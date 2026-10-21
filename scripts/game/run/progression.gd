@@ -75,6 +75,15 @@ func add_light(v: float) -> int:
 	return ups
 
 
+## The lantern spills: empties the gauge and returns its light. Taken off total_light too, so picking the shards
+## back up (add_light) never counts it twice.
+func spill() -> float:
+	var v := light
+	light = 0.0
+	total_light = maxf(total_light - v, 0.0)
+	return v
+
+
 ## Takes one pending level-up for a menu; returns the level that menu is for (0 if none is pending).
 func take_level_up() -> int:
 	if pending <= 0:

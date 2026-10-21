@@ -169,12 +169,15 @@ func _draw_death() -> void:
 
 
 func _draw_results() -> void:
-	N.panel(self, RESULTS_PANEL)
+	var spills: int = run.player.spills if run != null and run.get("player") != null else 0
+	N.panel(self, Rect2(RESULTS_PANEL.position, RESULTS_PANEL.size + Vector2(0, 12 if spills > 0 else 0)))
 	_line(STORY.line("results.title"), 106, "gold")
 	_line(_stat_line(), 118, "cream")
 	_line(STORY.line("results.line"), 130, "stone")
 	if _best != "":
 		_line(_best, 142, "lime" if _new_best else "mauve")
+	if spills > 0:
+		_line(STORY.line("results.lantern_saves", "SAVED BY THE LANTERN x%d") % spills, 154, "gold")
 	if get_node_or_null("%Narration") == null:
 		_line(STORY.line("results.keys"), 166, "cream")
 

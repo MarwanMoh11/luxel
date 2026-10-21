@@ -11,6 +11,8 @@ const INPUT_DELAY: Array[float] = [0.0, 0.2] # seconds of movement lag per INPUT
 const MERCY: Array[float] = [1.5, 0.8] # seconds of invulnerability after a hit per MERCY TIME level
 const DODGE_NEAR := 60.0 # px: the dodge bot steps away from enemies this close
 const GUARD_LEVEL := 12 # from act 3 (the CONTROLS tab's level, shop_data.gd) a hit can't take the last heart
+const STAGGER := 0.5 # s Wick can't steer after a spill
+const STORY := preload("res://scripts/game/story/story_text.gd")
 const NUDGE_PX := 8 # px: walking head-on into a prop's edge this close to clearing it slides Wick around it
 const NUDGE_SPEED := 0.6 # the nudge's sideways speed, of his own
 
@@ -20,6 +22,8 @@ var vel := Vector2.ZERO
 var hp := 0
 var max_hp := 0
 var invuln := 0.0 ## seconds of MERCY TIME left
+var stagger := 0.0 ## seconds of the lantern spilling's stagger left (no steering)
+var spills := 0 ## times the lantern spilled this run (the results card)
 
 var _buf_t := PackedFloat64Array()
 var _buf_d := PackedVector2Array()
@@ -38,6 +42,8 @@ func reset() -> void:
 	max_hp = BASE_HP + int(run.prog.hearts)
 	hp = max_hp
 	invuln = 0.0
+	stagger = 0.0
+	spills = 0
 	_buf_t.clear()
 	_buf_d.clear()
 	_sync()
@@ -47,6 +53,9 @@ func reset() -> void:
 func step(dt: float) -> void:
 	vel = run.player_vel # the toad's dome may have shoved Wick since the last step
 	var dir := _delayed(_lose_up(_wanted()))
+	if stagger > 0.0:
+		dir = Vector2.ZERO
+		stagger = maxf(stagger - dt, 0.0)
 	var accel: float = run.prog.accel() * MOVE_ACCEL[mini(run.lv("movement"), 1)]
 	var body: CharacterBody2D = run.view.body
 	vel = vel.move_toward(dir * run.prog.speed() * run.view.ground_speed(body.position), accel * dt)
@@ -89,15 +98,29 @@ func hittable() -> bool:
 
 ## Takes one heart; false if safe, invulnerable (MERCY TIME), or the last heart from act 3 on (GUARD_LEVEL, and
 ## always while closing), so a player who reached act 3 sees the finale. Starts MERCY TIME
-## whenever the contact registers, also when no heart is lost.
+## whenever the contact registers, also when no heart is lost. A guarded hit from GUARD_LEVEL (not while closing)
+## spills the lantern instead: the gauge's light scatters as shards Wick can run back in for a few seconds.
 func hurt() -> bool:
 	if not hittable():
 		return false
 	invuln = MERCY[mini(run.lv("mercy"), 1)]
-	if run.safe or (hp <= 1 and (run.closing() or run.prog.level >= GUARD_LEVEL)):
+	if run.safe:
+		return false
+	if hp <= 1 and (run.closing() or run.prog.level >= GUARD_LEVEL):
+		if not run.closing():
+			_spill()
 		return false
 	hp -= 1
 	return true
+
+
+## The lantern spills: the gauge empties into shards around Wick, a stagger, a line over him.
+func _spill() -> void:
+	spills += 1
+	stagger = STAGGER
+	run.shards.spill(run.lantern(), run.prog.spill())
+	if run.hud != null:
+		run.hud.nag(STORY.line("quip.lantern_spills", "THE LANTERN SPILLS."), 1.2)
 
 
 ## Restores `n` hearts up to max_hp.
