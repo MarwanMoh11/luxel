@@ -454,8 +454,7 @@ func _draw_fx(ci: CanvasItem, fx: String, row: int, f: int, at: Vector2) -> void
 	var e: Dictionary = kit.data["effects"][fx]
 	var size := KIT.vec(e["frame_size"])
 	var origin := KIT.vec(e["origin"])
-	ci.draw_texture_rect_region(_fx_tex[fx], Rect2((at - origin).round(), size),
-		Rect2(Vector2(f * size.x, row * size.y), size))
+	late(game.view.above, _fx_tex[fx], Rect2((at - origin).round(), size), Rect2(Vector2(f * size.x, row * size.y), size))
 
 
 func _fx_total(fx: String) -> float:

@@ -13,6 +13,11 @@ const SIDE_RATIO := 0.7 # |vx| > SIDE_RATIO * |vy| reads as the side view
 const DIR_HOLD := 0.15 # seconds a new view must hold before the sprite turns to it
 const UNMIRRORED: Array[String] = ["front", "back", "any"] # views never mirrored (the rim light stays west)
 const SHADOW_ALTS: Array[String] = ["shadow_mirror", "shadow_left"] # unflipped shadows of a mirrored frame
+const RIM := Color(1.0, 0.9569, 0.8627, 0.6) # palette cream (fff4dc) at 60%: the 1 px edge that lifts a body off dark grass
+
+static var _rims := {} # body/flash sheet -> its rim sheet (baked once, shared by every enemy of the kind)
+static var _late: Node2D # one child of the Above layer: draws after every body, so a tell is never covered
+static var _late_q: Array = [] # [texture, dest, src] queued this frame
 
 var kind: int # index in director.gd KINDS (snuffer 0, owl 1, toad 2, sporecap 3, gloam 4, magpie 5)
 var pos := Vector2.ZERO
@@ -306,4 +311,47 @@ func draw_layer(ci: CanvasItem, layer: String, at := Vector2.INF, f := -1) -> vo
 	var dest := Rect2(Vector2(left, feet.y - anchor.y), size)
 	if mirror:
 		dest.size.x = -size.x
-	ci.draw_texture_rect_region(tex_by[layer], dest, Rect2(f * size.x, 0, size.x, size.y))
+	var src := Rect2(f * size.x, 0, size.x, size.y)
+	if layer == "body" or layer == "flash":
+		ci.draw_texture_rect_region(_rim(tex_by[layer], int(size.x)), dest, src) # under the body: only the outer ring shows
+	ci.draw_texture_rect_region(tex_by[layer], dest, src)
+
+
+## Queues a telegraph (a ring, a star) to draw after everything else on the Above layer: over every body of the
+## horde, still inside the world viewport the COLOURS and RESOLUTION effects process. `above` = the Above layer.
+static func late(above: CanvasItem, tex: Texture2D, dest: Rect2, src: Rect2) -> void:
+	if _late == null or not is_instance_valid(_late) or _late.get_parent() != above:
+		_late = Node2D.new()
+		_late.draw.connect(_paint_late)
+		above.add_child(_late)
+		above.draw.connect(_late.queue_redraw) # an Above frame with no tells clears the last ones
+	_late_q.append([tex, dest, src])
+	_late.queue_redraw()
+
+
+static func _paint_late() -> void:
+	for q: Array in _late_q:
+		_late.draw_texture_rect_region(q[0], q[1], q[2])
+	_late_q.clear()
+
+
+## `tex` (frames `w` px wide, side by side) as a sheet of just the 1 px ring around each frame's silhouette, in RIM.
+## Neighbours never cross a frame's edge, so one frame's rim can't bleed into the next.
+static func _rim(tex: Texture2D, w: int) -> Texture2D:
+	if _rims.has(tex):
+		return _rims[tex]
+	var img := tex.get_image()
+	img.convert(Image.FORMAT_RGBA8)
+	var rim := Image.create(img.get_width(), img.get_height(), false, Image.FORMAT_RGBA8)
+	for y in img.get_height():
+		for x in img.get_width():
+			if img.get_pixel(x, y).a >= 0.5:
+				continue
+			var fx := x % w
+			var edge := (fx > 0 and img.get_pixel(x - 1, y).a >= 0.5) or (fx < w - 1 and x + 1 < img.get_width() and img.get_pixel(x + 1, y).a >= 0.5)
+			edge = edge or (y > 0 and img.get_pixel(x, y - 1).a >= 0.5) or (y + 1 < img.get_height() and img.get_pixel(x, y + 1).a >= 0.5)
+			if edge:
+				rim.set_pixel(x, y, RIM)
+	var out := ImageTexture.create_from_image(rim)
+	_rims[tex] = out
+	return out

@@ -7,6 +7,8 @@
 ## The static helpers draw the kind's effect sheets (the puff ring uses them too).
 extends "res://scripts/cast/enemies/hazard.gd"
 
+const ENEMY := preload("res://scripts/cast/enemies/enemy.gd")
+
 const ROOT := "res://art/cast/enemies/sporecap/"
 const POP_SOUND_GAP := 0.08 # seconds: a ring's eight pops at once make one sound
 
@@ -58,7 +60,7 @@ func draw_shadow(ci: CanvasItem) -> void:
 
 func draw(ci: CanvasItem) -> void:
 	if _popping < 0.0:
-		blit(ci, _spore, "body", pos, _spin())
+		blit(ci, _spore, "body", pos, _spin(), true)
 	else:
 		blit(ci, _pop, "body", pos, 0 if game.still() else frame_of(_pop, _popping))
 
@@ -69,7 +71,7 @@ func draw_eyes(ci: CanvasItem) -> void:
 
 
 ## Draws frame `f` of effect `fx`'s `layer` sheet with its origin on `at`.
-static func blit(ci: CanvasItem, fx: Dictionary, layer: String, at: Vector2, f: int) -> void:
+static func blit(ci: CanvasItem, fx: Dictionary, layer: String, at: Vector2, f: int, late := false) -> void:
 	if not fx.has(layer):
 		return
 	var path: String = fx[layer]
@@ -77,7 +79,12 @@ static func blit(ci: CanvasItem, fx: Dictionary, layer: String, at: Vector2, f: 
 		_tex[path] = load(ROOT + path)
 	var size := Vector2(float(fx["frame"][0]), float(fx["frame"][1]))
 	var origin := Vector2(float(fx["origin"][0]), float(fx["origin"][1]))
-	ci.draw_texture_rect_region(_tex[path], Rect2(at.round() - origin, size), Rect2(f * size.x, 0.0, size.x, size.y))
+	var dest := Rect2(at.round() - origin, size)
+	var src := Rect2(f * size.x, 0.0, size.x, size.y)
+	if late: # a tell: over every body of the horde (enemy.gd late)
+		ENEMY.late(ci, _tex[path], dest, src)
+	else:
+		ci.draw_texture_rect_region(_tex[path], dest, src)
 
 
 ## The frame of one-shot effect `fx` at `ms` into it (the last frame after the end).
