@@ -52,7 +52,7 @@ A first play from the title to the results takes about 8 and a half minutes, cou
 - The first play opens with a 24-second story intro (any key skips it) and a tutorial of about half a minute in which Wick can't be hurt. Both play once. Later runs start straight away.
 - Sell at every menu. The powers are what keep you alive: a player who never sells falls before act 3.
 - Every level-up heals one heart until you sell HEALING.
-- From level 12 (act 3, when CONTROLS opens) hits can't take your last heart. Get that far and you will see the ending.
+- From level 12 (act 3, when CONTROLS opens) a hit on your last heart still can't end the run. Instead THE LANTERN SPILLS: the gauge empties and its shards scatter around Wick. You have 4 seconds to run them back in, then they're gone. The results card counts SAVED BY THE LANTERN ×N. Get that far and you will see the ending.
 - Catch the Magpie. Killing it drops its star into the lantern for a free level-up.
 - Dying is cheap. Space restarts in place, with no intro or tutorial, and the first menu comes again at about 0:20.
 - The ending runs about a minute. Press twice to skip to the results.

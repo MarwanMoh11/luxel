@@ -11,6 +11,7 @@ The upgrade shop is the game's own Settings menu. Every level-up opens it with t
 
 - One sale per menu. Or BACK: keep everything and heal one heart. Once HEALING is sold, BACK reads KEEP ALL and heals nothing.
 - Tabs open as you level up: GENERAL and GRAPHICS at level 2, INTERFACE at 4, GAMEPLAY at 8, CONTROLS at 12. A gold badge on a tab counts the rows you can sell there right now.
+- From level 12 a hit on your last heart can't end the run. THE LANTERN SPILLS: the gauge empties and its shards scatter around Wick. Run them back in within 4 seconds or they're gone. The results card counts SAVED BY THE LANTERN ×N.
 - Act 1 sells your comfort, act 2 your safety, act 3 your hands.
 - Powers stack. Damage, fire rate, speed and range multiply; hearts, shots and pierce add up.
 - The beauty rule: anything that changes how the island looks, how the music sounds or how the game feels is stamped NOT FOR SALE, with a padlock and the word LATER. For the first four and a half minutes the island and the music stay beautiful. The AUDIO and GRAPHICS tabs sit there, locked, from the second menu on.
