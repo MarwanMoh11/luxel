@@ -313,7 +313,7 @@ func draw_layer(ci: CanvasItem, layer: String, at := Vector2.INF, f := -1) -> vo
 		dest.size.x = -size.x
 	var src := Rect2(f * size.x, 0, size.x, size.y)
 	if layer == "body" or layer == "flash":
-		ci.draw_texture_rect_region(_rim(tex_by[layer], int(size.x)), dest, src) # under the body: only the outer ring shows
+		ci.draw_texture_rect_region(_rim(tex_by[layer]), dest, src) # under the body: only the outer ring shows
 	ci.draw_texture_rect_region(tex_by[layer], dest, src)
 
 
@@ -335,23 +335,19 @@ static func _paint_late() -> void:
 	_late_q.clear()
 
 
-## `tex` (frames `w` px wide, side by side) as a sheet of just the 1 px ring around each frame's silhouette, in RIM.
-## Neighbours never cross a frame's edge, so one frame's rim can't bleed into the next.
-static func _rim(tex: Texture2D, w: int) -> Texture2D:
+## `tex` as a silhouette sheet in RIM grown 1 px up, down, left and right: drawn under the body, only the outer
+## 1 px ring shows. Baked once per sheet with native blits (no per-pixel script).
+static func _rim(tex: Texture2D) -> Texture2D:
 	if _rims.has(tex):
 		return _rims[tex]
 	var img := tex.get_image()
 	img.convert(Image.FORMAT_RGBA8)
+	var cream := Image.create(img.get_width(), img.get_height(), false, Image.FORMAT_RGBA8)
+	cream.fill(RIM)
 	var rim := Image.create(img.get_width(), img.get_height(), false, Image.FORMAT_RGBA8)
-	for y in img.get_height():
-		for x in img.get_width():
-			if img.get_pixel(x, y).a >= 0.5:
-				continue
-			var fx := x % w
-			var edge := (fx > 0 and img.get_pixel(x - 1, y).a >= 0.5) or (fx < w - 1 and x + 1 < img.get_width() and img.get_pixel(x + 1, y).a >= 0.5)
-			edge = edge or (y > 0 and img.get_pixel(x, y - 1).a >= 0.5) or (y + 1 < img.get_height() and img.get_pixel(x, y + 1).a >= 0.5)
-			if edge:
-				rim.set_pixel(x, y, RIM)
+	var all := Rect2i(Vector2i.ZERO, img.get_size())
+	for d: Vector2i in [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]:
+		rim.blit_rect_mask(cream, img, all, d)
 	var out := ImageTexture.create_from_image(rim)
 	_rims[tex] = out
 	return out
