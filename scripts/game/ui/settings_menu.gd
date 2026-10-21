@@ -56,6 +56,7 @@ const AUTO_SELL := 0.45
 const AUTO_DRAIN := 0.15
 const AUTO_SHUT := 0.75
 const AUTO_RESUME := 0.15 ## the world resumes this long after the menu shuts (sale["resume_in"])
+## ... all of the above times `_pace`: 1 for self-sales 1-3, then 25% quicker each (settings_fx.finale_pace).
 # Forced mode: the lock-break after CONFIRM SALES, seconds from the sale.
 const CRACK_AT := 0.3
 const CRACK_GAP := 0.12
@@ -108,6 +109,7 @@ var _press_t := -1.0 ## pixels mode: seconds since the last press (-1: none yet)
 var _bb_first := false ## player mode: the first menu that offers BUY BACK (its header line blinks gold)
 var _blast := 0 ## auto mode: this self-sale's charge of the blast (BLAST k/n, P8 B2); 0 = AUTO
 var _blast_of := 0
+var _pace := 1.0 ## auto mode: this self-sale's speed-up (settings_fx.finale_pace(_blast)); AUTO_* times scale by it
 
 
 ## Keeps the shop and the run.
@@ -123,6 +125,7 @@ func open(ctx: Dictionary) -> void:
 	_line = String(ctx.get("line", ""))
 	_blast = int(ctx.get("blast", 0))
 	_blast_of = int(ctx.get("blast_of", 0))
+	_pace = run.fx.finale_pace(_blast) if run and run.fx and _mode == "auto" else 1.0
 	_target = String(ctx.get("target", ""))
 	_open = true
 	_t = 0.0
@@ -308,21 +311,23 @@ func _open_player(new_tab: int) -> void:
 func _step_auto() -> void:
 	var target := _rows().find(_target)
 	# 60 ms a row, faster for deep rows so the cursor always arrives before SELL
-	var step := minf(AUTO_STEP, (AUTO_SELL - AUTO_CURSOR - 0.05) / maxf(target, 1.0))
-	var due := clampi(floori((_t - AUTO_CURSOR) / step), 0, maxi(target, 0)) if _t >= AUTO_CURSOR else 0
+	var cursor := AUTO_CURSOR * _pace
+	var sell := AUTO_SELL * _pace
+	var step := minf(AUTO_STEP * _pace, (sell - cursor - 0.05 * _pace) / maxf(target, 1.0))
+	var due := clampi(floori((_t - cursor) / step), 0, maxi(target, 0)) if _t >= cursor else 0
 	while _cursor_steps < due:
 		_cursor_steps += 1
 		_row = _cursor_steps
 		_fx_play("pick")
-	if _t >= AUTO_SELL and _sold_t < 0.0:
+	if _t >= sell and _sold_t < 0.0:
 		_row = maxi(target, 0)
 		_drain_from = shop.lv(_target)
 		_sale = shop.sell(_target, true)
 		_fx_play("sell", 0.0)
-		_sold_t = _t - AUTO_SELL
+		_sold_t = _t - sell
 		_result = "%s: SOLD" % DATA.ROWS[_target]["name"] if _target in DATA.ROWS else "SOLD"
-	if _t >= AUTO_SHUT:
-		_sale["resume_in"] = AUTO_RESUME
+	if _t >= AUTO_SHUT * _pace:
+		_sale["resume_in"] = AUTO_RESUME * _pace
 		_close()
 
 
@@ -681,7 +686,7 @@ func _draw_row(id: String, row: int, y: int) -> void:
 	var steps := DATA.steps(id)
 	var shown := float(lv)
 	if just_sold and _mode == "auto":
-		shown = lerpf(_drain_from, float(lv), clampf(_sold_t / AUTO_DRAIN, 0.0, 1.0))
+		shown = lerpf(_drain_from, float(lv), clampf(_sold_t / (AUTO_DRAIN * _pace), 0.0, 1.0))
 	if steps > MAX_NOTCHES:
 		_draw_fill_bar(steps, shown, y)
 	else:
@@ -764,7 +769,7 @@ func _draw_back(row: int, y: int) -> void:
 
 ## Draws the row's highlight (plum when picked, flashing coral just after a sale) and returns its colour.
 func _row_band(row: int, y: int) -> Color:
-	var picked := row == _row and (_mode != "auto" or _t >= AUTO_CURSOR)
+	var picked := row == _row and (_mode != "auto" or _t >= AUTO_CURSOR * _pace)
 	var flashing := _sold_t >= 0.0
 	var band: Color = PAL["dusk"]
 	if picked and flashing:

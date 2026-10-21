@@ -80,6 +80,7 @@ func _ready() -> void:
 	run.died.connect(_on_died)
 	run.display_off_reached.connect(_on_display_off)
 	run.closing_started.connect(_on_closing_started)
+	run.menu.closed.connect(_on_finale_sale_closed) # after the run's own connection: it has set the gap by then
 	run.pixels_stage.connect(_on_pixels_stage)
 	run.finale_line.connect(_on_finale_line)
 	run.stop_line.connect(_on_stop_line)
@@ -200,6 +201,13 @@ func _on_tutorial_finished() -> void:
 ## CONFIRM SALES sold: the finale opens (STORY.md 5).
 func _on_closing_started() -> void:
 	narration.say_id("finale.open", "ice", FINALE_SAY)
+
+
+## A finale self-sale closed: the play gap before the next one shortens with the sale's pace (the menu scales its own
+## times, settings_fx.finale_pace). The run has already set that gap; the CONFIRM and PIXELS menus pace at 1.
+func _on_finale_sale_closed(_sale: Dictionary) -> void:
+	if run.phase == RUN_GD.Phase.CLOSING or run.phase == RUN_GD.Phase.AUTO_SALE:
+		run._gap_len *= fx.finale_pace(run._auto_done + 1)
 
 
 ## The finale story's other lines (P8: the swell, the blast, the relight, the rest of the dark), when the run says.
@@ -337,3 +345,4 @@ func _unhandled_input(event: InputEvent) -> void:
 		_:
 			return
 	get_viewport().set_input_as_handled()
+
