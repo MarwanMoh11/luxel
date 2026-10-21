@@ -13,6 +13,10 @@ const SPAWN_RINGS: Array[float] = [200.0, 240.0, 170.0] # px from Wick; the view
 const WALK_LAYER := 1
 const SHOT_LAYER := 2
 const ROUGH_SPEED := 0.55 # speed factor on rough ground (Island.ROUGH_LAYER), Wick and walkers alike
+const PAL: Dictionary = preload("res://scripts/game/ui/palette.gd").PAL
+const SOIL: Array[String] = ["mauve", "stone", "lime", "mauve"] # flecks a hop kicks up on rough ground: soil, leaf
+const SOIL_LIFE := 0.35 # s
+const SOIL_FALL := 160.0 # px/s^2
 const SHAKE_PX := 3
 const POOL_COLOURS: Array[Color] = [Color8(255, 217, 140), Color8(245, 169, 106)] # gold, apricot: a pool's core
 const POOL_CELL := 8 # px: core pixels are grouped in cells; touching cells make one pool
@@ -26,6 +30,7 @@ var above: Node2D ## flyers, hazards, shots, impacts, shards
 var shake := 0.0 ## seconds of screen shake left
 var eyes_hidden := false ## the ending draws its own eyes (run.hide_eyes)
 
+var _soil: Array[Dictionary] = [] # kicked-up flecks: {pos, vel, t, c}
 var _under: Array[Node2D] = []
 var _rim := PackedVector2Array()
 var _query := PhysicsPointQueryParameters2D.new()
@@ -85,11 +90,18 @@ func reset() -> void:
 	shake = 0.0
 	eyes_hidden = false
 	warn.clear()
+	_soil.clear()
 
 
-## Camera: follows Wick, clamped to the map (unless a pan holds it). Real seconds.
+## Camera: follows Wick, clamped to the map (unless a pan holds it); the soil flecks fly. Real seconds.
 func step(dt: float) -> void:
 	shake = maxf(shake - dt, 0.0)
+	for f in _soil:
+		var v: Vector2 = f["vel"] + Vector2(0.0, SOIL_FALL * dt)
+		f["vel"] = v
+		f["pos"] += v * dt
+		f["t"] += dt
+	_soil = _soil.filter(func(f: Dictionary) -> bool: return f["t"] < SOIL_LIFE)
 	var target: Vector2 = run.wick_feet()
 	if _pan_to != Vector2.INF:
 		_pan_t = minf(_pan_t + dt, _pan_len)
@@ -163,9 +175,16 @@ func open(p: Vector2, mask := WALK_LAYER, rim := true) -> bool:
 	return run.get_world_2d().direct_space_state.intersect_point(_query, 1).is_empty()
 
 
-## Speed factor for feet at `p`: ROUGH_SPEED on rough ground (the flower beds' soil), else 1.
+## Speed factor for feet at `p`: ROUGH_SPEED on rough ground (flower beds, reeds), else 1.
 func ground_speed(p: Vector2) -> float:
 	return 1.0 if open(p, Island.ROUGH_LAYER, false) else ROUGH_SPEED
+
+
+## A hop landing on rough ground: a few soil and leaf flecks kick up around the feet.
+func kick_soil(feet: Vector2) -> void:
+	for c: String in SOIL:
+		_soil.append({"pos": feet + Vector2(randf_range(-3.0, 3.0), -1.0),
+			"vel": Vector2(randf_range(-22.0, 22.0), randf_range(-38.0, -18.0)), "t": 0.0, "c": PAL[c]})
 
 
 ## A walkable point on the island just outside the view, so enemies walk in from off-screen ground.
@@ -247,6 +266,8 @@ func _paint_wick() -> void:
 		light.draw_flies(body, feet, true)
 	light.draw_layer(body, LIGHT.UNDER_HERO, feet, emit)
 	light.draw_shots(body, run.bullets, true)
+	for f in _soil:
+		body.draw_rect(Rect2((f["pos"] as Vector2).round(), Vector2.ONE), f["c"])
 	var behind: bool = run.wick.lantern_behind()
 	if behind:
 		light.draw_layer(body, LIGHT.OVER_HERO, feet, emit)

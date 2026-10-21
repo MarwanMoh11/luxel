@@ -11,6 +11,8 @@ const INPUT_DELAY: Array[float] = [0.0, 0.2] # seconds of movement lag per INPUT
 const MERCY: Array[float] = [1.5, 0.8] # seconds of invulnerability after a hit per MERCY TIME level
 const DODGE_NEAR := 60.0 # px: the dodge bot steps away from enemies this close
 const GUARD_LEVEL := 12 # from act 3 (the CONTROLS tab's level, shop_data.gd) a hit can't take the last heart
+const NUDGE_PX := 8 # px: walking head-on into a prop's edge this close to clearing it slides Wick around it
+const NUDGE_SPEED := 0.6 # the nudge's sideways speed, of his own
 
 var run ## the Run (run.gd), duck-typed
 var feet := Vector2.ZERO ## the ground point under Wick (his body node's position)
@@ -54,12 +56,30 @@ func step(dt: float) -> void:
 		var hit := body.move_and_collide(motion)
 		if hit == null:
 			break
+		if i == 0:
+			_nudge(body, hit.get_normal(), dir, dt)
 		motion = hit.get_remainder().slide(hit.get_normal())
 	feet = body.position
 	if dt > 0.0:
 		vel = (body.position - before) / dt
 	invuln = maxf(invuln - dt, 0.0)
 	_sync()
+
+
+## Corner help: pushing straight into a wall (within about 25 degrees of its normal) while a sidestep of up to
+## NUDGE_PX clears the way drifts Wick toward that side (the side he leans to first), so stones, trunks and posts
+## don't stop him dead. Long walls have no clear sidestep and still stop him.
+func _nudge(body: CharacterBody2D, normal: Vector2, dir: Vector2, dt: float) -> void:
+	if dir.dot(-normal) < 0.9:
+		return
+	var side := normal.orthogonal()
+	if dir.dot(side) < 0.0:
+		side = -side
+	for d in range(1, NUDGE_PX + 1):
+		for s: Vector2 in [side, -side]:
+			if not body.test_move(Transform2D(0.0, body.position + s * d), dir * 2.0):
+				body.move_and_collide(s * minf(d, run.prog.speed() * NUDGE_SPEED * dt))
+				return
 
 
 ## A contact can land now: not in MERCY TIME, not immortal (checks), not while a level-up is about to open.

@@ -610,6 +610,8 @@ func _step_cast(dt: float) -> void:
 	wick.step(dt, player_vel if not frozen else Vector2.ZERO)
 	if wick.landed:
 		light.land(wick_feet())
+		if lv("particles") == 0 and view.ground_speed(wick_feet()) < 1.0:
+			view.kick_soil(wick_feet())
 	if player.hp > _last_hp and lv("healing") == 0:
 		light.heal()
 	_last_hp = player.hp
