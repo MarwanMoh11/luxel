@@ -4,12 +4,20 @@ extends Node2D
 ## never edit the scene by hand). Props are Sprite2D strips positioned at their feet, in the groups
 ## role_<role> and setting_<id> (the settings whose sale changes them). Lit props carry a lights-off texture in
 ## metadata/unlit; the painted stars are their own layer (Stars, stars.gdshader). Colliders are StaticBody2D
-## children: collision layer 1 = walk, 2 = shots.
+## children: collision layer 1 = walk, 2 = shots, 3 = rough ground (slow, set by _refine_walk).
 ## apply(levels) shows the sales on the map; colliders never change.
 
 const TICKS := 24 ## one world loop = 2 s at 12 fps; frame = tick * frames / TICKS, as in core.py
 const FPS := 12.0
 const STARS_GONE_AT := 30.0 ## % of PIXELS sold by which every star is dark; they go out bit by bit before that
+const ROUGH_LAYER := 4 ## collision layer 3: ground you wade through (the flower beds' soil), queried, never collided with
+const ROUGH_PROPS := "gh_bed" ## props whose walk colliders become rough ground
+## bridge_south's walk collider (local): it follows the south parapet's top so feet stay on the painted deck, and
+## ramps at both ends lead the road's south half up onto it instead of stopping Wick dead.
+const BRIDGE_RAIL: Array[Vector2] = [Vector2(-15, 4), Vector2(-15, 0), Vector2(3, -12), Vector2(16, -12),
+	Vector2(29, -13), Vector2(36, -14), Vector2(57, -14), Vector2(64, -13), Vector2(77, -12), Vector2(90, -12),
+	Vector2(108, 0), Vector2(108, 4)]
+const BRIDGE_NORTH_SORT := 341.0 ## the deck's back edge: whoever is on the deck draws in front of the north parapet
 
 @export var map_size := Vector2(1280, 720)
 @export var spawn := Vector2(640, 372)
@@ -35,6 +43,7 @@ func _ready() -> void:
 	_animated = _props.filter(func(s: Sprite2D) -> bool: return s.hframes > 1)
 	_stars = _props.filter(func(s: Sprite2D) -> bool: return s.is_in_group("setting_pixels"))
 	_stars.sort_custom(func(a: Sprite2D, b: Sprite2D) -> bool: return hash(a.name) < hash(b.name))
+	_refine_walk()
 	apply({})
 
 
@@ -125,6 +134,22 @@ func _go_dark(s: Sprite2D) -> void:
 		s.texture = s.get_meta("unlit")
 	else:
 		s.visible = false
+
+
+## Walk patches on top of the exported colliders (move them into world.py if they stay): the bridge's deck (the
+## south rail, BRIDGE_RAIL; the north parapet's sort point) and the flower beds as rough ground (ROUGH_LAYER).
+func _refine_walk() -> void:
+	var north: Sprite2D = $Sort/bridge_north
+	var lift := north.position.y - BRIDGE_NORTH_SORT
+	north.position.y = BRIDGE_NORTH_SORT
+	north.offset.y += lift
+	for c: Node in north.get_children():
+		(c as Node2D).position.y += lift # the collider stays where it was
+	($Sort/bridge_south/BlocksWalk/Shape0 as CollisionPolygon2D).polygon = PackedVector2Array(BRIDGE_RAIL)
+	for s in _props:
+		if s.name.begins_with(ROUGH_PROPS):
+			for body: StaticBody2D in s.find_children("*", "StaticBody2D", false, false):
+				body.collision_layer = ROUGH_LAYER
 
 
 ## Adds a moving thing (player, enemy, pickup) to the y-sorted layer. Its origin must be at its feet.

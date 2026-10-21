@@ -41,13 +41,13 @@ func reset() -> void:
 	_sync()
 
 
-## Reads input (MOVEMENT, INPUT DELAY, UP KEY), moves and collides Wick's feet. World seconds.
+## Reads input (MOVEMENT, INPUT DELAY, UP KEY), moves and collides Wick's feet (slower on rough ground). World seconds.
 func step(dt: float) -> void:
 	vel = run.player_vel # the toad's dome may have shoved Wick since the last step
 	var dir := _delayed(_lose_up(_wanted()))
 	var accel: float = run.prog.accel() * MOVE_ACCEL[mini(run.lv("movement"), 1)]
-	vel = vel.move_toward(dir * run.prog.speed(), accel * dt)
 	var body: CharacterBody2D = run.view.body
+	vel = vel.move_toward(dir * run.prog.speed() * run.view.ground_speed(body.position), accel * dt)
 	var before := body.position
 	var motion := vel * dt
 	for i in 3:

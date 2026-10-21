@@ -12,6 +12,7 @@ const FEET_RADIUS := 4.0 # Wick's walk collider, as the map's walker
 const SPAWN_RINGS: Array[float] = [200.0, 240.0, 170.0] # px from Wick; the view's half-diagonal is 184
 const WALK_LAYER := 1
 const SHOT_LAYER := 2
+const ROUGH_SPEED := 0.55 # speed factor on rough ground (Island.ROUGH_LAYER), Wick and walkers alike
 const SHAKE_PX := 3
 const POOL_COLOURS: Array[Color] = [Color8(255, 217, 140), Color8(245, 169, 106)] # gold, apricot: a pool's core
 const POOL_CELL := 8 # px: core pixels are grouped in cells; touching cells make one pool
@@ -160,6 +161,11 @@ func open(p: Vector2, mask := WALK_LAYER, rim := true) -> bool:
 	_query.position = p
 	_query.collision_mask = mask
 	return run.get_world_2d().direct_space_state.intersect_point(_query, 1).is_empty()
+
+
+## Speed factor for feet at `p`: ROUGH_SPEED on rough ground (the flower beds' soil), else 1.
+func ground_speed(p: Vector2) -> float:
+	return 1.0 if open(p, Island.ROUGH_LAYER, false) else ROUGH_SPEED
 
 
 ## A walkable point on the island just outside the view, so enemies walk in from off-screen ground.

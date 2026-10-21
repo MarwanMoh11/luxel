@@ -1512,9 +1512,12 @@ func shot_open(p: Vector2) -> bool:
 	return view.open(p, 2, false)
 
 
-## Moves enemy `e` by `step`, sliding around solid props (flyers only stay on the island); returns the new position.
+## Moves enemy `e` by `step`, sliding around solid props and slowed on rough ground (flyers only stay on the
+## island); returns the new position.
 func walk(e, step: Vector2, fly := false) -> Vector2:
 	var mask := 0 if fly else 1
+	if not fly:
+		step *= view.ground_speed(e.pos)
 	if view.open(e.pos + step, mask):
 		return e.pos + step
 	if view.open(e.pos + Vector2(step.x, 0), mask):
