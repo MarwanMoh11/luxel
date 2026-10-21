@@ -1,0 +1,86 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/game/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/world/island.tscn" id="2_island"]
+[ext_resource type="Script" path="res://scripts/game/run/run.gd" id="3_run"]
+[ext_resource type="Script" path="res://scripts/game/fx/settings_fx.gd" id="4_fx"]
+[ext_resource type="Script" path="res://scripts/game/fx/shard_audio.gd" id="5_shard_audio"]
+[ext_resource type="Script" path="res://scripts/game/tutorial.gd" id="6_tutorial"]
+[ext_resource type="Script" path="res://scripts/game/ui/hud.gd" id="7_hud"]
+[ext_resource type="Script" path="res://scripts/game/ui/settings_menu.gd" id="8_menu"]
+[ext_resource type="Script" path="res://scripts/game/screens/title.gd" id="9_title"]
+[ext_resource type="Script" path="res://scripts/game/screens/intro.gd" id="10_intro"]
+[ext_resource type="Script" path="res://scripts/game/screens/cards.gd" id="11_cards"]
+[ext_resource type="Script" path="res://scripts/game/screens/ending.gd" id="12_ending"]
+[ext_resource type="Script" path="res://scripts/game/ui/narration.gd" id="13_narration"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="Island" parent="." instance=ExtResource("2_island")]
+unique_name_in_owner = true
+
+[node name="Run" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_run")
+
+[node name="Fx" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_fx")
+
+[node name="ShardAudio" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_shard_audio")
+
+[node name="Tutorial" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_tutorial")
+
+[node name="HudLayer" type="CanvasLayer" parent="."]
+layer = 4
+
+[node name="Hud" type="Node2D" parent="HudLayer"]
+unique_name_in_owner = true
+script = ExtResource("7_hud")
+
+[node name="TopLayer" type="CanvasLayer" parent="."]
+layer = 6
+
+[node name="Top" type="Node2D" parent="TopLayer"]
+unique_name_in_owner = true
+
+[node name="MenuLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Menu" type="Node2D" parent="MenuLayer"]
+unique_name_in_owner = true
+script = ExtResource("8_menu")
+
+[node name="ScreensLayer" type="CanvasLayer" parent="."]
+layer = 12
+
+[node name="Title" type="Node2D" parent="ScreensLayer"]
+unique_name_in_owner = true
+script = ExtResource("9_title")
+
+[node name="Intro" type="Node2D" parent="ScreensLayer"]
+unique_name_in_owner = true
+script = ExtResource("10_intro")
+
+[node name="Cards" type="Node2D" parent="ScreensLayer"]
+unique_name_in_owner = true
+script = ExtResource("11_cards")
+
+[node name="EndingLayer" type="CanvasLayer" parent="."]
+layer = 14
+
+[node name="Ending" type="Node2D" parent="EndingLayer"]
+unique_name_in_owner = true
+script = ExtResource("12_ending")
+
+[node name="NarrationLayer" type="CanvasLayer" parent="."]
+layer = 15
+
+[node name="Narration" type="Node2D" parent="NarrationLayer"]
+unique_name_in_owner = true
+script = ExtResource("13_narration")

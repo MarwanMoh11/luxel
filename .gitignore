@@ -1,0 +1,24 @@
+# Godot cache (rebuilt by the first import)
+.godot/
+
+# Exports and release staging
+/build/
+/publish/
+
+# Kept local
+/docs/
+/tests/
+/archive/
+/3D/
+/website/tools/make_media.py
+.claude/
+.codex/
+/.mcp.json
+/CLAUDE.md
+/AGENTS.md
+
+# OS and Python
+.DS_Store
+__pycache__/
+*.pyc
+.venv/

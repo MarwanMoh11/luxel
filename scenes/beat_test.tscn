@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/beat_test.gd" id="1_script"]
+[ext_resource type="AudioStream" path="res://audio/click_120bpm.wav" id="2_click"]
+
+[node name="BeatTest" type="Node2D"]
+script = ExtResource("1_script")
+click_track = ExtResource("2_click")
+click_bpm = 120.0

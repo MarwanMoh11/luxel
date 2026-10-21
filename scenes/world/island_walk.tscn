@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/island.tscn" id="island"]
+[ext_resource type="Script" path="res://scripts/world/walker.gd" id="walker"]
+[ext_resource type="Script" path="res://scripts/world/walk_test.gd" id="walk_test"]
+
+[sub_resource type="CircleShape2D" id="feet"]
+radius = 4.0
+
+[node name="IslandWalk" type="Node2D"]
+script = ExtResource("walk_test")
+
+[node name="Island" parent="." instance=ExtResource("island")]
+
+[node name="Walker" type="CharacterBody2D" parent="Island/Sort"]
+position = Vector2(640, 372)
+collision_layer = 0
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("walker")
+
+[node name="Feet" type="CollisionShape2D" parent="Island/Sort/Walker"]
+shape = SubResource("feet")
+
+[node name="Camera" type="Camera2D" parent="Island/Sort/Walker"]
+process_callback = 0
+limit_left = 0
+limit_top = 0
+limit_right = 1280
+limit_bottom = 720

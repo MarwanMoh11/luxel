@@ -1,0 +1,2338 @@
+{
+ "name": "Hush Owl",
+ "id": "owl",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "frame": [
+  48,
+  48
+ ],
+ "anchor": [
+  24,
+  40
+ ],
+ "shadow_frame": [
+  56,
+  20
+ ],
+ "shadow_anchor": [
+  28,
+  10
+ ],
+ "anchor_convention": "node position = the ground point under the owl; draw the shadow frame's anchor on it and the body frame's anchor (the owl's feet) at ground point - (0, frame_data.altitude).",
+ "hit_radius": 7,
+ "body_radius": 8,
+ "body_box": [
+  18,
+  18
+ ],
+ "wingspan": 30,
+ "rig": {
+  "position": "the owl's node position is the GROUND POINT under it. Draw the shadow frame with its anchor on the ground point, then the body frame with its anchor (the feet) at ground point - (0, altitude). frame_data.altitude is per frame (the flap bob, the lock rise, the dive drop).",
+  "hit_centre": "frame_data.hit_centre = the body centre relative to the GROUND POINT (= (0, -9) above the feet, plus the altitude; same meaning as the Magpie's): shots aim at it and hits test hit_radius around it, but only on frames where frame_data.targetable is true (see behaviour.targetable); shots never hit the shadow. The dive hurts Wick when hit_centre passes within hit_radius + 5 px of his body centre.",
+  "layers": "SHADOW (ground layer) < dive_smear < BODY < EYES. EYES = pupils and their ice rings only; in the finale draw only EYES above the dead pixels. Every direction has eyes: from behind the owl turns its head back over its left shoulder, so a back-facing owl still shows two eyes (only closed-eye frames, the death puff and the dissolve have an empty EYES frame).",
+  "flash": "*_flash.png: cream silhouette inside the outline; swap it for the body frame for 60 ms on a hit (HIT FLASH sold: skip). hurt and death frame 0 are already flashed.",
+  "shadow": "one flat colour mask: shade the ground under it one step darker (core.SHADE). Flyer convention shared with the Magpie: almost under the bird, nudged (+2, +1) px, shrinking and thinning with altitude (solid and full size during the dive and the recover).",
+  "mirror_left": "side faces right; the art is symmetric about the anchor's left pixel edge, so a flipped body frame is drawn at the same place (ground.x - AX). Flip the shadow too and draw it at ground.x - (SW - SAX) + 4, so its sun nudge stays east.",
+  "directions": "front = flying down the screen, back = up, side = left/right and diagonals. While CIRCLING and in LOCK choose the direction from the vector to Wick (an owl keeps its face on its prey; it banks around him staring); in DIVE and RECOVER from the velocity.",
+  "y_sort": "flying: draw above the y-sorted props and actors (it flies over them) while altitude >= 10; below that (the bottom of the dive, recover, the landed death) y-sort by the ground point.",
+  "animations_sold": "loops hold frame 0 (the glide), one-shots show frame 0 for their whole duration (lock frame 0 is the full tell, dive frame 0 the smear frame)"
+ },
+ "behaviour": {
+  "id": "owl",
+  "from_s": 40,
+  "hp": 3,
+  "hp_in_code": 30,
+  "xp": 2,
+  "flies_over_props": true,
+  "cruise": {
+   "keep_distance_px": 80,
+   "circle_speed_px_s": 48,
+   "altitude_px": 20
+  },
+  "lock": {
+   "s": 0.7,
+   "note": "stops, rears, hoots; the dive target is Wick's position when the lock ends"
+  },
+  "dive": {
+   "s": 0.5,
+   "speed_px_s": 240,
+   "length_px": 120,
+   "overshoot_px": 40,
+   "lock_range_px": 80,
+   "frames": 6,
+   "note": "a straight line through Wick's position when the lock ends and 40 px past it: locked from ~80 px away that is 120 px in 0.5 s. From another range keep 240 px/s and the 40 px overshoot, so the time changes; play the 6 frames by progress (frame = floor(6 * distance done / dive length))."
+  },
+  "recover": {
+   "s": 0.9,
+   "note": "tumbles, shakes its head, slow: the window to shoot it"
+  },
+  "targetable": {
+   "below_altitude_px": 16,
+   "states": [
+    "dive",
+    "recover"
+   ],
+   "per_frame": "frame_data.targetable",
+   "rule": "the owl can't be hit while high (altitude >= 16 px: fly, lock, spawn, hurt): Wick's shots, the toll splash and the firefly stings pass under it, and the auto-aim skips it. It can only be hit low, in the DIVE and the RECOVER tumble (every frame of both is under 16 px). Shots already flying when it drops low can hit it.",
+   "why": "alone it used to die in the 0.7 s LOCK before teaching the sidestep; now the dodge comes first and the recover is the window"
+  },
+  "repeat": "cruise -> lock -> dive -> recover -> cruise",
+  "formations": "parliaments of 3 from ~3:30 that lock one after another (stagger the locks ~0.35 s)"
+ },
+ "tells": {
+  "lock": {
+   "animation": "lock",
+   "frame": 0,
+   "what": "the pale V of the wing undersides, the flared face disc and wide eyes, the crouch; the owl stops dead (the shadow sharpens as it rises)"
+  },
+  "hoot": {
+   "effect": "hoot",
+   "sound": "owl_hoot",
+   "when": "LOCK frame 0, at the head top",
+   "sound_sold": "when SOUND is sold the hoot is gone AND its visible rings vanish with it: the lock keeps only its pale V (that is the trade-off)"
+  },
+  "dive": {
+   "animation": "dive",
+   "effect": "dive_smear",
+   "sound": "owl_whoosh",
+   "when": "dive frame 0"
+  },
+  "recover": {
+   "animation": "recover",
+   "what": "tumble, dizzy sparks: shoot now",
+   "sound": "owl_ruffle",
+   "when": "recover frame 0"
+  },
+  "other_sounds": {
+   "hurt": "owl_squawk",
+   "death": "owl_puff",
+   "land": "owl_thud",
+   "spawn": "owl_wingbeat"
+  },
+  "sounds": {
+   "owl_hoot": "a soft two-note hoo-hoo",
+   "owl_whoosh": "a wing whoosh, the dive's rush of air",
+   "owl_ruffle": "a feather ruffle",
+   "owl_squawk": "a soft squawk",
+   "owl_puff": "a soft down puff (death frame 1)",
+   "owl_thud": "a low thud (death frame 6, it lands)",
+   "owl_wingbeat": "one heavy wingbeat (spawn frame 4, the brake)"
+  },
+  "sound_ids": "short ids the game calls; SOUND sold silences all of them",
+  "sales_that_hurt": [
+   "SOUND (no hoot, no hoot rings)",
+   "ANIMATIONS (lock frozen on frame 0: still readable, but the shiver and coil timing is gone)",
+   "FRAME RATE 20",
+   "INPUT DELAY",
+   "ICE",
+   "UP KEY"
+  ]
+ },
+ "animations": {
+  "fly": {
+   "loop": true,
+   "note": "24 frames x 1 tick on the 2 s world loop: a long glide (frame 0 is the still pose) then two heavy flaps; the body bobs through `altitude`. Cruise and circle.",
+   "frame": [
+    48,
+    48
+   ],
+   "anchor": [
+    24,
+    40
+   ],
+   "dirs": {
+    "front": {
+     "frames": 24,
+     "body": "sheets/fly_front_body.png",
+     "flash": "sheets/fly_front_flash.png",
+     "eyes": "sheets/fly_front_eyes.png",
+     "shadow": "sheets/fly_front_shadow.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      }
+     ]
+    },
+    "side": {
+     "frames": 24,
+     "body": "sheets/fly_side_body.png",
+     "flash": "sheets/fly_side_flash.png",
+     "eyes": "sheets/fly_side_eyes.png",
+     "shadow": "sheets/fly_side_shadow.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      }
+     ]
+    },
+    "back": {
+     "frames": 24,
+     "body": "sheets/fly_back_body.png",
+     "flash": "sheets/fly_back_flash.png",
+     "eyes": "sheets/fly_back_eyes.png",
+     "shadow": "sheets/fly_back_shadow.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -27
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      }
+     ]
+    }
+   },
+   "total_ms": 2000,
+   "ticks_per_frame": 1.0
+  },
+  "lock": {
+   "loop": false,
+   "note": "LOCK, 700 ms: stops, rears, wings back in a pale V, face disc flares, shiver, coil. Frame 0 already shows the tell. Hold the last frame if the lock runs long. High: it can't be hit.",
+   "frame": [
+    48,
+    48
+   ],
+   "anchor": [
+    24,
+    40
+   ],
+   "dirs": {
+    "front": {
+     "frames": 7,
+     "body": "sheets/lock_front_body.png",
+     "flash": "sheets/lock_front_flash.png",
+     "eyes": "sheets/lock_front_eyes.png",
+     "shadow": "sheets/lock_front_shadow.png",
+     "frame_data": [
+      {
+       "ms": 100,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 22,
+       "hit_centre": [
+        0,
+        -31
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 24,
+       "hit_centre": [
+        0,
+        -33
+       ],
+       "targetable": false
+      }
+     ]
+    },
+    "side": {
+     "frames": 7,
+     "body": "sheets/lock_side_body.png",
+     "flash": "sheets/lock_side_flash.png",
+     "eyes": "sheets/lock_side_eyes.png",
+     "shadow": "sheets/lock_side_shadow.png",
+     "frame_data": [
+      {
+       "ms": 100,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 22,
+       "hit_centre": [
+        0,
+        -31
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 24,
+       "hit_centre": [
+        0,
+        -33
+       ],
+       "targetable": false
+      }
+     ]
+    },
+    "back": {
+     "frames": 7,
+     "body": "sheets/lock_back_body.png",
+     "flash": "sheets/lock_back_flash.png",
+     "eyes": "sheets/lock_back_eyes.png",
+     "shadow": "sheets/lock_back_shadow.png",
+     "frame_data": [
+      {
+       "ms": 100,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 22,
+       "hit_centre": [
+        0,
+        -31
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 24,
+       "hit_centre": [
+        0,
+        -33
+       ],
+       "targetable": false
+      }
+     ]
+    }
+   },
+   "total_ms": 700
+  },
+  "dive": {
+   "loop": false,
+   "note": "DIVE, 500 ms = 6 ticks at 12 fps, ~240 px/s along a straight line, 120 px: ~80 px to where Wick stood (frame 4, the lowest point, talons out) + 40 px overshoot (frame 5). Frame 0 is the smear frame. Play `dive_smear` once from frame 0 (row = dive direction, its frame k with dive frame k). Low: it can be hit.",
+   "frame": [
+    48,
+    48
+   ],
+   "anchor": [
+    24,
+    40
+   ],
+   "dirs": {
+    "front": {
+     "frames": 6,
+     "body": "sheets/dive_front_body.png",
+     "flash": "sheets/dive_front_flash.png",
+     "eyes": "sheets/dive_front_eyes.png",
+     "shadow": "sheets/dive_front_shadow.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -24
+       ],
+       "targetable": true,
+       "smear": 3
+      },
+      {
+       "ms": 83.33,
+       "altitude": 12,
+       "hit_centre": [
+        0,
+        -21
+       ],
+       "targetable": true,
+       "smear": 3
+      },
+      {
+       "ms": 83.33,
+       "altitude": 9,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "targetable": true,
+       "smear": 2
+      },
+      {
+       "ms": 83.33,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true,
+       "smear": 2
+      },
+      {
+       "ms": 83.33,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true,
+       "smear": 1
+      },
+      {
+       "ms": 83.33,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true,
+       "smear": 1
+      }
+     ]
+    },
+    "side": {
+     "frames": 6,
+     "body": "sheets/dive_side_body.png",
+     "flash": "sheets/dive_side_flash.png",
+     "eyes": "sheets/dive_side_eyes.png",
+     "shadow": "sheets/dive_side_shadow.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -24
+       ],
+       "targetable": true,
+       "smear": 3
+      },
+      {
+       "ms": 83.33,
+       "altitude": 12,
+       "hit_centre": [
+        0,
+        -21
+       ],
+       "targetable": true,
+       "smear": 3
+      },
+      {
+       "ms": 83.33,
+       "altitude": 9,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "targetable": true,
+       "smear": 2
+      },
+      {
+       "ms": 83.33,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true,
+       "smear": 2
+      },
+      {
+       "ms": 83.33,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true,
+       "smear": 1
+      },
+      {
+       "ms": 83.33,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true,
+       "smear": 1
+      }
+     ]
+    },
+    "back": {
+     "frames": 6,
+     "body": "sheets/dive_back_body.png",
+     "flash": "sheets/dive_back_flash.png",
+     "eyes": "sheets/dive_back_eyes.png",
+     "shadow": "sheets/dive_back_shadow.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -24
+       ],
+       "targetable": true,
+       "smear": 3
+      },
+      {
+       "ms": 83.33,
+       "altitude": 12,
+       "hit_centre": [
+        0,
+        -21
+       ],
+       "targetable": true,
+       "smear": 3
+      },
+      {
+       "ms": 83.33,
+       "altitude": 9,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "targetable": true,
+       "smear": 2
+      },
+      {
+       "ms": 83.33,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true,
+       "smear": 2
+      },
+      {
+       "ms": 83.33,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true,
+       "smear": 1
+      },
+      {
+       "ms": 83.33,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true,
+       "smear": 1
+      }
+     ]
+    }
+   },
+   "total_ms": 500
+  },
+  "recover": {
+   "loop": false,
+   "note": "RECOVER, 900 ms: brake, forward tumble, head shake with dizzy sparks, climb. Low and slow: the window to shoot it.",
+   "frame": [
+    48,
+    48
+   ],
+   "anchor": [
+    24,
+    40
+   ],
+   "dirs": {
+    "front": {
+     "frames": 11,
+     "body": "sheets/recover_front_body.png",
+     "flash": "sheets/recover_front_flash.png",
+     "eyes": "sheets/recover_front_eyes.png",
+     "shadow": "sheets/recover_front_shadow.png",
+     "frame_data": [
+      {
+       "ms": 90,
+       "altitude": 9,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 5,
+       "hit_centre": [
+        0,
+        -14
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 90,
+       "altitude": 5,
+       "hit_centre": [
+        0,
+        -14
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 90,
+       "altitude": 5,
+       "hit_centre": [
+        0,
+        -14
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 70,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 70,
+       "altitude": 10,
+       "hit_centre": [
+        0,
+        -19
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 90,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -24
+       ],
+       "targetable": true
+      }
+     ]
+    },
+    "side": {
+     "frames": 11,
+     "body": "sheets/recover_side_body.png",
+     "flash": "sheets/recover_side_flash.png",
+     "eyes": "sheets/recover_side_eyes.png",
+     "shadow": "sheets/recover_side_shadow.png",
+     "frame_data": [
+      {
+       "ms": 90,
+       "altitude": 9,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 5,
+       "hit_centre": [
+        0,
+        -14
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 90,
+       "altitude": 5,
+       "hit_centre": [
+        0,
+        -14
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 90,
+       "altitude": 5,
+       "hit_centre": [
+        0,
+        -14
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 70,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 70,
+       "altitude": 10,
+       "hit_centre": [
+        0,
+        -19
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 90,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -24
+       ],
+       "targetable": true
+      }
+     ]
+    },
+    "back": {
+     "frames": 11,
+     "body": "sheets/recover_back_body.png",
+     "flash": "sheets/recover_back_flash.png",
+     "eyes": "sheets/recover_back_eyes.png",
+     "shadow": "sheets/recover_back_shadow.png",
+     "frame_data": [
+      {
+       "ms": 90,
+       "altitude": 9,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 5,
+       "hit_centre": [
+        0,
+        -14
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 90,
+       "altitude": 5,
+       "hit_centre": [
+        0,
+        -14
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 90,
+       "altitude": 5,
+       "hit_centre": [
+        0,
+        -14
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 70,
+       "altitude": 7,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 70,
+       "altitude": 10,
+       "hit_centre": [
+        0,
+        -19
+       ],
+       "targetable": true
+      },
+      {
+       "ms": 90,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -24
+       ],
+       "targetable": true
+      }
+     ]
+    }
+   },
+   "total_ms": 900
+  },
+  "hurt": {
+   "loop": false,
+   "note": "a non-lethal hit while flying high (frame 0 is already flashed). Under behaviour.targetable nothing hits it high, so this is kept only in case that rule is relaxed. A hit in dive/recover: swap in the flash sheet for 60 ms and keep the action going.",
+   "frame": [
+    48,
+    48
+   ],
+   "anchor": [
+    24,
+    40
+   ],
+   "dirs": {
+    "front": {
+     "frames": 3,
+     "body": "sheets/hurt_front_body.png",
+     "flash": "sheets/hurt_front_flash.png",
+     "eyes": "sheets/hurt_front_eyes.png",
+     "shadow": "sheets/hurt_front_shadow.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false,
+       "flashed": true
+      },
+      {
+       "ms": 90,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      }
+     ]
+    },
+    "side": {
+     "frames": 3,
+     "body": "sheets/hurt_side_body.png",
+     "flash": "sheets/hurt_side_flash.png",
+     "eyes": "sheets/hurt_side_eyes.png",
+     "shadow": "sheets/hurt_side_shadow.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false,
+       "flashed": true
+      },
+      {
+       "ms": 90,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      }
+     ]
+    },
+    "back": {
+     "frames": 3,
+     "body": "sheets/hurt_back_body.png",
+     "flash": "sheets/hurt_back_flash.png",
+     "eyes": "sheets/hurt_back_eyes.png",
+     "shadow": "sheets/hurt_back_shadow.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false,
+       "flashed": true
+      },
+      {
+       "ms": 90,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 100,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      }
+     ]
+    }
+   },
+   "total_ms": 250
+  },
+  "death": {
+   "loop": false,
+   "note": "one-shot, ~1.1 s, ends empty. Body altitude = altitude at death x fall; the feathers are drawn in ground space, they do not need the fall factor",
+   "frame": [
+    48,
+    48
+   ],
+   "anchor": [
+    24,
+    40
+   ],
+   "dirs": {
+    "front": {
+     "frames": 12,
+     "body": "sheets/death_front_body.png",
+     "flash": "sheets/death_front_flash.png",
+     "eyes": "sheets/death_front_eyes.png",
+     "shadow": "sheets/death_front_shadow.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false,
+       "fall": 1.0,
+       "flashed": true
+      },
+      {
+       "ms": 60,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false,
+       "fall": 1.0
+      },
+      {
+       "ms": 70,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false,
+       "fall": 0.95
+      },
+      {
+       "ms": 80,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -24
+       ],
+       "targetable": false,
+       "fall": 0.75
+      },
+      {
+       "ms": 80,
+       "altitude": 9,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "targetable": false,
+       "fall": 0.45
+      },
+      {
+       "ms": 80,
+       "altitude": 3,
+       "hit_centre": [
+        0,
+        -12
+       ],
+       "targetable": false,
+       "fall": 0.15
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 120,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      }
+     ]
+    },
+    "side": {
+     "frames": 12,
+     "body": "sheets/death_side_body.png",
+     "flash": "sheets/death_side_flash.png",
+     "eyes": "sheets/death_side_eyes.png",
+     "shadow": "sheets/death_side_shadow.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false,
+       "fall": 1.0,
+       "flashed": true
+      },
+      {
+       "ms": 60,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false,
+       "fall": 1.0
+      },
+      {
+       "ms": 70,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false,
+       "fall": 0.95
+      },
+      {
+       "ms": 80,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -24
+       ],
+       "targetable": false,
+       "fall": 0.75
+      },
+      {
+       "ms": 80,
+       "altitude": 9,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "targetable": false,
+       "fall": 0.45
+      },
+      {
+       "ms": 80,
+       "altitude": 3,
+       "hit_centre": [
+        0,
+        -12
+       ],
+       "targetable": false,
+       "fall": 0.15
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 120,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      }
+     ]
+    },
+    "back": {
+     "frames": 12,
+     "body": "sheets/death_back_body.png",
+     "flash": "sheets/death_back_flash.png",
+     "eyes": "sheets/death_back_eyes.png",
+     "shadow": "sheets/death_back_shadow.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false,
+       "fall": 1.0,
+       "flashed": true
+      },
+      {
+       "ms": 60,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false,
+       "fall": 1.0
+      },
+      {
+       "ms": 70,
+       "altitude": 19,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "targetable": false,
+       "fall": 0.95
+      },
+      {
+       "ms": 80,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -24
+       ],
+       "targetable": false,
+       "fall": 0.75
+      },
+      {
+       "ms": 80,
+       "altitude": 9,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "targetable": false,
+       "fall": 0.45
+      },
+      {
+       "ms": 80,
+       "altitude": 3,
+       "hit_centre": [
+        0,
+        -12
+       ],
+       "targetable": false,
+       "fall": 0.15
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 120,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": [
+        0,
+        -9
+       ],
+       "targetable": false,
+       "fall": 0.0
+      }
+     ]
+    }
+   },
+   "total_ms": 1060
+  },
+  "spawn": {
+   "loop": false,
+   "note": "one-shot, ~0.7 s: drops in from 64 px up, then fly",
+   "frame": [
+    48,
+    48
+   ],
+   "anchor": [
+    24,
+    40
+   ],
+   "dirs": {
+    "front": {
+     "frames": 8,
+     "body": "sheets/spawn_front_body.png",
+     "flash": "sheets/spawn_front_flash.png",
+     "eyes": "sheets/spawn_front_eyes.png",
+     "shadow": "sheets/spawn_front_shadow.png",
+     "frame_data": [
+      {
+       "ms": 80,
+       "altitude": 64,
+       "hit_centre": [
+        0,
+        -73
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 80,
+       "altitude": 50,
+       "hit_centre": [
+        0,
+        -59
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 80,
+       "altitude": 38,
+       "hit_centre": [
+        0,
+        -47
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 80,
+       "altitude": 29,
+       "hit_centre": [
+        0,
+        -38
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 90,
+       "altitude": 23,
+       "hit_centre": [
+        0,
+        -32
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 90,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -30
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 90,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      },
+      {
+       "ms": 110,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "targetable": false
+      }
+     ]
+    }
+   },
+   "total_ms": 700
+  }
+ },
+ "effects": {
+  "dive_smear": {
+   "file": "sheets/dive_smear_any_fx.png",
+   "frame_size": [
+    48,
+    48
+   ],
+   "origin": [
+    24,
+    24
+   ],
+   "rows": 16,
+   "frames": 6,
+   "ms": [
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33
+   ],
+   "loop": false,
+   "note": "16 directions: row d faces the dive velocity, angle d*22.5 deg (0 = +x, clockwise, +y down); origin = the owl's body centre (feet + centre, at the owl's altitude). Play once from dive frame 0, following the owl: frame k with dive frame k (6 frames, 0.5 s; if the dive is stretched to another length, keep them in step). Draw it under the owl and over the ground shadow."
+  },
+  "feather": {
+   "file": "sheets/feather_any_fx.png",
+   "frame_size": [
+    16,
+    20
+   ],
+   "origin": [
+    8,
+    3
+   ],
+   "rows": 2,
+   "frames": 8,
+   "ms": [
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+   ],
+   "loop": false,
+   "note": "rows: stone, ice. A shed feather seesawing down 11 px and fading; origin = where it was shed. Spawn 1-2 on hits (hurt) for extra flutter; PARTICLES sold: skip."
+  },
+  "hoot": {
+   "file": "sheets/hoot_any_fx.png",
+   "frame_size": [
+    36,
+    22
+   ],
+   "origin": [
+    18,
+    18
+   ],
+   "rows": 1,
+   "frames": 6,
+   "ms": [
+    80,
+    80,
+    80,
+    80,
+    80,
+    80
+   ],
+   "loop": false,
+   "note": "the soft hoot made visible, at the head top (feet + (0, -19)) on LOCK frame 0. Belongs to SOUND: when SOUND is sold, owl_hoot and these rings are both gone (the trade-off)."
+  }
+ }
+}

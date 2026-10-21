@@ -1,0 +1,1879 @@
+{
+ "name": "Snuffer",
+ "id": "snuffer",
+ "version": 1,
+ "palette": [
+  "void",
+  "night",
+  "dusk",
+  "plum",
+  "wine",
+  "coral",
+  "apricot",
+  "gold",
+  "cream",
+  "pine",
+  "teal",
+  "jade",
+  "lime",
+  "deep",
+  "blue",
+  "sky",
+  "ice",
+  "mauve",
+  "stone",
+  "rose"
+ ],
+ "frame": [
+  32,
+  40
+ ],
+ "anchor": [
+  16,
+  36
+ ],
+ "shadow_frame": [
+  36,
+  14
+ ],
+ "shadow_anchor": [
+  12,
+  3
+ ],
+ "size": "about 13 x 18 px with its outline (body 11 wide, cone 9 wide + lip)",
+ "hit_radius": 6,
+ "body_radius": 6,
+ "centre": [
+  0,
+  -8
+ ],
+ "looks": [
+  "tin",
+  "soot",
+  "dent"
+ ],
+ "rig": {
+  "layers": "body = the sprite. flash = cream silhouette inside the outline: swap it for body for 60 ms on a hit (HIT FLASH sold: skip). eyes = only the eye pixels, same frame: in the finale draw eyes alone above the dead pixels. shadow = flat void mask in its own frame, drawn first: shade the ground one step darker (core.SHADE) under it.",
+  "looks": "pick one look per snuffer at spawn (weights below); every look shares frames, timing and anchors, only the sheets differ: sheets/<look>/<anim>_<dir>_<layer>.png",
+  "look_weights": {
+   "tin": 0.45,
+   "soot": 0.3,
+   "dent": 0.25
+  },
+  "look_notes": {
+   "tin": "pale clean metal, a knobbed handle; the common one",
+   "soot": "dark sooted metal, a ring handle; reads a value darker in a crowd",
+   "dent": "crooked tip, a dent in the lit face, the handle snapped off"
+  },
+  "mirror_left": "side faces right; for left flip every layer horizontally around the anchor x (the shadow around shadow_anchor x)",
+  "directions": "front = moving down, back = moving up, side = left/right and diagonals (|vx| > 0.7 |vy|); keep the last direction while turning for at least 150 ms",
+  "phase": "start each snuffer's hop on a random frame (0..11) so a pack never hops in step",
+  "movement": "move at constant speed; the hop is cosmetic. A hop covers ~16 px at 32 px/s.",
+  "centre": "frame_data centre = the body centre (anchor-relative) for shots, impacts and splash",
+  "death": "on the killing hit play one death_* (weights below) at the snuffer's last position and direction instead of the light's generic body dissolve; it already starts with the cream hit frame and ends in its own dissolve. The light's death_small overlay may play over it at frame_data centre.",
+  "death_weights": {
+   "death_pop": 0.4,
+   "death_flip": 0.35,
+   "death_cork": 0.25
+  },
+  "events": "frame_data event: hit (hit-stop here), pop (death: the cone leaves), clatter (death: the cone lands), land (a hop or spawn landing; no sound for hops: a pack would drown the music)",
+  "hit_stop": "freeze only the snuffer for the light's impact hit-stop on hurt frame 0 / death frame 0",
+  "y_sort": "sort by the feet anchor y",
+  "animations_sold": "loops hold frame 0 (a neutral standing pose); one-shots show frame 0 throughout"
+ },
+ "animations": {
+  "idle": {
+   "loop": true,
+   "note": "12 frames x 2 ticks: breathing fluff, the cone rides it a frame late, a blink",
+   "dirs": {
+    "side": {
+     "frames": 12,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/idle_side_body.png",
+       "flash": "sheets/tin/idle_side_flash.png",
+       "eyes": "sheets/tin/idle_side_eyes.png",
+       "shadow": "sheets/tin/idle_side_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/idle_side_body.png",
+       "flash": "sheets/soot/idle_side_flash.png",
+       "eyes": "sheets/soot/idle_side_eyes.png",
+       "shadow": "sheets/soot/idle_side_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/idle_side_body.png",
+       "flash": "sheets/dent/idle_side_flash.png",
+       "eyes": "sheets/dent/idle_side_eyes.png",
+       "shadow": "sheets/dent/idle_side_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 12,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/idle_front_body.png",
+       "flash": "sheets/tin/idle_front_flash.png",
+       "eyes": "sheets/tin/idle_front_eyes.png",
+       "shadow": "sheets/tin/idle_front_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/idle_front_body.png",
+       "flash": "sheets/soot/idle_front_flash.png",
+       "eyes": "sheets/soot/idle_front_eyes.png",
+       "shadow": "sheets/soot/idle_front_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/idle_front_body.png",
+       "flash": "sheets/dent/idle_front_flash.png",
+       "eyes": "sheets/dent/idle_front_eyes.png",
+       "shadow": "sheets/dent/idle_front_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 12,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/idle_back_body.png",
+       "flash": "sheets/tin/idle_back_flash.png",
+       "eyes": "sheets/tin/idle_back_eyes.png",
+       "shadow": "sheets/tin/idle_back_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/idle_back_body.png",
+       "flash": "sheets/soot/idle_back_flash.png",
+       "eyes": "sheets/soot/idle_back_eyes.png",
+       "shadow": "sheets/soot/idle_back_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/idle_back_body.png",
+       "flash": "sheets/dent/idle_back_flash.png",
+       "eyes": "sheets/dent/idle_back_eyes.png",
+       "shadow": "sheets/dent/idle_back_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "centre": [
+        0,
+        -8
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 2000,
+   "ticks_per_frame": 2.0
+  },
+  "hop": {
+   "loop": true,
+   "note": "the chase gait: two waddle-hops per cycle (12 x 1 tick); start each snuffer on a random frame so a pack never hops in step",
+   "dirs": {
+    "side": {
+     "frames": 12,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/hop_side_body.png",
+       "flash": "sheets/tin/hop_side_flash.png",
+       "eyes": "sheets/tin/hop_side_eyes.png",
+       "shadow": "sheets/tin/hop_side_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/hop_side_body.png",
+       "flash": "sheets/soot/hop_side_flash.png",
+       "eyes": "sheets/soot/hop_side_eyes.png",
+       "shadow": "sheets/soot/hop_side_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/hop_side_body.png",
+       "flash": "sheets/dent/hop_side_flash.png",
+       "eyes": "sheets/dent/hop_side_eyes.png",
+       "shadow": "sheets/dent/hop_side_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -12
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "land"
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -11
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "land"
+      }
+     ]
+    },
+    "front": {
+     "frames": 12,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/hop_front_body.png",
+       "flash": "sheets/tin/hop_front_flash.png",
+       "eyes": "sheets/tin/hop_front_eyes.png",
+       "shadow": "sheets/tin/hop_front_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/hop_front_body.png",
+       "flash": "sheets/soot/hop_front_flash.png",
+       "eyes": "sheets/soot/hop_front_eyes.png",
+       "shadow": "sheets/soot/hop_front_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/hop_front_body.png",
+       "flash": "sheets/dent/hop_front_flash.png",
+       "eyes": "sheets/dent/hop_front_eyes.png",
+       "shadow": "sheets/dent/hop_front_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -12
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "land"
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -12
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "land"
+      }
+     ]
+    },
+    "back": {
+     "frames": 12,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/hop_back_body.png",
+       "flash": "sheets/tin/hop_back_flash.png",
+       "eyes": "sheets/tin/hop_back_eyes.png",
+       "shadow": "sheets/tin/hop_back_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/hop_back_body.png",
+       "flash": "sheets/soot/hop_back_flash.png",
+       "eyes": "sheets/soot/hop_back_eyes.png",
+       "shadow": "sheets/soot/hop_back_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/hop_back_body.png",
+       "flash": "sheets/dent/hop_back_flash.png",
+       "eyes": "sheets/dent/hop_back_eyes.png",
+       "shadow": "sheets/dent/hop_back_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -12
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "land"
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -12
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -10
+       ]
+      },
+      {
+       "ms": 83.33,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "land"
+      }
+     ]
+    }
+   },
+   "total_ms": 1000,
+   "ticks_per_frame": 1.0
+  },
+  "hurt": {
+   "loop": false,
+   "note": "one-shot on a hit that does not kill; frame 0 is flashed and holds the hit-stop; then back to hop",
+   "dirs": {
+    "side": {
+     "frames": 4,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/hurt_side_body.png",
+       "flash": "sheets/tin/hurt_side_flash.png",
+       "eyes": "sheets/tin/hurt_side_eyes.png",
+       "shadow": "sheets/tin/hurt_side_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/hurt_side_body.png",
+       "flash": "sheets/soot/hurt_side_flash.png",
+       "eyes": "sheets/soot/hurt_side_eyes.png",
+       "shadow": "sheets/soot/hurt_side_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/hurt_side_body.png",
+       "flash": "sheets/dent/hurt_side_flash.png",
+       "eyes": "sheets/dent/hurt_side_eyes.png",
+       "shadow": "sheets/dent/hurt_side_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 60,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 70,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 70,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 80,
+       "centre": [
+        0,
+        -8
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 4,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/hurt_front_body.png",
+       "flash": "sheets/tin/hurt_front_flash.png",
+       "eyes": "sheets/tin/hurt_front_eyes.png",
+       "shadow": "sheets/tin/hurt_front_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/hurt_front_body.png",
+       "flash": "sheets/soot/hurt_front_flash.png",
+       "eyes": "sheets/soot/hurt_front_eyes.png",
+       "shadow": "sheets/soot/hurt_front_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/hurt_front_body.png",
+       "flash": "sheets/dent/hurt_front_flash.png",
+       "eyes": "sheets/dent/hurt_front_eyes.png",
+       "shadow": "sheets/dent/hurt_front_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 60,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 70,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 70,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 80,
+       "centre": [
+        0,
+        -8
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 4,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/hurt_back_body.png",
+       "flash": "sheets/tin/hurt_back_flash.png",
+       "eyes": "sheets/tin/hurt_back_eyes.png",
+       "shadow": "sheets/tin/hurt_back_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/hurt_back_body.png",
+       "flash": "sheets/soot/hurt_back_flash.png",
+       "eyes": "sheets/soot/hurt_back_eyes.png",
+       "shadow": "sheets/soot/hurt_back_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/hurt_back_body.png",
+       "flash": "sheets/dent/hurt_back_flash.png",
+       "eyes": "sheets/dent/hurt_back_eyes.png",
+       "shadow": "sheets/dent/hurt_back_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 60,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 70,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 70,
+       "centre": [
+        0,
+        -8
+       ]
+      },
+      {
+       "ms": 80,
+       "centre": [
+        0,
+        -8
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 280
+  },
+  "spawn": {
+   "loop": false,
+   "note": "one-shot: rises out of a puff of void smoke, then hop",
+   "dirs": {
+    "front": {
+     "frames": 8,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/spawn_front_body.png",
+       "flash": "sheets/tin/spawn_front_flash.png",
+       "eyes": "sheets/tin/spawn_front_eyes.png",
+       "shadow": "sheets/tin/spawn_front_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/spawn_front_body.png",
+       "flash": "sheets/soot/spawn_front_flash.png",
+       "eyes": "sheets/soot/spawn_front_eyes.png",
+       "shadow": "sheets/soot/spawn_front_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/spawn_front_body.png",
+       "flash": "sheets/dent/spawn_front_flash.png",
+       "eyes": "sheets/dent/spawn_front_eyes.png",
+       "shadow": "sheets/dent/spawn_front_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 80
+      },
+      {
+       "ms": 90
+      },
+      {
+       "ms": 70,
+       "centre": [
+        0,
+        -2
+       ]
+      },
+      {
+       "ms": 70,
+       "centre": [
+        0,
+        -6
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        0,
+        -11
+       ]
+      },
+      {
+       "ms": 70,
+       "centre": [
+        0,
+        -9
+       ]
+      },
+      {
+       "ms": 80,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "land"
+      },
+      {
+       "ms": 120,
+       "centre": [
+        0,
+        -8
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 640
+  },
+  "death_pop": {
+   "loop": false,
+   "note": "the cone pops straight up spinning, clatters down on its side to the right, bounces",
+   "dirs": {
+    "side": {
+     "frames": 9,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/death_pop_side_body.png",
+       "flash": "sheets/tin/death_pop_side_flash.png",
+       "eyes": "sheets/tin/death_pop_side_eyes.png",
+       "shadow": "sheets/tin/death_pop_side_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/death_pop_side_body.png",
+       "flash": "sheets/soot/death_pop_side_flash.png",
+       "eyes": "sheets/soot/death_pop_side_eyes.png",
+       "shadow": "sheets/soot/death_pop_side_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/death_pop_side_body.png",
+       "flash": "sheets/dent/death_pop_side_flash.png",
+       "eyes": "sheets/dent/death_pop_side_eyes.png",
+       "shadow": "sheets/dent/death_pop_side_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        1,
+        -17
+       ],
+       "event": "pop"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        2,
+        -23
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        4,
+        -26
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        5,
+        -24
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        6,
+        -15
+       ]
+      },
+      {
+       "ms": 50,
+       "centre": [
+        7,
+        -5
+       ],
+       "event": "clatter"
+      },
+      {
+       "ms": 50,
+       "centre": [
+        8,
+        -7
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        8,
+        -5
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 9,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/death_pop_front_body.png",
+       "flash": "sheets/tin/death_pop_front_flash.png",
+       "eyes": "sheets/tin/death_pop_front_eyes.png",
+       "shadow": "sheets/tin/death_pop_front_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/death_pop_front_body.png",
+       "flash": "sheets/soot/death_pop_front_flash.png",
+       "eyes": "sheets/soot/death_pop_front_eyes.png",
+       "shadow": "sheets/soot/death_pop_front_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/death_pop_front_body.png",
+       "flash": "sheets/dent/death_pop_front_flash.png",
+       "eyes": "sheets/dent/death_pop_front_eyes.png",
+       "shadow": "sheets/dent/death_pop_front_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        1,
+        -17
+       ],
+       "event": "pop"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        2,
+        -23
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        4,
+        -26
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        5,
+        -24
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        6,
+        -15
+       ]
+      },
+      {
+       "ms": 50,
+       "centre": [
+        7,
+        -5
+       ],
+       "event": "clatter"
+      },
+      {
+       "ms": 50,
+       "centre": [
+        8,
+        -7
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        8,
+        -5
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 9,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/death_pop_back_body.png",
+       "flash": "sheets/tin/death_pop_back_flash.png",
+       "eyes": "sheets/tin/death_pop_back_eyes.png",
+       "shadow": "sheets/tin/death_pop_back_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/death_pop_back_body.png",
+       "flash": "sheets/soot/death_pop_back_flash.png",
+       "eyes": "sheets/soot/death_pop_back_eyes.png",
+       "shadow": "sheets/soot/death_pop_back_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/death_pop_back_body.png",
+       "flash": "sheets/dent/death_pop_back_flash.png",
+       "eyes": "sheets/dent/death_pop_back_eyes.png",
+       "shadow": "sheets/dent/death_pop_back_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        1,
+        -17
+       ],
+       "event": "pop"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        2,
+        -23
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        4,
+        -26
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        5,
+        -24
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        6,
+        -15
+       ]
+      },
+      {
+       "ms": 50,
+       "centre": [
+        7,
+        -5
+       ],
+       "event": "clatter"
+      },
+      {
+       "ms": 50,
+       "centre": [
+        8,
+        -7
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        8,
+        -5
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 400
+  },
+  "death_flip": {
+   "loop": false,
+   "note": "the cone flips backwards to the left, lands tip-left and rocks to a stop",
+   "dirs": {
+    "side": {
+     "frames": 9,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/death_flip_side_body.png",
+       "flash": "sheets/tin/death_flip_side_flash.png",
+       "eyes": "sheets/tin/death_flip_side_eyes.png",
+       "shadow": "sheets/tin/death_flip_side_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/death_flip_side_body.png",
+       "flash": "sheets/soot/death_flip_side_flash.png",
+       "eyes": "sheets/soot/death_flip_side_eyes.png",
+       "shadow": "sheets/soot/death_flip_side_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/death_flip_side_body.png",
+       "flash": "sheets/dent/death_flip_side_flash.png",
+       "eyes": "sheets/dent/death_flip_side_eyes.png",
+       "shadow": "sheets/dent/death_flip_side_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -1,
+        -17
+       ],
+       "event": "pop"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -2,
+        -22
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -4,
+        -25
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -6,
+        -22
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -8,
+        -13
+       ]
+      },
+      {
+       "ms": 50,
+       "centre": [
+        -9,
+        -5
+       ],
+       "event": "clatter"
+      },
+      {
+       "ms": 50,
+       "centre": [
+        -10,
+        -6
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        -10,
+        -5
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 9,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/death_flip_front_body.png",
+       "flash": "sheets/tin/death_flip_front_flash.png",
+       "eyes": "sheets/tin/death_flip_front_eyes.png",
+       "shadow": "sheets/tin/death_flip_front_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/death_flip_front_body.png",
+       "flash": "sheets/soot/death_flip_front_flash.png",
+       "eyes": "sheets/soot/death_flip_front_eyes.png",
+       "shadow": "sheets/soot/death_flip_front_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/death_flip_front_body.png",
+       "flash": "sheets/dent/death_flip_front_flash.png",
+       "eyes": "sheets/dent/death_flip_front_eyes.png",
+       "shadow": "sheets/dent/death_flip_front_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -1,
+        -17
+       ],
+       "event": "pop"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -2,
+        -22
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -4,
+        -25
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -6,
+        -22
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -8,
+        -13
+       ]
+      },
+      {
+       "ms": 50,
+       "centre": [
+        -9,
+        -5
+       ],
+       "event": "clatter"
+      },
+      {
+       "ms": 50,
+       "centre": [
+        -10,
+        -6
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        -10,
+        -5
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 9,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/death_flip_back_body.png",
+       "flash": "sheets/tin/death_flip_back_flash.png",
+       "eyes": "sheets/tin/death_flip_back_eyes.png",
+       "shadow": "sheets/tin/death_flip_back_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/death_flip_back_body.png",
+       "flash": "sheets/soot/death_flip_back_flash.png",
+       "eyes": "sheets/soot/death_flip_back_eyes.png",
+       "shadow": "sheets/soot/death_flip_back_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/death_flip_back_body.png",
+       "flash": "sheets/dent/death_flip_back_flash.png",
+       "eyes": "sheets/dent/death_flip_back_eyes.png",
+       "shadow": "sheets/dent/death_flip_back_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -1,
+        -17
+       ],
+       "event": "pop"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -2,
+        -22
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -4,
+        -25
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -6,
+        -22
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        -8,
+        -13
+       ]
+      },
+      {
+       "ms": 50,
+       "centre": [
+        -9,
+        -5
+       ],
+       "event": "clatter"
+      },
+      {
+       "ms": 50,
+       "centre": [
+        -10,
+        -6
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        -10,
+        -5
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 400
+  },
+  "death_cork": {
+   "loop": false,
+   "note": "pops like a cork, lands upright and empty where the snuffer stood; a last wisp leaks out",
+   "dirs": {
+    "side": {
+     "frames": 9,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/death_cork_side_body.png",
+       "flash": "sheets/tin/death_cork_side_flash.png",
+       "eyes": "sheets/tin/death_cork_side_eyes.png",
+       "shadow": "sheets/tin/death_cork_side_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/death_cork_side_body.png",
+       "flash": "sheets/soot/death_cork_side_flash.png",
+       "eyes": "sheets/soot/death_cork_side_eyes.png",
+       "shadow": "sheets/soot/death_cork_side_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/death_cork_side_body.png",
+       "flash": "sheets/dent/death_cork_side_flash.png",
+       "eyes": "sheets/dent/death_cork_side_eyes.png",
+       "shadow": "sheets/dent/death_cork_side_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -19
+       ],
+       "event": "pop"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -27
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -31
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -28
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -15
+       ]
+      },
+      {
+       "ms": 50,
+       "centre": [
+        0,
+        -5
+       ],
+       "event": "clatter"
+      },
+      {
+       "ms": 50,
+       "centre": [
+        0,
+        -6
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        0,
+        -5
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 9,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/death_cork_front_body.png",
+       "flash": "sheets/tin/death_cork_front_flash.png",
+       "eyes": "sheets/tin/death_cork_front_eyes.png",
+       "shadow": "sheets/tin/death_cork_front_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/death_cork_front_body.png",
+       "flash": "sheets/soot/death_cork_front_flash.png",
+       "eyes": "sheets/soot/death_cork_front_eyes.png",
+       "shadow": "sheets/soot/death_cork_front_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/death_cork_front_body.png",
+       "flash": "sheets/dent/death_cork_front_flash.png",
+       "eyes": "sheets/dent/death_cork_front_eyes.png",
+       "shadow": "sheets/dent/death_cork_front_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -19
+       ],
+       "event": "pop"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -27
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -31
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -28
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -15
+       ]
+      },
+      {
+       "ms": 50,
+       "centre": [
+        0,
+        -5
+       ],
+       "event": "clatter"
+      },
+      {
+       "ms": 50,
+       "centre": [
+        0,
+        -6
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        0,
+        -5
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 9,
+     "sheets": {
+      "tin": {
+       "body": "sheets/tin/death_cork_back_body.png",
+       "flash": "sheets/tin/death_cork_back_flash.png",
+       "eyes": "sheets/tin/death_cork_back_eyes.png",
+       "shadow": "sheets/tin/death_cork_back_shadow.png"
+      },
+      "soot": {
+       "body": "sheets/soot/death_cork_back_body.png",
+       "flash": "sheets/soot/death_cork_back_flash.png",
+       "eyes": "sheets/soot/death_cork_back_eyes.png",
+       "shadow": "sheets/soot/death_cork_back_shadow.png"
+      },
+      "dent": {
+       "body": "sheets/dent/death_cork_back_body.png",
+       "flash": "sheets/dent/death_cork_back_flash.png",
+       "eyes": "sheets/dent/death_cork_back_eyes.png",
+       "shadow": "sheets/dent/death_cork_back_shadow.png"
+      }
+     },
+     "frame_data": [
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -8
+       ],
+       "event": "hit"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -19
+       ],
+       "event": "pop"
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -27
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -31
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -28
+       ]
+      },
+      {
+       "ms": 40,
+       "centre": [
+        0,
+        -15
+       ]
+      },
+      {
+       "ms": 50,
+       "centre": [
+        0,
+        -5
+       ],
+       "event": "clatter"
+      },
+      {
+       "ms": 50,
+       "centre": [
+        0,
+        -6
+       ]
+      },
+      {
+       "ms": 60,
+       "centre": [
+        0,
+        -5
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 400
+  }
+ },
+ "behaviour": {
+  "role": "fodder: the one you mow down by the dozen; teaches nothing new, it is the baseline",
+  "from": "0:00",
+  "speed_px_s": 32,
+  "hp": 2,
+  "hp_code": 20,
+  "xp": 1,
+  "ai": "plain chaser: steer straight at Wick, loose packs; light separation so packs spread",
+  "packs": "loose packs of 4-8 from 0:00",
+  "formations": "from 3:30: rings of 18-24 that spawn around Wick just outside the view and close in",
+  "spawn": "play spawn (630 ms) at the spawn point; it cannot hurt or be hurt until frame 4",
+  "contact": "touching Wick hurts him (gameplay's damage number)"
+ },
+ "tells": {
+  "attack": "none: the snuffer is the baseline (it just chases)",
+  "spawn": "spawn frame 1: two ice eyes open inside a puff of void smoke, ~240 ms before it rises",
+  "sounds": {
+   "snuffer_spawn": "a soft puff when the smoke appears (spawn frame 0)",
+   "snuffer_pop": "a small cork-pop on death frame 1",
+   "snuffer_clatter": "a light tin clink on death frame 6 (pitch-vary per look: soot lower, dent dull)",
+   "hops": "silent"
+  },
+  "sales_that_hurt": {
+   "RESOLUTION": "a crowd blurs into one dark mass (the cones still read)",
+   "COLOUR": "the three looks merge; the eyes and the cones' lit edge survive"
+  }
+ }
+}

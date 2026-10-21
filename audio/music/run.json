@@ -1,0 +1,175 @@
+{
+ "bpm": 144,
+ "bar": 1.666667,
+ "start": "lantern",
+ "phrases": {
+  "lantern": {
+   "file": "run_lantern.ogg",
+   "bars": 16,
+   "part": "",
+   "next": "organ"
+  },
+  "organ": {
+   "file": "run_organ.ogg",
+   "bars": 8,
+   "part": "",
+   "next": "engine"
+  },
+  "engine": {
+   "file": "run_engine.ogg",
+   "bars": 4,
+   "part": "",
+   "next": "engine2",
+   "exit": {
+    "to": "a",
+    "due": 46.6667,
+    "lead": 0.0,
+    "hold": 6.6667
+   }
+  },
+  "engine2": {
+   "file": "run_engine.ogg",
+   "bars": 4,
+   "part": "",
+   "next": "engine",
+   "exit": {
+    "to": "a",
+    "due": 46.6667,
+    "lead": 0.0,
+    "hold": 6.6667
+   }
+  },
+  "a": {
+   "file": "run_a.ogg",
+   "bars": 16,
+   "part": "",
+   "next": "b",
+   "exit": {
+    "to": "breath",
+    "due": 158.3333,
+    "lead": 0.0,
+    "hold": 26.6667
+   }
+  },
+  "b": {
+   "file": "run_b.ogg",
+   "bars": 16,
+   "part": "",
+   "next": "brk",
+   "exit": {
+    "to": "breath",
+    "due": 158.3333,
+    "lead": 0.0,
+    "hold": 13.3333
+   }
+  },
+  "brk": {
+   "file": "run_brk.ogg",
+   "bars": 8,
+   "part": "",
+   "next": "a2",
+   "exit": {
+    "to": "breath",
+    "due": 158.3333,
+    "lead": 0.0,
+    "hold": 26.6667
+   }
+  },
+  "a2": {
+   "file": "run_a2.ogg",
+   "bars": 16,
+   "part": "",
+   "next": "c",
+   "exit": {
+    "to": "breath",
+    "due": 158.3333,
+    "lead": 0.0,
+    "hold": 18.3333
+   }
+  },
+  "c": {
+   "file": "run_c.ogg",
+   "bars": 11,
+   "part": "",
+   "next": "turn",
+   "exit": {
+    "to": "breath",
+    "due": 158.3333,
+    "lead": 0.0,
+    "hold": 35.0
+   }
+  },
+  "turn": {
+   "file": "run_turn.ogg",
+   "bars": 1,
+   "part": "",
+   "next": "engine"
+  },
+  "breath": {
+   "file": "run_breath.ogg",
+   "bars": 1,
+   "part": "night",
+   "next": "half"
+  },
+  "half": {
+   "file": "run_half.ogg",
+   "bars": 16,
+   "part": "night",
+   "next": "drive",
+   "exit": {
+    "to": "night_brk",
+    "due": 253.3333,
+    "lead": 13.3333,
+    "hold": 26.6667
+   }
+  },
+  "drive": {
+   "file": "run_drive.ogg",
+   "bars": 16,
+   "part": "night",
+   "next": "night_b",
+   "exit": {
+    "to": "night_brk",
+    "due": 253.3333,
+    "lead": 13.3333,
+    "hold": 26.6667
+   }
+  },
+  "night_b": {
+   "file": "run_night_b.ogg",
+   "bars": 16,
+   "part": "night",
+   "next": "half",
+   "exit": {
+    "to": "night_brk",
+    "due": 253.3333,
+    "lead": 13.3333,
+    "hold": 26.6667
+   }
+  },
+  "night_brk": {
+   "file": "run_night_brk.ogg",
+   "bars": 8,
+   "part": "night",
+   "next": "light_a"
+  },
+  "light_a": {
+   "file": "run_light_a.ogg",
+   "bars": 16,
+   "part": "light",
+   "next": "light_b"
+  },
+  "light_b": {
+   "file": "run_light_b.ogg",
+   "bars": 16,
+   "part": "light",
+   "next": "light_c"
+  },
+  "light_c": {
+   "file": "run_light_c.ogg",
+   "bars": 16,
+   "part": "light",
+   "next": "light_a"
+  }
+ }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "tag": "idea",
+    "title": "THE THEME",
+    "text": "The theme is Trade-off. The first question: what could a game trade away that only this theme would ask for?"
+  },
+  {
+    "tag": "idea",
+    "title": "THE IDEA",
+    "text": "A survivor game where the upgrade shop is the game's own Settings menu. Every power costs a piece of the game."
+  },
+  {
+    "tag": "prototype",
+    "title": "PLAIN SHAPES FIRST",
+    "text": "The core loop built with coloured squares: move, collect light, open the menu, sell. It had to be fun before anything was added to it."
+  },
+  {
+    "tag": "build",
+    "title": "THE DESIGN",
+    "text": "The rules, the numbers, the shop, the story and the finale, designed and written down before the game grew around the core."
+  },
+  {
+    "tag": "art",
+    "title": "THE LOOK",
+    "text": "Last Light: 20 colours, 320 by 180 pixels, one low sun. The island, Wick and the six enemies of the dark."
+  },
+  {
+    "tag": "sound",
+    "title": "THE SOUND",
+    "text": "An original gothic score in D minor that builds across a run, and soft foley pitched into its key."
+  },
+  {
+    "tag": "feedback",
+    "title": "PLAY, DEBUG, TUNE",
+    "text": "Whole runs played start to finish, bugs found and fixed, and the difficulty and pacing tuned until a run lands at about six and a half minutes."
+  },
+  {
+    "tag": "ship",
+    "title": "SUNSET",
+    "text": "A web build at the game's own 16:9, this site, and downloads for Mac, Windows and Linux."
+  }
+]

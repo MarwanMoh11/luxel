@@ -1,0 +1,42 @@
+[
+  {
+    "label": "A RUN TO DISPLAY: OFF",
+    "value": "6:20"
+  },
+  {
+    "label": "SALES IN A FULL RUN",
+    "value": "132"
+  },
+  {
+    "label": "ENEMIES OF THE DARK",
+    "value": "6"
+  },
+  {
+    "label": "LANTERN FORMS",
+    "value": "6"
+  },
+  {
+    "label": "ZONES ON THE ISLAND",
+    "value": "7"
+  },
+  {
+    "label": "PROPS ON THE ISLAND",
+    "value": "298"
+  },
+  {
+    "label": "COLOURS",
+    "value": "20"
+  },
+  {
+    "label": "PIXELS ON THE SCREEN",
+    "value": "57,600"
+  },
+  {
+    "label": "ANIMATION FRAMES FOR WICK AND THE SIX ENEMIES",
+    "value": "1,188"
+  },
+  {
+    "label": "LANTERN NOTES IN THE PIXELS SALE",
+    "value": "100"
+  }
+]

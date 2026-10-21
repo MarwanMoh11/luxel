@@ -1,0 +1,44 @@
+# Normalize text to LF in the repo
+* text=auto eol=lf
+
+# Godot text formats
+*.gd        text eol=lf
+*.gdshader  text eol=lf
+*.tscn      text eol=lf
+*.tres      text eol=lf
+*.godot     text eol=lf
+*.import    text eol=lf
+*.uid       text eol=lf
+*.cfg       text eol=lf
+
+# Tools and docs
+*.py    text eol=lf
+*.swift text eol=lf
+*.md    text eol=lf
+*.json  text eol=lf
+*.html  text eol=lf
+*.css   text eol=lf
+*.js    text eol=lf
+*.svg   text eol=lf
+
+# Binary assets
+*.png   binary
+*.gif   binary
+*.webp  binary
+*.jpg   binary
+*.jpeg  binary
+*.ico   binary
+*.wav   binary
+*.ogg   binary
+*.mp3   binary
+*.m4a   binary
+*.mid   binary
+*.f32   binary
+*.mp4   binary
+*.ttf   binary
+*.otf   binary
+*.woff  binary
+*.woff2 binary
+*.zip   binary
+*.pck   binary
+*.wasm  binary

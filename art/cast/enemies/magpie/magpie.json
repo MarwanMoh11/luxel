@@ -1,0 +1,2232 @@
+{
+ "name": "Magpie, the thief",
+ "id": "magpie",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "frame": [
+  48,
+  52
+ ],
+ "anchor": [
+  24,
+  44
+ ],
+ "anchor_note": "the anchor is the ground point under the bird; body frames bake the altitude (the body centre is `altitude` px above the anchor). Sort and spawn by the anchor; draw the magpie on the flyer layer above props and actors (it flies over everything).",
+ "shadow_frame": [
+  48,
+  16
+ ],
+ "shadow_anchor": [
+  24,
+  8
+ ],
+ "hit_radius": 6,
+ "body_radius": 7,
+ "hit_note": "circles around frame_data hit_centre (anchor-relative); shots hit the bird, not the shadow",
+ "rig": {
+  "layers": "Per frame at the same anchor: shadow (ground layer) -> [star if star_behind] -> body -> [star if not star_behind]. Swap body for flash for ~60 ms on a hit (hurt frame 0 is already flashed). In the finale draw only the eyes layer above the dead pixels.",
+  "mirror_left": "side faces right; for left flip frames around the anchor x and negate beak.x, hit_centre.x",
+  "directions": "front = moving down, back = moving up, side = left/right and the diagonals",
+  "shadow": "*_shadow.png: a flat mask (void); shade the ground one step darker (core.SHADE) under it. It shrinks and thins with altitude.",
+  "beak": "frame_data beak = centre of the held star, anchor-relative; null = no star in the beak"
+ },
+ "animations": {
+  "fly": {
+   "loop": true,
+   "note": "cruise, 12 x 1 tick (plays twice per 2 s world loop): two flap bursts and a short swoop with a tail flick and a head cock",
+   "frame": [
+    48,
+    52
+   ],
+   "anchor": [
+    24,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 12,
+     "body": "sheets/fly_side_body.png",
+     "shadow": "sheets/fly_side_shadow.png",
+     "eyes": "sheets/fly_side_eyes.png",
+     "flash": "sheets/fly_side_flash.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        13,
+        -23
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        13,
+        -24
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        13,
+        -23
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        13,
+        -21
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        13,
+        -24
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        13,
+        -23
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        13,
+        -21
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        13,
+        -24
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        13,
+        -23
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        13,
+        -21
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": [
+        13,
+        -20
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": [
+        13,
+        -21
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "front": {
+     "frames": 12,
+     "body": "sheets/fly_front_body.png",
+     "shadow": "sheets/fly_front_shadow.png",
+     "eyes": "sheets/fly_front_eyes.png",
+     "flash": "sheets/fly_front_flash.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -17
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -18
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -17
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -15
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -18
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -17
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -15
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -18
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -17
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -15
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": [
+        0,
+        -14
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": [
+        0,
+        -15
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "back": {
+     "frames": 12,
+     "body": "sheets/fly_back_body.png",
+     "shadow": "sheets/fly_back_shadow.png",
+     "eyes": "sheets/fly_back_eyes.png",
+     "flash": "sheets/fly_back_flash.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -29
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -26
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -29
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -26
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -29
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -26
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": [
+        0,
+        -25
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": [
+        0,
+        -26
+       ],
+       "star_behind": true
+      }
+     ]
+    }
+   },
+   "total_ms": 1000,
+   "ticks_per_frame": 1.0
+  },
+  "panic": {
+   "loop": true,
+   "note": "within 60 px of Wick, 6 x 1 tick: wild flapping, huge eyes glancing back, legs pedalling, tail fanned, feathers popping loose",
+   "frame": [
+    48,
+    52
+   ],
+   "anchor": [
+    24,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 6,
+     "body": "sheets/panic_side_body.png",
+     "shadow": "sheets/panic_side_shadow.png",
+     "eyes": "sheets/panic_side_eyes.png",
+     "flash": "sheets/panic_side_flash.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        7,
+        -19
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        1,
+        -18
+       ],
+       "beak": [
+        8,
+        -21
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        13,
+        -22
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        -1,
+        -18
+       ],
+       "beak": [
+        12,
+        -25
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        7,
+        -19
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        1,
+        -18
+       ],
+       "beak": [
+        14,
+        -25
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "front": {
+     "frames": 6,
+     "body": "sheets/panic_front_body.png",
+     "shadow": "sheets/panic_front_shadow.png",
+     "eyes": "sheets/panic_front_eyes.png",
+     "flash": "sheets/panic_front_flash.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -17
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        1,
+        -18
+       ],
+       "beak": [
+        1,
+        -19
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -16
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        -1,
+        -18
+       ],
+       "beak": [
+        -1,
+        -19
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -17
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        1,
+        -18
+       ],
+       "beak": [
+        1,
+        -19
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "back": {
+     "frames": 6,
+     "body": "sheets/panic_back_body.png",
+     "shadow": "sheets/panic_back_shadow.png",
+     "eyes": "sheets/panic_back_eyes.png",
+     "flash": "sheets/panic_back_flash.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        1,
+        -18
+       ],
+       "beak": [
+        1,
+        -30
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -27
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        -1,
+        -18
+       ],
+       "beak": [
+        -1,
+        -30
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 83.33,
+       "altitude": 18,
+       "hit_centre": [
+        1,
+        -18
+       ],
+       "beak": [
+        1,
+        -30
+       ],
+       "star_behind": true
+      }
+     ]
+    }
+   },
+   "total_ms": 500,
+   "ticks_per_frame": 1.0
+  },
+  "startle": {
+   "loop": false,
+   "note": "one-shot when the panic starts (the double take), then panic",
+   "frame": [
+    48,
+    52
+   ],
+   "anchor": [
+    24,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 4,
+     "body": "sheets/startle_side_body.png",
+     "shadow": "sheets/startle_side_shadow.png",
+     "eyes": "sheets/startle_side_eyes.png",
+     "flash": "sheets/startle_side_flash.png",
+     "frame_data": [
+      {
+       "ms": 90,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -20
+       ],
+       "beak": [
+        7,
+        -23
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 180,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -20
+       ],
+       "beak": [
+        7,
+        -23
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": [
+        13,
+        -20
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        13,
+        -23
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "front": {
+     "frames": 4,
+     "body": "sheets/startle_front_body.png",
+     "shadow": "sheets/startle_front_shadow.png",
+     "eyes": "sheets/startle_front_eyes.png",
+     "flash": "sheets/startle_front_flash.png",
+     "frame_data": [
+      {
+       "ms": 90,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -20
+       ],
+       "beak": [
+        0,
+        -21
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 180,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -20
+       ],
+       "beak": [
+        0,
+        -21
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": [
+        0,
+        -14
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -17
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "back": {
+     "frames": 4,
+     "body": "sheets/startle_back_body.png",
+     "shadow": "sheets/startle_back_shadow.png",
+     "eyes": "sheets/startle_back_eyes.png",
+     "flash": "sheets/startle_back_flash.png",
+     "frame_data": [
+      {
+       "ms": 90,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -20
+       ],
+       "beak": [
+        0,
+        -31
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 180,
+       "altitude": 20,
+       "hit_centre": [
+        0,
+        -20
+       ],
+       "beak": [
+        0,
+        -31
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 70,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": [
+        0,
+        -25
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 70,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": true
+      }
+     ]
+    }
+   },
+   "total_ms": 410
+  },
+  "hurt": {
+   "loop": false,
+   "note": "one-shot on a hit (frame 0 already flashed), then back to fly/panic",
+   "frame": [
+    48,
+    52
+   ],
+   "anchor": [
+    24,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 3,
+     "body": "sheets/hurt_side_body.png",
+     "shadow": "sheets/hurt_side_shadow.png",
+     "eyes": "sheets/hurt_side_eyes.png",
+     "flash": "sheets/hurt_side_flash.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "altitude": 17,
+       "hit_centre": [
+        -1,
+        -17
+       ],
+       "beak": [
+        12,
+        -23
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        -1,
+        -16
+       ],
+       "beak": [
+        12,
+        -22
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        13,
+        -22
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "front": {
+     "frames": 3,
+     "body": "sheets/hurt_front_body.png",
+     "shadow": "sheets/hurt_front_shadow.png",
+     "eyes": "sheets/hurt_front_eyes.png",
+     "flash": "sheets/hurt_front_flash.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "altitude": 17,
+       "hit_centre": [
+        -1,
+        -17
+       ],
+       "beak": [
+        -1,
+        -17
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        -1,
+        -16
+       ],
+       "beak": [
+        -1,
+        -16
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -16
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "back": {
+     "frames": 3,
+     "body": "sheets/hurt_back_body.png",
+     "shadow": "sheets/hurt_back_shadow.png",
+     "eyes": "sheets/hurt_back_eyes.png",
+     "flash": "sheets/hurt_back_flash.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "altitude": 17,
+       "hit_centre": [
+        -1,
+        -17
+       ],
+       "beak": [
+        -1,
+        -28
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        -1,
+        -16
+       ],
+       "beak": [
+        -1,
+        -27
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -27
+       ],
+       "star_behind": true
+      }
+     ]
+    }
+   },
+   "total_ms": 220
+  },
+  "enter": {
+   "loop": false,
+   "note": "one-shot entrance at the view's edge: swoops down from 44 px, flares, then fly",
+   "frame": [
+    48,
+    72
+   ],
+   "anchor": [
+    24,
+    68
+   ],
+   "dirs": {
+    "side": {
+     "frames": 7,
+     "body": "sheets/enter_side_body.png",
+     "shadow": "sheets/enter_side_shadow.png",
+     "eyes": "sheets/enter_side_eyes.png",
+     "flash": "sheets/enter_side_flash.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "altitude": 44,
+       "hit_centre": [
+        0,
+        -44
+       ],
+       "beak": [
+        13,
+        -49
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 60,
+       "altitude": 36,
+       "hit_centre": [
+        0,
+        -36
+       ],
+       "beak": [
+        13,
+        -41
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 60,
+       "altitude": 28,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "beak": [
+        13,
+        -33
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 60,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -21
+       ],
+       "beak": [
+        13,
+        -27
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 90,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        13,
+        -23
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        13,
+        -22
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        13,
+        -22
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "front": {
+     "frames": 7,
+     "body": "sheets/enter_front_body.png",
+     "shadow": "sheets/enter_front_shadow.png",
+     "eyes": "sheets/enter_front_eyes.png",
+     "flash": "sheets/enter_front_flash.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "altitude": 44,
+       "hit_centre": [
+        0,
+        -44
+       ],
+       "beak": [
+        0,
+        -44
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 60,
+       "altitude": 36,
+       "hit_centre": [
+        0,
+        -36
+       ],
+       "beak": [
+        0,
+        -36
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 60,
+       "altitude": 28,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 60,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -21
+       ],
+       "beak": [
+        0,
+        -21
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 90,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -17
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -16
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -16
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "back": {
+     "frames": 7,
+     "body": "sheets/enter_back_body.png",
+     "shadow": "sheets/enter_back_shadow.png",
+     "eyes": "sheets/enter_back_eyes.png",
+     "flash": "sheets/enter_back_flash.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "altitude": 44,
+       "hit_centre": [
+        0,
+        -44
+       ],
+       "beak": [
+        0,
+        -55
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 60,
+       "altitude": 36,
+       "hit_centre": [
+        0,
+        -36
+       ],
+       "beak": [
+        0,
+        -47
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 60,
+       "altitude": 28,
+       "hit_centre": [
+        0,
+        -28
+       ],
+       "beak": [
+        0,
+        -39
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 60,
+       "altitude": 21,
+       "hit_centre": [
+        0,
+        -21
+       ],
+       "beak": [
+        0,
+        -32
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 90,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -27
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 80,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -27
+       ],
+       "star_behind": true
+      }
+     ]
+    }
+   },
+   "total_ms": 490
+  },
+  "escape": {
+   "loop": false,
+   "note": "one-shot exit after ~9 s: a cheeky hover, then climbs out of view; remove it after the last frame",
+   "frame": [
+    48,
+    112
+   ],
+   "anchor": [
+    24,
+    108
+   ],
+   "dirs": {
+    "side": {
+     "frames": 10,
+     "body": "sheets/escape_side_body.png",
+     "shadow": "sheets/escape_side_shadow.png",
+     "eyes": "sheets/escape_side_eyes.png",
+     "flash": "sheets/escape_side_flash.png",
+     "frame_data": [
+      {
+       "ms": 120,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        13,
+        -22
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 120,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        13,
+        -23
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 90,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "beak": [
+        13,
+        -24
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 22,
+       "hit_centre": [
+        0,
+        -22
+       ],
+       "beak": [
+        13,
+        -29
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 29,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "beak": [
+        13,
+        -36
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 37,
+       "hit_centre": [
+        0,
+        -37
+       ],
+       "beak": [
+        13,
+        -44
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 46,
+       "hit_centre": [
+        0,
+        -46
+       ],
+       "beak": [
+        13,
+        -53
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 56,
+       "hit_centre": [
+        0,
+        -56
+       ],
+       "beak": [
+        13,
+        -63
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 67,
+       "hit_centre": [
+        0,
+        -67
+       ],
+       "beak": [
+        13,
+        -74
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 79,
+       "hit_centre": [
+        0,
+        -79
+       ],
+       "beak": [
+        13,
+        -86
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "front": {
+     "frames": 10,
+     "body": "sheets/escape_front_body.png",
+     "shadow": "sheets/escape_front_shadow.png",
+     "eyes": "sheets/escape_front_eyes.png",
+     "flash": "sheets/escape_front_flash.png",
+     "frame_data": [
+      {
+       "ms": 120,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -16
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 120,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -17
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 90,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "beak": [
+        0,
+        -18
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 22,
+       "hit_centre": [
+        0,
+        -22
+       ],
+       "beak": [
+        0,
+        -22
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 29,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "beak": [
+        0,
+        -29
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 37,
+       "hit_centre": [
+        0,
+        -37
+       ],
+       "beak": [
+        0,
+        -37
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 46,
+       "hit_centre": [
+        0,
+        -46
+       ],
+       "beak": [
+        0,
+        -46
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 56,
+       "hit_centre": [
+        0,
+        -56
+       ],
+       "beak": [
+        0,
+        -56
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 67,
+       "hit_centre": [
+        0,
+        -67
+       ],
+       "beak": [
+        0,
+        -67
+       ],
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 79,
+       "hit_centre": [
+        0,
+        -79
+       ],
+       "beak": [
+        0,
+        -79
+       ],
+       "star_behind": false
+      }
+     ]
+    },
+    "back": {
+     "frames": 10,
+     "body": "sheets/escape_back_body.png",
+     "shadow": "sheets/escape_back_shadow.png",
+     "eyes": "sheets/escape_back_eyes.png",
+     "flash": "sheets/escape_back_flash.png",
+     "frame_data": [
+      {
+       "ms": 120,
+       "altitude": 16,
+       "hit_centre": [
+        0,
+        -16
+       ],
+       "beak": [
+        0,
+        -27
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 120,
+       "altitude": 17,
+       "hit_centre": [
+        0,
+        -17
+       ],
+       "beak": [
+        0,
+        -28
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 90,
+       "altitude": 18,
+       "hit_centre": [
+        0,
+        -18
+       ],
+       "beak": [
+        0,
+        -29
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 70,
+       "altitude": 22,
+       "hit_centre": [
+        0,
+        -22
+       ],
+       "beak": [
+        0,
+        -33
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 70,
+       "altitude": 29,
+       "hit_centre": [
+        0,
+        -29
+       ],
+       "beak": [
+        0,
+        -40
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 70,
+       "altitude": 37,
+       "hit_centre": [
+        0,
+        -37
+       ],
+       "beak": [
+        0,
+        -48
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 70,
+       "altitude": 46,
+       "hit_centre": [
+        0,
+        -46
+       ],
+       "beak": [
+        0,
+        -57
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 70,
+       "altitude": 56,
+       "hit_centre": [
+        0,
+        -56
+       ],
+       "beak": [
+        0,
+        -67
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 70,
+       "altitude": 67,
+       "hit_centre": [
+        0,
+        -67
+       ],
+       "beak": [
+        0,
+        -78
+       ],
+       "star_behind": true
+      },
+      {
+       "ms": 70,
+       "altitude": 79,
+       "hit_centre": [
+        0,
+        -79
+       ],
+       "beak": [
+        0,
+        -90
+       ],
+       "star_behind": true
+      }
+     ]
+    }
+   },
+   "total_ms": 820
+  },
+  "death": {
+   "loop": false,
+   "note": "one-shot, side only (mirror for left; use it for every facing). Frame 0 knocks the star loose: start star_free at star_release. Replaces the generic dissolve.",
+   "frame": [
+    48,
+    52
+   ],
+   "anchor": [
+    24,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 12,
+     "body": "sheets/death_side_body.png",
+     "shadow": "sheets/death_side_shadow.png",
+     "eyes": "sheets/death_side_eyes.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "altitude": 17,
+       "hit_centre": [
+        -1,
+        -17
+       ],
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 15,
+       "hit_centre": [
+        0,
+        -15
+       ],
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 70,
+       "altitude": 12,
+       "hit_centre": [
+        0,
+        -12
+       ],
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 8,
+       "hit_centre": [
+        0,
+        -8
+       ],
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 80,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -6
+       ],
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 90,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -6
+       ],
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 90,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -6
+       ],
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 100,
+       "altitude": 6,
+       "hit_centre": [
+        0,
+        -6
+       ],
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 100,
+       "altitude": 0,
+       "hit_centre": null,
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 120,
+       "altitude": 0,
+       "hit_centre": null,
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 120,
+       "altitude": 0,
+       "hit_centre": null,
+       "beak": null,
+       "star_behind": false
+      },
+      {
+       "ms": 110,
+       "altitude": 0,
+       "hit_centre": null,
+       "beak": null,
+       "star_behind": false
+      }
+     ]
+    }
+   },
+   "total_ms": 1100,
+   "star_release": [
+    13,
+    -23
+   ]
+  }
+ },
+ "effects": {
+  "star_held": {
+   "file": "sheets/star_any_held.png",
+   "frame": [
+    15,
+    15
+   ],
+   "origin": [
+    7,
+    7
+   ],
+   "frames": 24,
+   "ms": [
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33,
+    83.33
+   ],
+   "loop": true,
+   "clock": "world tick",
+   "note": "Draw at the body frame's `beak` point (origin on it) while the magpie holds the star; before the body when star_behind, else after. Frame = world_tick % 24 (the glint is on the island's 2 s loop). Frame 0 glints, so ANIMATIONS sold still shows it."
+  },
+  "star_free": {
+   "file": "sheets/star_any_free.png",
+   "frame": [
+    17,
+    27
+   ],
+   "origin": [
+    8,
+    20
+   ],
+   "frames": 8,
+   "ms": [
+    50,
+    50,
+    60,
+    80,
+    110,
+    110,
+    100,
+    70
+   ],
+   "loop": false,
+   "launch_from": [
+    0,
+    -9
+   ],
+   "note": "On death frame 0, at the magpie anchor + star_release (mirror x for left): the star tumbles up and hangs a beat (the payoff). On its last frame start the flight from origin + launch_from."
+  },
+  "star_fly": {
+   "file": "sheets/star_any_fly.png",
+   "frame": [
+    21,
+    21
+   ],
+   "origin": [
+    10,
+    10
+   ],
+   "frames": 2,
+   "rows": "16 directions: row d faces d*22.5 deg (0 = +x, clockwise, +y down)",
+   "ms": [
+    40,
+    40
+   ],
+   "loop": true,
+   "path": "From P0 = launch point to P2 = Wick's emit point (hero.json, recomputed every frame). Duration T = clamp(220 + 1.6 * |P2 - P0|, 280, 650) ms. u = elapsed / T, e = u * u (it accelerates into the lantern). Position = quadratic Bezier with P1 = midpoint - 28 px up (the star arcs up and over, like a thrown spark). Row = direction of travel. Draw a 1 px trail at the positions 30 and 60 ms earlier in gold, then apricot."
+  },
+  "star_home": {
+   "file": "sheets/star_any_home.png",
+   "frame": [
+    15,
+    15
+   ],
+   "origin": [
+    7,
+    7
+   ],
+   "frames": 5,
+   "ms": [
+    40,
+    50,
+    60,
+    60,
+    70
+   ],
+   "loop": false,
+   "note": "At Wick's emit when the star arrives (layer over_hero). Then grant the free level-up (Wick's levelup animation opens the Settings menu)."
+  }
+ },
+ "behaviour": {
+  "first_at_s": 70,
+  "every_s": [
+   50,
+   60
+  ],
+  "max_alive": 1,
+  "in_finale": false,
+  "enter": "at the edge of the view, play `enter`",
+  "cruise_speed": 60,
+  "path": "a curving path at a distance (it circles Wick wide, ~90-130 px)",
+  "panic_radius": 60,
+  "panic_speed": 95,
+  "panic": "zig-zag away from Wick (flip the sideways component every 0.35-0.5 s); play `startle` once, then `panic`; back to `fly` beyond ~90 px",
+  "leave_after_s": 9,
+  "leave": "play `escape` toward the nearest island edge, then remove",
+  "attacks": false,
+  "contact_damage": 0,
+  "flies_over_props": true,
+  "hp": 8,
+  "hp_in_code": 80,
+  "reward": "a free level-up: star_free, then star_fly into the lantern, star_home, then levelup",
+  "targeting": "it must be the nearest enemy to be shot: catching it means running through the crowd"
+ },
+ "tells": {
+  "star_glint": "effects.star_held, the glint on the world's 2 s loop (ticks 0-5 big, 12-13 small)",
+  "enter": "animations.enter + sound `magpie_chatter` (a dry rattling chak-chak-chak)",
+  "panic": "animations.startle then panic + sound `magpie_alarm` (a fast scolding chatter)",
+  "hurt": "animations.hurt + sound `magpie_squawk`",
+  "escape": "animations.escape + sound `magpie_laugh` (two smug chaks)",
+  "caught": "death + star_free + sound `star_chime` on the hang, `star_home` on arrival",
+  "sales_that_hurt": [
+   "VIEW DISTANCE",
+   "RESOLUTION",
+   "AIM RANDOM",
+   "ICE"
+  ]
+ }
+}

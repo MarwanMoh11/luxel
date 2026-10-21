@@ -1,0 +1,1805 @@
+{
+ "name": "Wick, the lamplighter moth",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "frame": [
+  44,
+  40
+ ],
+ "anchor": [
+  22,
+  36
+ ],
+ "shadow_frame": [
+  56,
+  18
+ ],
+ "shadow_anchor": [
+  20,
+  3
+ ],
+ "rig": {
+  "layers": "Draw BODY then LANTERN at the same feet anchor; draw LANTERN first when lantern_behind. Pick lantern_t0/t1/t2 by the hero's power (glow tier 0..2). The cast sheets replace the lantern layer for their 4 frames, offset by (hand of the current body frame - rest_hand).",
+  "rest_hand": {
+   "front": [
+    7,
+    -9
+   ],
+   "side": [
+    6,
+    -9
+   ],
+   "back": [
+    -10,
+    -9
+   ]
+  },
+  "hand": "per idle/hop/hurt frame: the lantern hand, anchor-relative (+x right, +y down)",
+  "emit": "centre of the lantern glass, anchor-relative, in pixels (+x right, +y down); null = unlit",
+  "mirror_left": "side faces right; for left flip the frames horizontally (axis = anchor x) and negate emit.x and hand.x",
+  "directions": "front = moving down, back = moving up, side = left/right and diagonals",
+  "glow_tiers": "lantern_t0 (base), t1, t2: brighter glass and a wider dithered halo; halo pixels over Wick are pre-lit cloak (one step lighter), so draw t* with its own body frame",
+  "shadow": "sheets *_shadow.png, frames 56x18, anchor [20, 3] at the feet; one flat colour mask: shade the ground under it one step darker (core.SHADE). Draw it under everything.",
+  "flash": "*_flash.png: cream silhouette inside the outline for idle, hop and hurt; swap the body sheet for it for one frame (~50 ms) on a hit. hurt frame 0 is already flashed.",
+  "hit_stop": "suggested: freeze 50 ms on hurt frame 0 and on cast frame 1 (the flare)",
+  "y_sort": "sort Wick by the feet anchor y"
+ },
+ "animations": {
+  "idle": {
+   "loop": true,
+   "note": "12 frames x 2 ticks: breathing, antennae and hem lag, lantern sway",
+   "frame": [
+    44,
+    40
+   ],
+   "anchor": [
+    22,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 12,
+     "body": "sheets/idle_front_body.png",
+     "shadow": "sheets/idle_front_shadow.png",
+     "lantern": [
+      "sheets/idle_front_lantern_t0.png",
+      "sheets/idle_front_lantern_t1.png",
+      "sheets/idle_front_lantern_t2.png"
+     ],
+     "flash": "sheets/idle_front_flash.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        8.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        8.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        8.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      }
+     ]
+    },
+    "side": {
+     "frames": 12,
+     "body": "sheets/idle_side_body.png",
+     "shadow": "sheets/idle_side_shadow.png",
+     "lantern": [
+      "sheets/idle_side_lantern_t0.png",
+      "sheets/idle_side_lantern_t1.png",
+      "sheets/idle_side_lantern_t2.png"
+     ],
+     "flash": "sheets/idle_side_flash.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        5.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        5.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        5.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 12,
+     "body": "sheets/idle_back_body.png",
+     "shadow": "sheets/idle_back_shadow.png",
+     "lantern": [
+      "sheets/idle_back_lantern_t0.png",
+      "sheets/idle_back_lantern_t1.png",
+      "sheets/idle_back_lantern_t2.png"
+     ],
+     "flash": "sheets/idle_back_flash.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "emit": [
+        -9.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -9.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -9.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -8.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -8.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -8.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -9.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -9.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -9.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -10.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -10.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        -10.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 2000,
+   "ticks_per_frame": 2.0
+  },
+  "hop": {
+   "loop": true,
+   "note": "one hop per cycle: stand, crouch, take-off, air (wing flick), fall, land",
+   "frame": [
+    44,
+    40
+   ],
+   "anchor": [
+    22,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 6,
+     "body": "sheets/hop_front_body.png",
+     "shadow": "sheets/hop_front_shadow.png",
+     "lantern": [
+      "sheets/hop_front_lantern_t0.png",
+      "sheets/hop_front_lantern_t1.png",
+      "sheets/hop_front_lantern_t2.png"
+     ],
+     "flash": "sheets/hop_front_flash.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        7.5,
+        -3.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -8
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        8.5,
+        -8.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -13
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        8.5,
+        -11.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -15
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        7.5,
+        -8.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -12
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        7.5,
+        -3.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -8
+       ]
+      }
+     ]
+    },
+    "side": {
+     "frames": 6,
+     "body": "sheets/hop_side_body.png",
+     "shadow": "sheets/hop_side_shadow.png",
+     "lantern": [
+      "sheets/hop_side_lantern_t0.png",
+      "sheets/hop_side_lantern_t1.png",
+      "sheets/hop_side_lantern_t2.png"
+     ],
+     "flash": "sheets/hop_side_flash.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        6.5,
+        -3.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -8
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        5.5,
+        -8.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -13
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        5.5,
+        -11.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -15
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        6.5,
+        -8.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -12
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        7.5,
+        -3.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -8
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 6,
+     "body": "sheets/hop_back_body.png",
+     "shadow": "sheets/hop_back_shadow.png",
+     "lantern": [
+      "sheets/hop_back_lantern_t0.png",
+      "sheets/hop_back_lantern_t1.png",
+      "sheets/hop_back_lantern_t2.png"
+     ],
+     "flash": "sheets/hop_back_flash.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "emit": [
+        -9.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -9.5,
+        -3.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -8
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -10.5,
+        -8.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -13
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -10.5,
+        -11.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -15
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -9.5,
+        -8.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -12
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -9.5,
+        -3.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -8
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 420,
+   "ticks_per_frame": 0.84
+  },
+  "hurt": {
+   "loop": false,
+   "note": "cream flash + recoil, recover; then back to idle/hop",
+   "frame": [
+    44,
+    40
+   ],
+   "anchor": [
+    22,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 4,
+     "body": "sheets/hurt_front_body.png",
+     "shadow": "sheets/hurt_front_shadow.png",
+     "lantern": [
+      "sheets/hurt_front_lantern_t0.png",
+      "sheets/hurt_front_lantern_t1.png",
+      "sheets/hurt_front_lantern_t2.png"
+     ],
+     "flash": "sheets/hurt_front_flash.png",
+     "frame_data": [
+      {
+       "ms": 75,
+       "emit": [
+        9.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -8
+       ]
+      },
+      {
+       "ms": 75,
+       "emit": [
+        6.5,
+        -3.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -8
+       ]
+      },
+      {
+       "ms": 75,
+       "emit": [
+        8.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      },
+      {
+       "ms": 75,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        7,
+        -9
+       ]
+      }
+     ]
+    },
+    "side": {
+     "frames": 4,
+     "body": "sheets/hurt_side_body.png",
+     "shadow": "sheets/hurt_side_shadow.png",
+     "lantern": [
+      "sheets/hurt_side_lantern_t0.png",
+      "sheets/hurt_side_lantern_t1.png",
+      "sheets/hurt_side_lantern_t2.png"
+     ],
+     "flash": "sheets/hurt_side_flash.png",
+     "frame_data": [
+      {
+       "ms": 75,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        5,
+        -8
+       ]
+      },
+      {
+       "ms": 75,
+       "emit": [
+        4.5,
+        -3.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        5,
+        -8
+       ]
+      },
+      {
+       "ms": 75,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      },
+      {
+       "ms": 75,
+       "emit": [
+        6.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": [
+        6,
+        -9
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 4,
+     "body": "sheets/hurt_back_body.png",
+     "shadow": "sheets/hurt_back_shadow.png",
+     "lantern": [
+      "sheets/hurt_back_lantern_t0.png",
+      "sheets/hurt_back_lantern_t1.png",
+      "sheets/hurt_back_lantern_t2.png"
+     ],
+     "flash": "sheets/hurt_back_flash.png",
+     "frame_data": [
+      {
+       "ms": 75,
+       "emit": [
+        -7.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -8
+       ]
+      },
+      {
+       "ms": 75,
+       "emit": [
+        -10.5,
+        -3.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -8
+       ]
+      },
+      {
+       "ms": 75,
+       "emit": [
+        -8.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      },
+      {
+       "ms": 75,
+       "emit": [
+        -9.5,
+        -4.5
+       ],
+       "lantern_behind": true,
+       "hand": [
+        -10,
+        -9
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 300
+  },
+  "cast": {
+   "loop": false,
+   "note": "lantern layer only: plays over idle/hop body frames",
+   "frame": [
+    44,
+    40
+   ],
+   "anchor": [
+    22,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 4,
+     "lantern": [
+      "sheets/cast_front_lantern_t0.png",
+      "sheets/cast_front_lantern_t1.png",
+      "sheets/cast_front_lantern_t2.png"
+     ],
+     "frame_data": [
+      {
+       "ms": 30,
+       "emit": [
+        8.5,
+        -7.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 50,
+       "emit": [
+        9.5,
+        -13.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 40,
+       "emit": [
+        9.5,
+        -12.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 40,
+       "emit": [
+        8.5,
+        -7.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      }
+     ]
+    },
+    "side": {
+     "frames": 4,
+     "lantern": [
+      "sheets/cast_side_lantern_t0.png",
+      "sheets/cast_side_lantern_t1.png",
+      "sheets/cast_side_lantern_t2.png"
+     ],
+     "frame_data": [
+      {
+       "ms": 30,
+       "emit": [
+        8.5,
+        -7.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 50,
+       "emit": [
+        10.5,
+        -12.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 40,
+       "emit": [
+        10.5,
+        -11.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 40,
+       "emit": [
+        8.5,
+        -7.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      }
+     ]
+    },
+    "back": {
+     "frames": 4,
+     "lantern": [
+      "sheets/cast_back_lantern_t0.png",
+      "sheets/cast_back_lantern_t1.png",
+      "sheets/cast_back_lantern_t2.png"
+     ],
+     "frame_data": [
+      {
+       "ms": 30,
+       "emit": [
+        -10.5,
+        -7.5
+       ],
+       "lantern_behind": true,
+       "hand": null
+      },
+      {
+       "ms": 50,
+       "emit": [
+        -11.5,
+        -13.5
+       ],
+       "lantern_behind": true,
+       "hand": null
+      },
+      {
+       "ms": 40,
+       "emit": [
+        -11.5,
+        -12.5
+       ],
+       "lantern_behind": true,
+       "hand": null
+      },
+      {
+       "ms": 40,
+       "emit": [
+        -10.5,
+        -7.5
+       ],
+       "lantern_behind": true,
+       "hand": null
+      }
+     ]
+    }
+   },
+   "overlay": "replaces the lantern layer for 4 frames over the current idle/hop/hurt body frame; offset each cast frame by (body frame hand - rest_hand[dir]) and add the same offset to its emit. Frame 1 is the flare: launch the shot there.",
+   "total_ms": 160
+  },
+  "death": {
+   "loop": false,
+   "note": "one-shot, hold the last frame; the glow tier applies while the lantern is held (frames 0-2), after the drop the guttering is scripted and the tier sheets match",
+   "frame": [
+    44,
+    40
+   ],
+   "anchor": [
+    22,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 13,
+     "body": "sheets/death_front_body.png",
+     "shadow": "sheets/death_front_shadow.png",
+     "lantern": [
+      "sheets/death_front_lantern_t0.png",
+      "sheets/death_front_lantern_t1.png",
+      "sheets/death_front_lantern_t2.png"
+     ],
+     "frame_data": [
+      {
+       "ms": 100,
+       "emit": [
+        9.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 120,
+       "emit": [
+        9.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 120,
+       "emit": [
+        8.5,
+        -2.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 110,
+       "emit": [
+        8.5,
+        -5.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 100,
+       "emit": [
+        9.5,
+        -2.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 100,
+       "emit": [
+        10.5,
+        -2.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 120,
+       "emit": [
+        11.5,
+        -2.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 120,
+       "emit": [
+        12.5,
+        -2.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 100,
+       "emit": null,
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 100,
+       "emit": [
+        12.5,
+        -2.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 120,
+       "emit": null,
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 150,
+       "emit": null,
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 200,
+       "emit": null,
+       "lantern_behind": false,
+       "hand": null
+      }
+     ]
+    }
+   },
+   "total_ms": 1560
+  },
+  "spawn": {
+   "loop": false,
+   "note": "one-shot, then idle",
+   "frame": [
+    44,
+    80
+   ],
+   "anchor": [
+    22,
+    76
+   ],
+   "dirs": {
+    "front": {
+     "frames": 12,
+     "body": "sheets/spawn_front_body.png",
+     "shadow": "sheets/spawn_front_shadow.png",
+     "lantern": [
+      "sheets/spawn_front_lantern_t0.png",
+      "sheets/spawn_front_lantern_t1.png",
+      "sheets/spawn_front_lantern_t2.png"
+     ],
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "emit": [
+        6.5,
+        -45.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        6.5,
+        -38.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        6.5,
+        -33.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        6.5,
+        -26.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        6.5,
+        -22.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        6.5,
+        -16.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        6.5,
+        -12.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        6.5,
+        -8.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        7.5,
+        -2.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        7.5,
+        -7.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        7.5,
+        -3.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      }
+     ]
+    }
+   },
+   "total_ms": 1000
+  },
+  "levelup": {
+   "loop": false,
+   "note": "one-shot intro, then levelup_hold",
+   "frame": [
+    44,
+    40
+   ],
+   "anchor": [
+    22,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 6,
+     "body": "sheets/levelup_front_body.png",
+     "shadow": "sheets/levelup_front_shadow.png",
+     "lantern": [
+      "sheets/levelup_front_lantern_t0.png",
+      "sheets/levelup_front_lantern_t1.png",
+      "sheets/levelup_front_lantern_t2.png"
+     ],
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        7.5,
+        -3.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        9.5,
+        -11.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        10.5,
+        -20.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        10.5,
+        -19.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        10.5,
+        -17.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      }
+     ]
+    }
+   },
+   "total_ms": 500
+  },
+  "levelup_hold": {
+   "loop": true,
+   "note": "loops while the Settings menu is open",
+   "frame": [
+    44,
+    40
+   ],
+   "anchor": [
+    22,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 4,
+     "body": "sheets/levelup_hold_front_body.png",
+     "shadow": "sheets/levelup_hold_front_shadow.png",
+     "lantern": [
+      "sheets/levelup_hold_front_lantern_t0.png",
+      "sheets/levelup_hold_front_lantern_t1.png",
+      "sheets/levelup_hold_front_lantern_t2.png"
+     ],
+     "frame_data": [
+      {
+       "ms": 250,
+       "emit": [
+        10.5,
+        -17.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 250,
+       "emit": [
+        10.5,
+        -17.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 250,
+       "emit": [
+        10.5,
+        -18.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 250,
+       "emit": [
+        10.5,
+        -18.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      }
+     ]
+    }
+   },
+   "total_ms": 1000,
+   "ticks_per_frame": 3.0
+  },
+  "sell": {
+   "loop": false,
+   "note": "one-shot from the levelup_hold pose back to idle",
+   "frame": [
+    44,
+    40
+   ],
+   "anchor": [
+    22,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 6,
+     "body": "sheets/sell_front_body.png",
+     "shadow": "sheets/sell_front_shadow.png",
+     "lantern": [
+      "sheets/sell_front_lantern_t0.png",
+      "sheets/sell_front_lantern_t1.png",
+      "sheets/sell_front_lantern_t2.png"
+     ],
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "emit": [
+        10.5,
+        -17.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        10.5,
+        -18.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        10.5,
+        -18.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        10.5,
+        -17.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        9.5,
+        -10.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 83.33,
+       "emit": [
+        7.5,
+        -3.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      }
+     ]
+    }
+   },
+   "total_ms": 500
+  },
+  "ending": {
+   "loop": false,
+   "note": "DISPLAY: OFF, one-shot, hold the last frame; the glow is scripted (all tier sheets match); Wick darkens outside the lantern light, draw it on black",
+   "frame": [
+    44,
+    40
+   ],
+   "anchor": [
+    22,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 12,
+     "body": "sheets/ending_front_body.png",
+     "shadow": "sheets/ending_front_shadow.png",
+     "lantern": [
+      "sheets/ending_front_lantern_t0.png",
+      "sheets/ending_front_lantern_t1.png",
+      "sheets/ending_front_lantern_t2.png"
+     ],
+     "frame_data": [
+      {
+       "ms": 250,
+       "emit": [
+        7.5,
+        -4.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 250,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 300,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 400,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 250,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 250,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 250,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 200,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 200,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 300,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 200,
+       "emit": [
+        -0.5,
+        -6.5
+       ],
+       "lantern_behind": false,
+       "hand": null
+      },
+      {
+       "ms": 250,
+       "emit": null,
+       "lantern_behind": false,
+       "hand": null
+      }
+     ]
+    }
+   },
+   "total_ms": 3100
+  }
+ }
+}

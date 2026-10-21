@@ -1,0 +1,1422 @@
+{
+ "name": "Sporecap, the night toadstool",
+ "id": "sporecap",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "frame": [
+  36,
+  40
+ ],
+ "anchor": [
+  18,
+  36
+ ],
+ "anchor_note": "feet, bottom centre; the ground row is anchor y - 1",
+ "shadow_frame": [
+  48,
+  18
+ ],
+ "shadow_anchor": [
+  16,
+  5
+ ],
+ "body_centre": [
+  0,
+  -9
+ ],
+ "hit_radius": 8,
+ "body_radius": 5,
+ "radii_note": "hit_radius: shots, round body_centre (anchor-relative). body_radius: walk collision at the feet (the stalk's bulb).",
+ "rig": {
+  "layers": "Draw shadow (ground, tint one step darker: core.SHADE), then body. On a hit swap body for flash for ~50 ms. In the finale draw only eyes (the ice pixels).",
+  "directions": "it never moves: pick by where Wick is. front = Wick below (|dy| >= |dx|, dy > 0), back = Wick above, side = left/right (side faces right; mirror for left, axis = anchor x, negate emit.x). Switch only on a cycle boundary (idle frame 0) so it never pops.",
+  "emit": "per frame: the cap's crown, anchor-relative (+x right, +y down); null when there is no cap",
+  "release": "puff frame 0 (release: true): spawn the 8 spores at emit + spawn_radius, play puff_ring at emit",
+  "altitude": "fall only: the falling seed's height above the landing spot (seed = its centre)",
+  "animations_sold": "loops hold frame 0; every one-shot shows its frame 0 for its duration (swell frame 0 is already the tell). Exception: keep playing `fall` (it is the arrival's motion and its growing shadow is the tell).",
+  "y_sort": "sort by the feet anchor y; the fall's body draws above props"
+ },
+ "animations": {
+  "fall": {
+   "loop": false,
+   "note": "1.0 s arrival: the mother spore drops from 72 px while its landing shadow grows (the tell). Not targetable and harmless. Draw the body above props (layer over); the shadow on the ground.",
+   "frame": [
+    36,
+    108
+   ],
+   "anchor": [
+    18,
+    100
+   ],
+   "dirs": {
+    "any": {
+     "frames": 12,
+     "body": "sheets/fall_any_body.png",
+     "flash": "sheets/fall_any_flash.png",
+     "shadow": "sheets/fall_any_shadow.png",
+     "eyes": "sheets/fall_any_eyes.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 72,
+       "seed": [
+        0,
+        -76
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 63,
+       "seed": [
+        2,
+        -67
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 55,
+       "seed": [
+        2,
+        -59
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 47,
+       "seed": [
+        1,
+        -51
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 39,
+       "seed": [
+        0,
+        -43
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 32,
+       "seed": [
+        -1,
+        -36
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 25,
+       "seed": [
+        -1,
+        -29
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 18,
+       "seed": [
+        0,
+        -22
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 12,
+       "seed": [
+        0,
+        -16
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 7,
+       "seed": [
+        0,
+        -11
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 3,
+       "seed": [
+        0,
+        -7
+       ]
+      },
+      {
+       "ms": 83.33,
+       "emit": null,
+       "altitude": 0,
+       "seed": [
+        0,
+        -4
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 1000
+  },
+  "sprout": {
+   "loop": false,
+   "note": "0.5 s: splat, bury, the cap pushes up, stretches, pops open. Targetable from frame 2.",
+   "frame": [
+    36,
+    40
+   ],
+   "anchor": [
+    18,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 7,
+     "body": "sheets/sprout_front_body.png",
+     "flash": "sheets/sprout_front_flash.png",
+     "shadow": "sheets/sprout_front_shadow.png",
+     "eyes": "sheets/sprout_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "emit": null
+      },
+      {
+       "ms": 60,
+       "emit": null
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.0,
+        -2.3
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.0,
+        -7.5
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.0,
+        -16.1
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.0,
+        -13.0
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.0,
+        -15.1
+       ]
+      }
+     ]
+    },
+    "side": {
+     "frames": 7,
+     "body": "sheets/sprout_side_body.png",
+     "flash": "sheets/sprout_side_flash.png",
+     "shadow": "sheets/sprout_side_shadow.png",
+     "eyes": "sheets/sprout_side_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "emit": null
+      },
+      {
+       "ms": 60,
+       "emit": null
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.4,
+        -2.3
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.4,
+        -7.5
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.4,
+        -16.1
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.4,
+        -13.0
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.4,
+        -15.1
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 7,
+     "body": "sheets/sprout_back_body.png",
+     "flash": "sheets/sprout_back_flash.png",
+     "shadow": "sheets/sprout_back_shadow.png",
+     "eyes": "sheets/sprout_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "emit": null
+      },
+      {
+       "ms": 60,
+       "emit": null
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.0,
+        -3.3
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.0,
+        -8.5
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.0,
+        -17.1
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.0,
+        -14.0
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.0,
+        -16.1
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 500
+  },
+  "idle": {
+   "loop": true,
+   "note": "2.0 s breathing loop (12 frames x 2 ticks): the cap rises and settles, the fringe lags, a blink, two motes on the exhale",
+   "frame": [
+    36,
+    40
+   ],
+   "anchor": [
+    18,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 12,
+     "body": "sheets/idle_front_body.png",
+     "flash": "sheets/idle_front_flash.png",
+     "shadow": "sheets/idle_front_shadow.png",
+     "eyes": "sheets/idle_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -14.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -14.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -14.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -16.0
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -16.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -16.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -16.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -16.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -16.0
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -14.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -14.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -14.9
+       ]
+      }
+     ]
+    },
+    "side": {
+     "frames": 12,
+     "body": "sheets/idle_side_body.png",
+     "flash": "sheets/idle_side_flash.png",
+     "shadow": "sheets/idle_side_shadow.png",
+     "eyes": "sheets/idle_side_eyes.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -14.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -14.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -14.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -16.0
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -16.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -16.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -16.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -16.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -16.0
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -14.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -14.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.4,
+        -14.9
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 12,
+     "body": "sheets/idle_back_body.png",
+     "flash": "sheets/idle_back_flash.png",
+     "shadow": "sheets/idle_back_shadow.png",
+     "eyes": "sheets/idle_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -15.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -15.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -15.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -17.0
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -17.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -17.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -17.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -17.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -17.0
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -15.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -15.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "emit": [
+        0.0,
+        -15.9
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 2000,
+   "ticks_per_frame": 2.0
+  },
+  "swell": {
+   "loop": false,
+   "note": "0.6 s tell: the cap puffs up and shakes, the gills fill with ice specks, the neck bulges, the eyes go wide. Frame 0 already shows it.",
+   "frame": [
+    36,
+    40
+   ],
+   "anchor": [
+    18,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 6,
+     "body": "sheets/swell_front_body.png",
+     "flash": "sheets/swell_front_flash.png",
+     "shadow": "sheets/swell_front_shadow.png",
+     "eyes": "sheets/swell_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 100,
+       "emit": [
+        0.0,
+        -16.5
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        0.0,
+        -16.7
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        1.0,
+        -16.9
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        -1.0,
+        -17.1
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        1.0,
+        -17.2
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        0.0,
+        -17.3
+       ]
+      }
+     ]
+    },
+    "side": {
+     "frames": 6,
+     "body": "sheets/swell_side_body.png",
+     "flash": "sheets/swell_side_flash.png",
+     "shadow": "sheets/swell_side_shadow.png",
+     "eyes": "sheets/swell_side_eyes.png",
+     "frame_data": [
+      {
+       "ms": 100,
+       "emit": [
+        0.4,
+        -16.5
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        0.4,
+        -16.7
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        1.4,
+        -16.9
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        -0.6,
+        -17.1
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        1.4,
+        -17.2
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        0.4,
+        -17.3
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 6,
+     "body": "sheets/swell_back_body.png",
+     "flash": "sheets/swell_back_flash.png",
+     "shadow": "sheets/swell_back_shadow.png",
+     "eyes": "sheets/swell_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 100,
+       "emit": [
+        0.0,
+        -17.5
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        0.0,
+        -17.7
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        1.0,
+        -17.9
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        -1.0,
+        -18.1
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        1.0,
+        -18.2
+       ]
+      },
+      {
+       "ms": 100,
+       "emit": [
+        0.0,
+        -18.3
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 600
+  },
+  "puff": {
+   "loop": false,
+   "note": "0.4 s: the snap (frame 0 releases the ring at emit, play puff_ring there), then the recoil wobble; back to idle",
+   "frame": [
+    36,
+    40
+   ],
+   "anchor": [
+    18,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 6,
+     "body": "sheets/puff_front_body.png",
+     "flash": "sheets/puff_front_flash.png",
+     "shadow": "sheets/puff_front_shadow.png",
+     "eyes": "sheets/puff_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "emit": [
+        0.0,
+        -12.5
+       ],
+       "release": true
+      },
+      {
+       "ms": 60,
+       "emit": [
+        0.0,
+        -16.5
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.6,
+        -14.4
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -0.5,
+        -15.1
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.2,
+        -14.7
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.0,
+        -14.9
+       ]
+      }
+     ]
+    },
+    "side": {
+     "frames": 6,
+     "body": "sheets/puff_side_body.png",
+     "flash": "sheets/puff_side_flash.png",
+     "shadow": "sheets/puff_side_shadow.png",
+     "eyes": "sheets/puff_side_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "emit": [
+        0.4,
+        -12.5
+       ],
+       "release": true
+      },
+      {
+       "ms": 60,
+       "emit": [
+        0.4,
+        -16.5
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        1.0,
+        -14.4
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -0.1,
+        -15.1
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.7,
+        -14.7
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.4,
+        -14.9
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 6,
+     "body": "sheets/puff_back_body.png",
+     "flash": "sheets/puff_back_flash.png",
+     "shadow": "sheets/puff_back_shadow.png",
+     "eyes": "sheets/puff_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "emit": [
+        0.0,
+        -13.5
+       ],
+       "release": true
+      },
+      {
+       "ms": 60,
+       "emit": [
+        0.0,
+        -17.5
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.6,
+        -15.4
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -0.5,
+        -16.1
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.2,
+        -15.7
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.0,
+        -15.9
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 400
+  },
+  "hurt": {
+   "loop": false,
+   "note": "0.2 s: frame 0 is flashed; any state resumes after it",
+   "frame": [
+    36,
+    40
+   ],
+   "anchor": [
+    18,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 3,
+     "body": "sheets/hurt_front_body.png",
+     "flash": "sheets/hurt_front_flash.png",
+     "shadow": "sheets/hurt_front_shadow.png",
+     "eyes": "sheets/hurt_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 50,
+       "emit": [
+        0.0,
+        -13.4
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -0.6,
+        -15.0
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.2,
+        -14.8
+       ]
+      }
+     ]
+    },
+    "side": {
+     "frames": 3,
+     "body": "sheets/hurt_side_body.png",
+     "flash": "sheets/hurt_side_flash.png",
+     "shadow": "sheets/hurt_side_shadow.png",
+     "eyes": "sheets/hurt_side_eyes.png",
+     "frame_data": [
+      {
+       "ms": 50,
+       "emit": [
+        0.4,
+        -13.4
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -0.2,
+        -15.0
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.6,
+        -14.8
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 3,
+     "body": "sheets/hurt_back_body.png",
+     "flash": "sheets/hurt_back_flash.png",
+     "shadow": "sheets/hurt_back_shadow.png",
+     "eyes": "sheets/hurt_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 50,
+       "emit": [
+        0.0,
+        -14.4
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        -0.6,
+        -16.0
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.2,
+        -15.8
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 200
+  },
+  "death": {
+   "loop": false,
+   "note": "0.76 s: the cap droops and collapses, then bursts into a pale, harmless cloud; the eyes hang in it a beat, then blink out",
+   "frame": [
+    36,
+    40
+   ],
+   "anchor": [
+    18,
+    36
+   ],
+   "dirs": {
+    "front": {
+     "frames": 9,
+     "body": "sheets/death_front_body.png",
+     "flash": "sheets/death_front_flash.png",
+     "shadow": "sheets/death_front_shadow.png",
+     "eyes": "sheets/death_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "emit": [
+        0.0,
+        -13.4
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.0,
+        -13.3
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.8,
+        -10.8
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.0,
+        -5.7
+       ]
+      },
+      {
+       "ms": 60,
+       "emit": null
+      },
+      {
+       "ms": 80,
+       "emit": null
+      },
+      {
+       "ms": 100,
+       "emit": null
+      },
+      {
+       "ms": 110,
+       "emit": null
+      },
+      {
+       "ms": 120,
+       "emit": null
+      }
+     ]
+    },
+    "side": {
+     "frames": 9,
+     "body": "sheets/death_side_body.png",
+     "flash": "sheets/death_side_flash.png",
+     "shadow": "sheets/death_side_shadow.png",
+     "eyes": "sheets/death_side_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "emit": [
+        0.4,
+        -13.4
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.4,
+        -13.3
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        1.1,
+        -10.8
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.4,
+        -5.7
+       ]
+      },
+      {
+       "ms": 60,
+       "emit": null
+      },
+      {
+       "ms": 80,
+       "emit": null
+      },
+      {
+       "ms": 100,
+       "emit": null
+      },
+      {
+       "ms": 110,
+       "emit": null
+      },
+      {
+       "ms": 120,
+       "emit": null
+      }
+     ]
+    },
+    "back": {
+     "frames": 9,
+     "body": "sheets/death_back_body.png",
+     "flash": "sheets/death_back_flash.png",
+     "shadow": "sheets/death_back_shadow.png",
+     "eyes": "sheets/death_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "emit": [
+        0.0,
+        -14.4
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.0,
+        -14.3
+       ]
+      },
+      {
+       "ms": 80,
+       "emit": [
+        0.8,
+        -11.8
+       ]
+      },
+      {
+       "ms": 70,
+       "emit": [
+        0.0,
+        -6.7
+       ]
+      },
+      {
+       "ms": 60,
+       "emit": null
+      },
+      {
+       "ms": 80,
+       "emit": null
+      },
+      {
+       "ms": 100,
+       "emit": null
+      },
+      {
+       "ms": 110,
+       "emit": null
+      },
+      {
+       "ms": 120,
+       "emit": null
+      }
+     ]
+    }
+   },
+   "total_ms": 760
+  }
+ },
+ "effects": {
+  "spore": {
+   "loop": true,
+   "note": "the projectile: a dark core in a pale membrane with six turning spikes, 4-frame loop (2 ticks each); origin = its centre, which floats ~6 px above its shadow dot (baked in the shadow layer). In 2 colours it is a spiky ring, Wick's ember a filled dot. eyes = its ice pixels (speck and lit spike tips): in the finale draw only those, so spores stay dodgeable.",
+   "frame": [
+    11,
+    14
+   ],
+   "origin": [
+    5,
+    5
+   ],
+   "frames": 4,
+   "ms": [
+    166.67,
+    166.67,
+    166.67,
+    166.67
+   ],
+   "total_ms": 667,
+   "body": "sheets/spore_any_body.png",
+   "shadow": "sheets/spore_any_shadow.png",
+   "eyes": "sheets/spore_any_eyes.png"
+  },
+  "spore_pop": {
+   "loop": false,
+   "note": "a spore expires or hits cover: swell, ring, specks; harmless",
+   "frame": [
+    17,
+    17
+   ],
+   "origin": [
+    8,
+    8
+   ],
+   "frames": 4,
+   "ms": [
+    50,
+    50,
+    60,
+    70
+   ],
+   "total_ms": 230,
+   "body": "sheets/spore_pop_any_body.png"
+  },
+  "puff_ring": {
+   "loop": false,
+   "note": "plays at the puff's emit on its release frame: 8 little clouds race out with the spores",
+   "frame": [
+    31,
+    31
+   ],
+   "origin": [
+    15,
+    15
+   ],
+   "frames": 5,
+   "ms": [
+    50,
+    50,
+    60,
+    70,
+    80
+   ],
+   "total_ms": 310,
+   "body": "sheets/puff_ring_any_body.png"
+  }
+ },
+ "behaviour": {
+  "from_run_time": "2:15 (first one lands in view)",
+  "arrival": {
+   "fall_ms": 1000,
+   "landing_distance_px": [
+    70,
+    130
+   ],
+   "sprout_ms": 500,
+   "note": "the landing shadow grows at the landing spot for the whole fall"
+  },
+  "stationary": true,
+  "cycle": {
+   "idle_ms": 2000,
+   "swell_ms": 600,
+   "puff_ms": 400,
+   "ring_every_ms": 3000,
+   "order": "idle -> swell -> puff (ring leaves on puff frame 0) -> idle ..."
+  },
+  "ring": {
+   "spores": 8,
+   "speed_px_s": 42,
+   "life_s": 3.2,
+   "alternate_rotation_deg": 22.5,
+   "spawn_radius_px": 6,
+   "from": "the puff's frame-0 emit point",
+   "blocked_by": "cover and landmarks (physics layer 2 'shots'): play spore_pop there",
+   "spore_hit_radius_px": 3,
+   "on_expire": "spore_pop"
+  },
+  "hp": 6,
+  "hp_in_code": 60,
+  "xp": 4,
+  "population": "2 alive at most at first, 5 by 4:30; later 'spore gardens' of 3 land around Wick",
+  "targetable": "from sprout frame 2 until death; not while falling",
+  "contact": "rooted: Wick bumps its body_radius like a small obstacle"
+ },
+ "tells": {
+  "landing": {
+   "anim": "fall",
+   "layer": "shadow",
+   "sound": "spore_whistle (a soft falling whistle, 1.0 s)",
+   "note": "a growing shadow plus a ring of specks closing on the spot (the specks are in the body layer, so the tell survives 2 colours where the shadow and grass both turn dark)"
+  },
+  "swell": {
+   "anim": "swell",
+   "frame": 0,
+   "sound": "spore_inhale (a rubbery stretch)",
+   "note": "big round cap, a row of ice specks along the gills, wide eyes and a bulging neck: readable frozen on frame 0"
+  },
+  "puff": {
+   "anim": "puff",
+   "frame": 0,
+   "sound": "spore_puff (a soft pop-whoosh)",
+   "note": "ring released"
+  },
+  "spore_pop": {
+   "sound": "spore_pop (tiny, quiet)"
+  },
+  "death": {
+   "sound": "spore_sigh (a deflating squeak then a hush)"
+  },
+  "eyes": "two ice pixels under the cap, never hidden in any direction"
+ }
+}

@@ -1,0 +1,3089 @@
+{
+ "name": "Parasol Toad",
+ "id": "toad",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "frame": [
+  64,
+  60
+ ],
+ "anchor": [
+  32,
+  44
+ ],
+ "shadow_frame": [
+  84,
+  40
+ ],
+ "shadow_anchor": [
+  30,
+  12
+ ],
+ "hit_radius": 9,
+ "body_radius": 11,
+ "body_centre": [
+  0,
+  -9
+ ],
+ "rig": {
+  "layers": "body = toad + parasol in depth order (draw it alone); flash = the same frame with the toad as a cream silhouette and the parasol untouched (swap it in for ~60 ms on a body hit; HIT FLASH sold: skip); shadow = a flat mask in its own frame (shadow_frame, anchored at shadow_anchor on the feet): shade the ground one step darker (core.SHADE), drawn under everything; shadow_mirror = the shadow for the mirrored (left-facing) frame: draw it UNFLIPPED, because the sun still casts to the lower right; eyes = the eye pixels only (finale: draw just these above the dead pixels).",
+  "directions": "side = parasol facing right (0 deg); front34 = 45 (down-right); front = 90 (down); back34 = -45 (up-right); back = -90 (up). Angles are screen degrees, 0 = +x, clockwise (+y down). Mirror side/front34/back34 for 180/135/-135: flip on the anchor x, parasol_facing -> 180 - parasol_facing, canopy.x -> -canopy.x, cw <-> ccw.",
+  "facing": "The sprite's facing is the parasol's angle, which turns toward Wick at <= 100 deg/s. Pick the nearest of the 8 facings; while the angle is more than 5.6 deg from it, show the turn frame whose parasol_facing is nearest (frames every 11.25 deg). Movement direction never changes the sprite (it shuffles sideways when circled).",
+  "frame_data": "ms; parasol_facing (deg, the drawn parasol); canopy = centre of the canopy, anchor-relative (+x right, +y down): where splashes sit when a shot is blocked head-on; hop: lift; death: body_gone.",
+  "y_sort": "sort by the feet anchor y",
+  "hit_stop": "freeze the toad 50 ms on hurt frame 0 (the flash) and 40 ms on block frame 0"
+ },
+ "behaviour": {
+  "from": "1:30",
+  "speed_px_s": 16,
+  "hp": 14,
+  "hp_code": 140,
+  "xp": 6,
+  "turn_rate_deg_s": 100,
+  "block_half_angle_deg": 55,
+  "block": "every shot arriving from within +-55 deg of the parasol facing is blocked, pierce included: the shot stops on the canopy, splash_any_fx plays there (row = the direction back toward the shooter), block/block_cw/block_ccw by where it struck (|offset| < 18 deg: block), no damage. Shots from the sides and back hit: hurt + the light's impact.",
+  "formation": "later in a line of 3 (about 34 px apart), shoulder to shoulder",
+  "sizes": "toad ~26 x 22 px, parasol ~27 px across; hit_radius 9 around body_centre"
+ },
+ "tells": {
+  "parasol_facing": "every animation: the light outer canopy (sky, ice lace, ferrule spike) points where it blocks; from behind you see the dark underside (deep, blue ribs) and the toad's warty back: that is the side to shoot",
+  "canopy_vs_body": "a blocked shot = block_* (canopy dents, no flash) + cool drops; a hit = hurt (cream toad flash, croak) + the warm impact",
+  "sounds": {
+   "block": "toad_parasol_thup (a soft cloth thump + drip)",
+   "hurt": "toad_croak",
+   "hop": "toad_flump (heavy landing, frame 7)",
+   "turn": "toad_shuffle",
+   "death": "toad_croak_down + parasol_whoosh (a little rising flutter)"
+  },
+  "sales_that_hurt": [
+   "HIT FLASH",
+   "SOUND",
+   "AIM RANDOM",
+   "ICE",
+   "UP KEY"
+  ]
+ },
+ "effects": {
+  "splash_any_fx": {
+   "file": "sheets/splash_any_fx.png",
+   "frame_size": [
+    25,
+    25
+   ],
+   "origin": [
+    12,
+    12
+   ],
+   "frames": 6,
+   "ms": [
+    45,
+    45,
+    50,
+    55,
+    60,
+    70
+   ],
+   "rows": "16 directions: row d sprays toward angle d*22.5 deg (0 = +x, clockwise); use the direction from the hit point back toward the shooter",
+   "anchor": "the hit point on the canopy",
+   "layer": "over",
+   "note": "cool drops only (ice, sky, blue): the canopy never shows Wick's warm light"
+  }
+ },
+ "animations": {
+  "idle": {
+   "loop": true,
+   "note": "12 frames x 2 ticks (2 s): throat pulse, back breathes, the canopy sways a beat behind, one blink. Frame 0 is the still pose (ANIMATIONS sold).",
+   "frame": [
+    64,
+    60
+   ],
+   "anchor": [
+    32,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 12,
+     "body": "sheets/idle_side_body.png",
+     "flash": "sheets/idle_side_flash.png",
+     "shadow": "sheets/idle_side_shadow.png",
+     "eyes": "sheets/idle_side_eyes.png",
+     "shadow_mirror": "sheets/idle_side_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 1.2,
+       "canopy": [
+        20.2,
+        -5.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 2.4,
+       "canopy": [
+        20.3,
+        -4.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 3.0,
+       "canopy": [
+        20.3,
+        -4.8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 2.4,
+       "canopy": [
+        20.3,
+        -4.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 1.2,
+       "canopy": [
+        20.3,
+        -5.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -1.2,
+       "canopy": [
+        20.2,
+        -5.4
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -1.2,
+       "canopy": [
+        20.2,
+        -5.4
+       ]
+      }
+     ]
+    },
+    "front34": {
+     "frames": 12,
+     "body": "sheets/idle_front34_body.png",
+     "flash": "sheets/idle_front34_flash.png",
+     "shadow": "sheets/idle_front34_shadow.png",
+     "eyes": "sheets/idle_front34_eyes.png",
+     "shadow_mirror": "sheets/idle_front34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 46.2,
+       "canopy": [
+        14.2,
+        3.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 47.4,
+       "canopy": [
+        14.0,
+        3.8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 48.0,
+       "canopy": [
+        14.0,
+        3.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 47.4,
+       "canopy": [
+        14.1,
+        3.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 46.2,
+       "canopy": [
+        14.2,
+        3.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 43.8,
+       "canopy": [
+        14.4,
+        3.4
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 43.8,
+       "canopy": [
+        14.4,
+        3.4
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 12,
+     "body": "sheets/idle_front_body.png",
+     "flash": "sheets/idle_front_flash.png",
+     "shadow": "sheets/idle_front_shadow.png",
+     "eyes": "sheets/idle_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 91.2,
+       "canopy": [
+        -0.2,
+        7.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 92.4,
+       "canopy": [
+        -0.4,
+        7.3
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 93.0,
+       "canopy": [
+        -0.5,
+        7.4
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 92.4,
+       "canopy": [
+        -0.4,
+        7.4
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 91.2,
+       "canopy": [
+        -0.2,
+        7.3
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 88.8,
+       "canopy": [
+        0.2,
+        7.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": 88.8,
+       "canopy": [
+        0.2,
+        7.1
+       ]
+      }
+     ]
+    },
+    "back34": {
+     "frames": 12,
+     "body": "sheets/idle_back34_body.png",
+     "flash": "sheets/idle_back34_flash.png",
+     "shadow": "sheets/idle_back34_shadow.png",
+     "eyes": "sheets/idle_back34_eyes.png",
+     "shadow_mirror": "sheets/idle_back34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -43.8,
+       "canopy": [
+        14.5,
+        -14.0
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -42.6,
+       "canopy": [
+        14.6,
+        -13.8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -42.0,
+       "canopy": [
+        14.7,
+        -13.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -42.6,
+       "canopy": [
+        14.6,
+        -13.8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -43.8,
+       "canopy": [
+        14.5,
+        -13.9
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -46.2,
+       "canopy": [
+        14.2,
+        -14.2
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -46.2,
+       "canopy": [
+        14.2,
+        -14.2
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 12,
+     "body": "sheets/idle_back_body.png",
+     "flash": "sheets/idle_back_flash.png",
+     "shadow": "sheets/idle_back_shadow.png",
+     "eyes": "sheets/idle_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 166.67,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -88.8,
+       "canopy": [
+        0.2,
+        -17.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -87.6,
+       "canopy": [
+        0.4,
+        -17.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -87.0,
+       "canopy": [
+        0.5,
+        -17.6
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -87.6,
+       "canopy": [
+        0.4,
+        -17.6
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -88.8,
+       "canopy": [
+        0.2,
+        -17.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -91.2,
+       "canopy": [
+        -0.2,
+        -17.8
+       ]
+      },
+      {
+       "ms": 166.67,
+       "parasol_facing": -91.2,
+       "canopy": [
+        -0.2,
+        -17.8
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 2000,
+   "ticks_per_frame": 2.0
+  },
+  "hop": {
+   "loop": true,
+   "note": "the gait, 12 frames x 1 tick (1 s per hop): crouch, deep crouch, launch, air, land (big splat), wobble, settle. Move the sprite only on frames 3-7 (about 16 px per hop); the parasol lags a frame and wobbles on the landing.",
+   "frame": [
+    64,
+    60
+   ],
+   "anchor": [
+    32,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 12,
+     "body": "sheets/hop_side_body.png",
+     "flash": "sheets/hop_side_flash.png",
+     "shadow": "sheets/hop_side_shadow.png",
+     "eyes": "sheets/hop_side_eyes.png",
+     "shadow_mirror": "sheets/hop_side_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        21.3,
+        -4.2
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        22.1,
+        -3.1
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        19.2,
+        -6.1
+       ],
+       "lift": 2
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        19.2,
+        -8.2
+       ],
+       "lift": 5
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        19.6,
+        -10.1
+       ],
+       "lift": 6
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.1,
+        -9.8
+       ],
+       "lift": 4
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        22.4,
+        -5.7
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 1.5,
+       "canopy": [
+        19.6,
+        -5.6
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 1.5,
+       "canopy": [
+        21.1,
+        -4.1
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.4,
+        -5.2
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ],
+       "lift": 0
+      }
+     ]
+    },
+    "front34": {
+     "frames": 12,
+     "body": "sheets/hop_front34_body.png",
+     "flash": "sheets/hop_front34_flash.png",
+     "shadow": "sheets/hop_front34_shadow.png",
+     "eyes": "sheets/hop_front34_eyes.png",
+     "shadow_mirror": "sheets/hop_front34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        15.0,
+        5.1
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        15.6,
+        6.5
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        13.6,
+        2.3
+       ],
+       "lift": 2
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        13.6,
+        0.1
+       ],
+       "lift": 5
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        13.9,
+        -1.5
+       ],
+       "lift": 6
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.2,
+        -1.1
+       ],
+       "lift": 4
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        15.8,
+        4.0
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 46.5,
+       "canopy": [
+        13.7,
+        2.9
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 46.5,
+       "canopy": [
+        14.7,
+        5.0
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.4,
+        3.7
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ],
+       "lift": 0
+      }
+     ]
+    },
+    "front": {
+     "frames": 12,
+     "body": "sheets/hop_front_body.png",
+     "flash": "sheets/hop_front_flash.png",
+     "shadow": "sheets/hop_front_shadow.png",
+     "eyes": "sheets/hop_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        8.9
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        10.5
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        5.8
+       ],
+       "lift": 2
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        3.6
+       ],
+       "lift": 5
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        2.0
+       ],
+       "lift": 6
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        2.5
+       ],
+       "lift": 4
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        8.0
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 91.5,
+       "canopy": [
+        -0.2,
+        6.4
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 91.5,
+       "canopy": [
+        -0.2,
+        8.7
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.4
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ],
+       "lift": 0
+      }
+     ]
+    },
+    "back34": {
+     "frames": 12,
+     "body": "sheets/hop_back34_body.png",
+     "flash": "sheets/hop_back34_flash.png",
+     "shadow": "sheets/hop_back34_shadow.png",
+     "eyes": "sheets/hop_back34_eyes.png",
+     "shadow_mirror": "sheets/hop_back34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        15.0,
+        -13.4
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        15.6,
+        -12.7
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        13.6,
+        -14.5
+       ],
+       "lift": 2
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        13.6,
+        -16.6
+       ],
+       "lift": 5
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        13.9,
+        -18.6
+       ],
+       "lift": 6
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.2,
+        -18.5
+       ],
+       "lift": 4
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        15.8,
+        -15.5
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -43.5,
+       "canopy": [
+        14.0,
+        -14.1
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -43.5,
+       "canopy": [
+        15.1,
+        -13.3
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.4,
+        -14.0
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ],
+       "lift": 0
+      }
+     ]
+    },
+    "back": {
+     "frames": 12,
+     "body": "sheets/hop_back_body.png",
+     "flash": "sheets/hop_back_flash.png",
+     "shadow": "sheets/hop_back_shadow.png",
+     "eyes": "sheets/hop_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.3
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -16.7
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.9
+       ],
+       "lift": 2
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -20.0
+       ],
+       "lift": 5
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -22.2
+       ],
+       "lift": 6
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -22.2
+       ],
+       "lift": 4
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -19.5
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -88.5,
+       "canopy": [
+        0.2,
+        -17.8
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -88.5,
+       "canopy": [
+        0.2,
+        -17.3
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ],
+       "lift": 0
+      },
+      {
+       "ms": 83.33,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ],
+       "lift": 0
+      }
+     ]
+    }
+   },
+   "total_ms": 1000,
+   "ticks_per_frame": 1.0
+  },
+  "turn": {
+   "loop": false,
+   "note": "in-betweens from facing a to facing b, 11.25 deg apart (112.5 ms each = 100 deg/s). Play forward to turn a->b, backward to turn b->a; mirror for the left half. Or pick the frame whose parasol_facing is nearest the toad's current parasol angle.",
+   "frame": [
+    64,
+    60
+   ],
+   "anchor": [
+    32,
+    44
+   ],
+   "dirs": {
+    "side-front34": {
+     "frames": 3,
+     "body": "sheets/turn_side-front34_body.png",
+     "flash": "sheets/turn_side-front34_flash.png",
+     "shadow": "sheets/turn_side-front34_shadow.png",
+     "eyes": "sheets/turn_side-front34_eyes.png",
+     "shadow_mirror": "sheets/turn_side-front34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 112.5,
+       "parasol_facing": 13.5,
+       "canopy": [
+        20.4,
+        -2.2
+       ]
+      },
+      {
+       "ms": 112.5,
+       "parasol_facing": 24.75,
+       "canopy": [
+        18.2,
+        -1.5
+       ]
+      },
+      {
+       "ms": 112.5,
+       "parasol_facing": 36.0,
+       "canopy": [
+        17.1,
+        2.3
+       ]
+      }
+     ]
+    },
+    "front34-front": {
+     "frames": 3,
+     "body": "sheets/turn_front34-front_body.png",
+     "flash": "sheets/turn_front34-front_flash.png",
+     "shadow": "sheets/turn_front34-front_shadow.png",
+     "eyes": "sheets/turn_front34-front_eyes.png",
+     "shadow_mirror": "sheets/turn_front34-front_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 112.5,
+       "parasol_facing": 58.5,
+       "canopy": [
+        11.3,
+        5.8
+       ]
+      },
+      {
+       "ms": 112.5,
+       "parasol_facing": 69.75,
+       "canopy": [
+        7.2,
+        4.9
+       ]
+      },
+      {
+       "ms": 112.5,
+       "parasol_facing": 81.0,
+       "canopy": [
+        3.7,
+        7.6
+       ]
+      }
+     ]
+    },
+    "side-back34": {
+     "frames": 3,
+     "body": "sheets/turn_side-back34_body.png",
+     "flash": "sheets/turn_side-back34_flash.png",
+     "shadow": "sheets/turn_side-back34_shadow.png",
+     "eyes": "sheets/turn_side-back34_eyes.png",
+     "shadow_mirror": "sheets/turn_side-back34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 112.5,
+       "parasol_facing": -13.5,
+       "canopy": [
+        20.4,
+        -7.7
+       ]
+      },
+      {
+       "ms": 112.5,
+       "parasol_facing": -24.75,
+       "canopy": [
+        18.2,
+        -11.3
+       ]
+      },
+      {
+       "ms": 112.5,
+       "parasol_facing": -36.0,
+       "canopy": [
+        17.1,
+        -12.3
+       ]
+      }
+     ]
+    },
+    "back34-back": {
+     "frames": 3,
+     "body": "sheets/turn_back34-back_body.png",
+     "flash": "sheets/turn_back34-back_flash.png",
+     "shadow": "sheets/turn_back34-back_shadow.png",
+     "eyes": "sheets/turn_back34-back_eyes.png",
+     "shadow_mirror": "sheets/turn_back34-back_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 112.5,
+       "parasol_facing": -58.5,
+       "canopy": [
+        11.3,
+        -15.8
+       ]
+      },
+      {
+       "ms": 112.5,
+       "parasol_facing": -69.75,
+       "canopy": [
+        7.2,
+        -17.8
+       ]
+      },
+      {
+       "ms": 112.5,
+       "parasol_facing": -81.0,
+       "canopy": [
+        3.7,
+        -17.6
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 338
+  },
+  "block": {
+   "loop": false,
+   "note": "a shot struck the canopy near its centre: dent, shove back, shudder, settle. No flash, no damage. Play splash_any_fx at the hit point.",
+   "frame": [
+    64,
+    60
+   ],
+   "anchor": [
+    32,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 4,
+     "body": "sheets/block_side_body.png",
+     "flash": "sheets/block_side_flash.png",
+     "shadow": "sheets/block_side_shadow.png",
+     "eyes": "sheets/block_side_eyes.png",
+     "shadow_mirror": "sheets/block_side_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 0.0,
+       "canopy": [
+        19.1,
+        -4.7
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.5,
+        -5.7
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.1,
+        -4.9
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ]
+      }
+     ]
+    },
+    "front34": {
+     "frames": 4,
+     "body": "sheets/block_front34_body.png",
+     "flash": "sheets/block_front34_flash.png",
+     "shadow": "sheets/block_front34_shadow.png",
+     "eyes": "sheets/block_front34_eyes.png",
+     "shadow_mirror": "sheets/block_front34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 45.0,
+       "canopy": [
+        13.5,
+        3.6
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.5,
+        3.2
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.2,
+        3.8
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 4,
+     "body": "sheets/block_front_body.png",
+     "flash": "sheets/block_front_flash.png",
+     "shadow": "sheets/block_front_shadow.png",
+     "eyes": "sheets/block_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.0
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        6.9
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.4
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ]
+      }
+     ]
+    },
+    "back34": {
+     "frames": 4,
+     "body": "sheets/block_back34_body.png",
+     "flash": "sheets/block_back34_flash.png",
+     "shadow": "sheets/block_back34_shadow.png",
+     "eyes": "sheets/block_back34_eyes.png",
+     "shadow_mirror": "sheets/block_back34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": -45.0,
+       "canopy": [
+        13.5,
+        -13.1
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.5,
+        -14.7
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.2,
+        -13.7
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 4,
+     "body": "sheets/block_back_body.png",
+     "flash": "sheets/block_back_flash.png",
+     "shadow": "sheets/block_back_shadow.png",
+     "eyes": "sheets/block_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -16.5
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -18.4
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.3
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 290
+  },
+  "block_cw": {
+   "loop": false,
+   "note": "the shot struck the canopy's clockwise side (from facing + 18..55 deg); mirrored sprites swap cw and ccw",
+   "frame": [
+    64,
+    60
+   ],
+   "anchor": [
+    32,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 4,
+     "body": "sheets/block_cw_side_body.png",
+     "flash": "sheets/block_cw_side_flash.png",
+     "shadow": "sheets/block_cw_side_shadow.png",
+     "eyes": "sheets/block_cw_side_eyes.png",
+     "shadow_mirror": "sheets/block_cw_side_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": -5.0,
+       "canopy": [
+        19.1,
+        -5.2
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 2.0,
+       "canopy": [
+        20.5,
+        -5.5
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -1.0,
+       "canopy": [
+        20.1,
+        -5.0
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ]
+      }
+     ]
+    },
+    "front34": {
+     "frames": 4,
+     "body": "sheets/block_cw_front34_body.png",
+     "flash": "sheets/block_cw_front34_flash.png",
+     "shadow": "sheets/block_cw_front34_shadow.png",
+     "eyes": "sheets/block_cw_front34_eyes.png",
+     "shadow_mirror": "sheets/block_cw_front34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 40.0,
+       "canopy": [
+        14.0,
+        3.3
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 47.0,
+       "canopy": [
+        14.3,
+        3.4
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 44.0,
+       "canopy": [
+        14.3,
+        3.7
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 4,
+     "body": "sheets/block_cw_front_body.png",
+     "flash": "sheets/block_cw_front_flash.png",
+     "shadow": "sheets/block_cw_front_shadow.png",
+     "eyes": "sheets/block_cw_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 85.0,
+       "canopy": [
+        0.7,
+        7.0
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 92.0,
+       "canopy": [
+        -0.3,
+        6.9
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 89.0,
+       "canopy": [
+        0.2,
+        7.4
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ]
+      }
+     ]
+    },
+    "back34": {
+     "frames": 4,
+     "body": "sheets/block_cw_back34_body.png",
+     "flash": "sheets/block_cw_back34_flash.png",
+     "shadow": "sheets/block_cw_back34_shadow.png",
+     "eyes": "sheets/block_cw_back34_eyes.png",
+     "shadow_mirror": "sheets/block_cw_back34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": -50.0,
+       "canopy": [
+        13.0,
+        -13.4
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -43.0,
+       "canopy": [
+        14.7,
+        -14.5
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -46.0,
+       "canopy": [
+        14.1,
+        -13.8
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 4,
+     "body": "sheets/block_cw_back_body.png",
+     "flash": "sheets/block_cw_back_flash.png",
+     "shadow": "sheets/block_cw_back_shadow.png",
+     "eyes": "sheets/block_cw_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": -95.0,
+       "canopy": [
+        -0.7,
+        -16.5
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -88.0,
+       "canopy": [
+        0.3,
+        -18.3
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -91.0,
+       "canopy": [
+        -0.2,
+        -17.3
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 290
+  },
+  "block_ccw": {
+   "loop": false,
+   "note": "the shot struck the canopy's counter-clockwise side (from facing - 18..55 deg)",
+   "frame": [
+    64,
+    60
+   ],
+   "anchor": [
+    32,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 4,
+     "body": "sheets/block_ccw_side_body.png",
+     "flash": "sheets/block_ccw_side_flash.png",
+     "shadow": "sheets/block_ccw_side_shadow.png",
+     "eyes": "sheets/block_ccw_side_eyes.png",
+     "shadow_mirror": "sheets/block_ccw_side_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 5.0,
+       "canopy": [
+        19.1,
+        -4.3
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -2.0,
+       "canopy": [
+        20.5,
+        -5.9
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 1.0,
+       "canopy": [
+        20.1,
+        -4.8
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ]
+      }
+     ]
+    },
+    "front34": {
+     "frames": 4,
+     "body": "sheets/block_ccw_front34_body.png",
+     "flash": "sheets/block_ccw_front34_flash.png",
+     "shadow": "sheets/block_ccw_front34_shadow.png",
+     "eyes": "sheets/block_ccw_front34_eyes.png",
+     "shadow_mirror": "sheets/block_ccw_front34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 50.0,
+       "canopy": [
+        13.0,
+        3.9
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 43.0,
+       "canopy": [
+        14.7,
+        3.1
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 46.0,
+       "canopy": [
+        14.1,
+        3.9
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 4,
+     "body": "sheets/block_ccw_front_body.png",
+     "flash": "sheets/block_ccw_front_flash.png",
+     "shadow": "sheets/block_ccw_front_shadow.png",
+     "eyes": "sheets/block_ccw_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 95.0,
+       "canopy": [
+        -0.7,
+        7.0
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 88.0,
+       "canopy": [
+        0.3,
+        6.9
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": 91.0,
+       "canopy": [
+        -0.2,
+        7.4
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ]
+      }
+     ]
+    },
+    "back34": {
+     "frames": 4,
+     "body": "sheets/block_ccw_back34_body.png",
+     "flash": "sheets/block_ccw_back34_flash.png",
+     "shadow": "sheets/block_ccw_back34_shadow.png",
+     "eyes": "sheets/block_ccw_back34_eyes.png",
+     "shadow_mirror": "sheets/block_ccw_back34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": -40.0,
+       "canopy": [
+        14.0,
+        -12.8
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -47.0,
+       "canopy": [
+        14.3,
+        -14.8
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -44.0,
+       "canopy": [
+        14.3,
+        -13.6
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 4,
+     "body": "sheets/block_ccw_back_body.png",
+     "flash": "sheets/block_ccw_back_flash.png",
+     "shadow": "sheets/block_ccw_back_shadow.png",
+     "eyes": "sheets/block_ccw_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": -85.0,
+       "canopy": [
+        0.7,
+        -16.5
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -92.0,
+       "canopy": [
+        -0.3,
+        -18.3
+       ]
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -89.0,
+       "canopy": [
+        0.2,
+        -17.3
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 290
+  },
+  "hurt": {
+   "loop": false,
+   "note": "a shot in the side or back: frame 0 is already flashed (cream toad, the parasol never flashes), then a flinch, a croak (the throat balloons), a grumble.",
+   "frame": [
+    64,
+    60
+   ],
+   "anchor": [
+    32,
+    44
+   ],
+   "dirs": {
+    "side": {
+     "frames": 4,
+     "body": "sheets/hurt_side_body.png",
+     "flash": "sheets/hurt_side_flash.png",
+     "shadow": "sheets/hurt_side_shadow.png",
+     "eyes": "sheets/hurt_side_eyes.png",
+     "shadow_mirror": "sheets/hurt_side_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 6.0,
+       "canopy": [
+        20.3,
+        -6.2
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -3.0,
+       "canopy": [
+        20.0,
+        -5.1
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 2.0,
+       "canopy": [
+        20.4,
+        -5.2
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.2,
+        -5.2
+       ]
+      }
+     ]
+    },
+    "front34": {
+     "frames": 4,
+     "body": "sheets/hurt_front34_body.png",
+     "flash": "sheets/hurt_front34_flash.png",
+     "shadow": "sheets/hurt_front34_shadow.png",
+     "eyes": "sheets/hurt_front34_eyes.png",
+     "shadow_mirror": "sheets/hurt_front34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 51.0,
+       "canopy": [
+        13.7,
+        2.4
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": 42.0,
+       "canopy": [
+        14.5,
+        3.7
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 47.0,
+       "canopy": [
+        14.2,
+        3.6
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.3,
+        3.6
+       ]
+      }
+     ]
+    },
+    "front": {
+     "frames": 4,
+     "body": "sheets/hurt_front_body.png",
+     "flash": "sheets/hurt_front_flash.png",
+     "shadow": "sheets/hurt_front_shadow.png",
+     "eyes": "sheets/hurt_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": 96.0,
+       "canopy": [
+        -0.9,
+        5.7
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": 87.0,
+       "canopy": [
+        0.5,
+        7.5
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": 92.0,
+       "canopy": [
+        -0.3,
+        7.1
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        7.2
+       ]
+      }
+     ]
+    },
+    "back34": {
+     "frames": 4,
+     "body": "sheets/hurt_back34_body.png",
+     "flash": "sheets/hurt_back34_flash.png",
+     "shadow": "sheets/hurt_back34_shadow.png",
+     "eyes": "sheets/hurt_back34_eyes.png",
+     "shadow_mirror": "sheets/hurt_back34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": -39.0,
+       "canopy": [
+        15.0,
+        -15.2
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -48.0,
+       "canopy": [
+        13.8,
+        -13.7
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -43.0,
+       "canopy": [
+        14.6,
+        -14.1
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.3,
+        -14.1
+       ]
+      }
+     ]
+    },
+    "back": {
+     "frames": 4,
+     "body": "sheets/hurt_back_body.png",
+     "flash": "sheets/hurt_back_flash.png",
+     "shadow": "sheets/hurt_back_shadow.png",
+     "eyes": "sheets/hurt_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 60,
+       "parasol_facing": -84.0,
+       "canopy": [
+        0.9,
+        -19.3
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -93.0,
+       "canopy": [
+        -0.5,
+        -17.1
+       ]
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -88.0,
+       "canopy": [
+        0.3,
+        -17.9
+       ]
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -17.7
+       ]
+      }
+     ]
+    }
+   },
+   "total_ms": 350
+  },
+  "death": {
+   "loop": false,
+   "note": "one-shot, ~1.3 s, tall frames: the toad flops belly-up and dissolves in the light's colours (weapons.json deaths.dissolve, already baked in: do not apply it again; play the light's death_large overlay at body_centre when frame 7 starts, as mechanic.gif does); the parasol, let go, turns upright, bobs once over the toad and floats off up and to the right, spinning slowly. Remove the enemy after the last frame.",
+   "frame": [
+    96,
+    124
+   ],
+   "anchor": [
+    40,
+    108
+   ],
+   "dirs": {
+    "side": {
+     "frames": 16,
+     "body": "sheets/death_side_body.png",
+     "flash": "sheets/death_side_flash.png",
+     "shadow": "sheets/death_side_shadow.png",
+     "eyes": "sheets/death_side_eyes.png",
+     "shadow_mirror": "sheets/death_side_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "parasol_facing": 4.0,
+       "canopy": [
+        20.5,
+        -6.0
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": 0.0,
+       "canopy": [
+        20.1,
+        -9.7
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 60,
+       "parasol_facing": -20.67,
+       "canopy": [
+        20.6,
+        -23.2
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -47.39,
+       "canopy": [
+        19.4,
+        -33.9
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -91.63,
+       "canopy": [
+        19.8,
+        -38.8
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -111.19,
+       "canopy": [
+        19.9,
+        -37.3
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 130,
+       "parasol_facing": -117.89,
+       "canopy": [
+        22.3,
+        -40.4
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -107.68,
+       "canopy": [
+        24.5,
+        -44.9
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -86.74,
+       "canopy": [
+        28.0,
+        -49.3
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -67.78,
+       "canopy": [
+        31.4,
+        -54.3
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -62.3,
+       "canopy": [
+        33.3,
+        -59.3
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -73.62,
+       "canopy": [
+        35.0,
+        -65.4
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -94.88,
+       "canopy": [
+        35.6,
+        -70.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -113.18,
+       "canopy": [
+        36.2,
+        -76.3
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -117.42,
+       "canopy": [
+        38.4,
+        -81.4
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -105.02,
+       "canopy": [
+        40.7,
+        -87.5
+       ],
+       "body_gone": true
+      }
+     ]
+    },
+    "front34": {
+     "frames": 16,
+     "body": "sheets/death_front34_body.png",
+     "flash": "sheets/death_front34_flash.png",
+     "shadow": "sheets/death_front34_shadow.png",
+     "eyes": "sheets/death_front34_eyes.png",
+     "shadow_mirror": "sheets/death_front34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "parasol_facing": 49.0,
+       "canopy": [
+        14.1,
+        2.8
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": 45.0,
+       "canopy": [
+        14.2,
+        -0.9
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 60,
+       "parasol_facing": 9.33,
+       "canopy": [
+        17.7,
+        -16.2
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -32.39,
+       "canopy": [
+        16.8,
+        -28.8
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -91.63,
+       "canopy": [
+        16.6,
+        -34.1
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -111.19,
+       "canopy": [
+        16.8,
+        -32.6
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 130,
+       "parasol_facing": -117.89,
+       "canopy": [
+        19.2,
+        -35.7
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -107.68,
+       "canopy": [
+        21.4,
+        -40.2
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -86.74,
+       "canopy": [
+        24.8,
+        -44.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -67.78,
+       "canopy": [
+        28.3,
+        -49.5
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -62.3,
+       "canopy": [
+        30.2,
+        -54.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -73.62,
+       "canopy": [
+        31.9,
+        -60.7
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -94.88,
+       "canopy": [
+        32.4,
+        -65.8
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -113.18,
+       "canopy": [
+        33.0,
+        -71.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -117.42,
+       "canopy": [
+        35.2,
+        -76.7
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -105.02,
+       "canopy": [
+        37.6,
+        -82.7
+       ],
+       "body_gone": true
+      }
+     ]
+    },
+    "front": {
+     "frames": 16,
+     "body": "sheets/death_front_body.png",
+     "flash": "sheets/death_front_flash.png",
+     "shadow": "sheets/death_front_shadow.png",
+     "eyes": "sheets/death_front_eyes.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "parasol_facing": 94.0,
+       "canopy": [
+        -0.6,
+        6.2
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": 90.0,
+       "canopy": [
+        0.0,
+        2.7
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 60,
+       "parasol_facing": 39.33,
+       "canopy": [
+        8.6,
+        -12.2
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -17.39,
+       "canopy": [
+        9.6,
+        -26.3
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -91.63,
+       "canopy": [
+        8.9,
+        -32.1
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -111.19,
+       "canopy": [
+        9.1,
+        -30.6
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 130,
+       "parasol_facing": -117.89,
+       "canopy": [
+        11.5,
+        -33.7
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -107.68,
+       "canopy": [
+        13.7,
+        -38.2
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -86.74,
+       "canopy": [
+        17.2,
+        -42.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -67.78,
+       "canopy": [
+        20.6,
+        -47.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -62.3,
+       "canopy": [
+        22.5,
+        -52.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -73.62,
+       "canopy": [
+        24.2,
+        -58.7
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -94.88,
+       "canopy": [
+        24.7,
+        -63.9
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -113.18,
+       "canopy": [
+        25.3,
+        -69.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -117.42,
+       "canopy": [
+        27.5,
+        -74.7
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -105.02,
+       "canopy": [
+        29.9,
+        -80.8
+       ],
+       "body_gone": true
+      }
+     ]
+    },
+    "back34": {
+     "frames": 16,
+     "body": "sheets/death_back34_body.png",
+     "flash": "sheets/death_back34_flash.png",
+     "shadow": "sheets/death_back34_shadow.png",
+     "eyes": "sheets/death_back34_eyes.png",
+     "shadow_mirror": "sheets/death_back34_shadow_mirror.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "parasol_facing": -41.0,
+       "canopy": [
+        15.0,
+        -15.1
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -45.0,
+       "canopy": [
+        14.2,
+        -18.5
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 60,
+       "parasol_facing": -50.67,
+       "canopy": [
+        15.2,
+        -29.8
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -62.39,
+       "canopy": [
+        15.4,
+        -39.0
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -91.63,
+       "canopy": [
+        16.6,
+        -43.5
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -111.19,
+       "canopy": [
+        16.8,
+        -42.0
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 130,
+       "parasol_facing": -117.89,
+       "canopy": [
+        19.2,
+        -45.1
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -107.68,
+       "canopy": [
+        21.4,
+        -49.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -86.74,
+       "canopy": [
+        24.8,
+        -54.0
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -67.78,
+       "canopy": [
+        28.3,
+        -59.0
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -62.3,
+       "canopy": [
+        30.2,
+        -64.0
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -73.62,
+       "canopy": [
+        31.9,
+        -70.1
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -94.88,
+       "canopy": [
+        32.4,
+        -75.3
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -113.18,
+       "canopy": [
+        33.0,
+        -81.0
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -117.42,
+       "canopy": [
+        35.2,
+        -86.1
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -105.02,
+       "canopy": [
+        37.6,
+        -92.2
+       ],
+       "body_gone": true
+      }
+     ]
+    },
+    "back": {
+     "frames": 16,
+     "body": "sheets/death_back_body.png",
+     "flash": "sheets/death_back_flash.png",
+     "shadow": "sheets/death_back_shadow.png",
+     "eyes": "sheets/death_back_eyes.png",
+     "frame_data": [
+      {
+       "ms": 70,
+       "parasol_facing": -86.0,
+       "canopy": [
+        0.6,
+        -19.0
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -90.0,
+       "canopy": [
+        0.0,
+        -22.1
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 60,
+       "parasol_facing": -80.67,
+       "canopy": [
+        4.2,
+        -32.7
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 100,
+       "parasol_facing": -77.39,
+       "canopy": [
+        6.8,
+        -41.2
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -91.63,
+       "canopy": [
+        8.9,
+        -45.5
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -111.19,
+       "canopy": [
+        9.1,
+        -43.9
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 130,
+       "parasol_facing": -117.89,
+       "canopy": [
+        11.5,
+        -47.1
+       ],
+       "body_gone": false
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -107.68,
+       "canopy": [
+        13.7,
+        -51.6
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -86.74,
+       "canopy": [
+        17.2,
+        -56.0
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -67.78,
+       "canopy": [
+        20.6,
+        -60.9
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 70,
+       "parasol_facing": -62.3,
+       "canopy": [
+        22.5,
+        -66.0
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -73.62,
+       "canopy": [
+        24.2,
+        -72.1
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 80,
+       "parasol_facing": -94.88,
+       "canopy": [
+        24.7,
+        -77.2
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -113.18,
+       "canopy": [
+        25.3,
+        -83.0
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 90,
+       "parasol_facing": -117.42,
+       "canopy": [
+        27.5,
+        -88.1
+       ],
+       "body_gone": true
+      },
+      {
+       "ms": 110,
+       "parasol_facing": -105.02,
+       "canopy": [
+        29.9,
+        -94.1
+       ],
+       "body_gone": true
+      }
+     ]
+    }
+   },
+   "total_ms": 1380
+  }
+ }
+}
