@@ -40,6 +40,12 @@ const PULSE_FILL := 0.8 ## from this fill the lantern pulses on every beat
 const FALLBACK_DROPS := {
 	"snuffer": [[1, 1.0]], "owl": [[3, 1.0]], "toad": [[3, 3.0]], "sporecap": [[3, 2.0]], "gloam": [[3, 1.5]],
 }
+# Lantern spill (player.gd): the gauge's light scatters, Wick runs it back in before it fades.
+const SPILL_LIFE := 4.0 ## s a spilled shard waits
+const SPILL_BLINK := 1.0 ## the last seconds it blinks
+const SPILL_SETTLE := 0.3 ## s scattering out, and before Wick can pick one up
+const SPILL_REACH := 12.0 ## px from Wick's body centre that picks one up
+const SPILL_MAX := 10 ## most shards one spill makes
 const SNUFFER_LATE := 30.0 ## clock seconds from which a Snuffer's shard is worth 2
 const SNUFFER_LATE_DROPS := [[1, 2.0]]
 
@@ -63,6 +69,7 @@ class Shard:
 
 var run ## the Run (run.gd), duck-typed
 var list: Array = [] ## live shards (Shard), oldest first, for drawing
+var spilled: Array = [] ## shards of a lantern spill (Shard; t = age) waiting for Wick, not part of the queue
 var cosmetic := false ## closing: shards still fly and chime but add no light
 var now := 0.0 ## the shards' clock (world seconds since reset)
 var dropped := 0.0 ## light dropped this run (checks)
@@ -86,6 +93,7 @@ func setup(r) -> void:
 ## Removes every shard and star run; the clock restarts (new run, or DISPLAY: OFF).
 func reset() -> void:
 	list.clear()
+	spilled.clear()
 	cosmetic = false
 	now = 0.0
 	dropped = 0.0
@@ -124,6 +132,25 @@ func drop(pos: Vector2, id: String) -> void:
 			i += 1
 
 
+## The lantern spilled `light` at `pos`: it scatters as shards that wait SPILL_LIFE for Wick (no light is lost or
+## made; they add nothing to dropped/landed). An empty gauge spills nothing.
+func spill(pos: Vector2, light: float) -> void:
+	if light <= 0.0 or cosmetic:
+		return
+	var n := clampi(ceili(light), 1, SPILL_MAX)
+	run.shard_audio.pop()
+	run.shard_fx.pop(pos)
+	for i in n:
+		var s := Shard.new()
+		s.light = light / float(n)
+		s.size = size_for(s.light)
+		s.origin = pos
+		s.pos = pos
+		s.rest = pos + Vector2.from_angle(float(i) / float(n) * TAU + _rng.randf_range(-0.3, 0.3)) \
+				* _rng.randf_range(14.0, 28.0)
+		spilled.append(s)
+
+
 ## The magpie's star reached the lantern at `pos`: the gauge runs up the ladder in 32nds and fills (one level-up).
 func star(pos: Vector2) -> void:
 	if cosmetic:
@@ -145,6 +172,7 @@ func step(dt: float) -> void:
 	if run.has_method("lv"):
 		run.shard_fx.still = run.lv("animations") > 0
 	_step_star(dt)
+	_step_spilled(dt)
 	var arrived: Array = []
 	for s: Shard in list:
 		s.t += dt
@@ -155,6 +183,39 @@ func step(dt: float) -> void:
 		list.erase(s)
 		_arrive(s)
 	_pulse()
+
+
+## Ages the spilled shards (on the shards' own clock, so menus and pauses hold them), lets Wick pick them up.
+func _step_spilled(dt: float) -> void:
+	if cosmetic:
+		spilled.clear()
+		return
+	var body: Vector2 = run.player.body_centre()
+	for k in range(spilled.size() - 1, -1, -1):
+		var s: Shard = spilled[k]
+		s.t += dt
+		if s.t >= SPILL_LIFE:
+			spilled.remove_at(k)
+		elif s.t < SPILL_SETTLE:
+			var u := s.t / SPILL_SETTLE
+			s.pos = s.origin.lerp(s.rest, 1.0 - (1.0 - u) * (1.0 - u))
+		else:
+			s.pos = s.rest + Vector2(0.0, -1.0 if sin(TAU * BOB_HZ * s.t) > 0.0 else 0.0)
+			if body.distance_to(s.pos) <= SPILL_REACH:
+				spilled.remove_at(k)
+				_regain(s)
+
+
+## Wick picks a spilled shard up: its light goes straight back into the gauge.
+func _regain(s: Shard) -> void:
+	var emit: Vector2 = run.lantern()
+	var big := s.size >= LARGE
+	run.shard_audio.arrive(run.prog.fill_after(s.light), big)
+	run.shard_fx.drink(emit, big)
+	var ups: int = run.prog.add_light(s.light)
+	run.shard_landed.emit(s.light, run.prog.fill())
+	if ups > 0:
+		_full(emit)
 
 
 ## Menus and pause: hold every shard and release its arrival slot.
@@ -201,6 +262,10 @@ func draw(ci: CanvasItem, origin := Vector2.ZERO) -> void:
 			for p in s.trail:
 				trail.append(p - origin)
 		run.shard_fx.draw_shard(ci, s.pos - origin, s.size, s.t, trail)
+	for s: Shard in spilled:
+		if s.t > SPILL_LIFE - SPILL_BLINK and int(s.t * 10.0) % 2 == 0:
+			continue
+		run.shard_fx.draw_shard(ci, s.pos - origin, s.size, s.t, PackedVector2Array())
 
 
 ## Size class for a shard of `light` (7.1: small <= 1, medium <= 2, large >= 3).
