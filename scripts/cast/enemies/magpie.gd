@@ -63,6 +63,7 @@ var leave_after := 9.0
 var _sign := 1.0 # circling direction
 var _turn_cd := 0.0 # seconds before it may reverse its circling again
 var _zig := 1.0
+var _eyes_pass := false # inside draw_eyes (the finale's Top layer): the star draws there, not late
 var _zig_t := 0.0
 var _calm_at := -INF # age when the last panic ended
 var _born := 0.0 # game.clock() at spawn: the escape timer runs on world time (hit-stops don't stretch it)
@@ -254,7 +255,7 @@ func draw_body(ci: CanvasItem) -> void:
 	var at := pos + Vector2(0, -_climb)
 	var behind := bool(clip["data"][f].get("star_behind", false))
 	if behind:
-		_draw_held_star(ci, f, at)
+		_draw_held_star(ci, f, at, true)
 	var flashed: bool = flash > 0.0 and game.lv("hit_flash") == 0 and clip["tex"].has("flash")
 	draw_layer(ci, "flash" if flashed else "body", at, f)
 	if not behind:
@@ -263,6 +264,12 @@ func draw_body(ci: CanvasItem) -> void:
 
 ## The finale: its eyes and the stolen light stay over the dead pixels.
 func draw_eyes(ci: CanvasItem) -> void:
+	_eyes_pass = true
+	_draw_eyes(ci)
+	_eyes_pass = false
+
+
+func _draw_eyes(ci: CanvasItem) -> void:
 	if dead:
 		if not done():
 			draw_layer(ci, "eyes")
@@ -573,20 +580,24 @@ func _fx_frame(name: String, raw := false) -> int:
 	return ms.size() - 1
 
 
-func _draw_fx(ci: CanvasItem, name: String, at: Vector2, f: int, row := 0) -> void:
+func _draw_fx(ci: CanvasItem, name: String, at: Vector2, f: int, row := 0, direct := false) -> void:
 	var e: Dictionary = _fx[name]
 	var size: Vector2 = e["frame"]
-	ci.draw_texture_rect_region(e["tex"], Rect2((at - e["origin"]).round(), size),
-		Rect2(f * size.x, row * size.y, size.x, size.y))
+	var dest := Rect2((at - e["origin"]).round(), size)
+	var src := Rect2(f * size.x, row * size.y, size.x, size.y)
+	if direct or _eyes_pass: # behind the body, or the finale's Top layer: stays with its own draw
+		ci.draw_texture_rect_region(e["tex"], dest, src)
+	else:
+		late(game.view.above, e["tex"], dest, src) # over the horde's bodies
 
 
 ## In the beak: glints on the world's 2 s loop (frame 0 glints, so it still shows with ANIMATIONS sold).
-func _draw_held_star(ci: CanvasItem, f: int, at: Vector2) -> void:
+func _draw_held_star(ci: CanvasItem, f: int, at: Vector2, direct := false) -> void:
 	var beak: Variant = clip["data"][f].get("beak")
 	if beak == null:
 		return
 	var b := KIT.vec(beak) * Vector2(-1.0 if mirrored() else 1.0, 1.0)
-	_draw_fx(ci, "held", at + b, game.tick() % 24)
+	_draw_fx(ci, "held", at + b, game.tick() % 24, 0, direct)
 
 
 ## Knocked loose: it tumbles up and hangs, arcs into the lantern, bursts there.

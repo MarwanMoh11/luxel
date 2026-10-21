@@ -17,4 +17,4 @@ func _init(kit, at: Vector2) -> void:
 
 
 func draw(ci: CanvasItem) -> void:
-	SPORE.blit(ci, _fx, "body", pos, 0 if game.still() else SPORE.frame_of(_fx, age * 1000.0))
+	SPORE.blit(ci, _fx, "body", pos, 0 if game.still() else SPORE.frame_of(_fx, age * 1000.0), true)
