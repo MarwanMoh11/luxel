@@ -147,6 +147,9 @@ const TEXT := {
 	"quip.crosshair": "THERE WAS NO CROSSHAIR EITHER.",
 	"quip.camera_smoothing": "THE CAMERA STOPS BEING POLITE.",
 	"quip.credits": "NOBODY MADE THIS GAME. IT JUST HAPPENED.",
+	# The lantern spill (player.gd: a guarded last-heart hit from GUARD_LEVEL; cards.gd counts them, %d = spills)
+	"quip.lantern_spills": "THE LANTERN SPILLS.",
+	"results.lantern_saves": "SAVED BY THE LANTERN x%d",
 	# Ending (STORY.md 6; ending.gd owns the staging)
 	"ending.skip": "PRESS AGAIN TO SKIP",
 	"ending.display_off": "DISPLAY: OFF",
