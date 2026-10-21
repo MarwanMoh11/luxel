@@ -17,6 +17,7 @@ const SOUND_GAPS := {"snuffer_spawn": 0.35, "snuffer_pop": 0.1, "snuffer_clatter
 	"toad_turn": 0.3, "toad_block": 0.1, "spore_pop": 0.1, "gloam_hush": 0.15, "gloam_tick": 0.15,
 	"owl_wingbeat": 0.2, "owl_ruffle": 0.3, "sporecap_swell": 0.3, "sporecap_puff": 0.2}
 const SOUND_VOICES := 3
+const KILL_GAP_MS := 60 # the kill sound restarts at most this often (real ms, so it also thins out in the frozen blast)
 const SOUND_WINDOW := 0.12
 const SOUND_TELLS: Array[String] = ["owl_hoot", "owl_whoosh", "magpie_chatter", "magpie_alarm", "magpie_laugh",
 	"star_chime", "star_home", "sporecap_land", "sporecap_swell", "gloam_open", "formation"]
@@ -39,6 +40,7 @@ var _heard := {} # enemy sound id -> clock when it last started
 var _voices: Array[float] = [] # clock of the enemy sounds started lately (SOUND_WINDOW)
 var _sfx := {} # settings_fx's SFX_DB, when it has one
 var _clock := 0.0 # real seconds, for the sound gaps
+var _kill_ms := -100000 # Time ms of the last kill sound (KILL_GAP_MS)
 
 
 ## Keeps the back-reference to the run and loads every brain and kit once.
@@ -185,7 +187,10 @@ func hurt_enemy(e, dmg: int, push: Vector2, from := Vector2.INF) -> void:
 	e.die(push, from)
 	remnants.append(e)
 	run.stat("killed_" + e.id)
-	run.fx.play("kill")
+	var ms := Time.get_ticks_msec()
+	if ms - _kill_ms >= KILL_GAP_MS: # a blast kills the horde in one frame: one kill sound, not a pile of them
+		_kill_ms = ms
+		run.fx.play("kill")
 	run.on_kill(e.id, at)
 
 
