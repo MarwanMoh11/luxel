@@ -22,6 +22,7 @@ const WAKE_SHARE := 0.6 # of the shot's damage
 const WAKE_PUSH := 140.0 # px/s outward (none once KNOCKBACK is sold)
 const SOUND_GAP := 0.1 # seconds: at most one toll and one sting sound per gap
 const TRAIL_GAP := 3.0 # px between a darting fly's trail motes
+const TRAIL_MAX := 2.0 * STING_RANGE # px: a longer jump in one step leaves no motes (a far one never ended)
 
 var run # the Run (run.gd), duck-typed: enemies, hurt_enemy, shot_damage(), lv(), wick, combat, fx
 var light # light_fx.gd: tiers, the splash and sting tables, and the effects
@@ -164,6 +165,8 @@ func _trail(f: Dictionary) -> void:
 		return
 	var drop: Vector2 = f["drop"]
 	var to: Vector2 = f["pos"]
+	if not drop.is_finite() or drop.distance_to(to) > TRAIL_MAX:
+		drop = to # past float precision a 3 px step stops moving `drop` and this loop spun forever (the finale froze)
 	while drop.distance_to(to) >= TRAIL_GAP:
 		drop = drop.move_toward(to, TRAIL_GAP)
 		light.fly_trail(drop)
