@@ -88,7 +88,7 @@ minute. A death costs you the run, and Space starts a new one at once.
 
 The dark swells and there are too many of them. You sell one last setting, CONFIRM SALES, and the
 menu starts selling the game's looks by itself: the music, the colours, the resolution, the sound.
-Each of the 13 sales charges the lantern for one big blast. The blast clears the horde and leaves the
+Each of the 13 or more sales (one blast per setting still standing) charges the lantern for one big blast. The blast clears the horde and leaves the
 screen broken, and you relight it by hand. Then the rest of the dark arrives, and the only setting left is PIXELS. You sell them one
 percent at a time until DISPLAY: OFF.
 

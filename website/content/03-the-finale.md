@@ -32,7 +32,7 @@ The hidden ADVANCED tab opens with one row and no BACK: CONFIRM SALES, +2 HEARTS
 
 ## 4. THE MENU SELLS THE GAME
 
-Thirteen times, a few seconds apart, the menu pops open on its own. A ghost cursor steps down to a row, a SOLD stamp slams over it, and the game gets a little worse. Each sale charges the blast (BLAST 3/13 blinks over the lantern) and the lantern glows brighter.
+Thirteen or more times (one blast per setting still standing), a few seconds apart and quicker after the first three, the menu pops open on its own. A ghost cursor steps down to a row, a SOLD stamp slams over it, and the game gets a little worse. Each sale charges the blast (BLAST 3/13 or more blinks over the lantern) and the lantern glows brighter.
 
 | # | Setting | What you see and hear | Quip |
 |---|---|---|---|
