@@ -91,6 +91,9 @@ const SCALE_STEPS: Array[int] = [0, 1, 4, 5, 7, 8, 10]
 const SCALE_ROOT := 69
 const BLAST_TOLL := 1.0 / 3.0 ## the blast: toll.wav (A4) at 1/3 = D3 ...
 const BLAST_TOLL_DB := -8.0 ## ... 8 dB under the music volume (its RMS sits 8 dB over the lantern notes')
+const FINALE_FAST_FROM := 4 ## the finale's self-sales run at full length up to this one, then each is quicker ...
+const FINALE_QUICKER := 0.75 ## ... than the one before by this factor ...
+const FINALE_FLOOR := 0.10 ## ... down to this share of the full length
 const BLAST_LANTERN := 74 ## ... under lantern_74 (D5) at 0.5 = D4, at the music volume
 
 ## The screen shader's material (uniforms in screen_fx.gdshader).
@@ -252,6 +255,12 @@ func dark_edges(px: float, secs := 0.5) -> void:
 	if _edge_secs <= 0.0:
 		_edge = _edge_to
 	_set_edge()
+
+
+## The finale's pace for self-sale `n` (1-based): 1 for the first FINALE_FAST_FROM - 1, then FINALE_QUICKER per sale
+## down to FINALE_FLOOR. Scales the menu's AUTO_* times and the gap before the sale (main).
+func finale_pace(n: int) -> float:
+	return 1.0 if n < FINALE_FAST_FROM else maxf(FINALE_FLOOR, pow(FINALE_QUICKER, n - FINALE_FAST_FROM + 1))
 
 
 ## P8 B3: the blast from `screen_pos` (game screen px, like step()'s Wick position): a cream ring to past the
