@@ -37,6 +37,7 @@
   function size() {
     var rect = hero.parentNode.getBoundingClientRect();
     var cw = Math.ceil(rect.width), ch = Math.ceil(rect.height);
+    if (cw < 2 || ch < 2) return false; /* not laid out yet (a hidden frame): try again when it has a size */
     S = Math.max(2, Math.min(6, Math.floor(cw / 230)));
     W = Math.ceil(cw / S); H = Math.ceil(ch / S);
     hero.width = W; hero.height = H;
@@ -58,6 +59,7 @@
     }
     if (Lux.reduced) t = 99;
     dirtyAll = true;
+    return true;
   }
 
   /* Four versions of the island crop: dark (the night), mid, lit and warm (under a lantern). */
@@ -253,14 +255,28 @@
   hero.parentNode.addEventListener("pointerleave", function () { mouse = null; Lux.overHero = false; });
 
   function start() {
-    size();
+    if (!size()) {
+      var retry = function () {
+        if (!size()) return;
+        window.removeEventListener("resize", retry);
+        document.removeEventListener("visibilitychange", retry);
+        run();
+      };
+      window.addEventListener("resize", retry);
+      document.addEventListener("visibilitychange", retry);
+      return;
+    }
+    run();
+  }
+
+  function run() {
     Lux.onFrame(frame);
     Lux.watch(hero.parentNode, function (v) { visible = v; }, "0px");
     var rt = 0;
     window.addEventListener("resize", function () {
       clearTimeout(rt);
       rt = setTimeout(function () {
-        var keep = t; size(); t = Math.max(keep, lastLight + 4); dirtyAll = true;
+        var keep = t; if (!size()) return; t = Math.max(keep, lastLight + 4); dirtyAll = true;
       }, 150);
     });
   }
