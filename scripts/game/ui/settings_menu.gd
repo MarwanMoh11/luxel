@@ -57,6 +57,7 @@ const AUTO_DRAIN := 0.15
 const AUTO_SHUT := 0.75
 const AUTO_RESUME := 0.15 ## the world resumes this long after the menu shuts (sale["resume_in"])
 ## ... all of the above times `_pace`: 1 for self-sales 1-3, then 25% quicker each (settings_fx.finale_pace).
+const AUTO_PACE_FLOOR := 0.40 ## the menu never runs quicker than this share (the SOLD stamp stays readable; the gaps go lower)
 # Forced mode: the lock-break after CONFIRM SALES, seconds from the sale.
 const CRACK_AT := 0.3
 const CRACK_GAP := 0.12
@@ -125,7 +126,7 @@ func open(ctx: Dictionary) -> void:
 	_line = String(ctx.get("line", ""))
 	_blast = int(ctx.get("blast", 0))
 	_blast_of = int(ctx.get("blast_of", 0))
-	_pace = run.fx.finale_pace(_blast) if run and run.fx and _mode == "auto" else 1.0
+	_pace = maxf(AUTO_PACE_FLOOR, run.fx.finale_pace(_blast)) if run and run.fx and _mode == "auto" else 1.0
 	_target = String(ctx.get("target", ""))
 	_open = true
 	_t = 0.0
