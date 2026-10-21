@@ -4,7 +4,9 @@ extends Node2D
 ## AUTO-SELL); and the toast. Calls fx.menu(true/false) in tutorial,
 ## player and forced modes. Rewritten from scripts/proto/low_settings/settings_page.gd in the Last Light palette:
 ## panels dusk, frames night and mauve, text cream, titles gold, warnings coral. Every string goes through
-## shop.txt (LANGUAGE) except the self-sale banner, the PIXELS row and the toast.
+## shop.txt (LANGUAGE) except the self-sale banner, the PIXELS row and the toast. For first-time players each row
+## reads value now > after the sale, the footer spells out the picked sale (YOU LOSE / YOU GET, the stats it
+## changes lit), and the tutorial menu adds a HOW IT WORKS box.
 
 signal closed(sale: Dictionary)
 signal pixel_sold(sale: Dictionary) ## pixels mode: one press sold 1% (the menu stays open; the run applies it)
@@ -15,24 +17,31 @@ const STORY := preload("res://scripts/game/story/story_text.gd")
 const PAL: Dictionary = preload("res://scripts/game/ui/palette.gd").PAL
 const CX := 160.0
 const PANEL := Rect2(10, 4, 300, 172)
-# Columns.
+# Columns: name, slider, the value now > after the sale, and what the sale pays.
 const NAME_X := 28.0
 const SLIDER_X := 84.0
 const SLIDER_W := 24.0
-const VALUE_X := 116.0
-const POWER_X := 158.0
+const NOW_X := 114.0
+const ARROW_X := 146.0
+const AFTER_X := 151.0
+const GET_X := 192.0
 const LOCK_X := 296.0
-const TAG_GAP := 8.0 ## px between a row's reward and its NEW: tag
-const TAG_END := 300.0 ## the tag must end by here (the row band's right edge)
+const TAG_END := 300.0 ## the row's NEW mark and the footer's form tag must end by here (the row band's right edge)
 # Bands (top y of each).
 const TAB_X := 18
 const TAB_Y := 28
 const TAB_GAP := 3
 const ROW_Y := 48
 const SEP_Y := 129
-const QUIP_Y := 133
-const STAT_Y := 144
-const KEYS_Y := 160
+const QUIP_Y := 133 ## YOU LOSE (or the sale result)
+const STAT_Y := 144 ## auto mode: the sold row's quip
+const KEYS_Y := 160 ## auto mode: the AUTO / BLAST tag
+const GET_Y := 141 ## YOU GET (or the sold row's quip)
+const PREVIEW_Y := 151 ## the stat line, with what the picked sale changes lit
+const HINT_Y := 163 ## the key hint
+const STAT_W := 288.0 ## the stat line's widest (the panel's inside is 292)
+## Tutorial menu: the HOW IT WORKS box under the one row.
+const HOW_BOX := Rect2(52, 66, 216, 52)
 ## Rows with more steps than this get a fill bar instead of a notched slider (PIXELS has 100).
 const MAX_NOTCHES := 8
 ## The 3x5 "%" glyph the font lacks.
@@ -57,6 +66,8 @@ const PIXEL_PANEL := Rect2(46, 8, 228, 56)
 const PIXEL_ROW_Y := 14
 const PIXEL_ROW_GAP := 8
 const PIXEL_NAME_X := 54.0
+const VALUE_X := 116.0
+const POWER_X := 158.0
 const PIXEL_RULE_Y := 31
 const PIXEL_QUIP_Y := 34
 const PIXEL_STAT_Y := 43
@@ -545,6 +556,21 @@ func _draw_menu() -> void:
 		_draw_stamp(ROW_Y + _row * gap)
 	draw_rect(Rect2(20, SEP_Y, 280, 1), PAL["mauve"])
 	_draw_footer(rows)
+	if _mode == "tutorial":
+		_draw_how_to()
+
+
+## Tutorial menu: the trade in three plain steps, in the empty space under its one row.
+func _draw_how_to() -> void:
+	draw_rect(HOW_BOX, PAL["mauve"])
+	draw_rect(HOW_BOX.grow(-1), PAL["night"])
+	_centered(STORY.line("menu.how.title", "HOW IT WORKS"), CX, HOW_BOX.position.y + 5, PAL["gold"], PAL["night"])
+	for i in 3:
+		var x := HOW_BOX.position.x + 8
+		var y := HOW_BOX.position.y + 16 + i * 10
+		draw_rect(Rect2(x, y - 1, 7, 7), PAL["gold"])
+		_text(str(i + 1), x + 2, y, PAL["night"], PAL["gold"])
+		_text(STORY.line("menu.how.%d" % (i + 1)), x + 12, y, PAL["cream"], PAL["night"])
 
 
 func _draw_header() -> void:
@@ -553,7 +579,7 @@ func _draw_header() -> void:
 		title = STORY.line("finale.must_go", "EVERYTHING MUST GO")
 	_text(title, 22, 12, PAL["gold"], PAL["night"], 2)
 	_right("LV %d" % _level, 298, 12, PAL["stone"])
-	var sub := STORY.line("menu.header", "SELL ONE SETTING")
+	var sub := STORY.line("menu.header", "SELL 1 SETTING. GET 1 POWER.")
 	match _mode:
 		"tutorial":
 			sub = STORY.line("tut.menu_header", "THE LANTERN BUYS SETTINGS")
@@ -561,7 +587,7 @@ func _draw_header() -> void:
 			sub = STORY.line("finale.nothing_left", "THERE IS NOTHING LEFT TO SELL.")
 		"auto", "pixels":
 			sub = STORY.line("finale.header", "THE LANTERN WANTS THE GOOD STUFF")
-	var ink: Color = PAL["stone"]
+	var ink: Color = PAL["cream"]
 	if _mode == "player" and shop.buy_back_open():
 		sub = STORY.line("menu.buy_back.header", "SELL ONE OR BUY ONE BACK ONCE")
 		if _bb_first: # gold in the first menu that offers it, blinking 3 times
@@ -640,7 +666,8 @@ func _cracked_tab(t: int) -> bool:
 	return _mode == "forced" and _sold_t >= 0.0 and (t == DATA.AUDIO_TAB or t == DATA.GRAPHICS_TAB)
 
 
-## One setting row: name, slider, current value, and what selling the next step pays.
+## One setting row: name, slider, the value now > after the sale, and what the sale pays, with a gold NEW when it
+## lights a lantern form (the footer names it). A row BUY BACK can return shows the value it goes back to.
 func _draw_row(id: String, row: int, y: int) -> void:
 	var band := _row_band(row, y)
 	var hot := band != PAL["dusk"]
@@ -659,41 +686,62 @@ func _draw_row(id: String, row: int, y: int) -> void:
 		_draw_fill_bar(steps, shown, y)
 	else:
 		_draw_slider(steps, shown, y, dim)
-	_text(shop.value_text(id), VALUE_X, y, ink if hot or lv == 0 or dim else PAL["coral"], band)
-	var label: String = shop.next_label(id)
-	var reward: Color = ink if hot or dim else PAL["lime"]
+	_text(shop.value_text(id), NOW_X, y, ink if hot or lv == 0 or dim else PAL["coral"], band)
 	if buyable:
-		label = STORY.line("menu.buy_back.tag", "BUY BACK")
-		reward = PAL["gold"]
-	elif id == shop.bought_back:
-		label = STORY.line("menu.buy_back.kept", "BOUGHT BACK")
-		reward = PAL["cream"] if hot else PAL["stone"]
-	elif state == SHOP.RowState.SOLD_OUT:
-		label = "SOLD OUT"
-	_text(label, POWER_X, y, reward, band)
-	if state == SHOP.RowState.OPEN and not just_sold:
-		_draw_form_tag(id, label, y, band)
-	if state == SHOP.RowState.NOT_FOR_SALE: # its price stays as a tease; LATER says it is not broken, just not yet
-		var later := "LATER"
-		_text(later, LOCK_X - 3 - PixelFont.width(_txt(later)), y, PAL["cream"] if hot else PAL["stone"], band)
-		_draw_padlock(Vector2(LOCK_X, y), PAL["stone"], false)
-
-
-## The lantern forms selling row `id` would light, in gold after its reward ("NEW: FIREFLY"): the whole tag if it
-## fits the row, else the first form, else that form without NEW: (the callout over Wick names them all).
-func _draw_form_tag(id: String, label: String, y: int, band: Color) -> void:
-	var x := POWER_X + PixelFont.width(label) + TAG_GAP
-	if id == DATA.CONFIRM and _mode == "forced": # the finale's one big blast (P8 B2)
-		_text(STORY.line("finale.blast_tag", "NEW: BLAST"), x, y, PAL["gold"], band)
+		_draw_after(DATA.value(id, lv - 1), y, PAL["cream"] if hot else PAL["lime"], band)
+		_text(STORY.line("menu.buy_back.tag", "BUY BACK"), GET_X, y, PAL["gold"], band)
 		return
+	if id == shop.bought_back:
+		_text(STORY.line("menu.buy_back.kept", "BOUGHT BACK"), GET_X, y, PAL["cream"] if hot else PAL["stone"], band)
+		return
+	if state == SHOP.RowState.SOLD_OUT:
+		_text("SOLD OUT", GET_X, y, ink if hot or dim else PAL["lime"], band)
+		return
+	var open := state == SHOP.RowState.OPEN
+	_draw_after(String(DATA.step(id, lv)["value"]), y, ink if hot or not open else PAL["coral"], band)
+	var label: String = shop.next_label(id)
+	if state == SHOP.RowState.NOT_FOR_SALE: # its price stays as a tease if it fits; LATER says it is not broken
+		var later := "LATER"
+		var later_x := LOCK_X - 3 - PixelFont.width(_txt(later))
+		if GET_X + PixelFont.width(_txt(label)) + 4 <= later_x:
+			_text(label, GET_X, y, ink, band)
+		_text(later, later_x, y, PAL["cream"] if hot else PAL["stone"], band)
+		_draw_padlock(Vector2(LOCK_X, y), PAL["stone"], false)
+		return
+	_text(label, GET_X, y, ink if hot else PAL["lime"], band)
+	var mark := STORY.line("menu.new_mark", "NEW")
+	if not just_sold and not _form_tags(id).is_empty() \
+			and GET_X + PixelFont.width(_txt(label)) + 4 + PixelFont.width(_txt(mark)) <= TAG_END:
+		_text(mark, TAG_END - PixelFont.width(_txt(mark)), y, PAL["gold"], band)
+
+
+## The arrow and the value a row will read after the sale (or after BUY BACK).
+func _draw_after(value: String, y: int, color: Color, band: Color) -> void:
+	_draw_arrow(ARROW_X, y, PAL["stone"] if color != PAL["mauve"] else PAL["mauve"])
+	_text(value, AFTER_X, y, color, band)
+
+
+## A 5x5 right arrow with its head's back at x (the font has no ">"): a 2 px stem, then the head.
+func _draw_arrow(x: float, y: int, color: Color) -> void:
+	draw_rect(Rect2(x - 2, y + 2, 2, 1), color)
+	draw_rect(Rect2(x, y, 1, 5), color)
+	draw_rect(Rect2(x + 1, y + 1, 1, 3), color)
+	draw_rect(Rect2(x + 2, y + 2, 1, 1), color)
+
+
+## The footer's lantern-form tag for row `id`, longest first (the first that fits is drawn): "NEW LANTERN FORM:
+## BELL TOLL", then "NEW: FIREFLY 2 + BELL TOLL", then the first form alone. The forced CONFIRM SALES lights the
+## finale's blast (P8 B2). Empty when the sale lights nothing.
+func _form_tags(id: String) -> Array:
+	if id == DATA.CONFIRM and _mode == "forced":
+		return [STORY.line("finale.blast_tag", "NEW: BLAST")]
 	var gained := _new_forms(id)
 	if gained.is_empty():
-		return
-	for tag: String in [STORY.form_tag(gained), STORY.form_tag(gained.slice(0, 1)),
-			STORY.form_tag(gained.slice(0, 1), false)]:
-		if x + PixelFont.width(tag) <= TAG_END:
-			_text(tag, x, y, PAL["gold"], band)
-			return
+		return []
+	var tags := [STORY.form_tag(gained), STORY.form_tag(gained.slice(0, 1))]
+	if gained.size() == 1:
+		tags.push_front(STORY.line("menu.new_form", "NEW LANTERN FORM:") + " " + STORY.form_tag(gained, false))
+	return tags
 
 
 ## [[form, tier], ...] that selling row `id` would light or raise (light_fx.gd); none in the self-selling and
@@ -707,15 +755,11 @@ func _new_forms(id: String) -> Array:
 func _draw_back(row: int, y: int) -> void:
 	var band := _row_band(row, y)
 	var hot := band != PAL["dusk"]
-	var ink: Color = PAL["cream"]
-	var heals: bool = int(shop.back()["heal"]) > 0
-	if heals:
-		_text("BACK", NAME_X, y, ink, band)
-		_text("KEEP ALL", SLIDER_X, y, ink, band)
-		_text("HEAL 1 HEART", POWER_X, y, ink if hot else PAL["lime"], band)
+	_text(STORY.line("menu.skip", "SKIP: KEEP ALL SETTINGS"), NAME_X, y, PAL["cream"], band)
+	if int(shop.back()["heal"]) > 0:
+		_text("HEAL 1 HEART", GET_X, y, PAL["cream"] if hot else PAL["lime"], band)
 	else:
-		_text("KEEP ALL", NAME_X, y, ink, band)
-		_text("NO HEALING", POWER_X, y, ink if hot else PAL["mauve"], band)
+		_text("NO HEALING", GET_X, y, PAL["cream"] if hot else PAL["mauve"], band)
 
 
 ## Draws the row's highlight (plum when picked, flashing coral just after a sale) and returns its colour.
@@ -768,7 +812,9 @@ func _draw_stamp(y: int) -> void:
 	_plain = false
 
 
-## Quip (or the sale result), the stat line and the key hint (or the blinking AUTO tag).
+## Under the rows: what the picked row costs and pays (YOU LOSE / YOU GET, or one line when it does not sell), the
+## stat line with what the sale changes lit, and the key hint. Just after a sale: the result and the row's quip.
+## Auto mode: the result, the quip and the blinking AUTO tag.
 func _draw_footer(rows: Array) -> void:
 	if _mode == "auto":
 		if _sold_t >= 0.0:
@@ -783,54 +829,77 @@ func _draw_footer(rows: Array) -> void:
 			_centered(tag, CX, KEYS_Y, PAL["coral"], PAL["dusk"])
 			_plain = false
 		return
+	var power := {}
+	var refill := false
 	if _sold_t >= 0.0:
-		_plain = _mode == "pixels"
 		_centered(_result, CX, QUIP_Y, PAL["gold"], PAL["dusk"])
-		_plain = false
+		var sold := String(_sale.get("id", ""))
+		if sold != "" and not _sale.has("buy_back"): # the joke lands after the sale
+			_centered(_quip_of(sold, int(_sale.get("step", 0))), CX, GET_Y, PAL["stone"], PAL["dusk"])
 	elif _row >= rows.size():
-		var heals: bool = int(shop.back()["heal"]) > 0
-		var quip := "KEEP EVERY SETTING AND REST." if heals else "KEEP EVERY SETTING. NO REST."
-		if _mode == "player" and _stock(_tab) == 0 and _has_later(_tab): # a padlocked tab: the cursor waits on BACK
-			quip = _not_yet_line()
-		_centered(quip, CX, QUIP_Y, PAL["stone"], PAL["dusk"])
+		if _mode == "player" and _stock(_tab) == 0 and _has_later(_tab): # a padlocked tab: the cursor waits on SKIP
+			_centered(_not_yet_line(), CX, QUIP_Y, PAL["stone"], PAL["dusk"])
+		elif int(shop.back()["heal"]) > 0:
+			_draw_trade(STORY.line("menu.skip.lose", "NOTHING."), "HEAL 1 HEART", [])
+		else:
+			_draw_trade(STORY.line("menu.skip.lose", "NOTHING."), STORY.line("menu.skip.no_heal", "NOTHING."), [])
 	else:
 		var id: String = rows[_row]
-		var quip := _line if _line != "" and _mode != "forced" else _quip_of(id, shop.lv(id)) # forced: the row's quip
-		if _mode == "pixels":
-			quip = STORY.line("finale.pixels", "ONE SETTING LEFT. IT IS THE SCREEN.")
-		elif _mode == "tutorial" and _line == "":
-			quip = STORY.line("tut.menu_quip", quip)
 		if _buyable(id):
-			quip = STORY.line("menu.buy_back.quip", "COSTS THIS LEVEL. YOU KEEP THE POWER.")
+			_draw_trade(STORY.line("menu.buy_back.lose"), "%s %s %s" % [DATA.ROWS[id]["name"],
+					DATA.value(id, shop.lv(id) - 1), STORY.line("menu.buy_back.get")], [])
+		elif id == shop.bought_back:
+			_centered(STORY.line("menu.buy_back.done", "BOUGHT BACK. POWER KEPT."), CX, QUIP_Y, PAL["stone"], PAL["dusk"])
 		elif shop.row_state(id) == SHOP.RowState.SOLD_OUT:
-			quip = "ALREADY SOLD."
-		elif shop.row_state(id) == SHOP.RowState.NOT_FOR_SALE and _mode == "player":
-			quip = _not_yet_line()
-		_plain = _mode == "pixels"
-		_centered(quip, CX, QUIP_Y, PAL["stone"], PAL["dusk"])
-		_plain = false
+			_centered("ALREADY SOLD.", CX, QUIP_Y, PAL["stone"], PAL["dusk"])
+		elif shop.row_state(id) == SHOP.RowState.NOT_FOR_SALE:
+			_centered(_not_yet_line(), CX, QUIP_Y, PAL["stone"], PAL["dusk"])
+		else:
+			power = DATA.step(id, shop.lv(id))["power"]
+			refill = id == DATA.CONFIRM # it refills every heart, even with HEALING sold
+			_draw_trade(_lose_of(id), shop.next_label(id), _form_tags(id))
 	if _mode != "tutorial":
-		_centered(_stat_text(), CX, STAT_Y, PAL["sky"], PAL["dusk"])
+		_draw_stats(power, refill)
 	var keys := "SPACE: SELL"
 	if _mode == "player":
-		keys = "LEFT RIGHT: TAB   UP DOWN: PICK   SPACE: " + ("KEEP ALL" if _row >= rows.size() else "SELL")
+		keys = "LEFT RIGHT: TAB   UP DOWN: PICK   SPACE: " + ("SKIP" if _row >= rows.size() else "SELL")
 		if _row < rows.size() and _buyable(rows[_row]):
 			keys = "LEFT RIGHT: TAB   UP DOWN: PICK   " + STORY.line("menu.buy_back.key", "SPACE: BUY")
-	_plain = _mode == "pixels" # the one finale menu that waits for a key says which one, plain even while LANGUAGE lasts
-	_draw_keys(keys)
-	_plain = false
+	_draw_keys_at(keys, HINT_Y)
 
 
-## The key hint, centred on one line: key names in stone, what they do in mauve.
-func _draw_keys(keys: String) -> void:
-	_draw_keys_at(keys, KEYS_Y)
+## YOU LOSE: `lose`, then YOU GET: `get` and the first of `tags` that fits (the lantern form, gold).
+func _draw_trade(lose: String, get: String, tags: Array) -> void:
+	var x := _label(STORY.line("menu.lose", "YOU LOSE:"), QUIP_Y, PAL["coral"])
+	_text(lose, x, QUIP_Y, PAL["cream"], PAL["dusk"])
+	x = _label(STORY.line("menu.get", "YOU GET:"), GET_Y, PAL["lime"])
+	_text(get, x, GET_Y, PAL["cream"], PAL["dusk"])
+	x += PixelFont.width(_txt(get)) + 12
+	for tag: String in tags:
+		if x + PixelFont.width(_txt(tag)) <= TAG_END:
+			_text(tag, x, GET_Y, PAL["gold"], PAL["dusk"])
+			return
 
 
+## A footer label at the left edge; returns the x its text starts at.
+func _label(s: String, y: int, color: Color) -> float:
+	_text(s, 24, y, color, PAL["dusk"])
+	return 24.0 + PixelFont.width(_txt(s)) + 4
+
+
+## What selling row `id` takes away, in plain words: lose.<id> (lose.<id>_2 for its second step), else its quip.
+func _lose_of(id: String) -> String:
+	var lv: int = shop.lv(id)
+	var key := "lose." + id + ("_%d" % (lv + 1) if lv > 0 else "")
+	return STORY.line(key, _quip_of(id, lv))
+
+
+## The key hint, centred on one line: key names in cream, what they do in stone.
 func _draw_keys_at(keys: String, y: int) -> void:
 	var x := roundf(CX - PixelFont.width(_txt(keys)) / 2.0)
 	for group: String in keys.split("   "):
 		var colon := maxi(group.find(":"), 0)
-		for piece: Array in [[group.substr(0, colon), PAL["stone"]], [group.substr(colon), PAL["mauve"]]]:
+		for piece: Array in [[group.substr(0, colon), PAL["cream"]], [group.substr(colon), PAL["stone"]]]:
 			var s: String = piece[0]
 			if s != "":
 				_text(s, x, y, piece[1], PAL["dusk"])
@@ -862,14 +931,60 @@ func _quip_of(id: String, step: int) -> String:
 	return STORY.line(key, fallback)
 
 
-## Hearts, damage, fire rate, speed, shots and pierce on one line ("" without a run).
-func _stat_text() -> String:
+## Hearts, damage, fire rate, speed, shots and pierce on one line, centred; each stat `power` would change is lit
+## lime as old > new. Past STAT_W the unchanged stats drop from the right, then lit stats show just the new value.
+## `refill`: the sale refills every heart (CONFIRM SALES). Nothing without a run.
+func _draw_stats(power: Dictionary, refill := false) -> void:
 	if run == null or run.prog == null or run.player == null:
-		return ""
+		return
 	var prog = run.prog
-	return "HEARTS %d/%d  DAMAGE %d%%  FIRE %.1f/S  SPEED %d%%  SHOTS %d  PIERCE %d" % [run.player.hp,
-			run.player.max_hp, roundi(prog.mult["damage"] * 100.0), 1.0 / maxf(prog.fire_interval(), 0.01),
-			roundi(prog.mult["speed"] * 100.0), prog.shots, prog.pierce]
+	var after: Dictionary = prog.preview(power)
+	var hp: int = run.player.hp
+	var top: int = run.player.max_hp
+	var more := int(power.get("hearts", 0))
+	var fire := 1.0 / maxf(prog.fire_interval(), 0.01)
+	var stats := [ # [name, now, after the sale, lit]
+		["HEARTS", "%d/%d" % [hp, top], "%d/%d" % [top + more if refill else hp + (more if shop.lv("healing") == 0 else 0),
+				top + more], more > 0 or (refill and hp < top)],
+		["DAMAGE", _pct(prog.mult["damage"]), _pct(after["mult"]["damage"]), power.has("damage")],
+		["FIRE", "%.1f/S" % fire, "%.1f/S" % (fire * after["mult"]["fire"] / prog.mult["fire"]), power.has("fire")],
+		["SPEED", _pct(prog.mult["speed"]), _pct(after["mult"]["speed"]), power.has("speed")],
+		["SHOTS", str(prog.shots), str(after["shots"]), power.has("shots")],
+		["PIERCE", str(prog.pierce), str(after["pierce"]), power.has("pierce")],
+	]
+	while _stat_line(stats, true, 0.0, false) > STAT_W:
+		var spare := stats.filter(func(s: Array) -> bool: return not s[3])
+		if spare.is_empty():
+			break
+		stats.erase(spare[-1])
+	var both := _stat_line(stats, true, 0.0, false) <= STAT_W
+	_stat_line(stats, both, roundf(CX - _stat_line(stats, both, 0.0, false) / 2.0), true)
+
+
+## Lays the stat line out from `x` (drawing it if `draw`); returns its width. `both`: lit stats show old > new.
+func _stat_line(stats: Array, both: bool, x: float, draw: bool) -> float:
+	var start := x
+	for s: Array in stats:
+		var pieces := [[s[0] + " " + s[1], PAL["sky"]]]
+		if s[3]:
+			pieces = [[s[0] + " ", PAL["sky"]], [s[1], PAL["stone"]], [">", PAL["lime"]], [s[2], PAL["lime"]]]
+			if not both:
+				pieces = [[s[0] + " ", PAL["sky"]], [s[2], PAL["lime"]]]
+		for p: Array in pieces:
+			if p[0] == ">":
+				if draw:
+					_draw_arrow(x + 3, PREVIEW_Y, p[1])
+				x += 9
+				continue
+			if draw:
+				_text(p[0], x, PREVIEW_Y, p[1], PAL["dusk"])
+			x += PixelFont.width(_txt(p[0])) + 1
+		x += 5
+	return x - start - 6
+
+
+func _pct(v: float) -> String:
+	return "%d%%" % roundi(v * 100.0)
 
 
 ## Pixels mode (design 10.4, 13): the compact panel, plain English. PIXELS with its bar, value and reward; after 5
