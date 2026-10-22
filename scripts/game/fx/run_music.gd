@@ -137,7 +137,8 @@ func part() -> String:
 func clock() -> float:
 	if not player.playing or _cur == "":
 		return -1.0
-	return _cur_beat + _time() - _cur_at + AudioServer.get_time_since_last_mix()
+	# Movie Maker mixes once per frame, so the wall time since the last mix is only noise there (renders repeat)
+	return _cur_beat + _time() - _cur_at + (0.0 if OS.has_feature("movie") else AudioServer.get_time_since_last_mix())
 
 
 ## MUSIC sold: the phrase playing goes on alone on `tape` from the same spot, and the arc stops. -> tape
