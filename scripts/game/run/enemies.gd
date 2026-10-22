@@ -27,6 +27,7 @@ const SOUND_TONAL: Array[String] = ["owl_hoot", "owl_squawk", "magpie_chatter", 
 
 var run ## the Run (run.gd), duck-typed
 var list: Array = [] ## live brains (the same array as run.enemies)
+var by_kind: Array[Array] = [] ## live brains per kind (director KINDS index), in list order
 var remnants: Array = [] ## killed brains still playing their death
 var hazards: Array = [] ## enemy projectiles
 var kills := 0 ## this run
@@ -36,6 +37,7 @@ var _scripts := {} # kind id -> its brain script
 var _kits := {} # kind id -> KIT
 var _grid := {} # Vector2i cell -> the solid enemies in it, rebuilt every step (the crowd push looks 3x3 cells)
 var _grid_used: Array[Vector2i] = []
+var _none: Array = [] # an empty cell
 var _heard := {} # enemy sound id -> clock when it last started
 var _voices: Array[float] = [] # clock of the enemy sounds started lately (SOUND_WINDOW)
 var _sfx := {} # settings_fx's SFX_DB, when it has one
@@ -46,10 +48,12 @@ var _kill_ms := -100000 # run.anim_time ms of the last kill sound (KILL_GAP_MS)
 ## Keeps the back-reference to the run and loads every brain and kit once.
 func setup(r) -> void:
 	run = r
+	by_kind.clear()
 	for id in DIRECTOR.KINDS:
+		by_kind.append([])
 		if ResourceLoader.exists(BRAIN_PATH % id):
 			_scripts[id] = load(BRAIN_PATH % id)
-			kit(id)
+			_scripts[id].warm(kit(id))
 
 
 ## Reads the sound table from settings_fx (main calls fx.setup first).
@@ -62,9 +66,12 @@ func read_sfx() -> void:
 func reset() -> void:
 	for e in list:
 		_drop(e)
+		e.listed = false
 	for r in remnants:
 		_drop(r)
 	list.clear()
+	for k in by_kind:
+		k.clear()
 	remnants.clear()
 	hazards.clear()
 	scripted.clear()
@@ -94,6 +101,7 @@ func spawn(id: String, anchor: Vector2, i: int, n: int) -> RefCounted:
 	e.kit = kit(id)
 	e.kind = DIRECTOR.KINDS.find(id)
 	e.hp = run.director.hp(id)
+	e.size_px = DIRECTOR.size(id)
 	e.node = Node2D.new()
 	e.node.draw.connect(run.view.paint_brain.bind(e))
 	run.island.add_actor(e.node)
@@ -101,17 +109,16 @@ func spawn(id: String, anchor: Vector2, i: int, n: int) -> RefCounted:
 	e.setup()
 	e.node.position = e.pos.round()
 	list.append(e)
+	by_kind[e.kind].append(e)
+	e.listed = true
 	run.stat("spawned_" + id)
 	return e
 
 
 ## Live enemies of kind `id`.
 func alive(id: String) -> int:
-	var n := 0
-	for e in list:
-		if e.id == id:
-			n += 1
-	return n
+	var k := DIRECTOR.KINDS.find(id)
+	return 0 if k < 0 else by_kind[k].size()
 
 
 ## Steps brains and hazards (dt x run.enemy_tempo), contact damage. Deaths happen in hurt_enemy. World seconds.
@@ -128,6 +135,7 @@ func step(dt: float) -> void:
 		b.step(bdt)
 		if b.gone: # left the field alive (no kill)
 			list.remove_at(i)
+			_unlist(b)
 			scripted.erase(b)
 			_drop(b)
 			run.stat("left_" + b.id)
@@ -167,7 +175,7 @@ func contact() -> String:
 
 ## Damages `e` (`from` = the hit's source, for the toad's parasol); kills it at 0 hp.
 func hurt_enemy(e, dmg: int, push: Vector2, from := Vector2.INF) -> void:
-	if e == null or e.dead or not list.has(e):
+	if e == null or e.dead or not e.listed:
 		return
 	if from != Vector2.INF and e.blocks(from):
 		var c: Vector2 = e.centre()
@@ -180,7 +188,8 @@ func hurt_enemy(e, dmg: int, push: Vector2, from := Vector2.INF) -> void:
 		e.hurt(dmg, push, from)
 		run.fx.play("hit")
 		return
-	list.erase(e)
+	list.remove_at(list.rfind(e)) # each brain is listed once; a blast kills from the end
+	_unlist(e)
 	scripted.erase(e)
 	kills += 1
 	var at: Vector2 = e.centre()
@@ -213,18 +222,16 @@ func sound(sfx: String, now: float) -> void:
 ## The crowd push on `e` from overlapping walkers (director ROSTER `size`).
 func separation(e) -> Vector2:
 	var sep := Vector2.ZERO
-	var size := DIRECTOR.size(e.id)
+	var size: float = e.size_px
 	var c := Vector2i((e.pos / GRID).floor())
 	for dy in range(-1, 2):
 		for dx in range(-1, 2):
-			var cell: Variant = _grid.get(c + Vector2i(dx, dy))
-			if cell == null:
-				continue
+			var cell: Array = _grid.get(c + Vector2i(dx, dy), _none)
 			for o in cell:
 				if o == e:
 					continue
 				var d: Vector2 = e.pos - o.pos
-				var min_d := (size + DIRECTOR.size(o.id)) * 0.5
+				var min_d: float = (size + o.size_px) * 0.5
 				var l2 := d.length_squared()
 				if l2 < min_d * min_d and l2 > 0.0001:
 					var l := sqrt(l2)
@@ -256,6 +263,13 @@ func _fill_grid() -> void:
 		if (cell as Array).is_empty():
 			_grid_used.append(k)
 		(cell as Array).append(e)
+
+
+## Out of the live list (the caller removed it from `list`): out of its kind's list too.
+func _unlist(b) -> void:
+	b.listed = false
+	var kin: Array = by_kind[b.kind]
+	kin.remove_at(kin.rfind(b))
 
 
 func _drop(b) -> void:

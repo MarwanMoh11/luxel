@@ -35,11 +35,12 @@ const SOUND_GAP := 0.1 # s: the same gloam sound plays at most this often (a pac
 ## the tell), and one that bit spends its next dash bounding away into the dark, up to FLEE_TURN off straight back.
 ## A pack can't stack on him: each bite sends that hare off for a whole beat.
 const FLEE_TURN := deg_to_rad(40.0)
+const _NO_MASKS: Array = [] # a sheet with no mask read yet
 
 static var _material: ShaderMaterial # shared by every Gloam: its uniforms are the world's lights
 static var _lights := PackedVector4Array() # this frame's lights: x, y, radius, full
 static var _synced := -1 # process frame of the last light update
-static var _masks := {} # "<sheet>#<frame>" -> PackedVector2Array: opaque pixels of a shadow frame
+static var _masks := {} # shadow sheet -> per frame, PackedVector2Array: its opaque pixels (warm() reads them all)
 static var _images := {} # shadow sheet -> Image (null when it can't be read)
 static var _heard := {} # sound -> run_time it last played
 static var lab := {} # numbers for lab_check (one process = one check run)
@@ -226,11 +227,28 @@ func draw_shadow(ci: CanvasItem) -> void:
 				dest.size.x = -size.x
 			ci.draw_texture_rect_region(tex, dest, src)
 		return
+	var lit := reaching(_lights, area) # a light that doesn't reach the area adds 0 to every pixel's reveal
+	var run := Rect2i(0, 0, 0, 1) # shown pixels next to each other in a row: one rect
 	for q in pixels:
 		var x := int(area.position.x + ((size.x - 1.0 - q.x) if mirror else q.x))
 		var y := int(area.position.y + q.y)
-		if reveal(_lights, Vector2(x + 0.5, y + 0.5)) > bayer(x, y):
-			ci.draw_rect(Rect2(x, y, 1, 1), Color.WHITE) # the shade shader only reads the coverage
+		var p := Vector2(x + 0.5, y + 0.5)
+		var best := 0.0 # reveal(lit, p)
+		for l in lit:
+			best = maxf(best, clampf((l.z - p.distance_to(Vector2(l.x, l.y))) / (l.z - l.w), 0.0, 1.0))
+		if best <= (BAYER4[(y & 3) * 4 + (x & 3)] + 0.5) / 16.0: # bayer(x, y)
+			continue
+		if y == run.position.y and x == run.end.x:
+			run.size.x += 1
+		elif y == run.position.y and x == run.position.x - 1: # mirrored rows run right to left
+			run.position.x = x
+			run.size.x += 1
+		else:
+			if run.size.x > 0:
+				ci.draw_rect(Rect2(run), Color.WHITE) # the shade shader only reads the coverage
+			run = Rect2i(x, y, 1, 1)
+	if run.size.x > 0:
+		ci.draw_rect(Rect2(run), Color.WHITE)
 
 
 func draw_eyes(ci: CanvasItem) -> void:
@@ -326,16 +344,38 @@ static func reveal_span(lights: PackedVector4Array, area: Rect2) -> Vector2:
 	return Vector2(lo, hi)
 
 
+## The lights whose reveal reaches into the world rect `area` (reveal_span's most above 0), in order.
+static func reaching(lights: PackedVector4Array, area: Rect2) -> PackedVector4Array:
+	var out := PackedVector4Array()
+	for l in lights:
+		var c := Vector2(l.x, l.y)
+		if clampf((l.z - c.clamp(area.position, area.end).distance_to(c)) / (l.z - l.w), 0.0, 1.0) > 0.0:
+			out.append(l)
+	return out
+
+
 ## The ordered-dither threshold at world pixel (x, y) (core.bayer).
 static func bayer(x: int, y: int) -> float:
 	return (BAYER4[(y & 3) * 4 + (x & 3)] + 0.5) / 16.0
 
 
+## At load (enemies.gd setup): reads every shadow frame's mask now, not in the middle of a run (a GPU readback on
+## the web).
+static func warm(k: KIT) -> void:
+	for anim: String in k.data["animations"]:
+		for d: String in k.dirs(anim):
+			var c := k.clip(anim, d)
+			for layer: String in c["tex"]:
+				if layer.contains("shadow"):
+					for f in int(c["frames"]):
+						_mask(c["tex"][layer], f, k.shadow_size)
+
+
 ## Opaque pixels of frame `f` of a shadow sheet (read once per sheet and frame).
 static func _mask(tex: Texture2D, f: int, size: Vector2) -> PackedVector2Array:
-	var key := "%s#%d" % [tex.resource_path, f]
-	if _masks.has(key):
-		return _masks[key]
+	var by_frame: Array = _masks.get(tex, _NO_MASKS)
+	if f < by_frame.size() and by_frame[f] != null:
+		return by_frame[f]
 	if not _images.has(tex):
 		var img := tex.get_image()
 		if img != null and img.is_compressed():
@@ -348,7 +388,12 @@ static func _mask(tex: Texture2D, f: int, size: Vector2) -> PackedVector2Array:
 			for x in int(size.x):
 				if img.get_pixel(int(f * size.x) + x, y).a > 0.5:
 					out.append(Vector2(x, y))
-	_masks[key] = out
+	if by_frame.is_empty():
+		by_frame = []
+		_masks[tex] = by_frame
+	if f >= by_frame.size():
+		by_frame.resize(f + 1)
+	by_frame[f] = out
 	return out
 
 

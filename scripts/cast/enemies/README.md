@@ -15,8 +15,11 @@ loads once per kind.
   offer, report it.
 
 ## Adding a kind
-1. Export the art: `cd docs/art_concepts/lastlight && python3 cast/export_godot.py <id>`. Then re-import with
-   the shared lock script (never run a second editor import alongside it).
+1. Export the art: `cd docs/art_concepts/lastlight && python3 cast/export_godot.py <id>`. Then bake the rimmed
+   sheets (`"$GODOT" --headless --path . --script res://scripts/cast/enemies/bake_rims.gd`: each body and flash
+   sheet over its 1 px cream rim, into `art/cast/enemies/<id>/rimmed/`, so a body draws in one call) and re-import
+   with the shared lock script (never run a second editor import alongside it). Rerun the bake whenever sheets are
+   re-exported; a sheet without a baked copy still draws (the rim is then baked at run time).
 2. Write `<id>.gd`: `extends "res://scripts/cast/enemies/enemy.gd"`. Once the file exists, the director
    spawns your kind on the timeline instead of Snuffers. Lab mode and the debug keys pick it up too.
 3. Test it (commands at the end).
@@ -45,6 +48,8 @@ the clock) and
 | `solid()` | alive and not a flyer | Takes part in the walkers' crowd push (`game.separation`). |
 | `draw_shadow(ci)` / `draw_body(ci)` / `draw_eyes(ci)` | the clip's `shadow` / `body` (or `flash`) / `eyes` layer at `pos` | See Drawing. |
 | `is_flash_frame(f)` | frame_data `flashed: true` or `event: "hit"` | Baked flash frames are skipped once HIT FLASH is sold. Override if your hurt frame 0 is flashed but not marked (toad, sporecap, gloam, magpie). |
+| `body_key()` | -1 (always redraw) | A number for what `draw_body` draws (with `clip`): the view skips redrawing an unchanged body. Only for a body that is the plain layer at `pos` (`plain_key()`; the Snuffer): never with `late()` tells, extra draws or a shader. |
+| `warm(kit)` (static) | nothing | At load, once per kind: read what drawing would otherwise read back from the GPU mid-run (the Gloam's shadow masks). |
 | `lab_check(stats)` | no failures | Your assertions for `tests/enemy_check.gd` (see Testing). |
 
 Set `gone = true` to leave. An alive brain is then removed with no kill (the magpie's escape). A remnant is
@@ -60,7 +65,8 @@ dropped. Never touch `game.enemies` yourself.
   frame 0 is a flash frame (`is_flash_frame`) shows it for `FLASH_TIME` only (never once HIT FLASH is sold), then
   holds the first frame after it. `frame()` already
   applies this, and movement goes on.
-- `kit.clip(anim, dir, look)` gives `{anim, dir, loop, size, anchor, frames, ms, total, data, tex{layer}}`.
+- `kit.clip(anim, dir, look)` gives `{anim, dir, loop, size, anchor, frames, ms, total, data, tex{layer},
+  rimmed{body/flash}, centres, unmirrored}` (never change it: clips are shared and `frame()` memoises on them).
   A missing view falls back to front, side, any, then back. Any view name works, e.g. the toad's
   `"side-front34"`. Layers with "shadow" in the name use `kit.shadow_size`/`shadow_anchor`; every other layer
   uses the animation's frame and anchor. Use `kit.behaviour`, `kit.tells` and `kit.data` for your numbers.
@@ -91,7 +97,8 @@ dropped. Never touch `game.enemies` yourself.
 `separation(e)`, `light_pools()` (x, y, radius per pool; empty once BRIGHTNESS is sold), `add_hazard(h)`,
 `enemy_sound(name)`, `free_level_up()`, `light_overlay(sheet, pos)`, `spawn(id, anchor, index, count)`,
 `alive(id)`, `stat(key, n)`, `hurt_enemy(e, dmg, push, from)`. Also readable: `world_speed`, `enemy_tempo`, `run_time`,
-`enemies`, `remnants`, `hazards`, `player_pos`, `immortal`, `director`, `view` (e.g. `view.pools`), `level`.
+`enemies`, `enemies_host.by_kind[kind]` (the live ones of a kind, in `enemies` order), `remnants`, `hazards`,
+`player_pos`, `immortal`, `director`, `view` (e.g. `view.pools`), `level`.
 Everything else on the Run (phases, signals, sales) is for the game's own modules, not for brains.
 
 ## Hazards (`hazard.gd`)

@@ -370,8 +370,8 @@ func _drift(move: Vector2, dt: float) -> void:
 ## Away from other live toads nearer than SPACING (the crowd push keeps them only SIZE 18 px apart).
 func _spacing() -> Vector2:
 	var sep := Vector2.ZERO
-	for e in game.enemies:
-		if e == self or e.kind != kind:
+	for e in game.enemies_host.by_kind[kind]:
+		if e == self:
 			continue
 		var d: Vector2 = pos - e.pos
 		var l2 := d.length_squared()
