@@ -8,15 +8,25 @@ enum RowState { OPEN, SOLD_OUT, NOT_FOR_SALE }
 
 const DATA := preload("res://scripts/game/shop/shop_data.gd")
 const ALPHA := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const TXT_CACHE_MAX := 512 # enciphered strings kept (live numbers make new ones)
 
-var levels := {} ## row id -> steps sold
+var rev := 0 ## bumped by every write of levels or lang_worn (run.lv() and txt() cache against it)
+var levels := {}: ## row id -> steps sold
+	set(v):
+		levels = v
+		rev += 1
 var advanced := false ## the ADVANCED tab is revealed (the forced CONFIRM menu opened)
 var last_tab := -1 ## the tab of the last player sale (the next menu opens on it if it has stock)
 var seen: Array[int] = [] ## tabs some menu has shown (a tab flashes NEW the first time)
 var lang_menus := 0 ## menus opened since LANGUAGE was sold
-var lang_worn := false ## LANGUAGE wore off: English is back, the row stays SOLD OUT and keeps its +1 SHOT
+var lang_worn := false: ## LANGUAGE wore off: English is back, the row stays SOLD OUT and keeps its +1 SHOT
+	set(v):
+		lang_worn = v
+		rev += 1
 var bought_back := "" ## the row BUY BACK returned this run ("" = unused; once per run, the row is closed for good)
 var buy_back_seen := false ## a menu has offered BUY BACK (settings_menu.open sets it; the first offer blinks)
+var _txt_cache := {} # input -> enciphered, valid for _txt_rev
+var _txt_rev := -1
 
 
 ## Nothing sold.
@@ -72,6 +82,7 @@ func sell(id: String, auto := false) -> Dictionary:
 	var i := lv(id)
 	var s := DATA.step(id, i)
 	levels[id] = i + 1
+	rev += 1
 	if not auto:
 		last_tab = DATA.tab_of(id)
 	_count_choice(id)
@@ -107,6 +118,7 @@ func buy_back(id: String) -> Dictionary:
 	if not can_buy_back(id):
 		return {}
 	levels[id] = lv(id) - 1
+	rev += 1
 	bought_back = id
 	_count_choice(id)
 	return {"id": id, "step": lv(id), "value": DATA.value(id, lv(id)), "power": {}, "quip": "", "label": "",
@@ -160,10 +172,17 @@ func language_on() -> bool:
 func txt(s: String) -> String:
 	if not language_on():
 		return s
+	if _txt_rev != rev or _txt_cache.size() > TXT_CACHE_MAX:
+		_txt_cache.clear() # LANGUAGE sold, worn off or the levels reset
+		_txt_rev = rev
+	var hit: Variant = _txt_cache.get(s)
+	if hit != null:
+		return hit
 	var out := ""
 	for c in s:
 		var i := ALPHA.find(c)
 		out += DATA.CIPHER[i] if i >= 0 else c
+	_txt_cache[s] = out
 	return out
 
 

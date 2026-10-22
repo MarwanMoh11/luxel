@@ -62,6 +62,9 @@ const BLACK_WAIT := 2.0 # s after the last pixel before OFF even if fx.screen_bl
 ## shop's levels and every power stay.
 const FLARE_RESTORES: Array[String] = ["hit_flash", "particles", "animations", "frame_rate", "vsync", "colour",
 		"brightness", "resolution", "audio_quality"]
+const KIND_OWL := 1 # enemy.kind: the index in director.gd KINDS
+const KIND_MAGPIE := 5
+const LV_HOT: Array[String] = ["animations", "hit_flash", "particles"] ## FLARE_RESTORES rows lv() keeps (shop.rev)
 ## The finale story (P8, design 10). Times are world seconds unless the world is frozen (BLAST, RELIGHT).
 const SAY := 2.5 # s a finale line stays (main's FINALE_SAY)
 const NEED_POWER_AFTER := 5.0 # s of play from finale.swell to finale.need_power
@@ -120,7 +123,10 @@ const DEBUG_RING := Vector2(45.0, 70.0) # px from Wick where debug keys drop ene
 var island: Island
 var fx ## settings_fx.gd (the Fx node)
 var shard_audio ## shard_audio.gd (the ShardAudio node)
-var shop ## shop.gd
+var shop: ## shop.gd
+	set(v):
+		shop = v
+		_lv_rev = -1
 var menu ## settings_menu.gd (the Menu node)
 var hud ## hud.gd (the Hud node)
 var top: Node2D ## the Node2D on CanvasLayer 6 the run paints: lantern, eyes and shards over the dead pixels
@@ -184,7 +190,17 @@ var _auto_target := ""
 var _pixel_t := 0.0
 var _stage := 0 # last pixels_stage emitted
 var _black_t := 0.0
-var flare := false ## the relight's override is on (FLARE_RESTORES show unsold), from its end to DISPLAY: OFF
+var flare := false: ## the relight's override is on (FLARE_RESTORES show unsold), from its end to DISPLAY: OFF
+	set(v):
+		flare = v
+		_lv_rev = -1
+var _halo_img: Image # the lantern's halo baked (see _bake_halo), its texture and what it was baked for
+var _halo_tex: ImageTexture
+var _halo_key_r := -2.0
+var _halo_key_out := false
+var _halo_key_grid := Vector2i(-1, -1)
+var _lv_rev := -1 # shop.rev the _lv_hot values were read at (-1: read them again)
+var _lv_hot := {} # the hot rows (enemies read them every step) -> lv(), flare applied
 var _flared := false # the blast and the relight have played (the next empty queue opens the PIXELS menu)
 var lantern_power := 1.0 ## x the lantern's damage: RELIGHT_POWER after the relight, back with each pixel sold
 var charge := 0.0 ## the blast's charge 0..1 (self-sales; drained by the relight presses): the lantern's halo
@@ -778,6 +794,7 @@ func _tempo() -> float:
 
 ## Shows the shop's levels as they are (checks and renders that set shop.levels by hand): fx, island, enemy tempo.
 func refresh_levels() -> void:
+	shop.rev += 1 # a hand-set level is read again
 	enemy_tempo = _tempo()
 	fx.apply(shown_levels())
 	island.apply(shown_levels())
@@ -1251,10 +1268,11 @@ func _threats() -> void:
 	for e in enemies:
 		if rect.has_point(e.pos):
 			continue
-		if e.id == "owl" and e.phase == OWL.Phase.LOCK:
+		var kind: int = e.kind
+		if kind == KIND_OWL and e.phase == OWL.Phase.LOCK:
 			view.warn.append({"pos": e.pos, "kind": "owl"})
 			hud.warn(e.pos, "owl")
-		elif e.id == "magpie":
+		elif kind == KIND_MAGPIE:
 			view.warn.append({"pos": e.pos, "kind": "magpie"})
 			hud.warn(e.pos, "magpie")
 
@@ -1302,6 +1320,8 @@ func _say(id: String, colour: String, secs: float, delay := 0.0) -> void:
 
 
 func _step_lines(dt: float) -> void:
+	if _lines.is_empty():
+		return
 	for l: Array in _lines.duplicate():
 		l[0] -= dt
 		if l[0] <= 0.0:
@@ -1424,19 +1444,51 @@ func _paint_halo() -> void:
 		return
 	var c := lantern().round()
 	var o := view.origin()
+	var grid := Vector2i(int(c.x) & 3, int(c.y) & 3) # the dither grid's phase under the glass
+	if r != _halo_key_r or out != _halo_key_out or grid != _halo_key_grid:
+		_halo_key_r = r
+		_halo_key_out = out
+		_halo_key_grid = grid
+		_bake_halo(r, out, c)
+	var reach := ceili(r)
+	top.draw_texture(_halo_tex, c - Vector2(reach, reach) - o)
+
+
+## Dithers the halo (a band from 4 px out to `r`, the whole disc when `out`) into _halo_tex: one texel per screen
+## pixel, centred on the glass `c`. _paint_halo calls it when the radius, the sputter flag or the grid phase change.
+func _bake_halo(r: float, out: bool, c: Vector2) -> void:
+	var reach := ceili(r)
+	var side := reach * 2 + 1
+	var fresh := _halo_img == null or _halo_img.get_width() != side
+	if fresh:
+		_halo_img = Image.create_empty(side, side, false, Image.FORMAT_RGBA8)
+	else:
+		_halo_img.fill(Color(0.0, 0.0, 0.0, 0.0))
 	var inner := 0.0 if out else 4.0
+	var span := maxf(r - inner, 1.0)
+	var base := 0.75 if out else 0.45
+	var half := (inner + r) * 0.5
 	var gold: Color = PAL["gold"]
 	var apricot: Color = PAL["apricot"]
-	for y in range(-ceili(r), ceili(r) + 1):
-		for x in range(-ceili(r), ceili(r) + 1):
+	var night: Color = PAL["night"]
+	var cx := int(c.x)
+	var cy := int(c.y)
+	for y in range(-reach, reach + 1):
+		var spread := r * r - float(y * y)
+		if spread < -1.0:
+			continue # the row lies wholly outside the disc
+		var wide := mini(ceili(sqrt(maxf(spread, 0.0))) + 1, reach) # |x| beyond it is out of reach
+		for x in range(-wide, wide + 1):
 			var d := sqrt(float(x * x + y * y))
 			if d < inner or d > r:
 				continue
-			var p := c + Vector2(x, y)
-			var level := (0.75 if out else 0.45) * (1.0 - (d - inner) / maxf(r - inner, 1.0))
-			if BAYER[(int(p.y) & 3) * 4 + (int(p.x) & 3)] / 16.0 < level:
-				var col: Color = PAL["night"] if out else gold if d < (inner + r) * 0.5 else apricot
-				top.draw_rect(Rect2(p - o, Vector2.ONE), col)
+			var level := base * (1.0 - (d - inner) / span)
+			if BAYER[((cy + y) & 3) * 4 + ((cx + x) & 3)] / 16.0 < level:
+				_halo_img.set_pixel(x + reach, y + reach, night if out else gold if d < half else apricot)
+	if fresh:
+		_halo_tex = ImageTexture.create_from_image(_halo_img)
+	else:
+		_halo_tex.update(_halo_img)
 
 
 func _draw() -> void:
@@ -1478,6 +1530,13 @@ func damage_tier() -> int:
 ## The level of setting `id` in the shop (0 = not sold; "pixels" = % dead). HIT FLASH reads 0 while its
 ## self-sale's unison flash plays; FLARE_RESTORES read 0 while the flare is on.
 func lv(id: String) -> int:
+	if shop.rev != _lv_rev:
+		_lv_rev = shop.rev
+		for hot: String in LV_HOT:
+			_lv_hot[hot] = 0 if flare else shop.lv(hot)
+	var hot_lv: int = _lv_hot.get(id, -1)
+	if hot_lv >= 0: # all three are FLARE_RESTORES rows
+		return 0 if hot_lv > 0 and id == "hit_flash" and fx.unison_flash > 0.0 else hot_lv
 	if flare and FLARE_RESTORES.has(id):
 		return 0
 	if id == "hit_flash" and fx.unison_flash > 0.0:
@@ -1492,7 +1551,9 @@ func clock() -> float:
 
 ## ANIMATIONS sold: sprites hold their first frame (README.md contract; movement goes on).
 func still() -> bool:
-	return lv("animations") > 0
+	if shop.rev != _lv_rev:
+		lv("animations") # reads the hot rows again
+	return _lv_hot["animations"] > 0
 
 
 ## The 2 s animation loop's tick 0-23 (0 while ANIMATIONS is sold).
