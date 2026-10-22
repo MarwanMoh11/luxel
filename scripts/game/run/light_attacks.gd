@@ -56,7 +56,7 @@ func toll(pos: Vector2, struck, dmg: int) -> void:
 		run.fx.play("toll", 0.0, TOLL_PITCH[tier - 1])
 	var radius: int = light.splash["radius"][tier]
 	var reach: Array = light.splash["reach_ms"][tier]
-	for e in run.enemies:
+	for e in run.combat.near_point(pos, radius):
 		if e == struck or not e.aimable():
 			continue
 		var d: float = pos.distance_to(e.centre()) - e.reach()
@@ -191,9 +191,12 @@ func _step_moons(dt: float) -> void:
 		var dir: Vector2 = b.vel / speed if speed > 0.0 else Vector2.RIGHT
 		var a: Vector2 = b.origin + dir * tail
 		var z: Vector2 = b.origin + dir * head
-		var lo := Vector2(minf(a.x, z.x), minf(a.y, z.y)) - Vector2(24.0, 24.0)
-		var hi := Vector2(maxf(a.x, z.x), maxf(a.y, z.y)) + Vector2(24.0, 24.0)
-		for e in run.enemies:
+		var lo := Vector2(minf(a.x, z.x), minf(a.y, z.y))
+		var hi := Vector2(maxf(a.x, z.x), maxf(a.y, z.y))
+		var nearby: Array = run.combat.near(lo - Vector2(MOON_REACH, MOON_REACH), hi + Vector2(MOON_REACH, MOON_REACH))
+		lo -= Vector2(24.0, 24.0)
+		hi += Vector2(24.0, 24.0)
+		for e in nearby:
 			var c: Vector2 = e.centre()
 			if c.x < lo.x or c.x > hi.x or c.y < lo.y or c.y > hi.y:
 				continue
@@ -216,7 +219,7 @@ func _wake() -> void:
 	var feet: Vector2 = run.wick_feet()
 	var dmg := maxi(1, roundi(run.shot_damage() * WAKE_SHARE))
 	var near: Array = []
-	for e in run.enemies:
+	for e in run.combat.near_point(feet, WAKE_RADIUS):
 		if e.aimable() and feet.distance_to(e.centre()) - e.reach() <= WAKE_RADIUS:
 			near.append(e)
 	for e in near:
@@ -238,18 +241,26 @@ func _prey(feet: Vector2):
 	var best = null
 	var best_d := STING_RANGE * STING_RANGE
 	var best_free := false
-	for e in run.enemies:
+	for e in run.combat.near_point(feet, STING_RANGE):
 		if not e.aimable():
 			continue
 		var d: float = feet.distance_squared_to(e.centre())
 		if d >= STING_RANGE * STING_RANGE:
 			continue
-		var free := not _flies.any(func(f: Dictionary) -> bool: return f["e"] == e)
+		var free := not _chased(e)
 		if (free and not best_free) or (free == best_free and d < best_d):
 			best = e
 			best_d = d
 			best_free = free
 	return best
+
+
+## Some fly is darting at `e`.
+func _chased(e) -> bool:
+	for f: Dictionary in _flies:
+		if f["e"] == e:
+			return true
+	return false
 
 
 ## A push of `speed` px/s: none once KNOCKBACK is sold.
