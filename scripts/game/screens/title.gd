@@ -18,6 +18,7 @@ const FRAMING := Vector2(260, 90) ## camera centre (view origin 100, 0): the Lan
 const PULSE := 0.8 ## seconds per prompt colour (cream, stone)
 const TITLE_Y := 6.0 ## the luxels' top, in the void band (y 0-40)
 const SUB_Y := 36
+const MAX_STEP := 0.1 ## s the title's clock moves in one frame at most: a boot hitch (shader compiles) doesn't skip its lead-in
 const LIGHT_AT := 0.5 ## the first luxel lights
 const LIGHT_GAP := 0.07 ## between luxels
 const FLASH := 0.08 ## a luxel lights cream, then gold
@@ -62,6 +63,9 @@ var _next_fly := 0.0
 var _light: Node2D
 var _mat: ShaderMaterial
 var _lights := PackedVector4Array()
+var _sent_lights := PackedVector4Array() ## what the material holds (see _sync_light)
+var _sent_dark := -1.0
+var _sent_rect := Rect2()
 
 
 func _ready() -> void:
@@ -184,7 +188,7 @@ func _toggle_gamer() -> void:
 func _process(delta: float) -> void:
 	if not visible:
 		return
-	_t += delta
+	_t += minf(delta, MAX_STEP)
 	if _closing >= 0.0:
 		_closing += delta
 		if _closing >= FADE_OUT:
@@ -219,12 +223,20 @@ func _sync_light() -> void:
 		var grow := clampf((_t - _lit_at[i]) / REACH_GROW, 0.0, 1.0)
 		var c: Vector2 = _cells[i]["c"]
 		_lights[i] = Vector4(c.x, c.y, REACH * (1.0 - (1.0 - grow) * (1.0 - grow)), STRENGTH if on else 0.0)
-	var padded := _lights.duplicate()
-	padded.resize(64)
-	_mat.set_shader_parameter("lights", padded)
-	_mat.set_shader_parameter("light_count", mini(_lights.size(), 64))
-	_mat.set_shader_parameter("dark", _dark())
-	_light.queue_redraw()
+	if _lights != _sent_lights: # the material is only touched when a luxel's light moves
+		_sent_lights = _lights.duplicate()
+		var padded := _lights.duplicate()
+		padded.resize(64)
+		_mat.set_shader_parameter("lights", padded)
+		_mat.set_shader_parameter("light_count", mini(_lights.size(), 64))
+	var dark := _dark()
+	if dark != _sent_dark:
+		_sent_dark = dark
+		_mat.set_shader_parameter("dark", dark)
+	var rect := Display.screen_rect()
+	if rect != _sent_rect: # the light quad covers the screen: it redraws when the screen resizes
+		_sent_rect = rect
+		_light.queue_redraw()
 
 
 ## Luxel `i` now.

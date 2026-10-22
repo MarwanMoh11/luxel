@@ -60,10 +60,12 @@ static func tutorial_done() -> bool:
 	return bool(cfg.get_value("game", "tutorial_done", false))
 
 
-## Marks the tutorial as done in the save file.
+## Marks the tutorial as done in the save file (once: later calls leave the file alone, a save is an IndexedDB sync on the web).
 static func set_tutorial_done() -> void:
 	var cfg := ConfigFile.new()
 	cfg.load(path)
+	if bool(cfg.get_value("game", "tutorial_done", false)):
+		return
 	cfg.set_value("game", "tutorial_done", true)
 	cfg.save(path)
 

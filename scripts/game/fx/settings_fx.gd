@@ -16,7 +16,7 @@ const MUSIC_DIR := "res://audio/music/"
 ## is -16 LUFS, so it lands at -21 LUFS.
 const MUSIC_DB := -5.0
 const MUSIC_BUS := "Music"
-## Base volume of each sound effect in dB (they follow the SOUND level). .ogg or .wav in SFX_DIR.
+## Base volume of each sound effect in dB (they follow the SOUND level). .wav (PCM16: a start costs microseconds) or .ogg in SFX_DIR.
 const SFX_DB := {"shoot": -16.0, "hit": -8.0, "kill": -6.0, "hurt": -2.0, "sell": 0.0, "pick": -8.0,
 		"tab": -10.0, "crack": -14.0, "pause": -16.0, "snuff": -18.0,
 		# Enemies (run.enemy_sound; Kenney CC0 foley, tonal ones on D or A). Set by measured level: hops, pops and
@@ -863,6 +863,8 @@ func _build_audio() -> void:
 	low.pitch_scale = 0.5
 	low.volume_db = MUSIC_DB
 	_blast_notes = [toll, low]
+	for n in 14: # the relight's scale, up to the last note a lantern file reaches (built now, not mid-finale)
+		_scale_player(SCALE_ROOT + 12 * floori(n / 7.0) + SCALE_STEPS[n % 7])
 	for sfx: String in SFX_DB:
 		for ext in [".ogg", ".wav"]:
 			if ResourceLoader.exists(SFX_DIR + sfx + ext):
