@@ -6,6 +6,7 @@ const CHARSET := "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!-:x/.+= %"
 const MAX_CHARS := 45 ## per line at scale 1 (180 px: STORY.md 0)
 const SCREEN_W := 320
 const SETTINGS_TOTAL := 19 ## shop rows a run can sell before the finale (design 11)
+const CHECK_COUNTS: Array[int] = [0, 999] ## check() fills a %d template with these (the narrowest and widest counts)
 
 const TEXT := {
 	# Title (STORY.md 2)
@@ -313,17 +314,21 @@ static func best_line(best: Dictionary, gamer := false) -> String:
 	return head + "%d OF %d SOLD" % [int(best.get("sold", 0)), SETTINGS_TOTAL]
 
 
-## Problems with the text: characters outside the 3x5 charset and lines too wide. Empty = all good.
+## Problems with the text: characters outside the 3x5 charset and lines too wide. Empty = all good. A %d template
+## is checked as drawn, filled with each of CHECK_COUNTS.
 static func check() -> PackedStringArray:
 	var bad := PackedStringArray()
 	for id: String in TEXT:
-		var s: String = TEXT[id]
 		var scale: int = SCALE.get(id, 1)
-		for l in s.split("\n"):
-			for c in l:
-				if not CHARSET.contains(c):
-					bad.append("%s: '%s' not in the charset" % [id, c])
-			var w := (l.length() * 4 - 1) * scale
-			if (scale == 1 and l.length() > MAX_CHARS) or w > SCREEN_W - 4:
-				bad.append("%s: %d chars at scale %d is too wide" % [id, l.length(), scale])
+		for n in CHECK_COUNTS:
+			var s: String = TEXT[id].replace("%d", str(n))
+			for l in s.split("\n"):
+				for c in l:
+					if not CHARSET.contains(c) and not bad.has("%s: '%s' not in the charset" % [id, c]):
+						bad.append("%s: '%s' not in the charset" % [id, c])
+				var w := (l.length() * 4 - 1) * scale
+				if (scale == 1 and l.length() > MAX_CHARS) or w > SCREEN_W - 4:
+					bad.append("%s: %d chars at scale %d is too wide" % [id, l.length(), scale])
+			if not TEXT[id].contains("%d"):
+				break
 	return bad
