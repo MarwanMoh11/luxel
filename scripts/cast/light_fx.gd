@@ -37,8 +37,10 @@ var _wake_cd := 0.0
 
 
 ## One sprite sheet: the frame timing and `ends`, each frame's end in ms (what `frame` searches).
+## The sheets are packed into one atlas (the Texture Atlas import): `tex` is that atlas, `base` where the sheet sits.
 class Sheet extends RefCounted:
 	var tex: Texture2D
+	var base := Vector2.ZERO
 	var size: Vector2
 	var origin: Vector2
 	var total: float
@@ -48,6 +50,10 @@ class Sheet extends RefCounted:
 
 	func _init(t: Texture2D, frame_size: Vector2, org: Vector2, ms: PackedFloat32Array, duration: float, looping: bool) -> void:
 		tex = t
+		var packed := t as AtlasTexture
+		if packed != null:
+			tex = packed.atlas
+			base = packed.region.position
 		size = frame_size
 		origin = org
 		total = duration
@@ -66,27 +72,37 @@ class Sheet extends RefCounted:
 
 
 ## The one-shot sprites added to one layer between two steps. They are the same age, so `t` is kept once.
-## Parallel arrays in the order added; `tl` is the drawn top-left (unused by the emit and feet ones).
+## `tl` holds the drawn top-lefts in the order added (zero for the emit and feet ones); a run is the stretch of
+## them sharing a sheet, row and mode: run k is tl[start[k]] up to the next run's start.
 class Cohort extends RefCounted:
 	enum { POS, EMIT, FEET } # `mode`: drawn at its own place, at the lantern glass, at Wick's feet
 	var epoch: int
 	var t := 0.0
 	var last := 0.0 # the longest-lived sheet's total: the cohort is spent once t gets there
+	var tl := PackedVector2Array()
 	var sheet: Array[Sheet] = []
 	var row := PackedInt32Array()
-	var tl := PackedVector2Array()
 	var mode := PackedByteArray()
+	var start := PackedInt32Array()
 
 	func _init(e: int) -> void:
 		epoch = e
 
-	func add(s: Sheet, r: int, top_left: Vector2, m: int) -> void:
+	## Starts a run of (s, r, m) unless the newest one already is; the next top-lefts appended to `tl` belong to it.
+	func begin(s: Sheet, r: int, m: int) -> void:
+		var n := sheet.size()
+		if n > 0 and sheet[n - 1] == s and row[n - 1] == r and mode[n - 1] == m:
+			return
 		sheet.append(s)
 		row.append(r)
-		tl.append(top_left)
 		mode.append(m)
+		start.append(tl.size())
 		if s.total > last:
 			last = s.total
+
+	func add(s: Sheet, r: int, top_left: Vector2, m: int) -> void:
+		begin(s, r, m)
+		tl.append(top_left)
 
 
 func setup(r) -> void:
@@ -239,10 +255,12 @@ func track(shot, ms: float) -> void:
 	if shot.trail_at <= travelled:
 		var sheet: Sheet = sheets["trail_needle" if shot.look.begins_with("needle") else "trail_t0"]
 		var row := TRAIL_ROWS.find("gold" if st == 1 else shot.key)
-		var drawn: bool = run.lv("particles") == 0
+		var trail: Cohort = _cohort(TRAIL) if run.lv("particles") == 0 else null # PARTICLES sold: no trail
+		if trail != null:
+			trail.begin(sheet, row, Cohort.POS)
 		while shot.trail_at <= travelled:
-			if drawn:
-				_put(sheet, row, shot.origin + heading * shot.trail_at, TRAIL)
+			if trail != null:
+				trail.tl.append((shot.origin + heading * shot.trail_at).round() - sheet.origin)
 			shot.trail_at += 3.0
 	var tier := moon_tier() if st == 0 else 0
 	var moon: Sheet = sheets["moon_t%d" % tier] if tier > 0 and shot.moon_at <= travelled else null
@@ -390,22 +408,22 @@ func draw_layer(ci: CanvasItem, layer: int, feet: Vector2, emit: Vector2) -> voi
 	var emit_at := emit.round()
 	var feet_at := feet.round()
 	for c in cohorts:
-		var t := c.t
-		var last: Sheet = null # consecutive puffs mostly share a sheet, so they share a frame
-		var frame := 0
-		for i in c.sheet.size():
-			var s := c.sheet[i]
-			if t >= s.total: # spent (its cohort lives on for a longer one)
+		var tl := c.tl
+		var runs := c.sheet.size()
+		for k in runs:
+			var s := c.sheet[k]
+			if c.t >= s.total: # spent (the cohort lives on for a longer sheet)
 				continue
-			if s != last:
-				last = s
-				frame = 0 if still else s.frame(t)
-			var top_left := c.tl[i]
-			var m := c.mode[i]
-			if m != Cohort.POS:
-				top_left = (emit_at if m == Cohort.EMIT else feet_at) - s.origin
 			var size := s.size
-			ci.draw_texture_rect_region(s.tex, Rect2(top_left, size), Rect2(frame * size.x, c.row[i] * size.y, size.x, size.y))
+			var src := Rect2(s.base.x + (0 if still else s.frame(c.t)) * size.x, s.base.y + c.row[k] * size.y, size.x, size.y)
+			var to := c.start[k + 1] if k + 1 < runs else tl.size()
+			if c.mode[k] == Cohort.POS:
+				for i in range(c.start[k], to):
+					ci.draw_texture_rect_region(s.tex, Rect2(tl[i], size), src)
+			else:
+				var top_left := (emit_at if c.mode[k] == Cohort.EMIT else feet_at) - s.origin
+				for i in range(c.start[k], to):
+					ci.draw_texture_rect_region(s.tex, Rect2(top_left, size), src)
 
 
 ## `near`: only the shots still within NEAR px of the lantern (drawn under Wick), else only the others.
@@ -480,14 +498,17 @@ func _add(sheet: String, row: int, pos: Vector2, layer: int, at := "") -> void:
 
 ## Queues a one-shot of `s` in `layer`: onto the layer's newest cohort when it was started since the last step.
 func _put(s: Sheet, row: int, pos: Vector2, layer: int, mode := Cohort.POS) -> void:
+	_cohort(layer).add(s, row, pos.round() - s.origin if mode == Cohort.POS else Vector2.ZERO, mode)
+
+
+## The layer's cohort for puffs added now: its newest, unless that one is from before the last step.
+func _cohort(layer: int) -> Cohort:
 	var cohorts: Array[Cohort] = _layers[layer]
-	var c: Cohort
 	if not cohorts.is_empty() and cohorts[-1].epoch == _epoch:
-		c = cohorts[-1]
-	else:
-		c = Cohort.new(_epoch)
-		cohorts.append(c)
-	c.add(s, row, pos.round() - s.origin if mode == Cohort.POS else Vector2.ZERO, mode)
+		return cohorts[-1]
+	var c := Cohort.new(_epoch)
+	cohorts.append(c)
+	return c
 
 
 static func _empty_layers() -> Array:
@@ -505,7 +526,8 @@ func _frame(name: String, t: float) -> int:
 func _sprite(ci: CanvasItem, name: String, row: int, frame: int, at: Vector2) -> void:
 	var s: Sheet = sheets[name]
 	var size := s.size
-	ci.draw_texture_rect_region(s.tex, Rect2(at.round() - s.origin, size), Rect2(frame * size.x, row * size.y, size.x, size.y))
+	ci.draw_texture_rect_region(s.tex, Rect2(at.round() - s.origin, size),
+		Rect2(s.base.x + frame * size.x, s.base.y + row * size.y, size.x, size.y))
 
 
 static func _dir_row(v: Vector2) -> int:
