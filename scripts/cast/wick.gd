@@ -320,10 +320,9 @@ func _mask(path: Variant) -> Texture2D:
 	if img.is_compressed():
 		img.decompress()
 	img.convert(Image.FORMAT_RGBA8)
-	for y in img.get_height():
-		for x in img.get_width():
-			if img.get_pixel(x, y).a > 0.0:
-				img.set_pixel(x, y, Color.WHITE)
+	var white := Image.create_empty(img.get_width(), img.get_height(), false, Image.FORMAT_RGBA8)
+	white.fill(Color.WHITE)
+	img.blit_rect_mask(white, img, Rect2i(Vector2i.ZERO, img.get_size()), Vector2i.ZERO) # white where alpha > 0
 	return ImageTexture.create_from_image(img)
 
 

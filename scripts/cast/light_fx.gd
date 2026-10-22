@@ -26,13 +26,83 @@ const MOTE_TAIL := {
 	"ice": [Color("#c7e5ef"), Color("#78a9da")]}
 
 var run # the Run (run.gd), duck-typed: reads shop levels, powers and the clock
-var sheets := {} # name -> {"tex", "size", "origin", "ms", "total", "loop"}
+var sheets := {} # name -> Sheet
 var orbits := {} # firefly count ("1".."6") -> one 24-tick orbit per fly
 var splash := {} # the bell toll's reach: "radius" and "reach_ms" by tier (light_attacks.gd hurts with it)
 var sting := {} # a firefly's sortie: "out_ms", "back_ms", "arc_px"
-var puffs: Array = [] # one-shot sprites: {"s", "row", "pos", "t", "layer", "at" ("" | "emit" | "feet")}
 var motes: Array = [] # the sell stream: {"j", "t", "from", "row", "absorb"}
+var _layers: Array = _empty_layers() # one-shot sprites: per draw layer, its Cohorts oldest first
+var _epoch := 0 # counts step() calls; puffs added between two steps age alike, so they share a Cohort
 var _wake_cd := 0.0
+
+
+## One sprite sheet: the frame timing and `ends`, each frame's end in ms (what `frame` searches).
+## The sheets are packed into one atlas (the Texture Atlas import): `tex` is that atlas, `base` where the sheet sits.
+class Sheet extends RefCounted:
+	var tex: Texture2D
+	var base := Vector2.ZERO
+	var size: Vector2
+	var origin: Vector2
+	var total: float
+	var loop: bool
+	var ends := PackedFloat64Array()
+	var last: int # the final frame
+
+	func _init(t: Texture2D, frame_size: Vector2, org: Vector2, ms: PackedFloat32Array, duration: float, looping: bool) -> void:
+		tex = t
+		var packed := t as AtlasTexture
+		if packed != null:
+			tex = packed.atlas
+			base = packed.region.position
+		size = frame_size
+		origin = org
+		total = duration
+		loop = looping
+		var sum := 0.0
+		for m in ms:
+			sum += m
+			ends.append(sum)
+		last = ms.size() - 1
+
+	## The frame `t` ms in: the first one whose end is past t, the last once the sheet is over.
+	func frame(t: float) -> int:
+		if loop:
+			t = fmod(t, total)
+		return mini(ends.bsearch(t, false), last)
+
+
+## The one-shot sprites added to one layer between two steps. They are the same age, so `t` is kept once.
+## `tl` holds the drawn top-lefts in the order added (zero for the emit and feet ones); a run is the stretch of
+## them sharing a sheet, row and mode: run k is tl[start[k]] up to the next run's start.
+class Cohort extends RefCounted:
+	enum { POS, EMIT, FEET } # `mode`: drawn at its own place, at the lantern glass, at Wick's feet
+	var epoch: int
+	var t := 0.0
+	var last := 0.0 # the longest-lived sheet's total: the cohort is spent once t gets there
+	var tl := PackedVector2Array()
+	var sheet: Array[Sheet] = []
+	var row := PackedInt32Array()
+	var mode := PackedByteArray()
+	var start := PackedInt32Array()
+
+	func _init(e: int) -> void:
+		epoch = e
+
+	## Starts a run of (s, r, m) unless the newest one already is; the next top-lefts appended to `tl` belong to it.
+	func begin(s: Sheet, r: int, m: int) -> void:
+		var n := sheet.size()
+		if n > 0 and sheet[n - 1] == s and row[n - 1] == r and mode[n - 1] == m:
+			return
+		sheet.append(s)
+		row.append(r)
+		mode.append(m)
+		start.append(tl.size())
+		if s.total > last:
+			last = s.total
+
+	func add(s: Sheet, r: int, top_left: Vector2, m: int) -> void:
+		begin(s, r, m)
+		tl.append(top_left)
 
 
 func setup(r) -> void:
@@ -40,16 +110,15 @@ func setup(r) -> void:
 	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(ROOT + "weapons.json"))
 	for name: String in data["sheets"]:
 		var s: Dictionary = data["sheets"][name]
-		sheets[name] = {
-			"tex": load(ROOT + str(s["file"])), "size": _vec(s["frame_size"]), "origin": _vec(s["origin"]),
-			"ms": PackedFloat32Array(s["ms"]), "total": float(s["duration_ms"]), "loop": bool(s["loop"])}
+		sheets[name] = Sheet.new(load(ROOT + str(s["file"])), _vec(s["frame_size"]), _vec(s["origin"]),
+			PackedFloat32Array(s["ms"]), float(s["duration_ms"]), bool(s["loop"]))
 	orbits = data["fireflies"]["orbits"]
 	splash = data["splash"]
 	sting = data["sting"]
 
 
 func reset() -> void:
-	puffs.clear()
+	_layers = _empty_layers()
 	motes.clear()
 	_wake_cd = 0.0
 
@@ -86,7 +155,7 @@ func fly_count() -> int:
 
 ## Seconds a moon trail glint of `tier` stays drawn (light_attacks.gd hurts with it as long).
 func moon_life(tier: int) -> float:
-	return float(sheets["moon_t%d" % tier]["total"]) / 1000.0
+	return (sheets["moon_t%d" % tier] as Sheet).total / 1000.0
 
 
 static func toll_of(damage_mult: float) -> int:
@@ -183,14 +252,19 @@ func track(shot, ms: float) -> void:
 		return
 	var travelled: float = shot.origin.distance_to(shot.pos)
 	var heading: Vector2 = shot.vel.normalized()
-	var sheet := "trail_needle" if shot.look.begins_with("needle") else "trail_t0"
-	var row := TRAIL_ROWS.find("gold" if st == 1 else shot.key)
-	while shot.trail_at <= travelled:
-		if run.lv("particles") == 0:
-			_add(sheet, row, shot.origin + heading * shot.trail_at, TRAIL)
-		shot.trail_at += 3.0
+	if shot.trail_at <= travelled:
+		var sheet: Sheet = sheets["trail_needle" if shot.look.begins_with("needle") else "trail_t0"]
+		var row := TRAIL_ROWS.find("gold" if st == 1 else shot.key)
+		var trail: Cohort = _cohort(TRAIL) if run.lv("particles") == 0 else null # PARTICLES sold: no trail
+		if trail != null:
+			trail.begin(sheet, row, Cohort.POS)
+		while shot.trail_at <= travelled:
+			if trail != null:
+				trail.tl.append((shot.origin + heading * shot.trail_at).round() - sheet.origin)
+			shot.trail_at += 3.0
 	var tier := moon_tier() if st == 0 else 0
-	while tier > 0 and shot.moon_at <= travelled:
+	var moon: Sheet = sheets["moon_t%d" % tier] if tier > 0 and shot.moon_at <= travelled else null
+	while moon != null and shot.moon_at <= travelled:
 		var k: int = shot.moon_k
 		var at: Vector2 = shot.origin + heading * shot.moon_at
 		var moon_row := 0
@@ -201,7 +275,7 @@ func track(shot, ms: float) -> void:
 		else:
 			var wave := 1.5 * sin(shot.moon_at / 6.0) if tier == 1 else 2.0 * sin(shot.moon_at / 7.0)
 			at += Vector2(-heading.y, heading.x) * roundf(wave)
-		_add("moon_t%d" % tier, moon_row, at, MOON)
+		_put(moon, moon_row, at, MOON)
 		shot.moon_at += 2.0
 		shot.moon_k += 1
 
@@ -301,14 +375,25 @@ func _key_colour(key: String, j: int) -> String:
 func step(dt: float) -> void:
 	var ms := dt * 1000.0
 	_wake_cd -= ms
-	for p: Dictionary in puffs:
-		p["t"] += ms
-	puffs = puffs.filter(func(p: Dictionary) -> bool: return p["t"] < sheets[p["s"]]["total"])
+	for layer in _layers:
+		var cohorts: Array[Cohort] = layer
+		var n := cohorts.size()
+		var kept := 0
+		for i in n:
+			var c := cohorts[i]
+			c.t += ms
+			if c.t < c.last:
+				cohorts[kept] = c
+				kept += 1
+		if kept < n:
+			cohorts.resize(kept)
+	_epoch += 1 # the puffs added from here (the absorb below) start their own age
 	for m: Dictionary in motes:
 		m["t"] += ms
 		if m["t"] >= MOTE_FLIGHT and m["absorb"]:
 			_add("sell_absorb", 0, Vector2.ZERO, OVER_HERO, "emit")
-	motes = motes.filter(func(m: Dictionary) -> bool: return m["t"] < MOTE_FLIGHT)
+	if not motes.is_empty():
+		motes = motes.filter(func(m: Dictionary) -> bool: return m["t"] < MOTE_FLIGHT)
 
 
 # --- drawing -------------------------------------------------------------------------------------------------
@@ -316,11 +401,29 @@ func step(dt: float) -> void:
 func draw_layer(ci: CanvasItem, layer: int, feet: Vector2, emit: Vector2) -> void:
 	if stage() >= 4:
 		return
-	for p: Dictionary in puffs:
-		if p["layer"] != layer:
-			continue
-		var at: Vector2 = emit if p["at"] == "emit" else feet if p["at"] == "feet" else p["pos"]
-		_sprite(ci, p["s"], p["row"], _frame(p["s"], p["t"]), at)
+	var cohorts: Array[Cohort] = _layers[layer]
+	if cohorts.is_empty():
+		return
+	var still: bool = run.still()
+	var emit_at := emit.round()
+	var feet_at := feet.round()
+	for c in cohorts:
+		var tl := c.tl
+		var runs := c.sheet.size()
+		for k in runs:
+			var s := c.sheet[k]
+			if c.t >= s.total: # spent (the cohort lives on for a longer sheet)
+				continue
+			var size := s.size
+			var src := Rect2(s.base.x + (0 if still else s.frame(c.t)) * size.x, s.base.y + c.row[k] * size.y, size.x, size.y)
+			var to := c.start[k + 1] if k + 1 < runs else tl.size()
+			if c.mode[k] == Cohort.POS:
+				for i in range(c.start[k], to):
+					ci.draw_texture_rect_region(s.tex, Rect2(tl[i], size), src)
+			else:
+				var top_left := (emit_at if c.mode[k] == Cohort.EMIT else feet_at) - s.origin
+				for i in range(c.start[k], to):
+					ci.draw_texture_rect_region(s.tex, Rect2(top_left, size), src)
 
 
 ## `near`: only the shots still within NEAR px of the lantern (drawn under Wick), else only the others.
@@ -390,28 +493,41 @@ func draw_stream(ci: CanvasItem, emit: Vector2) -> void:
 # --- internals -----------------------------------------------------------------------------------------------
 
 func _add(sheet: String, row: int, pos: Vector2, layer: int, at := "") -> void:
-	puffs.append({"s": sheet, "row": row, "pos": pos.round(), "t": 0.0, "layer": layer, "at": at})
+	_put(sheets[sheet], row, pos, layer, Cohort.POS if at == "" else Cohort.EMIT if at == "emit" else Cohort.FEET)
+
+
+## Queues a one-shot of `s` in `layer`: onto the layer's newest cohort when it was started since the last step.
+func _put(s: Sheet, row: int, pos: Vector2, layer: int, mode := Cohort.POS) -> void:
+	_cohort(layer).add(s, row, pos.round() - s.origin if mode == Cohort.POS else Vector2.ZERO, mode)
+
+
+## The layer's cohort for puffs added now: its newest, unless that one is from before the last step.
+func _cohort(layer: int) -> Cohort:
+	var cohorts: Array[Cohort] = _layers[layer]
+	if not cohorts.is_empty() and cohorts[-1].epoch == _epoch:
+		return cohorts[-1]
+	var c := Cohort.new(_epoch)
+	cohorts.append(c)
+	return c
+
+
+static func _empty_layers() -> Array:
+	var layers := []
+	for i in OVER + 1:
+		var cohorts: Array[Cohort] = []
+		layers.append(cohorts)
+	return layers
 
 
 func _frame(name: String, t: float) -> int:
-	var s: Dictionary = sheets[name]
-	if run.still():
-		return 0
-	var ms: PackedFloat32Array = s["ms"]
-	if s["loop"]:
-		t = fmod(t, s["total"])
-	for i in ms.size():
-		t -= ms[i]
-		if t < 0.0:
-			return i
-	return ms.size() - 1
+	return 0 if run.still() else (sheets[name] as Sheet).frame(t)
 
 
 func _sprite(ci: CanvasItem, name: String, row: int, frame: int, at: Vector2) -> void:
-	var s: Dictionary = sheets[name]
-	var size: Vector2 = s["size"]
-	var src := Rect2(frame * size.x, row * size.y, size.x, size.y)
-	ci.draw_texture_rect_region(s["tex"], Rect2(at.round() - s["origin"], size), src)
+	var s: Sheet = sheets[name]
+	var size := s.size
+	ci.draw_texture_rect_region(s.tex, Rect2(at.round() - s.origin, size),
+		Rect2(s.base.x + frame * size.x, s.base.y + row * size.y, size.x, size.y))
 
 
 static func _dir_row(v: Vector2) -> int:
