@@ -713,6 +713,7 @@ func _restore(id: String, to: int) -> void:
 		_levels[id] = to
 	if run.shop != null and "levels" in run.shop and run.shop.levels.has(id):
 		run.shop.levels[id] = to
+		run.shop.rev += 1
 
 
 ## Bar 15, the D major landing: everything else comes back at once.
@@ -728,6 +729,7 @@ func _restore_all() -> void:
 	if run.shop != null and "levels" in run.shop:
 		for id: String in run.shop.levels.keys():
 			run.shop.levels[id] = 0
+		run.shop.rev += 1
 	_apply()
 
 
