@@ -11,7 +11,7 @@ const DIRS := 16
 const TRAIL: Array[Color] = [Color("#ffd98c"), Color("#f5a96a"), Color("#e2725b")]
 const FOLLOW_EMIT: Array[String] = ["drink", "drink_large", "lantern_full", "ready_pulse"]
 
-var sheets := {} ## name -> {"tex", "base", "size", "origin", "ms", "total", "loop", "frames"}
+var sheets := {} ## name -> {"tex", "size", "origin", "ms", "total", "loop", "frames"}
 var bob_px := 1.0 ## from shards.json (shards.gd applies the bob)
 var bob_hz := 6.0
 ## Added: ANIMATIONS sold holds every shard loop on frame 0 (the owner sets it; one-shots still play).
@@ -131,12 +131,7 @@ func _sheet(tex: Texture2D, fsize: Array, origin: Array, ms: Array, loop: bool) 
 	var total := 0.0
 	for v: float in m:
 		total += v
-	var base := Vector2.ZERO # the sheets are packed into one atlas (the Texture Atlas import): where this one sits
-	var packed := tex as AtlasTexture
-	if packed != null:
-		base = packed.region.position
-		tex = packed.atlas
-	return {"tex": tex, "base": base, "size": Vector2(float(fsize[0]), float(fsize[1])),
+	return {"tex": tex, "size": Vector2(float(fsize[0]), float(fsize[1])),
 		"origin": Vector2(float(origin[0]), float(origin[1])), "ms": m, "total": total, "loop": loop,
 		"frames": m.size()}
 
@@ -156,4 +151,4 @@ func _frame(s: Dictionary, ms: float) -> int:
 func _blit(ci: CanvasItem, s: Dictionary, frame: int, row: int, at: Vector2) -> void:
 	var size: Vector2 = s["size"]
 	ci.draw_texture_rect_region(s["tex"], Rect2(at.round() - s["origin"], size),
-		Rect2(Vector2(frame * size.x, row * size.y) + s["base"], size))
+		Rect2(Vector2(frame * size.x, row * size.y), size))

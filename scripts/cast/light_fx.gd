@@ -37,10 +37,8 @@ var _wake_cd := 0.0
 
 
 ## One sprite sheet: the frame timing and `ends`, each frame's end in ms (what `frame` searches).
-## The sheets are packed into one atlas (the Texture Atlas import): `tex` is that atlas, `base` where the sheet sits.
 class Sheet extends RefCounted:
 	var tex: Texture2D
-	var base := Vector2.ZERO
 	var size: Vector2
 	var origin: Vector2
 	var total: float
@@ -50,10 +48,6 @@ class Sheet extends RefCounted:
 
 	func _init(t: Texture2D, frame_size: Vector2, org: Vector2, ms: PackedFloat32Array, duration: float, looping: bool) -> void:
 		tex = t
-		var packed := t as AtlasTexture
-		if packed != null:
-			tex = packed.atlas
-			base = packed.region.position
 		size = frame_size
 		origin = org
 		total = duration
@@ -415,7 +409,7 @@ func draw_layer(ci: CanvasItem, layer: int, feet: Vector2, emit: Vector2) -> voi
 			if c.t >= s.total: # spent (the cohort lives on for a longer sheet)
 				continue
 			var size := s.size
-			var src := Rect2(s.base.x + (0 if still else s.frame(c.t)) * size.x, s.base.y + c.row[k] * size.y, size.x, size.y)
+			var src := Rect2((0 if still else s.frame(c.t)) * size.x, c.row[k] * size.y, size.x, size.y)
 			var to := c.start[k + 1] if k + 1 < runs else tl.size()
 			if c.mode[k] == Cohort.POS:
 				for i in range(c.start[k], to):
@@ -527,7 +521,7 @@ func _sprite(ci: CanvasItem, name: String, row: int, frame: int, at: Vector2) ->
 	var s: Sheet = sheets[name]
 	var size := s.size
 	ci.draw_texture_rect_region(s.tex, Rect2(at.round() - s.origin, size),
-		Rect2(s.base.x + frame * size.x, s.base.y + row * size.y, size.x, size.y))
+		Rect2(frame * size.x, row * size.y, size.x, size.y))
 
 
 static func _dir_row(v: Vector2) -> int:
