@@ -18,6 +18,7 @@ const FRAMING := Vector2(260, 90) ## camera centre (view origin 100, 0): the Lan
 const PULSE := 0.8 ## seconds per prompt colour (cream, stone)
 const TITLE_Y := 6.0 ## the luxels' top, in the void band (y 0-40)
 const SUB_Y := 36
+const MAX_STEP := 0.1 ## s the title's clock moves in one frame at most: a boot hitch (shader compiles) doesn't skip its lead-in
 const LIGHT_AT := 0.5 ## the first luxel lights
 const LIGHT_GAP := 0.07 ## between luxels
 const FLASH := 0.08 ## a luxel lights cream, then gold
@@ -62,6 +63,13 @@ var _next_fly := 0.0
 var _light: Node2D
 var _mat: ShaderMaterial
 var _lights := PackedVector4Array()
+var _sent_lights := PackedVector4Array() ## what the material holds (see _sync_light)
+var _sent_dark := -1.0
+var _sent_rect := Rect2()
+var _quiet_at := 0.0 ## _t from which nothing but a flicker or the pulse moves (see _process)
+var _flash_end := 0.0 ## _t the last firefly flash ends
+var _synced := false ## the light is at its final values
+var _drawn := Vector2i(-1, -1) ## the flicker step and pulse last drawn once quiet
 
 
 func _ready() -> void:
@@ -103,6 +111,10 @@ func open(best: Dictionary) -> void:
 	_next_note = 0
 	_flies.clear()
 	_next_fly = _all_lit() + SPILL_AFTER + SPILL + 1.0
+	_quiet_at = _all_lit() + SPILL_AFTER + SPILL + FLASH + 0.1
+	_flash_end = 0.0
+	_synced = false
+	_drawn = Vector2i(-1, -1)
 	visible = true
 	if run != null:
 		run.hud.set_shown(false)
@@ -184,7 +196,7 @@ func _toggle_gamer() -> void:
 func _process(delta: float) -> void:
 	if not visible:
 		return
-	_t += delta
+	_t += minf(delta, MAX_STEP)
 	if _closing >= 0.0:
 		_closing += delta
 		if _closing >= FADE_OUT:
@@ -194,7 +206,18 @@ func _process(delta: float) -> void:
 	else:
 		_play_notes()
 		_step_flies()
-	_sync_light()
+	# Once the grove is lit and nothing flies, the title changes only with a flicker step and the prompt's pulse.
+	var quiet := _closing < 0.0 and _t >= _quiet_at and _t >= _flash_end and _flies.is_empty()
+	if not quiet or not _synced:
+		_sync_light()
+	_synced = quiet
+	if quiet:
+		var look := Vector2i(floori(_t / LUX.FLICKER_STEP), int(fmod(_t, PULSE * 2.0) < PULSE))
+		if look == _drawn:
+			return
+		_drawn = look
+	else:
+		_drawn = Vector2i(-1, -1)
 	queue_redraw()
 
 
@@ -219,12 +242,20 @@ func _sync_light() -> void:
 		var grow := clampf((_t - _lit_at[i]) / REACH_GROW, 0.0, 1.0)
 		var c: Vector2 = _cells[i]["c"]
 		_lights[i] = Vector4(c.x, c.y, REACH * (1.0 - (1.0 - grow) * (1.0 - grow)), STRENGTH if on else 0.0)
-	var padded := _lights.duplicate()
-	padded.resize(64)
-	_mat.set_shader_parameter("lights", padded)
-	_mat.set_shader_parameter("light_count", mini(_lights.size(), 64))
-	_mat.set_shader_parameter("dark", _dark())
-	_light.queue_redraw()
+	if _lights != _sent_lights: # the material is only touched when a luxel's light moves
+		_sent_lights = _lights.duplicate()
+		var padded := _lights.duplicate()
+		padded.resize(64)
+		_mat.set_shader_parameter("lights", padded)
+		_mat.set_shader_parameter("light_count", mini(_lights.size(), 64))
+	var dark := _dark()
+	if dark != _sent_dark:
+		_sent_dark = dark
+		_mat.set_shader_parameter("dark", dark)
+	var rect := Display.screen_rect()
+	if rect != _sent_rect: # the light quad covers the screen: it redraws when the screen resizes
+		_sent_rect = rect
+		_light.queue_redraw()
 
 
 ## Luxel `i` now.
@@ -275,6 +306,7 @@ func _step_flies() -> void:
 	for f in _flies.duplicate():
 		if _t - float(f["t0"]) >= FLY_FLIGHT:
 			_flash_to[f["i"]] = _t + FLY_FLASH
+			_flash_end = _t + FLY_FLASH
 			_note(NOTES[0], NOTE_DOWN + 4.0)
 			_flies.erase(f)
 

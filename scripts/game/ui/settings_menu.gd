@@ -102,6 +102,7 @@ var _target := ""
 var _cursor_steps := 0 ## auto mode: ghost cursor steps taken
 var _cracked := 0
 var _frames := 0 ## frames since open (the auto pop)
+var _still := "" ## still menus: _still_sig() as last drawn ("": none yet)
 var _toast := ""
 var _toast_t := 0.0
 var _plain := false
@@ -136,6 +137,7 @@ func open(ctx: Dictionary) -> void:
 	_cursor_steps = 0
 	_cracked = 0
 	_frames = 0
+	_still = ""
 	_new = []
 	match _mode:
 		"tutorial":
@@ -267,9 +269,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	if _toast_t > 0.0:
 		_toast_t -= delta
-		if _toast_t <= 0.0:
+		if _toast_t <= 0.0: # the toast is still, so it redraws once at expiry (toast() redrew it at the start)
 			_toast = ""
-		queue_redraw()
+			queue_redraw()
 	if not _open:
 		return
 	_t += delta
@@ -289,7 +291,23 @@ func _process(delta: float) -> void:
 		_:
 			if _sold_t >= SOLD_HOLD:
 				_close()
-	queue_redraw()
+	if _mode == "auto" or _sold_t >= 0.0:
+		queue_redraw() # these move every frame (cursor, drain, stamp, flashes)
+		return
+	# The other menus are still but for a few timed looks: redraw only when one flips (keys redraw themselves).
+	var sig := _still_sig()
+	if sig != _still:
+		_still = sig
+		queue_redraw()
+
+
+## What the next frame of a still menu would draw differently: the two blinks (player, tutorial; the forced menu has
+## none before its sale), or the press flash, the gold quip and the stat line (pixels).
+func _still_sig() -> String:
+	if _mode == "pixels":
+		return "%d%d%s" % [int(_press_t >= 0.0 and _press_t < PIXEL_FLASH), int(_press_t >= 0.0 and _press_t < PIXEL_GOLD),
+				_pixel_stat_text()]
+	return "%d%d" % [int(_blink() and not _new.is_empty()), int(_bb_first and _t < 1.5 and fmod(_t, 0.5) >= 0.3)]
 
 
 # --- modes -----------------------------------------------------------------------------------------------------

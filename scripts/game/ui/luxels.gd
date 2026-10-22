@@ -4,6 +4,7 @@ extends RefCounted
 ## by one and the dark eats them; the ending flies them out of the lantern.
 
 const PAL := preload("res://scripts/game/ui/palette.gd").PAL
+const NIGHT: Color = PAL["night"]
 const SCALE := 5 ## one font pixel = one luxel cell
 const BLOCK := 4 ## the lamp inside its cell (the fifth pixel is the night grid)
 
@@ -14,7 +15,10 @@ const LOOKS := {
 	LIT: ["gold", "cream", "apricot"], FLASH: ["cream", "cream", "gold"],
 }
 
+const FLICKER_STEP := 0.14 ## s a lit luxel's flicker holds
+
 static var _font: Image
+static var _looks: Dictionary = {} ## LOOKS as colours: state -> [body, lit edge, shaded edge]
 
 
 ## The luxels of `text` with its top-left at `origin`: [{"p": top-left, "c": centre, "letter": index}], west to
@@ -44,18 +48,21 @@ static func origin(text: String, cx: float, y: float) -> Vector2:
 static func draw(ci: CanvasItem, p: Vector2, state: int) -> void:
 	if state == HIDDEN:
 		return
+	if _looks.is_empty():
+		for s: int in LOOKS:
+			_looks[s] = [PAL[LOOKS[s][0]], PAL[LOOKS[s][1]], PAL[LOOKS[s][2]]]
 	p = p.round()
-	var look: Array = LOOKS[state]
-	ci.draw_rect(Rect2(p - Vector2.ONE, Vector2.ONE * (BLOCK + 2)), PAL["night"])
-	ci.draw_rect(Rect2(p, Vector2.ONE * BLOCK), PAL[look[0]])
-	ci.draw_rect(Rect2(p + Vector2(1, BLOCK - 1), Vector2(BLOCK - 1, 1)), PAL[look[2]])
-	ci.draw_rect(Rect2(p + Vector2(BLOCK - 1, 1), Vector2(1, BLOCK - 1)), PAL[look[2]])
-	ci.draw_rect(Rect2(p, Vector2(BLOCK - 1, 1)), PAL[look[1]])
-	ci.draw_rect(Rect2(p, Vector2(1, BLOCK - 1)), PAL[look[1]])
+	var look: Array = _looks[state]
+	ci.draw_rect(Rect2(p - Vector2.ONE, Vector2.ONE * (BLOCK + 2)), NIGHT)
+	ci.draw_rect(Rect2(p, Vector2.ONE * BLOCK), look[0])
+	ci.draw_rect(Rect2(p + Vector2(1, BLOCK - 1), Vector2(BLOCK - 1, 1)), look[2])
+	ci.draw_rect(Rect2(p + Vector2(BLOCK - 1, 1), Vector2(1, BLOCK - 1)), look[2])
+	ci.draw_rect(Rect2(p, Vector2(BLOCK - 1, 1)), look[1])
+	ci.draw_rect(Rect2(p, Vector2(1, BLOCK - 1)), look[1])
 
 
 ## A lit luxel's flicker: now and then one dips to DIM for a beat, never two neighbours in step.
 static func flicker(index: int, t: float) -> int:
-	var step := floori(t / 0.14)
+	var step := floori(t / FLICKER_STEP)
 	var h := absi(hash(Vector2i(index, step))) % 1000
 	return DIM if h < 55 else LIT

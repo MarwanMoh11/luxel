@@ -25,6 +25,8 @@ var _bar_to := 0.0
 var _bar_t := 0.0
 var _bar_secs := 0.4
 var _slots := {} ## slot name -> {lines, colour, y, scale, t, secs}
+var _sig := 0 ## the lines' colours as last drawn (a line redraws only when its ramp steps)
+var _sr := Rect2() ## the screen rect as last drawn (the bars hug it)
 
 
 ## Slides the letterbox bars in or out over `secs`.
@@ -74,15 +76,24 @@ func clear() -> void:
 
 
 func _process(delta: float) -> void:
-	var busy := _bar != _bar_to or not _slots.is_empty()
+	var redraw := _bar != _bar_to # the bars move every frame; a line only when its colour steps (or it ends)
 	if _bar != _bar_to:
 		_bar_t += delta
 		_bar = lerpf(_bar_from, _bar_to, clampf(_bar_t / _bar_secs, 0.0, 1.0)) if _bar_secs > 0.0 else _bar_to
+	var sig := 0
 	for slot: String in _slots.keys():
-		_slots[slot]["t"] += delta
-		if _slots[slot]["t"] >= _slots[slot]["secs"]:
+		var s: Dictionary = _slots[slot]
+		s["t"] += delta
+		if s["t"] >= s["secs"]:
 			_slots.erase(slot)
-	if busy:
+			redraw = true
+		else:
+			var p := minf(float(s["t"]), float(s["secs"]) - float(s["t"])) / FADE
+			sig = sig * 31 + ramp(s["colour"], p).to_rgba32()
+	var sr := Display.screen_rect()
+	if redraw or sig != _sig or sr != _sr:
+		_sig = sig
+		_sr = sr
 		queue_redraw()
 
 

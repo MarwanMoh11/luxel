@@ -269,7 +269,8 @@ func _process(delta: float) -> void:
 	_step_relight()
 	for m in _motes:
 		m["t"] += delta
-	_motes.assign(_motes.filter(func(m: Dictionary) -> bool: return m["t"] < MOTE_FLIGHT + 0.12))
+	if not _motes.is_empty():
+		_motes.assign(_motes.filter(func(m: Dictionary) -> bool: return m["t"] < MOTE_FLIGHT + 0.12))
 	queue_redraw()
 	_shade_layer.queue_redraw()
 	_front.queue_redraw()
@@ -834,9 +835,12 @@ func _draw_front() -> void:
 	_draw_motes(ci, feet + run.wick.emit())
 	_draw_bars(ci)
 	for l: Array in LINES if not _done else []:
-		_line(ci, STORY.line(l[2], l[3]), l[0], l[1], l[4], l[5], l[6])
+		if _ramp(l[4], l[0], l[1]).a != 0.0: # most lines are not showing: skip their lookup
+			_line(ci, STORY.line(l[2], l[3]), l[0], l[1], l[4], l[5], l[6])
 	_draw_luxels(ci, feet + LANTERN, _bar(15.0), _titles_to)
-	_line(ci, STORY.line("ending.all_high", "ALL SETTINGS: HIGH"), _lux_built(_bar(15.0)), _titles_to, "lime", 50, 1)
+	var built := _lux_built(_bar(15.0))
+	if _ramp("lime", built, _titles_to).a != 0.0:
+		_line(ci, STORY.line("ending.all_high", "ALL SETTINGS: HIGH"), built, _titles_to, "lime", 50, 1)
 	_draw_toast(ci)
 	for i in _credit.size():
 		var y := 166 if _credit.size() == 1 else 165 + 7 * i

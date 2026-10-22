@@ -23,6 +23,7 @@ const INTRO_GD := preload("res://scripts/game/screens/intro.gd")
 const CARDS_GD := preload("res://scripts/game/screens/cards.gd")
 const ENDING_GD := preload("res://scripts/game/screens/ending.gd")
 const STORY := preload("res://scripts/game/story/story_text.gd")
+const WARMUP_GD := preload("res://scripts/game/warmup.gd")
 const DEAD_CARD := 0.8 # s from Wick's fall to the WICK FELL card
 const HOLD_R := 0.5 # s of R held in play to restart
 const DEBUG_SAVE := "user://low_settings_debug.cfg" # debug runs (args) save here, never in the player's file
@@ -93,6 +94,7 @@ func _ready() -> void:
 	tutorial_node.finished.connect(_on_tutorial_finished)
 	ending.finished.connect(_on_ending_finished)
 	cards.action.connect(_on_card_action)
+	add_child(WARMUP_GD.new()) # compiles the custom shaders now, behind the loader, not at their first use mid-game
 	_boot()
 
 
