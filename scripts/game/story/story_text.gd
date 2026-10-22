@@ -12,6 +12,9 @@ const TEXT := {
 	"title.name": "LUXEL",
 	"title.sub": "ALL SETTINGS: HIGH",
 	"title.prompt": "CLICK OR PRESS ANY KEY",
+	"title.gamer_off": "GAMER MODE: OFF",
+	"title.gamer_on": "GAMER MODE: ON",
+	"title.gamer_note": "MORE DARK. LESS MERCY. YOU CAN LOSE.",
 	# Intro (STORY.md 3)
 	"intro.skip": "ANY KEY: SKIP",
 	"intro.1": "AT SUNSET THE DARK COMES TO EAT THE LIGHT.",
@@ -300,13 +303,14 @@ static func clock(seconds: float) -> String:
 	return "%d:%02d" % [floori(s / 60.0), s % 60]
 
 
-## The best record for the title and cards (design 11), "" when there is none.
-static func best_line(best: Dictionary) -> String:
+## The best record for the title and cards (design 11), "" when there is none; GAMER MODE's says so.
+static func best_line(best: Dictionary, gamer := false) -> String:
 	if best.is_empty():
 		return ""
+	var head := "GAMER BEST: " if gamer else "BEST: "
 	if best.get("done", false):
-		return "BEST: DISPLAY OFF IN " + clock(best.get("time", 0.0))
-	return "BEST: %d OF %d SOLD" % [int(best.get("sold", 0)), SETTINGS_TOTAL]
+		return head + "DISPLAY OFF IN " + clock(best.get("time", 0.0))
+	return head + "%d OF %d SOLD" % [int(best.get("sold", 0)), SETTINGS_TOTAL]
 
 
 ## Problems with the text: characters outside the 3x5 charset and lines too wide. Empty = all good.

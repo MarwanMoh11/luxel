@@ -54,6 +54,7 @@ const LEVELUP_DELAY := 0.3 # s the world runs on after the gauge fills (Wick can
 const HIT_STOP := 0.06 # s the world stops when Wick is hit
 const SHAKE_TIME := 0.25
 const TEMPO: Array[float] = [1.0, 1.15, 1.30] # enemy tempo per DIFFICULTY level
+const GAMER_TEMPO := 1.15 # x the enemy tempo in GAMER MODE
 const PIXEL_TOAST := 0.6 # s the PIXELS toast stays up
 const PIXEL_STAGES: Array[int] = [70, 40, 15] # % of the pixels left at last-light stages 1-3
 const BLACK_WAIT := 2.0 # s after the last pixel before OFF even if fx.screen_black() never says so
@@ -144,7 +145,9 @@ var view: VIEW
 var light: LIGHT ## scripts/cast/light_fx.gd, ported to the Run API
 var shard_fx: SHARD_FX
 var anim_time := 0.0 ## seconds, for animation ticks
-var enemy_tempo := 1.0 ## from DIFFICULTY
+var enemy_tempo := 1.0 ## from DIFFICULTY (and GAMER MODE)
+var gamer := false ## GAMER MODE (the title's toggle, main sets it): the last heart can go until the blast, more
+## enemies (director.gd), less MERCY TIME (player.gd), a faster crowd, a longer need curve (progression.gd)
 var last_sold := "" ## the last setting the player or the menu sold (the death quip)
 var bot = null ## tests/run_bot.gd: steers Wick while autopilot is on (else player.gd's dodge bot)
 var no_levels := false ## checks: a full gauge opens no menu (counted as stats menus_opened)
@@ -262,7 +265,7 @@ func start_run(tutorial: bool) -> void:
 	paused = false
 	gauge_revealed = not tutorial
 	run_time = 0.0
-	enemy_tempo = 1.0
+	enemy_tempo = GAMER_TEMPO if gamer else 1.0
 	last_sold = ""
 	stats.clear()
 	_levelup_t = -1.0
@@ -481,6 +484,14 @@ func gauge_fill() -> float:
 func closing() -> bool:
 	return (phase >= Phase.CLOSING and phase <= Phase.OFF) or phase == Phase.BLAST or phase == Phase.RELIGHT \
 			or (phase == Phase.STOP and _stop == "pixels")
+
+
+## A hit can't take the last heart (player.hurt): from act 3 (player.GUARD_LEVEL) and while closing; in GAMER MODE
+## only from the blast on (the dark is meant to win the overwhelm).
+func last_heart_guarded() -> bool:
+	if gamer:
+		return _flared or _aftermath >= 0.0 or phase == Phase.BLAST or phase == Phase.RELIGHT
+	return closing() or prog.level >= PLAYER.GUARD_LEVEL
 
 
 ## RELIGHT waits on SPACE (the HUD's prompt).
@@ -760,9 +771,14 @@ func _after_menu() -> void:
 	_set_phase(Phase.TUTORIAL if tutorial_mode and not _tut_done else Phase.MAIN)
 
 
+## DIFFICULTY's enemy tempo, x GAMER_TEMPO in GAMER MODE.
+func _tempo() -> float:
+	return TEMPO[mini(lv("difficulty"), TEMPO.size() - 1)] * (GAMER_TEMPO if gamer else 1.0)
+
+
 ## Shows the shop's levels as they are (checks and renders that set shop.levels by hand): fx, island, enemy tempo.
 func refresh_levels() -> void:
-	enemy_tempo = TEMPO[mini(lv("difficulty"), TEMPO.size() - 1)]
+	enemy_tempo = _tempo()
 	fx.apply(shown_levels())
 	island.apply(shown_levels())
 
@@ -795,7 +811,7 @@ func _apply_sale(sale: Dictionary) -> void:
 			player.heal(1) # P8b M3: the comeback mends a heart every PIXEL_MEND pixels
 	if id == DATA.CONFIRM or bool(sale.get("refill", false)):
 		player.hp = player.max_hp # CONFIRM SALES refills every heart, even with HEALING sold
-	enemy_tempo = TEMPO[mini(lv("difficulty"), TEMPO.size() - 1)]
+	enemy_tempo = _tempo()
 	if bool(sale.get("auto", false)) and id != DATA.PIXELS:
 		_stage_sale(id)
 	else:
@@ -811,7 +827,7 @@ func _apply_sale(sale: Dictionary) -> void:
 func _apply_buy_back(sale: Dictionary) -> void:
 	if lv("healing") == 0:
 		player.heal(1)
-	enemy_tempo = TEMPO[mini(lv("difficulty"), TEMPO.size() - 1)]
+	enemy_tempo = _tempo()
 	fx.apply(shown_levels())
 	island.apply(shown_levels())
 	light.stream_out(String(sale.get("id", "")))

@@ -50,6 +50,7 @@ const ROSTER := {
 const RATE: Array = [[0.0, 0.6], [24.0, 0.6], [40.0, 0.75], [120.0, 0.75], [160.0, 0.6], [250.0, 0.45],
 	[290.0, 0.7], [340.0, 1.1]]
 const FINALE_RATE := 1.2 # x RATE from CONFIRM SALES on (run.closing())
+const GAMER_RATE := 1.5 # x RATE in GAMER MODE (run.gamer)
 ## Scripted spawns: at `at` s, `count` of `kind` around one anchor; `every` = [min, max] s to repeat (until
 ## `until` s); `finale` false = skipped once the run is closing; `quiet` = [s before, s after] its first time
 ## with no steady spawns (a debut). A debut always comes in full; one whose kind is at its cap tries again every
@@ -184,7 +185,7 @@ func step(dt: float) -> void:
 		return
 	var m := t / 60.0
 	var rate := minf(SPAWN_BASE + SPAWN_LINEAR * m + SPAWN_SQUARE * m * m, SPAWN_MAX)
-	rate *= _rate(t) * (FINALE_RATE if run.closing() else 1.0)
+	rate *= _rate(t) * (FINALE_RATE if run.closing() else 1.0) * (GAMER_RATE if run.gamer else 1.0)
 	rate *= float(_tide.get("rate", TIDE_RATE)) if tide != "" else 1.0
 	if rate <= 0.0: # a tide stage with no steady spawns: every enemy comes in its rings
 		_cd = 0.25

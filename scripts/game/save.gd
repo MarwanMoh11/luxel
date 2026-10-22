@@ -1,20 +1,22 @@
 extends RefCounted
-## Static save file user://low_settings.cfg: the best record and whether the tutorial is done (design 11).
-## Section `best`: done, time, sold, kills, level; section `game`: tutorial_done. Checks point `path` elsewhere.
+## Static save file user://low_settings.cfg: the best records and the title's choices (design 11).
+## Sections `best` and `best_gamer` (GAMER MODE's): done, time, sold, kills, level; section `game`: tutorial_done,
+## gamer. Checks point `path` elsewhere.
 
 const PATH := "user://low_settings.cfg"
 
 static var path := PATH ## checks set their own file so they never touch the player's record
+static var gamer := false ## GAMER MODE (the title's toggle): its runs keep their own best record
 
 
 ## Returns the best record (a stats dictionary: time, level, kills, light, sold, done) or {} when none.
 static func load_best() -> Dictionary:
 	var cfg := ConfigFile.new()
-	if cfg.load(path) != OK or not cfg.has_section("best"):
+	if cfg.load(path) != OK or not cfg.has_section(_best_section()):
 		return {}
 	var out := {}
-	for key in cfg.get_section_keys("best"):
-		out[key] = cfg.get_value("best", key)
+	for key in cfg.get_section_keys(_best_section()):
+		out[key] = cfg.get_value(_best_section(), key)
 	return out
 
 
@@ -26,7 +28,7 @@ static func submit(stats: Dictionary) -> bool:
 	cfg.load(path)
 	for key: String in ["done", "time", "sold", "kills", "level"]:
 		if stats.has(key):
-			cfg.set_value("best", key, stats[key])
+			cfg.set_value(_best_section(), key, stats[key])
 	cfg.save(path)
 	return true
 
@@ -64,3 +66,22 @@ static func set_tutorial_done() -> void:
 	cfg.load(path)
 	cfg.set_value("game", "tutorial_done", true)
 	cfg.save(path)
+
+
+## Reads GAMER MODE from the save file into `gamer`.
+static func load_gamer() -> void:
+	var cfg := ConfigFile.new()
+	gamer = cfg.load(path) == OK and bool(cfg.get_value("game", "gamer", false))
+
+
+## Sets GAMER MODE and keeps it in the save file.
+static func set_gamer(on: bool) -> void:
+	gamer = on
+	var cfg := ConfigFile.new()
+	cfg.load(path)
+	cfg.set_value("game", "gamer", on)
+	cfg.save(path)
+
+
+static func _best_section() -> String:
+	return "best_gamer" if gamer else "best"

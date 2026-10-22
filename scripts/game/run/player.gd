@@ -9,6 +9,7 @@ const BODY_RADIUS := 3.5 # contact circle with enemies and hazards
 const MOVE_ACCEL: Array[float] = [1.0, 0.25] # accel factor per MOVEMENT level (SNAPPY, ICE)
 const INPUT_DELAY: Array[float] = [0.0, 0.2] # seconds of movement lag per INPUT DELAY level
 const MERCY: Array[float] = [1.5, 0.8] # seconds of invulnerability after a hit per MERCY TIME level
+const GAMER_MERCY := 0.6 # x MERCY TIME in GAMER MODE
 const DODGE_NEAR := 60.0 # px: the dodge bot steps away from enemies this close
 const GUARD_LEVEL := 12 # from act 3 (the CONTROLS tab's level, shop_data.gd) a hit can't take the last heart
 const STAGGER := 0.5 # s Wick can't steer after a spill
@@ -97,16 +98,17 @@ func hittable() -> bool:
 
 
 ## Takes one heart; false if safe, invulnerable (MERCY TIME), or the last heart from act 3 on (GUARD_LEVEL, and
-## always while closing), so a player who reached act 3 sees the finale. Starts MERCY TIME
+## always while closing), so a player who reached act 3 sees the finale; GAMER MODE guards it only from the blast on
+## (run.last_heart_guarded). Starts MERCY TIME
 ## whenever the contact registers, also when no heart is lost. A guarded hit from GUARD_LEVEL (not while closing)
 ## spills the lantern instead: the gauge's light scatters as shards Wick can run back in for a few seconds.
 func hurt() -> bool:
 	if not hittable():
 		return false
-	invuln = MERCY[mini(run.lv("mercy"), 1)]
+	invuln = MERCY[mini(run.lv("mercy"), 1)] * (GAMER_MERCY if run.gamer else 1.0)
 	if run.safe:
 		return false
-	if hp <= 1 and (run.closing() or run.prog.level >= GUARD_LEVEL):
+	if hp <= 1 and run.last_heart_guarded():
 		if not run.closing():
 			_spill()
 		return false

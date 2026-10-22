@@ -9,6 +9,7 @@ extends RefCounted
 const XP_BASE := 6.0
 const XP_LINEAR := 4.1
 const XP_SQUARE := 0.05
+const GAMER_NEED := 1.25 # x the need from level 2 in GAMER MODE (its extra enemies would bring the menus early)
 const EPS := 0.000001
 
 # Base stats (design 6); damage is an int x10 so small % powers count.
@@ -56,7 +57,8 @@ func reset() -> void:
 ## Light needed to leave `lvl` (design 7.3).
 func need_for(lvl: int) -> float:
 	var n := float(maxi(lvl, 1) - 1)
-	return roundf(XP_BASE + XP_LINEAR * n + XP_SQUARE * n * n)
+	var v := XP_BASE + XP_LINEAR * n + XP_SQUARE * n * n
+	return roundf(v * (GAMER_NEED if lvl > 1 and run != null and run.gamer else 1.0))
 
 
 ## Adds light; returns the level-ups gained (overflow carries over; each one also adds to `pending`).

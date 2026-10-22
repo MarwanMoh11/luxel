@@ -90,7 +90,8 @@ func _set_best(stats: Dictionary, best: Dictionary, new_best: bool) -> void:
 		new_best = not best.is_empty() and best.get("time") == stats.get("time") \
 			and best.get("sold") == stats.get("sold") and best.get("done") == stats.get("done")
 	_new_best = new_best
-	_best = "NEW " + STORY.best_line(_as_record(stats)) if new_best else STORY.best_line(best)
+	var line := STORY.best_line(_as_record(stats) if new_best else best, SAVE.gamer)
+	_best = "NEW " + line if new_best else line
 
 
 func _as_record(stats: Dictionary) -> Dictionary:

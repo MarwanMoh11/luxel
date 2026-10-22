@@ -4,11 +4,13 @@ extends Node2D
 ## grove, then spills over all of it; the subtitle, the prompt and the best record follow. Fireflies drift up and
 ## join the letters. Any key or a click emits `start` (in an itch.io embed that first click also unlocks web
 ## audio), and the dark eats the title east to west, a letter at a time with a snuff, as the intro's lights-out
-## wave will eat the grove's lanterns.
+## wave will eat the grove's lanterns. Once the prompt shows, Left/Right (A/D, Tab, G) or a click on its line flips
+## GAMER MODE instead.
 
 signal start
 
 const N := preload("res://scripts/game/ui/narration.gd")
+const SAVE := preload("res://scripts/game/save.gd")
 const STORY := preload("res://scripts/game/story/story_text.gd")
 const LUX := preload("res://scripts/game/ui/luxels.gd")
 const LIGHT_SHADER := preload("res://scripts/game/screens/title_light.gdshader")
@@ -36,6 +38,9 @@ const EMBER := 0.05 ## a lit luxel going out shows ember, then unlit, then nothi
 const UNLIT_FOR := 0.12
 const DARK_LIFT := 0.4 ## a press during the lighting lifts the dark over this
 const FADE_OUT := 0.6 ## all gone by then (the intro's letterbox slides in over the top)
+const GAMER_Y := 148 ## the GAMER MODE toggle's top; its note GAMER_GAP under it while on
+const GAMER_GAP := 8
+const GAMER_KEYS: Array[Key] = [KEY_LEFT, KEY_RIGHT, KEY_A, KEY_D, KEY_TAB, KEY_G]
 
 static var _audio_ok := not OS.has_feature("web") ## web audio starts with the first input
 
@@ -81,7 +86,7 @@ func setup(r: Node2D) -> void:
 ## Shows the title with the best record (ARCHITECTURE.md's show(best): `show` is CanvasItem's). Puts the island
 ## back at full settings, frames the grove, starts the title cue and lights LUXEL from the dark.
 func open(best: Dictionary) -> void:
-	_best = STORY.best_line(best)
+	_best = STORY.best_line(best, SAVE.gamer)
 	_open = true
 	_t = 0.0
 	_closing = -1.0
@@ -149,11 +154,31 @@ static func any_press(event: InputEvent) -> bool:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _open and any_press(event):
-		_audio_ok = true
-		get_viewport().set_input_as_handled()
-		close()
-		start.emit()
+	if not _open or not any_press(event):
+		return
+	_audio_ok = true
+	get_viewport().set_input_as_handled()
+	if _text_in() > 0.0 and _toggles(event):
+		_toggle_gamer()
+		return
+	close()
+	start.emit()
+
+
+## A GAMER MODE key, or a click on its line.
+func _toggles(event: InputEvent) -> bool:
+	var key := event as InputEventKey
+	if key != null:
+		return key.keycode in GAMER_KEYS
+	var w := PixelFont.width(STORY.line("title.gamer_off"))
+	return Rect2(160 - w / 2.0 - 12, GAMER_Y - 4, w + 24, 13).has_point(get_local_mouse_position())
+
+
+func _toggle_gamer() -> void:
+	SAVE.set_gamer(not SAVE.gamer)
+	_best = STORY.best_line(SAVE.load_best(), SAVE.gamer)
+	_note(NOTES[NOTES.size() - 1] if SAVE.gamer else NOTES[0], NOTE_DOWN)
+	queue_redraw()
 
 
 func _process(delta: float) -> void:
@@ -276,11 +301,38 @@ func _draw() -> void:
 		for o: Vector2 in [Vector2(-1, 0), Vector2(1, 0), Vector2(0, -1), Vector2(0, 1)]:
 			draw_rect(Rect2(p + o, Vector2.ONE), N.PAL["lime"])
 		draw_rect(Rect2(p, Vector2.ONE), N.PAL["cream"])
-	var p := clampf((_t - _all_lit() - TEXT_AFTER) / 0.3, 0.0, 1.0)
+	var p := _text_in()
 	if _closing >= 0.0:
 		p = minf(p, 1.0 - _closing / FADE_OUT)
 	N.centred(self, STORY.line("title.sub"), 160, SUB_Y, N.ramp("lime", p))
+	var gamer := STORY.line("title.gamer_on" if SAVE.gamer else "title.gamer_off")
+	var col := N.ramp("coral" if SAVE.gamer else "stone", p)
+	var half := PixelFont.width(gamer) / 2.0
+	N.centred(self, gamer, 160, GAMER_Y, col)
+	_arrow(roundf(160 - half) - 7, GAMER_Y, -1, col)
+	_arrow(roundf(160 + half) + 4, GAMER_Y, 1, col)
+	if SAVE.gamer:
+		N.centred(self, STORY.line("title.gamer_note"), 160, GAMER_Y + GAMER_GAP, N.ramp("stone", p))
 	var pulse := "cream" if fmod(_t, PULSE * 2.0) < PULSE else "stone"
 	N.centred(self, STORY.line("title.prompt"), 160, 166, N.ramp(pulse, p))
 	if _best != "":
 		N.right(self, _best, 316, 172, N.ramp("mauve", p))
+
+
+## How far the subtitle, the prompt, the toggle and the best have faded in, 0..1.
+func _text_in() -> float:
+	return clampf((_t - _all_lit() - TEXT_AFTER) / 0.3, 0.0, 1.0)
+
+
+## A 3x5 arrow (the font has no "<" or ">") with its left column at x, pointing `dir` (-1 left, 1 right), outlined.
+func _arrow(x: float, y: float, dir: int, colour: Color) -> void:
+	if colour.a == 0.0:
+		return
+	for o: Vector2 in PixelFont.OUTLINE:
+		_arrow_cols(Vector2(x, y) + o, dir, N.NIGHT)
+	_arrow_cols(Vector2(x, y), dir, colour)
+
+
+func _arrow_cols(at: Vector2, dir: int, colour: Color) -> void:
+	for c in 3:
+		draw_rect(Rect2(at + Vector2(c if dir > 0 else 2 - c, c), Vector2(1, 5 - 2 * c)), colour)

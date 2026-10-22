@@ -101,6 +101,9 @@ func _boot() -> void:
 			debug_run = true
 	if debug_run and SAVE.path == SAVE.PATH:
 		SAVE.path = DEBUG_SAVE # neither the best record nor tutorial_done reach the player's save
+	SAVE.load_gamer()
+	if args.has("gamer"):
+		SAVE.gamer = true
 	if args.has("tutorial"):
 		_start_intro()
 		return
@@ -125,6 +128,7 @@ func start_run(tutorial: bool) -> void:
 	_r_released = false
 	fx.title(false)
 	_set_state(Flow.RUN)
+	run.gamer = SAVE.gamer
 	run.start_run(tutorial)
 	if tutorial:
 		tutorial_node.start(run, hud, menu)
