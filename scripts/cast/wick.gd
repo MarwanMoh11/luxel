@@ -133,7 +133,8 @@ func _advance(dt: float, vel: Vector2) -> void:
 	_base = base
 	landed = false
 	if _base == "hop" and _one == "":
-		var f := _frame(_clip_of("hop"), _base_t, true)
+		# The hop's own clock, not the shown frame: ANIMATIONS holds the pose, the river wake keeps landing.
+		var f := _frame(_clip_of("hop"), _base_t, true, false)
 		landed = f == LAND_FRAME and _hop_frame != LAND_FRAME
 		_hop_frame = f
 	if _one != "":
@@ -248,9 +249,10 @@ func _cast_frame(c: Dictionary) -> int:
 	return _frame(_clip_of("cast"), _cast_t, false)
 
 
-func _frame(clip: Dictionary, t: float, loop: bool) -> int:
+## `hold`: ANIMATIONS (`still`) may freeze it; the landing check passes false.
+func _frame(clip: Dictionary, t: float, loop: bool, hold := true) -> int:
 	var ms: PackedFloat32Array = clip["ms"]
-	var frozen := still and not cinematic
+	var frozen := hold and still and not cinematic
 	if loop:
 		if frozen:
 			return 0
