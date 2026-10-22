@@ -174,9 +174,10 @@ func step(dt: float) -> void:
 	_step_star(dt)
 	_step_spilled(dt)
 	var arrived: Array = []
+	var emit: Vector2 = run.lantern() if not list.is_empty() else Vector2.ZERO # where every pull ends this step
 	for s: Shard in list:
 		s.t += dt
-		_move(s)
+		_move(s, emit)
 		if s.state == State.PULL and now + dt * 0.5 >= s.slot:
 			arrived.append(s)
 	for s: Shard in arrived:
@@ -330,7 +331,8 @@ func _newest_waiting() -> Shard:
 	return null
 
 
-func _move(s: Shard) -> void:
+## Pops, hovers, or pulls `s` toward the lantern glass at `emit` (its trail rewritten in place).
+func _move(s: Shard, emit: Vector2) -> void:
 	if s.state == State.POP:
 		if s.t < POP_TIME:
 			var u := s.t / POP_TIME
@@ -344,13 +346,11 @@ func _move(s: Shard) -> void:
 		s.state = State.PULL
 		if s.lead:
 			run.shard_audio.pull(s.slot - now)
-	var emit: Vector2 = run.lantern()
 	var start := s.slot - s.pull_time
 	s.pos = _path(s, emit, (now - start) / s.pull_time)
-	var trail := PackedVector2Array()
-	for lag in TRAIL_LAG:
-		trail.append(_path(s, emit, (now - lag - start) / s.pull_time))
-	s.trail = trail
+	s.trail.resize(TRAIL_LAG.size()) # rewritten in place (draw() only reads it while drawing)
+	for k in TRAIL_LAG.size():
+		s.trail[k] = _path(s, emit, (now - TRAIL_LAG[k] - start) / s.pull_time)
 
 
 ## Where a pulling shard is at progress `u` (0 = rest point, 1 = the lantern): eased u^2 on a bowed Bezier.

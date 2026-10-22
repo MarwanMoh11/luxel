@@ -8,6 +8,13 @@ const ATTACKS := preload("res://scripts/game/run/light_attacks.gd")
 const FAN_ANGLE := 0.25 # radians between the shots of one volley
 const KNOCKBACK := 60.0 # px/s a hit pushes (the prototype's feel; 0 once KNOCKBACK is sold)
 const BLOCK_BACK := 8.0 # px behind a shot where its hit "comes from" (the toad's parasol test)
+# A brain's hit area (centre() +- reach()) lies within BODY_SIDE px sideways, BODY_UP px above and BODY_DOWN px below
+# its ground point, for every kind, clip and frame (owl at its highest altitude, a magpie's climb, a toad's hop).
+const BODY_SIDE := 32.0
+const BODY_UP := 96.0
+const BODY_DOWN := 24.0
+const CELL := 64.0 # px: the enemy grid's cells (_fill_cells)
+const NEAR_MAX_AREA := 640.0 * 640.0 # px^2: a wider query scans the list instead of the grid
 
 
 ## A shot that can pass through `left` more enemies, never hitting the same one twice. Its look and trail are set
@@ -35,6 +42,13 @@ var attacks ## light_attacks.gd
 var _fire_cd := 0.0
 var _armed := false # the flare for the next volley has started
 var _cast_armed := false # ...and so has Wick's cast
+var _cells := {} # Vector2i -> Array of indices into _listed, ascending (list order); arrays are kept and reused
+var _cells_used: Array[Vector2i] = []
+var _listed: Array = [] # run.enemies when the grid was filled; a kill leaves its (dead) entry in place
+var _listed_kills := 0 # the host's kill count then
+var _grid_ok := false # filled this step
+var _stepping := false # inside step()
+var _found := PackedInt32Array() # one shot's candidates
 
 
 ## Keeps the back-reference to the run and builds light_attacks.
@@ -46,6 +60,8 @@ func setup(r) -> void:
 ## Clears shots and cooldowns for a new run.
 func reset() -> void:
 	bullets.clear()
+	_listed.clear()
+	_grid_ok = false
 	_fire_cd = 0.0
 	_armed = false
 	_cast_armed = false
@@ -57,9 +73,13 @@ func reset() -> void:
 ## Fires volleys (AIM ASSIST, KNOCKBACK), moves shots, applies hits; calls light_fx and light_attacks.
 ## World seconds.
 func step(dt: float) -> void:
+	_stepping = true # enemies hold still until the end of the step: one grid serves every query
+	_grid_ok = false
 	_fire(dt)
 	_move(dt)
 	attacks.step(dt)
+	_stepping = false
+	_grid_ok = false
 
 
 func _fire(dt: float) -> void:
@@ -107,7 +127,7 @@ func _target():
 	var r: float = run.prog.range_px()
 	var from: Vector2 = run.lantern()
 	var in_range: Array = []
-	for e in run.enemies:
+	for e in near_point(from, r):
 		if e.aimable() and from.distance_squared_to(e.centre()) < r * r:
 			in_range.append(e)
 	return null if in_range.is_empty() else in_range[randi() % in_range.size()]
@@ -118,7 +138,7 @@ func _nearest():
 	var from: Vector2 = run.lantern()
 	var best_e = null
 	var best_d := r * r
-	for e in run.enemies:
+	for e in near_point(from, r):
 		if not e.aimable():
 			continue
 		var d := from.distance_squared_to(e.centre())
@@ -160,14 +180,78 @@ func _move(dt: float) -> void:
 			bullets.remove_at(i)
 
 
-## The first enemy the shot touches (not one it already pierced). A brain's hit area lies within 32 px sideways,
-## 96 px above and 24 px below its ground point (cheap cull before shot_hits).
+## The first enemy the shot touches (not one it already pierced), in list order: only those the grid hands over
+## (a px wider than the cull, so float rounding never drops one), then the cheap cull, then shot_hits.
 func _hit(b: Shot):
-	for e in run.enemies:
-		if b.hit.has(e):
+	var p := b.pos
+	_gather(p - Vector2(BODY_SIDE + 1.0, BODY_DOWN + 1.0), p + Vector2(BODY_SIDE + 1.0, BODY_UP + 1.0))
+	for k in _found:
+		var e = _listed[k]
+		if e.dead or b.hit.has(e):
 			continue
-		if absf(b.pos.x - e.pos.x) > 32.0 or b.pos.y > e.pos.y + 24.0 or b.pos.y < e.pos.y - 96.0:
+		if absf(p.x - e.pos.x) > BODY_SIDE or p.y > e.pos.y + BODY_DOWN or p.y < e.pos.y - BODY_UP:
 			continue
-		if e.shot_hits(b.pos):
+		if e.shot_hits(p):
 			return e
 	return null
+
+
+## The live enemies, in list order, whose hit area (centre() +- reach(), see BODY_SIDE) may reach into the box
+## `lo`..`hi` (world px): a cheap pre-cull for the area tests here and in light_attacks.gd.
+func near(lo: Vector2, hi: Vector2) -> Array:
+	lo -= Vector2(BODY_SIDE + 1.0, BODY_DOWN + 1.0)
+	hi += Vector2(BODY_SIDE + 1.0, BODY_UP + 1.0)
+	var out: Array = []
+	if (hi.x - lo.x) * (hi.y - lo.y) > NEAR_MAX_AREA: # wider than most of the map: the list is cheaper
+		for e in run.enemies:
+			var at: Vector2 = e.pos
+			if at.x >= lo.x and at.x <= hi.x and at.y >= lo.y and at.y <= hi.y:
+				out.append(e)
+		return out
+	_gather(lo, hi)
+	for k in _found:
+		var e = _listed[k]
+		var at: Vector2 = e.pos
+		if not e.dead and at.x >= lo.x and at.x <= hi.x and at.y >= lo.y and at.y <= hi.y:
+			out.append(e)
+	return out
+
+
+## `near` around a point: the enemies whose hit area may come within `r` px of `p`.
+func near_point(p: Vector2, r: float) -> Array:
+	return near(p - Vector2(r, r), p + Vector2(r, r))
+
+
+## _found = the indices into _listed (ascending, so list order) of the enemies whose ground point's cell overlaps
+## the box `lo`..`hi`; dead ones (killed since the grid was filled) included.
+func _gather(lo: Vector2, hi: Vector2) -> void:
+	if not _grid_ok or run.enemies.size() != _listed.size() - (run.enemies_host.kills - _listed_kills):
+		_fill_cells() # first query of the step, or an enemy joined (a kill only leaves a dead entry behind)
+	_found.clear()
+	for cy in range(floori(lo.y / CELL), floori(hi.y / CELL) + 1):
+		for cx in range(floori(lo.x / CELL), floori(hi.x / CELL) + 1):
+			var cell: Variant = _cells.get(Vector2i(cx, cy))
+			if cell != null:
+				for k: int in cell:
+					_found.append(k)
+	_found.sort()
+
+
+## Sorts the live enemies into CELL cells by ground point (they don't move while shots and forms hit).
+func _fill_cells() -> void:
+	for c in _cells_used:
+		(_cells[c] as Array).clear()
+	_cells_used.clear()
+	_listed = run.enemies.duplicate()
+	_listed_kills = run.enemies_host.kills
+	_grid_ok = _stepping # outside a step the enemies may move before the next query
+	for k in _listed.size():
+		var at: Vector2 = _listed[k].pos
+		var c := Vector2i(floori(at.x / CELL), floori(at.y / CELL))
+		var cell: Variant = _cells.get(c)
+		if cell == null:
+			cell = []
+			_cells[c] = cell
+		if (cell as Array).is_empty():
+			_cells_used.append(c)
+		(cell as Array).append(k)
