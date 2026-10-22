@@ -156,6 +156,7 @@ var _relight_from := 0.0
 var _relight_to := -1.0
 var _relight_t := 0.0
 var _flare_t := -1.0 # flare(): s into the timed relight, < 0 = not timed
+var _pushed := {} # step()'s shader parameters as last set: only a change is sent to the material
 
 
 ## Builds the effect layer, the music and the sfx players; reads run.wick and run.view later. Records the frame cap.
@@ -220,19 +221,26 @@ func step(dt: float, wick_screen_pos: Vector2, screen_on: bool) -> void:
 		var speed := maxf(1.0, (_pixels_target - _pixels_shown - 1.0) * 2.4) / PIXEL_FADE # big jumps catch up fast
 		_pixels_shown = move_toward(_pixels_shown, _pixels_target, speed * dt)
 		material.set_shader_parameter("dead", _pixels_shown)
-	material.set_shader_parameter("center", wick_screen_pos + Display.margin)
-	material.set_shader_parameter("glow_pos", _lantern_screen(wick_screen_pos) + Display.margin)
+	_push(&"center", wick_screen_pos + Display.margin)
+	_push(&"glow_pos", _lantern_screen(wick_screen_pos) + Display.margin)
 	if _lv(_levels, "vsync", 1) > 0:
 		_tear_clock += dt
 		var cycle := floori(_tear_clock / TEAR_PERIOD)
 		var view: Vector2 = material.get_shader_parameter("view")
-		material.set_shader_parameter("tear_y", fposmod(_tear_clock, TEAR_PERIOD) / TEAR_PERIOD * (view.y + 24.0) - 12.0)
-		material.set_shader_parameter("tear_shift", (3.0 + (cycle * 7) % 4) * (1.0 if cycle % 2 == 0 else -1.0))
+		_push(&"tear_y", fposmod(_tear_clock, TEAR_PERIOD) / TEAR_PERIOD * (view.y + 24.0) - 12.0)
+		_push(&"tear_shift", (3.0 + (cycle * 7) % 4) * (1.0 if cycle % 2 == 0 else -1.0))
 	unison_flash = maxf(unison_flash - dt, 0.0)
 	_track.step(_run_time())
 	_step_finale(dt)
 	_screen_on = screen_on
 	_update_visible()
+
+
+## Sets a per-step shader parameter only when it changed (step() runs every sub-step; the last one is drawn).
+func _push(param: StringName, value: Variant) -> void:
+	if _pushed.get(param) != value:
+		_pushed[param] = value
+		material.set_shader_parameter(param, value)
 
 
 ## Plays a sound effect by name at `pitch` with a random jitter; unknown names are ignored. Silent when SOUND is
