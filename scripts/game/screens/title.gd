@@ -66,6 +66,10 @@ var _lights := PackedVector4Array()
 var _sent_lights := PackedVector4Array() ## what the material holds (see _sync_light)
 var _sent_dark := -1.0
 var _sent_rect := Rect2()
+var _quiet_at := 0.0 ## _t from which nothing but a flicker or the pulse moves (see _process)
+var _flash_end := 0.0 ## _t the last firefly flash ends
+var _synced := false ## the light is at its final values
+var _drawn := Vector2i(-1, -1) ## the flicker step and pulse last drawn once quiet
 
 
 func _ready() -> void:
@@ -107,6 +111,10 @@ func open(best: Dictionary) -> void:
 	_next_note = 0
 	_flies.clear()
 	_next_fly = _all_lit() + SPILL_AFTER + SPILL + 1.0
+	_quiet_at = _all_lit() + SPILL_AFTER + SPILL + FLASH + 0.1
+	_flash_end = 0.0
+	_synced = false
+	_drawn = Vector2i(-1, -1)
 	visible = true
 	if run != null:
 		run.hud.set_shown(false)
@@ -198,7 +206,18 @@ func _process(delta: float) -> void:
 	else:
 		_play_notes()
 		_step_flies()
-	_sync_light()
+	# Once the grove is lit and nothing flies, the title changes only with a flicker step and the prompt's pulse.
+	var quiet := _closing < 0.0 and _t >= _quiet_at and _t >= _flash_end and _flies.is_empty()
+	if not quiet or not _synced:
+		_sync_light()
+	_synced = quiet
+	if quiet:
+		var look := Vector2i(floori(_t / LUX.FLICKER_STEP), int(fmod(_t, PULSE * 2.0) < PULSE))
+		if look == _drawn:
+			return
+		_drawn = look
+	else:
+		_drawn = Vector2i(-1, -1)
 	queue_redraw()
 
 
@@ -287,6 +306,7 @@ func _step_flies() -> void:
 	for f in _flies.duplicate():
 		if _t - float(f["t0"]) >= FLY_FLIGHT:
 			_flash_to[f["i"]] = _t + FLY_FLASH
+			_flash_end = _t + FLY_FLASH
 			_note(NOTES[0], NOTE_DOWN + 4.0)
 			_flies.erase(f)
 
