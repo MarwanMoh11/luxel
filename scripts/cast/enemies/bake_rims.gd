@@ -10,12 +10,15 @@ const ENEMY := preload("res://scripts/cast/enemies/enemy.gd")
 const KIT := preload("res://scripts/cast/enemies/enemy_kit.gd")
 const DIRECTOR := preload("res://scripts/game/run/director.gd")
 const LAYERS: Array[String] = ["body", "flash"]
+const UNRIMMED: Array[String] = ["gloam"] ## draws its body itself (gloam.gd _draw), never through draw_layer
 
 
 func _init() -> void:
 	var baked := 0
 	var skipped := PackedStringArray()
 	for id: String in DIRECTOR.KINDS:
+		if id in UNRIMMED:
+			continue
 		var json := KIT.ROOT + id + "/" + id + ".json"
 		if not FileAccess.file_exists(json):
 			continue

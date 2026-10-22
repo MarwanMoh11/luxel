@@ -205,14 +205,14 @@ func _build_cells() -> void:
 	_rows = ceili(island.map_size.y / CELL)
 	_cells.resize(_cols * _rows)
 	_cells.fill(0)
-	for body: CollisionObject2D in island.find_children("*", "CollisionObject2D", true, false):
-		var layers := body.collision_layer & CELL_LAYERS
+	for obj: CollisionObject2D in island.find_children("*", "CollisionObject2D", true, false):
+		var layers := obj.collision_layer & CELL_LAYERS
 		if layers == 0:
 			continue
-		for owner_id in body.get_shape_owners():
-			var xf := body.global_transform * body.shape_owner_get_transform(owner_id)
-			for i in body.shape_owner_get_shape_count(owner_id):
-				var shape := body.shape_owner_get_shape(owner_id, i)
+		for owner_id in obj.get_shape_owners():
+			var xf := obj.global_transform * obj.shape_owner_get_transform(owner_id)
+			for i in obj.shape_owner_get_shape_count(owner_id):
+				var shape := obj.shape_owner_get_shape(owner_id, i)
 				if shape is ConvexPolygonShape2D:
 					_mark_convex(xf * (shape as ConvexPolygonShape2D).points, layers)
 				elif shape is ConcavePolygonShape2D:

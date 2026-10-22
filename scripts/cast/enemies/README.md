@@ -121,7 +121,7 @@ becomes Snuffers. `tests/run_check.tscn` plays the whole run and prints the time
 
 ## Sounds
 Call `game.enemy_sound("owl_hoot")` at your tell moments, with the names from your JSON `tells`. Each name is a
-file `audio/sfx/<name>.ogg` with an `SFX_DB` entry in `scripts/game/fx/settings_fx.gd`; unknown names do nothing,
+file `audio/sfx/<name>.wav` with an `SFX_DB` entry in `scripts/game/fx/settings_fx.gd`; unknown names do nothing,
 and SOUND sold mutes them. The game thins crowds (`scripts/game/run/enemies.gd` `SOUND_GAP`/`SOUND_GAPS` per name,
 `SOUND_VOICES` per `SOUND_WINDOW`, except `SOUND_TELLS`), so call it freely.
 

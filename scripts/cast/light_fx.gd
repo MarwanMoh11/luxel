@@ -46,7 +46,8 @@ class Sheet extends RefCounted:
 	var ends := PackedFloat64Array()
 	var last: int # the final frame
 
-	func _init(t: Texture2D, frame_size: Vector2, org: Vector2, ms: PackedFloat32Array, duration: float, looping: bool) -> void:
+	func _init(t: Texture2D, frame_size: Vector2, org: Vector2, ms: PackedFloat32Array, duration: float,
+			looping: bool) -> void:
 		tex = t
 		size = frame_size
 		origin = org

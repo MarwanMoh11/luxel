@@ -188,7 +188,9 @@ func hurt_enemy(e, dmg: int, push: Vector2, from := Vector2.INF) -> void:
 		e.hurt(dmg, push, from)
 		run.fx.play("hit")
 		return
-	list.remove_at(list.rfind(e)) # each brain is listed once; a blast kills from the end
+	var slot := list.rfind(e) # each brain is listed once; a blast kills from the end
+	if slot >= 0:
+		list.remove_at(slot)
 	_unlist(e)
 	scripted.erase(e)
 	kills += 1
@@ -269,7 +271,9 @@ func _fill_grid() -> void:
 func _unlist(b) -> void:
 	b.listed = false
 	var kin: Array = by_kind[b.kind]
-	kin.remove_at(kin.rfind(b))
+	var at := kin.rfind(b)
+	if at >= 0: # remove_at(-1) would drop the last one
+		kin.remove_at(at)
 
 
 func _drop(b) -> void:
