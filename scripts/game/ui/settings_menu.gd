@@ -291,7 +291,7 @@ func _process(delta: float) -> void:
 		_:
 			if _sold_t >= SOLD_HOLD:
 				_close()
-	if _mode in ["auto", "forced"] or _sold_t >= 0.0:
+	if _mode == "auto" or _sold_t >= 0.0:
 		queue_redraw() # these move every frame (cursor, drain, stamp, flashes)
 		return
 	# The other menus are still but for a few timed looks: redraw only when one flips (keys redraw themselves).
@@ -301,8 +301,8 @@ func _process(delta: float) -> void:
 		queue_redraw()
 
 
-## What the next frame of a still menu would draw differently: the two blinks (player, tutorial), or the press flash,
-## the gold quip and the stat line (pixels).
+## What the next frame of a still menu would draw differently: the two blinks (player, tutorial; the forced menu has
+## none before its sale), or the press flash, the gold quip and the stat line (pixels).
 func _still_sig() -> String:
 	if _mode == "pixels":
 		return "%d%d%s" % [int(_press_t >= 0.0 and _press_t < PIXEL_FLASH), int(_press_t >= 0.0 and _press_t < PIXEL_GOLD),
