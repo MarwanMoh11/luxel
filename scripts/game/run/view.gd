@@ -18,8 +18,11 @@ const SOIL: Array[String] = ["mauve", "stone", "lime", "mauve"] # flecks a hop k
 const SOIL_LIFE := 0.35 # s
 const SOIL_FALL := 160.0 # px/s^2
 const SHAKE_PX := 3
-const POOL_COLOURS: Array[Color] = [Color8(255, 217, 140), Color8(245, 169, 106)] # gold, apricot: a pool's core
-const POOL_CELL := 8 # px: core pixels are grouped in cells; touching cells make one pool
+const LIGHT_POOLS := preload("res://scripts/world/light_pools.gd") ## the map's light pools (light_pools_gen.gd)
+const CELL := 4 ## px: open()'s lookup grid over the map
+const CELL_LAYERS := 7 ## the physics layers the grid knows: walk, shots, rough
+const CELL_INSIDE := 128 ## grid bit: the cell and 1 px around it are inside the rim
+const CELL_EDGE := 64 ## grid bit while building: a rim edge comes within 1 px of the cell
 
 var run ## the Run (run.gd), duck-typed
 var camera: Camera2D
@@ -34,6 +37,10 @@ var _soil: Array[Dictionary] = [] # kicked-up flecks: {pos, vel, t, c}
 var _under: Array[Node2D] = []
 var _rim := PackedVector2Array()
 var _query := PhysicsPointQueryParameters2D.new()
+var _space: PhysicsDirectSpaceState2D
+var _cells := PackedByteArray() # per CELL square of the map: the layers of the colliders within 1 px | CELL_INSIDE
+var _cols := 0
+var _rows := 0
 var _origin := Vector2.ZERO # world position of the 320x180 game screen's top-left (shake included)
 var _pan_to := Vector2.INF # world point the camera holds (INF = follow Wick)
 var _pan_from := Vector2.ZERO
@@ -51,6 +58,8 @@ func setup(r) -> void:
 func build() -> void:
 	var island: Island = run.island
 	_rim = (island.get_node("Bodies/Rim/Edge") as CollisionPolygon2D).polygon
+	_space = run.get_world_2d().direct_space_state
+	_build_cells()
 	var sort := island.get_node("Sort")
 	for painter: Callable in [_draw_ground_fx, _draw_shadows, _draw_trails]:
 		var layer := Node2D.new()
@@ -101,7 +110,8 @@ func step(dt: float) -> void:
 		f["vel"] = v
 		f["pos"] += v * dt
 		f["t"] += dt
-	_soil = _soil.filter(func(f: Dictionary) -> bool: return f["t"] < SOIL_LIFE)
+	if not _soil.is_empty():
+		_soil = _soil.filter(func(f: Dictionary) -> bool: return f["t"] < SOIL_LIFE)
 	var target: Vector2 = run.wick_feet()
 	if _pan_to != Vector2.INF:
 		_pan_t = minf(_pan_t + dt, _pan_len)
@@ -141,7 +151,8 @@ func sync() -> void:
 	var top := (_centre - VIEW / 2).round().clamp(Display.margin, island.map_size - Display.view_size + Display.margin)
 	var jolt := Vector2(randi_range(-SHAKE_PX, SHAKE_PX), randi_range(-SHAKE_PX, SHAKE_PX)) if shake > 0.0 else Vector2.ZERO
 	_origin = top + jolt
-	camera.position = _origin
+	if camera.position != _origin:
+		camera.position = _origin
 	body.queue_redraw()
 	for layer in _under:
 		layer.queue_redraw()
@@ -164,20 +175,119 @@ func place_wick(feet: Vector2) -> void:
 
 
 ## True if `p` is on the island (unless `rim` is false) and clear of colliders on physics `mask`
-## (1 walk, 2 shots; 0 = the rim only).
+## (1 walk, 2 shots; 0 = the rim only). The grid answers wherever no rim edge or collider comes near.
 func open(p: Vector2, mask := WALK_LAYER, rim := true) -> bool:
-	if rim and not Geometry2D.is_point_in_polygon(p, _rim):
+	var x := floori(p.x / CELL)
+	var y := floori(p.y / CELL)
+	var cell := CELL_LAYERS # off the grid: ask the polygon and the physics
+	if x >= 0 and y >= 0 and x < _cols and y < _rows:
+		cell = _cells[y * _cols + x]
+	if rim and cell & CELL_INSIDE == 0 and not Geometry2D.is_point_in_polygon(p, _rim):
 		return false
-	if mask == 0:
+	if mask == 0 or (cell & mask == 0 and mask & ~CELL_LAYERS == 0):
 		return true
 	_query.position = p
 	_query.collision_mask = mask
-	return run.get_world_2d().direct_space_state.intersect_point(_query, 1).is_empty()
+	return _space.intersect_point(_query, 1).is_empty()
 
 
 ## Speed factor for feet at `p`: ROUGH_SPEED on rough ground (flower beds, reeds), else 1.
 func ground_speed(p: Vector2) -> float:
 	return 1.0 if open(p, Island.ROUGH_LAYER, false) else ROUGH_SPEED
+
+
+## open()'s grid: per cell the physics layers of the collider shapes within 1 px of it, and whether the cell lies
+## inside the rim with no rim edge within 1 px. Colliders never move (Island), so a cell no shape on the asked
+## layers reaches answers open() as the query would, and an inside cell as the polygon test would.
+func _build_cells() -> void:
+	var island: Island = run.island
+	_cols = ceili(island.map_size.x / CELL)
+	_rows = ceili(island.map_size.y / CELL)
+	_cells.resize(_cols * _rows)
+	_cells.fill(0)
+	for body: CollisionObject2D in island.find_children("*", "CollisionObject2D", true, false):
+		var layers := body.collision_layer & CELL_LAYERS
+		if layers == 0:
+			continue
+		for owner_id in body.get_shape_owners():
+			var xf := body.global_transform * body.shape_owner_get_transform(owner_id)
+			for i in body.shape_owner_get_shape_count(owner_id):
+				var shape := body.shape_owner_get_shape(owner_id, i)
+				if shape is ConvexPolygonShape2D:
+					_mark_convex(xf * (shape as ConvexPolygonShape2D).points, layers)
+				elif shape is ConcavePolygonShape2D:
+					var segs := xf * (shape as ConcavePolygonShape2D).segments
+					for k in range(0, segs.size() - 1, 2):
+						_mark_convex(PackedVector2Array([segs[k], segs[k + 1]]), layers)
+				else: # any other shape: its bounding box
+					var r := shape.get_rect()
+					_mark_convex(xf * PackedVector2Array([r.position, Vector2(r.end.x, r.position.y), r.end,
+						Vector2(r.position.x, r.end.y)]), layers)
+	# Geometry2D.is_point_in_polygon counts the edges crossed by the line from the point to a far corner, which
+	# miscounts where that line grazes a vertex: those lines (from each vertex, away from the corner) count as edges.
+	var hi := Vector2(-1e20, -1e20)
+	var lo := Vector2(1e20, 1e20)
+	for v in _rim:
+		hi = hi.max(v)
+		lo = lo.min(v)
+	var far := hi + (hi - lo) * Vector2(1.221313, 1.512312)
+	var reach := island.map_size.length() * 2.0
+	for i in _rim.size():
+		_mark_convex(PackedVector2Array([_rim[i], _rim[(i + 1) % _rim.size()]]), CELL_EDGE)
+		_mark_convex(PackedVector2Array([_rim[i], _rim[i] + (_rim[i] - far).normalized() * reach]), CELL_EDGE)
+	for y in _rows: # a run of cells no edge reaches is all inside or all outside: one polygon test per run
+		var inside := false
+		var fresh := true
+		for x in _cols:
+			var k := y * _cols + x
+			if _cells[k] & CELL_EDGE:
+				_cells[k] &= ~CELL_EDGE
+				fresh = true
+				continue
+			if fresh:
+				inside = Geometry2D.is_point_in_polygon((Vector2(x, y) + Vector2(0.5, 0.5)) * CELL, _rim)
+				fresh = false
+			if inside:
+				_cells[k] |= CELL_INSIDE
+
+
+## Sets `bits` on every grid cell that convex polygon `points` (or a segment, as two points) comes within 1 px of.
+## Column by column: within a column the polygon spans the rows its edges' pieces over the column (grown by 1 px)
+## span.
+func _mark_convex(points: PackedVector2Array, bits: int) -> void:
+	var box := Rect2(points[0], Vector2.ZERO)
+	for q in points:
+		box = box.expand(q)
+	var c0 := maxi(floori((box.position.x - 1.0) / CELL), 0)
+	var c1 := mini(floori((box.end.x + 1.0) / CELL), _cols - 1)
+	if c1 < c0:
+		return
+	var lo := PackedFloat64Array()
+	var hi := PackedFloat64Array()
+	lo.resize(c1 - c0 + 1)
+	hi.resize(c1 - c0 + 1)
+	lo.fill(INF)
+	hi.fill(-INF)
+	for i in points.size():
+		var a := points[i]
+		var b := points[(i + 1) % points.size()]
+		if a.x > b.x:
+			var t := a
+			a = b
+			b = t
+		for x in range(maxi(floori((a.x - 1.0) / CELL), c0), mini(floori((b.x + 1.0) / CELL), c1) + 1):
+			var y0 := a.y
+			var y1 := b.y
+			if b.x > a.x:
+				y0 = lerpf(a.y, b.y, (maxf(a.x, x * CELL - 1.0) - a.x) / (b.x - a.x))
+				y1 = lerpf(a.y, b.y, (minf(b.x, (x + 1) * CELL + 1.0) - a.x) / (b.x - a.x))
+			lo[x - c0] = minf(lo[x - c0], minf(y0, y1))
+			hi[x - c0] = maxf(hi[x - c0], maxf(y0, y1))
+	for x in range(c0, c1 + 1):
+		if lo[x - c0] > hi[x - c0]:
+			continue
+		for y in range(maxi(floori((lo[x - c0] - 1.0) / CELL), 0), mini(floori((hi[x - c0] + 1.0) / CELL), _rows - 1) + 1):
+			_cells[y * _cols + x] |= bits
 
 
 ## A hop landing on rough ground: a few soil and leaf flecks kick up around the feet.
@@ -311,45 +421,6 @@ func _paint_top() -> void:
 
 
 
-## The orchard's light pools, from the pools' ground art: touching cells of core (gold, apricot) pixels.
+## The orchard's light pools, scanned from the pools' ground art ahead of time (light_pools_gen.gd).
 func _find_pools() -> void:
-	pools.clear()
-	var sprite := run.island.get_node_or_null("GroundProps/orchard_lightpools") as Sprite2D
-	if sprite == null:
-		return
-	var img := sprite.texture.get_image()
-	if img == null or img.is_empty(): # no readback (some web GPUs): no pools, the lantern still reveals
-		return
-	if img.is_compressed():
-		img.decompress()
-	var cells := {}
-	for y in img.get_height():
-		for x in img.get_width():
-			var c := img.get_pixel(x, y)
-			if c.a > 0.5 and (c.is_equal_approx(POOL_COLOURS[0]) or c.is_equal_approx(POOL_COLOURS[1])):
-				var k := Vector2i(x / POOL_CELL, y / POOL_CELL)
-				cells[k] = int(cells.get(k, 0)) + 1
-	var at0 := sprite.position + sprite.offset
-	var seen := {}
-	for start: Vector2i in cells:
-		if seen.has(start):
-			continue
-		seen[start] = true
-		var todo: Array[Vector2i] = [start]
-		var sum := Vector2.ZERO
-		var n := 0
-		var count := 0
-		while not todo.is_empty():
-			var k: Vector2i = todo.pop_back()
-			count += 1
-			n += cells[k]
-			sum += (Vector2(k) + Vector2(0.5, 0.5)) * POOL_CELL * cells[k]
-			for dy in range(-1, 2):
-				for dx in range(-1, 2):
-					var nk := k + Vector2i(dx, dy)
-					if cells.has(nk) and not seen.has(nk):
-						seen[nk] = true
-						todo.append(nk)
-		if n >= 12: # a lone glint is not a pool
-			var at := at0 + sum / n
-			pools.append(Vector3(at.x, at.y, 14.0 + POOL_CELL * sqrt(count)))
+	pools = PackedVector3Array(LIGHT_POOLS.POOLS)
