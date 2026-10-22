@@ -194,11 +194,11 @@ var flare := false: ## the relight's override is on (FLARE_RESTORES show unsold)
 	set(v):
 		flare = v
 		_lv_rev = -1
-var _halo_img: Image # the lantern's halo baked (see _bake_halo), its texture and what it was baked for
-var _halo_tex: ImageTexture
+var _halo_imgs := {} # the lantern's halo baked (see _bake_halo): dither grid phase -> Image and its texture
+var _halo_texs := {}
+var _halo_baked := {} # the phases baked for _halo_key_r and _halo_key_out
 var _halo_key_r := -2.0
 var _halo_key_out := false
-var _halo_key_grid := Vector2i(-1, -1)
 var _lv_rev := -1 # shop.rev the _lv_hot values were read at (-1: read them again)
 var _lv_hot := {} # the hot rows (enemies read them every step) -> lv(), flare applied
 var _flared := false # the blast and the relight have played (the next empty queue opens the PIXELS menu)
@@ -1444,26 +1444,31 @@ func _paint_halo() -> void:
 		return
 	var c := lantern().round()
 	var o := view.origin()
-	var grid := Vector2i(int(c.x) & 3, int(c.y) & 3) # the dither grid's phase under the glass
-	if r != _halo_key_r or out != _halo_key_out or grid != _halo_key_grid:
+	if r != _halo_key_r or out != _halo_key_out:
 		_halo_key_r = r
 		_halo_key_out = out
-		_halo_key_grid = grid
-		_bake_halo(r, out, c)
+		_halo_baked.clear()
+	var phase := (int(c.y) & 3) * 4 + (int(c.x) & 3) # the dither grid's phase under the glass
+	if not _halo_baked.has(phase):
+		_halo_baked[phase] = true
+		_bake_halo(phase, r, out, c)
 	var reach := ceili(r)
-	top.draw_texture(_halo_tex, c - Vector2(reach, reach) - o)
+	top.draw_texture(_halo_texs[phase], c - Vector2(reach, reach) - o)
 
 
-## Dithers the halo (a band from 4 px out to `r`, the whole disc when `out`) into _halo_tex: one texel per screen
-## pixel, centred on the glass `c`. _paint_halo calls it when the radius, the sputter flag or the grid phase change.
-func _bake_halo(r: float, out: bool, c: Vector2) -> void:
+## Dithers the halo (a band from 4 px out to `r`, the whole disc when `out`) as seen under dither grid `phase`
+## into its texture: one texel per screen pixel, centred on the glass `c`. _paint_halo calls it for a phase it has
+## not baked since the radius or the sputter flag last changed.
+func _bake_halo(phase: int, r: float, out: bool, c: Vector2) -> void:
 	var reach := ceili(r)
 	var side := reach * 2 + 1
-	var fresh := _halo_img == null or _halo_img.get_width() != side
+	var img: Image = _halo_imgs.get(phase)
+	var fresh := img == null or img.get_width() != side
 	if fresh:
-		_halo_img = Image.create_empty(side, side, false, Image.FORMAT_RGBA8)
+		img = Image.create_empty(side, side, false, Image.FORMAT_RGBA8)
+		_halo_imgs[phase] = img
 	else:
-		_halo_img.fill(Color(0.0, 0.0, 0.0, 0.0))
+		img.fill(Color(0.0, 0.0, 0.0, 0.0))
 	var inner := 0.0 if out else 4.0
 	var span := maxf(r - inner, 1.0)
 	var base := 0.75 if out else 0.45
@@ -1484,11 +1489,11 @@ func _bake_halo(r: float, out: bool, c: Vector2) -> void:
 				continue
 			var level := base * (1.0 - (d - inner) / span)
 			if BAYER[((cy + y) & 3) * 4 + ((cx + x) & 3)] / 16.0 < level:
-				_halo_img.set_pixel(x + reach, y + reach, night if out else gold if d < half else apricot)
+				img.set_pixel(x + reach, y + reach, night if out else gold if d < half else apricot)
 	if fresh:
-		_halo_tex = ImageTexture.create_from_image(_halo_img)
+		_halo_texs[phase] = ImageTexture.create_from_image(img)
 	else:
-		_halo_tex.update(_halo_img)
+		_halo_texs[phase].update(img)
 
 
 func _draw() -> void:
