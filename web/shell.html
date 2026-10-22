@@ -4,6 +4,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 	<meta name="theme-color" content="#0d0b1e">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="Luxel">
 	<meta name="color-scheme" content="dark">
 	<meta name="description" content="Luxel: sell the game's own settings to keep the last lantern lit. A Godot game for a jam on the theme Trade-off.">
 	<title>Luxel</title>
@@ -21,9 +25,12 @@ html, body {
 	height: 100%;
 	overflow: hidden;
 	background: var(--void);
+	overscroll-behavior: none;
 }
 body {
 	touch-action: none;
+	-webkit-touch-callout: none;
+	-webkit-text-size-adjust: 100%;
 	-webkit-user-select: none;
 	user-select: none;
 	-webkit-tap-highlight-color: transparent;
@@ -33,6 +40,30 @@ body {
 	inset: 0;
 	overflow: hidden;
 	background: var(--void);
+}
+/* Touch: the stage stops short of the notch and the home bar (zero on desktop); the void shows in the inset. */
+html.touch #stage {
+	top: env(safe-area-inset-top, 0px);
+	right: env(safe-area-inset-right, 0px);
+	bottom: env(safe-area-inset-bottom, 0px);
+	left: env(safe-area-inset-left, 0px);
+}
+#loader {
+	position: absolute;
+}
+#turn {
+	position: fixed;
+	left: 0;
+	top: 0;
+	display: none;
+	z-index: 10;
+	background: var(--void);
+	touch-action: none;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: pixelated;
+}
+html.portrait #turn {
+	display: block;
 }
 #frame {
 	position: absolute;
@@ -113,6 +144,7 @@ noscript p {
 		<canvas id="hint" width="1" height="5"></canvas>
 		<button id="fs" type="button" tabindex="-1" aria-label="Fullscreen" title="Fullscreen"><canvas width="9" height="9"></canvas></button>
 	</div>
+	<canvas id="turn" aria-label="Turn your phone sideways" role="img"></canvas>
 	<noscript><p>Luxel needs JavaScript to run.</p></noscript>
 
 	<script src="$GODOT_URL"></script>
@@ -195,6 +227,8 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 	const fsButton = document.getElementById('fs');
 	const fsIcon = fsButton.querySelector('canvas');
 	const ctx = loader.getContext('2d');
+	const turn = document.getElementById('turn');
+	const turnCtx = turn.getContext('2d');
 
 	const params = new URLSearchParams(window.location.search);
 	const embedded = (function () {
@@ -204,8 +238,12 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 			return true;
 		}
 	}());
-	const wantHint = params.get('hint') === '1' || (params.get('hint') !== '0' && !embedded);
-	const touchOnly = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+	// Touch phones and tablets; ?touch=1 forces it on a desktop (to try the touch layout), ?touch=0 forces it off.
+	const touchOnly = params.get('touch') === '1' || (params.get('touch') !== '0' && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+	const wantHint = !touchOnly && (params.get('hint') === '1' || (params.get('hint') !== '0' && !embedded));
+	if (touchOnly) {
+		document.documentElement.classList.add('touch');
+	}
 	const fsEnabled = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
 
 	// --- Pixel text (the game's 3x5 font) ---------------------------------------------------------------------
@@ -310,6 +348,7 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 		if (dw <= 0 || dh <= 0) {
 			return;
 		}
+		checkOrientation();
 		const full = isFullscreen();
 		const key = [dw, dh, dpr, full].join();
 		if (key === layoutKey) {
@@ -330,12 +369,30 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 		}
 		const left = Math.floor((dw - fw) / 2);
 		const top = Math.floor((dh - fh) / 2);
-		frame.style.left = left / dpr + 'px';
-		frame.style.top = top / dpr + 'px';
-		frame.style.width = fw / dpr + 'px';
-		frame.style.height = fh / dpr + 'px';
-		const bw = BASE_W * k;
-		const bh = BASE_H * k;
+		let bw = BASE_W * k;
+		let bh = BASE_H * k;
+		if (touchOnly) {
+			// Touch: the frame is the whole stage and the game fills it itself (Display._fit); only the loader stays 16:9.
+			frame.style.left = '0px';
+			frame.style.top = '0px';
+			frame.style.width = dw / dpr + 'px';
+			frame.style.height = dh / dpr + 'px';
+			loader.style.left = left / dpr + 'px';
+			loader.style.top = top / dpr + 'px';
+			loader.style.width = fw / dpr + 'px';
+			loader.style.height = fh / dpr + 'px';
+			bw = dw;
+			bh = dh;
+		} else {
+			frame.style.left = left / dpr + 'px';
+			frame.style.top = top / dpr + 'px';
+			frame.style.width = fw / dpr + 'px';
+			frame.style.height = fh / dpr + 'px';
+			loader.style.left = '0px';
+			loader.style.top = '0px';
+			loader.style.width = '100%';
+			loader.style.height = '100%';
+		}
 		if (canvas.width !== bw || canvas.height !== bh) {
 			canvas.width = bw;
 			canvas.height = bh;
@@ -365,7 +422,7 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 		}
 
 		// The fullscreen button: in the hint band when it shows, else over the frame's top-right corner.
-		if (!fsEnabled) {
+		if (!fsEnabled || touchOnly) {
 			fsButton.style.display = 'none';
 			return;
 		}
@@ -432,12 +489,150 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 		}
 	}
 
+	// --- Portrait: a full-cover pixel-art notice, in the shell's own font and palette ---------------------------
+	const TURN_LINES = [['TURN YOUR PHONE', PAL.stone], ['SIDEWAYS', PAL.gold]];
+	let portrait = false;
+	let turnPx = 4;
+	let turnW = 0;
+	let turnH = 0;
+	let turnKey = '';
+	function turnLayout() {
+		const vw = window.innerWidth;
+		const vh = window.innerHeight;
+		const key = vw + 'x' + vh;
+		if (key === turnKey) {
+			return;
+		}
+		turnKey = key;
+		turnPx = Math.max(2, Math.floor((Math.min(vw, vh) * 0.82) / textWidth(TURN_LINES[0][0])));
+		turnW = Math.ceil(vw / turnPx);
+		turnH = Math.ceil(vh / turnPx);
+		turn.width = turnW;
+		turn.height = turnH;
+		turn.style.width = turnW * turnPx + 'px';
+		turn.style.height = turnH * turnPx + 'px';
+	}
+	function drawPhone(c, cx, cy, deg) {
+		// A phone (8x14 cells of 2x2 px) turned by deg: a stone rim, a night screen and a lit lantern dot, tested per cell.
+		const a = (deg * Math.PI) / 180;
+		const cs = Math.cos(a);
+		const sn = Math.sin(a);
+		for (let y = -10; y <= 10; y++) {
+			for (let x = -10; x <= 10; x++) {
+				const dx = x + 0.5;
+				const dy = y + 0.5;
+				const rx = dx * cs + dy * sn;
+				const ry = -dx * sn + dy * cs;
+				const ax = Math.abs(rx);
+				const ay = Math.abs(ry);
+				let colour = null;
+				if (ax <= 4 && ay <= 7) {
+					if (ax > 3 || ay > 6) {
+						colour = PAL.stone;
+					} else if (Math.abs(rx) < 1 && ry < -4.5) {
+						colour = PAL.mauve;
+					} else if (ax < 1.2 && Math.abs(ry - 1) < 1.2) {
+						colour = PAL.gold;
+					} else {
+						colour = PAL.night;
+					}
+				}
+				if (colour) {
+					c.fillStyle = colour;
+					c.fillRect(cx + x * 2, cy + y * 2, 2, 2);
+				}
+			}
+		}
+	}
+	function drawTurn(t) {
+		const c = turnCtx;
+		c.fillStyle = PAL.void;
+		c.fillRect(0, 0, turnW, turnH);
+		// 8 steps per second: the turn is a flipbook, not a tween.
+		const u = (t % 3) * 8;
+		let deg = 0;
+		if (u >= 6 && u < 10) {
+			deg = ((u - 6 + 1) / 4) * 90;
+		} else if (u >= 10 && u < 18) {
+			deg = 90;
+		} else if (u >= 18 && u < 22) {
+			deg = 90 - ((u - 18 + 1) / 4) * 90;
+		}
+		deg = Math.round(deg / 22.5) * 22.5;
+		const blockH = 28 + 8 + 5 + 3 + 5;
+		const top = Math.floor((turnH - blockH) / 2);
+		drawPhone(c, Math.floor(turnW / 2), top + 14, deg);
+		TURN_LINES.forEach(function (line, i) {
+			drawCentred(c, line[0], turnW / 2, top + 36 + i * 8, line[1]);
+		});
+	}
+	let turnRaf = 0;
+	function turnTick(now) {
+		turnRaf = 0;
+		if (!portrait) {
+			return;
+		}
+		turnLayout();
+		drawTurn(now / 1000);
+		turnRaf = window.requestAnimationFrame(turnTick);
+	}
+	function checkOrientation() {
+		if (!touchOnly) {
+			return;
+		}
+		const p = window.innerHeight > window.innerWidth;
+		if (p === portrait) {
+			return;
+		}
+		portrait = p;
+		document.documentElement.classList.toggle('portrait', p);
+		if (p) {
+			// Losing focus makes the game pause itself and show its pause card.
+			canvas.blur();
+			if (document.activeElement && document.activeElement.blur) {
+				document.activeElement.blur();
+			}
+			if (!turnRaf) {
+				turnRaf = window.requestAnimationFrame(turnTick);
+			}
+		} else {
+			focusGame();
+		}
+	}
+
 	function focusGame() {
 		try {
 			canvas.focus({ preventScroll: true });
 		} catch (e) {
 			canvas.focus();
 		}
+	}
+
+	// On touch, the gate tap asks for fullscreen and a landscape lock (Android Chrome; Safari on iPhone has neither).
+	function enterTouchFullscreen() {
+		const lock = function () {
+			try {
+				const p = window.screen && screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape');
+				if (p && p.catch) {
+					p.catch(function () {});
+				}
+			} catch (e) {
+				// No lock here.
+			}
+		};
+		try {
+			const request = stage.requestFullscreen || stage.webkitRequestFullscreen;
+			if (fsEnabled && request && !isFullscreen()) {
+				const p = request.call(stage, { navigationUI: 'hide' });
+				if (p && p.then) {
+					p.then(lock, lock);
+					return;
+				}
+			}
+		} catch (e) {
+			// Fullscreen refused: play in the page.
+		}
+		lock();
 	}
 
 	function toggleFullscreen() {
@@ -527,9 +722,6 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 				drawCentred(ctx, error.detail, 160, 170, PAL.mauve);
 			}
 		}
-		if (touchOnly && (state === 'loading' || state === 'ready')) {
-			drawCentred(ctx, 'LUXEL NEEDS A KEYBOARD', 160, 128, PAL.coral);
-		}
 	}
 
 	function tick(now) {
@@ -605,6 +797,9 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 		state = 'starting';
 		startAt = performance.now() / 1000;
 		loader.classList.remove('gate');
+		if (touchOnly) {
+			enterTouchFullscreen();
+		}
 		focusGame();
 		layout();
 		// Let the lantern's flash paint first: booting blocks the page until the game's first frame.
@@ -689,6 +884,31 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 	});
 	stage.addEventListener('mousemove', wake);
 	window.addEventListener('resize', layout);
+	window.addEventListener('orientationchange', layout);
+	if (touchOnly) {
+		// No page gestures: no pinch, no double-tap zoom, no pull-to-refresh, no long-press menu.
+		['gesturestart', 'gesturechange', 'gestureend'].forEach(function (name) {
+			document.addEventListener(name, function (e) {
+				e.preventDefault();
+			});
+		});
+		let lastTouchEnd = 0;
+		document.addEventListener('touchend', function (e) {
+			const now = Date.now();
+			if (now - lastTouchEnd < 350 && e.cancelable) {
+				e.preventDefault();
+			}
+			lastTouchEnd = now;
+		}, { passive: false });
+		document.addEventListener('touchmove', function (e) {
+			if (e.cancelable) {
+				e.preventDefault();
+			}
+		}, { passive: false });
+		document.addEventListener('contextmenu', function (e) {
+			e.preventDefault();
+		});
+	}
 	document.addEventListener('fullscreenchange', function () {
 		layout();
 		drawFsIcon();

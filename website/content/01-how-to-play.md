@@ -2,7 +2,7 @@
 id: how-to-play
 tab: CONTROLS
 title: HOW TO PLAY
-kicker: ARROWS OR WASD: MOVE. THE LANTERN DOES THE REST.
+kicker: ARROWS, WASD OR A DRAG: MOVE. THE LANTERN DOES THE REST.
 ---
 
 You only move. The lantern aims at the nearest enemy and fires by itself, so your one job in play is where Wick stands.
@@ -19,6 +19,21 @@ You only move. The lantern aims at the nearest enemy and fires by itself, so you
 | Any key or a click | | Starts from the title and skips the intro |
 
 The pause card reads SPACE: RESUME, R: RESTART, Q: TITLE. Esc does nothing there, so a double press can't quit your run. R is a hold in play because it sits next to W and E. There is no mouse aiming and no gamepad.
+
+## TOUCH
+
+On a phone or tablet, turn it sideways: Luxel plays in landscape only, and a portrait screen pauses the game and asks you to turn it. Tap the screen once to light the lantern and the game goes fullscreen where the browser allows it.
+
+| Touch | In play | In menus and cards |
+|---|---|---|
+| Put a thumb down anywhere and drag | A floating stick appears under your thumb and Wick walks the way you drag (8 directions) | |
+| Tap a tab | | Opens it |
+| Tap a row | | Picks it, and a SELL button appears; tap SELL to sell it |
+| Tap a card button | | Works the card (resume, restart, title) |
+| Pause button, top-right corner | Pauses | |
+| Tap | | Starts from the title and skips the intro |
+
+There is no keyboard to hold R on, so restart from the pause card or the death card. On iPhone, Safari has no fullscreen for web pages: use Share, then Add to Home Screen, to play without the browser bars.
 
 ## THE LOOP
 
@@ -48,12 +63,12 @@ A first play from the title to the results takes about 8 and a half minutes, cou
 
 ## TIPS FOR JUDGES
 
-- In a browser, click the game once before you start. The click gives it focus and lets the sound play.
+- In a browser, click or tap the game once before you start. That gives it focus and lets the sound play. On a phone, turn it sideways first.
 - The first play opens with a 24-second story intro (any key skips it) and a tutorial of about half a minute in which Wick can't be hurt. Both play once. Later runs start straight away.
 - Sell at every menu. The powers are what keep you alive: a player who never sells falls before act 3.
 - Every level-up heals one heart until you sell HEALING.
 - From level 12 (act 3, when CONTROLS opens) a hit on your last heart still can't end the run. Instead THE LANTERN SPILLS: the gauge empties and its shards scatter around Wick. You have 4 seconds to run them back in, then they're gone. The results card counts SAVED BY THE LANTERN ×N. Get that far and you will see the ending.
 - Catch the Magpie. Killing it drops its star into the lantern for a free level-up.
-- Dying is cheap. Space restarts in place, with no intro or tutorial, and the first menu comes again at about 0:20.
+- Dying is cheap. Restarting from the death card puts you back in place, with no intro or tutorial, and the first menu comes again at about 0:20.
 - The ending runs about a minute. Press twice to skip to the results.
 - If the game loses focus, it pauses.

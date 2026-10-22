@@ -89,6 +89,7 @@ func _ready() -> void:
 	run.finale_line.connect(_on_finale_line)
 	run.stop_line.connect(_on_stop_line)
 	run.stop_cleared.connect(_on_stop_cleared)
+	Touch.pause_pressed.connect(_on_touch_pause)
 	title.start.connect(_on_title_start)
 	intro.finished.connect(_on_intro_finished)
 	tutorial_node.finished.connect(_on_tutorial_finished)
@@ -282,6 +283,11 @@ func _pause() -> void:
 	cards.pause()
 
 
+func _on_touch_pause() -> void:
+	if _can_pause() and not run.autopilot and not run.paused: # live: Touch.pause_enabled is a frame old by now
+		_pause()
+
+
 func _resume() -> void:
 	cards.close()
 	run.set_paused(false)
@@ -296,12 +302,20 @@ func _death_quip() -> String:
 # ---- per frame and keys -------------------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
+	_feed_touch()
 	if _dead_t >= 0.0:
 		_dead_t -= delta
 		if _dead_t < 0.0 and state == Flow.RUN:
 			_set_state(Flow.DEAD)
 			cards.death(last_stats, _death_quip(), SAVE.load_best(), new_best)
 	_hold_restart(delta)
+
+
+## The touch controls follow the game: the stick while Wick takes moves from input, the pause button while Esc/P pauses.
+func _feed_touch() -> void:
+	var live := state == Flow.RUN and not run.autopilot
+	Touch.stick_enabled = live and not run.paused and not run.frozen and not menu.is_open()
+	Touch.pause_enabled = live and _can_pause() and not run.paused
 
 
 ## Hold R 0.5 s in play restarts (a ring fills over Wick). R must have been up since the run started, so the R
@@ -333,6 +347,11 @@ func _notification(what: int) -> void:
 		_pause_if_away()
 
 
+## The pause key, or the touch button, would pause now (the autopilot check is the callers' own).
+func _can_pause() -> bool:
+	return state == Flow.RUN and PAUSABLE.has(run.phase) and not menu.is_open()
+
+
 ## A menu shut or the run's phase changed (menu.closed, run.phase_changed): synchronous, so a pause for a lost
 ## focus lands before the world's next step.
 func _on_run_moved_on(_arg) -> void:
@@ -342,25 +361,25 @@ func _on_run_moved_on(_arg) -> void:
 func _pause_if_away() -> void:
 	if not _away or not is_node_ready() or OS.has_feature("movie") or run.autopilot:
 		return
-	if state == Flow.RUN and PAUSABLE.has(run.phase) and not menu.is_open():
+	if _can_pause():
 		_away = false # answered: leaving the card takes the player's own key, so one lost focus pauses once
 		_pause()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key == null or not key.pressed or key.echo:
+	var tap := event as InputEventScreenTouch
+	if (key == null or not key.pressed or key.echo) and (tap == null or not tap.pressed):
 		return
-	var code := key.keycode
 	match state:
 		Flow.RUN:
-			if (code == KEY_ESCAPE or code == KEY_P) and PAUSABLE.has(run.phase) and not menu.is_open():
+			if key != null and (key.keycode == KEY_ESCAPE or key.keycode == KEY_P) and _can_pause():
 				_pause()
 			else:
 				return
 		Flow.ENDING:
 			if ending.has_method("key"):
-				ending.call("key", key)
+				ending.call("key", event)
 			else:
 				_ending_presses += 1
 				if _ending_presses >= 2:
@@ -368,4 +387,3 @@ func _unhandled_input(event: InputEvent) -> void:
 		_:
 			return
 	get_viewport().set_input_as_handled()
-

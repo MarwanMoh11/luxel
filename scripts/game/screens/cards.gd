@@ -11,6 +11,7 @@ enum Card { NONE, PAUSE, DEATH, RESULTS }
 const N := preload("res://scripts/game/ui/narration.gd")
 const STORY := preload("res://scripts/game/story/story_text.gd")
 const SAVE := preload("res://scripts/game/save.gd")
+const TAP := preload("res://scripts/game/ui/tap.gd")
 const PAL: Dictionary = N.PAL
 const CX := 160.0
 const FADE := 0.3 ## the card's text climbs its ramp
@@ -19,6 +20,8 @@ const DEATH_PANEL := Rect2(56, 42, 208, 86)
 const RESULTS_PANEL := Rect2(70, 100, 180, 58) ## below Wick, the letterbox still on (STORY.md 7)
 const TITLE_CUE_AFTER := 2.0 ## the title cue fades in quietly under the results panel
 const KEYS_SLOT := "results_keys" ## the results' key line sits in the letterbox's bottom bar, so the narration draws it
+const BUTTON_GAP := 10.0 ## px between touch buttons (wider than twice the hit growth, so no two hit areas meet)
+const BUTTON_Y := {Card.PAUSE: 89.0, Card.DEATH: 111.0, Card.RESULTS: 167.0} ## the touch buttons' top, where the key line was
 
 var run ## run.gd (shop for LANGUAGE, fx for the sounds)
 var card: int = Card.NONE
@@ -29,6 +32,13 @@ var _quip := ""
 var _t := 0.0
 var _opened_frame := -1
 var _cue_started := false
+var _tap := TAP.new() ## touch: reads taps on the open card's buttons
+var _items: Array[Dictionary] = [] ## the open card's touch buttons: {rect, label, action}
+var _held := -1 ## the button a finger is down on (-1: none)
+
+
+func _ready() -> void:
+	Touch.mode_changed.connect(_on_touch_mode)
 
 
 ## Keeps the run.
@@ -58,16 +68,16 @@ func results(stats: Dictionary, best: Dictionary, new_best: bool) -> void:
 	_set_best(stats, best, new_best)
 	_cue_started = false
 	_open(Card.RESULTS)
-	var narration := get_node_or_null("%Narration")
-	if narration != null:
-		narration.say(STORY.lines("results.keys"), "cream", 3600.0, -1.0, 1, KEYS_SLOT)
+	_sync_keys()
 
 
 ## Hides any card (ARCHITECTURE.md's hide(): `hide` is CanvasItem's).
 func close() -> void:
 	if card == Card.RESULTS and get_node_or_null("%Narration") != null:
 		get_node("%Narration").unsay(KEYS_SLOT)
+		get_node("%Narration").set_buttons([])
 	card = Card.NONE
+	_tap.disarm()
 	visible = false
 
 
@@ -80,8 +90,62 @@ func _open(c: int) -> void:
 	card = c
 	_t = 0.0
 	_opened_frame = Engine.get_process_frames()
+	_items = _make_buttons()
+	_held = -1
+	_tap.arm()
 	visible = true
 	queue_redraw()
+
+
+## The card's touch buttons, centred in a row at BUTTON_Y: the same actions as its keys.
+func _make_buttons() -> Array[Dictionary]:
+	var specs: Array = []
+	match card:
+		Card.PAUSE:
+			specs = [["button.resume", "resume"], ["button.restart", "restart"], ["button.title", "title"]]
+		Card.DEATH:
+			specs = [["button.again", "restart"], ["button.title", "title"]]
+		Card.RESULTS:
+			specs = [["button.play_again", "restart"], ["button.title", "title"]]
+	var items: Array[Dictionary] = []
+	var width := BUTTON_GAP * maxf(specs.size() - 1, 0)
+	for spec: Array in specs:
+		items.append({"label": STORY.line(spec[0]), "action": spec[1]})
+		width += N.button_size(items[-1]["label"]).x
+	var x := roundf(CX - width / 2.0)
+	for item: Dictionary in items:
+		var size := N.button_size(item["label"])
+		item["rect"] = Rect2(Vector2(x, BUTTON_Y[card]), size)
+		x += size.x + BUTTON_GAP
+	return items
+
+
+## The results' bottom bar shows the key line, or the buttons on a touch screen (the narration draws both).
+func _sync_keys() -> void:
+	var narration := get_node_or_null("%Narration")
+	if narration == null or card != Card.RESULTS:
+		return
+	if Touch.active:
+		narration.unsay(KEYS_SLOT)
+		narration.set_buttons(_items, _held)
+	else:
+		narration.say(STORY.lines("results.keys"), "cream", 3600.0, -1.0, 1, KEYS_SLOT)
+		narration.set_buttons([])
+
+
+func _on_touch_mode(_on: bool) -> void:
+	if card == Card.NONE:
+		return
+	queue_redraw()
+	_sync_keys()
+
+
+## The button under the finger that is down (the hit area), or -1.
+func _button_at(at: Vector2) -> int:
+	for i in _items.size():
+		if N.button_hit(_items[i]["rect"]).has_point(at):
+			return i
+	return -1
 
 
 func _set_best(stats: Dictionary, best: Dictionary, new_best: bool) -> void:
@@ -105,13 +169,28 @@ func _process(delta: float) -> void:
 	if card == Card.RESULTS and not _cue_started and _t >= TITLE_CUE_AFTER:
 		_cue_started = true
 		run.fx.title(true)
+	var held := _button_at(_tap.held()) if Touch.active else -1
+	if held != _held:
+		_held = held
+		queue_redraw()
+		_sync_keys()
 	if _t <= FADE + delta:
 		queue_redraw()
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if card == Card.NONE:
+		return
 	var key := event as InputEventKey
-	if card == Card.NONE or key == null or not key.pressed or key.echo:
+	if key == null:
+		var i := _button_at(_tap.feed(event, self))
+		if i >= 0 and Touch.active and Engine.get_process_frames() != _opened_frame:
+			var choice: String = _items[i]["action"]
+			get_viewport().set_input_as_handled()
+			close()
+			action.emit(choice)
+		return
+	if not key.pressed or key.echo:
 		return
 	if Engine.get_process_frames() == _opened_frame:
 		return # the press that opened this card
@@ -155,7 +234,10 @@ func _draw() -> void:
 func _draw_pause() -> void:
 	N.panel(self, PAUSE_PANEL)
 	_line(_txt(STORY.line("pause.title")), 70, "gold", 2)
-	_line(_txt(STORY.line("pause.keys")), 92, "cream")
+	if Touch.active:
+		_draw_buttons()
+	else:
+		_line(_txt(STORY.line("pause.keys")), 92, "cream")
 
 
 func _draw_death() -> void:
@@ -166,7 +248,10 @@ func _draw_death() -> void:
 	_line(_txt("SOLD %d OF %d SETTINGS" % [int(_stats.get("sold", 0)), STORY.SETTINGS_TOTAL]), 90, "stone")
 	if _best != "":
 		_line(_txt(_best), 100, "lime" if _new_best else "mauve")
-	_line(_txt(STORY.line("death.keys")), 116, "cream")
+	if Touch.active:
+		_draw_buttons()
+	else:
+		_line(_txt(STORY.line("death.keys")), 116, "cream")
 
 
 func _draw_results() -> void:
@@ -180,7 +265,15 @@ func _draw_results() -> void:
 	if spills > 0:
 		_line(STORY.line("results.lantern_saves", "SAVED BY THE LANTERN x%d") % spills, 154, "gold")
 	if get_node_or_null("%Narration") == null:
-		_line(STORY.line("results.keys"), 166, "cream")
+		if Touch.active:
+			_draw_buttons()
+		else:
+			_line(STORY.line("results.keys"), 166, "cream")
+
+
+func _draw_buttons() -> void:
+	for i in _items.size():
+		N.button(self, _items[i]["rect"], _items[i]["label"], i == _held)
 
 
 func _stat_line() -> String:

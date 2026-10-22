@@ -24,7 +24,7 @@ Then the dark comes all at once, and the menu starts selling the game by itself:
 ## FEATURES
 
 - An upgrade shop that is the game's own Settings menu, with 19 sales to choose and a quip for every one
-- Arrows or WASD to move; the lantern aims and fires by itself
+- Arrows or WASD to move, or drag a thumb on a phone; the lantern aims and fires by itself
 - A pixel island in 20 colours, drawn entirely in code, that loses its looks one setting at a time
 - An original soundtrack in D harmonic minor that follows your run phrase by phrase
 - A finale where the menu sells the game by itself, down to DISPLAY: OFF, and a cinematic ending

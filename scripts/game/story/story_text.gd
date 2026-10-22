@@ -212,6 +212,29 @@ const TEXT := {
 	# Pause card (design 11)
 	"pause.title": "PAUSED",
 	"pause.keys": "SPACE: RESUME   R: RESTART   Q: TITLE",
+	# Touch screens: line(id) reads "<id>.touch" in place of a key prompt while Touch.active
+	"title.prompt.touch": "TAP TO START",
+	"intro.skip.touch": "TAP: SKIP",
+	"tut.move.touch": "DRAG ANYWHERE: MOVE",
+	"lose.input_delay.touch": "YOUR MOVES ANSWER 0.2 S LATE.",
+	"lose.up_key.touch": "MOVING UP CUTS OUT NOW AND THEN.",
+	"finale.relight.touch": "THE LANTERN CAN FIX IT. TAP FAST.",
+	"finale.relight_key.touch": "TAP: FIX THE SCREEN",
+	"menu.pixels.sell_key.touch": "TAP: SELL 1%",
+	"menu.pixels.auto_key.touch": "TAP: AUTO-SELL",
+	"ending.skip.touch": "TAP AGAIN TO SKIP",
+	"menu.touch_hint": "TAP A TAB OR A ROW",
+	# Touch buttons (menus and cards)
+	"button.sell": "SELL",
+	"button.skip": "SKIP",
+	"button.buy": "BUY BACK",
+	"button.sell_1": "SELL 1%",
+	"button.auto_sell": "AUTO-SELL",
+	"button.resume": "RESUME",
+	"button.restart": "RESTART",
+	"button.again": "AGAIN",
+	"button.play_again": "PLAY AGAIN",
+	"button.title": "TITLE",
 }
 
 ## Lines drawn bigger than scale 1 (their width limit is the screen).
@@ -242,6 +265,8 @@ const ENDING := [
 
 ## The line for hook `id`, or `fallback`.
 static func line(id: String, fallback := "") -> String:
+	if Touch.active and TEXT.has(id + ".touch"):
+		return TEXT[id + ".touch"]
 	return TEXT.get(id, fallback)
 
 

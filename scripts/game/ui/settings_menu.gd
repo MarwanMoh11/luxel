@@ -15,6 +15,8 @@ const DATA := preload("res://scripts/game/shop/shop_data.gd")
 const SHOP := preload("res://scripts/game/shop/shop.gd")
 const STORY := preload("res://scripts/game/story/story_text.gd")
 const PAL: Dictionary = preload("res://scripts/game/ui/palette.gd").PAL
+const N := preload("res://scripts/game/ui/narration.gd")
+const TAP := preload("res://scripts/game/ui/tap.gd")
 const CX := 160.0
 const PANEL := Rect2(10, 4, 300, 172)
 # Columns: name, slider, the value now > after the sale, and what the sale pays.
@@ -39,6 +41,7 @@ const KEYS_Y := 160 ## auto mode: the AUTO / BLAST tag
 const GET_Y := 141 ## YOU GET (or the sold row's quip)
 const PREVIEW_Y := 151 ## the stat line, with what the picked sale changes lit
 const HINT_Y := 163 ## the key hint
+const BUTTON_Y := 161 ## touch mode: the button's top (its text sits on HINT_Y + 1)
 const STAT_W := 288.0 ## the stat line's widest (the panel's inside is 292)
 ## Tutorial menu: the HOW IT WORKS box under the one row.
 const HOW_BOX := Rect2(52, 66, 216, 52)
@@ -74,6 +77,7 @@ const PIXEL_RULE_Y := 31
 const PIXEL_QUIP_Y := 34
 const PIXEL_STAT_Y := 43
 const PIXEL_KEYS_Y := 52
+const PIXEL_BUTTON_Y := 50 ## touch mode: the button's top
 const PIXEL_AUTO_AFTER := 5 ## presses before the AUTO-SELL row shows
 const PIXEL_AUTO_HOLD := 0.3 ## AUTO-SELL ON. shows this long, then the menu closes
 const PIXEL_PRESS_GAP := 0.05 ## s between presses at least
@@ -111,10 +115,15 @@ var _press_t := -1.0 ## pixels mode: seconds since the last press (-1: none yet)
 var _bb_first := false ## player mode: the first menu that offers BUY BACK (its header line blinks gold)
 var _blast := 0 ## auto mode: this self-sale's charge of the blast (BLAST k/n, P8 B2); 0 = AUTO
 var _blast_of := 0
+var _tap := TAP.new() ## touch: reads taps on the tabs, rows and the button while the menu accepts input
 var _pace := 1.0 ## auto mode: this self-sale's speed-up (settings_fx.finale_pace(_blast)); AUTO_* times scale by it
 
 
 ## Keeps the shop and the run.
+func _ready() -> void:
+	Touch.mode_changed.connect(func(_on: bool) -> void: queue_redraw()) # key hints <-> buttons
+
+
 func setup(s: RefCounted, r: Node2D) -> void:
 	shop = s
 	run = r
@@ -130,6 +139,7 @@ func open(ctx: Dictionary) -> void:
 	_pace = maxf(AUTO_PACE_FLOOR, run.fx.finale_pace(_blast)) if run and run.fx and _mode == "auto" else 1.0
 	_target = String(ctx.get("target", ""))
 	_open = true
+	_tap.arm()
 	_t = 0.0
 	_sold_t = -1.0
 	_sale = {}
@@ -247,7 +257,13 @@ func cursor_id() -> String:
 
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key == null or not key.pressed or key.echo or not _accepts_keys():
+	if key == null:
+		var at := _tap.feed(event, self)
+		if at != Vector2.INF and _accepts_keys():
+			_tapped(at)
+			get_viewport().set_input_as_handled()
+		return
+	if not key.pressed or key.echo or not _accepts_keys():
 		return
 	var k := ""
 	match key.keycode:
@@ -302,12 +318,13 @@ func _process(delta: float) -> void:
 
 
 ## What the next frame of a still menu would draw differently: the two blinks (player, tutorial; the forced menu has
-## none before its sale), or the press flash, the gold quip and the stat line (pixels).
+## none before its sale), or the press flash, the gold quip and the stat line (pixels); and the touch button pressed.
 func _still_sig() -> String:
 	if _mode == "pixels":
-		return "%d%d%s" % [int(_press_t >= 0.0 and _press_t < PIXEL_FLASH), int(_press_t >= 0.0 and _press_t < PIXEL_GOLD),
-				_pixel_stat_text()]
-	return "%d%d" % [int(_blink() and not _new.is_empty()), int(_bb_first and _t < 1.5 and fmod(_t, 0.5) >= 0.3)]
+		return "%d%d%d%s" % [int(_press_t >= 0.0 and _press_t < PIXEL_FLASH), int(_press_t >= 0.0 and _press_t < PIXEL_GOLD),
+				int(_button_held()), _pixel_stat_text()]
+	return "%d%d%d" % [int(_blink() and not _new.is_empty()), int(_bb_first and _t < 1.5 and fmod(_t, 0.5) >= 0.3),
+			int(_button_held())]
 
 
 # --- modes -----------------------------------------------------------------------------------------------------
@@ -444,6 +461,7 @@ func _close() -> void:
 	if not _open:
 		return
 	_open = false
+	_tap.disarm()
 	if _walled() and run and run.fx:
 		run.fx.menu(false)
 	queue_redraw()
@@ -527,14 +545,93 @@ func _move_row(dir: int) -> void:
 	var to := _row
 	for i in n:
 		to = posmod(to + dir, n)
-		if to >= rows.size() or not rows[to] in DATA.ROWS or shop.row_state(rows[to]) == SHOP.RowState.OPEN \
-				or _buyable(rows[to]):
+		if _landable(rows, to):
 			break
+	_pick_row(to)
+
+
+## True when the cursor may rest on row `i` (`rows.size()` = BACK): BACK, a row the sale can take or BUY BACK can
+## return, or a row of the pixels panel.
+func _landable(rows: Array, i: int) -> bool:
+	return i >= rows.size() or not rows[i] in DATA.ROWS or shop.row_state(rows[i]) == SHOP.RowState.OPEN \
+			or _buyable(rows[i])
+
+
+func _pick_row(to: int) -> void:
 	if to == _row:
 		return
 	_row = to
 	_fx_play("pick")
 	queue_redraw()
+
+
+# --- touch -----------------------------------------------------------------------------------------------------
+
+## A finger tapped at `at`: the button sells (only the button: a mis-tap on an 8 px row must never cost a setting),
+## a tab opens, a row moves the cursor.
+func _tapped(at: Vector2) -> void:
+	var button := _button_rect()
+	if button.size != Vector2.ZERO and N.button_hit(button).has_point(at):
+		press("sell")
+		return
+	var rows := _rows()
+	if _mode == "pixels":
+		for i in rows.size():
+			if Rect2(PIXEL_PANEL.position.x, PIXEL_ROW_Y + i * PIXEL_ROW_GAP - 2, PIXEL_PANEL.size.x,
+					PIXEL_ROW_GAP).has_point(at) and _landable(rows, i):
+				_pick_row(i)
+		return
+	var spans := _tab_spans()
+	for i in _tabs.size():
+		if Rect2(spans[i].x - 1, TAB_Y - 4, spans[i].y + 2, 17).has_point(at):
+			if _tabs[i] != _tab and _tabs[i] in _nav:
+				_tab = _tabs[i]
+				_row = _first_row(_tab)
+				_fx_play("tab")
+				queue_redraw()
+			return
+	var gap := _row_gap(rows)
+	var n := rows.size() + (1 if _has_back() else 0)
+	var i := floori((at.y - (ROW_Y - 2)) / gap)
+	if at.x >= PANEL.position.x and at.x < PANEL.end.x and at.y >= ROW_Y - 2 and i < n and _landable(rows, i):
+		_pick_row(i)
+
+
+## The touch button's label, which follows the cursor like the SPACE key: SELL, SKIP on BACK, BUY BACK on a row
+## that can be bought back (pixels: SELL 1%, AUTO-SELL). "" when no button shows.
+func _button_label() -> String:
+	if not Touch.active or not _open or _mode == "auto":
+		return ""
+	if _mode == "pixels":
+		return STORY.line("button.auto_sell") if cursor_id() == AUTO_ROW else STORY.line("button.sell_1")
+	var rows := _rows()
+	if _row >= rows.size():
+		return STORY.line("button.skip")
+	return STORY.line("button.buy") if _buyable(rows[_row]) else STORY.line("button.sell")
+
+
+## Where the touch button sits (Rect2() while none shows): bottom right of the player menu, centred elsewhere.
+func _button_rect() -> Rect2:
+	var label := _button_label()
+	if label == "":
+		return Rect2()
+	var size := N.button_size(label)
+	if _mode == "player":
+		return Rect2(Vector2(TAG_END - size.x, BUTTON_Y), size)
+	return Rect2(Vector2(roundf(CX - size.x / 2.0), PIXEL_BUTTON_Y if _mode == "pixels" else BUTTON_Y), size)
+
+
+## True while a finger that may become a tap is down on the button.
+func _button_held() -> bool:
+	return _button_label() != "" and N.button_hit(_button_rect()).has_point(_tap.held())
+
+
+## The touch button, and in the player menu the hint on its left.
+func _draw_button() -> void:
+	var r := _button_rect()
+	if _mode == "player":
+		_text(STORY.line("menu.touch_hint", "TAP A TAB OR A ROW"), 24, r.position.y + 3, PAL["stone"], PAL["dusk"])
+	N.button(self, r, _button_label(), _button_held())
 
 
 func _fx_play(sfx: String, jitter := 0.06) -> void:
@@ -569,7 +666,7 @@ func _draw_menu() -> void:
 	_draw_header()
 	_draw_tabs()
 	var rows := _rows()
-	var gap := 8 if rows.size() + 1 > 8 else 10
+	var gap := _row_gap(rows)
 	for i in rows.size():
 		_plain = rows[i] == DATA.PIXELS
 		_draw_row(rows[i], i, ROW_Y + i * gap)
@@ -582,6 +679,11 @@ func _draw_menu() -> void:
 	_draw_footer(rows)
 	if _mode == "tutorial":
 		_draw_how_to()
+
+
+## The rows' pitch: 10 px, 8 when the tab is crowded.
+func _row_gap(rows: Array) -> int:
+	return 8 if rows.size() + 1 > 8 else 10
 
 
 ## Tutorial menu: the trade in three plain steps, in the empty space under its one row.
@@ -626,15 +728,25 @@ func _draw_header() -> void:
 ## it sells yet (the beauty rows, until CONFIRM SALES breaks the locks); sold-out tabs are dim with no sign.
 func _draw_tabs() -> void:
 	draw_rect(Rect2(16, TAB_Y + 8, 288, 1), PAL["mauve"])
+	var spans := _tab_spans()
+	for i in _tabs.size():
+		var t := _tabs[i]
+		_plain = t == DATA.ADVANCED_TAB # the hidden tab always reads plain, as in the prototype, even while LANGUAGE lasts
+		_draw_tab(t, spans[i].x, spans[i].y, _tab_padlock(t))
+		_plain = false
+
+
+## Each tab's (x, width) on the strip, in `_tabs` order (drawing and taps share it).
+func _tab_spans() -> Array[Vector2i]:
+	var spans: Array[Vector2i] = []
 	var x := TAB_X
 	for t in _tabs:
-		_plain = t == DATA.ADVANCED_TAB # the hidden tab always reads plain, as in the prototype, even while LANGUAGE lasts
-		var locked := _tab_padlock(t)
-		var sign := locked or _cracked_tab(t) or _stock(t) > 0
-		var w := PixelFont.width(_txt(DATA.TABS[t]["name"])) + 6 + (6 if sign else 0)
-		_draw_tab(t, x, w, locked)
-		_plain = false
+		var title: String = DATA.TABS[t]["name"]
+		var sign := _tab_padlock(t) or _cracked_tab(t) or _stock(t) > 0
+		var w := PixelFont.width(title if t == DATA.ADVANCED_TAB else _txt(title)) + 6 + (6 if sign else 0)
+		spans.append(Vector2i(x, w))
 		x += w + TAB_GAP
+	return spans
 
 
 func _draw_tab(t: int, x: int, w: int, locked: bool) -> void:
@@ -884,6 +996,9 @@ func _draw_footer(rows: Array) -> void:
 			_draw_trade(_lose_of(id), shop.next_label(id), _form_tags(id))
 	if _mode != "tutorial":
 		_draw_stats(power, refill)
+	if Touch.active:
+		_draw_button()
+		return
 	var keys := "SPACE: SELL"
 	if _mode == "player":
 		keys = "LEFT RIGHT: TAB   UP DOWN: PICK   SPACE: " + ("SKIP" if _row >= rows.size() else "SELL")
@@ -1045,6 +1160,10 @@ func _draw_pixels_panel() -> void:
 		quip_ink = PAL["gold"] if _press_t < PIXEL_GOLD else PAL["stone"]
 	_centered(quip, CX, PIXEL_QUIP_Y, quip_ink, PAL["dusk"])
 	_centered(_pixel_stat_text(), CX, PIXEL_STAT_Y, PAL["sky"], PAL["dusk"])
+	if Touch.active:
+		_draw_button()
+		_plain = false
+		return
 	var keys := STORY.line("menu.pixels.sell_key", "SPACE: SELL 1%")
 	if rows.size() > 1: # the pick key as in player mode (Up always works in menus)
 		keys = "UP DOWN: PICK   " + (STORY.line("menu.pixels.auto_key", "SPACE: AUTO-SELL") if cursor_id() == AUTO_ROW

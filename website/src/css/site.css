@@ -232,6 +232,13 @@ figcaption { font-size: .86em; color: var(--stone); margin-top: 10px; line-heigh
 .scroll-hint { color: var(--stone); text-shadow: var(--outline); animation: hint 1.6s steps(2) infinite; }
 @keyframes hint { 50% { transform: translateY(var(--px)); color: var(--gold); } }
 @media (max-width: 760px) { .hero-ui { gap: 16px; padding-bottom: 4vh; } .hero-buttons .btn { font-size: var(--f1); line-height: calc(var(--px) * 9); } }
+/* A phone on its side: the hero is the screen's height, with a compact row of buttons under the tagline. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .hero { min-height: 0; height: calc(100vh - 57px); height: calc(100svh - 57px); } /* 57px: the sticky header */
+  .hero-ui { gap: 10px; padding-bottom: 14px; }
+  .hero-buttons .btn { font-size: var(--f1); line-height: calc(var(--px) * 9); }
+  .hero-meta, .scroll-hint { display: none; }
+}
 
 /* ---------- Trailer ---------- */
 .player { position: relative; margin: 0 auto; background: var(--void); }
@@ -256,6 +263,8 @@ figcaption { font-size: .86em; color: var(--stone); margin-top: 10px; line-heigh
 .play-box .poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; opacity: .55; }
 .play-box .cover { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; padding: 16px; }
 .play-note { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; margin-top: 14px; color: var(--stone); }
+.only-touch { display: none; }
+@media (hover: none) and (pointer: coarse) { .only-kb { display: none; } .only-touch { display: flex; } }
 .keys { display: inline-flex; gap: 6px; flex-wrap: wrap; }
 .key { font-family: var(--pixel); font-size: var(--f1); line-height: calc(var(--px) * 7); color: var(--night); background: var(--stone);
   padding: 0 calc(var(--px) * 2); box-shadow: 0 var(--px) 0 var(--mauve), 0 0 0 var(--px) var(--night); -webkit-font-smoothing: none; }
@@ -499,6 +508,19 @@ details.row[open] > summary .pm::before { content: "-"; }
 details.row > .prose { padding: 18px calc(var(--px) * 7) 4px; }
 .table { overflow-x: auto; margin: 1em 0; }
 .table table { margin: 0; min-width: 520px; }
+@media (max-width: 560px) {
+  .table table { min-width: 0; }
+  .table.stack { overflow-x: visible; }
+  .table.stack table { display: block; }
+  .table.stack thead { display: none; }
+  .table.stack tbody, .table.stack tr { display: block; }
+  .table.stack tr { padding: 10px 0; border-bottom: 1px solid rgba(138, 110, 145, .35); }
+  .table.stack td { display: block; padding: 2px 0; border: 0; }
+  .table.stack td:empty { display: none; }
+  .table.stack td::before { content: attr(data-label) ": "; color: var(--mauve); }
+  .table.stack td:first-child::before { content: none; }
+  .table.stack td:first-child { color: var(--gold); }
+}
 .hint { margin-top: 12px; }
 .teaser { max-width: 560px; margin: 0 auto; color: var(--cream); }
 .grid.two-up { grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); }

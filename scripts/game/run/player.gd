@@ -152,7 +152,7 @@ func _wanted() -> Vector2:
 		d.y -= 1
 	if Input.is_key_pressed(KEY_DOWN) or Input.is_key_pressed(KEY_S):
 		d.y += 1
-	return d.normalized()
+	return (d + Touch.move()).normalized()
 
 
 ## The plain dodge bot: away from close enemies and harmful hazards, pulled toward the island's spawn.

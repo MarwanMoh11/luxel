@@ -39,6 +39,7 @@ const EMBER := 0.05 ## a lit luxel going out shows ember, then unlit, then nothi
 const UNLIT_FOR := 0.12
 const DARK_LIFT := 0.4 ## a press during the lighting lifts the dark over this
 const FADE_OUT := 0.6 ## all gone by then (the intro's letterbox slides in over the top)
+const GAMER_TOUCH_H := 22.0 ## px: the GAMER MODE line's hit height while a finger plays (13 px with a mouse)
 const GAMER_Y := 148 ## the GAMER MODE toggle's top; its note GAMER_GAP under it while on
 const GAMER_GAP := 8
 const GAMER_KEYS: Array[Key] = [KEY_LEFT, KEY_RIGHT, KEY_A, KEY_D, KEY_TAB, KEY_G]
@@ -156,13 +157,17 @@ func is_open() -> bool:
 	return _open
 
 
-## A key press or a click that counts as "any key" (F11 and Alt+Enter belong to the Display autoload).
+## A key press, a click or a finger down that counts as "any key" (F11 and Alt+Enter belong to the Display autoload).
+## The click a finger makes (Godot's mouse emulation) is skipped: the touch itself has just counted.
 static func any_press(event: InputEvent) -> bool:
 	var key := event as InputEventKey
 	if key != null:
 		return key.pressed and not key.echo and not key.alt_pressed and key.keycode != KEY_F11
+	var touch := event as InputEventScreenTouch
+	if touch != null:
+		return touch.pressed
 	var mouse := event as InputEventMouseButton
-	return mouse != null and mouse.pressed
+	return mouse != null and mouse.pressed and mouse.device != InputEvent.DEVICE_ID_EMULATION
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -177,13 +182,18 @@ func _unhandled_input(event: InputEvent) -> void:
 	start.emit()
 
 
-## A GAMER MODE key, or a click on its line.
+## A GAMER MODE key, or a click or tap on its line (a taller target for a thumb).
 func _toggles(event: InputEvent) -> bool:
 	var key := event as InputEventKey
 	if key != null:
 		return key.keycode in GAMER_KEYS
+	var at := get_local_mouse_position()
+	var touch := event as InputEventScreenTouch
+	if touch != null:
+		at = (make_input_local(touch) as InputEventScreenTouch).position
 	var w := PixelFont.width(STORY.line("title.gamer_off"))
-	return Rect2(160 - w / 2.0 - 12, GAMER_Y - 4, w + 24, 13).has_point(get_local_mouse_position())
+	var h := GAMER_TOUCH_H if Touch.active else 13.0
+	return Rect2(160 - w / 2.0 - 12, GAMER_Y + 2.5 - h / 2.0, w + 24, h).has_point(at)
 
 
 func _toggle_gamer() -> void:

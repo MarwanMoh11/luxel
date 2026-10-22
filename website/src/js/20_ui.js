@@ -185,8 +185,12 @@
 
   /* ---- Play here: the game loads only on a click ---- */
   Lux.ready(function () {
+    var touch = window.matchMedia && window.matchMedia("(hover: none) and (pointer: coarse)").matches;
     Lux.$$("[data-load-game]").forEach(function (b) {
+      /* A phone is too small for a box in the page: the game goes to its own tab, where it fills the screen. */
+      if (touch) { b.textContent = "▶ TAP TO PLAY"; }
       b.addEventListener("click", function () {
+        if (touch) { window.open((Lux.data.links && Lux.data.links.play) || "play/", "_blank"); return; }
         var box = b.closest("[data-play]");
         var f = document.createElement("iframe");
         f.src = (Lux.data.links && Lux.data.links.play) || "play/";

@@ -23,6 +23,7 @@ general/default_playback_type.web=0
 
 Conductor="*res://scripts/conductor.gd"
 Display="*res://scripts/display.gd"
+Touch="*res://scripts/touch.gd"
 
 [display]
 

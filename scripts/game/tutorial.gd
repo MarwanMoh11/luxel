@@ -47,6 +47,8 @@ func start(r: Node2D, h: Node2D, m: Node2D) -> void:
 	hud = h
 	menu = m
 	_connect()
+	if not Touch.mode_changed.is_connected(_on_touch_mode):
+		Touch.mode_changed.connect(_on_touch_mode)
 	_spawned = 0
 	_side = 1.0
 	run.gauge_revealed = false
@@ -167,6 +169,12 @@ func _finish() -> void:
 
 
 # ---- run signals --------------------------------------------------------------------------------------------
+
+## The prompt names keys or a thumb: say it again in the new words while the move prompt is up.
+func _on_touch_mode(_on: bool) -> void:
+	if beat == Beat.MOVE and _done_at < 0.0:
+		_tip(STORY.line("tut.move"), TIP_HOLD, _pulsed)
+
 
 func _on_moved(px: float) -> void:
 	if beat == Beat.MOVE:

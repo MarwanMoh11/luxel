@@ -8,6 +8,9 @@ const STORY := preload("res://scripts/game/story/story_text.gd")
 const PAL: Dictionary = PALETTE.PAL
 const NIGHT: Color = PAL["night"]
 const BAR := 16.0 ## letterbox bar height on the 320x180 game screen
+const BUTTON_H := 11.0 ## a touch button's height (text 5 px, 3 px above and below)
+const BUTTON_PAD := 6.0 ## px either side of a touch button's text
+const BUTTON_HIT := 4.0 ## px a touch button's hit area grows past the drawn rect
 const FADE := 0.3 ## seconds for a line to climb (or fall back down) its ramp
 ## Each colour's fade ramp, from just above void to the colour itself (void is the step before the first).
 const RAMPS := {
@@ -27,6 +30,8 @@ var _bar_secs := 0.4
 var _slots := {} ## slot name -> {lines, colour, y, scale, t, secs}
 var _sig := 0 ## the lines' colours as last drawn (a line redraws only when its ramp steps)
 var _sr := Rect2() ## the screen rect as last drawn (the bars hug it)
+var _buttons: Array[Dictionary] = [] ## touch buttons drawn above the bars: {rect, label}
+var _button_held := -1 ## the lit button (a finger is down on it)
 
 
 ## Slides the letterbox bars in or out over `secs`.
@@ -56,6 +61,16 @@ func say(lines: PackedStringArray, colour: String, secs: float, y := -1.0, scale
 ## say() with the story line `id` (story_text.gd).
 func say_id(id: String, colour: String, secs: float, y := -1.0, scale := 1, slot := "") -> void:
 	say(STORY.lines(id), colour, secs, y, scale, slot)
+
+
+## Touch buttons drawn above the bars (the results card's, in the bottom bar): {rect, label} each; `held` lights one.
+func set_buttons(items: Array, held := -1) -> void:
+	if held == _button_held and items.size() == _buttons.size() and items.all(func(it: Dictionary) -> bool:
+			return it in _buttons):
+		return
+	_buttons.assign(items)
+	_button_held = held
+	queue_redraw()
 
 
 ## True while `slot` shows a line.
@@ -106,6 +121,8 @@ func _draw() -> void:
 		draw_rect(Rect2(sr.position.x, bottom, sr.size.x, sr.end.y - bottom).abs(), PAL["void"])
 	for slot: Dictionary in _slots.values():
 		_draw_slot(slot)
+	for i in _buttons.size():
+		button(self, _buttons[i]["rect"], _buttons[i]["label"], i == _button_held)
 
 
 func _draw_slot(s: Dictionary) -> void:
@@ -163,6 +180,25 @@ static func panel(ci: CanvasItem, r: Rect2) -> void:
 	ci.draw_rect(r, NIGHT)
 	ci.draw_rect(r.grow(-1), PAL["mauve"])
 	ci.draw_rect(r.grow(-2), PAL["dusk"])
+
+
+## A touch button's size for `label`: the text and BUTTON_PAD either side, BUTTON_H tall.
+static func button_size(label: String) -> Vector2:
+	return Vector2(PixelFont.width(label) + BUTTON_PAD * 2.0, BUTTON_H)
+
+
+## Where a tap counts for the button drawn at `r`: the rect grown by BUTTON_HIT.
+static func button_hit(r: Rect2) -> Rect2:
+	return r.grow(BUTTON_HIT)
+
+
+## A touch button: gold 1 px border, dusk fill, cream text; while a finger is `held` on it, gold fill and night text.
+static func button(ci: CanvasItem, r: Rect2, label: String, held := false) -> void:
+	ci.draw_rect(r, PAL["gold"])
+	ci.draw_rect(r.grow(-1), PAL["gold"] if held else PAL["dusk"])
+	var ink: Color = NIGHT if held else PAL["cream"]
+	var back: Color = PAL["gold"] if held else PAL["dusk"]
+	text(ci, label, Vector2(r.position.x + BUTTON_PAD, r.position.y + 3.0), ink, 1, back)
 
 
 static func _percent(ci: CanvasItem, at: Vector2, colour: Color, scale: int) -> void:

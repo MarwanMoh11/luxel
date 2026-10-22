@@ -58,6 +58,12 @@ little stronger.
 | Esc or P | Pause. On the pause card: Space resumes, R restarts, Q goes to the title. |
 | Hold R (half a second) | Restart the run |
 | F11 or Alt+Enter | Fullscreen |
+| Touch: drag anywhere | Move Wick with a floating stick under your thumb |
+| Touch: tap a tab or a row | Menu: open the tab, or pick the row. Then tap SELL to sell it. |
+| Touch: pause button (top-right corner) | Pause |
+| Touch: tap | Start, skip the intro, work the card buttons |
+
+On a phone, play sideways (landscape only); the first tap lights the lantern and goes fullscreen where the browser allows it.
 
 The first play has a 24-second story intro (any key skips it) and a short tutorial in the first half
 minute. A death costs you the run, and Space starts a new one at once.

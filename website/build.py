@@ -102,8 +102,27 @@ def md(text: str, shift: int = 1) -> str:
         out = re.sub(r"<(/?)h([1-5])", lambda m: "<%sh%d" % (m.group(1), min(6, int(m.group(2)) + shift)), out)
     out = out.replace("<img ", '<img loading="lazy" decoding="async" ')
     out = re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" rel="noopener" target="_blank"', out)
-    out = out.replace("<table>", '<div class="table"><table>').replace("</table>", "</table></div>")
+    out = re.sub(r"<table>.*?</table>", _stack_table, out, flags=re.S)
     return out
+
+
+def _stack_table(m) -> str:
+    """Wrap a table; one with 3+ columns also gets data-labels so phones can stack its rows."""
+    t = m.group(0)
+    heads = [re.sub(r"<[^>]+>", "", h).strip() for h in re.findall(r"<th[^>]*>(.*?)</th>", t, flags=re.S)]
+    if len(heads) < 3:
+        return '<div class="table">%s</div>' % t
+
+    def label(row):
+        n = [0]
+
+        def cell(c):
+            i = n[0]
+            n[0] += 1
+            return "<td%s data-label=\"%s\">" % (c.group(1), attr(heads[i]) if i < len(heads) else "")
+        return re.sub(r"<td([^>]*)>", cell, row.group(0))
+    t = re.sub(r"<tr>.*?</tr>", label, t, flags=re.S)
+    return '<div class="table stack">%s</div>' % t
 
 
 def load_content() -> tuple[list, dict, dict]:
@@ -339,10 +358,14 @@ def w_play(m: Media) -> list:
     return [(None, (
         '<div class="play-box frame" data-play>%s<div class="cover">'
         '<button class="btn primary" type="button" data-load-game>▶ CLICK TO PLAY HERE</button>'
-        '<span class="px stone outlined">NEEDS A KEYBOARD. SOUND ON.</span></div></div>'
-        '<div class="play-note"><span class="keys"><span class="key">ARROWS</span><span class="key">WASD</span></span><span>move</span>'
+        '<span class="px stone outlined">KEYBOARD OR TOUCH. SOUND ON.</span></div></div>'
+        '<div class="play-note only-kb"><span class="keys"><span class="key">ARROWS</span><span class="key">WASD</span></span><span>move</span>'
         '<span class="keys"><span class="key">SPACE</span></span><span>pick in menus</span>'
-        '<span class="keys"><span class="key">ESC</span></span><span>pause</span>'
+        '<span class="keys"><span class="key">ESC</span></span><span>pause</span></div>'
+        '<div class="play-note only-touch"><span class="keys"><span class="key">DRAG</span></span><span>move</span>'
+        '<span class="keys"><span class="key">TAP</span></span><span>pick, then SELL</span>'
+        '<span class="keys"><span class="key">TOP RIGHT</span></span><span>pause</span></div>'
+        '<div class="play-note">'
         '<a class="btn small ghost" href="play/" target="_blank" rel="noopener">OPEN IN A FULL WINDOW</a>'
         '<a class="btn small ghost" href="%s" rel="noopener">DOWNLOAD</a></div>') % (im, RELEASES))]
 
@@ -350,7 +373,7 @@ def w_play(m: Media) -> list:
 def w_shop(m: Media) -> list:
     menu = ('<div class="shop panel" data-shop tabindex="0" aria-label="The settings shop. Arrow keys or click to browse; Space sells.">'
             '<noscript><p class="px stone">TURN ON JAVASCRIPT TO BROWSE THE MENU.</p></noscript></div>'
-            '<p class="hint px stone">CLICK THE MENU, THEN ARROWS AND SPACE. NOTHING HERE IS REALLY SOLD. FOR THAT, TRY SETTINGS AT THE BOTTOM RIGHT.</p>')
+            '<p class="hint px stone">TAP A TAB OR A ROW (OR USE ARROWS AND SPACE). NOTHING HERE IS REALLY SOLD. FOR THAT, TRY SETTINGS AT THE BOTTOM RIGHT.</p>')
     return [(None, menu), ("WHICH SALE LIGHTS WHICH WEAPON", grid(m.many("shot_sale_tag", "shot_levelup", "shot_language"), "grid small"))]
 
 

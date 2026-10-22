@@ -28,7 +28,7 @@ In this game, the trade-off is the settings menu. Every graphics and audio setti
 |---|---|
 | Theme | TRADE-OFF |
 | A run | about 6 and a half minutes to DISPLAY: OFF, then a one-minute ending |
-| Controls | arrows or WASD; Space in menus |
+| Controls | arrows or WASD and Space, or touch: drag to move, tap menus (phones: sideways) |
 | Plays in | the browser |
 | Made with | Godot 4.7 |
 | By | Marwan |

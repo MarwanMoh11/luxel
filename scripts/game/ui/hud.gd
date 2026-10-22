@@ -166,7 +166,7 @@ func _check_up_key() -> void:
 		return
 	if run.player == null or not run.player.has_method("up_dead") or not run.player.up_dead():
 		return
-	if Input.is_key_pressed(KEY_UP) or Input.is_key_pressed(KEY_W):
+	if Input.is_key_pressed(KEY_UP) or Input.is_key_pressed(KEY_W) or Touch.move().y < -0.5:
 		nag(UP_NAG, UP_NAG_TIME)
 
 
@@ -181,8 +181,8 @@ func _draw() -> void:
 	if shop.lv("timer") == 0 and not _in_tutorial():
 		var secs := floori(run.run_time)
 		var clock := "%d:%02d" % [floori(secs / 60.0), secs % 60]
-		PixelFont.draw(self, clock, Vector2(screen.end.x - 4 - PixelFont.width(clock), screen.position.y + 4),
-				PAL["cream"], PAL["night"])
+		var x := screen.end.x - 4 - Touch.corner_room() - PixelFont.width(clock)
+		PixelFont.draw(self, clock, Vector2(x, screen.position.y + 4), PAL["cream"], PAL["night"])
 	if shop.lv("warnings") == 0:
 		for p in _pips:
 			_draw_pip(p, screen)

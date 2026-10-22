@@ -1282,7 +1282,9 @@ func _stars_pending() -> int:
 
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key != null and key.pressed and not key.echo and key.keycode == KEY_SPACE and relighting() and not paused:
+	var tap := event as InputEventScreenTouch
+	var space := key != null and key.pressed and not key.echo and key.keycode == KEY_SPACE
+	if (space or (tap != null and tap.pressed)) and relighting() and not paused:
 		relight_press()
 		get_viewport().set_input_as_handled()
 		return

@@ -94,6 +94,8 @@ const BELL := "res://audio/sfx/toll.wav" ## the burst's low bell: the BELL TOLL 
 const BELL_PITCH := 0.3337 ## A4 -> D3 (146.8 Hz)
 const BELL_DB := -9.0
 const BELL_RING := 74 ## lantern_74 (D5) an octave down (D4) rings on under the toll
+const HINT_UP := 2.0 ## s the skip hint stays after a press; a second press inside it skips
+const TOUCH_SKIP_AFTER := 0.25 ## s the hint must be up before a finger skips (two thumbs landing together count once)
 
 var run ## run.gd (fx, island, view, wick, player, shop, hud)
 var narration ## narration.gd
@@ -276,14 +278,19 @@ func _process(delta: float) -> void:
 	_front.queue_redraw()
 
 
-## A key press while the ending plays (main forwards them): the first shows the hint, a second skips.
-func key(event: InputEventKey) -> void:
-	if not _on or _done or not event.pressed or event.echo:
+## A key press or a finger down while the ending plays (main forwards them): the first shows the hint, a second skips.
+func key(event: InputEvent) -> void:
+	if not _on or _done:
+		return
+	var k := event as InputEventKey
+	var touch := event as InputEventScreenTouch
+	if (k == null or not k.pressed or k.echo) and (touch == null or not touch.pressed):
 		return
 	if _now < _hint_to:
-		skip()
+		if touch == null or _now >= _hint_to - HINT_UP + TOUCH_SKIP_AFTER:
+			skip()
 	else:
-		_hint_to = _now + 2.0
+		_hint_to = _now + HINT_UP
 
 
 # --- timeline ------------------------------------------------------------------------------------------------
