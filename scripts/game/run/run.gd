@@ -48,6 +48,7 @@ const VIEW := preload("res://scripts/game/run/view.gd")
 const DATA := preload("res://scripts/game/shop/shop_data.gd")
 const STORY := preload("res://scripts/game/story/story_text.gd")
 const OWL := preload("res://scripts/cast/enemies/owl.gd")
+const KIT := preload("res://scripts/cast/enemies/enemy_kit.gd")
 
 const PLAYING: Array[int] = [Phase.TUTORIAL, Phase.MAIN, Phase.CLOSING, Phase.PIXELS] ## the world runs
 const LEVELUP_DELAY := 0.3 # s the world runs on after the gauge fills (Wick can't be hurt meanwhile)
@@ -182,7 +183,7 @@ var _last_hp := 0
 var _tut_menu := false # the tutorial's menu has been shown
 var _tut_done := false # tutorial.finished came (end_tutorial)
 var _resume_t := -1.0 # AUTO_SALE: seconds until the world resumes after the menu shut (sale.resume_in)
-var _eye_images := {} # eyes texture -> its Image (read back once, at DISPLAY: OFF)
+var _eye_images := {} # eyes texture -> its Image (read back at DISPLAY: OFF, only for a sheet eyes.json lacks)
 var _gap := 0.0 # CLOSING: play seconds since the last self-sale
 var _gap_len := 0.0
 var _auto_done := 0 # self-sales so far
@@ -433,7 +434,20 @@ func _eye_point(e) -> Vector2:
 	var tex_by: Dictionary = e.clip["tex"]
 	if not tex_by.has("eyes"):
 		return e.centre()
-	var tex: Texture2D = tex_by["eyes"]
+	var f: int = e.frame()
+	var mids: PackedVector2Array = e.clip["eye_mids"]
+	var mid: Vector2 = mids[f] if f < mids.size() else _eye_mid(tex_by["eyes"], f, e.clip["size"])
+	if mid == Vector2.INF:
+		return e.centre()
+	var anchor: Vector2 = e.clip["anchor"]
+	var local := mid - anchor
+	if e.mirrored():
+		local.x = -local.x
+	return e.pos.round() + local
+
+
+## A frame's eye middle (KIT.eye_mid) from the sheet read back from the GPU: only for a sheet eyes.json lacks.
+func _eye_mid(tex: Texture2D, f: int, size: Vector2) -> Vector2:
 	if not _eye_images.has(tex):
 		var img := tex.get_image()
 		if img != null and img.is_compressed():
@@ -441,23 +455,8 @@ func _eye_point(e) -> Vector2:
 		_eye_images[tex] = img
 	var img: Image = _eye_images[tex]
 	if img == null or img.is_empty():
-		return e.centre()
-	var size: Vector2 = e.clip["size"]
-	var anchor: Vector2 = e.clip["anchor"]
-	var x0 := int(e.frame() * size.x)
-	var sum := Vector2.ZERO
-	var n := 0
-	for y in int(size.y):
-		for x in int(size.x):
-			if x0 + x < img.get_width() and y < img.get_height() and img.get_pixel(x0 + x, y).a > 0.5:
-				sum += Vector2(x, y)
-				n += 1
-	if n == 0:
-		return e.centre()
-	var local := sum / n + Vector2(0.5, 0.5) - anchor
-	if e.mirrored():
-		local.x = -local.x
-	return e.pos.round() + local
+		return Vector2.INF
+	return KIT.eye_mid(KIT.eye_sum(img, f, size))
 
 
 ## Tutorial: spawns `count` enemies of kind `id` around `anchor` (the nearest walkable point to it), outside the

@@ -3,7 +3,9 @@
 ## Loaded once per kind and shared by every enemy of that kind. Clips are built on first use and cached.
 ## A clip: {"anim", "dir", "loop", "size", "anchor", "frames", "ms", "total", "data" (frame_data),
 ## "tex" {layer: Texture2D}, "rimmed" {body/flash: the sheet over its rim, bake_rims.gd}, "centres" (the hit
-## centre per frame, unmirrored), "unmirrored" (a front, back or any view)}. Clips are never changed once built.
+## centre per frame, unmirrored), "unmirrored" (a front, back or any view), "eye_mids" (the middle of each frame's
+## eye pixels, unanchored and INF where there are none, from eyes.json; empty without an eyes sheet)}. Clips are
+## never changed once built.
 ## Layers whose name contains "shadow" use the kind's shadow_size / shadow_anchor; every other layer uses the
 ## animation's frame size and anchor (the feet).
 extends RefCounted
@@ -12,6 +14,7 @@ const ROOT := "res://art/cast/enemies/"
 const DIR_FALLBACK: Array[String] = ["front", "side", "any", "back"]
 const UNMIRRORED: Array[String] = ["front", "back", "any"] # views never mirrored (enemy.gd UNMIRRORED)
 const RIMMED := "rimmed/" # body and flash sheets over their rim, baked by bake_rims.gd
+const EYES := "eyes.json" # each eyes sheet's eye pixels per frame, baked by bake_rims.gd (run.gd eye_pairs)
 
 var id := ""
 var data := {} ## the whole JSON
@@ -24,6 +27,7 @@ var shadow_anchor := Vector2.ZERO
 var looks: Array[String] = [""] ## sheet sets ("" = the only one); the Snuffer has tin, soot and dent
 var look_weights := {} ## look -> weight (rig.look_weights), empty when there is one look
 
+var eye_mids := {} ## eyes sheet path -> PackedVector2Array: each frame's eye middle (eye_mid), from eyes.json
 var _clips := {} # anim -> dir -> look -> clip
 
 
@@ -39,6 +43,14 @@ func _init(kind_id: String) -> void:
 	if data.has("looks"):
 		looks.assign(data["looks"])
 	look_weights = data.get("rig", {}).get("look_weights", {})
+	var eyes := ROOT + id + "/" + EYES
+	if FileAccess.file_exists(eyes):
+		var baked: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(eyes))
+		for rel: String in baked:
+			var mids := PackedVector2Array()
+			for s: Array in baked[rel]:
+				mids.append(eye_mid(Vector3i(int(s[0]), int(s[1]), int(s[2]))))
+			eye_mids[rel] = mids
 
 
 func has_anim(anim: String) -> bool:
@@ -101,6 +113,22 @@ static func vec(v: Variant) -> Vector2:
 	return Vector2.ZERO if v == null else Vector2(float(v[0]), float(v[1]))
 
 
+## Frame `f` of an eyes sheet `size` wide: its eye pixels (alpha over half) as their x sum, y sum and count.
+static func eye_sum(img: Image, f: int, size: Vector2) -> Vector3i:
+	var x0 := int(f * size.x)
+	var s := Vector3i.ZERO
+	for y in int(size.y):
+		for x in int(size.x):
+			if x0 + x < img.get_width() and y < img.get_height() and img.get_pixel(x0 + x, y).a > 0.5:
+				s += Vector3i(x, y, 1)
+	return s
+
+
+## The middle of those pixels on the pixel centres, in the frame (not yet anchored); INF when there are none.
+static func eye_mid(s: Vector3i) -> Vector2:
+	return Vector2.INF if s.z == 0 else Vector2(s.x, s.y) / s.z + Vector2(0.5, 0.5)
+
+
 func _build(anim: String, dir: String, look: String) -> Dictionary:
 	var a: Dictionary = data["animations"][anim]
 	var d: Dictionary = a["dirs"][dir]
@@ -130,4 +158,5 @@ func _build(anim: String, dir: String, look: String) -> Dictionary:
 		"anim": anim, "dir": dir, "loop": bool(a.get("loop", false)),
 		"size": vec(a.get("frame", data["frame"])), "anchor": vec(a.get("anchor", data["anchor"])),
 		"frames": int(d["frames"]), "ms": ms, "total": total, "data": d["frame_data"], "tex": tex,
-		"rimmed": rim, "centres": centres, "unmirrored": UNMIRRORED.has(dir)}
+		"rimmed": rim, "centres": centres, "unmirrored": UNMIRRORED.has(dir),
+		"eye_mids": eye_mids.get(str(src.get("eyes", "")), PackedVector2Array())}
