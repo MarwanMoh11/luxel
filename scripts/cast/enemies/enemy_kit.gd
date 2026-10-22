@@ -2,13 +2,16 @@
 ## docs/art_concepts/lastlight/cast/enemies/<id>.py, copied by cast/export_godot.py) and its sheets.
 ## Loaded once per kind and shared by every enemy of that kind. Clips are built on first use and cached.
 ## A clip: {"anim", "dir", "loop", "size", "anchor", "frames", "ms", "total", "data" (frame_data),
-## "tex" {layer: Texture2D}}.
+## "tex" {layer: Texture2D}, "rimmed" {body/flash: the sheet over its rim, bake_rims.gd}, "centres" (the hit
+## centre per frame, unmirrored), "unmirrored" (a front, back or any view)}. Clips are never changed once built.
 ## Layers whose name contains "shadow" use the kind's shadow_size / shadow_anchor; every other layer uses the
 ## animation's frame size and anchor (the feet).
 extends RefCounted
 
 const ROOT := "res://art/cast/enemies/"
 const DIR_FALLBACK: Array[String] = ["front", "side", "any", "back"]
+const UNMIRRORED: Array[String] = ["front", "back", "any"] # views never mirrored (enemy.gd UNMIRRORED)
+const RIMMED := "rimmed/" # body and flash sheets over their rim, baked by bake_rims.gd
 
 var id := ""
 var data := {} ## the whole JSON
@@ -89,6 +92,11 @@ static func pick(weights: Dictionary) -> String:
 	return weights.keys()[0]
 
 
+## The baked rimmed copy of sheet `rel` of kind `id` (bake_rims.gd).
+static func rimmed(kind_id: String, rel: String) -> String:
+	return ROOT + kind_id + "/" + RIMMED + rel
+
+
 static func vec(v: Variant) -> Vector2:
 	return Vector2.ZERO if v == null else Vector2(float(v[0]), float(v[1]))
 
@@ -102,16 +110,24 @@ func _build(anim: String, dir: String, look: String) -> Dictionary:
 	elif not src.has("body") and src.size() > 0 and src.values()[0] is Dictionary:
 		src = src.values()[0] # an unknown look: the first one
 	var tex := {}
+	var rim := {}
 	for layer: String in src:
 		if src[layer] is String and str(src[layer]).ends_with(".png"):
 			tex[layer] = load(ROOT + id + "/" + str(src[layer]))
+			if (layer == "body" or layer == "flash") and ResourceLoader.exists(rimmed(id, src[layer])):
+				rim[layer] = load(rimmed(id, src[layer]))
 	var ms := PackedFloat32Array()
+	var centres := PackedVector2Array()
+	var fallback: Variant = data.get("centre", data.get("body_centre", [0, -hit_radius]))
 	for fd: Dictionary in d["frame_data"]:
 		ms.append(float(fd["ms"]))
+		var c: Variant = fd.get("hit_centre", fd.get("centre"))
+		centres.append(vec(fallback if c == null else c))
 	var total := 0.0
 	for v in ms:
 		total += v
 	return {
 		"anim": anim, "dir": dir, "loop": bool(a.get("loop", false)),
 		"size": vec(a.get("frame", data["frame"])), "anchor": vec(a.get("anchor", data["anchor"])),
-		"frames": int(d["frames"]), "ms": ms, "total": total, "data": d["frame_data"], "tex": tex}
+		"frames": int(d["frames"]), "ms": ms, "total": total, "data": d["frame_data"], "tex": tex,
+		"rimmed": rim, "centres": centres, "unmirrored": UNMIRRORED.has(dir)}

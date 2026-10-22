@@ -316,8 +316,13 @@ func view_rect() -> Rect2:
 
 func _place(b) -> void:
 	if b != null and b.node != null:
-		b.node.position = b.pos.round()
-		b.node.queue_redraw()
+		var at: Vector2 = b.pos.round()
+		if b.node.position != at:
+			b.node.position = at
+		if b.body_key() < 0:
+			b.node.queue_redraw()
+		else: # paint_brain draws relative to the node: an unchanged body only moves (brain body_key)
+			b.redraw_body.call_deferred()
 
 
 # --- painters --------------------------------------------------------------------------------------------------

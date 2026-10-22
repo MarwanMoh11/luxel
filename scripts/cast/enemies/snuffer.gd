@@ -12,6 +12,7 @@ const LINGER_TOP := 22 # the held frame draws from this row down: the cone, not 
 const STUCK_SPEED := 6.0 # px/s: slower than this for STUCK_TIME (pressed in a crowd, against a prop) = idle
 const STUCK_TIME := 0.25
 const DEATHS: Array[String] = ["death_pop", "death_flip", "death_cork"]
+const LINGER_KEY := 1 << 20 # body_key() of the fallen cone (above any frame's key)
 
 var speed := 32.0
 var _linger := 0.0 # seconds left holding the fallen cone; < 0 = done with it
@@ -116,6 +117,13 @@ func draw_body(ci: CanvasItem) -> void:
 		dest.size.x = -size.x
 	var src := Rect2(LINGER_FRAME * size.x, LINGER_TOP, size.x, size.y - LINGER_TOP)
 	ci.draw_texture_rect_region(clip["tex"]["body"], dest, src)
+
+
+## The fallen cone depends only on the clip and the mirror.
+func body_key() -> int:
+	if _linger <= 0.0:
+		return plain_key()
+	return LINGER_KEY + (1 if mirrored() else 0)
 
 
 func draw_shadow(ci: CanvasItem) -> void:

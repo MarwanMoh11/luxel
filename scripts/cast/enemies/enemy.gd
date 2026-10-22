@@ -11,7 +11,7 @@ const FLASH_TIME := 0.06 # seconds the flash layer replaces the body after a hit
 const HIT_STOP: Array[float] = [0.05, 0.06, 0.07, 0.09] # seconds frozen per hit, by the light's damage tier
 const SIDE_RATIO := 0.7 # |vx| > SIDE_RATIO * |vy| reads as the side view
 const DIR_HOLD := 0.15 # seconds a new view must hold before the sprite turns to it
-const UNMIRRORED: Array[String] = ["front", "back", "any"] # views never mirrored (the rim light stays west)
+const UNMIRRORED := KIT.UNMIRRORED # views never mirrored (the rim light stays west)
 const SHADOW_ALTS: Array[String] = ["shadow_mirror", "shadow_left"] # unflipped shadows of a mirrored frame
 const RIM := Color(1.0, 0.9569, 0.8627, 0.6) # palette cream (fff4dc) at 60%: the 1 px edge that lifts a body off dark grass
 
@@ -39,10 +39,17 @@ var dead := false # killed: out of gameplay; the death animation plays on as a r
 var gone := false # set it to leave: an alive enemy is removed without a kill, a remnant is dropped
 var hit_stop := 0.0 # seconds left frozen (the game skips step() and step_dead() meanwhile)
 var age := 0.0 # seconds since spawn (world time)
+var size_px := 0.0 # director ROSTER size: the walkers' crowd push (set by the game)
+var listed := false # in the game's live list (set by the game)
+var drawn_key := -1 # body_key() and clip of the node's last draw (the view skips a redraw that would match)
+var drawn_clip := {}
 
 var _want_dir := "front"
 var _want_flip := false
 var _want_t := 0.0
+var _fm_t := -1.0 # frame() memo: anim_t, clip and the frame it gave (not while still())
+var _fm_clip := {}
+var _fm_f := 0
 
 
 # --- virtuals: override in a brain ---------------------------------------------------------------------------
@@ -88,11 +95,8 @@ func aimable() -> bool:
 
 ## The hit centre in world px: shots aim at it, splash and stings measure to it.
 func centre() -> Vector2:
-	var d: Dictionary = clip["data"][frame()]
-	var c: Variant = d.get("hit_centre", d.get("centre"))
-	if c == null:
-		c = kit.data.get("centre", kit.data.get("body_centre", [0, -kit.hit_radius]))
-	return pos + KIT.vec(c) * Vector2(-1.0 if mirrored() else 1.0, 1.0)
+	var c: PackedVector2Array = clip["centres"]
+	return pos + c[frame()] * Vector2(-1.0 if mirrored() else 1.0, 1.0)
 
 
 ## Body radius around centre() for shots and splash reach.
@@ -164,9 +168,45 @@ func draw_body(ci: CanvasItem) -> void:
 	draw_layer(ci, "flash" if flashed else "body")
 
 
+## What draw_body would draw, as a number (with `clip`): the view redraws the node only when either changes. -1
+## (the default) = always redraw: only a brain whose body is the plain layer at `pos` (nothing else, no late()
+## tells, no shader) may return a key, e.g. plain_key().
+func body_key() -> int:
+	return -1
+
+
+## The view's redraw check for a brain with a body_key(), deferred to the end of the frame like the draw itself
+## (a sale after the view's sync still shows this frame): the node redraws only when the key or the clip changed.
+func redraw_body() -> void:
+	if node == null:
+		return
+	var key := body_key()
+	if key != drawn_key or not is_same(clip, drawn_clip):
+		drawn_key = key
+		drawn_clip = clip
+		node.queue_redraw()
+
+
+## The key of the base draw_body: the frame draw_layer picks, the flash layer, the mirror.
+func plain_key() -> int:
+	var f := frame()
+	var flashed := false
+	if game.lv("hit_flash") > 0:
+		if is_flash_frame(f):
+			f = mini(f + 1, clip["frames"] - 1)
+	else:
+		flashed = flash > 0.0 and clip["tex"].has("flash")
+	return f * 4 + (2 if flashed else 0) + (1 if mirrored() else 0)
+
+
 ## The finale: only the eyes, above the dead pixels.
 func draw_eyes(ci: CanvasItem) -> void:
 	draw_layer(ci, "eyes")
+
+
+## At load, once per kind (before any run): read now what drawing would otherwise read back from the GPU mid-run.
+static func warm(_k: KIT) -> void:
+	pass
 
 
 ## Headless check (tests/enemy_check.gd): failures for this kind from the run's stats ({} keys: README.md).
@@ -224,7 +264,13 @@ func advance(dt: float) -> bool:
 ## The current frame index (ANIMATIONS sold: loops hold frame 0, one-shots show frame 0 until they end; a baked
 ## flash frame 0 only for FLASH_TIME, see _still_frame).
 func frame() -> int:
-	return frame_at(anim_t)
+	if still():
+		return frame_at(anim_t)
+	if anim_t != _fm_t or not is_same(clip, _fm_clip):
+		_fm_f = frame_at(anim_t)
+		_fm_t = anim_t
+		_fm_clip = clip
+	return _fm_f
 
 
 func frame_at(t: float) -> int:
@@ -271,7 +317,7 @@ func still() -> bool:
 
 ## The frame is drawn mirrored: facing left in a side (or other non front/back) view.
 func mirrored() -> bool:
-	return flip and not UNMIRRORED.has(clip["dir"])
+	return flip and not clip["unmirrored"]
 
 
 ## Moves by `step` (world px) on the island: walkers slide around solid props, flyers only stay on the island.
@@ -313,6 +359,10 @@ func draw_layer(ci: CanvasItem, layer: String, at := Vector2.INF, f := -1) -> vo
 		dest.size.x = -size.x
 	var src := Rect2(f * size.x, 0, size.x, size.y)
 	if layer == "body" or layer == "flash":
+		var rimmed: Texture2D = clip["rimmed"].get(layer)
+		if rimmed != null: # the sheet over its rim, baked (bake_rims.gd): one draw
+			ci.draw_texture_rect_region(rimmed, dest, src)
+			return
 		ci.draw_texture_rect_region(_rim(tex_by[layer]), dest, src) # under the body: only the outer ring shows
 	ci.draw_texture_rect_region(tex_by[layer], dest, src)
 
@@ -337,10 +387,17 @@ static func _paint_late() -> void:
 
 ## `tex` as a silhouette sheet in RIM grown 1 px up, down, left and right: drawn under the body, only the outer
 ## 1 px ring shows. Baked once per sheet with native blits (no per-pixel script).
+## Only for a sheet without a baked rimmed sheet (enemy_kit RIMMED, bake_rims.gd).
 static func _rim(tex: Texture2D) -> Texture2D:
 	if _rims.has(tex):
 		return _rims[tex]
-	var img := tex.get_image()
+	var out := ImageTexture.create_from_image(rim_image(tex.get_image()))
+	_rims[tex] = out
+	return out
+
+
+## The rim sheet of `img` (converted to RGBA8): bake_rims.gd lays the sheet over it offline.
+static func rim_image(img: Image) -> Image:
 	img.convert(Image.FORMAT_RGBA8)
 	var cream := Image.create(img.get_width(), img.get_height(), false, Image.FORMAT_RGBA8)
 	cream.fill(RIM)
@@ -348,6 +405,4 @@ static func _rim(tex: Texture2D) -> Texture2D:
 	var all := Rect2i(Vector2i.ZERO, img.get_size())
 	for d: Vector2i in [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]:
 		rim.blit_rect_mask(cream, img, all, d)
-	var out := ImageTexture.create_from_image(rim)
-	_rims[tex] = out
-	return out
+	return rim
