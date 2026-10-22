@@ -19,7 +19,7 @@ const BASE_SPEED := 85.0
 const BASE_ACCEL := 1000.0
 const BASE_RANGE := 150.0
 const BASE_LIFE := 0.8
-const BASE_HP := 5
+const BASE_HP: int = preload("res://scripts/game/run/player.gd").BASE_HP # one base for reset, sales and previews
 
 var run ## the Run (run.gd), duck-typed
 

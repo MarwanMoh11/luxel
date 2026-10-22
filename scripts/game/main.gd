@@ -44,6 +44,7 @@ var _dead_t := -1.0
 var _hold_r := 0.0
 var _r_released := false ## R was seen up since the run started: a card's R press can't also count as a hold
 var _ending_presses := 0
+var _away := false ## the window lost focus and hasn't got it back: the run pauses once it is next playable
 
 @onready var island: Island = %Island
 @onready var run: RUN_GD = %Run
@@ -81,6 +82,8 @@ func _ready() -> void:
 	run.display_off_reached.connect(_on_display_off)
 	run.closing_started.connect(_on_closing_started)
 	run.menu.closed.connect(_on_finale_sale_closed) # after the run's own connection: it has set the gap by then
+	run.menu.closed.connect(_on_run_moved_on) # focus lost in the SOLD hold: after the run has applied the sale
+	run.phase_changed.connect(_on_run_moved_on) # focus lost in a forced or self-sale hold
 	run.pixels_stage.connect(_on_pixels_stage)
 	run.finale_line.connect(_on_finale_line)
 	run.stop_line.connect(_on_stop_line)
@@ -318,13 +321,27 @@ func _hold_restart(delta: float) -> void:
 
 
 ## Losing focus mid-run (alt-tab, or a click outside the itch.io iframe: the web canvas blurs) opens the pause
-## card, since Godot drops the held keys and Wick would stand still while the world plays on.
+## card, since Godot drops the held keys and Wick would stand still while the world plays on. Focus lost while a
+## menu or a finale hold has the world (a sale's SOLD hold, a self-sale gap) pauses as the run plays again.
 func _notification(what: int) -> void:
-	if what != NOTIFICATION_APPLICATION_FOCUS_OUT and what != NOTIFICATION_WM_WINDOW_FOCUS_OUT:
-		return
-	if not is_node_ready() or OS.has_feature("movie") or run.autopilot:
+	if what == NOTIFICATION_APPLICATION_FOCUS_IN or what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
+		_away = false
+	elif what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		_away = true
+		_pause_if_away()
+
+
+## A menu shut or the run's phase changed (menu.closed, run.phase_changed): synchronous, so a pause for a lost
+## focus lands before the world's next step.
+func _on_run_moved_on(_arg) -> void:
+	_pause_if_away()
+
+
+func _pause_if_away() -> void:
+	if not _away or not is_node_ready() or OS.has_feature("movie") or run.autopilot:
 		return
 	if state == Flow.RUN and PAUSABLE.has(run.phase) and not menu.is_open():
+		_away = false # answered: leaving the card takes the player's own key, so one lost focus pauses once
 		_pause()
 
 
