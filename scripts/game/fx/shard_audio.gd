@@ -33,7 +33,7 @@ var history: Array[Dictionary] = []
 var _slots: PackedFloat64Array = PackedFloat64Array() # reserved arrival times (run seconds)
 var _offset := 0.0 # music seconds - run seconds: slot k sits at k * GRID - _offset in run time
 var _phase_known := false
-var _voices := {} # pool name -> Array of {"p": AudioStreamPlayer, "start": ms, "end": ms, "fading": bool}
+var _voices := {} # pool name -> Array of {"p": AudioStreamPlayer, "start": ms, "end": ms, "fading": bool, "tw": Tween}
 var _pop_rr := 0
 var _last_pull_ms := -100000.0
 var _queue: Array[Dictionary] = [] # {"in": s, "kind": "chime" | "full" | "pull", "deg", "fill", "big"}
@@ -56,6 +56,7 @@ func reset() -> void:
 	_last_pull_ms = -100000.0
 	for pool: String in _voices:
 		for v: Dictionary in _voices[pool]:
+			_kill_fade(v)
 			(v["p"] as AudioStreamPlayer).stop()
 			v["end"] = 0.0
 			v["fading"] = false
@@ -233,6 +234,7 @@ func _play(pool: String, stream: AudioStream, vol_db: float, pitch: float, entry
 			if float(v["start"]) < float(pick["start"]):
 				pick = v
 	var p: AudioStreamPlayer = pick["p"]
+	_kill_fade(pick)
 	p.stop()
 	p.stream = stream
 	p.volume_db = vol_db + linear_to_db(g)
@@ -253,11 +255,21 @@ func _fade_out(v: Dictionary) -> void:
 	v["fading"] = true
 	v["end"] = Time.get_ticks_msec() + cut_fade * 1000.0
 	var p: AudioStreamPlayer = v["p"]
+	_kill_fade(v)
 	var tw := create_tween()
 	tw.tween_property(p, "volume_db", -60.0, cut_fade)
 	tw.tween_callback(func() -> void:
 		if v["fading"]:
 			p.stop())
+	v["tw"] = tw
+
+
+## Stops `v`'s fade-out, so a stolen or reset voice keeps the volume it is given next.
+func _kill_fade(v: Dictionary) -> void:
+	var tw: Tween = v["tw"]
+	if tw != null and tw.is_valid():
+		tw.kill()
+	v["tw"] = null
 
 
 func _load() -> void:
@@ -306,5 +318,5 @@ func _load() -> void:
 			p.bus = &"Master"
 			p.name = "%s_%d" % [pool, i]
 			add_child(p)
-			arr.append({"p": p, "start": -1.0, "end": 0.0, "fading": false})
+			arr.append({"p": p, "start": -1.0, "end": 0.0, "fading": false, "tw": null})
 		_voices[pool] = arr

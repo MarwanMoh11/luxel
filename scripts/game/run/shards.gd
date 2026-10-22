@@ -105,7 +105,7 @@ func reset() -> void:
 	_star_left = 0
 	_star_t = 0.0
 	_beat = -1
-	_rng.randomize()
+	_rng.seed = randi() # from the global RNG: a seed=<n> run replays its shards, an unseeded one stays random
 	if run != null and run.shard_audio != null:
 		run.shard_audio.release_all()
 
