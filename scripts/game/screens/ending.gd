@@ -336,7 +336,7 @@ func _bar(bar: float) -> float:
 func _clock(delta: float) -> void:
 	_now += delta
 	if _theme.playing:
-		var pos := _theme.get_playback_position() + AudioServer.get_time_since_last_mix()
+		var pos := _theme.get_playback_position() + (0.0 if OS.has_feature("movie") else AudioServer.get_time_since_last_mix())
 		_now += clampf(THEME_AT + pos - _now, -0.01, 0.01)
 
 
