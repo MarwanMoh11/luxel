@@ -6,7 +6,7 @@ extends RefCounted
 const PATH := "user://low_settings.cfg"
 
 static var path := PATH ## checks set their own file so they never touch the player's record
-static var gamer := false ## GAMER MODE (the title's toggle): its runs keep their own best record
+static var gamer := true ## GAMER MODE (the title's toggle, on by default): its runs keep their own best record
 
 
 ## Returns the best record (a stats dictionary: time, level, kills, light, sold, done) or {} when none.
@@ -68,10 +68,11 @@ static func set_tutorial_done() -> void:
 	cfg.save(path)
 
 
-## Reads GAMER MODE from the save file into `gamer`.
+## Reads GAMER MODE from the save file into `gamer` (on until the player turns it off).
 static func load_gamer() -> void:
 	var cfg := ConfigFile.new()
-	gamer = cfg.load(path) == OK and bool(cfg.get_value("game", "gamer", false))
+	cfg.load(path)
+	gamer = bool(cfg.get_value("game", "gamer", true))
 
 
 ## Sets GAMER MODE and keeps it in the save file.
