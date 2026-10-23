@@ -24,7 +24,8 @@ var active := false ## the last input was a finger
 var stick_enabled := false: set = _set_stick_enabled ## main: Wick takes moves now (in play, world running, no card)
 var pause_enabled := false: set = _set_pause_enabled ## main: the pause button shows and works
 var _on_frame := -1 # the process frame touch mode last turned on
-var _finger := -1 # the steering finger's index (-1: none)
+var _steering := false # a thumb steers now
+var _finger := 0 # its index: any int (on iOS it can be negative)
 var _base := Vector2.ZERO
 var _knob := Vector2.ZERO
 var _view: Node2D
@@ -49,7 +50,7 @@ func _ready() -> void:
 
 ## The stick's direction: a unit vector, or zero when no thumb steers (or it pulls less than DEAD px).
 func move() -> Vector2:
-	if _finger < 0:
+	if not _steering:
 		return Vector2.ZERO
 	var pull := _knob - _base
 	return pull.normalized() if pull.length() > DEAD else Vector2.ZERO
@@ -84,19 +85,20 @@ func _input(event: InputEvent) -> void:
 			if pause_enabled and pause_rect().has_point(at):
 				get_viewport().set_input_as_handled()
 				pause_pressed.emit()
-			elif stick_enabled and _finger < 0:
+			elif stick_enabled and not _steering:
+				_steering = true
 				_finger = touch.index
 				_base = at
 				_knob = at
 				_view.queue_redraw()
 				get_viewport().set_input_as_handled()
-		elif touch.index == _finger:
-			_finger = -1
+		elif _steering and touch.index == _finger:
+			_steering = false
 			_view.queue_redraw()
 			get_viewport().set_input_as_handled()
 		return
 	var drag := event as InputEventScreenDrag
-	if drag != null and drag.index == _finger:
+	if drag != null and _steering and drag.index == _finger:
 		_knob = (_view.make_input_local(drag) as InputEventScreenDrag).position
 		var pull := _knob - _base
 		if pull.length() > STICK_R:
@@ -125,7 +127,7 @@ func _set_stick_enabled(on: bool) -> void:
 		return
 	stick_enabled = on
 	if not on: # a thumb held through a menu or a card lets go: steering again takes a fresh touch
-		_finger = -1
+		_steering = false
 	if _view != null:
 		_view.queue_redraw()
 
@@ -148,7 +150,7 @@ func _draw_view() -> void:
 		_view.draw_rect(box.grow(-1), PAL["night"])
 		for x in [3.0, 6.0]:
 			_view.draw_rect(Rect2(box.position + Vector2(x, 3), Vector2(2, 5)), PAL["stone"])
-	if _finger >= 0 and stick_enabled:
+	if _steering and stick_enabled:
 		var base := _base.round()
 		_view.draw_circle(base, STICK_R + 1.0, Color(PAL["night"], 0.45))
 		_view.draw_arc(base, STICK_R, 0.0, TAU, 32, Color(PAL["stone"], 0.7), 1.0)
