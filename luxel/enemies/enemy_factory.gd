@@ -1,6 +1,6 @@
 class_name LxEnemyFactory
 extends RefCounted
-## Factory instantiating all 20 Luxel 1.0 enemy kinds + M0 bosses by kind ID.
+## Factory instantiating all 20 Luxel 1.0 enemy kinds + all 15 mini-bosses & island bosses by kind ID.
 
 const KNOWN_KINDS: PackedStringArray = [
 	"warden",
@@ -27,6 +27,19 @@ const KNOWN_KINDS: PackedStringArray = [
 	"hollow_wick",
 	"bell_warden",
 	"bellkeeper",
+	"tide_captain",
+	"lighthouse_hermit",
+	"elder_sporecap",
+	"briar_matron",
+	"great_lily_hopper",
+	"heron_abbess",
+	"clockwork_warden",
+	"astronomer",
+	"forge_warden",
+	"kilnmother",
+	"hollow_wick_boss",
+	"night_harbinger",
+	"the_hush",
 ]
 
 const KIND_SCRIPTS: Dictionary = {
@@ -54,6 +67,19 @@ const KIND_SCRIPTS: Dictionary = {
 	"hollow_wick": "res://luxel/enemies/hollow_wick/brain.gd",
 	"bell_warden": "res://luxel/bosses/bell_warden/brain.gd",
 	"bellkeeper": "res://luxel/bosses/bellkeeper/brain.gd",
+	"tide_captain": "res://luxel/bosses/tide_captain/brain.gd",
+	"lighthouse_hermit": "res://luxel/bosses/lighthouse_hermit/brain.gd",
+	"elder_sporecap": "res://luxel/bosses/elder_sporecap/brain.gd",
+	"briar_matron": "res://luxel/bosses/briar_matron/brain.gd",
+	"great_lily_hopper": "res://luxel/bosses/great_lily_hopper/brain.gd",
+	"heron_abbess": "res://luxel/bosses/heron_abbess/brain.gd",
+	"clockwork_warden": "res://luxel/bosses/clockwork_warden/brain.gd",
+	"astronomer": "res://luxel/bosses/astronomer/brain.gd",
+	"forge_warden": "res://luxel/bosses/forge_warden/brain.gd",
+	"kilnmother": "res://luxel/bosses/kilnmother/brain.gd",
+	"hollow_wick_boss": "res://luxel/bosses/hollow_wick_boss/brain.gd",
+	"night_harbinger": "res://luxel/bosses/night_harbinger/brain.gd",
+	"the_hush": "res://luxel/bosses/the_hush/brain.gd",
 }
 
 
@@ -197,6 +223,40 @@ static func default_data(kind: String) -> LxEnemyData:
 			var bk: LxEnemyData = _make_data("bellkeeper", 10.0, 7.0, 42.0, 185.0, 150.0, 0.48, 1.15, 2.8, 25, 1.0, true)
 			bk.shield_gone_time = 4.8
 			return bk
+		"tide_captain":
+			var tc: LxEnemyData = _make_data("tide_captain", 8.0, 7.0, 38.0, 175.0, 140.0, 0.48, 1.15, 2.6, 12, 1.0, true)
+			tc.shield_gone_time = 4.5
+			return tc
+		"lighthouse_hermit":
+			var lh: LxEnemyData = _make_data("lighthouse_hermit", 12.0, 8.5, 34.0, 185.0, 152.0, 0.50, 1.20, 3.0, 28, 1.0, true)
+			lh.shield_gone_time = 4.8
+			return lh
+		"elder_sporecap":
+			return _make_data("elder_sporecap", 7.5, 7.5, 30.0, 165.0, 136.0, 0.56, 1.25, 0.0, 14, 1.0, true)
+		"briar_matron":
+			var bm: LxEnemyData = _make_data("briar_matron", 12.5, 8.5, 34.0, 185.0, 152.0, 0.50, 1.20, 3.5, 30, 1.0, true)
+			bm.shield_gone_time = 5.2
+			return bm
+		"great_lily_hopper":
+			return _make_data("great_lily_hopper", 7.5, 7.5, 44.0, 172.0, 140.0, 0.52, 1.20, 0.0, 15, 1.0, true)
+		"heron_abbess":
+			return _make_data("heron_abbess", 12.5, 7.5, 42.0, 185.0, 152.0, 0.56, 1.30, 0.0, 32, 1.0, true)
+		"clockwork_warden":
+			return _make_data("clockwork_warden", 8.0, 8.0, 36.0, 168.0, 144.0, 0.56, 1.15, 0.0, 16, 1.0, true)
+		"astronomer":
+			return _make_data("astronomer", 12.5, 8.5, 76.0, 185.0, 152.0, 0.62, 1.35, 0.0, 34, 1.0, true)
+		"forge_warden":
+			return _make_data("forge_warden", 8.5, 8.5, 26.0, 150.0, 132.0, 0.64, 1.45, 0.0, 18, 1.5, true)
+		"kilnmother":
+			return _make_data("kilnmother", 13.5, 9.5, 26.0, 160.0, 140.0, 0.66, 1.45, 0.0, 36, 1.5, true)
+		"hollow_wick_boss":
+			return _make_data("hollow_wick_boss", 13.0, 5.5, 56.0, 185.0, 152.0, 0.45, 1.05, 0.0, 40, 1.0, true)
+		"night_harbinger":
+			var nh: LxEnemyData = _make_data("night_harbinger", 9.0, 7.0, 42.0, 175.0, 144.0, 0.48, 1.10, 2.4, 22, 1.0, true)
+			nh.shield_gone_time = 4.6
+			return nh
+		"the_hush":
+			return _make_data("the_hush", 16.0, 10.0, 42.0, 190.0, 160.0, 0.56, 1.05, 0.0, 60, 1.0, true)
 		_:
 			var wd: LxEnemyData = _make_data("warden", 4.0, 5.0, 36.0, 158.0, 120.0, 0.48, 1.15, 1.75, 3)
 			wd.shield_gone_time = 4.8

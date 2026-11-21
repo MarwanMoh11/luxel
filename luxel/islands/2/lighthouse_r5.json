@@ -1,0 +1,126 @@
+{
+  "id": "lighthouse_r5",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "lighthouse_r5",
+      "name_key": "DUNGEON_2_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r5_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r4",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r5_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r6",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [
+        "prism"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r5_shutter"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "shrine_prism",
+      "kind": "shrine",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "move_id": "prism",
+        "zone": "lighthouse_r5",
+        "name_key": "MOVE_PRISM_NAME"
+      }
+    },
+    {
+      "id": "mirror_lh_r5_a",
+      "kind": "mirror",
+      "pos": [
+        216,
+        120
+      ],
+      "props": {
+        "angle_deg": 225,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_lh_r5",
+      "kind": "switch_eye",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "requires_prism": true,
+        "target_id": "door_lh_r5_shutter",
+        "sets_flag": "lh_r5_prism_solved"
+      }
+    },
+    {
+      "id": "door_lh_r5_shutter",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_lh_r5"
+        ],
+        "sets_flag": "lh_r5_prism_solved"
+      }
+    }
+  ],
+  "triggers": []
+}

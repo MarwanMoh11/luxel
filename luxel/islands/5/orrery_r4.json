@@ -1,0 +1,153 @@
+{
+  "id": "orrery_r4",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "orrery_r4",
+      "name_key": "DUNGEON_5_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r4_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "orrery_r3",
+      "to_spawn": [
+        272,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r4_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "orrery_r5",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "o5_r4_shutter_open"
+      ],
+      "locked_door_id": "door_o5_r4_shutter"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "door_o5_r4_key",
+      "kind": "door",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "orrery",
+        "key_kind": "wick_key",
+        "key_id": "wick_key_5_1",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_5_1"
+        ]
+      }
+    },
+    {
+      "id": "mirror_o5_r4_n",
+      "kind": "mirror",
+      "pos": [
+        152,
+        40
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "mirror_o5_r4_s",
+      "kind": "mirror",
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "switch_eye_o5_r4_n",
+      "kind": "switch_eye",
+      "pos": [
+        200,
+        40
+      ],
+      "props": {
+        "target_id": "door_o5_r4_shutter"
+      }
+    },
+    {
+      "id": "switch_eye_o5_r4_s",
+      "kind": "switch_eye",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "target_id": "door_o5_r4_shutter"
+      }
+    },
+    {
+      "id": "door_o5_r4_shutter",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_o5_r4_n",
+          "switch_eye_o5_r4_s"
+        ],
+        "required_count": 2,
+        "sets_flag": "o5_r4_shutter_open"
+      }
+    }
+  ],
+  "triggers": []
+}

@@ -20,6 +20,28 @@ const ISLAND_POS: Array[Vector2] = [
 
 const PANEL_RECT := Rect2(12.0, 10.0, 296.0, 160.0)
 
+const DUNGEON_NAME_KEYS: Dictionary = {
+	1: "ZONE_BELFRY",
+	2: "DUNGEON_2_NAME",
+	3: "DUNGEON_3_NAME",
+	4: "DUNGEON_4_NAME",
+	5: "DUNGEON_5_NAME",
+	6: "DUNGEON_6_NAME",
+	7: "DUNGEON_7_NAME",
+	8: "DUNGEON_8_NAME",
+}
+
+const ISLAND_ZONE_KEYS: Dictionary = {
+	1: ["ZONE_PLAZA", "ZONE_ORCHARD", "ZONE_OBSERVATORY", "ZONE_GLASSHOUSE", "ZONE_BRIDGE", "ZONE_BELL_TOWER"],
+	2: ["ZONE_ISL2_1", "ZONE_ISL2_2", "ZONE_ISL2_3", "ZONE_ISL2_4", "ZONE_ISL2_5", "ZONE_ISL2_6"],
+	3: ["ZONE_ISL3_1", "ZONE_ISL3_2", "ZONE_ISL3_3", "ZONE_ISL3_4", "ZONE_ISL3_5", "ZONE_ISL3_6"],
+	4: ["ZONE_ISL4_1", "ZONE_ISL4_2", "ZONE_ISL4_3", "ZONE_ISL4_4", "ZONE_ISL4_5", "ZONE_ISL4_6"],
+	5: ["ZONE_ISL5_1", "ZONE_ISL5_2", "ZONE_ISL5_3", "ZONE_ISL5_4", "ZONE_ISL5_5", "ZONE_ISL5_6"],
+	6: ["ZONE_ISL6_1", "ZONE_ISL6_2", "ZONE_ISL6_3", "ZONE_ISL6_4", "ZONE_ISL6_5", "ZONE_ISL6_6"],
+	7: ["ZONE_ISL7_1", "ZONE_ISL7_2", "ZONE_ISL7_3", "ZONE_ISL7_4", "ZONE_ISL7_5", "ZONE_ISL7_6"],
+	8: ["ZONE_ISL8_1", "ZONE_ISL8_2", "ZONE_ISL8_3", "ZONE_ISL8_4"],
+}
+
 var _selected_island: int = 1
 var _waystone_idx: int = 0
 var _waystone_list: Array[Dictionary] = [] # {island_id, waystone_id, label}
@@ -54,7 +76,7 @@ func _rebuild_waystones() -> void:
 			_waystone_list.append({
 				"island_id": isl,
 				"waystone_id": ws,
-				"label": LxStrings.sanitize(ws, 18),
+				"label": _waystone_label(isl, ws),
 			})
 	if _waystone_list.is_empty():
 		for ws: String in Lx.state.lit_waystones:
@@ -62,7 +84,7 @@ func _rebuild_waystones() -> void:
 			_waystone_list.append({
 				"island_id": isl,
 				"waystone_id": ws,
-				"label": LxStrings.sanitize(ws, 18),
+				"label": _waystone_label(isl, ws),
 			})
 	_waystone_idx = clampi(_waystone_idx, 0, maxi(0, _waystone_list.size() - 1))
 
@@ -117,14 +139,18 @@ func _handle_click(pos: Vector2) -> bool:
 	for i: int in range(ISLAND_POS.size()):
 		if pos.distance_to(ISLAND_POS[i]) <= 12.0:
 			_selected_island = i + 1
+			_waystone_idx = 0
 			_rebuild_waystones()
 			_play_ui_sfx("ui_move")
 			queue_redraw()
 			return true
-	for i: int in range(mini(_waystone_list.size(), 3)):
-		if _ws_row_rect(i).has_point(pos):
-			_waystone_idx = i
-			var item: Dictionary = _waystone_list[i]
+	var start_idx: int = maxi(0, _waystone_idx - 2)
+	var vis_count: int = mini(_waystone_list.size() - start_idx, 3)
+	for row: int in range(vis_count):
+		if _ws_row_rect(row).has_point(pos):
+			var idx: int = start_idx + row
+			_waystone_idx = idx
+			var item: Dictionary = _waystone_list[idx]
 			_play_ui_sfx("ui_confirm")
 			fast_travel_requested.emit(int(item["island_id"]), str(item["waystone_id"]))
 			return true
@@ -183,6 +209,8 @@ func _draw_islands() -> void:
 			draw_rect(Rect2(c + Vector2(2.0, -4.0), Vector2(3.0, 4.0)), dcol)
 		if is_cur:
 			draw_rect(Rect2(c - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), LxPalette.PAL["cream"])
+		var num_col: Color = LxPalette.PAL["gold"] if is_sel else (LxPalette.PAL["cream"] if explored else LxPalette.PAL["mauve"])
+		LxPixelFont.draw_centered(self, str(isl_id), c.x, c.y + 8.0, num_col, 1)
 
 
 func _draw_island_info(box: Rect2) -> void:
@@ -200,17 +228,22 @@ func _draw_island_info(box: Rect2) -> void:
 		LxPixelFont.draw_right(self, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 6.0, LxPalette.PAL["cream"], 1)
 
 	var beacons: int = _count_beacons(_selected_island)
-	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_BEACONS", [beacons]), box.position + Vector2(6.0, 16.0), LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_BEACONS", [beacons]), box.position + Vector2(6.0, 15.0), LxPalette.PAL["cream"], 1)
 
 	var boss_id: String = str(data.get("boss", ""))
 	var boss_done: bool = Lx.state != null and Lx.state.defeated_bosses.has(boss_id)
-	var d_line: String = LxStrings.text("MAP_DUNGEON_CLEAR") if boss_done else (LxStrings.fmt("MAP_DUNGEON", [LxStrings.sanitize(str(data.get("dungeon_name", "")), 18)]) if beacons >= 3 else LxStrings.text("MAP_DUNGEON_SEALED"))
-	LxPixelFont.draw_left(self, d_line, box.position + Vector2(6.0, 26.0), LxPalette.PAL["lime"] if boss_done else LxPalette.PAL["apricot"], 1)
+	var dungeon_label: String = _get_dungeon_name(_selected_island, data)
+	var d_line: String = LxStrings.text("MAP_DUNGEON_CLEAR") if boss_done else (LxStrings.fmt("MAP_DUNGEON", [dungeon_label]) if beacons >= 3 else LxStrings.text("MAP_DUNGEON_SEALED"))
+	LxPixelFont.draw_left(self, d_line, box.position + Vector2(6.0, 24.0), LxPalette.PAL["lime"] if boss_done else LxPalette.PAL["apricot"], 1)
+
+	var zone_label: String = _primary_zone_label(_selected_island)
+	if not zone_label.is_empty():
+		LxPixelFont.draw_left(self, zone_label, box.position + Vector2(6.0, 33.0), LxPalette.PAL["sky"], 1)
 
 	var embers: int = Lx.state.ember_pieces if Lx.state != null else 0
 	var secrets: int = Lx.state.claimed_shrines.size() if Lx.state != null else 0
-	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_EMBERS", [embers]), box.position + Vector2(6.0, 38.0), LxPalette.PAL["stone"], 1)
-	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_SECRETS", [secrets]), box.position + Vector2(74.0, 38.0), LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_EMBERS", [embers]), box.position + Vector2(6.0, 44.0), LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_SECRETS", [secrets]), box.position + Vector2(74.0, 44.0), LxPalette.PAL["stone"], 1)
 
 
 func _draw_waystones(box: Rect2) -> void:
@@ -219,11 +252,13 @@ func _draw_waystones(box: Rect2) -> void:
 	if _waystone_list.is_empty():
 		LxPixelFont.draw_left(self, LxStrings.text("MAP_NO_WAYSTONES"), box.position + Vector2(6.0, 20.0), LxPalette.PAL["mauve"], 1)
 		return
-	var vis_count: int = mini(_waystone_list.size(), 3)
-	for i: int in range(vis_count):
-		var item: Dictionary = _waystone_list[i]
-		var r: Rect2 = _ws_row_rect(i)
-		var sel: bool = i == _waystone_idx
+	var start_idx: int = maxi(0, _waystone_idx - 2)
+	var vis_count: int = mini(_waystone_list.size() - start_idx, 3)
+	for row: int in range(vis_count):
+		var idx: int = start_idx + row
+		var item: Dictionary = _waystone_list[idx]
+		var r: Rect2 = _ws_row_rect(row)
+		var sel: bool = idx == _waystone_idx
 		if sel:
 			draw_rect(r, LxPalette.PAL["plum"])
 		draw_rect(Rect2(r.position + Vector2(2.0, 2.0), Vector2(3.0, 5.0)), LxPalette.PAL["sky"] if sel else LxPalette.PAL["blue"])
@@ -235,6 +270,48 @@ func _ws_row_rect(i: int) -> Rect2:
 	return Rect2(174.0, 112.0 + float(i) * 10.0, 122.0, 9.0)
 
 
+func _get_dungeon_name(isl_id: int, data: Dictionary) -> String:
+	var key: String = str(DUNGEON_NAME_KEYS.get(isl_id, ""))
+	if not key.is_empty() and LxStrings.has_id(key):
+		return LxStrings.text(key)
+	return LxStrings.sanitize(str(data.get("dungeon_name", "")), 20)
+
+
+func _primary_zone_label(isl_id: int) -> String:
+	var zones: Array = ISLAND_ZONE_KEYS.get(isl_id, []) as Array
+	if zones.is_empty():
+		return ""
+	var key: String = str(zones[0])
+	return LxStrings.text(key) if LxStrings.has_id(key) else ""
+
+
+func _waystone_label(isl_id: int, ws_id: String) -> String:
+	if LxStrings.has_id(ws_id):
+		return LxStrings.text(ws_id).substr(0, 18)
+	var low: String = ws_id.to_lower()
+	var zones: Array = ISLAND_ZONE_KEYS.get(isl_id, []) as Array
+	if isl_id == 1:
+		if low.contains("plaza"):
+			return LxStrings.text("ZONE_PLAZA").substr(0, 18)
+		if low.contains("orchard"):
+			return LxStrings.text("ZONE_ORCHARD").substr(0, 18)
+		if low.contains("observatory"):
+			return LxStrings.text("ZONE_OBSERVATORY").substr(0, 18)
+		if low.contains("glasshouse"):
+			return LxStrings.text("ZONE_GLASSHOUSE").substr(0, 18)
+		if low.contains("bridge"):
+			return LxStrings.text("ZONE_BRIDGE").substr(0, 18)
+		if low.contains("tower") or low.contains("bell"):
+			return LxStrings.text("ZONE_BELL_TOWER").substr(0, 18)
+	for z_idx: int in range(zones.size()):
+		var num: String = str(z_idx + 1)
+		if low.ends_with("_" + num) or low.contains("_z" + num) or low.contains("_zone" + num):
+			return LxStrings.text(str(zones[z_idx])).substr(0, 18)
+	if not zones.is_empty() and (low.contains("entry") or low.contains("landing") or low.contains("hub") or low.contains("quay") or low.contains("gate")):
+		return LxStrings.text(str(zones[0])).substr(0, 18)
+	return LxStrings.sanitize(ws_id, 18)
+
+
 func _is_island_explored(isl_id: int) -> bool:
 	if Lx.state == null:
 		return isl_id == 1
@@ -243,6 +320,9 @@ func _is_island_explored(isl_id: int) -> bool:
 	var prefix: String = "%d:" % isl_id
 	for vr: String in Lx.state.visited_regions:
 		if vr.begins_with(prefix):
+			return true
+	for ws: String in Lx.state.lit_waystones:
+		if _waystone_island(ws) == isl_id:
 			return true
 	return false
 
@@ -253,15 +333,19 @@ func _count_beacons(isl_id: int) -> int:
 	var count: int = 0
 	var p1: String = "isl%d_" % isl_id
 	var p2: String = "%d:" % isl_id
+	var p3: String = "island%d_" % isl_id
+	var p4: String = "beacon_isl%d_" % isl_id
+	var p5: String = "b%d_" % isl_id
 	for b: String in Lx.state.lit_beacons:
-		if b.begins_with(p1) or b.begins_with(p2) or (isl_id == 1 and b.begins_with("beacon_")):
+		if b.begins_with(p1) or b.begins_with(p2) or b.begins_with(p3) or b.begins_with(p4) or b.begins_with(p5) or (isl_id == 1 and b.begins_with("beacon_") and not b.begins_with("beacon_isl")):
 			count += 1
 	return mini(count, 3)
 
 
 func _waystone_island(ws_id: String) -> int:
+	var low: String = ws_id.to_lower()
 	for n: int in range(1, 9):
-		if ws_id.begins_with("isl%d_" % n) or ws_id.begins_with("%d:" % n):
+		if low.begins_with("isl%d_" % n) or low.begins_with("ws_isl%d" % n) or low.begins_with("island%d_" % n) or low.begins_with("island_%d_" % n) or low.begins_with("ws_%d_" % n) or low.begins_with("%d:" % n):
 			return n
 	return 1
 

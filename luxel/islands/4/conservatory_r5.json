@@ -1,0 +1,89 @@
+{
+  "id": "conservatory_r5",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r5",
+      "name_key": "DUNGEON_4_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r5_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r4",
+      "to_spawn": [
+        272,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r5_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r6",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "shrine_wings",
+      "kind": "shrine",
+      "pos": [
+        56,
+        56
+      ],
+      "props": {
+        "move_id": "wings",
+        "zone": "conservatory_r5",
+        "name_key": "MOVE_WINGS_NAME"
+      }
+    },
+    {
+      "id": "lamp_c4_r5_e",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "zone": "conservatory_r5"
+      }
+    }
+  ],
+  "triggers": []
+}

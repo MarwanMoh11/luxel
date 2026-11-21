@@ -1,0 +1,147 @@
+{
+  "id": "kiln_r3",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "kiln_r3",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r3_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "kiln_r1",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_kiln_r3_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "kiln_r4",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_kiln_r3_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "bellows_kiln_r3_0",
+      "kind": "bellows_imp",
+      "pos": [
+        184,
+        56
+      ],
+      "route": [
+        [
+          152,
+          56
+        ],
+        [
+          200,
+          56
+        ]
+      ],
+      "perches": [],
+      "zone": "kiln_r3",
+      "leash": 120
+    },
+    {
+      "id": "mole_kiln_r3_0",
+      "kind": "ash_mole",
+      "pos": [
+        184,
+        120
+      ],
+      "route": [],
+      "perches": [
+        [
+          136,
+          120
+        ],
+        [
+          200,
+          120
+        ],
+        [
+          168,
+          88
+        ]
+      ],
+      "zone": "kiln_r3",
+      "leash": 130
+    },
+    {
+      "id": "bellows_kiln_r3_1",
+      "kind": "bellows_imp",
+      "pos": [
+        248,
+        88
+      ],
+      "route": [
+        [
+          232,
+          88
+        ],
+        [
+          280,
+          88
+        ]
+      ],
+      "perches": [],
+      "zone": "kiln_r3",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_kiln_r3_north",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "clear_zone": "kiln_r3"
+      }
+    }
+  ],
+  "triggers": []
+}

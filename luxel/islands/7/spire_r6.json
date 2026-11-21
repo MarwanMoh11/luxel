@@ -1,0 +1,125 @@
+{
+  "id": "spire_r6",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "spire_r6",
+      "name_key": "DUNGEON_7_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r6_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "spire_r5",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_spire_r6_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "spire_r7",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "wick_key_7_2"
+      ],
+      "locked_door_id": "door_spire_r6_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mini_moonshade_warden",
+      "kind": "moonshade_warden",
+      "variant": "moonshade_warden",
+      "is_boss": true,
+      "max_hp": 7.5,
+      "shard_drop": 14,
+      "pos": [
+        184,
+        88
+      ],
+      "route": [
+        [
+          136,
+          88
+        ],
+        [
+          232,
+          88
+        ]
+      ],
+      "perches": [],
+      "zone": "spire_r6",
+      "leash": 144
+    }
+  ],
+  "interactables": [
+    {
+      "id": "wick_key_7_2",
+      "kind": "wick_key",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "dungeon_id": "mirror_spire",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_7_2"
+      }
+    },
+    {
+      "id": "door_spire_r6_north",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "mirror_spire",
+        "key_kind": "wick_key",
+        "size": [
+          32,
+          16
+        ],
+        "clear_zone": "spire_r6",
+        "requires_flags": [
+          "wick_key_7_2"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

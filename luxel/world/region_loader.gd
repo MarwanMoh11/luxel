@@ -525,6 +525,8 @@ func is_flag_set(flag: String) -> bool:
 		return true
 	if flag.begins_with("island_") and flag.ends_with("_relit"):
 		return Lx.state.relit_islands.has(int(flag.substr(7, flag.length() - 13)))
+	if flag.begins_with("great_lamp_"):
+		return Lx.state.relit_islands.has(int(flag.substr(11)))
 	return false
 
 func _check_triggers(player_pos: Vector2) -> void:

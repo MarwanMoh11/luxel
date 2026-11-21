@@ -1,0 +1,115 @@
+{
+  "id": "lighthouse_r3",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "lighthouse_r3",
+      "name_key": "DUNGEON_2_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r3_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r2",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r3_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r4",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r3_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "barnacle_sentry_lh_r3",
+      "kind": "barnacle_sentry",
+      "pos": [
+        216,
+        56
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "lighthouse_r3",
+      "leash": 120
+    },
+    {
+      "id": "crab_warden_lh_r3",
+      "kind": "crab_warden",
+      "pos": [
+        184,
+        120
+      ],
+      "route": [
+        [
+          152,
+          120
+        ],
+        [
+          232,
+          120
+        ]
+      ],
+      "perches": [],
+      "zone": "lighthouse_r3",
+      "leash": 136
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_lh_r3_combat",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "lighthouse_r3",
+        "clear_zone": "lighthouse_r3",
+        "sets_flag": "lh_r3_cleared"
+      }
+    }
+  ],
+  "triggers": []
+}

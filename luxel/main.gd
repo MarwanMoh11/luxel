@@ -420,6 +420,12 @@ func step_sim(raw_dt: float) -> void:
 			if not ex.is_empty():
 				var next_isl: int = int(ex.get("to_island", Lx.state.island_id))
 				var next_reg: String = str(ex.get("to_region", ""))
+				if next_reg.begins_with("island") and next_reg.contains(":"):
+					var parts: PackedStringArray = next_reg.split(":", false, 1)
+					var parsed_isl: int = int(parts[0].substr(6))
+					if parsed_isl > 0:
+						next_isl = parsed_isl
+						next_reg = parts[1] if parts.size() > 1 and not parts[1].is_empty() else "overworld"
 				var sp_arr: Array = ex.get("to_spawn", [-1.0, -1.0]) as Array
 				var sp_vec := Vector2(float(sp_arr[0]), float(sp_arr[1])) if sp_arr.size() >= 2 else Vector2(-1.0, -1.0)
 				if not next_reg.is_empty():

@@ -1,0 +1,142 @@
+{
+  "id": "oak_r3",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "oak_r3",
+      "name_key": "DUNGEON_3_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r3_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "oak_r2",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r3_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "oak_r4",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r3_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "sporecap_oak_r3",
+      "kind": "sporecap",
+      "pos": [
+        200,
+        56
+      ],
+      "route": [
+        [
+          184,
+          56
+        ],
+        [
+          232,
+          56
+        ]
+      ],
+      "perches": [],
+      "zone": "oak_r3",
+      "leash": 130
+    },
+    {
+      "id": "gloam_oak_r3",
+      "kind": "gloam",
+      "pos": [
+        200,
+        120
+      ],
+      "route": [
+        [
+          168,
+          120
+        ],
+        [
+          232,
+          120
+        ]
+      ],
+      "perches": [],
+      "zone": "oak_r3",
+      "leash": 136
+    }
+  ],
+  "interactables": [
+    {
+      "id": "brazier_oak_r3_n",
+      "kind": "brazier",
+      "pos": [
+        120,
+        40
+      ],
+      "props": {}
+    },
+    {
+      "id": "brazier_oak_r3_s",
+      "kind": "brazier",
+      "pos": [
+        120,
+        136
+      ],
+      "props": {}
+    },
+    {
+      "id": "door_oak_r3_combat",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "oak_r3",
+        "clear_zone": "oak_r3",
+        "sets_flag": "oak_r3_cleared"
+      }
+    }
+  ],
+  "triggers": []
+}

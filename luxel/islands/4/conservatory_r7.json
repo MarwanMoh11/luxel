@@ -1,0 +1,132 @@
+{
+  "id": "conservatory_r7",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r7",
+      "name_key": "DUNGEON_4_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r7_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r6",
+      "to_spawn": [
+        272,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r7_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r8",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "c4_r7_shutter_open"
+      ],
+      "locked_door_id": "door_c4_r7_shutter"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "switch_eye_c4_r7",
+      "kind": "switch_eye",
+      "pos": [
+        264,
+        88
+      ],
+      "props": {
+        "target_ids": [
+          "bridge_c4_r7",
+          "door_c4_r7_shutter"
+        ],
+        "sets_flag": "c4_r7_bridge"
+      }
+    },
+    {
+      "id": "bridge_c4_r7",
+      "kind": "door",
+      "pos": [
+        104,
+        32
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          80,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "switch_eye_c4_r7"
+        ]
+      }
+    },
+    {
+      "id": "door_c4_r7_shutter",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "switch_eye_c4_r7"
+        ],
+        "sets_flag": "c4_r7_shutter_open"
+      }
+    },
+    {
+      "id": "chest_c4_r7_shards",
+      "kind": "chest",
+      "pos": [
+        152,
+        120
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40,
+        "zone": "conservatory_r7"
+      }
+    }
+  ],
+  "triggers": []
+}

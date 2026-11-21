@@ -1,0 +1,167 @@
+{
+  "id": "sanctum_r5",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r5",
+      "name_key": "DUNGEON_8_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r5_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r4",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r5_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r6",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "sunflare"
+      ],
+      "requires_flags": [
+        "keepers_flame_8"
+      ],
+      "locked_door_id": "door_boss_8"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "seal_sanctum_r5",
+      "kind": "obsidian_seal",
+      "pos": [
+        160,
+        72
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ],
+        "zone": "sanctum_r5"
+      }
+    },
+    {
+      "id": "brazier_sanctum_r5_nw",
+      "kind": "brazier",
+      "pos": [
+        104,
+        40
+      ],
+      "props": {
+        "target_id": "door_sanctum_r5_choir"
+      }
+    },
+    {
+      "id": "brazier_sanctum_r5_ne",
+      "kind": "brazier",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "target_id": "door_sanctum_r5_choir"
+      }
+    },
+    {
+      "id": "brazier_sanctum_r5_sw",
+      "kind": "brazier",
+      "pos": [
+        104,
+        120
+      ],
+      "props": {
+        "target_id": "door_sanctum_r5_choir"
+      }
+    },
+    {
+      "id": "brazier_sanctum_r5_se",
+      "kind": "brazier",
+      "pos": [
+        216,
+        120
+      ],
+      "props": {
+        "target_id": "door_sanctum_r5_choir"
+      }
+    },
+    {
+      "id": "door_sanctum_r5_choir",
+      "kind": "door",
+      "pos": [
+        160,
+        56
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "brazier_sanctum_r5_nw",
+          "brazier_sanctum_r5_ne",
+          "brazier_sanctum_r5_sw",
+          "brazier_sanctum_r5_se"
+        ]
+      }
+    },
+    {
+      "id": "door_boss_8",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_door",
+        "dungeon_id": "bell_sanctum",
+        "key_kind": "keepers_flame",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_8"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

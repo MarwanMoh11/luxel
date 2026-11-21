@@ -1,0 +1,157 @@
+{
+  "id": "kiln_r10",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "kiln_r10",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r10_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "kiln_r9",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_r10_bridge_7",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        96,
+        288
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "great_lamp_6"
+      ],
+      "locked_door_id": "bridge_of_light_kiln",
+      "to_island": 7
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_kilnmother",
+      "kind": "kilnmother",
+      "boss_id": "kilnmother",
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          112,
+          72
+        ],
+        [
+          208,
+          72
+        ]
+      ],
+      "perches": [],
+      "zone": "kiln_r10",
+      "leash": 145
+    }
+  ],
+  "interactables": [
+    {
+      "id": "great_lamp_6",
+      "kind": "great_lamp",
+      "pos": [
+        160,
+        48
+      ],
+      "props": {
+        "island_id": 6,
+        "requires_boss": "kilnmother",
+        "requires_flag": "boss_kilnmother_defeated",
+        "name_key": "ISL6_RELIGHT"
+      }
+    },
+    {
+      "id": "bridge_of_light_kiln",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "great_lamp_6"
+        ]
+      }
+    },
+    {
+      "id": "brazier_kiln_r10_w",
+      "kind": "brazier",
+      "pos": [
+        88,
+        56
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    },
+    {
+      "id": "brazier_kiln_r10_e",
+      "kind": "brazier",
+      "pos": [
+        232,
+        56
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_boss_kilnmother",
+      "rect": [
+        96,
+        112,
+        128,
+        40
+      ],
+      "string_id": "BOSS_KILNMOTHER",
+      "once": true
+    }
+  ]
+}

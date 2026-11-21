@@ -1,0 +1,143 @@
+{
+  "id": "kiln_r7",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "kiln_r7",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r7_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "kiln_r6",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_kiln_r7_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "kiln_r8",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_kiln_r7_west"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "seal_kiln_r7",
+      "kind": "obsidian_seal",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "zone": "kiln_r7"
+      }
+    },
+    {
+      "id": "brazier_kiln_r7_nw",
+      "kind": "brazier",
+      "pos": [
+        120,
+        56
+      ],
+      "props": {
+        "target_id": "door_kiln_r7_west"
+      }
+    },
+    {
+      "id": "brazier_kiln_r7_ne",
+      "kind": "brazier",
+      "pos": [
+        200,
+        56
+      ],
+      "props": {
+        "target_id": "door_kiln_r7_west"
+      }
+    },
+    {
+      "id": "brazier_kiln_r7_sw",
+      "kind": "brazier",
+      "pos": [
+        120,
+        120
+      ],
+      "props": {
+        "target_id": "door_kiln_r7_west"
+      }
+    },
+    {
+      "id": "brazier_kiln_r7_se",
+      "kind": "brazier",
+      "pos": [
+        200,
+        120
+      ],
+      "props": {
+        "target_id": "door_kiln_r7_west"
+      }
+    },
+    {
+      "id": "door_kiln_r7_west",
+      "kind": "door",
+      "pos": [
+        24,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "brazier_kiln_r7_nw",
+          "brazier_kiln_r7_ne",
+          "brazier_kiln_r7_sw",
+          "brazier_kiln_r7_se"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

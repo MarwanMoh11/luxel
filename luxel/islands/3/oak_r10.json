@@ -1,0 +1,211 @@
+{
+  "id": "oak_r10",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "oak_r10",
+      "name_key": "DUNGEON_3_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r10_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "oak_r9",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r10_island4",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_island": 4,
+      "to_region": "overworld",
+      "to_spawn": [
+        120,
+        288
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "island_3_relit"
+      ],
+      "locked_door_id": "bridge_of_light_3_r10"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_briar_matron",
+      "kind": "briar_matron",
+      "pos": [
+        160,
+        88
+      ],
+      "route": [
+        [
+          120,
+          72
+        ],
+        [
+          200,
+          104
+        ]
+      ],
+      "perches": [],
+      "zone": "oak_r10",
+      "leash": 148
+    }
+  ],
+  "interactables": [
+    {
+      "id": "great_lamp_3",
+      "kind": "great_lamp",
+      "pos": [
+        160,
+        40
+      ],
+      "props": {
+        "island_id": 3,
+        "requires_boss": "briar_matron",
+        "requires_flag": "boss_briar_matron_defeated",
+        "name_key": "DUNGEON_3_NAME"
+      }
+    },
+    {
+      "id": "web_oak_r10_nw",
+      "kind": "web",
+      "pos": [
+        88,
+        56
+      ],
+      "props": {
+        "size": [
+          24,
+          16
+        ]
+      }
+    },
+    {
+      "id": "web_oak_r10_ne",
+      "kind": "web",
+      "pos": [
+        232,
+        56
+      ],
+      "props": {
+        "size": [
+          24,
+          16
+        ]
+      }
+    },
+    {
+      "id": "web_oak_r10_sw",
+      "kind": "web",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "size": [
+          24,
+          16
+        ]
+      }
+    },
+    {
+      "id": "web_oak_r10_se",
+      "kind": "web",
+      "pos": [
+        232,
+        120
+      ],
+      "props": {
+        "size": [
+          24,
+          16
+        ]
+      }
+    },
+    {
+      "id": "brazier_oak_r10_w",
+      "kind": "brazier",
+      "pos": [
+        56,
+        88
+      ],
+      "props": {
+        "lit_by_default": true
+      }
+    },
+    {
+      "id": "brazier_oak_r10_e",
+      "kind": "brazier",
+      "pos": [
+        264,
+        88
+      ],
+      "props": {
+        "lit_by_default": true
+      }
+    },
+    {
+      "id": "bridge_of_light_3_r10",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "oak_r10",
+        "requires_flags": [
+          "island_3_relit"
+        ]
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_boss_matron",
+      "rect": [
+        96,
+        112,
+        128,
+        32
+      ],
+      "string_id": "BOSS_MATRON",
+      "once": true
+    }
+  ]
+}

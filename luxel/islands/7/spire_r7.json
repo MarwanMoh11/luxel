@@ -1,0 +1,134 @@
+{
+  "id": "spire_r7",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "spire_r7",
+      "name_key": "DUNGEON_7_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r7_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "spire_r6",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_spire_r7_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "spire_r8",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [
+        "prism",
+        "lens",
+        "wings"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_spire_r7_west"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "mirror_spire_r7_n",
+      "kind": "mirror",
+      "pos": [
+        184,
+        40
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "mirror_spire_r7_s",
+      "kind": "mirror",
+      "pos": [
+        184,
+        136
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "switch_eye_spire_r7_a",
+      "kind": "switch_eye",
+      "pos": [
+        280,
+        40
+      ],
+      "props": {
+        "requires_prism": true,
+        "target_id": "door_spire_r7_west"
+      }
+    },
+    {
+      "id": "switch_eye_spire_r7_b",
+      "kind": "switch_eye",
+      "pos": [
+        280,
+        136
+      ],
+      "props": {
+        "requires_prism": true,
+        "target_id": "door_spire_r7_west"
+      }
+    },
+    {
+      "id": "door_spire_r7_west",
+      "kind": "door",
+      "pos": [
+        24,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_spire_r7_a",
+          "switch_eye_spire_r7_b"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

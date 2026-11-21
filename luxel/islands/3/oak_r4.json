@@ -1,0 +1,138 @@
+{
+  "id": "oak_r4",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "oak_r4",
+      "name_key": "DUNGEON_3_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r4_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "oak_r3",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r4_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "oak_r5",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r4_shutter"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "door_oak_r4_key",
+      "kind": "door",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "hollow_oak",
+        "key_kind": "wick_key",
+        "key_id": "wick_key_3_1",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_3_1"
+        ]
+      }
+    },
+    {
+      "id": "brazier_oak_r4_nw",
+      "kind": "brazier",
+      "pos": [
+        136,
+        40
+      ],
+      "props": {
+        "target_id": "door_oak_r4_shutter"
+      }
+    },
+    {
+      "id": "brazier_oak_r4_ne",
+      "kind": "brazier",
+      "pos": [
+        232,
+        40
+      ],
+      "props": {
+        "target_id": "door_oak_r4_shutter"
+      }
+    },
+    {
+      "id": "brazier_oak_r4_s",
+      "kind": "brazier",
+      "pos": [
+        232,
+        136
+      ],
+      "props": {
+        "target_id": "door_oak_r4_shutter"
+      }
+    },
+    {
+      "id": "door_oak_r4_shutter",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "brazier_oak_r4_nw",
+          "brazier_oak_r4_ne",
+          "brazier_oak_r4_s"
+        ],
+        "sets_flag": "oak_r4_pool_lit"
+      }
+    }
+  ],
+  "triggers": []
+}

@@ -191,7 +191,11 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 					var hit_i: LxHit = LxHit.make(src_i, b.damage, b.dir, b.pos, b.shield_wear, false, false, wick, false)
 					var consumed: Variant = item.call("on_hit", hit_i)
 					if consumed is bool and bool(consumed):
-						wick.spawn_sparks(ipos, -b.dir, 4, LxWick.PAL_GOLD, 25.0, 65.0, 0.14)
+						if str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
+							wick.ember = minf(Lx.state.get_effective_ember_max(), wick.ember + 22.0)
+							wick.spawn_sparks(ipos, -b.dir, 6, LxWick.PAL_GOLD, 30.0, 85.0, 0.20)
+						else:
+							wick.spawn_sparks(ipos, -b.dir, 4, LxWick.PAL_GOLD, 25.0, 65.0, 0.14)
 						dead = true
 						break
 

@@ -1,0 +1,153 @@
+{
+  "id": "conservatory_r8",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r8",
+      "name_key": "DUNGEON_4_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r8_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r7",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r8_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r9",
+      "to_spawn": [
+        272,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "c4_r8_cleared"
+      ],
+      "locked_door_id": "door_c4_r8_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "heron_stalker_c4_r8",
+      "kind": "heron_stalker",
+      "pos": [
+        120,
+        88
+      ],
+      "route": [
+        [
+          88,
+          88
+        ],
+        [
+          168,
+          88
+        ]
+      ],
+      "perches": [],
+      "zone": "conservatory_r8",
+      "leash": 135
+    },
+    {
+      "id": "mire_snuffer_c4_r8",
+      "kind": "mire_snuffer",
+      "pos": [
+        216,
+        56
+      ],
+      "route": [],
+      "perches": [
+        [
+          216,
+          56
+        ],
+        [
+          264,
+          40
+        ],
+        [
+          184,
+          40
+        ]
+      ],
+      "zone": "conservatory_r8",
+      "leash": 145
+    },
+    {
+      "id": "lily_hopper_c4_r8",
+      "kind": "lily_hopper",
+      "pos": [
+        216,
+        120
+      ],
+      "route": [
+        [
+          184,
+          120
+        ],
+        [
+          264,
+          120
+        ]
+      ],
+      "perches": [],
+      "zone": "conservatory_r8",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_c4_r8_combat",
+      "kind": "door",
+      "pos": [
+        24,
+        88
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "clear_zone": "conservatory_r8",
+        "sets_flag": "c4_r8_cleared",
+        "requires_flags": [
+          "c4_r8_cleared"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

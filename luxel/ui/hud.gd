@@ -38,6 +38,33 @@ const MOVE_COLORS: Dictionary = {
 	"sunflare": "gold",
 }
 
+const BOSS_NAME_KEYS: Dictionary = {
+	"bellkeeper": "BOSS_BELLKEEPER",
+	"boss_bellkeeper": "BOSS_BELLKEEPER",
+	"grand_bellkeeper": "BOSS_BELLKEEPER",
+	"lighthouse_hermit": "BOSS_HERMIT",
+	"boss_hermit": "BOSS_HERMIT",
+	"hermit": "BOSS_HERMIT",
+	"briar_matron": "BOSS_MATRON",
+	"boss_matron": "BOSS_MATRON",
+	"matron": "BOSS_MATRON",
+	"heron_abbess": "BOSS_ABBESS",
+	"boss_abbess": "BOSS_ABBESS",
+	"abbess": "BOSS_ABBESS",
+	"astronomer": "BOSS_ASTRONOMER",
+	"boss_astronomer": "BOSS_ASTRONOMER",
+	"the_astronomer": "BOSS_ASTRONOMER",
+	"kilnmother": "BOSS_KILNMOTHER",
+	"boss_kilnmother": "BOSS_KILNMOTHER",
+	"the_kilnmother": "BOSS_KILNMOTHER",
+	"hollow_wick": "BOSS_HOLLOW",
+	"boss_hollow": "BOSS_HOLLOW",
+	"hollow": "BOSS_HOLLOW",
+	"the_hush": "BOSS_HUSH",
+	"boss_hush": "BOSS_HUSH",
+	"hush": "BOSS_HUSH",
+}
+
 var _cues: Array[Dictionary] = [] # {text, pos, is_world, color, t, dur}
 var _notice_text: String = ""
 var _notice_t: float = 0.0
@@ -90,13 +117,26 @@ func set_ember(current: float, maximum: float) -> void:
 	queue_redraw()
 
 
+static func resolve_boss_name_key(boss_id_or_key: String) -> String:
+	if LxStrings.has_id(boss_id_or_key):
+		return boss_id_or_key
+	var low: String = boss_id_or_key.to_lower().strip_edges()
+	if BOSS_NAME_KEYS.has(low):
+		return str(BOSS_NAME_KEYS[low])
+	return boss_id_or_key
+
+
 func show_boss(name_key: String, hp: float, max_hp: float, phase: int = 1) -> void:
 	_boss_active = true
-	_boss_name_key = name_key
+	_boss_name_key = resolve_boss_name_key(name_key)
 	_boss_max_hp = maxf(1.0, max_hp)
 	_boss_hp = clampf(hp, 0.0, _boss_max_hp)
 	_boss_trail_hp = _boss_hp
 	_boss_phase = maxi(1, phase)
+	if _boss_name_key == "BOSS_HOLLOW" and Lx.state != null and not bool(Lx.state.story_flags.get("twist_hollow_shown", false)):
+		Lx.state.story_flags["twist_hollow_shown"] = true
+		if Lx.events != null:
+			Lx.events.narration_requested.emit("TWIST_HOLLOW", "ice", 4.0)
 	queue_redraw()
 
 
@@ -178,7 +218,9 @@ func _on_move_unlocked(move_id: String) -> void:
 	spawn_screen_cue(name_key, Vector2(160.0, 42.0), "gold", 2.2)
 
 
-func _on_boss_phase(_boss_id: String, phase: int) -> void:
+func _on_boss_phase(boss_id: String, phase: int) -> void:
+	if not boss_id.is_empty():
+		_boss_name_key = resolve_boss_name_key(boss_id)
 	_boss_phase = maxi(1, phase)
 	if phase >= 2:
 		spawn_screen_cue("CUE_PHASE_2", Vector2(160.0, 44.0), "coral", 1.8)
@@ -413,7 +455,8 @@ func _draw_boss_bar() -> void:
 	var bar_h: float = 8.0
 	var x: float = roundf(160.0 - bar_w * 0.5)
 	var y: float = 148.0
-	var name_txt: String = LxStrings.text(_boss_name_key) if LxStrings.has_id(_boss_name_key) else LxStrings.sanitize(_boss_name_key)
+	var resolved_key: String = resolve_boss_name_key(_boss_name_key)
+	var name_txt: String = LxStrings.text(resolved_key) if LxStrings.has_id(resolved_key) else LxStrings.sanitize(resolved_key)
 	LxPixelFont.draw_centered(self, name_txt, 160.0, y - 8.0, LxPalette.PAL["gold"], 1)
 	if _boss_phase >= 2:
 		LxPixelFont.draw_right(self, LxStrings.text("HUD_BOSS_P2"), x + bar_w, y - 8.0, LxPalette.PAL["coral"], 1)
@@ -465,8 +508,11 @@ func _world_to_screen(world_pos: Vector2) -> Vector2:
 func _count_island_beacons(island_id: int) -> int:
 	var prefix: String = "isl%d_" % island_id
 	var alt_prefix: String = "%d:" % island_id
+	var p3: String = "island%d_" % island_id
+	var p4: String = "beacon_isl%d_" % island_id
+	var p5: String = "b%d_" % island_id
 	var count: int = 0
 	for bid: String in Lx.state.lit_beacons:
-		if bid.begins_with(prefix) or bid.begins_with(alt_prefix) or (island_id == 1 and bid.begins_with("beacon_")):
+		if bid.begins_with(prefix) or bid.begins_with(alt_prefix) or bid.begins_with(p3) or bid.begins_with(p4) or bid.begins_with(p5) or (island_id == 1 and bid.begins_with("beacon_") and not bid.begins_with("beacon_isl")):
 			count += 1
 	return mini(count, 3)

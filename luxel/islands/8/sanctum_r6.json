@@ -1,0 +1,143 @@
+{
+  "id": "sanctum_r6",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r6",
+      "name_key": "DUNGEON_8_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r6_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r5",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_the_hush",
+      "kind": "the_hush",
+      "boss_id": "the_hush",
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          104,
+          72
+        ],
+        [
+          216,
+          72
+        ]
+      ],
+      "perches": [],
+      "zone": "sanctum_r6",
+      "leash": 150
+    }
+  ],
+  "interactables": [
+    {
+      "id": "great_lamp_8",
+      "kind": "great_lamp",
+      "pos": [
+        160,
+        40
+      ],
+      "props": {
+        "island_id": 8,
+        "requires_boss": "the_hush",
+        "requires_flag": "boss_the_hush_defeated",
+        "name_key": "ISL8_RELIGHT"
+      }
+    },
+    {
+      "id": "brazier_sanctum_r6_nw",
+      "kind": "brazier",
+      "pos": [
+        88,
+        40
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    },
+    {
+      "id": "brazier_sanctum_r6_ne",
+      "kind": "brazier",
+      "pos": [
+        232,
+        40
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    },
+    {
+      "id": "brazier_sanctum_r6_sw",
+      "kind": "brazier",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    },
+    {
+      "id": "brazier_sanctum_r6_se",
+      "kind": "brazier",
+      "pos": [
+        232,
+        136
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_boss_hush",
+      "rect": [
+        96,
+        112,
+        128,
+        40
+      ],
+      "string_id": "BOSS_HUSH",
+      "once": true
+    }
+  ]
+}

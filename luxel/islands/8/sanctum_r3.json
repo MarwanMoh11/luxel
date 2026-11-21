@@ -1,0 +1,150 @@
+{
+  "id": "sanctum_r3",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r3",
+      "name_key": "DUNGEON_8_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r3_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r2",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r3_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r4",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "wings",
+        "lens"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_sanctum_r3_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "phantom_owl_sanctum_r3",
+      "kind": "phantom_owl",
+      "pos": [
+        104,
+        56
+      ],
+      "route": [],
+      "perches": [
+        [
+          88,
+          56
+        ],
+        [
+          232,
+          56
+        ],
+        [
+          168,
+          40
+        ]
+      ],
+      "zone": "sanctum_r3",
+      "leash": 150
+    },
+    {
+      "id": "echo_moth_sanctum_r3",
+      "kind": "echo_moth",
+      "pos": [
+        232,
+        56
+      ],
+      "route": [
+        [
+          200,
+          56
+        ],
+        [
+          264,
+          56
+        ]
+      ],
+      "perches": [],
+      "zone": "sanctum_r3",
+      "leash": 144
+    },
+    {
+      "id": "heron_sanctum_r3",
+      "kind": "heron_stalker",
+      "pos": [
+        168,
+        56
+      ],
+      "route": [
+        [
+          136,
+          56
+        ],
+        [
+          200,
+          56
+        ]
+      ],
+      "perches": [],
+      "zone": "sanctum_r3",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_sanctum_r3_north",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "clear_zone": "sanctum_r3"
+      }
+    }
+  ],
+  "triggers": []
+}

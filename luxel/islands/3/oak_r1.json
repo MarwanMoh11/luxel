@@ -1,0 +1,109 @@
+{
+  "id": "oak_r1",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "oak_r1",
+      "name_key": "DUNGEON_3_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r1_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        512,
+        92
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r1_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "oak_r2",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_oak",
+      "kind": "waystone",
+      "pos": [
+        160,
+        104
+      ],
+      "props": {
+        "zone": "oak_r1",
+        "name_key": "DUNGEON_3_NAME"
+      }
+    },
+    {
+      "id": "lamp_oak_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        56
+      ],
+      "props": {
+        "zone": "oak_r1"
+      }
+    },
+    {
+      "id": "lamp_oak_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        56
+      ],
+      "props": {
+        "zone": "oak_r1"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_oak_entry",
+      "rect": [
+        128,
+        112,
+        64,
+        32
+      ],
+      "string_id": "DUNGEON_3_NAME",
+      "once": true
+    }
+  ]
+}

@@ -14,12 +14,14 @@ signal settings_changed(settings: Dictionary)
 signal upgrade_bought(upgrade_id: String, new_rank: int)
 signal death_retry_requested()
 signal intro_finished()
+signal ending_finished()
 signal credits_finished()
 
-enum Screen { NONE, TITLE, INTRO, HUD, PAUSE, MAP, OPTIONS, REBIND, SHOP, DEATH, RESULTS, CREDITS }
+enum Screen { NONE, TITLE, INTRO, HUD, PAUSE, MAP, OPTIONS, REBIND, SHOP, DEATH, ENDING, RESULTS, CREDITS }
 
 var current_screen: int = Screen.NONE
 var _return_screen: int = Screen.TITLE
+var _main: Node = null
 
 var hud: LxHud = null
 var narration: LxNarration = null
@@ -89,21 +91,37 @@ func _build_children() -> void:
 func _connect_signals() -> void:
 	title.slot_selected.connect(func(slot_num: int, is_new: bool) -> void:
 		play_slot_requested.emit(slot_num, is_new)
+		if _main != null:
+			if is_new and _main.has_method("start_new_game"):
+				_main.call("start_new_game", slot_num, true)
+			elif not is_new and _main.has_method("continue_slot"):
+				_main.call("continue_slot", slot_num)
 	)
 	title.options_requested.connect(func() -> void: show_options(Screen.TITLE))
-	title.quit_requested.connect(func() -> void: quit_requested.emit())
+	title.quit_requested.connect(func() -> void:
+		quit_requested.emit()
+		if _main != null:
+			get_tree().quit()
+	)
 
 	pause.resume_requested.connect(func() -> void:
 		show_hud()
 		resume_requested.emit()
+		_notify_main_resume()
 	)
 	pause.map_requested.connect(func() -> void: show_map())
 	pause.options_requested.connect(func() -> void: show_options(Screen.PAUSE))
 	pause.retry_checkpoint_requested.connect(func() -> void:
 		show_hud()
 		retry_checkpoint_requested.emit()
+		if _main != null and _main.has_method("retry_from_death"):
+			_main.call("retry_from_death")
 	)
-	pause.title_requested.connect(func() -> void: return_to_title_requested.emit())
+	pause.title_requested.connect(func() -> void:
+		return_to_title_requested.emit()
+		if _main != null and _main.has_method("enter_title"):
+			_main.call("enter_title")
+	)
 
 	map_screen.closed.connect(func() -> void:
 		if _return_screen == Screen.PAUSE:
@@ -111,10 +129,13 @@ func _connect_signals() -> void:
 		else:
 			show_hud()
 			resume_requested.emit()
+			_notify_main_resume()
 	)
 	map_screen.fast_travel_requested.connect(func(isl: int, ws: String) -> void:
 		show_hud()
 		fast_travel_requested.emit(isl, ws)
+		if _main != null and _main.has_method("fast_travel_waystone"):
+			_main.call("fast_travel_waystone", isl, ws)
 	)
 
 	options.closed.connect(func() -> void:
@@ -127,17 +148,22 @@ func _connect_signals() -> void:
 	options.settings_changed.connect(func(cfg: Dictionary) -> void:
 		apply_display_settings(cfg)
 		settings_changed.emit(cfg)
+		if _main != null and _main.has_method("apply_runtime_settings"):
+			_main.call("apply_runtime_settings")
 	)
 
 	rebind.closed.connect(func() -> void: show_options(_return_screen))
 	rebind.bindings_updated.connect(func() -> void:
 		if Lx.save != null:
 			settings_changed.emit(Lx.save.settings)
+		if _main != null and _main.has_method("apply_runtime_settings"):
+			_main.call("apply_runtime_settings")
 	)
 
 	rest_shop.closed.connect(func() -> void:
 		show_hud()
 		resume_requested.emit()
+		_notify_main_resume()
 	)
 	rest_shop.upgrade_bought.connect(func(uid: String, rank: int) -> void:
 		upgrade_bought.emit(uid, rank)
@@ -146,13 +172,45 @@ func _connect_signals() -> void:
 	cards.retry_requested.connect(func() -> void:
 		show_hud()
 		death_retry_requested.emit()
+		if _main != null and _main.has_method("retry_from_death"):
+			_main.call("retry_from_death")
 	)
-	cards.title_requested.connect(func() -> void: return_to_title_requested.emit())
+	cards.title_requested.connect(func() -> void:
+		return_to_title_requested.emit()
+		if _main != null and _main.has_method("enter_title"):
+			_main.call("enter_title")
+	)
 	cards.intro_finished.connect(func() -> void:
 		show_hud()
 		intro_finished.emit()
+		if _main != null and int(_main.get("flow")) == 1:
+			_main.set("flow", 2)
 	)
-	cards.credits_finished.connect(func() -> void: credits_finished.emit())
+	cards.ending_finished.connect(func() -> void:
+		ending_finished.emit()
+		if _main != null and _main.has_method("enter_credits"):
+			_main.call("enter_credits")
+		else:
+			show_credits()
+	)
+	cards.credits_finished.connect(func() -> void:
+		credits_finished.emit()
+		if _main != null and _main.has_method("enter_title"):
+			_main.call("enter_title")
+	)
+
+
+func setup(main_node: Node) -> void:
+	_main = main_node
+	bind_events()
+
+
+func _notify_main_resume() -> void:
+	if _main == null or not _main.has_method("toggle_pause"):
+		return
+	var cur_flow: int = int(_main.get("flow"))
+	if cur_flow == 3 or cur_flow == 4 or cur_flow == 5:
+		_main.call("toggle_pause")
 
 
 func bind_events() -> void:
@@ -211,7 +269,7 @@ func set_flow(flow_id: int) -> void:
 		6:
 			show_death()
 		7:
-			show_results()
+			show_ending()
 		8:
 			show_credits()
 
@@ -270,6 +328,20 @@ func show_death(is_boss: bool = false) -> void:
 	hud.visible = true
 	current_screen = Screen.DEATH
 	cards.show_death(is_boss)
+
+
+func show_ending(p_mode: String = "") -> void:
+	var mode_str: String = p_mode
+	if mode_str.is_empty():
+		var host: Node = _main if _main != null else Lx.root
+		if host != null and host.get("ending_mode") != null:
+			mode_str = str(host.get("ending_mode"))
+	if mode_str.is_empty():
+		mode_str = str(Lx.get_decision("ending_mode", "display_off"))
+	_hide_all_modals()
+	hud.visible = false
+	current_screen = Screen.ENDING
+	cards.show_ending(mode_str)
 
 
 func show_results(stats: Dictionary = {}) -> void:

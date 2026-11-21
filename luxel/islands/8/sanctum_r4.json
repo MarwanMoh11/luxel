@@ -1,0 +1,115 @@
+{
+  "id": "sanctum_r4",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r4",
+      "name_key": "DUNGEON_8_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r4_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r3",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r4_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r5",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_sanctum_r4_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mini_night_harbinger",
+      "kind": "night_harbinger",
+      "boss_id": "night_harbinger",
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          112,
+          72
+        ],
+        [
+          208,
+          72
+        ]
+      ],
+      "perches": [],
+      "zone": "sanctum_r4",
+      "leash": 144
+    }
+  ],
+  "interactables": [
+    {
+      "id": "keepers_flame_8",
+      "kind": "keepers_flame",
+      "pos": [
+        168,
+        72
+      ],
+      "props": {
+        "dungeon_id": "bell_sanctum",
+        "key_kind": "keepers_flame",
+        "flag_id": "keepers_flame_8"
+      }
+    },
+    {
+      "id": "door_sanctum_r4_north",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "clear_zone": "sanctum_r4"
+      }
+    }
+  ],
+  "triggers": []
+}

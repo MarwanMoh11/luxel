@@ -1,0 +1,144 @@
+{
+  "id": "oak_r7",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "oak_r7",
+      "name_key": "DUNGEON_3_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r7_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "oak_r6",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r7_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r8",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r7_shutter"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "door_oak_r7_key",
+      "kind": "door",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "hollow_oak",
+        "key_kind": "wick_key",
+        "key_id": "wick_key_3_2",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_3_2"
+        ]
+      }
+    },
+    {
+      "id": "web_oak_r7",
+      "kind": "web",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "cracked_wall_oak_r7",
+      "kind": "cracked_wall",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_oak_r7",
+      "kind": "switch_eye",
+      "pos": [
+        280,
+        56
+      ],
+      "props": {
+        "target_id": "door_oak_r7_shutter",
+        "sets_flag": "oak_r7_loom_open"
+      }
+    },
+    {
+      "id": "door_oak_r7_shutter",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "switch_eye_oak_r7"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

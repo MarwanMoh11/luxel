@@ -1,0 +1,183 @@
+{
+  "id": "sanctum_r2",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r2",
+      "name_key": "DUNGEON_8_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r2_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r1",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r2_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r3",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "prism",
+        "beam"
+      ],
+      "requires_flags": [
+        "wick_key_8_1"
+      ],
+      "locked_door_id": "door_sanctum_r2_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "mirror_sanctum_r2_n",
+      "kind": "mirror",
+      "pos": [
+        200,
+        40
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "mirror_sanctum_r2_s",
+      "kind": "mirror",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "cracked_sanctum_r2",
+      "kind": "cracked_wall",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "zone": "sanctum_r2"
+      }
+    },
+    {
+      "id": "switch_eye_sanctum_r2_a",
+      "kind": "switch_eye",
+      "pos": [
+        280,
+        40
+      ],
+      "props": {
+        "requires_prism": true,
+        "target_id": "door_sanctum_r2_key"
+      }
+    },
+    {
+      "id": "switch_eye_sanctum_r2_b",
+      "kind": "switch_eye",
+      "pos": [
+        280,
+        136
+      ],
+      "props": {
+        "requires_prism": false,
+        "target_id": "door_sanctum_r2_key"
+      }
+    },
+    {
+      "id": "door_sanctum_r2_key",
+      "kind": "door",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_sanctum_r2_a",
+          "switch_eye_sanctum_r2_b"
+        ]
+      }
+    },
+    {
+      "id": "wick_key_8_1",
+      "kind": "wick_key",
+      "pos": [
+        40,
+        88
+      ],
+      "props": {
+        "dungeon_id": "bell_sanctum",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_8_1"
+      }
+    },
+    {
+      "id": "door_sanctum_r2_north",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "bell_sanctum",
+        "key_kind": "wick_key",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "wick_key_8_1"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

@@ -1,0 +1,25 @@
+# Island 5 - The Orrery r3: Pendulum Hall
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+####################
+#__..............__#
+#_...OO......OO..._#
+#....O#......#O....#
+#..................,
+#.............,,,,,,
+#..................,
+#....O#......#O....#
+#_...OO..,,..OO..._#
+#__......,,......__#
+#########,,#########

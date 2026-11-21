@@ -1,0 +1,201 @@
+{
+  "id": "oak_r9",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "oak_r9",
+      "name_key": "DUNGEON_3_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r9_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "oak_r8",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r9_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r10",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "beam",
+        "prism",
+        "throw"
+      ],
+      "requires_flags": [
+        "keepers_flame_3"
+      ],
+      "locked_door_id": "door_boss_3"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_oak_upper",
+      "kind": "waystone",
+      "pos": [
+        120,
+        120
+      ],
+      "props": {
+        "zone": "oak_r9",
+        "name_key": "DUNGEON_3_NAME"
+      }
+    },
+    {
+      "id": "web_oak_r9",
+      "kind": "web",
+      "pos": [
+        120,
+        72
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "bramble_oak_r9",
+      "kind": "bramble",
+      "pos": [
+        200,
+        120
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "mirror_oak_r9",
+      "kind": "mirror",
+      "pos": [
+        120,
+        40
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "brazier_oak_r9",
+      "kind": "brazier",
+      "pos": [
+        40,
+        56
+      ],
+      "props": {
+        "target_id": "door_oak_r9_vault"
+      }
+    },
+    {
+      "id": "switch_eye_oak_r9",
+      "kind": "switch_eye",
+      "pos": [
+        40,
+        120
+      ],
+      "props": {
+        "target_id": "door_oak_r9_vault",
+        "sets_flag": "oak_r9_vault_open"
+      }
+    },
+    {
+      "id": "door_oak_r9_vault",
+      "kind": "door",
+      "pos": [
+        232,
+        72
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "brazier_oak_r9",
+          "switch_eye_oak_r9"
+        ]
+      }
+    },
+    {
+      "id": "keepers_flame_3",
+      "kind": "keepers_flame",
+      "pos": [
+        264,
+        72
+      ],
+      "props": {
+        "dungeon_id": "hollow_oak",
+        "key_kind": "keepers_flame",
+        "flag_id": "keepers_flame_3"
+      }
+    },
+    {
+      "id": "door_boss_3",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_door",
+        "dungeon_id": "hollow_oak",
+        "key_kind": "keepers_flame",
+        "key_id": "keepers_flame_3",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_3"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

@@ -1,0 +1,163 @@
+{
+  "id": "kiln_r1",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "kiln_r1",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r1_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        512,
+        200
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_kiln_r1_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "kiln_r2",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_kiln_r1_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "kiln_r3",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_kiln_r1_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "kiln_r9",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "keepers_flame_6"
+      ],
+      "locked_door_id": "door_kiln_r1_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_kiln",
+      "kind": "waystone",
+      "pos": [
+        160,
+        88
+      ],
+      "props": {
+        "zone": "kiln_r1",
+        "name_key": "DUNGEON_6_NAME"
+      }
+    },
+    {
+      "id": "door_kiln_r1_north",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_6"
+        ]
+      }
+    },
+    {
+      "id": "lamp_kiln_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "zone": "kiln_r1"
+      }
+    },
+    {
+      "id": "lamp_kiln_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        88
+      ],
+      "props": {
+        "zone": "kiln_r1"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_kiln_enter",
+      "rect": [
+        128,
+        112,
+        64,
+        32
+      ],
+      "string_id": "DUNGEON_6_NAME",
+      "once": true
+    }
+  ]
+}

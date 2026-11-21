@@ -1,0 +1,708 @@
+{
+  "id": "overworld",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "spawn": [
+    96,
+    288
+  ],
+  "zones": [
+    {
+      "id": "shoals_landing",
+      "name_key": "ZONE_ISL7_1",
+      "rect": [
+        0,
+        208,
+        288,
+        144
+      ],
+      "dark": true
+    },
+    {
+      "id": "mirror_shallows",
+      "name_key": "ZONE_ISL7_2",
+      "rect": [
+        0,
+        0,
+        400,
+        208
+      ],
+      "dark": true
+    },
+    {
+      "id": "tideglass_basin",
+      "name_key": "ZONE_ISL7_3",
+      "rect": [
+        0,
+        352,
+        400,
+        224
+      ],
+      "dark": true
+    },
+    {
+      "id": "inverted_causeway",
+      "name_key": "ZONE_ISL7_4",
+      "rect": [
+        400,
+        352,
+        272,
+        224
+      ],
+      "dark": true
+    },
+    {
+      "id": "lunar_glasscourt",
+      "name_key": "ZONE_ISL7_5",
+      "rect": [
+        672,
+        0,
+        352,
+        576
+      ],
+      "dark": true
+    },
+    {
+      "id": "spire_terrace",
+      "name_key": "ZONE_ISL7_6",
+      "rect": [
+        400,
+        0,
+        272,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_spire",
+      "rect": [
+        496,
+        64,
+        32,
+        32
+      ],
+      "to_region": "spire_r1",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "beacon_7_1",
+        "beacon_7_2",
+        "beacon_7_3"
+      ],
+      "locked_door_id": "door_dungeon_7"
+    },
+    {
+      "id": "exit_to_island_8",
+      "rect": [
+        960,
+        256,
+        32,
+        64
+      ],
+      "to_island": 8,
+      "to_region": "overworld",
+      "to_spawn": [
+        96,
+        288
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "great_lamp_7"
+      ],
+      "locked_door_id": "bridge_of_light_7"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "ms_warden_landing_0",
+      "kind": "moonshade_warden",
+      "variant": "moonshade_warden",
+      "pos": [
+        200,
+        296
+      ],
+      "route": [
+        [
+          184,
+          296
+        ],
+        [
+          248,
+          296
+        ]
+      ],
+      "perches": [],
+      "zone": "shoals_landing",
+      "leash": 130
+    },
+    {
+      "id": "hollow_wick_enc_1",
+      "kind": "hollow_wick",
+      "pos": [
+        264,
+        136
+      ],
+      "route": [
+        [
+          216,
+          136
+        ],
+        [
+          328,
+          136
+        ]
+      ],
+      "perches": [],
+      "zone": "mirror_shallows",
+      "leash": 148
+    },
+    {
+      "id": "ms_owl_shallows_0",
+      "kind": "moonshade_owl",
+      "variant": "moonshade_owl",
+      "pos": [
+        328,
+        184
+      ],
+      "route": [],
+      "perches": [
+        [
+          200,
+          168
+        ],
+        [
+          328,
+          184
+        ],
+        [
+          296,
+          104
+        ]
+      ],
+      "zone": "mirror_shallows",
+      "leash": 150
+    },
+    {
+      "id": "ms_snatcher_basin_0",
+      "kind": "moonshade_snatcher",
+      "variant": "moonshade_snatcher",
+      "pos": [
+        296,
+        408
+      ],
+      "route": [],
+      "perches": [
+        [
+          264,
+          392
+        ],
+        [
+          344,
+          408
+        ],
+        [
+          296,
+          472
+        ]
+      ],
+      "zone": "tideglass_basin",
+      "leash": 144
+    },
+    {
+      "id": "ms_warden_basin_0",
+      "kind": "moonshade_warden",
+      "variant": "moonshade_warden",
+      "pos": [
+        328,
+        456
+      ],
+      "route": [
+        [
+          280,
+          456
+        ],
+        [
+          360,
+          456
+        ]
+      ],
+      "perches": [],
+      "zone": "tideglass_basin",
+      "leash": 136
+    },
+    {
+      "id": "hollow_wick_enc_2",
+      "kind": "hollow_wick",
+      "pos": [
+        504,
+        440
+      ],
+      "route": [
+        [
+          456,
+          440
+        ],
+        [
+          568,
+          440
+        ]
+      ],
+      "perches": [],
+      "zone": "inverted_causeway",
+      "leash": 148
+    },
+    {
+      "id": "ms_warden_trial_7",
+      "kind": "moonshade_warden",
+      "variant": "moonshade_warden",
+      "pos": [
+        472,
+        488
+      ],
+      "route": [
+        [
+          440,
+          488
+        ],
+        [
+          520,
+          488
+        ]
+      ],
+      "perches": [],
+      "zone": "inverted_causeway",
+      "leash": 124
+    },
+    {
+      "id": "ms_snatcher_trial_7",
+      "kind": "moonshade_snatcher",
+      "variant": "moonshade_snatcher",
+      "pos": [
+        584,
+        488
+      ],
+      "route": [],
+      "perches": [
+        [
+          552,
+          472
+        ],
+        [
+          632,
+          488
+        ],
+        [
+          584,
+          408
+        ]
+      ],
+      "zone": "inverted_causeway",
+      "leash": 132
+    },
+    {
+      "id": "hollow_wick_enc_3",
+      "kind": "hollow_wick",
+      "pos": [
+        792,
+        296
+      ],
+      "route": [
+        [
+          760,
+          296
+        ],
+        [
+          856,
+          296
+        ]
+      ],
+      "perches": [],
+      "zone": "lunar_glasscourt",
+      "leash": 148
+    },
+    {
+      "id": "ms_owl_court_0",
+      "kind": "moonshade_owl",
+      "variant": "moonshade_owl",
+      "pos": [
+        824,
+        184
+      ],
+      "route": [],
+      "perches": [
+        [
+          744,
+          168
+        ],
+        [
+          872,
+          184
+        ],
+        [
+          808,
+          248
+        ]
+      ],
+      "zone": "lunar_glasscourt",
+      "leash": 148
+    },
+    {
+      "id": "ms_snatcher_court_0",
+      "kind": "moonshade_snatcher",
+      "variant": "moonshade_snatcher",
+      "pos": [
+        824,
+        392
+      ],
+      "route": [],
+      "perches": [
+        [
+          744,
+          392
+        ],
+        [
+          872,
+          408
+        ],
+        [
+          808,
+          344
+        ]
+      ],
+      "zone": "lunar_glasscourt",
+      "leash": 148
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_shoals_landing",
+      "kind": "waystone",
+      "pos": [
+        136,
+        280
+      ],
+      "props": {
+        "zone": "shoals_landing",
+        "lit": true,
+        "lit_by_default": true,
+        "name_key": "ZONE_ISL7_1"
+      }
+    },
+    {
+      "id": "ws_mirror_shallows",
+      "kind": "waystone",
+      "pos": [
+        200,
+        184
+      ],
+      "props": {
+        "zone": "mirror_shallows",
+        "name_key": "ZONE_ISL7_2"
+      }
+    },
+    {
+      "id": "beacon_7_1",
+      "kind": "beacon",
+      "pos": [
+        184,
+        120
+      ],
+      "props": {
+        "index": 0,
+        "zone": "mirror_shallows",
+        "relit_zones": [
+          "mirror_shallows",
+          "shoals_landing"
+        ],
+        "name_key": "ZONE_ISL7_2"
+      }
+    },
+    {
+      "id": "mirror_7_ow_1",
+      "kind": "mirror",
+      "pos": [
+        280,
+        104
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "beacon_7_2",
+      "kind": "beacon",
+      "pos": [
+        296,
+        392
+      ],
+      "props": {
+        "index": 1,
+        "zone": "tideglass_basin",
+        "relit_zones": [
+          "tideglass_basin"
+        ],
+        "name_key": "ZONE_ISL7_3"
+      }
+    },
+    {
+      "id": "chest_ember_7_1",
+      "kind": "chest",
+      "pos": [
+        152,
+        488
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "tideglass_basin",
+        "requires_moves": [
+          "lens"
+        ],
+        "secret_id": "isl7_phantom_basin"
+      }
+    },
+    {
+      "id": "chest_ember_7_2",
+      "kind": "chest",
+      "pos": [
+        536,
+        504
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "inverted_causeway",
+        "trial_id": "isl7_moonshade_trial"
+      }
+    },
+    {
+      "id": "chest_shards_7_1",
+      "kind": "chest",
+      "pos": [
+        632,
+        408
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 55,
+        "zone": "inverted_causeway"
+      }
+    },
+    {
+      "id": "ws_lunar_glasscourt",
+      "kind": "waystone",
+      "pos": [
+        744,
+        280
+      ],
+      "props": {
+        "zone": "lunar_glasscourt",
+        "name_key": "ZONE_ISL7_5"
+      }
+    },
+    {
+      "id": "beacon_7_3",
+      "kind": "beacon",
+      "pos": [
+        888,
+        136
+      ],
+      "props": {
+        "index": 2,
+        "zone": "lunar_glasscourt",
+        "relit_zones": [
+          "lunar_glasscourt",
+          "inverted_causeway"
+        ],
+        "name_key": "ZONE_ISL7_5"
+      }
+    },
+    {
+      "id": "seal_7_ow_terrace",
+      "kind": "obsidian_seal",
+      "pos": [
+        600,
+        136
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "zone": "spire_terrace"
+      }
+    },
+    {
+      "id": "chest_shards_7_2",
+      "kind": "chest",
+      "pos": [
+        616,
+        104
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 60,
+        "zone": "spire_terrace"
+      }
+    },
+    {
+      "id": "door_dungeon_7",
+      "kind": "door",
+      "pos": [
+        512,
+        184
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "spire_terrace",
+        "seal_id": "spire_gate_seal",
+        "requires_beacons": [
+          "beacon_7_1",
+          "beacon_7_2",
+          "beacon_7_3"
+        ],
+        "requires_flags": [
+          "beacon_7_1",
+          "beacon_7_2",
+          "beacon_7_3"
+        ]
+      }
+    },
+    {
+      "id": "bridge_of_light_7",
+      "kind": "door",
+      "pos": [
+        952,
+        296
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "lunar_glasscourt",
+        "requires_flags": [
+          "great_lamp_7"
+        ]
+      }
+    },
+    {
+      "id": "lamp_7_w",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        264
+      ],
+      "props": {
+        "zone": "shoals_landing"
+      }
+    },
+    {
+      "id": "lamp_7_n",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        216
+      ],
+      "props": {
+        "zone": "spire_terrace"
+      }
+    },
+    {
+      "id": "lamp_7_e",
+      "kind": "road_lamp",
+      "pos": [
+        760,
+        248
+      ],
+      "props": {
+        "zone": "lunar_glasscourt"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_isl7_arrival",
+      "rect": [
+        64,
+        256,
+        80,
+        64
+      ],
+      "string_id": "ISL7_ARRIVAL",
+      "once": true
+    },
+    {
+      "id": "trig_twist_hollow_1",
+      "rect": [
+        192,
+        96,
+        128,
+        64
+      ],
+      "string_id": "TWIST_HOLLOW",
+      "style": "ominous",
+      "once": true
+    },
+    {
+      "id": "trig_isl7_z3",
+      "rect": [
+        208,
+        368,
+        80,
+        48
+      ],
+      "string_id": "ZONE_ISL7_3",
+      "once": true
+    },
+    {
+      "id": "trig_isl7_z4",
+      "rect": [
+        432,
+        400,
+        96,
+        48
+      ],
+      "string_id": "ZONE_ISL7_4",
+      "once": true
+    },
+    {
+      "id": "trig_isl7_z5",
+      "rect": [
+        720,
+        256,
+        80,
+        64
+      ],
+      "string_id": "ZONE_ISL7_5",
+      "once": true
+    },
+    {
+      "id": "trig_isl7_z6",
+      "rect": [
+        464,
+        192,
+        96,
+        48
+      ],
+      "string_id": "ZONE_ISL7_6",
+      "once": true
+    }
+  ]
+}

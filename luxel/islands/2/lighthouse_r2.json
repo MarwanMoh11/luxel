@@ -1,0 +1,124 @@
+{
+  "id": "lighthouse_r2",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "lighthouse_r2",
+      "name_key": "DUNGEON_2_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r2_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r1",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r2_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r3",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "tide_gate_lh_r2",
+      "kind": "tide_gate",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "period": 8.0,
+        "phase_offset": 0.0,
+        "low_ratio": 0.65,
+        "size": [
+          48,
+          32
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_lh_r2",
+      "kind": "switch_eye",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "target_id": "door_lh_r2_vault",
+        "sets_flag": "lh_r2_lock_open"
+      }
+    },
+    {
+      "id": "door_lh_r2_vault",
+      "kind": "door",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "switch_eye_lh_r2"
+        ],
+        "sets_flag": "lh_r2_lock_open"
+      }
+    },
+    {
+      "id": "wick_key_2_1",
+      "kind": "wick_key",
+      "pos": [
+        264,
+        40
+      ],
+      "props": {
+        "dungeon_id": "lighthouse",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_2_1"
+      }
+    }
+  ],
+  "triggers": []
+}

@@ -1,0 +1,167 @@
+{
+  "id": "orrery_r10",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "orrery_r10",
+      "name_key": "DUNGEON_5_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r10_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "orrery_r9",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r10_bridge",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_island": 6,
+      "to_region": "overworld",
+      "to_spawn": [
+        96,
+        432
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "island_5_relit"
+      ],
+      "locked_door_id": "bridge_of_light_5_crown"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_astronomer",
+      "kind": "astronomer",
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          112,
+          72
+        ],
+        [
+          208,
+          72
+        ]
+      ],
+      "perches": [
+        [
+          88,
+          56
+        ],
+        [
+          160,
+          40
+        ],
+        [
+          232,
+          56
+        ]
+      ],
+      "zone": "orrery_r10",
+      "leash": 150
+    }
+  ],
+  "interactables": [
+    {
+      "id": "great_lamp_5",
+      "kind": "great_lamp",
+      "pos": [
+        160,
+        40
+      ],
+      "props": {
+        "island_id": 5,
+        "requires_boss": "astronomer",
+        "requires_flag": "boss_astronomer_defeated",
+        "name_key": "DUNGEON_5_NAME"
+      }
+    },
+    {
+      "id": "bridge_of_light_5_crown",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "island_5_relit"
+        ]
+      }
+    },
+    {
+      "id": "brazier_o5_r10_w",
+      "kind": "brazier",
+      "pos": [
+        88,
+        40
+      ],
+      "props": {
+        "lit_by_default": true
+      }
+    },
+    {
+      "id": "brazier_o5_r10_e",
+      "kind": "brazier",
+      "pos": [
+        232,
+        40
+      ],
+      "props": {
+        "lit_by_default": true
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_boss_astronomer",
+      "rect": [
+        96,
+        104,
+        128,
+        48
+      ],
+      "string_id": "BOSS_ASTRONOMER",
+      "once": true
+    }
+  ]
+}

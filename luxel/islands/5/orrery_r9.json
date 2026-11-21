@@ -1,0 +1,162 @@
+{
+  "id": "orrery_r9",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "orrery_r9",
+      "name_key": "DUNGEON_5_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r9_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "orrery_r8",
+      "to_spawn": [
+        272,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r9_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r10",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "keepers_flame_5"
+      ],
+      "locked_door_id": "door_boss_5"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "phantom_o5_r9",
+      "kind": "phantom_platform",
+      "pos": [
+        216,
+        128
+      ],
+      "props": {
+        "size": [
+          64,
+          32
+        ],
+        "zone": "orrery_r9"
+      }
+    },
+    {
+      "id": "mirror_o5_r9",
+      "kind": "mirror",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "switch_eye_o5_r9",
+      "kind": "switch_eye",
+      "pos": [
+        264,
+        24
+      ],
+      "props": {
+        "target_id": "bridge_o5_r9",
+        "sets_flag": "o5_r9_bridge"
+      }
+    },
+    {
+      "id": "bridge_o5_r9",
+      "kind": "door",
+      "pos": [
+        200,
+        72
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          64,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "switch_eye_o5_r9"
+        ]
+      }
+    },
+    {
+      "id": "keepers_flame_5",
+      "kind": "wick_key",
+      "pos": [
+        264,
+        128
+      ],
+      "props": {
+        "dungeon_id": "orrery",
+        "key_kind": "keepers_flame",
+        "flag_id": "keepers_flame_5",
+        "requires_moves": [
+          "lens"
+        ]
+      }
+    },
+    {
+      "id": "door_boss_5",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_door",
+        "dungeon_id": "orrery",
+        "key_kind": "keepers_flame",
+        "key_id": "keepers_flame_5",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_5"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

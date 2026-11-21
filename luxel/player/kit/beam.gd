@@ -143,6 +143,8 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 		if _segment_hits_item(start_p, end_p, half_w, item, ipos, irad):
 			var consumed: Variant = item.call("on_hit", hit)
 			if consumed is bool and bool(consumed):
+				if str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
+					wick.ember = minf(Lx.state.get_effective_ember_max(), wick.ember + 22.0)
 				wick.spawn_sparks(ipos, aim, 6, LxWick.PAL_GOLD, 30.0, 90.0, 0.22)
 
 	beam_start = start_p

@@ -1,0 +1,604 @@
+{
+  "id": "overworld",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "spawn": [
+    96,
+    288
+  ],
+  "zones": [
+    {
+      "id": "dark_hub",
+      "name_key": "ZONE_ISL8_1",
+      "rect": [
+        0,
+        224,
+        672,
+        160
+      ],
+      "dark": true
+    },
+    {
+      "id": "gauntlet_tide",
+      "name_key": "ZONE_ISL8_2",
+      "rect": [
+        0,
+        0,
+        352,
+        224
+      ],
+      "dark": true
+    },
+    {
+      "id": "gauntlet_mire",
+      "name_key": "ZONE_ISL8_3",
+      "rect": [
+        256,
+        384,
+        512,
+        192
+      ],
+      "dark": true
+    },
+    {
+      "id": "gauntlet_kiln",
+      "name_key": "ZONE_ISL8_4",
+      "rect": [
+        672,
+        0,
+        352,
+        416
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_sanctum",
+      "rect": [
+        496,
+        48,
+        32,
+        32
+      ],
+      "to_region": "sanctum_r1",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "beacon_8_1",
+        "beacon_8_2",
+        "beacon_8_3"
+      ],
+      "locked_door_id": "door_dungeon_8"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "warden_hub_8_0",
+      "kind": "warden",
+      "pos": [
+        456,
+        296
+      ],
+      "route": [
+        [
+          408,
+          296
+        ],
+        [
+          488,
+          296
+        ]
+      ],
+      "perches": [],
+      "zone": "dark_hub",
+      "leash": 130
+    },
+    {
+      "id": "crab_g1_0",
+      "kind": "crab_warden",
+      "pos": [
+        248,
+        136
+      ],
+      "route": [
+        [
+          216,
+          136
+        ],
+        [
+          296,
+          136
+        ]
+      ],
+      "perches": [],
+      "zone": "gauntlet_tide",
+      "leash": 136
+    },
+    {
+      "id": "gull_g1_0",
+      "kind": "gull_thief",
+      "pos": [
+        200,
+        184
+      ],
+      "route": [],
+      "perches": [
+        [
+          168,
+          168
+        ],
+        [
+          232,
+          184
+        ],
+        [
+          280,
+          104
+        ]
+      ],
+      "zone": "gauntlet_tide",
+      "leash": 148
+    },
+    {
+      "id": "warden_g1_0",
+      "kind": "warden",
+      "pos": [
+        296,
+        104
+      ],
+      "route": [
+        [
+          264,
+          104
+        ],
+        [
+          312,
+          104
+        ]
+      ],
+      "perches": [],
+      "zone": "gauntlet_tide",
+      "leash": 124
+    },
+    {
+      "id": "bramble_g2_0",
+      "kind": "bramble_knight",
+      "pos": [
+        456,
+        472
+      ],
+      "route": [
+        [
+          424,
+          472
+        ],
+        [
+          504,
+          472
+        ]
+      ],
+      "perches": [],
+      "zone": "gauntlet_mire",
+      "leash": 136
+    },
+    {
+      "id": "gloam_g2_0",
+      "kind": "gloam",
+      "pos": [
+        568,
+        440
+      ],
+      "route": [
+        [
+          536,
+          440
+        ],
+        [
+          584,
+          488
+        ]
+      ],
+      "perches": [],
+      "zone": "gauntlet_mire",
+      "leash": 136
+    },
+    {
+      "id": "hopper_g2_0",
+      "kind": "lily_hopper",
+      "pos": [
+        552,
+        504
+      ],
+      "route": [
+        [
+          504,
+          504
+        ],
+        [
+          584,
+          504
+        ]
+      ],
+      "perches": [],
+      "zone": "gauntlet_mire",
+      "leash": 132
+    },
+    {
+      "id": "golem_g3_0",
+      "kind": "cinder_golem",
+      "pos": [
+        824,
+        296
+      ],
+      "route": [
+        [
+          776,
+          296
+        ],
+        [
+          840,
+          296
+        ]
+      ],
+      "perches": [],
+      "zone": "gauntlet_kiln",
+      "leash": 124
+    },
+    {
+      "id": "phantom_owl_g3_0",
+      "kind": "phantom_owl",
+      "pos": [
+        840,
+        184
+      ],
+      "route": [],
+      "perches": [
+        [
+          744,
+          168
+        ],
+        [
+          856,
+          184
+        ],
+        [
+          824,
+          248
+        ]
+      ],
+      "zone": "gauntlet_kiln",
+      "leash": 152
+    },
+    {
+      "id": "bellows_g3_0",
+      "kind": "bellows_imp",
+      "pos": [
+        888,
+        184
+      ],
+      "route": [
+        [
+          856,
+          184
+        ],
+        [
+          936,
+          184
+        ]
+      ],
+      "perches": [],
+      "zone": "gauntlet_kiln",
+      "leash": 136
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_dark_hub",
+      "kind": "waystone",
+      "pos": [
+        392,
+        280
+      ],
+      "props": {
+        "zone": "dark_hub",
+        "lit": true,
+        "lit_by_default": true,
+        "name_key": "ZONE_ISL8_1"
+      }
+    },
+    {
+      "id": "rest_shrine_8",
+      "kind": "rest_shrine",
+      "pos": [
+        584,
+        280
+      ],
+      "props": {
+        "zone": "dark_hub",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
+      "id": "ws_gauntlet_tide",
+      "kind": "waystone",
+      "pos": [
+        216,
+        200
+      ],
+      "props": {
+        "zone": "gauntlet_tide",
+        "name_key": "ZONE_ISL8_2"
+      }
+    },
+    {
+      "id": "mirror_8_g1",
+      "kind": "mirror",
+      "pos": [
+        200,
+        104
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "beacon_8_1",
+      "kind": "beacon",
+      "pos": [
+        120,
+        168
+      ],
+      "props": {
+        "index": 0,
+        "zone": "gauntlet_tide",
+        "relit_zones": [
+          "gauntlet_tide",
+          "dark_hub"
+        ],
+        "name_key": "ZONE_ISL8_2"
+      }
+    },
+    {
+      "id": "ws_gauntlet_mire",
+      "kind": "waystone",
+      "pos": [
+        440,
+        424
+      ],
+      "props": {
+        "zone": "gauntlet_mire",
+        "name_key": "ZONE_ISL8_3"
+      }
+    },
+    {
+      "id": "bramble_8_g2",
+      "kind": "bramble",
+      "pos": [
+        328,
+        472
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "zone": "gauntlet_mire"
+      }
+    },
+    {
+      "id": "beacon_8_2",
+      "kind": "beacon",
+      "pos": [
+        312,
+        440
+      ],
+      "props": {
+        "index": 1,
+        "zone": "gauntlet_mire",
+        "relit_zones": [
+          "gauntlet_mire"
+        ],
+        "name_key": "ZONE_ISL8_3"
+      }
+    },
+    {
+      "id": "chest_ember_8_1",
+      "kind": "chest",
+      "pos": [
+        696,
+        472
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "gauntlet_mire",
+        "requires_moves": [
+          "lens"
+        ],
+        "secret_id": "isl8_mire_ember"
+      }
+    },
+    {
+      "id": "ws_gauntlet_kiln",
+      "kind": "waystone",
+      "pos": [
+        744,
+        328
+      ],
+      "props": {
+        "zone": "gauntlet_kiln",
+        "name_key": "ZONE_ISL8_4"
+      }
+    },
+    {
+      "id": "seal_8_g3",
+      "kind": "obsidian_seal",
+      "pos": [
+        840,
+        152
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "zone": "gauntlet_kiln"
+      }
+    },
+    {
+      "id": "beacon_8_3",
+      "kind": "beacon",
+      "pos": [
+        840,
+        120
+      ],
+      "props": {
+        "index": 2,
+        "zone": "gauntlet_kiln",
+        "relit_zones": [
+          "gauntlet_kiln"
+        ],
+        "name_key": "ZONE_ISL8_4"
+      }
+    },
+    {
+      "id": "chest_ember_8_2",
+      "kind": "chest",
+      "pos": [
+        936,
+        344
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "gauntlet_kiln",
+        "secret_id": "isl8_kiln_ember"
+      }
+    },
+    {
+      "id": "door_dungeon_8",
+      "kind": "door",
+      "pos": [
+        512,
+        168
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "dark_hub",
+        "seal_id": "sanctum_gate_seal",
+        "requires_beacons": [
+          "beacon_8_1",
+          "beacon_8_2",
+          "beacon_8_3"
+        ],
+        "requires_flags": [
+          "beacon_8_1",
+          "beacon_8_2",
+          "beacon_8_3"
+        ]
+      }
+    },
+    {
+      "id": "lamp_8_w",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        280
+      ],
+      "props": {
+        "zone": "dark_hub"
+      }
+    },
+    {
+      "id": "lamp_8_n1",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        200
+      ],
+      "props": {
+        "zone": "dark_hub"
+      }
+    },
+    {
+      "id": "lamp_8_n2",
+      "kind": "road_lamp",
+      "pos": [
+        552,
+        200
+      ],
+      "props": {
+        "zone": "dark_hub"
+      }
+    },
+    {
+      "id": "lamp_8_e",
+      "kind": "road_lamp",
+      "pos": [
+        728,
+        264
+      ],
+      "props": {
+        "zone": "gauntlet_kiln"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_isl8_arrival",
+      "rect": [
+        64,
+        256,
+        80,
+        64
+      ],
+      "string_id": "ISL8_ARRIVAL",
+      "once": true
+    },
+    {
+      "id": "trig_isl8_z2",
+      "rect": [
+        176,
+        128,
+        80,
+        64
+      ],
+      "string_id": "ZONE_ISL8_2",
+      "once": true
+    },
+    {
+      "id": "trig_isl8_z3",
+      "rect": [
+        448,
+        384,
+        96,
+        48
+      ],
+      "string_id": "ZONE_ISL8_3",
+      "once": true
+    },
+    {
+      "id": "trig_isl8_z4",
+      "rect": [
+        704,
+        256,
+        64,
+        64
+      ],
+      "string_id": "ZONE_ISL8_4",
+      "once": true
+    }
+  ]
+}

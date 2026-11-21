@@ -1,0 +1,154 @@
+{
+  "id": "spire_r8",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    280,
+    88
+  ],
+  "zones": [
+    {
+      "id": "spire_r8",
+      "name_key": "DUNGEON_7_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r8_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "spire_r7",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_spire_r8_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "spire_r9",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_spire_r8_west"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "ms_warden_spire_r8_0",
+      "kind": "moonshade_warden",
+      "variant": "moonshade_warden",
+      "pos": [
+        168,
+        88
+      ],
+      "route": [
+        [
+          120,
+          88
+        ],
+        [
+          216,
+          88
+        ]
+      ],
+      "perches": [],
+      "zone": "spire_r8",
+      "leash": 136
+    },
+    {
+      "id": "ms_snatcher_spire_r8_0",
+      "kind": "moonshade_snatcher",
+      "variant": "moonshade_snatcher",
+      "pos": [
+        88,
+        120
+      ],
+      "route": [],
+      "perches": [
+        [
+          72,
+          120
+        ],
+        [
+          104,
+          56
+        ],
+        [
+          232,
+          56
+        ]
+      ],
+      "zone": "spire_r8",
+      "leash": 144
+    },
+    {
+      "id": "ms_owl_spire_r8_0",
+      "kind": "moonshade_owl",
+      "variant": "moonshade_owl",
+      "pos": [
+        232,
+        72
+      ],
+      "route": [],
+      "perches": [
+        [
+          232,
+          72
+        ],
+        [
+          104,
+          104
+        ],
+        [
+          168,
+          72
+        ]
+      ],
+      "zone": "spire_r8",
+      "leash": 148
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_spire_r8_west",
+      "kind": "door",
+      "pos": [
+        24,
+        88
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "clear_zone": "spire_r8"
+      }
+    }
+  ],
+  "triggers": []
+}

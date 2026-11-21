@@ -1,0 +1,197 @@
+{
+  "id": "lighthouse_r10",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "lighthouse_r10",
+      "name_key": "DUNGEON_2_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r10_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r9",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r10_island3",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_island": 3,
+      "to_region": "overworld",
+      "to_spawn": [
+        120,
+        288
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "island_2_relit"
+      ],
+      "locked_door_id": "bridge_of_light_2_r10"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_lighthouse_hermit",
+      "kind": "lighthouse_hermit",
+      "pos": [
+        160,
+        88
+      ],
+      "route": [
+        [
+          112,
+          88
+        ],
+        [
+          208,
+          88
+        ]
+      ],
+      "perches": [],
+      "zone": "lighthouse_r10",
+      "leash": 148
+    }
+  ],
+  "interactables": [
+    {
+      "id": "great_lamp_2",
+      "kind": "great_lamp",
+      "pos": [
+        160,
+        40
+      ],
+      "props": {
+        "island_id": 2,
+        "requires_boss": "lighthouse_hermit",
+        "requires_flag": "boss_lighthouse_hermit_defeated",
+        "name_key": "DUNGEON_2_NAME"
+      }
+    },
+    {
+      "id": "mirror_lh_r10_nw",
+      "kind": "mirror",
+      "pos": [
+        72,
+        56
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "mirror_lh_r10_ne",
+      "kind": "mirror",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "mirror_lh_r10_sw",
+      "kind": "mirror",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "mirror_lh_r10_se",
+      "kind": "mirror",
+      "pos": [
+        248,
+        120
+      ],
+      "props": {
+        "angle_deg": 225,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "bridge_of_light_2_r10",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "lighthouse_r10",
+        "requires_flags": [
+          "island_2_relit"
+        ]
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_boss_hermit",
+      "rect": [
+        96,
+        112,
+        128,
+        32
+      ],
+      "string_id": "BOSS_HERMIT",
+      "once": true
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+# The Great Kiln R6 - Forge Warden Anvil
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+#########,,#########
+#OOO.....,,.....OOO#
+#OOO..#..,,..#..OOO#
+#........,,........#
+,,,......,,........#
+,,,,,,,,,,,........#
+,,,................#
+#..................#
+#OOO..#......#..OOO#
+#OOO............OOO#
+####################

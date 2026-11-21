@@ -300,23 +300,39 @@ func try_zip() -> bool:
 	return false if dead or move_throw == null else move_throw.try_zip()
 
 func try_interact(world_ctx: Node) -> bool:
-	var best: Object = null
-	var best_d: float = INF
+	var candidates: Array[Dictionary] = []
 	for it_var: Variant in world_get_interactables(world_ctx):
 		if not (it_var is Object and is_instance_valid(it_var as Object)) or not (it_var as Object).has_method("interact"):
 			continue
 		var obj: Object = it_var as Object
 		if obj.get("active") is bool and not bool(obj.get("active")):
 			continue
+		if obj.get("opened") is bool and bool(obj.get("opened")):
+			continue
+		if obj.get("collected") is bool and bool(obj.get("collected")):
+			continue
+		if obj.get("shattered") is bool and bool(obj.get("shattered")):
+			continue
 		var irad_v: Variant = obj.get("radius")
 		var reach: float = maxf(INTERACT_RADIUS, (float(irad_v) if (irad_v is float or irad_v is int) else 0.0) + 6.0)
 		var d: float = get_entity_pos(obj).distance_to(global_position)
-		if d <= reach and d < best_d:
-			best_d = d
-			best = obj
-	if best != null:
-		best.call("interact")
-		return true
+		if d <= reach:
+			var has_prompt: bool = obj.has_method("get_interact_prompt") and not str(obj.call("get_interact_prompt")).is_empty()
+			candidates.append({"obj": obj, "d": d, "prompted": has_prompt})
+	candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var ap: bool = bool(a.get("prompted", false))
+		var bp: bool = bool(b.get("prompted", false))
+		if ap != bp:
+			return ap
+		return float(a.get("d", INF)) < float(b.get("d", INF))
+	)
+	for cand: Dictionary in candidates:
+		var cand_obj: Object = cand.get("obj") as Object
+		if cand_obj == null or not is_instance_valid(cand_obj):
+			continue
+		var res: Variant = cand_obj.call("interact")
+		if res is bool and bool(res):
+			return true
 	return false
 
 func take_damage(amount: float, from_pos: Vector2, knock_dir: Vector2, source: String = "hazard") -> void:

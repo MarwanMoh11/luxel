@@ -1,0 +1,104 @@
+{
+  "id": "orrery_r5",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "orrery_r5",
+      "name_key": "DUNGEON_5_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r5_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "orrery_r4",
+      "to_spawn": [
+        272,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r5_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r6",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "shrine_lens",
+      "kind": "shrine",
+      "pos": [
+        56,
+        56
+      ],
+      "props": {
+        "move_id": "lens",
+        "zone": "orrery_r5",
+        "name_key": "MOVE_LENS_NAME"
+      }
+    },
+    {
+      "id": "phantom_o5_r5",
+      "kind": "phantom_platform",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "size": [
+          64,
+          48
+        ],
+        "zone": "orrery_r5"
+      }
+    },
+    {
+      "id": "lamp_o5_r5_e",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "zone": "orrery_r5"
+      }
+    }
+  ],
+  "triggers": []
+}

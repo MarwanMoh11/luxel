@@ -1,0 +1,124 @@
+{
+  "id": "conservatory_r2",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r2",
+      "name_key": "DUNGEON_4_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r2_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r1",
+      "to_spawn": [
+        272,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r2_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r3",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "bramble_c4_r2",
+      "kind": "bramble",
+      "pos": [
+        120,
+        40
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_c4_r2",
+      "kind": "switch_eye",
+      "pos": [
+        160,
+        104
+      ],
+      "props": {
+        "target_id": "bridge_c4_r2",
+        "sets_flag": "c4_r2_bridge"
+      }
+    },
+    {
+      "id": "bridge_c4_r2",
+      "kind": "door",
+      "pos": [
+        152,
+        128
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "switch_eye_c4_r2"
+        ]
+      }
+    },
+    {
+      "id": "wick_key_4_1",
+      "kind": "wick_key",
+      "pos": [
+        264,
+        120
+      ],
+      "props": {
+        "dungeon_id": "conservatory",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_4_1",
+        "requires_moves": [
+          "dash"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

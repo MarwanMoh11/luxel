@@ -1,0 +1,686 @@
+{
+  "id": "overworld",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "spawn": [
+    96,
+    432
+  ],
+  "zones": [
+    {
+      "id": "star_landing",
+      "name_key": "ZONE_ISL5_1",
+      "rect": [
+        0,
+        288,
+        336,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "brass_terrace",
+      "name_key": "ZONE_ISL5_2",
+      "rect": [
+        0,
+        0,
+        336,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "echo_promenade",
+      "name_key": "ZONE_ISL5_3",
+      "rect": [
+        336,
+        288,
+        352,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "zenith_rim",
+      "name_key": "ZONE_ISL5_4",
+      "rect": [
+        688,
+        288,
+        336,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "orrery_plaza",
+      "name_key": "ZONE_ISL5_5",
+      "rect": [
+        336,
+        0,
+        352,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "kiln_overlook",
+      "name_key": "ZONE_ISL5_6",
+      "rect": [
+        688,
+        0,
+        336,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_orrery",
+      "rect": [
+        496,
+        48,
+        32,
+        24
+      ],
+      "to_region": "orrery_r1",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "beacon_5_1",
+        "beacon_5_2",
+        "beacon_5_3"
+      ],
+      "locked_door_id": "door_dungeon_5"
+    },
+    {
+      "id": "exit_to_island_6",
+      "rect": [
+        992,
+        128,
+        32,
+        48
+      ],
+      "to_island": 6,
+      "to_region": "overworld",
+      "to_spawn": [
+        96,
+        432
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "island_5_relit"
+      ],
+      "locked_door_id": "bridge_of_light_5"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "echo_moth_5_entry",
+      "kind": "echo_moth",
+      "pos": [
+        248,
+        432
+      ],
+      "route": [
+        [
+          232,
+          432
+        ],
+        [
+          280,
+          432
+        ]
+      ],
+      "perches": [],
+      "zone": "star_landing",
+      "leash": 140
+    },
+    {
+      "id": "orrery_sentinel_5_terrace",
+      "kind": "orrery_sentinel",
+      "pos": [
+        216,
+        184
+      ],
+      "route": [
+        [
+          184,
+          184
+        ],
+        [
+          248,
+          184
+        ]
+      ],
+      "perches": [],
+      "zone": "brass_terrace",
+      "leash": 145
+    },
+    {
+      "id": "echo_moth_5_terrace",
+      "kind": "echo_moth",
+      "pos": [
+        152,
+        168
+      ],
+      "route": [
+        [
+          136,
+          168
+        ],
+        [
+          184,
+          168
+        ]
+      ],
+      "perches": [],
+      "zone": "brass_terrace",
+      "leash": 145
+    },
+    {
+      "id": "orrery_sentinel_5_promenade",
+      "kind": "orrery_sentinel",
+      "pos": [
+        456,
+        376
+      ],
+      "route": [
+        [
+          440,
+          376
+        ],
+        [
+          488,
+          376
+        ]
+      ],
+      "perches": [],
+      "zone": "echo_promenade",
+      "leash": 145
+    },
+    {
+      "id": "echo_moth_5_promenade",
+      "kind": "echo_moth",
+      "pos": [
+        568,
+        376
+      ],
+      "route": [
+        [
+          552,
+          376
+        ],
+        [
+          616,
+          376
+        ]
+      ],
+      "perches": [],
+      "zone": "echo_promenade",
+      "leash": 145
+    },
+    {
+      "id": "phantom_owl_5_zenith",
+      "kind": "phantom_owl",
+      "pos": [
+        824,
+        360
+      ],
+      "route": [],
+      "perches": [
+        [
+          824,
+          360
+        ],
+        [
+          792,
+          392
+        ],
+        [
+          856,
+          392
+        ]
+      ],
+      "zone": "zenith_rim",
+      "leash": 160
+    },
+    {
+      "id": "orrery_sentinel_5_zenith",
+      "kind": "orrery_sentinel",
+      "pos": [
+        840,
+        408
+      ],
+      "route": [
+        [
+          792,
+          408
+        ],
+        [
+          856,
+          408
+        ]
+      ],
+      "perches": [],
+      "zone": "zenith_rim",
+      "leash": 145
+    },
+    {
+      "id": "echo_moth_5_plaza",
+      "kind": "echo_moth",
+      "pos": [
+        472,
+        232
+      ],
+      "route": [
+        [
+          456,
+          232
+        ],
+        [
+          568,
+          232
+        ]
+      ],
+      "perches": [],
+      "zone": "orrery_plaza",
+      "leash": 135
+    },
+    {
+      "id": "orrery_sentinel_5_trial",
+      "kind": "orrery_sentinel",
+      "pos": [
+        488,
+        488
+      ],
+      "route": [
+        [
+          472,
+          488
+        ],
+        [
+          552,
+          488
+        ]
+      ],
+      "perches": [],
+      "zone": "trial_5",
+      "leash": 120
+    },
+    {
+      "id": "echo_moth_5_trial",
+      "kind": "echo_moth",
+      "pos": [
+        552,
+        472
+      ],
+      "route": [
+        [
+          472,
+          472
+        ],
+        [
+          552,
+          472
+        ]
+      ],
+      "perches": [],
+      "zone": "trial_5",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_5_entry",
+      "kind": "waystone",
+      "pos": [
+        144,
+        432
+      ],
+      "props": {
+        "zone": "star_landing",
+        "lit_by_default": true,
+        "name_key": "ZONE_ISL5_1"
+      }
+    },
+    {
+      "id": "ws_5_terrace",
+      "kind": "waystone",
+      "pos": [
+        184,
+        232
+      ],
+      "props": {
+        "zone": "brass_terrace",
+        "name_key": "ZONE_ISL5_2"
+      }
+    },
+    {
+      "id": "beacon_5_1",
+      "kind": "beacon",
+      "pos": [
+        184,
+        184
+      ],
+      "props": {
+        "index": 0,
+        "zone": "brass_terrace",
+        "guard_zone": "brass_terrace",
+        "relit_zones": [
+          "brass_terrace",
+          "star_landing"
+        ],
+        "name_key": "ZONE_ISL5_2"
+      }
+    },
+    {
+      "id": "beacon_5_2",
+      "kind": "beacon",
+      "pos": [
+        512,
+        360
+      ],
+      "props": {
+        "index": 1,
+        "zone": "echo_promenade",
+        "guard_zone": "echo_promenade",
+        "relit_zones": [
+          "echo_promenade"
+        ],
+        "name_key": "ZONE_ISL5_3"
+      }
+    },
+    {
+      "id": "ws_5_zenith",
+      "kind": "waystone",
+      "pos": [
+        728,
+        376
+      ],
+      "props": {
+        "zone": "zenith_rim",
+        "name_key": "ZONE_ISL5_4"
+      }
+    },
+    {
+      "id": "beacon_5_3",
+      "kind": "beacon",
+      "pos": [
+        824,
+        392
+      ],
+      "props": {
+        "index": 2,
+        "zone": "zenith_rim",
+        "guard_zone": "zenith_rim",
+        "relit_zones": [
+          "zenith_rim",
+          "kiln_overlook"
+        ],
+        "name_key": "ZONE_ISL5_4"
+      }
+    },
+    {
+      "id": "ws_5_plaza",
+      "kind": "waystone",
+      "pos": [
+        552,
+        232
+      ],
+      "props": {
+        "zone": "orrery_plaza",
+        "name_key": "ZONE_ISL5_5"
+      }
+    },
+    {
+      "id": "door_dungeon_5",
+      "kind": "door",
+      "pos": [
+        512,
+        152
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "orrery_plaza",
+        "seal_id": "orrery_seal",
+        "requires_beacons": [
+          "beacon_5_1",
+          "beacon_5_2",
+          "beacon_5_3"
+        ],
+        "requires_flags": [
+          "beacon_5_1",
+          "beacon_5_2",
+          "beacon_5_3"
+        ]
+      }
+    },
+    {
+      "id": "bridge_of_light_5",
+      "kind": "door",
+      "pos": [
+        968,
+        152
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "kiln_overlook",
+        "requires_flags": [
+          "island_5_relit"
+        ]
+      }
+    },
+    {
+      "id": "chest_5_ember_1",
+      "kind": "chest",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "brass_terrace",
+        "requires_moves": [
+          "dash"
+        ],
+        "secret_id": "isl5_dash_spire"
+      }
+    },
+    {
+      "id": "chest_5_ember_2",
+      "kind": "chest",
+      "pos": [
+        512,
+        488
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "echo_promenade",
+        "trial_id": "isl5_trial_astrolabe"
+      }
+    },
+    {
+      "id": "obsidian_5_secret",
+      "kind": "obsidian_seal",
+      "pos": [
+        872,
+        480
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "zone": "zenith_rim"
+      }
+    },
+    {
+      "id": "chest_5_secret_sunflare",
+      "kind": "chest",
+      "pos": [
+        920,
+        480
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 75,
+        "zone": "zenith_rim",
+        "requires_moves": [
+          "sunflare"
+        ],
+        "secret_id": "isl5_sunflare_vault"
+      }
+    },
+    {
+      "id": "chest_5_shards_1",
+      "kind": "chest",
+      "pos": [
+        104,
+        488
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "zone": "star_landing"
+      }
+    },
+    {
+      "id": "chest_5_shards_2",
+      "kind": "chest",
+      "pos": [
+        616,
+        424
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40,
+        "zone": "echo_promenade"
+      }
+    },
+    {
+      "id": "chest_5_shards_3",
+      "kind": "chest",
+      "pos": [
+        856,
+        88
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45,
+        "zone": "kiln_overlook"
+      }
+    },
+    {
+      "id": "mirror_5_terrace",
+      "kind": "mirror",
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "lamp_5_1",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        408
+      ],
+      "props": {
+        "zone": "star_landing"
+      }
+    },
+    {
+      "id": "lamp_5_2",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        184
+      ],
+      "props": {
+        "zone": "brass_terrace"
+      }
+    },
+    {
+      "id": "lamp_5_3",
+      "kind": "road_lamp",
+      "pos": [
+        440,
+        392
+      ],
+      "props": {
+        "zone": "echo_promenade"
+      }
+    },
+    {
+      "id": "lamp_5_4",
+      "kind": "road_lamp",
+      "pos": [
+        776,
+        392
+      ],
+      "props": {
+        "zone": "zenith_rim"
+      }
+    },
+    {
+      "id": "lamp_5_5",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        184
+      ],
+      "props": {
+        "zone": "orrery_plaza"
+      }
+    },
+    {
+      "id": "lamp_5_6",
+      "kind": "road_lamp",
+      "pos": [
+        824,
+        184
+      ],
+      "props": {
+        "zone": "kiln_overlook"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_isl5_arrival",
+      "rect": [
+        72,
+        400,
+        64,
+        64
+      ],
+      "string_id": "ISL5_ARRIVAL",
+      "once": true
+    }
+  ]
+}

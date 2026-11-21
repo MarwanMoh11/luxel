@@ -1,0 +1,140 @@
+{
+  "id": "lighthouse_r4",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "lighthouse_r4",
+      "name_key": "DUNGEON_2_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r4_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r3",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r4_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r5",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r4_shutter"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "door_lh_r4_key",
+      "kind": "door",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "lighthouse",
+        "key_kind": "wick_key",
+        "key_id": "wick_key_2_1",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_2_1"
+        ]
+      }
+    },
+    {
+      "id": "brazier_lh_r4_n",
+      "kind": "brazier",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "target_id": "door_lh_r4_shutter"
+      }
+    },
+    {
+      "id": "brazier_lh_r4_s",
+      "kind": "brazier",
+      "pos": [
+        216,
+        136
+      ],
+      "props": {
+        "target_id": "door_lh_r4_shutter"
+      }
+    },
+    {
+      "id": "door_lh_r4_shutter",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "brazier_lh_r4_n",
+          "brazier_lh_r4_s"
+        ],
+        "sets_flag": "lh_r4_shutter_open"
+      }
+    },
+    {
+      "id": "chest_lh_r4_shards",
+      "kind": "chest",
+      "pos": [
+        264,
+        136
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30,
+        "zone": "lighthouse_r4"
+      }
+    }
+  ],
+  "triggers": []
+}

@@ -1,0 +1,179 @@
+{
+  "id": "spire_r9",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    280,
+    88
+  ],
+  "zones": [
+    {
+      "id": "spire_r9",
+      "name_key": "DUNGEON_7_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r9_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "spire_r8",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_spire_r9_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "spire_r1",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "keepers_flame_7"
+      ],
+      "locked_door_id": "door_spire_r9_south"
+    },
+    {
+      "id": "exit_spire_r9_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "spire_r10",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "keepers_flame_7"
+      ],
+      "locked_door_id": "door_boss_7"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "seal_spire_r9",
+      "kind": "obsidian_seal",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "zone": "spire_r9"
+      }
+    },
+    {
+      "id": "keepers_flame_7",
+      "kind": "keepers_flame",
+      "pos": [
+        56,
+        88
+      ],
+      "props": {
+        "dungeon_id": "mirror_spire",
+        "key_kind": "keepers_flame",
+        "flag_id": "keepers_flame_7"
+      }
+    },
+    {
+      "id": "cracked_spire_r9",
+      "kind": "cracked_wall",
+      "pos": [
+        248,
+        40
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "zone": "spire_r9"
+      }
+    },
+    {
+      "id": "chest_spire_r9",
+      "kind": "chest",
+      "pos": [
+        280,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 65,
+        "zone": "spire_r9"
+      }
+    },
+    {
+      "id": "door_spire_r9_south",
+      "kind": "door",
+      "pos": [
+        160,
+        152
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_7"
+        ]
+      }
+    },
+    {
+      "id": "door_boss_7",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_door",
+        "dungeon_id": "mirror_spire",
+        "key_kind": "keepers_flame",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_7"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

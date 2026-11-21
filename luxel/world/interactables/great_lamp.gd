@@ -59,6 +59,8 @@ func _relight() -> bool:
 	if Lx.state != null:
 		if not Lx.state.relit_islands.has(island_id):
 			Lx.state.relit_islands.append(island_id)
+		Lx.state.story_flags["great_lamp_%d" % island_id] = true
+		Lx.state.story_flags["island_%d_relit" % island_id] = true
 		Lx.state.story_flags["island_%d_bridge_open" % island_id] = true
 		Lx.state.heal_full()
 	if Lx.events != null:

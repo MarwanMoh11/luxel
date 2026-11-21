@@ -1,0 +1,682 @@
+{
+  "id": "overworld",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "spawn": [
+    96,
+    432
+  ],
+  "zones": [
+    {
+      "id": "fen_landing",
+      "name_key": "ZONE_ISL4_1",
+      "rect": [
+        0,
+        288,
+        336,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "sunken_beds",
+      "name_key": "ZONE_ISL4_2",
+      "rect": [
+        0,
+        0,
+        336,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "glass_walk",
+      "name_key": "ZONE_ISL4_3",
+      "rect": [
+        336,
+        288,
+        352,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "reed_causeway",
+      "name_key": "ZONE_ISL4_4",
+      "rect": [
+        688,
+        288,
+        336,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "conservatory_court",
+      "name_key": "ZONE_ISL4_5",
+      "rect": [
+        336,
+        0,
+        352,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "starfall_pier",
+      "name_key": "ZONE_ISL4_6",
+      "rect": [
+        688,
+        0,
+        336,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_conservatory",
+      "rect": [
+        496,
+        48,
+        32,
+        24
+      ],
+      "to_region": "conservatory_r1",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "beacon_4_1",
+        "beacon_4_2",
+        "beacon_4_3"
+      ],
+      "locked_door_id": "door_dungeon_4"
+    },
+    {
+      "id": "exit_to_island_5",
+      "rect": [
+        992,
+        128,
+        32,
+        48
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        96,
+        432
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "island_4_relit"
+      ],
+      "locked_door_id": "bridge_of_light_4"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "lily_hopper_4_entry",
+      "kind": "lily_hopper",
+      "pos": [
+        248,
+        432
+      ],
+      "route": [
+        [
+          232,
+          432
+        ],
+        [
+          280,
+          432
+        ]
+      ],
+      "perches": [],
+      "zone": "fen_landing",
+      "leash": 135
+    },
+    {
+      "id": "lily_hopper_4_beds",
+      "kind": "lily_hopper",
+      "pos": [
+        216,
+        168
+      ],
+      "route": [
+        [
+          184,
+          168
+        ],
+        [
+          248,
+          168
+        ]
+      ],
+      "perches": [],
+      "zone": "sunken_beds",
+      "leash": 145
+    },
+    {
+      "id": "heron_stalker_4_beds",
+      "kind": "heron_stalker",
+      "pos": [
+        264,
+        112
+      ],
+      "route": [
+        [
+          232,
+          112
+        ],
+        [
+          280,
+          112
+        ]
+      ],
+      "perches": [],
+      "zone": "sunken_beds",
+      "leash": 150
+    },
+    {
+      "id": "mire_snuffer_4_glass",
+      "kind": "mire_snuffer",
+      "pos": [
+        456,
+        376
+      ],
+      "route": [],
+      "perches": [
+        [
+          456,
+          376
+        ],
+        [
+          568,
+          376
+        ],
+        [
+          512,
+          344
+        ]
+      ],
+      "zone": "glass_walk",
+      "leash": 155
+    },
+    {
+      "id": "lily_hopper_4_glass",
+      "kind": "lily_hopper",
+      "pos": [
+        568,
+        392
+      ],
+      "route": [
+        [
+          552,
+          392
+        ],
+        [
+          616,
+          392
+        ]
+      ],
+      "perches": [],
+      "zone": "glass_walk",
+      "leash": 140
+    },
+    {
+      "id": "heron_stalker_4_causeway",
+      "kind": "heron_stalker",
+      "pos": [
+        808,
+        376
+      ],
+      "route": [
+        [
+          784,
+          376
+        ],
+        [
+          856,
+          376
+        ]
+      ],
+      "perches": [],
+      "zone": "reed_causeway",
+      "leash": 150
+    },
+    {
+      "id": "mire_snuffer_4_causeway",
+      "kind": "mire_snuffer",
+      "pos": [
+        856,
+        408
+      ],
+      "route": [],
+      "perches": [
+        [
+          856,
+          408
+        ],
+        [
+          792,
+          408
+        ],
+        [
+          824,
+          360
+        ]
+      ],
+      "zone": "reed_causeway",
+      "leash": 155
+    },
+    {
+      "id": "lily_hopper_4_court",
+      "kind": "lily_hopper",
+      "pos": [
+        472,
+        232
+      ],
+      "route": [
+        [
+          456,
+          232
+        ],
+        [
+          568,
+          232
+        ]
+      ],
+      "perches": [],
+      "zone": "conservatory_court",
+      "leash": 135
+    },
+    {
+      "id": "heron_stalker_4_trial",
+      "kind": "heron_stalker",
+      "pos": [
+        488,
+        488
+      ],
+      "route": [
+        [
+          472,
+          488
+        ],
+        [
+          552,
+          488
+        ]
+      ],
+      "perches": [],
+      "zone": "trial_4",
+      "leash": 120
+    },
+    {
+      "id": "mire_snuffer_4_trial",
+      "kind": "mire_snuffer",
+      "pos": [
+        552,
+        472
+      ],
+      "route": [],
+      "perches": [
+        [
+          552,
+          472
+        ],
+        [
+          472,
+          472
+        ],
+        [
+          512,
+          488
+        ]
+      ],
+      "zone": "trial_4",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_4_entry",
+      "kind": "waystone",
+      "pos": [
+        144,
+        432
+      ],
+      "props": {
+        "zone": "fen_landing",
+        "lit_by_default": true,
+        "name_key": "ZONE_ISL4_1"
+      }
+    },
+    {
+      "id": "ws_4_beds",
+      "kind": "waystone",
+      "pos": [
+        184,
+        232
+      ],
+      "props": {
+        "zone": "sunken_beds",
+        "name_key": "ZONE_ISL4_2"
+      }
+    },
+    {
+      "id": "beacon_4_1",
+      "kind": "beacon",
+      "pos": [
+        184,
+        184
+      ],
+      "props": {
+        "index": 0,
+        "zone": "sunken_beds",
+        "guard_zone": "sunken_beds",
+        "relit_zones": [
+          "sunken_beds",
+          "fen_landing"
+        ],
+        "name_key": "ZONE_ISL4_2"
+      }
+    },
+    {
+      "id": "beacon_4_2",
+      "kind": "beacon",
+      "pos": [
+        512,
+        360
+      ],
+      "props": {
+        "index": 1,
+        "zone": "glass_walk",
+        "guard_zone": "glass_walk",
+        "relit_zones": [
+          "glass_walk"
+        ],
+        "name_key": "ZONE_ISL4_3"
+      }
+    },
+    {
+      "id": "ws_4_causeway",
+      "kind": "waystone",
+      "pos": [
+        728,
+        376
+      ],
+      "props": {
+        "zone": "reed_causeway",
+        "name_key": "ZONE_ISL4_4"
+      }
+    },
+    {
+      "id": "beacon_4_3",
+      "kind": "beacon",
+      "pos": [
+        824,
+        392
+      ],
+      "props": {
+        "index": 2,
+        "zone": "reed_causeway",
+        "guard_zone": "reed_causeway",
+        "relit_zones": [
+          "reed_causeway",
+          "starfall_pier"
+        ],
+        "name_key": "ZONE_ISL4_4"
+      }
+    },
+    {
+      "id": "ws_4_court",
+      "kind": "waystone",
+      "pos": [
+        552,
+        232
+      ],
+      "props": {
+        "zone": "conservatory_court",
+        "name_key": "ZONE_ISL4_5"
+      }
+    },
+    {
+      "id": "door_dungeon_4",
+      "kind": "door",
+      "pos": [
+        512,
+        152
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "conservatory_court",
+        "seal_id": "conservatory_seal",
+        "requires_beacons": [
+          "beacon_4_1",
+          "beacon_4_2",
+          "beacon_4_3"
+        ],
+        "requires_flags": [
+          "beacon_4_1",
+          "beacon_4_2",
+          "beacon_4_3"
+        ]
+      }
+    },
+    {
+      "id": "bridge_of_light_4",
+      "kind": "door",
+      "pos": [
+        968,
+        152
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "starfall_pier",
+        "requires_flags": [
+          "island_4_relit"
+        ]
+      }
+    },
+    {
+      "id": "chest_4_ember_1",
+      "kind": "chest",
+      "pos": [
+        88,
+        88
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "sunken_beds",
+        "requires_moves": [
+          "dash"
+        ],
+        "secret_id": "isl4_dash_planter"
+      }
+    },
+    {
+      "id": "chest_4_ember_2",
+      "kind": "chest",
+      "pos": [
+        512,
+        488
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "glass_walk",
+        "trial_id": "isl4_trial_glass"
+      }
+    },
+    {
+      "id": "phantom_4_secret",
+      "kind": "phantom_platform",
+      "pos": [
+        872,
+        480
+      ],
+      "props": {
+        "size": [
+          64,
+          32
+        ],
+        "zone": "reed_causeway"
+      }
+    },
+    {
+      "id": "chest_4_secret_lens",
+      "kind": "chest",
+      "pos": [
+        920,
+        480
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 65,
+        "zone": "reed_causeway",
+        "requires_moves": [
+          "lens"
+        ],
+        "secret_id": "isl4_lens_grotto"
+      }
+    },
+    {
+      "id": "chest_4_shards_1",
+      "kind": "chest",
+      "pos": [
+        104,
+        488
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30,
+        "zone": "fen_landing"
+      }
+    },
+    {
+      "id": "chest_4_shards_2",
+      "kind": "chest",
+      "pos": [
+        616,
+        424
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "zone": "glass_walk"
+      }
+    },
+    {
+      "id": "chest_4_shards_3",
+      "kind": "chest",
+      "pos": [
+        856,
+        88
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40,
+        "zone": "starfall_pier"
+      }
+    },
+    {
+      "id": "lamp_4_1",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        408
+      ],
+      "props": {
+        "zone": "fen_landing"
+      }
+    },
+    {
+      "id": "lamp_4_2",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        184
+      ],
+      "props": {
+        "zone": "sunken_beds"
+      }
+    },
+    {
+      "id": "lamp_4_3",
+      "kind": "road_lamp",
+      "pos": [
+        440,
+        392
+      ],
+      "props": {
+        "zone": "glass_walk"
+      }
+    },
+    {
+      "id": "lamp_4_4",
+      "kind": "road_lamp",
+      "pos": [
+        776,
+        392
+      ],
+      "props": {
+        "zone": "reed_causeway"
+      }
+    },
+    {
+      "id": "lamp_4_5",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        184
+      ],
+      "props": {
+        "zone": "conservatory_court"
+      }
+    },
+    {
+      "id": "lamp_4_6",
+      "kind": "road_lamp",
+      "pos": [
+        824,
+        184
+      ],
+      "props": {
+        "zone": "starfall_pier"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_isl4_arrival",
+      "rect": [
+        72,
+        400,
+        64,
+        64
+      ],
+      "string_id": "ISL4_ARRIVAL",
+      "once": true
+    }
+  ]
+}

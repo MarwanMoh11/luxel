@@ -1,0 +1,174 @@
+{
+  "id": "lighthouse_r9",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "lighthouse_r9",
+      "name_key": "DUNGEON_2_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r9_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r8",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r9_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r10",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "prism",
+        "throw"
+      ],
+      "requires_flags": [
+        "keepers_flame_2"
+      ],
+      "locked_door_id": "door_boss_2"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_lighthouse_upper",
+      "kind": "waystone",
+      "pos": [
+        120,
+        136
+      ],
+      "props": {
+        "zone": "lighthouse_r9",
+        "name_key": "DUNGEON_2_NAME"
+      }
+    },
+    {
+      "id": "brazier_lh_r9",
+      "kind": "brazier",
+      "pos": [
+        40,
+        56
+      ],
+      "props": {
+        "target_id": "door_lh_r9_vault"
+      }
+    },
+    {
+      "id": "mirror_lh_r9",
+      "kind": "mirror",
+      "pos": [
+        120,
+        120
+      ],
+      "props": {
+        "angle_deg": 225,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_lh_r9",
+      "kind": "switch_eye",
+      "pos": [
+        40,
+        120
+      ],
+      "props": {
+        "requires_prism": true,
+        "target_id": "door_lh_r9_vault",
+        "sets_flag": "lh_r9_vault_open"
+      }
+    },
+    {
+      "id": "door_lh_r9_vault",
+      "kind": "door",
+      "pos": [
+        232,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "brazier_lh_r9",
+          "switch_eye_lh_r9"
+        ],
+        "sets_flag": "lh_r9_vault_open"
+      }
+    },
+    {
+      "id": "keepers_flame_2",
+      "kind": "keepers_flame",
+      "pos": [
+        264,
+        88
+      ],
+      "props": {
+        "dungeon_id": "lighthouse",
+        "key_kind": "keepers_flame",
+        "flag_id": "keepers_flame_2"
+      }
+    },
+    {
+      "id": "door_boss_2",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_door",
+        "dungeon_id": "lighthouse",
+        "key_kind": "keepers_flame",
+        "key_id": "keepers_flame_2",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_2"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

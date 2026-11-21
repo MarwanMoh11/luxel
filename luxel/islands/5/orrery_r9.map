@@ -1,0 +1,25 @@
+# Island 5 - The Orrery r9: Orrery Vault
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+#########,,#########
+#........,,#OOO....#
+#........,,#OOO....#
+#........,,OOOO....#
+,........,,O.OO....#
+,,,,,,,,,,,#OOO....#
+,..........#PPP....#
+#..........PP.P....#
+#..........PP.P....#
+#..........#PPP....#
+####################

@@ -1,0 +1,125 @@
+{
+  "id": "orrery_r6",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "orrery_r6",
+      "name_key": "DUNGEON_5_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r6_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "orrery_r5",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r6_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "orrery_r7",
+      "to_spawn": [
+        272,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "boss_clockwork_warden_defeated",
+        "wick_key_5_2"
+      ],
+      "locked_door_id": "door_o5_r6_west"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_clockwork_warden",
+      "kind": "clockwork_warden",
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          120,
+          72
+        ],
+        [
+          200,
+          72
+        ]
+      ],
+      "perches": [],
+      "zone": "orrery_r6",
+      "leash": 150
+    }
+  ],
+  "interactables": [
+    {
+      "id": "wick_key_5_2",
+      "kind": "wick_key",
+      "pos": [
+        160,
+        88
+      ],
+      "props": {
+        "dungeon_id": "orrery",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_5_2",
+        "requires_flag": "boss_clockwork_warden_defeated"
+      }
+    },
+    {
+      "id": "door_o5_r6_west",
+      "kind": "door",
+      "pos": [
+        24,
+        88
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "orrery",
+        "key_kind": "wick_key",
+        "key_id": "wick_key_5_2",
+        "size": [
+          16,
+          48
+        ],
+        "clear_zone": "orrery_r6",
+        "requires_flags": [
+          "boss_clockwork_warden_defeated",
+          "wick_key_5_2"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

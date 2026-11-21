@@ -1,0 +1,25 @@
+# The Great Kiln R4 - Cinder Bridge
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+####################
+#OOOO......OO..##..#
+#OOOO......OO..##..#
+#OOOO......OO..##..#
+#..........OO..PP,,,
+#....,,,,,,OO,,PP,,,
+#........,,OO..PP,,,
+#........,,OO..##..#
+#........,,OO..##..#
+#........,,OO..##..#
+#########,,#########

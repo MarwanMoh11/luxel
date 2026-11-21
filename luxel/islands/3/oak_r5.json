@@ -1,0 +1,154 @@
+{
+  "id": "oak_r5",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "oak_r5",
+      "name_key": "DUNGEON_3_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r5_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "oak_r4",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r5_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "oak_r6",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r5_shutter"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "shrine_beam",
+      "kind": "shrine",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "move_id": "beam",
+        "zone": "oak_r5",
+        "name_key": "MOVE_BEAM_NAME"
+      }
+    },
+    {
+      "id": "bramble_oak_r5",
+      "kind": "bramble",
+      "pos": [
+        168,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "cracked_wall_oak_r5",
+      "kind": "cracked_wall",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_oak_r5",
+      "kind": "switch_eye",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "target_id": "door_oak_r5_shutter",
+        "sets_flag": "oak_r5_beam_solved"
+      }
+    },
+    {
+      "id": "door_oak_r5_shutter",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_oak_r5"
+        ]
+      }
+    },
+    {
+      "id": "chest_oak_r5_shards",
+      "kind": "chest",
+      "pos": [
+        248,
+        152
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "zone": "oak_r5",
+        "requires_moves": [
+          "beam"
+        ],
+        "secret_id": "oak_r5_bramble_cache"
+      }
+    }
+  ],
+  "triggers": []
+}

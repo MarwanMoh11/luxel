@@ -1,0 +1,128 @@
+{
+  "id": "orrery_r3",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "orrery_r3",
+      "name_key": "DUNGEON_5_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r3_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "orrery_r2",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r3_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "orrery_r4",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "o5_r3_cleared"
+      ],
+      "locked_door_id": "door_o5_r3_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "orrery_sentinel_o5_r3",
+      "kind": "orrery_sentinel",
+      "pos": [
+        160,
+        56
+      ],
+      "route": [
+        [
+          128,
+          56
+        ],
+        [
+          192,
+          56
+        ]
+      ],
+      "perches": [],
+      "zone": "orrery_r3",
+      "leash": 135
+    },
+    {
+      "id": "echo_moth_o5_r3",
+      "kind": "echo_moth",
+      "pos": [
+        264,
+        88
+      ],
+      "route": [
+        [
+          264,
+          56
+        ],
+        [
+          264,
+          120
+        ]
+      ],
+      "perches": [],
+      "zone": "orrery_r3",
+      "leash": 145
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_o5_r3_combat",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "clear_zone": "orrery_r3",
+        "sets_flag": "o5_r3_cleared",
+        "requires_flags": [
+          "o5_r3_cleared"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

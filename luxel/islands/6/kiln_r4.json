@@ -1,0 +1,112 @@
+{
+  "id": "kiln_r4",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "kiln_r4",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r4_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "kiln_r3",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_kiln_r4_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "kiln_r5",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "wick_key_6_1"
+      ],
+      "locked_door_id": "door_kiln_r4_east"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "door_kiln_r4_east",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "great_kiln",
+        "key_kind": "wick_key",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_6_1"
+        ]
+      }
+    },
+    {
+      "id": "lamp_kiln_r4_mid",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "zone": "kiln_r4"
+      }
+    },
+    {
+      "id": "chest_kiln_r4_shards",
+      "kind": "chest",
+      "pos": [
+        56,
+        136
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30,
+        "zone": "kiln_r4"
+      }
+    }
+  ],
+  "triggers": []
+}

@@ -1,0 +1,771 @@
+{
+  "id": "overworld",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "spawn": [
+    120,
+    360
+  ],
+  "zones": [
+    {
+      "id": "harbor_landing",
+      "name_key": "ZONE_ISL2_1",
+      "rect": [
+        0,
+        288,
+        352,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "drydock_quays",
+      "name_key": "ZONE_ISL2_2",
+      "rect": [
+        0,
+        0,
+        352,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "tide_causeway",
+      "name_key": "ZONE_ISL2_3",
+      "rect": [
+        352,
+        288,
+        336,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "smugglers_cove",
+      "name_key": "ZONE_ISL2_4",
+      "rect": [
+        688,
+        288,
+        336,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "breakwater_reef",
+      "name_key": "ZONE_ISL2_5",
+      "rect": [
+        688,
+        0,
+        336,
+        288
+      ],
+      "dark": true
+    },
+    {
+      "id": "lighthouse_promontory",
+      "name_key": "ZONE_ISL2_6",
+      "rect": [
+        352,
+        0,
+        336,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_lighthouse",
+      "rect": [
+        496,
+        48,
+        32,
+        24
+      ],
+      "to_region": "lighthouse_r1",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "dash",
+        "throw"
+      ],
+      "requires_flags": [
+        "beacon_2_1",
+        "beacon_2_2",
+        "beacon_2_3"
+      ],
+      "locked_door_id": "door_dungeon_2"
+    },
+    {
+      "id": "exit_to_island_3",
+      "rect": [
+        976,
+        64,
+        32,
+        48
+      ],
+      "to_island": 3,
+      "to_region": "overworld",
+      "to_spawn": [
+        120,
+        288
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "island_2_relit"
+      ],
+      "locked_door_id": "bridge_of_light_2"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "barnacle_sentry_2_1",
+      "kind": "barnacle_sentry",
+      "pos": [
+        152,
+        168
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "drydock_quays",
+      "leash": 132
+    },
+    {
+      "id": "crab_warden_2_1",
+      "kind": "crab_warden",
+      "pos": [
+        216,
+        136
+      ],
+      "route": [
+        [
+          184,
+          136
+        ],
+        [
+          248,
+          136
+        ]
+      ],
+      "perches": [],
+      "zone": "drydock_quays",
+      "leash": 148
+    },
+    {
+      "id": "gull_thief_2_1",
+      "kind": "gull_thief",
+      "pos": [
+        472,
+        344
+      ],
+      "route": [],
+      "perches": [
+        [
+          472,
+          344
+        ],
+        [
+          520,
+          344
+        ],
+        [
+          568,
+          344
+        ]
+      ],
+      "zone": "tide_causeway",
+      "leash": 160
+    },
+    {
+      "id": "crab_warden_2_2",
+      "kind": "crab_warden",
+      "pos": [
+        568,
+        376
+      ],
+      "route": [
+        [
+          568,
+          344
+        ],
+        [
+          600,
+          392
+        ]
+      ],
+      "perches": [],
+      "zone": "tide_causeway",
+      "leash": 148
+    },
+    {
+      "id": "barnacle_sentry_2_2",
+      "kind": "barnacle_sentry",
+      "pos": [
+        824,
+        152
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "breakwater_reef",
+      "leash": 132
+    },
+    {
+      "id": "gull_thief_2_2",
+      "kind": "gull_thief",
+      "pos": [
+        776,
+        200
+      ],
+      "route": [],
+      "perches": [
+        [
+          776,
+          200
+        ],
+        [
+          824,
+          200
+        ],
+        [
+          872,
+          152
+        ]
+      ],
+      "zone": "breakwater_reef",
+      "leash": 164
+    },
+    {
+      "id": "crab_warden_2_3",
+      "kind": "crab_warden",
+      "pos": [
+        872,
+        200
+      ],
+      "route": [
+        [
+          840,
+          200
+        ],
+        [
+          904,
+          200
+        ]
+      ],
+      "perches": [],
+      "zone": "breakwater_reef",
+      "leash": 148
+    },
+    {
+      "id": "crab_warden_2_trial",
+      "kind": "crab_warden",
+      "pos": [
+        808,
+        424
+      ],
+      "route": [
+        [
+          792,
+          424
+        ],
+        [
+          840,
+          424
+        ]
+      ],
+      "perches": [],
+      "zone": "smugglers_cove",
+      "leash": 136
+    },
+    {
+      "id": "gull_thief_2_trial",
+      "kind": "gull_thief",
+      "pos": [
+        872,
+        408
+      ],
+      "route": [],
+      "perches": [
+        [
+          872,
+          408
+        ],
+        [
+          840,
+          456
+        ],
+        [
+          792,
+          456
+        ]
+      ],
+      "zone": "smugglers_cove",
+      "leash": 140
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_2_entry",
+      "kind": "waystone",
+      "pos": [
+        104,
+        392
+      ],
+      "props": {
+        "zone": "harbor_landing",
+        "lit": true,
+        "lit_by_default": true,
+        "name_key": "ZONE_ISL2_1"
+      }
+    },
+    {
+      "id": "rest_shrine_2",
+      "kind": "rest_shrine",
+      "pos": [
+        184,
+        392
+      ],
+      "props": {
+        "zone": "harbor_landing",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
+      "id": "chest_2_shards_pier",
+      "kind": "chest",
+      "pos": [
+        88,
+        488
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "zone": "harbor_landing"
+      }
+    },
+    {
+      "id": "ws_2_drydock",
+      "kind": "waystone",
+      "pos": [
+        280,
+        184
+      ],
+      "props": {
+        "zone": "drydock_quays",
+        "name_key": "ZONE_ISL2_2"
+      }
+    },
+    {
+      "id": "mirror_2_drydock",
+      "kind": "mirror",
+      "pos": [
+        184,
+        216
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_2_1",
+      "kind": "switch_eye",
+      "pos": [
+        104,
+        136
+      ],
+      "props": {
+        "sets_flag": "isl2_drydock_eye"
+      }
+    },
+    {
+      "id": "beacon_2_1",
+      "kind": "beacon",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "index": 0,
+        "zone": "drydock_quays",
+        "guard_zone": "drydock_quays",
+        "relit_zones": [
+          "drydock_quays",
+          "harbor_landing"
+        ],
+        "name_key": "ZONE_ISL2_2"
+      }
+    },
+    {
+      "id": "chest_2_secret_beam",
+      "kind": "chest",
+      "pos": [
+        40,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 65,
+        "zone": "drydock_quays",
+        "requires_moves": [
+          "beam"
+        ],
+        "secret_id": "isl2_beam_boathouse"
+      }
+    },
+    {
+      "id": "ws_2_mid",
+      "kind": "waystone",
+      "pos": [
+        408,
+        344
+      ],
+      "props": {
+        "zone": "tide_causeway",
+        "name_key": "ZONE_ISL2_3"
+      }
+    },
+    {
+      "id": "tide_gate_2_a",
+      "kind": "tide_gate",
+      "pos": [
+        456,
+        408
+      ],
+      "props": {
+        "period": 8.0,
+        "phase_offset": 0.0,
+        "low_ratio": 0.6,
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "tide_gate_2_b",
+      "kind": "tide_gate",
+      "pos": [
+        536,
+        408
+      ],
+      "props": {
+        "period": 8.0,
+        "phase_offset": 2.0,
+        "low_ratio": 0.6,
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "beacon_2_2",
+      "kind": "beacon",
+      "pos": [
+        600,
+        440
+      ],
+      "props": {
+        "index": 1,
+        "zone": "tide_causeway",
+        "guard_zone": "tide_causeway",
+        "relit_zones": [
+          "tide_causeway"
+        ],
+        "name_key": "ZONE_ISL2_3"
+      }
+    },
+    {
+      "id": "chest_2_ember_1",
+      "kind": "chest",
+      "pos": [
+        456,
+        504
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "tide_causeway",
+        "requires_moves": [
+          "throw"
+        ],
+        "secret_id": "isl2_tide_cove"
+      }
+    },
+    {
+      "id": "door_2_trial_reward",
+      "kind": "door",
+      "pos": [
+        936,
+        440
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          16
+        ],
+        "zone": "smugglers_cove",
+        "clear_zone": "smugglers_cove"
+      }
+    },
+    {
+      "id": "chest_2_ember_2",
+      "kind": "chest",
+      "pos": [
+        968,
+        440
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "smugglers_cove",
+        "trial_id": "isl2_trial_cove"
+      }
+    },
+    {
+      "id": "ws_2_reef",
+      "kind": "waystone",
+      "pos": [
+        744,
+        136
+      ],
+      "props": {
+        "zone": "breakwater_reef",
+        "name_key": "ZONE_ISL2_5"
+      }
+    },
+    {
+      "id": "beacon_2_3",
+      "kind": "beacon",
+      "pos": [
+        856,
+        104
+      ],
+      "props": {
+        "index": 2,
+        "zone": "breakwater_reef",
+        "guard_zone": "breakwater_reef",
+        "relit_zones": [
+          "breakwater_reef",
+          "smugglers_cove"
+        ],
+        "name_key": "ZONE_ISL2_5"
+      }
+    },
+    {
+      "id": "door_dungeon_2",
+      "kind": "door",
+      "pos": [
+        512,
+        120
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "lighthouse_promontory",
+        "seal_id": "lighthouse_seal",
+        "requires_beacons": [
+          "beacon_2_1",
+          "beacon_2_2",
+          "beacon_2_3"
+        ],
+        "requires_flags": [
+          "beacon_2_1",
+          "beacon_2_2",
+          "beacon_2_3"
+        ]
+      }
+    },
+    {
+      "id": "bridge_of_light_2",
+      "kind": "door",
+      "pos": [
+        952,
+        88
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "breakwater_reef",
+        "requires_flags": [
+          "island_2_relit"
+        ]
+      }
+    },
+    {
+      "id": "lamp_2_landing_w",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        328
+      ],
+      "props": {
+        "zone": "harbor_landing"
+      }
+    },
+    {
+      "id": "lamp_2_landing_e",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        360
+      ],
+      "props": {
+        "zone": "harbor_landing"
+      }
+    },
+    {
+      "id": "lamp_2_drydock",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        232
+      ],
+      "props": {
+        "zone": "drydock_quays"
+      }
+    },
+    {
+      "id": "lamp_2_causeway",
+      "kind": "road_lamp",
+      "pos": [
+        520,
+        344
+      ],
+      "props": {
+        "zone": "tide_causeway"
+      }
+    },
+    {
+      "id": "lamp_2_cove",
+      "kind": "road_lamp",
+      "pos": [
+        760,
+        392
+      ],
+      "props": {
+        "zone": "smugglers_cove"
+      }
+    },
+    {
+      "id": "lamp_2_reef",
+      "kind": "road_lamp",
+      "pos": [
+        808,
+        232
+      ],
+      "props": {
+        "zone": "breakwater_reef"
+      }
+    },
+    {
+      "id": "lamp_2_prom_w",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        168
+      ],
+      "props": {
+        "zone": "lighthouse_promontory"
+      }
+    },
+    {
+      "id": "lamp_2_prom_e",
+      "kind": "road_lamp",
+      "pos": [
+        568,
+        168
+      ],
+      "props": {
+        "zone": "lighthouse_promontory"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_isl2_arrival",
+      "rect": [
+        96,
+        336,
+        64,
+        48
+      ],
+      "string_id": "ISL2_ARRIVAL",
+      "once": true
+    },
+    {
+      "id": "trig_isl2_drydock",
+      "rect": [
+        96,
+        208,
+        64,
+        48
+      ],
+      "string_id": "ZONE_ISL2_2",
+      "once": true
+    },
+    {
+      "id": "trig_isl2_causeway",
+      "rect": [
+        368,
+        320,
+        64,
+        48
+      ],
+      "string_id": "ZONE_ISL2_3",
+      "once": true
+    },
+    {
+      "id": "trig_isl2_cove",
+      "rect": [
+        704,
+        336,
+        64,
+        48
+      ],
+      "string_id": "ZONE_ISL2_4",
+      "once": true
+    },
+    {
+      "id": "trig_isl2_reef",
+      "rect": [
+        704,
+        160,
+        64,
+        48
+      ],
+      "string_id": "ZONE_ISL2_5",
+      "once": true
+    },
+    {
+      "id": "trig_isl2_prom",
+      "rect": [
+        480,
+        144,
+        64,
+        32
+      ],
+      "string_id": "DUNGEON_2_NAME",
+      "once": true
+    }
+  ]
+}

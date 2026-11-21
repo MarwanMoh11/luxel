@@ -1,0 +1,149 @@
+{
+  "id": "conservatory_r9",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    272,
+    88
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r9",
+      "name_key": "DUNGEON_4_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r9_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r8",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r9_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r10",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "keepers_flame_4"
+      ],
+      "locked_door_id": "door_boss_4"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "cracked_c4_r9",
+      "kind": "cracked_wall",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "brazier_c4_r9",
+      "kind": "brazier",
+      "pos": [
+        40,
+        56
+      ],
+      "props": {
+        "target_id": "bridge_c4_r9",
+        "light_by_lantern": true
+      }
+    },
+    {
+      "id": "bridge_c4_r9",
+      "kind": "door",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "brazier_c4_r9"
+        ]
+      }
+    },
+    {
+      "id": "keepers_flame_4",
+      "kind": "wick_key",
+      "pos": [
+        40,
+        88
+      ],
+      "props": {
+        "dungeon_id": "conservatory",
+        "key_kind": "keepers_flame",
+        "flag_id": "keepers_flame_4",
+        "requires_moves": [
+          "wings"
+        ]
+      }
+    },
+    {
+      "id": "door_boss_4",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_door",
+        "dungeon_id": "conservatory",
+        "key_kind": "keepers_flame",
+        "key_id": "keepers_flame_4",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_4"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

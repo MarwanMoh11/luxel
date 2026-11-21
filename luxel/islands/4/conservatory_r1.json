@@ -1,0 +1,109 @@
+{
+  "id": "conservatory_r1",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r1",
+      "name_key": "DUNGEON_4_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r1_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        512,
+        112
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r1_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r2",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_conservatory",
+      "kind": "waystone",
+      "pos": [
+        160,
+        88
+      ],
+      "props": {
+        "zone": "conservatory_r1",
+        "name_key": "DUNGEON_4_NAME"
+      }
+    },
+    {
+      "id": "lamp_c4_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "zone": "conservatory_r1"
+      }
+    },
+    {
+      "id": "lamp_c4_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "zone": "conservatory_r1"
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_c4_entry",
+      "rect": [
+        128,
+        112,
+        64,
+        32
+      ],
+      "string_id": "DUNGEON_4_NAME",
+      "once": true
+    }
+  ]
+}

@@ -1,27 +1,42 @@
 class_name LxCards
 extends Node2D
-## Death card (instant retry), Results/Rank card, and Credits roll reading res://luxel/credits.json.
+## Intro beats, Death card (instant retry), Both Endings (display_off & dawn),
+## Results/Rank card, and Credits roll reading res://luxel/credits.json.
 
 signal intro_finished()
 signal retry_requested()
 signal title_requested()
+signal ending_finished()
 signal credits_finished()
 
-enum Mode { NONE, INTRO, DEATH, RESULTS, CREDITS }
+enum Mode { NONE, INTRO, DEATH, ENDING, RESULTS, CREDITS }
 
 const CREDITS_PATH: String = "res://luxel/credits.json"
 const INTRO_KEYS: Array[String] = ["INTRO_1", "INTRO_2", "INTRO_3"]
 const INTRO_BEAT_SECS: float = 2.0
+const ENDING_DISPLAY_OFF_SECS: float = 7.8
+const ENDING_DAWN_SECS: float = 7.6
 const CREDITS_SPEED: float = 18.0
 const DEATH_PANEL := Rect2(44.0, 36.0, 232.0, 102.0)
 const RESULTS_PANEL := Rect2(40.0, 24.0, 240.0, 132.0)
+const LANTERN_POS := Vector2(160.0, 96.0)
+const EYE_COUNT: int = 24
+const MOTE_COUNT: int = 18
+
+const DAWN_ISLANDS: Array[Vector2] = [
+	Vector2(28.0, 122.0), Vector2(66.0, 118.0), Vector2(104.0, 124.0), Vector2(142.0, 116.0),
+	Vector2(178.0, 120.0), Vector2(216.0, 117.0), Vector2(254.0, 123.0), Vector2(292.0, 118.0),
+]
 
 var mode: int = Mode.NONE
+var ending_mode: String = "display_off"
 var _is_boss_death: bool = false
 var _elapsed: float = 0.0
 var _stats: Dictionary = {}
 var _credit_lines: Array[Dictionary] = [] # {text, color, scale}
 var _scroll_y: float = 184.0
+var _eyes: Array[Dictionary] = [] # {start, heap, dir, blink_off, recoil}
+var _motes: Array[Dictionary] = [] # {angle, speed, phase, color}
 
 
 func _ready() -> void:
@@ -40,6 +55,15 @@ func show_death(is_boss: bool = false) -> void:
 	mode = Mode.DEATH
 	_is_boss_death = is_boss
 	_elapsed = 0.0
+	visible = true
+	queue_redraw()
+
+
+func show_ending(p_mode: String = "display_off") -> void:
+	ending_mode = "dawn" if p_mode == "dawn" else "display_off"
+	mode = Mode.ENDING
+	_elapsed = 0.0
+	_build_ending_actors()
 	visible = true
 	queue_redraw()
 
@@ -75,6 +99,11 @@ func _process(delta: float) -> void:
 			close()
 			intro_finished.emit()
 			return
+	elif mode == Mode.ENDING:
+		var limit: float = ENDING_DAWN_SECS if ending_mode == "dawn" else ENDING_DISPLAY_OFF_SECS
+		if _elapsed >= limit:
+			_finish_ending()
+			return
 	elif mode == Mode.CREDITS:
 		_scroll_y -= CREDITS_SPEED * delta
 		var total_h: float = float(_credit_lines.size()) * 12.0 + 40.0
@@ -99,14 +128,19 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 		return
 
+	if mode == Mode.ENDING:
+		if _elapsed >= 0.5 and (event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_SPACE) or _key_just(event, KEY_ENTER)):
+			_finish_ending()
+			get_viewport().set_input_as_handled()
+		return
+
 	if mode == Mode.DEATH:
 		if event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
 			close()
 			title_requested.emit()
 			get_viewport().set_input_as_handled()
 			return
-		var any_press: bool = _is_any_action_press(event)
-		if any_press:
+		if _is_any_action_press(event):
 			close()
 			retry_requested.emit()
 			get_viewport().set_input_as_handled()
@@ -128,12 +162,23 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 
+func _finish_ending() -> void:
+	ending_finished.emit()
+	if mode == Mode.ENDING:
+		show_credits()
+
+
 func _draw() -> void:
 	match mode:
 		Mode.INTRO:
 			_draw_intro()
 		Mode.DEATH:
 			_draw_death()
+		Mode.ENDING:
+			if ending_mode == "dawn":
+				_draw_ending_dawn()
+			else:
+				_draw_ending_display_off()
 		Mode.RESULTS:
 			_draw_results()
 		Mode.CREDITS:
@@ -145,15 +190,8 @@ func _draw_intro() -> void:
 	var idx: int = clampi(int(_elapsed / INTRO_BEAT_SECS), 0, INTRO_KEYS.size() - 1)
 	var local_t: float = _elapsed - float(idx) * INTRO_BEAT_SECS
 	var p: float = minf(local_t / 0.35, (INTRO_BEAT_SECS - local_t) / 0.35)
-	LxPixelFont.draw_faded(
-		self,
-		LxStrings.text(INTRO_KEYS[idx]),
-		Vector2(160.0, 86.0),
-		p,
-		"cream" if idx < 2 else "gold",
-		1,
-		HORIZONTAL_ALIGNMENT_CENTER
-	)
+	var col_name: String = "cream" if idx < 2 else "gold"
+	LxPixelFont.draw_faded(self, LxStrings.text(INTRO_KEYS[idx]), Vector2(160.0, 86.0), p, col_name, 1, HORIZONTAL_ALIGNMENT_CENTER)
 	LxPixelFont.draw_right(self, LxStrings.text("INTRO_SKIP"), 312.0, 168.0, LxPalette.PAL["mauve"], 1)
 
 
@@ -173,6 +211,224 @@ func _draw_death() -> void:
 	var pulse: Color = LxPalette.PAL["gold"] if fmod(_elapsed, 1.2) < 0.6 else LxPalette.PAL["apricot"]
 	LxPixelFont.draw_centered(self, LxStrings.text("DEATH_RETRY_HINT"), 160.0, 108.0, pulse, 1)
 	LxPixelFont.draw_centered(self, LxStrings.text("DEATH_TITLE_HINT"), 160.0, 122.0, LxPalette.PAL["mauve"], 1)
+
+
+func _draw_ending_display_off() -> void:
+	var t: float = _elapsed
+	draw_rect(Rect2(0.0, 0.0, 320.0, 180.0), LxPalette.PAL["void"])
+
+	# Stage 1 (0.0 - 1.4): THE LANTERN ASKS / SELL LOOK - SOUND - PIXELS
+	if t < 1.4:
+		var p1: float = _window_fade(t, 0.0, 1.4, 0.25)
+		_draw_lantern_core(LANTERN_POS, 2 if t < 1.0 else 1)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_ASK_TITLE"), Vector2(160.0, 42.0), p1, "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
+		var p_sell: float = _window_fade(t, 0.25, 1.4, 0.22)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_ASK_SELL"), Vector2(160.0, 144.0), p_sell, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
+
+	# Stage 2 (1.4 - 2.6): DISPLAY: OFF
+	if t >= 1.35 and t < 2.65:
+		var p_off: float = _window_fade(t, 1.35, 2.65, 0.25)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_DISPLAY_OFF"), Vector2(160.0, 38.0), p_off, "ice", 2, HORIZONTAL_ALIGNMENT_CENTER)
+
+	# Dimming lantern before dark smothers it (1.4 - 3.3)
+	if t >= 1.4 and t < 3.3:
+		var tier: int = 2 if t < 2.4 else (1 if t < 2.95 else 0)
+		_draw_lantern_core(LANTERN_POS, tier)
+
+	# Stage 3 (1.9 - 5.3): Eyes creeping in void -> smother -> startled -> popped by burst
+	if t >= 1.9 and t < 5.35:
+		_draw_void_eyes(t)
+
+	if t >= 3.0 and t < 4.25:
+		var p_ate: float = _window_fade(t, 3.0, 4.25, 0.25)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_DARK_ATE"), Vector2(160.0, 148.0), p_ate, "mauve", 1, HORIZONTAL_ALIGNMENT_CENTER)
+
+	# Stage 4 (4.35 - 4.9): Single gold pixel in the void, then rekindling
+	if t >= 4.35 and t < 4.95:
+		var px_col: Color = LxPalette.PAL["cream"] if t >= 4.75 else LxPalette.PAL["gold"]
+		var sz: float = 1.0 if t < 4.68 else 3.0
+		var half: float = floorf(sz * 0.5)
+		draw_rect(Rect2(LANTERN_POS.x - half, LANTERN_POS.y - half, sz, sz), px_col)
+
+	# Stage 5 (4.9 - 5.7): Burst ring sweeping past the screen corners
+	if t >= 4.9:
+		_draw_burst_and_motes(t)
+
+	# Stage 6 & 7: THE LANTERN KEPT EVERYTHING YOU SOLD. -> IT WAS TOO MUCH LIGHT FOR THE DARK.
+	if t >= 5.35 and t < 6.45:
+		var p_kept: float = _window_fade(t, 5.35, 6.45, 0.22)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_KEPT_ALL"), Vector2(160.0, 148.0), p_kept, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	elif t >= 6.45 and t < 7.65:
+		var p_much: float = _window_fade(t, 6.45, 7.65, 0.22)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_TOO_MUCH"), Vector2(160.0, 148.0), p_much, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
+
+	# Stage 8 (6.75 - 7.8): DISPLAY: ON
+	if t >= 6.75:
+		var p_on: float = _window_fade(t, 6.75, ENDING_DISPLAY_OFF_SECS, 0.25)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_DISPLAY_ON"), Vector2(160.0, 38.0), p_on, "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
+
+	# Cinematic 16 px void letterbox bars
+	draw_rect(Rect2(0.0, 0.0, 320.0, 16.0), LxPalette.PAL["void"])
+	draw_rect(Rect2(0.0, 164.0, 320.0, 16.0), LxPalette.PAL["void"])
+	if t >= 0.5:
+		LxPixelFont.draw_right(self, LxStrings.text("INTRO_SKIP"), 312.0, 168.0, LxPalette.PAL["mauve"], 1)
+
+
+func _draw_ending_dawn() -> void:
+	var t: float = _elapsed
+	var rise: float = clampf(t / 4.2, 0.0, 1.0)
+
+	# Stepped sky bands (opaque 20-colour palette only)
+	var top_col: Color = LxPalette.PAL["deep"] if rise > 0.45 else LxPalette.PAL["night"]
+	var mid_col: Color = LxPalette.PAL["blue"] if rise > 0.55 else LxPalette.PAL["dusk"]
+	var low_col: Color = LxPalette.PAL["coral"] if rise > 0.35 else LxPalette.PAL["plum"]
+	var hor_col: Color = LxPalette.PAL["gold"] if rise > 0.5 else LxPalette.PAL["apricot"]
+	draw_rect(Rect2(0.0, 16.0, 320.0, 36.0), top_col)
+	draw_rect(Rect2(0.0, 52.0, 320.0, 30.0), mid_col)
+	draw_rect(Rect2(0.0, 82.0, 320.0, 22.0), low_col)
+	draw_rect(Rect2(0.0, 104.0, 320.0, 18.0), hor_col)
+
+	# Rising sun behind horizon
+	var sun_y: float = roundf(lerpf(128.0, 88.0, rise))
+	draw_circle(Vector2(160.0, sun_y), 26.0, LxPalette.PAL["apricot"])
+	draw_circle(Vector2(160.0, sun_y), 19.0, LxPalette.PAL["gold"])
+	draw_circle(Vector2(160.0, sun_y), 11.0, LxPalette.PAL["cream"])
+
+	# Sea / void below horizon with golden sun path
+	draw_rect(Rect2(0.0, 122.0, 320.0, 42.0), LxPalette.PAL["night"])
+	draw_rect(Rect2(0.0, 122.0, 320.0, 6.0), LxPalette.PAL["deep"])
+	for row: int in range(6):
+		var rw: float = maxf(8.0, (44.0 - float(row) * 5.0) * (0.4 + 0.6 * rise))
+		var rx: float = roundf(160.0 - rw * 0.5)
+		var ry: float = 125.0 + float(row) * 5.0
+		var rcol: Color = LxPalette.PAL["gold"] if row < 3 else LxPalette.PAL["apricot"]
+		draw_rect(Rect2(rx, ry, rw, 2.0), rcol)
+
+	# 8 Archipelago island silhouettes + relighting great lamps west to east
+	for i: int in range(DAWN_ISLANDS.size()):
+		var p: Vector2 = DAWN_ISLANDS[i]
+		draw_rect(Rect2(p.x - 12.0, p.y, 24.0, 5.0), LxPalette.PAL["pine"])
+		draw_rect(Rect2(p.x - 8.0, p.y - 3.0, 16.0, 3.0), LxPalette.PAL["night"])
+		var lit_at: float = 1.0 + float(i) * 0.35
+		if t >= lit_at:
+			draw_rect(Rect2(p.x - 1.0, p.y - 8.0, 2.0, 5.0), LxPalette.PAL["gold"])
+			draw_rect(Rect2(p.x - 2.0, p.y - 10.0, 4.0, 3.0), LxPalette.PAL["cream"])
+			if t < lit_at + 0.5:
+				draw_rect(Rect2(p.x - 1.0, 16.0, 2.0, p.y - 26.0), LxPalette.PAL["gold"])
+
+	# Rising golden motes
+	for m: Dictionary in _motes:
+		var ang: float = float(m["angle"])
+		var mx: float = roundf(fmod(160.0 + cos(ang) * 140.0 + t * 8.0, 320.0))
+		var my: float = roundf(120.0 - fmod(t * float(m["speed"]) * 0.4 + float(m["phase"]) * 80.0, 96.0))
+		draw_rect(Rect2(mx, my, 2.0, 2.0), LxPalette.color(str(m["color"])))
+
+	# Dawn lines
+	if t >= 1.5:
+		var p_title: float = _window_fade(t, 1.5, ENDING_DAWN_SECS, 0.35)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_DAWN_TITLE"), Vector2(160.0, 34.0), p_title, "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	if t >= 3.6:
+		var p_sub: float = _window_fade(t, 3.6, ENDING_DAWN_SECS, 0.35)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_DAWN_SUB"), Vector2(160.0, 144.0), p_sub, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
+
+	# Cinematic letterbox
+	draw_rect(Rect2(0.0, 0.0, 320.0, 16.0), LxPalette.PAL["void"])
+	draw_rect(Rect2(0.0, 164.0, 320.0, 16.0), LxPalette.PAL["void"])
+	if t >= 0.5:
+		LxPixelFont.draw_right(self, LxStrings.text("INTRO_SKIP"), 312.0, 168.0, LxPalette.PAL["mauve"], 1)
+
+
+func _draw_lantern_core(at: Vector2, tier: int) -> void:
+	var c: Vector2 = at.round()
+	if tier >= 2:
+		draw_rect(Rect2(c - Vector2(6.0, 6.0), Vector2(12.0, 12.0)), LxPalette.PAL["wine"])
+		draw_rect(Rect2(c - Vector2(4.0, 4.0), Vector2(8.0, 8.0)), LxPalette.PAL["apricot"])
+		draw_rect(Rect2(c - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), LxPalette.PAL["gold"])
+		draw_rect(Rect2(c - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxPalette.PAL["cream"])
+	elif tier == 1:
+		draw_rect(Rect2(c - Vector2(3.0, 3.0), Vector2(6.0, 6.0)), LxPalette.PAL["coral"])
+		draw_rect(Rect2(c - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxPalette.PAL["gold"])
+	else:
+		draw_rect(Rect2(c, Vector2(1.0, 1.0)), LxPalette.PAL["apricot"])
+
+
+func _draw_void_eyes(t: float) -> void:
+	var burst_r: float = _burst_radius(t)
+	for i: int in range(_eyes.size()):
+		var e: Dictionary = _eyes[i]
+		var start_p: Vector2 = e["start"] as Vector2
+		var heap_p: Vector2 = e["heap"] as Vector2
+		var dir: Vector2 = e["dir"] as Vector2
+		var creep: float = clampf((t - 1.9) / 1.5, 0.0, 1.0)
+		var pos: Vector2 = start_p.lerp(heap_p, creep)
+		# Eyes shut between 3.7 and 4.55, then snap open startled on the gold pixel
+		var shut_at: float = 3.6 + float(i) * 0.025
+		if t >= shut_at and t < 4.55:
+			continue
+		var col: Color = LxPalette.PAL["ice"]
+		if t < 4.55:
+			var bl: float = fmod(t + float(e["blink_off"]), 1.8)
+			if bl < 0.08:
+				continue
+			if bl < 0.14:
+				col = LxPalette.PAL["blue"]
+		else:
+			# Startled recoil away from the single gold pixel
+			var rec: float = clampf((t - 4.55) / 0.35, 0.0, 1.0) * float(e["recoil"])
+			pos += dir * rec
+		pos = pos.round()
+		var dist: float = pos.distance_to(LANTERN_POS)
+		if t >= 4.9 and burst_r >= dist:
+			var pop_age: float = (burst_r - dist) / 380.0
+			if pop_age < 0.12:
+				draw_rect(Rect2(pos - Vector2(1.0, 0.0), Vector2(3.0, 1.0)), LxPalette.PAL["cream"])
+				draw_rect(Rect2(pos - Vector2(0.0, 1.0), Vector2(1.0, 3.0)), LxPalette.PAL["cream"])
+			continue
+		draw_rect(Rect2(pos - Vector2(1.0, 0.0), Vector2(1.0, 1.0)), col)
+		draw_rect(Rect2(pos + Vector2(1.0, 0.0), Vector2(1.0, 1.0)), col)
+
+
+func _draw_burst_and_motes(t: float) -> void:
+	var age: float = t - 4.9
+	var r: float = _burst_radius(t)
+	if age < 0.7:
+		draw_arc(LANTERN_POS, r, 0.0, TAU, 36, LxPalette.PAL["cream"], 2.0)
+		if r > 4.0:
+			draw_arc(LANTERN_POS, r - 3.0, 0.0, TAU, 36, LxPalette.PAL["gold"], 2.0)
+		if r > 9.0:
+			draw_arc(LANTERN_POS, r - 7.0, 0.0, TAU, 32, LxPalette.PAL["apricot"], 1.0)
+	_draw_lantern_core(LANTERN_POS, 2)
+	for m: Dictionary in _motes:
+		var ang: float = float(m["angle"])
+		var spd: float = float(m["speed"])
+		var dist: float = fmod(age * spd + float(m["phase"]) * 40.0, 150.0)
+		var pos: Vector2 = (LANTERN_POS + Vector2(cos(ang), sin(ang)) * dist).round()
+		draw_rect(Rect2(pos, Vector2(2.0, 2.0)), LxPalette.color(str(m["color"])))
+
+
+func _burst_radius(t: float) -> float:
+	if t < 4.9:
+		return 0.0
+	var u: float = clampf((t - 4.9) / 0.55, 0.0, 1.0)
+	var ease_u: float = 1.0 - pow(1.0 - u, 2.0)
+	return ease_u * 210.0
+
+
+func _build_ending_actors() -> void:
+	_eyes.clear()
+	_motes.clear()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 7
+	for i: int in range(EYE_COUNT):
+		var ang: float = -PI + TAU * (float(i) + 0.5) / float(EYE_COUNT) + rng.randf_range(-0.14, 0.14)
+		var dir := Vector2(cos(ang), sin(ang))
+		var start_p: Vector2 = (LANTERN_POS + Vector2(dir.x * 136.0, dir.y * 74.0)).clamp(Vector2(10.0, 22.0), Vector2(310.0, 158.0))
+		var heap_r: float = rng.randf_range(7.0, 22.0)
+		var heap_p: Vector2 = LANTERN_POS + Vector2(dir.x * heap_r * 1.3, dir.y * heap_r * 0.85)
+		_eyes.append({"start": start_p, "heap": heap_p, "dir": dir, "blink_off": rng.randf_range(0.0, 1.8), "recoil": rng.randf_range(3.0, 7.0)})
+	var mote_cols: Array[String] = ["cream", "gold", "apricot", "sky", "lime"]
+	for i: int in range(MOTE_COUNT):
+		_motes.append({"angle": TAU * float(i) / float(MOTE_COUNT) + rng.randf_range(-0.1, 0.1), "speed": rng.randf_range(42.0, 88.0), "phase": rng.randf(), "color": mote_cols[i % mote_cols.size()]})
 
 
 func _draw_results() -> void:
@@ -231,10 +487,15 @@ func _load_credits() -> void:
 
 func _parse_credits_dict(d: Dictionary) -> bool:
 	var added: bool = false
-	for list_key: String in ["sections", "entries", "audio", "third_party", "credits"]:
+	for list_key: String in ["sections", "entries", "engine", "art", "audio", "third_party_audio", "third_party", "credits"]:
 		if d.has(list_key) and d[list_key] is Array:
 			if _parse_credits_array(d[list_key] as Array):
 				added = true
+	if d.has("disclosure") and d["disclosure"] is String:
+		var disc: String = str(d["disclosure"])
+		for wrapped: String in _wrap_sanitized(disc, LxStrings.MAX_LEN):
+			_credit_lines.append({"text": wrapped, "color": "stone", "scale": 1})
+			added = true
 	if not added:
 		for k: Variant in d.keys():
 			var ks: String = LxStrings.sanitize(str(k))
@@ -249,30 +510,56 @@ func _parse_credits_array(arr: Array) -> bool:
 	var added: bool = false
 	for item: Variant in arr:
 		if item is String:
-			var s: String = LxStrings.sanitize(item as String)
-			if not s.is_empty():
-				_credit_lines.append({"text": s, "color": "cream", "scale": 1})
-				added = true
+			added = _add_credit_line(LxStrings.sanitize(item as String), "cream") or added
 		elif item is Dictionary:
 			var md: Dictionary = item as Dictionary
-			var title: String = LxStrings.sanitize(str(md.get("title", md.get("role", md.get("file", "")))))
-			var name_s: String = LxStrings.sanitize(str(md.get("name", md.get("author", md.get("source", "")))))
+			var title: String = LxStrings.sanitize(str(md.get("title", md.get("role", md.get("id", md.get("file", ""))))))
+			var name_s: String = LxStrings.sanitize(str(md.get("name", md.get("author", md.get("source", md.get("generator", ""))))))
 			var lic: String = LxStrings.sanitize(str(md.get("license", "")))
-			if not title.is_empty():
-				_credit_lines.append({"text": title, "color": "gold", "scale": 1})
-				added = true
-			if not name_s.is_empty():
-				var sub: String = name_s if lic.is_empty() else LxStrings.sanitize(LxStrings.fmt("FMT_DASH_PAIR", [name_s, lic]))
-				_credit_lines.append({"text": sub, "color": "cream", "scale": 1})
-				added = true
+			added = _add_credit_line(title, "gold") or added
+			var sub: String = (name_s if lic.is_empty() else LxStrings.sanitize(LxStrings.fmt("FMT_DASH_PAIR", [name_s, lic]))) if not name_s.is_empty() else lic
+			added = _add_credit_line(sub, "cream") or added
+			for wrapped: String in _wrap_sanitized(str(md.get("description", "")), LxStrings.MAX_LEN):
+				added = _add_credit_line(wrapped, "stone") or added
 			var lines: Variant = md.get("lines", [])
 			if lines is Array:
 				for ln: Variant in (lines as Array):
-					var sl: String = LxStrings.sanitize(str(ln))
-					if not sl.is_empty():
-						_credit_lines.append({"text": sl, "color": "stone", "scale": 1})
-						added = true
+					added = _add_credit_line(LxStrings.sanitize(str(ln)), "stone") or added
 	return added
+
+
+func _add_credit_line(txt: String, col: String, sc: int = 1) -> bool:
+	if txt.is_empty():
+		return false
+	_credit_lines.append({"text": txt, "color": col, "scale": sc})
+	return true
+
+
+static func _wrap_sanitized(raw: String, max_chars: int) -> PackedStringArray:
+	var clean: String = LxStrings.sanitize(raw, 0)
+	var out := PackedStringArray()
+	if clean.is_empty():
+		return out
+	var words: PackedStringArray = clean.split(" ", false)
+	var cur: String = ""
+	for w: String in words:
+		if cur.is_empty():
+			cur = w.substr(0, max_chars)
+		elif cur.length() + 1 + w.length() <= max_chars:
+			cur += " " + w
+		else:
+			out.append(cur)
+			cur = w.substr(0, max_chars)
+	if not cur.is_empty():
+		out.append(cur)
+	return out
+
+
+static func _window_fade(t: float, from_t: float, to_t: float, edge: float) -> float:
+	if t < from_t or t > to_t:
+		return 0.0
+	var fade_e: float = maxf(edge, 0.05)
+	return clampf(minf((t - from_t) / fade_e, (to_t - t) / fade_e), 0.0, 1.0)
 
 
 func _compute_rank_key(deaths: int, relit: int) -> String:

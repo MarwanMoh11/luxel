@@ -1,0 +1,149 @@
+{
+  "id": "lighthouse_r6",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "lighthouse_r6",
+      "name_key": "DUNGEON_2_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r6_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r5",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r6_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r7",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r6_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_tide_captain",
+      "kind": "tide_captain",
+      "pos": [
+        184,
+        88
+      ],
+      "route": [
+        [
+          152,
+          72
+        ],
+        [
+          216,
+          104
+        ]
+      ],
+      "perches": [],
+      "zone": "lighthouse_r6",
+      "leash": 140
+    }
+  ],
+  "interactables": [
+    {
+      "id": "mirror_lh_r6_nw",
+      "kind": "mirror",
+      "pos": [
+        104,
+        40
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "mirror_lh_r6_sw",
+      "kind": "mirror",
+      "pos": [
+        104,
+        136
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "wick_key_2_2",
+      "kind": "wick_key",
+      "pos": [
+        232,
+        88
+      ],
+      "props": {
+        "dungeon_id": "lighthouse",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_2_2",
+        "requires_flag": "boss_tide_captain_defeated"
+      }
+    },
+    {
+      "id": "door_lh_r6_combat",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "lighthouse_r6",
+        "clear_zone": "lighthouse_r6",
+        "sets_flag": "lh_r6_cleared"
+      }
+    }
+  ],
+  "triggers": []
+}

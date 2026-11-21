@@ -1,0 +1,172 @@
+{
+  "id": "lighthouse_r8",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "lighthouse_r8",
+      "name_key": "DUNGEON_2_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r8_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r7",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r8_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r9",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r8_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "barnacle_sentry_lh_r8",
+      "kind": "barnacle_sentry",
+      "pos": [
+        88,
+        56
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "lighthouse_r8",
+      "leash": 120
+    },
+    {
+      "id": "gull_thief_lh_r8",
+      "kind": "gull_thief",
+      "pos": [
+        232,
+        56
+      ],
+      "route": [],
+      "perches": [
+        [
+          232,
+          56
+        ],
+        [
+          160,
+          56
+        ],
+        [
+          88,
+          104
+        ]
+      ],
+      "zone": "lighthouse_r8",
+      "leash": 140
+    },
+    {
+      "id": "crab_warden_lh_r8",
+      "kind": "crab_warden",
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          120,
+          72
+        ],
+        [
+          200,
+          72
+        ]
+      ],
+      "perches": [],
+      "zone": "lighthouse_r8",
+      "leash": 136
+    }
+  ],
+  "interactables": [
+    {
+      "id": "mirror_lh_r8_w",
+      "kind": "mirror",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "mirror_lh_r8_e",
+      "kind": "mirror",
+      "pos": [
+        248,
+        120
+      ],
+      "props": {
+        "angle_deg": 225,
+        "rotatable": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_lh_r8_combat",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "lighthouse_r8",
+        "clear_zone": "lighthouse_r8",
+        "sets_flag": "lh_r8_cleared"
+      }
+    }
+  ],
+  "triggers": []
+}

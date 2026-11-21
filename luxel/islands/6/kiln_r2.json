@@ -1,0 +1,112 @@
+{
+  "id": "kiln_r2",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    280,
+    88
+  ],
+  "zones": [
+    {
+      "id": "kiln_r2",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r2_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "kiln_r1",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "brazier_kiln_r2_n",
+      "kind": "brazier",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "target_id": "door_kiln_r2_key"
+      }
+    },
+    {
+      "id": "brazier_kiln_r2_s",
+      "kind": "brazier",
+      "pos": [
+        216,
+        136
+      ],
+      "props": {
+        "target_id": "door_kiln_r2_key"
+      }
+    },
+    {
+      "id": "switch_eye_kiln_r2",
+      "kind": "switch_eye",
+      "pos": [
+        104,
+        40
+      ],
+      "props": {
+        "target_id": "door_kiln_r2_key"
+      }
+    },
+    {
+      "id": "door_kiln_r2_key",
+      "kind": "door",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "brazier_kiln_r2_n",
+          "brazier_kiln_r2_s",
+          "switch_eye_kiln_r2"
+        ]
+      }
+    },
+    {
+      "id": "wick_key_6_1",
+      "kind": "wick_key",
+      "pos": [
+        40,
+        88
+      ],
+      "props": {
+        "dungeon_id": "great_kiln",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_6_1"
+      }
+    }
+  ],
+  "triggers": []
+}

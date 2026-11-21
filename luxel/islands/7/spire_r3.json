@@ -1,0 +1,128 @@
+{
+  "id": "spire_r3",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    40,
+    88
+  ],
+  "zones": [
+    {
+      "id": "spire_r3",
+      "name_key": "DUNGEON_7_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r3_west",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_region": "spire_r1",
+      "to_spawn": [
+        280,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_spire_r3_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "spire_r4",
+      "to_spawn": [
+        160,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_spire_r3_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "ms_warden_spire_r3_0",
+      "kind": "moonshade_warden",
+      "variant": "moonshade_warden",
+      "pos": [
+        152,
+        72
+      ],
+      "route": [
+        [
+          120,
+          72
+        ],
+        [
+          200,
+          72
+        ]
+      ],
+      "perches": [],
+      "zone": "spire_r3",
+      "leash": 130
+    },
+    {
+      "id": "ms_owl_spire_r3_0",
+      "kind": "moonshade_owl",
+      "variant": "moonshade_owl",
+      "pos": [
+        184,
+        120
+      ],
+      "route": [],
+      "perches": [
+        [
+          136,
+          56
+        ],
+        [
+          184,
+          120
+        ],
+        [
+          184,
+          40
+        ]
+      ],
+      "zone": "spire_r3",
+      "leash": 140
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_spire_r3_north",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "clear_zone": "spire_r3"
+      }
+    }
+  ],
+  "triggers": []
+}

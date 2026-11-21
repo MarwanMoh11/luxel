@@ -1,0 +1,153 @@
+{
+  "id": "orrery_r8",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "orrery_r8",
+      "name_key": "DUNGEON_5_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r8_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "orrery_r7",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r8_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "orrery_r9",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "o5_r8_cleared"
+      ],
+      "locked_door_id": "door_o5_r8_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "phantom_owl_o5_r8",
+      "kind": "phantom_owl",
+      "pos": [
+        160,
+        40
+      ],
+      "route": [],
+      "perches": [
+        [
+          160,
+          40
+        ],
+        [
+          88,
+          56
+        ],
+        [
+          232,
+          56
+        ]
+      ],
+      "zone": "orrery_r8",
+      "leash": 155
+    },
+    {
+      "id": "orrery_sentinel_o5_r8",
+      "kind": "orrery_sentinel",
+      "pos": [
+        104,
+        88
+      ],
+      "route": [
+        [
+          72,
+          88
+        ],
+        [
+          136,
+          88
+        ]
+      ],
+      "perches": [],
+      "zone": "orrery_r8",
+      "leash": 135
+    },
+    {
+      "id": "echo_moth_o5_r8",
+      "kind": "echo_moth",
+      "pos": [
+        216,
+        88
+      ],
+      "route": [
+        [
+          200,
+          56
+        ],
+        [
+          216,
+          120
+        ]
+      ],
+      "perches": [],
+      "zone": "orrery_r8",
+      "leash": 140
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_o5_r8_combat",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "clear_zone": "orrery_r8",
+        "sets_flag": "o5_r8_cleared",
+        "requires_flags": [
+          "o5_r8_cleared"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}

@@ -1,0 +1,179 @@
+{
+  "id": "spire_r10",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "spire_r10",
+      "name_key": "DUNGEON_7_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r10_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "spire_r9",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_r10_bridge_8",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        96,
+        288
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "great_lamp_7"
+      ],
+      "locked_door_id": "bridge_of_light_spire",
+      "to_island": 8
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_hollow_wick",
+      "kind": "hollow_wick_boss",
+      "boss_id": "hollow_wick",
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          112,
+          72
+        ],
+        [
+          208,
+          72
+        ]
+      ],
+      "perches": [],
+      "zone": "spire_r10",
+      "leash": 150
+    }
+  ],
+  "interactables": [
+    {
+      "id": "great_lamp_7",
+      "kind": "great_lamp",
+      "pos": [
+        160,
+        48
+      ],
+      "props": {
+        "island_id": 7,
+        "requires_boss": "hollow_wick",
+        "requires_flag": "boss_hollow_wick_defeated",
+        "name_key": "ISL7_RELIGHT"
+      }
+    },
+    {
+      "id": "bridge_of_light_spire",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "great_lamp_7"
+        ]
+      }
+    },
+    {
+      "id": "mirror_spire_r10_w",
+      "kind": "mirror",
+      "pos": [
+        72,
+        56
+      ],
+      "props": {
+        "angle_deg": 45
+      }
+    },
+    {
+      "id": "mirror_spire_r10_e",
+      "kind": "mirror",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {
+        "angle_deg": 135
+      }
+    },
+    {
+      "id": "brazier_spire_r10_w",
+      "kind": "brazier",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    },
+    {
+      "id": "brazier_spire_r10_e",
+      "kind": "brazier",
+      "pos": [
+        248,
+        120
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_boss_hollow",
+      "rect": [
+        96,
+        112,
+        128,
+        40
+      ],
+      "string_id": "BOSS_HOLLOW",
+      "once": true
+    }
+  ]
+}

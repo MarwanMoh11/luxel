@@ -1,0 +1,99 @@
+{
+  "id": "spire_r4",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "spire_r4",
+      "name_key": "DUNGEON_7_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r4_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "spire_r3",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_spire_r4_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "spire_r5",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [
+        "wings",
+        "lens"
+      ],
+      "requires_flags": [
+        "wick_key_7_1"
+      ],
+      "locked_door_id": "door_spire_r4_east"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "door_spire_r4_east",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "mirror_spire",
+        "key_kind": "wick_key",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_7_1"
+        ]
+      }
+    },
+    {
+      "id": "lamp_spire_r4_c",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "zone": "spire_r4"
+      }
+    }
+  ],
+  "triggers": []
+}

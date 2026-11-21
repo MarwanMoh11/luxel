@@ -1,0 +1,399 @@
+class_name LxTheHushBoss
+extends LxEnemyBrain
+## The Long Night Final Boss (Island 8): the Hush, source of the dark.
+## 4 phases (SWARM_SPEC 4.2), HP 16.0, boss_id = "the_hush", every tell >= 0.50s, recover >= 0.90s:
+## P1: Shooting (Bolts+Prism) | P2: Throwing (LURE+Zip) | P3: Moving (Dash+Wings) | P4: Light (Beam+Lens+Sunflare).
+
+signal hush_bolt_fired(origin: Vector2, dir: Vector2, source: LxEnemyBrain)
+
+const Visuals := preload("res://luxel/bosses/the_hush/visuals.gd")
+
+enum HushMove { VOLLEY, VOID_ZIP, SHADOW_DASH, SILENCE_RING, ECLIPSE_BEAM }
+
+const P1_SHIELD_MAX: float = 2.4
+const P1_SHIELD_REFORM: float = 5.0
+const P4_VEIL_MAX: float = 3.0
+const P4_VEIL_RES: float = 0.35
+const VOLLEY_RANGE: float = 152.0
+const RING_START_R: float = 12.0
+const RING_MAX_R: float = 84.0
+const BEAM_RANGE: float = 158.0
+const BEAM_ARC: float = 1.45
+
+var active_move: int = HushMove.VOLLEY
+var move_toggle: int = 0
+var shield_hp: float = P1_SHIELD_MAX
+var shield_gone_t: float = 0.0
+var veil_intact: bool = false
+var veil_hp: float = 0.0
+var lens_lit_t: float = 0.0
+var commit_dir: Vector2 = Vector2.RIGHT
+var commit_elapsed: float = 0.0
+var commit_hit: bool = false
+var volley_shots: int = 0
+var void_orb_pos: Vector2 = Vector2.ZERO
+var void_orb_out: bool = false
+var ring_stage: int = 0
+var ring_progress: float = 0.0
+var sweep_start_ang: float = 0.0
+var sweep_sign: float = 1.0
+var beam_angle: float = 0.0
+var _orbit_side: float = 1.0
+var _roaring: bool = false
+
+func _init() -> void:
+	kind = "the_hush"; boss_id = "the_hush"; island_id = 8; is_boss = true
+	max_hp = 16.0; hp = 16.0; body_radius = 10.0; routine_speed = 42.0
+	leash_radius = 190.0; notice_radius = 160.0; tell_time = 0.56
+	recover_time = 1.05; give_up_time = 1.8; attack_damage = 1.0; shard_drop = 60
+
+func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
+	super.setup(spec, p_director, p_world)
+	is_boss = true
+	boss_id = str(spec.get("boss_id", "the_hush"))
+	island_id = int(spec.get("island_id", 8))
+	active_move = HushMove.VOLLEY; move_toggle = 0; shield_hp = P1_SHIELD_MAX; shield_gone_t = 0.0
+	veil_intact = false; veil_hp = 0.0; lens_lit_t = 0.0; commit_dir = Vector2.from_angle(facing)
+	commit_elapsed = 0.0; commit_hit = false; volley_shots = 0; void_orb_pos = pos; void_orb_out = false
+	ring_stage = 0; ring_progress = 0.0; sweep_start_ang = facing; sweep_sign = 1.0; beam_angle = facing
+	_orbit_side = 1.0; _roaring = false
+
+func on_light(a: Variant, b: Variant = Vector2.ZERO, _source: String = "") -> void:
+	if state == State.DEAD:
+		return
+	var in_light: bool = true
+	if a is Vector2 and (b is float or b is int):
+		in_light = pos.distance_to(a as Vector2) <= float(b) + body_radius
+	elif (a is float or a is int) and b is Vector2:
+		in_light = pos.distance_to(b as Vector2) <= float(a) + body_radius
+	if in_light:
+		lens_lit_t = maxf(lens_lit_t, 0.45)
+
+func take_hit(hit: LxHit) -> int:
+	if state == State.DEAD or hit == null or _roaring:
+		if hit != null and _roaring:
+			_emit_enemy_hit(hit, HitResult.GLANCED)
+		return HitResult.GLANCED
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var dmg: float = float(h["damage"])
+	var is_heavy: bool = bool(h["stagger"])
+	var pierce: bool = bool(h["pierce"])
+	var cracks: bool = bool(h["cracks_armour"])
+	var wear: float = float(h["shield_wear"])
+	var rel: Vector2 = (h["origin"] as Vector2) - pos
+
+	# Phase 1: front shadow mirror ward; prism_bolt banks straight through
+	if _has_active_shield() and src != LxHit.SOURCE_PRISM and not pierce and not cracks \
+			and rel.length() > 0.01 and absf(angle_difference(facing, rel.angle())) < 1.05:
+		clank_t = 0.14
+		shield_hp -= wear
+		if shield_hp <= 0.001:
+			shield_hp = 0.0
+			shield_gone_t = P1_SHIELD_REFORM
+			_release_token()
+			state = State.RECOVER
+			state_timer = 1.15
+			last_recover_duration = state_timer
+			_emit_sfx("hush_ward_break")
+			_emit_enemy_hit(hit, HitResult.OPENED)
+			return HitResult.OPENED
+		_emit_sfx("warden_clank")
+		_emit_enemy_hit(hit, HitResult.BLOCKED)
+		return HitResult.BLOCKED
+
+	if is_heavy and state == State.STAGGER and not cracks:
+		_emit_enemy_hit(hit, HitResult.GLANCED)
+		return HitResult.GLANCED
+
+	var opened: bool = state == State.RECOVER or state == State.STAGGER
+	if (phase == 1 and src == LxHit.SOURCE_PRISM) or (phase == 2 and _is_lured()):
+		dmg *= 1.25
+		opened = true
+	elif phase == 4:
+		if lens_lit_t > 0.0:
+			dmg *= 1.20
+			opened = true
+		if veil_intact:
+			if cracks or pierce or src == LxHit.SOURCE_BEAM:
+				dmg *= 1.25
+				veil_hp = 0.0 if cracks else maxf(0.0, veil_hp - wear)
+				veil_intact = veil_hp > 0.001
+				opened = true
+				if not veil_intact:
+					_emit_sfx("hush_veil_shatter")
+			else:
+				dmg *= P4_VEIL_RES
+				veil_hp -= (wear if is_heavy else wear * 0.35)
+				if veil_hp <= 0.001:
+					veil_intact = false
+					_emit_sfx("hush_veil_shatter")
+
+	hp -= dmg
+	flash_t = 0.15 if (is_heavy or opened) else 0.08
+	if rel.length() > 0.01:
+		knock = -rel.normalized() * (85.0 if is_heavy else 18.0)
+	if hp <= 0.001:
+		opened_kill = opened
+		void_orb_out = false
+		_die(hit)
+		return HitResult.KILLED
+	if _check_phase_transition():
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
+	if cracks or (is_heavy and not veil_intact and state != State.COMMIT):
+		_release_token()
+		void_orb_out = false
+		state = State.STAGGER
+		state_timer = 1.40 if src == LxHit.SOURCE_SUNFLARE else 0.52
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
+	if state == State.ROUTINE or state == State.RETURN:
+		_enter_notice()
+	var res: int = HitResult.OPENED if opened else HitResult.CHIPPED
+	_emit_enemy_hit(hit, res)
+	return res
+
+func _check_phase_transition() -> bool:
+	var target_p: int = 4 if hp <= max_hp * 0.25 else (3 if hp <= max_hp * 0.50 else (2 if hp <= max_hp * 0.75 else 1))
+	if target_p <= phase:
+		return false
+	phase = target_p; _roaring = true; void_orb_out = false; ring_stage = 0; ring_progress = 0.0
+	shield_hp = 0.0; shield_gone_t = 0.0; veil_intact = (phase == 4); veil_hp = P4_VEIL_MAX if phase == 4 else 0.0
+	_release_token(); state = State.NOTICE; state_timer = 0.62
+	if Lx.events != null:
+		Lx.events.boss_phase_changed.emit(boss_id, phase)
+		Lx.events.shake_requested.emit(0.36)
+	_emit_sfx("hush_phase_shift")
+	return true
+
+func _step_brain(dt: float) -> void:
+	lens_lit_t = maxf(0.0, lens_lit_t - dt)
+	if phase == 1 and shield_gone_t > 0.0:
+		shield_gone_t -= dt
+		if shield_gone_t <= 0.0:
+			shield_gone_t = 0.0
+			shield_hp = P1_SHIELD_MAX
+	match state:
+		State.ROUTINE:
+			if pos.distance_to(home) > 2.5:
+				_move_step((home - pos).limit_length(routine_speed * 0.75 * dt), false)
+			if _sees_target():
+				_enter_notice()
+		State.NOTICE:
+			var to_t: Vector2 = _attention_target() - pos
+			if to_t.length() > 0.01:
+				_turn_toward(to_t.angle(), 4.0, dt)
+			state_timer -= dt
+			if state_timer <= 0.0:
+				_roaring = false
+				state = State.POSITION
+				cooldown = 0.35
+		State.POSITION, State.WAIT_TOKEN:
+			_step_position(dt)
+		State.TELL:
+			_step_tell(dt)
+		State.COMMIT:
+			_step_commit(dt)
+		State.RECOVER:
+			void_orb_out = false
+			state_timer -= dt
+			if state_timer <= 0.0:
+				_release_token()
+				cooldown = 0.65
+				_orbit_side = -_orbit_side
+				state = State.RETURN if _should_give_up() else State.POSITION
+		State.STAGGER:
+			state_timer -= dt
+			if state_timer <= 0.0:
+				_release_token()
+				state = State.POSITION
+				cooldown = 0.50
+		State.RETURN:
+			void_orb_out = false
+			var to_h: Vector2 = home - pos
+			if to_h.length() <= 3.0:
+				pos = home
+				state = State.ROUTINE
+				lost_t = 0.0
+			else:
+				facing = to_h.angle()
+				_move_step(to_h.limit_length(routine_speed * 0.90 * dt), false)
+				if _sees_target() and _attention_target().distance_to(home) <= leash_radius:
+					_enter_notice()
+
+func _step_position(dt: float) -> void:
+	if _should_give_up():
+		lost_t += dt
+		if lost_t >= give_up_time:
+			_release_token()
+			state = State.RETURN
+			lost_t = 0.0
+			return
+	else:
+		lost_t = 0.0
+	var target: Vector2 = _attention_target()
+	var to_t: Vector2 = target - pos
+	var dist: float = to_t.length()
+	if dist > 0.01:
+		_turn_toward(to_t.angle(), 3.6, dt)
+	state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
+	if cooldown <= 0.0 and dist <= notice_radius and _is_on_screen() and _claim_token():
+		_begin_phase_attack(target)
+		return
+	if dist > 0.01:
+		var radial: Vector2 = to_t / dist
+		var mv: Vector2 = (radial.rotated(PI * 0.5 * _orbit_side) + radial * clampf((dist - 64.0) / 48.0, -0.5, 0.5)).normalized()
+		_move_step(mv * routine_speed * 0.84 * dt, false)
+
+func _begin_phase_attack(target: Vector2) -> void:
+	move_toggle += 1
+	var odd: bool = (move_toggle % 2 == 1)
+	active_move = HushMove.VOLLEY if phase == 1 else (HushMove.VOID_ZIP if phase == 2 else (
+		(HushMove.SHADOW_DASH if odd else HushMove.SILENCE_RING) if phase == 3 else (
+		HushMove.ECLIPSE_BEAM if odd else HushMove.SILENCE_RING)))
+	state = State.TELL
+	is_counter_attack = false
+	var tells: Array[float] = [0.54, 0.56, 0.52, 0.58, 0.62]
+	last_tell_duration = _scaled_tell(maxf(0.50, tells[active_move]), false, attack_damage)
+	state_timer = last_tell_duration
+	if target.distance_to(pos) > 0.01:
+		facing = (target - pos).angle()
+	commit_dir = Vector2.from_angle(facing)
+	sweep_sign = -sweep_sign
+	sweep_start_ang = wrapf(facing - sweep_sign * (BEAM_ARC * 0.5), -PI, PI)
+	beam_angle = sweep_start_ang
+	ring_stage = 0
+	ring_progress = 0.0
+	_emit_attack_started()
+	_emit_sfx("hush_tell")
+
+func _step_tell(dt: float) -> void:
+	if state_timer > 0.22:
+		var to_t: Vector2 = _attention_target() - pos
+		if to_t.length() > 0.01:
+			_turn_toward(to_t.angle(), 2.8, dt)
+			commit_dir = Vector2.from_angle(facing)
+			if active_move == HushMove.ECLIPSE_BEAM:
+				sweep_start_ang = wrapf(facing - sweep_sign * (BEAM_ARC * 0.5), -PI, PI)
+				beam_angle = sweep_start_ang
+	state_timer -= dt
+	if state_timer <= 0.0:
+		state = State.COMMIT; commit_elapsed = 0.0; commit_hit = false; volley_shots = 0; ring_stage = 0; ring_progress = 0.0
+		var durs: Array[float] = [0.36, 0.46, 0.26, 0.34, 0.58]
+		state_timer = durs[active_move]
+		if active_move == HushMove.VOID_ZIP:
+			void_orb_pos = _clamp_pt(pos + commit_dir * clampf(_attention_target().distance_to(pos), 36.0, 96.0))
+			void_orb_out = true
+		elif active_move == HushMove.ECLIPSE_BEAM:
+			beam_angle = sweep_start_ang
+		_emit_sfx("hush_commit")
+
+func _step_commit(dt: float) -> void:
+	commit_elapsed += dt
+	state_timer = maxf(0.0, state_timer - dt)
+	match active_move:
+		HushMove.VOLLEY:
+			var expected: int = mini(5, int(commit_elapsed / 0.07) + 1)
+			while volley_shots < expected:
+				var bdir: Vector2 = commit_dir.rotated((float(volley_shots) - 2.0) * 0.14)
+				volley_shots += 1
+				hush_bolt_fired.emit(pos, bdir, self)
+				_check_line_hit(bdir, VOLLEY_RANGE, 8.5, true)
+		HushMove.VOID_ZIP:
+			if commit_elapsed >= 0.20:
+				if void_orb_pos.distance_to(pos) > 3.0:
+					_move_step((void_orb_pos - pos).limit_length(350.0 * dt), true)
+				if pos.distance_to(void_orb_pos) <= 7.0:
+					_check_area_hit(26.0)
+		HushMove.SHADOW_DASH:
+			_move_step(commit_dir * 290.0 * dt, true)
+			_check_area_hit(16.0)
+		HushMove.SILENCE_RING:
+			if _tick_ring():
+				return
+		HushMove.ECLIPSE_BEAM:
+			beam_angle = wrapf(sweep_start_ang + sweep_sign * BEAM_ARC * (1.0 - clampf(state_timer / 0.58, 0.0, 1.0)), -PI, PI)
+			facing = beam_angle
+			_check_line_hit(Vector2.from_angle(beam_angle), BEAM_RANGE, 9.5, false)
+	if state_timer <= 0.0:
+		void_orb_out = false
+		state = State.RECOVER
+		state_timer = maxf(0.90, 1.15 if active_move == HushMove.ECLIPSE_BEAM else (1.10 if active_move == HushMove.SILENCE_RING else 1.00))
+		last_recover_duration = state_timer
+
+func _tick_ring() -> bool:
+	if ring_stage == 1:
+		if state_timer <= 0.0:
+			ring_stage = 2
+			state_timer = 0.34
+			ring_progress = 0.0
+			commit_hit = false
+			_emit_sfx("hush_commit")
+		return true
+	ring_progress = 1.0 - clampf(state_timer / 0.34, 0.0, 1.0)
+	var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
+	if not commit_hit and _has_player() and absf((_get_wick_pos() - pos).length() - ring_r) <= 10.0:
+		commit_hit = true
+		var prev_kind: String = kind
+		kind = "shockwave"
+		var wv: Vector2 = _get_wick_pos() - pos
+		_emit_player_hit(wv.normalized() if wv.length() > 0.01 else commit_dir)
+		kind = prev_kind
+	if _is_lantern_out() and _get_lantern_pos().distance_to(pos) <= ring_r and Lx.events != null:
+		Lx.events.lantern_struck.emit(_get_lantern_pos())
+	if state_timer <= 0.0 and ring_stage == 0 and phase == 3:
+		ring_stage = 1
+		state_timer = _scaled_tell(0.44, false, attack_damage)
+		ring_progress = 0.0
+		commit_hit = false
+		return true
+	return false
+
+func _check_line_hit(dir_v: Vector2, length: float, half_w: float, need_los: bool) -> void:
+	var end_p: Vector2 = pos + dir_v * length
+	if not commit_hit and _has_player():
+		var wp: Vector2 = _get_wick_pos()
+		if Geometry2D.get_closest_point_to_segment(wp, pos, end_p).distance_to(wp) <= half_w \
+				and (not need_los or _has_clear_view(pos, wp)):
+			commit_hit = true
+			_emit_player_hit(dir_v)
+	if _is_lantern_out():
+		var lp: Vector2 = _get_lantern_pos()
+		if Geometry2D.get_closest_point_to_segment(lp, pos, end_p).distance_to(lp) <= half_w + 2.0 and Lx.events != null:
+			Lx.events.lantern_struck.emit(lp)
+
+func _check_area_hit(rad: float) -> void:
+	if not commit_hit and _has_player() and pos.distance_to(_get_wick_pos()) <= rad:
+		commit_hit = true
+		_emit_player_hit(commit_dir)
+	if _is_lantern_out() and pos.distance_to(_get_lantern_pos()) <= rad + 3.0 and Lx.events != null:
+		Lx.events.lantern_struck.emit(_get_lantern_pos())
+
+func _is_lured() -> bool:
+	return (phase == 1 or phase == 2) and _is_lantern_out() and _get_lantern_pos().distance_to(home) <= leash_radius + 32.0
+func _attention_target() -> Vector2:
+	return _get_lantern_pos() if _is_lured() else _get_wick_pos()
+func _sees_target() -> bool:
+	return (pos.distance_to(_get_lantern_pos()) <= notice_radius) if _is_lured() else (_has_player() and pos.distance_to(_get_wick_pos()) <= notice_radius)
+func _should_give_up() -> bool:
+	return (not _is_lured()) and (not _has_player() or _get_wick_pos().distance_to(home) > leash_radius + 16.0)
+func _enter_notice() -> void:
+	state = State.NOTICE
+	state_timer = 0.32
+	alert_t = 0.85
+	lost_t = 0.0
+	_emit_sfx("hush_notice")
+func _clamp_pt(pt: Vector2) -> Vector2:
+	var cap: float = maxf(0.0, leash_radius - 2.0)
+	return home + (pt - home).normalized() * cap if pt.distance_to(home) > cap else pt
+func _has_active_shield() -> bool:
+	return phase == 1 and shield_gone_t <= 0.0 and shield_hp > 0.001 and state != State.DEAD and state != State.STAGGER
+func _body_color() -> Color:
+	if phase == 4:
+		return (PAL["wine"] as Color) if not veil_intact else (PAL["void"] as Color)
+	return (PAL["deep"] as Color) if phase == 3 else ((PAL["dusk"] as Color) if phase == 2 else (PAL["night"] as Color))
+func _shield_color() -> Color:
+	return PAL["sky"] as Color
+func _draw_extra(off: Vector2) -> void:
+	Visuals.draw_hush(self, off)

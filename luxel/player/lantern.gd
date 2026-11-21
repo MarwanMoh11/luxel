@@ -391,7 +391,10 @@ func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: S
 		if Geometry2D.get_closest_point_to_segment(ipos, prev_pos, pos).distance_to(ipos) <= irad + 3.5:
 			hit_ids.append(iid)
 			var hit_i: LxHit = LxHit.make(hit_source, dmg, move_dir, pos, shield_wear, true, false, wick, false)
-			item.call("on_hit", hit_i)
+			var consumed: Variant = item.call("on_hit", hit_i)
+			if consumed is bool and bool(consumed) and str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
+				wick.ember = minf(Lx.state.get_effective_ember_max(), wick.ember + 22.0)
+				wick.spawn_sparks(ipos, -move_dir, 6, PAL_GOLD, 30.0, 85.0, 0.20)
 
 
 func _notify_light(wick: LxWick, world_ctx: Node) -> void:

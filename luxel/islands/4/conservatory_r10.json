@@ -1,0 +1,167 @@
+{
+  "id": "conservatory_r10",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r10",
+      "name_key": "DUNGEON_4_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r10_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r9",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r10_bridge",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        96,
+        432
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "island_4_relit"
+      ],
+      "locked_door_id": "bridge_of_light_4_dome"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_heron_abbess",
+      "kind": "heron_abbess",
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          112,
+          72
+        ],
+        [
+          208,
+          72
+        ]
+      ],
+      "perches": [
+        [
+          88,
+          56
+        ],
+        [
+          160,
+          40
+        ],
+        [
+          232,
+          56
+        ]
+      ],
+      "zone": "conservatory_r10",
+      "leash": 150
+    }
+  ],
+  "interactables": [
+    {
+      "id": "great_lamp_4",
+      "kind": "great_lamp",
+      "pos": [
+        160,
+        40
+      ],
+      "props": {
+        "island_id": 4,
+        "requires_boss": "heron_abbess",
+        "requires_flag": "boss_heron_abbess_defeated",
+        "name_key": "DUNGEON_4_NAME"
+      }
+    },
+    {
+      "id": "bridge_of_light_4_dome",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "island_4_relit"
+        ]
+      }
+    },
+    {
+      "id": "brazier_c4_r10_w",
+      "kind": "brazier",
+      "pos": [
+        72,
+        40
+      ],
+      "props": {
+        "lit_by_default": true
+      }
+    },
+    {
+      "id": "brazier_c4_r10_e",
+      "kind": "brazier",
+      "pos": [
+        248,
+        40
+      ],
+      "props": {
+        "lit_by_default": true
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_boss_abbess",
+      "rect": [
+        96,
+        104,
+        128,
+        48
+      ],
+      "string_id": "BOSS_ABBESS",
+      "once": true
+    }
+  ]
+}

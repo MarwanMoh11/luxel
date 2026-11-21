@@ -1,0 +1,128 @@
+{
+  "id": "conservatory_r3",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [
+    160,
+    136
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r3",
+      "name_key": "DUNGEON_4_NAME",
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r3_south",
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r2",
+      "to_spawn": [
+        160,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r3_east",
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r4",
+      "to_spawn": [
+        40,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "c4_r3_cleared"
+      ],
+      "locked_door_id": "door_c4_r3_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "lily_hopper_c4_r3",
+      "kind": "lily_hopper",
+      "pos": [
+        152,
+        40
+      ],
+      "route": [
+        [
+          104,
+          40
+        ],
+        [
+          200,
+          40
+        ]
+      ],
+      "perches": [],
+      "zone": "conservatory_r3",
+      "leash": 135
+    },
+    {
+      "id": "heron_stalker_c4_r3",
+      "kind": "heron_stalker",
+      "pos": [
+        248,
+        88
+      ],
+      "route": [
+        [
+          248,
+          40
+        ],
+        [
+          248,
+          136
+        ]
+      ],
+      "perches": [],
+      "zone": "conservatory_r3",
+      "leash": 140
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_c4_r3_combat",
+      "kind": "door",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "clear_zone": "conservatory_r3",
+        "sets_flag": "c4_r3_cleared",
+        "requires_flags": [
+          "c4_r3_cleared"
+        ]
+      }
+    }
+  ],
+  "triggers": []
+}
