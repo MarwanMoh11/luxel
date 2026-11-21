@@ -1,0 +1,171 @@
+class_name LxInteractable
+extends Node2D
+## Base contract for every world interactable in Luxel 1.0.
+## Subclasses override interact(), on_hit(), on_light(), save_state(), load_state(), and tick().
+
+const PAL: Dictionary = {
+	"void": Color("0d0b1e"),
+	"night": Color("211a3b"),
+	"dusk": Color("3d2c5c"),
+	"plum": Color("6a3d6f"),
+	"wine": Color("a0466a"),
+	"coral": Color("e2725b"),
+	"apricot": Color("f5a96a"),
+	"gold": Color("ffd98c"),
+	"cream": Color("fff4dc"),
+	"pine": Color("1d3d4c"),
+	"teal": Color("2b6b68"),
+	"jade": Color("4c9e78"),
+	"lime": Color("a3cf7d"),
+	"deep": Color("263873"),
+	"blue": Color("3e6db0"),
+	"sky": Color("78a9da"),
+	"ice": Color("c7e5ef"),
+	"mauve": Color("8a6e91"),
+	"stone": Color("c2a7ae"),
+	"rose": Color("ec9fa8"),
+}
+
+var id: String = ""
+var kind: String = ""
+var pos: Vector2 = Vector2.ZERO
+var radius: float = 14.0
+var active: bool = true
+var props: Dictionary = {}
+
+var region: Node = null
+var island_id: int = 1
+var region_id: String = ""
+var _clock: float = 0.0
+
+
+func setup(spec: Dictionary) -> void:
+	id = str(spec.get("id", id))
+	kind = str(spec.get("kind", kind))
+	var raw_props: Variant = spec.get("props", {})
+	props = (raw_props as Dictionary).duplicate(true) if raw_props is Dictionary else {}
+	pos = _parse_vec2(spec.get("pos", pos))
+	position = pos.round()
+	if spec.has("radius"):
+		radius = maxf(2.0, float(spec.get("radius", radius)))
+	elif props.has("radius"):
+		radius = maxf(2.0, float(props.get("radius", radius)))
+	active = bool(spec.get("active", props.get("active", true)))
+	name = id if not id.is_empty() else kind
+	queue_redraw()
+
+
+func interact(_actor: Node = null) -> bool:
+	return false
+
+
+func on_hit(_hit: LxHit) -> bool:
+	return false
+
+
+func on_light(_light_radius: float, _source: String) -> void:
+	pass
+
+
+func on_signal(_from_id: String, _powered: bool) -> void:
+	pass
+
+
+func save_state() -> Dictionary:
+	return {"active": active}
+
+
+func load_state(d: Dictionary) -> void:
+	if d.is_empty():
+		return
+	active = bool(d.get("active", active))
+	queue_redraw()
+
+
+func tick(dt: float) -> void:
+	_clock += dt
+
+
+func is_solid() -> bool:
+	return false
+
+
+func blocks_sight() -> bool:
+	return is_solid()
+
+
+func get_solid_rect() -> Rect2:
+	if not is_solid():
+		return Rect2()
+	return Rect2(pos - Vector2(radius, radius), Vector2(radius * 2.0, radius * 2.0))
+
+
+func is_platform_solid() -> bool:
+	return false
+
+
+func get_platform_rect() -> Rect2:
+	return Rect2()
+
+
+func is_reflective() -> bool:
+	return false
+
+
+func reflect_dir(in_dir: Vector2) -> Vector2:
+	return in_dir
+
+
+func get_light_pool() -> Vector4:
+	return Vector4.ZERO
+
+
+func get_interact_prompt() -> String:
+	return ""
+
+
+func get_state_key() -> String:
+	return "%d:%s:%s" % [island_id, region_id, id]
+
+
+func _notify_linked_targets(powered: bool = true) -> void:
+	if region == null or not region.has_method("find_interactable"):
+		return
+	var targets: Array[String] = []
+	var single: String = str(props.get("target_id", ""))
+	if not single.is_empty():
+		targets.append(single)
+	var multi: Variant = props.get("target_ids", [])
+	if multi is Array:
+		for item: Variant in multi:
+			var tid: String = str(item)
+			if not tid.is_empty() and not targets.has(tid):
+				targets.append(tid)
+	for tid: String in targets:
+		var target: Variant = region.call("find_interactable", tid)
+		if target is LxInteractable:
+			(target as LxInteractable).on_signal(id, powered)
+
+
+func _emit_sfx(sfx_id: String) -> void:
+	if Lx.events != null:
+		Lx.events.sfx_requested.emit(sfx_id, pos, true)
+
+
+func _emit_save(reason: String) -> void:
+	if Lx.events != null:
+		Lx.events.save_requested.emit(reason)
+
+
+static func _parse_vec2(v: Variant, fallback: Vector2 = Vector2.ZERO) -> Vector2:
+	if v is Vector2:
+		return v as Vector2
+	if v is Array and (v as Array).size() >= 2:
+		var arr: Array = v as Array
+		return Vector2(float(arr[0]), float(arr[1]))
+	return fallback
+
+
+static func _parse_size(v: Variant, fallback: Vector2) -> Vector2:
+	var s: Vector2 = _parse_vec2(v, fallback)
+	return Vector2(maxf(4.0, s.x), maxf(4.0, s.y))

@@ -1,0 +1,25 @@
+# Bell Isle - Belfry Room 2: Clapper Chasm (20x11 tiles)
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+####################
+#OOOOOOOOOOOOOO....#
+#OOOOOOOO....OO....#
+#O.....OO....OO....#
+#O.....OO.,,.OO.,,,,
+#O..,,.OO.,,.OO,,,,,
+#O.....OO.,,.OO.,,,,
+#O.....OO....OO....#
+#OOOOOOOO....OO....#
+#OOOOOOOOOOOOOO....#
+####################

@@ -1,0 +1,79 @@
+{
+  "id": "belfry_r4",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [28, 88],
+  "zones": [
+    {
+      "id": "belfry_nave",
+      "name_key": "ZONE_BELFRY",
+      "rect": [0, 0, 320, 176],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_west",
+      "rect": [0, 64, 16, 48],
+      "to_region": "belfry_r3",
+      "to_spawn": [292, 88],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_r4_north",
+      "rect": [144, 0, 32, 16],
+      "to_region": "belfry_r5",
+      "to_spawn": [160, 148],
+      "requires_moves": [],
+      "requires_flags": ["r4_cleared"],
+      "locked_door_id": "door_r4_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "warden_r4_0",
+      "kind": "warden",
+      "pos": [152, 60],
+      "route": [[128, 60], [184, 60]],
+      "perches": [],
+      "zone": "belfry_nave",
+      "leash": 130
+    },
+    {
+      "id": "warden_r4_1",
+      "kind": "warden",
+      "pos": [152, 116],
+      "route": [[128, 116], [184, 116]],
+      "perches": [],
+      "zone": "belfry_nave",
+      "leash": 130
+    },
+    {
+      "id": "owl_r4_0",
+      "kind": "owl",
+      "pos": [248, 88],
+      "route": [],
+      "perches": [[248, 88], [248, 40], [248, 136]],
+      "zone": "belfry_nave",
+      "leash": 150
+    }
+  ],
+  "interactables": [
+    {
+      "id": "door_r4_combat",
+      "kind": "door",
+      "pos": [160, 24],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [32, 16],
+        "clear_zone": "belfry_nave",
+        "sets_flag": "r4_cleared",
+        "requires_flags": ["r4_cleared"]
+      }
+    }
+  ],
+  "triggers": []
+}

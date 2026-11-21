@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "project": "Luxel",
+  "disclosure": "Every sprite, tile, sound effect, and musical note in Luxel is produced by deterministic Python code under human direction, with no generative image, music, or voice models and no stock art.",
+  "engine": [
+    {
+      "name": "Godot Engine 4.7.2",
+      "license": "MIT",
+      "url": "https://godotengine.org/"
+    }
+  ],
+  "art": [
+    {
+      "id": "lastlight_island1_sprites",
+      "description": "Deterministic Last Light 20-colour pixel-art sprite sheets, boss sheets, world props, and 3x5 bitmap font",
+      "generator": "gen_island1.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/art/wick/wick.png",
+        "luxel/art/wick/wick.json",
+        "luxel/art/enemies/warden.png",
+        "luxel/art/enemies/warden.json",
+        "luxel/art/enemies/snatcher.png",
+        "luxel/art/enemies/snatcher.json",
+        "luxel/art/enemies/owl.png",
+        "luxel/art/enemies/owl.json",
+        "luxel/art/bosses/bellkeeper.png",
+        "luxel/art/bosses/bellkeeper.json",
+        "luxel/art/props/island1_props.png",
+        "luxel/art/props/island1_props.json",
+        "luxel/art/ui/font.png",
+        "luxel/art/ui/font_outline.png",
+        "luxel/art/ui/font.json"
+      ]
+    }
+  ],
+  "audio": [
+    {
+      "id": "lantern_gothic_ost",
+      "description": "Original Lantern Gothic soundtrack (D harmonic minor, 144 BPM; D major dawn resolution) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "compose.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/music/title.ogg",
+        "luxel/audio/music/hub.ogg",
+        "luxel/audio/music/island1_explore.ogg",
+        "luxel/audio/music/island1_combat.ogg",
+        "luxel/audio/music/island1_dungeon.ogg",
+        "luxel/audio/music/island1_boss_p1.ogg",
+        "luxel/audio/music/island1_boss_p2.ogg",
+        "luxel/audio/music/stinger_move.ogg",
+        "luxel/audio/music/stinger_lamp.ogg",
+        "luxel/audio/music/ending_dawn.ogg",
+        "luxel/audio/music/plan.json"
+      ]
+    },
+    {
+      "id": "lantern_gothic_sfx_ambience",
+      "description": "Original D-harmonic-minor physical-modeling sound effects (25 cues) and seamless stereo ambience loops (2 cues) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "gen_sfx.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/bolt_fire.ogg",
+        "luxel/audio/sfx/bolt_chip.ogg",
+        "luxel/audio/sfx/shield_clang.ogg",
+        "luxel/audio/sfx/shield_shatter.ogg",
+        "luxel/audio/sfx/heavy_hit.ogg",
+        "luxel/audio/sfx/enemy_kill.ogg",
+        "luxel/audio/sfx/boss_kill.ogg",
+        "luxel/audio/sfx/dash_whoosh.ogg",
+        "luxel/audio/sfx/perfect_dodge.ogg",
+        "luxel/audio/sfx/lantern_throw.ogg",
+        "luxel/audio/sfx/lantern_recall.ogg",
+        "luxel/audio/sfx/zip_streak.ogg",
+        "luxel/audio/sfx/magpie_gulp.ogg",
+        "luxel/audio/sfx/magpie_grab.ogg",
+        "luxel/audio/sfx/owl_lock.ogg",
+        "luxel/audio/sfx/owl_dive.ogg",
+        "luxel/audio/sfx/bell_slam.ogg",
+        "luxel/audio/sfx/wick_hurt.ogg",
+        "luxel/audio/sfx/shard_pickup.ogg",
+        "luxel/audio/sfx/beacon_lit.ogg",
+        "luxel/audio/sfx/seal_break.ogg",
+        "luxel/audio/sfx/ui_move.ogg",
+        "luxel/audio/sfx/ui_confirm.ogg",
+        "luxel/audio/sfx/ui_pause.ogg",
+        "luxel/audio/sfx/denied.ogg",
+        "luxel/audio/ambience/night_breeze.ogg",
+        "luxel/audio/ambience/river_murmur.ogg"
+      ]
+    }
+  ],
+  "third_party_audio": []
+}

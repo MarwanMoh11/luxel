@@ -1,0 +1,130 @@
+{
+  "id": "belfry_r6",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [292, 88],
+  "zones": [
+    {
+      "id": "belfry_vault",
+      "name_key": "ZONE_BELFRY",
+      "rect": [0, 0, 320, 176],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_east",
+      "rect": [304, 64, 16, 48],
+      "to_region": "belfry_r5",
+      "to_spawn": [28, 88],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_r6_south",
+      "rect": [144, 160, 32, 16],
+      "to_region": "belfry_r1",
+      "to_spawn": [160, 28],
+      "requires_moves": [],
+      "requires_flags": ["keepers_flame"],
+      "locked_door_id": "door_r6_south"
+    },
+    {
+      "id": "exit_r6_north",
+      "rect": [144, 0, 32, 16],
+      "to_region": "belfry_r7",
+      "to_spawn": [160, 148],
+      "requires_moves": ["dash", "throw"],
+      "requires_flags": ["keepers_flame"],
+      "locked_door_id": "door_belfry_boss"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "snatcher_r6_0",
+      "kind": "snatcher",
+      "pos": [152, 56],
+      "route": [],
+      "perches": [[152, 56], [152, 120], [184, 88]],
+      "zone": "belfry_vault",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "brazier_r6_vault",
+      "kind": "brazier",
+      "pos": [40, 56],
+      "props": {
+        "light_by_lantern": true
+      }
+    },
+    {
+      "id": "keepers_flame",
+      "kind": "wick_key",
+      "pos": [40, 88],
+      "props": {
+        "dungeon_id": "belfry",
+        "key_kind": "keepers_flame",
+        "flag_id": "keepers_flame",
+        "requires_moves": ["dash", "throw"]
+      }
+    },
+    {
+      "id": "switch_eye_r6",
+      "kind": "switch_eye",
+      "pos": [40, 120],
+      "props": {
+        "target_ids": ["bridge_r6_west", "bridge_r6_east"],
+        "sets_flag": "r6_bridges_extended"
+      }
+    },
+    {
+      "id": "bridge_r6_west",
+      "kind": "door",
+      "pos": [88, 88],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [48, 32],
+        "starts_open": false,
+        "requires_signals": ["switch_eye_r6"]
+      }
+    },
+    {
+      "id": "bridge_r6_east",
+      "kind": "door",
+      "pos": [224, 88],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [32, 32],
+        "starts_open": false,
+        "requires_signals": ["switch_eye_r6"]
+      }
+    },
+    {
+      "id": "door_r6_south",
+      "kind": "door",
+      "pos": [160, 152],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [32, 16],
+        "requires_flags": ["keepers_flame"]
+      }
+    },
+    {
+      "id": "door_belfry_boss",
+      "kind": "door",
+      "pos": [160, 24],
+      "props": {
+        "door_kind": "boss_door",
+        "dungeon_id": "belfry",
+        "key_kind": "keepers_flame",
+        "size": [32, 16],
+        "requires_flags": ["keepers_flame"]
+      }
+    }
+  ],
+  "triggers": []
+}

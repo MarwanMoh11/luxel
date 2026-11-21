@@ -1,0 +1,337 @@
+{
+  "version": 1,
+  "identity": "Lantern Gothic",
+  "format": "OGG_VORBIS_Q5",
+  "sample_rate": 44100,
+  "loudness_targets_lufs": {
+    "title": -19.0,
+    "hub": -19.0,
+    "gameplay": -16.0,
+    "true_peak_max_dbfs": -1.0,
+    "loop_seam_max_delta": 0.001
+  },
+  "global_cues": {
+    "title": {
+      "file": "title.ogg",
+      "mode": "D harmonic minor",
+      "bpm": 144,
+      "loop": true,
+      "status": "generated"
+    },
+    "hub": {
+      "file": "hub.ogg",
+      "mode": "D harmonic minor / F major",
+      "bpm": 144,
+      "loop": true,
+      "status": "generated"
+    },
+    "stinger_move": {
+      "file": "stinger_move.ogg",
+      "mode": "D major",
+      "bpm": 144,
+      "loop": false,
+      "status": "generated"
+    },
+    "stinger_lamp": {
+      "file": "stinger_lamp.ogg",
+      "mode": "Dm -> D major",
+      "bpm": 144,
+      "loop": false,
+      "status": "generated"
+    },
+    "ending_dawn": {
+      "file": "ending_dawn.ogg",
+      "mode": "D major",
+      "bpm": 120,
+      "loop": false,
+      "status": "generated"
+    },
+    "credits": {
+      "file": "credits.ogg",
+      "mode": "D major",
+      "bpm": 120,
+      "loop": true,
+      "status": "planned"
+    }
+  },
+  "islands": [
+    {
+      "id": 1,
+      "slug": "bell_isle",
+      "name": "Bell Isle",
+      "mode": "D harmonic minor",
+      "bpm": 144,
+      "lead_instrument": "glass lantern chime & gothic pipe organ",
+      "variation": "Core Lantern Gothic baseline: concert harp arpeggios, music box, bronze tower bells",
+      "status": "generated",
+      "cues": {
+        "explore": "island1_explore.ogg",
+        "combat": "island1_combat.ogg",
+        "dungeon": "island1_dungeon.ogg",
+        "boss_p1": "island1_boss_p1.ogg",
+        "boss_p2": "island1_boss_p2.ogg"
+      }
+    },
+    {
+      "id": 2,
+      "slug": "tidewater_harbor",
+      "name": "Tidewater Harbor",
+      "mode": "D dorian / harmonic minor",
+      "bpm": 132,
+      "lead_instrument": "concertina organ & glass marimba",
+      "variation": "6/8 swaying sea-lantern harp, low foghorn brass-organ swells, tide bells",
+      "status": "planned",
+      "cues": {
+        "explore": "island2_explore.ogg",
+        "combat": "island2_combat.ogg",
+        "dungeon": "island2_dungeon.ogg",
+        "boss_p1": "island2_boss_p1.ogg",
+        "boss_p2": "island2_boss_p2.ogg"
+      }
+    },
+    {
+      "id": 3,
+      "slug": "thornwood_hollow",
+      "name": "Thornwood Hollow",
+      "mode": "D natural / harmonic minor",
+      "bpm": 126,
+      "lead_instrument": "reed oboe-organ & plucked lute-harp",
+      "variation": "Dense forest woodblock pulses, dark low cello drone, tangled chromatic harp runs",
+      "status": "planned",
+      "cues": {
+        "explore": "island3_explore.ogg",
+        "combat": "island3_combat.ogg",
+        "dungeon": "island3_dungeon.ogg",
+        "boss_p1": "island3_boss_p1.ogg",
+        "boss_p2": "island3_boss_p2.ogg"
+      }
+    },
+    {
+      "id": 4,
+      "slug": "mirefen_gardens",
+      "name": "Mirefen Gardens",
+      "mode": "D melodic minor / lydian shadows",
+      "bpm": 120,
+      "lead_instrument": "celesta & bowed glass harmonica",
+      "variation": "Floating marsh music box over watery harp ripples and soft muffled hand drums",
+      "status": "planned",
+      "cues": {
+        "explore": "island4_explore.ogg",
+        "combat": "island4_combat.ogg",
+        "dungeon": "island4_dungeon.ogg",
+        "boss_p1": "island4_boss_p1.ogg",
+        "boss_p2": "island4_boss_p2.ogg"
+      }
+    },
+    {
+      "id": 5,
+      "slug": "starfall_observatory",
+      "name": "Starfall Observatory",
+      "mode": "D phrygian dominant / harmonic minor",
+      "bpm": 138,
+      "lead_instrument": "clockwork music box & crystalline chimes",
+      "variation": "Rotating polymetric orrery arpeggios, shimmering upper celesta, precise escapement ticks",
+      "status": "planned",
+      "cues": {
+        "explore": "island5_explore.ogg",
+        "combat": "island5_combat.ogg",
+        "dungeon": "island5_dungeon.ogg",
+        "boss_p1": "island5_boss_p1.ogg",
+        "boss_p2": "island5_boss_p2.ogg"
+      }
+    },
+    {
+      "id": 6,
+      "slug": "ashen_kiln",
+      "name": "Ashen Kiln",
+      "mode": "D phrygian / harmonic minor",
+      "bpm": 148,
+      "lead_instrument": "full-reed pipe organ & hammered anvil bells",
+      "variation": "Heavy industrial bellows rhythm, metallic bronze percussion, blazing organ chords",
+      "status": "planned",
+      "cues": {
+        "explore": "island6_explore.ogg",
+        "combat": "island6_combat.ogg",
+        "dungeon": "island6_dungeon.ogg",
+        "boss_p1": "island6_boss_p1.ogg",
+        "boss_p2": "island6_boss_p2.ogg"
+      }
+    },
+    {
+      "id": 7,
+      "slug": "moon_shoals",
+      "name": "Moon Shoals",
+      "mode": "D harmonic minor (inverted leitmotif)",
+      "bpm": 144,
+      "lead_instrument": "mirrored music box & spectral organ",
+      "variation": "Leitmotif played in melodic inversion for Hollow Wick duels; glassy moonlit harmonies",
+      "status": "planned",
+      "cues": {
+        "explore": "island7_explore.ogg",
+        "combat": "island7_combat.ogg",
+        "dungeon": "island7_dungeon.ogg",
+        "boss_p1": "island7_boss_p1.ogg",
+        "boss_p2": "island7_boss_p2.ogg"
+      }
+    },
+    {
+      "id": 8,
+      "slug": "long_night",
+      "name": "The Long Night",
+      "mode": "D phrygian -> D harmonic minor -> D major",
+      "bpm": 152,
+      "lead_instrument": "cathedral pipe organ, full bells & lantern chime",
+      "variation": "Grand synthesis of all island motifs converging into The Hush finale before dawn",
+      "status": "planned",
+      "cues": {
+        "explore": "island8_explore.ogg",
+        "combat": "island8_combat.ogg",
+        "dungeon": "island8_dungeon.ogg",
+        "boss_p1": "island8_boss_p1.ogg",
+        "boss_p2": "island8_boss_p2.ogg"
+      }
+    }
+  ],
+  "m0_verified_metrics": [
+    {
+      "file": "title.ogg",
+      "samples": 1176000,
+      "dur_s": 26.6667,
+      "is_loop": true,
+      "lufs": -19.01,
+      "target_lufs": -19.0,
+      "peak_db": -7.89,
+      "true_peak_db": -7.89,
+      "seam_delta": 0.000176,
+      "dc": 3.6e-05,
+      "bytes": 234313,
+      "preview_m4a": "docs/fullgame/swarm/listen/M0/title.m4a"
+    },
+    {
+      "file": "hub.ogg",
+      "samples": 1176000,
+      "dur_s": 26.6667,
+      "is_loop": true,
+      "lufs": -19.01,
+      "target_lufs": -19.0,
+      "peak_db": -6.31,
+      "true_peak_db": -6.31,
+      "seam_delta": 0.000166,
+      "dc": 2.9e-05,
+      "bytes": 197804,
+      "preview_m4a": null
+    },
+    {
+      "file": "island1_explore.ogg",
+      "samples": 1176000,
+      "dur_s": 26.6667,
+      "is_loop": true,
+      "lufs": -16.01,
+      "target_lufs": -16.0,
+      "peak_db": -3.86,
+      "true_peak_db": -3.86,
+      "seam_delta": 0.000753,
+      "dc": 1.6e-05,
+      "bytes": 224320,
+      "preview_m4a": "docs/fullgame/swarm/listen/M0/island1_explore.m4a"
+    },
+    {
+      "file": "island1_combat.ogg",
+      "samples": 1176000,
+      "dur_s": 26.6667,
+      "is_loop": true,
+      "lufs": -16.01,
+      "target_lufs": -16.0,
+      "peak_db": -4.16,
+      "true_peak_db": -4.15,
+      "seam_delta": 0.000286,
+      "dc": 5.3e-05,
+      "bytes": 455403,
+      "preview_m4a": "docs/fullgame/swarm/listen/M0/island1_combat.m4a"
+    },
+    {
+      "file": "island1_dungeon.ogg",
+      "samples": 1176000,
+      "dur_s": 26.6667,
+      "is_loop": true,
+      "lufs": -16.01,
+      "target_lufs": -16.0,
+      "peak_db": -5.3,
+      "true_peak_db": -5.3,
+      "seam_delta": 0.000468,
+      "dc": 2.2e-05,
+      "bytes": 401030,
+      "preview_m4a": null
+    },
+    {
+      "file": "island1_boss_p1.ogg",
+      "samples": 1176000,
+      "dur_s": 26.6667,
+      "is_loop": true,
+      "lufs": -16.02,
+      "target_lufs": -16.0,
+      "peak_db": -3.17,
+      "true_peak_db": -3.17,
+      "seam_delta": 0.000376,
+      "dc": 7.7e-05,
+      "bytes": 455750,
+      "preview_m4a": "docs/fullgame/swarm/listen/M0/island1_boss_p1.m4a"
+    },
+    {
+      "file": "island1_boss_p2.ogg",
+      "samples": 1176000,
+      "dur_s": 26.6667,
+      "is_loop": true,
+      "lufs": -16.02,
+      "target_lufs": -16.0,
+      "peak_db": -4.18,
+      "true_peak_db": -4.12,
+      "seam_delta": 0.000314,
+      "dc": 4.4e-05,
+      "bytes": 452514,
+      "preview_m4a": null
+    },
+    {
+      "file": "stinger_move.ogg",
+      "samples": 172358,
+      "dur_s": 3.9083,
+      "is_loop": false,
+      "lufs": -15.98,
+      "target_lufs": -16.0,
+      "peak_db": -4.3,
+      "true_peak_db": -4.29,
+      "seam_delta": 0.0,
+      "dc": 7e-06,
+      "bytes": 37793,
+      "preview_m4a": null
+    },
+    {
+      "file": "stinger_lamp.ogg",
+      "samples": 208740,
+      "dur_s": 4.7333,
+      "is_loop": false,
+      "lufs": -16.0,
+      "target_lufs": -16.0,
+      "peak_db": -2.87,
+      "true_peak_db": -2.87,
+      "seam_delta": 0.0,
+      "dc": 4e-06,
+      "bytes": 47447,
+      "preview_m4a": null
+    },
+    {
+      "file": "ending_dawn.ogg",
+      "samples": 890820,
+      "dur_s": 20.2,
+      "is_loop": false,
+      "lufs": -16.01,
+      "target_lufs": -16.0,
+      "peak_db": -4.87,
+      "true_peak_db": -4.87,
+      "seam_delta": 0.0,
+      "dc": 4.4e-05,
+      "bytes": 165057,
+      "preview_m4a": "docs/fullgame/swarm/listen/M0/ending_dawn.m4a"
+    }
+  ]
+}

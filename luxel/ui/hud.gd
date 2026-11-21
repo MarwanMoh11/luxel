@@ -1,0 +1,472 @@
+class_name LxHud
+extends Node2D
+## Gameplay HUD (320x180, Last Light palette): hearts (4..12), 3-lantern beacon gauge,
+## unlocked move icons with dynamic input glyphs, ember meter, shard/key counters,
+## boss health bar, and floating world cues.
+
+const HEART_PIXELS: Array[Rect2] = [
+	Rect2(1.0, 0.0, 1.0, 1.0),
+	Rect2(3.0, 0.0, 1.0, 1.0),
+	Rect2(0.0, 1.0, 5.0, 2.0),
+	Rect2(1.0, 3.0, 3.0, 1.0),
+	Rect2(2.0, 4.0, 1.0, 1.0),
+]
+
+const HALF_HEART_PIXELS: Array[Rect2] = [
+	Rect2(1.0, 0.0, 1.0, 1.0),
+	Rect2(0.0, 1.0, 3.0, 2.0),
+	Rect2(1.0, 3.0, 2.0, 1.0),
+	Rect2(2.0, 4.0, 1.0, 1.0),
+]
+
+const LANTERN_FRAME: Array[Rect2] = [
+	Rect2(1.0, 0.0, 3.0, 1.0),
+	Rect2(0.0, 1.0, 5.0, 1.0),
+	Rect2(0.0, 2.0, 1.0, 4.0),
+	Rect2(4.0, 2.0, 1.0, 4.0),
+	Rect2(0.0, 6.0, 5.0, 1.0),
+]
+
+const MOVE_COLORS: Dictionary = {
+	"bolt": "gold",
+	"dash": "coral",
+	"throw": "apricot",
+	"prism": "sky",
+	"beam": "cream",
+	"wings": "lime",
+	"lens": "ice",
+	"sunflare": "gold",
+}
+
+var _cues: Array[Dictionary] = [] # {text, pos, is_world, color, t, dur}
+var _notice_text: String = ""
+var _notice_t: float = 0.0
+var _notice_dur: float = 3.5
+
+var _boss_active: bool = false
+var _boss_name_key: String = ""
+var _boss_hp: float = 0.0
+var _boss_max_hp: float = 1.0
+var _boss_trail_hp: float = 0.0
+var _boss_phase: int = 1
+
+var _ember_val: float = 0.0
+var _ember_max: float = 100.0
+var _blink_t: float = 0.0
+var _hit_cue_cd: float = 0.0
+var _bound: bool = false
+
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	bind_events()
+
+
+func bind_events() -> void:
+	if _bound or Lx.events == null:
+		return
+	_bound = true
+	if not Lx.events.beacon_lit.is_connected(_on_beacon_lit):
+		Lx.events.beacon_lit.connect(_on_beacon_lit)
+	if not Lx.events.waystone_lit.is_connected(_on_waystone_lit):
+		Lx.events.waystone_lit.connect(_on_waystone_lit)
+	if not Lx.events.move_unlocked.is_connected(_on_move_unlocked):
+		Lx.events.move_unlocked.connect(_on_move_unlocked)
+	if not Lx.events.boss_phase_changed.is_connected(_on_boss_phase):
+		Lx.events.boss_phase_changed.connect(_on_boss_phase)
+	if not Lx.events.boss_defeated.is_connected(_on_boss_defeated):
+		Lx.events.boss_defeated.connect(_on_boss_defeated)
+	if not Lx.events.ember_piece_collected.is_connected(_on_ember_piece):
+		Lx.events.ember_piece_collected.connect(_on_ember_piece)
+	if not Lx.events.enemy_hit.is_connected(_on_enemy_hit):
+		Lx.events.enemy_hit.connect(_on_enemy_hit)
+	if not Lx.events.lantern_stolen.is_connected(_on_lantern_stolen):
+		Lx.events.lantern_stolen.connect(_on_lantern_stolen)
+
+
+func set_ember(current: float, maximum: float) -> void:
+	_ember_max = maxf(1.0, maximum)
+	_ember_val = clampf(current, 0.0, _ember_max)
+	queue_redraw()
+
+
+func show_boss(name_key: String, hp: float, max_hp: float, phase: int = 1) -> void:
+	_boss_active = true
+	_boss_name_key = name_key
+	_boss_max_hp = maxf(1.0, max_hp)
+	_boss_hp = clampf(hp, 0.0, _boss_max_hp)
+	_boss_trail_hp = _boss_hp
+	_boss_phase = maxi(1, phase)
+	queue_redraw()
+
+
+func update_boss(hp: float, max_hp: float, phase: int = -1) -> void:
+	_boss_max_hp = maxf(1.0, max_hp)
+	_boss_hp = clampf(hp, 0.0, _boss_max_hp)
+	if phase > 0:
+		_boss_phase = phase
+	queue_redraw()
+
+
+func hide_boss() -> void:
+	_boss_active = false
+	queue_redraw()
+
+
+func show_notice(string_id: String, duration: float = 3.5) -> void:
+	_notice_text = LxStrings.text(string_id)
+	_notice_t = 0.0
+	_notice_dur = maxf(duration, 1.0)
+	queue_redraw()
+
+
+func spawn_world_cue(
+	string_id: String,
+	world_pos: Vector2,
+	color_name: String = "gold",
+	duration: float = 1.4,
+	args: Array = []
+) -> void:
+	var txt: String = LxStrings.fmt(string_id, args) if not args.is_empty() else LxStrings.text(string_id)
+	_cues.append({
+		"text": txt,
+		"pos": world_pos,
+		"is_world": true,
+		"color": color_name,
+		"t": 0.0,
+		"dur": maxf(duration, 0.4),
+	})
+	queue_redraw()
+
+
+func spawn_screen_cue(
+	string_id: String,
+	screen_pos: Vector2,
+	color_name: String = "gold",
+	duration: float = 1.4,
+	args: Array = []
+) -> void:
+	var txt: String = LxStrings.fmt(string_id, args) if not args.is_empty() else LxStrings.text(string_id)
+	_cues.append({
+		"text": txt,
+		"pos": screen_pos,
+		"is_world": false,
+		"color": color_name,
+		"t": 0.0,
+		"dur": maxf(duration, 0.4),
+	})
+	queue_redraw()
+
+
+func clear_cues() -> void:
+	_cues.clear()
+	_notice_text = ""
+	queue_redraw()
+
+
+func _on_beacon_lit(_island_id: int, _beacon_id: String) -> void:
+	spawn_screen_cue("CUE_BEACON_LIT", Vector2(160.0, 34.0), "gold", 1.8)
+
+
+func _on_waystone_lit(_island_id: int, _waystone_id: String) -> void:
+	spawn_screen_cue("CUE_WAYSTONE_LIT", Vector2(160.0, 34.0), "sky", 1.6)
+
+
+func _on_move_unlocked(move_id: String) -> void:
+	var mdata: Dictionary = Lx.get_move_data(move_id)
+	var name_key: String = str(mdata.get("name_key", "CUE_SHRINE_CLAIMED"))
+	spawn_screen_cue(name_key, Vector2(160.0, 42.0), "gold", 2.2)
+
+
+func _on_boss_phase(_boss_id: String, phase: int) -> void:
+	_boss_phase = maxi(1, phase)
+	if phase >= 2:
+		spawn_screen_cue("CUE_PHASE_2", Vector2(160.0, 44.0), "coral", 1.8)
+
+
+func _on_boss_defeated(_boss_id: String, _island_id: int) -> void:
+	hide_boss()
+	spawn_screen_cue("CUE_HEART_GAINED", Vector2(160.0, 40.0), "lime", 1.8)
+
+
+func _on_ember_piece(_total: int) -> void:
+	spawn_screen_cue("CUE_EMBER_FOUND", Vector2(160.0, 34.0), "apricot", 1.8)
+
+
+func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
+	if _hit_cue_cd > 0.0 or enemy == null:
+		return
+	var wpos: Vector2 = (enemy as Node2D).global_position if enemy is Node2D else Vector2.ZERO
+	if result == 0:
+		_hit_cue_cd = 0.45
+		spawn_world_cue("CUE_EATS_BOLTS", wpos, "apricot", 1.0)
+	elif result == 2:
+		_hit_cue_cd = 0.35
+		spawn_world_cue("CUE_OPEN", wpos, "gold", 1.0)
+
+
+func _on_lantern_stolen(_thief: Object, pos: Vector2) -> void:
+	spawn_world_cue("CUE_LANTERN_STOLEN", pos, "coral", 1.6)
+
+
+func _process(delta: float) -> void:
+	if not visible:
+		return
+	_blink_t += delta
+	if _hit_cue_cd > 0.0:
+		_hit_cue_cd = maxf(0.0, _hit_cue_cd - delta)
+	if _boss_active and _boss_trail_hp > _boss_hp:
+		_boss_trail_hp = maxf(_boss_hp, _boss_trail_hp - _boss_max_hp * 0.45 * delta)
+	if not _cues.is_empty():
+		var kept: Array[Dictionary] = []
+		for cue: Dictionary in _cues:
+			cue["t"] = float(cue["t"]) + delta
+			if float(cue["t"]) < float(cue["dur"]):
+				kept.append(cue)
+		_cues = kept
+	if not _notice_text.is_empty():
+		_notice_t += delta
+		if _notice_t >= _notice_dur:
+			_notice_text = ""
+	_sync_player_ember()
+	queue_redraw()
+
+
+func _sync_player_ember() -> void:
+	if Lx.state == null or not Lx.state.has_move("sunflare"):
+		return
+	_ember_max = maxf(1.0, Lx.state.get_effective_ember_max())
+	if Lx.player != null and Lx.player.has_method("get_ember"):
+		_ember_val = clampf(float(Lx.player.call("get_ember")), 0.0, _ember_max)
+
+
+func _draw() -> void:
+	if Lx.state == null:
+		return
+	_draw_hearts(Vector2(5.0, 5.0))
+	_draw_beacon_gauge(160.0, 4.0)
+	_draw_shards_and_keys(Vector2(315.0, 5.0))
+	_draw_moves_tray(Vector2(5.0, 160.0))
+	_draw_zip_cue(Vector2(5.0, 148.0))
+	if Lx.state.has_move("sunflare"):
+		_draw_ember_meter(Vector2(246.0, 166.0))
+	if _boss_active:
+		_draw_boss_bar()
+	_draw_cues()
+	_draw_notice()
+
+
+func _draw_hearts(origin: Vector2) -> void:
+	var max_h: int = clampi(Lx.state.max_hearts, 4, 12)
+	var cur_h: float = clampf(Lx.state.hearts, 0.0, float(max_h))
+	var per_row: int = 6
+	for i: int in range(max_h):
+		var col: int = i % per_row
+		var row: int = i / per_row
+		var pos: Vector2 = origin + Vector2(float(col * 7), float(row * 7))
+		draw_rect(Rect2(pos - Vector2.ONE, Vector2(7.0, 7.0)), LxPalette.PAL["night"])
+		for r: Rect2 in HEART_PIXELS:
+			draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["plum"])
+		var fill_amt: float = cur_h - float(i)
+		if fill_amt >= 0.75:
+			for r: Rect2 in HEART_PIXELS:
+				draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["coral"])
+			draw_rect(Rect2(pos + Vector2(1.0, 1.0), Vector2(1.0, 1.0)), LxPalette.PAL["rose"])
+		elif fill_amt >= 0.25:
+			for r: Rect2 in HALF_HEART_PIXELS:
+				draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["coral"])
+	if cur_h > 0.0 and cur_h <= 1.0 and fmod(_blink_t, 0.6) < 0.35:
+		var warn_y: float = origin.y + (15.0 if max_h > per_row else 8.0)
+		LxPixelFont.draw_left(self, LxStrings.text("HUD_LAST_HEART"), Vector2(origin.x, warn_y), LxPalette.PAL["coral"], 1)
+
+
+func _draw_beacon_gauge(cx: float, y: float) -> void:
+	var lit_count: int = _count_island_beacons(Lx.state.island_id)
+	var spacing: float = 11.0
+	var start_x: float = roundf(cx - spacing)
+	for i: int in range(3):
+		var p: Vector2 = Vector2(start_x + float(i) * spacing - 2.0, y)
+		var is_lit: bool = i < lit_count
+		draw_rect(Rect2(p - Vector2.ONE, Vector2(7.0, 9.0)), LxPalette.PAL["night"])
+		var glass_col: Color = LxPalette.PAL["gold"] if is_lit else LxPalette.PAL["dusk"]
+		var frame_col: Color = LxPalette.PAL["apricot"] if is_lit else LxPalette.PAL["mauve"]
+		draw_rect(Rect2(p + Vector2(1.0, 2.0), Vector2(3.0, 4.0)), glass_col)
+		if is_lit:
+			draw_rect(Rect2(p + Vector2(2.0, 3.0), Vector2(1.0, 2.0)), LxPalette.PAL["cream"])
+		for r: Rect2 in LANTERN_FRAME:
+			draw_rect(Rect2(p + r.position, r.size), frame_col)
+
+
+func _draw_shards_and_keys(top_right: Vector2) -> void:
+	var shard_str: String = LxStrings.fmt("HUD_SHARDS_FMT", [Lx.state.shards])
+	var tw: float = float(LxPixelFont.width(shard_str, 1))
+	var icon_x: float = top_right.x - tw - 8.0
+	var y: float = top_right.y
+	# Diamond light-shard icon.
+	draw_rect(Rect2(icon_x, y - 1.0, 5.0, 7.0), LxPalette.PAL["night"])
+	draw_rect(Rect2(icon_x + 2.0, y, 1.0, 5.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(icon_x + 1.0, y + 1.0, 3.0, 3.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(icon_x + 2.0, y + 1.0, 1.0, 2.0), LxPalette.PAL["cream"])
+	LxPixelFont.draw_right(self, shard_str, top_right.x, y, LxPalette.PAL["gold"], 1)
+
+	if not Lx.state.room_id.is_empty():
+		var isl_data: Dictionary = Lx.get_island_data(Lx.state.island_id)
+		var dung_id: String = str(isl_data.get("dungeon_id", ""))
+		var keys: int = Lx.state.get_key_count(dung_id, "wick_key") if not dung_id.is_empty() else 0
+		if keys > 0:
+			var ktxt: String = LxStrings.fmt("HUD_KEYS_FMT", [keys])
+			LxPixelFont.draw_right(self, ktxt, top_right.x, y + 9.0, LxPalette.PAL["apricot"], 1)
+
+
+func _draw_moves_tray(origin: Vector2) -> void:
+	if Lx.data_moves.is_empty():
+		Lx.load_all_data()
+	var order: Array = Lx.data_moves.get("order", []) as Array
+	var slot_x: float = origin.x
+	for item: Variant in order:
+		var mid: String = str(item)
+		if not Lx.state.has_move(mid):
+			continue
+		var mdata: Dictionary = Lx.get_move_data(mid)
+		var is_passive: bool = bool(mdata.get("passive", false))
+		var action_id: String = str(mdata.get("action", ""))
+		var col_name: String = str(MOVE_COLORS.get(mid, "gold"))
+		var box := Rect2(slot_x, origin.y, 13.0, 11.0)
+		LxPixelFont.draw_panel(self, box, "night", col_name, "void")
+		_draw_move_icon(mid, box.position + Vector2(3.0, 2.0), LxPalette.color(col_name))
+		if not is_passive and not action_id.is_empty() and Lx.input != null:
+			var glyph: String = LxStrings.sanitize(Lx.input.get_glyph(action_id), 4)
+			LxPixelFont.draw_centered(self, glyph, slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["stone"], 1)
+		else:
+			draw_rect(Rect2(slot_x + 5.0, origin.y + 13.0, 3.0, 2.0), LxPalette.color(col_name))
+		slot_x += 17.0
+
+
+func _draw_zip_cue(origin: Vector2) -> void:
+	if not Lx.state.has_move("throw") or Lx.player == null:
+		return
+	var lantern_obj: Variant = Lx.player.get("lantern")
+	if lantern_obj == null or not (lantern_obj is Object):
+		return
+	if not (lantern_obj as Object).has_method("is_lure_active") or not bool((lantern_obj as Object).call("is_lure_active")):
+		return
+	var glyph: String = LxStrings.sanitize(Lx.input.get_glyph("lx_fire"), 6) if Lx.input != null else "-"
+	var txt: String = LxStrings.fmt("HUD_ZIP_CUE", [glyph])
+	var w: float = float(LxPixelFont.width(txt, 1)) + 8.0
+	LxPixelFont.draw_panel(self, Rect2(origin, Vector2(w, 9.0)), "dusk", "gold", "night")
+	LxPixelFont.draw_left(self, txt, origin + Vector2(4.0, 2.0), LxPalette.PAL["gold"], 1)
+
+
+func _draw_move_icon(move_id: String, at: Vector2, col: Color) -> void:
+	match move_id:
+		"bolt":
+			draw_rect(Rect2(at + Vector2(1.0, 2.0), Vector2(5.0, 2.0)), col)
+			draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(2.0, 4.0)), LxPalette.PAL["cream"])
+		"dash":
+			draw_rect(Rect2(at + Vector2(0.0, 2.0), Vector2(3.0, 1.0)), col)
+			draw_rect(Rect2(at + Vector2(1.0, 4.0), Vector2(4.0, 1.0)), col)
+			draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(2.0, 5.0)), LxPalette.PAL["cream"])
+		"throw":
+			draw_rect(Rect2(at + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), col)
+			draw_rect(Rect2(at + Vector2(3.0, 2.0), Vector2(1.0, 3.0)), LxPalette.PAL["cream"])
+		"prism":
+			draw_rect(Rect2(at + Vector2(3.0, 1.0), Vector2(1.0, 5.0)), col)
+			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), col)
+			draw_rect(Rect2(at + Vector2(3.0, 2.0), Vector2(1.0, 1.0)), LxPalette.PAL["cream"])
+		"beam":
+			draw_rect(Rect2(at + Vector2(0.0, 2.0), Vector2(7.0, 3.0)), col)
+			draw_rect(Rect2(at + Vector2(0.0, 3.0), Vector2(7.0, 1.0)), LxPalette.PAL["gold"])
+		"wings":
+			draw_rect(Rect2(at + Vector2(0.0, 1.0), Vector2(3.0, 2.0)), col)
+			draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(3.0, 2.0)), col)
+			draw_rect(Rect2(at + Vector2(2.0, 3.0), Vector2(3.0, 2.0)), LxPalette.PAL["cream"])
+		"lens":
+			draw_rect(Rect2(at + Vector2(1.0, 1.0), Vector2(5.0, 5.0)), col)
+			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), LxPalette.PAL["deep"])
+			draw_rect(Rect2(at + Vector2(3.0, 3.0), Vector2(1.0, 1.0)), LxPalette.PAL["cream"])
+		"sunflare":
+			draw_rect(Rect2(at + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), col)
+			draw_rect(Rect2(at + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), col)
+			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), LxPalette.PAL["cream"])
+		_:
+			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), col)
+
+
+func _draw_ember_meter(at: Vector2) -> void:
+	var bar_w: float = 68.0
+	var bar_h: float = 8.0
+	var frac: float = clampf(_ember_val / maxf(1.0, _ember_max), 0.0, 1.0)
+	var ready: bool = frac >= 0.999
+	var border_col: String = "cream" if (ready and fmod(_blink_t, 0.5) < 0.25) else "mauve"
+	LxPixelFont.draw_panel(self, Rect2(at, Vector2(bar_w, bar_h)), "night", border_col, "void")
+	var inner_w: float = floorf((bar_w - 4.0) * frac)
+	if inner_w > 0.0:
+		var fill_c: Color = LxPalette.PAL["gold"] if ready else (LxPalette.PAL["apricot"] if frac >= 0.5 else LxPalette.PAL["coral"])
+		draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(inner_w, bar_h - 4.0)), fill_c)
+	var label_id: String = "HUD_EMBER_READY" if ready else "HUD_EMBER"
+	var label_col: Color = LxPalette.PAL["gold"] if ready else LxPalette.PAL["stone"]
+	LxPixelFont.draw_right(self, LxStrings.text(label_id), at.x + bar_w, at.y - 7.0, label_col, 1)
+
+
+func _draw_boss_bar() -> void:
+	var bar_w: float = 180.0
+	var bar_h: float = 8.0
+	var x: float = roundf(160.0 - bar_w * 0.5)
+	var y: float = 148.0
+	var name_txt: String = LxStrings.text(_boss_name_key) if LxStrings.has_id(_boss_name_key) else LxStrings.sanitize(_boss_name_key)
+	LxPixelFont.draw_centered(self, name_txt, 160.0, y - 8.0, LxPalette.PAL["gold"], 1)
+	if _boss_phase >= 2:
+		LxPixelFont.draw_right(self, LxStrings.text("HUD_BOSS_P2"), x + bar_w, y - 8.0, LxPalette.PAL["coral"], 1)
+	LxPixelFont.draw_panel(self, Rect2(x, y, bar_w, bar_h), "night", "mauve", "void")
+	var trail_w: float = floorf((bar_w - 4.0) * clampf(_boss_trail_hp / _boss_max_hp, 0.0, 1.0))
+	var cur_w: float = floorf((bar_w - 4.0) * clampf(_boss_hp / _boss_max_hp, 0.0, 1.0))
+	if trail_w > 0.0:
+		draw_rect(Rect2(x + 2.0, y + 2.0, trail_w, bar_h - 4.0), LxPalette.PAL["apricot"])
+	if cur_w > 0.0:
+		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, bar_h - 4.0), LxPalette.PAL["coral"])
+
+
+func _draw_cues() -> void:
+	for cue: Dictionary in _cues:
+		var t: float = float(cue["t"])
+		var dur: float = float(cue["dur"])
+		var fade_p: float = minf(t / 0.15, (dur - t) / 0.35)
+		var col: Color = LxPalette.fade_step(fade_p, str(cue["color"]))
+		if col.a <= 0.0:
+			continue
+		var screen_pos: Vector2 = cue["pos"] as Vector2
+		if bool(cue["is_world"]):
+			screen_pos = _world_to_screen(screen_pos)
+		screen_pos.y -= floorf(t * 14.0)
+		screen_pos.x = clampf(screen_pos.x, 24.0, 296.0)
+		screen_pos.y = clampf(screen_pos.y, 16.0, 168.0)
+		LxPixelFont.draw_centered(self, str(cue["text"]), screen_pos.x, screen_pos.y, col, 1)
+
+
+func _draw_notice() -> void:
+	if _notice_text.is_empty():
+		return
+	var p: float = minf(_notice_t / 0.25, (_notice_dur - _notice_t) / 0.35)
+	var col: Color = LxPalette.fade_step(p, "gold")
+	if col.a <= 0.0:
+		return
+	var w: float = float(LxPixelFont.width(_notice_text, 1)) + 12.0
+	var rect := Rect2(roundf(160.0 - w * 0.5), 18.0, w, 11.0)
+	LxPixelFont.draw_panel(self, rect, "dusk", "gold", "night")
+	LxPixelFont.draw_centered(self, _notice_text, 160.0, 21.0, col, 1)
+
+
+func _world_to_screen(world_pos: Vector2) -> Vector2:
+	if Lx.camera != null:
+		return world_pos - Lx.camera.global_position + Vector2(160.0, 90.0)
+	return world_pos
+
+
+func _count_island_beacons(island_id: int) -> int:
+	var prefix: String = "isl%d_" % island_id
+	var alt_prefix: String = "%d:" % island_id
+	var count: int = 0
+	for bid: String in Lx.state.lit_beacons:
+		if bid.begins_with(prefix) or bid.begins_with(alt_prefix) or (island_id == 1 and bid.begins_with("beacon_")):
+			count += 1
+	return mini(count, 3)

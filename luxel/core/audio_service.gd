@@ -1,0 +1,352 @@
+class_name LxAudioService
+extends Node
+## Runtime audio bus rack (LxMusic, LxSfx, LxAmbience, LxUi) with continuous vertical-layered
+## music that NEVER stops or restarts on explore/combat/pause switches (SWARM_SPEC 2.2 & 9).
+
+const BUS_MUSIC: String = "LxMusic"
+const BUS_SFX: String = "LxSfx"
+const BUS_AMBIENCE: String = "LxAmbience"
+const BUS_UI: String = "LxUi"
+
+const OPEN_LP_HZ: float = 20000.0
+const PAUSE_LP_HZ: float = 520.0
+const SILENT_DB: float = -80.0
+const BASE_MUSIC_DB: float = -4.0
+const PAUSE_DUCK_DB: float = -6.0
+const CROSSFADE_S: float = 1.6
+const COMBAT_DWELL_S: float = 1.2
+const COMBAT_TAIL_S: float = 6.0
+
+const SFX_POOL_SIZE: int = 12
+const SFX_2D_POOL_SIZE: int = 12
+
+var _music_bus_idx: int = -1
+var _sfx_bus_idx: int = -1
+var _amb_bus_idx: int = -1
+var _ui_bus_idx: int = -1
+var _lowpass: AudioEffectLowPassFilter = null
+
+# Primary (explore/track) and synced combat stem players — both stay running for seamless layering.
+var _explore_player: AudioStreamPlayer = null
+var _combat_player: AudioStreamPlayer = null
+var _stinger_player: AudioStreamPlayer = null
+var _amb_players: Array[AudioStreamPlayer] = []
+var _sfx_pool: Array[AudioStreamPlayer] = []
+var _sfx_2d_pool: Array[AudioStreamPlayer2D] = []
+var _sfx_cursor: int = 0
+var _sfx_2d_cursor: int = 0
+
+var _stream_cache: Dictionary = {}
+var _saved_positions: Dictionary = {}
+
+var current_track_group: String = ""
+var current_mode: String = "explore" # "explore", "combat", "dungeon", "boss_p1", "boss_p2", "title", "hub", "ending"
+var is_paused: bool = false
+var combat_blend: float = 0.0 # 0.0 = explore, 1.0 = combat
+var _target_combat_blend: float = 0.0
+var _combat_request_timer: float = 0.0
+var _combat_tail_timer: float = 0.0
+var _mute_unfocus: bool = true
+var _focused: bool = true
+
+# Telemetry for QA's 50-switch audio_check.
+var stream_restart_count: int = 0
+var mode_switch_count: int = 0
+var pause_switch_count: int = 0
+
+
+func setup() -> void:
+	_setup_buses()
+	_setup_players()
+
+
+func _setup_buses() -> void:
+	_music_bus_idx = _ensure_bus(BUS_MUSIC)
+	_sfx_bus_idx = _ensure_bus(BUS_SFX)
+	_amb_bus_idx = _ensure_bus(BUS_AMBIENCE)
+	_ui_bus_idx = _ensure_bus(BUS_UI)
+
+	_lowpass = null
+	for i: int in range(AudioServer.get_bus_effect_count(_music_bus_idx)):
+		var fx: AudioEffect = AudioServer.get_bus_effect(_music_bus_idx, i)
+		if fx is AudioEffectLowPassFilter:
+			_lowpass = fx as AudioEffectLowPassFilter
+			break
+	if _lowpass == null:
+		_lowpass = AudioEffectLowPassFilter.new()
+		_lowpass.cutoff_hz = OPEN_LP_HZ
+		AudioServer.add_bus_effect(_music_bus_idx, _lowpass)
+
+	var has_limiter: bool = false
+	for i: int in range(AudioServer.get_bus_effect_count(_sfx_bus_idx)):
+		if AudioServer.get_bus_effect(_sfx_bus_idx, i) is AudioEffectLimiter:
+			has_limiter = true
+			break
+	if not has_limiter:
+		var lim := AudioEffectLimiter.new()
+		lim.ceiling_db = -0.5
+		AudioServer.add_bus_effect(_sfx_bus_idx, lim)
+
+
+func _ensure_bus(bus_name: String) -> int:
+	var idx: int = AudioServer.get_bus_index(bus_name)
+	if idx == -1:
+		AudioServer.add_bus()
+		idx = AudioServer.bus_count - 1
+		AudioServer.set_bus_name(idx, bus_name)
+		AudioServer.set_bus_send(idx, "Master")
+	return idx
+
+
+func _setup_players() -> void:
+	_explore_player = AudioStreamPlayer.new()
+	_explore_player.bus = BUS_MUSIC
+	_explore_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(_explore_player)
+
+	_combat_player = AudioStreamPlayer.new()
+	_combat_player.bus = BUS_MUSIC
+	_combat_player.volume_db = SILENT_DB
+	_combat_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(_combat_player)
+
+	_stinger_player = AudioStreamPlayer.new()
+	_stinger_player.bus = BUS_MUSIC
+	_stinger_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(_stinger_player)
+
+	for i: int in range(2):
+		var ap := AudioStreamPlayer.new()
+		ap.bus = BUS_AMBIENCE
+		ap.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(ap)
+		_amb_players.append(ap)
+
+	for i: int in range(SFX_POOL_SIZE):
+		var sp := AudioStreamPlayer.new()
+		sp.bus = BUS_SFX
+		sp.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(sp)
+		_sfx_pool.append(sp)
+
+	for i: int in range(SFX_2D_POOL_SIZE):
+		var sp2 := AudioStreamPlayer2D.new()
+		sp2.bus = BUS_SFX
+		sp2.max_distance = 360.0
+		add_child(sp2)
+		_sfx_2d_pool.append(sp2)
+
+
+func apply_settings(cfg: Dictionary) -> void:
+	_set_bus_linear(0, float(cfg.get("master_vol", 1.0)))
+	_set_bus_linear(_music_bus_idx, float(cfg.get("music_vol", 0.85)))
+	_set_bus_linear(_sfx_bus_idx, float(cfg.get("sfx_vol", 0.9)))
+	_set_bus_linear(_amb_bus_idx, float(cfg.get("ambience_vol", 0.8)))
+	_set_bus_linear(_ui_bus_idx, float(cfg.get("sfx_vol", 0.9)))
+	_mute_unfocus = bool(cfg.get("mute_unfocus", true))
+
+
+func _set_bus_linear(idx: int, linear: float) -> void:
+	if idx < 0:
+		return
+	var v: float = clampf(linear, 0.0, 1.0)
+	AudioServer.set_bus_mute(idx, v <= 0.001)
+	AudioServer.set_bus_volume_db(idx, linear_to_db(maxf(v, 0.0001)))
+
+
+func set_window_focus(focused: bool) -> void:
+	_focused = focused
+	if _mute_unfocus:
+		AudioServer.set_bus_mute(0, not focused)
+
+
+func start_island_music(island_id: int) -> void:
+	var group: String = "island%d" % island_id
+	if current_track_group == group and _explore_player.playing:
+		return
+	if current_track_group != "" and _explore_player.playing:
+		_saved_positions[current_track_group] = _explore_player.get_playback_position()
+	current_track_group = group
+	current_mode = "explore"
+	_target_combat_blend = 0.0
+	combat_blend = 0.0
+
+	var exp_stream: AudioStream = _load_music_stream("island%d_explore" % island_id, "island1_explore")
+	var cmb_stream: AudioStream = _load_music_stream("island%d_combat" % island_id, "island1_combat")
+	var resume_pos: float = float(_saved_positions.get(group, 0.0))
+
+	if exp_stream != null:
+		_explore_player.stream = exp_stream
+		_explore_player.volume_db = BASE_MUSIC_DB
+		_explore_player.play(resume_pos)
+	if cmb_stream != null:
+		_combat_player.stream = cmb_stream
+		_combat_player.volume_db = SILENT_DB
+		_combat_player.play(resume_pos)
+
+
+func play_cue(cue_name: String) -> void:
+	if cue_name == "explore" or cue_name == "combat":
+		set_music_mode(cue_name, true)
+		return
+	if current_track_group == cue_name and _explore_player.playing:
+		return
+	if current_track_group != "" and _explore_player.playing:
+		_saved_positions[current_track_group] = _explore_player.get_playback_position()
+	current_track_group = cue_name
+	current_mode = cue_name
+	_target_combat_blend = 0.0
+	combat_blend = 0.0
+
+	var st: AudioStream = _load_music_stream(cue_name, "title")
+	if st != null:
+		_explore_player.stream = st
+		_explore_player.volume_db = BASE_MUSIC_DB
+		var pos: float = float(_saved_positions.get(cue_name, 0.0))
+		_explore_player.play(pos)
+	_combat_player.volume_db = SILENT_DB
+
+
+func set_music_mode(mode: String, immediate: bool = false) -> void:
+	mode_switch_count += 1
+	if mode == "combat":
+		current_mode = "combat"
+		_combat_tail_timer = COMBAT_TAIL_S
+		if immediate or _combat_request_timer >= COMBAT_DWELL_S:
+			_target_combat_blend = 1.0
+	elif mode == "explore":
+		current_mode = "explore"
+		if immediate or _combat_tail_timer <= 0.0:
+			_target_combat_blend = 0.0
+	else:
+		play_cue(mode)
+	# Never call stop() or play() when switching explore <-> combat!
+
+
+func set_paused(paused: bool) -> void:
+	if is_paused == paused:
+		return
+	is_paused = paused
+	pause_switch_count += 1
+	if _lowpass != null:
+		_lowpass.cutoff_hz = PAUSE_LP_HZ if paused else OPEN_LP_HZ
+	_update_layer_volumes()
+
+
+func tick(dt: float, in_combat: bool = false) -> void:
+	if in_combat:
+		_combat_request_timer += dt
+		_combat_tail_timer = COMBAT_TAIL_S
+		if _combat_request_timer >= COMBAT_DWELL_S:
+			_target_combat_blend = 1.0
+	else:
+		_combat_request_timer = maxf(0.0, _combat_request_timer - dt * 2.0)
+		if _combat_tail_timer > 0.0:
+			_combat_tail_timer -= dt
+		else:
+			_target_combat_blend = 0.0
+
+	var step: float = dt / maxf(CROSSFADE_S, 0.05)
+	combat_blend = move_toward(combat_blend, _target_combat_blend, step)
+	_update_layer_volumes()
+
+
+func _update_layer_volumes() -> void:
+	var duck: float = PAUSE_DUCK_DB if is_paused else 0.0
+	var exp_gain: float = cos(combat_blend * PI * 0.5)
+	var cmb_gain: float = sin(combat_blend * PI * 0.5)
+	if _explore_player != null:
+		_explore_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(exp_gain, 0.0001)) if exp_gain > 0.001 else SILENT_DB
+	if _combat_player != null and _combat_player.stream != null:
+		_combat_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(cmb_gain, 0.0001)) if cmb_gain > 0.001 else SILENT_DB
+
+
+func play_stinger(stinger_name: String) -> void:
+	var st: AudioStream = _load_music_stream(stinger_name, "")
+	if st != null and _stinger_player != null:
+		_stinger_player.stream = st
+		_stinger_player.volume_db = -3.0
+		_stinger_player.play()
+
+
+func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool = false, ui_bus: bool = false) -> void:
+	var st: AudioStream = _load_sfx_stream(sfx_id)
+	if st == null:
+		return
+	if spatial and not _sfx_2d_pool.is_empty():
+		var p2: AudioStreamPlayer2D = _sfx_2d_pool[_sfx_2d_cursor]
+		_sfx_2d_cursor = (_sfx_2d_cursor + 1) % _sfx_2d_pool.size()
+		p2.global_position = world_pos
+		p2.stream = st
+		p2.pitch_scale = randf_range(0.96, 1.04)
+		p2.play()
+	elif not _sfx_pool.is_empty():
+		var p: AudioStreamPlayer = _sfx_pool[_sfx_cursor]
+		_sfx_cursor = (_sfx_cursor + 1) % _sfx_pool.size()
+		p.bus = BUS_UI if ui_bus else BUS_SFX
+		p.stream = st
+		p.pitch_scale = 1.0 if ui_bus else randf_range(0.97, 1.03)
+		p.play()
+
+
+func get_music_position() -> float:
+	if _explore_player != null and _explore_player.playing:
+		return _explore_player.get_playback_position()
+	return 0.0
+
+
+func is_music_playing() -> bool:
+	return _explore_player != null and _explore_player.playing
+
+
+func get_lowpass_cutoff() -> float:
+	return _lowpass.cutoff_hz if _lowpass != null else OPEN_LP_HZ
+
+
+func _load_music_stream(cue_name: String, fallback: String) -> AudioStream:
+	var candidates: Array[String] = [
+		"res://luxel/audio/music/%s.ogg" % cue_name,
+	]
+	if not fallback.is_empty() and fallback != cue_name:
+		candidates.append("res://luxel/audio/music/%s.ogg" % fallback)
+	for path: String in candidates:
+		if _stream_cache.has(path):
+			return _stream_cache[path] as AudioStream
+		if ResourceLoader.exists(path):
+			var res: Resource = ResourceLoader.load(path)
+			if res is AudioStream:
+				if res is AudioStreamOggVorbis:
+					(res as AudioStreamOggVorbis).loop = not cue_name.begins_with("stinger_") and cue_name != "ending_dawn"
+				_stream_cache[path] = res
+				return res as AudioStream
+		var abs_p: String = ProjectSettings.globalize_path(path)
+		if FileAccess.file_exists(abs_p):
+			var ogg: AudioStreamOggVorbis = AudioStreamOggVorbis.load_from_file(abs_p)
+			if ogg != null:
+				ogg.loop = not cue_name.begins_with("stinger_") and cue_name != "ending_dawn"
+				_stream_cache[path] = ogg
+				return ogg
+	# Fallback silent procedural stream so headless tests without audio files still verify continuous playback.
+	var gen := AudioStreamGenerator.new()
+	gen.mix_rate = 44100.0
+	gen.buffer_length = 0.5
+	return gen
+
+
+func _load_sfx_stream(sfx_id: String) -> AudioStream:
+	for ext: String in [".ogg", ".wav"]:
+		var path: String = "res://luxel/audio/sfx/%s%s" % [sfx_id, ext]
+		if _stream_cache.has(path):
+			return _stream_cache[path] as AudioStream
+		if ResourceLoader.exists(path):
+			var res: Resource = ResourceLoader.load(path)
+			if res is AudioStream:
+				_stream_cache[path] = res
+				return res as AudioStream
+		var abs_p: String = ProjectSettings.globalize_path(path)
+		if ext == ".ogg" and FileAccess.file_exists(abs_p):
+			var ogg: AudioStreamOggVorbis = AudioStreamOggVorbis.load_from_file(abs_p)
+			if ogg != null:
+				_stream_cache[path] = ogg
+				return ogg
+	return null

@@ -1,0 +1,73 @@
+{
+  "id": "belfry_r7",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [160, 148],
+  "zones": [
+    {
+      "id": "belfry_spire",
+      "name_key": "ZONE_BELL_TOWER",
+      "rect": [0, 0, 320, 176],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [144, 160, 32, 16],
+      "to_region": "belfry_r6",
+      "to_spawn": [160, 28],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_bellkeeper",
+      "kind": "bellkeeper",
+      "pos": [160, 72],
+      "route": [[120, 72], [200, 72]],
+      "perches": [[88, 56], [160, 40], [232, 56]],
+      "zone": "belfry_spire",
+      "leash": 150
+    }
+  ],
+  "interactables": [
+    {
+      "id": "great_lamp_1",
+      "kind": "great_lamp",
+      "pos": [160, 40],
+      "props": {
+        "island_id": 1,
+        "requires_flag": "boss_bellkeeper_defeated",
+        "name_key": "CH6_TITLE"
+      }
+    },
+    {
+      "id": "brazier_r7_w",
+      "kind": "brazier",
+      "pos": [72, 40],
+      "props": {
+        "lit_by_default": true
+      }
+    },
+    {
+      "id": "brazier_r7_e",
+      "kind": "brazier",
+      "pos": [248, 40],
+      "props": {
+        "lit_by_default": true
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_boss_intro",
+      "rect": [96, 112, 128, 48],
+      "string_id": "BOSS_BELLKEEPER",
+      "once": true
+    }
+  ]
+}

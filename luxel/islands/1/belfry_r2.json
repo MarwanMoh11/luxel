@@ -1,0 +1,68 @@
+{
+  "id": "belfry_r2",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "spawn": [292, 88],
+  "zones": [
+    {
+      "id": "belfry_chasm",
+      "name_key": "ZONE_BELFRY",
+      "rect": [0, 0, 320, 176],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_east",
+      "rect": [304, 64, 16, 48],
+      "to_region": "belfry_r1",
+      "to_spawn": [28, 88],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "switch_eye_r2",
+      "kind": "switch_eye",
+      "pos": [168, 40],
+      "props": {
+        "target_id": "bridge_r2",
+        "sets_flag": "r2_bridge_extended"
+      }
+    },
+    {
+      "id": "bridge_r2",
+      "kind": "door",
+      "pos": [224, 88],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [32, 32],
+        "starts_open": false,
+        "requires_signals": ["switch_eye_r2"]
+      }
+    },
+    {
+      "id": "wick_key_1",
+      "kind": "wick_key",
+      "pos": [72, 88],
+      "props": {
+        "dungeon_id": "belfry",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_1",
+        "requires_moves": ["dash"]
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_r2_dash",
+      "rect": [248, 64, 48, 48],
+      "string_id": "PROMPT_DASH",
+      "once": true
+    }
+  ]
+}

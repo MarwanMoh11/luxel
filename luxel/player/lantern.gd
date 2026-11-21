@@ -1,0 +1,453 @@
+class_name LxLantern
+extends Node2D
+## Wick's lantern entity: IN_HAND, FLYING, HANGING (LURE anchor), RECALLING, CARRIED (stolen by Snatcher).
+## Renders in the 20-colour Last Light palette with smooth glow and zip guide line when out.
+
+enum State { IN_HAND, FLYING, HANGING, RECALLING, CARRIED }
+
+const PAL_NIGHT: Color = Color("211a3b")
+const PAL_DUSK: Color = Color("3d2c5c")
+const PAL_CORAL: Color = Color("e2725b")
+const PAL_APRICOT: Color = Color("f5a96a")
+const PAL_GOLD: Color = Color("ffd98c")
+const PAL_CREAM: Color = Color("fff4dc")
+
+var state: State = State.IN_HAND
+var pos: Vector2 = Vector2.ZERO
+var prev_pos: Vector2 = Vector2.ZERO
+var vel: Vector2 = Vector2.ZERO
+var dir: Vector2 = Vector2.RIGHT
+var dist_traveled: float = 0.0
+var max_range: float = 108.0
+var hang_timer: float = 0.0
+var hang_max: float = 4.5
+var throw_speed: float = 360.0
+var recall_speed: float = 440.0
+var throw_damage: float = 2.0
+var recall_damage: float = 2.0
+var shield_wear: float = 2.0
+var lure_radius: float = 135.0
+var harmless_recall: bool = false
+
+var carrier: Object = null
+var hit_ids: Array[int] = []
+
+var _owner_wick: LxWick = null
+var _anim_t: float = 0.0
+
+
+func _ready() -> void:
+	top_level = true
+	z_index = 2
+
+
+func setup(p_wick: LxWick) -> void:
+	_owner_wick = p_wick
+	reset_to_hand(p_wick.global_position if p_wick != null else Vector2.ZERO)
+
+
+func reset_to_hand(at_pos: Vector2) -> void:
+	state = State.IN_HAND
+	pos = at_pos
+	prev_pos = at_pos
+	global_position = at_pos.round()
+	vel = Vector2.ZERO
+	dist_traveled = 0.0
+	hang_timer = 0.0
+	harmless_recall = false
+	carrier = null
+	hit_ids.clear()
+	queue_redraw()
+
+
+func is_in_hand() -> bool:
+	return state == State.IN_HAND
+
+
+func is_hanging() -> bool:
+	return state == State.HANGING
+
+
+func is_out() -> bool:
+	return state != State.IN_HAND
+
+
+func is_lure_active() -> bool:
+	return state == State.FLYING or state == State.HANGING
+
+
+func get_light_radius() -> float:
+	var has_lens: bool = Lx.state != null and Lx.state.has_move("lens")
+	if has_lens:
+		var ldata: Dictionary = Lx.get_move_data("lens")
+		if state == State.IN_HAND:
+			return float(ldata.get("hand_radius", 68.0))
+		if state == State.CARRIED:
+			return 44.0
+		return float(ldata.get("hung_radius", 118.0))
+	match state:
+		State.IN_HAND:
+			return 96.0
+		State.CARRIED:
+			return 48.0
+		_:
+			return 82.0
+
+
+func throw_out(
+	from_pos: Vector2,
+	p_dir: Vector2,
+	p_speed: float,
+	p_range: float,
+	p_hang: float,
+	p_recall_speed: float,
+	p_throw_dmg: float,
+	p_recall_dmg: float,
+	p_wear: float,
+	p_lure_r: float
+) -> void:
+	state = State.FLYING
+	pos = from_pos
+	prev_pos = from_pos
+	global_position = from_pos.round()
+	dir = p_dir.normalized() if p_dir.length_squared() > 0.0001 else Vector2.RIGHT
+	throw_speed = p_speed
+	vel = dir * throw_speed
+	dist_traveled = 0.0
+	max_range = p_range
+	hang_max = p_hang
+	hang_timer = p_hang
+	recall_speed = p_recall_speed
+	throw_damage = p_throw_dmg
+	recall_damage = p_recall_dmg
+	shield_wear = p_wear
+	lure_radius = p_lure_r
+	harmless_recall = false
+	carrier = null
+	hit_ids.clear()
+	if Lx.events != null:
+		Lx.events.lantern_thrown.emit(pos, dir)
+	queue_redraw()
+
+
+func start_recall(wick: LxWick, world_ctx: Node, slam_radius: float = 18.0, hs: float = 0.085, sh: float = 0.14) -> void:
+	if state != State.FLYING and state != State.HANGING:
+		return
+	state = State.RECALLING
+	harmless_recall = false
+	hit_ids.clear()
+	if Lx.events != null:
+		Lx.events.lantern_recalled.emit(pos)
+	if wick != null:
+		wick.emit_sfx("lantern_recall", pos, true)
+		wick.spawn_ring(pos, 2.0, slam_radius, 0.20, PAL_GOLD, 1.0)
+		# Immediate 18 px recall-on-grab slam (catches diving/wrestling Snatchers and nearby foes)
+		var enemies: Array = wick.world_get_enemies(world_ctx)
+		for e_var: Variant in enemies:
+			if not (e_var is Object):
+				continue
+			var enemy: Object = e_var as Object
+			if not wick.is_entity_alive(enemy):
+				continue
+			var epos: Vector2 = wick.get_entity_pos(enemy)
+			if epos.distance_to(pos) <= slam_radius:
+				var eid: int = enemy.get_instance_id()
+				hit_ids.append(eid)
+				var kdir: Vector2 = (epos - pos).normalized() if epos.distance_to(pos) > 0.1 else (wick.global_position - pos).normalized()
+				var hit: LxHit = LxHit.make(
+					LxHit.SOURCE_RECALL, recall_damage, kdir, pos,
+					shield_wear, true, false, wick, false
+				)
+				var res: int = wick.apply_hit_to_entity(enemy, hit)
+				wick.on_hit_landed(hit, res, epos, hs, sh)
+
+
+func catch_by_wick(wick: LxWick) -> void:
+	state = State.IN_HAND
+	vel = Vector2.ZERO
+	carrier = null
+	harmless_recall = false
+	hit_ids.clear()
+	if wick != null:
+		pos = wick.global_position
+		prev_pos = pos
+		global_position = pos.round()
+		wick.catch_anim_t = 0.22
+		wick.spawn_ring(pos, 2.0, 9.0, 0.16, PAL_CREAM, 1.0)
+		wick.emit_sfx("lantern_catch", pos, false)
+	if Lx.events != null:
+		Lx.events.lantern_caught.emit(pos)
+	queue_redraw()
+
+
+func on_grabbed(thief: Object) -> void:
+	state = State.CARRIED
+	carrier = thief
+	vel = Vector2.ZERO
+	hit_ids.clear()
+	if thief != null and is_instance_valid(thief):
+		if _owner_wick != null:
+			pos = _owner_wick.get_entity_pos(thief)
+		elif thief is Node2D:
+			pos = (thief as Node2D).global_position
+		else:
+			var pv: Variant = thief.get("pos")
+			if pv is Vector2:
+				pos = pv as Vector2
+		global_position = pos.round()
+	if _owner_wick != null:
+		_owner_wick.spawn_ring(pos, 2.0, 18.0, 0.28, PAL_CORAL, 1.5)
+		_owner_wick.spawn_sparks(pos, Vector2.UP, 8, PAL_GOLD, 25.0, 85.0, 0.24)
+		_owner_wick.emit_sfx("magpie_grab", pos, true)
+	if Lx.events != null:
+		Lx.events.lantern_stolen.emit(thief, pos)
+	queue_redraw()
+
+
+func on_dropped(at_pos: Vector2) -> void:
+	carrier = null
+	state = State.HANGING
+	pos = at_pos
+	prev_pos = at_pos
+	global_position = at_pos.round()
+	vel = Vector2.ZERO
+	var tdata: Dictionary = Lx.get_move_data("throw")
+	hang_max = float(tdata.get("hang_time", 4.5))
+	hang_timer = hang_max
+	harmless_recall = false
+	hit_ids.clear()
+	if _owner_wick != null:
+		_owner_wick.spawn_ring(pos, 3.0, 22.0, 0.30, PAL_GOLD, 2.0)
+		_owner_wick.spawn_sparks(pos, Vector2.UP, 12, PAL_GOLD, 30.0, 95.0, 0.28)
+		_owner_wick.trigger_hitstop(0.085)
+		_owner_wick.trigger_shake(0.12)
+		_owner_wick.emit_sfx("magpie_drop", pos, true)
+	if Lx.events != null:
+		Lx.events.lantern_dropped.emit(pos)
+	queue_redraw()
+
+
+func on_perched_loss() -> void:
+	if state != State.CARRIED:
+		return
+	carrier = null
+	state = State.RECALLING
+	harmless_recall = true
+	hit_ids.clear()
+	if Lx.events != null:
+		Lx.events.lantern_perched_loss.emit(pos)
+	if _owner_wick != null:
+		_owner_wick.emit_sfx("magpie_perch_loss", pos, false)
+		_owner_wick.on_lantern_lost(pos, "perched_loss")
+	queue_redraw()
+
+
+func on_struck() -> void:
+	if state != State.FLYING and state != State.HANGING:
+		return
+	state = State.RECALLING
+	harmless_recall = true
+	hit_ids.clear()
+	if Lx.events != null:
+		Lx.events.lantern_struck.emit(pos)
+	if _owner_wick != null:
+		_owner_wick.on_lantern_lost(pos, "struck")
+	queue_redraw()
+
+
+func tick_sim(dt: float, wick: LxWick, world_ctx: Node) -> void:
+	_owner_wick = wick
+	_anim_t += dt
+	prev_pos = pos
+	if wick == null:
+		return
+
+	match state:
+		State.IN_HAND:
+			pos = wick.global_position
+			vel = Vector2.ZERO
+		State.FLYING:
+			var step_d: float = throw_speed * dt
+			var nxt: Vector2 = pos + dir * step_d
+			if wick.world_shot_blocked(world_ctx, pos, nxt):
+				_land_hanging(wick)
+			else:
+				pos = nxt
+				vel = dir * throw_speed
+				dist_traveled += step_d
+				_sweep_hits(wick, world_ctx, dir, LxHit.SOURCE_THROW, throw_damage)
+				if state == State.FLYING and dist_traveled >= max_range:
+					_land_hanging(wick)
+		State.HANGING:
+			vel = Vector2.ZERO
+			hang_timer -= dt
+			if hang_timer < hang_max - 0.15 and not wick.is_zipping() and wick.global_position.distance_to(pos) <= 8.0:
+				catch_by_wick(wick)
+			elif hang_timer <= 0.0:
+				state = State.RECALLING
+				harmless_recall = false
+				hit_ids.clear()
+				if Lx.events != null:
+					Lx.events.lantern_recalled.emit(pos)
+				wick.emit_sfx("lantern_recall", pos, true)
+		State.RECALLING:
+			var to_w: Vector2 = wick.global_position - pos
+			var dlen: float = to_w.length()
+			if dlen <= 6.0:
+				catch_by_wick(wick)
+			else:
+				var rdir: Vector2 = to_w / dlen
+				var step: float = minf(recall_speed * dt, dlen)
+				pos += rdir * step
+				vel = rdir * recall_speed
+				if not harmless_recall:
+					_sweep_hits(wick, world_ctx, rdir, LxHit.SOURCE_RECALL, recall_damage)
+		State.CARRIED:
+			vel = Vector2.ZERO
+			if carrier != null and is_instance_valid(carrier) and wick.is_entity_alive(carrier):
+				pos = wick.get_entity_pos(carrier)
+			else:
+				carrier = null
+				state = State.RECALLING
+				harmless_recall = false
+				hit_ids.clear()
+
+	global_position = pos.round()
+
+	# Notify nearby interactables of lantern light (braziers, Lens phantom reveals).
+	if is_out():
+		wick.spawn_sparks(pos, Vector2.UP, 1, PAL_APRICOT, 4.0, 14.0, 0.16)
+	_notify_light(wick, world_ctx)
+	queue_redraw()
+
+
+func _land_hanging(wick: LxWick) -> void:
+	state = State.HANGING
+	vel = Vector2.ZERO
+	hang_timer = hang_max
+	if Lx.events != null:
+		Lx.events.lantern_hung.emit(pos)
+	wick.spawn_ring(pos, 2.0, 12.0, 0.22, PAL_GOLD, 1.0)
+	wick.emit_sfx("lantern_land", pos, true)
+
+
+func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: String, dmg: float) -> void:
+	var tdata: Dictionary = Lx.get_move_data("throw")
+	var hs: float = float(tdata.get("hitstop", 0.085))
+	var sh: float = float(tdata.get("shake", 0.14))
+
+	var enemies: Array = wick.world_get_enemies(world_ctx)
+	for e_var: Variant in enemies:
+		if not (e_var is Object):
+			continue
+		var enemy: Object = e_var as Object
+		if not wick.is_entity_alive(enemy):
+			continue
+		var eid: int = enemy.get_instance_id()
+		if hit_ids.has(eid):
+			continue
+		var epos: Vector2 = wick.get_entity_pos(enemy)
+		var erad: float = wick.get_entity_radius(enemy, 8.0)
+		var pad: float = 8.0 if (state == State.RECALLING and wick.is_snatcher_entity(enemy)) else 3.5
+		if Geometry2D.get_closest_point_to_segment(epos, prev_pos, pos).distance_to(epos) > erad + pad:
+			continue
+
+		hit_ids.append(eid)
+		if state == State.FLYING and enemy.has_method("try_catch_lantern"):
+			if bool(enemy.call("try_catch_lantern", self)):
+				return
+
+		var hit: LxHit = LxHit.make(
+			hit_source, dmg, move_dir, epos - move_dir * 10.0,
+			shield_wear, true, false, wick, false
+		)
+		var res: int = wick.apply_hit_to_entity(enemy, hit)
+		wick.on_hit_landed(hit, res, epos, hs, sh)
+		if res == 0 and state == State.FLYING:
+			var back: Vector2 = pos - move_dir * 6.0
+			if not wick.world_shot_blocked(world_ctx, pos, back):
+				pos = back
+			state = State.HANGING
+			vel = Vector2.ZERO
+			hang_max = 0.6
+			hang_timer = 0.6
+			return
+
+	# Interactables (distant braziers, switches, bells)
+	var inters: Array = wick.world_get_interactables(world_ctx)
+	for it_var: Variant in inters:
+		if not (it_var is Object):
+			continue
+		var item: Object = it_var as Object
+		if not is_instance_valid(item) or not item.has_method("on_hit"):
+			continue
+		var iid: int = item.get_instance_id()
+		if hit_ids.has(iid):
+			continue
+		var ipos: Vector2 = wick.get_entity_pos(item)
+		var irad: float = wick.get_entity_radius(item, 8.0)
+		if Geometry2D.get_closest_point_to_segment(ipos, prev_pos, pos).distance_to(ipos) <= irad + 3.5:
+			hit_ids.append(iid)
+			var hit_i: LxHit = LxHit.make(hit_source, dmg, move_dir, pos, shield_wear, true, false, wick, false)
+			item.call("on_hit", hit_i)
+
+
+func _notify_light(wick: LxWick, world_ctx: Node) -> void:
+	var rad: float = get_light_radius()
+	var src_tag: String = "lantern_hung" if is_lure_active() else "lantern_hand"
+	var inters: Array = wick.world_get_interactables(world_ctx)
+	for it_var: Variant in inters:
+		if not (it_var is Object):
+			continue
+		var item: Object = it_var as Object
+		if not is_instance_valid(item) or not item.has_method("on_light"):
+			continue
+		var ipos: Vector2 = wick.get_entity_pos(item)
+		if ipos.distance_to(pos) <= rad:
+			item.call("on_light", rad, src_tag)
+
+
+func _draw() -> void:
+	if state == State.IN_HAND:
+		return
+
+	var pulse: float = 0.90 + 0.10 * sin(_anim_t * 7.5)
+	var bob_y: float = roundf(sin(_anim_t * 5.0) * 1.5) if state == State.HANGING else 0.0
+	var center := Vector2(0.0, -5.0 + bob_y)
+
+	# Zip guide line from Wick to lantern when zippable (FLYING or HANGING)
+	if is_lure_active() and _owner_wick != null and is_instance_valid(_owner_wick):
+		var rel_wick: Vector2 = (_owner_wick.global_position - global_position).round()
+		_draw_dashed_line(rel_wick + Vector2(0.0, -5.0), center, 3.0, 3.0, Color(PAL_GOLD, 0.45), 1.0)
+
+	# Smooth feathered warm glow (no screen-door dither)
+	var glow_col: Color = PAL_CORAL if state == State.CARRIED else PAL_GOLD
+	draw_circle(center, 15.0 * pulse, Color(glow_col, 0.10))
+	draw_circle(center, 9.0 * pulse, Color(PAL_APRICOT, 0.16))
+
+	# Hang timer arc around hanging lantern
+	if state == State.HANGING and hang_max > 0.05:
+		var frac: float = clampf(hang_timer / hang_max, 0.0, 1.0)
+		draw_arc(center, 7.5, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, Color(PAL_GOLD, 0.72), 1.0)
+
+	# Crisp pixel lantern body (Last Light palette only)
+	draw_rect(Rect2(center + Vector2(-3.0, -4.0), Vector2(6.0, 8.0)), PAL_NIGHT)
+	draw_rect(Rect2(center + Vector2(-2.0, -4.0), Vector2(4.0, 1.0)), PAL_DUSK)
+	draw_rect(Rect2(center + Vector2(-2.0, 3.0), Vector2(4.0, 1.0)), PAL_DUSK)
+	draw_rect(Rect2(center + Vector2(-2.0, -3.0), Vector2(4.0, 6.0)), PAL_APRICOT)
+	draw_rect(Rect2(center + Vector2(-1.0, -2.0), Vector2(2.0, 4.0)), PAL_GOLD)
+	draw_rect(Rect2(center + Vector2(-1.0, -1.0), Vector2(2.0, 2.0)), PAL_CREAM)
+
+
+func _draw_dashed_line(a: Vector2, b: Vector2, dash_len: float, gap_len: float, col: Color, width: float) -> void:
+	var delta: Vector2 = b - a
+	var total: float = delta.length()
+	if total <= 1.0:
+		return
+	var step_dir: Vector2 = delta / total
+	var cursor: float = 0.0
+	var period: float = dash_len + gap_len
+	while cursor < total:
+		var seg_end: float = minf(cursor + dash_len, total)
+		draw_line(a + step_dir * cursor, a + step_dir * seg_end, col, width)
+		cursor += period

@@ -1,0 +1,15 @@
+{
+ "chars": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!-:x/.+=%",
+ "glyph_size": [
+  3,
+  5
+ ],
+ "outline_cell_size": [
+  5,
+  7
+ ],
+ "fill_color": "#fff4dc",
+ "outline_color": "#211a3b",
+ "sheet": "font.png",
+ "outline_sheet": "font_outline.png"
+}
