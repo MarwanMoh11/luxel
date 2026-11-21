@@ -1,0 +1,181 @@
+class_name LxMoveSunflare
+extends LxMove
+## Sunflare (Island 6): press lx_sunflare (Q / Y) at full Ember meter.
+## Spends full Ember meter, emits radial burst (radius 76) cracking heavy armour & stunning 1.6s,
+## shatters LxObsidianSeal & LxCrackedWall in radius, and lights EVERY LxBrazier in the current room.
+
+const FLARE_VIS_DURATION: float = 0.34
+
+var flare_vis_t: float = 0.0
+var flare_vis_max: float = FLARE_VIS_DURATION
+var flare_origin: Vector2 = Vector2.ZERO
+var flare_radius: float = 76.0
+var flares_fired: int = 0
+
+var _world_ctx: Node = null
+
+
+func set_world_ctx(world_ctx: Node) -> void:
+	_world_ctx = world_ctx
+
+
+func get_ember_max() -> float:
+	if Lx.state != null:
+		return Lx.state.get_effective_ember_max()
+	return float(get_data().get("ember_max", 100.0))
+
+
+func can_use() -> bool:
+	if not super.can_use():
+		return false
+	if wick.dead or wick.is_zipping():
+		return false
+	return wick.ember >= get_ember_max() - 0.001
+
+
+func press() -> bool:
+	return trigger_sunflare(_world_ctx)
+
+
+func trigger_sunflare(world_ctx: Node = null) -> bool:
+	if not can_use():
+		if wick != null:
+			wick.emit_sfx("denied", wick.global_position, false)
+		return false
+
+	if wick.move_beam != null:
+		wick.move_beam.cancel()
+
+	var ctx: Node = world_ctx if world_ctx != null else (_world_ctx if _world_ctx != null else Lx.world)
+	var data: Dictionary = get_data()
+	var rad: float = float(data.get("radius", 76.0))
+	var dmg: float = float(data.get("damage", 3.0))
+	var wear: float = float(data.get("shield_wear", 4.0))
+	var stun_t: float = float(data.get("stun_time", 1.6))
+	var cracks: bool = bool(data.get("cracks_armour", true))
+	var stagger: bool = bool(data.get("stagger", true))
+	var hs: float = float(data.get("hitstop", 0.14))
+	var sh: float = float(data.get("shake", 0.24))
+
+	wick.ember = 0.0
+	var origin: Vector2 = wick.global_position
+
+	# 1. Hit every alive enemy within radial burst (cracks_armour=true, stun 1.6s)
+	var enemies: Array = wick.world_get_enemies(ctx)
+	for e_var: Variant in enemies:
+		if not (e_var is Object):
+			continue
+		var enemy: Object = e_var as Object
+		if not wick.is_entity_alive(enemy):
+			continue
+		var epos: Vector2 = wick.get_entity_pos(enemy)
+		var erad: float = wick.get_entity_radius(enemy, 8.0)
+		if epos.distance_to(origin) <= rad + erad:
+			var dir: Vector2 = (epos - origin).normalized() if epos.distance_to(origin) > 0.1 else wick.facing
+			var hit: LxHit = LxHit.make(
+				LxHit.SOURCE_SUNFLARE, dmg, dir, origin,
+				wear, stagger, true, wick, cracks
+			)
+			var res: int = wick.apply_hit_to_entity(enemy, hit)
+			if res == LxEnemyBrain.HitResult.OPENED and wick.is_entity_alive(enemy):
+				var st_v: Variant = enemy.get("state")
+				var st_t: Variant = enemy.get("state_timer")
+				if st_v is int and int(st_v) == LxEnemyBrain.State.STAGGER and st_t is float and float(st_t) < stun_t:
+					enemy.set("state_timer", stun_t)
+			wick.on_hit_landed(hit, res, epos, hs, sh)
+
+	# 2. Shatter LxObsidianSeal & LxCrackedWall in radius + light EVERY LxBrazier in the current room
+	var room_rect: Rect2 = Rect2()
+	if ctx != null and ctx.has_method("get_current_room_rect"):
+		room_rect = ctx.call("get_current_room_rect") as Rect2
+
+	var inters: Array = wick.world_get_interactables(ctx)
+	for it_var: Variant in inters:
+		if not (it_var is Object):
+			continue
+		var item: Object = it_var as Object
+		if not is_instance_valid(item):
+			continue
+		if item.get("active") is bool and not bool(item.get("active")):
+			continue
+		var ipos: Vector2 = wick.get_entity_pos(item)
+		var irad: float = wick.get_entity_radius(item, 8.0)
+		var is_brazier: bool = (item is LxBrazier) or (str(item.get("kind")) == "brazier")
+		if is_brazier:
+			var in_room: bool = (not room_rect.has_area()) or room_rect.grow(8.0).has_point(ipos)
+			if in_room:
+				if item.has_method("on_light"):
+					item.call("on_light", 999.0, "sunflare")
+				elif item.has_method("on_hit"):
+					var bdir: Vector2 = (ipos - origin).normalized() if ipos.distance_to(origin) > 0.1 else Vector2.UP
+					item.call("on_hit", LxHit.make(LxHit.SOURCE_SUNFLARE, dmg, bdir, origin, wear, stagger, true, wick, cracks))
+				wick.spawn_sparks(ipos, Vector2.UP, 6, LxWick.PAL_GOLD, 24.0, 72.0, 0.24)
+				continue
+
+		if item.has_method("on_hit") and _within_burst(origin, rad, item, ipos, irad):
+			var idir: Vector2 = (ipos - origin).normalized() if ipos.distance_to(origin) > 0.1 else wick.facing
+			var hit_i: LxHit = LxHit.make(
+				LxHit.SOURCE_SUNFLARE, dmg, idir, origin,
+				wear, stagger, true, wick, cracks
+			)
+			var hit_res: Variant = item.call("on_hit", hit_i)
+			if hit_res is bool and bool(hit_res):
+				wick.spawn_sparks(ipos, idir, 10, LxWick.PAL_GOLD, 35.0, 105.0, 0.28)
+
+	# 3. Big Last Light gold/cream expanding ring + hitstop 0.14s + shake 0.24
+	flare_origin = origin
+	flare_radius = rad
+	flare_vis_max = FLARE_VIS_DURATION
+	flare_vis_t = FLARE_VIS_DURATION
+	flares_fired += 1
+	cooldown_left = 0.35
+
+	wick.trigger_hitstop(hs)
+	wick.trigger_shake(sh)
+	wick.spawn_ring(origin, 4.0, rad, 0.36, LxWick.PAL_GOLD, 2.5)
+	wick.spawn_ring(origin, 2.0, rad * 0.82, 0.28, LxWick.PAL_CREAM, 2.0)
+	wick.spawn_ring(origin, 6.0, rad * 1.08, 0.42, LxWick.PAL_APRICOT, 1.5)
+	for i: int in range(16):
+		var sdir: Vector2 = Vector2.from_angle(TAU * float(i) / 16.0)
+		var scol: Color = LxWick.PAL_CREAM if (i % 2 == 0) else LxWick.PAL_GOLD
+		wick.spawn_sparks(origin, sdir, 1, scol, 55.0, 145.0, 0.30)
+	wick.emit_sfx("sunflare_burst", origin, false)
+	return true
+
+
+func tick(dt: float) -> void:
+	super.tick(dt)
+	if flare_vis_t > 0.0:
+		flare_vis_t = maxf(0.0, flare_vis_t - dt)
+
+
+func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
+	if flare_vis_t <= 0.0:
+		return
+	var prog: float = 1.0 - clampf(flare_vis_t / maxf(flare_vis_max, 0.01), 0.0, 1.0)
+	var fade: float = 1.0 - prog
+	var center: Vector2 = (flare_origin + off).round() + Vector2(0.0, -5.0)
+	var cur_r: float = lerpf(8.0, flare_radius, prog)
+	canvas.draw_circle(center, cur_r * 0.55, Color(LxWick.PAL_CREAM, fade * 0.28))
+	canvas.draw_arc(center, cur_r, 0.0, TAU, 32, Color(LxWick.PAL_GOLD, fade * 0.95), 2.5)
+	canvas.draw_arc(center, cur_r * 0.78, 0.0, TAU, 28, Color(LxWick.PAL_CREAM, fade * 0.90), 1.5)
+
+
+func reset() -> void:
+	super.reset()
+	flare_vis_t = 0.0
+	flares_fired = 0
+
+
+func _within_burst(origin: Vector2, rad: float, item: Object, ipos: Vector2, irad: float) -> bool:
+	if ipos.distance_to(origin) <= rad + irad:
+		return true
+	if item.has_method("get_solid_rect"):
+		var srect: Rect2 = item.call("get_solid_rect") as Rect2
+		if srect.has_area():
+			var closest := Vector2(
+				clampf(origin.x, srect.position.x, srect.end.x),
+				clampf(origin.y, srect.position.y, srect.end.y)
+			)
+			return closest.distance_to(origin) <= rad
+	return false

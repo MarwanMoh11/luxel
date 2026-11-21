@@ -1,7 +1,14 @@
 class_name LxWick
 extends Node2D
-## Wick: player controller (92 px/s movement, 100% manual aim, modular kit, hearts/mercy/Assist).
-## Loads res://luxel/art/wick/ sprite sheet if present; falls back to Last Light coloured-squares moth.
+## Wick: player controller (92 px/s movement, 100% manual aim, 8-move modular kit, hearts/mercy/Assist).
+## FX pools and sprite/greybox rendering live in luxel/player/wick_fx.gd.
+
+const MovePrism := preload("res://luxel/player/kit/prism.gd")
+const MoveBeam := preload("res://luxel/player/kit/beam.gd")
+const MoveWings := preload("res://luxel/player/kit/wings.gd")
+const MoveLens := preload("res://luxel/player/kit/lens.gd")
+const MoveSunflare := preload("res://luxel/player/kit/sunflare.gd")
+const WickFx := preload("res://luxel/player/wick_fx.gd")
 
 const MOVE_SPEED: float = 92.0
 const BODY_RADIUS: float = 4.0
@@ -47,6 +54,11 @@ var lantern: LxLantern = null
 var move_bolt: LxMoveBolt = null
 var move_dash: LxMoveDash = null
 var move_throw: LxMoveThrow = null
+var move_prism: MovePrism = null
+var move_beam: MoveBeam = null
+var move_wings: MoveWings = null
+var move_lens: MoveLens = null
+var move_sunflare: MoveSunflare = null
 var moves: Dictionary = {}
 var bolts: Array = []
 
@@ -59,26 +71,21 @@ var _prev_act: Dictionary = {}
 var _walk_phase: float = 0.0
 var _clock_t: float = 0.0
 var _arity_cache: Dictionary = {}
-var _afterimages: Array[Dictionary] = []
-var _rings: Array[Dictionary] = []
-var _sparks: Array[Dictionary] = []
-var _sprite_tex: Texture2D = null
-var _sprite_frame_size: Vector2i = Vector2i(24, 24)
+var _fx: WickFx = WickFx.new()
 
 func _ready() -> void:
 	z_index = 1
 	_ensure_kit()
-	_try_load_sprite()
+	_fx.try_load_sprite()
 
 func setup(world_ctx: Node) -> void:
 	_world_ctx = world_ctx
 	_ensure_kit()
-	_try_load_sprite()
+	_fx.try_load_sprite()
 	if Lx.debug != null and Lx.debug.god:
 		god = true
 	Lx.player = self
-	if move_throw != null:
-		move_throw.set_world_ctx(world_ctx)
+	_bind_world_ctx(world_ctx)
 	if Lx.events != null and not Lx.events.move_unlocked.is_connected(_on_move_unlocked):
 		Lx.events.move_unlocked.connect(_on_move_unlocked)
 	sync_unlocks_from_state()
@@ -87,21 +94,25 @@ func setup(world_ctx: Node) -> void:
 		_local_hearts = Lx.state.hearts
 	reset_for_room(global_position)
 
+func _bind_world_ctx(world_ctx: Node) -> void:
+	if move_throw != null: move_throw.set_world_ctx(world_ctx)
+	if move_beam != null: move_beam.set_world_ctx(world_ctx)
+	if move_sunflare != null: move_sunflare.set_world_ctx(world_ctx)
+
 func _ensure_kit() -> void:
 	if lantern == null or not is_instance_valid(lantern):
 		lantern = LxLantern.new()
 		lantern.name = "LxLantern"
 		add_child(lantern)
 		lantern.setup(self)
-	if move_bolt == null:
-		move_bolt = LxMoveBolt.new()
-		register_move(move_bolt, "bolt")
-	if move_dash == null:
-		move_dash = LxMoveDash.new()
-		register_move(move_dash, "dash")
-	if move_throw == null:
-		move_throw = LxMoveThrow.new()
-		register_move(move_throw, "throw")
+	if move_bolt == null: move_bolt = LxMoveBolt.new(); register_move(move_bolt, "bolt")
+	if move_dash == null: move_dash = LxMoveDash.new(); register_move(move_dash, "dash")
+	if move_throw == null: move_throw = LxMoveThrow.new(); register_move(move_throw, "throw")
+	if move_prism == null: move_prism = MovePrism.new(); register_move(move_prism, "prism")
+	if move_beam == null: move_beam = MoveBeam.new(); register_move(move_beam, "beam")
+	if move_wings == null: move_wings = MoveWings.new(); register_move(move_wings, "wings")
+	if move_lens == null: move_lens = MoveLens.new(); register_move(move_lens, "lens")
+	if move_sunflare == null: move_sunflare = MoveSunflare.new(); register_move(move_sunflare, "sunflare")
 
 func register_move(move: LxMove, move_id: String) -> void:
 	if move != null:
@@ -133,9 +144,7 @@ func reset_for_room(at_pos: Vector2) -> void:
 	recoil_vis = 0.0
 	dead = false
 	bolts.clear()
-	_afterimages.clear()
-	_rings.clear()
-	_sparks.clear()
+	_fx.clear()
 	_prev_act.clear()
 	for mv_var: Variant in moves.values():
 		if mv_var is LxMove:
@@ -147,10 +156,9 @@ func reset_for_room(at_pos: Vector2) -> void:
 func tick_sim(dt: float, world_ctx: Node) -> void:
 	_world_ctx = world_ctx
 	_ensure_kit()
-	if move_throw != null:
-		move_throw.set_world_ctx(world_ctx)
+	_bind_world_ctx(world_ctx)
 	_clock_t += dt
-	_age_fx(dt)
+	_fx.age(dt)
 	if dead:
 		queue_redraw()
 		return
@@ -169,6 +177,8 @@ func tick_sim(dt: float, world_ctx: Node) -> void:
 	for mv_var: Variant in moves.values():
 		if mv_var is LxMove:
 			(mv_var as LxMove).tick(dt)
+	if move_lens != null:
+		move_lens.register_circle(world_ctx)
 
 	last_pos = global_position
 	var desired_vel: Vector2 = Vector2.ZERO
@@ -179,6 +189,8 @@ func tick_sim(dt: float, world_ctx: Node) -> void:
 	elif is_dashing() or is_gliding():
 		desired_vel = move_dash.get_active_velocity()
 		airborne = move_dash.can_cross_gaps()
+	elif is_beam_charging():
+		desired_vel = Vector2.ZERO
 	elif bounce_t <= 0.0:
 		desired_vel = get_move_input() * MOVE_SPEED
 
@@ -187,16 +199,14 @@ func tick_sim(dt: float, world_ctx: Node) -> void:
 	var next_pos: Vector2 = world_collide_step(world_ctx, global_position, global_position + desired_vel * dt, BODY_RADIUS, airborne)
 	velocity = (next_pos - global_position) / maxf(dt, 0.0001)
 	global_position = next_pos
-	_walk_phase = _walk_phase + dt * 13.0 if (velocity.length() > 10.0 and not is_dashing() and not is_zipping()) else 0.0
+	var walking: bool = velocity.length() > 10.0 and not is_dashing() and not is_gliding() and not is_zipping() and not is_beam_charging()
+	_walk_phase = _walk_phase + dt * 13.0 if walking else 0.0
 
-	if move_dash != null:
-		move_dash.tick_dash(dt, world_ctx)
-	if move_throw != null:
-		move_throw.tick_zip(dt, world_ctx)
-	if lantern != null:
-		lantern.tick_sim(dt, self, world_ctx)
-	if move_bolt != null:
-		move_bolt.tick_bolts(dt, world_ctx)
+	if move_dash != null: move_dash.tick_dash(dt, world_ctx)
+	if move_throw != null: move_throw.tick_zip(dt, world_ctx)
+	if lantern != null: lantern.tick_sim(dt, self, world_ctx)
+	if move_lens != null: move_lens.tick_lens(dt, world_ctx)
+	if move_bolt != null: move_bolt.tick_bolts(dt, world_ctx)
 	queue_redraw()
 
 func _update_manual_aim() -> void:
@@ -210,7 +220,7 @@ func _update_manual_aim() -> void:
 func _poll_inputs(world_ctx: Node) -> void:
 	if Lx.input == null:
 		return
-	for act: String in ["lx_fire", "lx_throw", "lx_dash", "lx_interact"]:
+	for act: String in ["lx_fire", "lx_throw", "lx_dash", "lx_beam", "lx_sunflare", "lx_interact"]:
 		var now: bool = Lx.input.is_action_active(act)
 		var was: bool = bool(_prev_act.get(act, false))
 		_prev_act[act] = now
@@ -219,10 +229,14 @@ func _poll_inputs(world_ctx: Node) -> void:
 				"lx_fire": press_fire()
 				"lx_throw": press_throw()
 				"lx_dash": press_dash()
+				"lx_beam": press_beam()
+				"lx_sunflare": press_sunflare()
 				"lx_interact": try_interact(world_ctx)
 		elif not now and was:
-			if act == "lx_fire": release_fire()
-			elif act == "lx_dash": release_dash()
+			match act:
+				"lx_fire": release_fire()
+				"lx_dash": release_dash()
+				"lx_beam": release_beam()
 
 func press_fire() -> bool:
 	_ensure_kit()
@@ -241,15 +255,45 @@ func release_fire() -> void:
 
 func press_throw() -> bool:
 	_ensure_kit()
-	return false if dead or move_throw == null else move_throw.press()
+	if dead or move_throw == null:
+		return false
+	var ok: bool = move_throw.press()
+	if ok and move_beam != null:
+		move_beam.cancel()
+	return ok
 
 func press_dash() -> bool:
 	_ensure_kit()
-	return false if dead or move_dash == null else move_dash.press()
+	if dead or move_dash == null:
+		return false
+	var ok: bool = move_dash.press()
+	if ok and move_beam != null:
+		move_beam.cancel()
+	return ok
 
 func release_dash() -> void:
 	if move_dash != null:
 		move_dash.release()
+
+func press_beam() -> bool:
+	_ensure_kit()
+	if dead or move_beam == null:
+		return false
+	move_beam.set_world_ctx(_world_ctx)
+	return move_beam.press_beam()
+
+func release_beam() -> bool:
+	if move_beam == null:
+		return false
+	move_beam.set_world_ctx(_world_ctx)
+	return move_beam.release_beam()
+
+func press_sunflare() -> bool:
+	_ensure_kit()
+	if dead or move_sunflare == null:
+		return false
+	move_sunflare.set_world_ctx(_world_ctx)
+	return move_sunflare.press()
 
 func try_zip() -> bool:
 	_ensure_kit()
@@ -281,7 +325,7 @@ func take_damage(amount: float, from_pos: Vector2, knock_dir: Vector2, source: S
 	if move_dash != null and move_dash.has_iframes():
 		move_dash.on_perfect_dodge()
 		return
-	if is_gliding() and source == "shockwave":
+	if is_gliding() and source == "shockwave" and (move_wings == null or move_wings.clears_shockwave()):
 		return
 	if is_invulnerable():
 		return
@@ -319,20 +363,22 @@ func _apply_damage_internal(amount: float, from_pos: Vector2, knock_dir: Vector2
 
 	if get_hearts() <= 0.0 and not god and dmg > 0.0:
 		dead = true
-		if move_dash != null:
-			move_dash.cancel()
-		if move_throw != null:
-			move_throw.cancel_zip()
-		if Lx.state != null:
-			Lx.state.deaths += 1
-		if Lx.events != null:
-			Lx.events.player_died.emit()
+		if move_dash != null: move_dash.cancel()
+		if move_wings != null: move_wings.stop_glide()
+		if move_beam != null: move_beam.cancel()
+		if move_throw != null: move_throw.cancel_zip()
+		if Lx.state != null: Lx.state.deaths += 1
+		if Lx.events != null: Lx.events.player_died.emit()
 
 func get_hearts() -> float:
 	return Lx.state.hearts if Lx.state != null else _local_hearts
 
 func get_max_hearts() -> int:
 	return Lx.state.max_hearts if Lx.state != null else _local_max_hearts
+
+func get_ember_ratio() -> float:
+	var emax: float = move_sunflare.get_ember_max() if move_sunflare != null else 100.0
+	return clampf(ember / maxf(emax, 1.0), 0.0, 1.0)
 
 func is_invulnerable() -> bool:
 	return god or mercy_t > 0.0 or is_zipping() or (move_dash != null and move_dash.has_iframes())
@@ -341,10 +387,16 @@ func is_dashing() -> bool:
 	return move_dash != null and move_dash.active
 
 func is_gliding() -> bool:
-	return move_dash != null and move_dash.is_gliding
+	return (move_wings != null and move_wings.gliding) or (move_dash != null and move_dash.is_gliding)
 
 func is_zipping() -> bool:
 	return move_throw != null and move_throw.zipping
+
+func is_beam_charging() -> bool:
+	return move_beam != null and move_beam.is_charging()
+
+func beam_charge_progress() -> float:
+	return move_beam.charge_progress() if move_beam != null else 0.0
 
 func get_move_input() -> Vector2:
 	return Lx.input.get_move_vector() if Lx.input != null else Vector2.ZERO
@@ -368,10 +420,15 @@ func on_hit_landed(hit: LxHit, result: int, target_pos: Vector2, hitstop_s: floa
 	if heavy:
 		spawn_ring(target_pos, 2.0, 14.0, 0.20, PAL_GOLD, 1.0)
 	emit_sfx("heavy_hit" if heavy else "bolt_chip", target_pos, true)
-	if Lx.state != null:
+	if hit.source != LxHit.SOURCE_SUNFLARE:
 		var sd: Dictionary = Lx.get_move_data("sunflare")
-		var gain: float = float(sd.get("ember_per_heavy", 18.0)) if heavy else float(sd.get("ember_per_bolt", 6.0))
-		ember = minf(Lx.state.get_effective_ember_max(), ember + gain)
+		var gain: float = float(sd.get("ember_per_kill", 20.0)) if result == LxEnemyBrain.HitResult.KILLED else (
+			float(sd.get("ember_per_heavy", 18.0)) if heavy else float(sd.get("ember_per_bolt", 6.0))
+		)
+		var emax: float = move_sunflare.get_ember_max() if move_sunflare != null else (
+			Lx.state.get_effective_ember_max() if Lx.state != null else float(sd.get("ember_max", 100.0))
+		)
+		ember = minf(emax, ember + gain)
 
 func trigger_hitstop(duration: float) -> void:
 	if duration > 0.0:
@@ -404,7 +461,7 @@ func world_collide_step(world_ctx: Node, from_p: Vector2, to_p: Vector2, rad: fl
 	if ctx.has_method("resolve_move"):
 		return ctx.call("resolve_move", from_p, to_p, rad, airborne) as Vector2
 	if ctx.has_method("collide_step"):
-		return (ctx.call("collide_step", from_p, to_p, rad, airborne) if _method_arity(ctx, "collide_step") >= 4 else ctx.call("collide_step", from_p, to_p, rad)) as Vector2
+		return (ctx.call("collide_step", from_p, to_p, rad, airborne) if get_method_arity(ctx, "collide_step") >= 4 else ctx.call("collide_step", from_p, to_p, rad)) as Vector2
 	if ctx.has_method("is_blocked"):
 		var cur: Vector2 = from_p
 		if not bool(ctx.call("is_blocked", Vector2(to_p.x, cur.y), rad, airborne)):
@@ -490,7 +547,7 @@ func is_snatcher_entity(entity: Object) -> bool:
 func apply_hit_to_entity(entity: Object, hit: LxHit) -> int:
 	return int(entity.call("take_hit", hit)) if (entity != null and is_instance_valid(entity) and entity.has_method("take_hit")) else -1
 
-func _method_arity(obj: Object, method_name: String) -> int:
+func get_method_arity(obj: Object, method_name: String) -> int:
 	var key: String = "%d:%s" % [obj.get_instance_id(), method_name]
 	if _arity_cache.has(key):
 		return int(_arity_cache[key])
@@ -503,96 +560,13 @@ func _method_arity(obj: Object, method_name: String) -> int:
 	return 4
 
 func spawn_afterimage(col: Color) -> void:
-	_afterimages.append({"pos": global_position, "age": 0.0, "life": 0.20, "col": col})
+	_fx.spawn_afterimage(global_position, col)
 
 func spawn_ring(at_pos: Vector2, r0: float, r1: float, life: float, col: Color, width: float = 1.0) -> void:
-	_rings.append({"pos": at_pos, "r0": r0, "r1": r1, "age": 0.0, "life": maxf(0.02, life), "col": col, "w": width})
+	_fx.spawn_ring(at_pos, r0, r1, life, col, width)
 
 func spawn_sparks(at_pos: Vector2, base_dir: Vector2, count: int, col: Color, min_spd: float, max_spd: float, life: float) -> void:
-	var dn: Vector2 = base_dir.normalized() if base_dir.length_squared() > 0.0001 else Vector2.RIGHT
-	for _i: int in range(count):
-		_sparks.append({"pos": at_pos, "vel": dn.rotated(randf_range(-0.65, 0.65)) * randf_range(min_spd, max_spd), "age": 0.0, "life": life, "col": col})
-
-func _age_fx(dt: float) -> void:
-	for arr: Array[Dictionary] in [_afterimages, _rings]:
-		for i: int in range(arr.size() - 1, -1, -1):
-			arr[i]["age"] = float(arr[i]["age"]) + dt
-			if float(arr[i]["age"]) >= float(arr[i]["life"]):
-				arr.remove_at(i)
-	for i: int in range(_sparks.size() - 1, -1, -1):
-		var s: Dictionary = _sparks[i]
-		s["age"] = float(s["age"]) + dt
-		var vel: Vector2 = s["vel"] as Vector2
-		s["pos"] = (s["pos"] as Vector2) + vel * dt
-		s["vel"] = vel * pow(0.08, dt)
-		if float(s["age"]) >= float(s["life"]):
-			_sparks.remove_at(i)
-
-func _try_load_sprite() -> void:
-	if _sprite_tex != null:
-		return
-	for path: String in ["res://luxel/art/wick/wick.png", "res://luxel/art/wick/sheet.png"]:
-		if ResourceLoader.exists(path):
-			var res: Resource = ResourceLoader.load(path)
-			if res is Texture2D:
-				_sprite_tex = res as Texture2D
-				return
+	_fx.spawn_sparks(at_pos, base_dir, count, col, min_spd, max_spd, life)
 
 func _draw() -> void:
-	var off: Vector2 = -global_position
-	for a: Dictionary in _afterimages:
-		var t: float = 1.0 - clampf(float(a["age"]) / float(a["life"]), 0.0, 1.0)
-		draw_rect(Rect2(((a["pos"] as Vector2) + off).round() + Vector2(-4.0, -10.0), Vector2(8.0, 10.0)), Color(a["col"] as Color, t * 0.55))
-	for r: Dictionary in _rings:
-		var t: float = clampf(float(r["age"]) / float(r["life"]), 0.0, 1.0)
-		draw_arc(((r["pos"] as Vector2) + off).round(), lerpf(float(r["r0"]), float(r["r1"]), t), 0.0, TAU, 20, Color(r["col"] as Color, 1.0 - t), float(r["w"]))
-	for s: Dictionary in _sparks:
-		draw_rect(Rect2(((s["pos"] as Vector2) + off).round(), Vector2(1.0, 1.0)), s["col"] as Color)
-	for b_var: Variant in bolts:
-		var b: LxMoveBolt.Bolt = b_var as LxMoveBolt.Bolt
-		if b != null:
-			var bp: Vector2 = (b.pos + off).round()
-			draw_line((bp - b.dir * 5.0).round(), bp, PAL_ICE if b.is_prism else PAL_GOLD, 2.0)
-			draw_rect(Rect2(bp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), PAL_CREAM)
-
-	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
-	var alpha: float = 0.40 if (mercy_t > 0.0 and not flash_red and (int(mercy_t * 14.0) % 2 == 0)) else 1.0
-	var base: Vector2 = (-facing * clampf(recoil_vis * 1.5, 0.0, 1.5)).round() + Vector2(0.0, -roundf(absf(sin(_walk_phase)) * 2.0))
-	var lan_in_hand: bool = lantern == null or lantern.is_in_hand()
-	var hand_pos: Vector2 = (base + facing * 6.0 + Vector2(0.0, -6.0)).round()
-
-	draw_rect(Rect2(Vector2(-4.0, -1.0), Vector2(8.0, 3.0)), Color(PAL_VOID, 0.45))
-	if lan_in_hand:
-		var pulse: float = 0.92 + 0.08 * sin(_clock_t * 7.0)
-		draw_circle(hand_pos, 13.0 * pulse, Color(PAL_GOLD, 0.10))
-		draw_circle(hand_pos, 6.5 * pulse, Color(PAL_APRICOT, 0.15))
-
-	var hit_white: bool = hurt_flash > 0.55 and not flash_red
-	if _sprite_tex != null:
-		var sz := Vector2(_sprite_frame_size)
-		var mod: Color = Color(PAL_CREAM, alpha) if hit_white else Color(1.0, 1.0, 1.0, alpha)
-		draw_texture_rect_region(_sprite_tex, Rect2(base + Vector2(-sz.x * 0.5, -sz.y), sz), Rect2(Vector2.ZERO, sz), mod)
-	else:
-		_draw_fallback_moth(base, hit_white, alpha, lan_in_hand, hand_pos)
-
-	draw_rect(Rect2((facing * 12.0 + Vector2(0.0, -6.0)).round() - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), PAL_GOLD)
-	if muzzle_t > 0.0:
-		draw_circle(hand_pos, 3.5, PAL_CREAM)
-
-func _draw_fallback_moth(base: Vector2, hit_white: bool, alpha: float, lan_in_hand: bool, hand_pos: Vector2) -> void:
-	var c_out := Color(PAL_NIGHT, alpha)
-	var c_cloak := Color(PAL_CREAM if hit_white else (PAL_ICE if is_dashing() else (PAL_GOLD if is_zipping() else PAL_DUSK)), alpha)
-	var c_wing := Color(PAL_CREAM if hit_white else PAL_PLUM, alpha)
-	var wing_w: float = 12.0 if is_gliding() else 10.0
-	draw_rect(Rect2(base + Vector2(-wing_w * 0.5, -10.0), Vector2(wing_w, 6.0)), c_out)
-	draw_rect(Rect2(base + Vector2(-wing_w * 0.5 + 1.0, -9.0), Vector2(wing_w - 2.0, 4.0)), c_wing)
-	draw_rect(Rect2(base + Vector2(-4.0, -11.0), Vector2(8.0, 10.0)), c_out)
-	draw_rect(Rect2(base + Vector2(-3.0, -10.0), Vector2(6.0, 8.0)), c_cloak)
-	draw_rect(Rect2(base + Vector2(-3.0, -15.0), Vector2(6.0, 5.0)), c_out)
-	draw_rect(Rect2(base + Vector2(-2.0, -14.0), Vector2(4.0, 3.0)), Color(PAL_CREAM, alpha))
-	draw_rect(Rect2(base + Vector2(-2.0, -17.0), Vector2(1.0, 2.0)), Color(PAL_GOLD, alpha))
-	draw_rect(Rect2(base + Vector2(1.0, -17.0), Vector2(1.0, 2.0)), Color(PAL_GOLD, alpha))
-	if lan_in_hand:
-		draw_rect(Rect2(hand_pos + Vector2(-2.0, -2.0), Vector2(4.0, 5.0)), c_out)
-		draw_rect(Rect2(hand_pos + Vector2(-1.0, -1.0), Vector2(2.0, 3.0)), Color(PAL_GOLD, alpha))
-		draw_rect(Rect2(hand_pos + Vector2(-1.0, 0.0), Vector2(2.0, 1.0)), Color(PAL_CREAM, alpha))
+	_fx.draw(self, _walk_phase, _clock_t)

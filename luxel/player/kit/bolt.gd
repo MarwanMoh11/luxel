@@ -1,7 +1,7 @@
 class_name LxMoveBolt
 extends LxMove
 ## Light Bolt: strictly manual aim along wick.facing (ZERO aim assist), disabled when lantern is out.
-## Supports Prism mirror bounces via bounces_left hook.
+## Delegates Prism mirror/glass bounces to LxMovePrism (physical reflection only, zero auto-aim).
 
 class Bolt:
 	extends RefCounted
@@ -24,7 +24,7 @@ var is_held: bool = false
 func can_use() -> bool:
 	if not super.can_use():
 		return false
-	if wick.dead or wick.is_dashing() or wick.is_zipping():
+	if wick.dead or wick.is_dashing() or wick.is_zipping() or wick.is_beam_charging():
 		return false
 	if wick.lantern != null and not wick.lantern.is_in_hand():
 		return false
@@ -66,6 +66,8 @@ func _get_effective_cooldown() -> float:
 
 
 func _get_prism_bounces() -> int:
+	if wick != null and wick.move_prism != null:
+		return wick.move_prism.get_bounces()
 	if Lx.state != null and Lx.state.has_move("prism"):
 		return maxi(1, Lx.state.get_effective_prism_bounces())
 	return 0
@@ -107,9 +109,8 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 	var shake_chip: float = float(data.get("shake", 0.03))
 	var stagger: bool = bool(data.get("stagger", false))
 	var pierce: bool = bool(data.get("pierce", false))
-	var prism_data: Dictionary = Lx.get_move_data("prism")
-	var prism_mult: float = float(prism_data.get("damage_mult", 1.15))
-	var prism_range: float = float(prism_data.get("range_refresh", 118.0))
+	var prism_mult: float = wick.move_prism.get_damage_mult() if wick.move_prism != null else float(Lx.get_move_data("prism").get("damage_mult", 1.15))
+	var prism_range: float = wick.move_prism.get_range_refresh() if wick.move_prism != null else float(Lx.get_move_data("prism").get("range_refresh", 118.0))
 
 	var i: int = wick.bolts.size() - 1
 	while i >= 0:
@@ -124,31 +125,9 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 		var step_dist: float = b.speed * dt
 		var nxt: Vector2 = b.pos + b.dir * step_dist
 		var dead: bool = false
+		var reflected: bool = false
 
-		# 1. Prism mirror reflection hook (active once Prism is unlocked)
-		if b.bounces_left > 0:
-			var mhit: Dictionary = wick.world_get_mirror_hit(world_ctx, b.pos, nxt)
-			if bool(mhit.get("hit", false)):
-				var hit_pos: Vector2 = mhit.get("pos", nxt) as Vector2
-				var normal: Vector2 = mhit.get("normal", -b.dir) as Vector2
-				if normal.length_squared() > 0.0001:
-					b.dir = b.dir.bounce(normal.normalized()).normalized()
-				else:
-					b.dir = -b.dir
-				b.pos = hit_pos + b.dir * 2.0
-				b.bounces_left -= 1
-				b.is_prism = true
-				b.damage *= prism_mult
-				b.dist = 0.0
-				b.max_range = prism_range
-				b.hit_ids.clear()
-				wick.spawn_sparks(hit_pos, b.dir, 5, LxWick.PAL_ICE, 35.0, 85.0, 0.16)
-				wick.spawn_ring(hit_pos, 2.0, 10.0, 0.18, LxWick.PAL_ICE, 1.0)
-				wick.emit_sfx("prism_bounce", hit_pos, true)
-				i -= 1
-				continue
-
-		# 2. Enemy collision
+		# 1. Enemy collision
 		var enemies: Array = wick.world_get_enemies(world_ctx)
 		for e_var: Variant in enemies:
 			if not (e_var is Object):
@@ -174,8 +153,7 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 					dead = true
 					break
 
-		# 3. Interactables (switches, eyes, mirrors, braziers)
-		var reflected: bool = false
+		# 2. Interactables (brass LxMirrors, custom reflect_bolt surfaces, switches, eyes, braziers)
 		if not dead:
 			var inters: Array = wick.world_get_interactables(world_ctx)
 			for it_var: Variant in inters:
@@ -184,40 +162,48 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				var item: Object = it_var as Object
 				if not is_instance_valid(item):
 					continue
+				if item.get("active") is bool and not bool(item.get("active")):
+					continue
 				var iid: int = item.get_instance_id()
 				if b.hit_ids.has(iid):
 					continue
 				var ipos: Vector2 = wick.get_entity_pos(item)
 				var irad: float = wick.get_entity_radius(item, 8.0)
-				if Geometry2D.get_closest_point_to_segment(ipos, b.pos, nxt).distance_to(ipos) <= irad + 2.0:
-					if b.bounces_left > 0 and item.has_method("reflect_bolt"):
-						var rinfo: Variant = item.call("reflect_bolt", b.pos, b.dir)
-						if rinfo is Dictionary and bool((rinfo as Dictionary).get("hit", false)):
-							var rd: Dictionary = rinfo as Dictionary
-							var rdir: Vector2 = rd.get("dir", -b.dir) as Vector2
-							var rpos: Vector2 = rd.get("pos", ipos) as Vector2
-							b.dir = rdir.normalized() if rdir.length_squared() > 0.0001 else -b.dir
-							b.pos = rpos + b.dir * 2.0
-							b.bounces_left -= 1
-							b.is_prism = true
-							b.damage *= prism_mult
-							b.dist = 0.0
-							b.max_range = prism_range
-							b.hit_ids.clear()
-							b.hit_ids.append(iid)
-							wick.spawn_sparks(rpos, b.dir, 5, LxWick.PAL_ICE, 35.0, 85.0, 0.16)
-							wick.emit_sfx("prism_bounce", rpos, true)
-							reflected = true
-							break
-					if item.has_method("on_hit"):
-						b.hit_ids.append(iid)
-						var src_i: String = LxHit.SOURCE_PRISM if b.is_prism else LxHit.SOURCE_BOLT
-						var hit_i: LxHit = LxHit.make(src_i, b.damage, b.dir, b.pos, b.shield_wear, false, false, wick, false)
-						var consumed: Variant = item.call("on_hit", hit_i)
-						if consumed is bool and bool(consumed):
-							wick.spawn_sparks(ipos, -b.dir, 4, LxWick.PAL_GOLD, 25.0, 65.0, 0.14)
-							dead = true
-							break
+				if not _bolt_hits_item(b.pos, nxt, item, ipos, irad):
+					continue
+
+				if b.bounces_left > 0 and wick.move_prism != null:
+					var refl: Dictionary = wick.move_prism.try_reflect_interactable(item, b.pos, nxt, b.dir)
+					if bool(refl.get("hit", false)):
+						var rpos: Vector2 = refl.get("pos", ipos) as Vector2
+						var exit_pos: Vector2 = refl.get("exit_pos", rpos) as Vector2
+						var rdir: Vector2 = refl.get("dir", -b.dir) as Vector2
+						_apply_prism_bounce(b, rpos, exit_pos, rdir, prism_mult, prism_range, iid)
+						if item.has_method("on_hit"):
+							var ping: LxHit = LxHit.make(LxHit.SOURCE_PRISM, b.damage, b.dir, rpos, b.shield_wear, false, false, wick, false)
+							item.call("on_hit", ping)
+						reflected = true
+						break
+
+				if item.has_method("on_hit"):
+					b.hit_ids.append(iid)
+					var src_i: String = LxHit.SOURCE_PRISM if b.is_prism else LxHit.SOURCE_BOLT
+					var hit_i: LxHit = LxHit.make(src_i, b.damage, b.dir, b.pos, b.shield_wear, false, false, wick, false)
+					var consumed: Variant = item.call("on_hit", hit_i)
+					if consumed is bool and bool(consumed):
+						wick.spawn_sparks(ipos, -b.dir, 4, LxWick.PAL_GOLD, 25.0, 65.0, 0.14)
+						dead = true
+						break
+
+		# 3. World mirror / glass tile reflection (when Prism bounces remain)
+		if not dead and not reflected and b.bounces_left > 0 and wick.move_prism != null:
+			var wrefl: Dictionary = wick.move_prism.try_reflect_world(world_ctx, b.pos, nxt, b.dir)
+			if bool(wrefl.get("hit", false)):
+				var wpos: Vector2 = wrefl.get("pos", b.pos) as Vector2
+				var wexit: Vector2 = wrefl.get("exit_pos", wpos) as Vector2
+				var wdir: Vector2 = wrefl.get("dir", -b.dir) as Vector2
+				_apply_prism_bounce(b, wpos, wexit, wdir, prism_mult, prism_range, -1)
+				reflected = true
 
 		# 4. Wall / max range check
 		if not dead and not reflected:
@@ -234,3 +220,37 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 		if dead:
 			wick.bolts.remove_at(i)
 		i -= 1
+
+
+func _apply_prism_bounce(
+	b: Bolt,
+	rpos: Vector2,
+	exit_pos: Vector2,
+	rdir: Vector2,
+	prism_mult: float,
+	prism_range: float,
+	ignore_id: int
+) -> void:
+	b.dir = rdir.normalized() if rdir.length_squared() > 0.0001 else -b.dir
+	b.prev_pos = rpos
+	b.pos = exit_pos
+	b.bounces_left -= 1
+	b.is_prism = true
+	b.damage *= prism_mult
+	b.dist = 0.0
+	b.max_range = prism_range
+	b.hit_ids.clear()
+	if ignore_id != -1:
+		b.hit_ids.append(ignore_id)
+	if wick.move_prism != null:
+		wick.move_prism.on_bolt_reflected(rpos, b.dir)
+
+
+func _bolt_hits_item(from_p: Vector2, to_p: Vector2, item: Object, ipos: Vector2, irad: float) -> bool:
+	if Geometry2D.get_closest_point_to_segment(ipos, from_p, to_p).distance_to(ipos) <= irad + 2.0:
+		return true
+	if item.has_method("get_solid_rect"):
+		var srect: Rect2 = item.call("get_solid_rect") as Rect2
+		if srect.has_area() and (srect.grow(1.5).has_point(to_p) or srect.grow(1.5).has_point(from_p.lerp(to_p, 0.5))):
+			return true
+	return false

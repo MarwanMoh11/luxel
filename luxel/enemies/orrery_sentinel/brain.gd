@@ -1,0 +1,319 @@
+class_name LxOrrerySentinelBrain
+extends LxEnemyBrain
+## Orrery Sentinel (Island 5, Starfall Observatory).
+## Glides smoothly along a clockwork rail with a rotating sight cone.
+## Rings a bell (0.55s tell) when Wick enters the cone, then fires a beam-bolt along the cone.
+## Front brass shell blocks normal bolts; back core takes full damage (prism_bolt, beam, or flank).
+
+signal beam_bolt_fired(origin: Vector2, dir: Vector2, source: LxEnemyBrain)
+
+const CONE_HALF: float = 0.48
+const CONE_RANGE: float = 134.0
+const FRONT_SHELL_HALF: float = 1.05
+const SCAN_TURN_SPEED: float = 1.25
+const TRACK_TURN_SPEED: float = 1.45
+const NOTICE_TIME: float = 0.24
+const COMMIT_TIME: float = 0.24
+const BOLT_RANGE: float = 148.0
+const BOLT_HALF_W: float = 8.5
+const STAGGER_TIME: float = 0.50
+const RAIL_SPEED_RATIO: float = 0.72
+const BACK_CRIT_MULT: float = 1.25
+
+var rail_points: Array[Vector2] = []
+var rail_i: int = 0
+var rail_spin: float = 1.0
+var shot_dir: Vector2 = Vector2.RIGHT
+var shot_hit: bool = false
+var shot_fired: bool = false
+var _beam_end: Vector2 = Vector2.ZERO
+
+
+func _init() -> void:
+	kind = "orrery_sentinel"
+	max_hp = 3.0
+	hp = 3.0
+	body_radius = 6.5
+	routine_speed = 34.0
+	leash_radius = 150.0
+	notice_radius = CONE_RANGE
+	tell_time = 0.55
+	recover_time = 1.15
+	give_up_time = 1.8
+	shard_drop = 4
+	attack_damage = 1.0
+
+
+func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
+	super.setup(spec, p_director, p_world)
+	rail_points.clear()
+	var raw_route: Variant = spec.get("route", [])
+	if raw_route is Array:
+		for pt_v: Variant in (raw_route as Array):
+			if pt_v is Vector2 or (pt_v is Array and (pt_v as Array).size() >= 2):
+				rail_points.append(_clamp_rail_point(_to_vec2(pt_v, home)))
+	if rail_points.size() < 2:
+		var r: float = minf(28.0, leash_radius * 0.35)
+		rail_points.append(_clamp_rail_point(home + Vector2(-r, 0.0)))
+		rail_points.append(_clamp_rail_point(home + Vector2(r, 0.0)))
+	rail_i = 0
+	rail_spin = 1.0 if float(spec.get("spin", 1.0)) >= 0.0 else -1.0
+	shot_dir = Vector2.from_angle(facing)
+	shot_hit = false
+	shot_fired = false
+	_beam_end = pos + shot_dir * BOLT_RANGE
+
+
+func take_hit(hit: LxHit) -> int:
+	if state == State.DEAD or hit == null:
+		return HitResult.GLANCED
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var dmg: float = float(h["damage"])
+	var orig: Vector2 = h["origin"] as Vector2
+	var is_heavy: bool = bool(h["stagger"])
+	var bypass: bool = src == LxHit.SOURCE_PRISM or src == LxHit.SOURCE_BEAM \
+			or src == LxHit.SOURCE_SUNFLARE or bool(h["pierce"]) or bool(h["cracks_armour"])
+	var rel: Vector2 = orig - pos
+	var front_hit: bool = rel.length() > 0.01 \
+			and absf(angle_difference(facing, rel.angle())) < FRONT_SHELL_HALF
+
+	if front_hit and not bypass and _has_active_shield():
+		clank_t = 0.14
+		if src == LxHit.SOURCE_BOLT:
+			_emit_sfx("orrery_clank")
+			_emit_enemy_hit(hit, HitResult.BLOCKED)
+			return HitResult.BLOCKED
+		# Heavy front throw chips brass shell lightly without full stagger
+		dmg *= 0.45
+		is_heavy = false
+		_emit_sfx("orrery_clank")
+	elif not front_hit:
+		dmg *= BACK_CRIT_MULT
+
+	if is_heavy and state == State.STAGGER:
+		_emit_enemy_hit(hit, HitResult.GLANCED)
+		return HitResult.GLANCED
+
+	var is_opening: bool = (not front_hit) or bypass or state == State.RECOVER or state == State.STAGGER
+	hp -= dmg
+	flash_t = 0.14 if is_heavy else 0.08
+	if rel.length() > 0.01:
+		var k_spd: float = 95.0 if is_heavy else 20.0
+		knock = (-rel.normalized() * k_spd) if is_heavy else (knock - rel.normalized() * k_spd)
+
+	if hp <= 0.001:
+		opened_kill = is_opening
+		_die(hit)
+		return HitResult.KILLED
+
+	if is_heavy or src == LxHit.SOURCE_BEAM or src == LxHit.SOURCE_SUNFLARE:
+		_release_token()
+		state = State.STAGGER
+		state_timer = 1.5 if src == LxHit.SOURCE_SUNFLARE else STAGGER_TIME
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
+
+	if state == State.ROUTINE or state == State.RETURN:
+		_enter_notice()
+	_emit_enemy_hit(hit, HitResult.CHIPPED)
+	return HitResult.CHIPPED
+
+
+func _step_brain(dt: float) -> void:
+	match state:
+		State.ROUTINE:
+			_step_rail_patrol(dt)
+			facing = wrapf(facing + rail_spin * SCAN_TURN_SPEED * dt, -PI, PI)
+			if _target_in_cone():
+				_enter_notice()
+		State.NOTICE:
+			var to_t: Vector2 = _attention_target() - pos
+			if to_t.length() > 0.01:
+				_turn_toward(to_t.angle(), TRACK_TURN_SPEED * 1.4, dt)
+			state_timer -= dt
+			if state_timer <= 0.0:
+				state = State.POSITION
+		State.POSITION, State.WAIT_TOKEN:
+			_step_position(dt)
+		State.TELL:
+			_step_tell(dt)
+		State.COMMIT:
+			_step_commit(dt)
+		State.RECOVER:
+			state_timer -= dt
+			if state_timer <= 0.0:
+				_release_token()
+				cooldown = 0.85
+				if _should_give_up():
+					state = State.RETURN
+				else:
+					state = State.POSITION
+		State.STAGGER:
+			state_timer -= dt
+			if state_timer <= 0.0:
+				_release_token()
+				state = State.POSITION
+				cooldown = 0.50
+		State.RETURN:
+			_step_return(dt)
+
+
+func _step_position(dt: float) -> void:
+	if _should_give_up():
+		lost_t += dt
+		if lost_t >= give_up_time:
+			_release_token()
+			state = State.RETURN
+			lost_t = 0.0
+			return
+	else:
+		lost_t = 0.0
+
+	_step_rail_patrol(dt)
+	facing = wrapf(facing + rail_spin * SCAN_TURN_SPEED * dt, -PI, PI)
+	state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
+
+	if cooldown <= 0.0 and _is_on_screen() and _target_in_cone() and _claim_token():
+		state = State.TELL
+		is_counter_attack = false
+		last_tell_duration = _scaled_tell(tell_time, false, attack_damage)
+		state_timer = last_tell_duration
+		_emit_attack_started()
+		_emit_sfx("orrery_bell_tell")
+
+
+func _step_tell(dt: float) -> void:
+	# Gentle aim lock during first portion of bell ring, then freezes angle so Wick can sidestep
+	if state_timer > 0.24:
+		var to_t: Vector2 = _attention_target() - pos
+		if to_t.length() > 0.01:
+			_turn_toward(to_t.angle(), TRACK_TURN_SPEED * 0.8, dt)
+	state_timer -= dt
+	if state_timer <= 0.0:
+		state = State.COMMIT
+		state_timer = COMMIT_TIME
+		shot_dir = Vector2.from_angle(facing)
+		shot_hit = false
+		shot_fired = false
+		_beam_end = pos + shot_dir * BOLT_RANGE
+		_emit_sfx("orrery_beam_bolt")
+
+
+func _step_commit(dt: float) -> void:
+	if not shot_fired:
+		shot_fired = true
+		beam_bolt_fired.emit(pos, shot_dir, self)
+	if not shot_hit and _has_player():
+		var wp: Vector2 = _get_wick_pos()
+		var closest: Vector2 = Geometry2D.get_closest_point_to_segment(wp, pos, _beam_end)
+		if closest.distance_to(wp) <= BOLT_HALF_W and _has_clear_view(pos, wp):
+			shot_hit = true
+			_emit_player_hit(shot_dir)
+	if _is_lantern_out():
+		var lp: Vector2 = _get_lantern_pos()
+		var closest_l: Vector2 = Geometry2D.get_closest_point_to_segment(lp, pos, _beam_end)
+		if closest_l.distance_to(lp) <= BOLT_HALF_W + 2.0 and Lx.events != null:
+			Lx.events.lantern_struck.emit(lp)
+	state_timer -= dt
+	if state_timer <= 0.0:
+		state = State.RECOVER
+		state_timer = maxf(MIN_RECOVER_TIME, recover_time)
+		last_recover_duration = state_timer
+		facing = wrapf(facing + rail_spin * 0.45, -PI, PI)
+
+
+func _step_return(dt: float) -> void:
+	var to_h: Vector2 = home - pos
+	if to_h.length() <= 2.5:
+		pos = home
+		state = State.ROUTINE
+		lost_t = 0.0
+		return
+	var spd: float = routine_speed * 0.88
+	_move_step(to_h.limit_length(spd * dt), false)
+	facing = wrapf(facing + rail_spin * SCAN_TURN_SPEED * 0.6 * dt, -PI, PI)
+	if _target_in_cone() and _attention_target().distance_to(home) <= leash_radius:
+		_enter_notice()
+
+
+func _step_rail_patrol(dt: float) -> void:
+	if rail_points.size() < 2:
+		return
+	var wp: Vector2 = rail_points[rail_i]
+	if pos.distance_to(wp) <= 2.5:
+		rail_i = (rail_i + 1) % rail_points.size()
+		return
+	var spd: float = routine_speed * RAIL_SPEED_RATIO
+	_move_step((wp - pos).limit_length(spd * dt), false)
+
+
+func _target_in_cone() -> bool:
+	var tgt: Vector2 = _attention_target()
+	if not _has_player() and not _is_lantern_out():
+		return false
+	var to_t: Vector2 = tgt - pos
+	var dist: float = to_t.length()
+	if dist > notice_radius or dist < 0.01:
+		return false
+	if absf(angle_difference(facing, to_t.angle())) > CONE_HALF:
+		return false
+	return _has_clear_view(pos, tgt)
+
+
+func _attention_target() -> Vector2:
+	if _is_lantern_out():
+		var lp: Vector2 = _get_lantern_pos()
+		if lp.distance_to(home) <= leash_radius + 24.0:
+			return lp
+	return _get_wick_pos()
+
+
+func _should_give_up() -> bool:
+	if _is_lantern_out() and _get_lantern_pos().distance_to(home) <= leash_radius + 24.0:
+		return false
+	return not _has_player() or _get_wick_pos().distance_to(home) > leash_radius + 16.0
+
+
+func _enter_notice() -> void:
+	state = State.NOTICE
+	state_timer = NOTICE_TIME
+	alert_t = 0.75
+	lost_t = 0.0
+	_emit_sfx("orrery_notice")
+
+
+func _clamp_rail_point(pt: Vector2) -> Vector2:
+	var cap: float = maxf(0.0, leash_radius - 2.0)
+	if pt.distance_to(home) > cap:
+		return home + (pt - home).normalized() * cap
+	return pt
+
+
+func _has_active_shield() -> bool:
+	return state != State.DEAD and state != State.STAGGER
+
+
+func _body_color() -> Color:
+	return PAL["deep"] as Color
+
+
+func _shield_color() -> Color:
+	return PAL["apricot"] as Color
+
+
+func _draw_extra(off: Vector2) -> void:
+	# Glowing exposed back core
+	var back_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.7)
+	draw_circle(back_pos, 2.5, PAL["coral"] as Color)
+	draw_circle(back_pos, 1.2, PAL["cream"] as Color)
+	# Rotating sight cone preview
+	var cone_col: Color = (PAL["gold"] as Color) if state == State.TELL else Color(PAL["sky"] as Color, 0.35)
+	var left_v: Vector2 = Vector2.from_angle(facing - CONE_HALF) * minf(notice_radius, 72.0)
+	var right_v: Vector2 = Vector2.from_angle(facing + CONE_HALF) * minf(notice_radius, 72.0)
+	draw_line(off, off + left_v, cone_col, 1.0)
+	draw_line(off, off + right_v, cone_col, 1.0)
+	if state == State.COMMIT:
+		var local_end: Vector2 = _beam_end - pos
+		draw_line(off, local_end, PAL["gold"] as Color, 3.0)
+		draw_line(off, local_end, PAL["cream"] as Color, 1.5)

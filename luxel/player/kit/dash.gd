@@ -1,7 +1,7 @@
 class_name LxMoveDash
 extends LxMove
 ## Flare Dash: directional dash with i-frames, shield-wear + stagger strike, gap crossing up to 32 px,
-## perfect dodge cooldown refund, and Wings glide continuation hook.
+## perfect dodge cooldown refund, and Wings (LxMoveWings) glide continuation when lx_dash stays held.
 
 const DASH_BOUNCE_TIME: float = 0.24
 const DASH_BOUNCE_KNOCK: float = 150.0
@@ -20,10 +20,6 @@ var iframes_left: float = 0.0
 var perfect_window: float = 0.12
 var perfect_refund_done: bool = false
 
-var glide_speed: float = 120.0
-var glide_time_left: float = 0.0
-var glide_dist_left: float = 0.0
-
 var hit_ids: Array[int] = []
 var _afterimage_cd: float = 0.0
 
@@ -31,7 +27,7 @@ var _afterimage_cd: float = 0.0
 func can_use() -> bool:
 	if not super.can_use():
 		return false
-	if wick.dead or active or is_gliding or wick.is_zipping() or wick.bounce_t > 0.0:
+	if wick.dead or active or is_gliding or wick.is_gliding() or wick.is_zipping() or wick.bounce_t > 0.0:
 		return false
 	return true
 
@@ -58,6 +54,8 @@ func press() -> bool:
 
 	active = true
 	is_gliding = false
+	if wick.move_wings != null:
+		wick.move_wings.stop_glide()
 	dash_time_left = duration
 	dash_elapsed = 0.0
 	dash_dist_traveled = 0.0
@@ -77,10 +75,9 @@ func press() -> bool:
 
 func release() -> void:
 	dash_held = false
-	if is_gliding:
-		is_gliding = false
-		glide_time_left = 0.0
-		glide_dist_left = 0.0
+	if wick != null and wick.move_wings != null:
+		wick.move_wings.stop_glide()
+	is_gliding = false
 
 
 func tick(dt: float) -> void:
@@ -112,36 +109,19 @@ func tick_dash(dt: float, world_ctx: Node) -> void:
 			_maybe_start_wings_glide()
 		return
 
-	if is_gliding:
-		if not dash_held:
-			release()
-			return
-		var steer: Vector2 = wick.get_move_input()
-		if steer.length_squared() > 0.04:
-			dash_dir = dash_dir.lerp(steer.normalized(), minf(1.0, dt * 6.0)).normalized()
-		var step_d: float = glide_speed * dt
-		glide_time_left -= dt
-		glide_dist_left -= step_d
-		_afterimage_cd -= dt
-		if _afterimage_cd <= 0.0:
-			_afterimage_cd = 0.06
-			wick.spawn_afterimage(LxWick.PAL_SKY)
-		if glide_time_left <= 0.0 or glide_dist_left <= 0.0:
-			is_gliding = false
+	if wick.move_wings != null and wick.move_wings.gliding:
+		wick.move_wings.tick_glide(dt, dash_held)
+		is_gliding = wick.move_wings.gliding
+		dash_dir = wick.move_wings.glide_dir
+	else:
+		is_gliding = false
 
 
 func _maybe_start_wings_glide() -> void:
-	if not dash_held:
+	if not dash_held or wick == null or wick.move_wings == null:
+		is_gliding = false
 		return
-	if Lx.state == null or not Lx.state.has_move("wings"):
-		return
-	var wdata: Dictionary = Lx.get_move_data("wings")
-	is_gliding = true
-	glide_speed = float(wdata.get("glide_speed", 120.0))
-	glide_dist_left = float(wdata.get("glide_max_px", 96.0))
-	glide_time_left = float(wdata.get("glide_duration", 0.8))
-	_afterimage_cd = 0.0
-	wick.emit_sfx("wings_glide", wick.global_position, false)
+	is_gliding = wick.move_wings.start_glide(dash_dir)
 
 
 func _check_dash_hits(world_ctx: Node) -> void:
@@ -177,6 +157,8 @@ func _check_dash_hits(world_ctx: Node) -> void:
 				# Shield blocked the dash -> crisp bounce-back
 				active = false
 				is_gliding = false
+				if wick.move_wings != null:
+					wick.move_wings.stop_glide()
 				dash_time_left = 0.0
 				wick.bounce_t = DASH_BOUNCE_TIME
 				wick.knock = -dash_dir * DASH_BOUNCE_KNOCK
@@ -186,13 +168,13 @@ func _check_dash_hits(world_ctx: Node) -> void:
 func get_active_velocity() -> Vector2:
 	if active:
 		return dash_dir * dash_speed
-	if is_gliding:
-		return dash_dir * glide_speed
+	if wick != null and wick.move_wings != null and wick.move_wings.gliding:
+		return wick.move_wings.get_glide_velocity()
 	return Vector2.ZERO
 
 
 func can_cross_gaps() -> bool:
-	if is_gliding:
+	if is_gliding or (wick != null and wick.move_wings != null and wick.move_wings.gliding):
 		return true
 	return active and dash_dist_traveled <= gap_max_px + 28.0
 
@@ -220,8 +202,8 @@ func cancel() -> void:
 	active = false
 	is_gliding = false
 	dash_time_left = 0.0
-	glide_time_left = 0.0
-	glide_dist_left = 0.0
+	if wick != null and wick.move_wings != null:
+		wick.move_wings.stop_glide()
 
 
 func reset() -> void:

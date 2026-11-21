@@ -77,6 +77,8 @@ func is_lure_active() -> bool:
 
 
 func get_light_radius() -> float:
+	if _owner_wick != null and _owner_wick.move_lens != null and _owner_wick.move_lens.unlocked:
+		return _owner_wick.move_lens.get_reveal_radius()
 	var has_lens: bool = Lx.state != null and Lx.state.has_move("lens")
 	if has_lens:
 		var ldata: Dictionary = Lx.get_move_data("lens")
@@ -403,8 +405,29 @@ func _notify_light(wick: LxWick, world_ctx: Node) -> void:
 		if not is_instance_valid(item) or not item.has_method("on_light"):
 			continue
 		var ipos: Vector2 = wick.get_entity_pos(item)
-		if ipos.distance_to(pos) <= rad:
+		var irad: float = wick.get_entity_radius(item, 0.0)
+		if ipos.distance_to(pos) <= rad + irad:
 			item.call("on_light", rad, src_tag)
+
+	var enemies: Array = wick.world_get_enemies(world_ctx)
+	for e_var: Variant in enemies:
+		if not (e_var is Object):
+			continue
+		var enemy: Object = e_var as Object
+		if not is_instance_valid(enemy) or not enemy.has_method("on_light"):
+			continue
+		if enemy.has_method("is_dead") and bool(enemy.call("is_dead")):
+			continue
+		var epos: Vector2 = wick.get_entity_pos(enemy)
+		var erad: float = wick.get_entity_radius(enemy, 8.0)
+		if epos.distance_to(pos) <= rad + erad:
+			var arity: int = wick.get_method_arity(enemy, "on_light")
+			if arity >= 3:
+				enemy.call("on_light", rad, pos, src_tag)
+			elif arity == 2:
+				enemy.call("on_light", rad, src_tag)
+			else:
+				enemy.call("on_light", rad)
 
 
 func _draw() -> void:
