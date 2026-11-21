@@ -58,6 +58,8 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if _draw_prop_sprite("chest", Vector2.ZERO, 1 if opened else 0):
+		return
 	draw_rect(Rect2(-7.0, -6.0, 14.0, 10.0), PAL["night"])
 	draw_rect(Rect2(-6.0, -5.0, 12.0, 8.0), PAL["wine"])
 	if opened:

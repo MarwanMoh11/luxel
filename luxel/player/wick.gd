@@ -75,6 +75,7 @@ var _fx: WickFx = WickFx.new()
 
 func _ready() -> void:
 	z_index = 1
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_ensure_kit()
 	_fx.try_load_sprite()
 

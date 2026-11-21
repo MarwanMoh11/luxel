@@ -26,6 +26,8 @@ const PAL: Dictionary = {
 	"rose": Color("ec9fa8"),
 }
 
+const PROP_SHEET_PATH: String = "res://luxel/art/props/island1_props.json"
+
 var id: String = ""
 var kind: String = ""
 var pos: Vector2 = Vector2.ZERO
@@ -37,6 +39,11 @@ var region: Node = null
 var island_id: int = 1
 var region_id: String = ""
 var _clock: float = 0.0
+var _uses_prop_anim: bool = false
+
+
+func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
 func setup(spec: Dictionary) -> void:
@@ -84,6 +91,23 @@ func load_state(d: Dictionary) -> void:
 
 func tick(dt: float) -> void:
 	_clock += dt
+	if _uses_prop_anim:
+		queue_redraw()
+
+
+func _draw_prop_sprite(
+	prop_key: String,
+	offset: Vector2 = Vector2.ZERO,
+	frame_override: int = -1,
+	modulate: Color = Color.WHITE
+) -> bool:
+	var sheet: LxSpriteSheet = LxSpriteSheet.load_sheet(PROP_SHEET_PATH)
+	if sheet == null:
+		return false
+	var drawn: bool = sheet.draw_prop(self, offset, prop_key, _clock, modulate, frame_override)
+	if drawn:
+		_uses_prop_anim = frame_override < 0
+	return drawn
 
 
 func is_solid() -> bool:

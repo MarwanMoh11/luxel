@@ -92,6 +92,8 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if _draw_prop_sprite("beacon" if lit else "beacon_unlit"):
+		return
 	draw_rect(Rect2(-8.0, -4.0, 16.0, 8.0), PAL["night"])
 	draw_rect(Rect2(-7.0, -5.0, 14.0, 7.0), PAL["dusk"])
 	draw_rect(Rect2(-5.0, -14.0, 10.0, 10.0), PAL["mauve"])

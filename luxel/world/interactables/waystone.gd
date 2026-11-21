@@ -57,6 +57,8 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if _draw_prop_sprite("waystone" if lit else "waystone_dormant"):
+		return
 	draw_rect(Rect2(-6.0, -3.0, 12.0, 6.0), PAL["night"])
 	draw_rect(Rect2(-5.0, -14.0, 10.0, 13.0), PAL["dusk"])
 	draw_rect(Rect2(-4.0, -13.0, 8.0, 11.0), PAL["stone"])

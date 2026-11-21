@@ -59,6 +59,11 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	var prop_key: String = "shrine_throw" if move_id == "throw" else "shrine"
+	var frame_ov: int = 0 if claimed else -1
+	var tint: Color = Color(0.62, 0.56, 0.72, 1.0) if claimed else Color.WHITE
+	if _draw_prop_sprite(prop_key, Vector2.ZERO, frame_ov, tint):
+		return
 	draw_rect(Rect2(-8.0, -3.0, 16.0, 7.0), PAL["night"])
 	draw_rect(Rect2(-6.0, -12.0, 12.0, 11.0), PAL["mauve"])
 	draw_rect(Rect2(-5.0, -11.0, 10.0, 9.0), PAL["stone"])

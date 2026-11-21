@@ -102,6 +102,8 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if _draw_prop_sprite("great_lamp" if lit else "great_lamp_unlit"):
+		return
 	draw_rect(Rect2(-12.0, -5.0, 24.0, 10.0), PAL["night"])
 	draw_rect(Rect2(-10.0, -8.0, 20.0, 10.0), PAL["dusk"])
 	draw_rect(Rect2(-8.0, -20.0, 16.0, 14.0), PAL["mauve"])

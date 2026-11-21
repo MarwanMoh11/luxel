@@ -220,6 +220,10 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if not opened and door_type == "ward_barrier" and size.x <= 40.0 and size.y <= 24.0:
+		if _draw_prop_sprite("ward_barrier"):
+			return
+	_uses_prop_anim = false
 	var half: Vector2 = size * 0.5
 	if door_type == "bridge_platform":
 		if opened:

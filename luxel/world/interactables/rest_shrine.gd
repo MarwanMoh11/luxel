@@ -32,6 +32,8 @@ func get_interact_prompt() -> String:
 
 
 func _draw() -> void:
+	if _draw_prop_sprite("rest_shrine"):
+		return
 	draw_rect(Rect2(-10.0, -4.0, 20.0, 8.0), PAL["night"])
 	draw_rect(Rect2(-9.0, -6.0, 18.0, 8.0), PAL["mauve"])
 	draw_rect(Rect2(-6.0, -16.0, 12.0, 12.0), PAL["stone"])

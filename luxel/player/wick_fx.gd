@@ -5,8 +5,7 @@ extends RefCounted
 var afterimages: Array[Dictionary] = []
 var rings: Array[Dictionary] = []
 var sparks: Array[Dictionary] = []
-var sprite_tex: Texture2D = null
-var sprite_frame_size: Vector2i = Vector2i(24, 24)
+var sprite_sheet: LxSpriteSheet = null
 
 
 func clear() -> void:
@@ -52,14 +51,9 @@ func age(dt: float) -> void:
 
 
 func try_load_sprite() -> void:
-	if sprite_tex != null:
+	if sprite_sheet != null:
 		return
-	for path: String in ["res://luxel/art/wick/wick.png", "res://luxel/art/wick/sheet.png"]:
-		if ResourceLoader.exists(path):
-			var res: Resource = ResourceLoader.load(path)
-			if res is Texture2D:
-				sprite_tex = res as Texture2D
-				return
+	sprite_sheet = LxSpriteSheet.load_sheet("res://luxel/art/wick/wick.json")
 
 
 func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
@@ -106,11 +100,20 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		wick.draw_circle(hand_pos, 6.5 * pulse, Color(LxWick.PAL_APRICOT, 0.15))
 
 	var hit_white: bool = wick.hurt_flash > 0.55 and not flash_red
-	if sprite_tex != null:
-		var sz := Vector2(sprite_frame_size)
-		var mod: Color = Color(LxWick.PAL_CREAM, alpha) if hit_white else Color(1.0, 1.0, 1.0, alpha)
-		wick.draw_texture_rect_region(sprite_tex, Rect2(base + Vector2(-sz.x * 0.5, -sz.y), sz), Rect2(Vector2.ZERO, sz), mod)
-	else:
+	var mod: Color = Color(LxWick.PAL_CREAM, alpha) if hit_white else Color(1.0, 1.0, 1.0, alpha)
+	var anim_name: String = "idle"
+	if wick.is_zipping():
+		anim_name = "zip"
+	elif wick.is_dashing() or wick.is_gliding():
+		anim_name = "dash"
+	elif wick.throw_anim_t > 0.0:
+		anim_name = "throw"
+	elif wick.shoot_anim_t > 0.0:
+		anim_name = "shoot"
+	elif wick.velocity.length() > 10.0:
+		anim_name = "walk"
+	var drew_sprite: bool = sprite_sheet != null and sprite_sheet.draw_actor(wick, base, anim_name, wick.facing, clock_t, mod)
+	if not drew_sprite:
 		_draw_fallback_moth(wick, base, hit_white, alpha, lan_in_hand, hand_pos)
 
 	if wick.move_beam != null:

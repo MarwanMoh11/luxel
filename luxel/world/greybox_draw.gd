@@ -7,12 +7,19 @@ const PAL: Dictionary = LxInteractable.PAL
 static func draw_tile(c: CanvasItem, tx: int, ty: int, ts: float, ttype: String) -> void:
 	var p := Vector2(float(tx) * ts, float(ty) * ts)
 	var r := Rect2(p, Vector2(ts, ts))
-	var h: int = (tx * 73856093 ^ ty * 19349663) & 255
+	var h: int = (((tx * 374761393 + ty * 668265263) ^ ((tx * 1274126177) >> 4)) >> 7) & 255
 	match ttype:
 		"ground":
-			c.draw_rect(r, PAL["pine"] if (h & 3) == 0 else PAL["teal"])
-			if (h & 15) == 1:
-				c.draw_rect(Rect2(p + Vector2(4.0, 5.0), Vector2(2.0, 2.0)), PAL["jade"])
+			c.draw_rect(r, PAL["teal"])
+			if (h & 7) == 0:
+				var sx: float = float(2 + ((h >> 3) % 9))
+				var sy: float = float(3 + ((h >> 5) % 9))
+				c.draw_rect(Rect2(p + Vector2(sx, sy), Vector2(4.0, 2.0)), PAL["pine"])
+			elif (h % 12) == 3:
+				var gx: float = float(2 + ((h >> 2) % 10))
+				var gy: float = float(3 + ((h >> 4) % 9))
+				c.draw_rect(Rect2(p + Vector2(gx, gy), Vector2(2.0, 2.0)), PAL["jade"])
+				c.draw_rect(Rect2(p + Vector2(gx + 1.0, gy - 1.0), Vector2(1.0, 1.0)), PAL["jade"])
 		"path":
 			c.draw_rect(r, PAL["mauve"])
 			if (h & 7) == 0:

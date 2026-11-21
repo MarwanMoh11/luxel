@@ -32,6 +32,16 @@ const MIN_HEAVY_TELL: float = 0.50
 const MIN_COUNTER_TELL: float = 0.25
 const MIN_RECOVER_TIME: float = 0.60
 
+const _STATE_ANIMS: Dictionary = { State.TELL: "tell", State.COMMIT: "commit", State.RECOVER: "recover", State.STAGGER: "stagger" }
+const _VARIANT_SHEETS: Dictionary = {
+	"bell_warden": ["enemies/warden", "gold", 1.18], "crab_warden": ["enemies/warden", "coral", 1.0],
+	"forge_warden": ["enemies/warden", "apricot", 1.0], "clockwork_warden": ["enemies/warden", "sky", 1.0],
+	"moonshade_warden": ["enemies/warden", "ice", 1.0], "moonshade_snatcher": ["enemies/snatcher", "ice", 1.0],
+	"gull_thief": ["enemies/snatcher", "stone", 1.0], "moonshade_owl": ["enemies/owl", "ice", 1.0],
+	"phantom_owl": ["enemies/owl", "ice", 1.0], "hollow_wick": ["wick/wick", "plum", 1.0],
+	"hollow_wick_boss": ["wick/wick", "plum", 1.0],
+}
+
 @export var home: Vector2 = Vector2.ZERO
 @export var leash_radius: float = 158.0
 @export var notice_radius: float = 120.0
@@ -73,8 +83,14 @@ var give_up_time: float = 2.2
 var is_counter_attack: bool = false
 var boss_id: String = ""
 var island_id: int = 1
-var _sprite_tex: Texture2D = null
+var _sprite_sheet: LxSpriteSheet = null
+var _sprite_tint: Color = Color.WHITE
+var _sprite_scale: Vector2 = Vector2.ONE
 var _fallback_rng := RandomNumberGenerator.new()
+
+
+func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
 static func _to_vec2(v: Variant, fallback: Vector2 = Vector2.ZERO) -> Vector2:
@@ -158,6 +174,7 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	last_tell_duration = 0.0
 	last_recover_duration = 0.0
 
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_clamp_to_leash()
 	_try_load_optional_sprite()
 	if director != null:
@@ -492,12 +509,22 @@ func _die(hit: Object) -> void:
 
 
 func _try_load_optional_sprite() -> void:
-	for p: String in ["res://luxel/art/enemies/%s/idle.png" % kind, "res://luxel/art/bosses/%s/idle.png" % kind]:
-		if ResourceLoader.exists(p):
-			var res: Resource = ResourceLoader.load(p)
-			if res is Texture2D:
-				_sprite_tex = res as Texture2D
+	_sprite_sheet = null
+	_sprite_tint = Color.WHITE
+	_sprite_scale = Vector2.ONE
+	for p: String in ["res://luxel/art/enemies/%s.json" % kind, "res://luxel/art/bosses/%s.json" % kind]:
+		if FileAccess.file_exists(p):
+			_sprite_sheet = LxSpriteSheet.load_sheet(p)
+			if _sprite_sheet != null:
 				return
+	if _VARIANT_SHEETS.has(kind):
+		var cfg: Array = _VARIANT_SHEETS[kind] as Array
+		var vp: String = "res://luxel/art/%s.json" % str(cfg[0])
+		if FileAccess.file_exists(vp):
+			_sprite_sheet = LxSpriteSheet.load_sheet(vp)
+			if _sprite_sheet != null:
+				_sprite_tint = PAL[str(cfg[1])] as Color
+				_sprite_scale = Vector2.ONE * float(cfg[2])
 
 
 func _body_color() -> Color:
@@ -532,10 +559,12 @@ func _draw() -> void:
 	elif state == State.COMMIT:
 		draw_arc(off, r + 14.0, facing - 1.1, facing + 1.1, 16, PAL["gold"] as Color, 2.5)
 
-	if _sprite_tex != null:
-		var sz: Vector2 = _sprite_tex.get_size()
-		draw_texture(_sprite_tex, off - Vector2(sz.x * 0.5, sz.y * 0.75), (PAL["cream"] as Color) if flash_t > 0.0 else Color.WHITE)
-	else:
+	var drew_sprite: bool = false
+	if _sprite_sheet != null:
+		var anim_name: String = str(_STATE_ANIMS.get(state, "phase2" if (kind == "bellkeeper" and phase >= 2 and state == State.ROUTINE) else "routine"))
+		var mod: Color = (PAL["cream"] as Color) if flash_t > 0.0 else _sprite_tint
+		drew_sprite = _sprite_sheet.draw_actor(self, off, anim_name, Vector2.from_angle(facing), anim_t, mod, _sprite_scale)
+	if not drew_sprite:
 		var fill: Color = (PAL["cream"] as Color) if flash_t > 0.0 else ((PAL["stone"] as Color) if state == State.STAGGER else ((PAL["dusk"] as Color) if state == State.RECOVER else _body_color()))
 		var box := Rect2(off - Vector2(r, r), Vector2(r * 2.0, r * 2.0))
 		draw_rect(box, fill, true)

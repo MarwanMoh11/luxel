@@ -244,6 +244,15 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 			Lx.camera.slide_to_room(b, 0.4)
 		else:
 			Lx.camera.snap_to(spawn_at)
+	if _darkness_layer != null:
+		if _darkness_layer.has_method("reset_zones"):
+			_darkness_layer.call("reset_zones")
+		if _darkness_layer.has_method("stop_dawn_wave"):
+			_darkness_layer.call("stop_dawn_wave")
+		if _darkness_layer.has_method("set_darkness"):
+			_darkness_layer.call("set_darkness", 0.0 if Lx.state.relit_islands.has(island_id) else 0.56)
+		if _darkness_layer.has_method("sync"):
+			_darkness_layer.call("sync", 0.0, _region_loader)
 
 	_load_island_controller(island_id)
 	Lx.audio.start_island_music(island_id)
@@ -415,6 +424,8 @@ func step_sim(raw_dt: float) -> void:
 	if _wick != null:
 		wpos = _wick.global_position
 		Lx.camera.follow(wpos, raw_dt)
+		if _darkness_layer != null and _darkness_layer.has_method("sync"):
+			_darkness_layer.call("sync", raw_dt, _region_loader)
 		if _region_loader != null and _region_loader.has_method("check_exit"):
 			var ex: Dictionary = _region_loader.call("check_exit", wpos)
 			if not ex.is_empty():
@@ -490,6 +501,9 @@ func _on_boss_defeated(boss_id: String, _isl: int) -> void:
 func _on_great_lamp_relit(isl: int) -> void:
 	if not Lx.state.relit_islands.has(isl):
 		Lx.state.relit_islands.append(isl)
+	if _darkness_layer != null and _darkness_layer.has_method("trigger_dawn_wave"):
+		var wave_pos: Vector2 = _wick.global_position if _wick != null else Vector2(160.0, 90.0)
+		_darkness_layer.call("trigger_dawn_wave", wave_pos, 260.0, 1400.0)
 	Lx.audio.play_stinger("stinger_lamp")
 	_on_save_requested("great_lamp")
 	if isl >= 8:
@@ -499,6 +513,14 @@ func _on_great_lamp_relit(isl: int) -> void:
 func _sync_ui_flow() -> void:
 	if _ui_root != null and _ui_root.has_method("set_flow"):
 		_ui_root.call("set_flow", flow)
+	if _darkness_layer != null:
+		_darkness_layer.visible = (
+			flow == Flow.PLAY
+			or flow == Flow.PAUSE
+			or flow == Flow.MAP
+			or flow == Flow.REST_SHOP
+			or flow == Flow.DEATH
+		)
 
 
 func _run_smoke_mode() -> void:
