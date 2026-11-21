@@ -21,6 +21,8 @@ var _ui_root: CanvasLayer = null
 var _director: RefCounted = null
 var _services_ready: bool = false
 var _headless_bot_active: bool = false
+var _tracked_boss: Object = null
+var _last_zone_id: String = ""
 
 
 func _ready() -> void:
@@ -199,6 +201,15 @@ func start_new_game(slot_num: int, play_intro: bool = true) -> void:
 		flow = Flow.PLAY
 	_sync_ui_flow()
 
+func finish_intro() -> void:
+	if flow != Flow.INTRO:
+		return
+	flow = Flow.PLAY
+	_sync_ui_flow()
+	if Lx.events != null and Lx.state != null and Lx.state.island_id == 1:
+		Lx.events.narration_requested.emit("ISL1_ARRIVAL", "narration", 4.0)
+		Lx.events.prompt_requested.emit("PROMPT_AIM_SHOOT", "lx_fire", 6.0)
+
 
 func continue_slot(slot_num: int) -> bool:
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
@@ -214,6 +225,10 @@ func continue_slot(slot_num: int) -> bool:
 
 
 func load_island_region(island_id: int, region_id: String, spawn_override: Vector2 = Vector2(-1.0, -1.0)) -> bool:
+	if _tracked_boss != null and Lx.ui != null and Lx.ui.get("hud") != null:
+		(Lx.ui.get("hud") as Node).call("hide_boss")
+	_tracked_boss = null
+	_last_zone_id = ""
 	if _region_loader != null and _region_loader.has_method("save_interactables_to_state"):
 		_region_loader.call("save_interactables_to_state")
 	Lx.state.island_id = island_id
@@ -367,15 +382,12 @@ func _notification(what: int) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not _services_ready:
 		return
-	if flow == Flow.PLAY and event.is_action_pressed("lx_pause"):
-		toggle_pause()
-	elif (flow == Flow.PAUSE or flow == Flow.MAP or flow == Flow.REST_SHOP) and event.is_action_pressed("lx_pause"):
+	if event.is_action_pressed("lx_pause") and flow in [Flow.PLAY, Flow.PAUSE, Flow.MAP, Flow.REST_SHOP]:
 		toggle_pause()
 	elif (flow == Flow.PLAY or flow == Flow.MAP) and event.is_action_pressed("lx_map"):
 		open_map()
 	elif flow == Flow.INTRO and (event.is_action_pressed("lx_ui_accept") or event.is_action_pressed("lx_ui_cancel")):
-		flow = Flow.PLAY
-		_sync_ui_flow()
+		finish_intro()
 	elif flow == Flow.DEATH and (event.is_action_pressed("lx_ui_accept") or event.is_action_pressed("lx_fire")):
 		retry_from_death()
 
@@ -390,8 +402,7 @@ func step_sim(raw_dt: float) -> void:
 	if flow == Flow.INTRO:
 		intro_timer += raw_dt
 		if intro_timer >= 6.0:
-			flow = Flow.PLAY
-			_sync_ui_flow()
+			finish_intro()
 		return
 	if flow == Flow.ENDING:
 		ending_timer += raw_dt
@@ -421,8 +432,10 @@ func step_sim(raw_dt: float) -> void:
 			_region_loader.call("tick", dt, wpos)
 
 	Lx.audio.tick(raw_dt, engaged_enemies > 0)
+	_sync_boss_hud()
 	if _wick != null:
 		wpos = _wick.global_position
+		_sync_zone_banner(wpos)
 		Lx.camera.follow(wpos, raw_dt)
 		if _darkness_layer != null and _darkness_layer.has_method("sync"):
 			_darkness_layer.call("sync", raw_dt, _region_loader)
@@ -514,13 +527,39 @@ func _sync_ui_flow() -> void:
 	if _ui_root != null and _ui_root.has_method("set_flow"):
 		_ui_root.call("set_flow", flow)
 	if _darkness_layer != null:
-		_darkness_layer.visible = (
-			flow == Flow.PLAY
-			or flow == Flow.PAUSE
-			or flow == Flow.MAP
-			or flow == Flow.REST_SHOP
-			or flow == Flow.DEATH
-		)
+		_darkness_layer.visible = flow in [Flow.PLAY, Flow.PAUSE, Flow.MAP, Flow.REST_SHOP, Flow.DEATH]
+
+func _sync_boss_hud() -> void:
+	var hud: Node = Lx.ui.get("hud") as Node if (Lx.ui != null and Lx.ui.get("hud") != null) else null
+	var boss: LxEnemyBrain = null
+	if _region_loader != null and _region_loader.has_method("get_enemies"):
+		for e: LxEnemyBrain in _region_loader.call("get_enemies"):
+			if e != null and is_instance_valid(e) and e.is_alive() and (e.is_boss or not e.boss_id.is_empty()):
+				boss = e
+				break
+	if boss != null and hud != null:
+		if not is_instance_valid(_tracked_boss) or _tracked_boss != boss:
+			_tracked_boss = boss
+			hud.call("show_boss", boss.boss_id if not boss.boss_id.is_empty() else boss.kind, boss.hp, boss.max_hp, boss.phase)
+		else:
+			hud.call("update_boss", boss.hp, boss.max_hp, boss.phase)
+	elif boss == null and _tracked_boss != null:
+		_tracked_boss = null
+		if hud != null:
+			hud.call("hide_boss")
+
+func _sync_zone_banner(wpos: Vector2) -> void:
+	if _region_loader == null or not _region_loader.has_method("get_zones"):
+		return
+	for z: Dictionary in _region_loader.call("get_zones"):
+		if LxMapFormat.to_rect2(z.get("rect", [])).has_point(wpos):
+			var zid: String = str(z.get("id", ""))
+			if zid != _last_zone_id:
+				_last_zone_id = zid
+				var nk: String = str(z.get("name_key", ""))
+				if not nk.is_empty() and LxStrings.has_id(nk) and Lx.ui != null and Lx.ui.get("hud") != null:
+					(Lx.ui.get("hud") as Node).call("show_notice", nk, 2.8)
+			return
 
 
 func _run_smoke_mode() -> void:

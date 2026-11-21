@@ -137,19 +137,26 @@ func _process(delta: float) -> void:
 		_bar_t += delta
 		_bar = lerpf(_bar_from, _bar_to, clampf(_bar_t / _bar_dur, 0.0, 1.0)) if _bar_dur > 0.0 else _bar_to
 		dirty = true
-	if not _slots.is_empty():
-		for key: Variant in _slots.keys():
-			var slot_name: String = str(key)
-			var entry: Dictionary = _slots[slot_name] as Dictionary
-			entry["t"] = float(entry["t"]) + delta
-			if float(entry["t"]) >= float(entry["secs"]):
-				_slots.erase(slot_name)
+	var modal_paused: bool = (
+		not is_letterbox_on()
+		and Lx.ui != null
+		and Lx.ui.has_method("is_modal_open")
+		and bool(Lx.ui.call("is_modal_open"))
+	)
+	if not modal_paused:
+		if not _slots.is_empty():
+			for key: Variant in _slots.keys():
+				var slot_name: String = str(key)
+				var entry: Dictionary = _slots[slot_name] as Dictionary
+				entry["t"] = float(entry["t"]) + delta
+				if float(entry["t"]) >= float(entry["secs"]):
+					_slots.erase(slot_name)
+				dirty = true
+		if not _prompt_text.is_empty():
+			_prompt_t += delta
+			if _prompt_t >= _prompt_dur:
+				_prompt_text = ""
 			dirty = true
-	if not _prompt_text.is_empty():
-		_prompt_t += delta
-		if _prompt_t >= _prompt_dur:
-			_prompt_text = ""
-		dirty = true
 	if dirty:
 		queue_redraw()
 

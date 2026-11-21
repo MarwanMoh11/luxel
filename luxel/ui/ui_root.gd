@@ -183,7 +183,9 @@ func _connect_signals() -> void:
 	cards.intro_finished.connect(func() -> void:
 		show_hud()
 		intro_finished.emit()
-		if _main != null and int(_main.get("flow")) == 1:
+		if _main != null and _main.has_method("finish_intro"):
+			_main.call("finish_intro")
+		elif _main != null and int(_main.get("flow")) == 1:
 			_main.set("flow", 2)
 	)
 	cards.ending_finished.connect(func() -> void:
@@ -249,7 +251,10 @@ func show_intro() -> void:
 
 
 func open_rest_shop() -> void:
-	show_shop()
+	if _main != null and _main.has_method("open_rest_shop"):
+		_main.call("open_rest_shop")
+	else:
+		show_shop()
 
 
 func set_flow(flow_id: int) -> void:

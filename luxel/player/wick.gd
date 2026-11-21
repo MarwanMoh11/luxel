@@ -393,6 +393,9 @@ func get_hearts() -> float:
 func get_max_hearts() -> int:
 	return Lx.state.max_hearts if Lx.state != null else _local_max_hearts
 
+func get_ember() -> float:
+	return ember
+
 func get_ember_ratio() -> float:
 	var emax: float = move_sunflare.get_ember_max() if move_sunflare != null else 100.0
 	return clampf(ember / maxf(emax, 1.0), 0.0, 1.0)

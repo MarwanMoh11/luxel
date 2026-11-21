@@ -290,10 +290,13 @@ func _draw() -> void:
 	_draw_shards_and_keys(Vector2(315.0, 5.0))
 	_draw_moves_tray(Vector2(5.0, 160.0))
 	_draw_zip_cue(Vector2(5.0, 148.0))
+	if Lx.world != null and not _boss_active:
+		LxMinimap.draw_minimap(self, Vector2(263.0, 16.0), _blink_t)
 	if Lx.state.has_move("sunflare"):
 		_draw_ember_meter(Vector2(246.0, 166.0))
 	if _boss_active:
 		_draw_boss_bar()
+	_draw_interact_prompt()
 	_draw_cues()
 	_draw_notice()
 
@@ -469,6 +472,62 @@ func _draw_boss_bar() -> void:
 		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, bar_h - 4.0), LxPalette.PAL["coral"])
 
 
+func _draw_interact_prompt() -> void:
+	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
+		return
+	if Lx.world == null or not Lx.world.has_method("get_interactables"):
+		return
+	var items_v: Variant = Lx.world.call("get_interactables")
+	if not (items_v is Array):
+		return
+	var ppos: Vector2 = (Lx.player as Node2D).global_position
+	var best_pid: String = ""
+	var best_pos: Vector2 = Vector2.ZERO
+	var best_d2: float = INF
+	for item: Variant in (items_v as Array):
+		if item == null or not (item is Object) or not is_instance_valid(item):
+			continue
+		var obj: Object = item as Object
+		if not _prop_bool(obj, "active"):
+			continue
+		if _prop_bool(obj, "opened") or _prop_bool(obj, "collected") or _prop_bool(obj, "shattered"):
+			continue
+		if not obj.has_method("get_interact_prompt"):
+			continue
+		var pid: String = str(obj.call("get_interact_prompt"))
+		if pid.is_empty():
+			continue
+		var it_pos_v: Variant = obj.get("pos")
+		var it_pos: Vector2 = (it_pos_v as Vector2) if it_pos_v is Vector2 else ((obj as Node2D).global_position if obj is Node2D else Vector2.ZERO)
+		var it_rad: float = float(obj.get("radius")) if obj.get("radius") != null else 14.0
+		var reach: float = maxf(24.0, it_rad + 10.0)
+		var d2: float = it_pos.distance_squared_to(ppos)
+		if d2 <= reach * reach and d2 < best_d2:
+			best_d2 = d2
+			best_pid = pid
+			best_pos = it_pos
+	if best_pid.is_empty():
+		return
+	var label: String = LxStrings.text(best_pid) if LxStrings.has_id(best_pid) else LxStrings.sanitize(best_pid)
+	if label.is_empty():
+		return
+	var glyph: String = "-"
+	if Lx.input != null:
+		var raw_g: String = LxStrings.sanitize(Lx.input.get_glyph("lx_interact"), 6)
+		if not raw_g.is_empty():
+			glyph = raw_g
+	var txt: String = LxStrings.fmt("HUD_KEY_PROMPT_FMT", [glyph, label])
+	var w: float = float(LxPixelFont.width(txt, 1)) + 8.0
+	var h: float = 11.0
+	var sp: Vector2 = _world_to_screen(best_pos) + Vector2(0.0, -24.0)
+	var half_w: float = w * 0.5
+	var cx: float = clampf(sp.x, 8.0 + half_w, 312.0 - half_w)
+	var py: float = clampf(sp.y - h * 0.5, 18.0, 146.0 - h)
+	var rect := Rect2(roundf(cx - half_w), roundf(py), w, h)
+	LxPixelFont.draw_panel(self, rect, "dusk", "gold", "night")
+	LxPixelFont.draw_centered(self, txt, rect.position.x + w * 0.5, rect.position.y + 3.0, LxPalette.PAL["cream"], 1)
+
+
 func _draw_cues() -> void:
 	for cue: Dictionary in _cues:
 		var t: float = float(cue["t"])
@@ -516,3 +575,8 @@ func _count_island_beacons(island_id: int) -> int:
 		if bid.begins_with(prefix) or bid.begins_with(alt_prefix) or bid.begins_with(p3) or bid.begins_with(p4) or bid.begins_with(p5) or (island_id == 1 and bid.begins_with("beacon_") and not bid.begins_with("beacon_isl")):
 			count += 1
 	return mini(count, 3)
+
+
+static func _prop_bool(obj: Object, prop: String) -> bool:
+	var v: Variant = obj.get(prop)
+	return v is bool and bool(v)
