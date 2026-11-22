@@ -37,6 +37,14 @@ const SFX_VARIANTS: Dictionary = {
 	"ui_back": ["ui_back", "ui_back_2"], "boss_victory": ["boss_victory", "boss_victory_2"],
 	"magpie_gulp": ["magpie_gulp", "magpie_gulp_2"], "magpie_drop": ["magpie_drop", "magpie_drop_2"],
 	"lens_reveal": ["lens_reveal", "lens_reveal_2"], "sunflare_burst": ["sunflare_burst", "sunflare_burst_2"],
+	"beam_ready": ["beam_ready", "beam_ready_2"], "boss_kill": ["boss_kill", "boss_kill_2"],
+	"denied": ["denied", "denied_2"], "furnace_draw": ["furnace_draw", "furnace_draw_2"],
+	"harbor_creak": ["harbor_creak", "harbor_creak_2"], "hush_pulse": ["hush_pulse", "hush_pulse_2"],
+	"hush_shatter": ["hush_shatter", "hush_shatter_2"], "key_drop": ["key_drop", "key_drop_2"],
+	"marsh_croak": ["marsh_croak", "marsh_croak_2"], "perfect_counter": ["perfect_counter", "perfect_counter_2"],
+	"prism_chain": ["prism_chain", "prism_chain_2"], "shield_strain": ["shield_strain", "shield_strain_2"],
+	"tide_surge": ["tide_surge", "tide_surge_2"], "waystone_rest": ["waystone_rest", "waystone_rest_2"],
+	"waystone_warp": ["waystone_warp", "waystone_warp_2"], "web_burn": ["web_burn", "web_burn_2"],
 }
 
 const SFX_BASE_TRIM_DB: Dictionary = {

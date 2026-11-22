@@ -1488,6 +1488,78 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        252,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        308,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "rope_coil",
+      "pos": [
+        268,
+        204
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "mooring_bollard",
+      "pos": [
+        296,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        382,
+        340
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "tide_bell_post",
+      "pos": [
+        434,
+        340
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
     }
   ]
 }

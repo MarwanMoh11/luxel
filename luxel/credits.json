@@ -470,6 +470,30 @@
         "luxel/audio/sfx/lens_reveal_2.ogg",
         "luxel/audio/sfx/sunflare_burst_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_masterwork3",
+      "description": "Masterwork Wave-3 final 16 zero-hiss alternate takes achieving 100% multi-take coverage on every repeatable combat, telegraph, enemy, and world sound (beam_ready_2, boss_kill_2, denied_2, furnace_draw_2, harbor_creak_2, hush_pulse_2, hush_shatter_2, key_drop_2, marsh_croak_2, perfect_counter_2, prism_chain_2, shield_strain_2, tide_surge_2, waystone_rest_2, waystone_warp_2, web_burn_2; 184 SFX across 85 multi-take pools)",
+      "generator": "gen_sfx_masterwork3.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/beam_ready_2.ogg",
+        "luxel/audio/sfx/boss_kill_2.ogg",
+        "luxel/audio/sfx/denied_2.ogg",
+        "luxel/audio/sfx/furnace_draw_2.ogg",
+        "luxel/audio/sfx/harbor_creak_2.ogg",
+        "luxel/audio/sfx/hush_pulse_2.ogg",
+        "luxel/audio/sfx/hush_shatter_2.ogg",
+        "luxel/audio/sfx/key_drop_2.ogg",
+        "luxel/audio/sfx/marsh_croak_2.ogg",
+        "luxel/audio/sfx/perfect_counter_2.ogg",
+        "luxel/audio/sfx/prism_chain_2.ogg",
+        "luxel/audio/sfx/shield_strain_2.ogg",
+        "luxel/audio/sfx/tide_surge_2.ogg",
+        "luxel/audio/sfx/waystone_rest_2.ogg",
+        "luxel/audio/sfx/waystone_warp_2.ogg",
+        "luxel/audio/sfx/web_burn_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []

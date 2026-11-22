@@ -258,6 +258,42 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        160,
+        88
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        64,
+        38
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        248,
+        146
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
     }
   ]
 }

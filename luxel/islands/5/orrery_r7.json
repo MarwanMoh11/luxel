@@ -197,6 +197,42 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "astro_floor_compass",
+      "pos": [
+        160,
+        88
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "hanging_pendulum",
+      "pos": [
+        112,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        280,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
     }
   ]
 }

@@ -1593,6 +1593,42 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        266,
+        388
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        326,
+        388
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "moon_crystal_cluster",
+      "pos": [
+        296,
+        418
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
     }
   ]
 }
