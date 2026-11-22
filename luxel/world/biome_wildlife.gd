@@ -15,15 +15,21 @@ static func draw_biome_life(ci: CanvasItem, island_id: int, is_dungeon: bool, cl
 	var min_y: float = cam_center.y - HALF_H
 	match island_id:
 		1:
-			if not is_dungeon:
+			if is_dungeon:
+				_draw_belfry_incense(ci, clock, min_x, min_y, 5, fred)
+			else:
 				_draw_gliding_birds(ci, clock, min_x, min_y, 3, 24.0, "night", "dusk", false)
 		2:
-			if not is_dungeon:
+			if is_dungeon:
+				_draw_mist_beads(ci, clock, min_x, min_y, 6, fred)
+			else:
 				_draw_gliding_birds(ci, clock, min_x, min_y, 3, 28.0, "stone", "ice", true)
 		3:
 			_draw_spore_wisps(ci, clock, min_x, min_y, 4 if is_dungeon else 6, fred)
 		4:
-			if not is_dungeon:
+			if is_dungeon:
+				_draw_glasshouse_drips(ci, clock, min_x, min_y, 5, fred)
+			else:
 				_draw_rain_ripples(ci, clock, min_x, min_y, 9, fred)
 		5:
 			_draw_constellations(ci, clock, min_x, min_y, 3 if is_dungeon else 4, fred)
@@ -33,6 +39,8 @@ static func draw_biome_life(ci: CanvasItem, island_id: int, is_dungeon: bool, cl
 			_draw_prism_glints(ci, clock, min_x, min_y, 4 if is_dungeon else 6, fred)
 		_:
 			_draw_eclipse_wisps(ci, clock, min_x, min_y, 4 if is_dungeon else 6, fred)
+	if not is_dungeon and Lx.state != null and Lx.state.relit_islands.has(island_id):
+		_draw_dawn_moths(ci, clock, min_x, min_y, 2, fred)
 
 
 static func _draw_gliding_birds(ci: CanvasItem, clock: float, min_x: float, min_y: float, count: int, spd: float, col_a: String, col_b: String, wide: bool) -> void:
@@ -162,3 +170,68 @@ static func _draw_eclipse_wisps(ci: CanvasItem, clock: float, min_x: float, min_
 		ci.draw_rect(Rect2(p + Vector2(1.0, 0.0), Vector2(2.0, 1.0)), Color(c_mv, a * 0.85))
 		if i % 2 == 0:
 			ci.draw_rect(Rect2(p, Vector2.ONE), Color(c_gd, a))
+
+
+static func _draw_belfry_incense(ci: CanvasItem, clock: float, min_x: float, min_y: float, count: int, fred: bool) -> void:
+	var c_gd: Color = LxPalette.PAL["gold"] as Color
+	var c_ap: Color = LxPalette.PAL["apricot"] as Color
+	for i: int in range(count):
+		var fi: float = float(i)
+		var ix: float = min_x + fposmod(fi * 73.0 + sin(clock * 0.7 + fi * 1.4) * 9.0, VIEW_W)
+		var iy: float = min_y + fposmod(fi * 47.0 - clock * (4.5 + float(i % 2) * 1.8), VIEW_H)
+		var p := Vector2(roundf(ix), roundf(iy))
+		var a: float = 0.34 if fred else (0.28 + 0.22 * absf(sin(clock * 1.3 + fi)))
+		ci.draw_rect(Rect2(p, Vector2(1.0, 2.0)), Color(c_ap, a))
+		ci.draw_rect(Rect2(p + Vector2(0.0, -1.0), Vector2.ONE), Color(c_gd, a + 0.20))
+
+
+static func _draw_mist_beads(ci: CanvasItem, clock: float, min_x: float, min_y: float, count: int, fred: bool) -> void:
+	var c_sk: Color = LxPalette.PAL["sky"] as Color
+	var c_ic: Color = LxPalette.PAL["ice"] as Color
+	for i: int in range(count):
+		var fi: float = float(i)
+		var mx: float = min_x + fposmod(fi * 59.0 + clock * (8.0 + float(i % 3) * 2.5), VIEW_W)
+		var my: float = min_y + fposmod(fi * 41.0 + sin(clock * 0.9 + fi) * 5.0, VIEW_H)
+		var p := Vector2(roundf(mx), roundf(my))
+		var a: float = 0.32 if fred else 0.44
+		ci.draw_rect(Rect2(p, Vector2(2.0, 1.0)), Color(c_sk, a))
+		if i % 2 == 0:
+			ci.draw_rect(Rect2(p, Vector2.ONE), Color(c_ic, a + 0.16))
+
+
+static func _draw_glasshouse_drips(ci: CanvasItem, clock: float, min_x: float, min_y: float, count: int, fred: bool) -> void:
+	var c_sk: Color = LxPalette.PAL["sky"] as Color
+	var c_ic: Color = LxPalette.PAL["ice"] as Color
+	for i: int in range(count):
+		var fi: float = float(i)
+		var per: float = 1.6 + float(i % 3) * 0.45
+		var ph: float = fposmod(clock + fi * 0.63, per)
+		var slot: float = floorf((clock + fi * 0.63) / per)
+		var u: float = ph / per
+		var dx: float = roundf(min_x + fposmod(slot * 67.0 + fi * 53.0 + 18.0, VIEW_W - 36.0) + 18.0)
+		var base_y: float = roundf(min_y + fposmod(slot * 43.0 + fi * 31.0 + 28.0, VIEW_H - 44.0) + 28.0)
+		var a: float = 0.42 if fred else 0.62
+		if u < 0.35:
+			var fy: float = roundf(base_y - (1.0 - u / 0.35) * 22.0)
+			ci.draw_rect(Rect2(dx, fy, 1.0, 2.0), Color(c_ic, a))
+		elif u < 0.62:
+			var r: float = roundf(1.0 + ((u - 0.35) / 0.27) * 3.0)
+			var ra: float = (1.0 - (u - 0.35) / 0.27) * a
+			ci.draw_rect(Rect2(dx - r, base_y, 1.0, 1.0), Color(c_sk, ra))
+			ci.draw_rect(Rect2(dx + r, base_y, 1.0, 1.0), Color(c_sk, ra))
+			ci.draw_rect(Rect2(dx, base_y, 1.0, 1.0), Color(c_ic, ra * 0.7))
+
+
+static func _draw_dawn_moths(ci: CanvasItem, clock: float, min_x: float, min_y: float, count: int, fred: bool) -> void:
+	var c_gd: Color = LxPalette.PAL["gold"] as Color
+	var c_cr: Color = LxPalette.PAL["cream"] as Color
+	for i: int in range(count):
+		var fi: float = float(i)
+		var dir_x: float = 1.0 if i % 2 == 0 else -1.0
+		var mx: float = min_x + fposmod(fi * 149.0 + clock * 14.0 * dir_x, VIEW_W)
+		var my: float = min_y + 38.0 + fi * 62.0 + sin(clock * 2.4 + fi * 2.5) * 10.0
+		var p := Vector2(roundf(mx), roundf(my))
+		var flap: float = 0.0 if (fred or sin(clock * 9.0 + fi * 1.7) > 0.0) else -1.0
+		ci.draw_rect(Rect2(p, Vector2.ONE), c_cr)
+		ci.draw_rect(Rect2(p + Vector2(-1.0, flap), Vector2.ONE), c_gd)
+		ci.draw_rect(Rect2(p + Vector2(1.0, flap), Vector2.ONE), c_gd)

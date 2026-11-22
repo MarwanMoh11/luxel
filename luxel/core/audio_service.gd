@@ -469,7 +469,7 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		_shard_streak = mini(SHARD_SCALE.size() - 1, _shard_streak + 1) if (_sfx_clock - _shard_streak_t) <= 0.85 else 0
 		_shard_streak_t = _sfx_clock
 		jit = SHARD_SCALE[_shard_streak]
-	elif base_id == "mirror_ping" or base_id == "prism_bounce" or base_id == "prism_chain":
+	elif base_id == "mirror_ping" or base_id == "prism_bounce" or base_id == "prism_chain" or base_id == "prop_chime":
 		_mirror_streak = mini(SHARD_SCALE.size() - 1, _mirror_streak + 1) if (_sfx_clock - _mirror_streak_t) <= 0.75 else 0
 		_mirror_streak_t = _sfx_clock
 		jit = SHARD_SCALE[_mirror_streak]
