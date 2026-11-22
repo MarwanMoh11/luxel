@@ -53,9 +53,10 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 
 	var ctx: Node = world_ctx if world_ctx != null else (_world_ctx if _world_ctx != null else Lx.world)
 	var data: Dictionary = get_data()
-	var rad: float = float(data.get("radius", 76.0))
-	var dmg: float = float(data.get("damage", 3.0))
-	var wear: float = float(data.get("shield_wear", 4.0))
+	var counter_emp: bool = wick.move_dash != null and wick.move_dash.consume_counter()
+	var rad: float = float(data.get("radius", 76.0)) + (12.0 if counter_emp else 0.0)
+	var dmg: float = float(data.get("damage", 3.0)) * (1.25 if counter_emp else 1.0)
+	var wear: float = float(data.get("shield_wear", 4.0)) + (1.0 if counter_emp else 0.0)
 	var stun_t: float = float(data.get("stun_time", 1.6))
 	var cracks: bool = bool(data.get("cracks_armour", true))
 	var stagger: bool = bool(data.get("stagger", true))
@@ -143,9 +144,15 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 		var amb: Variant = Lx.world.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", origin, rad * 1.4, 130.0)
+		var wfx: Variant = Lx.world.get("_water_fx")
+		if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
+			(wfx as Object).call("spawn_ripple", origin, "gold", 18.0)
 	wick.spawn_ring(origin, 4.0, rad, 0.36, LxWick.PAL_GOLD, 2.5)
 	wick.spawn_ring(origin, 2.0, rad * 0.82, 0.28, LxWick.PAL_CREAM, 2.0)
 	wick.spawn_ring(origin, 6.0, rad * 1.08, 0.42, LxWick.PAL_APRICOT, 1.5)
+	if counter_emp:
+		wick.spawn_ring(origin, 8.0, rad * 1.15, 0.44, LxWick.PAL_CREAM, 2.0)
+		wick.emit_sfx("perfect_counter", origin, false)
 	for i: int in range(16):
 		var sdir: Vector2 = Vector2.from_angle(TAU * float(i) / 16.0)
 		var scol: Color = LxWick.PAL_CREAM if (i % 2 == 0) else LxWick.PAL_GOLD

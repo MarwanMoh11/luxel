@@ -16,6 +16,7 @@ var _shores: Array[Dictionary] = [] # {x, y, mask, phase}
 var _glints: Array[Dictionary] = [] # {x, y, w, phase, spd, tide}
 var _abyss: Array[Dictionary] = []  # {x, y, phase, kind} kind: 0=star, 1=magma
 var _ripples: Array[Dictionary] = []
+var _water_cells: Dictionary = {}
 
 
 func _ready() -> void:
@@ -31,6 +32,7 @@ func configure(grid: Array[PackedStringArray], tile_size: int, island_id: int, i
 	_glints.clear()
 	_abyss.clear()
 	_ripples.clear()
+	_water_cells.clear()
 	var h: int = grid.size()
 	if h <= 0:
 		queue_redraw()
@@ -45,6 +47,7 @@ func configure(grid: Array[PackedStringArray], tile_size: int, island_id: int, i
 			var t: String = row[tx]
 			var hash_v: int = (tx * 73856093 ^ ty * 19349663 ^ _island_id * 83492791) & 0x7FFFFFFF
 			if t == "water" or t == "tide":
+				_water_cells[Vector2i(tx, ty)] = true
 				var mask: int = 0
 				if ty > 0 and _is_land(grid[ty - 1][tx]):
 					mask |= 1
@@ -80,13 +83,29 @@ func configure(grid: Array[PackedStringArray], tile_size: int, island_id: int, i
 	queue_redraw()
 
 
-func spawn_ripple(world_pos: Vector2, col_key: String = "ice") -> void:
+func spawn_ripple(world_pos: Vector2, col_key: String = "ice", max_r: float = 11.0) -> void:
+	if not _is_near_water(world_pos):
+		return
 	if _ripples.size() >= MAX_RIPPLES:
 		_ripples.pop_front()
 	_ripples.append({
-		"pos": world_pos, "age": 0.0, "dur": 0.42,
+		"pos": world_pos, "age": 0.0, "dur": 0.42 if max_r <= 12.0 else 0.52, "max_r": max_r,
 		"c1": LxPalette.color(col_key, "ice"), "c2": LxPalette.color("sky"),
 	})
+
+
+func _is_near_water(world_pos: Vector2) -> bool:
+	if _island_id == 2 or _island_id == 4:
+		return true
+	if _water_cells.is_empty():
+		return false
+	var cx: int = int(floorf(world_pos.x / float(_tile_size)))
+	var cy: int = int(floorf(world_pos.y / float(_tile_size)))
+	for dy: int in range(-1, 2):
+		for dx: int in range(-1, 2):
+			if _water_cells.has(Vector2i(cx + dx, cy + dy)):
+				return true
+	return false
 
 
 func tick(dt: float, cam_center: Vector2) -> void:
@@ -166,7 +185,7 @@ func _draw() -> void:
 
 	for rp: Dictionary in _ripples:
 		var u: float = clampf(float(rp["age"]) / maxf(0.01, float(rp["dur"])), 0.0, 1.0)
-		var r: float = roundf(lerpf(2.0, 11.0, u))
+		var r: float = roundf(lerpf(2.0, float(rp.get("max_r", 11.0)), u))
 		draw_arc((rp["pos"] as Vector2).round(), r, 0.0, TAU, 16, (rp["c1"] as Color) if u < 0.45 else (rp["c2"] as Color), 1.0, false)
 
 
