@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": false,
   "spawn": [
-    96,
-    288
+    336,
+    1104
   ],
   "zones": [
     {
@@ -13,9 +13,9 @@
       "name_key": "ZONE_ISL8_1",
       "rect": [
         0,
-        224,
+        912,
         672,
-        160
+        304
       ],
       "dark": true
     },
@@ -24,9 +24,9 @@
       "name_key": "ZONE_ISL8_2",
       "rect": [
         0,
-        0,
-        352,
-        224
+        656,
+        672,
+        256
       ],
       "dark": true
     },
@@ -34,10 +34,10 @@
       "id": "gauntlet_mire",
       "name_key": "ZONE_ISL8_3",
       "rect": [
-        256,
-        384,
-        512,
-        192
+        0,
+        416,
+        672,
+        240
       ],
       "dark": true
     },
@@ -45,9 +45,9 @@
       "id": "gauntlet_kiln",
       "name_key": "ZONE_ISL8_4",
       "rect": [
-        672,
         0,
-        352,
+        0,
+        672,
         416
       ],
       "dark": true
@@ -57,7 +57,7 @@
     {
       "id": "exit_to_sanctum",
       "rect": [
-        496,
+        320,
         48,
         32,
         32
@@ -81,17 +81,17 @@
       "id": "warden_hub_8_0",
       "kind": "warden",
       "pos": [
-        456,
-        296
+        336,
+        1016
       ],
       "route": [
         [
-          408,
-          296
+          288,
+          1016
         ],
         [
-          488,
-          296
+          384,
+          1016
         ]
       ],
       "perches": [],
@@ -102,17 +102,17 @@
       "id": "crab_g1_0",
       "kind": "crab_warden",
       "pos": [
-        248,
-        136
+        296,
+        760
       ],
       "route": [
         [
-          216,
-          136
+          248,
+          760
         ],
         [
-          296,
-          136
+          344,
+          760
         ]
       ],
       "perches": [],
@@ -123,22 +123,22 @@
       "id": "gull_g1_0",
       "kind": "gull_thief",
       "pos": [
-        200,
-        184
+        248,
+        808
       ],
       "route": [],
       "perches": [
         [
-          168,
-          168
+          216,
+          792
         ],
         [
-          232,
-          184
+          296,
+          808
         ],
         [
-          280,
-          104
+          264,
+          744
         ]
       ],
       "zone": "gauntlet_tide",
@@ -148,17 +148,17 @@
       "id": "warden_g1_0",
       "kind": "warden",
       "pos": [
-        296,
-        104
+        424,
+        760
       ],
       "route": [
         [
-          264,
-          104
+          392,
+          760
         ],
         [
-          312,
-          104
+          456,
+          760
         ]
       ],
       "perches": [],
@@ -169,17 +169,17 @@
       "id": "bramble_g2_0",
       "kind": "bramble_knight",
       "pos": [
-        456,
-        472
+        312,
+        520
       ],
       "route": [
         [
-          424,
-          472
+          280,
+          520
         ],
         [
-          504,
-          472
+          360,
+          520
         ]
       ],
       "perches": [],
@@ -190,17 +190,17 @@
       "id": "gloam_g2_0",
       "kind": "gloam",
       "pos": [
-        568,
-        440
+        408,
+        504
       ],
       "route": [
         [
-          536,
-          440
+          376,
+          504
         ],
         [
-          584,
-          488
+          440,
+          552
         ]
       ],
       "perches": [],
@@ -211,17 +211,17 @@
       "id": "hopper_g2_0",
       "kind": "lily_hopper",
       "pos": [
-        552,
-        504
+        392,
+        568
       ],
       "route": [
         [
-          504,
-          504
+          344,
+          568
         ],
         [
-          584,
-          504
+          440,
+          568
         ]
       ],
       "perches": [],
@@ -232,17 +232,17 @@
       "id": "golem_g3_0",
       "kind": "cinder_golem",
       "pos": [
-        824,
-        296
+        312,
+        312
       ],
       "route": [
         [
-          776,
-          296
+          264,
+          312
         ],
         [
-          840,
-          296
+          360,
+          312
         ]
       ],
       "perches": [],
@@ -253,22 +253,22 @@
       "id": "phantom_owl_g3_0",
       "kind": "phantom_owl",
       "pos": [
-        840,
-        184
+        424,
+        280
       ],
       "route": [],
       "perches": [
         [
-          744,
-          168
+          376,
+          280
         ],
         [
-          856,
-          184
+          456,
+          280
         ],
         [
-          824,
-          248
+          424,
+          328
         ]
       ],
       "zone": "gauntlet_kiln",
@@ -278,17 +278,17 @@
       "id": "bellows_g3_0",
       "kind": "bellows_imp",
       "pos": [
-        888,
-        184
+        472,
+        312
       ],
       "route": [
         [
-          856,
-          184
+          440,
+          312
         ],
         [
-          936,
-          184
+          504,
+          312
         ]
       ],
       "perches": [],
@@ -301,8 +301,8 @@
       "id": "ws_dark_hub",
       "kind": "waystone",
       "pos": [
-        392,
-        280
+        280,
+        1080
       ],
       "props": {
         "zone": "dark_hub",
@@ -315,8 +315,8 @@
       "id": "rest_shrine_8",
       "kind": "rest_shrine",
       "pos": [
-        584,
-        280
+        392,
+        1080
       ],
       "props": {
         "zone": "dark_hub",
@@ -327,8 +327,8 @@
       "id": "ws_gauntlet_tide",
       "kind": "waystone",
       "pos": [
-        216,
-        200
+        336,
+        840
       ],
       "props": {
         "zone": "gauntlet_tide",
@@ -339,8 +339,8 @@
       "id": "mirror_8_g1",
       "kind": "mirror",
       "pos": [
-        200,
-        104
+        248,
+        744
       ],
       "props": {
         "angle_deg": 45,
@@ -351,8 +351,8 @@
       "id": "beacon_8_1",
       "kind": "beacon",
       "pos": [
-        120,
-        168
+        152,
+        776
       ],
       "props": {
         "index": 0,
@@ -368,8 +368,8 @@
       "id": "ws_gauntlet_mire",
       "kind": "waystone",
       "pos": [
-        440,
-        424
+        336,
+        584
       ],
       "props": {
         "zone": "gauntlet_mire",
@@ -380,8 +380,8 @@
       "id": "bramble_8_g2",
       "kind": "bramble",
       "pos": [
-        328,
-        472
+        232,
+        520
       ],
       "props": {
         "size": [
@@ -395,8 +395,8 @@
       "id": "beacon_8_2",
       "kind": "beacon",
       "pos": [
-        312,
-        440
+        152,
+        520
       ],
       "props": {
         "index": 1,
@@ -411,8 +411,8 @@
       "id": "chest_ember_8_1",
       "kind": "chest",
       "pos": [
-        696,
-        472
+        568,
+        536
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -429,8 +429,8 @@
       "id": "ws_gauntlet_kiln",
       "kind": "waystone",
       "pos": [
-        744,
-        328
+        336,
+        352
       ],
       "props": {
         "zone": "gauntlet_kiln",
@@ -441,8 +441,8 @@
       "id": "seal_8_g3",
       "kind": "obsidian_seal",
       "pos": [
-        840,
-        152
+        184,
+        296
       ],
       "props": {
         "size": [
@@ -456,8 +456,8 @@
       "id": "beacon_8_3",
       "kind": "beacon",
       "pos": [
-        840,
-        120
+        136,
+        296
       ],
       "props": {
         "index": 2,
@@ -472,8 +472,8 @@
       "id": "chest_ember_8_2",
       "kind": "chest",
       "pos": [
-        936,
-        344
+        520,
+        312
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -487,7 +487,7 @@
       "id": "door_dungeon_8",
       "kind": "door",
       "pos": [
-        512,
+        336,
         168
       ],
       "props": {
@@ -514,8 +514,8 @@
       "id": "lamp_8_w",
       "kind": "road_lamp",
       "pos": [
-        264,
-        280
+        336,
+        1048
       ],
       "props": {
         "zone": "dark_hub"
@@ -525,8 +525,8 @@
       "id": "lamp_8_n1",
       "kind": "road_lamp",
       "pos": [
-        472,
-        200
+        280,
+        184
       ],
       "props": {
         "zone": "dark_hub"
@@ -536,8 +536,8 @@
       "id": "lamp_8_n2",
       "kind": "road_lamp",
       "pos": [
-        552,
-        200
+        392,
+        184
       ],
       "props": {
         "zone": "dark_hub"
@@ -547,8 +547,8 @@
       "id": "lamp_8_e",
       "kind": "road_lamp",
       "pos": [
-        728,
-        264
+        392,
+        344
       ],
       "props": {
         "zone": "gauntlet_kiln"
@@ -559,8 +559,8 @@
     {
       "id": "trig_isl8_arrival",
       "rect": [
-        64,
-        256,
+        296,
+        1072,
         80,
         64
       ],
@@ -570,8 +570,8 @@
     {
       "id": "trig_isl8_z2",
       "rect": [
-        176,
-        128,
+        296,
+        800,
         80,
         64
       ],
@@ -581,8 +581,8 @@
     {
       "id": "trig_isl8_z3",
       "rect": [
-        448,
-        384,
+        288,
+        552,
         96,
         48
       ],
@@ -592,8 +592,8 @@
     {
       "id": "trig_isl8_z4",
       "rect": [
-        704,
-        256,
+        304,
+        320,
         64,
         64
       ],
@@ -606,7 +606,7 @@
       "sheet": "island8_scenery",
       "prop": "sanctum_cathedral_arch",
       "pos": [
-        512,
+        336,
         162
       ],
       "layer": "over",
@@ -618,7 +618,7 @@
       "sheet": "island8_scenery",
       "prop": "shattered_rose_window",
       "pos": [
-        512,
+        336,
         74
       ],
       "layer": "over",
@@ -630,19 +630,7 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_floor_seal",
       "pos": [
-        512,
-        288
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "eclipse_floor_seal",
-      "pos": [
-        512,
+        336,
         112
       ],
       "layer": "ground",
@@ -654,8 +642,20 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_floor_seal",
       "pos": [
-        512,
-        464
+        336,
+        312
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        336,
+        536
       ],
       "layer": "ground",
       "flip_x": false,
@@ -664,10 +664,22 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "stained_glass_debris",
+      "prop": "eclipse_floor_seal",
       "pos": [
-        480,
-        220
+        336,
+        776
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        336,
+        1056
       ],
       "layer": "ground",
       "flip_x": false,
@@ -678,8 +690,20 @@
       "sheet": "island8_scenery",
       "prop": "stained_glass_debris",
       "pos": [
-        544,
-        220
+        304,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stained_glass_debris",
+      "pos": [
+        368,
+        144
       ],
       "layer": "ground",
       "flip_x": true,
@@ -688,21 +712,9 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "stained_glass_debris",
-      "pos": [
-        448,
-        250
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        458,
+        280,
         92
       ],
       "layer": "sort",
@@ -714,7 +726,7 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        566,
+        392,
         92
       ],
       "layer": "sort",
@@ -726,8 +738,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        422,
-        108
+        240,
+        104
       ],
       "layer": "sort",
       "flip_x": false,
@@ -738,8 +750,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        602,
-        108
+        432,
+        104
       ],
       "layer": "sort",
       "flip_x": true,
@@ -750,8 +762,8 @@
       "sheet": "island8_scenery",
       "prop": "stone_gargoyle_perch",
       "pos": [
-        436,
-        152
+        256,
+        148
       ],
       "layer": "sort",
       "flip_x": false,
@@ -762,8 +774,32 @@
       "sheet": "island8_scenery",
       "prop": "stone_gargoyle_perch",
       "pos": [
-        588,
-        152
+        416,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_kiln_crucible",
+      "pos": [
+        296,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_kiln_crucible",
+      "pos": [
+        488,
+        264
       ],
       "layer": "sort",
       "flip_x": true,
@@ -774,20 +810,32 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_obelisk",
       "pos": [
-        152,
-        266
+        240,
+        352
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.15
     },
     {
       "sheet": "island8_scenery",
-      "prop": "void_lantern_post",
+      "prop": "tattered_sanctum_banner",
       "pos": [
-        184,
-        314
+        536,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        264,
+        352
       ],
       "layer": "sort",
       "flip_x": false,
@@ -796,10 +844,34 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "broken_flying_buttress",
+      "prop": "stone_gargoyle_perch",
       "pos": [
-        104,
-        326
+        464,
+        360
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_kiln_crucible",
+      "pos": [
+        536,
+        360
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_thorn_root",
+      "pos": [
+        264,
+        472
       ],
       "layer": "sort",
       "flip_x": false,
@@ -808,22 +880,202 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "cracked_choir_pew",
+      "prop": "remix_thorn_root",
       "pos": [
-        288,
-        326
+        448,
+        472
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        136,
+        472
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        288,
+        472
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        384,
+        472
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "fallen_bell_fragment",
+      "pos": [
+        136,
+        592
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_thorn_root",
+      "pos": [
+        264,
+        592
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stone_gargoyle_perch",
+      "pos": [
+        456,
+        592
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
     },
     {
       "sheet": "island8_scenery",
       "prop": "gothic_iron_fence",
       "pos": [
-        328,
-        266
+        408,
+        592
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_harbor_bollard",
+      "pos": [
+        240,
+        712
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_harbor_bollard",
+      "pos": [
+        432,
+        712
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "void_lantern_post",
+      "pos": [
+        288,
+        712
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "broken_flying_buttress",
+      "pos": [
+        536,
+        768
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        384,
+        712
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_harbor_bollard",
+      "pos": [
+        240,
+        848
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        432,
+        848
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "void_lantern_post",
+      "pos": [
+        536,
+        808
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "silent_bell_tower",
+      "pos": [
+        216,
+        984
       ],
       "layer": "sort",
       "flip_x": false,
@@ -834,20 +1086,8 @@
       "sheet": "island8_scenery",
       "prop": "silent_bell_tower",
       "pos": [
-        386,
-        206
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "silent_bell_tower",
-      "pos": [
-        636,
-        206
+        456,
+        984
       ],
       "layer": "sort",
       "flip_x": true,
@@ -858,8 +1098,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        436,
-        206
+        272,
+        984
       ],
       "layer": "sort",
       "flip_x": false,
@@ -870,8 +1110,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        588,
-        206
+        400,
+        984
       ],
       "layer": "sort",
       "flip_x": true,
@@ -882,8 +1122,8 @@
       "sheet": "island8_scenery",
       "prop": "cracked_choir_pew",
       "pos": [
-        454,
-        252
+        216,
+        1040
       ],
       "layer": "sort",
       "flip_x": false,
@@ -894,8 +1134,8 @@
       "sheet": "island8_scenery",
       "prop": "cracked_choir_pew",
       "pos": [
-        570,
-        252
+        456,
+        1040
       ],
       "layer": "sort",
       "flip_x": true,
@@ -904,10 +1144,10 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "fallen_bell_fragment",
+      "prop": "eclipse_obelisk",
       "pos": [
-        392,
-        344
+        200,
+        1080
       ],
       "layer": "sort",
       "flip_x": false,
@@ -917,312 +1157,24 @@
     {
       "sheet": "island8_scenery",
       "prop": "eclipse_obelisk",
-      "pos": [
-        634,
-        344
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "broken_flying_buttress",
-      "pos": [
-        574,
-        356
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "void_lantern_post",
-      "pos": [
-        458,
-        354
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.45
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "remix_harbor_bollard",
-      "pos": [
-        112,
-        74
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "remix_harbor_bollard",
-      "pos": [
-        184,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "void_lantern_post",
-      "pos": [
-        104,
-        138
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "broken_flying_buttress",
-      "pos": [
-        294,
-        82
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "tattered_sanctum_banner",
-      "pos": [
-        252,
-        74
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "remix_harbor_bollard",
-      "pos": [
-        156,
-        206
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
-      "pos": [
-        96,
-        206
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "remix_thorn_root",
-      "pos": [
-        302,
-        412
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "remix_thorn_root",
-      "pos": [
-        614,
-        414
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "eclipse_obelisk",
-      "pos": [
-        354,
-        410
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
       "pos": [
         472,
-        418
+        1080
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
-        552,
-        418
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "fallen_bell_fragment",
-      "pos": [
-        318,
-        524
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "remix_thorn_root",
-      "pos": [
-        422,
-        526
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "stone_gargoyle_perch",
-      "pos": [
-        604,
-        528
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "gothic_iron_fence",
-      "pos": [
-        512,
-        528
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "stained_glass_debris",
-      "pos": [
-        482,
-        496
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "remix_kiln_crucible",
-      "pos": [
-        748,
-        114
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "remix_kiln_crucible",
-      "pos": [
-        928,
-        118
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "eclipse_obelisk",
-      "pos": [
-        792,
-        108
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "tattered_sanctum_banner",
-      "pos": [
-        884,
-        116
-      ],
-      "layer": "sort",
-      "flip_x": true,
       "shadow": true,
       "phase": 0.35
     },
     {
       "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
+      "prop": "broken_flying_buttress",
       "pos": [
-        732,
-        224
+        256,
+        1128
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "stone_gargoyle_perch",
-      "pos": [
-        944,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": true,
       "shadow": true,
       "phase": 0.0
     },
@@ -1230,44 +1182,20 @@
       "sheet": "island8_scenery",
       "prop": "broken_flying_buttress",
       "pos": [
-        936,
-        308
+        416,
+        1128
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "remix_kiln_crucible",
-      "pos": [
-        784,
-        376
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "void_lantern_post",
-      "pos": [
-        882,
-        376
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
+      "phase": 0.5
     },
     {
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        306,
-        244
+        112,
+        128
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1278,8 +1206,8 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        686,
-        134
+        560,
+        128
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1290,8 +1218,8 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        146,
-        372
+        56,
+        408
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1302,8 +1230,8 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        248,
-        464
+        616,
+        408
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1314,8 +1242,8 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        784,
-        446
+        88,
+        648
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1326,13 +1254,37 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        684,
-        368
+        584,
+        648
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.45
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "floating_cathedral_shard",
+      "pos": [
+        96,
+        944
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "floating_cathedral_shard",
+      "pos": [
+        576,
+        944
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
     }
   ]
 }
