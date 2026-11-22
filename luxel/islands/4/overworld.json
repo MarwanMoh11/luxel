@@ -86,8 +86,8 @@
       ],
       "to_region": "conservatory_r1",
       "to_spawn": [
-        160,
-        136
+        192,
+        216
       ],
       "requires_moves": [],
       "requires_flags": [

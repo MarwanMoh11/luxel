@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    256,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        512,
+        256
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_c4_r6_south",
       "rect": [
-        144,
-        160,
+        240,
+        240,
         32,
         16
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_c4_r6_east",
       "rect": [
-        304,
-        64,
+        496,
+        96,
         16,
         48
       ],
@@ -64,22 +64,22 @@
       "id": "boss_great_lily_hopper",
       "kind": "great_lily_hopper",
       "pos": [
-        160,
-        72
+        256,
+        112
       ],
       "route": [
         [
-          120,
-          72
+          184,
+          112
         ],
         [
-          200,
-          72
+          328,
+          112
         ]
       ],
       "perches": [],
       "zone": "conservatory_r6",
-      "leash": 150
+      "leash": 200
     }
   ],
   "interactables": [
@@ -87,8 +87,8 @@
       "id": "wick_key_4_2",
       "kind": "wick_key",
       "pos": [
-        160,
-        88
+        256,
+        128
       ],
       "props": {
         "dungeon_id": "conservatory",
@@ -101,8 +101,8 @@
       "id": "door_c4_r6_east",
       "kind": "door",
       "pos": [
-        296,
-        88
+        488,
+        128
       ],
       "props": {
         "door_kind": "key_door",
@@ -127,8 +127,8 @@
       "sheet": "island4_scenery",
       "prop": "giant_lotus_pad",
       "pos": [
-        72,
-        48
+        128,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -139,8 +139,8 @@
       "sheet": "island4_scenery",
       "prop": "giant_lotus_pad",
       "pos": [
-        248,
-        48
+        384,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -151,8 +151,8 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        72,
-        128
+        128,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -163,8 +163,8 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        248,
-        128
+        384,
+        200
       ],
       "layer": "sort",
       "flip_x": true,
@@ -175,8 +175,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        32,
-        26
+        40,
+        34
       ],
       "layer": "sort",
       "flip_x": false,
@@ -187,8 +187,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        288,
-        26
+        472,
+        34
       ],
       "layer": "sort",
       "flip_x": false,
@@ -199,8 +199,8 @@
       "sheet": "island4_scenery",
       "prop": "cattail_reeds",
       "pos": [
-        32,
-        148
+        40,
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -211,8 +211,8 @@
       "sheet": "island4_scenery",
       "prop": "cattail_reeds",
       "pos": [
-        288,
-        148
+        472,
+        224
       ],
       "layer": "sort",
       "flip_x": true,
@@ -223,8 +223,8 @@
       "sheet": "island4_scenery",
       "prop": "stone_bridge_post",
       "pos": [
-        118,
-        42
+        216,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -235,13 +235,14 @@
       "sheet": "island4_scenery",
       "prop": "stone_bridge_post",
       "pos": [
-        202,
-        42
+        296,
+        212
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

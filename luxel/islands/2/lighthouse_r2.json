@@ -31,8 +31,8 @@
       ],
       "to_region": "lighthouse_r1",
       "to_spawn": [
-        280,
-        88
+        312,
+        128
       ],
       "requires_moves": [],
       "requires_flags": [],

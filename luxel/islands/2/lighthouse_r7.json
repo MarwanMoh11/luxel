@@ -31,8 +31,8 @@
       ],
       "to_region": "lighthouse_r6",
       "to_spawn": [
-        280,
-        88
+        440,
+        112
       ],
       "requires_moves": [],
       "requires_flags": [],

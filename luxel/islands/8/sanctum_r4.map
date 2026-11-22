@@ -1,4 +1,5 @@
-# Bell Sanctum R4 - Harbinger Nave
+# Bell Sanctum r4 - Cruciform Gothic Harbinger Transept (28x18)
+TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
 LEGEND , path
@@ -12,14 +13,21 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-#########,,#########
-#OOO.....,,.....OOO#
-#OOO.....,,.....OOO#
-#........,,........#
-#...#....,,....#...#
-#........,,........#
-#...#....,,....#...#
-#........,,........#
-#OOO.....,,.....OOO#
-#OOO.....,,.....OOO#
-#########,,#########
+#############,,#############
+#OOOOOO......,,......OOOOOO#
+#OOOOOO......,,......OOOOOO#
+#OOOOOO......,,......OOOOOO#
+#OOOOOO......,,......OOOOOO#
+#O......#....,,....#......O#
+#O...........,,...........O#
+#O...........,,...........O#
+#O...........,,...........O#
+#O...........,,...........O#
+#O...........,,...........O#
+#O...........,,...........O#
+#O......#....,,....#......O#
+#OOOOOO......,,......OOOOOO#
+#OOOOOO......,,......OOOOOO#
+#OOOOOO......,,......OOOOOO#
+#OOOOOO......,,......OOOOOO#
+#############,,#############

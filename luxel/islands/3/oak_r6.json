@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    128
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        256
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_oak_r6_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_oak_r6_east",
       "rect": [
-        304,
-        64,
+        432,
+        96,
         16,
         48
       ],
@@ -61,22 +61,22 @@
       "id": "boss_elder_sporecap",
       "kind": "elder_sporecap",
       "pos": [
-        184,
-        88
+        248,
+        128
       ],
       "route": [
         [
-          152,
-          72
+          184,
+          96
         ],
         [
-          216,
-          104
+          304,
+          160
         ]
       ],
       "perches": [],
       "zone": "oak_r6",
-      "leash": 140
+      "leash": 190
     }
   ],
   "interactables": [
@@ -84,8 +84,8 @@
       "id": "wick_key_3_2",
       "kind": "wick_key",
       "pos": [
-        232,
-        88
+        328,
+        128
       ],
       "props": {
         "dungeon_id": "hollow_oak",
@@ -98,8 +98,8 @@
       "id": "door_oak_r6_combat",
       "kind": "door",
       "pos": [
-        296,
-        88
+        424,
+        128
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -119,8 +119,8 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        76,
-        42
+        136,
+        60
       ],
       "layer": "sort",
       "flip_x": false,
@@ -131,8 +131,8 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        244,
-        42
+        312,
+        60
       ],
       "layer": "sort",
       "flip_x": true,
@@ -143,8 +143,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        76,
-        144
+        136,
+        196
       ],
       "layer": "sort",
       "flip_x": false,
@@ -155,8 +155,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        244,
-        144
+        312,
+        196
       ],
       "layer": "sort",
       "flip_x": true,
@@ -167,8 +167,8 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        144,
-        38
+        224,
+        46
       ],
       "layer": "sort",
       "flip_x": false,
@@ -179,13 +179,14 @@
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        176,
-        148
+        224,
+        212
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.6
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

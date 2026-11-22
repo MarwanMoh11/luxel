@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    240,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        480,
+        256
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_o5_r6_south",
       "rect": [
-        144,
-        160,
+        224,
+        240,
         32,
         16
       ],
@@ -42,7 +42,7 @@
       "id": "exit_o5_r6_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -64,22 +64,22 @@
       "id": "boss_clockwork_warden",
       "kind": "clockwork_warden",
       "pos": [
-        160,
-        72
+        240,
+        112
       ],
       "route": [
         [
-          120,
-          72
+          168,
+          112
         ],
         [
-          200,
-          72
+          312,
+          112
         ]
       ],
       "perches": [],
       "zone": "orrery_r6",
-      "leash": 150
+      "leash": 200
     }
   ],
   "interactables": [
@@ -87,8 +87,8 @@
       "id": "wick_key_5_2",
       "kind": "wick_key",
       "pos": [
-        160,
-        88
+        240,
+        128
       ],
       "props": {
         "dungeon_id": "orrery",
@@ -102,7 +102,7 @@
       "kind": "door",
       "pos": [
         24,
-        88
+        128
       ],
       "props": {
         "door_kind": "key_door",
@@ -127,8 +127,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        122,
-        42
+        184,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -139,8 +139,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        198,
-        42
+        296,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -151,8 +151,8 @@
       "sheet": "island5_scenery",
       "prop": "hanging_pendulum",
       "pos": [
-        268,
-        88
+        392,
+        128
       ],
       "layer": "sort",
       "flip_x": true,
@@ -163,8 +163,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        118,
-        146
+        176,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
@@ -175,13 +175,38 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        202,
-        146
+        304,
+        208
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        128,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        352,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.9
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

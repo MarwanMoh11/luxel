@@ -86,8 +86,8 @@
       ],
       "to_region": "orrery_r1",
       "to_spawn": [
-        160,
-        136
+        208,
+        216
       ],
       "requires_moves": [],
       "requires_flags": [

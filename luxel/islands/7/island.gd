@@ -201,7 +201,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_miniboss",
 			"region": "spire_r6",
 			"zone": "spire_r6",
-			"pos": [184.0, 88.0],
+			"pos": [256.0, 128.0],
 			"action": "defeat_miniboss",
 			"target": "mini_moonshade_warden",
 			"grants_flag": "wick_key_7_2",

@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    224,
+    248
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        288
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_sanctum_r4_south",
       "rect": [
-        144,
-        160,
+        208,
+        272,
         32,
         16
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_sanctum_r4_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -62,22 +62,22 @@
       "kind": "night_harbinger",
       "boss_id": "night_harbinger",
       "pos": [
-        160,
-        72
+        224,
+        128
       ],
       "route": [
         [
-          112,
-          72
+          152,
+          128
         ],
         [
-          208,
-          72
+          296,
+          128
         ]
       ],
       "perches": [],
       "zone": "sanctum_r4",
-      "leash": 144
+      "leash": 195
     }
   ],
   "interactables": [
@@ -85,8 +85,8 @@
       "id": "keepers_flame_8",
       "kind": "keepers_flame",
       "pos": [
-        168,
-        72
+        224,
+        144
       ],
       "props": {
         "dungeon_id": "bell_sanctum",
@@ -98,7 +98,7 @@
       "id": "door_sanctum_r4_north",
       "kind": "door",
       "pos": [
-        160,
+        224,
         24
       ],
       "props": {
@@ -117,8 +117,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        122,
-        42
+        168,
+        46
       ],
       "layer": "sort",
       "flip_x": false,
@@ -129,8 +129,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        198,
-        42
+        280,
+        46
       ],
       "layer": "sort",
       "flip_x": true,
@@ -141,8 +141,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        86,
-        44
+        56,
+        116
       ],
       "layer": "sort",
       "flip_x": false,
@@ -153,8 +153,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        234,
-        44
+        392,
+        116
       ],
       "layer": "sort",
       "flip_x": true,
@@ -165,8 +165,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        92,
-        144
+        168,
+        240
       ],
       "layer": "sort",
       "flip_x": false,
@@ -177,8 +177,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        228,
-        144
+        280,
+        240
       ],
       "layer": "sort",
       "flip_x": true,
@@ -189,8 +189,8 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        40,
-        34
+        56,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -201,13 +201,38 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        280,
-        142
+        392,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.5
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "floating_cathedral_shard",
+      "pos": [
+        56,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "floating_cathedral_shard",
+      "pos": [
+        392,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.8
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

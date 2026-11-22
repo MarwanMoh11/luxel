@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    192,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        256
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_c4_r1_south",
       "rect": [
-        144,
-        160,
+        176,
+        240,
         32,
         16
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_c4_r1_east",
       "rect": [
-        304,
-        64,
+        368,
+        96,
         16,
         48
       ],
@@ -62,8 +62,8 @@
       "id": "ws_conservatory",
       "kind": "waystone",
       "pos": [
-        160,
-        88
+        192,
+        128
       ],
       "props": {
         "zone": "conservatory_r1",
@@ -74,8 +74,8 @@
       "id": "lamp_c4_r1_w",
       "kind": "road_lamp",
       "pos": [
-        104,
-        88
+        128,
+        128
       ],
       "props": {
         "zone": "conservatory_r1"
@@ -85,8 +85,8 @@
       "id": "lamp_c4_r1_e",
       "kind": "road_lamp",
       "pos": [
-        216,
-        88
+        256,
+        128
       ],
       "props": {
         "zone": "conservatory_r1"
@@ -97,10 +97,10 @@
     {
       "id": "trig_c4_entry",
       "rect": [
-        128,
-        112,
-        64,
-        32
+        144,
+        168,
+        96,
+        48
       ],
       "string_id": "DUNGEON_4_NAME",
       "once": true
@@ -111,8 +111,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        104,
-        62
+        132,
+        76
       ],
       "layer": "ground",
       "flip_x": false,
@@ -123,8 +123,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        216,
-        62
+        252,
+        76
       ],
       "layer": "ground",
       "flip_x": true,
@@ -135,8 +135,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        118,
-        42
+        148,
+        46
       ],
       "layer": "sort",
       "flip_x": false,
@@ -147,8 +147,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        202,
-        42
+        236,
+        46
       ],
       "layer": "sort",
       "flip_x": true,
@@ -159,8 +159,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        42,
-        28
+        44,
+        40
       ],
       "layer": "sort",
       "flip_x": false,
@@ -171,8 +171,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        278,
-        28
+        340,
+        40
       ],
       "layer": "sort",
       "flip_x": false,
@@ -183,8 +183,8 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        42,
-        146
+        44,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -195,8 +195,8 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        278,
-        146
+        340,
+        212
       ],
       "layer": "sort",
       "flip_x": true,
@@ -207,8 +207,8 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        116,
-        138
+        148,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -219,13 +219,14 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        204,
-        138
+        236,
+        212
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

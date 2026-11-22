@@ -166,7 +166,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_kiln_miniboss",
 			"region": "kiln_r6",
 			"zone": "kiln_r6",
-			"pos": [184.0, 88.0],
+			"pos": [272.0, 128.0],
 			"action": "defeat_miniboss",
 			"target": "mini_forge_warden",
 			"grants_flag": "wick_key_6_2",

@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    128
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        480,
+        256
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_spire_r6_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_spire_r6_north",
       "rect": [
-        144,
+        224,
         0,
         32,
         16
@@ -67,22 +67,22 @@
       "max_hp": 7.5,
       "shard_drop": 14,
       "pos": [
-        184,
-        88
+        256,
+        128
       ],
       "route": [
         [
-          136,
-          88
+          184,
+          128
         ],
         [
-          232,
-          88
+          328,
+          128
         ]
       ],
       "perches": [],
       "zone": "spire_r6",
-      "leash": 144
+      "leash": 195
     }
   ],
   "interactables": [
@@ -90,8 +90,8 @@
       "id": "wick_key_7_2",
       "kind": "wick_key",
       "pos": [
-        248,
-        88
+        336,
+        128
       ],
       "props": {
         "dungeon_id": "mirror_spire",
@@ -103,7 +103,7 @@
       "id": "door_spire_r6_north",
       "kind": "door",
       "pos": [
-        160,
+        240,
         24
       ],
       "props": {
@@ -127,7 +127,7 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        122,
+        192,
         48
       ],
       "layer": "sort",
@@ -139,7 +139,7 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        198,
+        288,
         48
       ],
       "layer": "sort",
@@ -151,8 +151,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        122,
-        148
+        184,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -163,8 +163,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        198,
-        148
+        296,
+        212
       ],
       "layer": "sort",
       "flip_x": true,
@@ -175,13 +175,14 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        254,
-        48
+        376,
+        128
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.35
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    176,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        352,
+        256
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_lh_r1_south",
       "rect": [
-        144,
         160,
+        240,
         32,
         16
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_lh_r1_east",
       "rect": [
-        304,
-        64,
+        336,
+        96,
         16,
         48
       ],
@@ -62,8 +62,8 @@
       "id": "ws_lighthouse",
       "kind": "waystone",
       "pos": [
-        160,
-        104
+        176,
+        128
       ],
       "props": {
         "zone": "lighthouse_r1",
@@ -74,8 +74,8 @@
       "id": "lamp_lh_r1_w",
       "kind": "road_lamp",
       "pos": [
-        120,
-        72
+        128,
+        88
       ],
       "props": {
         "zone": "lighthouse_r1"
@@ -85,8 +85,8 @@
       "id": "lamp_lh_r1_e",
       "kind": "road_lamp",
       "pos": [
-        200,
-        72
+        224,
+        88
       ],
       "props": {
         "zone": "lighthouse_r1"
@@ -98,9 +98,9 @@
       "id": "trig_lh_entry",
       "rect": [
         128,
-        112,
-        64,
-        32
+        168,
+        96,
+        48
       ],
       "string_id": "DUNGEON_2_NAME",
       "once": true
@@ -111,8 +111,8 @@
       "sheet": "island2_scenery",
       "prop": "brass_compass_floor",
       "pos": [
-        160,
-        88
+        176,
+        128
       ],
       "layer": "ground",
       "flip_x": false,
@@ -123,8 +123,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        104,
-        38
+        136,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -136,7 +136,7 @@
       "prop": "fresnel_pedestal",
       "pos": [
         216,
-        38
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -147,8 +147,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        88,
-        138
+        120,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -160,7 +160,7 @@
       "prop": "coastal_lantern_post",
       "pos": [
         232,
-        138
+        212
       ],
       "layer": "sort",
       "flip_x": true,
@@ -172,7 +172,7 @@
       "prop": "buoy_bobbing",
       "pos": [
         40,
-        36
+        40
       ],
       "layer": "sort",
       "flip_x": false,
@@ -181,15 +181,40 @@
     },
     {
       "sheet": "island2_scenery",
+      "prop": "buoy_bobbing",
+      "pos": [
+        312,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
-        280,
-        146
+        40,
+        216
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
       "phase": 0.1
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "barnacle_piling",
+      "pos": [
+        312,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

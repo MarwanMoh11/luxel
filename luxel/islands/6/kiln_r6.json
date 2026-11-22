@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    128
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        512,
+        256
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_kiln_r6_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_kiln_r6_north",
       "rect": [
-        144,
+        240,
         0,
         32,
         16
@@ -64,22 +64,22 @@
       "kind": "forge_warden",
       "boss_id": "forge_warden",
       "pos": [
-        184,
-        88
+        272,
+        128
       ],
       "route": [
         [
-          136,
-          88
+          200,
+          128
         ],
         [
-          232,
-          88
+          344,
+          128
         ]
       ],
       "perches": [],
       "zone": "kiln_r6",
-      "leash": 140
+      "leash": 200
     }
   ],
   "interactables": [
@@ -87,8 +87,8 @@
       "id": "wick_key_6_2",
       "kind": "wick_key",
       "pos": [
-        232,
-        88
+        344,
+        128
       ],
       "props": {
         "dungeon_id": "great_kiln",
@@ -100,7 +100,7 @@
       "id": "door_kiln_r6_north",
       "kind": "door",
       "pos": [
-        160,
+        256,
         24
       ],
       "props": {
@@ -124,8 +124,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        122,
-        42
+        184,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -136,8 +136,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        198,
-        42
+        328,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -148,8 +148,8 @@
       "sheet": "island6_scenery",
       "prop": "forge_anvil_stand",
       "pos": [
-        132,
-        144
+        184,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -160,8 +160,8 @@
       "sheet": "island6_scenery",
       "prop": "coal_hopper",
       "pos": [
-        196,
-        144
+        328,
+        200
       ],
       "layer": "sort",
       "flip_x": true,
@@ -172,8 +172,8 @@
       "sheet": "island6_scenery",
       "prop": "ash_urn_cluster",
       "pos": [
-        278,
-        72
+        416,
+        88
       ],
       "layer": "sort",
       "flip_x": true,
@@ -184,13 +184,14 @@
       "sheet": "island6_scenery",
       "prop": "obsidian_obelisk",
       "pos": [
-        278,
-        124
+        416,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

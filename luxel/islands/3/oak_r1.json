@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    208,
+    184
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_oak_r1_south",
       "rect": [
-        144,
-        160,
+        192,
+        208,
         32,
         16
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_oak_r1_east",
       "rect": [
-        304,
-        64,
+        400,
+        80,
         16,
         48
       ],
@@ -62,8 +62,8 @@
       "id": "ws_oak",
       "kind": "waystone",
       "pos": [
-        160,
-        104
+        208,
+        120
       ],
       "props": {
         "zone": "oak_r1",
@@ -74,8 +74,8 @@
       "id": "lamp_oak_r1_w",
       "kind": "road_lamp",
       "pos": [
-        120,
-        56
+        152,
+        72
       ],
       "props": {
         "zone": "oak_r1"
@@ -85,8 +85,8 @@
       "id": "lamp_oak_r1_e",
       "kind": "road_lamp",
       "pos": [
-        200,
-        56
+        264,
+        72
       ],
       "props": {
         "zone": "oak_r1"
@@ -97,10 +97,10 @@
     {
       "id": "trig_oak_entry",
       "rect": [
-        128,
-        112,
-        64,
-        32
+        160,
+        144,
+        96,
+        40
       ],
       "string_id": "DUNGEON_3_NAME",
       "once": true
@@ -111,8 +111,8 @@
       "sheet": "island3_scenery",
       "prop": "root_ring_floor",
       "pos": [
-        160,
-        104
+        208,
+        120
       ],
       "layer": "ground",
       "flip_x": false,
@@ -123,8 +123,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        72,
-        42
+        104,
+        62
       ],
       "layer": "sort",
       "flip_x": false,
@@ -135,8 +135,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        248,
-        42
+        312,
+        62
       ],
       "layer": "sort",
       "flip_x": true,
@@ -147,8 +147,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        72,
-        136
+        104,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -159,8 +159,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        248,
-        136
+        312,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -171,8 +171,8 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        104,
-        146
+        148,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -183,13 +183,14 @@
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        216,
-        146
+        268,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.6
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

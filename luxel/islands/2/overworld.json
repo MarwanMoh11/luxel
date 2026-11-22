@@ -86,8 +86,8 @@
       ],
       "to_region": "lighthouse_r1",
       "to_spawn": [
-        160,
-        136
+        176,
+        216
       ],
       "requires_moves": [
         "dash",

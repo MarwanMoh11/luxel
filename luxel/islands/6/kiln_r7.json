@@ -31,8 +31,8 @@
       ],
       "to_region": "kiln_r6",
       "to_spawn": [
-        160,
-        40
+        256,
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],

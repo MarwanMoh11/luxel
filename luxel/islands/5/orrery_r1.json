@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    208,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        256
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_o5_r1_south",
       "rect": [
-        144,
-        160,
+        192,
+        240,
         32,
         16
       ],
@@ -42,7 +42,7 @@
       "id": "exit_o5_r1_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -62,8 +62,8 @@
       "id": "ws_orrery",
       "kind": "waystone",
       "pos": [
-        160,
-        88
+        208,
+        128
       ],
       "props": {
         "zone": "orrery_r1",
@@ -74,8 +74,8 @@
       "id": "lamp_o5_r1_w",
       "kind": "road_lamp",
       "pos": [
-        104,
-        56
+        144,
+        88
       ],
       "props": {
         "zone": "orrery_r1"
@@ -85,8 +85,8 @@
       "id": "lamp_o5_r1_e",
       "kind": "road_lamp",
       "pos": [
-        216,
-        56
+        272,
+        88
       ],
       "props": {
         "zone": "orrery_r1"
@@ -97,10 +97,10 @@
     {
       "id": "trig_o5_entry",
       "rect": [
-        128,
-        112,
-        64,
-        32
+        160,
+        168,
+        96,
+        48
       ],
       "string_id": "DUNGEON_5_NAME",
       "once": true
@@ -111,8 +111,8 @@
       "sheet": "island5_scenery",
       "prop": "astro_floor_compass",
       "pos": [
-        160,
-        88
+        208,
+        128
       ],
       "layer": "ground",
       "flip_x": false,
@@ -123,8 +123,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        124,
-        42
+        156,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -135,8 +135,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        196,
-        42
+        260,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -147,8 +147,8 @@
       "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        252,
-        88
+        328,
+        128
       ],
       "layer": "sort",
       "flip_x": true,
@@ -159,8 +159,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        118,
-        144
+        144,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -171,8 +171,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        202,
-        144
+        272,
+        200
       ],
       "layer": "sort",
       "flip_x": true,
@@ -183,13 +183,14 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        68,
-        56
+        96,
+        88
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

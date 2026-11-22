@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    192,
+    248
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        288
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_sanctum_r1_south",
       "rect": [
-        144,
-        160,
+        176,
+        272,
         32,
         16
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_sanctum_r1_north",
       "rect": [
-        144,
+        176,
         0,
         32,
         16
@@ -62,8 +62,8 @@
       "id": "ws_sanctum",
       "kind": "waystone",
       "pos": [
-        160,
-        88
+        192,
+        144
       ],
       "props": {
         "zone": "sanctum_r1",
@@ -74,8 +74,8 @@
       "id": "lamp_sanctum_r1_w",
       "kind": "road_lamp",
       "pos": [
-        120,
-        88
+        136,
+        144
       ],
       "props": {
         "zone": "sanctum_r1"
@@ -85,8 +85,8 @@
       "id": "lamp_sanctum_r1_e",
       "kind": "road_lamp",
       "pos": [
-        200,
-        88
+        248,
+        144
       ],
       "props": {
         "zone": "sanctum_r1"
@@ -97,10 +97,10 @@
     {
       "id": "trig_sanctum_enter",
       "rect": [
-        128,
-        112,
-        64,
-        32
+        144,
+        192,
+        96,
+        48
       ],
       "string_id": "DUNGEON_8_NAME",
       "once": true
@@ -111,8 +111,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_floor_seal",
       "pos": [
-        160,
-        88
+        192,
+        144
       ],
       "layer": "ground",
       "flip_x": false,
@@ -123,8 +123,8 @@
       "sheet": "island8_scenery",
       "prop": "stained_glass_debris",
       "pos": [
-        122,
-        62
+        148,
+        100
       ],
       "layer": "ground",
       "flip_x": false,
@@ -135,8 +135,8 @@
       "sheet": "island8_scenery",
       "prop": "stained_glass_debris",
       "pos": [
-        198,
-        118
+        236,
+        188
       ],
       "layer": "ground",
       "flip_x": true,
@@ -147,8 +147,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        128,
-        42
+        156,
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -159,8 +159,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        192,
-        42
+        228,
+        44
       ],
       "layer": "sort",
       "flip_x": true,
@@ -171,8 +171,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        90,
-        74
+        88,
+        112
       ],
       "layer": "sort",
       "flip_x": false,
@@ -183,8 +183,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        230,
-        74
+        296,
+        112
       ],
       "layer": "sort",
       "flip_x": true,
@@ -195,8 +195,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        92,
-        118
+        88,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -207,8 +207,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        228,
-        118
+        296,
+        176
       ],
       "layer": "sort",
       "flip_x": true,
@@ -219,8 +219,8 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        46,
-        62
+        52,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -231,13 +231,38 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        274,
-        114
+        332,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
-      "phase": 0.6
+      "phase": 0.5
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "floating_cathedral_shard",
+      "pos": [
+        52,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "floating_cathedral_shard",
+      "pos": [
+        332,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.85
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

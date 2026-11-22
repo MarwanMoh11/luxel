@@ -48,8 +48,8 @@
       ],
       "to_region": "sanctum_r4",
       "to_spawn": [
-        160,
-        136
+        224,
+        248
       ],
       "requires_moves": [
         "wings",

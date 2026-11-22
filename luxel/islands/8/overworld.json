@@ -64,8 +64,8 @@
       ],
       "to_region": "sanctum_r1",
       "to_spawn": [
-        160,
-        136
+        192,
+        248
       ],
       "requires_moves": [],
       "requires_flags": [

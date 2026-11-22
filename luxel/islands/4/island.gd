@@ -180,7 +180,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_miniboss",
 			"region": "conservatory_r6",
 			"zone": "conservatory_r6",
-			"pos": [160.0, 72.0],
+			"pos": [256.0, 112.0],
 			"action": "defeat_miniboss",
 			"target": "boss_great_lily_hopper",
 			"grants_flag": "wick_key_4_2",

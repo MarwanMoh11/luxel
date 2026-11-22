@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    224,
+    184
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_spire_r1_south",
       "rect": [
-        144,
-        160,
+        208,
+        208,
         32,
         16
       ],
@@ -42,7 +42,7 @@
       "id": "exit_spire_r1_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -58,8 +58,8 @@
     {
       "id": "exit_spire_r1_east",
       "rect": [
-        304,
-        64,
+        432,
+        80,
         16,
         48
       ],
@@ -75,7 +75,7 @@
     {
       "id": "exit_spire_r1_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -98,8 +98,8 @@
       "id": "ws_spire",
       "kind": "waystone",
       "pos": [
-        160,
-        88
+        224,
+        112
       ],
       "props": {
         "zone": "spire_r1",
@@ -110,7 +110,7 @@
       "id": "door_spire_r1_north",
       "kind": "door",
       "pos": [
-        160,
+        224,
         24
       ],
       "props": {
@@ -128,8 +128,8 @@
       "id": "mirror_spire_r1_w",
       "kind": "mirror",
       "pos": [
-        104,
-        56
+        152,
+        72
       ],
       "props": {
         "angle_deg": 45
@@ -139,8 +139,8 @@
       "id": "mirror_spire_r1_e",
       "kind": "mirror",
       "pos": [
-        216,
-        56
+        296,
+        72
       ],
       "props": {
         "angle_deg": 135
@@ -150,8 +150,8 @@
       "id": "lamp_spire_r1_w",
       "kind": "road_lamp",
       "pos": [
-        120,
-        120
+        168,
+        152
       ],
       "props": {
         "zone": "spire_r1"
@@ -161,8 +161,8 @@
       "id": "lamp_spire_r1_e",
       "kind": "road_lamp",
       "pos": [
-        200,
-        120
+        280,
+        152
       ],
       "props": {
         "zone": "spire_r1"
@@ -173,10 +173,10 @@
     {
       "id": "trig_spire_enter",
       "rect": [
-        128,
-        112,
-        64,
-        32
+        176,
+        144,
+        96,
+        40
       ],
       "string_id": "DUNGEON_7_NAME",
       "once": true
@@ -187,8 +187,8 @@
       "sheet": "island7_scenery",
       "prop": "moon_dial_floor",
       "pos": [
-        160,
-        88
+        224,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -199,7 +199,7 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        130,
+        184,
         48
       ],
       "layer": "sort",
@@ -211,7 +211,7 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        190,
+        264,
         48
       ],
       "layer": "sort",
@@ -223,8 +223,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        92,
-        148
+        120,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -235,8 +235,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        228,
-        148
+        328,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -247,8 +247,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        84,
-        72
+        112,
+        84
       ],
       "layer": "sort",
       "flip_x": false,
@@ -259,13 +259,14 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        236,
-        72
+        336,
+        84
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.75
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    224,
+    184
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_kiln_r1_south",
       "rect": [
-        144,
-        160,
+        208,
+        208,
         32,
         16
       ],
@@ -42,7 +42,7 @@
       "id": "exit_kiln_r1_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -58,8 +58,8 @@
     {
       "id": "exit_kiln_r1_east",
       "rect": [
-        304,
-        64,
+        432,
+        80,
         16,
         48
       ],
@@ -75,7 +75,7 @@
     {
       "id": "exit_kiln_r1_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -98,8 +98,8 @@
       "id": "ws_kiln",
       "kind": "waystone",
       "pos": [
-        160,
-        88
+        224,
+        112
       ],
       "props": {
         "zone": "kiln_r1",
@@ -110,7 +110,7 @@
       "id": "door_kiln_r1_north",
       "kind": "door",
       "pos": [
-        160,
+        224,
         24
       ],
       "props": {
@@ -128,8 +128,8 @@
       "id": "lamp_kiln_r1_w",
       "kind": "road_lamp",
       "pos": [
-        120,
-        88
+        168,
+        112
       ],
       "props": {
         "zone": "kiln_r1"
@@ -139,8 +139,8 @@
       "id": "lamp_kiln_r1_e",
       "kind": "road_lamp",
       "pos": [
-        200,
-        88
+        280,
+        112
       ],
       "props": {
         "zone": "kiln_r1"
@@ -151,10 +151,10 @@
     {
       "id": "trig_kiln_enter",
       "rect": [
-        128,
-        112,
-        64,
-        32
+        176,
+        144,
+        96,
+        40
       ],
       "string_id": "DUNGEON_6_NAME",
       "once": true
@@ -165,8 +165,8 @@
       "sheet": "island6_scenery",
       "prop": "crucible_floor_seal",
       "pos": [
-        160,
-        88
+        224,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -177,8 +177,8 @@
       "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        118,
-        45
+        144,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -189,8 +189,8 @@
       "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        202,
-        45
+        304,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -201,8 +201,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        118,
-        140
+        144,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -213,8 +213,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        202,
-        140
+        304,
+        176
       ],
       "layer": "sort",
       "flip_x": true,
@@ -225,8 +225,8 @@
       "sheet": "island6_scenery",
       "prop": "coal_hopper",
       "pos": [
-        88,
-        144
+        112,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -237,13 +237,14 @@
       "sheet": "island6_scenery",
       "prop": "ash_urn_cluster",
       "pos": [
-        232,
-        144
+        336,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

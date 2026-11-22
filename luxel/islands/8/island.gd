@@ -138,7 +138,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_sanctum_miniboss",
 			"region": "sanctum_r4",
 			"zone": "sanctum_r4",
-			"pos": [160.0, 72.0],
+			"pos": [224.0, 128.0],
 			"action": "defeat_miniboss",
 			"target": "mini_night_harbinger",
 			"grants_flag": "keepers_flame_8",
