@@ -86,8 +86,8 @@
       ],
       "to_region": "belfry_r1",
       "to_spawn": [
-        160,
-        148
+        192,
+        216
       ],
       "requires_moves": [
         "dash",
@@ -1852,42 +1852,6 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.7
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "stone_lantern_garden",
-      "pos": [
-        284,
-        368
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "stone_lantern_garden",
-      "pos": [
-        344,
-        368
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "flower_bed_cool",
-      "pos": [
-        314,
-        398
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.25
     }
   ]
 }

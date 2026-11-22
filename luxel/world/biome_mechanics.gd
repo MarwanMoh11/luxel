@@ -11,6 +11,8 @@ static var active_instance: LxBiomeMechanics = null
 
 var _rules: LxBiomeRules = null
 var _region: Node = null
+var _decals: LxGroundDecals = null
+var _weather: LxBiomeWeather = null
 var _cam_center: Vector2 = Vector2.ZERO
 var _clock: float = 0.0
 
@@ -67,6 +69,18 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	mirror_echo_pos = Vector2.ZERO
 	_seal_shatter_fx.clear()
 	_sync_dawn_seals()
+	if _decals == null and get_parent() != null:
+		_decals = LxGroundDecals.new()
+		_decals.name = "GroundDecals"
+		get_parent().add_child(_decals)
+	if _decals != null:
+		_decals.configure(rules.island_id, region_node)
+	if _weather == null and get_parent() != null:
+		_weather = LxBiomeWeather.new()
+		_weather.name = "BiomeWeather"
+		get_parent().add_child(_weather)
+	if _weather != null:
+		_weather.configure(rules.island_id, rules.is_dungeon, rules.bounds.get_center())
 	queue_redraw()
 
 
@@ -77,6 +91,10 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	_clock += dt
 	tailwind_t = maxf(0.0, tailwind_t - dt)
 	_tick_fx_arrays(dt)
+	if _decals != null and is_instance_valid(_decals):
+		_decals.tick(dt, cam_center)
+	if _weather != null and is_instance_valid(_weather):
+		_weather.tick(dt, cam_center)
 	match _rules.island_id:
 		2:
 			_tick_island2(dt)
@@ -138,7 +156,7 @@ func _tick_drift_shards(dt: float) -> void:
 			if Lx.state != null:
 				Lx.state.shards += 5
 			if Lx.events != null:
-				Lx.events.shard_collected.emit(5, p)
+				Lx.events.shard_collected.emit(5)
 			w.spawn_ring(p, 2.0, 14.0, 0.22, LxWick.PAL_ICE, 1.2)
 			w.emit_sfx("shard_pickup", p, true)
 			_drift_shards.remove_at(i)

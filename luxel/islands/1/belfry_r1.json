@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    148
+    192,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        256
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_r1_south",
       "rect": [
-        144,
-        160,
+        176,
+        240,
         32,
         16
       ],
@@ -42,7 +42,7 @@
       "id": "exit_r1_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -58,8 +58,8 @@
     {
       "id": "exit_r1_east",
       "rect": [
-        304,
-        64,
+        368,
+        96,
         16,
         48
       ],
@@ -77,7 +77,7 @@
     {
       "id": "exit_r1_north",
       "rect": [
-        144,
+        176,
         0,
         32,
         16
@@ -100,8 +100,8 @@
       "id": "ws_belfry",
       "kind": "waystone",
       "pos": [
-        160,
-        112
+        192,
+        144
       ],
       "props": {
         "zone": "belfry_entry",
@@ -112,8 +112,8 @@
       "id": "door_r1_east",
       "kind": "door",
       "pos": [
-        296,
-        88
+        360,
+        128
       ],
       "props": {
         "door_kind": "key_door",
@@ -132,7 +132,7 @@
       "id": "door_r1_north",
       "kind": "door",
       "pos": [
-        160,
+        192,
         24
       ],
       "props": {
@@ -150,8 +150,8 @@
       "id": "lamp_r1_w",
       "kind": "road_lamp",
       "pos": [
-        120,
-        88
+        136,
+        128
       ],
       "props": {
         "zone": "belfry_entry"
@@ -161,8 +161,8 @@
       "id": "lamp_r1_e",
       "kind": "road_lamp",
       "pos": [
-        200,
-        88
+        248,
+        128
       ],
       "props": {
         "zone": "belfry_entry"
@@ -173,10 +173,10 @@
     {
       "id": "trig_belfry_entry",
       "rect": [
-        128,
-        128,
-        64,
-        32
+        144,
+        176,
+        96,
+        48
       ],
       "string_id": "CH5_TITLE",
       "once": true
@@ -187,8 +187,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        120,
-        32
+        148,
+        36
       ],
       "layer": "sort",
       "flip_x": false,
@@ -199,8 +199,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        200,
-        32
+        236,
+        36
       ],
       "layer": "sort",
       "flip_x": true,
@@ -211,8 +211,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        88,
-        60
+        104,
+        84
       ],
       "layer": "sort",
       "flip_x": false,
@@ -223,8 +223,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        232,
-        60
+        280,
+        84
       ],
       "layer": "sort",
       "flip_x": true,
@@ -235,8 +235,8 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        88,
-        126
+        104,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -247,8 +247,8 @@
       "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
-        232,
-        126
+        280,
+        176
       ],
       "layer": "sort",
       "flip_x": true,
@@ -259,8 +259,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        120,
-        152
+        148,
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -271,13 +271,14 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        200,
-        152
+        236,
+        224
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.75
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

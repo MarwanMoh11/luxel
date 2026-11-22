@@ -43,9 +43,28 @@ uniform vec3 col_cream = vec3(1.0, 0.95686, 0.86275);      // #fff4dc
 
 void fragment() {
 	vec3 src = texture(screen_tex, SCREEN_UV).rgb;
+	// Subtle per-island atmospheric color mood (even in relit/lit zones) using Last Light palette accents
+	vec3 mood_tint = vec3(1.0);
+	if (biome_id == 2) {
+		mood_tint = vec3(0.95, 1.01, 1.05); // Tidewater Harbor: crisp briny sea-teal air
+	} else if (biome_id == 3) {
+		mood_tint = vec3(0.94, 1.04, 0.96); // Thornwood Hollow: living emerald canopy filter
+	} else if (biome_id == 4) {
+		mood_tint = vec3(1.03, 0.99, 1.02); // Mirefen Gardens: luminous rose-mist conservatory
+	} else if (biome_id == 5) {
+		mood_tint = vec3(0.95, 0.97, 1.07); // Starfall Observatory: deep royal astral cosmos
+	} else if (biome_id == 6) {
+		mood_tint = vec3(1.07, 0.96, 0.93); // Ashen Kiln: warm volcanic smelter glow
+	} else if (biome_id == 7) {
+		mood_tint = vec3(0.96, 1.00, 1.08); // Moon Shoals: pale silver-ice lunar sheen
+	} else if (biome_id == 8) {
+		mood_tint = mix(vec3(1.03, 0.99, 0.94), vec3(0.96, 0.92, 1.05), clamp(darkness_strength * 1.4, 0.0, 1.0)); // Long Night: eclipse plum -> golden dawn
+	}
+	vec3 graded_src = clamp(src * mood_tint, vec3(0.0), vec3(1.0));
 	if (darkness_strength <= 0.001 && wave_active < 0.5 && danger_pulse <= 0.001 && transition_fade <= 0.001 && phase_flash <= 0.001 && focus_flash <= 0.001) {
-		COLOR = vec4(src, 1.0);
+		COLOR = vec4(graded_src, 1.0);
 	} else {
+		src = graded_src;
 		vec2 screen_px = floor(UV * view_size) + vec2(0.5);
 		vec2 world_px = cam_origin + screen_px;
 

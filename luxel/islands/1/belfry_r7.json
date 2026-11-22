@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    148
+    224,
+    248
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        288
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_r7_south",
       "rect": [
-        144,
-        160,
+        208,
+        272,
         32,
         16
       ],
@@ -44,35 +44,35 @@
       "id": "boss_bellkeeper",
       "kind": "bellkeeper",
       "pos": [
-        160,
-        72
+        224,
+        128
       ],
       "route": [
         [
-          120,
-          72
+          152,
+          128
         ],
         [
-          200,
-          72
+          296,
+          128
         ]
       ],
       "perches": [
         [
-          88,
-          56
+          136,
+          88
         ],
         [
-          160,
-          40
+          224,
+          64
         ],
         [
-          232,
-          56
+          312,
+          88
         ]
       ],
       "zone": "belfry_spire",
-      "leash": 150
+      "leash": 200
     }
   ],
   "interactables": [
@@ -80,8 +80,8 @@
       "id": "great_lamp_1",
       "kind": "great_lamp",
       "pos": [
-        160,
-        40
+        224,
+        56
       ],
       "props": {
         "island_id": 1,
@@ -93,8 +93,8 @@
       "id": "brazier_r7_w",
       "kind": "brazier",
       "pos": [
-        72,
-        40
+        128,
+        80
       ],
       "props": {
         "lit_by_default": true
@@ -104,8 +104,8 @@
       "id": "brazier_r7_e",
       "kind": "brazier",
       "pos": [
-        248,
-        40
+        320,
+        80
       ],
       "props": {
         "lit_by_default": true
@@ -116,9 +116,9 @@
     {
       "id": "trig_boss_intro",
       "rect": [
-        96,
-        112,
-        128,
+        144,
+        192,
+        160,
         48
       ],
       "string_id": "BOSS_BELLKEEPER",
@@ -130,8 +130,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        118,
-        30
+        180,
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -142,8 +142,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        202,
-        30
+        268,
+        44
       ],
       "layer": "sort",
       "flip_x": true,
@@ -154,8 +154,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        42,
-        74
+        76,
+        120
       ],
       "layer": "sort",
       "flip_x": false,
@@ -166,8 +166,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        278,
-        74
+        372,
+        120
       ],
       "layer": "sort",
       "flip_x": true,
@@ -178,8 +178,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        48,
-        118
+        76,
+        178
       ],
       "layer": "sort",
       "flip_x": false,
@@ -190,8 +190,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        272,
-        118
+        372,
+        178
       ],
       "layer": "sort",
       "flip_x": true,
@@ -202,8 +202,8 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        72,
-        142
+        128,
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -214,8 +214,8 @@
       "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
-        248,
-        142
+        320,
+        224
       ],
       "layer": "sort",
       "flip_x": true,
@@ -224,34 +224,10 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "hanging_chimes",
+      "prop": "candelabra_tall",
       "pos": [
-        44,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "hanging_chimes",
-      "pos": [
-        276,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "stone_lantern_garden",
-      "pos": [
-        112,
-        152
+        184,
+        248
       ],
       "layer": "sort",
       "flip_x": false,
@@ -260,15 +236,16 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "stone_lantern_garden",
+      "prop": "candelabra_tall",
       "pos": [
-        208,
-        152
+        264,
+        248
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.75
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

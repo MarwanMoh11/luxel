@@ -205,42 +205,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "hanging_chimes",
-      "pos": [
-        44,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "stone_lantern_garden",
-      "pos": [
-        116,
-        146
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "stone_lantern_garden",
-      "pos": [
-        204,
-        146
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
     }
   ]
 }
