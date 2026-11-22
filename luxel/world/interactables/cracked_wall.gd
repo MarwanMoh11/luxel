@@ -91,7 +91,8 @@ func _draw() -> void:
 		return
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
-	var x0: float = floorf(-w * 0.5)
+	var jx: float = (1.0 if int(floorf(_hint_t * 36.0)) % 2 == 0 else -1.0) if _hint_t > 0.0 else 0.0
+	var x0: float = floorf(-w * 0.5) + jx
 	var y0: float = floorf(-h * 0.5)
 	draw_rect(Rect2(x0, y0, w, h), PAL["void"])
 	draw_rect(Rect2(x0 + 1.0, y0 + 1.0, w - 2.0, h - 2.0), PAL["night"])

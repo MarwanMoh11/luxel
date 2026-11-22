@@ -82,7 +82,8 @@ func _set_events(ev: LxEventBus, bind: bool) -> void:
 		[&"enemy_killed", _on_enemy_killed], [&"lantern_hung", _on_lantern_hung],
 		[&"lantern_caught", _on_lantern_caught], [&"lantern_struck", _on_lantern_struck],
 		[&"beacon_lit", _on_beacon_lit], [&"waystone_lit", _on_waystone_lit],
-		[&"shrine_claimed", _on_shrine_claimed], [&"boss_phase_changed", _on_boss_phase_changed],
+		[&"shrine_claimed", _on_shrine_claimed], [&"seal_broken", _on_seal_broken],
+		[&"boss_phase_changed", _on_boss_phase_changed],
 		[&"boss_defeated", _on_boss_defeated], [&"great_lamp_relit", _on_great_lamp_relit],
 		[&"ember_piece_collected", _on_ember_piece], [&"upgrade_purchased", _on_upgrade_purchased],
 	]
@@ -209,6 +210,10 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 					candidates.append({"d": bpos.distance_squared_to(cam_center) + 5000.0, "v": Vector4(bpos.x, bpos.y, 34.0, 0.85)})
 		var beam_v: Variant = Lx.player.get("move_beam")
 		if beam_v is Object and is_instance_valid(beam_v):
+			if bool((beam_v as Object).get("charging")) and (beam_v as Object).has_method("charge_progress"):
+				var cprog: float = float((beam_v as Object).call("charge_progress"))
+				var ppos_c: Vector2 = _player_pos()
+				candidates.append({"d": ppos_c.distance_squared_to(cam_center) - 2000.0, "v": Vector4(ppos_c.x, ppos_c.y - 6.0, lerpf(46.0, 92.0, cprog), lerpf(0.70, 1.38, cprog))})
 			var bt: float = float((beam_v as Object).get("beam_vis_t"))
 			if bt > 0.0:
 				var bf: float = clampf(bt / maxf(0.01, float((beam_v as Object).get("beam_vis_max"))), 0.0, 1.0)
@@ -218,6 +223,9 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 				var m2: Vector2 = ba.lerp(bb, 0.85)
 				candidates.append({"d": m1.distance_squared_to(cam_center) - 2200.0, "v": Vector4(m1.x, m1.y, 68.0 * bf, 1.55 * bf)})
 				candidates.append({"d": m2.distance_squared_to(cam_center) - 2200.0, "v": Vector4(m2.x, m2.y, 62.0 * bf, 1.45 * bf)})
+		if Lx.player.has_method("is_zipping") and bool(Lx.player.call("is_zipping")):
+			var zp: Vector2 = _player_pos()
+			candidates.append({"d": zp.distance_squared_to(cam_center) - 2400.0, "v": Vector4(zp.x, zp.y - 6.0, 76.0, 1.42)})
 		var flare_v: Variant = Lx.player.get("move_sunflare")
 		if flare_v is Object and is_instance_valid(flare_v):
 			var ft: float = float((flare_v as Object).get("flare_vis_t"))
@@ -361,6 +369,7 @@ func _on_lantern_struck(pos: Vector2) -> void: add_burst_light(pos, 84.0, 1.48, 
 func _on_beacon_lit(_i: int, bid: String) -> void: add_burst_light(_interactable_pos(bid, "beacon"), 124.0, 1.60, 0.68)
 func _on_waystone_lit(_i: int, wid: String) -> void: add_burst_light(_interactable_pos(wid, "waystone"), 112.0, 1.50, 0.60)
 func _on_shrine_claimed(sid: String, _m: String) -> void: add_burst_light(_interactable_pos(sid, "shrine"), 118.0, 1.55, 0.64)
+func _on_seal_broken(_i: int, sid: String) -> void: add_burst_light(_interactable_pos(sid, "obsidian_seal"), 104.0, 1.52, 0.50)
 func _on_boss_phase_changed(bid: String, _p: int) -> void: add_burst_light(_boss_pos(bid), 112.0, 1.52, 0.56)
 func _on_boss_defeated(bid: String, _i: int) -> void: add_burst_light(_boss_pos(bid), 144.0, 1.72, 0.75)
 func _on_great_lamp_relit(_i: int) -> void: add_burst_light(_interactable_pos("great_lamp", "great_lamp"), 154.0, 1.80, 0.75)

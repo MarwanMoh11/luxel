@@ -44,6 +44,7 @@ func on_hit(hit: LxHit) -> bool:
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.10)
 		_emit_sfx("web_burn")
+		_emit_save("web_" + id)
 		_notify_linked_targets(true)
 		queue_redraw()
 		return true

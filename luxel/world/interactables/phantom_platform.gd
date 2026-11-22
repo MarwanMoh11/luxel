@@ -6,6 +6,7 @@ var revealed: bool = false
 var persist_grace: float = 0.25
 var size: Vector2 = Vector2(32.0, 16.0)
 var _reveal_left: float = 0.0
+var _reveal_fx_t: float = 0.0
 var _shimmer_stage: int = 0
 
 
@@ -29,12 +30,17 @@ func on_light(light_radius: float, source: String) -> void:
 	revealed = true
 	_reveal_left = persist_grace
 	if not was:
+		_reveal_fx_t = 0.24
+		_emit_sfx("phantom_reveal")
 		queue_redraw()
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
 	var changed: bool = false
+	if _reveal_fx_t > 0.0:
+		_reveal_fx_t = maxf(0.0, _reveal_fx_t - dt)
+		changed = true
 	if revealed and _reveal_left > 0.0:
 		_reveal_left -= dt
 		if _reveal_left <= 0.0:
@@ -122,6 +128,8 @@ func _draw() -> void:
 			draw_rect(Rect2(sp.x - 1.0, sp.y, 3.0, 1.0), PAL["ice"] if bright else PAL["sky"])
 			draw_rect(Rect2(sp.x, sp.y - 1.0, 1.0, 3.0), PAL["ice"] if bright else PAL["sky"])
 			draw_rect(Rect2(sp.x, sp.y, 1.0, 1.0), PAL["cream"] if bright else PAL["ice"])
+		if _reveal_fx_t > 0.0:
+			draw_rect(Rect2(x0, y0, w, h), PAL["cream"] if _reveal_fx_t > 0.12 else PAL["ice"], false, 1.0)
 		return
 	var br_c: Color = PAL["deep"] as Color
 	var tip_c: Color = PAL["blue"] as Color
