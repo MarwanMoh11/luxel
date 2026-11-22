@@ -163,11 +163,7 @@ func _draw_extra(off: Vector2) -> void:
 		draw_rect(Rect2(off + Vector2(-4.0, -3.0), Vector2(8.0, 5.0)), PAL["night"] as Color, true)
 		draw_rect(Rect2(off + Vector2(-3.0, -2.0), Vector2(6.0, 3.0)), (PAL["gold"] as Color) if not armour_intact else (PAL["coral"] as Color), true)
 	if armour_intact:
-		var plate_col: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["mauve"] as Color)
-		var ar: float = body_radius + 3.0
-		for i: int in range(4):
-			var a: float = PI * 0.25 + float(i) * (PI * 0.5)
-			draw_arc(off, ar, a - 0.38, a + 0.38, 4, plate_col, 1.8)
+		LxDamageFx.draw_armour_plates(self, off, body_radius + 3.0, 1.8, armour_hp, armour_max)
 	var c: Vector2 = off.round()
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
@@ -215,9 +211,4 @@ func _draw_extra(off: Vector2) -> void:
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(shake)
-	if Lx.world != null and is_instance_valid(Lx.world):
-		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)
+	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.15, 1.48, 0.42)

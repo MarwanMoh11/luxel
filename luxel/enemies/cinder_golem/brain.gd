@@ -134,9 +134,7 @@ func _crack_armour() -> void:
 	armour_intact = false
 	armour_hp = 0.0
 	armour_cracked_sig.emit(self, pos)
-	LxDamageFx.gust_arena(pos, 72.0, 80.0)
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.18)
+	LxDamageFx.boss_impact(pos, 0.18, 76.0, 84.0, 84.0, 1.45, 0.38)
 	_emit_sfx("golem_armour_crack")
 
 
@@ -192,12 +190,7 @@ func _enter_commit() -> void:
 	state_timer = STOMP_COMMIT_TIME
 	stomp_progress = 0.0
 	stomp_hit = false
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.18)
-	if Lx.world != null and is_instance_valid(Lx.world):
-		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-			(amb as Object).call("_gust_particles", pos, 72.0, 82.0)
+	LxDamageFx.boss_impact(pos, 0.18, 72.0, 82.0, 74.0, 1.32, 0.32)
 	_emit_sfx("golem_stomp_shockwave")
 
 
@@ -267,11 +260,7 @@ func _body_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	if armour_intact:
-		var plate_col: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["mauve"] as Color)
-		var ar: float = body_radius + 2.5
-		for i: int in range(4):
-			var a: float = PI * 0.25 + float(i) * (PI * 0.5)
-			draw_arc(off, ar, a - 0.38, a + 0.38, 4, plate_col, 1.6)
+		LxDamageFx.draw_armour_plates(self, off, body_radius + 2.5, 1.6, armour_hp, armour_max)
 	if state == State.TELL:
 		var c: Vector2 = off.round()
 		for ti: int in range(12):

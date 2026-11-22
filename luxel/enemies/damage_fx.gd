@@ -143,3 +143,45 @@ static func gust_arena(at_pos: Vector2, radius: float, strength: float) -> void:
 		var amb: Variant = Lx.world.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", at_pos, radius, strength)
+
+
+static func boss_impact(at_pos: Vector2, shake: float, gust_r: float, gust_s: float, light_r: float = 0.0, light_i: float = 1.38, light_dur: float = 0.38, ripple_col: String = "") -> void:
+	if Lx.events != null and shake > 0.0:
+		Lx.events.shake_requested.emit(shake)
+	if gust_r > 0.0:
+		gust_arena(at_pos, gust_r, gust_s)
+	if light_r > 0.0 and LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		var eff_i: float = light_i * (0.62 if _flash_reduced() else 1.0)
+		LxDarknessLayer.active_instance.add_burst_light(at_pos, light_r, eff_i, light_dur)
+	if not ripple_col.is_empty() and Lx.world != null and is_instance_valid(Lx.world):
+		var wfx: Variant = Lx.world.get("_water_fx")
+		if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
+			(wfx as Object).call("spawn_ripple", at_pos, ripple_col)
+
+
+static func draw_armour_plates(enemy: LxEnemyBrain, off: Vector2, ar: float, width: float, armour_hp: float, armour_max: float) -> void:
+	if enemy == null:
+		return
+	var pal: Dictionary = LxEnemyBrain.PAL
+	var frac: float = clampf(armour_hp / maxf(armour_max, 0.01), 0.0, 1.0)
+	var fred: bool = _flash_reduced()
+	var plate_col: Color = pal["mauve"] as Color
+	if enemy.clank_t > 0.0:
+		plate_col = pal["cream"] as Color
+	elif frac <= 0.45:
+		if fred:
+			plate_col = pal["apricot"] as Color
+		else:
+			plate_col = (pal["coral"] if int(enemy.anim_t * 10.0) % 2 == 0 else pal["apricot"]) as Color
+	for i: int in range(4):
+		var a: float = PI * 0.25 + float(i) * (PI * 0.5)
+		enemy.draw_arc(off, ar, a - 0.38, a + 0.38, 4, plate_col, width)
+		if frac <= 0.65:
+			var p_in: Vector2 = (off + Vector2.from_angle(a) * (ar - 1.5)).round()
+			var p_out: Vector2 = (off + Vector2.from_angle(a) * (ar + 1.8)).round()
+			enemy.draw_line(p_in, p_out, pal["night"] as Color, 1.0)
+			enemy.draw_rect(Rect2(p_out, Vector2.ONE), (pal["coral"] if frac <= 0.45 else pal["gold"]) as Color)
+		if frac <= 0.45 and (i % 2 == 0):
+			var sa: float = a + 0.22
+			var sp: Vector2 = (off + Vector2.from_angle(sa) * (ar + 2.2)).round()
+			enemy.draw_rect(Rect2(sp, Vector2.ONE), pal["cream"] as Color)

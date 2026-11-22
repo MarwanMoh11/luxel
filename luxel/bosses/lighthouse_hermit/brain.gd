@@ -39,6 +39,7 @@ var sweep_start_ang: float = 0.0
 var sweep_dir: float = 1.0
 var beam_angle: float = 0.0
 var beam_hit: bool = false
+var _beam_light_t: float = 0.0
 var tide_progress: float = 0.0
 var tide_hit: bool = false
 var _roaring: bool = false
@@ -233,6 +234,7 @@ func _enter_commit() -> void:
 		state_timer = BEAM_COMMIT_TIME
 		beam_angle = sweep_start_ang
 		beam_hit = false
+		_beam_light_t = 0.0
 		_boss_impact(0.16, 78.0, 72.0)
 		_emit_sfx("hermit_beam_sweep")
 		return
@@ -256,6 +258,10 @@ func _step_commit(dt: float) -> void:
 		facing = beam_angle
 		var bdir: Vector2 = Vector2.from_angle(beam_angle)
 		var bend: Vector2 = pos + bdir * BEAM_RANGE
+		_beam_light_t -= dt
+		if _beam_light_t <= 0.0:
+			_beam_light_t = 0.14
+			LxDamageFx.boss_impact(pos + bdir * 66.0, 0.0, 0.0, 0.0, 76.0, 1.38, 0.22)
 		if not beam_hit and _has_player():
 			var wp: Vector2 = _get_wick_pos()
 			if Geometry2D.get_closest_point_to_segment(wp, pos, bend).distance_to(wp) <= BEAM_HALF_W:
@@ -400,9 +406,5 @@ func _draw_extra(off: Vector2) -> void:
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(shake)
-	if Lx.world != null and is_instance_valid(Lx.world):
-		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)
+	var rip: String = "ice" if active_move == BossMove.TIDE_RING else ""
+	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.15, 1.48, 0.40, rip)

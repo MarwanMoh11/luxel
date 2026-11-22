@@ -58,6 +58,14 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 			var ca: float = -spin * 0.6 + float(k) * (TAU * 0.25)
 			var pip_p: Vector2 = veil_center + Vector2.from_angle(ca) * (veil_r + 2.0)
 			_draw_diamond(b, pip_p, 3.0, v_mid, v_hi)
+		var v_hp: float = float(b.get("veil_hp"))
+		if v_hp > 0.0 and v_hp <= 1.65:
+			for fi: int in range(4):
+				var fa: float = spin * 0.5 + float(fi) * (TAU * 0.25) + 0.4
+				var f0: Vector2 = (veil_center + Vector2.from_angle(fa) * (veil_r - 3.0)).round()
+				var f1: Vector2 = (veil_center + Vector2.from_angle(fa) * (veil_r + 3.5)).round()
+				b.draw_line(f0, f1, pal["gold"] as Color, 1.2)
+				b.draw_rect(Rect2(f1, Vector2.ONE), pal["cream"] as Color)
 
 	if bool(b.get("void_orb_out")):
 		var orb_off: Vector2 = ((b.get("void_orb_pos") as Vector2) - b.pos).round()
@@ -154,8 +162,17 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 			for ti: int in range(12):
 				var a0: float = float(ti) * (TAU / 12.0)
 				b.draw_arc(off, 84.0, a0, a0 + 0.24, 3, pal["sky"] as Color, 1.2)
-			b.draw_arc(off, 42.0, 0.0, TAU, 24, pal["sky"] as Color, 1.8)
-			b.draw_arc(off, 39.0, 0.0, TAU, 20, pal["ice"] as Color, 1.0)
+			var pr_h: float = 42.0 + 2.0 * sin(b.anim_t * 18.0)
+			var hot_h: bool = b.state_timer <= 0.14
+			b.draw_arc(off, pr_h, 0.0, TAU, 24, (pal["gold"] if hot_h else pal["sky"]) as Color, 2.2 if hot_h else 1.8)
+			b.draw_arc(off, pr_h - 3.0, 0.0, TAU, 20, (pal["cream"] if hot_h else pal["ice"]) as Color, 1.2)
+		elif active_move == 2: # SHADOW_DASH ink-ice slash wake
+			var d_perp2: Vector2 = Vector2(-commit_dir.y, commit_dir.x)
+			var tail_p: Vector2 = (off - commit_dir * 26.0).round()
+			b.draw_line(off.round(), tail_p, pal["sky"] as Color, 3.0)
+			b.draw_line(off.round(), (off - commit_dir * 18.0).round(), pal["ice"] as Color, 1.6)
+			b.draw_line((off + d_perp2 * 5.0).round(), (tail_p + d_perp2 * 2.0).round(), pal["deep"] as Color, 1.2)
+			b.draw_line((off - d_perp2 * 5.0).round(), (tail_p - d_perp2 * 2.0).round(), pal["deep"] as Color, 1.2)
 		elif active_move == 4:
 			var b_orig: Vector2 = off.round()
 			var b_dir: Vector2 = Vector2.from_angle(beam_ang)

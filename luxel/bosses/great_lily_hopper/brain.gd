@@ -230,9 +230,4 @@ func _draw_extra(off: Vector2) -> void:
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(shake)
-	if Lx.world != null and is_instance_valid(Lx.world):
-		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)
+	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.05, 1.32, 0.34, "ice")

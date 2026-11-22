@@ -207,12 +207,7 @@ func _step_commit(dt: float) -> void:
 			state_timer = RING_DURATION
 			ring_progress = 0.0
 			ring_hit = false
-			if Lx.events != null:
-				Lx.events.shake_requested.emit(0.14)
-			if Lx.world != null and is_instance_valid(Lx.world):
-				var amb: Variant = Lx.world.get("_ambient_life")
-				if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-					(amb as Object).call("_gust_particles", pos, 64.0, 72.0)
+			LxDamageFx.boss_impact(pos, 0.18 if is_boss else 0.14, 86.0 if is_boss else 64.0, 88.0 if is_boss else 72.0, 88.0 if is_boss else 54.0, 1.32 if is_boss else 1.05, 0.34, "ice")
 			_emit_sfx("hopper_land")
 			if _has_player() and pos.distance_to(_get_wick_pos()) <= STOMP_R:
 				ring_hit = true

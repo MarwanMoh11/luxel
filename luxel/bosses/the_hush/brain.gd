@@ -39,6 +39,8 @@ var ring_progress: float = 0.0
 var sweep_start_ang: float = 0.0
 var sweep_sign: float = 1.0
 var beam_angle: float = 0.0
+var _beam_light_t: float = 0.0
+var _zip_landed: bool = false
 var _orbit_side: float = 1.0
 var _roaring: bool = false
 
@@ -286,7 +288,7 @@ func _step_tell(dt: float) -> void:
 				beam_angle = sweep_start_ang
 	state_timer -= dt
 	if state_timer <= 0.0:
-		state = State.COMMIT; commit_elapsed = 0.0; commit_hit = false; volley_shots = 0; ring_stage = 0; ring_progress = 0.0
+		state = State.COMMIT; commit_elapsed = 0.0; commit_hit = false; volley_shots = 0; ring_stage = 0; ring_progress = 0.0; _beam_light_t = 0.0; _zip_landed = false
 		var durs: Array[float] = [0.36, 0.46, 0.26, 0.34, 0.58]
 		state_timer = durs[active_move]
 		if active_move == HushMove.VOID_ZIP:
@@ -316,6 +318,9 @@ func _step_commit(dt: float) -> void:
 				if void_orb_pos.distance_to(pos) > 3.0:
 					_move_step((void_orb_pos - pos).limit_length(350.0 * dt), true)
 				if pos.distance_to(void_orb_pos) <= 7.0:
+					if not _zip_landed:
+						_zip_landed = true
+						_boss_impact(0.16, 78.0, 82.0)
 					_check_area_hit(26.0)
 		HushMove.SHADOW_DASH:
 			_move_step(commit_dir * 290.0 * dt, true)
@@ -326,7 +331,12 @@ func _step_commit(dt: float) -> void:
 		HushMove.ECLIPSE_BEAM:
 			beam_angle = wrapf(sweep_start_ang + sweep_sign * BEAM_ARC * (1.0 - clampf(state_timer / 0.58, 0.0, 1.0)), -PI, PI)
 			facing = beam_angle
-			_check_line_hit(Vector2.from_angle(beam_angle), BEAM_RANGE, 9.5, false)
+			var eb_dir: Vector2 = Vector2.from_angle(beam_angle)
+			_beam_light_t -= dt
+			if _beam_light_t <= 0.0:
+				_beam_light_t = 0.14
+				LxDamageFx.boss_impact(pos + eb_dir * 72.0, 0.0, 0.0, 0.0, 82.0, 1.48, 0.22)
+			_check_line_hit(eb_dir, BEAM_RANGE, 9.5, false)
 	if state_timer <= 0.0:
 		void_orb_out = false
 		state = State.RECOVER
@@ -412,9 +422,4 @@ func _draw_extra(off: Vector2) -> void:
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(shake)
-	if Lx.world != null and is_instance_valid(Lx.world):
-		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)
+	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.18, 1.56, 0.44)
