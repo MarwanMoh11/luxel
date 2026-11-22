@@ -159,6 +159,13 @@ static func _draw_boss_alerts(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_
 static func _draw_player(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_t: float) -> void:
 	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
 		return
+	var lan_v: Variant = Lx.player.get("lantern")
+	if lan_v is Object and is_instance_valid(lan_v) and (lan_v as Object).has_method("is_out") and bool((lan_v as Object).call("is_out")):
+		var lpos_v: Variant = (lan_v as Object).get("pos")
+		if lpos_v is Vector2:
+			var lp: Vector2 = _map_pt(lpos_v as Vector2, bounds, inner, 2.0, 2.0)
+			var stolen: bool = int((lan_v as Object).get("state")) == 4
+			c.draw_rect(Rect2(lp, Vector2(2.0, 2.0)), LxPalette.PAL["coral"] if (stolen and fmod(blink_t, 0.4) < 0.2) else LxPalette.PAL["gold"])
 	var p: Vector2 = _map_pt((Lx.player as Node2D).global_position, bounds, inner.grow(-2.0), 2.0, 2.0)
 	var border_col: Color = LxPalette.PAL["gold"] if fmod(blink_t, 0.6) < 0.35 else LxPalette.PAL["apricot"]
 	c.draw_rect(Rect2(p.x - 1.0, p.y - 2.0, 4.0, 6.0), border_col)

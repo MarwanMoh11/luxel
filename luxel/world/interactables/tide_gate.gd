@@ -30,6 +30,8 @@ func tick(dt: float) -> void:
 	var prev_f: bool = is_flooded
 	var prev_w: bool = is_warning
 	_update_phase()
+	if prev_f != is_flooded and Lx.player != null and is_instance_valid(Lx.player) and Lx.player is Node2D and (Lx.player as Node2D).global_position.distance_to(pos) <= 145.0:
+		_emit_sfx("tide_surge")
 	var changed: bool = prev_f != is_flooded or prev_w != is_warning
 	if is_flooded or is_warning:
 		var ws: int = int(floorf(_clock * (5.0 if is_warning else 2.5))) % 4

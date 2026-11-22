@@ -181,6 +181,9 @@ func _draw() -> void:
 		draw_rect(Rect2(sr.position.x, sr.position.y, sr.size.x, top_y - sr.position.y).abs(), LxPalette.PAL["void"])
 		draw_rect(Rect2(sr.position.x, bot_y, sr.size.x, sr.end.y - bot_y).abs(), LxPalette.PAL["void"])
 
+	if not is_letterbox_on() and Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
+		return
+
 	for val: Variant in _slots.values():
 		_draw_slot(val as Dictionary)
 
@@ -214,7 +217,8 @@ func _draw_slot(s: Dictionary) -> void:
 			max_w = maxf(max_w, float(LxPixelFont.width(ln, sc)))
 		var pad_x: float = 6.0
 		var box_h: float = gap * float(lines.size()) + 3.0
-		var border_k: String = "gold" if slot_name == "title" else "dusk"
+		var col_key: String = str(s.get("colour", "cream"))
+		var border_k: String = "coral" if col_key == "coral" else ("gold" if slot_name == "title" else "dusk")
 		var rect := Rect2(roundf(160.0 - max_w * 0.5 - pad_x), roundf(y - 2.0), roundf(max_w + pad_x * 2.0), roundf(box_h))
 		LxPixelFont.draw_panel(self, rect, "night", border_k, "void")
 	for i: int in range(lines.size()):

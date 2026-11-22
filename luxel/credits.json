@@ -238,6 +238,24 @@
         "luxel/audio/ambience/shoals_chimes.ogg",
         "luxel/audio/ambience/sanctum_bells.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_studio_3",
+      "description": "Original studio storybook Lantern Gothic wave 3 world, reward, boss victory, and biome sound effects (10 cues, D harmonic minor / D major dawn) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "gen_sfx_studio3.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/waystone_rest.ogg",
+        "luxel/audio/sfx/heart_pickup.ogg",
+        "luxel/audio/sfx/lantern_land.ogg",
+        "luxel/audio/sfx/door_locked.ogg",
+        "luxel/audio/sfx/boss_victory.ogg",
+        "luxel/audio/sfx/magpie_drop.ogg",
+        "luxel/audio/sfx/key_drop.ogg",
+        "luxel/audio/sfx/earth_burrow.ogg",
+        "luxel/audio/sfx/tide_surge.ogg",
+        "luxel/audio/sfx/lamp_lit.ogg"
+      ]
     }
   ],
   "third_party_audio": []
