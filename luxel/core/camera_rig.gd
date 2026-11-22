@@ -33,6 +33,7 @@ func snap_to(pos: Vector2) -> void:
 	_slide_t = 1.0
 	_look_ahead = Vector2.ZERO
 	_kick_offset = Vector2.ZERO
+	_shake_trauma = 0.0
 	_target_pos = _clamp_center(pos)
 	global_position = _target_pos.round()
 

@@ -247,11 +247,10 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 			var sp_prop: Variant = _region_loader.get("spawn_pos")
 			if sp_prop is Vector2:
 				spawn_at = sp_prop as Vector2
-	if spawn_at.x < 0.0:
-		spawn_at = Vector2(160.0, 90.0)
+	if spawn_at.x < 0.0: spawn_at = Vector2(160.0, 90.0)
 	Lx.state.spawn_pos = spawn_at
-	if _wick != null and _wick.has_method("reset_for_room"):
-		_wick.call("reset_for_room", spawn_at)
+	if Lx.hitstop != null: Lx.hitstop.clear()
+	if _wick != null and _wick.has_method("reset_for_room"): _wick.call("reset_for_room", spawn_at)
 	var is_dun: bool = false
 	if _region_loader != null and _region_loader.has_method("get_bounds"):
 		var b: Rect2 = _region_loader.call("get_bounds")

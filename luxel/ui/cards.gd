@@ -445,11 +445,11 @@ func _draw_results() -> void:
 	var p: float = clampf(_elapsed / 0.35, 0.0, 1.0)
 	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_TITLE"), Vector2(160.0, 34.0), p, "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
 	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_RANK_FMT", [LxStrings.text(rank_key)]), 160.0, 56.0, LxEndingArt.rank_text_color(rank_key), 2)
-	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_TIME_FMT", [LxStrings.format_time(play_s)]), 160.0, 78.0, LxPalette.PAL["cream"], 1)
-	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_DEATHS_FMT", [deaths]), 160.0, 90.0, LxPalette.PAL["cream"], 1)
-	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_EMBERS_FMT", [embers]), 160.0, 102.0, LxPalette.PAL["apricot"], 1)
-	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), 160.0, 114.0, LxPalette.PAL["gold"], 1)
-	LxPixelFont.draw_centered(self, LxStrings.text("RESULTS_HINT"), 160.0, 140.0, LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_TIME_FMT", [LxStrings.format_time(play_s)]), Vector2(160.0, 78.0), clampf((_elapsed - 0.10) / 0.25, 0.0, 1.0), "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_DEATHS_FMT", [deaths]), Vector2(160.0, 90.0), clampf((_elapsed - 0.18) / 0.25, 0.0, 1.0), "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_EMBERS_FMT", [embers]), Vector2(160.0, 102.0), clampf((_elapsed - 0.26) / 0.25, 0.0, 1.0), "apricot", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(160.0, 114.0), clampf((_elapsed - 0.34) / 0.25, 0.0, 1.0), "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_HINT"), Vector2(160.0, 140.0), clampf((_elapsed - 0.42) / 0.25, 0.0, 1.0), "stone", 1, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _draw_credits() -> void:

@@ -187,6 +187,20 @@ func is_animated() -> bool:
 	return animated
 
 
+func gust_sway(origin: Vector2, radius: float, strength: float) -> void:
+	if not _can_sway or radius <= 1.0:
+		return
+	var diff: Vector2 = position - origin
+	var d2: float = diff.length_squared()
+	if d2 >= radius * radius:
+		return
+	var falloff: float = 1.0 - sqrt(d2) / radius
+	_sway_dir = 1.0 if diff.x >= 0.0 else -1.0
+	_sway_amp = maxf(_sway_amp if _sway_t > 0.0 else 0.0, clampf(1.1 + (strength / 52.0) * falloff * 2.1, 1.1, 3.0))
+	_sway_t = maxf(_sway_t, 0.36 + 0.14 * falloff)
+	set_process(true)
+
+
 func tick(dt: float) -> void:
 	if not animated:
 		return

@@ -114,11 +114,16 @@ static func draw_death_ornaments(ci: CanvasItem, panel: Rect2, t: float) -> void
 	_px(ci, [[-6, -5, 13, 11]], "void", 160.0, 34.0)
 	_px(ci, [[-1, -4, 3, 1], [-3, -3, 7, 1], [-2, -2, 1, 5], [2, -2, 1, 5], [-3, 3, 7, 1]], "mauve", 160.0, 34.0)
 	ci.draw_rect(Rect2(159.0, 32.0, 3.0, 5.0), LxPalette.PAL["night"])
-	ci.draw_rect(Rect2(160.0, 35.0, 1.0, 2.0), LxPalette.PAL["coral" if fmod(t * 2.4, 1.0) < 0.55 else "wine"])
+	var ember_pulse: float = fmod(t * 1.8, 1.0)
+	ci.draw_rect(Rect2(160.0, 35.0, 1.0, 2.0), LxPalette.PAL["apricot" if ember_pulse < 0.28 else ("coral" if ember_pulse < 0.62 else "wine")])
 	for s: int in range(3):
 		var sy: float = 28.0 - fmod(t * 6.5 + float(s) * 4.0, 12.0)
 		var sx: float = 160.0 + roundf(sin(t * 2.5 + float(s) * 2.1) * 2.0)
 		ci.draw_rect(Rect2(sx, roundf(sy), 2.0 if s == 0 else 1.0, 1.0), LxPalette.PAL["stone" if sy > 22.0 else "mauve"])
+	for am: int in range(4):
+		var ax: float = (panel.position.x + 12.0 + float(am % 2) * 10.0) if am < 2 else (panel.end.x - 14.0 - float(am % 2) * 10.0)
+		var ay: float = roundf(panel.position.y + 14.0 + fmod(t * (7.0 + float(am) * 1.6) + float(am) * 19.0, panel.size.y - 26.0))
+		ci.draw_rect(Rect2(ax + roundf(sin(t * 1.9 + float(am)) * 1.5), ay, 1.0, 1.0), LxPalette.PAL["stone" if am % 2 == 0 else "mauve"])
 	_draw_filigree_divider(ci, panel.position.x + 18.0, panel.end.x - 18.0, 99.0, "coral", "apricot")
 
 static func draw_lantern_core(ci: CanvasItem, at: Vector2, tier: int, t: float) -> void:
@@ -225,8 +230,14 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 	var lamp_y: float = y + float(lm[4])
 	var lit_at: float = 1.0 + float(idx) * 0.35
 	if t >= lit_at:
+		var age: float = t - lit_at
 		var flk: bool = fmod(t * 3.8 + float(idx) * 0.4, 1.0) < 0.55
-		if t - lit_at < 0.55:
+		if age < 0.48:
+			var u_ring: float = clampf(age / 0.48, 0.0, 1.0)
+			var ring_r: float = roundf(lerpf(3.0, 18.0, 1.0 - (1.0 - u_ring) * (1.0 - u_ring)))
+			var r_col: Color = LxPalette.PAL["cream" if u_ring < 0.30 else ("gold" if u_ring < 0.68 else "apricot")]
+			ci.draw_arc(Vector2(x, lamp_y), ring_r, 0.0, TAU, 20, r_col, 1.4 if u_ring < 0.5 else 1.0, false)
+		if age < 0.55:
 			ci.draw_rect(Rect2(x - 2.0, 16.0, 4.0, lamp_y - 16.0), LxPalette.PAL["gold"])
 			ci.draw_rect(Rect2(x - 1.0, 16.0, 2.0, lamp_y - 16.0), LxPalette.PAL["cream"])
 		else:
@@ -282,11 +293,14 @@ static func _draw_rank_medallion(ci: CanvasItem, rank_key: String, t: float) -> 
 	if rank_key == "RANK_S":
 		_px(ci, [[155, 51, 11, 2], [155, 50, 2, 1], [159, 49, 3, 2], [164, 50, 2, 1]], "gold")
 		_px(ci, [[160, 49, 1, 2], [156, 51, 1, 1], [164, 51, 1, 1]], "cream")
-		if fmod(t * 2.4, 1.0) < 0.5:
-			_px(ci, [[117, 54, 1, 1], [202, 54, 1, 1]], "cream")
+		var sg: bool = fmod(t * 2.4, 1.0) < 0.5
+		_px(ci, [[117, 54, 1, 1], [202, 54, 1, 1]] if sg else [[117, 67, 1, 1], [202, 67, 1, 1]], "cream")
+		_px(ci, [[116, 54, 1, 1], [118, 54, 1, 1], [201, 54, 1, 1], [203, 54, 1, 1]] if sg else [[116, 67, 1, 1], [118, 67, 1, 1], [201, 67, 1, 1], [203, 67, 1, 1]], "gold")
 	elif rank_key == "RANK_A":
 		_px(ci, [[155, 51, 4, 2], [162, 51, 4, 2], [158, 50, 5, 1]], "lime")
 		ci.draw_rect(Rect2(159.0, 51.0, 3.0, 2.0), LxPalette.PAL["gold"])
+		if fmod(t * 2.0, 1.0) < 0.45:
+			_px(ci, [[118, 55, 1, 1], [201, 55, 1, 1]], "cream")
 	elif rank_key == "RANK_B":
 		_px(ci, [[159, 50, 3, 3], [157, 51, 7, 1]], "sky")
 		ci.draw_rect(Rect2(160.0, 51.0, 1.0, 1.0), LxPalette.PAL["ice"])

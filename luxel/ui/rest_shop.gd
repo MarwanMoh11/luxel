@@ -34,6 +34,8 @@ var _elapsed: float = 0.0
 var _spark_row: int = -1
 var _spark_pip: int = -1
 var _spark_t: float = 0.0
+var _deny_row: int = -1
+var _deny_t: float = 0.0
 
 
 func _ready() -> void:
@@ -50,6 +52,8 @@ func open() -> void:
 	_spark_row = -1
 	_spark_pip = -1
 	_spark_t = 0.0
+	_deny_row = -1
+	_deny_t = 0.0
 	visible = true
 	queue_redraw()
 
@@ -82,6 +86,10 @@ func _process(delta: float) -> void:
 		if _spark_t <= 0.0:
 			_spark_row = -1
 			_spark_pip = -1
+	if _deny_t > 0.0:
+		_deny_t = maxf(0.0, _deny_t - delta)
+		if _deny_t <= 0.0:
+			_deny_row = -1
 	queue_redraw()
 
 
@@ -161,6 +169,8 @@ func _try_buy(i: int) -> void:
 		_feedback_key = "SHOP_MAXED" if Lx.state.get_upgrade_rank(uid) >= int(u.get("max_rank", 0)) else "SHOP_NO_SHARDS"
 		_feedback_col = "stone" if _feedback_key == "SHOP_MAXED" else "coral"
 		_feedback_t = 1.2
+		_deny_row = i
+		_deny_t = 0.22
 		_play_ui_sfx("denied")
 	queue_redraw()
 
@@ -174,7 +184,7 @@ func _draw() -> void:
 	var shard_txt: String = LxStrings.fmt("SHOP_SHARDS_FMT", [shards])
 	var gem_x: float = 292.0 - float(LxPixelFont.width(shard_txt, 1)) - 10.0
 	_draw_shard_gem_icon(Vector2(gem_x, 16.0))
-	LxPixelFont.draw_right(self, shard_txt, 292.0, 18.0, LxPalette.PAL["apricot"], 1)
+	LxPixelFont.draw_right(self, shard_txt, 292.0, 18.0, LxPalette.PAL["cream"] if _spark_t > 0.24 else LxPalette.PAL["apricot"], 1)
 	LxPixelFont.draw_left(self, LxStrings.text("SHOP_SUBTITLE"), Vector2(28.0, 27.0), LxPalette.PAL["stone"], 1)
 
 	for i: int in range(_upgrades.size()):
@@ -197,6 +207,9 @@ func _draw() -> void:
 
 func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 	var r: Rect2 = _row_rect(i)
+	var denied: bool = _deny_t > 0.0 and i == _deny_row
+	if denied:
+		r.position.x += roundf(sin(_deny_t * 54.0) * 1.6)
 	var sel: bool = i == _idx
 	var uid: String = str(u.get("id", ""))
 	var rank: int = Lx.state.get_upgrade_rank(uid) if Lx.state != null else 0
@@ -206,7 +219,7 @@ func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 	var affordable: bool = Lx.state != null and Lx.state.can_buy_upgrade(uid)
 
 	if sel:
-		LxPixelFont.draw_panel(self, r, "plum", "gold", "night")
+		LxPixelFont.draw_panel(self, r, "plum", "coral" if denied else "gold", "night")
 	else:
 		LxPixelFont.draw_panel(self, r, "night", "dusk", "void")
 

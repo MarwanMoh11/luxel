@@ -495,6 +495,12 @@ func _gust_particles(origin: Vector2, radius: float, strength: float) -> void:
 			p.push += (diff / d) * (strength * (1.0 - d / radius))
 			if p.push.length_squared() > 14400.0:
 				p.push = p.push.normalized() * 120.0
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var props_v: Variant = Lx.world.get("_scenery_props")
+		if props_v is Array:
+			for prop: Variant in (props_v as Array):
+				if prop is LxSceneryProp and is_instance_valid(prop):
+					(prop as LxSceneryProp).gust_sway(origin, radius, strength)
 
 func _on_boss_phase_changed(boss_id: String, _phase: int) -> void:
 	var p: Vector2 = _boss_pos(boss_id)
