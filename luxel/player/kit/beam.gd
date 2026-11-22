@@ -256,8 +256,20 @@ func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
 			canvas.draw_arc(hand_pos, 7.5, 0.0, TAU, 16, Color(LxWick.PAL_GOLD, 0.70 * flash_sc), 1.0)
 			var sr: float = roundf(5.5 if flash_red else (6.0 + 1.5 * sin(spin * 2.6)))
 			_draw_star_flare(canvas, hand_pos, Vector2.RIGHT, sr, sr, 0.92 * flash_sc)
-		var aim_len: float = lerpf(8.0, 28.0, prog)
-		canvas.draw_line(hand_pos, (hand_pos + wick.facing * aim_len).round(), Color(ring_col, 0.45), 1.0)
+		var aim_dir: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
+		var aim_len: float = 76.0 if ready else lerpf(10.0, 42.0, prog)
+		var ctx: Node = _world_ctx if _world_ctx != null else Lx.world
+		var w_end: Vector2 = _raycast_walls_only(ctx, wick.global_position, aim_dir, aim_len)
+		var local_len: float = minf(aim_len, wick.global_position.distance_to(w_end))
+		var tip_p: Vector2 = (hand_pos + aim_dir * local_len).round()
+		if ready:
+			for si: int in range(0, 12, 2):
+				var p0: Vector2 = (hand_pos + aim_dir * (local_len * float(si) / 12.0)).round()
+				var p1: Vector2 = (hand_pos + aim_dir * (local_len * float(si + 1) / 12.0)).round()
+				canvas.draw_line(p0, p1, Color(LxWick.PAL_GOLD, 0.62 * flash_sc), 1.0)
+			canvas.draw_rect(Rect2(tip_p - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
+		else:
+			canvas.draw_line(hand_pos, tip_p, Color(ring_col, 0.48), 1.0)
 
 	if beam_vis_t > 0.0:
 		var t: float = clampf(beam_vis_t / maxf(beam_vis_max, 0.01), 0.0, 1.0)

@@ -449,20 +449,21 @@ func _draw() -> void:
 		draw_rect(Rect2(sh_c + Vector2(-3.0, 0.0), Vector2(6.0, 1.0)), sh_col)
 		draw_rect(Rect2(sh_c + Vector2(-2.0, 1.0), Vector2(4.0, 1.0)), sh_col)
 
-	# Luminous golden thread of gliding lantern beads from Wick when zippable
-	if is_lure_active() and _owner_wick != null and is_instance_valid(_owner_wick):
+	# Luminous golden thread of gliding lantern beads from Wick when zippable (urgent coral when stolen)
+	if (is_lure_active() or state == State.CARRIED) and _owner_wick != null and is_instance_valid(_owner_wick):
 		var rel_wick: Vector2 = (_owner_wick.global_position - global_position).round()
-		_draw_lantern_tether(rel_wick + Vector2(0.0, -5.0), center, flash_red)
+		_draw_lantern_tether(rel_wick + Vector2(0.0, -5.0), center, flash_red, state == State.CARRIED)
 
 	var glow_col: Color = PAL_CORAL if state == State.CARRIED else PAL_GOLD
 	var glow_sc: float = 0.78 if flash_red else 1.0
 	draw_circle(center, 15.0 * pulse, Color(glow_col, 0.10 * glow_sc))
 	draw_circle(center, 9.0 * pulse, Color(PAL_APRICOT, 0.16 * glow_sc))
 
-	# Hang timer arc + 2 gently orbiting rising golden candlelight motes
+	# Hang timer arc (shifts coral in final 1.1s before auto-recall) + 2 orbiting rising candlelight motes
 	if state == State.HANGING and hang_max > 0.05:
 		var frac: float = clampf(hang_timer / hang_max, 0.0, 1.0)
-		draw_arc(center, 7.5, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, Color(PAL_GOLD, 0.72), 1.0)
+		var urgent_arc: bool = hang_timer <= 1.1 and (flash_red or fmod(_anim_t * 6.0, 1.0) < 0.6)
+		draw_arc(center, 7.5, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, Color(PAL_CORAL if urgent_arc else PAL_GOLD, 0.85 if urgent_arc else 0.72), 1.2 if urgent_arc else 1.0)
 		for mi: int in range(2):
 			var m_ph: float = fmod(_anim_t * 0.72 + float(mi) * 0.5, 1.0)
 			var m_ang: float = _anim_t * 1.85 + float(mi) * PI
@@ -498,19 +499,22 @@ func _draw() -> void:
 	draw_rect(Rect2(center + Vector2(0.0, 4.0), Vector2(1.0, 1.0)), PAL_GOLD)
 
 
-func _draw_lantern_tether(a: Vector2, b: Vector2, flash_red: bool) -> void:
+func _draw_lantern_tether(a: Vector2, b: Vector2, flash_red: bool, stolen: bool = false) -> void:
 	var delta: Vector2 = b - a
 	var total: float = delta.length()
 	if total <= 2.0:
 		return
 	var step_dir: Vector2 = delta / total
-	draw_line(a, b, Color(PAL_APRICOT, 0.22), 1.0)
-	var cursor: float = fmod(_anim_t * (14.0 if flash_red else 24.0), 7.0)
+	var line_c: Color = PAL_CORAL if stolen else PAL_APRICOT
+	var bead_c: Color = PAL_CORAL if stolen else PAL_GOLD
+	var hi_c: Color = PAL_APRICOT if stolen else PAL_CREAM
+	draw_line(a, b, Color(line_c, 0.30 if stolen else 0.22), 1.0)
+	var cursor: float = fmod(_anim_t * (20.0 if (stolen and not flash_red) else (14.0 if flash_red else 24.0)), 7.0)
 	var idx: int = 0
 	while cursor < total:
 		var edge: float = clampf(minf(cursor, total - cursor) / 9.0, 0.28, 1.0)
 		var bp: Vector2 = (a + step_dir * cursor).round()
-		draw_rect(Rect2(bp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), Color(PAL_GOLD, 0.42 * edge))
-		draw_rect(Rect2(bp, Vector2(1.0, 1.0)), Color(PAL_CREAM if (idx % 2 == 0) else PAL_GOLD, 0.90 * edge))
+		draw_rect(Rect2(bp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), Color(bead_c, (0.55 if stolen else 0.42) * edge))
+		draw_rect(Rect2(bp, Vector2(1.0, 1.0)), Color(hi_c if (idx % 2 == 0) else bead_c, 0.90 * edge))
 		cursor += 7.0
 		idx += 1

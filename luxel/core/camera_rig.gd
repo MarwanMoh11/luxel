@@ -71,17 +71,28 @@ func follow(target: Vector2, dt: float) -> void:
 		var desired_lead: Vector2 = Vector2.ZERO
 		if Lx.player != null and is_instance_valid(Lx.player):
 			var lan_v: Variant = Lx.player.get("lantern")
-			var framed_lantern: bool = false
-			if lan_v is Object and is_instance_valid(lan_v) and (lan_v as Object).has_method("is_lure_active") and bool((lan_v as Object).call("is_lure_active")):
-				var lpos_v: Variant = (lan_v as Object).get("pos")
-				if lpos_v is Vector2:
-					var to_lan: Vector2 = (lpos_v as Vector2) - target
-					desired_lead = (to_lan * 0.32).limit_length(28.0)
-					framed_lantern = true
-			if not framed_lantern:
+			var framed: bool = false
+			if lan_v is Object and is_instance_valid(lan_v):
+				var lan_o: Object = lan_v as Object
+				var is_lure: bool = lan_o.has_method("is_lure_active") and bool(lan_o.call("is_lure_active"))
+				var is_stolen: bool = int(lan_o.get("state")) == 4
+				if is_lure or is_stolen:
+					var lpos_v: Variant = lan_o.get("pos")
+					if lpos_v is Vector2:
+						var to_lan: Vector2 = (lpos_v as Vector2) - target
+						desired_lead = (to_lan * (0.30 if is_stolen else 0.32)).limit_length(26.0 if is_stolen else 28.0)
+						framed = true
+			if not framed:
+				var boss_lead: Vector2 = _find_active_boss_lead(target)
+				if boss_lead.length_squared() > 0.01:
+					desired_lead = boss_lead
+					framed = true
+			if not framed:
 				var fv: Variant = Lx.player.get("facing")
 				if fv is Vector2 and (fv as Vector2).length_squared() > 0.01:
-					desired_lead = (fv as Vector2).normalized() * 14.0
+					var bm: Variant = Lx.player.get("move_beam")
+					var charging_beam: bool = bm is Object and is_instance_valid(bm) and bool((bm as Object).get("charging"))
+					desired_lead = (fv as Vector2).normalized() * (24.0 if charging_beam else 14.0)
 		_look_ahead = _look_ahead.lerp(desired_lead, minf(1.0, dt * 3.8))
 		var clamped: Vector2 = _clamp_center(target + _look_ahead)
 		_target_pos = _target_pos.lerp(clamped, minf(1.0, dt * 10.0))
@@ -104,6 +115,26 @@ func is_on_screen(world_pos: Vector2, margin: float = 8.0) -> bool:
 	var half: Vector2 = VIEW_SIZE * 0.5 + Vector2(margin, margin)
 	var d: Vector2 = (world_pos - global_position).abs()
 	return d.x <= half.x and d.y <= half.y
+
+
+func _find_active_boss_lead(target: Vector2) -> Vector2:
+	if Lx.world == null or not is_instance_valid(Lx.world) or not Lx.world.has_method("get_enemies"):
+		return Vector2.ZERO
+	var enemies: Variant = Lx.world.call("get_enemies")
+	if not (enemies is Array):
+		return Vector2.ZERO
+	for e: Variant in (enemies as Array):
+		if e is Node2D and is_instance_valid(e):
+			var obj: Object = e as Object
+			if not bool(obj.get("is_boss")):
+				continue
+			if obj.has_method("is_alive") and not bool(obj.call("is_alive")):
+				continue
+			var bpos: Vector2 = (e as Node2D).global_position
+			var delta: Vector2 = bpos - target
+			if delta.length_squared() <= 36100.0:
+				return (delta * 0.24).limit_length(22.0)
+	return Vector2.ZERO
 
 
 func _clamp_center(pos: Vector2) -> Vector2:

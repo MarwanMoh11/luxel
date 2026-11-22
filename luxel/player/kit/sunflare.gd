@@ -137,6 +137,10 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 
 	wick.trigger_hitstop(hs)
 	wick.trigger_shake(sh)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", origin, rad * 1.4, 130.0)
 	wick.spawn_ring(origin, 4.0, rad, 0.36, LxWick.PAL_GOLD, 2.5)
 	wick.spawn_ring(origin, 2.0, rad * 0.82, 0.28, LxWick.PAL_CREAM, 2.0)
 	wick.spawn_ring(origin, 6.0, rad * 1.08, 0.42, LxWick.PAL_APRICOT, 1.5)
