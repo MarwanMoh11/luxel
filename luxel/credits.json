@@ -650,6 +650,37 @@
         "luxel/audio/sfx/phantom_phase.ogg",
         "luxel/audio/sfx/phantom_phase_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_polish_final_a",
+      "description": "100% multi-take completion for ceremonial cues (great_lamp_bloom_2, intro_toll_2, display_sell_2) plus shield_reform & forge_gust multi-takes (267 SFX across 130 multi-take pools)",
+      "generator": "gen_sfx_polish_final_a.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/great_lamp_bloom_2.ogg",
+        "luxel/audio/sfx/intro_toll_2.ogg",
+        "luxel/audio/sfx/display_sell_2.ogg",
+        "luxel/audio/sfx/shield_reform.ogg",
+        "luxel/audio/sfx/shield_reform_2.ogg",
+        "luxel/audio/sfx/forge_gust.ogg",
+        "luxel/audio/sfx/forge_gust_2.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_sfx_polish_final_b",
+      "description": "Final bespoke zero-hiss multi-take biome & map foley (wing_gale, feather_flutter, void_hum, map_open + _2 takes; 275 Studio SFX across 134 multi-take pools — 100.0% multi-take coverage, 0 single-take SFX)",
+      "generator": "gen_sfx_polish_final_b.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/wing_gale.ogg",
+        "luxel/audio/sfx/wing_gale_2.ogg",
+        "luxel/audio/sfx/feather_flutter.ogg",
+        "luxel/audio/sfx/feather_flutter_2.ogg",
+        "luxel/audio/sfx/void_hum.ogg",
+        "luxel/audio/sfx/void_hum_2.ogg",
+        "luxel/audio/sfx/map_open.ogg",
+        "luxel/audio/sfx/map_open_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []

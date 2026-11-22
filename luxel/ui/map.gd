@@ -62,7 +62,7 @@ func open() -> void:
 	_selected_island = Lx.state.island_id if Lx.state != null else 1
 	_rebuild_waystones()
 	_waystone_idx = 0; _elapsed = 0.0; visible = true
-	_play_ui_sfx("menu_open")
+	_play_ui_sfx("map_open")
 	queue_redraw()
 
 

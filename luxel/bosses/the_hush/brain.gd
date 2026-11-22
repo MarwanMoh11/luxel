@@ -98,6 +98,7 @@ func take_hit(hit: LxHit) -> int:
 			state = State.RECOVER
 			state_timer = 1.15
 			last_recover_duration = state_timer
+			_boss_impact(0.20, 82.0, 88.0)
 			_emit_sfx("hush_ward_break")
 			_emit_enemy_hit(hit, HitResult.OPENED)
 			return HitResult.OPENED
