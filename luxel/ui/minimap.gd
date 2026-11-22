@@ -23,6 +23,7 @@ static func draw_minimap(c: CanvasItem, origin: Vector2, blink_t: float) -> void
 	var inner := Rect2(o + Vector2(2.0, 2.0), Vector2(INNER_W, INNER_H))
 	_draw_zones(c, bounds, inner)
 	_draw_frame_accents(c, o, inner)
+	_draw_exits(c, bounds, inner)
 	_draw_interactables(c, bounds, inner, blink_t)
 	_draw_boss_alerts(c, bounds, inner, blink_t)
 	_draw_player(c, bounds, inner, blink_t)
@@ -125,12 +126,40 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 				else:
 					c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["plum"])
 					c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["apricot"])
-			"wick_key", "boss_key":
+			"wick_key":
 				if _prop_bool(obj, "collected"):
 					continue
 				_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["apricot"])
+			"boss_key", "keepers_flame":
+				if _prop_bool(obj, "collected"):
+					continue
+				var kp: Vector2 = _map_pt(wpos, bounds, inner, 3.0, 3.0)
+				var kc: Color = LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["coral"]
+				c.draw_rect(Rect2(kp.x + 1.0, kp.y, 1.0, 3.0), kc)
+				c.draw_rect(Rect2(kp.x, kp.y + 1.0, 3.0, 1.0), kc)
+				c.draw_rect(Rect2(kp.x + 1.0, kp.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
 			"bridge", "bridge_platform":
 				c.draw_rect(Rect2(_map_pt(wpos, bounds, inner, 3.0, 1.0), Vector2(3.0, 1.0)), LxPalette.PAL["apricot"])
+
+
+static func _draw_exits(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:
+	if not _prop_bool(Lx.world, "is_dungeon"):
+		return
+	var exits_v: Variant = Lx.world.get("exits")
+	if not (exits_v is Array):
+		return
+	for ex_v: Variant in (exits_v as Array):
+		if not (ex_v is Dictionary):
+			continue
+		var ex: Dictionary = ex_v as Dictionary
+		var did: String = str(ex.get("locked_door_id", ""))
+		if not did.is_empty() and Lx.world.has_method("find_interactable"):
+			var door: Variant = Lx.world.call("find_interactable", did)
+			if door is Object and (door as Object).has_method("is_solid") and bool((door as Object).call("is_solid")):
+				continue
+		var r: Rect2 = LxMapFormat.to_rect2(ex.get("rect", []))
+		if r.size.x > 0.0 and r.size.y > 0.0:
+			_draw_pip(c, r.get_center(), bounds, inner, 2.0, LxPalette.PAL["gold"])
 
 
 static func _draw_boss_alerts(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_t: float) -> void:

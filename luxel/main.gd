@@ -396,11 +396,13 @@ func _physics_process(delta: float) -> void:
 func step_sim(raw_dt: float) -> void:
 	if flow == Flow.INTRO:
 		intro_timer += raw_dt
+		Lx.audio.tick(raw_dt, false)
 		if intro_timer >= 6.0:
 			finish_intro()
 		return
 	if flow == Flow.ENDING:
 		ending_timer += raw_dt
+		Lx.audio.tick(raw_dt, false)
 		if ending_timer >= 8.0 and _ui_root != null and int(_ui_root.get("current_screen")) == 10:
 			_ui_root.call("show_results")
 		return

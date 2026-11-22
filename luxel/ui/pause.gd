@@ -31,6 +31,7 @@ func open() -> void:
 	_idx = 0
 	_elapsed = 0.0
 	visible = true
+	_play_ui_sfx("ui_pause")
 	queue_redraw()
 
 

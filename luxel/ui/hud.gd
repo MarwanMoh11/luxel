@@ -222,7 +222,9 @@ func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
 	var wpos: Vector2 = (enemy as Node2D).global_position if enemy is Node2D else Vector2.ZERO
 	if result == 0:
 		_hit_cue_cd = 0.45
-		spawn_world_cue("CUE_EATS_BOLTS", wpos, "apricot", 1.0)
+		var ek: String = str(enemy.get("kind"))
+		var eats: bool = ek in ["snatcher", "gull_thief", "mire_snuffer"]
+		spawn_world_cue("CUE_EATS_BOLTS" if eats else "CUE_BLOCKED", wpos, "apricot" if eats else "stone", 1.0)
 	elif result == 2:
 		_hit_cue_cd = 0.35
 		spawn_world_cue("CUE_OPEN", wpos, "gold", 1.0)
@@ -360,14 +362,27 @@ func _draw_moves_tray(origin: Vector2) -> void:
 			unlocked.append(mid)
 	var step_x: float = 15.0 if unlocked.size() >= 6 else 17.0
 	var slot_x: float = origin.x
+	var pulse_fast: bool = fmod(_blink_t, 0.44) < 0.22
+	var lan_v: Variant = Lx.player.get("lantern") if Lx.player != null else null
+	var lan_stolen: bool = lan_v is Object and int((lan_v as Object).get("state")) == 4
+	var dash_v: Variant = Lx.player.get("move_dash") if Lx.player != null else null
+	var dash_cd: float = float((dash_v as Object).get("cooldown_left")) if dash_v is Object else 0.0
+	var ember_ready: bool = _ember_val >= _ember_max - 0.001
 	for mid: String in unlocked:
 		var mdata: Dictionary = Lx.get_move_data(mid)
 		var is_passive: bool = bool(mdata.get("passive", false))
 		var action_id: String = str(mdata.get("action", ""))
 		var col_name: String = str(MOVE_COLORS.get(mid, "gold"))
+		var bdr_col: String = col_name
+		if mid == "dash" and dash_cd > 0.02: bdr_col = "dusk"
+		elif mid == "sunflare" and ember_ready: bdr_col = "cream" if pulse_fast else "gold"
+		elif mid == "throw" and lan_stolen: bdr_col = "coral" if pulse_fast else "wine"
 		var box := Rect2(slot_x, origin.y, 13.0, 11.0)
-		LxPixelFont.draw_panel(self, box, "night", col_name, "void")
-		_draw_move_icon(mid, box.position + Vector2(3.0, 2.0), LxPalette.color(col_name))
+		LxPixelFont.draw_panel(self, box, "night", bdr_col, "void")
+		_draw_move_icon(mid, box.position + Vector2(3.0, 2.0), LxPalette.PAL["mauve"] if (mid == "dash" and dash_cd > 0.02) else LxPalette.color(col_name))
+		if mid == "dash" and dash_cd > 0.02:
+			var frac: float = clampf(1.0 - dash_cd / maxf(0.15, Lx.state.get_effective_dash_cooldown() + 0.17), 0.0, 1.0)
+			draw_rect(Rect2(slot_x + 2.0, origin.y + 9.0, floorf(9.0 * frac), 1.0), LxPalette.PAL["coral"])
 		if not is_passive and not action_id.is_empty() and Lx.input != null:
 			var raw_glyph: String = Lx.input.get_glyph(action_id).to_upper().replace("SHIFT", "SHFT")
 			var glyph: String = LxStrings.sanitize(raw_glyph, 4)

@@ -37,6 +37,7 @@ const PANEL_RECT := Rect2(18.0, 12.0, 284.0, 156.0)
 
 var current_tab: int = Tab.AUDIO
 var _row_idx: int = 0
+var _hover_tab: int = -1
 
 
 func _ready() -> void:
@@ -47,6 +48,7 @@ func _ready() -> void:
 func open(initial_tab: int = Tab.AUDIO) -> void:
 	current_tab = clampi(initial_tab, 0, TAB_KEYS.size() - 1)
 	_row_idx = 0
+	_hover_tab = -1
 	visible = true
 	queue_redraw()
 
@@ -80,6 +82,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event is InputEventMouseMotion:
 		var pos: Vector2 = (event as InputEventMouseMotion).position
+		var ht: int = -1
+		for ti: int in range(TAB_KEYS.size()):
+			if _tab_rect(ti).has_point(pos):
+				ht = ti
+				break
+		if ht != _hover_tab:
+			_hover_tab = ht
+			queue_redraw()
 		var m_rows: Array[String] = _rows_for_tab(current_tab)
 		for i: int in range(m_rows.size()):
 			if _row_rect(i).has_point(pos):
@@ -147,14 +157,35 @@ func _handle_click(pos: Vector2) -> bool:
 		var r: Rect2 = _row_rect(i)
 		if r.has_point(pos):
 			_row_idx = i
+			var rid: String = rows[i]
+			var bar := Rect2(r.end.x - 94.0, r.position.y + 1.0, 56.0, 11.0)
+			if rid in ["master_vol", "music_vol", "sfx_vol", "ambience_vol", "screen_shake", "assist_game_speed"] and bar.has_point(pos):
+				_set_slider_from_frac(rid, clampf((pos.x - bar.position.x) / bar.size.x, 0.0, 1.0))
+				return true
 			if pos.x < r.position.x + r.size.x * 0.55:
-				_activate_row(rows[i])
+				_activate_row(rid)
 			elif pos.x < r.position.x + r.size.x * 0.77:
-				_adjust_row(rows[i], -1)
+				_adjust_row(rid, -1)
 			else:
-				_adjust_row(rows[i], 1)
+				_adjust_row(rid, 1)
 			return true
 	return false
+
+
+func _set_slider_from_frac(row_id: String, frac: float) -> void:
+	var cfg: Dictionary = _cfg()
+	if row_id == "screen_shake":
+		cfg[row_id] = clampi(int(roundf(frac * 10.0)) * 10, 0, 100)
+	elif row_id == "assist_game_speed":
+		cfg[row_id] = snappedf(clampf(0.7 + frac * 0.3, 0.7, 1.0), 0.05)
+	else:
+		cfg[row_id] = snappedf(clampf(frac, 0.0, 1.0), 0.05)
+	_apply_and_save(cfg)
+	if row_id == "sfx_vol" and Lx.audio != null:
+		Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, false)
+	else:
+		_play_ui_sfx("ui_move")
+	queue_redraw()
 
 
 func _activate_row(row_id: String) -> void:
@@ -263,8 +294,9 @@ func _draw() -> void:
 	for i: int in range(TAB_KEYS.size()):
 		var tr: Rect2 = _tab_rect(i)
 		var active: bool = i == current_tab
-		LxPixelFont.draw_panel(self, tr, "plum" if active else "night", "gold" if active else "mauve", "void")
-		LxPixelFont.draw_centered(self, LxStrings.text(TAB_KEYS[i]), tr.get_center().x, tr.position.y + 3.0, LxPalette.PAL["gold"] if active else LxPalette.PAL["stone"], 1)
+		var hovered: bool = (i == _hover_tab and not active)
+		LxPixelFont.draw_panel(self, tr, "plum" if active else "night", "gold" if active else ("sky" if hovered else "mauve"), "void")
+		LxPixelFont.draw_centered(self, LxStrings.text(TAB_KEYS[i]), tr.get_center().x, tr.position.y + 3.0, LxPalette.PAL["gold"] if active else (LxPalette.PAL["ice"] if hovered else LxPalette.PAL["stone"]), 1)
 
 	if current_tab == Tab.ASSIST:
 		LxPixelFont.draw_centered(self, LxStrings.text("OPT_ASSIST_NOTE"), 160.0, 44.0, LxPalette.PAL["ice"], 1)

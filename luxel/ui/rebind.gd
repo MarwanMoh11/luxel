@@ -89,6 +89,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			if _handle_click(mb.position):
 				get_viewport().set_input_as_handled()
+		elif mb.pressed and (mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN):
+			var max_scroll: int = maxi(0, _total_rows() - VISIBLE_ROWS)
+			var delta_s: int = -1 if mb.button_index == MOUSE_BUTTON_WHEEL_UP else 1
+			var next_s: int = clampi(_scroll + delta_s, 0, max_scroll)
+			if next_s != _scroll:
+				_scroll = next_s
+				_idx = clampi(_idx, _scroll, mini(_total_rows() - 1, _scroll + VISIBLE_ROWS - 1))
+				_play_ui_sfx("ui_move")
+				queue_redraw()
+			get_viewport().set_input_as_handled()
 		return
 
 	var total: int = _total_rows()
