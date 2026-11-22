@@ -83,7 +83,10 @@ func on_shockwave_cleared() -> void:
 			wick.emit_sfx("beam_ready", wick.global_position, false)
 
 
-func stop_glide() -> void:
+func stop_glide(emit_land: bool = true) -> void:
+	if emit_land and gliding and wick != null and not wick.dead and glide_dist_traveled >= 36.0:
+		wick.spawn_sparks(wick.global_position, -glide_dir, 2, LxWick.PAL_ICE, 12.0, 32.0, 0.18)
+		wick.emit_sfx("feather_flutter", wick.global_position, false)
 	gliding = false
 	glide_time_left = 0.0
 	glide_dist_left = 0.0
@@ -120,7 +123,7 @@ func get_glide_velocity() -> Vector2:
 
 func reset() -> void:
 	super.reset()
-	stop_glide()
+	stop_glide(false)
 	glide_dist_traveled = 0.0
 	glides_count = 0
 

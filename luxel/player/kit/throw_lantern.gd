@@ -64,7 +64,9 @@ func press() -> bool:
 		wick.throw_anim_t = 0.25
 		wick.spawn_sparks(wick.global_position, aim, 8 if empowered else 5, LxWick.PAL_CREAM if empowered else LxWick.PAL_GOLD, 35.0, 95.0, 0.18)
 		wick.spawn_ring(wick.global_position, 2.0, 14.0 if empowered else 10.0, 0.16, LxWick.PAL_GOLD if empowered else LxWick.PAL_CREAM, 1.2 if empowered else 1.0)
-		wick.emit_sfx("perfect_counter" if empowered else "lantern_throw", wick.global_position, false)
+		wick.emit_sfx("lantern_throw", wick.global_position, false)
+		if empowered:
+			wick.emit_sfx("perfect_counter", wick.global_position, false)
 		return true
 
 	if lan.state == LxLantern.State.FLYING or lan.state == LxLantern.State.HANGING:
@@ -153,12 +155,12 @@ func tick_zip(dt: float, world_ctx: Node) -> void:
 	_afterimage_cd -= dt
 	if _afterimage_cd <= 0.0:
 		_afterimage_cd = 0.028
-		wick.spawn_afterimage(LxWick.PAL_GOLD)
-	wick.spawn_sparks(wick.global_position, -zip_dir, 1, LxWick.PAL_GOLD, 10.0, 28.0, 0.18)
+		wick.spawn_afterimage(LxWick.PAL_CREAM if _zip_empowered else LxWick.PAL_GOLD)
+	wick.spawn_sparks(wick.global_position, -zip_dir, 1, LxWick.PAL_CREAM if _zip_empowered else LxWick.PAL_GOLD, 10.0, 28.0, 0.18)
 
 	var data: Dictionary = get_data()
-	var zdmg: float = float(data.get("zip_damage", 1.75))
-	var wear: float = float(data.get("shield_wear", 2.0))
+	var zdmg: float = float(data.get("zip_damage", 1.75)) * (1.25 if _zip_empowered else 1.0)
+	var wear: float = float(data.get("shield_wear", 2.0)) + (0.5 if _zip_empowered else 0.0)
 	var stag: bool = bool(data.get("stagger", true))
 	var hs: float = float(data.get("hitstop", 0.085))
 	var sh: float = float(data.get("shake", 0.14))

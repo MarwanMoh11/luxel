@@ -175,7 +175,7 @@ func tick(dt: float) -> void:
 func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 	if flare_vis_t <= 0.0:
 		return
-	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var flash_red: bool = LxHudFx.flash_reduced()
 	var flash_sc: float = 0.62 if flash_red else 1.0
 	var prog: float = 1.0 - clampf(flare_vis_t / maxf(flare_vis_max, 0.01), 0.0, 1.0)
 	var fade: float = 1.0 - prog

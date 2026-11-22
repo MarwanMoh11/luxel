@@ -233,6 +233,8 @@ func tick(dt: float) -> void:
 	var is_ready: bool = charge_t >= charge_time - 0.001
 	if is_ready and not was_ready:
 		wick.spawn_ring(wick.global_position, 3.0, 13.0, 0.20, LxWick.PAL_CREAM, 1.5)
+		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+			LxDarknessLayer.active_instance.add_burst_light(wick.global_position, 46.0, 0.72 if LxHudFx.flash_reduced() else 1.12, 0.22)
 		wick.emit_sfx("beam_ready", wick.global_position, false)
 	_charge_spark_cd -= dt
 	if _charge_spark_cd <= 0.0:
@@ -258,7 +260,7 @@ func reset() -> void:
 
 
 func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
-	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var flash_red: bool = LxHudFx.flash_reduced()
 	var flash_sc: float = 0.72 if flash_red else 1.0
 	if charging:
 		var prog: float = charge_progress()

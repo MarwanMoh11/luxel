@@ -106,7 +106,7 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 	if not unlocked or last_radius <= 0.0:
 		return
 	var center: Vector2 = (last_origin + off).round() + Vector2(0.0, -5.0)
-	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var flash_red: bool = LxHudFx.flash_reduced()
 	var rot: float = float(Time.get_ticks_msec()) * 0.00035
 	var inner_r: float = maxf(4.0, last_radius - 2.5)
 	var seg_step: float = TAU / 8.0
