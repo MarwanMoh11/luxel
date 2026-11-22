@@ -312,8 +312,12 @@ func _draw_extra(off: Vector2) -> void:
 	if active_move == BossMove.WING_GUST and state == State.TELL:
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		var g_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		draw_line((off - side * GUST_HALF_W * 0.72).round(), (off - side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE * 0.88).round(), PAL["sky"] as Color, 1.4)
-		draw_line((off + side * GUST_HALF_W * 0.72).round(), (off + side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE * 0.88).round(), PAL["sky"] as Color, 1.4)
+		var g_locked: bool = state_timer <= 0.18
+		var rail_col: Color = (PAL["gold"] if g_locked else PAL["sky"]) as Color
+		draw_line((off - side * GUST_HALF_W * 0.72).round(), (off - side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE).round(), rail_col, 1.4)
+		draw_line((off + side * GUST_HALF_W * 0.72).round(), (off + side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE).round(), rail_col, 1.4)
+		var dmg_pt: Vector2 = off + gust_dir * GUST_DMG_R
+		draw_line((dmg_pt - side * GUST_HALF_W * 0.72).round(), (dmg_pt + side * GUST_HALF_W * 0.72).round(), (PAL["cream"] if g_locked else PAL["gold"]) as Color, 1.4)
 		var pull_d: float = lerpf(44.0, 10.0, g_prog)
 		draw_line((off + gust_dir * pull_d - side * 12.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.2)
 		draw_line((off + gust_dir * pull_d + side * 12.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.2)

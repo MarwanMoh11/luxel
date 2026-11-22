@@ -70,6 +70,11 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 			b.draw_circle(bp, 1.8, pal["deep"] as Color)
 			b.draw_circle(bp, 1.0, (pal["ice"] if bi % 2 == 0 else pal["sky"]) as Color)
 		var pulse: float = 0.8 * sin(b.anim_t * 14.0)
+		if b.state == LxEnemyBrain.State.COMMIT and int(b.get("active_move")) == 1:
+			var zip_danger_col: Color = (pal["coral"] if fmod(b.anim_t * 12.0, 1.0) < 0.5 else pal["sky"]) as Color
+			for zi: int in range(8):
+				var za0: float = b.anim_t * 1.8 + float(zi) * (TAU / 8.0)
+				b.draw_arc(orb_off, 26.0, za0, za0 + 0.36, 3, zip_danger_col, 1.2)
 		b.draw_arc(orb_off, 6.8 + pulse, 0.0, TAU, 16, pal["sky"] as Color, 1.3)
 		b.draw_circle(orb_off, 5.2 + pulse * 0.4, pal["deep"] as Color)
 		b.draw_circle(orb_off, 3.5, pal["void"] as Color)
@@ -108,8 +113,29 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 				var is_edge: bool = (vi == 0 or vi == 4 or vi == 2)
 				b.draw_line(off.round(), (off + vdir * (152.0 if is_edge else 96.0)).round(), (pal["sky"] if is_edge else pal["deep"]) as Color, 1.4 if vi == 2 else 1.0)
 				b.draw_circle((off + vdir * 26.0).round(), 1.3, pal["ice"] as Color)
-		else:
-			b.draw_line(off.round(), (off + commit_dir * 64.0).round(), pal["ice"] as Color, 1.8)
+		elif active_move == 1: # VOID_ZIP (tether preview + arrival blast diamond)
+			var locked_z: bool = b.state_timer <= 0.22
+			var z_tip: Vector2 = (off + commit_dir * 72.0).round()
+			var z_col: Color = (pal["gold"] if locked_z else pal["sky"]) as Color
+			for di: int in range(6):
+				var dt0: float = float(di) / 6.0
+				var dt1: float = minf(1.0, dt0 + 0.10)
+				b.draw_line(off.lerp(z_tip, dt0).round(), off.lerp(z_tip, dt1).round(), z_col, 1.4 if locked_z else 1.1)
+			_draw_diamond(b, z_tip, lerpf(6.0, 3.5, prog), z_col, (pal["cream"] if locked_z else pal["ice"]) as Color)
+			for zi: int in range(4):
+				var za: float = float(zi) * (TAU * 0.25)
+				b.draw_arc(z_tip, 26.0, za - 0.18, za + 0.18, 3, (pal["coral"] if locked_z else pal["deep"]) as Color, 1.1)
+		else: # SHADOW_DASH (honest 76px coral-locked dash lane matching 290*0.26 = 75.4px)
+			var locked_d: bool = b.state_timer <= 0.22
+			var d_perp: Vector2 = Vector2(-commit_dir.y, commit_dir.x)
+			var d_end: Vector2 = (off + commit_dir * 76.0).round()
+			var d_col: Color = (pal["coral"] if locked_d else pal["sky"]) as Color
+			b.draw_line(off.round(), d_end, d_col, 2.0 if locked_d else 1.5)
+			b.draw_line((off - d_perp * 10.0).round(), (d_end - d_perp * 10.0).round(), (pal["gold"] if locked_d else pal["deep"]) as Color, 1.0)
+			b.draw_line((off + d_perp * 10.0).round(), (d_end + d_perp * 10.0).round(), (pal["gold"] if locked_d else pal["deep"]) as Color, 1.0)
+			var chev_col: Color = (pal["cream"] if locked_d else pal["ice"]) as Color
+			b.draw_line(d_end, (d_end - commit_dir * 7.0 + d_perp * 5.0).round(), chev_col, 1.5)
+			b.draw_line(d_end, (d_end - commit_dir * 7.0 - d_perp * 5.0).round(), chev_col, 1.5)
 	elif b.state == LxEnemyBrain.State.COMMIT:
 		if active_move == 3 and ring_stage != 1:
 			var ring_r: float = lerpf(12.0, 84.0, ring_prog)

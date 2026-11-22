@@ -296,8 +296,12 @@ func _draw_extra(off: Vector2) -> void:
 	if active_move == KilnMove.BELLOWS_GUST and state == State.TELL:
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		var g_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		draw_line((off - side * GUST_HALF_W * 0.72).round(), (off - side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE * 0.88).round(), PAL["gold"] as Color, 1.4)
-		draw_line((off + side * GUST_HALF_W * 0.72).round(), (off + side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE * 0.88).round(), PAL["gold"] as Color, 1.4)
+		var g_locked: bool = state_timer <= 0.22
+		var rail_col: Color = (PAL["coral"] if g_locked else PAL["gold"]) as Color
+		draw_line((off - side * GUST_HALF_W * 0.72).round(), (off - side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE).round(), rail_col, 1.4)
+		draw_line((off + side * GUST_HALF_W * 0.72).round(), (off + side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE).round(), rail_col, 1.4)
+		var dmg_pt: Vector2 = off + gust_dir * GUST_DMG_R
+		draw_line((dmg_pt - side * GUST_HALF_W * 0.72).round(), (dmg_pt + side * GUST_HALF_W * 0.72).round(), (PAL["cream"] if g_locked else PAL["coral"]) as Color, 1.4)
 		var pull_d: float = lerpf(46.0, 12.0, g_prog)
 		draw_line((off + gust_dir * pull_d - side * 14.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["apricot"] as Color, 1.3)
 		draw_line((off + gust_dir * pull_d + side * 14.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["apricot"] as Color, 1.3)

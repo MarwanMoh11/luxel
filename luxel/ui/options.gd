@@ -38,6 +38,8 @@ const PANEL_RECT := Rect2(18.0, 12.0, 284.0, 156.0)
 var current_tab: int = Tab.AUDIO
 var _row_idx: int = 0
 var _hover_tab: int = -1
+var _drag_row: String = ""
+var _drag_bar := Rect2()
 
 
 func _ready() -> void:
@@ -49,11 +51,13 @@ func open(initial_tab: int = Tab.AUDIO) -> void:
 	current_tab = clampi(initial_tab, 0, TAB_KEYS.size() - 1)
 	_row_idx = 0
 	_hover_tab = -1
+	_drag_row = ""
 	visible = true
 	queue_redraw()
 
 
 func close() -> void:
+	_drag_row = ""
 	visible = false
 
 
@@ -82,6 +86,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event is InputEventMouseMotion:
 		var pos: Vector2 = (event as InputEventMouseMotion).position
+		if not _drag_row.is_empty():
+			_set_slider_from_frac(_drag_row, clampf((pos.x - _drag_bar.position.x) / maxf(1.0, _drag_bar.size.x), 0.0, 1.0), true)
+			get_viewport().set_input_as_handled()
+			return
 		var ht: int = -1
 		for ti: int in range(TAB_KEYS.size()):
 			if _tab_rect(ti).has_point(pos):
@@ -101,21 +109,35 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
-		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
-			if _handle_click(mb.position):
+		if mb.button_index == MOUSE_BUTTON_LEFT:
+			if mb.pressed:
+				if _handle_click(mb.position):
+					get_viewport().set_input_as_handled()
+			elif not _drag_row.is_empty():
+				_drag_row = ""
 				get_viewport().set_input_as_handled()
 		return
 
 	var rows: Array[String] = _rows_for_tab(current_tab)
-	if _key_just(event, KEY_TAB) or _joy_just(event, JOY_BUTTON_RIGHT_SHOULDER):
+	if _key_just(event, KEY_TAB):
+		var tab_step: int = -1 if (event as InputEventKey).shift_pressed else 1
+		current_tab = (current_tab + tab_step + TAB_KEYS.size()) % TAB_KEYS.size()
+		_row_idx = 0
+		_drag_row = ""
+		_play_ui_sfx("ui_move")
+		queue_redraw()
+		get_viewport().set_input_as_handled()
+	elif _joy_just(event, JOY_BUTTON_RIGHT_SHOULDER):
 		current_tab = (current_tab + 1) % TAB_KEYS.size()
 		_row_idx = 0
+		_drag_row = ""
 		_play_ui_sfx("ui_move")
 		queue_redraw()
 		get_viewport().set_input_as_handled()
 	elif _joy_just(event, JOY_BUTTON_LEFT_SHOULDER):
 		current_tab = (current_tab - 1 + TAB_KEYS.size()) % TAB_KEYS.size()
 		_row_idx = 0
+		_drag_row = ""
 		_play_ui_sfx("ui_move")
 		queue_redraw()
 		get_viewport().set_input_as_handled()
@@ -160,7 +182,9 @@ func _handle_click(pos: Vector2) -> bool:
 			var rid: String = rows[i]
 			var bar := Rect2(r.end.x - 94.0, r.position.y + 1.0, 56.0, 11.0)
 			if rid in ["master_vol", "music_vol", "sfx_vol", "ambience_vol", "screen_shake", "assist_game_speed"] and bar.has_point(pos):
-				_set_slider_from_frac(rid, clampf((pos.x - bar.position.x) / bar.size.x, 0.0, 1.0))
+				_drag_row = rid
+				_drag_bar = bar
+				_set_slider_from_frac(rid, clampf((pos.x - bar.position.x) / bar.size.x, 0.0, 1.0), false)
 				return true
 			if pos.x < r.position.x + r.size.x * 0.55:
 				_activate_row(rid)
@@ -172,14 +196,19 @@ func _handle_click(pos: Vector2) -> bool:
 	return false
 
 
-func _set_slider_from_frac(row_id: String, frac: float) -> void:
+func _set_slider_from_frac(row_id: String, frac: float, is_drag: bool = false) -> void:
 	var cfg: Dictionary = _cfg()
+	var prev_v: Variant = cfg.get(row_id)
+	var next_v: Variant
 	if row_id == "screen_shake":
-		cfg[row_id] = clampi(int(roundf(frac * 10.0)) * 10, 0, 100)
+		next_v = clampi(int(roundf(frac * 10.0)) * 10, 0, 100)
 	elif row_id == "assist_game_speed":
-		cfg[row_id] = snappedf(clampf(0.7 + frac * 0.3, 0.7, 1.0), 0.05)
+		next_v = snappedf(clampf(0.7 + frac * 0.3, 0.7, 1.0), 0.05)
 	else:
-		cfg[row_id] = snappedf(clampf(frac, 0.0, 1.0), 0.05)
+		next_v = snappedf(clampf(frac, 0.0, 1.0), 0.05)
+	if is_drag and prev_v == next_v:
+		return
+	cfg[row_id] = next_v
 	_apply_and_save(cfg)
 	if row_id == "sfx_vol" and Lx.audio != null:
 		Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, false)

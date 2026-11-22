@@ -28,6 +28,7 @@ var _idx: int = 0
 var _scroll: int = 0
 var _listening: bool = false
 var _blink_t: float = 0.0
+var _hover_dev: bool = false
 
 
 func _ready() -> void:
@@ -41,12 +42,14 @@ func open() -> void:
 	_idx = 0
 	_scroll = 0
 	_listening = false
+	_hover_dev = false
 	visible = true
 	queue_redraw()
 
 
 func close() -> void:
 	_listening = false
+	_hover_dev = false
 	visible = false
 
 
@@ -72,6 +75,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseMotion:
 		var pos: Vector2 = (event as InputEventMouseMotion).position
+		var hd: bool = Rect2(26.0, 24.0, 268.0, 12.0).has_point(pos)
+		if hd != _hover_dev:
+			_hover_dev = hd
+			queue_redraw()
 		var m_total: int = _total_rows()
 		for vis_i: int in range(VISIBLE_ROWS):
 			var row_i: int = _scroll + vis_i
@@ -230,8 +237,8 @@ func _draw() -> void:
 
 	var dev_key: String = "REBIND_DEVICE_KBM" if device_kind == "kbm" else "REBIND_DEVICE_PAD"
 	var dev_rect := Rect2(26.0, 24.0, 268.0, 12.0)
-	LxPixelFont.draw_panel(self, dev_rect, "night", "sky", "void")
-	LxPixelFont.draw_centered(self, LxStrings.text(dev_key), 160.0, 27.0, LxPalette.PAL["ice"], 1)
+	LxPixelFont.draw_panel(self, dev_rect, "plum" if _hover_dev else "night", "gold" if _hover_dev else "sky", "void")
+	LxPixelFont.draw_centered(self, LxStrings.text(dev_key), 160.0, 27.0, LxPalette.PAL["cream"] if _hover_dev else LxPalette.PAL["ice"], 1)
 
 	var total: int = _total_rows()
 	for vis_i: int in range(VISIBLE_ROWS):

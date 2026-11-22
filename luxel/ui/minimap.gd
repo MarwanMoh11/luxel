@@ -106,8 +106,8 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 				if not _prop_bool(obj, "claimed"):
 					_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["sky"])
 			"waystone":
-				if _prop_bool(obj, "lit"):
-					_draw_pip(c, wpos, bounds, inner, 1.0, LxPalette.PAL["ice"])
+				var ws_col: Color = LxPalette.PAL["ice"] if _prop_bool(obj, "lit") else (LxPalette.PAL["sky"] if pulse_on else LxPalette.PAL["blue"])
+				_draw_pip(c, wpos, bounds, inner, 1.0, ws_col)
 			"rest_shrine":
 				_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["apricot"])
 			"great_lamp", "great_belfry_brazier":
@@ -126,18 +126,18 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 				else:
 					c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["plum"])
 					c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["apricot"])
-			"wick_key":
+			"wick_key", "boss_key", "keepers_flame":
 				if _prop_bool(obj, "collected"):
 					continue
-				_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["apricot"])
-			"boss_key", "keepers_flame":
-				if _prop_bool(obj, "collected"):
-					continue
-				var kp: Vector2 = _map_pt(wpos, bounds, inner, 3.0, 3.0)
-				var kc: Color = LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["coral"]
-				c.draw_rect(Rect2(kp.x + 1.0, kp.y, 1.0, 3.0), kc)
-				c.draw_rect(Rect2(kp.x, kp.y + 1.0, 3.0, 1.0), kc)
-				c.draw_rect(Rect2(kp.x + 1.0, kp.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+				var is_boss_key: bool = kind == "boss_key" or kind == "keepers_flame" or str(obj.get("key_kind")) == "keepers_flame"
+				if is_boss_key:
+					var kp: Vector2 = _map_pt(wpos, bounds, inner, 3.0, 3.0)
+					var kc: Color = LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["coral"]
+					c.draw_rect(Rect2(kp.x + 1.0, kp.y, 1.0, 3.0), kc)
+					c.draw_rect(Rect2(kp.x, kp.y + 1.0, 3.0, 1.0), kc)
+					c.draw_rect(Rect2(kp.x + 1.0, kp.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+				else:
+					_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["apricot"])
 			"bridge", "bridge_platform":
 				c.draw_rect(Rect2(_map_pt(wpos, bounds, inner, 3.0, 1.0), Vector2(3.0, 1.0)), LxPalette.PAL["apricot"])
 
