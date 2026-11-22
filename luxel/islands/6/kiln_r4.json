@@ -181,22 +181,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
-    },
-    {
-      "prop": "bellows_frame",
-      "pos": [
-        44,
-        44
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "forge_anvil_stand",
-      "pos": [
-        188,
-        144
-      ],
-      "layer": "back"
     }
   ]
 }

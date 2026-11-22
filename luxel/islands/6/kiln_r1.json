@@ -31,7 +31,7 @@
       ],
       "to_region": "overworld",
       "to_spawn": [
-        512,
+        1312,
         200
       ],
       "requires_moves": [],
@@ -244,14 +244,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "prop": "ember_grate_vent",
-      "pos": [
-        62,
-        52
-      ],
-      "layer": "back"
     }
   ]
 }

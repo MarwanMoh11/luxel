@@ -203,26 +203,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "crucible_floor_seal",
-      "pos": [
-        160,
-        92
-      ],
-      "layer": "ground",
-      "shadow": false
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "foundry_hook_crane",
-      "pos": [
-        198,
-        44
-      ],
-      "layer": "sort",
-      "phase": 0.4
     }
   ]
 }
