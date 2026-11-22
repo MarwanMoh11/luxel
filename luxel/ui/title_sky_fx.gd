@@ -6,7 +6,16 @@ extends RefCounted
 
 
 static func draw_sky_accents(ci: CanvasItem, elapsed: float) -> void:
-	var fred: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var fred: bool = LxHudFx.flash_reduced()
+
+	# 0. Two serene gliding twilight bird silhouettes crossing the upper moonlit sky
+	for bi: int in range(2):
+		var bx: float = roundf(fmod(42.0 + float(bi) * 148.0 + elapsed * (5.2 + float(bi) * 1.4), 344.0) - 12.0)
+		var by: float = roundf(26.0 + float(bi) * 16.0 + sin(elapsed * 1.4 + float(bi) * 2.1) * 2.5)
+		var flap: float = 0.0 if fred else (-1.0 if fmod(elapsed * 2.2 + float(bi) * 0.45, 1.0) < 0.5 else 1.0)
+		ci.draw_rect(Rect2(bx, by, 1.0, 1.0), LxPalette.PAL["night"])
+		ci.draw_rect(Rect2(bx - 1.0, by + flap, 1.0, 1.0), LxPalette.PAL["dusk"])
+		ci.draw_rect(Rect2(bx + 1.0, by + flap, 1.0, 1.0), LxPalette.PAL["dusk"])
 
 	# 1. Serene shooting star sweeping diagonally across upper sky every 7.4 s
 	var cycle: float = fmod(elapsed + 2.8, 7.4)
@@ -80,7 +89,10 @@ static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> v
 		Vector2(158.0, 142.0), # 8 The Long Night
 	]
 	if relit.size() >= 8:
-		ci.draw_rect(Rect2(0.0, 145.0, 320.0, 1.0), Color(LxPalette.PAL["gold"], 0.35 if fred else 0.48))
+		var glow_a: float = 0.22 if fred else 0.30
+		ci.draw_rect(Rect2(0.0, 141.0, 320.0, 2.0), Color(LxPalette.PAL["coral"], glow_a * 0.55))
+		ci.draw_rect(Rect2(0.0, 143.0, 320.0, 2.0), Color(LxPalette.PAL["apricot"], glow_a * 0.78))
+		ci.draw_rect(Rect2(0.0, 145.0, 320.0, 1.0), Color(LxPalette.PAL["gold"], 0.35 if fred else 0.50))
 	for i: int in range(pts.size()):
 		if not relit.has(i + 1):
 			continue
