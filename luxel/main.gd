@@ -307,7 +307,8 @@ func toggle_pause() -> void:
 		flow = Flow.PLAY
 		Lx.audio.set_paused(false)
 		if was_shop:
-			Lx.audio.set_music_mode("explore", true)
+			if _region_loader != null and bool(_region_loader.get("is_dungeon")): Lx.audio.start_dungeon_music(Lx.state.island_id)
+			else: Lx.audio.set_music_mode("explore", true)
 		Lx.events.pause_toggled.emit(false)
 	_sync_ui_flow()
 

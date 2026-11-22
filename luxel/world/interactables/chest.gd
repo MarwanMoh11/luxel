@@ -109,6 +109,7 @@ func _draw() -> void:
 			var alt_c: Color = (PAL["coral"] if is_rare else PAL["apricot"]) as Color
 			var sc: Color = (PAL["cream"] if u < 0.35 else (PAL["gold"] if k % 2 == 0 else alt_c)) as Color
 			draw_rect(Rect2(sx, sy, 2.0 if u < 0.4 else 1.0, 2.0 if u < 0.4 else 1.0), sc)
+	_draw_signal_pulses()
 
 
 func _draw_fallback() -> void:

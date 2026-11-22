@@ -11,11 +11,14 @@ const BUS_UI: String = "LxUi"
 const OPEN_LP_HZ: float = 20000.0
 const PAUSE_LP_HZ: float = 520.0
 const AMB_LP_HZ: float = 2800.0
+const AMB_INDOOR_LP_HZ: float = 920.0
+const AMB_BOSS_LP_HZ: float = 780.0
 const SILENT_DB: float = -80.0
 const BASE_MUSIC_DB: float = -4.0
 const BASE_AMBIENCE_DB: float = -22.0
 const AMB_LAYER2_OFFSET_DB: float = -3.0
 const AMB_COMBAT_DUCK_DB: float = -5.0
+const AMB_INDOOR_DUCK_DB: float = -5.0
 const AMB_PAUSE_DUCK_DB: float = -7.0
 const PAUSE_DUCK_DB: float = -6.0
 const CROSSFADE_S: float = 1.6
@@ -23,27 +26,7 @@ const AMB_FADE_S: float = 1.0
 const COMBAT_DWELL_S: float = 1.2
 const COMBAT_TAIL_S: float = 6.0
 
-const SFX_VARIANTS: Dictionary = {
-	"bolt_fire": ["bolt_fire", "bolt_fire_2", "bolt_fire_3"], "bolt_wall": ["bolt_wall", "bolt_wall_2", "bolt_wall_3"],
-	"footstep_stone": ["footstep_stone", "footstep_stone_2", "footstep_stone_3"], "footstep_grass": ["footstep_grass", "footstep_grass_2", "footstep_grass_3"],
-	"footstep_wood": ["footstep_wood", "footstep_wood_2", "footstep_wood_3"], "shard_pickup": ["shard_pickup", "shard_pickup_2", "shard_pickup_3"],
-	"ui_move": ["ui_move", "ui_move_2", "ui_move_3"], "bolt_chip": ["bolt_chip", "bolt_chip_2"], "shield_clang": ["shield_clang", "shield_clang_2"],
-	"enemy_kill": ["enemy_kill", "enemy_kill_2"], "heavy_hit": ["heavy_hit", "heavy_hit_2"], "dash_whoosh": ["dash_whoosh", "dash_whoosh_2"],
-	"lantern_throw": ["lantern_throw", "lantern_throw_2"], "lantern_land": ["lantern_land", "lantern_land_2"], "lantern_catch": ["lantern_catch", "lantern_catch_2"],
-	"lantern_recall": ["lantern_recall", "lantern_recall_2"], "wick_hurt": ["wick_hurt", "wick_hurt_2"], "warden_swing": ["warden_swing", "warden_swing_2"],
-	"boss_roar": ["boss_roar", "boss_roar_2"], "perfect_dodge": ["perfect_dodge", "perfect_dodge_2"], "mirror_ping": ["mirror_ping", "mirror_ping_2"],
-	"mirror_turn": ["mirror_turn", "mirror_turn_2"], "beam_fire": ["beam_fire", "beam_fire_2"], "brazier_lit": ["brazier_lit", "brazier_lit_2"],
-	"switch_eye": ["switch_eye", "switch_eye_2"], "door_open": ["door_open", "door_open_2"], "owl_dive": ["owl_dive", "owl_dive_2"],
-	"zip_streak": ["zip_streak", "zip_streak_2"], "prism_bounce": ["prism_bounce", "prism_bounce_2"], "wings_glide": ["wings_glide", "wings_glide_2"],
-	"chest_open": ["chest_open", "chest_open_2"], "shield_shatter": ["shield_shatter", "shield_shatter_2"], "stone_break": ["stone_break", "stone_break_2"],
-}
 const SHARD_SCALE: Array[float] = [1.0, 1.12246, 1.18921, 1.33484, 1.49831, 1.68179]
-
-const SFX_BASE_TRIM_DB: Dictionary = {
-	"bolt_fire": -2.5, "bolt_chip": -1.5, "bolt_wall": -5.5,
-	"footstep_stone": -5.5, "footstep_grass": -5.0, "footstep_wood": -4.5,
-	"dash_whoosh": -2.0, "ui_move": -2.5, "ui_confirm": -1.5, "ui_back": -1.5, "ui_pause": -3.5,
-}
 
 const ISLAND_AMBIENCE: Dictionary = {
 	1: ["night_breeze", "river_murmur"],
@@ -66,7 +49,9 @@ var _sfx_bus_idx: int = -1
 var _amb_bus_idx: int = -1
 var _ui_bus_idx: int = -1
 var _lowpass: AudioEffectLowPassFilter = null
+var _amb_lowpass: AudioEffectLowPassFilter = null
 var _sfx_reverb: AudioEffectReverb = null
+var _is_indoor: bool = false
 var _stinger_duck_t: float = 0.0
 var _music_fade: float = 1.0
 var _music_fade_target: float = 1.0
@@ -92,6 +77,8 @@ var _sfx_variant_idx: Dictionary = {}
 var _sfx_clock: float = 0.0
 var _shard_streak: int = 0
 var _shard_streak_t: float = -10.0
+var _mirror_streak: int = 0
+var _mirror_streak_t: float = -10.0
 var _saved_positions: Dictionary = {}
 
 var current_track_group: String = ""
@@ -156,15 +143,15 @@ func _setup_buses() -> void:
 		_sfx_reverb.dry = 1.0
 		AudioServer.add_bus_effect(_sfx_bus_idx, _sfx_reverb)
 
-	var has_amb_lp: bool = false
+	_amb_lowpass = null
 	for i: int in range(AudioServer.get_bus_effect_count(_amb_bus_idx)):
 		if AudioServer.get_bus_effect(_amb_bus_idx, i) is AudioEffectLowPassFilter:
-			has_amb_lp = true
+			_amb_lowpass = AudioServer.get_bus_effect(_amb_bus_idx, i) as AudioEffectLowPassFilter
 			break
-	if not has_amb_lp:
-		var amb_lp := AudioEffectLowPassFilter.new()
-		amb_lp.cutoff_hz = AMB_LP_HZ
-		AudioServer.add_bus_effect(_amb_bus_idx, amb_lp)
+	if _amb_lowpass == null:
+		_amb_lowpass = AudioEffectLowPassFilter.new()
+		_amb_lowpass.cutoff_hz = AMB_LP_HZ
+		AudioServer.add_bus_effect(_amb_bus_idx, _amb_lowpass)
 
 
 func _ensure_bus(bus_name: String) -> int:
@@ -257,20 +244,23 @@ func start_island_music(island_id: int) -> void:
 		_combat_player.stream = cmb_stream; _combat_player.volume_db = SILENT_DB; _combat_player.play(resume_pos)
 	_music_fade = 0.0; _music_fade_target = 1.0; _music_fade_rate = 3.5
 	_start_island_ambience(island_id)
-	_set_indoor_reverb(false)
+	_set_indoor_acoustics(false)
 
 
 func start_dungeon_music(island_id: int) -> void:
 	_current_island_id = island_id
 	_start_island_ambience(island_id)
-	_set_indoor_reverb(true)
+	_set_indoor_acoustics(true)
 	play_cue("island%d_dungeon" % island_id)
 
 
-func _set_indoor_reverb(indoor: bool) -> void:
+func _set_indoor_acoustics(indoor: bool, is_boss: bool = false) -> void:
+	_is_indoor = indoor
 	if _sfx_reverb != null:
-		_sfx_reverb.room_size = 0.44 if indoor else 0.24
-		_sfx_reverb.wet = 0.14 if indoor else 0.03
+		_sfx_reverb.room_size = 0.50 if is_boss else (0.44 if indoor else 0.24)
+		_sfx_reverb.wet = 0.15 if is_boss else (0.14 if indoor else 0.03)
+	if _amb_lowpass != null:
+		_amb_lowpass.cutoff_hz = AMB_BOSS_LP_HZ if is_boss else (AMB_INDOOR_LP_HZ if indoor else AMB_LP_HZ)
 
 
 func _start_island_ambience(island_id: int) -> void:
@@ -322,6 +312,11 @@ func play_cue(cue_name: String) -> void:
 		return
 	if cue_name in ["title", "ending_dawn", "credits"]:
 		_fade_out_ambience(cue_name == "ending_dawn")
+		_set_indoor_acoustics(false)
+	elif cue_name == "hub":
+		_set_indoor_acoustics(false)
+	elif cue_name.contains("_boss_"):
+		_set_indoor_acoustics(true, true)
 	if current_track_group == cue_name and _explore_player.playing:
 		_music_fade_target = 1.0; return
 	var boss_carry: bool = current_track_group.ends_with("_boss_p1") and cue_name.ends_with("_boss_p2") and current_track_group.left(7) == cue_name.left(7)
@@ -418,7 +413,7 @@ func _update_layer_volumes() -> void:
 		_explore_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(exp_gain, 0.0001)) if exp_gain > 0.001 else SILENT_DB
 	if _combat_player != null and _combat_player.stream != null:
 		_combat_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(cmb_gain, 0.0001)) if cmb_gain > 0.001 else SILENT_DB
-	var amb_duck: float = (AMB_PAUSE_DUCK_DB if is_paused else 0.0)
+	var amb_duck: float = (AMB_PAUSE_DUCK_DB if is_paused else 0.0) + (AMB_INDOOR_DUCK_DB if _is_indoor else 0.0)
 	var is_boss_cue: bool = current_track_group.contains("_boss_")
 	amb_duck += AMB_COMBAT_DUCK_DB * (1.0 if is_boss_cue else combat_blend)
 	for i: int in range(_amb_players.size()):
@@ -450,7 +445,7 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 	var base_id: String = sfx_id
 	var st: AudioStream = _pick_variant_stream(sfx_id)
 	var pitch_mul: float = 1.0
-	var gain_db: float = float(SFX_BASE_TRIM_DB.get(sfx_id, 0.0))
+	var gain_db: float = float(SfxMap.SFX_BASE_TRIM_DB.get(sfx_id, 0.0))
 	if st == null:
 		var mapped: Dictionary = SfxMap.resolve(sfx_id)
 		var mapped_id: String = str(mapped.get("id", ""))
@@ -458,7 +453,7 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 			base_id = mapped_id
 			st = _pick_variant_stream(mapped_id)
 			pitch_mul = float(mapped.get("pitch", 1.0))
-			gain_db = float(mapped.get("db", 0.0)) + float(SFX_BASE_TRIM_DB.get(mapped_id, 0.0))
+			gain_db = float(mapped.get("db", 0.0)) + float(SfxMap.SFX_BASE_TRIM_DB.get(mapped_id, 0.0))
 	if st == null:
 		return
 	if not ui_bus and base_id != sfx_id and _sfx_last_t.has(base_id) and (_sfx_clock - float(_sfx_last_t[base_id])) < SFX_MIN_INTERVAL_S:
@@ -472,6 +467,10 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		_shard_streak = mini(SHARD_SCALE.size() - 1, _shard_streak + 1) if (_sfx_clock - _shard_streak_t) <= 0.85 else 0
 		_shard_streak_t = _sfx_clock
 		jit = SHARD_SCALE[_shard_streak]
+	elif base_id == "mirror_ping" or base_id == "prism_bounce":
+		_mirror_streak = mini(SHARD_SCALE.size() - 1, _mirror_streak + 1) if (_sfx_clock - _mirror_streak_t) <= 0.75 else 0
+		_mirror_streak_t = _sfx_clock
+		jit = SHARD_SCALE[_mirror_streak]
 	if spatial and not _sfx_2d_pool.is_empty():
 		var p2: AudioStreamPlayer2D = _sfx_2d_pool[_sfx_2d_cursor]
 		_sfx_2d_cursor = (_sfx_2d_cursor + 1) % _sfx_2d_pool.size()
@@ -495,8 +494,8 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 
 
 func _pick_variant_stream(sfx_id: String) -> AudioStream:
-	if SFX_VARIANTS.has(sfx_id):
-		var arr: Array = SFX_VARIANTS[sfx_id] as Array
+	if SfxMap.SFX_VARIANTS.has(sfx_id):
+		var arr: Array = SfxMap.SFX_VARIANTS[sfx_id] as Array
 		if not arr.is_empty():
 			var idx: int = int(_sfx_variant_idx.get(sfx_id, 0)) % arr.size()
 			_sfx_variant_idx[sfx_id] = (idx + 1) % arr.size()

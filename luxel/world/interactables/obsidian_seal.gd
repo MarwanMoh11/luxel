@@ -97,8 +97,10 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	if _shatter_t > 0.0:
 		_draw_shatter_burst()
+		_draw_signal_pulses()
 		return
 	if shattered or not active:
+		_draw_signal_pulses()
 		return
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)

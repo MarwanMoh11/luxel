@@ -6,6 +6,7 @@ var lit: bool = false
 var requires_boss: String = ""
 var requires_flag: String = ""
 var _ready_cache: bool = false
+var _relight_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -17,10 +18,14 @@ func setup(spec: Dictionary) -> void:
 	if Lx.state != null and Lx.state.relit_islands.has(island_id):
 		lit = true
 	_ready_cache = _can_relight()
+	_relight_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
+	if _relight_t > 0.0:
+		_relight_t = maxf(0.0, _relight_t - dt)
+		queue_redraw()
 	var ready: bool = _can_relight()
 	if ready != _ready_cache:
 		_ready_cache = ready
@@ -67,6 +72,7 @@ func on_hit(hit: LxHit) -> bool:
 
 func _relight() -> bool:
 	lit = true
+	_relight_t = 0.72
 	if Lx.state != null:
 		if not Lx.state.relit_islands.has(island_id):
 			Lx.state.relit_islands.append(island_id)
@@ -77,6 +83,7 @@ func _relight() -> bool:
 	if Lx.events != null:
 		Lx.events.great_lamp_relit.emit(island_id)
 		Lx.events.shake_requested.emit(0.24)
+	_emit_sfx("great_lamp_relit")
 	_emit_save("great_lamp_%d" % island_id)
 	_notify_linked_targets(true)
 	queue_redraw()
@@ -123,6 +130,15 @@ func _draw() -> void:
 		_draw_beckon_motes()
 	elif lit:
 		_draw_dawn_embers()
+	if _relight_t > 0.0:
+		var p: float = 1.0 - clampf(_relight_t / 0.72, 0.0, 1.0)
+		var col_w: float = roundf(maxf(0.0, (1.0 - p) * 16.0))
+		if col_w >= 2.0:
+			draw_rect(Rect2(-floorf(col_w * 0.5), -68.0, col_w, 72.0), PAL["gold"] if p > 0.3 else PAL["cream"])
+		if p < 0.75:
+			draw_rect(Rect2(-2.0, -68.0, 4.0, 72.0), PAL["cream"])
+		draw_arc(Vector2(0.0, -14.0), roundf(8.0 + p * 44.0), 0.0, TAU, 24, PAL["cream"] if p < 0.35 else PAL["gold"], 2.0 if p < 0.4 else 1.0)
+	_draw_signal_pulses()
 
 
 func _draw_fallback(ready: bool) -> void:

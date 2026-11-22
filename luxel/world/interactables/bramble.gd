@@ -36,7 +36,7 @@ func tick(dt: float) -> void:
 func on_hit(hit: LxHit) -> bool:
 	if hit == null or not active or burned:
 		return false
-	if hit.source == "beam":
+	if hit.source in ["beam", "sunflare"]:
 		burned = true
 		active = false
 		_burn_t = 0.36
@@ -80,8 +80,10 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	if _burn_t > 0.0:
 		_draw_burn_burst()
+		_draw_signal_pulses()
 		return
 	if burned or not active:
+		_draw_signal_pulses()
 		return
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)

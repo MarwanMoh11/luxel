@@ -88,6 +88,7 @@ func _draw() -> void:
 		_draw_starlight_motes(c_main, c_hi)
 	if _claim_t > 0.0:
 		_draw_claim_burst(c_main, c_hi)
+	_draw_signal_pulses()
 
 
 func _draw_fallback() -> void:

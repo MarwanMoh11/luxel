@@ -137,6 +137,7 @@ func _draw() -> void:
 			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, (PAL["cream"] if u < 0.35 else PAL["gold"]) as Color, 2.0 if u < 0.4 else 1.0, false)
 	elif lit:
 		_draw_lit_embers()
+	_draw_signal_pulses()
 
 
 func _draw_fallback() -> void:

@@ -7,6 +7,27 @@ const FALLBACK: Dictionary = {"id": "bolt_chip", "pitch": 1.0, "db": -5.0}
 const BEAM_TELL: Dictionary = {"id": "beam_charge", "pitch": 1.04, "db": -3.5}
 const SLAM_TELL: Dictionary = {"id": "bell_slam", "pitch": 1.22, "db": -4.0}
 
+const SFX_VARIANTS: Dictionary = {
+	"bolt_fire": ["bolt_fire", "bolt_fire_2", "bolt_fire_3"], "bolt_wall": ["bolt_wall", "bolt_wall_2", "bolt_wall_3"],
+	"footstep_stone": ["footstep_stone", "footstep_stone_2", "footstep_stone_3"], "footstep_grass": ["footstep_grass", "footstep_grass_2", "footstep_grass_3"],
+	"footstep_wood": ["footstep_wood", "footstep_wood_2", "footstep_wood_3"], "shard_pickup": ["shard_pickup", "shard_pickup_2", "shard_pickup_3"],
+	"ui_move": ["ui_move", "ui_move_2", "ui_move_3"], "bolt_chip": ["bolt_chip", "bolt_chip_2"], "shield_clang": ["shield_clang", "shield_clang_2"],
+	"enemy_kill": ["enemy_kill", "enemy_kill_2"], "heavy_hit": ["heavy_hit", "heavy_hit_2"], "dash_whoosh": ["dash_whoosh", "dash_whoosh_2"],
+	"lantern_throw": ["lantern_throw", "lantern_throw_2"], "lantern_land": ["lantern_land", "lantern_land_2"], "lantern_catch": ["lantern_catch", "lantern_catch_2"],
+	"lantern_recall": ["lantern_recall", "lantern_recall_2"], "wick_hurt": ["wick_hurt", "wick_hurt_2"], "warden_swing": ["warden_swing", "warden_swing_2"],
+	"boss_roar": ["boss_roar", "boss_roar_2"], "perfect_dodge": ["perfect_dodge", "perfect_dodge_2"], "mirror_ping": ["mirror_ping", "mirror_ping_2"],
+	"mirror_turn": ["mirror_turn", "mirror_turn_2"], "beam_fire": ["beam_fire", "beam_fire_2"], "brazier_lit": ["brazier_lit", "brazier_lit_2"],
+	"switch_eye": ["switch_eye", "switch_eye_2"], "door_open": ["door_open", "door_open_2"], "owl_dive": ["owl_dive", "owl_dive_2"],
+	"zip_streak": ["zip_streak", "zip_streak_2"], "prism_bounce": ["prism_bounce", "prism_bounce_2"], "wings_glide": ["wings_glide", "wings_glide_2"],
+	"chest_open": ["chest_open", "chest_open_2"], "shield_shatter": ["shield_shatter", "shield_shatter_2"], "stone_break": ["stone_break", "stone_break_2"],
+}
+
+const SFX_BASE_TRIM_DB: Dictionary = {
+	"bolt_fire": -2.5, "bolt_chip": -1.5, "bolt_wall": -5.5,
+	"footstep_stone": -5.5, "footstep_grass": -5.0, "footstep_wood": -4.5,
+	"dash_whoosh": -2.0, "ui_move": -2.5, "ui_confirm": -1.5, "ui_back": -1.5, "ui_pause": -3.5,
+}
+
 const EXACT: Dictionary = {
 	# UI & World / Discovery / Doors / Puzzles / Shop
 	"ui_back": {"id": "ui_back", "pitch": 1.00, "db": 0.0},
