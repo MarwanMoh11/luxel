@@ -76,7 +76,7 @@ func on_hit(hit: LxHit) -> bool:
 func get_light_pool() -> Vector4:
 	if not activated:
 		return Vector4.ZERO
-	var surge: float = sin((1.0 - clampf(_act_t / 0.34, 0.0, 1.0)) * PI) if _act_t > 0.0 else 0.0
+	var surge: float = (sin((1.0 - clampf(_act_t / 0.34, 0.0, 1.0)) * PI) * (0.55 if LxHudFx.flash_reduced() else 1.0)) if _act_t > 0.0 else 0.0
 	return Vector4(pos.x, pos.y - 4.0, 42.0 + surge * 24.0, 0.9 + surge * 0.35)
 
 

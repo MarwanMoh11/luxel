@@ -63,7 +63,7 @@ func interact(_actor: Node = null) -> bool:
 
 func get_light_pool() -> Vector4:
 	if _pickup_t > 0.0:
-		var surge: float = sin((1.0 - clampf(_pickup_t / 0.36, 0.0, 1.0)) * PI)
+		var surge: float = sin((1.0 - clampf(_pickup_t / 0.36, 0.0, 1.0)) * PI) * (0.55 if LxHudFx.flash_reduced() else 1.0)
 		return Vector4(pos.x, pos.y - 4.0, (56.0 if key_kind == "keepers_flame" else 42.0) * surge, 1.2 * surge)
 	if collected or not active:
 		return Vector4.ZERO

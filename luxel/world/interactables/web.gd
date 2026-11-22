@@ -51,7 +51,7 @@ func on_hit(hit: LxHit) -> bool:
 		return true
 	if hit.source in ["bolt", "prism_bolt", "throw", "recall"]:
 		_tremble_t = 0.22
-		_emit_sfx("footstep_grass")
+		_emit_sfx("prop_rustle")
 		queue_redraw()
 		return false
 	return false
@@ -74,7 +74,7 @@ func get_solid_rect() -> Rect2:
 func get_light_pool() -> Vector4:
 	if _burn_t > 0.0:
 		var u: float = clampf(_burn_t / 0.34, 0.0, 1.0)
-		return Vector4(pos.x, pos.y, 54.0 * u, 1.25 * u)
+		return Vector4(pos.x, pos.y, 54.0 * u, (0.82 if LxHudFx.flash_reduced() else 1.25) * u)
 	return Vector4.ZERO
 
 

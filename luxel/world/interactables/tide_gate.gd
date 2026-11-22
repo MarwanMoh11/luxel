@@ -91,7 +91,8 @@ func _draw() -> void:
 	if is_flooded:
 		draw_rect(Rect2(x0, y0, w, h), PAL["deep"])
 		draw_rect(Rect2(x0 + 2.0, y0 + 1.0, w - 4.0, h - 2.0), PAL["blue"])
-		var crest_c: Color = (PAL["cream"] if (is_warning and _wave_stage % 2 == 0) else PAL["ice"]) as Color
+		var no_fl: bool = LxHudFx.flash_reduced()
+		var crest_c: Color = (PAL["cream"] if (is_warning and (no_fl or _wave_stage % 2 == 0)) else PAL["ice"]) as Color
 		var wy: float = y0 + 3.0 + float(_wave_stage % 2)
 		var idx: int = 0
 		while wy < y0 + h - 3.0:

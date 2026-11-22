@@ -41,7 +41,16 @@ static func draw_sky_accents(ci: CanvasItem, elapsed: float) -> void:
 				ci.draw_rect(Rect2(39.0 + step_x, 117.0, 4.0, 1.0), core_col)
 			step_x += 4.0
 
-	# 3. Living Horizon Progress: light tiny golden Great Lamp beacons on the Title archipelago
+	# 3. Gentle drifting coastal twilight mist wisps along the dark horizon sea
+	for mi: int in range(5):
+		var mw: float = 22.0 + float(mi % 3) * 10.0
+		var mspd: float = (2.4 if fred else 4.2) + float(mi % 2) * 1.4
+		var mx: float = roundf(fmod(float(mi) * 71.0 + elapsed * mspd, 356.0) - 24.0)
+		var my: float = 144.0 + float(mi % 3) * 2.0
+		ci.draw_rect(Rect2(mx, my, mw, 1.0), Color(LxPalette.PAL["dusk"], 0.34 if fred else 0.44))
+		ci.draw_rect(Rect2(mx + 4.0, my, mw - 8.0, 1.0), Color(LxPalette.PAL["mauve"], 0.22 if fred else 0.30))
+
+	# 4. Living Horizon Progress: light tiny golden Great Lamp beacons on the Title archipelago
 	#    for every island relit across save slots (and a serene dawn rim at 8/8).
 	_draw_relit_horizon(ci, elapsed, fred)
 
@@ -81,3 +90,5 @@ static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> v
 		ci.draw_rect(Rect2(p.x, p.y - bh, 1.0, bh), Color(LxPalette.PAL["gold"], 0.28 * tw))
 		ci.draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(LxPalette.PAL["apricot"], 0.65 * tw))
 		ci.draw_rect(Rect2(p, Vector2.ONE), Color(LxPalette.PAL["cream"], 0.95))
+		var rx: float = roundf(p.x + (0.0 if fred else sin(elapsed * 2.4 + float(i)) * 1.0))
+		ci.draw_rect(Rect2(rx - 1.0, 148.0 + float(i % 3) * 2.0, 3.0, 1.0), Color(LxPalette.PAL["gold"], 0.36 * tw))
