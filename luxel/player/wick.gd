@@ -147,6 +147,8 @@ func reset_for_room(at_pos: Vector2) -> void:
 	bolts.clear()
 	_fx.clear()
 	_prev_act.clear()
+	if Lx.input != null:
+		Lx.input.clear_all_toggles()
 	for mv_var: Variant in moves.values():
 		if mv_var is LxMove:
 			(mv_var as LxMove).reset()

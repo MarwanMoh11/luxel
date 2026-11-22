@@ -76,6 +76,8 @@ func release_beam() -> bool:
 	var ready: bool = charge_t >= charge_time - 0.001
 	charging = false
 	charge_t = 0.0
+	if Lx.input != null:
+		Lx.input.clear_toggle("lx_beam")
 	if ready:
 		return fire_instant_beam(_world_ctx)
 	return false
@@ -89,6 +91,8 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 		return false
 	charging = false
 	charge_t = 0.0
+	if Lx.input != null:
+		Lx.input.clear_toggle("lx_beam")
 
 	var ctx: Node = world_ctx if world_ctx != null else (_world_ctx if _world_ctx != null else Lx.world)
 	var data: Dictionary = get_data()
@@ -195,6 +199,10 @@ func tick(dt: float) -> void:
 func cancel() -> void:
 	charging = false
 	charge_t = 0.0
+	if Lx.input != null:
+		Lx.input.clear_toggle("lx_beam")
+	if Lx.input != null:
+		Lx.input.clear_toggle("lx_beam")
 
 
 func reset() -> void:

@@ -357,6 +357,18 @@
       }
     },
     {
+      "id": "rest_shrine_4",
+      "kind": "rest_shrine",
+      "pos": [
+        184,
+        472
+      ],
+      "props": {
+        "zone": "fen_landing",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
       "id": "ws_4_beds",
       "kind": "waystone",
       "pos": [

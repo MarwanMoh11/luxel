@@ -210,6 +210,7 @@ func _toggle_hold(cfg: Dictionary, action_id: String) -> void:
 	cfg["hold_mode"] = hm
 	if Lx.input != null:
 		Lx.input.hold_modes[action_id] = nxt
+		Lx.input.clear_toggle(action_id)
 
 
 func _reset_controls() -> void:
@@ -217,6 +218,7 @@ func _reset_controls() -> void:
 	if Lx.input != null:
 		Lx.input.register_default_actions()
 		Lx.input.hold_modes = {"lx_fire": "hold", "lx_beam": "hold", "lx_wings": "hold"}
+		Lx.input.clear_all_toggles()
 		cfg["bindings"] = Lx.input.export_bindings()
 	cfg["hold_mode"] = {"lx_fire": "hold", "lx_beam": "hold", "lx_wings": "hold"}
 	_play_ui_sfx("ui_confirm")

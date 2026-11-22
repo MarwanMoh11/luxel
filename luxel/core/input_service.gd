@@ -129,6 +129,18 @@ func is_action_active(action: String) -> bool:
 	return Input.is_action_pressed(action)
 
 
+func is_toggle_mode(action: String) -> bool:
+	return str(hold_modes.get(action, "hold")) == "toggle"
+
+
+func clear_toggle(action: String) -> void:
+	_toggle_states.erase(action)
+
+
+func clear_all_toggles() -> void:
+	_toggle_states.clear()
+
+
 func set_synthetic(active: bool, move_vec: Vector2 = Vector2.ZERO, aim_vec: Vector2 = Vector2.RIGHT) -> void:
 	_use_synthetic = active
 	_synthetic_move = move_vec

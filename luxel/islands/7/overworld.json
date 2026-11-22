@@ -395,6 +395,18 @@
       }
     },
     {
+      "id": "rest_shrine_7",
+      "kind": "rest_shrine",
+      "pos": [
+        104,
+        264
+      ],
+      "props": {
+        "zone": "shoals_landing",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
       "id": "ws_mirror_shallows",
       "kind": "waystone",
       "pos": [

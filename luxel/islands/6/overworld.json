@@ -379,6 +379,18 @@
       }
     },
     {
+      "id": "rest_shrine_6",
+      "kind": "rest_shrine",
+      "pos": [
+        136,
+        248
+      ],
+      "props": {
+        "zone": "kiln_landing",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
       "id": "ws_ash_drifts",
       "kind": "waystone",
       "pos": [

@@ -35,6 +35,11 @@ func can_use() -> bool:
 
 func press() -> bool:
 	dash_held = true
+	if is_gliding and _is_wings_toggle():
+		is_gliding = false
+		if wick != null and wick.move_wings != null:
+			wick.move_wings.stop_glide()
+		return true
 	if not can_use():
 		if not unlocked and wick != null:
 			wick.emit_sfx("denied", wick.global_position, false)
@@ -83,6 +88,8 @@ func _execute_dash() -> bool:
 
 func release() -> void:
 	dash_held = false
+	if _is_wings_toggle():
+		return
 	if wick != null and wick.move_wings != null:
 		wick.move_wings.stop_glide()
 	is_gliding = false
@@ -122,7 +129,7 @@ func tick_dash(dt: float, world_ctx: Node) -> void:
 		return
 
 	if wick.move_wings != null and wick.move_wings.gliding:
-		wick.move_wings.tick_glide(dt, dash_held)
+		wick.move_wings.tick_glide(dt, dash_held or _is_wings_toggle())
 		is_gliding = wick.move_wings.gliding
 		dash_dir = wick.move_wings.glide_dir
 	else:
@@ -130,10 +137,14 @@ func tick_dash(dt: float, world_ctx: Node) -> void:
 
 
 func _maybe_start_wings_glide() -> void:
-	if not dash_held or wick == null or wick.move_wings == null:
+	if (not dash_held and not _is_wings_toggle()) or wick == null or wick.move_wings == null:
 		is_gliding = false
 		return
 	is_gliding = wick.move_wings.start_glide(dash_dir)
+
+
+func _is_wings_toggle() -> bool:
+	return Lx.input != null and Lx.input.is_toggle_mode("lx_wings")
 
 
 func _check_dash_hits(world_ctx: Node) -> void:
