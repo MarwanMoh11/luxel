@@ -274,7 +274,7 @@ func set_flow(flow_id: int) -> void:
 		5:
 			show_shop()
 		6:
-			show_death()
+			show_death(hud != null and bool(hud.get("_boss_active")))
 		7:
 			show_ending()
 		8:
@@ -363,6 +363,17 @@ func show_credits() -> void:
 	hud.visible = false
 	current_screen = Screen.CREDITS
 	cards.show_credits()
+
+
+func advance_ending() -> void:
+	if current_screen == Screen.ENDING:
+		show_results()
+	elif current_screen == Screen.RESULTS:
+		ending_finished.emit()
+		if _main != null and _main.has_method("enter_credits"):
+			_main.call("enter_credits")
+		else:
+			show_credits()
 
 
 func close_modal() -> void:

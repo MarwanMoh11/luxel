@@ -152,7 +152,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			title_requested.emit()
 			get_viewport().set_input_as_handled()
 		elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
-			show_credits()
+			ending_finished.emit()
+			if mode == Mode.RESULTS:
+				show_credits()
 			get_viewport().set_input_as_handled()
 
 	elif mode == Mode.CREDITS:
@@ -163,9 +165,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _finish_ending() -> void:
-	ending_finished.emit()
-	if mode == Mode.ENDING:
-		show_credits()
+	if Lx.ui != null and Lx.ui.has_method("show_results"):
+		Lx.ui.call("show_results")
+	else:
+		show_results()
 
 
 func _draw() -> void:

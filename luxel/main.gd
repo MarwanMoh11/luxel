@@ -408,8 +408,8 @@ func step_sim(raw_dt: float) -> void:
 		return
 	if flow == Flow.ENDING:
 		ending_timer += raw_dt
-		if ending_timer >= 8.0:
-			enter_credits()
+		if ending_timer >= 8.0 and _ui_root != null and int(_ui_root.get("current_screen")) == 10:
+			_ui_root.call("show_results")
 		return
 	if flow != Flow.PLAY:
 		Lx.audio.tick(raw_dt, false)
