@@ -24,23 +24,19 @@ const COMBAT_DWELL_S: float = 1.2
 const COMBAT_TAIL_S: float = 6.0
 
 const SFX_VARIANTS: Dictionary = {
-	"bolt_fire": ["bolt_fire", "bolt_fire_2", "bolt_fire_3"],
-	"bolt_wall": ["bolt_wall", "bolt_wall_2", "bolt_wall_3"],
-	"footstep_stone": ["footstep_stone", "footstep_stone_2", "footstep_stone_3"],
-	"footstep_grass": ["footstep_grass", "footstep_grass_2", "footstep_grass_3"],
-	"footstep_wood": ["footstep_wood", "footstep_wood_2", "footstep_wood_3"],
-	"bolt_chip": ["bolt_chip", "bolt_chip_2"],
-	"shield_clang": ["shield_clang", "shield_clang_2"],
-	"enemy_kill": ["enemy_kill", "enemy_kill_2"],
-	"heavy_hit": ["heavy_hit", "heavy_hit_2"],
-	"shard_pickup": ["shard_pickup", "shard_pickup_2", "shard_pickup_3"],
-	"dash_whoosh": ["dash_whoosh", "dash_whoosh_2"],
-	"lantern_throw": ["lantern_throw", "lantern_throw_2"],
-	"ui_move": ["ui_move", "ui_move_2", "ui_move_3"],
-	"wick_hurt": ["wick_hurt", "wick_hurt_2"],
-	"warden_swing": ["warden_swing", "warden_swing_2"],
-	"boss_roar": ["boss_roar", "boss_roar_2"],
-	"perfect_dodge": ["perfect_dodge", "perfect_dodge_2"],
+	"bolt_fire": ["bolt_fire", "bolt_fire_2", "bolt_fire_3"], "bolt_wall": ["bolt_wall", "bolt_wall_2", "bolt_wall_3"],
+	"footstep_stone": ["footstep_stone", "footstep_stone_2", "footstep_stone_3"], "footstep_grass": ["footstep_grass", "footstep_grass_2", "footstep_grass_3"],
+	"footstep_wood": ["footstep_wood", "footstep_wood_2", "footstep_wood_3"], "shard_pickup": ["shard_pickup", "shard_pickup_2", "shard_pickup_3"],
+	"ui_move": ["ui_move", "ui_move_2", "ui_move_3"], "bolt_chip": ["bolt_chip", "bolt_chip_2"],
+	"shield_clang": ["shield_clang", "shield_clang_2"], "enemy_kill": ["enemy_kill", "enemy_kill_2"],
+	"heavy_hit": ["heavy_hit", "heavy_hit_2"], "dash_whoosh": ["dash_whoosh", "dash_whoosh_2"],
+	"lantern_throw": ["lantern_throw", "lantern_throw_2"], "lantern_catch": ["lantern_catch", "lantern_catch_2"],
+	"lantern_recall": ["lantern_recall", "lantern_recall_2"], "wick_hurt": ["wick_hurt", "wick_hurt_2"],
+	"warden_swing": ["warden_swing", "warden_swing_2"], "boss_roar": ["boss_roar", "boss_roar_2"],
+	"perfect_dodge": ["perfect_dodge", "perfect_dodge_2"], "mirror_ping": ["mirror_ping", "mirror_ping_2"],
+	"beam_fire": ["beam_fire", "beam_fire_2"], "brazier_lit": ["brazier_lit", "brazier_lit_2"],
+	"switch_eye": ["switch_eye", "switch_eye_2"], "door_open": ["door_open", "door_open_2"],
+	"owl_dive": ["owl_dive", "owl_dive_2"],
 }
 const SHARD_SCALE: Array[float] = [1.0, 1.12246, 1.18921, 1.33484, 1.49831, 1.68179]
 
@@ -462,7 +458,10 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 			gain_db = float(mapped.get("db", 0.0)) + float(SFX_BASE_TRIM_DB.get(mapped_id, 0.0))
 	if st == null:
 		return
+	if not ui_bus and base_id != sfx_id and _sfx_last_t.has(base_id) and (_sfx_clock - float(_sfx_last_t[base_id])) < SFX_MIN_INTERVAL_S:
+		return
 	_sfx_last_t[sfx_id] = _sfx_clock
+	_sfx_last_t[base_id] = _sfx_clock
 	var jit: float = 1.0 if ui_bus else randf_range(0.96, 1.04)
 	if base_id == "bolt_fire":
 		jit = randf_range(0.95, 1.06)

@@ -351,6 +351,22 @@
         "luxel/audio/sfx/boss_roar_2.ogg",
         "luxel/audio/sfx/perfect_dodge_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_multitake3",
+      "description": "Round-3 zero-hiss alternate puzzle & combat multi-take foley variants (mirror_ping_2, beam_fire_2, lantern_catch_2, lantern_recall_2, brazier_lit_2, switch_eye_2, door_open_2, owl_dive_2; 0.000% > 4 kHz hiss)",
+      "generator": "gen_sfx_multitake3.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/mirror_ping_2.ogg",
+        "luxel/audio/sfx/beam_fire_2.ogg",
+        "luxel/audio/sfx/lantern_catch_2.ogg",
+        "luxel/audio/sfx/lantern_recall_2.ogg",
+        "luxel/audio/sfx/brazier_lit_2.ogg",
+        "luxel/audio/sfx/switch_eye_2.ogg",
+        "luxel/audio/sfx/door_open_2.ogg",
+        "luxel/audio/sfx/owl_dive_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []
