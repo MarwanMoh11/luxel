@@ -111,8 +111,8 @@
       "to_island": 3,
       "to_region": "overworld",
       "to_spawn": [
-        120,
-        288
+        352,
+        912
       ],
       "requires_moves": [],
       "requires_flags": [

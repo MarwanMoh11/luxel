@@ -207,22 +207,6 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.8
-    },
-    {
-      "prop": "spore_brazier_stump",
-      "pos": [
-        184,
-        42
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "mossy_stump",
-      "pos": [
-        184,
-        142
-      ],
-      "layer": "back"
     }
   ]
 }

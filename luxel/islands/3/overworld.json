@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": false,
   "spawn": [
-    120,
-    288
+    352,
+    912
   ],
   "zones": [
     {
@@ -13,9 +13,9 @@
       "name_key": "ZONE_ISL3_1",
       "rect": [
         0,
-        224,
-        336,
-        352
+        768,
+        704,
+        256
       ],
       "dark": true
     },
@@ -24,9 +24,9 @@
       "name_key": "ZONE_ISL3_2",
       "rect": [
         0,
-        0,
-        336,
-        224
+        480,
+        352,
+        288
       ],
       "dark": true
     },
@@ -34,8 +34,8 @@
       "id": "briar_crossing",
       "name_key": "ZONE_ISL3_3",
       "rect": [
-        336,
-        288,
+        352,
+        480,
         352,
         288
       ],
@@ -45,10 +45,10 @@
       "id": "gloam_thicket",
       "name_key": "ZONE_ISL3_4",
       "rect": [
-        688,
-        288,
-        336,
-        288
+        352,
+        240,
+        352,
+        240
       ],
       "dark": true
     },
@@ -56,10 +56,10 @@
       "id": "canopy_bridge",
       "name_key": "ZONE_ISL3_5",
       "rect": [
-        688,
         0,
-        336,
-        288
+        240,
+        352,
+        240
       ],
       "dark": true
     },
@@ -67,10 +67,10 @@
       "id": "hollow_oak_glade",
       "name_key": "ZONE_ISL3_6",
       "rect": [
-        336,
         0,
-        352,
-        288
+        0,
+        704,
+        240
       ],
       "dark": true
     }
@@ -79,7 +79,7 @@
     {
       "id": "exit_to_oak",
       "rect": [
-        496,
+        336,
         48,
         32,
         24
@@ -104,7 +104,7 @@
     {
       "id": "exit_to_island_4",
       "rect": [
-        976,
+        640,
         64,
         32,
         48
@@ -127,17 +127,17 @@
       "id": "sporecap_3_1",
       "kind": "sporecap",
       "pos": [
-        136,
-        136
+        168,
+        632
       ],
       "route": [
         [
-          120,
-          136
+          152,
+          632
         ],
         [
-          168,
-          136
+          200,
+          632
         ]
       ],
       "perches": [],
@@ -149,16 +149,16 @@
       "kind": "sporecap",
       "pos": [
         216,
-        120
+        568
       ],
       "route": [
         [
-          200,
-          104
+          184,
+          568
         ],
         [
-          232,
-          136
+          248,
+          568
         ]
       ],
       "perches": [],
@@ -170,16 +170,16 @@
       "kind": "bramble_knight",
       "pos": [
         472,
-        408
+        616
       ],
       "route": [
         [
-          456,
-          408
+          440,
+          616
         ],
         [
           504,
-          408
+          616
         ]
       ],
       "perches": [],
@@ -190,17 +190,17 @@
       "id": "gloam_3_1",
       "kind": "gloam",
       "pos": [
-        552,
-        392
+        536,
+        632
       ],
       "route": [
         [
-          536,
-          376
+          520,
+          600
         ],
         [
-          584,
-          424
+          568,
+          648
         ]
       ],
       "perches": [],
@@ -211,17 +211,17 @@
       "id": "gloam_3_2",
       "kind": "gloam",
       "pos": [
-        792,
-        168
+        152,
+        360
       ],
       "route": [
         [
-          760,
-          168
+          120,
+          360
         ],
         [
-          824,
-          168
+          184,
+          360
         ]
       ],
       "perches": [],
@@ -232,17 +232,17 @@
       "id": "bramble_knight_3_2",
       "kind": "bramble_knight",
       "pos": [
-        856,
-        168
+        216,
+        344
       ],
       "route": [
         [
-          840,
-          152
+          184,
+          344
         ],
         [
-          888,
-          184
+          248,
+          344
         ]
       ],
       "perches": [],
@@ -253,8 +253,8 @@
       "id": "sporecap_3_3",
       "kind": "sporecap",
       "pos": [
-        824,
-        216
+        136,
+        408
       ],
       "route": [],
       "perches": [],
@@ -265,8 +265,8 @@
       "id": "sporecap_3_trial",
       "kind": "sporecap",
       "pos": [
-        792,
-        408
+        472,
+        360
       ],
       "route": [],
       "perches": [],
@@ -277,17 +277,17 @@
       "id": "gloam_3_trial",
       "kind": "gloam",
       "pos": [
-        856,
-        408
+        536,
+        344
       ],
       "route": [
         [
-          840,
-          392
+          504,
+          344
         ],
         [
-          872,
-          440
+          568,
+          376
         ]
       ],
       "perches": [],
@@ -298,17 +298,17 @@
       "id": "bramble_knight_3_trial",
       "kind": "bramble_knight",
       "pos": [
-        824,
-        472
+        520,
+        408
       ],
       "route": [
         [
-          792,
-          472
+          488,
+          408
         ],
         [
-          856,
-          472
+          552,
+          408
         ]
       ],
       "perches": [],
@@ -321,8 +321,8 @@
       "id": "ws_3_entry",
       "kind": "waystone",
       "pos": [
-        104,
-        328
+        312,
+        936
       ],
       "props": {
         "zone": "moss_trailhead",
@@ -335,8 +335,8 @@
       "id": "rest_shrine_3",
       "kind": "rest_shrine",
       "pos": [
-        184,
-        328
+        392,
+        936
       ],
       "props": {
         "zone": "moss_trailhead",
@@ -347,8 +347,8 @@
       "id": "chest_3_shards_trail",
       "kind": "chest",
       "pos": [
-        88,
-        456
+        120,
+        888
       ],
       "props": {
         "reward_kind": "shards",
@@ -362,7 +362,7 @@
       "kind": "waystone",
       "pos": [
         264,
-        152
+        680
       ],
       "props": {
         "zone": "spore_glade",
@@ -373,8 +373,8 @@
       "id": "beacon_3_1",
       "kind": "beacon",
       "pos": [
-        120,
-        72
+        152,
+        552
       ],
       "props": {
         "index": 0,
@@ -391,8 +391,8 @@
       "id": "chest_3_ember_1",
       "kind": "chest",
       "pos": [
-        40,
-        152
+        48,
+        616
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -409,8 +409,8 @@
       "id": "ws_3_mid",
       "kind": "waystone",
       "pos": [
-        408,
-        360
+        424,
+        712
       ],
       "props": {
         "zone": "briar_crossing",
@@ -421,8 +421,8 @@
       "id": "brazier_3_crossing",
       "kind": "brazier",
       "pos": [
-        520,
-        344
+        536,
+        568
       ],
       "props": {
         "target_id": "door_3_crossing_cache"
@@ -432,8 +432,8 @@
       "id": "door_3_crossing_cache",
       "kind": "door",
       "pos": [
-        408,
-        472
+        600,
+        696
       ],
       "props": {
         "door_kind": "switch_door",
@@ -450,8 +450,8 @@
       "id": "chest_3_crossing_shards",
       "kind": "chest",
       "pos": [
-        376,
-        472
+        632,
+        696
       ],
       "props": {
         "reward_kind": "shards",
@@ -465,7 +465,7 @@
       "kind": "beacon",
       "pos": [
         584,
-        472
+        584
       ],
       "props": {
         "index": 1,
@@ -481,8 +481,8 @@
       "id": "door_3_trial_reward",
       "kind": "door",
       "pos": [
-        904,
-        440
+        616,
+        360
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -498,8 +498,8 @@
       "id": "chest_3_ember_2",
       "kind": "chest",
       "pos": [
-        952,
-        440
+        648,
+        360
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -513,8 +513,8 @@
       "id": "chest_3_secret_lens",
       "kind": "chest",
       "pos": [
-        968,
-        536
+        648,
+        440
       ],
       "props": {
         "reward_kind": "shards",
@@ -531,8 +531,8 @@
       "id": "ws_3_canopy",
       "kind": "waystone",
       "pos": [
-        744,
-        120
+        248,
+        408
       ],
       "props": {
         "zone": "canopy_bridge",
@@ -543,8 +543,8 @@
       "id": "beacon_3_3",
       "kind": "beacon",
       "pos": [
-        856,
-        104
+        120,
+        312
       ],
       "props": {
         "index": 2,
@@ -561,7 +561,7 @@
       "id": "door_dungeon_3",
       "kind": "door",
       "pos": [
-        512,
+        352,
         120
       ],
       "props": {
@@ -588,7 +588,7 @@
       "id": "bridge_of_light_3",
       "kind": "door",
       "pos": [
-        952,
+        616,
         88
       ],
       "props": {
@@ -597,7 +597,7 @@
           16,
           48
         ],
-        "zone": "canopy_bridge",
+        "zone": "hollow_oak_glade",
         "requires_flags": [
           "island_3_relit"
         ]
@@ -607,8 +607,8 @@
       "id": "lamp_3_entry_n",
       "kind": "road_lamp",
       "pos": [
-        136,
-        264
+        352,
+        840
       ],
       "props": {
         "zone": "moss_trailhead"
@@ -618,8 +618,8 @@
       "id": "lamp_3_entry_s",
       "kind": "road_lamp",
       "pos": [
-        232,
-        344
+        248,
+        904
       ],
       "props": {
         "zone": "moss_trailhead"
@@ -629,8 +629,8 @@
       "id": "lamp_3_glade",
       "kind": "road_lamp",
       "pos": [
-        184,
-        184
+        200,
+        664
       ],
       "props": {
         "zone": "spore_glade"
@@ -641,7 +641,7 @@
       "kind": "road_lamp",
       "pos": [
         488,
-        344
+        664
       ],
       "props": {
         "zone": "briar_crossing"
@@ -651,8 +651,8 @@
       "id": "lamp_3_thicket",
       "kind": "road_lamp",
       "pos": [
-        744,
-        376
+        440,
+        408
       ],
       "props": {
         "zone": "gloam_thicket"
@@ -662,8 +662,8 @@
       "id": "lamp_3_canopy",
       "kind": "road_lamp",
       "pos": [
-        808,
-        232
+        184,
+        360
       ],
       "props": {
         "zone": "canopy_bridge"
@@ -673,7 +673,7 @@
       "id": "lamp_3_oak_w",
       "kind": "road_lamp",
       "pos": [
-        456,
+        296,
         184
       ],
       "props": {
@@ -684,7 +684,7 @@
       "id": "lamp_3_oak_e",
       "kind": "road_lamp",
       "pos": [
-        568,
+        408,
         184
       ],
       "props": {
@@ -696,8 +696,8 @@
     {
       "id": "trig_isl3_arrival",
       "rect": [
-        96,
-        264,
+        320,
+        880,
         64,
         48
       ],
@@ -707,8 +707,8 @@
     {
       "id": "trig_isl3_glade",
       "rect": [
-        96,
-        160,
+        176,
+        672,
         64,
         48
       ],
@@ -718,8 +718,8 @@
     {
       "id": "trig_isl3_crossing",
       "rect": [
-        368,
-        320,
+        400,
+        656,
         64,
         48
       ],
@@ -729,8 +729,8 @@
     {
       "id": "trig_isl3_thicket",
       "rect": [
-        704,
-        336,
+        424,
+        368,
         64,
         48
       ],
@@ -740,8 +740,8 @@
     {
       "id": "trig_isl3_canopy",
       "rect": [
-        704,
-        160,
+        192,
+        384,
         64,
         48
       ],
@@ -751,7 +751,7 @@
     {
       "id": "trig_isl3_oak",
       "rect": [
-        480,
+        320,
         144,
         64,
         32
@@ -765,7 +765,7 @@
       "sheet": "island3_scenery",
       "prop": "root_ring_floor",
       "pos": [
-        512,
+        352,
         192
       ],
       "layer": "ground",
@@ -777,7 +777,7 @@
       "sheet": "island3_scenery",
       "prop": "root_ring_floor",
       "pos": [
-        512,
+        352,
         80
       ],
       "layer": "ground",
@@ -789,8 +789,8 @@
       "sheet": "island3_scenery",
       "prop": "root_ring_floor",
       "pos": [
-        128,
-        304
+        352,
+        912
       ],
       "layer": "ground",
       "flip_x": false,
@@ -801,7 +801,7 @@
       "sheet": "island3_scenery",
       "prop": "hollow_oak_arch",
       "pos": [
-        512,
+        352,
         126
       ],
       "layer": "sort",
@@ -813,8 +813,8 @@
       "sheet": "island3_scenery",
       "prop": "ancient_oak_tree",
       "pos": [
-        386,
-        132
+        224,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -825,8 +825,8 @@
       "sheet": "island3_scenery",
       "prop": "ancient_oak_tree",
       "pos": [
-        638,
-        132
+        472,
+        208
       ],
       "layer": "sort",
       "flip_x": true,
@@ -837,8 +837,8 @@
       "sheet": "island3_scenery",
       "prop": "hanging_spore_lantern",
       "pos": [
-        448,
-        136
+        288,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
@@ -849,8 +849,8 @@
       "sheet": "island3_scenery",
       "prop": "hanging_spore_lantern",
       "pos": [
-        576,
-        136
+        416,
+        144
       ],
       "layer": "sort",
       "flip_x": true,
@@ -861,8 +861,8 @@
       "sheet": "island3_scenery",
       "prop": "root_monolith",
       "pos": [
-        424,
-        240
+        200,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -873,8 +873,8 @@
       "sheet": "island3_scenery",
       "prop": "root_monolith",
       "pos": [
-        600,
-        240
+        504,
+        200
       ],
       "layer": "sort",
       "flip_x": true,
@@ -883,10 +883,34 @@
     },
     {
       "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        584,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        584,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        470,
-        146
+        312,
+        148
       ],
       "layer": "sort",
       "flip_x": false,
@@ -897,8 +921,8 @@
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        554,
-        146
+        392,
+        148
       ],
       "layer": "sort",
       "flip_x": true,
@@ -909,8 +933,8 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        412,
-        170
+        248,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -921,8 +945,8 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        612,
-        170
+        456,
+        212
       ],
       "layer": "sort",
       "flip_x": true,
@@ -933,32 +957,8 @@
       "sheet": "island3_scenery",
       "prop": "ancient_oak_tree",
       "pos": [
-        64,
-        260
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "ancient_oak_tree",
-      "pos": [
-        274,
-        266
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.45
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "gnarled_thorn_tree",
-      "pos": [
-        64,
-        376
+        84,
+        296
       ],
       "layer": "sort",
       "flip_x": false,
@@ -969,56 +969,32 @@
       "sheet": "island3_scenery",
       "prop": "gnarled_thorn_tree",
       "pos": [
-        296,
-        404
+        280,
+        296
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.65
+      "phase": 0.6
     },
     {
       "sheet": "island3_scenery",
-      "prop": "fallen_log_mossy",
+      "prop": "thorn_archway",
       "pos": [
-        232,
-        244
+        176,
+        296
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "mossy_stump",
-      "pos": [
-        172,
-        250
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "mossy_stump",
-      "pos": [
-        168,
-        392
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
+      "phase": 0.35
     },
     {
       "sheet": "island3_scenery",
       "prop": "hanging_spore_lantern",
       "pos": [
-        156,
-        360
+        88,
+        392
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1029,8 +1005,56 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        56,
-        514
+        280,
+        424
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "mossy_stump",
+      "pos": [
+        96,
+        432
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        284,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        184,
+        424
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "gnarled_thorn_tree",
+      "pos": [
+        400,
+        296
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1039,46 +1063,82 @@
     },
     {
       "sheet": "island3_scenery",
-      "prop": "fern_cluster",
+      "prop": "gnarled_thorn_tree",
       "pos": [
-        64,
-        326
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "fern_cluster",
-      "pos": [
-        252,
-        316
+        600,
+        296
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": false,
-      "phase": 0.4
+      "shadow": true,
+      "phase": 0.7
     },
     {
       "sheet": "island3_scenery",
-      "prop": "fern_cluster",
+      "prop": "spider_silk_banner",
       "pos": [
-        174,
+        424,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        552,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_monolith",
+      "pos": [
+        392,
         424
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        568,
+        432
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fallen_log_mossy",
+      "pos": [
+        496,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
     },
     {
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        268,
-        368
+        408,
+        344
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1087,22 +1147,22 @@
     },
     {
       "sheet": "island3_scenery",
-      "prop": "tiny_shrooms",
+      "prop": "fern_cluster",
       "pos": [
-        170,
-        520
+        520,
+        440
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": false,
-      "phase": 0.6
+      "phase": 0.5
     },
     {
       "sheet": "island3_scenery",
       "prop": "ancient_oak_tree",
       "pos": [
-        62,
-        62
+        116,
+        536
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1113,8 +1173,8 @@
       "sheet": "island3_scenery",
       "prop": "ancient_oak_tree",
       "pos": [
-        322,
-        64
+        280,
+        536
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1125,8 +1185,8 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        64,
-        108
+        116,
+        616
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1137,8 +1197,8 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        316,
-        134
+        280,
+        624
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1149,8 +1209,8 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        136,
-        206
+        120,
+        728
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1161,8 +1221,8 @@
       "sheet": "island3_scenery",
       "prop": "gnarled_thorn_tree",
       "pos": [
-        318,
-        204
+        280,
+        728
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1173,8 +1233,8 @@
       "sheet": "island3_scenery",
       "prop": "hanging_spore_lantern",
       "pos": [
-        204,
-        154
+        216,
+        616
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1185,404 +1245,236 @@
       "sheet": "island3_scenery",
       "prop": "mossy_stump",
       "pos": [
-        154,
-        174
+        128,
+        664
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fallen_log_mossy",
+      "pos": [
+        200,
+        728
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        48,
+        568
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        248,
+        536
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "thorn_archway",
+      "pos": [
+        456,
+        536
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "ancient_oak_tree",
+      "pos": [
+        400,
+        536
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "gnarled_thorn_tree",
+      "pos": [
+        632,
+        536
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fallen_log_mossy",
+      "pos": [
+        520,
+        536
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_monolith",
+      "pos": [
+        400,
+        632
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        632,
+        624
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        536,
+        728
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "mossy_stump",
+      "pos": [
+        488,
+        728
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        400,
+        728
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        552,
+        720
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "ancient_oak_tree",
+      "pos": [
+        112,
+        816
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "ancient_oak_tree",
+      "pos": [
+        520,
+        816
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "gnarled_thorn_tree",
+      "pos": [
+        184,
+        816
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "gnarled_thorn_tree",
+      "pos": [
+        520,
+        920
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
     },
     {
       "sheet": "island3_scenery",
       "prop": "fallen_log_mossy",
       "pos": [
         272,
-        206
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "tiny_shrooms",
-      "pos": [
-        54,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "tiny_shrooms",
-      "pos": [
-        300,
-        92
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.55
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "fern_cluster",
-      "pos": [
-        212,
-        60
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "fern_cluster",
-      "pos": [
-        118,
-        178
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "thorn_archway",
-      "pos": [
-        512,
-        314
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "ancient_oak_tree",
-      "pos": [
-        364,
-        294
+        816
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.1
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "gnarled_thorn_tree",
-      "pos": [
-        652,
-        296
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "gnarled_thorn_tree",
-      "pos": [
-        460,
-        520
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "ancient_oak_tree",
-      "pos": [
-        646,
-        514
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
     },
     {
       "sheet": "island3_scenery",
       "prop": "fallen_log_mossy",
       "pos": [
-        564,
-        302
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "mossy_stump",
-      "pos": [
-        446,
-        444
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "root_monolith",
-      "pos": [
-        366,
-        404
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.45
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "hanging_spore_lantern",
-      "pos": [
-        538,
-        496
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "giant_glowshroom_cluster",
-      "pos": [
-        642,
-        434
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "fern_cluster",
-      "pos": [
-        436,
-        304
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "fern_cluster",
-      "pos": [
-        614,
-        412
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "tiny_shrooms",
-      "pos": [
-        512,
-        520
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "gnarled_thorn_tree",
-      "pos": [
-        720,
-        312
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "gnarled_thorn_tree",
-      "pos": [
-        954,
-        312
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "ancient_oak_tree",
-      "pos": [
-        726,
-        520
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        772,
-        318
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        872,
-        318
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.55
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        868,
-        496
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "root_monolith",
-      "pos": [
-        720,
-        442
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "giant_glowshroom_cluster",
-      "pos": [
-        760,
-        522
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spore_brazier_stump",
-      "pos": [
-        864,
-        524
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "fallen_log_mossy",
-      "pos": [
-        914,
-        326
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "tiny_shrooms",
-      "pos": [
-        826,
-        318
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "fern_cluster",
-      "pos": [
-        766,
-        474
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "thorn_archway",
-      "pos": [
-        854,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "canopy_vine_post",
-      "pos": [
-        888,
-        60
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "canopy_vine_post",
-      "pos": [
-        888,
-        128
+        432,
+        816
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1591,34 +1483,46 @@
     },
     {
       "sheet": "island3_scenery",
-      "prop": "ancient_oak_tree",
+      "prop": "mossy_stump",
       "pos": [
-        700,
-        62
+        200,
+        864
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.2
+      "phase": 0.0
     },
     {
       "sheet": "island3_scenery",
-      "prop": "gnarled_thorn_tree",
+      "prop": "mossy_stump",
       "pos": [
-        956,
-        224
+        472,
+        872
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.6
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        184,
+        944
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
     },
     {
       "sheet": "island3_scenery",
       "prop": "hanging_spore_lantern",
       "pos": [
-        704,
-        152
+        448,
+        944
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1627,99 +1531,51 @@
     },
     {
       "sheet": "island3_scenery",
-      "prop": "root_monolith",
-      "pos": [
-        944,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "mossy_stump",
-      "pos": [
-        748,
-        250
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "giant_glowshroom_cluster",
-      "pos": [
-        698,
-        252
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.45
-    },
-    {
-      "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        808,
-        66
+        280,
+        952
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "tiny_shrooms",
-      "pos": [
-        914,
-        242
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.75
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "mossy_stump",
-      "pos": [
-        312,
-        464
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
       "phase": 0.0
     },
     {
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        304,
-        520
+        424,
+        848
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": false,
-      "phase": 0.55
+      "phase": 0.4
     },
     {
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        934,
-        360
+        112,
+        936
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        488,
+        952
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
-      "phase": 0.3
+      "phase": 0.6
     }
   ]
 }

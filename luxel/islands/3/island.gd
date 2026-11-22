@@ -76,11 +76,11 @@ func get_region_list() -> PackedStringArray:
 
 func get_main_path_waypoints() -> Array[Dictionary]:
 	return [
-		_wp("wp_3_entry_ws", "overworld", "moss_trailhead", [104.0, 328.0], "waystone", "interact", "ws_3_entry", "Arrive at Thornwood Hollow moss trailhead", ["bolt", "dash", "throw", "prism"], []),
-		_wp("wp_3_beacon_1", "overworld", "spore_glade", [120.0, 72.0], "beacon", "light_beacon", "beacon_3_1", "Clear Spore Glade and light Beacon 1", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_1"),
-		_wp("wp_3_beacon_2", "overworld", "briar_crossing", [584.0, 472.0], "beacon", "light_beacon", "beacon_3_2", "Clear Briar Crossing and light Beacon 2", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_2"),
-		_wp("wp_3_beacon_3", "overworld", "canopy_bridge", [856.0, 104.0], "beacon", "light_beacon", "beacon_3_3", "Clear Canopy Bridge and light Beacon 3", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_3"),
-		_wp("wp_3_enter_oak", "overworld", "hollow_oak_glade", [512.0, 60.0], "exit", "enter_exit", "exit_to_oak", "Enter The Hollow Oak past the shattered ward barrier", ["dash", "throw", "prism"], ["beacon_3_1", "beacon_3_2", "beacon_3_3"], "", "", "oak_r1"),
+		_wp("wp_3_entry_ws", "overworld", "moss_trailhead", [312.0, 936.0], "waystone", "interact", "ws_3_entry", "Arrive at Thornwood Hollow moss trailhead", ["bolt", "dash", "throw", "prism"], []),
+		_wp("wp_3_beacon_1", "overworld", "spore_glade", [152.0, 552.0], "beacon", "light_beacon", "beacon_3_1", "Clear Spore Glade and light Beacon 1", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_1"),
+		_wp("wp_3_beacon_2", "overworld", "briar_crossing", [584.0, 584.0], "beacon", "light_beacon", "beacon_3_2", "Clear Briar Crossing and light Beacon 2", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_2"),
+		_wp("wp_3_beacon_3", "overworld", "canopy_bridge", [120.0, 312.0], "beacon", "light_beacon", "beacon_3_3", "Clear Canopy Bridge and light Beacon 3", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_3"),
+		_wp("wp_3_enter_oak", "overworld", "hollow_oak_glade", [352.0, 60.0], "exit", "enter_exit", "exit_to_oak", "Enter The Hollow Oak past the shattered ward barrier", ["dash", "throw", "prism"], ["beacon_3_1", "beacon_3_2", "beacon_3_3"], "", "", "oak_r1"),
 		_wp("wp_oak_r1_ws", "oak_r1", "oak_r1", [160.0, 104.0], "waystone", "interact", "ws_oak", "Light Hollow Oak Root Vestibule Waystone", ["dash", "throw", "prism"], []),
 		_wp("wp_oak_r2_key1", "oak_r2", "oak_r2", [280.0, 136.0], "wick_key", "collect_key", "wick_key_3_1", "Solve Knotwork Roots mirror switch puzzle and take wick_key_3_1", ["dash", "throw", "prism"], [], "", "wick_key_3_1"),
 		_wp("wp_oak_r3_combat", "oak_r3", "oak_r3", [296.0, 88.0], "combat_gate", "clear_room", "door_oak_r3_combat", "Clear Spore Gallery Sporecap and Gloam encounter", ["dash", "throw", "prism"], [], "", "oak_r3_cleared"),

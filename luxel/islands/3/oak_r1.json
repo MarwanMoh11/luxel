@@ -31,7 +31,7 @@
       ],
       "to_region": "overworld",
       "to_spawn": [
-        512,
+        352,
         92
       ],
       "requires_moves": [],
@@ -190,14 +190,6 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.6
-    },
-    {
-      "prop": "hanging_spore_lantern",
-      "pos": [
-        160,
-        38
-      ],
-      "layer": "back"
     }
   ]
 }

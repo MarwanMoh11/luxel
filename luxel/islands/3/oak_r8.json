@@ -211,22 +211,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.85
-    },
-    {
-      "prop": "tiny_shrooms",
-      "pos": [
-        112,
-        146
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "fern_cluster",
-      "pos": [
-        208,
-        146
-      ],
-      "layer": "back"
     }
   ]
 }
