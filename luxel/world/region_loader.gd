@@ -355,15 +355,6 @@ func tile_at(world_pos: Vector2) -> String:
 func is_solid_tile(tile_type: String, can_cross_pit: bool = false, can_cross_water: bool = false) -> bool:
 	return LxMapFormat.is_solid_tile(tile_type, can_cross_pit, can_cross_water)
 
-func get_bounds() -> Rect2:
-	return bounds
-
-func get_enemies() -> Array[LxEnemyBrain]:
-	return _enemies
-
-func get_interactables() -> Array[LxInteractable]:
-	return _interactables
-
 func find_interactable(id: String) -> LxInteractable:
 	var found: Variant = _interactables_by_id.get(id, null)
 	return found as LxInteractable if found is LxInteractable else null
@@ -438,11 +429,14 @@ func tick_region(dt: float, player_pos: Vector2 = Vector2.ZERO) -> int:
 				engaged += 1
 	return engaged
 
-func get_spawn_pos() -> Vector2:
-	return spawn_pos
-
-func collide_fly(pos: Vector2, radius: float) -> Vector2:
-	return collide(pos, radius, true, true)
+func get_spawn_pos() -> Vector2: return spawn_pos
+func collide_fly(pos: Vector2, radius: float) -> Vector2: return collide(pos, radius, true, true)
+func get_bounds() -> Rect2: return bounds
+func get_enemies() -> Array[LxEnemyBrain]: return _enemies
+func get_interactables() -> Array[LxInteractable]: return _interactables
+func get_zones() -> Array[Dictionary]: return zones
+func is_lantern_hung() -> bool: return get_lantern_state() == 2
+func is_lantern_out() -> bool: return get_lantern_state() in [1, 2]
 
 func get_wick_pos() -> Vector2:
 	if Lx.player != null and is_instance_valid(Lx.player):
@@ -468,13 +462,6 @@ func get_lantern_pos() -> Vector2:
 			if lan is Node2D:
 				return (lan as Node2D).global_position
 	return get_wick_pos()
-
-func is_lantern_hung() -> bool:
-	return get_lantern_state() == 2
-
-func is_lantern_out() -> bool:
-	var st: int = get_lantern_state()
-	return st == 1 or st == 2
 
 func apply_light(world_pos: Vector2, light_radius: float, source: String) -> void:
 	if light_radius <= 0.0:
@@ -523,9 +510,6 @@ func is_zone_cleared(zone_id: String = "") -> bool:
 			return false
 	return true
 
-func get_zones() -> Array[Dictionary]:
-	return zones
-
 func is_zone_lit(zone_id: String) -> bool:
 	if Lx.state != null and Lx.state.relit_islands.has(current_island_id):
 		return true
@@ -551,6 +535,13 @@ func get_light_pools() -> Array[Vector4]:
 	for sp: LxSceneryProp in _scenery_props:
 		if sp != null and sp.light_pool.z > 1.0:
 			pools.append(sp.light_pool)
+	if is_dungeon:
+		for ex: Dictionary in exits:
+			var did: String = str(ex.get("locked_door_id", ""))
+			var door: LxInteractable = find_interactable(did) if not did.is_empty() else null
+			if (door == null or not door.is_solid()) and _exit_requirements_met(ex):
+				var ec: Vector2 = LxMapFormat.to_rect2(ex.get("rect", [])).get_center()
+				pools.append(Vector4(ec.x, ec.y, 38.0, 0.52))
 	return pools
 
 func is_flag_set(flag: String) -> bool:

@@ -335,6 +335,22 @@
         "luxel/audio/sfx/wick_hurt_2.ogg",
         "luxel/audio/sfx/warden_swing_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_archetypes",
+      "description": "Biome-specific enemy archetype telegraph SFX (warden_alert, harbor_creak, marsh_croak, clockwork_chime, furnace_draw, shadow_whisper) plus alternate boss_roar and perfect_dodge takes (8 cues, 0.00% > 4 kHz hiss)",
+      "generator": "gen_sfx_archetypes.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/warden_alert.ogg",
+        "luxel/audio/sfx/harbor_creak.ogg",
+        "luxel/audio/sfx/marsh_croak.ogg",
+        "luxel/audio/sfx/clockwork_chime.ogg",
+        "luxel/audio/sfx/furnace_draw.ogg",
+        "luxel/audio/sfx/shadow_whisper.ogg",
+        "luxel/audio/sfx/boss_roar_2.ogg",
+        "luxel/audio/sfx/perfect_dodge_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []

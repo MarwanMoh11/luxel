@@ -39,6 +39,8 @@ const SFX_VARIANTS: Dictionary = {
 	"ui_move": ["ui_move", "ui_move_2", "ui_move_3"],
 	"wick_hurt": ["wick_hurt", "wick_hurt_2"],
 	"warden_swing": ["warden_swing", "warden_swing_2"],
+	"boss_roar": ["boss_roar", "boss_roar_2"],
+	"perfect_dodge": ["perfect_dodge", "perfect_dodge_2"],
 }
 const SHARD_SCALE: Array[float] = [1.0, 1.12246, 1.18921, 1.33484, 1.49831, 1.68179]
 

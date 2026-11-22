@@ -190,6 +190,9 @@ func _draw_extra(off: Vector2) -> void:
 
 	var c: Vector2 = off.round()
 	if state == State.TELL:
+		for ti: int in range(12):
+			var a0: float = float(ti) * (TAU / 12.0)
+			draw_arc(c, ELDER_RING_MAX_R, a0, a0 + 0.24, 3, PAL["jade"] as Color, 1.0)
 		var tr: float = lerpf(ELDER_RING_MAX_R * 0.85, RING_START_R + 5.0, swell)
 		var pulse: float = 1.4 * sin(anim_t * 20.0)
 		draw_arc(c, tr + 2.2 + pulse * 0.4, 0.0, TAU, 28, PAL["jade"] as Color, 1.4)
