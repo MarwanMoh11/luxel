@@ -602,6 +602,38 @@
         "luxel/audio/sfx/bell_toll_heavy.ogg",
         "luxel/audio/sfx/bell_toll_heavy_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_miniboss_voices_a",
+      "description": "Bespoke zero-hiss multi-take mini-boss Phase 2 signature voices batch A (Bell Warden, Elder Sporecap, Clockwork Warden, Forge Warden + _2 takes; 244 SFX across 117 multi-take pools)",
+      "generator": "gen_sfx_miniboss_voices_a.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/miniboss_bell_warden_roar.ogg",
+        "luxel/audio/sfx/miniboss_bell_warden_roar_2.ogg",
+        "luxel/audio/sfx/miniboss_sporecap_roar.ogg",
+        "luxel/audio/sfx/miniboss_sporecap_roar_2.ogg",
+        "luxel/audio/sfx/miniboss_clockwork_roar.ogg",
+        "luxel/audio/sfx/miniboss_clockwork_roar_2.ogg",
+        "luxel/audio/sfx/miniboss_forge_roar.ogg",
+        "luxel/audio/sfx/miniboss_forge_roar_2.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_sfx_miniboss_voices_b",
+      "description": "Bespoke zero-hiss multi-take Night Harbinger Phase 2 voice & signature boss attack cues (miniboss_harbinger_roar, eclipse_wave, anchor_slam, lighthouse_beam + _2 takes; 252 Studio SFX across 121 multi-take pools — 15/15 bosses uniquely voiced)",
+      "generator": "gen_sfx_miniboss_voices_b.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/miniboss_harbinger_roar.ogg",
+        "luxel/audio/sfx/miniboss_harbinger_roar_2.ogg",
+        "luxel/audio/sfx/eclipse_wave.ogg",
+        "luxel/audio/sfx/eclipse_wave_2.ogg",
+        "luxel/audio/sfx/anchor_slam.ogg",
+        "luxel/audio/sfx/anchor_slam_2.ogg",
+        "luxel/audio/sfx/lighthouse_beam.ogg",
+        "luxel/audio/sfx/lighthouse_beam_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []

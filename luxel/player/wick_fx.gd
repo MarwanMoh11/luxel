@@ -342,7 +342,7 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 
 	_draw_motes(wick, off, true)
 	if wick.move_dash != null and wick.move_dash.counter_t > 0.0:
-		var ca: float = clock_t * 7.5
+		var ca: float = clock_t * (3.5 if flash_red else 7.5)
 		for ci: int in range(2):
 			var cp: Vector2 = (hand_pos + Vector2(cos(ca + float(ci) * PI) * 5.0, sin(ca + float(ci) * PI) * 4.0)).round()
 			wick.draw_rect(Rect2(cp, Vector2.ONE), LxWick.PAL_CREAM if ci == 0 else LxWick.PAL_ICE)

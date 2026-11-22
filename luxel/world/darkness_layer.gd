@@ -164,9 +164,11 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	_veil.size = view_sz
 
 	var cam_center: Vector2 = Lx.camera.global_position if (Lx.camera != null and is_instance_valid(Lx.camera)) else view_sz * 0.5
+	var relit_ow: bool = (not wave_active) and region != null and (not region.is_dungeon) and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(region.current_island_id)
+	var eff_dark: float = clampf(darkness_strength - (0.14 if relit_ow else 0.0), 0.0, 1.0)
 	_mat.set_shader_parameter("cam_origin", (cam_center - view_sz * 0.5).round())
 	_mat.set_shader_parameter("view_size", view_sz)
-	_mat.set_shader_parameter("darkness_strength", clampf(darkness_strength, 0.0, 1.0))
+	_mat.set_shader_parameter("darkness_strength", eff_dark)
 	_mat.set_shader_parameter("biome_tint", _current_tint)
 	_mat.set_shader_parameter("vignette_strength", clampf(vignette_strength, 0.0, 0.5))
 	var dpulse: float = 0.0
@@ -305,6 +307,8 @@ func _update_biome_tint(dt: float, region: LxRegionLoader) -> void:
 	elif Lx.state != null and is_instance_valid(Lx.state) and Lx.state.island_id > 0:
 		isl_id = Lx.state.island_id
 	var desired: Vector3 = BIOME_TINTS.get(clampi(isl_id, 1, 8), DEFAULT_TINT) as Vector3
+	if region != null and (not region.is_dungeon) and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(isl_id):
+		desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.38)
 	if not _tint_ready:
 		_current_tint = desired
 		_from_tint = desired
@@ -398,21 +402,23 @@ func _on_enemy_killed(_e: Object, _k: String, pos: Vector2, opened: bool) -> voi
 func _on_lantern_hung(pos: Vector2) -> void: add_burst_light(pos, 64.0, 1.22, 0.28)
 func _on_lantern_caught(pos: Vector2) -> void: add_burst_light(pos, 56.0, 1.12, 0.22)
 func _on_lantern_struck(pos: Vector2) -> void: add_burst_light(pos, 84.0, 1.48, 0.36)
-func _on_beacon_lit(_i: int, bid: String) -> void: add_burst_light(_interactable_pos(bid, "beacon"), 124.0, 1.60, 0.68)
-func _on_waystone_lit(_i: int, wid: String) -> void: add_burst_light(_interactable_pos(wid, "waystone"), 112.0, 1.50, 0.60)
-func _on_shrine_claimed(sid: String, _m: String) -> void: add_burst_light(_interactable_pos(sid, "shrine"), 118.0, 1.55, 0.64)
-func _on_seal_broken(_i: int, sid: String) -> void: add_burst_light(_interactable_pos(sid, "obsidian_seal"), 104.0, 1.52, 0.50)
+func _fr_scale() -> float:
+	return 0.70 if (Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))) else 1.0
+func _on_beacon_lit(_i: int, bid: String) -> void: add_burst_light(_interactable_pos(bid, "beacon"), 124.0, 1.60 * _fr_scale(), 0.68)
+func _on_waystone_lit(_i: int, wid: String) -> void: add_burst_light(_interactable_pos(wid, "waystone"), 112.0, 1.50 * _fr_scale(), 0.60)
+func _on_shrine_claimed(sid: String, _m: String) -> void: add_burst_light(_interactable_pos(sid, "shrine"), 118.0, 1.55 * _fr_scale(), 0.64)
+func _on_seal_broken(_i: int, sid: String) -> void: add_burst_light(_interactable_pos(sid, "obsidian_seal"), 104.0, 1.52 * _fr_scale(), 0.50)
 func _on_boss_phase_changed(bid: String, _p: int) -> void:
 	var bp: Vector2 = _boss_pos(bid)
-	add_burst_light(bp, 112.0, 1.52, 0.56)
+	add_burst_light(bp, 112.0, 1.52 * _fr_scale(), 0.56)
 	LxDamageFx.trigger_boss_phase_burst(bid, bp)
 	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 	_phase_flash = maxf(_phase_flash, 0.35 if flash_red else 0.95)
 func _on_boss_defeated(bid: String, _i: int) -> void:
 	var bp: Vector2 = _boss_pos(bid)
-	add_burst_light(bp, 144.0, 1.72, 0.75)
+	add_burst_light(bp, 144.0, 1.72 * _fr_scale(), 0.75)
 	LxDamageFx.gust_arena(bp, 150.0, 145.0)
-func _on_great_lamp_relit(_i: int) -> void: add_burst_light(_interactable_pos("great_lamp", "great_lamp"), 154.0, 1.80, 0.75)
+func _on_great_lamp_relit(_i: int) -> void: add_burst_light(_interactable_pos("great_lamp", "great_lamp"), 154.0, 1.80 * _fr_scale(), 0.75)
 func _on_ember_piece(_total: int) -> void: add_burst_light(_player_pos(), 96.0, 1.45, 0.52)
 func _on_upgrade_purchased(_id: String, _rank: int) -> void: add_burst_light(_player_pos(), 108.0, 1.50, 0.55)
 func _on_player_healed(_a: float) -> void: add_burst_light(_player_pos(), 72.0, 1.25, 0.36)
