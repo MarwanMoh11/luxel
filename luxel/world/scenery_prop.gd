@@ -165,6 +165,16 @@ func _process(dt: float) -> void:
 					if absf(vel.x) > 25.0:
 						_sway_dir = signf(vel.x)
 					_sway_amp = 2.0 if vel.length_squared() > 14400.0 else 1.2
+			else:
+				var lan_v: Variant = Lx.player.get("lantern")
+				if lan_v is Object and is_instance_valid(lan_v as Object) and bool((lan_v as Object).call("is_out")):
+					var lpos: Vector2 = (lan_v as Object).get("pos") as Vector2
+					var lvel: Vector2 = (lan_v as Object).get("vel") as Vector2
+					if lvel.length_squared() > 400.0 and lpos.distance_squared_to(position) < 484.0:
+						_sway_t = 0.36
+						_sway_cd = 0.24
+						_sway_dir = signf(lvel.x) if absf(lvel.x) > 25.0 else (-1.0 if (lpos.x > position.x) else 1.0)
+						_sway_amp = 2.0
 		if _sway_t > 0.0:
 			_sway_t = maxf(0.0, _sway_t - dt)
 			var next_px: float = roundf(sin(_sway_t * 24.0) * _sway_amp * (_sway_t / 0.36) * _sway_dir) if _sway_t > 0.0 else 0.0

@@ -186,6 +186,12 @@ func _enter_commit() -> void:
 	state_timer = STOMP_COMMIT_TIME
 	stomp_progress = 0.0
 	stomp_hit = false
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(0.18)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, 72.0, 82.0)
 	_emit_sfx("golem_stomp_shockwave")
 
 
@@ -267,7 +273,8 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(c, STOMP_MAX_R, a0, a0 + 0.24, 3, PAL["coral"] as Color, 1.0)
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var r: float = lerpf(STOMP_MAX_R, STOMP_START_R + 4.0, prog)
-		draw_arc(c, r, 0.0, TAU, 24, PAL["apricot"] as Color, 1.5)
+		var hot: bool = state_timer <= 0.18 * _assist_tell_scale()
+		draw_arc(c, r, 0.0, TAU, 24, (PAL["cream"] if hot else PAL["apricot"]) as Color, 2.0 if hot else 1.5)
 	elif state == State.COMMIT:
 		var ring_r: float = lerpf(STOMP_START_R, STOMP_MAX_R, stomp_progress)
 		var c: Vector2 = off.round()

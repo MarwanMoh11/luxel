@@ -354,16 +354,23 @@ func _draw_extra(off: Vector2) -> void:
 		draw_rect(Rect2(lan_off + Vector2(-1.0, -1.0), Vector2(2.0, 2.0)), PAL["ice"] as Color, true)
 		draw_rect(Rect2(lan_off + Vector2(0.0, -1.0), Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	if state == State.TELL:
-		var tc: Color = (PAL["gold"] as Color) if lured_now else (PAL["ice"] as Color)
-		draw_line(c, (c + commit_dir * (36.0 if active_move == MoveKind.FLARE_DASH else 50.0)).round(), tc, 1.4)
+		var hot_t: bool = state_timer <= 0.22 * _assist_tell_scale()
+		var tc: Color = (PAL["coral"] if hot_t else (PAL["gold"] if lured_now else PAL["ice"])) as Color
+		draw_line(c, (c + commit_dir * (36.0 if active_move == MoveKind.FLARE_DASH else 50.0)).round(), tc, 1.8 if hot_t else 1.4)
 		if active_move == MoveKind.BOLT_VOLLEY:
 			var vc: int = _volley_count()
 			var vs: float = _volley_spread()
 			var vm: float = float(vc - 1) * 0.5
 			for vi: int in range(vc):
 				var vdir: Vector2 = commit_dir.rotated((float(vi) - vm) * vs)
-				draw_line(c, (c + vdir * VOLLEY_RANGE).round(), PAL["blue"] as Color, 1.0)
+				draw_line(c, (c + vdir * VOLLEY_RANGE).round(), (PAL["coral"] if hot_t else PAL["blue"]) as Color, 1.4 if hot_t else 1.0)
 				_draw_lunar_bolt(c + vdir * 22.0, vdir)
+		elif active_move == MoveKind.LANTERN_ZIP and dark_lantern_out:
+			var zc: Vector2 = (dark_lantern_pos - pos).round()
+			var zcol: Color = (PAL["cream"] if hot_t else PAL["coral"]) as Color
+			for zi: int in range(10):
+				var za: float = float(zi) * (TAU / 10.0)
+				draw_arc(zc, ZIP_BURST_R, za, za + 0.30, 3, zcol, 1.4 if hot_t else 1.0)
 	elif state == State.COMMIT and active_move == MoveKind.BOLT_VOLLEY:
 		var prog: float = clampf(commit_elapsed / VOLLEY_COMMIT_TIME, 0.0, 1.0)
 		var vc2: int = _volley_count()

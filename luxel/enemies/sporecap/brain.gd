@@ -294,7 +294,8 @@ func _draw_extra(off: Vector2) -> void:
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(c, RING_MAX_R, a0, a0 + 0.24, 3, PAL["jade"] as Color, 1.0)
-		draw_arc(c, lerpf(RING_MAX_R * 0.75, RING_START_R + 4.0, swell), 0.0, TAU, 24, PAL["lime"] as Color, 1.5)
+		var hot_s: bool = state_timer <= 0.18 * _assist_tell_scale()
+		draw_arc(c, lerpf(RING_MAX_R * 0.75, RING_START_R + 4.0, swell), 0.0, TAU, 24, (PAL["cream"] if hot_s else PAL["lime"]) as Color, 2.0 if hot_s else 1.5)
 	elif state == State.COMMIT:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
 		var c: Vector2 = off.round()

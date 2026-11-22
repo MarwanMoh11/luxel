@@ -325,6 +325,8 @@ func _draw_extra(off: Vector2) -> void:
 		for si: int in [-1, 1]:
 			var s_off: Vector2 = side * (float(si) * GUST_HALF_W)
 			draw_line((c + s_off + gust_dir * (body_radius + 2.0)).round(), (c + s_off + gust_dir * GUST_RANGE).round(), g_col, 1.0)
+		var dmg_c: Vector2 = c + gust_dir * GUST_DAMAGE_R
+		draw_line((dmg_c - side * GUST_HALF_W).round(), (dmg_c + side * GUST_HALF_W).round(), (PAL["cream"] if prog > 0.72 else PAL["coral"]) as Color, 1.4 if prog > 0.72 else 1.0)
 		for ii: int in range(3):
 			var lat: float = float(ii - 1) * (GUST_HALF_W * 0.55)
 			var u: float = fmod(prog * 2.2 + float(ii) * 0.33, 1.0)
