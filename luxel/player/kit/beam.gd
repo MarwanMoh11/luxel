@@ -165,7 +165,12 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 			var consumed: Variant = item.call("on_hit", hit)
 			if consumed is bool and bool(consumed):
 				if str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
-					wick.ember = minf(Lx.state.get_effective_ember_max(), wick.ember + 22.0)
+					var emax: float = Lx.state.get_effective_ember_max()
+					var was_full: bool = wick.ember >= emax - 0.001
+					wick.ember = minf(emax, wick.ember + 22.0)
+					if not was_full and wick.ember >= emax - 0.001:
+						wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
+						wick.emit_sfx("beam_ready", wick.global_position, false)
 				wick.spawn_sparks(ipos, aim, 6, LxWick.PAL_GOLD, 30.0, 90.0, 0.22)
 
 	beam_start = start_p
@@ -186,6 +191,11 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	wick.spawn_ring(end_p, 2.0, 10.0, 0.20, LxWick.PAL_GOLD, 1.5)
 	wick.spawn_sparks(start_p, aim, 6, LxWick.PAL_CREAM, 35.0, 95.0, 0.18)
 	wick.spawn_sparks(end_p, -aim, 8, LxWick.PAL_GOLD, 30.0, 95.0, 0.22)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", start_p, 56.0, 72.0)
+			(amb as Object).call("_gust_particles", end_p, 52.0, 84.0)
 	wick.emit_sfx("beam_fire", start_p, false)
 	return true
 

@@ -150,6 +150,7 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 		var lcol: Color = _dust_color_for(surf_l)
 		for side: float in [-1.0, 1.0]:
 			_spawn_mote(wick.global_position + Vector2(side * 3.0, 0.0), Vector2(side * 16.0, -7.0), 0.24, lcol, 2.0, true, 0.16, false, 0.80)
+		wick.emit_sfx("footstep_" + surf_l, wick.global_position, false)
 	_was_airborne = airborne
 
 	# Surface-aware footstep dust puffs & biome-matched footsteps (grass / wood / stone)
@@ -295,7 +296,8 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_GOLD)
 		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(1.0, 1.0)), LxWick.PAL_CREAM)
 	else:
-		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_APRICOT)
+		var lan_stolen: bool = wick.lantern != null and wick.lantern.state == LxLantern.State.CARRIED
+		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CORAL if lan_stolen else LxWick.PAL_APRICOT)
 		wick.draw_rect(Rect2(pip, Vector2.ONE), LxWick.PAL_VOID)
 	if wick.muzzle_t > 0.0:
 		_draw_muzzle_star(wick, hand_pos, flash_red)

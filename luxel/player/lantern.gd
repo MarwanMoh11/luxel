@@ -330,6 +330,10 @@ func _land_hanging(wick: LxWick) -> void:
 	if Lx.events != null:
 		Lx.events.lantern_hung.emit(pos)
 	wick.spawn_ring(pos, 2.0, 12.0, 0.22, PAL_GOLD, 1.0)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, 44.0, 56.0)
 	wick.emit_sfx("lantern_land", pos, true)
 
 
@@ -369,6 +373,7 @@ func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: S
 			var back: Vector2 = pos - move_dir * 6.0
 			if not wick.world_shot_blocked(world_ctx, pos, back):
 				pos = back
+			wick.spawn_ring(pos, 2.0, 12.0, 0.18, LxWick.PAL_STONE, 1.2)
 			state = State.HANGING
 			vel = Vector2.ZERO
 			hang_max = 0.6
@@ -393,7 +398,12 @@ func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: S
 			var hit_i: LxHit = LxHit.make(hit_source, dmg, move_dir, pos, shield_wear, true, false, wick, false)
 			var consumed: Variant = item.call("on_hit", hit_i)
 			if consumed is bool and bool(consumed) and str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
-				wick.ember = minf(Lx.state.get_effective_ember_max(), wick.ember + 22.0)
+				var emax: float = Lx.state.get_effective_ember_max()
+				var was_full: bool = wick.ember >= emax - 0.001
+				wick.ember = minf(emax, wick.ember + 22.0)
+				if not was_full and wick.ember >= emax - 0.001:
+					wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, PAL_GOLD, 1.5)
+					wick.emit_sfx("beam_ready", wick.global_position, false)
 				wick.spawn_sparks(ipos, -move_dir, 6, PAL_GOLD, 30.0, 85.0, 0.20)
 
 
@@ -449,10 +459,12 @@ func _draw() -> void:
 		draw_rect(Rect2(sh_c + Vector2(-3.0, 0.0), Vector2(6.0, 1.0)), sh_col)
 		draw_rect(Rect2(sh_c + Vector2(-2.0, 1.0), Vector2(4.0, 1.0)), sh_col)
 
-	# Luminous golden thread of gliding lantern beads from Wick when zippable (urgent coral when stolen)
-	if (is_lure_active() or state == State.CARRIED) and _owner_wick != null and is_instance_valid(_owner_wick):
+	# Luminous golden thread of gliding lantern beads from Wick when zippable/recalling (urgent coral when stolen)
+	if (is_lure_active() or state == State.CARRIED or state == State.RECALLING) and _owner_wick != null and is_instance_valid(_owner_wick):
 		var rel_wick: Vector2 = (_owner_wick.global_position - global_position).round()
-		_draw_lantern_tether(rel_wick + Vector2(0.0, -5.0), center, flash_red, state == State.CARRIED)
+		var t_a: Vector2 = center if state == State.RECALLING else rel_wick + Vector2(0.0, -5.0)
+		var t_b: Vector2 = rel_wick + Vector2(0.0, -5.0) if state == State.RECALLING else center
+		_draw_lantern_tether(t_a, t_b, flash_red, state == State.CARRIED)
 
 	var glow_col: Color = PAL_CORAL if state == State.CARRIED else PAL_GOLD
 	var glow_sc: float = 0.78 if flash_red else 1.0
