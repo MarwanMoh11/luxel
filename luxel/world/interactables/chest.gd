@@ -53,7 +53,7 @@ func interact(_actor: Node = null) -> bool:
 			"wick_key", "keepers_flame":
 				Lx.state.add_key(dungeon_id, reward_kind, amount)
 				if Lx.events != null:
-					Lx.events.narration_requested.emit("CUE_KEY_FOUND", "title", 2.8)
+					Lx.events.narration_requested.emit("CUE_BOSS_KEY_FOUND" if reward_kind == "keepers_flame" else "CUE_KEY_FOUND", "title", 2.8)
 				_emit_sfx("key_pickup")
 			_:
 				Lx.state.add_shards(amount)
@@ -97,14 +97,17 @@ func _draw() -> void:
 		_draw_lid_glint(_get_glint_stage())
 	elif _open_t > 0.0:
 		var u: float = 1.0 - clampf(_open_t / 0.44, 0.0, 1.0)
+		var is_rare: bool = reward_kind == "ember_piece" or reward_kind == "keepers_flame"
 		if u < 0.55:
-			draw_arc(Vector2(0.0, -7.0), roundf(lerpf(3.0, 16.0, u / 0.55)), 0.0, TAU, 14, (PAL["cream"] if u < 0.25 else PAL["gold"]) as Color, 1.0, false)
+			var rc: Color = (PAL["cream"] if u < 0.25 else (PAL["coral"] if is_rare else PAL["gold"])) as Color
+			draw_arc(Vector2(0.0, -7.0), roundf(lerpf(3.0, 18.0 if is_rare else 16.0, u / 0.55)), 0.0, TAU, 14, rc, 1.0, false)
 		for k: int in range(6):
 			var ang: float = -PI * 0.85 + float(k) * (PI * 0.70 / 5.0)
 			var rad: float = lerpf(2.0, 15.0, u)
 			var sx: float = roundf(cos(ang) * rad)
 			var sy: float = roundf(-7.0 + sin(ang) * rad - u * 4.0)
-			var sc: Color = (PAL["cream"] if u < 0.35 else (PAL["gold"] if k % 2 == 0 else PAL["apricot"])) as Color
+			var alt_c: Color = (PAL["coral"] if is_rare else PAL["apricot"]) as Color
+			var sc: Color = (PAL["cream"] if u < 0.35 else (PAL["gold"] if k % 2 == 0 else alt_c)) as Color
 			draw_rect(Rect2(sx, sy, 2.0 if u < 0.4 else 1.0, 2.0 if u < 0.4 else 1.0), sc)
 
 
@@ -138,7 +141,8 @@ func _draw_lid_glint(stage: int) -> void:
 		return
 	var gx: float = 0.0
 	var gy: float = -8.0
-	var primary: Color = (PAL["coral"] if reward_kind == "ember_piece" else PAL["gold"]) as Color
+	var is_rare: bool = reward_kind == "ember_piece" or reward_kind == "keepers_flame"
+	var primary: Color = (PAL["coral"] if is_rare else PAL["gold"]) as Color
 	if stage == 1:
 		draw_rect(Rect2(gx, gy, 1.0, 1.0), primary)
 	elif stage == 2:
@@ -148,4 +152,4 @@ func _draw_lid_glint(stage: int) -> void:
 		draw_rect(Rect2(gx + 1.0, gy, 1.0, 1.0), primary)
 		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["cream"])
 	else:
-		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["gold" if reward_kind == "ember_piece" else "cream"])
+		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["gold" if is_rare else "cream"])

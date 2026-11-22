@@ -49,8 +49,9 @@ func interact(_actor: Node = null) -> bool:
 		if not flag_name.is_empty():
 			Lx.state.story_flags[flag_name] = true
 	if Lx.events != null:
-		Lx.events.narration_requested.emit("CUE_KEY_FOUND", "title", 2.4)
-		Lx.events.shake_requested.emit(0.08)
+		var is_boss: bool = key_kind == "keepers_flame"
+		Lx.events.narration_requested.emit("CUE_BOSS_KEY_FOUND" if is_boss else "CUE_KEY_FOUND", "title", 2.8 if is_boss else 2.4)
+		Lx.events.shake_requested.emit(0.12 if is_boss else 0.08)
 	_emit_sfx("key_pickup")
 	_emit_save("key_" + id)
 	queue_redraw()
@@ -82,10 +83,14 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	if _pickup_t > 0.0:
 		var u: float = 1.0 - clampf(_pickup_t / 0.36, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -3.0), roundf(lerpf(3.0, 18.0, u)), 0.0, TAU, 16, (PAL["cream"] if u < 0.35 else PAL["gold"]) as Color, 2.0 if u < 0.3 else 1.0, false)
-		for k: int in range(6):
-			var a: float = (TAU * float(k)) / 6.0
-			draw_rect(Rect2(roundf(cos(a) * lerpf(2.0, 15.0, u)), roundf(-3.0 + sin(a) * lerpf(2.0, 15.0, u) - u * 4.0), 1.0, 1.0), PAL["cream"] if k % 2 == 0 else PAL["gold"])
+		var is_b: bool = key_kind == "keepers_flame"
+		var ring_c: Color = (PAL["cream"] if u < 0.35 else (PAL["coral"] if is_b else PAL["gold"])) as Color
+		draw_arc(Vector2(0.0, -3.0), roundf(lerpf(3.0, 22.0 if is_b else 18.0, u)), 0.0, TAU, 16, ring_c, 2.0 if u < 0.3 else 1.0, false)
+		var scount: int = 8 if is_b else 6
+		for k: int in range(scount):
+			var a: float = (TAU * float(k)) / float(scount)
+			var scol: Color = (PAL["cream"] if k % 2 == 0 else (PAL["coral"] if is_b else PAL["gold"])) as Color
+			draw_rect(Rect2(roundf(cos(a) * lerpf(2.0, 18.0 if is_b else 15.0, u)), roundf(-3.0 + sin(a) * lerpf(2.0, 18.0 if is_b else 15.0, u) - u * 4.0), 1.0, 1.0), scol)
 		return
 	if collected or not active:
 		return

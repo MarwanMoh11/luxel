@@ -397,8 +397,8 @@ func _draw_key_door(x0: float, y0: float, w: float, h: float, is_boss: bool) -> 
 			draw_rect(Rect2(bx, cy - 2.0, 2.0, 1.0), PAL["cream"])
 			draw_rect(Rect2(bx + 1.0, cy + 2.0, 1.0, 1.0), PAL["gold"])
 		draw_rect(Rect2(cx - 4.0, cy - 4.0, 8.0, 8.0), PAL["void"])
-		draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 6.0), PAL["gold"])
-		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 4.0), PAL["coral"])
+		draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 6.0), PAL["coral"] if _rattle_t > 0.0 else PAL["gold"])
+		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 4.0), PAL["cream"] if _rattle_t > 0.0 else PAL["coral"])
 		draw_rect(Rect2(cx - 1.0, cy - 2.0, 2.0, 4.0), PAL["cream"])
 	else:
 		draw_rect(Rect2(x0 + 3.0, y0 + 3.0, lw, 1.0), PAL["rose"])
@@ -407,7 +407,7 @@ func _draw_key_door(x0: float, y0: float, w: float, h: float, is_boss: bool) -> 
 		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["gold"])
 		draw_rect(Rect2(x0 + 2.0, y0 + h - 4.0, w - 4.0, 2.0), PAL["apricot"])
 		draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 7.0), PAL["void"])
-		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 5.0), PAL["apricot"])
+		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 5.0), PAL["coral"] if _rattle_t > 0.0 else PAL["apricot"])
 		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 1.0), PAL["gold"])
 		draw_rect(Rect2(cx - 1.0, cy - 1.0, 2.0, 2.0), PAL["cream"])
 		draw_rect(Rect2(cx - 1.0, cy + 1.0, 2.0, 2.0), PAL["gold"])
@@ -462,8 +462,26 @@ func _draw_ward_barrier(x0: float, y0: float, w: float, h: float) -> void:
 
 
 func _draw_light_bridge_glow(x0: float, y0: float, w: float, h: float, horiz: bool) -> void:
-	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, maxf(2.0, w - 4.0), maxf(2.0, h - 4.0)), Color(PAL["apricot"] as Color, 0.35))
-	draw_rect(Rect2(x0 + 4.0, y0 + 4.0, maxf(2.0, w - 8.0), maxf(2.0, h - 8.0)), Color(PAL["gold"] as Color, 0.55))
+	if horiz:
+		draw_rect(Rect2(x0 + 3.0, y0 + 2.0, maxf(2.0, w - 6.0), 1.0), PAL["apricot"])
+		draw_rect(Rect2(x0 + 3.0, y0 + h - 3.0, maxf(2.0, w - 6.0), 1.0), PAL["apricot"])
+		var sx: float = x0 + 5.0
+		var idx: int = 0
+		while sx < x0 + w - 5.0:
+			var hi: bool = (idx + _pulse_stage) % 3 == 0
+			draw_rect(Rect2(sx, y0 + 3.0, 2.0, maxf(1.0, h - 6.0)), PAL["gold"] if hi else PAL["apricot"])
+			sx += 4.0
+			idx += 1
+	else:
+		draw_rect(Rect2(x0 + 2.0, y0 + 3.0, 1.0, maxf(2.0, h - 6.0)), PAL["apricot"])
+		draw_rect(Rect2(x0 + w - 3.0, y0 + 3.0, 1.0, maxf(2.0, h - 6.0)), PAL["apricot"])
+		var sy: float = y0 + 5.0
+		var idx2: int = 0
+		while sy < y0 + h - 5.0:
+			var hi2: bool = (idx2 + _pulse_stage) % 3 == 0
+			draw_rect(Rect2(x0 + 3.0, sy, maxf(1.0, w - 6.0), 2.0), PAL["gold"] if hi2 else PAL["apricot"])
+			sy += 4.0
+			idx2 += 1
 	var step_count: int = 4
 	for i: int in range(step_count):
 		var frac: float = fmod(float(i) / float(step_count) + float(_pulse_stage) * 0.125, 1.0)
