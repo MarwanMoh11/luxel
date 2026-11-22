@@ -439,6 +439,7 @@ func _draw_reticle() -> void:
 	var arm: float = float(sz + 2)
 	var gap: float = float(sz + 1)
 	var zip_ready: bool = false
+	var lan_stolen: bool = false
 	var beam_ready: bool = false
 	if Lx.player != null and is_instance_valid(Lx.player):
 		var mz: Variant = Lx.player.get("muzzle_t")
@@ -450,11 +451,13 @@ func _draw_reticle() -> void:
 				gap = maxf(1.0, roundf(gap + lerpf(2.0, -1.0, bp)))
 				beam_ready = bp >= 0.999
 		var lan_v: Variant = Lx.player.get("lantern")
-		if lan_v is Object and is_instance_valid(lan_v) and (lan_v as Object).has_method("is_lure_active"):
-			zip_ready = bool((lan_v as Object).call("is_lure_active"))
+		if lan_v is Object and is_instance_valid(lan_v):
+			if (lan_v as Object).has_method("is_lure_active"):
+				zip_ready = bool((lan_v as Object).call("is_lure_active"))
+			lan_stolen = int((lan_v as Object).get("state")) == 4
 	var outline: Color = LxPalette.PAL["night"]
 	var cream: Color = LxPalette.PAL["cream"]
-	var draw_col: Color = cream if beam_ready else col
+	var draw_col: Color = LxPalette.PAL["coral"] if lan_stolen else (cream if beam_ready else (LxPalette.PAL["apricot"] if zip_ready else col))
 	var arms: Array[Rect2] = [
 		Rect2(pos.x - gap - arm, pos.y, arm, 1.0),
 		Rect2(pos.x + 1.0 + gap, pos.y, arm, 1.0),
@@ -466,7 +469,7 @@ func _draw_reticle() -> void:
 		arms.append(Rect2(pos.x + 2.0 + gap, pos.y - 1.0, arm - 2.0, 3.0))
 		arms.append(Rect2(pos.x - 1.0, pos.y - gap - arm + 1.0, 3.0, arm - 2.0))
 		arms.append(Rect2(pos.x - 1.0, pos.y + 2.0 + gap, 3.0, arm - 2.0))
-	if sz >= 2 or zip_ready:
+	if sz >= 2 or zip_ready or lan_stolen:
 		var d: float = float(sz + 1)
 		for corner: Vector2 in [
 			Vector2(-d, -d), Vector2(d, -d),

@@ -173,7 +173,7 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	if _events == null:
 		return
 	if shrine_id == "shrine_prism" or move_id == "prism":
-		_emit_narration("CUE_SHRINE_CLAIMED", "title", 3.0)
+		_emit_narration("MOVE_PRISM_NAME", "title", 3.2)
 		_events.prompt_requested.emit("PROMPT_PRISM", "", 6.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 

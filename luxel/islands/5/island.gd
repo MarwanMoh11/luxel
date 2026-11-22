@@ -299,7 +299,7 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	if shrine_id == "shrine_lens" or move_id == "lens":
 		_events.prompt_requested.emit("PROMPT_LENS", "", 6.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
-		_emit_narration("CUE_SHRINE_CLAIMED", "title", 3.0)
+		_emit_narration("MOVE_LENS_NAME", "title", 3.2)
 
 
 func _on_beacon_lit(island_id: int, beacon_id: String) -> void:

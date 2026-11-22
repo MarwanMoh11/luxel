@@ -221,6 +221,13 @@ func _draw_slot(s: Dictionary) -> void:
 		var border_k: String = "coral" if col_key == "coral" else ("gold" if slot_name == "title" else "dusk")
 		var rect := Rect2(roundf(160.0 - max_w * 0.5 - pad_x), roundf(y - 2.0), roundf(max_w + pad_x * 2.0), roundf(box_h))
 		LxPixelFont.draw_panel(self, rect, "night", border_k, "void")
+		if slot_name == "title":
+			var fin_c: Color = LxPalette.PAL["coral"] if col_key == "coral" else LxPalette.PAL["gold"]
+			for cp: Vector2 in [
+				Vector2(rect.position.x + 1.0, rect.position.y + 1.0), Vector2(rect.end.x - 2.0, rect.position.y + 1.0),
+				Vector2(rect.position.x + 1.0, rect.end.y - 2.0), Vector2(rect.end.x - 2.0, rect.end.y - 2.0),
+			]:
+				draw_rect(Rect2(cp, Vector2.ONE), fin_c)
 	for i: int in range(lines.size()):
 		LxPixelFont.draw_centered(self, lines[i], 160.0, y + gap * float(i), col, sc)
 

@@ -219,7 +219,7 @@ func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 	var pip_x: float = r.position.x + 150.0
 	for p: int in range(max_rank):
 		var pr := Rect2(pip_x + float(p * 8), r.position.y + 4.0, 5.0, 5.0)
-		_draw_rank_pip(pr, p < rank, sel, p)
+		_draw_rank_pip(pr, p < rank, sel, p, sel and not maxed and affordable and p == rank)
 	if _spark_t > 0.0 and i == _spark_row and _spark_pip >= 0:
 		_draw_purchase_sparkle(Vector2(pip_x + float(_spark_pip * 8) + 2.0, r.position.y + 6.0))
 
@@ -263,7 +263,13 @@ func _draw_brazier_icon(at: Vector2) -> void:
 	var x: float = roundf(at.x)
 	var y: float = roundf(at.y)
 	var tip: float = 0.0 if fmod(_elapsed * 5.2, 1.0) < 0.5 else 1.0
-	var bright: bool = fmod(_elapsed * 2.6, 1.0) < 0.55
+	var flare: bool = _spark_t > 0.0
+	var bright: bool = flare or fmod(_elapsed * 2.6, 1.0) < 0.55
+	if flare:
+		draw_rect(Rect2(x + 3.0, y - 2.0, 1.0, 2.0), LxPalette.PAL["cream"])
+		draw_rect(Rect2(x + 2.0, y - 1.0, 3.0, 2.0), LxPalette.PAL["gold"])
+		draw_rect(Rect2(x + 1.0, y - 2.0, 1.0, 1.0), LxPalette.PAL["gold"])
+		draw_rect(Rect2(x + 5.0, y - 2.0, 1.0, 1.0), LxPalette.PAL["cream"])
 	draw_rect(Rect2(x + 2.0 + tip, y, 1.0, 1.0), LxPalette.PAL["cream"] if bright else LxPalette.PAL["gold"])
 	draw_rect(Rect2(x + 2.0, y + 1.0, 3.0, 2.0), LxPalette.PAL["gold"])
 	draw_rect(Rect2(x + 3.0, y + 1.0, 1.0, 2.0), LxPalette.PAL["cream"])
@@ -309,13 +315,13 @@ func _draw_upgrade_icon(at: Vector2, uid: String, sel: bool) -> void:
 		draw_rect(Rect2(x + 6.0, y, 1.0, 1.0), LxPalette.PAL["cream"])
 
 
-func _draw_rank_pip(pr: Rect2, filled: bool, sel: bool, idx: int) -> void:
-	draw_rect(pr.grow(1.0), LxPalette.PAL["void"])
+func _draw_rank_pip(pr: Rect2, filled: bool, sel: bool, idx: int, next_buy: bool = false) -> void:
+	draw_rect(pr.grow(1.0), LxPalette.PAL["gold"] if (next_buy and fmod(_elapsed * 3.6, 1.0) < 0.55) else (LxPalette.PAL["apricot"] if next_buy else LxPalette.PAL["void"]))
 	if not filled:
 		draw_rect(pr, LxPalette.PAL["night"])
 		draw_rect(Rect2(pr.position.x + 1.0, pr.end.y - 1.0, 4.0, 1.0), LxPalette.PAL["dusk"])
 		draw_rect(Rect2(pr.end.x - 1.0, pr.position.y + 1.0, 1.0, 4.0), LxPalette.PAL["dusk"])
-		draw_rect(Rect2(pr.position.x + 2.0, pr.position.y + 2.0, 1.0, 1.0), LxPalette.PAL["dusk"])
+		draw_rect(Rect2(pr.position.x + 2.0, pr.position.y + 2.0, 1.0, 1.0), LxPalette.PAL["gold"] if next_buy else LxPalette.PAL["dusk"])
 		return
 	var shimmer: bool = fmod(_elapsed * 2.5 + float(idx) * 0.35, 1.0) < 0.4
 	draw_rect(pr, LxPalette.PAL["apricot"])
