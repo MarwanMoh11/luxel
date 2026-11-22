@@ -17,8 +17,34 @@ static func draw_indicators(hud: CanvasItem, blink_t: float, boss_active: bool, 
 	var fred: bool = flash_reduced()
 	_draw_lantern_edge_compass(hud, blink_t, fred)
 	_draw_counter_ready_halo(hud, blink_t, fred)
+	_draw_ember_ready_halo(hud, blink_t, fred)
 	if boss_active and boss_phase >= 2:
 		_draw_boss_phase_filigree(hud, blink_t, boss_phase, fred)
+
+
+static func _draw_ember_ready_halo(hud: CanvasItem, blink_t: float, fred: bool) -> void:
+	if Lx.state == null or not Lx.state.has_move("sunflare"):
+		return
+	if Lx.player == null or not is_instance_valid(Lx.player) or not Lx.player.has_method("get_ember_ratio"):
+		return
+	if float(Lx.player.call("get_ember_ratio")) < 0.999:
+		return
+	var pulse: bool = fred or (int(blink_t * 6.0) % 2 == 0)
+	var hi: Color = (LxPalette.PAL["cream"] if pulse else LxPalette.PAL["gold"]) as Color
+	var warm: Color = LxPalette.PAL["apricot"] as Color
+	var bg: Color = LxPalette.PAL["void"] as Color
+	# Left & right brass starlight pips framing the Ember gauge (246..314, 166..174)
+	for sx: float in [243.0, 315.0]:
+		hud.draw_rect(Rect2(sx - 1.0, 168.0, 3.0, 3.0), bg)
+		hud.draw_rect(Rect2(sx, 169.0, 1.0, 1.0), hi)
+		hud.draw_rect(Rect2(sx, 167.0, 1.0, 1.0), warm)
+		hud.draw_rect(Rect2(sx, 171.0, 1.0, 1.0), warm)
+	if not fred:
+		for mi: int in range(3):
+			var u: float = fmod(blink_t * 0.95 + float(mi) * 0.33, 1.0)
+			var mx: float = roundf(254.0 + float(mi) * 24.0 + sin(blink_t * 2.4 + float(mi) * 2.0) * 3.0)
+			var my: float = roundf(165.0 - u * 5.0)
+			hud.draw_rect(Rect2(mx, my, 1.0, 1.0), (LxPalette.PAL["cream"] if u < 0.35 else LxPalette.PAL["gold"]) as Color)
 
 
 static func _draw_counter_ready_halo(hud: CanvasItem, blink_t: float, fred: bool) -> void:

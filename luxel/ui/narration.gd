@@ -211,7 +211,7 @@ func _draw_slot(s: Dictionary) -> void:
 			if slot_name == "title":
 				base_y -= 13.0 if _slots.has("main") else 2.0
 			y = base_y - gap * float(lines.size() - 1)
-	var no_motion: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var no_motion: bool = LxHudFx.flash_reduced()
 	if not is_letterbox_on() and not no_motion and t < 0.22:
 		var ep: float = 1.0 - clampf(t / 0.22, 0.0, 1.0)
 		y += roundf(2.0 * ep * ep)
@@ -246,7 +246,7 @@ func _draw_prompt() -> void:
 	var box_h: float = 11.0
 	var lift_prompt: bool = is_letterbox_on() or _unlocked_move_count() >= 4
 	var y: float = 148.0 if lift_prompt else 164.0
-	var no_motion: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var no_motion: bool = LxHudFx.flash_reduced()
 	if not no_motion and _prompt_t < 0.20:
 		var pp: float = 1.0 - clampf(_prompt_t / 0.20, 0.0, 1.0)
 		y += roundf(2.0 * pp * pp)

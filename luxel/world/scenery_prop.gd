@@ -212,6 +212,8 @@ func gust_sway(origin: Vector2, radius: float, strength: float) -> void:
 	_sway_dir = 1.0 if diff.x >= 0.0 else -1.0
 	_sway_amp = maxf(_sway_amp if _sway_t > 0.0 else 0.0, clampf(1.1 + (strength / 52.0) * falloff * 2.1, 1.1, 3.0))
 	_sway_t = maxf(_sway_t, 0.36 + 0.14 * falloff)
+	if falloff > 0.35 and (prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("pendulum")):
+		_play_sway_sfx()
 	set_process(true)
 
 
