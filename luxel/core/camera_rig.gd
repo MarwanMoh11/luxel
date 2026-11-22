@@ -16,6 +16,7 @@ var _slide_t: float = 1.0
 var _slide_dur: float = DEFAULT_SLIDE_S
 var _shake_trauma: float = 0.0
 var _look_ahead: Vector2 = Vector2.ZERO
+var _kick_offset: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -31,6 +32,7 @@ func set_bounds(bounds: Rect2, locked_room: bool = false) -> void:
 func snap_to(pos: Vector2) -> void:
 	_slide_t = 1.0
 	_look_ahead = Vector2.ZERO
+	_kick_offset = Vector2.ZERO
 	_target_pos = _clamp_center(pos)
 	global_position = _target_pos.round()
 
@@ -47,6 +49,14 @@ func slide_to_room(room_rect: Rect2, duration: float = DEFAULT_SLIDE_S) -> void:
 
 func add_shake(intensity: float) -> void:
 	_shake_trauma = clampf(maxf(_shake_trauma, intensity), 0.0, 1.0)
+
+
+func add_kick(dir: Vector2, px: float = 3.0) -> void:
+	if shake_scale <= 0.01 or dir.length_squared() <= 0.0001:
+		return
+	var target_kick: Vector2 = dir.normalized() * clampf(px, 0.5, 5.0) * shake_scale
+	if target_kick.length_squared() >= _kick_offset.length_squared():
+		_kick_offset = target_kick
 
 
 func follow(target: Vector2, dt: float) -> void:
@@ -74,7 +84,11 @@ func follow(target: Vector2, dt: float) -> void:
 		_shake_trauma = maxf(0.0, _shake_trauma - dt * 2.6)
 	else:
 		_shake_trauma = 0.0
-	global_position = (_target_pos + shake_off).round()
+	if _kick_offset.length_squared() > 0.01:
+		_kick_offset = _kick_offset.lerp(Vector2.ZERO, minf(1.0, dt * 18.0))
+	else:
+		_kick_offset = Vector2.ZERO
+	global_position = (_target_pos + shake_off + _kick_offset).round()
 
 
 func is_on_screen(world_pos: Vector2, margin: float = 8.0) -> bool:

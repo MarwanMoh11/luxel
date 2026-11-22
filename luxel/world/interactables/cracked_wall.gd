@@ -5,6 +5,8 @@ extends LxInteractable
 var broken: bool = false
 var size: Vector2 = Vector2(16.0, 16.0)
 var _break_t: float = 0.0
+var _hint_t: float = 0.0
+var _pulse_stage: int = 0
 
 
 func setup(spec: Dictionary) -> void:
@@ -15,13 +17,25 @@ func setup(spec: Dictionary) -> void:
 	broken = bool(props.get("broken", false))
 	active = not broken
 	_break_t = 0.0
+	_hint_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	var dirty: bool = false
 	if _break_t > 0.0:
 		_break_t = maxf(0.0, _break_t - dt)
+		dirty = true
+	if _hint_t > 0.0:
+		_hint_t = maxf(0.0, _hint_t - dt)
+		dirty = true
+	if active and not broken:
+		var st: int = int(floorf(_clock * 1.4 + absf(pos.x * 0.02 + pos.y * 0.03))) % 4
+		if st != _pulse_stage:
+			_pulse_stage = st
+			dirty = true
+	if dirty:
 		queue_redraw()
 
 
@@ -32,11 +46,17 @@ func on_hit(hit: LxHit) -> bool:
 		broken = true
 		active = false
 		_break_t = 0.38
+		_hint_t = 0.0
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.16)
 		_emit_sfx("stone_break")
 		_emit_save("cracked_" + id)
 		_notify_linked_targets(true)
+		queue_redraw()
+		return true
+	if hit.source in ["bolt", "prism_bolt", "throw", "recall"]:
+		_hint_t = 0.30
+		_emit_sfx("lantern_land")
 		queue_redraw()
 		return true
 	return false
@@ -109,8 +129,17 @@ func _draw() -> void:
 		draw_line(a, b, PAL["void"], 2.0)
 		draw_line(b, c, PAL["void"], 1.5)
 	draw_rect(Rect2(hub - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["void"])
-	draw_line(Vector2(hub.x - 2.0, hub.y - 1.0), Vector2(hub.x + 2.0, hub.y + 1.0), PAL["apricot"], 1.0)
-	draw_rect(Rect2(hub, Vector2(1.0, 1.0)), PAL["gold"])
+	var hint_on: bool = _hint_t > 0.0
+	var seam_c: Color = (PAL["cream"] if hint_on else (PAL["gold"] if _pulse_stage == 0 else PAL["apricot"])) as Color
+	draw_line(Vector2(hub.x - 2.0, hub.y - 1.0), Vector2(hub.x + 2.0, hub.y + 1.0), seam_c, 1.0)
+	draw_rect(Rect2(hub, Vector2(1.0, 1.0)), PAL["cream"] if (hint_on or _pulse_stage == 0) else PAL["gold"])
+	if hint_on:
+		var u: float = 1.0 - clampf(_hint_t / 0.30, 0.0, 1.0)
+		draw_line(Vector2(hub.x - 3.0, hub.y + 1.0), Vector2(hub.x + 3.0, hub.y - 1.0), PAL["gold"], 1.0)
+		for k: int in range(4):
+			var a: float = (TAU * float(k)) / 4.0 + 0.5
+			var dp: Vector2 = hub + Vector2(roundf(cos(a) * (3.0 + u * 5.0)), roundf(sin(a) * (3.0 + u * 5.0) + u * 3.0))
+			draw_rect(Rect2(dp, Vector2.ONE), PAL["stone"] if k % 2 == 0 else PAL["gold"])
 	draw_rect(Rect2(x0 + 2.0, y0 + h - 2.0, 2.0, 2.0), PAL["mauve"])
 	draw_rect(Rect2(x0 + 2.0, y0 + h - 2.0, 1.0, 1.0), PAL["stone"])
 	draw_rect(Rect2(x0 + w - 5.0, y0 + h - 2.0, 2.0, 1.0), PAL["dusk"])

@@ -7,6 +7,7 @@ var requires_prism: bool = false
 var reset_time: float = 0.0
 var _reset_left: float = 0.0
 var _pulse_stage: int = 0
+var _reject_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -15,18 +16,22 @@ func setup(spec: Dictionary) -> void:
 	requires_prism = bool(props.get("requires_prism", false))
 	reset_time = maxf(0.0, float(props.get("reset_time", 0.0)))
 	activated = bool(props.get("activated", false))
+	_reject_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
 	var changed: bool = false
+	if _reject_t > 0.0:
+		_reject_t = maxf(0.0, _reject_t - dt)
+		changed = true
 	if activated and reset_time > 0.0:
 		_reset_left -= dt
+		changed = true
 		if _reset_left <= 0.0:
 			activated = false
 			_notify_linked_targets(false)
-			changed = true
 	if active:
 		var rate: float = 3.0 if activated else 1.8
 		var st: int = int(floorf(_clock * rate + absf(pos.x * 0.03))) % 4
@@ -41,6 +46,11 @@ func on_hit(hit: LxHit) -> bool:
 	if hit == null or not active:
 		return false
 	if requires_prism and hit.source != "prism_bolt":
+		if hit.source in ["bolt", "beam", "throw", "recall"]:
+			_reject_t = 0.24
+			_emit_sfx("mirror_ping")
+			queue_redraw()
+			return true
 		return false
 	if hit.source not in ["bolt", "prism_bolt", "beam", "throw", "recall", "sunflare"]:
 		return false
@@ -105,11 +115,19 @@ func _draw() -> void:
 		draw_rect(Rect2(0.0, 3.0, 1.0, 1.0), glint_c)
 		draw_rect(Rect2(-6.0, -1.0, 1.0, 1.0), glint_c)
 		draw_rect(Rect2(5.0, -1.0, 1.0, 1.0), glint_c)
+		if reset_time > 0.0 and _reset_left > 0.0:
+			var frac: float = clampf(_reset_left / reset_time, 0.0, 1.0)
+			var bar_w: float = roundf(10.0 * frac)
+			draw_rect(Rect2(-5.0, 6.0, 10.0, 2.0), PAL["void"])
+			if bar_w >= 1.0:
+				draw_rect(Rect2(-5.0, 6.0, bar_w, 1.0), PAL["cream"] if frac > 0.35 else PAL["coral"])
 	else:
-		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), PAL["deep"])
-		draw_rect(Rect2(-3.0, -2.0, 6.0, 3.0), PAL["blue"])
-		var shine: Color = (PAL["ice"] if (requires_prism or _pulse_stage == 0) else PAL["sky"]) as Color
+		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), PAL["sky"] if _reject_t > 0.0 else PAL["deep"])
+		draw_rect(Rect2(-3.0, -2.0, 6.0, 3.0), PAL["ice"] if _reject_t > 0.0 else PAL["blue"])
+		var shine: Color = (PAL["cream"] if _reject_t > 0.0 else (PAL["ice"] if (requires_prism or _pulse_stage == 0) else PAL["sky"])) as Color
 		draw_rect(Rect2(-2.0, -2.0, 4.0, 1.0), PAL["sky"])
 		draw_rect(Rect2(-2.0, -2.0, 2.0, 1.0), shine)
 		draw_rect(Rect2(-1.0, -2.0, 2.0, 3.0), PAL["void"])
 		draw_rect(Rect2(-2.0, -1.0, 1.0, 1.0), shine)
+		if _reject_t > 0.0:
+			draw_arc(Vector2(0.0, -1.0), 8.0, 0.0, TAU, 12, PAL["ice"], 1.0, false)

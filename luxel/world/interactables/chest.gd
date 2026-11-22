@@ -7,6 +7,7 @@ var reward_kind: String = "shards"
 var amount: int = 15
 var dungeon_id: String = ""
 var _glint_stage: int = 0
+var _open_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -17,12 +18,16 @@ func setup(spec: Dictionary) -> void:
 	dungeon_id = str(props.get("dungeon_id", region_id))
 	opened = bool(props.get("opened", false))
 	_glint_stage = _get_glint_stage()
+	_open_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	_uses_prop_anim = false
 	super.tick(dt)
+	if _open_t > 0.0:
+		_open_t = maxf(0.0, _open_t - dt)
+		queue_redraw()
 	if opened:
 		return
 	var stage: int = _get_glint_stage()
@@ -36,6 +41,7 @@ func interact(_actor: Node = null) -> bool:
 		return false
 	opened = true
 	_glint_stage = 0
+	_open_t = 0.44
 	if Lx.state != null:
 		match reward_kind:
 			"ember_piece":
@@ -50,6 +56,7 @@ func interact(_actor: Node = null) -> bool:
 				_emit_sfx("key_pickup")
 			_:
 				Lx.state.add_shards(amount)
+				_emit_sfx("shard_pickup")
 	if Lx.events != null:
 		Lx.events.shake_requested.emit(0.10)
 	_emit_sfx("chest_open")
@@ -87,6 +94,17 @@ func _draw() -> void:
 		_draw_fallback()
 	if not opened:
 		_draw_lid_glint(_get_glint_stage())
+	elif _open_t > 0.0:
+		var u: float = 1.0 - clampf(_open_t / 0.44, 0.0, 1.0)
+		if u < 0.55:
+			draw_arc(Vector2(0.0, -7.0), roundf(lerpf(3.0, 16.0, u / 0.55)), 0.0, TAU, 14, (PAL["cream"] if u < 0.25 else PAL["gold"]) as Color, 1.0, false)
+		for k: int in range(6):
+			var ang: float = -PI * 0.85 + float(k) * (PI * 0.70 / 5.0)
+			var rad: float = lerpf(2.0, 15.0, u)
+			var sx: float = roundf(cos(ang) * rad)
+			var sy: float = roundf(-7.0 + sin(ang) * rad - u * 4.0)
+			var sc: Color = (PAL["cream"] if u < 0.35 else (PAL["gold"] if k % 2 == 0 else PAL["apricot"])) as Color
+			draw_rect(Rect2(sx, sy, 2.0 if u < 0.4 else 1.0, 2.0 if u < 0.4 else 1.0), sc)
 
 
 func _draw_fallback() -> void:

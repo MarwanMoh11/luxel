@@ -96,6 +96,35 @@ func try_load_sprite() -> void:
 		return
 	sprite_sheet = LxSpriteSheet.load_sheet("res://luxel/art/wick/wick.json")
 
+
+func _surface_at(world_pos: Vector2) -> String:
+	if Lx.world == null or not is_instance_valid(Lx.world):
+		return "stone"
+	var tile: String = str(Lx.world.call("tile_at", world_pos)) if Lx.world.has_method("tile_at") else "floor"
+	if tile == "bridge":
+		return "wood"
+	var is_dung: bool = bool(Lx.world.get("is_dungeon"))
+	var isl: int = int(Lx.world.get("current_island_id"))
+	if not is_dung:
+		if isl == 2 and tile == "path":
+			return "wood"
+		if tile == "floor" and isl in [1, 3, 4]:
+			return "grass"
+	return "stone"
+
+
+func _dust_color_for(surf: String) -> Color:
+	if surf == "grass":
+		return LxPalette.color("lime") if randf() < 0.45 else LxPalette.color("jade")
+	if surf == "wood":
+		return LxWick.PAL_APRICOT if randf() < 0.45 else PAL_MAUVE
+	var isl: int = int(Lx.world.get("current_island_id")) if (Lx.world != null and is_instance_valid(Lx.world)) else 1
+	if isl == 6:
+		return LxWick.PAL_CORAL if randf() < 0.35 else LxWick.PAL_STONE
+	if isl == 7:
+		return LxWick.PAL_ICE if randf() < 0.45 else LxWick.PAL_SKY
+	return LxWick.PAL_STONE if randf() < 0.55 else PAL_MAUVE
+
 func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: Vector2, glide_lift: float) -> void:
 	if _last_clock_t < 0.0 or clock_t < _last_clock_t:
 		_last_clock_t = clock_t
@@ -112,7 +141,7 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 	var gliding: bool = wick.is_gliding()
 	var zipping: bool = wick.is_zipping()
 
-	# Footstep dust puffs (stone/mauve, 2-3 px, drift up & shrink)
+	# Surface-aware footstep dust puffs & biome-matched footsteps (grass / wood / stone)
 	if wick.velocity.length() > 24.0 and not dashing and not gliding and not zipping:
 		_dust_cd -= step_dt
 		if _dust_cd <= 0.0:
@@ -120,22 +149,24 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			var mdir: Vector2 = wick.velocity.normalized()
 			var foot: Vector2 = wick.global_position - mdir * 2.0 + Vector2(randf_range(-2.5, 2.5), randf_range(-0.5, 1.0))
 			var dvel: Vector2 = Vector2(-mdir.x * randf_range(4.0, 9.0) + randf_range(-3.0, 3.0), randf_range(-11.0, -6.0))
-			var dcol: Color = LxWick.PAL_STONE if randf() < 0.55 else PAL_MAUVE
+			var surf: String = _surface_at(wick.global_position)
+			var dcol: Color = _dust_color_for(surf)
 			_spawn_mote(foot, dvel, randf_range(0.26, 0.36), dcol, float(randi_range(2, 3)), true, 0.18, false, 0.72)
 			_step_parity = (_step_parity + 1) & 1
 			if _step_parity == 1:
-				wick.emit_sfx("footstep_stone", wick.global_position, false)
+				wick.emit_sfx("footstep_" + surf, wick.global_position, false)
 	else:
 		_dust_cd = minf(_dust_cd, 0.06)
 
-	# Lantern candlelight ember motes (gold/cream, 1x1 rising around hand_pos)
+	# Lantern candlelight ember motes (gold/cream, 1x1 rising around hand_pos; warm coral urgency at <= 1 heart)
 	if lan_in_hand:
+		var low_hp: bool = wick.get_hearts() > 0.0 and wick.get_hearts() <= 1.0
 		_mote_cd -= step_dt
 		if _mote_cd <= 0.0:
-			_mote_cd = MOTE_INTERVAL
+			_mote_cd = MOTE_INTERVAL * (0.78 if low_hp else 1.0)
 			var origin: Vector2 = wick.global_position + hand_pos + Vector2(randf_range(-2.5, 2.5), randf_range(-2.0, 1.0))
 			var mvel: Vector2 = Vector2(randf_range(-5.0, 5.0), randf_range(-16.0, -9.0))
-			var mcol: Color = LxWick.PAL_CREAM if randf() < 0.40 else LxWick.PAL_GOLD
+			var mcol: Color = (LxWick.PAL_CORAL if randf() < 0.65 else LxWick.PAL_APRICOT) if low_hp else (LxWick.PAL_CREAM if randf() < 0.40 else LxWick.PAL_GOLD)
 			_spawn_mote(origin, mvel, randf_range(0.38, 0.54), mcol, 1.0, false, 0.45, true, 0.92)
 	else:
 		_mote_cd = minf(_mote_cd, 0.08)
@@ -199,9 +230,11 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		wick.draw_arc(((r["pos"] as Vector2) + off).round(), lerpf(float(r["r0"]), float(r["r1"]), t), 0.0, TAU, 20, Color(r["col"] as Color, 1.0 - t), float(r["w"]))
 
 	if lan_in_hand:
-		var pulse: float = 0.92 + 0.08 * sin(clock_t * 7.0)
-		wick.draw_circle(hand_pos, 13.0 * pulse, Color(LxWick.PAL_GOLD, 0.10))
-		wick.draw_circle(hand_pos, 6.5 * pulse, Color(LxWick.PAL_APRICOT, 0.15))
+		var low_hp: bool = wick.get_hearts() > 0.0 and wick.get_hearts() <= 1.0
+		var beat: float = sin(clock_t * (9.5 if (low_hp and not flash_red) else 7.0))
+		var pulse: float = (0.86 + 0.14 * beat) if low_hp else (0.92 + 0.08 * beat)
+		wick.draw_circle(hand_pos, 13.0 * pulse, Color(LxWick.PAL_CORAL if low_hp else LxWick.PAL_GOLD, 0.13 if low_hp else 0.10))
+		wick.draw_circle(hand_pos, 6.5 * pulse, Color(LxWick.PAL_APRICOT, 0.17 if low_hp else 0.15))
 
 	var hit_white: bool = wick.hurt_flash > 0.55 and not flash_red
 	var mod: Color = Color(LxWick.PAL_CREAM, alpha) if hit_white else Color(1.0, 1.0, 1.0, alpha)

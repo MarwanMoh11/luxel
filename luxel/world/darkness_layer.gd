@@ -149,6 +149,11 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	_mat.set_shader_parameter("darkness_strength", clampf(darkness_strength, 0.0, 1.0))
 	_mat.set_shader_parameter("biome_tint", _current_tint)
 	_mat.set_shader_parameter("vignette_strength", clampf(vignette_strength, 0.0, 0.5))
+	var dpulse: float = 0.0
+	if Lx.state != null and is_instance_valid(Lx.state) and Lx.state.hearts > 0.0 and Lx.state.hearts <= 1.0:
+		var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+		dpulse = 0.45 if flash_red else (0.52 + 0.48 * sin(_clock * 6.4))
+	_mat.set_shader_parameter("danger_pulse", dpulse)
 
 	# Dual-frequency organic flame breath
 	var flicker: float = 0.955 + 0.030 * sin(_clock * 5.2) + 0.015 * sin(_clock * 13.7)

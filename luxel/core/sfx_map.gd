@@ -38,6 +38,9 @@ const EXACT: Dictionary = {
 	"boss_victory": {"id": "boss_victory", "pitch": 1.00, "db": 0.0},
 	# Player
 	"footstep": {"id": "footstep_stone", "pitch": 1.00, "db": -3.5},
+	"footstep_stone": {"id": "footstep_stone", "pitch": 1.00, "db": -3.5},
+	"footstep_grass": {"id": "footstep_grass", "pitch": 1.00, "db": -3.5},
+	"footstep_wood": {"id": "footstep_wood", "pitch": 1.00, "db": -3.0},
 	"beam_ready": {"id": "beam_ready", "pitch": 1.00, "db": 0.0},
 	"bolt_wall": {"id": "bolt_wall", "pitch": 1.00, "db": 0.0},
 	"lantern_catch": {"id": "lantern_catch", "pitch": 1.00, "db": 0.0},

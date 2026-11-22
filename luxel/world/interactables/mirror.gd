@@ -8,6 +8,8 @@ var angle_step_deg: float = 45.0
 var double_sided: bool = true
 var size: Vector2 = Vector2(16.0, 16.0)
 var _flash_t: float = 0.0
+var _turn_t: float = 0.0
+var _glint_stage: int = 0
 
 
 func setup(spec: Dictionary) -> void:
@@ -25,21 +27,33 @@ func setup(spec: Dictionary) -> void:
 	elif props.has("angle_deg"):
 		var rad: float = deg_to_rad(float(props.get("angle_deg", 45.0)))
 		normal = Vector2(cos(rad), sin(rad)).normalized()
+	_turn_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	var dirty: bool = false
 	if _flash_t > 0.0:
 		_flash_t = maxf(0.0, _flash_t - dt)
-		if _flash_t <= 0.0:
-			queue_redraw()
+		dirty = true
+	if _turn_t > 0.0:
+		_turn_t = maxf(0.0, _turn_t - dt)
+		dirty = true
+	if active:
+		var st: int = int(floorf(_clock * 1.6 + absf(pos.x * 0.03))) % 6
+		if st != _glint_stage:
+			_glint_stage = st
+			dirty = true
+	if dirty:
+		queue_redraw()
 
 
 func interact(_actor: Node = null) -> bool:
 	if not active or not rotatable:
 		return false
 	normal = normal.rotated(deg_to_rad(angle_step_deg)).normalized()
+	_turn_t = 0.18
 	_emit_sfx("mirror_turn")
 	queue_redraw()
 	return true
@@ -156,6 +170,16 @@ func _draw() -> void:
 	draw_line(front, fin_tip, PAL["night"], 3.0)
 	draw_line(front, fin_tip, PAL["apricot"], 1.0)
 	draw_rect(Rect2(fin_tip, Vector2(1.0, 1.0)), PAL["cream"] if lit else PAL["gold"])
+	# Subtle optical sightline tick so players read the reflection angle at a glance.
+	var sight_a: Vector2 = (normal * 8.0).round()
+	var sight_b: Vector2 = (normal * 10.0).round()
+	draw_rect(Rect2(sight_a, Vector2.ONE), PAL["gold"] if (_turn_t > 0.0 or lit) else PAL["sky"])
+	draw_rect(Rect2(sight_b, Vector2.ONE), PAL["cream"] if (_turn_t > 0.0 or lit) else PAL["ice"])
+	if not lit and _glint_stage <= 1:
+		var gpos: Vector2 = (tang * (-0.35 if _glint_stage == 0 else 0.25) + front).round()
+		draw_rect(Rect2(gpos, Vector2.ONE), PAL["cream"])
+	if _turn_t > 0.0:
+		draw_arc(Vector2.ZERO, roundf(minf(w, h) * 0.52), 0.0, TAU, 16, PAL["gold"], 1.0, false)
 	if lit:
 		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"])
 		draw_rect(Rect2(0.0, -2.0, 1.0, 5.0), PAL["gold"])

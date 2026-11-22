@@ -44,6 +44,8 @@ var _items: Array[Particle] = []
 var _sparks: Array[Dictionary] = []
 var _rings: Array[Dictionary] = []
 var _pillars: Array[Dictionary] = []
+var _slashes: Array[Dictionary] = []
+var _shard_orbs: Array[Dictionary] = []
 var _vfx_rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _bound_events: LxEventBus = null
 
@@ -97,6 +99,8 @@ func configure(island_id: int, world_bounds: Rect2, is_dungeon: bool) -> void:
 	_sparks.clear()
 	_rings.clear()
 	_pillars.clear()
+	_slashes.clear()
+	_shard_orbs.clear()
 
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(_island_id * 7919 + (131 if is_dungeon else 17) + int(world_bounds.size.x) * 31)
@@ -154,7 +158,7 @@ func _add_group(rng: RandomNumberGenerator, count: int, kind: int, c1: String, c
 func tick(dt: float, cam_center: Vector2) -> void:
 	if _bound_events != Lx.events:
 		_sync_events()
-	if _items.is_empty() and _sparks.is_empty() and _rings.is_empty() and _pillars.is_empty():
+	if _items.is_empty() and _sparks.is_empty() and _rings.is_empty() and _pillars.is_empty() and _slashes.is_empty() and _shard_orbs.is_empty():
 		return
 	_cam_center = cam_center
 	_clock += dt
@@ -186,6 +190,8 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		s["age"] = age
 	_age_pool(_rings, dt)
 	_age_pool(_pillars, dt)
+	_age_pool(_slashes, dt)
+	_tick_shard_orbs(dt)
 	queue_redraw()
 
 func _age_pool(pool: Array[Dictionary], dt: float) -> void:
@@ -203,7 +209,7 @@ func _draw_cross(pt: Vector2, arm_col: Color, core_col: Color) -> void:
 	draw_rect(Rect2(pt, Vector2.ONE), core_col)
 
 func _draw() -> void:
-	if _items.is_empty() and _sparks.is_empty() and _rings.is_empty() and _pillars.is_empty():
+	if _items.is_empty() and _sparks.is_empty() and _rings.is_empty() and _pillars.is_empty() and _slashes.is_empty() and _shard_orbs.is_empty():
 		return
 	for p: Particle in _items:
 		var pt: Vector2 = p.pos.round()
@@ -240,6 +246,10 @@ func _draw() -> void:
 		_draw_pillar(pl)
 	for r: Dictionary in _rings:
 		_draw_ring(r)
+	for sl: Dictionary in _slashes:
+		_draw_slash(sl)
+	for ob: Dictionary in _shard_orbs:
+		_draw_shard_orb(ob)
 	for s: Dictionary in _sparks:
 		_draw_spark(s)
 
@@ -287,6 +297,74 @@ func _draw_spark(s: Dictionary) -> void:
 	var sz: int = s0 if u < 0.35 else (maxi(1, s0 - 1) if u < 0.72 else 1)
 	var off: float = floor(float(sz) * 0.5)
 	draw_rect(Rect2((s["pos"] as Vector2).round() - Vector2(off, off), Vector2(float(sz), float(sz))), col)
+
+func _draw_slash(sl: Dictionary) -> void:
+	var u: float = clampf(float(sl["age"]) / maxf(0.01, float(sl["dur"])), 0.0, 1.0)
+	var half_l: float = roundf(float(sl["len"]) * (0.55 + 0.45 * u) * (1.0 - u * 0.65))
+	if half_l < 2.0:
+		return
+	var c: Vector2 = (sl["pos"] as Vector2).round()
+	var d: Vector2 = sl["dir"] as Vector2
+	var a: Vector2 = (c - d * half_l).round()
+	var b: Vector2 = (c + d * half_l).round()
+	draw_line(a, b, sl["outer"] as Color, 3.0 if u < 0.35 else 1.0, false)
+	if u < 0.65:
+		draw_line((c - d * roundf(half_l * 0.7)).round(), (c + d * roundf(half_l * 0.7)).round(), sl["core"] as Color, 1.0, false)
+
+
+func _spawn_slash(pos: Vector2, dir: Vector2, length: float, dur: float, core_k: String, outer_k: String) -> void:
+	if _slashes.size() >= 10:
+		_slashes.pop_front()
+	var dn: Vector2 = dir.normalized() if dir.length_squared() > 0.001 else Vector2.RIGHT
+	_slashes.append({"pos": pos, "dir": dn, "len": length, "age": 0.0, "dur": dur, "core": LxPalette.color(core_k), "outer": LxPalette.color(outer_k)})
+
+
+func _spawn_shard_orbs(pos: Vector2, count: int) -> void:
+	var n: int = clampi(count, 1, 7)
+	for i: int in range(n):
+		if _shard_orbs.size() >= 20:
+			_shard_orbs.pop_front()
+		var ang: float = _vfx_rng.randf_range(0.0, TAU)
+		var v: Vector2 = Vector2(cos(ang), sin(ang)) * _vfx_rng.randf_range(38.0, 74.0) + Vector2(0.0, -16.0)
+		_shard_orbs.append({"pos": pos, "vel": v, "age": 0.0, "delay": 0.12 + float(i) * 0.045, "sound": i == 0 or i == n - 1})
+
+
+func _tick_shard_orbs(dt: float) -> void:
+	if _shard_orbs.is_empty():
+		return
+	var target: Vector2 = _player_pos() + Vector2(0.0, -5.0)
+	for i: int in range(_shard_orbs.size() - 1, -1, -1):
+		var ob: Dictionary = _shard_orbs[i]
+		var age: float = float(ob["age"]) + dt
+		ob["age"] = age
+		var p: Vector2 = ob["pos"] as Vector2
+		var v: Vector2 = ob["vel"] as Vector2
+		if age < float(ob["delay"]):
+			v *= maxf(0.0, 1.0 - 4.2 * dt)
+			p += v * dt
+		else:
+			var to_p: Vector2 = target - p
+			var d: float = to_p.length()
+			if d <= 7.0 or age >= 1.35:
+				if bool(ob["sound"]) and Lx.audio != null:
+					Lx.audio.play_sfx("shard_pickup", target, false)
+				_spawn_sparks(target, 2, Ramp.GOLD, 16.0, 38.0, 0.14, 0.24, 4.5, 16.0, 1, Vector2.UP)
+				_shard_orbs.remove_at(i)
+				continue
+			var spd: float = minf(260.0, 115.0 + (age - float(ob["delay"])) * 240.0)
+			v = v.lerp((to_p / d) * spd, minf(1.0, dt * 11.0))
+			p += v * dt
+		ob["pos"] = p
+		ob["vel"] = v
+
+
+func _draw_shard_orb(ob: Dictionary) -> void:
+	var p: Vector2 = (ob["pos"] as Vector2).round()
+	var bright: bool = fmod(float(ob["age"]) * 8.0, 1.0) < 0.55
+	draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), PAL["gold"])
+	draw_rect(Rect2(p + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), PAL["gold"])
+	draw_rect(Rect2(p, Vector2.ONE), PAL["cream"] if bright else PAL["apricot"])
+
 
 func _spawn_ring(pos: Vector2, r0: float, r1: float, dur: float, c1: String, c2: String, dia: bool = false) -> void:
 	if _rings.size() >= MAX_RINGS:
@@ -348,25 +426,34 @@ func _boss_pos(boss_id: String) -> Vector2:
 					return (e as Node2D).global_position
 	return _player_pos()
 
-func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
+func _on_enemy_hit(enemy: Object, hit: Object, result: int) -> void:
 	if enemy == null or not is_instance_valid(enemy):
 		return
 	var pos: Vector2 = ((enemy as Node2D).global_position if enemy is Node2D else _player_pos()) + Vector2(0.0, -5.0)
+	var hdir: Vector2 = (hit.get("dir") as Vector2) if (hit != null and hit.get("dir") is Vector2) else (pos - _player_pos()).normalized()
 	if result <= 0:
 		_spawn_sparks(pos, 4, Ramp.STEEL, 34.0, 68.0, 0.16, 0.26, 6.0, 0.0, 2)
 		_spawn_ring(pos, 2.0, 10.0, 0.18, "ice", "stone", true)
 	elif result == 1:
-		_spawn_sparks(pos, 5, Ramp.GOLD, 32.0, 64.0, 0.18, 0.30, 5.2, 8.0, 2)
+		_spawn_sparks(pos, 5, Ramp.GOLD, 32.0, 64.0, 0.18, 0.30, 5.2, 8.0, 2, hdir)
+		_spawn_slash(pos, hdir, 10.0, 0.10, "cream", "gold")
 	elif result == 2:
-		_spawn_sparks(pos, 10, Ramp.GOLD, 48.0, 96.0, 0.24, 0.42, 4.2, 16.0, 3)
+		_spawn_sparks(pos, 10, Ramp.GOLD, 48.0, 96.0, 0.24, 0.42, 4.2, 16.0, 3, hdir)
 		_spawn_ring(pos, 3.0, 22.0, 0.28, "cream", "gold", false)
+		_spawn_slash(pos, hdir, 18.0, 0.15, "cream", "apricot")
+		if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+			Lx.camera.call("add_kick", hdir, 2.8)
 		_emit_juice(0.24, 0.032)
 
-func _on_enemy_killed(_e: Object, _k: String, pos: Vector2, opened: bool) -> void:
+func _on_enemy_killed(e: Object, _k: String, pos: Vector2, opened: bool) -> void:
 	var p: Vector2 = pos + Vector2(0.0, -4.0)
 	_spawn_sparks(p, 6, Ramp.SHADOW, 20.0, 52.0, 0.28, 0.48, 3.6, 12.0, 2)
 	_spawn_sparks(p, 10 if opened else 6, Ramp.GOLD, 34.0, 82.0, 0.26, 0.50, 3.8, 28.0, 3 if opened else 2)
 	_spawn_ring(p, 4.0, 26.0, 0.34, "cream" if opened else "gold", "gold" if opened else "apricot", false)
+	var drop_v: Variant = e.get("shard_drop") if (e != null and is_instance_valid(e)) else 2
+	var drop_n: int = int(drop_v) if (drop_v is int or drop_v is float) else 2
+	if drop_n > 0:
+		_spawn_shard_orbs(p, mini(7, maxi(2, drop_n / 2 + (1 if opened else 0))))
 	_emit_juice(0.30 if opened else 0.16)
 
 func _on_boss_phase_changed(boss_id: String, _phase: int) -> void:
@@ -377,11 +464,14 @@ func _on_boss_phase_changed(boss_id: String, _phase: int) -> void:
 	_spawn_sparks(p, 8, Ramp.GOLD, 40.0, 92.0, 0.30, 0.55, 3.2, 22.0, 3)
 	_emit_juice(0.48, 0.055)
 
-func _grand_burst(pos: Vector2) -> void:
-	_spawn_pillar(pos, 0.72, 14.0, 110.0, "cream", "gold", "apricot")
-	_spawn_sparks(pos, 24, Ramp.GOLD, 24.0, 90.0, 0.44, 0.78, 2.3, 50.0, 3, Vector2.UP, 9.0)
-	_spawn_ring(pos, 6.0, 64.0, 0.55, "cream", "gold", false)
-	_emit_juice(0.55)
+func _grand_burst(pos: Vector2, slowmo: bool = false) -> void:
+	_spawn_pillar(pos, 0.78, 14.0, 114.0, "cream", "gold", "apricot")
+	_spawn_sparks(pos, 26, Ramp.GOLD, 24.0, 96.0, 0.44, 0.80, 2.2, 52.0, 3, Vector2.UP, 9.0)
+	_spawn_ring(pos, 6.0, 68.0, 0.56, "cream", "gold", false)
+	_spawn_ring(pos, 3.0, 44.0, 0.44, "gold", "apricot", true)
+	_emit_juice(0.58, 0.11 if slowmo else 0.06)
+	if slowmo and Lx.hitstop != null and is_instance_valid(Lx.hitstop) and Lx.hitstop.has_method("trigger_slowmo"):
+		Lx.hitstop.call("trigger_slowmo", 0.34, 0.42)
 
 func _discovery_burst(pos: Vector2, warm: bool) -> void:
 	_spawn_pillar(pos, 0.65, 10.0, 88.0, "cream", "gold" if warm else "ice", "apricot" if warm else "sky")
@@ -389,8 +479,8 @@ func _discovery_burst(pos: Vector2, warm: bool) -> void:
 	_spawn_ring(pos, 4.0, 32.0, 0.40, "cream", "gold" if warm else "sky", not warm)
 	_emit_juice(0.25)
 
-func _on_boss_defeated(bid: String, _i: int) -> void: _grand_burst(_boss_pos(bid))
-func _on_great_lamp_relit(_i: int) -> void: _grand_burst(_interactable_pos("great_lamp", "great_lamp"))
+func _on_boss_defeated(bid: String, _i: int) -> void: _grand_burst(_boss_pos(bid), true)
+func _on_great_lamp_relit(_i: int) -> void: _grand_burst(_interactable_pos("great_lamp", "great_lamp"), true)
 func _on_shrine_claimed(sid: String, _m: String) -> void: _discovery_burst(_interactable_pos(sid, "shrine"), true)
 func _on_beacon_lit(_i: int, bid: String) -> void: _discovery_burst(_interactable_pos(bid, "beacon"), true)
 func _on_waystone_lit(_i: int, wid: String) -> void: _discovery_burst(_interactable_pos(wid, "waystone"), false)
@@ -410,7 +500,10 @@ func _on_lantern_struck(pos: Vector2) -> void:
 
 func _on_player_damaged(_a: float, from_pos: Vector2, knock_dir: Vector2, _s: String) -> void:
 	var p: Vector2 = _player_pos() + Vector2(0.0, -5.0)
-	_spawn_sparks(p, 8, Ramp.CORAL, 40.0, 84.0, 0.20, 0.36, 4.8, 0.0, 2, knock_dir if knock_dir.length_squared() > 0.01 else (p - from_pos), 3.0)
+	var kdir: Vector2 = knock_dir if knock_dir.length_squared() > 0.01 else (p - from_pos)
+	_spawn_sparks(p, 8, Ramp.CORAL, 40.0, 84.0, 0.20, 0.36, 4.8, 0.0, 2, kdir, 3.0)
+	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+		Lx.camera.call("add_kick", kdir, 3.4)
 	_emit_juice(0.42)
 
 func _on_player_healed(_a: float) -> void:

@@ -13,6 +13,7 @@ uniform float wave_active = 0.0;
 // Biome twilight shadow tint and subtle darkness-scaled corner vignette
 uniform vec3 biome_tint = vec3(0.42, 0.40, 0.64);
 uniform float vignette_strength : hint_range(0.0, 0.5) = 0.14;
+uniform float danger_pulse : hint_range(0.0, 1.0) = 0.0;
 
 // Up to 16 camera-prioritized light pools: xy = world pos, z = radius (px), w = intensity (0..2)
 uniform vec4 lights[16];
@@ -26,12 +27,13 @@ uniform int lit_zone_count = 0;
 // Locked Last Light palette tint colours
 uniform vec3 col_void = vec3(0.05098, 0.04314, 0.11765);   // #0d0b1e
 uniform vec3 col_night = vec3(0.12941, 0.10196, 0.23137);  // #211a3b
+uniform vec3 col_wine = vec3(0.32157, 0.14510, 0.26667);   // #522544
 uniform vec3 col_gold = vec3(1.0, 0.85098, 0.54902);       // #ffd98c
 uniform vec3 col_cream = vec3(1.0, 0.95686, 0.86275);      // #fff4dc
 
 void fragment() {
 	vec3 src = texture(screen_tex, SCREEN_UV).rgb;
-	if (darkness_strength <= 0.001 && wave_active < 0.5) {
+	if (darkness_strength <= 0.001 && wave_active < 0.5 && danger_pulse <= 0.001) {
 		COLOR = vec4(src, 1.0);
 	} else {
 		vec2 screen_px = UV * view_size;
@@ -116,6 +118,13 @@ void fragment() {
 		if (wave_rim > 0.01) {
 			vec3 rim_col = mix(col_gold, col_cream, smoothstep(0.45, 0.95, wave_rim));
 			out_col = mix(out_col, rim_col, wave_rim * 0.55);
+		}
+
+		// Subtle Last Light wine edge heartbeat when Wick is on their last heart
+		if (danger_pulse > 0.002) {
+			vec2 duv = (UV - vec2(0.5)) * vec2(1.0, 0.92);
+			float dvig = smoothstep(0.38, 0.76, length(duv)) * danger_pulse * 0.28;
+			out_col = mix(out_col, col_wine, clamp(dvig, 0.0, 0.26));
 		}
 
 		COLOR = vec4(out_col, 1.0);

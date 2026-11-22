@@ -111,6 +111,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if _ws_row_rect(row).has_point(mpos):
 				if _waystone_idx != start_idx + row:
 					_waystone_idx = start_idx + row
+					_play_ui_sfx("ui_move")
 					queue_redraw()
 				return
 		return

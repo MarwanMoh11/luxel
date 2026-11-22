@@ -5,6 +5,7 @@ extends LxInteractable
 var burned: bool = false
 var size: Vector2 = Vector2(24.0, 16.0)
 var _burn_t: float = 0.0
+var _tremble_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -15,13 +16,20 @@ func setup(spec: Dictionary) -> void:
 	burned = bool(props.get("burned", false))
 	active = not burned
 	_burn_t = 0.0
+	_tremble_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	var dirty: bool = false
 	if _burn_t > 0.0:
 		_burn_t = maxf(0.0, _burn_t - dt)
+		dirty = true
+	if _tremble_t > 0.0:
+		_tremble_t = maxf(0.0, _tremble_t - dt)
+		dirty = true
+	if dirty:
 		queue_redraw()
 
 
@@ -32,10 +40,16 @@ func on_hit(hit: LxHit) -> bool:
 		burned = true
 		active = false
 		_burn_t = 0.34
+		_tremble_t = 0.0
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.10)
 		_emit_sfx("web_burn")
 		_notify_linked_targets(true)
+		queue_redraw()
+		return true
+	if hit.source in ["bolt", "prism_bolt", "throw", "recall"]:
+		_tremble_t = 0.22
+		_emit_sfx("footstep_grass")
 		queue_redraw()
 		return true
 	return false
@@ -106,8 +120,13 @@ func _draw() -> void:
 			draw_line(mid, p2, col, 1.0)
 			if ri == 1 and (i == 0 or i == 1 or i == 7):
 				draw_rect(Rect2(p1, Vector2(1.0, 1.0)), PAL["cream"])
-	draw_rect(Rect2(hub - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["ice"])
+	draw_rect(Rect2(hub - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["gold"] if _tremble_t > 0.0 else PAL["ice"])
 	draw_rect(Rect2(hub, Vector2(1.0, 1.0)), PAL["cream"])
+	if _tremble_t > 0.0:
+		var u: float = 1.0 - clampf(_tremble_t / 0.22, 0.0, 1.0)
+		for k: int in range(4):
+			var a: float = (TAU * float(k)) / 4.0
+			draw_rect(Rect2(hub + Vector2(roundf(cos(a) * (3.0 + u * 5.0)), roundf(sin(a) * (2.0 + u * 4.0))), Vector2.ONE), PAL["gold"] if k % 2 == 0 else PAL["ice"])
 
 
 func _draw_burn_burst() -> void:

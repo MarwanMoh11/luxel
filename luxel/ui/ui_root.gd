@@ -236,6 +236,8 @@ func _hide_all_modals() -> void:
 	rebind.close()
 	rest_shop.close()
 	cards.close()
+	if _cursor_node != null:
+		_cursor_node.visible = false
 
 
 func show_title(open_slots: bool = false) -> void:

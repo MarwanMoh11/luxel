@@ -125,6 +125,10 @@ func _draw() -> void:
 		return
 	var br_c: Color = PAL["deep"] as Color
 	var tip_c: Color = PAL["blue"] as Color
+	var near_player: bool = Lx.player != null and is_instance_valid(Lx.player) and Lx.player is Node2D and (Lx.player as Node2D).global_position.distance_squared_to(pos) < 3025.0
+	if near_player:
+		br_c = PAL["blue"] as Color
+		tip_c = PAL["sky"] as Color
 	draw_rect(Rect2(x0, y0, 4.0, 1.0), br_c)
 	draw_rect(Rect2(x0, y0, 1.0, 4.0), br_c)
 	draw_rect(Rect2(x0 + w - 4.0, y0, 4.0, 1.0), br_c)
@@ -133,13 +137,14 @@ func _draw() -> void:
 	draw_rect(Rect2(x0, y0 + h - 4.0, 1.0, 4.0), br_c)
 	draw_rect(Rect2(x0 + w - 4.0, y0 + h - 1.0, 4.0, 1.0), br_c)
 	draw_rect(Rect2(x0 + w - 1.0, y0 + h - 4.0, 1.0, 4.0), br_c)
-	draw_rect(Rect2(x0, y0, 1.0, 1.0), PAL["sky"] if _shimmer_stage == 0 else tip_c)
-	draw_rect(Rect2(x0 + w - 1.0, y0, 1.0, 1.0), tip_c)
-	draw_rect(Rect2(x0, y0 + h - 1.0, 1.0, 1.0), tip_c)
-	draw_rect(Rect2(x0 + w - 1.0, y0 + h - 1.0, 1.0, 1.0), tip_c)
+	var glint_c: Color = (PAL["ice"] if near_player else PAL["sky"]) as Color
+	draw_rect(Rect2(x0, y0, 1.0, 1.0), glint_c if _shimmer_stage == 0 else tip_c)
+	draw_rect(Rect2(x0 + w - 1.0, y0, 1.0, 1.0), glint_c if (_shimmer_stage == 1 and near_player) else tip_c)
+	draw_rect(Rect2(x0, y0 + h - 1.0, 1.0, 1.0), glint_c if (_shimmer_stage == 2 and near_player) else tip_c)
+	draw_rect(Rect2(x0 + w - 1.0, y0 + h - 1.0, 1.0, 1.0), glint_c if (_shimmer_stage == 3 and near_player) else tip_c)
 	var m1x: float = floorf(-w * 0.18)
 	var m1y: float = floorf(-h * 0.12)
 	var m2x: float = floorf(w * 0.18)
 	var m2y: float = floorf(h * 0.12)
-	draw_rect(Rect2(m1x, m1y, 1.0, 1.0), PAL["blue"] if _shimmer_stage % 2 == 0 else PAL["deep"])
-	draw_rect(Rect2(m2x, m2y, 1.0, 1.0), PAL["deep"] if _shimmer_stage % 2 == 0 else PAL["blue"])
+	draw_rect(Rect2(m1x, m1y, 1.0, 1.0), (PAL["sky"] if near_player else PAL["blue"]) if _shimmer_stage % 2 == 0 else br_c)
+	draw_rect(Rect2(m2x, m2y, 1.0, 1.0), br_c if _shimmer_stage % 2 == 0 else (PAL["sky"] if near_player else PAL["blue"]))

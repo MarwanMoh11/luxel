@@ -201,8 +201,6 @@ func cancel() -> void:
 	charge_t = 0.0
 	if Lx.input != null:
 		Lx.input.clear_toggle("lx_beam")
-	if Lx.input != null:
-		Lx.input.clear_toggle("lx_beam")
 
 
 func reset() -> void:

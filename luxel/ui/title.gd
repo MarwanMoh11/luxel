@@ -176,17 +176,23 @@ func _handle_mouse_hover(pos: Vector2) -> void:
 	if mode == Mode.MAIN:
 		for i: int in range(MAIN_ITEMS.size()):
 			if _main_btn_rect(i).has_point(pos):
-				_main_idx = i
+				if _main_idx != i:
+					_main_idx = i
+					_play_ui_sfx("ui_move")
 				return
 	elif mode == Mode.SLOTS:
 		for i: int in range(SLOT_COUNT):
 			if _slot_rect(i).has_point(pos):
-				_slot_idx = i
+				if _slot_idx != i:
+					_slot_idx = i
+					_play_ui_sfx("ui_move")
 				return
 	elif mode == Mode.CONFIRM_DELETE:
 		for i: int in range(2):
 			if _confirm_btn_rect(i).has_point(pos):
-				_confirm_idx = i
+				if _confirm_idx != i:
+					_confirm_idx = i
+					_play_ui_sfx("ui_move")
 				return
 
 

@@ -5,6 +5,7 @@ extends LxInteractable
 var burned: bool = false
 var size: Vector2 = Vector2(16.0, 16.0)
 var _burn_t: float = 0.0
+var _rustle_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -15,13 +16,20 @@ func setup(spec: Dictionary) -> void:
 	burned = bool(props.get("burned", false))
 	active = not burned
 	_burn_t = 0.0
+	_rustle_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	var dirty: bool = false
 	if _burn_t > 0.0:
 		_burn_t = maxf(0.0, _burn_t - dt)
+		dirty = true
+	if _rustle_t > 0.0:
+		_rustle_t = maxf(0.0, _rustle_t - dt)
+		dirty = true
+	if dirty:
 		queue_redraw()
 
 
@@ -32,11 +40,17 @@ func on_hit(hit: LxHit) -> bool:
 		burned = true
 		active = false
 		_burn_t = 0.36
+		_rustle_t = 0.0
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.14)
 		_emit_sfx("bramble_burn")
 		_emit_save("bramble_" + id)
 		_notify_linked_targets(true)
+		queue_redraw()
+		return true
+	if hit.source in ["bolt", "prism_bolt", "throw", "recall"]:
+		_rustle_t = 0.24
+		_emit_sfx("footstep_grass")
 		queue_redraw()
 		return true
 	return false
@@ -114,6 +128,12 @@ func _draw() -> void:
 		draw_rect(Rect2(tp.x - 1.0, tp.y, 1.0, 1.0), PAL["mauve"])
 		draw_rect(Rect2(tp.x, tp.y - 1.0, 2.0, 2.0), PAL["coral"] if ti % 2 == 0 else PAL["rose"])
 		draw_rect(Rect2(tp.x, tp.y - 1.0, 1.0, 1.0), PAL["rose"])
+	if _rustle_t > 0.0:
+		var u: float = 1.0 - clampf(_rustle_t / 0.24, 0.0, 1.0)
+		for k: int in range(4):
+			var a: float = (TAU * float(k)) / 4.0 + 0.4
+			var dp: Vector2 = Vector2(roundf(cos(a) * (4.0 + u * 5.0)), roundf(sin(a) * (3.0 + u * 4.0) - u * 4.0))
+			draw_rect(Rect2(dp, Vector2.ONE), PAL["gold"] if k % 2 == 0 else PAL["lime"])
 
 
 func _draw_burn_burst() -> void:

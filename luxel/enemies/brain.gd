@@ -501,10 +501,11 @@ func _die(hit: Object) -> void:
 		director.release_light(self)
 		director.unregister(self)
 	_emit_enemy_hit(hit, HitResult.KILLED)
+	_emit_sfx("boss_kill" if is_boss else "enemy_kill")
+	if Lx.state != null and shard_drop > 0: Lx.state.add_shards(shard_drop + (1 if opened_kill else 0))
 	if Lx.events != null:
 		Lx.events.enemy_killed.emit(self, kind, pos, opened_kill)
-		if is_boss and boss_id != "":
-			Lx.events.boss_defeated.emit(boss_id, island_id)
+		if is_boss and boss_id != "": Lx.events.boss_defeated.emit(boss_id, island_id)
 	queue_redraw()
 
 
@@ -580,10 +581,11 @@ func _draw() -> void:
 		draw_rect(Rect2(top + Vector2(-1.0, -4.5), Vector2(2.0, 3.5)), PAL["gold"] as Color, true)
 		draw_rect(Rect2(top + Vector2(-1.0, 1.0), Vector2(2.0, 2.0)), PAL["gold"] as Color, true)
 
-	if state == State.RECOVER:
+	if state == State.RECOVER or state == State.STAGGER:
+		var scol: Color = (PAL["cream"] if int(anim_t * 10.0) % 2 == 0 else PAL["gold"]) if state == State.STAGGER else (PAL["gold"] as Color)
 		for i: int in range(3):
-			var ang: float = anim_t * 5.0 + float(i) * (TAU / 3.0)
-			draw_circle(off + Vector2(cos(ang) * (r + 2.0), -r - 4.0 + sin(ang) * 2.0), 1.5, PAL["gold"] as Color)
+			var ang: float = anim_t * (7.5 if state == State.STAGGER else 5.0) + float(i) * (TAU / 3.0)
+			draw_circle(off + Vector2(cos(ang) * (r + 2.0), -r - 4.0 + sin(ang) * 2.0), 1.5, scol)
 
 	if not is_boss and hp < max_hp - 0.01:
 		var w: float = maxf(12.0, r * 2.4)

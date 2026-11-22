@@ -186,6 +186,7 @@ func tick_zip(dt: float, world_ctx: Node) -> void:
 	if zipping and (zip_time_left <= 0.0 or wick.global_position.distance_to(lan.pos) <= 8.0):
 		zipping = false
 		zip_time_left = 0.0
+		wick.mercy_t = maxf(wick.mercy_t, 0.14)
 		_trigger_zip_arrival_burst(world_ctx)
 		if lan.state != LxLantern.State.IN_HAND and lan.state != LxLantern.State.CARRIED:
 			if wick.global_position.distance_to(lan.pos) <= 18.0:

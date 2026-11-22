@@ -294,6 +294,31 @@
         "luxel/audio/sfx/footstep_stone_3.ogg",
         "luxel/audio/sfx/shield_clang_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_surfaces",
+      "description": "Surface-aware biome footsteps (grass & wooden dock/bridge 3x multi-takes) and combat/loot multi-variant foley takes (10 cues, 0% > 4 kHz hiss)",
+      "generator": "gen_sfx_surfaces.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/footstep_grass.ogg",
+        "luxel/audio/sfx/footstep_grass_2.ogg",
+        "luxel/audio/sfx/footstep_grass_3.ogg",
+        "luxel/audio/sfx/footstep_wood.ogg",
+        "luxel/audio/sfx/footstep_wood_2.ogg",
+        "luxel/audio/sfx/footstep_wood_3.ogg",
+        "luxel/audio/sfx/enemy_kill_2.ogg",
+        "luxel/audio/sfx/heavy_hit_2.ogg",
+        "luxel/audio/sfx/shard_pickup_2.ogg",
+        "luxel/audio/sfx/shard_pickup_3.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_ost_stereo_master",
+      "description": "True-stereo mono-compatible chamber mastering pass across all 46 Lantern Gothic soundtrack tracks (mono <180 Hz bass, zero-hiss 6-tap prime circular chamber reflections, exact sample-locked explore/combat crossfades)",
+      "generator": "master_music_stereo.py",
+      "license": "Original project asset",
+      "outputs": []
     }
   ],
   "third_party_audio": []

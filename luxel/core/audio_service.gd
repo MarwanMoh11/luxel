@@ -26,16 +26,19 @@ const COMBAT_TAIL_S: float = 6.0
 const SFX_VARIANTS: Dictionary = {
 	"bolt_fire": ["bolt_fire", "bolt_fire_2", "bolt_fire_3"],
 	"footstep_stone": ["footstep_stone", "footstep_stone_2", "footstep_stone_3"],
+	"footstep_grass": ["footstep_grass", "footstep_grass_2", "footstep_grass_3"],
+	"footstep_wood": ["footstep_wood", "footstep_wood_2", "footstep_wood_3"],
 	"bolt_chip": ["bolt_chip", "bolt_chip_2"],
 	"shield_clang": ["shield_clang", "shield_clang_2"],
+	"enemy_kill": ["enemy_kill", "enemy_kill_2"],
+	"heavy_hit": ["heavy_hit", "heavy_hit_2"],
+	"shard_pickup": ["shard_pickup", "shard_pickup_2", "shard_pickup_3"],
 }
 
 const SFX_BASE_TRIM_DB: Dictionary = {
-	"bolt_fire": -2.5,
-	"bolt_chip": -1.5,
-	"footstep_stone": -5.5,
-	"dash_whoosh": -2.0,
-	"ui_move": -2.5,
+	"bolt_fire": -2.5, "bolt_chip": -1.5, "bolt_wall": -5.5,
+	"footstep_stone": -5.5, "footstep_grass": -5.0, "footstep_wood": -4.5,
+	"dash_whoosh": -2.0, "ui_move": -2.5,
 }
 
 const ISLAND_AMBIENCE: Dictionary = {
@@ -59,6 +62,8 @@ var _sfx_bus_idx: int = -1
 var _amb_bus_idx: int = -1
 var _ui_bus_idx: int = -1
 var _lowpass: AudioEffectLowPassFilter = null
+var _sfx_reverb: AudioEffectReverb = null
+var _stinger_duck_t: float = 0.0
 
 # Primary (explore/track) and synced combat stem players — both stay running for seamless layering.
 var _explore_player: AudioStreamPlayer = null
@@ -128,6 +133,18 @@ func _setup_buses() -> void:
 		var lim := AudioEffectLimiter.new()
 		lim.ceiling_db = -0.5
 		AudioServer.add_bus_effect(_sfx_bus_idx, lim)
+	_sfx_reverb = null
+	for i: int in range(AudioServer.get_bus_effect_count(_sfx_bus_idx)):
+		if AudioServer.get_bus_effect(_sfx_bus_idx, i) is AudioEffectReverb:
+			_sfx_reverb = AudioServer.get_bus_effect(_sfx_bus_idx, i) as AudioEffectReverb
+			break
+	if _sfx_reverb == null:
+		_sfx_reverb = AudioEffectReverb.new()
+		_sfx_reverb.room_size = 0.24
+		_sfx_reverb.damping = 0.72
+		_sfx_reverb.wet = 0.03
+		_sfx_reverb.dry = 1.0
+		AudioServer.add_bus_effect(_sfx_bus_idx, _sfx_reverb)
 
 	var has_amb_lp: bool = false
 	for i: int in range(AudioServer.get_bus_effect_count(_amb_bus_idx)):
@@ -251,12 +268,20 @@ func start_island_music(island_id: int) -> void:
 		_combat_player.volume_db = SILENT_DB
 		_combat_player.play(resume_pos)
 	_start_island_ambience(island_id)
+	_set_indoor_reverb(false)
 
 
 func start_dungeon_music(island_id: int) -> void:
 	_current_island_id = island_id
 	_start_island_ambience(island_id)
+	_set_indoor_reverb(true)
 	play_cue("island%d_dungeon" % island_id)
+
+
+func _set_indoor_reverb(indoor: bool) -> void:
+	if _sfx_reverb != null:
+		_sfx_reverb.room_size = 0.44 if indoor else 0.24
+		_sfx_reverb.wet = 0.14 if indoor else 0.03
 
 
 func _start_island_ambience(island_id: int) -> void:
@@ -366,6 +391,7 @@ func set_paused(paused: bool) -> void:
 
 func tick(dt: float, in_combat: bool = false) -> void:
 	_sfx_clock += dt
+	_stinger_duck_t = maxf(0.0, _stinger_duck_t - dt)
 	if _is_overworld_layer_active():
 		if in_combat:
 			_combat_request_timer += dt
@@ -393,7 +419,7 @@ func tick(dt: float, in_combat: bool = false) -> void:
 
 
 func _update_layer_volumes() -> void:
-	var duck: float = PAUSE_DUCK_DB if is_paused else 0.0
+	var duck: float = (PAUSE_DUCK_DB if is_paused else 0.0) - (4.0 * clampf(_stinger_duck_t / 0.6, 0.0, 1.0))
 	var exp_gain: float = cos(combat_blend * PI * 0.5)
 	var cmb_gain: float = sin(combat_blend * PI * 0.5)
 	if _explore_player != null:
@@ -421,6 +447,7 @@ func play_stinger(stinger_name: String) -> void:
 		_stinger_player.stream = st
 		_stinger_player.volume_db = -3.0
 		_stinger_player.play()
+		_stinger_duck_t = 2.2
 
 
 func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool = false, ui_bus: bool = false) -> void:
@@ -450,7 +477,7 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 			p2.stop()
 		p2.global_position = world_pos
 		p2.stream = st
-		p2.volume_db = gain_db
+		p2.volume_db = gain_db + randf_range(-1.1, 1.1)
 		p2.pitch_scale = pitch_mul * randf_range(0.95, 1.05)
 		p2.play()
 	elif not _sfx_pool.is_empty():
@@ -460,7 +487,7 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 			p.stop()
 		p.bus = BUS_UI if ui_bus else BUS_SFX
 		p.stream = st
-		p.volume_db = gain_db
+		p.volume_db = gain_db if ui_bus else gain_db + randf_range(-1.1, 1.1)
 		var jit: float = 1.0 if ui_bus else randf_range(0.96, 1.04)
 		if base_id == "bolt_fire":
 			jit = randf_range(0.95, 1.06)

@@ -54,10 +54,13 @@ var _ms_arr: Array = []
 var _frame_count: int = 0
 var _loop: bool = true
 var _last_frame: int = -1
+var _can_occlude: bool = false
+var _occlude_a: float = 1.0
 
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	set_process(_can_occlude)
 
 
 func setup(spec: Dictionary) -> void:
@@ -108,7 +111,22 @@ func setup(spec: Dictionary) -> void:
 				_frame_size = Vector2(float((first as Array)[2]), float((first as Array)[3]))
 			if layer_name == "sort" and cast_shadow:
 				_shadow_poly = _build_shadow_ellipse(_frame_size)
+			_can_occlude = layer_name == "sort" and _frame_size.y >= 26.0 and _frame_size.x >= 16.0
+			_occlude_a = 1.0
+			modulate.a = 1.0
+			set_process(_can_occlude)
 	queue_redraw()
+
+
+func _process(dt: float) -> void:
+	if not _can_occlude or Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
+		return
+	var pp: Vector2 = (Lx.player as Node2D).global_position
+	var behind: bool = pp.y < position.y - 2.0 and pp.y > position.y - _frame_size.y - 2.0 and absf(pp.x - position.x) < _frame_size.x * 0.46
+	var target_a: float = 0.48 if behind else 1.0
+	if not is_equal_approx(_occlude_a, target_a):
+		_occlude_a = move_toward(_occlude_a, target_a, dt * 4.5)
+		modulate.a = _occlude_a
 
 
 func is_animated() -> bool:
