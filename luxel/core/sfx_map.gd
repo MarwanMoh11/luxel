@@ -45,6 +45,8 @@ const SFX_VARIANTS: Dictionary = {
 	"prism_chain": ["prism_chain", "prism_chain_2"], "shield_strain": ["shield_strain", "shield_strain_2"],
 	"tide_surge": ["tide_surge", "tide_surge_2"], "waystone_rest": ["waystone_rest", "waystone_rest_2"],
 	"waystone_warp": ["waystone_warp", "waystone_warp_2"], "web_burn": ["web_burn", "web_burn_2"],
+	"menu_open": ["menu_open", "menu_open_2"], "menu_close": ["menu_close", "menu_close_2"],
+	"ui_pause": ["ui_pause", "ui_pause_2"], "seal_shatter_heavy": ["seal_shatter_heavy", "seal_shatter_heavy_2"],
 }
 
 const SFX_BASE_TRIM_DB: Dictionary = {

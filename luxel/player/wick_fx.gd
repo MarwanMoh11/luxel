@@ -165,6 +165,8 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			var wfx_l: Variant = Lx.world.get("_water_fx")
 			if wfx_l is Object and is_instance_valid(wfx_l) and (wfx_l as Object).has_method("spawn_ripple"):
 				(wfx_l as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 1.0), "ice")
+		else:
+			spawn_ring(wick.global_position + Vector2(0.0, 1.0), 2.0, 8.5, 0.17, lcol, 1.0)
 		wick.emit_sfx("footstep_" + surf_l, wick.global_position, false)
 	_was_airborne = airborne
 
@@ -191,6 +193,10 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			_spawn_mote(foot, dvel, randf_range(0.26, 0.36), dcol, float(randi_range(2, 3)), true, 0.18, false, 0.72)
 			_step_parity = (_step_parity + 1) & 1
 			if _step_parity == 1:
+				if surf == "water" and Lx.world != null and is_instance_valid(Lx.world):
+					var wfx_s: Variant = Lx.world.get("_water_fx")
+					if wfx_s is Object and is_instance_valid(wfx_s) and (wfx_s as Object).has_method("spawn_ripple"):
+						(wfx_s as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 1.0), "ice", 10.0)
 				wick.emit_sfx("footstep_" + surf, wick.global_position, false)
 	else:
 		_prev_move_dir = Vector2.ZERO

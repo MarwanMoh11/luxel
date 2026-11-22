@@ -494,6 +494,18 @@
         "luxel/audio/sfx/waystone_warp_2.ogg",
         "luxel/audio/sfx/web_burn_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_masterwork4",
+      "description": "Masterwork Wave-4 final 4 zero-hiss UI & obsidian seal alternate takes (menu_open_2, menu_close_2, ui_pause_2, seal_shatter_heavy_2; 188 Studio SFX across 89 multi-take pools)",
+      "generator": "gen_sfx_masterwork4.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/menu_open_2.ogg",
+        "luxel/audio/sfx/menu_close_2.ogg",
+        "luxel/audio/sfx/ui_pause_2.ogg",
+        "luxel/audio/sfx/seal_shatter_heavy_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []
