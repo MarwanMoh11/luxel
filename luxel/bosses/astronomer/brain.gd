@@ -237,12 +237,16 @@ func _draw_extra(off: Vector2) -> void:
 		var t_r: float = lerpf(NOVA_MAX_R, NOVA_START_R + 8.0, prog)
 		draw_arc(off, t_r, 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
 		var ray_len: float = NOVA_RAY_RANGE
+		var locked_a: bool = state_timer <= 0.22
+		var ray_col: Color = (PAL["gold"] if locked_a else PAL["sky"]) as Color
 		for i: int in range(ray_count):
 			var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
 			var nb: float = star_base_ang + float((i + 1) % ray_count) * (TAU / float(ray_count))
 			var p_a: Vector2 = (off + Vector2.from_angle(ra) * ray_len).round()
 			var p_b: Vector2 = (off + Vector2.from_angle(nb) * ray_len).round()
-			draw_line(c_orig, p_a, PAL["sky"] as Color, 1.3)
+			draw_line(c_orig, p_a, ray_col, 1.8 if locked_a else 1.3)
+			if locked_a:
+				draw_line(c_orig, p_a, PAL["cream"] as Color, 0.9)
 			draw_line(p_a, p_b, PAL["gold"] as Color, 1.0)
 			draw_line(p_a + Vector2(-4.5, 0.0), p_a + Vector2(4.5, 0.0), PAL["gold"] as Color, 1.3)
 			draw_line(p_a + Vector2(0.0, -4.5), p_a + Vector2(0.0, 4.5), PAL["gold"] as Color, 1.3)

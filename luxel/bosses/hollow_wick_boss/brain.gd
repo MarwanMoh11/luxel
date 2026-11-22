@@ -261,9 +261,15 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(off + Vector2(3.0, -body_radius), off + Vector2(5.5, -body_radius - 4.0), PAL["ice"] as Color, 1.4)
 	super._draw_extra(off)
 	if active_move == BossMove.DARK_BEAM and state == State.TELL:
-		var t_col: Color = (PAL["gold"] if lured_now else PAL["sky"]) as Color
-		draw_line(off.round(), (off + commit_dir * BEAM_RANGE).round(), t_col, 1.6)
-		draw_circle(off.round(), 2.2, PAL["ice"] as Color)
+		var locked_hw: bool = state_timer <= 0.16
+		var t_col: Color = (PAL["coral"] if locked_hw else (PAL["gold"] if lured_now else PAL["sky"])) as Color
+		var b_perp: Vector2 = Vector2(-commit_dir.y, commit_dir.x)
+		var b_tip: Vector2 = (off + commit_dir * BEAM_RANGE).round()
+		draw_line(off.round(), b_tip, t_col, 2.2 if locked_hw else 1.6)
+		if locked_hw:
+			draw_line(off.round(), b_tip, PAL["cream"] as Color, 1.0)
+		draw_line((b_tip - b_perp * BEAM_HALF_W).round(), (b_tip + b_perp * BEAM_HALF_W).round(), t_col, 1.2)
+		draw_circle(off.round(), 2.8 if locked_hw else 2.2, (PAL["cream"] if locked_hw else PAL["ice"]) as Color)
 	elif active_move == BossMove.DARK_BEAM and state == State.COMMIT:
 		var orig: Vector2 = off.round()
 		var b_end: Vector2 = (off + commit_dir * BEAM_RANGE).round()

@@ -151,14 +151,15 @@ func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var locked_c: bool = state_timer <= 0.24
 		var ray_n: int = 3 if phase >= 2 else 1
 		for ri: int in range(ray_n):
 			var off_a: float = 0.0 if ri == 0 else (-FAN_SPREAD_RAD if ri == 1 else FAN_SPREAD_RAD)
 			var r_end: Vector2 = (c + Vector2.from_angle(facing + off_a) * BOLT_RANGE).round()
-			draw_line(c, r_end, PAL["sky"] as Color, 2.0)
-			draw_line(c, r_end, PAL["gold"] as Color, 1.0)
-		draw_arc(c, lerpf(16.0, 4.0, prog), 0.0, TAU, 16, PAL["sky"] as Color, 1.2)
-		_draw_cw_star_flare(c, lerpf(3.5, 7.5, prog), PAL["gold"] as Color, PAL["cream"] as Color)
+			draw_line(c, r_end, (PAL["coral"] if locked_c else PAL["sky"]) as Color, 2.2 if locked_c else 2.0)
+			draw_line(c, r_end, (PAL["cream"] if locked_c else PAL["gold"]) as Color, 1.0)
+		draw_arc(c, lerpf(16.0, 4.0, prog), 0.0, TAU, 16, (PAL["coral"] if locked_c else PAL["sky"]) as Color, 1.2)
+		_draw_cw_star_flare(c, lerpf(3.5, 7.5, prog), (PAL["coral"] if locked_c else PAL["gold"]) as Color, PAL["cream"] as Color)
 	elif state == State.COMMIT:
 		var fl: float = 6.5 + 1.2 * sin(anim_t * 22.0)
 		var ray_n: int = 3 if phase >= 2 else 1

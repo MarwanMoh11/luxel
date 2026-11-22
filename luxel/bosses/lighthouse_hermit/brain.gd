@@ -334,12 +334,22 @@ func _draw_extra(off: Vector2) -> void:
 		var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
 		var end_a: float = sweep_start_ang + sweep_dir * arc
 		var prog_b: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		draw_line(off.round(), (off + Vector2.from_angle(sweep_start_ang) * BEAM_RANGE).round(), PAL["gold"] as Color, 1.8)
+		var locked_b: bool = state_timer <= 0.24
+		var start_col: Color = (PAL["coral"] if locked_b else PAL["gold"]) as Color
+		var arc_r: float = lerpf(104.0, 38.0, prog_b)
+		draw_line(off.round(), (off + Vector2.from_angle(sweep_start_ang) * BEAM_RANGE).round(), start_col, 2.2 if locked_b else 1.8)
 		draw_line(off.round(), (off + Vector2.from_angle(end_a) * BEAM_RANGE).round(), PAL["apricot"] as Color, 1.1)
-		draw_arc(off, lerpf(104.0, 38.0, prog_b), minf(sweep_start_ang, end_a), maxf(sweep_start_ang, end_a), 14, PAL["gold"] as Color, 1.2)
+		draw_arc(off, arc_r, minf(sweep_start_ang, end_a), maxf(sweep_start_ang, end_a), 14, (PAL["cream"] if locked_b else PAL["gold"]) as Color, 1.3)
+		# Directional sweep chevron on the arc so sweep direction is instantly readable
+		var mid_a: float = sweep_start_ang + sweep_dir * (arc * 0.5)
+		var mid_pt: Vector2 = (off + Vector2.from_angle(mid_a) * arc_r).round()
+		var tang: Vector2 = Vector2.from_angle(mid_a + sweep_dir * (PI * 0.5))
+		var rad_v: Vector2 = Vector2.from_angle(mid_a)
+		draw_line(mid_pt, (mid_pt - tang * 4.5 + rad_v * 3.0).round(), PAL["cream"] as Color, 1.3)
+		draw_line(mid_pt, (mid_pt - tang * 4.5 - rad_v * 3.0).round(), PAL["cream"] as Color, 1.3)
 		var g_r: float = lerpf(3.5, 7.5, prog_b)
-		draw_line(off.round() + Vector2(-g_r, 0.0), off.round() + Vector2(g_r, 0.0), PAL["gold"] as Color, 1.4)
-		draw_line(off.round() + Vector2(0.0, -g_r), off.round() + Vector2(0.0, g_r), PAL["gold"] as Color, 1.4)
+		draw_line(off.round() + Vector2(-g_r, 0.0), off.round() + Vector2(g_r, 0.0), start_col, 1.4)
+		draw_line(off.round() + Vector2(0.0, -g_r), off.round() + Vector2(0.0, g_r), start_col, 1.4)
 	elif active_move == BossMove.LAMP_BEAM and state == State.COMMIT:
 		var orig: Vector2 = off.round()
 		var b_dir: Vector2 = Vector2.from_angle(beam_angle)

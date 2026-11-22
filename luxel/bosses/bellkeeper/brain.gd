@@ -34,6 +34,7 @@ var double_toll_enabled: bool = false
 var swings_since_slam: int = 0
 var _roaring: bool = false
 var _adds_requested: bool = false
+var _p3_chime_t: float = 0.0
 
 
 func _init() -> void:
@@ -74,10 +75,12 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	swings_since_slam = 0
 	_roaring = false
 	_adds_requested = false
+	_p3_chime_t = 0.0
 
 
 func _step_brain(dt: float) -> void:
 	slam_cd = maxf(0.0, slam_cd - dt)
+	_p3_chime_t = maxf(0.0, _p3_chime_t - dt)
 	super._step_brain(dt)
 
 
@@ -131,6 +134,7 @@ func _enter_phase2() -> void:
 func _enter_phase3() -> void:
 	phase = 3
 	double_toll_enabled = true
+	_p3_chime_t = 0.55
 	if Lx.events != null:
 		Lx.events.boss_phase_changed.emit(boss_id, 3)
 		Lx.events.shake_requested.emit(0.25)
@@ -311,6 +315,9 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(off, maxf(4.0, r * 0.6), 0.0, TAU, 20, PAL["coral"] as Color, 1.2)
 	elif slam_attack and state == State.COMMIT:
 		if slam_stage == SlamStage.TOLL_PAUSE:
+			for oi: int in range(12):
+				var oa0: float = float(oi) * (TAU / 12.0)
+				draw_arc(off, SLAM_MAX_R, oa0, oa0 + 0.24, 3, PAL["coral"] as Color, 1.0)
 			var pr: float = SLAM_MAX_R * 0.5 + 2.0 * sin(anim_t * 18.0)
 			draw_arc(off, pr + 2.0, 0.0, TAU, 24, PAL["apricot"] as Color, 1.8)
 			draw_arc(off, pr, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
@@ -339,3 +346,11 @@ func _draw_extra(off: Vector2) -> void:
 		for ri: int in range(4):
 			var rd: Vector2 = Vector2.from_angle(float(ri) * (TAU * 0.25))
 			draw_line((off + rd * (rr - 3.0)).round(), (off + rd * (rr + 4.5)).round(), PAL["cream"] as Color, 1.2)
+	if _p3_chime_t > 0.0:
+		var cp: float = 1.0 - clampf(_p3_chime_t / 0.55, 0.0, 1.0)
+		var cr: float = body_radius + 10.0 + cp * 22.0
+		draw_arc(off, cr + 2.0, 0.0, TAU, 28, PAL["coral"] as Color, 2.0)
+		draw_arc(off, cr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)
+		for ci: int in range(4):
+			var cd: Vector2 = Vector2.from_angle(float(ci) * (TAU * 0.25) + PI * 0.25)
+			draw_line((off + cd * (cr - 3.0)).round(), (off + cd * (cr + 4.5)).round(), PAL["cream"] as Color, 1.3)

@@ -92,6 +92,7 @@ func _on_damaged_alive(_hit: LxHit) -> bool:
 		slam_cd = 0.9
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
+			Lx.events.shake_requested.emit(0.24)
 		_emit_sfx("bell_warden_phase2")
 		return true
 	return false

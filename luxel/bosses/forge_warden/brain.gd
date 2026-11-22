@@ -169,15 +169,19 @@ func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var tell_max_r: float = FORGE_RING_MAX_R if phase >= 2 else STOMP_MAX_R + 6.0
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
-			draw_arc(c, FORGE_RING_MAX_R, a0, a0 + 0.24, 3, PAL["coral"] as Color, 1.0)
-		var tr: float = lerpf(FORGE_RING_MAX_R, STOMP_START_R + 5.0, prog)
+			draw_arc(c, tell_max_r, a0, a0 + 0.24, 3, PAL["coral"] as Color, 1.0)
+		var tr: float = lerpf(tell_max_r, STOMP_START_R + 5.0, prog)
 		draw_arc(c, tr + 2.0, 0.0, TAU, 28, PAL["coral"] as Color, 1.4)
 		draw_arc(c, tr, 0.0, TAU, 28, PAL["apricot"] as Color, 1.8)
 		draw_arc(c, maxf(3.0, tr - 2.0), 0.0, TAU, 24, PAL["gold"] as Color, 1.0)
 	elif state == State.COMMIT:
 		if quake_stage == QuakeStage.PAUSE:
+			for oi: int in range(12):
+				var oa0: float = float(oi) * (TAU / 12.0)
+				draw_arc(c, FORGE_RING_MAX_R, oa0, oa0 + 0.24, 3, PAL["coral"] as Color, 1.0)
 			var pr: float = FORGE_RING_MAX_R * 0.48 + 2.0 * sin(anim_t * 18.0)
 			draw_arc(c, pr + 2.2, 0.0, TAU, 24, PAL["coral"] as Color, 2.0)
 			draw_arc(c, pr, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)

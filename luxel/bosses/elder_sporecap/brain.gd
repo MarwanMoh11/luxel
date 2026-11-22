@@ -200,6 +200,10 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, maxf(4.0, tr * 0.62 + pulse * 0.6), 0.0, TAU, 22, PAL["gold"] as Color, 1.4)
 	elif state == State.COMMIT:
 		if pulse_stage == PulseStage.PAUSE:
+			var r2_max: float = ELDER_RING_MAX_R + 10.0
+			for oi: int in range(14):
+				var oa0: float = float(oi) * (TAU / 14.0)
+				draw_arc(c, r2_max, oa0, oa0 + 0.22, 3, PAL["lime"] as Color, 1.0)
 			var pr: float = ELDER_RING_MAX_R * 0.48 + 2.0 * sin(anim_t * 20.0)
 			draw_arc(c, pr + 2.4, 0.0, TAU, 28, PAL["lime"] as Color, 1.8)
 			draw_arc(c, pr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)
