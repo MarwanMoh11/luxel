@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    128
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        256
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_c4_r5_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_c4_r5_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -64,8 +64,8 @@
       "id": "shrine_wings",
       "kind": "shrine",
       "pos": [
-        56,
-        56
+        64,
+        72
       ],
       "props": {
         "move_id": "wings",
@@ -77,8 +77,8 @@
       "id": "lamp_c4_r5_e",
       "kind": "road_lamp",
       "pos": [
-        216,
-        88
+        296,
+        128
       ],
       "props": {
         "zone": "conservatory_r5"
@@ -91,8 +91,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        240,
-        62
+        296,
+        80
       ],
       "layer": "ground",
       "flip_x": false,
@@ -103,8 +103,8 @@
       "sheet": "island4_scenery",
       "prop": "stone_bridge_post",
       "pos": [
-        26,
-        36
+        32,
+        42
       ],
       "layer": "sort",
       "flip_x": false,
@@ -115,8 +115,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        26,
-        146
+        32,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -127,8 +127,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        112,
-        32
+        144,
+        34
       ],
       "layer": "sort",
       "flip_x": false,
@@ -139,8 +139,8 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        112,
-        144
+        144,
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -151,8 +151,8 @@
       "sheet": "island4_scenery",
       "prop": "rain_basin_fountain",
       "pos": [
-        262,
-        134
+        344,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -163,8 +163,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        274,
-        42
+        344,
+        68
       ],
       "layer": "sort",
       "flip_x": true,
@@ -175,13 +175,14 @@
       "sheet": "island4_scenery",
       "prop": "glass_cloche_bed",
       "pos": [
-        214,
-        146
+        248,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

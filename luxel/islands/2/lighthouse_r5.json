@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_lh_r5_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_lh_r5_east",
       "rect": [
-        304,
-        64,
+        432,
+        80,
         16,
         48
       ],
@@ -64,8 +64,8 @@
       "id": "shrine_prism",
       "kind": "shrine",
       "pos": [
-        120,
-        88
+        152,
+        112
       ],
       "props": {
         "move_id": "prism",
@@ -77,8 +77,8 @@
       "id": "mirror_lh_r5_a",
       "kind": "mirror",
       "pos": [
-        216,
-        120
+        280,
+        152
       ],
       "props": {
         "angle_deg": 225,
@@ -93,8 +93,8 @@
       "id": "switch_eye_lh_r5",
       "kind": "switch_eye",
       "pos": [
-        216,
-        40
+        280,
+        48
       ],
       "props": {
         "requires_prism": true,
@@ -106,8 +106,8 @@
       "id": "door_lh_r5_shutter",
       "kind": "door",
       "pos": [
-        296,
-        88
+        424,
+        112
       ],
       "props": {
         "door_kind": "switch_door",
@@ -128,8 +128,8 @@
       "sheet": "island2_scenery",
       "prop": "brass_compass_floor",
       "pos": [
-        120,
-        88
+        152,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -140,8 +140,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        104,
-        40
+        136,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -152,8 +152,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        104,
-        136
+        136,
+        180
       ],
       "layer": "sort",
       "flip_x": true,
@@ -164,8 +164,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        156,
-        40
+        192,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -176,8 +176,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        156,
-        136
+        192,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -188,7 +188,7 @@
       "sheet": "island2_scenery",
       "prop": "mooring_bollard",
       "pos": [
-        264,
+        344,
         56
       ],
       "layer": "sort",
@@ -200,13 +200,14 @@
       "sheet": "island2_scenery",
       "prop": "wooden_crates",
       "pos": [
-        264,
-        124
+        344,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

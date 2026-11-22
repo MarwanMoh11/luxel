@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        480,
+        224
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_spire_r5_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_spire_r5_east",
       "rect": [
-        304,
-        64,
+        464,
+        80,
         16,
         48
       ],
@@ -65,8 +65,8 @@
       "id": "seal_spire_r5",
       "kind": "obsidian_seal",
       "pos": [
-        152,
-        88
+        232,
+        112
       ],
       "props": {
         "size": [
@@ -80,8 +80,8 @@
       "id": "brazier_spire_r5_a",
       "kind": "brazier",
       "pos": [
-        120,
-        40
+        168,
+        56
       ],
       "props": {
         "target_id": "door_spire_r5_east"
@@ -91,8 +91,8 @@
       "id": "brazier_spire_r5_b",
       "kind": "brazier",
       "pos": [
-        120,
-        136
+        168,
+        168
       ],
       "props": {
         "target_id": "door_spire_r5_east"
@@ -102,8 +102,8 @@
       "id": "brazier_spire_r5_c",
       "kind": "brazier",
       "pos": [
-        264,
-        40
+        376,
+        56
       ],
       "props": {
         "target_id": "door_spire_r5_east"
@@ -113,8 +113,8 @@
       "id": "brazier_spire_r5_d",
       "kind": "brazier",
       "pos": [
-        264,
-        136
+        376,
+        168
       ],
       "props": {
         "target_id": "door_spire_r5_east"
@@ -124,8 +124,8 @@
       "id": "door_spire_r5_east",
       "kind": "door",
       "pos": [
-        296,
-        88
+        456,
+        112
       ],
       "props": {
         "door_kind": "switch_door",
@@ -148,7 +148,7 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        44,
+        56,
         48
       ],
       "layer": "sort",
@@ -160,8 +160,8 @@
       "sheet": "island7_scenery",
       "prop": "standing_mirror_tall",
       "pos": [
-        80,
-        54
+        104,
+        60
       ],
       "layer": "sort",
       "flip_x": false,
@@ -172,8 +172,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        44,
-        148
+        56,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -184,8 +184,8 @@
       "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
-        184,
-        50
+        264,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -196,8 +196,8 @@
       "sheet": "island7_scenery",
       "prop": "floating_prism_totem",
       "pos": [
-        184,
-        146
+        264,
+        176
       ],
       "layer": "sort",
       "flip_x": true,
@@ -208,13 +208,14 @@
       "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        292,
-        42
+        432,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.25
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    128
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        256
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_o5_r5_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_o5_r5_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -64,8 +64,8 @@
       "id": "shrine_lens",
       "kind": "shrine",
       "pos": [
-        56,
-        56
+        64,
+        72
       ],
       "props": {
         "move_id": "lens",
@@ -77,8 +77,8 @@
       "id": "phantom_o5_r5",
       "kind": "phantom_platform",
       "pos": [
-        120,
-        88
+        144,
+        120
       ],
       "props": {
         "size": [
@@ -92,8 +92,8 @@
       "id": "lamp_o5_r5_e",
       "kind": "road_lamp",
       "pos": [
-        216,
-        88
+        312,
+        128
       ],
       "props": {
         "zone": "orrery_r5"
@@ -106,8 +106,8 @@
       "sheet": "island5_scenery",
       "prop": "astro_floor_compass",
       "pos": [
-        216,
-        88
+        312,
+        128
       ],
       "layer": "ground",
       "flip_x": false,
@@ -118,8 +118,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        30,
-        38
+        32,
+        42
       ],
       "layer": "sort",
       "flip_x": false,
@@ -130,8 +130,8 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        38,
-        146
+        48,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
@@ -142,8 +142,8 @@
       "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        276,
-        46
+        352,
+        72
       ],
       "layer": "sort",
       "flip_x": true,
@@ -154,8 +154,8 @@
       "sheet": "island5_scenery",
       "prop": "brass_orrery_stand",
       "pos": [
-        272,
-        142
+        352,
+        192
       ],
       "layer": "sort",
       "flip_x": true,
@@ -166,8 +166,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        206,
-        38
+        264,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -178,13 +178,14 @@
       "sheet": "island5_scenery",
       "prop": "moon_phase_obelisk",
       "pos": [
-        278,
-        96
+        408,
+        128
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.75
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -155,7 +155,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_shrine_sunflare",
 			"region": "kiln_r5",
 			"zone": "kiln_r5",
-			"pos": [152.0, 88.0],
+			"pos": [208.0, 112.0],
 			"action": "claim_shrine",
 			"target": "shrine_sunflare",
 			"grants_move": "sunflare",

@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        480,
+        224
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_kiln_r5_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_kiln_r5_east",
       "rect": [
-        304,
-        64,
+        464,
+        80,
         16,
         48
       ],
@@ -64,8 +64,8 @@
       "id": "shrine_sunflare",
       "kind": "shrine",
       "pos": [
-        152,
-        88
+        208,
+        112
       ],
       "props": {
         "move_id": "sunflare",
@@ -77,8 +77,8 @@
       "id": "seal_kiln_r5",
       "kind": "obsidian_seal",
       "pos": [
-        216,
-        88
+        296,
+        112
       ],
       "props": {
         "size": [
@@ -92,8 +92,8 @@
       "id": "brazier_kiln_r5_a",
       "kind": "brazier",
       "pos": [
-        184,
-        56
+        248,
+        64
       ],
       "props": {
         "target_id": "door_kiln_r5_east"
@@ -103,8 +103,8 @@
       "id": "brazier_kiln_r5_b",
       "kind": "brazier",
       "pos": [
-        184,
-        120
+        248,
+        160
       ],
       "props": {
         "target_id": "door_kiln_r5_east"
@@ -114,8 +114,8 @@
       "id": "door_kiln_r5_east",
       "kind": "door",
       "pos": [
-        296,
-        88
+        456,
+        112
       ],
       "props": {
         "door_kind": "switch_door",
@@ -136,8 +136,8 @@
       "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        118,
-        45
+        160,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -148,8 +148,8 @@
       "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        118,
-        140
+        160,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -160,8 +160,8 @@
       "sheet": "island6_scenery",
       "prop": "obsidian_obelisk",
       "pos": [
-        42,
-        46
+        48,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -172,8 +172,8 @@
       "sheet": "island6_scenery",
       "prop": "obsidian_obelisk",
       "pos": [
-        42,
-        140
+        48,
+        176
       ],
       "layer": "sort",
       "flip_x": true,
@@ -184,8 +184,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        268,
-        42
+        336,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -196,13 +196,14 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        268,
-        140
+        336,
+        176
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

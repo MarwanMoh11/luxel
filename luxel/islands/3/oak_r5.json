@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_oak_r5_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_oak_r5_east",
       "rect": [
-        304,
-        64,
+        432,
+        80,
         16,
         48
       ],
@@ -64,8 +64,8 @@
       "id": "shrine_beam",
       "kind": "shrine",
       "pos": [
-        104,
-        88
+        120,
+        112
       ],
       "props": {
         "move_id": "beam",
@@ -77,8 +77,8 @@
       "id": "bramble_oak_r5",
       "kind": "bramble",
       "pos": [
-        168,
-        88
+        216,
+        112
       ],
       "props": {
         "size": [
@@ -91,8 +91,8 @@
       "id": "cracked_wall_oak_r5",
       "kind": "cracked_wall",
       "pos": [
-        216,
-        88
+        280,
+        112
       ],
       "props": {
         "size": [
@@ -105,8 +105,8 @@
       "id": "switch_eye_oak_r5",
       "kind": "switch_eye",
       "pos": [
-        264,
-        56
+        352,
+        72
       ],
       "props": {
         "target_id": "door_oak_r5_shutter",
@@ -117,8 +117,8 @@
       "id": "door_oak_r5_shutter",
       "kind": "door",
       "pos": [
-        296,
-        88
+        424,
+        112
       ],
       "props": {
         "door_kind": "switch_door",
@@ -135,8 +135,8 @@
       "id": "chest_oak_r5_shards",
       "kind": "chest",
       "pos": [
-        248,
-        152
+        328,
+        184
       ],
       "props": {
         "reward_kind": "shards",
@@ -156,8 +156,8 @@
       "sheet": "island3_scenery",
       "prop": "root_ring_floor",
       "pos": [
-        104,
-        88
+        120,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -168,8 +168,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        104,
-        40
+        120,
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -180,8 +180,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        104,
-        144
+        120,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -192,8 +192,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        140,
-        42
+        164,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -204,8 +204,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        140,
-        144
+        164,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -216,8 +216,8 @@
       "sheet": "island3_scenery",
       "prop": "root_monolith",
       "pos": [
-        200,
-        40
+        248,
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -228,13 +228,14 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        44,
-        146
+        248,
+        188
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
       "phase": 0.4
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

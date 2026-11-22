@@ -191,7 +191,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_r5_refraction",
 			"region": "spire_r5",
 			"zone": "spire_r5",
-			"pos": [296.0, 88.0],
+			"pos": [456.0, 112.0],
 			"action": "solve_puzzle",
 			"target": "door_spire_r5_east",
 			"requires_moves": ["sunflare", "throw"],

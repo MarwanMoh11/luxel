@@ -169,7 +169,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_shrine_wings",
 			"region": "conservatory_r5",
 			"zone": "conservatory_r5",
-			"pos": [56.0, 56.0],
+			"pos": [64.0, 72.0],
 			"action": "claim_shrine",
 			"target": "shrine_wings",
 			"grants_move": "wings",

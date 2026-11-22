@@ -31,8 +31,8 @@
       ],
       "to_region": "conservatory_r5",
       "to_spawn": [
-        160,
-        40
+        224,
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
