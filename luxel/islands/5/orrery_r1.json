@@ -31,8 +31,8 @@
       ],
       "to_region": "overworld",
       "to_spawn": [
-        512,
-        112
+        544,
+        448
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -190,14 +190,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
-    },
-    {
-      "prop": "starlight_lantern_post",
-      "pos": [
-        252,
-        56
-      ],
-      "layer": "back"
     }
   ]
 }

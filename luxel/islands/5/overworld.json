@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": false,
   "spawn": [
-    96,
-    432
+    152,
+    544
   ],
   "zones": [
     {
@@ -13,9 +13,9 @@
       "name_key": "ZONE_ISL5_1",
       "rect": [
         0,
-        288,
-        336,
-        288
+        416,
+        368,
+        352
       ],
       "dark": true
     },
@@ -25,8 +25,8 @@
       "rect": [
         0,
         0,
-        336,
-        288
+        720,
+        368
       ],
       "dark": true
     },
@@ -34,10 +34,10 @@
       "id": "echo_promenade",
       "name_key": "ZONE_ISL5_3",
       "rect": [
-        336,
-        288,
-        352,
-        288
+        304,
+        720,
+        464,
+        368
       ],
       "dark": true
     },
@@ -45,10 +45,10 @@
       "id": "zenith_rim",
       "name_key": "ZONE_ISL5_4",
       "rect": [
-        688,
-        288,
-        336,
-        288
+        736,
+        544,
+        352,
+        544
       ],
       "dark": true
     },
@@ -56,10 +56,10 @@
       "id": "orrery_plaza",
       "name_key": "ZONE_ISL5_5",
       "rect": [
-        336,
-        0,
-        352,
-        288
+        368,
+        368,
+        368,
+        352
       ],
       "dark": true
     },
@@ -67,10 +67,10 @@
       "id": "kiln_overlook",
       "name_key": "ZONE_ISL5_6",
       "rect": [
-        688,
+        720,
         0,
-        336,
-        288
+        368,
+        544
       ],
       "dark": true
     }
@@ -79,8 +79,8 @@
     {
       "id": "exit_to_orrery",
       "rect": [
-        496,
-        48,
+        528,
+        400,
         32,
         24
       ],
@@ -100,8 +100,8 @@
     {
       "id": "exit_to_island_6",
       "rect": [
-        992,
-        128,
+        1040,
+        432,
         32,
         48
       ],
@@ -123,17 +123,17 @@
       "id": "echo_moth_5_entry",
       "kind": "echo_moth",
       "pos": [
-        248,
-        432
+        232,
+        544
       ],
       "route": [
         [
-          232,
-          432
+          200,
+          544
         ],
         [
-          280,
-          432
+          248,
+          544
         ]
       ],
       "perches": [],
@@ -144,17 +144,17 @@
       "id": "orrery_sentinel_5_terrace",
       "kind": "orrery_sentinel",
       "pos": [
-        216,
-        184
+        568,
+        152
       ],
       "route": [
         [
-          184,
-          184
+          520,
+          152
         ],
         [
-          248,
-          184
+          600,
+          152
         ]
       ],
       "perches": [],
@@ -165,17 +165,17 @@
       "id": "echo_moth_5_terrace",
       "kind": "echo_moth",
       "pos": [
-        152,
-        168
+        488,
+        184
       ],
       "route": [
         [
-          136,
-          168
+          456,
+          184
         ],
         [
-          184,
-          168
+          520,
+          184
         ]
       ],
       "perches": [],
@@ -186,17 +186,17 @@
       "id": "orrery_sentinel_5_promenade",
       "kind": "orrery_sentinel",
       "pos": [
-        456,
-        376
+        488,
+        840
       ],
       "route": [
         [
-          440,
-          376
+          456,
+          840
         ],
         [
-          488,
-          376
+          520,
+          840
         ]
       ],
       "perches": [],
@@ -207,17 +207,17 @@
       "id": "echo_moth_5_promenade",
       "kind": "echo_moth",
       "pos": [
-        568,
-        376
+        600,
+        840
       ],
       "route": [
         [
-          552,
-          376
+          568,
+          840
         ],
         [
-          616,
-          376
+          632,
+          840
         ]
       ],
       "perches": [],
@@ -228,22 +228,22 @@
       "id": "phantom_owl_5_zenith",
       "kind": "phantom_owl",
       "pos": [
-        824,
-        360
+        904,
+        648
       ],
       "route": [],
       "perches": [
         [
-          824,
-          360
-        ],
-        [
-          792,
-          392
+          904,
+          648
         ],
         [
           856,
-          392
+          680
+        ],
+        [
+          936,
+          680
         ]
       ],
       "zone": "zenith_rim",
@@ -253,17 +253,17 @@
       "id": "orrery_sentinel_5_zenith",
       "kind": "orrery_sentinel",
       "pos": [
-        840,
-        408
+        936,
+        712
       ],
       "route": [
         [
-          792,
-          408
+          872,
+          712
         ],
         [
-          856,
-          408
+          952,
+          712
         ]
       ],
       "perches": [],
@@ -274,17 +274,17 @@
       "id": "echo_moth_5_plaza",
       "kind": "echo_moth",
       "pos": [
-        472,
-        232
+        504,
+        584
       ],
       "route": [
         [
-          456,
-          232
+          472,
+          584
         ],
         [
-          568,
-          232
+          600,
+          584
         ]
       ],
       "perches": [],
@@ -295,17 +295,17 @@
       "id": "orrery_sentinel_5_trial",
       "kind": "orrery_sentinel",
       "pos": [
-        488,
-        488
+        504,
+        952
       ],
       "route": [
         [
           472,
-          488
+          952
         ],
         [
-          552,
-          488
+          584,
+          952
         ]
       ],
       "perches": [],
@@ -316,17 +316,17 @@
       "id": "echo_moth_5_trial",
       "kind": "echo_moth",
       "pos": [
-        552,
-        472
+        584,
+        936
       ],
       "route": [
         [
-          472,
-          472
+          488,
+          936
         ],
         [
-          552,
-          472
+          584,
+          936
         ]
       ],
       "perches": [],
@@ -339,8 +339,8 @@
       "id": "ws_5_entry",
       "kind": "waystone",
       "pos": [
-        144,
-        432
+        184,
+        544
       ],
       "props": {
         "zone": "star_landing",
@@ -352,8 +352,8 @@
       "id": "rest_shrine_5",
       "kind": "rest_shrine",
       "pos": [
-        184,
-        472
+        200,
+        592
       ],
       "props": {
         "zone": "star_landing",
@@ -364,8 +364,8 @@
       "id": "ws_5_terrace",
       "kind": "waystone",
       "pos": [
-        184,
-        232
+        424,
+        184
       ],
       "props": {
         "zone": "brass_terrace",
@@ -376,8 +376,8 @@
       "id": "beacon_5_1",
       "kind": "beacon",
       "pos": [
-        184,
-        184
+        504,
+        152
       ],
       "props": {
         "index": 0,
@@ -394,8 +394,8 @@
       "id": "beacon_5_2",
       "kind": "beacon",
       "pos": [
-        512,
-        360
+        544,
+        840
       ],
       "props": {
         "index": 1,
@@ -411,8 +411,8 @@
       "id": "ws_5_zenith",
       "kind": "waystone",
       "pos": [
-        728,
-        376
+        840,
+        664
       ],
       "props": {
         "zone": "zenith_rim",
@@ -423,8 +423,8 @@
       "id": "beacon_5_3",
       "kind": "beacon",
       "pos": [
-        824,
-        392
+        920,
+        680
       ],
       "props": {
         "index": 2,
@@ -441,8 +441,8 @@
       "id": "ws_5_plaza",
       "kind": "waystone",
       "pos": [
-        552,
-        232
+        584,
+        568
       ],
       "props": {
         "zone": "orrery_plaza",
@@ -453,8 +453,8 @@
       "id": "door_dungeon_5",
       "kind": "door",
       "pos": [
-        512,
-        152
+        544,
+        488
       ],
       "props": {
         "door_kind": "ward_barrier",
@@ -480,8 +480,8 @@
       "id": "bridge_of_light_5",
       "kind": "door",
       "pos": [
-        968,
-        152
+        1016,
+        456
       ],
       "props": {
         "door_kind": "bridge_of_light",
@@ -499,8 +499,8 @@
       "id": "chest_5_ember_1",
       "kind": "chest",
       "pos": [
-        104,
-        88
+        184,
+        184
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -517,8 +517,8 @@
       "id": "chest_5_ember_2",
       "kind": "chest",
       "pos": [
-        512,
-        488
+        544,
+        952
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -532,8 +532,8 @@
       "id": "obsidian_5_secret",
       "kind": "obsidian_seal",
       "pos": [
-        872,
-        480
+        920,
+        816
       ],
       "props": {
         "size": [
@@ -548,7 +548,7 @@
       "kind": "chest",
       "pos": [
         920,
-        480
+        872
       ],
       "props": {
         "reward_kind": "shards",
@@ -565,8 +565,8 @@
       "id": "chest_5_shards_1",
       "kind": "chest",
       "pos": [
-        104,
-        488
+        152,
+        600
       ],
       "props": {
         "reward_kind": "shards",
@@ -579,8 +579,8 @@
       "id": "chest_5_shards_2",
       "kind": "chest",
       "pos": [
-        616,
-        424
+        648,
+        872
       ],
       "props": {
         "reward_kind": "shards",
@@ -593,8 +593,8 @@
       "id": "chest_5_shards_3",
       "kind": "chest",
       "pos": [
-        856,
-        88
+        904,
+        344
       ],
       "props": {
         "reward_kind": "shards",
@@ -607,7 +607,7 @@
       "id": "mirror_5_terrace",
       "kind": "mirror",
       "pos": [
-        152,
+        456,
         136
       ],
       "props": {
@@ -619,8 +619,8 @@
       "id": "lamp_5_1",
       "kind": "road_lamp",
       "pos": [
-        184,
-        408
+        216,
+        504
       ],
       "props": {
         "zone": "star_landing"
@@ -630,7 +630,7 @@
       "id": "lamp_5_2",
       "kind": "road_lamp",
       "pos": [
-        248,
+        552,
         184
       ],
       "props": {
@@ -641,8 +641,8 @@
       "id": "lamp_5_3",
       "kind": "road_lamp",
       "pos": [
-        440,
-        392
+        472,
+        872
       ],
       "props": {
         "zone": "echo_promenade"
@@ -652,8 +652,8 @@
       "id": "lamp_5_4",
       "kind": "road_lamp",
       "pos": [
-        776,
-        392
+        872,
+        712
       ],
       "props": {
         "zone": "zenith_rim"
@@ -663,8 +663,8 @@
       "id": "lamp_5_5",
       "kind": "road_lamp",
       "pos": [
-        472,
-        184
+        504,
+        536
       ],
       "props": {
         "zone": "orrery_plaza"
@@ -674,8 +674,8 @@
       "id": "lamp_5_6",
       "kind": "road_lamp",
       "pos": [
-        824,
-        184
+        888,
+        424
       ],
       "props": {
         "zone": "kiln_overlook"
@@ -686,8 +686,8 @@
     {
       "id": "trig_isl5_arrival",
       "rect": [
-        72,
-        400,
+        120,
+        512,
         64,
         64
       ],
@@ -700,8 +700,8 @@
       "sheet": "island5_scenery",
       "prop": "orrery_dome_arch",
       "pos": [
-        512,
-        160
+        544,
+        496
       ],
       "layer": "over",
       "flip_x": false,
@@ -712,8 +712,8 @@
       "sheet": "island5_scenery",
       "prop": "constellation_arch",
       "pos": [
-        512,
-        74
+        544,
+        424
       ],
       "layer": "over",
       "flip_x": false,
@@ -724,8 +724,8 @@
       "sheet": "island5_scenery",
       "prop": "astro_floor_compass",
       "pos": [
-        512,
-        104
+        544,
+        440
       ],
       "layer": "ground",
       "flip_x": false,
@@ -736,8 +736,8 @@
       "sheet": "island5_scenery",
       "prop": "astro_floor_compass",
       "pos": [
-        512,
-        384
+        544,
+        544
       ],
       "layer": "ground",
       "flip_x": false,
@@ -748,8 +748,8 @@
       "sheet": "island5_scenery",
       "prop": "astro_floor_compass",
       "pos": [
-        192,
-        192
+        544,
+        840
       ],
       "layer": "ground",
       "flip_x": false,
@@ -760,8 +760,8 @@
       "sheet": "island5_scenery",
       "prop": "astro_floor_compass",
       "pos": [
-        816,
-        384
+        904,
+        544
       ],
       "layer": "ground",
       "flip_x": false,
@@ -770,214 +770,10 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "copper_dome_cap",
-      "pos": [
-        94,
-        290
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "armillary_sphere",
-      "pos": [
-        158,
-        344
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        148,
-        392
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "star_chart_lectern",
-      "pos": [
-        232,
-        362
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "reflecting_star_basin",
-      "pos": [
-        282,
-        316
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "moon_phase_obelisk",
-      "pos": [
-        242,
-        260
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        148,
-        492
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "broken_astrolabe_ring",
-      "pos": [
-        324,
-        492
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "clockwork_gear_pillar",
-      "pos": [
-        362,
-        500
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "grand_telescope",
-      "pos": [
-        108,
-        162
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "brass_orrery_stand",
-      "pos": [
-        316,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "celestial_globe",
-      "pos": [
-        206,
-        78
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        122,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "moon_phase_obelisk",
-      "pos": [
-        308,
-        148
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "star_chart_lectern",
-      "pos": [
-        104,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        268,
-        246
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "broken_astrolabe_ring",
-      "pos": [
-        322,
-        244
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        472,
-        86
+        504,
+        428
       ],
       "layer": "sort",
       "flip_x": false,
@@ -988,8 +784,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        552,
-        86
+        584,
+        428
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1000,8 +796,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        446,
-        136
+        478,
+        464
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1012,8 +808,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        578,
-        136
+        610,
+        464
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1024,8 +820,8 @@
       "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        408,
-        164
+        436,
+        496
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1036,8 +832,8 @@
       "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        616,
-        164
+        652,
+        496
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1048,8 +844,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        432,
-        232
+        448,
+        600
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1060,8 +856,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        596,
-        232
+        640,
+        600
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1072,8 +868,8 @@
       "sheet": "island5_scenery",
       "prop": "moon_phase_obelisk",
       "pos": [
-        384,
-        256
+        488,
+        648
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1084,8 +880,8 @@
       "sheet": "island5_scenery",
       "prop": "moon_phase_obelisk",
       "pos": [
-        640,
-        256
+        600,
+        648
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1094,34 +890,10 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "reflecting_star_basin",
+      "prop": "copper_dome_cap",
       "pos": [
-        412,
-        286
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "reflecting_star_basin",
-      "pos": [
-        612,
-        286
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "hanging_pendulum",
-      "pos": [
-        472,
-        286
+        120,
+        488
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1130,106 +902,10 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "hanging_pendulum",
+      "prop": "armillary_sphere",
       "pos": [
-        552,
-        286
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "celestial_globe",
-      "pos": [
-        336,
-        336
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "star_chart_lectern",
-      "pos": [
-        652,
-        354
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        424,
-        506
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        598,
-        506
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "clockwork_gear_pillar",
-      "pos": [
-        652,
-        466
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "grand_telescope",
-      "pos": [
-        914,
-        92
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "copper_dome_cap",
-      "pos": [
-        796,
-        102
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "brass_orrery_stand",
-      "pos": [
-        704,
-        152
+        168,
+        488
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1238,10 +914,34 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
+      "prop": "star_chart_lectern",
       "pos": [
-        772,
-        232
+        224,
+        480
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "reflecting_star_basin",
+      "pos": [
+        120,
+        592
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        232,
+        600
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1252,20 +952,224 @@
       "sheet": "island5_scenery",
       "prop": "moon_phase_obelisk",
       "pos": [
-        720,
-        256
+        152,
+        640
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.65
+      "phase": 0.4
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "grand_telescope",
+      "pos": [
+        424,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "brass_orrery_stand",
+      "pos": [
+        632,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        544,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        416,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "moon_phase_obelisk",
+      "pos": [
+        632,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        328,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
     },
     {
       "sheet": "island5_scenery",
       "prop": "broken_astrolabe_ring",
       "pos": [
-        928,
-        270
+        240,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "clockwork_gear_pillar",
+      "pos": [
+        176,
+        360
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "reflecting_star_basin",
+      "pos": [
+        448,
+        816
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "reflecting_star_basin",
+      "pos": [
+        640,
+        816
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "hanging_pendulum",
+      "pos": [
+        488,
+        816
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "hanging_pendulum",
+      "pos": [
+        600,
+        816
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        416,
+        872
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "star_chart_lectern",
+      "pos": [
+        672,
+        840
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        464,
+        984
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        624,
+        984
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "clockwork_gear_pillar",
+      "pos": [
+        280,
+        808
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "broken_astrolabe_ring",
+      "pos": [
+        200,
+        720
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1274,10 +1178,82 @@
     },
     {
       "sheet": "island5_scenery",
+      "prop": "grand_telescope",
+      "pos": [
+        952,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "copper_dome_cap",
+      "pos": [
+        848,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "brass_orrery_stand",
+      "pos": [
+        840,
+        408
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        952,
+        416
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "moon_phase_obelisk",
+      "pos": [
+        744,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        872,
-        356
+        848,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        968,
+        632
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1288,8 +1264,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        784,
-        344
+        840,
+        616
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1300,8 +1276,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        728,
-        352
+        840,
+        728
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1312,8 +1288,8 @@
       "sheet": "island5_scenery",
       "prop": "celestial_globe",
       "pos": [
-        872,
-        424
+        968,
+        744
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1324,8 +1300,8 @@
       "sheet": "island5_scenery",
       "prop": "moon_phase_obelisk",
       "pos": [
-        826,
-        496
+        792,
+        824
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1336,53 +1312,13 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        924,
-        198
+        720,
+        872
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "prop": "starlight_lantern_post",
-      "pos": [
-        112,
-        412
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "star_chart_lectern",
-      "pos": [
-        176,
-        464
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        924,
-        120
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "moon_phase_obelisk",
-      "pos": [
-        928,
-        186
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "armillary_sphere",
-      "pos": [
-        888,
-        152
-      ],
-      "layer": "back"
     }
   ]
 }
