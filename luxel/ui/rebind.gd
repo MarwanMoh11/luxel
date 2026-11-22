@@ -78,6 +78,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		var hd: bool = Rect2(26.0, 24.0, 268.0, 12.0).has_point(pos)
 		if hd != _hover_dev:
 			_hover_dev = hd
+			if hd:
+				_play_ui_sfx("ui_move")
 			queue_redraw()
 		var m_total: int = _total_rows()
 		for vis_i: int in range(VISIBLE_ROWS):

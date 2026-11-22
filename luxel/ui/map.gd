@@ -113,6 +113,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				break
 		if next_hover != _hover_island:
 			_hover_island = next_hover
+			if next_hover > 0: _play_ui_sfx("ui_move")
 			queue_redraw()
 		var start_idx: int = maxi(0, _waystone_idx - 2)
 		var vis_count: int = mini(_waystone_list.size() - start_idx, 3)
