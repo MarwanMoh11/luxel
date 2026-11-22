@@ -6,6 +6,12 @@ extends Node2D
 const BAR_HEIGHT: float = 16.0
 const FADE_SECS: float = 0.3
 const VIEW_RECT := Rect2(0.0, 0.0, 320.0, 180.0)
+const STYLE_COLORS: Dictionary = {
+	"title": "gold",
+	"warning": "coral",
+	"ominous": "ice",
+	"narration": "cream",
+}
 
 var _bar: float = 0.0
 var _bar_from: float = 0.0
@@ -58,6 +64,9 @@ func say_id(
 	slot: String = "main"
 ) -> void:
 	var line: String = LxStrings.text(string_id)
+	if line.find("%s") >= 0:
+		var glyph: String = LxStrings.sanitize(Lx.input.get_glyph("lx_interact"), 12) if Lx.input != null else "E"
+		line = LxStrings.fmt(string_id, [glyph])
 	say_lines(PackedStringArray([line]), style, secs, y, scale, slot)
 
 
@@ -69,7 +78,8 @@ func say_lines(
 	scale: int = 1,
 	slot: String = "main"
 ) -> void:
-	var col: String = style if LxPalette.is_valid_color(style) else "cream"
+	var mapped: String = str(STYLE_COLORS.get(style, style))
+	var col: String = mapped if LxPalette.is_valid_color(mapped) else "cream"
 	_slots[slot] = {
 		"lines": lines,
 		"colour": col,
@@ -77,6 +87,7 @@ func say_lines(
 		"scale": clampi(scale, 1, 5),
 		"t": 0.0,
 		"secs": maxf(secs, FADE_SECS * 2.0 + 0.1),
+		"slot": slot,
 	}
 	queue_redraw()
 
@@ -124,7 +135,8 @@ func clear_all() -> void:
 
 
 func _on_narration_requested(string_id: String, style: String, duration: float) -> void:
-	say_id(string_id, style, duration)
+	var slot_name: String = "title" if (style == "title" or style == "warning") else "main"
+	say_id(string_id, style, duration, -1.0, 1, slot_name)
 
 
 func _on_prompt_requested(string_id: String, action_id: String, duration: float) -> void:
@@ -186,13 +198,25 @@ func _draw_slot(s: Dictionary) -> void:
 	var lines: PackedStringArray = s["lines"] as PackedStringArray
 	var sc: int = int(s["scale"])
 	var y: float = float(s["y"])
+	var slot_name: String = str(s.get("slot", "main"))
 	var gap: float = 7.0 * float(sc)
 	if y < 0.0:
 		if is_letterbox_on():
 			y = 166.0 if lines.size() == 1 else 165.0
 		else:
-			var base_y: float = 136.0 if _unlocked_move_count() >= 4 else 152.0
+			var base_y: float = 136.0 if _unlocked_move_count() >= 4 else 150.0
+			if slot_name == "title":
+				base_y -= 13.0 if _slots.has("main") else 2.0
 			y = base_y - gap * float(lines.size() - 1)
+	if not is_letterbox_on() and not lines.is_empty():
+		var max_w: float = 0.0
+		for ln: String in lines:
+			max_w = maxf(max_w, float(LxPixelFont.width(ln, sc)))
+		var pad_x: float = 6.0
+		var box_h: float = gap * float(lines.size()) + 3.0
+		var border_k: String = "gold" if slot_name == "title" else "dusk"
+		var rect := Rect2(roundf(160.0 - max_w * 0.5 - pad_x), roundf(y - 2.0), roundf(max_w + pad_x * 2.0), roundf(box_h))
+		LxPixelFont.draw_panel(self, rect, "night", border_k, "void")
 	for i: int in range(lines.size()):
 		LxPixelFont.draw_centered(self, lines[i], 160.0, y + gap * float(i), col, sc)
 

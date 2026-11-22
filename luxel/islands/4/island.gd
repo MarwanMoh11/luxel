@@ -378,7 +378,7 @@ func _on_boss_defeated(boss_id: String, island_id: int) -> void:
 		st.story_flags["boss_heron_abbess_defeated"] = true
 	if _events != null:
 		_events.sfx_requested.emit("boss_victory", Vector2.ZERO, false)
-		_emit_narration("PROMPT_IGNITE", "narration", 3.5)
+		_events.prompt_requested.emit("PROMPT_IGNITE", "lx_interact", 5.0)
 		_events.save_requested.emit("boss_heron_abbess_defeated")
 
 

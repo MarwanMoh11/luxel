@@ -150,7 +150,7 @@ func _try_buy(i: int) -> void:
 		_spark_row = i
 		_spark_pip = maxi(0, new_rank - 1)
 		_spark_t = SPARK_DUR
-		_play_ui_sfx("ui_confirm")
+		_play_ui_sfx("shop_buy")
 		if Lx.events != null:
 			Lx.events.save_requested.emit("upgrade")
 		upgrade_bought.emit(uid, new_rank)

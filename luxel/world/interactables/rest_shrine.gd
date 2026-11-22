@@ -24,7 +24,7 @@ func interact(_actor: Node = null) -> bool:
 	if Lx.ui != null and Lx.ui.has_method("open_rest_shop"):
 		Lx.ui.call("open_rest_shop")
 	elif Lx.events != null:
-		Lx.events.prompt_requested.emit("REST_SHOP_TITLE", "lx_interact", 2.0)
+		Lx.events.prompt_requested.emit("SHOP_TITLE", "lx_interact", 2.0)
 	_emit_save("rest_shrine")
 	return true
 

@@ -293,12 +293,13 @@ func fast_travel_waystone(island_id: int, waystone_id: String) -> bool:
 	Lx.state.last_waystone_island = island_id
 	Lx.state.last_waystone_id = waystone_id
 	Lx.state.heal_full()
-	load_island_region(island_id, "overworld")
+	var loc: Dictionary = LxMapFormat.find_waystone(island_id, waystone_id)
+	load_island_region(island_id, str(loc.get("region", "overworld")), loc.get("pos", Vector2(-1.0, -1.0)) as Vector2)
 	flow = Flow.PLAY
 	Lx.audio.set_paused(false)
+	Lx.audio.play_sfx("waystone_rest", Vector2.ZERO, false)
 	_sync_ui_flow()
 	return true
-
 
 func toggle_pause() -> void:
 	if flow == Flow.PLAY:
@@ -337,11 +338,12 @@ func retry_from_death() -> void:
 	if Lx.state.region_id != "overworld":
 		load_island_region(Lx.state.island_id, Lx.state.region_id)
 	else:
-		load_island_region(Lx.state.last_waystone_island, "overworld", Lx.state.spawn_pos)
+		var loc: Dictionary = LxMapFormat.find_waystone(Lx.state.last_waystone_island, Lx.state.last_waystone_id)
+		var sp: Vector2 = loc.get("pos", Lx.state.spawn_pos) as Vector2
+		load_island_region(Lx.state.last_waystone_island, str(loc.get("region", "overworld")), sp)
 	flow = Flow.PLAY
 	Lx.audio.set_paused(false)
 	_sync_ui_flow()
-
 
 func trigger_ending(mode: String = "") -> void:
 	ending_mode = mode if not mode.is_empty() else str(Lx.get_decision("ending_mode", "display_off"))

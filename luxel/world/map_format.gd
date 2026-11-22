@@ -232,3 +232,32 @@ static func _empty_map() -> Dictionary:
 		"grid": empty_grid,
 		"raw_rows": PackedStringArray(),
 	}
+
+
+static var _waystone_cache: Dictionary = {}
+
+
+static func find_waystone(island_id: int, waystone_id: String) -> Dictionary:
+	if waystone_id.is_empty():
+		return {}
+	if not _waystone_cache.has(island_id):
+		var map_dict: Dictionary = {}
+		var dir_path: String = "res://luxel/islands/%d" % island_id
+		var da: DirAccess = DirAccess.open(dir_path)
+		if da != null:
+			for fname: String in da.get_files():
+				if not fname.ends_with(".json"):
+					continue
+				var reg_id: String = fname.trim_suffix(".json")
+				var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(dir_path + "/" + fname))
+				if parsed is Dictionary:
+					var inters: Array = (parsed as Dictionary).get("interactables", []) as Array
+					for it_v: Variant in inters:
+						if it_v is Dictionary and str((it_v as Dictionary).get("kind", "")) == "waystone":
+							var wid: String = str((it_v as Dictionary).get("id", ""))
+							var wpos: Vector2 = to_vec2((it_v as Dictionary).get("pos", []), Vector2(-1.0, -1.0))
+							if not wid.is_empty() and wpos.x >= 0.0:
+								map_dict[wid] = {"region": reg_id, "pos": wpos + Vector2(0.0, 14.0)}
+		_waystone_cache[island_id] = map_dict
+	var island_ws: Dictionary = _waystone_cache.get(island_id, {}) as Dictionary
+	return (island_ws.get(waystone_id, {}) as Dictionary).duplicate()
