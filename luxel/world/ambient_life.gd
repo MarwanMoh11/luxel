@@ -8,7 +8,7 @@ const VIEW_W: float = 340.0
 const VIEW_H: float = 200.0
 const HALF_W: float = 170.0
 const HALF_H: float = 100.0
-const MAX_PARTICLES: int = 28
+const MAX_PARTICLES: int = 32
 const MAX_SPARKS: int = 80
 const MAX_RINGS: int = 14
 const MAX_PILLARS: int = 4
@@ -139,6 +139,8 @@ func configure(island_id: int, world_bounds: Rect2, is_dungeon: bool) -> void:
 		_: # Island 8 (The Long Night): void ash & eclipse embers
 			_add_group(rng, 10 if d else 14, Kind.FLAKE, "mauve", "stone", "stone", -5.0, 3.0, 6.0, 13.0, 9.0, 1.0, 1.9)
 			_add_group(rng, 8 if d else 12, Kind.GLOW, "coral", "", "gold", -4.0, 4.0, -9.0, -3.0, 7.0, 1.1, 2.0)
+	if not d and Lx.state != null and Lx.state.relit_islands.has(_island_id):
+		_add_group(rng, 4, Kind.GLOW, "gold", "", "cream", -3.0, 3.0, -8.0, -3.0, 7.0, 1.4, 2.4)
 	queue_redraw()
 
 func _add_group(rng: RandomNumberGenerator, count: int, kind: int, c1: String, c1_alt: String, c2: String, vx0: float, vx1: float, vy0: float, vy1: float, sway: float, f0: float, f1: float, sz: float = 1.0, sz_third: float = 0.0) -> void:

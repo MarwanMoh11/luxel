@@ -16,8 +16,34 @@ static func shake_enabled() -> bool:
 static func draw_indicators(hud: CanvasItem, blink_t: float, boss_active: bool, boss_phase: int) -> void:
 	var fred: bool = flash_reduced()
 	_draw_lantern_edge_compass(hud, blink_t, fred)
+	_draw_counter_ready_halo(hud, blink_t, fred)
 	if boss_active and boss_phase >= 2:
 		_draw_boss_phase_filigree(hud, blink_t, boss_phase, fred)
+
+
+static func _draw_counter_ready_halo(hud: CanvasItem, blink_t: float, fred: bool) -> void:
+	if Lx.player == null or not is_instance_valid(Lx.player):
+		return
+	var md_v: Variant = Lx.player.get("move_dash")
+	if not (md_v is Object) or not is_instance_valid(md_v):
+		return
+	var ct: float = float((md_v as Object).get("counter_t"))
+	if ct <= 0.01:
+		return
+	var frac: float = clampf(ct / 1.45, 0.0, 1.0)
+	var pulse: bool = fred or (int(blink_t * 10.0) % 2 == 0)
+	var col: Color = (LxPalette.PAL["cream"] if pulse else LxPalette.PAL["ice"]) as Color
+	var accent: Color = LxPalette.PAL["gold"] as Color
+	# Crisp 1-px highlight corners & draining counter bar directly above the Bolt slot (5, 160)
+	var bx: float = 5.0
+	var by: float = 158.0
+	var bar_w: float = maxf(2.0, floorf(13.0 * frac))
+	hud.draw_rect(Rect2(bx - 1.0, by - 1.0, 15.0, 3.0), LxPalette.PAL["void"] as Color)
+	hud.draw_rect(Rect2(bx, by, bar_w, 1.0), col)
+	hud.draw_rect(Rect2(bx + bar_w - 1.0, by, 1.0, 1.0), accent)
+	# Corner sparkles framing the primary kit slot while counter empowerment is live
+	hud.draw_rect(Rect2(bx - 1.0, 160.0, 1.0, 2.0), col)
+	hud.draw_rect(Rect2(bx + 13.0, 160.0, 1.0, 2.0), col)
 
 
 static func _draw_lantern_edge_compass(hud: CanvasItem, blink_t: float, fred: bool) -> void:

@@ -51,7 +51,7 @@ func interact(_actor: Node = null) -> bool:
 
 func get_light_pool() -> Vector4:
 	if _claim_t > 0.0:
-		var surge: float = sin((1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)) * PI)
+		var surge: float = sin((1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)) * PI) * (0.55 if LxHudFx.flash_reduced() else 1.0)
 		return Vector4(pos.x, pos.y - 10.0, 42.0 + surge * 74.0, 0.72 + surge * 0.85)
 	if not claimed:
 		return Vector4(pos.x, pos.y - 10.0, 68.0, 1.15)

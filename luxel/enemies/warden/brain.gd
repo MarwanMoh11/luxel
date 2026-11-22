@@ -227,6 +227,7 @@ func _wear_shield(amount: float) -> bool:
 	state_timer = maxf(MIN_RECOVER_TIME, break_open_time)
 	last_recover_duration = state_timer
 	shield_broken.emit(self, pos)
+	LxDamageFx.boss_impact(pos, 0.14, 62.0, 74.0, 58.0, 1.28, 0.30)
 	_emit_sfx("warden_shield_break")
 	return true
 

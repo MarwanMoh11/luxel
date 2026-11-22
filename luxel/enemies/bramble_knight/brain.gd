@@ -66,6 +66,7 @@ func take_hit(hit: LxHit) -> int:
 		is_counter_attack = false
 		_release_token()
 		shield_broken.emit(self, pos)
+		LxDamageFx.boss_impact(pos, 0.14, 62.0, 74.0, 58.0, 1.28, 0.30)
 		_emit_sfx("bramble_guard_break")
 		hp -= dmg
 		flash_t = 0.18

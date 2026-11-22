@@ -235,7 +235,7 @@ func on_perfect_dodge() -> bool:
 		_gust(64.0, 72.0)
 		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 			LxDarknessLayer.active_instance.trigger_focus_flash(0.85)
-			LxDarknessLayer.active_instance.add_burst_light(wick.global_position, 74.0, 1.45, 0.30)
+			LxDarknessLayer.active_instance.add_burst_light(wick.global_position, 74.0, 0.94 if LxHudFx.flash_reduced() else 1.45, 0.30)
 		wick.emit_sfx("perfect_dodge", wick.global_position, false)
 		if Lx.ui != null and Lx.ui.get("hud") != null and (Lx.ui.get("hud") as Node).has_method("spawn_world_cue"):
 			(Lx.ui.get("hud") as Node).call("spawn_world_cue", "CUE_PERFECT_DODGE", wick.global_position + Vector2(0.0, -10.0), "ice", 1.1)

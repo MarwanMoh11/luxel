@@ -107,6 +107,8 @@ func _fire_bolt() -> bool:
 	wick.shoot_anim_t = 0.20
 	wick.recoil_vis = 1.0
 	wick.spawn_sparks(b.pos, aim, 3, LxWick.PAL_GOLD, 40.0, 95.0, 0.12)
+	if not LxHudFx.flash_reduced() and LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(b.pos, 32.0, 0.72, 0.10)
 	wick.emit_sfx("bolt_fire", wick.global_position, false)
 	return true
 

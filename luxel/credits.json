@@ -538,6 +538,38 @@
         "luxel/audio/sfx/boss_hush_roar.ogg",
         "luxel/audio/sfx/boss_hush_roar_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_biome_combat_a",
+      "description": "Bespoke zero-hiss multi-take biome combat SFX batch A (prism_hit, thorn_burst, star_lance, beak_strike + _2 takes; 212 SFX across 101 multi-take pools)",
+      "generator": "gen_sfx_biome_combat_a.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/prism_hit.ogg",
+        "luxel/audio/sfx/prism_hit_2.ogg",
+        "luxel/audio/sfx/thorn_burst.ogg",
+        "luxel/audio/sfx/thorn_burst_2.ogg",
+        "luxel/audio/sfx/star_lance.ogg",
+        "luxel/audio/sfx/star_lance_2.ogg",
+        "luxel/audio/sfx/beak_strike.ogg",
+        "luxel/audio/sfx/beak_strike_2.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_sfx_biome_combat_b",
+      "description": "Bespoke zero-hiss multi-take biome combat SFX batch B (shell_snap, magma_crack, moon_blink, marsh_splash + _2 takes; 220 Studio SFX across 105 multi-take pools)",
+      "generator": "gen_sfx_biome_combat_b.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/shell_snap.ogg",
+        "luxel/audio/sfx/shell_snap_2.ogg",
+        "luxel/audio/sfx/magma_crack.ogg",
+        "luxel/audio/sfx/magma_crack_2.ogg",
+        "luxel/audio/sfx/moon_blink.ogg",
+        "luxel/audio/sfx/moon_blink_2.ogg",
+        "luxel/audio/sfx/marsh_splash.ogg",
+        "luxel/audio/sfx/marsh_splash_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []

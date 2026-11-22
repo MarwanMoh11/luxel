@@ -74,7 +74,8 @@ func interact(_actor: Node = null) -> bool:
 func get_light_pool() -> Vector4:
 	if _open_t > 0.0:
 		var u: float = clampf(_open_t / 0.44, 0.0, 1.0)
-		return Vector4(pos.x, pos.y - 6.0, 68.0 * (0.45 + 0.55 * u), 1.40 * u)
+		var peak: float = 0.95 if LxHudFx.flash_reduced() else 1.40
+		return Vector4(pos.x, pos.y - 6.0, 68.0 * (0.45 + 0.55 * u), peak * u)
 	if opened:
 		return Vector4.ZERO
 	return Vector4(pos.x, pos.y - 4.0, 34.0, 0.65)
