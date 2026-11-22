@@ -73,7 +73,7 @@ func _check_phase_transition() -> void:
 		state_timer = PHASE2_ROAR_TIME
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
-			Lx.events.shake_requested.emit(0.28)
+		_boss_impact(0.28, 98.0, 96.0)
 		_emit_sfx("forge_warden_phase2")
 
 
@@ -108,6 +108,7 @@ func _try_start_attack(_target_pos: Vector2, dist: float) -> bool:
 func _enter_commit() -> void:
 	quake_stage = QuakeStage.RING_1
 	super._enter_commit()
+	_boss_impact(0.18, 88.0, 90.0)
 
 
 func _step_commit(dt: float) -> void:
@@ -118,6 +119,7 @@ func _step_commit(dt: float) -> void:
 			state_timer = STOMP_COMMIT_TIME
 			stomp_progress = 0.0
 			stomp_hit = false
+			_boss_impact(0.22, 98.0, 102.0)
 			_emit_sfx("golem_stomp_shockwave")
 		return
 
@@ -174,17 +176,19 @@ func _draw_extra(off: Vector2) -> void:
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(c, tell_max_r, a0, a0 + 0.24, 3, PAL["coral"] as Color, 1.0)
 		var tr: float = lerpf(tell_max_r, STOMP_START_R + 5.0, prog)
-		draw_arc(c, tr + 2.0, 0.0, TAU, 28, PAL["coral"] as Color, 1.4)
-		draw_arc(c, tr, 0.0, TAU, 28, PAL["apricot"] as Color, 1.8)
-		draw_arc(c, maxf(3.0, tr - 2.0), 0.0, TAU, 24, PAL["gold"] as Color, 1.0)
+		var hot: bool = state_timer <= 0.14
+		draw_arc(c, tr + 2.0, 0.0, TAU, 28, (PAL["apricot"] if hot else PAL["coral"]) as Color, 1.4)
+		draw_arc(c, tr, 0.0, TAU, 28, (PAL["cream"] if hot else PAL["apricot"]) as Color, 2.0 if hot else 1.8)
+		draw_arc(c, maxf(3.0, tr - 2.0), 0.0, TAU, 24, (PAL["cream"] if hot else PAL["gold"]) as Color, 1.0)
 	elif state == State.COMMIT:
 		if quake_stage == QuakeStage.PAUSE:
 			for oi: int in range(12):
 				var oa0: float = float(oi) * (TAU / 12.0)
 				draw_arc(c, FORGE_RING_MAX_R, oa0, oa0 + 0.24, 3, PAL["coral"] as Color, 1.0)
 			var pr: float = FORGE_RING_MAX_R * 0.48 + 2.0 * sin(anim_t * 18.0)
-			draw_arc(c, pr + 2.2, 0.0, TAU, 24, PAL["coral"] as Color, 2.0)
-			draw_arc(c, pr, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
+			var hot_p: bool = state_timer <= 0.14
+			draw_arc(c, pr + 2.2, 0.0, TAU, 24, (PAL["apricot"] if hot_p else PAL["coral"]) as Color, 2.0)
+			draw_arc(c, pr, 0.0, TAU, 24, (PAL["cream"] if hot_p else PAL["gold"]) as Color, 2.4 if hot_p else 2.2)
 		else:
 			var max_r: float = FORGE_RING_MAX_R if (phase >= 2 or quake_stage == QuakeStage.RING_2) else STOMP_MAX_R + 6.0
 			var ring_r: float = lerpf(STOMP_START_R, max_r, stomp_progress)
@@ -208,3 +212,12 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, rr + 2.4, 0.0, TAU, 28, PAL["coral"] as Color, 2.2)
 		draw_arc(c, rr, 0.0, TAU, 28, PAL["apricot"] as Color, 2.4)
 		draw_arc(c, maxf(3.0, rr - 2.2), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

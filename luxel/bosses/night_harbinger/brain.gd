@@ -98,7 +98,7 @@ func _on_damaged_alive(_hit: LxHit) -> bool:
 		wave_cd = 0.80
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
-			Lx.events.shake_requested.emit(0.28)
+		_boss_impact(0.28, 96.0, 96.0)
 		_emit_sfx("night_harbinger_phase2")
 		return true
 	return false
@@ -149,6 +149,7 @@ func _enter_commit() -> void:
 		state_timer = WAVE_COMMIT_TIME
 		wave_progress = 0.0
 		wave_hit = false
+		_boss_impact(0.18, 88.0, 92.0)
 		_emit_sfx("harbinger_wave_fire")
 		return
 	swings_since_wave += 1
@@ -215,9 +216,10 @@ func _draw_extra(off: Vector2) -> void:
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(c, WAVE_MAX_R, a0, a0 + 0.24, 3, PAL["plum"] as Color, 1.0)
 		var tr: float = lerpf(WAVE_MAX_R, WAVE_START_R + 6.0, prog)
-		draw_arc(c, tr + 2.2, 0.0, TAU, 28, PAL["plum"] as Color, 1.6)
-		draw_arc(c, tr, 0.0, TAU, 28, PAL["coral"] as Color, 1.8)
-		draw_arc(c, maxf(4.0, tr - 2.2), 0.0, TAU, 24, PAL["ice"] as Color, 1.0)
+		var hot: bool = state_timer <= 0.14
+		draw_arc(c, tr + 2.2, 0.0, TAU, 28, (PAL["coral"] if hot else PAL["plum"]) as Color, 1.6)
+		draw_arc(c, tr, 0.0, TAU, 28, (PAL["cream"] if hot else PAL["coral"]) as Color, 2.0 if hot else 1.8)
+		draw_arc(c, maxf(4.0, tr - 2.2), 0.0, TAU, 24, (PAL["cream"] if hot else PAL["ice"]) as Color, 1.0)
 	elif wave_attack and state == State.COMMIT:
 		var ring_r: float = lerpf(WAVE_START_R, WAVE_MAX_R, wave_progress)
 		draw_arc(c, ring_r + 3.6, 0.0, TAU, 36, PAL["plum"] as Color, 2.2)
@@ -255,3 +257,12 @@ func _draw_eclipse_diamond(pt: Vector2, rad: float, outer: Color, inner: Color) 
 	draw_line(d, l, outer, 1.2)
 	draw_line(l, t, outer, 1.2)
 	draw_rect(Rect2(p - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), inner, true)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

@@ -64,7 +64,7 @@ func _check_phase_transition() -> void:
 		state_timer = PHASE2_ROAR_TIME
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
-			Lx.events.shake_requested.emit(0.24)
+		_boss_impact(0.24, 90.0, 88.0)
 		_emit_sfx("great_hopper_phase2")
 
 
@@ -137,6 +137,7 @@ func _step_commit(dt: float) -> void:
 			leap_from = pos
 			ring_progress = 0.0
 			ring_hit = false
+			_boss_impact(0.10, 62.0, 58.0)
 			_emit_sfx("hopper_leap")
 		return
 
@@ -190,8 +191,9 @@ func _draw_extra(off: Vector2) -> void:
 			var a0: float = float(oi) * (TAU / 10.0)
 			draw_arc(rel, BOSS_RING_MAX_R, a0, a0 + 0.28, 3, PAL["blue"] as Color, 1.0)
 		var br: float = 9.5 + 0.5 * sin(anim_t * 16.0)
-		draw_arc(rel, br, 0.0, TAU, 20, PAL["sky"] as Color, 1.6)
-		draw_arc(rel, maxf(3.0, br - 3.5), 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
+		var locked_t: bool = state_timer <= 0.14
+		draw_arc(rel, br, 0.0, TAU, 20, (PAL["gold"] if locked_t else PAL["sky"]) as Color, 2.0 if locked_t else 1.6)
+		draw_arc(rel, maxf(3.0, br - 3.5), 0.0, TAU, 16, (PAL["cream"] if locked_t else PAL["ice"]) as Color, 1.2 if locked_t else 1.0)
 		var b_off: float = br + 1.5
 		for bi: int in range(4):
 			var sx: float = -1.0 if (bi == 0 or bi == 3) else 1.0
@@ -225,3 +227,12 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, rr + 2.2, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
 		draw_arc(c, rr, 0.0, TAU, 28, PAL["lime"] as Color, 2.4)
 		draw_arc(c, maxf(3.0, rr - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

@@ -65,7 +65,7 @@ func _check_phase_transition() -> void:
 		state_timer = PHASE2_ROAR_TIME
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
-			Lx.events.shake_requested.emit(0.24)
+		_boss_impact(0.24, 92.0, 90.0)
 		_emit_sfx("elder_sporecap_phase2")
 
 
@@ -122,6 +122,7 @@ func _enter_commit() -> void:
 	cap_open = true
 	ring_progress = 0.0
 	ring_hit = false
+	_boss_impact(0.18, 92.0, 90.0)
 	_emit_sfx("elder_sporecap_burst")
 
 
@@ -133,6 +134,7 @@ func _step_commit(dt: float) -> void:
 			state_timer = ELDER_COMMIT_TIME
 			ring_progress = 0.0
 			ring_hit = false
+			_boss_impact(0.20, 98.0, 96.0)
 			_emit_sfx("elder_sporecap_burst")
 		return
 
@@ -195,9 +197,10 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(c, ELDER_RING_MAX_R, a0, a0 + 0.24, 3, PAL["jade"] as Color, 1.0)
 		var tr: float = lerpf(ELDER_RING_MAX_R * 0.85, RING_START_R + 5.0, swell)
 		var pulse: float = 1.4 * sin(anim_t * 20.0)
-		draw_arc(c, tr + 2.2 + pulse * 0.4, 0.0, TAU, 28, PAL["jade"] as Color, 1.4)
-		draw_arc(c, tr, 0.0, TAU, 28, PAL["lime"] as Color, 2.0)
-		draw_arc(c, maxf(4.0, tr * 0.62 + pulse * 0.6), 0.0, TAU, 22, PAL["gold"] as Color, 1.4)
+		var hot: bool = state_timer <= 0.14
+		draw_arc(c, tr + 2.2 + pulse * 0.4, 0.0, TAU, 28, (PAL["lime"] if hot else PAL["jade"]) as Color, 1.4)
+		draw_arc(c, tr, 0.0, TAU, 28, (PAL["cream"] if hot else PAL["lime"]) as Color, 2.2 if hot else 2.0)
+		draw_arc(c, maxf(4.0, tr * 0.62 + pulse * 0.6), 0.0, TAU, 22, (PAL["cream"] if hot else PAL["gold"]) as Color, 1.4)
 	elif state == State.COMMIT:
 		if pulse_stage == PulseStage.PAUSE:
 			var r2_max: float = ELDER_RING_MAX_R + 10.0
@@ -205,8 +208,9 @@ func _draw_extra(off: Vector2) -> void:
 				var oa0: float = float(oi) * (TAU / 14.0)
 				draw_arc(c, r2_max, oa0, oa0 + 0.22, 3, PAL["lime"] as Color, 1.0)
 			var pr: float = ELDER_RING_MAX_R * 0.48 + 2.0 * sin(anim_t * 20.0)
-			draw_arc(c, pr + 2.4, 0.0, TAU, 28, PAL["lime"] as Color, 1.8)
-			draw_arc(c, pr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)
+			var hot_p: bool = state_timer <= 0.14
+			draw_arc(c, pr + 2.4, 0.0, TAU, 28, (PAL["gold"] if hot_p else PAL["lime"]) as Color, 1.8)
+			draw_arc(c, pr, 0.0, TAU, 28, (PAL["cream"] if hot_p else PAL["gold"]) as Color, 2.4 if hot_p else 2.2)
 			draw_arc(c, maxf(4.0, pr - 2.2), 0.0, TAU, 22, PAL["cream"] as Color, 1.0)
 		else:
 			var max_r: float = ELDER_RING_MAX_R + (10.0 if pulse_stage == PulseStage.RING_2 else 0.0)
@@ -239,3 +243,12 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, rr + 2.2, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
 		draw_arc(c, rr, 0.0, TAU, 28, PAL["lime"] as Color, 2.4)
 		draw_arc(c, maxf(3.0, rr - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

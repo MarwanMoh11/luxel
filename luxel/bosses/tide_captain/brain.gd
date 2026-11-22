@@ -98,7 +98,7 @@ func _check_phase_transition() -> bool:
 		slam_cd = 0.85
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
-			Lx.events.shake_requested.emit(0.26)
+		_boss_impact(0.26, 92.0, 92.0)
 		_emit_sfx("tide_captain_phase2")
 		return true
 	return false
@@ -147,6 +147,7 @@ func _enter_commit() -> void:
 		state_timer = SLAM_FIRE_TIME
 		slam_progress = 0.0
 		slam_hit = false
+		_boss_impact(0.18, 84.0, 88.0)
 		_emit_sfx("tide_captain_slam_fire")
 		return
 	swings_since_slam += 1
@@ -220,9 +221,10 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(c, SLAM_MAX_R, a0, a0 + 0.24, 3, PAL["blue"] as Color, 1.0)
 		var tr: float = lerpf(SLAM_MAX_R, SLAM_START_R + 6.0, prog)
 		var pulse: float = 1.2 * sin(anim_t * 18.0)
-		draw_arc(c, tr + 2.0 + pulse * 0.5, 0.0, TAU, 28, PAL["blue"] as Color, 1.4)
-		draw_arc(c, tr, 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
-		draw_arc(c, maxf(3.0, tr - 2.2), 0.0, TAU, 24, PAL["ice"] as Color, 1.0)
+		var hot: bool = state_timer <= 0.14
+		draw_arc(c, tr + 2.0 + pulse * 0.5, 0.0, TAU, 28, (PAL["sky"] if hot else PAL["blue"]) as Color, 1.4)
+		draw_arc(c, tr, 0.0, TAU, 28, (PAL["cream"] if hot else PAL["sky"]) as Color, 2.0 if hot else 1.8)
+		draw_arc(c, maxf(3.0, tr - 2.2), 0.0, TAU, 24, (PAL["cream"] if hot else PAL["ice"]) as Color, 1.0)
 	elif slam_attack and state == State.COMMIT:
 		var ring_r: float = lerpf(SLAM_START_R, SLAM_MAX_R, slam_progress)
 		draw_arc(c, ring_r + 3.6, 0.0, TAU, 36, PAL["deep"] as Color, 2.0)
@@ -243,3 +245,12 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, rr + 2.4, 0.0, TAU, 28, PAL["sky"] as Color, 2.0)
 		draw_arc(c, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)
 		draw_arc(c, maxf(3.0, rr - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

@@ -55,7 +55,7 @@ func _check_phase_transition() -> void:
 		state_timer = PHASE2_ROAR_TIME
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
-			Lx.events.shake_requested.emit(0.24)
+		_boss_impact(0.24, 90.0, 86.0)
 		_emit_sfx("clockwork_warden_phase2")
 
 
@@ -103,6 +103,7 @@ func _step_commit(dt: float) -> void:
 		angles = [0.0, -FAN_SPREAD_RAD, FAN_SPREAD_RAD]
 	if not shot_fired:
 		shot_fired = true
+		_boss_impact(0.16 if phase >= 2 else 0.12, 82.0, 78.0)
 		for off_a: float in angles:
 			beam_bolt_fired.emit(pos, shot_dir.rotated(off_a), self)
 	if not shot_hit and _has_player():
@@ -158,8 +159,8 @@ func _draw_extra(off: Vector2) -> void:
 			var r_end: Vector2 = (c + Vector2.from_angle(facing + off_a) * BOLT_RANGE).round()
 			draw_line(c, r_end, (PAL["coral"] if locked_c else PAL["sky"]) as Color, 2.2 if locked_c else 2.0)
 			draw_line(c, r_end, (PAL["cream"] if locked_c else PAL["gold"]) as Color, 1.0)
-		draw_arc(c, lerpf(16.0, 4.0, prog), 0.0, TAU, 16, (PAL["coral"] if locked_c else PAL["sky"]) as Color, 1.2)
-		_draw_cw_star_flare(c, lerpf(3.5, 7.5, prog), (PAL["coral"] if locked_c else PAL["gold"]) as Color, PAL["cream"] as Color)
+		draw_arc(c, lerpf(16.0, 4.0, prog), 0.0, TAU, 16, (PAL["cream"] if state_timer <= 0.12 else (PAL["coral"] if locked_c else PAL["sky"])) as Color, 1.6 if state_timer <= 0.12 else 1.2)
+		_draw_cw_star_flare(c, lerpf(3.5, 7.5, prog), (PAL["cream"] if state_timer <= 0.12 else (PAL["coral"] if locked_c else PAL["gold"])) as Color, PAL["cream"] as Color)
 	elif state == State.COMMIT:
 		var fl: float = 6.5 + 1.2 * sin(anim_t * 22.0)
 		var ray_n: int = 3 if phase >= 2 else 1
@@ -187,3 +188,12 @@ func _draw_cw_star_flare(pt: Vector2, rad: float, outer: Color, core: Color) -> 
 	draw_line(p + Vector2(-rad * 0.62, 0.0), p + Vector2(rad * 0.62, 0.0), core, 1.0)
 	draw_line(p + Vector2(0.0, -rad * 0.62), p + Vector2(0.0, rad * 0.62), core, 1.0)
 	draw_circle(p, 1.8, core)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)
