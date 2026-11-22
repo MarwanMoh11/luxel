@@ -187,8 +187,9 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	var use_shafts: float = 0.65 if (region != null and region.is_dungeon) else 0.0
 	_mat.set_shader_parameter("dungeon_shafts", use_shafts)
 
-	# Dual-frequency organic flame breath
-	var flicker: float = 0.955 + 0.030 * sin(_clock * 5.2) + 0.015 * sin(_clock * 13.7)
+	# Dual-frequency organic flame breath (calm gentle breath when flash_reduction is enabled)
+	var fr_flk: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var flicker: float = (0.985 + 0.015 * sin(_clock * 2.4)) if fr_flk else (0.955 + 0.030 * sin(_clock * 5.2) + 0.015 * sin(_clock * 13.7))
 	var lights := PackedVector4Array()
 	_append_player_lights(lights, flicker)
 

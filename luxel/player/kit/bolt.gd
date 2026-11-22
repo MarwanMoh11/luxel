@@ -159,6 +159,9 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				)
 				var res: int = wick.apply_hit_to_entity(enemy, hit)
 				wick.on_hit_landed(hit, res, epos, hs_chip, shake_chip)
+				if (b.is_prism or b.is_counter) and res > 0 and LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+					var bi_p: float = 0.88 if LxHudFx.flash_reduced() else 1.38
+					LxDarknessLayer.active_instance.add_burst_light(epos, 58.0 if (b.is_counter or b.bounce_count >= 2) else 48.0, bi_p, 0.22)
 				if b.is_prism and res > 0:
 					wick.spawn_ring(epos, 2.0, 12.0 if b.bounce_count >= 2 else 10.0, 0.16, LxWick.PAL_ICE, 1.0)
 					wick.spawn_sparks(epos, b.dir, 7 if b.bounce_count >= 2 else 5, LxWick.PAL_ICE, 32.0, 88.0, 0.18)

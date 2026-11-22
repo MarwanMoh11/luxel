@@ -9,6 +9,7 @@ const HALF_H: float = 108.0
 const MAX_RIPPLES: int = 12
 
 var _island_id: int = 1
+var _is_dungeon: bool = false
 var _tile_size: int = 16
 var _clock: float = 0.0
 var _cam_center: Vector2 = Vector2.ZERO
@@ -26,6 +27,7 @@ func _ready() -> void:
 
 func configure(grid: Array[PackedStringArray], tile_size: int, island_id: int, is_dungeon: bool) -> void:
 	_island_id = clampi(island_id, 1, 8)
+	_is_dungeon = is_dungeon
 	_tile_size = maxi(8, tile_size)
 	_clock = 0.0
 	_shores.clear()
@@ -95,7 +97,7 @@ func spawn_ripple(world_pos: Vector2, col_key: String = "ice", max_r: float = 11
 
 
 func _is_near_water(world_pos: Vector2) -> bool:
-	if _island_id == 2 or _island_id == 4:
+	if _island_id == 4 and not _is_dungeon:
 		return true
 	if _water_cells.is_empty():
 		return false

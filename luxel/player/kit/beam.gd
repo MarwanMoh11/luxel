@@ -197,6 +197,12 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	wick.spawn_ring(end_p, 2.0, 14.0 if empowered else 10.0, 0.22, LxWick.PAL_GOLD, 1.8 if empowered else 1.5)
 	wick.spawn_sparks(start_p, aim, 9 if empowered else 6, LxWick.PAL_CREAM, 35.0, 105.0, 0.20)
 	wick.spawn_sparks(end_p, -aim, 10 if empowered else 8, LxWick.PAL_GOLD, 30.0, 105.0, 0.22)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		var fred_b: bool = LxHudFx.flash_reduced()
+		var bi_b: float = (1.12 if empowered else 0.92) if fred_b else (1.72 if empowered else 1.45)
+		LxDarknessLayer.active_instance.add_burst_light(start_p, 74.0 if empowered else 62.0, bi_b, 0.28)
+		LxDarknessLayer.active_instance.add_burst_light(start_p.lerp(end_p, 0.5), 68.0 if empowered else 56.0, bi_b * 0.85, 0.24)
+		LxDarknessLayer.active_instance.add_burst_light(end_p, 78.0 if empowered else 64.0, bi_b, 0.30)
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
