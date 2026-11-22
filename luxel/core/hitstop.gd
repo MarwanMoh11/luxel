@@ -43,4 +43,7 @@ func step(raw_dt: float) -> float:
 		var u: float = 1.0 - clampf(_slow_t / maxf(0.01, _slow_dur), 0.0, 1.0)
 		scale *= lerpf(_slow_scale, 1.0, u * u)
 		_slow_t = maxf(0.0, _slow_t - raw_dt)
+		if _slow_t <= 0.0:
+			_slow_dur = 0.0
+			_slow_scale = 1.0
 	return raw_dt * scale

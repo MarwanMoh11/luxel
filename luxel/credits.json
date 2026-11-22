@@ -383,6 +383,13 @@
         "luxel/audio/sfx/shield_shatter_2.ogg",
         "luxel/audio/sfx/stone_break_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_ambience_stereo_master",
+      "description": "True-stereo phase-clean and RMS-balanced mastering pass across all 16 biome ambience loops (mono <90 Hz sub-bass, zero-hiss velvet lowpass, seamless circular wraps)",
+      "generator": "master_ambience_stereo.py",
+      "license": "Original project asset",
+      "outputs": []
     }
   ],
   "third_party_audio": []

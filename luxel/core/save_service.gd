@@ -158,9 +158,23 @@ func load_settings() -> Dictionary:
 	if d.is_empty():
 		d = _read_json_dict(p + ".bak")
 	for k: String in d.keys():
-		if base.has(k):
+		if not base.has(k):
+			continue
+		if k == "hold_mode" and d[k] is Dictionary:
+			var hm: Dictionary = base["hold_mode"] as Dictionary
+			for hk: Variant in (d[k] as Dictionary).keys():
+				var hs: String = str(hk)
+				if hm.has(hs):
+					hm[hs] = "toggle" if str((d[k] as Dictionary)[hk]) == "toggle" else "hold"
+		elif k == "bindings" and not (d[k] is Dictionary):
+			continue
+		else:
 			base[k] = d[k]
-	# Clamp Assist options strictly to valid ranges; aim assist never exists.
+	# Clamp Audio, Display & Assist options strictly to valid ranges; aim assist never exists.
+	for vk: String in ["master_vol", "music_vol", "sfx_vol", "ambience_vol"]:
+		base[vk] = clampf(float(base.get(vk, 1.0)), 0.0, 1.0)
+	base["window_scale"] = clampi(int(base.get("window_scale", 3)), 1, 5)
+	base["cursor_size"] = clampi(int(base.get("cursor_size", 1)), 1, 3)
 	base["assist_damage_mult"] = clampf(float(base.get("assist_damage_mult", 1.0)), 0.0, 1.0)
 	base["assist_tell_scale"] = clampf(float(base.get("assist_tell_scale", 1.0)), 1.0, 1.5)
 	base["assist_game_speed"] = clampf(float(base.get("assist_game_speed", 1.0)), 0.7, 1.0)
