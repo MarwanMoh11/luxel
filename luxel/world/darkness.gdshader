@@ -15,6 +15,10 @@ uniform vec3 biome_tint = vec3(0.42, 0.40, 0.64);
 uniform float vignette_strength : hint_range(0.0, 0.5) = 0.14;
 uniform float danger_pulse : hint_range(0.0, 1.0) = 0.0;
 uniform float transition_fade : hint_range(0.0, 1.0) = 0.0;
+uniform float dungeon_shafts : hint_range(0.0, 1.0) = 0.0;
+uniform float shader_clock = 0.0;
+uniform float phase_flash : hint_range(0.0, 1.0) = 0.0;
+uniform float focus_flash : hint_range(0.0, 1.0) = 0.0;
 
 // Up to 16 camera-prioritized light pools: xy = world pos, z = radius (px), w = intensity (0..2)
 uniform vec4 lights[16];
@@ -29,12 +33,14 @@ uniform int lit_zone_count = 0;
 uniform vec3 col_void = vec3(0.05098, 0.04314, 0.11765);   // #0d0b1e
 uniform vec3 col_night = vec3(0.12941, 0.10196, 0.23137);  // #211a3b
 uniform vec3 col_wine = vec3(0.32157, 0.14510, 0.26667);   // #522544
+uniform vec3 col_coral = vec3(0.88627, 0.44706, 0.35686);  // #e2725b
+uniform vec3 col_sky = vec3(0.47059, 0.66275, 0.85490);    // #78a9da
 uniform vec3 col_gold = vec3(1.0, 0.85098, 0.54902);       // #ffd98c
 uniform vec3 col_cream = vec3(1.0, 0.95686, 0.86275);      // #fff4dc
 
 void fragment() {
 	vec3 src = texture(screen_tex, SCREEN_UV).rgb;
-	if (darkness_strength <= 0.001 && wave_active < 0.5 && danger_pulse <= 0.001 && transition_fade <= 0.001) {
+	if (darkness_strength <= 0.001 && wave_active < 0.5 && danger_pulse <= 0.001 && transition_fade <= 0.001 && phase_flash <= 0.001 && focus_flash <= 0.001) {
 		COLOR = vec4(src, 1.0);
 	} else {
 		vec2 screen_px = floor(UV * view_size) + vec2(0.5);
@@ -126,6 +132,29 @@ void fragment() {
 			vec2 duv = (UV - vec2(0.5)) * vec2(1.0, 0.92);
 			float dvig = smoothstep(0.38, 0.76, length(duv)) * danger_pulse * 0.28;
 			out_col = mix(out_col, col_wine, clamp(dvig, 0.0, 0.26));
+		}
+
+		// Subtle diagonal moonlight/skylight shafts across shadowed dungeon chambers
+		if (dungeon_shafts > 0.01 && shadow_amt > 0.08) {
+			float diag = (screen_px.x * 0.58 + screen_px.y * 0.82) / 56.0;
+			float band = pow(max(0.0, sin(diag + shader_clock * 0.18)), 6.0);
+			float vfade = smoothstep(0.0, 0.18, UV.y) * (1.0 - smoothstep(0.62, 0.96, UV.y));
+			float shaft_a = band * vfade * dungeon_shafts * shadow_amt * 0.13;
+			out_col = mix(out_col, mix(out_col, col_sky, 0.45) + col_gold * 0.05, clamp(shaft_a, 0.0, 0.14));
+		}
+
+		// Dramatic crimson-gold rim pulse on Boss Phase 2/3/4 escalations
+		if (phase_flash > 0.002) {
+			vec2 puv = (UV - vec2(0.5)) * vec2(1.0, 0.92);
+			float pvig = smoothstep(0.28, 0.76, length(puv)) * phase_flash * 0.34;
+			out_col = mix(out_col, mix(col_wine, col_coral, phase_flash * 0.65), clamp(pvig, 0.0, 0.32));
+		}
+
+		// Crisp golden rim focus shimmer on Perfect Dodge & Sunflare
+		if (focus_flash > 0.002) {
+			vec2 fuv = (UV - vec2(0.5)) * vec2(1.0, 0.92);
+			float fvig = smoothstep(0.34, 0.78, length(fuv)) * focus_flash * 0.24;
+			out_col = mix(out_col, col_gold, clamp(fvig, 0.0, 0.22));
 		}
 
 		// Velvety room/region arrival fade from Last Light void

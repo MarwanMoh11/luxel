@@ -29,6 +29,7 @@ var _scenery_ground_root: Node2D = null
 var _scenery_sort_root: Node2D = null
 var _scenery_over_root: Node2D = null
 var _scenery_props: Array[LxSceneryProp] = []
+var _water_fx: LxWaterFx = null
 var _ambient_life: LxAmbientLife = null
 var _interactables_root: Node2D = null
 var _enemies_root: Node2D = null
@@ -45,6 +46,8 @@ func _ready() -> void:
 	_ensure_containers()
 
 func _ensure_containers() -> void:
+	if _water_fx == null:
+		_water_fx = LxWaterFx.new(); _water_fx.name = "WaterFx"; add_child(_water_fx)
 	if _scenery_ground_root == null:
 		_scenery_ground_root = _make_layer("SceneryGround", -5, false)
 	if _scenery_sort_root == null:
@@ -126,6 +129,9 @@ func load_region_from_paths(
 		Lx.state.region_id = current_region_id
 		Lx.state.mark_region_visited(current_island_id, current_region_id)
 	_init_camera(spawn_pos)
+	if _water_fx != null:
+		_water_fx.configure(grid, tile_size, current_island_id, is_dungeon)
+		_water_fx.tick(0.0, Lx.camera.global_position if Lx.camera != null else spawn_pos)
 	if _ambient_life != null:
 		_ambient_life.configure(current_island_id, bounds, is_dungeon)
 		_ambient_life.tick(0.0, Lx.camera.global_position if Lx.camera != null else spawn_pos)
@@ -406,8 +412,10 @@ func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
 	for sp: LxSceneryProp in _scenery_props:
 		if sp != null and sp.animated:
 			sp.tick(dt)
+	var cam_pos: Vector2 = Lx.camera.global_position if Lx.camera != null else (player_pos if player_pos.x > -9000.0 else spawn_pos)
+	if _water_fx != null:
+		_water_fx.tick(dt, cam_pos)
 	if _ambient_life != null:
-		var cam_pos: Vector2 = Lx.camera.global_position if Lx.camera != null else (player_pos if player_pos.x > -9000.0 else spawn_pos)
 		_ambient_life.tick(dt, cam_pos)
 	for it: LxInteractable in _interactables:
 		if it != null:

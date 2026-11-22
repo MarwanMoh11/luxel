@@ -23,6 +23,8 @@ const BIOME_TINTS: Dictionary = {
 	8: Vector3(0.32, 0.28, 0.52), # The Long Night: deepest eclipsed obsidian
 }
 
+static var active_instance: LxDarknessLayer = null
+
 var darkness_strength: float = 0.56
 var vignette_strength: float = 0.14
 var wave_active: bool = false
@@ -42,15 +44,20 @@ var _tint_t: float = 1.0
 var _tint_ready: bool = false
 var _trans_fade: float = 0.0
 var _trans_speed: float = 4.5
+var _phase_flash: float = 0.0
+var _focus_flash: float = 0.0
 var _burst_lights: Array[Dictionary] = []
 var _bound_events: LxEventBus = null
 
 func _ready() -> void:
 	layer = 5
+	active_instance = self
 	_ensure_veil()
 	_sync_events()
 
 func _exit_tree() -> void:
+	if active_instance == self:
+		active_instance = null
 	_set_events(_bound_events, false)
 	_bound_events = null
 
@@ -119,6 +126,10 @@ func trigger_transition_fade(dur: float = 0.22) -> void:
 	_trans_fade = 0.65 if flash_red else 0.92
 	_trans_speed = _trans_fade / maxf(0.08, dur * (0.7 if flash_red else 1.0))
 
+func trigger_focus_flash(strength: float = 0.85) -> void:
+	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	_focus_flash = maxf(_focus_flash, strength * (0.35 if flash_red else 1.0))
+
 func add_burst_light(pos: Vector2, radius: float, intensity: float, duration: float) -> void:
 	if _burst_lights.size() >= MAX_BURST_LIGHTS:
 		_burst_lights.pop_front()
@@ -165,7 +176,16 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	_mat.set_shader_parameter("danger_pulse", dpulse)
 	if _trans_fade > 0.0 and dt > 0.0:
 		_trans_fade = maxf(0.0, _trans_fade - _trans_speed * dt)
+	if _phase_flash > 0.0 and dt > 0.0:
+		_phase_flash = maxf(0.0, _phase_flash - dt * 1.85)
+	if _focus_flash > 0.0 and dt > 0.0:
+		_focus_flash = maxf(0.0, _focus_flash - dt * 3.4)
 	_mat.set_shader_parameter("transition_fade", clampf(_trans_fade, 0.0, 1.0))
+	_mat.set_shader_parameter("phase_flash", clampf(_phase_flash, 0.0, 1.0))
+	_mat.set_shader_parameter("focus_flash", clampf(_focus_flash, 0.0, 1.0))
+	_mat.set_shader_parameter("shader_clock", _clock)
+	var use_shafts: float = 0.65 if (region != null and region.is_dungeon) else 0.0
+	_mat.set_shader_parameter("dungeon_shafts", use_shafts)
 
 	# Dual-frequency organic flame breath
 	var flicker: float = 0.955 + 0.030 * sin(_clock * 5.2) + 0.015 * sin(_clock * 13.7)
@@ -380,7 +400,10 @@ func _on_beacon_lit(_i: int, bid: String) -> void: add_burst_light(_interactable
 func _on_waystone_lit(_i: int, wid: String) -> void: add_burst_light(_interactable_pos(wid, "waystone"), 112.0, 1.50, 0.60)
 func _on_shrine_claimed(sid: String, _m: String) -> void: add_burst_light(_interactable_pos(sid, "shrine"), 118.0, 1.55, 0.64)
 func _on_seal_broken(_i: int, sid: String) -> void: add_burst_light(_interactable_pos(sid, "obsidian_seal"), 104.0, 1.52, 0.50)
-func _on_boss_phase_changed(bid: String, _p: int) -> void: add_burst_light(_boss_pos(bid), 112.0, 1.52, 0.56)
+func _on_boss_phase_changed(bid: String, _p: int) -> void:
+	add_burst_light(_boss_pos(bid), 112.0, 1.52, 0.56)
+	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	_phase_flash = maxf(_phase_flash, 0.35 if flash_red else 0.95)
 func _on_boss_defeated(bid: String, _i: int) -> void: add_burst_light(_boss_pos(bid), 144.0, 1.72, 0.75)
 func _on_great_lamp_relit(_i: int) -> void: add_burst_light(_interactable_pos("great_lamp", "great_lamp"), 154.0, 1.80, 0.75)
 func _on_ember_piece(_total: int) -> void: add_burst_light(_player_pos(), 96.0, 1.45, 0.52)

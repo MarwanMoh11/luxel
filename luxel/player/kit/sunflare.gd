@@ -64,6 +64,8 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 
 	wick.ember = 0.0
 	var origin: Vector2 = wick.global_position
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.trigger_focus_flash(1.0)
 
 	# 1. Hit every alive enemy within radial burst (cracks_armour=true, stun 1.6s)
 	var enemies: Array = wick.world_get_enemies(ctx)

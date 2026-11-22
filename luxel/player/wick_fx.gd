@@ -231,6 +231,9 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 				_ripple_cd = 0.14
 				var rcol: Color = LxWick.PAL_ICE if randf() < 0.42 else LxWick.PAL_SKY
 				spawn_ring(wick.global_position + Vector2(0.0, 2.0), 2.0, 10.0, 0.34, rcol, 1.0)
+				var wfx: Variant = Lx.world.get("_water_fx")
+				if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
+					(wfx as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 2.0), "ice")
 				_spawn_mote(wick.global_position + Vector2(randf_range(-3.0, 3.0), 1.0), Vector2(randf_range(-14.0, 14.0), randf_range(-12.0, -5.0)), 0.24, LxWick.PAL_ICE, 1.0, false, 0.22, false, 0.85)
 	else:
 		_streak_cd = 0.0
