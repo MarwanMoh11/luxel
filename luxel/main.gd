@@ -541,6 +541,7 @@ func _sync_boss_hud() -> void:
 		if not is_instance_valid(_tracked_boss) or _tracked_boss != boss:
 			_tracked_boss = boss
 			hud.call("show_boss", boss.boss_id if not boss.boss_id.is_empty() else boss.kind, boss.hp, boss.max_hp, boss.phase)
+			LxDamageFx.trigger_boss_awaken(boss)
 		else:
 			hud.call("update_boss", boss.hp, boss.max_hp, boss.phase)
 	elif boss == null and _tracked_boss != null:

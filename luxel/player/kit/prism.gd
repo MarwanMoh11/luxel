@@ -108,7 +108,7 @@ func try_reflect_world(world_ctx: Node, from_p: Vector2, to_p: Vector2, in_dir: 
 	return {"hit": true, "pos": hit_pos, "exit_pos": exit_pos, "dir": reflected_dir}
 
 
-func on_bolt_reflected(at_pos: Vector2, out_dir: Vector2) -> void:
+func on_bolt_reflected(at_pos: Vector2, out_dir: Vector2, chain_count: int = 1) -> void:
 	bounces_count += 1
 	if wick == null:
 		return
@@ -116,7 +116,12 @@ func on_bolt_reflected(at_pos: Vector2, out_dir: Vector2) -> void:
 	wick.spawn_sparks(at_pos, out_dir, 2, LxWick.PAL_CREAM, 65.0, 115.0, 0.13)
 	wick.spawn_ring(at_pos, 2.0, 11.0, 0.18, LxWick.PAL_GOLD, 1.0)
 	wick.spawn_ring(at_pos, 1.0, 7.0, 0.11, LxWick.PAL_CREAM, 1.0)
-	wick.emit_sfx("prism_bounce", at_pos, true)
+	if chain_count >= 2:
+		wick.spawn_sparks(at_pos, out_dir, 4, LxWick.PAL_ICE, 45.0, 110.0, 0.22)
+		wick.spawn_ring(at_pos, 3.0, 15.0, 0.22, LxWick.PAL_ICE, 1.2)
+		wick.emit_sfx("prism_chain", at_pos, true)
+	else:
+		wick.emit_sfx("prism_bounce", at_pos, true)
 
 
 func reset() -> void:

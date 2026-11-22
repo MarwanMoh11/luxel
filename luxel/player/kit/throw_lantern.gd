@@ -56,11 +56,14 @@ func press() -> bool:
 		var hang: float = float(data.get("hang_time", 4.5))
 		var rspd: float = float(data.get("recall_speed", 440.0))
 		var lure_r: float = float(data.get("lure_radius", 135.0))
+		var empowered: bool = wick.move_dash != null and wick.move_dash.consume_counter()
+		if empowered:
+			dmg *= 1.25
 		lan.throw_out(wick.global_position, aim, spd, rng, hang, rspd, dmg, dmg, wear, lure_r)
 		wick.throw_anim_t = 0.25
-		wick.spawn_sparks(wick.global_position, aim, 5, LxWick.PAL_GOLD, 35.0, 85.0, 0.16)
-		wick.spawn_ring(wick.global_position, 2.0, 10.0, 0.13, LxWick.PAL_CREAM, 1.0)
-		wick.emit_sfx("lantern_throw", wick.global_position, false)
+		wick.spawn_sparks(wick.global_position, aim, 8 if empowered else 5, LxWick.PAL_CREAM if empowered else LxWick.PAL_GOLD, 35.0, 95.0, 0.18)
+		wick.spawn_ring(wick.global_position, 2.0, 14.0 if empowered else 10.0, 0.16, LxWick.PAL_GOLD if empowered else LxWick.PAL_CREAM, 1.2 if empowered else 1.0)
+		wick.emit_sfx("perfect_counter" if empowered else "lantern_throw", wick.global_position, false)
 		return true
 
 	if lan.state == LxLantern.State.FLYING or lan.state == LxLantern.State.HANGING:

@@ -17,6 +17,9 @@ var _slide_dur: float = DEFAULT_SLIDE_S
 var _shake_trauma: float = 0.0
 var _look_ahead: Vector2 = Vector2.ZERO
 var _kick_offset: Vector2 = Vector2.ZERO
+var _focus_pos: Vector2 = Vector2.ZERO
+var _focus_t: float = 0.0
+var _focus_dur: float = 0.55
 
 
 func _ready() -> void:
@@ -33,6 +36,7 @@ func snap_to(pos: Vector2) -> void:
 	_slide_t = 1.0
 	_look_ahead = Vector2.ZERO
 	_kick_offset = Vector2.ZERO
+	_focus_t = 0.0
 	_shake_trauma = 0.0
 	_target_pos = _clamp_center(pos)
 	global_position = _target_pos.round()
@@ -58,6 +62,12 @@ func add_kick(dir: Vector2, px: float = 3.0) -> void:
 	var target_kick: Vector2 = dir.normalized() * clampf(px, 0.5, 5.0) * shake_scale
 	if target_kick.length_squared() >= _kick_offset.length_squared():
 		_kick_offset = target_kick
+
+
+func trigger_focus_nudge(world_pos: Vector2, duration: float = 0.55) -> void:
+	_focus_pos = world_pos
+	_focus_dur = maxf(0.15, duration)
+	_focus_t = _focus_dur
 
 
 func follow(target: Vector2, dt: float) -> void:
@@ -109,7 +119,14 @@ func follow(target: Vector2, dt: float) -> void:
 		_kick_offset = _kick_offset.lerp(Vector2.ZERO, minf(1.0, dt * 18.0))
 	else:
 		_kick_offset = Vector2.ZERO
-	global_position = (_target_pos + shake_off + _kick_offset).round()
+	var focus_off: Vector2 = Vector2.ZERO
+	if _focus_t > 0.0:
+		_focus_t = maxf(0.0, _focus_t - dt)
+		var f_env: float = sin(clampf(_focus_t / _focus_dur, 0.0, 1.0) * PI)
+		focus_off = (_focus_pos - target).limit_length(34.0) * f_env * 0.55
+		if room_lock and world_bounds.size.x <= VIEW_SIZE.x + 2.0 and world_bounds.size.y <= VIEW_SIZE.y + 2.0:
+			focus_off = focus_off.limit_length(6.0)
+	global_position = (_target_pos + shake_off + _kick_offset + focus_off).round()
 
 
 func is_on_screen(world_pos: Vector2, margin: float = 8.0) -> bool:

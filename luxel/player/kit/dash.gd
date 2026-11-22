@@ -19,6 +19,7 @@ var gap_max_px: float = 32.0
 var iframes_left: float = 0.0
 var perfect_window: float = 0.12
 var perfect_refund_done: bool = false
+var counter_t: float = 0.0
 
 var hit_ids: Array[int] = []
 var _afterimage_cd: float = 0.0
@@ -102,6 +103,8 @@ func tick(dt: float) -> void:
 	super.tick(dt)
 	if iframes_left > 0.0:
 		iframes_left = maxf(0.0, iframes_left - dt)
+	if counter_t > 0.0:
+		counter_t = maxf(0.0, counter_t - dt)
 	if _buffer_t > 0.0:
 		_buffer_t = maxf(0.0, _buffer_t - dt)
 		if can_use():
@@ -218,6 +221,7 @@ func on_perfect_dodge() -> bool:
 	if allow_refund and not perfect_refund_done:
 		perfect_refund_done = true
 		cooldown_left = 0.0
+		counter_t = 1.45
 		wick.perfect_dodges += 1
 		wick.trigger_hitstop(0.045)
 		wick.trigger_shake(0.10)
@@ -240,6 +244,13 @@ func on_perfect_dodge() -> bool:
 	return true
 
 
+func consume_counter() -> bool:
+	if counter_t > 0.0:
+		counter_t = 0.0
+		return true
+	return false
+
+
 func cancel() -> void:
 	active = false
 	is_gliding = false
@@ -255,6 +266,7 @@ func reset() -> void:
 	_buffer_t = 0.0
 	iframes_left = 0.0
 	perfect_refund_done = false
+	counter_t = 0.0
 	hit_ids.clear()
 
 

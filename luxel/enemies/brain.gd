@@ -62,6 +62,7 @@ var director: LxAttackDirector = null
 var world_ctx: Node = null
 var flash_t: float = 0.0
 var clank_t: float = 0.0
+var awaken_t: float = 0.0
 var knock: Vector2 = Vector2.ZERO
 var opened_kill: bool = false
 var last_tell_duration: float = 0.0
@@ -164,6 +165,7 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	anim_t = 0.0
 	flash_t = 0.0
 	clank_t = 0.0
+	awaken_t = 0.0
 	alert_t = 0.0
 	lost_t = 0.0
 	cooldown = 0.0
@@ -204,6 +206,7 @@ func tick(dt: float) -> void:
 	anim_t += dt
 	flash_t = maxf(0.0, flash_t - dt)
 	clank_t = maxf(0.0, clank_t - dt)
+	awaken_t = maxf(0.0, awaken_t - dt)
 	alert_t = maxf(0.0, alert_t - dt)
 	cooldown = maxf(0.0, cooldown - dt)
 	if knock.length() > 1.0:
@@ -557,13 +560,9 @@ func _draw() -> void:
 		var box := Rect2(off - sz * 0.5, sz)
 		draw_rect(box, fill, true); draw_rect(box, PAL["night"] as Color, false, 1.0)
 		draw_circle(off + Vector2.from_angle(facing) * (r * 0.55), 1.5, PAL["gold"] as Color)
-	if hp > 0.0 and hp <= max_hp * 0.35 and fmod(anim_t * 3.5, 1.0) < 0.55:
-		var ca: float = anim_t * 4.2
-		draw_rect(Rect2((off + Vector2(cos(ca) * (r + 1.0), -r * 0.4 + sin(ca * 1.3) * 3.0)).round(), Vector2(2.0, 1.0)), PAL["coral"] as Color)
-		draw_rect(Rect2((off + Vector2(-cos(ca * 0.9) * r, -r * 0.1 + cos(ca) * 2.5)).round(), Vector2.ONE), PAL["apricot"] as Color)
-
+	LxDamageFx.draw_wear(self, off)
 	if _has_active_shield():
-		draw_arc(off, r + 3.0, facing - 1.05, facing + 1.05, 12, (PAL["cream"] as Color) if clank_t > 0.0 else _shield_color(), 2.5)
+		LxDamageFx.draw_shield_arc(self, off, _shield_color())
 
 	if alert_t > 0.0:
 		var top: Vector2 = off + Vector2(0.0, -r - 9.0)

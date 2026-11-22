@@ -15,7 +15,9 @@ class Bolt:
 	var shield_wear: float = 0.25
 	var age: float = 0.0
 	var bounces_left: int = 0
+	var bounce_count: int = 0
 	var is_prism: bool = false
+	var is_counter: bool = false
 	var hit_ids: Array[int] = []
 
 var is_held: bool = false
@@ -85,7 +87,15 @@ func _fire_bolt() -> bool:
 	b.damage = _get_effective_damage()
 	b.shield_wear = float(data.get("shield_wear", 0.25))
 	b.bounces_left = _get_prism_bounces()
+	b.bounce_count = 0
 	b.is_prism = false
+	b.is_counter = false
+	if wick.move_dash != null and wick.move_dash.consume_counter():
+		b.is_counter = true
+		b.damage *= 1.25
+		b.shield_wear += 0.15
+		wick.spawn_ring(b.pos, 2.0, 11.0, 0.16, LxWick.PAL_CREAM, 1.0)
+		wick.spawn_sparks(b.pos, aim, 5, LxWick.PAL_CREAM, 55.0, 115.0, 0.16)
 
 	wick.bolts.append(b)
 	wick.shots_fired += 1
@@ -150,8 +160,19 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				var res: int = wick.apply_hit_to_entity(enemy, hit)
 				wick.on_hit_landed(hit, res, epos, hs_chip, shake_chip)
 				if b.is_prism and res > 0:
-					wick.spawn_ring(epos, 2.0, 10.0, 0.16, LxWick.PAL_ICE, 1.0)
-					wick.spawn_sparks(epos, b.dir, 5, LxWick.PAL_ICE, 32.0, 88.0, 0.18)
+					wick.spawn_ring(epos, 2.0, 12.0 if b.bounce_count >= 2 else 10.0, 0.16, LxWick.PAL_ICE, 1.0)
+					wick.spawn_sparks(epos, b.dir, 7 if b.bounce_count >= 2 else 5, LxWick.PAL_ICE, 32.0, 88.0, 0.18)
+				if b.is_counter and res > 0:
+					wick.spawn_ring(epos, 2.0, 13.0, 0.18, LxWick.PAL_GOLD, 1.2)
+					wick.spawn_sparks(epos, b.dir, 6, LxWick.PAL_CREAM, 40.0, 105.0, 0.20)
+					wick.emit_sfx("perfect_counter", epos, true)
+					if wick.move_sunflare != null and wick.move_sunflare.unlocked:
+						var emax_c: float = wick.move_sunflare.get_ember_max()
+						var was_f: bool = wick.ember >= emax_c - 0.001
+						wick.ember = minf(emax_c, wick.ember + 12.0)
+						if not was_f and wick.ember >= emax_c - 0.001:
+							wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
+							wick.emit_sfx("beam_ready", wick.global_position, false)
 				if not pierce:
 					dead = true
 					break
@@ -247,6 +268,7 @@ func _apply_prism_bounce(
 	b.prev_pos = rpos
 	b.pos = exit_pos
 	b.bounces_left -= 1
+	b.bounce_count += 1
 	b.is_prism = true
 	b.damage *= prism_mult
 	b.dist = 0.0
@@ -255,7 +277,7 @@ func _apply_prism_bounce(
 	if ignore_id != -1:
 		b.hit_ids.append(ignore_id)
 	if wick.move_prism != null:
-		wick.move_prism.on_bolt_reflected(rpos, b.dir)
+		wick.move_prism.on_bolt_reflected(rpos, b.dir, b.bounce_count)
 
 
 func _bolt_hits_item(from_p: Vector2, to_p: Vector2, item: Object, ipos: Vector2, irad: float) -> bool:

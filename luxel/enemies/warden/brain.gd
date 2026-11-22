@@ -159,6 +159,9 @@ func take_hit(hit: LxHit) -> int:
 			_emit_sfx("warden_deflect")
 			if world_ctx != null and world_ctx.has_method("on_enemy_ricochet"):
 				world_ctx.call("on_enemy_ricochet", self, pos, r_dir)
+		elif shield_max > 0.01 and shield_hp > 0.001 and shield_hp <= shield_max * 0.45:
+			clank_t = 0.18
+			_emit_sfx("shield_strain")
 		else:
 			_emit_sfx("warden_clank")
 		_emit_enemy_hit(hit, HitResult.BLOCKED)

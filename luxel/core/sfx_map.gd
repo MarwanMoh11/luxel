@@ -64,6 +64,10 @@ const EXACT: Dictionary = {
 	"bramble_burn": {"id": "bramble_burn", "pitch": 1.00, "db": 0.0},
 	"tide_surge": {"id": "tide_surge", "pitch": 1.00, "db": -1.0},
 	"boss_victory": {"id": "boss_victory", "pitch": 1.00, "db": 0.0},
+	"boss_awaken": {"id": "boss_roar", "pitch": 0.88, "db": -1.5},
+	"shield_strain": {"id": "shield_clang", "pitch": 1.24, "db": -0.5},
+	"perfect_counter": {"id": "perfect_dodge", "pitch": 1.18, "db": -0.5},
+	"prism_chain": {"id": "prism_bounce", "pitch": 1.22, "db": 0.0},
 	# Player
 	"footstep": {"id": "footstep_stone", "pitch": 1.00, "db": -3.5},
 	"footstep_stone": {"id": "footstep_stone", "pitch": 1.00, "db": -3.5},
