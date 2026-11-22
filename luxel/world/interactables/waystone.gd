@@ -40,6 +40,8 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.spawn_pos = pos + Vector2(0.0, 14.0)
 	if Lx.events != null:
 		Lx.events.waystone_lit.emit(island_id, id)
+		if first_time:
+			Lx.events.narration_requested.emit("CUE_WAYSTONE_LIT", "title", 2.5)
 	_emit_sfx("waystone_lit" if first_time else "waystone_rest")
 	_emit_save("waystone_" + id)
 	queue_redraw()

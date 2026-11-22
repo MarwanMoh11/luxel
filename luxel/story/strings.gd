@@ -170,6 +170,8 @@ const TABLE: Dictionary = {
 	"HUD_EMBER_READY": "SUNFLARE READY!",
 	"HUD_KEYS_FMT": "KEY x%d",
 	"HUD_BOSS_P2": "PHASE 2",
+	"HUD_BOSS_P3": "PHASE 3",
+	"HUD_BOSS_P4": "PHASE 4",
 	"HUD_LAST_HEART": "LAST HEART!",
 	"HUD_ZIP_CUE": "%s: ZIP!",
 	"HUD_KEY_PROMPT_FMT": "%s: %s",

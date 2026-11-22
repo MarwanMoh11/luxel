@@ -77,11 +77,6 @@ func _relight() -> bool:
 	if Lx.events != null:
 		Lx.events.great_lamp_relit.emit(island_id)
 		Lx.events.shake_requested.emit(0.24)
-		var idata: Dictionary = Lx.get_island_data(island_id)
-		var rline: String = str(idata.get("relight_line", ""))
-		if not rline.is_empty():
-			Lx.events.narration_requested.emit(rline, "title", 4.0)
-	_emit_sfx("great_lamp_relit")
 	_emit_save("great_lamp_%d" % island_id)
 	_notify_linked_targets(true)
 	queue_redraw()

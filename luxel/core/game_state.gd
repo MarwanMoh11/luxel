@@ -156,9 +156,13 @@ func add_ember_piece() -> bool:
 
 func add_boss_heart() -> void:
 	var max_cap: int = int(Lx.get_decision("hearts_max", 12))
-	if max_hearts < max_cap:
+	var gained: bool = max_hearts < max_cap
+	if gained:
 		max_hearts += 1
 	hearts = float(max_hearts)
+	if gained and Lx.events != null:
+		Lx.events.narration_requested.emit("CUE_HEART_GAINED", "title", 3.0)
+		Lx.events.sfx_requested.emit("heart_pickup", Vector2.ZERO, false)
 
 
 func heal_full() -> void:

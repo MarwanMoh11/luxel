@@ -473,7 +473,8 @@ func _draw_boss_bar() -> void:
 	var name_txt: String = LxStrings.text(resolved_key) if LxStrings.has_id(resolved_key) else LxStrings.sanitize(resolved_key)
 	LxPixelFont.draw_centered(self, name_txt, 160.0, 5.0, LxPalette.PAL["gold"], 1)
 	if _boss_phase >= 2:
-		LxPixelFont.draw_right(self, LxStrings.text("HUD_BOSS_P2"), x + bar_w, 5.0, LxPalette.PAL["coral"], 1)
+		var pkey: String = "HUD_BOSS_P4" if _boss_phase >= 4 else ("HUD_BOSS_P3" if _boss_phase == 3 else "HUD_BOSS_P2")
+		LxPixelFont.draw_right(self, LxStrings.text(pkey), x + bar_w, 5.0, LxPalette.PAL["coral"], 1)
 	LxPixelFont.draw_panel(self, Rect2(x, y, bar_w, bar_h), "night", "gold" if _boss_phase >= 2 else "mauve", "void")
 	draw_rect(Rect2(x - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
 	draw_rect(Rect2(x + bar_w - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
@@ -484,7 +485,8 @@ func _draw_boss_bar() -> void:
 	if cur_w > 0.0:
 		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, bar_h - 4.0), LxPalette.PAL["coral"])
 		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, 1.0), LxPalette.PAL["rose"])
-	for frac: float in ([0.25, 0.5, 0.75] if resolved_key == "BOSS_HUSH" else [0.5]):
+	var notches: Array = [0.25, 0.5, 0.75] if resolved_key == "BOSS_HUSH" else ([0.2, 0.5] if resolved_key == "BOSS_BELLKEEPER" else ([0.33, 0.66] if resolved_key in ["BOSS_HERMIT", "BOSS_MATRON", "BOSS_ABBESS", "BOSS_ASTRONOMER", "BOSS_KILNMOTHER", "BOSS_HOLLOW"] else [0.5]))
+	for frac: float in notches:
 		draw_rect(Rect2(roundf(x + 2.0 + (bar_w - 4.0) * frac), y + 1.0, 1.0, bar_h - 2.0), LxPalette.PAL["gold"])
 
 

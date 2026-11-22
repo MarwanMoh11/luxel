@@ -39,11 +39,19 @@ func interact(_actor: Node = null) -> bool:
 	if Lx.state != null:
 		match reward_kind:
 			"ember_piece":
-				Lx.state.add_ember_piece()
+				var gained_heart: bool = Lx.state.add_ember_piece()
+				if Lx.events != null:
+					Lx.events.narration_requested.emit("CUE_HEART_GAINED" if gained_heart else "CUE_EMBER_FOUND", "title", 3.0)
+				_emit_sfx("heart_pickup" if gained_heart else "ember_pickup")
 			"wick_key", "keepers_flame":
 				Lx.state.add_key(dungeon_id, reward_kind, amount)
+				if Lx.events != null:
+					Lx.events.narration_requested.emit("CUE_KEY_FOUND", "title", 2.8)
+				_emit_sfx("key_pickup")
 			_:
 				Lx.state.add_shards(amount)
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(0.10)
 	_emit_sfx("chest_open")
 	_emit_save("chest_" + id)
 	_notify_linked_targets(true)

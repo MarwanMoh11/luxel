@@ -5,6 +5,7 @@ extends LxInteractable
 var shattered: bool = false
 var size: Vector2 = Vector2(32.0, 16.0)
 var _resonate_t: float = 0.0
+var _shatter_t: float = 0.0
 var _pulse_stage: int = 0
 
 
@@ -18,11 +19,16 @@ func setup(spec: Dictionary) -> void:
 		shattered = true
 	active = not shattered
 	_resonate_t = 0.0
+	_shatter_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	if _shatter_t > 0.0:
+		_shatter_t = maxf(0.0, _shatter_t - dt)
+		queue_redraw()
+		return
 	if _resonate_t > 0.0:
 		_resonate_t = maxf(0.0, _resonate_t - dt)
 		queue_redraw()
@@ -40,6 +46,7 @@ func on_hit(hit: LxHit) -> bool:
 	if hit.source == "sunflare":
 		shattered = true
 		active = false
+		_shatter_t = 0.42
 		if Lx.state != null and not id.is_empty() and not Lx.state.broken_seals.has(id):
 			Lx.state.broken_seals.append(id)
 		if Lx.events != null:
@@ -56,6 +63,12 @@ func on_hit(hit: LxHit) -> bool:
 		queue_redraw()
 		return true
 	return false
+
+
+func get_light_pool() -> Vector4:
+	if shattered or not active:
+		return Vector4.ZERO
+	return Vector4(pos.x, pos.y, 44.0 if _resonate_t > 0.0 else 38.0, 0.95 if _resonate_t > 0.0 else 0.68)
 
 
 func is_solid() -> bool:
@@ -82,6 +95,9 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if _shatter_t > 0.0:
+		_draw_shatter_burst()
+		return
 	if shattered or not active:
 		return
 	var w: float = roundf(size.x)
@@ -130,3 +146,18 @@ func _draw() -> void:
 	else:
 		var core_c: Color = (PAL["cream"] if _pulse_stage == 0 else PAL["gold"]) as Color
 		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), core_c)
+
+
+func _draw_shatter_burst() -> void:
+	var u: float = 1.0 - clampf(_shatter_t / 0.42, 0.0, 1.0)
+	var spread: float = maxf(size.x, size.y) * 0.52
+	if u < 0.6:
+		draw_arc(Vector2.ZERO, roundf(lerpf(5.0, spread + 14.0, u / 0.6)), 0.0, TAU, 18, (PAL["cream"] if u < 0.25 else PAL["gold"]) as Color, 2.0 if u < 0.3 else 1.0, false)
+	for i: int in range(10):
+		var a: float = (TAU * float(i)) / 10.0 + 0.15
+		var d: float = lerpf(3.0, spread + 16.0, u)
+		var px: float = roundf(cos(a) * d)
+		var py: float = roundf(sin(a) * d + u * u * 8.0 - u * 5.0)
+		var sz: float = 3.0 if (u < 0.35 and i % 2 == 0) else (2.0 if u < 0.7 else 1.0)
+		var c: Color = (PAL["gold"] if i % 3 == 0 else (PAL["coral"] if i % 3 == 1 else PAL["dusk"])) as Color
+		draw_rect(Rect2(px, py, sz, sz), c)
