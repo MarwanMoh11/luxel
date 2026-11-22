@@ -296,17 +296,17 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("ISL7_ARRIVAL", "narration", 4.0)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
-	elif region_id == "spire_r1":
-		if st != null and not bool(st.story_flags.get("isl7_spire_entered", false)):
-			st.story_flags["isl7_spire_entered"] = true
-			_emit_narration("DUNGEON_7_NAME", "title", 3.5)
-		if _events != null:
-			_events.music_mode_requested.emit("island7_dungeon")
 	elif region_id == "spire_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_HOLLOW", "title", 3.5)
 			if _events != null:
 				_events.music_mode_requested.emit("island7_boss_p1")
+	elif region_id.begins_with("spire_"):
+		if region_id == "spire_r1" and st != null and not bool(st.story_flags.get("isl7_spire_entered", false)):
+			st.story_flags["isl7_spire_entered"] = true
+			_emit_narration("DUNGEON_7_NAME", "title", 3.5)
+		if _events != null:
+			_events.music_mode_requested.emit("island7_dungeon")
 
 
 func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
@@ -334,6 +334,7 @@ func _trigger_seal_shatter() -> void:
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
 		_events.shake_requested.emit(0.28)
 		_emit_narration("CUE_SEAL_SHATTER", "title", 3.5)
+		_emit_narration("DUNGEON_7_NAME", "narration", 3.0)
 		_events.save_requested.emit("seal_broken_7")
 
 

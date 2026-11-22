@@ -4,6 +4,7 @@ extends LxInteractable
 
 var lit: bool = false
 var _flicker_frame: int = 0
+var _ignite_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -11,6 +12,7 @@ func setup(spec: Dictionary) -> void:
 	kind = "brazier"
 	lit = bool(props.get("lit", props.get("lit_by_default", false)))
 	_uses_prop_anim = false
+	_ignite_t = 0.0
 	_flicker_frame = _calc_flicker_frame()
 	queue_redraw()
 
@@ -18,6 +20,9 @@ func setup(spec: Dictionary) -> void:
 func tick(dt: float) -> void:
 	_uses_prop_anim = false
 	super.tick(dt)
+	if _ignite_t > 0.0:
+		_ignite_t = maxf(0.0, _ignite_t - dt)
+		queue_redraw()
 	if not lit:
 		return
 	var frame: int = _calc_flicker_frame()
@@ -50,6 +55,9 @@ func interact(_actor: Node = null) -> bool:
 
 func _ignite() -> bool:
 	lit = true
+	_ignite_t = 0.32
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(0.08)
 	_emit_sfx("brazier_lit")
 	_notify_linked_targets(true)
 	queue_redraw()
@@ -138,3 +146,6 @@ func _draw_flame() -> void:
 		var ex: float = roundf(sin(_clock * 2.6 + float(i) * 3.1) * (2.0 + t * 2.5))
 		var ey: float = roundf(-19.0 - t * 11.0)
 		draw_rect(Rect2(ex, ey, 1.0, 1.0), c_cream if t < 0.25 else (c_gold if t < 0.65 else c_apr))
+	if _ignite_t > 0.0:
+		var u: float = 1.0 - clampf(_ignite_t / 0.32, 0.0, 1.0)
+		draw_arc(Vector2(0.0, -14.0), roundf(lerpf(4.0, 18.0, u)), 0.0, TAU, 16, c_cream if u < 0.4 else c_gold, 2.0 if u < 0.35 else 1.0, false)

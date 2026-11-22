@@ -4,6 +4,7 @@ extends LxInteractable
 
 var burned: bool = false
 var size: Vector2 = Vector2(24.0, 16.0)
+var _burn_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -13,7 +14,15 @@ func setup(spec: Dictionary) -> void:
 	radius = maxf(size.x, size.y) * 0.5
 	burned = bool(props.get("burned", false))
 	active = not burned
+	_burn_t = 0.0
 	queue_redraw()
+
+
+func tick(dt: float) -> void:
+	super.tick(dt)
+	if _burn_t > 0.0:
+		_burn_t = maxf(0.0, _burn_t - dt)
+		queue_redraw()
 
 
 func on_hit(hit: LxHit) -> bool:
@@ -22,6 +31,9 @@ func on_hit(hit: LxHit) -> bool:
 	if hit.source == "beam":
 		burned = true
 		active = false
+		_burn_t = 0.34
+		if Lx.events != null:
+			Lx.events.shake_requested.emit(0.10)
 		_emit_sfx("web_burn")
 		_notify_linked_targets(true)
 		queue_redraw()
@@ -55,6 +67,9 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if _burn_t > 0.0:
+		_draw_burn_burst()
+		return
 	if burned or not active:
 		return
 	var w: float = roundf(size.x)
@@ -93,3 +108,15 @@ func _draw() -> void:
 				draw_rect(Rect2(p1, Vector2(1.0, 1.0)), PAL["cream"])
 	draw_rect(Rect2(hub - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["ice"])
 	draw_rect(Rect2(hub, Vector2(1.0, 1.0)), PAL["cream"])
+
+
+func _draw_burn_burst() -> void:
+	var u: float = 1.0 - clampf(_burn_t / 0.34, 0.0, 1.0)
+	var rx: float = size.x * 0.45
+	var ry: float = size.y * 0.45
+	for i: int in range(8):
+		var a: float = (TAU * float(i)) / 8.0
+		var px: float = roundf(cos(a) * lerpf(3.0, rx + 7.0, u))
+		var py: float = roundf(sin(a) * lerpf(2.0, ry + 5.0, u) - u * 7.0)
+		var c: Color = (PAL["cream"] if u < 0.3 else (PAL["gold"] if i % 2 == 0 else PAL["ice"])) as Color
+		draw_rect(Rect2(px, py, 2.0 if u < 0.4 else 1.0, 1.0), c)

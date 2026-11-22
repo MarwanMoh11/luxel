@@ -4,6 +4,7 @@ extends LxInteractable
 
 var broken: bool = false
 var size: Vector2 = Vector2(16.0, 16.0)
+var _break_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -13,7 +14,15 @@ func setup(spec: Dictionary) -> void:
 	radius = maxf(size.x, size.y) * 0.5
 	broken = bool(props.get("broken", false))
 	active = not broken
+	_break_t = 0.0
 	queue_redraw()
+
+
+func tick(dt: float) -> void:
+	super.tick(dt)
+	if _break_t > 0.0:
+		_break_t = maxf(0.0, _break_t - dt)
+		queue_redraw()
 
 
 func on_hit(hit: LxHit) -> bool:
@@ -22,6 +31,7 @@ func on_hit(hit: LxHit) -> bool:
 	if hit.source in ["beam", "sunflare"]:
 		broken = true
 		active = false
+		_break_t = 0.38
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.16)
 		_emit_sfx("stone_break")
@@ -54,6 +64,9 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if _break_t > 0.0:
+		_draw_shatter_burst()
+		return
 	if broken or not active:
 		return
 	var w: float = roundf(size.x)
@@ -102,3 +115,18 @@ func _draw() -> void:
 	draw_rect(Rect2(x0 + 2.0, y0 + h - 2.0, 1.0, 1.0), PAL["stone"])
 	draw_rect(Rect2(x0 + w - 5.0, y0 + h - 2.0, 2.0, 1.0), PAL["dusk"])
 	draw_rect(Rect2(hub.x - 3.0, y0 + h - 1.0, 2.0, 1.0), PAL["stone"])
+
+
+func _draw_shatter_burst() -> void:
+	var u: float = 1.0 - clampf(_break_t / 0.38, 0.0, 1.0)
+	var spread: float = maxf(size.x, size.y) * 0.48
+	if u < 0.45:
+		draw_arc(Vector2.ZERO, roundf(lerpf(3.0, spread + 8.0, u / 0.45)), 0.0, TAU, 14, (PAL["gold"] if u < 0.22 else PAL["stone"]) as Color, 1.0, false)
+	for i: int in range(8):
+		var a: float = (TAU * float(i)) / 8.0 + 0.2
+		var d: float = lerpf(2.0, spread + 12.0, u)
+		var px: float = roundf(cos(a) * d)
+		var py: float = roundf(sin(a) * d + u * u * 10.0 - u * 4.0)
+		var sz: float = 3.0 if (u < 0.35 and i % 2 == 0) else (2.0 if u < 0.65 else 1.0)
+		var c: Color = (PAL["stone"] if i % 3 == 0 else (PAL["mauve"] if i % 3 == 1 else PAL["dusk"])) as Color
+		draw_rect(Rect2(px, py, sz, sz), c)

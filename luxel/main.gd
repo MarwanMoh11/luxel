@@ -231,6 +231,9 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 	Lx.state.region_id = region_id
 	Lx.state.mark_region_visited(island_id, region_id)
 
+	if current_island_script != null and current_island_script.has_method("detach"):
+		current_island_script.call("detach")
+	current_island_script = null
 	var ok: bool = false
 	if _region_loader != null and _region_loader.has_method("load_region"):
 		ok = bool(_region_loader.call("load_region", island_id, region_id, _director))
@@ -277,9 +280,6 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 
 func _load_island_controller(island_id: int) -> void:
 	var path: String = "res://luxel/islands/%d/island.gd" % island_id
-	if current_island_script != null and current_island_script.has_method("detach"):
-		current_island_script.call("detach")
-	current_island_script = null
 	if ResourceLoader.exists(path):
 		current_island_script = _instantiate_script(path)
 		if current_island_script != null:

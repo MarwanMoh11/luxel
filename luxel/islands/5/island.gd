@@ -327,6 +327,7 @@ func _trigger_seal_shatter() -> void:
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
 		_events.shake_requested.emit(0.28)
 		_emit_narration("CUE_SEAL_SHATTER", "title", 3.5)
+		_emit_narration("DUNGEON_5_NAME", "narration", 3.0)
 		_events.save_requested.emit("seal_broken_5")
 
 

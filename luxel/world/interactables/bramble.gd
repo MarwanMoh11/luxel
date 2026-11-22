@@ -4,6 +4,7 @@ extends LxInteractable
 
 var burned: bool = false
 var size: Vector2 = Vector2(16.0, 16.0)
+var _burn_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -13,7 +14,15 @@ func setup(spec: Dictionary) -> void:
 	radius = maxf(size.x, size.y) * 0.5
 	burned = bool(props.get("burned", false))
 	active = not burned
+	_burn_t = 0.0
 	queue_redraw()
+
+
+func tick(dt: float) -> void:
+	super.tick(dt)
+	if _burn_t > 0.0:
+		_burn_t = maxf(0.0, _burn_t - dt)
+		queue_redraw()
 
 
 func on_hit(hit: LxHit) -> bool:
@@ -22,6 +31,9 @@ func on_hit(hit: LxHit) -> bool:
 	if hit.source == "beam":
 		burned = true
 		active = false
+		_burn_t = 0.36
+		if Lx.events != null:
+			Lx.events.shake_requested.emit(0.14)
 		_emit_sfx("bramble_burn")
 		_emit_save("bramble_" + id)
 		_notify_linked_targets(true)
@@ -52,6 +64,9 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if _burn_t > 0.0:
+		_draw_burn_burst()
+		return
 	if burned or not active:
 		return
 	var w: float = roundf(size.x)
@@ -99,3 +114,19 @@ func _draw() -> void:
 		draw_rect(Rect2(tp.x - 1.0, tp.y, 1.0, 1.0), PAL["mauve"])
 		draw_rect(Rect2(tp.x, tp.y - 1.0, 2.0, 2.0), PAL["coral"] if ti % 2 == 0 else PAL["rose"])
 		draw_rect(Rect2(tp.x, tp.y - 1.0, 1.0, 1.0), PAL["rose"])
+
+
+func _draw_burn_burst() -> void:
+	var u: float = 1.0 - clampf(_burn_t / 0.36, 0.0, 1.0)
+	var spread: float = maxf(size.x, size.y) * 0.45
+	var ring_r: float = roundf(lerpf(4.0, spread + 10.0, u))
+	if u < 0.65:
+		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 14, (PAL["gold"] if u < 0.3 else PAL["coral"]) as Color, 2.0 if u < 0.25 else 1.0, false)
+	for i: int in range(8):
+		var a: float = (TAU * float(i)) / 8.0 + 0.3
+		var d: float = lerpf(2.0, spread + 11.0, u)
+		var px: float = roundf(cos(a) * d)
+		var py: float = roundf(sin(a) * d - u * 9.0)
+		var sz: float = 2.0 if u < 0.45 else 1.0
+		var c: Color = (PAL["cream"] if u < 0.25 else (PAL["gold"] if u < 0.55 else (PAL["coral"] if i % 2 == 0 else PAL["wine"]))) as Color
+		draw_rect(Rect2(px, py, sz, sz), c)

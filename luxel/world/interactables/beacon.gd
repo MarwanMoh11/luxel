@@ -7,6 +7,8 @@ var lit: bool = false
 var ignitable: bool = false
 var zone_id: String = ""
 var require_clear: bool = true
+var _unlock_t: float = 0.0
+var _synced_once: bool = false
 
 
 func setup(spec: Dictionary) -> void:
@@ -18,10 +20,15 @@ func setup(spec: Dictionary) -> void:
 	if Lx.state != null and Lx.state.lit_beacons.has(id):
 		lit = true
 	ignitable = lit or not require_clear
+	_unlock_t = 0.0
+	_synced_once = false
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
+	if _unlock_t > 0.0:
+		_unlock_t = maxf(0.0, _unlock_t - dt)
+		queue_redraw()
 	if lit:
 		ignitable = true
 	else:
@@ -29,8 +36,12 @@ func tick(dt: float) -> void:
 		if require_clear and region != null and region.has_method("is_zone_cleared"):
 			cleared = bool(region.call("is_zone_cleared", zone_id))
 		if cleared != ignitable:
+			if cleared and _synced_once:
+				_unlock_t = 0.55
+				_emit_sfx("ember_pickup")
 			ignitable = cleared
 			queue_redraw()
+		_synced_once = true
 	_uses_prop_anim = lit or ignitable
 	super.tick(dt)
 
@@ -106,6 +117,9 @@ func _draw() -> void:
 	if ready:
 		_draw_invite_ring(true)
 		_draw_ready_sparks()
+		if _unlock_t > 0.0:
+			var u: float = 1.0 - clampf(_unlock_t / 0.55, 0.0, 1.0)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, (PAL["cream"] if u < 0.35 else PAL["gold"]) as Color, 2.0 if u < 0.4 else 1.0, false)
 	elif lit:
 		_draw_lit_embers()
 

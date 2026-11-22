@@ -198,6 +198,13 @@ func _spawn_enemies(specs: Array[Dictionary], director: LxAttackDirector) -> voi
 		var brain: LxEnemyBrain = LxEnemyFactory.create(kind, s, director, self)
 		if brain == null:
 			continue
+		if brain.is_boss and Lx.state != null:
+			var bid: String = brain.boss_id if not brain.boss_id.is_empty() else brain.kind
+			var alt: String = "hollow_wick" if brain.kind == "hollow_wick_boss" else ""
+			if Lx.state.defeated_bosses.has(bid) or Lx.state.defeated_bosses.has(brain.kind) \
+					or (not alt.is_empty() and Lx.state.defeated_bosses.has(alt)):
+				brain.free()
+				continue
 		_enemies_root.add_child(brain)
 		brain.position = brain.pos.round()
 		_enemies.append(brain)

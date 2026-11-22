@@ -3,6 +3,7 @@ extends LxInteractable
 ## Road lantern post that ignites when struck or when Wick's lantern passes near it.
 
 var lit: bool = false
+var _ignite_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -10,12 +11,16 @@ func setup(spec: Dictionary) -> void:
 	kind = "road_lamp"
 	lit = bool(props.get("lit", false))
 	_uses_prop_anim = lit
+	_ignite_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	_uses_prop_anim = lit
 	super.tick(dt)
+	if _ignite_t > 0.0:
+		_ignite_t = maxf(0.0, _ignite_t - dt)
+		queue_redraw()
 
 
 func interact(_actor: Node = null) -> bool:
@@ -41,6 +46,7 @@ func on_light(light_radius: float, source: String) -> void:
 
 func _ignite() -> bool:
 	lit = true
+	_ignite_t = 0.30
 	_uses_prop_anim = true
 	_emit_sfx("lamp_lit")
 	_notify_linked_targets(true)
@@ -97,3 +103,6 @@ func _draw_lantern_embers() -> void:
 		var px: float = roundf(gx + sin(_clock * 1.6 + phase + float(i) * 3.1) * (2.5 + t * 2.5))
 		var py: float = roundf(-12.0 - t * 11.0)
 		draw_rect(Rect2(px, py, 1.0, 1.0), c_cream if t < 0.4 else c_gold)
+	if _ignite_t > 0.0:
+		var u: float = 1.0 - clampf(_ignite_t / 0.30, 0.0, 1.0)
+		draw_arc(Vector2(gx, -14.0), roundf(lerpf(3.0, 14.0, u)), 0.0, TAU, 14, c_cream if u < 0.4 else c_gold, 1.0, false)

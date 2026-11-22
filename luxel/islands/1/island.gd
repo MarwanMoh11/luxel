@@ -273,18 +273,18 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 				_events.prompt_requested.emit("PROMPT_AIM_SHOOT", "lx_fire", 4.5)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
-	elif region_id == "belfry_r1":
-		if st != null and not bool(st.story_flags.get("isl1_belfry_entered", false)):
-			st.story_flags["isl1_belfry_entered"] = true
-			_emit_narration("CH5_TITLE", "title", 3.5)
-		if _events != null:
-			_events.music_mode_requested.emit("island1_dungeon")
-	elif region_id == "belfry_r4":
-		_r4_kills = 0
 	elif region_id == "belfry_r7":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			if _events != null:
 				_events.music_mode_requested.emit("island1_boss_p1")
+	elif region_id.begins_with("belfry_"):
+		if region_id == "belfry_r1" and st != null and not bool(st.story_flags.get("isl1_belfry_entered", false)):
+			st.story_flags["isl1_belfry_entered"] = true
+			_emit_narration("CH5_TITLE", "title", 3.5)
+		elif region_id == "belfry_r4":
+			_r4_kills = 0
+		if _events != null:
+			_events.music_mode_requested.emit("island1_dungeon")
 
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
@@ -339,6 +339,8 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 				_events.sfx_requested.emit("door_open", Vector2.ZERO, false)
 				_emit_narration("CUE_DOOR_OPEN", "title", 2.5)
 	elif st.region_id == "belfry_r5" and kind == MINI_BOSS_KIND:
+		if not st.defeated_bosses.has(MINI_BOSS_KIND):
+			st.defeated_bosses.append(MINI_BOSS_KIND)
 		st.story_flags["bell_warden_defeated"] = true
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)

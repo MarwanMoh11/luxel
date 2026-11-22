@@ -200,17 +200,17 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("ISL8_ARRIVAL", "ominous", 4.5)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
-	elif region_id == "sanctum_r1":
-		if st != null and not bool(st.story_flags.get("isl8_sanctum_entered", false)):
-			st.story_flags["isl8_sanctum_entered"] = true
-			_emit_narration("DUNGEON_8_NAME", "title", 3.5)
-		if _events != null:
-			_events.music_mode_requested.emit("island8_dungeon")
 	elif region_id == "sanctum_r6":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_HUSH", "title", 4.0)
 			if _events != null:
 				_events.music_mode_requested.emit("island8_boss_p1")
+	elif region_id.begins_with("sanctum_"):
+		if region_id == "sanctum_r1" and st != null and not bool(st.story_flags.get("isl8_sanctum_entered", false)):
+			st.story_flags["isl8_sanctum_entered"] = true
+			_emit_narration("DUNGEON_8_NAME", "title", 3.5)
+		if _events != null:
+			_events.music_mode_requested.emit("island8_dungeon")
 
 
 func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
@@ -238,6 +238,7 @@ func _trigger_seal_shatter() -> void:
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
 		_events.shake_requested.emit(0.30)
 		_emit_narration("CUE_SEAL_SHATTER", "title", 3.5)
+		_emit_narration("DUNGEON_8_NAME", "narration", 3.0)
 		_events.save_requested.emit("seal_broken_8")
 
 
@@ -263,7 +264,8 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island8_boss_p2")
 		_events.shake_requested.emit(0.36)
-		_emit_narration("CUE_PHASE_2", "warning", 3.0)
+		var cue: String = "CUE_HUSH_P4" if phase >= 4 else ("CUE_HUSH_P3" if phase == 3 else "CUE_PHASE_2")
+		_emit_narration(cue, "warning", 3.2)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
