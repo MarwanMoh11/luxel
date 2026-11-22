@@ -170,6 +170,7 @@ func _enter_constellation_commit() -> void:
 	nova_hit = false
 	reveal_t = maxf(reveal_t, 0.55)
 	revealed = true
+	_boss_impact(0.22, 104.0, 98.0)
 	_emit_sfx("astronomer_constellation_fire")
 
 
@@ -235,7 +236,7 @@ func _draw_extra(off: Vector2) -> void:
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(off, NOVA_MAX_R, a0, a0 + 0.24, 3, PAL["sky"] as Color, 1.0)
 		var t_r: float = lerpf(NOVA_MAX_R, NOVA_START_R + 8.0, prog)
-		draw_arc(off, t_r, 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
+		draw_arc(off, t_r, 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["ice"]) as Color, 1.8)
 		var ray_len: float = NOVA_RAY_RANGE
 		var locked_a: bool = state_timer <= 0.22
 		var ray_col: Color = (PAL["gold"] if locked_a else PAL["sky"]) as Color
@@ -287,3 +288,12 @@ func _draw_extra(off: Vector2) -> void:
 		var rr: float = body_radius + 11.0 + rp * 16.0
 		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
 		draw_arc(off, rr, 0.0, TAU, 28, PAL["ice"] as Color, 2.2)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

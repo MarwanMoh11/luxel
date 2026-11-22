@@ -170,6 +170,7 @@ func _enter_commit() -> void:
 		state_timer = SPORE_COMMIT_TIME
 		spore_progress = 0.0
 		spore_hit = false
+		_boss_impact(0.20, 94.0, 92.0)
 		_emit_sfx("briar_spore_burst")
 		return
 	if not thorn_burst_active:
@@ -258,7 +259,7 @@ func _draw_extra(off: Vector2) -> void:
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(off, SPORE_MAX_R, a0, a0 + 0.24, 3, PAL["jade"] as Color, 1.0)
-		draw_arc(off, lerpf(SPORE_MAX_R, SPORE_START_R + 6.0, prog), 0.0, TAU, 28, PAL["lime"] as Color, 1.8)
+		draw_arc(off, lerpf(SPORE_MAX_R, SPORE_START_R + 6.0, prog), 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["lime"]) as Color, 1.8)
 	elif spore_burst_attack and state == State.COMMIT:
 		var ring_r: float = lerpf(SPORE_START_R, SPORE_MAX_R, spore_progress)
 		draw_arc(off, ring_r + 2.6, 0.0, TAU, 36, PAL["pine"] as Color, 2.4)
@@ -279,3 +280,12 @@ func _draw_extra(off: Vector2) -> void:
 		var rr: float = body_radius + 11.0 + rp * 16.0
 		draw_arc(off, rr + 2.2, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
 		draw_arc(off, rr, 0.0, TAU, 28, PAL["lime"] as Color, 2.4)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

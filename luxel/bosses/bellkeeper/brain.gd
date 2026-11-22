@@ -198,6 +198,7 @@ func _enter_commit() -> void:
 		state_timer = SLAM_FIRE_TIME
 		slam_progress = 0.0
 		slam_hit = false
+		_boss_impact(0.20, 92.0, 95.0)
 		_emit_sfx("bellkeeper_slam_fire")
 		return
 	swings_since_slam += 1
@@ -239,6 +240,7 @@ func _step_commit(dt: float) -> void:
 				state_timer = SLAM_FIRE_TIME
 				slam_progress = 0.0
 				slam_hit = false
+				_boss_impact(0.20, 92.0, 95.0)
 				_emit_sfx("bellkeeper_slam_fire")
 		_:
 			_finish_slam_into_recover()
@@ -310,7 +312,7 @@ func _draw_extra(off: Vector2) -> void:
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(off, SLAM_MAX_R, a0, a0 + 0.24, 3, PAL["apricot"] as Color, 1.0)
 		var r: float = lerpf(SLAM_MAX_R, SLAM_START_R + 6.0, prog)
-		draw_arc(off, r, 0.0, TAU, 28, PAL["gold"] as Color, 1.8)
+		draw_arc(off, r, 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["gold"]) as Color, 1.8)
 		if double_toll_enabled:
 			draw_arc(off, maxf(4.0, r * 0.6), 0.0, TAU, 20, PAL["coral"] as Color, 1.2)
 	elif slam_attack and state == State.COMMIT:
@@ -354,3 +356,12 @@ func _draw_extra(off: Vector2) -> void:
 		for ci: int in range(4):
 			var cd: Vector2 = Vector2.from_angle(float(ci) * (TAU * 0.25) + PI * 0.25)
 			draw_line((off + cd * (cr - 3.0)).round(), (off + cd * (cr + 4.5)).round(), PAL["cream"] as Color, 1.3)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

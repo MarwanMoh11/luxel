@@ -201,6 +201,7 @@ func _enter_commit() -> void:
 		state_timer = GUST_COMMIT_TIME
 		gust_hit = false
 		gust_announced = false
+		_boss_impact(0.15, 110.0, 105.0)
 		_emit_sfx("heron_gust_fire")
 		return
 	if active_move == BossMove.SHOCKWAVE_RING:
@@ -208,6 +209,7 @@ func _enter_commit() -> void:
 		state_timer = RING_COMMIT_TIME
 		ring_progress = 0.0
 		ring_hit = false
+		_boss_impact(0.20, 94.0, 92.0)
 		_emit_sfx("heron_ring_fire")
 		return
 	super._enter_commit()
@@ -349,7 +351,7 @@ func _draw_extra(off: Vector2) -> void:
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(off, RING_MAX_R, a0, a0 + 0.24, 3, PAL["blue"] as Color, 1.0)
-		draw_arc(off, lerpf(RING_MAX_R, RING_START_R + 6.0, prog), 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
+		draw_arc(off, lerpf(RING_MAX_R, RING_START_R + 6.0, prog), 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["sky"]) as Color, 1.8)
 	elif active_move == BossMove.SHOCKWAVE_RING and state == State.COMMIT:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
 		draw_arc(off, ring_r + 3.0, 0.0, TAU, 36, PAL["blue"] as Color, 2.2)
@@ -363,3 +365,12 @@ func _draw_extra(off: Vector2) -> void:
 		var rr: float = body_radius + 10.0 + rp * 16.0
 		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
 		draw_arc(off, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

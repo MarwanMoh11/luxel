@@ -121,12 +121,14 @@ func take_hit(hit: LxHit) -> int:
 				veil_intact = veil_hp > 0.001
 				opened = true
 				if not veil_intact:
+					_boss_impact(0.26, 98.0, 105.0)
 					_emit_sfx("hush_veil_shatter")
 			else:
 				dmg *= P4_VEIL_RES
 				veil_hp -= (wear if is_heavy else wear * 0.35)
 				if veil_hp <= 0.001:
 					veil_intact = false
+					_boss_impact(0.26, 98.0, 105.0)
 					_emit_sfx("hush_veil_shatter")
 
 	hp -= dmg
@@ -285,8 +287,11 @@ func _step_tell(dt: float) -> void:
 		if active_move == HushMove.VOID_ZIP:
 			void_orb_pos = _clamp_pt(pos + commit_dir * clampf(_attention_target().distance_to(pos), 36.0, 96.0))
 			void_orb_out = true
+		elif active_move == HushMove.SILENCE_RING:
+			_boss_impact(0.24, 112.0, 108.0)
 		elif active_move == HushMove.ECLIPSE_BEAM:
 			beam_angle = sweep_start_ang
+			_boss_impact(0.18, 86.0, 84.0)
 		var csfx: Array[String] = ["bolt_fire", "zip_streak", "hollow_dash", "hush_pulse", "beam_fire"]
 		_emit_sfx(csfx[active_move])
 
@@ -330,6 +335,7 @@ func _tick_ring() -> bool:
 			state_timer = 0.34
 			ring_progress = 0.0
 			commit_hit = false
+			_boss_impact(0.24, 112.0, 108.0)
 			_emit_sfx("hush_pulse")
 		return true
 	ring_progress = 1.0 - clampf(state_timer / 0.34, 0.0, 1.0)
@@ -398,3 +404,12 @@ func _shield_color() -> Color:
 	return PAL["sky"] as Color
 func _draw_extra(off: Vector2) -> void:
 	Visuals.draw_hush(self, off)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

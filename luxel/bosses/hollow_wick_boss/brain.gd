@@ -159,9 +159,11 @@ func _step_tell(dt: float) -> void:
 				_emit_sfx("lantern_throw")
 			BossMove.DARK_BEAM:
 				state_timer = BEAM_COMMIT_TIME
+				_boss_impact(0.16, 76.0, 72.0)
 				_emit_sfx("beam_fire")
 			BossMove.ECLIPSE_FLARE:
 				state_timer = FLARE_COMMIT_TIME
+				_boss_impact(0.24, 102.0, 100.0)
 				_emit_sfx("sunflare_burst")
 
 
@@ -292,7 +294,7 @@ func _draw_extra(off: Vector2) -> void:
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(off, FLARE_MAX_R, a0, a0 + 0.24, 3, PAL["sky"] as Color, 1.0)
-		draw_arc(off, lerpf(FLARE_MAX_R, FLARE_START_R + 6.0, prog), 0.0, TAU, 26, PAL["ice"] as Color, 1.8)
+		draw_arc(off, lerpf(FLARE_MAX_R, FLARE_START_R + 6.0, prog), 0.0, TAU, 26, (PAL["cream"] if state_timer <= 0.14 else PAL["ice"]) as Color, 1.8)
 	elif active_move == BossMove.ECLIPSE_FLARE and state == State.COMMIT:
 		var ring_r: float = lerpf(FLARE_START_R, FLARE_MAX_R, flare_progress)
 		draw_arc(off, ring_r + 2.6, 0.0, TAU, 36, PAL["blue"] as Color, 2.2)
@@ -313,3 +315,12 @@ func _draw_extra(off: Vector2) -> void:
 		var rr: float = body_radius + 10.0 + rp * 16.0
 		draw_arc(off, rr + 2.5, 0.0, TAU, 26, PAL["blue"] as Color, 1.8)
 		draw_arc(off, rr, 0.0, TAU, 26, PAL["ice"] as Color, 2.2)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)

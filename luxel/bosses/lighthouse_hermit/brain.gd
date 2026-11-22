@@ -233,6 +233,7 @@ func _enter_commit() -> void:
 		state_timer = BEAM_COMMIT_TIME
 		beam_angle = sweep_start_ang
 		beam_hit = false
+		_boss_impact(0.16, 78.0, 72.0)
 		_emit_sfx("hermit_beam_sweep")
 		return
 	if active_move == BossMove.TIDE_RING:
@@ -240,6 +241,7 @@ func _enter_commit() -> void:
 		state_timer = TIDE_COMMIT_TIME
 		tide_progress = 0.0
 		tide_hit = false
+		_boss_impact(0.22, 96.0, 96.0)
 		_emit_sfx("hermit_tide_fire")
 		return
 	super._enter_commit()
@@ -376,7 +378,7 @@ func _draw_extra(off: Vector2) -> void:
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(off, TIDE_MAX_R, a0, a0 + 0.24, 3, PAL["blue"] as Color, 1.0)
-		draw_arc(off, lerpf(TIDE_MAX_R, TIDE_START_R + 8.0, prog), 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
+		draw_arc(off, lerpf(TIDE_MAX_R, TIDE_START_R + 8.0, prog), 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["sky"]) as Color, 1.8)
 	elif active_move == BossMove.TIDE_RING and state == State.COMMIT:
 		var ring_r: float = lerpf(TIDE_START_R, TIDE_MAX_R, tide_progress)
 		draw_arc(off, ring_r + 2.4, 0.0, TAU, 36, PAL["blue"] as Color, 2.4)
@@ -395,3 +397,12 @@ func _draw_extra(off: Vector2) -> void:
 		var rr: float = body_radius + 11.0 + rp * 18.0
 		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
 		draw_arc(off, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)
+
+
+func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(shake)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos, gust_r, gust_s)
