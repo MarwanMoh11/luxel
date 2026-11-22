@@ -442,6 +442,7 @@ func _draw_reticle() -> void:
 	var zip_ready: bool = false
 	var lan_stolen: bool = false
 	var beam_ready: bool = false
+	var sunflare_ready: bool = false
 	if Lx.player != null and is_instance_valid(Lx.player):
 		var mz: Variant = Lx.player.get("muzzle_t")
 		if (mz is float or mz is int) and float(mz) > 0.0:
@@ -451,6 +452,9 @@ func _draw_reticle() -> void:
 			if bp > 0.01:
 				gap = maxf(1.0, roundf(gap + lerpf(2.0, -1.0, bp)))
 				beam_ready = bp >= 0.999
+		var sf_v: Variant = Lx.player.get("move_sunflare")
+		if sf_v is Object and is_instance_valid(sf_v) and (sf_v as Object).has_method("can_use"):
+			sunflare_ready = bool((sf_v as Object).call("can_use"))
 		var lan_v: Variant = Lx.player.get("lantern")
 		if lan_v is Object and is_instance_valid(lan_v):
 			if (lan_v as Object).has_method("is_lure_active"):
@@ -490,3 +494,10 @@ func _draw_reticle() -> void:
 	_cursor_node.draw_rect(Rect2(pos.x - 1.0, pos.y, 3.0, 1.0), outline)
 	_cursor_node.draw_rect(Rect2(pos.x, pos.y - 1.0, 1.0, 3.0), outline)
 	_cursor_node.draw_rect(Rect2(pos.x, pos.y, 1.0, 1.0), cream)
+	if sunflare_ready and not lan_stolen:
+		var no_flash: bool = bool(cfg.get("flash_reduction", false))
+		var sf_col: Color = LxPalette.PAL["gold"] if (no_flash or int(Time.get_ticks_msec() / 320) % 2 == 0) else cream
+		var sd: float = gap + arm + 2.0
+		for sp: Vector2 in [Vector2(-sd, 0.0), Vector2(sd, 0.0), Vector2(0.0, -sd), Vector2(0.0, sd)]:
+			_cursor_node.draw_rect(Rect2(pos + sp - Vector2.ONE, Vector2(3.0, 3.0)), outline)
+			_cursor_node.draw_rect(Rect2(pos + sp, Vector2(1.0, 1.0)), sf_col)

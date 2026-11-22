@@ -507,7 +507,7 @@ func _on_boss_defeated(boss_id: String, isl: int) -> void:
 	if is_major and not bool(Lx.state.story_flags.get("boss_heart_" + boss_id, false)):
 		Lx.state.story_flags["boss_heart_" + boss_id] = true
 		Lx.state.add_boss_heart()
-	if Lx.audio != null and Lx.audio.current_track_group.contains("_boss_"): Lx.audio.silence_music(0.85)
+	if is_major and Lx.audio != null and Lx.audio.current_track_group.contains("_boss_"): Lx.audio.silence_music(0.85)
 	if is_major: Lx.audio.play_stinger("stinger_lamp")
 	_on_save_requested("boss")
 

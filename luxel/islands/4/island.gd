@@ -290,7 +290,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		elif region_id == "conservatory_r8":
 			_r8_kills = 0
 		if _events != null:
-			_events.music_mode_requested.emit("island4_dungeon")
+			var mb_live: bool = region_id == "conservatory_r6" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
+			_events.music_mode_requested.emit("island4_boss_p1" if mb_live else "island4_dungeon")
 
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
@@ -356,16 +357,17 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 		st.story_flags["boss_great_lily_hopper_defeated"] = true
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
+			_events.music_mode_requested.emit("island4_dungeon")
 			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("great_lily_hopper_defeated")
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
-	if boss_id != BOSS_ID:
+	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
 		return
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island4_boss_p2")
-		_events.shake_requested.emit(0.38 if phase >= 3 else 0.32)
+		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
 		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2", "warning", 3.5)
 
 

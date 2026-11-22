@@ -306,7 +306,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			st.story_flags["isl7_spire_entered"] = true
 			_emit_narration("DUNGEON_7_NAME", "title", 3.5)
 		if _events != null:
-			_events.music_mode_requested.emit("island7_dungeon")
+			var mb_live: bool = region_id == "spire_r6" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
+			_events.music_mode_requested.emit("island7_boss_p1" if mb_live else "island7_dungeon")
 
 
 func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
@@ -358,6 +359,7 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 		st.story_flags["moonshade_warden_defeated"] = true
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
+			_events.music_mode_requested.emit("island7_dungeon")
 			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("moonshade_warden_defeated")
 	elif st.region_id == "spire_r10" and (kind == "hollow_wick_boss" or eid == "boss_hollow_wick"):
@@ -367,11 +369,11 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
-	if boss_id != BOSS_ID and boss_id != "hollow_wick_boss":
+	if boss_id != BOSS_ID and boss_id != "hollow_wick_boss" and boss_id != MINI_BOSS_KIND:
 		return
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island7_boss_p2")
-		_events.shake_requested.emit(0.38 if phase >= 3 else 0.32)
+		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
 		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2", "warning", 3.0)
 
 
