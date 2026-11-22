@@ -326,9 +326,24 @@ func _draw_extra(off: Vector2) -> void:
 	var left_d: Vector2 = Vector2.from_angle(facing - CONE_HALF)
 	var right_d: Vector2 = Vector2.from_angle(facing + CONE_HALF)
 	if state == State.TELL:
+		var fwd_t: Vector2 = Vector2.from_angle(facing)
+		var locked_t: bool = state_timer <= 0.24
+		var ray_start: Vector2 = (c + fwd_t * (body_radius + 1.0)).round()
+		var ray_end: Vector2 = (c + fwd_t * BOLT_RANGE).round()
+		var ray_c: Color = (PAL["coral"] as Color) if locked_t else (PAL["gold"] as Color)
 		draw_line(c, (c + left_d * cone_r).round(), cone_col, 1.0)
 		draw_line(c, (c + right_d * cone_r).round(), cone_col, 1.0)
 		draw_arc(c, cone_r, facing - CONE_HALF, facing + CONE_HALF, 14, cone_col, 1.0)
+		if locked_t:
+			draw_line(ray_start, ray_end, ray_c, 1.5)
+			_draw_star_flare(ray_start, 3.5, PAL["coral"] as Color)
+		else:
+			for bi: int in range(0, 18, 2):
+				var b0: Vector2 = (c + fwd_t * lerpf(body_radius + 2.0, BOLT_RANGE, float(bi) / 18.0)).round()
+				var b1: Vector2 = (c + fwd_t * lerpf(body_radius + 2.0, BOLT_RANGE, float(bi + 1) / 18.0)).round()
+				draw_line(b0, b1, ray_c, 1.0)
+			_draw_star_flare(ray_start, 2.5, PAL["gold"] as Color)
+		draw_rect(Rect2(ray_end, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	else:
 		for si: int in range(0, 8, 2):
 			var d0: float = cone_r * (float(si) / 8.0)

@@ -260,19 +260,29 @@ func _draw_extra(off: Vector2) -> void:
 
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var locked_t: bool = state_timer <= 0.20 * _assist_tell_scale()
 		var muzzle: Vector2 = (off + fwd * (body_radius + 1.0)).round()
 		var fl: float = roundf(2.0 + prog * 3.0)
-		var tip: Vector2 = (off + fwd * (body_radius + 14.0)).round()
-		draw_line(muzzle, tip, (PAL["gold"] as Color) if prog > 0.65 else (PAL["sky"] as Color), 1.0)
+		var aim_col: Color = (PAL["coral"] as Color) if locked_t else ((PAL["gold"] as Color) if prog > 0.50 else (PAL["sky"] as Color))
+		var tip: Vector2 = (off + fwd * (body_radius + 44.0)).round()
+		for si: int in range(0, 8, 2):
+			var s0: Vector2 = (off + fwd * (body_radius + 4.0 + float(si) * 5.0)).round()
+			var s1: Vector2 = (off + fwd * (body_radius + 4.0 + float(si + 1) * 5.0)).round()
+			draw_line(s0, s1, aim_col, 1.2 if locked_t else 1.0)
 		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 		draw_circle(muzzle, 1.8 + prog * 1.4, PAL["deep"] as Color)
-		draw_circle(muzzle, 1.2 + prog * 0.9, PAL["sky"] as Color)
+		draw_circle(muzzle, 1.2 + prog * 0.9, PAL["coral"] as Color if locked_t else PAL["sky"] as Color)
 		draw_line(muzzle + Vector2(-fl, 0.0), muzzle + Vector2(fl, 0.0), PAL["ice"] as Color, 1.0)
 		draw_line(muzzle + Vector2(0.0, -fl), muzzle + Vector2(0.0, fl), PAL["ice"] as Color, 1.0)
 		draw_rect(Rect2(muzzle, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
-	elif (state == State.COMMIT or state == State.RECOVER) and _sprite_sheet == null:
-		draw_circle(off, body_radius * 0.58, PAL["coral"] as Color)
-		draw_circle(off, body_radius * 0.30, PAL["gold"] as Color)
+	elif state == State.COMMIT or state == State.RECOVER:
+		if _sprite_sheet == null:
+			draw_circle(off, body_radius * 0.58, PAL["coral"] as Color)
+			draw_circle(off, body_radius * 0.30, PAL["gold"] as Color)
+		elif state == State.RECOVER:
+			var op: Vector2 = (off + Vector2(0.0, -2.0)).round()
+			draw_rect(Rect2(op + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), PAL["coral"] as Color, true)
+			draw_rect(Rect2(op, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 
 	for g: Dictionary in globs:
 		var gp: Vector2 = ((g["pos"] as Vector2) - pos).round()

@@ -286,7 +286,21 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(off, body_radius + 3.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)
 	var c: Vector2 = off.round()
 	if state == State.TELL:
-		draw_line(c, (c + lunge_dir * 26.0).round(), PAL["ice"] as Color, 1.5)
+		var locked: bool = state_timer <= 0.15 * _assist_tell_scale()
+		var reach_len: float = LUNGE_SPEED * LUNGE_TIME
+		var tip: Vector2 = (c + lunge_dir * reach_len).round()
+		var line_c: Color = (PAL["coral"] as Color) if locked else (PAL["ice"] as Color)
+		if locked:
+			draw_line(c, tip, line_c, 1.4)
+		else:
+			for si: int in range(0, 10, 2):
+				var p0: Vector2 = (c + lunge_dir * (reach_len * float(si) / 10.0)).round()
+				var p1: Vector2 = (c + lunge_dir * (reach_len * float(si + 1) / 10.0)).round()
+				draw_line(p0, p1, line_c, 1.2)
+		var perp_t := Vector2(-lunge_dir.y, lunge_dir.x)
+		draw_line((tip - lunge_dir * 4.0 + perp_t * 3.0).round(), tip, line_c, 1.2)
+		draw_line((tip - lunge_dir * 4.0 - perp_t * 3.0).round(), tip, line_c, 1.2)
+		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	elif state == State.COMMIT:
 		var perp: Vector2 = Vector2(-lunge_dir.y, lunge_dir.x)
 		var la: float = lunge_dir.angle()

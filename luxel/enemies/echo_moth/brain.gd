@@ -305,12 +305,30 @@ func _draw_extra(off: Vector2) -> void:
 		var wing: float = 3.0 + sin(anim_t * 14.0) * 1.5
 		draw_line(off + Vector2(-body_radius - wing, -1.0), off + Vector2(body_radius + wing, -1.0), PAL["sky"] as Color, 1.5)
 	if state == State.TELL:
-		var preview_len: float = 38.0 if _echo_is_dash else 52.0
+		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var preview_len: float = (DASH_SPEED * DASH_COMMIT_TIME) if _echo_is_dash else BOLT_RANGE
 		var c: Vector2 = off.round()
 		var tip: Vector2 = (c + _echo_dir * preview_len).round()
-		draw_line(c, tip, PAL["ice"] as Color, 1.2)
-		draw_circle(tip, 2.2, PAL["gold"] as Color)
-		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+		var perp_t := Vector2(-_echo_dir.y, _echo_dir.x)
+		if _echo_is_dash:
+			var dc: Color = (PAL["gold"] as Color) if prog > 0.65 else (PAL["ice"] as Color)
+			draw_line(c, tip, dc, 1.2)
+			draw_line((tip - _echo_dir * 5.0 + perp_t * 3.5).round(), tip, dc, 1.4)
+			draw_line((tip - _echo_dir * 5.0 - perp_t * 3.5).round(), tip, dc, 1.4)
+			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+		else:
+			var hot: bool = prog > 0.65
+			var lc: Color = (PAL["coral"] as Color) if hot else (PAL["gold"] as Color)
+			if hot:
+				draw_line(c, tip, lc, 1.4)
+			else:
+				for si: int in range(0, 16, 2):
+					var p0: Vector2 = (c + _echo_dir * (preview_len * float(si) / 16.0)).round()
+					var p1: Vector2 = (c + _echo_dir * (preview_len * float(si + 1) / 16.0)).round()
+					draw_line(p0, p1, lc, 1.0)
+			draw_line(tip + Vector2(-3.0, 0.0), tip + Vector2(3.0, 0.0), PAL["ice"] as Color, 1.0)
+			draw_line(tip + Vector2(0.0, -3.0), tip + Vector2(0.0, 3.0), PAL["ice"] as Color, 1.0)
+			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	elif state == State.COMMIT:
 		var c: Vector2 = off.round()
 		var perp: Vector2 = Vector2(-_echo_dir.y, _echo_dir.x)

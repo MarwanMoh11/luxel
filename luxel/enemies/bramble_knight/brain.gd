@@ -179,7 +179,12 @@ func _draw_extra(off: Vector2) -> void:
 			draw_line(p0, p1, (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["lime"] as Color), 1.5)
 	if thorn_burst_active and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		draw_arc(off.round(), lerpf(THORN_BURST_R, body_radius + 4.0, prog), 0.0, TAU, 20, PAL["gold"] as Color, 1.5)
+		var c: Vector2 = off.round()
+		var edge_c: Color = (PAL["coral"] as Color) if prog > 0.65 else (PAL["lime"] as Color)
+		for ti: int in range(12):
+			var a0: float = float(ti) * (TAU / 12.0)
+			draw_arc(c, THORN_BURST_R, a0, a0 + 0.24, 3, edge_c, 1.0)
+		draw_arc(c, lerpf(THORN_BURST_R, body_radius + 4.0, prog), 0.0, TAU, 20, PAL["gold"] as Color, 1.5)
 	elif thorn_burst_active and state == State.COMMIT:
 		var prog: float = 1.0 - clampf(state_timer / THORN_BURST_TIME, 0.0, 1.0)
 		var burst_r: float = lerpf(body_radius + 6.0, THORN_BURST_R, prog)
