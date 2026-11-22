@@ -53,6 +53,7 @@ func _ignite() -> bool:
 	_ignite_t = 0.30
 	_uses_prop_anim = true
 	_emit_sfx("lamp_lit")
+	_emit_gust(42.0, 26.0, Vector2(0.0, -10.0))
 	_notify_linked_targets(true)
 	queue_redraw()
 	return true
@@ -84,6 +85,7 @@ func _draw() -> void:
 		_draw_fallback()
 	if lit:
 		_draw_lantern_embers()
+	_draw_signal_pulses()
 
 
 func _draw_fallback() -> void:

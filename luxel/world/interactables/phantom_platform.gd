@@ -42,9 +42,12 @@ func tick(dt: float) -> void:
 		_reveal_fx_t = maxf(0.0, _reveal_fx_t - dt)
 		changed = true
 	if revealed and _reveal_left > 0.0:
+		var was_warn: bool = _reveal_left < 0.14
 		_reveal_left -= dt
 		if _reveal_left <= 0.0:
 			revealed = false
+			changed = true
+		elif _reveal_left < 0.14 or was_warn:
 			changed = true
 	if active:
 		var rate: float = 3.0 if revealed else 1.5
@@ -130,6 +133,9 @@ func _draw() -> void:
 			draw_rect(Rect2(sp.x, sp.y, 1.0, 1.0), PAL["cream"] if bright else PAL["ice"])
 		if _reveal_fx_t > 0.0:
 			draw_rect(Rect2(x0, y0, w, h), PAL["cream"] if _reveal_fx_t > 0.12 else PAL["ice"], false, 1.0)
+		elif _reveal_left > 0.0 and _reveal_left < 0.14:
+			var warn_c: Color = (PAL["sky"] if int(floorf(_clock * 24.0)) % 2 == 0 else PAL["deep"]) as Color
+			draw_rect(Rect2(x0, y0, w, h), warn_c, false, 1.0)
 		return
 	var br_c: Color = PAL["deep"] as Color
 	var tip_c: Color = PAL["blue"] as Color

@@ -212,6 +212,13 @@ func _emit_save(reason: String) -> void:
 		Lx.events.save_requested.emit(reason)
 
 
+func _emit_gust(gust_radius: float, strength: float, offset: Vector2 = Vector2.ZERO) -> void:
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pos + offset, gust_radius, strength)
+
+
 static func _parse_vec2(v: Variant, fallback: Vector2 = Vector2.ZERO) -> Vector2:
 	if v is Vector2:
 		return v as Vector2

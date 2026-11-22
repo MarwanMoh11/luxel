@@ -102,15 +102,24 @@ func tick(dt: float) -> void:
 		if _ward_requirements_met():
 			_open(true)
 			return
-		if not _uses_prop_anim:
-			var st: int = int(floorf(_clock * 2.5 + absf(pos.x * 0.02))) % 4
-			if st != _pulse_stage:
-				_pulse_stage = st
-				queue_redraw()
+		var st: int = int(floorf(_clock * 2.5 + absf(pos.x * 0.02))) % 4
+		if st != _pulse_stage:
+			_pulse_stage = st
+			queue_redraw()
 	elif door_type == "combat_gate":
 		if region != null and region.has_method("is_zone_cleared"):
 			if bool(region.call("is_zone_cleared", zone_id)):
 				_open(false)
+				return
+		var st_c: int = int(floorf(_clock * 3.2 + absf(pos.x * 0.03))) % 4
+		if st_c != _pulse_stage:
+			_pulse_stage = st_c
+			queue_redraw()
+	elif door_type == "wick_key" or door_type == "boss_key":
+		var st_k: int = int(floorf(_clock * 3.0 + absf(pos.x * 0.02))) % 4
+		if st_k != _pulse_stage and _player_can_unlock_key_door():
+			_pulse_stage = st_k
+			queue_redraw()
 
 
 func interact(_actor: Node = null) -> bool:
@@ -194,6 +203,8 @@ func _open(persist: bool) -> bool:
 				Lx.state.broken_seals.append(id)
 	if door_type == "ward_barrier" and Lx.events != null:
 		Lx.events.seal_broken.emit(island_id, id)
+	else:
+		_emit_gust(maxf(size.x, size.y) + 22.0, 42.0)
 	if Lx.events != null:
 		Lx.events.shake_requested.emit(0.14)
 	_emit_sfx("door_open")
@@ -267,15 +278,16 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
-	if not opened and door_type == "ward_barrier" and size.x <= 40.0 and size.y <= 24.0:
-		if _draw_prop_sprite("ward_barrier"):
-			return
-	_uses_prop_anim = false
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
 	var rattle_dx: float = (1.0 if int(floorf(_rattle_t * 36.0)) % 2 == 0 else -1.0) if _rattle_t > 0.0 else 0.0
 	var x0: float = floorf(-w * 0.5) + rattle_dx
 	var y0: float = floorf(-h * 0.5)
+	if not opened and door_type == "ward_barrier" and size.x <= 40.0 and size.y <= 24.0:
+		if _draw_prop_sprite("ward_barrier", Vector2(rattle_dx, 0.0)):
+			_draw_ward_pips(x0, y0, w)
+			return
+	_uses_prop_anim = false
 	if door_type == "bridge_platform":
 		_draw_bridge(x0, y0, w, h)
 		if _open_t > 0.0:
@@ -374,9 +386,9 @@ func _draw_combat_gate(x0: float, y0: float, w: float, h: float) -> void:
 	draw_rect(Rect2(x0 + 2.0, cy, w - 4.0, 4.0), PAL["night"])
 	draw_rect(Rect2(x0 + 2.0, cy, w - 4.0, 1.0), PAL["dusk"])
 	draw_rect(Rect2(cx - 3.0, cy - 1.0, 6.0, 6.0), PAL["void"])
-	draw_rect(Rect2(cx - 2.0, cy, 4.0, 4.0), PAL["wine"])
-	draw_rect(Rect2(cx - 1.0, cy + 1.0, 2.0, 2.0), PAL["coral"])
-	draw_rect(Rect2(cx - 1.0, cy + 1.0, 1.0, 1.0), PAL["apricot"])
+	draw_rect(Rect2(cx - 2.0, cy, 4.0, 4.0), PAL["coral"] if _rattle_t > 0.0 else PAL["wine"])
+	draw_rect(Rect2(cx - 1.0, cy + 1.0, 2.0, 2.0), PAL["cream"] if _rattle_t > 0.0 else (PAL["apricot"] if _pulse_stage == 0 else PAL["coral"]))
+	draw_rect(Rect2(cx - 1.0, cy + 1.0, 1.0, 1.0), PAL["cream"] if (_rattle_t > 0.0 or _pulse_stage == 0) else PAL["apricot"])
 
 
 func _draw_key_door(x0: float, y0: float, w: float, h: float, is_boss: bool) -> void:
@@ -389,26 +401,27 @@ func _draw_key_door(x0: float, y0: float, w: float, h: float, is_boss: bool) -> 
 	draw_rect(Rect2(x0 + pad, y0 + 3.0, lw, h - 6.0), PAL["wine"])
 	draw_rect(Rect2(cx + 1.0, y0 + 3.0, rw, h - 6.0), PAL["wine"])
 	draw_rect(Rect2(cx - 1.0, y0 + 1.0, 2.0, h - 2.0), PAL["void"] if is_boss else PAL["night"])
+	var ready_glint: bool = _rattle_t <= 0.0 and _player_can_unlock_key_door() and (_pulse_stage % 2 == 0)
 	if is_boss:
-		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["gold"])
-		draw_rect(Rect2(x0 + 2.0, y0 + h - 3.0, w - 4.0, 1.0), PAL["apricot"])
+		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["cream"] if ready_glint else PAL["gold"])
+		draw_rect(Rect2(x0 + 2.0, y0 + h - 3.0, w - 4.0, 1.0), PAL["gold"] if ready_glint else PAL["apricot"])
 		for bx: float in [x0 + 6.0, x0 + w - 9.0]:
-			draw_rect(Rect2(bx, cy - 2.0, 3.0, 4.0), PAL["apricot"])
+			draw_rect(Rect2(bx, cy - 2.0, 3.0, 4.0), PAL["gold"] if ready_glint else PAL["apricot"])
 			draw_rect(Rect2(bx, cy - 2.0, 2.0, 1.0), PAL["cream"])
 			draw_rect(Rect2(bx + 1.0, cy + 2.0, 1.0, 1.0), PAL["gold"])
 		draw_rect(Rect2(cx - 4.0, cy - 4.0, 8.0, 8.0), PAL["void"])
-		draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 6.0), PAL["coral"] if _rattle_t > 0.0 else PAL["gold"])
-		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 4.0), PAL["cream"] if _rattle_t > 0.0 else PAL["coral"])
+		draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 6.0), PAL["coral"] if _rattle_t > 0.0 else (PAL["cream"] if ready_glint else PAL["gold"]))
+		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 4.0), PAL["cream"] if _rattle_t > 0.0 else (PAL["gold"] if ready_glint else PAL["coral"]))
 		draw_rect(Rect2(cx - 1.0, cy - 2.0, 2.0, 4.0), PAL["cream"])
 	else:
 		draw_rect(Rect2(x0 + 3.0, y0 + 3.0, lw, 1.0), PAL["rose"])
 		draw_rect(Rect2(cx + 1.0, y0 + 3.0, rw, 1.0), PAL["rose"])
-		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 2.0), PAL["apricot"])
-		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["gold"])
+		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 2.0), PAL["gold"] if ready_glint else PAL["apricot"])
+		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["cream"] if ready_glint else PAL["gold"])
 		draw_rect(Rect2(x0 + 2.0, y0 + h - 4.0, w - 4.0, 2.0), PAL["apricot"])
 		draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 7.0), PAL["void"])
-		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 5.0), PAL["coral"] if _rattle_t > 0.0 else PAL["apricot"])
-		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 1.0), PAL["gold"])
+		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 5.0), PAL["coral"] if _rattle_t > 0.0 else (PAL["gold"] if ready_glint else PAL["apricot"]))
+		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 1.0), PAL["cream"] if ready_glint else PAL["gold"])
 		draw_rect(Rect2(cx - 1.0, cy - 1.0, 2.0, 2.0), PAL["cream"])
 		draw_rect(Rect2(cx - 1.0, cy + 1.0, 2.0, 2.0), PAL["gold"])
 
@@ -459,6 +472,41 @@ func _draw_ward_barrier(x0: float, y0: float, w: float, h: float) -> void:
 		idx += 1
 	_draw_pier(x0, y0, 4.0, h, false)
 	_draw_pier(x0 + w - 4.0, y0, 4.0, h, false)
+	_draw_ward_pips(x0, y0, w)
+
+
+func _player_can_unlock_key_door() -> bool:
+	if Lx.state == null or Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
+		return false
+	if (Lx.player as Node2D).global_position.distance_squared_to(pos) > 2704.0:
+		return false
+	var kflag: String = str(props.get("key_id", ""))
+	if not kflag.is_empty() and bool(Lx.state.story_flags.get(kflag, false)):
+		return true
+	var kk: String = "keepers_flame" if door_type == "boss_key" else "wick_key"
+	return Lx.state.get_key_count(dungeon_id, kk) > 0
+
+
+func _draw_ward_pips(x0: float, y0: float, w: float) -> void:
+	var need: int = required_beacon_ids.size() if not required_beacon_ids.is_empty() else required_beacons
+	if need <= 1 or Lx.state == null:
+		return
+	var got: int = 0
+	if not required_beacon_ids.is_empty():
+		for bid: String in required_beacon_ids:
+			if Lx.state.lit_beacons.has(bid):
+				got += 1
+	else:
+		got = mini(need, Lx.state.lit_beacons.size())
+	var cx: float = floorf(x0 + w * 0.5)
+	var span_p: float = float(need - 1) * 5.0
+	for pi: int in range(need):
+		var px: float = roundf(cx - span_p * 0.5 + float(pi) * 5.0) - 1.0
+		var lit_p: bool = pi < got
+		draw_rect(Rect2(px, y0 - 2.0, 3.0, 3.0), PAL["void"])
+		draw_rect(Rect2(px + 1.0, y0 - 1.0, 1.0, 1.0), PAL["cream"] if lit_p else PAL["deep"])
+		if lit_p:
+			draw_rect(Rect2(px, y0 - 2.0, 3.0, 1.0), PAL["gold"])
 
 
 func _draw_light_bridge_glow(x0: float, y0: float, w: float, h: float, horiz: bool) -> void:

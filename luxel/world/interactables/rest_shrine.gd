@@ -29,6 +29,7 @@ func interact(_actor: Node = null) -> bool:
 	if Lx.state != null:
 		Lx.state.heal_full()
 	_emit_sfx("rest_shrine")
+	_emit_gust(62.0, 50.0, Vector2(0.0, -8.0))
 	if Lx.ui != null and Lx.ui.has_method("open_rest_shop"):
 		Lx.ui.call("open_rest_shop")
 	elif Lx.events != null:
