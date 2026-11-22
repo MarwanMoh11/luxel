@@ -15,6 +15,7 @@ var clock: float = 0.0
 var bounds: Rect2 = Rect2()
 var _region: Node = null
 var _cam_center: Vector2 = Vector2.ZERO
+var _mechanics: LxBiomeMechanics = null
 
 # Island 2: Live Ocean Tides + Sweeping Lighthouse Fresnel Beam
 var tide_phase: float = 0.0 # 0..1 cycle (0.60..1.0 = High Tide Surge)
@@ -83,6 +84,12 @@ func configure(p_island_id: int, p_bounds: Rect2, p_is_dungeon: bool, region_nod
 	lunar_phase = 1.0
 	eclipse_pulse = 0.0
 	_populate_features()
+	if _mechanics == null and get_parent() != null:
+		_mechanics = LxBiomeMechanics.new()
+		_mechanics.name = "BiomeMechanics"
+		get_parent().add_child(_mechanics)
+	if _mechanics != null:
+		_mechanics.configure(self, _region)
 	queue_redraw()
 
 
@@ -177,6 +184,8 @@ func tick(dt: float, cam_center: Vector2) -> void:
 			_tick_island7(dt)
 		8:
 			_tick_island8(dt)
+	if _mechanics != null and is_instance_valid(_mechanics):
+		_mechanics.tick(dt, cam_center)
 	queue_redraw()
 
 
@@ -214,8 +223,11 @@ func _tick_island3(dt: float) -> void:
 				b["lit_t"] = maxf(0.0, lt - dt)
 			var bp: Vector2 = b["pos"] as Vector2
 			if (p_act and bp.distance_squared_to(ppos) <= 2304.0) or bp.distance_squared_to(lpos) <= 1296.0:
-				if lt <= 0.1 and Lx.audio != null:
-					Lx.audio.play_sfx("prop_chime", bp, true)
+				if lt <= 0.1:
+					if Lx.audio != null:
+						Lx.audio.play_sfx("prop_chime", bp, true)
+					if _mechanics != null and is_instance_valid(_mechanics):
+						_mechanics.on_bloom_ignited(bp, true)
 				b["lit_t"] = 16.0
 	else:
 		if _region != null and _region.has_method("get_enemies"):
@@ -245,6 +257,8 @@ func _tick_island4(dt: float) -> void:
 				w.spawn_ring(u["pos"] as Vector2, 4.0, 22.0, 0.28, LxWick.PAL_ICE, 1.4)
 				w.spawn_sparks(w.global_position, Vector2.UP, 6, LxWick.PAL_CREAM, 22.0, 56.0, 0.22)
 				w.emit_sfx("wing_gale", u["pos"] as Vector2, true)
+				if _mechanics != null and is_instance_valid(_mechanics):
+					_mechanics.on_updraft_caught(u["pos"] as Vector2)
 
 
 func _tick_island5(dt: float) -> void:
@@ -270,6 +284,8 @@ func _tick_island5(dt: float) -> void:
 func _on_star_impact(at: Vector2) -> void:
 	if Lx.audio != null:
 		Lx.audio.play_sfx("star_lance", at, true)
+	if _mechanics != null and is_instance_valid(_mechanics):
+		_mechanics.spawn_star_crystal(at)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		LxDarknessLayer.active_instance.add_burst_light(at, 66.0, 0.85 if LxHudFx.flash_reduced() else 1.38, 0.34)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
@@ -311,6 +327,8 @@ func _tick_island6(dt: float) -> void:
 					w.ember = minf(emax, w.ember + 18.0)
 				w.spawn_ring(w.global_position, 3.0, 18.0, 0.24, LxWick.PAL_GOLD, 1.4)
 				w.emit_sfx("ember_pickup", w.global_position, false)
+				if _mechanics != null and is_instance_valid(_mechanics):
+					_mechanics.grant_molten_overdrive(3)
 
 
 func _tick_island7(_dt: float) -> void:

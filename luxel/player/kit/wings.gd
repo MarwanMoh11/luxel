@@ -102,7 +102,9 @@ func tick_glide(dt: float, dash_held: bool) -> void:
 	if steer.length_squared() > 0.04:
 		glide_dir = glide_dir.lerp(steer.normalized(), minf(1.0, dt * 6.0)).normalized()
 
-	var step_d: float = glide_speed * dt
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	var spd_mult: float = bm.get_glide_speed_mult() if (bm != null and is_instance_valid(bm)) else 1.0
+	var step_d: float = glide_speed * spd_mult * dt
 	glide_dist_traveled += step_d
 	glide_dist_left = maxf(0.0, glide_dist_left - step_d)
 	glide_time_left = maxf(0.0, glide_time_left - dt)
@@ -118,7 +120,11 @@ func tick_glide(dt: float, dash_held: bool) -> void:
 
 
 func get_glide_velocity() -> Vector2:
-	return glide_dir * glide_speed if gliding else Vector2.ZERO
+	if not gliding:
+		return Vector2.ZERO
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	var spd_mult: float = bm.get_glide_speed_mult() if (bm != null and is_instance_valid(bm)) else 1.0
+	return glide_dir * (glide_speed * spd_mult)
 
 
 func reset() -> void:

@@ -18,6 +18,7 @@ class Bolt:
 	var bounce_count: int = 0
 	var is_prism: bool = false
 	var is_counter: bool = false
+	var is_pierce: bool = false
 	var hit_ids: Array[int] = []
 
 var is_held: bool = false
@@ -97,16 +98,36 @@ func _fire_bolt() -> bool:
 		wick.spawn_ring(b.pos, 2.0, 11.0, 0.16, LxWick.PAL_CREAM, 1.0)
 		wick.spawn_sparks(b.pos, aim, 5, LxWick.PAL_CREAM, 55.0, 115.0, 0.16)
 	var br: LxBiomeRules = LxBiomeRules.active_instance
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	if br != null and is_instance_valid(br):
 		if br.island_id == 2 and br.is_dungeon and br.beam_buff_t > 0.0:
 			b.damage *= 1.25
 			b.is_counter = true
 		elif br.island_id == 7 and br.lunar_phase > 0.65:
 			b.damage *= 1.20
+	if bm != null and is_instance_valid(bm) and bm.consume_molten_charge():
+		b.damage *= 1.35
+		b.is_pierce = true
+		b.is_counter = true
+		wick.spawn_sparks(b.pos, aim, 5, LxWick.PAL_CORAL, 55.0, 120.0, 0.18)
 
 	wick.bolts.append(b)
+	# Island 7 Full Silver Moon: Radiant Mirror Echo fires a synced parallel twin-bolt (zero aim assist)
+	if bm != null and is_instance_valid(bm) and bm.mirror_echo_active:
+		var eb := Bolt.new()
+		eb.dir = aim
+		eb.pos = bm.mirror_echo_pos + aim * 4.0
+		eb.prev_pos = eb.pos
+		eb.speed = b.speed
+		eb.max_range = b.max_range
+		eb.damage = b.damage * 0.55
+		eb.shield_wear = b.shield_wear * 0.6
+		eb.bounces_left = 0
+		eb.is_prism = true
+		wick.bolts.append(eb)
+		wick.spawn_sparks(eb.pos, aim, 3, LxWick.PAL_ICE, 35.0, 85.0, 0.14)
 	wick.shots_fired += 1
-	var cd_scale: float = 0.82 if (br != null and is_instance_valid(br) and br.starlight_surge_t > 0.0) else 1.0
+	var cd_scale: float = bm.get_fire_rate_mult() if (bm != null and is_instance_valid(bm)) else (0.82 if (br != null and is_instance_valid(br) and br.starlight_surge_t > 0.0) else 1.0)
 	cooldown_left = _get_effective_cooldown() * cd_scale
 
 	var recoil: float = float(data.get("recoil", 60.0))
@@ -163,9 +184,13 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 			if Geometry2D.get_closest_point_to_segment(epos, b.pos, nxt).distance_to(epos) <= erad + 2.5:
 				b.hit_ids.append(eid)
 				var src: String = LxHit.SOURCE_PRISM if b.is_prism else LxHit.SOURCE_BOLT
+				var dmg_f: float = b.damage
+				var bm_h: LxBiomeMechanics = LxBiomeMechanics.active_instance
+				if bm_h != null and is_instance_valid(bm_h) and bm_h.is_in_lighthouse_beam(epos):
+					dmg_f *= 1.25
 				var hit: LxHit = LxHit.make(
-					src, b.damage, b.dir, b.pos,
-					b.shield_wear, stagger, pierce, wick, false
+					src, dmg_f, b.dir, b.pos,
+					b.shield_wear, stagger, pierce or b.is_pierce, wick, false
 				)
 				var res: int = wick.apply_hit_to_entity(enemy, hit)
 				wick.on_hit_landed(hit, res, epos, hs_chip, shake_chip)
@@ -186,9 +211,15 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 						if not was_f and wick.ember >= emax_c - 0.001:
 							wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
 							wick.emit_sfx("beam_ready", wick.global_position, false)
-				if not pierce:
+				if not (pierce or b.is_pierce):
 					dead = true
 					break
+
+		# 1b. Interactive Biome Targets (Island 3 Bloom-Lamp chain waves, Island 5 Starfall Nova Crystals)
+		if not dead:
+			var bm_t: LxBiomeMechanics = LxBiomeMechanics.active_instance
+			if bm_t != null and is_instance_valid(bm_t) and bm_t.try_hit_biome_target(b.pos, nxt, b.dir, wick):
+				dead = true
 
 		# 2. Interactables (brass LxMirrors, custom reflect_bolt surfaces, switches, eyes, braziers)
 		if not dead:

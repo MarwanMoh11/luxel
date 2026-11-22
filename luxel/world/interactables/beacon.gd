@@ -88,6 +88,7 @@ func _ignite() -> bool:
 		Lx.hitstop.trigger(0.05)
 	_emit_gust(104.0, 88.0, Vector2(0.0, -10.0))
 	_emit_sfx("beacon_lit")
+	LxBeaconRituals.on_beacon_ignited(self)
 	_emit_save("beacon_" + id)
 	_notify_linked_targets(true)
 	queue_redraw()
@@ -154,6 +155,7 @@ func _draw() -> void:
 			if cw >= 2.0:
 				draw_rect(Rect2(-floorf(cw * 0.5), -54.0, cw, 56.0), PAL["cream"] if p < 0.35 else PAL["gold"])
 			draw_arc(Vector2(0.0, -12.0), roundf(lerpf(6.0, 38.0, p)), 0.0, TAU, 22, (PAL["cream"] if p < 0.38 else PAL["gold"]) as Color, 2.0 if p < 0.4 else 1.0, false)
+	LxBeaconRituals.draw_biome_crown(self, island_id, lit, ignitable, _clock, _ignite_t)
 	_draw_signal_pulses()
 
 
