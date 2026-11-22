@@ -458,6 +458,8 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		return
 	if not ui_bus and base_id != sfx_id and _sfx_last_t.has(base_id) and (_sfx_clock - float(_sfx_last_t[base_id])) < SFX_MIN_INTERVAL_S:
 		return
+	if base_id == "shield_clang" and (_sfx_clock - float(_sfx_last_t.get("shield_strain", -1.0))) < 0.08:
+		return
 	_sfx_last_t[sfx_id] = _sfx_clock
 	_sfx_last_t[base_id] = _sfx_clock
 	var jit: float = 1.0 if ui_bus else randf_range(0.96, 1.04)
@@ -467,7 +469,7 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		_shard_streak = mini(SHARD_SCALE.size() - 1, _shard_streak + 1) if (_sfx_clock - _shard_streak_t) <= 0.85 else 0
 		_shard_streak_t = _sfx_clock
 		jit = SHARD_SCALE[_shard_streak]
-	elif base_id == "mirror_ping" or base_id == "prism_bounce":
+	elif base_id == "mirror_ping" or base_id == "prism_bounce" or base_id == "prism_chain":
 		_mirror_streak = mini(SHARD_SCALE.size() - 1, _mirror_streak + 1) if (_sfx_clock - _mirror_streak_t) <= 0.75 else 0
 		_mirror_streak_t = _sfx_clock
 		jit = SHARD_SCALE[_mirror_streak]

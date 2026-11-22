@@ -89,7 +89,10 @@ func take_hit(hit: LxHit) -> int:
 		if _wear_shield(eff_wear):
 			_emit_enemy_hit(hit, HitResult.OPENED)
 			return HitResult.OPENED
-		_emit_sfx("bramble_thorn_block")
+		if shield_max > 0.01 and shield_hp > 0.001 and shield_hp <= shield_max * 0.45:
+			_emit_sfx("shield_strain")
+		else:
+			_emit_sfx("bramble_thorn_block")
 		# Close-range hit on thorn shield triggers a thorn burst counter if token is available.
 		if _has_player() and pos.distance_to(_get_wick_pos()) < THORN_COUNTER_R \
 				and state != State.TELL and state != State.COMMIT \

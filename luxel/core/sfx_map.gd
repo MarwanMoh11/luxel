@@ -52,7 +52,7 @@ const SFX_BASE_TRIM_DB: Dictionary = {
 	"footstep_stone": -5.5, "footstep_grass": -5.0, "footstep_wood": -4.5,
 	"footstep_ash": -5.0, "footstep_crystal": -5.5, "footstep_water": -5.0,
 	"dash_whoosh": -2.0, "ui_move": -2.5, "ui_confirm": -1.5, "ui_back": -1.5, "ui_pause": -3.5,
-	"menu_open": -2.0, "menu_close": -2.0,
+	"menu_open": -2.0, "menu_close": -2.0, "intro_toll": -1.0, "boss_awaken": -0.5, "great_lamp_bloom": 0.5,
 }
 
 const EXACT: Dictionary = {

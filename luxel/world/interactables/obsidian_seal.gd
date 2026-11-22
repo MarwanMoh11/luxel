@@ -53,6 +53,7 @@ func on_hit(hit: LxHit) -> bool:
 			Lx.events.seal_broken.emit(island_id, id)
 			Lx.events.shake_requested.emit(0.24)
 			Lx.events.hitstop_requested.emit(0.055)
+		_emit_gust(96.0, 92.0)
 		_emit_sfx("seal_shatter")
 		_emit_save("seal_" + id)
 		_notify_linked_targets(true)

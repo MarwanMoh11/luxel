@@ -22,6 +22,7 @@ const BEAM_ARC: float = 1.45
 
 var active_move: int = HushMove.VOLLEY
 var move_toggle: int = 0
+var shield_max: float = P1_SHIELD_MAX
 var shield_hp: float = P1_SHIELD_MAX
 var shield_gone_t: float = 0.0
 var veil_intact: bool = false
@@ -98,7 +99,11 @@ func take_hit(hit: LxHit) -> int:
 			_emit_sfx("hush_ward_break")
 			_emit_enemy_hit(hit, HitResult.OPENED)
 			return HitResult.OPENED
-		_emit_sfx("warden_clank")
+		if shield_hp <= P1_SHIELD_MAX * 0.45:
+			clank_t = 0.18
+			_emit_sfx("shield_strain")
+		else:
+			_emit_sfx("warden_clank")
 		_emit_enemy_hit(hit, HitResult.BLOCKED)
 		return HitResult.BLOCKED
 

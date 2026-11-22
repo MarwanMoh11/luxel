@@ -25,6 +25,10 @@ var _focus_dur: float = 0.55
 func _ready() -> void:
 	enabled = true
 	position_smoothing_enabled = false
+	var listener := AudioListener2D.new()
+	listener.name = "AudioListener"
+	add_child(listener)
+	listener.make_current()
 
 
 func set_bounds(bounds: Rect2, locked_room: bool = false) -> void:

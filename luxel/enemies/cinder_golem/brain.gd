@@ -84,6 +84,9 @@ func take_hit(hit: LxHit) -> int:
 			if armour_hp <= 0.001:
 				_crack_armour()
 				just_cracked = true
+			elif armour_hp <= armour_max * 0.45:
+				clank_t = 0.18
+				_emit_sfx("shield_strain")
 			else:
 				_emit_sfx("golem_armour_clank")
 
@@ -131,6 +134,9 @@ func _crack_armour() -> void:
 	armour_intact = false
 	armour_hp = 0.0
 	armour_cracked_sig.emit(self, pos)
+	LxDamageFx.gust_arena(pos, 72.0, 80.0)
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(0.18)
 	_emit_sfx("golem_armour_crack")
 
 
