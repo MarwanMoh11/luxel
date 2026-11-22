@@ -319,6 +319,22 @@
       "generator": "master_music_stereo.py",
       "license": "Original project asset",
       "outputs": []
+    },
+    {
+      "id": "lantern_gothic_sfx_polish_round2",
+      "description": "Zero-hiss spectral warmth pass on 4 remaining bright SFX (magpie_drop, hush_shatter, bramble_burn, mirror_turn) plus 8 new multi-take foley variants (dash, lantern throw, bolt wall, UI move, hurt, warden swing; all 0.00% > 4 kHz)",
+      "generator": "gen_sfx_polish_round2.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/dash_whoosh_2.ogg",
+        "luxel/audio/sfx/lantern_throw_2.ogg",
+        "luxel/audio/sfx/bolt_wall_2.ogg",
+        "luxel/audio/sfx/bolt_wall_3.ogg",
+        "luxel/audio/sfx/ui_move_2.ogg",
+        "luxel/audio/sfx/ui_move_3.ogg",
+        "luxel/audio/sfx/wick_hurt_2.ogg",
+        "luxel/audio/sfx/warden_swing_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []

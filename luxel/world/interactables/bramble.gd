@@ -52,7 +52,7 @@ func on_hit(hit: LxHit) -> bool:
 		_rustle_t = 0.24
 		_emit_sfx("footstep_grass")
 		queue_redraw()
-		return true
+		return false
 	return false
 
 

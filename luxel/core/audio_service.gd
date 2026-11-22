@@ -25,6 +25,7 @@ const COMBAT_TAIL_S: float = 6.0
 
 const SFX_VARIANTS: Dictionary = {
 	"bolt_fire": ["bolt_fire", "bolt_fire_2", "bolt_fire_3"],
+	"bolt_wall": ["bolt_wall", "bolt_wall_2", "bolt_wall_3"],
 	"footstep_stone": ["footstep_stone", "footstep_stone_2", "footstep_stone_3"],
 	"footstep_grass": ["footstep_grass", "footstep_grass_2", "footstep_grass_3"],
 	"footstep_wood": ["footstep_wood", "footstep_wood_2", "footstep_wood_3"],
@@ -33,7 +34,13 @@ const SFX_VARIANTS: Dictionary = {
 	"enemy_kill": ["enemy_kill", "enemy_kill_2"],
 	"heavy_hit": ["heavy_hit", "heavy_hit_2"],
 	"shard_pickup": ["shard_pickup", "shard_pickup_2", "shard_pickup_3"],
+	"dash_whoosh": ["dash_whoosh", "dash_whoosh_2"],
+	"lantern_throw": ["lantern_throw", "lantern_throw_2"],
+	"ui_move": ["ui_move", "ui_move_2", "ui_move_3"],
+	"wick_hurt": ["wick_hurt", "wick_hurt_2"],
+	"warden_swing": ["warden_swing", "warden_swing_2"],
 }
+const SHARD_SCALE: Array[float] = [1.0, 1.12246, 1.18921, 1.33484, 1.49831, 1.68179]
 
 const SFX_BASE_TRIM_DB: Dictionary = {
 	"bolt_fire": -2.5, "bolt_chip": -1.5, "bolt_wall": -5.5,
@@ -83,6 +90,8 @@ var _sfx_missing: Dictionary = {}
 var _sfx_last_t: Dictionary = {}
 var _sfx_variant_idx: Dictionary = {}
 var _sfx_clock: float = 0.0
+var _shard_streak: int = 0
+var _shard_streak_t: float = -10.0
 var _saved_positions: Dictionary = {}
 
 var current_track_group: String = ""
@@ -166,47 +175,29 @@ func _ensure_bus(bus_name: String) -> int:
 		AudioServer.set_bus_send(idx, "Master")
 	return idx
 
-
 func _setup_players() -> void:
 	_explore_player = AudioStreamPlayer.new()
-	_explore_player.bus = BUS_MUSIC
-	_explore_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	_explore_player.bus = BUS_MUSIC; _explore_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_explore_player)
-
 	_combat_player = AudioStreamPlayer.new()
-	_combat_player.bus = BUS_MUSIC
-	_combat_player.volume_db = SILENT_DB
-	_combat_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	_combat_player.bus = BUS_MUSIC; _combat_player.volume_db = SILENT_DB; _combat_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_combat_player)
-
 	_stinger_player = AudioStreamPlayer.new()
-	_stinger_player.bus = BUS_MUSIC
-	_stinger_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	_stinger_player.bus = BUS_MUSIC; _stinger_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_stinger_player)
-
 	for i: int in range(2):
 		var ap := AudioStreamPlayer.new()
-		ap.bus = BUS_AMBIENCE
-		ap.volume_db = SILENT_DB
-		ap.process_mode = Node.PROCESS_MODE_ALWAYS
+		ap.bus = BUS_AMBIENCE; ap.volume_db = SILENT_DB; ap.process_mode = Node.PROCESS_MODE_ALWAYS
 		add_child(ap)
-		_amb_players.append(ap)
-		_amb_gains.append(0.0)
-		_amb_target_gains.append(0.0)
-
+		_amb_players.append(ap); _amb_gains.append(0.0); _amb_target_gains.append(0.0)
 	for i: int in range(SFX_POOL_SIZE):
 		var sp := AudioStreamPlayer.new()
-		sp.bus = BUS_SFX
-		sp.process_mode = Node.PROCESS_MODE_ALWAYS
-		add_child(sp)
-		_sfx_pool.append(sp)
-
+		sp.bus = BUS_SFX; sp.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(sp); _sfx_pool.append(sp)
 	for i: int in range(SFX_2D_POOL_SIZE):
 		var sp2 := AudioStreamPlayer2D.new()
-		sp2.bus = BUS_SFX
-		sp2.max_distance = 360.0
-		add_child(sp2)
-		_sfx_2d_pool.append(sp2)
+		sp2.bus = BUS_SFX; sp2.max_distance = 360.0
+		add_child(sp2); _sfx_2d_pool.append(sp2)
 
 
 func apply_settings(cfg: Dictionary) -> void:
@@ -335,27 +326,22 @@ func play_cue(cue_name: String) -> void:
 		_fade_out_ambience(cue_name == "ending_dawn")
 	if current_track_group == cue_name and _explore_player.playing:
 		return
+	var boss_carry: bool = current_track_group.ends_with("_boss_p1") and cue_name.ends_with("_boss_p2") and current_track_group.left(7) == cue_name.left(7)
+	var carry_pos: float = _explore_player.get_playback_position() if (boss_carry and _explore_player.playing) else -1.0
 	if current_track_group != "" and _explore_player.playing:
 		_saved_positions[current_track_group] = _explore_player.get_playback_position()
-	current_track_group = cue_name
-	current_mode = cue_name
-	_target_combat_blend = 0.0
-	combat_blend = 0.0
-	_combat_request_timer = 0.0
-	_combat_tail_timer = 0.0
-
+	current_track_group = cue_name; current_mode = cue_name
+	_target_combat_blend = 0.0; combat_blend = 0.0; _combat_request_timer = 0.0; _combat_tail_timer = 0.0
 	var st: AudioStream = _load_music_stream(cue_name, "title")
 	if st != null:
-		if _explore_player.playing:
-			_explore_player.stop()
+		if _explore_player.playing: _explore_player.stop()
 		_explore_player.stream = st
 		_explore_player.volume_db = BASE_MUSIC_DB
-		var pos: float = float(_saved_positions.get(cue_name, 0.0))
+		var pos: float = carry_pos if carry_pos >= 0.0 else float(_saved_positions.get(cue_name, 0.0))
 		_explore_player.play(pos)
 	if _combat_player != null:
 		_combat_player.volume_db = SILENT_DB
-		if _combat_player.playing:
-			_combat_player.stop()
+		if _combat_player.playing: _combat_player.stop()
 
 
 func set_music_mode(mode: String, immediate: bool = false) -> void:
@@ -491,6 +477,10 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		var jit: float = 1.0 if ui_bus else randf_range(0.96, 1.04)
 		if base_id == "bolt_fire":
 			jit = randf_range(0.95, 1.06)
+		elif base_id == "shard_pickup":
+			_shard_streak = mini(SHARD_SCALE.size() - 1, _shard_streak + 1) if (_sfx_clock - _shard_streak_t) <= 0.85 else 0
+			_shard_streak_t = _sfx_clock
+			jit = SHARD_SCALE[_shard_streak]
 		p.pitch_scale = pitch_mul * jit
 		p.play()
 

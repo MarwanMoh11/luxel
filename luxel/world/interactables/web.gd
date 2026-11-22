@@ -51,7 +51,7 @@ func on_hit(hit: LxHit) -> bool:
 		_tremble_t = 0.22
 		_emit_sfx("footstep_grass")
 		queue_redraw()
-		return true
+		return false
 	return false
 
 

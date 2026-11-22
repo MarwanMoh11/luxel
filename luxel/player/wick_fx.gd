@@ -21,6 +21,7 @@ var _dust_cd: float = 0.0
 var _mote_cd: float = 0.0
 var _streak_cd: float = 0.0
 var _step_parity: int = 0
+var _was_airborne: bool = false
 
 func clear() -> void:
 	afterimages.clear()
@@ -33,6 +34,7 @@ func clear() -> void:
 	_mote_cd = 0.0
 	_streak_cd = 0.0
 	_step_parity = 0
+	_was_airborne = false
 
 func spawn_afterimage(at_pos: Vector2, col: Color, dir: Vector2 = Vector2.RIGHT, anim: String = "dash") -> void:
 	afterimages.append({"pos": at_pos, "age": 0.0, "life": 0.20, "col": col, "dir": dir, "anim": anim})
@@ -140,6 +142,13 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 	var dashing: bool = wick.is_dashing()
 	var gliding: bool = wick.is_gliding()
 	var zipping: bool = wick.is_zipping()
+	var airborne: bool = dashing or gliding or zipping
+	if _was_airborne and not airborne:
+		var surf_l: String = _surface_at(wick.global_position)
+		var lcol: Color = _dust_color_for(surf_l)
+		for side: float in [-1.0, 1.0]:
+			_spawn_mote(wick.global_position + Vector2(side * 3.0, 0.0), Vector2(side * 16.0, -7.0), 0.24, lcol, 2.0, true, 0.16, false, 0.80)
+	_was_airborne = airborne
 
 	# Surface-aware footstep dust puffs & biome-matched footsteps (grass / wood / stone)
 	if wick.velocity.length() > 24.0 and not dashing and not gliding and not zipping:
@@ -212,6 +221,10 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 
 	var air_lift: float = absf(hop_y) + absf(glide_lift) + (2.5 if wick.is_zipping() else 0.0)
 	_draw_shadow(wick, air_lift)
+	if wick.is_gliding() and wick.move_wings != null and wick.move_wings.glide_duration > 0.05:
+		var gfrac: float = clampf(wick.move_wings.glide_time_left / wick.move_wings.glide_duration, 0.0, 1.0)
+		var gcol: Color = LxWick.PAL_CORAL if gfrac < 0.28 else (LxWick.PAL_GOLD if gfrac < 0.55 else LxWick.PAL_ICE)
+		wick.draw_arc(Vector2(0.0, 1.0), 9.0, PI * 0.15, PI * 0.15 + PI * 0.70 * gfrac, 12, gcol, 1.5, false)
 	_draw_motes(wick, off, false)
 
 	for a: Dictionary in afterimages:

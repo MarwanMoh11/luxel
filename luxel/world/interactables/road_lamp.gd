@@ -40,7 +40,11 @@ func on_hit(hit: LxHit) -> bool:
 func on_light(light_radius: float, source: String) -> void:
 	if not active or lit or light_radius < 20.0:
 		return
-	if source in ["wick_lantern", "thrown_lantern", "lantern", "sunflare", "beam"]:
+	if source in ["wick_lantern", "thrown_lantern", "lantern", "sunflare", "beam", "lens"] or source.begins_with("lantern"):
+		if source == "lantern_hand" or source == "lens":
+			if Lx.player != null and is_instance_valid(Lx.player) and Lx.player is Node2D:
+				if (Lx.player as Node2D).global_position.distance_to(pos) > 48.0:
+					return
 		_ignite()
 
 

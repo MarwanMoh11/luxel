@@ -6,6 +6,7 @@ var collected: bool = false
 var key_kind: String = "wick_key"
 var dungeon_id: String = ""
 var _anim_frame: int = 0
+var _pickup_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -18,11 +19,16 @@ func setup(spec: Dictionary) -> void:
 		dungeon_id = "island_%d" % island_id
 	collected = bool(props.get("collected", false))
 	active = not collected
+	_pickup_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	if _pickup_t > 0.0:
+		_pickup_t = maxf(0.0, _pickup_t - dt)
+		queue_redraw()
+		return
 	if collected or not active:
 		return
 	var fr: int = int(floorf(_clock * 6.0 + absf(pos.x * 0.05))) % 24
@@ -36,11 +42,15 @@ func interact(_actor: Node = null) -> bool:
 		return false
 	collected = true
 	active = false
+	_pickup_t = 0.36
 	if Lx.state != null:
 		Lx.state.add_key(dungeon_id, key_kind, 1)
 		var flag_name: String = str(props.get("flag_id", props.get("sets_flag", "")))
 		if not flag_name.is_empty():
 			Lx.state.story_flags[flag_name] = true
+	if Lx.events != null:
+		Lx.events.narration_requested.emit("CUE_KEY_FOUND", "title", 2.4)
+		Lx.events.shake_requested.emit(0.08)
 	_emit_sfx("key_pickup")
 	_emit_save("key_" + id)
 	queue_redraw()
@@ -70,6 +80,13 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	if _pickup_t > 0.0:
+		var u: float = 1.0 - clampf(_pickup_t / 0.36, 0.0, 1.0)
+		draw_arc(Vector2(0.0, -3.0), roundf(lerpf(3.0, 18.0, u)), 0.0, TAU, 16, (PAL["cream"] if u < 0.35 else PAL["gold"]) as Color, 2.0 if u < 0.3 else 1.0, false)
+		for k: int in range(6):
+			var a: float = (TAU * float(k)) / 6.0
+			draw_rect(Rect2(roundf(cos(a) * lerpf(2.0, 15.0, u)), roundf(-3.0 + sin(a) * lerpf(2.0, 15.0, u) - u * 4.0), 1.0, 1.0), PAL["cream"] if k % 2 == 0 else PAL["gold"])
+		return
 	if collected or not active:
 		return
 	var bob: float = roundf(sin(float(_anim_frame) * TAU / 24.0) * 1.5)

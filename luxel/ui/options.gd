@@ -208,8 +208,11 @@ func _adjust_row(row_id: String, dir: int) -> void:
 			cfg[row_id] = spd
 		_:
 			return
-	_play_ui_sfx("ui_move")
 	_apply_and_save(cfg)
+	if row_id == "sfx_vol" and Lx.audio != null:
+		Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, false)
+	else:
+		_play_ui_sfx("ui_move")
 	queue_redraw()
 
 

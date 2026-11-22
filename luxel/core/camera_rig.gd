@@ -70,10 +70,19 @@ func follow(target: Vector2, dt: float) -> void:
 	else:
 		var desired_lead: Vector2 = Vector2.ZERO
 		if Lx.player != null and is_instance_valid(Lx.player):
-			var fv: Variant = Lx.player.get("facing")
-			if fv is Vector2 and (fv as Vector2).length_squared() > 0.01:
-				desired_lead = (fv as Vector2).normalized() * 14.0
-		_look_ahead = _look_ahead.lerp(desired_lead, minf(1.0, dt * 3.5))
+			var lan_v: Variant = Lx.player.get("lantern")
+			var framed_lantern: bool = false
+			if lan_v is Object and is_instance_valid(lan_v) and (lan_v as Object).has_method("is_lure_active") and bool((lan_v as Object).call("is_lure_active")):
+				var lpos_v: Variant = (lan_v as Object).get("pos")
+				if lpos_v is Vector2:
+					var to_lan: Vector2 = (lpos_v as Vector2) - target
+					desired_lead = (to_lan * 0.32).limit_length(28.0)
+					framed_lantern = true
+			if not framed_lantern:
+				var fv: Variant = Lx.player.get("facing")
+				if fv is Vector2 and (fv as Vector2).length_squared() > 0.01:
+					desired_lead = (fv as Vector2).normalized() * 14.0
+		_look_ahead = _look_ahead.lerp(desired_lead, minf(1.0, dt * 3.8))
 		var clamped: Vector2 = _clamp_center(target + _look_ahead)
 		_target_pos = _target_pos.lerp(clamped, minf(1.0, dt * 10.0))
 

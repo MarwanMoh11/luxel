@@ -58,7 +58,7 @@ func on_hit(hit: LxHit) -> bool:
 		_hint_t = 0.30
 		_emit_sfx("lantern_land")
 		queue_redraw()
-		return true
+		return false
 	return false
 
 

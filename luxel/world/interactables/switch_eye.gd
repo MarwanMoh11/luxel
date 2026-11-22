@@ -50,7 +50,6 @@ func on_hit(hit: LxHit) -> bool:
 			_reject_t = 0.24
 			_emit_sfx("mirror_ping")
 			queue_redraw()
-			return true
 		return false
 	if hit.source not in ["bolt", "prism_bolt", "beam", "throw", "recall", "sunflare"]:
 		return false
