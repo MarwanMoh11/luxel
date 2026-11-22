@@ -3,21 +3,29 @@ extends LxInteractable
 ## Lamplighter's Rest upgrade shrine: heals Wick and opens the lantern upgrade UI.
 
 
+var _heal_t: float = 0.0
+
+
 func setup(spec: Dictionary) -> void:
 	super.setup(spec)
 	kind = "rest_shrine"
 	_uses_prop_anim = active
+	_heal_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	_uses_prop_anim = active
 	super.tick(dt)
+	if _heal_t > 0.0:
+		_heal_t = maxf(0.0, _heal_t - dt)
+		queue_redraw()
 
 
 func interact(_actor: Node = null) -> bool:
 	if not active:
 		return false
+	_heal_t = 0.48
 	if Lx.state != null:
 		Lx.state.heal_full()
 	_emit_sfx("rest_shrine")
@@ -26,6 +34,7 @@ func interact(_actor: Node = null) -> bool:
 	elif Lx.events != null:
 		Lx.events.prompt_requested.emit("SHOP_TITLE", "lx_interact", 2.0)
 	_emit_save("rest_shrine")
+	queue_redraw()
 	return true
 
 
@@ -49,6 +58,13 @@ func _draw() -> void:
 		_draw_fallback()
 	if active:
 		_draw_hearth_embers()
+	if _heal_t > 0.0:
+		var p: float = 1.0 - clampf(_heal_t / 0.48, 0.0, 1.0)
+		draw_arc(Vector2(0.0, -8.0), roundf(6.0 + p * 24.0), 0.0, TAU, 20, PAL["cream"] if p < 0.35 else PAL["gold"], 1.0)
+		for j: int in range(6):
+			var a: float = float(j) * TAU / 6.0 + p * 0.8
+			var sp := Vector2(roundf(cos(a) * (5.0 + p * 18.0)), roundf(-10.0 + sin(a) * (2.0 + p * 7.0) - p * 10.0))
+			draw_rect(Rect2(sp, Vector2.ONE), PAL["cream"] if j % 2 == 0 else PAL["gold"])
 
 
 func _draw_fallback() -> void:

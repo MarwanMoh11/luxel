@@ -244,6 +244,12 @@ func _draw_prompt() -> void:
 	var y: float = 148.0 if lift_prompt else 164.0
 	var rect := Rect2(roundf(160.0 - box_w * 0.5), y, box_w, box_h)
 	LxPixelFont.draw_panel(self, rect, "dusk", "mauve", "night")
+	var pin_c: Color = LxPalette.fade_step(p, "gold")
+	for cp: Vector2 in [
+		Vector2(rect.position.x + 1.0, rect.position.y + 1.0), Vector2(rect.end.x - 2.0, rect.position.y + 1.0),
+		Vector2(rect.position.x + 1.0, rect.end.y - 2.0), Vector2(rect.end.x - 2.0, rect.end.y - 2.0),
+	]:
+		draw_rect(Rect2(cp, Vector2.ONE), pin_c)
 	LxPixelFont.draw_centered(self, _prompt_text, 160.0, y + 3.0, col, 1)
 
 

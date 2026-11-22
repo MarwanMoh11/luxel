@@ -519,6 +519,7 @@ func _discovery_burst(pos: Vector2, warm: bool) -> void:
 	_spawn_pillar(pos, 0.65, 10.0, 88.0, "cream", "gold" if warm else "ice", "apricot" if warm else "sky")
 	_spawn_sparks(pos, 12, Ramp.GOLD if warm else Ramp.ICE, 18.0, 56.0, 0.36, 0.68, 2.6, 42.0, 2, Vector2.UP, 6.0)
 	_spawn_ring(pos, 4.0, 32.0, 0.40, "cream", "gold" if warm else "sky", not warm)
+	_gust_particles(pos, 72.0, 68.0)
 	_emit_juice(0.25)
 
 func _on_boss_defeated(bid: String, _i: int) -> void: _grand_burst(_boss_pos(bid), true)
@@ -526,7 +527,7 @@ func _on_great_lamp_relit(_i: int) -> void: _grand_burst(_interactable_pos("grea
 func _on_shrine_claimed(sid: String, _m: String) -> void: _discovery_burst(_interactable_pos(sid, "shrine"), true)
 func _on_beacon_lit(_i: int, bid: String) -> void: _discovery_burst(_interactable_pos(bid, "beacon"), true)
 func _on_waystone_lit(_i: int, wid: String) -> void: _discovery_burst(_interactable_pos(wid, "waystone"), false)
-func _on_seal_broken(_i: int, sid: String) -> void: _discovery_burst(_interactable_pos(sid, "seal"), false)
+func _on_seal_broken(_i: int, sid: String) -> void: _discovery_burst(_interactable_pos(sid, "obsidian_seal"), false)
 
 func _on_lantern_hung(pos: Vector2) -> void:
 	_spawn_ring(pos, 3.0, 18.0, 0.26, "cream", "gold", false)

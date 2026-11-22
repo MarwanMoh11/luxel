@@ -306,11 +306,16 @@ static func draw_credits_backdrop(ci: CanvasItem, t: float) -> void:
 	ci.draw_rect(Rect2(0.0, 146.0, 320.0, 34.0), LxPalette.PAL["night"])
 	_dither(ci, 0.0, 320.0, 144.0, LxPalette.PAL["night"])
 	_draw_stars(ci, t, 34, 6.0, 138.0, 73, true, 0.0, -1.0, -1.0)
-	_px(ci, [[12, 155, 28, 9], [20, 150, 8, 5], [52, 156, 30, 8], [64, 151, 5, 5], [96, 157, 32, 7], [104, 153, 14, 4], [142, 154, 34, 10], [152, 149, 12, 5], [190, 156, 28, 8], [201, 151, 6, 5], [232, 155, 30, 9], [245, 150, 4, 5], [274, 156, 34, 8], [286, 150, 8, 6]], "dusk")
+	_px(ci, [
+		[8, 155, 28, 9], [18, 150, 6, 5], [46, 156, 28, 8], [57, 151, 5, 5],
+		[84, 157, 30, 7], [92, 153, 12, 4], [124, 155, 28, 9], [133, 150, 10, 5],
+		[162, 154, 30, 10], [172, 149, 10, 5], [202, 156, 28, 8], [213, 151, 6, 5],
+		[240, 155, 28, 9], [252, 150, 4, 5], [278, 156, 32, 8], [290, 150, 8, 6],
+	], "dusk")
 	ci.draw_rect(Rect2(0.0, 164.0, 320.0, 16.0), LxPalette.PAL["void"])
 	_dither(ci, 0.0, 320.0, 163.0, LxPalette.PAL["void"])
-	for bi: int in range(7):
-		var b: Array = [[23, 149], [66, 150], [110, 152], [158, 148], [203, 150], [246, 149], [290, 149]][bi]
+	for bi: int in range(8):
+		var b: Array = [[20, 149], [59, 150], [97, 152], [137, 149], [176, 148], [215, 150], [253, 149], [293, 149]][bi]
 		ci.draw_rect(Rect2(float(b[0]), float(b[1]), 1.0, 1.0), LxPalette.PAL["gold" if fmod(t * 1.6 + float(bi) * 0.55, 1.0) < 0.6 else "apricot"])
 	# Gentle rising lantern fireflies along left/right margins (center text lane stays clean).
 	for mi: int in range(14):

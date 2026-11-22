@@ -111,7 +111,8 @@ func _process(delta: float) -> void:
 			_finish_ending()
 			return
 	elif mode == Mode.CREDITS:
-		_scroll_y -= CREDITS_SPEED * delta
+		var fast_fwd: bool = Input.is_key_pressed(KEY_DOWN) or (InputMap.has_action("lx_move_down") and Input.is_action_pressed("lx_move_down"))
+		_scroll_y -= CREDITS_SPEED * (3.2 if fast_fwd else 1.0) * delta
 		var total_h: float = 40.0
 		for entry: Dictionary in _credit_lines:
 			total_h += 12.0 * float(int(entry.get("scale", 1)))
@@ -126,7 +127,8 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible or mode == Mode.NONE:
 		return
-	if _elapsed < 0.25:
+	var guard_s: float = 0.18 if mode == Mode.DEATH else 0.25
+	if _elapsed < guard_s:
 		return
 
 	if mode == Mode.INTRO:
@@ -259,7 +261,11 @@ func _draw_death() -> void:
 	LxPixelFont.draw_centered(self, stats_line, 160.0, 86.0, LxPalette.PAL["stone"], 1)
 
 	var pulse: Color = LxPalette.PAL["gold"] if fmod(_elapsed, 1.2) < 0.6 else LxPalette.PAL["apricot"]
-	LxPixelFont.draw_centered(self, LxStrings.text("DEATH_RETRY_HINT"), 160.0, 108.0, pulse, 1)
+	var retry_txt: String = LxStrings.text("DEATH_RETRY_HINT")
+	var rw: float = float(LxPixelFont.width(retry_txt, 1))
+	draw_rect(Rect2(roundf(160.0 - rw * 0.5 - 6.0), 109.0, 2.0, 2.0), pulse)
+	draw_rect(Rect2(roundf(160.0 + rw * 0.5 + 4.0), 109.0, 2.0, 2.0), pulse)
+	LxPixelFont.draw_centered(self, retry_txt, 160.0, 108.0, pulse, 1)
 	LxPixelFont.draw_centered(self, LxStrings.text("DEATH_TITLE_HINT"), 160.0, 122.0, LxPalette.PAL["mauve"], 1)
 
 
