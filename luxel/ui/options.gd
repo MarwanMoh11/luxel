@@ -78,6 +78,17 @@ func _rows_for_tab(tab: int) -> Array[String]:
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
+	if event is InputEventMouseMotion:
+		var pos: Vector2 = (event as InputEventMouseMotion).position
+		var m_rows: Array[String] = _rows_for_tab(current_tab)
+		for i: int in range(m_rows.size()):
+			if _row_rect(i).has_point(pos):
+				if _row_idx != i:
+					_row_idx = i
+					_play_ui_sfx("ui_move")
+					queue_redraw()
+				return
+		return
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:

@@ -4,6 +4,7 @@ extends LxInteractable
 
 var claimed: bool = false
 var move_id: String = ""
+var _claim_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -20,12 +21,16 @@ func setup(spec: Dictionary) -> void:
 func tick(dt: float) -> void:
 	_uses_prop_anim = not claimed
 	super.tick(dt)
+	if _claim_t > 0.0:
+		_claim_t = maxf(0.0, _claim_t - dt)
+		queue_redraw()
 
 
 func interact(_actor: Node = null) -> bool:
 	if not active or claimed:
 		return false
 	claimed = true
+	_claim_t = 0.65
 	if Lx.state != null:
 		if not move_id.is_empty():
 			Lx.state.unlock_move(move_id)
@@ -81,6 +86,8 @@ func _draw() -> void:
 	if not claimed:
 		_draw_floor_ring(true, c_main, c_hi)
 		_draw_starlight_motes(c_main, c_hi)
+	if _claim_t > 0.0:
+		_draw_claim_burst(c_main, c_hi)
 
 
 func _draw_fallback() -> void:
@@ -115,3 +122,16 @@ func _draw_starlight_motes(c_main: Color, c_hi: Color) -> void:
 		draw_rect(Rect2(px, py, 1.0, 1.0), c_hi)
 		if sin(_clock * 4.2 + phase) > 0.35:
 			draw_rect(Rect2(px + side, py, 1.0, 1.0), c_main)
+
+
+func _draw_claim_burst(c_main: Color, c_hi: Color) -> void:
+	var p: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
+	var col_w: float = roundf(maxf(1.0, (1.0 - p) * 10.0))
+	draw_rect(Rect2(-floorf(col_w * 0.5), -44.0, col_w, 46.0), Color(c_main, (1.0 - p) * 0.55))
+	draw_rect(Rect2(-1.0, -44.0, 2.0, 46.0), Color(c_hi, (1.0 - p) * 0.85))
+	draw_arc(Vector2(0.0, -6.0), roundf(6.0 + p * 26.0), 0.0, TAU, 20, c_hi if p < 0.35 else c_main, 1.0)
+	for i: int in range(8):
+		var a: float = float(i) * TAU / 8.0 + p * 1.4
+		var d: float = roundf(5.0 + p * 24.0)
+		var pt := Vector2(roundf(cos(a) * d), roundf(-10.0 + sin(a) * d * 0.55 - p * 14.0))
+		draw_rect(Rect2(pt, Vector2(2.0 if p < 0.4 else 1.0, 2.0 if p < 0.4 else 1.0)), c_hi if i % 2 == 0 else c_main)

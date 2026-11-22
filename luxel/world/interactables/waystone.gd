@@ -4,6 +4,7 @@ extends LxInteractable
 
 var lit: bool = false
 var _dormant_pip_on: bool = false
+var _pulse_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -19,6 +20,9 @@ func setup(spec: Dictionary) -> void:
 func tick(dt: float) -> void:
 	_uses_prop_anim = lit
 	super.tick(dt)
+	if _pulse_t > 0.0:
+		_pulse_t = maxf(0.0, _pulse_t - dt)
+		queue_redraw()
 	if not lit:
 		var pip_on: bool = _is_dormant_pip_on()
 		if pip_on != _dormant_pip_on:
@@ -31,6 +35,7 @@ func interact(_actor: Node = null) -> bool:
 		return false
 	var first_time: bool = not lit
 	lit = true
+	_pulse_t = 0.48 if first_time else 0.32
 	if Lx.state != null:
 		if not id.is_empty() and not Lx.state.lit_waystones.has(id):
 			Lx.state.lit_waystones.append(id)
@@ -81,6 +86,13 @@ func _draw() -> void:
 		_draw_lit_aura()
 	elif _is_dormant_pip_on():
 		draw_rect(Rect2(0.0, -17.0, 1.0, 1.0), PAL["sky"])
+	if _pulse_t > 0.0:
+		var p: float = 1.0 - clampf(_pulse_t / 0.48, 0.0, 1.0)
+		draw_arc(Vector2(0.0, -8.0), roundf(5.0 + p * 22.0), 0.0, TAU, 18, PAL["ice"] if p < 0.4 else PAL["sky"], 1.0)
+		for j: int in range(6):
+			var a: float = float(j) * TAU / 6.0 + p * 0.9
+			var sp := Vector2(roundf(cos(a) * (4.0 + p * 18.0)), roundf(-10.0 + sin(a) * (2.0 + p * 7.0) - p * 10.0))
+			draw_rect(Rect2(sp, Vector2(1.0, 1.0)), PAL["cream"] if j % 2 == 0 else PAL["ice"])
 
 
 func _draw_fallback() -> void:

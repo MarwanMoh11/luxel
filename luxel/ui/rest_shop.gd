@@ -93,11 +93,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		var over_close: bool = _close_btn_rect().has_point(pos)
 		if over_close != _close_hover:
 			_close_hover = over_close
+			if over_close:
+				_play_ui_sfx("ui_move")
 			queue_redraw()
 		for i: int in range(_upgrades.size()):
 			if _row_rect(i).has_point(pos):
 				if _idx != i:
 					_idx = i
+					_play_ui_sfx("ui_move")
 					queue_redraw()
 				return
 		return

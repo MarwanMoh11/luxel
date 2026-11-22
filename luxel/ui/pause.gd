@@ -54,6 +54,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if _row_rect(i).has_point(p):
 				if _idx != i:
 					_idx = i
+					_play_ui_sfx("ui_move")
 					queue_redraw()
 				return
 		return

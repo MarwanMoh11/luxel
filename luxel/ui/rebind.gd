@@ -70,6 +70,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 
+	if event is InputEventMouseMotion:
+		var pos: Vector2 = (event as InputEventMouseMotion).position
+		var m_total: int = _total_rows()
+		for vis_i: int in range(VISIBLE_ROWS):
+			var row_i: int = _scroll + vis_i
+			if row_i >= m_total:
+				break
+			if _row_rect(vis_i).has_point(pos):
+				if _idx != row_i:
+					_idx = row_i
+					_play_ui_sfx("ui_move")
+					queue_redraw()
+				return
+		return
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:

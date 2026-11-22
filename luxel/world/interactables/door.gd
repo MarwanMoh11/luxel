@@ -20,6 +20,9 @@ var required_signals: Array[String] = []
 var required_count: int = 1
 var _active_signals: Dictionary = {}
 var _pulse_stage: int = 0
+var _open_t: float = 0.0
+var _rattle_t: float = 0.0
+var _is_light_bridge: bool = false
 
 
 func setup(spec: Dictionary) -> void:
@@ -71,6 +74,7 @@ func setup(spec: Dictionary) -> void:
 	required_signals = _to_str_array(props.get("requires_signals", props.get("required_signals", [])))
 	required_count = maxi(1, int(props.get("required_count", maxi(1, required_signals.size()))))
 	opened = bool(props.get("opened", props.get("starts_open", false)))
+	_is_light_bridge = id.begins_with("bridge_of_light") or raw_type == "bridge_of_light"
 	if Lx.state != null and not id.is_empty():
 		if Lx.state.opened_doors.has(id) or Lx.state.broken_seals.has(id):
 			opened = true
@@ -79,7 +83,20 @@ func setup(spec: Dictionary) -> void:
 
 func tick(dt: float) -> void:
 	super.tick(dt)
-	if not active or opened:
+	if _open_t > 0.0:
+		_open_t = maxf(0.0, _open_t - dt)
+		queue_redraw()
+	if _rattle_t > 0.0:
+		_rattle_t = maxf(0.0, _rattle_t - dt)
+		queue_redraw()
+	if not active:
+		return
+	if opened:
+		if _is_light_bridge:
+			var st_b: int = int(floorf(_clock * 4.0)) % 8
+			if st_b != _pulse_stage:
+				_pulse_stage = st_b
+				queue_redraw()
 		return
 	if door_type == "ward_barrier":
 		if _ward_requirements_met():
@@ -115,7 +132,9 @@ func interact(_actor: Node = null) -> bool:
 		"ward_barrier":
 			if _ward_requirements_met():
 				return _open(true)
+	_rattle_t = 0.22
 	_emit_sfx("door_locked")
+	queue_redraw()
 	return false
 
 
@@ -157,6 +176,7 @@ func _ward_requirements_met() -> bool:
 
 func _open(persist: bool) -> bool:
 	opened = true
+	_open_t = 0.38
 	if Lx.state != null:
 		var flag_name: String = str(props.get("sets_flag", props.get("flag_id", "")))
 		if not flag_name.is_empty():
@@ -180,6 +200,8 @@ func _open(persist: bool) -> bool:
 func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
+	if _is_light_bridge and opened:
+		return Vector4(pos.x, pos.y, 68.0, 1.15)
 	if door_type == "bridge_platform" and opened:
 		return Vector4(pos.x, pos.y, 46.0, 0.72)
 	if not opened and (door_type == "boss_key" or door_type == "ward_barrier"):
@@ -245,16 +267,23 @@ func _draw() -> void:
 	_uses_prop_anim = false
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
-	var x0: float = floorf(-w * 0.5)
+	var rattle_dx: float = (1.0 if int(floorf(_rattle_t * 36.0)) % 2 == 0 else -1.0) if _rattle_t > 0.0 else 0.0
+	var x0: float = floorf(-w * 0.5) + rattle_dx
 	var y0: float = floorf(-h * 0.5)
 	if door_type == "bridge_platform":
 		_draw_bridge(x0, y0, w, h)
+		if _open_t > 0.0:
+			_draw_open_burst(w, h)
 		return
 	if opened:
 		var horiz: bool = w >= h
 		var j: float = minf(4.0, floorf((w if horiz else h) * 0.25))
+		if _is_light_bridge:
+			_draw_light_bridge_glow(x0, y0, w, h, horiz)
 		_draw_pier(x0, y0, j if horiz else w, h if horiz else j, false)
 		_draw_pier(x0 + w - j if horiz else x0, y0 if horiz else y0 + h - j, j if horiz else w, h if horiz else j, false)
+		if _open_t > 0.0:
+			_draw_open_burst(w, h)
 		return
 	match door_type:
 		"combat_gate": _draw_combat_gate(x0, y0, w, h)
@@ -413,6 +442,30 @@ func _draw_ward_barrier(x0: float, y0: float, w: float, h: float) -> void:
 		idx += 1
 	_draw_pier(x0, y0, 4.0, h, false)
 	_draw_pier(x0 + w - 4.0, y0, 4.0, h, false)
+
+
+func _draw_light_bridge_glow(x0: float, y0: float, w: float, h: float, horiz: bool) -> void:
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, maxf(2.0, w - 4.0), maxf(2.0, h - 4.0)), Color(PAL["apricot"] as Color, 0.35))
+	draw_rect(Rect2(x0 + 4.0, y0 + 4.0, maxf(2.0, w - 8.0), maxf(2.0, h - 8.0)), Color(PAL["gold"] as Color, 0.55))
+	var step_count: int = 4
+	for i: int in range(step_count):
+		var frac: float = fmod(float(i) / float(step_count) + float(_pulse_stage) * 0.125, 1.0)
+		var mx: float = roundf(x0 + 4.0 + frac * maxf(4.0, w - 8.0)) if horiz else roundf(x0 + w * 0.5 + sin(_clock * 2.5 + float(i)) * maxf(2.0, w * 0.25))
+		var my: float = roundf(y0 + h * 0.5 + sin(_clock * 2.5 + float(i)) * maxf(2.0, h * 0.25)) if horiz else roundf(y0 + 4.0 + frac * maxf(4.0, h - 8.0))
+		draw_rect(Rect2(mx - 1.0, my - 1.0, 2.0, 2.0), PAL["cream"] if (i + _pulse_stage) % 2 == 0 else PAL["gold"])
+
+
+func _draw_open_burst(w: float, h: float) -> void:
+	var p: float = 1.0 - clampf(_open_t / 0.38, 0.0, 1.0)
+	var col: Color = (PAL["sky"] if door_type == "ward_barrier" else PAL["gold"]) as Color
+	var hi: Color = (PAL["ice"] if door_type == "ward_barrier" else PAL["cream"]) as Color
+	var rad: float = roundf(4.0 + p * maxf(w, h) * 0.55)
+	draw_arc(Vector2.ZERO, rad, 0.0, TAU, 16, col if p > 0.35 else hi, 1.0)
+	for i: int in range(6):
+		var a: float = float(i) * TAU / 6.0 + 0.35
+		var d: float = roundf(3.0 + p * (maxf(w, h) * 0.45 + 6.0))
+		var pt := Vector2(roundf(cos(a) * d), roundf(sin(a) * d * 0.7))
+		draw_rect(Rect2(pt, Vector2(2.0 if p < 0.45 else 1.0, 2.0 if p < 0.45 else 1.0)), hi if i % 2 == 0 else col)
 
 
 static func _to_str_array(v: Variant) -> Array[String]:

@@ -275,6 +275,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "belfry_r7":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
+			_emit_narration("BOSS_BELLKEEPER", "title", 3.5)
 			if _events != null:
 				_events.music_mode_requested.emit("island1_boss_p1")
 	elif region_id.begins_with("belfry_"):
@@ -291,9 +292,11 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	if _events == null:
 		return
 	if shrine_id == "shrine_dash" or move_id == "dash":
+		_emit_narration("MOVE_DASH_NAME", "title", 3.0)
 		_events.prompt_requested.emit("PROMPT_DASH", "lx_dash", 4.5)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 	elif shrine_id == "shrine_throw" or move_id == "throw":
+		_emit_narration("MOVE_THROW_NAME", "title", 3.0)
 		_events.prompt_requested.emit("PROMPT_THROW", "lx_throw", 4.5)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 
