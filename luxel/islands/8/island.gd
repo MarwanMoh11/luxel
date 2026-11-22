@@ -205,6 +205,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("BOSS_HUSH", "title", 4.0)
 			if _events != null:
 				_events.music_mode_requested.emit("island8_boss_p1")
+		elif st != null and st.relit_islands.has(ISLAND_ID) and _events != null:
+			_events.music_mode_requested.emit("explore")
 	elif region_id.begins_with("sanctum_"):
 		if region_id == "sanctum_r1" and st != null and not bool(st.story_flags.get("isl8_sanctum_entered", false)):
 			st.story_flags["isl8_sanctum_entered"] = true

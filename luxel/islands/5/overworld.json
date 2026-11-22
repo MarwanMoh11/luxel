@@ -1343,6 +1343,46 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "prop": "starlight_lantern_post",
+      "pos": [
+        112,
+        412
+      ],
+      "layer": "back"
+    },
+    {
+      "prop": "star_chart_lectern",
+      "pos": [
+        176,
+        464
+      ],
+      "layer": "back"
+    },
+    {
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        924,
+        120
+      ],
+      "layer": "back"
+    },
+    {
+      "prop": "moon_phase_obelisk",
+      "pos": [
+        928,
+        186
+      ],
+      "layer": "back"
+    },
+    {
+      "prop": "armillary_sphere",
+      "pos": [
+        888,
+        152
+      ],
+      "layer": "back"
     }
   ]
 }

@@ -1560,6 +1560,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "prop": "coastal_lantern_post",
+      "pos": [
+        896,
+        412
+      ],
+      "layer": "back"
+    },
+    {
+      "prop": "rope_coil",
+      "pos": [
+        964,
+        474
+      ],
+      "layer": "back"
+    },
+    {
+      "prop": "mooring_bollard",
+      "pos": [
+        968,
+        410
+      ],
+      "layer": "back"
     }
   ]
 }

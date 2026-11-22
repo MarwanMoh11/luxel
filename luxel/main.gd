@@ -466,7 +466,7 @@ func _on_player_damaged(_amount: float, _from_pos: Vector2, _knock_dir: Vector2,
 
 func _on_player_died() -> void:
 	Lx.state.append_run_log("death")
-	flow = Flow.DEATH
+	flow = Flow.DEATH; Lx.audio.set_paused(true)
 	_sync_ui_flow()
 
 
