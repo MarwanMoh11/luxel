@@ -60,6 +60,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 	var o := Vector2(5.0, 22.0)
 	var bg: Color = LxPalette.PAL["void"] as Color
 	var night: Color = LxPalette.PAL["night"] as Color
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	match br.island_id:
 		2:
 			if not br.is_dungeon:
@@ -74,9 +75,15 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				hud.draw_rect(Rect2(o + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(o + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+		4:
+			if bm != null and is_instance_valid(bm) and bm.tailwind_t > 0.0:
+				var tw_w: float = floorf(18.0 * clampf(bm.tailwind_t / 2.2, 0.0, 1.0))
+				hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
+				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(maxf(1.0, tw_w), 1.0)), LxPalette.PAL["ice"] as Color)
+				hud.draw_rect(Rect2(o + Vector2(2.0 + tw_w - 1.0, 2.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
 		5:
 			if br.starlight_surge_t > 0.0:
-				var sw: float = floorf(18.0 * clampf(br.starlight_surge_t / 2.6, 0.0, 1.0))
+				var sw: float = floorf(18.0 * clampf(br.starlight_surge_t / 4.0, 0.0, 1.0))
 				hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
 				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(maxf(1.0, sw), 1.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(o + Vector2(2.0 + sw - 1.0, 2.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
@@ -87,6 +94,12 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 			var vc: Color = (LxPalette.PAL["gold"] if br.vent_cycle >= 0.56 else LxPalette.PAL["coral"]) as Color
 			if vw > 0.0:
 				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(vw, 1.0)), vc)
+			if bm != null and is_instance_valid(bm) and bm.molten_charges > 0:
+				for k: int in range(bm.molten_charges):
+					var px: float = o.x + 25.0 + float(k) * 5.0
+					hud.draw_rect(Rect2(px, o.y, 4.0, 5.0), bg)
+					hud.draw_rect(Rect2(px + 1.0, o.y + 1.0, 2.0, 3.0), LxPalette.PAL["coral"] as Color)
+					hud.draw_rect(Rect2(px + 1.0, o.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
 		7:
 			hud.draw_rect(Rect2(o, Vector2(9.0, 9.0)), bg)
 			hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(7.0, 7.0)), night)
@@ -94,15 +107,25 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 			hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(5.0, 5.0)), (LxPalette.PAL["ice"] if full_m else LxPalette.PAL["plum"]) as Color)
 			if full_m:
 				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2(3.0, 3.0)), LxPalette.PAL["cream"] as Color)
+				if bm != null and is_instance_valid(bm) and bm.mirror_echo_active:
+					hud.draw_rect(Rect2(o + Vector2(11.0, 2.0), Vector2(5.0, 5.0)), bg)
+					hud.draw_rect(Rect2(o + Vector2(12.0, 3.0), Vector2(3.0, 3.0)), LxPalette.PAL["ice"] as Color)
+					hud.draw_rect(Rect2(o + Vector2(13.0, 4.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
 			else:
 				hud.draw_rect(Rect2(o + Vector2(4.0, 2.0), Vector2(3.0, 5.0)), night)
 				hud.draw_rect(Rect2(o + Vector2(2.0, 3.0), Vector2(1.0, 3.0)), LxPalette.PAL["sky"] as Color)
 		8:
-			if br.eclipse_pulse > 0.05:
-				var pulse_on: bool = fred or (int(blink_t * 4.0) % 2 == 0)
-				hud.draw_rect(Rect2(o, Vector2(9.0, 9.0)), bg)
-				hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(7.0, 7.0)), (LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["wine"]) as Color)
-				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(5.0, 5.0)), bg)
+			var seals_b: int = bm.dawn_seals_broken if (bm != null and is_instance_valid(bm)) else 0
+			for k: int in range(3):
+				var sx: float = o.x + float(k) * 7.0
+				hud.draw_rect(Rect2(sx, o.y, 6.0, 6.0), bg)
+				if k < seals_b:
+					hud.draw_rect(Rect2(sx + 1.0, o.y + 1.0, 4.0, 4.0), LxPalette.PAL["gold"] as Color)
+					hud.draw_rect(Rect2(sx + 2.0, o.y + 2.0, 2.0, 2.0), LxPalette.PAL["cream"] as Color)
+				else:
+					var pulse_on: bool = fred or (int(blink_t * 4.0) % 2 == 0)
+					hud.draw_rect(Rect2(sx + 1.0, o.y + 1.0, 4.0, 4.0), (LxPalette.PAL["rose"] if pulse_on else LxPalette.PAL["plum"]) as Color)
+					hud.draw_rect(Rect2(sx + 2.0, o.y + 2.0, 2.0, 2.0), bg)
 
 
 static func _draw_ember_ready_halo(hud: CanvasItem, blink_t: float, fred: bool) -> void:

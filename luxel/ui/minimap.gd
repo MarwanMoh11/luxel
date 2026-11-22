@@ -22,6 +22,7 @@ static func draw_minimap(c: CanvasItem, origin: Vector2, blink_t: float) -> void
 	LxPixelFont.draw_panel(c, Rect2(o, Vector2(PANEL_W, PANEL_H)), "night", "mauve", "void")
 	var inner := Rect2(o + Vector2(2.0, 2.0), Vector2(INNER_W, INNER_H))
 	_draw_zones(c, bounds, inner)
+	_draw_terrain_silhouette(c, inner)
 	_draw_frame_accents(c, o, inner)
 	_draw_exits(c, bounds, inner)
 	_draw_interactables(c, bounds, inner, blink_t)
@@ -80,6 +81,31 @@ static func _draw_zones(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:
 		c.draw_rect(r, LxPalette.PAL["teal"] if lit else LxPalette.PAL["dusk"])
 		if r.size.x > 2.0 and r.size.y > 2.0:
 			c.draw_rect(r.grow(-1.0), LxPalette.PAL["pine"] if lit else LxPalette.PAL["void"])
+
+
+static func _draw_terrain_silhouette(c: CanvasItem, inner: Rect2) -> void:
+	var grid_v: Variant = Lx.world.get("grid")
+	if not (grid_v is Array) or (grid_v as Array).is_empty():
+		return
+	var grid: Array = grid_v as Array
+	var gh: int = grid.size()
+	var gw: int = (grid[0] as PackedStringArray).size()
+	if gw <= 0 or gh <= 0:
+		return
+	var isl_id: int = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 1
+	var col_land: Color = (LxPalette.PAL["teal"] if isl_id in [2, 3, 4] else (LxPalette.PAL["plum"] if isl_id in [6, 8] else LxPalette.PAL["blue"])) as Color
+	var col_haz: Color = (LxPalette.PAL["coral"] if isl_id == 6 else LxPalette.PAL["deep"]) as Color
+	var step: int = 2
+	for py: int in range(0, int(INNER_H), step):
+		var ty: int = clampi(int(floor(float(py) / INNER_H * float(gh))), 0, gh - 1)
+		var row: PackedStringArray = grid[ty] as PackedStringArray
+		for px: int in range(0, int(INNER_W), step):
+			var tx: int = clampi(int(floor(float(px) / INNER_W * float(gw))), 0, gw - 1)
+			var t: String = row[tx]
+			if t in ["ground", "path", "bridge", "mirror", "glass"]:
+				c.draw_rect(Rect2(inner.position.x + float(px), inner.position.y + float(py), float(step), float(step)), Color(col_land, 0.55))
+			elif t in ["water", "tide"] or (isl_id == 6 and t == "pit"):
+				c.draw_rect(Rect2(inner.position.x + float(px), inner.position.y + float(py), float(step), float(step)), Color(col_haz, 0.35))
 
 
 static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_t: float) -> void:

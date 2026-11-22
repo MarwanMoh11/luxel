@@ -10,6 +10,8 @@ func setup(spec: Dictionary) -> void:
 	super.setup(spec)
 	kind = "road_lamp"
 	lit = bool(props.get("lit", false))
+	if not lit and Lx.state != null and Lx.state.relit_islands.has(island_id) and region_id == "overworld":
+		lit = true
 	_uses_prop_anim = lit
 	_ignite_t = 0.0
 	queue_redraw()

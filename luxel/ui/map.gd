@@ -337,12 +337,7 @@ func _draw_unexplored_island(c: Vector2, isl_id: int) -> void:
 
 
 func _draw_island_plinth(c: Vector2, isl_id: int, relit: bool) -> void:
-	_px(c, [[-7, 1, 14, 2], [-5, 3, 10, 1], [-3, 4, 6, 1], [-1, 5, 2, 1]], LxPalette.PAL["night"])
-	_px(c, [[-5, 1, 10, 1], [-3, 2, 3, 1]], LxPalette.PAL["dusk"])
-	draw_rect(Rect2(c.x - 7.0, c.y - 1.0, 14.0, 2.0), LxPalette.color(PLINTH_RIM[isl_id - 1]))
-	draw_rect(Rect2(c.x - 6.0, c.y - 2.0, 12.0, 2.0), LxPalette.color(PLINTH_TOP[isl_id - 1]))
-	if relit:
-		draw_rect(Rect2(c.x - 6.0, c.y - 2.0, 5.0, 1.0), LxPalette.PAL["gold"])
+	LxMapSilhouettes.draw_plinth(self, c, isl_id, relit, LxPalette.color(PLINTH_TOP[isl_id - 1]), LxPalette.color(PLINTH_RIM[isl_id - 1]))
 
 
 func _draw_island_landmark(c: Vector2, isl_id: int, relit: bool) -> void:
