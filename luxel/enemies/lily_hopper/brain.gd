@@ -280,10 +280,34 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(off + Vector2(0.0, -body_radius + 1.0), leaf_r * 0.75, 0.2, TAU - 0.2, 12, PAL["lime"] as Color, 2.0)
 		draw_circle(off + Vector2(2.0, -body_radius - 1.0), 2.0, PAL["rose"] as Color)
 	if state == State.TELL:
-		var rel: Vector2 = leap_to - pos
-		draw_arc(rel, 7.0, 0.0, TAU, 14, PAL["sky"] as Color, 1.5)
-		draw_line(off, rel, PAL["ice"] as Color, 1.0)
+		var c: Vector2 = off.round()
+		var rel: Vector2 = (leap_to - pos).round()
+		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var br: float = roundf(lerpf(10.0, 6.0, prog))
+		draw_line(c, rel, PAL["sky"] as Color, 1.0)
+		for bi: int in range(1, 4):
+			var bt: float = float(bi) * 0.25
+			var arc_p: Vector2 = (c.lerp(rel, bt) + Vector2(0.0, -sin(bt * PI) * 8.0)).round()
+			draw_rect(Rect2(arc_p, Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
+		for sx: int in range(-1, 2, 2):
+			for sy: int in range(-1, 2, 2):
+				var fx: float = float(sx)
+				var fy: float = float(sy)
+				var cr: Vector2 = rel + Vector2(fx * br, fy * br)
+				draw_line(cr, cr + Vector2(-fx * 3.0, 0.0), PAL["sky"] as Color, 1.5)
+				draw_line(cr, cr + Vector2(0.0, -fy * 3.0), PAL["sky"] as Color, 1.5)
+				draw_rect(Rect2(cr, Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
+		draw_rect(Rect2(rel + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), PAL["ice"] as Color, true)
+		draw_rect(Rect2(rel + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), PAL["ice"] as Color, true)
 	elif state == State.COMMIT and commit_stage == CommitStage.RING:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
-		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 28, PAL["sky"] as Color, 3.0)
-		draw_arc(Vector2.ZERO, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["cream"] as Color, 1.2)
+		draw_arc(Vector2.ZERO, ring_r + 1.5, 0.0, TAU, 28, PAL["blue"] as Color, 2.4)
+		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 28, PAL["sky"] as Color, 2.2)
+		draw_arc(Vector2.ZERO, maxf(2.0, ring_r - 2.2), 0.0, TAU, 24, PAL["ice"] as Color, 1.2)
+		draw_arc(Vector2.ZERO, maxf(2.0, ring_r - 3.4), 0.0, TAU, 20, PAL["cream"] as Color, 1.0)
+		var lift: float = -sin(ring_progress * PI) * 5.0
+		for di: int in range(4):
+			var da: float = float(di) * (PI * 0.5) + PI * 0.25 + ring_progress * 0.45
+			var dp: Vector2 = (Vector2.from_angle(da) * (ring_r + 2.5) + Vector2(0.0, lift)).round()
+			draw_rect(Rect2(dp + Vector2(0.0, 1.0), Vector2(2.0, 1.0)), PAL["sky"] as Color, true)
+			draw_rect(Rect2(dp, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)

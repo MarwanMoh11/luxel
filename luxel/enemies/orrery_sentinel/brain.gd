@@ -302,19 +302,48 @@ func _shield_color() -> Color:
 	return PAL["apricot"] as Color
 
 
+func _pal_a(key: String, a: float) -> Color:
+	var c: Color = PAL[key] as Color
+	c.a = a
+	return c
+
+
+func _draw_star_flare(pt: Vector2, arm: float, outer_c: Color) -> void:
+	var p: Vector2 = pt.round()
+	var inner: float = maxf(1.5, arm * 0.55)
+	draw_line(p + Vector2(-arm, 0.0), p + Vector2(arm, 0.0), outer_c, 1.4)
+	draw_line(p + Vector2(0.0, -arm), p + Vector2(0.0, arm), outer_c, 1.4)
+	draw_line(p + Vector2(-inner, 0.0), p + Vector2(inner, 0.0), PAL["cream"] as Color, 1.0)
+	draw_line(p + Vector2(0.0, -inner), p + Vector2(0.0, inner), PAL["cream"] as Color, 1.0)
+	draw_rect(Rect2(p, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+
+
 func _draw_extra(off: Vector2) -> void:
+	var c: Vector2 = off.round()
 	if _sprite_sheet == null:
 		# Glowing exposed back core
 		var back_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.7)
 		draw_circle(back_pos, 2.5, PAL["coral"] as Color)
 		draw_circle(back_pos, 1.2, PAL["cream"] as Color)
-	# Rotating sight cone preview
-	var cone_col: Color = (PAL["gold"] as Color) if state == State.TELL else Color(PAL["sky"] as Color, 0.35)
-	var left_v: Vector2 = Vector2.from_angle(facing - CONE_HALF) * minf(notice_radius, 72.0)
-	var right_v: Vector2 = Vector2.from_angle(facing + CONE_HALF) * minf(notice_radius, 72.0)
-	draw_line(off, off + left_v, cone_col, 1.0)
-	draw_line(off, off + right_v, cone_col, 1.0)
+	# Rotating sight cone preview with brass astrolabe tick marks
+	var cone_r: float = minf(notice_radius, 72.0)
+	var cone_col: Color = (PAL["gold"] as Color) if state == State.TELL else _pal_a("sky", 0.35)
+	var tick_col: Color = (PAL["gold"] as Color) if state == State.TELL else (PAL["apricot"] as Color)
+	var left_v: Vector2 = Vector2.from_angle(facing - CONE_HALF) * cone_r
+	var right_v: Vector2 = Vector2.from_angle(facing + CONE_HALF) * cone_r
+	draw_line(c, (c + left_v).round(), cone_col, 1.0)
+	draw_line(c, (c + right_v).round(), cone_col, 1.0)
+	draw_arc(c, cone_r, facing - CONE_HALF, facing + CONE_HALF, 14, cone_col, 1.0)
+	for ti: int in range(5):
+		var ta: float = lerpf(facing - CONE_HALF, facing + CONE_HALF, float(ti) / 4.0)
+		var td: Vector2 = Vector2.from_angle(ta)
+		var t_len: float = 4.5 if (ti % 2 == 0) else 2.5
+		draw_line((c + td * (cone_r - t_len)).round(), (c + td * cone_r).round(), tick_col, 1.0)
 	if state == State.COMMIT:
-		var local_end: Vector2 = _beam_end - pos
-		draw_line(off, local_end, PAL["gold"] as Color, 3.0)
-		draw_line(off, local_end, PAL["cream"] as Color, 1.5)
+		var emit_p: Vector2 = (c + shot_dir * (body_radius + 1.0)).round()
+		var local_end: Vector2 = (_beam_end - pos).round()
+		draw_line(emit_p, local_end, PAL["gold"] as Color, 4.0)
+		draw_line(emit_p, local_end, PAL["ice"] as Color, 2.2)
+		draw_line(emit_p, local_end, PAL["cream"] as Color, 1.0)
+		_draw_star_flare(emit_p, 5.0, PAL["gold"] as Color)
+		_draw_star_flare(local_end, 6.0, PAL["ice"] as Color)

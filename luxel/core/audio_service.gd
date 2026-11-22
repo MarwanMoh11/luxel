@@ -21,18 +21,19 @@ const COMBAT_TAIL_S: float = 6.0
 
 const ISLAND_AMBIENCE: Dictionary = {
 	1: ["night_breeze", "river_murmur"],
-	2: ["harbor_tide"],
-	3: ["forest_wind"],
-	4: ["marsh_rain"],
-	5: ["observatory_chime"],
-	6: ["kiln_rumble"],
-	7: ["shoals_echo"],
-	8: ["long_night_drone"],
+	2: ["harbor_tide", "harbor_rigging"],
+	3: ["forest_wind", "thornwood_night"],
+	4: ["marsh_rain", "marsh_reeds"],
+	5: ["observatory_chime", "orrery_clockwork"],
+	6: ["kiln_rumble", "kiln_embers"],
+	7: ["shoals_echo", "shoals_chimes"],
+	8: ["long_night_drone", "sanctum_bells"],
 }
 
 const SfxMap := preload("res://luxel/core/sfx_map.gd")
 const SFX_POOL_SIZE: int = 12
 const SFX_2D_POOL_SIZE: int = 12
+const SFX_MIN_INTERVAL_S: float = 0.045
 
 var _music_bus_idx: int = -1
 var _sfx_bus_idx: int = -1
@@ -55,10 +56,13 @@ var _sfx_2d_cursor: int = 0
 
 var _stream_cache: Dictionary = {}
 var _sfx_missing: Dictionary = {}
+var _sfx_last_t: Dictionary = {}
+var _sfx_clock: float = 0.0
 var _saved_positions: Dictionary = {}
 
 var current_track_group: String = ""
 var current_mode: String = "explore" # "explore", "combat", "dungeon", "boss_p1", "boss_p2", "title", "hub", "ending"
+var _current_island_id: int = 0
 var is_paused: bool = false
 var combat_blend: float = 0.0 # 0.0 = explore, 1.0 = combat
 var _target_combat_blend: float = 0.0
@@ -181,9 +185,15 @@ func set_window_focus(focused: bool) -> void:
 		AudioServer.set_bus_mute(0, not focused)
 
 
+func _is_overworld_layer_active() -> bool:
+	return _current_island_id > 0 and current_track_group == ("island%d" % _current_island_id)
+
+
 func start_island_music(island_id: int) -> void:
+	_current_island_id = island_id
 	var group: String = "island%d" % island_id
 	if current_track_group == group and _explore_player.playing:
+		_start_island_ambience(island_id)
 		return
 	if current_track_group != "" and _explore_player.playing:
 		_saved_positions[current_track_group] = _explore_player.get_playback_position()
@@ -191,20 +201,32 @@ func start_island_music(island_id: int) -> void:
 	current_mode = "explore"
 	_target_combat_blend = 0.0
 	combat_blend = 0.0
+	_combat_request_timer = 0.0
+	_combat_tail_timer = 0.0
 
 	var exp_stream: AudioStream = _load_music_stream("island%d_explore" % island_id, "island1_explore")
 	var cmb_stream: AudioStream = _load_music_stream("island%d_combat" % island_id, "island1_combat")
 	var resume_pos: float = float(_saved_positions.get(group, 0.0))
 
 	if exp_stream != null:
+		if _explore_player.playing:
+			_explore_player.stop()
 		_explore_player.stream = exp_stream
 		_explore_player.volume_db = BASE_MUSIC_DB
 		_explore_player.play(resume_pos)
 	if cmb_stream != null:
+		if _combat_player.playing:
+			_combat_player.stop()
 		_combat_player.stream = cmb_stream
 		_combat_player.volume_db = SILENT_DB
 		_combat_player.play(resume_pos)
 	_start_island_ambience(island_id)
+
+
+func start_dungeon_music(island_id: int) -> void:
+	_current_island_id = island_id
+	_start_island_ambience(island_id)
+	play_cue("island%d_dungeon" % island_id)
 
 
 func _start_island_ambience(island_id: int) -> void:
@@ -264,24 +286,36 @@ func play_cue(cue_name: String) -> void:
 	current_mode = cue_name
 	_target_combat_blend = 0.0
 	combat_blend = 0.0
+	_combat_request_timer = 0.0
+	_combat_tail_timer = 0.0
 
 	var st: AudioStream = _load_music_stream(cue_name, "title")
 	if st != null:
+		if _explore_player.playing:
+			_explore_player.stop()
 		_explore_player.stream = st
 		_explore_player.volume_db = BASE_MUSIC_DB
 		var pos: float = float(_saved_positions.get(cue_name, 0.0))
 		_explore_player.play(pos)
-	_combat_player.volume_db = SILENT_DB
+	if _combat_player != null:
+		_combat_player.volume_db = SILENT_DB
+		if _combat_player.playing:
+			_combat_player.stop()
 
 
 func set_music_mode(mode: String, immediate: bool = false) -> void:
 	mode_switch_count += 1
 	if mode == "combat":
+		if not _is_overworld_layer_active():
+			return
 		current_mode = "combat"
 		_combat_tail_timer = COMBAT_TAIL_S
 		if immediate or _combat_request_timer >= COMBAT_DWELL_S:
 			_target_combat_blend = 1.0
 	elif mode == "explore":
+		if not _is_overworld_layer_active() and _current_island_id > 0:
+			start_island_music(_current_island_id)
+			return
 		current_mode = "explore"
 		if immediate or _combat_tail_timer <= 0.0:
 			_target_combat_blend = 0.0
@@ -301,20 +335,27 @@ func set_paused(paused: bool) -> void:
 
 
 func tick(dt: float, in_combat: bool = false) -> void:
-	if in_combat:
-		_combat_request_timer += dt
-		_combat_tail_timer = COMBAT_TAIL_S
-		if _combat_request_timer >= COMBAT_DWELL_S:
-			_target_combat_blend = 1.0
-	else:
-		_combat_request_timer = maxf(0.0, _combat_request_timer - dt * 2.0)
-		if _combat_tail_timer > 0.0:
-			_combat_tail_timer -= dt
+	_sfx_clock += dt
+	if _is_overworld_layer_active():
+		if in_combat:
+			_combat_request_timer += dt
+			_combat_tail_timer = COMBAT_TAIL_S
+			if _combat_request_timer >= COMBAT_DWELL_S:
+				_target_combat_blend = 1.0
 		else:
-			_target_combat_blend = 0.0
+			_combat_request_timer = maxf(0.0, _combat_request_timer - dt * 2.0)
+			if _combat_tail_timer > 0.0:
+				_combat_tail_timer -= dt
+			else:
+				_target_combat_blend = 0.0
+		var step: float = dt / maxf(CROSSFADE_S, 0.05)
+		combat_blend = move_toward(combat_blend, _target_combat_blend, step)
+	else:
+		_combat_request_timer = 0.0
+		_combat_tail_timer = 0.0
+		_target_combat_blend = 0.0
+		combat_blend = 0.0
 
-	var step: float = dt / maxf(CROSSFADE_S, 0.05)
-	combat_blend = move_toward(combat_blend, _target_combat_blend, step)
 	var amb_step: float = dt / maxf(AMB_FADE_S, 0.05)
 	for i: int in range(_amb_players.size()):
 		_amb_gains[i] = move_toward(_amb_gains[i], _amb_target_gains[i], amb_step)
@@ -351,6 +392,8 @@ func play_stinger(stinger_name: String) -> void:
 func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool = false, ui_bus: bool = false) -> void:
 	if sfx_id.is_empty():
 		return
+	if not ui_bus and _sfx_last_t.has(sfx_id) and (_sfx_clock - float(_sfx_last_t[sfx_id])) < SFX_MIN_INTERVAL_S:
+		return
 	var st: AudioStream = _load_sfx_stream(sfx_id)
 	var pitch_mul: float = 1.0
 	var gain_db: float = 0.0
@@ -363,9 +406,12 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 			gain_db = float(mapped.get("db", 0.0))
 	if st == null:
 		return
+	_sfx_last_t[sfx_id] = _sfx_clock
 	if spatial and not _sfx_2d_pool.is_empty():
 		var p2: AudioStreamPlayer2D = _sfx_2d_pool[_sfx_2d_cursor]
 		_sfx_2d_cursor = (_sfx_2d_cursor + 1) % _sfx_2d_pool.size()
+		if p2.playing:
+			p2.stop()
 		p2.global_position = world_pos
 		p2.stream = st
 		p2.volume_db = gain_db
@@ -374,6 +420,8 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 	elif not _sfx_pool.is_empty():
 		var p: AudioStreamPlayer = _sfx_pool[_sfx_cursor]
 		_sfx_cursor = (_sfx_cursor + 1) % _sfx_pool.size()
+		if p.playing:
+			p.stop()
 		p.bus = BUS_UI if ui_bus else BUS_SFX
 		p.stream = st
 		p.volume_db = gain_db

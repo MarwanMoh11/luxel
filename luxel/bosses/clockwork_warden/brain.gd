@@ -148,14 +148,41 @@ func _draw_extra(off: Vector2) -> void:
 			var g1: Vector2 = off + Vector2.from_angle(ga) * (body_radius + 3.5)
 			draw_line(g0, g1, PAL["apricot"] as Color, 1.5)
 	super._draw_extra(off)
-	if phase >= 2 and state == State.TELL:
-		for off_a: float in [-FAN_SPREAD_RAD, FAN_SPREAD_RAD]:
-			var ray_end: Vector2 = off + Vector2.from_angle(facing + off_a) * 68.0
-			draw_line(off, ray_end, PAL["gold"] as Color, 1.0)
-	elif phase >= 2 and state == State.COMMIT:
-		for off_a: float in [-FAN_SPREAD_RAD, FAN_SPREAD_RAD]:
-			var r_end: Vector2 = off + shot_dir.rotated(off_a) * BOLT_RANGE
-			draw_line(off, r_end, PAL["gold"] as Color, 2.5)
-			draw_line(off, r_end, PAL["cream"] as Color, 1.2)
+	var c: Vector2 = off.round()
+	if state == State.TELL:
+		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var ray_n: int = 3 if phase >= 2 else 1
+		for ri: int in range(ray_n):
+			var off_a: float = 0.0 if ri == 0 else (-FAN_SPREAD_RAD if ri == 1 else FAN_SPREAD_RAD)
+			var r_end: Vector2 = (c + Vector2.from_angle(facing + off_a) * 72.0).round()
+			draw_line(c, r_end, PAL["sky"] as Color, 2.0)
+			draw_line(c, r_end, PAL["gold"] as Color, 1.0)
+		draw_arc(c, lerpf(16.0, 4.0, prog), 0.0, TAU, 16, PAL["sky"] as Color, 1.2)
+		_draw_cw_star_flare(c, lerpf(3.5, 7.5, prog), PAL["gold"] as Color, PAL["cream"] as Color)
+	elif state == State.COMMIT:
+		var fl: float = 6.5 + 1.2 * sin(anim_t * 22.0)
+		var ray_n: int = 3 if phase >= 2 else 1
+		for ri: int in range(ray_n):
+			var off_a: float = 0.0 if ri == 0 else (-FAN_SPREAD_RAD if ri == 1 else FAN_SPREAD_RAD)
+			var r_end: Vector2 = (c + shot_dir.rotated(off_a) * BOLT_RANGE).round()
+			draw_line(c, r_end, PAL["sky"] as Color, 5.0)
+			draw_line(c, r_end, PAL["gold"] as Color, 3.2)
+			draw_line(c, r_end, PAL["ice"] as Color, 2.0)
+			draw_line(c, r_end, PAL["cream"] as Color, 1.0)
+			_draw_cw_star_flare(r_end, fl, PAL["gold"] as Color, PAL["cream"] as Color)
+		_draw_cw_star_flare(c, fl + 2.0, PAL["sky"] as Color, PAL["cream"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 11.0, 0.0, TAU, 22, PAL["gold"] as Color, 2.2)
+		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 10.0 + rp * 16.0
+		draw_arc(c, rr + 2.4, 0.0, TAU, 28, PAL["sky"] as Color, 2.0)
+		draw_arc(c, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)
+		draw_arc(c, maxf(3.0, rr - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+
+
+func _draw_cw_star_flare(pt: Vector2, rad: float, outer: Color, core: Color) -> void:
+	var p: Vector2 = pt.round()
+	draw_line(p + Vector2(-rad, 0.0), p + Vector2(rad, 0.0), outer, 1.8)
+	draw_line(p + Vector2(0.0, -rad), p + Vector2(0.0, rad), outer, 1.8)
+	draw_line(p + Vector2(-rad * 0.62, 0.0), p + Vector2(rad * 0.62, 0.0), core, 1.0)
+	draw_line(p + Vector2(0.0, -rad * 0.62), p + Vector2(0.0, rad * 0.62), core, 1.0)
+	draw_circle(p, 1.8, core)

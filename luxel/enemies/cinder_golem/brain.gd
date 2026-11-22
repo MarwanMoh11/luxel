@@ -263,8 +263,26 @@ func _draw_extra(off: Vector2) -> void:
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var r: float = lerpf(STOMP_MAX_R, STOMP_START_R + 4.0, prog)
-		draw_arc(off, r, 0.0, TAU, 24, PAL["apricot"] as Color, 1.5)
+		draw_arc(off.round(), r, 0.0, TAU, 24, PAL["apricot"] as Color, 1.5)
 	elif state == State.COMMIT:
 		var ring_r: float = lerpf(STOMP_START_R, STOMP_MAX_R, stomp_progress)
-		draw_arc(off, ring_r, 0.0, TAU, 28, PAL["coral"] as Color, 3.0)
-		draw_arc(off, maxf(2.0, ring_r - 2.0), 0.0, TAU, 24, PAL["gold"] as Color, 1.5)
+		var c: Vector2 = off.round()
+		draw_arc(c, ring_r + 2.0, 0.0, TAU, 28, PAL["wine"] as Color, 3.0)
+		draw_arc(c, ring_r, 0.0, TAU, 28, PAL["coral"] as Color, 2.4)
+		draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 24, PAL["apricot"] as Color, 1.5)
+		draw_arc(c, maxf(2.0, ring_r - 3.5), 0.0, TAU, 20, PAL["gold"] as Color, 1.0)
+		for i: int in range(6):
+			var a: float = float(i) * (TAU / 6.0) + 0.25
+			var d: Vector2 = Vector2.from_angle(a)
+			var perp: Vector2 = Vector2(-d.y, d.x)
+			var sign_k: float = 1.0 if (i % 2 == 0) else -1.0
+			var base_p: Vector2 = (c + d * maxf(body_radius, ring_r - 7.0)).round()
+			var kink_p: Vector2 = (c + d * ring_r + perp * (sign_k * 2.2)).round()
+			var tip_p: Vector2 = (c + d * (ring_r + 5.5)).round()
+			draw_line(base_p, kink_p, PAL["wine"] as Color, 2.4)
+			draw_line(kink_p, tip_p, PAL["wine"] as Color, 2.0)
+			draw_line(base_p, kink_p, PAL["coral"] as Color, 1.4)
+			draw_line(kink_p, tip_p, PAL["apricot"] as Color, 1.2)
+			draw_line((c + d * (ring_r - 1.0) + perp * 2.5).round(), tip_p, PAL["coral"] as Color, 1.0)
+			draw_line((c + d * (ring_r - 1.0) - perp * 2.5).round(), tip_p, PAL["coral"] as Color, 1.0)
+			draw_rect(Rect2(tip_p, Vector2(1.0, 1.0)), PAL["gold"] as Color, true)

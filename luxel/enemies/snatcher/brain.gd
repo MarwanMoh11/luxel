@@ -430,8 +430,35 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
+	var c := Vector2(roundf(off.x), roundf(off.y))
 	if carrying_lantern:
-		draw_circle(off + Vector2(0.0, 4.0), 3.0, PAL["gold"] as Color)
-		draw_circle(off + Vector2(0.0, 4.0), 1.5, PAL["cream"] as Color)
-	elif gulp_t > 0.0:
-		draw_arc(off, body_radius + 4.0, 0.0, TAU, 12, PAL["gold"] as Color, 1.5)
+		var sway: float = roundf(sin(anim_t * 10.0) * 1.5)
+		var lx: float = c.x + sway
+		var ly: float = c.y + 5.0
+		draw_rect(Rect2(lx, ly - 5.0, 1.0, 1.0), PAL["night"] as Color, true)
+		draw_rect(Rect2(lx - 1.0, ly - 4.0, 3.0, 1.0), PAL["apricot"] as Color, true)
+		draw_rect(Rect2(lx - 3.0, ly - 3.0, 7.0, 7.0), PAL["void"] as Color, true)
+		draw_rect(Rect2(lx - 2.0, ly - 2.0, 5.0, 5.0), PAL["night"] as Color, true)
+		draw_rect(Rect2(lx - 2.0, ly - 3.0, 5.0, 1.0), PAL["apricot"] as Color, true)
+		draw_rect(Rect2(lx - 2.0, ly + 3.0, 5.0, 1.0), PAL["apricot"] as Color, true)
+		draw_rect(Rect2(lx - 1.0, ly - 1.0, 3.0, 3.0), PAL["gold"] as Color, true)
+		var flick: float = 0.0 if (int(anim_t * 14.0) % 2 == 0) else -1.0
+		draw_rect(Rect2(lx, ly + flick, 1.0, 2.0), PAL["cream"] as Color, true)
+		var back: Vector2 = -Vector2.from_angle(facing)
+		for ti: int in range(2):
+			var tp: float = fmod(anim_t * 2.4 + float(ti) * 0.5, 1.0)
+			var mx: float = roundf(lx + back.x * (4.0 + tp * 6.0) + sin(anim_t * 9.0 + float(ti) * 2.5) * 1.5)
+			var my: float = roundf(ly + back.y * (4.0 + tp * 6.0) - tp * 2.0)
+			draw_rect(Rect2(mx, my, 1.0, 1.0), (PAL["cream"] as Color) if ti == 0 else (PAL["gold"] as Color), true)
+	if gulp_t > 0.0:
+		var gp: float = 1.0 - clampf(gulp_t / GULP_TIME, 0.0, 1.0)
+		var gr: float = roundf(body_radius + 2.5 + gp * 5.0)
+		draw_arc(c, gr + 1.0, 0.0, TAU, 16, PAL["apricot"] as Color, 1.4)
+		draw_arc(c, gr, 0.0, TAU, 14, PAL["gold"] as Color, 1.0)
+		for si: int in range(4):
+			var sa: float = float(si) * (PI * 0.5) + PI * 0.25 + gp * 0.45
+			var sd: Vector2 = Vector2.from_angle(sa)
+			var p0 := Vector2(roundf(c.x + sd.x * (gr + 1.0)), roundf(c.y + sd.y * (gr + 1.0)))
+			var p1 := Vector2(roundf(c.x + sd.x * (gr + 4.0)), roundf(c.y + sd.y * (gr + 4.0)))
+			draw_line(p0, p1, PAL["gold"] as Color, 1.0)
+			draw_rect(Rect2(p1, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)

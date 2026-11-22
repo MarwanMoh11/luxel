@@ -175,13 +175,33 @@ func _shield_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
+	var c: Vector2 = off.round()
 	if slam_attack and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var r: float = lerpf(SLAM_MAX_R, SLAM_START_R + 6.0, prog)
-		draw_arc(off, r, 0.0, TAU, 24, PAL["gold"] as Color, 1.5)
+		var pulse: float = 1.0 + 0.6 * sin(anim_t * 18.0)
+		draw_arc(c, r + pulse, 0.0, TAU, 28, PAL["apricot"] as Color, 1.2)
+		draw_arc(c, r, 0.0, TAU, 28, PAL["gold"] as Color, 1.8)
+		for ti: int in range(4):
+			var td: Vector2 = Vector2.from_angle(float(ti) * (TAU * 0.25))
+			draw_line((c + td * maxf(2.0, r - 3.5)).round(), (c + td * (r + 3.5)).round(), PAL["cream"] as Color, 1.2)
 	elif slam_attack and state == State.COMMIT:
 		var ring_r: float = lerpf(SLAM_START_R, SLAM_MAX_R, slam_progress)
-		draw_arc(off, ring_r, 0.0, TAU, 28, PAL["coral"] as Color, 3.0)
-		draw_arc(off, maxf(2.0, ring_r - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+		draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, PAL["apricot"] as Color, 2.2)
+		draw_arc(c, ring_r, 0.0, TAU, 36, PAL["gold"] as Color, 3.4)
+		draw_arc(c, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, PAL["cream"] as Color, 1.4)
+		for ci: int in range(8):
+			var ca: float = anim_t * 2.2 + float(ci) * (TAU / 8.0)
+			var cd: Vector2 = Vector2.from_angle(ca)
+			var cp: Vector2 = (c + cd * (ring_r + 1.5)).round()
+			draw_line((c + cd * maxf(2.0, ring_r - 2.0)).round(), (c + cd * (ring_r + 5.5)).round(), PAL["apricot"] as Color, 1.2)
+			draw_circle(cp, 2.0, PAL["gold"] as Color)
+			draw_circle(cp, 1.0, PAL["cream"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 10.0, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
+		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 10.0 + rp * 16.0
+		draw_arc(c, rr + 2.5, 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
+		draw_arc(c, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)
+		for ri: int in range(4):
+			var rd: Vector2 = Vector2.from_angle(float(ri) * (TAU * 0.25))
+			draw_line((c + rd * (rr - 3.0)).round(), (c + rd * (rr + 4.0)).round(), PAL["cream"] as Color, 1.2)

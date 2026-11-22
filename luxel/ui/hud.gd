@@ -58,6 +58,7 @@ const BOSS_NAME_KEYS: Dictionary = {
 	"boss_kilnmother": "BOSS_KILNMOTHER",
 	"the_kilnmother": "BOSS_KILNMOTHER",
 	"hollow_wick": "BOSS_HOLLOW",
+	"hollow_wick_boss": "BOSS_HOLLOW",
 	"boss_hollow": "BOSS_HOLLOW",
 	"hollow": "BOSS_HOLLOW",
 	"the_hush": "BOSS_HUSH",

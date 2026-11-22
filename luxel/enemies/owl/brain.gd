@@ -398,10 +398,48 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
+	var c := Vector2(roundf(off.x), roundf(off.y))
 	if state == State.TELL:
-		var local_target: Vector2 = lock_target - pos
-		var col: Color = (PAL["gold"] as Color) if lock_lured else (PAL["ice"] as Color)
-		draw_line(off, local_target, col, 1.5)
-		draw_circle(local_target, 3.0, col)
+		var lt := Vector2(roundf(lock_target.x - pos.x), roundf(lock_target.y - pos.y))
+		var main_c: Color = (PAL["gold"] as Color) if lock_lured else (PAL["sky"] as Color)
+		var hi_c: Color = (PAL["cream"] as Color) if lock_lured else (PAL["ice"] as Color)
+		var delta: Vector2 = lt - c
+		var dist: float = delta.length()
+		if dist > 4.0:
+			var dir: Vector2 = delta / dist
+			var shift: float = fmod(anim_t * 20.0, 6.0)
+			var steps: int = mini(26, int(dist / 6.0))
+			for di: int in range(steps):
+				var d0: float = float(di) * 6.0 + shift
+				if d0 >= dist - 4.0:
+					break
+				var dp := Vector2(roundf(c.x + dir.x * d0), roundf(c.y + dir.y * d0))
+				var dp2 := Vector2(roundf(c.x + dir.x * minf(d0 + 2.0, dist - 3.0)), roundf(c.y + dir.y * minf(d0 + 2.0, dist - 3.0)))
+				draw_line(dp, dp2, main_c if (di % 2 == 0) else hi_c, 1.0)
+		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var rad: float = roundf(lerpf(7.0, 3.5, prog) + sin(anim_t * 20.0) * 0.8)
+		var rot: float = anim_t * 2.8
+		for ci: int in range(4):
+			var ca: float = rot + float(ci) * (PI * 0.5)
+			var cd: Vector2 = Vector2.from_angle(ca)
+			var cp := Vector2(roundf(lt.x + cd.x * rad), roundf(lt.y + cd.y * rad))
+			var ci_p := Vector2(roundf(lt.x + cd.x * maxf(1.5, rad - 2.5)), roundf(lt.y + cd.y * maxf(1.5, rad - 2.5)))
+			draw_line(ci_p, cp, main_c, 1.2)
+			draw_rect(Rect2(cp, Vector2(1.0, 1.0)), hi_c, true)
+		draw_rect(Rect2(lt, Vector2(1.0, 1.0)), hi_c, true)
+		var perp := Vector2(-sin(facing), cos(facing))
+		for ti: int in range(-1, 2, 2):
+			var tp := Vector2(roundf(c.x + perp.x * (float(ti) * 3.0)), roundf(c.y + perp.y * (float(ti) * 3.0) + 3.0))
+			draw_rect(Rect2(tp, Vector2(1.0, 1.0)), hi_c if ((int(anim_t * 12.0) + ti) % 2 == 0) else main_c, true)
 	elif state == State.COMMIT:
-		draw_line(off, off - dive_dir * 12.0, PAL["sky"] as Color, 2.0)
+		var perp := Vector2(-dive_dir.y, dive_dir.x)
+		draw_line(c, Vector2(roundf(c.x - dive_dir.x * 18.0), roundf(c.y - dive_dir.y * 18.0)), PAL["deep"] as Color, 2.2)
+		draw_line(c, Vector2(roundf(c.x - dive_dir.x * 14.0), roundf(c.y - dive_dir.y * 14.0)), PAL["sky"] as Color, 1.4)
+		draw_line(c, Vector2(roundf(c.x - dive_dir.x * 9.0), roundf(c.y - dive_dir.y * 9.0)), PAL["cream"] as Color, 1.0)
+		for si: int in range(-1, 2, 2):
+			var s: float = float(si)
+			var w0 := Vector2(roundf(c.x + perp.x * (s * 4.0) - dive_dir.x * 2.0), roundf(c.y + perp.y * (s * 4.0) - dive_dir.y * 2.0))
+			var w1 := Vector2(roundf(c.x + perp.x * (s * 6.5) - dive_dir.x * 15.0), roundf(c.y + perp.y * (s * 6.5) - dive_dir.y * 15.0))
+			draw_line(w0, w1, PAL["deep"] as Color, 1.8)
+			draw_line(w0, Vector2(roundf(c.x + perp.x * (s * 5.5) - dive_dir.x * 11.0), roundf(c.y + perp.y * (s * 5.5) - dive_dir.y * 11.0)), PAL["sky"] as Color, 1.0)
+			draw_rect(Rect2(w1, Vector2(1.0, 1.0)), PAL["ice"] as Color, true)

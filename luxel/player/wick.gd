@@ -580,7 +580,7 @@ func get_method_arity(obj: Object, method_name: String) -> int:
 	return 4
 
 func spawn_afterimage(col: Color) -> void:
-	_fx.spawn_afterimage(global_position, col)
+	_fx.spawn_afterimage(global_position, col, facing, "zip" if is_zipping() else "dash")
 
 func spawn_ring(at_pos: Vector2, r0: float, r1: float, life: float, col: Color, width: float = 1.0) -> void:
 	_fx.spawn_ring(at_pos, r0, r1, life, col, width)

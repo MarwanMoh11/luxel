@@ -538,3 +538,42 @@ func _body_color() -> Color:
 
 func _shield_color() -> Color:
 	return PAL["teal"] as Color
+
+
+func _draw_extra(off: Vector2) -> void:
+	var c := Vector2(roundf(off.x), roundf(off.y))
+	var fwd: Vector2 = Vector2.from_angle(facing)
+	var side := Vector2(-fwd.y, fwd.x)
+	if clank_t > 0.0:
+		var cp: float = clampf(clank_t / 0.14, 0.0, 1.0)
+		var sc := Vector2(roundf(c.x + fwd.x * (body_radius + 3.5)), roundf(c.y + fwd.y * (body_radius + 3.5)))
+		for i: int in range(-2, 3):
+			var sa: float = facing + float(i) * 0.42
+			var sd: Vector2 = Vector2.from_angle(sa)
+			var slen: float = (5.5 if (i % 2 == 0) else 3.5) + (1.0 - cp) * 3.5
+			var tip := Vector2(roundf(sc.x + sd.x * slen), roundf(sc.y + sd.y * slen))
+			draw_line(sc, tip, (PAL["gold"] as Color) if (i % 2 == 0) else (PAL["apricot"] as Color), 1.2)
+			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+	if state == State.TELL:
+		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var glint_p := Vector2(roundf(c.x + fwd.x * (body_radius + 5.0 + prog * 4.0)), roundf(c.y + fwd.y * (body_radius + 5.0 + prog * 4.0)))
+		var arm: float = roundf((3.0 if (is_counter_attack or lunge_attack) else 2.0) + prog * 2.0)
+		draw_line(glint_p + Vector2(-arm, 0.0), glint_p + Vector2(arm, 0.0), PAL["apricot"] as Color, 1.2)
+		draw_line(glint_p + Vector2(0.0, -arm), glint_p + Vector2(0.0, arm), PAL["gold"] as Color, 1.2)
+		draw_rect(Rect2(glint_p, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+		if _has_active_shield():
+			var rim := Vector2(roundf(c.x + fwd.x * (body_radius + 3.0) + side.x * 2.0), roundf(c.y + fwd.y * (body_radius + 3.0) + side.y * 2.0))
+			draw_rect(Rect2(rim, Vector2(2.0, 1.0)), PAL["gold"] as Color, true)
+	elif state == State.COMMIT:
+		var dur: float = LUNGE_SWING_TIME if lunge_attack else SWING_TIME
+		var prog: float = 1.0 - clampf(state_timer / maxf(dur, 0.05), 0.0, 1.0)
+		var a0: float = facing - swing_arc * 0.95
+		var a1: float = lerpf(a0 + 0.35, facing + swing_arc * 0.95, prog)
+		draw_arc(c, body_radius + 14.5, a0, a1, 14, PAL["wine"] as Color, 2.6)
+		draw_arc(c, body_radius + 13.0, a0, a1, 14, PAL["apricot"] as Color, 1.8)
+		draw_arc(c, body_radius + 11.5, a0 + 0.15, a1, 12, PAL["gold"] as Color, 1.2)
+		var lead_d: Vector2 = Vector2.from_angle(a1)
+		var tip_a := Vector2(roundf(c.x + lead_d.x * (body_radius + 10.0)), roundf(c.y + lead_d.y * (body_radius + 10.0)))
+		var tip_b := Vector2(roundf(c.x + lead_d.x * (body_radius + 15.5)), roundf(c.y + lead_d.y * (body_radius + 15.5)))
+		draw_line(tip_a, tip_b, PAL["cream"] as Color, 1.5)
+		draw_rect(Rect2(tip_b, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)

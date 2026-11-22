@@ -130,11 +130,44 @@ func _draw_extra(off: Vector2) -> void:
 		draw_polyline(PackedVector2Array([pts[0], pts[1], pts[2], pts[0]]), PAL["night"] as Color, 1.0)
 		draw_circle(off + Vector2(-1.5, -2.0), 1.0, PAL["lime"] as Color)
 		draw_circle(off + Vector2(1.5, -2.0), 1.0, PAL["lime"] as Color)
+	var c := Vector2(roundf(off.x), roundf(off.y))
 	if sub_state == SubState.GRAB:
-		var r: float = body_radius + 5.0 + sin(anim_t * 18.0) * 1.5
-		draw_arc(off, r, 0.0, TAU, 14, PAL["dusk"] as Color, 2.0)
+		var spin: float = anim_t * 6.5
+		var vr: float = roundf(body_radius + 5.5 + sin(anim_t * 16.0) * 1.0)
+		for vi: int in range(3):
+			var a0: float = spin + float(vi) * (TAU / 3.0)
+			draw_arc(c, vr + 1.5, a0, a0 + 1.15, 8, PAL["night"] as Color, 2.2)
+			draw_arc(c, vr, a0 + 0.15, a0 + 1.25, 8, PAL["dusk"] as Color, 1.6)
+			draw_arc(c, maxf(2.0, vr - 2.0), a0 + 0.40, a0 + 1.15, 6, PAL["plum"] as Color, 1.1)
+		for wi: int in range(4):
+			var wt: float = fmod(anim_t * 2.0 + float(wi) * 0.25, 1.0)
+			var wr: float = lerpf(body_radius + 11.0, body_radius + 1.5, wt)
+			var wa: float = spin * 0.8 + float(wi) * (PI * 0.5) + wt * 1.8
+			var wp := Vector2(roundf(c.x + cos(wa) * wr), roundf(c.y + sin(wa) * wr))
+			draw_rect(Rect2(wp, Vector2(1.0, 1.0)), PAL["lime"] as Color, true)
+			draw_rect(Rect2(roundf(c.x + cos(wa - 0.22) * (wr + 1.5)), roundf(c.y + sin(wa - 0.22) * (wr + 1.5)), 1.0, 1.0), PAL["teal"] as Color, true)
 	elif snuff_fx_t > 0.0:
-		draw_arc(off, body_radius + 9.0, 0.0, TAU, 16, PAL["plum"] as Color, 2.0)
+		var sp: float = 1.0 - clampf(snuff_fx_t / 0.45, 0.0, 1.0)
+		var sr: float = roundf(body_radius + 4.0 + sp * 9.5)
+		draw_arc(c, sr + 1.5, 0.0, TAU, 16, PAL["dusk"] as Color, 2.0)
+		draw_arc(c, sr, 0.0, TAU, 16, PAL["plum"] as Color, 1.4)
+		draw_arc(c, maxf(2.0, sr - 2.5), 0.0, TAU, 12, PAL["stone"] as Color, 1.0)
+		for pi: int in range(6):
+			var pa: float = float(pi) * (TAU / 6.0) + sp * 0.45
+			var pp := Vector2(roundf(c.x + cos(pa) * sr), roundf(c.y + sin(pa) * sr - sp * 3.0))
+			var pc: Color = (PAL["dusk"] as Color) if (pi % 3 == 0) else ((PAL["plum"] as Color) if (pi % 3 == 1) else (PAL["stone"] as Color))
+			draw_circle(pp, 2.0 if sp < 0.55 else 1.2, pc)
 	elif carrying_lantern:
-		draw_circle(off + Vector2(0.0, 4.0), 3.0, PAL["gold"] as Color)
-		draw_circle(off + Vector2(0.0, 4.0), 1.5, PAL["cream"] as Color)
+		var sway: float = roundf(sin(anim_t * 9.5) * 1.5)
+		var lx: float = c.x + sway
+		var ly: float = c.y + 5.0
+		draw_rect(Rect2(lx - 3.0, ly - 4.0, 7.0, 2.0), PAL["night"] as Color, true)
+		draw_rect(Rect2(lx - 3.0, ly - 2.0, 7.0, 6.0), PAL["void"] as Color, true)
+		draw_rect(Rect2(lx - 2.0, ly - 1.0, 5.0, 4.0), PAL["gold"] as Color, true)
+		var flick: float = 0.0 if (int(anim_t * 10.0) % 2 == 0) else 1.0
+		draw_rect(Rect2(lx, ly + flick, 1.0, 1.0), PAL["cream"] as Color, true)
+		draw_rect(Rect2(lx - 1.0, ly - 2.0, 1.0, 5.0), PAL["night"] as Color, true)
+		draw_rect(Rect2(lx + 1.0, ly - 2.0, 1.0, 5.0), PAL["night"] as Color, true)
+		draw_rect(Rect2(lx - 2.0, ly + 3.0, 5.0, 1.0), PAL["apricot"] as Color, true)
+		var back: Vector2 = -Vector2.from_angle(facing)
+		draw_rect(Rect2(roundf(lx + back.x * 5.0), roundf(ly + back.y * 5.0 - 1.0), 1.0, 1.0), PAL["mauve"] as Color, true)

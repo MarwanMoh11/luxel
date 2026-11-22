@@ -208,12 +208,47 @@ func _draw_extra(off: Vector2) -> void:
 	if _sprite_sheet == null:
 		# Twin lunar crescent horns
 		draw_arc(off + Vector2(0.0, -body_radius - 2.0), 5.5, 0.25, PI - 0.25, 12, PAL["ice"] as Color, 1.8)
+	var c: Vector2 = off.round()
 	if wave_attack and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		draw_arc(off, lerpf(WAVE_MAX_R, WAVE_START_R + 6.0, prog), 0.0, TAU, 26, PAL["sky"] as Color, 1.8)
+		var tr: float = lerpf(WAVE_MAX_R, WAVE_START_R + 6.0, prog)
+		draw_arc(c, tr + 2.2, 0.0, TAU, 28, PAL["plum"] as Color, 1.6)
+		draw_arc(c, tr, 0.0, TAU, 28, PAL["coral"] as Color, 1.8)
+		draw_arc(c, maxf(4.0, tr - 2.2), 0.0, TAU, 24, PAL["ice"] as Color, 1.0)
 	elif wave_attack and state == State.COMMIT:
 		var ring_r: float = lerpf(WAVE_START_R, WAVE_MAX_R, wave_progress)
-		draw_arc(off, ring_r, 0.0, TAU, 30, PAL["sky"] as Color, 3.0)
-		draw_arc(off, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["ice"] as Color, 1.2)
+		draw_arc(c, ring_r + 3.6, 0.0, TAU, 36, PAL["plum"] as Color, 2.2)
+		draw_arc(c, ring_r + 1.8, 0.0, TAU, 36, PAL["wine"] as Color, 2.6)
+		draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.0)
+		draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["gold"] as Color, 1.6)
+		draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["ice"] as Color, 1.1)
+		for di: int in range(8):
+			var da: float = anim_t * 2.4 + float(di) * (TAU / 8.0)
+			var dp: Vector2 = c + Vector2.from_angle(da) * ring_r
+			var d_out: Color = (PAL["gold"] if di % 2 == 0 else PAL["ice"]) as Color
+			var d_in: Color = (PAL["ice"] if di % 2 == 0 else PAL["cream"]) as Color
+			_draw_eclipse_diamond(dp, 3.0, d_out, d_in)
 	elif _roaring:
-		draw_arc(off, body_radius + 12.0, 0.0, TAU, 24, PAL["ice"] as Color, 2.2)
+		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
+		var r1: float = body_radius + 11.0 + rp * 18.0
+		var r2: float = maxf(6.0, r1 - 6.5)
+		draw_arc(c, r1, 0.0, TAU, 32, PAL["coral"] as Color, 2.4)
+		draw_arc(c, r2, 0.0, TAU, 28, PAL["gold"] as Color, 2.0)
+		draw_arc(c, maxf(4.0, r2 - 2.0), 0.0, TAU, 24, PAL["ice"] as Color, 1.1)
+		for ri: int in range(4):
+			var rd: Vector2 = Vector2.from_angle(float(ri) * (TAU * 0.25))
+			draw_line((c + rd * (r1 - 3.5)).round(), (c + rd * (r1 + 4.5)).round(), PAL["gold"] as Color, 1.6)
+			draw_line((c + rd * (r1 - 1.5)).round(), (c + rd * (r1 + 2.5)).round(), PAL["ice"] as Color, 1.0)
+
+
+func _draw_eclipse_diamond(pt: Vector2, rad: float, outer: Color, inner: Color) -> void:
+	var p: Vector2 = pt.round()
+	var t: Vector2 = p + Vector2(0.0, -rad)
+	var r: Vector2 = p + Vector2(rad, 0.0)
+	var d: Vector2 = p + Vector2(0.0, rad)
+	var l: Vector2 = p + Vector2(-rad, 0.0)
+	draw_line(t, r, outer, 1.2)
+	draw_line(r, d, outer, 1.2)
+	draw_line(d, l, outer, 1.2)
+	draw_line(l, t, outer, 1.2)
+	draw_rect(Rect2(p - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), inner, true)

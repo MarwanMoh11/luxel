@@ -277,17 +277,58 @@ func _body_color() -> Color:
 	return PAL["ice"] as Color
 
 func _draw_extra(off: Vector2) -> void:
+	var c := Vector2(roundf(off.x), roundf(off.y))
+	var fwd: Vector2 = Vector2.from_angle(facing)
+	var side := Vector2(-fwd.y, fwd.x)
 	if _sprite_sheet == null:
 		var flap: float = sin(anim_t * (14.0 if carrying_lantern else 9.0)) * 4.0
-		var fwd: Vector2 = Vector2.from_angle(facing)
-		var side: Vector2 = Vector2(-fwd.y, fwd.x)
 		draw_line(off, off + side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
 		draw_line(off, off - side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
 		draw_line(off + fwd * 3.0, off + fwd * 8.0, PAL["apricot"] as Color, 1.5)
 	if state == State.TELL:
-		var rel: Vector2 = dive_target - pos
-		draw_line(off, rel, PAL["gold"] as Color, 1.0)
-		draw_arc(rel, 5.0, 0.0, TAU, 12, PAL["coral"] as Color, 1.5)
-	elif carrying_lantern:
-		draw_circle(off + Vector2(0.0, 6.0), 3.0, PAL["gold"] as Color)
-		draw_circle(off + Vector2(0.0, 6.0), 1.5, PAL["cream"] as Color)
+		var rel := Vector2(roundf(dive_target.x - pos.x), roundf(dive_target.y - pos.y))
+		var delta: Vector2 = rel - c
+		var dist: float = delta.length()
+		if dist > 4.0:
+			var dir: Vector2 = delta / dist
+			var shift: float = fmod(anim_t * 22.0, 6.0)
+			var steps: int = mini(26, int(dist / 6.0))
+			for di: int in range(steps):
+				var d0: float = float(di) * 6.0 + shift
+				if d0 >= dist - 4.0:
+					break
+				var p0 := Vector2(roundf(c.x + dir.x * d0), roundf(c.y + dir.y * d0))
+				var p1 := Vector2(roundf(c.x + dir.x * minf(d0 + 2.0, dist - 3.0)), roundf(c.y + dir.y * minf(d0 + 2.0, dist - 3.0)))
+				draw_line(p0, p1, (PAL["gold"] as Color) if (di % 2 == 0) else (PAL["coral"] as Color), 1.0)
+		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var rad: float = roundf(lerpf(6.5, 3.5, prog))
+		for ci: int in range(4):
+			var cd: Vector2 = Vector2.from_angle(float(ci) * (PI * 0.5))
+			var tp := Vector2(roundf(rel.x + cd.x * rad), roundf(rel.y + cd.y * rad))
+			var ti := Vector2(roundf(rel.x + cd.x * maxf(1.5, rad - 2.5)), roundf(rel.y + cd.y * maxf(1.5, rad - 2.5)))
+			draw_line(ti, tp, PAL["coral"] as Color, 1.2)
+			draw_rect(Rect2(tp, Vector2(1.0, 1.0)), PAL["gold"] as Color, true)
+		draw_rect(Rect2(rel, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+	elif state == State.COMMIT:
+		for si: int in range(-1, 2, 2):
+			var s: float = float(si)
+			var w0 := Vector2(roundf(c.x + side.x * (s * 5.5) - fwd.x * 1.5), roundf(c.y + side.y * (s * 5.5) - fwd.y * 1.5))
+			var w1 := Vector2(roundf(c.x + side.x * (s * 7.5) - fwd.x * 14.0), roundf(c.y + side.y * (s * 7.5) - fwd.y * 14.0))
+			draw_line(w0, w1, PAL["sky"] as Color, 1.5)
+			draw_line(w0, Vector2(roundf(c.x + side.x * (s * 6.5) - fwd.x * 9.0), roundf(c.y + side.y * (s * 6.5) - fwd.y * 9.0)), PAL["ice"] as Color, 1.0)
+			draw_rect(Rect2(w1, Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
+	if carrying_lantern:
+		var sway: float = roundf(sin(anim_t * 11.0) * 1.5)
+		var lx: float = c.x + sway
+		var ly: float = c.y + 6.0
+		draw_rect(Rect2(lx - 1.0, ly - 4.0, 3.0, 1.0), PAL["apricot"] as Color, true)
+		draw_rect(Rect2(lx - 3.0, ly - 3.0, 7.0, 7.0), PAL["void"] as Color, true)
+		draw_rect(Rect2(lx - 2.0, ly - 2.0, 5.0, 5.0), PAL["night"] as Color, true)
+		draw_rect(Rect2(lx - 2.0, ly - 3.0, 5.0, 1.0), PAL["apricot"] as Color, true)
+		draw_rect(Rect2(lx - 2.0, ly + 3.0, 5.0, 1.0), PAL["apricot"] as Color, true)
+		draw_rect(Rect2(lx - 1.0, ly - 1.0, 3.0, 3.0), PAL["gold"] as Color, true)
+		var flick: float = 0.0 if (int(anim_t * 14.0) % 2 == 0) else -1.0
+		draw_rect(Rect2(lx, ly + flick, 1.0, 2.0), PAL["cream"] as Color, true)
+		for mi: int in range(2):
+			var mp: float = fmod(anim_t * 2.5 + float(mi) * 0.5, 1.0)
+			draw_rect(Rect2(roundf(lx - fwd.x * (4.0 + mp * 6.0)), roundf(ly - fwd.y * (4.0 + mp * 6.0) - mp * 2.0), 1.0, 1.0), PAL["gold"] as Color, true)

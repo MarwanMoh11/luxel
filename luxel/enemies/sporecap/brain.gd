@@ -290,11 +290,24 @@ func _draw_extra(off: Vector2) -> void:
 		draw_circle(off + Vector2(2.5, -2.5), 1.5, PAL["lime"] as Color)
 
 	if state == State.TELL:
-		draw_arc(off, lerpf(RING_MAX_R * 0.75, RING_START_R + 4.0, swell), 0.0, TAU, 24, PAL["lime"] as Color, 1.5)
+		draw_arc(off.round(), lerpf(RING_MAX_R * 0.75, RING_START_R + 4.0, swell), 0.0, TAU, 24, PAL["lime"] as Color, 1.5)
 	elif state == State.COMMIT:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
-		draw_arc(off, ring_r, 0.0, TAU, 28, PAL["lime"] as Color, 3.0)
-		draw_arc(off, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["coral"] as Color, 1.2)
+		var c: Vector2 = off.round()
+		draw_arc(c, ring_r + 2.0, 0.0, TAU, 28, PAL["pine"] as Color, 3.2)
+		draw_arc(c, ring_r, 0.0, TAU, 28, PAL["jade"] as Color, 2.2)
+		draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 24, PAL["lime"] as Color, 1.4)
+		var lift: float = -sin(ring_progress * PI) * 3.0
+		for mi: int in range(6):
+			var ma: float = float(mi) * (TAU / 6.0) + ring_progress * 0.85 + sin(anim_t * 6.0 + float(mi)) * 0.14
+			var mr: float = ring_r + sin(float(mi) * 1.9 + ring_progress * 6.0) * 3.5
+			var mp: Vector2 = (c + Vector2.from_angle(ma) * mr + Vector2(0.0, lift)).round()
+			if mi % 2 == 0:
+				draw_rect(Rect2(mp, Vector2(2.0, 2.0)), PAL["lime"] as Color, true)
+				draw_rect(Rect2(mp, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+			else:
+				draw_rect(Rect2(mp + Vector2(1.0, 1.0), Vector2(1.0, 1.0)), PAL["jade"] as Color, true)
+				draw_rect(Rect2(mp, Vector2(1.0, 1.0)), PAL["lime"] as Color, true)
 	elif cap_open:
 		if _sprite_sheet == null:
 			draw_circle(off + Vector2(0.0, -3.0), body_radius * 0.7, PAL["gold"] as Color)

@@ -260,14 +260,39 @@ func _draw_extra(off: Vector2) -> void:
 
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		draw_circle(off + fwd * (body_radius * 0.4), 2.0 + prog * 2.5, PAL["lime"] as Color)
-		draw_line(off + fwd * body_radius, off + fwd * (body_radius + 14.0), PAL["gold"] as Color, 1.0)
+		var muzzle: Vector2 = (off + fwd * (body_radius + 1.0)).round()
+		var fl: float = roundf(2.0 + prog * 3.0)
+		var tip: Vector2 = (off + fwd * (body_radius + 14.0)).round()
+		draw_line(muzzle, tip, (PAL["gold"] as Color) if prog > 0.65 else (PAL["sky"] as Color), 1.0)
+		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+		draw_circle(muzzle, 1.8 + prog * 1.4, PAL["deep"] as Color)
+		draw_circle(muzzle, 1.2 + prog * 0.9, PAL["sky"] as Color)
+		draw_line(muzzle + Vector2(-fl, 0.0), muzzle + Vector2(fl, 0.0), PAL["ice"] as Color, 1.0)
+		draw_line(muzzle + Vector2(0.0, -fl), muzzle + Vector2(0.0, fl), PAL["ice"] as Color, 1.0)
+		draw_rect(Rect2(muzzle, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	elif (state == State.COMMIT or state == State.RECOVER) and _sprite_sheet == null:
 		draw_circle(off, body_radius * 0.58, PAL["coral"] as Color)
 		draw_circle(off, body_radius * 0.30, PAL["gold"] as Color)
 
 	for g: Dictionary in globs:
-		var gp: Vector2 = (g["pos"] as Vector2) - pos
-		draw_circle(gp, GLOB_RADIUS + 1.0, PAL["night"] as Color)
-		draw_circle(gp, GLOB_RADIUS, PAL["lime"] as Color)
-		draw_circle(gp + Vector2(-1.0, -1.0), 1.5, PAL["cream"] as Color)
+		var gp: Vector2 = ((g["pos"] as Vector2) - pos).round()
+		var gd: Vector2 = g["dir"] as Vector2
+		if gd.length_squared() < 0.001:
+			gd = fwd
+		var perp: Vector2 = Vector2(-gd.y, gd.x)
+		var trav: float = float(g["traveled"])
+		var tail_end: Vector2 = (gp - gd * 8.0).round()
+		draw_line((gp - gd * 3.0).round(), tail_end, PAL["deep"] as Color, 1.5)
+		draw_line((gp - gd * 3.0).round(), (gp - gd * 6.5).round(), PAL["sky"] as Color, 1.0)
+		for si: int in range(3):
+			var dist_s: float = 5.0 + float(si) * 2.5
+			var lat_s: float = sin(trav * 0.25 + float(si) * 2.1) * (1.2 + float(si) * 0.6)
+			var sp: Vector2 = (gp - gd * dist_s + perp * lat_s).round()
+			draw_rect(Rect2(sp, Vector2(1.0, 1.0)), (PAL["ice"] as Color) if si == 0 else (PAL["sky"] as Color), true)
+		var pinch: Vector2 = (gp - gd * 2.2).round()
+		draw_circle(gp, GLOB_RADIUS + 0.5, PAL["deep"] as Color)
+		draw_circle(pinch, GLOB_RADIUS * 0.62, PAL["deep"] as Color)
+		draw_circle(gp, GLOB_RADIUS - 0.8, PAL["sky"] as Color)
+		draw_circle(pinch, GLOB_RADIUS * 0.42, PAL["sky"] as Color)
+		draw_circle((gp + Vector2(-1.0, -1.0)).round(), GLOB_RADIUS * 0.48, PAL["ice"] as Color)
+		draw_rect(Rect2(gp + Vector2(-2.0, -2.0), Vector2(1.0, 1.0)), PAL["cream"] as Color, true)

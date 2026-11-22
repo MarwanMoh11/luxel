@@ -306,10 +306,37 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(off + Vector2(-body_radius - wing, -1.0), off + Vector2(body_radius + wing, -1.0), PAL["sky"] as Color, 1.5)
 	if state == State.TELL:
 		var preview_len: float = 38.0 if _echo_is_dash else 52.0
-		draw_line(off, off + _echo_dir * preview_len, PAL["ice"] as Color, 1.5)
-		draw_circle(off + _echo_dir * preview_len, 2.5, PAL["gold"] as Color)
+		var c: Vector2 = off.round()
+		var tip: Vector2 = (c + _echo_dir * preview_len).round()
+		draw_line(c, tip, PAL["ice"] as Color, 1.2)
+		draw_circle(tip, 2.2, PAL["gold"] as Color)
+		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	elif state == State.COMMIT:
-		if _echo_is_dash:
-			draw_line(off, off - _echo_dir * 14.0, PAL["ice"] as Color, 2.0)
-		else:
-			draw_line(off, off + _echo_dir * BOLT_RANGE, PAL["ice"] as Color, 2.5)
+		var c: Vector2 = off.round()
+		var perp: Vector2 = Vector2(-_echo_dir.y, _echo_dir.x)
+		var step_dir: Vector2 = (-_echo_dir) if _echo_is_dash else _echo_dir
+		var trail_len: float = 24.0 if _echo_is_dash else BOLT_RANGE
+		var mid_p: Vector2 = c + step_dir * (trail_len * 0.55)
+		var end_p: Vector2 = c + step_dir * trail_len
+		var shim: float = sin(anim_t * 36.0)
+		for si: int in range(-1, 2, 2):
+			var s: float = float(si)
+			var p0: Vector2 = (c + perp * (s * 2.0)).round()
+			var p1: Vector2 = (mid_p + perp * (s * 2.6 + shim * 0.9)).round()
+			var p2: Vector2 = (end_p + perp * (s * 1.4 - shim * 0.9)).round()
+			draw_line(p0, p1, PAL["blue"] as Color, 2.0)
+			draw_line(p1, p2, PAL["blue"] as Color, 1.5)
+			draw_line(p0, p1, PAL["sky"] as Color, 1.0)
+			draw_line(p1, p2, PAL["sky"] as Color, 1.0)
+		draw_line(c, end_p.round(), PAL["ice"] as Color, 1.8)
+		draw_line(c, (c + step_dir * (trail_len * (0.72 if _echo_is_dash else 0.92))).round(), PAL["cream"] as Color, 1.0)
+		for mi: int in range(1, 4):
+			var mp: Vector2 = (c + step_dir * (trail_len * float(mi) * 0.26) + perp * (shim * (2.0 if mi == 2 else -2.0))).round()
+			draw_rect(Rect2(mp, Vector2(1.0, 1.0)), (PAL["cream"] as Color) if mi == 1 else (PAL["ice"] as Color), true)
+		# Tiny 3 px starlight echo cross at origin
+		draw_rect(Rect2(c + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), PAL["cream"] as Color, true)
+		draw_rect(Rect2(c + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), PAL["cream"] as Color, true)
+		draw_rect(Rect2(c + Vector2(-2.0, 0.0), Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
+		draw_rect(Rect2(c + Vector2(2.0, 0.0), Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
+		draw_rect(Rect2(c + Vector2(0.0, -2.0), Vector2(1.0, 1.0)), PAL["sky"] as Color, true)
+		draw_rect(Rect2(c + Vector2(0.0, 2.0), Vector2(1.0, 1.0)), PAL["sky"] as Color, true)

@@ -317,18 +317,48 @@ func _clamp_point(pt: Vector2) -> Vector2:
 func _body_color() -> Color:
 	return PAL["night"] as Color
 
+func _draw_lunar_bolt(pt: Vector2, dir: Vector2) -> void:
+	var p: Vector2 = pt.round()
+	var perp: Vector2 = Vector2(-dir.y, dir.x)
+	var head: Vector2 = (p + dir * 3.5).round()
+	var tail: Vector2 = (p - dir * 3.5).round()
+	draw_line(tail, head, PAL["sky"] as Color, 2.6)
+	draw_line((p + perp * 2.0).round(), head, PAL["ice"] as Color, 1.0)
+	draw_line((p - perp * 2.0).round(), head, PAL["ice"] as Color, 1.0)
+	draw_line(p, head, PAL["cream"] as Color, 1.2)
+	draw_rect(Rect2(head, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+
 func _draw_extra(off: Vector2) -> void:
+	var c: Vector2 = off.round()
 	if dark_lantern_out or _sprite_sheet == null:
-		var lan_off: Vector2 = (dark_lantern_pos - pos) if dark_lantern_out else (off + Vector2.from_angle(facing) * 6.0)
+		var lan_off: Vector2 = ((dark_lantern_pos - pos) if dark_lantern_out else (c + Vector2.from_angle(facing) * 6.0)).round()
 		if dark_lantern_out:
-			draw_line(off, lan_off, PAL["sky"] as Color, 1.0)
-		draw_circle(lan_off, 3.0, PAL["deep"] as Color)
-		draw_circle(lan_off, 1.5, PAL["ice"] as Color)
+			draw_line(c, lan_off, PAL["deep"] as Color, 1.6)
+			draw_line(c, lan_off, PAL["sky"] as Color, 1.0)
+			for bi: int in range(1, 5):
+				var bp: Vector2 = c.lerp(lan_off, float(bi) * 0.2).round()
+				draw_rect(Rect2(bp + Vector2(-1.0, -1.0), Vector2(2.0, 2.0)), (PAL["ice"] as Color) if (bi % 2 == 0) else (PAL["sky"] as Color), true)
+				draw_rect(Rect2(bp, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+			draw_arc(lan_off, 5.5, 0.0, TAU, 12, PAL["sky"] as Color, 1.0)
+		draw_rect(Rect2(lan_off + Vector2(-1.0, -5.0), Vector2(2.0, 1.0)), PAL["sky"] as Color, true)
+		draw_rect(Rect2(lan_off + Vector2(-3.0, -3.0), Vector2(6.0, 6.0)), PAL["night"] as Color, true)
+		draw_rect(Rect2(lan_off + Vector2(-2.0, -4.0), Vector2(4.0, 1.0)), PAL["night"] as Color, true)
+		draw_rect(Rect2(lan_off + Vector2(-2.0, -2.0), Vector2(4.0, 4.0)), PAL["deep"] as Color, true)
+		draw_rect(Rect2(lan_off + Vector2(-1.0, -2.0), Vector2(2.0, 4.0)), PAL["sky"] as Color, true)
+		draw_rect(Rect2(lan_off + Vector2(-1.0, -1.0), Vector2(2.0, 2.0)), PAL["ice"] as Color, true)
+		draw_rect(Rect2(lan_off + Vector2(0.0, -1.0), Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	if state == State.TELL:
 		var tc: Color = (PAL["gold"] as Color) if lured_now else (PAL["ice"] as Color)
-		draw_line(off, off + commit_dir * (36.0 if active_move == MoveKind.FLARE_DASH else 50.0), tc, 1.5)
+		draw_line(c, (c + commit_dir * (36.0 if active_move == MoveKind.FLARE_DASH else 50.0)).round(), tc, 1.4)
 		if active_move == MoveKind.BOLT_VOLLEY:
-			draw_circle(off + commit_dir.rotated(-0.14) * 20.0, 1.5, tc)
-			draw_circle(off + commit_dir.rotated(0.14) * 20.0, 1.5, tc)
+			for vi: int in range(-1, 2):
+				var vdir: Vector2 = commit_dir.rotated(float(vi) * 0.14)
+				_draw_lunar_bolt(c + vdir * 22.0, vdir)
 	elif state == State.COMMIT and active_move == MoveKind.BOLT_VOLLEY:
-		draw_line(off, off + commit_dir * VOLLEY_RANGE, PAL["ice"] as Color, 2.0)
+		var prog: float = clampf(commit_elapsed / VOLLEY_COMMIT_TIME, 0.0, 1.0)
+		for vi: int in range(-1, 2):
+			var vdir: Vector2 = commit_dir.rotated(float(vi) * 0.14)
+			var b_end: Vector2 = (c + vdir * VOLLEY_RANGE).round()
+			draw_line(c, b_end, PAL["sky"] as Color, 2.0 if vi == 0 else 1.4)
+			draw_line(c, (c + vdir * (VOLLEY_RANGE * 0.85)).round(), PAL["ice"] as Color, 1.0)
+			_draw_lunar_bolt(c + vdir * lerpf(16.0, VOLLEY_RANGE - 6.0, prog), vdir)

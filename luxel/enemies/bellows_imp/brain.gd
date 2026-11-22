@@ -318,7 +318,34 @@ func _draw_extra(off: Vector2) -> void:
 		var sac_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.65)
 		draw_circle(sac_pos, sac_r, (PAL["gold"] as Color) if state == State.TELL else (PAL["apricot"] as Color))
 	if state == State.COMMIT:
+		var prog: float = 1.0 - clampf(state_timer / GUST_COMMIT_TIME, 0.0, 1.0)
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
-		for idx: int in [-1, 0, 1]:
-			var s_off: Vector2 = side * float(idx) * (GUST_HALF_W * 0.45)
-			draw_line(off + s_off, off + s_off + gust_dir * GUST_RANGE * 0.75, PAL["cream"] as Color if idx == 0 else PAL["apricot"] as Color, 1.5)
+		var reach: float = GUST_RANGE * lerpf(0.55, 0.96, prog)
+		var base_p: Vector2 = off.round()
+		for idx: int in range(-1, 2):
+			var lane_w: float = float(idx) * (GUST_HALF_W * 0.48)
+			var p0: Vector2 = (base_p + side * lane_w + gust_dir * (body_radius + 2.0)).round()
+			var lane_len: float = reach * (1.0 if idx == 0 else 0.84)
+			var p1: Vector2 = (base_p + side * (lane_w * 1.15) + gust_dir * lane_len).round()
+			draw_line(p0, p1, PAL["coral"] as Color, 3.0 if idx == 0 else 2.0)
+			var mid_c: Color = (PAL["gold"] as Color) if idx == 0 else (PAL["apricot"] as Color)
+			draw_line(p0, p0.lerp(p1, 0.92).round(), mid_c, 1.6 if idx == 0 else 1.2)
+			if idx == 0:
+				draw_line(p0, p0.lerp(p1, 0.72).round(), PAL["cream"] as Color, 1.0)
+		for ci: int in range(4):
+			var ct: float = fmod(prog * 1.7 + float(ci) * 0.25, 1.0)
+			var tip: Vector2 = (base_p + gust_dir * (body_radius + 8.0 + ct * (GUST_RANGE - 16.0))).round()
+			var cw: float = lerpf(4.0, GUST_HALF_W * 0.76, ct)
+			var back: Vector2 = -gust_dir * lerpf(4.0, 7.5, ct)
+			var cc: Color = (PAL["cream"] as Color) if ct < 0.30 else ((PAL["gold"] as Color) if ct < 0.68 else (PAL["apricot"] as Color))
+			draw_line(tip, (tip + back + side * cw).round(), cc, 1.2)
+			draw_line(tip, (tip + back - side * cw).round(), cc, 1.2)
+		for ei: int in range(8):
+			var et: float = fmod(prog * 2.1 + float(ei) * 0.137, 1.0)
+			var lat: float = sin(float(ei) * 2.4 + anim_t * 18.0) * lerpf(3.0, GUST_HALF_W * 0.85, et)
+			var ep: Vector2 = (base_p + gust_dir * (body_radius + 4.0 + et * GUST_RANGE * 0.92) + side * lat).round()
+			var mod3: int = ei % 3
+			var ec: Color = (PAL["cream"] as Color) if mod3 == 0 else ((PAL["gold"] as Color) if mod3 == 1 else (PAL["coral"] as Color))
+			draw_rect(Rect2(ep, Vector2(1.0, 1.0)), ec, true)
+			if mod3 == 0:
+				draw_rect(Rect2((ep - gust_dir * 2.0).round(), Vector2(1.0, 1.0)), PAL["apricot"] as Color, true)

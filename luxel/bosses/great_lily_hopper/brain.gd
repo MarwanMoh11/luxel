@@ -183,13 +183,42 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(off + Vector2(0.0, -body_radius + 1.0), leaf_r * 0.85, 0.2, TAU - 0.2, 16, PAL["lime"] as Color, 2.2)
 		draw_circle(off + Vector2(-3.0, -body_radius - 1.5), 2.2, PAL["rose"] as Color)
 		draw_circle(off + Vector2(3.0, -body_radius - 1.5), 2.2, PAL["gold"] as Color)
+	var c: Vector2 = off.round()
 	if state == State.TELL or twin_pause_active:
-		var rel: Vector2 = leap_to - pos
-		draw_arc(rel, 9.0, 0.0, TAU, 16, PAL["sky"] as Color, 1.8)
-		draw_line(off, rel, PAL["ice"] as Color, 1.2)
+		var rel: Vector2 = (leap_to - pos).round()
+		var br: float = 9.5 + 0.5 * sin(anim_t * 16.0)
+		draw_arc(rel, br, 0.0, TAU, 20, PAL["sky"] as Color, 1.6)
+		draw_arc(rel, maxf(3.0, br - 3.5), 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
+		var b_off: float = br + 1.5
+		for bi: int in range(4):
+			var sx: float = -1.0 if (bi == 0 or bi == 3) else 1.0
+			var sy: float = -1.0 if bi < 2 else 1.0
+			var corner: Vector2 = (rel + Vector2(sx * b_off, sy * b_off)).round()
+			draw_line(corner, corner + Vector2(-sx * 3.5, 0.0), PAL["cream"] as Color, 1.4)
+			draw_line(corner, corner + Vector2(0.0, -sy * 3.5), PAL["cream"] as Color, 1.4)
+		for ti: int in range(5):
+			var t: float = float(ti + 1) / 6.0
+			var arc_y: float = -sin(t * PI) * 14.0
+			var bp: Vector2 = (c.lerp(rel, t) + Vector2(0.0, arc_y)).round()
+			draw_circle(bp, 1.6, PAL["sky"] as Color)
+			draw_circle(bp, 0.9, PAL["cream"] as Color)
 	elif state == State.COMMIT and commit_stage == CommitStage.RING:
 		var ring_r: float = lerpf(RING_START_R, BOSS_RING_MAX_R, ring_progress)
-		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 32, PAL["sky"] as Color, 3.2)
-		draw_arc(Vector2.ZERO, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["cream"] as Color, 1.4)
+		draw_arc(Vector2.ZERO, ring_r + 2.6, 0.0, TAU, 36, PAL["blue"] as Color, 2.4)
+		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
+		draw_arc(Vector2.ZERO, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
+		draw_arc(Vector2.ZERO, maxf(2.0, ring_r - 3.8), 0.0, TAU, 24, PAL["cream"] as Color, 1.1)
+		for pi: int in range(6):
+			var pa: float = anim_t * 2.4 + float(pi) * (TAU / 6.0)
+			var pd: Vector2 = Vector2.from_angle(pa)
+			var pt: Vector2 = Vector2(-pd.y, pd.x)
+			var p_pos: Vector2 = (pd * (ring_r + sin(anim_t * 9.0 + float(pi)) * 2.2)).round()
+			draw_line((p_pos - pt * 2.5).round(), (p_pos + pt * 2.5).round(), PAL["coral"] as Color, 1.8)
+			draw_circle(p_pos, 1.4, PAL["rose"] as Color)
+			draw_circle(p_pos, 0.7, PAL["cream"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 11.0, 0.0, TAU, 22, PAL["lime"] as Color, 2.0)
+		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 10.0 + rp * 16.0
+		draw_arc(c, rr + 2.2, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
+		draw_arc(c, rr, 0.0, TAU, 28, PAL["lime"] as Color, 2.4)
+		draw_arc(c, maxf(3.0, rr - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)

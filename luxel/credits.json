@@ -196,6 +196,41 @@
         "luxel/audio/sfx/stone_break.ogg",
         "luxel/audio/sfx/boss_roar.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_studio_2",
+      "description": "Original studio storybook Lantern Gothic wave 2 combat, puzzle, and UI sound effects (12 cues, D harmonic minor) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "gen_sfx_studio2.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/footstep_stone.ogg",
+        "luxel/audio/sfx/lantern_catch.ogg",
+        "luxel/audio/sfx/beam_ready.ogg",
+        "luxel/audio/sfx/bolt_wall.ogg",
+        "luxel/audio/sfx/bramble_burn.ogg",
+        "luxel/audio/sfx/mirror_ping.ogg",
+        "luxel/audio/sfx/switch_eye.ogg",
+        "luxel/audio/sfx/warden_swing.ogg",
+        "luxel/audio/sfx/golem_stomp.ogg",
+        "luxel/audio/sfx/hush_shatter.ogg",
+        "luxel/audio/sfx/shop_buy.ogg",
+        "luxel/audio/sfx/ember_pickup.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_ambience_layer2",
+      "description": "Original Lantern Gothic Layer-2 seamless stereo biome ambience loops for Islands 2-8 (7 cues, 12.0 s, D minor / D harmonic minor) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "gen_ambience_layer2.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/ambience/harbor_rigging.ogg",
+        "luxel/audio/ambience/thornwood_night.ogg",
+        "luxel/audio/ambience/marsh_reeds.ogg",
+        "luxel/audio/ambience/orrery_clockwork.ogg",
+        "luxel/audio/ambience/kiln_embers.ogg",
+        "luxel/audio/ambience/shoals_chimes.ogg",
+        "luxel/audio/ambience/sanctum_bells.ogg"
+      ]
     }
   ],
   "third_party_audio": []

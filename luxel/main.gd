@@ -124,7 +124,6 @@ func _boot_services() -> void:
 	_validate_strings_debug()
 	_services_ready = true
 
-
 func _validate_strings_debug() -> void:
 	if not OS.is_debug_build():
 		return
@@ -133,7 +132,6 @@ func _validate_strings_debug() -> void:
 		var errs: PackedStringArray = script_res.call("validate")
 		if not errs.is_empty():
 			push_warning("LxStrings validation issues: " + str(errs.size()))
-
 
 func _connect_events() -> void:
 	var ev: LxEventBus = Lx.events
@@ -151,7 +149,6 @@ func _connect_events() -> void:
 	ev.boss_defeated.connect(_on_boss_defeated)
 	ev.great_lamp_relit.connect(_on_great_lamp_relit)
 	ev.ending_requested.connect(trigger_ending)
-
 
 func _apply_debug_args() -> void:
 	var dbg: LxDebugArgs = Lx.debug
@@ -180,13 +177,11 @@ func _apply_debug_args() -> void:
 		return
 	enter_title()
 
-
 func enter_title() -> void:
 	flow = Flow.TITLE
 	Lx.audio.set_paused(false)
 	Lx.audio.play_cue("title")
 	_sync_ui_flow()
-
 
 func start_new_game(slot_num: int, play_intro: bool = true) -> void:
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
@@ -251,9 +246,10 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 	Lx.state.spawn_pos = spawn_at
 	if _wick != null and _wick.has_method("reset_for_room"):
 		_wick.call("reset_for_room", spawn_at)
+	var is_dun: bool = false
 	if _region_loader != null and _region_loader.has_method("get_bounds"):
 		var b: Rect2 = _region_loader.call("get_bounds")
-		var is_dun: bool = bool(_region_loader.get("is_dungeon"))
+		is_dun = bool(_region_loader.get("is_dungeon"))
 		Lx.camera.set_bounds(b, is_dun)
 		if is_dun:
 			Lx.camera.slide_to_room(b, 0.4)
@@ -268,14 +264,15 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 			_darkness_layer.call("set_darkness", 0.0 if Lx.state.relit_islands.has(island_id) else 0.56)
 		if _darkness_layer.has_method("sync"):
 			_darkness_layer.call("sync", 0.0, _region_loader)
-
 	_load_island_controller(island_id)
-	Lx.audio.start_island_music(island_id)
+	if is_dun:
+		Lx.audio.start_dungeon_music(island_id)
+	else:
+		Lx.audio.start_island_music(island_id)
 	Lx.events.region_entered.emit(island_id, region_id)
 	if region_id != "overworld":
 		Lx.save.save_slot(active_slot, Lx.state)
 	return ok
-
 
 func _load_island_controller(island_id: int) -> void:
 	var path: String = "res://luxel/islands/%d/island.gd" % island_id
@@ -289,7 +286,6 @@ func _load_island_controller(island_id: int) -> void:
 				current_island_script.call("attach", Lx.events, Lx.state)
 			if current_island_script.has_method("on_region_loaded"):
 				current_island_script.call("on_region_loaded", Lx.state.region_id)
-
 
 func fast_travel_waystone(island_id: int, waystone_id: String) -> bool:
 	if not Lx.state.lit_waystones.has(waystone_id):
@@ -310,11 +306,13 @@ func toggle_pause() -> void:
 		Lx.audio.set_paused(true)
 		Lx.events.pause_toggled.emit(true)
 	elif flow == Flow.PAUSE or flow == Flow.MAP or flow == Flow.REST_SHOP:
+		var was_shop: bool = flow == Flow.REST_SHOP
 		flow = Flow.PLAY
 		Lx.audio.set_paused(false)
+		if was_shop:
+			Lx.audio.set_music_mode("explore", true)
 		Lx.events.pause_toggled.emit(false)
 	_sync_ui_flow()
-
 
 func open_map() -> void:
 	if flow == Flow.PLAY or flow == Flow.PAUSE:
@@ -326,11 +324,11 @@ func open_map() -> void:
 		Lx.audio.set_paused(false)
 		_sync_ui_flow()
 
-
 func open_rest_shop() -> void:
 	if flow == Flow.PLAY:
 		flow = Flow.REST_SHOP
-		Lx.audio.set_paused(true)
+		Lx.audio.set_paused(false)
+		Lx.audio.play_cue("hub")
 		_sync_ui_flow()
 
 

@@ -188,21 +188,47 @@ func _draw_extra(off: Vector2) -> void:
 		draw_circle(off + Vector2(-3.5, -5.0), 1.8, PAL["lime"] as Color)
 		draw_circle(off + Vector2(3.5, -3.5), 1.8, PAL["lime"] as Color)
 
+	var c: Vector2 = off.round()
 	if state == State.TELL:
-		draw_arc(off, lerpf(ELDER_RING_MAX_R * 0.8, RING_START_R + 5.0, swell), 0.0, TAU, 28, PAL["lime"] as Color, 1.8)
+		var tr: float = lerpf(ELDER_RING_MAX_R * 0.85, RING_START_R + 5.0, swell)
+		var pulse: float = 1.4 * sin(anim_t * 20.0)
+		draw_arc(c, tr + 2.2 + pulse * 0.4, 0.0, TAU, 28, PAL["jade"] as Color, 1.4)
+		draw_arc(c, tr, 0.0, TAU, 28, PAL["lime"] as Color, 2.0)
+		draw_arc(c, maxf(4.0, tr * 0.62 + pulse * 0.6), 0.0, TAU, 22, PAL["gold"] as Color, 1.4)
 	elif state == State.COMMIT:
 		if pulse_stage == PulseStage.PAUSE:
-			draw_arc(off, ELDER_RING_MAX_R * 0.45, 0.0, TAU, 24, PAL["gold"] as Color, 2.0)
+			var pr: float = ELDER_RING_MAX_R * 0.48 + 2.0 * sin(anim_t * 20.0)
+			draw_arc(c, pr + 2.4, 0.0, TAU, 28, PAL["lime"] as Color, 1.8)
+			draw_arc(c, pr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)
+			draw_arc(c, maxf(4.0, pr - 2.2), 0.0, TAU, 22, PAL["cream"] as Color, 1.0)
 		else:
 			var max_r: float = ELDER_RING_MAX_R + (10.0 if pulse_stage == PulseStage.RING_2 else 0.0)
 			var ring_r: float = lerpf(RING_START_R, max_r, ring_progress)
-			draw_arc(off, ring_r, 0.0, TAU, 32, PAL["lime"] as Color, 3.2)
-			draw_arc(off, maxf(2.0, ring_r - 2.8), 0.0, TAU, 26, PAL["coral"] as Color, 1.4)
+			draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, PAL["pine"] as Color, 2.4)
+			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["jade"] as Color, 3.6)
+			draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["lime"] as Color, 2.2)
+			draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+			for pi: int in range(8):
+				var pa: float = anim_t * 2.6 + float(pi) * (TAU / 8.0)
+				var wob: float = sin(anim_t * 10.0 + float(pi) * 1.6) * 2.6
+				var pp: Vector2 = (c + Vector2.from_angle(pa) * (ring_r + wob)).round()
+				draw_circle(pp, 2.2, PAL["pine"] as Color)
+				draw_circle(pp, 1.4, PAL["lime"] as Color)
+				draw_circle(pp, 0.7, PAL["cream"] as Color)
 	elif cap_open:
 		if _sprite_sheet == null:
 			draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.72, PAL["gold"] as Color)
 			draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.35, PAL["cream"] as Color)
 		else:
-			draw_arc(off, body_radius + 3.5, 0.0, TAU, 22, PAL["gold"] as Color, 1.6)
+			var vr: float = body_radius + 4.0 + 0.8 * sin(anim_t * 14.0)
+			draw_arc(c, vr + 1.4, 0.0, TAU, 24, PAL["apricot"] as Color, 1.2)
+			draw_arc(c, vr, 0.0, TAU, 24, PAL["gold"] as Color, 1.8)
+			for vi: int in range(4):
+				var vd: Vector2 = Vector2.from_angle(anim_t * 1.5 + float(vi) * (TAU * 0.25))
+				draw_circle((c + vd * (vr + 1.5)).round(), 1.1, PAL["cream"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 11.0, 0.0, TAU, 22, PAL["lime"] as Color, 2.2)
+		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 10.0 + rp * 16.0
+		draw_arc(c, rr + 2.2, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
+		draw_arc(c, rr, 0.0, TAU, 28, PAL["lime"] as Color, 2.4)
+		draw_arc(c, maxf(3.0, rr - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)

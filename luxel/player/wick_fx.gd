@@ -20,6 +20,7 @@ var _last_clock_t: float = -1.0
 var _dust_cd: float = 0.0
 var _mote_cd: float = 0.0
 var _streak_cd: float = 0.0
+var _step_parity: int = 0
 
 func clear() -> void:
 	afterimages.clear()
@@ -31,9 +32,10 @@ func clear() -> void:
 	_dust_cd = 0.0
 	_mote_cd = 0.0
 	_streak_cd = 0.0
+	_step_parity = 0
 
-func spawn_afterimage(at_pos: Vector2, col: Color) -> void:
-	afterimages.append({"pos": at_pos, "age": 0.0, "life": 0.20, "col": col})
+func spawn_afterimage(at_pos: Vector2, col: Color, dir: Vector2 = Vector2.RIGHT, anim: String = "dash") -> void:
+	afterimages.append({"pos": at_pos, "age": 0.0, "life": 0.20, "col": col, "dir": dir, "anim": anim})
 
 func spawn_ring(at_pos: Vector2, r0: float, r1: float, life: float, col: Color, width: float = 1.0) -> void:
 	rings.append({"pos": at_pos, "r0": r0, "r1": r1, "age": 0.0, "life": maxf(0.02, life), "col": col, "w": width})
@@ -120,6 +122,9 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			var dvel: Vector2 = Vector2(-mdir.x * randf_range(4.0, 9.0) + randf_range(-3.0, 3.0), randf_range(-11.0, -6.0))
 			var dcol: Color = LxWick.PAL_STONE if randf() < 0.55 else PAL_MAUVE
 			_spawn_mote(foot, dvel, randf_range(0.26, 0.36), dcol, float(randi_range(2, 3)), true, 0.18, false, 0.72)
+			_step_parity = (_step_parity + 1) & 1
+			if _step_parity == 1:
+				wick.emit_sfx("footstep_stone", wick.global_position, false)
 	else:
 		_dust_cd = minf(_dust_cd, 0.06)
 
@@ -180,7 +185,10 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 
 	for a: Dictionary in afterimages:
 		var t: float = 1.0 - clampf(float(a["age"]) / float(a["life"]), 0.0, 1.0)
-		wick.draw_rect(Rect2(((a["pos"] as Vector2) + off).round() + Vector2(-4.0, -10.0), Vector2(8.0, 10.0)), Color(a["col"] as Color, t * 0.55))
+		var apos: Vector2 = ((a["pos"] as Vector2) + off).round()
+		var acol: Color = Color(a["col"] as Color, t * 0.52)
+		if sprite_sheet == null or not sprite_sheet.draw_actor(wick, apos, str(a.get("anim", "dash")), a.get("dir", wick.facing) as Vector2, clock_t, acol):
+			wick.draw_rect(Rect2(apos + Vector2(-4.0, -10.0), Vector2(8.0, 10.0)), acol)
 	for st: Dictionary in streaks:
 		var t: float = clampf(float(st["age"]) / float(st["life"]), 0.0, 1.0)
 		var p0: Vector2 = (st["p0"] as Vector2) + off
@@ -219,7 +227,10 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		wick.draw_rect(Rect2(((s["pos"] as Vector2) + off).round(), Vector2(1.0, 1.0)), s["col"] as Color)
 	_draw_bolts(wick, off)
 
-	wick.draw_rect(Rect2((wick.facing * 12.0 + Vector2(0.0, -6.0)).round() - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_GOLD)
+	var pip: Vector2 = (wick.facing * 12.0 + Vector2(0.0, -6.0)).round()
+	wick.draw_rect(Rect2(pip - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), LxWick.PAL_VOID)
+	wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_GOLD)
+	wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(1.0, 1.0)), LxWick.PAL_CREAM)
 	if wick.muzzle_t > 0.0:
 		_draw_muzzle_star(wick, hand_pos, flash_red)
 
@@ -259,6 +270,9 @@ func _draw_bolts(wick: LxWick, off: Vector2) -> void:
 		wick.draw_line(mid_end, bp, c_body, 2.0)
 		wick.draw_line((bp - bdir * 2.0).round(), bp, LxWick.PAL_CREAM, 1.0)
 		wick.draw_rect(Rect2(bp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
+		if b.is_prism:
+			wick.draw_line(bp + Vector2(-3.0, 0.0), bp + Vector2(3.0, 0.0), LxWick.PAL_ICE, 1.0)
+			wick.draw_line(bp + Vector2(0.0, -3.0), bp + Vector2(0.0, 3.0), LxWick.PAL_ICE, 1.0)
 
 func _draw_muzzle_star(wick: LxWick, hand_pos: Vector2, flash_red: bool) -> void:
 	var aim: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT

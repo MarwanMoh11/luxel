@@ -166,16 +166,38 @@ func _draw_extra(off: Vector2) -> void:
 		for i: int in range(4):
 			var a: float = PI * 0.25 + float(i) * (PI * 0.5)
 			draw_arc(off, ar, a - 0.38, a + 0.38, 4, plate_col, 1.8)
+	var c: Vector2 = off.round()
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		draw_arc(off, lerpf(FORGE_RING_MAX_R, STOMP_START_R + 5.0, prog), 0.0, TAU, 28, PAL["apricot"] as Color, 1.8)
+		var tr: float = lerpf(FORGE_RING_MAX_R, STOMP_START_R + 5.0, prog)
+		draw_arc(c, tr + 2.0, 0.0, TAU, 28, PAL["coral"] as Color, 1.4)
+		draw_arc(c, tr, 0.0, TAU, 28, PAL["apricot"] as Color, 1.8)
+		draw_arc(c, maxf(3.0, tr - 2.0), 0.0, TAU, 24, PAL["gold"] as Color, 1.0)
 	elif state == State.COMMIT:
 		if quake_stage == QuakeStage.PAUSE:
-			draw_arc(off, FORGE_RING_MAX_R * 0.45, 0.0, TAU, 24, PAL["gold"] as Color, 2.0)
+			var pr: float = FORGE_RING_MAX_R * 0.48 + 2.0 * sin(anim_t * 18.0)
+			draw_arc(c, pr + 2.2, 0.0, TAU, 24, PAL["coral"] as Color, 2.0)
+			draw_arc(c, pr, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
 		else:
-			var max_r: float = FORGE_RING_MAX_R if phase >= 2 else STOMP_MAX_R + 6.0
+			var max_r: float = FORGE_RING_MAX_R if (phase >= 2 or quake_stage == QuakeStage.RING_2) else STOMP_MAX_R + 6.0
 			var ring_r: float = lerpf(STOMP_START_R, max_r, stomp_progress)
-			draw_arc(off, ring_r, 0.0, TAU, 32, PAL["coral"] as Color, 3.2)
-			draw_arc(off, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["gold"] as Color, 1.5)
+			draw_arc(c, ring_r + 2.8, 0.0, TAU, 36, PAL["wine"] as Color, 2.5)
+			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.8)
+			draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
+			draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
+			for si: int in range(8):
+				var sa: float = anim_t * 1.9 + float(si) * (TAU / 8.0)
+				var sd: Vector2 = Vector2.from_angle(sa)
+				var st: Vector2 = Vector2(-sd.y, sd.x)
+				var base_c: Vector2 = c + sd * maxf(2.0, ring_r - 1.0)
+				var tip: Vector2 = (c + sd * (ring_r + 6.5)).round()
+				draw_line((base_c - st * 3.0).round(), tip, PAL["coral"] as Color, 1.6)
+				draw_line((base_c + st * 3.0).round(), tip, PAL["coral"] as Color, 1.6)
+				draw_line(base_c.round(), tip, PAL["gold"] as Color, 1.2)
+				draw_circle(tip, 1.1, PAL["apricot"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 12.0, 0.0, TAU, 24, PAL["apricot"] as Color, 2.2)
+		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 11.0 + rp * 16.0
+		draw_arc(c, rr + 2.4, 0.0, TAU, 28, PAL["coral"] as Color, 2.2)
+		draw_arc(c, rr, 0.0, TAU, 28, PAL["apricot"] as Color, 2.4)
+		draw_arc(c, maxf(3.0, rr - 2.2), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)

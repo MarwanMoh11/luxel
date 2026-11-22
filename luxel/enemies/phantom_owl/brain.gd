@@ -106,19 +106,60 @@ func _draw() -> void:
 	if revealed:
 		super._draw()
 		return
-	# Unrevealed: faint spectral shimmer only (no solid hitbox read)
+	# Unrevealed: opaque 20-colour spectral shimmer wisps (no solid hitbox read)
 	var off: Vector2 = _visual_offset()
-	var pulse: float = 0.5 + 0.5 * sin(anim_t * 5.0)
-	var ghost_col := Color(PAL["sky"] as Color, 0.22 + pulse * 0.10)
-	draw_arc(off, body_radius * 0.9, 0.0, TAU, 14, ghost_col, 1.0)
+	var c := Vector2(roundf(off.x), roundf(off.y))
+	var spin: float = anim_t * 2.2
+	for wi: int in range(4):
+		var wa: float = spin + float(wi) * (PI * 0.5)
+		var wr: float = roundf(body_radius * 0.85 + sin(anim_t * 5.0 + float(wi)) * 1.0)
+		draw_arc(c, wr, wa, wa + 0.55, 5, (PAL["plum"] as Color) if (wi % 2 == 0) else (PAL["dusk"] as Color), 1.0)
+		var wp := Vector2(roundf(c.x + cos(wa + 0.9) * (wr + 1.5)), roundf(c.y + sin(wa + 0.9) * (wr + 1.5)))
+		draw_rect(Rect2(wp, Vector2(1.0, 1.0)), (PAL["stone"] as Color) if (wi % 2 == 0) else (PAL["mauve"] as Color), true)
 	if state == State.TELL:
-		var local_t: Vector2 = lock_target - pos
-		var lock_col := Color(PAL["ice"] as Color, 0.35)
-		draw_line(off, local_t, lock_col, 1.0)
-		draw_arc(local_t, 3.0, 0.0, TAU, 10, lock_col, 1.0)
+		var lt := Vector2(roundf(lock_target.x - pos.x), roundf(lock_target.y - pos.y))
+		var delta: Vector2 = lt - c
+		var dist: float = delta.length()
+		if dist > 6.0:
+			var dir: Vector2 = delta / dist
+			var steps: int = mini(20, int(dist / 8.0))
+			for di: int in range(steps):
+				var d0: float = float(di) * 8.0 + fmod(anim_t * 16.0, 8.0)
+				if d0 >= dist - 4.0:
+					break
+				draw_rect(Rect2(roundf(c.x + dir.x * d0), roundf(c.y + dir.y * d0), 1.0, 1.0), (PAL["mauve"] as Color) if (di % 2 == 0) else (PAL["plum"] as Color), true)
+		for ci: int in range(4):
+			var cd: Vector2 = Vector2.from_angle(float(ci) * (PI * 0.5))
+			draw_rect(Rect2(roundf(lt.x + cd.x * 3.0), roundf(lt.y + cd.y * 3.0), 1.0, 1.0), PAL["stone"] as Color, true)
+	elif state == State.COMMIT:
+		for si: int in range(-1, 2, 2):
+			var perp := Vector2(-dive_dir.y, dive_dir.x)
+			var w0 := Vector2(roundf(c.x + perp.x * (float(si) * 3.0)), roundf(c.y + perp.y * (float(si) * 3.0)))
+			var w1 := Vector2(roundf(w0.x - dive_dir.x * 11.0), roundf(w0.y - dive_dir.y * 11.0))
+			draw_line(w0, w1, PAL["plum"] as Color, 1.0)
+			draw_rect(Rect2(w1, Vector2(1.0, 1.0)), PAL["stone"] as Color, true)
 
 
 func _draw_extra(off: Vector2) -> void:
 	super._draw_extra(off)
 	if revealed:
-		draw_arc(off, body_radius + 2.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
+		var c := Vector2(roundf(off.x), roundf(off.y))
+		var rot: float = anim_t * 1.4
+		var pulse: float = 0.5 + 0.5 * sin(anim_t * 6.0)
+		var tick_len: float = roundf(2.0 + pulse * 2.5)
+		draw_arc(c, body_radius + 2.5, 0.0, TAU, 16, PAL["sky"] as Color, 1.0)
+		for qi: int in range(4):
+			var qa: float = rot + float(qi) * (PI * 0.5)
+			draw_arc(c, body_radius + 4.5, qa, qa + 0.85, 6, PAL["deep"] as Color, 1.2)
+			draw_arc(c, body_radius + 3.0, qa + 0.15, qa + 0.65, 5, PAL["ice"] as Color, 1.0)
+			var ca: float = float(qi) * (PI * 0.5)
+			var cd: Vector2 = Vector2.from_angle(ca)
+			var t0 := Vector2(roundf(c.x + cd.x * (body_radius + 3.0)), roundf(c.y + cd.y * (body_radius + 3.0)))
+			var t1 := Vector2(roundf(c.x + cd.x * (body_radius + 3.0 + tick_len)), roundf(c.y + cd.y * (body_radius + 3.0 + tick_len)))
+			draw_line(t0, t1, PAL["sky"] as Color, 1.0)
+			draw_rect(Rect2(t1, Vector2(1.0, 1.0)), (PAL["cream"] as Color) if (qi % 2 == 0) else (PAL["ice"] as Color), true)
+		for fi: int in range(-1, 2, 2):
+			var fx: float = roundf(c.x + float(fi) * (body_radius + 3.5))
+			var fy: float = roundf(c.y + sin(anim_t * 4.5 + float(fi)) * 2.0)
+			draw_line(Vector2(fx, fy), Vector2(fx + float(fi) * 2.0, fy + 2.0), PAL["mauve"] as Color, 1.0)
+			draw_rect(Rect2(fx + float(fi) * 2.0, fy + 2.0, 1.0, 1.0), PAL["stone"] as Color, true)
