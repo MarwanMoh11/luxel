@@ -273,6 +273,7 @@ func _draw() -> void:
 					if tail.length_squared() >= 1.0:
 						draw_line(pt, pt - tail, p.col, 1.0, false)
 					draw_rect(Rect2(pt, Vector2.ONE), p.col2)
+	LxBiomeWildlife.draw_biome_life(self, _island_id, _is_dungeon, _clock, _cam_center)
 	for pl: Dictionary in _pillars:
 		_draw_pillar(pl)
 	for r: Dictionary in _rings:

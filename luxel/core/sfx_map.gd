@@ -29,6 +29,14 @@ const SFX_VARIANTS: Dictionary = {
 	"bramble_burn": ["bramble_burn", "bramble_burn_2"], "earth_burrow": ["earth_burrow", "earth_burrow_2"],
 	"footstep_ash": ["footstep_ash", "footstep_ash_2"], "footstep_crystal": ["footstep_crystal", "footstep_crystal_2"],
 	"footstep_water": ["footstep_water", "footstep_water_2"], "boss_awaken": ["boss_awaken", "boss_awaken_2"],
+	"beacon_lit": ["beacon_lit", "beacon_lit_2"], "waystone_lit": ["waystone_lit", "waystone_lit_2"],
+	"shrine_claimed": ["shrine_claimed", "shrine_claimed_2"], "shop_buy": ["shop_buy", "shop_buy_2"],
+	"heart_pickup": ["heart_pickup", "heart_pickup_2"], "ember_pickup": ["ember_pickup", "ember_pickup_2"],
+	"key_pickup": ["key_pickup", "key_pickup_2"], "seal_break": ["seal_break", "seal_break_2"],
+	"dawn_burst": ["dawn_burst", "dawn_burst_2"], "ui_confirm": ["ui_confirm", "ui_confirm_2"],
+	"ui_back": ["ui_back", "ui_back_2"], "boss_victory": ["boss_victory", "boss_victory_2"],
+	"magpie_gulp": ["magpie_gulp", "magpie_gulp_2"], "magpie_drop": ["magpie_drop", "magpie_drop_2"],
+	"lens_reveal": ["lens_reveal", "lens_reveal_2"], "sunflare_burst": ["sunflare_burst", "sunflare_burst_2"],
 }
 
 const SFX_BASE_TRIM_DB: Dictionary = {

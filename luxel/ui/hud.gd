@@ -287,8 +287,8 @@ func _draw() -> void:
 	if _boss_active:
 		_draw_boss_bar()
 	_draw_interact_prompt()
-	_draw_cues()
-	_draw_notice()
+	_draw_cues(); _draw_notice()
+	LxHudFx.draw_indicators(self, _blink_t, _boss_active, _boss_phase)
 
 
 func _draw_hearts(origin: Vector2) -> void:

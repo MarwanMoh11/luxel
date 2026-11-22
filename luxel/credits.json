@@ -446,6 +446,30 @@
         "luxel/audio/sfx/menu_open.ogg",
         "luxel/audio/sfx/menu_close.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_masterwork2",
+      "description": "Masterwork Wave-2 zero-hiss alternate signature takes (beacon_lit_2, waystone_lit_2, shrine_claimed_2, shop_buy_2, heart_pickup_2, ember_pickup_2, key_pickup_2, seal_break_2, dawn_burst_2, ui_confirm_2, ui_back_2, boss_victory_2, magpie_gulp_2, magpie_drop_2, lens_reveal_2, sunflare_burst_2; 168 SFX across 69 multi-take pools)",
+      "generator": "gen_sfx_masterwork2.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/beacon_lit_2.ogg",
+        "luxel/audio/sfx/waystone_lit_2.ogg",
+        "luxel/audio/sfx/shrine_claimed_2.ogg",
+        "luxel/audio/sfx/shop_buy_2.ogg",
+        "luxel/audio/sfx/heart_pickup_2.ogg",
+        "luxel/audio/sfx/ember_pickup_2.ogg",
+        "luxel/audio/sfx/key_pickup_2.ogg",
+        "luxel/audio/sfx/seal_break_2.ogg",
+        "luxel/audio/sfx/dawn_burst_2.ogg",
+        "luxel/audio/sfx/ui_confirm_2.ogg",
+        "luxel/audio/sfx/ui_back_2.ogg",
+        "luxel/audio/sfx/boss_victory_2.ogg",
+        "luxel/audio/sfx/magpie_gulp_2.ogg",
+        "luxel/audio/sfx/magpie_drop_2.ogg",
+        "luxel/audio/sfx/lens_reveal_2.ogg",
+        "luxel/audio/sfx/sunflare_burst_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []
