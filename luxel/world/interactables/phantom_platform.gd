@@ -136,7 +136,8 @@ func _draw() -> void:
 		if _reveal_fx_t > 0.0:
 			draw_rect(Rect2(x0, y0, w, h), PAL["cream"] if _reveal_fx_t > 0.12 else PAL["ice"], false, 1.0)
 		elif _reveal_left > 0.0 and _reveal_left < 0.14:
-			var warn_c: Color = (PAL["sky"] if int(floorf(_clock * 24.0)) % 2 == 0 else PAL["deep"]) as Color
+			var no_flash: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+			var warn_c: Color = (PAL["sky"] if (no_flash or int(floorf(_clock * 24.0)) % 2 == 0) else PAL["deep"]) as Color
 			draw_rect(Rect2(x0, y0, w, h), warn_c, false, 1.0)
 		return
 	var br_c: Color = PAL["deep"] as Color

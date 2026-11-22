@@ -127,6 +127,10 @@ func _unhandled_input(event: InputEvent) -> void:
 					_try_buy(_idx)
 					get_viewport().set_input_as_handled()
 					return
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
+			_play_ui_sfx("menu_close")
+			closed.emit()
+			get_viewport().set_input_as_handled()
 		return
 
 	var count: int = maxi(1, _upgrades.size())
@@ -143,7 +147,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
 		_try_buy(_idx)
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
+	elif event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_pause") or _key_just(event, KEY_ESCAPE):
 		_play_ui_sfx("menu_close")
 		closed.emit()
 		get_viewport().set_input_as_handled()

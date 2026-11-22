@@ -29,6 +29,7 @@ var _scroll: int = 0
 var _listening: bool = false
 var _blink_t: float = 0.0
 var _hover_dev: bool = false
+var _hover_back: bool = false
 
 
 func _ready() -> void:
@@ -43,6 +44,7 @@ func open() -> void:
 	_scroll = 0
 	_listening = false
 	_hover_dev = false
+	_hover_back = false
 	visible = true
 	queue_redraw()
 
@@ -50,6 +52,7 @@ func open() -> void:
 func close() -> void:
 	_listening = false
 	_hover_dev = false
+	_hover_back = false
 	visible = false
 
 
@@ -81,6 +84,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			if hd:
 				_play_ui_sfx("ui_move")
 			queue_redraw()
+		var hb: bool = _back_btn_rect().has_point(pos)
+		if hb != _hover_back:
+			_hover_back = hb
+			if hb:
+				_play_ui_sfx("ui_move")
+			queue_redraw()
 		var m_total: int = _total_rows()
 		for vis_i: int in range(VISIBLE_ROWS):
 			var row_i: int = _scroll + vis_i
@@ -98,6 +107,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			if _handle_click(mb.position):
 				get_viewport().set_input_as_handled()
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
+			_play_ui_sfx("ui_back")
+			closed.emit()
+			get_viewport().set_input_as_handled()
 		elif mb.pressed and (mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN):
 			var max_scroll: int = maxi(0, _total_rows() - VISIBLE_ROWS)
 			var delta_s: int = -1 if mb.button_index == MOUSE_BUTTON_WHEEL_UP else 1
@@ -131,7 +144,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
 		_activate_current()
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
+	elif event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_pause") or _key_just(event, KEY_ESCAPE):
 		_play_ui_sfx("ui_back")
 		closed.emit()
 		get_viewport().set_input_as_handled()
@@ -204,6 +217,10 @@ func _persist_bindings() -> void:
 
 
 func _handle_click(pos: Vector2) -> bool:
+	if _back_btn_rect().has_point(pos):
+		_play_ui_sfx("ui_back")
+		closed.emit()
+		return true
 	if Rect2(26.0, 24.0, 268.0, 12.0).has_point(pos):
 		device_kind = "gamepad" if device_kind == "kbm" else "kbm"
 		_play_ui_sfx("ui_move")
@@ -229,7 +246,8 @@ func _sync_scroll() -> void:
 
 
 func _draw() -> void:
-	var pulse_hi: bool = fmod(_blink_t, 0.5) < 0.25
+	var no_flash: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var pulse_hi: bool = true if no_flash else fmod(_blink_t, 0.5) < 0.25
 	draw_rect(Rect2(PANEL_RECT.position + Vector2(3.0, 3.0), PANEL_RECT.size), LxPalette.PAL["void"])
 	draw_rect(PANEL_RECT.grow(1.0), LxPalette.PAL["void"])
 	var panel_border: String = ("gold" if pulse_hi else "apricot") if _listening else "mauve"
@@ -278,7 +296,10 @@ func _draw() -> void:
 	if _listening:
 		_draw_listen_modal(pulse_hi)
 
-	LxPixelFont.draw_centered(self, LxStrings.text("REBIND_HINT"), 160.0, 159.0, LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(self, LxStrings.text("REBIND_HINT"), Vector2(26.0, 159.0), LxPalette.PAL["stone"], 1)
+	var br: Rect2 = _back_btn_rect()
+	LxPixelFont.draw_panel(self, br, "plum" if _hover_back else "night", "gold" if _hover_back else "mauve", "void")
+	LxPixelFont.draw_centered(self, LxStrings.text("OPT_BACK"), br.get_center().x, br.position.y + 3.0, LxPalette.PAL["gold"] if _hover_back else LxPalette.PAL["cream"], 1)
 
 
 func _draw_frame_ornaments() -> void:
@@ -359,6 +380,10 @@ func _binding_glyph(action_id: String) -> String:
 
 func _row_rect(vis_i: int) -> Rect2:
 	return Rect2(26.0, 40.0 + float(vis_i) * 14.0, 262.0, 12.0)
+
+
+func _back_btn_rect() -> Rect2:
+	return Rect2(246.0, 156.0, 48.0, 11.0)
 
 
 func _play_ui_sfx(sfx_id: String) -> void:

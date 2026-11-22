@@ -127,8 +127,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
-			if _handle_click(mb.position):
-				get_viewport().set_input_as_handled()
+			if _handle_click(mb.position): get_viewport().set_input_as_handled()
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
+			_play_ui_sfx("menu_close"); closed.emit(); get_viewport().set_input_as_handled()
 		return
 
 	if event.is_action_pressed("lx_move_left") or _key_just(event, KEY_LEFT):

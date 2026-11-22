@@ -536,7 +536,7 @@ func is_zone_lit(zone_id: String) -> bool:
 func get_light_pools() -> Array[Vector4]:
 	var pools: Array[Vector4] = []
 	for it: LxInteractable in _interactables:
-		if it != null and it.active:
+		if it != null:
 			var p: Vector4 = it.get_light_pool()
 			if p.z > 1.0 and p.w > 0.001:
 				pools.append(p)

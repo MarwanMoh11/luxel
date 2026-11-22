@@ -68,6 +68,10 @@ func _unhandled_input(event: InputEvent) -> void:
 					_activate(_idx)
 					get_viewport().set_input_as_handled()
 					return
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
+			_play_ui_sfx("ui_back")
+			resume_requested.emit()
+			get_viewport().set_input_as_handled()
 		return
 
 	if event.is_action_pressed("lx_move_up") or _key_just(event, KEY_UP):

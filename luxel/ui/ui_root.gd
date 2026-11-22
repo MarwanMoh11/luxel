@@ -242,6 +242,10 @@ func _hide_all_modals() -> void:
 
 func show_title(open_slots: bool = false) -> void:
 	_hide_all_modals()
+	if narration != null:
+		narration.clear_all()
+	if Lx.hitstop != null:
+		Lx.hitstop.clear()
 	hud.visible = false
 	current_screen = Screen.TITLE
 	title.open(open_slots)

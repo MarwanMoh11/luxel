@@ -38,6 +38,7 @@ const PANEL_RECT := Rect2(18.0, 12.0, 284.0, 156.0)
 var current_tab: int = Tab.AUDIO
 var _row_idx: int = 0
 var _hover_tab: int = -1
+var _hover_back: bool = false
 var _drag_row: String = ""
 var _drag_bar := Rect2()
 
@@ -51,6 +52,7 @@ func open(initial_tab: int = Tab.AUDIO) -> void:
 	current_tab = clampi(initial_tab, 0, TAB_KEYS.size() - 1)
 	_row_idx = 0
 	_hover_tab = -1
+	_hover_back = false
 	_drag_row = ""
 	visible = true
 	_play_ui_sfx("menu_open")
@@ -101,6 +103,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			if ht >= 0:
 				_play_ui_sfx("ui_move")
 			queue_redraw()
+		var hb: bool = _back_btn_rect().has_point(pos)
+		if hb != _hover_back:
+			_hover_back = hb
+			if hb:
+				_play_ui_sfx("ui_move")
+			queue_redraw()
 		var m_rows: Array[String] = _rows_for_tab(current_tab)
 		for i: int in range(m_rows.size()):
 			if _row_rect(i).has_point(pos):
@@ -119,6 +127,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif not _drag_row.is_empty():
 				_drag_row = ""
 				get_viewport().set_input_as_handled()
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
+			_play_ui_sfx("menu_close")
+			closed.emit()
+			get_viewport().set_input_as_handled()
 		return
 
 	var rows: Array[String] = _rows_for_tab(current_tab)
@@ -163,13 +175,17 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
 		_activate_row(rows[_row_idx])
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
+	elif event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_pause") or _key_just(event, KEY_ESCAPE):
 		_play_ui_sfx("menu_close")
 		closed.emit()
 		get_viewport().set_input_as_handled()
 
 
 func _handle_click(pos: Vector2) -> bool:
+	if _back_btn_rect().has_point(pos):
+		_play_ui_sfx("menu_close")
+		closed.emit()
+		return true
 	for i: int in range(TAB_KEYS.size()):
 		if _tab_rect(i).has_point(pos):
 			current_tab = i
@@ -342,7 +358,10 @@ func _draw() -> void:
 	for i: int in range(rows.size()):
 		_draw_row(i, rows[i], cfg)
 
-	LxPixelFont.draw_centered(self, LxStrings.text("OPT_HINT"), 160.0, PANEL_RECT.end.y - 10.0, LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(self, LxStrings.text("OPT_HINT"), Vector2(26.0, PANEL_RECT.end.y - 10.0), LxPalette.PAL["stone"], 1)
+	var br: Rect2 = _back_btn_rect()
+	LxPixelFont.draw_panel(self, br, "plum" if _hover_back else "night", "gold" if _hover_back else "mauve", "void")
+	LxPixelFont.draw_centered(self, LxStrings.text("OPT_BACK"), br.get_center().x, br.position.y + 3.0, LxPalette.PAL["gold"] if _hover_back else LxPalette.PAL["cream"], 1)
 
 
 func _draw_frame_ornaments() -> void:
@@ -539,6 +558,10 @@ func _tab_rect(i: int) -> Rect2:
 func _row_rect(i: int) -> Rect2:
 	var base_y: float = 54.0 if current_tab == Tab.ASSIST else 44.0
 	return Rect2(26.0, base_y + float(i) * 16.0, 268.0, 13.0)
+
+
+func _back_btn_rect() -> Rect2:
+	return Rect2(246.0, PANEL_RECT.end.y - 13.0, 48.0, 11.0)
 
 
 func _closest_step(v: float, steps: Array[float]) -> int:
