@@ -453,6 +453,8 @@ func _draw_ember_meter(at: Vector2) -> void:
 	if inner_w > 0.0:
 		var fill_c: Color = LxPalette.PAL["gold"] if ready else (LxPalette.PAL["apricot"] if frac >= 0.5 else LxPalette.PAL["coral"])
 		draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(inner_w, bar_h - 4.0)), fill_c)
+		if ready:
+			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(inner_w, 1.0)), LxPalette.PAL["cream"])
 	var label_id: String = "HUD_EMBER_READY" if ready else "HUD_EMBER"
 	var label_col: Color = LxPalette.PAL["gold"] if ready else LxPalette.PAL["stone"]
 	LxPixelFont.draw_right(self, LxStrings.text(label_id), at.x + bar_w, at.y - 7.0, label_col, 1)
@@ -461,27 +463,31 @@ func _draw_ember_meter(at: Vector2) -> void:
 func _draw_boss_bar() -> void:
 	var bar_w: float = 160.0
 	var bar_h: float = 8.0
-	var x: float = roundf(160.0 - bar_w * 0.5)
+	var hit_jolt: float = (1.0 if fmod(_blink_t, 0.08) < 0.04 else -1.0) if (_boss_trail_hp - _boss_hp) > (_boss_max_hp * 0.015) else 0.0
+	var x: float = roundf(160.0 - bar_w * 0.5) + hit_jolt
 	var y: float = 14.0
 	var resolved_key: String = resolve_boss_name_key(_boss_name_key)
 	var name_txt: String = LxStrings.text(resolved_key) if LxStrings.has_id(resolved_key) else LxStrings.sanitize(resolved_key)
 	LxPixelFont.draw_centered(self, name_txt, 160.0, 5.0, LxPalette.PAL["gold"], 1)
 	if _boss_phase >= 2:
 		var pkey: String = "HUD_BOSS_P4" if _boss_phase >= 4 else ("HUD_BOSS_P3" if _boss_phase == 3 else "HUD_BOSS_P2")
-		LxPixelFont.draw_right(self, LxStrings.text(pkey), x + bar_w, 5.0, LxPalette.PAL["coral"], 1)
+		LxPixelFont.draw_right(self, LxStrings.text(pkey), roundf(160.0 + bar_w * 0.5), 5.0, LxPalette.PAL["coral"], 1)
 	LxPixelFont.draw_panel(self, Rect2(x, y, bar_w, bar_h), "night", "gold" if _boss_phase >= 2 else "mauve", "void")
 	draw_rect(Rect2(x - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
 	draw_rect(Rect2(x + bar_w - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
-	var trail_w: float = floorf((bar_w - 4.0) * clampf(_boss_trail_hp / _boss_max_hp, 0.0, 1.0))
-	var cur_w: float = floorf((bar_w - 4.0) * clampf(_boss_hp / _boss_max_hp, 0.0, 1.0))
+	var cur_frac: float = clampf(_boss_hp / maxf(1.0, _boss_max_hp), 0.0, 1.0)
+	var trail_w: float = floorf((bar_w - 4.0) * clampf(_boss_trail_hp / maxf(1.0, _boss_max_hp), 0.0, 1.0))
+	var cur_w: float = floorf((bar_w - 4.0) * cur_frac)
 	if trail_w > 0.0:
 		draw_rect(Rect2(x + 2.0, y + 2.0, trail_w, bar_h - 4.0), LxPalette.PAL["apricot"])
+		if trail_w > cur_w:
+			draw_rect(Rect2(x + 2.0 + cur_w, y + 2.0, minf(2.0, trail_w - cur_w), bar_h - 4.0), LxPalette.PAL["cream"])
 	if cur_w > 0.0:
 		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, bar_h - 4.0), LxPalette.PAL["coral"])
 		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, 1.0), LxPalette.PAL["rose"])
 	var notches: Array = [0.25, 0.5, 0.75] if resolved_key == "BOSS_HUSH" else ([0.2, 0.5] if resolved_key == "BOSS_BELLKEEPER" else ([0.33, 0.66] if resolved_key in ["BOSS_HERMIT", "BOSS_MATRON", "BOSS_ABBESS", "BOSS_ASTRONOMER", "BOSS_KILNMOTHER", "BOSS_HOLLOW"] else [0.5]))
 	for frac: float in notches:
-		draw_rect(Rect2(roundf(x + 2.0 + (bar_w - 4.0) * frac), y + 1.0, 1.0, bar_h - 2.0), LxPalette.PAL["gold"])
+		draw_rect(Rect2(roundf(x + 2.0 + (bar_w - 4.0) * frac), y + 1.0, 1.0, bar_h - 2.0), LxPalette.PAL["gold"] if cur_frac > frac else LxPalette.PAL["dusk"])
 
 
 func _draw_interact_prompt() -> void:

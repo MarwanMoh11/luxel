@@ -123,6 +123,9 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 				if dt_str == "boss_key":
 					c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["plum"])
 					c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["gold"])
+				elif dt_str == "ward_barrier" or kind == "ward_barrier":
+					c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["deep"])
+					c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["ice"] if pulse_on else LxPalette.PAL["sky"])
 				else:
 					c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["plum"])
 					c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["apricot"])

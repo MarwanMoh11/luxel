@@ -153,8 +153,8 @@ func _draw_brass_filigree() -> void:
 	draw_rect(Rect2(e.x - 7.0, e.y - 2.0, 6.0, 1.0), apr)
 	draw_rect(Rect2(e.x - 2.0, e.y - 7.0, 1.0, 6.0), apr)
 	for tip: Vector2 in [
-		Vector2(p.x + 1.0, p.y + 1.0), Vector2(e.x - 2.0, p.y + 1.0),
-		Vector2(p.x + 1.0, e.y - 2.0), Vector2(e.x - 2.0, e.y - 2.0),
+		Vector2(p.x + 1.0, p.y + 1.0), Vector2(e.x - 3.0, p.y + 1.0),
+		Vector2(p.x + 1.0, e.y - 3.0), Vector2(e.x - 3.0, e.y - 3.0),
 	]:
 		draw_rect(Rect2(tip, Vector2(2.0, 2.0)), gold)
 	# Decorative lantern-chain divider under PAUSE_TITLE.
