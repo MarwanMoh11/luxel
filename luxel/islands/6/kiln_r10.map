@@ -1,4 +1,5 @@
-# The Great Kiln R10 - Great Hearth
+# The Great Kiln r10 - Octagonal Molten Caldera (32x18)
+TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
 LEGEND , path
@@ -12,14 +13,21 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-#########++#########
-#OO......++......OO#
-#OO......,,......OO#
-#OO......,,......OO#
-#OO......,,......OO#
-#OO......,,......OO#
-#OO......,,......OO#
-#OO......,,......OO#
-#OO......,,......OO#
-#OO......,,......OO#
-#########,,#########
+###############++###############
+#OOOOOOOOOOOOOO++OOOOOOOOOOOOOO#
+#OOOOOOOOOOO...,,...OOOOOOOOOOO#
+#OOOOOOOOO.....,,.....OOOOOOOOO#
+#OOOOOOOO......,,......OOOOOOOO#
+#OOOOOO........,,........OOOOOO#
+#OOOOO.........,,.........OOOOO#
+#OOO...........,,...........OOO#
+#OOO...........,,...........OOO#
+#OOO...........,,...........OOO#
+#OOO...........,,...........OOO#
+#OOOOO.........,,.........OOOOO#
+#OOOOOO........,,........OOOOOO#
+#OOOOOOOO......,,......OOOOOOOO#
+#OOOOOOOOO.....,,.....OOOOOOOOO#
+#OOOOOOOOOOO...,,...OOOOOOOOOOO#
+#OOOOOOOOOOOO..,,..OOOOOOOOOOOO#
+###############,,###############

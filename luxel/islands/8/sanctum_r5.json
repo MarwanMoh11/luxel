@@ -48,8 +48,8 @@
       ],
       "to_region": "sanctum_r6",
       "to_spawn": [
-        160,
-        136
+        240,
+        304
       ],
       "requires_moves": [
         "sunflare"

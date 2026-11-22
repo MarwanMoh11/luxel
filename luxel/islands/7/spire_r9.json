@@ -67,8 +67,8 @@
       ],
       "to_region": "spire_r10",
       "to_spawn": [
-        160,
-        136
+        240,
+        240
       ],
       "requires_moves": [],
       "requires_flags": [

@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    240,
+    240
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        480,
+        288
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_spire_r10_south",
       "rect": [
-        144,
-        160,
+        224,
+        272,
         32,
         16
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_r10_bridge_8",
       "rect": [
-        144,
+        224,
         0,
         32,
         16
@@ -65,22 +65,22 @@
       "kind": "hollow_wick_boss",
       "boss_id": "hollow_wick",
       "pos": [
-        160,
-        72
+        240,
+        128
       ],
       "route": [
         [
-          112,
-          72
+          168,
+          128
         ],
         [
-          208,
-          72
+          312,
+          128
         ]
       ],
       "perches": [],
       "zone": "spire_r10",
-      "leash": 150
+      "leash": 215
     }
   ],
   "interactables": [
@@ -88,8 +88,8 @@
       "id": "great_lamp_7",
       "kind": "great_lamp",
       "pos": [
-        160,
-        48
+        240,
+        64
       ],
       "props": {
         "island_id": 7,
@@ -102,7 +102,7 @@
       "id": "bridge_of_light_spire",
       "kind": "door",
       "pos": [
-        160,
+        240,
         24
       ],
       "props": {
@@ -120,8 +120,8 @@
       "id": "mirror_spire_r10_w",
       "kind": "mirror",
       "pos": [
-        72,
-        56
+        120,
+        96
       ],
       "props": {
         "angle_deg": 45
@@ -131,8 +131,8 @@
       "id": "mirror_spire_r10_e",
       "kind": "mirror",
       "pos": [
-        248,
-        56
+        360,
+        96
       ],
       "props": {
         "angle_deg": 135
@@ -142,8 +142,8 @@
       "id": "brazier_spire_r10_w",
       "kind": "brazier",
       "pos": [
-        72,
-        120
+        120,
+        192
       ],
       "props": {
         "lit_by_default": true,
@@ -154,8 +154,8 @@
       "id": "brazier_spire_r10_e",
       "kind": "brazier",
       "pos": [
-        248,
-        120
+        360,
+        192
       ],
       "props": {
         "lit_by_default": true,
@@ -167,10 +167,10 @@
     {
       "id": "trig_boss_hollow",
       "rect": [
-        96,
-        112,
-        128,
-        40
+        160,
+        192,
+        160,
+        48
       ],
       "string_id": "BOSS_HOLLOW",
       "once": true
@@ -181,8 +181,8 @@
       "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
-        100,
-        50
+        184,
+        58
       ],
       "layer": "sort",
       "flip_x": false,
@@ -193,8 +193,8 @@
       "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
-        220,
-        50
+        296,
+        58
       ],
       "layer": "sort",
       "flip_x": true,
@@ -205,8 +205,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        68,
-        92
+        104,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
@@ -217,8 +217,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        252,
-        92
+        376,
+        144
       ],
       "layer": "sort",
       "flip_x": true,
@@ -229,8 +229,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        96,
-        152
+        184,
+        248
       ],
       "layer": "sort",
       "flip_x": false,
@@ -241,8 +241,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        224,
-        152
+        296,
+        248
       ],
       "layer": "sort",
       "flip_x": true,
@@ -253,8 +253,8 @@
       "sheet": "island7_scenery",
       "prop": "shattered_mirror_shard",
       "pos": [
-        66,
-        152
+        136,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -265,13 +265,38 @@
       "sheet": "island7_scenery",
       "prop": "shattered_mirror_shard",
       "pos": [
-        254,
-        152
+        344,
+        232
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "shattered_mirror_shard",
+      "pos": [
+        136,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "shattered_mirror_shard",
+      "pos": [
+        344,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

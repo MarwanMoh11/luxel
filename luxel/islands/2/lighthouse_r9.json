@@ -48,8 +48,8 @@
       ],
       "to_region": "lighthouse_r10",
       "to_spawn": [
-        160,
-        136
+        224,
+        240
       ],
       "requires_moves": [
         "prism",

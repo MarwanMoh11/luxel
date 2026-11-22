@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    256,
+    240
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        512,
+        288
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_c4_r10_south",
       "rect": [
-        144,
-        160,
+        240,
+        272,
         32,
         16
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_c4_r10_bridge",
       "rect": [
-        304,
-        64,
+        496,
+        112,
         16,
         48
       ],
@@ -64,35 +64,35 @@
       "id": "boss_heron_abbess",
       "kind": "heron_abbess",
       "pos": [
-        160,
-        72
+        256,
+        128
       ],
       "route": [
         [
-          112,
-          72
+          176,
+          128
         ],
         [
-          208,
-          72
+          336,
+          128
         ]
       ],
       "perches": [
         [
-          88,
+          152,
+          88
+        ],
+        [
+          256,
           56
         ],
         [
-          160,
-          40
-        ],
-        [
-          232,
-          56
+          360,
+          88
         ]
       ],
       "zone": "conservatory_r10",
-      "leash": 150
+      "leash": 220
     }
   ],
   "interactables": [
@@ -100,8 +100,8 @@
       "id": "great_lamp_4",
       "kind": "great_lamp",
       "pos": [
-        160,
-        40
+        256,
+        56
       ],
       "props": {
         "island_id": 4,
@@ -114,8 +114,8 @@
       "id": "bridge_of_light_4_dome",
       "kind": "door",
       "pos": [
-        296,
-        88
+        488,
+        144
       ],
       "props": {
         "door_kind": "bridge_of_light",
@@ -132,8 +132,8 @@
       "id": "brazier_c4_r10_w",
       "kind": "brazier",
       "pos": [
-        72,
-        40
+        136,
+        72
       ],
       "props": {
         "lit_by_default": true
@@ -143,8 +143,8 @@
       "id": "brazier_c4_r10_e",
       "kind": "brazier",
       "pos": [
-        248,
-        40
+        376,
+        72
       ],
       "props": {
         "lit_by_default": true
@@ -155,9 +155,9 @@
     {
       "id": "trig_boss_abbess",
       "rect": [
-        96,
-        104,
-        128,
+        176,
+        192,
+        160,
         48
       ],
       "string_id": "BOSS_ABBESS",
@@ -169,8 +169,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        108,
-        42
+        214,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -181,8 +181,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        212,
-        42
+        298,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -193,8 +193,8 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        90,
-        144
+        216,
+        248
       ],
       "layer": "sort",
       "flip_x": false,
@@ -205,8 +205,8 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        230,
-        144
+        296,
+        248
       ],
       "layer": "sort",
       "flip_x": true,
@@ -215,10 +215,34 @@
     },
     {
       "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        112,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        400,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.85
+    },
+    {
+      "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        31,
-        27
+        48,
+        36
       ],
       "layer": "sort",
       "flip_x": false,
@@ -229,8 +253,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        289,
-        27
+        464,
+        36
       ],
       "layer": "sort",
       "flip_x": false,
@@ -239,10 +263,34 @@
     },
     {
       "sheet": "island4_scenery",
+      "prop": "floating_lantern_lily",
+      "pos": [
+        148,
+        34
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "floating_lantern_lily",
+      "pos": [
+        364,
+        34
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.9
+    },
+    {
+      "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        31,
-        148
+        48,
+        252
       ],
       "layer": "sort",
       "flip_x": false,
@@ -253,13 +301,38 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        289,
-        148
+        464,
+        252
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.8
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "blooming_lotus",
+      "pos": [
+        148,
+        250
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "blooming_lotus",
+      "pos": [
+        364,
+        250
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.65
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

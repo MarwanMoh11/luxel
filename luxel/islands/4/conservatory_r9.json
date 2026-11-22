@@ -48,8 +48,8 @@
       ],
       "to_region": "conservatory_r10",
       "to_spawn": [
-        160,
-        136
+        256,
+        240
       ],
       "requires_moves": [
         "wings"

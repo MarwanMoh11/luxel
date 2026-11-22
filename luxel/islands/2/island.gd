@@ -90,9 +90,9 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 		_wp("wp_lh_r7_mirror_gallery", "lighthouse_r7", "lighthouse_r7", [160.0, 24.0], "switch_door", "open_shutter", "door_lh_r7_shutter", "Unlock Mirror Gallery key door and bank Prism bolt into switch_eye", ["dash", "throw", "prism"], ["wick_key_2_2"], "", "lh_r7_gallery_open"),
 		_wp("wp_lh_r8_belfry", "lighthouse_r8", "lighthouse_r8", [160.0, 24.0], "combat_gate", "clear_room", "door_lh_r8_combat", "Clear Gulls Belfry encounter using brass mirrors", ["dash", "throw", "prism"], [], "", "lh_r8_cleared"),
 		_wp("wp_lh_r9_boss_key", "lighthouse_r9", "lighthouse_r9", [264.0, 88.0], "keepers_flame", "collect_key", "keepers_flame_2", "Solve Keepers Prism Vault for keepers_flame_2 and unlock door_boss_2", ["dash", "throw", "prism"], [], "", "keepers_flame_2"),
-		_wp("wp_lh_r10_boss", "lighthouse_r10", "lighthouse_r10", [160.0, 88.0], "boss", "defeat_boss", "boss_lighthouse_hermit", "Defeat the Lighthouse Hermit in the Lantern Room", ["dash", "throw", "prism"], ["keepers_flame_2"], "", "boss_lighthouse_hermit_defeated"),
-		_wp("wp_lh_r10_great_lamp", "lighthouse_r10", "lighthouse_r10", [160.0, 40.0], "great_lamp", "light_great_lamp", "great_lamp_2", "Relight Great Lamp 2 to wake Tidewater Harbor", ["dash", "throw", "prism"], ["boss_lighthouse_hermit_defeated"], "", "island_2_relit"),
-		_wp("wp_2_bridge_to_island_3", "lighthouse_r10", "lighthouse_r10", [312.0, 88.0], "exit", "enter_exit", "exit_lh_r10_island3", "Cross Bridge of Light to Island 3 Thornwood Hollow", ["prism"], ["island_2_relit"], "", "", "overworld", 3),
+		_wp("wp_lh_r10_boss", "lighthouse_r10", "lighthouse_r10", [224.0, 144.0], "boss", "defeat_boss", "boss_lighthouse_hermit", "Defeat the Lighthouse Hermit in the Lantern Room", ["dash", "throw", "prism"], ["keepers_flame_2"], "", "boss_lighthouse_hermit_defeated"),
+		_wp("wp_lh_r10_great_lamp", "lighthouse_r10", "lighthouse_r10", [224.0, 56.0], "great_lamp", "light_great_lamp", "great_lamp_2", "Relight Great Lamp 2 to wake Tidewater Harbor", ["dash", "throw", "prism"], ["boss_lighthouse_hermit_defeated"], "", "island_2_relit"),
+		_wp("wp_2_bridge_to_island_3", "lighthouse_r10", "lighthouse_r10", [440.0, 144.0], "exit", "enter_exit", "exit_lh_r10_island3", "Cross Bridge of Light to Island 3 Thornwood Hollow", ["prism"], ["island_2_relit"], "", "", "overworld", 3),
 	]
 
 

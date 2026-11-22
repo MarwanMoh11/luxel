@@ -90,9 +90,9 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 		_wp("wp_oak_r7_loom", "oak_r7", "oak_r7", [160.0, 24.0], "switch_door", "open_shutter", "door_oak_r7_shutter", "Unlock Weavers Loom key door and pierce web, cracked_wall, and switch_eye", ["dash", "throw", "prism", "beam"], ["wick_key_3_2"], "", "oak_r7_loom_open"),
 		_wp("wp_oak_r8_bastion", "oak_r8", "oak_r8", [160.0, 24.0], "combat_gate", "clear_room", "door_oak_r8_combat", "Clear Bramble Bastion Bramble Knight and Gloam encounter", ["dash", "throw", "prism", "beam"], [], "", "oak_r8_cleared"),
 		_wp("wp_oak_r9_boss_key", "oak_r9", "oak_r9", [264.0, 72.0], "keepers_flame", "collect_key", "keepers_flame_3", "Solve Keepers Amber Vault for keepers_flame_3 and unlock door_boss_3", ["dash", "throw", "prism", "beam"], [], "", "keepers_flame_3"),
-		_wp("wp_oak_r10_boss", "oak_r10", "oak_r10", [160.0, 88.0], "boss", "defeat_boss", "boss_briar_matron", "Defeat the Briar Matron in The Hollow Crown", ["dash", "throw", "prism", "beam"], ["keepers_flame_3"], "", "boss_briar_matron_defeated"),
-		_wp("wp_oak_r10_great_lamp", "oak_r10", "oak_r10", [160.0, 40.0], "great_lamp", "light_great_lamp", "great_lamp_3", "Relight Great Lamp 3 to wake Thornwood Hollow", ["dash", "throw", "prism", "beam"], ["boss_briar_matron_defeated"], "", "island_3_relit"),
-		_wp("wp_3_bridge_to_island_4", "oak_r10", "oak_r10", [312.0, 88.0], "exit", "enter_exit", "exit_oak_r10_island4", "Cross Bridge of Light to Island 4 Mirefen Gardens", ["beam"], ["island_3_relit"], "", "", "overworld", 4),
+		_wp("wp_oak_r10_boss", "oak_r10", "oak_r10", [240.0, 144.0], "boss", "defeat_boss", "boss_briar_matron", "Defeat the Briar Matron in The Hollow Crown", ["dash", "throw", "prism", "beam"], ["keepers_flame_3"], "", "boss_briar_matron_defeated"),
+		_wp("wp_oak_r10_great_lamp", "oak_r10", "oak_r10", [240.0, 56.0], "great_lamp", "light_great_lamp", "great_lamp_3", "Relight Great Lamp 3 to wake Thornwood Hollow", ["dash", "throw", "prism", "beam"], ["boss_briar_matron_defeated"], "", "island_3_relit"),
+		_wp("wp_3_bridge_to_island_4", "oak_r10", "oak_r10", [472.0, 144.0], "exit", "enter_exit", "exit_oak_r10_island4", "Cross Bridge of Light to Island 4 Mirefen Gardens", ["beam"], ["island_3_relit"], "", "", "overworld", 4),
 	]
 
 

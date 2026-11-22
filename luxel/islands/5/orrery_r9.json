@@ -48,8 +48,8 @@
       ],
       "to_region": "orrery_r10",
       "to_spawn": [
-        160,
-        136
+        240,
+        272
       ],
       "requires_moves": [
         "lens"
