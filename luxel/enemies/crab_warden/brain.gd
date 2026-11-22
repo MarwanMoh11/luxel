@@ -186,7 +186,7 @@ func _draw_extra(off: Vector2) -> void:
 				draw_rect(Rect2(kp, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 			draw_rect(Rect2(focal - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["cream"] as Color, true)
 		elif is_counter_attack:
-			var arm: float = roundf(3.0 + sin(anim_t * 28.0) * 1.5)
+			var arm: float = 3.0 if LxHudFx.flash_reduced() else roundf(3.0 + sin(anim_t * 28.0) * 1.5)
 			draw_line(focal + Vector2(-arm, 0.0), focal + Vector2(arm, 0.0), PAL["gold"] as Color, 1.4)
 			draw_line(focal + Vector2(0.0, -arm), focal + Vector2(0.0, arm), PAL["gold"] as Color, 1.4)
 			draw_rect(Rect2(focal, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)

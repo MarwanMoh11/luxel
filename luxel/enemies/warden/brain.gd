@@ -560,7 +560,7 @@ func _draw_extra(off: Vector2) -> void:
 			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	if _has_active_shield() and deflect_charge > 0:
 		var hot_d: bool = deflect_charge >= RICOCHET_NEED - 1
-		var pc: Color = (PAL["cream"] if int(anim_t * 16.0) % 2 == 0 else PAL["coral"]) if hot_d else (PAL["gold"] as Color)
+		var pc: Color = (PAL["coral"] if LxHudFx.flash_reduced() else (PAL["cream"] if int(anim_t * 16.0) % 2 == 0 else PAL["coral"])) if hot_d else (PAL["gold"] as Color)
 		for di: int in range(mini(deflect_charge, 2)):
 			var s_off: float = (float(di) - 0.5) * 4.0 if deflect_charge >= 2 else 0.0
 			var dp := Vector2(roundf(c.x + fwd.x * (body_radius + 4.0) + side.x * s_off), roundf(c.y + fwd.y * (body_radius + 4.0) + side.y * s_off))

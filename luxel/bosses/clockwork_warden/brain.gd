@@ -162,7 +162,7 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, lerpf(16.0, 4.0, prog), 0.0, TAU, 16, (PAL["cream"] if state_timer <= 0.12 else (PAL["coral"] if locked_c else PAL["sky"])) as Color, 1.6 if state_timer <= 0.12 else 1.2)
 		_draw_cw_star_flare(c, lerpf(3.5, 7.5, prog), (PAL["cream"] if state_timer <= 0.12 else (PAL["coral"] if locked_c else PAL["gold"])) as Color, PAL["cream"] as Color)
 	elif state == State.COMMIT:
-		var fl: float = 6.5 + 1.2 * sin(anim_t * 22.0)
+		var fl: float = 6.5 + (0.0 if LxHudFx.flash_reduced() else 1.2 * sin(anim_t * 22.0))
 		var ray_n: int = 3 if phase >= 2 else 1
 		for ri: int in range(ray_n):
 			var off_a: float = 0.0 if ri == 0 else (-FAN_SPREAD_RAD if ri == 1 else FAN_SPREAD_RAD)

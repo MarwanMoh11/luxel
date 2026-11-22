@@ -184,7 +184,7 @@ func _draw_extra(off: Vector2) -> void:
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(c, SLAM_MAX_R, a0, a0 + 0.24, 3, PAL["apricot"] as Color, 1.0)
 		var r: float = lerpf(SLAM_MAX_R, SLAM_START_R + 6.0, prog)
-		var pulse: float = 1.0 + 0.6 * sin(anim_t * 18.0)
+		var pulse: float = 1.0 if LxHudFx.flash_reduced() else (1.0 + 0.6 * sin(anim_t * 18.0))
 		var hot: bool = state_timer <= 0.14
 		draw_arc(c, r + pulse, 0.0, TAU, 28, (PAL["gold"] if hot else PAL["apricot"]) as Color, 1.2)
 		draw_arc(c, r, 0.0, TAU, 28, (PAL["cream"] if hot else PAL["gold"]) as Color, 2.0 if hot else 1.8)

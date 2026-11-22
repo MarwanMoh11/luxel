@@ -32,7 +32,7 @@ uniform int lit_zone_count = 0;
 // Locked Last Light palette tint colours
 uniform vec3 col_void = vec3(0.05098, 0.04314, 0.11765);   // #0d0b1e
 uniform vec3 col_night = vec3(0.12941, 0.10196, 0.23137);  // #211a3b
-uniform vec3 col_wine = vec3(0.32157, 0.14510, 0.26667);   // #522544
+uniform vec3 col_wine = vec3(0.62745, 0.27451, 0.41569);   // #a0466a
 uniform vec3 col_coral = vec3(0.88627, 0.44706, 0.35686);  // #e2725b
 uniform vec3 col_sky = vec3(0.47059, 0.66275, 0.85490);    // #78a9da
 uniform vec3 col_gold = vec3(1.0, 0.85098, 0.54902);       // #ffd98c
@@ -130,8 +130,8 @@ void fragment() {
 		// Subtle Last Light wine edge heartbeat when Wick is on their last heart
 		if (danger_pulse > 0.002) {
 			vec2 duv = (UV - vec2(0.5)) * vec2(1.0, 0.92);
-			float dvig = smoothstep(0.38, 0.76, length(duv)) * danger_pulse * 0.28;
-			out_col = mix(out_col, col_wine, clamp(dvig, 0.0, 0.26));
+			float dvig = smoothstep(0.38, 0.76, length(duv)) * danger_pulse * 0.22;
+			out_col = mix(out_col, col_wine, clamp(dvig, 0.0, 0.22));
 		}
 
 		// Subtle diagonal moonlight/skylight shafts across shadowed dungeon chambers

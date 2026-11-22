@@ -337,7 +337,7 @@ func _draw_extra(off: Vector2) -> void:
 		var trail_len: float = 24.0 if _echo_is_dash else BOLT_RANGE
 		var mid_p: Vector2 = c + step_dir * (trail_len * 0.55)
 		var end_p: Vector2 = c + step_dir * trail_len
-		var shim: float = sin(anim_t * 36.0)
+		var shim: float = 0.0 if LxHudFx.flash_reduced() else sin(anim_t * 36.0)
 		for si: int in range(-1, 2, 2):
 			var s: float = float(si)
 			var p0: Vector2 = (c + perp * (s * 2.0)).round()

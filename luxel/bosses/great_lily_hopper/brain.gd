@@ -190,7 +190,7 @@ func _draw_extra(off: Vector2) -> void:
 		for oi: int in range(10):
 			var a0: float = float(oi) * (TAU / 10.0)
 			draw_arc(rel, BOSS_RING_MAX_R, a0, a0 + 0.28, 3, PAL["blue"] as Color, 1.0)
-		var br: float = 9.5 + 0.5 * sin(anim_t * 16.0)
+		var br: float = 9.5 + (0.0 if LxHudFx.flash_reduced() else 0.5 * sin(anim_t * 16.0))
 		var locked_t: bool = state_timer <= 0.14
 		draw_arc(rel, br, 0.0, TAU, 20, (PAL["gold"] if locked_t else PAL["sky"]) as Color, 2.0 if locked_t else 1.6)
 		draw_arc(rel, maxf(3.0, br - 3.5), 0.0, TAU, 16, (PAL["cream"] if locked_t else PAL["ice"]) as Color, 1.2 if locked_t else 1.0)

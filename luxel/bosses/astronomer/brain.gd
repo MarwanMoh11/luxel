@@ -261,7 +261,7 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(off, ring_r + 2.2, 0.0, TAU, 36, PAL["sky"] as Color, 2.0)
 		draw_arc(off, ring_r, 0.0, TAU, 36, PAL["ice"] as Color, 3.2)
 		draw_arc(off, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, PAL["cream"] as Color, 1.3)
-		var fl: float = 6.5 + 1.2 * sin(anim_t * 22.0)
+		var fl: float = 6.5 + (0.0 if LxHudFx.flash_reduced() else 1.2 * sin(anim_t * 22.0))
 		for i: int in range(ray_count):
 			var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
 			var nb: float = star_base_ang + float((i + 1) % ray_count) * (TAU / float(ray_count))

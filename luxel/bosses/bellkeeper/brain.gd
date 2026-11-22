@@ -320,7 +320,7 @@ func _draw_extra(off: Vector2) -> void:
 			for oi: int in range(12):
 				var oa0: float = float(oi) * (TAU / 12.0)
 				draw_arc(off, SLAM_MAX_R, oa0, oa0 + 0.24, 3, PAL["coral"] as Color, 1.0)
-			var pr: float = SLAM_MAX_R * 0.5 + 2.0 * sin(anim_t * 18.0)
+			var pr: float = SLAM_MAX_R * 0.5 + (0.0 if LxHudFx.flash_reduced() else 2.0 * sin(anim_t * 18.0))
 			draw_arc(off, pr + 2.0, 0.0, TAU, 24, PAL["apricot"] as Color, 1.8)
 			draw_arc(off, pr, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
 			for ti: int in range(4):
