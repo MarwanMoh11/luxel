@@ -266,6 +266,14 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.75
+    },
+    {
+      "prop": "moon_crystal_cluster",
+      "pos": [
+        44,
+        48
+      ],
+      "layer": "back"
     }
   ]
 }

@@ -216,6 +216,22 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "prop": "coal_hopper",
+      "pos": [
+        272,
+        44
+      ],
+      "layer": "back"
+    },
+    {
+      "prop": "cooled_magma_vent",
+      "pos": [
+        272,
+        142
+      ],
+      "layer": "back"
     }
   ]
 }

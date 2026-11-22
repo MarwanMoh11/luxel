@@ -185,6 +185,14 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.75
+    },
+    {
+      "prop": "hanging_pendulum",
+      "pos": [
+        160,
+        36
+      ],
+      "layer": "back"
     }
   ]
 }

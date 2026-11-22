@@ -190,6 +190,14 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
+    },
+    {
+      "prop": "starlight_lantern_post",
+      "pos": [
+        252,
+        56
+      ],
+      "layer": "back"
     }
   ]
 }

@@ -5,8 +5,16 @@ extends RefCounted
 ## Uses strictly the 20 opaque Last Light colours (LxPalette.PAL).
 
 
+static func flash_reduced() -> bool:
+	return Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+
+
+static func shake_enabled() -> bool:
+	return Lx.save == null or float(Lx.save.settings.get("screen_shake", 1.0)) > 0.01
+
+
 static func draw_indicators(hud: CanvasItem, blink_t: float, boss_active: bool, boss_phase: int) -> void:
-	var fred: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var fred: bool = flash_reduced()
 	_draw_lantern_edge_compass(hud, blink_t, fred)
 	if boss_active and boss_phase >= 2:
 		_draw_boss_phase_filigree(hud, blink_t, boss_phase, fred)

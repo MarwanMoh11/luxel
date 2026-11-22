@@ -88,7 +88,7 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 	var items_v: Variant = Lx.world.call("get_interactables")
 	if not (items_v is Array):
 		return
-	var pulse_on: bool = fmod(blink_t, 0.7) < 0.35
+	var pulse_on: bool = LxHudFx.flash_reduced() or fmod(blink_t, 0.7) < 0.35
 	for item: Variant in (items_v as Array):
 		if item == null or not (item is Object) or not is_instance_valid(item):
 			continue
@@ -104,7 +104,10 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 				_draw_pip(c, wpos, bounds, inner, 2.0, col)
 			"shrine":
 				if not _prop_bool(obj, "claimed"):
-					_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["sky"])
+					var sp: Vector2 = _map_pt(wpos, bounds, inner, 2.0, 2.0)
+					c.draw_rect(Rect2(sp, Vector2(2.0, 2.0)), LxPalette.PAL["sky"])
+					if pulse_on:
+						c.draw_rect(Rect2(sp, Vector2(1.0, 1.0)), LxPalette.PAL["cream"])
 			"waystone":
 				var ws_col: Color = LxPalette.PAL["ice"] if _prop_bool(obj, "lit") else (LxPalette.PAL["sky"] if pulse_on else LxPalette.PAL["blue"])
 				_draw_pip(c, wpos, bounds, inner, 1.0, ws_col)
@@ -177,7 +180,7 @@ static func _draw_boss_alerts(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_
 	var enemies_v: Variant = Lx.world.call("get_enemies")
 	if not (enemies_v is Array):
 		return
-	var pulse_on: bool = fmod(blink_t, 0.5) < 0.28
+	var pulse_on: bool = LxHudFx.flash_reduced() or fmod(blink_t, 0.5) < 0.28
 	for item: Variant in (enemies_v as Array):
 		if item == null or not (item is Object) or not is_instance_valid(item):
 			continue
@@ -203,9 +206,9 @@ static func _draw_player(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_t: fl
 		if lpos_v is Vector2:
 			var lp: Vector2 = _map_pt(lpos_v as Vector2, bounds, inner, 2.0, 2.0)
 			var stolen: bool = int((lan_v as Object).get("state")) == 4
-			c.draw_rect(Rect2(lp, Vector2(2.0, 2.0)), LxPalette.PAL["coral"] if (stolen and fmod(blink_t, 0.4) < 0.2) else LxPalette.PAL["gold"])
+			c.draw_rect(Rect2(lp, Vector2(2.0, 2.0)), LxPalette.PAL["coral"] if (stolen and (LxHudFx.flash_reduced() or fmod(blink_t, 0.4) < 0.2)) else LxPalette.PAL["gold"])
 	var p: Vector2 = _map_pt((Lx.player as Node2D).global_position, bounds, inner.grow(-2.0), 2.0, 2.0)
-	var border_col: Color = LxPalette.PAL["gold"] if fmod(blink_t, 0.6) < 0.35 else LxPalette.PAL["apricot"]
+	var border_col: Color = LxPalette.PAL["gold"] if (LxHudFx.flash_reduced() or fmod(blink_t, 0.6) < 0.35) else LxPalette.PAL["apricot"]
 	c.draw_rect(Rect2(p.x - 1.0, p.y - 2.0, 4.0, 6.0), border_col)
 	c.draw_rect(Rect2(p.x - 2.0, p.y - 1.0, 6.0, 4.0), border_col)
 	c.draw_rect(Rect2(p.x - 1.0, p.y - 1.0, 4.0, 4.0), LxPalette.PAL["void"])

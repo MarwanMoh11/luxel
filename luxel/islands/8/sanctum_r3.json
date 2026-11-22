@@ -231,6 +231,14 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.25
+    },
+    {
+      "prop": "dark_candelabra",
+      "pos": [
+        160,
+        148
+      ],
+      "layer": "back"
     }
   ]
 }

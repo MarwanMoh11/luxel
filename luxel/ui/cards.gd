@@ -157,16 +157,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if mode == Mode.DEATH:
-		if event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
-			if Lx.audio != null:
-				Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
+		var rmb_d: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT
+		if rmb_d or event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
+			if Lx.audio != null: Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
 			close()
 			title_requested.emit()
 			get_viewport().set_input_as_handled()
 			return
 		if _is_any_action_press(event):
-			if Lx.audio != null:
-				Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
+			if Lx.audio != null: Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
 			close()
 			retry_requested.emit()
 			get_viewport().set_input_as_handled()
@@ -174,25 +173,22 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	elif mode == Mode.RESULTS:
 		var lmb_res: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT
-		if event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
-			if Lx.audio != null:
-				Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
+		var rmb_res: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT
+		if rmb_res or event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
+			if Lx.audio != null: Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
 			close()
 			title_requested.emit()
 			get_viewport().set_input_as_handled()
 		elif lmb_res or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
-			if Lx.audio != null:
-				Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
+			if Lx.audio != null: Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
 			ending_finished.emit()
-			if mode == Mode.RESULTS:
-				show_credits()
+			if mode == Mode.RESULTS: show_credits()
 			get_viewport().set_input_as_handled()
 
 	elif mode == Mode.CREDITS:
-		var lmb_cred: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT
-		if lmb_cred or event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_SPACE):
-			if Lx.audio != null:
-				Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
+		var mb_cred: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]
+		if mb_cred or event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_SPACE):
+			if Lx.audio != null: Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
 			close()
 			credits_finished.emit()
 			get_viewport().set_input_as_handled()

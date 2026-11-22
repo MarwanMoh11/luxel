@@ -91,6 +91,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			if _handle_mouse_click(mb.position):
 				get_viewport().set_input_as_handled()
+		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT and mode != Mode.MAIN:
+			mode = Mode.SLOTS if mode == Mode.CONFIRM_DELETE else Mode.MAIN
+			_play_ui_sfx("ui_back")
+			get_viewport().set_input_as_handled()
 		return
 
 	if mode == Mode.MAIN:
@@ -438,10 +442,10 @@ func _draw_atmosphere() -> void:
 
 
 func _draw_wick_lantern(ox: float, oy: float) -> void:
-	var x: float = roundf(ox)
-	var y: float = roundf(oy)
-	var bright: bool = fmod(_elapsed * 2.4, 1.0) < 0.55
-	var shift: float = 0.0 if fmod(_elapsed * 4.8, 1.0) < 0.5 else 1.0
+	var x: float = roundf(ox); var y: float = roundf(oy)
+	var fred: bool = LxHudFx.flash_reduced()
+	var bright: bool = fred or fmod(_elapsed * 2.4, 1.0) < 0.55
+	var shift: float = 0.0 if (fred or fmod(_elapsed * 4.8, 1.0) < 0.5) else 1.0
 	_px([[x + 2, y + 2, 3, 5], [x + 2, y + 8, 3, 1]], LxPalette.PAL["night"])
 	_px([[x + 2, y, 3, 1], [x + 1, y + 2, 1, 5], [x + 5, y + 2, 1, 5], [x + 1, y + 7, 5, 1]], LxPalette.PAL["apricot"])
 	_px([[x + 3, y, 1, 1], [x + 1, y + 1, 5, 1], [x + 2, y + 7, 3, 1]], LxPalette.PAL["gold"])
@@ -520,9 +524,8 @@ func _draw_slot_pips(origin: Vector2, relit: int, relit_arr: Array) -> void:
 		draw_rect(Rect2(px, origin.y, 3.0, 3.0), LxPalette.PAL["gold" if lit else "night"])
 		draw_rect(Rect2(px + 1.0, origin.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream" if lit else "dusk"])
 	if relit >= 8:
-		var cx: float = origin.x + 44.0
-		var cy: float = origin.y - 1.0
-		var hi: Color = LxPalette.PAL["cream"] if fmod(_elapsed * 2.2, 1.0) < 0.55 else LxPalette.PAL["gold"]
+		var cx: float = origin.x + 44.0; var cy: float = origin.y - 1.0
+		var hi: Color = LxPalette.PAL["cream"] if (LxHudFx.flash_reduced() or fmod(_elapsed * 2.2, 1.0) < 0.55) else LxPalette.PAL["gold"]
 		_px([[cx, cy + 2.0, 7.0, 2.0], [cx, cy + 1.0, 1.0, 1.0], [cx + 3.0, cy, 1.0, 2.0], [cx + 6.0, cy + 1.0, 1.0, 1.0]], LxPalette.PAL["gold"])
 		_px([[cx + 3.0, cy, 1.0, 1.0], [cx + 1.0, cy + 2.0, 1.0, 1.0], [cx + 5.0, cy + 2.0, 1.0, 1.0]], hi)
 

@@ -193,6 +193,14 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
+    },
+    {
+      "prop": "ash_urn_cluster",
+      "pos": [
+        160,
+        144
+      ],
+      "layer": "back"
     }
   ]
 }

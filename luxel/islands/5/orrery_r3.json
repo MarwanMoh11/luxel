@@ -197,6 +197,22 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.65
+    },
+    {
+      "prop": "star_chart_lectern",
+      "pos": [
+        68,
+        144
+      ],
+      "layer": "back"
+    },
+    {
+      "prop": "armillary_sphere",
+      "pos": [
+        242,
+        144
+      ],
+      "layer": "back"
     }
   ]
 }

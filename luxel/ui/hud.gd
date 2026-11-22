@@ -310,7 +310,7 @@ func _draw_hearts(origin: Vector2) -> void:
 		elif fill_amt >= 0.25:
 			for r: Rect2 in HALF_HEART_PIXELS:
 				draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["coral"])
-	if cur_h > 0.0 and cur_h <= 1.0 and fmod(_blink_t, 0.6) < 0.35:
+	if cur_h > 0.0 and cur_h <= 1.0 and (LxHudFx.flash_reduced() or fmod(_blink_t, 0.6) < 0.35):
 		var warn_y: float = origin.y + (15.0 if max_h > per_row else 8.0)
 		LxPixelFont.draw_left(self, LxStrings.text("HUD_LAST_HEART"), Vector2(origin.x, warn_y), LxPalette.PAL["coral"], 1)
 
@@ -362,7 +362,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 			unlocked.append(mid)
 	var step_x: float = 17.0
 	var slot_x: float = origin.x
-	var pulse_fast: bool = fmod(_blink_t, 0.44) < 0.22
+	var pulse_fast: bool = LxHudFx.flash_reduced() or fmod(_blink_t, 0.44) < 0.22
 	var lan_v: Variant = Lx.player.get("lantern") if Lx.player != null else null
 	var lan_stolen: bool = lan_v is Object and int((lan_v as Object).get("state")) == 4
 	var dash_v: Variant = Lx.player.get("move_dash") if Lx.player != null else null
@@ -447,7 +447,7 @@ func _draw_ember_meter(at: Vector2) -> void:
 	var bar_h: float = 8.0
 	var frac: float = clampf(_ember_val / maxf(1.0, _ember_max), 0.0, 1.0)
 	var ready: bool = frac >= 0.999
-	var border_col: String = "cream" if (ready and fmod(_blink_t, 0.5) < 0.25) else "mauve"
+	var border_col: String = "cream" if (ready and (LxHudFx.flash_reduced() or fmod(_blink_t, 0.5) < 0.25)) else ("gold" if ready else "mauve")
 	LxPixelFont.draw_panel(self, Rect2(at, Vector2(bar_w, bar_h)), "night", border_col, "void")
 	var inner_w: float = floorf((bar_w - 4.0) * frac)
 	if inner_w > 0.0:
@@ -463,7 +463,7 @@ func _draw_ember_meter(at: Vector2) -> void:
 func _draw_boss_bar() -> void:
 	var bar_w: float = 160.0
 	var bar_h: float = 8.0
-	var hit_jolt: float = (1.0 if fmod(_blink_t, 0.08) < 0.04 else -1.0) if (_boss_trail_hp - _boss_hp) > (_boss_max_hp * 0.015) else 0.0
+	var hit_jolt: float = (1.0 if fmod(_blink_t, 0.08) < 0.04 else -1.0) if (LxHudFx.shake_enabled() and not LxHudFx.flash_reduced() and (_boss_trail_hp - _boss_hp) > (_boss_max_hp * 0.015)) else 0.0
 	var x: float = roundf(160.0 - bar_w * 0.5) + hit_jolt
 	var y: float = 14.0
 	var resolved_key: String = resolve_boss_name_key(_boss_name_key)

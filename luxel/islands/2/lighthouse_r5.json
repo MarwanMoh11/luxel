@@ -207,6 +207,14 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "prop": "rope_coil",
+      "pos": [
+        44,
+        144
+      ],
+      "layer": "back"
     }
   ]
 }

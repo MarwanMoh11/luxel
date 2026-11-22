@@ -211,6 +211,22 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.8
+    },
+    {
+      "prop": "fern_cluster",
+      "pos": [
+        86,
+        40
+      ],
+      "layer": "back"
+    },
+    {
+      "prop": "fern_cluster",
+      "pos": [
+        234,
+        144
+      ],
+      "layer": "back"
     }
   ]
 }
