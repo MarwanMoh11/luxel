@@ -96,7 +96,7 @@ func get_interact_prompt() -> String:
 
 func get_light_pool() -> Vector4:
 	if _flash_t > 0.0:
-		return Vector4(pos.x, pos.y, 52.0, 1.1)
+		return Vector4(pos.x, pos.y, 52.0, 0.72 if LxHudFx.flash_reduced() else 1.1)
 	return Vector4.ZERO
 
 

@@ -185,6 +185,19 @@ func _draw_beckon_motes() -> void:
 
 
 func _draw_dawn_embers() -> void:
+	var fred: bool = LxHudFx.flash_reduced()
+	var beam_h: float = 34.0 + (0.0 if fred else roundf(sin(_clock * 1.9) * 4.0))
+	var by: float = -30.0
+	var step_i: int = 0
+	while by > -30.0 - beam_h:
+		if step_i % 2 == 0:
+			var bcol: Color = (PAL["cream"] if step_i < 2 else (PAL["gold"] if step_i < 6 else PAL["apricot"])) as Color
+			draw_rect(Rect2(0.0, by, 1.0, 2.0), bcol)
+		by -= 3.0
+		step_i += 1
+	for hi: int in range(6):
+		var ha: float = _clock * 0.38 + float(hi) * (TAU / 6.0)
+		draw_rect(Rect2(roundf(cos(ha) * 22.0), roundf(2.0 + sin(ha) * 6.5), 2.0 if hi % 2 == 0 else 1.0, 1.0), PAL["gold"] if hi % 2 == 0 else PAL["apricot"])
 	for i: int in range(5):
 		var t: float = fmod(_clock * 0.44 + float(i) * 0.2, 1.0)
 		var px: float = roundf(sin(_clock * 1.6 + float(i) * 1.3) * (4.0 + t * 7.0))

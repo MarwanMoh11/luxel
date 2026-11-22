@@ -155,8 +155,9 @@ func _draw() -> void:
 		if (m & 8) != 0:
 			draw_rect(Rect2(sx + ts - 1.0 - inset, sy + 2.0, 1.0, ts - 4.0), col)
 
-	var gl_hi: Color = (PAL["gold"] if _island_id in [1, 2] else (PAL["lime"] if _island_id in [3, 4] else PAL["cream"])) as Color
-	var gl_lo: Color = (PAL["sky"] if _island_id in [1, 2, 5, 7, 8] else PAL["teal"]) as Color
+	var relit_sea: bool = not _is_dungeon and Lx.state != null and Lx.state.relit_islands.has(_island_id)
+	var gl_hi: Color = (PAL["cream"] if relit_sea else (PAL["gold"] if _island_id in [1, 2] else (PAL["lime"] if _island_id in [3, 4] else PAL["cream"]))) as Color
+	var gl_lo: Color = (PAL["gold"] if relit_sea else (PAL["sky"] if _island_id in [1, 2, 5, 7, 8] else PAL["teal"])) as Color
 	for gl: Dictionary in _glints:
 		var gx: float = float(gl["x"])
 		var gy: float = float(gl["y"])
@@ -167,7 +168,7 @@ func _draw() -> void:
 			continue
 		var dx: float = roundf(s * 2.0)
 		var wpx: float = float(gl["w"]) if s > 0.35 else maxf(2.0, float(gl["w"]) - 1.0)
-		var col: Color = gl_hi if s > 0.72 else (PAL["ice"] if bool(gl["tide"]) and s > 0.30 else gl_lo)
+		var col: Color = gl_hi if s > 0.72 else ((PAL["apricot"] if relit_sea else PAL["ice"]) if bool(gl["tide"]) and s > 0.30 else gl_lo)
 		draw_rect(Rect2(roundf(gx + dx), gy, wpx, 1.0), col)
 
 	for ab: Dictionary in _abyss:

@@ -116,7 +116,7 @@ func _is_near_sanctuary(world_pos: Vector2) -> bool:
 	for it: Variant in (inters as Array):
 		if it is Node2D and is_instance_valid(it):
 			var k: String = str((it as Object).get("kind"))
-			if k in ["rest_shrine", "waystone", "great_lamp"]:
+			if k in ["rest_shrine", "waystone", "great_lamp", "brazier", "beacon"]:
 				if k != "rest_shrine" and not bool((it as Object).get("lit")):
 					continue
 				if (it as Node2D).global_position.distance_squared_to(world_pos) <= 4096.0:
