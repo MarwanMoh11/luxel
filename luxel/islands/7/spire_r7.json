@@ -191,42 +191,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "moon_dial_floor",
-      "pos": [
-        160,
-        88
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "floating_prism_totem",
-      "pos": [
-        236,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
-      "pos": [
-        236,
-        146
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
     }
   ]
 }

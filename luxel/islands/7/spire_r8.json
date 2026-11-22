@@ -223,22 +223,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
-    },
-    {
-      "prop": "shattered_mirror_shard",
-      "pos": [
-        160,
-        42
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "floating_prism_totem",
-      "pos": [
-        160,
-        148
-      ],
-      "layer": "back"
     }
   ]
 }

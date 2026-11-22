@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": false,
   "spawn": [
-    96,
-    288
+    120,
+    384
   ],
   "zones": [
     {
@@ -13,9 +13,9 @@
       "name_key": "ZONE_ISL7_1",
       "rect": [
         0,
-        208,
         288,
-        144
+        352,
+        208
       ],
       "dark": true
     },
@@ -25,8 +25,8 @@
       "rect": [
         0,
         0,
-        400,
-        208
+        512,
+        288
       ],
       "dark": true
     },
@@ -35,9 +35,9 @@
       "name_key": "ZONE_ISL7_3",
       "rect": [
         0,
-        352,
-        400,
-        224
+        496,
+        512,
+        272
       ],
       "dark": true
     },
@@ -45,10 +45,10 @@
       "id": "inverted_causeway",
       "name_key": "ZONE_ISL7_4",
       "rect": [
-        400,
-        352,
-        272,
-        224
+        512,
+        496,
+        336,
+        272
       ],
       "dark": true
     },
@@ -56,10 +56,10 @@
       "id": "lunar_glasscourt",
       "name_key": "ZONE_ISL7_5",
       "rect": [
-        672,
+        848,
         0,
-        352,
-        576
+        496,
+        768
       ],
       "dark": true
     },
@@ -67,10 +67,10 @@
       "id": "spire_terrace",
       "name_key": "ZONE_ISL7_6",
       "rect": [
-        400,
+        512,
         0,
-        272,
-        352
+        336,
+        496
       ],
       "dark": true
     }
@@ -79,7 +79,7 @@
     {
       "id": "exit_to_spire",
       "rect": [
-        496,
+        656,
         64,
         32,
         32
@@ -100,8 +100,8 @@
     {
       "id": "exit_to_island_8",
       "rect": [
-        960,
-        256,
+        1264,
+        352,
         32,
         64
       ],
@@ -124,17 +124,17 @@
       "kind": "moonshade_warden",
       "variant": "moonshade_warden",
       "pos": [
-        200,
-        296
+        232,
+        384
       ],
       "route": [
         [
-          184,
-          296
+          200,
+          384
         ],
         [
-          248,
-          296
+          264,
+          384
         ]
       ],
       "perches": [],
@@ -145,17 +145,17 @@
       "id": "hollow_wick_enc_1",
       "kind": "hollow_wick",
       "pos": [
-        264,
-        136
+        360,
+        184
       ],
       "route": [
         [
-          216,
-          136
+          312,
+          184
         ],
         [
-          328,
-          136
+          408,
+          184
         ]
       ],
       "perches": [],
@@ -167,22 +167,22 @@
       "kind": "moonshade_owl",
       "variant": "moonshade_owl",
       "pos": [
-        328,
-        184
+        408,
+        216
       ],
       "route": [],
       "perches": [
         [
-          200,
-          168
-        ],
-        [
-          328,
-          184
-        ],
-        [
           296,
-          104
+          216
+        ],
+        [
+          408,
+          216
+        ],
+        [
+          376,
+          152
         ]
       ],
       "zone": "mirror_shallows",
@@ -193,22 +193,22 @@
       "kind": "moonshade_snatcher",
       "variant": "moonshade_snatcher",
       "pos": [
-        296,
-        408
+        376,
+        568
       ],
       "route": [],
       "perches": [
         [
-          264,
-          392
+          360,
+          552
         ],
         [
-          344,
-          408
+          424,
+          568
         ],
         [
-          296,
-          472
+          392,
+          608
         ]
       ],
       "zone": "tideglass_basin",
@@ -219,17 +219,17 @@
       "kind": "moonshade_warden",
       "variant": "moonshade_warden",
       "pos": [
-        328,
-        456
+        392,
+        600
       ],
       "route": [
         [
-          280,
-          456
+          360,
+          600
         ],
         [
-          360,
-          456
+          424,
+          600
         ]
       ],
       "perches": [],
@@ -240,17 +240,17 @@
       "id": "hollow_wick_enc_2",
       "kind": "hollow_wick",
       "pos": [
-        504,
-        440
+        664,
+        600
       ],
       "route": [
         [
-          456,
-          440
+          600,
+          600
         ],
         [
-          568,
-          440
+          728,
+          600
         ]
       ],
       "perches": [],
@@ -262,17 +262,17 @@
       "kind": "moonshade_warden",
       "variant": "moonshade_warden",
       "pos": [
-        472,
-        488
+        632,
+        648
       ],
       "route": [
         [
-          440,
-          488
+          584,
+          648
         ],
         [
-          520,
-          488
+          680,
+          648
         ]
       ],
       "perches": [],
@@ -284,22 +284,22 @@
       "kind": "moonshade_snatcher",
       "variant": "moonshade_snatcher",
       "pos": [
-        584,
-        488
+        744,
+        648
       ],
       "route": [],
       "perches": [
         [
-          552,
-          472
+          712,
+          632
         ],
         [
-          632,
-          488
+          776,
+          648
         ],
         [
-          584,
-          408
+          744,
+          584
         ]
       ],
       "zone": "inverted_causeway",
@@ -309,17 +309,17 @@
       "id": "hollow_wick_enc_3",
       "kind": "hollow_wick",
       "pos": [
-        792,
-        296
+        1080,
+        384
       ],
       "route": [
         [
-          760,
-          296
+          1048,
+          384
         ],
         [
-          856,
-          296
+          1128,
+          384
         ]
       ],
       "perches": [],
@@ -331,22 +331,22 @@
       "kind": "moonshade_owl",
       "variant": "moonshade_owl",
       "pos": [
-        824,
-        184
+        1064,
+        248
       ],
       "route": [],
       "perches": [
         [
-          744,
-          168
+          984,
+          216
         ],
         [
-          872,
-          184
-        ],
-        [
-          808,
+          1112,
           248
+        ],
+        [
+          1048,
+          296
         ]
       ],
       "zone": "lunar_glasscourt",
@@ -357,22 +357,22 @@
       "kind": "moonshade_snatcher",
       "variant": "moonshade_snatcher",
       "pos": [
-        824,
-        392
+        1080,
+        520
       ],
       "route": [],
       "perches": [
         [
-          744,
-          392
+          1016,
+          520
         ],
         [
-          872,
-          408
+          1112,
+          536
         ],
         [
-          808,
-          344
+          1048,
+          472
         ]
       ],
       "zone": "lunar_glasscourt",
@@ -384,8 +384,8 @@
       "id": "ws_shoals_landing",
       "kind": "waystone",
       "pos": [
-        136,
-        280
+        168,
+        376
       ],
       "props": {
         "zone": "shoals_landing",
@@ -398,8 +398,8 @@
       "id": "rest_shrine_7",
       "kind": "rest_shrine",
       "pos": [
-        104,
-        264
+        136,
+        344
       ],
       "props": {
         "zone": "shoals_landing",
@@ -410,8 +410,8 @@
       "id": "ws_mirror_shallows",
       "kind": "waystone",
       "pos": [
-        200,
-        184
+        280,
+        248
       ],
       "props": {
         "zone": "mirror_shallows",
@@ -422,8 +422,8 @@
       "id": "beacon_7_1",
       "kind": "beacon",
       "pos": [
-        184,
-        120
+        296,
+        168
       ],
       "props": {
         "index": 0,
@@ -439,8 +439,8 @@
       "id": "mirror_7_ow_1",
       "kind": "mirror",
       "pos": [
-        280,
-        104
+        376,
+        136
       ],
       "props": {
         "angle_deg": 135,
@@ -451,8 +451,8 @@
       "id": "beacon_7_2",
       "kind": "beacon",
       "pos": [
-        296,
-        392
+        376,
+        536
       ],
       "props": {
         "index": 1,
@@ -467,8 +467,8 @@
       "id": "chest_ember_7_1",
       "kind": "chest",
       "pos": [
-        152,
-        488
+        248,
+        616
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -485,8 +485,8 @@
       "id": "chest_ember_7_2",
       "kind": "chest",
       "pos": [
-        536,
-        504
+        696,
+        664
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -500,8 +500,8 @@
       "id": "chest_shards_7_1",
       "kind": "chest",
       "pos": [
-        632,
-        408
+        776,
+        584
       ],
       "props": {
         "reward_kind": "shards",
@@ -514,8 +514,8 @@
       "id": "ws_lunar_glasscourt",
       "kind": "waystone",
       "pos": [
-        744,
-        280
+        1016,
+        376
       ],
       "props": {
         "zone": "lunar_glasscourt",
@@ -526,8 +526,8 @@
       "id": "beacon_7_3",
       "kind": "beacon",
       "pos": [
-        888,
-        136
+        1080,
+        184
       ],
       "props": {
         "index": 2,
@@ -543,7 +543,7 @@
       "id": "seal_7_ow_terrace",
       "kind": "obsidian_seal",
       "pos": [
-        600,
+        760,
         136
       ],
       "props": {
@@ -558,7 +558,7 @@
       "id": "chest_shards_7_2",
       "kind": "chest",
       "pos": [
-        616,
+        776,
         104
       ],
       "props": {
@@ -572,7 +572,7 @@
       "id": "door_dungeon_7",
       "kind": "door",
       "pos": [
-        512,
+        672,
         184
       ],
       "props": {
@@ -599,8 +599,8 @@
       "id": "bridge_of_light_7",
       "kind": "door",
       "pos": [
-        952,
-        296
+        1240,
+        384
       ],
       "props": {
         "door_kind": "bridge_of_light",
@@ -618,8 +618,8 @@
       "id": "lamp_7_w",
       "kind": "road_lamp",
       "pos": [
-        168,
-        264
+        200,
+        352
       ],
       "props": {
         "zone": "shoals_landing"
@@ -629,7 +629,7 @@
       "id": "lamp_7_n",
       "kind": "road_lamp",
       "pos": [
-        472,
+        632,
         216
       ],
       "props": {
@@ -640,8 +640,8 @@
       "id": "lamp_7_e",
       "kind": "road_lamp",
       "pos": [
-        760,
-        248
+        1032,
+        344
       ],
       "props": {
         "zone": "lunar_glasscourt"
@@ -652,8 +652,8 @@
     {
       "id": "trig_isl7_arrival",
       "rect": [
-        64,
-        256,
+        96,
+        352,
         80,
         64
       ],
@@ -663,8 +663,8 @@
     {
       "id": "trig_twist_hollow_1",
       "rect": [
-        192,
-        96,
+        288,
+        144,
         128,
         64
       ],
@@ -675,8 +675,8 @@
     {
       "id": "trig_isl7_z3",
       "rect": [
-        208,
-        368,
+        288,
+        528,
         80,
         48
       ],
@@ -686,8 +686,8 @@
     {
       "id": "trig_isl7_z4",
       "rect": [
-        432,
-        400,
+        608,
+        576,
         96,
         48
       ],
@@ -697,8 +697,8 @@
     {
       "id": "trig_isl7_z5",
       "rect": [
-        720,
-        256,
+        992,
+        352,
         80,
         64
       ],
@@ -708,7 +708,7 @@
     {
       "id": "trig_isl7_z6",
       "rect": [
-        464,
+        624,
         192,
         96,
         48
@@ -722,7 +722,7 @@
       "sheet": "island7_scenery",
       "prop": "mirror_spire_arch",
       "pos": [
-        512,
+        672,
         190
       ],
       "layer": "over",
@@ -734,8 +734,8 @@
       "sheet": "island7_scenery",
       "prop": "crystal_archway",
       "pos": [
-        512,
-        372
+        672,
+        560
       ],
       "layer": "over",
       "flip_x": false,
@@ -746,8 +746,8 @@
       "sheet": "island7_scenery",
       "prop": "crystal_archway",
       "pos": [
-        240,
-        212
+        272,
+        240
       ],
       "layer": "over",
       "flip_x": false,
@@ -758,8 +758,8 @@
       "sheet": "island7_scenery",
       "prop": "crystal_archway",
       "pos": [
-        784,
-        212
+        1072,
+        240
       ],
       "layer": "over",
       "flip_x": false,
@@ -770,7 +770,7 @@
       "sheet": "island7_scenery",
       "prop": "moon_dial_floor",
       "pos": [
-        512,
+        672,
         128
       ],
       "layer": "ground",
@@ -782,8 +782,8 @@
       "sheet": "island7_scenery",
       "prop": "moon_dial_floor",
       "pos": [
-        240,
-        288
+        672,
+        384
       ],
       "layer": "ground",
       "flip_x": false,
@@ -794,8 +794,8 @@
       "sheet": "island7_scenery",
       "prop": "moon_dial_floor",
       "pos": [
-        512,
-        424
+        672,
+        600
       ],
       "layer": "ground",
       "flip_x": false,
@@ -806,8 +806,8 @@
       "sheet": "island7_scenery",
       "prop": "moon_dial_floor",
       "pos": [
-        784,
-        288
+        272,
+        384
       ],
       "layer": "ground",
       "flip_x": false,
@@ -816,10 +816,22 @@
     },
     {
       "sheet": "island7_scenery",
+      "prop": "moon_dial_floor",
+      "pos": [
+        1072,
+        384
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island7_scenery",
       "prop": "reflection_ripple_ring",
       "pos": [
-        434,
-        248
+        536,
+        296
       ],
       "layer": "ground",
       "flip_x": false,
@@ -830,8 +842,8 @@
       "sheet": "island7_scenery",
       "prop": "reflection_ripple_ring",
       "pos": [
-        594,
-        248
+        808,
+        296
       ],
       "layer": "ground",
       "flip_x": false,
@@ -842,8 +854,8 @@
       "sheet": "island7_scenery",
       "prop": "reflection_ripple_ring",
       "pos": [
-        64,
-        152
+        536,
+        472
       ],
       "layer": "ground",
       "flip_x": false,
@@ -854,8 +866,8 @@
       "sheet": "island7_scenery",
       "prop": "reflection_ripple_ring",
       "pos": [
-        974,
-        176
+        808,
+        472
       ],
       "layer": "ground",
       "flip_x": false,
@@ -866,8 +878,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_willow_pale",
       "pos": [
-        74,
-        256
+        168,
+        320
       ],
       "layer": "sort",
       "flip_x": false,
@@ -878,8 +890,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        132,
-        248
+        232,
+        328
       ],
       "layer": "sort",
       "flip_x": false,
@@ -890,8 +902,8 @@
       "sheet": "island7_scenery",
       "prop": "standing_mirror_tall",
       "pos": [
-        198,
-        254
+        120,
+        440
       ],
       "layer": "sort",
       "flip_x": false,
@@ -902,8 +914,8 @@
       "sheet": "island7_scenery",
       "prop": "floating_prism_totem",
       "pos": [
-        62,
-        336
+        176,
+        440
       ],
       "layer": "sort",
       "flip_x": false,
@@ -914,8 +926,8 @@
       "sheet": "island7_scenery",
       "prop": "tide_mirror_basin",
       "pos": [
-        118,
-        344
+        232,
+        440
       ],
       "layer": "sort",
       "flip_x": false,
@@ -924,46 +936,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "moon_crystal_cluster",
-      "pos": [
-        164,
-        346
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "crescent_monolith",
-      "pos": [
-        200,
-        346
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "silver_drift_reef",
-      "pos": [
-        82,
-        356
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "silver_willow_pale",
       "pos": [
-        160,
-        102
+        232,
+        160
       ],
       "layer": "sort",
       "flip_x": true,
@@ -974,8 +950,8 @@
       "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        142,
-        148
+        248,
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -984,22 +960,46 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "tide_mirror_basin",
+      "prop": "standing_mirror_tall",
       "pos": [
-        162,
-        166
+        336,
+        128
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "inverted_bell_statue",
+      "pos": [
+        424,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "floating_prism_totem",
+      "pos": [
+        352,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
     },
     {
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        142,
-        208
+        216,
+        264
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1008,70 +1008,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "standing_mirror_tall",
-      "pos": [
-        242,
-        98
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "inverted_bell_statue",
-      "pos": [
-        354,
-        104
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "shattered_mirror_shard",
-      "pos": [
-        360,
-        166
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "floating_prism_totem",
-      "pos": [
-        298,
-        204
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "silver_drift_reef",
-      "pos": [
-        352,
-        208
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "silver_willow_pale",
       "pos": [
-        148,
-        404
+        232,
+        520
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1082,8 +1022,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        192,
-        408
+        320,
+        512
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1094,8 +1034,8 @@
       "sheet": "island7_scenery",
       "prop": "crescent_monolith",
       "pos": [
-        232,
-        468
+        424,
+        528
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1106,8 +1046,8 @@
       "sheet": "island7_scenery",
       "prop": "tide_mirror_basin",
       "pos": [
-        254,
-        502
+        376,
+        648
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1116,22 +1056,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "shattered_mirror_shard",
-      "pos": [
-        296,
-        514
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        364,
-        504
+        432,
+        640
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1140,34 +1068,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "silver_drift_reef",
-      "pos": [
-        334,
-        514
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "silver_brazier_stand",
-      "pos": [
-        364,
-        386
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
-        448,
-        86
+        624,
+        96
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1178,8 +1082,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        456,
-        124
+        624,
+        136
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1190,8 +1094,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        568,
-        124
+        720,
+        136
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1200,22 +1104,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "standing_mirror_tall",
-      "pos": [
-        432,
-        160
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.45
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        472,
-        162
+        632,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1226,8 +1118,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        552,
-        162
+        712,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1238,8 +1130,8 @@
       "sheet": "island7_scenery",
       "prop": "crescent_monolith",
       "pos": [
-        432,
-        212
+        568,
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1250,8 +1142,8 @@
       "sheet": "island7_scenery",
       "prop": "crescent_monolith",
       "pos": [
-        592,
-        212
+        776,
+        224
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1260,22 +1152,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "moon_crystal_cluster",
-      "pos": [
-        626,
-        214
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
-        420,
-        386
+        568,
+        568
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1286,8 +1166,8 @@
       "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
-        640,
-        386
+        804,
+        568
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1298,8 +1178,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        472,
-        384
+        624,
+        568
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1310,8 +1190,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        552,
-        384
+        720,
+        568
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1320,34 +1200,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "standing_mirror_tall",
-      "pos": [
-        422,
-        464
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "moon_crystal_cluster",
-      "pos": [
-        644,
-        460
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.55
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        422,
-        514
+        568,
+        664
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1358,8 +1214,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        642,
-        514
+        804,
+        664
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1370,8 +1226,8 @@
       "sheet": "island7_scenery",
       "prop": "shattered_mirror_shard",
       "pos": [
-        484,
-        516
+        648,
+        672
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1380,22 +1236,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "silver_drift_reef",
-      "pos": [
-        588,
-        516
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "silver_willow_pale",
       "pos": [
-        720,
-        122
+        1112,
+        160
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1404,34 +1248,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
-      "pos": [
-        716,
-        186
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "tide_mirror_basin",
-      "pos": [
-        724,
-        224
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "standing_mirror_tall",
       "pos": [
-        836,
-        114
+        1008,
+        128
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1440,22 +1260,22 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "crescent_monolith",
+      "prop": "inverted_bell_statue",
       "pos": [
-        916,
-        118
+        920,
+        136
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.4
     },
     {
       "sheet": "island7_scenery",
       "prop": "floating_prism_totem",
       "pos": [
-        918,
-        166
+        992,
+        240
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1464,22 +1284,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "moon_crystal_cluster",
-      "pos": [
-        920,
-        206
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        906,
-        250
+        1176,
+        336
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1490,8 +1298,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        906,
-        336
+        1176,
+        432
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1502,8 +1310,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        886,
-        250
+        1136,
+        336
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1514,8 +1322,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        886,
-        332
+        1136,
+        432
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1524,22 +1332,10 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "inverted_bell_statue",
-      "pos": [
-        718,
-        352
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "silver_willow_pale",
       "pos": [
-        902,
-        396
+        1144,
+        520
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1548,22 +1344,22 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
+      "prop": "crescent_monolith",
       "pos": [
-        736,
-        466
+        920,
+        528
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
-      "phase": 0.2
+      "phase": 0.0
     },
     {
       "sheet": "island7_scenery",
       "prop": "tide_mirror_basin",
       "pos": [
-        856,
-        464
+        968,
+        648
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1572,63 +1368,15 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "shattered_mirror_shard",
-      "pos": [
-        916,
-        462
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "silver_drift_reef",
-      "pos": [
-        792,
-        474
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
-      "pos": [
-        266,
-        388
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
-      "pos": [
-        326,
-        388
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        296,
-        418
+        1104,
+        624
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
-      "phase": 0.3
+      "phase": 0.6
     }
   ]
 }

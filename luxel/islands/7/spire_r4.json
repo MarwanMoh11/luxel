@@ -168,22 +168,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.3
-    },
-    {
-      "prop": "standing_mirror_tall",
-      "pos": [
-        42,
-        48
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "moon_dial_floor",
-      "pos": [
-        160,
-        90
-      ],
-      "layer": "floor"
     }
   ]
 }
