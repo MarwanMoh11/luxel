@@ -265,7 +265,7 @@ func _draw_death() -> void:
 	var stats_line: String = LxStrings.fmt("DEATH_STATS_FMT", [LxStrings.format_time(play_s), deaths, shards])
 	LxPixelFont.draw_centered(self, stats_line, 160.0, 86.0, LxPalette.PAL["stone"], 1)
 
-	var pulse: Color = LxPalette.PAL["gold"] if fmod(_elapsed, 1.2) < 0.6 else LxPalette.PAL["apricot"]
+	var pulse: Color = LxPalette.PAL["gold"] if (LxHudFx.flash_reduced() or fmod(_elapsed, 1.2) < 0.6) else LxPalette.PAL["apricot"]
 	var retry_txt: String = LxStrings.text("DEATH_RETRY_HINT")
 	var rw: float = float(LxPixelFont.width(retry_txt, 1))
 	draw_rect(Rect2(roundf(160.0 - rw * 0.5 - 6.0), 109.0, 2.0, 2.0), pulse)

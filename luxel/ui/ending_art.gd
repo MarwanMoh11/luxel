@@ -86,8 +86,9 @@ static func draw_intro_backdrop(ci: CanvasItem, t: float) -> void:
 	_draw_stars(ci, t, 30, 8.0, 128.0, 73, true, 0.0, 76.0, 100.0)
 	# Subtle flickering golden Wick-lantern glow silhouette below text (y = 128).
 	var boost: bool = t >= 4.0
-	var flk: bool = fmod(t * 2.5, 1.0) < 0.58
-	var dr: float = roundf(sin(t * 2.2))
+	var fr: bool = LxHudFx.flash_reduced()
+	var flk: bool = fr or fmod(t * 2.5, 1.0) < 0.58
+	var dr: float = 0.0 if fr else roundf(sin(t * 2.2))
 	_px(ci, [[-10, 0, 1, 1], [10, 0, 1, 1], [-7, -5, 1, 1], [7, -5, 1, 1], [-7, 5, 1, 1], [7, 5, 1, 1], [-4 + dr, 10, 9, 1], [-2 - dr, 13, 5, 1]], "plum", 160.0, 128.0)
 	_px(ci, [[-6, 0, 1, 1], [6, 0, 1, 1], [0, -6, 1, 1], [0, 6, 1, 1], [-4, -3, 1, 1], [4, -3, 1, 1], [-4, 3, 1, 1], [4, 3, 1, 1]], "coral" if (boost and flk) else "wine", 160.0, 128.0)
 	_px(ci, [[-2, -5, 5, 1], [-3, -4, 7, 1], [-3, 4, 7, 1], [-2, 5, 5, 1]], "night", 160.0, 128.0)
@@ -143,8 +144,9 @@ static func draw_lantern_core(ci: CanvasItem, at: Vector2, tier: int, t: float) 
 		_px(ci, [[-2, -4, 5, 1], [-2, 4, 5, 1], [-2, -3, 1, 7], [2, -3, 1, 7]], "night", x, y)
 		ci.draw_rect(Rect2(x, y, 1.0, 1.0), LxPalette.PAL["apricot"])
 		return
-	var flk: bool = fmod(t * 3.4, 1.0) < 0.55
-	var shift: float = 0.0 if fmod(t * 6.0, 1.0) < 0.5 else 1.0
+	var fr: bool = LxHudFx.flash_reduced()
+	var flk: bool = fr or fmod(t * 3.4, 1.0) < 0.55
+	var shift: float = 0.0 if (fr or fmod(t * 6.0, 1.0) < 0.5) else 1.0
 	if tier >= 2:
 		_px(ci, [[-8, 0, 1, 1], [8, 0, 1, 1], [0, -10, 1, 1], [0, 9, 1, 1], [-6, -5, 1, 1], [6, -5, 1, 1], [-6, 5, 1, 1], [6, 5, 1, 1]], "coral" if flk else "wine", x, y)
 		_px(ci, [[-5, -1, 1, 3], [5, -1, 1, 3]], "apricot" if flk else "coral", x, y)
@@ -241,7 +243,7 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 	var lit_at: float = 1.0 + float(idx) * 0.35
 	if t >= lit_at:
 		var age: float = t - lit_at
-		var flk: bool = fmod(t * 3.8 + float(idx) * 0.4, 1.0) < 0.55
+		var flk: bool = LxHudFx.flash_reduced() or fmod(t * 3.8 + float(idx) * 0.4, 1.0) < 0.55
 		if age < 0.48:
 			var u_ring: float = clampf(age / 0.48, 0.0, 1.0)
 			var ring_r: float = roundf(lerpf(3.0, 18.0, 1.0 - (1.0 - u_ring) * (1.0 - u_ring)))
@@ -268,7 +270,7 @@ static func _draw_wick_silhouette(ci: CanvasItem, t: float) -> void:
 	ci.draw_rect(Rect2(25.0, 145.0, 4.0, 3.0), LxPalette.PAL["apricot"])
 	ci.draw_rect(Rect2(26.0, 145.0, 2.0, 2.0), LxPalette.PAL["gold"])
 	ci.draw_rect(Rect2(26.0, 146.0, 1.0, 1.0), LxPalette.PAL["cream"])
-	if fmod(t * 2.8, 1.0) < 0.55:
+	if LxHudFx.flash_reduced() or fmod(t * 2.8, 1.0) < 0.55:
 		_px(ci, [[24, 146, 1, 1], [29, 146, 1, 1], [27, 143, 1, 1]], "gold")
 
 static func rank_text_color(rank_key: String) -> Color:
@@ -303,13 +305,13 @@ static func _draw_rank_medallion(ci: CanvasItem, rank_key: String, t: float) -> 
 	if rank_key == "RANK_S":
 		_px(ci, [[155, 51, 11, 2], [155, 50, 2, 1], [159, 49, 3, 2], [164, 50, 2, 1]], "gold")
 		_px(ci, [[160, 49, 1, 2], [156, 51, 1, 1], [164, 51, 1, 1]], "cream")
-		var sg: bool = fmod(t * 2.4, 1.0) < 0.5
+		var sg: bool = LxHudFx.flash_reduced() or fmod(t * 2.4, 1.0) < 0.5
 		_px(ci, [[117, 54, 1, 1], [202, 54, 1, 1]] if sg else [[117, 67, 1, 1], [202, 67, 1, 1]], "cream")
 		_px(ci, [[116, 54, 1, 1], [118, 54, 1, 1], [201, 54, 1, 1], [203, 54, 1, 1]] if sg else [[116, 67, 1, 1], [118, 67, 1, 1], [201, 67, 1, 1], [203, 67, 1, 1]], "gold")
 	elif rank_key == "RANK_A":
 		_px(ci, [[155, 51, 4, 2], [162, 51, 4, 2], [158, 50, 5, 1]], "lime")
 		ci.draw_rect(Rect2(159.0, 51.0, 3.0, 2.0), LxPalette.PAL["gold"])
-		if fmod(t * 2.0, 1.0) < 0.45:
+		if LxHudFx.flash_reduced() or fmod(t * 2.0, 1.0) < 0.45:
 			_px(ci, [[118, 55, 1, 1], [201, 55, 1, 1]], "cream")
 	elif rank_key == "RANK_B":
 		_px(ci, [[159, 50, 3, 3], [157, 51, 7, 1]], "sky")

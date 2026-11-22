@@ -274,7 +274,7 @@ func _draw_compass_rose(c: Vector2) -> void:
 	_px(c, [[-3, -2, 1, 1], [3, -2, 1, 1], [-3, 2, 1, 1], [3, 2, 1, 1], [-2, -3, 1, 1], [2, -3, 1, 1], [-2, 3, 1, 1], [2, 3, 1, 1], [-2, -2, 1, 1], [2, -2, 1, 1], [-2, 2, 1, 1], [2, 2, 1, 1]], dusk)
 	_px(c, [[-1, -1, 1, 1], [1, -1, 1, 1], [-1, 1, 1, 1], [1, 1, 1, 1], [-4, 0, 9, 1], [0, 1, 1, 4]], apr)
 	_px(c, [[-2, 0, 5, 1], [0, 1, 1, 2], [0, -4, 1, 4]], gold)
-	draw_rect(Rect2(c.x, c.y - 5.0, 1.0, 2.0), cream if fmod(_elapsed, 2.0) < 1.2 else gold)
+	draw_rect(Rect2(c.x, c.y - 5.0, 1.0, 2.0), cream if (LxHudFx.flash_reduced() or fmod(_elapsed, 2.0) < 1.2) else gold)
 	draw_rect(Rect2(c.x, c.y, 1.0, 1.0), cream)
 
 
@@ -289,7 +289,7 @@ func _draw_bridges() -> void:
 			var p: Vector2 = a.lerp(b, float(s) / 8.0).round()
 			if open_bridge:
 				draw_rect(Rect2(p + Vector2(0.0, 1.0), Vector2(2.0, 1.0)), LxPalette.PAL["night"])
-				draw_rect(Rect2(p, Vector2(2.0, 2.0)), LxPalette.PAL["gold"] if (s + floori(_elapsed * 3.2)) % 3 == 0 else LxPalette.PAL["apricot"])
+				draw_rect(Rect2(p, Vector2(2.0, 2.0)), LxPalette.PAL["gold"] if ((s if LxHudFx.flash_reduced() else s + floori(_elapsed * 3.2)) % 3 == 0) else LxPalette.PAL["apricot"])
 			else:
 				draw_rect(Rect2(p, Vector2(2.0, 1.0)), LxPalette.PAL["dusk"])
 		if open_bridge:
@@ -318,7 +318,7 @@ func _draw_islands() -> void:
 			if relit:
 				_draw_relit_sparkle(c + Vector2(0.0, -14.0), isl_id)
 			if is_cur:
-				_draw_wick_pip(c + Vector2(-9.0, -9.0 + roundf(sin(_elapsed * 3.8) * 1.5)))
+				_draw_wick_pip(c + Vector2(-9.0, -9.0 + (0.0 if LxHudFx.flash_reduced() else roundf(sin(_elapsed * 3.8) * 1.5))))
 		if is_sel:
 			_draw_selection_brackets(c, false)
 		elif isl_id == _hover_island:
@@ -360,7 +360,7 @@ func _draw_island_landmark(c: Vector2, isl_id: int, relit: bool) -> void:
 			_px(c, [[1, -8, 1, 6]], LxPalette.PAL["stone"])
 			_px(c, [[-3, -9, 6, 1]], LxPalette.PAL["dusk"])
 			_px(c, [[-1, -12, 2, 1]], LxPalette.PAL["night"])
-			var lit: bool = fmod(_elapsed, 1.6) < 0.9
+			var lit: bool = LxHudFx.flash_reduced() or fmod(_elapsed, 1.6) < 0.9
 			_px(c, [[-1, -11, 2, 2]], LxPalette.PAL["cream"] if lit else LxPalette.PAL["gold"])
 			if lit:
 				_px(c, [[-3, -10, 1, 1], [2, -10, 1, 1]], LxPalette.PAL["gold"])
@@ -389,7 +389,7 @@ func _draw_island_landmark(c: Vector2, isl_id: int, relit: bool) -> void:
 			_px(c, [[-3, -7, 6, 5]], LxPalette.PAL["dusk"])
 			_px(c, [[-2, -9, 4, 2]], LxPalette.PAL["night"])
 			_px(c, [[-3, -9, 6, 1]], LxPalette.PAL["wine"])
-			_px(c, [[-1, -4, 2, 2]], LxPalette.PAL["apricot"] if fmod(_elapsed * 2.2, 1.0) < 0.5 else LxPalette.PAL["coral"])
+			_px(c, [[-1, -4, 2, 2]], LxPalette.PAL["apricot"] if (LxHudFx.flash_reduced() or fmod(_elapsed * 2.2, 1.0) < 0.5) else LxPalette.PAL["coral"])
 			_px(c, [[0, -3, 1, 1]], LxPalette.PAL["gold"])
 			var puff: float = floorf(fmod(_elapsed * 2.5, 3.0))
 			draw_rect(Rect2(roundf(c.x - 1.0 + puff * 0.5), c.y - 10.0 - puff, 1.0, 1.0), LxPalette.PAL["coral"])
@@ -410,7 +410,7 @@ func _draw_island_landmark(c: Vector2, isl_id: int, relit: bool) -> void:
 
 func _draw_relit_sparkle(p: Vector2, isl_id: int) -> void:
 	var sp := Vector2(roundf(p.x), maxf(29.0, roundf(p.y)))
-	if fmod(_elapsed * 1.8 + float(isl_id) * 0.37, 1.2) < 0.6:
+	if LxHudFx.flash_reduced() or fmod(_elapsed * 1.8 + float(isl_id) * 0.37, 1.2) < 0.6:
 		_px(sp, [[-1, 0, 1, 1], [1, 0, 1, 1], [0, -1, 1, 1], [0, 1, 1, 1]], LxPalette.PAL["gold"])
 		draw_rect(Rect2(sp, Vector2(1.0, 1.0)), LxPalette.PAL["cream"])
 	else:
@@ -419,7 +419,7 @@ func _draw_relit_sparkle(p: Vector2, isl_id: int) -> void:
 
 func _draw_wick_pip(p: Vector2) -> void:
 	var wp := Vector2(roundf(p.x), maxf(30.0, roundf(p.y)))
-	var flk: bool = fmod(_elapsed * 3.0, 1.0) < 0.55
+	var flk: bool = LxHudFx.flash_reduced() or fmod(_elapsed * 3.0, 1.0) < 0.55
 	draw_rect(Rect2(wp, Vector2(5.0, 6.0)), LxPalette.PAL["night"])
 	_px(wp, [[1, 0, 3, 1], [1, 5, 3, 1]], LxPalette.PAL["apricot"])
 	_px(wp, [[1, 1, 3, 4]], LxPalette.PAL["gold"] if flk else LxPalette.PAL["apricot"])
@@ -427,7 +427,7 @@ func _draw_wick_pip(p: Vector2) -> void:
 
 
 func _draw_selection_brackets(c: Vector2, is_hover: bool = false) -> void:
-	var pulse: bool = not is_hover and fmod(_elapsed, 1.1) < 0.55
+	var pulse: bool = not is_hover and not LxHudFx.flash_reduced() and fmod(_elapsed, 1.1) < 0.55
 	var ex: float = 1.0 if pulse else 0.0
 	var col: Color = LxPalette.PAL["sky"] if is_hover else (LxPalette.PAL["cream"] if pulse else LxPalette.PAL["gold"])
 	var l: float = roundf(c.x - 10.0 - ex)

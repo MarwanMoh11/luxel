@@ -213,7 +213,7 @@ func _draw() -> void:
 func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 	var r: Rect2 = _row_rect(i)
 	var denied: bool = _deny_t > 0.0 and i == _deny_row
-	if denied:
+	if denied and LxHudFx.shake_enabled():
 		r.position.x += roundf(sin(_deny_t * 54.0) * 1.6)
 	var sel: bool = i == _idx
 	var uid: String = str(u.get("id", ""))
@@ -280,9 +280,10 @@ func _draw_frame_ornaments() -> void:
 func _draw_brazier_icon(at: Vector2) -> void:
 	var x: float = roundf(at.x)
 	var y: float = roundf(at.y)
-	var tip: float = 0.0 if fmod(_elapsed * 5.2, 1.0) < 0.5 else 1.0
+	var fr: bool = LxHudFx.flash_reduced()
+	var tip: float = 0.0 if (fr or fmod(_elapsed * 5.2, 1.0) < 0.5) else 1.0
 	var flare: bool = _spark_t > 0.0
-	var bright: bool = flare or fmod(_elapsed * 2.6, 1.0) < 0.55
+	var bright: bool = fr or flare or fmod(_elapsed * 2.6, 1.0) < 0.55
 	if flare:
 		draw_rect(Rect2(x + 3.0, y - 2.0, 1.0, 2.0), LxPalette.PAL["cream"])
 		draw_rect(Rect2(x + 2.0, y - 1.0, 3.0, 2.0), LxPalette.PAL["gold"])
@@ -304,7 +305,7 @@ func _draw_brazier_icon(at: Vector2) -> void:
 func _draw_shard_gem_icon(at: Vector2) -> void:
 	var x: float = roundf(at.x)
 	var y: float = roundf(at.y)
-	var glint: bool = fmod(_elapsed * 2.2, 1.0) < 0.45
+	var glint: bool = LxHudFx.flash_reduced() or fmod(_elapsed * 2.2, 1.0) < 0.45
 	draw_rect(Rect2(x + 3.0, y, 1.0, 1.0), LxPalette.PAL["cream"] if glint else LxPalette.PAL["gold"])
 	draw_rect(Rect2(x + 2.0, y + 1.0, 3.0, 1.0), LxPalette.PAL["gold"])
 	draw_rect(Rect2(x + 1.0, y + 2.0, 5.0, 3.0), LxPalette.PAL["apricot"])
@@ -329,19 +330,20 @@ func _draw_upgrade_icon(at: Vector2, uid: String, sel: bool) -> void:
 				continue
 			var key: String = str(ICON_PAL.get(ch, "cream"))
 			draw_rect(Rect2(x + float(c_i), y + float(r_i), 1.0, 1.0), LxPalette.color(key))
-	if sel and fmod(_elapsed * 3.0, 1.0) < 0.45:
+	if sel and (LxHudFx.flash_reduced() or fmod(_elapsed * 3.0, 1.0) < 0.45):
 		draw_rect(Rect2(x + 6.0, y, 1.0, 1.0), LxPalette.PAL["cream"])
 
 
 func _draw_rank_pip(pr: Rect2, filled: bool, sel: bool, idx: int, next_buy: bool = false) -> void:
-	draw_rect(pr.grow(1.0), LxPalette.PAL["gold"] if (next_buy and fmod(_elapsed * 3.6, 1.0) < 0.55) else (LxPalette.PAL["apricot"] if next_buy else LxPalette.PAL["void"]))
+	var fr: bool = LxHudFx.flash_reduced()
+	draw_rect(pr.grow(1.0), LxPalette.PAL["gold"] if (next_buy and (fr or fmod(_elapsed * 3.6, 1.0) < 0.55)) else (LxPalette.PAL["apricot"] if next_buy else LxPalette.PAL["void"]))
 	if not filled:
 		draw_rect(pr, LxPalette.PAL["night"])
 		draw_rect(Rect2(pr.position.x + 1.0, pr.end.y - 1.0, 4.0, 1.0), LxPalette.PAL["dusk"])
 		draw_rect(Rect2(pr.end.x - 1.0, pr.position.y + 1.0, 1.0, 4.0), LxPalette.PAL["dusk"])
 		draw_rect(Rect2(pr.position.x + 2.0, pr.position.y + 2.0, 1.0, 1.0), LxPalette.PAL["gold"] if next_buy else LxPalette.PAL["dusk"])
 		return
-	var shimmer: bool = fmod(_elapsed * 2.5 + float(idx) * 0.35, 1.0) < 0.4
+	var shimmer: bool = fr or fmod(_elapsed * 2.5 + float(idx) * 0.35, 1.0) < 0.4
 	draw_rect(pr, LxPalette.PAL["apricot"])
 	draw_rect(Rect2(pr.position.x + 1.0, pr.position.y, 3.0, 5.0), LxPalette.PAL["gold"])
 	draw_rect(Rect2(pr.position.x, pr.position.y + 1.0, 5.0, 3.0), LxPalette.PAL["gold"])

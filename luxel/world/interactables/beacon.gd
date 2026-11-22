@@ -129,7 +129,7 @@ func _draw() -> void:
 	draw_rect(Rect2(-12.0, 1.0, 24.0, 4.0), shadow)
 	draw_rect(Rect2(-8.0, 0.0, 16.0, 6.0), shadow)
 	var ready: bool = not lit and ignitable
-	var jx: float = roundf(sin(_locked_t * 55.0) * 1.5) if _locked_t > 0.0 else 0.0
+	var jx: float = roundf(sin(_locked_t * 55.0) * 1.5) if (_locked_t > 0.0 and LxHudFx.shake_enabled()) else 0.0
 	if ready:
 		_draw_invite_ring(false)
 	var frame_ov: int = -1 if (lit or ignitable) else 0

@@ -280,7 +280,7 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
-	var rattle_dx: float = (1.0 if int(floorf(_rattle_t * 36.0)) % 2 == 0 else -1.0) if _rattle_t > 0.0 else 0.0
+	var rattle_dx: float = (1.0 if int(floorf(_rattle_t * 36.0)) % 2 == 0 else -1.0) if (_rattle_t > 0.0 and LxHudFx.shake_enabled()) else 0.0
 	var x0: float = floorf(-w * 0.5) + rattle_dx
 	var y0: float = floorf(-h * 0.5)
 	if not opened and door_type == "ward_barrier" and size.x <= 40.0 and size.y <= 24.0:

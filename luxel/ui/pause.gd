@@ -171,7 +171,7 @@ func _draw_brass_filigree() -> void:
 		x += 4.0
 	draw_rect(Rect2(p.x + 13.0, cy - 1.0, 2.0, 3.0), gold)
 	draw_rect(Rect2(e.x - 15.0, cy - 1.0, 2.0, 3.0), gold)
-	var glow: bool = fmod(_elapsed * 2.2, 1.0) < 0.55
+	var glow: bool = LxHudFx.flash_reduced() or fmod(_elapsed * 2.2, 1.0) < 0.55
 	draw_rect(Rect2(158.0, cy, 5.0, 1.0), apr)
 	draw_rect(Rect2(159.0, cy - 1.0, 3.0, 3.0), gold)
 	draw_rect(Rect2(160.0, cy, 1.0, 1.0), LxPalette.PAL["cream"] if glow else gold)
@@ -180,8 +180,9 @@ func _draw_brass_filigree() -> void:
 func _draw_wick_lantern(ox: float, oy: float) -> void:
 	var x: float = roundf(ox)
 	var y: float = roundf(oy)
-	var bright: bool = fmod(_elapsed * 2.4, 1.0) < 0.55
-	var shift: float = 0.0 if fmod(_elapsed * 4.8, 1.0) < 0.5 else 1.0
+	var fr: bool = LxHudFx.flash_reduced()
+	var bright: bool = fr or fmod(_elapsed * 2.4, 1.0) < 0.55
+	var shift: float = 0.0 if (fr or fmod(_elapsed * 4.8, 1.0) < 0.5) else 1.0
 	draw_rect(Rect2(x + 2.0, y + 2.0, 3.0, 5.0), LxPalette.PAL["night"])
 	draw_rect(Rect2(x + 2.0, y, 3.0, 1.0), LxPalette.PAL["apricot"])
 	draw_rect(Rect2(x + 1.0, y + 2.0, 1.0, 4.0), LxPalette.PAL["apricot"])
