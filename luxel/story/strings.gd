@@ -273,6 +273,7 @@ const TABLE: Dictionary = {
 	# ---- Enemy & World Cues ----
 	"CUE_EATS_BOLTS": "EATS BOLTS!",
 	"CUE_OPEN": "OPEN!",
+	"CUE_PERFECT_DODGE": "PERFECT!",
 	"CUE_BELL_ARCH_OPEN": "BELL ARCH OPEN!",
 	"CUE_BEACON_LIT": "BEACON LIT!",
 	"CUE_WAYSTONE_LIT": "WAYSTONE LIT!",

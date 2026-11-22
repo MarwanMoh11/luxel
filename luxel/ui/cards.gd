@@ -125,6 +125,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if mode == Mode.INTRO:
 		if _is_any_action_press(event):
+			if Lx.audio != null:
+				Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
 			close()
 			intro_finished.emit()
 			get_viewport().set_input_as_handled()
@@ -139,11 +141,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if mode == Mode.DEATH:
 		if event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
+			if Lx.audio != null:
+				Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
 			close()
 			title_requested.emit()
 			get_viewport().set_input_as_handled()
 			return
 		if _is_any_action_press(event):
+			if Lx.audio != null:
+				Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
 			close()
 			retry_requested.emit()
 			get_viewport().set_input_as_handled()

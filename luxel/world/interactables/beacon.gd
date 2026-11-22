@@ -8,6 +8,7 @@ var ignitable: bool = false
 var zone_id: String = ""
 var require_clear: bool = true
 var _unlock_t: float = 0.0
+var _locked_t: float = 0.0
 var _synced_once: bool = false
 
 
@@ -29,6 +30,9 @@ func tick(dt: float) -> void:
 	if _unlock_t > 0.0:
 		_unlock_t = maxf(0.0, _unlock_t - dt)
 		queue_redraw()
+	if _locked_t > 0.0:
+		_locked_t = maxf(0.0, _locked_t - dt)
+		queue_redraw()
 	if lit:
 		ignitable = true
 	else:
@@ -47,7 +51,12 @@ func tick(dt: float) -> void:
 
 
 func interact(_actor: Node = null) -> bool:
-	if not active or lit or not ignitable:
+	if not active or lit:
+		return false
+	if not ignitable:
+		_locked_t = 0.24
+		_emit_sfx("door_locked")
+		queue_redraw()
 		return false
 	return _ignite()
 
@@ -109,11 +118,17 @@ func _draw() -> void:
 	draw_rect(Rect2(-12.0, 1.0, 24.0, 4.0), shadow)
 	draw_rect(Rect2(-8.0, 0.0, 16.0, 6.0), shadow)
 	var ready: bool = not lit and ignitable
+	var jx: float = roundf(sin(_locked_t * 55.0) * 1.5) if _locked_t > 0.0 else 0.0
 	if ready:
 		_draw_invite_ring(false)
 	var frame_ov: int = -1 if (lit or ignitable) else 0
-	if not _draw_prop_sprite("beacon" if lit else "beacon_unlit", Vector2.ZERO, frame_ov):
+	if not _draw_prop_sprite("beacon" if lit else "beacon_unlit", Vector2(jx, 0.0), frame_ov):
 		_draw_fallback()
+	if not lit and not ignitable:
+		var wc: Color = (PAL["coral"] if _locked_t > 0.0 else PAL["plum"]) as Color
+		for k: int in range(8):
+			var wa: float = _clock * 0.4 + float(k) * (TAU / 8.0)
+			draw_rect(Rect2(roundf(cos(wa) * 13.0) + jx, roundf(1.5 + sin(wa) * 4.0), 2.0, 1.0), wc)
 	if ready:
 		_draw_invite_ring(true)
 		_draw_ready_sparks()

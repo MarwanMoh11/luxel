@@ -73,6 +73,7 @@ func press_beam() -> bool:
 func release_beam() -> bool:
 	if not charging:
 		return false
+	var held_t: float = charge_t
 	var ready: bool = charge_t >= charge_time - 0.001
 	charging = false
 	charge_t = 0.0
@@ -80,6 +81,9 @@ func release_beam() -> bool:
 		Lx.input.clear_toggle("lx_beam")
 	if ready:
 		return fire_instant_beam(_world_ctx)
+	if held_t >= 0.15 and wick != null:
+		wick.spawn_sparks(wick.global_position, wick.facing, 3, LxWick.PAL_APRICOT, 16.0, 42.0, 0.16)
+		wick.emit_sfx("bolt_wall", wick.global_position, false)
 	return false
 
 

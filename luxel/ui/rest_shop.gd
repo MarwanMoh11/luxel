@@ -161,7 +161,7 @@ func _try_buy(i: int) -> void:
 		_feedback_key = "SHOP_MAXED" if Lx.state.get_upgrade_rank(uid) >= int(u.get("max_rank", 0)) else "SHOP_NO_SHARDS"
 		_feedback_col = "stone" if _feedback_key == "SHOP_MAXED" else "coral"
 		_feedback_t = 1.2
-		_play_ui_sfx("ui_back")
+		_play_ui_sfx("denied")
 	queue_redraw()
 
 

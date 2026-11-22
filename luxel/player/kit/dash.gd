@@ -215,9 +215,21 @@ func on_perfect_dodge() -> bool:
 		perfect_refund_done = true
 		cooldown_left = 0.0
 		wick.perfect_dodges += 1
-		wick.spawn_ring(wick.global_position, 3.0, 16.0, 0.22, LxWick.PAL_SKY, 1.5)
-		wick.spawn_sparks(wick.global_position, -dash_dir, 6, LxWick.PAL_ICE, 30.0, 75.0, 0.20)
+		wick.trigger_hitstop(0.045)
+		wick.trigger_shake(0.10)
+		wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.24, LxWick.PAL_ICE, 1.5)
+		wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.18, LxWick.PAL_CREAM, 1.0)
+		wick.spawn_sparks(wick.global_position, -dash_dir, 8, LxWick.PAL_ICE, 34.0, 86.0, 0.22)
 		wick.emit_sfx("perfect_dodge", wick.global_position, false)
+		if Lx.ui != null and Lx.ui.get("hud") != null and (Lx.ui.get("hud") as Node).has_method("spawn_world_cue"):
+			(Lx.ui.get("hud") as Node).call("spawn_world_cue", "CUE_PERFECT_DODGE", wick.global_position + Vector2(0.0, -10.0), "ice", 1.1)
+		if wick.move_sunflare != null and wick.move_sunflare.unlocked:
+			var emax: float = wick.move_sunflare.get_ember_max()
+			var was_full: bool = wick.ember >= emax - 0.001
+			wick.ember = minf(emax, wick.ember + 10.0)
+			if not was_full and wick.ember >= emax - 0.001:
+				wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
+				wick.emit_sfx("beam_ready", wick.global_position, false)
 	return true
 
 

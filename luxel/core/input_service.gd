@@ -28,6 +28,7 @@ const AIM_ASSIST_ENABLED: bool = false # Locked non-negotiable: never true.
 
 var last_device: String = "kbm" # "kbm" or "gamepad"
 var last_aim_dir: Vector2 = Vector2.RIGHT
+var _active_joy_id: int = 0
 var hold_modes: Dictionary = {"lx_fire": "hold", "lx_beam": "hold", "lx_wings": "hold"}
 var _toggle_states: Dictionary = {}
 var _synthetic_move: Vector2 = Vector2.ZERO
@@ -106,6 +107,7 @@ func register_default_actions() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > STICK_DEADZONE):
+		_active_joy_id = maxi(0, event.device)
 		_set_device("gamepad")
 	elif event is InputEventKey or event is InputEventMouseButton or event is InputEventMouseMotion:
 		_set_device("kbm")
@@ -161,8 +163,8 @@ func get_aim_dir(from_world: Vector2, mouse_world: Vector2) -> Vector2:
 	if _use_synthetic:
 		return last_aim_dir
 	if last_device == "gamepad":
-		var rx: float = Input.get_joy_axis(0, JOY_AXIS_RIGHT_X)
-		var ry: float = Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y)
+		var rx: float = Input.get_joy_axis(_active_joy_id, JOY_AXIS_RIGHT_X)
+		var ry: float = Input.get_joy_axis(_active_joy_id, JOY_AXIS_RIGHT_Y)
 		var stick: Vector2 = Vector2(rx, ry)
 		if stick.length() >= STICK_DEADZONE:
 			last_aim_dir = stick.normalized()

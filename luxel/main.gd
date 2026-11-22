@@ -385,8 +385,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		open_map()
 	elif flow == Flow.INTRO and (event.is_action_pressed("lx_ui_accept") or event.is_action_pressed("lx_ui_cancel")):
 		finish_intro()
-	elif flow == Flow.DEATH and (event.is_action_pressed("lx_ui_accept") or event.is_action_pressed("lx_fire")):
-		retry_from_death()
 
 
 func _physics_process(delta: float) -> void:
