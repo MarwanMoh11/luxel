@@ -40,6 +40,7 @@ var island_id: int = 1
 var region_id: String = ""
 var _clock: float = 0.0
 var _uses_prop_anim: bool = false
+var _signal_pulses: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -91,6 +92,12 @@ func load_state(d: Dictionary) -> void:
 
 func tick(dt: float) -> void:
 	_clock += dt
+	if not _signal_pulses.is_empty():
+		for i: int in range(_signal_pulses.size() - 1, -1, -1):
+			_signal_pulses[i]["age"] = float(_signal_pulses[i]["age"]) + dt
+			if float(_signal_pulses[i]["age"]) >= float(_signal_pulses[i]["life"]):
+				_signal_pulses.remove_at(i)
+		queue_redraw()
 	if _uses_prop_anim:
 		queue_redraw()
 
@@ -172,7 +179,27 @@ func _notify_linked_targets(powered: bool = true) -> void:
 	for tid: String in targets:
 		var target: Variant = region.call("find_interactable", tid)
 		if target is LxInteractable:
-			(target as LxInteractable).on_signal(id, powered)
+			var it_t: LxInteractable = target as LxInteractable
+			it_t.on_signal(id, powered)
+			if powered and it_t.pos.distance_to(pos) > 8.0:
+				_signal_pulses.append({"to": it_t.pos - pos, "age": 0.0, "life": 0.44})
+				queue_redraw()
+
+
+func _draw_signal_pulses() -> void:
+	if _signal_pulses.is_empty():
+		return
+	for sp: Dictionary in _signal_pulses:
+		var u: float = clampf(float(sp["age"]) / maxf(float(sp["life"]), 0.01), 0.0, 1.0)
+		var dest: Vector2 = sp["to"] as Vector2
+		var start := Vector2(0.0, -6.0)
+		var arc_h: float = minf(26.0, dest.length() * 0.18 + 8.0)
+		for k: int in range(3):
+			var uk: float = clampf(u - float(k) * 0.08, 0.0, 1.0)
+			var pt: Vector2 = (start.lerp(dest, uk) + Vector2(0.0, -sin(uk * PI) * arc_h)).round()
+			var col: Color = (PAL["cream"] if k == 0 else (PAL["gold"] if k == 1 else PAL["apricot"])) as Color
+			var sz: float = 3.0 if k == 0 else (2.0 if k == 1 else 1.0)
+			draw_rect(Rect2(pt - Vector2(floorf(sz * 0.5), floorf(sz * 0.5)), Vector2(sz, sz)), col)
 
 
 func _emit_sfx(sfx_id: String) -> void:

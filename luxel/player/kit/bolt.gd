@@ -149,6 +149,9 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				)
 				var res: int = wick.apply_hit_to_entity(enemy, hit)
 				wick.on_hit_landed(hit, res, epos, hs_chip, shake_chip)
+				if b.is_prism and res > 0:
+					wick.spawn_ring(epos, 2.0, 10.0, 0.16, LxWick.PAL_ICE, 1.0)
+					wick.spawn_sparks(epos, b.dir, 5, LxWick.PAL_ICE, 32.0, 88.0, 0.18)
 				if not pierce:
 					dead = true
 					break

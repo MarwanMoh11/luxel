@@ -130,3 +130,4 @@ func _draw() -> void:
 		draw_rect(Rect2(-2.0, -1.0, 1.0, 1.0), shine)
 		if _reject_t > 0.0:
 			draw_arc(Vector2(0.0, -1.0), 8.0, 0.0, TAU, 12, PAL["ice"], 1.0, false)
+	_draw_signal_pulses()

@@ -150,10 +150,16 @@ func on_signal(from_id: String, powered: bool) -> void:
 	if not required_signals.is_empty():
 		for req: String in required_signals:
 			if not bool(_active_signals.get(req, false)):
+				if powered:
+					_rattle_t = 0.10
+					queue_redraw()
 				return
 		_open(bool(props.get("persistent", true)))
 	elif _active_signals.size() >= required_count:
 		_open(bool(props.get("persistent", true)))
+	elif powered:
+		_rattle_t = 0.10
+		queue_redraw()
 
 
 func _ward_requirements_met() -> bool:
@@ -422,6 +428,17 @@ func _draw_switch_door(x0: float, y0: float, w: float, h: float) -> void:
 	draw_rect(Rect2(cx - 2.0, cy - 1.0, 4.0, 3.0), PAL["blue"])
 	draw_rect(Rect2(cx - 1.0, cy - 1.0, 2.0, 2.0), PAL["sky"])
 	draw_rect(Rect2(cx - 1.0, cy - 1.0, 1.0, 1.0), PAL["ice"])
+	var need: int = maxi(required_count, required_signals.size())
+	if need > 1:
+		var got: int = _active_signals.size()
+		var span_p: float = float(need - 1) * 5.0
+		for pi: int in range(need):
+			var px: float = roundf(cx - span_p * 0.5 + float(pi) * 5.0) - 1.0
+			var lit_p: bool = pi < got
+			draw_rect(Rect2(px, y0 + 2.0, 3.0, 3.0), PAL["void"])
+			draw_rect(Rect2(px + 1.0, y0 + 3.0, 1.0, 1.0), PAL["cream"] if lit_p else PAL["deep"])
+			if lit_p:
+				draw_rect(Rect2(px, y0 + 2.0, 3.0, 1.0), PAL["gold"])
 
 
 func _draw_ward_barrier(x0: float, y0: float, w: float, h: float) -> void:

@@ -116,6 +116,7 @@ func _draw() -> void:
 		draw_rect(Rect2(-4.0, -13.0, 8.0, 2.0), PAL["dusk"] as Color)
 		draw_rect(Rect2(-2.0, -13.0, 4.0, 1.0), PAL["plum"] as Color)
 		_fill("wine", [Rect2(-3.0, -12.0, 2.0, 1.0), Rect2(1.0, -12.0, 2.0, 1.0)])
+	_draw_signal_pulses()
 
 
 func _draw_flame() -> void:
