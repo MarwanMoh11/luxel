@@ -310,8 +310,11 @@ func _step_shade_return(dt: float) -> void:
 	facing = to_h.angle()
 	_move_step(to_h.limit_length(routine_speed * 0.90 * dt), true)
 
+func _is_lured() -> bool:
+	return _is_lantern_out() and _get_lantern_pos().distance_to(home) <= leash_radius + 24.0
+
 func _shade_lost_target() -> bool:
-	if _is_lantern_out() and _get_lantern_pos().distance_to(home) <= leash_radius + 24.0:
+	if _is_lured():
 		return false
 	return not _has_player() or _get_wick_pos().distance_to(home) > leash_radius + 16.0
 
@@ -334,11 +337,6 @@ func _body_color() -> Color:
 func _shield_color() -> Color:
 	return PAL["ice"] as Color
 
-func _pal_a(key: String, a: float) -> Color:
-	var c: Color = PAL[key] as Color
-	c.a = a
-	return c
-
 func _draw_lunar_glint(pt: Vector2, arm: float) -> void:
 	var p: Vector2 = pt.round()
 	var inner: float = maxf(1.0, arm * 0.55)
@@ -355,14 +353,16 @@ func _draw_extra(off: Vector2) -> void:
 		var gp: Vector2 = (ghost_pos - pos + off).round()
 		var bv: Vector2 = c - gp
 		var ba: float = bv.angle() if bv.length_squared() > 0.01 else facing
-		draw_line(gp, c, _pal_a("deep", gt * 0.65), 1.6)
-		draw_line(gp, c, _pal_a("sky", gt * 0.55), 1.0)
-		draw_arc(gp, body_radius + 1.2, ba - 1.35, ba + 1.35, 10, _pal_a("deep", gt * 0.85), 2.4)
-		draw_arc(gp, body_radius, ba - 1.15, ba + 1.15, 10, _pal_a("blue", gt * 0.90), 1.6)
-		draw_arc(gp.lerp(c, 0.30).round(), body_radius * 0.85, ba - 0.95, ba + 0.95, 8, _pal_a("sky", gt), 1.4)
-		draw_arc(gp.lerp(c, 0.62).round(), body_radius * 0.65, ba - 0.70, ba + 0.70, 6, _pal_a("ice", gt), 1.1)
-		draw_rect(Rect2(gp.lerp(c, 0.45).round(), Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
-		_draw_lunar_glint(gp, 3.0)
+		draw_line(gp, c, (PAL["blue"] if gt > 0.45 else PAL["deep"]) as Color, 1.4)
+		draw_arc(gp, body_radius + 1.2, ba - 1.35, ba + 1.35, 10, PAL["deep"] as Color, 2.0)
+		if gt > 0.30:
+			draw_arc(gp, body_radius, ba - 1.15, ba + 1.15, 10, PAL["blue"] as Color, 1.4)
+		if gt > 0.50:
+			draw_arc(gp.lerp(c, 0.30).round(), body_radius * 0.85, ba - 0.95, ba + 0.95, 8, PAL["sky"] as Color, 1.2)
+		if gt > 0.65:
+			draw_arc(gp.lerp(c, 0.62).round(), body_radius * 0.65, ba - 0.70, ba + 0.70, 6, PAL["ice"] as Color, 1.0)
+			draw_rect(Rect2(gp.lerp(c, 0.45).round(), Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+		_draw_lunar_glint(gp, 3.0 if gt > 0.45 else 2.0)
 	if variant == VARIANT_OWL and state == State.TELL:
 		var local_t: Vector2 = lock_target - pos
 		var spread: float = twin_offset_rad * clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)

@@ -261,9 +261,13 @@ func _draw_extra(off: Vector2) -> void:
 			var a: float = PI * 0.25 + float(i) * (PI * 0.5)
 			draw_arc(off, ar, a - 0.38, a + 0.38, 4, plate_col, 1.6)
 	if state == State.TELL:
+		var c: Vector2 = off.round()
+		for ti: int in range(12):
+			var a0: float = float(ti) * (TAU / 12.0)
+			draw_arc(c, STOMP_MAX_R, a0, a0 + 0.24, 3, PAL["coral"] as Color, 1.0)
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var r: float = lerpf(STOMP_MAX_R, STOMP_START_R + 4.0, prog)
-		draw_arc(off.round(), r, 0.0, TAU, 24, PAL["apricot"] as Color, 1.5)
+		draw_arc(c, r, 0.0, TAU, 24, PAL["apricot"] as Color, 1.5)
 	elif state == State.COMMIT:
 		var ring_r: float = lerpf(STOMP_START_R, STOMP_MAX_R, stomp_progress)
 		var c: Vector2 = off.round()

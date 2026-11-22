@@ -519,6 +519,7 @@ func _body_color() -> Color: return PAL["plum"] as Color
 func _has_active_shield() -> bool: return false
 func _shield_color() -> Color: return PAL["teal"] as Color
 func _visual_offset() -> Vector2: return Vector2.ZERO
+func _is_visually_lured() -> bool: return (has_method("_is_lured") and bool(call("_is_lured"))) or (has_method("_can_lure") and bool(call("_can_lure")))
 
 
 func _draw() -> void:
@@ -569,6 +570,12 @@ func _draw() -> void:
 		draw_rect(Rect2(top + Vector2(-1.5, -5.0), Vector2(3.0, 5.0)), PAL["night"] as Color, true)
 		draw_rect(Rect2(top + Vector2(-1.0, -4.5), Vector2(2.0, 3.5)), PAL["gold"] as Color, true)
 		draw_rect(Rect2(top + Vector2(-1.0, 1.0), Vector2(2.0, 2.0)), PAL["gold"] as Color, true)
+	elif state in [State.NOTICE, State.POSITION, State.WAIT_TOKEN, State.TELL] and _is_visually_lured():
+		var lt: Vector2 = (off + Vector2(0.0, -r - 9.0 + sin(anim_t * 6.5) * 1.2)).round()
+		draw_rect(Rect2(lt + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), PAL["gold"] as Color)
+		draw_rect(Rect2(lt + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), PAL["gold"] as Color)
+		draw_rect(Rect2(lt + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), PAL["apricot"] as Color)
+		draw_rect(Rect2(lt, Vector2.ONE), PAL["cream"] as Color)
 
 	if state == State.RECOVER or state == State.STAGGER:
 		var scol: Color = (PAL["cream"] if int(anim_t * 10.0) % 2 == 0 else PAL["gold"]) if state == State.STAGGER else (PAL["gold"] as Color)

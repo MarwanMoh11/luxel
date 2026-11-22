@@ -261,12 +261,12 @@ func _target_in_cone() -> bool:
 	return _has_clear_view(pos, tgt)
 
 
+func _is_lured() -> bool:
+	return _is_lantern_out() and _get_lantern_pos().distance_to(home) <= leash_radius + 24.0
+
+
 func _attention_target() -> Vector2:
-	if _is_lantern_out():
-		var lp: Vector2 = _get_lantern_pos()
-		if lp.distance_to(home) <= leash_radius + 24.0:
-			return lp
-	return _get_wick_pos()
+	return _get_lantern_pos() if _is_lured() else _get_wick_pos()
 
 
 func _should_give_up() -> bool:
@@ -302,12 +302,6 @@ func _shield_color() -> Color:
 	return PAL["apricot"] as Color
 
 
-func _pal_a(key: String, a: float) -> Color:
-	var c: Color = PAL[key] as Color
-	c.a = a
-	return c
-
-
 func _draw_star_flare(pt: Vector2, arm: float, outer_c: Color) -> void:
 	var p: Vector2 = pt.round()
 	var inner: float = maxf(1.5, arm * 0.55)
@@ -325,15 +319,25 @@ func _draw_extra(off: Vector2) -> void:
 		var back_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.7)
 		draw_circle(back_pos, 2.5, PAL["coral"] as Color)
 		draw_circle(back_pos, 1.2, PAL["cream"] as Color)
-	# Rotating sight cone preview with brass astrolabe tick marks
+	# Rotating sight cone preview with brass astrolabe tick marks (strictly opaque 20-colour PAL).
 	var cone_r: float = minf(notice_radius, 72.0)
-	var cone_col: Color = (PAL["gold"] as Color) if state == State.TELL else _pal_a("sky", 0.35)
+	var cone_col: Color = (PAL["gold"] as Color) if state == State.TELL else (PAL["blue"] as Color)
 	var tick_col: Color = (PAL["gold"] as Color) if state == State.TELL else (PAL["apricot"] as Color)
-	var left_v: Vector2 = Vector2.from_angle(facing - CONE_HALF) * cone_r
-	var right_v: Vector2 = Vector2.from_angle(facing + CONE_HALF) * cone_r
-	draw_line(c, (c + left_v).round(), cone_col, 1.0)
-	draw_line(c, (c + right_v).round(), cone_col, 1.0)
-	draw_arc(c, cone_r, facing - CONE_HALF, facing + CONE_HALF, 14, cone_col, 1.0)
+	var left_d: Vector2 = Vector2.from_angle(facing - CONE_HALF)
+	var right_d: Vector2 = Vector2.from_angle(facing + CONE_HALF)
+	if state == State.TELL:
+		draw_line(c, (c + left_d * cone_r).round(), cone_col, 1.0)
+		draw_line(c, (c + right_d * cone_r).round(), cone_col, 1.0)
+		draw_arc(c, cone_r, facing - CONE_HALF, facing + CONE_HALF, 14, cone_col, 1.0)
+	else:
+		for si: int in range(0, 8, 2):
+			var d0: float = cone_r * (float(si) / 8.0)
+			var d1: float = cone_r * (float(si + 1) / 8.0)
+			draw_line((c + left_d * d0).round(), (c + left_d * d1).round(), cone_col, 1.0)
+			draw_line((c + right_d * d0).round(), (c + right_d * d1).round(), cone_col, 1.0)
+		for ai: int in range(6):
+			var a0: float = lerpf(facing - CONE_HALF, facing + CONE_HALF, float(ai) / 6.0)
+			draw_arc(c, cone_r, a0, a0 + CONE_HALF * 0.20, 3, cone_col, 1.0)
 	for ti: int in range(5):
 		var ta: float = lerpf(facing - CONE_HALF, facing + CONE_HALF, float(ti) / 4.0)
 		var td: Vector2 = Vector2.from_angle(ta)

@@ -299,6 +299,9 @@ func _draw_extra(off: Vector2) -> void:
 				draw_rect(Rect2(cr, Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
 		draw_rect(Rect2(rel + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), PAL["ice"] as Color, true)
 		draw_rect(Rect2(rel + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), PAL["ice"] as Color, true)
+		for ti: int in range(8):
+			var a0: float = float(ti) * (TAU / 8.0)
+			draw_arc(rel, RING_MAX_R, a0, a0 + 0.34, 3, PAL["sky"] as Color, 1.0)
 	elif state == State.COMMIT and commit_stage == CommitStage.RING:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
 		draw_arc(Vector2.ZERO, ring_r + 1.5, 0.0, TAU, 28, PAL["blue"] as Color, 2.4)

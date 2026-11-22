@@ -285,12 +285,12 @@ func _sees_target() -> bool:
 	return pos.distance_to(t) <= notice_radius and _has_clear_view(pos, t)
 
 
+func _is_lured() -> bool:
+	return _is_lantern_out() and _get_lantern_pos().distance_to(home) <= leash_radius + 24.0
+
+
 func _attention_target() -> Vector2:
-	if _is_lantern_out():
-		var lp: Vector2 = _get_lantern_pos()
-		if lp.distance_to(home) <= leash_radius + 24.0:
-			return lp
-	return _get_wick_pos()
+	return _get_lantern_pos() if _is_lured() else _get_wick_pos()
 
 
 func _should_give_up() -> bool:
@@ -317,7 +317,21 @@ func _draw_extra(off: Vector2) -> void:
 		var sac_r: float = 4.5 if state == State.TELL else (2.0 if bellows_punctured else 3.0)
 		var sac_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.65)
 		draw_circle(sac_pos, sac_r, (PAL["gold"] as Color) if state == State.TELL else (PAL["apricot"] as Color))
-	if state == State.COMMIT:
+	if state == State.TELL:
+		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var c: Vector2 = off.round()
+		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
+		var g_col: Color = (PAL["gold"] if prog > 0.65 else PAL["apricot"]) as Color
+		for si: int in [-1, 1]:
+			var s_off: Vector2 = side * (float(si) * GUST_HALF_W)
+			draw_line((c + s_off + gust_dir * (body_radius + 2.0)).round(), (c + s_off + gust_dir * GUST_RANGE).round(), g_col, 1.0)
+		for ii: int in range(3):
+			var lat: float = float(ii - 1) * (GUST_HALF_W * 0.55)
+			var u: float = fmod(prog * 2.2 + float(ii) * 0.33, 1.0)
+			var d0: float = lerpf(GUST_RANGE * 0.85, body_radius + 6.0, u)
+			var d1: float = maxf(body_radius + 3.0, d0 - 11.0)
+			draw_line((c + side * lat + gust_dir * d0).round(), (c + side * lat + gust_dir * d1).round(), (PAL["cream"] if ii == 1 else PAL["gold"]) as Color, 1.0)
+	elif state == State.COMMIT:
 		var prog: float = 1.0 - clampf(state_timer / GUST_COMMIT_TIME, 0.0, 1.0)
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		var reach: float = GUST_RANGE * lerpf(0.55, 0.96, prog)

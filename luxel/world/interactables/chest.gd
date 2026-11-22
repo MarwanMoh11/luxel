@@ -13,7 +13,7 @@ var _open_t: float = 0.0
 func setup(spec: Dictionary) -> void:
 	super.setup(spec)
 	kind = "chest"
-	reward_kind = str(props.get("reward_kind", "shards"))
+	reward_kind = str(props.get("reward_kind", props.get("reward", "shards")))
 	amount = maxi(1, int(props.get("amount", 15)))
 	dungeon_id = str(props.get("dungeon_id", region_id))
 	opened = bool(props.get("opened", false))
