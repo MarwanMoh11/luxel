@@ -1,4 +1,5 @@
-# Bell Isle - Belfry Room 6: Keeper's Vault (20x11 tiles)
+# Belfry r6 - Suspended Bell-Chasm Keeper's Vault (28x14)
+TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
 LEGEND , path
@@ -12,14 +13,17 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-#########,,#########
-#OOOOOO..,,..OO....#
-#...OOO..,,..OO....#
-#...OOO..,,..OO....#
-#...OOO..,,..OO....,
-#.,,OOO,,,,,,OO,,,,,
-#...OOO..,,..OO....,
-#...OOO..,,..OO....#
-#...OOO..,,..OO....#
-#OOOOOO..,,..OO....#
-#########,,#########
+#############,,#############
+#OOOOOOOOO...,,...OOOOOOOOO#
+#....OOOOO...,,...OOOO.....#
+#....OOO.....,,.....OO.....#
+#....OOO.....,,.....OO.....#
+#....OOO.....,,.....OO.....,
+#.,,,OOO,,,,,,,,,,,,OO,,,,,,
+#.,,,OOO,,,,,,,,,,,,OO,,,,,,
+#....OOO.....,,.....OO.....#
+#....OOO.....,,.....OO.....#
+#....OOO.....,,.....OO.....#
+#....OOOOO...,,...OOOO.....#
+#OOOOOOOOO...,,...OOOOOOOOO#
+#############,,#############

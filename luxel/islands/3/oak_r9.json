@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    224,
+    184
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_oak_r9_south",
       "rect": [
-        144,
-        160,
+        208,
+        208,
         32,
         16
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_oak_r9_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -68,8 +68,8 @@
       "id": "ws_oak_upper",
       "kind": "waystone",
       "pos": [
-        120,
-        120
+        168,
+        152
       ],
       "props": {
         "zone": "oak_r9",
@@ -80,8 +80,8 @@
       "id": "web_oak_r9",
       "kind": "web",
       "pos": [
-        120,
-        72
+        168,
+        96
       ],
       "props": {
         "size": [
@@ -94,8 +94,8 @@
       "id": "bramble_oak_r9",
       "kind": "bramble",
       "pos": [
-        200,
-        120
+        280,
+        152
       ],
       "props": {
         "size": [
@@ -108,8 +108,8 @@
       "id": "mirror_oak_r9",
       "kind": "mirror",
       "pos": [
-        120,
-        40
+        168,
+        56
       ],
       "props": {
         "angle_deg": 135,
@@ -124,8 +124,8 @@
       "id": "brazier_oak_r9",
       "kind": "brazier",
       "pos": [
-        40,
-        56
+        48,
+        72
       ],
       "props": {
         "target_id": "door_oak_r9_vault"
@@ -135,8 +135,8 @@
       "id": "switch_eye_oak_r9",
       "kind": "switch_eye",
       "pos": [
-        40,
-        120
+        48,
+        152
       ],
       "props": {
         "target_id": "door_oak_r9_vault",
@@ -147,8 +147,8 @@
       "id": "door_oak_r9_vault",
       "kind": "door",
       "pos": [
-        232,
-        72
+        328,
+        88
       ],
       "props": {
         "door_kind": "switch_door",
@@ -166,8 +166,8 @@
       "id": "keepers_flame_3",
       "kind": "keepers_flame",
       "pos": [
-        264,
-        72
+        384,
+        88
       ],
       "props": {
         "dungeon_id": "hollow_oak",
@@ -179,7 +179,7 @@
       "id": "door_boss_3",
       "kind": "door",
       "pos": [
-        160,
+        224,
         24
       ],
       "props": {
@@ -203,8 +203,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        200,
-        42
+        280,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -213,10 +213,22 @@
     },
     {
       "sheet": "island3_scenery",
+      "prop": "heartwood_pillar",
+      "pos": [
+        136,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
       "prop": "spider_silk_banner",
       "pos": [
-        280,
-        40
+        384,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -227,8 +239,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        280,
-        140
+        384,
+        172
       ],
       "layer": "sort",
       "flip_x": true,
@@ -239,8 +251,8 @@
       "sheet": "island3_scenery",
       "prop": "hanging_spore_lantern",
       "pos": [
-        104,
-        144
+        280,
+        186
       ],
       "layer": "sort",
       "flip_x": false,
@@ -251,13 +263,14 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        40,
-        146
+        48,
+        188
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
       "phase": 0.5
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

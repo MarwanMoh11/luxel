@@ -149,7 +149,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_sanctum_r5_choir",
 			"region": "sanctum_r5",
 			"zone": "sanctum_r5",
-			"pos": [160.0, 24.0],
+			"pos": [224.0, 24.0],
 			"action": "unlock_door",
 			"target": "door_boss_8",
 			"requires_moves": ["sunflare"],

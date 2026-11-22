@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    280,
-    88
+    408,
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_spire_r9_east",
       "rect": [
-        304,
-        64,
+        432,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_spire_r9_south",
       "rect": [
-        144,
-        160,
+        208,
+        208,
         32,
         16
       ],
@@ -60,7 +60,7 @@
     {
       "id": "exit_spire_r9_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -83,8 +83,8 @@
       "id": "seal_spire_r9",
       "kind": "obsidian_seal",
       "pos": [
-        104,
-        88
+        136,
+        104
       ],
       "props": {
         "size": [
@@ -98,8 +98,8 @@
       "id": "keepers_flame_7",
       "kind": "keepers_flame",
       "pos": [
-        56,
-        88
+        72,
+        112
       ],
       "props": {
         "dungeon_id": "mirror_spire",
@@ -111,8 +111,8 @@
       "id": "cracked_spire_r9",
       "kind": "cracked_wall",
       "pos": [
-        248,
-        40
+        360,
+        48
       ],
       "props": {
         "size": [
@@ -126,8 +126,8 @@
       "id": "chest_spire_r9",
       "kind": "chest",
       "pos": [
-        280,
-        40
+        400,
+        48
       ],
       "props": {
         "reward_kind": "shards",
@@ -140,8 +140,8 @@
       "id": "door_spire_r9_south",
       "kind": "door",
       "pos": [
-        160,
-        152
+        224,
+        200
       ],
       "props": {
         "door_kind": "shortcut_door",
@@ -158,7 +158,7 @@
       "id": "door_boss_7",
       "kind": "door",
       "pos": [
-        160,
+        224,
         24
       ],
       "props": {
@@ -181,8 +181,8 @@
       "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
-        132,
-        50
+        198,
+        54
       ],
       "layer": "sort",
       "flip_x": false,
@@ -193,8 +193,8 @@
       "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
-        188,
-        50
+        250,
+        54
       ],
       "layer": "sort",
       "flip_x": true,
@@ -205,8 +205,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        128,
-        128
+        198,
+        174
       ],
       "layer": "sort",
       "flip_x": false,
@@ -217,8 +217,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        192,
-        128
+        250,
+        174
       ],
       "layer": "sort",
       "flip_x": true,
@@ -229,8 +229,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        126,
-        78
+        198,
+        90
       ],
       "layer": "sort",
       "flip_x": false,
@@ -241,8 +241,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        194,
-        78
+        250,
+        90
       ],
       "layer": "sort",
       "flip_x": true,
@@ -253,8 +253,8 @@
       "sheet": "island7_scenery",
       "prop": "standing_mirror_tall",
       "pos": [
-        216,
-        54
+        312,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -265,13 +265,14 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        296,
-        150
+        412,
+        190
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

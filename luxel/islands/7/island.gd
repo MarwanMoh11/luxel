@@ -232,7 +232,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_boss_key",
 			"region": "spire_r9",
 			"zone": "spire_r9",
-			"pos": [56.0, 88.0],
+			"pos": [72.0, 112.0],
 			"action": "collect_key",
 			"target": "keepers_flame_7",
 			"grants_flag": "keepers_flame_7",

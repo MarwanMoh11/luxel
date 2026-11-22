@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    224,
+    184
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_lh_r9_south",
       "rect": [
-        144,
-        160,
+        208,
+        208,
         32,
         16
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_lh_r9_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -67,8 +67,8 @@
       "id": "ws_lighthouse_upper",
       "kind": "waystone",
       "pos": [
-        120,
-        136
+        168,
+        176
       ],
       "props": {
         "zone": "lighthouse_r9",
@@ -79,8 +79,8 @@
       "id": "brazier_lh_r9",
       "kind": "brazier",
       "pos": [
-        40,
-        56
+        48,
+        72
       ],
       "props": {
         "target_id": "door_lh_r9_vault"
@@ -90,8 +90,8 @@
       "id": "mirror_lh_r9",
       "kind": "mirror",
       "pos": [
-        120,
-        120
+        168,
+        144
       ],
       "props": {
         "angle_deg": 225,
@@ -106,8 +106,8 @@
       "id": "switch_eye_lh_r9",
       "kind": "switch_eye",
       "pos": [
-        40,
-        120
+        48,
+        144
       ],
       "props": {
         "requires_prism": true,
@@ -119,8 +119,8 @@
       "id": "door_lh_r9_vault",
       "kind": "door",
       "pos": [
-        232,
-        88
+        328,
+        104
       ],
       "props": {
         "door_kind": "switch_door",
@@ -139,8 +139,8 @@
       "id": "keepers_flame_2",
       "kind": "keepers_flame",
       "pos": [
-        264,
-        88
+        384,
+        104
       ],
       "props": {
         "dungeon_id": "lighthouse",
@@ -152,7 +152,7 @@
       "id": "door_boss_2",
       "kind": "door",
       "pos": [
-        160,
+        224,
         24
       ],
       "props": {
@@ -176,8 +176,8 @@
       "sheet": "island2_scenery",
       "prop": "brass_compass_floor",
       "pos": [
-        160,
-        88
+        224,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -188,8 +188,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        112,
-        40
+        176,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -200,8 +200,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        204,
-        40
+        272,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -212,8 +212,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        204,
-        136
+        272,
+        178
       ],
       "layer": "sort",
       "flip_x": true,
@@ -222,10 +222,22 @@
     },
     {
       "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        136,
+        178
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        280,
-        42
+        360,
+        62
       ],
       "layer": "sort",
       "flip_x": false,
@@ -236,13 +248,14 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        280,
-        136
+        360,
+        164
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.3
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

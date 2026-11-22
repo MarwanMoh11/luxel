@@ -213,7 +213,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_keepers_flame",
 			"region": "orrery_r9",
 			"zone": "orrery_r9",
-			"pos": [264.0, 128.0],
+			"pos": [384.0, 160.0],
 			"action": "collect_key",
 			"target": "keepers_flame_5",
 			"grants_flag": "keepers_flame_5",

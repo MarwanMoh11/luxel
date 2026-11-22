@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    292,
-    88
+    408,
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_r6_east",
       "rect": [
-        304,
-        64,
+        432,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_r6_south",
       "rect": [
-        144,
-        160,
+        208,
+        208,
         32,
         16
       ],
@@ -60,7 +60,7 @@
     {
       "id": "exit_r6_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -85,8 +85,8 @@
       "id": "snatcher_r6_0",
       "kind": "snatcher",
       "pos": [
-        152,
-        56
+        216,
+        72
       ],
       "route": [],
       "perches": [
@@ -112,8 +112,8 @@
       "id": "brazier_r6_vault",
       "kind": "brazier",
       "pos": [
-        40,
-        56
+        48,
+        72
       ],
       "props": {
         "light_by_lantern": true
@@ -123,8 +123,8 @@
       "id": "keepers_flame",
       "kind": "wick_key",
       "pos": [
-        40,
-        88
+        48,
+        112
       ],
       "props": {
         "dungeon_id": "belfry",
@@ -140,8 +140,8 @@
       "id": "switch_eye_r6",
       "kind": "switch_eye",
       "pos": [
-        40,
-        120
+        48,
+        152
       ],
       "props": {
         "target_ids": [
@@ -155,8 +155,8 @@
       "id": "bridge_r6_west",
       "kind": "door",
       "pos": [
-        88,
-        88
+        104,
+        112
       ],
       "props": {
         "door_kind": "bridge_platform",
@@ -174,8 +174,8 @@
       "id": "bridge_r6_east",
       "kind": "door",
       "pos": [
-        224,
-        88
+        336,
+        112
       ],
       "props": {
         "door_kind": "bridge_platform",
@@ -193,8 +193,8 @@
       "id": "door_r6_south",
       "kind": "door",
       "pos": [
-        160,
-        152
+        224,
+        200
       ],
       "props": {
         "door_kind": "shortcut_door",
@@ -211,7 +211,7 @@
       "id": "door_belfry_boss",
       "kind": "door",
       "pos": [
-        160,
+        224,
         24
       ],
       "props": {
@@ -234,8 +234,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        276,
-        36
+        392,
+        54
       ],
       "layer": "sort",
       "flip_x": false,
@@ -246,8 +246,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        276,
-        144
+        392,
+        174
       ],
       "layer": "sort",
       "flip_x": true,
@@ -258,8 +258,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        122,
-        34
+        180,
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -270,8 +270,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        198,
-        34
+        268,
+        44
       ],
       "layer": "sort",
       "flip_x": true,
@@ -282,8 +282,8 @@
       "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
-        122,
-        142
+        180,
+        182
       ],
       "layer": "sort",
       "flip_x": false,
@@ -294,13 +294,38 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        198,
-        142
+        268,
+        182
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        152,
+        86
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        296,
+        86
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.85
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

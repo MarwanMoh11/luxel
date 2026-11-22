@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    224,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        256
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_sanctum_r5_south",
       "rect": [
-        144,
-        160,
+        208,
+        240,
         32,
         16
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_sanctum_r5_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -66,8 +66,8 @@
       "id": "seal_sanctum_r5",
       "kind": "obsidian_seal",
       "pos": [
-        160,
-        72
+        224,
+        104
       ],
       "props": {
         "size": [
@@ -81,8 +81,8 @@
       "id": "brazier_sanctum_r5_nw",
       "kind": "brazier",
       "pos": [
-        104,
-        40
+        144,
+        64
       ],
       "props": {
         "target_id": "door_sanctum_r5_choir"
@@ -92,8 +92,8 @@
       "id": "brazier_sanctum_r5_ne",
       "kind": "brazier",
       "pos": [
-        216,
-        40
+        304,
+        64
       ],
       "props": {
         "target_id": "door_sanctum_r5_choir"
@@ -103,8 +103,8 @@
       "id": "brazier_sanctum_r5_sw",
       "kind": "brazier",
       "pos": [
-        104,
-        120
+        144,
+        168
       ],
       "props": {
         "target_id": "door_sanctum_r5_choir"
@@ -114,8 +114,8 @@
       "id": "brazier_sanctum_r5_se",
       "kind": "brazier",
       "pos": [
-        216,
-        120
+        304,
+        168
       ],
       "props": {
         "target_id": "door_sanctum_r5_choir"
@@ -125,8 +125,8 @@
       "id": "door_sanctum_r5_choir",
       "kind": "door",
       "pos": [
-        160,
-        56
+        224,
+        80
       ],
       "props": {
         "door_kind": "switch_door",
@@ -146,7 +146,7 @@
       "id": "door_boss_8",
       "kind": "door",
       "pos": [
-        160,
+        224,
         24
       ],
       "props": {
@@ -169,8 +169,8 @@
       "sheet": "island8_scenery",
       "prop": "stained_glass_debris",
       "pos": [
-        118,
-        86
+        168,
+        128
       ],
       "layer": "ground",
       "flip_x": false,
@@ -181,8 +181,8 @@
       "sheet": "island8_scenery",
       "prop": "stained_glass_debris",
       "pos": [
-        202,
-        86
+        280,
+        128
       ],
       "layer": "ground",
       "flip_x": true,
@@ -193,8 +193,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        44,
-        44
+        92,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -205,8 +205,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        276,
-        44
+        356,
+        68
       ],
       "layer": "sort",
       "flip_x": true,
@@ -217,8 +217,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        130,
-        42
+        184,
+        52
       ],
       "layer": "sort",
       "flip_x": false,
@@ -229,8 +229,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        190,
-        42
+        264,
+        52
       ],
       "layer": "sort",
       "flip_x": true,
@@ -241,8 +241,8 @@
       "sheet": "island8_scenery",
       "prop": "cracked_choir_pew",
       "pos": [
-        46,
-        98
+        96,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
@@ -253,8 +253,8 @@
       "sheet": "island8_scenery",
       "prop": "cracked_choir_pew",
       "pos": [
-        274,
-        98
+        352,
+        144
       ],
       "layer": "sort",
       "flip_x": true,
@@ -265,8 +265,8 @@
       "sheet": "island8_scenery",
       "prop": "stone_gargoyle_perch",
       "pos": [
-        80,
-        152
+        128,
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -277,13 +277,14 @@
       "sheet": "island8_scenery",
       "prop": "stone_gargoyle_perch",
       "pos": [
-        240,
-        152
+        320,
+        224
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

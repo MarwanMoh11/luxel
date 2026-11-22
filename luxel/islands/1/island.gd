@@ -208,7 +208,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_belfry_boss_key",
 			"region": "belfry_r6",
 			"zone": "belfry_vault",
-			"pos": [40.0, 88.0],
+			"pos": [48.0, 112.0],
 			"action": "collect_key",
 			"target": "keepers_flame",
 			"grants_flag": "keepers_flame",

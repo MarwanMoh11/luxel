@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    272,
-    88
+    408,
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_c4_r9_east",
       "rect": [
-        304,
-        64,
+        432,
+        80,
         16,
         48
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_c4_r9_north",
       "rect": [
-        144,
+        208,
         0,
         32,
         16
@@ -66,8 +66,8 @@
       "id": "cracked_c4_r9",
       "kind": "cracked_wall",
       "pos": [
-        120,
-        88
+        136,
+        104
       ],
       "props": {
         "size": [
@@ -80,8 +80,8 @@
       "id": "brazier_c4_r9",
       "kind": "brazier",
       "pos": [
-        40,
-        56
+        48,
+        72
       ],
       "props": {
         "target_id": "bridge_c4_r9",
@@ -92,8 +92,8 @@
       "id": "bridge_c4_r9",
       "kind": "door",
       "pos": [
-        88,
-        136
+        104,
+        176
       ],
       "props": {
         "door_kind": "bridge_platform",
@@ -111,8 +111,8 @@
       "id": "keepers_flame_4",
       "kind": "wick_key",
       "pos": [
-        40,
-        88
+        48,
+        112
       ],
       "props": {
         "dungeon_id": "conservatory",
@@ -127,7 +127,7 @@
       "id": "door_boss_4",
       "kind": "door",
       "pos": [
-        160,
+        224,
         24
       ],
       "props": {
@@ -151,8 +151,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        208,
-        66
+        280,
+        74
       ],
       "layer": "ground",
       "flip_x": false,
@@ -163,8 +163,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        92,
-        44
+        104,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -175,8 +175,8 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        92,
-        92
+        104,
+        108
       ],
       "layer": "sort",
       "flip_x": false,
@@ -187,8 +187,8 @@
       "sheet": "island4_scenery",
       "prop": "cattail_reeds",
       "pos": [
-        72,
-        112
+        88,
+        134
       ],
       "layer": "sort",
       "flip_x": false,
@@ -199,8 +199,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        212,
-        40
+        280,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -211,8 +211,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        274,
-        40
+        344,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -223,8 +223,8 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        212,
-        142
+        280,
+        178
       ],
       "layer": "sort",
       "flip_x": false,
@@ -235,13 +235,38 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        274,
-        142
+        344,
+        178
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "floating_lantern_lily",
+      "pos": [
+        396,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "blooming_lotus",
+      "pos": [
+        396,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.8
     }
-  ]
+  ],
+  "is_2x2_room": true
 }
