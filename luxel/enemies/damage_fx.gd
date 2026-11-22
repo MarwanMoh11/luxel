@@ -121,3 +121,25 @@ static func trigger_boss_awaken(boss: LxEnemyBrain) -> void:
 		LxDarknessLayer.active_instance.trigger_focus_flash(0.45)
 	if Lx.events != null:
 		Lx.events.sfx_requested.emit("boss_awaken", boss.pos, true)
+
+
+static func trigger_boss_phase_burst(boss_id: String, at_pos: Vector2) -> void:
+	gust_arena(at_pos, 118.0, 125.0)
+	if Lx.world == null or not is_instance_valid(Lx.world) or not Lx.world.has_method("get_enemies"):
+		return
+	var enemies: Variant = Lx.world.call("get_enemies")
+	if not (enemies is Array):
+		return
+	for e: Variant in (enemies as Array):
+		if e is LxEnemyBrain and is_instance_valid(e):
+			var b: LxEnemyBrain = e as LxEnemyBrain
+			if b.is_alive() and (b.boss_id == boss_id or b.kind == boss_id or b.is_boss):
+				b.awaken_t = 0.55
+				break
+
+
+static func gust_arena(at_pos: Vector2, radius: float, strength: float) -> void:
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", at_pos, radius, strength)

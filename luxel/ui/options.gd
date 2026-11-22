@@ -53,6 +53,7 @@ func open(initial_tab: int = Tab.AUDIO) -> void:
 	_hover_tab = -1
 	_drag_row = ""
 	visible = true
+	_play_ui_sfx("menu_open")
 	queue_redraw()
 
 
@@ -163,7 +164,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_activate_row(rows[_row_idx])
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
-		_play_ui_sfx("ui_back")
+		_play_ui_sfx("menu_close")
 		closed.emit()
 		get_viewport().set_input_as_handled()
 

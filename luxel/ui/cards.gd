@@ -36,6 +36,7 @@ var _stats: Dictionary = {}
 var _credit_lines: Array[Dictionary] = [] # {text, color, scale}
 var _scroll_y: float = 184.0
 var _ending_cue_stage: int = 0
+var _intro_cue_stage: int = 0
 var _eyes: Array[Dictionary] = [] # {start, heap, dir, blink_off, recoil}
 var _motes: Array[Dictionary] = [] # {angle, speed, phase, color}
 
@@ -48,6 +49,7 @@ func _ready() -> void:
 func show_intro() -> void:
 	mode = Mode.INTRO
 	_elapsed = 0.0
+	_intro_cue_stage = 0
 	visible = true
 	queue_redraw()
 
@@ -100,6 +102,13 @@ func _process(delta: float) -> void:
 		return
 	_elapsed += delta
 	if mode == Mode.INTRO:
+		if Lx.audio != null:
+			if _intro_cue_stage == 0 and _elapsed >= 0.04:
+				_intro_cue_stage = 1
+				Lx.audio.play_sfx("intro_toll", Vector2.ZERO, false, true)
+			elif _intro_cue_stage == 1 and _elapsed >= 4.0:
+				_intro_cue_stage = 2
+				Lx.audio.play_sfx("lamp_lit", Vector2.ZERO, false, true)
 		if _elapsed >= INTRO_BEAT_SECS * float(INTRO_KEYS.size()):
 			close()
 			intro_finished.emit()

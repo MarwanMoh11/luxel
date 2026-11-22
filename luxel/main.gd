@@ -293,7 +293,8 @@ func fast_travel_waystone(island_id: int, waystone_id: String) -> bool:
 	load_island_region(island_id, str(loc.get("region", "overworld")), loc.get("pos", Vector2(-1.0, -1.0)) as Vector2)
 	flow = Flow.PLAY
 	Lx.audio.set_paused(false)
-	Lx.audio.play_sfx("waystone_rest", Vector2.ZERO, false)
+	Lx.audio.play_sfx("waystone_warp", Vector2.ZERO, false)
+	if _wick != null and _wick.has_method("spawn_ring"): _wick.call("spawn_ring", _wick.global_position, 4.0, 22.0, 0.34, LxWick.PAL_ICE, 1.5)
 	_sync_ui_flow()
 	return true
 

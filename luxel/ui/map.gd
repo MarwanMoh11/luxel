@@ -61,9 +61,8 @@ func open() -> void:
 		Lx.load_all_data()
 	_selected_island = Lx.state.island_id if Lx.state != null else 1
 	_rebuild_waystones()
-	_waystone_idx = 0
-	_elapsed = 0.0
-	visible = true
+	_waystone_idx = 0; _elapsed = 0.0; visible = true
+	_play_ui_sfx("menu_open")
 	queue_redraw()
 
 
@@ -163,7 +162,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			fast_travel_requested.emit(int(item["island_id"]), str(item["waystone_id"]))
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_map") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_TAB):
-		_play_ui_sfx("ui_back")
+		_play_ui_sfx("menu_close")
 		closed.emit()
 		get_viewport().set_input_as_handled()
 

@@ -111,10 +111,16 @@ func _surface_at(world_pos: Vector2) -> String:
 	if Lx.world == null or not is_instance_valid(Lx.world):
 		return "stone"
 	var tile: String = str(Lx.world.call("tile_at", world_pos)) if Lx.world.has_method("tile_at") else "floor"
+	if tile == "water" or tile == "tide":
+		return "water"
 	if tile == "bridge":
 		return "wood"
 	var is_dung: bool = bool(Lx.world.get("is_dungeon"))
 	var isl: int = int(Lx.world.get("current_island_id"))
+	if isl == 6 and tile in ["floor", "path", "ground"]:
+		return "ash"
+	if (isl == 7 or isl == 8) and tile in ["floor", "path", "ground", "mirror", "glass"]:
+		return "crystal"
 	if not is_dung:
 		if isl == 2 and tile == "path":
 			return "wood"
@@ -128,10 +134,9 @@ func _dust_color_for(surf: String) -> Color:
 		return LxPalette.color("lime") if randf() < 0.45 else LxPalette.color("jade")
 	if surf == "wood":
 		return LxWick.PAL_APRICOT if randf() < 0.45 else PAL_MAUVE
-	var isl: int = int(Lx.world.get("current_island_id")) if (Lx.world != null and is_instance_valid(Lx.world)) else 1
-	if isl == 6:
+	if surf == "ash":
 		return LxWick.PAL_CORAL if randf() < 0.35 else LxWick.PAL_STONE
-	if isl == 7:
+	if surf == "crystal" or surf == "water":
 		return LxWick.PAL_ICE if randf() < 0.45 else LxWick.PAL_SKY
 	return LxWick.PAL_STONE if randf() < 0.55 else PAL_MAUVE
 
@@ -234,6 +239,9 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 				var wfx: Variant = Lx.world.get("_water_fx")
 				if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
 					(wfx as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 2.0), "ice")
+				_step_parity = (_step_parity + 1) & 1
+				if _step_parity == 0:
+					wick.emit_sfx("footstep_water", wick.global_position, false)
 				_spawn_mote(wick.global_position + Vector2(randf_range(-3.0, 3.0), 1.0), Vector2(randf_range(-14.0, 14.0), randf_range(-12.0, -5.0)), 0.24, LxWick.PAL_ICE, 1.0, false, 0.22, false, 0.85)
 	else:
 		_streak_cd = 0.0

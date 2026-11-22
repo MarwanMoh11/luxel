@@ -191,6 +191,42 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "crucible_floor_seal",
+      "pos": [
+        184,
+        88
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        78,
+        52
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        78,
+        128
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
     }
   ]
 }

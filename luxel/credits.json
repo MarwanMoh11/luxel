@@ -422,6 +422,30 @@
         "luxel/audio/sfx/bramble_burn_2.ogg",
         "luxel/audio/sfx/earth_burrow_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_masterwork",
+      "description": "Masterwork zero-hiss biome surface footsteps (ash, crystal, water) and signature foley cues (boss_awaken, prism_chain, perfect_counter, shield_strain, intro_toll, great_lamp_bloom, waystone_warp, menu_open/close; 152 SFX across 53 multi-take pools)",
+      "generator": "gen_sfx_masterwork.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/footstep_ash.ogg",
+        "luxel/audio/sfx/footstep_ash_2.ogg",
+        "luxel/audio/sfx/footstep_crystal.ogg",
+        "luxel/audio/sfx/footstep_crystal_2.ogg",
+        "luxel/audio/sfx/footstep_water.ogg",
+        "luxel/audio/sfx/footstep_water_2.ogg",
+        "luxel/audio/sfx/boss_awaken.ogg",
+        "luxel/audio/sfx/boss_awaken_2.ogg",
+        "luxel/audio/sfx/prism_chain.ogg",
+        "luxel/audio/sfx/perfect_counter.ogg",
+        "luxel/audio/sfx/shield_strain.ogg",
+        "luxel/audio/sfx/intro_toll.ogg",
+        "luxel/audio/sfx/great_lamp_bloom.ogg",
+        "luxel/audio/sfx/waystone_warp.ogg",
+        "luxel/audio/sfx/menu_open.ogg",
+        "luxel/audio/sfx/menu_close.ogg"
+      ]
     }
   ],
   "third_party_audio": []

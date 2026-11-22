@@ -95,6 +95,16 @@ static func draw_intro_backdrop(ci: CanvasItem, t: float) -> void:
 	ci.draw_rect(Rect2(159.0, 125.0, 3.0, 6.0), LxPalette.PAL["gold" if flk else "apricot"])
 	ci.draw_rect(Rect2(160.0, 126.0, 1.0, 4.0), LxPalette.PAL["cream"])
 	ci.draw_rect(Rect2(159.0 + dr, 138.0, 3.0, 1.0), LxPalette.PAL["apricot" if boost else "coral"])
+	if boost:
+		var bt: float = clampf((t - 4.0) / 1.4, 0.0, 1.0)
+		var ring_r: float = roundf(lerpf(6.0, 42.0, 1.0 - pow(1.0 - bt, 2.0)))
+		if bt < 0.92:
+			ci.draw_arc(Vector2(160.0, 128.0), ring_r, 0.0, TAU, 24, Color(LxPalette.PAL["gold"], (1.0 - bt) * 0.72), 1.0)
+		for mi: int in range(6):
+			var mu: float = fmod((t - 4.0) * 0.65 + float(mi) * 0.19, 1.0)
+			var mx: float = roundf(160.0 + sin(t * 2.1 + float(mi) * 1.4) * (10.0 + mu * 12.0))
+			var my: float = roundf(124.0 - mu * 34.0)
+			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), LxPalette.PAL["cream" if mi % 2 == 0 else "gold"])
 
 static func draw_death_vignette(ci: CanvasItem, panel: Rect2) -> void:
 	var v: Color = LxPalette.PAL["void"]

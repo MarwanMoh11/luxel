@@ -295,6 +295,7 @@ func _draw_sky_and_moon() -> void:
 			_px([[sx - 1.0, sy, 1.0, 1.0], [sx + 1.0, sy, 1.0, 1.0], [sx, sy - 1.0, 1.0, 1.0], [sx, sy + 1.0, 1.0, 1.0]], arm)
 
 	_draw_crescent_moon(269.0, 19.0)
+	LxTitleSkyFx.draw_sky_accents(self, _elapsed)
 
 
 func _draw_dither_band(x0: float, x1: float, y: float, col: Color) -> void:

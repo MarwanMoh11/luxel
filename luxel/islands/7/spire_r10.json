@@ -272,6 +272,66 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "moon_dial_floor",
+      "pos": [
+        160,
+        92
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "floating_prism_totem",
+      "pos": [
+        52,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "floating_prism_totem",
+      "pos": [
+        268,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        122,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        198,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
     }
   ]
 }

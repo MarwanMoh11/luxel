@@ -393,6 +393,7 @@ func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
 		add_burst_light((enemy as Node2D).global_position + Vector2(0.0, -5.0), 66.0, 1.38, 0.28)
 func _on_enemy_killed(_e: Object, _k: String, pos: Vector2, opened: bool) -> void:
 	add_burst_light(pos, 76.0 if opened else 54.0, 1.40 if opened else 1.05, 0.42 if opened else 0.26)
+	if opened: LxDamageFx.gust_arena(pos, 52.0, 55.0)
 func _on_lantern_hung(pos: Vector2) -> void: add_burst_light(pos, 64.0, 1.22, 0.28)
 func _on_lantern_caught(pos: Vector2) -> void: add_burst_light(pos, 56.0, 1.12, 0.22)
 func _on_lantern_struck(pos: Vector2) -> void: add_burst_light(pos, 84.0, 1.48, 0.36)
@@ -401,10 +402,15 @@ func _on_waystone_lit(_i: int, wid: String) -> void: add_burst_light(_interactab
 func _on_shrine_claimed(sid: String, _m: String) -> void: add_burst_light(_interactable_pos(sid, "shrine"), 118.0, 1.55, 0.64)
 func _on_seal_broken(_i: int, sid: String) -> void: add_burst_light(_interactable_pos(sid, "obsidian_seal"), 104.0, 1.52, 0.50)
 func _on_boss_phase_changed(bid: String, _p: int) -> void:
-	add_burst_light(_boss_pos(bid), 112.0, 1.52, 0.56)
+	var bp: Vector2 = _boss_pos(bid)
+	add_burst_light(bp, 112.0, 1.52, 0.56)
+	LxDamageFx.trigger_boss_phase_burst(bid, bp)
 	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 	_phase_flash = maxf(_phase_flash, 0.35 if flash_red else 0.95)
-func _on_boss_defeated(bid: String, _i: int) -> void: add_burst_light(_boss_pos(bid), 144.0, 1.72, 0.75)
+func _on_boss_defeated(bid: String, _i: int) -> void:
+	var bp: Vector2 = _boss_pos(bid)
+	add_burst_light(bp, 144.0, 1.72, 0.75)
+	LxDamageFx.gust_arena(bp, 150.0, 145.0)
 func _on_great_lamp_relit(_i: int) -> void: add_burst_light(_interactable_pos("great_lamp", "great_lamp"), 154.0, 1.80, 0.75)
 func _on_ember_piece(_total: int) -> void: add_burst_light(_player_pos(), 96.0, 1.45, 0.52)
 func _on_upgrade_purchased(_id: String, _rank: int) -> void: add_burst_light(_player_pos(), 108.0, 1.50, 0.55)

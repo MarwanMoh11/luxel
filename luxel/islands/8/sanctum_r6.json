@@ -260,6 +260,66 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.9
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        160,
+        92
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        60,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        260,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "fallen_bell_fragment",
+      "pos": [
+        114,
+        154
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "fallen_bell_fragment",
+      "pos": [
+        206,
+        154
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
     }
   ]
 }

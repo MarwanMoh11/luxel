@@ -55,6 +55,7 @@ func open() -> void:
 	_deny_row = -1
 	_deny_t = 0.0
 	visible = true
+	_play_ui_sfx("menu_open")
 	queue_redraw()
 
 
@@ -116,7 +117,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
 			if _close_btn_rect().has_point(mb.position):
-				_play_ui_sfx("ui_back")
+				_play_ui_sfx("menu_close")
 				closed.emit()
 				get_viewport().set_input_as_handled()
 				return
@@ -143,7 +144,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_try_buy(_idx)
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
-		_play_ui_sfx("ui_back")
+		_play_ui_sfx("menu_close")
 		closed.emit()
 		get_viewport().set_input_as_handled()
 
