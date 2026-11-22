@@ -49,6 +49,8 @@ func on_hit(hit: LxHit) -> bool:
 		_hint_t = 0.0
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.16)
+			Lx.events.hitstop_requested.emit(0.045)
+		_emit_gust(maxf(size.x, size.y) + 34.0, 74.0)
 		_emit_sfx("stone_break")
 		_emit_save("cracked_" + id)
 		_notify_linked_targets(true)
@@ -70,6 +72,16 @@ func get_solid_rect() -> Rect2:
 	if not is_solid():
 		return Rect2()
 	return Rect2(pos - size * 0.5, size)
+
+
+func get_light_pool() -> Vector4:
+	if _break_t > 0.0:
+		var u: float = clampf(_break_t / 0.38, 0.0, 1.0)
+		return Vector4(pos.x, pos.y, 64.0 * u, 1.35 * u)
+	if _hint_t > 0.0 and active and not broken:
+		var h: float = clampf(_hint_t / 0.30, 0.0, 1.0)
+		return Vector4(pos.x, pos.y, 34.0, 0.85 * h)
+	return Vector4.ZERO
 
 
 func save_state() -> Dictionary:

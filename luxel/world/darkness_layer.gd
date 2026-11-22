@@ -208,7 +208,8 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 				var bp: Variant = b.get("pos") if (b is Dictionary or b is Object) else null
 				if bp is Vector2 and (bp as Vector2).distance_to(cam_center) <= 240.0:
 					var bpos: Vector2 = bp as Vector2
-					var bounced: bool = int(b.get("bounces")) > 0 if (b is Dictionary or b is Object) else false
+					var is_p: Variant = b.get("is_prism") if (b is Dictionary or b is Object) else null
+					var bounced: bool = is_p is bool and bool(is_p)
 					candidates.append({"d": bpos.distance_squared_to(cam_center) + (3200.0 if bounced else 5000.0), "v": Vector4(bpos.x, bpos.y, 48.0 if bounced else 34.0, 1.18 if bounced else 0.85)})
 		var beam_v: Variant = Lx.player.get("move_beam")
 		if beam_v is Object and is_instance_valid(beam_v):

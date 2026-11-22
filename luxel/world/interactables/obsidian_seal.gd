@@ -52,6 +52,7 @@ func on_hit(hit: LxHit) -> bool:
 		if Lx.events != null:
 			Lx.events.seal_broken.emit(island_id, id)
 			Lx.events.shake_requested.emit(0.24)
+			Lx.events.hitstop_requested.emit(0.055)
 		_emit_sfx("seal_shatter")
 		_emit_save("seal_" + id)
 		_notify_linked_targets(true)
@@ -66,6 +67,9 @@ func on_hit(hit: LxHit) -> bool:
 
 
 func get_light_pool() -> Vector4:
+	if _shatter_t > 0.0:
+		var u: float = clampf(_shatter_t / 0.42, 0.0, 1.0)
+		return Vector4(pos.x, pos.y, 76.0 * u, 1.50 * u)
 	if shattered or not active:
 		return Vector4.ZERO
 	return Vector4(pos.x, pos.y, 44.0 if _resonate_t > 0.0 else 38.0, 0.95 if _resonate_t > 0.0 else 0.68)

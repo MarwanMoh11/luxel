@@ -58,8 +58,12 @@ func interact(_actor: Node = null) -> bool:
 			_:
 				Lx.state.add_shards(amount)
 				_emit_sfx("shard_pickup")
+	var is_rare_r: bool = reward_kind == "ember_piece" or reward_kind == "keepers_flame"
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.10)
+		Lx.events.shake_requested.emit(0.14 if is_rare_r else 0.10)
+		if is_rare_r:
+			Lx.events.hitstop_requested.emit(0.035)
+	_emit_gust(74.0 if is_rare_r else 56.0, 68.0 if is_rare_r else 52.0, Vector2(0.0, -6.0))
 	_emit_sfx("chest_open")
 	_emit_save("chest_" + id)
 	_notify_linked_targets(true)
@@ -68,6 +72,9 @@ func interact(_actor: Node = null) -> bool:
 
 
 func get_light_pool() -> Vector4:
+	if _open_t > 0.0:
+		var u: float = clampf(_open_t / 0.44, 0.0, 1.0)
+		return Vector4(pos.x, pos.y - 6.0, 68.0 * (0.45 + 0.55 * u), 1.40 * u)
 	if opened:
 		return Vector4.ZERO
 	return Vector4(pos.x, pos.y - 4.0, 34.0, 0.65)

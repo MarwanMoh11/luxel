@@ -43,6 +43,7 @@ func on_hit(hit: LxHit) -> bool:
 		_rustle_t = 0.0
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.14)
+		_emit_gust(maxf(size.x, size.y) + 28.0, 62.0)
 		_emit_sfx("bramble_burn")
 		_emit_save("bramble_" + id)
 		_notify_linked_targets(true)
@@ -64,6 +65,13 @@ func get_solid_rect() -> Rect2:
 	if not is_solid():
 		return Rect2()
 	return Rect2(pos - size * 0.5, size)
+
+
+func get_light_pool() -> Vector4:
+	if _burn_t > 0.0:
+		var u: float = clampf(_burn_t / 0.36, 0.0, 1.0)
+		return Vector4(pos.x, pos.y, 58.0 * u, 1.35 * u)
+	return Vector4.ZERO
 
 
 func save_state() -> Dictionary:

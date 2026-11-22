@@ -43,7 +43,7 @@ func press() -> bool:
 	if not can_use():
 		if not unlocked and wick != null:
 			wick.emit_sfx("denied", wick.global_position, false)
-		elif unlocked and wick != null and not wick.dead and not active and not is_gliding and not wick.is_gliding() and not wick.is_zipping():
+		elif unlocked and wick != null and not wick.dead and not active and not is_gliding and not wick.is_gliding():
 			_buffer_t = 0.09
 		return false
 	return _execute_dash()
@@ -51,6 +51,8 @@ func press() -> bool:
 
 func _execute_dash() -> bool:
 	_buffer_t = 0.0
+	if wick.move_beam != null:
+		wick.move_beam.cancel()
 
 	var data: Dictionary = get_data()
 	var move_v: Vector2 = wick.get_move_input()
@@ -82,6 +84,7 @@ func _execute_dash() -> bool:
 
 	wick.spawn_afterimage(LxWick.PAL_ICE)
 	wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.16, LxWick.PAL_ICE, 1.0)
+	_gust(38.0, 42.0)
 	wick.emit_sfx("dash_whoosh", wick.global_position, false)
 	return true
 
@@ -221,6 +224,7 @@ func on_perfect_dodge() -> bool:
 		wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.24, LxWick.PAL_ICE, 1.5)
 		wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.18, LxWick.PAL_CREAM, 1.0)
 		wick.spawn_sparks(wick.global_position, -dash_dir, 8, LxWick.PAL_ICE, 34.0, 86.0, 0.22)
+		_gust(64.0, 72.0)
 		wick.emit_sfx("perfect_dodge", wick.global_position, false)
 		if Lx.ui != null and Lx.ui.get("hud") != null and (Lx.ui.get("hud") as Node).has_method("spawn_world_cue"):
 			(Lx.ui.get("hud") as Node).call("spawn_world_cue", "CUE_PERFECT_DODGE", wick.global_position + Vector2(0.0, -10.0), "ice", 1.1)
@@ -256,3 +260,10 @@ func _get_effective_cooldown() -> float:
 	if Lx.state != null:
 		return Lx.state.get_effective_dash_cooldown()
 	return float(get_data().get("cooldown", 0.55))
+
+
+func _gust(radius: float, strength: float) -> void:
+	if wick != null and Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", wick.global_position, radius, strength)

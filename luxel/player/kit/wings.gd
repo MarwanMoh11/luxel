@@ -57,6 +57,7 @@ func start_glide(dir: Vector2) -> bool:
 	_sw_cleared_this_glide = false
 
 	wick.spawn_ring(wick.global_position, 2.0, 11.0, 0.18, LxWick.PAL_SKY, 1.0)
+	_gust(44.0, 48.0)
 	wick.emit_sfx("wings_glide", wick.global_position, false)
 	return true
 
@@ -68,6 +69,7 @@ func on_shockwave_cleared() -> void:
 	wick.spawn_ring(wick.global_position, 3.0, 15.0, 0.22, LxWick.PAL_SKY, 1.4)
 	wick.spawn_ring(wick.global_position, 2.0, 10.0, 0.16, LxWick.PAL_CREAM, 1.0)
 	wick.spawn_sparks(wick.global_position, Vector2.UP, 6, LxWick.PAL_ICE, 24.0, 66.0, 0.22)
+	_gust(60.0, 68.0)
 	wick.emit_sfx("prism_bounce", wick.global_position, false)
 	if wick.move_sunflare != null and wick.move_sunflare.unlocked:
 		var emax: float = wick.move_sunflare.get_ember_max()
@@ -118,3 +120,10 @@ func reset() -> void:
 	stop_glide()
 	glide_dist_traveled = 0.0
 	glides_count = 0
+
+
+func _gust(radius: float, strength: float) -> void:
+	if wick != null and Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", wick.global_position, radius, strength)

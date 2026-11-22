@@ -42,6 +42,7 @@ func tick(dt: float) -> void:
 		if cleared != ignitable:
 			if cleared and _synced_once:
 				_unlock_t = 0.55
+				_emit_gust(62.0, 54.0, Vector2(0.0, -10.0))
 				_emit_sfx("ember_pickup")
 			ignitable = cleared
 			queue_redraw()
