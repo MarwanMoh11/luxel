@@ -70,12 +70,15 @@ const SFX_VARIANTS: Dictionary = {
 	"miniboss_harbinger_roar": ["miniboss_harbinger_roar", "miniboss_harbinger_roar_2"],
 	"eclipse_wave": ["eclipse_wave", "eclipse_wave_2"], "anchor_slam": ["anchor_slam", "anchor_slam_2"],
 	"lighthouse_beam": ["lighthouse_beam", "lighthouse_beam_2"],
+	"prop_chime": ["prop_chime", "prop_chime_2"], "prop_rustle": ["prop_rustle", "prop_rustle_2"],
+	"bridge_rise": ["bridge_rise", "bridge_rise_2"], "phantom_phase": ["phantom_phase", "phantom_phase_2"],
 }
 
 const SFX_BASE_TRIM_DB: Dictionary = {
 	"bolt_fire": -2.5, "bolt_chip": -1.5, "bolt_wall": -5.5,
 	"footstep_stone": -5.5, "footstep_grass": -5.0, "footstep_wood": -4.5,
 	"footstep_ash": -5.0, "footstep_crystal": -5.5, "footstep_water": -5.0,
+	"prop_chime": -6.5, "prop_rustle": -8.0,
 	"dash_whoosh": -2.0, "ui_move": -2.5, "ui_confirm": -1.5, "ui_back": -1.5, "ui_pause": -3.5,
 	"menu_open": -2.0, "menu_close": -2.0, "intro_toll": -1.0, "boss_awaken": -0.5, "great_lamp_bloom": 0.5,
 }
@@ -85,6 +88,10 @@ const EXACT: Dictionary = {
 	"ui_back": {"id": "ui_back", "pitch": 1.00, "db": 0.0},
 	"door_open": {"id": "door_open", "pitch": 1.00, "db": 0.0},
 	"door_locked": {"id": "door_locked", "pitch": 1.00, "db": 0.0},
+	"bridge_rise": {"id": "bridge_rise", "pitch": 1.00, "db": 0.0},
+	"phantom_phase": {"id": "phantom_phase", "pitch": 1.00, "db": -1.5},
+	"prop_chime": {"id": "prop_chime", "pitch": 1.00, "db": 0.0},
+	"prop_rustle": {"id": "prop_rustle", "pitch": 1.00, "db": 0.0},
 	"brazier_lit": {"id": "brazier_lit", "pitch": 1.00, "db": 0.0},
 	"lamp_lit": {"id": "lamp_lit", "pitch": 1.00, "db": 0.0},
 	"lamp_relit": {"id": "dawn_burst", "pitch": 1.00, "db": -1.0},

@@ -352,7 +352,8 @@ func _draw_keycap(r: Rect2, glyph: String, sel: bool) -> void:
 
 func _draw_listen_modal(pulse_hi: bool) -> void:
 	var box := Rect2(54.0, 72.0, 212.0, 26.0)
-	var phase: int = int(floorf(_blink_t * 6.0)) % 4
+	var no_flash: bool = LxHudFx.flash_reduced()
+	var phase: int = 1 if no_flash else (int(floorf(_blink_t * 6.0)) % 4)
 	var bdr: String = "cream" if phase == 0 else ("apricot" if phase == 2 else "gold")
 	draw_rect(Rect2(box.position + Vector2(3.0, 3.0), box.size), LxPalette.PAL["void"])
 	draw_rect(box.grow(2.0), LxPalette.PAL["void"])

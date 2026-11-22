@@ -32,7 +32,7 @@ func on_light(light_radius: float, source: String) -> void:
 	if not was:
 		_reveal_fx_t = 0.24
 		_emit_gust(48.0, 34.0)
-		_emit_sfx("phantom_reveal")
+		_emit_sfx("phantom_phase")
 		queue_redraw()
 
 
@@ -73,7 +73,7 @@ func get_platform_rect() -> Rect2:
 func get_light_pool() -> Vector4:
 	if not revealed:
 		return Vector4.ZERO
-	var surge: float = sin((1.0 - clampf(_reveal_fx_t / 0.24, 0.0, 1.0)) * PI) if _reveal_fx_t > 0.0 else 0.0
+	var surge: float = (sin((1.0 - clampf(_reveal_fx_t / 0.24, 0.0, 1.0)) * PI) * (0.55 if LxHudFx.flash_reduced() else 1.0)) if _reveal_fx_t > 0.0 else 0.0
 	return Vector4(pos.x, pos.y, 32.0 + surge * 24.0, 0.55 + surge * 0.35)
 
 

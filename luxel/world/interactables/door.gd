@@ -207,7 +207,7 @@ func _open(persist: bool) -> bool:
 		_emit_gust(maxf(size.x, size.y) + 22.0, 42.0)
 	if Lx.events != null:
 		Lx.events.shake_requested.emit(0.14)
-	_emit_sfx("door_open")
+	_emit_sfx("bridge_rise" if (door_type == "bridge_platform" or _is_light_bridge) else "door_open")
 	if persist:
 		_emit_save("door_" + id)
 	queue_redraw()

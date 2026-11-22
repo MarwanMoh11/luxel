@@ -56,6 +56,8 @@ const SWAY_PROPS: Dictionary = {
 	"tattered_sanctum_banner": true,
 }
 
+static var _global_sway_sfx_ms: int = 0
+
 var sheet_name: String = ""
 var prop_key: String = ""
 var layer_name: String = "sort"
@@ -81,6 +83,7 @@ var _sway_cd: float = 0.0
 var _sway_dir: float = 1.0
 var _sway_amp: float = 1.2
 var _sway_px: float = 0.0
+var _sfx_cd: float = 0.0
 
 
 func _ready() -> void:
@@ -159,6 +162,8 @@ func _process(dt: float) -> void:
 	if _can_sway:
 		if _sway_cd > 0.0:
 			_sway_cd = maxf(0.0, _sway_cd - dt)
+		if _sfx_cd > 0.0:
+			_sfx_cd = maxf(0.0, _sfx_cd - dt)
 		if has_p and _sway_cd <= 0.0:
 			var pp2: Vector2 = (Lx.player as Node2D).global_position
 			var d2: float = pp2.distance_squared_to(position)
@@ -172,6 +177,7 @@ func _process(dt: float) -> void:
 					if absf(vel.x) > 25.0:
 						_sway_dir = signf(vel.x)
 					_sway_amp = 2.0 if vel.length_squared() > 14400.0 else 1.2
+					_play_sway_sfx()
 			else:
 				var lan_v: Variant = Lx.player.get("lantern")
 				if lan_v is Object and is_instance_valid(lan_v as Object) and bool((lan_v as Object).call("is_out")):
@@ -182,6 +188,7 @@ func _process(dt: float) -> void:
 						_sway_cd = 0.24
 						_sway_dir = signf(lvel.x) if absf(lvel.x) > 25.0 else (-1.0 if (lpos.x > position.x) else 1.0)
 						_sway_amp = 2.0
+						_play_sway_sfx()
 		if _sway_t > 0.0:
 			_sway_t = maxf(0.0, _sway_t - dt)
 			var next_px: float = roundf(sin(_sway_t * 24.0) * _sway_amp * (_sway_t / 0.36) * _sway_dir) if _sway_t > 0.0 else 0.0
@@ -238,6 +245,18 @@ func _draw() -> void:
 			var mx: float = roundf(_sway_dir * (2.5 + u * (5.5 + float(mi) * 3.0)) + float(mi * 2 - 1) * 2.5)
 			var my: float = roundf(-mh - u * (5.0 + float(mi) * 2.5) + sin(u * PI * 2.0 + float(mi)) * 1.5)
 			draw_rect(Rect2(mx, my, 1.0, 1.0), Color(mc, (1.0 - u) * 0.90))
+
+
+func _play_sway_sfx() -> void:
+	if _sfx_cd > 0.0 or Lx.audio == null:
+		return
+	var now_ms: int = Time.get_ticks_msec()
+	if now_ms - _global_sway_sfx_ms < 220:
+		return
+	_global_sway_sfx_ms = now_ms
+	var is_chime: bool = prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("pendulum")
+	_sfx_cd = 0.72 if is_chime else 0.56
+	Lx.audio.play_sfx("prop_chime" if is_chime else "prop_rustle", global_position, true)
 
 
 func _sway_mote_color() -> Color:

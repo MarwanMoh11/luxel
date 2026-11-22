@@ -634,6 +634,22 @@
         "luxel/audio/sfx/lighthouse_beam.ogg",
         "luxel/audio/sfx/lighthouse_beam_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_world_tactile",
+      "description": "Tactile zero-hiss multi-take world foley (prop_chime, prop_rustle, bridge_rise, phantom_phase + _2 takes; 260 Studio SFX across 125 multi-take pools)",
+      "generator": "gen_sfx_world_tactile.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/prop_chime.ogg",
+        "luxel/audio/sfx/prop_chime_2.ogg",
+        "luxel/audio/sfx/prop_rustle.ogg",
+        "luxel/audio/sfx/prop_rustle_2.ogg",
+        "luxel/audio/sfx/bridge_rise.ogg",
+        "luxel/audio/sfx/bridge_rise_2.ogg",
+        "luxel/audio/sfx/phantom_phase.ogg",
+        "luxel/audio/sfx/phantom_phase_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []
