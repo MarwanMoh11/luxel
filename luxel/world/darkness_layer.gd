@@ -300,11 +300,11 @@ func _append_player_lights(lights: PackedVector4Array, flicker: float) -> void:
 			lan_pos = lo.get("pos") as Vector2 if lo.get("pos") is Vector2 else ((lo as Node2D).global_position if lo is Node2D else p_pos)
 	var has_lens: bool = Lx.state != null and is_instance_valid(Lx.state) and Lx.state.has_move("lens")
 	if not lantern_out:
-		var base_hand: float = custom_r if custom_r > 0.0 else (108.0 if has_lens else 96.0)
+		var base_hand: float = maxf(108.0 if has_lens else 96.0, custom_r)
 		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, base_hand * flicker, 1.35))
 	else:
 		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, 42.0, 0.72))
-		var base_hung: float = custom_r if custom_r > 0.0 else (118.0 if has_lens else 86.0)
+		var base_hung: float = maxf(118.0 if has_lens else 86.0, custom_r)
 		lights.append(Vector4(lan_pos.x, lan_pos.y - 6.0, base_hung * flicker, 1.38))
 
 func _player_pos() -> Vector2:
