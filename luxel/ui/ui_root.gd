@@ -436,6 +436,7 @@ func _draw_reticle() -> void:
 		if Lx.player != null and Lx.camera != null and Lx.player is Node2D:
 			center = (Lx.player as Node2D).global_position - Lx.camera.global_position + Vector2(160.0, 90.0)
 		pos = (center + Lx.input.last_aim_dir.normalized() * 42.0).round()
+		pos = Vector2(clampf(pos.x, 8.0, 312.0), clampf(pos.y, 8.0, 172.0))
 	var arm: float = float(sz + 2)
 	var gap: float = float(sz + 1)
 	var zip_ready: bool = false

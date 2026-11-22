@@ -210,6 +210,7 @@ func continue_slot(slot_num: int) -> bool:
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
 	if not Lx.save.load_slot(active_slot, Lx.state):
 		return false
+	if Lx.state.hearts <= 0.0: Lx.state.heal_full()
 	if _wick != null and _wick.has_method("sync_unlocks_from_state"):
 		_wick.call("sync_unlocks_from_state")
 	load_island_region(Lx.state.island_id, Lx.state.region_id, Lx.state.spawn_pos)
@@ -525,10 +526,9 @@ func _on_great_lamp_relit(isl: int) -> void:
 
 
 func _sync_ui_flow() -> void:
-	if _ui_root != null and _ui_root.has_method("set_flow"):
-		_ui_root.call("set_flow", flow)
-	if _darkness_layer != null:
-		_darkness_layer.visible = flow in [Flow.PLAY, Flow.PAUSE, Flow.MAP, Flow.REST_SHOP, Flow.DEATH]
+	if flow != Flow.PLAY and Lx.input != null: Lx.input.clear_all_toggles()
+	if _ui_root != null and _ui_root.has_method("set_flow"): _ui_root.call("set_flow", flow)
+	if _darkness_layer != null: _darkness_layer.visible = flow in [Flow.PLAY, Flow.PAUSE, Flow.MAP, Flow.REST_SHOP, Flow.DEATH]
 
 func _sync_boss_hud() -> void:
 	var hud: Node = Lx.ui.get("hud") as Node if (Lx.ui != null and Lx.ui.get("hud") != null) else null

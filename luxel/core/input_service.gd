@@ -112,9 +112,10 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventKey or event is InputEventMouseButton or event is InputEventMouseMotion:
 		_set_device("kbm")
 
-	for act: String in hold_modes.keys():
-		if str(hold_modes[act]) == "toggle" and InputMap.has_action(act) and event.is_action_pressed(act):
-			_toggle_states[act] = not bool(_toggle_states.get(act, false))
+	if Lx.root == null or int(Lx.root.get("flow")) == 2:
+		for act: String in hold_modes.keys():
+			if str(hold_modes[act]) == "toggle" and InputMap.has_action(act) and event.is_action_pressed(act):
+				_toggle_states[act] = not bool(_toggle_states.get(act, false))
 
 
 func _set_device(kind: String) -> void:
@@ -168,6 +169,10 @@ func get_aim_dir(from_world: Vector2, mouse_world: Vector2) -> Vector2:
 		var stick: Vector2 = Vector2(rx, ry)
 		if stick.length() >= STICK_DEADZONE:
 			last_aim_dir = stick.normalized()
+		else:
+			var mv: Vector2 = get_move_vector()
+			if mv.length() >= STICK_DEADZONE:
+				last_aim_dir = mv.normalized()
 		return last_aim_dir
 	var delta: Vector2 = mouse_world - from_world
 	if delta.length_squared() > 0.001:
@@ -281,6 +286,18 @@ static func event_to_glyph(ev: InputEvent) -> String:
 				return "LB"
 			JOY_BUTTON_RIGHT_SHOULDER:
 				return "RB"
+			JOY_BUTTON_LEFT_STICK:
+				return "L3"
+			JOY_BUTTON_RIGHT_STICK:
+				return "R3"
+			JOY_BUTTON_DPAD_UP:
+				return "DPAD-U"
+			JOY_BUTTON_DPAD_DOWN:
+				return "DPAD-D"
+			JOY_BUTTON_DPAD_LEFT:
+				return "DPAD-L"
+			JOY_BUTTON_DPAD_RIGHT:
+				return "DPAD-R"
 			_:
 				return "PAD" + str(int((ev as InputEventJoypadButton).button_index))
 	if ev is InputEventJoypadMotion:
