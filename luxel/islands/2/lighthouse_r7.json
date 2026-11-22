@@ -219,22 +219,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "prop": "rope_coil",
-      "pos": [
-        276,
-        108
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "wooden_crates",
-      "pos": [
-        276,
-        144
-      ],
-      "layer": "back"
     }
   ]
 }

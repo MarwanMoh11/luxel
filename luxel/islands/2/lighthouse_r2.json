@@ -193,26 +193,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
-      "pos": [
-        276,
-        44
-      ],
-      "layer": "sort",
-      "phase": 0.5
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "rope_coil",
-      "pos": [
-        204,
-        138
-      ],
-      "layer": "sort",
-      "phase": 0.2
     }
   ]
 }

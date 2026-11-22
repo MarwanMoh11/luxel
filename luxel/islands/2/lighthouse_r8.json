@@ -229,42 +229,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.9
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
-      "pos": [
-        44,
-        42
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
-      "pos": [
-        276,
-        42
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "rope_coil",
-      "pos": [
-        44,
-        142
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
     }
   ]
 }

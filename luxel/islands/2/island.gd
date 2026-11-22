@@ -76,11 +76,11 @@ func get_region_list() -> PackedStringArray:
 
 func get_main_path_waypoints() -> Array[Dictionary]:
 	return [
-		_wp("wp_2_entry_ws", "overworld", "harbor_landing", [104.0, 392.0], "waystone", "interact", "ws_2_entry", "Arrive at Tidewater Harbor landing pier", ["bolt", "dash", "throw"], []),
-		_wp("wp_2_beacon_1", "overworld", "drydock_quays", [120.0, 88.0], "beacon", "light_beacon", "beacon_2_1", "Clear Drydock Quays and light Beacon 1", ["bolt", "dash", "throw"], [], "", "beacon_2_1"),
-		_wp("wp_2_beacon_2", "overworld", "tide_causeway", [600.0, 440.0], "beacon", "light_beacon", "beacon_2_2", "Cross Tide Causeway and light Beacon 2", ["bolt", "dash", "throw"], [], "", "beacon_2_2"),
-		_wp("wp_2_beacon_3", "overworld", "breakwater_reef", [856.0, 104.0], "beacon", "light_beacon", "beacon_2_3", "Clear Breakwater Reef and light Beacon 3", ["bolt", "dash", "throw"], [], "", "beacon_2_3"),
-		_wp("wp_2_enter_lighthouse", "overworld", "lighthouse_promontory", [512.0, 60.0], "exit", "enter_exit", "exit_to_lighthouse", "Enter The Lighthouse past the shattered ward barrier", ["dash", "throw"], ["beacon_2_1", "beacon_2_2", "beacon_2_3"], "", "", "lighthouse_r1"),
+		_wp("wp_2_entry_ws", "overworld", "harbor_landing", [104.0, 296.0], "waystone", "interact", "ws_2_entry", "Arrive at Tidewater Harbor landing pier", ["bolt", "dash", "throw"], []),
+		_wp("wp_2_beacon_1", "overworld", "drydock_quays", [200.0, 88.0], "beacon", "light_beacon", "beacon_2_1", "Clear Drydock Quays and light Beacon 1", ["bolt", "dash", "throw"], [], "", "beacon_2_1"),
+		_wp("wp_2_beacon_2", "overworld", "tide_causeway", [760.0, 184.0], "beacon", "light_beacon", "beacon_2_2", "Cross Tide Causeway and light Beacon 2", ["bolt", "dash", "throw"], [], "", "beacon_2_2"),
+		_wp("wp_2_beacon_3", "overworld", "breakwater_reef", [1176.0, 88.0], "beacon", "light_beacon", "beacon_2_3", "Clear Breakwater Reef and light Beacon 3", ["bolt", "dash", "throw"], [], "", "beacon_2_3"),
+		_wp("wp_2_enter_lighthouse", "overworld", "lighthouse_promontory", [1536.0, 108.0], "exit", "enter_exit", "exit_to_lighthouse", "Enter The Lighthouse past the shattered ward barrier", ["dash", "throw"], ["beacon_2_1", "beacon_2_2", "beacon_2_3"], "", "", "lighthouse_r1"),
 		_wp("wp_lh_r1_ws", "lighthouse_r1", "lighthouse_r1", [160.0, 104.0], "waystone", "interact", "ws_lighthouse", "Light Lighthouse Entry Hall Waystone", ["dash", "throw"], []),
 		_wp("wp_lh_r2_key1", "lighthouse_r2", "lighthouse_r2", [264.0, 40.0], "wick_key", "collect_key", "wick_key_2_1", "Solve Tide Lock switch puzzle and take wick_key_2_1", ["dash", "throw"], [], "", "wick_key_2_1"),
 		_wp("wp_lh_r3_combat", "lighthouse_r3", "lighthouse_r3", [296.0, 88.0], "combat_gate", "clear_room", "door_lh_r3_combat", "Clear Pier Ward enemies to open combat gate", ["dash", "throw"], [], "", "lh_r3_cleared"),

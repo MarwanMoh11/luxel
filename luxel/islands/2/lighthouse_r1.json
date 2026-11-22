@@ -31,8 +31,8 @@
       ],
       "to_region": "overworld",
       "to_spawn": [
-        512,
-        92
+        1536,
+        136
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -190,14 +190,6 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.1
-    },
-    {
-      "prop": "rope_coil",
-      "pos": [
-        40,
-        146
-      ],
-      "layer": "back"
     }
   ]
 }

@@ -230,30 +230,6 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.8
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
-      "pos": [
-        224,
-        38
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
-      "pos": [
-        224,
-        144
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
     }
   ]
 }

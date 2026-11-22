@@ -266,54 +266,6 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.6
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "brass_compass_floor",
-      "pos": [
-        160,
-        92
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
-      "pos": [
-        46,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
-      "pos": [
-        274,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "rope_coil",
-      "pos": [
-        126,
-        154
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
     }
   ]
 }

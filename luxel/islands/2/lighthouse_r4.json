@@ -209,22 +209,6 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
-    },
-    {
-      "prop": "mooring_bollard",
-      "pos": [
-        164,
-        40
-      ],
-      "layer": "back"
-    },
-    {
-      "prop": "barnacle_piling",
-      "pos": [
-        164,
-        142
-      ],
-      "layer": "back"
     }
   ]
 }

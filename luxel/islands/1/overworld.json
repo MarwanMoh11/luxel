@@ -110,8 +110,8 @@
       ],
       "to_region": "island2:overworld",
       "to_spawn": [
-        120,
-        360
+        104,
+        248
       ],
       "requires_moves": [
         "dash",
