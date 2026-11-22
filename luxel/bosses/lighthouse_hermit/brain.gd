@@ -370,7 +370,7 @@ func _draw_extra(off: Vector2) -> void:
 			var ft: float = fposmod(anim_t * 3.4 + float(fi) * 0.333, 1.0)
 			var fp_b: Vector2 = orig.lerp(b_end, ft).round()
 			draw_line(fp_b - b_perp * 4.0, fp_b + b_perp * 4.0, PAL["cream"] as Color, 1.2)
-		var fl: float = 8.5 + 1.5 * sin(anim_t * 22.0)
+		var fl: float = 8.5 + (0.0 if LxHudFx.flash_reduced() else 1.5 * sin(anim_t * 22.0))
 		for ep_i: int in range(2):
 			var fp: Vector2 = orig if ep_i == 0 else b_end
 			var fr: float = fl if ep_i == 0 else fl + 1.5

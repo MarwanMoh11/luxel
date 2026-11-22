@@ -196,7 +196,7 @@ func _draw_extra(off: Vector2) -> void:
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(c, ELDER_RING_MAX_R, a0, a0 + 0.24, 3, PAL["jade"] as Color, 1.0)
 		var tr: float = lerpf(ELDER_RING_MAX_R * 0.85, RING_START_R + 5.0, swell)
-		var pulse: float = 1.4 * sin(anim_t * 20.0)
+		var pulse: float = 0.0 if LxHudFx.flash_reduced() else 1.4 * sin(anim_t * 20.0)
 		var hot: bool = state_timer <= 0.14
 		draw_arc(c, tr + 2.2 + pulse * 0.4, 0.0, TAU, 28, (PAL["lime"] if hot else PAL["jade"]) as Color, 1.4)
 		draw_arc(c, tr, 0.0, TAU, 28, (PAL["cream"] if hot else PAL["lime"]) as Color, 2.2 if hot else 2.0)
@@ -207,7 +207,7 @@ func _draw_extra(off: Vector2) -> void:
 			for oi: int in range(14):
 				var oa0: float = float(oi) * (TAU / 14.0)
 				draw_arc(c, r2_max, oa0, oa0 + 0.22, 3, PAL["lime"] as Color, 1.0)
-			var pr: float = ELDER_RING_MAX_R * 0.48 + 2.0 * sin(anim_t * 20.0)
+			var pr: float = ELDER_RING_MAX_R * 0.48 + (0.0 if LxHudFx.flash_reduced() else 2.0 * sin(anim_t * 20.0))
 			var hot_p: bool = state_timer <= 0.14
 			draw_arc(c, pr + 2.4, 0.0, TAU, 28, (PAL["gold"] if hot_p else PAL["lime"]) as Color, 1.8)
 			draw_arc(c, pr, 0.0, TAU, 28, (PAL["cream"] if hot_p else PAL["gold"]) as Color, 2.4 if hot_p else 2.2)

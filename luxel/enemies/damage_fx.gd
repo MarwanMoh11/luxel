@@ -8,6 +8,42 @@ static func _flash_reduced() -> bool:
 	return Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 
 
+static func draw_phase_sigil(enemy: LxEnemyBrain, off: Vector2) -> void:
+	if enemy == null or not enemy.is_boss or enemy.phase < 2:
+		return
+	var pal: Dictionary = LxEnemyBrain.PAL
+	var r: float = enemy.body_radius
+	var ph: int = enemy.phase
+	var t: float = enemy.anim_t
+	var fred: bool = _flash_reduced()
+	var rx: float = r + 6.5
+	var ry: float = rx * 0.48
+	var base_y: float = r * 0.45
+	var ring_col: Color = (pal["sky"] if ph >= 4 else (pal["coral"] if ph >= 3 else pal["apricot"])) as Color
+	var hi_col: Color = (pal["cream"] if ph >= 4 else (pal["gold"] if ph >= 3 else pal["cream"])) as Color
+	var spin: float = t * (0.45 if fred else (0.75 + float(ph) * 0.25))
+	# Pixel-snapped gothic ground rune dashes beneath the boss's feet
+	var segs: int = 8 if ph == 2 else (10 if ph == 3 else 12)
+	for si: int in range(segs):
+		var a0: float = spin + float(si) * (TAU / float(segs))
+		var p0: Vector2 = (off + Vector2(cos(a0) * rx, base_y + sin(a0) * ry)).round()
+		var col_s: Color = hi_col if (ph >= 3 and si % 3 == 0) else ring_col
+		enemy.draw_rect(Rect2(p0, Vector2(2.0 if si % 2 == 0 else 1.0, 1.0)), col_s)
+	# Inner cardinal spokes for Phase 3 & 4 bosses
+	if ph >= 3:
+		for ci: int in range(4):
+			var ca: float = -spin * 0.7 + float(ci) * (PI * 0.5)
+			var cp: Vector2 = (off + Vector2(cos(ca) * (rx + 2.5), base_y + sin(ca) * (ry + 1.5))).round()
+			enemy.draw_rect(Rect2(cp, Vector2(2.0, 2.0)), hi_col)
+	# Orbiting phase motes
+	var pn: int = mini(ph * 2, 8)
+	var orb_spd: float = (1.1 if fred else (1.8 + float(ph) * 0.55))
+	for pi: int in range(pn):
+		var pa: float = t * orb_spd + float(pi) * (TAU / float(pn))
+		var mp: Vector2 = (off + Vector2(cos(pa) * (r + 5.0), base_y + sin(pa) * (r * 0.48 + 2.0))).round()
+		enemy.draw_rect(Rect2(mp, Vector2(2.0, 1.0)), hi_col if (pi % 2 == 0) else (pal["gold"] as Color))
+
+
 static func draw_wear(enemy: LxEnemyBrain, off: Vector2) -> void:
 	if enemy == null or enemy.state == LxEnemyBrain.State.DEAD:
 		return

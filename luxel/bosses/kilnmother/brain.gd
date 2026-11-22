@@ -335,7 +335,7 @@ func _draw_extra(off: Vector2) -> void:
 			for oi: int in range(12):
 				var oa0: float = float(oi) * (TAU / 12.0)
 				draw_arc(off, KILN_RING_MAX_R, oa0, oa0 + 0.24, 3, PAL["coral"] as Color, 1.0)
-			var pr: float = KILN_RING_MAX_R * 0.5 + 2.0 * sin(anim_t * 18.0)
+			var pr: float = KILN_RING_MAX_R * 0.5 + (0.0 if LxHudFx.flash_reduced() else 2.0 * sin(anim_t * 18.0))
 			var hot_k: bool = state_timer <= 0.14
 			draw_arc(off, pr + 2.0, 0.0, TAU, 24, (PAL["apricot"] if hot_k else PAL["coral"]) as Color, 2.0)
 			draw_arc(off, pr, 0.0, TAU, 24, (PAL["cream"] if hot_k else PAL["gold"]) as Color, 2.4 if hot_k else 2.2)

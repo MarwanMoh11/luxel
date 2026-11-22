@@ -532,11 +532,7 @@ func _draw() -> void:
 	var off: Vector2 = _visual_offset()
 	draw_circle(Vector2(2.0, r * 0.55), r * 0.9, PAL["void"] as Color)
 	if is_boss and phase >= 2:
-		var pn: int = mini(phase * 2, 8)
-		var pc: Color = (PAL["cream"] if phase >= 4 else (PAL["coral"] if phase >= 3 else PAL["gold"])) as Color
-		for pi: int in range(pn):
-			var pa: float = anim_t * (1.8 + float(phase) * 0.6) + float(pi) * (TAU / float(pn))
-			draw_rect(Rect2((off + Vector2(cos(pa) * (r + 5.0), r * 0.45 + sin(pa) * (r * 0.48 + 2.0))).round(), Vector2(2.0, 1.0)), pc if (pi % 2 == 0) else (PAL["gold"] as Color))
+		LxDamageFx.draw_phase_sigil(self, off)
 
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
@@ -577,7 +573,7 @@ func _draw() -> void:
 		draw_rect(Rect2(lt, Vector2.ONE), PAL["cream"] as Color)
 
 	if state == State.RECOVER or state == State.STAGGER:
-		var scol: Color = (PAL["cream"] if int(anim_t * 10.0) % 2 == 0 else PAL["gold"]) if state == State.STAGGER else (PAL["gold"] as Color)
+		var scol: Color = (PAL["cream"] if (LxHudFx.flash_reduced() or int(anim_t * 10.0) % 2 == 0) else PAL["gold"]) if state == State.STAGGER else (PAL["gold"] as Color)
 		for i: int in range(3):
 			var ang: float = anim_t * (7.5 if state == State.STAGGER else 5.0) + float(i) * (TAU / 3.0)
 			draw_circle(off + Vector2(cos(ang) * (r + 2.0), -r - 4.0 + sin(ang) * 2.0), 1.5, scol)

@@ -280,7 +280,7 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(orig, b_end, PAL["sky"] as Color, 3.6)
 		draw_line(orig, b_end, PAL["ice"] as Color, 2.2)
 		draw_line(orig, b_end, PAL["cream"] as Color, 1.1)
-		var fl: float = 8.0 + 1.4 * sin(anim_t * 24.0)
+		var fl: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else 1.4 * sin(anim_t * 24.0))
 		for ep_i: int in range(2):
 			var fp: Vector2 = orig if ep_i == 0 else b_end
 			var fr: float = fl if ep_i == 0 else fl + 1.5

@@ -29,6 +29,7 @@ static func _draw_star_flare(b: LxEnemyBrain, p: Vector2, rad: float, outer: Col
 
 static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 	var pal: Dictionary = LxEnemyBrain.PAL
+	var fred: bool = LxHudFx.flash_reduced()
 	var phase: int = b.phase
 	var r: float = b.body_radius
 	var has_sprite: bool = b._sprite_sheet != null
@@ -77,9 +78,9 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 			var bp: Vector2 = o_orig.lerp(orb_off, bt).round()
 			b.draw_circle(bp, 1.8, pal["deep"] as Color)
 			b.draw_circle(bp, 1.0, (pal["ice"] if bi % 2 == 0 else pal["sky"]) as Color)
-		var pulse: float = 0.8 * sin(b.anim_t * 14.0)
+		var pulse: float = 0.0 if fred else 0.8 * sin(b.anim_t * 14.0)
 		if b.state == LxEnemyBrain.State.COMMIT and int(b.get("active_move")) == 1:
-			var zip_danger_col: Color = (pal["coral"] if fmod(b.anim_t * 12.0, 1.0) < 0.5 else pal["sky"]) as Color
+			var zip_danger_col: Color = (pal["coral"] if (fred or fmod(b.anim_t * 12.0, 1.0) < 0.5) else pal["sky"]) as Color
 			for zi: int in range(8):
 				var za0: float = b.anim_t * 1.8 + float(zi) * (TAU / 8.0)
 				b.draw_arc(orb_off, 26.0, za0, za0 + 0.36, 3, zip_danger_col, 1.2)
@@ -109,7 +110,7 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 		elif active_move == 4: # ECLIPSE_BEAM
 			var sw_end: float = sweep_start + sweep_sign * 1.45
 			var locked_e: bool = b.state_timer <= 0.22
-			var pulse_w: float = (2.2 if locked_e else 1.6) + 0.9 * absf(sin(b.anim_t * 18.0))
+			var pulse_w: float = (2.2 if locked_e else 1.6) + (0.0 if fred else 0.9 * absf(sin(b.anim_t * 18.0)))
 			var s_tip: Vector2 = (off + Vector2.from_angle(sweep_start) * 158.0).round()
 			var e_tip: Vector2 = (off + Vector2.from_angle(sw_end) * 158.0).round()
 			b.draw_line(off.round(), s_tip, (pal["coral"] if locked_e else pal["gold"]) as Color, pulse_w)
@@ -162,7 +163,7 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 			for ti: int in range(12):
 				var a0: float = float(ti) * (TAU / 12.0)
 				b.draw_arc(off, 84.0, a0, a0 + 0.24, 3, pal["sky"] as Color, 1.2)
-			var pr_h: float = 42.0 + 2.0 * sin(b.anim_t * 18.0)
+			var pr_h: float = 42.0 + (0.0 if fred else 2.0 * sin(b.anim_t * 18.0))
 			var hot_h: bool = b.state_timer <= 0.14
 			b.draw_arc(off, pr_h, 0.0, TAU, 24, (pal["gold"] if hot_h else pal["sky"]) as Color, 2.2 if hot_h else 1.8)
 			b.draw_arc(off, pr_h - 3.0, 0.0, TAU, 20, (pal["cream"] if hot_h else pal["ice"]) as Color, 1.2)
@@ -187,7 +188,7 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 				var sp: Vector2 = b_orig.lerp(b_end, st).round()
 				b.draw_line(sp - b_perp * 4.5, sp + b_perp * 4.5, pal["gold"] as Color, 1.4)
 				b.draw_rect(Rect2(sp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), pal["cream"] as Color, true)
-			var fl_r: float = 9.0 + 1.5 * sin(b.anim_t * 24.0)
+			var fl_r: float = 9.0 + (0.0 if fred else 1.5 * sin(b.anim_t * 24.0))
 			_draw_star_flare(b, b_orig, fl_r, pal["gold"] as Color, pal["cream"] as Color)
 			_draw_star_flare(b, b_end, fl_r + 1.5, pal["gold"] as Color, pal["cream"] as Color)
 		elif active_move == 0: # VOLLEY (honest 5-bolt fan matching hitbox)
