@@ -23,6 +23,9 @@ var _streak_cd: float = 0.0
 var _ripple_cd: float = 0.0
 var _step_parity: int = 0
 var _was_airborne: bool = false
+var _prev_move_dir: Vector2 = Vector2.ZERO
+var _skid_cd: float = 0.0
+var _idle_t: float = 0.0
 
 func clear() -> void:
 	afterimages.clear()
@@ -37,6 +40,9 @@ func clear() -> void:
 	_ripple_cd = 0.0
 	_step_parity = 0
 	_was_airborne = false
+	_prev_move_dir = Vector2.ZERO
+	_skid_cd = 0.0
+	_idle_t = 0.0
 
 func spawn_afterimage(at_pos: Vector2, col: Color, dir: Vector2 = Vector2.RIGHT, anim: String = "dash") -> void:
 	afterimages.append({"pos": at_pos, "age": 0.0, "life": 0.20, "col": col, "dir": dir, "anim": anim})
@@ -153,12 +159,22 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 		wick.emit_sfx("footstep_" + surf_l, wick.global_position, false)
 	_was_airborne = airborne
 
-	# Surface-aware footstep dust puffs & biome-matched footsteps (grass / wood / stone)
+	# Surface-aware footstep dust puffs, sharp-turn skid dust, & biome-matched footsteps (grass / wood / stone)
+	_skid_cd = maxf(0.0, _skid_cd - step_dt)
 	if wick.velocity.length() > 24.0 and not dashing and not gliding and not zipping:
+		_idle_t = 0.0
+		var mdir: Vector2 = wick.velocity.normalized()
+		if _prev_move_dir.length_squared() > 0.5 and _prev_move_dir.dot(mdir) < -0.35 and _skid_cd <= 0.0:
+			_skid_cd = 0.24
+			var s_skid: String = _surface_at(wick.global_position)
+			var c_skid: Color = _dust_color_for(s_skid)
+			for sk: int in range(2):
+				var sk_vel: Vector2 = _prev_move_dir * randf_range(12.0, 22.0) + Vector2(randf_range(-5.0, 5.0), randf_range(-10.0, -4.0))
+				_spawn_mote(wick.global_position + Vector2(randf_range(-2.0, 2.0), 0.0), sk_vel, 0.26, c_skid, 2.0, true, 0.16, false, 0.78)
+		_prev_move_dir = mdir
 		_dust_cd -= step_dt
 		if _dust_cd <= 0.0:
 			_dust_cd = DUST_INTERVAL
-			var mdir: Vector2 = wick.velocity.normalized()
 			var foot: Vector2 = wick.global_position - mdir * 2.0 + Vector2(randf_range(-2.5, 2.5), randf_range(-0.5, 1.0))
 			var dvel: Vector2 = Vector2(-mdir.x * randf_range(4.0, 9.0) + randf_range(-3.0, 3.0), randf_range(-11.0, -6.0))
 			var surf: String = _surface_at(wick.global_position)
@@ -168,7 +184,12 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			if _step_parity == 1:
 				wick.emit_sfx("footstep_" + surf, wick.global_position, false)
 	else:
+		_prev_move_dir = Vector2.ZERO
 		_dust_cd = minf(_dust_cd, 0.06)
+		if not dashing and not gliding and not zipping:
+			_idle_t += step_dt
+			if lan_in_hand and _idle_t > 1.4 and fmod(_idle_t, 1.35) < step_dt:
+				_spawn_mote(wick.global_position + hand_pos + Vector2(randf_range(-2.0, 2.0), -2.0), Vector2(randf_range(-3.0, 3.0), -11.0), 0.48, LxWick.PAL_CREAM, 1.0, false, 0.50, true, 0.88)
 
 	# Lantern candlelight ember motes (gold/cream, 1x1 rising around hand_pos; warm coral urgency at <= 1 heart)
 	if lan_in_hand:

@@ -58,6 +58,7 @@ func _ignite() -> bool:
 	_ignite_t = 0.32
 	if Lx.events != null:
 		Lx.events.shake_requested.emit(0.08)
+	_emit_gust(56.0, 44.0, Vector2(0.0, -12.0))
 	_emit_sfx("brazier_lit")
 	_notify_linked_targets(true)
 	queue_redraw()
@@ -67,7 +68,8 @@ func _ignite() -> bool:
 func get_light_pool() -> Vector4:
 	if not lit:
 		return Vector4.ZERO
-	return Vector4(pos.x, pos.y - 8.0, 64.0, 1.15)
+	var surge: float = sin((1.0 - clampf(_ignite_t / 0.32, 0.0, 1.0)) * PI) if _ignite_t > 0.0 else 0.0
+	return Vector4(pos.x, pos.y - 8.0, 64.0 + surge * 28.0, 1.15 + surge * 0.32)
 
 
 func save_state() -> Dictionary:

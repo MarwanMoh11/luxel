@@ -39,6 +39,9 @@ func interact(_actor: Node = null) -> bool:
 	if Lx.events != null:
 		Lx.events.shrine_claimed.emit(id, move_id)
 		Lx.events.shake_requested.emit(0.14)
+	if Lx.hitstop != null:
+		Lx.hitstop.trigger(0.06)
+	_emit_gust(108.0, 92.0, Vector2(0.0, -10.0))
 	_emit_sfx("shrine_claimed")
 	_emit_save("shrine_" + id)
 	_notify_linked_targets(true)
@@ -47,6 +50,9 @@ func interact(_actor: Node = null) -> bool:
 
 
 func get_light_pool() -> Vector4:
+	if _claim_t > 0.0:
+		var surge: float = sin((1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)) * PI)
+		return Vector4(pos.x, pos.y - 10.0, 42.0 + surge * 74.0, 0.72 + surge * 0.85)
 	if not claimed:
 		return Vector4(pos.x, pos.y - 10.0, 68.0, 1.15)
 	return Vector4(pos.x, pos.y - 8.0, 42.0, 0.72)

@@ -47,6 +47,7 @@ func interact(_actor: Node = null) -> bool:
 		Lx.events.waystone_lit.emit(island_id, id)
 		if first_time:
 			Lx.events.narration_requested.emit("CUE_WAYSTONE_LIT", "title", 2.5)
+	_emit_gust(76.0 if first_time else 52.0, 64.0 if first_time else 40.0, Vector2(0.0, -8.0))
 	_emit_sfx("waystone_lit" if first_time else "waystone_rest")
 	_emit_save("waystone_" + id)
 	queue_redraw()
@@ -55,7 +56,8 @@ func interact(_actor: Node = null) -> bool:
 
 func get_light_pool() -> Vector4:
 	if lit:
-		return Vector4(pos.x, pos.y - 10.0, 58.0, 1.05)
+		var surge: float = sin((1.0 - clampf(_pulse_t / 0.48, 0.0, 1.0)) * PI) if _pulse_t > 0.0 else 0.0
+		return Vector4(pos.x, pos.y - 10.0, 58.0 + surge * 44.0, 1.05 + surge * 0.42)
 	return Vector4(pos.x, pos.y - 8.0, 26.0, 0.45)
 
 

@@ -8,6 +8,7 @@ var reset_time: float = 0.0
 var _reset_left: float = 0.0
 var _pulse_stage: int = 0
 var _reject_t: float = 0.0
+var _act_t: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -17,6 +18,7 @@ func setup(spec: Dictionary) -> void:
 	reset_time = maxf(0.0, float(props.get("reset_time", 0.0)))
 	activated = bool(props.get("activated", false))
 	_reject_t = 0.0
+	_act_t = 0.0
 	queue_redraw()
 
 
@@ -25,6 +27,9 @@ func tick(dt: float) -> void:
 	var changed: bool = false
 	if _reject_t > 0.0:
 		_reject_t = maxf(0.0, _reject_t - dt)
+		changed = true
+	if _act_t > 0.0:
+		_act_t = maxf(0.0, _act_t - dt)
 		changed = true
 	if activated and reset_time > 0.0:
 		_reset_left -= dt
@@ -58,6 +63,10 @@ func on_hit(hit: LxHit) -> bool:
 	if reset_time > 0.0:
 		_reset_left = reset_time
 	if not was_active:
+		_act_t = 0.34
+		if Lx.events != null:
+			Lx.events.shake_requested.emit(0.06)
+		_emit_gust(54.0, 38.0)
 		_emit_sfx("switch_eye")
 		_notify_linked_targets(true)
 	queue_redraw()
@@ -67,7 +76,8 @@ func on_hit(hit: LxHit) -> bool:
 func get_light_pool() -> Vector4:
 	if not activated:
 		return Vector4.ZERO
-	return Vector4(pos.x, pos.y - 4.0, 42.0, 0.9)
+	var surge: float = sin((1.0 - clampf(_act_t / 0.34, 0.0, 1.0)) * PI) if _act_t > 0.0 else 0.0
+	return Vector4(pos.x, pos.y - 4.0, 42.0 + surge * 24.0, 0.9 + surge * 0.35)
 
 
 func save_state() -> Dictionary:
@@ -130,4 +140,7 @@ func _draw() -> void:
 		draw_rect(Rect2(-2.0, -1.0, 1.0, 1.0), shine)
 		if _reject_t > 0.0:
 			draw_arc(Vector2(0.0, -1.0), 8.0, 0.0, TAU, 12, PAL["ice"], 1.0, false)
+	if _act_t > 0.0:
+		var ap: float = 1.0 - clampf(_act_t / 0.34, 0.0, 1.0)
+		draw_arc(Vector2(0.0, -1.0), roundf(lerpf(5.0, 19.0, ap)), 0.0, TAU, 16, PAL["cream"] if ap < 0.4 else PAL["gold"], 2.0 if ap < 0.35 else 1.0, false)
 	_draw_signal_pulses()

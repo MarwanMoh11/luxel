@@ -62,7 +62,8 @@ func _ignite() -> bool:
 func get_light_pool() -> Vector4:
 	if not lit:
 		return Vector4.ZERO
-	return Vector4(pos.x, pos.y - 10.0, 54.0, 0.95)
+	var surge: float = sin((1.0 - clampf(_ignite_t / 0.30, 0.0, 1.0)) * PI) if _ignite_t > 0.0 else 0.0
+	return Vector4(pos.x, pos.y - 10.0, 54.0 + surge * 24.0, 0.95 + surge * 0.32)
 
 
 func save_state() -> Dictionary:

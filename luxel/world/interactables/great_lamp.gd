@@ -83,6 +83,9 @@ func _relight() -> bool:
 	if Lx.events != null:
 		Lx.events.great_lamp_relit.emit(island_id)
 		Lx.events.shake_requested.emit(0.24)
+	if Lx.hitstop != null:
+		Lx.hitstop.trigger(0.09)
+	_emit_gust(144.0, 125.0, Vector2(0.0, -14.0))
 	_emit_sfx("great_lamp_relit")
 	_emit_save("great_lamp_%d" % island_id)
 	_notify_linked_targets(true)
@@ -92,7 +95,8 @@ func _relight() -> bool:
 
 func get_light_pool() -> Vector4:
 	if lit:
-		return Vector4(pos.x, pos.y - 16.0, 148.0, 1.6)
+		var surge: float = sin((1.0 - clampf(_relight_t / 0.72, 0.0, 1.0)) * PI) if _relight_t > 0.0 else 0.0
+		return Vector4(pos.x, pos.y - 16.0, 148.0 + surge * 76.0, 1.6 + surge * 0.55)
 	if _can_relight():
 		return Vector4(pos.x, pos.y - 14.0, 58.0, 0.9)
 	return Vector4(pos.x, pos.y - 12.0, 26.0, 0.4)

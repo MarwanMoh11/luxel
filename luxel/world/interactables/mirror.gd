@@ -64,6 +64,7 @@ func on_hit(hit: LxHit) -> bool:
 		return false
 	if hit.source in ["bolt", "prism_bolt", "beam"]:
 		_flash_t = 0.2
+		_emit_gust(38.0, 28.0)
 		_emit_sfx("mirror_ping")
 		queue_redraw()
 		return true
@@ -181,6 +182,8 @@ func _draw() -> void:
 	if _turn_t > 0.0:
 		draw_arc(Vector2.ZERO, roundf(minf(w, h) * 0.52), 0.0, TAU, 16, PAL["gold"], 1.0, false)
 	if lit:
+		var fp: float = 1.0 - clampf(_flash_t / 0.2, 0.0, 1.0)
+		draw_arc(Vector2.ZERO, roundf(lerpf(4.0, 14.0, fp)), 0.0, TAU, 14, PAL["cream"] if fp < 0.45 else PAL["gold"], 1.0, false)
 		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"])
 		draw_rect(Rect2(0.0, -2.0, 1.0, 5.0), PAL["gold"])
 		draw_rect(Rect2(-2.0, 0.0, 5.0, 1.0), PAL["gold"])

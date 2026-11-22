@@ -8,6 +8,7 @@ var ignitable: bool = false
 var zone_id: String = ""
 var require_clear: bool = true
 var _unlock_t: float = 0.0
+var _ignite_t: float = 0.0
 var _locked_t: float = 0.0
 var _synced_once: bool = false
 
@@ -22,6 +23,7 @@ func setup(spec: Dictionary) -> void:
 		lit = true
 	ignitable = lit or not require_clear
 	_unlock_t = 0.0
+	_ignite_t = 0.0
 	_synced_once = false
 	queue_redraw()
 
@@ -29,6 +31,9 @@ func setup(spec: Dictionary) -> void:
 func tick(dt: float) -> void:
 	if _unlock_t > 0.0:
 		_unlock_t = maxf(0.0, _unlock_t - dt)
+		queue_redraw()
+	if _ignite_t > 0.0:
+		_ignite_t = maxf(0.0, _ignite_t - dt)
 		queue_redraw()
 	if _locked_t > 0.0:
 		_locked_t = maxf(0.0, _locked_t - dt)
@@ -73,11 +78,15 @@ func on_hit(hit: LxHit) -> bool:
 func _ignite() -> bool:
 	lit = true
 	ignitable = true
+	_ignite_t = 0.56
 	if Lx.state != null and not id.is_empty() and not Lx.state.lit_beacons.has(id):
 		Lx.state.lit_beacons.append(id)
 	if Lx.events != null:
 		Lx.events.beacon_lit.emit(island_id, id)
 		Lx.events.shake_requested.emit(0.18)
+	if Lx.hitstop != null:
+		Lx.hitstop.trigger(0.05)
+	_emit_gust(104.0, 88.0, Vector2(0.0, -10.0))
 	_emit_sfx("beacon_lit")
 	_emit_save("beacon_" + id)
 	_notify_linked_targets(true)
@@ -87,7 +96,8 @@ func _ignite() -> bool:
 
 func get_light_pool() -> Vector4:
 	if lit:
-		return Vector4(pos.x, pos.y - 12.0, 124.0, 1.4)
+		var surge: float = sin((1.0 - clampf(_ignite_t / 0.56, 0.0, 1.0)) * PI) if _ignite_t > 0.0 else 0.0
+		return Vector4(pos.x, pos.y - 12.0, 124.0 + surge * 52.0, 1.4 + surge * 0.45)
 	if ignitable:
 		return Vector4(pos.x, pos.y - 10.0, 52.0, 0.85)
 	return Vector4(pos.x, pos.y - 8.0, 22.0, 0.35)
@@ -138,6 +148,12 @@ func _draw() -> void:
 			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, (PAL["cream"] if u < 0.35 else PAL["gold"]) as Color, 2.0 if u < 0.4 else 1.0, false)
 	elif lit:
 		_draw_lit_embers()
+		if _ignite_t > 0.0:
+			var p: float = 1.0 - clampf(_ignite_t / 0.56, 0.0, 1.0)
+			var cw: float = roundf(maxf(0.0, (1.0 - p) * 10.0))
+			if cw >= 2.0:
+				draw_rect(Rect2(-floorf(cw * 0.5), -54.0, cw, 56.0), PAL["cream"] if p < 0.35 else PAL["gold"])
+			draw_arc(Vector2(0.0, -12.0), roundf(lerpf(6.0, 38.0, p)), 0.0, TAU, 22, (PAL["cream"] if p < 0.38 else PAL["gold"]) as Color, 2.0 if p < 0.4 else 1.0, false)
 	_draw_signal_pulses()
 
 

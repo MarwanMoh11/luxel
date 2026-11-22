@@ -143,6 +143,12 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 					_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["apricot"])
 			"bridge", "bridge_platform":
 				c.draw_rect(Rect2(_map_pt(wpos, bounds, inner, 3.0, 1.0), Vector2(3.0, 1.0)), LxPalette.PAL["apricot"])
+			"road_lamp":
+				if _prop_bool(obj, "lit"):
+					_draw_pip(c, wpos, bounds, inner, 1.0, LxPalette.PAL["gold"])
+			"chest":
+				if not _prop_bool(obj, "opened"):
+					c.draw_rect(Rect2(_map_pt(wpos, bounds, inner, 2.0, 1.0), Vector2(2.0, 1.0)), LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["apricot"])
 
 
 static func _draw_exits(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:

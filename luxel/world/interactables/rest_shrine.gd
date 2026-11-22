@@ -40,7 +40,8 @@ func interact(_actor: Node = null) -> bool:
 
 
 func get_light_pool() -> Vector4:
-	return Vector4(pos.x, pos.y - 10.0, 74.0, 1.2)
+	var surge: float = sin((1.0 - clampf(_heal_t / 0.48, 0.0, 1.0)) * PI) if _heal_t > 0.0 else 0.0
+	return Vector4(pos.x, pos.y - 10.0, 74.0 + surge * 34.0, 1.2 + surge * 0.35)
 
 
 func get_interact_prompt() -> String:

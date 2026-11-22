@@ -48,10 +48,13 @@ func interact(_actor: Node = null) -> bool:
 		var flag_name: String = str(props.get("flag_id", props.get("sets_flag", "")))
 		if not flag_name.is_empty():
 			Lx.state.story_flags[flag_name] = true
+	var is_boss: bool = key_kind == "keepers_flame"
 	if Lx.events != null:
-		var is_boss: bool = key_kind == "keepers_flame"
 		Lx.events.narration_requested.emit("CUE_BOSS_KEY_FOUND" if is_boss else "CUE_KEY_FOUND", "title", 2.8 if is_boss else 2.4)
 		Lx.events.shake_requested.emit(0.12 if is_boss else 0.08)
+	if is_boss and Lx.hitstop != null:
+		Lx.hitstop.trigger(0.05)
+	_emit_gust(72.0 if is_boss else 52.0, 60.0 if is_boss else 42.0)
 	_emit_sfx("key_pickup")
 	_emit_save("key_" + id)
 	queue_redraw()
@@ -59,6 +62,9 @@ func interact(_actor: Node = null) -> bool:
 
 
 func get_light_pool() -> Vector4:
+	if _pickup_t > 0.0:
+		var surge: float = sin((1.0 - clampf(_pickup_t / 0.36, 0.0, 1.0)) * PI)
+		return Vector4(pos.x, pos.y - 4.0, (56.0 if key_kind == "keepers_flame" else 42.0) * surge, 1.2 * surge)
 	if collected or not active:
 		return Vector4.ZERO
 	var r: float = 42.0 if key_kind == "keepers_flame" else 30.0
