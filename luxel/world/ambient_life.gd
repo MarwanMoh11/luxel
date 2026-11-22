@@ -50,6 +50,7 @@ var _shard_orbs: Array[Dictionary] = []
 var _vfx_rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _bound_events: LxEventBus = null
 var _wake_sway_cd: float = 0.0
+var _biome_rules: LxBiomeRules = null
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -103,6 +104,12 @@ func configure(island_id: int, world_bounds: Rect2, is_dungeon: bool) -> void:
 	_pillars.clear()
 	_slashes.clear()
 	_shard_orbs.clear()
+	if _biome_rules == null and get_parent() != null:
+		_biome_rules = LxBiomeRules.new()
+		_biome_rules.name = "BiomeRules"
+		get_parent().add_child(_biome_rules)
+	if _biome_rules != null:
+		_biome_rules.configure(_island_id, world_bounds, _is_dungeon, get_parent())
 
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(_island_id * 7919 + (131 if is_dungeon else 17) + int(world_bounds.size.x) * 31)
@@ -225,6 +232,8 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	_age_pool(_pillars, dt)
 	_age_pool(_slashes, dt)
 	_tick_shard_orbs(dt)
+	if _biome_rules != null:
+		_biome_rules.tick(dt, cam_center)
 	queue_redraw()
 
 func _age_pool(pool: Array[Dictionary], dt: float) -> void:

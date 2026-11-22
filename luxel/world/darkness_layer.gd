@@ -14,13 +14,13 @@ const DEFAULT_TINT: Vector3 = Vector3(0.42, 0.40, 0.64)
 
 const BIOME_TINTS: Dictionary = {
 	1: Vector3(0.46, 0.40, 0.62), # Bell Isle: warm dusk indigo
-	2: Vector3(0.36, 0.46, 0.64), # Tidewater Harbor: coastal sea-mist slate
-	3: Vector3(0.34, 0.48, 0.56), # Thornwood Hollow: deep woodland emerald-night
-	4: Vector3(0.35, 0.49, 0.62), # Mirefen Gardens: moonlit botanical teal
-	5: Vector3(0.36, 0.42, 0.68), # Starfall Observatory: astral sapphire
-	6: Vector3(0.50, 0.36, 0.54), # Ashen Kiln: volcanic soot-plum
-	7: Vector3(0.44, 0.49, 0.70), # Moon Shoals: silvery pale moonlight
-	8: Vector3(0.32, 0.28, 0.52), # The Long Night: deepest eclipsed obsidian
+	2: Vector3(0.28, 0.50, 0.68), # Tidewater Harbor: stormy oceanic teal
+	3: Vector3(0.26, 0.52, 0.48), # Thornwood Hollow: deep nocturnal forest emerald
+	4: Vector3(0.40, 0.52, 0.64), # Mirefen Gardens: moonlit rose-teal lagoon
+	5: Vector3(0.30, 0.38, 0.74), # Starfall Observatory: deep royal astral sapphire
+	6: Vector3(0.58, 0.32, 0.44), # Ashen Kiln: glowing volcanic soot-crimson
+	7: Vector3(0.46, 0.54, 0.76), # Moon Shoals: pale silver-ice moonlight
+	8: Vector3(0.30, 0.22, 0.48), # The Long Night: pitch eclipsed plum-void
 }
 
 static var active_instance: LxDarknessLayer = null
@@ -165,11 +165,16 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 
 	var cam_center: Vector2 = Lx.camera.global_position if (Lx.camera != null and is_instance_valid(Lx.camera)) else view_sz * 0.5
 	var relit_ow: bool = (not wave_active) and region != null and (not region.is_dungeon) and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(region.current_island_id)
-	var eff_dark: float = clampf(darkness_strength - (0.14 if relit_ow else 0.0), 0.0, 1.0)
+	var b_off: float = LxBiomeRules.active_instance.get_darkness_offset() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.0
+	var b_phase: float = LxBiomeRules.active_instance.get_shader_phase() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.5
+	var b_id: int = region.current_island_id if (region != null and region.current_island_id > 0) else 1
+	var eff_dark: float = clampf(darkness_strength + b_off - (0.14 if relit_ow else 0.0), 0.0, 0.88)
 	_mat.set_shader_parameter("cam_origin", (cam_center - view_sz * 0.5).round())
 	_mat.set_shader_parameter("view_size", view_sz)
 	_mat.set_shader_parameter("darkness_strength", eff_dark)
 	_mat.set_shader_parameter("biome_tint", _current_tint)
+	_mat.set_shader_parameter("biome_id", b_id)
+	_mat.set_shader_parameter("biome_phase", clampf(b_phase, 0.0, 1.0))
 	_mat.set_shader_parameter("vignette_strength", clampf(vignette_strength, 0.0, 0.5))
 	var dpulse: float = 0.0
 	if Lx.state != null and is_instance_valid(Lx.state) and Lx.state.hearts > 0.0 and Lx.state.hearts <= 1.0:
@@ -217,6 +222,12 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 				if bp.distance_to(cam_center) <= 320.0:
 					var ph_b: float = float(maxi(0, e.phase - 1))
 					candidates.append({"d": bp.distance_squared_to(cam_center) - 2400.0, "v": Vector4(bp.x, bp.y, (70.0 + ph_b * 10.0) * flicker, 0.94 + ph_b * 0.12)})
+
+	if LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance):
+		for bpool: Vector4 in LxBiomeRules.active_instance.get_light_pools():
+			var bp2 := Vector2(bpool.x, bpool.y)
+			if bp2.distance_to(cam_center) <= 320.0 + bpool.z:
+				candidates.append({"d": bp2.distance_squared_to(cam_center) - 800.0, "v": bpool})
 
 	for extra: Vector4 in extra_lights:
 		if extra.z <= 1.0 or extra.w <= 0.001:

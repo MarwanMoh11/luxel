@@ -48,8 +48,61 @@ static func draw_indicators(hud: CanvasItem, blink_t: float, boss_active: bool, 
 	_draw_lantern_edge_compass(hud, blink_t, fred)
 	_draw_counter_ready_halo(hud, blink_t, fred)
 	_draw_ember_ready_halo(hud, blink_t, fred)
+	_draw_biome_rule_badge(hud, blink_t, fred)
 	if boss_active and boss_phase >= 2:
 		_draw_boss_phase_filigree(hud, blink_t, boss_phase, fred)
+
+
+static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) -> void:
+	var br: LxBiomeRules = LxBiomeRules.active_instance
+	if br == null or not is_instance_valid(br) or br.island_id <= 1:
+		return
+	var o := Vector2(5.0, 22.0)
+	var bg: Color = LxPalette.PAL["void"] as Color
+	var night: Color = LxPalette.PAL["night"] as Color
+	match br.island_id:
+		2:
+			if not br.is_dungeon:
+				var fill_w: float = floorf(18.0 * clampf(br.tide_phase, 0.0, 1.0))
+				hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
+				hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), night)
+				var tc: Color = (LxPalette.PAL["ice"] if br.tide_surging else LxPalette.PAL["sky"]) as Color
+				if fill_w > 0.0:
+					hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(fill_w, 1.0)), tc)
+			elif br.beam_buff_t > 0.0:
+				hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
+				hud.draw_rect(Rect2(o + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), LxPalette.PAL["gold"] as Color)
+				hud.draw_rect(Rect2(o + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), LxPalette.PAL["gold"] as Color)
+				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+		5:
+			if br.starlight_surge_t > 0.0:
+				var sw: float = floorf(18.0 * clampf(br.starlight_surge_t / 2.6, 0.0, 1.0))
+				hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
+				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(maxf(1.0, sw), 1.0)), LxPalette.PAL["gold"] as Color)
+				hud.draw_rect(Rect2(o + Vector2(2.0 + sw - 1.0, 2.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+		6:
+			var vw: float = floorf(18.0 * clampf(br.vent_cycle, 0.0, 1.0))
+			hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
+			hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), night)
+			var vc: Color = (LxPalette.PAL["gold"] if br.vent_cycle >= 0.56 else LxPalette.PAL["coral"]) as Color
+			if vw > 0.0:
+				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(vw, 1.0)), vc)
+		7:
+			hud.draw_rect(Rect2(o, Vector2(9.0, 9.0)), bg)
+			hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(7.0, 7.0)), night)
+			var full_m: bool = br.lunar_phase > 0.5
+			hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(5.0, 5.0)), (LxPalette.PAL["ice"] if full_m else LxPalette.PAL["plum"]) as Color)
+			if full_m:
+				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2(3.0, 3.0)), LxPalette.PAL["cream"] as Color)
+			else:
+				hud.draw_rect(Rect2(o + Vector2(4.0, 2.0), Vector2(3.0, 5.0)), night)
+				hud.draw_rect(Rect2(o + Vector2(2.0, 3.0), Vector2(1.0, 3.0)), LxPalette.PAL["sky"] as Color)
+		8:
+			if br.eclipse_pulse > 0.05:
+				var pulse_on: bool = fred or (int(blink_t * 4.0) % 2 == 0)
+				hud.draw_rect(Rect2(o, Vector2(9.0, 9.0)), bg)
+				hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(7.0, 7.0)), (LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["wine"]) as Color)
+				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(5.0, 5.0)), bg)
 
 
 static func _draw_ember_ready_halo(hud: CanvasItem, blink_t: float, fred: bool) -> void:

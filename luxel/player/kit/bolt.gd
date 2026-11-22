@@ -96,10 +96,18 @@ func _fire_bolt() -> bool:
 		b.shield_wear += 0.15
 		wick.spawn_ring(b.pos, 2.0, 11.0, 0.16, LxWick.PAL_CREAM, 1.0)
 		wick.spawn_sparks(b.pos, aim, 5, LxWick.PAL_CREAM, 55.0, 115.0, 0.16)
+	var br: LxBiomeRules = LxBiomeRules.active_instance
+	if br != null and is_instance_valid(br):
+		if br.island_id == 2 and br.is_dungeon and br.beam_buff_t > 0.0:
+			b.damage *= 1.25
+			b.is_counter = true
+		elif br.island_id == 7 and br.lunar_phase > 0.65:
+			b.damage *= 1.20
 
 	wick.bolts.append(b)
 	wick.shots_fired += 1
-	cooldown_left = _get_effective_cooldown()
+	var cd_scale: float = 0.82 if (br != null and is_instance_valid(br) and br.starlight_surge_t > 0.0) else 1.0
+	cooldown_left = _get_effective_cooldown() * cd_scale
 
 	var recoil: float = float(data.get("recoil", 60.0))
 	wick.apply_recoil(-aim * recoil)

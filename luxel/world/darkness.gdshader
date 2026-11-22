@@ -19,6 +19,8 @@ uniform float dungeon_shafts : hint_range(0.0, 1.0) = 0.0;
 uniform float shader_clock = 0.0;
 uniform float phase_flash : hint_range(0.0, 1.0) = 0.0;
 uniform float focus_flash : hint_range(0.0, 1.0) = 0.0;
+uniform int biome_id = 1;
+uniform float biome_phase : hint_range(0.0, 1.0) = 0.5;
 
 // Up to 16 camera-prioritized light pools: xy = world pos, z = radius (px), w = intensity (0..2)
 uniform vec4 lights[16];
@@ -144,6 +146,30 @@ void fragment() {
 			float vfade = smoothstep(0.0, 0.18, UV.y) * (1.0 - smoothstep(0.62, 0.96, UV.y));
 			float shaft_a = band * vfade * dungeon_shafts * shadow_amt * 0.13;
 			out_col = mix(out_col, mix(out_col, col_sky, 0.45) + col_gold * 0.05, clamp(shaft_a, 0.0, 0.14));
+		}
+
+		// Distinct per-island atmospheric shader signature (coastal mist, forest canopy, lagoon caustics, kiln glow, lunar sheen, eclipse corona)
+		if (biome_id == 2 && shadow_amt > 0.06) {
+			float mist = pow(max(0.0, sin((screen_px.y * 0.08) + sin(screen_px.x * 0.03 + shader_clock * 0.7))), 4.0);
+			out_col = mix(out_col, col_sky, mist * shadow_amt * (0.09 + 0.06 * biome_phase));
+		} else if (biome_id == 3 && shadow_amt > 0.06) {
+			float canopy = pow(max(0.0, sin((screen_px.x * 0.045 - screen_px.y * 0.03) + shader_clock * 0.25)), 5.0);
+			out_col = mix(out_col, col_gold * 0.55 + col_sky * 0.35, canopy * shadow_amt * 0.09);
+		} else if (biome_id == 4 && shadow_amt > 0.06) {
+			float caust = pow(max(0.0, sin(screen_px.x * 0.09 + shader_clock * 1.1) * cos(screen_px.y * 0.09 - shader_clock * 0.8)), 3.0);
+			out_col = mix(out_col, col_sky, caust * shadow_amt * 0.11);
+		} else if (biome_id == 5 && shadow_amt > 0.06) {
+			float grid_g = max(0.0, sin(screen_px.x * 0.11 + shader_clock * 0.2) * sin(screen_px.y * 0.11 - shader_clock * 0.2));
+			out_col = mix(out_col, col_gold, pow(grid_g, 8.0) * shadow_amt * 0.14);
+		} else if (biome_id == 6 && shadow_amt > 0.04) {
+			float heat = smoothstep(0.55, 1.0, UV.y) * (0.65 + 0.35 * sin(shader_clock * 1.8 + biome_phase * 6.283));
+			out_col = mix(out_col, col_coral, clamp(heat * shadow_amt * 0.22, 0.0, 0.20));
+		} else if (biome_id == 7 && shadow_amt > 0.04) {
+			out_col = mix(out_col, col_sky * 0.8 + col_cream * 0.2, biome_phase * shadow_amt * 0.14);
+		} else if (biome_id == 8 && shadow_amt > 0.04) {
+			float ec_r = length((UV - vec2(0.5)) * vec2(1.0, 0.92));
+			float ec_ring = smoothstep(0.32, 0.72, ec_r) * biome_phase * 0.24;
+			out_col = mix(out_col, col_wine * 0.65 + col_void * 0.35, clamp(ec_ring, 0.0, 0.22));
 		}
 
 		// Dramatic crimson-gold rim pulse on Boss Phase 2/3/4 escalations
