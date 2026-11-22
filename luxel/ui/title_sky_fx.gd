@@ -40,3 +40,44 @@ static func draw_sky_accents(ci: CanvasItem, elapsed: float) -> void:
 			if frac < 0.55:
 				ci.draw_rect(Rect2(39.0 + step_x, 117.0, 4.0, 1.0), core_col)
 			step_x += 4.0
+
+	# 3. Living Horizon Progress: light tiny golden Great Lamp beacons on the Title archipelago
+	#    for every island relit across save slots (and a serene dawn rim at 8/8).
+	_draw_relit_horizon(ci, elapsed, fred)
+
+
+static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> void:
+	var sums: Variant = ci.get("_summaries")
+	if not (sums is Array):
+		return
+	var relit: Dictionary = {}
+	for s: Variant in (sums as Array):
+		if s is Dictionary and not bool((s as Dictionary).get("empty", true)):
+			var arr: Variant = (s as Dictionary).get("relit_islands", [])
+			if arr is Array:
+				for iid: Variant in (arr as Array):
+					relit[int(iid)] = true
+	if relit.is_empty():
+		return
+	# Subtle horizon beacon coordinates across the archipelago skyline (Islands 1..8)
+	var pts: Array[Vector2] = [
+		Vector2(263.0, 84.0),  # 1 Bell Isle belfry spire
+		Vector2(37.0, 112.0),  # 2 Tidewater Lighthouse
+		Vector2(66.0, 141.0),  # 3 Thornwood Hollow
+		Vector2(126.0, 142.0), # 4 Mirefen Gardens
+		Vector2(93.0, 127.0),  # 5 Starfall Observatory dome
+		Vector2(188.0, 142.0), # 6 Ashen Kiln
+		Vector2(214.0, 140.0), # 7 Moon Shoals
+		Vector2(158.0, 142.0), # 8 The Long Night
+	]
+	if relit.size() >= 8:
+		ci.draw_rect(Rect2(0.0, 145.0, 320.0, 1.0), Color(LxPalette.PAL["gold"], 0.35 if fred else 0.48))
+	for i: int in range(pts.size()):
+		if not relit.has(i + 1):
+			continue
+		var p: Vector2 = pts[i]
+		var tw: float = 0.85 if fred else (0.72 + 0.28 * sin(elapsed * 2.2 + float(i) * 1.1))
+		var bh: float = roundf(6.0 + 3.0 * tw)
+		ci.draw_rect(Rect2(p.x, p.y - bh, 1.0, bh), Color(LxPalette.PAL["gold"], 0.28 * tw))
+		ci.draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(LxPalette.PAL["apricot"], 0.65 * tw))
+		ci.draw_rect(Rect2(p, Vector2.ONE), Color(LxPalette.PAL["cream"], 0.95))

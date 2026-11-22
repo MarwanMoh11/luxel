@@ -520,6 +520,8 @@ func _on_boss_phase_changed(boss_id: String, _phase: int) -> void:
 func _grand_burst(pos: Vector2, slowmo: bool = false) -> void:
 	_spawn_pillar(pos, 0.78, 14.0, 114.0, "cream", "gold", "apricot")
 	_spawn_sparks(pos, 26, Ramp.GOLD, 24.0, 96.0, 0.44, 0.80, 2.2, 52.0, 3, Vector2.UP, 9.0)
+	if slowmo:
+		_spawn_sparks(pos, 10, Ramp.SHADOW, 10.0, 36.0, 0.48, 0.76, 1.8, 42.0, 2, Vector2.UP, 10.0)
 	_spawn_ring(pos, 6.0, 68.0, 0.56, "cream", "gold", false)
 	_spawn_ring(pos, 3.0, 44.0, 0.44, "gold", "apricot", true)
 	_gust_particles(pos, 120.0, 115.0)

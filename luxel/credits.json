@@ -506,6 +506,38 @@
         "luxel/audio/sfx/ui_pause_2.ogg",
         "luxel/audio/sfx/seal_shatter_heavy_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_boss_voices_a",
+      "description": "Bespoke zero-hiss multi-take signature boss phase-roar voices for Islands 1-4 (Bellkeeper, Lighthouse Hermit, Briar Matron, Heron Abbess; 196 SFX across 93 multi-take pools)",
+      "generator": "gen_sfx_boss_voices_a.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/boss_bellkeeper_roar.ogg",
+        "luxel/audio/sfx/boss_bellkeeper_roar_2.ogg",
+        "luxel/audio/sfx/boss_hermit_roar.ogg",
+        "luxel/audio/sfx/boss_hermit_roar_2.ogg",
+        "luxel/audio/sfx/boss_matron_roar.ogg",
+        "luxel/audio/sfx/boss_matron_roar_2.ogg",
+        "luxel/audio/sfx/boss_abbess_roar.ogg",
+        "luxel/audio/sfx/boss_abbess_roar_2.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_sfx_boss_voices_b",
+      "description": "Bespoke zero-hiss multi-take signature boss phase-roar voices for Islands 5-8 (The Astronomer, The Kilnmother, Hollow Wick, The Hush; 204 Studio SFX across 97 multi-take pools)",
+      "generator": "gen_sfx_boss_voices_b.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/boss_astronomer_roar.ogg",
+        "luxel/audio/sfx/boss_astronomer_roar_2.ogg",
+        "luxel/audio/sfx/boss_kilnmother_roar.ogg",
+        "luxel/audio/sfx/boss_kilnmother_roar_2.ogg",
+        "luxel/audio/sfx/boss_hollow_wick_roar.ogg",
+        "luxel/audio/sfx/boss_hollow_wick_roar_2.ogg",
+        "luxel/audio/sfx/boss_hush_roar.ogg",
+        "luxel/audio/sfx/boss_hush_roar_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []

@@ -107,6 +107,23 @@ func try_load_sprite() -> void:
 	sprite_sheet = LxSpriteSheet.load_sheet("res://luxel/art/wick/wick.json")
 
 
+func _is_near_sanctuary(world_pos: Vector2) -> bool:
+	if Lx.world == null or not is_instance_valid(Lx.world) or not Lx.world.has_method("get_interactables"):
+		return false
+	var inters: Variant = Lx.world.call("get_interactables")
+	if not (inters is Array):
+		return false
+	for it: Variant in (inters as Array):
+		if it is Node2D and is_instance_valid(it):
+			var k: String = str((it as Object).get("kind"))
+			if k in ["rest_shrine", "waystone", "great_lamp"]:
+				if k != "rest_shrine" and not bool((it as Object).get("lit")):
+					continue
+				if (it as Node2D).global_position.distance_squared_to(world_pos) <= 4096.0:
+					return true
+	return false
+
+
 func _surface_at(world_pos: Vector2) -> String:
 	if Lx.world == null or not is_instance_valid(Lx.world):
 		return "stone"
@@ -203,8 +220,11 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 		_dust_cd = minf(_dust_cd, 0.06)
 		if not dashing and not gliding and not zipping:
 			_idle_t += step_dt
-			if lan_in_hand and _idle_t > 1.4 and fmod(_idle_t, 1.35) < step_dt:
-				_spawn_mote(wick.global_position + hand_pos + Vector2(randf_range(-2.0, 2.0), -2.0), Vector2(randf_range(-3.0, 3.0), -11.0), 0.48, LxWick.PAL_CREAM, 1.0, false, 0.50, true, 0.88)
+			var near_sanc: bool = lan_in_hand and _idle_t > 0.6 and _is_near_sanctuary(wick.global_position)
+			var idle_per: float = 0.65 if near_sanc else 1.35
+			if lan_in_hand and (_idle_t > 1.4 or near_sanc) and fmod(_idle_t, idle_per) < step_dt:
+				var ic: Color = LxWick.PAL_GOLD if (near_sanc and randf() < 0.5) else LxWick.PAL_CREAM
+				_spawn_mote(wick.global_position + hand_pos + Vector2(randf_range(-3.0, 3.0), -2.0), Vector2(randf_range(-4.0, 4.0), -13.0 if near_sanc else -11.0), 0.52, ic, 1.0, false, 0.50, true, 0.88)
 
 	# Lantern candlelight ember motes (gold/cream, 1x1 rising around hand_pos; warm coral urgency at <= 1 heart)
 	if lan_in_hand:

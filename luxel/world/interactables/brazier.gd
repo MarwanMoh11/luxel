@@ -85,7 +85,8 @@ func load_state(d: Dictionary) -> void:
 
 
 func _calc_flicker_frame() -> int:
-	return int(floorf(_clock * 10.0 + absf(pos.x * 0.07 + pos.y * 0.05)))
+	var rate: float = 4.0 if LxHudFx.flash_reduced() else 10.0
+	return int(floorf(_clock * rate + absf(pos.x * 0.07 + pos.y * 0.05)))
 
 
 func _fill(key: String, rects: Array) -> void:

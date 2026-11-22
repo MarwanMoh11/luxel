@@ -10,6 +10,7 @@ var size: Vector2 = Vector2(16.0, 16.0)
 var _flash_t: float = 0.0
 var _turn_t: float = 0.0
 var _glint_stage: int = 0
+var _aim_was_on: bool = false
 
 
 func setup(spec: Dictionary) -> void:
@@ -44,6 +45,10 @@ func tick(dt: float) -> void:
 		var st: int = int(floorf(_clock * 1.6 + absf(pos.x * 0.03))) % 6
 		if st != _glint_stage:
 			_glint_stage = st
+			dirty = true
+		var aim_now: bool = _is_player_aiming_here()
+		if aim_now or aim_now != _aim_was_on:
+			_aim_was_on = aim_now
 			dirty = true
 	if dirty:
 		queue_redraw()
@@ -172,10 +177,19 @@ func _draw() -> void:
 	draw_line(front, fin_tip, PAL["apricot"], 1.0)
 	draw_rect(Rect2(fin_tip, Vector2(1.0, 1.0)), PAL["cream"] if lit else PAL["gold"])
 	# Subtle optical sightline tick so players read the reflection angle at a glance.
+	var aim_hit: bool = _is_player_aiming_here()
 	var sight_a: Vector2 = (normal * 8.0).round()
 	var sight_b: Vector2 = (normal * 10.0).round()
-	draw_rect(Rect2(sight_a, Vector2.ONE), PAL["gold"] if (_turn_t > 0.0 or lit) else PAL["sky"])
-	draw_rect(Rect2(sight_b, Vector2.ONE), PAL["cream"] if (_turn_t > 0.0 or lit) else PAL["ice"])
+	draw_rect(Rect2(sight_a, Vector2.ONE), PAL["gold"] if (_turn_t > 0.0 or lit or aim_hit) else PAL["sky"])
+	draw_rect(Rect2(sight_b, Vector2.ONE), PAL["cream"] if (_turn_t > 0.0 or lit or aim_hit) else PAL["ice"])
+	if aim_hit and Lx.player != null and is_instance_valid(Lx.player):
+		var fv: Variant = Lx.player.get("facing")
+		if fv is Vector2 and (fv as Vector2).length_squared() > 0.01:
+			var rdir: Vector2 = reflect_dir(fv as Vector2)
+			if rdir.length_squared() > 0.01:
+				for pi: int in range(1, 4):
+					var pp: Vector2 = (rdir * (6.0 + float(pi) * 4.5)).round()
+					draw_rect(Rect2(pp, Vector2.ONE), PAL["cream"] if pi == 1 else PAL["gold"])
 	if not lit and _glint_stage <= 1:
 		var gpos: Vector2 = (tang * (-0.35 if _glint_stage == 0 else 0.25) + front).round()
 		draw_rect(Rect2(gpos, Vector2.ONE), PAL["cream"])
@@ -187,3 +201,24 @@ func _draw() -> void:
 		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"])
 		draw_rect(Rect2(0.0, -2.0, 1.0, 5.0), PAL["gold"])
 		draw_rect(Rect2(-2.0, 0.0, 5.0, 1.0), PAL["gold"])
+
+
+func _is_player_aiming_here() -> bool:
+	if not active or Lx.state == null or not Lx.state.has_move("prism"):
+		return false
+	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
+		return false
+	var ppos: Vector2 = (Lx.player as Node2D).global_position
+	var to_m: Vector2 = pos - ppos
+	var d2: float = to_m.length_squared()
+	if d2 < 16.0 or d2 > 19600.0:
+		return false
+	var fv: Variant = Lx.player.get("facing")
+	if not (fv is Vector2) or (fv as Vector2).length_squared() <= 0.01:
+		return false
+	var fdir: Vector2 = (fv as Vector2).normalized()
+	var proj: float = to_m.dot(fdir)
+	if proj <= 0.0:
+		return false
+	var perp: float = (to_m - fdir * proj).length()
+	return perp <= maxf(size.x, size.y) * 0.65
