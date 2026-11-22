@@ -234,14 +234,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "prop": "cattail_reeds",
-      "pos": [
-        198,
-        42
-      ],
-      "layer": "back"
     }
   ]
 }

@@ -31,8 +31,8 @@
       ],
       "to_region": "overworld",
       "to_spawn": [
-        512,
-        112
+        608,
+        208
       ],
       "requires_moves": [],
       "requires_flags": [],

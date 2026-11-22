@@ -242,18 +242,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "stained_floor_pool",
-      "pos": [
-        160,
-        88
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
     }
   ]
 }

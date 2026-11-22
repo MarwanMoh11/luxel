@@ -205,14 +205,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.1
-    },
-    {
-      "prop": "blooming_lotus",
-      "pos": [
-        216,
-        44
-      ],
-      "layer": "back"
     }
   ]
 }
