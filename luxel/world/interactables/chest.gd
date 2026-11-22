@@ -46,9 +46,10 @@ func interact(_actor: Node = null) -> bool:
 		match reward_kind:
 			"ember_piece":
 				var gained_heart: bool = Lx.state.add_ember_piece()
-				if Lx.events != null:
-					Lx.events.narration_requested.emit("CUE_HEART_GAINED" if gained_heart else "CUE_EMBER_FOUND", "title", 3.0)
-				_emit_sfx("heart_pickup" if gained_heart else "ember_pickup")
+				if not gained_heart:
+					if Lx.events != null:
+						Lx.events.narration_requested.emit("CUE_EMBER_FOUND", "title", 3.0)
+					_emit_sfx("ember_pickup")
 			"wick_key", "keepers_flame":
 				Lx.state.add_key(dungeon_id, reward_kind, amount)
 				if Lx.events != null:
@@ -137,14 +138,14 @@ func _draw_lid_glint(stage: int) -> void:
 		return
 	var gx: float = 0.0
 	var gy: float = -8.0
+	var primary: Color = (PAL["coral"] if reward_kind == "ember_piece" else PAL["gold"]) as Color
 	if stage == 1:
-		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["gold"])
+		draw_rect(Rect2(gx, gy, 1.0, 1.0), primary)
 	elif stage == 2:
-		var c_gold: Color = PAL["gold"] as Color
-		draw_rect(Rect2(gx, gy - 1.0, 1.0, 1.0), c_gold)
-		draw_rect(Rect2(gx, gy + 1.0, 1.0, 1.0), c_gold)
-		draw_rect(Rect2(gx - 1.0, gy, 1.0, 1.0), c_gold)
-		draw_rect(Rect2(gx + 1.0, gy, 1.0, 1.0), c_gold)
+		draw_rect(Rect2(gx, gy - 1.0, 1.0, 1.0), primary)
+		draw_rect(Rect2(gx, gy + 1.0, 1.0, 1.0), primary)
+		draw_rect(Rect2(gx - 1.0, gy, 1.0, 1.0), primary)
+		draw_rect(Rect2(gx + 1.0, gy, 1.0, 1.0), primary)
 		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["cream"])
 	else:
-		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["cream"])
+		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["gold" if reward_kind == "ember_piece" else "cream"])

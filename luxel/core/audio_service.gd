@@ -201,7 +201,7 @@ func _setup_players() -> void:
 		add_child(sp); _sfx_pool.append(sp)
 	for i: int in range(SFX_2D_POOL_SIZE):
 		var sp2 := AudioStreamPlayer2D.new()
-		sp2.bus = BUS_SFX; sp2.max_distance = 360.0
+		sp2.bus = BUS_SFX; sp2.max_distance = 360.0; sp2.panning_strength = 0.72; sp2.attenuation = 0.85
 		add_child(sp2); _sfx_2d_pool.append(sp2)
 
 
@@ -412,7 +412,7 @@ func tick(dt: float, in_combat: bool = false) -> void:
 
 
 func _update_layer_volumes() -> void:
-	var duck: float = (PAUSE_DUCK_DB if is_paused else 0.0) - (4.0 * clampf(_stinger_duck_t / 0.6, 0.0, 1.0))
+	var duck: float = (PAUSE_DUCK_DB if is_paused else 0.0) - (6.0 * clampf(_stinger_duck_t / 0.8, 0.0, 1.0))
 	var exp_gain: float = cos(combat_blend * PI * 0.5) * _music_fade
 	var cmb_gain: float = sin(combat_blend * PI * 0.5) * _music_fade
 	if _explore_player != null:
@@ -438,9 +438,9 @@ func play_stinger(stinger_name: String) -> void:
 	var st: AudioStream = _load_music_stream(stinger_name, "")
 	if st != null and _stinger_player != null:
 		_stinger_player.stream = st
-		_stinger_player.volume_db = -3.0
+		_stinger_player.volume_db = -1.5
 		_stinger_player.play()
-		_stinger_duck_t = 2.2
+		_stinger_duck_t = 2.8
 
 
 func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool = false, ui_bus: bool = false) -> void:
@@ -463,6 +463,13 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 	if st == null:
 		return
 	_sfx_last_t[sfx_id] = _sfx_clock
+	var jit: float = 1.0 if ui_bus else randf_range(0.96, 1.04)
+	if base_id == "bolt_fire":
+		jit = randf_range(0.95, 1.06)
+	elif base_id == "shard_pickup":
+		_shard_streak = mini(SHARD_SCALE.size() - 1, _shard_streak + 1) if (_sfx_clock - _shard_streak_t) <= 0.85 else 0
+		_shard_streak_t = _sfx_clock
+		jit = SHARD_SCALE[_shard_streak]
 	if spatial and not _sfx_2d_pool.is_empty():
 		var p2: AudioStreamPlayer2D = _sfx_2d_pool[_sfx_2d_cursor]
 		_sfx_2d_cursor = (_sfx_2d_cursor + 1) % _sfx_2d_pool.size()
@@ -471,7 +478,7 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		p2.global_position = world_pos
 		p2.stream = st
 		p2.volume_db = gain_db + randf_range(-1.1, 1.1)
-		p2.pitch_scale = pitch_mul * randf_range(0.95, 1.05)
+		p2.pitch_scale = pitch_mul * jit
 		p2.play()
 	elif not _sfx_pool.is_empty():
 		var p: AudioStreamPlayer = _sfx_pool[_sfx_cursor]
@@ -481,13 +488,6 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		p.bus = BUS_UI if ui_bus else BUS_SFX
 		p.stream = st
 		p.volume_db = gain_db if ui_bus else gain_db + randf_range(-1.1, 1.1)
-		var jit: float = 1.0 if ui_bus else randf_range(0.96, 1.04)
-		if base_id == "bolt_fire":
-			jit = randf_range(0.95, 1.06)
-		elif base_id == "shard_pickup":
-			_shard_streak = mini(SHARD_SCALE.size() - 1, _shard_streak + 1) if (_sfx_clock - _shard_streak_t) <= 0.85 else 0
-			_shard_streak_t = _sfx_clock
-			jit = SHARD_SCALE[_shard_streak]
 		p.pitch_scale = pitch_mul * jit
 		p.play()
 
