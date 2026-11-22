@@ -406,6 +406,22 @@
         "luxel/audio/sfx/door_locked_2.ogg",
         "luxel/audio/sfx/lamp_lit_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_multitake6",
+      "description": "Round-6 zero-hiss telegraph, beam & foley multi-take variants (owl_lock_2, warden_alert_2, shadow_whisper_2, clockwork_chime_2, beam_charge_2, magpie_grab_2, bramble_burn_2, earth_burrow_2; 136 SFX across 49 multi-take pools)",
+      "generator": "gen_sfx_multitake6.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/owl_lock_2.ogg",
+        "luxel/audio/sfx/warden_alert_2.ogg",
+        "luxel/audio/sfx/shadow_whisper_2.ogg",
+        "luxel/audio/sfx/clockwork_chime_2.ogg",
+        "luxel/audio/sfx/beam_charge_2.ogg",
+        "luxel/audio/sfx/magpie_grab_2.ogg",
+        "luxel/audio/sfx/bramble_burn_2.ogg",
+        "luxel/audio/sfx/earth_burrow_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []
