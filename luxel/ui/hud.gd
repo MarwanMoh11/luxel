@@ -483,6 +483,9 @@ func _draw_boss_bar() -> void:
 		draw_rect(Rect2(x + 2.0, y + 2.0, trail_w, bar_h - 4.0), LxPalette.PAL["apricot"])
 	if cur_w > 0.0:
 		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, bar_h - 4.0), LxPalette.PAL["coral"])
+		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, 1.0), LxPalette.PAL["rose"])
+	for frac: float in ([0.25, 0.5, 0.75] if resolved_key == "BOSS_HUSH" else [0.5]):
+		draw_rect(Rect2(roundf(x + 2.0 + (bar_w - 4.0) * frac), y + 1.0, 1.0, bar_h - 2.0), LxPalette.PAL["gold"])
 
 
 func _draw_interact_prompt() -> void:

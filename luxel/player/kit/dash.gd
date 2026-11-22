@@ -22,6 +22,7 @@ var perfect_refund_done: bool = false
 
 var hit_ids: Array[int] = []
 var _afterimage_cd: float = 0.0
+var _buffer_t: float = 0.0
 
 
 func can_use() -> bool:
@@ -37,7 +38,14 @@ func press() -> bool:
 	if not can_use():
 		if not unlocked and wick != null:
 			wick.emit_sfx("denied", wick.global_position, false)
+		elif unlocked and wick != null and not wick.dead and not active and not is_gliding and not wick.is_gliding() and not wick.is_zipping():
+			_buffer_t = 0.09
 		return false
+	return _execute_dash()
+
+
+func _execute_dash() -> bool:
+	_buffer_t = 0.0
 
 	var data: Dictionary = get_data()
 	var move_v: Vector2 = wick.get_move_input()
@@ -84,6 +92,10 @@ func tick(dt: float) -> void:
 	super.tick(dt)
 	if iframes_left > 0.0:
 		iframes_left = maxf(0.0, iframes_left - dt)
+	if _buffer_t > 0.0:
+		_buffer_t = maxf(0.0, _buffer_t - dt)
+		if can_use():
+			_execute_dash()
 
 
 func tick_dash(dt: float, world_ctx: Node) -> void:
@@ -210,6 +222,7 @@ func reset() -> void:
 	super.reset()
 	cancel()
 	dash_held = false
+	_buffer_t = 0.0
 	iframes_left = 0.0
 	perfect_refund_done = false
 	hit_ids.clear()

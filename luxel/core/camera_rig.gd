@@ -14,8 +14,8 @@ var _slide_from: Vector2 = Vector2.ZERO
 var _slide_to: Vector2 = Vector2.ZERO
 var _slide_t: float = 1.0
 var _slide_dur: float = DEFAULT_SLIDE_S
-var _shake_mag: float = 0.0
-var _shake_decay: float = 4.0
+var _shake_trauma: float = 0.0
+var _look_ahead: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -30,6 +30,7 @@ func set_bounds(bounds: Rect2, locked_room: bool = false) -> void:
 
 func snap_to(pos: Vector2) -> void:
 	_slide_t = 1.0
+	_look_ahead = Vector2.ZERO
 	_target_pos = _clamp_center(pos)
 	global_position = _target_pos.round()
 
@@ -37,6 +38,7 @@ func snap_to(pos: Vector2) -> void:
 func slide_to_room(room_rect: Rect2, duration: float = DEFAULT_SLIDE_S) -> void:
 	room_lock = true
 	world_bounds = room_rect
+	_look_ahead = Vector2.ZERO
 	_slide_from = global_position
 	_slide_to = _clamp_center(room_rect.get_center())
 	_slide_dur = maxf(0.05, duration)
@@ -44,7 +46,7 @@ func slide_to_room(room_rect: Rect2, duration: float = DEFAULT_SLIDE_S) -> void:
 
 
 func add_shake(intensity: float) -> void:
-	_shake_mag = maxf(_shake_mag, clampf(intensity, 0.0, 1.0) * 6.0 * shake_scale)
+	_shake_trauma = clampf(maxf(_shake_trauma, intensity), 0.0, 1.0)
 
 
 func follow(target: Vector2, dt: float) -> void:
@@ -53,15 +55,25 @@ func follow(target: Vector2, dt: float) -> void:
 		var ease_t: float = 1.0 - pow(1.0 - _slide_t, 3.0)
 		_target_pos = _slide_from.lerp(_slide_to, ease_t)
 	elif room_lock:
+		_look_ahead = Vector2.ZERO
 		_target_pos = _clamp_center(target)
 	else:
-		var clamped: Vector2 = _clamp_center(target)
+		var desired_lead: Vector2 = Vector2.ZERO
+		if Lx.player != null and is_instance_valid(Lx.player):
+			var fv: Variant = Lx.player.get("facing")
+			if fv is Vector2 and (fv as Vector2).length_squared() > 0.01:
+				desired_lead = (fv as Vector2).normalized() * 14.0
+		_look_ahead = _look_ahead.lerp(desired_lead, minf(1.0, dt * 3.5))
+		var clamped: Vector2 = _clamp_center(target + _look_ahead)
 		_target_pos = _target_pos.lerp(clamped, minf(1.0, dt * 10.0))
 
 	var shake_off: Vector2 = Vector2.ZERO
-	if _shake_mag > 0.05:
-		shake_off = Vector2(randf_range(-_shake_mag, _shake_mag), randf_range(-_shake_mag, _shake_mag))
-		_shake_mag = maxf(0.0, _shake_mag - _shake_decay * dt * 6.0)
+	if _shake_trauma > 0.02:
+		var mag: float = _shake_trauma * _shake_trauma * 6.5 * shake_scale
+		shake_off = Vector2(randf_range(-mag, mag), randf_range(-mag, mag))
+		_shake_trauma = maxf(0.0, _shake_trauma - dt * 2.6)
+	else:
+		_shake_trauma = 0.0
 	global_position = (_target_pos + shake_off).round()
 
 

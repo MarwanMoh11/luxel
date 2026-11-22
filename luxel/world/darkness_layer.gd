@@ -82,6 +82,7 @@ func _set_events(ev: LxEventBus, bind: bool) -> void:
 		[&"beacon_lit", _on_beacon_lit], [&"waystone_lit", _on_waystone_lit],
 		[&"shrine_claimed", _on_shrine_claimed], [&"boss_phase_changed", _on_boss_phase_changed],
 		[&"boss_defeated", _on_boss_defeated], [&"great_lamp_relit", _on_great_lamp_relit],
+		[&"ember_piece_collected", _on_ember_piece], [&"upgrade_purchased", _on_upgrade_purchased],
 	]
 	for pair: Array in pairs:
 		var sig: StringName = pair[0] as StringName
@@ -191,6 +192,25 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 				if bp is Vector2 and (bp as Vector2).distance_to(cam_center) <= 240.0:
 					var bpos: Vector2 = bp as Vector2
 					candidates.append({"d": bpos.distance_squared_to(cam_center) + 5000.0, "v": Vector4(bpos.x, bpos.y, 34.0, 0.85)})
+		var beam_v: Variant = Lx.player.get("move_beam")
+		if beam_v is Object and is_instance_valid(beam_v):
+			var bt: float = float((beam_v as Object).get("beam_vis_t"))
+			if bt > 0.0:
+				var bf: float = clampf(bt / maxf(0.01, float((beam_v as Object).get("beam_vis_max"))), 0.0, 1.0)
+				var ba: Vector2 = (beam_v as Object).get("beam_start") as Vector2
+				var bb: Vector2 = (beam_v as Object).get("beam_end") as Vector2
+				var m1: Vector2 = ba.lerp(bb, 0.35)
+				var m2: Vector2 = ba.lerp(bb, 0.85)
+				candidates.append({"d": m1.distance_squared_to(cam_center) - 2200.0, "v": Vector4(m1.x, m1.y, 68.0 * bf, 1.55 * bf)})
+				candidates.append({"d": m2.distance_squared_to(cam_center) - 2200.0, "v": Vector4(m2.x, m2.y, 62.0 * bf, 1.45 * bf)})
+		var flare_v: Variant = Lx.player.get("move_sunflare")
+		if flare_v is Object and is_instance_valid(flare_v):
+			var ft: float = float((flare_v as Object).get("flare_vis_t"))
+			if ft > 0.0:
+				var ff: float = clampf(ft / maxf(0.01, float((flare_v as Object).get("flare_vis_max"))), 0.0, 1.0)
+				var fo: Vector2 = (flare_v as Object).get("flare_origin") as Vector2
+				var fr: float = float((flare_v as Object).get("flare_radius"))
+				candidates.append({"d": fo.distance_squared_to(cam_center) - 3200.0, "v": Vector4(fo.x, fo.y, fr * 2.0 * (0.45 + 0.55 * (1.0 - ff)), 1.85 * ff)})
 
 	candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a["d"]) < float(b["d"]))
 	for entry: Dictionary in candidates:
@@ -329,3 +349,5 @@ func _on_shrine_claimed(sid: String, _m: String) -> void: add_burst_light(_inter
 func _on_boss_phase_changed(bid: String, _p: int) -> void: add_burst_light(_boss_pos(bid), 112.0, 1.52, 0.56)
 func _on_boss_defeated(bid: String, _i: int) -> void: add_burst_light(_boss_pos(bid), 144.0, 1.72, 0.75)
 func _on_great_lamp_relit(_i: int) -> void: add_burst_light(_interactable_pos("great_lamp", "great_lamp"), 154.0, 1.80, 0.75)
+func _on_ember_piece(_total: int) -> void: add_burst_light(_player_pos(), 96.0, 1.45, 0.52)
+func _on_upgrade_purchased(_id: String, _rank: int) -> void: add_burst_light(_player_pos(), 108.0, 1.50, 0.55)

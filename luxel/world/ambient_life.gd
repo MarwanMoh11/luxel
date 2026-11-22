@@ -75,6 +75,7 @@ func _set_events(ev: LxEventBus, bind: bool) -> void:
 		[&"seal_broken", _on_seal_broken], [&"lantern_hung", _on_lantern_hung],
 		[&"lantern_caught", _on_lantern_caught], [&"lantern_struck", _on_lantern_struck],
 		[&"player_damaged", _on_player_damaged], [&"player_healed", _on_player_healed],
+		[&"ember_piece_collected", _on_ember_piece], [&"upgrade_purchased", _on_upgrade_purchased],
 	]
 	for pair: Array in pairs:
 		var sig: StringName = pair[0] as StringName
@@ -413,3 +414,11 @@ func _on_player_damaged(_a: float, from_pos: Vector2, knock_dir: Vector2, _s: St
 
 func _on_player_healed(_a: float) -> void:
 	_spawn_sparks(_player_pos() + Vector2(0.0, -4.0), 8, Ramp.HEAL, 14.0, 38.0, 0.36, 0.62, 2.8, 40.0, 2, Vector2.UP, 6.0)
+
+func _on_ember_piece(_total: int) -> void:
+	_discovery_burst(_player_pos(), true)
+
+func _on_upgrade_purchased(_id: String, _rank: int) -> void:
+	var p: Vector2 = _player_pos() + Vector2(0.0, -6.0)
+	_spawn_ring(p, 4.0, 30.0, 0.38, "cream", "gold", false)
+	_spawn_sparks(p, 12, Ramp.GOLD, 18.0, 62.0, 0.30, 0.56, 3.0, 36.0, 2, Vector2.UP, 6.0)
