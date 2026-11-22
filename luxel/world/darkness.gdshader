@@ -37,7 +37,7 @@ void fragment() {
 	if (darkness_strength <= 0.001 && wave_active < 0.5 && danger_pulse <= 0.001 && transition_fade <= 0.001) {
 		COLOR = vec4(src, 1.0);
 	} else {
-		vec2 screen_px = UV * view_size;
+		vec2 screen_px = floor(UV * view_size) + vec2(0.5);
 		vec2 world_px = cam_origin + screen_px;
 
 		// Softly feathered relit zones (wide 84 px smoothstep avoids hard rectangle edges)

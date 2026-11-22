@@ -96,17 +96,20 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 				var a0: float = float(ti) * (TAU / 12.0)
 				b.draw_arc(off, 84.0, a0, a0 + 0.24, 3, pal["deep"] as Color, 1.2)
 			var tr: float = lerpf(84.0, 20.0, prog)
-			b.draw_arc(off, tr, 0.0, TAU, 28, pal["sky"] as Color, 2.0)
-			b.draw_arc(off, maxf(4.0, tr - 2.5), 0.0, TAU, 24, pal["ice"] as Color, 1.1)
+			b.draw_arc(off, tr, 0.0, TAU, 28, (pal["cream"] if b.state_timer <= 0.14 else pal["sky"]) as Color, 2.0)
+			b.draw_arc(off, maxf(4.0, tr - 2.5), 0.0, TAU, 24, (pal["gold"] if b.state_timer <= 0.14 else pal["ice"]) as Color, 1.1)
 		elif active_move == 4: # ECLIPSE_BEAM
 			var sw_end: float = sweep_start + sweep_sign * 1.45
-			var pulse_w: float = 1.6 + 0.9 * absf(sin(b.anim_t * 18.0))
+			var locked_e: bool = b.state_timer <= 0.22
+			var pulse_w: float = (2.2 if locked_e else 1.6) + 0.9 * absf(sin(b.anim_t * 18.0))
 			var s_tip: Vector2 = (off + Vector2.from_angle(sweep_start) * 158.0).round()
 			var e_tip: Vector2 = (off + Vector2.from_angle(sw_end) * 158.0).round()
-			b.draw_line(off.round(), s_tip, pal["gold"] as Color, pulse_w)
+			b.draw_line(off.round(), s_tip, (pal["coral"] if locked_e else pal["gold"]) as Color, pulse_w)
+			if locked_e:
+				b.draw_line(off.round(), s_tip, pal["cream"] as Color, 1.0)
 			b.draw_line(off.round(), e_tip, pal["coral"] as Color, 1.1)
-			b.draw_arc(off, lerpf(118.0, 42.0, prog), minf(sweep_start, sw_end), maxf(sweep_start, sw_end), 14, pal["gold"] as Color, 1.2)
-			_draw_star_flare(b, off, lerpf(4.5, 9.0, prog), pal["gold"] as Color, pal["cream"] as Color)
+			b.draw_arc(off, lerpf(118.0, 42.0, prog), minf(sweep_start, sw_end), maxf(sweep_start, sw_end), 14, (pal["cream"] if locked_e else pal["gold"]) as Color, 1.2)
+			_draw_star_flare(b, off, lerpf(4.5, 9.0, prog), (pal["coral"] if locked_e else pal["gold"]) as Color, pal["cream"] as Color)
 		elif active_move == 0: # VOLLEY (honest 5-ray spread preview)
 			for vi: int in range(5):
 				var vdir: Vector2 = commit_dir.rotated((float(vi) - 2.0) * 0.14)

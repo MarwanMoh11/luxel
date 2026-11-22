@@ -86,6 +86,7 @@ func _set_events(ev: LxEventBus, bind: bool) -> void:
 		[&"boss_phase_changed", _on_boss_phase_changed],
 		[&"boss_defeated", _on_boss_defeated], [&"great_lamp_relit", _on_great_lamp_relit],
 		[&"ember_piece_collected", _on_ember_piece], [&"upgrade_purchased", _on_upgrade_purchased],
+		[&"player_healed", _on_player_healed], [&"shard_collected", _on_shard_collected],
 	]
 	for pair: Array in pairs:
 		var sig: StringName = pair[0] as StringName
@@ -207,7 +208,8 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 				var bp: Variant = b.get("pos") if (b is Dictionary or b is Object) else null
 				if bp is Vector2 and (bp as Vector2).distance_to(cam_center) <= 240.0:
 					var bpos: Vector2 = bp as Vector2
-					candidates.append({"d": bpos.distance_squared_to(cam_center) + 5000.0, "v": Vector4(bpos.x, bpos.y, 34.0, 0.85)})
+					var bounced: bool = int(b.get("bounces")) > 0 if (b is Dictionary or b is Object) else false
+					candidates.append({"d": bpos.distance_squared_to(cam_center) + (3200.0 if bounced else 5000.0), "v": Vector4(bpos.x, bpos.y, 48.0 if bounced else 34.0, 1.18 if bounced else 0.85)})
 		var beam_v: Variant = Lx.player.get("move_beam")
 		if beam_v is Object and is_instance_valid(beam_v):
 			if bool((beam_v as Object).get("charging")) and (beam_v as Object).has_method("charge_progress"):
@@ -322,11 +324,14 @@ func _append_player_lights(lights: PackedVector4Array, flicker: float) -> void:
 		if lantern_out:
 			lan_pos = lo.get("pos") as Vector2 if lo.get("pos") is Vector2 else ((lo as Node2D).global_position if lo is Node2D else p_pos)
 	var has_lens: bool = Lx.state != null and is_instance_valid(Lx.state) and Lx.state.has_move("lens")
+	var dashing: bool = Lx.player.has_method("is_dashing") and bool(Lx.player.call("is_dashing"))
+	var gliding: bool = Lx.player.has_method("is_gliding") and bool(Lx.player.call("is_gliding"))
+	var move_boost: float = 16.0 if dashing else (12.0 if gliding else 0.0)
 	if not lantern_out:
-		var base_hand: float = maxf(108.0 if has_lens else 96.0, custom_r)
-		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, base_hand * flicker, 1.35))
+		var base_hand: float = maxf(108.0 if has_lens else 96.0, custom_r) + move_boost
+		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, base_hand * flicker, 1.46 if dashing else 1.35))
 	else:
-		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, 42.0, 0.72))
+		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, 42.0 + move_boost, 1.05 if dashing else 0.72))
 		var base_hung: float = maxf(118.0 if has_lens else 86.0, custom_r)
 		lights.append(Vector4(lan_pos.x, lan_pos.y - 6.0, base_hung * flicker, 1.38))
 
@@ -375,3 +380,7 @@ func _on_boss_defeated(bid: String, _i: int) -> void: add_burst_light(_boss_pos(
 func _on_great_lamp_relit(_i: int) -> void: add_burst_light(_interactable_pos("great_lamp", "great_lamp"), 154.0, 1.80, 0.75)
 func _on_ember_piece(_total: int) -> void: add_burst_light(_player_pos(), 96.0, 1.45, 0.52)
 func _on_upgrade_purchased(_id: String, _rank: int) -> void: add_burst_light(_player_pos(), 108.0, 1.50, 0.55)
+func _on_player_healed(_a: float) -> void: add_burst_light(_player_pos(), 72.0, 1.25, 0.36)
+func _on_shard_collected(amount: int) -> void:
+	if amount >= 10:
+		add_burst_light(_player_pos(), 58.0, 1.15, 0.26)
