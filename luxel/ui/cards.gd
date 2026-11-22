@@ -35,6 +35,7 @@ var _elapsed: float = 0.0
 var _stats: Dictionary = {}
 var _credit_lines: Array[Dictionary] = [] # {text, color, scale}
 var _scroll_y: float = 184.0
+var _ending_cue_stage: int = 0
 var _eyes: Array[Dictionary] = [] # {start, heap, dir, blink_off, recoil}
 var _motes: Array[Dictionary] = [] # {angle, speed, phase, color}
 
@@ -63,6 +64,7 @@ func show_ending(p_mode: String = "display_off") -> void:
 	ending_mode = "dawn" if p_mode == "dawn" else "display_off"
 	mode = Mode.ENDING
 	_elapsed = 0.0
+	_ending_cue_stage = 0
 	_build_ending_actors()
 	visible = true
 	queue_redraw()
@@ -73,6 +75,9 @@ func show_results(stats: Dictionary = {}) -> void:
 	_stats = stats.duplicate(true)
 	_elapsed = 0.0
 	visible = true
+	if Lx.audio != null:
+		var deaths: int = int(_stats.get("deaths", Lx.state.deaths if Lx.state != null else 0))
+		Lx.audio.play_sfx("shrine_unlock" if deaths <= 3 else "waystone_light", Vector2.ZERO, false, true)
 	queue_redraw()
 
 
@@ -100,6 +105,7 @@ func _process(delta: float) -> void:
 			intro_finished.emit()
 			return
 	elif mode == Mode.ENDING:
+		_tick_ending_audio()
 		var limit: float = ENDING_DAWN_SECS if ending_mode == "dawn" else ENDING_DISPLAY_OFF_SECS
 		if _elapsed >= limit:
 			_finish_ending()
@@ -186,6 +192,28 @@ func _finish_ending() -> void:
 		Lx.ui.call("show_results")
 	else:
 		show_results()
+
+
+func _tick_ending_audio() -> void:
+	if Lx.audio == null:
+		return
+	if ending_mode == "display_off":
+		if _ending_cue_stage == 0 and _elapsed >= 1.35:
+			_ending_cue_stage = 1
+			Lx.audio.play_sfx("display_sell", Vector2.ZERO, false, true)
+		elif _ending_cue_stage == 1 and _elapsed >= 4.35:
+			_ending_cue_stage = 2
+			Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, true)
+		elif _ending_cue_stage == 2 and _elapsed >= 4.90:
+			_ending_cue_stage = 3
+			Lx.audio.play_sfx("dawn_burst", Vector2.ZERO, false, true)
+	else:
+		if _ending_cue_stage == 0 and _elapsed >= 1.0:
+			_ending_cue_stage = 1
+			Lx.audio.play_sfx("dawn_burst", Vector2.ZERO, false, true)
+		elif _ending_cue_stage < 9 and _elapsed >= 1.0 + float(_ending_cue_stage) * 0.35:
+			_ending_cue_stage += 1
+			Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, true)
 
 
 func _draw() -> void:

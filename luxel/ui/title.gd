@@ -499,15 +499,31 @@ func _draw_slots() -> void:
 			var isl_data: Dictionary = Lx.get_island_data(isl_id)
 			var isl_name: String = LxStrings.sanitize(str(isl_data.get("name", "")), 20)
 			var relit: int = int(info.get("relit_count", 0))
+			var relit_arr: Array = info.get("relit_islands", []) as Array
 			var time_str: String = LxStrings.format_time(float(info.get("play_time_s", 0.0)))
 			var meta: String = LxStrings.fmt("SLOT_META", [isl_name, relit, time_str])
 			LxPixelFont.draw_left(self, meta, r.position + Vector2(7.0, 15.0), LxPalette.PAL["cream"], 1)
+			_draw_slot_pips(r.position + Vector2(46.0, 6.0), relit, relit_arr)
 			LxPixelFont.draw_right(self, LxStrings.text("SLOT_CONTINUE"), r.end.x - 42.0, r.position.y + 5.0, LxPalette.PAL["gold"] if sel else LxPalette.PAL["stone"], 1)
 			var del_r: Rect2 = _slot_del_rect(i)
 			LxPixelFont.draw_panel(self, del_r, "wine" if sel else "night", "coral" if sel else "mauve", "void")
 			LxPixelFont.draw_centered(self, LxStrings.text("SLOT_DELETE"), del_r.get_center().x, del_r.position.y + 3.0, LxPalette.PAL["cream"], 1)
 
 	LxPixelFont.draw_centered(self, LxStrings.text("SLOT_HINT"), 160.0, 164.0, LxPalette.PAL["stone"], 1)
+
+
+func _draw_slot_pips(origin: Vector2, relit: int, relit_arr: Array) -> void:
+	for k: int in range(8):
+		var lit: bool = relit_arr.has(k + 1) if not relit_arr.is_empty() else (k < relit)
+		var px: float = origin.x + float(k) * 5.0
+		draw_rect(Rect2(px, origin.y, 3.0, 3.0), LxPalette.PAL["gold" if lit else "night"])
+		draw_rect(Rect2(px + 1.0, origin.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream" if lit else "dusk"])
+	if relit >= 8:
+		var cx: float = origin.x + 44.0
+		var cy: float = origin.y - 1.0
+		var hi: Color = LxPalette.PAL["cream"] if fmod(_elapsed * 2.2, 1.0) < 0.55 else LxPalette.PAL["gold"]
+		_px([[cx, cy + 2.0, 7.0, 2.0], [cx, cy + 1.0, 1.0, 1.0], [cx + 3.0, cy, 1.0, 2.0], [cx + 6.0, cy + 1.0, 1.0, 1.0]], LxPalette.PAL["gold"])
+		_px([[cx + 3.0, cy, 1.0, 1.0], [cx + 1.0, cy + 2.0, 1.0, 1.0], [cx + 5.0, cy + 2.0, 1.0, 1.0]], hi)
 
 
 func _draw_confirm_delete() -> void:

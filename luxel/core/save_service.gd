@@ -49,13 +49,15 @@ func slot_summary(slot_num: int) -> Dictionary:
 	var d: Dictionary = load_slot_dict(slot_num)
 	if d.is_empty():
 		return {"empty": true, "slot": slot_num}
+	var relit_arr: Array = d.get("relit_islands", []) as Array
 	return {
 		"empty": false,
 		"slot": slot_num,
 		"island_id": int(d.get("island_id", 1)),
 		"hearts": int(d.get("max_hearts", 4)),
 		"play_time_s": float(d.get("play_time_s", 0.0)),
-		"relit_count": (d.get("relit_islands", []) as Array).size(),
+		"relit_count": relit_arr.size(),
+		"relit_islands": relit_arr.duplicate(),
 	}
 
 

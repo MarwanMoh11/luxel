@@ -45,6 +45,7 @@ const ISLAND_ZONE_KEYS: Dictionary = {
 }
 
 var _selected_island: int = 1
+var _hover_island: int = 0
 var _waystone_idx: int = 0
 var _waystone_list: Array[Dictionary] = [] # {island_id, waystone_id, label}
 var _elapsed: float = 0.0
@@ -105,6 +106,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event is InputEventMouseMotion:
 		var mpos: Vector2 = (event as InputEventMouseMotion).position
+		var next_hover: int = 0
+		for i: int in range(ISLAND_POS.size()):
+			if mpos.distance_to(ISLAND_POS[i]) <= 12.0:
+				next_hover = i + 1
+				break
+		if next_hover != _hover_island:
+			_hover_island = next_hover
+			queue_redraw()
 		var start_idx: int = maxi(0, _waystone_idx - 2)
 		var vis_count: int = mini(_waystone_list.size() - start_idx, 3)
 		for row: int in range(vis_count):
@@ -310,7 +319,9 @@ func _draw_islands() -> void:
 			if is_cur:
 				_draw_wick_pip(c + Vector2(-9.0, -9.0 + roundf(sin(_elapsed * 3.8) * 1.5)))
 		if is_sel:
-			_draw_selection_brackets(c)
+			_draw_selection_brackets(c, false)
+		elif isl_id == _hover_island:
+			_draw_selection_brackets(c, true)
 
 		var num_col: Color = LxPalette.PAL["gold"] if is_sel else (LxPalette.PAL["cream"] if explored else LxPalette.PAL["mauve"])
 		LxPixelFont.draw_centered(self, str(isl_id), c.x, c.y + 8.0, num_col, 1)
@@ -414,10 +425,10 @@ func _draw_wick_pip(p: Vector2) -> void:
 	_px(wp, [[2, 2, 1, 2]], LxPalette.PAL["cream"])
 
 
-func _draw_selection_brackets(c: Vector2) -> void:
-	var pulse: bool = fmod(_elapsed, 1.1) < 0.55
+func _draw_selection_brackets(c: Vector2, is_hover: bool = false) -> void:
+	var pulse: bool = not is_hover and fmod(_elapsed, 1.1) < 0.55
 	var ex: float = 1.0 if pulse else 0.0
-	var col: Color = LxPalette.PAL["cream"] if pulse else LxPalette.PAL["gold"]
+	var col: Color = LxPalette.PAL["sky"] if is_hover else (LxPalette.PAL["cream"] if pulse else LxPalette.PAL["gold"])
 	var l: float = roundf(c.x - 10.0 - ex)
 	var r: float = roundf(c.x + 10.0 + ex)
 	var t: float = maxf(29.0, roundf(c.y - 13.0 - ex))
@@ -441,6 +452,11 @@ func _draw_island_info(box: Rect2) -> void:
 
 	var beacons: int = _count_beacons(_selected_island)
 	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_BEACONS", [beacons]), box.position + Vector2(6.0, 15.0), LxPalette.PAL["cream"], 1)
+	for bk: int in range(3):
+		var bx: float = box.end.x - 24.0 + float(bk) * 6.0
+		var lit_b: bool = bk < beacons
+		draw_rect(Rect2(bx, box.position.y + 15.0, 4.0, 4.0), LxPalette.PAL["gold" if lit_b else "night"])
+		draw_rect(Rect2(bx + 1.0, box.position.y + 16.0, 2.0, 2.0), LxPalette.PAL["cream" if lit_b else "mauve"])
 
 	var boss_id: String = str(data.get("boss", ""))
 	var boss_done: bool = Lx.state != null and Lx.state.defeated_bosses.has(boss_id)

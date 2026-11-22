@@ -312,3 +312,16 @@ static func draw_credits_backdrop(ci: CanvasItem, t: float) -> void:
 	for bi: int in range(7):
 		var b: Array = [[23, 149], [66, 150], [110, 152], [158, 148], [203, 150], [246, 149], [290, 149]][bi]
 		ci.draw_rect(Rect2(float(b[0]), float(b[1]), 1.0, 1.0), LxPalette.PAL["gold" if fmod(t * 1.6 + float(bi) * 0.55, 1.0) < 0.6 else "apricot"])
+	# Gentle rising lantern fireflies along left/right margins (center text lane stays clean).
+	for mi: int in range(14):
+		var side_x: float = float(8 + (mi * 13) % 38) if mi % 2 == 0 else float(274 + (mi * 17) % 38)
+		var mx: float = roundf(side_x + sin(t * 1.15 + float(mi) * 1.3) * 4.0)
+		var my: float = roundf(152.0 - fmod(t * (7.0 + float(mi % 3) * 2.5) + float(mi) * 23.0, 148.0))
+		var pulse: float = fmod(t + float(mi) * 0.47, 1.8)
+		if pulse < 0.7:
+			ci.draw_rect(Rect2(mx, my, 2.0, 2.0), LxPalette.PAL["gold"])
+			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), LxPalette.PAL["cream"])
+		elif pulse < 1.25:
+			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), LxPalette.PAL["apricot"])
+		else:
+			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), LxPalette.PAL["coral"])
