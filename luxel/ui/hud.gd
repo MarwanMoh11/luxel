@@ -360,7 +360,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		var mid: String = str(item)
 		if Lx.state.has_move(mid):
 			unlocked.append(mid)
-	var step_x: float = 15.0 if unlocked.size() >= 6 else 17.0
+	var step_x: float = 17.0
 	var slot_x: float = origin.x
 	var pulse_fast: bool = fmod(_blink_t, 0.44) < 0.22
 	var lan_v: Variant = Lx.player.get("lantern") if Lx.player != null else null

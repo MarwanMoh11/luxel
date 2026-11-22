@@ -104,6 +104,7 @@ var _combat_request_timer: float = 0.0
 var _combat_tail_timer: float = 0.0
 var _mute_unfocus: bool = true
 var _focused: bool = true
+var _master_muted: bool = false
 
 # Telemetry for QA's 50-switch audio_check.
 var stream_restart_count: int = 0
@@ -201,26 +202,29 @@ func _setup_players() -> void:
 
 
 func apply_settings(cfg: Dictionary) -> void:
+	_mute_unfocus = bool(cfg.get("mute_unfocus", true))
 	_set_bus_linear(0, float(cfg.get("master_vol", 1.0)))
 	_set_bus_linear(_music_bus_idx, float(cfg.get("music_vol", 0.85)))
 	_set_bus_linear(_sfx_bus_idx, float(cfg.get("sfx_vol", 0.9)))
 	_set_bus_linear(_amb_bus_idx, float(cfg.get("ambience_vol", 0.8)))
 	_set_bus_linear(_ui_bus_idx, float(cfg.get("sfx_vol", 0.9)))
-	_mute_unfocus = bool(cfg.get("mute_unfocus", true))
 
 
 func _set_bus_linear(idx: int, linear: float) -> void:
 	if idx < 0:
 		return
 	var v: float = clampf(linear, 0.0, 1.0)
-	AudioServer.set_bus_mute(idx, v <= 0.001)
+	if idx == 0:
+		_master_muted = v <= 0.001
+		AudioServer.set_bus_mute(0, _master_muted or (_mute_unfocus and not _focused))
+	else:
+		AudioServer.set_bus_mute(idx, v <= 0.001)
 	AudioServer.set_bus_volume_db(idx, linear_to_db(maxf(v, 0.0001)))
 
 
 func set_window_focus(focused: bool) -> void:
 	_focused = focused
-	if _mute_unfocus:
-		AudioServer.set_bus_mute(0, not focused)
+	AudioServer.set_bus_mute(0, _master_muted or (_mute_unfocus and not _focused))
 
 
 func _is_overworld_layer_active() -> bool:

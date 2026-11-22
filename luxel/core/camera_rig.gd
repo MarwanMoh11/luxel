@@ -64,7 +64,7 @@ func follow(target: Vector2, dt: float) -> void:
 		_slide_t = minf(1.0, _slide_t + dt / _slide_dur)
 		var ease_t: float = 1.0 - pow(1.0 - _slide_t, 3.0)
 		_target_pos = _slide_from.lerp(_slide_to, ease_t)
-	elif room_lock:
+	elif room_lock and world_bounds.size.x <= VIEW_SIZE.x + 2.0 and world_bounds.size.y <= VIEW_SIZE.y + 2.0:
 		_look_ahead = Vector2.ZERO
 		_target_pos = _clamp_center(target)
 	else:
