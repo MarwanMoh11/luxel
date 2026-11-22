@@ -185,6 +185,8 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	wick.muzzle_t = 0.11
 	wick.shoot_anim_t = 0.26
 	wick.recoil_vis = 1.0
+	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+		Lx.camera.call("add_kick", -aim, 2.6)
 	if not any_enemy_hit:
 		wick.trigger_shake(sh * 0.6)
 	wick.spawn_ring(start_p, 2.0, 12.0, 0.20, LxWick.PAL_CREAM, 1.5)

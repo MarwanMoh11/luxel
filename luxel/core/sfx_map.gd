@@ -20,6 +20,9 @@ const SFX_VARIANTS: Dictionary = {
 	"switch_eye": ["switch_eye", "switch_eye_2"], "door_open": ["door_open", "door_open_2"], "owl_dive": ["owl_dive", "owl_dive_2"],
 	"zip_streak": ["zip_streak", "zip_streak_2"], "prism_bounce": ["prism_bounce", "prism_bounce_2"], "wings_glide": ["wings_glide", "wings_glide_2"],
 	"chest_open": ["chest_open", "chest_open_2"], "shield_shatter": ["shield_shatter", "shield_shatter_2"], "stone_break": ["stone_break", "stone_break_2"],
+	"bell_slam": ["bell_slam", "bell_slam_2"], "golem_stomp": ["golem_stomp", "golem_stomp_2"], "spore_pop": ["spore_pop", "spore_pop_2"],
+	"gust_whoosh": ["gust_whoosh", "gust_whoosh_2"], "tide_wave": ["tide_wave", "tide_wave_2"], "hollow_dash": ["hollow_dash", "hollow_dash_2"],
+	"door_locked": ["door_locked", "door_locked_2"], "lamp_lit": ["lamp_lit", "lamp_lit_2"],
 }
 
 const SFX_BASE_TRIM_DB: Dictionary = {

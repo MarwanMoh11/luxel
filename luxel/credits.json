@@ -390,6 +390,22 @@
       "generator": "master_ambience_stereo.py",
       "license": "Original project asset",
       "outputs": []
+    },
+    {
+      "id": "lantern_gothic_sfx_multitake5",
+      "description": "Round-5 zero-hiss boss & world multi-take foley variants (bell_slam_2, golem_stomp_2, spore_pop_2, gust_whoosh_2, tide_wave_2, hollow_dash_2, door_locked_2, lamp_lit_2; 128 SFX across 41 multi-take pools)",
+      "generator": "gen_sfx_multitake5.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/bell_slam_2.ogg",
+        "luxel/audio/sfx/golem_stomp_2.ogg",
+        "luxel/audio/sfx/spore_pop_2.ogg",
+        "luxel/audio/sfx/gust_whoosh_2.ogg",
+        "luxel/audio/sfx/tide_wave_2.ogg",
+        "luxel/audio/sfx/hollow_dash_2.ogg",
+        "luxel/audio/sfx/door_locked_2.ogg",
+        "luxel/audio/sfx/lamp_lit_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []

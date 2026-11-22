@@ -143,6 +143,7 @@ func start_recall(wick: LxWick, world_ctx: Node, slam_radius: float = 18.0, hs: 
 	if wick != null:
 		wick.emit_sfx("lantern_recall", pos, true)
 		wick.spawn_ring(pos, 2.0, slam_radius, 0.20, PAL_GOLD, 1.0)
+		_emit_gust(pos, 52.0, 68.0)
 		# Immediate 18 px recall-on-grab slam (catches diving/wrestling Snatchers and nearby foes)
 		var enemies: Array = wick.world_get_enemies(world_ctx)
 		for e_var: Variant in enemies:
@@ -176,6 +177,8 @@ func catch_by_wick(wick: LxWick) -> void:
 		global_position = pos.round()
 		wick.catch_anim_t = 0.22
 		wick.spawn_ring(pos, 2.0, 9.0, 0.16, PAL_CREAM, 1.0)
+		wick.spawn_sparks(pos, Vector2.UP, 4, PAL_CREAM, 14.0, 42.0, 0.18)
+		_emit_gust(pos, 32.0, 38.0)
 		wick.emit_sfx("lantern_catch", pos, false)
 	if Lx.events != null:
 		Lx.events.lantern_caught.emit(pos)
@@ -223,6 +226,7 @@ func on_dropped(at_pos: Vector2) -> void:
 		_owner_wick.spawn_sparks(pos, Vector2.UP, 12, PAL_GOLD, 30.0, 95.0, 0.28)
 		_owner_wick.trigger_hitstop(0.085)
 		_owner_wick.trigger_shake(0.12)
+		_emit_gust(pos, 56.0, 72.0)
 		_owner_wick.emit_sfx("magpie_drop", pos, true)
 	if Lx.events != null:
 		Lx.events.lantern_dropped.emit(pos)
@@ -330,11 +334,15 @@ func _land_hanging(wick: LxWick) -> void:
 	if Lx.events != null:
 		Lx.events.lantern_hung.emit(pos)
 	wick.spawn_ring(pos, 2.0, 12.0, 0.22, PAL_GOLD, 1.0)
+	_emit_gust(pos, 44.0, 56.0)
+	wick.emit_sfx("lantern_land", pos, true)
+
+
+func _emit_gust(at_pos: Vector2, rad: float, strength: float) -> void:
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-			(amb as Object).call("_gust_particles", pos, 44.0, 56.0)
-	wick.emit_sfx("lantern_land", pos, true)
+			(amb as Object).call("_gust_particles", at_pos, rad, strength)
 
 
 func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: String, dmg: float) -> void:
