@@ -15,6 +15,7 @@ var glide_time_left: float = 0.0
 var glides_count: int = 0
 
 var _afterimage_cd: float = 0.0
+var _sw_cleared_this_glide: bool = false
 
 
 func can_use() -> bool:
@@ -53,10 +54,28 @@ func start_glide(dir: Vector2) -> bool:
 	glide_time_left = glide_duration
 	glides_count += 1
 	_afterimage_cd = 0.0
+	_sw_cleared_this_glide = false
 
 	wick.spawn_ring(wick.global_position, 2.0, 11.0, 0.18, LxWick.PAL_SKY, 1.0)
 	wick.emit_sfx("wings_glide", wick.global_position, false)
 	return true
+
+
+func on_shockwave_cleared() -> void:
+	if wick == null or _sw_cleared_this_glide:
+		return
+	_sw_cleared_this_glide = true
+	wick.spawn_ring(wick.global_position, 3.0, 15.0, 0.22, LxWick.PAL_SKY, 1.4)
+	wick.spawn_ring(wick.global_position, 2.0, 10.0, 0.16, LxWick.PAL_CREAM, 1.0)
+	wick.spawn_sparks(wick.global_position, Vector2.UP, 6, LxWick.PAL_ICE, 24.0, 66.0, 0.22)
+	wick.emit_sfx("prism_bounce", wick.global_position, false)
+	if wick.move_sunflare != null and wick.move_sunflare.unlocked:
+		var emax: float = wick.move_sunflare.get_ember_max()
+		var was_full: bool = wick.ember >= emax - 0.001
+		wick.ember = minf(emax, wick.ember + 6.0)
+		if not was_full and wick.ember >= emax - 0.001:
+			wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
+			wick.emit_sfx("beam_ready", wick.global_position, false)
 
 
 func stop_glide() -> void:

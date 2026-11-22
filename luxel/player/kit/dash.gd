@@ -185,6 +185,7 @@ func _check_dash_hits(world_ctx: Node) -> void:
 				dash_time_left = 0.0
 				wick.bounce_t = DASH_BOUNCE_TIME
 				wick.knock = -dash_dir * DASH_BOUNCE_KNOCK
+				wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.18, LxWick.PAL_STONE, 1.2)
 				return
 
 

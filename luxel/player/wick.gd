@@ -345,6 +345,7 @@ func take_damage(amount: float, from_pos: Vector2, knock_dir: Vector2, source: S
 		move_dash.on_perfect_dodge()
 		return
 	if is_gliding() and source == "shockwave" and (move_wings == null or move_wings.clears_shockwave()):
+		if move_wings != null: move_wings.on_shockwave_cleared()
 		return
 	if is_invulnerable():
 		return

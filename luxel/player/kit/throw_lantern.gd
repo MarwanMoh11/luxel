@@ -181,6 +181,7 @@ func tick_zip(dt: float, world_ctx: Node) -> void:
 				zip_time_left = 0.0
 				wick.bounce_t = ZIP_BOUNCE_TIME
 				wick.knock = -zip_dir * ZIP_BOUNCE_KNOCK
+				wick.spawn_ring(wick.global_position, 2.0, 13.0, 0.18, LxWick.PAL_STONE, 1.2)
 				return
 
 	if zipping and (zip_time_left <= 0.0 or wick.global_position.distance_to(lan.pos) <= 8.0):
@@ -207,6 +208,10 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 
 	wick.spawn_ring(center, 3.0, burst_r, 0.22, LxWick.PAL_GOLD, 1.5)
 	wick.spawn_sparks(center, zip_dir, 8, LxWick.PAL_CREAM, 30.0, 90.0, 0.20)
+	if world_ctx != null and is_instance_valid(world_ctx):
+		var amb: Variant = world_ctx.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", center, burst_r * 2.2, 85.0)
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
 	for e_var: Variant in enemies:
