@@ -363,7 +363,10 @@ func _draw_extra(off: Vector2) -> void:
 			draw_circle(fp, 2.2, PAL["cream"] as Color)
 	elif active_move == BossMove.TIDE_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		draw_arc(off, lerpf(TIDE_MAX_R, TIDE_START_R + 8.0, prog), 0.0, TAU, 28, PAL["sky"] as Color, 1.5)
+		for ti: int in range(12):
+			var a0: float = float(ti) * (TAU / 12.0)
+			draw_arc(off, TIDE_MAX_R, a0, a0 + 0.24, 3, PAL["blue"] as Color, 1.0)
+		draw_arc(off, lerpf(TIDE_MAX_R, TIDE_START_R + 8.0, prog), 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
 	elif active_move == BossMove.TIDE_RING and state == State.COMMIT:
 		var ring_r: float = lerpf(TIDE_START_R, TIDE_MAX_R, tide_progress)
 		draw_arc(off, ring_r + 2.4, 0.0, TAU, 36, PAL["blue"] as Color, 2.4)

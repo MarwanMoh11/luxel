@@ -241,24 +241,11 @@ func take_hit(hit: LxHit) -> int:
 	return HitResult.CHIPPED
 
 
-func wants_token() -> bool:
-	return state == State.POSITION or state == State.WAIT_TOKEN
-
-
-func is_alive() -> bool:
-	return state != State.DEAD and hp > 0.001
-
-
-func is_targetable() -> bool:
-	return is_alive()
-
-
-func is_flying() -> bool:
-	return false
-
-
-func get_state_name() -> String:
-	return STATE_NAMES[state] if (state >= 0 and state < STATE_NAMES.size()) else "UNKNOWN"
+func wants_token() -> bool: return state == State.POSITION or state == State.WAIT_TOKEN
+func is_alive() -> bool: return state != State.DEAD and hp > 0.001
+func is_targetable() -> bool: return is_alive()
+func is_flying() -> bool: return false
+func get_state_name() -> String: return STATE_NAMES[state] if (state >= 0 and state < STATE_NAMES.size()) else "UNKNOWN"
 
 
 func debug_state() -> Dictionary:
@@ -540,6 +527,12 @@ func _draw() -> void:
 	var r: float = body_radius
 	var off: Vector2 = _visual_offset()
 	draw_circle(Vector2(2.0, r * 0.55), r * 0.9, PAL["void"] as Color)
+	if is_boss and phase >= 2:
+		var pn: int = mini(phase * 2, 8)
+		var pc: Color = (PAL["cream"] if phase >= 4 else (PAL["coral"] if phase >= 3 else PAL["gold"])) as Color
+		for pi: int in range(pn):
+			var pa: float = anim_t * (1.8 + float(phase) * 0.6) + float(pi) * (TAU / float(pn))
+			draw_rect(Rect2((off + Vector2(cos(pa) * (r + 5.0), r * 0.45 + sin(pa) * (r * 0.48 + 2.0))).round(), Vector2(2.0, 1.0)), pc if (pi % 2 == 0) else (PAL["gold"] as Color))
 
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)

@@ -266,7 +266,7 @@ func _begin_phase_attack(target: Vector2) -> void:
 	ring_stage = 0
 	ring_progress = 0.0
 	_emit_attack_started()
-	_emit_sfx("hush_tell")
+	_emit_sfx("beam_charge" if active_move == HushMove.ECLIPSE_BEAM else "hush_tell")
 
 func _step_tell(dt: float) -> void:
 	if state_timer > 0.22:
@@ -287,7 +287,8 @@ func _step_tell(dt: float) -> void:
 			void_orb_out = true
 		elif active_move == HushMove.ECLIPSE_BEAM:
 			beam_angle = sweep_start_ang
-		_emit_sfx("hush_commit")
+		var csfx: Array[String] = ["bolt_fire", "zip_streak", "hollow_dash", "hush_pulse", "beam_fire"]
+		_emit_sfx(csfx[active_move])
 
 func _step_commit(dt: float) -> void:
 	commit_elapsed += dt

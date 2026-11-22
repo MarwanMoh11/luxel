@@ -295,8 +295,12 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(off, ar, a - 0.38, a + 0.38, 4, plate_col, 2.0)
 	if active_move == KilnMove.BELLOWS_GUST and state == State.TELL:
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
-		draw_line(off - side * 14.0, off - side * 14.0 + gust_dir * 52.0, PAL["gold"] as Color, 1.5)
-		draw_line(off + side * 14.0, off + side * 14.0 + gust_dir * 52.0, PAL["gold"] as Color, 1.5)
+		var g_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		draw_line((off - side * GUST_HALF_W * 0.72).round(), (off - side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE * 0.88).round(), PAL["gold"] as Color, 1.4)
+		draw_line((off + side * GUST_HALF_W * 0.72).round(), (off + side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE * 0.88).round(), PAL["gold"] as Color, 1.4)
+		var pull_d: float = lerpf(46.0, 12.0, g_prog)
+		draw_line((off + gust_dir * pull_d - side * 14.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["apricot"] as Color, 1.3)
+		draw_line((off + gust_dir * pull_d + side * 14.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["apricot"] as Color, 1.3)
 	elif active_move == KilnMove.BELLOWS_GUST and state == State.COMMIT:
 		var side2: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		var g_len: float = GUST_RANGE * 0.88
@@ -320,6 +324,9 @@ func _draw_extra(off: Vector2) -> void:
 			draw_circle(ep, 0.8, PAL["cream"] as Color)
 	elif active_move == KilnMove.MOLTEN_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		for ti: int in range(12):
+			var a0: float = float(ti) * (TAU / 12.0)
+			draw_arc(off, KILN_RING_MAX_R, a0, a0 + 0.24, 3, PAL["coral"] as Color, 1.0)
 		draw_arc(off, lerpf(KILN_RING_MAX_R, STOMP_START_R + 6.0, prog), 0.0, TAU, 28, PAL["apricot"] as Color, 1.8)
 	elif active_move == KilnMove.MOLTEN_RING and state == State.COMMIT:
 		if ring_stage == RingStage.PAUSE:

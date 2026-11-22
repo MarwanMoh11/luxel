@@ -311,8 +311,12 @@ func _draw_extra(off: Vector2) -> void:
 
 	if active_move == BossMove.WING_GUST and state == State.TELL:
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
-		draw_line(off - side * 12.0, off - side * 12.0 + gust_dir * 48.0, PAL["sky"] as Color, 1.5)
-		draw_line(off + side * 12.0, off + side * 12.0 + gust_dir * 48.0, PAL["sky"] as Color, 1.5)
+		var g_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		draw_line((off - side * GUST_HALF_W * 0.72).round(), (off - side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE * 0.88).round(), PAL["sky"] as Color, 1.4)
+		draw_line((off + side * GUST_HALF_W * 0.72).round(), (off + side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE * 0.88).round(), PAL["sky"] as Color, 1.4)
+		var pull_d: float = lerpf(44.0, 10.0, g_prog)
+		draw_line((off + gust_dir * pull_d - side * 12.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.2)
+		draw_line((off + gust_dir * pull_d + side * 12.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.2)
 	elif active_move == BossMove.WING_GUST and state == State.COMMIT:
 		var side2: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		var g_len: float = GUST_RANGE * 0.88
@@ -338,6 +342,9 @@ func _draw_extra(off: Vector2) -> void:
 			draw_line((tip - gust_dir * 3.5 + side2 * (span * 0.30)).round(), tip, PAL["cream"] as Color, 1.0)
 	elif active_move == BossMove.SHOCKWAVE_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		for ti: int in range(12):
+			var a0: float = float(ti) * (TAU / 12.0)
+			draw_arc(off, RING_MAX_R, a0, a0 + 0.24, 3, PAL["blue"] as Color, 1.0)
 		draw_arc(off, lerpf(RING_MAX_R, RING_START_R + 6.0, prog), 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
 	elif active_move == BossMove.SHOCKWAVE_RING and state == State.COMMIT:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)

@@ -255,6 +255,9 @@ func _draw_extra(off: Vector2) -> void:
 		draw_circle((w_mid + side * (sin(anim_t * 5.0) * 2.0)).round(), 1.2, PAL["cream"] as Color)
 	if spore_burst_attack and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		for ti: int in range(12):
+			var a0: float = float(ti) * (TAU / 12.0)
+			draw_arc(off, SPORE_MAX_R, a0, a0 + 0.24, 3, PAL["jade"] as Color, 1.0)
 		draw_arc(off, lerpf(SPORE_MAX_R, SPORE_START_R + 6.0, prog), 0.0, TAU, 28, PAL["lime"] as Color, 1.8)
 	elif spore_burst_attack and state == State.COMMIT:
 		var ring_r: float = lerpf(SPORE_START_R, SPORE_MAX_R, spore_progress)

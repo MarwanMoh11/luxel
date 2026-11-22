@@ -87,6 +87,9 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 	if b.state == LxEnemyBrain.State.TELL:
 		var prog: float = 1.0 - clampf(b.state_timer / maxf(b.last_tell_duration, 0.05), 0.0, 1.0)
 		if active_move == 3: # SILENCE_RING
+			for ti: int in range(12):
+				var a0: float = float(ti) * (TAU / 12.0)
+				b.draw_arc(off, 84.0, a0, a0 + 0.24, 3, pal["deep"] as Color, 1.2)
 			var tr: float = lerpf(84.0, 20.0, prog)
 			b.draw_arc(off, tr, 0.0, TAU, 28, pal["sky"] as Color, 2.0)
 			b.draw_arc(off, maxf(4.0, tr - 2.5), 0.0, TAU, 24, pal["ice"] as Color, 1.1)
@@ -132,10 +135,13 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 			var fl_r: float = 9.0 + 1.5 * sin(b.anim_t * 24.0)
 			_draw_star_flare(b, b_orig, fl_r, pal["gold"] as Color, pal["cream"] as Color)
 			_draw_star_flare(b, b_end, fl_r + 1.5, pal["gold"] as Color, pal["cream"] as Color)
-		elif active_move == 0: # VOLLEY
-			var v_end: Vector2 = (off + commit_dir * 152.0).round()
-			b.draw_line(off.round(), v_end, pal["sky"] as Color, 3.2)
-			b.draw_line(off.round(), v_end, pal["ice"] as Color, 1.6)
+		elif active_move == 0: # VOLLEY (honest 5-bolt fan matching hitbox)
+			var shots_n: int = maxi(1, int(b.get("volley_shots")))
+			for vi: int in range(shots_n):
+				var vdir: Vector2 = commit_dir.rotated((float(vi) - 2.0) * 0.14)
+				var v_end: Vector2 = (off + vdir * 152.0).round()
+				b.draw_line(off.round(), v_end, pal["sky"] as Color, 2.6)
+				b.draw_line(off.round(), v_end, pal["ice"] as Color, 1.2)
 	elif bool(b.get("_roaring")):
 		var rp: float = 1.0 - clampf(b.state_timer / 0.62, 0.0, 1.0)
 		var base_r: float = (r + 14.0) if has_sprite else (r + 10.0)

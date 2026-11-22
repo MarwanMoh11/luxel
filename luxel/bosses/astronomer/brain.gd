@@ -231,8 +231,11 @@ func _draw_extra(off: Vector2) -> void:
 	var c_orig: Vector2 = off.round()
 	if active_move == AstroMove.CONSTELLATION and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		for ti: int in range(12):
+			var a0: float = float(ti) * (TAU / 12.0)
+			draw_arc(off, NOVA_MAX_R, a0, a0 + 0.24, 3, PAL["sky"] as Color, 1.0)
 		var t_r: float = lerpf(NOVA_MAX_R, NOVA_START_R + 8.0, prog)
-		draw_arc(off, t_r, 0.0, TAU, 28, PAL["ice"] as Color, 1.6)
+		draw_arc(off, t_r, 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
 		var ray_len: float = NOVA_RAY_RANGE * 0.75
 		for i: int in range(ray_count):
 			var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
