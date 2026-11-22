@@ -46,6 +46,7 @@ func on_light(a: Variant, b: Variant = Vector2.ZERO, _source: String = "") -> vo
 		reveal_t = maxf(reveal_t, REVEAL_GRACE)
 		revealed = true
 		if was_hidden:
+			LxDamageFx.boss_impact(pos, 0.0, 38.0, 48.0, 44.0, 1.22, 0.24)
 			_emit_sfx("phantom_reveal")
 
 

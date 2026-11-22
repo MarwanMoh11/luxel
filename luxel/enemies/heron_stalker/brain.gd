@@ -246,12 +246,7 @@ func _step_commit(dt: float) -> void:
 		beak_stuck = true
 		state_timer = maxf(MIN_RECOVER_TIME, recover_time)
 		last_recover_duration = state_timer
-		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.10)
-		if Lx.world != null and is_instance_valid(Lx.world):
-			var amb: Variant = Lx.world.get("_ambient_life")
-			if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-				(amb as Object).call("_gust_particles", pos + stab_dir * 10.0, 48.0, 56.0)
+		LxDamageFx.boss_impact(pos + stab_dir * 10.0, 0.10, 48.0, 56.0, 0.0, 1.0, 0.0, "sky")
 		_emit_sfx("heron_beak_stuck")
 
 

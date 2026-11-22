@@ -10,6 +10,7 @@ const ASH_TELL_TIME: float = 0.50
 const ERUPT_DIST: float = 14.0
 
 var surfaced: bool = false
+var _was_surfaced: bool = false
 
 
 func _init() -> void:
@@ -34,6 +35,7 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	grab_time = maxf(MIN_RECOVER_TIME, float(spec.get("grab_time", ASH_GRAB_TIME)))
 	recover_time = grab_time
 	surfaced = false
+	_was_surfaced = false
 
 
 func is_flying() -> bool:
@@ -103,6 +105,9 @@ func _step_brain(dt: float) -> void:
 			surfaced = pos.distance_to(run_to) <= ERUPT_DIST
 		_:
 			surfaced = false
+	if surfaced and not _was_surfaced:
+		LxDamageFx.boss_impact(pos, 0.06, 40.0, 52.0, 34.0, 1.15, 0.22)
+	_was_surfaced = surfaced
 
 
 func _walk_to(dest: Vector2, spd: float, dt: float) -> bool:

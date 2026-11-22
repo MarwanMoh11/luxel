@@ -298,6 +298,7 @@ func _do_lateral_feint(target_pos: Vector2, dist_px: float) -> void:
 	_move_step(perp * dist_px, is_flying())
 	if target_pos.distance_to(pos) > 0.01:
 		facing = (target_pos - pos).angle()
+	LxDamageFx.boss_impact(ghost_pos, 0.0, 32.0, 42.0, 36.0, 1.20, 0.20)
 	_emit_sfx("moonshade_blink")
 
 func _step_shade_return(dt: float) -> void:

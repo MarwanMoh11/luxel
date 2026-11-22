@@ -204,12 +204,7 @@ func _step_commit(dt: float) -> void:
 	if not shot_fired:
 		shot_fired = true
 		beam_bolt_fired.emit(pos, shot_dir, self)
-		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.08)
-		if Lx.world != null and is_instance_valid(Lx.world):
-			var amb: Variant = Lx.world.get("_ambient_life")
-			if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-				(amb as Object).call("_gust_particles", pos, 52.0, 56.0)
+		LxDamageFx.boss_impact(pos + shot_dir * 26.0, 0.08, 52.0, 56.0, 60.0, 1.30, 0.24)
 	if not shot_hit and _has_player():
 		var wp: Vector2 = _get_wick_pos()
 		var closest: Vector2 = Geometry2D.get_closest_point_to_segment(wp, pos, _beam_end)

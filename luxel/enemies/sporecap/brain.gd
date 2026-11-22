@@ -221,12 +221,7 @@ func _enter_commit() -> void:
 	cap_open = true
 	ring_progress = 0.0
 	ring_hit = false
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.12)
-	if Lx.world != null and is_instance_valid(Lx.world):
-		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
-			(amb as Object).call("_gust_particles", pos, 68.0, 74.0)
+	LxDamageFx.boss_impact(pos, 0.12, 68.0, 74.0, 58.0, 1.28, 0.28)
 	_emit_sfx("sporecap_burst")
 
 

@@ -237,6 +237,7 @@ func _enter_commit() -> void:
 	state = State.COMMIT
 	state_timer = LUNGE_TIME
 	lunge_hit = false
+	LxDamageFx.boss_impact(pos, 0.06, 36.0, 46.0)
 	_emit_sfx("gloam_lunge")
 
 func _step_commit(dt: float) -> void:

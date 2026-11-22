@@ -236,6 +236,7 @@ func _step_commit(dt: float) -> void:
 		if not _bolt_fired:
 			_bolt_fired = true
 			echo_bolt_fired.emit(pos, _echo_dir, self)
+			LxDamageFx.boss_impact(pos + _echo_dir * 24.0, 0.05, 36.0, 44.0, 46.0, 1.20, 0.20)
 		var end_p: Vector2 = pos + _echo_dir * BOLT_RANGE
 		if not _commit_hit and _has_player():
 			var wp: Vector2 = _get_wick_pos()

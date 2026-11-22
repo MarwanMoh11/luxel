@@ -192,6 +192,7 @@ func _enter_commit() -> void:
 		"dir": fire_dir,
 		"traveled": 0.0,
 	})
+	LxDamageFx.boss_impact(pos + fire_dir * (body_radius + 4.0), 0.04, 26.0, 34.0, 32.0, 1.15, 0.18, "sky")
 	_emit_sfx("barnacle_fire")
 
 
