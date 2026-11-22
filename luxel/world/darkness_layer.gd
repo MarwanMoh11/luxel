@@ -79,7 +79,7 @@ func _set_events(ev: LxEventBus, bind: bool) -> void:
 	if ev == null or not is_instance_valid(ev):
 		return
 	var pairs: Array = [
-		[&"enemy_killed", _on_enemy_killed], [&"lantern_hung", _on_lantern_hung],
+		[&"enemy_hit", _on_enemy_hit], [&"enemy_killed", _on_enemy_killed], [&"lantern_hung", _on_lantern_hung],
 		[&"lantern_caught", _on_lantern_caught], [&"lantern_struck", _on_lantern_struck],
 		[&"beacon_lit", _on_beacon_lit], [&"waystone_lit", _on_waystone_lit],
 		[&"shrine_claimed", _on_shrine_claimed], [&"seal_broken", _on_seal_broken],
@@ -192,7 +192,8 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 			if e != null and is_instance_valid(e) and e.is_alive() and e.is_boss:
 				var bp: Vector2 = e.global_position + Vector2(0.0, -10.0)
 				if bp.distance_to(cam_center) <= 320.0:
-					candidates.append({"d": bp.distance_squared_to(cam_center) - 2400.0, "v": Vector4(bp.x, bp.y, 70.0 * flicker, 0.94)})
+					var ph_b: float = float(maxi(0, e.phase - 1))
+					candidates.append({"d": bp.distance_squared_to(cam_center) - 2400.0, "v": Vector4(bp.x, bp.y, (70.0 + ph_b * 10.0) * flicker, 0.94 + ph_b * 0.12)})
 
 	for extra: Vector4 in extra_lights:
 		if extra.z <= 1.0 or extra.w <= 0.001:
@@ -367,6 +368,9 @@ func _boss_pos(boss_id: String) -> Vector2:
 					return (e as Node2D).global_position
 	return _player_pos()
 
+func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
+	if result == 2 and enemy is Node2D and is_instance_valid(enemy):
+		add_burst_light((enemy as Node2D).global_position + Vector2(0.0, -5.0), 66.0, 1.38, 0.28)
 func _on_enemy_killed(_e: Object, _k: String, pos: Vector2, opened: bool) -> void:
 	add_burst_light(pos, 76.0 if opened else 54.0, 1.40 if opened else 1.05, 0.42 if opened else 0.26)
 func _on_lantern_hung(pos: Vector2) -> void: add_burst_light(pos, 64.0, 1.22, 0.28)

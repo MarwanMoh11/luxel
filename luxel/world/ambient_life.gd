@@ -49,6 +49,7 @@ var _slashes: Array[Dictionary] = []
 var _shard_orbs: Array[Dictionary] = []
 var _vfx_rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _bound_events: LxEventBus = null
+var _wake_sway_cd: float = 0.0
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -178,6 +179,10 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	var wake_r: float = 44.0 if wick_burst else 24.0
 	var wake_r2: float = wake_r * wake_r
 	var wake_active: bool = wick_burst or wick_vel.length_squared() > 400.0
+	_wake_sway_cd = maxf(0.0, _wake_sway_cd - dt)
+	if wick_burst and _wake_sway_cd <= 0.0:
+		_wake_sway_cd = 0.09
+		_gust_particles(wick_pos, 42.0, 56.0)
 	for p: Particle in _items:
 		if p.kind == Kind.SHOOT:
 			var cyc: float = fposmod(_clock + p.phase, p.freq)

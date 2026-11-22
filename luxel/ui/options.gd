@@ -97,6 +97,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				break
 		if ht != _hover_tab:
 			_hover_tab = ht
+			if ht >= 0:
+				_play_ui_sfx("ui_move")
 			queue_redraw()
 		var m_rows: Array[String] = _rows_for_tab(current_tab)
 		for i: int in range(m_rows.size()):
@@ -214,6 +216,8 @@ func _set_slider_from_frac(row_id: String, frac: float, is_drag: bool = false) -
 		Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, false)
 	else:
 		_play_ui_sfx("ui_move")
+	if row_id == "screen_shake" and int(cfg.get("screen_shake", 0)) > 0 and Lx.camera != null:
+		Lx.camera.add_shake(0.18)
 	queue_redraw()
 
 
@@ -273,6 +277,8 @@ func _adjust_row(row_id: String, dir: int) -> void:
 		Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, false)
 	else:
 		_play_ui_sfx("ui_move")
+	if row_id == "screen_shake" and int(cfg.get("screen_shake", 0)) > 0 and Lx.camera != null:
+		Lx.camera.add_shake(0.18)
 	queue_redraw()
 
 
