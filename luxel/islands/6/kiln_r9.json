@@ -233,6 +233,27 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "crucible_floor_seal",
+      "pos": [
+        160,
+        92
+      ],
+      "layer": "ground",
+      "shadow": false
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        88,
+        132
+      ],
+      "layer": "ground",
+      "shadow": false,
+      "phase": 0.6
     }
   ]
 }

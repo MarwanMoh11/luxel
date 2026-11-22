@@ -215,6 +215,26 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.25
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "moon_dial_floor",
+      "pos": [
+        160,
+        92
+      ],
+      "layer": "ground",
+      "shadow": false
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        292,
+        146
+      ],
+      "layer": "sort",
+      "phase": 0.5
     }
   ]
 }

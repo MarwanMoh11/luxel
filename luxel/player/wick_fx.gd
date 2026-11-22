@@ -161,6 +161,10 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 		var lcol: Color = _dust_color_for(surf_l)
 		for side: float in [-1.0, 1.0]:
 			_spawn_mote(wick.global_position + Vector2(side * 3.0, 0.0), Vector2(side * 16.0, -7.0), 0.24, lcol, 2.0, true, 0.16, false, 0.80)
+		if surf_l == "water" and Lx.world != null and is_instance_valid(Lx.world):
+			var wfx_l: Variant = Lx.world.get("_water_fx")
+			if wfx_l is Object and is_instance_valid(wfx_l) and (wfx_l as Object).has_method("spawn_ripple"):
+				(wfx_l as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 1.0), "ice")
 		wick.emit_sfx("footstep_" + surf_l, wick.global_position, false)
 	_was_airborne = airborne
 

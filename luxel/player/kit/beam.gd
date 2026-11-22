@@ -118,6 +118,10 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	var half_w: float = width_px * 0.5
 	var dmg: float = float(data.get("damage", 2.5))
 	var wear: float = float(data.get("shield_wear", 3.0))
+	var empowered: bool = wick.move_dash != null and wick.move_dash.consume_counter()
+	if empowered:
+		dmg *= 1.25
+		wear += 1.0
 	var pierce: bool = bool(data.get("pierce", true))
 	var stagger: bool = bool(data.get("stagger", true))
 	var hs: float = float(data.get("hitstop", 0.095))
@@ -189,16 +193,18 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 		Lx.camera.call("add_kick", -aim, 2.6)
 	if not any_enemy_hit:
 		wick.trigger_shake(sh * 0.6)
-	wick.spawn_ring(start_p, 2.0, 12.0, 0.20, LxWick.PAL_CREAM, 1.5)
-	wick.spawn_ring(end_p, 2.0, 10.0, 0.20, LxWick.PAL_GOLD, 1.5)
-	wick.spawn_sparks(start_p, aim, 6, LxWick.PAL_CREAM, 35.0, 95.0, 0.18)
-	wick.spawn_sparks(end_p, -aim, 8, LxWick.PAL_GOLD, 30.0, 95.0, 0.22)
+	wick.spawn_ring(start_p, 2.0, 16.0 if empowered else 12.0, 0.22, LxWick.PAL_CREAM, 1.8 if empowered else 1.5)
+	wick.spawn_ring(end_p, 2.0, 14.0 if empowered else 10.0, 0.22, LxWick.PAL_GOLD, 1.8 if empowered else 1.5)
+	wick.spawn_sparks(start_p, aim, 9 if empowered else 6, LxWick.PAL_CREAM, 35.0, 105.0, 0.20)
+	wick.spawn_sparks(end_p, -aim, 10 if empowered else 8, LxWick.PAL_GOLD, 30.0, 105.0, 0.22)
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", start_p, 56.0, 72.0)
 			(amb as Object).call("_gust_particles", end_p, 52.0, 84.0)
 	wick.emit_sfx("beam_fire", start_p, false)
+	if empowered:
+		wick.emit_sfx("perfect_counter", start_p, false)
 	return true
 
 

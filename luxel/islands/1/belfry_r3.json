@@ -208,6 +208,26 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.55
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        160,
+        148
+      ],
+      "layer": "sort",
+      "phase": 0.4
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "hanging_chimes",
+      "pos": [
+        96,
+        32
+      ],
+      "layer": "sort",
+      "phase": 0.9
     }
   ]
 }

@@ -12,6 +12,7 @@ var zip_dir: Vector2 = Vector2.RIGHT
 var zip_speed: float = 520.0
 var zip_time_left: float = 0.0
 var zip_hit_ids: Array[int] = []
+var _zip_empowered: bool = false
 var _afterimage_cd: float = 0.0
 var _throw_buf_t: float = 0.0
 var _zip_buf_t: float = 0.0
@@ -109,6 +110,7 @@ func try_zip() -> bool:
 	zip_dir = to / dist
 	zip_time_left = dist / maxf(zip_speed, 1.0)
 	zipping = true
+	_zip_empowered = wick.move_dash != null and wick.move_dash.consume_counter()
 	zip_hit_ids.clear()
 	_afterimage_cd = 0.0
 
@@ -118,9 +120,11 @@ func try_zip() -> bool:
 	lan.hang_timer = maxf(lan.hang_timer, zip_time_left + 0.5)
 
 	wick.zips_count += 1
-	wick.spawn_afterimage(LxWick.PAL_GOLD)
-	wick.spawn_ring(wick.global_position, 3.0, 14.0, 0.20, LxWick.PAL_GOLD, 1.0)
+	wick.spawn_afterimage(LxWick.PAL_CREAM if _zip_empowered else LxWick.PAL_GOLD)
+	wick.spawn_ring(wick.global_position, 3.0, 18.0 if _zip_empowered else 14.0, 0.20, LxWick.PAL_CREAM if _zip_empowered else LxWick.PAL_GOLD, 1.4 if _zip_empowered else 1.0)
 	wick.emit_sfx("zip_streak", wick.global_position, false)
+	if _zip_empowered:
+		wick.emit_sfx("perfect_counter", wick.global_position, false)
 	return true
 
 
@@ -202,16 +206,22 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 	if wick == null or wick.lantern == null:
 		return
 	var data: Dictionary = get_data()
-	var burst_r: float = float(data.get("zip_burst_radius", 24.0))
-	var zdmg: float = float(data.get("zip_damage", 1.75))
-	var wear: float = float(data.get("shield_wear", 2.0))
+	var burst_r: float = float(data.get("zip_burst_radius", 24.0)) * (1.15 if _zip_empowered else 1.0)
+	var zdmg: float = float(data.get("zip_damage", 1.75)) * (1.25 if _zip_empowered else 1.0)
+	var wear: float = float(data.get("shield_wear", 2.0)) + (0.5 if _zip_empowered else 0.0)
 	var stag: bool = bool(data.get("stagger", true))
 	var hs: float = float(data.get("hitstop", 0.085))
 	var sh: float = float(data.get("shake", 0.14))
 	var center: Vector2 = wick.lantern.pos
+	var was_emp: bool = _zip_empowered
+	_zip_empowered = false
 
-	wick.spawn_ring(center, 3.0, burst_r, 0.22, LxWick.PAL_GOLD, 1.5)
-	wick.spawn_sparks(center, zip_dir, 8, LxWick.PAL_CREAM, 30.0, 90.0, 0.20)
+	wick.spawn_ring(center, 3.0, burst_r, 0.22, LxWick.PAL_CREAM if was_emp else LxWick.PAL_GOLD, 1.8 if was_emp else 1.5)
+	wick.spawn_sparks(center, zip_dir, 11 if was_emp else 8, LxWick.PAL_CREAM, 30.0, 95.0, 0.20)
+	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+		Lx.camera.call("add_kick", zip_dir, 2.2 if was_emp else 1.6)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(center, 78.0 if was_emp else 64.0, 1.48 if was_emp else 1.28, 0.30)
 	if world_ctx != null and is_instance_valid(world_ctx):
 		var amb: Variant = world_ctx.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
@@ -245,6 +255,7 @@ func get_zip_velocity() -> Vector2:
 
 func cancel_zip() -> void:
 	zipping = false
+	_zip_empowered = false
 	zip_time_left = 0.0
 	zip_hit_ids.clear()
 

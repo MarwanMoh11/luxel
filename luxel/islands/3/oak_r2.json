@@ -191,6 +191,26 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.7
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        160,
+        92
+      ],
+      "layer": "ground",
+      "shadow": false
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        284,
+        140
+      ],
+      "layer": "sort",
+      "phase": 0.8
     }
   ]
 }

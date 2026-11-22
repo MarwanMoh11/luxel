@@ -252,6 +252,26 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.25
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        160,
+        92
+      ],
+      "layer": "ground",
+      "shadow": false
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        264,
+        42
+      ],
+      "layer": "sort",
+      "phase": 0.6
     }
   ]
 }

@@ -70,6 +70,9 @@ func on_shockwave_cleared() -> void:
 	wick.spawn_ring(wick.global_position, 2.0, 10.0, 0.16, LxWick.PAL_CREAM, 1.0)
 	wick.spawn_sparks(wick.global_position, Vector2.UP, 6, LxWick.PAL_ICE, 24.0, 66.0, 0.22)
 	_gust(60.0, 68.0)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(wick.global_position, 64.0, 1.32, 0.24)
+		LxDarknessLayer.active_instance.trigger_focus_flash(0.50)
 	wick.emit_sfx("prism_bounce", wick.global_position, false)
 	if wick.move_sunflare != null and wick.move_sunflare.unlocked:
 		var emax: float = wick.move_sunflare.get_ember_max()
