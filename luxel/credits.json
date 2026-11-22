@@ -256,6 +256,44 @@
         "luxel/audio/sfx/tide_surge.ogg",
         "luxel/audio/sfx/lamp_lit.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_ambience_clean",
+      "description": "Zero-white-noise organic acoustic biome soundscapes across all 8 islands (16 seamless 12.0 s loops, sparse storybook micro-events, 0% broadband static)",
+      "generator": "gen_ambience_clean.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/ambience/night_breeze.ogg",
+        "luxel/audio/ambience/river_murmur.ogg",
+        "luxel/audio/ambience/harbor_tide.ogg",
+        "luxel/audio/ambience/harbor_rigging.ogg",
+        "luxel/audio/ambience/forest_wind.ogg",
+        "luxel/audio/ambience/thornwood_night.ogg",
+        "luxel/audio/ambience/marsh_rain.ogg",
+        "luxel/audio/ambience/marsh_reeds.ogg",
+        "luxel/audio/ambience/observatory_chime.ogg",
+        "luxel/audio/ambience/orrery_clockwork.ogg",
+        "luxel/audio/ambience/kiln_rumble.ogg",
+        "luxel/audio/ambience/kiln_embers.ogg",
+        "luxel/audio/ambience/shoals_echo.ogg",
+        "luxel/audio/ambience/shoals_chimes.ogg",
+        "luxel/audio/ambience/long_night_drone.ogg",
+        "luxel/audio/ambience/sanctum_bells.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_sfx_warm_overhaul",
+      "description": "Warm zero-hiss storybook SFX overhaul (31 upgraded core/move/combat SFX with Karplus-Strong harp & velvet sub-1kHz air + 6 multi-variant player foley takes)",
+      "generator": "gen_sfx_warm_overhaul.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/bolt_fire_2.ogg",
+        "luxel/audio/sfx/bolt_fire_3.ogg",
+        "luxel/audio/sfx/bolt_chip_2.ogg",
+        "luxel/audio/sfx/footstep_stone_2.ogg",
+        "luxel/audio/sfx/footstep_stone_3.ogg",
+        "luxel/audio/sfx/shield_clang_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []

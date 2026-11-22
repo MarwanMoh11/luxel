@@ -133,7 +133,7 @@ static func default_settings() -> Dictionary:
 		"master_vol": 1.0,
 		"music_vol": 0.85,
 		"sfx_vol": 0.9,
-		"ambience_vol": 0.8,
+		"ambience_vol": 0.65,
 		"mute_unfocus": true,
 		"fullscreen": false,
 		"window_scale": 3,

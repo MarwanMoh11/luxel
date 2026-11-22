@@ -10,14 +10,33 @@ const BUS_UI: String = "LxUi"
 
 const OPEN_LP_HZ: float = 20000.0
 const PAUSE_LP_HZ: float = 520.0
+const AMB_LP_HZ: float = 2800.0
 const SILENT_DB: float = -80.0
 const BASE_MUSIC_DB: float = -4.0
-const BASE_AMBIENCE_DB: float = -14.0
+const BASE_AMBIENCE_DB: float = -22.0
+const AMB_LAYER2_OFFSET_DB: float = -3.0
+const AMB_COMBAT_DUCK_DB: float = -5.0
+const AMB_PAUSE_DUCK_DB: float = -7.0
 const PAUSE_DUCK_DB: float = -6.0
 const CROSSFADE_S: float = 1.6
 const AMB_FADE_S: float = 1.0
 const COMBAT_DWELL_S: float = 1.2
 const COMBAT_TAIL_S: float = 6.0
+
+const SFX_VARIANTS: Dictionary = {
+	"bolt_fire": ["bolt_fire", "bolt_fire_2", "bolt_fire_3"],
+	"footstep_stone": ["footstep_stone", "footstep_stone_2", "footstep_stone_3"],
+	"bolt_chip": ["bolt_chip", "bolt_chip_2"],
+	"shield_clang": ["shield_clang", "shield_clang_2"],
+}
+
+const SFX_BASE_TRIM_DB: Dictionary = {
+	"bolt_fire": -2.5,
+	"bolt_chip": -1.5,
+	"footstep_stone": -5.5,
+	"dash_whoosh": -2.0,
+	"ui_move": -2.5,
+}
 
 const ISLAND_AMBIENCE: Dictionary = {
 	1: ["night_breeze", "river_murmur"],
@@ -57,6 +76,7 @@ var _sfx_2d_cursor: int = 0
 var _stream_cache: Dictionary = {}
 var _sfx_missing: Dictionary = {}
 var _sfx_last_t: Dictionary = {}
+var _sfx_variant_idx: Dictionary = {}
 var _sfx_clock: float = 0.0
 var _saved_positions: Dictionary = {}
 
@@ -108,6 +128,16 @@ func _setup_buses() -> void:
 		var lim := AudioEffectLimiter.new()
 		lim.ceiling_db = -0.5
 		AudioServer.add_bus_effect(_sfx_bus_idx, lim)
+
+	var has_amb_lp: bool = false
+	for i: int in range(AudioServer.get_bus_effect_count(_amb_bus_idx)):
+		if AudioServer.get_bus_effect(_amb_bus_idx, i) is AudioEffectLowPassFilter:
+			has_amb_lp = true
+			break
+	if not has_amb_lp:
+		var amb_lp := AudioEffectLowPassFilter.new()
+		amb_lp.cutoff_hz = AMB_LP_HZ
+		AudioServer.add_bus_effect(_amb_bus_idx, amb_lp)
 
 
 func _ensure_bus(bus_name: String) -> int:
@@ -370,11 +400,15 @@ func _update_layer_volumes() -> void:
 		_explore_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(exp_gain, 0.0001)) if exp_gain > 0.001 else SILENT_DB
 	if _combat_player != null and _combat_player.stream != null:
 		_combat_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(cmb_gain, 0.0001)) if cmb_gain > 0.001 else SILENT_DB
+	var amb_duck: float = (AMB_PAUSE_DUCK_DB if is_paused else 0.0)
+	var is_boss_cue: bool = current_track_group.contains("_boss_")
+	amb_duck += AMB_COMBAT_DUCK_DB * (1.0 if is_boss_cue else combat_blend)
 	for i: int in range(_amb_players.size()):
 		var ap: AudioStreamPlayer = _amb_players[i]
 		var g: float = _amb_gains[i]
 		if g > 0.001:
-			ap.volume_db = BASE_AMBIENCE_DB + linear_to_db(g)
+			var layer_off: float = AMB_LAYER2_OFFSET_DB if i > 0 else 0.0
+			ap.volume_db = BASE_AMBIENCE_DB + layer_off + amb_duck + linear_to_db(g)
 		else:
 			ap.volume_db = SILENT_DB
 			if _amb_target_gains[i] <= 0.001 and ap.playing:
@@ -394,16 +428,18 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		return
 	if not ui_bus and _sfx_last_t.has(sfx_id) and (_sfx_clock - float(_sfx_last_t[sfx_id])) < SFX_MIN_INTERVAL_S:
 		return
-	var st: AudioStream = _load_sfx_stream(sfx_id)
+	var base_id: String = sfx_id
+	var st: AudioStream = _pick_variant_stream(sfx_id)
 	var pitch_mul: float = 1.0
-	var gain_db: float = 0.0
+	var gain_db: float = float(SFX_BASE_TRIM_DB.get(sfx_id, 0.0))
 	if st == null:
 		var mapped: Dictionary = SfxMap.resolve(sfx_id)
 		var mapped_id: String = str(mapped.get("id", ""))
 		if not mapped_id.is_empty():
-			st = _load_sfx_stream(mapped_id)
+			base_id = mapped_id
+			st = _pick_variant_stream(mapped_id)
 			pitch_mul = float(mapped.get("pitch", 1.0))
-			gain_db = float(mapped.get("db", 0.0))
+			gain_db = float(mapped.get("db", 0.0)) + float(SFX_BASE_TRIM_DB.get(mapped_id, 0.0))
 	if st == null:
 		return
 	_sfx_last_t[sfx_id] = _sfx_clock
@@ -415,7 +451,7 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		p2.global_position = world_pos
 		p2.stream = st
 		p2.volume_db = gain_db
-		p2.pitch_scale = pitch_mul * randf_range(0.96, 1.04)
+		p2.pitch_scale = pitch_mul * randf_range(0.95, 1.05)
 		p2.play()
 	elif not _sfx_pool.is_empty():
 		var p: AudioStreamPlayer = _sfx_pool[_sfx_cursor]
@@ -425,8 +461,23 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		p.bus = BUS_UI if ui_bus else BUS_SFX
 		p.stream = st
 		p.volume_db = gain_db
-		p.pitch_scale = pitch_mul if ui_bus else pitch_mul * randf_range(0.97, 1.03)
+		var jit: float = 1.0 if ui_bus else randf_range(0.96, 1.04)
+		if base_id == "bolt_fire":
+			jit = randf_range(0.95, 1.06)
+		p.pitch_scale = pitch_mul * jit
 		p.play()
+
+
+func _pick_variant_stream(sfx_id: String) -> AudioStream:
+	if SFX_VARIANTS.has(sfx_id):
+		var arr: Array = SFX_VARIANTS[sfx_id] as Array
+		if not arr.is_empty():
+			var idx: int = int(_sfx_variant_idx.get(sfx_id, 0)) % arr.size()
+			_sfx_variant_idx[sfx_id] = (idx + 1) % arr.size()
+			var cand: AudioStream = _load_sfx_stream(str(arr[idx]))
+			if cand != null:
+				return cand
+	return _load_sfx_stream(sfx_id)
 
 
 func get_music_position() -> float:
