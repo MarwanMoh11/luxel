@@ -20,6 +20,7 @@ var _last_clock_t: float = -1.0
 var _dust_cd: float = 0.0
 var _mote_cd: float = 0.0
 var _streak_cd: float = 0.0
+var _ripple_cd: float = 0.0
 var _step_parity: int = 0
 var _was_airborne: bool = false
 
@@ -33,6 +34,7 @@ func clear() -> void:
 	_dust_cd = 0.0
 	_mote_cd = 0.0
 	_streak_cd = 0.0
+	_ripple_cd = 0.0
 	_step_parity = 0
 	_was_airborne = false
 
@@ -200,8 +202,17 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			_spawn_streak(c - mdir * slen, c, 0.20 if (gliding and not zipping) else 0.14, sc, 1.0)
 			var tvel: Vector2 = -mdir * randf_range(7.0, 16.0 if (gliding and not zipping) else 26.0) + perp * randf_range(-10.0, 10.0) + Vector2(0.0, randf_range(2.0, 7.0) if (gliding and not zipping) else -4.5)
 			_spawn_mote(c, tvel, 0.30 if (gliding and not zipping) else 0.21, tc, 2.0 if (gliding and not zipping) else 1.0, gliding and not zipping, 0.32 if (gliding and not zipping) else 0.19, true, 0.88)
+		_ripple_cd -= step_dt
+		if _ripple_cd <= 0.0 and Lx.world != null and is_instance_valid(Lx.world) and Lx.world.has_method("tile_at"):
+			var under_tile: String = str(Lx.world.call("tile_at", wick.global_position))
+			if under_tile == "water" or under_tile == "tide":
+				_ripple_cd = 0.14
+				var rcol: Color = LxWick.PAL_ICE if randf() < 0.42 else LxWick.PAL_SKY
+				spawn_ring(wick.global_position + Vector2(0.0, 2.0), 2.0, 10.0, 0.34, rcol, 1.0)
+				_spawn_mote(wick.global_position + Vector2(randf_range(-3.0, 3.0), 1.0), Vector2(randf_range(-14.0, 14.0), randf_range(-12.0, -5.0)), 0.24, LxWick.PAL_ICE, 1.0, false, 0.22, false, 0.85)
 	else:
 		_streak_cd = 0.0
+		_ripple_cd = 0.0
 
 func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 	var off: Vector2 = -wick.global_position

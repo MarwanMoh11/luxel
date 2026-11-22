@@ -37,6 +37,18 @@ const GLOW_PROPS: Dictionary = {
 	"eclipse_floor_seal": Vector2(40.0, 0.55),
 }
 
+const SWAY_PROPS: Dictionary = {
+	"river_reeds": true, "flower_bed_cool": true, "flower_bed_warm": true,
+	"hanging_chimes": true, "weeping_willow": true, "belfry_bell_hanging": true,
+	"buoy_bobbing": true, "harbor_wind_vane": true,
+	"fern_cluster": true, "tiny_shrooms": true, "hanging_spore_lantern": true,
+	"spider_silk_banner": true, "canopy_vine_post": true,
+	"cattail_reeds": true, "blooming_lotus": true, "floating_lantern_lily": true, "marsh_willow": true,
+	"hanging_pendulum": true,
+	"silver_willow_pale": true, "floating_prism_totem": true,
+	"tattered_sanctum_banner": true,
+}
+
 var sheet_name: String = ""
 var prop_key: String = ""
 var layer_name: String = "sort"
@@ -56,11 +68,17 @@ var _loop: bool = true
 var _last_frame: int = -1
 var _can_occlude: bool = false
 var _occlude_a: float = 1.0
+var _can_sway: bool = false
+var _sway_t: float = 0.0
+var _sway_cd: float = 0.0
+var _sway_dir: float = 1.0
+var _sway_amp: float = 1.2
+var _sway_px: float = 0.0
 
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	set_process(_can_occlude)
+	set_process(_can_occlude or _can_sway)
 
 
 func setup(spec: Dictionary) -> void:
@@ -112,21 +130,47 @@ func setup(spec: Dictionary) -> void:
 			if layer_name == "sort" and cast_shadow:
 				_shadow_poly = _build_shadow_ellipse(_frame_size)
 			_can_occlude = layer_name == "sort" and _frame_size.y >= 26.0 and _frame_size.x >= 16.0
+			_can_sway = SWAY_PROPS.has(prop_key)
+			_sway_t = 0.0
+			_sway_cd = 0.0
+			_sway_px = 0.0
 			_occlude_a = 1.0
 			modulate.a = 1.0
-			set_process(_can_occlude)
+			set_process(_can_occlude or _can_sway)
 	queue_redraw()
 
 
 func _process(dt: float) -> void:
-	if not _can_occlude or Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
-		return
-	var pp: Vector2 = (Lx.player as Node2D).global_position
-	var behind: bool = pp.y < position.y - 2.0 and pp.y > position.y - _frame_size.y - 2.0 and absf(pp.x - position.x) < _frame_size.x * 0.46
-	var target_a: float = 0.48 if behind else 1.0
-	if not is_equal_approx(_occlude_a, target_a):
-		_occlude_a = move_toward(_occlude_a, target_a, dt * 4.5)
-		modulate.a = _occlude_a
+	var has_p: bool = Lx.player != null and is_instance_valid(Lx.player) and (Lx.player is Node2D)
+	if _can_occlude and has_p:
+		var pp: Vector2 = (Lx.player as Node2D).global_position
+		var behind: bool = pp.y < position.y - 2.0 and pp.y > position.y - _frame_size.y - 2.0 and absf(pp.x - position.x) < _frame_size.x * 0.46
+		var target_a: float = 0.48 if behind else 1.0
+		if not is_equal_approx(_occlude_a, target_a):
+			_occlude_a = move_toward(_occlude_a, target_a, dt * 4.5)
+			modulate.a = _occlude_a
+	if _can_sway:
+		if _sway_cd > 0.0:
+			_sway_cd = maxf(0.0, _sway_cd - dt)
+		if has_p and _sway_cd <= 0.0:
+			var pp2: Vector2 = (Lx.player as Node2D).global_position
+			var d2: float = pp2.distance_squared_to(position)
+			if d2 < 324.0:
+				var vel_v: Variant = Lx.player.get("velocity")
+				var vel: Vector2 = vel_v as Vector2 if vel_v is Vector2 else Vector2.ZERO
+				if vel.length_squared() > 400.0:
+					_sway_t = 0.36
+					_sway_cd = 0.24
+					_sway_dir = -1.0 if (pp2.x > position.x) else 1.0
+					if absf(vel.x) > 25.0:
+						_sway_dir = signf(vel.x)
+					_sway_amp = 2.0 if vel.length_squared() > 14400.0 else 1.2
+		if _sway_t > 0.0:
+			_sway_t = maxf(0.0, _sway_t - dt)
+			var next_px: float = roundf(sin(_sway_t * 24.0) * _sway_amp * (_sway_t / 0.36) * _sway_dir) if _sway_t > 0.0 else 0.0
+			if not is_equal_approx(next_px, _sway_px):
+				_sway_px = next_px
+				queue_redraw()
 
 
 func is_animated() -> bool:
@@ -148,11 +192,13 @@ func _draw() -> void:
 		return
 	if _shadow_poly.size() >= 3:
 		draw_colored_polygon(_shadow_poly, Color(PAL["void"] as Color, 0.32))
+	var draw_off := Vector2(_sway_px, 0.0)
 	if flip_x:
-		draw_set_transform(Vector2.ZERO, 0.0, Vector2(-1.0, 1.0))
-	_sheet.draw_prop(self, Vector2.ZERO, prop_key, _clock)
-	if flip_x:
+		draw_set_transform(draw_off, 0.0, Vector2(-1.0, 1.0))
+		_sheet.draw_prop(self, Vector2.ZERO, prop_key, _clock)
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	else:
+		_sheet.draw_prop(self, draw_off, prop_key, _clock)
 
 
 static func _build_shadow_ellipse(frame_sz: Vector2) -> PackedVector2Array:

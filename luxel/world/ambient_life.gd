@@ -28,6 +28,7 @@ const SPARK_RAMPS: Array = [
 class Particle:
 	var pos: Vector2 = Vector2.ZERO
 	var vel: Vector2 = Vector2.ZERO
+	var push: Vector2 = Vector2.ZERO
 	var phase: float = 0.0
 	var freq: float = 1.0
 	var sway: float = 0.0
@@ -164,6 +165,19 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	_clock += dt
 	var min_x: float = cam_center.x - HALF_W
 	var min_y: float = cam_center.y - HALF_H
+	var wick_pos: Vector2 = _player_pos()
+	var wick_vel: Vector2 = Vector2.ZERO
+	var wick_burst: bool = false
+	if Lx.player != null and is_instance_valid(Lx.player):
+		var vel_v: Variant = Lx.player.get("velocity")
+		if vel_v is Vector2:
+			wick_vel = vel_v as Vector2
+		wick_burst = (Lx.player.has_method("is_dashing") and bool(Lx.player.call("is_dashing"))) \
+			or (Lx.player.has_method("is_zipping") and bool(Lx.player.call("is_zipping"))) \
+			or (Lx.player.has_method("is_gliding") and bool(Lx.player.call("is_gliding")))
+	var wake_r: float = 44.0 if wick_burst else 24.0
+	var wake_r2: float = wake_r * wake_r
+	var wake_active: bool = wick_burst or wick_vel.length_squared() > 400.0
 	for p: Particle in _items:
 		if p.kind == Kind.SHOOT:
 			var cyc: float = fposmod(_clock + p.phase, p.freq)
@@ -172,8 +186,20 @@ func tick(dt: float, cam_center: Vector2) -> void:
 			elif cyc >= p.freq - maxf(dt, 0.02):
 				p.pos = Vector2(min_x + fposmod(p.phase * 53.0, VIEW_W * 0.65), min_y + 14.0 + fposmod(p.phase * 29.0, VIEW_H * 0.35))
 		else:
-			p.pos.x += (p.vel.x + sin(_clock * p.freq + p.phase) * p.sway) * dt
-			p.pos.y += (p.vel.y + cos(_clock * p.freq * 0.7 + p.phase) * p.sway * 0.35) * dt
+			if wake_active and p.kind != Kind.STREAK:
+				var diff: Vector2 = p.pos - wick_pos
+				var d2: float = diff.length_squared()
+				if d2 > 1.0 and d2 < wake_r2:
+					var d: float = sqrt(d2)
+					var falloff: float = 1.0 - (d / wake_r)
+					var away: Vector2 = diff / d
+					var force: float = (180.0 if wick_burst else 65.0) * falloff * dt
+					p.push += (away * force + wick_vel * (0.18 * falloff * dt))
+					if p.push.length_squared() > 8100.0:
+						p.push = p.push.normalized() * 90.0
+			p.push *= maxf(0.0, 1.0 - 4.2 * dt)
+			p.pos.x += (p.vel.x + p.push.x + sin(_clock * p.freq + p.phase) * p.sway) * dt
+			p.pos.y += (p.vel.y + p.push.y + cos(_clock * p.freq * 0.7 + p.phase) * p.sway * 0.35) * dt
 		p.pos.x = min_x + fposmod(p.pos.x - min_x, VIEW_W)
 		p.pos.y = min_y + fposmod(p.pos.y - min_y, VIEW_H)
 
@@ -454,7 +480,21 @@ func _on_enemy_killed(e: Object, _k: String, pos: Vector2, opened: bool) -> void
 	var drop_n: int = int(drop_v) if (drop_v is int or drop_v is float) else 2
 	if drop_n > 0:
 		_spawn_shard_orbs(p, mini(7, maxi(2, drop_n / 2 + (1 if opened else 0))))
+	_gust_particles(p, 56.0 if opened else 40.0, 58.0 if opened else 38.0)
 	_emit_juice(0.30 if opened else 0.16)
+
+func _gust_particles(origin: Vector2, radius: float, strength: float) -> void:
+	var r2: float = radius * radius
+	for p: Particle in _items:
+		if p.kind == Kind.SHOOT or p.kind == Kind.STREAK:
+			continue
+		var diff: Vector2 = p.pos - origin
+		var d2: float = diff.length_squared()
+		if d2 > 1.0 and d2 < r2:
+			var d: float = sqrt(d2)
+			p.push += (diff / d) * (strength * (1.0 - d / radius))
+			if p.push.length_squared() > 14400.0:
+				p.push = p.push.normalized() * 120.0
 
 func _on_boss_phase_changed(boss_id: String, _phase: int) -> void:
 	var p: Vector2 = _boss_pos(boss_id)
@@ -462,6 +502,7 @@ func _on_boss_phase_changed(boss_id: String, _phase: int) -> void:
 	_spawn_ring(p, 4.0, 38.0, 0.38, "cream", "gold", true)
 	_spawn_sparks(p, 10, Ramp.CORAL, 46.0, 108.0, 0.28, 0.52, 3.4, 14.0, 3)
 	_spawn_sparks(p, 8, Ramp.GOLD, 40.0, 92.0, 0.30, 0.55, 3.2, 22.0, 3)
+	_gust_particles(p, 96.0, 95.0)
 	_emit_juice(0.48, 0.055)
 
 func _grand_burst(pos: Vector2, slowmo: bool = false) -> void:
@@ -469,6 +510,7 @@ func _grand_burst(pos: Vector2, slowmo: bool = false) -> void:
 	_spawn_sparks(pos, 26, Ramp.GOLD, 24.0, 96.0, 0.44, 0.80, 2.2, 52.0, 3, Vector2.UP, 9.0)
 	_spawn_ring(pos, 6.0, 68.0, 0.56, "cream", "gold", false)
 	_spawn_ring(pos, 3.0, 44.0, 0.44, "gold", "apricot", true)
+	_gust_particles(pos, 120.0, 115.0)
 	_emit_juice(0.58, 0.11 if slowmo else 0.06)
 	if slowmo and Lx.hitstop != null and is_instance_valid(Lx.hitstop) and Lx.hitstop.has_method("trigger_slowmo"):
 		Lx.hitstop.call("trigger_slowmo", 0.34, 0.42)
@@ -497,6 +539,7 @@ func _on_lantern_caught(pos: Vector2) -> void:
 func _on_lantern_struck(pos: Vector2) -> void:
 	_spawn_ring(pos, 4.0, 24.0, 0.30, "cream", "gold", false)
 	_spawn_sparks(pos, 10, Ramp.GOLD, 38.0, 86.0, 0.24, 0.44, 4.0, 20.0, 3)
+	_gust_particles(pos, 64.0, 62.0)
 
 func _on_player_damaged(_a: float, from_pos: Vector2, knock_dir: Vector2, _s: String) -> void:
 	var p: Vector2 = _player_pos() + Vector2(0.0, -5.0)
