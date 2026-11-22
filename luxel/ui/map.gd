@@ -509,7 +509,17 @@ func _waystone_label(isl_id: int, ws_id: String) -> String:
 			return LxStrings.text(str(zones[z_idx])).substr(0, 18)
 	if not zones.is_empty() and (low.contains("entry") or low.contains("landing") or low.contains("hub") or low.contains("quay") or low.contains("gate")):
 		return LxStrings.text(str(zones[0])).substr(0, 18)
-	return LxStrings.sanitize(ws_id, 18)
+	var loc: Dictionary = LxMapFormat.find_waystone(isl_id, ws_id)
+	if not loc.is_empty() and str(loc.get("region", "overworld")) != "overworld":
+		var dkey: String = str(DUNGEON_NAME_KEYS.get(isl_id, ""))
+		if not dkey.is_empty() and LxStrings.has_id(dkey):
+			return LxStrings.text(dkey).substr(0, 18)
+	var clean_id: String = low
+	if clean_id.begins_with("ws_"):
+		clean_id = clean_id.substr(3)
+	if clean_id.length() >= 2 and clean_id[0] >= "1" and clean_id[0] <= "8" and clean_id[1] == "_":
+		clean_id = clean_id.substr(2)
+	return LxStrings.sanitize(clean_id, 18)
 
 
 func _is_island_explored(isl_id: int) -> bool:
@@ -533,16 +543,18 @@ func _count_beacons(isl_id: int) -> int:
 	var count: int = 0
 	var p1: String = "isl%d_" % isl_id
 	var p2: String = "%d:" % isl_id
-	var p3: String = "island%d_" % isl_id
+	var p3: String = "beacon_%d_" % isl_id
 	var p4: String = "beacon_isl%d_" % isl_id
-	var p5: String = "b%d_" % isl_id
 	for b: String in Lx.state.lit_beacons:
-		if b.begins_with(p1) or b.begins_with(p2) or b.begins_with(p3) or b.begins_with(p4) or b.begins_with(p5) or (isl_id == 1 and b.begins_with("beacon_") and not b.begins_with("beacon_isl")):
+		if b.begins_with(p1) or b.begins_with(p2) or b.begins_with(p3) or b.begins_with(p4) or (isl_id == 1 and b in ["beacon_orchard", "beacon_observatory", "beacon_bridge"]):
 			count += 1
 	return mini(count, 3)
 
 
 func _waystone_island(ws_id: String) -> int:
+	var found: Dictionary = LxMapFormat.find_waystone_any(ws_id)
+	if not found.is_empty():
+		return int(found.get("island", 1))
 	var low: String = ws_id.to_lower()
 	for n: int in range(1, 9):
 		if low.begins_with("isl%d_" % n) or low.begins_with("ws_isl%d" % n) or low.begins_with("island%d_" % n) or low.begins_with("island_%d_" % n) or low.begins_with("ws_%d_" % n) or low.begins_with("%d:" % n):

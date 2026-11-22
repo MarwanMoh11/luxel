@@ -257,7 +257,17 @@ static func find_waystone(island_id: int, waystone_id: String) -> Dictionary:
 							var wid: String = str((it_v as Dictionary).get("id", ""))
 							var wpos: Vector2 = to_vec2((it_v as Dictionary).get("pos", []), Vector2(-1.0, -1.0))
 							if not wid.is_empty() and wpos.x >= 0.0:
-								map_dict[wid] = {"region": reg_id, "pos": wpos + Vector2(0.0, 14.0)}
+								map_dict[wid] = {"island": island_id, "region": reg_id, "pos": wpos + Vector2(0.0, 14.0)}
 		_waystone_cache[island_id] = map_dict
 	var island_ws: Dictionary = _waystone_cache.get(island_id, {}) as Dictionary
 	return (island_ws.get(waystone_id, {}) as Dictionary).duplicate()
+
+
+static func find_waystone_any(waystone_id: String) -> Dictionary:
+	if waystone_id.is_empty():
+		return {}
+	for isl: int in range(1, 9):
+		var found: Dictionary = find_waystone(isl, waystone_id)
+		if not found.is_empty():
+			return found
+	return {}

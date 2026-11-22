@@ -364,7 +364,7 @@ func _draw_shards_and_keys(top_right: Vector2) -> void:
 	if not Lx.state.room_id.is_empty():
 		var isl_data: Dictionary = Lx.get_island_data(Lx.state.island_id)
 		var dung_id: String = str(isl_data.get("dungeon_id", ""))
-		var keys: int = Lx.state.get_key_count(dung_id, "wick_key") if not dung_id.is_empty() else 0
+		var keys: int = (Lx.state.get_key_count(dung_id, "wick_key") + Lx.state.get_key_count(dung_id, "keepers_flame")) if not dung_id.is_empty() else 0
 		if keys > 0:
 			var ktxt: String = LxStrings.fmt("HUD_KEYS_FMT", [keys])
 			LxPixelFont.draw_right(self, ktxt, top_right.x, y + 9.0, LxPalette.PAL["apricot"], 1)
@@ -582,14 +582,13 @@ func _world_to_screen(world_pos: Vector2) -> Vector2:
 
 
 func _count_island_beacons(island_id: int) -> int:
-	var prefix: String = "isl%d_" % island_id
-	var alt_prefix: String = "%d:" % island_id
-	var p3: String = "island%d_" % island_id
+	var p1: String = "isl%d_" % island_id
+	var p2: String = "%d:" % island_id
+	var p3: String = "beacon_%d_" % island_id
 	var p4: String = "beacon_isl%d_" % island_id
-	var p5: String = "b%d_" % island_id
 	var count: int = 0
 	for bid: String in Lx.state.lit_beacons:
-		if bid.begins_with(prefix) or bid.begins_with(alt_prefix) or bid.begins_with(p3) or bid.begins_with(p4) or bid.begins_with(p5) or (island_id == 1 and bid.begins_with("beacon_") and not bid.begins_with("beacon_isl")):
+		if bid.begins_with(p1) or bid.begins_with(p2) or bid.begins_with(p3) or bid.begins_with(p4) or (island_id == 1 and bid in ["beacon_orchard", "beacon_observatory", "beacon_bridge"]):
 			count += 1
 	return mini(count, 3)
 

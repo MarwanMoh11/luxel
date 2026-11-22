@@ -79,7 +79,7 @@
       "name": "MIREFEN GARDENS",
       "move_gained": ["wings"],
       "target_minutes": 75,
-      "dungeon_id": "drowned_conservatory",
+      "dungeon_id": "conservatory",
       "dungeon_name": "DROWNED CONSERVATORY",
       "mini_boss": "great_lily_hopper",
       "boss": "heron_abbess",
