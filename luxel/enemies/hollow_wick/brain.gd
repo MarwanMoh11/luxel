@@ -317,6 +317,12 @@ func _clamp_point(pt: Vector2) -> Vector2:
 func _body_color() -> Color:
 	return PAL["night"] as Color
 
+func _volley_count() -> int:
+	return 3
+
+func _volley_spread() -> float:
+	return 0.14
+
 func _draw_lunar_bolt(pt: Vector2, dir: Vector2) -> void:
 	var p: Vector2 = pt.round()
 	var perp: Vector2 = Vector2(-dir.y, dir.x)
@@ -351,14 +357,21 @@ func _draw_extra(off: Vector2) -> void:
 		var tc: Color = (PAL["gold"] as Color) if lured_now else (PAL["ice"] as Color)
 		draw_line(c, (c + commit_dir * (36.0 if active_move == MoveKind.FLARE_DASH else 50.0)).round(), tc, 1.4)
 		if active_move == MoveKind.BOLT_VOLLEY:
-			for vi: int in range(-1, 2):
-				var vdir: Vector2 = commit_dir.rotated(float(vi) * 0.14)
+			var vc: int = _volley_count()
+			var vs: float = _volley_spread()
+			var vm: float = float(vc - 1) * 0.5
+			for vi: int in range(vc):
+				var vdir: Vector2 = commit_dir.rotated((float(vi) - vm) * vs)
+				draw_line(c, (c + vdir * VOLLEY_RANGE).round(), PAL["blue"] as Color, 1.0)
 				_draw_lunar_bolt(c + vdir * 22.0, vdir)
 	elif state == State.COMMIT and active_move == MoveKind.BOLT_VOLLEY:
 		var prog: float = clampf(commit_elapsed / VOLLEY_COMMIT_TIME, 0.0, 1.0)
-		for vi: int in range(-1, 2):
-			var vdir: Vector2 = commit_dir.rotated(float(vi) * 0.14)
+		var vc2: int = _volley_count()
+		var vs2: float = _volley_spread()
+		var vm2: float = float(vc2 - 1) * 0.5
+		for vi: int in range(vc2):
+			var vdir: Vector2 = commit_dir.rotated((float(vi) - vm2) * vs2)
 			var b_end: Vector2 = (c + vdir * VOLLEY_RANGE).round()
-			draw_line(c, b_end, PAL["sky"] as Color, 2.0 if vi == 0 else 1.4)
+			draw_line(c, b_end, PAL["sky"] as Color, 2.0 if absf(float(vi) - vm2) < 0.1 else 1.4)
 			draw_line(c, (c + vdir * (VOLLEY_RANGE * 0.85)).round(), PAL["ice"] as Color, 1.0)
 			_draw_lunar_bolt(c + vdir * lerpf(16.0, VOLLEY_RANGE - 6.0, prog), vdir)

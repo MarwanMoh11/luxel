@@ -236,7 +236,7 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(off, NOVA_MAX_R, a0, a0 + 0.24, 3, PAL["sky"] as Color, 1.0)
 		var t_r: float = lerpf(NOVA_MAX_R, NOVA_START_R + 8.0, prog)
 		draw_arc(off, t_r, 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
-		var ray_len: float = NOVA_RAY_RANGE * 0.75
+		var ray_len: float = NOVA_RAY_RANGE
 		for i: int in range(ray_count):
 			var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
 			var nb: float = star_base_ang + float((i + 1) % ray_count) * (TAU / float(ray_count))

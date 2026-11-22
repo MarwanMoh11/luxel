@@ -102,6 +102,12 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 			b.draw_line(off.round(), e_tip, pal["coral"] as Color, 1.1)
 			b.draw_arc(off, lerpf(118.0, 42.0, prog), minf(sweep_start, sw_end), maxf(sweep_start, sw_end), 14, pal["gold"] as Color, 1.2)
 			_draw_star_flare(b, off, lerpf(4.5, 9.0, prog), pal["gold"] as Color, pal["cream"] as Color)
+		elif active_move == 0: # VOLLEY (honest 5-ray spread preview)
+			for vi: int in range(5):
+				var vdir: Vector2 = commit_dir.rotated((float(vi) - 2.0) * 0.14)
+				var is_edge: bool = (vi == 0 or vi == 4 or vi == 2)
+				b.draw_line(off.round(), (off + vdir * (152.0 if is_edge else 96.0)).round(), (pal["sky"] if is_edge else pal["deep"]) as Color, 1.4 if vi == 2 else 1.0)
+				b.draw_circle((off + vdir * 26.0).round(), 1.3, pal["ice"] as Color)
 		else:
 			b.draw_line(off.round(), (off + commit_dir * 64.0).round(), pal["ice"] as Color, 1.8)
 	elif b.state == LxEnemyBrain.State.COMMIT:
@@ -116,6 +122,9 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 				var np: Vector2 = off + Vector2.from_angle(na) * ring_r
 				_draw_diamond(b, np, 3.0, pal["ice"] as Color, pal["cream"] as Color)
 		elif active_move == 3 and ring_stage == 1:
+			for ti: int in range(12):
+				var a0: float = float(ti) * (TAU / 12.0)
+				b.draw_arc(off, 84.0, a0, a0 + 0.24, 3, pal["sky"] as Color, 1.2)
 			b.draw_arc(off, 42.0, 0.0, TAU, 24, pal["sky"] as Color, 1.8)
 			b.draw_arc(off, 39.0, 0.0, TAU, 20, pal["ice"] as Color, 1.0)
 		elif active_move == 4:

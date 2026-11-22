@@ -10,6 +10,8 @@ var size: Vector2 = Vector2(32.0, 32.0)
 var is_flooded: bool = false
 var is_warning: bool = false
 var _wave_stage: int = 0
+var _low_remain_frac: float = 1.0
+var _bar_px: int = -1
 
 
 func setup(spec: Dictionary) -> void:
@@ -33,6 +35,11 @@ func tick(dt: float) -> void:
 	if prev_f != is_flooded and Lx.player != null and is_instance_valid(Lx.player) and Lx.player is Node2D and (Lx.player as Node2D).global_position.distance_to(pos) <= 145.0:
 		_emit_sfx("tide_surge")
 	var changed: bool = prev_f != is_flooded or prev_w != is_warning
+	if not is_flooded:
+		var cur_px: int = int(floorf(maxf(0.0, roundf(size.x) - 8.0) * _low_remain_frac))
+		if cur_px != _bar_px:
+			_bar_px = cur_px
+			changed = true
 	if is_flooded or is_warning:
 		var ws: int = int(floorf(_clock * (5.0 if is_warning else 2.5))) % 4
 		if ws != _wave_stage:
@@ -46,6 +53,7 @@ func _update_phase() -> void:
 	var t: float = fposmod(_clock + phase_offset, period)
 	var low_end: float = period * low_ratio
 	is_flooded = t >= low_end
+	_low_remain_frac = 0.0 if is_flooded else clampf((low_end - t) / maxf(0.01, low_end), 0.0, 1.0)
 	is_warning = (not is_flooded and (low_end - t) <= warn_time) or (is_flooded and (period - t) <= warn_time)
 
 
@@ -116,7 +124,10 @@ func _draw() -> void:
 		gi += 1
 	var mid_y: float = floorf(y0 + h * 0.5)
 	draw_rect(Rect2(x0 + 3.0, mid_y - 1.0, w - 6.0, 2.0), PAL["night"])
-	draw_rect(Rect2(x0 + 4.0, mid_y - 1.0, w - 8.0, 1.0), PAL["ice"] if is_warning else PAL["sky"])
+	var bar_w: float = floorf(maxf(0.0, w - 8.0) * _low_remain_frac)
+	if bar_w > 0.0:
+		var bar_col: Color = (PAL["coral"] if (is_warning and _wave_stage % 2 == 0) else (PAL["ice"] if is_warning else PAL["sky"])) as Color
+		draw_rect(Rect2(x0 + 4.0, mid_y - 1.0, bar_w, 1.0), bar_col)
 	var bolts: Array[Vector2] = [
 		Vector2(x0 + 2.0, y0 + 2.0), Vector2(x0 + w - 4.0, y0 + 2.0),
 		Vector2(x0 + 2.0, y0 + h - 4.0), Vector2(x0 + w - 4.0, y0 + h - 4.0),

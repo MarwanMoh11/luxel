@@ -246,6 +246,14 @@ func _body_color() -> Color:
 	return PAL["night"] as Color
 
 
+func _volley_count() -> int:
+	return 5 if phase >= 2 else 3
+
+
+func _volley_spread() -> float:
+	return 0.12
+
+
 func _draw_extra(off: Vector2) -> void:
 	if _sprite_sheet == null:
 		# Rival moth antenna crown

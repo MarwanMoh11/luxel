@@ -126,9 +126,11 @@ func _draw_starlight_motes(c_main: Color, c_hi: Color) -> void:
 
 func _draw_claim_burst(c_main: Color, c_hi: Color) -> void:
 	var p: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
-	var col_w: float = roundf(maxf(1.0, (1.0 - p) * 10.0))
-	draw_rect(Rect2(-floorf(col_w * 0.5), -44.0, col_w, 46.0), Color(c_main, (1.0 - p) * 0.55))
-	draw_rect(Rect2(-1.0, -44.0, 2.0, 46.0), Color(c_hi, (1.0 - p) * 0.85))
+	var col_w: float = roundf(maxf(0.0, (1.0 - p) * 10.0))
+	if col_w >= 2.0:
+		draw_rect(Rect2(-floorf(col_w * 0.5), -44.0, col_w, 46.0), c_main)
+	if p < 0.72:
+		draw_rect(Rect2(-1.0, -44.0, 2.0, 46.0), c_hi)
 	draw_arc(Vector2(0.0, -6.0), roundf(6.0 + p * 26.0), 0.0, TAU, 20, c_hi if p < 0.35 else c_main, 1.0)
 	for i: int in range(8):
 		var a: float = float(i) * TAU / 8.0 + p * 1.4

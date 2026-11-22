@@ -186,6 +186,9 @@ func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	if state == State.TELL or twin_pause_active:
 		var rel: Vector2 = (leap_to - pos).round()
+		for oi: int in range(10):
+			var a0: float = float(oi) * (TAU / 10.0)
+			draw_arc(rel, BOSS_RING_MAX_R, a0, a0 + 0.28, 3, PAL["blue"] as Color, 1.0)
 		var br: float = 9.5 + 0.5 * sin(anim_t * 16.0)
 		draw_arc(rel, br, 0.0, TAU, 20, PAL["sky"] as Color, 1.6)
 		draw_arc(rel, maxf(3.0, br - 3.5), 0.0, TAU, 16, PAL["ice"] as Color, 1.0)

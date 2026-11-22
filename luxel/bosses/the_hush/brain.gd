@@ -330,7 +330,7 @@ func _tick_ring() -> bool:
 			state_timer = 0.34
 			ring_progress = 0.0
 			commit_hit = false
-			_emit_sfx("hush_commit")
+			_emit_sfx("hush_pulse")
 		return true
 	ring_progress = 1.0 - clampf(state_timer / 0.34, 0.0, 1.0)
 	var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)

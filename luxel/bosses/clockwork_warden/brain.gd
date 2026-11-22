@@ -154,7 +154,7 @@ func _draw_extra(off: Vector2) -> void:
 		var ray_n: int = 3 if phase >= 2 else 1
 		for ri: int in range(ray_n):
 			var off_a: float = 0.0 if ri == 0 else (-FAN_SPREAD_RAD if ri == 1 else FAN_SPREAD_RAD)
-			var r_end: Vector2 = (c + Vector2.from_angle(facing + off_a) * 72.0).round()
+			var r_end: Vector2 = (c + Vector2.from_angle(facing + off_a) * BOLT_RANGE).round()
 			draw_line(c, r_end, PAL["sky"] as Color, 2.0)
 			draw_line(c, r_end, PAL["gold"] as Color, 1.0)
 		draw_arc(c, lerpf(16.0, 4.0, prog), 0.0, TAU, 16, PAL["sky"] as Color, 1.2)
