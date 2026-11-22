@@ -4,12 +4,41 @@ extends Node2D
 
 const PAL: Dictionary = LxInteractable.PAL
 
+const GLOW_PROPS: Dictionary = {
+	"candelabra_tall": Vector2(44.0, 0.72),
+	"stone_lantern_garden": Vector2(40.0, 0.68),
+	"bridge_balustrade": Vector2(34.0, 0.55),
+	"coastal_lantern_post": Vector2(42.0, 0.68),
+	"fresnel_pedestal": Vector2(46.0, 0.75),
+	"buoy_bobbing": Vector2(34.0, 0.58),
+	"hanging_spore_lantern": Vector2(42.0, 0.68),
+	"spore_brazier_stump": Vector2(44.0, 0.72),
+	"giant_glowshroom_cluster": Vector2(36.0, 0.52),
+	"floating_lantern_lily": Vector2(40.0, 0.68),
+	"heron_lantern_post": Vector2(42.0, 0.68),
+	"starlight_lantern_post": Vector2(44.0, 0.70),
+	"observatory_brazier": Vector2(48.0, 0.76),
+	"armillary_sphere": Vector2(38.0, 0.55),
+	"slag_crucible": Vector2(54.0, 0.82),
+	"hearth_brazier_tall": Vector2(48.0, 0.76),
+	"ember_grate_vent": Vector2(42.0, 0.66),
+	"cooled_magma_vent": Vector2(36.0, 0.56),
+	"lunar_lantern_post": Vector2(42.0, 0.68),
+	"silver_brazier_stand": Vector2(46.0, 0.74),
+	"floating_prism_totem": Vector2(44.0, 0.70),
+	"moon_crystal_cluster": Vector2(36.0, 0.54),
+	"dark_candelabra": Vector2(46.0, 0.74),
+	"eclipse_brazier": Vector2(50.0, 0.78),
+	"void_lantern_post": Vector2(42.0, 0.68),
+}
+
 var sheet_name: String = ""
 var prop_key: String = ""
 var layer_name: String = "sort"
 var flip_x: bool = false
 var cast_shadow: bool = true
 var animated: bool = false
+var light_pool: Vector4 = Vector4.ZERO
 
 var _sheet: LxSpriteSheet = null
 var _clock: float = 0.0
@@ -37,6 +66,11 @@ func setup(spec: Dictionary) -> void:
 	position = LxMapFormat.to_vec2(spec.get("pos", Vector2.ZERO)).round()
 	if not prop_key.is_empty():
 		name = prop_key
+	if GLOW_PROPS.has(prop_key):
+		var g: Vector2 = GLOW_PROPS[prop_key] as Vector2
+		light_pool = Vector4(position.x, position.y - 10.0, g.x, g.y)
+	else:
+		light_pool = Vector4.ZERO
 
 	_sheet = null
 	_valid = false

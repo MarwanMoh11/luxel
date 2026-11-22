@@ -585,7 +585,7 @@ func _draw() -> void:
 			var ang: float = anim_t * 5.0 + float(i) * (TAU / 3.0)
 			draw_circle(off + Vector2(cos(ang) * (r + 2.0), -r - 4.0 + sin(ang) * 2.0), 1.5, PAL["gold"] as Color)
 
-	if hp < max_hp - 0.01:
+	if not is_boss and hp < max_hp - 0.01:
 		var w: float = maxf(12.0, r * 2.4)
 		var bp: Vector2 = off + Vector2(-w * 0.5, -r - 6.0)
 		draw_rect(Rect2(bp, Vector2(w, 2.0)), PAL["night"] as Color, true)

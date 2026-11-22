@@ -541,6 +541,9 @@ func get_light_pools() -> Array[Vector4]:
 			var p: Vector4 = it.get_light_pool()
 			if p.z > 1.0 and p.w > 0.001:
 				pools.append(p)
+	for sp: LxSceneryProp in _scenery_props:
+		if sp != null and sp.light_pool.z > 1.0:
+			pools.append(sp.light_pool)
 	return pools
 
 func is_flag_set(flag: String) -> bool:
