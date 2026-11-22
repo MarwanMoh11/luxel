@@ -117,5 +117,79 @@
       }
     }
   ],
-  "triggers": []
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island5_scenery",
+      "prop": "clockwork_gear_pillar",
+      "pos": [
+        32,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "clockwork_gear_pillar",
+      "pos": [
+        288,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "hanging_pendulum",
+      "pos": [
+        118,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        32,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "star_chart_lectern",
+      "pos": [
+        116,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "broken_astrolabe_ring",
+      "pos": [
+        286,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ]
 }

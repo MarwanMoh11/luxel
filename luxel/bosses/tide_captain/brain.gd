@@ -207,10 +207,11 @@ func _shield_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	super._draw_extra(off)
-	# Naval bicorne hat silhouette
-	var hat_y: float = -body_radius - 2.0
-	draw_line(off + Vector2(-7.0, hat_y), off + Vector2(7.0, hat_y), PAL["deep"] as Color, 3.0)
-	draw_line(off + Vector2(-4.5, hat_y - 2.5), off + Vector2(4.5, hat_y - 2.5), PAL["gold"] as Color, 1.5)
+	if _sprite_sheet == null:
+		# Naval bicorne hat silhouette
+		var hat_y: float = -body_radius - 2.0
+		draw_line(off + Vector2(-7.0, hat_y), off + Vector2(7.0, hat_y), PAL["deep"] as Color, 3.0)
+		draw_line(off + Vector2(-4.5, hat_y - 2.5), off + Vector2(4.5, hat_y - 2.5), PAL["gold"] as Color, 1.5)
 	if slam_attack and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		draw_arc(off, lerpf(SLAM_MAX_R, SLAM_START_R + 6.0, prog), 0.0, TAU, 24, PAL["sky"] as Color, 1.5)

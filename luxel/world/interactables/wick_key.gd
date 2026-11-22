@@ -5,6 +5,7 @@ extends LxInteractable
 var collected: bool = false
 var key_kind: String = "wick_key"
 var dungeon_id: String = ""
+var _anim_frame: int = 0
 
 
 func setup(spec: Dictionary) -> void:
@@ -18,6 +19,16 @@ func setup(spec: Dictionary) -> void:
 	collected = bool(props.get("collected", false))
 	active = not collected
 	queue_redraw()
+
+
+func tick(dt: float) -> void:
+	super.tick(dt)
+	if collected or not active:
+		return
+	var fr: int = int(floorf(_clock * 6.0 + absf(pos.x * 0.05))) % 24
+	if fr != _anim_frame:
+		_anim_frame = fr
+		queue_redraw()
 
 
 func interact(_actor: Node = null) -> bool:
@@ -61,10 +72,41 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	if collected or not active:
 		return
-	var col: Color = PAL["coral"] if key_kind == "keepers_flame" else PAL["gold"]
-	var core: Color = PAL["cream"]
-	draw_circle(Vector2(0.0, -3.0), 4.5, PAL["night"])
-	draw_circle(Vector2(0.0, -3.0), 3.5, col)
-	draw_circle(Vector2(0.0, -3.0), 1.5, core)
-	draw_rect(Rect2(-1.0, 0.0, 2.0, 6.0), col)
-	draw_rect(Rect2(1.0, 3.0, 2.0, 2.0), col)
+	var bob: float = roundf(sin(float(_anim_frame) * TAU / 24.0) * 1.5)
+	var is_boss: bool = key_kind == "keepers_flame"
+	var body_c: Color = (PAL["coral"] if is_boss else PAL["apricot"]) as Color
+	var hi_c: Color = (PAL["apricot"] if is_boss else PAL["gold"]) as Color
+	var core_c: Color = PAL["cream"] as Color
+	var sw: float = 6.0 if bob < 0.0 else 8.0
+	draw_rect(Rect2(-floorf(sw * 0.5), 6.0, sw, 2.0), PAL["void"])
+	draw_rect(Rect2(-floorf(sw * 0.5) + 1.0, 5.0, sw - 2.0, 1.0), PAL["night"])
+	var y: float = bob - 1.0
+	draw_rect(Rect2(-2.0, y - 8.0, 4.0, 2.0), PAL["void"])
+	draw_rect(Rect2(-4.0, y - 6.0, 8.0, 5.0), PAL["void"])
+	draw_rect(Rect2(-5.0, y - 5.0, 10.0, 3.0), PAL["void"])
+	draw_rect(Rect2(-3.0, y - 1.0, 6.0, 2.0), PAL["void"])
+	draw_rect(Rect2(-2.0, y + 1.0, 4.0, 6.0), PAL["void"])
+	draw_rect(Rect2(1.0, y + 2.0, 4.0, 5.0), PAL["void"])
+	draw_rect(Rect2(-1.0, y - 7.0, 2.0, 1.0), hi_c)
+	draw_rect(Rect2(-3.0, y - 5.0, 6.0, 4.0), body_c)
+	draw_rect(Rect2(-4.0, y - 4.0, 8.0, 2.0), body_c)
+	draw_rect(Rect2(-3.0, y - 5.0, 4.0, 1.0), hi_c)
+	draw_rect(Rect2(-4.0, y - 4.0, 1.0, 2.0), core_c)
+	draw_rect(Rect2(-2.0, y - 4.0, 4.0, 2.0), PAL["night"])
+	draw_rect(Rect2(-1.0, y - 4.0, 2.0, 2.0), PAL["gold"] if is_boss else hi_c)
+	draw_rect(Rect2(-1.0, y - 4.0, 1.0, 1.0), core_c)
+	draw_rect(Rect2(-2.0, y - 1.0, 4.0, 1.0), hi_c)
+	draw_rect(Rect2(-1.0, y, 2.0, 6.0), body_c)
+	draw_rect(Rect2(-1.0, y, 1.0, 5.0), hi_c)
+	draw_rect(Rect2(1.0, y + 2.0, 3.0, 1.0), hi_c)
+	draw_rect(Rect2(1.0, y + 3.0, 2.0, 1.0), body_c)
+	draw_rect(Rect2(1.0, y + 5.0, 3.0, 1.0), hi_c)
+	draw_rect(Rect2(2.0, y + 2.0, 1.0, 1.0), core_c)
+	if _anim_frame >= 18 and _anim_frame <= 21:
+		var sx: float = -4.0
+		var sy: float = y - 6.0
+		if _anim_frame == 19 or _anim_frame == 20:
+			draw_rect(Rect2(sx - 1.0, sy, 3.0, 1.0), core_c)
+			draw_rect(Rect2(sx, sy - 1.0, 1.0, 3.0), core_c)
+		else:
+			draw_rect(Rect2(sx, sy, 1.0, 1.0), PAL["gold"])

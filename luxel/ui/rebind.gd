@@ -196,7 +196,12 @@ func _sync_scroll() -> void:
 
 
 func _draw() -> void:
-	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", "mauve", "night")
+	var pulse_hi: bool = fmod(_blink_t, 0.5) < 0.25
+	draw_rect(Rect2(PANEL_RECT.position + Vector2(3.0, 3.0), PANEL_RECT.size), LxPalette.PAL["void"])
+	draw_rect(PANEL_RECT.grow(1.0), LxPalette.PAL["void"])
+	var panel_border: String = ("gold" if pulse_hi else "apricot") if _listening else "mauve"
+	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", panel_border, "night")
+	_draw_frame_ornaments()
 	LxPixelFont.draw_centered(self, LxStrings.text("REBIND_TITLE"), 160.0, 15.0, LxPalette.PAL["gold"], 1)
 
 	var dev_key: String = "REBIND_DEVICE_KBM" if device_kind == "kbm" else "REBIND_DEVICE_PAD"
@@ -212,32 +217,100 @@ func _draw() -> void:
 		var r: Rect2 = _row_rect(vis_i)
 		var sel: bool = row_i == _idx
 		if sel:
-			LxPixelFont.draw_panel(self, r, "plum", "gold", "night")
+			var row_bdr: String = ("cream" if pulse_hi else "gold") if _listening else "gold"
+			LxPixelFont.draw_panel(self, r, "plum", row_bdr, "night")
 		if row_i >= ACTION_ROWS.size():
 			LxPixelFont.draw_centered(self, LxStrings.text("REBIND_RESET"), r.get_center().x, r.position.y + 3.0, LxPalette.PAL["coral"] if sel else LxPalette.PAL["stone"], 1)
 		else:
 			var act_id: String = str(ACTION_ROWS[row_i][0])
 			var lbl_id: String = str(ACTION_ROWS[row_i][1])
-			LxPixelFont.draw_left(self, LxStrings.text(lbl_id), r.position + Vector2(6.0, 3.0), LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"], 1)
-			var glyph: String = _binding_glyph(act_id)
-			LxPixelFont.draw_right(self, glyph, r.end.x - 8.0, r.position.y + 3.0, LxPalette.PAL["cream"] if sel else LxPalette.PAL["apricot"], 1)
+			if sel:
+				draw_rect(Rect2(r.position.x + 3.0, r.position.y + 3.0, 2.0, 6.0), LxPalette.PAL["gold"])
+				draw_rect(Rect2(r.position.x + 3.0, r.position.y + 4.0, 1.0, 4.0), LxPalette.PAL["cream"])
+			var lx: float = 8.0 if sel else 6.0
+			LxPixelFont.draw_left(self, LxStrings.text(lbl_id), r.position + Vector2(lx, 3.0), LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"], 1)
+			_draw_keycap(r, _binding_glyph(act_id), sel)
 
 	# Scrollbar indicator.
 	if total > VISIBLE_ROWS:
 		var track := Rect2(292.0, 40.0, 3.0, float(VISIBLE_ROWS * 14) - 2.0)
-		draw_rect(track, LxPalette.PAL["night"])
+		draw_rect(track.grow(1.0), LxPalette.PAL["night"])
+		draw_rect(track, LxPalette.PAL["void"])
 		var thumb_h: float = maxf(10.0, track.size.y * float(VISIBLE_ROWS) / float(total))
 		var frac: float = float(_scroll) / float(maxi(1, total - VISIBLE_ROWS))
-		var thumb_y: float = track.position.y + (track.size.y - thumb_h) * frac
-		draw_rect(Rect2(track.position.x, roundf(thumb_y), track.size.x, roundf(thumb_h)), LxPalette.PAL["gold"])
+		var thumb_y: float = roundf(track.position.y + (track.size.y - thumb_h) * frac)
+		draw_rect(Rect2(track.position.x, thumb_y, track.size.x, roundf(thumb_h)), LxPalette.PAL["gold"])
+		draw_rect(Rect2(track.position.x, thumb_y, track.size.x, 1.0), LxPalette.PAL["cream"])
 
 	if _listening:
-		var box := Rect2(54.0, 72.0, 212.0, 26.0)
-		LxPixelFont.draw_panel(self, box, "night", "gold", "void")
-		var c: Color = LxPalette.PAL["gold"] if fmod(_blink_t, 0.5) < 0.25 else LxPalette.PAL["cream"]
-		LxPixelFont.draw_centered(self, LxStrings.text("REBIND_LISTEN"), 160.0, 82.0, c, 1)
+		_draw_listen_modal(pulse_hi)
 
 	LxPixelFont.draw_centered(self, LxStrings.text("REBIND_HINT"), 160.0, 159.0, LxPalette.PAL["stone"], 1)
+
+
+func _draw_frame_ornaments() -> void:
+	var p: Vector2 = PANEL_RECT.position
+	var e: Vector2 = PANEL_RECT.end
+	var gold: Color = LxPalette.PAL["gold"]
+	var apr: Color = LxPalette.PAL["apricot"]
+	var dusk: Color = LxPalette.PAL["dusk"]
+	var night: Color = LxPalette.PAL["night"]
+	for c: Array in [
+		[p.x + 1.0, p.y + 1.0, 1.0, 1.0], [e.x - 2.0, p.y + 1.0, -1.0, 1.0],
+		[p.x + 1.0, e.y - 2.0, 1.0, -1.0], [e.x - 2.0, e.y - 2.0, -1.0, -1.0],
+	]:
+		var cx: float = float(c[0])
+		var cy0: float = float(c[1])
+		var sx: float = float(c[2])
+		var sy: float = float(c[3])
+		draw_rect(Rect2(cx if sx > 0.0 else cx - 4.0, cy0, 5.0, 1.0), apr)
+		draw_rect(Rect2(cx, cy0 if sy > 0.0 else cy0 - 4.0, 1.0, 5.0), apr)
+		draw_rect(Rect2(cx if sx > 0.0 else cx - 1.0, cy0 if sy > 0.0 else cy0 - 1.0, 2.0, 2.0), gold)
+		var rv := Vector2(cx + sx * 2.0 - (0.0 if sx > 0.0 else 1.0), cy0 + sy * 2.0 - (0.0 if sy > 0.0 else 1.0))
+		draw_rect(Rect2(rv + Vector2(1.0, 1.0), Vector2(2.0, 2.0)), night)
+		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), apr)
+		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), gold)
+	# Lantern-chain divider under REBIND_TITLE.
+	var cy: float = 22.0
+	draw_rect(Rect2(p.x + 12.0, cy, PANEL_RECT.size.x - 24.0, 1.0), night)
+	var x: float = p.x + 16.0
+	while x < e.x - 16.0:
+		draw_rect(Rect2(x, cy, 2.0, 1.0), apr if int(x) % 8 == 0 else dusk)
+		x += 4.0
+	draw_rect(Rect2(p.x + 12.0, cy, 2.0, 1.0), gold)
+	draw_rect(Rect2(e.x - 14.0, cy, 2.0, 1.0), gold)
+	draw_rect(Rect2(158.0, cy, 5.0, 1.0), apr)
+	draw_rect(Rect2(159.0, cy, 3.0, 1.0), gold)
+	draw_rect(Rect2(160.0, cy, 1.0, 1.0), LxPalette.PAL["cream"])
+
+
+func _draw_keycap(r: Rect2, glyph: String, sel: bool) -> void:
+	var gw: float = float(LxPixelFont.width(glyph, 1))
+	var cap_w: float = maxf(16.0, gw + 8.0)
+	var cap := Rect2(roundf(r.end.x - 5.0 - cap_w), r.position.y + 1.0, cap_w, 10.0)
+	draw_rect(cap, LxPalette.PAL["void"])
+	var inner := Rect2(cap.position.x + 1.0, cap.position.y + 1.0, cap.size.x - 2.0, cap.size.y - 2.0)
+	draw_rect(inner, LxPalette.PAL["night"])
+	draw_rect(Rect2(inner.position.x, inner.position.y, inner.size.x, 1.0), LxPalette.PAL["gold"] if sel else LxPalette.PAL["mauve"])
+	draw_rect(Rect2(inner.position.x, inner.end.y - 1.0, inner.size.x, 1.0), LxPalette.PAL["void"])
+	LxPixelFont.draw_centered(self, glyph, cap.get_center().x, r.position.y + 3.0, LxPalette.PAL["cream"] if sel else LxPalette.PAL["apricot"], 1)
+
+
+func _draw_listen_modal(pulse_hi: bool) -> void:
+	var box := Rect2(54.0, 72.0, 212.0, 26.0)
+	var phase: int = int(floorf(_blink_t * 6.0)) % 4
+	var bdr: String = "cream" if phase == 0 else ("apricot" if phase == 2 else "gold")
+	draw_rect(Rect2(box.position + Vector2(3.0, 3.0), box.size), LxPalette.PAL["void"])
+	draw_rect(box.grow(2.0), LxPalette.PAL["void"])
+	draw_rect(box.grow(1.0), LxPalette.PAL["gold"] if pulse_hi else LxPalette.PAL["apricot"])
+	LxPixelFont.draw_panel(self, box, "night", bdr, "void")
+	var pip: Color = LxPalette.PAL["cream"] if pulse_hi else LxPalette.PAL["gold"]
+	for c: Vector2 in [
+		Vector2(box.position.x + 2.0, box.position.y + 2.0), Vector2(box.end.x - 4.0, box.position.y + 2.0),
+		Vector2(box.position.x + 2.0, box.end.y - 4.0), Vector2(box.end.x - 4.0, box.end.y - 4.0),
+	]:
+		draw_rect(Rect2(c, Vector2(2.0, 2.0)), pip)
+	LxPixelFont.draw_centered(self, LxStrings.text("REBIND_LISTEN"), 160.0, 82.0, LxPalette.PAL["gold"] if pulse_hi else LxPalette.PAL["cream"], 1)
 
 
 func _binding_glyph(action_id: String) -> String:

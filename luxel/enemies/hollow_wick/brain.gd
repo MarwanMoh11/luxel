@@ -318,11 +318,12 @@ func _body_color() -> Color:
 	return PAL["night"] as Color
 
 func _draw_extra(off: Vector2) -> void:
-	var lan_off: Vector2 = (dark_lantern_pos - pos) if dark_lantern_out else (off + Vector2.from_angle(facing) * 6.0)
-	if dark_lantern_out:
-		draw_line(off, lan_off, PAL["sky"] as Color, 1.0)
-	draw_circle(lan_off, 3.0, PAL["deep"] as Color)
-	draw_circle(lan_off, 1.5, PAL["ice"] as Color)
+	if dark_lantern_out or _sprite_sheet == null:
+		var lan_off: Vector2 = (dark_lantern_pos - pos) if dark_lantern_out else (off + Vector2.from_angle(facing) * 6.0)
+		if dark_lantern_out:
+			draw_line(off, lan_off, PAL["sky"] as Color, 1.0)
+		draw_circle(lan_off, 3.0, PAL["deep"] as Color)
+		draw_circle(lan_off, 1.5, PAL["ice"] as Color)
 	if state == State.TELL:
 		var tc: Color = (PAL["gold"] as Color) if lured_now else (PAL["ice"] as Color)
 		draw_line(off, off + commit_dir * (36.0 if active_move == MoveKind.FLARE_DASH else 50.0), tc, 1.5)

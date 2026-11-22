@@ -96,9 +96,57 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
-	var half: Vector2 = size * 0.5
-	draw_rect(Rect2(-half, size), PAL["night"])
-	draw_rect(Rect2(-half + Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), PAL["apricot"] if _flash_t > 0.0 else PAL["plum"])
-	var tangent: Vector2 = Vector2(-normal.y, normal.x) * (minf(size.x, size.y) * 0.44)
-	draw_line(-tangent, tangent, PAL["cream"] if _flash_t > 0.0 else PAL["ice"], 3.0)
-	draw_line(Vector2.ZERO, normal * 5.0, PAL["gold"], 1.0)
+	var w: float = roundf(size.x)
+	var h: float = roundf(size.y)
+	var x0: float = floorf(-w * 0.5)
+	var y0: float = floorf(-h * 0.5)
+	var lit: bool = _flash_t > 0.0
+	draw_rect(Rect2(x0 + 1.0, y0 + 2.0, w - 1.0, h - 1.0), PAL["void"])
+	if rotatable:
+		var cx: float = floorf(x0 + w * 0.5)
+		var cy: float = floorf(y0 + h * 0.5)
+		var teeth: Array[Vector2] = [
+			Vector2(cx - 1.0, y0 - 1.0), Vector2(cx - 1.0, y0 + h),
+			Vector2(x0 - 1.0, cy - 1.0), Vector2(x0 + w, cy - 1.0),
+			Vector2(x0, y0), Vector2(x0 + w - 2.0, y0),
+			Vector2(x0, y0 + h - 2.0), Vector2(x0 + w - 2.0, y0 + h - 2.0),
+		]
+		for tp: Vector2 in teeth:
+			draw_rect(Rect2(tp, Vector2(2.0, 2.0)), PAL["night"])
+			draw_rect(Rect2(tp, Vector2(1.0, 1.0)), PAL["gold"])
+	draw_rect(Rect2(x0 + 1.0, y0 + 1.0, w - 2.0, h - 2.0), PAL["night"])
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, h - 4.0), PAL["dusk"])
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["stone"])
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, 1.0, h - 4.0), PAL["mauve"])
+	draw_rect(Rect2(x0 + 3.0, y0 + 3.0, w - 6.0, h - 6.0), PAL["apricot"] if lit else PAL["night"])
+	draw_rect(Rect2(x0 + 4.0, y0 + 4.0, maxf(2.0, w - 8.0), maxf(2.0, h - 8.0)), PAL["dusk"])
+	var rivets: Array[Vector2] = [
+		Vector2(x0 + 2.0, y0 + 2.0), Vector2(x0 + w - 4.0, y0 + 2.0),
+		Vector2(x0 + 2.0, y0 + h - 4.0), Vector2(x0 + w - 4.0, y0 + h - 4.0),
+	]
+	for rv: Vector2 in rivets:
+		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), PAL["apricot"])
+		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), PAL["gold"])
+	var span: float = floorf(minf(w, h) * 0.44)
+	var tang: Vector2 = Vector2(-normal.y, normal.x) * span
+	var p1: Vector2 = (-tang).round()
+	var p2: Vector2 = tang.round()
+	var back: Vector2 = (-normal * 1.5).round()
+	var front: Vector2 = (normal * 1.0).round()
+	draw_line(p1 + back, p2 + back, PAL["void"], 4.0)
+	draw_line(p1 + back, p2 + back, PAL["apricot"], 2.0)
+	draw_line(p1, p2, PAL["apricot"] if lit else PAL["deep"], 4.0)
+	draw_line(p1, p2, PAL["gold"] if lit else PAL["blue"], 3.0)
+	draw_line(p1 + front, p2 + front, PAL["cream"] if lit else PAL["sky"], 2.0)
+	var gl_a: Vector2 = (-tang * 0.45 + front).round()
+	var gl_b: Vector2 = (tang * 0.35 + front).round()
+	draw_line(gl_a, gl_b, PAL["cream"] if lit else PAL["ice"], 1.0)
+	draw_rect(Rect2(gl_a, Vector2(1.0, 1.0)), PAL["cream"])
+	var fin_tip: Vector2 = (normal * 5.0).round()
+	draw_line(front, fin_tip, PAL["night"], 3.0)
+	draw_line(front, fin_tip, PAL["apricot"], 1.0)
+	draw_rect(Rect2(fin_tip, Vector2(1.0, 1.0)), PAL["cream"] if lit else PAL["gold"])
+	if lit:
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"])
+		draw_rect(Rect2(0.0, -2.0, 1.0, 5.0), PAL["gold"])
+		draw_rect(Rect2(-2.0, 0.0, 5.0, 1.0), PAL["gold"])

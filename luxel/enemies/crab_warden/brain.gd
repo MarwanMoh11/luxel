@@ -138,19 +138,20 @@ func _shield_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	var fwd: Vector2 = Vector2.from_angle(facing)
-	var side: Vector2 = Vector2(-fwd.y, fwd.x)
-	# Wide scuttling crab legs on both flanks.
-	var scuttle: float = sin(anim_t * 11.0) * 1.5
-	for s: float in [-1.0, 1.0]:
-		var leg_base: Vector2 = off + side * (body_radius * s)
-		draw_line(leg_base, leg_base + side * 3.5 + fwd * (2.0 + scuttle * s), PAL["wine"] as Color, 1.5)
-		draw_line(leg_base, leg_base + side * 3.5 - fwd * (2.0 + scuttle * s), PAL["wine"] as Color, 1.5)
-	# Oversized front guard claw + pinch jaw when telling/committing.
-	var claw_c: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["gold"] as Color if is_counter_attack and state == State.TELL else PAL["apricot"] as Color)
-	if _has_active_shield():
-		var claw_p: Vector2 = off + fwd * (body_radius + 3.5) + side * 3.0
-		draw_circle(claw_p, 3.5, PAL["night"] as Color)
-		draw_circle(claw_p, 2.5, claw_c)
+	if _sprite_sheet == null:
+		var side: Vector2 = Vector2(-fwd.y, fwd.x)
+		# Wide scuttling crab legs on both flanks.
+		var scuttle: float = sin(anim_t * 11.0) * 1.5
+		for s: float in [-1.0, 1.0]:
+			var leg_base: Vector2 = off + side * (body_radius * s)
+			draw_line(leg_base, leg_base + side * 3.5 + fwd * (2.0 + scuttle * s), PAL["wine"] as Color, 1.5)
+			draw_line(leg_base, leg_base + side * 3.5 - fwd * (2.0 + scuttle * s), PAL["wine"] as Color, 1.5)
+		# Oversized front guard claw
+		var claw_c: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["gold"] as Color if is_counter_attack and state == State.TELL else PAL["apricot"] as Color)
+		if _has_active_shield():
+			var claw_p: Vector2 = off + fwd * (body_radius + 3.5) + side * 3.0
+			draw_circle(claw_p, 3.5, PAL["night"] as Color)
+			draw_circle(claw_p, 2.5, claw_c)
 	if state == State.TELL or state == State.COMMIT:
 		var spread: float = 0.55 if state == State.TELL else 0.12
 		var p1: Vector2 = off + Vector2.from_angle(facing + spread) * (body_radius + 9.0)

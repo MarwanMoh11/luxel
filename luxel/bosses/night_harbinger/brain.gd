@@ -205,8 +205,9 @@ func _shield_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	super._draw_extra(off)
-	# Twin lunar crescent horns
-	draw_arc(off + Vector2(0.0, -body_radius - 2.0), 5.5, 0.25, PI - 0.25, 12, PAL["ice"] as Color, 1.8)
+	if _sprite_sheet == null:
+		# Twin lunar crescent horns
+		draw_arc(off + Vector2(0.0, -body_radius - 2.0), 5.5, 0.25, PI - 0.25, 12, PAL["ice"] as Color, 1.8)
 	if wave_attack and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		draw_arc(off, lerpf(WAVE_MAX_R, WAVE_START_R + 6.0, prog), 0.0, TAU, 26, PAL["sky"] as Color, 1.8)

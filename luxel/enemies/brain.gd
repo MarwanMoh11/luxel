@@ -561,7 +561,7 @@ func _draw() -> void:
 
 	var drew_sprite: bool = false
 	if _sprite_sheet != null:
-		var anim_name: String = str(_STATE_ANIMS.get(state, "phase2" if (kind == "bellkeeper" and phase >= 2 and state == State.ROUTINE) else "routine"))
+		var anim_name: String = str(_STATE_ANIMS.get(state, ("phase%d" % phase) if (phase >= 2 and state == State.ROUTINE and _sprite_sheet.animations.has("phase%d" % phase)) else ("phase2" if (phase >= 2 and state == State.ROUTINE and _sprite_sheet.animations.has("phase2")) else "routine")))
 		var mod: Color = (PAL["cream"] as Color) if flash_t > 0.0 else _sprite_tint
 		drew_sprite = _sprite_sheet.draw_actor(self, off, anim_name, Vector2.from_angle(facing), anim_t, mod, _sprite_scale)
 	if not drew_sprite:

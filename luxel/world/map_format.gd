@@ -150,6 +150,7 @@ static func parse_region(map_path: String, json_path: String) -> Dictionary:
 	out["enemies"] = _ensure_dict_array(j.get("enemies", []))
 	out["interactables"] = _ensure_dict_array(j.get("interactables", []))
 	out["triggers"] = _ensure_dict_array(j.get("triggers", []))
+	out["scenery"] = _ensure_dict_array(j.get("scenery", []))
 	return out
 
 

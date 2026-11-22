@@ -3,32 +3,58 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
-  "spawn": [28, 88],
+  "spawn": [
+    28,
+    88
+  ],
   "zones": [
     {
       "id": "belfry_nave",
       "name_key": "ZONE_BELFRY",
-      "rect": [0, 0, 320, 176],
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r4_west",
-      "rect": [0, 64, 16, 48],
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
       "to_region": "belfry_r3",
-      "to_spawn": [292, 88],
+      "to_spawn": [
+        292,
+        88
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_r4_north",
-      "rect": [144, 0, 32, 16],
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
       "to_region": "belfry_r5",
-      "to_spawn": [160, 148],
+      "to_spawn": [
+        160,
+        148
+      ],
       "requires_moves": [],
-      "requires_flags": ["r4_cleared"],
+      "requires_flags": [
+        "r4_cleared"
+      ],
       "locked_door_id": "door_r4_combat"
     }
   ],
@@ -36,8 +62,20 @@
     {
       "id": "warden_r4_0",
       "kind": "warden",
-      "pos": [152, 60],
-      "route": [[128, 60], [184, 60]],
+      "pos": [
+        152,
+        60
+      ],
+      "route": [
+        [
+          128,
+          60
+        ],
+        [
+          184,
+          60
+        ]
+      ],
       "perches": [],
       "zone": "belfry_nave",
       "leash": 130
@@ -45,8 +83,20 @@
     {
       "id": "warden_r4_1",
       "kind": "warden",
-      "pos": [152, 116],
-      "route": [[128, 116], [184, 116]],
+      "pos": [
+        152,
+        116
+      ],
+      "route": [
+        [
+          128,
+          116
+        ],
+        [
+          184,
+          116
+        ]
+      ],
       "perches": [],
       "zone": "belfry_nave",
       "leash": 130
@@ -54,9 +104,25 @@
     {
       "id": "owl_r4_0",
       "kind": "owl",
-      "pos": [248, 88],
+      "pos": [
+        248,
+        88
+      ],
       "route": [],
-      "perches": [[248, 88], [248, 40], [248, 136]],
+      "perches": [
+        [
+          248,
+          88
+        ],
+        [
+          248,
+          40
+        ],
+        [
+          248,
+          136
+        ]
+      ],
       "zone": "belfry_nave",
       "leash": 150
     }
@@ -65,15 +131,145 @@
     {
       "id": "door_r4_combat",
       "kind": "door",
-      "pos": [160, 24],
+      "pos": [
+        160,
+        24
+      ],
       "props": {
         "door_kind": "combat_gate",
-        "size": [32, 16],
+        "size": [
+          32,
+          16
+        ],
         "clear_zone": "belfry_nave",
         "sets_flag": "r4_cleared",
-        "requires_flags": ["r4_cleared"]
+        "requires_flags": [
+          "r4_cleared"
+        ]
       }
     }
   ],
-  "triggers": []
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        40,
+        34
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        288,
+        34
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        40,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        288,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        104,
+        62
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        216,
+        62
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        104,
+        126
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        216,
+        126
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        120,
+        28
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        200,
+        28
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.55
+    }
+  ]
 }

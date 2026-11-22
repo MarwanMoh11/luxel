@@ -277,12 +277,13 @@ func _body_color() -> Color:
 	return PAL["ice"] as Color
 
 func _draw_extra(off: Vector2) -> void:
-	var flap: float = sin(anim_t * (14.0 if carrying_lantern else 9.0)) * 4.0
-	var fwd: Vector2 = Vector2.from_angle(facing)
-	var side: Vector2 = Vector2(-fwd.y, fwd.x)
-	draw_line(off, off + side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
-	draw_line(off, off - side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
-	draw_line(off + fwd * 3.0, off + fwd * 8.0, PAL["apricot"] as Color, 1.5)
+	if _sprite_sheet == null:
+		var flap: float = sin(anim_t * (14.0 if carrying_lantern else 9.0)) * 4.0
+		var fwd: Vector2 = Vector2.from_angle(facing)
+		var side: Vector2 = Vector2(-fwd.y, fwd.x)
+		draw_line(off, off + side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
+		draw_line(off, off - side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
+		draw_line(off + fwd * 3.0, off + fwd * 8.0, PAL["apricot"] as Color, 1.5)
 	if state == State.TELL:
 		var rel: Vector2 = dive_target - pos
 		draw_line(off, rel, PAL["gold"] as Color, 1.0)

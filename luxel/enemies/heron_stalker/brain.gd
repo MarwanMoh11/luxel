@@ -280,13 +280,14 @@ func _body_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	var fwd: Vector2 = Vector2.from_angle(facing)
-	# Tall wading neck crest & long spear beak silhouette.
-	var neck_top: Vector2 = off + Vector2(0.0, -body_radius - 5.0)
 	if beak_stuck:
 		var mud_pt: Vector2 = off + fwd * 10.0 + Vector2(0.0, 3.0)
-		draw_line(off, mud_pt, PAL["apricot"] as Color, 2.0)
+		if _sprite_sheet == null:
+			draw_line(off, mud_pt, PAL["apricot"] as Color, 2.0)
 		draw_arc(mud_pt, 5.0, 0.0, TAU, 12, PAL["pine"] as Color, 1.5)
-	else:
+	elif _sprite_sheet == null:
+		# Tall wading neck crest & long spear beak silhouette.
+		var neck_top: Vector2 = off + Vector2(0.0, -body_radius - 5.0)
 		draw_line(off + Vector2(0.0, -3.0), neck_top, PAL["ice"] as Color, 2.5)
 		draw_line(neck_top, neck_top + fwd * 11.0, PAL["apricot"] as Color, 1.8)
 	if state == State.TELL:

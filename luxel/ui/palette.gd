@@ -52,16 +52,16 @@ const PAL: Dictionary = {
 const FADE_RAMP: Array[String] = ["void", "dusk", "mauve", "stone", "cream"]
 
 const COLOR_RAMPS: Dictionary = {
-	"cream": ["void", "dusk", "mauve", "stone", "cream"],
-	"gold": ["void", "dusk", "plum", "apricot", "gold"],
-	"ice": ["void", "deep", "blue", "sky", "ice"],
-	"stone": ["void", "night", "dusk", "mauve", "stone"],
-	"mauve": ["void", "night", "dusk", "mauve"],
-	"coral": ["void", "dusk", "plum", "wine", "coral"],
-	"apricot": ["void", "dusk", "wine", "coral", "apricot"],
-	"lime": ["void", "pine", "teal", "jade", "lime"],
-	"sky": ["void", "deep", "blue", "sky"],
-	"rose": ["void", "dusk", "plum", "wine", "rose"],
+	"cream": ["mauve", "stone", "cream"],
+	"gold": ["mauve", "apricot", "gold"],
+	"ice": ["blue", "sky", "ice"],
+	"stone": ["mauve", "stone"],
+	"mauve": ["dusk", "mauve"],
+	"coral": ["wine", "coral"],
+	"apricot": ["coral", "apricot"],
+	"lime": ["teal", "jade", "lime"],
+	"sky": ["blue", "sky"],
+	"rose": ["wine", "rose"],
 }
 
 const CURSOR_COLORS: Array[String] = [
@@ -89,13 +89,12 @@ static func is_valid_color(name: String) -> bool:
 ## Steps from hidden (t <= 0) up through the palette ramp to the target colour (t >= 1).
 ## Returns Color(0, 0, 0, 0) only when fully hidden; every visible step is 100% opaque.
 static func fade_step(t: float, colour_name: String = "cream") -> Color:
-	if t <= 0.0:
+	if t <= 0.08:
 		return Color(0.0, 0.0, 0.0, 0.0)
 	var ramp: Array = COLOR_RAMPS.get(colour_name, FADE_RAMP) as Array
 	var n: int = ramp.size()
 	if n <= 0:
 		return color(colour_name)
-	var idx: int = clampi(floori(clampf(t, 0.0, 1.0) * float(n)), 0, n - 1)
-	if idx == 0 and str(ramp[0]) == "void" and t < 0.08:
-		return Color(0.0, 0.0, 0.0, 0.0)
+	var min_idx: int = 1 if (n > 1 and str(ramp[0]) == "void") else 0
+	var idx: int = clampi(min_idx + floori(clampf((t - 0.08) / 0.92, 0.0, 1.0) * float(n - min_idx)), min_idx, n - 1)
 	return color(str(ramp[idx]))

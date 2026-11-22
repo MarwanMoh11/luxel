@@ -106,8 +106,26 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 	if not unlocked or last_radius <= 0.0:
 		return
 	var center: Vector2 = (last_origin + off).round() + Vector2(0.0, -5.0)
-	canvas.draw_arc(center, last_radius, 0.0, TAU, 36, Color(LxWick.PAL_ICE, 0.22), 1.0)
-	canvas.draw_arc(center, maxf(4.0, last_radius - 2.0), 0.0, TAU, 36, Color(LxWick.PAL_SKY, 0.14), 1.0)
+	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var rot: float = float(Time.get_ticks_msec()) * 0.00035
+	var inner_r: float = maxf(4.0, last_radius - 2.5)
+	var seg_step: float = TAU / 8.0
+	var arc_span: float = seg_step * 0.56
+	var inner_span: float = seg_step * 0.42
+	for i: int in range(8):
+		var shim: float = 1.0 if flash_red else (0.84 + 0.16 * sin(rot * 4.0 + float(i) * 1.1))
+		var a0: float = rot + float(i) * seg_step
+		canvas.draw_arc(center, last_radius, a0, a0 + arc_span, 6, Color(LxWick.PAL_ICE, 0.24 * shim), 1.0)
+		var b0: float = -rot * 0.65 + (float(i) + 0.35) * seg_step
+		canvas.draw_arc(center, inner_r, b0, b0 + inner_span, 5, Color(LxWick.PAL_SKY, 0.15 * shim), 1.0)
+	for j: int in range(4):
+		var pang: float = rot + (float(j) * 2.0 + 0.78) * seg_step
+		var pip: Vector2 = (center + Vector2.from_angle(pang) * last_radius).round()
+		var tw: float = 0.72 if flash_red else (0.62 + 0.28 * sin(rot * 5.0 + float(j) * 1.57))
+		var pcol: Color = LxWick.PAL_CREAM if (j % 2 == 0) else LxWick.PAL_ICE
+		canvas.draw_rect(Rect2(pip, Vector2(1.0, 1.0)), Color(pcol, tw))
+		var inner_pip: Vector2 = (center + Vector2.from_angle(pang) * inner_r).round()
+		canvas.draw_rect(Rect2(inner_pip, Vector2(1.0, 1.0)), Color(LxWick.PAL_SKY, tw * 0.45))
 
 
 func reset() -> void:

@@ -301,8 +301,9 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	var wing: float = 3.0 + sin(anim_t * 14.0) * 1.5
-	draw_line(off + Vector2(-body_radius - wing, -1.0), off + Vector2(body_radius + wing, -1.0), PAL["sky"] as Color, 1.5)
+	if _sprite_sheet == null:
+		var wing: float = 3.0 + sin(anim_t * 14.0) * 1.5
+		draw_line(off + Vector2(-body_radius - wing, -1.0), off + Vector2(body_radius + wing, -1.0), PAL["sky"] as Color, 1.5)
 	if state == State.TELL:
 		var preview_len: float = 38.0 if _echo_is_dash else 52.0
 		draw_line(off, off + _echo_dir * preview_len, PAL["ice"] as Color, 1.5)

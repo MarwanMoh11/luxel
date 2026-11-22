@@ -22,16 +22,17 @@ func setup(spec: Dictionary) -> void:
 
 
 func tick(dt: float) -> void:
-	super.tick(dt)
 	if lit:
 		ignitable = true
-		return
-	var cleared: bool = not require_clear
-	if require_clear and region != null and region.has_method("is_zone_cleared"):
-		cleared = bool(region.call("is_zone_cleared", zone_id))
-	if cleared != ignitable:
-		ignitable = cleared
-		queue_redraw()
+	else:
+		var cleared: bool = not require_clear
+		if require_clear and region != null and region.has_method("is_zone_cleared"):
+			cleared = bool(region.call("is_zone_cleared", zone_id))
+		if cleared != ignitable:
+			ignitable = cleared
+			queue_redraw()
+	_uses_prop_anim = lit or ignitable
+	super.tick(dt)
 
 
 func interact(_actor: Node = null) -> bool:
@@ -92,8 +93,24 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
-	if _draw_prop_sprite("beacon" if lit else "beacon_unlit"):
-		return
+	var shadow: Color = PAL["void"] as Color
+	draw_rect(Rect2(-14.0, 2.0, 28.0, 2.0), shadow)
+	draw_rect(Rect2(-12.0, 1.0, 24.0, 4.0), shadow)
+	draw_rect(Rect2(-8.0, 0.0, 16.0, 6.0), shadow)
+	var ready: bool = not lit and ignitable
+	if ready:
+		_draw_invite_ring(false)
+	var frame_ov: int = -1 if (lit or ignitable) else 0
+	if not _draw_prop_sprite("beacon" if lit else "beacon_unlit", Vector2.ZERO, frame_ov):
+		_draw_fallback()
+	if ready:
+		_draw_invite_ring(true)
+		_draw_ready_sparks()
+	elif lit:
+		_draw_lit_embers()
+
+
+func _draw_fallback() -> void:
 	draw_rect(Rect2(-8.0, -4.0, 16.0, 8.0), PAL["night"])
 	draw_rect(Rect2(-7.0, -5.0, 14.0, 7.0), PAL["dusk"])
 	draw_rect(Rect2(-5.0, -14.0, 10.0, 10.0), PAL["mauve"])
@@ -106,3 +123,41 @@ func _draw() -> void:
 		draw_circle(Vector2(0.0, -15.0), 1.5, PAL["gold"])
 	else:
 		draw_rect(Rect2(-3.0, -16.0, 6.0, 3.0), PAL["plum"])
+
+
+func _draw_invite_ring(front: bool) -> void:
+	var pulse: float = sin(_clock * 3.0) * 1.2
+	var rx: float = 17.5 + pulse
+	var ry: float = 5.5 + pulse * 0.3
+	var c_gold: Color = PAL["gold"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	for i: int in range(12):
+		var a: float = _clock * 0.65 + (TAU * float(i)) / 12.0
+		var sa: float = sin(a)
+		if (sa >= 0.0) != front:
+			continue
+		var px: float = roundf(cos(a) * rx)
+		var py: float = roundf(2.0 + sa * ry)
+		draw_rect(Rect2(px - 1.0, py, 2.0, 1.0), c_gold if (i % 2 == 0) else c_apr)
+
+
+func _draw_ready_sparks() -> void:
+	var c_gold: Color = PAL["gold"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	for i: int in range(3):
+		var t: float = fmod(_clock * 0.62 + float(i) * 0.33, 1.0)
+		var px: float = roundf(sin(_clock * 2.1 + float(i) * 2.2) * 4.5)
+		var py: float = roundf(-17.0 - t * 14.0)
+		draw_rect(Rect2(px, py, 1.0, 1.0), c_gold if t < 0.55 else c_apr)
+
+
+func _draw_lit_embers() -> void:
+	var c_cream: Color = PAL["cream"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	for i: int in range(3):
+		var t: float = fmod(_clock * 0.48 + float(i) * 0.33, 1.0)
+		var px: float = roundf(sin(_clock * 1.7 + float(i) * 2.1) * (2.5 + t * 2.5))
+		var py: float = roundf(-24.0 - t * 18.0)
+		var col: Color = c_cream if t < 0.3 else (c_gold if t < 0.7 else c_apr)
+		draw_rect(Rect2(px, py, 1.0, 1.0), col)

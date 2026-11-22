@@ -6,7 +6,13 @@ extends LxInteractable
 func setup(spec: Dictionary) -> void:
 	super.setup(spec)
 	kind = "rest_shrine"
+	_uses_prop_anim = active
 	queue_redraw()
+
+
+func tick(dt: float) -> void:
+	_uses_prop_anim = active
+	super.tick(dt)
 
 
 func interact(_actor: Node = null) -> bool:
@@ -32,11 +38,48 @@ func get_interact_prompt() -> String:
 
 
 func _draw() -> void:
-	if _draw_prop_sprite("rest_shrine"):
-		return
-	draw_rect(Rect2(-10.0, -4.0, 20.0, 8.0), PAL["night"])
-	draw_rect(Rect2(-9.0, -6.0, 18.0, 8.0), PAL["mauve"])
-	draw_rect(Rect2(-6.0, -16.0, 12.0, 12.0), PAL["stone"])
-	draw_circle(Vector2(0.0, -12.0), 4.0, PAL["apricot"])
-	draw_circle(Vector2(0.0, -12.0), 2.5, PAL["gold"])
-	draw_circle(Vector2(0.0, -12.0), 1.2, PAL["cream"])
+	var shadow: Color = PAL["void"] as Color
+	draw_rect(Rect2(-16.0, 2.0, 32.0, 2.0), shadow)
+	draw_rect(Rect2(-14.0, 1.0, 28.0, 4.0), shadow)
+	draw_rect(Rect2(-10.0, 0.0, 20.0, 6.0), shadow)
+	if active:
+		_draw_hearth_ring()
+	var frame_ov: int = -1 if active else 0
+	if not _draw_prop_sprite("rest_shrine", Vector2.ZERO, frame_ov):
+		_draw_fallback()
+	if active:
+		_draw_hearth_embers()
+
+
+func _draw_fallback() -> void:
+	draw_rect(Rect2(-10.0, -4.0, 20.0, 8.0), PAL["night"] as Color)
+	draw_rect(Rect2(-9.0, -6.0, 18.0, 8.0), PAL["mauve"] as Color)
+	draw_rect(Rect2(-6.0, -16.0, 12.0, 12.0), PAL["stone"] as Color)
+	draw_circle(Vector2(0.0, -12.0), 4.0, PAL["apricot"] as Color)
+	draw_circle(Vector2(0.0, -12.0), 2.5, PAL["gold"] as Color)
+	draw_circle(Vector2(0.0, -12.0), 1.2, PAL["cream"] as Color)
+
+
+func _draw_hearth_ring() -> void:
+	var breath: float = sin(_clock * 2.2) * 1.4
+	var rx: float = 19.0 + breath
+	var ry: float = 5.2 + breath * 0.3
+	var c_gold: Color = PAL["gold"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	for i: int in range(4):
+		var a: float = _clock * 0.45 + (TAU * float(i)) / 4.0
+		var px: float = roundf(cos(a) * rx)
+		var py: float = roundf(2.0 + sin(a) * ry)
+		draw_rect(Rect2(px - 1.0, py, 2.0, 1.0), c_gold if i % 2 == 0 else c_apr)
+
+
+func _draw_hearth_embers() -> void:
+	var c_cream: Color = PAL["cream"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	for i: int in range(3):
+		var t: float = fmod(_clock * 0.46 + float(i) * 0.33, 1.0)
+		var px: float = roundf(sin(_clock * 1.6 + float(i) * 2.1) * (2.5 + t * 3.0))
+		var py: float = roundf(-20.0 - t * 18.0)
+		var col: Color = c_cream if t < 0.3 else (c_gold if t < 0.7 else c_apr)
+		draw_rect(Rect2(px, py, 1.0, 1.0), col)

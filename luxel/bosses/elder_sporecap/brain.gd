@@ -180,12 +180,13 @@ func _draw_extra(off: Vector2) -> void:
 	var swell: float = 0.0
 	if state == State.TELL:
 		swell = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-	var cap_r: float = body_radius + 3.5 + swell * 4.0
-	draw_circle(off + Vector2(0.0, -4.0), cap_r, PAL["night"] as Color)
-	draw_circle(off + Vector2(0.0, -4.0), cap_r - 1.2, (PAL["coral"] as Color) if phase >= 2 else (PAL["wine"] as Color))
-	draw_circle(off + Vector2(0.0, -6.5), cap_r * 0.55, PAL["plum"] as Color)
-	draw_circle(off + Vector2(-3.5, -5.0), 1.8, PAL["lime"] as Color)
-	draw_circle(off + Vector2(3.5, -3.5), 1.8, PAL["lime"] as Color)
+	if _sprite_sheet == null:
+		var cap_r: float = body_radius + 3.5 + swell * 4.0
+		draw_circle(off + Vector2(0.0, -4.0), cap_r, PAL["night"] as Color)
+		draw_circle(off + Vector2(0.0, -4.0), cap_r - 1.2, (PAL["coral"] as Color) if phase >= 2 else (PAL["wine"] as Color))
+		draw_circle(off + Vector2(0.0, -6.5), cap_r * 0.55, PAL["plum"] as Color)
+		draw_circle(off + Vector2(-3.5, -5.0), 1.8, PAL["lime"] as Color)
+		draw_circle(off + Vector2(3.5, -3.5), 1.8, PAL["lime"] as Color)
 
 	if state == State.TELL:
 		draw_arc(off, lerpf(ELDER_RING_MAX_R * 0.8, RING_START_R + 5.0, swell), 0.0, TAU, 28, PAL["lime"] as Color, 1.8)
@@ -198,7 +199,10 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(off, ring_r, 0.0, TAU, 32, PAL["lime"] as Color, 3.2)
 			draw_arc(off, maxf(2.0, ring_r - 2.8), 0.0, TAU, 26, PAL["coral"] as Color, 1.4)
 	elif cap_open:
-		draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.72, PAL["gold"] as Color)
-		draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.35, PAL["cream"] as Color)
+		if _sprite_sheet == null:
+			draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.72, PAL["gold"] as Color)
+			draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.35, PAL["cream"] as Color)
+		else:
+			draw_arc(off, body_radius + 3.5, 0.0, TAU, 22, PAL["gold"] as Color, 1.6)
 	elif _roaring:
 		draw_arc(off, body_radius + 11.0, 0.0, TAU, 22, PAL["lime"] as Color, 2.2)

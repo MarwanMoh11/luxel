@@ -3,50 +3,94 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
-  "spawn": [160, 148],
+  "spawn": [
+    160,
+    148
+  ],
   "zones": [
     {
       "id": "belfry_entry",
       "name_key": "ZONE_BELFRY",
-      "rect": [0, 0, 320, 176],
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r1_south",
-      "rect": [144, 160, 32, 16],
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
       "to_region": "overworld",
-      "to_spawn": [640, 152],
+      "to_spawn": [
+        640,
+        152
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_r1_west",
-      "rect": [0, 64, 16, 48],
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
       "to_region": "belfry_r2",
-      "to_spawn": [292, 88],
+      "to_spawn": [
+        292,
+        88
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_r1_east",
-      "rect": [304, 64, 16, 48],
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
       "to_region": "belfry_r3",
-      "to_spawn": [28, 88],
+      "to_spawn": [
+        28,
+        88
+      ],
       "requires_moves": [],
-      "requires_flags": ["wick_key_1"],
+      "requires_flags": [
+        "wick_key_1"
+      ],
       "locked_door_id": "door_r1_east"
     },
     {
       "id": "exit_r1_north",
-      "rect": [144, 0, 32, 16],
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
       "to_region": "belfry_r6",
-      "to_spawn": [160, 148],
+      "to_spawn": [
+        160,
+        148
+      ],
       "requires_moves": [],
-      "requires_flags": ["keepers_flame"],
+      "requires_flags": [
+        "keepers_flame"
+      ],
       "locked_door_id": "door_r1_north"
     }
   ],
@@ -55,7 +99,10 @@
     {
       "id": "ws_belfry",
       "kind": "waystone",
-      "pos": [160, 112],
+      "pos": [
+        160,
+        112
+      ],
       "props": {
         "zone": "belfry_entry",
         "name_key": "ZONE_BELFRY"
@@ -64,44 +111,173 @@
     {
       "id": "door_r1_east",
       "kind": "door",
-      "pos": [296, 88],
+      "pos": [
+        296,
+        88
+      ],
       "props": {
         "door_kind": "key_door",
         "dungeon_id": "belfry",
         "key_kind": "wick_key",
-        "size": [16, 48],
-        "requires_flags": ["wick_key_1"]
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_1"
+        ]
       }
     },
     {
       "id": "door_r1_north",
       "kind": "door",
-      "pos": [160, 24],
+      "pos": [
+        160,
+        24
+      ],
       "props": {
         "door_kind": "shortcut_door",
-        "size": [32, 16],
-        "requires_flags": ["keepers_flame"]
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame"
+        ]
       }
     },
     {
       "id": "lamp_r1_w",
       "kind": "road_lamp",
-      "pos": [120, 88],
-      "props": {"zone": "belfry_entry"}
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "zone": "belfry_entry"
+      }
     },
     {
       "id": "lamp_r1_e",
       "kind": "road_lamp",
-      "pos": [200, 88],
-      "props": {"zone": "belfry_entry"}
+      "pos": [
+        200,
+        88
+      ],
+      "props": {
+        "zone": "belfry_entry"
+      }
     }
   ],
   "triggers": [
     {
       "id": "trig_belfry_entry",
-      "rect": [128, 128, 64, 32],
+      "rect": [
+        128,
+        128,
+        64,
+        32
+      ],
       "string_id": "CH5_TITLE",
       "once": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        120,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        200,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        88,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        232,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        88,
+        126
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        232,
+        126
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        120,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        200,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.75
     }
   ]
 }

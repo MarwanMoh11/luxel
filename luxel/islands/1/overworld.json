@@ -3,62 +3,123 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": false,
-  "spawn": [572, 366],
+  "spawn": [
+    572,
+    366
+  ],
   "zones": [
     {
       "id": "plaza",
       "name_key": "ZONE_PLAZA",
-      "rect": [448, 264, 384, 192],
+      "rect": [
+        448,
+        264,
+        384,
+        192
+      ],
       "dark": true
     },
     {
       "id": "orchard",
       "name_key": "ZONE_ORCHARD",
-      "rect": [0, 0, 448, 264],
+      "rect": [
+        0,
+        0,
+        448,
+        264
+      ],
       "dark": true
     },
     {
       "id": "observatory",
       "name_key": "ZONE_OBSERVATORY",
-      "rect": [0, 264, 448, 456],
+      "rect": [
+        0,
+        264,
+        448,
+        456
+      ],
       "dark": true
     },
     {
       "id": "glasshouse",
       "name_key": "ZONE_GLASSHOUSE",
-      "rect": [448, 456, 384, 264],
+      "rect": [
+        448,
+        456,
+        384,
+        264
+      ],
       "dark": true
     },
     {
       "id": "moonlit_bridge",
       "name_key": "ZONE_BRIDGE",
-      "rect": [832, 0, 448, 720],
+      "rect": [
+        832,
+        0,
+        448,
+        720
+      ],
       "dark": true
     },
     {
       "id": "bell_arch",
       "name_key": "ZONE_BELL_TOWER",
-      "rect": [448, 0, 384, 264],
+      "rect": [
+        448,
+        0,
+        384,
+        264
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_to_belfry",
-      "rect": [624, 96, 32, 24],
+      "rect": [
+        624,
+        96,
+        32,
+        24
+      ],
       "to_region": "belfry_r1",
-      "to_spawn": [160, 148],
-      "requires_moves": ["dash", "throw"],
-      "requires_flags": ["beacon_orchard", "beacon_observatory", "beacon_bridge"],
+      "to_spawn": [
+        160,
+        148
+      ],
+      "requires_moves": [
+        "dash",
+        "throw"
+      ],
+      "requires_flags": [
+        "beacon_orchard",
+        "beacon_observatory",
+        "beacon_bridge"
+      ],
       "locked_door_id": "door_ward_barrier"
     },
     {
       "id": "exit_to_island_2",
-      "rect": [1216, 144, 48, 48],
+      "rect": [
+        1216,
+        144,
+        48,
+        48
+      ],
       "to_region": "island2:overworld",
-      "to_spawn": [120, 360],
-      "requires_moves": ["dash", "throw"],
-      "requires_flags": ["great_lamp_1"],
+      "to_spawn": [
+        120,
+        360
+      ],
+      "requires_moves": [
+        "dash",
+        "throw"
+      ],
+      "requires_flags": [
+        "great_lamp_1"
+      ],
       "locked_door_id": "bridge_of_light_1"
     }
   ],
@@ -66,8 +127,20 @@
     {
       "id": "warden_plaza_0",
       "kind": "warden",
-      "pos": [692, 362],
-      "route": [[692, 336], [692, 392]],
+      "pos": [
+        692,
+        362
+      ],
+      "route": [
+        [
+          692,
+          336
+        ],
+        [
+          692,
+          392
+        ]
+      ],
       "perches": [],
       "zone": "plaza",
       "leash": 140
@@ -75,7 +148,10 @@
     {
       "id": "warden_orchard_0",
       "kind": "warden",
-      "pos": [268, 200],
+      "pos": [
+        268,
+        200
+      ],
       "route": [],
       "perches": [],
       "zone": "orchard",
@@ -84,8 +160,20 @@
     {
       "id": "warden_orchard_1",
       "kind": "warden",
-      "pos": [228, 136],
-      "route": [[196, 136], [286, 136]],
+      "pos": [
+        228,
+        136
+      ],
+      "route": [
+        [
+          196,
+          136
+        ],
+        [
+          286,
+          136
+        ]
+      ],
       "perches": [],
       "zone": "orchard",
       "leash": 158
@@ -93,8 +181,20 @@
     {
       "id": "warden_observatory_0",
       "kind": "warden",
-      "pos": [246, 344],
-      "route": [[196, 344], [294, 344]],
+      "pos": [
+        246,
+        344
+      ],
+      "route": [
+        [
+          196,
+          344
+        ],
+        [
+          294,
+          344
+        ]
+      ],
       "perches": [],
       "zone": "observatory",
       "leash": 158
@@ -102,35 +202,95 @@
     {
       "id": "owl_observatory_0",
       "kind": "owl",
-      "pos": [218, 428],
+      "pos": [
+        218,
+        428
+      ],
       "route": [],
-      "perches": [[218, 428], [264, 384], [168, 412]],
+      "perches": [
+        [
+          218,
+          428
+        ],
+        [
+          264,
+          384
+        ],
+        [
+          168,
+          412
+        ]
+      ],
       "zone": "observatory",
       "leash": 165
     },
     {
       "id": "snatcher_glasshouse_0",
       "kind": "snatcher",
-      "pos": [576, 540],
+      "pos": [
+        576,
+        540
+      ],
       "route": [],
-      "perches": [[568, 534], [568, 572], [612, 534]],
+      "perches": [
+        [
+          568,
+          534
+        ],
+        [
+          568,
+          572
+        ],
+        [
+          612,
+          534
+        ]
+      ],
       "zone": "glasshouse",
       "leash": 158
     },
     {
       "id": "snatcher_glasshouse_1",
       "kind": "snatcher",
-      "pos": [696, 540],
+      "pos": [
+        696,
+        540
+      ],
       "route": [],
-      "perches": [[704, 534], [704, 572], [668, 534]],
+      "perches": [
+        [
+          704,
+          534
+        ],
+        [
+          704,
+          572
+        ],
+        [
+          668,
+          534
+        ]
+      ],
       "zone": "glasshouse",
       "leash": 158
     },
     {
       "id": "warden_bridge_0",
       "kind": "warden",
-      "pos": [936, 356],
-      "route": [[936, 304], [936, 404]],
+      "pos": [
+        936,
+        356
+      ],
+      "route": [
+        [
+          936,
+          304
+        ],
+        [
+          936,
+          404
+        ]
+      ],
       "perches": [],
       "zone": "moonlit_bridge",
       "leash": 158
@@ -138,26 +298,70 @@
     {
       "id": "snatcher_bridge_0",
       "kind": "snatcher",
-      "pos": [960, 286],
+      "pos": [
+        960,
+        286
+      ],
       "route": [],
-      "perches": [[920, 286], [968, 286], [1128, 292]],
+      "perches": [
+        [
+          920,
+          286
+        ],
+        [
+          968,
+          286
+        ],
+        [
+          1128,
+          292
+        ]
+      ],
       "zone": "moonlit_bridge",
       "leash": 170
     },
     {
       "id": "owl_bridge_0",
       "kind": "owl",
-      "pos": [1128, 420],
+      "pos": [
+        1128,
+        420
+      ],
       "route": [],
-      "perches": [[1128, 420], [1128, 320], [952, 420]],
+      "perches": [
+        [
+          1128,
+          420
+        ],
+        [
+          1128,
+          320
+        ],
+        [
+          952,
+          420
+        ]
+      ],
       "zone": "moonlit_bridge",
       "leash": 170
     },
     {
       "id": "warden_trial_0",
       "kind": "warden",
-      "pos": [1128, 504],
-      "route": [[1112, 504], [1144, 504]],
+      "pos": [
+        1128,
+        504
+      ],
+      "route": [
+        [
+          1112,
+          504
+        ],
+        [
+          1144,
+          504
+        ]
+      ],
       "perches": [],
       "zone": "moonlit_bridge",
       "leash": 120
@@ -167,7 +371,10 @@
     {
       "id": "ws_plaza",
       "kind": "waystone",
-      "pos": [536, 392],
+      "pos": [
+        536,
+        392
+      ],
       "props": {
         "zone": "plaza",
         "lit_by_default": true,
@@ -177,7 +384,10 @@
     {
       "id": "rest_shrine_plaza",
       "kind": "rest_shrine",
-      "pos": [640, 396],
+      "pos": [
+        640,
+        396
+      ],
       "props": {
         "zone": "plaza",
         "name_key": "SHOP_TITLE"
@@ -186,7 +396,10 @@
     {
       "id": "shrine_dash",
       "kind": "shrine",
-      "pos": [360, 198],
+      "pos": [
+        360,
+        198
+      ],
       "props": {
         "move_id": "dash",
         "zone": "orchard",
@@ -197,19 +410,28 @@
     {
       "id": "beacon_orchard",
       "kind": "beacon",
-      "pos": [204, 196],
+      "pos": [
+        204,
+        196
+      ],
       "props": {
         "index": 0,
         "zone": "orchard",
         "guard_zone": "orchard",
-        "relit_zones": ["orchard", "plaza"],
+        "relit_zones": [
+          "orchard",
+          "plaza"
+        ],
         "name_key": "ZONE_ORCHARD"
       }
     },
     {
       "id": "ws_orchard",
       "kind": "waystone",
-      "pos": [312, 112],
+      "pos": [
+        312,
+        112
+      ],
       "props": {
         "zone": "orchard",
         "name_key": "ZONE_ORCHARD"
@@ -218,7 +440,10 @@
     {
       "id": "shrine_throw",
       "kind": "shrine",
-      "pos": [314, 372],
+      "pos": [
+        314,
+        372
+      ],
       "props": {
         "move_id": "throw",
         "zone": "observatory",
@@ -229,19 +454,27 @@
     {
       "id": "beacon_observatory",
       "kind": "beacon",
-      "pos": [182, 376],
+      "pos": [
+        182,
+        376
+      ],
       "props": {
         "index": 1,
         "zone": "observatory",
         "guard_zone": "observatory",
-        "relit_zones": ["observatory"],
+        "relit_zones": [
+          "observatory"
+        ],
         "name_key": "ZONE_OBSERVATORY"
       }
     },
     {
       "id": "ws_observatory",
       "kind": "waystone",
-      "pos": [120, 344],
+      "pos": [
+        120,
+        344
+      ],
       "props": {
         "zone": "observatory",
         "name_key": "ZONE_OBSERVATORY"
@@ -250,19 +483,27 @@
     {
       "id": "chest_ember_1",
       "kind": "chest",
-      "pos": [88, 520],
+      "pos": [
+        88,
+        520
+      ],
       "props": {
         "reward": "ember_piece",
         "amount": 1,
         "zone": "observatory",
-        "requires_moves": ["dash"],
+        "requires_moves": [
+          "dash"
+        ],
         "secret_id": "isl1_dash_ledge"
       }
     },
     {
       "id": "chest_glasshouse_shards",
       "kind": "chest",
-      "pos": [640, 560],
+      "pos": [
+        640,
+        560
+      ],
       "props": {
         "reward": "shards",
         "amount": 35,
@@ -272,31 +513,45 @@
     {
       "id": "chest_beam_secret",
       "kind": "chest",
-      "pos": [472, 488],
+      "pos": [
+        472,
+        488
+      ],
       "props": {
         "reward": "shards",
         "amount": 60,
         "zone": "glasshouse",
-        "requires_moves": ["beam"],
+        "requires_moves": [
+          "beam"
+        ],
         "secret_id": "isl1_beam_alcove"
       }
     },
     {
       "id": "beacon_bridge",
       "kind": "beacon",
-      "pos": [1128, 360],
+      "pos": [
+        1128,
+        360
+      ],
       "props": {
         "index": 2,
         "zone": "moonlit_bridge",
         "guard_zone": "moonlit_bridge",
-        "relit_zones": ["moonlit_bridge", "glasshouse"],
+        "relit_zones": [
+          "moonlit_bridge",
+          "glasshouse"
+        ],
         "name_key": "ZONE_BRIDGE"
       }
     },
     {
       "id": "ws_bridge",
       "kind": "waystone",
-      "pos": [888, 356],
+      "pos": [
+        888,
+        356
+      ],
       "props": {
         "zone": "moonlit_bridge",
         "name_key": "ZONE_BRIDGE"
@@ -305,7 +560,10 @@
     {
       "id": "chest_ember_2",
       "kind": "chest",
-      "pos": [1128, 552],
+      "pos": [
+        1128,
+        552
+      ],
       "props": {
         "reward": "ember_piece",
         "amount": 1,
@@ -316,124 +574,1284 @@
     {
       "id": "door_ward_barrier",
       "kind": "door",
-      "pos": [640, 232],
+      "pos": [
+        640,
+        232
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "size": [32, 16],
+        "size": [
+          32,
+          16
+        ],
         "zone": "bell_arch",
         "seal_id": "bell_arch_seal",
-        "requires_beacons": ["beacon_orchard", "beacon_observatory", "beacon_bridge"],
-        "requires_flags": ["beacon_orchard", "beacon_observatory", "beacon_bridge"]
+        "requires_beacons": [
+          "beacon_orchard",
+          "beacon_observatory",
+          "beacon_bridge"
+        ],
+        "requires_flags": [
+          "beacon_orchard",
+          "beacon_observatory",
+          "beacon_bridge"
+        ]
       }
     },
     {
       "id": "bridge_of_light_1",
       "kind": "door",
-      "pos": [1176, 168],
+      "pos": [
+        1176,
+        168
+      ],
       "props": {
         "door_kind": "bridge_of_light",
-        "size": [16, 48],
+        "size": [
+          16,
+          48
+        ],
         "zone": "moonlit_bridge",
-        "requires_flags": ["great_lamp_1"]
+        "requires_flags": [
+          "great_lamp_1"
+        ]
       }
     },
     {
       "id": "lamp_plaza_w",
       "kind": "road_lamp",
-      "pos": [534, 344],
-      "props": {"zone": "plaza"}
+      "pos": [
+        534,
+        344
+      ],
+      "props": {
+        "zone": "plaza"
+      }
     },
     {
       "id": "lamp_plaza_e",
       "kind": "road_lamp",
-      "pos": [748, 344],
-      "props": {"zone": "plaza"}
+      "pos": [
+        748,
+        344
+      ],
+      "props": {
+        "zone": "plaza"
+      }
     },
     {
       "id": "lamp_orchard_e",
       "kind": "road_lamp",
-      "pos": [416, 166],
-      "props": {"zone": "orchard"}
+      "pos": [
+        416,
+        166
+      ],
+      "props": {
+        "zone": "orchard"
+      }
     },
     {
       "id": "lamp_orchard_s",
       "kind": "road_lamp",
-      "pos": [256, 232],
-      "props": {"zone": "orchard"}
+      "pos": [
+        256,
+        232
+      ],
+      "props": {
+        "zone": "orchard"
+      }
     },
     {
       "id": "lamp_west_n",
       "kind": "road_lamp",
-      "pos": [364, 342],
-      "props": {"zone": "observatory"}
+      "pos": [
+        364,
+        342
+      ],
+      "props": {
+        "zone": "observatory"
+      }
     },
     {
       "id": "lamp_west_s",
       "kind": "road_lamp",
-      "pos": [284, 444],
-      "props": {"zone": "observatory"}
+      "pos": [
+        284,
+        444
+      ],
+      "props": {
+        "zone": "observatory"
+      }
     },
     {
       "id": "lamp_glasshouse_w",
       "kind": "road_lamp",
-      "pos": [520, 574],
-      "props": {"zone": "glasshouse"}
+      "pos": [
+        520,
+        574
+      ],
+      "props": {
+        "zone": "glasshouse"
+      }
     },
     {
       "id": "lamp_glasshouse_e",
       "kind": "road_lamp",
-      "pos": [760, 574],
-      "props": {"zone": "glasshouse"}
+      "pos": [
+        760,
+        574
+      ],
+      "props": {
+        "zone": "glasshouse"
+      }
     },
     {
       "id": "lamp_river_w",
       "kind": "road_lamp",
-      "pos": [906, 328],
-      "props": {"zone": "moonlit_bridge"}
+      "pos": [
+        906,
+        328
+      ],
+      "props": {
+        "zone": "moonlit_bridge"
+      }
     },
     {
       "id": "lamp_chimes_court",
       "kind": "road_lamp",
-      "pos": [600, 196],
-      "props": {"zone": "bell_arch"}
+      "pos": [
+        600,
+        196
+      ],
+      "props": {
+        "zone": "bell_arch"
+      }
     }
   ],
   "triggers": [
     {
       "id": "trig_arrival",
-      "rect": [540, 336, 72, 64],
+      "rect": [
+        540,
+        336,
+        72,
+        64
+      ],
       "string_id": "ISL1_ARRIVAL",
       "once": true
     },
     {
       "id": "trig_orchard",
-      "rect": [368, 160, 64, 64],
+      "rect": [
+        368,
+        160,
+        64,
+        64
+      ],
       "string_id": "CH2_TITLE",
       "once": true
     },
     {
       "id": "trig_observatory",
-      "rect": [328, 336, 64, 64],
+      "rect": [
+        328,
+        336,
+        64,
+        64
+      ],
       "string_id": "CH3_TITLE",
       "once": true
     },
     {
       "id": "trig_glasshouse",
-      "rect": [592, 488, 96, 48],
+      "rect": [
+        592,
+        488,
+        96,
+        48
+      ],
       "string_id": "CH4_TITLE",
       "once": true
     },
     {
       "id": "trig_bridge",
-      "rect": [848, 328, 64, 64],
+      "rect": [
+        848,
+        328,
+        64,
+        64
+      ],
       "string_id": "ZONE_BRIDGE",
       "once": true
     },
     {
       "id": "trig_bell_arch_seal",
-      "rect": [608, 240, 64, 32],
+      "rect": [
+        608,
+        240,
+        64,
+        32
+      ],
       "string_id": "PROMPT_BOSS_DOOR",
       "once": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island1_scenery",
+      "prop": "bell_tower_arch",
+      "pos": [
+        640,
+        108
+      ],
+      "layer": "overhead",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "sundial_pillar",
+      "pos": [
+        640,
+        336
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "observatory_telescope",
+      "pos": [
+        88,
+        334
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "glasshouse_arch",
+      "pos": [
+        576,
+        496
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "glasshouse_arch",
+      "pos": [
+        640,
+        494
+      ],
+      "layer": "overhead",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "glasshouse_arch",
+      "pos": [
+        704,
+        496
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        532,
+        306
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        748,
+        306
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        532,
+        424
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        748,
+        424
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        594,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        688,
+        434
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        514,
+        326
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        766,
+        404
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        506,
+        396
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        768,
+        326
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "hanging_chimes",
+      "pos": [
+        588,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "hanging_chimes",
+      "pos": [
+        692,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "hanging_chimes",
+      "pos": [
+        542,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "hanging_chimes",
+      "pos": [
+        738,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        586,
+        174
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        694,
+        174
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        602,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        678,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        522,
+        114
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        758,
+        114
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_warm",
+      "pos": [
+        264,
+        110
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_bloom",
+      "pos": [
+        376,
+        126
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_warm",
+      "pos": [
+        152,
+        142
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_bloom",
+      "pos": [
+        152,
+        254
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_warm",
+      "pos": [
+        328,
+        254
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_bloom",
+      "pos": [
+        200,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.85
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_warm",
+      "pos": [
+        458,
+        102
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_warm",
+      "pos": [
+        142,
+        198
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_bloom",
+      "pos": [
+        488,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        286,
+        174
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        392,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        236,
+        178
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        352,
+        166
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        180,
+        224
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_warm",
+      "pos": [
+        156,
+        294
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_bloom",
+      "pos": [
+        392,
+        286
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        140,
+        392
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        104,
+        412
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        164,
+        456
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        374,
+        536
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        216,
+        488
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        334,
+        492
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        224,
+        568
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        328,
+        566
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        144,
+        326
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        360,
+        424
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        514,
+        526
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        766,
+        526
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_bloom",
+      "pos": [
+        498,
+        452
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_warm",
+      "pos": [
+        796,
+        452
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        510,
+        550
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        772,
+        550
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        516,
+        496
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        764,
+        496
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        814,
+        556
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "bridge_balustrade",
+      "pos": [
+        978,
+        338
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "bridge_balustrade",
+      "pos": [
+        1086,
+        338
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "bridge_balustrade",
+      "pos": [
+        978,
+        386
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "bridge_balustrade",
+      "pos": [
+        1086,
+        386
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        888,
+        190
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        936,
+        254
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        872,
+        462
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        920,
+        510
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        826,
+        118
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        1112,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        956,
+        562
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        1112,
+        234
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        1152,
+        266
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        1112,
+        474
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        1154,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        1154,
+        214
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        986,
+        178
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        1074,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        996,
+        254
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        1072,
+        424
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        1004,
+        484
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        1018,
+        564
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        1076,
+        558
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        844,
+        246
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        860,
+        412
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        1156,
+        384
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        964,
+        520
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
     }
   ]
 }

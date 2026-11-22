@@ -25,6 +25,11 @@ var triggers: Array[Dictionary] = []
 var rooms: Array[Dictionary] = []
 
 var _ground_sprite: Sprite2D = null
+var _scenery_ground_root: Node2D = null
+var _scenery_sort_root: Node2D = null
+var _scenery_over_root: Node2D = null
+var _scenery_props: Array[LxSceneryProp] = []
+var _ambient_life: LxAmbientLife = null
 var _interactables_root: Node2D = null
 var _enemies_root: Node2D = null
 var _enemies: Array[LxEnemyBrain] = []
@@ -40,16 +45,29 @@ func _ready() -> void:
 	_ensure_containers()
 
 func _ensure_containers() -> void:
+	if _scenery_ground_root == null:
+		_scenery_ground_root = _make_layer("SceneryGround", -5, false)
+	if _scenery_sort_root == null:
+		_scenery_sort_root = _make_layer("ScenerySort", 0, true)
 	if _interactables_root == null:
-		_interactables_root = Node2D.new()
-		_interactables_root.name = "Interactables"
-		_interactables_root.y_sort_enabled = true
-		add_child(_interactables_root)
+		_interactables_root = _make_layer("Interactables", 0, true)
 	if _enemies_root == null:
-		_enemies_root = Node2D.new()
-		_enemies_root.name = "Enemies"
-		_enemies_root.y_sort_enabled = true
-		add_child(_enemies_root)
+		_enemies_root = _make_layer("Enemies", 0, true)
+	if _ambient_life == null:
+		_ambient_life = LxAmbientLife.new()
+		_ambient_life.name = "AmbientLife"
+		_ambient_life.z_index = 3
+		add_child(_ambient_life)
+	if _scenery_over_root == null:
+		_scenery_over_root = _make_layer("SceneryOver", 4, false)
+
+func _make_layer(layer_name: String, z: int, y_sort: bool) -> Node2D:
+	var n := Node2D.new()
+	n.name = layer_name
+	n.z_index = z
+	n.y_sort_enabled = y_sort
+	add_child(n)
+	return n
 
 func load_region(island_id: int, region_id: String, director: LxAttackDirector) -> bool:
 	var map_path: String = "res://luxel/islands/%d/%s.map" % [island_id, region_id]
@@ -93,6 +111,9 @@ func load_region_from_paths(
 	triggers.assign(parsed.get("triggers", []))
 	rooms = LxMapFormat._ensure_dict_array(parsed.get("rooms", []))
 	_setup_ground_visual()
+	var scenery_raw: Variant = parsed.get("scenery", [])
+	if scenery_raw is Array:
+		_scenery_props = LxSceneryProp.spawn_from_specs(scenery_raw as Array, _scenery_ground_root, _scenery_sort_root, _scenery_over_root)
 	var inter_specs: Array[Dictionary] = []
 	inter_specs.assign(parsed.get("interactables", []))
 	_spawn_interactables(inter_specs)
@@ -105,6 +126,9 @@ func load_region_from_paths(
 		Lx.state.region_id = current_region_id
 		Lx.state.mark_region_visited(current_island_id, current_region_id)
 	_init_camera(spawn_pos)
+	if _ambient_life != null:
+		_ambient_life.configure(current_island_id, bounds, is_dungeon)
+		_ambient_life.tick(0.0, Lx.camera.global_position if Lx.camera != null else spawn_pos)
 	queue_redraw()
 	if Lx.events != null:
 		Lx.events.region_entered.emit(current_island_id, current_region_id)
@@ -123,7 +147,8 @@ func _clear_loaded() -> void:
 	if _ground_sprite != null:
 		_ground_sprite.queue_free()
 		_ground_sprite = null
-	for root_node: Node2D in [_interactables_root, _enemies_root]:
+	_scenery_props.clear()
+	for root_node: Node2D in [_interactables_root, _enemies_root, _scenery_ground_root, _scenery_sort_root, _scenery_over_root]:
 		if root_node != null:
 			for c: Node in root_node.get_children():
 				c.queue_free()
@@ -380,6 +405,12 @@ func load_interactables_from_state() -> void:
 
 func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
 	_lens_circles.clear()
+	for sp: LxSceneryProp in _scenery_props:
+		if sp != null and sp.animated:
+			sp.tick(dt)
+	if _ambient_life != null:
+		var cam_pos: Vector2 = Lx.camera.global_position if Lx.camera != null else (player_pos if player_pos.x > -9000.0 else spawn_pos)
+		_ambient_life.tick(dt, cam_pos)
 	for it: LxInteractable in _interactables:
 		if it != null:
 			it.tick(dt)

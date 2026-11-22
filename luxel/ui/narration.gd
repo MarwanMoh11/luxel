@@ -191,7 +191,8 @@ func _draw_slot(s: Dictionary) -> void:
 		if is_letterbox_on():
 			y = 166.0 if lines.size() == 1 else 165.0
 		else:
-			y = 152.0 - gap * float(lines.size() - 1)
+			var base_y: float = 136.0 if _unlocked_move_count() >= 4 else 152.0
+			y = base_y - gap * float(lines.size() - 1)
 	for i: int in range(lines.size()):
 		LxPixelFont.draw_centered(self, lines[i], 160.0, y + gap * float(i), col, sc)
 
@@ -204,10 +205,21 @@ func _draw_prompt() -> void:
 	var tw: float = float(LxPixelFont.width(_prompt_text, 1))
 	var box_w: float = tw + 12.0
 	var box_h: float = 11.0
-	var y: float = 148.0 if is_letterbox_on() else 164.0
+	var lift_prompt: bool = is_letterbox_on() or _unlocked_move_count() >= 4
+	var y: float = 148.0 if lift_prompt else 164.0
 	var rect := Rect2(roundf(160.0 - box_w * 0.5), y, box_w, box_h)
 	LxPixelFont.draw_panel(self, rect, "dusk", "mauve", "night")
 	LxPixelFont.draw_centered(self, _prompt_text, 160.0, y + 3.0, col, 1)
+
+
+func _unlocked_move_count() -> int:
+	if Lx.state == null:
+		return 0
+	var count: int = 0
+	for v: Variant in Lx.state.unlocked_moves.values():
+		if bool(v):
+			count += 1
+	return count
 
 
 func _screen_rect() -> Rect2:

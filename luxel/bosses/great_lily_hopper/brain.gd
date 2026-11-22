@@ -177,11 +177,12 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Royal twin-blossom lily crown
-	var leaf_r: float = body_radius + (2.5 if state == State.TELL else 1.0)
-	draw_arc(off + Vector2(0.0, -body_radius + 1.0), leaf_r * 0.85, 0.2, TAU - 0.2, 16, PAL["lime"] as Color, 2.2)
-	draw_circle(off + Vector2(-3.0, -body_radius - 1.5), 2.2, PAL["rose"] as Color)
-	draw_circle(off + Vector2(3.0, -body_radius - 1.5), 2.2, PAL["gold"] as Color)
+	if _sprite_sheet == null:
+		# Royal twin-blossom lily crown
+		var leaf_r: float = body_radius + (2.5 if state == State.TELL else 1.0)
+		draw_arc(off + Vector2(0.0, -body_radius + 1.0), leaf_r * 0.85, 0.2, TAU - 0.2, 16, PAL["lime"] as Color, 2.2)
+		draw_circle(off + Vector2(-3.0, -body_radius - 1.5), 2.2, PAL["rose"] as Color)
+		draw_circle(off + Vector2(3.0, -body_radius - 1.5), 2.2, PAL["gold"] as Color)
 	if state == State.TELL or twin_pause_active:
 		var rel: Vector2 = leap_to - pos
 		draw_arc(rel, 9.0, 0.0, TAU, 16, PAL["sky"] as Color, 1.8)

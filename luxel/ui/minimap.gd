@@ -21,11 +21,38 @@ static func draw_minimap(c: CanvasItem, origin: Vector2, blink_t: float) -> void
 	var o: Vector2 = origin.round()
 	LxPixelFont.draw_panel(c, Rect2(o, Vector2(PANEL_W, PANEL_H)), "night", "mauve", "void")
 	var inner := Rect2(o + Vector2(2.0, 2.0), Vector2(INNER_W, INNER_H))
-
 	_draw_zones(c, bounds, inner)
+	_draw_frame_accents(c, o, inner)
 	_draw_interactables(c, bounds, inner, blink_t)
+	_draw_boss_alerts(c, bounds, inner, blink_t)
 	_draw_player(c, bounds, inner, blink_t)
 	_draw_map_hint(c, o)
+
+
+static func _draw_frame_accents(c: CanvasItem, o: Vector2, inner: Rect2) -> void:
+	var gold: Color = LxPalette.PAL["gold"]
+	var apr: Color = LxPalette.PAL["apricot"]
+	var dusk: Color = LxPalette.PAL["dusk"]
+	var x1: float = o.x + PANEL_W - 2.0
+	var y1: float = o.y + PANEL_H - 2.0
+	# 1 px brass corner accents on frame border.
+	for corner: Array in [[o.x + 1.0, o.y + 1.0, 1.0, 1.0], [x1, o.y + 1.0, -1.0, 1.0], [o.x + 1.0, y1, 1.0, -1.0], [x1, y1, -1.0, -1.0]]:
+		var cx0: float = float(corner[0])
+		var cy0: float = float(corner[1])
+		c.draw_rect(Rect2(cx0, cy0, 1.0, 1.0), gold)
+		c.draw_rect(Rect2(cx0 + float(corner[2]), cy0, 1.0, 1.0), apr)
+		c.draw_rect(Rect2(cx0, cy0 + float(corner[3]), 1.0, 1.0), apr)
+	# Faint N/S/E/W cardinal tick notches on inner border.
+	var mx: float = floorf(inner.position.x + inner.size.x * 0.5) - 1.0
+	var my: float = floorf(inner.position.y + inner.size.y * 0.5) - 1.0
+	c.draw_rect(Rect2(mx, o.y + 1.0, 2.0, 1.0), apr)
+	c.draw_rect(Rect2(mx, inner.position.y, 2.0, 1.0), dusk)
+	c.draw_rect(Rect2(mx, y1, 2.0, 1.0), dusk)
+	c.draw_rect(Rect2(mx, inner.end.y - 1.0, 2.0, 1.0), dusk)
+	c.draw_rect(Rect2(o.x + 1.0, my, 1.0, 2.0), dusk)
+	c.draw_rect(Rect2(inner.position.x, my, 1.0, 2.0), dusk)
+	c.draw_rect(Rect2(x1, my, 1.0, 2.0), dusk)
+	c.draw_rect(Rect2(inner.end.x - 1.0, my, 1.0, 2.0), dusk)
 
 
 static func _draw_zones(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:
@@ -41,25 +68,17 @@ static func _draw_zones(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:
 		var zrect: Rect2 = LxMapFormat.to_rect2(z.get("rect", []))
 		if zrect.size.x <= 0.0 or zrect.size.y <= 0.0:
 			continue
-		var zid: String = str(z.get("id", ""))
-		var lit: bool = Lx.world.has_method("is_zone_lit") and bool(Lx.world.call("is_zone_lit", zid))
+		var lit: bool = Lx.world.has_method("is_zone_lit") and bool(Lx.world.call("is_zone_lit", str(z.get("id", ""))))
 		var rx0: float = floorf(inner.position.x + clampf((zrect.position.x - bounds.position.x) / bounds.size.x, 0.0, 1.0) * inner.size.x)
 		var ry0: float = floorf(inner.position.y + clampf((zrect.position.y - bounds.position.y) / bounds.size.y, 0.0, 1.0) * inner.size.y)
 		var rx1: float = ceilf(inner.position.x + clampf((zrect.end.x - bounds.position.x) / bounds.size.x, 0.0, 1.0) * inner.size.x)
 		var ry1: float = ceilf(inner.position.y + clampf((zrect.end.y - bounds.position.y) / bounds.size.y, 0.0, 1.0) * inner.size.y)
-		var r := Rect2(
-			rx0,
-			ry0,
-			clampf(maxf(1.0, rx1 - rx0), 0.0, inner.end.x - rx0),
-			clampf(maxf(1.0, ry1 - ry0), 0.0, inner.end.y - ry0)
-		)
+		var r := Rect2(rx0, ry0, clampf(maxf(1.0, rx1 - rx0), 0.0, inner.end.x - rx0), clampf(maxf(1.0, ry1 - ry0), 0.0, inner.end.y - ry0))
 		if r.size.x <= 0.0 or r.size.y <= 0.0:
 			continue
-		var edge_col: Color = LxPalette.PAL["teal"] if lit else LxPalette.PAL["dusk"]
-		var fill_col: Color = LxPalette.PAL["pine"] if lit else LxPalette.PAL["void"]
-		c.draw_rect(r, edge_col)
+		c.draw_rect(r, LxPalette.PAL["teal"] if lit else LxPalette.PAL["dusk"])
 		if r.size.x > 2.0 and r.size.y > 2.0:
-			c.draw_rect(r.grow(-1.0), fill_col)
+			c.draw_rect(r.grow(-1.0), LxPalette.PAL["pine"] if lit else LxPalette.PAL["void"])
 
 
 static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_t: float) -> void:
@@ -90,21 +109,55 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 					_draw_pip(c, wpos, bounds, inner, 1.0, LxPalette.PAL["ice"])
 			"rest_shrine":
 				_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["apricot"])
-			"great_lamp":
-				_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["gold"])
+			"great_lamp", "great_belfry_brazier":
+				var gp: Vector2 = _map_pt(wpos, bounds, inner, 3.0, 3.0)
+				c.draw_rect(Rect2(gp.x + 1.0, gp.y, 1.0, 3.0), LxPalette.PAL["gold"])
+				c.draw_rect(Rect2(gp.x, gp.y + 1.0, 3.0, 1.0), LxPalette.PAL["gold"])
+				c.draw_rect(Rect2(gp.x + 1.0, gp.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+			"door", "locked_door", "switch_door", "combat_gate", "ward_barrier", "dungeon_entrance":
+				var dp: Vector2 = _map_pt(wpos, bounds, inner, 3.0, 2.0)
+				c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["plum"])
+				c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["apricot"])
+			"boss_door", "boss_key":
+				var bp: Vector2 = _map_pt(wpos, bounds, inner, 3.0, 2.0)
+				c.draw_rect(Rect2(bp, Vector2(3.0, 2.0)), LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["plum"])
+				c.draw_rect(Rect2(bp.x + 1.0, bp.y, 1.0, 2.0), LxPalette.PAL["gold"])
+			"bridge", "bridge_platform":
+				c.draw_rect(Rect2(_map_pt(wpos, bounds, inner, 3.0, 1.0), Vector2(3.0, 1.0)), LxPalette.PAL["apricot"])
+
+
+static func _draw_boss_alerts(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_t: float) -> void:
+	if not Lx.world.has_method("get_enemies"):
+		return
+	var enemies_v: Variant = Lx.world.call("get_enemies")
+	if not (enemies_v is Array):
+		return
+	var pulse_on: bool = fmod(blink_t, 0.5) < 0.28
+	for item: Variant in (enemies_v as Array):
+		if item == null or not (item is Object) or not is_instance_valid(item):
+			continue
+		var obj: Object = item as Object
+		if not _prop_bool(obj, "is_boss"):
+			continue
+		var alive: bool = bool(obj.call("is_alive")) if obj.has_method("is_alive") else (not (obj.get("hp") is float or obj.get("hp") is int) or float(obj.get("hp")) > 0.0)
+		if not alive:
+			continue
+		var wpos: Vector2 = (obj as Node2D).global_position if obj is Node2D else (obj.get("pos") as Vector2 if obj.get("pos") is Vector2 else Vector2.ZERO)
+		var pt: Vector2 = _map_pt(wpos, bounds, inner, 2.0, 2.0)
+		if pulse_on:
+			c.draw_rect(Rect2(pt.x - 1.0, pt.y - 1.0, 4.0, 4.0), LxPalette.PAL["void"])
+		c.draw_rect(Rect2(pt, Vector2(2.0, 2.0)), LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["wine"])
 
 
 static func _draw_player(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_t: float) -> void:
 	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
 		return
-	var wpos: Vector2 = (Lx.player as Node2D).global_position
-	var nx: float = clampf((wpos.x - bounds.position.x) / bounds.size.x, 0.0, 1.0)
-	var ny: float = clampf((wpos.y - bounds.position.y) / bounds.size.y, 0.0, 1.0)
-	var px: float = clampf(floorf(inner.position.x + nx * (inner.size.x - 2.0)), inner.position.x + 1.0, inner.end.x - 3.0)
-	var py: float = clampf(floorf(inner.position.y + ny * (inner.size.y - 2.0)), inner.position.y + 1.0, inner.end.y - 3.0)
+	var p: Vector2 = _map_pt((Lx.player as Node2D).global_position, bounds, inner.grow(-2.0), 2.0, 2.0)
 	var border_col: Color = LxPalette.PAL["gold"] if fmod(blink_t, 0.6) < 0.35 else LxPalette.PAL["apricot"]
-	c.draw_rect(Rect2(px - 1.0, py - 1.0, 4.0, 4.0), border_col)
-	c.draw_rect(Rect2(px, py, 2.0, 2.0), LxPalette.PAL["cream"])
+	c.draw_rect(Rect2(p.x - 1.0, p.y - 2.0, 4.0, 6.0), border_col)
+	c.draw_rect(Rect2(p.x - 2.0, p.y - 1.0, 6.0, 4.0), border_col)
+	c.draw_rect(Rect2(p.x - 1.0, p.y - 1.0, 4.0, 4.0), LxPalette.PAL["void"])
+	c.draw_rect(Rect2(p.x, p.y, 2.0, 2.0), LxPalette.PAL["cream"])
 
 
 static func _draw_map_hint(c: CanvasItem, origin: Vector2) -> void:
@@ -117,12 +170,16 @@ static func _draw_map_hint(c: CanvasItem, origin: Vector2) -> void:
 	LxPixelFont.draw_right(c, hint, origin.x + PANEL_W, origin.y + PANEL_H + 2.0, LxPalette.PAL["stone"], 1)
 
 
-static func _draw_pip(c: CanvasItem, wpos: Vector2, bounds: Rect2, inner: Rect2, sz: float, col: Color) -> void:
+static func _map_pt(wpos: Vector2, bounds: Rect2, inner: Rect2, w: float, h: float) -> Vector2:
 	var nx: float = clampf((wpos.x - bounds.position.x) / bounds.size.x, 0.0, 1.0)
 	var ny: float = clampf((wpos.y - bounds.position.y) / bounds.size.y, 0.0, 1.0)
-	var px: float = clampf(floorf(inner.position.x + nx * (inner.size.x - sz)), inner.position.x, inner.end.x - sz)
-	var py: float = clampf(floorf(inner.position.y + ny * (inner.size.y - sz)), inner.position.y, inner.end.y - sz)
-	c.draw_rect(Rect2(px, py, sz, sz), col)
+	var px: float = clampf(floorf(inner.position.x + nx * (inner.size.x - w)), inner.position.x, inner.end.x - w)
+	var py: float = clampf(floorf(inner.position.y + ny * (inner.size.y - h)), inner.position.y, inner.end.y - h)
+	return Vector2(px, py)
+
+
+static func _draw_pip(c: CanvasItem, wpos: Vector2, bounds: Rect2, inner: Rect2, sz: float, col: Color) -> void:
+	c.draw_rect(Rect2(_map_pt(wpos, bounds, inner, sz, sz), Vector2(sz, sz)), col)
 
 
 static func _prop_bool(obj: Object, prop: String) -> bool:

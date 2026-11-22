@@ -156,12 +156,16 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Glowing forge grate core
-	draw_rect(Rect2(off + Vector2(-4.0, -3.0), Vector2(8.0, 5.0)), PAL["night"] as Color, true)
-	draw_rect(Rect2(off + Vector2(-3.0, -2.0), Vector2(6.0, 3.0)), (PAL["gold"] as Color) if not armour_intact else (PAL["coral"] as Color), true)
+	if _sprite_sheet == null:
+		# Glowing forge grate core
+		draw_rect(Rect2(off + Vector2(-4.0, -3.0), Vector2(8.0, 5.0)), PAL["night"] as Color, true)
+		draw_rect(Rect2(off + Vector2(-3.0, -2.0), Vector2(6.0, 3.0)), (PAL["gold"] as Color) if not armour_intact else (PAL["coral"] as Color), true)
 	if armour_intact:
-		var plate_col: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["dusk"] as Color)
-		draw_rect(Rect2(off - Vector2(body_radius + 1.5, body_radius + 1.5), Vector2((body_radius + 1.5) * 2.0, (body_radius + 1.5) * 2.0)), plate_col, false, 2.5)
+		var plate_col: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["mauve"] as Color)
+		var ar: float = body_radius + 3.0
+		for i: int in range(4):
+			var a: float = PI * 0.25 + float(i) * (PI * 0.5)
+			draw_arc(off, ar, a - 0.38, a + 0.38, 4, plate_col, 1.8)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		draw_arc(off, lerpf(FORGE_RING_MAX_R, STOMP_START_R + 5.0, prog), 0.0, TAU, 28, PAL["apricot"] as Color, 1.8)

@@ -30,6 +30,7 @@ const ISLAND_AMBIENCE: Dictionary = {
 	8: ["long_night_drone"],
 }
 
+const SfxMap := preload("res://luxel/core/sfx_map.gd")
 const SFX_POOL_SIZE: int = 12
 const SFX_2D_POOL_SIZE: int = 12
 
@@ -53,6 +54,7 @@ var _sfx_cursor: int = 0
 var _sfx_2d_cursor: int = 0
 
 var _stream_cache: Dictionary = {}
+var _sfx_missing: Dictionary = {}
 var _saved_positions: Dictionary = {}
 
 var current_track_group: String = ""
@@ -347,7 +349,18 @@ func play_stinger(stinger_name: String) -> void:
 
 
 func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool = false, ui_bus: bool = false) -> void:
+	if sfx_id.is_empty():
+		return
 	var st: AudioStream = _load_sfx_stream(sfx_id)
+	var pitch_mul: float = 1.0
+	var gain_db: float = 0.0
+	if st == null:
+		var mapped: Dictionary = SfxMap.resolve(sfx_id)
+		var mapped_id: String = str(mapped.get("id", ""))
+		if not mapped_id.is_empty():
+			st = _load_sfx_stream(mapped_id)
+			pitch_mul = float(mapped.get("pitch", 1.0))
+			gain_db = float(mapped.get("db", 0.0))
 	if st == null:
 		return
 	if spatial and not _sfx_2d_pool.is_empty():
@@ -355,14 +368,16 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 		_sfx_2d_cursor = (_sfx_2d_cursor + 1) % _sfx_2d_pool.size()
 		p2.global_position = world_pos
 		p2.stream = st
-		p2.pitch_scale = randf_range(0.96, 1.04)
+		p2.volume_db = gain_db
+		p2.pitch_scale = pitch_mul * randf_range(0.96, 1.04)
 		p2.play()
 	elif not _sfx_pool.is_empty():
 		var p: AudioStreamPlayer = _sfx_pool[_sfx_cursor]
 		_sfx_cursor = (_sfx_cursor + 1) % _sfx_pool.size()
 		p.bus = BUS_UI if ui_bus else BUS_SFX
 		p.stream = st
-		p.pitch_scale = 1.0 if ui_bus else randf_range(0.97, 1.03)
+		p.volume_db = gain_db
+		p.pitch_scale = pitch_mul if ui_bus else pitch_mul * randf_range(0.97, 1.03)
 		p.play()
 
 
@@ -437,6 +452,8 @@ func _load_ambience_stream(amb_name: String, fallback: String = "night_breeze") 
 
 
 func _load_sfx_stream(sfx_id: String) -> AudioStream:
+	if _sfx_missing.has(sfx_id):
+		return null
 	for ext: String in [".ogg", ".wav"]:
 		var path: String = "res://luxel/audio/sfx/%s%s" % [sfx_id, ext]
 		if _stream_cache.has(path):
@@ -452,4 +469,5 @@ func _load_sfx_stream(sfx_id: String) -> AudioStream:
 			if ogg != null:
 				_stream_cache[path] = ogg
 				return ogg
+	_sfx_missing[sfx_id] = true
 	return null

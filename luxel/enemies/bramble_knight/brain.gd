@@ -166,9 +166,10 @@ func _shield_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Horned bramble helmet silhouette.
-	draw_line(off + Vector2(-4.0, -body_radius), off + Vector2(-6.5, -body_radius - 5.0), PAL["jade"] as Color, 1.8)
-	draw_line(off + Vector2(4.0, -body_radius), off + Vector2(6.5, -body_radius - 5.0), PAL["jade"] as Color, 1.8)
+	if _sprite_sheet == null:
+		# Horned bramble helmet silhouette.
+		draw_line(off + Vector2(-4.0, -body_radius), off + Vector2(-6.5, -body_radius - 5.0), PAL["jade"] as Color, 1.8)
+		draw_line(off + Vector2(4.0, -body_radius), off + Vector2(6.5, -body_radius - 5.0), PAL["jade"] as Color, 1.8)
 	# Spiky thorn tines along active front shield.
 	if _has_active_shield():
 		for i: int in range(-2, 3):

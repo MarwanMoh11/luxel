@@ -312,10 +312,11 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Bellows sac swells during TELL inhale
-	var sac_r: float = 4.5 if state == State.TELL else (2.0 if bellows_punctured else 3.0)
-	var sac_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.65)
-	draw_circle(sac_pos, sac_r, (PAL["gold"] as Color) if state == State.TELL else (PAL["apricot"] as Color))
+	if _sprite_sheet == null:
+		# Bellows sac swells during TELL inhale
+		var sac_r: float = 4.5 if state == State.TELL else (2.0 if bellows_punctured else 3.0)
+		var sac_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.65)
+		draw_circle(sac_pos, sac_r, (PAL["gold"] as Color) if state == State.TELL else (PAL["apricot"] as Color))
 	if state == State.COMMIT:
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		for idx: int in [-1, 0, 1]:

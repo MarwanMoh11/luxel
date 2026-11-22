@@ -436,44 +436,81 @@ func _notify_light(wick: LxWick, world_ctx: Node) -> void:
 func _draw() -> void:
 	if state == State.IN_HAND:
 		return
-
-	var pulse: float = 0.90 + 0.10 * sin(_anim_t * 7.5)
+	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var pulse: float = (0.95 + 0.04 * sin(_anim_t * 5.0)) if flash_red else (0.90 + 0.10 * sin(_anim_t * 7.5))
 	var bob_y: float = roundf(sin(_anim_t * 5.0) * 1.5) if state == State.HANGING else 0.0
 	var center := Vector2(0.0, -5.0 + bob_y)
 
-	# Zip guide line from Wick to lantern when zippable (FLYING or HANGING)
+	# Soft ground contact shadow oval below the hovering/flying lantern
+	if state != State.CARRIED:
+		var sh_c := Vector2(0.0, 2.0)
+		var sh_col := Color(LxWick.PAL_VOID, 0.34 - maxf(0.0, -bob_y) * 0.04)
+		draw_rect(Rect2(sh_c + Vector2(-2.0, -1.0), Vector2(4.0, 1.0)), sh_col)
+		draw_rect(Rect2(sh_c + Vector2(-3.0, 0.0), Vector2(6.0, 1.0)), sh_col)
+		draw_rect(Rect2(sh_c + Vector2(-2.0, 1.0), Vector2(4.0, 1.0)), sh_col)
+
+	# Luminous golden thread of gliding lantern beads from Wick when zippable
 	if is_lure_active() and _owner_wick != null and is_instance_valid(_owner_wick):
 		var rel_wick: Vector2 = (_owner_wick.global_position - global_position).round()
-		_draw_dashed_line(rel_wick + Vector2(0.0, -5.0), center, 3.0, 3.0, Color(PAL_GOLD, 0.45), 1.0)
+		_draw_lantern_tether(rel_wick + Vector2(0.0, -5.0), center, flash_red)
 
-	# Smooth feathered warm glow (no screen-door dither)
 	var glow_col: Color = PAL_CORAL if state == State.CARRIED else PAL_GOLD
-	draw_circle(center, 15.0 * pulse, Color(glow_col, 0.10))
-	draw_circle(center, 9.0 * pulse, Color(PAL_APRICOT, 0.16))
+	var glow_sc: float = 0.78 if flash_red else 1.0
+	draw_circle(center, 15.0 * pulse, Color(glow_col, 0.10 * glow_sc))
+	draw_circle(center, 9.0 * pulse, Color(PAL_APRICOT, 0.16 * glow_sc))
 
-	# Hang timer arc around hanging lantern
+	# Hang timer arc + 2 gently orbiting rising golden candlelight motes
 	if state == State.HANGING and hang_max > 0.05:
 		var frac: float = clampf(hang_timer / hang_max, 0.0, 1.0)
 		draw_arc(center, 7.5, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, Color(PAL_GOLD, 0.72), 1.0)
+		for mi: int in range(2):
+			var m_ph: float = fmod(_anim_t * 0.72 + float(mi) * 0.5, 1.0)
+			var m_ang: float = _anim_t * 1.85 + float(mi) * PI
+			var m_pos: Vector2 = (center + Vector2(cos(m_ang) * 9.0, 2.0 - m_ph * 11.0)).round()
+			var m_col: Color = PAL_CREAM if mi == 0 else PAL_GOLD
+			draw_rect(Rect2(m_pos, Vector2(1.0, 1.0)), Color(m_col, sin(m_ph * PI) * (0.65 if flash_red else 0.90)))
 
-	# Crisp pixel lantern body (Last Light palette only)
-	draw_rect(Rect2(center + Vector2(-3.0, -4.0), Vector2(6.0, 8.0)), PAL_NIGHT)
-	draw_rect(Rect2(center + Vector2(-2.0, -4.0), Vector2(4.0, 1.0)), PAL_DUSK)
+	# Sculpted miniature Last Light Brass Lantern (curved bail, iron hood, 4 brass struts, flame, finial)
+	draw_rect(Rect2(center + Vector2(-1.0, -7.0), Vector2(2.0, 1.0)), PAL_GOLD)
+	draw_rect(Rect2(center + Vector2(-2.0, -6.0), Vector2(1.0, 1.0)), PAL_APRICOT)
+	draw_rect(Rect2(center + Vector2(1.0, -6.0), Vector2(1.0, 1.0)), PAL_APRICOT)
+	draw_rect(Rect2(center + Vector2(-2.0, -5.0), Vector2(4.0, 1.0)), PAL_NIGHT)
+	draw_rect(Rect2(center + Vector2(-1.0, -5.0), Vector2(2.0, 1.0)), PAL_DUSK)
+	draw_rect(Rect2(center + Vector2(-4.0, -4.0), Vector2(8.0, 1.0)), PAL_NIGHT)
+	draw_rect(Rect2(center + Vector2(-3.0, -4.0), Vector2(6.0, 1.0)), PAL_DUSK)
+	draw_rect(Rect2(center + Vector2(-4.0, -3.0), Vector2(8.0, 6.0)), PAL_NIGHT)
+	draw_rect(Rect2(center + Vector2(-3.0, -3.0), Vector2(6.0, 6.0)), PAL_APRICOT)
+	draw_rect(Rect2(center + Vector2(-2.0, -2.0), Vector2(4.0, 4.0)), PAL_GOLD)
+	var sway_x: float = 0.0 if flash_red else roundf(sin(_anim_t * 6.5) * 0.65)
+	draw_rect(Rect2(center + Vector2(-1.0 + sway_x, -1.0), Vector2(2.0, 2.0)), PAL_CREAM)
+	draw_rect(Rect2(center + Vector2(sway_x, -2.0), Vector2(1.0, 1.0)), Color(PAL_CREAM, 0.84))
+	# Four thin vertical brass cage struts (outer rim + inner mullions)
+	draw_rect(Rect2(center + Vector2(-4.0, -2.0), Vector2(1.0, 4.0)), PAL_APRICOT)
+	draw_rect(Rect2(center + Vector2(3.0, -2.0), Vector2(1.0, 4.0)), PAL_APRICOT)
+	draw_rect(Rect2(center + Vector2(-4.0, -1.0), Vector2(1.0, 2.0)), PAL_GOLD)
+	draw_rect(Rect2(center + Vector2(3.0, -1.0), Vector2(1.0, 2.0)), PAL_GOLD)
+	draw_rect(Rect2(center + Vector2(-2.0, -3.0), Vector2(1.0, 6.0)), Color(PAL_CORAL, 0.54))
+	draw_rect(Rect2(center + Vector2(1.0, -3.0), Vector2(1.0, 6.0)), Color(PAL_CORAL, 0.54))
+	# Base plinth + tiny brass finial
+	draw_rect(Rect2(center + Vector2(-3.0, 3.0), Vector2(6.0, 1.0)), PAL_NIGHT)
 	draw_rect(Rect2(center + Vector2(-2.0, 3.0), Vector2(4.0, 1.0)), PAL_DUSK)
-	draw_rect(Rect2(center + Vector2(-2.0, -3.0), Vector2(4.0, 6.0)), PAL_APRICOT)
-	draw_rect(Rect2(center + Vector2(-1.0, -2.0), Vector2(2.0, 4.0)), PAL_GOLD)
-	draw_rect(Rect2(center + Vector2(-1.0, -1.0), Vector2(2.0, 2.0)), PAL_CREAM)
+	draw_rect(Rect2(center + Vector2(-1.0, 4.0), Vector2(2.0, 1.0)), PAL_APRICOT)
+	draw_rect(Rect2(center + Vector2(0.0, 4.0), Vector2(1.0, 1.0)), PAL_GOLD)
 
 
-func _draw_dashed_line(a: Vector2, b: Vector2, dash_len: float, gap_len: float, col: Color, width: float) -> void:
+func _draw_lantern_tether(a: Vector2, b: Vector2, flash_red: bool) -> void:
 	var delta: Vector2 = b - a
 	var total: float = delta.length()
-	if total <= 1.0:
+	if total <= 2.0:
 		return
 	var step_dir: Vector2 = delta / total
-	var cursor: float = 0.0
-	var period: float = dash_len + gap_len
+	draw_line(a, b, Color(PAL_APRICOT, 0.22), 1.0)
+	var cursor: float = fmod(_anim_t * (14.0 if flash_red else 24.0), 7.0)
+	var idx: int = 0
 	while cursor < total:
-		var seg_end: float = minf(cursor + dash_len, total)
-		draw_line(a + step_dir * cursor, a + step_dir * seg_end, col, width)
-		cursor += period
+		var edge: float = clampf(minf(cursor, total - cursor) / 9.0, 0.28, 1.0)
+		var bp: Vector2 = (a + step_dir * cursor).round()
+		draw_rect(Rect2(bp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), Color(PAL_GOLD, 0.42 * edge))
+		draw_rect(Rect2(bp, Vector2(1.0, 1.0)), Color(PAL_CREAM if (idx % 2 == 0) else PAL_GOLD, 0.90 * edge))
+		cursor += 7.0
+		idx += 1

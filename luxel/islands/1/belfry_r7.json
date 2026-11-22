@@ -3,21 +3,37 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
-  "spawn": [160, 148],
+  "spawn": [
+    160,
+    148
+  ],
   "zones": [
     {
       "id": "belfry_spire",
       "name_key": "ZONE_BELL_TOWER",
-      "rect": [0, 0, 320, 176],
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r7_south",
-      "rect": [144, 160, 32, 16],
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
       "to_region": "belfry_r6",
-      "to_spawn": [160, 28],
+      "to_spawn": [
+        160,
+        28
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
@@ -27,9 +43,34 @@
     {
       "id": "boss_bellkeeper",
       "kind": "bellkeeper",
-      "pos": [160, 72],
-      "route": [[120, 72], [200, 72]],
-      "perches": [[88, 56], [160, 40], [232, 56]],
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          120,
+          72
+        ],
+        [
+          200,
+          72
+        ]
+      ],
+      "perches": [
+        [
+          88,
+          56
+        ],
+        [
+          160,
+          40
+        ],
+        [
+          232,
+          56
+        ]
+      ],
       "zone": "belfry_spire",
       "leash": 150
     }
@@ -38,7 +79,10 @@
     {
       "id": "great_lamp_1",
       "kind": "great_lamp",
-      "pos": [160, 40],
+      "pos": [
+        160,
+        40
+      ],
       "props": {
         "island_id": 1,
         "requires_flag": "boss_bellkeeper_defeated",
@@ -48,7 +92,10 @@
     {
       "id": "brazier_r7_w",
       "kind": "brazier",
-      "pos": [72, 40],
+      "pos": [
+        72,
+        40
+      ],
       "props": {
         "lit_by_default": true
       }
@@ -56,7 +103,10 @@
     {
       "id": "brazier_r7_e",
       "kind": "brazier",
-      "pos": [248, 40],
+      "pos": [
+        248,
+        40
+      ],
       "props": {
         "lit_by_default": true
       }
@@ -65,9 +115,112 @@
   "triggers": [
     {
       "id": "trig_boss_intro",
-      "rect": [96, 112, 128, 48],
+      "rect": [
+        96,
+        112,
+        128,
+        48
+      ],
       "string_id": "BOSS_BELLKEEPER",
       "once": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        118,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        202,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        42,
+        74
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        278,
+        74
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        48,
+        118
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        272,
+        118
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        72,
+        142
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        248,
+        142
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
     }
   ]
 }

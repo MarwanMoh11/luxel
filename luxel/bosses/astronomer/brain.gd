@@ -224,20 +224,59 @@ func _body_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	super._draw_extra(off)
-	# Astrolabe celestial halo
-	draw_arc(off, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.2)
+	if _sprite_sheet == null:
+		# Astrolabe celestial halo
+		draw_arc(off, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.2)
 	var ray_count: int = 5 if phase >= 3 else 3
+	var c_orig: Vector2 = off.round()
 	if active_move == AstroMove.CONSTELLATION and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		draw_arc(off, lerpf(NOVA_MAX_R, NOVA_START_R + 8.0, prog), 0.0, TAU, 28, PAL["ice"] as Color, 1.5)
+		var t_r: float = lerpf(NOVA_MAX_R, NOVA_START_R + 8.0, prog)
+		draw_arc(off, t_r, 0.0, TAU, 28, PAL["ice"] as Color, 1.6)
+		var ray_len: float = NOVA_RAY_RANGE * 0.75
 		for i: int in range(ray_count):
 			var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
-			draw_line(off, off + Vector2.from_angle(ra) * NOVA_RAY_RANGE * 0.75, PAL["sky"] as Color, 1.2)
+			var nb: float = star_base_ang + float((i + 1) % ray_count) * (TAU / float(ray_count))
+			var p_a: Vector2 = (off + Vector2.from_angle(ra) * ray_len).round()
+			var p_b: Vector2 = (off + Vector2.from_angle(nb) * ray_len).round()
+			draw_line(c_orig, p_a, PAL["sky"] as Color, 1.3)
+			draw_line(p_a, p_b, PAL["gold"] as Color, 1.0)
+			draw_line(p_a + Vector2(-4.5, 0.0), p_a + Vector2(4.5, 0.0), PAL["gold"] as Color, 1.3)
+			draw_line(p_a + Vector2(0.0, -4.5), p_a + Vector2(0.0, 4.5), PAL["gold"] as Color, 1.3)
+			draw_circle(p_a, 1.4, PAL["cream"] as Color)
+		var cf: float = lerpf(4.0, 8.0, prog)
+		draw_line(c_orig + Vector2(-cf, 0.0), c_orig + Vector2(cf, 0.0), PAL["gold"] as Color, 1.5)
+		draw_line(c_orig + Vector2(0.0, -cf), c_orig + Vector2(0.0, cf), PAL["gold"] as Color, 1.5)
+		draw_circle(c_orig, 1.8, PAL["cream"] as Color)
 	elif active_move == AstroMove.CONSTELLATION and state == State.COMMIT:
 		var ring_r: float = lerpf(NOVA_START_R, NOVA_MAX_R, nova_progress)
-		draw_arc(off, ring_r, 0.0, TAU, 32, PAL["ice"] as Color, 3.0)
+		draw_arc(off, ring_r + 2.2, 0.0, TAU, 36, PAL["sky"] as Color, 2.0)
+		draw_arc(off, ring_r, 0.0, TAU, 36, PAL["ice"] as Color, 3.2)
+		draw_arc(off, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, PAL["cream"] as Color, 1.3)
+		var fl: float = 6.5 + 1.2 * sin(anim_t * 22.0)
 		for i: int in range(ray_count):
 			var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
-			draw_line(off, off + Vector2.from_angle(ra) * NOVA_RAY_RANGE, PAL["gold"] as Color, 2.2)
+			var nb: float = star_base_ang + float((i + 1) % ray_count) * (TAU / float(ray_count))
+			var p_a: Vector2 = (off + Vector2.from_angle(ra) * NOVA_RAY_RANGE).round()
+			var p_b: Vector2 = (off + Vector2.from_angle(nb) * NOVA_RAY_RANGE).round()
+			draw_line(p_a, p_b, PAL["gold"] as Color, 1.2)
+			draw_line((off + Vector2.from_angle(ra) * ring_r).round(), (off + Vector2.from_angle(nb) * ring_r).round(), PAL["apricot"] as Color, 1.0)
+			draw_line(c_orig, p_a, PAL["apricot"] as Color, 4.2)
+			draw_line(c_orig, p_a, PAL["gold"] as Color, 2.5)
+			draw_line(c_orig, p_a, PAL["cream"] as Color, 1.1)
+			draw_line(p_a + Vector2(-fl, 0.0), p_a + Vector2(fl, 0.0), PAL["gold"] as Color, 1.6)
+			draw_line(p_a + Vector2(0.0, -fl), p_a + Vector2(0.0, fl), PAL["gold"] as Color, 1.6)
+			draw_line(p_a + Vector2(-fl * 0.6, 0.0), p_a + Vector2(fl * 0.6, 0.0), PAL["cream"] as Color, 1.0)
+			draw_line(p_a + Vector2(0.0, -fl * 0.6), p_a + Vector2(0.0, fl * 0.6), PAL["cream"] as Color, 1.0)
+			draw_circle(p_a, 1.8, PAL["cream"] as Color)
+		var c_fl: float = fl + 3.0
+		draw_line(c_orig + Vector2(-c_fl, 0.0), c_orig + Vector2(c_fl, 0.0), PAL["gold"] as Color, 2.0)
+		draw_line(c_orig + Vector2(0.0, -c_fl), c_orig + Vector2(0.0, c_fl), PAL["gold"] as Color, 2.0)
+		draw_line(c_orig + Vector2(-c_fl * 0.65, 0.0), c_orig + Vector2(c_fl * 0.65, 0.0), PAL["cream"] as Color, 1.2)
+		draw_line(c_orig + Vector2(0.0, -c_fl * 0.65), c_orig + Vector2(0.0, c_fl * 0.65), PAL["cream"] as Color, 1.2)
+		draw_circle(c_orig, 2.4, PAL["cream"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 14.0, 0.0, TAU, 24, PAL["ice"] as Color, 2.2)
+		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 11.0 + rp * 16.0
+		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
+		draw_arc(off, rr, 0.0, TAU, 28, PAL["ice"] as Color, 2.2)

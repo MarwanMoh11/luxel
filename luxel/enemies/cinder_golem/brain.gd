@@ -255,8 +255,11 @@ func _body_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	if armour_intact:
-		var plate_col: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["dusk"] as Color)
-		draw_rect(Rect2(off - Vector2(body_radius + 1.0, body_radius + 1.0), Vector2((body_radius + 1.0) * 2.0, (body_radius + 1.0) * 2.0)), plate_col, false, 2.0)
+		var plate_col: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["mauve"] as Color)
+		var ar: float = body_radius + 2.5
+		for i: int in range(4):
+			var a: float = PI * 0.25 + float(i) * (PI * 0.5)
+			draw_arc(off, ar, a - 0.38, a + 0.38, 4, plate_col, 1.6)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var r: float = lerpf(STOMP_MAX_R, STOMP_START_R + 4.0, prog)

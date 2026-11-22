@@ -281,32 +281,69 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Kiln chimney crown + glowing furnace belly
-	draw_rect(Rect2(off + Vector2(-4.0, -body_radius - 5.0), Vector2(8.0, 5.0)), PAL["night"] as Color, true)
-	draw_rect(Rect2(off + Vector2(-2.5, -body_radius - 4.0), Vector2(5.0, 3.0)), PAL["apricot"] as Color, true)
-	draw_circle(off + Vector2(0.0, 1.0), 4.2, PAL["night"] as Color)
-	draw_circle(off + Vector2(0.0, 1.0), 2.8, (PAL["cream"] as Color) if not armour_intact else (PAL["coral"] as Color))
+	if _sprite_sheet == null:
+		# Kiln chimney crown + glowing furnace belly
+		draw_rect(Rect2(off + Vector2(-4.0, -body_radius - 5.0), Vector2(8.0, 5.0)), PAL["night"] as Color, true)
+		draw_rect(Rect2(off + Vector2(-2.5, -body_radius - 4.0), Vector2(5.0, 3.0)), PAL["apricot"] as Color, true)
+		draw_circle(off + Vector2(0.0, 1.0), 4.2, PAL["night"] as Color)
+		draw_circle(off + Vector2(0.0, 1.0), 2.8, (PAL["cream"] as Color) if not armour_intact else (PAL["coral"] as Color))
 	if armour_intact:
 		var plate_col: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["mauve"] as Color)
-		draw_rect(Rect2(off - Vector2(body_radius + 2.0, body_radius + 2.0), Vector2((body_radius + 2.0) * 2.0, (body_radius + 2.0) * 2.0)), plate_col, false, 2.5)
+		var ar: float = body_radius + 3.5
+		for i: int in range(4):
+			var a: float = PI * 0.25 + float(i) * (PI * 0.5)
+			draw_arc(off, ar, a - 0.38, a + 0.38, 4, plate_col, 2.0)
 	if active_move == KilnMove.BELLOWS_GUST and state == State.TELL:
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		draw_line(off - side * 14.0, off - side * 14.0 + gust_dir * 52.0, PAL["gold"] as Color, 1.5)
 		draw_line(off + side * 14.0, off + side * 14.0 + gust_dir * 52.0, PAL["gold"] as Color, 1.5)
 	elif active_move == KilnMove.BELLOWS_GUST and state == State.COMMIT:
 		var side2: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
-		for idx: int in [-1, 0, 1]:
-			var s_off: Vector2 = side2 * float(idx) * (GUST_HALF_W * 0.45)
-			draw_line(off + s_off, off + s_off + gust_dir * GUST_RANGE * 0.80, (PAL["cream"] as Color) if idx == 0 else (PAL["apricot"] as Color), 2.2)
+		var g_len: float = GUST_RANGE * 0.88
+		for idx: int in range(-1, 2):
+			var s_off: Vector2 = side2 * float(idx) * (GUST_HALF_W * 0.48)
+			var l_end: float = g_len if idx == 0 else g_len * 0.86
+			var p0: Vector2 = (off + s_off).round()
+			var p1: Vector2 = (off + s_off + gust_dir * l_end).round()
+			draw_line(p0, p1, PAL["wine"] as Color, 7.2 if idx == 0 else 5.2)
+			draw_line(p0, p1, PAL["coral"] as Color, 5.2 if idx == 0 else 3.6)
+			draw_line(p0, p1, PAL["apricot"] as Color, 3.4 if idx == 0 else 2.2)
+			draw_line(p0, p1, PAL["gold"] as Color, 2.0 if idx == 0 else 1.2)
+			if idx == 0:
+				draw_line(p0, p1, PAL["cream"] as Color, 1.1)
+		for ei: int in range(6):
+			var et: float = fposmod(anim_t * 4.0 + float(ei) * 0.167, 1.0)
+			var lat: float = sin(anim_t * 15.0 + float(ei) * 2.2) * (GUST_HALF_W * 0.78)
+			var ep: Vector2 = (off + gust_dir * lerpf(10.0, g_len, et) + side2 * lat).round()
+			draw_line(ep, (ep - gust_dir * 5.0).round(), PAL["coral"] as Color, 1.5)
+			draw_circle(ep, 1.6, PAL["gold"] as Color)
+			draw_circle(ep, 0.8, PAL["cream"] as Color)
 	elif active_move == KilnMove.MOLTEN_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		draw_arc(off, lerpf(KILN_RING_MAX_R, STOMP_START_R + 6.0, prog), 0.0, TAU, 28, PAL["apricot"] as Color, 1.8)
 	elif active_move == KilnMove.MOLTEN_RING and state == State.COMMIT:
 		if ring_stage == RingStage.PAUSE:
-			draw_arc(off, KILN_RING_MAX_R * 0.5, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
+			var pr: float = KILN_RING_MAX_R * 0.5 + 2.0 * sin(anim_t * 18.0)
+			draw_arc(off, pr + 2.0, 0.0, TAU, 24, PAL["coral"] as Color, 2.0)
+			draw_arc(off, pr, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
 		else:
 			var ring_r: float = lerpf(STOMP_START_R, KILN_RING_MAX_R, stomp_progress)
-			draw_arc(off, ring_r, 0.0, TAU, 32, PAL["coral"] as Color, 3.5)
-			draw_arc(off, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["gold"] as Color, 1.5)
+			draw_arc(off, ring_r + 2.8, 0.0, TAU, 36, PAL["wine"] as Color, 2.5)
+			draw_arc(off, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.8)
+			draw_arc(off, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
+			draw_arc(off, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
+			for si: int in range(8):
+				var sa: float = anim_t * 1.9 + float(si) * (TAU / 8.0)
+				var sd: Vector2 = Vector2.from_angle(sa)
+				var st: Vector2 = Vector2(-sd.y, sd.x)
+				var base_c: Vector2 = off + sd * maxf(2.0, ring_r - 1.0)
+				var tip: Vector2 = (off + sd * (ring_r + 6.5)).round()
+				draw_line((base_c - st * 3.0).round(), tip, PAL["coral"] as Color, 1.6)
+				draw_line((base_c + st * 3.0).round(), tip, PAL["coral"] as Color, 1.6)
+				draw_line(base_c.round(), tip, PAL["gold"] as Color, 1.2)
+				draw_circle(tip, 1.1, PAL["apricot"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 14.0, 0.0, TAU, 24, PAL["gold"] as Color, 2.5)
+		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 11.0 + rp * 18.0
+		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["coral"] as Color, 2.2)
+		draw_arc(off, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)

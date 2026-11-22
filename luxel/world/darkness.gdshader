@@ -1,7 +1,6 @@
 shader_type canvas_item;
-// Smooth atmospheric twilight and camera-prioritized warm lantern pools for Luxel 1.0.
-// Wide feathered edges preserve crisp 320x180 Last Light pixel art while deepening
-// unlit zones into rich twilight indigo.
+// Smooth atmospheric twilight, biome-aware Last Light grading, vignette, and
+// camera-prioritized warm lantern pools for Luxel 1.0 (GL Compatibility safe).
 
 uniform sampler2D screen_tex : hint_screen_texture, filter_nearest;
 uniform vec2 cam_origin = vec2(0.0, 0.0);
@@ -10,6 +9,10 @@ uniform float darkness_strength : hint_range(0.0, 1.0) = 0.56;
 uniform float wave_radius = 0.0;
 uniform vec2 wave_origin = vec2(640.0, 180.0);
 uniform float wave_active = 0.0;
+
+// Biome twilight shadow tint and subtle darkness-scaled corner vignette
+uniform vec3 biome_tint = vec3(0.42, 0.40, 0.64);
+uniform float vignette_strength : hint_range(0.0, 0.5) = 0.14;
 
 // Up to 16 camera-prioritized light pools: xy = world pos, z = radius (px), w = intensity (0..2)
 uniform vec4 lights[16];
@@ -59,7 +62,7 @@ void fragment() {
 			}
 		}
 
-		// Smooth radial light pools (Wick lantern, thrown lantern, beacons, lamps, braziers)
+		// Smooth radial light pools (Wick lantern, thrown lantern, beacons, lamps, bursts)
 		float warm_glow = 0.0;
 		for (int i = 0; i < 16; i++) {
 			if (i >= light_count) break;
@@ -72,7 +75,7 @@ void fragment() {
 			float contrib = smooth_n * L.w;
 			lit = max(lit, clamp(contrib * 1.35, 0.0, 1.0));
 			float halo = smoothstep(0.0, 0.55, n) * (1.0 - smoothstep(0.55, 1.0, n));
-			warm_glow = max(warm_glow, halo * min(L.w, 1.0) * 0.14);
+			warm_glow = max(warm_glow, halo * min(L.w, 1.2) * 0.14);
 		}
 
 		float shadow_amt = clamp((1.0 - lit) * darkness_strength, 0.0, 1.0);
@@ -84,8 +87,9 @@ void fragment() {
 			float bright_guard = smoothstep(0.66, 0.88, luma);
 			float eff = shadow_amt * (1.0 - bright_guard * 0.85);
 
-			vec3 night_graded = src * vec3(0.42, 0.40, 0.64) + col_night * 0.06;
-			vec3 deep_graded = mix(src * vec3(0.26, 0.24, 0.44), col_void, 0.22);
+			vec3 night_graded = src * biome_tint + col_night * 0.06;
+			vec3 deep_tint = biome_tint * vec3(0.62, 0.60, 0.69);
+			vec3 deep_graded = mix(src * deep_tint, col_void, 0.22);
 			vec3 dark_col = mix(night_graded, deep_graded, smoothstep(0.45, 1.0, eff));
 			out_col = mix(src, dark_col, eff);
 		}
@@ -97,6 +101,15 @@ void fragment() {
 				out_col * vec3(1.08, 1.03, 0.92) + col_gold * 0.09,
 				warm_glow * min(shadow_amt * 2.2, 1.0)
 			);
+		}
+
+		// Subtle corner vignette proportional to darkness_strength (vanishes cleanly at dawn)
+		if (vignette_strength > 0.001 && darkness_strength > 0.001) {
+			vec2 uv_c = (UV - vec2(0.5)) * vec2(1.0, 0.92);
+			float edge_r = length(uv_c);
+			float vig = smoothstep(0.42, 0.78, edge_r) * vignette_strength * darkness_strength;
+			vig *= (1.0 - lit * 0.55);
+			out_col = mix(out_col, col_void, clamp(vig, 0.0, 0.35));
 		}
 
 		// Smooth golden leading edge for the dawn relight wave

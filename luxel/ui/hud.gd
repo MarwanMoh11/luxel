@@ -187,6 +187,11 @@ func spawn_screen_cue(
 	args: Array = []
 ) -> void:
 	var txt: String = LxStrings.fmt(string_id, args) if not args.is_empty() else LxStrings.text(string_id)
+	var kept: Array[Dictionary] = []
+	for c: Dictionary in _cues:
+		if bool(c["is_world"]) or absf((c["pos"] as Vector2).y - screen_pos.y) > 14.0:
+			kept.append(c)
+	_cues = kept
 	_cues.append({
 		"text": txt,
 		"pos": screen_pos,
@@ -286,7 +291,8 @@ func _draw() -> void:
 	if Lx.state == null:
 		return
 	_draw_hearts(Vector2(5.0, 5.0))
-	_draw_beacon_gauge(160.0, 4.0)
+	if not _boss_active:
+		_draw_beacon_gauge(160.0, 4.0)
 	_draw_shards_and_keys(Vector2(315.0, 5.0))
 	_draw_moves_tray(Vector2(5.0, 160.0))
 	_draw_zip_cue(Vector2(5.0, 148.0))
@@ -367,11 +373,14 @@ func _draw_moves_tray(origin: Vector2) -> void:
 	if Lx.data_moves.is_empty():
 		Lx.load_all_data()
 	var order: Array = Lx.data_moves.get("order", []) as Array
-	var slot_x: float = origin.x
+	var unlocked: Array[String] = []
 	for item: Variant in order:
 		var mid: String = str(item)
-		if not Lx.state.has_move(mid):
-			continue
+		if Lx.state.has_move(mid):
+			unlocked.append(mid)
+	var step_x: float = 15.0 if unlocked.size() >= 6 else 17.0
+	var slot_x: float = origin.x
+	for mid: String in unlocked:
 		var mdata: Dictionary = Lx.get_move_data(mid)
 		var is_passive: bool = bool(mdata.get("passive", false))
 		var action_id: String = str(mdata.get("action", ""))
@@ -380,11 +389,12 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		LxPixelFont.draw_panel(self, box, "night", col_name, "void")
 		_draw_move_icon(mid, box.position + Vector2(3.0, 2.0), LxPalette.color(col_name))
 		if not is_passive and not action_id.is_empty() and Lx.input != null:
-			var glyph: String = LxStrings.sanitize(Lx.input.get_glyph(action_id), 4)
+			var raw_glyph: String = Lx.input.get_glyph(action_id).to_upper().replace("SHIFT", "SHFT")
+			var glyph: String = LxStrings.sanitize(raw_glyph, 4)
 			LxPixelFont.draw_centered(self, glyph, slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["stone"], 1)
 		else:
 			draw_rect(Rect2(slot_x + 5.0, origin.y + 13.0, 3.0, 2.0), LxPalette.color(col_name))
-		slot_x += 17.0
+		slot_x += step_x
 
 
 func _draw_zip_cue(origin: Vector2) -> void:
@@ -454,16 +464,18 @@ func _draw_ember_meter(at: Vector2) -> void:
 
 
 func _draw_boss_bar() -> void:
-	var bar_w: float = 180.0
+	var bar_w: float = 160.0
 	var bar_h: float = 8.0
 	var x: float = roundf(160.0 - bar_w * 0.5)
-	var y: float = 148.0
+	var y: float = 14.0
 	var resolved_key: String = resolve_boss_name_key(_boss_name_key)
 	var name_txt: String = LxStrings.text(resolved_key) if LxStrings.has_id(resolved_key) else LxStrings.sanitize(resolved_key)
-	LxPixelFont.draw_centered(self, name_txt, 160.0, y - 8.0, LxPalette.PAL["gold"], 1)
+	LxPixelFont.draw_centered(self, name_txt, 160.0, 5.0, LxPalette.PAL["gold"], 1)
 	if _boss_phase >= 2:
-		LxPixelFont.draw_right(self, LxStrings.text("HUD_BOSS_P2"), x + bar_w, y - 8.0, LxPalette.PAL["coral"], 1)
-	LxPixelFont.draw_panel(self, Rect2(x, y, bar_w, bar_h), "night", "mauve", "void")
+		LxPixelFont.draw_right(self, LxStrings.text("HUD_BOSS_P2"), x + bar_w, 5.0, LxPalette.PAL["coral"], 1)
+	LxPixelFont.draw_panel(self, Rect2(x, y, bar_w, bar_h), "night", "gold" if _boss_phase >= 2 else "mauve", "void")
+	draw_rect(Rect2(x - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(x + bar_w - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
 	var trail_w: float = floorf((bar_w - 4.0) * clampf(_boss_trail_hp / _boss_max_hp, 0.0, 1.0))
 	var cur_w: float = floorf((bar_w - 4.0) * clampf(_boss_hp / _boss_max_hp, 0.0, 1.0))
 	if trail_w > 0.0:
@@ -548,14 +560,15 @@ func _draw_cues() -> void:
 func _draw_notice() -> void:
 	if _notice_text.is_empty():
 		return
-	var p: float = minf(_notice_t / 0.25, (_notice_dur - _notice_t) / 0.35)
-	var col: Color = LxPalette.fade_step(p, "gold")
+	var p: float = minf(_notice_t / 0.18, (_notice_dur - _notice_t) / 0.30)
+	var col: Color = LxPalette.fade_step(maxf(p, 0.52) if _notice_t < 0.2 else p, "gold")
 	if col.a <= 0.0:
 		return
 	var w: float = float(LxPixelFont.width(_notice_text, 1)) + 12.0
-	var rect := Rect2(roundf(160.0 - w * 0.5), 18.0, w, 11.0)
-	LxPixelFont.draw_panel(self, rect, "dusk", "gold", "night")
-	LxPixelFont.draw_centered(self, _notice_text, 160.0, 21.0, col, 1)
+	var ny: float = 26.0 if _boss_active else 18.0
+	var rect := Rect2(roundf(160.0 - w * 0.5), ny, w, 11.0)
+	LxPixelFont.draw_panel(self, rect, "night", "gold", "void")
+	LxPixelFont.draw_centered(self, _notice_text, 160.0, ny + 3.0, col, 1)
 
 
 func _world_to_screen(world_pos: Vector2) -> Vector2:

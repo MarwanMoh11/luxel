@@ -294,10 +294,11 @@ func _shield_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# 3-pronged brass crown silhouette
-	draw_line(off + Vector2(-4.0, -body_radius), off + Vector2(-5.0, -body_radius - 4.0), PAL["gold"] as Color, 1.5)
-	draw_line(off + Vector2(0.0, -body_radius), off + Vector2(0.0, -body_radius - 5.0), PAL["gold"] as Color, 1.5)
-	draw_line(off + Vector2(4.0, -body_radius), off + Vector2(5.0, -body_radius - 4.0), PAL["gold"] as Color, 1.5)
+	if _sprite_sheet == null:
+		# 3-pronged brass crown silhouette
+		draw_line(off + Vector2(-4.0, -body_radius), off + Vector2(-5.0, -body_radius - 4.0), PAL["gold"] as Color, 1.5)
+		draw_line(off + Vector2(0.0, -body_radius), off + Vector2(0.0, -body_radius - 5.0), PAL["gold"] as Color, 1.5)
+		draw_line(off + Vector2(4.0, -body_radius), off + Vector2(5.0, -body_radius - 4.0), PAL["gold"] as Color, 1.5)
 
 	if slam_attack and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
@@ -307,10 +308,31 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(off, maxf(4.0, r * 0.6), 0.0, TAU, 20, PAL["coral"] as Color, 1.0)
 	elif slam_attack and state == State.COMMIT:
 		if slam_stage == SlamStage.TOLL_PAUSE:
-			draw_arc(off, SLAM_MAX_R * 0.5, 0.0, TAU, 24, PAL["gold"] as Color, 2.0)
+			var pr: float = SLAM_MAX_R * 0.5 + 2.0 * sin(anim_t * 18.0)
+			draw_arc(off, pr + 2.0, 0.0, TAU, 24, PAL["apricot"] as Color, 1.8)
+			draw_arc(off, pr, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
+			for ti: int in range(4):
+				var td: Vector2 = Vector2.from_angle(float(ti) * (TAU * 0.25))
+				draw_line((off + td * (pr - 3.0)).round(), (off + td * (pr + 4.0)).round(), PAL["cream"] as Color, 1.2)
 		else:
 			var ring_r: float = lerpf(SLAM_START_R, SLAM_MAX_R, slam_progress)
-			draw_arc(off, ring_r, 0.0, TAU, 32, PAL["coral"] as Color, 3.0)
-			draw_arc(off, maxf(2.0, ring_r - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+			draw_arc(off, ring_r + 3.0, 0.0, TAU, 36, PAL["apricot"] as Color, 2.2)
+			draw_arc(off, ring_r, 0.0, TAU, 36, PAL["gold"] as Color, 3.4)
+			draw_arc(off, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, PAL["cream"] as Color, 1.4)
+			if ring_r > 14.0:
+				draw_arc(off, ring_r - 6.0, 0.0, TAU, 24, PAL["coral"] as Color, 1.1)
+			for ci: int in range(8):
+				var ca: float = anim_t * 2.2 + float(ci) * (TAU / 8.0)
+				var cd: Vector2 = Vector2.from_angle(ca)
+				var cp: Vector2 = (off + cd * (ring_r + 1.5)).round()
+				draw_line((off + cd * maxf(2.0, ring_r - 2.0)).round(), (off + cd * (ring_r + 6.0)).round(), PAL["apricot"] as Color, 1.2)
+				draw_circle(cp, 2.0, PAL["gold"] as Color)
+				draw_circle(cp, 1.0, PAL["cream"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 14.0, 0.0, TAU, 24, PAL["gold"] as Color, 2.5)
+		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 11.0 + rp * 18.0
+		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
+		draw_arc(off, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)
+		for ri: int in range(4):
+			var rd: Vector2 = Vector2.from_angle(float(ri) * (TAU * 0.25))
+			draw_line((off + rd * (rr - 3.0)).round(), (off + rd * (rr + 4.5)).round(), PAL["cream"] as Color, 1.2)

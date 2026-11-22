@@ -243,21 +243,52 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Rival moth antenna crown
-	draw_line(off + Vector2(-3.0, -body_radius), off + Vector2(-5.5, -body_radius - 4.0), PAL["ice"] as Color, 1.4)
-	draw_line(off + Vector2(3.0, -body_radius), off + Vector2(5.5, -body_radius - 4.0), PAL["ice"] as Color, 1.4)
+	if _sprite_sheet == null:
+		# Rival moth antenna crown
+		draw_line(off + Vector2(-3.0, -body_radius), off + Vector2(-5.5, -body_radius - 4.0), PAL["ice"] as Color, 1.4)
+		draw_line(off + Vector2(3.0, -body_radius), off + Vector2(5.5, -body_radius - 4.0), PAL["ice"] as Color, 1.4)
 	super._draw_extra(off)
 	if active_move == BossMove.DARK_BEAM and state == State.TELL:
-		draw_line(off, off + commit_dir * BEAM_RANGE, (PAL["gold"] as Color) if lured_now else (PAL["sky"] as Color), 1.5)
+		var t_col: Color = (PAL["gold"] if lured_now else PAL["sky"]) as Color
+		draw_line(off.round(), (off + commit_dir * BEAM_RANGE).round(), t_col, 1.6)
+		draw_circle(off.round(), 2.2, PAL["ice"] as Color)
 	elif active_move == BossMove.DARK_BEAM and state == State.COMMIT:
-		draw_line(off, off + commit_dir * BEAM_RANGE, PAL["sky"] as Color, 4.0)
-		draw_line(off, off + commit_dir * BEAM_RANGE, PAL["ice"] as Color, 1.8)
+		var orig: Vector2 = off.round()
+		var b_end: Vector2 = (off + commit_dir * BEAM_RANGE).round()
+		draw_line(orig, b_end, PAL["deep"] as Color, 7.6)
+		draw_line(orig, b_end, PAL["blue"] as Color, 5.4)
+		draw_line(orig, b_end, PAL["sky"] as Color, 3.6)
+		draw_line(orig, b_end, PAL["ice"] as Color, 2.2)
+		draw_line(orig, b_end, PAL["cream"] as Color, 1.1)
+		var fl: float = 8.0 + 1.4 * sin(anim_t * 24.0)
+		for ep_i: int in range(2):
+			var fp: Vector2 = orig if ep_i == 0 else b_end
+			var fr: float = fl if ep_i == 0 else fl + 1.5
+			draw_line(fp + Vector2(-fr, 0.0), fp + Vector2(fr, 0.0), PAL["sky"] as Color, 1.8)
+			draw_line(fp + Vector2(0.0, -fr), fp + Vector2(0.0, fr), PAL["sky"] as Color, 1.8)
+			draw_line(fp + Vector2(-fr * 0.65, 0.0), fp + Vector2(fr * 0.65, 0.0), PAL["cream"] as Color, 1.1)
+			draw_line(fp + Vector2(0.0, -fr * 0.65), fp + Vector2(0.0, fr * 0.65), PAL["cream"] as Color, 1.1)
+			draw_circle(fp, 2.0, PAL["cream"] as Color)
 	elif active_move == BossMove.ECLIPSE_FLARE and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		draw_arc(off, lerpf(FLARE_MAX_R, FLARE_START_R + 6.0, prog), 0.0, TAU, 26, PAL["ice"] as Color, 1.8)
 	elif active_move == BossMove.ECLIPSE_FLARE and state == State.COMMIT:
 		var ring_r: float = lerpf(FLARE_START_R, FLARE_MAX_R, flare_progress)
-		draw_arc(off, ring_r, 0.0, TAU, 30, PAL["sky"] as Color, 3.0)
-		draw_arc(off, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["ice"] as Color, 1.2)
+		draw_arc(off, ring_r + 2.6, 0.0, TAU, 36, PAL["blue"] as Color, 2.2)
+		draw_arc(off, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
+		draw_arc(off, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
+		draw_arc(off, maxf(2.0, ring_r - 4.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.1)
+		for ci: int in range(8):
+			var rd: Vector2 = Vector2.from_angle(float(ci) * (TAU / 8.0))
+			var is_card: bool = (ci % 2 == 0)
+			var r_in: float = maxf(3.0, ring_r - (6.5 if is_card else 4.0))
+			var r_out: float = ring_r + (7.5 if is_card else 4.5)
+			var c_col: Color = (PAL["cream"] if is_card else PAL["ice"]) as Color
+			draw_line((off + rd * r_in).round(), (off + rd * r_out).round(), c_col, 1.6 if is_card else 1.1)
+			if is_card:
+				draw_circle((off + rd * r_out).round(), 1.2, PAL["cream"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 12.0, 0.0, TAU, 22, PAL["ice"] as Color, 2.2)
+		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 10.0 + rp * 16.0
+		draw_arc(off, rr + 2.5, 0.0, TAU, 26, PAL["blue"] as Color, 1.8)
+		draw_arc(off, rr, 0.0, TAU, 26, PAL["ice"] as Color, 2.2)

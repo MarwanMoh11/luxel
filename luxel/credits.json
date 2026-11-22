@@ -178,6 +178,24 @@
         "luxel/audio/ambience/shoals_echo.ogg",
         "luxel/audio/ambience/long_night_drone.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_studio",
+      "description": "Original studio storybook Lantern Gothic world, UI, and boss sound effects (10 cues, D harmonic minor) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "gen_sfx_studio.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/ui_back.ogg",
+        "luxel/audio/sfx/door_open.ogg",
+        "luxel/audio/sfx/chest_open.ogg",
+        "luxel/audio/sfx/brazier_lit.ogg",
+        "luxel/audio/sfx/waystone_lit.ogg",
+        "luxel/audio/sfx/shrine_claimed.ogg",
+        "luxel/audio/sfx/key_pickup.ogg",
+        "luxel/audio/sfx/mirror_turn.ogg",
+        "luxel/audio/sfx/stone_break.ogg",
+        "luxel/audio/sfx/boss_roar.ogg"
+      ]
     }
   ],
   "third_party_audio": []

@@ -3,32 +3,59 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
-  "spawn": [160, 148],
+  "spawn": [
+    160,
+    148
+  ],
   "zones": [
     {
       "id": "belfry_loft",
       "name_key": "ZONE_BELFRY",
-      "rect": [0, 0, 320, 176],
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r5_south",
-      "rect": [144, 160, 32, 16],
+      "rect": [
+        144,
+        160,
+        32,
+        16
+      ],
       "to_region": "belfry_r4",
-      "to_spawn": [160, 28],
+      "to_spawn": [
+        160,
+        28
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_r5_west",
-      "rect": [0, 64, 16, 48],
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
       "to_region": "belfry_r6",
-      "to_spawn": [292, 88],
+      "to_spawn": [
+        292,
+        88
+      ],
       "requires_moves": [],
-      "requires_flags": ["bell_warden_defeated", "wick_key_2"],
+      "requires_flags": [
+        "bell_warden_defeated",
+        "wick_key_2"
+      ],
       "locked_door_id": "door_r5_west"
     }
   ],
@@ -36,8 +63,20 @@
     {
       "id": "bell_warden_r5",
       "kind": "bell_warden",
-      "pos": [160, 72],
-      "route": [[120, 72], [200, 72]],
+      "pos": [
+        160,
+        72
+      ],
+      "route": [
+        [
+          120,
+          72
+        ],
+        [
+          200,
+          72
+        ]
+      ],
       "perches": [],
       "zone": "belfry_loft",
       "leash": 145
@@ -47,7 +86,10 @@
     {
       "id": "wick_key_2",
       "kind": "wick_key",
-      "pos": [160, 88],
+      "pos": [
+        160,
+        88
+      ],
       "props": {
         "dungeon_id": "belfry",
         "key_kind": "wick_key",
@@ -58,16 +100,111 @@
     {
       "id": "door_r5_west",
       "kind": "door",
-      "pos": [24, 88],
+      "pos": [
+        24,
+        88
+      ],
       "props": {
         "door_kind": "key_door",
         "dungeon_id": "belfry",
         "key_kind": "wick_key",
-        "size": [16, 48],
+        "size": [
+          16,
+          48
+        ],
         "clear_zone": "belfry_loft",
-        "requires_flags": ["bell_warden_defeated", "wick_key_2"]
+        "requires_flags": [
+          "bell_warden_defeated",
+          "wick_key_2"
+        ]
       }
     }
   ],
-  "triggers": []
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        66,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        254,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        88,
+        62
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        232,
+        62
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        72,
+        134
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        248,
+        134
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        276,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ]
 }

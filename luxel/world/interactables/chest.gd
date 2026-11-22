@@ -6,6 +6,7 @@ var opened: bool = false
 var reward_kind: String = "shards"
 var amount: int = 15
 var dungeon_id: String = ""
+var _glint_stage: int = 0
 
 
 func setup(spec: Dictionary) -> void:
@@ -15,13 +16,26 @@ func setup(spec: Dictionary) -> void:
 	amount = maxi(1, int(props.get("amount", 15)))
 	dungeon_id = str(props.get("dungeon_id", region_id))
 	opened = bool(props.get("opened", false))
+	_glint_stage = _get_glint_stage()
 	queue_redraw()
+
+
+func tick(dt: float) -> void:
+	_uses_prop_anim = false
+	super.tick(dt)
+	if opened:
+		return
+	var stage: int = _get_glint_stage()
+	if stage != _glint_stage:
+		_glint_stage = stage
+		queue_redraw()
 
 
 func interact(_actor: Node = null) -> bool:
 	if not active or opened:
 		return false
 	opened = true
+	_glint_stage = 0
 	if Lx.state != null:
 		match reward_kind:
 			"ember_piece":
@@ -58,8 +72,16 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
-	if _draw_prop_sprite("chest", Vector2.ZERO, 1 if opened else 0):
-		return
+	var shadow: Color = PAL["void"] as Color
+	draw_rect(Rect2(-9.0, 1.0, 18.0, 2.0), shadow)
+	draw_rect(Rect2(-7.0, 0.0, 14.0, 4.0), shadow)
+	if not _draw_prop_sprite("chest", Vector2.ZERO, 1 if opened else 0):
+		_draw_fallback()
+	if not opened:
+		_draw_lid_glint(_get_glint_stage())
+
+
+func _draw_fallback() -> void:
 	draw_rect(Rect2(-7.0, -6.0, 14.0, 10.0), PAL["night"])
 	draw_rect(Rect2(-6.0, -5.0, 12.0, 8.0), PAL["wine"])
 	if opened:
@@ -68,3 +90,35 @@ func _draw() -> void:
 	else:
 		draw_rect(Rect2(-6.0, -5.0, 12.0, 2.0), PAL["gold"])
 		draw_rect(Rect2(-2.0, -3.0, 4.0, 3.0), PAL["cream"])
+
+
+func _get_glint_stage() -> int:
+	if opened:
+		return 0
+	var phase: float = fmod(absf(pos.x * 0.037 + pos.y * 0.053), 2.4)
+	var t: float = fmod(_clock + phase, 2.4)
+	if t >= 0.4:
+		return 0
+	if t < 0.1:
+		return 1
+	if t < 0.28:
+		return 2
+	return 3
+
+
+func _draw_lid_glint(stage: int) -> void:
+	if stage <= 0:
+		return
+	var gx: float = 0.0
+	var gy: float = -8.0
+	if stage == 1:
+		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["gold"])
+	elif stage == 2:
+		var c_gold: Color = PAL["gold"] as Color
+		draw_rect(Rect2(gx, gy - 1.0, 1.0, 1.0), c_gold)
+		draw_rect(Rect2(gx, gy + 1.0, 1.0, 1.0), c_gold)
+		draw_rect(Rect2(gx - 1.0, gy, 1.0, 1.0), c_gold)
+		draw_rect(Rect2(gx + 1.0, gy, 1.0, 1.0), c_gold)
+		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["cream"])
+	else:
+		draw_rect(Rect2(gx, gy, 1.0, 1.0), PAL["cream"])

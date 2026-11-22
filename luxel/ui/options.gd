@@ -238,7 +238,10 @@ func _apply_and_save(cfg: Dictionary) -> void:
 
 
 func _draw() -> void:
+	draw_rect(Rect2(PANEL_RECT.position + Vector2(3.0, 3.0), PANEL_RECT.size), LxPalette.PAL["void"])
+	draw_rect(PANEL_RECT.grow(1.0), LxPalette.PAL["void"])
 	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", "mauve", "night")
+	_draw_frame_ornaments()
 	LxPixelFont.draw_centered(self, LxStrings.text("OPT_TITLE"), 160.0, PANEL_RECT.position.y + 6.0, LxPalette.PAL["gold"], 1)
 
 	for i: int in range(TAB_KEYS.size()):
@@ -258,17 +261,56 @@ func _draw() -> void:
 	LxPixelFont.draw_centered(self, LxStrings.text("OPT_HINT"), 160.0, PANEL_RECT.end.y - 10.0, LxPalette.PAL["stone"], 1)
 
 
+func _draw_frame_ornaments() -> void:
+	var p: Vector2 = PANEL_RECT.position
+	var e: Vector2 = PANEL_RECT.end
+	var gold: Color = LxPalette.PAL["gold"]
+	var apr: Color = LxPalette.PAL["apricot"]
+	var dusk: Color = LxPalette.PAL["dusk"]
+	var night: Color = LxPalette.PAL["night"]
+	# Corner brass brackets and rivets with shadow depth.
+	for c: Array in [
+		[p.x + 1.0, p.y + 1.0, 1.0, 1.0], [e.x - 2.0, p.y + 1.0, -1.0, 1.0],
+		[p.x + 1.0, e.y - 2.0, 1.0, -1.0], [e.x - 2.0, e.y - 2.0, -1.0, -1.0],
+	]:
+		var cx: float = float(c[0])
+		var cy0: float = float(c[1])
+		var sx: float = float(c[2])
+		var sy: float = float(c[3])
+		draw_rect(Rect2(cx if sx > 0.0 else cx - 4.0, cy0, 5.0, 1.0), apr)
+		draw_rect(Rect2(cx, cy0 if sy > 0.0 else cy0 - 4.0, 1.0, 5.0), apr)
+		draw_rect(Rect2(cx if sx > 0.0 else cx - 1.0, cy0 if sy > 0.0 else cy0 - 1.0, 2.0, 2.0), gold)
+		var rv := Vector2(cx + sx * 2.0 - (0.0 if sx > 0.0 else 1.0), cy0 + sy * 2.0 - (0.0 if sy > 0.0 else 1.0))
+		draw_rect(Rect2(rv + Vector2(1.0, 1.0), Vector2(2.0, 2.0)), night)
+		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), apr)
+		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), gold)
+	# Decorative lantern-chain divider beneath OPT_TITLE.
+	var cy: float = p.y + 12.0
+	draw_rect(Rect2(p.x + 12.0, cy, PANEL_RECT.size.x - 24.0, 1.0), night)
+	var x: float = p.x + 16.0
+	while x < e.x - 16.0:
+		draw_rect(Rect2(x, cy, 2.0, 1.0), apr if int(x) % 8 == 0 else dusk)
+		x += 4.0
+	draw_rect(Rect2(p.x + 12.0, cy, 2.0, 1.0), gold)
+	draw_rect(Rect2(e.x - 14.0, cy, 2.0, 1.0), gold)
+	draw_rect(Rect2(158.0, cy, 5.0, 1.0), apr)
+	draw_rect(Rect2(159.0, cy, 3.0, 1.0), gold)
+	draw_rect(Rect2(160.0, cy, 1.0, 1.0), LxPalette.PAL["cream"])
+
+
 func _draw_row(idx: int, row_id: String, cfg: Dictionary) -> void:
 	var r: Rect2 = _row_rect(idx)
 	var sel: bool = idx == _row_idx
 	if sel:
 		LxPixelFont.draw_panel(self, r, "plum", "gold", "night")
+		_draw_lantern_pip(r.position + Vector2(5.0, 4.0))
 	var label_col: Color = LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"]
 	var val_col: Color = LxPalette.PAL["cream"] if sel else LxPalette.PAL["stone"]
 	var label: String = _row_label(row_id)
 	var val_txt: String = _row_value_text(row_id, cfg)
 
-	LxPixelFont.draw_left(self, label, r.position + Vector2(6.0, 4.0), label_col, 1)
+	var label_x: float = 12.0 if sel else 6.0
+	LxPixelFont.draw_left(self, label, r.position + Vector2(label_x, 4.0), label_col, 1)
 	if not val_txt.is_empty():
 		LxPixelFont.draw_right(self, val_txt, r.end.x - 8.0, r.position.y + 4.0, val_col, 1)
 
@@ -277,8 +319,19 @@ func _draw_row(idx: int, row_id: String, cfg: Dictionary) -> void:
 	elif row_id == "cursor_color":
 		var cname: String = str(cfg.get("cursor_color", "gold"))
 		var sw := Rect2(r.end.x - 54.0, r.position.y + 3.0, 8.0, 7.0)
-		draw_rect(sw.grow(1.0), LxPalette.PAL["night"])
+		draw_rect(sw.grow(1.0), LxPalette.PAL["void"])
 		draw_rect(sw, LxPalette.color(cname))
+
+
+func _draw_lantern_pip(at: Vector2) -> void:
+	var x: float = roundf(at.x)
+	var y: float = roundf(at.y)
+	draw_rect(Rect2(x - 1.0, y, 5.0, 5.0), LxPalette.PAL["night"])
+	draw_rect(Rect2(x + 1.0, y, 1.0, 1.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(x, y + 1.0, 3.0, 1.0), LxPalette.PAL["apricot"])
+	draw_rect(Rect2(x, y + 2.0, 3.0, 2.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(x + 1.0, y + 2.0, 1.0, 2.0), LxPalette.PAL["cream"])
+	draw_rect(Rect2(x, y + 4.0, 3.0, 1.0), LxPalette.PAL["apricot"])
 
 
 func _draw_slider(r: Rect2, row_id: String, cfg: Dictionary, sel: bool) -> void:
@@ -292,9 +345,20 @@ func _draw_slider(r: Rect2, row_id: String, cfg: Dictionary, sel: bool) -> void:
 	var bar := Rect2(r.end.x - 94.0, r.position.y + 4.0, 56.0, 5.0)
 	draw_rect(bar.grow(1.0), LxPalette.PAL["night"])
 	draw_rect(bar, LxPalette.PAL["void"])
+	draw_rect(Rect2(bar.position.x, bar.end.y - 1.0, bar.size.x, 1.0), LxPalette.PAL["dusk"])
+	for t: int in range(1, 5):
+		var tx: float = roundf(bar.position.x + bar.size.x * float(t) * 0.2)
+		draw_rect(Rect2(tx, bar.position.y + 2.0, 1.0, 1.0), LxPalette.PAL["mauve"])
+		draw_rect(Rect2(tx, bar.end.y, 1.0, 1.0), LxPalette.PAL["dusk"])
 	var fill_w: float = floorf(bar.size.x * frac)
 	if fill_w > 0.0:
-		draw_rect(Rect2(bar.position, Vector2(fill_w, bar.size.y)), LxPalette.PAL["gold"] if sel else LxPalette.PAL["apricot"])
+		draw_rect(Rect2(bar.position, Vector2(fill_w, bar.size.y)), LxPalette.PAL["apricot"])
+		draw_rect(Rect2(bar.position, Vector2(fill_w, 4.0 if sel else 2.0)), LxPalette.PAL["gold"])
+	var thumb_x: float = clampf(roundf(bar.position.x + fill_w - 1.0), bar.position.x, bar.end.x - 3.0)
+	var thumb := Rect2(thumb_x, bar.position.y - 1.0, 3.0, bar.size.y + 2.0)
+	draw_rect(thumb.grow(1.0), LxPalette.PAL["night"])
+	draw_rect(thumb, LxPalette.PAL["gold"] if sel else LxPalette.PAL["apricot"])
+	draw_rect(Rect2(thumb_x + 1.0, bar.position.y, 1.0, bar.size.y), LxPalette.PAL["cream"] if sel else LxPalette.PAL["gold"])
 
 
 func _row_label(row_id: String) -> String:

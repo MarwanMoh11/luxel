@@ -323,27 +323,62 @@ func _shield_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Giant lighthouse lamp-shell cupola on back
-	var dome_c: Vector2 = off + Vector2(0.0, -body_radius * 0.45)
-	draw_circle(dome_c, body_radius * 0.72, PAL["deep"] as Color)
-	draw_circle(dome_c, body_radius * 0.42, PAL["gold"] as Color)
-	draw_line(dome_c + Vector2(0.0, -body_radius * 0.72), dome_c + Vector2(0.0, -body_radius * 1.15), PAL["apricot"] as Color, 2.0)
+	if _sprite_sheet == null:
+		# Giant lighthouse lamp-shell cupola on back
+		var dome_c: Vector2 = off + Vector2(0.0, -body_radius * 0.45)
+		draw_circle(dome_c, body_radius * 0.72, PAL["deep"] as Color)
+		draw_circle(dome_c, body_radius * 0.42, PAL["gold"] as Color)
+		draw_line(dome_c + Vector2(0.0, -body_radius * 0.72), dome_c + Vector2(0.0, -body_radius * 1.15), PAL["apricot"] as Color, 2.0)
 
 	if active_move == BossMove.LAMP_BEAM and state == State.TELL:
 		var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
 		var end_a: float = sweep_start_ang + sweep_dir * arc
-		draw_line(off, off + Vector2.from_angle(sweep_start_ang) * BEAM_RANGE, PAL["gold"] as Color, 1.5)
-		draw_line(off, off + Vector2.from_angle(end_a) * BEAM_RANGE, PAL["apricot"] as Color, 1.0)
+		var prog_b: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		draw_line(off.round(), (off + Vector2.from_angle(sweep_start_ang) * BEAM_RANGE).round(), PAL["gold"] as Color, 1.8)
+		draw_line(off.round(), (off + Vector2.from_angle(end_a) * BEAM_RANGE).round(), PAL["apricot"] as Color, 1.1)
+		draw_arc(off, lerpf(104.0, 38.0, prog_b), minf(sweep_start_ang, end_a), maxf(sweep_start_ang, end_a), 14, PAL["gold"] as Color, 1.2)
+		var g_r: float = lerpf(3.5, 7.5, prog_b)
+		draw_line(off.round() + Vector2(-g_r, 0.0), off.round() + Vector2(g_r, 0.0), PAL["gold"] as Color, 1.4)
+		draw_line(off.round() + Vector2(0.0, -g_r), off.round() + Vector2(0.0, g_r), PAL["gold"] as Color, 1.4)
 	elif active_move == BossMove.LAMP_BEAM and state == State.COMMIT:
-		var b_end: Vector2 = off + Vector2.from_angle(beam_angle) * BEAM_RANGE
-		draw_line(off, b_end, PAL["gold"] as Color, 4.0)
-		draw_line(off, b_end, PAL["cream"] as Color, 1.8)
+		var orig: Vector2 = off.round()
+		var b_dir: Vector2 = Vector2.from_angle(beam_angle)
+		var b_perp: Vector2 = Vector2(-b_dir.y, b_dir.x)
+		var b_end: Vector2 = (off + b_dir * BEAM_RANGE).round()
+		draw_line(orig, b_end, PAL["apricot"] as Color, 6.8)
+		draw_line(orig, b_end, PAL["gold"] as Color, 3.8)
+		draw_line(orig, b_end, PAL["cream"] as Color, 1.6)
+		for fi: int in range(3):
+			var ft: float = fposmod(anim_t * 3.4 + float(fi) * 0.333, 1.0)
+			var fp_b: Vector2 = orig.lerp(b_end, ft).round()
+			draw_line(fp_b - b_perp * 4.0, fp_b + b_perp * 4.0, PAL["cream"] as Color, 1.2)
+		var fl: float = 8.5 + 1.5 * sin(anim_t * 22.0)
+		for ep_i: int in range(2):
+			var fp: Vector2 = orig if ep_i == 0 else b_end
+			var fr: float = fl if ep_i == 0 else fl + 1.5
+			draw_line(fp + Vector2(-fr, 0.0), fp + Vector2(fr, 0.0), PAL["apricot"] as Color, 2.0)
+			draw_line(fp + Vector2(0.0, -fr), fp + Vector2(0.0, fr), PAL["apricot"] as Color, 2.0)
+			draw_line(fp + Vector2(-fr * 0.72, 0.0), fp + Vector2(fr * 0.72, 0.0), PAL["cream"] as Color, 1.2)
+			draw_line(fp + Vector2(0.0, -fr * 0.72), fp + Vector2(0.0, fr * 0.72), PAL["cream"] as Color, 1.2)
+			draw_circle(fp, 2.2, PAL["cream"] as Color)
 	elif active_move == BossMove.TIDE_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		draw_arc(off, lerpf(TIDE_MAX_R, TIDE_START_R + 8.0, prog), 0.0, TAU, 28, PAL["sky"] as Color, 1.5)
 	elif active_move == BossMove.TIDE_RING and state == State.COMMIT:
 		var ring_r: float = lerpf(TIDE_START_R, TIDE_MAX_R, tide_progress)
-		draw_arc(off, ring_r, 0.0, TAU, 32, PAL["sky"] as Color, 3.2)
-		draw_arc(off, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["ice"] as Color, 1.2)
+		draw_arc(off, ring_r + 2.4, 0.0, TAU, 36, PAL["blue"] as Color, 2.4)
+		draw_arc(off, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
+		draw_arc(off, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
+		draw_arc(off, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+		for ti: int in range(10):
+			var ta: float = anim_t * 2.0 + float(ti) * (TAU / 10.0)
+			var td: Vector2 = Vector2.from_angle(ta)
+			var tt: Vector2 = Vector2(-td.y, td.x)
+			var crest: Vector2 = (off + td * (ring_r + 1.0)).round()
+			draw_line((crest - tt * 3.0).round(), (crest + tt * 3.0 + td * 2.2).round(), PAL["ice"] as Color, 1.4)
+			draw_circle((crest + td * 1.5).round(), 1.2, PAL["cream"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 14.0, 0.0, TAU, 24, PAL["gold"] as Color, 2.5)
+		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 11.0 + rp * 18.0
+		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
+		draw_arc(off, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)

@@ -406,16 +406,36 @@ func _draw_reticle() -> void:
 		pos = (center + Lx.input.last_aim_dir.normalized() * 42.0).round()
 	var arm: float = float(sz + 2)
 	var gap: float = float(sz + 1)
-	var thick: float = float(sz)
 	var outline: Color = LxPalette.PAL["night"]
-	var rects: Array[Rect2] = [
-		Rect2(pos.x - gap - arm, pos.y - floorf(thick * 0.5), arm, thick),
-		Rect2(pos.x + gap, pos.y - floorf(thick * 0.5), arm, thick),
-		Rect2(pos.x - floorf(thick * 0.5), pos.y - gap - arm, thick, arm),
-		Rect2(pos.x - floorf(thick * 0.5), pos.y + gap, thick, arm),
+	var cream: Color = LxPalette.PAL["cream"]
+	var arms: Array[Rect2] = [
+		Rect2(pos.x - gap - arm, pos.y, arm, 1.0),
+		Rect2(pos.x + 1.0 + gap, pos.y, arm, 1.0),
+		Rect2(pos.x, pos.y - gap - arm, 1.0, arm),
+		Rect2(pos.x, pos.y + 1.0 + gap, 1.0, arm),
 	]
-	for r: Rect2 in rects:
+	if sz == 3:
+		arms.append(Rect2(pos.x - gap - arm + 1.0, pos.y - 1.0, arm - 2.0, 3.0))
+		arms.append(Rect2(pos.x + 2.0 + gap, pos.y - 1.0, arm - 2.0, 3.0))
+		arms.append(Rect2(pos.x - 1.0, pos.y - gap - arm + 1.0, 3.0, arm - 2.0))
+		arms.append(Rect2(pos.x - 1.0, pos.y + 2.0 + gap, 3.0, arm - 2.0))
+	if sz >= 2:
+		var d: float = float(sz + 1)
+		for corner: Vector2 in [
+			Vector2(-d, -d), Vector2(d, -d),
+			Vector2(-d, d), Vector2(d, d),
+		]:
+			arms.append(Rect2(pos + corner, Vector2(1.0, 1.0)))
+	for r: Rect2 in arms:
 		_cursor_node.draw_rect(r.grow(1.0), outline)
-	for r: Rect2 in rects:
+	for r: Rect2 in arms:
 		_cursor_node.draw_rect(r, col)
-	_cursor_node.draw_rect(Rect2(pos.x, pos.y, 1.0, 1.0), LxPalette.PAL["cream"])
+	if sz == 3:
+		_cursor_node.draw_rect(Rect2(pos.x - gap - arm + 2.0, pos.y, arm - 3.0, 1.0), cream)
+		_cursor_node.draw_rect(Rect2(pos.x + 2.0 + gap, pos.y, arm - 3.0, 1.0), cream)
+		_cursor_node.draw_rect(Rect2(pos.x, pos.y - gap - arm + 2.0, 1.0, arm - 3.0), cream)
+		_cursor_node.draw_rect(Rect2(pos.x, pos.y + 2.0 + gap, 1.0, arm - 3.0), cream)
+	# Dark-outlined center pinpoint stays razor-sharp on bright stone and dark floors.
+	_cursor_node.draw_rect(Rect2(pos.x - 1.0, pos.y, 3.0, 1.0), outline)
+	_cursor_node.draw_rect(Rect2(pos.x, pos.y - 1.0, 1.0, 3.0), outline)
+	_cursor_node.draw_rect(Rect2(pos.x, pos.y, 1.0, 1.0), cream)

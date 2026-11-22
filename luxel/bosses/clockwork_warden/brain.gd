@@ -140,12 +140,13 @@ func _shield_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Clockwork brass gear teeth ring
-	for i: int in range(8):
-		var ga: float = anim_t * 1.4 * rail_spin + float(i) * (TAU / 8.0)
-		var g0: Vector2 = off + Vector2.from_angle(ga) * (body_radius + 0.5)
-		var g1: Vector2 = off + Vector2.from_angle(ga) * (body_radius + 3.5)
-		draw_line(g0, g1, PAL["apricot"] as Color, 1.5)
+	if _sprite_sheet == null:
+		# Clockwork brass gear teeth ring
+		for i: int in range(8):
+			var ga: float = anim_t * 1.4 * rail_spin + float(i) * (TAU / 8.0)
+			var g0: Vector2 = off + Vector2.from_angle(ga) * (body_radius + 0.5)
+			var g1: Vector2 = off + Vector2.from_angle(ga) * (body_radius + 3.5)
+			draw_line(g0, g1, PAL["apricot"] as Color, 1.5)
 	super._draw_extra(off)
 	if phase >= 2 and state == State.TELL:
 		for off_a: float in [-FAN_SPREAD_RAD, FAN_SPREAD_RAD]:

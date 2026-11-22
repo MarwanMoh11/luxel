@@ -231,25 +231,48 @@ func _shield_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	super._draw_extra(off)
-	# Spider-beetle legs
 	var fwd: Vector2 = Vector2.from_angle(facing)
 	var side: Vector2 = Vector2(-fwd.y, fwd.x)
-	for s: float in [-1.0, 1.0]:
-		for k: int in [-1, 0, 1]:
-			var b_pt: Vector2 = off + side * (body_radius * s) + fwd * (float(k) * 3.0)
-			draw_line(b_pt, b_pt + side * (5.0 * s) + fwd * (float(k) * 2.5), PAL["jade"] as Color, 1.5)
-	# Criss-cross web barrier lines while shield is active
+	if _sprite_sheet == null:
+		# Spider-beetle legs
+		for s: float in [-1.0, 1.0]:
+			for k: int in [-1, 0, 1]:
+				var b_pt: Vector2 = off + side * (body_radius * s) + fwd * (float(k) * 3.0)
+				draw_line(b_pt, b_pt + side * (5.0 * s) + fwd * (float(k) * 2.5), PAL["jade"] as Color, 1.5)
+	# Glistening woven web-shield cross-strands while shield is active
 	if _has_active_shield():
-		var w0: Vector2 = off + fwd * (body_radius + 3.0) - side * 8.0
-		var w1: Vector2 = off + fwd * (body_radius + 3.0) + side * 8.0
-		draw_line(w0, w1, PAL["stone"] as Color, 1.5)
-		draw_line(off + fwd * (body_radius + 1.0) - side * 6.0, off + fwd * (body_radius + 6.0) + side * 6.0, PAL["cream"] as Color, 1.0)
+		var w_in: Vector2 = off + fwd * (body_radius + 1.5)
+		var w_mid: Vector2 = off + fwd * (body_radius + 4.0)
+		var w_out: Vector2 = off + fwd * (body_radius + 6.5)
+		var w_col: Color = (PAL["cream"] if clank_t > 0.0 else PAL["ice"]) as Color
+		draw_line((w_mid - side * 9.0).round(), (w_mid + side * 9.0).round(), PAL["stone"] as Color, 1.5)
+		draw_line((w_in - side * 7.5).round(), (w_out + side * 7.5).round(), w_col, 1.1)
+		draw_line((w_in + side * 7.5).round(), (w_out - side * 7.5).round(), w_col, 1.1)
+		draw_line((w_out - side * 5.0).round(), (w_out + side * 5.0).round(), PAL["cream"] as Color, 1.0)
+		for wi: int in range(-1, 2):
+			var anchor: Vector2 = w_in + side * (float(wi) * 4.5)
+			draw_line(anchor.round(), (anchor + fwd * 5.0).round(), PAL["ice"] as Color, 1.0)
+		draw_circle((w_mid + side * (sin(anim_t * 5.0) * 2.0)).round(), 1.2, PAL["cream"] as Color)
 	if spore_burst_attack and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		draw_arc(off, lerpf(SPORE_MAX_R, SPORE_START_R + 6.0, prog), 0.0, TAU, 28, PAL["lime"] as Color, 1.8)
 	elif spore_burst_attack and state == State.COMMIT:
 		var ring_r: float = lerpf(SPORE_START_R, SPORE_MAX_R, spore_progress)
-		draw_arc(off, ring_r, 0.0, TAU, 32, PAL["lime"] as Color, 3.2)
-		draw_arc(off, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
+		draw_arc(off, ring_r + 2.6, 0.0, TAU, 36, PAL["pine"] as Color, 2.4)
+		draw_arc(off, ring_r, 0.0, TAU, 36, PAL["jade"] as Color, 3.6)
+		draw_arc(off, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["lime"] as Color, 2.0)
+		for sw: int in range(4):
+			var sw_a: float = anim_t * 3.2 + float(sw) * (TAU * 0.25)
+			draw_arc(off, maxf(3.0, ring_r - 4.0), sw_a, sw_a + 0.65, 6, PAL["lime"] as Color, 1.2)
+		for pi: int in range(8):
+			var pa: float = anim_t * 2.6 + float(pi) * (TAU / 8.0)
+			var wob: float = sin(anim_t * 10.0 + float(pi) * 1.6) * 2.6
+			var pp: Vector2 = (off + Vector2.from_angle(pa) * (ring_r + wob)).round()
+			draw_circle(pp, 2.2, PAL["pine"] as Color)
+			draw_circle(pp, 1.4, PAL["lime"] as Color)
+			draw_circle(pp, 0.7, PAL["cream"] as Color)
 	elif _roaring:
-		draw_arc(off, body_radius + 13.0, 0.0, TAU, 24, PAL["lime"] as Color, 2.5)
+		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 11.0 + rp * 16.0
+		draw_arc(off, rr + 2.2, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
+		draw_arc(off, rr, 0.0, TAU, 28, PAL["lime"] as Color, 2.4)

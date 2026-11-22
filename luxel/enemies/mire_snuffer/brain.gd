@@ -119,16 +119,17 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Hooded candle-snuffer bell cone silhouette (distinct from Magpie bird).
-	var pts := PackedVector2Array([
-		off + Vector2(0.0, -body_radius - 6.0),
-		off + Vector2(-body_radius - 2.0, -1.0),
-		off + Vector2(body_radius + 2.0, -1.0),
-	])
-	draw_colored_polygon(pts, PAL["pine"] as Color)
-	draw_polyline(PackedVector2Array([pts[0], pts[1], pts[2], pts[0]]), PAL["night"] as Color, 1.0)
-	draw_circle(off + Vector2(-1.5, -2.0), 1.0, PAL["lime"] as Color)
-	draw_circle(off + Vector2(1.5, -2.0), 1.0, PAL["lime"] as Color)
+	if _sprite_sheet == null:
+		# Hooded candle-snuffer bell cone silhouette (distinct from Magpie bird).
+		var pts := PackedVector2Array([
+			off + Vector2(0.0, -body_radius - 6.0),
+			off + Vector2(-body_radius - 2.0, -1.0),
+			off + Vector2(body_radius + 2.0, -1.0),
+		])
+		draw_colored_polygon(pts, PAL["pine"] as Color)
+		draw_polyline(PackedVector2Array([pts[0], pts[1], pts[2], pts[0]]), PAL["night"] as Color, 1.0)
+		draw_circle(off + Vector2(-1.5, -2.0), 1.0, PAL["lime"] as Color)
+		draw_circle(off + Vector2(1.5, -2.0), 1.0, PAL["lime"] as Color)
 	if sub_state == SubState.GRAB:
 		var r: float = body_radius + 5.0 + sin(anim_t * 18.0) * 1.5
 		draw_arc(off, r, 0.0, TAU, 14, PAL["dusk"] as Color, 2.0)

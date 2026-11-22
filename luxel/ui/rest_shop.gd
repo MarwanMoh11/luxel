@@ -6,6 +6,23 @@ signal closed()
 signal upgrade_bought(upgrade_id: String, new_rank: int)
 
 const PANEL_RECT := Rect2(20.0, 12.0, 280.0, 156.0)
+const SPARK_DUR: float = 0.45
+
+const ICON_PAL: Dictionary = {
+	"k": "void", "n": "night", "d": "dusk", "m": "mauve",
+	"w": "wine", "r": "coral", "a": "apricot", "g": "gold",
+	"c": "cream", "b": "blue", "s": "sky", "i": "ice",
+}
+
+const UPGRADE_ICONS: Dictionary = {
+	"bolt_damage": ["...c...", "..cgc..", "..gag..", ".gacag.", ".argrr.", "..dgd..", "..nnn.."],
+	"bolt_rate": ["...cg..", "..cga..", ".cgag..", "..agac.", ".s.gag.", "..cga..", ".s.a..."],
+	"throw_damage": ["..aga..", ".dgggd.", ".a.c.a.", ".acgca.", ".a.g.a.", ".dgggd.", "..ddd.."],
+	"dash_cooldown": [".g...g.", "gg.c.gg", "agacaga", ".a.c.a.", ".s.g.s.", "..s.s..", "...a..."],
+	"ember_meter": [".rr.rr.", "ragagar", "ragcgar", "raggagr", ".rgggr.", "..rar..", "...w..."],
+	"prism_bounce": ["...g...", "..iic..", ".iissc.", ".iissb.", "gisbbbg", ".gbbbg.", "..ddd.."],
+}
+const DEFAULT_ICON: Array[String] = ["...g...", "..gag..", ".gacag.", "..gag..", "...g...", ".......", "......."]
 
 var _upgrades: Array[Dictionary] = []
 var _idx: int = 0
@@ -13,6 +30,10 @@ var _close_hover: bool = false
 var _feedback_key: String = ""
 var _feedback_col: String = "lime"
 var _feedback_t: float = 0.0
+var _elapsed: float = 0.0
+var _spark_row: int = -1
+var _spark_pip: int = -1
+var _spark_t: float = 0.0
 
 
 func _ready() -> void:
@@ -25,6 +46,10 @@ func open() -> void:
 	_idx = 0
 	_feedback_key = ""
 	_feedback_t = 0.0
+	_elapsed = 0.0
+	_spark_row = -1
+	_spark_pip = -1
+	_spark_t = 0.0
 	visible = true
 	queue_redraw()
 
@@ -47,11 +72,17 @@ func _load_upgrades() -> void:
 func _process(delta: float) -> void:
 	if not visible:
 		return
+	_elapsed += delta
 	if _feedback_t > 0.0:
 		_feedback_t = maxf(0.0, _feedback_t - delta)
 		if _feedback_t <= 0.0:
 			_feedback_key = ""
-		queue_redraw()
+	if _spark_t > 0.0:
+		_spark_t = maxf(0.0, _spark_t - delta)
+		if _spark_t <= 0.0:
+			_spark_row = -1
+			_spark_pip = -1
+	queue_redraw()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -116,6 +147,9 @@ func _try_buy(i: int) -> void:
 		_feedback_key = "SHOP_BOUGHT"
 		_feedback_col = "lime"
 		_feedback_t = 1.6
+		_spark_row = i
+		_spark_pip = maxi(0, new_rank - 1)
+		_spark_t = SPARK_DUR
 		_play_ui_sfx("ui_confirm")
 		if Lx.events != null:
 			Lx.events.save_requested.emit("upgrade")
@@ -130,9 +164,14 @@ func _try_buy(i: int) -> void:
 
 func _draw() -> void:
 	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", "gold", "night")
-	LxPixelFont.draw_left(self, LxStrings.text("SHOP_TITLE"), Vector2(28.0, 18.0), LxPalette.PAL["gold"], 1)
+	_draw_frame_ornaments()
+	_draw_brazier_icon(Vector2(27.0, 16.0))
+	LxPixelFont.draw_left(self, LxStrings.text("SHOP_TITLE"), Vector2(38.0, 18.0), LxPalette.PAL["gold"], 1)
 	var shards: int = Lx.state.shards if Lx.state != null else 0
-	LxPixelFont.draw_right(self, LxStrings.fmt("SHOP_SHARDS_FMT", [shards]), 292.0, 18.0, LxPalette.PAL["apricot"], 1)
+	var shard_txt: String = LxStrings.fmt("SHOP_SHARDS_FMT", [shards])
+	var gem_x: float = 292.0 - float(LxPixelFont.width(shard_txt, 1)) - 10.0
+	_draw_shard_gem_icon(Vector2(gem_x, 16.0))
+	LxPixelFont.draw_right(self, shard_txt, 292.0, 18.0, LxPalette.PAL["apricot"], 1)
 	LxPixelFont.draw_left(self, LxStrings.text("SHOP_SUBTITLE"), Vector2(28.0, 27.0), LxPalette.PAL["stone"], 1)
 
 	for i: int in range(_upgrades.size()):
@@ -168,16 +207,18 @@ func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 	else:
 		LxPixelFont.draw_panel(self, r, "night", "dusk", "void")
 
+	_draw_upgrade_icon(r.position + Vector2(5.0, 3.0), uid, sel)
 	var name_key: String = str(u.get("name_key", ""))
 	var name_col: Color = LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"]
-	LxPixelFont.draw_left(self, LxStrings.text(name_key), r.position + Vector2(6.0, 4.0), name_col, 1)
+	LxPixelFont.draw_left(self, LxStrings.text(name_key), r.position + Vector2(16.0, 4.0), name_col, 1)
 
-	# Rank pips.
+	# Polished glowing crystal rank pips.
 	var pip_x: float = r.position.x + 150.0
 	for p: int in range(max_rank):
 		var pr := Rect2(pip_x + float(p * 8), r.position.y + 4.0, 5.0, 5.0)
-		draw_rect(pr.grow(1.0), LxPalette.PAL["void"])
-		draw_rect(pr, LxPalette.PAL["gold"] if p < rank else LxPalette.PAL["dusk"])
+		_draw_rank_pip(pr, p < rank, sel, p)
+	if _spark_t > 0.0 and i == _spark_row and _spark_pip >= 0:
+		_draw_purchase_sparkle(Vector2(pip_x + float(_spark_pip * 8) + 2.0, r.position.y + 6.0))
 
 	if maxed:
 		LxPixelFont.draw_right(self, LxStrings.text("SHOP_MAXED"), r.end.x - 6.0, r.position.y + 4.0, LxPalette.PAL["lime"], 1)
@@ -185,6 +226,117 @@ func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 		var cost: int = int(costs[rank]) if rank < costs.size() else 0
 		var c_col: Color = LxPalette.PAL["gold"] if affordable else LxPalette.PAL["coral"]
 		LxPixelFont.draw_right(self, LxStrings.fmt("SHOP_COST_FMT", [cost]), r.end.x - 6.0, r.position.y + 4.0, c_col, 1)
+
+
+func _draw_frame_ornaments() -> void:
+	var p: Vector2 = PANEL_RECT.position
+	var e: Vector2 = PANEL_RECT.end
+	var gold: Color = LxPalette.PAL["gold"]
+	var apr: Color = LxPalette.PAL["apricot"]
+	var dusk: Color = LxPalette.PAL["dusk"]
+	var night: Color = LxPalette.PAL["night"]
+	# Corner brass rivets with shadow depth.
+	for rv: Vector2 in [
+		Vector2(p.x + 3.0, p.y + 3.0), Vector2(e.x - 5.0, p.y + 3.0),
+		Vector2(p.x + 3.0, e.y - 5.0), Vector2(e.x - 5.0, e.y - 5.0),
+	]:
+		draw_rect(Rect2(rv + Vector2(1.0, 1.0), Vector2(2.0, 2.0)), night)
+		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), apr)
+		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), gold)
+	# Brass filigree divider beneath header.
+	var dy: float = 35.0
+	draw_rect(Rect2(28.0, dy, 264.0, 1.0), night)
+	draw_rect(Rect2(32.0, dy, 256.0, 1.0), dusk)
+	var x: float = 36.0
+	while x < 284.0:
+		draw_rect(Rect2(x, dy, 3.0, 1.0), apr if int(x) % 12 == 0 else dusk)
+		x += 6.0
+	draw_rect(Rect2(158.0, dy, 5.0, 1.0), apr)
+	draw_rect(Rect2(159.0, dy - 1.0, 3.0, 3.0), gold)
+	draw_rect(Rect2(160.0, dy, 1.0, 1.0), LxPalette.PAL["cream"])
+
+
+func _draw_brazier_icon(at: Vector2) -> void:
+	var x: float = roundf(at.x)
+	var y: float = roundf(at.y)
+	var tip: float = 0.0 if fmod(_elapsed * 5.2, 1.0) < 0.5 else 1.0
+	var bright: bool = fmod(_elapsed * 2.6, 1.0) < 0.55
+	draw_rect(Rect2(x + 2.0 + tip, y, 1.0, 1.0), LxPalette.PAL["cream"] if bright else LxPalette.PAL["gold"])
+	draw_rect(Rect2(x + 2.0, y + 1.0, 3.0, 2.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(x + 3.0, y + 1.0, 1.0, 2.0), LxPalette.PAL["cream"])
+	draw_rect(Rect2(x + 1.0, y + 2.0, 5.0, 2.0), LxPalette.PAL["apricot"])
+	draw_rect(Rect2(x + 2.0, y + 2.0, 3.0, 2.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(x + 3.0, y + 3.0, 1.0, 1.0), LxPalette.PAL["cream"])
+	# Brazier brass bowl & pedestal.
+	draw_rect(Rect2(x, y + 4.0, 7.0, 1.0), LxPalette.PAL["coral"])
+	draw_rect(Rect2(x + 1.0, y + 5.0, 5.0, 1.0), LxPalette.PAL["apricot"])
+	draw_rect(Rect2(x + 2.0, y + 6.0, 3.0, 1.0), LxPalette.PAL["dusk"])
+	draw_rect(Rect2(x + 1.0, y + 7.0, 5.0, 1.0), LxPalette.PAL["night"])
+
+
+func _draw_shard_gem_icon(at: Vector2) -> void:
+	var x: float = roundf(at.x)
+	var y: float = roundf(at.y)
+	var glint: bool = fmod(_elapsed * 2.2, 1.0) < 0.45
+	draw_rect(Rect2(x + 3.0, y, 1.0, 1.0), LxPalette.PAL["cream"] if glint else LxPalette.PAL["gold"])
+	draw_rect(Rect2(x + 2.0, y + 1.0, 3.0, 1.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(x + 1.0, y + 2.0, 5.0, 3.0), LxPalette.PAL["apricot"])
+	draw_rect(Rect2(x + 2.0, y + 2.0, 3.0, 2.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(x + 2.0, y + 2.0, 1.0, 2.0), LxPalette.PAL["cream"])
+	draw_rect(Rect2(x + 4.0, y + 3.0, 1.0, 2.0), LxPalette.PAL["coral"])
+	draw_rect(Rect2(x + 2.0, y + 5.0, 3.0, 1.0), LxPalette.PAL["coral"])
+	draw_rect(Rect2(x + 3.0, y + 6.0, 1.0, 1.0), LxPalette.PAL["wine"])
+	if glint:
+		draw_rect(Rect2(x + 5.0, y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+
+
+func _draw_upgrade_icon(at: Vector2, uid: String, sel: bool) -> void:
+	var x: float = roundf(at.x)
+	var y: float = roundf(at.y)
+	var rows: Array = UPGRADE_ICONS.get(uid, DEFAULT_ICON) as Array
+	for r_i: int in range(rows.size()):
+		var row: String = str(rows[r_i])
+		for c_i: int in range(row.length()):
+			var ch: String = row[c_i]
+			if ch == ".":
+				continue
+			var key: String = str(ICON_PAL.get(ch, "cream"))
+			draw_rect(Rect2(x + float(c_i), y + float(r_i), 1.0, 1.0), LxPalette.color(key))
+	if sel and fmod(_elapsed * 3.0, 1.0) < 0.45:
+		draw_rect(Rect2(x + 6.0, y, 1.0, 1.0), LxPalette.PAL["cream"])
+
+
+func _draw_rank_pip(pr: Rect2, filled: bool, sel: bool, idx: int) -> void:
+	draw_rect(pr.grow(1.0), LxPalette.PAL["void"])
+	if not filled:
+		draw_rect(pr, LxPalette.PAL["night"])
+		draw_rect(Rect2(pr.position.x + 1.0, pr.end.y - 1.0, 4.0, 1.0), LxPalette.PAL["dusk"])
+		draw_rect(Rect2(pr.end.x - 1.0, pr.position.y + 1.0, 1.0, 4.0), LxPalette.PAL["dusk"])
+		draw_rect(Rect2(pr.position.x + 2.0, pr.position.y + 2.0, 1.0, 1.0), LxPalette.PAL["dusk"])
+		return
+	var shimmer: bool = fmod(_elapsed * 2.5 + float(idx) * 0.35, 1.0) < 0.4
+	draw_rect(pr, LxPalette.PAL["apricot"])
+	draw_rect(Rect2(pr.position.x + 1.0, pr.position.y, 3.0, 5.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(pr.position.x, pr.position.y + 1.0, 5.0, 3.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(pr.position.x + 2.0, pr.position.y + 2.0, 1.0, 1.0), LxPalette.PAL["cream"])
+	if shimmer or sel:
+		draw_rect(Rect2(pr.position.x + 2.0, pr.position.y + 1.0, 1.0, 3.0), LxPalette.PAL["cream"])
+
+
+func _draw_purchase_sparkle(center: Vector2) -> void:
+	var prog: float = clampf(1.0 - (_spark_t / SPARK_DUR), 0.0, 1.0)
+	var dist: float = roundf(3.0 + prog * 7.0)
+	var d_diag: float = roundf(dist * 0.7)
+	var col: Color = LxPalette.PAL["cream"] if prog < 0.3 else (LxPalette.PAL["gold"] if prog < 0.65 else LxPalette.PAL["apricot"])
+	var dirs: Array[Vector2] = [
+		Vector2(dist, 0.0), Vector2(-dist, 0.0), Vector2(0.0, dist), Vector2(0.0, -dist),
+		Vector2(d_diag, d_diag), Vector2(-d_diag, d_diag), Vector2(d_diag, -d_diag), Vector2(-d_diag, -d_diag),
+	]
+	if prog < 0.35:
+		draw_rect(Rect2(center - Vector2(3.0, 3.0), Vector2(7.0, 1.0)), LxPalette.PAL["cream"])
+		draw_rect(Rect2(center + Vector2(-3.0, 3.0), Vector2(7.0, 1.0)), LxPalette.PAL["cream"])
+	for off: Vector2 in dirs:
+		draw_rect(Rect2((center + off).round(), Vector2(1.0, 1.0)), col)
 
 
 func _row_rect(i: int) -> Rect2:

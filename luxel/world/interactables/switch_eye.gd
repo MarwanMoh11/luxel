@@ -6,6 +6,7 @@ var activated: bool = false
 var requires_prism: bool = false
 var reset_time: float = 0.0
 var _reset_left: float = 0.0
+var _pulse_stage: int = 0
 
 
 func setup(spec: Dictionary) -> void:
@@ -19,12 +20,21 @@ func setup(spec: Dictionary) -> void:
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	var changed: bool = false
 	if activated and reset_time > 0.0:
 		_reset_left -= dt
 		if _reset_left <= 0.0:
 			activated = false
 			_notify_linked_targets(false)
-			queue_redraw()
+			changed = true
+	if active:
+		var rate: float = 3.0 if activated else 1.8
+		var st: int = int(floorf(_clock * rate + absf(pos.x * 0.03))) % 4
+		if st != _pulse_stage:
+			_pulse_stage = st
+			changed = true
+	if changed:
+		queue_redraw()
 
 
 func on_hit(hit: LxHit) -> bool:
@@ -64,12 +74,42 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
-	draw_circle(Vector2.ZERO, 7.0, PAL["night"])
-	draw_circle(Vector2.ZERO, 6.0, PAL["dusk"])
+	draw_rect(Rect2(-7.0, 5.0, 14.0, 3.0), PAL["void"])
+	draw_rect(Rect2(-6.0, 2.0, 12.0, 5.0), PAL["night"])
+	draw_rect(Rect2(-5.0, 3.0, 10.0, 3.0), PAL["dusk"])
+	draw_rect(Rect2(-5.0, 3.0, 10.0, 1.0), PAL["stone"])
+	draw_rect(Rect2(-4.0, -7.0, 8.0, 11.0), PAL["night"])
+	draw_rect(Rect2(-3.0, -6.0, 6.0, 9.0), PAL["dusk"])
+	draw_rect(Rect2(-3.0, -6.0, 2.0, 8.0), PAL["mauve"])
+	draw_rect(Rect2(-3.0, -6.0, 5.0, 1.0), PAL["stone"])
+	draw_rect(Rect2(-8.0, -4.0, 16.0, 7.0), PAL["void"])
+	draw_rect(Rect2(-7.0, -5.0, 14.0, 9.0), PAL["void"])
+	draw_rect(Rect2(-6.0, -4.0, 12.0, 7.0), PAL["apricot"])
+	draw_rect(Rect2(-7.0, -2.0, 14.0, 3.0), PAL["apricot"])
+	draw_rect(Rect2(-5.0, -4.0, 10.0, 1.0), PAL["gold"])
+	draw_rect(Rect2(-6.0, -3.0, 1.0, 3.0), PAL["gold"])
+	draw_rect(Rect2(-5.0, 2.0, 10.0, 1.0), PAL["wine"])
+	draw_rect(Rect2(-7.0, -1.0, 1.0, 1.0), PAL["gold"])
+	draw_rect(Rect2(6.0, -1.0, 1.0, 1.0), PAL["gold"])
+	if requires_prism:
+		draw_rect(Rect2(-2.0, -7.0, 4.0, 2.0), PAL["deep"])
+		draw_rect(Rect2(-1.0, -7.0, 2.0, 2.0), PAL["sky"])
+		draw_rect(Rect2(-1.0, -7.0, 1.0, 1.0), PAL["ice"])
+	draw_rect(Rect2(-5.0, -3.0, 10.0, 5.0), PAL["void"])
 	if activated:
-		draw_circle(Vector2.ZERO, 4.0, PAL["gold"])
-		draw_circle(Vector2.ZERO, 2.0, PAL["cream"])
+		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), PAL["apricot"])
+		draw_rect(Rect2(-3.0, -3.0, 6.0, 5.0), PAL["gold"])
+		draw_rect(Rect2(-2.0, -2.0, 4.0, 3.0), PAL["cream"])
+		var glint_c: Color = (PAL["cream"] if _pulse_stage < 2 else PAL["gold"]) as Color
+		draw_rect(Rect2(0.0, -5.0, 1.0, 1.0), glint_c)
+		draw_rect(Rect2(0.0, 3.0, 1.0, 1.0), glint_c)
+		draw_rect(Rect2(-6.0, -1.0, 1.0, 1.0), glint_c)
+		draw_rect(Rect2(5.0, -1.0, 1.0, 1.0), glint_c)
 	else:
-		var iris: Color = PAL["sky"] if requires_prism else PAL["coral"]
-		draw_circle(Vector2.ZERO, 3.5, iris)
-		draw_circle(Vector2.ZERO, 1.5, PAL["night"])
+		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), PAL["deep"])
+		draw_rect(Rect2(-3.0, -2.0, 6.0, 3.0), PAL["blue"])
+		var shine: Color = (PAL["ice"] if (requires_prism or _pulse_stage == 0) else PAL["sky"]) as Color
+		draw_rect(Rect2(-2.0, -2.0, 4.0, 1.0), PAL["sky"])
+		draw_rect(Rect2(-2.0, -2.0, 2.0, 1.0), shine)
+		draw_rect(Rect2(-1.0, -2.0, 2.0, 3.0), PAL["void"])
+		draw_rect(Rect2(-2.0, -1.0, 1.0, 1.0), shine)

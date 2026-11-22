@@ -139,7 +139,7 @@ func _draw() -> void:
 
 func _draw_extra(off: Vector2) -> void:
 	super._draw_extra(off)
-	if surfaced:
+	if surfaced and _sprite_sheet == null:
 		# Digging claws
 		draw_line(off + Vector2(-3.0, 2.0), off + Vector2(-5.0, 5.0), PAL["gold"] as Color, 1.5)
 		draw_line(off + Vector2(3.0, 2.0), off + Vector2(5.0, 5.0), PAL["gold"] as Color, 1.5)

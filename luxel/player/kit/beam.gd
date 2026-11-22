@@ -205,15 +205,28 @@ func reset() -> void:
 
 
 func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
+	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var flash_sc: float = 0.72 if flash_red else 1.0
 	if charging:
 		var prog: float = charge_progress()
 		var ready: bool = prog >= 0.999
 		var r: float = lerpf(14.0, 4.5, prog)
 		var ring_col: Color = LxWick.PAL_CREAM if ready else LxWick.PAL_GOLD
 		canvas.draw_arc(hand_pos, r, -PI * 0.5, -PI * 0.5 + TAU * prog, 20, ring_col, 1.5)
+		var spin: float = float(Time.get_ticks_msec()) * (0.0032 if flash_red else 0.0055)
+		var mote_r: float = lerpf(15.0, 3.0, prog)
+		for i: int in range(4):
+			var ang: float = spin + TAU * float(i) * 0.25 + prog * 2.4
+			var mp: Vector2 = (hand_pos + Vector2.from_angle(ang) * mote_r).round()
+			var mcol: Color = LxWick.PAL_CREAM if (ready or i % 2 == 0) else LxWick.PAL_GOLD
+			canvas.draw_rect(Rect2(mp, Vector2(1.0, 1.0)), Color(mcol, lerpf(0.55, 0.95, prog) * flash_sc))
+			var tp: Vector2 = (hand_pos + Vector2.from_angle(ang - 0.26) * (mote_r + 2.0)).round()
+			canvas.draw_rect(Rect2(tp, Vector2(1.0, 1.0)), Color(LxWick.PAL_APRICOT, 0.42 * flash_sc))
 		if ready:
 			canvas.draw_circle(hand_pos, 3.0, LxWick.PAL_CREAM)
-			canvas.draw_arc(hand_pos, 7.5, 0.0, TAU, 16, Color(LxWick.PAL_GOLD, 0.75), 1.0)
+			canvas.draw_arc(hand_pos, 7.5, 0.0, TAU, 16, Color(LxWick.PAL_GOLD, 0.70 * flash_sc), 1.0)
+			var sr: float = roundf(5.5 if flash_red else (6.0 + 1.5 * sin(spin * 2.6)))
+			_draw_star_flare(canvas, hand_pos, Vector2.RIGHT, sr, sr, 0.92 * flash_sc)
 		var aim_len: float = lerpf(8.0, 28.0, prog)
 		canvas.draw_line(hand_pos, (hand_pos + wick.facing * aim_len).round(), Color(ring_col, 0.45), 1.0)
 
@@ -221,11 +234,37 @@ func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
 		var t: float = clampf(beam_vis_t / maxf(beam_vis_max, 0.01), 0.0, 1.0)
 		var a: Vector2 = (beam_start + off).round() + Vector2(0.0, -5.0)
 		var b: Vector2 = (beam_end + off).round() + Vector2(0.0, -5.0)
-		canvas.draw_line(a, b, Color(LxWick.PAL_APRICOT, t * 0.85), maxf(1.0, beam_width * t))
-		canvas.draw_line(a, b, Color(LxWick.PAL_GOLD, t), maxf(1.0, beam_width * 0.65 * t))
+		var delta: Vector2 = b - a
+		var blen: float = delta.length()
+		var bdir: Vector2 = delta / blen if blen > 0.5 else Vector2.RIGHT
+		var perp := Vector2(-bdir.y, bdir.x)
+		canvas.draw_line(a, b, Color(LxWick.PAL_APRICOT, t * 0.85 * flash_sc), maxf(1.0, beam_width * t))
+		canvas.draw_line(a, b, Color(LxWick.PAL_GOLD, t * lerpf(1.0, 0.85, 1.0 - flash_sc)), maxf(1.0, beam_width * 0.65 * t))
 		canvas.draw_line(a, b, Color(LxWick.PAL_CREAM, t), maxf(1.0, beam_width * 0.30 * t))
-		canvas.draw_circle(a, 4.0 * t, LxWick.PAL_CREAM)
-		canvas.draw_circle(b, 4.5 * t, LxWick.PAL_GOLD)
+		var cursor: float = 12.0 + (1.0 - t) * 10.0
+		while cursor < blen - 8.0:
+			var np: Vector2 = (a + bdir * cursor).round()
+			var hw: float = maxf(1.0, roundf((1.5 + beam_width * 0.35) * t))
+			canvas.draw_line((np - perp * hw).round(), (np + perp * hw).round(), Color(LxWick.PAL_GOLD, t * 0.82 * flash_sc), 1.0)
+			canvas.draw_rect(Rect2(np - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), Color(LxWick.PAL_CREAM, t * 0.92))
+			cursor += 18.0
+		canvas.draw_circle(a, 4.0 * t, Color(LxWick.PAL_CREAM, t * flash_sc))
+		canvas.draw_circle(b, 4.5 * t, Color(LxWick.PAL_GOLD, t * flash_sc))
+		_draw_star_flare(canvas, a, bdir, roundf(9.0 * t * flash_sc), roundf(6.5 * t * flash_sc), t)
+		_draw_star_flare(canvas, b, bdir, roundf(10.0 * t * flash_sc), roundf(8.5 * t * flash_sc), t)
+
+
+func _draw_star_flare(canvas: CanvasItem, c: Vector2, axis: Vector2, main_r: float, cross_r: float, alpha: float) -> void:
+	if main_r < 1.5 and cross_r < 1.5:
+		return
+	var perp := Vector2(-axis.y, axis.x)
+	var cg := Color(LxWick.PAL_GOLD, alpha * 0.92)
+	var cc := Color(LxWick.PAL_CREAM, alpha)
+	canvas.draw_line((c - axis * main_r).round(), (c + axis * main_r).round(), cg, 1.0)
+	canvas.draw_line((c - perp * cross_r).round(), (c + perp * cross_r).round(), cg, 1.0)
+	canvas.draw_line((c - axis * roundf(main_r * 0.55)).round(), (c + axis * roundf(main_r * 0.55)).round(), cc, 1.0)
+	canvas.draw_line((c - perp * roundf(cross_r * 0.55)).round(), (c + perp * roundf(cross_r * 0.55)).round(), cc, 1.0)
+	canvas.draw_rect(Rect2(c - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), cc)
 
 
 func _raycast_walls_only(ctx: Node, start_p: Vector2, aim: Vector2, max_range: float) -> Vector2:

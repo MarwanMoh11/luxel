@@ -5,6 +5,7 @@ extends LxInteractable
 var lit: bool = false
 var requires_boss: String = ""
 var requires_flag: String = ""
+var _ready_cache: bool = false
 
 
 func setup(spec: Dictionary) -> void:
@@ -15,7 +16,17 @@ func setup(spec: Dictionary) -> void:
 	lit = bool(props.get("lit", false))
 	if Lx.state != null and Lx.state.relit_islands.has(island_id):
 		lit = true
+	_ready_cache = _can_relight()
 	queue_redraw()
+
+
+func tick(dt: float) -> void:
+	var ready: bool = _can_relight()
+	if ready != _ready_cache:
+		_ready_cache = ready
+		queue_redraw()
+	_uses_prop_anim = lit or ready
+	super.tick(dt)
 
 
 func _can_relight() -> bool:
@@ -102,8 +113,24 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
-	if _draw_prop_sprite("great_lamp" if lit else "great_lamp_unlit"):
-		return
+	var shadow: Color = PAL["void"] as Color
+	draw_rect(Rect2(-21.0, 2.0, 42.0, 2.0), shadow)
+	draw_rect(Rect2(-18.0, 1.0, 36.0, 4.0), shadow)
+	draw_rect(Rect2(-13.0, 0.0, 26.0, 6.0), shadow)
+	var ready: bool = _can_relight()
+	if not lit and ready:
+		_draw_relight_rings(false)
+	var frame_ov: int = -1 if (lit or ready) else 0
+	if not _draw_prop_sprite("great_lamp" if lit else "great_lamp_unlit", Vector2.ZERO, frame_ov):
+		_draw_fallback(ready)
+	if not lit and ready:
+		_draw_relight_rings(true)
+		_draw_beckon_motes()
+	elif lit:
+		_draw_dawn_embers()
+
+
+func _draw_fallback(ready: bool) -> void:
 	draw_rect(Rect2(-12.0, -5.0, 24.0, 10.0), PAL["night"])
 	draw_rect(Rect2(-10.0, -8.0, 20.0, 10.0), PAL["dusk"])
 	draw_rect(Rect2(-8.0, -20.0, 16.0, 14.0), PAL["mauve"])
@@ -112,8 +139,39 @@ func _draw() -> void:
 		draw_circle(Vector2(0.0, -22.0), 8.0, PAL["apricot"])
 		draw_circle(Vector2(0.0, -22.0), 5.5, PAL["gold"])
 		draw_circle(Vector2(0.0, -22.0), 3.0, PAL["cream"])
-	elif _can_relight():
+	elif ready:
 		draw_circle(Vector2(0.0, -21.0), 4.0, PAL["coral"])
 		draw_circle(Vector2(0.0, -21.0), 2.0, PAL["gold"])
 	else:
 		draw_rect(Rect2(-5.0, -22.0, 10.0, 4.0), PAL["plum"])
+
+
+func _draw_relight_rings(front: bool) -> void:
+	var breath: float = sin(_clock * 2.2) * 2.0
+	_draw_orbit_ring(front, 12, 26.0 + breath, 8.0 + breath * 0.35, 0.55, PAL["gold"] as Color, PAL["apricot"] as Color)
+	_draw_orbit_ring(front, 8, 20.0 - breath * 0.5, 6.0, -0.85, PAL["cream"] as Color, PAL["gold"] as Color)
+
+
+func _draw_orbit_ring(
+	front: bool, count: int, rx: float, ry: float, speed: float, c_a: Color, c_b: Color
+) -> void:
+	for i: int in range(count):
+		var a: float = _clock * speed + (TAU * float(i)) / float(count)
+		var sa: float = sin(a)
+		if (sa >= 0.0) == front:
+			draw_rect(Rect2(roundf(cos(a) * rx), roundf(1.0 + sa * ry), 1.0, 1.0), c_a if i % 2 == 0 else c_b)
+
+
+func _draw_beckon_motes() -> void:
+	for i: int in range(4):
+		var t: float = fmod(_clock * 0.5 + float(i) * 0.25, 1.0)
+		var px: float = roundf(sin(_clock * 1.8 + float(i) * 1.57) * 12.0)
+		draw_rect(Rect2(px, roundf(-14.0 - t * 36.0), 1.0, 1.0), PAL["cream"] if t < 0.45 else PAL["gold"])
+
+
+func _draw_dawn_embers() -> void:
+	for i: int in range(5):
+		var t: float = fmod(_clock * 0.44 + float(i) * 0.2, 1.0)
+		var px: float = roundf(sin(_clock * 1.6 + float(i) * 1.3) * (4.0 + t * 7.0))
+		var col: Color = (PAL["cream"] if t < 0.28 else (PAL["gold"] if t < 0.68 else PAL["apricot"])) as Color
+		draw_rect(Rect2(px, roundf(-28.0 - t * 32.0), 1.0, 1.0), col)

@@ -3,32 +3,60 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
-  "spawn": [28, 88],
+  "spawn": [
+    28,
+    88
+  ],
   "zones": [
     {
       "id": "belfry_gallery",
       "name_key": "ZONE_BELFRY",
-      "rect": [0, 0, 320, 176],
+      "rect": [
+        0,
+        0,
+        320,
+        176
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r3_west",
-      "rect": [0, 64, 16, 48],
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
       "to_region": "belfry_r1",
-      "to_spawn": [292, 88],
+      "to_spawn": [
+        292,
+        88
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_r3_east",
-      "rect": [304, 64, 16, 48],
+      "rect": [
+        304,
+        64,
+        16,
+        48
+      ],
       "to_region": "belfry_r4",
-      "to_spawn": [28, 88],
-      "requires_moves": ["throw"],
-      "requires_flags": ["r3_shutter_open"],
+      "to_spawn": [
+        28,
+        88
+      ],
+      "requires_moves": [
+        "throw"
+      ],
+      "requires_flags": [
+        "r3_shutter_open"
+      ],
       "locked_door_id": "door_r3_shutter"
     }
   ],
@@ -37,7 +65,10 @@
     {
       "id": "brazier_r3_a",
       "kind": "brazier",
-      "pos": [200, 40],
+      "pos": [
+        200,
+        40
+      ],
       "props": {
         "target_id": "door_r3_shutter",
         "light_by_lantern": true
@@ -46,7 +77,10 @@
     {
       "id": "brazier_r3_b",
       "kind": "brazier",
-      "pos": [200, 136],
+      "pos": [
+        200,
+        136
+      ],
       "props": {
         "target_id": "door_r3_shutter",
         "light_by_lantern": true
@@ -55,11 +89,20 @@
     {
       "id": "door_r3_shutter",
       "kind": "door",
-      "pos": [288, 88],
+      "pos": [
+        288,
+        88
+      ],
       "props": {
         "door_kind": "shutter",
-        "size": [16, 48],
-        "requires_signals": ["brazier_r3_a", "brazier_r3_b"],
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "brazier_r3_a",
+          "brazier_r3_b"
+        ],
         "required_count": 2,
         "sets_flag": "r3_shutter_open"
       }
@@ -67,20 +110,104 @@
     {
       "id": "chest_r3_shards",
       "kind": "chest",
-      "pos": [280, 40],
+      "pos": [
+        280,
+        40
+      ],
       "props": {
         "reward": "shards",
         "amount": 40,
-        "requires_moves": ["throw"]
+        "requires_moves": [
+          "throw"
+        ]
       }
     }
   ],
   "triggers": [
     {
       "id": "trig_r3_zip",
-      "rect": [24, 64, 48, 48],
+      "rect": [
+        24,
+        64,
+        48,
+        48
+      ],
       "string_id": "PROMPT_ZIP",
       "once": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        40,
+        34
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        40,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        160,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        248,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        264,
+        124
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        248,
+        150
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.55
     }
   ]
 }

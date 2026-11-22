@@ -186,7 +186,7 @@ func _draw() -> void:
 
 
 func _draw_intro() -> void:
-	draw_rect(Rect2(0.0, 0.0, 320.0, 180.0), LxPalette.PAL["void"])
+	LxEndingArt.draw_intro_backdrop(self, _elapsed)
 	var idx: int = clampi(int(_elapsed / INTRO_BEAT_SECS), 0, INTRO_KEYS.size() - 1)
 	var local_t: float = _elapsed - float(idx) * INTRO_BEAT_SECS
 	var p: float = minf(local_t / 0.35, (INTRO_BEAT_SECS - local_t) / 0.35)
@@ -196,7 +196,9 @@ func _draw_intro() -> void:
 
 
 func _draw_death() -> void:
+	LxEndingArt.draw_death_vignette(self, DEATH_PANEL)
 	LxPixelFont.draw_panel(self, DEATH_PANEL, "dusk", "coral", "night")
+	LxEndingArt.draw_death_ornaments(self, DEATH_PANEL, _elapsed)
 	var p: float = clampf(_elapsed / 0.3, 0.0, 1.0)
 	LxPixelFont.draw_faded(self, LxStrings.text("DEATH_TITLE"), Vector2(160.0, 48.0), p, "coral", 2, HORIZONTAL_ALIGNMENT_CENTER)
 	var sub_key: String = "DEATH_BOSS_SUB" if _is_boss_death else "DEATH_SUB"
@@ -276,52 +278,7 @@ func _draw_ending_display_off() -> void:
 
 func _draw_ending_dawn() -> void:
 	var t: float = _elapsed
-	var rise: float = clampf(t / 4.2, 0.0, 1.0)
-
-	# Stepped sky bands (opaque 20-colour palette only)
-	var top_col: Color = LxPalette.PAL["deep"] if rise > 0.45 else LxPalette.PAL["night"]
-	var mid_col: Color = LxPalette.PAL["blue"] if rise > 0.55 else LxPalette.PAL["dusk"]
-	var low_col: Color = LxPalette.PAL["coral"] if rise > 0.35 else LxPalette.PAL["plum"]
-	var hor_col: Color = LxPalette.PAL["gold"] if rise > 0.5 else LxPalette.PAL["apricot"]
-	draw_rect(Rect2(0.0, 16.0, 320.0, 36.0), top_col)
-	draw_rect(Rect2(0.0, 52.0, 320.0, 30.0), mid_col)
-	draw_rect(Rect2(0.0, 82.0, 320.0, 22.0), low_col)
-	draw_rect(Rect2(0.0, 104.0, 320.0, 18.0), hor_col)
-
-	# Rising sun behind horizon
-	var sun_y: float = roundf(lerpf(128.0, 88.0, rise))
-	draw_circle(Vector2(160.0, sun_y), 26.0, LxPalette.PAL["apricot"])
-	draw_circle(Vector2(160.0, sun_y), 19.0, LxPalette.PAL["gold"])
-	draw_circle(Vector2(160.0, sun_y), 11.0, LxPalette.PAL["cream"])
-
-	# Sea / void below horizon with golden sun path
-	draw_rect(Rect2(0.0, 122.0, 320.0, 42.0), LxPalette.PAL["night"])
-	draw_rect(Rect2(0.0, 122.0, 320.0, 6.0), LxPalette.PAL["deep"])
-	for row: int in range(6):
-		var rw: float = maxf(8.0, (44.0 - float(row) * 5.0) * (0.4 + 0.6 * rise))
-		var rx: float = roundf(160.0 - rw * 0.5)
-		var ry: float = 125.0 + float(row) * 5.0
-		var rcol: Color = LxPalette.PAL["gold"] if row < 3 else LxPalette.PAL["apricot"]
-		draw_rect(Rect2(rx, ry, rw, 2.0), rcol)
-
-	# 8 Archipelago island silhouettes + relighting great lamps west to east
-	for i: int in range(DAWN_ISLANDS.size()):
-		var p: Vector2 = DAWN_ISLANDS[i]
-		draw_rect(Rect2(p.x - 12.0, p.y, 24.0, 5.0), LxPalette.PAL["pine"])
-		draw_rect(Rect2(p.x - 8.0, p.y - 3.0, 16.0, 3.0), LxPalette.PAL["night"])
-		var lit_at: float = 1.0 + float(i) * 0.35
-		if t >= lit_at:
-			draw_rect(Rect2(p.x - 1.0, p.y - 8.0, 2.0, 5.0), LxPalette.PAL["gold"])
-			draw_rect(Rect2(p.x - 2.0, p.y - 10.0, 4.0, 3.0), LxPalette.PAL["cream"])
-			if t < lit_at + 0.5:
-				draw_rect(Rect2(p.x - 1.0, 16.0, 2.0, p.y - 26.0), LxPalette.PAL["gold"])
-
-	# Rising golden motes
-	for m: Dictionary in _motes:
-		var ang: float = float(m["angle"])
-		var mx: float = roundf(fmod(160.0 + cos(ang) * 140.0 + t * 8.0, 320.0))
-		var my: float = roundf(120.0 - fmod(t * float(m["speed"]) * 0.4 + float(m["phase"]) * 80.0, 96.0))
-		draw_rect(Rect2(mx, my, 2.0, 2.0), LxPalette.color(str(m["color"])))
+	LxEndingArt.draw_ending_dawn(self, t, DAWN_ISLANDS, _motes)
 
 	# Dawn lines
 	if t >= 1.5:
@@ -339,17 +296,7 @@ func _draw_ending_dawn() -> void:
 
 
 func _draw_lantern_core(at: Vector2, tier: int) -> void:
-	var c: Vector2 = at.round()
-	if tier >= 2:
-		draw_rect(Rect2(c - Vector2(6.0, 6.0), Vector2(12.0, 12.0)), LxPalette.PAL["wine"])
-		draw_rect(Rect2(c - Vector2(4.0, 4.0), Vector2(8.0, 8.0)), LxPalette.PAL["apricot"])
-		draw_rect(Rect2(c - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), LxPalette.PAL["gold"])
-		draw_rect(Rect2(c - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxPalette.PAL["cream"])
-	elif tier == 1:
-		draw_rect(Rect2(c - Vector2(3.0, 3.0), Vector2(6.0, 6.0)), LxPalette.PAL["coral"])
-		draw_rect(Rect2(c - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxPalette.PAL["gold"])
-	else:
-		draw_rect(Rect2(c, Vector2(1.0, 1.0)), LxPalette.PAL["apricot"])
+	LxEndingArt.draw_lantern_core(self, at, tier, _elapsed)
 
 
 func _draw_void_eyes(t: float) -> void:
@@ -432,17 +379,18 @@ func _build_ending_actors() -> void:
 
 
 func _draw_results() -> void:
+	LxEndingArt.draw_results_backdrop(self, RESULTS_PANEL, _elapsed)
 	LxPixelFont.draw_panel(self, RESULTS_PANEL, "dusk", "gold", "night")
-	var p: float = clampf(_elapsed / 0.35, 0.0, 1.0)
-	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_TITLE"), Vector2(160.0, 34.0), p, "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
-
 	var play_s: float = float(_stats.get("play_time_s", Lx.state.play_time_s if Lx.state != null else 0.0))
 	var deaths: int = int(_stats.get("deaths", Lx.state.deaths if Lx.state != null else 0))
 	var embers: int = int(_stats.get("ember_pieces", Lx.state.ember_pieces if Lx.state != null else 0))
 	var relit: int = int(_stats.get("relit_count", Lx.state.relit_islands.size() if Lx.state != null else 0))
 	var rank_key: String = _compute_rank_key(deaths, relit)
+	LxEndingArt.draw_results_ornaments(self, RESULTS_PANEL, rank_key, _elapsed)
 
-	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_RANK_FMT", [LxStrings.text(rank_key)]), 160.0, 56.0, LxPalette.PAL["lime"], 2)
+	var p: float = clampf(_elapsed / 0.35, 0.0, 1.0)
+	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_TITLE"), Vector2(160.0, 34.0), p, "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
+	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_RANK_FMT", [LxStrings.text(rank_key)]), 160.0, 56.0, LxEndingArt.rank_text_color(rank_key), 2)
 	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_TIME_FMT", [LxStrings.format_time(play_s)]), 160.0, 78.0, LxPalette.PAL["cream"], 1)
 	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_DEATHS_FMT", [deaths]), 160.0, 90.0, LxPalette.PAL["cream"], 1)
 	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_EMBERS_FMT", [embers]), 160.0, 102.0, LxPalette.PAL["apricot"], 1)
@@ -451,7 +399,7 @@ func _draw_results() -> void:
 
 
 func _draw_credits() -> void:
-	draw_rect(Rect2(0.0, 0.0, 320.0, 180.0), LxPalette.PAL["void"])
+	LxEndingArt.draw_credits_backdrop(self, _elapsed)
 	var y: float = roundf(_scroll_y)
 	for entry: Dictionary in _credit_lines:
 		var line: String = str(entry["text"])

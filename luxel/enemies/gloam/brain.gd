@@ -275,12 +275,15 @@ func _body_color() -> Color:
 	return (PAL["mauve"] as Color) if (illuminated or state == State.RECOVER) else (PAL["void"] as Color)
 
 func _draw_extra(off: Vector2) -> void:
-	var rim: Color = (PAL["ice"] as Color) if (illuminated or phase_fx_t > 0.0) else (PAL["dusk"] as Color)
-	draw_arc(off, body_radius + 2.0, 0.0, TAU, 14, rim, 1.5 if illuminated else 1.0)
-	var fwd: Vector2 = Vector2.from_angle(facing)
-	var side: Vector2 = Vector2(-fwd.y, fwd.x)
-	draw_circle(off + fwd * 2.0 + side * 2.0, 1.2, PAL["ice"] as Color)
-	draw_circle(off + fwd * 2.0 - side * 2.0, 1.2, PAL["ice"] as Color)
+	if _sprite_sheet == null:
+		var rim: Color = (PAL["ice"] as Color) if (illuminated or phase_fx_t > 0.0) else (PAL["dusk"] as Color)
+		draw_arc(off, body_radius + 2.0, 0.0, TAU, 14, rim, 1.5 if illuminated else 1.0)
+		var fwd: Vector2 = Vector2.from_angle(facing)
+		var side: Vector2 = Vector2(-fwd.y, fwd.x)
+		draw_circle(off + fwd * 2.0 + side * 2.0, 1.2, PAL["ice"] as Color)
+		draw_circle(off + fwd * 2.0 - side * 2.0, 1.2, PAL["ice"] as Color)
+	elif illuminated:
+		draw_arc(off, body_radius + 3.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)
 	if state == State.TELL:
 		draw_line(off, off + lunge_dir * 26.0, PAL["ice"] as Color, 1.5)
 	elif state == State.COMMIT:

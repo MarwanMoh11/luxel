@@ -2,25 +2,41 @@ class_name LxWickFx
 extends RefCounted
 ## Particle pools, sprite loading, and Last Light 20-colour rendering for LxWick and his 8-move kit.
 
+const PAL_MAUVE: Color = Color("8a6e91")
+const MAX_MOTES: int = 48
+const DUST_INTERVAL: float = 0.22
+const MOTE_INTERVAL: float = 0.18
+const STREAK_DASH_INTERVAL: float = 0.036
+const STREAK_WING_INTERVAL: float = 0.055
+
 var afterimages: Array[Dictionary] = []
 var rings: Array[Dictionary] = []
 var sparks: Array[Dictionary] = []
+var motes: Array[Dictionary] = []
+var streaks: Array[Dictionary] = []
 var sprite_sheet: LxSpriteSheet = null
 
+var _last_clock_t: float = -1.0
+var _dust_cd: float = 0.0
+var _mote_cd: float = 0.0
+var _streak_cd: float = 0.0
 
 func clear() -> void:
 	afterimages.clear()
 	rings.clear()
 	sparks.clear()
-
+	motes.clear()
+	streaks.clear()
+	_last_clock_t = -1.0
+	_dust_cd = 0.0
+	_mote_cd = 0.0
+	_streak_cd = 0.0
 
 func spawn_afterimage(at_pos: Vector2, col: Color) -> void:
 	afterimages.append({"pos": at_pos, "age": 0.0, "life": 0.20, "col": col})
 
-
 func spawn_ring(at_pos: Vector2, r0: float, r1: float, life: float, col: Color, width: float = 1.0) -> void:
 	rings.append({"pos": at_pos, "r0": r0, "r1": r1, "age": 0.0, "life": maxf(0.02, life), "col": col, "w": width})
-
 
 func spawn_sparks(at_pos: Vector2, base_dir: Vector2, count: int, col: Color, min_spd: float, max_spd: float, life: float) -> void:
 	var dn: Vector2 = base_dir.normalized() if base_dir.length_squared() > 0.0001 else Vector2.RIGHT
@@ -28,14 +44,30 @@ func spawn_sparks(at_pos: Vector2, base_dir: Vector2, count: int, col: Color, mi
 		sparks.append({
 			"pos": at_pos,
 			"vel": dn.rotated(randf_range(-0.65, 0.65)) * randf_range(min_spd, max_spd),
-			"age": 0.0,
-			"life": life,
-			"col": col,
+			"age": 0.0, "life": life, "col": col,
 		})
 
+func _spawn_mote(at_pos: Vector2, vel: Vector2, life: float, col: Color, size_px: float, shrink: bool, drag: float, fg: bool, alpha: float) -> void:
+	if motes.size() + streaks.size() >= MAX_MOTES:
+		if not motes.is_empty():
+			motes.remove_at(0)
+		elif not streaks.is_empty():
+			streaks.remove_at(0)
+	motes.append({
+		"pos": at_pos, "vel": vel, "age": 0.0, "life": maxf(0.04, life),
+		"col": col, "size": size_px, "shrink": shrink, "drag": drag, "fg": fg, "alpha": alpha,
+	})
+
+func _spawn_streak(p0: Vector2, p1: Vector2, life: float, col: Color, width: float = 1.0) -> void:
+	if motes.size() + streaks.size() >= MAX_MOTES:
+		if not streaks.is_empty():
+			streaks.remove_at(0)
+		elif not motes.is_empty():
+			motes.remove_at(0)
+	streaks.append({"p0": p0, "p1": p1, "age": 0.0, "life": maxf(0.04, life), "col": col, "w": width})
 
 func age(dt: float) -> void:
-	for arr: Array[Dictionary] in [afterimages, rings]:
+	for arr: Array[Dictionary] in [afterimages, rings, streaks]:
 		for i: int in range(arr.size() - 1, -1, -1):
 			arr[i]["age"] = float(arr[i]["age"]) + dt
 			if float(arr[i]["age"]) >= float(arr[i]["life"]):
@@ -48,43 +80,86 @@ func age(dt: float) -> void:
 		s["vel"] = vel * pow(0.08, dt)
 		if float(s["age"]) >= float(s["life"]):
 			sparks.remove_at(i)
-
+	for i: int in range(motes.size() - 1, -1, -1):
+		var m: Dictionary = motes[i]
+		m["age"] = float(m["age"]) + dt
+		var vel: Vector2 = m["vel"] as Vector2
+		m["pos"] = (m["pos"] as Vector2) + vel * dt
+		m["vel"] = vel * pow(float(m["drag"]), dt)
+		if float(m["age"]) >= float(m["life"]):
+			motes.remove_at(i)
 
 func try_load_sprite() -> void:
 	if sprite_sheet != null:
 		return
 	sprite_sheet = LxSpriteSheet.load_sheet("res://luxel/art/wick/wick.json")
 
+func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: Vector2, glide_lift: float) -> void:
+	if _last_clock_t < 0.0 or clock_t < _last_clock_t:
+		_last_clock_t = clock_t
+		_dust_cd = 0.06
+		_mote_cd = 0.08
+		_streak_cd = 0.0
+		return
+	var step_dt: float = clampf(clock_t - _last_clock_t, 0.0, 0.1)
+	_last_clock_t = clock_t
+	if step_dt <= 0.0 or wick.dead:
+		return
+
+	var dashing: bool = wick.is_dashing()
+	var gliding: bool = wick.is_gliding()
+	var zipping: bool = wick.is_zipping()
+
+	# Footstep dust puffs (stone/mauve, 2-3 px, drift up & shrink)
+	if wick.velocity.length() > 24.0 and not dashing and not gliding and not zipping:
+		_dust_cd -= step_dt
+		if _dust_cd <= 0.0:
+			_dust_cd = DUST_INTERVAL
+			var mdir: Vector2 = wick.velocity.normalized()
+			var foot: Vector2 = wick.global_position - mdir * 2.0 + Vector2(randf_range(-2.5, 2.5), randf_range(-0.5, 1.0))
+			var dvel: Vector2 = Vector2(-mdir.x * randf_range(4.0, 9.0) + randf_range(-3.0, 3.0), randf_range(-11.0, -6.0))
+			var dcol: Color = LxWick.PAL_STONE if randf() < 0.55 else PAL_MAUVE
+			_spawn_mote(foot, dvel, randf_range(0.26, 0.36), dcol, float(randi_range(2, 3)), true, 0.18, false, 0.72)
+	else:
+		_dust_cd = minf(_dust_cd, 0.06)
+
+	# Lantern candlelight ember motes (gold/cream, 1x1 rising around hand_pos)
+	if lan_in_hand:
+		_mote_cd -= step_dt
+		if _mote_cd <= 0.0:
+			_mote_cd = MOTE_INTERVAL
+			var origin: Vector2 = wick.global_position + hand_pos + Vector2(randf_range(-2.5, 2.5), randf_range(-2.0, 1.0))
+			var mvel: Vector2 = Vector2(randf_range(-5.0, 5.0), randf_range(-16.0, -9.0))
+			var mcol: Color = LxWick.PAL_CREAM if randf() < 0.40 else LxWick.PAL_GOLD
+			_spawn_mote(origin, mvel, randf_range(0.38, 0.54), mcol, 1.0, false, 0.45, true, 0.92)
+	else:
+		_mote_cd = minf(_mote_cd, 0.08)
+
+	# Dash (coral/gold), Wings (ice/sky), Zip (gold/apricot) motion streaks + feather/ember trail
+	if dashing or gliding or zipping:
+		_streak_cd -= step_dt
+		if _streak_cd <= 0.0:
+			var mdir: Vector2 = wick.velocity.normalized() if wick.velocity.length_squared() > 1.0 else (
+				wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
+			)
+			var perp: Vector2 = Vector2(-mdir.y, mdir.x)
+			var c_a: Color = LxWick.PAL_GOLD if zipping else (LxWick.PAL_ICE if gliding else LxWick.PAL_CORAL)
+			var c_b: Color = LxWick.PAL_APRICOT if zipping else (LxWick.PAL_SKY if gliding else LxWick.PAL_GOLD)
+			var pick_a: bool = randf() < 0.52
+			var sc: Color = c_a if pick_a else c_b
+			var tc: Color = c_b if pick_a else c_a
+			_streak_cd = STREAK_WING_INTERVAL if (gliding and not zipping) else STREAK_DASH_INTERVAL
+			var spread: float = 6.0 if (gliding and not zipping) else 4.5
+			var c: Vector2 = wick.global_position + Vector2(0.0, -6.0 + glide_lift) + perp * randf_range(-spread, spread)
+			var slen: float = randf_range(7.0, 12.0) if (gliding and not zipping) else randf_range(9.0, 16.0)
+			_spawn_streak(c - mdir * slen, c, 0.20 if (gliding and not zipping) else 0.14, sc, 1.0)
+			var tvel: Vector2 = -mdir * randf_range(7.0, 16.0 if (gliding and not zipping) else 26.0) + perp * randf_range(-10.0, 10.0) + Vector2(0.0, randf_range(2.0, 7.0) if (gliding and not zipping) else -4.5)
+			_spawn_mote(c, tvel, 0.30 if (gliding and not zipping) else 0.21, tc, 2.0 if (gliding and not zipping) else 1.0, gliding and not zipping, 0.32 if (gliding and not zipping) else 0.19, true, 0.88)
+	else:
+		_streak_cd = 0.0
 
 func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 	var off: Vector2 = -wick.global_position
-	if wick.move_lens != null:
-		wick.move_lens.draw_fx(wick, off)
-	if wick.move_sunflare != null:
-		wick.move_sunflare.draw_fx(wick, off)
-
-	for a: Dictionary in afterimages:
-		var t: float = 1.0 - clampf(float(a["age"]) / float(a["life"]), 0.0, 1.0)
-		wick.draw_rect(
-			Rect2(((a["pos"] as Vector2) + off).round() + Vector2(-4.0, -10.0), Vector2(8.0, 10.0)),
-			Color(a["col"] as Color, t * 0.55)
-		)
-	for r: Dictionary in rings:
-		var t: float = clampf(float(r["age"]) / float(r["life"]), 0.0, 1.0)
-		wick.draw_arc(
-			((r["pos"] as Vector2) + off).round(),
-			lerpf(float(r["r0"]), float(r["r1"]), t),
-			0.0, TAU, 20, Color(r["col"] as Color, 1.0 - t), float(r["w"])
-		)
-	for s: Dictionary in sparks:
-		wick.draw_rect(Rect2(((s["pos"] as Vector2) + off).round(), Vector2(1.0, 1.0)), s["col"] as Color)
-	for b_var: Variant in wick.bolts:
-		var b: LxMoveBolt.Bolt = b_var as LxMoveBolt.Bolt
-		if b != null:
-			var bp: Vector2 = (b.pos + off).round()
-			wick.draw_line((bp - b.dir * 5.0).round(), bp, LxWick.PAL_ICE if b.is_prism else LxWick.PAL_GOLD, 2.0)
-			wick.draw_rect(Rect2(bp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
-
 	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 	var alpha: float = 0.40 if (wick.mercy_t > 0.0 and not flash_red and (int(wick.mercy_t * 14.0) % 2 == 0)) else 1.0
 	var glide_lift: float = -3.0 if wick.is_gliding() else 0.0
@@ -93,7 +168,28 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 	var lan_in_hand: bool = wick.lantern == null or wick.lantern.is_in_hand()
 	var hand_pos: Vector2 = (base + wick.facing * 6.0 + Vector2(0.0, -6.0)).round()
 
-	wick.draw_rect(Rect2(Vector2(-4.0, -1.0), Vector2(8.0, 3.0)), Color(LxWick.PAL_VOID, 0.45))
+	_tick_emitters(wick, clock_t, lan_in_hand, hand_pos, glide_lift)
+	if wick.move_lens != null:
+		wick.move_lens.draw_fx(wick, off)
+	if wick.move_sunflare != null:
+		wick.move_sunflare.draw_fx(wick, off)
+
+	var air_lift: float = absf(hop_y) + absf(glide_lift) + (2.5 if wick.is_zipping() else 0.0)
+	_draw_shadow(wick, air_lift)
+	_draw_motes(wick, off, false)
+
+	for a: Dictionary in afterimages:
+		var t: float = 1.0 - clampf(float(a["age"]) / float(a["life"]), 0.0, 1.0)
+		wick.draw_rect(Rect2(((a["pos"] as Vector2) + off).round() + Vector2(-4.0, -10.0), Vector2(8.0, 10.0)), Color(a["col"] as Color, t * 0.55))
+	for st: Dictionary in streaks:
+		var t: float = clampf(float(st["age"]) / float(st["life"]), 0.0, 1.0)
+		var p0: Vector2 = (st["p0"] as Vector2) + off
+		var p1: Vector2 = (st["p1"] as Vector2) + off
+		wick.draw_line(p0.lerp(p1, t * 0.65).round(), p1.round(), Color(st["col"] as Color, (1.0 - t) * 0.85), float(st["w"]))
+	for r: Dictionary in rings:
+		var t: float = clampf(float(r["age"]) / float(r["life"]), 0.0, 1.0)
+		wick.draw_arc(((r["pos"] as Vector2) + off).round(), lerpf(float(r["r0"]), float(r["r1"]), t), 0.0, TAU, 20, Color(r["col"] as Color, 1.0 - t), float(r["w"]))
+
 	if lan_in_hand:
 		var pulse: float = 0.92 + 0.08 * sin(clock_t * 7.0)
 		wick.draw_circle(hand_pos, 13.0 * pulse, Color(LxWick.PAL_GOLD, 0.10))
@@ -116,13 +212,67 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 	if not drew_sprite:
 		_draw_fallback_moth(wick, base, hit_white, alpha, lan_in_hand, hand_pos)
 
+	_draw_motes(wick, off, true)
 	if wick.move_beam != null:
 		wick.move_beam.draw_fx(wick, off, hand_pos)
+	for s: Dictionary in sparks:
+		wick.draw_rect(Rect2(((s["pos"] as Vector2) + off).round(), Vector2(1.0, 1.0)), s["col"] as Color)
+	_draw_bolts(wick, off)
 
 	wick.draw_rect(Rect2((wick.facing * 12.0 + Vector2(0.0, -6.0)).round() - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_GOLD)
 	if wick.muzzle_t > 0.0:
-		wick.draw_circle(hand_pos, 3.5, LxWick.PAL_CREAM)
+		_draw_muzzle_star(wick, hand_pos, flash_red)
 
+func _draw_shadow(wick: LxWick, air_lift: float) -> void:
+	var sc: float = clampf(1.0 - air_lift * 0.09, 0.55, 1.0)
+	var col: Color = Color(LxWick.PAL_VOID, 0.42 * lerpf(1.0, 0.72, clampf(air_lift / 5.0, 0.0, 1.0)))
+	var widths: Array[float] = [6.0, 10.0, 10.0, 6.0]
+	for idx: int in range(4):
+		var row_y: float = float(idx - 1)
+		var w: float = maxf(2.0, roundf(widths[idx] * sc))
+		var x: float = roundf(1.0 + row_y * 0.7 - w * 0.5)
+		wick.draw_rect(Rect2(Vector2(x, row_y), Vector2(w, 1.0)), col)
+
+func _draw_motes(wick: LxWick, off: Vector2, foreground: bool) -> void:
+	for m: Dictionary in motes:
+		if bool(m["fg"]) != foreground:
+			continue
+		var t: float = clampf(float(m["age"]) / float(m["life"]), 0.0, 1.0)
+		var base_sz: float = float(m["size"])
+		var sz: float = maxf(1.0, roundf(lerpf(base_sz, 1.0, t))) if bool(m["shrink"]) else base_sz
+		var p: Vector2 = ((m["pos"] as Vector2) + off).round() - Vector2(floorf(sz * 0.5), floorf(sz * 0.5))
+		wick.draw_rect(Rect2(p, Vector2(sz, sz)), Color(m["col"] as Color, (1.0 - t) * float(m["alpha"])))
+
+func _draw_bolts(wick: LxWick, off: Vector2) -> void:
+	for b_var: Variant in wick.bolts:
+		var b: LxMoveBolt.Bolt = b_var as LxMoveBolt.Bolt
+		if b == null:
+			continue
+		var bdir: Vector2 = b.dir.normalized() if b.dir.length_squared() > 0.0001 else Vector2.RIGHT
+		var bp: Vector2 = (b.pos + off).round()
+		var c_body: Color = LxWick.PAL_ICE if b.is_prism else LxWick.PAL_GOLD
+		var c_tail: Color = LxWick.PAL_SKY if b.is_prism else LxWick.PAL_APRICOT
+		var mid_end: Vector2 = (bp - bdir * 5.0).round()
+		var tail_end: Vector2 = (bp - bdir * 9.0).round()
+		wick.draw_line(tail_end, mid_end, Color(c_tail, 0.85), 1.0)
+		wick.draw_rect(Rect2(tail_end, Vector2(1.0, 1.0)), c_tail)
+		wick.draw_line(mid_end, bp, c_body, 2.0)
+		wick.draw_line((bp - bdir * 2.0).round(), bp, LxWick.PAL_CREAM, 1.0)
+		wick.draw_rect(Rect2(bp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
+
+func _draw_muzzle_star(wick: LxWick, hand_pos: Vector2, flash_red: bool) -> void:
+	var aim: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
+	var perp: Vector2 = Vector2(-aim.y, aim.x)
+	var mt: float = clampf(wick.muzzle_t / 0.065, 0.0, 1.0)
+	var sc: float = 0.75 if flash_red else 1.0
+	var fwd: float = roundf(lerpf(3.0, 7.0, mt) * sc)
+	var bck: float = roundf(lerpf(2.0, 4.0, mt) * sc)
+	var side: float = roundf(lerpf(2.0, 5.0, mt) * sc)
+	wick.draw_line((hand_pos - aim * bck).round(), (hand_pos + aim * fwd).round(), LxWick.PAL_GOLD, 1.0)
+	wick.draw_line((hand_pos - perp * side).round(), (hand_pos + perp * side).round(), LxWick.PAL_GOLD, 1.0)
+	wick.draw_line((hand_pos - aim * roundf(bck * 0.5)).round(), (hand_pos + aim * roundf(fwd * 0.65)).round(), LxWick.PAL_CREAM, 1.0)
+	wick.draw_line((hand_pos - perp * roundf(side * 0.6)).round(), (hand_pos + perp * roundf(side * 0.6)).round(), LxWick.PAL_CREAM, 1.0)
+	wick.draw_rect(Rect2(hand_pos - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
 
 func _draw_fallback_moth(wick: LxWick, base: Vector2, hit_white: bool, alpha: float, lan_in_hand: bool, hand_pos: Vector2) -> void:
 	var c_out := Color(LxWick.PAL_NIGHT, alpha)

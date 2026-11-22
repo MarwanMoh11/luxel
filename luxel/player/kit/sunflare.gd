@@ -152,13 +152,45 @@ func tick(dt: float) -> void:
 func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 	if flare_vis_t <= 0.0:
 		return
+	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var flash_sc: float = 0.62 if flash_red else 1.0
 	var prog: float = 1.0 - clampf(flare_vis_t / maxf(flare_vis_max, 0.01), 0.0, 1.0)
 	var fade: float = 1.0 - prog
 	var center: Vector2 = (flare_origin + off).round() + Vector2(0.0, -5.0)
 	var cur_r: float = lerpf(8.0, flare_radius, prog)
-	canvas.draw_circle(center, cur_r * 0.55, Color(LxWick.PAL_CREAM, fade * 0.28))
-	canvas.draw_arc(center, cur_r, 0.0, TAU, 32, Color(LxWick.PAL_GOLD, fade * 0.95), 2.5)
-	canvas.draw_arc(center, cur_r * 0.78, 0.0, TAU, 28, Color(LxWick.PAL_CREAM, fade * 0.90), 1.5)
+	canvas.draw_circle(center, cur_r * 0.55, Color(LxWick.PAL_CREAM, fade * 0.28 * flash_sc))
+	# 8-ray tapered golden solar starburst corona (alternating long PAL_GOLD & shorter PAL_CREAM)
+	var r_in: float = lerpf(3.0, cur_r * 0.26, prog)
+	for i: int in range(8):
+		var is_long: bool = (i % 2 == 0)
+		var rdir: Vector2 = Vector2.from_angle(float(i) * (TAU * 0.125))
+		var rperp := Vector2(-rdir.y, rdir.x)
+		var r_out: float = cur_r * (1.06 if is_long else 0.76)
+		var base_p: Vector2 = center + rdir * r_in
+		var tip_p: Vector2 = (center + rdir * r_out).round()
+		var half_w: float = (4.2 if is_long else 2.8) * fade * lerpf(1.0, 0.80, 1.0 - flash_sc)
+		var rcol: Color = LxWick.PAL_GOLD if is_long else LxWick.PAL_CREAM
+		if half_w >= 1.0:
+			var poly := PackedVector2Array([
+				(base_p - rperp * half_w).round(),
+				tip_p,
+				(base_p + rperp * half_w).round(),
+			])
+			canvas.draw_colored_polygon(poly, Color(rcol, fade * (0.72 if is_long else 0.60) * flash_sc))
+		canvas.draw_line(base_p.round(), tip_p, Color(rcol, fade * 0.85 * flash_sc), 1.0)
+	# Expanding golden-cream nova rings
+	canvas.draw_arc(center, cur_r, 0.0, TAU, 32, Color(LxWick.PAL_GOLD, fade * (0.76 if flash_red else 0.95)), 2.5)
+	canvas.draw_arc(center, cur_r * 0.78, 0.0, TAU, 28, Color(LxWick.PAL_CREAM, fade * (0.68 if flash_red else 0.90)), 1.5)
+	# Crisp inner 4-point dawn star
+	var star_r: float = roundf(lerpf(14.0, 4.0, prog) * (0.78 if flash_red else 1.0))
+	if star_r >= 2.0:
+		var sa: float = fade * (0.72 if flash_red else 0.96)
+		var inner_s: float = roundf(star_r * 0.62)
+		canvas.draw_line(center + Vector2(-star_r, 0.0), center + Vector2(star_r, 0.0), Color(LxWick.PAL_GOLD, sa), 1.0)
+		canvas.draw_line(center + Vector2(0.0, -star_r), center + Vector2(0.0, star_r), Color(LxWick.PAL_GOLD, sa), 1.0)
+		canvas.draw_line(center + Vector2(-inner_s, 0.0), center + Vector2(inner_s, 0.0), Color(LxWick.PAL_CREAM, sa), 1.0)
+		canvas.draw_line(center + Vector2(0.0, -inner_s), center + Vector2(0.0, inner_s), Color(LxWick.PAL_CREAM, sa), 1.0)
+		canvas.draw_rect(Rect2(center - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), Color(LxWick.PAL_CREAM, sa))
 
 
 func reset() -> void:

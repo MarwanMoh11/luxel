@@ -251,17 +251,18 @@ func _shield_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	var fwd: Vector2 = Vector2.from_angle(facing)
-	var back: Vector2 = -fwd
-	# Pedestal ring + exposed glowing back aperture (shows flank/prism vulnerability).
-	draw_arc(off, body_radius + 1.5, 0.0, TAU, 16, PAL["night"] as Color, 1.5)
-	draw_circle(off + back * (body_radius * 0.72), 2.5, PAL["apricot"] as Color)
-	draw_circle(off + back * (body_radius * 0.72), 1.2, PAL["gold"] as Color)
+	if _sprite_sheet == null:
+		var back: Vector2 = -fwd
+		# Pedestal ring + exposed glowing back aperture (shows flank/prism vulnerability).
+		draw_arc(off, body_radius + 1.5, 0.0, TAU, 16, PAL["night"] as Color, 1.5)
+		draw_circle(off + back * (body_radius * 0.72), 2.5, PAL["apricot"] as Color)
+		draw_circle(off + back * (body_radius * 0.72), 1.2, PAL["gold"] as Color)
 
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		draw_circle(off + fwd * (body_radius * 0.4), 2.0 + prog * 2.5, PAL["lime"] as Color)
 		draw_line(off + fwd * body_radius, off + fwd * (body_radius + 14.0), PAL["gold"] as Color, 1.0)
-	elif state == State.COMMIT or state == State.RECOVER:
+	elif (state == State.COMMIT or state == State.RECOVER) and _sprite_sheet == null:
 		draw_circle(off, body_radius * 0.58, PAL["coral"] as Color)
 		draw_circle(off, body_radius * 0.30, PAL["gold"] as Color)
 

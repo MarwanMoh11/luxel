@@ -3,13 +3,27 @@ extends LxInteractable
 ## Dungeon/overworld brazier lit by thrown lantern, beam, or sunflare; opens linked gates.
 
 var lit: bool = false
+var _flicker_frame: int = 0
 
 
 func setup(spec: Dictionary) -> void:
 	super.setup(spec)
 	kind = "brazier"
 	lit = bool(props.get("lit", props.get("lit_by_default", false)))
+	_uses_prop_anim = false
+	_flicker_frame = _calc_flicker_frame()
 	queue_redraw()
+
+
+func tick(dt: float) -> void:
+	_uses_prop_anim = false
+	super.tick(dt)
+	if not lit:
+		return
+	var frame: int = _calc_flicker_frame()
+	if frame != _flicker_frame:
+		_flicker_frame = frame
+		queue_redraw()
 
 
 func on_hit(hit: LxHit) -> bool:
@@ -60,13 +74,67 @@ func load_state(d: Dictionary) -> void:
 	queue_redraw()
 
 
+func _calc_flicker_frame() -> int:
+	return int(floorf(_clock * 10.0 + absf(pos.x * 0.07 + pos.y * 0.05)))
+
+
+func _fill(key: String, rects: Array) -> void:
+	var c: Color = PAL[key] as Color
+	for r: Variant in rects:
+		draw_rect(r as Rect2, c)
+
+
 func _draw() -> void:
-	draw_rect(Rect2(-6.0, -3.0, 12.0, 6.0), PAL["night"])
-	draw_rect(Rect2(-5.0, -7.0, 10.0, 6.0), PAL["plum"])
-	draw_rect(Rect2(-6.0, -9.0, 12.0, 3.0), PAL["mauve"])
+	_fill("void", [
+		Rect2(-9.0, 2.0, 18.0, 2.0), Rect2(-7.0, 1.0, 14.0, 4.0), Rect2(-5.0, 0.0, 10.0, 5.0),
+		Rect2(-8.0, -2.0, 16.0, 5.0), Rect2(-6.0, -6.0, 12.0, 5.0),
+	])
+	_fill("night", [Rect2(-7.0, -1.0, 14.0, 3.0), Rect2(-5.0, -5.0, 10.0, 4.0)])
+	_fill("dusk", [Rect2(-7.0, -1.0, 12.0, 2.0), Rect2(-5.0, -5.0, 8.0, 3.0)])
+	_fill("mauve", [Rect2(-7.0, -1.0, 8.0, 1.0), Rect2(-5.0, -5.0, 3.0, 3.0), Rect2(0.0, -4.0, 1.0, 2.0)])
+	_fill("stone", [Rect2(-7.0, -1.0, 4.0, 1.0), Rect2(-5.0, -5.0, 2.0, 1.0)])
+	draw_rect(Rect2(-1.0, -4.0, 1.0, 2.0), PAL["night"] as Color)
+	_fill("void", [Rect2(-6.0, -7.0, 12.0, 2.0), Rect2(-7.0, -9.0, 14.0, 3.0), Rect2(-8.0, -12.0, 16.0, 4.0)])
+	_fill("plum", [Rect2(-6.0, -9.0, 12.0, 2.0), Rect2(-7.0, -11.0, 14.0, 2.0)])
+	_fill("night", [Rect2(-5.0, -7.0, 10.0, 2.0), Rect2(3.0, -9.0, 3.0, 2.0), Rect2(4.0, -11.0, 3.0, 2.0)])
+	_fill("wine", [Rect2(-6.0, -9.0, 4.0, 1.0), Rect2(-7.0, -11.0, 11.0, 1.0)])
+	draw_rect(Rect2(-6.0, -11.0, 12.0, 1.0), PAL["void"] as Color)
+	_fill("gold", [Rect2(-7.0, -10.0, 1.0, 1.0), Rect2(-3.0, -10.0, 1.0, 1.0)])
+	_fill("apricot", [Rect2(2.0, -10.0, 1.0, 1.0), Rect2(6.0, -10.0, 1.0, 1.0)])
 	if lit:
-		draw_circle(Vector2(0.0, -11.0), 4.0, PAL["coral"])
-		draw_circle(Vector2(0.0, -12.0), 2.5, PAL["gold"])
-		draw_circle(Vector2(0.0, -12.0), 1.2, PAL["cream"])
+		_draw_flame()
 	else:
-		draw_rect(Rect2(-3.0, -9.0, 6.0, 2.0), PAL["dusk"])
+		draw_rect(Rect2(-5.0, -12.0, 10.0, 2.0), PAL["night"] as Color)
+		draw_rect(Rect2(-4.0, -13.0, 8.0, 2.0), PAL["dusk"] as Color)
+		draw_rect(Rect2(-2.0, -13.0, 4.0, 1.0), PAL["plum"] as Color)
+		_fill("wine", [Rect2(-3.0, -12.0, 2.0, 1.0), Rect2(1.0, -12.0, 2.0, 1.0)])
+
+
+func _draw_flame() -> void:
+	var st: int = _flicker_frame % 4
+	var sway: float = -1.0 if st == 0 else (1.0 if st == 2 else 0.0)
+	var tall: float = 1.0 if (st == 1 or st == 3) else 0.0
+	var lh: float = 2.0 if (st == 0 or st == 3) else 1.0
+	var rh: float = 2.0 if (st == 1 or st == 2) else 1.0
+	draw_rect(Rect2(-5.0, -12.0, 10.0, 2.0), PAL["wine"] as Color)
+	_fill("coral", [
+		Rect2(-5.0, -14.0, 10.0, 3.0), Rect2(-4.0, -16.0, 8.0, 2.0),
+		Rect2(-2.0 + sway, -19.0 - tall, 4.0, 3.0 + tall), Rect2(-1.0 + sway, -20.0 - tall, 2.0, 1.0),
+		Rect2(-5.0, -15.0 - lh, 2.0, 1.0 + lh), Rect2(3.0, -15.0 - rh, 2.0, 1.0 + rh),
+	])
+	_fill("apricot", [
+		Rect2(-4.0, -14.0, 8.0, 2.0), Rect2(-3.0, -16.0, 6.0, 2.0),
+		Rect2(-1.0 + sway, -18.0 - tall, 2.0, 2.0 + tall),
+		Rect2(-4.0, -14.0 - lh, 1.0, lh), Rect2(3.0, -14.0 - rh, 1.0, rh),
+	])
+	_fill("gold", [Rect2(-3.0, -14.0, 6.0, 2.0), Rect2(-2.0, -16.0, 4.0, 2.0), Rect2(-1.0 + sway, -17.0, 2.0, 1.0)])
+	_fill("cream", [Rect2(-1.0, -14.0, 2.0, 2.0), Rect2(0.0 if sway > 0.0 else -1.0, -15.0, 1.0, 1.0)])
+	var c_cream: Color = PAL["cream"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var phase: float = absf(pos.x * 0.019 + pos.y * 0.013)
+	for i: int in range(2):
+		var t: float = fmod(_clock * 0.68 + phase + float(i) * 0.5, 1.0)
+		var ex: float = roundf(sin(_clock * 2.6 + float(i) * 3.1) * (2.0 + t * 2.5))
+		var ey: float = roundf(-19.0 - t * 11.0)
+		draw_rect(Rect2(ex, ey, 1.0, 1.0), c_cream if t < 0.25 else (c_gold if t < 0.65 else c_apr))

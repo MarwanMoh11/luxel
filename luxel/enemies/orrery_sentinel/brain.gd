@@ -303,10 +303,11 @@ func _shield_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Glowing exposed back core
-	var back_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.7)
-	draw_circle(back_pos, 2.5, PAL["coral"] as Color)
-	draw_circle(back_pos, 1.2, PAL["cream"] as Color)
+	if _sprite_sheet == null:
+		# Glowing exposed back core
+		var back_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.7)
+		draw_circle(back_pos, 2.5, PAL["coral"] as Color)
+		draw_circle(back_pos, 1.2, PAL["cream"] as Color)
 	# Rotating sight cone preview
 	var cone_col: Color = (PAL["gold"] as Color) if state == State.TELL else Color(PAL["sky"] as Color, 0.35)
 	var left_v: Vector2 = Vector2.from_angle(facing - CONE_HALF) * minf(notice_radius, 72.0)

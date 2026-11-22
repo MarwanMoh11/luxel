@@ -303,10 +303,11 @@ func _body_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	super._draw_extra(off)
-	# Mitered abbess crest
-	var top: Vector2 = off + Vector2(0.0, -body_radius - 6.0)
-	draw_line(top + Vector2(-4.0, 2.0), top + Vector2(0.0, -4.0), PAL["gold"] as Color, 1.8)
-	draw_line(top + Vector2(4.0, 2.0), top + Vector2(0.0, -4.0), PAL["gold"] as Color, 1.8)
+	if _sprite_sheet == null:
+		# Mitered abbess crest
+		var top: Vector2 = off + Vector2(0.0, -body_radius - 6.0)
+		draw_line(top + Vector2(-4.0, 2.0), top + Vector2(0.0, -4.0), PAL["gold"] as Color, 1.8)
+		draw_line(top + Vector2(4.0, 2.0), top + Vector2(0.0, -4.0), PAL["gold"] as Color, 1.8)
 
 	if active_move == BossMove.WING_GUST and state == State.TELL:
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
@@ -314,15 +315,40 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(off + side * 12.0, off + side * 12.0 + gust_dir * 48.0, PAL["sky"] as Color, 1.5)
 	elif active_move == BossMove.WING_GUST and state == State.COMMIT:
 		var side2: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
-		for idx: int in [-1, 0, 1]:
-			var s_off: Vector2 = side2 * float(idx) * (GUST_HALF_W * 0.45)
-			draw_line(off + s_off, off + s_off + gust_dir * GUST_RANGE * 0.80, (PAL["cream"] as Color) if idx == 0 else (PAL["ice"] as Color), 2.0)
+		var g_len: float = GUST_RANGE * 0.88
+		for idx: int in range(-1, 2):
+			var s_off: Vector2 = side2 * float(idx) * (GUST_HALF_W * 0.50)
+			var l_end: float = g_len if idx == 0 else g_len * 0.86
+			var p0: Vector2 = (off + s_off).round()
+			var p1: Vector2 = (off + s_off + gust_dir * l_end).round()
+			draw_line(p0, p1, PAL["sky"] as Color, 3.2 if idx == 0 else 2.2)
+			draw_line(p0, p1, (PAL["cream"] if idx == 0 else PAL["ice"]) as Color, 1.5 if idx == 0 else 1.2)
+		for ci: int in range(4):
+			var ct: float = fposmod(anim_t * 4.6 + float(ci) * 0.25, 1.0)
+			var dist_c: float = lerpf(12.0, g_len, ct)
+			var span: float = lerpf(GUST_HALF_W * 0.42, GUST_HALF_W * 0.90, ct)
+			var tip: Vector2 = (off + gust_dir * dist_c).round()
+			var wing_l: Vector2 = (off + gust_dir * (dist_c - 10.0) - side2 * span).round()
+			var wing_r: Vector2 = (off + gust_dir * (dist_c - 10.0) + side2 * span).round()
+			draw_line(wing_l, tip, PAL["sky"] as Color, 2.2)
+			draw_line(wing_r, tip, PAL["sky"] as Color, 2.2)
+			draw_line((tip - gust_dir * 6.0 - side2 * (span * 0.62)).round(), tip, PAL["ice"] as Color, 1.4)
+			draw_line((tip - gust_dir * 6.0 + side2 * (span * 0.62)).round(), tip, PAL["ice"] as Color, 1.4)
+			draw_line((tip - gust_dir * 3.5 - side2 * (span * 0.30)).round(), tip, PAL["cream"] as Color, 1.0)
+			draw_line((tip - gust_dir * 3.5 + side2 * (span * 0.30)).round(), tip, PAL["cream"] as Color, 1.0)
 	elif active_move == BossMove.SHOCKWAVE_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		draw_arc(off, lerpf(RING_MAX_R, RING_START_R + 6.0, prog), 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
 	elif active_move == BossMove.SHOCKWAVE_RING and state == State.COMMIT:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
-		draw_arc(off, ring_r, 0.0, TAU, 32, PAL["sky"] as Color, 3.2)
-		draw_arc(off, maxf(2.0, ring_r - 2.5), 0.0, TAU, 24, PAL["cream"] as Color, 1.4)
+		draw_arc(off, ring_r + 3.0, 0.0, TAU, 36, PAL["blue"] as Color, 2.2)
+		draw_arc(off, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
+		draw_arc(off, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
+		draw_arc(off, maxf(2.0, ring_r - 4.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.1)
+		if ring_r > 16.0:
+			draw_arc(off, ring_r - 8.5, 0.0, TAU, 24, PAL["blue"] as Color, 1.1)
 	elif _roaring:
-		draw_arc(off, body_radius + 13.0, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
+		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
+		var rr: float = body_radius + 10.0 + rp * 16.0
+		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
+		draw_arc(off, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)

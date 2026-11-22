@@ -19,6 +19,7 @@ var required_flags: Array[String] = []
 var required_signals: Array[String] = []
 var required_count: int = 1
 var _active_signals: Dictionary = {}
+var _pulse_stage: int = 0
 
 
 func setup(spec: Dictionary) -> void:
@@ -83,6 +84,12 @@ func tick(dt: float) -> void:
 	if door_type == "ward_barrier":
 		if _ward_requirements_met():
 			_open(true)
+			return
+		if not _uses_prop_anim:
+			var st: int = int(floorf(_clock * 2.5 + absf(pos.x * 0.02))) % 4
+			if st != _pulse_stage:
+				_pulse_stage = st
+				queue_redraw()
 	elif door_type == "combat_gate":
 		if region != null and region.has_method("is_zone_cleared"):
 			if bool(region.call("is_zone_cleared", zone_id)):
@@ -224,47 +231,176 @@ func _draw() -> void:
 		if _draw_prop_sprite("ward_barrier"):
 			return
 	_uses_prop_anim = false
-	var half: Vector2 = size * 0.5
+	var w: float = roundf(size.x)
+	var h: float = roundf(size.y)
+	var x0: float = floorf(-w * 0.5)
+	var y0: float = floorf(-h * 0.5)
 	if door_type == "bridge_platform":
-		if opened:
-			draw_rect(Rect2(-half, size), PAL["night"])
-			draw_rect(Rect2(-half + Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), PAL["wine"])
-			draw_rect(Rect2(-half.x, -half.y, size.x, 2.0), PAL["gold"])
-			draw_rect(Rect2(-half.x, half.y - 2.0, size.x, 2.0), PAL["gold"])
-			var px: float = -half.x + 6.0
-			while px < half.x - 2.0:
-				draw_line(Vector2(px, -half.y + 2.0), Vector2(px, half.y - 2.0), PAL["plum"], 1.0)
-				px += 6.0
-		else:
-			draw_rect(Rect2(-half.x, -half.y, 2.0, size.y), PAL["dusk"])
-			draw_rect(Rect2(half.x - 2.0, -half.y, 2.0, size.y), PAL["dusk"])
+		_draw_bridge(x0, y0, w, h)
 		return
 	if opened:
-		draw_rect(Rect2(-half.x, -half.y, 3.0, size.y), PAL["dusk"])
-		draw_rect(Rect2(half.x - 3.0, -half.y, 3.0, size.y), PAL["dusk"])
+		var horiz: bool = w >= h
+		var j: float = minf(4.0, floorf((w if horiz else h) * 0.25))
+		_draw_pier(x0, y0, j if horiz else w, h if horiz else j, false)
+		_draw_pier(x0 + w - j if horiz else x0, y0 if horiz else y0 + h - j, j if horiz else w, h if horiz else j, false)
 		return
-	var fill_col: Color = PAL["plum"]
-	var trim_col: Color = PAL["gold"]
 	match door_type:
-		"ward_barrier":
-			fill_col = PAL["deep"]
-			trim_col = PAL["ice"]
-		"wick_key":
-			fill_col = PAL["wine"]
-			trim_col = PAL["gold"]
-		"boss_key":
-			fill_col = PAL["coral"]
-			trim_col = PAL["cream"]
-		"combat_gate":
-			fill_col = PAL["dusk"]
-			trim_col = PAL["coral"]
-		"switch_door":
-			fill_col = PAL["dusk"]
-			trim_col = PAL["sky"]
-	draw_rect(Rect2(-half, size), PAL["night"])
-	draw_rect(Rect2(-half + Vector2(1.0, 1.0), size - Vector2(2.0, 2.0)), fill_col)
-	draw_rect(Rect2(-half + Vector2(2.0, 2.0), Vector2(size.x - 4.0, 2.0)), trim_col)
-	draw_circle(Vector2.ZERO, 3.0, trim_col)
+		"combat_gate": _draw_combat_gate(x0, y0, w, h)
+		"wick_key": _draw_key_door(x0, y0, w, h, false)
+		"boss_key": _draw_key_door(x0, y0, w, h, true)
+		"ward_barrier": _draw_ward_barrier(x0, y0, w, h)
+		_: _draw_switch_door(x0, y0, w, h)
+
+
+func _draw_frame(x0: float, y0: float, w: float, h: float, fill: Color) -> void:
+	draw_rect(Rect2(x0, y0, w, h), PAL["void"])
+	draw_rect(Rect2(x0 + 1.0, y0 + 1.0, w - 2.0, h - 2.0), PAL["night"])
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, h - 4.0), fill)
+
+
+func _draw_bridge(x0: float, y0: float, w: float, h: float) -> void:
+	var horiz: bool = w >= h
+	if not opened:
+		var aw: float = minf(5.0, (w if horiz else h) * 0.25)
+		_draw_pier(x0, y0, aw if horiz else w, h if horiz else aw, true)
+		_draw_pier(x0 + w - aw if horiz else x0, y0 if horiz else y0 + h - aw, aw if horiz else w, h if horiz else aw, true)
+		return
+	draw_rect(Rect2(x0, y0 + 1.0, w, h), PAL["void"])
+	_draw_frame(x0, y0, w, h, PAL["plum"] as Color)
+	var span: float = (w if horiz else h) - 4.0
+	var p: float = 0.0
+	var idx: int = 0
+	while p < span:
+		var seg: float = minf(5.0, span - p)
+		var pc: Color = (PAL["wine"] if idx % 2 == 0 else PAL["plum"]) as Color
+		if horiz:
+			draw_rect(Rect2(x0 + 2.0 + p, y0 + 3.0, seg, h - 6.0), pc)
+			draw_rect(Rect2(x0 + 2.0 + p, y0 + 3.0, seg, 1.0), PAL["mauve"])
+			draw_rect(Rect2(x0 + 1.0 + p + seg, y0 + 3.0, 1.0, h - 6.0), PAL["night"])
+		else:
+			draw_rect(Rect2(x0 + 3.0, y0 + 2.0 + p, w - 6.0, seg), pc)
+			draw_rect(Rect2(x0 + 3.0, y0 + 2.0 + p, 1.0, seg), PAL["mauve"])
+			draw_rect(Rect2(x0 + 3.0, y0 + 1.0 + p + seg, w - 6.0, 1.0), PAL["night"])
+		p += 5.0
+		idx += 1
+	if horiz:
+		for ry: float in [y0 + 1.0, y0 + h - 3.0]:
+			draw_rect(Rect2(x0, ry, w, 2.0), PAL["apricot"])
+			draw_rect(Rect2(x0, ry, w, 1.0), PAL["gold"])
+		var rx: float = x0 + 6.0
+		while rx < x0 + w - 4.0:
+			draw_rect(Rect2(rx, y0 + 2.0, 1.0, 1.0), PAL["night"])
+			draw_rect(Rect2(rx, y0 + h - 2.0, 1.0, 1.0), PAL["night"])
+			rx += 6.0
+	else:
+		for rx2: float in [x0 + 1.0, x0 + w - 3.0]:
+			draw_rect(Rect2(rx2, y0, 2.0, h), PAL["apricot"])
+			draw_rect(Rect2(rx2, y0, 1.0, h), PAL["gold"])
+	for cp: Vector2 in [Vector2(x0, y0), Vector2(x0 + w - 3.0, y0), Vector2(x0, y0 + h - 3.0), Vector2(x0 + w - 3.0, y0 + h - 3.0)]:
+		draw_rect(Rect2(cp, Vector2(3.0, 3.0)), PAL["night"])
+		draw_rect(Rect2(cp + Vector2(1.0, 0.0), Vector2(1.0, 1.0)), PAL["gold"])
+		draw_rect(Rect2(cp + Vector2(1.0, 1.0), Vector2(1.0, 1.0)), PAL["cream"])
+
+
+func _draw_pier(x: float, y: float, w: float, h: float, mooring: bool) -> void:
+	draw_rect(Rect2(x, y, w, h), PAL["void"])
+	draw_rect(Rect2(x + 1.0, y + 1.0, maxf(1.0, w - 2.0), maxf(1.0, h - 2.0)), PAL["night"])
+	draw_rect(Rect2(x + 1.0, y + 1.0, maxf(1.0, w - 2.0), maxf(1.0, h - 3.0)), PAL["dusk"])
+	draw_rect(Rect2(x + 1.0, y + 1.0, maxf(1.0, w - 2.0), 1.0), PAL["stone"])
+	draw_rect(Rect2(x + 1.0, y + 1.0, 1.0, maxf(1.0, h - 3.0)), PAL["mauve"])
+	if mooring:
+		draw_rect(Rect2(floorf(x + w * 0.5) - 1.0, floorf(y + h * 0.5) - 1.0, 2.0, 2.0), PAL["night"])
+
+
+func _draw_combat_gate(x0: float, y0: float, w: float, h: float) -> void:
+	draw_rect(Rect2(x0, y0, w, h), PAL["void"])
+	_draw_pier(x0, y0, 3.0, h, false)
+	_draw_pier(x0 + w - 3.0, y0, 3.0, h, false)
+	var bx: float = x0 + 5.0
+	while bx <= x0 + w - 5.0:
+		draw_rect(Rect2(bx, y0 + 1.0, 2.0, h - 2.0), PAL["night"])
+		draw_rect(Rect2(bx, y0 + 1.0, 1.0, h - 3.0), PAL["dusk"])
+		draw_rect(Rect2(bx, y0 + h - 3.0, 1.0, 1.0), PAL["stone"])
+		bx += 4.0
+	var cx: float = floorf(x0 + w * 0.5)
+	var cy: float = floorf(y0 + h * 0.5) - 2.0
+	draw_rect(Rect2(x0 + 2.0, cy, w - 4.0, 4.0), PAL["night"])
+	draw_rect(Rect2(x0 + 2.0, cy, w - 4.0, 1.0), PAL["dusk"])
+	draw_rect(Rect2(cx - 3.0, cy - 1.0, 6.0, 6.0), PAL["void"])
+	draw_rect(Rect2(cx - 2.0, cy, 4.0, 4.0), PAL["wine"])
+	draw_rect(Rect2(cx - 1.0, cy + 1.0, 2.0, 2.0), PAL["coral"])
+	draw_rect(Rect2(cx - 1.0, cy + 1.0, 1.0, 1.0), PAL["apricot"])
+
+
+func _draw_key_door(x0: float, y0: float, w: float, h: float, is_boss: bool) -> void:
+	_draw_frame(x0, y0, w, h, PAL["plum"] as Color)
+	var cx: float = floorf(x0 + w * 0.5)
+	var cy: float = floorf(y0 + h * 0.5)
+	var pad: float = 4.0 if is_boss else 3.0
+	var lw: float = maxf(2.0, cx - x0 - pad - 1.0)
+	var rw: float = maxf(2.0, x0 + w - cx - pad - 1.0)
+	draw_rect(Rect2(x0 + pad, y0 + 3.0, lw, h - 6.0), PAL["wine"])
+	draw_rect(Rect2(cx + 1.0, y0 + 3.0, rw, h - 6.0), PAL["wine"])
+	draw_rect(Rect2(cx - 1.0, y0 + 1.0, 2.0, h - 2.0), PAL["void"] if is_boss else PAL["night"])
+	if is_boss:
+		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["gold"])
+		draw_rect(Rect2(x0 + 2.0, y0 + h - 3.0, w - 4.0, 1.0), PAL["apricot"])
+		for bx: float in [x0 + 6.0, x0 + w - 9.0]:
+			draw_rect(Rect2(bx, cy - 2.0, 3.0, 4.0), PAL["apricot"])
+			draw_rect(Rect2(bx, cy - 2.0, 2.0, 1.0), PAL["cream"])
+			draw_rect(Rect2(bx + 1.0, cy + 2.0, 1.0, 1.0), PAL["gold"])
+		draw_rect(Rect2(cx - 4.0, cy - 4.0, 8.0, 8.0), PAL["void"])
+		draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 6.0), PAL["gold"])
+		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 4.0), PAL["coral"])
+		draw_rect(Rect2(cx - 1.0, cy - 2.0, 2.0, 4.0), PAL["cream"])
+	else:
+		draw_rect(Rect2(x0 + 3.0, y0 + 3.0, lw, 1.0), PAL["rose"])
+		draw_rect(Rect2(cx + 1.0, y0 + 3.0, rw, 1.0), PAL["rose"])
+		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 2.0), PAL["apricot"])
+		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["gold"])
+		draw_rect(Rect2(x0 + 2.0, y0 + h - 4.0, w - 4.0, 2.0), PAL["apricot"])
+		draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 7.0), PAL["void"])
+		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 5.0), PAL["apricot"])
+		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 1.0), PAL["gold"])
+		draw_rect(Rect2(cx - 1.0, cy - 1.0, 2.0, 2.0), PAL["cream"])
+		draw_rect(Rect2(cx - 1.0, cy + 1.0, 2.0, 2.0), PAL["gold"])
+
+
+func _draw_switch_door(x0: float, y0: float, w: float, h: float) -> void:
+	_draw_frame(x0, y0, w, h, PAL["dusk"] as Color)
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["stone"])
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, 1.0, h - 4.0), PAL["mauve"])
+	var cx: float = floorf(x0 + w * 0.5)
+	var cy: float = floorf(y0 + h * 0.5)
+	draw_rect(Rect2(x0 + 3.0, cy - 1.0, w - 6.0, 3.0), PAL["deep"])
+	draw_rect(Rect2(x0 + 4.0, cy, w - 8.0, 1.0), PAL["blue"])
+	draw_rect(Rect2(x0 + 4.0, cy, 2.0, 1.0), PAL["sky"])
+	draw_rect(Rect2(x0 + w - 6.0, cy, 2.0, 1.0), PAL["sky"])
+	draw_rect(Rect2(cx - 4.0, cy - 3.0, 8.0, 7.0), PAL["void"])
+	draw_rect(Rect2(cx - 3.0, cy - 2.0, 6.0, 5.0), PAL["deep"])
+	draw_rect(Rect2(cx - 2.0, cy - 1.0, 4.0, 3.0), PAL["blue"])
+	draw_rect(Rect2(cx - 1.0, cy - 1.0, 2.0, 2.0), PAL["sky"])
+	draw_rect(Rect2(cx - 1.0, cy - 1.0, 1.0, 1.0), PAL["ice"])
+
+
+func _draw_ward_barrier(x0: float, y0: float, w: float, h: float) -> void:
+	_draw_frame(x0, y0, w, h, PAL["deep"] as Color)
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["sky"])
+	draw_rect(Rect2(x0 + 2.0, y0 + h - 3.0, w - 4.0, 1.0), PAL["blue"])
+	var rx: float = x0 + 5.0
+	var cy: float = floorf(y0 + h * 0.5)
+	var idx: int = 0
+	while rx < x0 + w - 5.0:
+		var lit_r: bool = (idx + _pulse_stage) % 2 == 0
+		draw_line(Vector2(rx, y0 + 2.0), Vector2(rx + 2.0, cy), PAL["blue"], 1.0)
+		draw_line(Vector2(rx + 2.0, cy), Vector2(rx, y0 + h - 3.0), PAL["sky"], 1.0)
+		draw_rect(Rect2(rx + 1.0, y0 + 4.0, 1.0, maxf(1.0, h - 8.0)), PAL["ice"] if lit_r else PAL["sky"])
+		if lit_r:
+			draw_rect(Rect2(rx + 1.0, cy, 1.0, 1.0), PAL["cream"])
+		rx += 5.0
+		idx += 1
+	_draw_pier(x0, y0, 4.0, h, false)
+	_draw_pier(x0 + w - 4.0, y0, 4.0, h, false)
 
 
 static func _to_str_array(v: Variant) -> Array[String]:

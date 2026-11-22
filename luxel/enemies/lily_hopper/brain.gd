@@ -274,10 +274,11 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	# Lily-pad leaf crown + rose blossom silhouette.
-	var leaf_r: float = body_radius + (2.0 if state == State.TELL else 0.5)
-	draw_arc(off + Vector2(0.0, -body_radius + 1.0), leaf_r * 0.75, 0.2, TAU - 0.2, 12, PAL["lime"] as Color, 2.0)
-	draw_circle(off + Vector2(2.0, -body_radius - 1.0), 2.0, PAL["rose"] as Color)
+	if _sprite_sheet == null:
+		# Lily-pad leaf crown + rose blossom silhouette.
+		var leaf_r: float = body_radius + (2.0 if state == State.TELL else 0.5)
+		draw_arc(off + Vector2(0.0, -body_radius + 1.0), leaf_r * 0.75, 0.2, TAU - 0.2, 12, PAL["lime"] as Color, 2.0)
+		draw_circle(off + Vector2(2.0, -body_radius - 1.0), 2.0, PAL["rose"] as Color)
 	if state == State.TELL:
 		var rel: Vector2 = leap_to - pos
 		draw_arc(rel, 7.0, 0.0, TAU, 14, PAL["sky"] as Color, 1.5)
