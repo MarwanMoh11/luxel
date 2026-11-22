@@ -394,7 +394,14 @@ func apply_display_settings(cfg: Dictionary) -> void:
 		DisplayServer.window_set_mode(target_mode)
 	if not full:
 		var sc: int = clampi(int(cfg.get("window_scale", 3)), 1, 5)
-		DisplayServer.window_set_size(Vector2i(320 * sc, 180 * sc))
+		var usable: Rect2i = DisplayServer.screen_get_usable_rect()
+		var target_sz := Vector2i(320 * sc, 180 * sc)
+		if usable.size.x > 320 and usable.size.y > 180:
+			target_sz.x = mini(target_sz.x, usable.size.x)
+			target_sz.y = mini(target_sz.y, usable.size.y)
+		DisplayServer.window_set_size(target_sz)
+		if usable.size.x > target_sz.x and usable.size.y > target_sz.y:
+			DisplayServer.window_set_position(usable.position + (usable.size - target_sz) / 2)
 
 
 func _exit_tree() -> void:
@@ -429,8 +436,23 @@ func _draw_reticle() -> void:
 		pos = (center + Lx.input.last_aim_dir.normalized() * 42.0).round()
 	var arm: float = float(sz + 2)
 	var gap: float = float(sz + 1)
+	var zip_ready: bool = false
+	var beam_ready: bool = false
+	if Lx.player != null and is_instance_valid(Lx.player):
+		var mz: Variant = Lx.player.get("muzzle_t")
+		if (mz is float or mz is int) and float(mz) > 0.0:
+			gap += 1.0
+		if Lx.player.has_method("beam_charge_progress"):
+			var bp: float = float(Lx.player.call("beam_charge_progress"))
+			if bp > 0.01:
+				gap = maxf(1.0, roundf(gap + lerpf(2.0, -1.0, bp)))
+				beam_ready = bp >= 0.999
+		var lan_v: Variant = Lx.player.get("lantern")
+		if lan_v is Object and is_instance_valid(lan_v) and (lan_v as Object).has_method("is_lure_active"):
+			zip_ready = bool((lan_v as Object).call("is_lure_active"))
 	var outline: Color = LxPalette.PAL["night"]
 	var cream: Color = LxPalette.PAL["cream"]
+	var draw_col: Color = cream if beam_ready else col
 	var arms: Array[Rect2] = [
 		Rect2(pos.x - gap - arm, pos.y, arm, 1.0),
 		Rect2(pos.x + 1.0 + gap, pos.y, arm, 1.0),
@@ -442,7 +464,7 @@ func _draw_reticle() -> void:
 		arms.append(Rect2(pos.x + 2.0 + gap, pos.y - 1.0, arm - 2.0, 3.0))
 		arms.append(Rect2(pos.x - 1.0, pos.y - gap - arm + 1.0, 3.0, arm - 2.0))
 		arms.append(Rect2(pos.x - 1.0, pos.y + 2.0 + gap, 3.0, arm - 2.0))
-	if sz >= 2:
+	if sz >= 2 or zip_ready:
 		var d: float = float(sz + 1)
 		for corner: Vector2 in [
 			Vector2(-d, -d), Vector2(d, -d),
@@ -452,7 +474,7 @@ func _draw_reticle() -> void:
 	for r: Rect2 in arms:
 		_cursor_node.draw_rect(r.grow(1.0), outline)
 	for r: Rect2 in arms:
-		_cursor_node.draw_rect(r, col)
+		_cursor_node.draw_rect(r, draw_col)
 	if sz == 3:
 		_cursor_node.draw_rect(Rect2(pos.x - gap - arm + 2.0, pos.y, arm - 3.0, 1.0), cream)
 		_cursor_node.draw_rect(Rect2(pos.x + 2.0 + gap, pos.y, arm - 3.0, 1.0), cream)
