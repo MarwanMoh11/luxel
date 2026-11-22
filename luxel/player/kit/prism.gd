@@ -116,6 +116,9 @@ func on_bolt_reflected(at_pos: Vector2, out_dir: Vector2, chain_count: int = 1) 
 	wick.spawn_sparks(at_pos, out_dir, 2, LxWick.PAL_CREAM, 65.0, 115.0, 0.13)
 	wick.spawn_ring(at_pos, 2.0, 11.0, 0.18, LxWick.PAL_GOLD, 1.0)
 	wick.spawn_ring(at_pos, 1.0, 7.0, 0.11, LxWick.PAL_CREAM, 1.0)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		var bi_r: float = (0.92 if chain_count >= 2 else 0.72) if LxHudFx.flash_reduced() else (1.42 if chain_count >= 2 else 1.12)
+		LxDarknessLayer.active_instance.add_burst_light(at_pos, 48.0 if chain_count >= 2 else 36.0, bi_r, 0.20)
 	if chain_count >= 2:
 		wick.spawn_sparks(at_pos, out_dir, 4, LxWick.PAL_ICE, 45.0, 110.0, 0.22)
 		wick.spawn_ring(at_pos, 3.0, 15.0, 0.22, LxWick.PAL_ICE, 1.2)

@@ -221,7 +221,8 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
 		Lx.camera.call("add_kick", zip_dir, 2.2 if was_emp else 1.6)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(center, 78.0 if was_emp else 64.0, 1.48 if was_emp else 1.28, 0.30)
+		var z_sc: float = 0.65 if LxHudFx.flash_reduced() else 1.0
+		LxDarknessLayer.active_instance.add_burst_light(center, 78.0 if was_emp else 64.0, (1.48 if was_emp else 1.28) * z_sc, 0.30)
 	if world_ctx != null and is_instance_valid(world_ctx):
 		var amb: Variant = world_ctx.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):

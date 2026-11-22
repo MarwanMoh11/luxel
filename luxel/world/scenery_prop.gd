@@ -230,6 +230,24 @@ func _draw() -> void:
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	else:
 		_sheet.draw_prop(self, draw_off, prop_key, _clock)
+	if _sway_t > 0.0:
+		var u: float = clampf(1.0 - _sway_t / 0.36, 0.0, 1.0)
+		var mc: Color = _sway_mote_color()
+		var mh: float = minf(18.0, _frame_size.y * 0.55)
+		for mi: int in range(2):
+			var mx: float = roundf(_sway_dir * (2.5 + u * (5.5 + float(mi) * 3.0)) + float(mi * 2 - 1) * 2.5)
+			var my: float = roundf(-mh - u * (5.0 + float(mi) * 2.5) + sin(u * PI * 2.0 + float(mi)) * 1.5)
+			draw_rect(Rect2(mx, my, 1.0, 1.0), Color(mc, (1.0 - u) * 0.90))
+
+
+func _sway_mote_color() -> Color:
+	if prop_key.contains("flower") or prop_key.contains("lotus"):
+		return PAL["rose"] as Color
+	if prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("lantern") or prop_key.contains("pendulum"):
+		return PAL["gold"] as Color
+	if prop_key.contains("prism") or prop_key.contains("silver"):
+		return PAL["ice"] as Color
+	return PAL["lime"] as Color
 
 
 static func _build_shadow_ellipse(frame_sz: Vector2) -> PackedVector2Array:

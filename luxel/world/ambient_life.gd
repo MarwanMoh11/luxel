@@ -392,7 +392,7 @@ func _tick_shard_orbs(dt: float) -> void:
 
 func _draw_shard_orb(ob: Dictionary) -> void:
 	var p: Vector2 = (ob["pos"] as Vector2).round()
-	var bright: bool = fmod(float(ob["age"]) * 8.0, 1.0) < 0.55
+	var bright: bool = LxHudFx.flash_reduced() or fmod(float(ob["age"]) * 8.0, 1.0) < 0.55
 	draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), PAL["gold"])
 	draw_rect(Rect2(p + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), PAL["gold"])
 	draw_rect(Rect2(p, Vector2.ONE), PAL["cream"] if bright else PAL["apricot"])
