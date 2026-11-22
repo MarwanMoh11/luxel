@@ -168,11 +168,23 @@ func _open(persist: bool) -> bool:
 				Lx.state.broken_seals.append(id)
 	if door_type == "ward_barrier" and Lx.events != null:
 		Lx.events.seal_broken.emit(island_id, id)
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(0.14)
 	_emit_sfx("door_open")
 	if persist:
 		_emit_save("door_" + id)
 	queue_redraw()
 	return true
+
+
+func get_light_pool() -> Vector4:
+	if not active:
+		return Vector4.ZERO
+	if door_type == "bridge_platform" and opened:
+		return Vector4(pos.x, pos.y, 46.0, 0.72)
+	if not opened and (door_type == "boss_key" or door_type == "ward_barrier"):
+		return Vector4(pos.x, pos.y - 4.0, 44.0, 0.75)
+	return Vector4.ZERO
 
 
 func is_solid() -> bool:

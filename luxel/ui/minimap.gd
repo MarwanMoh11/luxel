@@ -117,9 +117,9 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 			"door", "locked_door", "switch_door", "combat_gate", "ward_barrier", "dungeon_entrance":
 				if _prop_bool(obj, "opened"):
 					continue
-				var dk: String = str(obj.get("door_kind"))
+				var dt_str: String = str(obj.get("door_type"))
 				var dp: Vector2 = _map_pt(wpos, bounds, inner, 3.0, 2.0)
-				if dk == "boss_door":
+				if dt_str == "boss_key":
 					c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["plum"])
 					c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["gold"])
 				else:

@@ -70,6 +70,16 @@ func is_reflective() -> bool:
 	return active
 
 
+func get_interact_prompt() -> String:
+	return "PROMPT_TURN_MIRROR" if (active and rotatable) else ""
+
+
+func get_light_pool() -> Vector4:
+	if _flash_t > 0.0:
+		return Vector4(pos.x, pos.y, 52.0, 1.1)
+	return Vector4.ZERO
+
+
 func reflect_dir(in_dir: Vector2) -> Vector2:
 	if in_dir.length_squared() <= 0.0001:
 		return Vector2.ZERO
