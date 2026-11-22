@@ -314,6 +314,10 @@ func _step_dive(dt: float) -> void:
 		last_recover_duration = state_timer
 		altitude = ALT_PERCH
 		vel = dive_dir * RECOVER_DRIFT
+		if Lx.world != null and is_instance_valid(Lx.world):
+			var amb: Variant = Lx.world.get("_ambient_life")
+			if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+				(amb as Object).call("_gust_particles", pos, 50.0, 62.0)
 		_emit_sfx("owl_recover")
 
 
@@ -401,8 +405,9 @@ func _draw_extra(off: Vector2) -> void:
 	var c := Vector2(roundf(off.x), roundf(off.y))
 	if state == State.TELL:
 		var lt := Vector2(roundf(lock_target.x - pos.x), roundf(lock_target.y - pos.y))
-		var main_c: Color = (PAL["gold"] as Color) if lock_lured else (PAL["sky"] as Color)
-		var hi_c: Color = (PAL["cream"] as Color) if lock_lured else (PAL["ice"] as Color)
+		var locked_owl: bool = state_timer <= LOCK_AIM_CUTOFF * _assist_tell_scale()
+		var main_c: Color = (PAL["coral"] as Color) if (locked_owl and not lock_lured) else ((PAL["gold"] as Color) if lock_lured else (PAL["sky"] as Color))
+		var hi_c: Color = (PAL["cream"] as Color) if (locked_owl or lock_lured) else (PAL["ice"] as Color)
 		var delta: Vector2 = lt - c
 		var dist: float = delta.length()
 		if dist > 4.0:

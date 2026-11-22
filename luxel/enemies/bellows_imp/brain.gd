@@ -224,6 +224,12 @@ func _step_commit(dt: float) -> void:
 		gust_emitted.emit(pos, gust_dir, GUST_RANGE, GUST_HALF_W, self)
 		if world_ctx != null and world_ctx.has_method("on_enemy_gust"):
 			world_ctx.call("on_enemy_gust", self, pos, gust_dir, GUST_RANGE, GUST_HALF_W)
+		if Lx.events != null:
+			Lx.events.shake_requested.emit(0.10)
+		if Lx.world != null and is_instance_valid(Lx.world):
+			var amb: Variant = Lx.world.get("_ambient_life")
+			if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+				(amb as Object).call("_gust_particles", pos + gust_dir * 42.0, 78.0, 96.0)
 
 	var end_p: Vector2 = pos + gust_dir * GUST_RANGE
 	if _has_player():
