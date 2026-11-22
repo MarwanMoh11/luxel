@@ -254,7 +254,7 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 		st.story_flags[MINI_BOSS_KIND + "_defeated"] = true
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
-			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
+			_emit_narration("CUE_BOSS_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("night_harbinger_defeated")
 
 

@@ -227,8 +227,8 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 		return
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island3_boss_p2")
-		_events.shake_requested.emit(0.32)
-		_emit_narration("CUE_PHASE_2", "warning", 3.5)
+		_events.shake_requested.emit(0.38 if phase >= 3 else 0.32)
+		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2", "warning", 3.5)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:

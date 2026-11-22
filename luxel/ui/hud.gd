@@ -204,13 +204,12 @@ func _on_boss_phase(boss_id: String, phase: int) -> void:
 		_boss_name_key = resolve_boss_name_key(boss_id)
 	_boss_phase = maxi(1, phase)
 	if phase >= 2:
-		var p_cue: String = ("CUE_HUSH_P4" if phase >= 4 else "CUE_HUSH_P3") if (_boss_name_key == "BOSS_HUSH" and phase >= 3) else ("HUD_BOSS_P3" if phase >= 3 else "CUE_PHASE_2")
+		var p_cue: String = ("CUE_HUSH_P4" if phase >= 4 else "CUE_HUSH_P3") if (_boss_name_key == "BOSS_HUSH" and phase >= 3) else ("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2")
 		spawn_screen_cue(p_cue, Vector2(160.0, 44.0), "coral", 1.8)
 
 
 func _on_boss_defeated(_boss_id: String, _island_id: int) -> void:
 	hide_boss()
-	spawn_screen_cue("CUE_HEART_GAINED", Vector2(160.0, 40.0), "lime", 1.8)
 
 
 func _on_ember_piece(_total: int) -> void:

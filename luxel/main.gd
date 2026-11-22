@@ -500,13 +500,14 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	_on_save_requested("shrine")
 
 
-func _on_boss_defeated(boss_id: String, _isl: int) -> void:
-	if not Lx.state.defeated_bosses.has(boss_id):
-		Lx.state.defeated_bosses.append(boss_id)
-	Lx.state.add_boss_heart()
-	if Lx.audio != null and Lx.audio.current_track_group.contains("_boss_"):
-		Lx.audio.silence_music(0.85)
-	Lx.audio.play_stinger("stinger_lamp")
+func _on_boss_defeated(boss_id: String, isl: int) -> void:
+	if not Lx.state.defeated_bosses.has(boss_id): Lx.state.defeated_bosses.append(boss_id)
+	var is_major: bool = str(Lx.get_island_data(isl).get("boss", "")) == boss_id or boss_id == "hollow_wick_boss"
+	if is_major and not bool(Lx.state.story_flags.get("boss_heart_" + boss_id, false)):
+		Lx.state.story_flags["boss_heart_" + boss_id] = true
+		Lx.state.add_boss_heart()
+	if Lx.audio != null and Lx.audio.current_track_group.contains("_boss_"): Lx.audio.silence_music(0.85)
+	if is_major: Lx.audio.play_stinger("stinger_lamp")
 	_on_save_requested("boss")
 
 
