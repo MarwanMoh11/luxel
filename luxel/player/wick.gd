@@ -448,7 +448,11 @@ func on_hit_landed(hit: LxHit, result: int, target_pos: Vector2, hitstop_s: floa
 		var emax: float = move_sunflare.get_ember_max() if move_sunflare != null else (
 			Lx.state.get_effective_ember_max() if Lx.state != null else float(sd.get("ember_max", 100.0))
 		)
+		var was_full: bool = ember >= emax - 0.001
 		ember = minf(emax, ember + gain)
+		if not was_full and ember >= emax - 0.001 and move_sunflare != null and move_sunflare.unlocked:
+			spawn_ring(global_position, 3.0, 18.0, 0.28, PAL_GOLD, 1.5)
+			emit_sfx("beam_ready", global_position, false)
 
 func trigger_hitstop(duration: float) -> void:
 	if duration > 0.0:

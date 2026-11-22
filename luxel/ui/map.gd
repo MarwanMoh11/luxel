@@ -103,6 +103,17 @@ func _rebuild_waystones() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
+	if event is InputEventMouseMotion:
+		var mpos: Vector2 = (event as InputEventMouseMotion).position
+		var start_idx: int = maxi(0, _waystone_idx - 2)
+		var vis_count: int = mini(_waystone_list.size() - start_idx, 3)
+		for row: int in range(vis_count):
+			if _ws_row_rect(row).has_point(mpos):
+				if _waystone_idx != start_idx + row:
+					_waystone_idx = start_idx + row
+					queue_redraw()
+				return
+		return
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:

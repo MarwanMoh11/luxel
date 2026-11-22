@@ -183,6 +183,11 @@ func _handle_mouse_hover(pos: Vector2) -> void:
 			if _slot_rect(i).has_point(pos):
 				_slot_idx = i
 				return
+	elif mode == Mode.CONFIRM_DELETE:
+		for i: int in range(2):
+			if _confirm_btn_rect(i).has_point(pos):
+				_confirm_idx = i
+				return
 
 
 func _handle_mouse_click(pos: Vector2) -> bool:
@@ -199,6 +204,7 @@ func _handle_mouse_click(pos: Vector2) -> bool:
 				_slot_idx = i
 				mode = Mode.CONFIRM_DELETE
 				_confirm_idx = 1
+				_play_ui_sfx("ui_move")
 				return true
 			if _slot_rect(i).has_point(pos):
 				_slot_idx = i
@@ -209,9 +215,11 @@ func _handle_mouse_click(pos: Vector2) -> bool:
 			if Lx.save != null:
 				Lx.save.delete_slot(_slot_idx + 1)
 				refresh_slots()
+			_play_ui_sfx("ui_confirm")
 			mode = Mode.SLOTS
 			return true
 		if _confirm_btn_rect(1).has_point(pos):
+			_play_ui_sfx("ui_back")
 			mode = Mode.SLOTS
 			return true
 	return false

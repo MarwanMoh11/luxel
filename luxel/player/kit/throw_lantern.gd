@@ -13,6 +13,8 @@ var zip_speed: float = 520.0
 var zip_time_left: float = 0.0
 var zip_hit_ids: Array[int] = []
 var _afterimage_cd: float = 0.0
+var _throw_buf_t: float = 0.0
+var _zip_buf_t: float = 0.0
 var _world_ctx: Node = null
 
 
@@ -69,6 +71,10 @@ func press() -> bool:
 		lan.start_recall(wick, _world_ctx, slam_r, hs, sh)
 		return true
 
+	if lan.state == LxLantern.State.RECALLING:
+		_throw_buf_t = 0.09
+		return false
+
 	return false
 
 
@@ -81,7 +87,10 @@ func try_zip() -> bool:
 		return false
 	if lan.state != LxLantern.State.FLYING and lan.state != LxLantern.State.HANGING:
 		return false
-	if zipping or wick.is_dashing() or wick.bounce_t > 0.0:
+	if zipping or wick.bounce_t > 0.0:
+		return false
+	if wick.is_dashing():
+		_zip_buf_t = 0.09
 		return false
 
 	var to: Vector2 = lan.pos - wick.global_position
@@ -113,6 +122,16 @@ func try_zip() -> bool:
 
 func tick_zip(dt: float, world_ctx: Node) -> void:
 	_world_ctx = world_ctx
+	if _throw_buf_t > 0.0:
+		_throw_buf_t = maxf(0.0, _throw_buf_t - dt)
+		if wick != null and wick.lantern != null and wick.lantern.state == LxLantern.State.IN_HAND:
+			_throw_buf_t = 0.0
+			press()
+	if _zip_buf_t > 0.0:
+		_zip_buf_t = maxf(0.0, _zip_buf_t - dt)
+		if wick != null and not wick.is_dashing() and not zipping:
+			_zip_buf_t = 0.0
+			try_zip()
 	if not zipping or wick == null or wick.lantern == null:
 		return
 
@@ -222,6 +241,8 @@ func cancel_zip() -> void:
 
 func reset() -> void:
 	super.reset()
+	_throw_buf_t = 0.0
+	_zip_buf_t = 0.0
 	cancel_zip()
 
 

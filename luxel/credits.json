@@ -32,6 +32,13 @@
         "luxel/art/ui/font_outline.png",
         "luxel/art/ui/font.json"
       ]
+    },
+    {
+      "id": "lastlight_islands2_8_studio",
+      "description": "Studio Last Light 20-colour painted environments (81 island and dungeon regions), 8 animated biome scenery atlases, 96 canonical world props, and 35+ bespoke character, enemy, mini-boss, and major-boss sprite rigs",
+      "generator": "gen_studio_art.py",
+      "license": "Original project asset",
+      "outputs": []
     }
   ],
   "audio": [

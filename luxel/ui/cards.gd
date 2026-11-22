@@ -106,7 +106,9 @@ func _process(delta: float) -> void:
 			return
 	elif mode == Mode.CREDITS:
 		_scroll_y -= CREDITS_SPEED * delta
-		var total_h: float = float(_credit_lines.size()) * 12.0 + 40.0
+		var total_h: float = 40.0
+		for entry: Dictionary in _credit_lines:
+			total_h += 12.0 * float(int(entry.get("scale", 1)))
 		if _scroll_y + total_h < -12.0:
 			mode = Mode.NONE
 			visible = false
@@ -129,7 +131,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if mode == Mode.ENDING:
-		if _elapsed >= 0.5 and (event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_SPACE) or _key_just(event, KEY_ENTER)):
+		var lmb_end: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT
+		if _elapsed >= 0.5 and (lmb_end or event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_SPACE) or _key_just(event, KEY_ENTER)):
 			_finish_ending()
 			get_viewport().set_input_as_handled()
 		return
@@ -147,18 +150,26 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 
 	elif mode == Mode.RESULTS:
+		var lmb_res: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT
 		if event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
+			if Lx.audio != null:
+				Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
 			close()
 			title_requested.emit()
 			get_viewport().set_input_as_handled()
-		elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
+		elif lmb_res or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
+			if Lx.audio != null:
+				Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
 			ending_finished.emit()
 			if mode == Mode.RESULTS:
 				show_credits()
 			get_viewport().set_input_as_handled()
 
 	elif mode == Mode.CREDITS:
-		if event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_SPACE):
+		var lmb_cred: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT
+		if lmb_cred or event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_SPACE):
+			if Lx.audio != null:
+				Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
 			close()
 			credits_finished.emit()
 			get_viewport().set_input_as_handled()
@@ -476,6 +487,8 @@ func _parse_credits_array(arr: Array) -> bool:
 			if lines is Array:
 				for ln: Variant in (lines as Array):
 					added = _add_credit_line(LxStrings.sanitize(str(ln)), "stone") or added
+			if added:
+				_credit_lines.append({"text": "", "color": "cream", "scale": 1})
 	return added
 
 
