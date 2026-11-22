@@ -34,6 +34,7 @@ uniform vec3 col_void = vec3(0.05098, 0.04314, 0.11765);   // #0d0b1e
 uniform vec3 col_night = vec3(0.12941, 0.10196, 0.23137);  // #211a3b
 uniform vec3 col_wine = vec3(0.62745, 0.27451, 0.41569);   // #a0466a
 uniform vec3 col_coral = vec3(0.88627, 0.44706, 0.35686);  // #e2725b
+uniform vec3 col_apricot = vec3(0.96078, 0.66275, 0.41569); // #f5a96a
 uniform vec3 col_sky = vec3(0.47059, 0.66275, 0.85490);    // #78a9da
 uniform vec3 col_gold = vec3(1.0, 0.85098, 0.54902);       // #ffd98c
 uniform vec3 col_cream = vec3(1.0, 0.95686, 0.86275);      // #fff4dc
@@ -121,10 +122,12 @@ void fragment() {
 			out_col = mix(out_col, col_void, clamp(vig, 0.0, 0.35));
 		}
 
-		// Smooth golden leading edge for the dawn relight wave
+		// Radiant 3-band Last Light golden-apricot-cream dawn relight wave crest
 		if (wave_rim > 0.01) {
-			vec3 rim_col = mix(col_gold, col_cream, smoothstep(0.45, 0.95, wave_rim));
-			out_col = mix(out_col, rim_col, wave_rim * 0.55);
+			vec3 warm_band = mix(col_apricot, col_gold, smoothstep(0.18, 0.62, wave_rim));
+			vec3 rim_col = mix(warm_band, col_cream, smoothstep(0.68, 0.94, wave_rim));
+			float rim_a = clamp(wave_rim * 0.86, 0.0, 0.86);
+			out_col = mix(out_col, rim_col, rim_a);
 		}
 
 		// Subtle Last Light wine edge heartbeat when Wick is on their last heart

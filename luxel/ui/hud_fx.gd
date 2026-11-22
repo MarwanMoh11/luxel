@@ -13,6 +13,36 @@ static func shake_enabled() -> bool:
 	return Lx.save == null or float(Lx.save.settings.get("screen_shake", 1.0)) > 0.01
 
 
+static func draw_cues(hud: CanvasItem, cues: Array[Dictionary], prompt_rect: Rect2) -> void:
+	var has_prompt: bool = prompt_rect.has_area()
+	var placed: Array[Rect2] = []
+	for cue: Dictionary in cues:
+		var t: float = float(cue["t"])
+		var dur: float = float(cue["dur"])
+		var fade_p: float = minf(t / 0.15, (dur - t) / 0.35)
+		var col: Color = LxPalette.fade_step(fade_p, str(cue["color"]))
+		if col.a <= 0.0:
+			continue
+		var screen_pos: Vector2 = cue["pos"] as Vector2
+		if bool(cue["is_world"]) and Lx.camera != null:
+			screen_pos = screen_pos - Lx.camera.global_position + Vector2(160.0, 90.0)
+		screen_pos.y -= floorf(t * 14.0)
+		var txt: String = str(cue["text"])
+		var tw: float = float(LxPixelFont.width(txt, 1))
+		screen_pos.x = clampf(roundf(screen_pos.x), 8.0 + tw * 0.5, 312.0 - tw * 0.5)
+		screen_pos.y = clampf(roundf(screen_pos.y), 16.0, 152.0)
+		var cr := Rect2(screen_pos.x - tw * 0.5 - 2.0, screen_pos.y - 1.0, tw + 4.0, 7.0)
+		if has_prompt and cr.intersects(prompt_rect.grow(2.0)):
+			screen_pos.y = maxf(14.0, prompt_rect.position.y - 8.0)
+			cr.position.y = screen_pos.y - 1.0
+		for prev: Rect2 in placed:
+			if cr.intersects(prev):
+				screen_pos.y = maxf(14.0, prev.position.y - 8.0)
+				cr.position.y = screen_pos.y - 1.0
+		placed.append(cr)
+		LxPixelFont.draw_centered(hud, txt, screen_pos.x, screen_pos.y, col, 1)
+
+
 static func draw_indicators(hud: CanvasItem, blink_t: float, boss_active: bool, boss_phase: int) -> void:
 	var fred: bool = flash_reduced()
 	_draw_lantern_edge_compass(hud, blink_t, fred)

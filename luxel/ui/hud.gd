@@ -286,8 +286,8 @@ func _draw() -> void:
 		_draw_ember_meter(Vector2(246.0, 166.0))
 	if _boss_active:
 		_draw_boss_bar()
-	_draw_interact_prompt()
-	_draw_cues(); _draw_notice()
+	var prompt_r: Rect2 = _draw_interact_prompt()
+	LxHudFx.draw_cues(self, _cues, prompt_r); _draw_notice()
 	LxHudFx.draw_indicators(self, _blink_t, _boss_active, _boss_phase)
 
 
@@ -360,7 +360,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		var mid: String = str(item)
 		if Lx.state.has_move(mid):
 			unlocked.append(mid)
-	var step_x: float = 17.0
+	var step_x: float = 19.0
 	var slot_x: float = origin.x
 	var pulse_fast: bool = LxHudFx.flash_reduced() or fmod(_blink_t, 0.44) < 0.22
 	var lan_v: Variant = Lx.player.get("lantern") if Lx.player != null else null
@@ -490,14 +490,14 @@ func _draw_boss_bar() -> void:
 		draw_rect(Rect2(roundf(x + 2.0 + (bar_w - 4.0) * frac), y + 1.0, 1.0, bar_h - 2.0), LxPalette.PAL["gold"] if cur_frac > frac else LxPalette.PAL["dusk"])
 
 
-func _draw_interact_prompt() -> void:
+func _draw_interact_prompt() -> Rect2:
 	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
-		return
+		return Rect2()
 	if Lx.world == null or not Lx.world.has_method("get_interactables"):
-		return
+		return Rect2()
 	var items_v: Variant = Lx.world.call("get_interactables")
 	if not (items_v is Array):
-		return
+		return Rect2()
 	var ppos: Vector2 = (Lx.player as Node2D).global_position
 	var best_pid: String = ""
 	var best_pos: Vector2 = Vector2.ZERO
@@ -525,10 +525,10 @@ func _draw_interact_prompt() -> void:
 			best_pid = pid
 			best_pos = it_pos
 	if best_pid.is_empty():
-		return
+		return Rect2()
 	var label: String = LxStrings.text(best_pid) if LxStrings.has_id(best_pid) else LxStrings.sanitize(best_pid)
 	if label.is_empty():
-		return
+		return Rect2()
 	var glyph: String = "-"
 	if Lx.input != null:
 		var raw_g: String = LxStrings.sanitize(Lx.input.get_glyph("lx_interact"), 6)
@@ -544,23 +544,7 @@ func _draw_interact_prompt() -> void:
 	var rect := Rect2(roundf(cx - half_w), roundf(py), w, h)
 	LxPixelFont.draw_panel(self, rect, "dusk", "gold", "night")
 	LxPixelFont.draw_centered(self, txt, rect.position.x + w * 0.5, rect.position.y + 3.0, LxPalette.PAL["cream"], 1)
-
-
-func _draw_cues() -> void:
-	for cue: Dictionary in _cues:
-		var t: float = float(cue["t"])
-		var dur: float = float(cue["dur"])
-		var fade_p: float = minf(t / 0.15, (dur - t) / 0.35)
-		var col: Color = LxPalette.fade_step(fade_p, str(cue["color"]))
-		if col.a <= 0.0:
-			continue
-		var screen_pos: Vector2 = cue["pos"] as Vector2
-		if bool(cue["is_world"]):
-			screen_pos = _world_to_screen(screen_pos)
-		screen_pos.y -= floorf(t * 14.0)
-		screen_pos.x = clampf(screen_pos.x, 24.0, 296.0)
-		screen_pos.y = clampf(screen_pos.y, 16.0, 168.0)
-		LxPixelFont.draw_centered(self, str(cue["text"]), screen_pos.x, screen_pos.y, col, 1)
+	return rect
 
 
 func _draw_notice() -> void:
