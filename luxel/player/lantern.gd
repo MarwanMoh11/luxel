@@ -144,6 +144,7 @@ func start_recall(wick: LxWick, world_ctx: Node, slam_radius: float = 18.0, hs: 
 		wick.emit_sfx("lantern_recall", pos, true)
 		wick.spawn_ring(pos, 2.0, slam_radius, 0.20, PAL_GOLD, 1.0)
 		_emit_gust(pos, 52.0, 68.0)
+		_burst_light(pos, 56.0, 1.20, 0.22)
 		# Immediate 18 px recall-on-grab slam (catches diving/wrestling Snatchers and nearby foes)
 		var enemies: Array = wick.world_get_enemies(world_ctx)
 		for e_var: Variant in enemies:
@@ -227,6 +228,7 @@ func on_dropped(at_pos: Vector2) -> void:
 		_owner_wick.trigger_hitstop(0.085)
 		_owner_wick.trigger_shake(0.12)
 		_emit_gust(pos, 56.0, 72.0)
+		_burst_light(pos, 68.0, 1.38, 0.30)
 		_owner_wick.emit_sfx("magpie_drop", pos, true)
 	if Lx.events != null:
 		Lx.events.lantern_dropped.emit(pos)
@@ -335,7 +337,14 @@ func _land_hanging(wick: LxWick) -> void:
 		Lx.events.lantern_hung.emit(pos)
 	wick.spawn_ring(pos, 2.0, 12.0, 0.22, PAL_GOLD, 1.0)
 	_emit_gust(pos, 44.0, 56.0)
+	_burst_light(pos, 52.0, 1.12, 0.20)
 	wick.emit_sfx("lantern_land", pos, true)
+
+
+func _burst_light(at_pos: Vector2, rad: float, intensity: float, dur: float) -> void:
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		var eff_i: float = intensity * (0.62 if LxHudFx.flash_reduced() else 1.0)
+		LxDarknessLayer.active_instance.add_burst_light(at_pos, rad, eff_i, dur)
 
 
 func _emit_gust(at_pos: Vector2, rad: float, strength: float) -> void:
@@ -490,6 +499,12 @@ func _draw() -> void:
 			var m_pos: Vector2 = (center + Vector2(cos(m_ang) * 9.0, 2.0 - m_ph * 11.0)).round()
 			var m_col: Color = PAL_CREAM if mi == 0 else PAL_GOLD
 			draw_rect(Rect2(m_pos, Vector2(1.0, 1.0)), Color(m_col, sin(m_ph * PI) * (0.65 if flash_red else 0.90)))
+		if Lx.state != null and Lx.state.has_move("lens"):
+			var l_spin: float = _anim_t * (0.55 if flash_red else 1.25)
+			for li: int in range(6):
+				var la: float = l_spin + float(li) * (TAU / 6.0)
+				var lp: Vector2 = (center + Vector2(cos(la) * 11.5, sin(la) * 11.5)).round()
+				draw_rect(Rect2(lp, Vector2(1.0, 1.0)), LxPalette.PAL["ice" if li % 2 == 0 else "sky"])
 
 	# Sculpted miniature Last Light Brass Lantern (curved bail, iron hood, 4 brass struts, flame, finial)
 	draw_rect(Rect2(center + Vector2(-1.0, -7.0), Vector2(2.0, 1.0)), PAL_GOLD)

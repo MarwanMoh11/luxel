@@ -200,6 +200,14 @@ static func _draw_dawn_sky(ci: CanvasItem, t: float, rise: float) -> void:
 	ci.draw_circle(Vector2(160.0, sun_y), 25.0, LxPalette.PAL["apricot"])
 	ci.draw_circle(Vector2(160.0, sun_y), 18.0, LxPalette.PAL["gold"])
 	ci.draw_circle(Vector2(160.0, sun_y), 11.0, LxPalette.PAL["cream"])
+	if rise > 0.45:
+		for bi: int in range(3):
+			var bx: float = roundf(fmod(24.0 + float(bi) * 86.0 + t * (10.5 + float(bi) * 2.2), 344.0) - 12.0)
+			var by: float = roundf(42.0 + float(bi) * 11.0 + sin(t * 2.2 + float(bi) * 1.7) * 3.0)
+			var flap: float = -1.0 if fmod(t * 3.2 + float(bi) * 0.35, 1.0) < 0.5 else 1.0
+			ci.draw_rect(Rect2(bx, by, 1.0, 1.0), LxPalette.PAL["night"])
+			ci.draw_rect(Rect2(bx - 1.0, by + flap, 1.0, 1.0), LxPalette.PAL["dusk"])
+			ci.draw_rect(Rect2(bx + 1.0, by + flap, 1.0, 1.0), LxPalette.PAL["dusk"])
 	for cl: Array in [[22, 54, 46, 2.2, "rose"], [214, 48, 52, 1.9, "rose"], [86, 74, 40, 2.6, "apricot"], [242, 78, 44, 2.3, "apricot"], [36, 94, 38, 3.0, "gold"]]:
 		var cx: float = roundf(fmod(float(cl[0]) + t * float(cl[3]), 360.0) - 20.0)
 		var cy: float = float(cl[1])
@@ -342,7 +350,12 @@ static func draw_credits_backdrop(ci: CanvasItem, t: float) -> void:
 	_dither(ci, 0.0, 320.0, 163.0, LxPalette.PAL["void"])
 	for bi: int in range(8):
 		var b: Array = [[20, 149], [59, 150], [97, 152], [137, 149], [176, 148], [215, 150], [253, 149], [293, 149]][bi]
-		ci.draw_rect(Rect2(float(b[0]), float(b[1]), 1.0, 1.0), LxPalette.PAL["gold" if fmod(t * 1.6 + float(bi) * 0.55, 1.0) < 0.6 else "apricot"])
+		var bx: float = float(b[0])
+		var by: float = float(b[1])
+		var lit_c: bool = LxHudFx.flash_reduced() or fmod(t * 1.6 + float(bi) * 0.55, 1.0) < 0.6
+		ci.draw_rect(Rect2(bx, by - 5.0, 1.0, 5.0), LxPalette.PAL["apricot" if lit_c else "dusk"])
+		ci.draw_rect(Rect2(bx, by, 1.0, 1.0), LxPalette.PAL["cream" if lit_c else "gold"])
+		ci.draw_rect(Rect2(bx - 1.0, 166.0 + float(bi % 3) * 2.0, 3.0, 1.0), LxPalette.PAL["gold" if lit_c else "apricot"])
 	# Gentle rising lantern fireflies along left/right margins (center text lane stays clean).
 	for mi: int in range(14):
 		var side_x: float = float(8 + (mi * 13) % 38) if mi % 2 == 0 else float(274 + (mi * 17) % 38)

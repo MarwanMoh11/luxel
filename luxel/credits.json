@@ -570,6 +570,38 @@
         "luxel/audio/sfx/marsh_splash.ogg",
         "luxel/audio/sfx/marsh_splash_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_biome_combat_c",
+      "description": "Bespoke zero-hiss multi-take mini-boss phase roars & biome projectiles (tide_captain_roar, hopper_king_roar, orrery_bolt, barnacle_shot + _2 takes; 228 SFX across 109 multi-take pools)",
+      "generator": "gen_sfx_biome_combat_c.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/tide_captain_roar.ogg",
+        "luxel/audio/sfx/tide_captain_roar_2.ogg",
+        "luxel/audio/sfx/hopper_king_roar.ogg",
+        "luxel/audio/sfx/hopper_king_roar_2.ogg",
+        "luxel/audio/sfx/orrery_bolt.ogg",
+        "luxel/audio/sfx/orrery_bolt_2.ogg",
+        "luxel/audio/sfx/barnacle_shot.ogg",
+        "luxel/audio/sfx/barnacle_shot_2.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_sfx_biome_combat_d",
+      "description": "Bespoke zero-hiss multi-take biome clanks, snuffer quench & cathedral bell tolls (crystal_clank, thorn_clank, snuffer_gulp, bell_toll_heavy + _2 takes; 236 Studio SFX across 113 multi-take pools)",
+      "generator": "gen_sfx_biome_combat_d.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/crystal_clank.ogg",
+        "luxel/audio/sfx/crystal_clank_2.ogg",
+        "luxel/audio/sfx/thorn_clank.ogg",
+        "luxel/audio/sfx/thorn_clank_2.ogg",
+        "luxel/audio/sfx/snuffer_gulp.ogg",
+        "luxel/audio/sfx/snuffer_gulp_2.ogg",
+        "luxel/audio/sfx/bell_toll_heavy.ogg",
+        "luxel/audio/sfx/bell_toll_heavy_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []
