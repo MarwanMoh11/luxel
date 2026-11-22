@@ -115,13 +115,20 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 				c.draw_rect(Rect2(gp.x, gp.y + 1.0, 3.0, 1.0), LxPalette.PAL["gold"])
 				c.draw_rect(Rect2(gp.x + 1.0, gp.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
 			"door", "locked_door", "switch_door", "combat_gate", "ward_barrier", "dungeon_entrance":
+				if _prop_bool(obj, "opened"):
+					continue
+				var dk: String = str(obj.get("door_kind"))
 				var dp: Vector2 = _map_pt(wpos, bounds, inner, 3.0, 2.0)
-				c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["plum"])
-				c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["apricot"])
-			"boss_door", "boss_key":
-				var bp: Vector2 = _map_pt(wpos, bounds, inner, 3.0, 2.0)
-				c.draw_rect(Rect2(bp, Vector2(3.0, 2.0)), LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["plum"])
-				c.draw_rect(Rect2(bp.x + 1.0, bp.y, 1.0, 2.0), LxPalette.PAL["gold"])
+				if dk == "boss_door":
+					c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["plum"])
+					c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["gold"])
+				else:
+					c.draw_rect(Rect2(dp, Vector2(3.0, 2.0)), LxPalette.PAL["plum"])
+					c.draw_rect(Rect2(dp.x + 1.0, dp.y, 1.0, 2.0), LxPalette.PAL["apricot"])
+			"wick_key", "boss_key":
+				if _prop_bool(obj, "collected"):
+					continue
+				_draw_pip(c, wpos, bounds, inner, 2.0, LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["apricot"])
 			"bridge", "bridge_platform":
 				c.draw_rect(Rect2(_map_pt(wpos, bounds, inner, 3.0, 1.0), Vector2(3.0, 1.0)), LxPalette.PAL["apricot"])
 

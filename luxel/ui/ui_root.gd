@@ -205,6 +205,8 @@ func _connect_signals() -> void:
 func setup(main_node: Node) -> void:
 	_main = main_node
 	bind_events()
+	if Lx.save != null:
+		apply_display_settings(Lx.save.settings)
 
 
 func _notify_main_resume() -> void:
@@ -384,9 +386,19 @@ func apply_display_settings(cfg: Dictionary) -> void:
 		DisplayServer.window_set_size(Vector2i(320 * sc, 180 * sc))
 
 
+func _exit_tree() -> void:
+	if DisplayServer.get_name() != "headless":
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
 func _process(_delta: float) -> void:
 	if _cursor_node != null:
-		_cursor_node.visible = (current_screen == Screen.HUD)
+		var in_hud: bool = (current_screen == Screen.HUD)
+		_cursor_node.visible = in_hud
+		if DisplayServer.get_name() != "headless":
+			var want_mode: Input.MouseMode = Input.MOUSE_MODE_HIDDEN if in_hud else Input.MOUSE_MODE_VISIBLE
+			if Input.get_mouse_mode() != want_mode:
+				Input.set_mouse_mode(want_mode)
 		if _cursor_node.visible:
 			_cursor_node.queue_redraw()
 

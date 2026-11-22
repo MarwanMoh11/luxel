@@ -216,8 +216,9 @@ func continue_slot(slot_num: int) -> bool:
 	flow = Flow.PLAY
 	Lx.audio.set_paused(false)
 	_sync_ui_flow()
+	if Lx.save.last_load_used_backup and not Lx.save.last_notice_key.is_empty() and _ui_root != null and _ui_root.has_method("show_notice"):
+		_ui_root.call("show_notice", Lx.save.last_notice_key, 4.0)
 	return true
-
 
 func load_island_region(island_id: int, region_id: String, spawn_override: Vector2 = Vector2(-1.0, -1.0)) -> bool:
 	if _tracked_boss != null and Lx.ui != null and Lx.ui.get("hud") != null:
