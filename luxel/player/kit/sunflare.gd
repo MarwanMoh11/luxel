@@ -13,6 +13,7 @@ var flare_radius: float = 76.0
 var flares_fired: int = 0
 
 var _world_ctx: Node = null
+var _buffer_t: float = 0.0
 
 
 func set_world_ctx(world_ctx: Node) -> void:
@@ -39,9 +40,13 @@ func press() -> bool:
 
 func trigger_sunflare(world_ctx: Node = null) -> bool:
 	if not can_use():
+		if unlocked and wick != null and not wick.dead and wick.ember >= get_ember_max() - 0.001 and (wick.is_zipping() or cooldown_left > 0.0):
+			_buffer_t = 0.12
+			return false
 		if wick != null:
 			wick.emit_sfx("denied", wick.global_position, false)
 		return false
+	_buffer_t = 0.0
 
 	if wick.move_beam != null:
 		wick.move_beam.cancel()
@@ -147,6 +152,10 @@ func tick(dt: float) -> void:
 	super.tick(dt)
 	if flare_vis_t > 0.0:
 		flare_vis_t = maxf(0.0, flare_vis_t - dt)
+	if _buffer_t > 0.0:
+		_buffer_t = maxf(0.0, _buffer_t - dt)
+		if can_use():
+			trigger_sunflare(_world_ctx)
 
 
 func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
@@ -197,6 +206,7 @@ func reset() -> void:
 	super.reset()
 	flare_vis_t = 0.0
 	flares_fired = 0
+	_buffer_t = 0.0
 
 
 func _within_burst(origin: Vector2, rad: float, item: Object, ipos: Vector2, irad: float) -> bool:

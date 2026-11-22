@@ -483,7 +483,7 @@ func world_collide_step(world_ctx: Node, from_p: Vector2, to_p: Vector2, rad: fl
 	if ctx.has_method("collide"):
 		var cross_pit: bool = airborne or is_dashing() or is_gliding() or is_zipping()
 		var cross_water: bool = is_gliding() or is_zipping()
-		return ctx.call("collide", to_p, rad, cross_pit, cross_water) as Vector2
+		return _fx.collide_with_corner_slide(ctx, from_p, to_p, rad, cross_pit, cross_water)
 	if ctx.has_method("resolve_move"):
 		return ctx.call("resolve_move", from_p, to_p, rad, airborne) as Vector2
 	if ctx.has_method("collide_step"):

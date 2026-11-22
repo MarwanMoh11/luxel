@@ -267,6 +267,11 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		_draw_fallback_moth(wick, base, hit_white, alpha, lan_in_hand, hand_pos)
 
 	_draw_motes(wick, off, true)
+	if wick.move_sunflare != null and wick.move_sunflare.unlocked and wick.get_ember_ratio() >= 0.999:
+		for si: int in range(2):
+			var sa: float = clock_t * 3.4 + float(si) * PI
+			var sp: Vector2 = (Vector2(0.0, -7.0) + Vector2(cos(sa) * 9.0, sin(sa) * 5.0)).round()
+			wick.draw_rect(Rect2(sp, Vector2.ONE), LxWick.PAL_CREAM if si == 0 else LxWick.PAL_GOLD)
 	if wick.move_beam != null:
 		wick.move_beam.draw_fx(wick, off, hand_pos)
 	for s: Dictionary in sparks:
@@ -363,3 +368,25 @@ func _draw_fallback_moth(wick: LxWick, base: Vector2, hit_white: bool, alpha: fl
 		wick.draw_rect(Rect2(hand_pos + Vector2(-2.0, -2.0), Vector2(4.0, 5.0)), c_out)
 		wick.draw_rect(Rect2(hand_pos + Vector2(-1.0, -1.0), Vector2(2.0, 3.0)), Color(LxWick.PAL_GOLD, alpha))
 		wick.draw_rect(Rect2(hand_pos + Vector2(-1.0, 0.0), Vector2(2.0, 1.0)), Color(LxWick.PAL_CREAM, alpha))
+
+
+static func collide_with_corner_slide(ctx: Node, from_p: Vector2, to_p: Vector2, rad: float, cross_pit: bool, cross_water: bool) -> Vector2:
+	var res: Vector2 = ctx.call("collide", to_p, rad, cross_pit, cross_water) as Vector2
+	var delta: Vector2 = to_p - from_p
+	var dist: float = delta.length()
+	if dist < 0.25:
+		return res
+	var mdir: Vector2 = delta / dist
+	if absf(mdir.x) < 0.92 and absf(mdir.y) < 0.92:
+		return res
+	if (res - from_p).dot(mdir) >= dist * 0.45:
+		return res
+	var perp := Vector2(-mdir.y, mdir.x)
+	var step_p: float = maxf(dist, 2.0)
+	var probe_fwd: Vector2 = from_p + mdir * step_p
+	var plus_ok: bool = ((ctx.call("collide", probe_fwd + perp * 5.0, rad, cross_pit, cross_water) as Vector2) - (from_p + perp * 5.0)).dot(mdir) > step_p * 0.65
+	var minus_ok: bool = ((ctx.call("collide", probe_fwd - perp * 5.0, rad, cross_pit, cross_water) as Vector2) - (from_p - perp * 5.0)).dot(mdir) > step_p * 0.65
+	if plus_ok != minus_ok:
+		var nudge: Vector2 = perp * (1.0 if plus_ok else -1.0) * minf(dist * 0.85, 2.2)
+		return ctx.call("collide", from_p + nudge, rad, cross_pit, cross_water) as Vector2
+	return res

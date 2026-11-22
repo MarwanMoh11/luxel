@@ -20,6 +20,8 @@ var beams_fired: int = 0
 
 var _world_ctx: Node = null
 var _charge_spark_cd: float = 0.0
+var _buffer_t: float = 0.0
+var _held: bool = false
 
 
 func set_world_ctx(world_ctx: Node) -> void:
@@ -55,12 +57,21 @@ func release() -> void:
 
 
 func press_beam() -> bool:
+	_held = true
 	if charging:
 		return true
 	if not can_use():
+		var can_buf: bool = unlocked and wick != null and not wick.dead and (
+			wick.is_dashing() or wick.is_gliding() or wick.is_zipping() or cooldown_left > 0.0
+			or (wick.lantern != null and wick.lantern.state == LxLantern.State.RECALLING)
+		)
+		if can_buf:
+			_buffer_t = 0.12
+			return false
 		if wick != null and (not unlocked or (wick.lantern != null and not wick.lantern.is_in_hand())):
 			wick.emit_sfx("denied", wick.global_position, false)
 		return false
+	_buffer_t = 0.0
 	var data: Dictionary = get_data()
 	charge_time = maxf(0.05, float(data.get("charge_time", 0.6)))
 	charging = true
@@ -71,6 +82,8 @@ func press_beam() -> bool:
 
 
 func release_beam() -> bool:
+	_held = false
+	_buffer_t = 0.0
 	if not charging:
 		return false
 	var held_t: float = charge_t
@@ -181,6 +194,10 @@ func tick(dt: float) -> void:
 	super.tick(dt)
 	if beam_vis_t > 0.0:
 		beam_vis_t = maxf(0.0, beam_vis_t - dt)
+	if _buffer_t > 0.0:
+		_buffer_t = maxf(0.0, _buffer_t - dt)
+		if _held and not charging and can_use():
+			press_beam()
 	if not charging:
 		return
 	if wick == null or wick.dead or wick.is_dashing() or wick.is_gliding() or wick.is_zipping() \
@@ -203,6 +220,8 @@ func tick(dt: float) -> void:
 func cancel() -> void:
 	charging = false
 	charge_t = 0.0
+	_buffer_t = 0.0
+	_held = false
 	if Lx.input != null:
 		Lx.input.clear_toggle("lx_beam")
 
