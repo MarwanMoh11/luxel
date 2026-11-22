@@ -229,6 +229,7 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 		_region_loader.call("save_interactables_to_state")
 	Lx.state.island_id = island_id
 	Lx.state.region_id = region_id
+	Lx.state.room_id = "" if region_id == "overworld" else region_id
 	Lx.state.mark_region_visited(island_id, region_id)
 
 	if current_island_script != null and current_island_script.has_method("detach"):
@@ -255,19 +256,13 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 		var b: Rect2 = _region_loader.call("get_bounds")
 		is_dun = bool(_region_loader.get("is_dungeon"))
 		Lx.camera.set_bounds(b, is_dun)
-		if is_dun:
-			Lx.camera.slide_to_room(b, 0.4)
-		else:
-			Lx.camera.snap_to(spawn_at)
+		Lx.camera.snap_to(spawn_at)
 	if _darkness_layer != null:
-		if _darkness_layer.has_method("reset_zones"):
-			_darkness_layer.call("reset_zones")
-		if _darkness_layer.has_method("stop_dawn_wave"):
-			_darkness_layer.call("stop_dawn_wave")
-		if _darkness_layer.has_method("set_darkness"):
-			_darkness_layer.call("set_darkness", 0.0 if Lx.state.relit_islands.has(island_id) else 0.56)
-		if _darkness_layer.has_method("sync"):
-			_darkness_layer.call("sync", 0.0, _region_loader)
+		if _darkness_layer.has_method("reset_zones"): _darkness_layer.call("reset_zones")
+		if _darkness_layer.has_method("stop_dawn_wave"): _darkness_layer.call("stop_dawn_wave")
+		if _darkness_layer.has_method("set_darkness"): _darkness_layer.call("set_darkness", 0.0 if Lx.state.relit_islands.has(island_id) else 0.56)
+		if _darkness_layer.has_method("trigger_transition_fade"): _darkness_layer.call("trigger_transition_fade", 0.22)
+		if _darkness_layer.has_method("sync"): _darkness_layer.call("sync", 0.0, _region_loader)
 	_load_island_controller(island_id)
 	if is_dun:
 		Lx.audio.start_dungeon_music(island_id)
@@ -509,6 +504,8 @@ func _on_boss_defeated(boss_id: String, _isl: int) -> void:
 	if not Lx.state.defeated_bosses.has(boss_id):
 		Lx.state.defeated_bosses.append(boss_id)
 	Lx.state.add_boss_heart()
+	if Lx.audio != null and Lx.audio.current_track_group.contains("_boss_"):
+		Lx.audio.silence_music(0.85)
 	Lx.audio.play_stinger("stinger_lamp")
 	_on_save_requested("boss")
 

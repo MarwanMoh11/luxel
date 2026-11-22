@@ -4,39 +4,10 @@ extends Node2D
 ## unlocked move icons with dynamic input glyphs, ember meter, shard/key counters,
 ## boss health bar, and floating world cues.
 
-const HEART_PIXELS: Array[Rect2] = [
-	Rect2(1.0, 0.0, 1.0, 1.0),
-	Rect2(3.0, 0.0, 1.0, 1.0),
-	Rect2(0.0, 1.0, 5.0, 2.0),
-	Rect2(1.0, 3.0, 3.0, 1.0),
-	Rect2(2.0, 4.0, 1.0, 1.0),
-]
-
-const HALF_HEART_PIXELS: Array[Rect2] = [
-	Rect2(1.0, 0.0, 1.0, 1.0),
-	Rect2(0.0, 1.0, 3.0, 2.0),
-	Rect2(1.0, 3.0, 2.0, 1.0),
-	Rect2(2.0, 4.0, 1.0, 1.0),
-]
-
-const LANTERN_FRAME: Array[Rect2] = [
-	Rect2(1.0, 0.0, 3.0, 1.0),
-	Rect2(0.0, 1.0, 5.0, 1.0),
-	Rect2(0.0, 2.0, 1.0, 4.0),
-	Rect2(4.0, 2.0, 1.0, 4.0),
-	Rect2(0.0, 6.0, 5.0, 1.0),
-]
-
-const MOVE_COLORS: Dictionary = {
-	"bolt": "gold",
-	"dash": "coral",
-	"throw": "apricot",
-	"prism": "sky",
-	"beam": "cream",
-	"wings": "lime",
-	"lens": "ice",
-	"sunflare": "gold",
-}
+const HEART_PIXELS: Array[Rect2] = [Rect2(1.0, 0.0, 1.0, 1.0), Rect2(3.0, 0.0, 1.0, 1.0), Rect2(0.0, 1.0, 5.0, 2.0), Rect2(1.0, 3.0, 3.0, 1.0), Rect2(2.0, 4.0, 1.0, 1.0)]
+const HALF_HEART_PIXELS: Array[Rect2] = [Rect2(1.0, 0.0, 1.0, 1.0), Rect2(0.0, 1.0, 3.0, 2.0), Rect2(1.0, 3.0, 2.0, 1.0), Rect2(2.0, 4.0, 1.0, 1.0)]
+const LANTERN_FRAME: Array[Rect2] = [Rect2(1.0, 0.0, 3.0, 1.0), Rect2(0.0, 1.0, 5.0, 1.0), Rect2(0.0, 2.0, 1.0, 4.0), Rect2(4.0, 2.0, 1.0, 4.0), Rect2(0.0, 6.0, 5.0, 1.0)]
+const MOVE_COLORS: Dictionary = {"bolt": "gold", "dash": "coral", "throw": "apricot", "prism": "sky", "beam": "cream", "wings": "lime", "lens": "ice", "sunflare": "gold"}
 
 const BOSS_NAME_KEYS: Dictionary = {
 	"bellkeeper": "BOSS_BELLKEEPER",
@@ -82,6 +53,10 @@ var _ember_val: float = 0.0
 var _ember_max: float = 100.0
 var _blink_t: float = 0.0
 var _hit_cue_cd: float = 0.0
+var _last_shards: int = -1
+var _shard_pop_t: float = 0.0
+var _last_hearts: float = -1.0
+var _heart_pop_t: float = 0.0
 var _bound: bool = false
 
 
@@ -261,8 +236,14 @@ func _process(delta: float) -> void:
 	if not visible:
 		return
 	_blink_t += delta
-	if _hit_cue_cd > 0.0:
-		_hit_cue_cd = maxf(0.0, _hit_cue_cd - delta)
+	_hit_cue_cd = maxf(0.0, _hit_cue_cd - delta)
+	_shard_pop_t = maxf(0.0, _shard_pop_t - delta)
+	_heart_pop_t = maxf(0.0, _heart_pop_t - delta)
+	if Lx.state != null:
+		if _last_shards >= 0 and Lx.state.shards > _last_shards: _shard_pop_t = 0.28
+		_last_shards = Lx.state.shards
+		if _last_hearts >= 0.0 and not is_equal_approx(Lx.state.hearts, _last_hearts): _heart_pop_t = 0.24
+		_last_hearts = Lx.state.hearts
 	if _boss_active and _boss_trail_hp > _boss_hp:
 		_boss_trail_hp = maxf(_boss_hp, _boss_trail_hp - _boss_max_hp * 0.45 * delta)
 	if not _cues.is_empty():
@@ -294,11 +275,11 @@ func _draw() -> void:
 	_draw_hearts(Vector2(5.0, 5.0))
 	if not _boss_active:
 		_draw_beacon_gauge(160.0, 4.0)
-	_draw_shards_and_keys(Vector2(315.0, 5.0))
+	var keys_shown: bool = _draw_shards_and_keys(Vector2(315.0, 5.0))
 	_draw_moves_tray(Vector2(5.0, 160.0))
 	_draw_zip_cue(Vector2(5.0, 148.0))
 	if Lx.world != null and not _boss_active:
-		LxMinimap.draw_minimap(self, Vector2(263.0, 16.0), _blink_t)
+		LxMinimap.draw_minimap(self, Vector2(263.0, 22.0 if keys_shown else 16.0), _blink_t)
 	if Lx.state.has_move("sunflare"):
 		_draw_ember_meter(Vector2(246.0, 166.0))
 	if _boss_active:
@@ -315,7 +296,7 @@ func _draw_hearts(origin: Vector2) -> void:
 	for i: int in range(max_h):
 		var col: int = i % per_row
 		var row: int = i / per_row
-		var pos: Vector2 = origin + Vector2(float(col * 7), float(row * 7))
+		var pos: Vector2 = origin + Vector2(float(col * 7), float(row * 7) - (1.0 if (_heart_pop_t > 0.0 and i == maxi(0, ceili(cur_h) - 1)) else 0.0))
 		draw_rect(Rect2(pos - Vector2.ONE, Vector2(7.0, 7.0)), LxPalette.PAL["night"])
 		for r: Rect2 in HEART_PIXELS:
 			draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["plum"])
@@ -349,25 +330,23 @@ func _draw_beacon_gauge(cx: float, y: float) -> void:
 			draw_rect(Rect2(p + r.position, r.size), frame_col)
 
 
-func _draw_shards_and_keys(top_right: Vector2) -> void:
+func _draw_shards_and_keys(top_right: Vector2) -> bool:
 	var shard_str: String = LxStrings.fmt("HUD_SHARDS_FMT", [Lx.state.shards])
 	var tw: float = float(LxPixelFont.width(shard_str, 1))
 	var icon_x: float = top_right.x - tw - 8.0
-	var y: float = top_right.y
-	# Diamond light-shard icon.
+	var y: float = top_right.y - (1.0 if _shard_pop_t > 0.0 else 0.0)
 	draw_rect(Rect2(icon_x, y - 1.0, 5.0, 7.0), LxPalette.PAL["night"])
-	draw_rect(Rect2(icon_x + 2.0, y, 1.0, 5.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(icon_x + 2.0, y, 1.0, 5.0), LxPalette.PAL["cream"] if _shard_pop_t > 0.0 else LxPalette.PAL["gold"])
 	draw_rect(Rect2(icon_x + 1.0, y + 1.0, 3.0, 3.0), LxPalette.PAL["gold"])
 	draw_rect(Rect2(icon_x + 2.0, y + 1.0, 1.0, 2.0), LxPalette.PAL["cream"])
-	LxPixelFont.draw_right(self, shard_str, top_right.x, y, LxPalette.PAL["gold"], 1)
-
-	if not Lx.state.room_id.is_empty():
-		var isl_data: Dictionary = Lx.get_island_data(Lx.state.island_id)
-		var dung_id: String = str(isl_data.get("dungeon_id", ""))
+	LxPixelFont.draw_right(self, shard_str, top_right.x, y, LxPalette.PAL["cream"] if _shard_pop_t > 0.0 else LxPalette.PAL["gold"], 1)
+	if Lx.state.region_id != "overworld" or not Lx.state.room_id.is_empty():
+		var dung_id: String = str(Lx.get_island_data(Lx.state.island_id).get("dungeon_id", ""))
 		var keys: int = (Lx.state.get_key_count(dung_id, "wick_key") + Lx.state.get_key_count(dung_id, "keepers_flame")) if not dung_id.is_empty() else 0
 		if keys > 0:
-			var ktxt: String = LxStrings.fmt("HUD_KEYS_FMT", [keys])
-			LxPixelFont.draw_right(self, ktxt, top_right.x, y + 9.0, LxPalette.PAL["apricot"], 1)
+			LxPixelFont.draw_right(self, LxStrings.fmt("HUD_KEYS_FMT", [keys]), top_right.x, top_right.y + 9.0, LxPalette.PAL["apricot"], 1)
+			return true
+	return false
 
 
 func _draw_moves_tray(origin: Vector2) -> void:

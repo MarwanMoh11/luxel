@@ -528,20 +528,10 @@ func _try_load_optional_sprite() -> void:
 				_sprite_scale = Vector2.ONE * float(cfg[2])
 
 
-func _body_color() -> Color:
-	return PAL["plum"] as Color
-
-
-func _has_active_shield() -> bool:
-	return false
-
-
-func _shield_color() -> Color:
-	return PAL["teal"] as Color
-
-
-func _visual_offset() -> Vector2:
-	return Vector2.ZERO
+func _body_color() -> Color: return PAL["plum"] as Color
+func _has_active_shield() -> bool: return false
+func _shield_color() -> Color: return PAL["teal"] as Color
+func _visual_offset() -> Vector2: return Vector2.ZERO
 
 
 func _draw() -> void:
@@ -561,16 +551,22 @@ func _draw() -> void:
 		draw_arc(off, r + 14.0, facing - 1.1, facing + 1.1, 16, PAL["gold"] as Color, 2.5)
 
 	var drew_sprite: bool = false
+	var sq: float = clampf(flash_t / 0.12, 0.0, 1.0)
+	var draw_sc: Vector2 = _sprite_scale * Vector2(1.0 + 0.18 * sq, 1.0 - 0.16 * sq)
 	if _sprite_sheet != null:
 		var anim_name: String = str(_STATE_ANIMS.get(state, ("phase%d" % phase) if (phase >= 2 and state == State.ROUTINE and _sprite_sheet.animations.has("phase%d" % phase)) else ("phase2" if (phase >= 2 and state == State.ROUTINE and _sprite_sheet.animations.has("phase2")) else "routine")))
 		var mod: Color = (PAL["cream"] as Color) if flash_t > 0.0 else _sprite_tint
-		drew_sprite = _sprite_sheet.draw_actor(self, off, anim_name, Vector2.from_angle(facing), anim_t, mod, _sprite_scale)
+		drew_sprite = _sprite_sheet.draw_actor(self, off, anim_name, Vector2.from_angle(facing), anim_t, mod, draw_sc)
 	if not drew_sprite:
 		var fill: Color = (PAL["cream"] as Color) if flash_t > 0.0 else ((PAL["stone"] as Color) if state == State.STAGGER else ((PAL["dusk"] as Color) if state == State.RECOVER else _body_color()))
-		var box := Rect2(off - Vector2(r, r), Vector2(r * 2.0, r * 2.0))
-		draw_rect(box, fill, true)
-		draw_rect(box, PAL["night"] as Color, false, 1.0)
+		var sz := Vector2(r * 2.0 * (1.0 + 0.16 * sq), r * 2.0 * (1.0 - 0.14 * sq))
+		var box := Rect2(off - sz * 0.5, sz)
+		draw_rect(box, fill, true); draw_rect(box, PAL["night"] as Color, false, 1.0)
 		draw_circle(off + Vector2.from_angle(facing) * (r * 0.55), 1.5, PAL["gold"] as Color)
+	if hp > 0.0 and hp <= max_hp * 0.35 and fmod(anim_t * 3.5, 1.0) < 0.55:
+		var ca: float = anim_t * 4.2
+		draw_rect(Rect2((off + Vector2(cos(ca) * (r + 1.0), -r * 0.4 + sin(ca * 1.3) * 3.0)).round(), Vector2(2.0, 1.0)), PAL["coral"] as Color)
+		draw_rect(Rect2((off + Vector2(-cos(ca * 0.9) * r, -r * 0.1 + cos(ca) * 2.5)).round(), Vector2.ONE), PAL["apricot"] as Color)
 
 	if _has_active_shield():
 		draw_arc(off, r + 3.0, facing - 1.05, facing + 1.05, 12, (PAL["cream"] as Color) if clank_t > 0.0 else _shield_color(), 2.5)

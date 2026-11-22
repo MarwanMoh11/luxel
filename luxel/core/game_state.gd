@@ -151,6 +151,9 @@ func add_ember_piece() -> bool:
 		gained_heart = true
 	if Lx.events != null:
 		Lx.events.ember_piece_collected.emit(ember_pieces)
+		if gained_heart:
+			Lx.events.narration_requested.emit("CUE_HEART_GAINED", "title", 3.0)
+			Lx.events.sfx_requested.emit("heart_pickup", Vector2.ZERO, false)
 	return gained_heart
 
 

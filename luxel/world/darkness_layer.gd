@@ -40,6 +40,8 @@ var _from_tint: Vector3 = DEFAULT_TINT
 var _target_tint: Vector3 = DEFAULT_TINT
 var _tint_t: float = 1.0
 var _tint_ready: bool = false
+var _trans_fade: float = 0.0
+var _trans_speed: float = 4.5
 var _burst_lights: Array[Dictionary] = []
 var _bound_events: LxEventBus = null
 
@@ -110,6 +112,11 @@ func stop_dawn_wave() -> void:
 	wave_active = false
 	wave_radius = 0.0
 
+func trigger_transition_fade(dur: float = 0.22) -> void:
+	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	_trans_fade = 0.65 if flash_red else 0.92
+	_trans_speed = _trans_fade / maxf(0.08, dur * (0.7 if flash_red else 1.0))
+
 func add_burst_light(pos: Vector2, radius: float, intensity: float, duration: float) -> void:
 	if _burst_lights.size() >= MAX_BURST_LIGHTS:
 		_burst_lights.pop_front()
@@ -154,6 +161,9 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 		var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 		dpulse = 0.45 if flash_red else (0.52 + 0.48 * sin(_clock * 6.4))
 	_mat.set_shader_parameter("danger_pulse", dpulse)
+	if _trans_fade > 0.0 and dt > 0.0:
+		_trans_fade = maxf(0.0, _trans_fade - _trans_speed * dt)
+	_mat.set_shader_parameter("transition_fade", clampf(_trans_fade, 0.0, 1.0))
 
 	# Dual-frequency organic flame breath
 	var flicker: float = 0.955 + 0.030 * sin(_clock * 5.2) + 0.015 * sin(_clock * 13.7)

@@ -14,6 +14,7 @@ uniform float wave_active = 0.0;
 uniform vec3 biome_tint = vec3(0.42, 0.40, 0.64);
 uniform float vignette_strength : hint_range(0.0, 0.5) = 0.14;
 uniform float danger_pulse : hint_range(0.0, 1.0) = 0.0;
+uniform float transition_fade : hint_range(0.0, 1.0) = 0.0;
 
 // Up to 16 camera-prioritized light pools: xy = world pos, z = radius (px), w = intensity (0..2)
 uniform vec4 lights[16];
@@ -33,7 +34,7 @@ uniform vec3 col_cream = vec3(1.0, 0.95686, 0.86275);      // #fff4dc
 
 void fragment() {
 	vec3 src = texture(screen_tex, SCREEN_UV).rgb;
-	if (darkness_strength <= 0.001 && wave_active < 0.5 && danger_pulse <= 0.001) {
+	if (darkness_strength <= 0.001 && wave_active < 0.5 && danger_pulse <= 0.001 && transition_fade <= 0.001) {
 		COLOR = vec4(src, 1.0);
 	} else {
 		vec2 screen_px = UV * view_size;
@@ -125,6 +126,11 @@ void fragment() {
 			vec2 duv = (UV - vec2(0.5)) * vec2(1.0, 0.92);
 			float dvig = smoothstep(0.38, 0.76, length(duv)) * danger_pulse * 0.28;
 			out_col = mix(out_col, col_wine, clamp(dvig, 0.0, 0.26));
+		}
+
+		// Velvety room/region arrival fade from Last Light void
+		if (transition_fade > 0.002) {
+			out_col = mix(out_col, col_void, clamp(transition_fade, 0.0, 1.0));
 		}
 
 		COLOR = vec4(out_col, 1.0);
