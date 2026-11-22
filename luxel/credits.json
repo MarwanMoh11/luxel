@@ -367,6 +367,22 @@
         "luxel/audio/sfx/door_open_2.ogg",
         "luxel/audio/sfx/owl_dive_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_multitake4",
+      "description": "Round-4 zero-hiss alternate move & world foley variants (lantern_land_2, zip_streak_2, prism_bounce_2, wings_glide_2, mirror_turn_2, chest_open_2, shield_shatter_2, stone_break_2; 120 SFX across 33 multi-take pools)",
+      "generator": "gen_sfx_multitake4.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/lantern_land_2.ogg",
+        "luxel/audio/sfx/zip_streak_2.ogg",
+        "luxel/audio/sfx/prism_bounce_2.ogg",
+        "luxel/audio/sfx/wings_glide_2.ogg",
+        "luxel/audio/sfx/mirror_turn_2.ogg",
+        "luxel/audio/sfx/chest_open_2.ogg",
+        "luxel/audio/sfx/shield_shatter_2.ogg",
+        "luxel/audio/sfx/stone_break_2.ogg"
+      ]
     }
   ],
   "third_party_audio": []
