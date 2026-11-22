@@ -77,7 +77,7 @@ func show_results(stats: Dictionary = {}) -> void:
 	visible = true
 	if Lx.audio != null:
 		var deaths: int = int(_stats.get("deaths", Lx.state.deaths if Lx.state != null else 0))
-		Lx.audio.play_sfx("shrine_unlock" if deaths <= 3 else "waystone_light", Vector2.ZERO, false, true)
+		Lx.audio.play_sfx("shrine_unlock" if deaths <= 3 else "waystone_lit", Vector2.ZERO, false, true)
 	queue_redraw()
 
 

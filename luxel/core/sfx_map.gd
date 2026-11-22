@@ -100,6 +100,7 @@ const EXACT: Dictionary = {
 	"clockwork_warden_phase2": {"id": "boss_roar", "pitch": 1.08, "db": -1.5},
 	"crab_flank_hit": {"id": "heavy_hit", "pitch": 1.04, "db": -0.5},
 	"crab_pinch_counter": {"id": "heavy_hit", "pitch": 1.14, "db": -1.0},
+	"echo_moth_bolt": {"id": "bolt_fire", "pitch": 1.16, "db": -1.5},
 	"echo_moth_dash": {"id": "hollow_dash", "pitch": 1.22, "db": -2.0},
 	"echo_moth_notice": {"id": "clockwork_chime", "pitch": 1.18, "db": -4.0},
 	"echo_moth_tell": {"id": "clockwork_chime", "pitch": 1.12, "db": -3.5},
@@ -194,6 +195,7 @@ const EXACT: Dictionary = {
 	"warden_shield_break": {"id": "shield_shatter", "pitch": 1.00, "db": 0.0},
 	"warden_shield_reform": {"id": "shield_clang", "pitch": 1.16, "db": -2.0},
 	"warden_swing": {"id": "warden_swing", "pitch": 1.00, "db": 0.0},
+	"warden_windup": {"id": "warden_alert", "pitch": 0.92, "db": -3.0},
 }
 
 const PATTERNS: Array = [
