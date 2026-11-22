@@ -554,12 +554,21 @@ func _draw_extra(off: Vector2) -> void:
 			var tip := Vector2(roundf(sc.x + sd.x * slen), roundf(sc.y + sd.y * slen))
 			draw_line(sc, tip, (PAL["gold"] as Color) if (i % 2 == 0) else (PAL["apricot"] as Color), 1.2)
 			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+	if _has_active_shield() and deflect_charge > 0:
+		var hot_d: bool = deflect_charge >= RICOCHET_NEED - 1
+		var pc: Color = (PAL["cream"] if int(anim_t * 16.0) % 2 == 0 else PAL["coral"]) if hot_d else (PAL["gold"] as Color)
+		for di: int in range(mini(deflect_charge, 2)):
+			var s_off: float = (float(di) - 0.5) * 4.0 if deflect_charge >= 2 else 0.0
+			var dp := Vector2(roundf(c.x + fwd.x * (body_radius + 4.0) + side.x * s_off), roundf(c.y + fwd.y * (body_radius + 4.0) + side.y * s_off))
+			draw_rect(Rect2(dp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), PAL["void"] as Color, true)
+			draw_rect(Rect2(dp, Vector2(1.0, 1.0)), pc, true)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var locked_t: bool = state_timer <= 0.14
 		var glint_p := Vector2(roundf(c.x + fwd.x * (body_radius + 5.0 + prog * 4.0)), roundf(c.y + fwd.y * (body_radius + 5.0 + prog * 4.0)))
-		var arm: float = roundf((3.0 if (is_counter_attack or lunge_attack) else 2.0) + prog * 2.0)
-		draw_line(glint_p + Vector2(-arm, 0.0), glint_p + Vector2(arm, 0.0), PAL["apricot"] as Color, 1.2)
-		draw_line(glint_p + Vector2(0.0, -arm), glint_p + Vector2(0.0, arm), PAL["gold"] as Color, 1.2)
+		var arm: float = roundf((3.0 if (is_counter_attack or lunge_attack) else 2.0) + prog * 2.0 + (1.0 if locked_t else 0.0))
+		draw_line(glint_p + Vector2(-arm, 0.0), glint_p + Vector2(arm, 0.0), (PAL["cream"] if locked_t else PAL["apricot"]) as Color, 1.2)
+		draw_line(glint_p + Vector2(0.0, -arm), glint_p + Vector2(0.0, arm), (PAL["cream"] if locked_t else PAL["gold"]) as Color, 1.2)
 		draw_rect(Rect2(glint_p, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 		if _has_active_shield():
 			var rim := Vector2(roundf(c.x + fwd.x * (body_radius + 3.0) + side.x * 2.0), roundf(c.y + fwd.y * (body_radius + 3.0) + side.y * 2.0))

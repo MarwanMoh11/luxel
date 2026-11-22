@@ -118,6 +118,12 @@ func _enter_commit() -> void:
 		state = State.COMMIT
 		state_timer = THORN_BURST_TIME
 		thorn_burst_hit = false
+		if Lx.events != null:
+			Lx.events.shake_requested.emit(0.12)
+		if Lx.world != null and is_instance_valid(Lx.world):
+			var amb: Variant = Lx.world.get("_ambient_life")
+			if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+				(amb as Object).call("_gust_particles", pos, 58.0, 68.0)
 		_emit_sfx("bramble_thorn_burst")
 		return
 	super._enter_commit()
@@ -184,7 +190,7 @@ func _draw_extra(off: Vector2) -> void:
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(c, THORN_BURST_R, a0, a0 + 0.24, 3, edge_c, 1.0)
-		draw_arc(c, lerpf(THORN_BURST_R, body_radius + 4.0, prog), 0.0, TAU, 20, PAL["gold"] as Color, 1.5)
+		draw_arc(c, lerpf(THORN_BURST_R, body_radius + 4.0, prog), 0.0, TAU, 20, (PAL["cream"] if state_timer <= 0.10 else PAL["gold"]) as Color, 1.5)
 	elif thorn_burst_active and state == State.COMMIT:
 		var prog: float = 1.0 - clampf(state_timer / THORN_BURST_TIME, 0.0, 1.0)
 		var burst_r: float = lerpf(body_radius + 6.0, THORN_BURST_R, prog)

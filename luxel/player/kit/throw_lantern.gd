@@ -59,6 +59,7 @@ func press() -> bool:
 		lan.throw_out(wick.global_position, aim, spd, rng, hang, rspd, dmg, dmg, wear, lure_r)
 		wick.throw_anim_t = 0.25
 		wick.spawn_sparks(wick.global_position, aim, 5, LxWick.PAL_GOLD, 35.0, 85.0, 0.16)
+		wick.spawn_ring(wick.global_position, 2.0, 10.0, 0.13, LxWick.PAL_CREAM, 1.0)
 		wick.emit_sfx("lantern_throw", wick.global_position, false)
 		return true
 

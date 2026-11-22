@@ -365,15 +365,16 @@ func _draw_extra(off: Vector2) -> void:
 		_draw_lunar_glint(gp, 3.0 if gt > 0.45 else 2.0)
 	if variant == VARIANT_OWL and state == State.TELL:
 		var local_t: Vector2 = lock_target - pos
+		var locked_o: bool = state_timer <= 0.20
 		var spread: float = twin_offset_rad * clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var len_t: float = local_t.length()
 		var base_a: float = local_t.angle() if len_t > 0.01 else facing
 		var tip_a: Vector2 = (c + Vector2.from_angle(base_a + spread * feint_side) * len_t).round()
 		var tip_b: Vector2 = (c + Vector2.from_angle(base_a - spread * feint_side * 0.5) * len_t).round()
-		draw_line(c, tip_a, PAL["sky"] as Color, 1.0)
-		draw_line(c, tip_b, PAL["ice"] as Color, 1.4)
+		draw_line(c, tip_a, (PAL["coral"] if locked_o else PAL["sky"]) as Color, 1.0)
+		draw_line(c, tip_b, (PAL["cream"] if locked_o else PAL["ice"]) as Color, 1.6 if locked_o else 1.4)
 		_draw_lunar_glint(tip_a, 3.0)
-		_draw_lunar_glint(tip_b, 4.5)
+		_draw_lunar_glint(tip_b, 5.0 if locked_o else 4.5)
 	elif variant == VARIANT_SNATCHER and state == State.TELL:
 		var tgt: Vector2 = (lock_target - pos).round()
 		draw_line(c, tgt, PAL["blue"] as Color, 1.8)

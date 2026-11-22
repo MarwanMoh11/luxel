@@ -209,6 +209,10 @@ func _step_commit(dt: float) -> void:
 			ring_hit = false
 			if Lx.events != null:
 				Lx.events.shake_requested.emit(0.14)
+			if Lx.world != null and is_instance_valid(Lx.world):
+				var amb: Variant = Lx.world.get("_ambient_life")
+				if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+					(amb as Object).call("_gust_particles", pos, 64.0, 72.0)
 			_emit_sfx("hopper_land")
 			if _has_player() and pos.distance_to(_get_wick_pos()) <= STOMP_R:
 				ring_hit = true
@@ -283,25 +287,28 @@ func _draw_extra(off: Vector2) -> void:
 		var c: Vector2 = off.round()
 		var rel: Vector2 = (leap_to - pos).round()
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var locked: bool = state_timer <= 0.16 * _assist_tell_scale()
 		var br: float = roundf(lerpf(10.0, 6.0, prog))
-		draw_line(c, rel, PAL["sky"] as Color, 1.0)
+		var br_c: Color = (PAL["gold"] if locked else PAL["sky"]) as Color
+		var hi_c: Color = (PAL["cream"] if locked else PAL["ice"]) as Color
+		draw_line(c, rel, br_c, 1.0)
 		for bi: int in range(1, 4):
 			var bt: float = float(bi) * 0.25
 			var arc_p: Vector2 = (c.lerp(rel, bt) + Vector2(0.0, -sin(bt * PI) * 8.0)).round()
-			draw_rect(Rect2(arc_p, Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
+			draw_rect(Rect2(arc_p, Vector2(1.0, 1.0)), hi_c, true)
 		for sx: int in range(-1, 2, 2):
 			for sy: int in range(-1, 2, 2):
 				var fx: float = float(sx)
 				var fy: float = float(sy)
 				var cr: Vector2 = rel + Vector2(fx * br, fy * br)
-				draw_line(cr, cr + Vector2(-fx * 3.0, 0.0), PAL["sky"] as Color, 1.5)
-				draw_line(cr, cr + Vector2(0.0, -fy * 3.0), PAL["sky"] as Color, 1.5)
-				draw_rect(Rect2(cr, Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
-		draw_rect(Rect2(rel + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), PAL["ice"] as Color, true)
-		draw_rect(Rect2(rel + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), PAL["ice"] as Color, true)
+				draw_line(cr, cr + Vector2(-fx * 3.0, 0.0), br_c, 1.5)
+				draw_line(cr, cr + Vector2(0.0, -fy * 3.0), br_c, 1.5)
+				draw_rect(Rect2(cr, Vector2(1.0, 1.0)), hi_c, true)
+		draw_rect(Rect2(rel + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), hi_c, true)
+		draw_rect(Rect2(rel + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), hi_c, true)
 		for ti: int in range(8):
 			var a0: float = float(ti) * (TAU / 8.0)
-			draw_arc(rel, RING_MAX_R, a0, a0 + 0.34, 3, PAL["sky"] as Color, 1.0)
+			draw_arc(rel, RING_MAX_R, a0, a0 + 0.34, 3, br_c, 1.0)
 	elif state == State.COMMIT and commit_stage == CommitStage.RING:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
 		draw_arc(Vector2.ZERO, ring_r + 1.5, 0.0, TAU, 28, PAL["blue"] as Color, 2.4)

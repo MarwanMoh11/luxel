@@ -149,7 +149,7 @@ func _draw() -> void:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var r: float = roundf(lerpf(body_radius + 8.5, body_radius + 2.5, prog))
 		draw_arc(c, r, 0.0, TAU, 16, PAL["coral"] as Color, 1.5)
-		draw_arc(c, maxf(2.0, r - 2.0), 0.0, TAU, 12, PAL["apricot"] as Color, 1.0)
+		draw_arc(c, maxf(2.0, r - 2.0), 0.0, TAU, 12, (PAL["cream"] if state_timer <= 0.14 else PAL["apricot"]) as Color, 1.0)
 	elif state == State.COMMIT:
 		var br: float = roundf(body_radius + 4.5 + sin(anim_t * 22.0) * 1.0)
 		draw_arc(c, br, 0.0, TAU, 14, PAL["apricot"] as Color, 1.8)

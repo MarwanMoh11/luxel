@@ -113,7 +113,9 @@ func on_bolt_reflected(at_pos: Vector2, out_dir: Vector2) -> void:
 	if wick == null:
 		return
 	wick.spawn_sparks(at_pos, out_dir, 6, LxWick.PAL_GOLD, 35.0, 90.0, 0.18)
+	wick.spawn_sparks(at_pos, out_dir, 2, LxWick.PAL_CREAM, 65.0, 115.0, 0.13)
 	wick.spawn_ring(at_pos, 2.0, 11.0, 0.18, LxWick.PAL_GOLD, 1.0)
+	wick.spawn_ring(at_pos, 1.0, 7.0, 0.11, LxWick.PAL_CREAM, 1.0)
 	wick.emit_sfx("prism_bounce", at_pos, true)
 
 
