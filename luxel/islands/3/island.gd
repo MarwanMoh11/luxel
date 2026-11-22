@@ -156,17 +156,17 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("ISL3_ARRIVAL", "narration", 4.0)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
-	elif region_id == "oak_r1":
-		if st != null and not bool(st.story_flags.get("isl3_oak_entered", false)):
-			st.story_flags["isl3_oak_entered"] = true
-			_emit_narration("DUNGEON_3_NAME", "title", 3.5)
-		if _events != null:
-			_events.music_mode_requested.emit("island3_dungeon")
 	elif region_id == "oak_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_MATRON", "title", 3.5)
 			if _events != null:
 				_events.music_mode_requested.emit("island3_boss_p1")
+	elif region_id.begins_with("oak_"):
+		if region_id == "oak_r1" and st != null and not bool(st.story_flags.get("isl3_oak_entered", false)):
+			st.story_flags["isl3_oak_entered"] = true
+			_emit_narration("DUNGEON_3_NAME", "title", 3.5)
+		if _events != null:
+			_events.music_mode_requested.emit("island3_dungeon")
 
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
@@ -174,6 +174,7 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 		return
 	if shrine_id == "shrine_beam" or move_id == "beam":
 		_emit_narration("CUE_SHRINE_CLAIMED", "title", 3.0)
+		_events.prompt_requested.emit("PROMPT_BEAM", "lx_beam", 6.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 
 

@@ -357,6 +357,7 @@ func trigger_ending(mode: String = "") -> void:
 
 func enter_credits() -> void:
 	flow = Flow.CREDITS
+	Lx.audio.play_cue("credits")
 	_sync_ui_flow()
 
 

@@ -12,10 +12,23 @@ const OPEN_LP_HZ: float = 20000.0
 const PAUSE_LP_HZ: float = 520.0
 const SILENT_DB: float = -80.0
 const BASE_MUSIC_DB: float = -4.0
+const BASE_AMBIENCE_DB: float = -14.0
 const PAUSE_DUCK_DB: float = -6.0
 const CROSSFADE_S: float = 1.6
+const AMB_FADE_S: float = 1.0
 const COMBAT_DWELL_S: float = 1.2
 const COMBAT_TAIL_S: float = 6.0
+
+const ISLAND_AMBIENCE: Dictionary = {
+	1: ["night_breeze", "river_murmur"],
+	2: ["harbor_tide"],
+	3: ["forest_wind"],
+	4: ["marsh_rain"],
+	5: ["observatory_chime"],
+	6: ["kiln_rumble"],
+	7: ["shoals_echo"],
+	8: ["long_night_drone"],
+}
 
 const SFX_POOL_SIZE: int = 12
 const SFX_2D_POOL_SIZE: int = 12
@@ -31,6 +44,9 @@ var _explore_player: AudioStreamPlayer = null
 var _combat_player: AudioStreamPlayer = null
 var _stinger_player: AudioStreamPlayer = null
 var _amb_players: Array[AudioStreamPlayer] = []
+var _amb_gains: Array[float] = []
+var _amb_target_gains: Array[float] = []
+var _current_amb_island: int = -1
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _sfx_2d_pool: Array[AudioStreamPlayer2D] = []
 var _sfx_cursor: int = 0
@@ -118,9 +134,12 @@ func _setup_players() -> void:
 	for i: int in range(2):
 		var ap := AudioStreamPlayer.new()
 		ap.bus = BUS_AMBIENCE
+		ap.volume_db = SILENT_DB
 		ap.process_mode = Node.PROCESS_MODE_ALWAYS
 		add_child(ap)
 		_amb_players.append(ap)
+		_amb_gains.append(0.0)
+		_amb_target_gains.append(0.0)
 
 	for i: int in range(SFX_POOL_SIZE):
 		var sp := AudioStreamPlayer.new()
@@ -183,12 +202,58 @@ func start_island_music(island_id: int) -> void:
 		_combat_player.stream = cmb_stream
 		_combat_player.volume_db = SILENT_DB
 		_combat_player.play(resume_pos)
+	_start_island_ambience(island_id)
+
+
+func _start_island_ambience(island_id: int) -> void:
+	if _amb_players.is_empty():
+		return
+	var names: Array = ISLAND_AMBIENCE.get(island_id, ["night_breeze"]) as Array
+	if _current_amb_island == island_id:
+		var all_active: bool = true
+		for i: int in range(mini(names.size(), _amb_players.size())):
+			if not _amb_players[i].playing:
+				all_active = false
+				break
+		if all_active:
+			for i: int in range(_amb_players.size()):
+				_amb_target_gains[i] = 1.0 if i < names.size() else 0.0
+			return
+	_current_amb_island = island_id
+	for i: int in range(_amb_players.size()):
+		var ap: AudioStreamPlayer = _amb_players[i]
+		if i < names.size():
+			var st: AudioStream = _load_ambience_stream(str(names[i]), "night_breeze")
+			if st != null:
+				_amb_target_gains[i] = 1.0
+				if ap.stream != st or not ap.playing:
+					ap.stream = st
+					_amb_gains[i] = 0.0
+					ap.volume_db = SILENT_DB
+					ap.play()
+			else:
+				_amb_target_gains[i] = 0.0
+		else:
+			_amb_target_gains[i] = 0.0
+
+
+func _fade_out_ambience(immediate: bool = false) -> void:
+	_current_amb_island = -1
+	for i: int in range(_amb_players.size()):
+		_amb_target_gains[i] = 0.0
+		if immediate:
+			_amb_gains[i] = 0.0
+			_amb_players[i].volume_db = SILENT_DB
+			if _amb_players[i].playing:
+				_amb_players[i].stop()
 
 
 func play_cue(cue_name: String) -> void:
 	if cue_name == "explore" or cue_name == "combat":
 		set_music_mode(cue_name, true)
 		return
+	if cue_name in ["title", "ending_dawn", "credits"]:
+		_fade_out_ambience(cue_name == "ending_dawn")
 	if current_track_group == cue_name and _explore_player.playing:
 		return
 	if current_track_group != "" and _explore_player.playing:
@@ -248,6 +313,9 @@ func tick(dt: float, in_combat: bool = false) -> void:
 
 	var step: float = dt / maxf(CROSSFADE_S, 0.05)
 	combat_blend = move_toward(combat_blend, _target_combat_blend, step)
+	var amb_step: float = dt / maxf(AMB_FADE_S, 0.05)
+	for i: int in range(_amb_players.size()):
+		_amb_gains[i] = move_toward(_amb_gains[i], _amb_target_gains[i], amb_step)
 	_update_layer_volumes()
 
 
@@ -259,6 +327,15 @@ func _update_layer_volumes() -> void:
 		_explore_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(exp_gain, 0.0001)) if exp_gain > 0.001 else SILENT_DB
 	if _combat_player != null and _combat_player.stream != null:
 		_combat_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(cmb_gain, 0.0001)) if cmb_gain > 0.001 else SILENT_DB
+	for i: int in range(_amb_players.size()):
+		var ap: AudioStreamPlayer = _amb_players[i]
+		var g: float = _amb_gains[i]
+		if g > 0.001:
+			ap.volume_db = BASE_AMBIENCE_DB + linear_to_db(g)
+		else:
+			ap.volume_db = SILENT_DB
+			if _amb_target_gains[i] <= 0.001 and ap.playing:
+				ap.stop()
 
 
 func play_stinger(stinger_name: String) -> void:
@@ -331,6 +408,32 @@ func _load_music_stream(cue_name: String, fallback: String) -> AudioStream:
 	gen.mix_rate = 44100.0
 	gen.buffer_length = 0.5
 	return gen
+
+
+func _load_ambience_stream(amb_name: String, fallback: String = "night_breeze") -> AudioStream:
+	var candidates: Array[String] = [
+		"res://luxel/audio/ambience/%s.ogg" % amb_name,
+	]
+	if not fallback.is_empty() and fallback != amb_name:
+		candidates.append("res://luxel/audio/ambience/%s.ogg" % fallback)
+	for path: String in candidates:
+		if _stream_cache.has(path):
+			return _stream_cache[path] as AudioStream
+		if ResourceLoader.exists(path):
+			var res: Resource = ResourceLoader.load(path)
+			if res is AudioStream:
+				if res is AudioStreamOggVorbis:
+					(res as AudioStreamOggVorbis).loop = true
+				_stream_cache[path] = res
+				return res as AudioStream
+		var abs_p: String = ProjectSettings.globalize_path(path)
+		if FileAccess.file_exists(abs_p):
+			var ogg: AudioStreamOggVorbis = AudioStreamOggVorbis.load_from_file(abs_p)
+			if ogg != null:
+				ogg.loop = true
+				_stream_cache[path] = ogg
+				return ogg
+	return null
 
 
 func _load_sfx_stream(sfx_id: String) -> AudioStream:

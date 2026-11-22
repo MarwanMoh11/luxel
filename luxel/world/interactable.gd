@@ -101,13 +101,17 @@ func _draw_prop_sprite(
 	frame_override: int = -1,
 	modulate: Color = Color.WHITE
 ) -> bool:
-	var sheet: LxSpriteSheet = LxSpriteSheet.load_sheet(PROP_SHEET_PATH)
-	if sheet == null:
-		return false
-	var drawn: bool = sheet.draw_prop(self, offset, prop_key, _clock, modulate, frame_override)
-	if drawn:
+	var island_path: String = "res://luxel/art/props/island%d_props.json" % clampi(island_id, 1, 8)
+	var sheet: LxSpriteSheet = LxSpriteSheet.load_sheet(island_path)
+	if sheet != null and sheet.draw_prop(self, offset, prop_key, _clock, modulate, frame_override):
 		_uses_prop_anim = frame_override < 0
-	return drawn
+		return true
+	if island_path != PROP_SHEET_PATH:
+		var fallback_sheet: LxSpriteSheet = LxSpriteSheet.load_sheet(PROP_SHEET_PATH)
+		if fallback_sheet != null and fallback_sheet.draw_prop(self, offset, prop_key, _clock, modulate, frame_override):
+			_uses_prop_anim = frame_override < 0
+			return true
+	return false
 
 
 func is_solid() -> bool:

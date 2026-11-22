@@ -156,17 +156,17 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("ISL2_ARRIVAL", "narration", 4.0)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
-	elif region_id == "lighthouse_r1":
-		if st != null and not bool(st.story_flags.get("isl2_lighthouse_entered", false)):
-			st.story_flags["isl2_lighthouse_entered"] = true
-			_emit_narration("DUNGEON_2_NAME", "title", 3.5)
-		if _events != null:
-			_events.music_mode_requested.emit("island2_dungeon")
 	elif region_id == "lighthouse_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_HERMIT", "title", 3.5)
 			if _events != null:
 				_events.music_mode_requested.emit("island2_boss_p1")
+	elif region_id.begins_with("lighthouse_"):
+		if region_id == "lighthouse_r1" and st != null and not bool(st.story_flags.get("isl2_lighthouse_entered", false)):
+			st.story_flags["isl2_lighthouse_entered"] = true
+			_emit_narration("DUNGEON_2_NAME", "title", 3.5)
+		if _events != null:
+			_events.music_mode_requested.emit("island2_dungeon")
 
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
@@ -174,6 +174,7 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 		return
 	if shrine_id == "shrine_prism" or move_id == "prism":
 		_emit_narration("CUE_SHRINE_CLAIMED", "title", 3.0)
+		_events.prompt_requested.emit("PROMPT_PRISM", "", 6.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 
 

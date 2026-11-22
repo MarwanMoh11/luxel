@@ -261,17 +261,17 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("ISL6_ARRIVAL", "narration", 4.0)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
-	elif region_id == "kiln_r1":
-		if st != null and not bool(st.story_flags.get("isl6_kiln_entered", false)):
-			st.story_flags["isl6_kiln_entered"] = true
-			_emit_narration("DUNGEON_6_NAME", "title", 3.5)
-		if _events != null:
-			_events.music_mode_requested.emit("island6_dungeon")
 	elif region_id == "kiln_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_KILNMOTHER", "title", 3.5)
 			if _events != null:
 				_events.music_mode_requested.emit("island6_boss_p1")
+	elif region_id.begins_with("kiln_"):
+		if region_id == "kiln_r1" and st != null and not bool(st.story_flags.get("isl6_kiln_entered", false)):
+			st.story_flags["isl6_kiln_entered"] = true
+			_emit_narration("DUNGEON_6_NAME", "title", 3.5)
+		if _events != null:
+			_events.music_mode_requested.emit("island6_dungeon")
 
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
@@ -279,6 +279,7 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 		return
 	if shrine_id == "shrine_sunflare" or move_id == "sunflare":
 		_emit_narration("MOVE_SUNFLARE_NAME", "title", 3.5)
+		_events.prompt_requested.emit("PROMPT_SUNFLARE", "lx_sunflare", 6.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 
 

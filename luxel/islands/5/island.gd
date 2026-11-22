@@ -276,27 +276,28 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("ISL5_ARRIVAL", "narration", 4.0)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
-	elif region_id == "orrery_r1":
-		if st != null and not bool(st.story_flags.get("isl5_dungeon_entered", false)):
-			st.story_flags["isl5_dungeon_entered"] = true
-			_emit_narration("DUNGEON_5_NAME", "title", 3.5)
-		if _events != null:
-			_events.music_mode_requested.emit("island5_dungeon")
-	elif region_id == "orrery_r3":
-		_r3_kills = 0
-	elif region_id == "orrery_r8":
-		_r8_kills = 0
 	elif region_id == "orrery_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_ASTRONOMER", "title", 3.5)
 			if _events != null:
 				_events.music_mode_requested.emit("island5_boss_p1")
+	elif region_id.begins_with("orrery_"):
+		if region_id == "orrery_r1" and st != null and not bool(st.story_flags.get("isl5_dungeon_entered", false)):
+			st.story_flags["isl5_dungeon_entered"] = true
+			_emit_narration("DUNGEON_5_NAME", "title", 3.5)
+		elif region_id == "orrery_r3":
+			_r3_kills = 0
+		elif region_id == "orrery_r8":
+			_r8_kills = 0
+		if _events != null:
+			_events.music_mode_requested.emit("island5_dungeon")
 
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	if _events == null:
 		return
 	if shrine_id == "shrine_lens" or move_id == "lens":
+		_events.prompt_requested.emit("PROMPT_LENS", "", 6.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 		_emit_narration("CUE_SHRINE_CLAIMED", "title", 3.0)
 

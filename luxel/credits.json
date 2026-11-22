@@ -88,6 +88,96 @@
         "luxel/audio/ambience/night_breeze.ogg",
         "luxel/audio/ambience/river_murmur.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_ost_islands234",
+      "description": "Original Lantern Gothic soundtrack suites for Islands 2, 3, and 4 (Tidewater Harbor 132 BPM 6/8 D dorian/harmonic minor, Thornwood Hollow 126 BPM D natural/harmonic minor, Mirefen Gardens 120 BPM D melodic minor) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "compose_islands234.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/music/island2_explore.ogg",
+        "luxel/audio/music/island2_combat.ogg",
+        "luxel/audio/music/island2_dungeon.ogg",
+        "luxel/audio/music/island2_boss_p1.ogg",
+        "luxel/audio/music/island2_boss_p2.ogg",
+        "luxel/audio/music/island3_explore.ogg",
+        "luxel/audio/music/island3_combat.ogg",
+        "luxel/audio/music/island3_dungeon.ogg",
+        "luxel/audio/music/island3_boss_p1.ogg",
+        "luxel/audio/music/island3_boss_p2.ogg",
+        "luxel/audio/music/island4_explore.ogg",
+        "luxel/audio/music/island4_combat.ogg",
+        "luxel/audio/music/island4_dungeon.ogg",
+        "luxel/audio/music/island4_boss_p1.ogg",
+        "luxel/audio/music/island4_boss_p2.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_sfx_ambience_m345",
+      "description": "Original D-harmonic-minor move & enemy sound effects (8 cues) and Islands 2-4 seamless stereo ambience loops (3 cues) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "gen_sfx_m345.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/prism_bounce.ogg",
+        "luxel/audio/sfx/beam_charge.ogg",
+        "luxel/audio/sfx/beam_fire.ogg",
+        "luxel/audio/sfx/wings_glide.ogg",
+        "luxel/audio/sfx/tide_wave.ogg",
+        "luxel/audio/sfx/spore_pop.ogg",
+        "luxel/audio/sfx/web_burn.ogg",
+        "luxel/audio/sfx/gust_whoosh.ogg",
+        "luxel/audio/ambience/harbor_tide.ogg",
+        "luxel/audio/ambience/forest_wind.ogg",
+        "luxel/audio/ambience/marsh_rain.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_ost_islands5678_credits",
+      "description": "Original Lantern Gothic soundtrack suites for Islands 5, 6, 7, 8 and Credits (Starfall Observatory 138 BPM D phrygian dominant/harmonic minor, Ashen Kiln 148 BPM D phrygian/harmonic minor, Moon Shoals 144 BPM D harmonic minor inverted leitmotif, The Long Night 152 BPM D phrygian to D major finale, and Credits 120 BPM D major) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "compose_islands5678.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/music/island5_explore.ogg",
+        "luxel/audio/music/island5_combat.ogg",
+        "luxel/audio/music/island5_dungeon.ogg",
+        "luxel/audio/music/island5_boss_p1.ogg",
+        "luxel/audio/music/island5_boss_p2.ogg",
+        "luxel/audio/music/island6_explore.ogg",
+        "luxel/audio/music/island6_combat.ogg",
+        "luxel/audio/music/island6_dungeon.ogg",
+        "luxel/audio/music/island6_boss_p1.ogg",
+        "luxel/audio/music/island6_boss_p2.ogg",
+        "luxel/audio/music/island7_explore.ogg",
+        "luxel/audio/music/island7_combat.ogg",
+        "luxel/audio/music/island7_dungeon.ogg",
+        "luxel/audio/music/island7_boss_p1.ogg",
+        "luxel/audio/music/island7_boss_p2.ogg",
+        "luxel/audio/music/island8_explore.ogg",
+        "luxel/audio/music/island8_combat.ogg",
+        "luxel/audio/music/island8_dungeon.ogg",
+        "luxel/audio/music/island8_boss_p1.ogg",
+        "luxel/audio/music/island8_boss_p2.ogg",
+        "luxel/audio/music/credits.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_sfx_ambience_m6789",
+      "description": "Original move, boss, and finale sound effects (7 cues) and Islands 5-8 seamless stereo ambience loops (4 cues) synthesized deterministically in Python and encoded to Ogg Vorbis q5",
+      "generator": "gen_sfx_m6789.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/lens_reveal.ogg",
+        "luxel/audio/sfx/sunflare_burst.ogg",
+        "luxel/audio/sfx/seal_shatter_heavy.ogg",
+        "luxel/audio/sfx/hollow_dash.ogg",
+        "luxel/audio/sfx/hush_pulse.ogg",
+        "luxel/audio/sfx/display_sell.ogg",
+        "luxel/audio/sfx/dawn_burst.ogg",
+        "luxel/audio/ambience/observatory_chime.ogg",
+        "luxel/audio/ambience/kiln_rumble.ogg",
+        "luxel/audio/ambience/shoals_echo.ogg",
+        "luxel/audio/ambience/long_night_drone.ogg"
+      ]
     }
   ],
   "third_party_audio": []
