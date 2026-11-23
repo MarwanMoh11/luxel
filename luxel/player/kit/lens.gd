@@ -120,6 +120,8 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 		canvas.draw_arc(center, inner_r, b0, b0 + inner_span, 5, Color(LxWick.PAL_SKY, 0.15 * shim), 1.0)
 	var isl_l: int = Lx.state.island_id if Lx.state != null else 1
 	var b_glow: Color = LxBiomePalette.col(isl_l, "glow")
+	var relit_l: bool = Lx.state != null and Lx.state.relit_islands.has(isl_l)
+	var harm_l: bool = Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % isl_l, false))
 	for j: int in range(4):
 		var pang: float = rot + (float(j) * 2.0 + 0.78) * seg_step
 		var pip: Vector2 = (center + Vector2.from_angle(pang) * last_radius).round()
@@ -128,7 +130,11 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 		canvas.draw_rect(Rect2(pip, Vector2(1.0, 1.0)), Color(pcol, tw))
 		var inner_pip: Vector2 = (center + Vector2.from_angle(pang) * inner_r).round()
 		canvas.draw_rect(Rect2(inner_pip, Vector2(1.0, 1.0)), Color(LxWick.PAL_SKY, tw * 0.45))
-	_draw_hidden_biome_runes(canvas, off, isl_l, b_glow, rot, flash_red)
+		var cdir: Vector2 = Vector2.from_angle(float(j) * (PI * 0.5))
+		var ct0: Vector2 = (center + cdir * (last_radius - 2.0)).round()
+		var ct1: Vector2 = (center + cdir * (last_radius + 1.5)).round()
+		canvas.draw_line(ct0, ct1, Color(LxWick.PAL_GOLD if (relit_l or harm_l) else b_glow, 0.42), 1.0)
+	_draw_hidden_biome_runes(canvas, off, isl_l, LxWick.PAL_GOLD if (relit_l or harm_l) else b_glow, rot, flash_red)
 
 
 func _draw_hidden_biome_runes(canvas: CanvasItem, off: Vector2, isl: int, b_glow: Color, rot: float, flash_red: bool) -> void:

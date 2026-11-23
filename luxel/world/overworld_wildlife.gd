@@ -19,6 +19,7 @@ const HALF_H: float = 124.0
 var _island_id: int = 1
 var _active: bool = false
 var _clock: float = 0.0
+var _wick_still_t: float = 0.0
 var _cam_center: Vector2 = Vector2.ZERO
 var _bounds: Rect2 = Rect2()
 var _critters: Array[Dictionary] = []
@@ -33,6 +34,7 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_island_id = rules.island_id if rules != null else 1
 	_active = rules != null and not rules.is_dungeon
 	_clock = 0.0
+	_wick_still_t = 0.0
 	_bounds = rules.bounds if rules != null else Rect2()
 	_cam_center = _bounds.get_center()
 	_critters.clear()
@@ -92,11 +94,20 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		if not w.dead:
 			wp = w.global_position
 			w_fast = w.is_dashing() or w.is_gliding() or w.velocity.length_squared() > 1600.0
+			if not w_fast and w.velocity.length_squared() < 16.0:
+				_wick_still_t = minf(3.0, _wick_still_t + dt)
+			else:
+				_wick_still_t = 0.0
 			if w.lantern != null and is_instance_valid(w.lantern) and w.lantern.is_out():
 				lp = w.lantern.pos
+		else:
+			_wick_still_t = 0.0
+	else:
+		_wick_still_t = 0.0
 	var relit_t: bool = Lx.state != null and Lx.state.relit_islands.has(_island_id)
 	var harm_t: bool = Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % _island_id, false))
 	var friendly: bool = relit_t or harm_t
+	var cozy_gather: bool = friendly and _wick_still_t >= 1.1 and lp.x < -9000.0 and wp.x > -9000.0
 
 	var any_vis: bool = false
 	for c: Dictionary in _critters:
@@ -107,7 +118,7 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		var ft: float = float(c["flee_t"])
 		var d2: float = p.distance_squared_to(wp)
 		var scare_r2: float = 2500.0 if w_fast else 1296.0
-		if ft <= 0.0 and d2 < scare_r2:
+		if ft <= 0.0 and d2 < scare_r2 and not cozy_gather:
 			if friendly and not w_fast:
 				# Saved/Harmony islands: native wildlife trusts Wick's light & swirls in a joyful greeting arc!
 				ft = 1.25
@@ -138,16 +149,22 @@ func tick(dt: float, cam_center: Vector2) -> void:
 			var home: Vector2 = c["home"] as Vector2
 			var ph: float = float(c["phase"])
 			var goal: Vector2 = home + _idle_offset(ph)
-			# Curious flying/glowing critters gently flutter near Wick's hung lantern!
-			if lp.x > -9000.0 and _island_id in [1, 4, 5, 7, 8] and p.distance_squared_to(lp) < 5776.0:
+			# Curious flying/glowing critters gently flutter near Wick's hung lantern, or gather peacefully around a paused Wick on saved islands!
+			var near_lp: bool = lp.x > -9000.0 and _island_id in [1, 4, 5, 7, 8] and p.distance_squared_to(lp) < 5776.0
+			var near_cozy: bool = cozy_gather and d2 < 6400.0
+			if near_lp:
 				var orbit_a: float = _clock * 2.2 + ph
 				goal = lp + Vector2(cos(orbit_a) * 14.0, sin(orbit_a) * 9.0)
+			elif near_cozy:
+				var orbit_w: float = _clock * 1.7 + ph
+				goal = wp + Vector2(cos(orbit_w) * 17.0, sin(orbit_w) * 10.5 - 3.0)
 			var delta: Vector2 = goal - p
 			if delta.length_squared() > 1.0:
-				p += delta.limit_length(22.0 * dt if (lp.x > -9000.0 and p.distance_squared_to(lp) < 5776.0) else 18.0 * dt)
+				var step_spd: float = 22.0 if (near_lp or near_cozy) else 18.0
+				p += delta.limit_length(step_spd * dt)
 				if absf(delta.x) > 1.5:
 					c["dir"] = 1.0 if delta.x >= 0.0 else -1.0
-			c["hop"] = 0.0
+			c["hop"] = sin(_clock * 8.0 + ph) * 1.5 if near_cozy else 0.0
 		c["pos"] = p
 	if any_vis:
 		queue_redraw()
