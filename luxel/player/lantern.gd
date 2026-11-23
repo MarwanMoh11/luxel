@@ -399,6 +399,10 @@ func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: S
 			hang_timer = 0.6
 			return
 
+	# Biome mechanics, overworld setpieces, micro-discoveries, dungeon twists & boss/mini-boss sanctum features
+	if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
+		LxBiomeMechanics.active_instance.try_hit_biome_target(prev_pos, pos, move_dir, wick)
+
 	# Interactables (distant braziers, switches, bells)
 	var inters: Array = wick.world_get_interactables(world_ctx)
 	for it_var: Variant in inters:

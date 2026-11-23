@@ -102,7 +102,7 @@ func _fire_bolt() -> bool:
 	var br: LxBiomeRules = LxBiomeRules.active_instance
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	if br != null and is_instance_valid(br):
-		if br.island_id == 2 and br.is_dungeon and br.beam_buff_t > 0.0:
+		if br.island_id == 2 and br.beam_buff_t > 0.0:
 			b.damage *= 1.25
 			b.is_counter = true
 		elif br.island_id == 7 and br.lunar_phase > 0.65:
