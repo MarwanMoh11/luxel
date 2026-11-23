@@ -181,10 +181,14 @@ func _try_buy(i: int) -> void:
 
 
 func _draw() -> void:
-	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", "gold", "night")
-	_draw_frame_ornaments()
-	_draw_brazier_icon(Vector2(27.0, 16.0))
-	LxPixelFont.draw_left(self, LxStrings.text("SHOP_TITLE"), Vector2(38.0, 18.0), LxPalette.PAL["gold"], 1)
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
+	var bdr_k: String = LxBiomePalette.key(isl, "border")
+	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", bdr_k, "night")
+	_draw_frame_ornaments(isl)
+	_draw_brazier_icon(Vector2(27.0, 16.0), isl)
+	LxPixelFont.draw_left(self, LxStrings.text("SHOP_TITLE"), Vector2(38.0, 18.0), LxBiomePalette.col(isl, "glow"), 1)
+	var title_end: float = 38.0 + float(LxPixelFont.width(LxStrings.text("SHOP_TITLE"), 1)) + 8.0
+	LxHudFx.draw_biome_crest(self, isl, Vector2(title_end, 20.0), LxBiomePalette.col(isl, "glow"), LxPalette.PAL["cream"] as Color)
 	var shards: int = Lx.state.shards if Lx.state != null else 0
 	var shard_txt: String = LxStrings.fmt("SHOP_SHARDS_FMT", [shards])
 	var gem_x: float = 292.0 - float(LxPixelFont.width(shard_txt, 1)) - 10.0
@@ -249,14 +253,14 @@ func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 		LxPixelFont.draw_right(self, LxStrings.fmt("SHOP_COST_FMT", [cost]), r.end.x - 6.0, r.position.y + 4.0, c_col, 1)
 
 
-func _draw_frame_ornaments() -> void:
+func _draw_frame_ornaments(isl: int) -> void:
 	var p: Vector2 = PANEL_RECT.position
 	var e: Vector2 = PANEL_RECT.end
-	var gold: Color = LxPalette.PAL["gold"]
-	var apr: Color = LxPalette.PAL["apricot"]
+	var gold: Color = LxBiomePalette.col(isl, "glow")
+	var apr: Color = LxBiomePalette.col(isl, "hi")
 	var dusk: Color = LxPalette.PAL["dusk"]
 	var night: Color = LxPalette.PAL["night"]
-	# Corner brass rivets with shadow depth.
+	# Corner rivets with shadow depth.
 	for rv: Vector2 in [
 		Vector2(p.x + 3.0, p.y + 3.0), Vector2(e.x - 5.0, p.y + 3.0),
 		Vector2(p.x + 3.0, e.y - 5.0), Vector2(e.x - 5.0, e.y - 5.0),
@@ -264,7 +268,7 @@ func _draw_frame_ornaments() -> void:
 		draw_rect(Rect2(rv + Vector2(1.0, 1.0), Vector2(2.0, 2.0)), night)
 		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), apr)
 		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), gold)
-	# Brass filigree divider beneath header.
+	# Filigree divider beneath header.
 	var dy: float = 35.0
 	draw_rect(Rect2(28.0, dy, 264.0, 1.0), night)
 	draw_rect(Rect2(32.0, dy, 256.0, 1.0), dusk)
@@ -277,27 +281,31 @@ func _draw_frame_ornaments() -> void:
 	draw_rect(Rect2(160.0, dy, 1.0, 1.0), LxPalette.PAL["cream"])
 
 
-func _draw_brazier_icon(at: Vector2) -> void:
+func _draw_brazier_icon(at: Vector2, isl: int) -> void:
 	var x: float = roundf(at.x)
 	var y: float = roundf(at.y)
 	var fr: bool = LxHudFx.flash_reduced()
 	var tip: float = 0.0 if (fr or fmod(_elapsed * 5.2, 1.0) < 0.5) else 1.0
 	var flare: bool = _spark_t > 0.0
 	var bright: bool = fr or flare or fmod(_elapsed * 2.6, 1.0) < 0.55
+	var c_core: Color = LxBiomePalette.col(isl, "core")
+	var c_glow: Color = LxBiomePalette.col(isl, "glow")
+	var c_hi: Color = LxBiomePalette.col(isl, "hi")
+	var c_mid: Color = LxBiomePalette.col(isl, "mid")
 	if flare:
-		draw_rect(Rect2(x + 3.0, y - 2.0, 1.0, 2.0), LxPalette.PAL["cream"])
-		draw_rect(Rect2(x + 2.0, y - 1.0, 3.0, 2.0), LxPalette.PAL["gold"])
-		draw_rect(Rect2(x + 1.0, y - 2.0, 1.0, 1.0), LxPalette.PAL["gold"])
-		draw_rect(Rect2(x + 5.0, y - 2.0, 1.0, 1.0), LxPalette.PAL["cream"])
-	draw_rect(Rect2(x + 2.0 + tip, y, 1.0, 1.0), LxPalette.PAL["cream"] if bright else LxPalette.PAL["gold"])
-	draw_rect(Rect2(x + 2.0, y + 1.0, 3.0, 2.0), LxPalette.PAL["gold"])
-	draw_rect(Rect2(x + 3.0, y + 1.0, 1.0, 2.0), LxPalette.PAL["cream"])
-	draw_rect(Rect2(x + 1.0, y + 2.0, 5.0, 2.0), LxPalette.PAL["apricot"])
-	draw_rect(Rect2(x + 2.0, y + 2.0, 3.0, 2.0), LxPalette.PAL["gold"])
-	draw_rect(Rect2(x + 3.0, y + 3.0, 1.0, 1.0), LxPalette.PAL["cream"])
-	# Brazier brass bowl & pedestal.
-	draw_rect(Rect2(x, y + 4.0, 7.0, 1.0), LxPalette.PAL["coral"])
-	draw_rect(Rect2(x + 1.0, y + 5.0, 5.0, 1.0), LxPalette.PAL["apricot"])
+		draw_rect(Rect2(x + 3.0, y - 2.0, 1.0, 2.0), c_core)
+		draw_rect(Rect2(x + 2.0, y - 1.0, 3.0, 2.0), c_glow)
+		draw_rect(Rect2(x + 1.0, y - 2.0, 1.0, 1.0), c_glow)
+		draw_rect(Rect2(x + 5.0, y - 2.0, 1.0, 1.0), c_core)
+	draw_rect(Rect2(x + 2.0 + tip, y, 1.0, 1.0), c_core if bright else c_glow)
+	draw_rect(Rect2(x + 2.0, y + 1.0, 3.0, 2.0), c_glow)
+	draw_rect(Rect2(x + 3.0, y + 1.0, 1.0, 2.0), c_core)
+	draw_rect(Rect2(x + 1.0, y + 2.0, 5.0, 2.0), c_hi)
+	draw_rect(Rect2(x + 2.0, y + 2.0, 3.0, 2.0), c_glow)
+	draw_rect(Rect2(x + 3.0, y + 3.0, 1.0, 1.0), c_core)
+	# Brazier bowl & pedestal.
+	draw_rect(Rect2(x, y + 4.0, 7.0, 1.0), c_mid)
+	draw_rect(Rect2(x + 1.0, y + 5.0, 5.0, 1.0), c_hi)
 	draw_rect(Rect2(x + 2.0, y + 6.0, 3.0, 1.0), LxPalette.PAL["dusk"])
 	draw_rect(Rect2(x + 1.0, y + 7.0, 5.0, 1.0), LxPalette.PAL["night"])
 

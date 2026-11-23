@@ -62,28 +62,30 @@ func _draw() -> void:
 		_draw_hearth_embers()
 	if _heal_t > 0.0:
 		var p: float = 1.0 - clampf(_heal_t / 0.48, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -8.0), roundf(6.0 + p * 24.0), 0.0, TAU, 20, PAL["cream"] if p < 0.35 else PAL["gold"], 1.0)
+		var c_hi: Color = LxBiomePalette.col(island_id, "core")
+		var c_gl: Color = LxBiomePalette.col(island_id, "glow")
+		draw_arc(Vector2(0.0, -8.0), roundf(6.0 + p * 24.0), 0.0, TAU, 20, c_hi if p < 0.35 else c_gl, 1.0)
 		for j: int in range(6):
 			var a: float = float(j) * TAU / 6.0 + p * 0.8
 			var sp := Vector2(roundf(cos(a) * (5.0 + p * 18.0)), roundf(-10.0 + sin(a) * (2.0 + p * 7.0) - p * 10.0))
-			draw_rect(Rect2(sp, Vector2.ONE), PAL["cream"] if j % 2 == 0 else PAL["gold"])
+			draw_rect(Rect2(sp, Vector2.ONE), c_hi if j % 2 == 0 else c_gl)
 
 
 func _draw_fallback() -> void:
 	draw_rect(Rect2(-10.0, -4.0, 20.0, 8.0), PAL["night"] as Color)
 	draw_rect(Rect2(-9.0, -6.0, 18.0, 8.0), PAL["mauve"] as Color)
 	draw_rect(Rect2(-6.0, -16.0, 12.0, 12.0), PAL["stone"] as Color)
-	draw_circle(Vector2(0.0, -12.0), 4.0, PAL["apricot"] as Color)
-	draw_circle(Vector2(0.0, -12.0), 2.5, PAL["gold"] as Color)
-	draw_circle(Vector2(0.0, -12.0), 1.2, PAL["cream"] as Color)
+	draw_circle(Vector2(0.0, -12.0), 4.0, LxBiomePalette.col(island_id, "hi"))
+	draw_circle(Vector2(0.0, -12.0), 2.5, LxBiomePalette.col(island_id, "glow"))
+	draw_circle(Vector2(0.0, -12.0), 1.2, LxBiomePalette.col(island_id, "core"))
 
 
 func _draw_hearth_ring() -> void:
 	var breath: float = sin(_clock * 2.2) * 1.4
 	var rx: float = 19.0 + breath
 	var ry: float = 5.2 + breath * 0.3
-	var c_gold: Color = PAL["gold"] as Color
-	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = LxBiomePalette.col(island_id, "glow")
+	var c_apr: Color = LxBiomePalette.col(island_id, "hi")
 	for i: int in range(4):
 		var a: float = _clock * 0.45 + (TAU * float(i)) / 4.0
 		var px: float = roundf(cos(a) * rx)
@@ -92,9 +94,9 @@ func _draw_hearth_ring() -> void:
 
 
 func _draw_hearth_embers() -> void:
-	var c_cream: Color = PAL["cream"] as Color
-	var c_gold: Color = PAL["gold"] as Color
-	var c_apr: Color = PAL["apricot"] as Color
+	var c_cream: Color = LxBiomePalette.col(island_id, "core")
+	var c_gold: Color = LxBiomePalette.col(island_id, "glow")
+	var c_apr: Color = LxBiomePalette.col(island_id, "hi")
 	for i: int in range(3):
 		var t: float = fmod(_clock * 0.46 + float(i) * 0.33, 1.0)
 		var px: float = roundf(sin(_clock * 1.6 + float(i) * 2.1) * (2.5 + t * 3.0))

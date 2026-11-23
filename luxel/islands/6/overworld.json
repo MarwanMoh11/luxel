@@ -713,8 +713,8 @@
       "sheet": "island6_scenery",
       "prop": "crucible_floor_seal",
       "pos": [
-        824,
-        392
+        1208,
+        296
       ],
       "layer": "ground",
       "flip_x": false,
