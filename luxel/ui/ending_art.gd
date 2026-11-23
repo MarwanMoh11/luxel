@@ -249,13 +249,26 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 	var base_k: String = LxBiomePalette.key(isl_id, "dark")
 	var rim_k: String = LxBiomePalette.key(isl_id, "mid")
 	match isl_id:
+		1: # Bell Isle: rounded sanctuary hill + eastern ford glint
+			_px(ci, [[-12, 0, 24, 3], [-9, 3, 18, 2], [-5, 5, 10, 1]], base_k, x, y)
+			_px(ci, [[-10, -2, 20, 3], [-6, -4, 12, 2]], "night", x, y)
+			ci.draw_rect(Rect2(x - 6.0, y - 4.0, 12.0, 1.0), LxPalette.PAL[rim_k])
+			_px(ci, [[7, 0, 2, 3]], "sky", x, y)
 		2: # 4-islet Harbor piers
 			_px(ci, [[-13, 0, 5, 3], [-6, 0, 5, 3], [1, 0, 5, 3], [8, 0, 5, 3]], base_k, x, y)
 			_px(ci, [[-11, -1, 22, 1]], rim_k, x, y)
+		3: # Thornwood Hollow: terraced emerald forest tiers
+			_px(ci, [[-11, 0, 22, 3], [-8, 3, 16, 2]], "pine", x, y)
+			_px(ci, [[-9, -2, 18, 2], [-6, -4, 12, 2]], "teal", x, y)
+			_px(ci, [[-5, -5, 10, 1]], "jade", x, y)
 		4: # Glasshouse lagoon ring
 			_px(ci, [[-12, 0, 24, 3], [-8, 3, 16, 2]], base_k, x, y)
 			_px(ci, [[-10, -2, 20, 2]], rim_k, x, y)
 			_px(ci, [[-5, -1, 10, 1]], "sky", x, y)
+		5: # Starfall Observatory: ringed astrolabe terrace
+			_px(ci, [[-12, 0, 24, 3], [-9, 3, 18, 2]], "deep", x, y)
+			_px(ci, [[-10, -1, 5, 2], [5, -1, 5, 2], [-4, -3, 8, 3]], "blue", x, y)
+			_px(ci, [[-5, 0, 10, 1]], "gold", x, y)
 		6: # Lava-split volcanic caldera
 			_px(ci, [[-12, 0, 10, 3], [2, 0, 10, 3], [-9, 3, 18, 2]], "night", x, y)
 			_px(ci, [[-2, -1, 4, 4]], "coral", x, y)
@@ -263,10 +276,10 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 		7: # Twin silver crescent shoals
 			_px(ci, [[-12, 0, 8, 3], [4, 0, 8, 3], [-8, 3, 16, 2]], "deep", x, y)
 			_px(ci, [[-11, -2, 7, 2], [4, -2, 7, 2]], "sky", x, y)
-		_:
-			_px(ci, [[-12, 0, 24, 3], [-9, 3, 18, 2], [-5, 5, 10, 1]], base_k, x, y)
-			_px(ci, [[-10, -2, 20, 3], [-6, -4, 12, 2]], "night", x, y)
-			ci.draw_rect(Rect2(x - 6.0, y - 4.0, 12.0, 1.0), LxPalette.PAL[rim_k])
+		_: # The Long Night: stepped obsidian cathedral causeway
+			_px(ci, [[-11, 1, 22, 3], [-8, -1, 16, 2], [-5, -3, 10, 2]], "night", x, y)
+			_px(ci, [[-2, -3, 4, 5]], "plum", x, y)
+			_px(ci, [[-1, -3, 2, 5]], "gold", x, y)
 	var lm: Array = ISLAND_LANDMARKS[clampi(idx, 0, ISLAND_LANDMARKS.size() - 1)]
 	_px(ci, lm[1] as Array, str(lm[0]), x, y)
 	_px(ci, lm[3] as Array, str(lm[2]), x, y)

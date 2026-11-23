@@ -167,8 +167,11 @@ void fragment() {
 			out_col = mix(out_col, mix(out_col, col_sky, 0.45) + col_gold * 0.05, clamp(shaft_a, 0.0, 0.14));
 		}
 
-		// Distinct per-island atmospheric shader signature (coastal mist, forest canopy, lagoon caustics, kiln glow, lunar sheen, eclipse corona)
-		if (biome_id == 2 && shadow_amt > 0.06) {
+		// Distinct per-island atmospheric shader signature (bell shimmer, coastal mist, forest canopy, lagoon caustics, astral grid, kiln glow, lunar sheen, eclipse corona)
+		if (biome_id == 1 && shadow_amt > 0.06) {
+			float chime_w = pow(max(0.0, sin((screen_px.x * 0.03 + screen_px.y * 0.04) - shader_clock * 0.45)), 6.0);
+			out_col = mix(out_col, col_apricot * 0.55 + col_gold * 0.45, chime_w * shadow_amt * 0.07);
+		} else if (biome_id == 2 && shadow_amt > 0.06) {
 			float mist = pow(max(0.0, sin((screen_px.y * 0.08) + sin(screen_px.x * 0.03 + shader_clock * 0.7))), 4.0);
 			out_col = mix(out_col, col_sky, mist * shadow_amt * (0.09 + 0.06 * biome_phase));
 		} else if (biome_id == 3 && shadow_amt > 0.06) {
