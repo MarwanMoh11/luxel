@@ -321,6 +321,7 @@ func _draw() -> void:
 		var ea: float = (1.0 - eu) * (0.28 if fred else 0.46)
 		draw_arc(_center.round(), er, 0.0, TAU, 24, Color(LxBiomePalette.col(_island_id, "glow"), ea), 1.4)
 		draw_arc(_center.round(), roundf(er * 0.72), 0.0, TAU, 18, Color(PAL["cream"] as Color, ea * 0.75), 1.0)
+	_draw_chamber_architecture(fred)
 	if _room_idx in [1, 5, 9] or (_island_id == 1 and _room_idx == 6):
 		_draw_architectural_medallion(fred)
 	match _island_id:
@@ -433,3 +434,122 @@ func _draw_architectural_medallion(fred: bool) -> void:
 		var p1: Vector2 = (c + Vector2.from_angle(ang) * (rad - 2.0)).round()
 		draw_line(p0, p1, Color(c_hi if k % 2 == 0 else c_mid, a * 0.9), 1.0)
 	LxHudFx.draw_biome_crest(self, _island_id, c, Color(c_hi, a * 1.4), Color(PAL["cream"] as Color, a * 1.2))
+
+
+func _draw_chamber_architecture(fred: bool) -> void:
+	# Bespoke architectural floor & gallery craftsmanship unique to each of the 8 dungeons (73 chambers total)
+	var x0: float = _bounds.position.x + 18.0
+	var y0: float = _bounds.position.y + 18.0
+	var x1: float = _bounds.end.x - 18.0
+	var y1: float = _bounds.end.y - 18.0
+	if x1 - x0 < 64.0 or y1 - y0 < 48.0:
+		return
+	var c: Vector2 = _center.round()
+	var a: float = 0.16 if fred else 0.26
+	var corners: Array[Vector2] = [
+		Vector2(x0 + 10.0, y0 + 10.0).round(), Vector2(x1 - 10.0, y0 + 10.0).round(),
+		Vector2(x0 + 10.0, y1 - 10.0).round(), Vector2(x1 - 10.0, y1 - 10.0).round(),
+	]
+	match _island_id:
+		1: # Great Belfry: warm choir-corner stone arches, acoustic nave floor grooves & gently swaying bell-rope shadows
+			var arch_col := Color(PAL["apricot"] as Color, a * 1.15)
+			var groove_col := Color(PAL["gold"] as Color, a * 0.72)
+			draw_arc(corners[0], 14.0, 0.0, PI * 0.5, 8, arch_col, 1.2)
+			draw_arc(corners[1], 14.0, PI * 0.5, PI, 8, arch_col, 1.2)
+			draw_arc(corners[2], 14.0, -PI * 0.5, 0.0, 8, arch_col, 1.2)
+			draw_arc(corners[3], 14.0, PI, PI * 1.5, 8, arch_col, 1.2)
+			draw_line(Vector2(x0 + 26.0, c.y - 26.0).round(), Vector2(x1 - 26.0, c.y - 26.0).round(), groove_col, 1.0)
+			draw_line(Vector2(x0 + 26.0, c.y + 26.0).round(), Vector2(x1 - 26.0, c.y + 26.0).round(), groove_col, 1.0)
+			var sway: float = roundf(sin(_clock * 1.2 + float(_room_idx)) * 3.0)
+			for side: float in [-1.0, 1.0]:
+				var rx: float = roundf(c.x + side * minf(56.0, (x1 - x0) * 0.28))
+				draw_line(Vector2(rx, y0), Vector2(rx + sway, y0 + 18.0), Color(PAL["stone"] as Color, a * 0.9), 1.0)
+				draw_rect(Rect2(Vector2(rx + sway - 1.0, y0 + 17.0), Vector2(3.0, 2.0)), Color(PAL["gold"] as Color, a * 1.2))
+		2: # The Lighthouse: curved gallery railings, lapping waterline tide-marks & brass cardinal compass pips
+			var rail_col := Color(PAL["sky"] as Color, a * 1.1)
+			var foam_col := Color(PAL["ice"] as Color, a * (0.75 + 0.25 * sin(_clock * 1.8)))
+			draw_arc(corners[0], 18.0, 0.0, PI * 0.5, 10, rail_col, 1.2)
+			draw_arc(corners[1], 18.0, PI * 0.5, PI, 10, rail_col, 1.2)
+			draw_arc(corners[2], 18.0, -PI * 0.5, 0.0, 10, rail_col, 1.2)
+			draw_arc(corners[3], 18.0, PI, PI * 1.5, 10, rail_col, 1.2)
+			var lap: float = roundf(sin(_clock * 1.5 + float(_room_idx)) * 2.0)
+			draw_line(Vector2(x0 + 24.0, y0 + 3.0 + lap).round(), Vector2(x1 - 24.0, y0 + 3.0 + lap).round(), foam_col, 1.0)
+			draw_line(Vector2(x0 + 24.0, y1 - 3.0 - lap).round(), Vector2(x1 - 24.0, y1 - 3.0 - lap).round(), foam_col, 1.0)
+			for dir2: Vector2 in [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]:
+				var pip: Vector2 = (c + Vector2(dir2.x * minf(68.0, (x1 - x0) * 0.36), dir2.y * minf(42.0, (y1 - y0) * 0.36))).round()
+				draw_line(pip - dir2 * 3.0, pip + dir2 * 3.0, Color(PAL["gold"] as Color, a * 1.3), 1.2)
+		3: # Hollow Oak: organic creeping pine/jade Heartwood root-tendrils with softly pulsing lime dew-drops
+			var pulse3: float = 0.65 + 0.35 * sin(_clock * 2.0 + float(_room_idx))
+			for idx3: int in range(4):
+				var cp3: Vector2 = corners[idx3]
+				var inward: Vector2 = (c - cp3).normalized()
+				var perp: Vector2 = Vector2(-inward.y, inward.x)
+				var mid3: Vector2 = (cp3 + inward * 14.0 + perp * (4.0 if idx3 % 2 == 0 else -4.0)).round()
+				var tip3: Vector2 = (cp3 + inward * 26.0 - perp * (2.0 if idx3 % 2 == 0 else -2.0)).round()
+				draw_line(cp3, mid3, Color(PAL["pine"] as Color, a * 1.5), 2.0)
+				draw_line(mid3, tip3, Color(PAL["jade"] as Color, a * 1.3), 1.2)
+				draw_rect(Rect2(tip3 - Vector2.ONE, Vector2(2.0, 2.0)), Color(PAL["lime"] as Color, a * 1.7 * pulse3))
+		4: # Sunken Conservatory: wrought-iron glasshouse vault ribs & jewel stained-glass corner diamond transoms
+			var rib_col := Color(PAL["teal"] as Color, a * 1.35)
+			var glass_cols: Array[Color] = [PAL["rose"] as Color, PAL["ice"] as Color, PAL["gold"] as Color, PAL["sky"] as Color]
+			for idx4: int in range(4):
+				var cp4: Vector2 = corners[idx4]
+				var inward4: Vector2 = (c - cp4).normalized()
+				var anchor4: Vector2 = (cp4 + inward4 * 12.0).round()
+				draw_line(cp4, (cp4 + inward4 * 24.0).round(), rib_col, 1.2)
+				var dia := PackedVector2Array([
+					anchor4 + Vector2(0.0, -5.0), anchor4 + Vector2(5.0, 0.0),
+					anchor4 + Vector2(0.0, 5.0), anchor4 + Vector2(-5.0, 0.0),
+				])
+				draw_colored_polygon(dia, Color(glass_cols[(idx4 + _room_idx) % 4], a * 0.95))
+				draw_polyline(PackedVector2Array([dia[0], dia[1], dia[2], dia[3], dia[0]]), Color(PAL["ice"] as Color, a * 1.15), 1.0)
+		5: # Grand Orrery: etched golden zodiac meridian axes, perimeter degree ticks & tiny turning corner gears
+			var brass := Color(PAL["gold"] as Color, a * 1.1)
+			draw_line(Vector2(x0 + 18.0, c.y).round(), Vector2(x1 - 18.0, c.y).round(), Color(PAL["blue"] as Color, a * 0.95), 1.0)
+			draw_line(Vector2(c.x, y0 + 12.0).round(), Vector2(c.x, y1 - 12.0).round(), Color(PAL["blue"] as Color, a * 0.95), 1.0)
+			var step5: float = maxf(24.0, (x1 - x0) / 8.0)
+			var tx5: float = x0 + 24.0
+			while tx5 <= x1 - 24.0:
+				draw_line(Vector2(roundf(tx5), y0 + 2.0), Vector2(roundf(tx5), y0 + 6.0), brass, 1.0)
+				draw_line(Vector2(roundf(tx5), y1 - 6.0), Vector2(roundf(tx5), y1 - 2.0), brass, 1.0)
+				tx5 += step5
+			for idx5: int in range(4):
+				var gp5: Vector2 = corners[idx5]
+				var rot5: float = _clock * (0.45 if idx5 % 2 == 0 else -0.45)
+				draw_arc(gp5, 6.0, 0.0, TAU, 10, brass, 1.0)
+				for tooth: int in range(4):
+					var ta: float = rot5 + float(tooth) * (PI * 0.5)
+					draw_line((gp5 + Vector2.from_angle(ta) * 5.0).round(), (gp5 + Vector2.from_angle(ta) * 8.0).round(), brass, 1.0)
+		6: # Great Kiln: smelter corner floor-grates glowing wine -> coral -> gold in rhythm with the furnace gust
+			var gust6: bool = fposmod(_clock, 6.0) >= 4.4
+			var heat6: float = (0.72 if gust6 else 0.35 + 0.25 * sin(_clock * 2.4)) * (0.65 if fred else 1.0)
+			var ember6: Color = (PAL["gold"] if gust6 else PAL["coral"]) as Color
+			for cp6: Vector2 in corners:
+				var gr := Rect2((cp6 - Vector2(8.0, 6.0)).round(), Vector2(16.0, 12.0))
+				draw_rect(gr, Color(PAL["wine"] as Color, a * 1.25))
+				draw_rect(gr, Color(PAL["dusk"] as Color, a * 1.4), false, 1.0)
+				for slat: int in range(3):
+					var sy6: float = gr.position.y + 3.0 + float(slat) * 3.0
+					draw_line(Vector2(gr.position.x + 2.0, sy6), Vector2(gr.end.x - 2.0, sy6), Color(ember6, heat6 * (a * 2.2)), 1.0)
+		7: # Moon Spire: north/south silver mirror-gallery strips shimmering with lunar_phase + twin crescent glyphs
+			var lp7: float = clampf(_rules.lunar_phase, 0.15, 1.0)
+			var sheen7: float = a * (0.8 + 0.9 * lp7)
+			var strip_w: float = minf(96.0, (x1 - x0) * 0.44)
+			for sy7: float in [y0 + 6.0, y1 - 8.0]:
+				var mr := Rect2(Vector2(roundf(c.x - strip_w * 0.5), roundf(sy7)), Vector2(roundf(strip_w), 3.0))
+				draw_rect(mr, Color(PAL["deep"] as Color, a * 1.3))
+				draw_line(mr.position + Vector2(2.0, 1.0), Vector2(mr.end.x - 2.0, mr.position.y + 1.0), Color(PAL["ice"] as Color, sheen7), 1.0)
+			for idx7: int in range(4):
+				var cp7: Vector2 = corners[idx7]
+				draw_arc(cp7, 6.0, -PI * 0.4, PI * 0.4, 8, Color(PAL["sky"] as Color, sheen7), 1.2)
+				draw_arc(cp7 + Vector2(2.0, 0.0), 4.0, -PI * 0.35, PI * 0.35, 6, Color(PAL["ice"] as Color, sheen7 * 0.9), 1.0)
+		8: # Bell Sanctum: gothic rose-window stone-and-plum tracery brightening rose -> gold -> cream as Wick nears r6
+			var prog8: float = clampf(float(_room_idx) / 6.0, 0.16, 1.0)
+			var frame_col := Color(PAL["plum"] as Color, a * 1.35)
+			var vein_col: Color = (PAL["cream"] if _room_idx >= 5 else (PAL["gold"] if _room_idx >= 3 else PAL["rose"])) as Color
+			draw_rect(Rect2(Vector2(x0 + 8.0, y0 + 8.0).round(), Vector2(x1 - x0 - 16.0, y1 - y0 - 16.0).round()), frame_col, false, 1.0)
+			for idx8: int in range(4):
+				var cp8: Vector2 = corners[idx8]
+				var inward8: Vector2 = (c - cp8).normalized()
+				draw_arc(cp8, 12.0, 0.0, TAU, 12, frame_col, 1.0)
+				draw_line(cp8, (cp8 + inward8 * (16.0 + 14.0 * prog8)).round(), Color(vein_col, a * (0.9 + 0.9 * prog8)), 1.2)
