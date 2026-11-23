@@ -211,6 +211,8 @@ func is_in_lighthouse_beam(world_pos: Vector2) -> bool:
 # --- Island 3: Cascading Forest Bloom-Lamp Canopy Wave + Dark-Foe Stun ---
 func on_bloom_ignited(origin: Vector2, allow_chain: bool = true) -> void:
 	_canopy_waves.append({"pos": origin, "age": 0.0, "dur": 0.45, "max_r": 110.0})
+	if _decals != null and is_instance_valid(_decals):
+		_decals.add_decal(LxGroundDecals.Kind.BLOSSOM, origin, 16.0, 7.0)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		LxDarknessLayer.active_instance.add_burst_light(origin, 96.0, 0.95 if LxHudFx.flash_reduced() else 1.35, 0.36)
 	if allow_chain and _rules != null:
@@ -299,6 +301,8 @@ func try_hit_biome_target(from_p: Vector2, to_p: Vector2, dir: Vector2, wick: Lx
 
 func _detonate_astral_nova(at: Vector2, dir: Vector2, wick: LxWick) -> void:
 	_nova_rings.append({"pos": at, "age": 0.0, "dur": 0.42, "max_r": 78.0})
+	if _decals != null and is_instance_valid(_decals):
+		_decals.add_decal(LxGroundDecals.Kind.PRISM_STAR, at, 18.0, 7.5)
 	if Lx.audio != null:
 		Lx.audio.play_sfx("prism_chain", at, true)
 	if Lx.events != null:

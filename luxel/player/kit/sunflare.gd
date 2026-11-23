@@ -148,6 +148,8 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 		var wfx: Variant = Lx.world.get("_water_fx")
 		if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
 			(wfx as Object).call("spawn_ripple", origin, "gold", 18.0)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, origin, rad * 0.48, 9.0)
 	var isl_sf: int = Lx.state.island_id if Lx.state != null else 1
 	wick.spawn_ring(origin, 4.0, rad, 0.36, LxWick.PAL_GOLD, 2.5)
 	wick.spawn_ring(origin, 2.0, rad * 0.82, 0.28, LxWick.PAL_CREAM, 2.0)

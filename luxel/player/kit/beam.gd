@@ -176,6 +176,10 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 						wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
 						wick.emit_sfx("beam_ready", wick.global_position, false)
 				wick.spawn_sparks(ipos, aim, 6, LxWick.PAL_GOLD, 30.0, 90.0, 0.22)
+	if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
+		LxBiomeMechanics.active_instance.try_hit_biome_target(start_p, end_p, aim, wick)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, end_p, 10.0, 5.0)
 
 	beam_start = start_p
 	beam_end = end_p
