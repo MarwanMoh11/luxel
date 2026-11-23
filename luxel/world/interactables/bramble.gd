@@ -44,6 +44,8 @@ func on_hit(hit: LxHit) -> bool:
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.14)
 		_emit_gust(maxf(size.x, size.y) + 28.0, 62.0)
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, pos, 12.0, 6.0)
 		_emit_sfx("bramble_burn")
 		_emit_save("bramble_" + id)
 		_notify_linked_targets(true)

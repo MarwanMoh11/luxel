@@ -54,6 +54,9 @@ func on_hit(hit: LxHit) -> bool:
 			Lx.events.shake_requested.emit(0.24)
 			Lx.events.hitstop_requested.emit(0.055)
 		_emit_gust(96.0, 92.0)
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.CRATER, pos, 16.0, 9.0)
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 15.0, 8.0)
 		_emit_sfx("seal_shatter")
 		_emit_save("seal_" + id)
 		_notify_linked_targets(true)

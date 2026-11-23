@@ -51,6 +51,8 @@ func on_hit(hit: LxHit) -> bool:
 			Lx.events.shake_requested.emit(0.16)
 			Lx.events.hitstop_requested.emit(0.045)
 		_emit_gust(maxf(size.x, size.y) + 34.0, 74.0)
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.CRATER, pos, 13.0, 7.0)
 		_emit_sfx("stone_break")
 		_emit_save("cracked_" + id)
 		_notify_linked_targets(true)

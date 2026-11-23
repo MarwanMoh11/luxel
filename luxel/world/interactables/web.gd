@@ -44,6 +44,8 @@ func on_hit(hit: LxHit) -> bool:
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.10)
 		_emit_gust(maxf(size.x, size.y) + 26.0, 56.0)
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, pos, 10.0, 5.0)
 		_emit_sfx("web_burn")
 		_emit_save("web_" + id)
 		_notify_linked_targets(true)

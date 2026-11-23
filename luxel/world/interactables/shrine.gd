@@ -143,6 +143,20 @@ func _move_accent_sfx() -> String:
 func _draw_move_emblem(c_main: Color, c_hi: Color) -> void:
 	var cy: float = -24.0 + roundf(sin(_clock * 2.6) * 1.5)
 	match move_id:
+		"dash": # Twin glowing flare-dash chevrons streaking right
+			var sx: float = roundf(sin(_clock * 4.5) * 2.0)
+			for ci: int in range(2):
+				var ox: float = sx + float(ci) * 5.0 - 3.0
+				var col: Color = c_hi if ci == 1 else c_main
+				draw_line(Vector2(ox - 2.0, cy - 3.0), Vector2(ox + 1.0, cy), col, 1.0)
+				draw_line(Vector2(ox - 2.0, cy + 3.0), Vector2(ox + 1.0, cy), col, 1.0)
+		"throw": # Tiny suspended brass lantern swaying gently above the shrine
+			var sw: float = roundf(sin(_clock * 3.0) * 1.5)
+			draw_rect(Rect2(sw - 1.0, cy - 4.0, 3.0, 1.0), c_main)
+			draw_rect(Rect2(sw - 2.0, cy - 3.0, 5.0, 5.0), c_main)
+			draw_rect(Rect2(sw - 1.0, cy - 2.0, 3.0, 3.0), c_hi)
+			draw_rect(Rect2(sw, cy - 1.0, 1.0, 1.0), PAL["cream"] as Color)
+			draw_rect(Rect2(sw - 1.0, cy + 2.0, 3.0, 1.0), c_main)
 		"prism": # Rotating 3-vertex diamond prism ring
 			for k: int in range(3):
 				var a: float = _clock * 2.2 + float(k) * (TAU / 3.0)
