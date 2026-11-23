@@ -86,18 +86,29 @@ func _trigger_overworld_arrival_ceremony() -> void:
 	var p: Vector2 = w.global_position
 	var k_glow: String = LxBiomePalette.key(_island_id, "glow")
 	var k_hi: String = LxBiomePalette.key(_island_id, "hi")
+	var relit_arr: bool = Lx.state != null and Lx.state.relit_islands.has(_island_id)
 	_ripples.append({"pos": p, "age": 0.0, "dur": 0.52, "r0": 4.0, "r1": 34.0, "col": k_glow})
 	_ripples.append({"pos": p, "age": 0.0, "dur": 0.44, "r0": 22.0, "r1": 4.0, "col": "cream"})
-	for k: int in range(8):
-		var ang: float = float(k) * (TAU / 8.0)
+	if relit_arr:
+		_ripples.append({"pos": p, "age": 0.0, "dur": 0.64, "r0": 6.0, "r1": 46.0, "col": "gold"})
+	for k: int in range(10):
+		var ang: float = float(k) * (TAU / 10.0) + float(_island_id) * 0.35
+		var spiral_r: float = 6.0 + float(k % 3) * 3.5
 		_trails.append({
-			"pos": p + Vector2(cos(ang) * 10.0, sin(ang) * 6.0),
-			"vel": Vector2(cos(ang) * 16.0, -22.0 + sin(ang) * 6.0),
-			"age": 0.0, "dur": 0.48,
+			"pos": p + Vector2(cos(ang) * spiral_r, sin(ang) * (spiral_r * 0.55)),
+			"vel": Vector2(cos(ang + 0.55) * 18.0, -24.0 + sin(ang) * 6.0),
+			"age": 0.0, "dur": 0.52,
 			"col": "cream" if k % 3 == 0 else (k_glow if k % 2 == 0 else k_hi),
 		})
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		var dk_a: int = LxGroundDecals.Kind.BLOSSOM
+		match _island_id:
+			2, 4: dk_a = LxGroundDecals.Kind.RIPPLE
+			5, 7: dk_a = LxGroundDecals.Kind.PRISM_STAR
+			6: dk_a = LxGroundDecals.Kind.SCORCH
+		LxGroundDecals.active_instance.add_decal(dk_a, p, 14.0, 5.5)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(p, 84.0, 0.72 if LxHudFx.flash_reduced() else 1.05, 0.48)
+		LxDarknessLayer.active_instance.add_burst_light(p, 92.0 if relit_arr else 84.0, 0.72 if LxHudFx.flash_reduced() else 1.08, 0.50)
 
 
 func tick(dt: float) -> void:

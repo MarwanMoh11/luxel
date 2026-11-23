@@ -143,6 +143,19 @@ func _draw_lit_aura() -> void:
 		draw_rect(Rect2(0.0, 1.0, 1.0, 1.0), wc[1])
 	var bob: float = 0.0 if fr else roundf(sin(_clock * 2.0) * 1.0)
 	LxHudFx.draw_biome_crest(self, island_id, Vector2(0.0, -24.0 + bob), wc[0], wc[1])
+	# Proximity Fast-Travel Compass Ring awakens softly when Wick stands near a lit Waystone
+	if Lx.player is Node2D and is_instance_valid(Lx.player):
+		var d_w: float = (Lx.player as Node2D).global_position.distance_to(pos)
+		if d_w <= 56.0:
+			var prox: float = clampf(1.0 - d_w / 56.0, 0.0, 1.0)
+			var c_spin: float = 0.0 if fr else _clock * 0.85
+			var ca: float = (0.34 if fr else 0.48) * prox
+			draw_arc(Vector2(0.0, 2.0), 16.0, c_spin, c_spin + PI * 0.72, 10, Color(wc[0], ca), 1.0)
+			draw_arc(Vector2(0.0, 2.0), 16.0, c_spin + PI, c_spin + PI * 1.72, 10, Color(wc[1], ca), 1.0)
+			for ci: int in range(4):
+				var ca_p: float = c_spin + float(ci) * (PI * 0.5)
+				var cp := Vector2(roundf(cos(ca_p) * 16.0), roundf(2.0 + sin(ca_p) * 6.0))
+				draw_rect(Rect2(cp, Vector2.ONE), Color(PAL["cream"] as Color if ci % 2 == 0 else wc[1], minf(0.9, ca * 1.6)))
 	var lanes: Array[float] = [-8.0, 7.0, -5.0]
 	for i: int in range(3):
 		var t: float = fmod(_clock * 0.42 + float(i) * 0.33, 1.0)
