@@ -515,3 +515,34 @@ func _draw_reticle() -> void:
 		for sp: Vector2 in [Vector2(-sd, 0.0), Vector2(sd, 0.0), Vector2(0.0, -sd), Vector2(0.0, sd)]:
 			_cursor_node.draw_rect(Rect2(pos + sp - Vector2.ONE, Vector2(3.0, 3.0)), outline)
 			_cursor_node.draw_rect(Rect2(pos + sp, Vector2(1.0, 1.0)), sf_col)
+	var biome_col: Color = _active_biome_reticle_color()
+	if biome_col.a > 0.5 and not lan_stolen:
+		var no_flash_b: bool = bool(cfg.get("flash_reduction", false))
+		var tick_b: int = 0 if no_flash_b else (int(Time.get_ticks_msec() / 420) % 2)
+		var bd: float = gap + 4.0
+		var b_pts: Array[Vector2] = [Vector2(-bd, -bd), Vector2(bd, -bd), Vector2(-bd, bd), Vector2(bd, bd)]
+		for bi: int in range(b_pts.size()):
+			var bp: Vector2 = b_pts[bi]
+			var pip_c: Color = cream if (not no_flash_b and ((bi + tick_b) % 2 == 0)) else biome_col
+			_cursor_node.draw_rect(Rect2(pos + bp - Vector2.ONE, Vector2(3.0, 3.0)), outline)
+			_cursor_node.draw_rect(Rect2(pos + bp, Vector2(1.0, 1.0)), pip_c)
+
+
+func _active_biome_reticle_color() -> Color:
+	var rules: LxBiomeRules = LxBiomeRules.active_instance
+	var mech: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	if rules != null and is_instance_valid(rules):
+		if rules.beam_buff_t > 0.0:
+			return LxPalette.PAL["ice"]
+		if rules.starlight_surge_t > 0.0:
+			return LxPalette.PAL["sky"]
+	if mech != null and is_instance_valid(mech):
+		if mech.molten_charges > 0:
+			return LxPalette.PAL["coral"]
+		if mech.tailwind_t > 0.0:
+			return LxPalette.PAL["rose"]
+		if mech.mirror_echo_active and rules != null and is_instance_valid(rules) and rules.lunar_phase > 0.65:
+			return LxPalette.PAL["ice"]
+		if mech.dawn_seals_broken > 0 and rules != null and is_instance_valid(rules) and rules.island_id == 8:
+			return LxPalette.PAL["gold"]
+	return Color(0.0, 0.0, 0.0, 0.0)
