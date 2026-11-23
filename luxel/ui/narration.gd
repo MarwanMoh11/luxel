@@ -251,9 +251,10 @@ func _draw_prompt() -> void:
 	if not no_motion and _prompt_t < 0.20:
 		var pp: float = 1.0 - clampf(_prompt_t / 0.20, 0.0, 1.0)
 		y += roundf(2.0 * pp * pp)
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
 	var rect := Rect2(roundf(160.0 - box_w * 0.5), y, box_w, box_h)
-	LxPixelFont.draw_panel(self, rect, "dusk", "mauve", "night")
-	var pin_c: Color = LxPalette.fade_step(p, "gold")
+	LxPixelFont.draw_panel(self, rect, "dusk", LxBiomePalette.key(isl, "border"), "night")
+	var pin_c: Color = LxPalette.fade_step(p, LxBiomePalette.key(isl, "hi"))
 	for cp: Vector2 in [
 		Vector2(rect.position.x + 1.0, rect.position.y + 1.0), Vector2(rect.end.x - 2.0, rect.position.y + 1.0),
 		Vector2(rect.position.x + 1.0, rect.end.y - 2.0), Vector2(rect.end.x - 2.0, rect.end.y - 2.0),

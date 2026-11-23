@@ -12,6 +12,15 @@ static func draw_biome_crown(canvas: CanvasItem, island_id: int, lit: bool, igni
 	var fred: bool = LxHudFx.flash_reduced()
 	var pulse: float = 0.0 if fred else sin(clock * 3.4)
 	match island_id:
+		1: # Bell Isle: Warm Brass Bell-Chime Crown + rising amber bell-motes
+			var c1: Color = (PAL["gold"] if lit else PAL["apricot"]) as Color
+			canvas.draw_arc(Vector2(0.0, -16.0), 8.0 + pulse * 1.1, PI * 1.1, PI * 1.9, 10, c1, 1.3)
+			if lit:
+				for k: int in range(3):
+					var u1: float = fposmod(clock * 0.9 + float(k) * 0.33, 1.0)
+					var mx: float = roundf(sin(clock * 2.2 + float(k) * 2.1) * 5.0)
+					var my: float = roundf(-14.0 - u1 * 18.0)
+					canvas.draw_rect(Rect2(mx, my, 1.0, 1.0), (PAL["cream"] if u1 < 0.35 else PAL["gold"]) as Color)
 		2: # Tidewater Harbor: Brass Sea-Bell Fog-Horn Buoy + oceanic sonar rings
 			var col: Color = (PAL["ice"] if lit else PAL["sky"]) as Color
 			canvas.draw_arc(Vector2(0.0, -16.0), 8.0 + pulse * 1.2, PI * 1.15, PI * 1.85, 10, col, 1.4)

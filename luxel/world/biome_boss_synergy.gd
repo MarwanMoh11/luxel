@@ -24,6 +24,8 @@ var _clock: float = 0.0
 var _center: Vector2 = Vector2.ZERO
 var _bell_pulse_t: float = 0.0
 var _was_dashing: bool = false
+var _oak_harmony_cd: float = 0.0
+var _orrery_nodes: Array[Dictionary] = [] # {ang, cd}
 
 
 func _ready() -> void:
@@ -39,6 +41,8 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node) -
 	_clock = 0.0
 	_bell_pulse_t = 0.0
 	_was_dashing = false
+	_oak_harmony_cd = 0.0
+	_orrery_nodes.clear()
 	var rid: String = str(region_node.get("current_region_id")) if region_node != null and region_node.get("current_region_id") != null else ""
 	_active = BOSS_REGIONS.has(rid)
 	_is_miniboss = MINIBOSS_REGIONS.has(rid)
@@ -65,6 +69,9 @@ func _seed_boss_arena_features() -> void:
 				Vector2(-148.0, 68.0), Vector2(148.0, 68.0),
 			]:
 				_rules._updrafts.append({"pos": _center + off, "r": 20.0, "cd": 0.0})
+		5: # The Clockmaker: 4 orbiting Brass Conjunction Nodes (touch -> Starlight Surge!)
+			for k: int in range(4):
+				_orrery_nodes.append({"ang": float(k) * (TAU / 4.0), "cd": 0.0})
 		6: # The Kilnmother: 4 rhythmic caldera Magma Vents for mid-fight Molten Overdrive!
 			_rules._vents.clear()
 			var phases: Array[float] = [0.0, 0.25, 0.50, 0.75]
@@ -84,10 +91,13 @@ func tick(dt: float) -> void:
 		queue_redraw()
 		return
 	_bell_pulse_t = maxf(0.0, _bell_pulse_t - dt)
+	_oak_harmony_cd = maxf(0.0, _oak_harmony_cd - dt)
 	if _island_id == 1:
 		_tick_belfry_ring()
 	elif _island_id == 3:
 		_tick_oak_boss_blooms(dt)
+	elif _island_id == 5:
+		_tick_orrery_boss_nodes(dt)
 	queue_redraw()
 
 
@@ -98,11 +108,33 @@ func _tick_belfry_ring() -> void:
 	var dashing: bool = w.is_dashing()
 	if dashing and not _was_dashing and w.global_position.distance_to(_center) <= 78.0:
 		_bell_pulse_t = 0.52
+		if w.move_sunflare != null and w.move_sunflare.unlocked:
+			w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 6.0)
 		if Lx.audio != null:
 			Lx.audio.play_sfx("prop_chime", _center, true)
 		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 			LxDarknessLayer.active_instance.add_burst_light(_center, 94.0, 0.85 if LxHudFx.flash_reduced() else 1.25, 0.36)
 	_was_dashing = dashing
+
+
+func _tick_orrery_boss_nodes(dt: float) -> void:
+	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	for nd: Dictionary in _orrery_nodes:
+		nd["ang"] = wrapf(float(nd["ang"]) + dt * 0.42, -PI, PI)
+		nd["cd"] = maxf(0.0, float(nd["cd"]) - dt)
+		if float(nd["cd"]) > 0.0 or w == null or w.dead:
+			continue
+		var np: Vector2 = _center + Vector2(cos(float(nd["ang"])) * 108.0, sin(float(nd["ang"])) * 62.0)
+		if w.global_position.distance_to(np) <= 18.0:
+			nd["cd"] = 2.6
+			_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 3.2)
+			w.spawn_ring(np, 3.0, 22.0, 0.24, LxWick.PAL_GOLD, 1.5)
+			if Lx.audio != null:
+				Lx.audio.play_sfx("clockwork_chime", np, true)
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(np, 76.0, 0.85 if LxHudFx.flash_reduced() else 1.20, 0.32)
+			if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, np, 13.0, 5.0)
 
 
 func _tick_oak_boss_blooms(dt: float) -> void:
@@ -114,6 +146,7 @@ func _tick_oak_boss_blooms(dt: float) -> void:
 		p_act = w.is_dashing() or w.is_beam_charging()
 		if w.lantern != null and is_instance_valid(w.lantern):
 			lpos = w.lantern.global_position
+	var lit_n: int = 0
 	for b: Dictionary in _rules._blooms:
 		var lt: float = float(b["lit_t"])
 		if lt > 0.0:
@@ -126,6 +159,16 @@ func _tick_oak_boss_blooms(dt: float) -> void:
 				if _mech != null and is_instance_valid(_mech):
 					_mech.on_bloom_ignited(bp, true)
 			b["lit_t"] = 14.0
+		if float(b["lit_t"]) > 0.0:
+			lit_n += 1
+	if lit_n >= 4 and _oak_harmony_cd <= 0.0 and not _is_boss_cleared():
+		_oak_harmony_cd = 22.0
+		if Lx.state != null and Lx.state.hearts < float(Lx.state.max_hearts):
+			Lx.state.hearts = minf(float(Lx.state.max_hearts), Lx.state.hearts + 0.5)
+			if Lx.events != null:
+				Lx.events.player_healed.emit(0.5)
+		if Lx.audio != null:
+			Lx.audio.play_sfx("prop_chime", _center, true)
 
 
 func try_hit_boss_bloom(from_p: Vector2, to_p: Vector2) -> void:
@@ -191,6 +234,9 @@ func _draw() -> void:
 	var cleared: bool = _is_boss_cleared()
 	match _island_id:
 		1:
+			if not cleared:
+				var a1: float = 0.22 if fred else (0.20 + 0.10 * sin(_clock * 2.4))
+				draw_arc(_center.round(), 34.0, 0.0, TAU, 24, Color(PAL["apricot"] as Color, a1), 1.0)
 			if _bell_pulse_t > 0.0:
 				var u: float = 1.0 - clampf(_bell_pulse_t / 0.52, 0.0, 1.0)
 				var r: float = roundf(lerpf(18.0, 88.0, u))
@@ -202,14 +248,27 @@ func _draw() -> void:
 			if cleared:
 				draw_arc(Vector2(_center.x, 56.0), roundf(22.0 + (0.0 if fred else sin(_clock * 2.0) * 3.0)), 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.42), 1.4)
 		3:
+			var lit_c: int = 0
 			for b: Dictionary in _rules._blooms:
 				var bp: Vector2 = (b["pos"] as Vector2).round()
 				var lit: bool = cleared or float(b["lit_t"]) > 0.0
+				if lit:
+					lit_c += 1
 				draw_circle(bp, 5.5 if lit else 3.5, (PAL["jade"] if lit else PAL["pine"]) as Color)
 				draw_circle(bp, 2.5 if lit else 1.5, (PAL["cream"] if lit else PAL["teal"]) as Color)
 				if lit:
 					var rr: float = roundf(12.0 + (0.0 if fred else sin(_clock * 4.0 + bp.x) * 2.0))
 					draw_arc(bp, rr, 0.0, TAU, 16, Color(PAL["lime"] as Color, 0.65), 1.0)
+			if lit_c >= 4 and _rules._blooms.size() == 4:
+				var ha: float = 0.24 if fred else (0.28 + 0.10 * sin(_clock * 3.0))
+				var p0: Vector2 = (_rules._blooms[0]["pos"] as Vector2).round()
+				var p1: Vector2 = (_rules._blooms[1]["pos"] as Vector2).round()
+				var p2: Vector2 = (_rules._blooms[2]["pos"] as Vector2).round()
+				var p3: Vector2 = (_rules._blooms[3]["pos"] as Vector2).round()
+				draw_line(p0, p1, Color(PAL["lime"] as Color, ha), 1.0)
+				draw_line(p2, p3, Color(PAL["lime"] as Color, ha), 1.0)
+				draw_line(p0, p2, Color(PAL["gold"] as Color, ha), 1.0)
+				draw_line(p1, p3, Color(PAL["gold"] as Color, ha), 1.0)
 		4:
 			if cleared:
 				var c4: Vector2 = _center.round()
@@ -217,6 +276,12 @@ func _draw() -> void:
 				draw_arc(c4, 38.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["gold"] as Color, 0.42), 1.4)
 				draw_arc(c4, 34.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["ice"] as Color, 0.42), 1.2)
 		5:
+			for nd: Dictionary in _orrery_nodes:
+				var ready_n: bool = float(nd["cd"]) <= 0.0
+				var np: Vector2 = (_center + Vector2(cos(float(nd["ang"])) * 108.0, sin(float(nd["ang"])) * 62.0)).round()
+				draw_arc(np, 7.0 if ready_n else 4.0, 0.0, TAU, 14, Color((PAL["gold"] if ready_n else PAL["blue"]) as Color, 0.72 if ready_n else 0.35), 1.2)
+				if ready_n:
+					draw_rect(Rect2(np - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 			if cleared:
 				for k: int in range(6):
 					var ang: float = _clock * 0.6 + float(k) * (TAU / 6.0)
