@@ -372,7 +372,7 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 	var pip: Vector2 = (wick.facing * 12.0 + Vector2(0.0, -6.0)).round()
 	wick.draw_rect(Rect2(pip - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), LxWick.PAL_VOID)
 	if lan_in_hand:
-		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_GOLD)
+		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), _muzzle_biome_color())
 		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(1.0, 1.0)), LxWick.PAL_CREAM)
 	else:
 		var lan_stolen: bool = wick.lantern != null and wick.lantern.state == LxLantern.State.CARRIED

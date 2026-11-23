@@ -12,6 +12,8 @@ var _region: Node = null
 var _island_id: int = 1
 var _center: Vector2 = Vector2.ZERO
 var _anchors: Array[Dictionary] = [] # {pos, cd, flash_t}
+var _was_live: bool = false
+var _victory_t: float = 0.0
 
 
 func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node, center: Vector2) -> void:
@@ -21,6 +23,8 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node, c
 	_island_id = rules.island_id if rules != null else 1
 	_center = center.round()
 	_anchors.clear()
+	_was_live = false
+	_victory_t = 0.0
 	if rules == null:
 		return
 	var safe: Rect2 = rules.bounds.grow(-34.0)
@@ -34,6 +38,22 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node, c
 
 
 func tick(dt: float, live: bool) -> void:
+	if _victory_t > 0.0:
+		_victory_t = maxf(0.0, _victory_t - dt)
+	if _was_live and not live:
+		_victory_t = 0.68
+		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+			LxDarknessLayer.active_instance.add_burst_light(_center, 128.0, 0.84 if LxHudFx.flash_reduced() else 1.32, 0.58)
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, _center, 18.0, 9.0)
+		if Lx.audio != null:
+			var vsfx: String = "prop_chime"
+			match _island_id:
+				1, 8: vsfx = "bell_toll"
+				2: vsfx = "lighthouse_toll"
+				5: vsfx = "clockwork_chime"
+			Lx.audio.play_sfx(vsfx, _center, true)
+	_was_live = live
 	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
 	var act: bool = w != null and not w.dead and (w.is_dashing() or w.is_gliding() or w.is_zipping())
 	var lp: Vector2 = w.lantern.pos if (w != null and w.lantern != null and is_instance_valid(w.lantern) and w.lantern.is_out()) else Vector2(-9999.0, -9999.0)
@@ -143,6 +163,15 @@ func draw_anchors(canvas: CanvasItem, clock: float, fred: bool, cleared: bool) -
 	var c_hi: Color = LxBiomePalette.col(_island_id, "hi")
 	var c_gl: Color = LxBiomePalette.col(_island_id, "glow")
 	var cream: Color = PAL["cream"] as Color
+	if _victory_t > 0.0 and _center != Vector2.ZERO:
+		var vu: float = 1.0 - clampf(_victory_t / 0.68, 0.0, 1.0)
+		var va: float = (1.0 - vu) * (0.55 if fred else 0.88)
+		canvas.draw_arc(_center, roundf(lerpf(10.0, 86.0, vu)), 0.0, TAU, 24, Color(c_gl, va), 1.8)
+		canvas.draw_arc(_center, roundf(lerpf(6.0, 58.0, vu)), 0.0, TAU, 18, Color(cream, va), 1.2)
+		for vk: int in range(6):
+			var vang: float = float(vk) * (TAU / 6.0) + vu * 0.55
+			var vpt: Vector2 = (_center + Vector2.from_angle(vang) * lerpf(8.0, 66.0, vu)).round()
+			canvas.draw_rect(Rect2(vpt - Vector2.ONE, Vector2(2.0, 2.0)), Color(cream if vk % 2 == 0 else c_hi, va))
 	if cleared and _center != Vector2.ZERO:
 		var r_v: float = roundf(20.0 + (0.0 if fred else sin(clock * 1.8) * 2.0))
 		canvas.draw_arc(_center, r_v, 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.28), 1.0)

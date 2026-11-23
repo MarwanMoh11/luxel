@@ -194,10 +194,12 @@ func _draw_signal_pulses() -> void:
 		var dest: Vector2 = sp["to"] as Vector2
 		var start := Vector2(0.0, -6.0)
 		var arc_h: float = minf(26.0, dest.length() * 0.18 + 8.0)
+		var b_sig_g: Color = LxBiomePalette.col(island_id, "glow")
+		var b_sig_h: Color = LxBiomePalette.col(island_id, "hi")
 		for k: int in range(3):
 			var uk: float = clampf(u - float(k) * 0.08, 0.0, 1.0)
 			var pt: Vector2 = (start.lerp(dest, uk) + Vector2(0.0, -sin(uk * PI) * arc_h)).round()
-			var col: Color = (PAL["cream"] if k == 0 else (PAL["gold"] if k == 1 else PAL["apricot"])) as Color
+			var col: Color = (PAL["cream"] as Color) if k == 0 else (b_sig_g if k == 1 else b_sig_h)
 			var sz: float = 3.0 if k == 0 else (2.0 if k == 1 else 1.0)
 			draw_rect(Rect2(pt - Vector2(floorf(sz * 0.5), floorf(sz * 0.5)), Vector2(sz, sz)), col)
 

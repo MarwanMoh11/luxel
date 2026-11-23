@@ -279,6 +279,25 @@ func _draw_frame_ornaments(isl: int) -> void:
 	draw_rect(Rect2(158.0, dy, 5.0, 1.0), apr)
 	draw_rect(Rect2(159.0, dy - 1.0, 3.0, 3.0), gold)
 	draw_rect(Rect2(160.0, dy, 1.0, 1.0), LxPalette.PAL["cream"])
+	var fr_s: bool = LxHudFx.flash_reduced()
+	if not fr_s:
+		for ei: int in range(4):
+			var eu: float = fposmod(_elapsed * 0.28 + float(ei) * 0.25, 1.0)
+			var ex: float = (p.x + 3.0 + float(ei % 2) * 2.0) if ei < 2 else (e.x - 5.0 + float(ei % 2))
+			var ey: float = roundf(e.y - 16.0 - eu * 116.0)
+			var ea: float = sin(eu * PI) * 0.72
+			if ea > 0.05:
+				draw_rect(Rect2(ex, ey, 1.0, 1.0), Color((LxPalette.PAL["cream"] as Color) if ei % 2 == 0 else gold, ea))
+	if Lx.state != null and not _upgrades.is_empty():
+		var all_max: bool = true
+		for u_m: Dictionary in _upgrades:
+			if Lx.state.get_upgrade_rank(str(u_m.get("id", ""))) < int(u_m.get("max_rank", 1)):
+				all_max = false
+				break
+		if all_max:
+			draw_rect(Rect2(158.0, dy, 5.0, 1.0), LxPalette.PAL["gold"])
+			draw_rect(Rect2(160.0, dy - 2.0, 1.0, 5.0), LxPalette.PAL["gold"])
+			draw_rect(Rect2(160.0, dy, 1.0, 1.0), LxPalette.PAL["cream"])
 
 
 func _draw_brazier_icon(at: Vector2, isl: int) -> void:
