@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    208,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        256
       ],
       "dark": true
     }
@@ -24,14 +24,14 @@
     {
       "id": "exit_sanctum_r3_south",
       "rect": [
-        144,
-        160,
+        192,
+        240,
         32,
         16
       ],
       "to_region": "sanctum_r2",
       "to_spawn": [
-        160,
+        208,
         40
       ],
       "requires_moves": [],
@@ -41,7 +41,7 @@
     {
       "id": "exit_sanctum_r3_north",
       "rect": [
-        144,
+        192,
         0,
         32,
         16
@@ -64,22 +64,22 @@
       "id": "phantom_owl_sanctum_r3",
       "kind": "phantom_owl",
       "pos": [
-        104,
-        56
+        128,
+        72
       ],
       "route": [],
       "perches": [
         [
-          88,
-          56
+          104,
+          72
         ],
         [
-          232,
-          56
+          312,
+          72
         ],
         [
-          168,
-          40
+          208,
+          48
         ]
       ],
       "zone": "sanctum_r3",
@@ -89,17 +89,17 @@
       "id": "echo_moth_sanctum_r3",
       "kind": "echo_moth",
       "pos": [
-        232,
-        56
+        312,
+        72
       ],
       "route": [
         [
-          200,
-          56
+          264,
+          72
         ],
         [
-          264,
-          56
+          352,
+          72
         ]
       ],
       "perches": [],
@@ -110,17 +110,17 @@
       "id": "heron_sanctum_r3",
       "kind": "heron_stalker",
       "pos": [
-        168,
-        56
+        208,
+        72
       ],
       "route": [
         [
-          136,
-          56
+          160,
+          72
         ],
         [
-          200,
-          56
+          256,
+          72
         ]
       ],
       "perches": [],
@@ -133,7 +133,7 @@
       "id": "door_sanctum_r3_north",
       "kind": "door",
       "pos": [
-        160,
+        208,
         24
       ],
       "props": {
@@ -152,8 +152,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        38,
-        42
+        48,
+        52
       ],
       "layer": "sort",
       "flip_x": false,
@@ -164,8 +164,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        282,
-        42
+        368,
+        52
       ],
       "layer": "sort",
       "flip_x": true,
@@ -176,8 +176,8 @@
       "sheet": "island8_scenery",
       "prop": "void_lantern_post",
       "pos": [
-        38,
-        146
+        48,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -188,8 +188,8 @@
       "sheet": "island8_scenery",
       "prop": "void_lantern_post",
       "pos": [
-        282,
-        146
+        368,
+        212
       ],
       "layer": "sort",
       "flip_x": true,
@@ -200,8 +200,8 @@
       "sheet": "island8_scenery",
       "prop": "cracked_choir_pew",
       "pos": [
-        92,
-        144
+        120,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
@@ -212,8 +212,8 @@
       "sheet": "island8_scenery",
       "prop": "cracked_choir_pew",
       "pos": [
-        228,
-        144
+        296,
+        208
       ],
       "layer": "sort",
       "flip_x": true,
@@ -224,13 +224,14 @@
       "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
-        160,
-        102
+        208,
+        136
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
       "phase": 0.25
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

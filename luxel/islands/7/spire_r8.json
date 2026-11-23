@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    280,
-    88
+    408,
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_spire_r8_east",
       "rect": [
-        304,
-        64,
+        432,
+        80,
         16,
         48
       ],
@@ -42,7 +42,7 @@
       "id": "exit_spire_r8_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -62,17 +62,17 @@
       "kind": "moonshade_warden",
       "variant": "moonshade_warden",
       "pos": [
-        168,
-        88
+        224,
+        112
       ],
       "route": [
         [
-          120,
-          88
+          160,
+          112
         ],
         [
-          216,
-          88
+          288,
+          112
         ]
       ],
       "perches": [],
@@ -84,22 +84,22 @@
       "kind": "moonshade_snatcher",
       "variant": "moonshade_snatcher",
       "pos": [
-        88,
-        120
+        120,
+        160
       ],
       "route": [],
       "perches": [
         [
-          72,
-          120
+          96,
+          160
         ],
         [
-          104,
-          56
+          144,
+          72
         ],
         [
-          232,
-          56
+          320,
+          72
         ]
       ],
       "zone": "spire_r8",
@@ -110,22 +110,22 @@
       "kind": "moonshade_owl",
       "variant": "moonshade_owl",
       "pos": [
-        232,
-        72
+        328,
+        96
       ],
       "route": [],
       "perches": [
         [
-          232,
-          72
+          328,
+          96
         ],
         [
-          104,
-          104
+          144,
+          144
         ],
         [
-          168,
-          72
+          224,
+          96
         ]
       ],
       "zone": "spire_r8",
@@ -138,7 +138,7 @@
       "kind": "door",
       "pos": [
         24,
-        88
+        104
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -156,8 +156,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        40,
-        48
+        48,
+        52
       ],
       "layer": "sort",
       "flip_x": false,
@@ -168,8 +168,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        280,
-        48
+        400,
+        52
       ],
       "layer": "sort",
       "flip_x": true,
@@ -180,8 +180,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        88,
-        42
+        112,
+        46
       ],
       "layer": "sort",
       "flip_x": false,
@@ -192,8 +192,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        232,
-        148
+        336,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -204,8 +204,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        44,
-        148
+        52,
+        188
       ],
       "layer": "sort",
       "flip_x": false,
@@ -216,13 +216,14 @@
       "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        284,
-        148
+        400,
+        188
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    208,
+    184
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_c4_r8_south",
       "rect": [
-        144,
-        160,
+        192,
+        208,
         32,
         16
       ],
@@ -42,7 +42,7 @@
       "id": "exit_c4_r8_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -63,17 +63,17 @@
       "id": "heron_stalker_c4_r8",
       "kind": "heron_stalker",
       "pos": [
-        120,
-        88
+        160,
+        112
       ],
       "route": [
         [
-          88,
-          88
+          112,
+          112
         ],
         [
-          168,
-          88
+          224,
+          112
         ]
       ],
       "perches": [],
@@ -84,22 +84,22 @@
       "id": "mire_snuffer_c4_r8",
       "kind": "mire_snuffer",
       "pos": [
-        216,
-        56
+        280,
+        72
       ],
       "route": [],
       "perches": [
         [
-          216,
-          56
+          280,
+          72
         ],
         [
-          264,
-          40
+          352,
+          48
         ],
         [
-          184,
-          40
+          240,
+          48
         ]
       ],
       "zone": "conservatory_r8",
@@ -109,17 +109,17 @@
       "id": "lily_hopper_c4_r8",
       "kind": "lily_hopper",
       "pos": [
-        216,
-        120
+        280,
+        160
       ],
       "route": [
         [
-          184,
-          120
+          232,
+          160
         ],
         [
-          264,
-          120
+          344,
+          160
         ]
       ],
       "perches": [],
@@ -133,7 +133,7 @@
       "kind": "door",
       "pos": [
         24,
-        88
+        104
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -155,8 +155,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        160,
-        88
+        208,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -167,8 +167,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        120,
-        48
+        152,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -179,8 +179,8 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        256,
-        88
+        352,
+        104
       ],
       "layer": "sort",
       "flip_x": false,
@@ -189,10 +189,22 @@
     },
     {
       "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
+      "prop": "cattail_reeds",
       "pos": [
         40,
-        40
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        44,
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -203,8 +215,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        292,
-        40
+        376,
+        44
       ],
       "layer": "sort",
       "flip_x": true,
@@ -215,8 +227,8 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        40,
-        142
+        144,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -227,13 +239,14 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        276,
-        142
+        376,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -31,8 +31,8 @@
       ],
       "to_region": "belfry_r5",
       "to_spawn": [
-        28,
-        88
+        40,
+        128
       ],
       "requires_moves": [],
       "requires_flags": [],

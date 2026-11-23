@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    208,
+    184
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_sanctum_r2_south",
       "rect": [
-        144,
-        160,
+        192,
+        208,
         32,
         16
       ],
@@ -41,15 +41,15 @@
     {
       "id": "exit_sanctum_r2_north",
       "rect": [
-        144,
+        192,
         0,
         32,
         16
       ],
       "to_region": "sanctum_r3",
       "to_spawn": [
-        160,
-        136
+        208,
+        216
       ],
       "requires_moves": [
         "prism",
@@ -67,8 +67,8 @@
       "id": "mirror_sanctum_r2_n",
       "kind": "mirror",
       "pos": [
-        200,
-        40
+        264,
+        48
       ],
       "props": {
         "angle_deg": 45,
@@ -79,8 +79,8 @@
       "id": "mirror_sanctum_r2_s",
       "kind": "mirror",
       "pos": [
-        200,
-        136
+        264,
+        176
       ],
       "props": {
         "angle_deg": 315,
@@ -91,8 +91,8 @@
       "id": "cracked_sanctum_r2",
       "kind": "cracked_wall",
       "pos": [
-        248,
-        88
+        328,
+        112
       ],
       "props": {
         "size": [
@@ -106,8 +106,8 @@
       "id": "switch_eye_sanctum_r2_a",
       "kind": "switch_eye",
       "pos": [
-        280,
-        40
+        368,
+        48
       ],
       "props": {
         "requires_prism": true,
@@ -118,8 +118,8 @@
       "id": "switch_eye_sanctum_r2_b",
       "kind": "switch_eye",
       "pos": [
-        280,
-        136
+        368,
+        176
       ],
       "props": {
         "requires_prism": false,
@@ -130,8 +130,8 @@
       "id": "door_sanctum_r2_key",
       "kind": "door",
       "pos": [
-        72,
-        88
+        88,
+        104
       ],
       "props": {
         "door_kind": "switch_door",
@@ -149,8 +149,8 @@
       "id": "wick_key_8_1",
       "kind": "wick_key",
       "pos": [
-        40,
-        88
+        48,
+        112
       ],
       "props": {
         "dungeon_id": "bell_sanctum",
@@ -162,7 +162,7 @@
       "id": "door_sanctum_r2_north",
       "kind": "door",
       "pos": [
-        160,
+        208,
         24
       ],
       "props": {
@@ -185,8 +185,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        38,
-        42
+        48,
+        52
       ],
       "layer": "sort",
       "flip_x": false,
@@ -197,8 +197,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        38,
-        144
+        48,
+        178
       ],
       "layer": "sort",
       "flip_x": true,
@@ -209,8 +209,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        118,
-        42
+        148,
+        46
       ],
       "layer": "sort",
       "flip_x": false,
@@ -221,8 +221,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        104,
-        142
+        148,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -233,8 +233,8 @@
       "sheet": "island8_scenery",
       "prop": "cracked_choir_pew",
       "pos": [
-        264,
-        112
+        360,
+        140
       ],
       "layer": "sort",
       "flip_x": true,
@@ -245,13 +245,14 @@
       "sheet": "island8_scenery",
       "prop": "stained_glass_debris",
       "pos": [
-        112,
-        112
+        148,
+        140
       ],
       "layer": "ground",
       "flip_x": false,
       "shadow": false,
       "phase": 0.25
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

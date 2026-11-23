@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    208,
+    184
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_c4_r3_south",
       "rect": [
-        144,
-        160,
+        192,
+        208,
         32,
         16
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_c4_r3_east",
       "rect": [
-        304,
-        64,
+        400,
+        80,
         16,
         48
       ],
@@ -63,17 +63,17 @@
       "id": "lily_hopper_c4_r3",
       "kind": "lily_hopper",
       "pos": [
-        152,
-        40
+        208,
+        48
       ],
       "route": [
         [
-          104,
-          40
+          144,
+          48
         ],
         [
-          200,
-          40
+          272,
+          48
         ]
       ],
       "perches": [],
@@ -84,17 +84,17 @@
       "id": "heron_stalker_c4_r3",
       "kind": "heron_stalker",
       "pos": [
-        248,
-        88
+        328,
+        112
       ],
       "route": [
         [
-          248,
-          40
+          328,
+          56
         ],
         [
-          248,
-          136
+          328,
+          168
         ]
       ],
       "perches": [],
@@ -107,8 +107,8 @@
       "id": "door_c4_r3_combat",
       "kind": "door",
       "pos": [
-        296,
-        88
+        392,
+        104
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -130,8 +130,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        160,
-        88
+        208,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -142,8 +142,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        42,
-        26
+        44,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -154,8 +154,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        278,
-        26
+        372,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -166,8 +166,8 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        112,
-        68
+        128,
+        80
       ],
       "layer": "sort",
       "flip_x": false,
@@ -178,8 +178,8 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        208,
-        68
+        288,
+        80
       ],
       "layer": "sort",
       "flip_x": true,
@@ -190,8 +190,8 @@
       "sheet": "island4_scenery",
       "prop": "giant_lotus_pad",
       "pos": [
-        112,
-        114
+        128,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
@@ -202,8 +202,8 @@
       "sheet": "island4_scenery",
       "prop": "giant_lotus_pad",
       "pos": [
-        208,
-        114
+        288,
+        144
       ],
       "layer": "sort",
       "flip_x": true,
@@ -214,8 +214,8 @@
       "sheet": "island4_scenery",
       "prop": "cattail_reeds",
       "pos": [
-        42,
-        146
+        44,
+        192
       ],
       "layer": "sort",
       "flip_x": false,
@@ -226,13 +226,14 @@
       "sheet": "island4_scenery",
       "prop": "cattail_reeds",
       "pos": [
-        278,
-        146
+        372,
+        192
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.8
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

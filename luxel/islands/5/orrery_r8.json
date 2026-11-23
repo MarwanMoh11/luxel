@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    208,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        256
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_o5_r8_south",
       "rect": [
-        144,
-        160,
+        192,
+        240,
         32,
         16
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_o5_r8_east",
       "rect": [
-        304,
-        64,
+        400,
+        96,
         16,
         48
       ],
@@ -63,22 +63,22 @@
       "id": "phantom_owl_o5_r8",
       "kind": "phantom_owl",
       "pos": [
-        160,
-        40
+        208,
+        56
       ],
       "route": [],
       "perches": [
         [
-          160,
-          40
-        ],
-        [
-          88,
+          208,
           56
         ],
         [
-          232,
-          56
+          152,
+          88
+        ],
+        [
+          264,
+          88
         ]
       ],
       "zone": "orrery_r8",
@@ -88,17 +88,17 @@
       "id": "orrery_sentinel_o5_r8",
       "kind": "orrery_sentinel",
       "pos": [
-        104,
-        88
+        136,
+        128
       ],
       "route": [
         [
-          72,
-          88
+          96,
+          128
         ],
         [
-          136,
-          88
+          176,
+          128
         ]
       ],
       "perches": [],
@@ -109,17 +109,17 @@
       "id": "echo_moth_o5_r8",
       "kind": "echo_moth",
       "pos": [
-        216,
-        88
+        280,
+        128
       ],
       "route": [
         [
-          200,
-          56
+          264,
+          96
         ],
         [
-          216,
-          120
+          280,
+          160
         ]
       ],
       "perches": [],
@@ -132,8 +132,8 @@
       "id": "door_o5_r8_combat",
       "kind": "door",
       "pos": [
-        296,
-        88
+        392,
+        120
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -155,8 +155,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        40,
-        44
+        160,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -167,8 +167,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        280,
-        44
+        256,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -179,8 +179,8 @@
       "sheet": "island5_scenery",
       "prop": "moon_phase_obelisk",
       "pos": [
-        40,
-        122
+        64,
+        128
       ],
       "layer": "sort",
       "flip_x": false,
@@ -191,8 +191,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        116,
-        148
+        160,
+        210
       ],
       "layer": "sort",
       "flip_x": false,
@@ -203,8 +203,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        204,
-        148
+        256,
+        210
       ],
       "layer": "sort",
       "flip_x": true,
@@ -215,13 +215,14 @@
       "sheet": "island5_scenery",
       "prop": "broken_astrolabe_ring",
       "pos": [
-        276,
-        134
+        332,
+        180
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

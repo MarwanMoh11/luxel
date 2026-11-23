@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        224
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_spire_r3_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_spire_r3_north",
       "rect": [
-        144,
+        192,
         0,
         32,
         16
@@ -62,17 +62,17 @@
       "kind": "moonshade_warden",
       "variant": "moonshade_warden",
       "pos": [
-        152,
-        72
+        208,
+        96
       ],
       "route": [
         [
-          120,
-          72
+          160,
+          96
         ],
         [
-          200,
-          72
+          256,
+          96
         ]
       ],
       "perches": [],
@@ -84,22 +84,22 @@
       "kind": "moonshade_owl",
       "variant": "moonshade_owl",
       "pos": [
-        184,
-        120
+        248,
+        160
       ],
       "route": [],
       "perches": [
         [
-          136,
+          176,
+          72
+        ],
+        [
+          248,
+          160
+        ],
+        [
+          248,
           56
-        ],
-        [
-          184,
-          120
-        ],
-        [
-          184,
-          40
         ]
       ],
       "zone": "spire_r3",
@@ -111,7 +111,7 @@
       "id": "door_spire_r3_north",
       "kind": "door",
       "pos": [
-        160,
+        208,
         24
       ],
       "props": {
@@ -130,8 +130,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        42,
-        48
+        48,
+        52
       ],
       "layer": "sort",
       "flip_x": false,
@@ -142,8 +142,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        118,
-        44
+        156,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -154,8 +154,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        212,
-        44
+        280,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -166,8 +166,8 @@
       "sheet": "island7_scenery",
       "prop": "standing_mirror_tall",
       "pos": [
-        40,
-        148
+        48,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -178,8 +178,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        122,
-        150
+        156,
+        188
       ],
       "layer": "sort",
       "flip_x": false,
@@ -190,13 +190,14 @@
       "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        174,
-        150
+        232,
+        188
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.15
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

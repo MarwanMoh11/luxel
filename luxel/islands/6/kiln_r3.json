@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        224
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_kiln_r3_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_kiln_r3_north",
       "rect": [
-        144,
+        192,
         0,
         32,
         16
@@ -61,17 +61,17 @@
       "id": "bellows_kiln_r3_0",
       "kind": "bellows_imp",
       "pos": [
-        184,
-        56
+        232,
+        64
       ],
       "route": [
         [
-          152,
-          56
+          200,
+          64
         ],
         [
-          200,
-          56
+          280,
+          64
         ]
       ],
       "perches": [],
@@ -82,22 +82,22 @@
       "id": "mole_kiln_r3_0",
       "kind": "ash_mole",
       "pos": [
-        184,
-        120
+        232,
+        160
       ],
       "route": [],
       "perches": [
         [
-          136,
-          120
+          176,
+          160
         ],
         [
-          200,
-          120
+          264,
+          160
         ],
         [
-          168,
-          88
+          216,
+          112
         ]
       ],
       "zone": "kiln_r3",
@@ -107,17 +107,17 @@
       "id": "bellows_kiln_r3_1",
       "kind": "bellows_imp",
       "pos": [
-        248,
-        88
+        336,
+        112
       ],
       "route": [
         [
-          232,
-          88
+          312,
+          112
         ],
         [
-          280,
-          88
+          368,
+          112
         ]
       ],
       "perches": [],
@@ -130,7 +130,7 @@
       "id": "door_kiln_r3_north",
       "kind": "door",
       "pos": [
-        160,
+        208,
         24
       ],
       "props": {
@@ -149,8 +149,8 @@
       "sheet": "island6_scenery",
       "prop": "ember_grate_vent",
       "pos": [
-        160,
-        88
+        208,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -161,8 +161,8 @@
       "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        42,
-        45
+        48,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -173,8 +173,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        112,
-        42
+        156,
+        46
       ],
       "layer": "sort",
       "flip_x": false,
@@ -185,8 +185,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        224,
-        40
+        296,
+        46
       ],
       "layer": "sort",
       "flip_x": true,
@@ -197,8 +197,8 @@
       "sheet": "island6_scenery",
       "prop": "bellows_frame",
       "pos": [
-        56,
-        138
+        60,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -209,13 +209,14 @@
       "sheet": "island6_scenery",
       "prop": "ash_urn_cluster",
       "pos": [
-        116,
-        142
+        140,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -48,8 +48,8 @@
       ],
       "to_region": "belfry_r4",
       "to_spawn": [
-        28,
-        88
+        36,
+        112
       ],
       "requires_moves": [
         "throw"

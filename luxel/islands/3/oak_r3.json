@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        224
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_oak_r3_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_oak_r3_east",
       "rect": [
-        304,
-        64,
+        400,
+        80,
         16,
         48
       ],
@@ -61,17 +61,17 @@
       "id": "sporecap_oak_r3",
       "kind": "sporecap",
       "pos": [
-        200,
-        56
+        264,
+        64
       ],
       "route": [
         [
-          184,
-          56
+          240,
+          64
         ],
         [
-          232,
-          56
+          280,
+          64
         ]
       ],
       "perches": [],
@@ -82,17 +82,17 @@
       "id": "gloam_oak_r3",
       "kind": "gloam",
       "pos": [
-        200,
-        120
+        256,
+        160
       ],
       "route": [
         [
-          168,
-          120
+          224,
+          160
         ],
         [
-          232,
-          120
+          280,
+          160
         ]
       ],
       "perches": [],
@@ -105,8 +105,8 @@
       "id": "brazier_oak_r3_n",
       "kind": "brazier",
       "pos": [
-        120,
-        40
+        208,
+        64
       ],
       "props": {}
     },
@@ -114,8 +114,8 @@
       "id": "brazier_oak_r3_s",
       "kind": "brazier",
       "pos": [
-        120,
-        136
+        208,
+        160
       ],
       "props": {}
     },
@@ -123,8 +123,8 @@
       "id": "door_oak_r3_combat",
       "kind": "door",
       "pos": [
-        296,
-        88
+        392,
+        104
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -144,8 +144,8 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        42,
-        40
+        72,
+        46
       ],
       "layer": "sort",
       "flip_x": false,
@@ -156,8 +156,8 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        278,
-        40
+        344,
+        46
       ],
       "layer": "sort",
       "flip_x": true,
@@ -168,8 +168,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        42,
-        142
+        72,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -180,8 +180,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        278,
-        142
+        344,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -192,8 +192,8 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        160,
-        36
+        208,
+        40
       ],
       "layer": "sort",
       "flip_x": false,
@@ -204,13 +204,14 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        160,
-        148
+        208,
+        188
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.8
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

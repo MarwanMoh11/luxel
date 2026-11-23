@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    88
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        224
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_lh_r3_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_lh_r3_east",
       "rect": [
-        304,
-        64,
+        400,
+        80,
         16,
         48
       ],
@@ -61,8 +61,8 @@
       "id": "barnacle_sentry_lh_r3",
       "kind": "barnacle_sentry",
       "pos": [
-        216,
-        56
+        280,
+        72
       ],
       "route": [],
       "perches": [],
@@ -73,17 +73,17 @@
       "id": "crab_warden_lh_r3",
       "kind": "crab_warden",
       "pos": [
-        184,
-        120
+        248,
+        152
       ],
       "route": [
         [
-          152,
-          120
+          208,
+          152
         ],
         [
-          232,
-          120
+          312,
+          152
         ]
       ],
       "perches": [],
@@ -96,8 +96,8 @@
       "id": "door_lh_r3_combat",
       "kind": "door",
       "pos": [
-        296,
-        88
+        392,
+        104
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -117,8 +117,8 @@
       "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
-        56,
-        26
+        64,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -129,8 +129,8 @@
       "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
-        264,
-        26
+        352,
+        32
       ],
       "layer": "sort",
       "flip_x": true,
@@ -141,8 +141,8 @@
       "sheet": "island2_scenery",
       "prop": "buoy_bobbing",
       "pos": [
-        160,
-        26
+        208,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -153,8 +153,8 @@
       "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
-        88,
-        152
+        112,
+        192
       ],
       "layer": "sort",
       "flip_x": false,
@@ -163,10 +163,22 @@
     },
     {
       "sheet": "island2_scenery",
+      "prop": "barnacle_piling",
+      "pos": [
+        304,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.9
+    },
+    {
+      "sheet": "island2_scenery",
       "prop": "mooring_bollard",
       "pos": [
-        44,
-        52
+        56,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -177,8 +189,8 @@
       "sheet": "island2_scenery",
       "prop": "mooring_bollard",
       "pos": [
-        44,
-        130
+        56,
+        158
       ],
       "layer": "sort",
       "flip_x": true,
@@ -189,13 +201,14 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        274,
-        52
+        356,
+        68
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.2
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    280,
-    88
+    408,
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        224
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_kiln_r8_east",
       "rect": [
-        304,
-        64,
+        432,
+        80,
         16,
         48
       ],
@@ -42,7 +42,7 @@
       "id": "exit_kiln_r8_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -61,17 +61,17 @@
       "id": "golem_kiln_r8_0",
       "kind": "cinder_golem",
       "pos": [
-        152,
-        88
+        224,
+        112
       ],
       "route": [
         [
-          120,
-          88
+          168,
+          112
         ],
         [
-          200,
-          88
+          280,
+          112
         ]
       ],
       "perches": [],
@@ -82,17 +82,17 @@
       "id": "bellows_kiln_r8_0",
       "kind": "bellows_imp",
       "pos": [
-        88,
-        56
+        120,
+        64
       ],
       "route": [
         [
-          72,
-          56
+          96,
+          64
         ],
         [
-          120,
-          56
+          160,
+          64
         ]
       ],
       "perches": [],
@@ -103,17 +103,17 @@
       "id": "bellows_kiln_r8_1",
       "kind": "bellows_imp",
       "pos": [
-        232,
-        120
+        328,
+        160
       ],
       "route": [
         [
-          216,
-          120
+          288,
+          160
         ],
         [
-          264,
-          120
+          360,
+          160
         ]
       ],
       "perches": [],
@@ -127,7 +127,7 @@
       "kind": "door",
       "pos": [
         24,
-        88
+        104
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -145,8 +145,8 @@
       "sheet": "island6_scenery",
       "prop": "ember_grate_vent",
       "pos": [
-        160,
-        88
+        224,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -157,8 +157,8 @@
       "sheet": "island6_scenery",
       "prop": "bellows_frame",
       "pos": [
-        54,
-        42
+        60,
+        46
       ],
       "layer": "sort",
       "flip_x": false,
@@ -169,8 +169,8 @@
       "sheet": "island6_scenery",
       "prop": "bellows_frame",
       "pos": [
-        266,
-        42
+        388,
+        46
       ],
       "layer": "sort",
       "flip_x": true,
@@ -181,8 +181,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        54,
-        140
+        60,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -193,13 +193,38 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        284,
-        142
+        388,
+        180
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
+        336,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
+        112,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.85
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

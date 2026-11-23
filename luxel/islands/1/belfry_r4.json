@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    28,
-    88
+    36,
+    112
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        224
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_r4_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,15 +41,15 @@
     {
       "id": "exit_r4_north",
       "rect": [
-        144,
+        192,
         0,
         32,
         16
       ],
       "to_region": "belfry_r5",
       "to_spawn": [
-        160,
-        148
+        224,
+        216
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -63,17 +63,17 @@
       "id": "warden_r4_0",
       "kind": "warden",
       "pos": [
-        152,
-        60
+        200,
+        72
       ],
       "route": [
         [
-          128,
-          60
+          160,
+          72
         ],
         [
-          184,
-          60
+          248,
+          72
         ]
       ],
       "perches": [],
@@ -84,17 +84,17 @@
       "id": "warden_r4_1",
       "kind": "warden",
       "pos": [
-        152,
-        116
+        200,
+        152
       ],
       "route": [
         [
-          128,
-          116
+          160,
+          152
         ],
         [
-          184,
-          116
+          248,
+          152
         ]
       ],
       "perches": [],
@@ -105,22 +105,22 @@
       "id": "owl_r4_0",
       "kind": "owl",
       "pos": [
-        248,
-        88
+        336,
+        112
       ],
       "route": [],
       "perches": [
         [
-          248,
-          88
+          336,
+          112
         ],
         [
-          248,
-          40
+          336,
+          56
         ],
         [
-          248,
-          136
+          336,
+          168
         ]
       ],
       "zone": "belfry_nave",
@@ -132,7 +132,7 @@
       "id": "door_r4_combat",
       "kind": "door",
       "pos": [
-        160,
+        208,
         24
       ],
       "props": {
@@ -155,8 +155,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        40,
-        34
+        56,
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -167,8 +167,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        288,
-        34
+        360,
+        44
       ],
       "layer": "sort",
       "flip_x": true,
@@ -179,8 +179,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        40,
-        148
+        56,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -191,8 +191,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        288,
-        148
+        360,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -203,8 +203,8 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        104,
-        62
+        136,
+        78
       ],
       "layer": "sort",
       "flip_x": false,
@@ -215,8 +215,8 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        216,
-        62
+        280,
+        78
       ],
       "layer": "sort",
       "flip_x": true,
@@ -227,8 +227,8 @@
       "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
-        104,
-        126
+        136,
+        158
       ],
       "layer": "sort",
       "flip_x": false,
@@ -239,8 +239,8 @@
       "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
-        216,
-        126
+        280,
+        158
       ],
       "layer": "sort",
       "flip_x": true,
@@ -251,8 +251,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        120,
-        28
+        160,
+        34
       ],
       "layer": "sort",
       "flip_x": false,
@@ -263,13 +263,14 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        200,
-        28
+        256,
+        34
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.55
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

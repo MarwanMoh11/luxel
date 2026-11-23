@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    148
+    224,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        448,
+        256
       ],
       "dark": true
     }
@@ -24,15 +24,15 @@
     {
       "id": "exit_r5_south",
       "rect": [
-        144,
-        160,
+        208,
+        240,
         32,
         16
       ],
       "to_region": "belfry_r4",
       "to_spawn": [
-        160,
-        28
+        208,
+        36
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -42,7 +42,7 @@
       "id": "exit_r5_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -64,22 +64,22 @@
       "id": "bell_warden_r5",
       "kind": "bell_warden",
       "pos": [
-        160,
-        72
+        224,
+        104
       ],
       "route": [
         [
-          120,
-          72
+          160,
+          104
         ],
         [
-          200,
-          72
+          288,
+          104
         ]
       ],
       "perches": [],
       "zone": "belfry_loft",
-      "leash": 145
+      "leash": 180
     }
   ],
   "interactables": [
@@ -87,8 +87,8 @@
       "id": "wick_key_2",
       "kind": "wick_key",
       "pos": [
-        160,
-        88
+        224,
+        128
       ],
       "props": {
         "dungeon_id": "belfry",
@@ -102,7 +102,7 @@
       "kind": "door",
       "pos": [
         24,
-        88
+        120
       ],
       "props": {
         "door_kind": "key_door",
@@ -126,8 +126,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        66,
-        36
+        104,
+        54
       ],
       "layer": "sort",
       "flip_x": false,
@@ -138,8 +138,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        254,
-        36
+        344,
+        54
       ],
       "layer": "sort",
       "flip_x": true,
@@ -150,8 +150,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        88,
-        62
+        136,
+        78
       ],
       "layer": "sort",
       "flip_x": false,
@@ -162,8 +162,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        232,
-        62
+        312,
+        78
       ],
       "layer": "sort",
       "flip_x": true,
@@ -174,8 +174,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        72,
-        134
+        104,
+        198
       ],
       "layer": "sort",
       "flip_x": false,
@@ -186,8 +186,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        248,
-        134
+        344,
+        198
       ],
       "layer": "sort",
       "flip_x": true,
@@ -198,13 +198,14 @@
       "sheet": "island1_scenery",
       "prop": "stone_bench",
       "pos": [
-        276,
-        88
+        384,
+        128
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }
