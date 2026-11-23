@@ -85,12 +85,18 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		return
 	_clock += dt
 	var wp: Vector2 = Vector2(-9999.0, -9999.0)
+	var lp: Vector2 = Vector2(-9999.0, -9999.0)
 	var w_fast: bool = false
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
 		var w: LxWick = Lx.player as LxWick
 		if not w.dead:
 			wp = w.global_position
 			w_fast = w.is_dashing() or w.is_gliding() or w.velocity.length_squared() > 1600.0
+			if w.lantern != null and is_instance_valid(w.lantern) and w.lantern.is_out():
+				lp = w.lantern.pos
+	var relit_t: bool = Lx.state != null and Lx.state.relit_islands.has(_island_id)
+	var harm_t: bool = Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % _island_id, false))
+	var friendly: bool = relit_t or harm_t
 
 	var any_vis: bool = false
 	for c: Dictionary in _critters:
@@ -102,14 +108,21 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		var d2: float = p.distance_squared_to(wp)
 		var scare_r2: float = 2500.0 if w_fast else 1296.0
 		if ft <= 0.0 and d2 < scare_r2:
-			ft = 1.45
-			var away: Vector2 = (p - wp).normalized() if d2 > 1.0 else Vector2(float(c["dir"]), -0.5).normalized()
-			if _island_id == 2: # Shore-crabs scuttle sideways!
-				away = Vector2(signf(away.x) if absf(away.x) > 0.1 else float(c["dir"]), away.y * 0.25).normalized()
-			elif _island_id in [1, 4, 7, 8]: # Moths, dragonflies, & sparrows lift skyward!
-				away = (away + Vector2(0.0, -0.65)).normalized()
-			c["vel"] = away * (56.0 if _island_id in [4, 6, 8] else 42.0)
-			c["dir"] = 1.0 if away.x >= 0.0 else -1.0
+			if friendly and not w_fast:
+				# Saved/Harmony islands: native wildlife trusts Wick's light & swirls in a joyful greeting arc!
+				ft = 1.25
+				var tang: Vector2 = (p - wp).normalized().rotated(PI * 0.42 * float(c["dir"])) if d2 > 4.0 else Vector2(float(c["dir"]), -0.4).normalized()
+				c["vel"] = (tang + Vector2(0.0, -0.35)).normalized() * 34.0
+				c["dir"] = 1.0 if tang.x >= 0.0 else -1.0
+			else:
+				ft = 1.45
+				var away: Vector2 = (p - wp).normalized() if d2 > 1.0 else Vector2(float(c["dir"]), -0.5).normalized()
+				if _island_id == 2: # Shore-crabs scuttle sideways!
+					away = Vector2(signf(away.x) if absf(away.x) > 0.1 else float(c["dir"]), away.y * 0.25).normalized()
+				elif _island_id in [1, 4, 7, 8]: # Moths, dragonflies, & sparrows lift skyward!
+					away = (away + Vector2(0.0, -0.65)).normalized()
+				c["vel"] = away * (56.0 if _island_id in [4, 6, 8] else 42.0)
+				c["dir"] = 1.0 if away.x >= 0.0 else -1.0
 		if ft > 0.0:
 			ft = maxf(0.0, ft - dt)
 			c["flee_t"] = ft
@@ -124,11 +137,14 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		else:
 			var home: Vector2 = c["home"] as Vector2
 			var ph: float = float(c["phase"])
-			var roam: Vector2 = _idle_offset(ph)
-			var goal: Vector2 = home + roam
+			var goal: Vector2 = home + _idle_offset(ph)
+			# Curious flying/glowing critters gently flutter near Wick's hung lantern!
+			if lp.x > -9000.0 and _island_id in [1, 4, 5, 7, 8] and p.distance_squared_to(lp) < 5776.0:
+				var orbit_a: float = _clock * 2.2 + ph
+				goal = lp + Vector2(cos(orbit_a) * 14.0, sin(orbit_a) * 9.0)
 			var delta: Vector2 = goal - p
 			if delta.length_squared() > 1.0:
-				p += delta.limit_length(18.0 * dt)
+				p += delta.limit_length(22.0 * dt if (lp.x > -9000.0 and p.distance_squared_to(lp) < 5776.0) else 18.0 * dt)
 				if absf(delta.x) > 1.5:
 					c["dir"] = 1.0 if delta.x >= 0.0 else -1.0
 			c["hop"] = 0.0
