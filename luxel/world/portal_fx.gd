@@ -104,6 +104,8 @@ func _bridge_whisper_sfx(next_isl: int) -> String:
 			return "forge_gust"
 		7:
 			return "lens_reveal"
+		8:
+			return "void_hum"
 		_:
 			return "bell_toll"
 

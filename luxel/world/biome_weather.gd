@@ -182,7 +182,7 @@ func _ambient_breath_sfx(relit: bool) -> String:
 		3:
 			return "prop_chime" if relit else "prop_rustle"
 		4:
-			return "prop_chime" if relit else "feather_flutter"
+			return "wing_gale" if relit else "feather_flutter"
 		5:
 			return "clockwork_chime"
 		6:
@@ -190,7 +190,7 @@ func _ambient_breath_sfx(relit: bool) -> String:
 		7:
 			return "lens_reveal" if relit else "phantom_phase"
 		_:
-			return "prop_chime" if relit else "void_hum"
+			return "bell_toll" if relit else "void_hum"
 
 
 func _draw_true_dawn_glints(fred: bool) -> void:
