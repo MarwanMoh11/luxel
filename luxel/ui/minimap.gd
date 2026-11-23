@@ -19,11 +19,12 @@ static func draw_minimap(c: CanvasItem, origin: Vector2, blink_t: float) -> void
 		return
 
 	var o: Vector2 = origin.round()
-	LxPixelFont.draw_panel(c, Rect2(o, Vector2(PANEL_W, PANEL_H)), "night", "mauve", "void")
+	var isl_id: int = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 1
+	LxPixelFont.draw_panel(c, Rect2(o, Vector2(PANEL_W, PANEL_H)), "night", LxBiomePalette.key(isl_id, "border"), "void")
 	var inner := Rect2(o + Vector2(2.0, 2.0), Vector2(INNER_W, INNER_H))
 	_draw_zones(c, bounds, inner)
 	_draw_terrain_silhouette(c, inner)
-	_draw_frame_accents(c, o, inner)
+	_draw_frame_accents(c, o, inner, isl_id)
 	_draw_exits(c, bounds, inner)
 	_draw_interactables(c, bounds, inner, blink_t)
 	_draw_boss_alerts(c, bounds, inner, blink_t)
@@ -31,13 +32,13 @@ static func draw_minimap(c: CanvasItem, origin: Vector2, blink_t: float) -> void
 	_draw_map_hint(c, o)
 
 
-static func _draw_frame_accents(c: CanvasItem, o: Vector2, inner: Rect2) -> void:
-	var gold: Color = LxPalette.PAL["gold"]
-	var apr: Color = LxPalette.PAL["apricot"]
+static func _draw_frame_accents(c: CanvasItem, o: Vector2, inner: Rect2, isl_id: int = 1) -> void:
+	var gold: Color = LxBiomePalette.col(isl_id, "glow")
+	var apr: Color = LxBiomePalette.col(isl_id, "hi")
 	var dusk: Color = LxPalette.PAL["dusk"]
 	var x1: float = o.x + PANEL_W - 2.0
 	var y1: float = o.y + PANEL_H - 2.0
-	# 1 px brass corner accents on frame border.
+	# 1 px biome-tinted corner accents on frame border.
 	for corner: Array in [[o.x + 1.0, o.y + 1.0, 1.0, 1.0], [x1, o.y + 1.0, -1.0, 1.0], [o.x + 1.0, y1, 1.0, -1.0], [x1, y1, -1.0, -1.0]]:
 		var cx0: float = float(corner[0])
 		var cy0: float = float(corner[1])
@@ -55,6 +56,9 @@ static func _draw_frame_accents(c: CanvasItem, o: Vector2, inner: Rect2) -> void
 	c.draw_rect(Rect2(inner.position.x, my, 1.0, 2.0), dusk)
 	c.draw_rect(Rect2(x1, my, 1.0, 2.0), dusk)
 	c.draw_rect(Rect2(inner.end.x - 1.0, my, 1.0, 2.0), dusk)
+	# Compact Biome Micro-Crest tucked neatly left of the minimap border
+	c.draw_rect(Rect2(o + Vector2(-8.0, 1.0), Vector2(7.0, 7.0)), LxPalette.PAL["void"] as Color)
+	LxHudFx.draw_biome_crest(c, isl_id, o + Vector2(-5.0, 4.0), gold, LxPalette.PAL["cream"] as Color)
 
 
 static func _draw_zones(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:

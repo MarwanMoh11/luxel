@@ -15,6 +15,7 @@ var _decals: LxGroundDecals = null
 var _weather: LxBiomeWeather = null
 var _boss_synergy: LxBiomeBossSynergy = null
 var _passives: LxBiomePassives = null
+var _dungeon_twists: LxBiomeDungeonTwists = null
 var _cam_center: Vector2 = Vector2.ZERO
 var _clock: float = 0.0
 
@@ -95,6 +96,12 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 		get_parent().add_child(_passives)
 	if _passives != null:
 		_passives.configure(rules, region_node)
+	if _dungeon_twists == null and get_parent() != null:
+		_dungeon_twists = LxBiomeDungeonTwists.new()
+		_dungeon_twists.name = "BiomeDungeonTwists"
+		get_parent().add_child(_dungeon_twists)
+	if _dungeon_twists != null:
+		_dungeon_twists.configure(rules, region_node)
 	queue_redraw()
 
 
@@ -113,6 +120,8 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		_boss_synergy.tick(dt)
 	if _passives != null and is_instance_valid(_passives):
 		_passives.tick(dt)
+	if _dungeon_twists != null and is_instance_valid(_dungeon_twists):
+		_dungeon_twists.tick(dt)
 	match _rules.island_id:
 		2:
 			_tick_island2(dt)
