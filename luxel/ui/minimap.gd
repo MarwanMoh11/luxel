@@ -97,8 +97,8 @@ static func _draw_terrain_silhouette(c: CanvasItem, inner: Rect2) -> void:
 	if gw <= 0 or gh <= 0:
 		return
 	var isl_id: int = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 1
-	var col_land: Color = (LxPalette.PAL["teal"] if isl_id in [2, 3, 4] else (LxPalette.PAL["plum"] if isl_id in [6, 8] else LxPalette.PAL["blue"])) as Color
-	var col_haz: Color = (LxPalette.PAL["coral"] if isl_id == 6 else LxPalette.PAL["deep"]) as Color
+	var col_land: Color = LxBiomePalette.col(isl_id, "mid")
+	var col_haz: Color = (LxPalette.PAL["coral"] if isl_id == 6 else (LxPalette.PAL["teal"] if isl_id == 4 else LxPalette.PAL["deep"])) as Color
 	var step: int = 2
 	for py: int in range(0, int(INNER_H), step):
 		var ty: int = clampi(int(floor(float(py) / INNER_H * float(gh))), 0, gh - 1)
@@ -130,7 +130,8 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 		var wpos: Vector2 = (wpos_v as Vector2) if wpos_v is Vector2 else ((obj as Node2D).global_position if obj is Node2D else Vector2.ZERO)
 		match kind:
 			"beacon":
-				var col: Color = LxPalette.PAL["gold"] if _prop_bool(obj, "lit") else (LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["apricot"])
+				var b_isl: int = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 1
+				var col: Color = LxBiomePalette.col(b_isl, "glow") if _prop_bool(obj, "lit") else (LxPalette.PAL["coral"] if pulse_on else LxPalette.PAL["apricot"])
 				_draw_pip(c, wpos, bounds, inner, 2.0, col)
 			"shrine":
 				if not _prop_bool(obj, "claimed"):

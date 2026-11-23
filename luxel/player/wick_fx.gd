@@ -251,8 +251,10 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 				wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
 			)
 			var perp: Vector2 = Vector2(-mdir.y, mdir.x)
+			var isl_id: int = int(Lx.world.get("current_island_id")) if (Lx.world != null and is_instance_valid(Lx.world) and Lx.world.get("current_island_id") != null) else 1
+			var bio_gl: Color = LxBiomePalette.col(isl_id, "glow")
 			var c_a: Color = LxWick.PAL_GOLD if zipping else (LxWick.PAL_ICE if gliding else LxWick.PAL_CORAL)
-			var c_b: Color = LxWick.PAL_APRICOT if zipping else (LxWick.PAL_SKY if gliding else LxWick.PAL_GOLD)
+			var c_b: Color = bio_gl if (isl_id != 1) else (LxWick.PAL_APRICOT if zipping else (LxWick.PAL_SKY if gliding else LxWick.PAL_GOLD))
 			var pick_a: bool = randf() < 0.52
 			var sc: Color = c_a if pick_a else c_b
 			var tc: Color = c_b if pick_a else c_a

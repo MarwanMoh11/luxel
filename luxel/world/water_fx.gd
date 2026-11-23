@@ -134,8 +134,9 @@ func _draw() -> void:
 	var max_y: float = _cam_center.y + HALF_H
 	var ts: float = float(_tile_size)
 
-	var foam_hi: Color = (PAL["lime"] if _island_id == 3 else (PAL["cream"] if _island_id == 7 else PAL["ice"])) as Color
-	var foam_lo: Color = (PAL["jade"] if _island_id == 3 else (PAL["teal"] if _island_id == 4 else PAL["sky"])) as Color
+	var relit_sea: bool = not _is_dungeon and Lx.state != null and Lx.state.relit_islands.has(_island_id)
+	var foam_hi: Color = (PAL["rose"] if (relit_sea and _island_id == 4) else (PAL["lime"] if _island_id == 3 else (PAL["cream"] if _island_id == 7 else PAL["ice"]))) as Color
+	var foam_lo: Color = (PAL["ice"] if (relit_sea and _island_id == 4) else (PAL["jade"] if _island_id == 3 else (PAL["teal"] if _island_id == 4 else PAL["sky"]))) as Color
 	for sh: Dictionary in _shores:
 		var sx: float = float(sh["x"])
 		var sy: float = float(sh["y"])
@@ -155,7 +156,6 @@ func _draw() -> void:
 		if (m & 8) != 0:
 			draw_rect(Rect2(sx + ts - 1.0 - inset, sy + 2.0, 1.0, ts - 4.0), col)
 
-	var relit_sea: bool = not _is_dungeon and Lx.state != null and Lx.state.relit_islands.has(_island_id)
 	var gl_hi: Color = (PAL["cream"] if relit_sea else (PAL["gold"] if _island_id in [1, 2] else (PAL["lime"] if _island_id in [3, 4] else PAL["cream"]))) as Color
 	var gl_lo: Color = (PAL["gold"] if relit_sea else (PAL["sky"] if _island_id in [1, 2, 5, 7, 8] else PAL["teal"])) as Color
 	for gl: Dictionary in _glints:
@@ -179,12 +179,12 @@ func _draw() -> void:
 		var p: float = sin(_clock * 1.4 + float(ab["phase"]))
 		if int(ab["kind"]) == 1:
 			if p > 0.15:
-				var mc: Color = (PAL["apricot"] if p > 0.75 else (PAL["coral"] if p > 0.45 else PAL["wine"])) as Color
+				var mc: Color = (PAL["cream"] if p > 0.78 else (PAL["gold"] if p > 0.48 else PAL["apricot"])) as Color if relit_sea else (PAL["apricot"] if p > 0.75 else (PAL["coral"] if p > 0.45 else PAL["wine"])) as Color
 				draw_rect(Rect2(ax, ay, 2.0 if p > 0.55 else 1.0, 1.0), mc)
 		else:
 			if p > 0.25:
-				var sc: Color = _abyss_star_color(p)
-				draw_rect(Rect2(ax, ay, 2.0 if (_island_id == 5 and p > 0.88) else 1.0, 1.0), sc)
+				var sc: Color = (PAL["cream"] if p > 0.78 else PAL["gold"]) as Color if (relit_sea and _island_id == 8) else _abyss_star_color(p)
+				draw_rect(Rect2(ax, ay, 2.0 if ((_island_id == 5 or (relit_sea and _island_id == 8)) and p > 0.88) else 1.0, 1.0), sc)
 
 	for rp: Dictionary in _ripples:
 		var u: float = clampf(float(rp["age"]) / maxf(0.01, float(rp["dur"])), 0.0, 1.0)
