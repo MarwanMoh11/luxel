@@ -293,6 +293,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_r8_kills = 0
 		if _events != null:
 			var mb_live: bool = region_id == "orrery_r6" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
+			if mb_live:
+				_emit_narration("MINIBOSS_5", "title", 3.2)
 			_events.music_mode_requested.emit("island5_boss_p1" if mb_live else "island5_dungeon")
 
 
