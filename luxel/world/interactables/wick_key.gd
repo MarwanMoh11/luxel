@@ -90,12 +90,13 @@ func _draw() -> void:
 	if _pickup_t > 0.0:
 		var u: float = 1.0 - clampf(_pickup_t / 0.36, 0.0, 1.0)
 		var is_b: bool = key_kind == "keepers_flame"
-		var ring_c: Color = (PAL["cream"] if u < 0.35 else (PAL["coral"] if is_b else PAL["gold"])) as Color
+		var b_gl: Color = LxBiomePalette.col(island_id, "glow")
+		var ring_c: Color = (PAL["cream"] as Color) if u < 0.35 else ((PAL["coral"] as Color) if is_b else b_gl)
 		draw_arc(Vector2(0.0, -3.0), roundf(lerpf(3.0, 22.0 if is_b else 18.0, u)), 0.0, TAU, 16, ring_c, 2.0 if u < 0.3 else 1.0, false)
 		var scount: int = 8 if is_b else 6
 		for k: int in range(scount):
 			var a: float = (TAU * float(k)) / float(scount)
-			var scol: Color = (PAL["cream"] if k % 2 == 0 else (PAL["coral"] if is_b else PAL["gold"])) as Color
+			var scol: Color = (PAL["cream"] as Color) if k % 2 == 0 else ((PAL["coral"] as Color) if is_b else b_gl)
 			draw_rect(Rect2(roundf(cos(a) * lerpf(2.0, 18.0 if is_b else 15.0, u)), roundf(-3.0 + sin(a) * lerpf(2.0, 18.0 if is_b else 15.0, u) - u * 4.0), 1.0, 1.0), scol)
 		return
 	if collected or not active:

@@ -103,8 +103,8 @@ func _draw_fallback() -> void:
 
 
 func _draw_lantern_embers() -> void:
-	var c_cream: Color = PAL["cream"] as Color
-	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = LxBiomePalette.col(island_id, "core")
+	var c_gold: Color = LxBiomePalette.col(island_id, "glow")
 	var phase: float = absf(pos.x * 0.029 + pos.y * 0.017)
 	var gx: float = 4.0 if island_id >= 5 else 0.0
 	for i: int in range(2):

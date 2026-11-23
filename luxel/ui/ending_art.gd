@@ -241,9 +241,28 @@ static func _draw_dawn_sea(ci: CanvasItem, t: float, rise: float) -> void:
 static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) -> void:
 	var x: float = roundf(p.x)
 	var y: float = roundf(p.y)
-	_px(ci, [[-12, 0, 24, 3], [-9, 3, 18, 2], [-5, 5, 10, 1]], "pine", x, y)
-	_px(ci, [[-10, -2, 20, 3], [-6, -4, 12, 2]], "night", x, y)
-	ci.draw_rect(Rect2(x - 6.0, y - 4.0, 12.0, 1.0), LxPalette.PAL["dusk"])
+	var isl_id: int = clampi(idx + 1, 1, 8)
+	var base_k: String = LxBiomePalette.key(isl_id, "dark")
+	var rim_k: String = LxBiomePalette.key(isl_id, "mid")
+	match isl_id:
+		2: # 4-islet Harbor piers
+			_px(ci, [[-13, 0, 5, 3], [-6, 0, 5, 3], [1, 0, 5, 3], [8, 0, 5, 3]], base_k, x, y)
+			_px(ci, [[-11, -1, 22, 1]], rim_k, x, y)
+		4: # Glasshouse lagoon ring
+			_px(ci, [[-12, 0, 24, 3], [-8, 3, 16, 2]], base_k, x, y)
+			_px(ci, [[-10, -2, 20, 2]], rim_k, x, y)
+			_px(ci, [[-5, -1, 10, 1]], "sky", x, y)
+		6: # Lava-split volcanic caldera
+			_px(ci, [[-12, 0, 10, 3], [2, 0, 10, 3], [-9, 3, 18, 2]], "night", x, y)
+			_px(ci, [[-2, -1, 4, 4]], "coral", x, y)
+			_px(ci, [[-1, 0, 2, 2]], "gold", x, y)
+		7: # Twin silver crescent shoals
+			_px(ci, [[-12, 0, 8, 3], [4, 0, 8, 3], [-8, 3, 16, 2]], "deep", x, y)
+			_px(ci, [[-11, -2, 7, 2], [4, -2, 7, 2]], "sky", x, y)
+		_:
+			_px(ci, [[-12, 0, 24, 3], [-9, 3, 18, 2], [-5, 5, 10, 1]], base_k, x, y)
+			_px(ci, [[-10, -2, 20, 3], [-6, -4, 12, 2]], "night", x, y)
+			ci.draw_rect(Rect2(x - 6.0, y - 4.0, 12.0, 1.0), LxPalette.PAL[rim_k])
 	var lm: Array = ISLAND_LANDMARKS[clampi(idx, 0, ISLAND_LANDMARKS.size() - 1)]
 	_px(ci, lm[1] as Array, str(lm[0]), x, y)
 	_px(ci, lm[3] as Array, str(lm[2]), x, y)
@@ -252,10 +271,11 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 	if t >= lit_at:
 		var age: float = t - lit_at
 		var flk: bool = LxHudFx.flash_reduced() or fmod(t * 3.8 + float(idx) * 0.4, 1.0) < 0.55
+		var bio_glow: Color = LxBiomePalette.col(isl_id, "glow")
 		if age < 0.48:
 			var u_ring: float = clampf(age / 0.48, 0.0, 1.0)
 			var ring_r: float = roundf(lerpf(3.0, 18.0, 1.0 - (1.0 - u_ring) * (1.0 - u_ring)))
-			var r_col: Color = LxPalette.PAL["cream" if u_ring < 0.30 else ("gold" if u_ring < 0.68 else "apricot")]
+			var r_col: Color = LxPalette.PAL["cream"] if u_ring < 0.30 else (bio_glow if u_ring < 0.68 else LxPalette.PAL["gold"])
 			ci.draw_arc(Vector2(x, lamp_y), ring_r, 0.0, TAU, 20, r_col, 1.4 if u_ring < 0.5 else 1.0, false)
 		if age < 0.55:
 			ci.draw_rect(Rect2(x - 2.0, 16.0, 4.0, lamp_y - 16.0), LxPalette.PAL["gold"])
@@ -301,6 +321,12 @@ static func draw_results_ornaments(ci: CanvasItem, panel: Rect2, rank_key: Strin
 		_draw_mini_icon(ci, STAT_ICONS[row], 82.0, iy)
 		_draw_mini_icon(ci, STAT_ICONS[row], 233.0, iy)
 	_draw_filigree_divider(ci, panel.position.x + 22.0, panel.end.x - 22.0, 132.0, "mauve", "apricot")
+	for isl_c: int in range(1, 9):
+		var relit_c: bool = Lx.state == null or Lx.state.relit_islands.has(isl_c)
+		var cx_c: float = roundf(76.0 + float(isl_c - 1) * 24.0)
+		var c1: Color = LxBiomePalette.col(isl_c, "glow") if relit_c else (LxPalette.PAL["dusk"] as Color)
+		var c2: Color = (LxPalette.PAL["cream"] if relit_c else LxPalette.PAL["mauve"]) as Color
+		LxHudFx.draw_biome_crest(ci, isl_c, Vector2(cx_c, 132.0), c1, c2)
 	if rank_key == "RANK_S" or rank_key == "RANK_A":
 		var fr_r: bool = LxHudFx.flash_reduced()
 		var cnt: int = 8 if rank_key == "RANK_S" else 4
