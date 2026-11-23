@@ -9,6 +9,7 @@ var _reset_left: float = 0.0
 var _pulse_stage: int = 0
 var _reject_t: float = 0.0
 var _act_t: float = 0.0
+var _gaze_off: Vector2i = Vector2i.ZERO
 
 
 func setup(spec: Dictionary) -> void:
@@ -43,8 +44,22 @@ func tick(dt: float) -> void:
 		if st != _pulse_stage:
 			_pulse_stage = st
 			changed = true
+		if not activated:
+			var g: Vector2i = _compute_gaze()
+			if g != _gaze_off:
+				_gaze_off = g
+				changed = true
 	if changed:
 		queue_redraw()
+
+
+func _compute_gaze() -> Vector2i:
+	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
+		return Vector2i.ZERO
+	var d: Vector2 = (Lx.player as Node2D).global_position - pos
+	if d.length_squared() > 12544.0 or d.length_squared() < 16.0:
+		return Vector2i.ZERO
+	return Vector2i(1 if d.x > 14.0 else (-1 if d.x < -14.0 else 0), 1 if d.y > 18.0 else (-1 if d.y < -18.0 else 0))
 
 
 func on_hit(hit: LxHit) -> bool:
@@ -139,10 +154,12 @@ func _draw() -> void:
 		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), PAL["sky"] if _reject_t > 0.0 else PAL["deep"])
 		draw_rect(Rect2(-3.0, -2.0, 6.0, 3.0), PAL["ice"] if _reject_t > 0.0 else PAL["blue"])
 		var shine: Color = (PAL["cream"] if _reject_t > 0.0 else (PAL["ice"] if (requires_prism or _pulse_stage == 0) else PAL["sky"])) as Color
+		var gx: float = float(_gaze_off.x)
+		var gy: float = float(_gaze_off.y) * 0.5
 		draw_rect(Rect2(-2.0, -2.0, 4.0, 1.0), PAL["sky"])
 		draw_rect(Rect2(-2.0, -2.0, 2.0, 1.0), shine)
-		draw_rect(Rect2(-1.0, -2.0, 2.0, 3.0), PAL["void"])
-		draw_rect(Rect2(-2.0, -1.0, 1.0, 1.0), shine)
+		draw_rect(Rect2(-1.0 + gx, -2.0 + roundf(gy), 2.0, 3.0), PAL["void"])
+		draw_rect(Rect2(-1.0 + gx, -1.0 + roundf(gy), 1.0, 1.0), shine)
 		if _reject_t > 0.0:
 			draw_arc(Vector2(0.0, -1.0), 8.0, 0.0, TAU, 12, PAL["ice"], 1.0, false)
 	if _act_t > 0.0:
