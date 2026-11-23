@@ -245,6 +245,8 @@ func _celebrate_all_found(cp: Vector2, w: LxWick, glow_k: String) -> void:
 		_rings.append({"pos": (other["pos"] as Vector2) + Vector2(0.0, -7.0), "age": 0.0, "dur": 0.68, "col": glow_k})
 	if Lx.audio != null:
 		Lx.audio.play_sfx("great_lamp_bloom", cp, true)
+	if Lx.events != null:
+		Lx.events.narration_requested.emit(_harmony_cue_id(), "title", 3.4)
 	if Lx.camera != null and is_instance_valid(Lx.camera):
 		Lx.camera.add_shake(0.30)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
@@ -253,6 +255,18 @@ func _celebrate_all_found(cp: Vector2, w: LxWick, glow_k: String) -> void:
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, cp, 16.0, 8.0)
 	if w != null and is_instance_valid(w):
 		w.spawn_sparks(cp + Vector2(0.0, -7.0), Vector2.UP, 10, LxBiomePalette.col(_island_id, "glow"), 28.0, 70.0, 0.44)
+
+
+func _harmony_cue_id() -> String:
+	match _island_id:
+		2: return "CUE_HARMONY_2"
+		3: return "CUE_HARMONY_3"
+		4: return "CUE_HARMONY_4"
+		5: return "CUE_HARMONY_5"
+		6: return "CUE_HARMONY_6"
+		7: return "CUE_HARMONY_7"
+		8: return "CUE_HARMONY_8"
+		_: return "CUE_HARMONY_1"
 
 
 func _draw() -> void:

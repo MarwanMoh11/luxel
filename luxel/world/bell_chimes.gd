@@ -164,6 +164,8 @@ func _celebrate_all_rung(cp: Vector2, w: LxWick) -> void:
 		_rings.append({"pos": (other["pos"] as Vector2) + Vector2(0.0, -8.0), "age": 0.0, "dur": 0.65})
 	if Lx.audio != null:
 		Lx.audio.play_sfx("great_lamp_bloom", cp, true)
+	if Lx.events != null:
+		Lx.events.narration_requested.emit("CUE_HARMONY_1", "title", 3.4)
 	if Lx.camera != null and is_instance_valid(Lx.camera):
 		Lx.camera.add_shake(0.30)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
