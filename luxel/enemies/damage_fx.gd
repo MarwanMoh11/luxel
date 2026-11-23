@@ -68,10 +68,17 @@ static func draw_wear(enemy: LxEnemyBrain, off: Vector2) -> void:
 			var p0: Vector2 = (off + Vector2.from_angle(ang) * (r + 4.0 + ease_p * 10.0)).round()
 			var p1: Vector2 = (off + Vector2.from_angle(ang) * (r + 8.0 + ease_p * 16.0)).round()
 			enemy.draw_line(p0, p1, Color(LxBiomePalette.col(isl_a, "hi"), a_out), 1.0)
+			if enemy.is_boss and enemy.phase >= 2:
+				var da: float = float(ci) * (PI * 0.5) + PI * 0.25 - prog * 0.35
+				var q0: Vector2 = (off + Vector2.from_angle(da) * (r + 6.0 + ease_p * 14.0)).round()
+				var q1: Vector2 = (off + Vector2.from_angle(da) * (r + 12.0 + ease_p * 22.0)).round()
+				enemy.draw_line(q0, q1, Color(pal["gold"] as Color, a_out * 0.90), 1.2)
 
 	if enemy.max_hp <= 0.01 or enemy.hp <= 0.0:
 		return
 	_draw_biome_aura(enemy, off, r, t, fred)
+	if enemy.state == LxEnemyBrain.State.STAGGER:
+		_draw_stagger_halo(enemy, off, r, t, fred)
 	var hp_ratio: float = clampf(enemy.hp / enemy.max_hp, 0.0, 1.0)
 
 	# 2. Stage 1 Wear (<= 65% HP on bosses & heavy foes): subtle hairline fracture + drifting spark
@@ -164,6 +171,8 @@ static func trigger_boss_awaken(boss: LxEnemyBrain) -> void:
 
 static func trigger_boss_phase_burst(boss_id: String, at_pos: Vector2) -> void:
 	gust_arena(at_pos, 118.0, 125.0)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(at_pos, 96.0, 0.85 if _flash_reduced() else 1.38, 0.46)
 	if Lx.world == null or not is_instance_valid(Lx.world) or not Lx.world.has_method("get_enemies"):
 		return
 	var enemies: Variant = Lx.world.call("get_enemies")
@@ -276,3 +285,22 @@ static func _draw_biome_aura(enemy: LxEnemyBrain, off: Vector2, r: float, t: flo
 				var bx: float = roundf(off.x + sin(t * 1.8 + ph) * (r + 1.5))
 				var by: float = roundf(off.y - r * 0.2 - u * 8.0)
 				enemy.draw_rect(Rect2(bx, by, 1.0, 1.0), Color(pal["gold"] as Color, sin(u * PI) * 0.60))
+
+
+static func _draw_stagger_halo(enemy: LxEnemyBrain, off: Vector2, r: float, t: float, fred: bool) -> void:
+	var pal: Dictionary = LxEnemyBrain.PAL
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
+	var bio_g: Color = LxBiomePalette.col(isl, "glow")
+	var rx: float = r + 4.5
+	var ry: float = rx * 0.48
+	var by: float = r * 0.48
+	var spin: float = t * (1.2 if fred else 3.4)
+	for k: int in range(6):
+		var a: float = spin + float(k) * (TAU / 6.0)
+		var pt: Vector2 = (off + Vector2(cos(a) * rx, by + sin(a) * ry)).round()
+		var col: Color = (pal["cream"] if (k % 3 == 0 and (fred or int(t * 8.0) % 2 == 0)) else (bio_g if k % 2 == 0 else (pal["gold"] as Color))) as Color
+		enemy.draw_rect(Rect2(pt, Vector2(2.0, 1.0)), col)
+	var top: Vector2 = (off + Vector2(0.0, -r - 8.0)).round()
+	enemy.draw_rect(Rect2(top + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), bio_g)
+	enemy.draw_rect(Rect2(top + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), bio_g)
+	enemy.draw_rect(Rect2(top, Vector2.ONE), pal["cream"] as Color)
