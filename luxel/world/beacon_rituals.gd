@@ -78,32 +78,59 @@ static func on_beacon_ignited(beacon: LxBeacon) -> void:
 	var br: LxBiomeRules = LxBiomeRules.active_instance
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	match isl:
-		2: # Harbor Fog-Horn rings a resonant coastal brass horn
+		1: # Bell Isle: warm bell-harmonic ripple auto-ignites nearby unlit road lamps (domino wave!)
+			if beacon.region != null and beacon.region.has_method("get_interactables"):
+				var items_v: Variant = beacon.region.call("get_interactables")
+				if items_v is Array:
+					for it: Variant in (items_v as Array):
+						if it is LxRoadLamp and is_instance_valid(it):
+							var rl: LxRoadLamp = it as LxRoadLamp
+							if rl.active and not rl.lit and rl.pos.distance_to(pos) <= 220.0:
+								rl.interact(null)
+		2: # Harbor Fog-Horn calms the coastal tide surge & washes ashore 2 bonus Drift-Shards!
+			if br != null and is_instance_valid(br):
+				br.tide_phase = 0.0
+				br.tide_surging = false
+			if bm != null and is_instance_valid(bm):
+				bm.spawn_drift_shards_near(pos, 2)
 			if Lx.audio != null:
 				Lx.audio.play_sfx("lighthouse_toll", pos, true)
-		3: # Ancient Sap-Shrine triggers a massive emerald canopy chain wave
+		3: # Ancient Sap-Shrine triggers a massive emerald canopy chain wave + heals +0.5 heart of forest dew!
 			if bm != null and is_instance_valid(bm):
 				bm.on_bloom_ignited(pos, true)
-		4: # Glasshouse Hydro-Fountain spawns a permanent live Mist Updraft beside it!
+			if Lx.state != null and Lx.state.hearts < float(Lx.state.max_hearts):
+				Lx.state.hearts = minf(float(Lx.state.max_hearts), Lx.state.hearts + 0.5)
+				if Lx.events != null:
+					Lx.events.player_healed.emit(0.5)
+		4: # Glasshouse Hydro-Fountain spawns a permanent live Mist Updraft & grants 3.5s Rose Tailwind!
 			if bm != null and is_instance_valid(bm):
 				bm.add_permanent_updraft(pos + Vector2(0.0, 26.0))
+				bm.tailwind_t = maxf(bm.tailwind_t, 3.5)
 			if Lx.audio != null:
 				Lx.audio.play_sfx("wing_gale", pos, true)
-		5: # Celestial Astrolabe Relay grants 4s Starlight Surge
+		5: # Celestial Astrolabe Relay grants 4s Starlight Surge & links Constellation Ley-Lines!
 			if br != null and is_instance_valid(br):
 				br.starlight_surge_t = maxf(br.starlight_surge_t, 4.0)
 			if Lx.audio != null:
 				Lx.audio.play_sfx("prism_chain", pos, true)
-		6: # Volcanic Smelter Crucible fills Ember + grants 3 Molten Overdrive charges
+		6: # Volcanic Smelter Crucible fills Ember + grants 3 Molten Overdrive charges + seismic knockback!
 			if bm != null and is_instance_valid(bm):
 				bm.grant_molten_overdrive(3)
 			if Lx.player is LxWick and is_instance_valid(Lx.player):
 				var w: LxWick = Lx.player as LxWick
 				if w.move_sunflare != null and w.move_sunflare.unlocked:
 					w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 25.0)
+			if beacon.region != null and beacon.region.has_method("get_enemies"):
+				var ev: Variant = beacon.region.call("get_enemies")
+				if ev is Array:
+					for e_v: Variant in (ev as Array):
+						if e_v is LxEnemyBrain and is_instance_valid(e_v):
+							var e: LxEnemyBrain = e_v as LxEnemyBrain
+							if e.is_alive() and not e.is_boss and e.pos.distance_to(pos) <= 140.0:
+								e.knock += (e.pos - pos).normalized() * 110.0
 			if Lx.audio != null:
 				Lx.audio.play_sfx("forge_gust", pos, true)
-		7: # Lunar Mirror Obelisk aligns Moon toward radiant Full Silver Moon!
+		7: # Lunar Mirror Obelisk aligns Moon toward radiant Full Silver Moon & links silver ley-lines!
 			if br != null and is_instance_valid(br):
 				br.lunar_phase = 1.0
 				br.clock = 0.0

@@ -373,6 +373,51 @@ func add_permanent_updraft(at: Vector2) -> void:
 	_rules._updrafts.append({"pos": at, "r": 20.0, "cd": 0.0})
 
 
+func spawn_drift_shards_near(origin: Vector2, count: int = 2) -> void:
+	for k: int in range(count):
+		if _drift_shards.size() >= 4:
+			break
+		var ang: float = float(k) * PI + 0.65
+		var cand: Vector2 = (origin + Vector2(cos(ang) * 28.0, sin(ang) * 20.0)).round()
+		_drift_shards.append({"pos": cand, "age": 0.0, "life": 16.0})
+
+
+func _draw_beacon_ley_lines(col_a: Color, col_b: Color, show_next_guide: bool) -> void:
+	if _rules == null or _rules.is_dungeon or _region == null or not _region.has_method("get_interactables"):
+		return
+	var items_v: Variant = _region.call("get_interactables")
+	if not (items_v is Array):
+		return
+	var lit_pts: Array[Vector2] = []
+	var unlit_pts: Array[Vector2] = []
+	for it: Variant in (items_v as Array):
+		if it is LxBeacon and is_instance_valid(it):
+			var b: LxBeacon = it as LxBeacon
+			if b.active:
+				if b.lit:
+					lit_pts.append(b.pos + Vector2(0.0, -12.0))
+				else:
+					unlit_pts.append(b.pos + Vector2(0.0, -12.0))
+	if lit_pts.is_empty():
+		return
+	var a_line: float = 0.24 if LxHudFx.flash_reduced() else (0.34 + 0.12 * sin(_clock * 2.4))
+	for i: int in range(lit_pts.size()):
+		for j: int in range(i + 1, lit_pts.size()):
+			draw_line(lit_pts[i], lit_pts[j], Color(col_a, a_line), 1.4)
+			var u: float = fposmod(_clock * 0.35 + float(i + j) * 0.23, 1.0)
+			var mp: Vector2 = lit_pts[i].lerp(lit_pts[j], u).round()
+			if _on_screen(mp):
+				draw_rect(Rect2(mp - Vector2.ONE, Vector2(2.0, 2.0)), Color(col_b, a_line * 1.8))
+	if show_next_guide and not unlit_pts.is_empty():
+		var src: Vector2 = lit_pts[lit_pts.size() - 1]
+		var dst: Vector2 = unlit_pts[0]
+		var u2: float = fposmod(_clock * 0.55, 1.0)
+		var gp: Vector2 = src.lerp(dst, u2).round()
+		if _on_screen(gp):
+			draw_rect(Rect2(gp - Vector2.ONE, Vector2(2.0, 2.0)), Color(col_b, 0.78))
+			draw_line(src.lerp(dst, maxf(0.0, u2 - 0.08)), gp, Color(col_a, 0.45), 1.0)
+
+
 func _draw() -> void:
 	if _rules == null or not is_instance_valid(_rules):
 		return
@@ -385,10 +430,12 @@ func _draw() -> void:
 		4:
 			_draw_tailwind_ribbons(fred)
 		5:
+			_draw_beacon_ley_lines(PAL["sky"] as Color, PAL["gold"] as Color, true)
 			_draw_star_crystals(fred)
 		6:
 			_draw_molten_orbit(fred)
 		7:
+			_draw_beacon_ley_lines(PAL["sky"] as Color, PAL["ice"] as Color, false)
 			_draw_mirror_echo(fred)
 		8:
 			_draw_eclipse_seals(fred)

@@ -178,8 +178,8 @@ func _draw_invite_ring(front: bool) -> void:
 	var pulse: float = sin(_clock * 3.0) * 1.2
 	var rx: float = 17.5 + pulse
 	var ry: float = 5.5 + pulse * 0.3
-	var c_gold: Color = PAL["gold"] as Color
-	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = LxBiomePalette.col(island_id, "glow")
+	var c_apr: Color = LxBiomePalette.col(island_id, "hi")
 	for i: int in range(12):
 		var a: float = _clock * 0.65 + (TAU * float(i)) / 12.0
 		var sa: float = sin(a)
@@ -191,8 +191,8 @@ func _draw_invite_ring(front: bool) -> void:
 
 
 func _draw_ready_sparks() -> void:
-	var c_gold: Color = PAL["gold"] as Color
-	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = LxBiomePalette.col(island_id, "glow")
+	var c_apr: Color = LxBiomePalette.col(island_id, "hi")
 	for i: int in range(3):
 		var t: float = fmod(_clock * 0.62 + float(i) * 0.33, 1.0)
 		var px: float = roundf(sin(_clock * 2.1 + float(i) * 2.2) * 4.5)
