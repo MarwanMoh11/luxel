@@ -46,6 +46,7 @@ var _trans_fade: float = 0.0
 var _trans_speed: float = 4.5
 var _phase_flash: float = 0.0
 var _focus_flash: float = 0.0
+var _beacon_lift: float = 0.0
 var _burst_lights: Array[Dictionary] = []
 var _bound_events: LxEventBus = null
 
@@ -165,10 +166,13 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 
 	var cam_center: Vector2 = Lx.camera.global_position if (Lx.camera != null and is_instance_valid(Lx.camera)) else view_sz * 0.5
 	var relit_ow: bool = (not wave_active) and region != null and (not region.is_dungeon) and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(region.current_island_id)
+	var lit_b: int = 0 if (relit_ow or wave_active) else _lit_beacon_count(region)
+	var target_lift: float = 0.14 if relit_ow else (0.032 * float(lit_b))
+	_beacon_lift = move_toward(_beacon_lift, target_lift, dt * 0.16) if dt > 0.0 else target_lift
 	var b_off: float = LxBiomeRules.active_instance.get_darkness_offset() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.0
 	var b_phase: float = LxBiomeRules.active_instance.get_shader_phase() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.5
 	var b_id: int = region.current_island_id if (region != null and region.current_island_id > 0) else 1
-	var eff_dark: float = clampf(darkness_strength + b_off - (0.14 if relit_ow else 0.0), 0.0, 0.88)
+	var eff_dark: float = clampf(darkness_strength + b_off - _beacon_lift, 0.0, 0.88)
 	_mat.set_shader_parameter("cam_origin", (cam_center - view_sz * 0.5).round())
 	_mat.set_shader_parameter("view_size", view_sz)
 	_mat.set_shader_parameter("darkness_strength", eff_dark)
@@ -332,8 +336,13 @@ func _update_biome_tint(dt: float, region: LxRegionLoader) -> void:
 	elif Lx.state != null and is_instance_valid(Lx.state) and Lx.state.island_id > 0:
 		isl_id = Lx.state.island_id
 	var desired: Vector3 = BIOME_TINTS.get(clampi(isl_id, 1, 8), DEFAULT_TINT) as Vector3
-	if region != null and (not region.is_dungeon) and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(isl_id):
-		desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.38)
+	if region != null and not region.is_dungeon:
+		if Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(isl_id):
+			desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.38)
+		else:
+			var lit_b: int = _lit_beacon_count(region)
+			if lit_b > 0:
+				desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.085 * float(lit_b))
 	if not _tint_ready:
 		_current_tint = desired
 		_from_tint = desired
@@ -348,6 +357,19 @@ func _update_biome_tint(dt: float, region: LxRegionLoader) -> void:
 	if _tint_t < 1.0 and dt > 0.0:
 		_tint_t = minf(1.0, _tint_t + dt / TINT_LERP_S)
 		_current_tint = _from_tint.lerp(_target_tint, _tint_t * _tint_t * (3.0 - 2.0 * _tint_t))
+
+func _lit_beacon_count(region: LxRegionLoader) -> int:
+	if region == null or region.is_dungeon or not region.has_method("get_interactables"):
+		return 0
+	var items_v: Variant = region.call("get_interactables")
+	if not (items_v is Array):
+		return 0
+	var n: int = 0
+	for it: Variant in (items_v as Array):
+		if it is LxBeacon and is_instance_valid(it) and (it as LxBeacon).lit:
+			n += 1
+	return mini(n, 3)
+
 
 func _tick_burst_lights(dt: float) -> void:
 	if dt <= 0.0 or _burst_lights.is_empty():

@@ -319,6 +319,16 @@ func _is_relit() -> bool:
 	return Lx.state != null and Lx.state.relit_islands.has(_island_id)
 
 
+func _lit_beacon_count() -> int:
+	if _is_relit():
+		return 3
+	var n: int = 0
+	for bn: Node in _beacons:
+		if bn is LxBeacon and is_instance_valid(bn) and (bn as LxBeacon).lit:
+			n += 1
+	return mini(n, 3)
+
+
 func _in_view(p: Vector2, pad: float = 0.0) -> bool:
 	return absf(p.x - _cam_center.x) <= (HALF_W + pad) and absf(p.y - _cam_center.y) <= (HALF_H + pad)
 
@@ -394,18 +404,19 @@ func _draw_bell_isle(fred: bool, relit: bool) -> void:
 
 func _draw_tidewater_lighthouse(fred: bool, relit: bool) -> void:
 	# Grand working Overworld Lighthouse Fresnel beam sweeping slowly across the harbor!
+	var lit_n: int = _lit_beacon_count()
 	var origins: Array[Vector2] = [_door_pos + Vector2(0.0, -18.0), Vector2(760.0, 168.0)]
 	for idx: int in range(origins.size()):
 		var orig: Vector2 = origins[idx]
 		if not _in_view(orig, 260.0):
 			continue
 		var ang: float = PI + sin(_clock * (0.34 if idx == 0 else -0.44) + float(idx) * 1.4) * 0.85
-		var span: float = 250.0 if idx == 0 else 145.0
-		var cone: float = 0.22 if idx == 0 else 0.16
+		var span: float = (250.0 if idx == 0 else 145.0) * (1.0 + float(lit_n) * 0.07)
+		var cone: float = (0.22 if idx == 0 else 0.16) + float(lit_n) * 0.015
 		var p1: Vector2 = (orig + Vector2.from_angle(ang - cone) * span).round()
 		var p2: Vector2 = (orig + Vector2.from_angle(ang + cone) * span).round()
 		var beam_c: Color = (PAL["gold"] if relit else PAL["ice"]) as Color
-		var a: float = (0.07 if fred else 0.13) if idx == 0 else (0.05 if fred else 0.09)
+		var a: float = ((0.07 if fred else 0.13) if idx == 0 else (0.05 if fred else 0.09)) * (1.0 + float(lit_n) * 0.14)
 		draw_colored_polygon(PackedVector2Array([orig.round(), p1, p2]), Color(beam_c, a))
 		var mid_end: Vector2 = (orig + Vector2.from_angle(ang) * span).round()
 		draw_line(orig.round(), mid_end, Color((PAL["cream"] if relit else PAL["sky"]) as Color, a * 1.6), 1.0)
@@ -441,14 +452,15 @@ func _draw_thornwood_roots(fred: bool, relit: bool) -> void:
 
 func _draw_mirefen_prism_koi(fred: bool, relit: bool) -> void:
 	# Stained-glass rose/gold/ice prism rays radiating from Sunken Conservatory dome
+	var lit_4: int = _lit_beacon_count()
 	if _in_view(_door_pos, 190.0):
 		var c: Vector2 = _door_pos.round()
 		var cols: Array[String] = ["rose", "gold", "ice"]
-		var a: float = 0.06 if fred else (0.13 if relit else 0.09)
+		var a: float = (0.06 if fred else (0.13 if relit else 0.09)) * (1.0 + float(lit_4) * 0.12)
 		for k: int in range(3):
 			var ang: float = PI * 0.30 + float(k) * 0.22 + sin(_clock * 0.35 + float(k)) * 0.08
-			var p1: Vector2 = (c + Vector2.from_angle(ang - 0.08) * 185.0).round()
-			var p2: Vector2 = (c + Vector2.from_angle(ang + 0.08) * 185.0).round()
+			var p1: Vector2 = (c + Vector2.from_angle(ang - 0.08) * (185.0 + float(lit_4) * 12.0)).round()
+			var p2: Vector2 = (c + Vector2.from_angle(ang + 0.08) * (185.0 + float(lit_4) * 12.0)).round()
 			draw_colored_polygon(PackedVector2Array([c, p1, p2]), Color(PAL[cols[k]] as Color, a))
 	# Gliding luminous koi fish silhouettes beneath the lotus lagoon
 	for k: Dictionary in _koi:
@@ -467,15 +479,16 @@ func _draw_mirefen_prism_koi(fred: bool, relit: bool) -> void:
 
 func _draw_starfall_orrery(fred: bool, relit: bool) -> void:
 	# Colossal counter-rotating brass celestial rings around the Grand Orrery core!
+	var lit_5: int = _lit_beacon_count()
 	var c: Vector2 = _door_pos.round()
-	var a_ring: float = 0.20 if fred else (0.42 if relit else 0.30)
+	var a_ring: float = (0.20 if fred else (0.42 if relit else 0.30)) * (1.0 + float(lit_5) * 0.09)
 	var radii: Array[float] = [148.0, 260.0, 368.0]
 	var spds: Array[float] = [0.16, -0.11, 0.07]
 	for idx: int in range(radii.size()):
 		var rad: float = radii[idx]
 		if not _in_view(c, rad + 24.0):
 			continue
-		var rot: float = _clock * spds[idx] + float(idx) * 1.1
+		var rot: float = _clock * spds[idx] * (1.0 + float(lit_5) * 0.14) + float(idx) * 1.1
 		var rc: Color = (PAL["gold"] if (relit or idx != 1) else PAL["sky"]) as Color
 		for seg: int in range(4):
 			var a0: float = rot + float(seg) * (PI * 0.5)
@@ -512,7 +525,7 @@ func _draw_ashen_fissures(fred: bool, relit: bool) -> void:
 
 func _draw_moon_shoals_reflection(fred: bool, relit: bool) -> void:
 	# Twin shimmering Reflected Moon Discs floating strictly inside the west & east open mirror-lagoon basins!
-	var ph: float = 1.0 if relit else clampf(_rules.lunar_phase, 0.0, 1.0)
+	var ph: float = 1.0 if relit else clampf(_rules.lunar_phase + float(_lit_beacon_count()) * 0.10, 0.0, 1.0)
 	var r: float = 42.0
 	var a_disc: float = (0.14 + 0.24 * ph) * (0.75 if fred else 1.0)
 	var disc_c: Color = (PAL["gold"] if relit else (PAL["ice"] if ph > 0.5 else PAL["sky"])) as Color
