@@ -446,36 +446,32 @@ func _draw_muzzle_star(wick: LxWick, hand_pos: Vector2, flash_red: bool) -> void
 
 
 func _draw_biome_buff_halo(wick: LxWick, clock_t: float, flash_red: bool) -> void:
-	# Diegetic combat buff indicators right on Wick for each island's signature empowerment
+	# Sleek inner body halo arcs framing Wick during live biome empowerments (layers cleanly beneath orbiting pips)
 	var br: LxBiomeRules = LxBiomeRules.active_instance
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	var center := Vector2(0.0, -6.0)
-	var spd: float = 1.4 if flash_red else 3.4
+	var spd: float = 1.2 if flash_red else 2.8
+	var a_hi: float = 0.45 if flash_red else 0.68
 	if br != null and is_instance_valid(br):
-		if br.island_id == 2 and br.beam_buff_t > 0.0: # Fresnel Focus (+25% Bolt / +20% Beam)
+		if br.island_id == 2 and br.beam_buff_t > 0.0: # Fresnel Focus
 			var a2: float = clock_t * spd
-			for k: int in range(2):
-				var p2: Vector2 = (center + Vector2(cos(a2 + float(k) * PI) * 10.0, sin(a2 + float(k) * PI) * 5.0)).round()
-				wick.draw_rect(Rect2(p2, Vector2(2.0, 1.0)), LxWick.PAL_GOLD if k == 0 else LxWick.PAL_ICE)
-		elif br.island_id == 5 and br.starlight_surge_t > 0.0: # Starlight Surge (faster Bolts & fire rate)
-			var a5: float = clock_t * (spd * 1.15)
-			for k: int in range(3):
-				var p5: Vector2 = (center + Vector2(cos(a5 + float(k) * (TAU / 3.0)) * 10.5, sin(a5 + float(k) * (TAU / 3.0)) * 5.5)).round()
-				wick.draw_rect(Rect2(p5, Vector2.ONE), LxWick.PAL_GOLD if k % 2 == 0 else LxWick.PAL_SKY)
-		elif br.island_id == 7 and br.lunar_phase > 0.65: # Full Silver Moon (+20% Bolt + Mirror Echo)
-			wick.draw_arc(center + Vector2(0.0, -4.0), 8.0, PI * 1.15, PI * 1.85, 8, Color(LxWick.PAL_ICE, 0.55 if flash_red else 0.78), 1.0)
+			wick.draw_arc(center, 8.5, a2, a2 + 1.3, 8, Color(LxWick.PAL_GOLD, a_hi), 1.0)
+			wick.draw_arc(center, 8.5, a2 + PI, a2 + PI + 1.3, 8, Color(LxWick.PAL_ICE, a_hi), 1.0)
+		elif br.island_id == 5 and br.starlight_surge_t > 0.0: # Starlight Surge
+			var a5: float = -clock_t * spd
+			wick.draw_arc(center, 8.5, a5, a5 + 1.5, 8, Color(LxWick.PAL_GOLD, a_hi), 1.0)
+			wick.draw_arc(center, 8.5, a5 + PI, a5 + PI + 1.5, 8, Color(LxWick.PAL_SKY, a_hi), 1.0)
+		elif br.island_id == 7 and br.lunar_phase > 0.65: # Full Silver Moon
+			wick.draw_arc(center + Vector2(0.0, -3.0), 7.5, PI * 1.15, PI * 1.85, 8, Color(LxWick.PAL_ICE, a_hi), 1.0)
 	if bm != null and is_instance_valid(bm):
-		if bm.tailwind_t > 0.0: # Island 4 Rose Tailwind (+22% Wings glide speed)
+		if bm.tailwind_t > 0.0: # Island 4 Rose Tailwind
 			var a4: float = clock_t * spd
-			wick.draw_arc(center, 10.0, a4, a4 + 1.4, 8, Color(LxPalette.PAL["rose"] as Color, 0.62), 1.0)
-			wick.draw_arc(center, 10.0, a4 + PI, a4 + PI + 1.2, 8, Color(LxWick.PAL_ICE, 0.58), 1.0)
-		if bm.molten_charges > 0: # Island 6 Molten Overdrive (1..3 piercing +35% bolts)
-			var n6: int = clampi(bm.molten_charges, 1, 3)
+			wick.draw_arc(center, 8.5, a4, a4 + 1.4, 8, Color(LxPalette.PAL["rose"] as Color, a_hi), 1.0)
+			wick.draw_arc(center, 8.5, a4 + PI, a4 + PI + 1.2, 8, Color(LxWick.PAL_ICE, a_hi), 1.0)
+		if bm.molten_charges > 0: # Island 6 Molten Overdrive
 			var a6: float = clock_t * spd
-			for k: int in range(n6):
-				var p6: Vector2 = (center + Vector2(cos(a6 + float(k) * (TAU / float(n6))) * 9.5, sin(a6 + float(k) * (TAU / float(n6))) * 5.0)).round()
-				wick.draw_rect(Rect2(p6 - Vector2.ONE, Vector2(2.0, 2.0)), LxWick.PAL_CORAL)
-				wick.draw_rect(Rect2(p6, Vector2.ONE), LxWick.PAL_GOLD)
+			wick.draw_arc(center, 8.0, a6, a6 + 1.1, 8, Color(LxWick.PAL_CORAL, a_hi), 1.0)
+			wick.draw_arc(center, 8.0, a6 + PI, a6 + PI + 1.1, 8, Color(LxWick.PAL_GOLD, a_hi), 1.0)
 
 func _draw_fallback_moth(wick: LxWick, base: Vector2, hit_white: bool, alpha: float, lan_in_hand: bool, hand_pos: Vector2) -> void:
 	var c_out := Color(LxWick.PAL_NIGHT, alpha)

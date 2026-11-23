@@ -21,6 +21,7 @@ var _moon_mirror_on: bool = false
 var _wick_pos: Vector2 = Vector2.ZERO
 var _wick_alive: bool = false
 var _grace_heal_t: float = 0.0
+var _room_cleared_fx: bool = false
 
 
 func _ready() -> void:
@@ -70,6 +71,7 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_last_wpos = Vector2.ZERO
 	_moon_mirror_on = false
 	_grace_heal_t = 0.0
+	_room_cleared_fx = false
 	queue_redraw()
 
 
@@ -265,7 +267,48 @@ func _on_enemy_killed(enemy: Object, _kind: String, pos: Vector2, _opened_kill: 
 		if w.move_sunflare != null and w.move_sunflare.unlocked:
 			w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 8.0)
 			_trails.append({"pos": pos.lerp(w.global_position, 0.5), "age": 0.0, "dur": 0.45, "col": "gold"})
+	# Biome-voiced Dungeon Combat Chamber Clear Crescendo when the final non-boss foe falls
+	if not is_boss_kill and not _room_cleared_fx and _rules != null and _rules.is_dungeon:
+		_check_dungeon_chamber_clear(pos, k_glow, k_mid)
 	queue_redraw()
+
+
+func _check_dungeon_chamber_clear(kill_pos: Vector2, k_glow: String, k_mid: String) -> void:
+	if _region == null or not is_instance_valid(_region) or not _region.has_method("get_enemies"):
+		return
+	var rid: String = str(_region.get("current_region_id")) if _region.get("current_region_id") != null else ""
+	if LxBiomeBossSynergy.MINIBOSS_REGIONS.has(rid) or LxBiomeBossSynergy.BOSS_REGIONS.has(rid):
+		return
+	var enemies_v: Variant = _region.call("get_enemies")
+	if not (enemies_v is Array):
+		return
+	for e_v: Variant in (enemies_v as Array):
+		if e_v is LxEnemyBrain and is_instance_valid(e_v) and (e_v as LxEnemyBrain).is_alive():
+			return
+	_room_cleared_fx = true
+	var c: Vector2 = _rules.bounds.get_center()
+	_ripples.append({"pos": c, "age": 0.0, "dur": 0.56, "r0": 8.0, "r1": 62.0, "col": k_glow})
+	_ripples.append({"pos": c, "age": 0.0, "dur": 0.48, "r0": 10.0, "r1": 40.0, "col": "cream"})
+	for k: int in range(8):
+		var ang: float = float(k) * (TAU / 8.0)
+		_trails.append({
+			"pos": c + Vector2(cos(ang) * 14.0, sin(ang) * 10.0),
+			"vel": Vector2(cos(ang) * 20.0, -18.0 + sin(ang) * 8.0),
+			"age": 0.0, "dur": 0.52,
+			"col": "cream" if k % 3 == 0 else (k_glow if k % 2 == 0 else k_mid),
+		})
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(c, 118.0, 0.78 if LxHudFx.flash_reduced() else 1.15, 0.55)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM if _island_id == 3 else LxGroundDecals.Kind.PRISM_STAR, kill_pos, 14.0, 7.0)
+	if Lx.audio != null:
+		var sfx_id: String = "prop_chime"
+		match _island_id:
+			2: sfx_id = "lighthouse_toll"
+			5: sfx_id = "clockwork_chime"
+			6: sfx_id = "forge_gust"
+			8: sfx_id = "bell_toll"
+		Lx.audio.play_sfx(sfx_id, c, true)
 
 
 func _draw() -> void:
