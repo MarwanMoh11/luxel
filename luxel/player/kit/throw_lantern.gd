@@ -218,8 +218,13 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 	var was_emp: bool = _zip_empowered
 	_zip_empowered = false
 
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
 	wick.spawn_ring(center, 3.0, burst_r, 0.22, LxWick.PAL_CREAM if was_emp else LxWick.PAL_GOLD, 1.8 if was_emp else 1.5)
+	wick.spawn_ring(center, 5.0, burst_r + 6.0, 0.26, LxBiomePalette.col(isl, "glow"), 1.0)
 	wick.spawn_sparks(center, zip_dir, 11 if was_emp else 8, LxWick.PAL_CREAM, 30.0, 95.0, 0.20)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		var dk: int = LxGroundDecals.Kind.PRISM_STAR if isl in [2, 5, 7] else LxGroundDecals.Kind.SCORCH
+		LxGroundDecals.active_instance.add_decal(dk, center + Vector2(0.0, 3.0), 10.0, 5.0)
 	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
 		Lx.camera.call("add_kick", zip_dir, 2.2 if was_emp else 1.6)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):

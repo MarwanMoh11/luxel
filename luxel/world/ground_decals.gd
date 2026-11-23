@@ -9,7 +9,7 @@ const MAX_DECALS: int = 44
 const HALF_W: float = 188.0
 const HALF_H: float = 118.0
 
-enum Kind { FOOTSTEP, RIPPLE, SCORCH, CRATER, PRISM_STAR }
+enum Kind { FOOTSTEP, RIPPLE, SCORCH, CRATER, PRISM_STAR, BLOSSOM }
 
 static var active_instance: LxGroundDecals = null
 
@@ -54,6 +54,7 @@ func _set_events(ev: LxEventBus, bind: bool) -> void:
 		[&"boss_defeated", _on_boss_defeated],
 		[&"seal_broken", _on_seal_broken],
 		[&"beacon_lit", _on_beacon_lit],
+		[&"player_healed", _on_player_healed],
 	]
 	for pair: Array in pairs:
 		var sig: StringName = pair[0] as StringName
@@ -166,7 +167,14 @@ func _on_seal_broken(_isl: int, _seal_id: String) -> void:
 
 func _on_beacon_lit(_isl: int, _bid: String) -> void:
 	if Lx.player is Node2D and is_instance_valid(Lx.player):
-		add_decal(Kind.PRISM_STAR, (Lx.player as Node2D).global_position, 14.0, 7.5)
+		var p: Vector2 = (Lx.player as Node2D).global_position
+		add_decal(Kind.PRISM_STAR, p, 14.0, 7.5)
+		add_decal(Kind.BLOSSOM, p, 16.0, 9.0)
+
+
+func _on_player_healed(_amount: float) -> void:
+	if Lx.player is Node2D and is_instance_valid(Lx.player):
+		add_decal(Kind.BLOSSOM, (Lx.player as Node2D).global_position + Vector2(0.0, 4.0), 11.0, 4.5)
 
 
 func _step_color() -> Color:
@@ -206,21 +214,30 @@ func _draw() -> void:
 				draw_arc(p, rr, 0.0, TAU, 14, Color(PAL["ice"] as Color, a * 0.72), 1.0)
 			Kind.SCORCH:
 				draw_circle(p, r, Color(PAL["void"] as Color, a * 0.36))
-				draw_arc(p, r * 0.85, 0.0, TAU, 16, Color((PAL["coral"] if _island_id == 6 else PAL["plum"]) as Color, a * 0.42), 1.0)
-				if u < 0.32:
-					draw_arc(p, r * 0.48, 0.0, TAU, 12, Color(PAL["apricot"] as Color, (1.0 - u / 0.32) * 0.65), 1.0)
+				draw_arc(p, r * 0.85, 0.0, TAU, 16, Color(LxBiomePalette.col(_island_id, "mid"), a * 0.48), 1.0)
+				if u < 0.35:
+					draw_arc(p, r * 0.48, 0.0, TAU, 12, Color(LxBiomePalette.col(_island_id, "hi"), (1.0 - u / 0.35) * 0.68), 1.0)
 			Kind.CRATER:
 				draw_circle(p, r * 0.78, Color(PAL["void"] as Color, a * 0.46))
-				draw_arc(p, r, 0.0, TAU, 18, Color(PAL["dusk"] as Color, a * 0.65), 1.4)
+				draw_arc(p, r, 0.0, TAU, 18, Color(LxBiomePalette.col(_island_id, "dark"), a * 0.72), 1.4)
 				var rot: float = float(d["rot"])
 				for k: int in range(6):
 					var ang: float = rot + float(k) * (TAU / 6.0)
 					var v: Vector2 = Vector2.from_angle(ang)
-					draw_line((p + v * (r * 0.35)).round(), (p + v * (r * 1.18)).round(), Color(PAL["night"] as Color, a * 0.75), 1.0)
+					draw_line((p + v * (r * 0.35)).round(), (p + v * (r * 1.18)).round(), Color(LxBiomePalette.col(_island_id, "mid"), a * 0.55), 1.0)
 			Kind.PRISM_STAR:
-				var col_s: Color = (PAL["ice"] if _island_id in [2, 7] else PAL["gold"]) as Color
-				draw_arc(p, r * 0.85, 0.0, TAU, 16, Color(col_s, a * 0.48), 1.0)
+				var col_s: Color = LxBiomePalette.col(_island_id, "glow")
+				draw_arc(p, r * 0.85, 0.0, TAU, 16, Color(col_s, a * 0.52), 1.0)
 				for k: int in range(4):
 					var ang: float = float(k) * (PI * 0.25)
 					var v: Vector2 = Vector2.from_angle(ang) * r
 					draw_line((p - v).round(), (p + v).round(), Color(PAL["cream"] as Color, a * 0.55), 1.0)
+			Kind.BLOSSOM:
+				var col_b: Color = LxBiomePalette.col(_island_id, "hi")
+				var col_c: Color = LxBiomePalette.col(_island_id, "glow")
+				var rot_b: float = float(d["rot"])
+				for k: int in range(6):
+					var ang: float = rot_b + float(k) * (TAU / 6.0)
+					var pt: Vector2 = (p + Vector2.from_angle(ang) * (r * (0.45 + 0.55 * minf(1.0, u * 3.0)))).round()
+					draw_rect(Rect2(pt - Vector2.ONE, Vector2(2.0, 2.0)), Color(col_b if k % 2 == 0 else col_c, a * 0.62))
+				draw_arc(p, roundf(r * 0.55), 0.0, TAU, 12, Color(PAL["cream"] as Color, a * 0.35), 1.0)

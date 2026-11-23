@@ -521,8 +521,8 @@ func _gust_particles(origin: Vector2, radius: float, strength: float) -> void:
 
 func _on_boss_phase_changed(boss_id: String, _phase: int) -> void:
 	var p: Vector2 = _boss_pos(boss_id)
-	_spawn_ring(p, 6.0, 48.0, 0.44, "coral", "wine", false)
-	_spawn_ring(p, 4.0, 38.0, 0.38, "cream", "gold", true)
+	_spawn_ring(p, 6.0, 48.0, 0.44, LxBiomePalette.key(_island_id, "mid"), "wine", false)
+	_spawn_ring(p, 4.0, 38.0, 0.38, "cream", LxBiomePalette.key(_island_id, "hi"), true)
 	_spawn_sparks(p, 10, Ramp.CORAL, 46.0, 108.0, 0.28, 0.52, 3.4, 14.0, 3)
 	_spawn_sparks(p, 8, Ramp.GOLD, 40.0, 92.0, 0.30, 0.55, 3.2, 22.0, 3)
 	_gust_particles(p, 96.0, 95.0)
@@ -541,9 +541,11 @@ func _grand_burst(pos: Vector2, slowmo: bool = false) -> void:
 		Lx.hitstop.call("trigger_slowmo", 0.34, 0.42)
 
 func _discovery_burst(pos: Vector2, warm: bool) -> void:
-	_spawn_pillar(pos, 0.65, 10.0, 88.0, "cream", "gold" if warm else "ice", "apricot" if warm else "sky")
+	var k_hi: String = LxBiomePalette.key(_island_id, "hi") if warm else LxBiomePalette.key(_island_id, "glow")
+	var k_mid: String = LxBiomePalette.key(_island_id, "mid")
+	_spawn_pillar(pos, 0.65, 10.0, 88.0, "cream", k_hi, k_mid)
 	_spawn_sparks(pos, 12, Ramp.GOLD if warm else Ramp.ICE, 18.0, 56.0, 0.36, 0.68, 2.6, 42.0, 2, Vector2.UP, 6.0)
-	_spawn_ring(pos, 4.0, 32.0, 0.40, "cream", "gold" if warm else "sky", not warm)
+	_spawn_ring(pos, 4.0, 32.0, 0.40, "cream", k_hi, not warm)
 	_gust_particles(pos, 72.0, 68.0)
 	_emit_juice(0.25)
 
