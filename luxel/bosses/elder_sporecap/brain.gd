@@ -231,7 +231,7 @@ func _draw_extra(off: Vector2) -> void:
 			draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.72, PAL["gold"] as Color)
 			draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.35, PAL["cream"] as Color)
 		else:
-			var vr: float = body_radius + 4.0 + 0.8 * sin(anim_t * 14.0)
+			var vr: float = body_radius + 4.0 + (0.0 if LxHudFx.flash_reduced() else 0.8 * sin(anim_t * 14.0))
 			draw_arc(c, vr + 1.4, 0.0, TAU, 24, PAL["apricot"] as Color, 1.2)
 			draw_arc(c, vr, 0.0, TAU, 24, PAL["gold"] as Color, 1.8)
 			for vi: int in range(4):

@@ -133,7 +133,7 @@ func _draw_extra(off: Vector2) -> void:
 	var c := Vector2(roundf(off.x), roundf(off.y))
 	if sub_state == SubState.GRAB:
 		var spin: float = anim_t * 6.5
-		var vr: float = roundf(body_radius + 5.5 + sin(anim_t * 16.0) * 1.0)
+		var vr: float = roundf(body_radius + 5.5 + (0.0 if LxHudFx.flash_reduced() else sin(anim_t * 16.0) * 1.0))
 		for vi: int in range(3):
 			var a0: float = spin + float(vi) * (TAU / 3.0)
 			draw_arc(c, vr + 1.5, a0, a0 + 1.15, 8, PAL["night"] as Color, 2.2)

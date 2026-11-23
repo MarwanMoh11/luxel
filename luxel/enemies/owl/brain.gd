@@ -422,7 +422,7 @@ func _draw_extra(off: Vector2) -> void:
 				var dp2 := Vector2(roundf(c.x + dir.x * minf(d0 + 2.0, dist - 3.0)), roundf(c.y + dir.y * minf(d0 + 2.0, dist - 3.0)))
 				draw_line(dp, dp2, main_c if (di % 2 == 0) else hi_c, 1.0)
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var rad: float = roundf(lerpf(7.0, 3.5, prog) + sin(anim_t * 20.0) * 0.8)
+		var rad: float = roundf(lerpf(7.0, 3.5, prog) + (0.0 if LxHudFx.flash_reduced() else sin(anim_t * 20.0) * 0.8))
 		var rot: float = anim_t * 2.8
 		for ci: int in range(4):
 			var ca: float = rot + float(ci) * (PI * 0.5)
@@ -435,7 +435,7 @@ func _draw_extra(off: Vector2) -> void:
 		var perp := Vector2(-sin(facing), cos(facing))
 		for ti: int in range(-1, 2, 2):
 			var tp := Vector2(roundf(c.x + perp.x * (float(ti) * 3.0)), roundf(c.y + perp.y * (float(ti) * 3.0) + 3.0))
-			draw_rect(Rect2(tp, Vector2(1.0, 1.0)), hi_c if ((int(anim_t * 12.0) + ti) % 2 == 0) else main_c, true)
+			draw_rect(Rect2(tp, Vector2(1.0, 1.0)), hi_c if (LxHudFx.flash_reduced() or (int(anim_t * 12.0) + ti) % 2 == 0) else main_c, true)
 	elif state == State.COMMIT:
 		var perp := Vector2(-dive_dir.y, dive_dir.x)
 		draw_line(c, Vector2(roundf(c.x - dive_dir.x * 18.0), roundf(c.y - dive_dir.y * 18.0)), PAL["deep"] as Color, 2.2)

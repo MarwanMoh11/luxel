@@ -156,7 +156,7 @@ func _draw() -> void:
 		draw_arc(c, r, 0.0, TAU, 16, PAL["coral"] as Color, 1.5)
 		draw_arc(c, maxf(2.0, r - 2.0), 0.0, TAU, 12, (PAL["cream"] if state_timer <= 0.14 else PAL["apricot"]) as Color, 1.0)
 	elif state == State.COMMIT:
-		var br: float = roundf(body_radius + 4.5 + sin(anim_t * 22.0) * 1.0)
+		var br: float = roundf(body_radius + 4.5 + (0.0 if LxHudFx.flash_reduced() else sin(anim_t * 22.0) * 1.0))
 		draw_arc(c, br, 0.0, TAU, 14, PAL["apricot"] as Color, 1.8)
 		draw_arc(c, maxf(2.0, br - 2.0), 0.0, TAU, 12, PAL["gold"] as Color, 1.0)
 
