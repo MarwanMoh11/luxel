@@ -27,6 +27,7 @@ var _beacons: Array[Node] = []
 var _koi: Array[Dictionary] = []
 var _wildlife: LxOverworldWildlife = null
 var _chimes: LxBellChimes = null
+var _discoveries: LxBiomeDiscoveries = null
 
 
 func _ready() -> void:
@@ -83,6 +84,12 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 		get_parent().add_child(_chimes)
 	if _chimes != null:
 		_chimes.configure(rules, region_node)
+	if _discoveries == null and get_parent() != null:
+		_discoveries = LxBiomeDiscoveries.new()
+		_discoveries.name = "BiomeDiscoveries"
+		get_parent().add_child(_discoveries)
+	if _discoveries != null:
+		_discoveries.configure(rules, region_node, _door_pos)
 	queue_redraw()
 
 
@@ -112,6 +119,8 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		_wildlife.tick(dt, cam_center)
 	if _chimes != null and is_instance_valid(_chimes):
 		_chimes.tick(dt, cam_center)
+	if _discoveries != null and is_instance_valid(_discoveries):
+		_discoveries.tick(dt, cam_center)
 	if not _active or dt <= 0.0:
 		return
 	_clock += dt
