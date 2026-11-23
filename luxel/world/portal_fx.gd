@@ -130,48 +130,74 @@ func _draw() -> void:
 		var kind: int = int(ex["kind"])
 		var pulse: float = 0.72 if fred else (0.62 + 0.38 * sin(_clock * 3.0 + c.x * 0.02))
 		if kind == 0:
-			_draw_bridge_portal(r, c, int(ex["next_isl"]), c_glow, c_cream, pulse, fred)
+			_draw_bridge_portal(r, c, int(ex["next_isl"]), c_glow, c_cream, pulse, fred, wp)
 		elif kind == 1:
-			_draw_dungeon_entrance(r, c, c_glow, c_hi, c_cream, pulse, fred)
+			_draw_dungeon_entrance(r, c, c_glow, c_hi, c_cream, pulse, fred, wp)
 		else:
 			_draw_room_threshold(r, c, c_glow, c_cream, pulse, wp)
 
 
-func _draw_bridge_portal(r: Rect2, c: Vector2, next_isl: int, col_a: Color, cream: Color, pulse: float, fred: bool) -> void:
+func _draw_bridge_portal(r: Rect2, c: Vector2, next_isl: int, col_a: Color, cream: Color, pulse: float, fred: bool, wp: Vector2) -> void:
 	var col_b: Color = LxBiomePalette.col(next_isl, "glow")
+	var col_b_hi: Color = LxBiomePalette.col(next_isl, "hi")
+	var prox: float = clampf(1.0 - c.distance_to(wp) / 96.0, 0.0, 1.0)
 	var rad: float = minf(maxf(r.size.x, r.size.y) * 0.45, 22.0)
-	draw_arc(c, roundf(rad), 0.0, TAU, 22, Color(col_a, 0.36 * pulse), 1.5)
-	draw_arc(c, roundf(maxf(6.0, rad - 5.0)), _clock * 0.8, _clock * 0.8 + PI * 1.4, 16, Color(col_b, 0.52 * pulse), 1.4)
+	draw_arc(c, roundf(rad), 0.0, TAU, 22, Color(col_a, (0.36 + prox * 0.22) * pulse), 1.5)
+	draw_arc(c, roundf(maxf(6.0, rad - 5.0)), _clock * 0.8, _clock * 0.8 + PI * 1.4, 16, Color(col_b, (0.52 + prox * 0.28) * pulse), 1.4)
+	if prox > 0.05:
+		draw_arc(c, roundf(rad + 4.0), -_clock * 0.45, -_clock * 0.45 + PI * 1.2, 18, Color(col_b_hi, 0.44 * prox * pulse), 1.0)
 	# Heraldic Biome Crest of the destination island gleaming at the Bridge of Light threshold!
-	LxHudFx.draw_biome_crest(self, next_isl, c, Color(col_b, 0.85 * pulse), Color(cream, 0.90))
+	LxHudFx.draw_biome_crest(self, next_isl, c, Color(col_b, (0.85 + prox * 0.12) * pulse), Color(cream, 0.90))
 	for k: int in range(4):
 		var u: float = fposmod(_clock * 0.75 + float(k) * 0.25, 1.0)
 		var mx: float = roundf(c.x + sin(_clock * 2.0 + float(k) * 1.7) * (rad * 0.55))
 		var my: float = roundf(c.y + 8.0 - u * 24.0)
 		draw_rect(Rect2(mx, my, 2.0 if (not fred and k % 2 == 0) else 1.0, 1.0), Color(cream if u < 0.35 else col_b, sin(u * PI) * 0.85))
+	# Destination-biome floating constellation embers streaming gently across the Bridge of Light
+	var stream_n: int = 2 if fred else 4
+	var horiz_b: bool = r.size.y >= r.size.x
+	for si: int in range(stream_n):
+		var su: float = fposmod(_clock * (0.32 if fred else 0.58) + float(si) * (1.0 / float(stream_n)), 1.0)
+		var sa: float = sin(su * PI) * (0.48 + prox * 0.38)
+		var off_s: float = lerpf(-rad - 4.0, rad + 6.0, su)
+		var perp_s: float = sin(_clock * 1.8 + float(si) * 2.1) * 7.0
+		var sp: Vector2 = (c + (Vector2(off_s, perp_s) if horiz_b else Vector2(perp_s, off_s))).round()
+		draw_rect(Rect2(sp, Vector2(2.0 if si % 2 == 0 else 1.0, 1.0)), Color(cream if su > 0.6 else col_b, sa))
 	# Beckoning destination-biome chevrons orbiting the Bridge of Light threshold
 	var ch_off: float = 0.0 if fred else roundf(sin(_clock * 3.0) * 2.0)
 	for side: float in [-1.0, 1.0]:
 		var tip := Vector2(roundf(c.x + side * (rad + 5.0 + ch_off)), roundf(c.y))
-		draw_line(tip, tip + Vector2(-side * 3.0, -3.0), Color(col_b, 0.72 * pulse), 1.0)
-		draw_line(tip, tip + Vector2(-side * 3.0, 3.0), Color(cream, 0.68 * pulse), 1.0)
+		draw_line(tip, tip + Vector2(-side * 3.0, -3.0), Color(col_b, (0.72 + prox * 0.20) * pulse), 1.0)
+		draw_line(tip, tip + Vector2(-side * 3.0, 3.0), Color(cream, (0.68 + prox * 0.22) * pulse), 1.0)
 
 
-func _draw_dungeon_entrance(r: Rect2, c: Vector2, col_g: Color, col_h: Color, cream: Color, pulse: float, fred: bool) -> void:
+func _draw_dungeon_entrance(r: Rect2, c: Vector2, col_g: Color, col_h: Color, cream: Color, pulse: float, fred: bool, wp: Vector2) -> void:
+	var prox: float = clampf(1.0 - c.distance_to(wp) / 88.0, 0.0, 1.0)
 	var w: float = minf(r.size.x, 32.0)
 	var x0: float = roundf(c.x - w * 0.5)
 	var y0: float = roundf(c.y - 6.0)
-	draw_rect(Rect2(x0, y0, w, 12.0), Color(col_h, 0.14 * pulse))
-	draw_rect(Rect2(x0, y0, w, 1.0), Color(col_g, 0.55 * pulse))
-	draw_rect(Rect2(x0, y0 + 11.0, w, 1.0), Color(col_g, 0.55 * pulse))
-	_draw_biome_gateway_frame(c, w, col_g, col_h, cream, pulse, fred)
-	LxHudFx.draw_biome_crest(self, _island_id, c, Color(col_g, 0.78 * pulse), Color(cream, 0.82))
+	draw_rect(Rect2(x0, y0, w, 12.0), Color(col_h, (0.14 + prox * 0.16) * pulse))
+	draw_rect(Rect2(x0, y0, w, 1.0), Color(col_g, (0.55 + prox * 0.30) * pulse))
+	draw_rect(Rect2(x0, y0 + 11.0, w, 1.0), Color(col_g, (0.55 + prox * 0.30) * pulse))
+	if prox > 0.05:
+		var hw_p: float = roundf(w * 0.5) + 3.0
+		var pa: float = (0.38 if fred else 0.56) * prox * pulse
+		# Proximity-awakening vertical invitation pillars & floor welcome chevron
+		draw_rect(Rect2(c.x - hw_p, y0 - 4.0, 1.0, 18.0), Color(col_g, pa))
+		draw_rect(Rect2(c.x + hw_p, y0 - 4.0, 1.0, 18.0), Color(col_g, pa))
+		draw_rect(Rect2(c.x - hw_p, y0 - 5.0, 2.0, 2.0), Color(cream, pa * 1.25))
+		draw_rect(Rect2(c.x + hw_p - 1.0, y0 - 5.0, 2.0, 2.0), Color(cream, pa * 1.25))
+		var ch_y: float = roundf(y0 + 15.0 - (0.0 if fred else fposmod(_clock * 6.0, 3.0)))
+		draw_line(Vector2(c.x - 4.0, ch_y + 2.0), Vector2(c.x, ch_y), Color(cream, pa * 1.2), 1.0)
+		draw_line(Vector2(c.x + 4.0, ch_y + 2.0), Vector2(c.x, ch_y), Color(cream, pa * 1.2), 1.0)
+	_draw_biome_gateway_frame(c, w, col_g, col_h, cream, pulse * (1.0 + prox * 0.22), fred)
+	LxHudFx.draw_biome_crest(self, _island_id, c, Color(col_g, minf(0.96, (0.78 + prox * 0.18) * pulse)), Color(cream, 0.86))
 	if not fred:
 		for k: int in range(3):
 			var u: float = fposmod(_clock * 0.65 + float(k) * 0.33, 1.0)
 			var mx: float = roundf(c.x + float(k - 1) * 8.0)
-			var my: float = roundf(c.y + 5.0 - u * 16.0)
-			draw_rect(Rect2(mx, my, 1.0, 1.0), Color(cream if u < 0.4 else col_g, sin(u * PI) * 0.78))
+			var my: float = roundf(c.y + 5.0 - u * (16.0 + prox * 8.0))
+			draw_rect(Rect2(mx, my, 1.0, 1.0), Color(cream if u < 0.4 else col_g, sin(u * PI) * (0.78 + prox * 0.18)))
 
 
 func _draw_biome_gateway_frame(c: Vector2, w: float, col_g: Color, col_h: Color, cream: Color, pulse: float, fred: bool) -> void:
@@ -221,7 +247,8 @@ func _draw_biome_gateway_frame(c: Vector2, w: float, col_g: Color, col_h: Color,
 
 
 func _draw_room_threshold(r: Rect2, c: Vector2, col_g: Color, cream: Color, pulse: float, wp: Vector2) -> void:
-	var near_boost: float = 1.45 if c.distance_squared_to(wp) <= 19600.0 else 0.85
+	var d2: float = c.distance_squared_to(wp)
+	var near_boost: float = 1.45 if d2 <= 19600.0 else 0.85
 	var a: float = clampf(0.30 * pulse * near_boost, 0.12, 0.62)
 	var horiz: bool = r.size.x >= r.size.y
 	if horiz:
@@ -234,3 +261,5 @@ func _draw_room_threshold(r: Rect2, c: Vector2, col_g: Color, cream: Color, puls
 		draw_rect(Rect2(roundf(c.x), roundf(c.y - span_v * 0.5), 1.0, span_v), Color(col_g, a))
 		for k: int in range(-1, 2):
 			draw_rect(Rect2(roundf(c.x - 1.0), roundf(c.y + float(k) * 6.0), 2.0, 2.0), Color(cream if k == 0 else col_g, a * 1.25))
+	if d2 <= 5184.0:
+		LxHudFx.draw_biome_crest(self, _island_id, c, Color(col_g, a * 1.2), Color(cream, a * 1.35))
