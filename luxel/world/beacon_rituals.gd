@@ -168,6 +168,43 @@ static func on_beacon_ignited(beacon: LxBeacon) -> void:
 								e8.flash_t = maxf(e8.flash_t, 0.35)
 			if Lx.audio != null:
 				Lx.audio.play_sfx("bell_toll", pos, false)
+	_check_all_beacons_awakened(beacon)
+
+
+static func _check_all_beacons_awakened(beacon: LxBeacon) -> void:
+	if beacon == null or beacon.region == null or not beacon.region.has_method("get_interactables"):
+		return
+	var items_v: Variant = beacon.region.call("get_interactables")
+	if not (items_v is Array):
+		return
+	var lit_n: int = 0
+	var total_n: int = 0
+	var door_pos: Vector2 = Vector2.ZERO
+	for it: Variant in (items_v as Array):
+		if it is LxBeacon and is_instance_valid(it):
+			total_n += 1
+			if (it as LxBeacon).lit:
+				lit_n += 1
+		elif it is LxInteractable and is_instance_valid(it):
+			var obj: LxInteractable = it as LxInteractable
+			if obj.id.begins_with("door_dungeon_") or obj.id == "door_ward_barrier":
+				door_pos = obj.pos
+	if total_n < 3 or lit_n < total_n:
+		return
+	# All 3 beacons lit: monumental Dungeon-Awakening harmonic pulse!
+	var fred: bool = LxHudFx.flash_reduced()
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(beacon.pos, 152.0, 0.88 if fred else 1.42, 0.72)
+		if door_pos != Vector2.ZERO:
+			LxDarknessLayer.active_instance.add_burst_light(door_pos, 168.0, 0.92 if fred else 1.48, 0.82)
+	if Lx.camera != null and is_instance_valid(Lx.camera) and door_pos != Vector2.ZERO:
+		if Lx.camera.has_method("trigger_focus_nudge"):
+			Lx.camera.call("trigger_focus_nudge", door_pos, 0.65)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, beacon.pos, 22.0, 10.0)
+	if Lx.audio != null:
+		var chime: String = "bell_toll" if beacon.island_id in [1, 7, 8] else ("lighthouse_toll" if beacon.island_id == 2 else ("prism_chain" if beacon.island_id == 5 else "prop_chime"))
+		Lx.audio.play_sfx(chime, beacon.pos, false)
 
 
 static func _biome_accent(island_id: int) -> Color:

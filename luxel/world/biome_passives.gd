@@ -72,7 +72,32 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_moon_mirror_on = false
 	_grace_heal_t = 0.0
 	_room_cleared_fx = false
+	if _rules != null and not _rules.is_dungeon:
+		_trigger_overworld_arrival_ceremony()
 	queue_redraw()
+
+
+func _trigger_overworld_arrival_ceremony() -> void:
+	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
+		return
+	var w: LxWick = Lx.player as LxWick
+	if w.dead:
+		return
+	var p: Vector2 = w.global_position
+	var k_glow: String = LxBiomePalette.key(_island_id, "glow")
+	var k_hi: String = LxBiomePalette.key(_island_id, "hi")
+	_ripples.append({"pos": p, "age": 0.0, "dur": 0.52, "r0": 4.0, "r1": 34.0, "col": k_glow})
+	_ripples.append({"pos": p, "age": 0.0, "dur": 0.44, "r0": 22.0, "r1": 4.0, "col": "cream"})
+	for k: int in range(8):
+		var ang: float = float(k) * (TAU / 8.0)
+		_trails.append({
+			"pos": p + Vector2(cos(ang) * 10.0, sin(ang) * 6.0),
+			"vel": Vector2(cos(ang) * 16.0, -22.0 + sin(ang) * 6.0),
+			"age": 0.0, "dur": 0.48,
+			"col": "cream" if k % 3 == 0 else (k_glow if k % 2 == 0 else k_hi),
+		})
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(p, 84.0, 0.72 if LxHudFx.flash_reduced() else 1.05, 0.48)
 
 
 func tick(dt: float) -> void:
