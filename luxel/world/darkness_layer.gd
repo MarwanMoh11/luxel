@@ -228,6 +228,15 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 			var bp2 := Vector2(bpool.x, bpool.y)
 			if bp2.distance_to(cam_center) <= 320.0 + bpool.z:
 				candidates.append({"d": bp2.distance_squared_to(cam_center) - 800.0, "v": bpool})
+	if region != null and not region.is_dungeon:
+		var dpts: Array[Vector2] = []
+		if b_id == 1 and LxBellChimes.active_instance != null and is_instance_valid(LxBellChimes.active_instance):
+			dpts = LxBellChimes.active_instance.get_found_positions()
+		elif b_id >= 2 and LxBiomeDiscoveries.active_instance != null and is_instance_valid(LxBiomeDiscoveries.active_instance):
+			dpts = LxBiomeDiscoveries.active_instance.get_found_positions()
+		for dp: Vector2 in dpts:
+			if dp.distance_to(cam_center) <= 300.0:
+				candidates.append({"d": dp.distance_squared_to(cam_center) + 1200.0, "v": Vector4(dp.x, dp.y - 6.0, 36.0 * flicker, 0.52)})
 
 	for extra: Vector4 in extra_lights:
 		if extra.z <= 1.0 or extra.w <= 0.001:

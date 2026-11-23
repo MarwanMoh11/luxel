@@ -239,6 +239,10 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			var origin: Vector2 = wick.global_position + hand_pos + Vector2(randf_range(-2.5, 2.5), randf_range(-2.0, 1.0))
 			var mvel: Vector2 = Vector2(randf_range(-5.0, 5.0), randf_range(-16.0, -9.0))
 			var mcol: Color = (LxWick.PAL_CORAL if randf() < 0.65 else LxWick.PAL_APRICOT) if low_hp else (LxWick.PAL_CREAM if randf() < 0.40 else LxWick.PAL_GOLD)
+			if not low_hp and Lx.state != null and Lx.world != null and is_instance_valid(Lx.world):
+				var cur_i: int = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 1
+				if (Lx.state.relit_islands.has(cur_i) or bool(Lx.state.story_flags.get("disc_all_%d" % cur_i, false))) and randf() < 0.35:
+					mcol = LxBiomePalette.col(cur_i, "glow")
 			_spawn_mote(origin, mvel, randf_range(0.38, 0.54), mcol, 1.0, false, 0.45, true, 0.92)
 	else:
 		_mote_cd = minf(_mote_cd, 0.08)
