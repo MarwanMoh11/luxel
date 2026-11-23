@@ -284,6 +284,8 @@ func try_hit_biome_target(from_p: Vector2, to_p: Vector2, dir: Vector2, wick: Lx
 		LxBellChimes.active_instance.try_hit_segment(from_p, to_p, wick)
 	if LxBiomeDiscoveries.active_instance != null and is_instance_valid(LxBiomeDiscoveries.active_instance):
 		LxBiomeDiscoveries.active_instance.try_hit_segment(from_p, to_p, wick)
+	if not _rules.is_dungeon and _setpieces != null and is_instance_valid(_setpieces):
+		_setpieces.try_hit_segment(from_p, to_p, wick)
 	# Interactive dungeon twists (Island 3 Spore-Caps, Island 5 Orrery Conjunction Nodes) & Boss Sanctum features (3/5/7/8)
 	if _rules.is_dungeon:
 		if _boss_synergy != null and is_instance_valid(_boss_synergy):

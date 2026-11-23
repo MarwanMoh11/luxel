@@ -25,6 +25,10 @@ var _cam_center: Vector2 = Vector2.ZERO
 var _door_pos: Vector2 = Vector2.ZERO
 var _beacons: Array[Node] = []
 var _koi: Array[Dictionary] = []
+var _pulse_rings: Array[Dictionary] = [] # {pos, age, dur, r0, r1, col}
+var _lit_spine: Dictionary = {} # Island 8 pilgrimage stepping stones lit by Wick
+var _setpiece_cd: float = 0.0
+var _dial_spin_t: float = 0.0
 var _wildlife: LxOverworldWildlife = null
 var _chimes: LxBellChimes = null
 var _discoveries: LxBiomeDiscoveries = null
@@ -45,6 +49,10 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_door_pos = _default_anchor(_island_id)
 	_beacons.clear()
 	_koi.clear()
+	_pulse_rings.clear()
+	_lit_spine.clear()
+	_setpiece_cd = 0.0
+	_dial_spin_t = 0.0
 	if _active and _region != null and _region.has_method("get_interactables"):
 		var items_v: Variant = _region.call("get_interactables")
 		if items_v is Array:
@@ -71,6 +79,8 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 				"spd": rng.randf_range(0.36, 0.62) * (1.0 if k % 2 == 0 else -1.0),
 				"phase": rng.randf_range(0.0, TAU),
 				"col": "coral" if k % 3 == 0 else ("gold" if k % 3 == 1 else "ice"),
+				"burst_t": 0.0,
+				"cd": 0.0,
 			})
 	if _wildlife == null and get_parent() != null:
 		_wildlife = LxOverworldWildlife.new()
@@ -124,7 +134,185 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	if not _active or dt <= 0.0:
 		return
 	_clock += dt
+	_setpiece_cd = maxf(0.0, _setpiece_cd - dt)
+	_dial_spin_t = maxf(0.0, _dial_spin_t - dt)
+	for i: int in range(_pulse_rings.size() - 1, -1, -1):
+		var pr: Dictionary = _pulse_rings[i]
+		pr["age"] = float(pr["age"]) + dt
+		if float(pr["age"]) >= float(pr["dur"]):
+			_pulse_rings.remove_at(i)
+	_tick_setpiece_interactions(dt)
 	queue_redraw()
+
+
+func _tick_setpiece_interactions(dt: float) -> void:
+	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	if w == null or w.dead or _rules == null:
+		return
+	var wp: Vector2 = w.global_position
+	var lp: Vector2 = w.lantern.pos if (w.lantern != null and is_instance_valid(w.lantern) and w.lantern.is_out()) else Vector2(-9999.0, -9999.0)
+	match _island_id:
+		1: # Sundial Plaza interactive golden chime
+			var dial_c := Vector2(640.0, 396.0)
+			if _setpiece_cd <= 0.0 and ((w.is_dashing() and wp.distance_to(dial_c) <= 28.0) or lp.distance_to(dial_c) <= 26.0):
+				_trigger_sundial_chime(dial_c, w)
+		2: # Working Overworld Lighthouse Fresnel Searchlight charges Fresnel Focus!
+			_rules.beam_buff_t = maxf(0.0, _rules.beam_buff_t - dt)
+			var origins: Array[Vector2] = [_door_pos + Vector2(0.0, -18.0), Vector2(760.0, 168.0)]
+			for idx: int in range(origins.size()):
+				var orig: Vector2 = origins[idx]
+				var ang: float = PI + sin(_clock * (0.34 if idx == 0 else -0.44) + float(idx) * 1.4) * 0.85
+				var span: float = 250.0 if idx == 0 else 145.0
+				var cone: float = 0.22 if idx == 0 else 0.16
+				var d_v: Vector2 = wp - orig
+				if d_v.length() <= span and d_v.length() >= 18.0 and absf(wrapf(d_v.angle() - ang, -PI, PI)) <= cone:
+					var fresh: bool = _rules.beam_buff_t <= 0.05 and _setpiece_cd <= 0.0
+					_rules.beam_buff_t = maxf(_rules.beam_buff_t, 1.2)
+					if fresh:
+						_setpiece_cd = 3.2
+						_pulse_rings.append({"pos": wp, "age": 0.0, "dur": 0.42, "r0": 4.0, "r1": 22.0, "col": "ice"})
+						if Lx.audio != null:
+							Lx.audio.play_sfx("prop_chime", wp, true)
+					break
+		3: # Bioluminescent Heartwood Root-Vein resonance
+			if _setpiece_cd <= 0.0 and w.is_dashing():
+				for bn: Node in _beacons:
+					if bn is LxBeacon and is_instance_valid(bn) and ((bn as LxBeacon).lit or _is_relit()):
+						var mid_r: Vector2 = (bn as LxBeacon).pos.lerp(_door_pos, 0.5)
+						if wp.distance_to(mid_r) <= 44.0:
+							_setpiece_cd = 2.4
+							_pulse_rings.append({"pos": wp, "age": 0.0, "dur": 0.44, "r0": 4.0, "r1": 24.0, "col": "lime"})
+							if w.move_sunflare != null and w.move_sunflare.unlocked:
+								w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 4.0)
+							if Lx.audio != null:
+								Lx.audio.play_sfx("prop_chime", wp, true)
+							break
+		4: # Luminous Koi splash + Conservatory Stained-Glass Prism Rays tailwind
+			for k: Dictionary in _koi:
+				k["cd"] = maxf(0.0, float(k.get("cd", 0.0)) - dt)
+				k["burst_t"] = maxf(0.0, float(k.get("burst_t", 0.0)) - dt)
+				if float(k["cd"]) <= 0.0 and (w.is_gliding() or w.is_dashing()):
+					var cen: Vector2 = k["center"] as Vector2
+					if wp.distance_to(cen) <= 42.0:
+						k["cd"] = 3.2
+						k["burst_t"] = 1.4
+						_pulse_rings.append({"pos": cen, "age": 0.0, "dur": 0.48, "r0": 4.0, "r1": 24.0, "col": "rose"})
+						if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
+							LxBiomeMechanics.active_instance.tailwind_t = maxf(LxBiomeMechanics.active_instance.tailwind_t, 2.0)
+						if Lx.audio != null:
+							Lx.audio.play_sfx("prop_chime", cen, true)
+			var dv4: Vector2 = wp - _door_pos
+			if dv4.length() <= 175.0 and dv4.y > 10.0 and absf(wrapf(dv4.angle() - PI * 0.52, -PI, PI)) <= 0.34:
+				if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
+					LxBiomeMechanics.active_instance.tailwind_t = maxf(LxBiomeMechanics.active_instance.tailwind_t, 0.8)
+		5: # Orbiting Overworld Brass Orrery Planetoids trigger Starlight Surge!
+			if _setpiece_cd <= 0.0:
+				for orb: Vector2 in _orrery_inner_orbs():
+					if wp.distance_to(orb) <= 22.0 or lp.distance_to(orb) <= 22.0:
+						_trigger_orrery_orb(orb, w)
+						break
+		6: # Caldera Magma Fissure dash charges Molten Overdrive!
+			if _setpiece_cd <= 0.0 and _rules.vent_cycle >= 0.52 and w.is_dashing():
+				for bn6: Node in _beacons:
+					if bn6 is LxBeacon and is_instance_valid(bn6):
+						var mid6: Vector2 = (bn6 as LxBeacon).pos.lerp(_door_pos, 0.5)
+						if wp.distance_to(mid6) <= 44.0:
+							_setpiece_cd = 3.0
+							_pulse_rings.append({"pos": wp, "age": 0.0, "dur": 0.45, "r0": 5.0, "r1": 26.0, "col": "coral"})
+							if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
+								LxBiomeMechanics.active_instance.grant_molten_overdrive(1)
+							if Lx.audio != null:
+								Lx.audio.play_sfx("forge_gust", wp, true)
+							break
+		7: # Reflected Twin Moon Lagoon ripples
+			if _setpiece_cd <= 0.0 and w.is_dashing():
+				for mc: Vector2 in [Vector2(476.0, 368.0), Vector2(868.0, 368.0)]:
+					if wp.distance_to(mc) <= 64.0:
+						_trigger_moon_disc(mc)
+						break
+		8: # Golden Dawn Pilgrimage Spine stepping stones ignite beneath Wick!
+			if absf(wp.x - 336.0) <= 32.0:
+				for step: int in range(18):
+					if _lit_spine.has(step):
+						continue
+					var sp := Vector2(336.0, 1040.0 - float(step) * 46.0)
+					if wp.distance_to(sp) <= 26.0:
+						_lit_spine[step] = true
+						_pulse_rings.append({"pos": sp, "age": 0.0, "dur": 0.45, "r0": 3.0, "r1": 20.0, "col": "gold"})
+						if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+							LxDarknessLayer.active_instance.add_burst_light(sp, 68.0, 0.78 if LxHudFx.flash_reduced() else 1.12, 0.42)
+						if Lx.audio != null:
+							Lx.audio.play_sfx("prop_chime", sp, true)
+						break
+
+
+func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> bool:
+	if not _active or _setpiece_cd > 0.0 or _rules == null:
+		return false
+	match _island_id:
+		1:
+			var dial_c := Vector2(640.0, 396.0)
+			if Geometry2D.get_closest_point_to_segment(dial_c, from_p, to_p).distance_to(dial_c) <= 22.0:
+				_trigger_sundial_chime(dial_c, w)
+				return true
+		5:
+			for orb: Vector2 in _orrery_inner_orbs():
+				if Geometry2D.get_closest_point_to_segment(orb, from_p, to_p).distance_to(orb) <= 16.0:
+					_trigger_orrery_orb(orb, w)
+					return true
+		7:
+			for mc: Vector2 in [Vector2(476.0, 368.0), Vector2(868.0, 368.0)]:
+				if Geometry2D.get_closest_point_to_segment(mc, from_p, to_p).distance_to(mc) <= 44.0:
+					_trigger_moon_disc(mc)
+					return true
+	return false
+
+
+func _orrery_inner_orbs() -> Array[Vector2]:
+	var c: Vector2 = _door_pos.round()
+	var rot: float = _clock * 0.16
+	var out: Array[Vector2] = []
+	for seg: int in range(4):
+		var a0: float = rot + float(seg) * (PI * 0.5)
+		out.append((c + Vector2.from_angle(a0) * 148.0).round())
+	return out
+
+
+func _trigger_sundial_chime(dial_c: Vector2, w: LxWick) -> void:
+	_setpiece_cd = 4.2
+	_dial_spin_t = 0.85
+	_pulse_rings.append({"pos": dial_c, "age": 0.0, "dur": 0.58, "r0": 6.0, "r1": 44.0, "col": "gold"})
+	if Lx.audio != null:
+		Lx.audio.play_sfx("prop_chime", dial_c, true)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(dial_c, 96.0, 0.82 if LxHudFx.flash_reduced() else 1.22, 0.48)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, dial_c, 16.0, 6.0)
+	if w != null and is_instance_valid(w):
+		w.spawn_sparks(dial_c, Vector2.UP, 6, LxWick.PAL_GOLD, 22.0, 56.0, 0.28)
+
+
+func _trigger_orrery_orb(orb: Vector2, w: LxWick) -> void:
+	_setpiece_cd = 2.8
+	_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 2.8)
+	_pulse_rings.append({"pos": orb, "age": 0.0, "dur": 0.46, "r0": 4.0, "r1": 28.0, "col": "gold"})
+	if Lx.audio != null:
+		Lx.audio.play_sfx("clockwork_chime", orb, true)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(orb, 82.0, 0.80 if LxHudFx.flash_reduced() else 1.18, 0.40)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, orb, 13.0, 5.5)
+	if w != null and is_instance_valid(w):
+		w.spawn_ring(orb, 3.0, 20.0, 0.24, LxWick.PAL_GOLD, 1.4)
+
+
+func _trigger_moon_disc(mc: Vector2) -> void:
+	_setpiece_cd = 3.8
+	_pulse_rings.append({"pos": mc, "age": 0.0, "dur": 0.68, "r0": 8.0, "r1": 52.0, "col": "ice"})
+	if Lx.audio != null:
+		Lx.audio.play_sfx("lens_reveal", mc, true)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(mc, 96.0, 0.80 if LxHudFx.flash_reduced() else 1.18, 0.46)
 
 
 func _is_relit() -> bool:
@@ -157,6 +345,12 @@ func _draw() -> void:
 			_draw_moon_shoals_reflection(fred, relit)
 		8:
 			_draw_long_night_eclipse(fred, relit)
+	for pr: Dictionary in _pulse_rings:
+		var u: float = clampf(float(pr["age"]) / maxf(float(pr["dur"]), 0.01), 0.0, 1.0)
+		var r: float = roundf(lerpf(float(pr["r0"]), float(pr["r1"]), u))
+		var pa: float = (1.0 - u) * (0.52 if fred else 0.84)
+		var pcol: Color = (PAL["cream"] if u < 0.30 else PAL[str(pr["col"])]) as Color
+		draw_arc((pr["pos"] as Vector2).round(), r, 0.0, TAU, 20, Color(pcol, pa), 1.4)
 
 
 func _draw_bell_isle(fred: bool, relit: bool) -> void:
@@ -188,7 +382,7 @@ func _draw_bell_isle(fred: bool, relit: bool) -> void:
 			if bn is LxBeacon and is_instance_valid(bn) and (bn as LxBeacon).lit:
 				lit_n += 1
 		var dial_a: float = (0.24 if fred else 0.42) if (relit or lit_n > 0) else 0.22
-		var hand_ang: float = -PI * 0.5 + (TAU * float(lit_n) / 3.0) + _clock * (0.25 if relit else 0.08)
+		var hand_ang: float = -PI * 0.5 + (TAU * float(lit_n) / 3.0) + _clock * (0.25 if relit else 0.08) + _dial_spin_t * 6.5
 		draw_arc(dial_c, 26.0, 0.0, TAU, 24, Color((PAL["gold"] if (relit or lit_n >= 3) else PAL["apricot"]) as Color, dial_a), 1.0)
 		draw_line(dial_c, (dial_c + Vector2.from_angle(hand_ang) * 22.0).round(), Color(PAL["cream"] as Color, dial_a * 1.4), 1.2)
 		for k: int in range(3):
@@ -258,7 +452,8 @@ func _draw_mirefen_prism_koi(fred: bool, relit: bool) -> void:
 			draw_colored_polygon(PackedVector2Array([c, p1, p2]), Color(PAL[cols[k]] as Color, a))
 	# Gliding luminous koi fish silhouettes beneath the lotus lagoon
 	for k: Dictionary in _koi:
-		var ang: float = _clock * float(k["spd"]) + float(k["phase"])
+		var spd_k: float = float(k["spd"]) * (2.2 if float(k.get("burst_t", 0.0)) > 0.0 else 1.0)
+		var ang: float = _clock * spd_k + float(k["phase"])
 		var cen: Vector2 = k["center"] as Vector2
 		var p: Vector2 = (cen + Vector2(cos(ang) * float(k["rx"]), sin(ang) * float(k["ry"]))).round()
 		if not _in_view(p, 24.0):
@@ -361,8 +556,9 @@ func _draw_long_night_eclipse(fred: bool, relit: bool) -> void:
 		if not _in_view(sp, 24.0):
 			continue
 		var frac: float = float(step) / 18.0
-		var col: Color = (PAL["gold"] if frac <= lit_ratio + 0.12 else PAL["plum"]) as Color
-		draw_rect(Rect2(sp - Vector2(2.0, 1.0), Vector2(4.0, 2.0)), Color(col, 0.55))
+		var lit_s: bool = _lit_spine.has(step)
+		var col: Color = (PAL["cream"] if lit_s else (PAL["gold"] if frac <= lit_ratio + 0.12 else PAL["plum"])) as Color
+		draw_rect(Rect2(sp - Vector2(2.0, 1.0), Vector2(4.0, 2.0)), Color(col, 0.85 if lit_s else 0.55))
 
 
 func _draw_beacon_conduits(col_dim: Color, col_hi: Color, fred: bool, relit: bool) -> void:
