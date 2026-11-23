@@ -387,6 +387,45 @@ func _check_dungeon_chamber_clear(kill_pos: Vector2, k_glow: String, k_mid: Stri
 			6: sfx_id = "forge_gust"
 			8: sfx_id = "bell_toll"
 		Lx.audio.play_sfx(sfx_id, c, true)
+	_spawn_chamber_clear_guides(kill_pos, k_glow)
+
+
+func _spawn_chamber_clear_guides(from_pos: Vector2, k_glow: String) -> void:
+	var goal: Vector2 = Vector2.ZERO
+	var best_d2: float = INF
+	if _region != null and is_instance_valid(_region):
+		if _region.has_method("get_interactables"):
+			var items_v: Variant = _region.call("get_interactables")
+			if items_v is Array:
+				for it: Variant in (items_v as Array):
+					if it is LxChest and is_instance_valid(it) and not (it as LxChest).opened:
+						var cp: Vector2 = (it as LxChest).pos
+						var d2: float = cp.distance_squared_to(from_pos)
+						if d2 > 900.0 and d2 < best_d2:
+							best_d2 = d2
+							goal = cp
+		if goal == Vector2.ZERO:
+			var ex_v: Variant = _region.get("exits")
+			if ex_v is Array:
+				for raw: Variant in (ex_v as Array):
+					if raw is Dictionary:
+						var er: Rect2 = LxMapFormat.to_rect2((raw as Dictionary).get("rect", []))
+						if er.has_area():
+							var ec: Vector2 = er.get_center()
+							var d2: float = ec.distance_squared_to(from_pos)
+							if d2 > 1296.0 and d2 < best_d2:
+								best_d2 = d2
+								goal = ec
+	if goal == Vector2.ZERO:
+		return
+	var dir: Vector2 = (goal - from_pos).normalized()
+	for k: int in range(3):
+		var spread: Vector2 = dir.rotated(float(k - 1) * 0.22)
+		_fireflies.append({
+			"pos": from_pos + Vector2(0.0, -4.0) + spread * float(k) * 4.0,
+			"vel": spread * (28.0 + float(k) * 5.0),
+			"age": 0.0, "dur": 1.25, "col": k_glow,
+		})
 
 
 func _draw() -> void:
@@ -404,7 +443,8 @@ func _draw() -> void:
 		var u: float = clampf(float(ff["age"]) / maxf(float(ff["dur"]), 0.01), 0.0, 1.0)
 		var fp: Vector2 = (ff["pos"] as Vector2).round() + Vector2(0.0, roundf(sin(_clock * 7.0 + u * 8.0) * 2.0))
 		var a: float = sin(u * PI) * 0.88
-		draw_rect(Rect2(fp, Vector2(2.0, 2.0)), Color(PAL["lime"] as Color, a))
+		var fcol: Color = PAL[str(ff.get("col", "lime"))] as Color
+		draw_rect(Rect2(fp, Vector2(2.0, 2.0)), Color(fcol, a))
 		draw_rect(Rect2(fp, Vector2.ONE), Color(PAL["cream"] as Color, a))
 	for tr: Dictionary in _trails:
 		var u: float = clampf(float(tr["age"]) / maxf(float(tr["dur"]), 0.01), 0.0, 1.0)

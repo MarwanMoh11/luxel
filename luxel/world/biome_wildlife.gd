@@ -39,8 +39,11 @@ static func draw_biome_life(ci: CanvasItem, island_id: int, is_dungeon: bool, cl
 			_draw_prism_glints(ci, clock, min_x, min_y, 4 if is_dungeon else 6, fred)
 		_:
 			_draw_eclipse_wisps(ci, clock, min_x, min_y, 4 if is_dungeon else 6, fred)
-	if not is_dungeon and Lx.state != null and Lx.state.relit_islands.has(island_id):
-		_draw_relit_celebration(ci, island_id, clock, min_x, min_y, fred)
+	if Lx.state != null and Lx.state.relit_islands.has(island_id):
+		if is_dungeon:
+			_draw_relit_dungeon_motes(ci, island_id, clock, min_x, min_y, fred)
+		else:
+			_draw_relit_celebration(ci, island_id, clock, min_x, min_y, fred)
 
 
 static func _draw_gliding_birds(ci: CanvasItem, clock: float, min_x: float, min_y: float, count: int, spd: float, col_a: String, col_b: String, wide: bool) -> void:
@@ -252,12 +255,13 @@ static func _draw_relit_celebration(ci: CanvasItem, island_id: int, clock: float
 			wing_col = "ice"
 			body_col = "cream"
 			count = 4
-		8: # The Long Night: ascending golden dawn butterflies
+		8: # The Long Night: ascending golden dawn butterflies (all 8 archipelago colours at 8/8 relit!)
 			wing_col = "gold"
 			body_col = "cream"
-			count = 5
+			count = 8 if (Lx.state != null and Lx.state.relit_islands.size() >= 8) else 5
 	var c_w: Color = LxPalette.PAL[wing_col] as Color
 	var c_b: Color = LxPalette.PAL[body_col] as Color
+	var all_eight_dawn: bool = island_id == 8 and count == 8
 	for i: int in range(count):
 		var fi: float = float(i)
 		var dir_x: float = 1.0 if i % 2 == 0 else -1.0
@@ -265,9 +269,24 @@ static func _draw_relit_celebration(ci: CanvasItem, island_id: int, clock: float
 		var my: float = min_y + fposmod(28.0 + fi * 44.0 + sin(clock * 2.4 + fi * 2.5) * 12.0, VIEW_H - 24.0)
 		var p := Vector2(roundf(mx), roundf(my))
 		var flap: float = 0.0 if (fred or sin(clock * 9.0 + fi * 1.7) > 0.0) else -1.0
+		var cw_i: Color = LxBiomePalette.col(i + 1, "glow") if all_eight_dawn else c_w
 		ci.draw_rect(Rect2(p, Vector2.ONE), c_b)
-		ci.draw_rect(Rect2(p + Vector2(-1.0, flap), Vector2.ONE), c_w)
-		ci.draw_rect(Rect2(p + Vector2(1.0, flap), Vector2.ONE), c_w)
+		ci.draw_rect(Rect2(p + Vector2(-1.0, flap), Vector2.ONE), cw_i)
+		ci.draw_rect(Rect2(p + Vector2(1.0, flap), Vector2.ONE), cw_i)
 		if island_id == 4 or island_id == 7:
 			ci.draw_rect(Rect2(p + Vector2(-2.0, flap), Vector2.ONE), Color(c_b, 0.72))
 			ci.draw_rect(Rect2(p + Vector2(2.0, flap), Vector2.ONE), Color(c_b, 0.72))
+
+
+static func _draw_relit_dungeon_motes(ci: CanvasItem, island_id: int, clock: float, min_x: float, min_y: float, fred: bool) -> void:
+	# Quiet slow-rising sanctuary dust motes inside a restored island's dungeon temple
+	var c_gl: Color = LxBiomePalette.col(island_id, "glow")
+	var c_cr: Color = LxPalette.PAL["cream"] as Color
+	var c_gd: Color = LxPalette.PAL["gold"] as Color
+	for i: int in range(5):
+		var fi: float = float(i)
+		var mx: float = min_x + fposmod(fi * 71.0 + sin(clock * 0.65 + fi * 1.9) * 10.0, VIEW_W)
+		var my: float = min_y + fposmod(fi * 43.0 - clock * (4.2 + float(i % 2) * 1.6), VIEW_H)
+		var p := Vector2(roundf(mx), roundf(my))
+		var a: float = 0.34 if fred else (0.30 + 0.24 * absf(sin(clock * 1.4 + fi * 1.3)))
+		ci.draw_rect(Rect2(p, Vector2.ONE), Color(c_cr if i % 3 == 0 else (c_gd if i % 2 == 0 else c_gl), a))
