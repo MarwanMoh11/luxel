@@ -29,6 +29,10 @@ func tick(dt: float) -> void:
 	if _tremble_t > 0.0:
 		_tremble_t = maxf(0.0, _tremble_t - dt)
 		dirty = true
+	if active and not burned and Lx.player is LxWick and is_instance_valid(Lx.player):
+		var ww: LxWick = Lx.player as LxWick
+		if ww.is_beam_charging() and ww.global_position.distance_squared_to(pos) <= 9216.0:
+			dirty = true
 	if dirty:
 		queue_redraw()
 
@@ -143,15 +147,21 @@ func _draw() -> void:
 		for k: int in range(4):
 			var a: float = (TAU * float(k)) / 4.0
 			draw_rect(Rect2(hub + Vector2(roundf(cos(a) * (3.0 + u * 5.0)), roundf(sin(a) * (2.0 + u * 4.0))), Vector2.ONE), PAL["gold"] if k % 2 == 0 else w_gl)
+	if Lx.player is LxWick and is_instance_valid(Lx.player):
+		var ww_d: LxWick = Lx.player as LxWick
+		if ww_d.is_beam_charging() and ww_d.global_position.distance_squared_to(pos) <= 9216.0:
+			var bp_w: float = clampf(ww_d.beam_charge_progress(), 0.2, 1.0)
+			draw_rect(Rect2(x0, y0, w, h), Color((PAL["cream"] if bp_w >= 0.99 else w_gl) as Color, bp_w * 0.56), false, 1.0)
 
 
 func _draw_burn_burst() -> void:
 	var u: float = 1.0 - clampf(_burn_t / 0.34, 0.0, 1.0)
 	var rx: float = size.x * 0.45
 	var ry: float = size.y * 0.45
+	var b_glow_w: Color = LxBiomePalette.col(island_id, "glow")
 	for i: int in range(8):
 		var a: float = (TAU * float(i)) / 8.0
 		var px: float = roundf(cos(a) * lerpf(3.0, rx + 7.0, u))
 		var py: float = roundf(sin(a) * lerpf(2.0, ry + 5.0, u) - u * 7.0)
-		var c: Color = (PAL["cream"] if u < 0.3 else (PAL["gold"] if i % 2 == 0 else PAL["ice"])) as Color
+		var c: Color = (PAL["cream"] as Color) if u < 0.3 else (b_glow_w if i % 2 == 0 else (PAL["ice"] as Color))
 		draw_rect(Rect2(px, py, 2.0 if u < 0.4 else 1.0, 1.0), c)

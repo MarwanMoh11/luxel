@@ -177,8 +177,12 @@ func catch_by_wick(wick: LxWick) -> void:
 		prev_pos = pos
 		global_position = pos.round()
 		wick.catch_anim_t = 0.22
+		var isl_c: int = Lx.state.island_id if Lx.state != null else 1
+		var c_gl: Color = LxBiomePalette.col(isl_c, "glow")
 		wick.spawn_ring(pos, 2.0, 9.0, 0.16, PAL_CREAM, 1.0)
+		wick.spawn_ring(pos, 3.0, 12.0, 0.19, c_gl, 1.0)
 		wick.spawn_sparks(pos, Vector2.UP, 4, PAL_CREAM, 14.0, 42.0, 0.18)
+		wick.spawn_sparks(pos, Vector2.UP, 3, c_gl, 18.0, 48.0, 0.20)
 		_emit_gust(pos, 32.0, 38.0)
 		wick.emit_sfx("lantern_catch", pos, false)
 	if Lx.events != null:
@@ -223,7 +227,9 @@ func on_dropped(at_pos: Vector2) -> void:
 	harmless_recall = false
 	hit_ids.clear()
 	if _owner_wick != null:
+		var isl_dr: int = Lx.state.island_id if Lx.state != null else 1
 		_owner_wick.spawn_ring(pos, 3.0, 22.0, 0.30, PAL_GOLD, 2.0)
+		_owner_wick.spawn_ring(pos, 5.0, 28.0, 0.34, LxBiomePalette.col(isl_dr, "glow"), 1.0)
 		_owner_wick.spawn_sparks(pos, Vector2.UP, 12, PAL_GOLD, 30.0, 95.0, 0.28)
 		_owner_wick.trigger_hitstop(0.085)
 		_owner_wick.trigger_shake(0.12)
