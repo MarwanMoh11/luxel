@@ -150,13 +150,15 @@ func _draw() -> void:
 	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, 1.0, h - 4.0), PAL["mauve"])
 	draw_rect(Rect2(x0 + 3.0, y0 + 3.0, w - 6.0, h - 6.0), PAL["apricot"] if lit else PAL["night"])
 	draw_rect(Rect2(x0 + 4.0, y0 + 4.0, maxf(2.0, w - 8.0), maxf(2.0, h - 8.0)), PAL["dusk"])
+	var b_hi: Color = LxBiomePalette.col(island_id, "hi")
+	var b_gl: Color = LxBiomePalette.col(island_id, "glow")
 	var rivets: Array[Vector2] = [
 		Vector2(x0 + 2.0, y0 + 2.0), Vector2(x0 + w - 4.0, y0 + 2.0),
 		Vector2(x0 + 2.0, y0 + h - 4.0), Vector2(x0 + w - 4.0, y0 + h - 4.0),
 	]
 	for rv: Vector2 in rivets:
-		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), PAL["apricot"])
-		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), PAL["gold"])
+		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), b_hi)
+		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), b_gl)
 	var span: float = floorf(minf(w, h) * 0.44)
 	var tang: Vector2 = Vector2(-normal.y, normal.x) * span
 	var p1: Vector2 = (-tang).round()
@@ -164,7 +166,7 @@ func _draw() -> void:
 	var back: Vector2 = (-normal * 1.5).round()
 	var front: Vector2 = (normal * 1.0).round()
 	draw_line(p1 + back, p2 + back, PAL["void"], 4.0)
-	draw_line(p1 + back, p2 + back, PAL["apricot"], 2.0)
+	draw_line(p1 + back, p2 + back, b_hi, 2.0)
 	draw_line(p1, p2, PAL["apricot"] if lit else PAL["deep"], 4.0)
 	draw_line(p1, p2, PAL["gold"] if lit else PAL["blue"], 3.0)
 	draw_line(p1 + front, p2 + front, PAL["cream"] if lit else PAL["sky"], 2.0)
@@ -174,22 +176,23 @@ func _draw() -> void:
 	draw_rect(Rect2(gl_a, Vector2(1.0, 1.0)), PAL["cream"])
 	var fin_tip: Vector2 = (normal * 5.0).round()
 	draw_line(front, fin_tip, PAL["night"], 3.0)
-	draw_line(front, fin_tip, PAL["apricot"], 1.0)
-	draw_rect(Rect2(fin_tip, Vector2(1.0, 1.0)), PAL["cream"] if lit else PAL["gold"])
+	draw_line(front, fin_tip, b_hi, 1.0)
+	draw_rect(Rect2(fin_tip, Vector2(1.0, 1.0)), PAL["cream"] if lit else b_gl)
 	# Subtle optical sightline tick so players read the reflection angle at a glance.
 	var aim_hit: bool = _is_player_aiming_here()
 	var sight_a: Vector2 = (normal * 8.0).round()
 	var sight_b: Vector2 = (normal * 10.0).round()
-	draw_rect(Rect2(sight_a, Vector2.ONE), PAL["gold"] if (_turn_t > 0.0 or lit or aim_hit) else PAL["sky"])
+	draw_rect(Rect2(sight_a, Vector2.ONE), b_gl if (_turn_t > 0.0 or lit or aim_hit) else PAL["sky"])
 	draw_rect(Rect2(sight_b, Vector2.ONE), PAL["cream"] if (_turn_t > 0.0 or lit or aim_hit) else PAL["ice"])
 	if aim_hit and Lx.player != null and is_instance_valid(Lx.player):
 		var fv: Variant = Lx.player.get("facing")
 		if fv is Vector2 and (fv as Vector2).length_squared() > 0.01:
 			var rdir: Vector2 = reflect_dir(fv as Vector2)
 			if rdir.length_squared() > 0.01:
-				for pi: int in range(1, 4):
+				for pi: int in range(1, 5):
 					var pp: Vector2 = (rdir * (6.0 + float(pi) * 4.5)).round()
-					draw_rect(Rect2(pp, Vector2.ONE), PAL["cream"] if pi == 1 else PAL["gold"])
+					var pcol: Color = (PAL["cream"] if pi == 1 else (b_gl if pi == 4 else PAL["gold"])) as Color
+					draw_rect(Rect2(pp, Vector2.ONE), pcol)
 	if not lit and _glint_stage <= 1:
 		var gpos: Vector2 = (tang * (-0.35 if _glint_stage == 0 else 0.25) + front).round()
 		draw_rect(Rect2(gpos, Vector2.ONE), PAL["cream"])
