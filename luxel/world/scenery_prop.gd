@@ -49,11 +49,13 @@ const SWAY_PROPS: Dictionary = {
 	"hanging_chimes": true, "weeping_willow": true, "belfry_bell_hanging": true,
 	"buoy_bobbing": true, "harbor_wind_vane": true, "tide_bell_post": true,
 	"fern_cluster": true, "tiny_shrooms": true, "hanging_spore_lantern": true,
-	"spider_silk_banner": true, "canopy_vine_post": true,
+	"spider_silk_banner": true, "canopy_vine_post": true, "giant_glowshroom_cluster": true,
 	"cattail_reeds": true, "blooming_lotus": true, "floating_lantern_lily": true, "marsh_willow": true,
-	"hanging_pendulum": true, "foundry_hook_crane": true,
-	"silver_willow_pale": true, "floating_prism_totem": true,
-	"tattered_sanctum_banner": true,
+	"giant_lotus_pad": true, "mossy_planter_urn": true,
+	"hanging_pendulum": true, "armillary_sphere": true, "celestial_globe": true, "brass_orrery_stand": true,
+	"foundry_hook_crane": true,
+	"silver_willow_pale": true, "floating_prism_totem": true, "moon_crystal_cluster": true, "shattered_mirror_shard": true,
+	"tattered_sanctum_banner": true, "floating_cathedral_shard": true,
 }
 
 static var _global_sway_sfx_ms: int = 0
@@ -256,7 +258,7 @@ func _play_sway_sfx() -> void:
 	if now_ms - _global_sway_sfx_ms < 220:
 		return
 	_global_sway_sfx_ms = now_ms
-	var is_chime: bool = prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("pendulum")
+	var is_chime: bool = prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("pendulum") or prop_key.contains("crystal") or prop_key.contains("shard") or prop_key.contains("armillary") or prop_key.contains("orrery") or prop_key.contains("globe")
 	_sfx_cd = 0.72 if is_chime else 0.56
 	Lx.audio.play_sfx("prop_chime" if is_chime else "prop_rustle", global_position, true)
 
@@ -264,10 +266,12 @@ func _play_sway_sfx() -> void:
 func _sway_mote_color() -> Color:
 	if prop_key.contains("flower") or prop_key.contains("lotus"):
 		return PAL["rose"] as Color
-	if prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("lantern") or prop_key.contains("pendulum"):
+	if prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("lantern") or prop_key.contains("pendulum") or prop_key.contains("armillary") or prop_key.contains("orrery") or prop_key.contains("globe"):
 		return PAL["gold"] as Color
-	if prop_key.contains("prism") or prop_key.contains("silver"):
+	if prop_key.contains("prism") or prop_key.contains("silver") or prop_key.contains("crystal") or prop_key.contains("mirror"):
 		return PAL["ice"] as Color
+	if prop_key.contains("cathedral") or prop_key.contains("sanctum"):
+		return PAL["rose"] as Color
 	return PAL["lime"] as Color
 
 

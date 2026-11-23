@@ -235,6 +235,21 @@ static func _draw_boss_phase_filigree(hud: CanvasItem, blink_t: float, phase: in
 		hud.draw_rect(Rect2(px + side * 2.0, py, 2.0, 1.0), col)
 
 
+static func draw_boss_biome_header(hud: CanvasItem, island_id: int, name_w: float, bar_x: float, bar_y: float, bar_w: float, phase: int) -> void:
+	var pri: Color = LxBiomePalette.col(island_id, "hi")
+	var glow: Color = LxBiomePalette.col(island_id, "glow")
+	var cream: Color = LxPalette.PAL["cream"] as Color
+	var half: float = floorf(name_w * 0.5) + 7.0
+	var lx: float = maxf(bar_x + 3.0, 160.0 - half)
+	draw_biome_crest(hud, island_id, Vector2(lx, 7.0), pri, cream)
+	if phase < 2 or (160.0 + half) < (bar_x + bar_w - 22.0):
+		var rx: float = minf(bar_x + bar_w - 4.0, 160.0 + half)
+		draw_biome_crest(hud, island_id, Vector2(rx, 7.0), pri, cream)
+	# Subtle biome-tinted outer gem tips on the boss bar brass endcaps
+	hud.draw_rect(Rect2(bar_x - 2.0, bar_y + 3.0, 1.0, 2.0), glow)
+	hud.draw_rect(Rect2(bar_x + bar_w + 1.0, bar_y + 3.0, 1.0, 2.0), glow)
+
+
 static func draw_biome_crest(canvas: CanvasItem, island_id: int, center: Vector2, primary: Color, hi: Color) -> void:
 	var c: Vector2 = center.round()
 	match clampi(island_id, 1, 8):

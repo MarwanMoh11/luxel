@@ -478,6 +478,7 @@ func _draw_boss_bar() -> void:
 	LxPixelFont.draw_panel(self, Rect2(x, y, bar_w, bar_h), "night", "gold" if _boss_phase >= 2 else "mauve", "void")
 	draw_rect(Rect2(x - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
 	draw_rect(Rect2(x + bar_w - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
+	LxHudFx.draw_boss_biome_header(self, Lx.state.island_id if Lx.state != null else 1, float(LxPixelFont.width(name_txt, 1)), x, y, bar_w, _boss_phase)
 	var cur_frac: float = clampf(_boss_hp / maxf(1.0, _boss_max_hp), 0.0, 1.0)
 	var trail_w: float = floorf((bar_w - 4.0) * clampf(_boss_trail_hp / maxf(1.0, _boss_max_hp), 0.0, 1.0))
 	var cur_w: float = floorf((bar_w - 4.0) * cur_frac)

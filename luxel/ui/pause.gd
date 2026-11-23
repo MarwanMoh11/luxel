@@ -110,14 +110,19 @@ func _activate(i: int) -> void:
 
 func _draw() -> void:
 	_draw_dimmed_frame()
-	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", "mauve", "night")
-	_draw_brass_filigree()
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
+	var bkey: String = LxBiomePalette.key(isl, "border")
+	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", bkey, "night")
+	_draw_brass_filigree(isl)
+	var b_hi: Color = LxBiomePalette.col(isl, "hi")
+	LxHudFx.draw_biome_crest(self, isl, Vector2(PANEL_RECT.position.x + 14.0, PANEL_RECT.position.y + 12.0), b_hi, LxPalette.PAL["cream"] as Color)
+	LxHudFx.draw_biome_crest(self, isl, Vector2(PANEL_RECT.end.x - 15.0, PANEL_RECT.position.y + 12.0), b_hi, LxPalette.PAL["cream"] as Color)
 	LxPixelFont.draw_centered(self, LxStrings.text("PAUSE_TITLE"), 160.0, PANEL_RECT.position.y + 8.0, LxPalette.PAL["gold"], 2)
 	for i: int in range(ITEMS.size()):
 		var r: Rect2 = _row_rect(i)
 		var sel: bool = i == _idx
 		if sel:
-			LxPixelFont.draw_panel(self, r, "plum", "gold", "night")
+			LxPixelFont.draw_panel(self, r, "plum", bkey, "night")
 			_draw_wick_lantern(r.position.x + 5.0, r.position.y + 2.0)
 			_draw_wick_lantern(r.end.x - 12.0, r.position.y + 2.0)
 		var col: Color = LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"]
@@ -140,11 +145,11 @@ func _draw_dimmed_frame() -> void:
 	draw_rect(PANEL_RECT.grow(1.0), v)
 
 
-func _draw_brass_filigree() -> void:
+func _draw_brass_filigree(isl: int) -> void:
 	var p: Vector2 = PANEL_RECT.position
 	var e: Vector2 = PANEL_RECT.end
-	var gold: Color = LxPalette.PAL["gold"]
-	var apr: Color = LxPalette.PAL["apricot"]
+	var gold: Color = LxBiomePalette.col(isl, "hi")
+	var apr: Color = LxBiomePalette.col(isl, "mid")
 	var dusk: Color = LxPalette.PAL["dusk"]
 	var night: Color = LxPalette.PAL["night"]
 	# Corner brass brackets (gold tips + apricot arms).
