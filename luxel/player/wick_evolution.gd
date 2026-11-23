@@ -9,12 +9,24 @@ const PAL: Dictionary = LxPalette.PAL
 
 
 static func draw_wick_evolution(wick: LxWick, hand_pos: Vector2, clock_t: float, flash_red: bool) -> void:
-	if wick == null or wick.dead or Lx.state == null or Lx.state.relit_islands.is_empty():
+	if wick == null or wick.dead or Lx.state == null:
 		return
 	var relit: Array = Lx.state.relit_islands
+	var cur_isl: int = clampi(Lx.state.island_id, 1, 8)
+	var cur_harm: bool = bool(Lx.state.story_flags.get("disc_all_%d" % cur_isl, false))
+	if relit.is_empty() and not cur_harm:
+		return
 	var t: float = clock_t * (0.45 if flash_red else 1.0)
 	var lan_in_hand: bool = wick.lantern == null or wick.lantern.is_in_hand()
 	var center := Vector2(0.0, -7.0)
+	if cur_harm:
+		var hy: float = roundf(-14.0 + (0.0 if flash_red else sin(t * 2.4) * 1.2))
+		var hcol: Color = LxBiomePalette.col(cur_isl, "glow")
+		wick.draw_rect(Rect2(Vector2(-1.0, hy), Vector2(3.0, 1.0)), Color(hcol, 0.55 if flash_red else 0.78))
+		wick.draw_rect(Rect2(Vector2(0.0, hy - 1.0), Vector2(1.0, 3.0)), Color(hcol, 0.55 if flash_red else 0.78))
+		wick.draw_rect(Rect2(Vector2(0.0, hy), Vector2.ONE), Color(PAL["cream"] as Color, 0.85))
+	if relit.is_empty():
+		return
 
 	# Island 1 (Bell Isle): warm brass chime glint beside the held lantern
 	if lan_in_hand and relit.has(1):
@@ -63,20 +75,34 @@ static func draw_wick_evolution(wick: LxWick, hand_pos: Vector2, clock_t: float,
 
 
 static func draw_lantern_constellation(lantern: CanvasItem, center: Vector2, anim_t: float, flash_red: bool) -> void:
-	# Every saved island lends a tiny 1px star in its biome's signature glow orbiting Wick's thrown lantern!
-	if lantern == null or Lx.state == null or Lx.state.relit_islands.is_empty():
+	# Every saved or Harmony-awakened island lends a tiny biome star orbiting Wick's thrown lantern!
+	if lantern == null or Lx.state == null:
 		return
-	var relit: Array = Lx.state.relit_islands
-	var n: int = mini(relit.size(), 8)
+	var stars: Array[int] = []
+	var harm_count: int = 0
+	for iid: int in range(1, 9):
+		var is_r: bool = Lx.state.relit_islands.has(iid)
+		var is_h: bool = bool(Lx.state.story_flags.get("disc_all_%d" % iid, false))
+		if is_h:
+			harm_count += 1
+		if is_r or is_h:
+			stars.append(iid)
+	if stars.is_empty():
+		return
+	var n: int = stars.size()
 	var spin: float = anim_t * (0.45 if flash_red else 1.05)
 	var rx: float = 11.5 if n >= 5 else 9.5
 	var ry: float = 5.5 if n >= 5 else 4.5
+	if harm_count >= 4:
+		var ribbon_a: float = 0.22 if flash_red else 0.34
+		lantern.draw_arc(center + Vector2(0.0, -1.0), rx * 0.72, spin, spin + PI * 1.2, 12, Color(PAL["gold"] as Color, ribbon_a), 1.0)
 	for i: int in range(n):
-		var iid: int = clampi(int(relit[i]), 1, 8)
+		var iid: int = stars[i]
+		var is_h: bool = bool(Lx.state.story_flags.get("disc_all_%d" % iid, false))
 		var ang: float = spin + float(i) * (TAU / float(n))
 		var pt: Vector2 = (center + Vector2(cos(ang) * rx, sin(ang) * ry - 1.0)).round()
 		var col: Color = LxBiomePalette.col(iid, "glow")
 		var a: float = (0.58 if flash_red else 0.85) * (0.65 + 0.35 * sin(ang))
 		lantern.draw_rect(Rect2(pt, Vector2.ONE), Color(col, a))
-		if n >= 8 and i % 2 == 0:
-			lantern.draw_rect(Rect2(pt + Vector2(0.0, -1.0), Vector2.ONE), Color(PAL["cream"] as Color, a * 0.55))
+		if is_h or (n >= 8 and i % 2 == 0):
+			lantern.draw_rect(Rect2(pt + Vector2(0.0, -1.0), Vector2.ONE), Color(PAL["cream"] as Color, a * (0.85 if is_h else 0.55)))
