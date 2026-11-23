@@ -115,12 +115,15 @@ func _draw() -> void:
 		var ay: float = clampf(a.y - 1.0, y0, y0 + h - 2.0)
 		draw_rect(Rect2(ax, ay, 2.0, 2.0), PAL["night"])
 		draw_rect(Rect2(ax, ay, 1.0, 1.0), PAL["dusk"])
+	var w_hi: Color = LxBiomePalette.col(island_id, "hi")
+	var w_gl: Color = LxBiomePalette.col(island_id, "glow")
+	var w_dk: Color = LxBiomePalette.col(island_id, "dark")
 	for i: int in range(anchors.size()):
 		var ap: Vector2 = anchors[i]
-		draw_line(hub + Vector2(0.0, 1.0), ap + Vector2(0.0, 1.0), PAL["dusk"], 1.0)
-		draw_line(hub, ap, PAL["ice"] if i % 2 == 1 else PAL["stone"], 1.0)
+		draw_line(hub + Vector2(0.0, 1.0), ap + Vector2(0.0, 1.0), w_dk, 1.0)
+		draw_line(hub, ap, w_gl if i % 2 == 1 else PAL["stone"], 1.0)
 	var rings: Array[float] = [0.34, 0.64, 0.88]
-	var ring_cols: Array[Color] = [PAL["cream"] as Color, PAL["ice"] as Color, PAL["stone"] as Color]
+	var ring_cols: Array[Color] = [PAL["cream"] as Color, w_gl, w_hi]
 	for ri: int in range(rings.size()):
 		var t: float = rings[ri]
 		var sag: float = t * 0.84
@@ -133,13 +136,13 @@ func _draw() -> void:
 			draw_line(mid, p2, col, 1.0)
 			if ri == 1 and (i == 0 or i == 1 or i == 7):
 				draw_rect(Rect2(p1, Vector2(1.0, 1.0)), PAL["cream"])
-	draw_rect(Rect2(hub - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["gold"] if _tremble_t > 0.0 else PAL["ice"])
+	draw_rect(Rect2(hub - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["gold"] if _tremble_t > 0.0 else w_gl)
 	draw_rect(Rect2(hub, Vector2(1.0, 1.0)), PAL["cream"])
 	if _tremble_t > 0.0:
 		var u: float = 1.0 - clampf(_tremble_t / 0.22, 0.0, 1.0)
 		for k: int in range(4):
 			var a: float = (TAU * float(k)) / 4.0
-			draw_rect(Rect2(hub + Vector2(roundf(cos(a) * (3.0 + u * 5.0)), roundf(sin(a) * (2.0 + u * 4.0))), Vector2.ONE), PAL["gold"] if k % 2 == 0 else PAL["ice"])
+			draw_rect(Rect2(hub + Vector2(roundf(cos(a) * (3.0 + u * 5.0)), roundf(sin(a) * (2.0 + u * 4.0))), Vector2.ONE), PAL["gold"] if k % 2 == 0 else w_gl)
 
 
 func _draw_burn_burst() -> void:
