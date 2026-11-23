@@ -134,38 +134,79 @@ func try_hit_boss_bloom(from_p: Vector2, to_p: Vector2) -> void:
 					Lx.audio.play_sfx("prop_chime", bp, true)
 
 
+func _is_boss_cleared() -> bool:
+	if Lx.state == null:
+		return false
+	if Lx.state.relit_islands.has(_island_id):
+		return true
+	var boss_id: String = str(Lx.get_island_data(_island_id).get("boss", ""))
+	return not boss_id.is_empty() and Lx.state.defeated_bosses.has(boss_id)
+
+
 func _draw() -> void:
 	if not _active or _rules == null:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
+	var cleared: bool = _is_boss_cleared()
 	match _island_id:
 		1:
 			if _bell_pulse_t > 0.0:
 				var u: float = 1.0 - clampf(_bell_pulse_t / 0.52, 0.0, 1.0)
 				var r: float = roundf(lerpf(18.0, 88.0, u))
 				draw_arc(_center.round(), r, 0.0, TAU, 24, Color(PAL["gold"] as Color, (1.0 - u) * (0.55 if fred else 0.85)), 1.6)
+			if cleared:
+				var r_c: float = roundf(36.0 + (0.0 if fred else sin(_clock * 1.8) * 4.0))
+				draw_arc(_center.round(), r_c, 0.0, TAU, 24, Color(PAL["gold"] as Color, 0.35), 1.2)
+		2:
+			if cleared:
+				draw_arc(Vector2(_center.x, 56.0), roundf(22.0 + (0.0 if fred else sin(_clock * 2.0) * 3.0)), 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.42), 1.4)
 		3:
 			for b: Dictionary in _rules._blooms:
 				var bp: Vector2 = (b["pos"] as Vector2).round()
-				var lit: bool = float(b["lit_t"]) > 0.0
+				var lit: bool = cleared or float(b["lit_t"]) > 0.0
 				draw_circle(bp, 5.5 if lit else 3.5, (PAL["jade"] if lit else PAL["pine"]) as Color)
 				draw_circle(bp, 2.5 if lit else 1.5, (PAL["cream"] if lit else PAL["teal"]) as Color)
 				if lit:
 					var rr: float = roundf(12.0 + (0.0 if fred else sin(_clock * 4.0 + bp.x) * 2.0))
 					draw_arc(bp, rr, 0.0, TAU, 16, Color(PAL["lime"] as Color, 0.65), 1.0)
+		4:
+			if cleared:
+				var c4: Vector2 = _center.round()
+				draw_arc(c4, 42.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["rose"] as Color, 0.42), 1.6)
+				draw_arc(c4, 38.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["gold"] as Color, 0.42), 1.4)
+				draw_arc(c4, 34.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["ice"] as Color, 0.42), 1.2)
+		5:
+			if cleared:
+				for k: int in range(6):
+					var ang: float = _clock * 0.6 + float(k) * (TAU / 6.0)
+					var sp: Vector2 = (_center + Vector2(cos(ang) * 48.0, sin(ang) * 34.0)).round()
+					draw_rect(Rect2(sp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["gold"] as Color)
+					draw_rect(Rect2(sp, Vector2.ONE), PAL["cream"] as Color)
+		6:
+			if cleared:
+				for k: int in range(6):
+					var u6: float = fposmod(_clock * 0.45 + float(k) * 0.17, 1.0)
+					var ep: Vector2 = (_center + Vector2(sin(_clock * 1.4 + float(k) * 1.9) * 36.0, 20.0 - u6 * 56.0)).round()
+					draw_rect(Rect2(ep, Vector2(2.0, 2.0)), Color((PAL["gold"] if k % 2 == 0 else PAL["apricot"]) as Color, sin(u6 * PI) * 0.78))
 		7:
-			if _rules.lunar_phase > 0.65:
+			if cleared or _rules.lunar_phase > 0.65:
 				var a: float = 0.25 if fred else (0.28 + 0.14 * sin(_clock * 3.0))
 				draw_line(_center + Vector2(-128.0, -48.0), _center + Vector2(128.0, -48.0), Color(PAL["ice"] as Color, a), 1.0)
 				draw_arc(_center.round(), 52.0, _clock * 0.6, _clock * 0.6 + PI * 0.7, 16, Color(PAL["sky"] as Color, a * 1.4), 1.2)
-				draw_arc(_center.round(), 52.0, _clock * 0.6 + PI, _clock * 0.6 + PI * 1.7, 16, Color(PAL["ice"] as Color, a * 1.4), 1.2)
+				draw_arc(_center.round(), 52.0, _clock * 0.6 + PI, _clock * 0.6 + PI * 1.7, 16, Color((PAL["gold"] if cleared else PAL["ice"]) as Color, a * 1.4), 1.2)
 		8:
+			if cleared:
+				for k: int in range(8):
+					var ang: float = float(k) * (TAU / 8.0) + _clock * 0.18
+					var p0: Vector2 = (_center + Vector2(cos(ang) * 18.0, sin(ang) * 14.0)).round()
+					var p1: Vector2 = (_center + Vector2(cos(ang) * 72.0, sin(ang) * 52.0)).round()
+					draw_line(p0, p1, Color(PAL["gold"] as Color, 0.30 if fred else 0.48), 1.4)
 			var seals: int = _mech.dawn_seals_broken if _mech != null else 0
 			var relit: bool = Lx.state != null and Lx.state.relit_islands.has(8)
 			for k: int in range(3):
-				var ang: float = _clock * (0.9 if relit else 0.55) + float(k) * (TAU / 3.0)
+				var ang: float = _clock * (0.9 if (relit or cleared) else 0.55) + float(k) * (TAU / 3.0)
 				var sp: Vector2 = (_center + Vector2(cos(ang) * 74.0, sin(ang) * 44.0)).round()
-				var lit_seal: bool = relit or k < seals
+				var lit_seal: bool = relit or cleared or k < seals
 				draw_circle(sp, 3.5 if lit_seal else 2.5, (PAL["gold"] if lit_seal else PAL["plum"]) as Color)
 				if lit_seal:
 					draw_rect(Rect2(sp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)

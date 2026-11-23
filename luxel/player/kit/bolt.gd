@@ -137,7 +137,9 @@ func _fire_bolt() -> bool:
 	wick.muzzle_t = 0.065
 	wick.shoot_anim_t = 0.20
 	wick.recoil_vis = 1.0
-	wick.spawn_sparks(b.pos, aim, 3, LxWick.PAL_GOLD, 40.0, 95.0, 0.12)
+	wick.spawn_sparks(b.pos, aim, 2, LxWick.PAL_GOLD, 40.0, 95.0, 0.12)
+	var isl_spark: int = Lx.state.island_id if Lx.state != null else 1
+	wick.spawn_sparks(b.pos, aim, 1, LxBiomePalette.col(isl_spark, "glow"), 34.0, 82.0, 0.14)
 	if not LxHudFx.flash_reduced() and LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		LxDarknessLayer.active_instance.add_burst_light(b.pos, 32.0, 0.72, 0.10)
 	wick.emit_sfx("bolt_fire", wick.global_position, false)

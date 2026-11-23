@@ -116,10 +116,13 @@ func _draw() -> void:
 		draw_rect(Rect2(-1.0, -7.0, 1.0, 1.0), PAL["ice"])
 	draw_rect(Rect2(-5.0, -3.0, 10.0, 5.0), PAL["void"])
 	if activated:
-		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), PAL["apricot"])
-		draw_rect(Rect2(-3.0, -3.0, 6.0, 5.0), PAL["gold"])
-		draw_rect(Rect2(-2.0, -2.0, 4.0, 3.0), PAL["cream"])
-		var glint_c: Color = (PAL["cream"] if _pulse_stage < 2 else PAL["gold"]) as Color
+		var b_hi: Color = LxBiomePalette.col(island_id, "hi")
+		var b_glow: Color = LxBiomePalette.col(island_id, "glow")
+		var b_core: Color = LxBiomePalette.col(island_id, "core")
+		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), b_hi)
+		draw_rect(Rect2(-3.0, -3.0, 6.0, 5.0), b_glow)
+		draw_rect(Rect2(-2.0, -2.0, 4.0, 3.0), b_core)
+		var glint_c: Color = b_core if _pulse_stage < 2 else b_glow
 		draw_rect(Rect2(0.0, -5.0, 1.0, 1.0), glint_c)
 		draw_rect(Rect2(0.0, 3.0, 1.0, 1.0), glint_c)
 		draw_rect(Rect2(-6.0, -1.0, 1.0, 1.0), glint_c)
@@ -129,7 +132,7 @@ func _draw() -> void:
 			var bar_w: float = roundf(10.0 * frac)
 			draw_rect(Rect2(-5.0, 6.0, 10.0, 2.0), PAL["void"])
 			if bar_w >= 1.0:
-				draw_rect(Rect2(-5.0, 6.0, bar_w, 1.0), PAL["cream"] if frac > 0.35 else PAL["coral"])
+				draw_rect(Rect2(-5.0, 6.0, bar_w, 1.0), b_core if frac > 0.35 else PAL["coral"])
 	else:
 		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), PAL["sky"] if _reject_t > 0.0 else PAL["deep"])
 		draw_rect(Rect2(-3.0, -2.0, 6.0, 3.0), PAL["ice"] if _reject_t > 0.0 else PAL["blue"])
@@ -142,5 +145,5 @@ func _draw() -> void:
 			draw_arc(Vector2(0.0, -1.0), 8.0, 0.0, TAU, 12, PAL["ice"], 1.0, false)
 	if _act_t > 0.0:
 		var ap: float = 1.0 - clampf(_act_t / 0.34, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -1.0), roundf(lerpf(5.0, 19.0, ap)), 0.0, TAU, 16, PAL["cream"] if ap < 0.4 else PAL["gold"], 2.0 if ap < 0.35 else 1.0, false)
+		draw_arc(Vector2(0.0, -1.0), roundf(lerpf(5.0, 19.0, ap)), 0.0, TAU, 16, PAL["cream"] if ap < 0.4 else LxBiomePalette.col(island_id, "glow"), 2.0 if ap < 0.35 else 1.0, false)
 	_draw_signal_pulses()

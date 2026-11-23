@@ -106,16 +106,18 @@ func _draw() -> void:
 	elif _open_t > 0.0:
 		var u: float = 1.0 - clampf(_open_t / 0.44, 0.0, 1.0)
 		var is_rare: bool = reward_kind == "ember_piece" or reward_kind == "keepers_flame"
+		var b_glow: Color = LxBiomePalette.col(island_id, "glow")
+		var b_hi: Color = LxBiomePalette.col(island_id, "hi")
 		if u < 0.55:
-			var rc: Color = (PAL["cream"] if u < 0.25 else (PAL["coral"] if is_rare else PAL["gold"])) as Color
+			var rc: Color = (PAL["cream"] if u < 0.25 else ((PAL["coral"] as Color) if is_rare else b_glow)) as Color
 			draw_arc(Vector2(0.0, -7.0), roundf(lerpf(3.0, 18.0 if is_rare else 16.0, u / 0.55)), 0.0, TAU, 14, rc, 1.0, false)
 		for k: int in range(6):
 			var ang: float = -PI * 0.85 + float(k) * (PI * 0.70 / 5.0)
 			var rad: float = lerpf(2.0, 15.0, u)
 			var sx: float = roundf(cos(ang) * rad)
 			var sy: float = roundf(-7.0 + sin(ang) * rad - u * 4.0)
-			var alt_c: Color = (PAL["coral"] if is_rare else PAL["apricot"]) as Color
-			var sc: Color = (PAL["cream"] if u < 0.35 else (PAL["gold"] if k % 2 == 0 else alt_c)) as Color
+			var alt_c: Color = (PAL["coral"] as Color) if is_rare else b_hi
+			var sc: Color = (PAL["cream"] as Color) if u < 0.35 else (b_glow if k % 2 == 0 else alt_c)
 			draw_rect(Rect2(sx, sy, 2.0 if u < 0.4 else 1.0, 2.0 if u < 0.4 else 1.0), sc)
 	_draw_signal_pulses()
 
