@@ -159,10 +159,12 @@ func _draw() -> void:
 		_draw_lit_embers()
 		if _ignite_t > 0.0:
 			var p: float = 1.0 - clampf(_ignite_t / 0.56, 0.0, 1.0)
+			var c_gl: Color = LxBiomePalette.col(island_id, "glow")
+			var c_hi: Color = LxBiomePalette.col(island_id, "hi")
 			var cw: float = roundf(maxf(0.0, (1.0 - p) * 10.0))
 			if cw >= 2.0:
-				draw_rect(Rect2(-floorf(cw * 0.5), -54.0, cw, 56.0), PAL["cream"] if p < 0.35 else PAL["gold"])
-			draw_arc(Vector2(0.0, -12.0), roundf(lerpf(6.0, 38.0, p)), 0.0, TAU, 22, (PAL["cream"] if p < 0.38 else PAL["gold"]) as Color, 2.0 if p < 0.4 else 1.0, false)
+				draw_rect(Rect2(-floorf(cw * 0.5), -54.0, cw, 56.0), PAL["cream"] if p < 0.32 else c_gl)
+			draw_arc(Vector2(0.0, -12.0), roundf(lerpf(6.0, 38.0, p)), 0.0, TAU, 22, (PAL["cream"] if p < 0.30 else (c_gl if p < 0.65 else c_hi)), 2.0 if p < 0.4 else 1.0, false)
 	LxBeaconRituals.draw_biome_crown(self, island_id, lit, ignitable, _clock, _ignite_t)
 	_draw_signal_pulses()
 
@@ -210,11 +212,11 @@ func _draw_ready_sparks() -> void:
 
 func _draw_lit_embers() -> void:
 	var c_cream: Color = PAL["cream"] as Color
-	var c_gold: Color = PAL["gold"] as Color
-	var c_apr: Color = PAL["apricot"] as Color
+	var c_glow: Color = LxBiomePalette.col(island_id, "glow")
+	var c_hi: Color = LxBiomePalette.col(island_id, "hi")
 	for i: int in range(3):
 		var t: float = fmod(_clock * 0.48 + float(i) * 0.33, 1.0)
 		var px: float = roundf(sin(_clock * 1.7 + float(i) * 2.1) * (2.5 + t * 2.5))
 		var py: float = roundf(-24.0 - t * 18.0)
-		var col: Color = c_cream if t < 0.3 else (c_gold if t < 0.7 else c_apr)
+		var col: Color = c_cream if t < 0.3 else (c_glow if t < 0.7 else c_hi)
 		draw_rect(Rect2(px, py, 1.0, 1.0), col)

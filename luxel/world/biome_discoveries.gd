@@ -186,6 +186,8 @@ func _trigger_node(nd: Dictionary, w: LxWick) -> void:
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	var glow_k: String = LxBiomePalette.key(_island_id, "glow")
 	_rings.append({"pos": cp + Vector2(0.0, -7.0), "age": 0.0, "dur": 0.45, "col": glow_k})
+	if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % _island_id, false)):
+		_rings.append({"pos": cp + Vector2(0.0, -7.0), "age": 0.0, "dur": 0.65, "col": glow_k})
 
 	var sfx_id: String = "prop_chime"
 	var decal_k: int = LxGroundDecals.Kind.BLOSSOM
@@ -293,6 +295,12 @@ func _draw() -> void:
 		_draw_biome_toy(cp, at, found, sway, fred, ph)
 		if not found and (fred or fmod(_clock * 1.9 + ph, 1.4) < 0.55):
 			draw_rect(Rect2(cp + Vector2(0.0, -15.0), Vector2.ONE), PAL["cream"] as Color)
+		elif found and Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % _island_id, false)):
+			var st_y: float = -16.0 + (0.0 if fred else roundf(sin(_clock * 2.4 + ph) * 1.0))
+			var hc: Color = LxBiomePalette.col(_island_id, "glow")
+			draw_rect(Rect2(cp + Vector2(-1.0, st_y), Vector2(3.0, 1.0)), hc)
+			draw_rect(Rect2(cp + Vector2(0.0, st_y - 1.0), Vector2(1.0, 3.0)), hc)
+			draw_rect(Rect2(cp + Vector2(0.0, st_y), Vector2.ONE), PAL["cream"] as Color)
 	for rg: Dictionary in _rings:
 		var u: float = clampf(float(rg["age"]) / maxf(float(rg["dur"]), 0.01), 0.0, 1.0)
 		var r: float = roundf(lerpf(4.0, 24.0, u))

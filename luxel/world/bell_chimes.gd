@@ -145,6 +145,8 @@ func _ring_chime(ch: Dictionary, w: LxWick) -> void:
 	ch["swing_t"] = 1.35
 	ch["cd"] = 4.0
 	_rings.append({"pos": cp + Vector2(0.0, -8.0), "age": 0.0, "dur": 0.42})
+	if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_1", false)):
+		_rings.append({"pos": cp + Vector2(0.0, -8.0), "age": 0.0, "dur": 0.62})
 	if Lx.audio != null:
 		Lx.audio.play_sfx("prop_chime", cp, true)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
@@ -207,9 +209,14 @@ func _draw() -> void:
 		draw_rect(Rect2(cp + Vector2(-3.0 + sway, -12.0), Vector2(1.0, 5.0)), pipe_col)
 		draw_rect(Rect2(cp + Vector2(0.0 + sway, -12.0), Vector2(1.0, 7.0)), PAL["cream"] if (sw_t > 0.0 or rung) else PAL["gold"])
 		draw_rect(Rect2(cp + Vector2(3.0 + sway, -12.0), Vector2(1.0, 5.0)), pipe_col)
-		# Subtle inviting glint above un-rung chimes
+		# Subtle inviting glint above un-rung chimes; twinkling Harmony Crown once all chimes ring
 		if not rung and (fred or fmod(_clock * 1.8 + ph, 1.4) < 0.55):
 			draw_rect(Rect2(cp + Vector2(0.0, -16.0), Vector2.ONE), PAL["cream"] as Color)
+		elif rung and Lx.state != null and bool(Lx.state.story_flags.get("disc_all_1", false)):
+			var st_y: float = -17.0 + (0.0 if fred else roundf(sin(_clock * 2.4 + ph) * 1.0))
+			draw_rect(Rect2(cp + Vector2(-1.0, st_y), Vector2(3.0, 1.0)), PAL["gold"] as Color)
+			draw_rect(Rect2(cp + Vector2(0.0, st_y - 1.0), Vector2(1.0, 3.0)), PAL["gold"] as Color)
+			draw_rect(Rect2(cp + Vector2(0.0, st_y), Vector2.ONE), PAL["cream"] as Color)
 	for rg: Dictionary in _rings:
 		var u: float = clampf(float(rg["age"]) / maxf(float(rg["dur"]), 0.01), 0.0, 1.0)
 		var r: float = roundf(lerpf(4.0, 24.0, u))
