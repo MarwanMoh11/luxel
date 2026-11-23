@@ -24,6 +24,10 @@ var _cam_center: Vector2 = Vector2.ZERO
 var _door_pos: Vector2 = Vector2.ZERO
 var _nodes: Array[Dictionary] = [] # {pos, anim_t, cd, found, phase}
 var _rings: Array[Dictionary] = [] # {pos, age, dur, col}
+var _hint_dir: Vector2 = Vector2.ZERO
+var _hint_alpha: float = 0.0
+var _hint_wick_pos: Vector2 = Vector2.ZERO
+var _hint_pulse_cd: float = 1.2
 
 
 func _ready() -> void:
@@ -47,6 +51,9 @@ func configure(rules: LxBiomeRules, region_node: Node, door_pos: Vector2) -> voi
 	_door_pos = door_pos
 	_nodes.clear()
 	_rings.clear()
+	_hint_dir = Vector2.ZERO
+	_hint_alpha = 0.0
+	_hint_pulse_cd = 1.2
 	if not _active or region_node == null or not is_instance_valid(region_node):
 		queue_redraw()
 		return
@@ -161,18 +168,36 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		lp = w.lantern.pos
 
 	var any_vis: bool = not _rings.is_empty()
+	_hint_pulse_cd = maxf(0.0, _hint_pulse_cd - dt)
+	var best_unfound_d: float = 120.0
+	var best_unfound_p: Vector2 = Vector2.ZERO
 	for nd: Dictionary in _nodes:
 		nd["anim_t"] = maxf(0.0, float(nd["anim_t"]) - dt)
 		nd["cd"] = maxf(0.0, float(nd["cd"]) - dt)
 		var cp: Vector2 = nd["pos"] as Vector2
 		if absf(cp.x - _cam_center.x) <= HALF_W and absf(cp.y - _cam_center.y) <= HALF_H:
 			any_vis = true
+		if not bool(nd["found"]) and w != null and not w.dead:
+			var ud: float = cp.distance_to(wp)
+			if ud < best_unfound_d:
+				best_unfound_d = ud
+				best_unfound_p = cp
 		if float(nd["cd"]) <= 0.0:
 			var hit_r: float = 22.0 if (w != null and (w.is_dashing() or w.is_gliding())) else 16.0
 			var hit_w: bool = w != null and not w.dead and cp.distance_to(wp) <= hit_r
 			var hit_l: bool = cp.distance_to(lp) <= 22.0
 			if hit_w or hit_l:
 				_trigger_node(nd, w)
+	if best_unfound_d < 116.0 and best_unfound_d > 26.0 and w != null and not w.dead:
+		_hint_wick_pos = wp
+		_hint_dir = (best_unfound_p - wp).normalized()
+		_hint_alpha = clampf(1.0 - (best_unfound_d - 26.0) / 90.0, 0.15, 0.85)
+		any_vis = true
+		if best_unfound_d <= 98.0 and _hint_pulse_cd <= 0.0:
+			_hint_pulse_cd = 2.8
+			_rings.append({"pos": best_unfound_p + Vector2(0.0, -9.0), "age": 0.0, "dur": 0.52, "col": LxBiomePalette.key(_island_id, "glow")})
+	else:
+		_hint_alpha = 0.0
 	if any_vis:
 		queue_redraw()
 
@@ -301,6 +326,13 @@ func _draw() -> void:
 			draw_rect(Rect2(cp + Vector2(-1.0, st_y), Vector2(3.0, 1.0)), hc)
 			draw_rect(Rect2(cp + Vector2(0.0, st_y - 1.0), Vector2(1.0, 3.0)), hc)
 			draw_rect(Rect2(cp + Vector2(0.0, st_y), Vector2.ONE), PAL["cream"] as Color)
+	if _hint_alpha > 0.01:
+		var shimmer: float = 0.72 if fred else (0.55 + 0.45 * sin(_clock * 4.2))
+		var gp: Vector2 = (_hint_wick_pos + Vector2(0.0, -5.0) + _hint_dir * 19.0).round()
+		var hc_g: Color = LxBiomePalette.col(_island_id, "glow")
+		draw_rect(Rect2(gp + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(hc_g, _hint_alpha * shimmer * 0.72))
+		draw_rect(Rect2(gp + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), Color(hc_g, _hint_alpha * shimmer * 0.72))
+		draw_rect(Rect2(gp, Vector2.ONE), Color(PAL["cream"] as Color, _hint_alpha * shimmer))
 	for rg: Dictionary in _rings:
 		var u: float = clampf(float(rg["age"]) / maxf(float(rg["dur"]), 0.01), 0.0, 1.0)
 		var r: float = roundf(lerpf(4.0, 24.0, u))
