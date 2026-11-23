@@ -130,10 +130,8 @@ func tick(dt: float) -> void:
 		if _island_id == 6 and moved and _step_cd <= 0.0:
 			_step_cd = 0.28
 			_trails.append({"pos": wpos + Vector2(0.0, 2.0), "age": 0.0, "dur": 0.28, "col": "coral"})
-		# Island 7: Full Silver Moon floor reflection + crystalline dash afterimages
+		# Island 7: Full Silver Moon crystalline dash afterimages (floor reflection is drawn by LxBiomeRules)
 		if _island_id == 7 and _rules.lunar_phase > 0.65:
-			_moon_mirror_on = true
-			_moon_mirror_pos = wpos
 			if dashing and fmod(_clock, 0.06) < dt:
 				_trails.append({"pos": wpos, "age": 0.0, "dur": 0.34, "col": "ice"})
 		# Island 8: Golden Dawn Ribbon trail when Dawn Seals are broken
@@ -253,11 +251,6 @@ func _draw_wick_biome_aura() -> void:
 				var p3: Vector2 = (wp + Vector2(cos(a3) * 11.0, sin(a3) * 5.0 - 2.0)).round()
 				draw_rect(Rect2(p3, Vector2(2.0, 2.0)), PAL["lime"] as Color)
 				draw_rect(Rect2(p3, Vector2.ONE), PAL["cream"] as Color)
-		4: # Rose Mist Tailwind: fluttering twin rose-ice wing motes
-			if has_bm and bm.tailwind_t > 0.0:
-				for side: float in [-1.0, 1.0]:
-					var p4: Vector2 = (wp + Vector2(side * 9.0, sin(_clock * 8.0 + side) * 2.0)).round()
-					draw_rect(Rect2(p4, Vector2(2.0, 1.0)), (PAL["rose"] if side < 0.0 else PAL["ice"]) as Color)
 		5: # Starlight Surge: twin brisk orbiting golden planetoids
 			if _rules.starlight_surge_t > 0.0:
 				for k: int in range(2):
@@ -265,13 +258,6 @@ func _draw_wick_biome_aura() -> void:
 					var p5: Vector2 = (wp + Vector2(cos(a5) * 11.0, sin(a5) * 5.0)).round()
 					draw_rect(Rect2(p5 - Vector2.ONE, Vector2(2.0, 2.0)), (PAL["gold"] if k == 0 else PAL["sky"]) as Color)
 					draw_rect(Rect2(p5, Vector2.ONE), PAL["cream"] as Color)
-		6: # Molten Overdrive: 1..3 live orbiting volcanic forge-orbs matching charge count!
-			if has_bm and bm.molten_charges > 0:
-				for k: int in range(bm.molten_charges):
-					var a6: float = _clock * 3.8 + float(k) * (TAU / float(bm.molten_charges))
-					var p6: Vector2 = (wp + Vector2(cos(a6) * 11.0, sin(a6) * 5.5)).round()
-					draw_circle(p6, 2.0, PAL["coral"] as Color)
-					draw_rect(Rect2(p6, Vector2.ONE), PAL["cream"] as Color)
 		7: # Full Silver Moon Echo: twin pale silver crescent glints framing Wick
 			if has_bm and bm.mirror_echo_active and _rules.lunar_phase > 0.65:
 				draw_arc(wp, 11.0, -PI * 0.25, PI * 0.25, 6, Color(PAL["ice"] as Color, 0.70), 1.0)

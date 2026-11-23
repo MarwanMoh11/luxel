@@ -162,6 +162,21 @@ func _draw_bell_isle(fred: bool, relit: bool) -> void:
 				var gl_c: Color = (PAL["cream"] if (relit or (s % 2 == 0)) else PAL["gold"]) as Color
 				draw_rect(Rect2(pt.round() - Vector2.ONE, Vector2(2.0, 2.0)), Color(gl_c, 0.72))
 			prev = pt
+	# Living Sundial Plaza golden dial hand & beacon-progress radiance (640, 396)
+	var dial_c := Vector2(640.0, 396.0)
+	if _in_view(dial_c, 64.0):
+		var lit_n: int = 0
+		for bn: Node in _beacons:
+			if bn is LxBeacon and is_instance_valid(bn) and (bn as LxBeacon).lit:
+				lit_n += 1
+		var dial_a: float = (0.24 if fred else 0.42) if (relit or lit_n > 0) else 0.22
+		var hand_ang: float = -PI * 0.5 + (TAU * float(lit_n) / 3.0) + _clock * (0.25 if relit else 0.08)
+		draw_arc(dial_c, 26.0, 0.0, TAU, 24, Color((PAL["gold"] if (relit or lit_n >= 3) else PAL["apricot"]) as Color, dial_a), 1.0)
+		draw_line(dial_c, (dial_c + Vector2.from_angle(hand_ang) * 22.0).round(), Color(PAL["cream"] as Color, dial_a * 1.4), 1.2)
+		for k: int in range(3):
+			var ka: float = -PI * 0.5 + float(k) * (TAU / 3.0)
+			var kp: Vector2 = (dial_c + Vector2.from_angle(ka) * 26.0).round()
+			draw_rect(Rect2(kp - Vector2.ONE, Vector2(2.0, 2.0)), (PAL["cream"] if (relit or k < lit_n) else PAL["dusk"]) as Color)
 	_draw_beacon_conduits(PAL["gold"] as Color, PAL["cream"] as Color, fred, relit)
 
 

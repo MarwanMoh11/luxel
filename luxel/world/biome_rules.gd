@@ -250,6 +250,16 @@ func _tick_island3(dt: float) -> void:
 						for sp: Dictionary in _sap_pools:
 							if e.pos.distance_to(sp["pos"] as Vector2) <= float(sp["r"]):
 								e.knock *= maxf(0.0, 1.0 - 4.0 * dt)
+		var p_act_d: bool = _player_light_burst_active()
+		var ppos_d: Vector2 = _player_pos()
+		for sp: Dictionary in _sap_pools:
+			sp["lit_t"] = maxf(0.0, float(sp.get("lit_t", 0.0)) - dt)
+			if p_act_d and ppos_d.distance_to(sp["pos"] as Vector2) <= float(sp["r"]) + 10.0 and float(sp["lit_t"]) <= 0.1:
+				sp["lit_t"] = 6.0
+				if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+					LxDarknessLayer.active_instance.add_burst_light(sp["pos"] as Vector2, 72.0, 0.85 if LxHudFx.flash_reduced() else 1.18, 0.45)
+				if Lx.audio != null:
+					Lx.audio.play_sfx("prop_chime", sp["pos"] as Vector2, true)
 
 
 func _tick_island4(dt: float) -> void:
@@ -571,10 +581,8 @@ func _find_walkable_near_cam() -> Vector2:
 func _on_screen(p: Vector2) -> bool:
 	return absf(p.x - _cam_center.x) <= HALF_W and absf(p.y - _cam_center.y) <= HALF_H
 
-
 func _player_pos() -> Vector2:
 	return (Lx.player as Node2D).global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2(-9999.0, -9999.0)
-
 
 func _lantern_pos() -> Vector2:
 	if Lx.player != null and is_instance_valid(Lx.player):
@@ -582,7 +590,6 @@ func _lantern_pos() -> Vector2:
 		if lan is Object and is_instance_valid(lan) and (lan as Object).get("pos") is Vector2:
 			return (lan as Object).get("pos") as Vector2
 	return _player_pos()
-
 
 func _player_light_burst_active() -> bool:
 	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
