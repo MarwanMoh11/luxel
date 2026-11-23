@@ -40,7 +40,7 @@ static func draw_biome_life(ci: CanvasItem, island_id: int, is_dungeon: bool, cl
 		_:
 			_draw_eclipse_wisps(ci, clock, min_x, min_y, 4 if is_dungeon else 6, fred)
 	if not is_dungeon and Lx.state != null and Lx.state.relit_islands.has(island_id):
-		_draw_dawn_moths(ci, clock, min_x, min_y, 2, fred)
+		_draw_relit_celebration(ci, island_id, clock, min_x, min_y, fred)
 
 
 static func _draw_gliding_birds(ci: CanvasItem, clock: float, min_x: float, min_y: float, count: int, spd: float, col_a: String, col_b: String, wide: bool) -> void:
@@ -222,16 +222,52 @@ static func _draw_glasshouse_drips(ci: CanvasItem, clock: float, min_x: float, m
 			ci.draw_rect(Rect2(dx, base_y, 1.0, 1.0), Color(c_ic, ra * 0.7))
 
 
-static func _draw_dawn_moths(ci: CanvasItem, clock: float, min_x: float, min_y: float, count: int, fred: bool) -> void:
-	var c_gd: Color = LxPalette.PAL["gold"] as Color
-	var c_cr: Color = LxPalette.PAL["cream"] as Color
+static func _draw_relit_celebration(ci: CanvasItem, island_id: int, clock: float, min_x: float, min_y: float, fred: bool) -> void:
+	# Each island awakens with its own signature celebratory relit wildlife!
+	var wing_col: String = "gold"
+	var body_col: String = "cream"
+	var count: int = 3
+	match island_id:
+		2: # Tidewater Harbor: sunlit golden sea-swallows
+			wing_col = "ice"
+			body_col = "gold"
+			count = 4
+		3: # Thornwood Hollow: luminous emerald-lime forest butterflies
+			wing_col = "lime"
+			body_col = "cream"
+			count = 4
+		4: # Mirefen Gardens: iridescent rose-ice glasshouse dragonflies
+			wing_col = "rose"
+			body_col = "ice"
+			count = 4
+		5: # Starfall Observatory: radiant golden starlight wisps
+			wing_col = "gold"
+			body_col = "sky"
+			count = 4
+		6: # Ashen Kiln: warm hearth blossom embers
+			wing_col = "apricot"
+			body_col = "cream"
+			count = 4
+		7: # Moon Shoals: silver crystal lunar moths
+			wing_col = "ice"
+			body_col = "cream"
+			count = 4
+		8: # The Long Night: ascending golden dawn butterflies
+			wing_col = "gold"
+			body_col = "cream"
+			count = 5
+	var c_w: Color = LxPalette.PAL[wing_col] as Color
+	var c_b: Color = LxPalette.PAL[body_col] as Color
 	for i: int in range(count):
 		var fi: float = float(i)
 		var dir_x: float = 1.0 if i % 2 == 0 else -1.0
-		var mx: float = min_x + fposmod(fi * 149.0 + clock * 14.0 * dir_x, VIEW_W)
-		var my: float = min_y + 38.0 + fi * 62.0 + sin(clock * 2.4 + fi * 2.5) * 10.0
+		var mx: float = min_x + fposmod(fi * 97.0 + clock * (14.0 + float(i % 2) * 4.0) * dir_x, VIEW_W)
+		var my: float = min_y + fposmod(28.0 + fi * 44.0 + sin(clock * 2.4 + fi * 2.5) * 12.0, VIEW_H - 24.0)
 		var p := Vector2(roundf(mx), roundf(my))
 		var flap: float = 0.0 if (fred or sin(clock * 9.0 + fi * 1.7) > 0.0) else -1.0
-		ci.draw_rect(Rect2(p, Vector2.ONE), c_cr)
-		ci.draw_rect(Rect2(p + Vector2(-1.0, flap), Vector2.ONE), c_gd)
-		ci.draw_rect(Rect2(p + Vector2(1.0, flap), Vector2.ONE), c_gd)
+		ci.draw_rect(Rect2(p, Vector2.ONE), c_b)
+		ci.draw_rect(Rect2(p + Vector2(-1.0, flap), Vector2.ONE), c_w)
+		ci.draw_rect(Rect2(p + Vector2(1.0, flap), Vector2.ONE), c_w)
+		if island_id == 4 or island_id == 7:
+			ci.draw_rect(Rect2(p + Vector2(-2.0, flap), Vector2.ONE), Color(c_b, 0.72))
+			ci.draw_rect(Rect2(p + Vector2(2.0, flap), Vector2.ONE), Color(c_b, 0.72))

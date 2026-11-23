@@ -13,6 +13,7 @@ var _rules: LxBiomeRules = null
 var _region: Node = null
 var _decals: LxGroundDecals = null
 var _weather: LxBiomeWeather = null
+var _boss_synergy: LxBiomeBossSynergy = null
 var _cam_center: Vector2 = Vector2.ZERO
 var _clock: float = 0.0
 
@@ -81,6 +82,12 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 		get_parent().add_child(_weather)
 	if _weather != null:
 		_weather.configure(rules.island_id, rules.is_dungeon, rules.bounds.get_center())
+	if _boss_synergy == null and get_parent() != null:
+		_boss_synergy = LxBiomeBossSynergy.new()
+		_boss_synergy.name = "BiomeBossSynergy"
+		get_parent().add_child(_boss_synergy)
+	if _boss_synergy != null:
+		_boss_synergy.configure(rules, self, region_node)
 	queue_redraw()
 
 
@@ -95,6 +102,8 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		_decals.tick(dt, cam_center)
 	if _weather != null and is_instance_valid(_weather):
 		_weather.tick(dt, cam_center)
+	if _boss_synergy != null and is_instance_valid(_boss_synergy):
+		_boss_synergy.tick(dt)
 	match _rules.island_id:
 		2:
 			_tick_island2(dt)
@@ -234,7 +243,9 @@ func _tick_island5(dt: float) -> void:
 func try_hit_biome_target(from_p: Vector2, to_p: Vector2, dir: Vector2, wick: LxWick) -> bool:
 	if _rules == null or not is_instance_valid(_rules):
 		return false
-	# Island 3: Shooting near a Forest Bloom-Lamp triggers a Canopy Chain Wave!
+	# Island 3: Shooting near a Forest Bloom-Lamp (overworld OR Briar Matron boss arena!) triggers a Canopy Wave
+	if _rules.island_id == 3 and _rules.is_dungeon and _boss_synergy != null and is_instance_valid(_boss_synergy):
+		_boss_synergy.try_hit_boss_bloom(from_p, to_p)
 	if _rules.island_id == 3 and not _rules.is_dungeon:
 		for b: Dictionary in _rules._blooms:
 			var bp: Vector2 = b["pos"] as Vector2

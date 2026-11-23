@@ -43,6 +43,9 @@ func interact(_actor: Node = null) -> bool:
 		Lx.hitstop.trigger(0.06)
 	_emit_gust(108.0, 92.0, Vector2(0.0, -10.0))
 	_emit_sfx("shrine_claimed")
+	var accent_sfx: String = _move_accent_sfx()
+	if not accent_sfx.is_empty() and Lx.audio != null:
+		Lx.audio.play_sfx(accent_sfx, pos, true)
 	_emit_save("shrine_" + id)
 	_notify_linked_targets(true)
 	queue_redraw()
@@ -80,8 +83,9 @@ func _draw() -> void:
 	draw_rect(Rect2(-10.0, 1.0, 20.0, 4.0), shadow)
 	draw_rect(Rect2(-7.0, 0.0, 14.0, 5.0), shadow)
 	var is_throw: bool = move_id == "throw"
-	var c_main: Color = (PAL["gold"] as Color) if is_throw else (PAL["sky"] as Color)
-	var c_hi: Color = (PAL["cream"] as Color) if is_throw else (PAL["ice"] as Color)
+	var colors: Array[Color] = _move_palette()
+	var c_main: Color = colors[0]
+	var c_hi: Color = colors[1]
 	if not claimed:
 		_draw_floor_ring(false, c_main, c_hi)
 	var prop_key: String = "shrine_throw" if is_throw else "shrine"
@@ -91,10 +95,75 @@ func _draw() -> void:
 		_draw_fallback()
 	if not claimed:
 		_draw_floor_ring(true, c_main, c_hi)
+		_draw_move_emblem(c_main, c_hi)
 		_draw_starlight_motes(c_main, c_hi)
 	if _claim_t > 0.0:
 		_draw_claim_burst(c_main, c_hi)
 	_draw_signal_pulses()
+
+
+func _move_palette() -> Array[Color]:
+	match move_id:
+		"dash":
+			return [PAL["apricot"] as Color, PAL["gold"] as Color]
+		"throw":
+			return [PAL["gold"] as Color, PAL["cream"] as Color]
+		"prism":
+			return [PAL["sky"] as Color, PAL["ice"] as Color]
+		"beam":
+			return [PAL["jade"] as Color, PAL["lime"] as Color]
+		"wings":
+			return [PAL["rose"] as Color, PAL["cream"] as Color]
+		"lens":
+			return [PAL["gold"] as Color, PAL["sky"] as Color]
+		"sunflare":
+			return [PAL["coral"] as Color, PAL["gold"] as Color]
+		_:
+			return [PAL["sky"] as Color, PAL["ice"] as Color]
+
+
+func _move_accent_sfx() -> String:
+	match move_id:
+		"prism":
+			return "prism_chain"
+		"beam":
+			return "prop_chime"
+		"wings":
+			return "wing_gale"
+		"lens":
+			return "phantom_phase"
+		"sunflare":
+			return "forge_gust"
+		_:
+			return ""
+
+
+func _draw_move_emblem(c_main: Color, c_hi: Color) -> void:
+	var cy: float = -24.0 + roundf(sin(_clock * 2.6) * 1.5)
+	match move_id:
+		"prism": # Rotating 3-vertex diamond prism ring
+			for k: int in range(3):
+				var a: float = _clock * 2.2 + float(k) * (TAU / 3.0)
+				var pt := Vector2(roundf(cos(a) * 9.0), roundf(cy + sin(a) * 4.0))
+				draw_rect(Rect2(pt, Vector2(2.0, 2.0)), c_hi if k == 0 else c_main)
+		"beam": # Focused vertical emerald-gold spire aura
+			draw_line(Vector2(0.0, cy - 10.0), Vector2(0.0, cy + 6.0), Color(c_main, 0.72), 2.0)
+			draw_line(Vector2(0.0, cy - 12.0), Vector2(0.0, cy + 4.0), c_hi, 1.0)
+		"wings": # Fluttering dual-wing motes
+			var fl: float = roundf(sin(_clock * 6.5) * 2.0)
+			draw_rect(Rect2(-9.0, cy + fl, 3.0, 2.0), c_main)
+			draw_rect(Rect2(6.0, cy + fl, 3.0, 2.0), c_main)
+			draw_rect(Rect2(-7.0, cy + fl - 1.0, 2.0, 1.0), c_hi)
+			draw_rect(Rect2(5.0, cy + fl - 1.0, 2.0, 1.0), c_hi)
+		"lens": # Counter-rotating golden/sky astrolabe halo
+			draw_arc(Vector2(0.0, cy), 8.0, _clock * 2.4, _clock * 2.4 + 2.2, 10, c_main, 1.2)
+			draw_arc(Vector2(0.0, cy), 8.0, -_clock * 2.4, -_clock * 2.4 + 2.2, 10, c_hi, 1.2)
+		"sunflare": # Blazing solar corona flares
+			for k: int in range(6):
+				var a: float = _clock * 1.8 + float(k) * (TAU / 6.0)
+				var p0 := Vector2(cos(a) * 5.0, cy + sin(a) * 5.0).round()
+				var p1 := Vector2(cos(a) * 10.0, cy + sin(a) * 10.0).round()
+				draw_line(p0, p1, c_hi if k % 2 == 0 else c_main, 1.0)
 
 
 func _draw_fallback() -> void:
