@@ -240,7 +240,7 @@ func _trigger_seal_shatter() -> void:
 		_events.seal_broken.emit(ISLAND_ID, SEAL_ID)
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
 		_events.shake_requested.emit(0.30)
-		_emit_narration("CUE_SEAL_SHATTER", "title", 3.5)
+		_emit_narration("CUE_SEAL_SHATTER_8", "title", 3.5)
 		_emit_narration("DUNGEON_8_NAME", "narration", 3.0)
 		_events.save_requested.emit("seal_broken_8")
 
@@ -268,7 +268,7 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island8_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else 0.36)
-		var cue: String = "CUE_PHASE_2" if boss_id == MINI_BOSS_KIND else ("CUE_HUSH_P4" if phase >= 4 else ("CUE_HUSH_P3" if phase == 3 else "CUE_PHASE_2"))
+		var cue: String = "CUE_PHASE_2_ISL8" if boss_id == MINI_BOSS_KIND else ("CUE_HUSH_P4" if phase >= 4 else ("CUE_HUSH_P3" if phase == 3 else "CUE_PHASE_2_ISL8"))
 		_emit_narration(cue, "warning", 3.2)
 
 

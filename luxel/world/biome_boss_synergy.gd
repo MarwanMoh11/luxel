@@ -9,12 +9,17 @@ const BOSS_REGIONS: PackedStringArray = [
 	"belfry_r7", "lighthouse_r10", "oak_r10", "conservatory_r10",
 	"orrery_r10", "kiln_r10", "spire_r10", "sanctum_r6",
 ]
+const MINIBOSS_REGIONS: PackedStringArray = [
+	"belfry_r5", "lighthouse_r6", "oak_r6", "conservatory_r6",
+	"orrery_r6", "kiln_r6", "spire_r6", "sanctum_r4",
+]
 
 var _rules: LxBiomeRules = null
 var _mech: LxBiomeMechanics = null
 var _region: Node = null
 var _island_id: int = 1
 var _active: bool = false
+var _is_miniboss: bool = false
 var _clock: float = 0.0
 var _center: Vector2 = Vector2.ZERO
 var _bell_pulse_t: float = 0.0
@@ -36,6 +41,7 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node) -
 	_was_dashing = false
 	var rid: String = str(region_node.get("current_region_id")) if region_node != null and region_node.get("current_region_id") != null else ""
 	_active = BOSS_REGIONS.has(rid)
+	_is_miniboss = MINIBOSS_REGIONS.has(rid)
 	_center = rules.bounds.get_center() if rules != null else Vector2(224.0, 144.0)
 	if _active and _rules != null:
 		_seed_boss_arena_features()
@@ -71,9 +77,12 @@ func _seed_boss_arena_features() -> void:
 
 
 func tick(dt: float) -> void:
-	if not _active or dt <= 0.0 or _rules == null:
+	if (not _active and not _is_miniboss) or dt <= 0.0 or _rules == null:
 		return
 	_clock += dt
+	if _is_miniboss:
+		queue_redraw()
+		return
 	_bell_pulse_t = maxf(0.0, _bell_pulse_t - dt)
 	if _island_id == 1:
 		_tick_belfry_ring()
@@ -143,10 +152,42 @@ func _is_boss_cleared() -> bool:
 	return not boss_id.is_empty() and Lx.state.defeated_bosses.has(boss_id)
 
 
+func _has_live_enemies() -> bool:
+	if _region == null or not _region.has_method("get_enemies"):
+		return false
+	var ev: Variant = _region.call("get_enemies")
+	if ev is Array:
+		for e_v: Variant in (ev as Array):
+			if e_v is LxEnemyBrain and is_instance_valid(e_v) and (e_v as LxEnemyBrain).is_alive():
+				return true
+	return false
+
+
+func _draw_miniboss_arena(fred: bool) -> void:
+	var c: Vector2 = _center.round()
+	var live: bool = _has_live_enemies()
+	var col_a: Color = LxBiomePalette.col(_island_id, "hi") if live else (PAL["gold"] as Color)
+	var col_b: Color = LxBiomePalette.col(_island_id, "glow") if live else (PAL["cream"] as Color)
+	var pulse: float = 0.0 if fred else sin(_clock * (2.6 if live else 1.4))
+	var r_out: float = roundf((44.0 if live else 30.0) + pulse * 2.0)
+	var a_ring: float = (0.34 if live else 0.42) * (0.75 if fred else 1.0)
+	draw_arc(c, r_out, _clock * 0.5, _clock * 0.5 + PI * 0.85, 18, Color(col_a, a_ring), 1.4)
+	draw_arc(c, r_out, _clock * 0.5 + PI, _clock * 0.5 + PI * 1.85, 18, Color(col_b, a_ring), 1.4)
+	for k: int in range(4):
+		var ang: float = (PI * 0.25) + float(k) * (PI * 0.5) + (_clock * 0.22 if live else 0.0)
+		var pt: Vector2 = (c + Vector2.from_angle(ang) * (r_out + 4.0)).round()
+		draw_rect(Rect2(pt - Vector2.ONE, Vector2(2.0, 2.0)), Color(col_b if k % 2 == 0 else col_a, a_ring * 1.4))
+
+
 func _draw() -> void:
-	if not _active or _rules == null:
+	if _rules == null:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
+	if _is_miniboss:
+		_draw_miniboss_arena(fred)
+		return
+	if not _active:
+		return
 	var cleared: bool = _is_boss_cleared()
 	match _island_id:
 		1:
