@@ -42,7 +42,7 @@ func configure(grid: Array[PackedStringArray], tile_size: int, island_id: int, i
 	var w: int = grid[0].size()
 	var ts: float = float(_tile_size)
 	var use_magma: bool = _island_id == 6
-	var use_stars: bool = _island_id in [1, 5, 7, 8] or is_dungeon
+	var use_stars: bool = _island_id in [1, 3, 5, 7, 8] or is_dungeon
 	for ty: int in range(h):
 		var row: PackedStringArray = grid[ty]
 		for tx: int in range(w):
@@ -183,13 +183,27 @@ func _draw() -> void:
 				draw_rect(Rect2(ax, ay, 2.0 if p > 0.55 else 1.0, 1.0), mc)
 		else:
 			if p > 0.25:
-				var sc: Color = (PAL["ice"] if p > 0.85 else (PAL["sky"] if p > 0.58 else PAL["dusk"])) as Color
-				draw_rect(Rect2(ax, ay, 1.0, 1.0), sc)
+				var sc: Color = _abyss_star_color(p)
+				draw_rect(Rect2(ax, ay, 2.0 if (_island_id == 5 and p > 0.88) else 1.0, 1.0), sc)
 
 	for rp: Dictionary in _ripples:
 		var u: float = clampf(float(rp["age"]) / maxf(0.01, float(rp["dur"])), 0.0, 1.0)
 		var r: float = roundf(lerpf(2.0, float(rp.get("max_r", 11.0)), u))
 		draw_arc((rp["pos"] as Vector2).round(), r, 0.0, TAU, 16, (rp["c1"] as Color) if u < 0.45 else (rp["c2"] as Color), 1.0, false)
+
+
+func _abyss_star_color(p: float) -> Color:
+	match _island_id:
+		3:
+			return (PAL["lime"] if p > 0.82 else (PAL["jade"] if p > 0.55 else PAL["pine"])) as Color
+		5:
+			return (PAL["cream"] if p > 0.88 else (PAL["gold"] if p > 0.62 else PAL["sky"])) as Color
+		7:
+			return (PAL["cream"] if p > 0.84 else (PAL["ice"] if p > 0.56 else PAL["blue"])) as Color
+		8:
+			return (PAL["gold"] if p > 0.88 else (PAL["rose"] if p > 0.62 else PAL["plum"])) as Color
+		_:
+			return (PAL["ice"] if p > 0.85 else (PAL["sky"] if p > 0.58 else PAL["dusk"])) as Color
 
 
 static func _is_land(tile_type: String) -> bool:

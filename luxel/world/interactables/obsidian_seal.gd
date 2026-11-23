@@ -159,13 +159,15 @@ func _draw() -> void:
 func _draw_shatter_burst() -> void:
 	var u: float = 1.0 - clampf(_shatter_t / 0.42, 0.0, 1.0)
 	var spread: float = maxf(size.x, size.y) * 0.52
+	var b_glow: Color = LxBiomePalette.col(island_id, "glow")
 	if u < 0.6:
 		draw_arc(Vector2.ZERO, roundf(lerpf(5.0, spread + 14.0, u / 0.6)), 0.0, TAU, 18, (PAL["cream"] if u < 0.25 else PAL["gold"]) as Color, 2.0 if u < 0.3 else 1.0, false)
+		draw_arc(Vector2.ZERO, roundf(lerpf(8.0, spread + 20.0, u / 0.6)), 0.0, TAU, 18, b_glow, 1.0, false)
 	for i: int in range(10):
 		var a: float = (TAU * float(i)) / 10.0 + 0.15
 		var d: float = lerpf(3.0, spread + 16.0, u)
 		var px: float = roundf(cos(a) * d)
 		var py: float = roundf(sin(a) * d + u * u * 8.0 - u * 5.0)
 		var sz: float = 3.0 if (u < 0.35 and i % 2 == 0) else (2.0 if u < 0.7 else 1.0)
-		var c: Color = (PAL["gold"] if i % 3 == 0 else (PAL["coral"] if i % 3 == 1 else PAL["dusk"])) as Color
+		var c: Color = (PAL["gold"] if i % 3 == 0 else (b_glow if i % 3 == 1 else PAL["dusk"])) as Color
 		draw_rect(Rect2(px, py, sz, sz), c)

@@ -19,8 +19,9 @@ static func draw_phase_sigil(enemy: LxEnemyBrain, off: Vector2) -> void:
 	var rx: float = r + 6.5
 	var ry: float = rx * 0.48
 	var base_y: float = r * 0.45
-	var ring_col: Color = (pal["sky"] if ph >= 4 else (pal["coral"] if ph >= 3 else pal["apricot"])) as Color
-	var hi_col: Color = (pal["cream"] if ph >= 4 else (pal["gold"] if ph >= 3 else pal["cream"])) as Color
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
+	var ring_col: Color = (pal["sky"] if ph >= 4 else (pal["coral"] if ph >= 3 else LxBiomePalette.col(isl, "hi"))) as Color
+	var hi_col: Color = (pal["cream"] if ph >= 4 else (pal["gold"] if ph >= 3 else LxBiomePalette.col(isl, "glow"))) as Color
 	var spin: float = t * (0.45 if fred else (0.75 + float(ph) * 0.25))
 	# Pixel-snapped gothic ground rune dashes beneath the boss's feet
 	var segs: int = 8 if ph == 2 else (10 if ph == 3 else 12)
@@ -59,13 +60,14 @@ static func draw_wear(enemy: LxEnemyBrain, off: Vector2) -> void:
 		var outer_r: float = lerpf(r + 3.0, r + 34.0, ease_p)
 		var inner_r: float = lerpf(r + 1.0, r + 20.0, ease_p)
 		var a_out: float = (1.0 - prog) * (0.55 if fred else 0.90)
-		enemy.draw_arc(off, outer_r, 0.0, TAU, 24, Color(pal["gold"] as Color, a_out), 1.5)
+		var isl_a: int = Lx.state.island_id if Lx.state != null else 1
+		enemy.draw_arc(off, outer_r, 0.0, TAU, 24, Color(LxBiomePalette.col(isl_a, "glow"), a_out), 1.5)
 		enemy.draw_arc(off, inner_r, 0.0, TAU, 18, Color(pal["cream"] as Color, a_out * 0.85), 1.0)
 		for ci: int in range(4):
 			var ang: float = float(ci) * (PI * 0.5) + prog * 0.45
 			var p0: Vector2 = (off + Vector2.from_angle(ang) * (r + 4.0 + ease_p * 10.0)).round()
 			var p1: Vector2 = (off + Vector2.from_angle(ang) * (r + 8.0 + ease_p * 16.0)).round()
-			enemy.draw_line(p0, p1, Color(pal["apricot"] as Color, a_out), 1.0)
+			enemy.draw_line(p0, p1, Color(LxBiomePalette.col(isl_a, "hi"), a_out), 1.0)
 
 	if enemy.max_hp <= 0.01 or enemy.hp <= 0.0:
 		return
