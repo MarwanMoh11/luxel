@@ -126,6 +126,15 @@ func tick(dt: float) -> void:
 				_nudge_foes_on_wave(_center, _bell_wave_r, 14.0, 38.0)
 				if _bell_wave_r > maxf(_bounds.size.x, _bounds.size.y) * 0.55:
 					_bell_wave_r = -1.0
+		2: # Lighthouse: sweeping Fresnel beam washes across the chamber — step inside to charge Fresnel Focus!
+			if w != null and not w.dead:
+				var b_ang2: float = PI * 0.5 + sin(_clock * 0.42 + float(_room_idx) * 0.9) * 0.95
+				var b_orig2 := Vector2(_center.x, _bounds.position.y + 18.0)
+				var delta2: Vector2 = w.global_position - b_orig2
+				var b_span2: float = minf(_bounds.size.x, _bounds.size.y) * 0.85
+				if delta2.length() <= b_span2 and delta2.length_squared() > 16.0:
+					if absf(wrapf(delta2.angle() - b_ang2, -PI, PI)) <= 0.17:
+						_rules.beam_buff_t = maxf(_rules.beam_buff_t, 1.4)
 		3: # Hollow Oak: floating forest spores + interactive Spore-Caps that puff foes back on dash/zip
 			for sp: Dictionary in _sparks:
 				sp["y"] = float(sp["y"]) - float(sp["spd"]) * 0.45 * dt
@@ -214,6 +223,22 @@ func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> void:
 				cap["burst_t"] = 0.45
 				_trigger_spore_puff(cp)
 				return
+	elif _island_id == 4 and _twist_cd <= 0.0:
+		var mid_p: Vector2 = from_p.lerp(to_p, 0.5)
+		for sh: Dictionary in _shafts:
+			var sx: float = float(sh["x"])
+			if absf(mid_p.x - sx) <= 18.0 or absf(to_p.x - sx) <= 18.0:
+				_twist_cd = 2.0
+				var hit_pt := Vector2(sx, clampf(mid_p.y, _bounds.position.y + 24.0, _bounds.end.y - 24.0))
+				if w != null and is_instance_valid(w):
+					if w.move_sunflare != null and w.move_sunflare.unlocked:
+						w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 3.0)
+					w.spawn_ring(hit_pt, 3.0, 20.0, 0.26, LxWick.PAL_ICE, 1.3)
+				if Lx.audio != null:
+					Lx.audio.play_sfx("prop_chime", hit_pt, true)
+				if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+					LxDarknessLayer.active_instance.add_burst_light(hit_pt, 72.0, 0.78 if LxHudFx.flash_reduced() else 1.12, 0.36)
+				return
 	elif _island_id == 5 and _twist_cd <= 0.0:
 		for npt: Vector2 in _orrery_node_positions():
 			if Geometry2D.get_closest_point_to_segment(npt, from_p, to_p).distance_to(npt) <= 14.0:
@@ -224,6 +249,16 @@ func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> void:
 				if Lx.audio != null:
 					Lx.audio.play_sfx("clockwork_chime", npt, true)
 				return
+	elif _island_id == 7 and _rules.lunar_phase > 0.65 and _twist_cd <= 0.0:
+		if Geometry2D.get_closest_point_to_segment(_center, from_p, to_p).distance_to(_center) <= 22.0:
+			_twist_cd = 2.6
+			if w != null and is_instance_valid(w):
+				w.spawn_ring(_center, 4.0, 32.0, 0.30, LxWick.PAL_ICE, 1.5)
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(_center, 110.0, 0.85 if LxHudFx.flash_reduced() else 1.25, 0.55)
+			if Lx.audio != null:
+				Lx.audio.play_sfx("lens_reveal", _center, true)
+			return
 
 
 func _orrery_node_positions() -> Array[Vector2]:

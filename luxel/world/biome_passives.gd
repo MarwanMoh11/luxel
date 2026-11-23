@@ -36,17 +36,22 @@ func _bind_events(enable: bool) -> void:
 	var ev: LxEventBus = Lx.events if enable else _bound_events
 	if ev == null or not is_instance_valid(ev):
 		return
-	var cb := Callable(self, "_on_enemy_killed")
+	var cb_kill := Callable(self, "_on_enemy_killed")
+	var cb_hang := Callable(self, "_on_lantern_hung")
 	if enable:
 		if _bound_events == ev:
 			return
 		_bind_events(false)
 		_bound_events = ev
-		if not ev.is_connected(&"enemy_killed", cb):
-			ev.connect(&"enemy_killed", cb)
+		if not ev.is_connected(&"enemy_killed", cb_kill):
+			ev.connect(&"enemy_killed", cb_kill)
+		if not ev.is_connected(&"lantern_hung", cb_hang):
+			ev.connect(&"lantern_hung", cb_hang)
 	else:
-		if ev.is_connected(&"enemy_killed", cb):
-			ev.disconnect(&"enemy_killed", cb)
+		if ev.is_connected(&"enemy_killed", cb_kill):
+			ev.disconnect(&"enemy_killed", cb_kill)
+		if ev.is_connected(&"lantern_hung", cb_hang):
+			ev.disconnect(&"lantern_hung", cb_hang)
 		_bound_events = null
 
 
@@ -179,6 +184,31 @@ func on_updraft_gust(origin: Vector2) -> void:
 			if e.is_alive() and not e.is_boss and e.pos.distance_to(origin) <= 56.0:
 				var kdir: Vector2 = (e.pos - origin).normalized() if e.pos.distance_to(origin) > 1.0 else Vector2.RIGHT
 				e.knock += kdir * 70.0
+
+
+func _on_lantern_hung(pos: Vector2) -> void:
+	# 8-Biome Thrown-Lantern Anchor Resonance: every island's floor responds uniquely when Wick hangs their lantern!
+	var k_glow: String = LxBiomePalette.key(_island_id, "glow")
+	var k_hi: String = LxBiomePalette.key(_island_id, "hi")
+	_ripples.append({"pos": pos, "age": 0.0, "dur": 0.42, "r0": 3.0, "r1": 18.0, "col": k_glow})
+	if _island_id in [4, 7]:
+		_ripples.append({"pos": pos, "age": 0.0, "dur": 0.50, "r0": 6.0, "r1": 24.0, "col": k_hi})
+	for k: int in range(4):
+		var ang: float = float(k) * (TAU / 4.0) + (0.0 if _island_id == 5 else PI * 0.25)
+		_trails.append({
+			"pos": pos + Vector2(cos(ang) * 4.0, sin(ang) * 4.0),
+			"vel": Vector2(cos(ang), sin(ang)) * 24.0,
+			"age": 0.0, "dur": 0.34,
+			"col": k_glow if k % 2 == 0 else k_hi,
+		})
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		var dk: int = LxGroundDecals.Kind.BLOSSOM
+		match _island_id:
+			2, 4: dk = LxGroundDecals.Kind.RIPPLE
+			5, 7: dk = LxGroundDecals.Kind.PRISM_STAR
+			6: dk = LxGroundDecals.Kind.SCORCH
+		LxGroundDecals.active_instance.add_decal(dk, pos, 11.0, 4.5)
+	queue_redraw()
 
 
 func _on_enemy_killed(_enemy: Object, _kind: String, pos: Vector2, _opened_kill: bool) -> void:
