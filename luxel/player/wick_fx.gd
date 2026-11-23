@@ -328,8 +328,8 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 
 	if lan_in_hand:
 		var low_hp: bool = wick.get_hearts() > 0.0 and wick.get_hearts() <= 1.0
-		var beat: float = sin(clock_t * (9.5 if (low_hp and not flash_red) else 7.0))
-		var pulse: float = (0.86 + 0.14 * beat) if low_hp else (0.92 + 0.08 * beat)
+		var beat: float = 0.0 if flash_red else sin(clock_t * (9.5 if low_hp else 7.0))
+		var pulse: float = 1.0 if flash_red else ((0.86 + 0.14 * beat) if low_hp else (0.92 + 0.08 * beat))
 		wick.draw_circle(hand_pos, 13.0 * pulse, Color(LxWick.PAL_CORAL if low_hp else LxWick.PAL_GOLD, 0.13 if low_hp else 0.10))
 		wick.draw_circle(hand_pos, 6.5 * pulse, Color(LxWick.PAL_APRICOT, 0.17 if low_hp else 0.15))
 
@@ -361,6 +361,7 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 			var sa: float = clock_t * 3.4 + float(si) * PI
 			var sp: Vector2 = (Vector2(0.0, -7.0) + Vector2(cos(sa) * 9.0, sin(sa) * 5.0)).round()
 			wick.draw_rect(Rect2(sp, Vector2.ONE), LxWick.PAL_CREAM if si == 0 else LxWick.PAL_GOLD)
+	_draw_biome_buff_halo(wick, clock_t, flash_red)
 	if wick.move_beam != null:
 		wick.move_beam.draw_fx(wick, off, hand_pos)
 	for s: Dictionary in sparks:
@@ -442,6 +443,39 @@ func _draw_muzzle_star(wick: LxWick, hand_pos: Vector2, flash_red: bool) -> void
 	wick.draw_line((hand_pos - aim * roundf(bck * 0.5)).round(), (hand_pos + aim * roundf(fwd * 0.65)).round(), LxWick.PAL_CREAM, 1.0)
 	wick.draw_line((hand_pos - perp * roundf(side * 0.6)).round(), (hand_pos + perp * roundf(side * 0.6)).round(), LxWick.PAL_CREAM, 1.0)
 	wick.draw_rect(Rect2(hand_pos - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
+
+
+func _draw_biome_buff_halo(wick: LxWick, clock_t: float, flash_red: bool) -> void:
+	# Diegetic combat buff indicators right on Wick for each island's signature empowerment
+	var br: LxBiomeRules = LxBiomeRules.active_instance
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	var center := Vector2(0.0, -6.0)
+	var spd: float = 1.4 if flash_red else 3.4
+	if br != null and is_instance_valid(br):
+		if br.island_id == 2 and br.beam_buff_t > 0.0: # Fresnel Focus (+25% Bolt / +20% Beam)
+			var a2: float = clock_t * spd
+			for k: int in range(2):
+				var p2: Vector2 = (center + Vector2(cos(a2 + float(k) * PI) * 10.0, sin(a2 + float(k) * PI) * 5.0)).round()
+				wick.draw_rect(Rect2(p2, Vector2(2.0, 1.0)), LxWick.PAL_GOLD if k == 0 else LxWick.PAL_ICE)
+		elif br.island_id == 5 and br.starlight_surge_t > 0.0: # Starlight Surge (faster Bolts & fire rate)
+			var a5: float = clock_t * (spd * 1.15)
+			for k: int in range(3):
+				var p5: Vector2 = (center + Vector2(cos(a5 + float(k) * (TAU / 3.0)) * 10.5, sin(a5 + float(k) * (TAU / 3.0)) * 5.5)).round()
+				wick.draw_rect(Rect2(p5, Vector2.ONE), LxWick.PAL_GOLD if k % 2 == 0 else LxWick.PAL_SKY)
+		elif br.island_id == 7 and br.lunar_phase > 0.65: # Full Silver Moon (+20% Bolt + Mirror Echo)
+			wick.draw_arc(center + Vector2(0.0, -4.0), 8.0, PI * 1.15, PI * 1.85, 8, Color(LxWick.PAL_ICE, 0.55 if flash_red else 0.78), 1.0)
+	if bm != null and is_instance_valid(bm):
+		if bm.tailwind_t > 0.0: # Island 4 Rose Tailwind (+22% Wings glide speed)
+			var a4: float = clock_t * spd
+			wick.draw_arc(center, 10.0, a4, a4 + 1.4, 8, Color(LxPalette.PAL["rose"] as Color, 0.62), 1.0)
+			wick.draw_arc(center, 10.0, a4 + PI, a4 + PI + 1.2, 8, Color(LxWick.PAL_ICE, 0.58), 1.0)
+		if bm.molten_charges > 0: # Island 6 Molten Overdrive (1..3 piercing +35% bolts)
+			var n6: int = clampi(bm.molten_charges, 1, 3)
+			var a6: float = clock_t * spd
+			for k: int in range(n6):
+				var p6: Vector2 = (center + Vector2(cos(a6 + float(k) * (TAU / float(n6))) * 9.5, sin(a6 + float(k) * (TAU / float(n6))) * 5.0)).round()
+				wick.draw_rect(Rect2(p6 - Vector2.ONE, Vector2(2.0, 2.0)), LxWick.PAL_CORAL)
+				wick.draw_rect(Rect2(p6, Vector2.ONE), LxWick.PAL_GOLD)
 
 func _draw_fallback_moth(wick: LxWick, base: Vector2, hit_white: bool, alpha: float, lan_in_hand: bool, hand_pos: Vector2) -> void:
 	var c_out := Color(LxWick.PAL_NIGHT, alpha)

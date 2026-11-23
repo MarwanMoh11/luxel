@@ -20,6 +20,7 @@ var _moon_mirror_pos: Vector2 = Vector2.ZERO
 var _moon_mirror_on: bool = false
 var _wick_pos: Vector2 = Vector2.ZERO
 var _wick_alive: bool = false
+var _grace_heal_t: float = 0.0
 
 
 func _ready() -> void:
@@ -68,6 +69,7 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_step_cd = 0.0
 	_last_wpos = Vector2.ZERO
 	_moon_mirror_on = false
+	_grace_heal_t = 0.0
 	queue_redraw()
 
 
@@ -143,10 +145,21 @@ func tick(dt: float) -> void:
 		if _island_id == 8 and dashing and LxBiomeMechanics.active_instance != null and LxBiomeMechanics.active_instance.dawn_seals_broken > 0:
 			if fmod(_clock, 0.05) < dt:
 				_trails.append({"pos": wpos, "age": 0.0, "dur": 0.38, "col": "gold"})
-		# Relit Overworld Grace: warm golden-biome dawn motes gently trail Wick on saved islands!
-		if not _rules.is_dungeon and moved and _step_cd <= 0.0 and Lx.state != null and Lx.state.relit_islands.has(_island_id):
-			_step_cd = 0.22
-			_trails.append({"pos": wpos + Vector2(sin(_clock * 6.0) * 3.0, -2.0), "vel": Vector2(0.0, -14.0), "age": 0.0, "dur": 0.42, "col": LxBiomePalette.key(_island_id, "glow")})
+		# Relit Overworld Grace: warm golden-biome dawn motes & gentle heart recovery on saved islands!
+		if not _rules.is_dungeon and Lx.state != null and Lx.state.relit_islands.has(_island_id):
+			if moved and _step_cd <= 0.0:
+				_step_cd = 0.22
+				_trails.append({"pos": wpos + Vector2(sin(_clock * 6.0) * 3.0, -2.0), "vel": Vector2(0.0, -14.0), "age": 0.0, "dur": 0.42, "col": LxBiomePalette.key(_island_id, "glow")})
+			if Lx.state.hearts > 0.0 and Lx.state.hearts < float(Lx.state.max_hearts):
+				_grace_heal_t += dt
+				if _grace_heal_t >= 4.5:
+					_grace_heal_t = 0.0
+					Lx.state.hearts = minf(float(Lx.state.max_hearts), Lx.state.hearts + 0.5)
+					_ripples.append({"pos": wpos, "age": 0.0, "dur": 0.45, "r0": 3.0, "r1": 16.0, "col": LxBiomePalette.key(_island_id, "glow")})
+					if Lx.events != null:
+						Lx.events.player_healed.emit(0.5)
+			else:
+				_grace_heal_t = 0.0
 		_was_dashing = dashing
 	if not _trails.is_empty() or not _ripples.is_empty() or not _fireflies.is_empty() or _moon_mirror_on or _wick_alive:
 		queue_redraw()
