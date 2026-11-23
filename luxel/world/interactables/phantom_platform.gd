@@ -127,14 +127,15 @@ func _draw() -> void:
 			Vector2(x0 + 1.0, y0 + 1.0), Vector2(x0 + w - 2.0, y0 + 1.0),
 			Vector2(x0 + 1.0, y0 + h - 2.0), Vector2(x0 + w - 2.0, y0 + h - 2.0),
 		]
+		var b_glow: Color = LxBiomePalette.col(island_id, "glow")
 		for si: int in range(stars.size()):
 			var sp: Vector2 = stars[si]
 			var bright: bool = (si + _shimmer_stage) % 2 == 0
-			draw_rect(Rect2(sp.x - 1.0, sp.y, 3.0, 1.0), PAL["ice"] if bright else PAL["sky"])
-			draw_rect(Rect2(sp.x, sp.y - 1.0, 1.0, 3.0), PAL["ice"] if bright else PAL["sky"])
-			draw_rect(Rect2(sp.x, sp.y, 1.0, 1.0), PAL["cream"] if bright else PAL["ice"])
+			draw_rect(Rect2(sp.x - 1.0, sp.y, 3.0, 1.0), b_glow if bright else PAL["sky"])
+			draw_rect(Rect2(sp.x, sp.y - 1.0, 1.0, 3.0), b_glow if bright else PAL["sky"])
+			draw_rect(Rect2(sp.x, sp.y, 1.0, 1.0), PAL["cream"] if bright else b_glow)
 		if _reveal_fx_t > 0.0:
-			draw_rect(Rect2(x0, y0, w, h), PAL["cream"] if _reveal_fx_t > 0.12 else PAL["ice"], false, 1.0)
+			draw_rect(Rect2(x0, y0, w, h), PAL["cream"] if _reveal_fx_t > 0.12 else b_glow, false, 1.0)
 		elif _reveal_left > 0.0 and _reveal_left < 0.14:
 			var no_flash: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 			var warn_c: Color = (PAL["sky"] if (no_flash or int(floorf(_clock * 24.0)) % 2 == 0) else PAL["deep"]) as Color

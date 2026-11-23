@@ -118,11 +118,13 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 		canvas.draw_arc(center, last_radius, a0, a0 + arc_span, 6, Color(LxWick.PAL_ICE, 0.24 * shim), 1.0)
 		var b0: float = -rot * 0.65 + (float(i) + 0.35) * seg_step
 		canvas.draw_arc(center, inner_r, b0, b0 + inner_span, 5, Color(LxWick.PAL_SKY, 0.15 * shim), 1.0)
+	var isl_l: int = Lx.state.island_id if Lx.state != null else 1
+	var b_glow: Color = LxBiomePalette.col(isl_l, "glow")
 	for j: int in range(4):
 		var pang: float = rot + (float(j) * 2.0 + 0.78) * seg_step
 		var pip: Vector2 = (center + Vector2.from_angle(pang) * last_radius).round()
 		var tw: float = 0.72 if flash_red else (0.62 + 0.28 * sin(rot * 5.0 + float(j) * 1.57))
-		var pcol: Color = LxWick.PAL_CREAM if (j % 2 == 0) else LxWick.PAL_ICE
+		var pcol: Color = LxWick.PAL_CREAM if (j % 2 == 0) else b_glow
 		canvas.draw_rect(Rect2(pip, Vector2(1.0, 1.0)), Color(pcol, tw))
 		var inner_pip: Vector2 = (center + Vector2.from_angle(pang) * inner_r).round()
 		canvas.draw_rect(Rect2(inner_pip, Vector2(1.0, 1.0)), Color(LxWick.PAL_SKY, tw * 0.45))

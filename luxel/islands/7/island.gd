@@ -320,7 +320,7 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	_emit_narration("CUE_BEACON_LIT", "title", 2.5)
+	_emit_narration("CUE_BEACON_LIT_7", "title", 2.5)
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 

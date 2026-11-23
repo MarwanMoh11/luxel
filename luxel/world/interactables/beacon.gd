@@ -107,7 +107,15 @@ func get_light_pool() -> Vector4:
 func get_interact_prompt() -> String:
 	if lit or not ignitable:
 		return ""
-	return "PROMPT_LIGHT_BEACON"
+	match island_id:
+		2: return "PROMPT_LIGHT_BEACON_2"
+		3: return "PROMPT_LIGHT_BEACON_3"
+		4: return "PROMPT_LIGHT_BEACON_4"
+		5: return "PROMPT_LIGHT_BEACON_5"
+		6: return "PROMPT_LIGHT_BEACON_6"
+		7: return "PROMPT_LIGHT_BEACON_7"
+		8: return "PROMPT_LIGHT_BEACON_8"
+		_: return "PROMPT_LIGHT_BEACON"
 
 
 func save_state() -> Dictionary:

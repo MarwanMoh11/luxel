@@ -305,6 +305,8 @@ func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
 		var blen: float = delta.length()
 		var bdir: Vector2 = delta / blen if blen > 0.5 else Vector2.RIGHT
 		var perp := Vector2(-bdir.y, bdir.x)
+		var isl_b: int = Lx.state.island_id if Lx.state != null else 1
+		canvas.draw_line(a, b, Color(LxBiomePalette.col(isl_b, "glow"), t * 0.42 * flash_sc), maxf(2.0, (beam_width + 3.0) * t))
 		canvas.draw_line(a, b, Color(LxWick.PAL_APRICOT, t * 0.85 * flash_sc), maxf(1.0, beam_width * t))
 		canvas.draw_line(a, b, Color(LxWick.PAL_GOLD, t * lerpf(1.0, 0.85, 1.0 - flash_sc)), maxf(1.0, beam_width * 0.65 * t))
 		canvas.draw_line(a, b, Color(LxWick.PAL_CREAM, t), maxf(1.0, beam_width * 0.30 * t))

@@ -145,7 +145,8 @@ func _draw() -> void:
 		draw_line(b, c, PAL["void"], 1.5)
 	draw_rect(Rect2(hub - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["void"])
 	var hint_on: bool = _hint_t > 0.0
-	var seam_c: Color = (PAL["cream"] if hint_on else (PAL["gold"] if _pulse_stage == 0 else PAL["apricot"])) as Color
+	var b_glow: Color = LxBiomePalette.col(island_id, "glow")
+	var seam_c: Color = (PAL["cream"] if hint_on else (b_glow if _pulse_stage == 0 else LxBiomePalette.col(island_id, "hi"))) as Color
 	draw_line(Vector2(hub.x - 2.0, hub.y - 1.0), Vector2(hub.x + 2.0, hub.y + 1.0), seam_c, 1.0)
 	draw_rect(Rect2(hub, Vector2(1.0, 1.0)), PAL["cream"] if (hint_on or _pulse_stage == 0) else PAL["gold"])
 	if hint_on:
@@ -165,7 +166,7 @@ func _draw_shatter_burst() -> void:
 	var u: float = 1.0 - clampf(_break_t / 0.38, 0.0, 1.0)
 	var spread: float = maxf(size.x, size.y) * 0.48
 	if u < 0.45:
-		draw_arc(Vector2.ZERO, roundf(lerpf(3.0, spread + 8.0, u / 0.45)), 0.0, TAU, 14, (PAL["gold"] if u < 0.22 else PAL["stone"]) as Color, 1.0, false)
+		draw_arc(Vector2.ZERO, roundf(lerpf(3.0, spread + 8.0, u / 0.45)), 0.0, TAU, 14, (LxBiomePalette.col(island_id, "glow") if u < 0.22 else PAL["stone"]) as Color, 1.0, false)
 	for i: int in range(8):
 		var a: float = (TAU * float(i)) / 8.0 + 0.2
 		var d: float = lerpf(2.0, spread + 12.0, u)

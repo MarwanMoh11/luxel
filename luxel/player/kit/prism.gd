@@ -112,9 +112,10 @@ func on_bolt_reflected(at_pos: Vector2, out_dir: Vector2, chain_count: int = 1) 
 	bounces_count += 1
 	if wick == null:
 		return
+	var isl_p: int = Lx.state.island_id if Lx.state != null else 1
 	wick.spawn_sparks(at_pos, out_dir, 6, LxWick.PAL_GOLD, 35.0, 90.0, 0.18)
 	wick.spawn_sparks(at_pos, out_dir, 2, LxWick.PAL_CREAM, 65.0, 115.0, 0.13)
-	wick.spawn_ring(at_pos, 2.0, 11.0, 0.18, LxWick.PAL_GOLD, 1.0)
+	wick.spawn_ring(at_pos, 2.0, 11.0, 0.18, LxBiomePalette.col(isl_p, "glow"), 1.0)
 	wick.spawn_ring(at_pos, 1.0, 7.0, 0.11, LxWick.PAL_CREAM, 1.0)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		var bi_r: float = (0.92 if chain_count >= 2 else 0.72) if LxHudFx.flash_reduced() else (1.42 if chain_count >= 2 else 1.12)
