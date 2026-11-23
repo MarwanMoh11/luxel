@@ -233,11 +233,16 @@ func on_perfect_dodge() -> bool:
 		wick.perfect_dodges += 1
 		wick.trigger_hitstop(0.045)
 		wick.trigger_shake(0.10)
+		var isl_p: int = Lx.state.island_id if Lx.state != null else 1
+		var p_glow: Color = LxBiomePalette.col(isl_p, "glow")
 		wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.24, LxWick.PAL_ICE, 1.5)
 		wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.18, LxWick.PAL_CREAM, 1.0)
+		wick.spawn_ring(wick.global_position, 4.0, 23.0, 0.28, p_glow, 1.1)
 		wick.spawn_sparks(wick.global_position, -dash_dir, 8, LxWick.PAL_ICE, 34.0, 86.0, 0.22)
+		wick.spawn_sparks(wick.global_position, dash_dir, 4, p_glow, 28.0, 78.0, 0.24)
 		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, wick.global_position + Vector2(0.0, 3.0), 12.0, 4.5)
+			var p_dk: int = LxGroundDecals.Kind.BLOSSOM if isl_p in [3, 4] else (LxGroundDecals.Kind.SCORCH if isl_p == 6 else LxGroundDecals.Kind.PRISM_STAR)
+			LxGroundDecals.active_instance.add_decal(p_dk, wick.global_position + Vector2(0.0, 3.0), 12.0, 4.5)
 		_gust(64.0, 72.0)
 		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 			LxDarknessLayer.active_instance.trigger_focus_flash(0.85)
