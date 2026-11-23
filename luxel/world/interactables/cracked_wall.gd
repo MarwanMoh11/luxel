@@ -79,7 +79,7 @@ func get_solid_rect() -> Rect2:
 func get_light_pool() -> Vector4:
 	if _break_t > 0.0:
 		var u: float = clampf(_break_t / 0.38, 0.0, 1.0)
-		return Vector4(pos.x, pos.y, 64.0 * u, 1.35 * u)
+		return Vector4(pos.x, pos.y, 64.0 * u, (0.88 if LxHudFx.flash_reduced() else 1.35) * u)
 	if _hint_t > 0.0 and active and not broken:
 		var h: float = clampf(_hint_t / 0.30, 0.0, 1.0)
 		return Vector4(pos.x, pos.y, 34.0, 0.85 * h)

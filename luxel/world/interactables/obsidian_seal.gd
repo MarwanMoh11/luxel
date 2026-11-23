@@ -73,7 +73,7 @@ func on_hit(hit: LxHit) -> bool:
 func get_light_pool() -> Vector4:
 	if _shatter_t > 0.0:
 		var u: float = clampf(_shatter_t / 0.42, 0.0, 1.0)
-		return Vector4(pos.x, pos.y, 76.0 * u, 1.50 * u)
+		return Vector4(pos.x, pos.y, 76.0 * u, (0.95 if LxHudFx.flash_reduced() else 1.50) * u)
 	if shattered or not active:
 		return Vector4.ZERO
 	return Vector4(pos.x, pos.y, 44.0 if _resonate_t > 0.0 else 38.0, 0.95 if _resonate_t > 0.0 else 0.68)

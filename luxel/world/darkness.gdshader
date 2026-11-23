@@ -145,9 +145,19 @@ void fragment() {
 			out_col = mix(out_col, col_void, clamp(vig, 0.0, 0.35));
 		}
 
-		// Radiant 3-band Last Light golden-apricot-cream dawn relight wave crest
+		// Radiant 3-band Last Light biome-accent -> gold -> cream dawn relight wave crest
 		if (wave_rim > 0.01) {
-			vec3 warm_band = mix(col_apricot, col_gold, smoothstep(0.18, 0.62, wave_rim));
+			vec3 wave_edge = col_apricot;
+			if (biome_id == 2 || biome_id == 5 || biome_id == 7) {
+				wave_edge = col_sky;
+			} else if (biome_id == 3) {
+				wave_edge = col_jade;
+			} else if (biome_id == 4 || biome_id == 8) {
+				wave_edge = col_rose;
+			} else if (biome_id == 6) {
+				wave_edge = col_coral;
+			}
+			vec3 warm_band = mix(wave_edge, col_gold, smoothstep(0.18, 0.62, wave_rim));
 			vec3 rim_col = mix(warm_band, col_cream, smoothstep(0.68, 0.94, wave_rim));
 			float rim_a = clamp(wave_rim * 0.86, 0.0, 0.86);
 			out_col = mix(out_col, rim_col, rim_a);
