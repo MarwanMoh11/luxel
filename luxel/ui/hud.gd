@@ -10,31 +10,22 @@ const LANTERN_FRAME: Array[Rect2] = [Rect2(1.0, 0.0, 3.0, 1.0), Rect2(0.0, 1.0, 
 const MOVE_COLORS: Dictionary = {"bolt": "gold", "dash": "coral", "throw": "apricot", "prism": "sky", "beam": "cream", "wings": "lime", "lens": "ice", "sunflare": "gold"}
 
 const BOSS_NAME_KEYS: Dictionary = {
-	"bellkeeper": "BOSS_BELLKEEPER",
-	"boss_bellkeeper": "BOSS_BELLKEEPER",
-	"grand_bellkeeper": "BOSS_BELLKEEPER",
-	"lighthouse_hermit": "BOSS_HERMIT",
-	"boss_hermit": "BOSS_HERMIT",
-	"hermit": "BOSS_HERMIT",
-	"briar_matron": "BOSS_MATRON",
-	"boss_matron": "BOSS_MATRON",
-	"matron": "BOSS_MATRON",
-	"heron_abbess": "BOSS_ABBESS",
-	"boss_abbess": "BOSS_ABBESS",
-	"abbess": "BOSS_ABBESS",
-	"astronomer": "BOSS_ASTRONOMER",
-	"boss_astronomer": "BOSS_ASTRONOMER",
-	"the_astronomer": "BOSS_ASTRONOMER",
-	"kilnmother": "BOSS_KILNMOTHER",
-	"boss_kilnmother": "BOSS_KILNMOTHER",
-	"the_kilnmother": "BOSS_KILNMOTHER",
-	"hollow_wick": "BOSS_HOLLOW",
-	"hollow_wick_boss": "BOSS_HOLLOW",
-	"boss_hollow": "BOSS_HOLLOW",
-	"hollow": "BOSS_HOLLOW",
-	"the_hush": "BOSS_HUSH",
-	"boss_hush": "BOSS_HUSH",
-	"hush": "BOSS_HUSH",
+	"bellkeeper": "BOSS_BELLKEEPER", "boss_bellkeeper": "BOSS_BELLKEEPER", "grand_bellkeeper": "BOSS_BELLKEEPER",
+	"lighthouse_hermit": "BOSS_HERMIT", "boss_hermit": "BOSS_HERMIT", "hermit": "BOSS_HERMIT",
+	"briar_matron": "BOSS_MATRON", "boss_matron": "BOSS_MATRON", "matron": "BOSS_MATRON",
+	"heron_abbess": "BOSS_ABBESS", "boss_abbess": "BOSS_ABBESS", "abbess": "BOSS_ABBESS",
+	"astronomer": "BOSS_ASTRONOMER", "boss_astronomer": "BOSS_ASTRONOMER", "the_astronomer": "BOSS_ASTRONOMER",
+	"kilnmother": "BOSS_KILNMOTHER", "boss_kilnmother": "BOSS_KILNMOTHER", "the_kilnmother": "BOSS_KILNMOTHER",
+	"hollow_wick": "BOSS_HOLLOW", "hollow_wick_boss": "BOSS_HOLLOW", "boss_hollow": "BOSS_HOLLOW", "hollow": "BOSS_HOLLOW",
+	"the_hush": "BOSS_HUSH", "boss_hush": "BOSS_HUSH", "hush": "BOSS_HUSH",
+	"bell_warden": "MINIBOSS_1", "bell_warden_r5": "MINIBOSS_1",
+	"tide_captain": "MINIBOSS_2", "boss_tide_captain": "MINIBOSS_2",
+	"elder_sporecap": "MINIBOSS_3", "boss_elder_sporecap": "MINIBOSS_3",
+	"great_lily_hopper": "MINIBOSS_4", "boss_great_lily_hopper": "MINIBOSS_4",
+	"clockwork_warden": "MINIBOSS_5", "boss_clockwork_warden": "MINIBOSS_5",
+	"forge_warden": "MINIBOSS_6", "boss_forge_warden": "MINIBOSS_6",
+	"moonshade_warden": "MINIBOSS_7", "boss_moonshade_warden": "MINIBOSS_7",
+	"night_harbinger": "MINIBOSS_8", "mini_night_harbinger": "MINIBOSS_8", "boss_night_harbinger": "MINIBOSS_8",
 }
 
 var _cues: Array[Dictionary] = [] # {text, pos, is_world, color, t, dur}
@@ -185,8 +176,11 @@ func clear_cues() -> void:
 	queue_redraw()
 
 
-func _on_beacon_lit(_island_id: int, _beacon_id: String) -> void:
-	spawn_screen_cue("CUE_BEACON_LIT", Vector2(160.0, 34.0), "gold", 1.8)
+func _on_beacon_lit(island_id: int, _beacon_id: String) -> void:
+	var ck: String = ("CUE_BEACON_LIT_%d" % island_id) if island_id >= 2 else "CUE_BEACON_LIT"
+	if not LxStrings.has_id(ck):
+		ck = "CUE_BEACON_LIT"
+	spawn_screen_cue(ck, Vector2(160.0, 34.0), LxBiomePalette.key(island_id, "glow"), 1.8)
 
 
 func _on_waystone_lit(_island_id: int, _waystone_id: String) -> void:
@@ -204,7 +198,9 @@ func _on_boss_phase(boss_id: String, phase: int) -> void:
 		_boss_name_key = resolve_boss_name_key(boss_id)
 	_boss_phase = maxi(1, phase)
 	if phase >= 2:
-		var p_cue: String = ("CUE_HUSH_P4" if phase >= 4 else "CUE_HUSH_P3") if (_boss_name_key == "BOSS_HUSH" and phase >= 3) else ("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2")
+		var isl_p: int = Lx.state.island_id if Lx.state != null else 1
+		var p2_k: String = ("CUE_PHASE_2_ISL%d" % isl_p) if (isl_p >= 2 and LxStrings.has_id("CUE_PHASE_2_ISL%d" % isl_p)) else "CUE_PHASE_2"
+		var p_cue: String = ("CUE_HUSH_P4" if phase >= 4 else "CUE_HUSH_P3") if (_boss_name_key == "BOSS_HUSH" and phase >= 3) else ("CUE_PHASE_3" if phase >= 3 else p2_k)
 		spawn_screen_cue(p_cue, Vector2(160.0, 44.0), "coral", 1.8)
 
 
@@ -546,7 +542,8 @@ func _draw_interact_prompt() -> Rect2:
 	var cx: float = clampf(sp.x, 8.0 + half_w, 312.0 - half_w)
 	var py: float = clampf(sp.y - h * 0.5, 18.0, 146.0 - h)
 	var rect := Rect2(roundf(cx - half_w), roundf(py), w, h)
-	LxPixelFont.draw_panel(self, rect, "dusk", "gold", "night")
+	var p_isl: int = Lx.state.island_id if Lx.state != null else 1
+	LxPixelFont.draw_panel(self, rect, "dusk", LxBiomePalette.key(p_isl, "border"), "night")
 	LxPixelFont.draw_centered(self, txt, rect.position.x + w * 0.5, rect.position.y + 3.0, LxPalette.PAL["cream"], 1)
 	return rect
 
