@@ -82,6 +82,19 @@ func get_total_count() -> int:
 	return _chimes.size()
 
 
+func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> bool:
+	if not _active:
+		return false
+	for ch: Dictionary in _chimes:
+		if float(ch["cd"]) > 0.0:
+			continue
+		var cp: Vector2 = ch["pos"] as Vector2
+		if Geometry2D.get_closest_point_to_segment(cp, from_p, to_p).distance_to(cp) <= 14.0:
+			_ring_chime(ch, w)
+			return true
+	return false
+
+
 func tick(dt: float, cam_center: Vector2) -> void:
 	_cam_center = cam_center
 	if not _active or dt <= 0.0:

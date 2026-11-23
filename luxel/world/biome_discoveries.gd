@@ -119,6 +119,19 @@ func get_total_count() -> int:
 	return _nodes.size()
 
 
+func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> bool:
+	if not _active:
+		return false
+	for nd: Dictionary in _nodes:
+		if float(nd["cd"]) > 0.0:
+			continue
+		var cp: Vector2 = nd["pos"] as Vector2
+		if Geometry2D.get_closest_point_to_segment(cp, from_p, to_p).distance_to(cp) <= 14.0:
+			_trigger_node(nd, w)
+			return true
+	return false
+
+
 func tick(dt: float, cam_center: Vector2) -> void:
 	_cam_center = cam_center
 	if not _active or dt <= 0.0:

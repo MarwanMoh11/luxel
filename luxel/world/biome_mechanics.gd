@@ -260,10 +260,7 @@ func get_glide_speed_mult() -> float:
 
 
 func _tick_island4(_dt: float) -> void:
-	if tailwind_t > 0.0 and Lx.player is LxWick and is_instance_valid(Lx.player):
-		var w: LxWick = Lx.player as LxWick
-		if not w.is_gliding():
-			tailwind_t = minf(tailwind_t, 0.15)
+	pass
 
 
 # --- Island 5: Shootable Starfall Nova Crystals ---
@@ -283,6 +280,10 @@ func _tick_island5(dt: float) -> void:
 func try_hit_biome_target(from_p: Vector2, to_p: Vector2, dir: Vector2, wick: LxWick) -> bool:
 	if _rules == null or not is_instance_valid(_rules):
 		return false
+	if LxBellChimes.active_instance != null and is_instance_valid(LxBellChimes.active_instance):
+		LxBellChimes.active_instance.try_hit_segment(from_p, to_p, wick)
+	if LxBiomeDiscoveries.active_instance != null and is_instance_valid(LxBiomeDiscoveries.active_instance):
+		LxBiomeDiscoveries.active_instance.try_hit_segment(from_p, to_p, wick)
 	# Island 3: Shooting near a Forest Bloom-Lamp (overworld OR Briar Matron boss arena!) triggers a Canopy Wave
 	if _rules.island_id == 3 and _rules.is_dungeon and _boss_synergy != null and is_instance_valid(_boss_synergy):
 		_boss_synergy.try_hit_boss_bloom(from_p, to_p)
