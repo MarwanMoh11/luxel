@@ -48,6 +48,8 @@ func interact(_actor: Node = null) -> bool:
 		if first_time:
 			Lx.events.narration_requested.emit("CUE_WAYSTONE_LIT", "title", 2.5)
 	_emit_gust(76.0 if first_time else 52.0, 64.0 if first_time else 40.0, Vector2(0.0, -8.0))
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, pos, 16.0 if first_time else 12.0, 6.0)
 	_emit_sfx("waystone_lit" if first_time else "waystone_rest")
 	_emit_save("waystone_" + id)
 	queue_redraw()

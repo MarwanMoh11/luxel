@@ -64,6 +64,8 @@ func interact(_actor: Node = null) -> bool:
 		if is_rare_r:
 			Lx.events.hitstop_requested.emit(0.035)
 	_emit_gust(74.0 if is_rare_r else 56.0, 68.0 if is_rare_r else 52.0, Vector2(0.0, -6.0))
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR if is_rare_r else LxGroundDecals.Kind.BLOSSOM, pos, 15.0 if is_rare_r else 11.0, 6.0)
 	_emit_sfx("chest_open")
 	_emit_save("chest_" + id)
 	_notify_linked_targets(true)

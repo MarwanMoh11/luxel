@@ -195,7 +195,7 @@ func tick_sim(dt: float, world_ctx: Node) -> void:
 	elif is_beam_charging():
 		desired_vel = Vector2.ZERO
 	elif bounce_t <= 0.0:
-		desired_vel = get_move_input() * MOVE_SPEED
+		desired_vel = get_move_input() * MOVE_SPEED * (1.14 if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance) and LxBiomeRules.active_instance.starlight_surge_t > 0.0) else 1.0)
 
 	desired_vel += knock
 	knock = knock.move_toward(Vector2.ZERO, KNOCK_DECAY * dt)

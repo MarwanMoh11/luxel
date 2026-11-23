@@ -75,6 +75,25 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				hud.draw_rect(Rect2(o + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(o + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+		3:
+			if not br.is_dungeon:
+				var lit_b: int = mini(3, br.get_lit_bloom_count())
+				if lit_b > 0:
+					for k: int in range(3):
+						var lx: float = o.x + float(k) * 7.0
+						hud.draw_rect(Rect2(lx, o.y, 6.0, 6.0), bg)
+						if k < lit_b:
+							hud.draw_rect(Rect2(lx + 1.0, o.y + 1.0, 4.0, 4.0), LxPalette.PAL["lime"] as Color)
+							hud.draw_rect(Rect2(lx + 2.0, o.y + 2.0, 2.0, 2.0), LxPalette.PAL["cream"] as Color)
+						else:
+							hud.draw_rect(Rect2(lx + 1.0, o.y + 1.0, 4.0, 4.0), LxPalette.PAL["teal"] as Color)
+							hud.draw_rect(Rect2(lx + 2.0, o.y + 2.0, 2.0, 2.0), night)
+			else:
+				var pulse_s: bool = fred or (int(blink_t * 3.0) % 2 == 0)
+				hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
+				hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(5.0, 5.0)), (LxPalette.PAL["jade"] if pulse_s else LxPalette.PAL["teal"]) as Color)
+				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), LxPalette.PAL["lime"] as Color)
+				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["gold"] as Color)
 		4:
 			if bm != null and is_instance_valid(bm) and bm.tailwind_t > 0.0:
 				var tw_w: float = floorf(18.0 * clampf(bm.tailwind_t / 2.2, 0.0, 1.0))

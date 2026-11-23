@@ -121,11 +121,11 @@ func _draw() -> void:
 		4:
 			_draw_lagoon_rain(fred, relit)
 		5:
-			_draw_comets(fred)
+			_draw_comets(fred, relit)
 		6:
-			_draw_volcanic_cinders(fred)
+			_draw_volcanic_cinders(fred, relit)
 		7:
-			_draw_lunar_aurora(fred)
+			_draw_lunar_aurora(fred, relit)
 		8:
 			_draw_eclipse_ash(fred, relit)
 
@@ -174,7 +174,16 @@ func _draw_lagoon_rain(fred: bool, relit: bool) -> void:
 		draw_line(p, p + Vector2(-l * 0.25, l), Color(col, a), 1.0)
 
 
-func _draw_comets(fred: bool) -> void:
+func _draw_comets(fred: bool, relit: bool) -> void:
+	if relit:
+		var ra: float = 0.05 if fred else 0.09
+		for band: int in range(2):
+			var base_y: float = _cam_center.y - 78.0 + float(band) * 16.0
+			var c_col: Color = (PAL["gold"] if band == 0 else PAL["sky"]) as Color
+			for s: int in range(10):
+				var fx: float = roundf(_cam_center.x - 154.0 + float(s) * 34.0)
+				var fy: float = roundf(base_y + sin(_clock * 0.55 + float(s) * 0.7 + float(band)) * 5.0)
+				draw_line(Vector2(fx, fy), Vector2(fx + 22.0, fy + 2.0), Color(c_col, ra), 2.0)
 	for cm: Dictionary in _comets:
 		var age: float = float(cm["age"])
 		if age > 0.72:
@@ -183,24 +192,30 @@ func _draw_comets(fred: bool) -> void:
 		var head: Vector2 = (_cam_center + Vector2(float(cm["ox"]) + u * 96.0, float(cm["oy"]) + u * 44.0)).round()
 		var tail: Vector2 = (head - Vector2(22.0, 10.0)).round()
 		var a: float = sin(u * PI) * (0.55 if fred else 0.90)
-		draw_line(tail, head, Color(PAL["sky"] as Color, a * 0.75), 1.2)
-		draw_line(tail.lerp(head, 0.5), head, Color(PAL["gold"] as Color, a), 1.4)
+		draw_line(tail, head, Color((PAL["gold"] if relit else PAL["sky"]) as Color, a * 0.75), 1.2)
+		draw_line(tail.lerp(head, 0.5), head, Color((PAL["cream"] if relit else PAL["gold"]) as Color, a), 1.4)
 		draw_rect(Rect2(head - Vector2.ONE, Vector2(2.0, 2.0)), Color(PAL["cream"] as Color, a))
 
 
-func _draw_volcanic_cinders(fred: bool) -> void:
-	var a: float = 0.52 if fred else 0.85
+func _draw_volcanic_cinders(fred: bool, relit: bool) -> void:
+	if relit:
+		_draw_dawn_sunbeams(fred)
+	var a: float = 0.44 if (relit or fred) else 0.85
 	for i: int in range(_drops.size()):
 		var d: Dictionary = _drops[i]
 		var p: Vector2 = (_cam_center + Vector2(float(d["ox"]), float(d["oy"]))).round()
-		var col: Color = (PAL["gold"] if i % 3 == 0 else (PAL["coral"] if i % 3 == 1 else PAL["apricot"])) as Color
+		var col: Color
+		if relit:
+			col = (PAL["cream"] if i % 3 == 0 else (PAL["gold"] if i % 3 == 1 else PAL["apricot"])) as Color
+		else:
+			col = (PAL["gold"] if i % 3 == 0 else (PAL["coral"] if i % 3 == 1 else PAL["apricot"])) as Color
 		draw_rect(Rect2(p, Vector2(2.0 if i % 4 == 0 else 1.0, 2.0 if i % 5 == 0 else 1.0)), Color(col, a))
 
 
-func _draw_lunar_aurora(fred: bool) -> void:
-	var a: float = 0.08 if fred else 0.15
+func _draw_lunar_aurora(fred: bool, relit: bool) -> void:
+	var a: float = 0.08 if fred else (0.18 if relit else 0.15)
 	for band: int in range(2):
-		var col: Color = (PAL["ice"] if band == 0 else PAL["sky"]) as Color
+		var col: Color = ((PAL["gold"] if band == 0 else PAL["cream"]) if relit else (PAL["ice"] if band == 0 else PAL["sky"])) as Color
 		var pts := PackedVector2Array()
 		var base_y: float = _cam_center.y - 76.0 + float(band) * 14.0
 		for s: int in range(14):

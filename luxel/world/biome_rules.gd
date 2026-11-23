@@ -213,6 +213,14 @@ func _tick_island2(dt: float) -> void:
 				beam_buff_t = 0.85
 
 
+func get_lit_bloom_count() -> int:
+	var n: int = 0
+	for b: Dictionary in _blooms:
+		if float(b.get("lit_t", 0.0)) > 0.0:
+			n += 1
+	return n
+
+
 func _tick_island3(dt: float) -> void:
 	if not is_dungeon:
 		var ppos: Vector2 = _player_pos()
