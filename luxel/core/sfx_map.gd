@@ -102,6 +102,8 @@ const EXACT: Dictionary = {
 	"lamp_relit": {"id": "dawn_burst", "pitch": 1.00, "db": -1.0},
 	"great_lamp_relit": {"id": "great_lamp_bloom", "pitch": 1.00, "db": 0.5},
 	"great_lamp_bloom": {"id": "great_lamp_bloom", "pitch": 1.00, "db": 0.5},
+	"bell_toll": {"id": "bell_toll_heavy", "pitch": 1.00, "db": 0.0},
+	"lighthouse_toll": {"id": "bell_toll_heavy", "pitch": 0.84, "db": -0.5},
 	"waystone_lit": {"id": "waystone_lit", "pitch": 1.00, "db": 0.0},
 	"waystone_rest": {"id": "waystone_rest", "pitch": 1.00, "db": 0.0},
 	"waystone_warp": {"id": "waystone_warp", "pitch": 1.00, "db": 0.0},

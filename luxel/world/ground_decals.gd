@@ -135,8 +135,9 @@ func _tick_player_steps(dt: float) -> void:
 		_last_player_pos = w.global_position
 
 
-func _on_enemy_killed(_enemy: Object, kind: String, pos: Vector2, _opened_kill: bool) -> void:
-	if kind.contains("boss") or kind in ["bellkeeper", "lighthouse_hermit", "briar_matron", "heron_abbess", "astronomer", "kilnmother", "hollow_wick", "the_hush"]:
+func _on_enemy_killed(enemy: Object, kind: String, pos: Vector2, _opened_kill: bool) -> void:
+	var boss_foe: bool = (enemy is LxEnemyBrain and (enemy as LxEnemyBrain).is_boss) or kind.contains("boss") or kind in ["bellkeeper", "lighthouse_hermit", "briar_matron", "heron_abbess", "astronomer", "kilnmother", "hollow_wick", "the_hush"]
+	if boss_foe:
 		add_decal(Kind.CRATER, pos, 22.0, 14.0)
 		add_decal(Kind.SCORCH, pos, 18.0, 12.0)
 	elif _island_id in [2, 5, 7]:
