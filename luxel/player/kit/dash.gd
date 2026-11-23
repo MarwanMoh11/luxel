@@ -83,8 +83,10 @@ func _execute_dash() -> bool:
 	hit_ids.clear()
 	_afterimage_cd = 0.0
 
+	var isl_d: int = Lx.state.island_id if Lx.state != null else 1
+	var b_glow: Color = LxBiomePalette.col(isl_d, "glow")
 	wick.spawn_afterimage(LxWick.PAL_ICE)
-	wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.16, LxWick.PAL_ICE, 1.0)
+	wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.16, b_glow, 1.0)
 	_gust(38.0, 42.0)
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var wfx: Variant = Lx.world.get("_water_fx")

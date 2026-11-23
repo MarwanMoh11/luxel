@@ -136,13 +136,17 @@ func _surface_at(world_pos: Vector2) -> String:
 	var isl: int = int(Lx.world.get("current_island_id"))
 	if isl == 6 and tile in ["floor", "path", "ground"]:
 		return "ash"
-	if (isl == 7 or isl == 8) and tile in ["floor", "path", "ground", "mirror", "glass"]:
+	if isl == 7 and tile in ["floor", "path", "ground", "mirror", "glass"]:
+		return "crystal"
+	if tile in ["mirror", "glass"]:
 		return "crystal"
 	if not is_dung:
 		if isl == 2 and tile == "path":
 			return "wood"
-		if tile == "floor" and isl in [1, 3, 4]:
+		if tile in ["floor", "ground"] and isl in [1, 2, 3, 4]:
 			return "grass"
+	if isl == 8 and tile in ["floor", "ground"]:
+		return "crystal"
 	return "stone"
 
 

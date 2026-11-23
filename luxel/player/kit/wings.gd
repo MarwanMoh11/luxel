@@ -56,7 +56,8 @@ func start_glide(dir: Vector2) -> bool:
 	_afterimage_cd = 0.0
 	_sw_cleared_this_glide = false
 
-	wick.spawn_ring(wick.global_position, 2.0, 11.0, 0.18, LxWick.PAL_SKY, 1.0)
+	var isl_w: int = Lx.state.island_id if Lx.state != null else 1
+	wick.spawn_ring(wick.global_position, 2.0, 11.0, 0.18, LxBiomePalette.col(isl_w, "glow"), 1.0)
 	_gust(44.0, 48.0)
 	wick.emit_sfx("wings_glide", wick.global_position, false)
 	return true
