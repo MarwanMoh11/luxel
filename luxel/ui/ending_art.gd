@@ -289,18 +289,19 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 		var age: float = t - lit_at
 		var flk: bool = LxHudFx.flash_reduced() or fmod(t * 3.8 + float(idx) * 0.4, 1.0) < 0.55
 		var bio_glow: Color = LxBiomePalette.col(isl_id, "glow")
+		var bio_hi: Color = LxBiomePalette.col(isl_id, "hi")
 		if age < 0.48:
 			var u_ring: float = clampf(age / 0.48, 0.0, 1.0)
 			var ring_r: float = roundf(lerpf(3.0, 18.0, 1.0 - (1.0 - u_ring) * (1.0 - u_ring)))
 			var r_col: Color = LxPalette.PAL["cream"] if u_ring < 0.30 else (bio_glow if u_ring < 0.68 else LxPalette.PAL["gold"])
 			ci.draw_arc(Vector2(x, lamp_y), ring_r, 0.0, TAU, 20, r_col, 1.4 if u_ring < 0.5 else 1.0, false)
 		if age < 0.55:
-			ci.draw_rect(Rect2(x - 2.0, 16.0, 4.0, lamp_y - 16.0), LxPalette.PAL["gold"])
+			ci.draw_rect(Rect2(x - 2.0, 16.0, 4.0, lamp_y - 16.0), bio_glow)
 			ci.draw_rect(Rect2(x - 1.0, 16.0, 2.0, lamp_y - 16.0), LxPalette.PAL["cream"])
 		else:
 			var bh: float = minf(lamp_y - 22.0, 22.0 + sin(t * 2.1 + float(idx)) * 4.0)
-			ci.draw_rect(Rect2(x, lamp_y - bh, 1.0, bh), LxPalette.PAL["gold" if flk else "apricot"])
-		ci.draw_rect(Rect2(x - 2.0, lamp_y - 1.0, 4.0, 3.0), LxPalette.PAL["gold"])
+			ci.draw_rect(Rect2(x, lamp_y - bh, 1.0, bh), bio_glow if flk else bio_hi)
+		ci.draw_rect(Rect2(x - 2.0, lamp_y - 1.0, 4.0, 3.0), bio_glow)
 		ci.draw_rect(Rect2(x - 1.0, lamp_y - 2.0, 2.0, 3.0), LxPalette.PAL["cream"])
 		if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % isl_id, false)):
 			var hs := Vector2(x, lamp_y - 9.0).round()
@@ -310,7 +311,7 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 		for rr: int in range(5):
 			var wob: float = roundf(sin(t * 3.0 + float(idx) + float(rr)) * 1.4)
 			var rw: float = maxf(2.0, 6.0 - float(rr))
-			ci.draw_rect(Rect2(roundf(x - rw * 0.5 + wob), y + 6.0 + float(rr) * 3.0, rw, 1.0), LxPalette.PAL["cream" if rr == 0 else ("gold" if rr < 3 else "apricot")])
+			ci.draw_rect(Rect2(roundf(x - rw * 0.5 + wob), y + 6.0 + float(rr) * 3.0, rw, 1.0), LxPalette.PAL["cream"] if rr == 0 else (bio_glow if rr < 3 else bio_hi))
 
 static func _draw_wick_silhouette(ci: CanvasItem, t: float) -> void:
 	# Foreground left cliff outcrop & Wick silhouette (moth-ears + cloak + softly glowing lantern).
@@ -431,16 +432,20 @@ static func draw_credits_backdrop(ci: CanvasItem, t: float) -> void:
 			ci.draw_rect(Rect2(bx - 1.0, by - 9.0, 3.0, 1.0), bc_glow)
 			ci.draw_rect(Rect2(bx, by - 10.0, 1.0, 3.0), bc_glow)
 			ci.draw_rect(Rect2(bx, by - 9.0, 1.0, 1.0), LxPalette.PAL["cream"] if lit_c else bc_glow)
-	# Gentle rising lantern fireflies along left/right margins (center text lane stays clean).
+	# Gentle rising lantern fireflies along left/right margins in all 8 biome glows (center lane stays clean).
+	var fr_c: bool = LxHudFx.flash_reduced()
 	for mi: int in range(14):
 		var side_x: float = float(8 + (mi * 13) % 38) if mi % 2 == 0 else float(274 + (mi * 17) % 38)
-		var mx: float = roundf(side_x + sin(t * 1.15 + float(mi) * 1.3) * 4.0)
-		var my: float = roundf(152.0 - fmod(t * (7.0 + float(mi % 3) * 2.5) + float(mi) * 23.0, 148.0))
-		var pulse: float = fmod(t + float(mi) * 0.47, 1.8)
+		var mx: float = roundf(side_x + (0.0 if fr_c else sin(t * 1.15 + float(mi) * 1.3) * 4.0))
+		var my: float = roundf(152.0 - fmod((0.0 if fr_c else t * (7.0 + float(mi % 3) * 2.5)) + float(mi) * 23.0, 148.0))
+		var f_isl: int = (mi % 8) + 1
+		var f_glow: Color = LxBiomePalette.col(f_isl, "glow")
+		var f_hi: Color = LxBiomePalette.col(f_isl, "hi")
+		var pulse: float = 0.4 if fr_c else fmod(t + float(mi) * 0.47, 1.8)
 		if pulse < 0.7:
-			ci.draw_rect(Rect2(mx, my, 2.0, 2.0), LxPalette.PAL["gold"])
+			ci.draw_rect(Rect2(mx, my, 2.0, 2.0), f_glow)
 			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), LxPalette.PAL["cream"])
 		elif pulse < 1.25:
-			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), LxPalette.PAL["apricot"])
+			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), f_glow)
 		else:
-			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), LxPalette.PAL["coral"])
+			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), f_hi)

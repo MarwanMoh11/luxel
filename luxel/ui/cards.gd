@@ -219,8 +219,9 @@ func _tick_ending_audio() -> void:
 			_ending_cue_stage = 1
 			Lx.audio.play_sfx("dawn_burst", Vector2.ZERO, false, true)
 		elif _ending_cue_stage < 9 and _elapsed >= 1.0 + float(_ending_cue_stage) * 0.35:
+			var dawn_sfx: Array[String] = ["bell_toll_heavy", "lighthouse_beam", "prop_chime", "wing_gale", "prism_chain", "forge_gust", "lens_reveal", "great_lamp_bloom"]
+			Lx.audio.play_sfx(dawn_sfx[clampi(_ending_cue_stage - 1, 0, 7)], Vector2.ZERO, false, true)
 			_ending_cue_stage += 1
-			Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, true)
 
 
 func _draw() -> void:
