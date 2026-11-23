@@ -67,6 +67,7 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 					"next_isl": next_isl if next_isl > 0 else _island_id,
 					"locked_id": str(ex.get("locked_door_id", "")),
 					"req_flags": req_f,
+					"greet_cd": 1.2,
 				})
 	queue_redraw()
 
@@ -76,7 +77,35 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	if dt <= 0.0 or _exits.is_empty():
 		return
 	_clock += dt
+	var wp: Vector2 = (Lx.player as Node2D).global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2(1e6, 1e6)
+	for ex: Dictionary in _exits:
+		var gcd: float = maxf(0.0, float(ex.get("greet_cd", 0.0)) - dt)
+		ex["greet_cd"] = gcd
+		if int(ex["kind"]) == 0 and gcd <= 0.0 and _is_exit_open(ex):
+			var c: Vector2 = ex["center"] as Vector2
+			if c.distance_squared_to(wp) <= 3364.0: # 58 px proximity whisper
+				ex["greet_cd"] = 9.0
+				if Lx.audio != null:
+					Lx.audio.play_sfx(_bridge_whisper_sfx(int(ex["next_isl"])), c, true)
 	queue_redraw()
+
+
+func _bridge_whisper_sfx(next_isl: int) -> String:
+	match next_isl:
+		2:
+			return "lighthouse_toll"
+		3:
+			return "prop_chime"
+		4:
+			return "wing_gale"
+		5:
+			return "clockwork_chime"
+		6:
+			return "forge_gust"
+		7:
+			return "lens_reveal"
+		_:
+			return "bell_toll"
 
 
 func _is_exit_open(ex: Dictionary) -> bool:
@@ -169,6 +198,70 @@ func _draw_bridge_portal(r: Rect2, c: Vector2, next_isl: int, col_a: Color, crea
 		var tip := Vector2(roundf(c.x + side * (rad + 5.0 + ch_off)), roundf(c.y))
 		draw_line(tip, tip + Vector2(-side * 3.0, -3.0), Color(col_b, (0.72 + prox * 0.20) * pulse), 1.0)
 		draw_line(tip, tip + Vector2(-side * 3.0, 3.0), Color(cream, (0.68 + prox * 0.22) * pulse), 1.0)
+	# Floating miniature Destination Landmark Hologram shimmering above the Bridge when Wick approaches
+	if prox > 0.12:
+		_draw_destination_landmark(next_isl, c, col_b, col_b_hi, cream, prox, pulse, fred)
+
+
+func _draw_destination_landmark(next_isl: int, c: Vector2, col_b: Color, col_hi: Color, cream: Color, prox: float, pulse: float, fred: bool) -> void:
+	var bob: float = 0.0 if fred else roundf(sin(_clock * 2.4 + float(next_isl)) * 1.5)
+	var base: Vector2 = (c + Vector2(0.0, -19.0 + bob)).round()
+	var a_main: float = clampf((prox - 0.12) / 0.88, 0.0, 1.0) * (0.68 if fred else 0.86) * (0.78 + 0.22 * pulse)
+	var c_m := Color(col_b, a_main)
+	var c_h := Color(col_hi, a_main * 0.78)
+	var c_c := Color(cream, minf(0.95, a_main * 1.12))
+	# Soft projection cradle beneath the floating miniature silhouette
+	draw_line(c + Vector2(-4.0, -7.0), base + Vector2(-5.0, 2.0), Color(col_hi, a_main * 0.28), 1.0)
+	draw_line(c + Vector2(4.0, -7.0), base + Vector2(5.0, 2.0), Color(col_hi, a_main * 0.28), 1.0)
+	draw_rect(Rect2(base + Vector2(-6.0, 1.0), Vector2(12.0, 1.0)), c_h)
+	match next_isl:
+		1: # Bell Isle: Great Belfry gable & hanging bell
+			draw_rect(Rect2(base + Vector2(-4.0, -6.0), Vector2(1.0, 7.0)), c_m)
+			draw_rect(Rect2(base + Vector2(3.0, -6.0), Vector2(1.0, 7.0)), c_m)
+			draw_line(base + Vector2(-5.0, -6.0), base + Vector2(0.0, -11.0), c_c, 1.0)
+			draw_line(base + Vector2(5.0, -6.0), base + Vector2(0.0, -11.0), c_c, 1.0)
+			draw_rect(Rect2(base + Vector2(-1.0, -6.0), Vector2(2.0, 3.0)), c_c)
+		2: # Tidewater Harbor: Lighthouse tower + sweeping Fresnel beam
+			draw_rect(Rect2(base + Vector2(-2.0, -8.0), Vector2(4.0, 9.0)), c_m)
+			draw_rect(Rect2(base + Vector2(-3.0, -9.0), Vector2(6.0, 2.0)), c_h)
+			draw_rect(Rect2(base + Vector2(-1.0, -11.0), Vector2(2.0, 2.0)), c_c)
+			var b_len: float = 7.0 if fred else (5.0 + absf(sin(_clock * 2.5)) * 4.0)
+			draw_line(base + Vector2(-2.0, -10.0), base + Vector2(-2.0 - b_len, -11.0), c_c, 1.0)
+			draw_line(base + Vector2(2.0, -10.0), base + Vector2(2.0 + b_len, -11.0), c_c, 1.0)
+		3: # Thornwood Hollow: Hollow Oak arched trunk & layered emerald canopy
+			draw_rect(Rect2(base + Vector2(-2.0, -5.0), Vector2(4.0, 6.0)), c_h)
+			draw_circle(base + Vector2(0.0, -8.0), 4.0, c_m)
+			draw_circle(base + Vector2(-4.0, -6.0), 2.5, c_m)
+			draw_circle(base + Vector2(4.0, -6.0), 2.5, c_m)
+			draw_rect(Rect2(base + Vector2(-1.0, -10.0), Vector2(2.0, 1.0)), c_c)
+		4: # Mirefen Gardens: Pointed Conservatory glasshouse dome
+			draw_rect(Rect2(base + Vector2(-5.0, -5.0), Vector2(10.0, 6.0)), c_h)
+			draw_line(base + Vector2(-5.0, -5.0), base + Vector2(0.0, -10.0), c_m, 1.0)
+			draw_line(base + Vector2(5.0, -5.0), base + Vector2(0.0, -10.0), c_m, 1.0)
+			draw_line(base + Vector2(0.0, -10.0), base + Vector2(0.0, 1.0), c_c, 1.0)
+			draw_rect(Rect2(base + Vector2(-3.0, -4.0), Vector2(2.0, 3.0)), c_c)
+			draw_rect(Rect2(base + Vector2(1.0, -4.0), Vector2(2.0, 3.0)), c_c)
+		5: # Starfall Observatory: Orrery dome + tilted golden astrolabe ring
+			draw_arc(base + Vector2(0.0, -2.0), 5.0, PI, TAU, 10, c_m, 1.2)
+			draw_line(base + Vector2(-7.0, -2.0), base + Vector2(7.0, -9.0), c_c, 1.0)
+			draw_rect(Rect2(base + Vector2(0.0, -9.0), Vector2(1.0, 2.0)), c_c)
+		6: # Ashen Kiln: Stepped volcanic furnace chimney & hearth crown
+			draw_rect(Rect2(base + Vector2(-4.0, -4.0), Vector2(8.0, 5.0)), c_h)
+			draw_rect(Rect2(base + Vector2(-3.0, -8.0), Vector2(6.0, 4.0)), c_m)
+			draw_rect(Rect2(base + Vector2(-2.0, -10.0), Vector2(4.0, 2.0)), c_c)
+			draw_rect(Rect2(base + Vector2(-1.0, -3.0), Vector2(2.0, 3.0)), c_c)
+		7: # Moon Shoals: Twin-horned silver Lunar Mirror Spire
+			draw_rect(Rect2(base + Vector2(-1.0, -9.0), Vector2(2.0, 10.0)), c_h)
+			draw_arc(base + Vector2(0.0, -10.0), 4.0, 0.25, PI - 0.25, 8, c_c, 1.2)
+			draw_rect(Rect2(base + Vector2(-4.0, -12.0), Vector2(1.0, 2.0)), c_m)
+			draw_rect(Rect2(base + Vector2(3.0, -12.0), Vector2(1.0, 2.0)), c_m)
+		_: # The Long Night: Twin-spired Gothic Eclipse Cathedral + Dawn star
+			draw_rect(Rect2(base + Vector2(-5.0, -9.0), Vector2(2.0, 10.0)), c_h)
+			draw_rect(Rect2(base + Vector2(3.0, -9.0), Vector2(2.0, 10.0)), c_h)
+			draw_line(base + Vector2(-4.0, -9.0), base + Vector2(0.0, -12.0), c_m, 1.0)
+			draw_line(base + Vector2(4.0, -9.0), base + Vector2(0.0, -12.0), c_m, 1.0)
+			draw_rect(Rect2(base + Vector2(-1.0, -8.0), Vector2(3.0, 1.0)), c_c)
+			draw_rect(Rect2(base + Vector2(0.0, -9.0), Vector2(1.0, 3.0)), c_c)
 
 
 func _draw_dungeon_entrance(r: Rect2, c: Vector2, col_g: Color, col_h: Color, cream: Color, pulse: float, fred: bool, wp: Vector2) -> void:
