@@ -53,7 +53,25 @@ static func draw_plinth(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool
 			_px(canvas, c, [[-4, -3, 8, 3]], top_col)
 			_px(canvas, c, [[-1, -2, 2, 5]], gold if relit else dusk)
 	if relit:
-		canvas.draw_rect(Rect2(roundf(c.x - 5.0), roundf(c.y - 2.0), 4.0, 1.0), gold)
+		var glow_c: Color = LxBiomePalette.col(isl_id, "glow")
+		match isl_id:
+			2:
+				_px(canvas, c, [[-9, -1, 3, 1], [-3, -1, 3, 1], [3, -1, 3, 1], [8, -1, 2, 1]], glow_c)
+				_px(canvas, c, [[-8, 3, 16, 1]], sky)
+			4:
+				_px(canvas, c, [[-6, -2, 12, 1]], glow_c)
+				_px(canvas, c, [[-3, -1, 6, 1]], LxPalette.PAL["ice"] as Color)
+			6:
+				_px(canvas, c, [[-8, -2, 5, 1], [3, -2, 5, 1]], gold)
+				_px(canvas, c, [[-1, 0, 2, 2]], LxPalette.PAL["cream"] as Color)
+			7:
+				_px(canvas, c, [[-8, -2, 4, 1], [4, -2, 4, 1]], LxPalette.PAL["ice"] as Color)
+				_px(canvas, c, [[-2, 0, 4, 1]], LxPalette.PAL["cream"] as Color)
+			8:
+				_px(canvas, c, [[-3, -3, 6, 1], [-1, -2, 2, 5]], gold)
+			_:
+				_px(canvas, c, [[-5, -2, 10, 1]], glow_c)
+				canvas.draw_rect(Rect2(roundf(c.x - 3.0), roundf(c.y - 2.0), 4.0, 1.0), gold)
 
 
 static func _px(canvas: CanvasItem, c: Vector2, rects: Array, col: Color) -> void:

@@ -59,6 +59,8 @@ func _ignite() -> bool:
 	if Lx.events != null:
 		Lx.events.shake_requested.emit(0.08)
 	_emit_gust(56.0, 44.0, Vector2(0.0, -12.0))
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, pos, 10.0, 6.0)
 	_emit_sfx("brazier_lit")
 	_notify_linked_targets(true)
 	queue_redraw()

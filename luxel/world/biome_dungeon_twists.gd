@@ -108,7 +108,7 @@ func tick(dt: float) -> void:
 	var dashing_now: bool = w != null and not w.dead and w.is_dashing()
 	var dash_started: bool = dashing_now and not _was_dashing
 	match _island_id:
-		1: # Great Belfry: periodic golden acoustic bell-chime pulse nudges nearby non-boss foes
+		1: # Great Belfry: periodic golden acoustic bell-chime pulse nudges nearby non-boss foes & feeds soft Ember
 			_bell_cd -= dt
 			if _bell_cd <= 0.0:
 				_bell_cd = 6.8
@@ -116,6 +116,11 @@ func tick(dt: float) -> void:
 				_bell_pushed_ids.clear()
 				if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 					LxDarknessLayer.active_instance.add_burst_light(_center, 86.0, 0.72 if LxHudFx.flash_reduced() else 1.05, 0.42)
+				if w != null and not w.dead and w.global_position.distance_to(_center) <= 96.0:
+					if w.move_sunflare != null and w.move_sunflare.unlocked:
+						w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 1.5)
+					if Lx.audio != null:
+						Lx.audio.play_sfx("prop_chime", _center, true)
 			if _bell_wave_r >= 0.0:
 				_bell_wave_r += 118.0 * dt
 				_nudge_foes_on_wave(_center, _bell_wave_r, 14.0, 38.0)
@@ -247,7 +252,7 @@ func _draw() -> void:
 	if not _active or _rules == null:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
-	if _room_idx in [1, 5, 9]:
+	if _room_idx in [1, 5, 9] or (_island_id == 1 and _room_idx == 6):
 		_draw_architectural_medallion(fred)
 	match _island_id:
 		1:
@@ -259,6 +264,13 @@ func _draw() -> void:
 				draw_arc(_center.round(), roundf(maxf(4.0, _bell_wave_r - 6.0)), 0.0, TAU, 24, Color(PAL["cream"] as Color, a * 0.7), 1.0)
 		2:
 			var a2: float = 0.28 if fred else 0.48
+			# Subtle sweeping Fresnel lighthouse beam glint crossing the chamber floor
+			var b_ang: float = _clock * 0.42 + float(_room_idx) * 0.9
+			var b_orig: Vector2 = Vector2(_center.x, _bounds.position.y + 18.0).round()
+			var b_span: float = minf(_bounds.size.x, _bounds.size.y) * 0.85
+			var b_p1: Vector2 = (b_orig + Vector2.from_angle(PI * 0.5 + sin(b_ang) * 0.95 - 0.14) * b_span).round()
+			var b_p2: Vector2 = (b_orig + Vector2.from_angle(PI * 0.5 + sin(b_ang) * 0.95 + 0.14) * b_span).round()
+			draw_colored_polygon(PackedVector2Array([b_orig, b_p1, b_p2]), Color(PAL["ice"] as Color, 0.05 if fred else 0.09))
 			for wp: Vector2 in _water_pts:
 				var phase: float = fposmod(_clock * 1.1 + wp.x * 0.03 + wp.y * 0.02, 1.0)
 				var rr: float = roundf(lerpf(2.0, 7.0, phase))

@@ -145,7 +145,27 @@ static func on_beacon_ignited(beacon: LxBeacon) -> void:
 				br.clock = 0.0
 			if Lx.audio != null:
 				Lx.audio.play_sfx("prop_chime", pos, true)
-		8: # Eclipse Seal Altar shatters one sky seal
+		8: # Eclipse Seal Altar shatters one sky seal: golden dawn shockwave, +1 Heart & +30 Sunflare Ember!
+			if Lx.state != null and Lx.state.hearts < float(Lx.state.max_hearts):
+				Lx.state.hearts = minf(float(Lx.state.max_hearts), Lx.state.hearts + 1.0)
+				if Lx.events != null:
+					Lx.events.player_healed.emit(1.0)
+			if Lx.player is LxWick and is_instance_valid(Lx.player):
+				var w8: LxWick = Lx.player as LxWick
+				if w8.move_sunflare != null and w8.move_sunflare.unlocked:
+					w8.ember = minf(w8.move_sunflare.get_ember_max(), w8.ember + 30.0)
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(pos, 140.0, 0.90 if LxHudFx.flash_reduced() else 1.45, 0.60)
+			if beacon.region != null and beacon.region.has_method("get_enemies"):
+				var ev8: Variant = beacon.region.call("get_enemies")
+				if ev8 is Array:
+					for e_v8: Variant in (ev8 as Array):
+						if e_v8 is LxEnemyBrain and is_instance_valid(e_v8):
+							var e8: LxEnemyBrain = e_v8 as LxEnemyBrain
+							if e8.is_alive() and not e8.is_boss and e8.pos.distance_to(pos) <= 160.0:
+								var d8: Vector2 = (e8.pos - pos).normalized() if e8.pos.distance_to(pos) > 1.0 else Vector2.DOWN
+								e8.knock += d8 * 120.0
+								e8.flash_t = maxf(e8.flash_t, 0.35)
 			if Lx.audio != null:
 				Lx.audio.play_sfx("bell_toll", pos, false)
 

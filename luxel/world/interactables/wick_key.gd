@@ -55,6 +55,8 @@ func interact(_actor: Node = null) -> bool:
 	if is_boss and Lx.hitstop != null:
 		Lx.hitstop.trigger(0.05)
 	_emit_gust(72.0 if is_boss else 52.0, 60.0 if is_boss else 42.0)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 16.0 if is_boss else 12.0, 6.0)
 	_emit_sfx("key_pickup")
 	_emit_save("key_" + id)
 	queue_redraw()
@@ -122,7 +124,8 @@ func _draw() -> void:
 	draw_rect(Rect2(-3.0, y - 5.0, 4.0, 1.0), hi_c)
 	draw_rect(Rect2(-4.0, y - 4.0, 1.0, 2.0), core_c)
 	draw_rect(Rect2(-2.0, y - 4.0, 4.0, 2.0), PAL["night"])
-	draw_rect(Rect2(-1.0, y - 4.0, 2.0, 2.0), PAL["gold"] if is_boss else hi_c)
+	var gem_c: Color = (PAL["gold"] if is_boss else LxBiomePalette.col(island_id, "glow")) as Color
+	draw_rect(Rect2(-1.0, y - 4.0, 2.0, 2.0), gem_c)
 	draw_rect(Rect2(-1.0, y - 4.0, 1.0, 1.0), core_c)
 	draw_rect(Rect2(-2.0, y - 1.0, 4.0, 1.0), hi_c)
 	draw_rect(Rect2(-1.0, y, 2.0, 6.0), body_c)

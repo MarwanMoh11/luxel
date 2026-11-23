@@ -67,6 +67,8 @@ func on_hit(hit: LxHit) -> bool:
 		if Lx.events != null:
 			Lx.events.shake_requested.emit(0.06)
 		_emit_gust(54.0, 38.0)
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 10.0, 5.0)
 		_emit_sfx("switch_eye")
 		_notify_linked_targets(true)
 	queue_redraw()
