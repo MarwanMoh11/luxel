@@ -26,6 +26,8 @@ var _bell_pulse_t: float = 0.0
 var _was_dashing: bool = false
 var _oak_harmony_cd: float = 0.0
 var _orrery_nodes: Array[Dictionary] = [] # {ang, cd}
+var _lunar_anchors: Array[Dictionary] = [] # Isl 7 Hollow Wick Mirror Anchors {pos, cd, flash_t}
+var _dawn_relics: Array[Dictionary] = []   # Isl 8 The Hush Dawn Bell Relics {pos, cd, flash_t}
 
 
 func _ready() -> void:
@@ -43,6 +45,8 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node) -
 	_was_dashing = false
 	_oak_harmony_cd = 0.0
 	_orrery_nodes.clear()
+	_lunar_anchors.clear()
+	_dawn_relics.clear()
 	var rid: String = str(region_node.get("current_region_id")) if region_node != null and region_node.get("current_region_id") != null else ""
 	_active = BOSS_REGIONS.has(rid)
 	_is_miniboss = MINIBOSS_REGIONS.has(rid)
@@ -81,6 +85,12 @@ func _seed_boss_arena_features() -> void:
 			]
 			for i: int in range(offs.size()):
 				_rules._vents.append({"pos": _center + offs[i], "phase": phases[i], "ember_cd": 0.0, "erupted": false})
+		7: # Hollow Wick: 2 Silver Lunar Mirror Anchors (dash/shoot -> snap Full Silver Moon + Mirror Echo!)
+			for off7: Vector2 in [Vector2(-112.0, 0.0), Vector2(112.0, 0.0)]:
+				_lunar_anchors.append({"pos": _center + off7, "cd": 0.0, "flash_t": 0.0})
+		8: # The Hush: 3 Golden Dawn Bell Relics (dash/strike -> +12 Ember + golden dawn flare!)
+			for off8: Vector2 in [Vector2(-116.0, -40.0), Vector2(116.0, -40.0), Vector2(0.0, 68.0)]:
+				_dawn_relics.append({"pos": _center + off8, "cd": 0.0, "flash_t": 0.0})
 
 
 func tick(dt: float) -> void:
@@ -98,6 +108,10 @@ func tick(dt: float) -> void:
 		_tick_oak_boss_blooms(dt)
 	elif _island_id == 5:
 		_tick_orrery_boss_nodes(dt)
+	elif _island_id == 7:
+		_tick_lunar_anchors(dt)
+	elif _island_id == 8:
+		_tick_dawn_relics(dt)
 	queue_redraw()
 
 
@@ -186,6 +200,52 @@ func try_hit_boss_bloom(from_p: Vector2, to_p: Vector2) -> void:
 					Lx.audio.play_sfx("prop_chime", bp, true)
 
 
+func _tick_lunar_anchors(dt: float) -> void:
+	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var act: bool = w != null and not w.dead and (w.is_dashing() or w.muzzle_t > 0.0 or w.is_zipping())
+	for anc: Dictionary in _lunar_anchors:
+		anc["cd"] = maxf(0.0, float(anc["cd"]) - dt)
+		anc["flash_t"] = maxf(0.0, float(anc["flash_t"]) - dt)
+		if float(anc["cd"]) > 0.0 or not act or _is_boss_cleared():
+			continue
+		var ap: Vector2 = anc["pos"] as Vector2
+		if w.global_position.distance_to(ap) <= 28.0:
+			anc["cd"] = 6.5
+			anc["flash_t"] = 0.55
+			_rules.lunar_phase = 1.0
+			_rules.clock = 0.0
+			w.spawn_ring(ap, 4.0, 28.0, 0.28, LxWick.PAL_ICE, 1.5)
+			if Lx.audio != null:
+				Lx.audio.play_sfx("lens_reveal", ap, true)
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(ap, 92.0, 0.85 if LxHudFx.flash_reduced() else 1.28, 0.42)
+			if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, ap, 15.0, 6.0)
+
+
+func _tick_dawn_relics(dt: float) -> void:
+	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var act: bool = w != null and not w.dead and (w.is_dashing() or w.muzzle_t > 0.0 or w.is_zipping())
+	for rel: Dictionary in _dawn_relics:
+		rel["cd"] = maxf(0.0, float(rel["cd"]) - dt)
+		rel["flash_t"] = maxf(0.0, float(rel["flash_t"]) - dt)
+		if float(rel["cd"]) > 0.0 or not act or _is_boss_cleared():
+			continue
+		var rp: Vector2 = rel["pos"] as Vector2
+		if w.global_position.distance_to(rp) <= 26.0:
+			rel["cd"] = 7.5
+			rel["flash_t"] = 0.55
+			if w.move_sunflare != null and w.move_sunflare.unlocked:
+				w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 12.0)
+			w.spawn_ring(rp, 4.0, 30.0, 0.30, LxWick.PAL_GOLD, 1.6)
+			if Lx.audio != null:
+				Lx.audio.play_sfx("prop_chime", rp, true)
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(rp, 112.0, 0.88 if LxHudFx.flash_reduced() else 1.38, 0.48)
+			if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, rp, 15.0, 6.0)
+
+
 func _is_boss_cleared() -> bool:
 	if Lx.state == null:
 		return false
@@ -216,10 +276,12 @@ func _draw_miniboss_arena(fred: bool) -> void:
 	var a_ring: float = (0.34 if live else 0.42) * (0.75 if fred else 1.0)
 	draw_arc(c, r_out, _clock * 0.5, _clock * 0.5 + PI * 0.85, 18, Color(col_a, a_ring), 1.4)
 	draw_arc(c, r_out, _clock * 0.5 + PI, _clock * 0.5 + PI * 1.85, 18, Color(col_b, a_ring), 1.4)
-	for k: int in range(4):
-		var ang: float = (PI * 0.25) + float(k) * (PI * 0.5) + (_clock * 0.22 if live else 0.0)
+	var spokes: int = 8 if _island_id == 5 else (6 if _island_id in [3, 6] else 4)
+	for k: int in range(spokes):
+		var ang: float = (PI * 0.25) + float(k) * (TAU / float(spokes)) + (_clock * 0.22 if live else 0.0)
 		var pt: Vector2 = (c + Vector2.from_angle(ang) * (r_out + 4.0)).round()
 		draw_rect(Rect2(pt - Vector2.ONE, Vector2(2.0, 2.0)), Color(col_b if k % 2 == 0 else col_a, a_ring * 1.4))
+	LxHudFx.draw_biome_crest(self, _island_id, c, Color(col_a, a_ring * 1.35), Color(PAL["cream"] as Color, a_ring * 1.2))
 
 
 func _draw() -> void:
@@ -295,12 +357,34 @@ func _draw() -> void:
 					var ep: Vector2 = (_center + Vector2(sin(_clock * 1.4 + float(k) * 1.9) * 36.0, 20.0 - u6 * 56.0)).round()
 					draw_rect(Rect2(ep, Vector2(2.0, 2.0)), Color((PAL["gold"] if k % 2 == 0 else PAL["apricot"]) as Color, sin(u6 * PI) * 0.78))
 		7:
+			for anc: Dictionary in _lunar_anchors:
+				var ap: Vector2 = (anc["pos"] as Vector2).round()
+				var rdy7: bool = float(anc["cd"]) <= 0.0
+				var ft7: float = float(anc["flash_t"])
+				draw_circle(ap, 6.0 if rdy7 else 4.0, Color((PAL["sky"] if rdy7 else PAL["deep"]) as Color, 0.55))
+				draw_arc(ap, 8.0 if rdy7 else 5.0, -PI * 0.65, PI * 0.65, 12, (PAL["ice"] if rdy7 else PAL["blue"]) as Color, 1.3)
+				if rdy7:
+					draw_rect(Rect2(ap - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
+				if ft7 > 0.0:
+					var u7: float = 1.0 - clampf(ft7 / 0.55, 0.0, 1.0)
+					draw_arc(ap, roundf(lerpf(8.0, 42.0, u7)), 0.0, TAU, 18, Color(PAL["ice"] as Color, (1.0 - u7) * 0.85), 1.4)
 			if cleared or _rules.lunar_phase > 0.65:
 				var a: float = 0.25 if fred else (0.28 + 0.14 * sin(_clock * 3.0))
 				draw_line(_center + Vector2(-128.0, -48.0), _center + Vector2(128.0, -48.0), Color(PAL["ice"] as Color, a), 1.0)
 				draw_arc(_center.round(), 52.0, _clock * 0.6, _clock * 0.6 + PI * 0.7, 16, Color(PAL["sky"] as Color, a * 1.4), 1.2)
 				draw_arc(_center.round(), 52.0, _clock * 0.6 + PI, _clock * 0.6 + PI * 1.7, 16, Color((PAL["gold"] if cleared else PAL["ice"]) as Color, a * 1.4), 1.2)
 		8:
+			for rel: Dictionary in _dawn_relics:
+				var rp: Vector2 = (rel["pos"] as Vector2).round()
+				var rdy8: bool = float(rel["cd"]) <= 0.0
+				var ft8: float = float(rel["flash_t"])
+				draw_circle(rp, 5.5 if rdy8 else 3.5, Color((PAL["gold"] if (rdy8 or cleared) else PAL["plum"]) as Color, 0.60))
+				draw_arc(rp, 8.0 if rdy8 else 5.0, 0.0, TAU, 14, (PAL["gold"] if (rdy8 or cleared) else PAL["rose"]) as Color, 1.2)
+				if rdy8 or cleared:
+					draw_rect(Rect2(rp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
+				if ft8 > 0.0:
+					var u8: float = 1.0 - clampf(ft8 / 0.55, 0.0, 1.0)
+					draw_arc(rp, roundf(lerpf(8.0, 48.0, u8)), 0.0, TAU, 20, Color(PAL["gold"] as Color, (1.0 - u8) * 0.88), 1.6)
 			if cleared:
 				for k: int in range(8):
 					var ang: float = float(k) * (TAU / 8.0) + _clock * 0.18
