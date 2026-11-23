@@ -442,7 +442,7 @@ func _draw_extra(off: Vector2) -> void:
 		draw_rect(Rect2(lx - 2.0, ly - 3.0, 5.0, 1.0), PAL["apricot"] as Color, true)
 		draw_rect(Rect2(lx - 2.0, ly + 3.0, 5.0, 1.0), PAL["apricot"] as Color, true)
 		draw_rect(Rect2(lx - 1.0, ly - 1.0, 3.0, 3.0), PAL["gold"] as Color, true)
-		var flick: float = 0.0 if (int(anim_t * 14.0) % 2 == 0) else -1.0
+		var flick: float = 0.0 if (LxHudFx.flash_reduced() or int(anim_t * 14.0) % 2 == 0) else -1.0
 		draw_rect(Rect2(lx, ly + flick, 1.0, 2.0), PAL["cream"] as Color, true)
 		var back: Vector2 = -Vector2.from_angle(facing)
 		for ti: int in range(2):

@@ -403,7 +403,7 @@ func _draw_key_door(x0: float, y0: float, w: float, h: float, is_boss: bool) -> 
 	draw_rect(Rect2(x0 + pad, y0 + 3.0, lw, h - 6.0), PAL["wine"])
 	draw_rect(Rect2(cx + 1.0, y0 + 3.0, rw, h - 6.0), PAL["wine"])
 	draw_rect(Rect2(cx - 1.0, y0 + 1.0, 2.0, h - 2.0), PAL["void"] if is_boss else PAL["night"])
-	var ready_glint: bool = _rattle_t <= 0.0 and _player_can_unlock_key_door() and (_pulse_stage % 2 == 0)
+	var ready_glint: bool = _rattle_t <= 0.0 and _player_can_unlock_key_door() and (LxHudFx.flash_reduced() or (_pulse_stage % 2 == 0))
 	if is_boss:
 		draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["cream"] if ready_glint else PAL["gold"])
 		draw_rect(Rect2(x0 + 2.0, y0 + h - 3.0, w - 4.0, 1.0), PAL["gold"] if ready_glint else PAL["apricot"])

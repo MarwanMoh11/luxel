@@ -420,13 +420,13 @@ func _boss_pos(boss_id: String) -> Vector2:
 
 func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
 	if result == 2 and enemy is Node2D and is_instance_valid(enemy):
-		add_burst_light((enemy as Node2D).global_position + Vector2(0.0, -5.0), 66.0, 1.38, 0.28)
+		add_burst_light((enemy as Node2D).global_position + Vector2(0.0, -5.0), 66.0, 1.38 * _fr_scale(), 0.28)
 func _on_enemy_killed(_e: Object, _k: String, pos: Vector2, opened: bool) -> void:
-	add_burst_light(pos, 76.0 if opened else 54.0, 1.40 if opened else 1.05, 0.42 if opened else 0.26)
+	add_burst_light(pos, 76.0 if opened else 54.0, (1.40 if opened else 1.05) * _fr_scale(), 0.42 if opened else 0.26)
 	if opened: LxDamageFx.gust_arena(pos, 52.0, 55.0)
-func _on_lantern_hung(pos: Vector2) -> void: add_burst_light(pos, 64.0, 1.22, 0.28)
-func _on_lantern_caught(pos: Vector2) -> void: add_burst_light(pos, 56.0, 1.12, 0.22)
-func _on_lantern_struck(pos: Vector2) -> void: add_burst_light(pos, 84.0, 1.48, 0.36)
+func _on_lantern_hung(pos: Vector2) -> void: add_burst_light(pos, 64.0, 1.22 * _fr_scale(), 0.28)
+func _on_lantern_caught(pos: Vector2) -> void: add_burst_light(pos, 56.0, 1.12 * _fr_scale(), 0.22)
+func _on_lantern_struck(pos: Vector2) -> void: add_burst_light(pos, 84.0, 1.48 * _fr_scale(), 0.36)
 func _fr_scale() -> float:
 	return 0.70 if (Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))) else 1.0
 func _on_beacon_lit(_i: int, bid: String) -> void: add_burst_light(_interactable_pos(bid, "beacon"), 124.0, 1.60 * _fr_scale(), 0.68)
@@ -444,9 +444,9 @@ func _on_boss_defeated(bid: String, _i: int) -> void:
 	add_burst_light(bp, 144.0, 1.72 * _fr_scale(), 0.75)
 	LxDamageFx.gust_arena(bp, 150.0, 145.0)
 func _on_great_lamp_relit(_i: int) -> void: add_burst_light(_interactable_pos("great_lamp", "great_lamp"), 154.0, 1.80 * _fr_scale(), 0.75)
-func _on_ember_piece(_total: int) -> void: add_burst_light(_player_pos(), 96.0, 1.45, 0.52)
-func _on_upgrade_purchased(_id: String, _rank: int) -> void: add_burst_light(_player_pos(), 108.0, 1.50, 0.55)
-func _on_player_healed(_a: float) -> void: add_burst_light(_player_pos(), 72.0, 1.25, 0.36)
+func _on_ember_piece(_total: int) -> void: add_burst_light(_player_pos(), 96.0, 1.45 * _fr_scale(), 0.52)
+func _on_upgrade_purchased(_id: String, _rank: int) -> void: add_burst_light(_player_pos(), 108.0, 1.50 * _fr_scale(), 0.55)
+func _on_player_healed(_a: float) -> void: add_burst_light(_player_pos(), 72.0, 1.25 * _fr_scale(), 0.36)
 func _on_shard_collected(amount: int) -> void:
 	if amount >= 10:
-		add_burst_light(_player_pos(), 58.0, 1.15, 0.26)
+		add_burst_light(_player_pos(), 58.0, 1.15 * _fr_scale(), 0.26)
