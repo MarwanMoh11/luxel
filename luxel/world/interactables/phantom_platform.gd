@@ -138,7 +138,9 @@ func _draw() -> void:
 			draw_rect(Rect2(sp.x, sp.y - 1.0, 1.0, 3.0), b_glow if bright else b_md)
 			draw_rect(Rect2(sp.x, sp.y, 1.0, 1.0), PAL["cream"] if bright else b_glow)
 		if _reveal_fx_t > 0.0:
+			var ru: float = 1.0 - clampf(_reveal_fx_t / 0.24, 0.0, 1.0)
 			draw_rect(Rect2(x0, y0, w, h), PAL["cream"] if _reveal_fx_t > 0.12 else b_glow, false, 1.0)
+			draw_arc(Vector2.ZERO, roundf(lerpf(4.0, maxf(w, h) * 0.56, ru)), 0.0, TAU, 14, Color(PAL["cream"] if ru < 0.4 else b_glow, (1.0 - ru) * 0.85), 1.0)
 		elif _reveal_left > 0.0 and _reveal_left < 0.14:
 			var no_flash: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 			var warn_c: Color = (b_md if (no_flash or int(floorf(_clock * 24.0)) % 2 == 0) else b_dk)

@@ -35,6 +35,10 @@ func tick(dt: float) -> void:
 		if st != _pulse_stage:
 			_pulse_stage = st
 			dirty = true
+		if Lx.player is LxWick and is_instance_valid(Lx.player):
+			var wc: LxWick = Lx.player as LxWick
+			if wc.is_beam_charging() and wc.global_position.distance_squared_to(pos) <= 9216.0:
+				dirty = true
 	if dirty:
 		queue_redraw()
 
@@ -166,6 +170,12 @@ func _draw() -> void:
 	draw_rect(Rect2(x0 + 2.0, y0 + h - 2.0, 1.0, 1.0), c_brick2)
 	draw_rect(Rect2(x0 + w - 5.0, y0 + h - 2.0, 2.0, 1.0), c_brick0)
 	draw_rect(Rect2(hub.x - 3.0, y0 + h - 1.0, 2.0, 1.0), c_brick2)
+	if Lx.player is LxWick and is_instance_valid(Lx.player):
+		var wc_d: LxWick = Lx.player as LxWick
+		if wc_d.is_beam_charging() and wc_d.global_position.distance_squared_to(pos) <= 9216.0:
+			var bp_c: float = clampf(wc_d.beam_charge_progress(), 0.2, 1.0)
+			draw_rect(Rect2(x0, y0, w, h), Color((PAL["cream"] if bp_c >= 0.99 else b_glow) as Color, bp_c * 0.62), false, 1.0)
+			draw_rect(Rect2(hub - Vector2.ONE, Vector2(3.0, 3.0)), Color(PAL["cream"] as Color, bp_c * 0.85))
 
 
 func _biome_stone_colors() -> Array[String]:

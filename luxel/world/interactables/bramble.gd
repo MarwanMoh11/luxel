@@ -29,6 +29,10 @@ func tick(dt: float) -> void:
 	if _rustle_t > 0.0:
 		_rustle_t = maxf(0.0, _rustle_t - dt)
 		dirty = true
+	if active and not burned and Lx.player is LxWick and is_instance_valid(Lx.player):
+		var wb: LxWick = Lx.player as LxWick
+		if wb.is_beam_charging() and wb.global_position.distance_squared_to(pos) <= 9216.0:
+			dirty = true
 	if dirty:
 		queue_redraw()
 
@@ -156,6 +160,11 @@ func _draw() -> void:
 			var a: float = (TAU * float(k)) / 4.0 + 0.4
 			var dp: Vector2 = Vector2(roundf(cos(a) * (4.0 + u * 5.0)), roundf(sin(a) * (3.0 + u * 4.0) - u * 4.0))
 			draw_rect(Rect2(dp, Vector2.ONE), b_gl if k % 2 == 0 else c_leaf3)
+	if Lx.player is LxWick and is_instance_valid(Lx.player):
+		var wb_d: LxWick = Lx.player as LxWick
+		if wb_d.is_beam_charging() and wb_d.global_position.distance_squared_to(pos) <= 9216.0:
+			var bp: float = clampf(wb_d.beam_charge_progress(), 0.2, 1.0)
+			draw_rect(Rect2(x0, y0, w, h), Color((PAL["cream"] if bp >= 0.99 else PAL["gold"]) as Color, bp * 0.58), false, 1.0)
 
 
 func _biome_bramble_colors() -> Array[String]:
