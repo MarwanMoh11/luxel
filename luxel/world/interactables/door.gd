@@ -327,27 +327,31 @@ func _draw_bridge(x0: float, y0: float, w: float, h: float) -> void:
 		_draw_pier(x0 + w - aw if horiz else x0, y0 if horiz else y0 + h - aw, aw if horiz else w, h if horiz else aw, true)
 		return
 	draw_rect(Rect2(x0, y0 + 1.0, w, h), PAL["void"])
-	_draw_frame(x0, y0, w, h, PAL["plum"] as Color)
+	var br_dk: Color = LxBiomePalette.col(island_id, "dark")
+	var br_mid: Color = LxBiomePalette.col(island_id, "mid")
+	var br_hi: Color = LxBiomePalette.col(island_id, "hi")
+	var br_gl: Color = LxBiomePalette.col(island_id, "glow")
+	_draw_frame(x0, y0, w, h, br_dk)
 	var span: float = (w if horiz else h) - 4.0
 	var p: float = 0.0
 	var idx: int = 0
 	while p < span:
 		var seg: float = minf(5.0, span - p)
-		var pc: Color = (PAL["wine"] if idx % 2 == 0 else PAL["plum"]) as Color
+		var pc: Color = br_mid if idx % 2 == 0 else br_dk
 		if horiz:
 			draw_rect(Rect2(x0 + 2.0 + p, y0 + 3.0, seg, h - 6.0), pc)
-			draw_rect(Rect2(x0 + 2.0 + p, y0 + 3.0, seg, 1.0), PAL["mauve"])
+			draw_rect(Rect2(x0 + 2.0 + p, y0 + 3.0, seg, 1.0), br_hi)
 			draw_rect(Rect2(x0 + 1.0 + p + seg, y0 + 3.0, 1.0, h - 6.0), PAL["night"])
 		else:
 			draw_rect(Rect2(x0 + 3.0, y0 + 2.0 + p, w - 6.0, seg), pc)
-			draw_rect(Rect2(x0 + 3.0, y0 + 2.0 + p, 1.0, seg), PAL["mauve"])
+			draw_rect(Rect2(x0 + 3.0, y0 + 2.0 + p, 1.0, seg), br_hi)
 			draw_rect(Rect2(x0 + 3.0, y0 + 1.0 + p + seg, w - 6.0, 1.0), PAL["night"])
 		p += 5.0
 		idx += 1
 	if horiz:
 		for ry: float in [y0 + 1.0, y0 + h - 3.0]:
-			draw_rect(Rect2(x0, ry, w, 2.0), PAL["apricot"])
-			draw_rect(Rect2(x0, ry, w, 1.0), PAL["gold"])
+			draw_rect(Rect2(x0, ry, w, 2.0), br_hi)
+			draw_rect(Rect2(x0, ry, w, 1.0), br_gl)
 		var rx: float = x0 + 6.0
 		while rx < x0 + w - 4.0:
 			draw_rect(Rect2(rx, y0 + 2.0, 1.0, 1.0), PAL["night"])
@@ -355,11 +359,11 @@ func _draw_bridge(x0: float, y0: float, w: float, h: float) -> void:
 			rx += 6.0
 	else:
 		for rx2: float in [x0 + 1.0, x0 + w - 3.0]:
-			draw_rect(Rect2(rx2, y0, 2.0, h), PAL["apricot"])
-			draw_rect(Rect2(rx2, y0, 1.0, h), PAL["gold"])
+			draw_rect(Rect2(rx2, y0, 2.0, h), br_hi)
+			draw_rect(Rect2(rx2, y0, 1.0, h), br_gl)
 	for cp: Vector2 in [Vector2(x0, y0), Vector2(x0 + w - 3.0, y0), Vector2(x0, y0 + h - 3.0), Vector2(x0 + w - 3.0, y0 + h - 3.0)]:
 		draw_rect(Rect2(cp, Vector2(3.0, 3.0)), PAL["night"])
-		draw_rect(Rect2(cp + Vector2(1.0, 0.0), Vector2(1.0, 1.0)), PAL["gold"])
+		draw_rect(Rect2(cp + Vector2(1.0, 0.0), Vector2(1.0, 1.0)), br_gl)
 		draw_rect(Rect2(cp + Vector2(1.0, 1.0), Vector2(1.0, 1.0)), PAL["cream"])
 
 
@@ -386,10 +390,10 @@ func _draw_combat_gate(x0: float, y0: float, w: float, h: float) -> void:
 	var cx: float = floorf(x0 + w * 0.5)
 	var cy: float = floorf(y0 + h * 0.5) - 2.0
 	draw_rect(Rect2(x0 + 2.0, cy, w - 4.0, 4.0), PAL["night"])
-	draw_rect(Rect2(x0 + 2.0, cy, w - 4.0, 1.0), PAL["dusk"])
+	draw_rect(Rect2(x0 + 2.0, cy, w - 4.0, 1.0), LxBiomePalette.col(island_id, "hi"))
 	draw_rect(Rect2(cx - 3.0, cy - 1.0, 6.0, 6.0), PAL["void"])
-	draw_rect(Rect2(cx - 2.0, cy, 4.0, 4.0), PAL["coral"] if _rattle_t > 0.0 else PAL["wine"])
-	draw_rect(Rect2(cx - 1.0, cy + 1.0, 2.0, 2.0), PAL["cream"] if _rattle_t > 0.0 else (PAL["apricot"] if _pulse_stage == 0 else PAL["coral"]))
+	draw_rect(Rect2(cx - 2.0, cy, 4.0, 4.0), PAL["coral"] if _rattle_t > 0.0 else LxBiomePalette.col(island_id, "mid"))
+	draw_rect(Rect2(cx - 1.0, cy + 1.0, 2.0, 2.0), PAL["cream"] if _rattle_t > 0.0 else (LxBiomePalette.col(island_id, "glow") if _pulse_stage == 0 else PAL["coral"]))
 	draw_rect(Rect2(cx - 1.0, cy + 1.0, 1.0, 1.0), PAL["cream"] if (_rattle_t > 0.0 or _pulse_stage == 0) else PAL["apricot"])
 
 

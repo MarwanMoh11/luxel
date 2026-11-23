@@ -204,6 +204,21 @@ static func _draw_dawn_sky(ci: CanvasItem, t: float, rise: float) -> void:
 	ci.draw_circle(Vector2(160.0, sun_y), 25.0, LxPalette.PAL["apricot"])
 	ci.draw_circle(Vector2(160.0, sun_y), 18.0, LxPalette.PAL["gold"])
 	ci.draw_circle(Vector2(160.0, sun_y), 11.0, LxPalette.PAL["cream"])
+	# If all 8 islands' Harmony Secrets were mastered, crown the rising Dawn sun with an 8-biome constellation arc!
+	if rise > 0.35 and Lx.state != null:
+		var harm_all: bool = true
+		for hid: int in range(1, 9):
+			if not bool(Lx.state.story_flags.get("disc_all_%d" % hid, false)):
+				harm_all = false
+				break
+		if harm_all:
+			for hi: int in range(8):
+				var ha: float = -PI * 0.85 + float(hi) * (PI * 0.70 / 7.0)
+				var hp: Vector2 = Vector2(roundf(160.0 + cos(ha) * 33.0), roundf(sun_y + sin(ha) * 33.0))
+				if hp.y >= 18.0 and hp.y < 120.0:
+					ci.draw_rect(Rect2(hp - Vector2.ONE, Vector2(3.0, 1.0)), LxBiomePalette.col(hi + 1, "glow"))
+					ci.draw_rect(Rect2(hp + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), LxBiomePalette.col(hi + 1, "glow"))
+					ci.draw_rect(Rect2(hp, Vector2.ONE), LxPalette.PAL["cream"])
 	if rise > 0.45:
 		for bi: int in range(3):
 			var bx: float = roundf(fmod(24.0 + float(bi) * 86.0 + t * (10.5 + float(bi) * 2.2), 344.0) - 12.0)
@@ -358,12 +373,13 @@ static func draw_results_ornaments(ci: CanvasItem, panel: Rect2, rank_key: Strin
 	if rank_key == "RANK_S" or rank_key == "RANK_A":
 		var fr_r: bool = LxHudFx.flash_reduced()
 		var cnt: int = 8 if rank_key == "RANK_S" else 4
+		var all_relit_r: bool = Lx.state != null and Lx.state.relit_islands.size() >= 8
 		for pi: int in range(cnt):
 			var side_x: float = (panel.position.x + 12.0 + float(pi % 2) * 12.0) if pi < cnt / 2 else (panel.end.x - 14.0 - float(pi % 2) * 12.0)
 			var py: float = roundf(panel.position.y + 14.0 + fmod((0.0 if fr_r else t * (10.0 + float(pi % 3) * 3.0)) + float(pi) * 17.0, panel.size.y - 28.0))
 			var px: float = roundf(side_x + (0.0 if fr_r else sin(t * 2.1 + float(pi) * 1.4) * 2.5))
-			var pcol: String = "cream" if (rank_key == "RANK_S" and pi % 3 == 0) else ("gold" if pi % 2 == 0 else ("apricot" if rank_key == "RANK_S" else "lime"))
-			ci.draw_rect(Rect2(px, py, 1.0, 1.0), LxPalette.PAL[pcol])
+			var p_c: Color = LxBiomePalette.col((pi % 8) + 1, "glow") if all_relit_r else LxPalette.PAL["cream" if (rank_key == "RANK_S" and pi % 3 == 0) else ("gold" if pi % 2 == 0 else ("apricot" if rank_key == "RANK_S" else "lime"))]
+			ci.draw_rect(Rect2(px, py, 1.0, 1.0), p_c)
 
 static func _draw_rank_medallion(ci: CanvasItem, rank_key: String, t: float) -> void:
 	var st: Array = RANK_STYLE.get(rank_key, RANK_STYLE["RANK_C"]) as Array
