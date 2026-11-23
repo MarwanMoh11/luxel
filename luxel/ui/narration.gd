@@ -219,19 +219,20 @@ func _draw_slot(s: Dictionary) -> void:
 		var max_w: float = 0.0
 		for ln: String in lines:
 			max_w = maxf(max_w, float(LxPixelFont.width(ln, sc)))
-		var pad_x: float = 6.0
+		var is_title: bool = slot_name == "title"
+		var isl: int = Lx.state.island_id if Lx.state != null else 1
+		var pad_x: float = 13.0 if is_title else 6.0
 		var box_h: float = gap * float(lines.size()) + 3.0
 		var col_key: String = str(s.get("colour", "cream"))
-		var border_k: String = "coral" if col_key == "coral" else ("gold" if slot_name == "title" else "dusk")
+		var border_k: String = "coral" if col_key == "coral" else (LxBiomePalette.key(isl, "border") if is_title else "dusk")
 		var rect := Rect2(roundf(160.0 - max_w * 0.5 - pad_x), roundf(y - 2.0), roundf(max_w + pad_x * 2.0), roundf(box_h))
 		LxPixelFont.draw_panel(self, rect, "night", border_k, "void")
-		if slot_name == "title":
-			var fin_c: Color = LxPalette.PAL["coral"] if col_key == "coral" else LxPalette.PAL["gold"]
-			for cp: Vector2 in [
-				Vector2(rect.position.x + 1.0, rect.position.y + 1.0), Vector2(rect.end.x - 2.0, rect.position.y + 1.0),
-				Vector2(rect.position.x + 1.0, rect.end.y - 2.0), Vector2(rect.end.x - 2.0, rect.end.y - 2.0),
-			]:
-				draw_rect(Rect2(cp, Vector2.ONE), fin_c)
+		if is_title:
+			var fin_c: Color = LxPalette.PAL["coral"] if col_key == "coral" else LxBiomePalette.col(isl, "glow")
+			var hi_c: Color = LxPalette.PAL["cream"] as Color
+			var cy_t: float = roundf(rect.position.y + rect.size.y * 0.5)
+			LxHudFx.draw_biome_crest(self, isl, Vector2(rect.position.x + 6.0, cy_t), fin_c, hi_c)
+			LxHudFx.draw_biome_crest(self, isl, Vector2(rect.end.x - 7.0, cy_t), fin_c, hi_c)
 	for i: int in range(lines.size()):
 		LxPixelFont.draw_centered(self, lines[i], 160.0, y + gap * float(i), col, sc)
 

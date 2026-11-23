@@ -455,17 +455,20 @@ func _draw_switch_door(x0: float, y0: float, w: float, h: float) -> void:
 
 
 func _draw_ward_barrier(x0: float, y0: float, w: float, h: float) -> void:
-	_draw_frame(x0, y0, w, h, PAL["deep"] as Color)
-	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["sky"])
-	draw_rect(Rect2(x0 + 2.0, y0 + h - 3.0, w - 4.0, 1.0), PAL["blue"])
+	var wa: Color = LxBiomePalette.col(island_id, "ward_a")
+	var wb: Color = LxBiomePalette.col(island_id, "ward_b")
+	var whi: Color = LxBiomePalette.col(island_id, "ward_hi")
+	_draw_frame(x0, y0, w, h, LxBiomePalette.col(island_id, "dark"))
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), wb)
+	draw_rect(Rect2(x0 + 2.0, y0 + h - 3.0, w - 4.0, 1.0), wa)
 	var rx: float = x0 + 5.0
 	var cy: float = floorf(y0 + h * 0.5)
 	var idx: int = 0
 	while rx < x0 + w - 5.0:
 		var lit_r: bool = (idx + _pulse_stage) % 2 == 0
-		draw_line(Vector2(rx, y0 + 2.0), Vector2(rx + 2.0, cy), PAL["blue"], 1.0)
-		draw_line(Vector2(rx + 2.0, cy), Vector2(rx, y0 + h - 3.0), PAL["sky"], 1.0)
-		draw_rect(Rect2(rx + 1.0, y0 + 4.0, 1.0, maxf(1.0, h - 8.0)), PAL["ice"] if lit_r else PAL["sky"])
+		draw_line(Vector2(rx, y0 + 2.0), Vector2(rx + 2.0, cy), wa, 1.0)
+		draw_line(Vector2(rx + 2.0, cy), Vector2(rx, y0 + h - 3.0), wb, 1.0)
+		draw_rect(Rect2(rx + 1.0, y0 + 4.0, 1.0, maxf(1.0, h - 8.0)), whi if lit_r else wb)
 		if lit_r:
 			draw_rect(Rect2(rx + 1.0, cy, 1.0, 1.0), PAL["cream"])
 		rx += 5.0
@@ -510,24 +513,27 @@ func _draw_ward_pips(x0: float, y0: float, w: float) -> void:
 
 
 func _draw_light_bridge_glow(x0: float, y0: float, w: float, h: float, horiz: bool) -> void:
+	var c_edge: Color = LxBiomePalette.col(island_id, "hi")
+	var c_glow: Color = LxBiomePalette.col(island_id, "glow")
+	var c_core: Color = LxBiomePalette.col(island_id, "core")
 	if horiz:
-		draw_rect(Rect2(x0 + 3.0, y0 + 2.0, maxf(2.0, w - 6.0), 1.0), PAL["apricot"])
-		draw_rect(Rect2(x0 + 3.0, y0 + h - 3.0, maxf(2.0, w - 6.0), 1.0), PAL["apricot"])
+		draw_rect(Rect2(x0 + 3.0, y0 + 2.0, maxf(2.0, w - 6.0), 1.0), c_edge)
+		draw_rect(Rect2(x0 + 3.0, y0 + h - 3.0, maxf(2.0, w - 6.0), 1.0), c_edge)
 		var sx: float = x0 + 5.0
 		var idx: int = 0
 		while sx < x0 + w - 5.0:
 			var hi: bool = (idx + _pulse_stage) % 3 == 0
-			draw_rect(Rect2(sx, y0 + 3.0, 2.0, maxf(1.0, h - 6.0)), PAL["gold"] if hi else PAL["apricot"])
+			draw_rect(Rect2(sx, y0 + 3.0, 2.0, maxf(1.0, h - 6.0)), c_glow if hi else c_edge)
 			sx += 4.0
 			idx += 1
 	else:
-		draw_rect(Rect2(x0 + 2.0, y0 + 3.0, 1.0, maxf(2.0, h - 6.0)), PAL["apricot"])
-		draw_rect(Rect2(x0 + w - 3.0, y0 + 3.0, 1.0, maxf(2.0, h - 6.0)), PAL["apricot"])
+		draw_rect(Rect2(x0 + 2.0, y0 + 3.0, 1.0, maxf(2.0, h - 6.0)), c_edge)
+		draw_rect(Rect2(x0 + w - 3.0, y0 + 3.0, 1.0, maxf(2.0, h - 6.0)), c_edge)
 		var sy: float = y0 + 5.0
 		var idx2: int = 0
 		while sy < y0 + h - 5.0:
 			var hi2: bool = (idx2 + _pulse_stage) % 3 == 0
-			draw_rect(Rect2(x0 + 3.0, sy, maxf(1.0, w - 6.0), 2.0), PAL["gold"] if hi2 else PAL["apricot"])
+			draw_rect(Rect2(x0 + 3.0, sy, maxf(1.0, w - 6.0), 2.0), c_glow if hi2 else c_edge)
 			sy += 4.0
 			idx2 += 1
 	var step_count: int = 4
@@ -535,7 +541,7 @@ func _draw_light_bridge_glow(x0: float, y0: float, w: float, h: float, horiz: bo
 		var frac: float = fmod(float(i) / float(step_count) + float(_pulse_stage) * 0.125, 1.0)
 		var mx: float = roundf(x0 + 4.0 + frac * maxf(4.0, w - 8.0)) if horiz else roundf(x0 + w * 0.5 + sin(_clock * 2.5 + float(i)) * maxf(2.0, w * 0.25))
 		var my: float = roundf(y0 + h * 0.5 + sin(_clock * 2.5 + float(i)) * maxf(2.0, h * 0.25)) if horiz else roundf(y0 + 4.0 + frac * maxf(4.0, h - 8.0))
-		draw_rect(Rect2(mx - 1.0, my - 1.0, 2.0, 2.0), PAL["cream"] if (i + _pulse_stage) % 2 == 0 else PAL["gold"])
+		draw_rect(Rect2(mx - 1.0, my - 1.0, 2.0, 2.0), c_core if (i + _pulse_stage) % 2 == 0 else c_glow)
 
 
 func _draw_open_burst(w: float, h: float) -> void:

@@ -12,6 +12,12 @@ var _clock: float = 0.0
 var _was_dashing: bool = false
 var _bound_events: LxEventBus = null
 var _trails: Array[Dictionary] = [] # {pos, age, dur, col}
+var _ripples: Array[Dictionary] = [] # {pos, age, dur, r0, r1, col}
+var _fireflies: Array[Dictionary] = [] # {pos, vel, age, dur}
+var _step_cd: float = 0.0
+var _last_wpos: Vector2 = Vector2.ZERO
+var _moon_mirror_pos: Vector2 = Vector2.ZERO
+var _moon_mirror_on: bool = false
 
 
 func _ready() -> void:
@@ -50,6 +56,11 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_clock = 0.0
 	_was_dashing = false
 	_trails.clear()
+	_ripples.clear()
+	_fireflies.clear()
+	_step_cd = 0.0
+	_last_wpos = Vector2.ZERO
+	_moon_mirror_on = false
 	queue_redraw()
 
 
@@ -57,39 +68,96 @@ func tick(dt: float) -> void:
 	if dt <= 0.0 or _rules == null or not is_instance_valid(_rules):
 		return
 	_clock += dt
-	for i: int in range(_trails.size() - 1, -1, -1):
-		_trails[i]["age"] = float(_trails[i]["age"]) + dt
-		if float(_trails[i]["age"]) >= float(_trails[i]["dur"]):
-			_trails.remove_at(i)
+	_step_cd = maxf(0.0, _step_cd - dt)
+	for arr: Array in [_trails, _ripples, _fireflies]:
+		for i: int in range(arr.size() - 1, -1, -1):
+			var it: Dictionary = arr[i] as Dictionary
+			it["age"] = float(it["age"]) + dt
+			if it.has("vel"):
+				it["pos"] = (it["pos"] as Vector2) + (it["vel"] as Vector2) * dt
+			if float(it["age"]) >= float(it["dur"]):
+				arr.remove_at(i)
 
+	_moon_mirror_on = false
 	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
 	if w != null and not w.dead:
+		var wpos: Vector2 = w.global_position
+		var moved: bool = _last_wpos != Vector2.ZERO and wpos.distance_squared_to(_last_wpos) > 4.0
+		_last_wpos = wpos
 		var dashing: bool = w.is_dashing()
-		# Island 2: Sea-Spray Surge when dashing across shallow coastal tide water
-		if _island_id == 2 and dashing and not _was_dashing and _region != null and _region.has_method("tile_at"):
-			if str(_region.call("tile_at", w.global_position)) == "tide":
+		var tile_kind: String = str(_region.call("tile_at", wpos)) if (_region != null and _region.has_method("tile_at")) else ""
+
+		# Island 1: Warm brass chime motes on Dash
+		if _island_id == 1 and dashing and not _was_dashing:
+			_trails.append({"pos": wpos, "age": 0.0, "dur": 0.34, "col": "gold"})
+		# Island 2: Sea-Spray Surge on tide + tidal footstep ripples
+		if _island_id == 2 and tile_kind == "tide":
+			if dashing and not _was_dashing:
 				var dir: Vector2 = w.facing.normalized() if w.facing.length_squared() > 0.01 else Vector2.RIGHT
 				w.apply_recoil(dir * 26.0)
-				w.spawn_sparks(w.global_position, -dir, 6, LxWick.PAL_ICE, 26.0, 64.0, 0.22)
-		# Island 3: Canopy Ember Dew near any lit Forest Bloom-Lamp
-		if _island_id == 3 and w.move_sunflare != null and w.move_sunflare.unlocked:
-			for b: Dictionary in _rules._blooms:
-				if float(b["lit_t"]) > 0.0 and w.global_position.distance_squared_to(b["pos"] as Vector2) <= 3136.0:
-					w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 6.0 * dt)
-					if fmod(_clock, 0.25) < dt:
-						_trails.append({"pos": w.global_position + Vector2(sin(_clock * 9.0) * 5.0, -4.0), "age": 0.0, "dur": 0.42, "col": "lime"})
-					break
-		# Island 7: Full Silver Moon crystalline afterimage trail on Dash
-		if _island_id == 7 and _rules.lunar_phase > 0.65 and dashing:
-			if fmod(_clock, 0.06) < dt:
-				_trails.append({"pos": w.global_position, "age": 0.0, "dur": 0.34, "col": "ice"})
+				w.spawn_sparks(wpos, -dir, 6, LxWick.PAL_ICE, 26.0, 64.0, 0.22)
+				_ripples.append({"pos": wpos, "age": 0.0, "dur": 0.42, "r0": 3.0, "r1": 14.0, "col": "ice"})
+			elif moved and _step_cd <= 0.0:
+				_step_cd = 0.24
+				_ripples.append({"pos": wpos + Vector2(0.0, 2.0), "age": 0.0, "dur": 0.38, "r0": 2.0, "r1": 9.0, "col": "sky"})
+		# Island 3: Canopy Ember Dew + guiding emerald fireflies toward nearest unlit beacon
+		if _island_id == 3:
+			if w.move_sunflare != null and w.move_sunflare.unlocked:
+				for b: Dictionary in _rules._blooms:
+					if float(b["lit_t"]) > 0.0 and wpos.distance_squared_to(b["pos"] as Vector2) <= 3136.0:
+						w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 6.0 * dt)
+						if fmod(_clock, 0.25) < dt:
+							_trails.append({"pos": wpos + Vector2(sin(_clock * 9.0) * 5.0, -4.0), "age": 0.0, "dur": 0.42, "col": "lime"})
+						break
+			if not _rules.is_dungeon and _step_cd <= 0.0 and _fireflies.size() < 4:
+				_step_cd = 0.95
+				var b_dir: Vector2 = _dir_to_nearest_unlit_beacon(wpos)
+				if b_dir != Vector2.ZERO:
+					_fireflies.append({"pos": wpos + Vector2(0.0, -4.0), "vel": b_dir * 26.0, "age": 0.0, "dur": 1.15})
+		# Island 4: Rose-ice lagoon ripples under Moth Wings glide over water
+		if _island_id == 4 and w.is_gliding() and tile_kind in ["water", "tide"] and _step_cd <= 0.0:
+			_step_cd = 0.20
+			_ripples.append({"pos": wpos + Vector2(0.0, 4.0), "age": 0.0, "dur": 0.46, "r0": 2.0, "r1": 11.0, "col": "rose"})
+		# Island 5: Starlight Surge golden boot trail
+		if _island_id == 5 and _rules.starlight_surge_t > 0.0 and moved and _step_cd <= 0.0:
+			_step_cd = 0.14
+			_trails.append({"pos": wpos, "age": 0.0, "dur": 0.30, "col": "gold"})
+		# Island 6: Volcanic cinder steps
+		if _island_id == 6 and moved and _step_cd <= 0.0:
+			_step_cd = 0.28
+			_trails.append({"pos": wpos + Vector2(0.0, 2.0), "age": 0.0, "dur": 0.28, "col": "coral"})
+		# Island 7: Full Silver Moon floor reflection + crystalline dash afterimages
+		if _island_id == 7 and _rules.lunar_phase > 0.65:
+			_moon_mirror_on = true
+			_moon_mirror_pos = wpos
+			if dashing and fmod(_clock, 0.06) < dt:
+				_trails.append({"pos": wpos, "age": 0.0, "dur": 0.34, "col": "ice"})
 		# Island 8: Golden Dawn Ribbon trail when Dawn Seals are broken
 		if _island_id == 8 and dashing and LxBiomeMechanics.active_instance != null and LxBiomeMechanics.active_instance.dawn_seals_broken > 0:
 			if fmod(_clock, 0.05) < dt:
-				_trails.append({"pos": w.global_position, "age": 0.0, "dur": 0.38, "col": "gold"})
+				_trails.append({"pos": wpos, "age": 0.0, "dur": 0.38, "col": "gold"})
 		_was_dashing = dashing
-	if not _trails.is_empty():
+	if not _trails.is_empty() or not _ripples.is_empty() or not _fireflies.is_empty() or _moon_mirror_on:
 		queue_redraw()
+
+
+func _dir_to_nearest_unlit_beacon(from_pos: Vector2) -> Vector2:
+	if _region == null or not _region.has_method("get_interactables"):
+		return Vector2.ZERO
+	var items_v: Variant = _region.call("get_interactables")
+	if not (items_v is Array):
+		return Vector2.ZERO
+	var best_d2: float = INF
+	var best_p: Vector2 = Vector2.ZERO
+	for it: Variant in (items_v as Array):
+		if it is LxBeacon and is_instance_valid(it):
+			var b: LxBeacon = it as LxBeacon
+			if b.active and not b.lit:
+				var d2: float = b.pos.distance_squared_to(from_pos)
+				if d2 > 400.0 and d2 < best_d2:
+					best_d2 = d2
+					best_p = b.pos
+	return (best_p - from_pos).normalized() if best_d2 < INF else Vector2.ZERO
 
 
 func on_updraft_gust(origin: Vector2) -> void:
@@ -123,6 +191,20 @@ func _on_enemy_killed(_enemy: Object, _kind: String, pos: Vector2, _opened_kill:
 
 
 func _draw() -> void:
+	if _moon_mirror_on:
+		var mp: Vector2 = _moon_mirror_pos.round() + Vector2(0.0, 6.0)
+		draw_rect(Rect2(mp + Vector2(-3.0, -1.0), Vector2(6.0, 3.0)), Color(PAL["sky"] as Color, 0.32))
+		draw_rect(Rect2(mp + Vector2(-2.0, 1.0), Vector2(4.0, 2.0)), Color(PAL["ice"] as Color, 0.28))
+	for rp: Dictionary in _ripples:
+		var u: float = clampf(float(rp["age"]) / maxf(float(rp["dur"]), 0.01), 0.0, 1.0)
+		var r: float = roundf(lerpf(float(rp["r0"]), float(rp["r1"]), u))
+		draw_arc((rp["pos"] as Vector2).round(), r, 0.0, TAU, 14, Color(PAL[str(rp["col"])] as Color, (1.0 - u) * 0.72), 1.0)
+	for ff: Dictionary in _fireflies:
+		var u: float = clampf(float(ff["age"]) / maxf(float(ff["dur"]), 0.01), 0.0, 1.0)
+		var fp: Vector2 = (ff["pos"] as Vector2).round() + Vector2(0.0, roundf(sin(_clock * 7.0 + u * 8.0) * 2.0))
+		var a: float = sin(u * PI) * 0.88
+		draw_rect(Rect2(fp, Vector2(2.0, 2.0)), Color(PAL["lime"] as Color, a))
+		draw_rect(Rect2(fp, Vector2.ONE), Color(PAL["cream"] as Color, a))
 	for tr: Dictionary in _trails:
 		var u: float = clampf(float(tr["age"]) / maxf(float(tr["dur"]), 0.01), 0.0, 1.0)
 		var p: Vector2 = (tr["pos"] as Vector2).round()

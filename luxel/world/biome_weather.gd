@@ -213,6 +213,15 @@ func _draw_lunar_aurora(fred: bool) -> void:
 
 func _draw_eclipse_ash(fred: bool, relit: bool) -> void:
 	var a: float = 0.55 if fred else 0.82
+	var seals_b: int = LxBiomeMechanics.active_instance.dawn_seals_broken if (LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance)) else 0
+	if relit or seals_b > 0:
+		var ray_n: int = 3 if relit else seals_b
+		var ray_a: float = (0.06 if fred else 0.11) if relit else (0.04 if fred else 0.07)
+		for k: int in range(ray_n):
+			var bx: float = roundf(_cam_center.x - 96.0 + float(k) * 96.0 + sin(_clock * 0.4 + float(k)) * 10.0)
+			var top := Vector2(bx, _cam_center.y - 96.0)
+			var poly := PackedVector2Array([top + Vector2(-8.0, 0.0), top + Vector2(12.0, 0.0), top + Vector2(40.0, 170.0), top + Vector2(10.0, 170.0)])
+			draw_colored_polygon(poly, Color(PAL["gold"] as Color, ray_a))
 	for i: int in range(_drops.size()):
 		var d: Dictionary = _drops[i]
 		var p: Vector2 = (_cam_center + Vector2(float(d["ox"]), float(d["oy"]))).round()
@@ -220,5 +229,5 @@ func _draw_eclipse_ash(fred: bool, relit: bool) -> void:
 		if relit:
 			col = (PAL["cream"] if i % 3 == 0 else PAL["gold"]) as Color
 		else:
-			col = (PAL["plum"] if i % 3 == 0 else (PAL["rose"] if i % 5 == 0 else PAL["mauve"])) as Color
+			col = (PAL["gold"] if (seals_b > 0 and i % (5 - mini(seals_b, 3)) == 0) else (PAL["plum"] if i % 3 == 0 else (PAL["rose"] if i % 5 == 0 else PAL["mauve"]))) as Color
 		draw_rect(Rect2(p, Vector2(2.0 if i % 4 == 0 else 1.0, 1.0)), Color(col, a))

@@ -316,15 +316,18 @@ func _draw_hearts(origin: Vector2) -> void:
 
 
 func _draw_beacon_gauge(cx: float, y: float) -> void:
-	var lit_count: int = _count_island_beacons(Lx.state.island_id)
+	var isl: int = Lx.state.island_id
+	var lit_count: int = _count_island_beacons(isl)
 	var spacing: float = 11.0
 	var start_x: float = roundf(cx - spacing)
+	var lit_glass: Color = LxBiomePalette.col(isl, "glow")
+	var lit_frame: Color = LxBiomePalette.col(isl, "hi")
 	for i: int in range(3):
 		var p: Vector2 = Vector2(start_x + float(i) * spacing - 2.0, y)
 		var is_lit: bool = i < lit_count
 		draw_rect(Rect2(p - Vector2.ONE, Vector2(7.0, 9.0)), LxPalette.PAL["night"])
-		var glass_col: Color = LxPalette.PAL["gold"] if is_lit else LxPalette.PAL["dusk"]
-		var frame_col: Color = LxPalette.PAL["apricot"] if is_lit else LxPalette.PAL["mauve"]
+		var glass_col: Color = lit_glass if is_lit else LxPalette.PAL["dusk"]
+		var frame_col: Color = lit_frame if is_lit else LxPalette.PAL["mauve"]
 		draw_rect(Rect2(p + Vector2(1.0, 2.0), Vector2(3.0, 4.0)), glass_col)
 		if is_lit:
 			draw_rect(Rect2(p + Vector2(2.0, 3.0), Vector2(1.0, 2.0)), LxPalette.PAL["cream"])
@@ -551,13 +554,16 @@ func _draw_notice() -> void:
 	if _notice_text.is_empty():
 		return
 	var p: float = minf(_notice_t / 0.18, (_notice_dur - _notice_t) / 0.30)
-	var col: Color = LxPalette.fade_step(maxf(p, 0.52) if _notice_t < 0.2 else p, "gold")
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
+	var col: Color = LxPalette.fade_step(maxf(p, 0.52) if _notice_t < 0.2 else p, LxBiomePalette.key(isl, "border"))
 	if col.a <= 0.0:
 		return
-	var w: float = float(LxPixelFont.width(_notice_text, 1)) + 12.0
+	var w: float = float(LxPixelFont.width(_notice_text, 1)) + 24.0
 	var ny: float = 26.0 if _boss_active else 18.0
 	var rect := Rect2(roundf(160.0 - w * 0.5), ny, w, 11.0)
-	LxPixelFont.draw_panel(self, rect, "night", "gold", "void")
+	LxPixelFont.draw_panel(self, rect, "night", LxBiomePalette.key(isl, "border"), "void")
+	LxHudFx.draw_biome_crest(self, isl, Vector2(rect.position.x + 6.0, ny + 5.0), col, LxPalette.PAL["cream"] as Color)
+	LxHudFx.draw_biome_crest(self, isl, Vector2(rect.end.x - 7.0, ny + 5.0), col, LxPalette.PAL["cream"] as Color)
 	LxPixelFont.draw_centered(self, _notice_text, 160.0, ny + 3.0, col, 1)
 
 

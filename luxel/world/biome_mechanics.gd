@@ -398,6 +398,8 @@ func _draw_island2(fred: bool) -> void:
 		draw_rect(Rect2(pt + Vector2(-1.0, -1.0), Vector2(1.0, 1.0)), PAL["cream"] as Color)
 		if not fred:
 			draw_arc(pt, 6.0 + sin(_clock * 5.0) * 1.0, 0.0, TAU, 12, Color(PAL["gold"] as Color, 0.55), 1.0)
+			var sr: float = fmod(_clock * 0.75 + p.x * 0.01, 1.0)
+			draw_arc(pt, roundf(lerpf(6.0, 18.0, sr)), 0.0, TAU, 16, Color(PAL["ice"] as Color, (1.0 - sr) * 0.52), 1.0)
 	if _rules.is_dungeon and _region != null and _region.has_method("get_enemies"):
 		var enemies_v: Variant = _region.call("get_enemies")
 		if enemies_v is Array:

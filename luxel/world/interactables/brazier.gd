@@ -128,22 +128,27 @@ func _draw_flame() -> void:
 	var tall: float = 1.0 if (st == 1 or st == 3) else 0.0
 	var lh: float = 2.0 if (st == 0 or st == 3) else 1.0
 	var rh: float = 2.0 if (st == 1 or st == 2) else 1.0
-	draw_rect(Rect2(-5.0, -12.0, 10.0, 2.0), PAL["wine"] as Color)
-	_fill("coral", [
+	var c_dark: String = LxBiomePalette.key(island_id, "dark")
+	var c_mid: String = LxBiomePalette.key(island_id, "mid")
+	var c_hi: String = LxBiomePalette.key(island_id, "hi")
+	var c_glow: String = LxBiomePalette.key(island_id, "glow")
+	var c_core: String = LxBiomePalette.key(island_id, "core")
+	draw_rect(Rect2(-5.0, -12.0, 10.0, 2.0), PAL[c_dark] as Color)
+	_fill(c_mid, [
 		Rect2(-5.0, -14.0, 10.0, 3.0), Rect2(-4.0, -16.0, 8.0, 2.0),
 		Rect2(-2.0 + sway, -19.0 - tall, 4.0, 3.0 + tall), Rect2(-1.0 + sway, -20.0 - tall, 2.0, 1.0),
 		Rect2(-5.0, -15.0 - lh, 2.0, 1.0 + lh), Rect2(3.0, -15.0 - rh, 2.0, 1.0 + rh),
 	])
-	_fill("apricot", [
+	_fill(c_hi, [
 		Rect2(-4.0, -14.0, 8.0, 2.0), Rect2(-3.0, -16.0, 6.0, 2.0),
 		Rect2(-1.0 + sway, -18.0 - tall, 2.0, 2.0 + tall),
 		Rect2(-4.0, -14.0 - lh, 1.0, lh), Rect2(3.0, -14.0 - rh, 1.0, rh),
 	])
-	_fill("gold", [Rect2(-3.0, -14.0, 6.0, 2.0), Rect2(-2.0, -16.0, 4.0, 2.0), Rect2(-1.0 + sway, -17.0, 2.0, 1.0)])
-	_fill("cream", [Rect2(-1.0, -14.0, 2.0, 2.0), Rect2(0.0 if sway > 0.0 else -1.0, -15.0, 1.0, 1.0)])
-	var c_cream: Color = PAL["cream"] as Color
-	var c_gold: Color = PAL["gold"] as Color
-	var c_apr: Color = PAL["apricot"] as Color
+	_fill(c_glow, [Rect2(-3.0, -14.0, 6.0, 2.0), Rect2(-2.0, -16.0, 4.0, 2.0), Rect2(-1.0 + sway, -17.0, 2.0, 1.0)])
+	_fill(c_core, [Rect2(-1.0, -14.0, 2.0, 2.0), Rect2(0.0 if sway > 0.0 else -1.0, -15.0, 1.0, 1.0)])
+	var c_cream: Color = PAL[c_core] as Color
+	var c_gold: Color = PAL[c_glow] as Color
+	var c_apr: Color = PAL[c_hi] as Color
 	var phase: float = absf(pos.x * 0.019 + pos.y * 0.013)
 	for i: int in range(2):
 		var t: float = fmod(_clock * 0.68 + phase + float(i) * 0.5, 1.0)

@@ -233,3 +233,43 @@ static func _draw_boss_phase_filigree(hud: CanvasItem, blink_t: float, phase: in
 		hud.draw_rect(Rect2(px - 1.0, py - 1.0, 3.0, 3.0), LxPalette.PAL["void"] as Color)
 		hud.draw_rect(Rect2(px, py, 1.0, 1.0), hi)
 		hud.draw_rect(Rect2(px + side * 2.0, py, 2.0, 1.0), col)
+
+
+static func draw_biome_crest(canvas: CanvasItem, island_id: int, center: Vector2, primary: Color, hi: Color) -> void:
+	var c: Vector2 = center.round()
+	match clampi(island_id, 1, 8):
+		1: # Brass Bell
+			canvas.draw_rect(Rect2(c + Vector2(-1.0, -2.0), Vector2(3.0, 3.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(-2.0, 1.0), Vector2(5.0, 1.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), hi)
+		2: # Tidal Wave Crest
+			canvas.draw_rect(Rect2(c + Vector2(-2.0, 0.0), Vector2(5.0, 2.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(-1.0, -2.0), Vector2(2.0, 2.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(-1.0, -2.0), Vector2(3.0, 1.0)), hi)
+		3: # Emerald Forest Leaf
+			canvas.draw_rect(Rect2(c + Vector2(-1.0, -2.0), Vector2(3.0, 4.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(-2.0, -1.0), Vector2(5.0, 2.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), hi)
+		4: # Botanical Lotus Diamond
+			canvas.draw_rect(Rect2(c + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), hi)
+		5: # 4-Point Astral Star
+			canvas.draw_rect(Rect2(c + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), primary)
+			canvas.draw_rect(Rect2(c, Vector2.ONE), hi)
+		6: # Forged Kiln Flame
+			canvas.draw_rect(Rect2(c + Vector2(-2.0, 0.0), Vector2(5.0, 2.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(-1.0, -2.0), Vector2(3.0, 2.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(0.0, -1.0), Vector2(1.0, 2.0)), hi)
+		7: # Silver Crescent Moon
+			canvas.draw_rect(Rect2(c + Vector2(-2.0, -2.0), Vector2(4.0, 5.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(0.0, -1.0), Vector2(2.0, 3.0)), LxPalette.PAL["night"] as Color)
+			canvas.draw_rect(Rect2(c + Vector2(-2.0, -1.0), Vector2(1.0, 3.0)), hi)
+		8: # Eclipsed Dawn Sunburst
+			canvas.draw_rect(Rect2(c + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), primary)
+			canvas.draw_rect(Rect2(c + Vector2(0.0, -2.0), Vector2(1.0, 1.0)), hi)
+			canvas.draw_rect(Rect2(c + Vector2(0.0, 2.0), Vector2(1.0, 1.0)), hi)
+			canvas.draw_rect(Rect2(c + Vector2(-2.0, 0.0), Vector2(1.0, 1.0)), hi)
+			canvas.draw_rect(Rect2(c + Vector2(2.0, 0.0), Vector2(1.0, 1.0)), hi)
+			canvas.draw_rect(Rect2(c, Vector2.ONE), hi)
