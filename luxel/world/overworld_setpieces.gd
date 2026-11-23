@@ -54,14 +54,19 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 					if obj.id.begins_with("door_dungeon_") or obj.id == "door_ward_barrier":
 						_door_pos = obj.pos
 	if _active and _island_id == 4:
+		var pools: Array[Vector2] = [
+			Vector2(416.0, 312.0), Vector2(800.0, 312.0),
+			Vector2(432.0, 568.0), Vector2(784.0, 568.0),
+			Vector2(608.0, 412.0), Vector2(608.0, 624.0),
+		]
 		var rng := RandomNumberGenerator.new()
 		rng.seed = 40471
-		for k: int in range(6):
+		for k: int in range(pools.size()):
 			_koi.append({
-				"center": Vector2(608.0 + rng.randf_range(-240.0, 260.0), 390.0 + rng.randf_range(-130.0, 150.0)),
-				"rx": rng.randf_range(24.0, 52.0),
-				"ry": rng.randf_range(16.0, 34.0),
-				"spd": rng.randf_range(0.32, 0.58) * (1.0 if k % 2 == 0 else -1.0),
+				"center": pools[k],
+				"rx": rng.randf_range(18.0, 32.0),
+				"ry": rng.randf_range(12.0, 22.0),
+				"spd": rng.randf_range(0.36, 0.62) * (1.0 if k % 2 == 0 else -1.0),
 				"phase": rng.randf_range(0.0, TAU),
 				"col": "coral" if k % 3 == 0 else ("gold" if k % 3 == 1 else "ice"),
 			})
@@ -278,25 +283,24 @@ func _draw_ashen_fissures(fred: bool, relit: bool) -> void:
 
 
 func _draw_moon_shoals_reflection(fred: bool, relit: bool) -> void:
-	# Giant shimmering Reflected Moon Disc floating inside the central mirror lagoon!
-	var moon_c := Vector2(672.0, 368.0)
-	if _in_view(moon_c, 96.0):
-		var ph: float = 1.0 if relit else clampf(_rules.lunar_phase, 0.0, 1.0)
-		var r: float = 56.0
-		var a_disc: float = (0.14 + 0.24 * ph) * (0.75 if fred else 1.0)
-		var disc_c: Color = (PAL["gold"] if relit else (PAL["ice"] if ph > 0.5 else PAL["sky"])) as Color
-		# Horizontal water-ripple scanlines forming the reflected moon silhouette
+	# Twin shimmering Reflected Moon Discs floating strictly inside the west & east open mirror-lagoon basins!
+	var ph: float = 1.0 if relit else clampf(_rules.lunar_phase, 0.0, 1.0)
+	var r: float = 42.0
+	var a_disc: float = (0.14 + 0.24 * ph) * (0.75 if fred else 1.0)
+	var disc_c: Color = (PAL["gold"] if relit else (PAL["ice"] if ph > 0.5 else PAL["sky"])) as Color
+	for moon_c: Vector2 in [Vector2(476.0, 368.0), Vector2(868.0, 368.0)]:
+		if not _in_view(moon_c, 84.0):
+			continue
 		var y_off: float = -r
 		while y_off <= r:
 			var half_span: float = sqrt(maxf(0.0, r * r - y_off * y_off))
-			var wave: float = 0.0 if fred else sin(_clock * 2.2 + y_off * 0.25) * 3.0
+			var wave: float = 0.0 if fred else sin(_clock * 2.2 + y_off * 0.25 + moon_c.x * 0.01) * 2.5
 			var y_px: float = roundf(moon_c.y + y_off)
-			# Waxing/waning shadow nibble on left edge when lunar_phase < 0.9
 			var left_cut: float = lerpf(-half_span * 0.85, half_span * 0.35, 1.0 - ph)
 			if half_span > left_cut + 2.0:
 				draw_line(Vector2(roundf(moon_c.x + left_cut + wave), y_px), Vector2(roundf(moon_c.x + half_span + wave), y_px), Color(disc_c, a_disc), 2.0)
 			y_off += 4.0
-		draw_arc(moon_c, r + 3.0, 0.0, TAU, 32, Color((PAL["cream"] if relit else PAL["ice"]) as Color, a_disc * 1.1), 1.0)
+		draw_arc(moon_c, r + 3.0, 0.0, TAU, 28, Color((PAL["cream"] if relit else PAL["ice"]) as Color, a_disc * 1.1), 1.0)
 	_draw_beacon_conduits(PAL["ice"] as Color, PAL["cream"] as Color, fred, relit)
 
 
