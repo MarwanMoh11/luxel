@@ -302,6 +302,11 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 			ci.draw_rect(Rect2(x, lamp_y - bh, 1.0, bh), LxPalette.PAL["gold" if flk else "apricot"])
 		ci.draw_rect(Rect2(x - 2.0, lamp_y - 1.0, 4.0, 3.0), LxPalette.PAL["gold"])
 		ci.draw_rect(Rect2(x - 1.0, lamp_y - 2.0, 2.0, 3.0), LxPalette.PAL["cream"])
+		if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % isl_id, false)):
+			var hs := Vector2(x, lamp_y - 9.0).round()
+			ci.draw_rect(Rect2(hs + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), bio_glow)
+			ci.draw_rect(Rect2(hs + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), bio_glow)
+			ci.draw_rect(Rect2(hs, Vector2.ONE), LxPalette.PAL["cream"])
 		for rr: int in range(5):
 			var wob: float = roundf(sin(t * 3.0 + float(idx) + float(rr)) * 1.4)
 			var rw: float = maxf(2.0, 6.0 - float(rr))
@@ -422,6 +427,10 @@ static func draw_credits_backdrop(ci: CanvasItem, t: float) -> void:
 		ci.draw_rect(Rect2(bx, by - 5.0, 1.0, 5.0), bc_hi if lit_c else (LxPalette.PAL["dusk"] as Color))
 		ci.draw_rect(Rect2(bx, by, 1.0, 1.0), LxPalette.PAL["cream"] if lit_c else bc_glow)
 		ci.draw_rect(Rect2(bx - 1.0, 166.0 + float(bi % 3) * 2.0, 3.0, 1.0), bc_glow if lit_c else bc_hi)
+		if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % (bi + 1), false)):
+			ci.draw_rect(Rect2(bx - 1.0, by - 9.0, 3.0, 1.0), bc_glow)
+			ci.draw_rect(Rect2(bx, by - 10.0, 1.0, 3.0), bc_glow)
+			ci.draw_rect(Rect2(bx, by - 9.0, 1.0, 1.0), LxPalette.PAL["cream"] if lit_c else bc_glow)
 	# Gentle rising lantern fireflies along left/right margins (center text lane stays clean).
 	for mi: int in range(14):
 		var side_x: float = float(8 + (mi * 13) % 38) if mi % 2 == 0 else float(274 + (mi * 17) % 38)

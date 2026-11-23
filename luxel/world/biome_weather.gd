@@ -153,7 +153,9 @@ func _draw_dawn_sunbeams(fred: bool) -> void:
 
 
 func _draw_coastal_weather(fred: bool, relit: bool) -> void:
-	var c_spray: Color = (PAL["cream"] if relit else PAL["ice"]) as Color
+	if relit:
+		_draw_dawn_sunbeams(fred)
+	var c_spray: Color = (PAL["gold"] if relit else PAL["ice"]) as Color
 	for d: Dictionary in _drops:
 		var p: Vector2 = (_cam_center + Vector2(float(d["ox"]), float(d["oy"]))).round()
 		draw_line(p, p + Vector2(float(d["len"]), 1.0), Color(c_spray, 0.25 if fred else 0.42), 1.0)
@@ -163,6 +165,8 @@ func _draw_coastal_weather(fred: bool, relit: bool) -> void:
 		var wing: float = roundf(sin(_clock * 5.2 + float(g["phase"])) * 2.0)
 		draw_line(gp + Vector2(-4.0, wing), gp, Color(c_gull, 0.65), 1.0)
 		draw_line(gp, gp + Vector2(4.0, wing), Color(c_gull, 0.65), 1.0)
+		if relit:
+			draw_rect(Rect2(gp, Vector2.ONE), PAL["gold"] as Color)
 
 
 func _draw_forest_beams(fred: bool, relit: bool) -> void:
@@ -179,11 +183,15 @@ func _draw_forest_beams(fred: bool, relit: bool) -> void:
 
 
 func _draw_lagoon_rain(fred: bool, relit: bool) -> void:
-	var a: float = 0.18 if relit else (0.28 if fred else 0.46)
-	var col: Color = (PAL["cream"] if relit else PAL["ice"]) as Color
-	for d: Dictionary in _drops:
+	if relit:
+		_draw_dawn_sunbeams(fred)
+	var a: float = 0.24 if (relit and not fred) else (0.18 if relit else (0.28 if fred else 0.46))
+	var prism_cols: Array[Color] = [PAL["rose"] as Color, PAL["gold"] as Color, PAL["ice"] as Color]
+	for i: int in range(_drops.size()):
+		var d: Dictionary = _drops[i]
 		var p: Vector2 = (_cam_center + Vector2(float(d["ox"]), float(d["oy"]))).round()
 		var l: float = float(d["len"])
+		var col: Color = prism_cols[i % 3] if relit else (PAL["ice"] as Color)
 		draw_line(p, p + Vector2(-l * 0.25, l), Color(col, a), 1.0)
 
 

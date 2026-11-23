@@ -157,6 +157,9 @@ func _draw() -> void:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
 	var relit: bool = Lx.state != null and Lx.state.relit_islands.has(_island_id)
+	var harm: bool = Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % _island_id, false))
+	var blessed: bool = relit or harm
+	var bio_glow: Color = LxBiomePalette.col(_island_id, "glow")
 	var seals_b: int = LxBiomeMechanics.active_instance.dawn_seals_broken if (LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance)) else 0
 	for c: Dictionary in _critters:
 		var p: Vector2 = (c["pos"] as Vector2).round()
@@ -217,3 +220,6 @@ func _draw() -> void:
 				draw_line(bp + Vector2(-3.0, wing), bp, col_w, 1.0)
 				draw_line(bp, bp + Vector2(3.0, wing), col_w, 1.0)
 				draw_rect(Rect2(bp, Vector2.ONE), col_c)
+		if blessed and (fleeing or (not fred and sin(_clock * 3.0 + ph) > 0.72)):
+			var sp_pt: Vector2 = (p + Vector2(-dir_x * 3.0, -4.0 - absf(hop))).round()
+			draw_rect(Rect2(sp_pt, Vector2.ONE), (PAL["cream"] if harm else bio_glow) as Color)
