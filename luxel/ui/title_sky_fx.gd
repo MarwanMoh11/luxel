@@ -8,7 +8,10 @@ extends RefCounted
 static func draw_sky_accents(ci: CanvasItem, elapsed: float) -> void:
 	var fred: bool = LxHudFx.flash_reduced()
 
-	# 0. Two serene gliding twilight bird silhouettes crossing the upper moonlit sky
+	# 0. Subtle etched twilight constellations in the far-left & far-right upper sky
+	_draw_sky_constellations(ci, elapsed, fred)
+
+	# 1. Two serene gliding twilight bird silhouettes crossing the upper moonlit sky
 	for bi: int in range(2):
 		var bx: float = roundf(fmod(42.0 + float(bi) * 148.0 + elapsed * (5.2 + float(bi) * 1.4), 344.0) - 12.0)
 		var by: float = roundf(26.0 + float(bi) * 16.0 + sin(elapsed * 1.4 + float(bi) * 2.1) * 2.5)
@@ -115,6 +118,12 @@ static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> v
 			ci.draw_rect(Rect2(p, Vector2.ONE), Color(LxPalette.PAL["cream"], 0.95))
 			var rx: float = roundf(p.x + (0.0 if fred else sin(elapsed * 2.4 + float(i)) * 1.0))
 			ci.draw_rect(Rect2(rx - 1.0, 148.0 + float(i % 3) * 2.0, 3.0, 1.0), Color(b_glow, 0.42 * tw))
+			# Shimmering 3-step biome reflection ripple down the dark archipelago sea
+			for rw: int in range(3):
+				var wy: float = 151.0 + float(rw) * 3.0 + float(i % 2)
+				var wx: float = roundf(p.x + (0.0 if fred else sin(elapsed * 1.9 + float(i) * 1.3 + float(rw) * 1.7) * (1.2 + float(rw) * 0.5)))
+				var ww: float = 3.0 - float(rw) * 0.5
+				ci.draw_rect(Rect2(wx - 1.0, wy, maxf(1.0, roundf(ww)), 1.0), Color(b_hi if rw == 2 else b_glow, (0.34 - float(rw) * 0.08) * tw))
 			# Subtle biome-signature horizon whisper for each relit island
 			if not fred:
 				var wu: float = fposmod(elapsed * 0.45 + float(i) * 0.27, 1.0)
@@ -137,3 +146,22 @@ static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> v
 			ci.draw_rect(Rect2(sc + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(b_glow, 0.82 * tw))
 			ci.draw_rect(Rect2(sc + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), Color(b_glow, 0.82 * tw))
 			ci.draw_rect(Rect2(sc, Vector2.ONE), Color(LxPalette.PAL["cream"], 0.96))
+
+
+static func _draw_sky_constellations(ci: CanvasItem, elapsed: float, fred: bool) -> void:
+	# Left sky: The Lantern Bearer constellation; Right sky: The Great Bell constellation
+	var figs: Array = [
+		[Vector2(24.0, 22.0), Vector2(36.0, 15.0), Vector2(49.0, 23.0), Vector2(36.0, 34.0), Vector2(24.0, 22.0)],
+		[Vector2(284.0, 56.0), Vector2(296.0, 46.0), Vector2(307.0, 56.0), Vector2(303.0, 68.0), Vector2(288.0, 68.0), Vector2(284.0, 56.0)],
+	]
+	var line_a: float = 0.14 if fred else (0.13 + 0.05 * sin(elapsed * 1.1))
+	for fi: int in range(figs.size()):
+		var pts: Array = figs[fi] as Array
+		var lc: Color = Color(LxPalette.PAL["blue"] if fi == 0 else LxPalette.PAL["dusk"], line_a)
+		for k: int in range(pts.size() - 1):
+			ci.draw_line(pts[k] as Vector2, pts[k + 1] as Vector2, lc, 1.0)
+		for k: int in range(pts.size() - 1):
+			var sp: Vector2 = pts[k] as Vector2
+			var tw: float = 0.72 if fred else (0.52 + 0.42 * sin(elapsed * 1.8 + float(fi) * 2.3 + float(k) * 1.2))
+			var sc: Color = LxPalette.PAL["gold"] if (fi == 0 and k == 3) else (LxPalette.PAL["ice"] if k % 2 == 0 else LxPalette.PAL["sky"])
+			ci.draw_rect(Rect2(sp, Vector2.ONE), Color(sc, tw))

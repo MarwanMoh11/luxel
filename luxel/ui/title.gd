@@ -521,7 +521,7 @@ func _draw_slot_pips(origin: Vector2, relit: int, relit_arr: Array) -> void:
 	for k: int in range(8):
 		var lit: bool = relit_arr.has(k + 1) if not relit_arr.is_empty() else (k < relit)
 		var px: float = origin.x + float(k) * 5.0
-		draw_rect(Rect2(px, origin.y, 3.0, 3.0), LxPalette.PAL["gold" if lit else "night"])
+		draw_rect(Rect2(px, origin.y, 3.0, 3.0), LxBiomePalette.col(k + 1, "glow") if lit else LxPalette.PAL["night"])
 		draw_rect(Rect2(px + 1.0, origin.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream" if lit else "dusk"])
 	if relit >= 8:
 		var cx: float = origin.x + 44.0; var cy: float = origin.y - 1.0
