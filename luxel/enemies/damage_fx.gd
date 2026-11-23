@@ -76,6 +76,8 @@ static func draw_wear(enemy: LxEnemyBrain, off: Vector2) -> void:
 
 	if enemy.max_hp <= 0.01 or enemy.hp <= 0.0:
 		return
+	if enemy.alert_t > 0.0:
+		_draw_alert_ring(enemy, off, r, fred)
 	_draw_biome_aura(enemy, off, r, t, fred)
 	if enemy.state == LxEnemyBrain.State.STAGGER:
 		_draw_stagger_halo(enemy, off, r, t, fred)
@@ -244,6 +246,18 @@ static func draw_armour_plates(enemy: LxEnemyBrain, off: Vector2, ar: float, wid
 			var sa: float = a + 0.22
 			var sp: Vector2 = (off + Vector2.from_angle(sa) * (ar + 2.2)).round()
 			enemy.draw_rect(Rect2(sp, Vector2.ONE), pal["cream"] as Color)
+
+
+static func _draw_alert_ring(enemy: LxEnemyBrain, off: Vector2, r: float, fred: bool) -> void:
+	var u: float = clampf(1.0 - (enemy.alert_t / 0.55), 0.0, 1.0)
+	if u >= 0.98:
+		return
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
+	var ac: Color = LxBiomePalette.col(isl, "glow")
+	var top: Vector2 = (off + Vector2(0.0, -r - 11.0)).round()
+	var rad: float = roundf(lerpf(3.0, 11.0, u))
+	var alpha: float = (1.0 - u) * (0.42 if fred else 0.72)
+	enemy.draw_arc(top, rad, 0.0, TAU, 14, Color(ac, alpha), 1.0)
 
 
 static func _draw_biome_aura(enemy: LxEnemyBrain, off: Vector2, r: float, t: float, fred: bool) -> void:
