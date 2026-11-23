@@ -70,6 +70,15 @@ func draw_celebration(ci: CanvasItem, clock: float, fred: bool, cleared: bool) -
 	if not cleared:
 		return
 	var relit: bool = Lx.state != null and Lx.state.relit_islands.has(_island_id)
+	var c_cen: Vector2 = _center.round()
+	var halo_r: float = roundf(18.0 + (0.0 if fred else sin(clock * 1.9) * 2.0))
+	ci.draw_arc(c_cen, halo_r, 0.0, TAU, 20, Color((PAL["gold"] as Color) if relit else c_glow, 0.24 if fred else 0.34), 1.0)
+	var h_rot: float = 0.0 if fred else clock * 0.55
+	for hk: int in range(4):
+		var ha: float = h_rot + float(hk) * (PI * 0.5)
+		var hp: Vector2 = (c_cen + Vector2.from_angle(ha) * halo_r).round()
+		ci.draw_rect(Rect2(hp, Vector2.ONE), Color(c_cream if hk % 2 == 0 else c_glow, 0.65 if fred else 0.85))
+	LxHudFx.draw_biome_crest(ci, _island_id, c_cen, Color(c_glow, 0.68), Color(c_cream, 0.78))
 	if _has_lamp and _lamp_pos.distance_to(_center) > 28.0:
 		_draw_lamp_procession(ci, clock, fred, relit, c_glow, c_hi, c_cream)
 	_draw_biome_victory_shower(ci, clock, fred, relit, c_glow, c_hi, c_cream)

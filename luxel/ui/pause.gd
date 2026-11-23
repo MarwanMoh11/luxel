@@ -180,6 +180,22 @@ func _draw_brass_filigree(isl: int) -> void:
 	draw_rect(Rect2(158.0, cy, 5.0, 1.0), apr)
 	draw_rect(Rect2(159.0, cy - 1.0, 3.0, 3.0), gold)
 	draw_rect(Rect2(160.0, cy, 1.0, 1.0), LxPalette.PAL["cream"] if glow else gold)
+	var b_glow: Color = LxBiomePalette.col(isl, "glow")
+	if Lx.state != null:
+		if Lx.state.relit_islands.has(isl):
+			draw_rect(Rect2(152.0, cy - 1.0, 2.0, 3.0), LxPalette.PAL["gold"])
+			draw_rect(Rect2(166.0, cy - 1.0, 2.0, 3.0), LxPalette.PAL["gold"])
+		if bool(Lx.state.story_flags.get("disc_all_%d" % isl, false)):
+			draw_rect(Rect2(148.0, cy, 1.0, 1.0), LxPalette.PAL["cream"] if glow else b_glow)
+			draw_rect(Rect2(171.0, cy, 1.0, 1.0), LxPalette.PAL["cream"] if glow else b_glow)
+	if not LxHudFx.flash_reduced():
+		for ei: int in range(4):
+			var eu: float = fposmod(_elapsed * 0.26 + float(ei) * 0.25, 1.0)
+			var ex: float = (p.x + 5.0 + float(ei % 2) * 2.0) if ei < 2 else (e.x - 7.0 + float(ei % 2))
+			var ey: float = roundf(e.y - 16.0 - eu * 86.0)
+			var ea: float = sin(eu * PI) * 0.68
+			if ea > 0.05:
+				draw_rect(Rect2(ex, ey, 1.0, 1.0), Color((LxPalette.PAL["cream"] as Color) if ei % 2 == 0 else b_glow, ea))
 
 
 func _draw_wick_lantern(ox: float, oy: float) -> void:

@@ -220,7 +220,7 @@ func tick(dt: float) -> void:
 func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> void:
 	if not _active or _rules == null:
 		return
-	_story_fx.try_hit_segment(from_p, to_p)
+	_story_fx.try_hit_segment(from_p, to_p, w)
 	if _island_id == 3:
 		for cap: Dictionary in _spore_caps:
 			if float(cap["cd"]) > 0.0:
