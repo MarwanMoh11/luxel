@@ -18,6 +18,7 @@ var _glints: Array[Dictionary] = [] # {x, y, w, phase, spd, tide}
 var _abyss: Array[Dictionary] = []  # {x, y, phase, kind} kind: 0=star, 1=magma
 var _ripples: Array[Dictionary] = []
 var _water_cells: Dictionary = {}
+var _sky_accents: LxBiomeSkyAccents = LxBiomeSkyAccents.new()
 
 
 func _ready() -> void:
@@ -82,6 +83,7 @@ func configure(grid: Array[PackedStringArray], tile_size: int, island_id: int, i
 						"phase": float(hash_v % 628) * 0.01,
 						"kind": 1 if (use_magma and t == "pit") else 0,
 					})
+	_sky_accents.configure(grid, _tile_size, _island_id, _is_dungeon)
 	queue_redraw()
 
 
@@ -112,7 +114,7 @@ func _is_near_water(world_pos: Vector2) -> bool:
 
 func tick(dt: float, cam_center: Vector2) -> void:
 	_cam_center = cam_center
-	if _shores.is_empty() and _glints.is_empty() and _abyss.is_empty() and _ripples.is_empty():
+	if _shores.is_empty() and _glints.is_empty() and _abyss.is_empty() and _ripples.is_empty() and _sky_accents.is_empty():
 		return
 	_clock += dt
 	for i: int in range(_ripples.size() - 1, -1, -1):
@@ -126,7 +128,7 @@ func tick(dt: float, cam_center: Vector2) -> void:
 
 
 func _draw() -> void:
-	if _shores.is_empty() and _glints.is_empty() and _abyss.is_empty() and _ripples.is_empty():
+	if _shores.is_empty() and _glints.is_empty() and _abyss.is_empty() and _ripples.is_empty() and _sky_accents.is_empty():
 		return
 	var min_x: float = _cam_center.x - HALF_W
 	var max_x: float = _cam_center.x + HALF_W
@@ -186,6 +188,7 @@ func _draw() -> void:
 				var sc: Color = (PAL["cream"] if p > 0.78 else PAL["gold"]) as Color if (relit_sea and _island_id == 8) else _abyss_star_color(p)
 				draw_rect(Rect2(ax, ay, 2.0 if ((_island_id == 5 or (relit_sea and _island_id == 8)) and p > 0.88) else 1.0, 1.0), sc)
 
+	_sky_accents.draw_accents(self, _clock, _cam_center, relit_sea)
 	for rp: Dictionary in _ripples:
 		var u: float = clampf(float(rp["age"]) / maxf(0.01, float(rp["dur"])), 0.0, 1.0)
 		var r: float = roundf(lerpf(2.0, float(rp.get("max_r", 11.0)), u))
