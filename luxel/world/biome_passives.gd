@@ -22,6 +22,7 @@ var _wick_pos: Vector2 = Vector2.ZERO
 var _wick_alive: bool = false
 var _grace_heal_t: float = 0.0
 var _room_cleared_fx: bool = false
+var _anchor_cd: float = 0.0
 
 
 func _ready() -> void:
@@ -72,6 +73,7 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_moon_mirror_on = false
 	_grace_heal_t = 0.0
 	_room_cleared_fx = false
+	_anchor_cd = 0.0
 	if _rules != null and not _rules.is_dungeon:
 		_trigger_overworld_arrival_ceremony()
 	queue_redraw()
@@ -116,6 +118,7 @@ func tick(dt: float) -> void:
 		return
 	_clock += dt
 	_step_cd = maxf(0.0, _step_cd - dt)
+	_anchor_cd = maxf(0.0, _anchor_cd - dt)
 	for arr: Array in [_trails, _ripples, _fireflies]:
 		for i: int in range(arr.size() - 1, -1, -1):
 			var it: Dictionary = arr[i] as Dictionary
@@ -259,7 +262,75 @@ func _on_lantern_hung(pos: Vector2) -> void:
 			5, 7: dk = LxGroundDecals.Kind.PRISM_STAR
 			6: dk = LxGroundDecals.Kind.SCORCH
 		LxGroundDecals.active_instance.add_decal(dk, pos, 11.0, 4.5)
+	if _anchor_cd <= 0.0:
+		_anchor_cd = 3.2
+		_apply_lantern_anchor_biome_effect(pos)
 	queue_redraw()
+
+
+func _apply_lantern_anchor_biome_effect(pos: Vector2) -> void:
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	var has_bm: bool = bm != null and is_instance_valid(bm)
+	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	match _island_id:
+		1: # Bell Isle: warm acoustic hang kindles nearby road lamps within 68 px
+			if _region != null and _region.has_method("get_interactables"):
+				var its_v: Variant = _region.call("get_interactables")
+				if its_v is Array:
+					for it: Variant in (its_v as Array):
+						if it is LxRoadLamp and is_instance_valid(it) and not (it as LxRoadLamp).lit and (it as LxRoadLamp).pos.distance_to(pos) <= 68.0:
+							(it as LxRoadLamp).interact(null)
+		2: # Tidewater Harbor: Fresnel Sea-Lens splash + brief Fresnel Focus
+			if _rules != null:
+				_rules.beam_buff_t = maxf(_rules.beam_buff_t, 1.0)
+			if Lx.world != null and is_instance_valid(Lx.world):
+				var wfx: Variant = Lx.world.get("_water_fx")
+				if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
+					(wfx as Object).call("spawn_ripple", pos, "ice", 14.0)
+		3: # Thornwood Hollow: Heartwood Bloom kindles nearby Bloom-Lamps within 84 px
+			if _rules != null:
+				for b: Dictionary in _rules._blooms:
+					if (b["pos"] as Vector2).distance_to(pos) <= 84.0:
+						b["lit_t"] = maxf(float(b["lit_t"]), 12.0)
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(pos, 64.0, 0.70 if LxHudFx.flash_reduced() else 1.02, 0.36)
+		4: # Mirefen Gardens: Rose Mist updraft puff grants +1.2s Tailwind
+			if has_bm:
+				bm.tailwind_t = maxf(bm.tailwind_t, 1.2)
+		5: # Starfall Observatory: Astrolabe Node grants +1.1s Starlight Surge
+			if _rules != null:
+				_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 1.1)
+			if Lx.audio != null:
+				Lx.audio.play_sfx("clockwork_chime", pos, true)
+		6: # Ashen Kiln: Hearth Crucible radiates forge warmth & feeds +4 Ember near foes
+			if w != null and w.move_sunflare != null and w.move_sunflare.unlocked and _region != null and _region.has_method("get_enemies"):
+				var ev6: Variant = _region.call("get_enemies")
+				if ev6 is Array:
+					for e_v6: Variant in (ev6 as Array):
+						if e_v6 is LxEnemyBrain and is_instance_valid(e_v6) and (e_v6 as LxEnemyBrain).is_alive() and (e_v6 as LxEnemyBrain).pos.distance_to(pos) <= 76.0:
+							w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 4.0)
+							break
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(pos, 72.0, 0.72 if LxHudFx.flash_reduced() else 1.08, 0.36)
+		7: # Moon Shoals: Silver Mirror reveal pulse exposes hidden foes within 78 px
+			if w != null and _region != null and _region.has_method("get_enemies"):
+				var ev7: Variant = _region.call("get_enemies")
+				if ev7 is Array:
+					for e_v7: Variant in (ev7 as Array):
+						if e_v7 is Object and is_instance_valid(e_v7) and (e_v7 as Object).has_method("on_light"):
+							var ep7: Vector2 = (e_v7 as Node2D).global_position if e_v7 is Node2D else pos
+							if ep7.distance_to(pos) <= 78.0:
+								var ar7: int = w.get_method_arity(e_v7 as Object, "on_light")
+								if ar7 >= 3:
+									(e_v7 as Object).call("on_light", 78.0, pos, "lens")
+								elif ar7 == 2:
+									(e_v7 as Object).call("on_light", 78.0, "lens")
+								else:
+									(e_v7 as Object).call("on_light", 78.0)
+		8: # The Long Night: Golden Dawn Anchor cuts darkness & nudges nearby non-boss foes back
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(pos, 92.0, 0.78 if LxHudFx.flash_reduced() else 1.18, 0.42)
+			on_updraft_gust(pos)
 
 
 func _on_enemy_killed(enemy: Object, _kind: String, pos: Vector2, opened_kill: bool) -> void:

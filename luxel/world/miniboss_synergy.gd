@@ -42,16 +42,8 @@ func tick(dt: float, live: bool) -> void:
 		_victory_t = maxf(0.0, _victory_t - dt)
 	if _was_live and not live:
 		_victory_t = 0.68
-		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-			LxDarknessLayer.active_instance.add_burst_light(_center, 128.0, 0.84 if LxHudFx.flash_reduced() else 1.32, 0.58)
-		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, _center, 18.0, 9.0)
-		if Lx.audio != null:
-			var vsfx: String = "prop_chime"
-			match _island_id:
-				1, 8: vsfx = "bell_toll"
-				2: vsfx = "lighthouse_toll"
-				5: vsfx = "clockwork_chime"
+		if Lx.audio != null and _island_id in [1, 2, 5, 8]:
+			var vsfx: String = "bell_toll" if _island_id in [1, 8] else ("lighthouse_toll" if _island_id == 2 else "clockwork_chime")
 			Lx.audio.play_sfx(vsfx, _center, true)
 	_was_live = live
 	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
