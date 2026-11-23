@@ -86,11 +86,14 @@ var _sway_dir: float = 1.0
 var _sway_amp: float = 1.2
 var _sway_px: float = 0.0
 var _sfx_cd: float = 0.0
+var _is_glow: bool = false
+var _flare_t: float = 0.0
+var _flare_dir: float = 1.0
 
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	set_process(_can_occlude or _can_sway)
+	set_process(_can_occlude or _can_sway or _is_glow)
 
 
 func setup(spec: Dictionary) -> void:
@@ -106,9 +109,14 @@ func setup(spec: Dictionary) -> void:
 		name = prop_key
 	if GLOW_PROPS.has(prop_key):
 		var g: Vector2 = GLOW_PROPS[prop_key] as Vector2
-		light_pool = Vector4(position.x, position.y - 10.0, g.x, g.y)
+		var isl_g: int = Lx.state.island_id if Lx.state != null else 1
+		var relit_mul: float = 1.14 if (Lx.state != null and Lx.state.relit_islands.has(isl_g)) else 1.0
+		light_pool = Vector4(position.x, position.y - 10.0, g.x * relit_mul, g.y)
+		_is_glow = true
 	else:
 		light_pool = Vector4.ZERO
+		_is_glow = false
+	_flare_t = 0.0
 
 	_sheet = null
 	_valid = false
@@ -148,7 +156,7 @@ func setup(spec: Dictionary) -> void:
 			_sway_px = 0.0
 			_occlude_a = 1.0
 			modulate.a = 1.0
-			set_process(_can_occlude or _can_sway)
+			set_process(_can_occlude or _can_sway or _is_glow)
 	queue_redraw()
 
 
@@ -197,6 +205,18 @@ func _process(dt: float) -> void:
 			if not is_equal_approx(next_px, _sway_px):
 				_sway_px = next_px
 				queue_redraw()
+	if _is_glow:
+		if _flare_t > 0.0:
+			_flare_t = maxf(0.0, _flare_t - dt)
+			queue_redraw()
+		elif has_p:
+			var pp3: Vector2 = (Lx.player as Node2D).global_position
+			if pp3.distance_squared_to(position) < 400.0:
+				var vel_g: Variant = Lx.player.get("velocity")
+				if vel_g is Vector2 and (vel_g as Vector2).length_squared() > 6400.0:
+					_flare_t = 0.38
+					_flare_dir = signf((vel_g as Vector2).x) if absf((vel_g as Vector2).x) > 10.0 else 1.0
+					queue_redraw()
 
 
 func is_animated() -> bool:
@@ -204,13 +224,20 @@ func is_animated() -> bool:
 
 
 func gust_sway(origin: Vector2, radius: float, strength: float) -> void:
-	if not _can_sway or radius <= 1.0:
+	if (not _can_sway and not _is_glow) or radius <= 1.0:
 		return
 	var diff: Vector2 = position - origin
 	var d2: float = diff.length_squared()
 	if d2 >= radius * radius:
 		return
 	var falloff: float = 1.0 - sqrt(d2) / radius
+	if _is_glow:
+		_flare_dir = 1.0 if diff.x >= 0.0 else -1.0
+		_flare_t = maxf(_flare_t, 0.32 + 0.16 * falloff)
+		set_process(true)
+		queue_redraw()
+	if not _can_sway:
+		return
 	_sway_dir = 1.0 if diff.x >= 0.0 else -1.0
 	_sway_amp = maxf(_sway_amp if _sway_t > 0.0 else 0.0, clampf(1.1 + (strength / 52.0) * falloff * 2.1, 1.1, 3.0))
 	_sway_t = maxf(_sway_t, 0.36 + 0.14 * falloff)
@@ -250,6 +277,15 @@ func _draw() -> void:
 			var mx: float = roundf(_sway_dir * (2.5 + u * (5.5 + float(mi) * 2.4)) + float((mi % 2) * 2 - 1) * (2.0 + float(mi) * 0.6))
 			var my: float = roundf(-mh - u * (5.0 + float(mi) * 2.0) + sin(u * PI * 2.0 + float(mi)) * 1.5)
 			draw_rect(Rect2(mx, my, 1.0, 1.0), Color(mc, (1.0 - u) * 0.90))
+	if _flare_t > 0.0:
+		var fu: float = clampf(1.0 - _flare_t / 0.44, 0.0, 1.0)
+		var isl_f: int = Lx.state.island_id if Lx.state != null else 1
+		var fc: Color = PAL["cream"] as Color if fu < 0.32 else LxBiomePalette.col(isl_f, "glow")
+		var fh: float = minf(22.0, _frame_size.y * 0.68)
+		for fi: int in range(3):
+			var fx: float = roundf(_flare_dir * (1.5 + fu * (4.0 + float(fi) * 2.2)) + float(fi - 1) * 2.5)
+			var fy: float = roundf(-fh - fu * (6.0 + float(fi) * 2.5))
+			draw_rect(Rect2(fx, fy, 1.0, 1.0), Color(fc, (1.0 - fu) * 0.88))
 
 
 func _play_sway_sfx() -> void:
