@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    280,
-    88
+    312,
+    120
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        240
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_kiln_r2_east",
       "rect": [
-        304,
-        64,
+        368,
+        96,
         16,
         48
       ],
@@ -45,8 +45,8 @@
       "id": "brazier_kiln_r2_n",
       "kind": "brazier",
       "pos": [
-        216,
-        40
+        248,
+        72
       ],
       "props": {
         "target_id": "door_kiln_r2_key"
@@ -56,8 +56,8 @@
       "id": "brazier_kiln_r2_s",
       "kind": "brazier",
       "pos": [
-        216,
-        136
+        248,
+        168
       ],
       "props": {
         "target_id": "door_kiln_r2_key"
@@ -67,8 +67,8 @@
       "id": "switch_eye_kiln_r2",
       "kind": "switch_eye",
       "pos": [
-        104,
-        40
+        136,
+        72
       ],
       "props": {
         "target_id": "door_kiln_r2_key"
@@ -78,8 +78,8 @@
       "id": "door_kiln_r2_key",
       "kind": "door",
       "pos": [
-        72,
-        88
+        104,
+        120
       ],
       "props": {
         "door_kind": "switch_door",
@@ -98,8 +98,8 @@
       "id": "wick_key_6_1",
       "kind": "wick_key",
       "pos": [
-        40,
-        88
+        72,
+        120
       ],
       "props": {
         "dungeon_id": "great_kiln",
@@ -114,8 +114,8 @@
       "sheet": "island6_scenery",
       "prop": "ember_grate_vent",
       "pos": [
-        248,
-        44
+        280,
+        76
       ],
       "layer": "ground",
       "flip_x": false,
@@ -126,8 +126,8 @@
       "sheet": "island6_scenery",
       "prop": "ember_grate_vent",
       "pos": [
-        248,
-        132
+        280,
+        164
       ],
       "layer": "ground",
       "flip_x": false,
@@ -138,8 +138,8 @@
       "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        274,
-        45
+        306,
+        77
       ],
       "layer": "sort",
       "flip_x": false,
@@ -150,8 +150,8 @@
       "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        274,
-        140
+        306,
+        172
       ],
       "layer": "sort",
       "flip_x": true,
@@ -162,8 +162,8 @@
       "sheet": "island6_scenery",
       "prop": "forge_anvil_stand",
       "pos": [
-        40,
-        42
+        72,
+        74
       ],
       "layer": "sort",
       "flip_x": false,
@@ -174,8 +174,8 @@
       "sheet": "island6_scenery",
       "prop": "coal_hopper",
       "pos": [
-        40,
-        140
+        72,
+        172
       ],
       "layer": "sort",
       "flip_x": false,
@@ -186,13 +186,14 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        104,
-        138
+        136,
+        170
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

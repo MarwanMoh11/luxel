@@ -1,4 +1,5 @@
-# The Great Kiln R7 - Furnace Hall
+# Great Kiln r7 - Four-Flame Furnace Rotunda (26x15)
+TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
 LEGEND , path
@@ -12,14 +13,18 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-####################
-#........##........#
-#...OO...##...OO...#
-#...OO........OO...#
-,,,................#
-,,,,,,,,,,,........#
-,,,......,,........#
-#...OO...,,...OO...#
-#...OO...,,...OO...#
-#........,,........#
-#########,,#########
+##########################
+##OOOOOOOOOOOOOOOOOOOOOO##
+#OOOOOOOOOOOOOOOOOOOOOOOO#
+#OOO........##........OOO#
+#OOO...OO...##...OO...OOO#
+#OOO...OO........OO...OOO#
+,,,,,,................OOO#
+,,,,,,,,,,,,,,........OOO#
+,,,,,,......,,........OOO#
+#OOO...OO...,,...OO...OOO#
+#OOO...OO...,,...OO...OOO#
+#OOO........,,........OOO#
+#OOOOOOOOOOO,,OOOOOOOOOOO#
+##OOOOOOOOOO,,OOOOOOOOOO##
+############,,############

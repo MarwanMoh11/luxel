@@ -1,4 +1,5 @@
-# The Great Kiln R2 - Ash Flue
+# Great Kiln r2 - Magma-Ringed Key Foundry (24x15)
+TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
 LEGEND , path
@@ -12,14 +13,18 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-####################
-#...#...OOO........#
-#...#...OOO........#
-#...#...OOO........#
-#...,...+++......,,,
-#.,,,,,,,,,,,,,,,,,,
-#...,...+++......,,,
-#...#...OOO........#
-#...#...OOO........#
-#...#...OOO........#
-####################
+########################
+##OOOOOOOOOOOOOOOOOOOO##
+#OOOOOOOOOOOOOOOOOOOOOO#
+#OO...#...OOO........OO#
+#OO...#...OOO........OO#
+#OO...#...OOO........OO#
+#OO...,...+++......,,,,,
+#OO.,,,,,,,,,,,,,,,,,,,,
+#OO...,...+++......,,,,,
+#OO...#...OOO........OO#
+#OO...#...OOO........OO#
+#OO...#...OOO........OO#
+#OOOOOOOOOOOOOOOOOOOOOO#
+##OOOOOOOOOOOOOOOOOOOO##
+########################

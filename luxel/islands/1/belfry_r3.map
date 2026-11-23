@@ -1,4 +1,5 @@
-# Bell Isle - Belfry Room 3: Lantern Gallery (20x11 tiles)
+# Belfry r3 - Gothic Lantern Gallery Nave (24x13)
+TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
 LEGEND , path
@@ -12,14 +13,16 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-####################
-#....OOOO..........#
-#....OOOO.O...O....#
-#....OOOO.O...O.#..#
-,....OOOO......,,..,
-,,,,,OOOO,,,,,,,,,,,
-,....OOOO......,,..,
-#....OOOO.O...O.#..#
-#....OOOO.O...O....#
-#....OOOO..........#
-####################
+########################
+#O####################O#
+#.#....OOOO..........#.#
+#.#....OOOO.O...O....#.#
+###....OOOO.O...O.#..#.#
+,,,,...OOOO......,,.,,,,
+,,,,,,,OOOO,,,,,,,,,,,,,
+,,,,...OOOO......,,.,,,,
+###....OOOO.O...O.#..#.#
+#.#....OOOO.O...O....#.#
+#.#....OOOO..........#.#
+#O####################O#
+########################

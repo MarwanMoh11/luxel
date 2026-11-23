@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    28,
-    88
+    60,
+    104
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        208
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_r3_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_r3_east",
       "rect": [
-        304,
-        64,
+        368,
+        80,
         16,
         48
       ],
@@ -66,8 +66,8 @@
       "id": "brazier_r3_a",
       "kind": "brazier",
       "pos": [
-        200,
-        40
+        232,
+        56
       ],
       "props": {
         "target_id": "door_r3_shutter",
@@ -78,8 +78,8 @@
       "id": "brazier_r3_b",
       "kind": "brazier",
       "pos": [
-        200,
-        136
+        232,
+        152
       ],
       "props": {
         "target_id": "door_r3_shutter",
@@ -90,8 +90,8 @@
       "id": "door_r3_shutter",
       "kind": "door",
       "pos": [
-        288,
-        88
+        320,
+        104
       ],
       "props": {
         "door_kind": "shutter",
@@ -111,8 +111,8 @@
       "id": "chest_r3_shards",
       "kind": "chest",
       "pos": [
-        280,
-        40
+        312,
+        56
       ],
       "props": {
         "reward": "shards",
@@ -141,8 +141,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        40,
-        34
+        72,
+        50
       ],
       "layer": "sort",
       "flip_x": false,
@@ -153,8 +153,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        40,
-        148
+        72,
+        164
       ],
       "layer": "sort",
       "flip_x": true,
@@ -165,8 +165,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        160,
-        32
+        192,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -177,8 +177,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        248,
-        32
+        280,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -189,8 +189,8 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        264,
-        124
+        296,
+        140
       ],
       "layer": "sort",
       "flip_x": false,
@@ -201,13 +201,14 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        248,
-        150
+        280,
+        166
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.55
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

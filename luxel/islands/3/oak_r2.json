@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    40,
-    88
+    72,
+    120
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        240
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_oak_r2_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_oak_r2_east",
       "rect": [
-        304,
-        64,
+        368,
+        96,
         16,
         48
       ],
@@ -62,8 +62,8 @@
       "id": "mirror_oak_r2",
       "kind": "mirror",
       "pos": [
-        152,
-        40
+        184,
+        72
       ],
       "props": {
         "angle_deg": 135,
@@ -78,8 +78,8 @@
       "id": "switch_eye_oak_r2",
       "kind": "switch_eye",
       "pos": [
-        104,
-        40
+        136,
+        72
       ],
       "props": {
         "target_id": "door_oak_r2_vault",
@@ -90,8 +90,8 @@
       "id": "door_oak_r2_vault",
       "kind": "door",
       "pos": [
-        264,
-        120
+        296,
+        152
       ],
       "props": {
         "door_kind": "switch_door",
@@ -108,8 +108,8 @@
       "id": "wick_key_3_1",
       "kind": "wick_key",
       "pos": [
-        280,
-        136
+        312,
+        168
       ],
       "props": {
         "dungeon_id": "hollow_oak",
@@ -124,8 +124,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        36,
-        42
+        68,
+        74
       ],
       "layer": "sort",
       "flip_x": false,
@@ -136,8 +136,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        284,
-        42
+        316,
+        74
       ],
       "layer": "sort",
       "flip_x": true,
@@ -148,8 +148,8 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        40,
-        140
+        72,
+        172
       ],
       "layer": "sort",
       "flip_x": false,
@@ -160,8 +160,8 @@
       "sheet": "island3_scenery",
       "prop": "hanging_spore_lantern",
       "pos": [
-        120,
-        140
+        152,
+        172
       ],
       "layer": "sort",
       "flip_x": false,
@@ -172,8 +172,8 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        224,
-        42
+        256,
+        74
       ],
       "layer": "sort",
       "flip_x": false,
@@ -184,13 +184,14 @@
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        72,
-        144
+        104,
+        176
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.7
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -48,8 +48,8 @@
       ],
       "to_region": "kiln_r4",
       "to_spawn": [
-        160,
-        136
+        192,
+        168
       ],
       "requires_moves": [],
       "requires_flags": [],

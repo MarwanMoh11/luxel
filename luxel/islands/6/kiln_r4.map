@@ -1,4 +1,5 @@
-# The Great Kiln R4 - Cinder Bridge
+# Great Kiln r4 - Obsidian Crucible Crossing (24x15)
+TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
 LEGEND , path
@@ -12,14 +13,18 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-####################
-#OOOO......OO..##..#
-#OOOO......OO..##..#
-#OOOO......OO..##..#
-#..........OO..PP,,,
-#....,,,,,,OO,,PP,,,
-#........,,OO..PP,,,
-#........,,OO..##..#
-#........,,OO..##..#
-#........,,OO..##..#
-#########,,#########
+########################
+##OOOOOOOOOOOOOOOOOOOO##
+#OOOOOOOOOOOOOOOOOOOOOO#
+#OOOOOO......OO..##..OO#
+#OOOOOO......OO..##..OO#
+#OOOOOO......OO..##..OO#
+#OO..........OO..PP,,,,,
+#OO....,,,,,,OO,,PP,,,,,
+#OO........,,OO..PP,,,,,
+#OO........,,OO..##..OO#
+#OO........,,OO..##..OO#
+#OO........,,OO..##..OO#
+#OOOOOOOOOO,,OOOOOOOOOO#
+##OOOOOOOOO,,OOOOOOOOO##
+###########,,###########

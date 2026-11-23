@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    40,
-    88
+    88,
+    104
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        208
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_o5_r4_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_o5_r4_east",
       "rect": [
-        304,
-        64,
+        400,
+        80,
         16,
         48
       ],
@@ -64,8 +64,8 @@
       "id": "door_o5_r4_key",
       "kind": "door",
       "pos": [
-        104,
-        88
+        152,
+        104
       ],
       "props": {
         "door_kind": "key_door",
@@ -85,8 +85,8 @@
       "id": "mirror_o5_r4_n",
       "kind": "mirror",
       "pos": [
-        152,
-        40
+        200,
+        56
       ],
       "props": {
         "angle_deg": 45,
@@ -97,8 +97,8 @@
       "id": "mirror_o5_r4_s",
       "kind": "mirror",
       "pos": [
-        152,
-        136
+        200,
+        152
       ],
       "props": {
         "angle_deg": 135,
@@ -109,8 +109,8 @@
       "id": "switch_eye_o5_r4_n",
       "kind": "switch_eye",
       "pos": [
-        200,
-        40
+        248,
+        56
       ],
       "props": {
         "target_id": "door_o5_r4_shutter"
@@ -120,8 +120,8 @@
       "id": "switch_eye_o5_r4_s",
       "kind": "switch_eye",
       "pos": [
-        200,
-        136
+        248,
+        152
       ],
       "props": {
         "target_id": "door_o5_r4_shutter"
@@ -131,8 +131,8 @@
       "id": "door_o5_r4_shutter",
       "kind": "door",
       "pos": [
-        296,
-        88
+        344,
+        104
       ],
       "props": {
         "door_kind": "shutter",
@@ -155,8 +155,8 @@
       "sheet": "island5_scenery",
       "prop": "moon_phase_obelisk",
       "pos": [
-        42,
-        46
+        90,
+        62
       ],
       "layer": "sort",
       "flip_x": false,
@@ -167,8 +167,8 @@
       "sheet": "island5_scenery",
       "prop": "moon_phase_obelisk",
       "pos": [
-        42,
-        146
+        90,
+        162
       ],
       "layer": "sort",
       "flip_x": false,
@@ -179,8 +179,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        84,
-        38
+        132,
+        54
       ],
       "layer": "sort",
       "flip_x": false,
@@ -191,8 +191,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        84,
-        146
+        132,
+        162
       ],
       "layer": "sort",
       "flip_x": true,
@@ -203,8 +203,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        282,
-        44
+        330,
+        60
       ],
       "layer": "sort",
       "flip_x": true,
@@ -215,8 +215,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        282,
-        146
+        330,
+        162
       ],
       "layer": "sort",
       "flip_x": true,
@@ -227,8 +227,8 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        248,
-        38
+        296,
+        54
       ],
       "layer": "sort",
       "flip_x": true,
@@ -239,13 +239,14 @@
       "sheet": "island5_scenery",
       "prop": "celestial_globe",
       "pos": [
-        254,
-        146
+        302,
+        162
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

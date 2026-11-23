@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    208,
+    168
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        240
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_spire_r7_south",
       "rect": [
-        144,
-        160,
+        192,
+        224,
         32,
         16
       ],
@@ -42,7 +42,7 @@
       "id": "exit_spire_r7_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -66,8 +66,8 @@
       "id": "mirror_spire_r7_n",
       "kind": "mirror",
       "pos": [
-        184,
-        40
+        232,
+        72
       ],
       "props": {
         "angle_deg": 45,
@@ -78,8 +78,8 @@
       "id": "mirror_spire_r7_s",
       "kind": "mirror",
       "pos": [
-        184,
-        136
+        232,
+        168
       ],
       "props": {
         "angle_deg": 315,
@@ -90,8 +90,8 @@
       "id": "switch_eye_spire_r7_a",
       "kind": "switch_eye",
       "pos": [
-        280,
-        40
+        328,
+        72
       ],
       "props": {
         "requires_prism": true,
@@ -102,8 +102,8 @@
       "id": "switch_eye_spire_r7_b",
       "kind": "switch_eye",
       "pos": [
-        280,
-        136
+        328,
+        168
       ],
       "props": {
         "requires_prism": true,
@@ -114,8 +114,8 @@
       "id": "door_spire_r7_west",
       "kind": "door",
       "pos": [
-        24,
-        88
+        72,
+        120
       ],
       "props": {
         "door_kind": "switch_door",
@@ -136,8 +136,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        36,
-        48
+        84,
+        80
       ],
       "layer": "sort",
       "flip_x": false,
@@ -148,8 +148,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        36,
-        146
+        84,
+        178
       ],
       "layer": "sort",
       "flip_x": false,
@@ -160,8 +160,8 @@
       "sheet": "island7_scenery",
       "prop": "floating_prism_totem",
       "pos": [
-        138,
-        52
+        186,
+        84
       ],
       "layer": "sort",
       "flip_x": false,
@@ -172,8 +172,8 @@
       "sheet": "island7_scenery",
       "prop": "shattered_mirror_shard",
       "pos": [
-        70,
-        150
+        118,
+        182
       ],
       "layer": "sort",
       "flip_x": false,
@@ -184,13 +184,14 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        282,
-        92
+        330,
+        124
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

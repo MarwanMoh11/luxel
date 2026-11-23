@@ -1,4 +1,5 @@
-# Bell Isle - Belfry Room 2: Clapper Chasm (20x11 tiles)
+# Belfry r2 - Suspended Clapper Chasm Vault (24x15)
+TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
 LEGEND , path
@@ -12,14 +13,18 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-####################
-#OOOOOOOOOOOOOO....#
-#OOOOOOOO....OO....#
-#O.....OO....OO....#
-#O.....OO.,,.OO.,,,,
-#O..,,.OO.,,.OO,,,,,
-#O.....OO.,,.OO.,,,,
-#O.....OO....OO....#
-#OOOOOOOO....OO....#
-#OOOOOOOOOOOOOO....#
-####################
+########################
+#OOOOOOOOOOOOOOOOOOOOOO#
+#OOOOOOOOOOOOOOOOOOOOOO#
+#OOOOOOOOOOOOOOOO....OO#
+#OOOOOOOOOO....OO....OO#
+#OOO.....OO....OO....OO#
+#OOO.....OO.,,.OO.,,,,,,
+#OOO..,,.OO.,,.OO,,,,,,,
+#OOO.....OO.,,.OO.,,,,,,
+#OOO.....OO....OO....OO#
+#OOOOOOOOOO....OO....OO#
+#OOOOOOOOOOOOOOOO....OO#
+#OOOOOOOOOOOOOOOOOOOOOO#
+#OOOOOOOOOOOOOOOOOOOOOO#
+########################

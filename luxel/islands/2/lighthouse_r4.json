@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    40,
-    88
+    72,
+    104
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        208
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_lh_r4_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_lh_r4_east",
       "rect": [
-        304,
-        64,
+        368,
+        80,
         16,
         48
       ],
@@ -62,8 +62,8 @@
       "id": "door_lh_r4_key",
       "kind": "door",
       "pos": [
-        72,
-        88
+        104,
+        104
       ],
       "props": {
         "door_kind": "key_door",
@@ -83,8 +83,8 @@
       "id": "brazier_lh_r4_n",
       "kind": "brazier",
       "pos": [
-        216,
-        40
+        248,
+        56
       ],
       "props": {
         "target_id": "door_lh_r4_shutter"
@@ -94,8 +94,8 @@
       "id": "brazier_lh_r4_s",
       "kind": "brazier",
       "pos": [
-        216,
-        136
+        248,
+        152
       ],
       "props": {
         "target_id": "door_lh_r4_shutter"
@@ -105,8 +105,8 @@
       "id": "door_lh_r4_shutter",
       "kind": "door",
       "pos": [
-        296,
-        88
+        328,
+        104
       ],
       "props": {
         "door_kind": "switch_door",
@@ -125,8 +125,8 @@
       "id": "chest_lh_r4_shards",
       "kind": "chest",
       "pos": [
-        264,
-        136
+        296,
+        152
       ],
       "props": {
         "reward_kind": "shards",
@@ -142,8 +142,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        44,
-        44
+        76,
+        60
       ],
       "layer": "sort",
       "flip_x": false,
@@ -154,8 +154,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        44,
-        138
+        76,
+        154
       ],
       "layer": "sort",
       "flip_x": false,
@@ -166,8 +166,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        112,
-        42
+        144,
+        58
       ],
       "layer": "sort",
       "flip_x": false,
@@ -178,8 +178,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        112,
-        138
+        144,
+        154
       ],
       "layer": "sort",
       "flip_x": true,
@@ -190,8 +190,8 @@
       "sheet": "island2_scenery",
       "prop": "wooden_crates",
       "pos": [
-        268,
-        42
+        300,
+        58
       ],
       "layer": "sort",
       "flip_x": true,
@@ -202,13 +202,14 @@
       "sheet": "island2_scenery",
       "prop": "rope_coil",
       "pos": [
-        246,
-        48
+        278,
+        64
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

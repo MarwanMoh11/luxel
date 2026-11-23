@@ -31,8 +31,8 @@
       ],
       "to_region": "orrery_r2",
       "to_spawn": [
-        160,
-        40
+        192,
+        72
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -48,8 +48,8 @@
       ],
       "to_region": "orrery_r4",
       "to_spawn": [
-        40,
-        88
+        88,
+        104
       ],
       "requires_moves": [],
       "requires_flags": [

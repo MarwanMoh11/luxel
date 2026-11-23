@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    40,
-    88
+    88,
+    104
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        416,
+        208
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_c4_r4_west",
       "rect": [
         0,
-        64,
+        80,
         16,
         48
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_c4_r4_east",
       "rect": [
-        304,
-        64,
+        400,
+        80,
         16,
         48
       ],
@@ -64,8 +64,8 @@
       "id": "door_c4_r4_key",
       "kind": "door",
       "pos": [
-        120,
-        88
+        168,
+        104
       ],
       "props": {
         "door_kind": "key_door",
@@ -85,8 +85,8 @@
       "id": "brazier_c4_r4",
       "kind": "brazier",
       "pos": [
-        216,
-        40
+        264,
+        56
       ],
       "props": {
         "target_id": "door_c4_r4_shutter",
@@ -97,8 +97,8 @@
       "id": "switch_eye_c4_r4",
       "kind": "switch_eye",
       "pos": [
-        216,
-        136
+        264,
+        152
       ],
       "props": {
         "target_id": "door_c4_r4_shutter"
@@ -108,8 +108,8 @@
       "id": "door_c4_r4_shutter",
       "kind": "door",
       "pos": [
-        296,
-        88
+        344,
+        104
       ],
       "props": {
         "door_kind": "shutter",
@@ -132,8 +132,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        248,
-        88
+        296,
+        104
       ],
       "layer": "ground",
       "flip_x": false,
@@ -144,8 +144,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        46,
-        40
+        94,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -156,8 +156,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        46,
-        144
+        94,
+        160
       ],
       "layer": "sort",
       "flip_x": false,
@@ -168,8 +168,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        176,
-        40
+        224,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -180,8 +180,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        176,
-        136
+        224,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -192,8 +192,8 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        266,
-        40
+        314,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -204,8 +204,8 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        266,
-        144
+        314,
+        160
       ],
       "layer": "sort",
       "flip_x": true,
@@ -216,8 +216,8 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        96,
-        42
+        144,
+        58
       ],
       "layer": "sort",
       "flip_x": false,
@@ -228,13 +228,14 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        96,
-        144
+        144,
+        160
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

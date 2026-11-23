@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    272,
-    88
+    304,
+    120
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        240
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_o5_r2_east",
       "rect": [
-        304,
-        64,
+        368,
+        96,
         16,
         48
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_o5_r2_north",
       "rect": [
-        144,
+        176,
         0,
         32,
         16
@@ -62,8 +62,8 @@
       "id": "cracked_o5_r2",
       "kind": "cracked_wall",
       "pos": [
-        160,
-        56
+        192,
+        88
       ],
       "props": {
         "size": [
@@ -76,8 +76,8 @@
       "id": "switch_eye_o5_r2",
       "kind": "switch_eye",
       "pos": [
-        216,
-        40
+        248,
+        72
       ],
       "props": {
         "target_id": "bridge_o5_r2",
@@ -88,8 +88,8 @@
       "id": "bridge_o5_r2",
       "kind": "door",
       "pos": [
-        248,
-        48
+        280,
+        80
       ],
       "props": {
         "door_kind": "bridge_platform",
@@ -107,8 +107,8 @@
       "id": "wick_key_5_1",
       "kind": "wick_key",
       "pos": [
-        24,
-        88
+        56,
+        120
       ],
       "props": {
         "dungeon_id": "orrery",
@@ -123,8 +123,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        32,
-        42
+        64,
+        74
       ],
       "layer": "sort",
       "flip_x": false,
@@ -135,8 +135,8 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        288,
-        42
+        320,
+        74
       ],
       "layer": "sort",
       "flip_x": true,
@@ -147,8 +147,8 @@
       "sheet": "island5_scenery",
       "prop": "hanging_pendulum",
       "pos": [
-        118,
-        42
+        150,
+        74
       ],
       "layer": "sort",
       "flip_x": false,
@@ -159,8 +159,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        32,
-        148
+        64,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -171,8 +171,8 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        116,
-        148
+        148,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -183,13 +183,14 @@
       "sheet": "island5_scenery",
       "prop": "broken_astrolabe_ring",
       "pos": [
-        286,
-        148
+        318,
+        180
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.0
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

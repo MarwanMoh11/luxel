@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    160,
-    136
+    192,
+    168
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        240
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_spire_r4_south",
       "rect": [
-        144,
-        160,
+        176,
+        224,
         32,
         16
       ],
@@ -41,8 +41,8 @@
     {
       "id": "exit_spire_r4_east",
       "rect": [
-        304,
-        64,
+        368,
+        96,
         16,
         48
       ],
@@ -67,8 +67,8 @@
       "id": "door_spire_r4_east",
       "kind": "door",
       "pos": [
-        296,
-        88
+        328,
+        120
       ],
       "props": {
         "door_kind": "key_door",
@@ -87,8 +87,8 @@
       "id": "lamp_spire_r4_c",
       "kind": "road_lamp",
       "pos": [
-        216,
-        40
+        248,
+        72
       ],
       "props": {
         "zone": "spire_r4"
@@ -101,8 +101,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        82,
-        50
+        114,
+        82
       ],
       "layer": "sort",
       "flip_x": false,
@@ -113,8 +113,8 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        82,
-        146
+        114,
+        178
       ],
       "layer": "sort",
       "flip_x": false,
@@ -125,8 +125,8 @@
       "sheet": "island7_scenery",
       "prop": "floating_prism_totem",
       "pos": [
-        118,
-        52
+        150,
+        84
       ],
       "layer": "sort",
       "flip_x": false,
@@ -137,8 +137,8 @@
       "sheet": "island7_scenery",
       "prop": "shattered_mirror_shard",
       "pos": [
-        118,
-        148
+        150,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -149,8 +149,8 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        218,
-        148
+        250,
+        180
       ],
       "layer": "sort",
       "flip_x": true,
@@ -161,13 +161,14 @@
       "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        292,
-        42
+        324,
+        74
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.3
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

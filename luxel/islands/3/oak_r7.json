@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    40,
-    88
+    72,
+    120
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        240
       ],
       "dark": true
     }
@@ -25,7 +25,7 @@
       "id": "exit_oak_r7_west",
       "rect": [
         0,
-        64,
+        96,
         16,
         48
       ],
@@ -41,7 +41,7 @@
     {
       "id": "exit_oak_r7_north",
       "rect": [
-        144,
+        176,
         0,
         32,
         16
@@ -64,8 +64,8 @@
       "id": "door_oak_r7_key",
       "kind": "door",
       "pos": [
-        72,
-        88
+        104,
+        120
       ],
       "props": {
         "door_kind": "key_door",
@@ -85,8 +85,8 @@
       "id": "web_oak_r7",
       "kind": "web",
       "pos": [
-        216,
-        56
+        248,
+        88
       ],
       "props": {
         "size": [
@@ -99,8 +99,8 @@
       "id": "cracked_wall_oak_r7",
       "kind": "cracked_wall",
       "pos": [
-        248,
-        56
+        280,
+        88
       ],
       "props": {
         "size": [
@@ -113,8 +113,8 @@
       "id": "switch_eye_oak_r7",
       "kind": "switch_eye",
       "pos": [
-        280,
-        56
+        312,
+        88
       ],
       "props": {
         "target_id": "door_oak_r7_shutter",
@@ -125,8 +125,8 @@
       "id": "door_oak_r7_shutter",
       "kind": "door",
       "pos": [
-        160,
-        24
+        192,
+        56
       ],
       "props": {
         "door_kind": "switch_door",
@@ -146,8 +146,8 @@
       "sheet": "island3_scenery",
       "prop": "spider_silk_banner",
       "pos": [
-        108,
-        42
+        140,
+        74
       ],
       "layer": "sort",
       "flip_x": false,
@@ -158,8 +158,8 @@
       "sheet": "island3_scenery",
       "prop": "spider_silk_banner",
       "pos": [
-        248,
-        102
+        280,
+        134
       ],
       "layer": "sort",
       "flip_x": true,
@@ -170,8 +170,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        40,
-        42
+        72,
+        74
       ],
       "layer": "sort",
       "flip_x": false,
@@ -182,8 +182,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        40,
-        142
+        72,
+        174
       ],
       "layer": "sort",
       "flip_x": false,
@@ -194,8 +194,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        196,
-        102
+        228,
+        134
       ],
       "layer": "sort",
       "flip_x": false,
@@ -206,13 +206,14 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        176,
-        144
+        208,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
       "phase": 0.45
     }
-  ]
+  ],
+  "is_2x2_room": true
 }

@@ -31,8 +31,8 @@
       ],
       "to_region": "oak_r2",
       "to_spawn": [
-        280,
-        88
+        312,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -48,8 +48,8 @@
       ],
       "to_region": "oak_r4",
       "to_spawn": [
-        40,
-        88
+        88,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],

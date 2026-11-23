@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    292,
-    88
+    324,
+    120
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        320,
-        176
+        384,
+        240
       ],
       "dark": true
     }
@@ -24,8 +24,8 @@
     {
       "id": "exit_r2_east",
       "rect": [
-        304,
-        64,
+        368,
+        96,
         16,
         48
       ],
@@ -45,8 +45,8 @@
       "id": "switch_eye_r2",
       "kind": "switch_eye",
       "pos": [
-        168,
-        40
+        200,
+        72
       ],
       "props": {
         "target_id": "bridge_r2",
@@ -57,8 +57,8 @@
       "id": "bridge_r2",
       "kind": "door",
       "pos": [
-        224,
-        88
+        256,
+        120
       ],
       "props": {
         "door_kind": "bridge_platform",
@@ -76,8 +76,8 @@
       "id": "wick_key_1",
       "kind": "wick_key",
       "pos": [
-        72,
-        88
+        104,
+        120
       ],
       "props": {
         "dungeon_id": "belfry",
@@ -107,8 +107,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        268,
-        36
+        300,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -119,8 +119,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        268,
-        144
+        300,
+        176
       ],
       "layer": "sort",
       "flip_x": true,
@@ -131,8 +131,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        168,
-        144
+        200,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -143,8 +143,8 @@
       "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
-        56,
-        62
+        88,
+        94
       ],
       "layer": "sort",
       "flip_x": false,
@@ -155,13 +155,14 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        56,
-        122
+        88,
+        154
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.35
     }
-  ]
+  ],
+  "is_2x2_room": true
 }
