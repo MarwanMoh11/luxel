@@ -56,10 +56,13 @@ static func _draw_frame_accents(c: CanvasItem, o: Vector2, inner: Rect2, isl_id:
 	c.draw_rect(Rect2(inner.position.x, my, 1.0, 2.0), dusk)
 	c.draw_rect(Rect2(x1, my, 1.0, 2.0), dusk)
 	c.draw_rect(Rect2(inner.end.x - 1.0, my, 1.0, 2.0), dusk)
-	# Compact Biome Micro-Crest tucked neatly left of the minimap border (+ Relit / Harmony badges)
+	# Compact Biome Micro-Crest tucked neatly left of the minimap border (+ Relit / Harmony / 8/8 Dawn badges)
 	c.draw_rect(Rect2(o + Vector2(-8.0, 1.0), Vector2(7.0, 7.0)), LxPalette.PAL["void"] as Color)
 	LxHudFx.draw_biome_crest(c, isl_id, o + Vector2(-5.0, 4.0), gold, LxPalette.PAL["cream"] as Color)
 	if Lx.state != null:
+		if Lx.state.relit_islands.size() >= 8:
+			c.draw_rect(Rect2(o + Vector2(-6.0, -1.0), Vector2(3.0, 1.0)), LxPalette.PAL["gold"] as Color)
+			c.draw_rect(Rect2(o + Vector2(-5.0, -2.0), Vector2(1.0, 2.0)), LxPalette.PAL["cream"] as Color)
 		if Lx.state.relit_islands.has(isl_id):
 			c.draw_rect(Rect2(o + Vector2(-7.0, 9.0), Vector2(5.0, 3.0)), LxPalette.PAL["void"] as Color)
 			c.draw_rect(Rect2(o + Vector2(-6.0, 10.0), Vector2(3.0, 1.0)), LxPalette.PAL["gold"] as Color)

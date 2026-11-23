@@ -203,7 +203,15 @@ static func _check_all_beacons_awakened(beacon: LxBeacon) -> void:
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, beacon.pos, 22.0, 10.0)
 	if Lx.audio != null:
-		var chime: String = "bell_toll" if beacon.island_id in [1, 7, 8] else ("lighthouse_toll" if beacon.island_id == 2 else ("prism_chain" if beacon.island_id == 5 else "prop_chime"))
+		var chime: String = "prop_chime"
+		match beacon.island_id:
+			1: chime = "bell_toll"
+			2: chime = "lighthouse_toll"
+			4: chime = "wing_gale"
+			5: chime = "prism_chain"
+			6: chime = "forge_gust"
+			7: chime = "lens_reveal"
+			8: chime = "great_lamp_bloom"
 		Lx.audio.play_sfx(chime, beacon.pos, false)
 
 

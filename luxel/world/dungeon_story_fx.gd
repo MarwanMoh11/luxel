@@ -151,9 +151,11 @@ func _trigger(toy: Dictionary, push_dir: float, w: LxWick = null) -> void:
 		match _island_id:
 			2: sfx_id = "footstep_water"
 			3: sfx_id = "prop_rustle"
+			4: sfx_id = "mirror_ping"
 			5: sfx_id = "clockwork_chime"
 			6: sfx_id = "forge_gust"
 			7: sfx_id = "lens_reveal"
+			8: sfx_id = "phantom_phase"
 		Lx.audio.play_sfx(sfx_id, tp, true)
 
 
@@ -207,6 +209,8 @@ func draw_toys(canvas: CanvasItem, rules: LxBiomeRules, fred: bool) -> void:
 		if sw_t > 0.0:
 			var su: float = 1.0 - clampf(sw_t / 0.85, 0.0, 1.0)
 			canvas.draw_arc(p, roundf(lerpf(4.0, 22.0, su)), 0.0, TAU, 14, Color(LxBiomePalette.col(_island_id, "glow"), (1.0 - su) * a_base), 1.0)
+		elif Lx.state != null and Lx.state.relit_islands.has(_island_id) and (fred or sin(_clock * 2.4 + ph) > 0.35):
+			canvas.draw_rect(Rect2(p + Vector2(0.0, -5.0), Vector2.ONE), Color(PAL["gold"] as Color, a_base * 0.85))
 	for m: Dictionary in _motes:
 		var u: float = clampf(float(m["age"]) / maxf(float(m["dur"]), 0.01), 0.0, 1.0)
 		var mp: Vector2 = (m["pos"] as Vector2).round()

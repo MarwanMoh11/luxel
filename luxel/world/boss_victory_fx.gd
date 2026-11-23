@@ -45,9 +45,13 @@ func tick(dt: float, live_now: bool) -> void:
 		if Lx.audio != null:
 			var sfx_id: String = "prop_chime"
 			match _island_id:
-				1, 8: sfx_id = "bell_toll"
+				1: sfx_id = "bell_toll"
 				2: sfx_id = "lighthouse_toll"
+				4: sfx_id = "wing_gale"
 				5: sfx_id = "clockwork_chime"
+				6: sfx_id = "forge_gust"
+				7: sfx_id = "lens_reveal"
+				8: sfx_id = "great_lamp_bloom"
 			Lx.audio.play_sfx(sfx_id, _center, true)
 	_boss_was_live = live_now
 
