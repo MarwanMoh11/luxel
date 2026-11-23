@@ -67,9 +67,13 @@ func on_shockwave_cleared() -> void:
 	if wick == null or _sw_cleared_this_glide:
 		return
 	_sw_cleared_this_glide = true
+	var isl_sw: int = Lx.state.island_id if Lx.state != null else 1
+	var sw_glow: Color = LxBiomePalette.col(isl_sw, "glow")
 	wick.spawn_ring(wick.global_position, 3.0, 15.0, 0.22, LxWick.PAL_SKY, 1.4)
 	wick.spawn_ring(wick.global_position, 2.0, 10.0, 0.16, LxWick.PAL_CREAM, 1.0)
+	wick.spawn_ring(wick.global_position, 4.0, 20.0, 0.26, sw_glow, 1.0)
 	wick.spawn_sparks(wick.global_position, Vector2.UP, 6, LxWick.PAL_ICE, 24.0, 66.0, 0.22)
+	wick.spawn_sparks(wick.global_position, -glide_dir, 4, sw_glow, 20.0, 58.0, 0.22)
 	_gust(60.0, 68.0)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		LxDarknessLayer.active_instance.add_burst_light(wick.global_position, 64.0, 0.85 if LxHudFx.flash_reduced() else 1.32, 0.24)
@@ -121,6 +125,10 @@ func tick_glide(dt: float, dash_held: bool) -> void:
 		var isl_g: int = Lx.state.island_id if Lx.state != null else 1
 		wick.spawn_afterimage(LxBiomePalette.col(isl_g, "hi"))
 		wick.spawn_sparks(wick.global_position, -glide_dir, 1, LxBiomePalette.col(isl_g, "glow"), 8.0, 22.0, 0.16)
+		if isl_g in [2, 4, 7] and Lx.world != null and is_instance_valid(Lx.world):
+			var wfx: Variant = Lx.world.get("_water_fx")
+			if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
+				(wfx as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 4.0), "rose" if isl_g == 4 else "ice", 10.0)
 
 	if glide_time_left <= 0.0 or glide_dist_left <= 0.0:
 		stop_glide()

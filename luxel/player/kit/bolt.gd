@@ -213,6 +213,8 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				if b.is_prism and res > 0:
 					wick.spawn_ring(epos, 2.0, 12.0 if b.bounce_count >= 2 else 10.0, 0.16, LxWick.PAL_ICE, 1.0)
 					wick.spawn_sparks(epos, b.dir, 7 if b.bounce_count >= 2 else 5, LxWick.PAL_ICE, 32.0, 88.0, 0.18)
+				if not b.biome_tint.is_empty() and res > 0:
+					wick.spawn_sparks(epos, -b.dir, 3, LxPalette.color(b.biome_tint, "gold"), 28.0, 74.0, 0.16)
 				if b.is_counter and res > 0:
 					wick.spawn_ring(epos, 2.0, 13.0, 0.18, LxWick.PAL_GOLD, 1.2)
 					wick.spawn_sparks(epos, b.dir, 6, LxWick.PAL_CREAM, 40.0, 105.0, 0.20)
@@ -302,8 +304,11 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 			b.dist += step_dist
 			var hit_wall: bool = wick.world_shot_blocked(world_ctx, b.pos, nxt)
 			if hit_wall or b.dist >= b.max_range:
-				wick.spawn_sparks(b.pos, -b.dir, 3, LxWick.PAL_APRICOT, 20.0, 50.0, 0.14)
+				var isl_w: int = Lx.state.island_id if Lx.state != null else 1
+				var wcol: Color = LxWick.PAL_ICE if b.is_prism else (LxPalette.color(b.biome_tint, "apricot") if not b.biome_tint.is_empty() else LxBiomePalette.col(isl_w, "glow"))
+				wick.spawn_sparks(b.pos, -b.dir, 3, wcol, 20.0, 52.0, 0.14)
 				if hit_wall:
+					wick.spawn_ring(b.pos, 1.5, 5.5, 0.12, wcol, 1.0)
 					wick.emit_sfx("bolt_wall", b.pos, true)
 				dead = true
 			else:

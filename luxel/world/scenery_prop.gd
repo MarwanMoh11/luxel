@@ -88,6 +88,7 @@ var _sway_px: float = 0.0
 var _sfx_cd: float = 0.0
 var _is_glow: bool = false
 var _flare_t: float = 0.0
+var _flare_cd: float = 0.0
 var _flare_dir: float = 1.0
 
 
@@ -206,15 +207,18 @@ func _process(dt: float) -> void:
 				_sway_px = next_px
 				queue_redraw()
 	if _is_glow:
+		if _flare_cd > 0.0:
+			_flare_cd = maxf(0.0, _flare_cd - dt)
 		if _flare_t > 0.0:
 			_flare_t = maxf(0.0, _flare_t - dt)
 			queue_redraw()
-		elif has_p:
+		elif has_p and _flare_cd <= 0.0:
 			var pp3: Vector2 = (Lx.player as Node2D).global_position
-			if pp3.distance_squared_to(position) < 400.0:
+			if pp3.distance_squared_to(position) < 484.0:
 				var vel_g: Variant = Lx.player.get("velocity")
-				if vel_g is Vector2 and (vel_g as Vector2).length_squared() > 6400.0:
-					_flare_t = 0.38
+				if vel_g is Vector2 and (vel_g as Vector2).length_squared() > 2500.0:
+					_flare_t = 0.38 if (vel_g as Vector2).length_squared() > 6400.0 else 0.28
+					_flare_cd = 0.55
 					_flare_dir = signf((vel_g as Vector2).x) if absf((vel_g as Vector2).x) > 10.0 else 1.0
 					queue_redraw()
 
