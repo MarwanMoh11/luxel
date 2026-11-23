@@ -237,6 +237,11 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 		for dp: Vector2 in dpts:
 			if dp.distance_to(cam_center) <= 300.0:
 				candidates.append({"d": dp.distance_squared_to(cam_center) + 1200.0, "v": Vector4(dp.x, dp.y - 6.0, 36.0 * flicker, 0.52)})
+	if LxPortalFx.active_instance != null and is_instance_valid(LxPortalFx.active_instance):
+		for ppool: Vector4 in LxPortalFx.active_instance.get_light_pools():
+			var pp_v := Vector2(ppool.x, ppool.y)
+			if pp_v.distance_to(cam_center) <= 300.0 + ppool.z:
+				candidates.append({"d": pp_v.distance_squared_to(cam_center) + 900.0, "v": Vector4(ppool.x, ppool.y, ppool.z * flicker, ppool.w)})
 
 	for extra: Vector4 in extra_lights:
 		if extra.z <= 1.0 or extra.w <= 0.001:

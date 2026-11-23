@@ -7,6 +7,8 @@ const PAL: Dictionary = LxPalette.PAL
 const HALF_W: float = 196.0
 const HALF_H: float = 124.0
 
+static var active_instance: LxPortalFx = null
+
 var _region: Node = null
 var _island_id: int = 1
 var _is_dungeon: bool = false
@@ -18,9 +20,16 @@ var _exits: Array[Dictionary] = [] # {rect, center, kind, next_isl, locked_id, r
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	z_index = -1
+	active_instance = self
+
+
+func _exit_tree() -> void:
+	if active_instance == self:
+		active_instance = null
 
 
 func configure(rules: LxBiomeRules, region_node: Node) -> void:
+	active_instance = self
 	_region = region_node
 	_island_id = rules.island_id if rules != null else 1
 	_is_dungeon = rules.is_dungeon if rules != null else false
@@ -87,6 +96,22 @@ func _is_exit_open(ex: Dictionary) -> bool:
 	return true
 
 
+func get_light_pools() -> Array[Vector4]:
+	var out: Array[Vector4] = []
+	for ex: Dictionary in _exits:
+		if not _is_exit_open(ex):
+			continue
+		var c: Vector2 = ex["center"] as Vector2
+		var kind: int = int(ex["kind"])
+		if kind == 0:
+			out.append(Vector4(c.x, c.y, 48.0, 0.72))
+		elif kind == 1:
+			out.append(Vector4(c.x, c.y, 44.0, 0.62))
+		else:
+			out.append(Vector4(c.x, c.y, 30.0, 0.36))
+	return out
+
+
 func _draw() -> void:
 	if _exits.is_empty():
 		return
@@ -124,6 +149,12 @@ func _draw_bridge_portal(r: Rect2, c: Vector2, next_isl: int, col_a: Color, crea
 		var mx: float = roundf(c.x + sin(_clock * 2.0 + float(k) * 1.7) * (rad * 0.55))
 		var my: float = roundf(c.y + 8.0 - u * 24.0)
 		draw_rect(Rect2(mx, my, 2.0 if (not fred and k % 2 == 0) else 1.0, 1.0), Color(cream if u < 0.35 else col_b, sin(u * PI) * 0.85))
+	# Beckoning destination-biome chevrons orbiting the Bridge of Light threshold
+	var ch_off: float = 0.0 if fred else roundf(sin(_clock * 3.0) * 2.0)
+	for side: float in [-1.0, 1.0]:
+		var tip := Vector2(roundf(c.x + side * (rad + 5.0 + ch_off)), roundf(c.y))
+		draw_line(tip, tip + Vector2(-side * 3.0, -3.0), Color(col_b, 0.72 * pulse), 1.0)
+		draw_line(tip, tip + Vector2(-side * 3.0, 3.0), Color(cream, 0.68 * pulse), 1.0)
 
 
 func _draw_dungeon_entrance(r: Rect2, c: Vector2, col_g: Color, col_h: Color, cream: Color, pulse: float, fred: bool) -> void:
@@ -133,6 +164,7 @@ func _draw_dungeon_entrance(r: Rect2, c: Vector2, col_g: Color, col_h: Color, cr
 	draw_rect(Rect2(x0, y0, w, 12.0), Color(col_h, 0.14 * pulse))
 	draw_rect(Rect2(x0, y0, w, 1.0), Color(col_g, 0.55 * pulse))
 	draw_rect(Rect2(x0, y0 + 11.0, w, 1.0), Color(col_g, 0.55 * pulse))
+	_draw_biome_gateway_frame(c, w, col_g, col_h, cream, pulse, fred)
 	LxHudFx.draw_biome_crest(self, _island_id, c, Color(col_g, 0.78 * pulse), Color(cream, 0.82))
 	if not fred:
 		for k: int in range(3):
@@ -140,6 +172,52 @@ func _draw_dungeon_entrance(r: Rect2, c: Vector2, col_g: Color, col_h: Color, cr
 			var mx: float = roundf(c.x + float(k - 1) * 8.0)
 			var my: float = roundf(c.y + 5.0 - u * 16.0)
 			draw_rect(Rect2(mx, my, 1.0, 1.0), Color(cream if u < 0.4 else col_g, sin(u * PI) * 0.78))
+
+
+func _draw_biome_gateway_frame(c: Vector2, w: float, col_g: Color, col_h: Color, cream: Color, pulse: float, fred: bool) -> void:
+	var hw: float = roundf(w * 0.5)
+	var a_hi: float = 0.68 * pulse
+	match _island_id:
+		1: # Great Belfry: twin choir columns + golden bell-gable arch
+			draw_line(c + Vector2(-hw, 6.0), c + Vector2(-hw, -7.0), Color(col_g, a_hi), 1.4)
+			draw_line(c + Vector2(hw, 6.0), c + Vector2(hw, -7.0), Color(col_g, a_hi), 1.4)
+			draw_arc(c + Vector2(0.0, -7.0), hw, PI, TAU, 14, Color(col_g, a_hi), 1.4)
+			draw_rect(Rect2(c + Vector2(-1.0, -hw - 6.0), Vector2(2.0, 2.0)), Color(cream, a_hi))
+		2: # The Lighthouse: curved lantern cupola + sweeping sea-ice glint
+			draw_arc(c + Vector2(0.0, -4.0), hw, PI, TAU, 14, Color(PAL["ice"] as Color, a_hi), 1.4)
+			var glint_x: float = roundf(c.x + (0.0 if fred else sin(_clock * 1.9) * (hw - 4.0)))
+			draw_line(Vector2(glint_x, c.y - 6.0), Vector2(glint_x, c.y + 5.0), Color(PAL["ice"] as Color, 0.35 * pulse), 2.0)
+		3: # Hollow Oak: intertwined pine/jade root-arch with lime canopy buds
+			draw_arc(c + Vector2(0.0, -4.0), hw + 1.0, PI, TAU, 14, Color(PAL["jade"] as Color, a_hi), 1.8)
+			for side3: float in [-1.0, 1.0]:
+				draw_line(c + Vector2(side3 * hw, 6.0), c + Vector2(side3 * (hw + 3.0), 8.0), Color(PAL["pine"] as Color, a_hi), 1.5)
+				draw_rect(Rect2(c + Vector2(side3 * (hw - 3.0), -10.0), Vector2(2.0, 2.0)), Color(PAL["lime"] as Color, a_hi))
+		4: # Sunken Conservatory: pointed glasshouse gable + rose/ice transoms
+			draw_line(c + Vector2(-hw, -5.0), c + Vector2(0.0, -14.0), Color(PAL["teal"] as Color, a_hi), 1.4)
+			draw_line(c + Vector2(hw, -5.0), c + Vector2(0.0, -14.0), Color(PAL["teal"] as Color, a_hi), 1.4)
+			draw_rect(Rect2(c + Vector2(-4.0, -10.0), Vector2(3.0, 3.0)), Color(PAL["rose"] as Color, 0.55 * pulse))
+			draw_rect(Rect2(c + Vector2(1.0, -10.0), Vector2(3.0, 3.0)), Color(PAL["ice"] as Color, 0.55 * pulse))
+		5: # Grand Orrery: brass zodiac ring with rotating cardinal ticks
+			var rot5: float = 0.0 if fred else _clock * 0.7
+			draw_arc(c, hw + 1.0, 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.45 * pulse), 1.2)
+			for t5: int in range(4):
+				var ang5: float = rot5 + float(t5) * (PI * 0.5)
+				var pt5: Vector2 = (c + Vector2.from_angle(ang5) * (hw + 1.0)).round()
+				draw_rect(Rect2(pt5 - Vector2.ONE, Vector2(2.0, 2.0)), Color(cream if t5 % 2 == 0 else PAL["sky"] as Color, a_hi))
+		6: # Great Kiln: stepped volcanic furnace lintel with glowing coral/gold vents
+			draw_rect(Rect2(c + Vector2(-hw - 2.0, -9.0), Vector2(w + 4.0, 3.0)), Color(PAL["wine"] as Color, 0.65 * pulse))
+			for vx: float in [-8.0, 0.0, 8.0]:
+				draw_rect(Rect2(c + Vector2(vx - 1.0, -8.0), Vector2(2.0, 2.0)), Color(PAL["gold"] as Color if not fred else PAL["coral"] as Color, a_hi))
+		7: # Moon Spire: twin silver crescent gateposts + lunar center seam
+			draw_arc(c + Vector2(-hw - 1.0, 0.0), 6.0, -PI * 0.55, PI * 0.55, 8, Color(PAL["ice"] as Color, a_hi), 1.4)
+			draw_arc(c + Vector2(hw + 1.0, 0.0), 6.0, PI * 0.45, PI * 1.55, 8, Color(PAL["ice"] as Color, a_hi), 1.4)
+			draw_line(c + Vector2(0.0, -11.0), c + Vector2(0.0, 7.0), Color(PAL["sky"] as Color, 0.35 * pulse), 1.0)
+		_: # Bell Sanctum: tall gothic rose-gold cathedral arch + radiant dawn keystone
+			draw_line(c + Vector2(-hw, 6.0), c + Vector2(-hw, -8.0), Color(PAL["plum"] as Color, a_hi), 1.5)
+			draw_line(c + Vector2(hw, 6.0), c + Vector2(hw, -8.0), Color(PAL["plum"] as Color, a_hi), 1.5)
+			draw_line(c + Vector2(-hw, -8.0), c + Vector2(0.0, -16.0), Color(col_g, a_hi), 1.5)
+			draw_line(c + Vector2(hw, -8.0), c + Vector2(0.0, -16.0), Color(col_g, a_hi), 1.5)
+			draw_circle(c + Vector2(0.0, -14.0), 2.5, Color(cream, a_hi))
 
 
 func _draw_room_threshold(r: Rect2, c: Vector2, col_g: Color, cream: Color, pulse: float, wp: Vector2) -> void:
