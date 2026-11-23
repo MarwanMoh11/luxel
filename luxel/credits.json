@@ -681,6 +681,39 @@
         "luxel/audio/sfx/map_open.ogg",
         "luxel/audio/sfx/map_open_2.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_sfx_triple_take",
+      "description": "Triple-take studio polish: 25 zero-hiss 3rd takes (*_3.ogg) for highest-frequency combat, movement, footstep, and biome cues (300 Studio SFX across 134 multi-take pools, 32 triple-take pools)",
+      "generator": "gen_sfx_triple_take.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/sfx/dash_whoosh_3.ogg",
+        "luxel/audio/sfx/lantern_throw_3.ogg",
+        "luxel/audio/sfx/lantern_catch_3.ogg",
+        "luxel/audio/sfx/lantern_land_3.ogg",
+        "luxel/audio/sfx/bolt_chip_3.ogg",
+        "luxel/audio/sfx/enemy_kill_3.ogg",
+        "luxel/audio/sfx/heavy_hit_3.ogg",
+        "luxel/audio/sfx/wick_hurt_3.ogg",
+        "luxel/audio/sfx/shield_clang_3.ogg",
+        "luxel/audio/sfx/prism_bounce_3.ogg",
+        "luxel/audio/sfx/prism_chain_3.ogg",
+        "luxel/audio/sfx/beam_fire_3.ogg",
+        "luxel/audio/sfx/wings_glide_3.ogg",
+        "luxel/audio/sfx/sunflare_burst_3.ogg",
+        "luxel/audio/sfx/footstep_ash_3.ogg",
+        "luxel/audio/sfx/footstep_crystal_3.ogg",
+        "luxel/audio/sfx/footstep_water_3.ogg",
+        "luxel/audio/sfx/tide_surge_3.ogg",
+        "luxel/audio/sfx/forge_gust_3.ogg",
+        "luxel/audio/sfx/wing_gale_3.ogg",
+        "luxel/audio/sfx/prop_chime_3.ogg",
+        "luxel/audio/sfx/beacon_lit_3.ogg",
+        "luxel/audio/sfx/lamp_lit_3.ogg",
+        "luxel/audio/sfx/perfect_counter_3.ogg",
+        "luxel/audio/sfx/star_lance_3.ogg"
+      ]
     }
   ],
   "third_party_audio": []
