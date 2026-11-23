@@ -55,13 +55,26 @@ static func draw_indicators(hud: CanvasItem, blink_t: float, boss_active: bool, 
 
 static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) -> void:
 	var br: LxBiomeRules = LxBiomeRules.active_instance
-	if br == null or not is_instance_valid(br) or br.island_id <= 1:
+	if br == null or not is_instance_valid(br):
 		return
 	var o := Vector2(5.0, 22.0)
 	var bg: Color = LxPalette.PAL["void"] as Color
 	var night: Color = LxPalette.PAL["night"] as Color
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	match br.island_id:
+		1:
+			if not br.is_dungeon and LxBellChimes.active_instance != null and is_instance_valid(LxBellChimes.active_instance):
+				var rung_n: int = LxBellChimes.active_instance.get_rung_count()
+				var tot_n: int = LxBellChimes.active_instance.get_total_count()
+				if rung_n > 0 and tot_n > 0:
+					for k: int in range(mini(tot_n, 6)):
+						var cx: float = o.x + float(k) * 5.0
+						hud.draw_rect(Rect2(cx, o.y, 4.0, 5.0), bg)
+						if k < rung_n:
+							hud.draw_rect(Rect2(cx + 1.0, o.y + 1.0, 2.0, 3.0), LxPalette.PAL["gold"] as Color)
+							hud.draw_rect(Rect2(cx + 1.0, o.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
+						else:
+							hud.draw_rect(Rect2(cx + 1.0, o.y + 1.0, 2.0, 3.0), night)
 		2:
 			if not br.is_dungeon:
 				var fill_w: float = floorf(18.0 * clampf(br.tide_phase, 0.0, 1.0))
