@@ -158,6 +158,21 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 					var pulse_on: bool = fred or (int(blink_t * 4.0) % 2 == 0)
 					hud.draw_rect(Rect2(sx + 1.0, o.y + 1.0, 4.0, 4.0), (LxPalette.PAL["rose"] if pulse_on else LxPalette.PAL["plum"]) as Color)
 					hud.draw_rect(Rect2(sx + 2.0, o.y + 2.0, 2.0, 2.0), bg)
+	# Compact overworld micro-discovery pips (Islands 2..8) once at least 1 toy is discovered
+	if not br.is_dungeon and br.island_id >= 2 and LxBiomeDiscoveries.active_instance != null and is_instance_valid(LxBiomeDiscoveries.active_instance):
+		var found_d: int = LxBiomeDiscoveries.active_instance.get_found_count()
+		var tot_d: int = LxBiomeDiscoveries.active_instance.get_total_count()
+		if found_d > 0 and tot_d > 0:
+			var dy: float = o.y + 10.0 if br.island_id == 7 else o.y + 7.0
+			var d_col: Color = LxBiomePalette.col(br.island_id, "glow")
+			for k: int in range(mini(tot_d, 5)):
+				var dx: float = o.x + float(k) * 5.0
+				hud.draw_rect(Rect2(dx, dy, 4.0, 4.0), bg)
+				if k < found_d:
+					hud.draw_rect(Rect2(dx + 1.0, dy + 1.0, 2.0, 2.0), d_col)
+					hud.draw_rect(Rect2(dx + 1.0, dy + 1.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
+				else:
+					hud.draw_rect(Rect2(dx + 1.0, dy + 1.0, 2.0, 2.0), night)
 
 
 static func _draw_ember_ready_halo(hud: CanvasItem, blink_t: float, fred: bool) -> void:

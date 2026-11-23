@@ -71,6 +71,7 @@ static func draw_wear(enemy: LxEnemyBrain, off: Vector2) -> void:
 
 	if enemy.max_hp <= 0.01 or enemy.hp <= 0.0:
 		return
+	_draw_biome_aura(enemy, off, r, t, fred)
 	var hp_ratio: float = clampf(enemy.hp / enemy.max_hp, 0.0, 1.0)
 
 	# 2. Stage 1 Wear (<= 65% HP on bosses & heavy foes): subtle hairline fracture + drifting spark
@@ -234,3 +235,44 @@ static func draw_armour_plates(enemy: LxEnemyBrain, off: Vector2, ar: float, wid
 			var sa: float = a + 0.22
 			var sp: Vector2 = (off + Vector2.from_angle(sa) * (ar + 2.2)).round()
 			enemy.draw_rect(Rect2(sp, Vector2.ONE), pal["cream"] as Color)
+
+
+static func _draw_biome_aura(enemy: LxEnemyBrain, off: Vector2, r: float, t: float, fred: bool) -> void:
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
+	var pal: Dictionary = LxEnemyBrain.PAL
+	var ph: float = float(enemy.get_instance_id() & 63) * 0.17
+	var u: float = fposmod(t * (0.45 if fred else 0.72) + ph, 1.0)
+	match isl:
+		2: # Tidewater sea-mist droplet near feet
+			if u < 0.65:
+				var px: float = roundf(off.x + sin(t * 2.1 + ph) * (r + 1.0))
+				enemy.draw_rect(Rect2(px, roundf(off.y + r * 0.45 - u * 4.0), 1.0, 1.0), Color(pal["ice"] as Color, (1.0 - u / 0.65) * 0.62))
+		3: # Thornwood emerald spore drifting upward
+			var sx: float = roundf(off.x + sin(t * 2.4 + ph) * (r * 0.85))
+			var sy: float = roundf(off.y - r * 0.2 - u * 9.0)
+			enemy.draw_rect(Rect2(sx, sy, 1.0, 1.0), Color((pal["lime"] if u < 0.5 else pal["jade"]) as Color, sin(u * PI) * 0.75))
+		4: # Mirefen rose-ice dew mote
+			var mx: float = roundf(off.x + cos(t * 2.0 + ph) * (r + 1.5))
+			var my: float = roundf(off.y - r * 0.1 - u * 7.0)
+			enemy.draw_rect(Rect2(mx, my, 1.0, 1.0), Color((pal["rose"] if u < 0.5 else pal["ice"]) as Color, sin(u * PI) * 0.68))
+		5: # Starfall tiny orbiting gold-sky starlight spark
+			var ang: float = t * (1.2 if fred else 2.2) + ph
+			var gx: float = roundf(off.x + cos(ang) * (r + 2.5))
+			var gy: float = roundf(off.y - r * 0.35 + sin(ang) * 3.0)
+			enemy.draw_rect(Rect2(gx, gy, 1.0, 1.0), Color((pal["gold"] if sin(ang) >= 0.0 else pal["sky"]) as Color, 0.72))
+		6: # Ashen Kiln rising forge cinder
+			var kx: float = roundf(off.x + sin(t * 3.0 + ph) * (r * 0.75))
+			var ky: float = roundf(off.y - u * 11.0)
+			enemy.draw_rect(Rect2(kx, ky, 1.0, 1.0), Color((pal["gold"] if u < 0.35 else pal["coral"]) as Color, (1.0 - u) * 0.80))
+		7: # Moon Shoals crisp silver reflection bar beneath feet
+			var rw: float = roundf(maxf(4.0, r * 1.1))
+			enemy.draw_rect(Rect2(roundf(off.x - rw * 0.5), roundf(off.y + r * 0.75 + 2.0), rw, 1.0), Color(pal["ice"] as Color, 0.38))
+		8: # Long Night dark plum/rose eclipse mote
+			var ex: float = roundf(off.x + cos(t * 1.8 + ph) * (r + 2.0))
+			var ey: float = roundf(off.y - r * 0.25 + sin(t * 2.4 + ph) * 3.5)
+			enemy.draw_rect(Rect2(ex, ey, 1.0, 1.0), Color((pal["rose"] if u < 0.45 else pal["plum"]) as Color, 0.75))
+		_:
+			if enemy.is_boss or enemy.max_hp >= 5.0:
+				var bx: float = roundf(off.x + sin(t * 1.8 + ph) * (r + 1.5))
+				var by: float = roundf(off.y - r * 0.2 - u * 8.0)
+				enemy.draw_rect(Rect2(bx, by, 1.0, 1.0), Color(pal["gold"] as Color, sin(u * PI) * 0.60))
