@@ -80,6 +80,12 @@ static func draw_plinth(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool
 		canvas.draw_rect(Rect2(star_c + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), LxBiomePalette.col(isl_id, "glow"))
 		canvas.draw_rect(Rect2(star_c, Vector2.ONE), LxPalette.PAL["cream"] as Color)
 	_draw_island_atmosphere(canvas, c, isl_id, relit, elapsed)
+	# Subtle breathing compass halo around the island where Wick currently stands
+	if Lx.state != null and Lx.state.island_id == isl_id:
+		var fred_c: bool = LxHudFx.flash_reduced()
+		var ca_c: float = 0.34 if fred_c else (0.28 + 0.16 * sin(elapsed * 2.6))
+		var cr_c: float = 13.0 if isl_id in [2, 6, 7] else 11.0
+		canvas.draw_arc(c.round(), cr_c, 0.0, TAU, 16, Color(LxBiomePalette.col(isl_id, "glow"), ca_c), 1.0)
 	if isl_id == 1:
 		_draw_harmony_constellation(canvas, elapsed)
 
@@ -113,6 +119,13 @@ static func _draw_harmony_constellation(canvas: CanvasItem, elapsed: float) -> v
 			canvas.draw_rect(Rect2(px, cy, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
 		else:
 			canvas.draw_rect(Rect2(px, cy, 1.0, 1.0), LxPalette.PAL["mauve"] as Color)
+	# Crown the top-right jewel bar with a golden Archipelago Dawn Star once all 8 islands are relit!
+	if Lx.state.relit_islands.size() >= 8:
+		var ds := Vector2(base_x - 7.0, cy).round()
+		var dtw: float = 0.88 if fred else (0.72 + 0.28 * sin(t * 2.2))
+		canvas.draw_rect(Rect2(ds + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), Color(LxPalette.PAL["gold"] as Color, dtw))
+		canvas.draw_rect(Rect2(ds + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), Color(LxPalette.PAL["gold"] as Color, dtw))
+		canvas.draw_rect(Rect2(ds, Vector2.ONE), LxPalette.PAL["cream"] as Color)
 
 
 static func _draw_island_atmosphere(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool, elapsed: float) -> void:

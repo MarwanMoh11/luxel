@@ -124,10 +124,14 @@ static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> v
 				var wx: float = roundf(p.x + (0.0 if fred else sin(elapsed * 1.9 + float(i) * 1.3 + float(rw) * 1.7) * (1.2 + float(rw) * 0.5)))
 				var ww: float = 3.0 - float(rw) * 0.5
 				ci.draw_rect(Rect2(wx - 1.0, wy, maxf(1.0, roundf(ww)), 1.0), Color(b_hi if rw == 2 else b_glow, (0.34 - float(rw) * 0.08) * tw))
-			# Subtle biome-signature horizon whisper for each relit island
+			# Subtle biome-signature horizon whisper for each relit island (complete 8/8 Archipelago!)
 			if not fred:
 				var wu: float = fposmod(elapsed * 0.45 + float(i) * 0.27, 1.0)
 				match isl_i:
+					1: # Warm brass bell-chime resonance arc rising above Bell Isle spire
+						ci.draw_arc(Vector2(p.x, p.y - 3.0), roundf(3.0 + wu * 5.0), PI * 1.15, PI * 1.85, 8, Color(LxPalette.PAL["gold"], sin(wu * PI) * 0.78), 1.0)
+					2: # Crisp sea-ice lighthouse spray glint above Tidewater Harbor
+						ci.draw_rect(Rect2(roundf(p.x + sin(elapsed * 2.4) * 3.0), roundf(p.y - 4.0 - wu * 7.0), 1.0, 1.0), Color(LxPalette.PAL["ice"], sin(wu * PI) * 0.85))
 					3: # Rising emerald firefly above Thornwood
 						ci.draw_rect(Rect2(roundf(p.x + sin(elapsed * 2.0) * 3.0), roundf(p.y - 4.0 - wu * 9.0), 1.0, 1.0), Color(LxPalette.PAL["lime"], sin(wu * PI) * 0.85))
 					4: # Rose-ice conservatory sparkle above Mirefen
