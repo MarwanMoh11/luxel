@@ -57,16 +57,19 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 	var br: LxBiomeRules = LxBiomeRules.active_instance
 	if br == null or not is_instance_valid(br):
 		return
-	var o := Vector2(5.0, 22.0)
+	var low_two_row: bool = Lx.state != null and Lx.state.max_hearts > 6 and Lx.state.hearts > 0.0 and Lx.state.hearts <= 1.0
+	var o := Vector2(5.0, 27.0 if low_two_row else 22.0)
 	var bg: Color = LxPalette.PAL["void"] as Color
 	var night: Color = LxPalette.PAL["night"] as Color
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	var has_top_badge: bool = false
 	match br.island_id:
 		1:
 			if not br.is_dungeon and LxBellChimes.active_instance != null and is_instance_valid(LxBellChimes.active_instance):
 				var rung_n: int = LxBellChimes.active_instance.get_rung_count()
 				var tot_n: int = LxBellChimes.active_instance.get_total_count()
 				if rung_n > 0 and tot_n > 0:
+					has_top_badge = true
 					var show_n: int = mini(tot_n, 6)
 					for k: int in range(show_n):
 						var cx: float = o.x + float(k) * 5.0
@@ -80,6 +83,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 						_draw_discovery_crown(hud, Vector2(o.x + float(show_n) * 5.0 + 2.0, o.y + 2.0), LxPalette.PAL["gold"] as Color, blink_t, fred)
 		2:
 			if not br.is_dungeon:
+				has_top_badge = true
 				var fill_w: float = floorf(18.0 * clampf(br.tide_phase, 0.0, 1.0))
 				hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
 				hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), night)
@@ -87,6 +91,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				if fill_w > 0.0:
 					hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(fill_w, 1.0)), tc)
 			if br.beam_buff_t > 0.0:
+				has_top_badge = true
 				var fo: Vector2 = (o + Vector2(25.0, -1.0)) if not br.is_dungeon else o
 				hud.draw_rect(Rect2(fo, Vector2(7.0, 7.0)), bg)
 				hud.draw_rect(Rect2(fo + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), LxPalette.PAL["gold"] as Color)
@@ -96,6 +101,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 			if not br.is_dungeon:
 				var lit_b: int = mini(3, br.get_lit_bloom_count())
 				if lit_b > 0:
+					has_top_badge = true
 					for k: int in range(3):
 						var lx: float = o.x + float(k) * 7.0
 						hud.draw_rect(Rect2(lx, o.y, 6.0, 6.0), bg)
@@ -106,6 +112,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 							hud.draw_rect(Rect2(lx + 1.0, o.y + 1.0, 4.0, 4.0), LxPalette.PAL["teal"] as Color)
 							hud.draw_rect(Rect2(lx + 2.0, o.y + 2.0, 2.0, 2.0), night)
 			else:
+				has_top_badge = true
 				var pulse_s: bool = fred or (int(blink_t * 3.0) % 2 == 0)
 				hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
 				hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(5.0, 5.0)), (LxPalette.PAL["jade"] if pulse_s else LxPalette.PAL["teal"]) as Color)
@@ -113,17 +120,24 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["gold"] as Color)
 		4:
 			if bm != null and is_instance_valid(bm) and bm.tailwind_t > 0.0:
-				var tw_w: float = floorf(18.0 * clampf(bm.tailwind_t / 2.2, 0.0, 1.0))
+				has_top_badge = true
+				var tw_w: float = maxf(1.0, floorf(18.0 * clampf(bm.tailwind_t / 2.2, 0.0, 1.0)))
+				var half_tw: float = floorf(tw_w * 0.5)
 				hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
-				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(maxf(1.0, tw_w), 1.0)), LxPalette.PAL["ice"] as Color)
+				hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), night)
+				if half_tw > 0.0:
+					hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(half_tw, 1.0)), LxPalette.PAL["rose"] as Color)
+				hud.draw_rect(Rect2(o + Vector2(2.0 + half_tw, 2.0), Vector2(maxf(1.0, tw_w - half_tw), 1.0)), LxPalette.PAL["ice"] as Color)
 				hud.draw_rect(Rect2(o + Vector2(2.0 + tw_w - 1.0, 2.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
 		5:
 			if br.starlight_surge_t > 0.0:
+				has_top_badge = true
 				var sw: float = floorf(18.0 * clampf(br.starlight_surge_t / 4.0, 0.0, 1.0))
 				hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
 				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(maxf(1.0, sw), 1.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(o + Vector2(2.0 + sw - 1.0, 2.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
 		6:
+			has_top_badge = true
 			var vw: float = floorf(18.0 * clampf(br.vent_cycle, 0.0, 1.0))
 			hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
 			hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), night)
@@ -137,6 +151,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 					hud.draw_rect(Rect2(px + 1.0, o.y + 1.0, 2.0, 3.0), LxPalette.PAL["coral"] as Color)
 					hud.draw_rect(Rect2(px + 1.0, o.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
 		7:
+			has_top_badge = true
 			hud.draw_rect(Rect2(o, Vector2(9.0, 9.0)), bg)
 			hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(7.0, 7.0)), night)
 			var full_m: bool = br.lunar_phase > 0.5
@@ -151,6 +166,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				hud.draw_rect(Rect2(o + Vector2(4.0, 2.0), Vector2(3.0, 5.0)), night)
 				hud.draw_rect(Rect2(o + Vector2(2.0, 3.0), Vector2(1.0, 3.0)), LxPalette.PAL["sky"] as Color)
 		8:
+			has_top_badge = true
 			var seals_b: int = bm.dawn_seals_broken if (bm != null and is_instance_valid(bm)) else 0
 			for k: int in range(3):
 				var sx: float = o.x + float(k) * 7.0
@@ -167,7 +183,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 		var found_d: int = LxBiomeDiscoveries.active_instance.get_found_count()
 		var tot_d: int = LxBiomeDiscoveries.active_instance.get_total_count()
 		if found_d > 0 and tot_d > 0:
-			var dy: float = o.y + 10.0 if br.island_id == 7 else o.y + 7.0
+			var dy: float = (o.y + (10.0 if br.island_id == 7 else 7.0)) if has_top_badge else o.y
 			var d_col: Color = LxBiomePalette.col(br.island_id, "glow")
 			var show_d: int = mini(tot_d, 5)
 			for k: int in range(show_d):

@@ -156,7 +156,7 @@ static func trigger_boss_awaken(boss: LxEnemyBrain) -> void:
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", boss.pos, 96.0, 95.0)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(boss.pos, 72.0, 1.35, 0.55)
+		LxDarknessLayer.active_instance.add_burst_light(boss.pos, 72.0, 1.35 * (0.62 if _flash_reduced() else 1.0), 0.55)
 		LxDarknessLayer.active_instance.trigger_focus_flash(0.45)
 	if Lx.events != null:
 		Lx.events.sfx_requested.emit("boss_awaken", boss.pos, true)
