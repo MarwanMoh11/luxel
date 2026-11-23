@@ -20,6 +20,7 @@ var _decals: Array[Dictionary] = []
 var _step_cd: float = 0.0
 var _last_player_pos: Vector2 = Vector2.ZERO
 var _step_alt: bool = false
+var _step_seq: int = 0
 var _bound_events: LxEventBus = null
 
 
@@ -131,7 +132,12 @@ func _tick_player_steps(dt: float) -> void:
 		elif w.is_dashing():
 			add_decal(Kind.SCORCH, foot_p, 6.5, 2.2)
 		else:
-			add_decal(Kind.FOOTSTEP, foot_p, 2.0, 2.6)
+			_step_seq += 1
+			var saved_isl: bool = Lx.state != null and (Lx.state.relit_islands.has(_island_id) or bool(Lx.state.story_flags.get("disc_all_%d" % _island_id, false)))
+			if saved_isl and (_step_seq % 4 == 0):
+				add_decal(Kind.BLOSSOM, foot_p, 4.5, 1.8)
+			else:
+				add_decal(Kind.FOOTSTEP, foot_p, 2.0, 2.6)
 		_last_player_pos = w.global_position
 
 

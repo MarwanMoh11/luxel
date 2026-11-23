@@ -194,8 +194,11 @@ func _draw() -> void:
 				draw_rect(Rect2(ax, ay, 2.0 if p > 0.55 else 1.0, 1.0), mc)
 		else:
 			if p > 0.25:
-				var sc: Color = (PAL["cream"] if p > 0.78 else PAL["gold"]) as Color if (relit_sea and _island_id == 8) else _abyss_star_color(p)
-				draw_rect(Rect2(ax, ay, 2.0 if ((_island_id == 5 or (relit_sea and _island_id == 8)) and p > 0.88) else 1.0, 1.0), sc)
+				var sc: Color = (PAL["cream"] if p > 0.78 else PAL["gold"]) as Color if (relit_sea and (_island_id == 8 or p > 0.84)) else _abyss_star_color(p)
+				var wide_st: bool = (_island_id == 5 or (relit_sea and _island_id in [1, 5, 7, 8])) and p > 0.88
+				draw_rect(Rect2(ax, ay, 2.0 if wide_st else 1.0, 1.0), sc)
+				if relit_sea and p > 0.92:
+					draw_rect(Rect2(ax, ay - 1.0, 1.0, 3.0), Color(PAL["gold"] as Color, 0.55))
 
 	_sky_accents.draw_accents(self, _clock, _cam_center, relit_sea)
 	for rp: Dictionary in _ripples:
