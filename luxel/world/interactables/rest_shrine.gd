@@ -101,6 +101,18 @@ func _draw_hearth_ring() -> void:
 		var px: float = roundf(cos(a) * rx)
 		var py: float = roundf(2.0 + sin(a) * ry)
 		draw_rect(Rect2(px - 1.0, py, 2.0, 1.0), c_gold if i % 2 == 0 else c_apr)
+	if Lx.player is Node2D and is_instance_valid(Lx.player):
+		var d_w: float = (Lx.player as Node2D).global_position.distance_to(pos)
+		if d_w <= 56.0:
+			var prox: float = clampf(1.0 - d_w / 56.0, 0.0, 1.0)
+			var wa: float = (0.30 if fr else 0.44) * prox
+			var c_core: Color = LxBiomePalette.col(island_id, "core")
+			draw_arc(Vector2(0.0, 2.0), roundf(22.0 + breath * 0.4), spin, spin + PI * 0.8, 12, Color(c_gold, wa), 1.0)
+			draw_arc(Vector2(0.0, 2.0), roundf(22.0 + breath * 0.4), spin + PI, spin + PI * 1.8, 12, Color(c_core, wa), 1.0)
+			for si: int in range(2):
+				var su: float = fposmod(_clock * 0.65 + float(si) * 0.5, 1.0)
+				var sx: float = roundf((-14.0 if si == 0 else 14.0) + sin(_clock * 2.0 + float(si) * 3.1) * 2.0)
+				draw_rect(Rect2(sx, roundf(0.0 - su * 18.0), 1.0, 1.0), Color(c_core if su < 0.45 else c_gold, sin(su * PI) * prox * 0.85))
 
 
 func _draw_hearth_embers() -> void:

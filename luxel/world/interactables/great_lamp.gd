@@ -285,3 +285,12 @@ func _draw_dawn_embers() -> void:
 		var px: float = roundf(sin(_clock * 1.6 + float(i) * 1.3) * (4.0 + t * 7.0))
 		var col: Color = (PAL["cream"] as Color) if t < 0.28 else (rc[1] if t < 0.68 else rc[0])
 		draw_rect(Rect2(px, roundf(-28.0 - t * 32.0), 1.0, 1.0), col)
+	if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % island_id, false)):
+		var h_spin: float = 0.0 if fred else _clock * 0.9
+		for hi2: int in range(4):
+			var ha2: float = h_spin + float(hi2) * (PI * 0.5)
+			var hx: float = roundf(cos(ha2) * 14.0)
+			var hy: float = roundf(-36.0 + sin(ha2) * 3.5)
+			draw_rect(Rect2(hx - 1.0, hy, 3.0, 1.0), PAL["gold"] as Color if hi2 % 2 == 0 else rc[1])
+			draw_rect(Rect2(hx, hy - 1.0, 1.0, 3.0), PAL["gold"] as Color if hi2 % 2 == 0 else rc[1])
+			draw_rect(Rect2(hx, hy, 1.0, 1.0), PAL["cream"] as Color)

@@ -28,6 +28,8 @@ func tick(dt: float) -> void:
 		if pip_on != _dormant_pip_on:
 			_dormant_pip_on = pip_on
 			queue_redraw()
+		elif Lx.player is Node2D and is_instance_valid(Lx.player) and (Lx.player as Node2D).global_position.distance_squared_to(pos) <= 3600.0:
+			queue_redraw()
 
 
 func interact(_actor: Node = null) -> bool:
@@ -88,8 +90,21 @@ func _draw() -> void:
 		_draw_fallback()
 	if lit:
 		_draw_lit_aura()
-	elif _is_dormant_pip_on():
-		draw_rect(Rect2(0.0, -17.0, 1.0, 1.0), PAL["sky"])
+	else:
+		if _is_dormant_pip_on():
+			draw_rect(Rect2(0.0, -17.0, 1.0, 1.0), PAL["sky"])
+		if Lx.player is Node2D and is_instance_valid(Lx.player):
+			var d_dw: float = (Lx.player as Node2D).global_position.distance_to(pos)
+			if d_dw <= 56.0:
+				var prox_d: float = clampf(1.0 - d_dw / 56.0, 0.0, 1.0)
+				var fr_d: bool = LxHudFx.flash_reduced()
+				var wc_d: Array[Color] = _biome_waystone_colors()
+				var d_spin: float = 0.0 if fr_d else _clock * 0.75
+				var da: float = (0.32 if fr_d else 0.46) * prox_d
+				draw_arc(Vector2(0.0, 2.0), 13.0, d_spin, d_spin + PI * 0.65, 10, Color(wc_d[0], da), 1.0)
+				draw_arc(Vector2(0.0, 2.0), 13.0, d_spin + PI, d_spin + PI * 1.65, 10, Color(wc_d[1], da), 1.0)
+				draw_rect(Rect2(-1.0, -17.0, 3.0, 1.0), Color(wc_d[1], minf(0.92, da * 1.6)))
+				draw_rect(Rect2(0.0, -18.0, 1.0, 3.0), Color(PAL["cream"] as Color, minf(0.92, da * 1.6)))
 	if _pulse_t > 0.0:
 		var p: float = 1.0 - clampf(_pulse_t / 0.48, 0.0, 1.0)
 		var wc: Array[Color] = _biome_waystone_colors()
