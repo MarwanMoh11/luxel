@@ -86,11 +86,12 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				var tc: Color = (LxPalette.PAL["ice"] if br.tide_surging else LxPalette.PAL["sky"]) as Color
 				if fill_w > 0.0:
 					hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(fill_w, 1.0)), tc)
-			elif br.beam_buff_t > 0.0:
-				hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
-				hud.draw_rect(Rect2(o + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), LxPalette.PAL["gold"] as Color)
-				hud.draw_rect(Rect2(o + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), LxPalette.PAL["gold"] as Color)
-				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+			if br.beam_buff_t > 0.0:
+				var fo: Vector2 = (o + Vector2(25.0, -1.0)) if not br.is_dungeon else o
+				hud.draw_rect(Rect2(fo, Vector2(7.0, 7.0)), bg)
+				hud.draw_rect(Rect2(fo + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), LxPalette.PAL["gold"] as Color)
+				hud.draw_rect(Rect2(fo + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), LxPalette.PAL["gold"] as Color)
+				hud.draw_rect(Rect2(fo + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
 		3:
 			if not br.is_dungeon:
 				var lit_b: int = mini(3, br.get_lit_bloom_count())

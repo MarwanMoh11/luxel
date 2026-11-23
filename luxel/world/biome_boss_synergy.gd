@@ -31,6 +31,7 @@ var _orrery_nodes: Array[Dictionary] = [] # {ang, cd}
 var _fresnel_buoys: Array[Dictionary] = [] # Isl 2 Lighthouse Hermit Fresnel Buoys {pos, cd, flash_t}
 var _lunar_anchors: Array[Dictionary] = [] # Isl 7 Hollow Wick Mirror Anchors {pos, cd, flash_t}
 var _dawn_relics: Array[Dictionary] = []   # Isl 8 The Hush Dawn Bell Relics {pos, cd, flash_t}
+var _mb_synergy: LxMinibossSynergy = LxMinibossSynergy.new()
 
 
 func _ready() -> void:
@@ -59,6 +60,8 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node) -
 	_center = rules.bounds.get_center() if rules != null else Vector2(224.0, 144.0)
 	if _active and _rules != null:
 		_seed_boss_arena_features()
+	elif _is_miniboss and _rules != null:
+		_mb_synergy.configure(_rules, _mech, _region, _center)
 	queue_redraw()
 
 
@@ -118,6 +121,7 @@ func tick(dt: float) -> void:
 			if Lx.audio != null:
 				Lx.audio.play_sfx("prop_chime", _center, true)
 		_miniboss_was_live = live_now
+		_mb_synergy.tick(dt, live_now)
 		queue_redraw()
 		return
 	_bell_pulse_t = maxf(0.0, _bell_pulse_t - dt)
@@ -250,6 +254,9 @@ func try_hit_boss_bloom(from_p: Vector2, to_p: Vector2) -> void:
 
 
 func try_hit_boss_feature(from_p: Vector2, to_p: Vector2, w: LxWick) -> void:
+	if _is_miniboss and _rules != null:
+		_mb_synergy.try_hit_segment(from_p, to_p, w, _has_live_enemies())
+		return
 	if not _active or _rules == null or _is_boss_cleared():
 		return
 	match _island_id:
@@ -412,6 +419,7 @@ func _draw_miniboss_arena(fred: bool) -> void:
 		var pt: Vector2 = (c + Vector2.from_angle(ang) * (r_out + 4.0)).round()
 		draw_rect(Rect2(pt - Vector2.ONE, Vector2(2.0, 2.0)), Color(col_b if k % 2 == 0 else col_a, a_ring * 1.4))
 	LxHudFx.draw_biome_crest(self, _island_id, c, Color(col_a, a_ring * 1.35), Color(PAL["cream"] as Color, a_ring * 1.2))
+	_mb_synergy.draw_anchors(self, _clock, fred, not live)
 	if _mb_clear_t > 0.0:
 		var u_mb: float = 1.0 - clampf(_mb_clear_t / 0.72, 0.0, 1.0)
 		var r_mb: float = roundf(lerpf(12.0, 96.0, u_mb))
