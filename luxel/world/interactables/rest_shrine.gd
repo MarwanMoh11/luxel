@@ -83,22 +83,35 @@ func _draw_fallback() -> void:
 
 
 func _draw_hearth_ring() -> void:
-	var breath: float = 0.0 if LxHudFx.flash_reduced() else sin(_clock * 2.2) * 1.4
+	var fr: bool = LxHudFx.flash_reduced()
+	var breath: float = 0.0 if fr else sin(_clock * 2.2) * 1.4
 	var rx: float = 19.0 + breath
 	var ry: float = 5.2 + breath * 0.3
 	var c_gold: Color = LxBiomePalette.col(island_id, "glow")
 	var c_apr: Color = LxBiomePalette.col(island_id, "hi")
+	var c_dim := Color(c_apr, 0.42)
+	# Subtle biome-framed sanctuary floor notches flanking the hearth
+	draw_rect(Rect2(-21.0, 2.0, 3.0, 1.0), c_dim)
+	draw_rect(Rect2(18.0, 2.0, 3.0, 1.0), c_dim)
+	draw_rect(Rect2(-3.0, 7.0, 6.0, 1.0), c_dim)
+	LxHudFx.draw_biome_crest(self, island_id, Vector2(0.0, 6.0), c_gold, LxBiomePalette.col(island_id, "core"))
+	var spin: float = 0.0 if fr else _clock * 0.45
 	for i: int in range(4):
-		var a: float = _clock * 0.45 + (TAU * float(i)) / 4.0
+		var a: float = spin + (TAU * float(i)) / 4.0
 		var px: float = roundf(cos(a) * rx)
 		var py: float = roundf(2.0 + sin(a) * ry)
 		draw_rect(Rect2(px - 1.0, py, 2.0, 1.0), c_gold if i % 2 == 0 else c_apr)
 
 
 func _draw_hearth_embers() -> void:
+	var fr: bool = LxHudFx.flash_reduced()
 	var c_cream: Color = LxBiomePalette.col(island_id, "core")
 	var c_gold: Color = LxBiomePalette.col(island_id, "glow")
 	var c_apr: Color = LxBiomePalette.col(island_id, "hi")
+	var crown_y: float = -24.0 + (0.0 if fr else roundf(sin(_clock * 2.2) * 1.0))
+	draw_rect(Rect2(-1.0, crown_y, 3.0, 1.0), c_gold)
+	draw_rect(Rect2(0.0, crown_y - 1.0, 1.0, 3.0), c_gold)
+	draw_rect(Rect2(0.0, crown_y, 1.0, 1.0), c_cream)
 	for i: int in range(3):
 		var t: float = fmod(_clock * 0.46 + float(i) * 0.33, 1.0)
 		var px: float = roundf(sin(_clock * 1.6 + float(i) * 2.1) * (2.5 + t * 3.0))

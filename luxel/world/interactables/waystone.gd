@@ -134,11 +134,15 @@ func _biome_waystone_colors() -> Array[Color]:
 
 func _draw_lit_aura() -> void:
 	var wc: Array[Color] = _biome_waystone_colors()
-	var pulse: float = 0.5 if LxHudFx.flash_reduced() else sin(_clock * 2.6)
+	var fr: bool = LxHudFx.flash_reduced()
+	var pulse: float = 0.5 if fr else sin(_clock * 2.6)
 	var base_col: Color = wc[0] if pulse > 0.0 else (PAL["blue"] as Color)
+	_draw_biome_floor_sigil(wc, fr)
 	draw_rect(Rect2(-1.0, 2.0, 2.0, 1.0), base_col)
 	if pulse > 0.45:
 		draw_rect(Rect2(0.0, 1.0, 1.0, 1.0), wc[1])
+	var bob: float = 0.0 if fr else roundf(sin(_clock * 2.0) * 1.0)
+	LxHudFx.draw_biome_crest(self, island_id, Vector2(0.0, -24.0 + bob), wc[0], wc[1])
 	var lanes: Array[float] = [-8.0, 7.0, -5.0]
 	for i: int in range(3):
 		var t: float = fmod(_clock * 0.42 + float(i) * 0.33, 1.0)
@@ -147,6 +151,51 @@ func _draw_lit_aura() -> void:
 		draw_rect(Rect2(px, py, 1.0, 1.0), wc[1] if t < 0.5 else wc[0])
 
 
+func _draw_biome_floor_sigil(wc: Array[Color], fr: bool) -> void:
+	var c0 := Color(wc[0], 0.55)
+	var c1 := Color(wc[1], 0.72)
+	var spin: float = 0.0 if fr else _clock * 0.55
+	match island_id:
+		2: # Tidewater compass wave chevrons
+			draw_line(Vector2(-11.0, 2.0), Vector2(-9.0, 0.0), c0, 1.0)
+			draw_line(Vector2(11.0, 2.0), Vector2(9.0, 0.0), c0, 1.0)
+			draw_rect(Rect2(-10.0, 3.0, 2.0, 1.0), c1)
+			draw_rect(Rect2(9.0, 3.0, 2.0, 1.0), c1)
+		3: # Thornwood 4-petal emerald leaf wreath
+			for p: Vector2 in [Vector2(-10.0, 1.0), Vector2(9.0, 1.0), Vector2(-6.0, 5.0), Vector2(5.0, 5.0)]:
+				draw_rect(Rect2(p, Vector2(2.0, 1.0)), c0)
+				draw_rect(Rect2(p + Vector2(0.0, -1.0), Vector2.ONE), c1)
+		4: # Mirefen rose-ice glass diamond
+			draw_line(Vector2(0.0, -3.0), Vector2(11.0, 2.0), c0, 1.0)
+			draw_line(Vector2(11.0, 2.0), Vector2(0.0, 6.0), c1, 1.0)
+			draw_line(Vector2(0.0, 6.0), Vector2(-11.0, 2.0), c0, 1.0)
+			draw_line(Vector2(-11.0, 2.0), Vector2(0.0, -3.0), c1, 1.0)
+		5: # Starfall rotating astrolabe ticks
+			for k: int in range(4):
+				var a: float = spin + float(k) * PI * 0.5
+				var pt := Vector2(roundf(cos(a) * 11.0), roundf(2.0 + sin(a) * 4.0))
+				draw_rect(Rect2(pt, Vector2(2.0, 1.0)), c1 if k % 2 == 0 else c0)
+		6: # Ashen Kiln forge anvil brackets
+			for sx: float in [-11.0, 9.0]:
+				draw_rect(Rect2(sx, 0.0, 2.0, 1.0), c0)
+				draw_rect(Rect2(sx, 4.0, 2.0, 1.0), c1)
+		7: # Moon Shoals twin silver crescent reflections
+			draw_arc(Vector2(0.0, 2.0), 11.0, 0.25, PI - 0.25, 10, c1, 1.0)
+			draw_rect(Rect2(-5.0, 6.0, 10.0, 1.0), c0)
+		8: # Long Night dawn sunburst spokes
+			for k8: int in range(6):
+				var a8: float = spin * 0.6 + float(k8) * TAU / 6.0
+				var p8 := Vector2(roundf(cos(a8) * 11.0), roundf(2.0 + sin(a8) * 4.5))
+				draw_rect(Rect2(p8, Vector2(1.0, 1.0)), c1 if k8 % 2 == 0 else c0)
+		_: # Bell Isle golden chime brackets
+			draw_rect(Rect2(-10.0, 1.0, 2.0, 2.0), c0)
+			draw_rect(Rect2(8.0, 1.0, 2.0, 2.0), c0)
+			draw_rect(Rect2(-9.0, 1.0, 1.0, 1.0), c1)
+			draw_rect(Rect2(9.0, 1.0, 1.0, 1.0), c1)
+
+
 func _is_dormant_pip_on() -> bool:
+	if LxHudFx.flash_reduced():
+		return true
 	var phase: float = fmod(absf(pos.x * 0.023 + pos.y * 0.019), 2.6)
 	return fmod(_clock + phase, 2.6) < 0.75
