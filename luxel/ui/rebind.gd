@@ -250,9 +250,12 @@ func _draw() -> void:
 	var pulse_hi: bool = true if no_flash else fmod(_blink_t, 0.5) < 0.25
 	draw_rect(Rect2(PANEL_RECT.position + Vector2(3.0, 3.0), PANEL_RECT.size), LxPalette.PAL["void"])
 	draw_rect(PANEL_RECT.grow(1.0), LxPalette.PAL["void"])
-	var panel_border: String = ("gold" if pulse_hi else "apricot") if _listening else "mauve"
+	var isl_r: int = Lx.state.island_id if Lx.state != null else 1
+	var panel_border: String = ("gold" if pulse_hi else "apricot") if _listening else LxBiomePalette.key(isl_r, "border")
 	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", panel_border, "night")
 	_draw_frame_ornaments()
+	LxHudFx.draw_biome_crest(self, isl_r, Vector2(PANEL_RECT.position.x + 16.0, 17.0), LxBiomePalette.col(isl_r, "hi"), LxPalette.PAL["cream"] as Color)
+	LxHudFx.draw_biome_crest(self, isl_r, Vector2(PANEL_RECT.end.x - 17.0, 17.0), LxBiomePalette.col(isl_r, "hi"), LxPalette.PAL["cream"] as Color)
 	LxPixelFont.draw_centered(self, LxStrings.text("REBIND_TITLE"), 160.0, 15.0, LxPalette.PAL["gold"], 1)
 
 	var dev_key: String = "REBIND_DEVICE_KBM" if device_kind == "kbm" else "REBIND_DEVICE_PAD"

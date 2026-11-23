@@ -157,7 +157,7 @@ func tick(dt: float) -> void:
 							_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 2.8)
 							w.spawn_ring(npt, 2.0, 16.0, 0.24, LxWick.PAL_GOLD, 1.2)
 							if Lx.audio != null:
-								Lx.audio.play_sfx("prop_chime", npt, true)
+								Lx.audio.play_sfx("clockwork_chime", npt, true)
 							break
 		6: # Great Kiln: furnace ember gust empowers Flare-Dashing west with +1 Molten Overdrive charge!
 			var gust_on: bool = fposmod(_clock, 6.0) >= 4.4
@@ -174,13 +174,15 @@ func tick(dt: float) -> void:
 				if LxBiomeMechanics.active_instance != null:
 					LxBiomeMechanics.active_instance.molten_charges = mini(3, LxBiomeMechanics.active_instance.molten_charges + 1)
 				w.spawn_sparks(w.global_position, Vector2.LEFT, 5, LxWick.PAL_APRICOT, 28.0, 72.0, 0.22)
+				if Lx.audio != null:
+					Lx.audio.play_sfx("furnace_draw", w.global_position, true)
 		7: # Moon Spire: dashing across the silver lunar focus during Full Silver Moon illuminates the chamber
 			if _rules.lunar_phase > 0.65 and dash_started and _twist_cd <= 0.0 and w != null and w.global_position.distance_to(_center) <= 36.0:
 				_twist_cd = 2.6
 				if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 					LxDarknessLayer.active_instance.add_burst_light(_center, 110.0, 0.85 if LxHudFx.flash_reduced() else 1.25, 0.55)
 				if Lx.audio != null:
-					Lx.audio.play_sfx("prop_chime", _center, true)
+					Lx.audio.play_sfx("lens_reveal", _center, true)
 		8: # Bell Sanctum: Dawn Cracks pulse bonus Ember toward Sunflare during heartbeat peaks
 			var beat: float = 0.5 + 0.5 * sin(_clock * 2.1)
 			if beat > 0.82 and _twist_cd <= 0.0 and w != null and not w.dead and w.move_sunflare != null and w.move_sunflare.unlocked:
@@ -188,6 +190,8 @@ func tick(dt: float) -> void:
 					_twist_cd = 3.0
 					w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 4.0)
 					w.spawn_sparks(w.global_position, Vector2.UP, 4, LxWick.PAL_GOLD, 16.0, 42.0, 0.24)
+					if Lx.audio != null:
+						Lx.audio.play_sfx("eclipse_wave", w.global_position, true)
 	_was_dashing = dashing_now
 	queue_redraw()
 
@@ -226,7 +230,7 @@ func _trigger_spore_puff(at: Vector2) -> void:
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		LxDarknessLayer.active_instance.add_burst_light(at, 84.0, 0.82 if LxHudFx.flash_reduced() else 1.18, 0.45)
 	if Lx.audio != null:
-		Lx.audio.play_sfx("prop_rustle", at, true)
+		Lx.audio.play_sfx("spore_pop", at, true)
 	if _region != null and _region.has_method("get_enemies"):
 		var enemies_v: Variant = _region.call("get_enemies")
 		if enemies_v is Array:

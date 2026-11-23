@@ -136,6 +136,10 @@ static func draw_death_ornaments(ci: CanvasItem, panel: Rect2, t: float) -> void
 		var ay: float = roundf(panel.position.y + 14.0 + fmod(t * (7.0 + float(am) * 1.6) + float(am) * 19.0, panel.size.y - 26.0))
 		ci.draw_rect(Rect2(ax + roundf(sin(t * 1.9 + float(am)) * 1.5), ay, 1.0, 1.0), LxPalette.PAL["stone" if am % 2 == 0 else "mauve"])
 	_draw_filigree_divider(ci, panel.position.x + 18.0, panel.end.x - 18.0, 99.0, "coral", "apricot")
+	var isl_d: int = Lx.state.island_id if Lx.state != null else 1
+	var b_hi_d: Color = LxBiomePalette.col(isl_d, "hi")
+	LxHudFx.draw_biome_crest(ci, isl_d, Vector2(panel.position.x + 16.0, 52.0), b_hi_d, LxPalette.PAL["cream"] as Color)
+	LxHudFx.draw_biome_crest(ci, isl_d, Vector2(panel.end.x - 17.0, 52.0), b_hi_d, LxPalette.PAL["cream"] as Color)
 
 static func draw_lantern_core(ci: CanvasItem, at: Vector2, tier: int, t: float) -> void:
 	var x: float = roundf(at.x)
@@ -388,9 +392,11 @@ static func draw_credits_backdrop(ci: CanvasItem, t: float) -> void:
 		var bx: float = float(b[0])
 		var by: float = float(b[1])
 		var lit_c: bool = LxHudFx.flash_reduced() or fmod(t * 1.6 + float(bi) * 0.55, 1.0) < 0.6
-		ci.draw_rect(Rect2(bx, by - 5.0, 1.0, 5.0), LxPalette.PAL["apricot" if lit_c else "dusk"])
-		ci.draw_rect(Rect2(bx, by, 1.0, 1.0), LxPalette.PAL["cream" if lit_c else "gold"])
-		ci.draw_rect(Rect2(bx - 1.0, 166.0 + float(bi % 3) * 2.0, 3.0, 1.0), LxPalette.PAL["gold" if lit_c else "apricot"])
+		var bc_glow: Color = LxBiomePalette.col(bi + 1, "glow")
+		var bc_hi: Color = LxBiomePalette.col(bi + 1, "hi")
+		ci.draw_rect(Rect2(bx, by - 5.0, 1.0, 5.0), bc_hi if lit_c else (LxPalette.PAL["dusk"] as Color))
+		ci.draw_rect(Rect2(bx, by, 1.0, 1.0), LxPalette.PAL["cream"] if lit_c else bc_glow)
+		ci.draw_rect(Rect2(bx - 1.0, 166.0 + float(bi % 3) * 2.0, 3.0, 1.0), bc_glow if lit_c else bc_hi)
 	# Gentle rising lantern fireflies along left/right margins (center text lane stays clean).
 	for mi: int in range(14):
 		var side_x: float = float(8 + (mi * 13) % 38) if mi % 2 == 0 else float(274 + (mi * 17) % 38)

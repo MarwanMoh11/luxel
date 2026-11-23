@@ -136,6 +136,10 @@ func tick(dt: float) -> void:
 		if _island_id == 8 and dashing and LxBiomeMechanics.active_instance != null and LxBiomeMechanics.active_instance.dawn_seals_broken > 0:
 			if fmod(_clock, 0.05) < dt:
 				_trails.append({"pos": wpos, "age": 0.0, "dur": 0.38, "col": "gold"})
+		# Relit Overworld Grace: warm golden-biome dawn motes gently trail Wick on saved islands!
+		if not _rules.is_dungeon and moved and _step_cd <= 0.0 and Lx.state != null and Lx.state.relit_islands.has(_island_id):
+			_step_cd = 0.22
+			_trails.append({"pos": wpos + Vector2(sin(_clock * 6.0) * 3.0, -2.0), "vel": Vector2(0.0, -14.0), "age": 0.0, "dur": 0.42, "col": LxBiomePalette.key(_island_id, "glow")})
 		_was_dashing = dashing
 	if not _trails.is_empty() or not _ripples.is_empty() or not _fireflies.is_empty() or _moon_mirror_on:
 		queue_redraw()

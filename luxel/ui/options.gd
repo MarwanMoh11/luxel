@@ -339,8 +339,11 @@ func _apply_and_save(cfg: Dictionary) -> void:
 func _draw() -> void:
 	draw_rect(Rect2(PANEL_RECT.position + Vector2(3.0, 3.0), PANEL_RECT.size), LxPalette.PAL["void"])
 	draw_rect(PANEL_RECT.grow(1.0), LxPalette.PAL["void"])
-	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", "mauve", "night")
+	var isl_o: int = Lx.state.island_id if Lx.state != null else 1
+	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", LxBiomePalette.key(isl_o, "border"), "night")
 	_draw_frame_ornaments()
+	LxHudFx.draw_biome_crest(self, isl_o, Vector2(PANEL_RECT.position.x + 16.0, PANEL_RECT.position.y + 8.0), LxBiomePalette.col(isl_o, "hi"), LxPalette.PAL["cream"] as Color)
+	LxHudFx.draw_biome_crest(self, isl_o, Vector2(PANEL_RECT.end.x - 17.0, PANEL_RECT.position.y + 8.0), LxBiomePalette.col(isl_o, "hi"), LxPalette.PAL["cream"] as Color)
 	LxPixelFont.draw_centered(self, LxStrings.text("OPT_TITLE"), 160.0, PANEL_RECT.position.y + 6.0, LxPalette.PAL["gold"], 1)
 
 	for i: int in range(TAB_KEYS.size()):
