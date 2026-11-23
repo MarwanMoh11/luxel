@@ -86,6 +86,8 @@ func _relight() -> bool:
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.09)
 	_emit_gust(144.0, 125.0, Vector2(0.0, -14.0))
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, pos, 22.0, 9.0)
 	_emit_sfx("great_lamp_relit")
 	var accent: String = _island_relight_sfx()
 	if not accent.is_empty() and Lx.audio != null:
@@ -244,6 +246,10 @@ func _draw_dawn_embers() -> void:
 		draw_rect(Rect2(roundf(cos(ha) * 22.0), roundf(2.0 + sin(ha) * 6.5), 2.0 if hi % 2 == 0 else 1.0, 1.0), rc[1] if hi % 2 == 0 else rc[0])
 	# Biome-specific ceremonial crown shimmer above the relit Great Lamp!
 	match island_id:
+		1: # Warm acoustic brass bell-chime halo
+			var r_b: float = 12.0 + (0.0 if fred else fposmod(_clock * 10.0, 8.0))
+			var a_b: float = 0.65 * clampf(1.0 - (r_b - 12.0) / 8.0, 0.25, 1.0)
+			draw_arc(Vector2(0.0, -24.0), roundf(r_b), PI * 1.12, PI * 1.88, 12, Color(PAL["gold"] as Color, a_b), 1.2)
 		2: # Rotating Fresnel lighthouse beams
 			for k: int in range(2):
 				var ba: float = _clock * 1.1 + float(k) * PI

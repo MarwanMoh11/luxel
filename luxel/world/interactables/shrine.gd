@@ -42,6 +42,8 @@ func interact(_actor: Node = null) -> bool:
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.06)
 	_emit_gust(108.0, 92.0, Vector2(0.0, -10.0))
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 18.0, 8.0)
 	_emit_sfx("shrine_claimed")
 	var accent_sfx: String = _move_accent_sfx()
 	if not accent_sfx.is_empty() and Lx.audio != null:

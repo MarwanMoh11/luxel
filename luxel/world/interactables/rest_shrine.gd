@@ -30,6 +30,8 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.heal_full()
 	_emit_sfx("rest_shrine")
 	_emit_gust(62.0, 50.0, Vector2(0.0, -8.0))
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, pos, 15.0, 6.0)
 	if Lx.ui != null and Lx.ui.has_method("open_rest_shop"):
 		Lx.ui.call("open_rest_shop")
 	elif Lx.events != null:
