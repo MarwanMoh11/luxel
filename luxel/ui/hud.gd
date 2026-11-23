@@ -183,14 +183,14 @@ func _on_beacon_lit(island_id: int, _beacon_id: String) -> void:
 	spawn_screen_cue(ck, Vector2(160.0, 34.0), LxBiomePalette.key(island_id, "glow"), 1.8)
 
 
-func _on_waystone_lit(_island_id: int, _waystone_id: String) -> void:
-	spawn_screen_cue("CUE_WAYSTONE_LIT", Vector2(160.0, 34.0), "sky", 1.6)
+func _on_waystone_lit(island_id: int, _waystone_id: String) -> void:
+	spawn_screen_cue("CUE_WAYSTONE_LIT", Vector2(160.0, 34.0), LxBiomePalette.key(island_id, "glow"), 1.6)
 
 
 func _on_move_unlocked(move_id: String) -> void:
 	var mdata: Dictionary = Lx.get_move_data(move_id)
 	var name_key: String = str(mdata.get("name_key", "CUE_SHRINE_CLAIMED"))
-	spawn_screen_cue(name_key, Vector2(160.0, 42.0), "gold", 2.2)
+	spawn_screen_cue(name_key, Vector2(160.0, 42.0), str(MOVE_COLORS.get(move_id, "gold")), 2.2)
 
 
 func _on_boss_phase(boss_id: String, phase: int) -> void:

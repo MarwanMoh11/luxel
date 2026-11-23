@@ -344,6 +344,11 @@ static func draw_results_ornaments(ci: CanvasItem, panel: Rect2, rank_key: Strin
 		var c1: Color = LxBiomePalette.col(isl_c, "glow") if relit_c else (LxPalette.PAL["dusk"] as Color)
 		var c2: Color = (LxPalette.PAL["cream"] if relit_c else LxPalette.PAL["mauve"]) as Color
 		LxHudFx.draw_biome_crest(ci, isl_c, Vector2(cx_c, 132.0), c1, c2)
+		if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % isl_c, false)):
+			var sg_c: bool = LxHudFx.flash_reduced() or fmod(t * 2.4 + float(isl_c) * 0.4, 1.0) < 0.55
+			ci.draw_rect(Rect2(cx_c, 126.0, 1.0, 3.0), c1)
+			ci.draw_rect(Rect2(cx_c - 1.0, 127.0, 3.0, 1.0), c1)
+			ci.draw_rect(Rect2(cx_c, 127.0, 1.0, 1.0), LxPalette.PAL["cream"] if sg_c else c1)
 	if rank_key == "RANK_S" or rank_key == "RANK_A":
 		var fr_r: bool = LxHudFx.flash_reduced()
 		var cnt: int = 8 if rank_key == "RANK_S" else 4
@@ -392,12 +397,19 @@ static func draw_credits_backdrop(ci: CanvasItem, t: float) -> void:
 	ci.draw_rect(Rect2(0.0, 146.0, 320.0, 34.0), LxPalette.PAL["night"])
 	_dither(ci, 0.0, 320.0, 144.0, LxPalette.PAL["night"])
 	_draw_stars(ci, t, 34, 6.0, 138.0, 73, true, 0.0, -1.0, -1.0)
+	# True reshaped 8-island archipelago silhouettes across the twilight credits horizon
 	_px(ci, [
-		[8, 155, 28, 9], [18, 150, 6, 5], [46, 156, 28, 8], [57, 151, 5, 5],
-		[84, 157, 30, 7], [92, 153, 12, 4], [124, 155, 28, 9], [133, 150, 10, 5],
-		[162, 154, 30, 10], [172, 149, 10, 5], [202, 156, 28, 8], [213, 151, 6, 5],
-		[240, 155, 28, 9], [252, 150, 4, 5], [278, 156, 32, 8], [290, 150, 8, 6],
+		[8, 155, 28, 9], [14, 153, 16, 2], [18, 150, 5, 5], [19, 149, 3, 1],                  # 1 Bell Isle cliff + belfry
+		[44, 157, 6, 7], [52, 157, 6, 7], [60, 157, 6, 7], [68, 157, 6, 7], [57, 151, 5, 6], # 2 Tidewater 4-islet piers + lighthouse
+		[84, 157, 28, 7], [88, 154, 20, 3], [91, 152, 14, 2], [94, 150, 8, 2],               # 3 Thornwood 3-tier oak massif
+		[124, 157, 28, 7], [130, 153, 16, 4], [133, 151, 10, 2], [136, 150, 4, 1],           # 4 Mirefen lagoon + conservatory dome
+		[162, 156, 30, 8], [166, 154, 22, 2], [171, 151, 12, 3], [174, 149, 6, 2],           # 5 Starfall astrolabe wheel + dome
+		[201, 156, 12, 8], [218, 156, 12, 8], [212, 151, 6, 6],                              # 6 Ashen Kiln split caldera + chimney
+		[240, 157, 10, 7], [258, 157, 10, 7], [252, 150, 4, 7],                              # 7 Moon Shoals twin crescents + spire
+		[278, 157, 32, 7], [283, 155, 22, 2], [288, 150, 3, 6], [297, 150, 3, 6], [291, 151, 6, 2], # 8 Long Night stepped cathedral arch
 	], "dusk")
+	_px(ci, [[213, 158, 5, 5]], "coral") # Subtle lava-river cleft glow in Ashen Kiln silhouette
+	_px(ci, [[250, 159, 8, 4]], "deep")  # Mirror lake reflection between Moon Shoals crescents
 	ci.draw_rect(Rect2(0.0, 164.0, 320.0, 16.0), LxPalette.PAL["void"])
 	_dither(ci, 0.0, 320.0, 163.0, LxPalette.PAL["void"])
 	for bi: int in range(8):
