@@ -5,6 +5,7 @@ extends RefCounted
 
 const PAL: Dictionary = LxPalette.PAL
 
+var _rules: LxBiomeRules = null
 var _island_id: int = 1
 var _room_idx: int = 1
 var _active: bool = false
@@ -15,6 +16,7 @@ var _motes: Array[Dictionary] = [] # {pos, vel, age, dur, col}
 
 
 func configure(rules: LxBiomeRules, room_idx: int, rid: String) -> void:
+	_rules = rules
 	_toys.clear()
 	_motes.clear()
 	_clock = 0.0
@@ -78,10 +80,10 @@ func tick(dt: float, w: LxWick) -> void:
 			continue
 		var tp: Vector2 = toy["pos"] as Vector2
 		if (fast and wp.distance_to(tp) <= 24.0) or lp.distance_to(tp) <= 22.0:
-			_trigger(toy, signf(tp.x - wp.x) if wp.x > -9000.0 else 1.0)
+			_trigger(toy, signf(tp.x - wp.x) if wp.x > -9000.0 else 1.0, w)
 
 
-func try_hit_segment(from_p: Vector2, to_p: Vector2) -> void:
+func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick = null) -> void:
 	if not _active:
 		return
 	for toy: Dictionary in _toys:
@@ -89,15 +91,46 @@ func try_hit_segment(from_p: Vector2, to_p: Vector2) -> void:
 			continue
 		var tp: Vector2 = toy["pos"] as Vector2
 		if Geometry2D.get_closest_point_to_segment(tp, from_p, to_p).distance_to(tp) <= 15.0:
-			_trigger(toy, signf(to_p.x - from_p.x))
+			_trigger(toy, signf(to_p.x - from_p.x), w)
 			return
 
 
-func _trigger(toy: Dictionary, push_dir: float) -> void:
+func _trigger(toy: Dictionary, push_dir: float, w: LxWick = null) -> void:
 	var tp: Vector2 = toy["pos"] as Vector2
-	toy["cd"] = 2.6
+	toy["cd"] = 3.8
 	toy["swing_t"] = 0.85
 	toy["dir"] = push_dir if absf(push_dir) > 0.1 else 1.0
+	var wick: LxWick = w if (w != null and is_instance_valid(w)) else (Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null)
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	var burst_r: float = 52.0
+	match _island_id:
+		1:
+			if wick != null and not wick.dead and wick.move_sunflare != null and wick.move_sunflare.unlocked:
+				wick.ember = minf(wick.move_sunflare.get_ember_max(), wick.ember + 2.0)
+		2:
+			if _rules != null and is_instance_valid(_rules):
+				_rules.beam_buff_t = maxf(_rules.beam_buff_t, 1.2)
+		3:
+			burst_r = 68.0
+			if wick != null and not wick.dead and wick.move_sunflare != null and wick.move_sunflare.unlocked:
+				wick.ember = minf(wick.move_sunflare.get_ember_max(), wick.ember + 3.0)
+		4:
+			if bm != null and is_instance_valid(bm):
+				bm.tailwind_t = maxf(bm.tailwind_t, 1.2)
+		5:
+			if _rules != null and is_instance_valid(_rules):
+				_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 1.4)
+		6:
+			if bm != null and is_instance_valid(bm) and bm.molten_charges <= 0:
+				bm.grant_molten_overdrive(1)
+		7:
+			burst_r = 74.0
+			if _rules != null and is_instance_valid(_rules):
+				_rules.lunar_phase = clampf(_rules.lunar_phase + 0.16, 0.0, 1.0)
+		8:
+			burst_r = 78.0
+			if wick != null and not wick.dead and wick.move_sunflare != null and wick.move_sunflare.unlocked:
+				wick.ember = minf(wick.move_sunflare.get_ember_max(), wick.ember + 5.0)
 	var k_glow: String = LxBiomePalette.key(_island_id, "glow")
 	var k_hi: String = LxBiomePalette.key(_island_id, "hi")
 	for k: int in range(5):
@@ -111,7 +144,7 @@ func _trigger(toy: Dictionary, push_dir: float) -> void:
 			"col": "cream" if k == 0 else (k_glow if k % 2 == 0 else k_hi),
 		})
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(tp, 48.0, 0.58 if LxHudFx.flash_reduced() else 0.88, 0.32)
+		LxDarknessLayer.active_instance.add_burst_light(tp, burst_r, 0.58 if LxHudFx.flash_reduced() else 0.90, 0.34)
 	if _sfx_cd <= 0.0 and Lx.audio != null:
 		_sfx_cd = 0.65
 		var sfx_id: String = "prop_chime"

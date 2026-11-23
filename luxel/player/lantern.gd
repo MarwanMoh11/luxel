@@ -491,9 +491,14 @@ func _draw() -> void:
 
 	var isl_id: int = Lx.state.island_id if Lx.state != null else 1
 	var glow_col: Color = PAL_CORAL if state == State.CARRIED else LxBiomePalette.col(isl_id, "glow")
+	var hi_col: Color = PAL_CORAL if state == State.CARRIED else LxBiomePalette.col(isl_id, "hi")
 	var glow_sc: float = 0.78 if flash_red else 1.0
-	draw_circle(center, 15.0 * pulse, Color(glow_col, 0.12 * glow_sc))
-	draw_circle(center, 9.0 * pulse, Color(PAL_APRICOT, 0.16 * glow_sc))
+	draw_circle(center, 15.0 * pulse, Color(glow_col, 0.13 * glow_sc))
+	draw_circle(center, 9.0 * pulse, Color(hi_col, 0.16 * glow_sc))
+	if (state == State.FLYING or state == State.RECALLING) and vel.length_squared() > 400.0:
+		var v_ang: float = (-vel).angle()
+		draw_arc(center, 8.5, v_ang - 0.85, v_ang + 0.85, 10, Color(glow_col, 0.62 * glow_sc), 1.3)
+		draw_arc(center, 11.0, v_ang - 0.55, v_ang + 0.55, 8, Color(PAL_CREAM, 0.46 * glow_sc), 1.0)
 
 	# Hang timer arc (shifts coral in final 1.1s before auto-recall) + 2 orbiting rising candlelight motes
 	if state == State.HANGING and hang_max > 0.05:
@@ -504,7 +509,7 @@ func _draw() -> void:
 			var m_ph: float = fmod(_anim_t * 0.72 + float(mi) * 0.5, 1.0)
 			var m_ang: float = _anim_t * 1.85 + float(mi) * PI
 			var m_pos: Vector2 = (center + Vector2(cos(m_ang) * 9.0, 2.0 - m_ph * 11.0)).round()
-			var m_col: Color = PAL_CREAM if mi == 0 else PAL_GOLD
+			var m_col: Color = PAL_CREAM if mi == 0 else glow_col
 			draw_rect(Rect2(m_pos, Vector2(1.0, 1.0)), Color(m_col, sin(m_ph * PI) * (0.65 if flash_red else 0.90)))
 		if Lx.state != null and Lx.state.has_move("lens"):
 			var l_spin: float = _anim_t * (0.55 if flash_red else 1.25)
