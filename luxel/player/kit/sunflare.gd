@@ -161,9 +161,10 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 	if counter_emp:
 		wick.spawn_ring(origin, 8.0, rad * 1.15, 0.44, LxWick.PAL_CREAM, 2.0)
 		wick.emit_sfx("perfect_counter", origin, false)
+	var b_glow_sf: Color = LxBiomePalette.col(isl_sf, "glow")
 	for i: int in range(16):
 		var sdir: Vector2 = Vector2.from_angle(TAU * float(i) / 16.0)
-		var scol: Color = LxWick.PAL_CREAM if (i % 2 == 0) else LxWick.PAL_GOLD
+		var scol: Color = b_glow_sf if (i % 4 == 3) else (LxWick.PAL_CREAM if (i % 2 == 0) else LxWick.PAL_GOLD)
 		wick.spawn_sparks(origin, sdir, 1, scol, 55.0, 145.0, 0.30)
 	wick.emit_sfx("sunflare_burst", origin, false)
 	return true
@@ -208,14 +209,21 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 			])
 			canvas.draw_colored_polygon(poly, Color(rcol, fade * (0.72 if is_long else 0.60) * flash_sc))
 		canvas.draw_line(base_p.round(), tip_p, Color(rcol, fade * 0.85 * flash_sc), 1.0)
-	# Expanding golden-cream nova rings
+	# Expanding golden-cream nova rings + outer biome resonance corona
+	var isl_d: int = Lx.state.island_id if Lx.state != null else 1
+	var b_glow: Color = LxBiomePalette.col(isl_d, "glow")
+	canvas.draw_arc(center, cur_r * 1.12, 0.0, TAU, 32, Color(b_glow, fade * (0.48 if flash_red else 0.62)), 1.5)
 	canvas.draw_arc(center, cur_r, 0.0, TAU, 32, Color(LxWick.PAL_GOLD, fade * (0.76 if flash_red else 0.95)), 2.5)
 	canvas.draw_arc(center, cur_r * 0.78, 0.0, TAU, 28, Color(LxWick.PAL_CREAM, fade * (0.68 if flash_red else 0.90)), 1.5)
-	# Crisp inner 4-point dawn star
+	# Crisp inner 4-point dawn star + diagonal biome filigree rays
 	var star_r: float = roundf(lerpf(14.0, 4.0, prog) * (0.78 if flash_red else 1.0))
 	if star_r >= 2.0:
 		var sa: float = fade * (0.72 if flash_red else 0.96)
 		var inner_s: float = roundf(star_r * 0.62)
+		var diag_s: float = roundf(star_r * 0.56)
+		if diag_s >= 2.0:
+			canvas.draw_line(center + Vector2(-diag_s, -diag_s), center + Vector2(diag_s, diag_s), Color(b_glow, sa * 0.72), 1.0)
+			canvas.draw_line(center + Vector2(-diag_s, diag_s), center + Vector2(diag_s, -diag_s), Color(b_glow, sa * 0.72), 1.0)
 		canvas.draw_line(center + Vector2(-star_r, 0.0), center + Vector2(star_r, 0.0), Color(LxWick.PAL_GOLD, sa), 1.0)
 		canvas.draw_line(center + Vector2(0.0, -star_r), center + Vector2(0.0, star_r), Color(LxWick.PAL_GOLD, sa), 1.0)
 		canvas.draw_line(center + Vector2(-inner_s, 0.0), center + Vector2(inner_s, 0.0), Color(LxWick.PAL_CREAM, sa), 1.0)

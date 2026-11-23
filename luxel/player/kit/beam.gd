@@ -212,6 +212,7 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	wick.spawn_ring(start_p, 2.0, 16.0 if empowered else 12.0, 0.22, LxWick.PAL_CREAM, 1.8 if empowered else 1.5)
 	wick.spawn_ring(end_p, 2.0, 14.0 if empowered else 10.0, 0.22, LxWick.PAL_GOLD, 1.8 if empowered else 1.5)
 	wick.spawn_sparks(start_p, aim, 9 if empowered else 6, LxWick.PAL_CREAM, 35.0, 105.0, 0.20)
+	wick.spawn_sparks(start_p, aim, 3, LxBiomePalette.col(isl_dec, "glow"), 28.0, 92.0, 0.22)
 	wick.spawn_sparks(end_p, -aim, 10 if empowered else 8, LxWick.PAL_GOLD, 30.0, 105.0, 0.22)
 	wick.spawn_sparks(end_p, -aim, 3, LxBiomePalette.col(isl_dec, "glow"), 26.0, 88.0, 0.24)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
@@ -280,6 +281,8 @@ func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
 	var flash_red: bool = LxHudFx.flash_reduced()
 	var flash_sc: float = 0.72 if flash_red else 1.0
 	if charging:
+		var isl_c: int = Lx.state.island_id if Lx.state != null else 1
+		var b_glow: Color = LxBiomePalette.col(isl_c, "glow")
 		var prog: float = charge_progress()
 		var ready: bool = prog >= 0.999
 		var r: float = lerpf(14.0, 4.5, prog)
@@ -290,13 +293,14 @@ func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
 		for i: int in range(4):
 			var ang: float = spin + TAU * float(i) * 0.25 + prog * 2.4
 			var mp: Vector2 = (hand_pos + Vector2.from_angle(ang) * mote_r).round()
-			var mcol: Color = LxWick.PAL_CREAM if (ready or i % 2 == 0) else LxWick.PAL_GOLD
+			var mcol: Color = LxWick.PAL_CREAM if (ready or i % 2 == 0) else b_glow
 			canvas.draw_rect(Rect2(mp, Vector2(1.0, 1.0)), Color(mcol, lerpf(0.55, 0.95, prog) * flash_sc))
 			var tp: Vector2 = (hand_pos + Vector2.from_angle(ang - 0.26) * (mote_r + 2.0)).round()
-			canvas.draw_rect(Rect2(tp, Vector2(1.0, 1.0)), Color(LxWick.PAL_APRICOT, 0.42 * flash_sc))
+			canvas.draw_rect(Rect2(tp, Vector2(1.0, 1.0)), Color(b_glow if i % 2 == 0 else LxWick.PAL_APRICOT, 0.48 * flash_sc))
 		if ready:
 			canvas.draw_circle(hand_pos, 3.0, LxWick.PAL_CREAM)
 			canvas.draw_arc(hand_pos, 7.5, 0.0, TAU, 16, Color(LxWick.PAL_GOLD, 0.70 * flash_sc), 1.0)
+			canvas.draw_arc(hand_pos, 9.5, 0.0, TAU, 16, Color(b_glow, 0.45 * flash_sc), 1.0)
 			var sr: float = roundf(5.5 if flash_red else (6.0 + 1.5 * sin(spin * 2.6)))
 			_draw_star_flare(canvas, hand_pos, Vector2.RIGHT, sr, sr, 0.92 * flash_sc)
 		var aim_dir: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
