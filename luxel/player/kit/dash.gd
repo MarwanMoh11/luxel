@@ -84,8 +84,9 @@ func _execute_dash() -> bool:
 	_afterimage_cd = 0.0
 
 	var isl_d: int = Lx.state.island_id if Lx.state != null else 1
+	var b_hi: Color = LxBiomePalette.col(isl_d, "hi")
 	var b_glow: Color = LxBiomePalette.col(isl_d, "glow")
-	wick.spawn_afterimage(LxWick.PAL_ICE)
+	wick.spawn_afterimage(b_hi)
 	wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.16, b_glow, 1.0)
 	_gust(38.0, 42.0)
 	if Lx.world != null and is_instance_valid(Lx.world):
@@ -127,11 +128,12 @@ func tick_dash(dt: float, world_ctx: Node) -> void:
 		var step_vec: Vector2 = dash_dir * dash_speed * dt
 		dash_dist_traveled += step_vec.length()
 
+		var isl_t: int = Lx.state.island_id if Lx.state != null else 1
 		_afterimage_cd -= dt
 		if _afterimage_cd <= 0.0:
 			_afterimage_cd = 0.032
-			wick.spawn_afterimage(LxWick.PAL_ICE)
-		wick.spawn_sparks(wick.global_position, -dash_dir, 1, LxWick.PAL_ICE, 8.0, 22.0, 0.16)
+			wick.spawn_afterimage(LxBiomePalette.col(isl_t, "hi"))
+		wick.spawn_sparks(wick.global_position, -dash_dir, 1, LxBiomePalette.col(isl_t, "glow"), 8.0, 22.0, 0.16)
 
 		_check_dash_hits(world_ctx)
 

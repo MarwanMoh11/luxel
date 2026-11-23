@@ -53,9 +53,9 @@ const SWAY_PROPS: Dictionary = {
 	"cattail_reeds": true, "blooming_lotus": true, "floating_lantern_lily": true, "marsh_willow": true,
 	"giant_lotus_pad": true, "mossy_planter_urn": true,
 	"hanging_pendulum": true, "armillary_sphere": true, "celestial_globe": true, "brass_orrery_stand": true,
-	"foundry_hook_crane": true,
+	"foundry_hook_crane": true, "slag_crucible": true, "ember_grate_vent": true, "hearth_brazier_tall": true,
 	"silver_willow_pale": true, "floating_prism_totem": true, "moon_crystal_cluster": true, "shattered_mirror_shard": true,
-	"tattered_sanctum_banner": true, "floating_cathedral_shard": true,
+	"tattered_sanctum_banner": true, "floating_cathedral_shard": true, "eclipse_brazier": true, "remix_kiln_crucible": true,
 }
 
 static var _global_sway_sfx_ms: int = 0
@@ -245,9 +245,10 @@ func _draw() -> void:
 		var u: float = clampf(1.0 - _sway_t / 0.36, 0.0, 1.0)
 		var mc: Color = _sway_mote_color()
 		var mh: float = minf(18.0, _frame_size.y * 0.55)
-		for mi: int in range(2):
-			var mx: float = roundf(_sway_dir * (2.5 + u * (5.5 + float(mi) * 3.0)) + float(mi * 2 - 1) * 2.5)
-			var my: float = roundf(-mh - u * (5.0 + float(mi) * 2.5) + sin(u * PI * 2.0 + float(mi)) * 1.5)
+		var cnt: int = 4 if _sway_amp >= 1.9 else 2
+		for mi: int in range(cnt):
+			var mx: float = roundf(_sway_dir * (2.5 + u * (5.5 + float(mi) * 2.4)) + float((mi % 2) * 2 - 1) * (2.0 + float(mi) * 0.6))
+			var my: float = roundf(-mh - u * (5.0 + float(mi) * 2.0) + sin(u * PI * 2.0 + float(mi)) * 1.5)
 			draw_rect(Rect2(mx, my, 1.0, 1.0), Color(mc, (1.0 - u) * 0.90))
 
 
@@ -258,12 +259,20 @@ func _play_sway_sfx() -> void:
 	if now_ms - _global_sway_sfx_ms < 220:
 		return
 	_global_sway_sfx_ms = now_ms
-	var is_chime: bool = prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("pendulum") or prop_key.contains("crystal") or prop_key.contains("shard") or prop_key.contains("armillary") or prop_key.contains("orrery") or prop_key.contains("globe")
-	_sfx_cd = 0.72 if is_chime else 0.56
-	Lx.audio.play_sfx("prop_chime" if is_chime else "prop_rustle", global_position, true)
+	var sfx_id: String = "prop_rustle"
+	if prop_key.contains("armillary") or prop_key.contains("orrery") or prop_key.contains("globe") or prop_key.contains("pendulum"):
+		sfx_id = "clockwork_chime"
+	elif prop_key.contains("shroom") or prop_key.contains("spore"):
+		sfx_id = "spore_pop"
+	elif prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("crystal") or prop_key.contains("shard"):
+		sfx_id = "prop_chime"
+	_sfx_cd = 0.72 if sfx_id != "prop_rustle" else 0.56
+	Lx.audio.play_sfx(sfx_id, global_position, true)
 
 
 func _sway_mote_color() -> Color:
+	if prop_key.contains("crucible") or prop_key.contains("vent") or prop_key.contains("hearth") or prop_key.contains("brazier"):
+		return PAL["coral"] as Color
 	if prop_key.contains("flower") or prop_key.contains("lotus"):
 		return PAL["rose"] as Color
 	if prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("lantern") or prop_key.contains("pendulum") or prop_key.contains("armillary") or prop_key.contains("orrery") or prop_key.contains("globe"):

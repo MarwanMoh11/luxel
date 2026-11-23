@@ -324,7 +324,8 @@ func tick_sim(dt: float, wick: LxWick, world_ctx: Node) -> void:
 
 	# Notify nearby interactables of lantern light (braziers, Lens phantom reveals).
 	if is_out():
-		wick.spawn_sparks(pos, Vector2.UP, 1, PAL_APRICOT, 4.0, 14.0, 0.16)
+		var isl_s: int = Lx.state.island_id if Lx.state != null else 1
+		wick.spawn_sparks(pos, Vector2.UP, 1, LxBiomePalette.col(isl_s, "hi"), 4.0, 14.0, 0.16)
 	_notify_light(wick, world_ctx)
 	queue_redraw()
 
@@ -335,7 +336,8 @@ func _land_hanging(wick: LxWick) -> void:
 	hang_timer = hang_max
 	if Lx.events != null:
 		Lx.events.lantern_hung.emit(pos)
-	wick.spawn_ring(pos, 2.0, 12.0, 0.22, PAL_GOLD, 1.0)
+	var isl_l: int = Lx.state.island_id if Lx.state != null else 1
+	wick.spawn_ring(pos, 2.0, 12.0, 0.22, LxBiomePalette.col(isl_l, "glow"), 1.0)
 	_emit_gust(pos, 44.0, 56.0)
 	_burst_light(pos, 52.0, 1.12, 0.20)
 	wick.emit_sfx("lantern_land", pos, true)
@@ -541,9 +543,10 @@ func _draw_lantern_tether(a: Vector2, b: Vector2, flash_red: bool, stolen: bool 
 	if total <= 2.0:
 		return
 	var step_dir: Vector2 = delta / total
-	var line_c: Color = PAL_CORAL if stolen else PAL_APRICOT
-	var bead_c: Color = PAL_CORAL if stolen else PAL_GOLD
-	var hi_c: Color = PAL_APRICOT if stolen else PAL_CREAM
+	var isl_t: int = Lx.state.island_id if Lx.state != null else 1
+	var line_c: Color = PAL_CORAL if stolen else LxBiomePalette.col(isl_t, "hi")
+	var bead_c: Color = PAL_CORAL if stolen else LxBiomePalette.col(isl_t, "glow")
+	var hi_c: Color = PAL_APRICOT if stolen else LxBiomePalette.col(isl_t, "core")
 	draw_line(a, b, Color(line_c, 0.30 if stolen else 0.22), 1.0)
 	var cursor: float = fmod(_anim_t * (20.0 if (stolen and not flash_red) else (14.0 if flash_red else 24.0)), 7.0)
 	var idx: int = 0
