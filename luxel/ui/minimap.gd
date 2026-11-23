@@ -56,9 +56,21 @@ static func _draw_frame_accents(c: CanvasItem, o: Vector2, inner: Rect2, isl_id:
 	c.draw_rect(Rect2(inner.position.x, my, 1.0, 2.0), dusk)
 	c.draw_rect(Rect2(x1, my, 1.0, 2.0), dusk)
 	c.draw_rect(Rect2(inner.end.x - 1.0, my, 1.0, 2.0), dusk)
-	# Compact Biome Micro-Crest tucked neatly left of the minimap border
+	# Compact Biome Micro-Crest tucked neatly left of the minimap border (+ Relit / Harmony badges)
 	c.draw_rect(Rect2(o + Vector2(-8.0, 1.0), Vector2(7.0, 7.0)), LxPalette.PAL["void"] as Color)
 	LxHudFx.draw_biome_crest(c, isl_id, o + Vector2(-5.0, 4.0), gold, LxPalette.PAL["cream"] as Color)
+	if Lx.state != null:
+		if Lx.state.relit_islands.has(isl_id):
+			c.draw_rect(Rect2(o + Vector2(-7.0, 9.0), Vector2(5.0, 3.0)), LxPalette.PAL["void"] as Color)
+			c.draw_rect(Rect2(o + Vector2(-6.0, 10.0), Vector2(3.0, 1.0)), LxPalette.PAL["gold"] as Color)
+			c.draw_rect(Rect2(o + Vector2(-5.0, 9.0), Vector2(1.0, 2.0)), LxPalette.PAL["cream"] as Color)
+		if bool(Lx.state.story_flags.get("disc_all_%d" % isl_id, false)):
+			var sy: float = 15.0 if Lx.state.relit_islands.has(isl_id) else 11.0
+			var sc := (o + Vector2(-5.0, sy)).round()
+			c.draw_rect(Rect2(sc + Vector2(-2.0, -2.0), Vector2(5.0, 5.0)), LxPalette.PAL["void"] as Color)
+			c.draw_rect(Rect2(sc + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), gold)
+			c.draw_rect(Rect2(sc + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), gold)
+			c.draw_rect(Rect2(sc, Vector2.ONE), LxPalette.PAL["cream"] as Color)
 
 
 static func _draw_zones(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:
@@ -82,9 +94,10 @@ static func _draw_zones(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:
 		var r := Rect2(rx0, ry0, clampf(maxf(1.0, rx1 - rx0), 0.0, inner.end.x - rx0), clampf(maxf(1.0, ry1 - ry0), 0.0, inner.end.y - ry0))
 		if r.size.x <= 0.0 or r.size.y <= 0.0:
 			continue
-		c.draw_rect(r, LxPalette.PAL["teal"] if lit else LxPalette.PAL["dusk"])
+		var z_isl: int = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 1
+		c.draw_rect(r, LxBiomePalette.col(z_isl, "mid") if lit else LxPalette.PAL["dusk"])
 		if r.size.x > 2.0 and r.size.y > 2.0:
-			c.draw_rect(r.grow(-1.0), LxPalette.PAL["pine"] if lit else LxPalette.PAL["void"])
+			c.draw_rect(r.grow(-1.0), LxBiomePalette.col(z_isl, "dark") if lit else LxPalette.PAL["void"])
 
 
 static func _draw_terrain_silhouette(c: CanvasItem, inner: Rect2) -> void:
