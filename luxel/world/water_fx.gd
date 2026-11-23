@@ -92,9 +92,16 @@ func spawn_ripple(world_pos: Vector2, col_key: String = "ice", max_r: float = 11
 		return
 	if _ripples.size() >= MAX_RIPPLES:
 		_ripples.pop_front()
+	var c1_k: String = col_key
+	var c2_k: String = "sky"
+	if col_key == "ice":
+		if _island_id == 3:
+			c1_k = "lime"; c2_k = "jade"
+		elif _island_id == 4:
+			c1_k = "rose"; c2_k = "ice"
 	_ripples.append({
 		"pos": world_pos, "age": 0.0, "dur": 0.42 if max_r <= 12.0 else 0.52, "max_r": max_r,
-		"c1": LxPalette.color(col_key, "ice"), "c2": LxPalette.color("sky"),
+		"c1": LxPalette.color(c1_k, "ice"), "c2": LxPalette.color(c2_k, "sky"),
 	})
 
 
@@ -137,15 +144,17 @@ func _draw() -> void:
 	var ts: float = float(_tile_size)
 
 	var relit_sea: bool = not _is_dungeon and Lx.state != null and Lx.state.relit_islands.has(_island_id)
-	var foam_hi: Color = (PAL["rose"] if (relit_sea and _island_id == 4) else (PAL["lime"] if _island_id == 3 else (PAL["cream"] if _island_id == 7 else PAL["ice"]))) as Color
-	var foam_lo: Color = (PAL["ice"] if (relit_sea and _island_id == 4) else (PAL["jade"] if _island_id == 3 else (PAL["teal"] if _island_id == 4 else PAL["sky"]))) as Color
+	var surging2: bool = _island_id == 2 and not _is_dungeon and LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance) and LxBiomeRules.active_instance.tide_surging
+	var foam_hi: Color = (PAL["cream"] if surging2 else (PAL["rose"] if (relit_sea and _island_id == 4) else (PAL["lime"] if _island_id == 3 else (PAL["cream"] if _island_id == 7 else PAL["ice"])))) as Color
+	var foam_lo: Color = (PAL["ice"] if surging2 else (PAL["ice"] if (relit_sea and _island_id == 4) else (PAL["jade"] if _island_id == 3 else (PAL["teal"] if _island_id == 4 else PAL["sky"])))) as Color
+	var foam_spd: float = 3.2 if (surging2 and not LxHudFx.flash_reduced()) else 2.1
 	for sh: Dictionary in _shores:
 		var sx: float = float(sh["x"])
 		var sy: float = float(sh["y"])
 		if sx + ts < min_x or sx > max_x or sy + ts < min_y or sy > max_y:
 			continue
 		var ph: float = float(sh["phase"])
-		var wv: float = sin(_clock * 2.1 + ph)
+		var wv: float = sin(_clock * foam_spd + ph)
 		var inset: float = 1.0 if wv > 0.25 else 0.0
 		var col: Color = foam_hi if wv > 0.45 else foam_lo
 		var m: int = int(sh["mask"])
@@ -197,8 +206,12 @@ func _draw() -> void:
 
 func _abyss_star_color(p: float) -> Color:
 	match _island_id:
+		2:
+			return (PAL["cream"] if p > 0.86 else (PAL["ice"] if p > 0.56 else PAL["blue"])) as Color
 		3:
 			return (PAL["lime"] if p > 0.82 else (PAL["jade"] if p > 0.55 else PAL["pine"])) as Color
+		4:
+			return (PAL["rose"] if p > 0.80 else (PAL["ice"] if p > 0.54 else PAL["teal"])) as Color
 		5:
 			return (PAL["cream"] if p > 0.88 else (PAL["gold"] if p > 0.62 else PAL["sky"])) as Color
 		7:
