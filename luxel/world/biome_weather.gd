@@ -23,6 +23,8 @@ var _cam_center: Vector2 = Vector2.ZERO
 var _drops: Array[Dictionary] = []
 var _comets: Array[Dictionary] = []
 var _gulls: Array[Dictionary] = []
+var _amb_sfx_cd: float = 9.0
+var _amb_side: float = 1.0
 
 
 func _ready() -> void:
@@ -40,6 +42,8 @@ func configure(island_id: int, is_dungeon: bool, cam_center: Vector2) -> void:
 	_gulls.clear()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(_island_id * 11939 + (401 if is_dungeon else 73))
+	_amb_sfx_cd = rng.randf_range(7.5, 11.5)
+	_amb_side = 1.0 if (_island_id % 2 == 0) else -1.0
 	if not is_dungeon:
 		match _island_id:
 			1: # Gentle twilight bell-blossom petals -> warm golden dawn pollen when relit
@@ -93,6 +97,13 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		return
 	_clock += dt
 	var relit: bool = _is_relit()
+	_amb_sfx_cd -= dt
+	if _amb_sfx_cd <= 0.0:
+		_amb_sfx_cd = 13.0 + fmod(absf(_clock * 1.7 + float(_island_id) * 2.3), 5.0)
+		var modal_open: bool = Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open"))
+		if not modal_open and Lx.audio != null:
+			Lx.audio.play_sfx(_ambient_breath_sfx(relit), _cam_center + Vector2(_amb_side * 96.0, -28.0), true)
+			_amb_side = -_amb_side
 	match _island_id:
 		1:
 			for d: Dictionary in _drops:
@@ -158,6 +169,41 @@ func _draw() -> void:
 			_draw_lunar_aurora(fred, relit, lit_b)
 		8:
 			_draw_eclipse_ash(fred, relit)
+	if Lx.state != null and Lx.state.relit_islands.size() >= 8:
+		_draw_true_dawn_glints(fred)
+
+
+func _ambient_breath_sfx(relit: bool) -> String:
+	match _island_id:
+		1:
+			return "prop_chime"
+		2:
+			return "lighthouse_toll" if relit else "harbor_creak"
+		3:
+			return "prop_chime" if relit else "prop_rustle"
+		4:
+			return "prop_chime" if relit else "feather_flutter"
+		5:
+			return "clockwork_chime"
+		6:
+			return "forge_gust" if relit else "furnace_draw"
+		7:
+			return "lens_reveal" if relit else "phantom_phase"
+		_:
+			return "prop_chime" if relit else "void_hum"
+
+
+func _draw_true_dawn_glints(fred: bool) -> void:
+	var c_cream: Color = PAL["cream"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	for gi: int in range(6):
+		var ph: float = float(gi) * 1.13 + float(_island_id) * 0.7
+		var tw: float = 0.62 if fred else (0.35 + 0.65 * pow(0.5 + 0.5 * sin(_clock * 1.6 + ph), 2.0))
+		var gx: float = roundf(_cam_center.x - 132.0 + float(gi) * 52.0 + sin(_clock * 0.28 + ph) * 10.0)
+		var gy: float = roundf(_cam_center.y - 78.0 + float(gi % 3) * 14.0 + cos(_clock * 0.22 + ph) * 4.0)
+		draw_rect(Rect2(gx - 1.0, gy, 3.0, 1.0), Color(c_gold, tw * 0.55))
+		draw_rect(Rect2(gx, gy - 1.0, 1.0, 3.0), Color(c_gold, tw * 0.55))
+		draw_rect(Rect2(gx, gy, 1.0, 1.0), Color(c_cream, tw * 0.85))
 
 
 func _draw_dawn_sunbeams(fred: bool, scale_a: float = 1.0) -> void:
