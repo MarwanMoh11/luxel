@@ -32,6 +32,7 @@ var _fresnel_buoys: Array[Dictionary] = [] # Isl 2 Lighthouse Hermit Fresnel Buo
 var _lunar_anchors: Array[Dictionary] = [] # Isl 7 Hollow Wick Mirror Anchors {pos, cd, flash_t}
 var _dawn_relics: Array[Dictionary] = []   # Isl 8 The Hush Dawn Bell Relics {pos, cd, flash_t}
 var _mb_synergy: LxMinibossSynergy = LxMinibossSynergy.new()
+var _boss_victory: LxBossVictoryFx = LxBossVictoryFx.new()
 
 
 func _ready() -> void:
@@ -60,6 +61,7 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node) -
 	_center = rules.bounds.get_center() if rules != null else Vector2(224.0, 144.0)
 	if _active and _rules != null:
 		_seed_boss_arena_features()
+		_boss_victory.configure(_island_id, _center, _region, _has_live_enemies())
 	elif _is_miniboss and _rules != null:
 		_mb_synergy.configure(_rules, _mech, _region, _center)
 	queue_redraw()
@@ -138,6 +140,7 @@ func tick(dt: float) -> void:
 		_tick_lunar_anchors(dt)
 	elif _island_id == 8:
 		_tick_dawn_relics(dt)
+	_boss_victory.tick(dt, _has_live_enemies())
 	queue_redraw()
 
 
@@ -440,6 +443,7 @@ func _draw() -> void:
 	var cleared: bool = _is_boss_cleared()
 	if not cleared:
 		_draw_boss_phase_corners(fred)
+	_boss_victory.draw_celebration(self, _clock, fred, cleared)
 	match _island_id:
 		1:
 			if not cleared:
