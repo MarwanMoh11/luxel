@@ -285,19 +285,21 @@ func _draw_bridges() -> void:
 		var a: Vector2 = ISLAND_POS[i]
 		var b: Vector2 = ISLAND_POS[i + 1]
 		var open_bridge: bool = Lx.state.relit_islands.has(i + 1)
+		var b_hi: Color = LxBiomePalette.col(i + 1, "glow")
+		var b_lo: Color = LxBiomePalette.col(i + 1, "hi")
 		for s: int in range(1, 8):
 			var p: Vector2 = a.lerp(b, float(s) / 8.0).round()
 			if open_bridge:
 				draw_rect(Rect2(p + Vector2(0.0, 1.0), Vector2(2.0, 1.0)), LxPalette.PAL["night"])
-				draw_rect(Rect2(p, Vector2(2.0, 2.0)), LxPalette.PAL["gold"] if ((s if LxHudFx.flash_reduced() else s + floori(_elapsed * 3.2)) % 3 == 0) else LxPalette.PAL["apricot"])
+				draw_rect(Rect2(p, Vector2(2.0, 2.0)), b_hi if ((s if LxHudFx.flash_reduced() else s + floori(_elapsed * 3.2)) % 3 == 0) else b_lo)
 			else:
 				draw_rect(Rect2(p, Vector2(2.0, 1.0)), LxPalette.PAL["dusk"])
 		if open_bridge:
 			var t: float = fmod(_elapsed * 0.55 + float(i) * 0.21, 1.0)
-			draw_rect(Rect2(a.lerp(b, clampf(t - 0.11, 0.08, 0.92)).round(), Vector2(1.0, 1.0)), LxPalette.PAL["apricot"])
-			draw_rect(Rect2(a.lerp(b, clampf(t - 0.05, 0.08, 0.92)).round(), Vector2(2.0, 2.0)), LxPalette.PAL["gold"])
+			draw_rect(Rect2(a.lerp(b, clampf(t - 0.11, 0.08, 0.92)).round(), Vector2(1.0, 1.0)), b_lo)
+			draw_rect(Rect2(a.lerp(b, clampf(t - 0.05, 0.08, 0.92)).round(), Vector2(2.0, 2.0)), b_hi)
 			var hp: Vector2 = a.lerp(b, clampf(t, 0.08, 0.92)).round()
-			draw_rect(Rect2(hp + Vector2(-1.0, 0.0), Vector2(4.0, 2.0)), LxPalette.PAL["gold"])
+			draw_rect(Rect2(hp + Vector2(-1.0, 0.0), Vector2(4.0, 2.0)), b_hi)
 			draw_rect(Rect2(hp, Vector2(2.0, 2.0)), LxPalette.PAL["cream"])
 
 
@@ -433,16 +435,17 @@ func _draw_selection_brackets(c: Vector2, is_hover: bool = false) -> void:
 
 
 func _draw_island_info(box: Rect2) -> void:
-	LxPixelFont.draw_panel(self, box, "dusk", "mauve", "night")
 	var explored: bool = _is_island_explored(_selected_island)
+	LxPixelFont.draw_panel(self, box, "dusk", LxBiomePalette.key(_selected_island, "border") if explored else "mauve", "night")
 	var data: Dictionary = Lx.get_island_data(_selected_island)
 	if not explored:
 		LxPixelFont.draw_left(self, LxStrings.text("MAP_UNEXPLORED"), box.position + Vector2(6.0, 8.0), LxPalette.PAL["mauve"], 1)
 		LxPixelFont.draw_left(self, LxStrings.text("MAP_LOCKED"), box.position + Vector2(6.0, 18.0), LxPalette.PAL["coral"], 1)
 		return
-	var isl_name: String = LxStrings.sanitize(str(data.get("name", "")), 22)
-	var title: String = LxStrings.fmt("MAP_ISLAND_FMT", [_selected_island, isl_name])
-	LxPixelFont.draw_left(self, title, box.position + Vector2(6.0, 6.0), LxPalette.PAL["gold"], 1)
+	var isl_glow: Color = LxBiomePalette.col(_selected_island, "glow")
+	LxHudFx.draw_biome_crest(self, _selected_island, box.position + Vector2(8.0, 8.0), isl_glow, LxPalette.PAL["cream"] as Color)
+	var isl_name: String = LxStrings.sanitize(str(data.get("name", "")), 20)
+	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_ISLAND_FMT", [_selected_island, isl_name]), box.position + Vector2(14.0, 6.0), isl_glow, 1)
 	if Lx.state != null and Lx.state.island_id == _selected_island:
 		LxPixelFont.draw_right(self, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 6.0, LxPalette.PAL["cream"], 1)
 
@@ -451,7 +454,7 @@ func _draw_island_info(box: Rect2) -> void:
 	for bk: int in range(3):
 		var bx: float = box.end.x - 24.0 + float(bk) * 6.0
 		var lit_b: bool = bk < beacons
-		draw_rect(Rect2(bx, box.position.y + 15.0, 4.0, 4.0), LxPalette.PAL["gold" if lit_b else "night"])
+		draw_rect(Rect2(bx, box.position.y + 15.0, 4.0, 4.0), isl_glow if lit_b else LxPalette.PAL["night"])
 		draw_rect(Rect2(bx + 1.0, box.position.y + 16.0, 2.0, 2.0), LxPalette.PAL["cream" if lit_b else "mauve"])
 
 	var boss_id: String = str(data.get("boss", ""))

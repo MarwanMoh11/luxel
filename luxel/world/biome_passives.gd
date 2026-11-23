@@ -176,6 +176,18 @@ func on_updraft_gust(origin: Vector2) -> void:
 
 
 func _on_enemy_killed(_enemy: Object, _kind: String, pos: Vector2, _opened_kill: bool) -> void:
+	# Biome-flavoured defeat burst ring + radial sparks (strictly 20 Last Light colours)
+	var k_mid: String = LxBiomePalette.key(_island_id, "hi")
+	var k_glow: String = LxBiomePalette.key(_island_id, "glow")
+	_ripples.append({"pos": pos, "age": 0.0, "dur": 0.36, "r0": 3.0, "r1": 18.0, "col": k_glow})
+	for k: int in range(6):
+		var ang: float = float(k) * (TAU / 6.0) + pos.x * 0.03
+		_trails.append({
+			"pos": pos + Vector2(cos(ang) * 4.0, sin(ang) * 4.0),
+			"vel": Vector2(cos(ang), sin(ang)) * 34.0,
+			"age": 0.0, "dur": 0.34,
+			"col": k_glow if k % 2 == 0 else k_mid,
+		})
 	# Island 1: Acoustic Echo widens lantern light briefly
 	if _island_id == 1:
 		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
@@ -185,9 +197,8 @@ func _on_enemy_killed(_enemy: Object, _kind: String, pos: Vector2, _opened_kill:
 		var w: LxWick = Lx.player as LxWick
 		if w.move_sunflare != null and w.move_sunflare.unlocked:
 			w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 8.0)
-			_trails.append({"pos": pos, "age": 0.0, "dur": 0.45, "col": "coral"})
 			_trails.append({"pos": pos.lerp(w.global_position, 0.5), "age": 0.0, "dur": 0.45, "col": "gold"})
-			queue_redraw()
+	queue_redraw()
 
 
 func _draw() -> void:

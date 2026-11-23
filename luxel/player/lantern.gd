@@ -483,9 +483,10 @@ func _draw() -> void:
 		var t_b: Vector2 = rel_wick + Vector2(0.0, -5.0) if state == State.RECALLING else center
 		_draw_lantern_tether(t_a, t_b, flash_red, state == State.CARRIED)
 
-	var glow_col: Color = PAL_CORAL if state == State.CARRIED else PAL_GOLD
+	var isl_id: int = Lx.state.island_id if Lx.state != null else 1
+	var glow_col: Color = PAL_CORAL if state == State.CARRIED else LxBiomePalette.col(isl_id, "glow")
 	var glow_sc: float = 0.78 if flash_red else 1.0
-	draw_circle(center, 15.0 * pulse, Color(glow_col, 0.10 * glow_sc))
+	draw_circle(center, 15.0 * pulse, Color(glow_col, 0.12 * glow_sc))
 	draw_circle(center, 9.0 * pulse, Color(PAL_APRICOT, 0.16 * glow_sc))
 
 	# Hang timer arc (shifts coral in final 1.1s before auto-recall) + 2 orbiting rising candlelight motes
