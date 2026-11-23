@@ -23,6 +23,7 @@ var _spore_caps: Array[Dictionary] = [] # Isl 3 interactive spore-cap puffs
 var _twist_cd: float = 0.0
 var _was_dashing: bool = false
 var _room_entry_t: float = 0.0
+var _story_fx: LxDungeonStoryFx = LxDungeonStoryFx.new()
 
 
 func _ready() -> void:
@@ -49,6 +50,8 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_was_dashing = false
 	_room_entry_t = 0.55 if _active else 0.0
 	_room_idx = _parse_room_index(region_node)
+	var rid_s: String = str(region_node.get("current_region_id")) if (region_node != null and region_node.get("current_region_id") != null) else ""
+	_story_fx.configure(rules, _room_idx, rid_s)
 	if _active:
 		_seed_room()
 	queue_redraw()
@@ -210,12 +213,14 @@ func tick(dt: float) -> void:
 					if Lx.audio != null:
 						Lx.audio.play_sfx("eclipse_wave", w.global_position, true)
 	_was_dashing = dashing_now
+	_story_fx.tick(dt, w)
 	queue_redraw()
 
 
 func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> void:
 	if not _active or _rules == null:
 		return
+	_story_fx.try_hit_segment(from_p, to_p)
 	if _island_id == 3:
 		for cap: Dictionary in _spore_caps:
 			if float(cap["cd"]) > 0.0:
@@ -322,6 +327,7 @@ func _draw() -> void:
 		draw_arc(_center.round(), er, 0.0, TAU, 24, Color(LxBiomePalette.col(_island_id, "glow"), ea), 1.4)
 		draw_arc(_center.round(), roundf(er * 0.72), 0.0, TAU, 18, Color(PAL["cream"] as Color, ea * 0.75), 1.0)
 	_draw_chamber_architecture(fred)
+	_story_fx.draw_toys(self, _rules, fred)
 	if _room_idx in [1, 5, 9] or (_island_id == 1 and _room_idx == 6):
 		_draw_architectural_medallion(fred)
 	match _island_id:
