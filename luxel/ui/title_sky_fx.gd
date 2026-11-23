@@ -146,6 +146,29 @@ static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> v
 			ci.draw_rect(Rect2(sc + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(b_glow, 0.82 * tw))
 			ci.draw_rect(Rect2(sc + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), Color(b_glow, 0.82 * tw))
 			ci.draw_rect(Rect2(sc, Vector2.ONE), Color(LxPalette.PAL["cream"], 0.96))
+	# Rising biome-tinted edge fireflies along the far left/right sky margins for saved islands
+	if not fred and not relit.is_empty():
+		var relit_ids: Array = relit.keys()
+		relit_ids.sort()
+		var n_ff: int = mini(relit_ids.size(), 6)
+		for fi: int in range(n_ff):
+			var iid: int = int(relit_ids[fi])
+			var u: float = fposmod(elapsed * 0.16 + float(fi) * 0.19, 1.0)
+			var on_right: bool = (fi % 2 == 1)
+			var base_x: float = (294.0 + float(fi % 3) * 6.0) if on_right else (12.0 + float(fi % 3) * 6.0)
+			var fx: float = roundf(base_x + sin(elapsed * 1.4 + float(fi) * 2.1) * 3.0)
+			var fy: float = roundf(138.0 - u * 86.0)
+			var fa: float = sin(u * PI) * 0.72
+			if fa > 0.05:
+				ci.draw_rect(Rect2(fx, fy, 1.0, 1.0), Color(LxBiomePalette.col(iid, "glow"), fa))
+	# 8/8 Harmony Mastery serene North Star halo crowning the upper center sky
+	if harmony.size() >= 8:
+		var ns := Vector2(160.0, 8.0)
+		var nt: float = 0.88 if fred else (0.76 + 0.24 * sin(elapsed * 1.9))
+		ci.draw_line(ns + Vector2(-4.0, 0.0), ns + Vector2(4.0, 0.0), Color(LxPalette.PAL["gold"] as Color, 0.58 * nt), 1.0)
+		ci.draw_line(ns + Vector2(0.0, -3.0), ns + Vector2(0.0, 3.0), Color(LxPalette.PAL["gold"] as Color, 0.58 * nt), 1.0)
+		ci.draw_rect(Rect2(ns - Vector2(1.0, 0.0), Vector2(3.0, 1.0)), Color(LxPalette.PAL["cream"] as Color, nt))
+		ci.draw_rect(Rect2(ns - Vector2(0.0, 1.0), Vector2(1.0, 3.0)), Color(LxPalette.PAL["cream"] as Color, nt))
 
 
 static func _draw_sky_constellations(ci: CanvasItem, elapsed: float, fred: bool) -> void:

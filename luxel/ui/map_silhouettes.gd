@@ -80,6 +80,39 @@ static func draw_plinth(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool
 		canvas.draw_rect(Rect2(star_c + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), LxBiomePalette.col(isl_id, "glow"))
 		canvas.draw_rect(Rect2(star_c, Vector2.ONE), LxPalette.PAL["cream"] as Color)
 	_draw_island_atmosphere(canvas, c, isl_id, relit, elapsed)
+	if isl_id == 1:
+		_draw_harmony_constellation(canvas, elapsed)
+
+
+static func _draw_harmony_constellation(canvas: CanvasItem, elapsed: float) -> void:
+	# Compact 8-island jewel bar in the quiet top-right Sky-Chart header (x=244..294, y=18)
+	if Lx.state == null:
+		return
+	var fred: bool = LxHudFx.flash_reduced()
+	var t: float = 0.0 if fred else elapsed
+	var harm_cnt: int = 0
+	for k: int in range(1, 9):
+		if bool(Lx.state.story_flags.get("disc_all_%d" % k, false)):
+			harm_cnt += 1
+	var base_x: float = 248.0
+	var cy: float = 18.0
+	var line_col: Color = Color(LxPalette.PAL["gold"] as Color, 0.72) if harm_cnt >= 8 else Color(LxPalette.PAL["dusk"] as Color, 0.85)
+	canvas.draw_line(Vector2(base_x, cy), Vector2(base_x + 42.0, cy), line_col, 1.0)
+	for k: int in range(1, 9):
+		var px: float = base_x + float(k - 1) * 6.0
+		var is_relit: bool = Lx.state.relit_islands.has(k)
+		var is_harm: bool = bool(Lx.state.story_flags.get("disc_all_%d" % k, false))
+		var b_glow: Color = LxBiomePalette.col(k, "glow")
+		if is_harm:
+			var tw: float = 0.88 if fred else (0.76 + 0.24 * sin(t * 2.4 + float(k) * 0.9))
+			canvas.draw_rect(Rect2(px - 1.0, cy, 3.0, 1.0), Color(b_glow, tw))
+			canvas.draw_rect(Rect2(px, cy - 1.0, 1.0, 3.0), Color(b_glow, tw))
+			canvas.draw_rect(Rect2(px, cy, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
+		elif is_relit:
+			canvas.draw_rect(Rect2(px - 1.0, cy - 1.0, 2.0, 2.0), b_glow)
+			canvas.draw_rect(Rect2(px, cy, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
+		else:
+			canvas.draw_rect(Rect2(px, cy, 1.0, 1.0), LxPalette.PAL["mauve"] as Color)
 
 
 static func _draw_island_atmosphere(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool, elapsed: float) -> void:
