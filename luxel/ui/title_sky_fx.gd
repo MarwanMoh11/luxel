@@ -115,6 +115,23 @@ static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> v
 			ci.draw_rect(Rect2(p, Vector2.ONE), Color(LxPalette.PAL["cream"], 0.95))
 			var rx: float = roundf(p.x + (0.0 if fred else sin(elapsed * 2.4 + float(i)) * 1.0))
 			ci.draw_rect(Rect2(rx - 1.0, 148.0 + float(i % 3) * 2.0, 3.0, 1.0), Color(b_glow, 0.42 * tw))
+			# Subtle biome-signature horizon whisper for each relit island
+			if not fred:
+				var wu: float = fposmod(elapsed * 0.45 + float(i) * 0.27, 1.0)
+				match isl_i:
+					3: # Rising emerald firefly above Thornwood
+						ci.draw_rect(Rect2(roundf(p.x + sin(elapsed * 2.0) * 3.0), roundf(p.y - 4.0 - wu * 9.0), 1.0, 1.0), Color(LxPalette.PAL["lime"], sin(wu * PI) * 0.85))
+					4: # Rose-ice conservatory sparkle above Mirefen
+						ci.draw_rect(Rect2(roundf(p.x + cos(elapsed * 1.8) * 3.0), roundf(p.y - 5.0 - wu * 7.0), 1.0, 1.0), Color(LxPalette.PAL["rose"], sin(wu * PI) * 0.85))
+					5: # Orbiting gold starlet around Observatory dome
+						ci.draw_rect(Rect2(roundf(p.x + cos(elapsed * 1.6) * 5.0), roundf(p.y - 6.0 + sin(elapsed * 1.6) * 2.0), 1.0, 1.0), Color(LxPalette.PAL["gold"], 0.85))
+					6: # Rising warm hearth ember over Ashen Kiln
+						ci.draw_rect(Rect2(roundf(p.x + sin(elapsed * 2.6) * 2.0), roundf(p.y - 3.0 - wu * 10.0), 1.0, 1.0), Color(LxPalette.PAL["apricot"], sin(wu * PI) * 0.85))
+					7: # Tiny silver-gold lunar aurora shimmer over Moon Shoals
+						ci.draw_line(Vector2(roundf(p.x - 4.0), roundf(p.y - 9.0)), Vector2(roundf(p.x + 4.0), roundf(p.y - 9.0)), Color(LxPalette.PAL["ice"], 0.45 * tw), 1.0)
+					8: # Radiant dawn crest sparks above The Long Night
+						for dk: int in [-1, 1]:
+							ci.draw_rect(Rect2(roundf(p.x + float(dk) * (3.0 + wu * 4.0)), roundf(p.y - 6.0 - wu * 8.0), 1.0, 1.0), Color(LxPalette.PAL["gold"], sin(wu * PI) * 0.85))
 		if is_harm:
 			var sc := Vector2(p.x, p.y - (bh + 5.0 if is_relit else 6.0)).round()
 			ci.draw_rect(Rect2(sc + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(b_glow, 0.82 * tw))

@@ -339,7 +339,7 @@ func _draw_unexplored_island(c: Vector2, isl_id: int) -> void:
 
 
 func _draw_island_plinth(c: Vector2, isl_id: int, relit: bool) -> void:
-	LxMapSilhouettes.draw_plinth(self, c, isl_id, relit, LxPalette.color(PLINTH_TOP[isl_id - 1]), LxPalette.color(PLINTH_RIM[isl_id - 1]))
+	LxMapSilhouettes.draw_plinth(self, c, isl_id, relit, LxPalette.color(PLINTH_TOP[isl_id - 1]), LxPalette.color(PLINTH_RIM[isl_id - 1]), _elapsed)
 
 
 func _draw_island_landmark(c: Vector2, isl_id: int, relit: bool) -> void:
