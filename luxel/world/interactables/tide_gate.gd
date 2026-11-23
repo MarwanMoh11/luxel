@@ -132,16 +132,18 @@ func _draw() -> void:
 	draw_rect(Rect2(x0 + 3.0, mid_y - 1.0, w - 6.0, 2.0), PAL["night"])
 	var no_flash: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 	var bar_w: float = floorf(maxf(0.0, w - 8.0) * _low_remain_frac)
+	var b_tg_glow: Color = LxBiomePalette.col(island_id, "glow")
+	var b_tg_hi: Color = LxBiomePalette.col(island_id, "hi")
 	if bar_w > 0.0:
-		var bar_col: Color = (PAL["apricot"] if (is_warning and no_flash) else (PAL["coral"] if (is_warning and _wave_stage % 2 == 0) else (PAL["ice"] if is_warning else PAL["sky"]))) as Color
+		var bar_col: Color = (PAL["apricot"] if (is_warning and no_flash) else (PAL["coral"] if (is_warning and _wave_stage % 2 == 0) else (PAL["ice"] if is_warning else b_tg_glow))) as Color
 		draw_rect(Rect2(x0 + 4.0, mid_y - 1.0, bar_w, 1.0), bar_col)
 	var bolts: Array[Vector2] = [
 		Vector2(x0 + 2.0, y0 + 2.0), Vector2(x0 + w - 4.0, y0 + 2.0),
 		Vector2(x0 + 2.0, y0 + h - 4.0), Vector2(x0 + w - 4.0, y0 + h - 4.0),
 	]
 	for bp: Vector2 in bolts:
-		draw_rect(Rect2(bp, Vector2(2.0, 2.0)), PAL["apricot"])
-		draw_rect(Rect2(bp, Vector2(1.0, 1.0)), PAL["gold"])
+		draw_rect(Rect2(bp, Vector2(2.0, 2.0)), b_tg_hi)
+		draw_rect(Rect2(bp, Vector2(1.0, 1.0)), b_tg_glow)
 	if is_warning:
 		var rim_c: Color = (PAL["sky"] if no_flash else (PAL["ice"] if _wave_stage % 2 == 0 else PAL["sky"])) as Color
 		draw_rect(Rect2(x0 + 1.0, y0 + 1.0, w - 2.0, h - 2.0), rim_c, false, 1.0)

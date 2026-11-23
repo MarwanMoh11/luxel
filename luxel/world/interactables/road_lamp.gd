@@ -4,6 +4,7 @@ extends LxInteractable
 
 var lit: bool = false
 var _ignite_t: float = 0.0
+var _near_unlit: bool = false
 
 
 func setup(spec: Dictionary) -> void:
@@ -14,6 +15,7 @@ func setup(spec: Dictionary) -> void:
 		lit = true
 	_uses_prop_anim = lit
 	_ignite_t = 0.0
+	_near_unlit = false
 	queue_redraw()
 
 
@@ -23,6 +25,13 @@ func tick(dt: float) -> void:
 	if _ignite_t > 0.0:
 		_ignite_t = maxf(0.0, _ignite_t - dt)
 		queue_redraw()
+	if not lit and active and Lx.player is Node2D and is_instance_valid(Lx.player):
+		var near_now: bool = (Lx.player as Node2D).global_position.distance_squared_to(pos) <= 4096.0
+		if near_now != _near_unlit:
+			_near_unlit = near_now
+			queue_redraw()
+		elif near_now and not LxHudFx.flash_reduced():
+			queue_redraw()
 
 
 func interact(_actor: Node = null) -> bool:
@@ -88,6 +97,11 @@ func _draw() -> void:
 		_draw_fallback()
 	if lit:
 		_draw_lantern_embers()
+	elif _near_unlit:
+		var gx_u: float = 4.0 if island_id >= 5 else 0.0
+		var pu: float = 0.72 if LxHudFx.flash_reduced() else (0.45 + 0.55 * absf(sin(_clock * 3.8)))
+		draw_rect(Rect2(gx_u, -15.0, 1.0, 1.0), Color(LxBiomePalette.col(island_id, "glow"), pu))
+		draw_rect(Rect2(gx_u - 1.0, -15.0, 3.0, 1.0), Color(LxBiomePalette.col(island_id, "hi"), pu * 0.45))
 	_draw_signal_pulses()
 
 
@@ -112,6 +126,9 @@ func _draw_lantern_embers() -> void:
 		var px: float = roundf(gx + sin(_clock * 1.6 + phase + float(i) * 3.1) * (2.5 + t * 2.5))
 		var py: float = roundf(-12.0 - t * 11.0)
 		draw_rect(Rect2(px, py, 1.0, 1.0), c_cream if t < 0.4 else c_gold)
+	if Lx.state != null and Lx.state.relit_islands.has(island_id):
+		var cy_r: float = -21.0 + (0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 2.2 + phase) * 1.0))
+		draw_rect(Rect2(gx, cy_r, 1.0, 1.0), PAL["gold"] as Color)
 	if _ignite_t > 0.0:
 		var u: float = 1.0 - clampf(_ignite_t / 0.30, 0.0, 1.0)
 		draw_arc(Vector2(gx, -14.0), roundf(lerpf(3.0, 14.0, u)), 0.0, TAU, 14, c_cream if u < 0.4 else c_gold, 1.0, false)

@@ -104,12 +104,20 @@ func _draw() -> void:
 	if not _draw_prop_sprite("chest", Vector2.ZERO, 1 if opened else 0):
 		_draw_fallback()
 	if not opened:
+		if reward_kind == "ember_piece" or reward_kind == "keepers_flame":
+			var bg_c: Color = LxBiomePalette.col(island_id, "glow")
+			var pa_c: float = 0.55 if LxHudFx.flash_reduced() else (0.38 + 0.34 * sin(_clock * 3.0 + pos.x * 0.04))
+			draw_rect(Rect2(-6.0, -7.0, 1.0, 1.0), Color(bg_c, pa_c))
+			draw_rect(Rect2(5.0, -7.0, 1.0, 1.0), Color(bg_c, pa_c))
 		_draw_lid_glint(_get_glint_stage())
 	elif _open_t > 0.0:
 		var u: float = 1.0 - clampf(_open_t / 0.44, 0.0, 1.0)
 		var is_rare: bool = reward_kind == "ember_piece" or reward_kind == "keepers_flame"
 		var b_glow: Color = LxBiomePalette.col(island_id, "glow")
 		var b_hi: Color = LxBiomePalette.col(island_id, "hi")
+		if is_rare:
+			var crest_y: float = roundf(-10.0 - u * 12.0)
+			LxHudFx.draw_biome_crest(self, island_id, Vector2(0.0, crest_y), Color(b_glow, (1.0 - u) * 0.92), Color(PAL["cream"] as Color, (1.0 - u) * 0.96))
 		if u < 0.55:
 			var rc: Color = (PAL["cream"] if u < 0.25 else ((PAL["coral"] as Color) if is_rare else b_glow)) as Color
 			draw_arc(Vector2(0.0, -7.0), roundf(lerpf(3.0, 18.0 if is_rare else 16.0, u / 0.55)), 0.0, TAU, 14, rc, 1.0, false)

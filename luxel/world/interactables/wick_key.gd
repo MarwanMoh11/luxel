@@ -142,3 +142,10 @@ func _draw() -> void:
 			draw_rect(Rect2(sx, sy - 1.0, 1.0, 3.0), core_c)
 		else:
 			draw_rect(Rect2(sx, sy, 1.0, 1.0), PAL["gold"])
+	# Subtle orbiting biome relic glints framing uncollected keys
+	var k_spd: float = 0.14 if LxHudFx.flash_reduced() else 0.26
+	var b_kg: Color = PAL["coral"] as Color if is_boss else LxBiomePalette.col(island_id, "glow")
+	for oi: int in range(2):
+		var oa: float = float(_anim_frame) * k_spd + float(oi) * PI
+		var op := Vector2(roundf(cos(oa) * 7.0), roundf(y - 2.0 + sin(oa) * 3.5))
+		draw_rect(Rect2(op, Vector2.ONE), core_c if oi == 0 else b_kg)
