@@ -98,11 +98,14 @@ func _place_discoveries(region_node: Node) -> void:
 				break
 		if not ok:
 			continue
+		var idx: int = _nodes.size()
+		var was_found: bool = Lx.state != null and bool(Lx.state.story_flags.get("disc_%d_%d" % [_island_id, idx], false))
 		_nodes.append({
+			"idx": idx,
 			"pos": p,
 			"anim_t": 0.0,
 			"cd": 0.0,
-			"found": false,
+			"found": was_found,
 			"phase": rng.randf_range(0.0, TAU),
 		})
 
@@ -222,11 +225,34 @@ func _trigger_node(nd: Dictionary, w: LxWick) -> void:
 		LxGroundDecals.active_instance.add_decal(decal_k, cp, 12.0, 5.5)
 	if first_time:
 		if Lx.state != null:
-			Lx.state.shards += 2
-		if Lx.events != null:
+			Lx.state.story_flags["disc_%d_%d" % [_island_id, int(nd.get("idx", 0))]] = true
+			Lx.state.add_shards(2)
+		elif Lx.events != null:
 			Lx.events.shard_collected.emit(2)
 		if w != null and is_instance_valid(w):
 			w.spawn_sparks(cp + Vector2(0.0, -7.0), Vector2.UP, 5, LxBiomePalette.col(_island_id, "glow"), 20.0, 54.0, 0.28)
+		var all_k: String = "disc_all_%d" % _island_id
+		if get_total_count() > 0 and get_found_count() >= get_total_count() and Lx.state != null and not bool(Lx.state.story_flags.get(all_k, false)):
+			_celebrate_all_found(cp, w, glow_k)
+
+
+func _celebrate_all_found(cp: Vector2, w: LxWick, glow_k: String) -> void:
+	if Lx.state != null:
+		Lx.state.story_flags["disc_all_%d" % _island_id] = true
+		Lx.state.add_shards(10)
+	for other: Dictionary in _nodes:
+		other["anim_t"] = 2.0
+		_rings.append({"pos": (other["pos"] as Vector2) + Vector2(0.0, -7.0), "age": 0.0, "dur": 0.68, "col": glow_k})
+	if Lx.audio != null:
+		Lx.audio.play_sfx("great_lamp_bloom", cp, true)
+	if Lx.camera != null and is_instance_valid(Lx.camera):
+		Lx.camera.add_shake(0.30)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(cp, 136.0, 0.85 if LxHudFx.flash_reduced() else 1.25, 0.74)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, cp, 16.0, 8.0)
+	if w != null and is_instance_valid(w):
+		w.spawn_sparks(cp + Vector2(0.0, -7.0), Vector2.UP, 10, LxBiomePalette.col(_island_id, "glow"), 28.0, 70.0, 0.44)
 
 
 func _draw() -> void:

@@ -361,10 +361,11 @@ func _draw_rank_pip(pr: Rect2, filled: bool, sel: bool, idx: int, next_buy: bool
 
 
 func _draw_purchase_sparkle(center: Vector2) -> void:
+	var isl: int = Lx.state.island_id if Lx.state != null else 1
 	var prog: float = clampf(1.0 - (_spark_t / SPARK_DUR), 0.0, 1.0)
 	var dist: float = roundf(3.0 + prog * 7.0)
 	var d_diag: float = roundf(dist * 0.7)
-	var col: Color = LxPalette.PAL["cream"] if prog < 0.3 else (LxPalette.PAL["gold"] if prog < 0.65 else LxPalette.PAL["apricot"])
+	var col: Color = (LxPalette.PAL["cream"] as Color) if prog < 0.3 else (LxBiomePalette.col(isl, "glow") if prog < 0.65 else LxBiomePalette.col(isl, "hi"))
 	var dirs: Array[Vector2] = [
 		Vector2(dist, 0.0), Vector2(-dist, 0.0), Vector2(0.0, dist), Vector2(0.0, -dist),
 		Vector2(d_diag, d_diag), Vector2(-d_diag, d_diag), Vector2(d_diag, -d_diag), Vector2(-d_diag, -d_diag),

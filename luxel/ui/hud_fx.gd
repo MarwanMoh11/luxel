@@ -67,7 +67,8 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				var rung_n: int = LxBellChimes.active_instance.get_rung_count()
 				var tot_n: int = LxBellChimes.active_instance.get_total_count()
 				if rung_n > 0 and tot_n > 0:
-					for k: int in range(mini(tot_n, 6)):
+					var show_n: int = mini(tot_n, 6)
+					for k: int in range(show_n):
 						var cx: float = o.x + float(k) * 5.0
 						hud.draw_rect(Rect2(cx, o.y, 4.0, 5.0), bg)
 						if k < rung_n:
@@ -75,6 +76,8 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 							hud.draw_rect(Rect2(cx + 1.0, o.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
 						else:
 							hud.draw_rect(Rect2(cx + 1.0, o.y + 1.0, 2.0, 3.0), night)
+					if rung_n >= tot_n:
+						_draw_discovery_crown(hud, Vector2(o.x + float(show_n) * 5.0 + 2.0, o.y + 2.0), LxPalette.PAL["gold"] as Color, blink_t, fred)
 		2:
 			if not br.is_dungeon:
 				var fill_w: float = floorf(18.0 * clampf(br.tide_phase, 0.0, 1.0))
@@ -165,7 +168,8 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 		if found_d > 0 and tot_d > 0:
 			var dy: float = o.y + 10.0 if br.island_id == 7 else o.y + 7.0
 			var d_col: Color = LxBiomePalette.col(br.island_id, "glow")
-			for k: int in range(mini(tot_d, 5)):
+			var show_d: int = mini(tot_d, 5)
+			for k: int in range(show_d):
 				var dx: float = o.x + float(k) * 5.0
 				hud.draw_rect(Rect2(dx, dy, 4.0, 4.0), bg)
 				if k < found_d:
@@ -173,6 +177,17 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 					hud.draw_rect(Rect2(dx + 1.0, dy + 1.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
 				else:
 					hud.draw_rect(Rect2(dx + 1.0, dy + 1.0, 2.0, 2.0), night)
+			if found_d >= tot_d:
+				_draw_discovery_crown(hud, Vector2(o.x + float(show_d) * 5.0 + 2.0, dy + 2.0), d_col, blink_t, fred)
+
+
+static func _draw_discovery_crown(hud: CanvasItem, center: Vector2, col: Color, blink_t: float, fred: bool) -> void:
+	var c: Vector2 = center.round()
+	var pulse: bool = fred or (int(blink_t * 4.5) % 2 == 0)
+	hud.draw_rect(Rect2(c + Vector2(-2.0, -2.0), Vector2(5.0, 5.0)), LxPalette.PAL["void"] as Color)
+	hud.draw_rect(Rect2(c + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), col)
+	hud.draw_rect(Rect2(c + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), col)
+	hud.draw_rect(Rect2(c, Vector2.ONE), (LxPalette.PAL["cream"] if pulse else LxPalette.PAL["gold"]) as Color)
 
 
 static func _draw_ember_ready_halo(hud: CanvasItem, blink_t: float, fred: bool) -> void:

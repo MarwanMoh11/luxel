@@ -72,6 +72,13 @@ static func draw_plinth(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool
 			_:
 				_px(canvas, c, [[-5, -2, 10, 1]], glow_c)
 				canvas.draw_rect(Rect2(roundf(c.x - 3.0), roundf(c.y - 2.0), 4.0, 1.0), gold)
+	# Golden Harmony Star on the Sky-Chart once all overworld chimes/discoveries on this island are awakened
+	if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % isl_id, false)):
+		var star_c: Vector2 = (c + Vector2(8.0, 5.0)).round()
+		canvas.draw_rect(Rect2(star_c + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), LxPalette.PAL["void"] as Color)
+		canvas.draw_rect(Rect2(star_c + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), LxBiomePalette.col(isl_id, "glow"))
+		canvas.draw_rect(Rect2(star_c + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), LxBiomePalette.col(isl_id, "glow"))
+		canvas.draw_rect(Rect2(star_c, Vector2.ONE), LxPalette.PAL["cream"] as Color)
 
 
 static func _px(canvas: CanvasItem, c: Vector2, rects: Array, col: Color) -> void:

@@ -50,11 +50,13 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	for idx: int in range(candidates.size()):
 		var pt: Vector2 = _snap_walkable(region_node, candidates[idx])
 		if pt != Vector2.ZERO:
+			var was_rung: bool = Lx.state != null and bool(Lx.state.story_flags.get("chime_1_%d" % idx, false))
 			_chimes.append({
+				"idx": idx,
 				"pos": pt,
 				"swing_t": 0.0,
 				"cd": 0.0,
-				"rung": false,
+				"rung": was_rung,
 				"phase": float(idx) * 1.15,
 			})
 	queue_redraw()
@@ -143,11 +145,33 @@ func _ring_chime(ch: Dictionary, w: LxWick) -> void:
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, cp, 12.0, 5.5)
 	if first_ring:
 		if Lx.state != null:
-			Lx.state.shards += 2
-		if Lx.events != null:
+			Lx.state.story_flags["chime_1_%d" % int(ch.get("idx", 0))] = true
+			Lx.state.add_shards(2)
+		elif Lx.events != null:
 			Lx.events.shard_collected.emit(2)
 		if w != null and is_instance_valid(w):
 			w.spawn_sparks(cp + Vector2(0.0, -8.0), Vector2.UP, 5, LxWick.PAL_GOLD, 20.0, 52.0, 0.28)
+		if get_total_count() > 0 and get_rung_count() >= get_total_count() and Lx.state != null and not bool(Lx.state.story_flags.get("disc_all_1", false)):
+			_celebrate_all_rung(cp, w)
+
+
+func _celebrate_all_rung(cp: Vector2, w: LxWick) -> void:
+	if Lx.state != null:
+		Lx.state.story_flags["disc_all_1"] = true
+		Lx.state.add_shards(10)
+	for other: Dictionary in _chimes:
+		other["swing_t"] = 2.0
+		_rings.append({"pos": (other["pos"] as Vector2) + Vector2(0.0, -8.0), "age": 0.0, "dur": 0.65})
+	if Lx.audio != null:
+		Lx.audio.play_sfx("great_lamp_bloom", cp, true)
+	if Lx.camera != null and is_instance_valid(Lx.camera):
+		Lx.camera.add_shake(0.30)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(cp, 132.0, 0.85 if LxHudFx.flash_reduced() else 1.25, 0.72)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, cp, 16.0, 8.0)
+	if w != null and is_instance_valid(w):
+		w.spawn_sparks(cp + Vector2(0.0, -8.0), Vector2.UP, 10, LxWick.PAL_GOLD, 28.0, 68.0, 0.42)
 
 
 func _draw() -> void:
