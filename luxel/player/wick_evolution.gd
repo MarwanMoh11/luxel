@@ -65,13 +65,19 @@ static func draw_wick_evolution(wick: LxWick, hand_pos: Vector2, clock_t: float,
 	if relit.has(7):
 		wick.draw_arc(center + Vector2(0.0, -5.0), 6.0, PI * 1.2, PI * 1.8, 6, Color(PAL["ice"] as Color, 0.42 if flash_red else 0.62), 1.0)
 
-	# 8/8 True Dawn Mastery: peaceful twinkling 8-island dawn crown around Wick
+	# 8/8 True Dawn Mastery: peaceful twinkling 8-island dawn crown around Wick (all 8 archipelago colours!)
 	if relit.size() >= 8:
-		var a8: float = t * 1.1
-		for k: int in range(4):
-			var ang: float = a8 + float(k) * (PI * 0.5)
-			var sp: Vector2 = (center + Vector2(cos(ang) * 9.5, sin(ang) * 4.5 - 3.0)).round()
-			wick.draw_rect(Rect2(sp, Vector2.ONE), Color((PAL["cream"] if k % 2 == 0 else PAL["gold"]) as Color, 0.68 if flash_red else 0.88))
+		var a8: float = t * 0.95
+		for k: int in range(8):
+			var ang: float = a8 + float(k) * (TAU / 8.0)
+			var rx8: float = 10.0 if k % 2 == 0 else 8.0
+			var ry8: float = 4.5 if k % 2 == 0 else 3.5
+			var sp: Vector2 = (center + Vector2(cos(ang) * rx8, sin(ang) * ry8 - 3.0)).round()
+			var col8: Color = LxBiomePalette.col(k + 1, "glow")
+			var a_sp: float = (0.62 if flash_red else 0.86) * (0.65 + 0.35 * sin(ang))
+			wick.draw_rect(Rect2(sp, Vector2.ONE), Color(col8, a_sp))
+			if k % 2 == 0 and (flash_red or sin(t * 3.0 + float(k)) > 0.35):
+				wick.draw_rect(Rect2(sp + Vector2(0.0, -1.0), Vector2.ONE), Color(PAL["cream"] as Color, a_sp * 0.72))
 
 
 static func draw_lantern_constellation(lantern: CanvasItem, center: Vector2, anim_t: float, flash_red: bool) -> void:

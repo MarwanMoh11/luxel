@@ -67,6 +67,15 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 				var f1: Vector2 = (veil_center + Vector2.from_angle(fa) * (veil_r + 3.5)).round()
 				b.draw_line(f0, f1, pal["gold"] as Color, 1.2)
 				b.draw_rect(Rect2(f1, Vector2.ONE), pal["cream"] as Color)
+	elif b.state == LxEnemyBrain.State.STAGGER:
+		# Exposed Veil Shatter: the light of all 8 islands orbits The Hush's vulnerable core!
+		var core_c: Vector2 = (off + (Vector2(0.0, -12.0) if has_sprite else Vector2.ZERO)).round()
+		var s_rot: float = b.anim_t * (0.9 if fred else 2.2)
+		for si: int in range(8):
+			var sa: float = s_rot + float(si) * (TAU / 8.0)
+			var sp_v: Vector2 = (core_c + Vector2.from_angle(sa) * (r + 12.0)).round()
+			b.draw_rect(Rect2(sp_v, Vector2(2.0, 2.0)), LxBiomePalette.col(si + 1, "glow"))
+			b.draw_rect(Rect2(sp_v, Vector2.ONE), pal["cream"] as Color)
 
 	if bool(b.get("void_orb_out")):
 		var orb_off: Vector2 = ((b.get("void_orb_pos") as Vector2) - b.pos).round()
@@ -210,3 +219,7 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 			var cd: Vector2 = Vector2.from_angle(float(ci) * (TAU * 0.25))
 			b.draw_line((off + cd * (r1 - 4.0)).round(), (off + cd * (r1 + 5.5)).round(), pal["gold"] as Color, 1.8)
 			b.draw_line((off + cd * (r1 - 2.0)).round(), (off + cd * (r1 + 3.5)).round(), pal["cream"] as Color, 1.0)
+		for bi: int in range(8):
+			var ba: float = float(bi) * (TAU / 8.0) + rp * 0.5
+			var bp_r: Vector2 = (off + Vector2.from_angle(ba) * (r1 + 3.0)).round()
+			b.draw_rect(Rect2(bp_r, Vector2(2.0, 2.0)), LxBiomePalette.col(bi + 1, "glow"))

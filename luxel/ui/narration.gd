@@ -180,6 +180,11 @@ func _draw() -> void:
 		var bot_y: float = lerpf(sr.end.y, 180.0 - BAR_HEIGHT, _bar)
 		draw_rect(Rect2(sr.position.x, sr.position.y, sr.size.x, top_y - sr.position.y).abs(), LxPalette.PAL["void"])
 		draw_rect(Rect2(sr.position.x, bot_y, sr.size.x, sr.end.y - bot_y).abs(), LxPalette.PAL["void"])
+		if _bar > 0.5:
+			var isl_lb: int = Lx.state.island_id if Lx.state != null else 1
+			var trim_c: Color = Color(LxBiomePalette.col(isl_lb, "dark"), 0.72)
+			draw_rect(Rect2(sr.position.x, roundf(top_y - 1.0), sr.size.x, 1.0), trim_c)
+			draw_rect(Rect2(sr.position.x, roundf(bot_y), sr.size.x, 1.0), trim_c)
 
 	if not is_letterbox_on() and Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
 		return
