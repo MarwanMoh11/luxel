@@ -87,6 +87,9 @@ func _relight() -> bool:
 		Lx.hitstop.trigger(0.09)
 	_emit_gust(144.0, 125.0, Vector2(0.0, -14.0))
 	_emit_sfx("great_lamp_relit")
+	var accent: String = _island_relight_sfx()
+	if not accent.is_empty() and Lx.audio != null:
+		Lx.audio.play_sfx(accent, pos, true)
 	_emit_save("great_lamp_%d" % island_id)
 	_notify_linked_targets(true)
 	queue_redraw()
@@ -136,13 +139,53 @@ func _draw() -> void:
 		_draw_dawn_embers()
 	if _relight_t > 0.0:
 		var p: float = 1.0 - clampf(_relight_t / 0.72, 0.0, 1.0)
+		var rc: Array[Color] = _island_relight_colors()
 		var col_w: float = roundf(maxf(0.0, (1.0 - p) * 16.0))
 		if col_w >= 2.0:
-			draw_rect(Rect2(-floorf(col_w * 0.5), -68.0, col_w, 72.0), PAL["gold"] if p > 0.3 else PAL["cream"])
+			draw_rect(Rect2(-floorf(col_w * 0.5), -68.0, col_w, 72.0), rc[0] if p > 0.3 else rc[1])
 		if p < 0.75:
 			draw_rect(Rect2(-2.0, -68.0, 4.0, 72.0), PAL["cream"])
-		draw_arc(Vector2(0.0, -14.0), roundf(8.0 + p * 44.0), 0.0, TAU, 24, PAL["cream"] if p < 0.35 else PAL["gold"], 2.0 if p < 0.4 else 1.0)
+		draw_arc(Vector2(0.0, -14.0), roundf(8.0 + p * 44.0), 0.0, TAU, 24, rc[1] if p < 0.35 else rc[0], 2.0 if p < 0.4 else 1.0)
+		draw_arc(Vector2(0.0, -14.0), roundf(4.0 + p * 28.0), 0.0, TAU, 18, PAL["cream"], 1.0)
 	_draw_signal_pulses()
+
+
+func _island_relight_colors() -> Array[Color]:
+	match island_id:
+		2:
+			return [PAL["sky"] as Color, PAL["ice"] as Color]
+		3:
+			return [PAL["jade"] as Color, PAL["lime"] as Color]
+		4:
+			return [PAL["rose"] as Color, PAL["ice"] as Color]
+		5:
+			return [PAL["gold"] as Color, PAL["sky"] as Color]
+		6:
+			return [PAL["coral"] as Color, PAL["gold"] as Color]
+		7:
+			return [PAL["ice"] as Color, PAL["cream"] as Color]
+		8:
+			return [PAL["gold"] as Color, PAL["rose"] as Color]
+		_:
+			return [PAL["gold"] as Color, PAL["cream"] as Color]
+
+
+func _island_relight_sfx() -> String:
+	match island_id:
+		2:
+			return "lighthouse_toll"
+		3:
+			return "prop_chime"
+		4:
+			return "wing_gale"
+		5:
+			return "prism_chain"
+		6:
+			return "forge_gust"
+		7, 8:
+			return "bell_toll"
+		_:
+			return ""
 
 
 func _draw_fallback(ready: bool) -> void:
@@ -186,18 +229,45 @@ func _draw_beckon_motes() -> void:
 
 func _draw_dawn_embers() -> void:
 	var fred: bool = LxHudFx.flash_reduced()
+	var rc: Array[Color] = _island_relight_colors()
 	var beam_h: float = 34.0 + (0.0 if fred else roundf(sin(_clock * 1.9) * 4.0))
 	var by: float = -30.0
 	var step_i: int = 0
 	while by > -30.0 - beam_h:
 		if step_i % 2 == 0:
-			var bcol: Color = (PAL["cream"] if step_i < 2 else (PAL["gold"] if step_i < 6 else PAL["apricot"])) as Color
+			var bcol: Color = (PAL["cream"] as Color) if step_i < 2 else (rc[1] if step_i < 6 else rc[0])
 			draw_rect(Rect2(0.0, by, 1.0, 2.0), bcol)
 		by -= 3.0
 		step_i += 1
 	for hi: int in range(6):
 		var ha: float = _clock * 0.38 + float(hi) * (TAU / 6.0)
-		draw_rect(Rect2(roundf(cos(ha) * 22.0), roundf(2.0 + sin(ha) * 6.5), 2.0 if hi % 2 == 0 else 1.0, 1.0), PAL["gold"] if hi % 2 == 0 else PAL["apricot"])
+		draw_rect(Rect2(roundf(cos(ha) * 22.0), roundf(2.0 + sin(ha) * 6.5), 2.0 if hi % 2 == 0 else 1.0, 1.0), rc[1] if hi % 2 == 0 else rc[0])
+	# Biome-specific ceremonial crown shimmer above the relit Great Lamp!
+	match island_id:
+		2: # Rotating Fresnel lighthouse beams
+			for k: int in range(2):
+				var ba: float = _clock * 1.1 + float(k) * PI
+				draw_line(Vector2(0.0, -24.0), Vector2(roundf(cos(ba) * 26.0), roundf(-24.0 + sin(ba) * 10.0)), Color(PAL["ice"] as Color, 0.55), 1.0)
+		3: # Rising emerald-lime canopy petals
+			for k: int in range(4):
+				var pa: float = _clock * 1.6 + float(k) * (TAU / 4.0)
+				draw_rect(Rect2(roundf(cos(pa) * 14.0), roundf(-22.0 + sin(pa) * 6.0), 2.0, 2.0), PAL["lime"] as Color)
+		4: # Glasshouse prism rainbow arc
+			draw_arc(Vector2(0.0, -22.0), 16.0, PI * 1.12, PI * 1.88, 12, Color(PAL["rose"] as Color, 0.65), 1.0)
+			draw_arc(Vector2(0.0, -22.0), 14.0, PI * 1.15, PI * 1.85, 12, Color(PAL["ice"] as Color, 0.65), 1.0)
+		5: # Counter-rotating golden astrolabe rings
+			draw_arc(Vector2(0.0, -22.0), 15.0, _clock * 1.8, _clock * 1.8 + 2.4, 12, PAL["gold"] as Color, 1.2)
+			draw_arc(Vector2(0.0, -22.0), 15.0, -_clock * 1.8, -_clock * 1.8 + 2.4, 12, PAL["sky"] as Color, 1.2)
+		6: # Twin volcanic solar hearth spirals
+			for side: float in [-1.0, 1.0]:
+				var h_j: float = roundf(10.0 + (0.0 if fred else absf(sin(_clock * 6.0 + side)) * 5.0))
+				draw_rect(Rect2(side * 10.0, -20.0 - h_j, 2.0, h_j), Color(PAL["coral"] as Color, 0.72))
+		7: # Radiant silver lunar crescent corona
+			draw_arc(Vector2(0.0, -24.0), 13.0, -PI * 0.65, PI * 0.65, 12, PAL["ice"] as Color, 1.4)
+		8: # Colossal 8-ray Dawn Sunburst!
+			for k: int in range(8):
+				var sa: float = _clock * 0.6 + float(k) * (TAU / 8.0)
+				draw_line(Vector2(0.0, -22.0), Vector2(roundf(cos(sa) * 20.0), roundf(-22.0 + sin(sa) * 14.0)), Color(PAL["gold"] as Color, 0.65), 1.0)
 	for i: int in range(5):
 		var t: float = fmod(_clock * 0.44 + float(i) * 0.2, 1.0)
 		var px: float = roundf(sin(_clock * 1.6 + float(i) * 1.3) * (4.0 + t * 7.0))

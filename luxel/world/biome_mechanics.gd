@@ -14,6 +14,7 @@ var _region: Node = null
 var _decals: LxGroundDecals = null
 var _weather: LxBiomeWeather = null
 var _boss_synergy: LxBiomeBossSynergy = null
+var _passives: LxBiomePassives = null
 var _cam_center: Vector2 = Vector2.ZERO
 var _clock: float = 0.0
 
@@ -88,6 +89,12 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 		get_parent().add_child(_boss_synergy)
 	if _boss_synergy != null:
 		_boss_synergy.configure(rules, self, region_node)
+	if _passives == null and get_parent() != null:
+		_passives = LxBiomePassives.new()
+		_passives.name = "BiomePassives"
+		get_parent().add_child(_passives)
+	if _passives != null:
+		_passives.configure(rules, region_node)
 	queue_redraw()
 
 
@@ -104,6 +111,8 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		_weather.tick(dt, cam_center)
 	if _boss_synergy != null and is_instance_valid(_boss_synergy):
 		_boss_synergy.tick(dt)
+	if _passives != null and is_instance_valid(_passives):
+		_passives.tick(dt)
 	match _rules.island_id:
 		2:
 			_tick_island2(dt)
@@ -211,6 +220,8 @@ func _tick_island3(_dt: float) -> void:
 # --- Island 4: Lagoon Mist Tailwind ---
 func on_updraft_caught(pos: Vector2) -> void:
 	tailwind_t = 2.2
+	if _passives != null and is_instance_valid(_passives):
+		_passives.on_updraft_gust(pos)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
 		(Lx.player as LxWick).spawn_sparks(pos, Vector2.UP, 4, LxWick.PAL_SKY, 24.0, 62.0, 0.24)
 

@@ -90,11 +90,12 @@ func _draw() -> void:
 		draw_rect(Rect2(0.0, -17.0, 1.0, 1.0), PAL["sky"])
 	if _pulse_t > 0.0:
 		var p: float = 1.0 - clampf(_pulse_t / 0.48, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -8.0), roundf(5.0 + p * 22.0), 0.0, TAU, 18, PAL["ice"] if p < 0.4 else PAL["sky"], 1.0)
+		var wc: Array[Color] = _biome_waystone_colors()
+		draw_arc(Vector2(0.0, -8.0), roundf(5.0 + p * 22.0), 0.0, TAU, 18, wc[1] if p < 0.4 else wc[0], 1.0)
 		for j: int in range(6):
 			var a: float = float(j) * TAU / 6.0 + p * 0.9
 			var sp := Vector2(roundf(cos(a) * (4.0 + p * 18.0)), roundf(-10.0 + sin(a) * (2.0 + p * 7.0) - p * 10.0))
-			draw_rect(Rect2(sp, Vector2(1.0, 1.0)), PAL["cream"] if j % 2 == 0 else PAL["ice"])
+			draw_rect(Rect2(sp, Vector2(1.0, 1.0)), PAL["cream"] if j % 2 == 0 else wc[1])
 
 
 func _draw_fallback() -> void:
@@ -109,20 +110,39 @@ func _draw_fallback() -> void:
 		draw_rect(Rect2(-2.0, -11.0, 4.0, 7.0), PAL["deep"])
 
 
+func _biome_waystone_colors() -> Array[Color]:
+	match island_id:
+		2:
+			return [PAL["sky"] as Color, PAL["ice"] as Color]
+		3:
+			return [PAL["jade"] as Color, PAL["lime"] as Color]
+		4:
+			return [PAL["rose"] as Color, PAL["ice"] as Color]
+		5:
+			return [PAL["gold"] as Color, PAL["sky"] as Color]
+		6:
+			return [PAL["coral"] as Color, PAL["apricot"] as Color]
+		7:
+			return [PAL["ice"] as Color, PAL["cream"] as Color]
+		8:
+			return [PAL["rose"] as Color, PAL["gold"] as Color]
+		_:
+			return [PAL["sky"] as Color, PAL["gold"] as Color]
+
+
 func _draw_lit_aura() -> void:
+	var wc: Array[Color] = _biome_waystone_colors()
 	var pulse: float = sin(_clock * 2.6)
-	var base_col: Color = (PAL["sky"] as Color) if pulse > 0.0 else (PAL["blue"] as Color)
+	var base_col: Color = wc[0] if pulse > 0.0 else (PAL["blue"] as Color)
 	draw_rect(Rect2(-1.0, 2.0, 2.0, 1.0), base_col)
 	if pulse > 0.45:
-		draw_rect(Rect2(0.0, 1.0, 1.0, 1.0), PAL["sky"])
-	var c_ice: Color = PAL["ice"] as Color
-	var c_sky: Color = PAL["sky"] as Color
+		draw_rect(Rect2(0.0, 1.0, 1.0, 1.0), wc[1])
 	var lanes: Array[float] = [-8.0, 7.0, -5.0]
 	for i: int in range(3):
 		var t: float = fmod(_clock * 0.42 + float(i) * 0.33, 1.0)
 		var px: float = roundf(lanes[i] + sin(_clock * 1.5 + float(i) * 2.0) * 1.5)
 		var py: float = roundf(-5.0 - t * 27.0)
-		draw_rect(Rect2(px, py, 1.0, 1.0), c_ice if t < 0.5 else c_sky)
+		draw_rect(Rect2(px, py, 1.0, 1.0), wc[1] if t < 0.5 else wc[0])
 
 
 func _is_dormant_pip_on() -> bool:

@@ -84,6 +84,8 @@ func _fire_bolt() -> bool:
 	b.pos = wick.global_position + aim * 6.0
 	b.prev_pos = b.pos
 	b.speed = float(data.get("speed", 330.0))
+	if LxBiomeRules.active_instance != null and LxBiomeRules.active_instance.starlight_surge_t > 0.0:
+		b.speed *= 1.18
 	b.max_range = float(data.get("range", 118.0))
 	b.damage = _get_effective_damage()
 	b.shield_wear = float(data.get("shield_wear", 0.25))
