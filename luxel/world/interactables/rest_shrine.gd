@@ -83,7 +83,7 @@ func _draw_fallback() -> void:
 
 
 func _draw_hearth_ring() -> void:
-	var breath: float = sin(_clock * 2.2) * 1.4
+	var breath: float = 0.0 if LxHudFx.flash_reduced() else sin(_clock * 2.2) * 1.4
 	var rx: float = 19.0 + breath
 	var ry: float = 5.2 + breath * 0.3
 	var c_gold: Color = LxBiomePalette.col(island_id, "glow")

@@ -134,7 +134,7 @@ func _biome_waystone_colors() -> Array[Color]:
 
 func _draw_lit_aura() -> void:
 	var wc: Array[Color] = _biome_waystone_colors()
-	var pulse: float = sin(_clock * 2.6)
+	var pulse: float = 0.5 if LxHudFx.flash_reduced() else sin(_clock * 2.6)
 	var base_col: Color = wc[0] if pulse > 0.0 else (PAL["blue"] as Color)
 	draw_rect(Rect2(-1.0, 2.0, 2.0, 1.0), base_col)
 	if pulse > 0.45:

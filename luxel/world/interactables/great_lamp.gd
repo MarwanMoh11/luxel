@@ -88,6 +88,7 @@ func _relight() -> bool:
 	_emit_gust(144.0, 125.0, Vector2(0.0, -14.0))
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, pos, 22.0, 9.0)
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 26.0, 10.0)
 	_emit_sfx("great_lamp_relit")
 	var accent: String = _island_relight_sfx()
 	if not accent.is_empty() and Lx.audio != null:
@@ -207,9 +208,10 @@ func _draw_fallback(ready: bool) -> void:
 
 
 func _draw_relight_rings(front: bool) -> void:
-	var breath: float = sin(_clock * 2.2) * 2.0
-	_draw_orbit_ring(front, 12, 26.0 + breath, 8.0 + breath * 0.35, 0.55, PAL["gold"] as Color, PAL["apricot"] as Color)
-	_draw_orbit_ring(front, 8, 20.0 - breath * 0.5, 6.0, -0.85, PAL["cream"] as Color, PAL["gold"] as Color)
+	var rc: Array[Color] = _island_relight_colors()
+	var breath: float = 0.0 if LxHudFx.flash_reduced() else sin(_clock * 2.2) * 2.0
+	_draw_orbit_ring(front, 12, 26.0 + breath, 8.0 + breath * 0.35, 0.55, rc[1], rc[0])
+	_draw_orbit_ring(front, 8, 20.0 - breath * 0.5, 6.0, -0.85, PAL["cream"] as Color, rc[1])
 
 
 func _draw_orbit_ring(
@@ -223,10 +225,11 @@ func _draw_orbit_ring(
 
 
 func _draw_beckon_motes() -> void:
+	var rc: Array[Color] = _island_relight_colors()
 	for i: int in range(4):
 		var t: float = fmod(_clock * 0.5 + float(i) * 0.25, 1.0)
 		var px: float = roundf(sin(_clock * 1.8 + float(i) * 1.57) * 12.0)
-		draw_rect(Rect2(px, roundf(-14.0 - t * 36.0), 1.0, 1.0), PAL["cream"] if t < 0.45 else PAL["gold"])
+		draw_rect(Rect2(px, roundf(-14.0 - t * 36.0), 1.0, 1.0), PAL["cream"] if t < 0.45 else rc[1])
 
 
 func _draw_dawn_embers() -> void:
@@ -277,5 +280,5 @@ func _draw_dawn_embers() -> void:
 	for i: int in range(5):
 		var t: float = fmod(_clock * 0.44 + float(i) * 0.2, 1.0)
 		var px: float = roundf(sin(_clock * 1.6 + float(i) * 1.3) * (4.0 + t * 7.0))
-		var col: Color = (PAL["cream"] if t < 0.28 else (PAL["gold"] if t < 0.68 else PAL["apricot"])) as Color
+		var col: Color = (PAL["cream"] as Color) if t < 0.28 else (rc[1] if t < 0.68 else rc[0])
 		draw_rect(Rect2(px, roundf(-28.0 - t * 32.0), 1.0, 1.0), col)
