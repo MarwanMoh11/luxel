@@ -94,11 +94,24 @@ static func draw_keepsake(ci: CanvasItem, island_id: int, door_pos: Vector2, clo
 				ci.draw_rect(Rect2(op, Vector2.ONE), cr)
 			ci.draw_circle(cen8, 3.0, cr)
 
-	# Harmony Star crown floating directly above the Keepsake when all discoveries are found!
+	# Harmony Star crown & orbiting mastery sparks floating directly above the Keepsake when all discoveries are found!
 	if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % island_id, false)):
 		var hy: float = c.y - 24.0 + (0.0 if fred else roundf(sin(clock * 2.2) * 1.2))
 		var hs := Vector2(c.x, hy).round()
+		var h_rot: float = 0.0 if fred else clock * 1.1
+		ci.draw_arc(hs, 6.0, h_rot, h_rot + PI * 1.35, 10, Color(g, 0.56 * pulse), 1.0)
+		for hk: int in range(2):
+			var ha: float = h_rot + float(hk) * PI
+			var hp: Vector2 = (hs + Vector2(cos(ha) * 6.0, sin(ha) * 3.5)).round()
+			ci.draw_rect(Rect2(hp, Vector2.ONE), Color(cr if hk == 0 else gold, 0.85))
 		ci.draw_rect(Rect2(hs + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), g)
 		ci.draw_rect(Rect2(hs + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), g)
 		ci.draw_rect(Rect2(hs + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), hi)
 		ci.draw_rect(Rect2(hs, Vector2.ONE), cr)
+	# Post-game 8/8 True Dawn Chorus: revisiting any saved island crowns its Keepsake with gentle golden dawn motes!
+	if Lx.state != null and Lx.state.relit_islands.size() >= 8 and island_id < 8:
+		var dc_rot: float = 0.0 if fred else clock * 0.45
+		for dk: int in range(4):
+			var da: float = dc_rot + float(dk) * (PI * 0.5)
+			var dp: Vector2 = (c + Vector2(cos(da) * 24.0, -2.0 + sin(da) * 10.0)).round()
+			ci.draw_rect(Rect2(dp, Vector2(2.0 if dk % 2 == 0 else 1.0, 1.0)), Color(cr if dk % 2 == 0 else gold, 0.65 * pulse))
