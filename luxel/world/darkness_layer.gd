@@ -241,6 +241,10 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 		for dp: Vector2 in dpts:
 			if dp.distance_to(cam_center) <= 300.0:
 				candidates.append({"d": dp.distance_squared_to(cam_center) + 1200.0, "v": Vector4(dp.x, dp.y - 6.0, 36.0 * flicker, 0.52)})
+		if relit_ow:
+			var kp: Vector2 = _interactable_pos("door_ward_barrier" if b_id == 1 else "door_dungeon_%d" % b_id, "door")
+			if kp != Vector2.ZERO and kp.distance_to(cam_center) <= 320.0:
+				candidates.append({"d": kp.distance_squared_to(cam_center) + 600.0, "v": Vector4(kp.x, kp.y - 28.0, 88.0 * flicker, 0.96)})
 	if LxPortalFx.active_instance != null and is_instance_valid(LxPortalFx.active_instance):
 		for ppool: Vector4 in LxPortalFx.active_instance.get_light_pools():
 			var pp_v := Vector2(ppool.x, ppool.y)
@@ -401,13 +405,39 @@ func _append_player_lights(lights: PackedVector4Array, flicker: float) -> void:
 	var dashing: bool = Lx.player.has_method("is_dashing") and bool(Lx.player.call("is_dashing"))
 	var gliding: bool = Lx.player.has_method("is_gliding") and bool(Lx.player.call("is_gliding"))
 	var move_boost: float = 16.0 if dashing else (12.0 if gliding else 0.0)
+	var b_boost: Vector2 = _biome_and_harmony_light_boost()
 	if not lantern_out:
-		var base_hand: float = maxf(108.0 if has_lens else 96.0, custom_r) + move_boost
-		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, base_hand * flicker, 1.46 if dashing else 1.35))
+		var base_hand: float = maxf(108.0 if has_lens else 96.0, custom_r) + move_boost + b_boost.x
+		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, base_hand * flicker, (1.46 if dashing else 1.35) + b_boost.y))
 	else:
-		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, 42.0 + move_boost, 1.05 if dashing else 0.72))
-		var base_hung: float = maxf(118.0 if has_lens else 86.0, custom_r)
-		lights.append(Vector4(lan_pos.x, lan_pos.y - 6.0, base_hung * flicker, 1.38))
+		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, 42.0 + move_boost + b_boost.x * 0.45, (1.05 if dashing else 0.72) + b_boost.y * 0.5))
+		var base_hung: float = maxf(118.0 if has_lens else 86.0, custom_r) + b_boost.x
+		lights.append(Vector4(lan_pos.x, lan_pos.y - 6.0, base_hung * flicker, 1.38 + b_boost.y))
+
+
+func _biome_and_harmony_light_boost() -> Vector2:
+	var rad_b: float = 0.0
+	var int_b: float = 0.0
+	if Lx.state != null and is_instance_valid(Lx.state):
+		var harm_n: int = 0
+		for iid: int in range(1, 9):
+			if bool(Lx.state.story_flags.get("disc_all_%d" % iid, false)):
+				harm_n += 1
+		rad_b += float(harm_n) * 2.0
+		int_b += float(harm_n) * 0.012
+	var br: LxBiomeRules = LxBiomeRules.active_instance
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	var empowered: bool = false
+	if br != null and is_instance_valid(br):
+		if br.beam_buff_t > 0.0 or br.starlight_surge_t > 0.0 or (br.island_id == 7 and br.lunar_phase > 0.72):
+			empowered = true
+	if not empowered and bm != null and is_instance_valid(bm):
+		if bm.molten_charges > 0 or bm.tailwind_t > 0.0 or (br != null and br.island_id == 8 and bm.dawn_seals_broken > 0):
+			empowered = true
+	if empowered:
+		rad_b += 14.0
+		int_b += 0.10 * _fr_scale()
+	return Vector2(rad_b, int_b)
 
 func _player_pos() -> Vector2:
 	if Lx.player != null and is_instance_valid(Lx.player):
