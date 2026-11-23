@@ -187,7 +187,12 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			if wfx_l is Object and is_instance_valid(wfx_l) and (wfx_l as Object).has_method("spawn_ripple"):
 				(wfx_l as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 1.0), "ice")
 		else:
-			spawn_ring(wick.global_position + Vector2(0.0, 1.0), 2.0, 8.5, 0.17, lcol, 1.0)
+			var r_col: Color = lcol
+			if Lx.state != null and Lx.world != null and is_instance_valid(Lx.world):
+				var isl_l: int = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 1
+				if Lx.state.relit_islands.has(isl_l) or bool(Lx.state.story_flags.get("disc_all_%d" % isl_l, false)):
+					r_col = LxBiomePalette.col(isl_l, "glow")
+			spawn_ring(wick.global_position + Vector2(0.0, 1.0), 2.0, 8.5, 0.17, r_col, 1.0)
 		wick.emit_sfx("footstep_" + surf_l, wick.global_position, false)
 	_was_airborne = airborne
 
@@ -332,6 +337,10 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		var pulse: float = 1.0 if flash_red else ((0.86 + 0.14 * beat) if low_hp else (0.92 + 0.08 * beat))
 		wick.draw_circle(hand_pos, 13.0 * pulse, Color(LxWick.PAL_CORAL if low_hp else LxWick.PAL_GOLD, 0.13 if low_hp else 0.10))
 		wick.draw_circle(hand_pos, 6.5 * pulse, Color(LxWick.PAL_APRICOT, 0.17 if low_hp else 0.15))
+		if not low_hp and Lx.state != null and Lx.state.relit_islands.size() >= 8:
+			var sg: float = 2.0 if flash_red else roundf(2.0 + absf(sin(clock_t * 3.0)))
+			wick.draw_line(hand_pos + Vector2(-sg, 0.0), hand_pos + Vector2(sg, 0.0), Color(LxWick.PAL_GOLD, 0.55), 1.0)
+			wick.draw_line(hand_pos + Vector2(0.0, -sg), hand_pos + Vector2(0.0, sg), Color(LxWick.PAL_CREAM, 0.65), 1.0)
 
 	var hit_white: bool = wick.hurt_flash > 0.55 and not flash_red
 	var mod: Color = Color(LxWick.PAL_CREAM, alpha) if hit_white else Color(1.0, 1.0, 1.0, alpha)
@@ -455,6 +464,8 @@ func _muzzle_biome_color() -> Color:
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	if bm != null and is_instance_valid(bm) and bm.molten_charges > 0:
 		return LxWick.PAL_CORAL
+	if bm != null and is_instance_valid(bm) and bm.tailwind_t > 0.0:
+		return LxPalette.PAL["rose"] as Color
 	if br != null and is_instance_valid(br):
 		if br.island_id == 2 and br.beam_buff_t > 0.0:
 			return LxWick.PAL_ICE
