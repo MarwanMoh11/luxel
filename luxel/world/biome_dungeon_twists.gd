@@ -201,6 +201,31 @@ func tick(dt: float) -> void:
 	queue_redraw()
 
 
+func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> void:
+	if not _active or _rules == null:
+		return
+	if _island_id == 3:
+		for cap: Dictionary in _spore_caps:
+			if float(cap["cd"]) > 0.0:
+				continue
+			var cp: Vector2 = cap["pos"] as Vector2
+			if Geometry2D.get_closest_point_to_segment(cp, from_p, to_p).distance_to(cp) <= 14.0:
+				cap["cd"] = 4.5
+				cap["burst_t"] = 0.45
+				_trigger_spore_puff(cp)
+				return
+	elif _island_id == 5 and _twist_cd <= 0.0:
+		for npt: Vector2 in _orrery_node_positions():
+			if Geometry2D.get_closest_point_to_segment(npt, from_p, to_p).distance_to(npt) <= 14.0:
+				_twist_cd = 2.4
+				_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 2.8)
+				if w != null and is_instance_valid(w):
+					w.spawn_ring(npt, 2.0, 16.0, 0.24, LxWick.PAL_GOLD, 1.2)
+				if Lx.audio != null:
+					Lx.audio.play_sfx("clockwork_chime", npt, true)
+				return
+
+
 func _orrery_node_positions() -> Array[Vector2]:
 	var rot1: float = _clock * 0.55
 	var rot2: float = -_clock * 0.38

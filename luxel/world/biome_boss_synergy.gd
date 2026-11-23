@@ -20,6 +20,8 @@ var _region: Node = null
 var _island_id: int = 1
 var _active: bool = false
 var _is_miniboss: bool = false
+var _miniboss_was_live: bool = false
+var _mb_clear_t: float = 0.0
 var _clock: float = 0.0
 var _center: Vector2 = Vector2.ZERO
 var _bell_pulse_t: float = 0.0
@@ -50,6 +52,8 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node) -
 	var rid: String = str(region_node.get("current_region_id")) if region_node != null and region_node.get("current_region_id") != null else ""
 	_active = BOSS_REGIONS.has(rid)
 	_is_miniboss = MINIBOSS_REGIONS.has(rid)
+	_miniboss_was_live = _is_miniboss and _has_live_enemies()
+	_mb_clear_t = 0.0
 	_center = rules.bounds.get_center() if rules != null else Vector2(224.0, 144.0)
 	if _active and _rules != null:
 		_seed_boss_arena_features()
@@ -98,6 +102,18 @@ func tick(dt: float) -> void:
 		return
 	_clock += dt
 	if _is_miniboss:
+		_mb_clear_t = maxf(0.0, _mb_clear_t - dt)
+		var live_now: bool = _has_live_enemies()
+		if _miniboss_was_live and not live_now:
+			_mb_clear_t = 0.72
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(_center, 128.0, 0.85 if LxHudFx.flash_reduced() else 1.32, 0.52)
+			if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, _center, 18.0, 9.0)
+				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, _center, 16.0, 8.0)
+			if Lx.audio != null:
+				Lx.audio.play_sfx("prop_chime", _center, true)
+		_miniboss_was_live = live_now
 		queue_redraw()
 		return
 	_bell_pulse_t = maxf(0.0, _bell_pulse_t - dt)
@@ -140,15 +156,20 @@ func _tick_orrery_boss_nodes(dt: float) -> void:
 			continue
 		var np: Vector2 = _center + Vector2(cos(float(nd["ang"])) * 108.0, sin(float(nd["ang"])) * 62.0)
 		if w.global_position.distance_to(np) <= 18.0:
-			nd["cd"] = 2.6
-			_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 3.2)
-			w.spawn_ring(np, 3.0, 22.0, 0.24, LxWick.PAL_GOLD, 1.5)
-			if Lx.audio != null:
-				Lx.audio.play_sfx("clockwork_chime", np, true)
-			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-				LxDarknessLayer.active_instance.add_burst_light(np, 76.0, 0.85 if LxHudFx.flash_reduced() else 1.20, 0.32)
-			if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, np, 13.0, 5.0)
+			_activate_orrery_node(nd, np, w)
+
+
+func _activate_orrery_node(nd: Dictionary, np: Vector2, w: LxWick) -> void:
+	nd["cd"] = 2.6
+	_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 3.2)
+	if w != null and is_instance_valid(w):
+		w.spawn_ring(np, 3.0, 22.0, 0.24, LxWick.PAL_GOLD, 1.5)
+	if Lx.audio != null:
+		Lx.audio.play_sfx("clockwork_chime", np, true)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(np, 76.0, 0.85 if LxHudFx.flash_reduced() else 1.20, 0.32)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, np, 13.0, 5.0)
 
 
 func _tick_oak_boss_blooms(dt: float) -> void:
@@ -186,18 +207,48 @@ func _tick_oak_boss_blooms(dt: float) -> void:
 
 
 func try_hit_boss_bloom(from_p: Vector2, to_p: Vector2) -> void:
-	if not _active or _island_id != 3 or _rules == null:
+	try_hit_boss_feature(from_p, to_p, Lx.player as LxWick if Lx.player is LxWick else null)
+
+
+func try_hit_boss_feature(from_p: Vector2, to_p: Vector2, w: LxWick) -> void:
+	if not _active or _rules == null or _is_boss_cleared():
 		return
-	for b: Dictionary in _rules._blooms:
-		var bp: Vector2 = b["pos"] as Vector2
-		if Geometry2D.get_closest_point_to_segment(bp, from_p, to_p).distance_to(bp) <= 14.0:
-			var was_dim: bool = float(b["lit_t"]) < 10.0
-			b["lit_t"] = 14.0
-			if was_dim:
-				if _mech != null and is_instance_valid(_mech):
-					_mech.on_bloom_ignited(bp, true)
-				if Lx.audio != null:
-					Lx.audio.play_sfx("prop_chime", bp, true)
+	match _island_id:
+		3:
+			for b: Dictionary in _rules._blooms:
+				var bp: Vector2 = b["pos"] as Vector2
+				if Geometry2D.get_closest_point_to_segment(bp, from_p, to_p).distance_to(bp) <= 14.0:
+					var was_dim: bool = float(b["lit_t"]) < 10.0
+					b["lit_t"] = 14.0
+					if was_dim:
+						if _mech != null and is_instance_valid(_mech):
+							_mech.on_bloom_ignited(bp, true)
+						if Lx.audio != null:
+							Lx.audio.play_sfx("prop_chime", bp, true)
+		5:
+			for nd: Dictionary in _orrery_nodes:
+				if float(nd["cd"]) > 0.0:
+					continue
+				var np: Vector2 = _center + Vector2(cos(float(nd["ang"])) * 108.0, sin(float(nd["ang"])) * 62.0)
+				if Geometry2D.get_closest_point_to_segment(np, from_p, to_p).distance_to(np) <= 14.0:
+					_activate_orrery_node(nd, np, w)
+					return
+		7:
+			for anc: Dictionary in _lunar_anchors:
+				if float(anc["cd"]) > 0.0:
+					continue
+				var ap: Vector2 = anc["pos"] as Vector2
+				if Geometry2D.get_closest_point_to_segment(ap, from_p, to_p).distance_to(ap) <= 16.0:
+					_activate_lunar_anchor(anc, w)
+					return
+		8:
+			for rel: Dictionary in _dawn_relics:
+				if float(rel["cd"]) > 0.0:
+					continue
+				var rp: Vector2 = rel["pos"] as Vector2
+				if Geometry2D.get_closest_point_to_segment(rp, from_p, to_p).distance_to(rp) <= 16.0:
+					_activate_dawn_relic(rel, w)
+					return
 
 
 func _tick_lunar_anchors(dt: float) -> void:
@@ -208,19 +259,24 @@ func _tick_lunar_anchors(dt: float) -> void:
 		anc["flash_t"] = maxf(0.0, float(anc["flash_t"]) - dt)
 		if float(anc["cd"]) > 0.0 or not act or _is_boss_cleared():
 			continue
-		var ap: Vector2 = anc["pos"] as Vector2
-		if w.global_position.distance_to(ap) <= 28.0:
-			anc["cd"] = 6.5
-			anc["flash_t"] = 0.55
-			_rules.lunar_phase = 1.0
-			_rules.clock = 0.0
-			w.spawn_ring(ap, 4.0, 28.0, 0.28, LxWick.PAL_ICE, 1.5)
-			if Lx.audio != null:
-				Lx.audio.play_sfx("lens_reveal", ap, true)
-			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-				LxDarknessLayer.active_instance.add_burst_light(ap, 92.0, 0.85 if LxHudFx.flash_reduced() else 1.28, 0.42)
-			if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, ap, 15.0, 6.0)
+		if w.global_position.distance_to(anc["pos"] as Vector2) <= 28.0:
+			_activate_lunar_anchor(anc, w)
+
+
+func _activate_lunar_anchor(anc: Dictionary, w: LxWick) -> void:
+	var ap: Vector2 = anc["pos"] as Vector2
+	anc["cd"] = 6.5
+	anc["flash_t"] = 0.55
+	_rules.lunar_phase = 1.0
+	_rules.clock = 0.0
+	if w != null and is_instance_valid(w):
+		w.spawn_ring(ap, 4.0, 28.0, 0.28, LxWick.PAL_ICE, 1.5)
+	if Lx.audio != null:
+		Lx.audio.play_sfx("lens_reveal", ap, true)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(ap, 92.0, 0.85 if LxHudFx.flash_reduced() else 1.28, 0.42)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, ap, 15.0, 6.0)
 
 
 func _tick_dawn_relics(dt: float) -> void:
@@ -231,19 +287,24 @@ func _tick_dawn_relics(dt: float) -> void:
 		rel["flash_t"] = maxf(0.0, float(rel["flash_t"]) - dt)
 		if float(rel["cd"]) > 0.0 or not act or _is_boss_cleared():
 			continue
-		var rp: Vector2 = rel["pos"] as Vector2
-		if w.global_position.distance_to(rp) <= 26.0:
-			rel["cd"] = 7.5
-			rel["flash_t"] = 0.55
-			if w.move_sunflare != null and w.move_sunflare.unlocked:
-				w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 12.0)
-			w.spawn_ring(rp, 4.0, 30.0, 0.30, LxWick.PAL_GOLD, 1.6)
-			if Lx.audio != null:
-				Lx.audio.play_sfx("prop_chime", rp, true)
-			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-				LxDarknessLayer.active_instance.add_burst_light(rp, 112.0, 0.88 if LxHudFx.flash_reduced() else 1.38, 0.48)
-			if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, rp, 15.0, 6.0)
+		if w.global_position.distance_to(rel["pos"] as Vector2) <= 26.0:
+			_activate_dawn_relic(rel, w)
+
+
+func _activate_dawn_relic(rel: Dictionary, w: LxWick) -> void:
+	var rp: Vector2 = rel["pos"] as Vector2
+	rel["cd"] = 7.5
+	rel["flash_t"] = 0.55
+	if w != null and is_instance_valid(w):
+		if w.move_sunflare != null and w.move_sunflare.unlocked:
+			w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 12.0)
+		w.spawn_ring(rp, 4.0, 30.0, 0.30, LxWick.PAL_GOLD, 1.6)
+	if Lx.audio != null:
+		Lx.audio.play_sfx("prop_chime", rp, true)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(rp, 112.0, 0.88 if LxHudFx.flash_reduced() else 1.38, 0.48)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, rp, 15.0, 6.0)
 
 
 func _is_boss_cleared() -> bool:
@@ -282,6 +343,12 @@ func _draw_miniboss_arena(fred: bool) -> void:
 		var pt: Vector2 = (c + Vector2.from_angle(ang) * (r_out + 4.0)).round()
 		draw_rect(Rect2(pt - Vector2.ONE, Vector2(2.0, 2.0)), Color(col_b if k % 2 == 0 else col_a, a_ring * 1.4))
 	LxHudFx.draw_biome_crest(self, _island_id, c, Color(col_a, a_ring * 1.35), Color(PAL["cream"] as Color, a_ring * 1.2))
+	if _mb_clear_t > 0.0:
+		var u_mb: float = 1.0 - clampf(_mb_clear_t / 0.72, 0.0, 1.0)
+		var r_mb: float = roundf(lerpf(12.0, 96.0, u_mb))
+		var a_mb: float = (1.0 - u_mb) * (0.55 if fred else 0.88)
+		draw_arc(c, r_mb, 0.0, TAU, 28, Color(LxBiomePalette.col(_island_id, "glow"), a_mb), 2.0)
+		draw_arc(c, roundf(r_mb * 0.72), 0.0, TAU, 22, Color(PAL["cream"] as Color, a_mb), 1.2)
 
 
 func _draw() -> void:

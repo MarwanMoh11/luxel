@@ -284,9 +284,12 @@ func try_hit_biome_target(from_p: Vector2, to_p: Vector2, dir: Vector2, wick: Lx
 		LxBellChimes.active_instance.try_hit_segment(from_p, to_p, wick)
 	if LxBiomeDiscoveries.active_instance != null and is_instance_valid(LxBiomeDiscoveries.active_instance):
 		LxBiomeDiscoveries.active_instance.try_hit_segment(from_p, to_p, wick)
-	# Island 3: Shooting near a Forest Bloom-Lamp (overworld OR Briar Matron boss arena!) triggers a Canopy Wave
-	if _rules.island_id == 3 and _rules.is_dungeon and _boss_synergy != null and is_instance_valid(_boss_synergy):
-		_boss_synergy.try_hit_boss_bloom(from_p, to_p)
+	# Interactive dungeon twists (Island 3 Spore-Caps, Island 5 Orrery Conjunction Nodes) & Boss Sanctum features (3/5/7/8)
+	if _rules.is_dungeon:
+		if _boss_synergy != null and is_instance_valid(_boss_synergy):
+			_boss_synergy.try_hit_boss_feature(from_p, to_p, wick)
+		if _dungeon_twists != null and is_instance_valid(_dungeon_twists):
+			_dungeon_twists.try_hit_segment(from_p, to_p, wick)
 	if _rules.island_id == 3 and not _rules.is_dungeon:
 		for b: Dictionary in _rules._blooms:
 			var bp: Vector2 = b["pos"] as Vector2
