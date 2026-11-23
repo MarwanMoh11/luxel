@@ -264,6 +264,10 @@ func _play_sway_sfx() -> void:
 		sfx_id = "clockwork_chime"
 	elif prop_key.contains("shroom") or prop_key.contains("spore"):
 		sfx_id = "spore_pop"
+	elif prop_key.contains("crucible") or prop_key.contains("vent") or prop_key.contains("hearth") or prop_key.contains("brazier"):
+		sfx_id = "forge_gust"
+	elif prop_key.contains("buoy") or prop_key.contains("vane") or prop_key.contains("crane"):
+		sfx_id = "harbor_creak"
 	elif prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("crystal") or prop_key.contains("shard"):
 		sfx_id = "prop_chime"
 	_sfx_cd = 0.72 if sfx_id != "prop_rustle" else 0.56

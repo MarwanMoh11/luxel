@@ -130,6 +130,10 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 			var hit_res: Variant = item.call("on_hit", hit_i)
 			if hit_res is bool and bool(hit_res):
 				wick.spawn_sparks(ipos, idir, 10, LxWick.PAL_GOLD, 35.0, 105.0, 0.28)
+	if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
+		for ri: int in range(8):
+			var rdir: Vector2 = Vector2.from_angle(float(ri) * (TAU * 0.125))
+			LxBiomeMechanics.active_instance.try_hit_biome_target(origin, origin + rdir * rad, rdir, wick)
 
 	# 3. Big Last Light gold/cream expanding ring + hitstop 0.14s + shake 0.24
 	flare_origin = origin

@@ -234,6 +234,8 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 		var amb: Variant = world_ctx.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", center, burst_r * 2.2, 85.0)
+	if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
+		LxBiomeMechanics.active_instance.try_hit_biome_target(center - zip_dir * burst_r, center + zip_dir * burst_r, zip_dir, wick)
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
 	for e_var: Variant in enemies:
