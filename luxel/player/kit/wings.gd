@@ -113,8 +113,9 @@ func tick_glide(dt: float, dash_held: bool) -> void:
 	_afterimage_cd -= dt
 	if _afterimage_cd <= 0.0:
 		_afterimage_cd = 0.06
-		wick.spawn_afterimage(LxWick.PAL_SKY)
-		wick.spawn_sparks(wick.global_position, -glide_dir, 1, LxWick.PAL_ICE, 8.0, 22.0, 0.16)
+		var isl_g: int = Lx.state.island_id if Lx.state != null else 1
+		wick.spawn_afterimage(LxBiomePalette.col(isl_g, "hi"))
+		wick.spawn_sparks(wick.global_position, -glide_dir, 1, LxBiomePalette.col(isl_g, "glow"), 8.0, 22.0, 0.16)
 
 	if glide_time_left <= 0.0 or glide_dist_left <= 0.0:
 		stop_glide()

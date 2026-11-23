@@ -25,6 +25,7 @@ var _cam_center: Vector2 = Vector2.ZERO
 var _door_pos: Vector2 = Vector2.ZERO
 var _beacons: Array[Node] = []
 var _koi: Array[Dictionary] = []
+var _wildlife: LxOverworldWildlife = null
 
 
 func _ready() -> void:
@@ -64,6 +65,12 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 				"phase": rng.randf_range(0.0, TAU),
 				"col": "coral" if k % 3 == 0 else ("gold" if k % 3 == 1 else "ice"),
 			})
+	if _wildlife == null and get_parent() != null:
+		_wildlife = LxOverworldWildlife.new()
+		_wildlife.name = "OverworldWildlife"
+		get_parent().add_child(_wildlife)
+	if _wildlife != null:
+		_wildlife.configure(rules, region_node)
 	queue_redraw()
 
 
@@ -89,6 +96,8 @@ static func _default_anchor(isl: int) -> Vector2:
 
 func tick(dt: float, cam_center: Vector2) -> void:
 	_cam_center = cam_center
+	if _wildlife != null and is_instance_valid(_wildlife):
+		_wildlife.tick(dt, cam_center)
 	if not _active or dt <= 0.0:
 		return
 	_clock += dt
