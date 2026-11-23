@@ -183,6 +183,17 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 			"chest":
 				if not _prop_bool(obj, "opened"):
 					c.draw_rect(Rect2(_map_pt(wpos, bounds, inner, 2.0, 1.0), Vector2(2.0, 1.0)), LxPalette.PAL["gold"] if pulse_on else LxPalette.PAL["apricot"])
+	# Subtle glints ONLY for already-discovered overworld micro-discoveries (never unfound secrets).
+	if not _prop_bool(Lx.world, "is_dungeon"):
+		var d_isl: int = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 1
+		var fpts: Array[Vector2] = []
+		if d_isl == 1 and LxBellChimes.active_instance != null and is_instance_valid(LxBellChimes.active_instance):
+			fpts = LxBellChimes.active_instance.get_found_positions()
+		elif d_isl >= 2 and LxBiomeDiscoveries.active_instance != null and is_instance_valid(LxBiomeDiscoveries.active_instance):
+			fpts = LxBiomeDiscoveries.active_instance.get_found_positions()
+		var d_col: Color = LxPalette.PAL["cream"] if pulse_on else LxBiomePalette.col(d_isl, "glow")
+		for fp: Vector2 in fpts:
+			_draw_pip(c, fp, bounds, inner, 1.0, d_col)
 
 
 static func _draw_exits(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:

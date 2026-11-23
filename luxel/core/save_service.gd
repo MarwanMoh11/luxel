@@ -50,6 +50,13 @@ func slot_summary(slot_num: int) -> Dictionary:
 	if d.is_empty():
 		return {"empty": true, "slot": slot_num}
 	var relit_arr: Array = d.get("relit_islands", []) as Array
+	var harmony_arr: Array[int] = []
+	var sflags_v: Variant = d.get("story_flags", {})
+	if sflags_v is Dictionary:
+		var sflags: Dictionary = sflags_v as Dictionary
+		for iid: int in range(1, 9):
+			if bool(sflags.get("disc_all_%d" % iid, false)):
+				harmony_arr.append(iid)
 	return {
 		"empty": false,
 		"slot": slot_num,
@@ -58,6 +65,8 @@ func slot_summary(slot_num: int) -> Dictionary:
 		"play_time_s": float(d.get("play_time_s", 0.0)),
 		"relit_count": relit_arr.size(),
 		"relit_islands": relit_arr.duplicate(),
+		"harmony_count": harmony_arr.size(),
+		"harmony_islands": harmony_arr,
 	}
 
 

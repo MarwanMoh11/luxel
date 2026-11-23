@@ -84,6 +84,14 @@ func get_total_count() -> int:
 	return _chimes.size()
 
 
+func get_found_positions() -> Array[Vector2]:
+	var out: Array[Vector2] = []
+	for ch: Dictionary in _chimes:
+		if bool(ch["rung"]):
+			out.append(ch["pos"] as Vector2)
+	return out
+
+
 func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> bool:
 	if not _active:
 		return false

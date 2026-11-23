@@ -22,6 +22,7 @@ var _water_pts: Array[Vector2] = [] # Isl 2 caustic shimmer anchor tiles
 var _spore_caps: Array[Dictionary] = [] # Isl 3 interactive spore-cap puffs
 var _twist_cd: float = 0.0
 var _was_dashing: bool = false
+var _room_entry_t: float = 0.0
 
 
 func _ready() -> void:
@@ -46,6 +47,7 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_spore_caps.clear()
 	_twist_cd = 0.0
 	_was_dashing = false
+	_room_entry_t = 0.55 if _active else 0.0
 	_room_idx = _parse_room_index(region_node)
 	if _active:
 		_seed_room()
@@ -104,6 +106,7 @@ func tick(dt: float) -> void:
 		return
 	_clock += dt
 	_twist_cd = maxf(0.0, _twist_cd - dt)
+	_room_entry_t = maxf(0.0, _room_entry_t - dt)
 	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
 	var dashing_now: bool = w != null and not w.dead and w.is_dashing()
 	var dash_started: bool = dashing_now and not _was_dashing
@@ -312,6 +315,12 @@ func _draw() -> void:
 	if not _active or _rules == null:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
+	if _room_entry_t > 0.0:
+		var eu: float = 1.0 - clampf(_room_entry_t / 0.55, 0.0, 1.0)
+		var er: float = roundf(lerpf(14.0, 68.0, eu))
+		var ea: float = (1.0 - eu) * (0.28 if fred else 0.46)
+		draw_arc(_center.round(), er, 0.0, TAU, 24, Color(LxBiomePalette.col(_island_id, "glow"), ea), 1.4)
+		draw_arc(_center.round(), roundf(er * 0.72), 0.0, TAU, 18, Color(PAL["cream"] as Color, ea * 0.75), 1.0)
 	if _room_idx in [1, 5, 9] or (_island_id == 1 and _room_idx == 6):
 		_draw_architectural_medallion(fred)
 	match _island_id:

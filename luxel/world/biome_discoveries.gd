@@ -122,6 +122,14 @@ func get_total_count() -> int:
 	return _nodes.size()
 
 
+func get_found_positions() -> Array[Vector2]:
+	var out: Array[Vector2] = []
+	for nd: Dictionary in _nodes:
+		if bool(nd["found"]):
+			out.append(nd["pos"] as Vector2)
+	return out
+
+
 func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick) -> bool:
 	if not _active:
 		return false

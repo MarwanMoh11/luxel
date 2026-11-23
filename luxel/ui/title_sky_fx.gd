@@ -69,13 +69,18 @@ static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> v
 	if not (sums is Array):
 		return
 	var relit: Dictionary = {}
+	var harmony: Dictionary = {}
 	for s: Variant in (sums as Array):
 		if s is Dictionary and not bool((s as Dictionary).get("empty", true)):
 			var arr: Variant = (s as Dictionary).get("relit_islands", [])
 			if arr is Array:
 				for iid: Variant in (arr as Array):
 					relit[int(iid)] = true
-	if relit.is_empty():
+			var harr: Variant = (s as Dictionary).get("harmony_islands", [])
+			if harr is Array:
+				for hid: Variant in (harr as Array):
+					harmony[int(hid)] = true
+	if relit.is_empty() and harmony.is_empty():
 		return
 	# Subtle horizon beacon coordinates across the archipelago skyline (Islands 1..8)
 	var pts: Array[Vector2] = [
@@ -95,15 +100,23 @@ static func _draw_relit_horizon(ci: CanvasItem, elapsed: float, fred: bool) -> v
 		ci.draw_rect(Rect2(0.0, 145.0, 320.0, 1.0), Color(LxPalette.PAL["gold"], 0.35 if fred else 0.50))
 	for i: int in range(pts.size()):
 		var isl_i: int = i + 1
-		if not relit.has(isl_i):
+		var is_relit: bool = relit.has(isl_i)
+		var is_harm: bool = harmony.has(isl_i)
+		if not is_relit and not is_harm:
 			continue
 		var p: Vector2 = pts[i]
 		var tw: float = 0.85 if fred else (0.72 + 0.28 * sin(elapsed * 2.2 + float(i) * 1.1))
 		var bh: float = roundf(6.0 + 3.0 * tw)
 		var b_glow: Color = LxBiomePalette.col(isl_i, "glow")
 		var b_hi: Color = LxBiomePalette.col(isl_i, "hi")
-		ci.draw_rect(Rect2(p.x, p.y - bh, 1.0, bh), Color(b_glow, 0.34 * tw))
-		ci.draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(b_hi, 0.72 * tw))
-		ci.draw_rect(Rect2(p, Vector2.ONE), Color(LxPalette.PAL["cream"], 0.95))
-		var rx: float = roundf(p.x + (0.0 if fred else sin(elapsed * 2.4 + float(i)) * 1.0))
-		ci.draw_rect(Rect2(rx - 1.0, 148.0 + float(i % 3) * 2.0, 3.0, 1.0), Color(b_glow, 0.42 * tw))
+		if is_relit:
+			ci.draw_rect(Rect2(p.x, p.y - bh, 1.0, bh), Color(b_glow, 0.34 * tw))
+			ci.draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(b_hi, 0.72 * tw))
+			ci.draw_rect(Rect2(p, Vector2.ONE), Color(LxPalette.PAL["cream"], 0.95))
+			var rx: float = roundf(p.x + (0.0 if fred else sin(elapsed * 2.4 + float(i)) * 1.0))
+			ci.draw_rect(Rect2(rx - 1.0, 148.0 + float(i % 3) * 2.0, 3.0, 1.0), Color(b_glow, 0.42 * tw))
+		if is_harm:
+			var sc := Vector2(p.x, p.y - (bh + 5.0 if is_relit else 6.0)).round()
+			ci.draw_rect(Rect2(sc + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(b_glow, 0.82 * tw))
+			ci.draw_rect(Rect2(sc + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), Color(b_glow, 0.82 * tw))
+			ci.draw_rect(Rect2(sc, Vector2.ONE), Color(LxPalette.PAL["cream"], 0.96))

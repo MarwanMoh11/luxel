@@ -211,19 +211,37 @@ func _on_lantern_hung(pos: Vector2) -> void:
 	queue_redraw()
 
 
-func _on_enemy_killed(_enemy: Object, _kind: String, pos: Vector2, _opened_kill: bool) -> void:
+func _on_enemy_killed(enemy: Object, _kind: String, pos: Vector2, _opened_kill: bool) -> void:
 	# Biome-flavoured defeat burst ring + radial sparks (strictly 20 Last Light colours)
 	var k_mid: String = LxBiomePalette.key(_island_id, "hi")
 	var k_glow: String = LxBiomePalette.key(_island_id, "glow")
-	_ripples.append({"pos": pos, "age": 0.0, "dur": 0.36, "r0": 3.0, "r1": 18.0, "col": k_glow})
-	for k: int in range(6):
-		var ang: float = float(k) * (TAU / 6.0) + pos.x * 0.03
-		_trails.append({
-			"pos": pos + Vector2(cos(ang) * 4.0, sin(ang) * 4.0),
-			"vel": Vector2(cos(ang), sin(ang)) * 34.0,
-			"age": 0.0, "dur": 0.34,
-			"col": k_glow if k % 2 == 0 else k_mid,
-		})
+	var is_boss_kill: bool = enemy is LxEnemyBrain and is_instance_valid(enemy) and (enemy as LxEnemyBrain).is_boss
+	if is_boss_kill:
+		_ripples.append({"pos": pos, "age": 0.0, "dur": 0.56, "r0": 6.0, "r1": 44.0, "col": "cream"})
+		_ripples.append({"pos": pos, "age": 0.0, "dur": 0.68, "r0": 8.0, "r1": 64.0, "col": k_glow})
+		_ripples.append({"pos": pos, "age": 0.0, "dur": 0.80, "r0": 10.0, "r1": 84.0, "col": k_mid})
+		for k: int in range(12):
+			var ang: float = float(k) * (TAU / 12.0)
+			_trails.append({
+				"pos": pos + Vector2(cos(ang) * 6.0, sin(ang) * 6.0),
+				"vel": Vector2(cos(ang), sin(ang)) * (56.0 if k % 2 == 0 else 40.0),
+				"age": 0.0, "dur": 0.56,
+				"col": "cream" if k % 3 == 0 else (k_glow if k % 2 == 0 else k_mid),
+			})
+		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+			LxDarknessLayer.active_instance.add_burst_light(pos, 144.0, 0.88 if LxHudFx.flash_reduced() else 1.38, 0.68)
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 20.0, 10.0)
+	else:
+		_ripples.append({"pos": pos, "age": 0.0, "dur": 0.36, "r0": 3.0, "r1": 18.0, "col": k_glow})
+		for k: int in range(6):
+			var ang: float = float(k) * (TAU / 6.0) + pos.x * 0.03
+			_trails.append({
+				"pos": pos + Vector2(cos(ang) * 4.0, sin(ang) * 4.0),
+				"vel": Vector2(cos(ang), sin(ang)) * 34.0,
+				"age": 0.0, "dur": 0.34,
+				"col": k_glow if k % 2 == 0 else k_mid,
+			})
 	# Island 1: Acoustic Echo widens lantern light briefly
 	if _island_id == 1:
 		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
