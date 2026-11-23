@@ -308,6 +308,9 @@ func _draw() -> void:
 	if not _active:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
+	var wp_d: Vector2 = (Lx.player as Node2D).global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2(-9999.0, -9999.0)
+	var harm_d: bool = Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % _island_id, false))
+	var glow_d: Color = LxBiomePalette.col(_island_id, "glow")
 	for nd: Dictionary in _nodes:
 		var cp: Vector2 = (nd["pos"] as Vector2).round()
 		if absf(cp.x - _cam_center.x) > HALF_W or absf(cp.y - _cam_center.y) > HALF_H:
@@ -317,6 +320,9 @@ func _draw() -> void:
 		var ph: float = float(nd["phase"])
 		var sway: float = 0.0 if fred else roundf(sin(_clock * (10.0 if at > 0.0 else 2.0) + ph) * (2.0 if at > 0.0 else 0.7))
 		draw_rect(Rect2(cp + Vector2(-4.0, 1.0), Vector2(8.0, 2.0)), Color(PAL["void"] as Color, 0.46))
+		if found:
+			var near_h: bool = harm_d and cp.distance_to(wp_d) <= 42.0
+			draw_arc(cp + Vector2(0.0, 1.0), 8.0 if near_h else 6.0, 0.0, TAU, 12, Color(glow_d, 0.36 if near_h else 0.20), 1.0)
 		_draw_biome_toy(cp, at, found, sway, fred, ph)
 		if not found and (fred or fmod(_clock * 1.9 + ph, 1.4) < 0.55):
 			draw_rect(Rect2(cp + Vector2(0.0, -15.0), Vector2.ONE), PAL["cream"] as Color)

@@ -215,6 +215,8 @@ func _draw() -> void:
 	if not _active:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
+	var wp_d: Vector2 = (Lx.player as Node2D).global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2(-9999.0, -9999.0)
+	var harm_1: bool = Lx.state != null and bool(Lx.state.story_flags.get("disc_all_1", false))
 	for ch: Dictionary in _chimes:
 		var cp: Vector2 = (ch["pos"] as Vector2).round()
 		if absf(cp.x - _cam_center.x) > HALF_W or absf(cp.y - _cam_center.y) > HALF_H:
@@ -225,6 +227,10 @@ func _draw() -> void:
 		var sway: float = 0.0 if fred else roundf(sin(_clock * (12.0 if sw_t > 0.0 else 2.2) + ph) * (2.5 if sw_t > 0.0 else 0.8))
 		# Ground shadow + slender stone/brass bell-chime post
 		draw_rect(Rect2(cp + Vector2(-4.0, 1.0), Vector2(8.0, 2.0)), Color(PAL["void"] as Color, 0.48))
+		if rung:
+			var d_c: float = cp.distance_to(wp_d)
+			var halo_a: float = 0.34 if (harm_1 and d_c <= 42.0) else 0.18
+			draw_arc(cp + Vector2(0.0, 1.0), 8.0 if (harm_1 and d_c <= 42.0) else 6.0, 0.0, TAU, 12, Color(PAL["gold"] as Color, halo_a), 1.0)
 		draw_rect(Rect2(cp + Vector2(-1.0, -13.0), Vector2(2.0, 14.0)), PAL["night"] as Color)
 		draw_rect(Rect2(cp + Vector2(-1.0, -13.0), Vector2(1.0, 13.0)), PAL["mauve"] as Color)
 		# Crossbar + 3 hanging brass chime pipes

@@ -215,8 +215,9 @@ static func _draw_ember_ready_halo(hud: CanvasItem, blink_t: float, fred: bool) 
 	if float(Lx.player.call("get_ember_ratio")) < 0.999:
 		return
 	var pulse: bool = fred or (int(blink_t * 6.0) % 2 == 0)
+	var isl_e: int = Lx.state.island_id if Lx.state != null else 1
 	var hi: Color = (LxPalette.PAL["cream"] if pulse else LxPalette.PAL["gold"]) as Color
-	var warm: Color = LxPalette.PAL["apricot"] as Color
+	var warm: Color = LxBiomePalette.col(isl_e, "glow")
 	var bg: Color = LxPalette.PAL["void"] as Color
 	# Left & right brass starlight pips framing the Ember gauge (246..314, 166..174)
 	for sx: float in [243.0, 315.0]:
@@ -287,7 +288,8 @@ static func _draw_lantern_edge_compass(hud: CanvasItem, blink_t: float, fred: bo
 	var pulse: bool = fred or (int(blink_t * (8.0 if stolen else 4.0)) % 2 == 0)
 
 	var bg: Color = LxPalette.PAL["void"] as Color
-	var rim: Color = (LxPalette.PAL["coral"] if stolen else LxPalette.PAL["apricot"]) as Color
+	var isl_c: int = Lx.state.island_id if Lx.state != null else 1
+	var rim: Color = (LxPalette.PAL["coral"] as Color) if stolen else LxBiomePalette.col(isl_c, "glow")
 	var core: Color = (LxPalette.PAL["cream"] if pulse else LxPalette.PAL["gold"]) as Color
 	hud.draw_rect(Rect2(edge + Vector2(-4.0, -4.0), Vector2(9.0, 9.0)), bg)
 	hud.draw_rect(Rect2(edge + Vector2(-3.0, -3.0), Vector2(7.0, 7.0)), rim)
@@ -304,14 +306,21 @@ static func _draw_lantern_edge_compass(hud: CanvasItem, blink_t: float, fred: bo
 
 static func _draw_boss_phase_filigree(hud: CanvasItem, blink_t: float, phase: int, fred: bool) -> void:
 	var lit: bool = fred or (int(blink_t * 6.0) % 2 == 0)
-	var col: Color = (LxPalette.PAL["coral"] if phase >= 3 else LxPalette.PAL["gold"]) as Color
-	var hi: Color = (LxPalette.PAL["cream"] if lit else col) as Color
+	var isl_b: int = Lx.state.island_id if Lx.state != null else 1
+	var b_glow: Color = LxBiomePalette.col(isl_b, "glow")
+	var col: Color = (LxPalette.PAL["coral"] as Color) if phase >= 3 else b_glow
+	var hi: Color = (LxPalette.PAL["cream"] as Color) if lit else col
 	for side: float in [-1.0, 1.0]:
 		var px: float = roundf(160.0 + side * 86.0)
 		var py: float = 15.0
 		hud.draw_rect(Rect2(px - 1.0, py - 1.0, 3.0, 3.0), LxPalette.PAL["void"] as Color)
 		hud.draw_rect(Rect2(px, py, 1.0, 1.0), hi)
 		hud.draw_rect(Rect2(px + side * 2.0, py, 2.0, 1.0), col)
+		if not fred:
+			var u_b: float = fmod(blink_t * (1.25 if phase >= 3 else 0.85) + (0.0 if side < 0.0 else 0.5), 1.0)
+			var sy_b: float = roundf(py - 2.0 - u_b * 7.0)
+			var sx_b: float = roundf(px + side * (1.0 + sin(blink_t * 4.0 + side) * 1.5))
+			hud.draw_rect(Rect2(sx_b, sy_b, 1.0, 1.0), (LxPalette.PAL["cream"] as Color) if u_b < 0.35 else b_glow)
 
 
 static func draw_boss_biome_header(hud: CanvasItem, island_id: int, name_w: float, bar_x: float, bar_y: float, bar_w: float, phase: int) -> void:
