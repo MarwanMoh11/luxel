@@ -128,6 +128,69 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 		canvas.draw_rect(Rect2(pip, Vector2(1.0, 1.0)), Color(pcol, tw))
 		var inner_pip: Vector2 = (center + Vector2.from_angle(pang) * inner_r).round()
 		canvas.draw_rect(Rect2(inner_pip, Vector2(1.0, 1.0)), Color(LxWick.PAL_SKY, tw * 0.45))
+	_draw_hidden_biome_runes(canvas, off, isl_l, b_glow, rot, flash_red)
+
+
+func _draw_hidden_biome_runes(canvas: CanvasItem, off: Vector2, isl: int, b_glow: Color, rot: float, flash_red: bool) -> void:
+	# Reveals delicate biome-unique astral runes anchored in world space inside the True Lens circle
+	const STEP: float = 56.0
+	var r_lim: float = last_radius - 6.0
+	if r_lim <= 10.0:
+		return
+	var gx0: int = int(floor((last_origin.x - r_lim) / STEP))
+	var gx1: int = int(ceil((last_origin.x + r_lim) / STEP))
+	var gy0: int = int(floor((last_origin.y - r_lim) / STEP))
+	var gy1: int = int(ceil((last_origin.y + r_lim) / STEP))
+	for gy: int in range(gy0, gy1 + 1):
+		for gx: int in range(gx0, gx1 + 1):
+			var h: int = absi((gx * 73856093) ^ (gy * 19349663) ^ (isl * 83492791))
+			if (h & 7) >= 3:
+				continue
+			var wp := Vector2(
+				(float(gx) + 0.5) * STEP + float(((h >> 3) & 31) - 16),
+				(float(gy) + 0.5) * STEP + float(((h >> 8) & 31) - 16)
+			)
+			var dist: float = wp.distance_to(last_origin)
+			if dist >= r_lim:
+				continue
+			var reveal: float = clampf(1.0 - dist / r_lim, 0.0, 1.0)
+			var tw: float = 0.72 if flash_red else (0.58 + 0.30 * sin(rot * 4.5 + float(h & 15)))
+			var a: float = clampf(reveal * 0.42 * tw, 0.0, 0.48)
+			if a < 0.04:
+				continue
+			var p: Vector2 = (wp + off).round()
+			var c_main := Color(b_glow, a)
+			var c_hi := Color(LxWick.PAL_ICE, a * 0.9)
+			match isl:
+				1: # Bell-arch glyph
+					canvas.draw_arc(p, 3.0, PI, TAU, 6, c_main, 1.0)
+					canvas.draw_rect(Rect2(p + Vector2(-0.5, 1.0), Vector2(1.0, 1.0)), c_hi)
+				2: # Tide wave-chevron
+					canvas.draw_line(p + Vector2(-3.0, 1.0), p + Vector2(0.0, -2.0), c_hi, 1.0)
+					canvas.draw_line(p + Vector2(0.0, -2.0), p + Vector2(3.0, 1.0), c_main, 1.0)
+				3: # Heartwood leaf-sprig
+					canvas.draw_line(p + Vector2(-3.0, -1.0), p + Vector2(0.0, 2.0), c_main, 1.0)
+					canvas.draw_line(p + Vector2(3.0, -1.0), p + Vector2(0.0, 2.0), c_main, 1.0)
+					canvas.draw_rect(Rect2(p + Vector2(-0.5, -2.0), Vector2(1.0, 1.0)), c_hi)
+				4: # Stained-glass diamond
+					canvas.draw_line(p + Vector2(0.0, -3.0), p + Vector2(3.0, 0.0), c_main, 1.0)
+					canvas.draw_line(p + Vector2(3.0, 0.0), p + Vector2(0.0, 3.0), c_hi, 1.0)
+					canvas.draw_line(p + Vector2(0.0, 3.0), p + Vector2(-3.0, 0.0), c_main, 1.0)
+					canvas.draw_line(p + Vector2(-3.0, 0.0), p + Vector2(0.0, -3.0), c_hi, 1.0)
+				5: # Astral 4-point star
+					canvas.draw_line(p + Vector2(-3.0, 0.0), p + Vector2(3.0, 0.0), c_main, 1.0)
+					canvas.draw_line(p + Vector2(0.0, -3.0), p + Vector2(0.0, 3.0), c_hi, 1.0)
+				6: # Forge ember chevron
+					canvas.draw_line(p + Vector2(-3.0, 2.0), p + Vector2(0.0, -2.0), c_main, 1.0)
+					canvas.draw_line(p + Vector2(0.0, -2.0), p + Vector2(3.0, 2.0), c_main, 1.0)
+					canvas.draw_rect(Rect2(p, Vector2(1.0, 1.0)), Color(LxWick.PAL_CREAM, a))
+				7: # Silver lunar crescent
+					canvas.draw_arc(p, 3.0, -PI * 0.45, PI * 0.45, 6, c_hi, 1.0)
+					canvas.draw_rect(Rect2(p + Vector2(-2.0, 0.0), Vector2(1.0, 1.0)), c_main)
+				_: # Dawn sunburst
+					canvas.draw_line(p + Vector2(-3.0, 0.0), p + Vector2(3.0, 0.0), c_main, 1.0)
+					canvas.draw_line(p + Vector2(0.0, -3.0), p + Vector2(0.0, 3.0), c_main, 1.0)
+					canvas.draw_rect(Rect2(p - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), Color(LxWick.PAL_CREAM, a))
 
 
 func reset() -> void:

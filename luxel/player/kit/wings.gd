@@ -86,7 +86,12 @@ func on_shockwave_cleared() -> void:
 
 func stop_glide(emit_land: bool = true) -> void:
 	if emit_land and gliding and wick != null and not wick.dead and glide_dist_traveled >= 36.0:
+		var isl_l: int = Lx.state.island_id if Lx.state != null else 1
 		wick.spawn_sparks(wick.global_position, -glide_dir, 2, LxWick.PAL_ICE, 12.0, 32.0, 0.18)
+		wick.spawn_sparks(wick.global_position, -glide_dir, 2, LxBiomePalette.col(isl_l, "glow"), 14.0, 36.0, 0.20)
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			var wdk: int = LxGroundDecals.Kind.RIPPLE if isl_l in [2, 4] else (LxGroundDecals.Kind.BLOSSOM if isl_l == 3 else (LxGroundDecals.Kind.PRISM_STAR if isl_l in [5, 7] else LxGroundDecals.Kind.FOOTSTEP))
+			LxGroundDecals.active_instance.add_decal(wdk, wick.global_position + Vector2(0.0, 4.0), 9.0, 3.2)
 		wick.emit_sfx("feather_flutter", wick.global_position, false)
 	gliding = false
 	glide_time_left = 0.0

@@ -122,6 +122,10 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	if empowered:
 		dmg *= 1.25
 		wear += 1.0
+	var br_b: LxBiomeRules = LxBiomeRules.active_instance
+	if br_b != null and is_instance_valid(br_b) and br_b.island_id == 2 and br_b.beam_buff_t > 0.0:
+		dmg *= 1.20
+		empowered = true
 	var pierce: bool = bool(data.get("pierce", true))
 	var stagger: bool = bool(data.get("stagger", true))
 	var hs: float = float(data.get("hitstop", 0.095))
@@ -178,8 +182,16 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 				wick.spawn_sparks(ipos, aim, 6, LxWick.PAL_GOLD, 30.0, 90.0, 0.22)
 	if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
 		LxBiomeMechanics.active_instance.try_hit_biome_target(start_p, end_p, aim, wick)
+	var isl_dec: int = Lx.state.island_id if Lx.state != null else 1
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, end_p, 10.0, 5.0)
+		var dk: int = LxGroundDecals.Kind.SCORCH
+		if isl_dec in [2, 4]:
+			dk = LxGroundDecals.Kind.RIPPLE
+		elif isl_dec == 3:
+			dk = LxGroundDecals.Kind.BLOSSOM
+		elif isl_dec in [5, 7]:
+			dk = LxGroundDecals.Kind.PRISM_STAR
+		LxGroundDecals.active_instance.add_decal(dk, end_p, 11.0, 5.2)
 
 	beam_start = start_p
 	beam_end = end_p
@@ -201,6 +213,7 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	wick.spawn_ring(end_p, 2.0, 14.0 if empowered else 10.0, 0.22, LxWick.PAL_GOLD, 1.8 if empowered else 1.5)
 	wick.spawn_sparks(start_p, aim, 9 if empowered else 6, LxWick.PAL_CREAM, 35.0, 105.0, 0.20)
 	wick.spawn_sparks(end_p, -aim, 10 if empowered else 8, LxWick.PAL_GOLD, 30.0, 105.0, 0.22)
+	wick.spawn_sparks(end_p, -aim, 3, LxBiomePalette.col(isl_dec, "glow"), 26.0, 88.0, 0.24)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		var fred_b: bool = LxHudFx.flash_reduced()
 		var bi_b: float = (1.12 if empowered else 0.92) if fred_b else (1.72 if empowered else 1.45)
