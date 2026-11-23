@@ -270,6 +270,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			st.story_flags["isl1_arrived"] = true
 			_emit_narration("ISL1_ARRIVAL", "narration", 4.0)
 			if _events != null:
+				_events.sfx_requested.emit("bell_toll", Vector2.ZERO, false)
 				_events.prompt_requested.emit("PROMPT_AIM_SHOOT", "lx_fire", 4.5)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
@@ -284,6 +285,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if region_id == "belfry_r1" and st != null and not bool(st.story_flags.get("isl1_belfry_entered", false)):
 			st.story_flags["isl1_belfry_entered"] = true
 			_emit_narration("CH5_TITLE", "title", 3.5)
+			if _events != null:
+				_events.sfx_requested.emit("intro_toll", Vector2.ZERO, false)
 		elif region_id == "belfry_r4":
 			_r4_kills = 0
 		if _events != null:

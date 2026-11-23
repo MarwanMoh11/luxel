@@ -274,6 +274,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if st != null and not bool(st.story_flags.get("isl4_arrived", false)):
 			st.story_flags["isl4_arrived"] = true
 			_emit_narration("ISL4_ARRIVAL", "narration", 4.0)
+			if _events != null:
+				_events.sfx_requested.emit("wing_gale", Vector2.ZERO, false)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "conservatory_r10":
@@ -287,6 +289,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if region_id == "conservatory_r1" and st != null and not bool(st.story_flags.get("isl4_dungeon_entered", false)):
 			st.story_flags["isl4_dungeon_entered"] = true
 			_emit_narration("DUNGEON_4_NAME", "title", 3.5)
+			if _events != null:
+				_events.sfx_requested.emit("marsh_splash", Vector2.ZERO, false)
 		elif region_id == "conservatory_r3":
 			_r3_kills = 0
 		elif region_id == "conservatory_r8":

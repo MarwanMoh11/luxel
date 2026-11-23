@@ -154,6 +154,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if st != null and not bool(st.story_flags.get("isl2_arrived", false)):
 			st.story_flags["isl2_arrived"] = true
 			_emit_narration("ISL2_ARRIVAL", "narration", 4.0)
+			if _events != null:
+				_events.sfx_requested.emit("lighthouse_toll", Vector2.ZERO, false)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "lighthouse_r10":
@@ -167,6 +169,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if region_id == "lighthouse_r1" and st != null and not bool(st.story_flags.get("isl2_lighthouse_entered", false)):
 			st.story_flags["isl2_lighthouse_entered"] = true
 			_emit_narration("DUNGEON_2_NAME", "title", 3.5)
+			if _events != null:
+				_events.sfx_requested.emit("harbor_creak", Vector2.ZERO, false)
 		if _events != null:
 			var mb_live: bool = region_id == "lighthouse_r6" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
 			if mb_live:

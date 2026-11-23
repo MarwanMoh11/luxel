@@ -198,6 +198,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if st != null and not bool(st.story_flags.get("isl8_arrived", false)):
 			st.story_flags["isl8_arrived"] = true
 			_emit_narration("ISL8_ARRIVAL", "ominous", 4.5)
+			if _events != null:
+				_events.sfx_requested.emit("void_hum", Vector2.ZERO, false)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "sanctum_r6":
@@ -211,6 +213,9 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if region_id == "sanctum_r1" and st != null and not bool(st.story_flags.get("isl8_sanctum_entered", false)):
 			st.story_flags["isl8_sanctum_entered"] = true
 			_emit_narration("DUNGEON_8_NAME", "title", 3.5)
+			if _events != null:
+				_events.sfx_requested.emit("eclipse_wave", Vector2.ZERO, false)
+				_events.shake_requested.emit(0.10)
 		if _events != null:
 			var mb_live: bool = region_id == "sanctum_r4" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
 			if mb_live:
