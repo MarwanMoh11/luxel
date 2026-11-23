@@ -408,10 +408,12 @@ func _draw_bolts(wick: LxWick, off: Vector2) -> void:
 			continue
 		var bdir: Vector2 = b.dir.normalized() if b.dir.length_squared() > 0.0001 else Vector2.RIGHT
 		var bp: Vector2 = (b.pos + off).round()
-		var c_body: Color = LxWick.PAL_ICE if b.is_prism else (LxWick.PAL_CORAL if b.is_pierce else (LxWick.PAL_CREAM if b.is_counter else LxWick.PAL_GOLD))
-		var c_tail: Color = LxWick.PAL_SKY if b.is_prism else (LxWick.PAL_APRICOT if b.is_pierce else (LxWick.PAL_GOLD if b.is_counter else LxWick.PAL_APRICOT))
-		var mid_end: Vector2 = (bp - bdir * (6.0 if (b.is_counter or b.is_pierce or b.bounce_count >= 2) else 5.0)).round()
-		var tail_end: Vector2 = (bp - bdir * (12.0 if (b.is_counter or b.is_pierce or b.bounce_count >= 2) else 9.0)).round()
+		var has_bt: bool = not b.biome_tint.is_empty() and LxPalette.PAL.has(b.biome_tint)
+		var bt_col: Color = (LxPalette.PAL[b.biome_tint] as Color) if has_bt else LxWick.PAL_GOLD
+		var c_body: Color = LxWick.PAL_ICE if b.is_prism else (LxWick.PAL_CORAL if b.is_pierce else (bt_col if has_bt else (LxWick.PAL_CREAM if b.is_counter else LxWick.PAL_GOLD)))
+		var c_tail: Color = LxWick.PAL_SKY if b.is_prism else (LxWick.PAL_APRICOT if b.is_pierce else (LxWick.PAL_SKY if b.biome_tint == "ice" else (LxWick.PAL_GOLD if (b.is_counter or has_bt) else LxWick.PAL_APRICOT)))
+		var mid_end: Vector2 = (bp - bdir * (6.0 if (b.is_counter or b.is_pierce or has_bt or b.bounce_count >= 2) else 5.0)).round()
+		var tail_end: Vector2 = (bp - bdir * (12.0 if (b.is_counter or b.is_pierce or has_bt or b.bounce_count >= 2) else 9.0)).round()
 		wick.draw_line(tail_end, mid_end, Color(c_tail, 0.85), 1.0)
 		wick.draw_rect(Rect2(tail_end, Vector2(1.0, 1.0)), c_tail)
 		wick.draw_line(mid_end, bp, c_body, 2.0)
@@ -427,9 +429,10 @@ func _draw_bolts(wick: LxWick, off: Vector2) -> void:
 		elif b.is_pierce:
 			wick.draw_line(bp + Vector2(-3.0, 0.0), bp + Vector2(3.0, 0.0), LxWick.PAL_CORAL, 1.0)
 			wick.draw_line(bp + Vector2(0.0, -3.0), bp + Vector2(0.0, 3.0), LxWick.PAL_GOLD, 1.0)
-		elif b.is_counter:
-			wick.draw_line(bp + Vector2(-3.0, 0.0), bp + Vector2(3.0, 0.0), LxWick.PAL_GOLD, 1.0)
-			wick.draw_line(bp + Vector2(0.0, -3.0), bp + Vector2(0.0, 3.0), LxWick.PAL_GOLD, 1.0)
+		elif b.is_counter or has_bt:
+			var star_c: Color = bt_col if has_bt else LxWick.PAL_GOLD
+			wick.draw_line(bp + Vector2(-3.0, 0.0), bp + Vector2(3.0, 0.0), star_c, 1.0)
+			wick.draw_line(bp + Vector2(0.0, -3.0), bp + Vector2(0.0, 3.0), star_c, 1.0)
 
 func _draw_muzzle_star(wick: LxWick, hand_pos: Vector2, flash_red: bool) -> void:
 	var aim: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
@@ -439,11 +442,29 @@ func _draw_muzzle_star(wick: LxWick, hand_pos: Vector2, flash_red: bool) -> void
 	var fwd: float = roundf(lerpf(3.0, 7.0, mt) * sc)
 	var bck: float = roundf(lerpf(2.0, 4.0, mt) * sc)
 	var side: float = roundf(lerpf(2.0, 5.0, mt) * sc)
-	wick.draw_line((hand_pos - aim * bck).round(), (hand_pos + aim * fwd).round(), LxWick.PAL_GOLD, 1.0)
-	wick.draw_line((hand_pos - perp * side).round(), (hand_pos + perp * side).round(), LxWick.PAL_GOLD, 1.0)
+	var ray_col: Color = _muzzle_biome_color()
+	wick.draw_line((hand_pos - aim * bck).round(), (hand_pos + aim * fwd).round(), ray_col, 1.0)
+	wick.draw_line((hand_pos - perp * side).round(), (hand_pos + perp * side).round(), ray_col, 1.0)
 	wick.draw_line((hand_pos - aim * roundf(bck * 0.5)).round(), (hand_pos + aim * roundf(fwd * 0.65)).round(), LxWick.PAL_CREAM, 1.0)
 	wick.draw_line((hand_pos - perp * roundf(side * 0.6)).round(), (hand_pos + perp * roundf(side * 0.6)).round(), LxWick.PAL_CREAM, 1.0)
 	wick.draw_rect(Rect2(hand_pos - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
+
+
+func _muzzle_biome_color() -> Color:
+	var br: LxBiomeRules = LxBiomeRules.active_instance
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	if bm != null and is_instance_valid(bm) and bm.molten_charges > 0:
+		return LxWick.PAL_CORAL
+	if br != null and is_instance_valid(br):
+		if br.island_id == 2 and br.beam_buff_t > 0.0:
+			return LxWick.PAL_ICE
+		if br.island_id == 5 and br.starlight_surge_t > 0.0:
+			return LxWick.PAL_SKY
+		if br.island_id == 7 and br.lunar_phase > 0.65:
+			return LxWick.PAL_ICE
+		if br.island_id == 8 and bm != null and is_instance_valid(bm) and bm.dawn_seals_broken > 0 and bm.dawn_seals_broken < 3:
+			return LxPalette.PAL["rose"] as Color
+	return LxWick.PAL_GOLD
 
 
 func _draw_biome_buff_halo(wick: LxWick, clock_t: float, flash_red: bool) -> void:

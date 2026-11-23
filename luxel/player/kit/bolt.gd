@@ -19,6 +19,7 @@ class Bolt:
 	var is_prism: bool = false
 	var is_counter: bool = false
 	var is_pierce: bool = false
+	var biome_tint: String = ""
 	var hit_ids: Array[int] = []
 
 var is_held: bool = false
@@ -105,12 +106,19 @@ func _fire_bolt() -> bool:
 		if br.island_id == 2 and br.beam_buff_t > 0.0:
 			b.damage *= 1.25
 			b.is_counter = true
+			b.biome_tint = "ice"
+		elif br.island_id == 5 and br.starlight_surge_t > 0.0:
+			b.biome_tint = "sky"
 		elif br.island_id == 7 and br.lunar_phase > 0.65:
 			b.damage *= 1.20
+			b.biome_tint = "ice"
+		elif br.island_id == 8 and bm != null and is_instance_valid(bm) and bm.dawn_seals_broken > 0:
+			b.biome_tint = "gold" if bm.dawn_seals_broken >= 3 else "rose"
 	if bm != null and is_instance_valid(bm) and bm.consume_molten_charge():
 		b.damage *= 1.35
 		b.is_pierce = true
 		b.is_counter = true
+		b.biome_tint = "coral"
 		wick.spawn_sparks(b.pos, aim, 5, LxWick.PAL_CORAL, 55.0, 120.0, 0.18)
 
 	wick.bolts.append(b)
@@ -118,6 +126,7 @@ func _fire_bolt() -> bool:
 	if bm != null and is_instance_valid(bm) and bm.mirror_echo_active:
 		var eb := Bolt.new()
 		eb.dir = aim
+		eb.biome_tint = "ice"
 		eb.pos = bm.mirror_echo_pos + aim * 4.0
 		eb.prev_pos = eb.pos
 		eb.speed = b.speed
