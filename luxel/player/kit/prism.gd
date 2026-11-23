@@ -123,6 +123,8 @@ func on_bolt_reflected(at_pos: Vector2, out_dir: Vector2, chain_count: int = 1) 
 	if chain_count >= 2:
 		wick.spawn_sparks(at_pos, out_dir, 4, LxWick.PAL_ICE, 45.0, 110.0, 0.22)
 		wick.spawn_ring(at_pos, 3.0, 15.0, 0.22, LxWick.PAL_ICE, 1.2)
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, at_pos, 10.0, 5.5)
 		wick.emit_sfx("prism_chain", at_pos, true)
 	else:
 		wick.emit_sfx("prism_bounce", at_pos, true)

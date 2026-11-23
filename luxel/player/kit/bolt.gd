@@ -207,6 +207,8 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				if b.is_counter and res > 0:
 					wick.spawn_ring(epos, 2.0, 13.0, 0.18, LxWick.PAL_GOLD, 1.2)
 					wick.spawn_sparks(epos, b.dir, 6, LxWick.PAL_CREAM, 40.0, 105.0, 0.20)
+					if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+						LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, epos + Vector2(0.0, 2.0), 9.5, 4.0)
 					wick.emit_sfx("perfect_counter", epos, true)
 					if wick.move_sunflare != null and wick.move_sunflare.unlocked:
 						var emax_c: float = wick.move_sunflare.get_ember_max()

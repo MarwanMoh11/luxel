@@ -157,7 +157,9 @@ func _on_boss_phase_changed(_boss_id: String, _phase: int) -> void:
 
 func _on_boss_defeated(_boss_id: String, _isl: int) -> void:
 	if Lx.player is Node2D and is_instance_valid(Lx.player):
-		add_decal(Kind.PRISM_STAR, (Lx.player as Node2D).global_position, 18.0, 12.0)
+		var wp: Vector2 = (Lx.player as Node2D).global_position
+		add_decal(Kind.PRISM_STAR, wp, 18.0, 12.0)
+		add_decal(Kind.BLOSSOM, wp, 16.0, 10.0)
 
 
 func _on_seal_broken(_isl: int, _seal_id: String) -> void:
@@ -209,6 +211,9 @@ func _draw() -> void:
 		match int(d["kind"]):
 			Kind.FOOTSTEP:
 				draw_rect(Rect2(p - Vector2.ONE, Vector2(2.0, 2.0)), Color(step_col, a * 0.42))
+				if u < 0.42:
+					var glint_col: Color = LxBiomePalette.col(_island_id, "hi")
+					draw_rect(Rect2(p - Vector2.ONE, Vector2(1.0, 1.0)), Color(glint_col, (1.0 - u / 0.42) * 0.55))
 			Kind.RIPPLE:
 				var rr: float = roundf(lerpf(2.0, r + 5.0, u))
 				draw_arc(p, rr, 0.0, TAU, 14, Color(PAL["ice"] as Color, a * 0.72), 1.0)

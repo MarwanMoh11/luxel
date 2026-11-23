@@ -196,7 +196,16 @@ static func boss_impact(at_pos: Vector2, shake: float, gust_r: float, gust_s: fl
 		if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
 			(wfx as Object).call("spawn_ripple", at_pos, ripple_col)
 	if shake >= 0.16 and LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.CRATER, at_pos, 14.0, 8.0)
+		var isl_b: int = Lx.state.island_id if Lx.state != null else 1
+		if isl_b in [2, 5, 7]:
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, at_pos, 15.0, 7.5)
+		elif isl_b == 3:
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, at_pos, 15.0, 7.0)
+		elif isl_b == 6:
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.CRATER, at_pos, 14.0, 8.0)
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, at_pos, 16.0, 8.5)
+		else:
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.CRATER, at_pos, 14.0, 8.0)
 
 
 static func draw_armour_plates(enemy: LxEnemyBrain, off: Vector2, ar: float, width: float, armour_hp: float, armour_max: float) -> void:
