@@ -512,6 +512,8 @@ func _draw() -> void:
 				var la: float = l_spin + float(li) * (TAU / 6.0)
 				var lp: Vector2 = (center + Vector2(cos(la) * 11.5, sin(la) * 11.5)).round()
 				draw_rect(Rect2(lp, Vector2(1.0, 1.0)), LxPalette.PAL["ice" if li % 2 == 0 else "sky"])
+	if state == State.HANGING or state == State.FLYING:
+		LxWickEvolution.draw_lantern_constellation(self, center, _anim_t, flash_red)
 
 	# Sculpted miniature Last Light Brass Lantern (curved bail, iron hood, 4 brass struts, flame, finial)
 	draw_rect(Rect2(center + Vector2(-1.0, -7.0), Vector2(2.0, 1.0)), PAL_GOLD)

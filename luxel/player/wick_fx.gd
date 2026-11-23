@@ -362,6 +362,7 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 			var sp: Vector2 = (Vector2(0.0, -7.0) + Vector2(cos(sa) * 9.0, sin(sa) * 5.0)).round()
 			wick.draw_rect(Rect2(sp, Vector2.ONE), LxWick.PAL_CREAM if si == 0 else LxWick.PAL_GOLD)
 	_draw_biome_buff_halo(wick, clock_t, flash_red)
+	LxWickEvolution.draw_wick_evolution(wick, hand_pos, clock_t, flash_red)
 	if wick.move_beam != null:
 		wick.move_beam.draw_fx(wick, off, hand_pos)
 	for s: Dictionary in sparks:
