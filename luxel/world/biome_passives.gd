@@ -239,6 +239,13 @@ func _draw_wick_biome_aura() -> void:
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	var has_bm: bool = bm != null and is_instance_valid(bm)
 	match _island_id:
+		1: # Bell Isle Wind-Chime Resonance: warm brass bell-spark orbiting Wick once chimes ring or isle relit
+			var chimes_on: bool = (LxBellChimes.active_instance != null and is_instance_valid(LxBellChimes.active_instance) and LxBellChimes.active_instance.get_rung_count() > 0) or (Lx.state != null and Lx.state.relit_islands.has(1))
+			if chimes_on:
+				var a1: float = _clock * 2.6
+				var p1: Vector2 = (wp + Vector2(cos(a1) * 10.5, sin(a1) * 5.0 - 1.0)).round()
+				draw_rect(Rect2(p1 - Vector2.ONE, Vector2(2.0, 2.0)), PAL["gold"] as Color)
+				draw_rect(Rect2(p1, Vector2.ONE), PAL["cream"] as Color)
 		2: # Lighthouse Fresnel Beam buff: radiant gold-ice starlight crest orbiting Wick
 			if _rules.beam_buff_t > 0.0:
 				var a2: float = _clock * 4.5
@@ -251,6 +258,13 @@ func _draw_wick_biome_aura() -> void:
 				var p3: Vector2 = (wp + Vector2(cos(a3) * 11.0, sin(a3) * 5.0 - 2.0)).round()
 				draw_rect(Rect2(p3, Vector2(2.0, 2.0)), PAL["lime"] as Color)
 				draw_rect(Rect2(p3, Vector2.ONE), PAL["cream"] as Color)
+		4: # Mirefen Rose Tailwind: twin fluttering rose-ice petals orbiting Wick during Tailwind boost
+			if has_bm and bm.tailwind_t > 0.0:
+				for k: int in range(2):
+					var a4: float = _clock * 4.6 + float(k) * PI
+					var p4: Vector2 = (wp + Vector2(cos(a4) * 11.0, sin(a4) * 5.5 - 1.0)).round()
+					draw_rect(Rect2(p4 - Vector2.ONE, Vector2(2.0, 2.0)), (PAL["rose"] if k == 0 else PAL["ice"]) as Color)
+					draw_rect(Rect2(p4, Vector2.ONE), PAL["cream"] as Color)
 		5: # Starlight Surge: twin brisk orbiting golden planetoids
 			if _rules.starlight_surge_t > 0.0:
 				for k: int in range(2):
@@ -258,6 +272,14 @@ func _draw_wick_biome_aura() -> void:
 					var p5: Vector2 = (wp + Vector2(cos(a5) * 11.0, sin(a5) * 5.0)).round()
 					draw_rect(Rect2(p5 - Vector2.ONE, Vector2(2.0, 2.0)), (PAL["gold"] if k == 0 else PAL["sky"]) as Color)
 					draw_rect(Rect2(p5, Vector2.ONE), PAL["cream"] as Color)
+		6: # Ashen Kiln Molten Overdrive: 1..3 blazing coral-gold molten ember orbs showing exact charges!
+			if has_bm and bm.molten_charges > 0:
+				var mc: int = mini(3, bm.molten_charges)
+				for k: int in range(mc):
+					var a6: float = _clock * 4.2 + float(k) * (TAU / float(mc))
+					var p6: Vector2 = (wp + Vector2(cos(a6) * 11.0, sin(a6) * 5.5 - 1.0)).round()
+					draw_rect(Rect2(p6 - Vector2.ONE, Vector2(3.0, 2.0)), PAL["coral"] as Color)
+					draw_rect(Rect2(p6, Vector2.ONE), PAL["gold"] as Color)
 		7: # Full Silver Moon Echo: twin pale silver crescent glints framing Wick
 			if has_bm and bm.mirror_echo_active and _rules.lunar_phase > 0.65:
 				draw_arc(wp, 11.0, -PI * 0.25, PI * 0.25, 6, Color(PAL["ice"] as Color, 0.70), 1.0)

@@ -42,6 +42,9 @@ func configure(island_id: int, is_dungeon: bool, cam_center: Vector2) -> void:
 	rng.seed = int(_island_id * 11939 + (401 if is_dungeon else 73))
 	if not is_dungeon:
 		match _island_id:
+			1: # Gentle twilight bell-blossom petals -> warm golden dawn pollen when relit
+				for i: int in range(12):
+					_drops.append({"ox": rng.randf_range(-HALF_W, HALF_W), "oy": rng.randf_range(-HALF_H, HALF_H), "spd": rng.randf_range(7.0, 14.0), "phase": rng.randf_range(0.0, TAU)})
 			2: # Sea spray + 3 distant gull silhouettes
 				for i: int in range(14):
 					_drops.append({"ox": rng.randf_range(-HALF_W, HALF_W), "oy": rng.randf_range(-HALF_H, HALF_H), "spd": rng.randf_range(36.0, 62.0), "len": rng.randf_range(3.0, 6.0)})
@@ -76,6 +79,10 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	_clock += dt
 	var relit: bool = _is_relit()
 	match _island_id:
+		1:
+			for d: Dictionary in _drops:
+				d["ox"] = wrapf(float(d["ox"]) + (6.0 + sin(_clock * 1.1 + float(d["phase"])) * 5.0) * dt, -HALF_W, HALF_W)
+				d["oy"] = wrapf(float(d["oy"]) + float(d["spd"]) * 0.55 * dt, -HALF_H, HALF_H)
 		2:
 			for d: Dictionary in _drops:
 				d["ox"] = wrapf(float(d["ox"]) + float(d["spd"]) * dt, -HALF_W, HALF_W)
@@ -114,6 +121,12 @@ func _draw() -> void:
 		1:
 			if relit:
 				_draw_dawn_sunbeams(fred)
+			var a1: float = 0.42 if fred else (0.72 if relit else 0.52)
+			for i: int in range(_drops.size()):
+				var d: Dictionary = _drops[i]
+				var p: Vector2 = (_cam_center + Vector2(float(d["ox"]), float(d["oy"]))).round()
+				var c1: Color = ((PAL["cream"] if i % 3 == 0 else PAL["gold"]) if relit else (PAL["apricot"] if i % 3 == 0 else PAL["mauve"])) as Color
+				draw_rect(Rect2(p, Vector2(2.0 if i % 2 == 0 else 1.0, 1.0)), Color(c1, a1))
 		2:
 			_draw_coastal_weather(fred, relit)
 		3:
