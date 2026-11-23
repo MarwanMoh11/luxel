@@ -38,6 +38,8 @@ uniform vec3 col_wine = vec3(0.62745, 0.27451, 0.41569);   // #a0466a
 uniform vec3 col_coral = vec3(0.88627, 0.44706, 0.35686);  // #e2725b
 uniform vec3 col_apricot = vec3(0.96078, 0.66275, 0.41569); // #f5a96a
 uniform vec3 col_sky = vec3(0.47059, 0.66275, 0.85490);    // #78a9da
+uniform vec3 col_jade = vec3(0.29804, 0.61961, 0.47059);   // #4c9e78
+uniform vec3 col_rose = vec3(0.92549, 0.62353, 0.65882);   // #ec9fa8
 uniform vec3 col_gold = vec3(1.0, 0.85098, 0.54902);       // #ffd98c
 uniform vec3 col_cream = vec3(1.0, 0.95686, 0.86275);      // #fff4dc
 
@@ -158,13 +160,29 @@ void fragment() {
 			out_col = mix(out_col, col_wine, clamp(dvig, 0.0, 0.22));
 		}
 
-		// Subtle diagonal moonlight/skylight shafts across shadowed dungeon chambers
+		// Biome-matched diagonal skylight/hearth shafts across shadowed dungeon chambers
 		if (dungeon_shafts > 0.01 && shadow_amt > 0.08) {
 			float diag = (screen_px.x * 0.58 + screen_px.y * 0.82) / 56.0;
 			float band = pow(max(0.0, sin(diag + shader_clock * 0.18)), 6.0);
 			float vfade = smoothstep(0.0, 0.18, UV.y) * (1.0 - smoothstep(0.62, 0.96, UV.y));
 			float shaft_a = band * vfade * dungeon_shafts * shadow_amt * 0.13;
-			out_col = mix(out_col, mix(out_col, col_sky, 0.45) + col_gold * 0.05, clamp(shaft_a, 0.0, 0.14));
+			vec3 shaft_col = col_sky;
+			if (biome_id == 1) {
+				shaft_col = mix(col_apricot, col_gold, 0.55);
+			} else if (biome_id == 3) {
+				shaft_col = mix(col_jade, col_gold, 0.35);
+			} else if (biome_id == 4) {
+				shaft_col = mix(col_rose, col_sky, 0.45);
+			} else if (biome_id == 5) {
+				shaft_col = mix(col_sky, col_gold, 0.50);
+			} else if (biome_id == 6) {
+				shaft_col = mix(col_coral, col_apricot, 0.55);
+			} else if (biome_id == 7) {
+				shaft_col = mix(col_sky, col_cream, 0.55);
+			} else if (biome_id == 8) {
+				shaft_col = mix(col_wine, col_gold, 0.35);
+			}
+			out_col = mix(out_col, mix(out_col, shaft_col, 0.48) + shaft_col * 0.05, clamp(shaft_a, 0.0, 0.15));
 		}
 
 		// Distinct per-island atmospheric shader signature (bell shimmer, coastal mist, forest canopy, lagoon caustics, astral grid, kiln glow, lunar sheen, eclipse corona)
@@ -176,10 +194,10 @@ void fragment() {
 			out_col = mix(out_col, col_sky, mist * shadow_amt * (0.09 + 0.06 * biome_phase));
 		} else if (biome_id == 3 && shadow_amt > 0.06) {
 			float canopy = pow(max(0.0, sin((screen_px.x * 0.045 - screen_px.y * 0.03) + shader_clock * 0.25)), 5.0);
-			out_col = mix(out_col, col_gold * 0.55 + col_sky * 0.35, canopy * shadow_amt * 0.09);
+			out_col = mix(out_col, mix(col_jade, col_gold, 0.38), canopy * shadow_amt * 0.10);
 		} else if (biome_id == 4 && shadow_amt > 0.06) {
 			float caust = pow(max(0.0, sin(screen_px.x * 0.09 + shader_clock * 1.1) * cos(screen_px.y * 0.09 - shader_clock * 0.8)), 3.0);
-			out_col = mix(out_col, col_sky, caust * shadow_amt * 0.11);
+			out_col = mix(out_col, mix(col_rose, col_sky, 0.55), caust * shadow_amt * 0.11);
 		} else if (biome_id == 5 && shadow_amt > 0.06) {
 			float grid_g = max(0.0, sin(screen_px.x * 0.11 + shader_clock * 0.2) * sin(screen_px.y * 0.11 - shader_clock * 0.2));
 			out_col = mix(out_col, col_gold, pow(grid_g, 8.0) * shadow_amt * 0.14);
