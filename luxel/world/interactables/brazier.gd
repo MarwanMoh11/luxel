@@ -24,6 +24,8 @@ func tick(dt: float) -> void:
 		_ignite_t = maxf(0.0, _ignite_t - dt)
 		queue_redraw()
 	if not lit:
+		if Lx.player is Node2D and is_instance_valid(Lx.player) and (Lx.player as Node2D).global_position.distance_squared_to(pos) <= 4624.0:
+			queue_redraw()
 		return
 	var frame: int = _calc_flicker_frame()
 	if frame != _flicker_frame:
@@ -121,6 +123,16 @@ func _draw() -> void:
 		draw_rect(Rect2(-4.0, -13.0, 8.0, 2.0), PAL["dusk"] as Color)
 		draw_rect(Rect2(-2.0, -13.0, 4.0, 1.0), PAL["plum"] as Color)
 		_fill("wine", [Rect2(-3.0, -12.0, 2.0, 1.0), Rect2(1.0, -12.0, 2.0, 1.0)])
+		if Lx.player is Node2D and is_instance_valid(Lx.player):
+			var d_b: float = (Lx.player as Node2D).global_position.distance_to(pos)
+			if d_b <= 64.0:
+				var prox_b: float = clampf(1.0 - d_b / 64.0, 0.0, 1.0)
+				var bg: Color = LxBiomePalette.col(island_id, "glow")
+				var fr_b: bool = LxHudFx.flash_reduced()
+				var ba: float = (0.35 if fr_b else (0.38 + 0.28 * sin(_clock * 3.6))) * prox_b
+				draw_rect(Rect2(-1.0, -14.0, 3.0, 1.0), Color(bg, ba))
+				draw_rect(Rect2(0.0, -15.0, 1.0, 3.0), Color(PAL["cream"] as Color, ba))
+				draw_arc(Vector2(0.0, 1.0), 11.0, 0.0, TAU, 14, Color(bg, ba * 0.48), 1.0)
 	_draw_signal_pulses()
 
 
@@ -157,6 +169,9 @@ func _draw_flame() -> void:
 		var ex: float = roundf(sin(_clock * 2.6 + float(i) * 3.1) * (2.0 + t * 2.5))
 		var ey: float = roundf(-19.0 - t * 11.0)
 		draw_rect(Rect2(ex, ey, 1.0, 1.0), c_cream if t < 0.25 else (c_gold if t < 0.65 else c_apr))
+	var fr_f: bool = LxHudFx.flash_reduced()
+	var ha_f: float = 0.24 if fr_f else (0.20 + 0.14 * sin(_clock * 4.2 + phase))
+	draw_arc(Vector2(0.0, -15.0), 9.0, 0.0, TAU, 14, Color(c_gold, ha_f), 1.0)
 	if _ignite_t > 0.0:
 		var u: float = 1.0 - clampf(_ignite_t / 0.32, 0.0, 1.0)
 		draw_arc(Vector2(0.0, -14.0), roundf(lerpf(4.0, 18.0, u)), 0.0, TAU, 16, c_cream if u < 0.4 else c_gold, 2.0 if u < 0.35 else 1.0, false)

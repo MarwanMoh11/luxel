@@ -99,6 +99,17 @@ func _draw() -> void:
 		_draw_floor_ring(true, c_main, c_hi)
 		_draw_move_emblem(c_main, c_hi)
 		_draw_starlight_motes(c_main, c_hi)
+		if Lx.player is Node2D and is_instance_valid(Lx.player):
+			var d_s: float = (Lx.player as Node2D).global_position.distance_to(pos)
+			if d_s <= 60.0:
+				var prox_s: float = clampf(1.0 - d_s / 60.0, 0.0, 1.0)
+				var fr_s: bool = LxHudFx.flash_reduced()
+				var sa: float = (0.14 if fr_s else 0.24) * prox_s
+				draw_rect(Rect2(-6.0, -38.0, 12.0, 38.0), Color(c_main, sa))
+				draw_rect(Rect2(-2.0, -40.0, 4.0, 40.0), Color(c_hi, sa * 1.15))
+				var spin_s: float = 0.0 if fr_s else _clock * 1.1
+				draw_arc(Vector2(0.0, 1.0), 17.0, spin_s, spin_s + PI * 0.7, 10, Color(c_hi, prox_s * 0.65), 1.0)
+				draw_arc(Vector2(0.0, 1.0), 17.0, spin_s + PI, spin_s + PI * 1.7, 10, Color(c_main, prox_s * 0.65), 1.0)
 	else:
 		# Sacred memory spark gently orbiting the claimed Shrine pedestal
 		var fred_s: bool = LxHudFx.flash_reduced()

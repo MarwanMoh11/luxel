@@ -38,6 +38,8 @@ func tick(dt: float) -> void:
 		if st != _pulse_stage:
 			_pulse_stage = st
 			queue_redraw()
+		elif Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).global_position.distance_squared_to(pos) <= 4624.0:
+			queue_redraw()
 
 
 func on_hit(hit: LxHit) -> bool:
@@ -157,6 +159,22 @@ func _draw() -> void:
 	else:
 		var core_c: Color = (PAL["cream"] if _pulse_stage == 0 else PAL["gold"]) as Color
 		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), core_c)
+	# Sympathetic solar crackle when Wick carries Sunflare near an intact Obsidian Seal
+	if Lx.player is LxWick and is_instance_valid(Lx.player):
+		var w_s: LxWick = Lx.player as LxWick
+		if w_s.move_sunflare != null and w_s.move_sunflare.unlocked:
+			var d_os: float = w_s.global_position.distance_to(pos)
+			if d_os <= 64.0:
+				var prox_os: float = clampf(1.0 - d_os / 64.0, 0.0, 1.0)
+				var fr_os: bool = LxHudFx.flash_reduced()
+				var charged: bool = w_s.ember >= w_s.move_sunflare.get_ember_max() - 0.001
+				var ca_os: float = (0.45 if fr_os else (0.55 if charged else 0.34)) * prox_os
+				draw_rect(Rect2(x0, y0, w, h), Color((PAL["gold"] if charged else PAL["coral"]) as Color, ca_os), false, 1.0)
+				for si: int in range(3 if charged else 2):
+					var su: float = fposmod(_clock * (0.95 if charged else 0.65) + float(si) * 0.33, 1.0)
+					var sx: float = roundf(sin(_clock * 2.8 + float(si) * 2.4) * (w * 0.32))
+					var sy: float = roundf(-2.0 - su * 14.0)
+					draw_rect(Rect2(sx, sy, 1.0, 1.0), Color((PAL["cream"] if (charged and su < 0.4) else PAL["gold"]) as Color, sin(su * PI) * prox_os * 0.9))
 
 
 func _draw_shatter_burst() -> void:
