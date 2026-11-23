@@ -99,6 +99,13 @@ func _draw() -> void:
 		_draw_floor_ring(true, c_main, c_hi)
 		_draw_move_emblem(c_main, c_hi)
 		_draw_starlight_motes(c_main, c_hi)
+	else:
+		# Sacred memory spark gently orbiting the claimed Shrine pedestal
+		var fred_s: bool = LxHudFx.flash_reduced()
+		var ma: float = _clock * (0.65 if fred_s else 1.25)
+		var mp := Vector2(roundf(cos(ma) * 9.0), roundf(-16.0 + sin(ma) * 3.0))
+		draw_rect(Rect2(mp, Vector2(2.0, 1.0)), Color(c_main, 0.65))
+		draw_rect(Rect2(mp, Vector2.ONE), Color(c_hi, 0.85))
 	if _claim_t > 0.0:
 		_draw_claim_burst(c_main, c_hi)
 	_draw_signal_pulses()

@@ -438,6 +438,8 @@ func _draw() -> void:
 	if not _active:
 		return
 	var cleared: bool = _is_boss_cleared()
+	if not cleared:
+		_draw_boss_phase_corners(fred)
 	match _island_id:
 		1:
 			if not cleared:
@@ -558,3 +560,26 @@ func _draw() -> void:
 				draw_circle(sp, 3.5 if lit_seal else 2.5, (PAL["gold"] if lit_seal else PAL["plum"]) as Color)
 				if lit_seal:
 					draw_rect(Rect2(sp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
+
+
+func _draw_boss_phase_corners(fred: bool) -> void:
+	if _region == null or not _region.has_method("get_enemies"):
+		return
+	var ph: int = 1
+	var ev: Variant = _region.call("get_enemies")
+	if ev is Array:
+		for e_v: Variant in (ev as Array):
+			if e_v is LxEnemyBrain and is_instance_valid(e_v):
+				var e: LxEnemyBrain = e_v as LxEnemyBrain
+				if e.is_alive() and e.is_boss:
+					ph = maxi(ph, e.phase)
+	if ph < 2:
+		return
+	var r_in: Rect2 = _rules.bounds.grow(-30.0)
+	var col: Color = (PAL["sky"] if ph >= 4 else (PAL["coral"] if ph >= 3 else LxBiomePalette.col(_island_id, "glow"))) as Color
+	var a: float = 0.42 if fred else (0.36 + 0.24 * sin(_clock * (2.6 + float(ph) * 0.5)))
+	var rad: float = 7.0 if ph == 2 else 9.0
+	for pt: Vector2 in [r_in.position, Vector2(r_in.end.x, r_in.position.y), Vector2(r_in.position.x, r_in.end.y), r_in.end]:
+		var cp: Vector2 = pt.round()
+		draw_arc(cp, rad, _clock * 0.9, _clock * 0.9 + PI * 1.4, 10, Color(col, a), 1.2)
+		LxHudFx.draw_biome_crest(self, _island_id, cp, Color(col, a * 1.25), Color(PAL["cream"] as Color, a))

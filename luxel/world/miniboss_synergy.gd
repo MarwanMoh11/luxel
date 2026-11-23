@@ -10,6 +10,7 @@ var _rules: LxBiomeRules = null
 var _mech: LxBiomeMechanics = null
 var _region: Node = null
 var _island_id: int = 1
+var _center: Vector2 = Vector2.ZERO
 var _anchors: Array[Dictionary] = [] # {pos, cd, flash_t}
 
 
@@ -18,6 +19,7 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node, c
 	_mech = mech
 	_region = region_node
 	_island_id = rules.island_id if rules != null else 1
+	_center = center.round()
 	_anchors.clear()
 	if rules == null:
 		return
@@ -38,16 +40,14 @@ func tick(dt: float, live: bool) -> void:
 	for anc: Dictionary in _anchors:
 		anc["cd"] = maxf(0.0, float(anc["cd"]) - dt)
 		anc["flash_t"] = maxf(0.0, float(anc["flash_t"]) - dt)
-		if not live or float(anc["cd"]) > 0.0:
+		if float(anc["cd"]) > 0.0:
 			continue
 		var ap: Vector2 = anc["pos"] as Vector2
 		if (act and w.global_position.distance_to(ap) <= 22.0) or lp.distance_to(ap) <= 20.0:
 			_activate(anc, w)
 
 
-func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick, live: bool) -> bool:
-	if not live:
-		return false
+func try_hit_segment(from_p: Vector2, to_p: Vector2, w: LxWick, _live: bool) -> bool:
 	for anc: Dictionary in _anchors:
 		if float(anc["cd"]) > 0.0:
 			continue
@@ -143,6 +143,11 @@ func draw_anchors(canvas: CanvasItem, clock: float, fred: bool, cleared: bool) -
 	var c_hi: Color = LxBiomePalette.col(_island_id, "hi")
 	var c_gl: Color = LxBiomePalette.col(_island_id, "glow")
 	var cream: Color = PAL["cream"] as Color
+	if cleared and _center != Vector2.ZERO:
+		var r_v: float = roundf(20.0 + (0.0 if fred else sin(clock * 1.8) * 2.0))
+		canvas.draw_arc(_center, r_v, 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.28), 1.0)
+		canvas.draw_arc(_center, r_v - 4.0, clock * 0.5, clock * 0.5 + PI * 1.2, 14, Color(c_gl, 0.34), 1.0)
+		LxHudFx.draw_biome_crest(canvas, _island_id, _center, Color(c_gl, 0.72), Color(cream, 0.80))
 	for anc: Dictionary in _anchors:
 		var ap: Vector2 = (anc["pos"] as Vector2).round()
 		var rdy: bool = cleared or float(anc["cd"]) <= 0.0

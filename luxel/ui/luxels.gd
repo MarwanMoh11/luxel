@@ -62,6 +62,8 @@ static func draw_cell(ci: CanvasItem, pos: Vector2, state: int) -> void:
 
 
 static func flicker(index: int, elapsed: float) -> int:
+	if LxHudFx.flash_reduced():
+		return State.LIT
 	var step: int = floori(elapsed / FLICKER_STEP)
 	var h: int = absi(hash(Vector2i(index, step))) % 1000
 	return State.DIM if h < 55 else State.LIT
