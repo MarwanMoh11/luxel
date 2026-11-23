@@ -262,7 +262,7 @@ func _on_lantern_hung(pos: Vector2) -> void:
 	queue_redraw()
 
 
-func _on_enemy_killed(enemy: Object, _kind: String, pos: Vector2, _opened_kill: bool) -> void:
+func _on_enemy_killed(enemy: Object, _kind: String, pos: Vector2, opened_kill: bool) -> void:
 	# Biome-flavoured defeat burst ring + radial sparks (strictly 20 Last Light colours)
 	var k_mid: String = LxBiomePalette.key(_island_id, "hi")
 	var k_glow: String = LxBiomePalette.key(_island_id, "glow")
@@ -303,10 +303,52 @@ func _on_enemy_killed(enemy: Object, _kind: String, pos: Vector2, _opened_kill: 
 		if w.move_sunflare != null and w.move_sunflare.unlocked:
 			w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 8.0)
 			_trails.append({"pos": pos.lerp(w.global_position, 0.5), "age": 0.0, "dur": 0.45, "col": "gold"})
+	# Skillful Opened-Kill Biome Payoff: every island rewards staggering/opening foes with its own signature power!
+	if opened_kill and not is_boss_kill:
+		_apply_opened_kill_biome_reward(pos, k_glow)
 	# Biome-voiced Dungeon Combat Chamber Clear Crescendo when the final non-boss foe falls
 	if not is_boss_kill and not _room_cleared_fx and _rules != null and _rules.is_dungeon:
 		_check_dungeon_chamber_clear(pos, k_glow, k_mid)
 	queue_redraw()
+
+
+func _apply_opened_kill_biome_reward(pos: Vector2, k_glow: String) -> void:
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	var has_bm: bool = bm != null and is_instance_valid(bm)
+	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	_ripples.append({"pos": pos, "age": 0.0, "dur": 0.44, "r0": 4.0, "r1": 28.0, "col": "cream"})
+	match _island_id:
+		1: # Bell Isle: warm acoustic bell chime echo
+			if Lx.audio != null:
+				Lx.audio.play_sfx("prop_chime", pos, true)
+		2: # Tidewater Harbor: Fresnel Catch (+1.2s Fresnel Focus!)
+			if _rules != null:
+				_rules.beam_buff_t = maxf(_rules.beam_buff_t, 1.2)
+			_ripples.append({"pos": pos, "age": 0.0, "dur": 0.46, "r0": 5.0, "r1": 24.0, "col": "ice"})
+		3: # Thornwood Hollow: Heartwood Dew spore nudge + soft Ember
+			on_updraft_gust(pos)
+			if w != null and w.move_sunflare != null and w.move_sunflare.unlocked:
+				w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 4.0)
+		4: # Mirefen Gardens: Lagoon Zephyr (+1.5s Rose Tailwind!)
+			if has_bm:
+				bm.tailwind_t = maxf(bm.tailwind_t, 1.5)
+			_ripples.append({"pos": pos, "age": 0.0, "dur": 0.46, "r0": 5.0, "r1": 24.0, "col": "rose"})
+		5: # Starfall Observatory: Astral Cadence (+1.5s Starlight Surge!)
+			if _rules != null:
+				_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 1.5)
+		6: # Ashen Kiln: Forge Temper (+1 Molten Overdrive charge, capped at 3!)
+			if has_bm:
+				bm.molten_charges = mini(3, bm.molten_charges + 1)
+		7: # Moon Shoals: Silver Reflection brightens Moon phase briefly
+			if _rules != null:
+				_rules.lunar_phase = minf(1.0, _rules.lunar_phase + 0.18)
+			_ripples.append({"pos": pos, "age": 0.0, "dur": 0.48, "r0": 6.0, "r1": 26.0, "col": "ice"})
+		8: # The Long Night: Dawn Spark (+10 Ember + dawn flare!)
+			if w != null and w.move_sunflare != null and w.move_sunflare.unlocked:
+				w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 10.0)
+			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+				LxDarknessLayer.active_instance.add_burst_light(pos, 92.0, 0.80 if LxHudFx.flash_reduced() else 1.20, 0.42)
+	_ripples.append({"pos": pos, "age": 0.0, "dur": 0.40, "r0": 3.0, "r1": 22.0, "col": k_glow})
 
 
 func _check_dungeon_chamber_clear(kill_pos: Vector2, k_glow: String, k_mid: String) -> void:
