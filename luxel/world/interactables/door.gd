@@ -411,6 +411,8 @@ func _draw_key_door(x0: float, y0: float, w: float, h: float, is_boss: bool) -> 
 			draw_rect(Rect2(bx, cy - 2.0, 3.0, 4.0), PAL["gold"] if ready_glint else PAL["apricot"])
 			draw_rect(Rect2(bx, cy - 2.0, 2.0, 1.0), PAL["cream"])
 			draw_rect(Rect2(bx + 1.0, cy + 2.0, 1.0, 1.0), PAL["gold"])
+		LxHudFx.draw_biome_crest(self, island_id, Vector2(x0 + 7.0, y0 + 2.0), LxBiomePalette.col(island_id, "glow"), PAL["cream"] as Color)
+		LxHudFx.draw_biome_crest(self, island_id, Vector2(x0 + w - 8.0, y0 + 2.0), LxBiomePalette.col(island_id, "glow"), PAL["cream"] as Color)
 		draw_rect(Rect2(cx - 4.0, cy - 4.0, 8.0, 8.0), PAL["void"])
 		draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 6.0), PAL["coral"] if _rattle_t > 0.0 else (PAL["cream"] if ready_glint else PAL["gold"]))
 		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 4.0), PAL["cream"] if _rattle_t > 0.0 else (PAL["gold"] if ready_glint else PAL["coral"]))
@@ -481,6 +483,8 @@ func _draw_ward_barrier(x0: float, y0: float, w: float, h: float) -> void:
 		idx += 1
 	_draw_pier(x0, y0, 4.0, h, false)
 	_draw_pier(x0 + w - 4.0, y0, 4.0, h, false)
+	var cx_w: float = floorf(x0 + w * 0.5)
+	LxHudFx.draw_biome_crest(self, island_id, Vector2(cx_w, cy), whi, PAL["cream"] as Color)
 	_draw_ward_pips(x0, y0, w)
 
 
@@ -516,6 +520,14 @@ func _draw_ward_pips(x0: float, y0: float, w: float) -> void:
 		draw_rect(Rect2(px + 1.0, y0 - 1.0, 1.0, 1.0), PAL["cream"] if lit_p else PAL["deep"])
 		if lit_p:
 			draw_rect(Rect2(px, y0 - 2.0, 3.0, 1.0), PAL["gold"])
+	# Progressive ward-fracture cracks widening across the barrier as 1/3 -> 2/3 beacons ignite!
+	if got > 0 and got < need:
+		var fc: Color = PAL["cream"] as Color if (LxHudFx.flash_reduced() or _pulse_stage % 2 == 0) else LxBiomePalette.col(island_id, "glow")
+		var cy_f: float = y0 + 5.0
+		draw_line(Vector2(cx - 2.0, cy_f), Vector2(cx - 5.0 - float(got) * 2.0, cy_f + 3.0), fc, 1.0)
+		if got >= 2:
+			draw_line(Vector2(cx + 2.0, cy_f), Vector2(cx + 6.0, cy_f - 2.0), fc, 1.0)
+			draw_line(Vector2(cx + 6.0, cy_f - 2.0), Vector2(cx + 9.0, cy_f + 2.0), PAL["gold"] as Color, 1.0)
 
 
 func _draw_light_bridge_glow(x0: float, y0: float, w: float, h: float, horiz: bool) -> void:
