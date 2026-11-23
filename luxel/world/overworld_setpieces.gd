@@ -355,6 +355,8 @@ func _draw() -> void:
 			_draw_moon_shoals_reflection(fred, relit)
 		8:
 			_draw_long_night_eclipse(fred, relit)
+	if relit and _in_view(_door_pos, 110.0):
+		LxRelitKeepsakes.draw_keepsake(self, _island_id, _door_pos, _clock, fred)
 	for pr: Dictionary in _pulse_rings:
 		var u: float = clampf(float(pr["age"]) / maxf(float(pr["dur"]), 0.01), 0.0, 1.0)
 		var r: float = roundf(lerpf(float(pr["r0"]), float(pr["r1"]), u))
