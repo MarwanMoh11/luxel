@@ -18,6 +18,8 @@ var _step_cd: float = 0.0
 var _last_wpos: Vector2 = Vector2.ZERO
 var _moon_mirror_pos: Vector2 = Vector2.ZERO
 var _moon_mirror_on: bool = false
+var _wick_pos: Vector2 = Vector2.ZERO
+var _wick_alive: bool = false
 
 
 func _ready() -> void:
@@ -80,8 +82,10 @@ func tick(dt: float) -> void:
 
 	_moon_mirror_on = false
 	var w: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
-	if w != null and not w.dead:
-		var wpos: Vector2 = w.global_position
+	_wick_alive = w != null and not w.dead
+	if _wick_alive:
+		_wick_pos = w.global_position
+		var wpos: Vector2 = _wick_pos
 		var moved: bool = _last_wpos != Vector2.ZERO and wpos.distance_squared_to(_last_wpos) > 4.0
 		_last_wpos = wpos
 		var dashing: bool = w.is_dashing()
@@ -141,7 +145,7 @@ func tick(dt: float) -> void:
 			_step_cd = 0.22
 			_trails.append({"pos": wpos + Vector2(sin(_clock * 6.0) * 3.0, -2.0), "vel": Vector2(0.0, -14.0), "age": 0.0, "dur": 0.42, "col": LxBiomePalette.key(_island_id, "glow")})
 		_was_dashing = dashing
-	if not _trails.is_empty() or not _ripples.is_empty() or not _fireflies.is_empty() or _moon_mirror_on:
+	if not _trails.is_empty() or not _ripples.is_empty() or not _fireflies.is_empty() or _moon_mirror_on or _wick_alive:
 		queue_redraw()
 
 
@@ -210,6 +214,8 @@ func _draw() -> void:
 		var mp: Vector2 = _moon_mirror_pos.round() + Vector2(0.0, 6.0)
 		draw_rect(Rect2(mp + Vector2(-3.0, -1.0), Vector2(6.0, 3.0)), Color(PAL["sky"] as Color, 0.32))
 		draw_rect(Rect2(mp + Vector2(-2.0, 1.0), Vector2(4.0, 2.0)), Color(PAL["ice"] as Color, 0.28))
+	if _wick_alive and _rules != null and is_instance_valid(_rules):
+		_draw_wick_biome_aura()
 	for rp: Dictionary in _ripples:
 		var u: float = clampf(float(rp["age"]) / maxf(float(rp["dur"]), 0.01), 0.0, 1.0)
 		var r: float = roundf(lerpf(float(rp["r0"]), float(rp["r1"]), u))
@@ -228,3 +234,52 @@ func _draw() -> void:
 		draw_circle(p + Vector2(0.0, -3.0), roundf(lerpf(4.0, 1.5, u)), Color(col, a))
 		if u < 0.45:
 			draw_rect(Rect2(p + Vector2(-1.0, -4.0), Vector2(2.0, 2.0)), Color(PAL["cream"] as Color, a))
+
+
+func _draw_wick_biome_aura() -> void:
+	var wp: Vector2 = _wick_pos.round() + Vector2(0.0, -6.0)
+	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
+	var has_bm: bool = bm != null and is_instance_valid(bm)
+	match _island_id:
+		2: # Lighthouse Fresnel Beam buff: radiant gold-ice starlight crest orbiting Wick
+			if _rules.beam_buff_t > 0.0:
+				var a2: float = _clock * 4.5
+				var p2: Vector2 = (wp + Vector2(cos(a2) * 10.0, sin(a2) * 6.0)).round()
+				draw_rect(Rect2(p2 - Vector2.ONE, Vector2(3.0, 3.0)), PAL["gold"] as Color)
+				draw_rect(Rect2(p2, Vector2.ONE), PAL["cream"] as Color)
+		3: # Emerald Canopy Dew: orbiting lime firefly when near lit Bloom-Lamps
+			if _rules.get_lit_bloom_count() > 0:
+				var a3: float = _clock * 2.4
+				var p3: Vector2 = (wp + Vector2(cos(a3) * 11.0, sin(a3) * 5.0 - 2.0)).round()
+				draw_rect(Rect2(p3, Vector2(2.0, 2.0)), PAL["lime"] as Color)
+				draw_rect(Rect2(p3, Vector2.ONE), PAL["cream"] as Color)
+		4: # Rose Mist Tailwind: fluttering twin rose-ice wing motes
+			if has_bm and bm.tailwind_t > 0.0:
+				for side: float in [-1.0, 1.0]:
+					var p4: Vector2 = (wp + Vector2(side * 9.0, sin(_clock * 8.0 + side) * 2.0)).round()
+					draw_rect(Rect2(p4, Vector2(2.0, 1.0)), (PAL["rose"] if side < 0.0 else PAL["ice"]) as Color)
+		5: # Starlight Surge: twin brisk orbiting golden planetoids
+			if _rules.starlight_surge_t > 0.0:
+				for k: int in range(2):
+					var a5: float = _clock * 5.2 + float(k) * PI
+					var p5: Vector2 = (wp + Vector2(cos(a5) * 11.0, sin(a5) * 5.0)).round()
+					draw_rect(Rect2(p5 - Vector2.ONE, Vector2(2.0, 2.0)), (PAL["gold"] if k == 0 else PAL["sky"]) as Color)
+					draw_rect(Rect2(p5, Vector2.ONE), PAL["cream"] as Color)
+		6: # Molten Overdrive: 1..3 live orbiting volcanic forge-orbs matching charge count!
+			if has_bm and bm.molten_charges > 0:
+				for k: int in range(bm.molten_charges):
+					var a6: float = _clock * 3.8 + float(k) * (TAU / float(bm.molten_charges))
+					var p6: Vector2 = (wp + Vector2(cos(a6) * 11.0, sin(a6) * 5.5)).round()
+					draw_circle(p6, 2.0, PAL["coral"] as Color)
+					draw_rect(Rect2(p6, Vector2.ONE), PAL["cream"] as Color)
+		7: # Full Silver Moon Echo: twin pale silver crescent glints framing Wick
+			if has_bm and bm.mirror_echo_active and _rules.lunar_phase > 0.65:
+				draw_arc(wp, 11.0, -PI * 0.25, PI * 0.25, 6, Color(PAL["ice"] as Color, 0.70), 1.0)
+				draw_arc(wp, 11.0, PI * 0.75, PI * 1.25, 6, Color(PAL["cream"] as Color, 0.70), 1.0)
+		8: # Broken Eclipse Seals: 1..3 golden Dawn Sparks orbiting Wick's lantern
+			if has_bm and bm.dawn_seals_broken > 0:
+				for k: int in range(bm.dawn_seals_broken):
+					var a8: float = _clock * 3.2 + float(k) * (TAU / float(bm.dawn_seals_broken))
+					var p8: Vector2 = (wp + Vector2(cos(a8) * 11.0, sin(a8) * 5.5 - 2.0)).round()
+					draw_rect(Rect2(p8 - Vector2.ONE, Vector2(2.0, 2.0)), PAL["gold"] as Color)
+					draw_rect(Rect2(p8, Vector2.ONE), PAL["cream"] as Color)

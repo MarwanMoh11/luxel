@@ -247,6 +247,8 @@ func _draw() -> void:
 	if not _active or _rules == null:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
+	if _room_idx in [1, 5, 9]:
+		_draw_architectural_medallion(fred)
 	match _island_id:
 		1:
 			if _bell_wave_r >= 0.0:
@@ -332,3 +334,21 @@ func _draw() -> void:
 				var p0: Vector2 = (c8 + Vector2(cos(ang) * 18.0, sin(ang) * 12.0)).round()
 				var p1: Vector2 = (c8 + Vector2(cos(ang) * 44.0, sin(ang) * 28.0)).round()
 				draw_line(p0, p1, Color(PAL["gold"] as Color, 0.25 if fred else 0.42), 1.0)
+
+
+func _draw_architectural_medallion(fred: bool) -> void:
+	# Bespoke carved dungeon-chamber floor medallion in Entry Foyers (r1), Shrine Vaults (r5), & Key Vaults (r9)
+	var c: Vector2 = _center.round()
+	var c_mid: Color = LxBiomePalette.col(_island_id, "mid")
+	var c_hi: Color = LxBiomePalette.col(_island_id, "hi")
+	var a: float = 0.18 if fred else 0.28
+	var rad: float = 28.0 if _room_idx == 1 else (34.0 if _room_idx == 5 else 30.0)
+	draw_arc(c, rad, 0.0, TAU, 24, Color(c_mid, a), 1.2)
+	draw_arc(c, rad - 5.0, 0.0, TAU, 20, Color(c_hi, a * 0.8), 1.0)
+	var spokes: int = 8 if _island_id in [2, 5, 8] else (6 if _island_id in [3, 4, 6] else 4)
+	for k: int in range(spokes):
+		var ang: float = float(k) * (TAU / float(spokes)) + (0.0 if _island_id % 2 == 0 else PI / float(spokes))
+		var p0: Vector2 = (c + Vector2.from_angle(ang) * 8.0).round()
+		var p1: Vector2 = (c + Vector2.from_angle(ang) * (rad - 2.0)).round()
+		draw_line(p0, p1, Color(c_hi if k % 2 == 0 else c_mid, a * 0.9), 1.0)
+	LxHudFx.draw_biome_crest(self, _island_id, c, Color(c_hi, a * 1.4), Color(PAL["cream"] as Color, a * 1.2))

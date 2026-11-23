@@ -208,6 +208,8 @@ func _open(persist: bool) -> bool:
 	if Lx.events != null:
 		Lx.events.shake_requested.emit(0.14)
 	_emit_sfx("bridge_rise" if (door_type == "bridge_platform" or _is_light_bridge) else "door_open")
+	if (door_type == "ward_barrier" or door_type == "bridge_platform") and LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 16.0, 6.5)
 	if persist:
 		_emit_save("door_" + id)
 	queue_redraw()
@@ -432,15 +434,19 @@ func _draw_switch_door(x0: float, y0: float, w: float, h: float) -> void:
 	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, 1.0, h - 4.0), PAL["mauve"])
 	var cx: float = floorf(x0 + w * 0.5)
 	var cy: float = floorf(y0 + h * 0.5)
-	draw_rect(Rect2(x0 + 3.0, cy - 1.0, w - 6.0, 3.0), PAL["deep"])
-	draw_rect(Rect2(x0 + 4.0, cy, w - 8.0, 1.0), PAL["blue"])
-	draw_rect(Rect2(x0 + 4.0, cy, 2.0, 1.0), PAL["sky"])
-	draw_rect(Rect2(x0 + w - 6.0, cy, 2.0, 1.0), PAL["sky"])
+	var sd_lo: Color = LxBiomePalette.col(island_id, "dark")
+	var sd_mid: Color = LxBiomePalette.col(island_id, "mid")
+	var sd_hi: Color = LxBiomePalette.col(island_id, "hi")
+	var sd_gl: Color = LxBiomePalette.col(island_id, "glow")
+	draw_rect(Rect2(x0 + 3.0, cy - 1.0, w - 6.0, 3.0), sd_lo)
+	draw_rect(Rect2(x0 + 4.0, cy, w - 8.0, 1.0), sd_mid)
+	draw_rect(Rect2(x0 + 4.0, cy, 2.0, 1.0), sd_hi)
+	draw_rect(Rect2(x0 + w - 6.0, cy, 2.0, 1.0), sd_hi)
 	draw_rect(Rect2(cx - 4.0, cy - 3.0, 8.0, 7.0), PAL["void"])
-	draw_rect(Rect2(cx - 3.0, cy - 2.0, 6.0, 5.0), PAL["deep"])
-	draw_rect(Rect2(cx - 2.0, cy - 1.0, 4.0, 3.0), PAL["blue"])
-	draw_rect(Rect2(cx - 1.0, cy - 1.0, 2.0, 2.0), PAL["sky"])
-	draw_rect(Rect2(cx - 1.0, cy - 1.0, 1.0, 1.0), PAL["ice"])
+	draw_rect(Rect2(cx - 3.0, cy - 2.0, 6.0, 5.0), sd_lo)
+	draw_rect(Rect2(cx - 2.0, cy - 1.0, 4.0, 3.0), sd_mid)
+	draw_rect(Rect2(cx - 1.0, cy - 1.0, 2.0, 2.0), sd_hi)
+	draw_rect(Rect2(cx - 1.0, cy - 1.0, 1.0, 1.0), sd_gl)
 	var need: int = maxi(required_count, required_signals.size())
 	if need > 1:
 		var got: int = _active_signals.size()
@@ -546,8 +552,8 @@ func _draw_light_bridge_glow(x0: float, y0: float, w: float, h: float, horiz: bo
 
 func _draw_open_burst(w: float, h: float) -> void:
 	var p: float = 1.0 - clampf(_open_t / 0.38, 0.0, 1.0)
-	var col: Color = (PAL["sky"] if door_type == "ward_barrier" else PAL["gold"]) as Color
-	var hi: Color = (PAL["ice"] if door_type == "ward_barrier" else PAL["cream"]) as Color
+	var col: Color = LxBiomePalette.col(island_id, "glow")
+	var hi: Color = LxBiomePalette.col(island_id, "core")
 	var rad: float = roundf(4.0 + p * maxf(w, h) * 0.55)
 	draw_arc(Vector2.ZERO, rad, 0.0, TAU, 16, col if p > 0.35 else hi, 1.0)
 	for i: int in range(6):
