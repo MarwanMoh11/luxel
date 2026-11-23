@@ -229,11 +229,21 @@ void fragment() {
 			out_col = mix(out_col, mix(col_wine, col_coral, phase_flash * 0.65), clamp(pvig, 0.0, 0.32));
 		}
 
-		// Crisp golden rim focus shimmer on Perfect Dodge & Sunflare
+		// Crisp biome-harmonized golden rim focus shimmer on Perfect Dodge & Sunflare
 		if (focus_flash > 0.002) {
 			vec2 fuv = (UV - vec2(0.5)) * vec2(1.0, 0.92);
 			float fvig = smoothstep(0.34, 0.78, length(fuv)) * focus_flash * 0.24;
-			out_col = mix(out_col, col_gold, clamp(fvig, 0.0, 0.22));
+			vec3 f_accent = col_gold;
+			if (biome_id == 2 || biome_id == 5 || biome_id == 7) {
+				f_accent = col_sky;
+			} else if (biome_id == 3) {
+				f_accent = col_jade;
+			} else if (biome_id == 4 || biome_id == 8) {
+				f_accent = col_rose;
+			} else if (biome_id == 6) {
+				f_accent = col_coral;
+			}
+			out_col = mix(out_col, mix(col_gold, f_accent, 0.38), clamp(fvig, 0.0, 0.22));
 		}
 
 		// Velvety room/region arrival fade from Last Light void

@@ -47,6 +47,7 @@ var _trans_speed: float = 4.5
 var _phase_flash: float = 0.0
 var _focus_flash: float = 0.0
 var _beacon_lift: float = 0.0
+var _sanctum_cleared: bool = false
 var _burst_lights: Array[Dictionary] = []
 var _bound_events: LxEventBus = null
 
@@ -110,6 +111,7 @@ func set_darkness(strength: float) -> void:
 func reset_zones() -> void:
 	_zone_fades.clear()
 	_burst_lights.clear()
+	_sanctum_cleared = false
 
 func trigger_dawn_wave(origin: Vector2, speed: float = 280.0, max_radius: float = 1600.0) -> void:
 	wave_active = true
@@ -166,8 +168,9 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 
 	var cam_center: Vector2 = Lx.camera.global_position if (Lx.camera != null and is_instance_valid(Lx.camera)) else view_sz * 0.5
 	var relit_ow: bool = (not wave_active) and region != null and (not region.is_dungeon) and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(region.current_island_id)
+	var relit_dng: bool = (not wave_active) and region != null and region.is_dungeon and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(region.current_island_id)
 	var lit_b: int = 0 if (relit_ow or wave_active) else _lit_beacon_count(region)
-	var target_lift: float = 0.14 if relit_ow else (0.032 * float(lit_b))
+	var target_lift: float = 0.14 if relit_ow else (0.17 if _sanctum_cleared else (0.09 if relit_dng else (0.032 * float(lit_b))))
 	_beacon_lift = move_toward(_beacon_lift, target_lift, dt * 0.16) if dt > 0.0 else target_lift
 	var b_off: float = LxBiomeRules.active_instance.get_darkness_offset() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.0
 	var b_phase: float = LxBiomeRules.active_instance.get_shader_phase() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.5
@@ -238,9 +241,12 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 			dpts = LxBellChimes.active_instance.get_found_positions()
 		elif b_id >= 2 and LxBiomeDiscoveries.active_instance != null and is_instance_valid(LxBiomeDiscoveries.active_instance):
 			dpts = LxBiomeDiscoveries.active_instance.get_found_positions()
+		var harm_d: bool = Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % b_id, false))
+		var dr_d: float = (48.0 if harm_d else 36.0) * flicker
+		var di_d: float = 0.72 if harm_d else 0.52
 		for dp: Vector2 in dpts:
 			if dp.distance_to(cam_center) <= 300.0:
-				candidates.append({"d": dp.distance_squared_to(cam_center) + 1200.0, "v": Vector4(dp.x, dp.y - 6.0, 36.0 * flicker, 0.52)})
+				candidates.append({"d": dp.distance_squared_to(cam_center) + 1200.0, "v": Vector4(dp.x, dp.y - 6.0, dr_d, di_d)})
 		if relit_ow:
 			var kp: Vector2 = _interactable_pos("door_ward_barrier" if b_id == 1 else "door_dungeon_%d" % b_id, "door")
 			if kp != Vector2.ZERO and kp.distance_to(cam_center) <= 320.0:
@@ -347,6 +353,8 @@ func _update_biome_tint(dt: float, region: LxRegionLoader) -> void:
 			var lit_b: int = _lit_beacon_count(region)
 			if lit_b > 0:
 				desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.085 * float(lit_b))
+	elif region != null and region.is_dungeon and (_sanctum_cleared or (Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(isl_id))):
+		desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.32 if _sanctum_cleared else 0.18)
 	if not _tint_ready:
 		_current_tint = desired
 		_from_tint = desired
@@ -492,6 +500,7 @@ func _on_boss_phase_changed(bid: String, _p: int) -> void:
 	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 	_phase_flash = maxf(_phase_flash, 0.35 if flash_red else 0.95)
 func _on_boss_defeated(bid: String, _i: int) -> void:
+	_sanctum_cleared = true
 	var bp: Vector2 = _boss_pos(bid)
 	add_burst_light(bp, 144.0, 1.72 * _fr_scale(), 0.75)
 	LxDamageFx.gust_arena(bp, 150.0, 145.0)

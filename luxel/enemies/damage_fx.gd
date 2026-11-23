@@ -135,12 +135,13 @@ static func draw_shield_arc(enemy: LxEnemyBrain, off: Vector2, base_col: Color) 
 	enemy.draw_arc(off, rad, enemy.facing - 1.05, enemy.facing + 1.05, 12, col, 2.5)
 
 	# Visible hairline fractures across the shield as it wears down
+	var isl_sh: int = Lx.state.island_id if Lx.state != null else 1
 	if sfrac <= 0.65:
 		var a0: float = enemy.facing - 0.25
 		var p_in: Vector2 = (off + Vector2.from_angle(a0) * (rad - 1.5)).round()
 		var p_out: Vector2 = (off + Vector2.from_angle(a0) * (rad + 2.0)).round()
 		enemy.draw_line(p_in, p_out, pal["night"] as Color, 1.0)
-		enemy.draw_rect(Rect2(p_out, Vector2.ONE), pal["gold"] as Color)
+		enemy.draw_rect(Rect2(p_out, Vector2.ONE), LxBiomePalette.col(isl_sh, "glow"))
 	if sfrac <= 0.45:
 		var a1: float = enemy.facing + 0.42
 		var q_in: Vector2 = (off + Vector2.from_angle(a1) * (rad - 1.5)).round()
@@ -295,10 +296,10 @@ static func _draw_biome_aura(enemy: LxEnemyBrain, off: Vector2, r: float, t: flo
 			var ey: float = roundf(off.y - r * 0.25 + sin(t * 2.4 + ph) * 3.5)
 			enemy.draw_rect(Rect2(ex, ey, 1.0, 1.0), Color((pal["rose"] if u < 0.45 else pal["plum"]) as Color, 0.75))
 		_:
-			if enemy.is_boss or enemy.max_hp >= 5.0:
-				var bx: float = roundf(off.x + sin(t * 1.8 + ph) * (r + 1.5))
-				var by: float = roundf(off.y - r * 0.2 - u * 8.0)
-				enemy.draw_rect(Rect2(bx, by, 1.0, 1.0), Color(pal["gold"] as Color, sin(u * PI) * 0.60))
+			var bx: float = roundf(off.x + sin(t * 1.8 + ph) * (r + 1.5))
+			var by: float = roundf(off.y - r * 0.2 - u * 8.0)
+			var b1_col: Color = (pal["gold"] if (enemy.is_boss or enemy.max_hp >= 5.0) else pal["apricot"]) as Color
+			enemy.draw_rect(Rect2(bx, by, 1.0, 1.0), Color(b1_col, sin(u * PI) * (0.60 if (enemy.is_boss or enemy.max_hp >= 5.0) else 0.42)))
 
 
 static func _draw_stagger_halo(enemy: LxEnemyBrain, off: Vector2, r: float, t: float, fred: bool) -> void:
