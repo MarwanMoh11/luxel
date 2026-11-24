@@ -122,6 +122,7 @@ func take_hit(hit: LxHit) -> int:
 			hp = maxf(0.0, hp - float(h.get("damage", 0.0)) * 0.25)
 			burn_bonus = true
 		if had_webs:
+			_spawn_web_burn_fx()
 			web_lanes.clear()
 			hp = maxf(0.0, hp - 0.5)
 			burn_bonus = true
@@ -525,3 +526,29 @@ func _draw_extra(off: Vector2) -> void:
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
 	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.15, 1.44, 0.40)
+
+
+func _spawn_web_burn_fx() -> void:
+	var fred: bool = LxHudFx.flash_reduced()
+	var gold_col: Color = PAL["gold"] as Color
+	var lime_col: Color = PAL["lime"] as Color
+	var cream_col: Color = PAL["cream"] as Color
+	var has_p: bool = Lx.player != null and is_instance_valid(Lx.player)
+	var can_ring: bool = has_p and Lx.player.has_method("spawn_ring")
+	var can_spark: bool = has_p and Lx.player.has_method("spawn_sparks")
+	for lane: Dictionary in web_lanes:
+		var lo: Vector2 = lane["origin"] as Vector2
+		var ld: Vector2 = lane["dir"] as Vector2
+		var llen: float = float(lane["length"])
+		for k: int in range(3):
+			var pt: Vector2 = lo + ld * (llen * (0.20 + float(k) * 0.30))
+			if can_ring:
+				Lx.player.call("spawn_ring", pt, 3.0, 18.0, 0.28, gold_col if k % 2 == 0 else lime_col, 1.4 if fred else 1.8)
+			if can_spark:
+				Lx.player.call("spawn_sparks", pt, ld, 3, gold_col, 28.0, 86.0, 0.30)
+				Lx.player.call("spawn_sparks", pt, -ld, 2, lime_col if k % 2 == 0 else cream_col, 22.0, 72.0, 0.26)
+		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+			LxDarknessLayer.active_instance.add_burst_light(lo + ld * (llen * 0.5), 54.0, 1.32 * (0.62 if fred else 1.0), 0.32)
+	if Lx.hitstop != null and is_instance_valid(Lx.hitstop):
+		Lx.hitstop.trigger(0.065)
+	_boss_impact(0.18, 84.0, 82.0)

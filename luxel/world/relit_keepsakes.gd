@@ -155,6 +155,7 @@ static func draw_living_world_keepsakes(
 			5: _draw_relit_starlight_orrery(ci, anchor, t, fred, phase_off)
 			6: _draw_relit_ash_kiln(ci, anchor, t, fred, phase_off)
 			7: _draw_relit_mirror_spire(ci, anchor, t, fred, phase_off)
+			8: _draw_relit_long_night_dawn(ci, anchor, t, fred, phase_off)
 			_: pass
 
 
@@ -421,6 +422,51 @@ static func _draw_relit_mirror_spire(ci: CanvasItem, anchor: Vector2, t: float, 
 		ci.draw_rect(Rect2(orig + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), Color(c_ice, pulse * 0.80))
 		ci.draw_rect(Rect2(orig + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), Color(c_gold, pulse * 0.80))
 		ci.draw_rect(Rect2(orig, Vector2.ONE), c_cr)
+
+
+static func _draw_relit_long_night_dawn(ci: CanvasItem, anchor: Vector2, t: float, fred: bool, ph: float) -> void:
+	# Isl 8: Ascending 8-biome dawn petals (one per saved island) + warm golden cathedral crown motes
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cr: Color = PAL["cream"] as Color
+	var c_rose: Color = PAL["rose"] as Color
+	var pulse: float = 0.72 if fred else (0.62 + 0.38 * sin(t * 2.0 + ph))
+	# Ascending 8-biome celebration petals rising along the cathedral rose-window shafts
+	for k: int in range(1, 9):
+		if Lx.state != null and k < 8 and not Lx.state.relit_islands.has(k):
+			continue
+		var fk: float = float(k - 1)
+		var u: float = fposmod(t * (0.16 + float(k % 3) * 0.03) + fk * 0.125 + ph, 1.0)
+		var env: float = sin(u * PI)
+		if env <= 0.08:
+			continue
+		var sway: float = 0.0 if fred else sin(t * 1.8 + fk * 1.7 + ph) * 5.0
+		var px: float = roundf(anchor.x - 42.0 + fk * 12.0 + sway)
+		var py: float = roundf(anchor.y + 34.0 - u * 92.0)
+		var b_col: Color = LxBiomePalette.col(k, "glow")
+		var p_a: float = env * (0.72 if fred else 0.92)
+		var sz: Vector2 = Vector2(2.0, 1.0) if ((k + int(floorf(t * 2.0))) % 2 == 0) else Vector2(1.0, 2.0)
+		ci.draw_rect(Rect2(px, py, sz.x, sz.y), Color(b_col, p_a))
+		if env > 0.45:
+			ci.draw_rect(Rect2(px, py, 1.0, 1.0), Color(c_cr, p_a * 0.78))
+	# Warm golden cathedral crown motes drifting upward near the rose-window shafts
+	for m: int in range(8):
+		var fm: float = float(m)
+		var mu: float = fposmod(t * (0.20 + float(m % 3) * 0.04) + fm * 0.17 + ph * 0.7, 1.0)
+		var menv: float = sin(mu * PI)
+		if menv <= 0.06:
+			continue
+		var mx: float = roundf(anchor.x + float((m * 29) % 84) - 42.0 + (0.0 if fred else sin(t * 1.5 + fm * 2.2) * 4.0))
+		var my: float = roundf(anchor.y + 26.0 - mu * 84.0)
+		var mc: Color = c_cr if (m % 3 == 0) else (c_gold if (m % 3 == 1) else c_rose)
+		var ma: float = menv * (0.66 if fred else 0.88)
+		ci.draw_rect(Rect2(mx, my, 1.0, 1.0), Color(mc, ma))
+		if m % 2 == 0 and menv > 0.55:
+			ci.draw_rect(Rect2(mx - 1.0, my, 3.0, 1.0), Color(c_gold, ma * 0.45))
+			ci.draw_rect(Rect2(mx, my - 1.0, 1.0, 3.0), Color(c_gold, ma * 0.45))
+	# Subtle golden dawn crown arc hovering above the shaft anchor
+	var crown_c: Vector2 = (anchor + Vector2(0.0, -24.0)).round()
+	ci.draw_arc(crown_c, 16.0, PI * 1.15, PI * 1.85, 14, Color(c_gold, (0.28 if fred else 0.44) * pulse), 1.0)
+	ci.draw_rect(Rect2(crown_c + Vector2(-1.0, -16.0), Vector2(2.0, 1.0)), Color(c_cr, 0.75 * pulse))
 
 
 static func _in_view(p: Vector2, cam_center: Vector2, pad: float = 0.0) -> bool:

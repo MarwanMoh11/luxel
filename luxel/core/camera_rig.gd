@@ -95,6 +95,7 @@ func follow(target: Vector2, dt: float) -> void:
 		_target_pos = _clamp_center(target)
 	else:
 		var desired_lead: Vector2 = Vector2.ZERO
+		var lead_rate: float = 3.8
 		if Lx.player != null and is_instance_valid(Lx.player):
 			var lan_v: Variant = Lx.player.get("lantern")
 			var framed: bool = false
@@ -114,12 +115,33 @@ func follow(target: Vector2, dt: float) -> void:
 					desired_lead = boss_lead
 					framed = true
 			if not framed:
-				var fv: Variant = Lx.player.get("facing")
-				if fv is Vector2 and (fv as Vector2).length_squared() > 0.01:
-					var bm: Variant = Lx.player.get("move_beam")
-					var charging_beam: bool = bm is Object and is_instance_valid(bm) and bool((bm as Object).get("charging"))
-					desired_lead = (fv as Vector2).normalized() * (24.0 if charging_beam else 14.0)
-		_look_ahead = _look_ahead.lerp(desired_lead, minf(1.0, dt * 3.8))
+				var is_glide: bool = Lx.player.has_method("is_gliding") and bool(Lx.player.call("is_gliding"))
+				var is_dash: bool = Lx.player.has_method("is_dashing") and bool(Lx.player.call("is_dashing"))
+				if is_glide or is_dash:
+					var trav_dir: Vector2 = Vector2.ZERO
+					var md_v: Variant = Lx.player.get("move_dash")
+					if md_v is Object and is_instance_valid(md_v) and (md_v as Object).has_method("get_active_velocity"):
+						var avel_v: Variant = (md_v as Object).call("get_active_velocity")
+						if avel_v is Vector2 and (avel_v as Vector2).length_squared() > 0.01:
+							trav_dir = (avel_v as Vector2).normalized()
+					if trav_dir.length_squared() <= 0.01:
+						var vel_v: Variant = Lx.player.get("velocity")
+						if vel_v is Vector2 and (vel_v as Vector2).length_squared() > 1.0:
+							trav_dir = (vel_v as Vector2).normalized()
+					if trav_dir.length_squared() <= 0.01:
+						var fv_t: Variant = Lx.player.get("facing")
+						if fv_t is Vector2 and (fv_t as Vector2).length_squared() > 0.01:
+							trav_dir = (fv_t as Vector2).normalized()
+					if trav_dir.length_squared() > 0.01:
+						desired_lead = trav_dir * 22.0
+						lead_rate = 5.2
+				else:
+					var fv: Variant = Lx.player.get("facing")
+					if fv is Vector2 and (fv as Vector2).length_squared() > 0.01:
+						var bm: Variant = Lx.player.get("move_beam")
+						var charging_beam: bool = bm is Object and is_instance_valid(bm) and bool((bm as Object).get("charging"))
+						desired_lead = (fv as Vector2).normalized() * (24.0 if charging_beam else 14.0)
+		_look_ahead = _look_ahead.lerp(desired_lead, minf(1.0, dt * lead_rate))
 		var clamped: Vector2 = _clamp_center(target + _look_ahead)
 		_target_pos = _target_pos.lerp(clamped, minf(1.0, dt * 10.0))
 

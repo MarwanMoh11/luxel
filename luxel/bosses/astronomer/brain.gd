@@ -83,6 +83,7 @@ func on_light(a: Variant, b: Variant = Vector2.ZERO, source: String = "") -> voi
 	true_core_lit_t = maxf(true_core_lit_t, 0.85)
 	if state == State.TELL and active_move == AstroMove.CONSTELLATION:
 		# Active True Lens pulse during Constellation TELL shatters decoys and staggers her 0.8s!
+		_spawn_decoy_shatter_fx()
 		active_move = AstroMove.DIVE
 		decoy_offsets.clear()
 		_release_token()
@@ -358,3 +359,27 @@ func _draw_extra(off: Vector2) -> void:
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
 	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.24, 1.60, 0.48)
+
+
+func _spawn_decoy_shatter_fx() -> void:
+	var fred: bool = LxHudFx.flash_reduced()
+	var ice_col: Color = PAL["ice"] as Color
+	var gold_col: Color = PAL["gold"] as Color
+	var cream_col: Color = PAL["cream"] as Color
+	var has_p: bool = Lx.player != null and is_instance_valid(Lx.player)
+	var can_ring: bool = has_p and Lx.player.has_method("spawn_ring")
+	var can_spark: bool = has_p and Lx.player.has_method("spawn_sparks")
+	for d_off: Vector2 in decoy_offsets:
+		var dpos: Vector2 = pos + d_off
+		if can_ring:
+			Lx.player.call("spawn_ring", dpos, 4.0, 26.0, 0.30, ice_col, 1.4 if fred else 1.8)
+			Lx.player.call("spawn_ring", dpos, 2.0, 16.0, 0.22, gold_col, 1.2 if fred else 1.5)
+		if can_spark:
+			for si: int in range(4):
+				var sdir: Vector2 = Vector2.from_angle(float(si) * (PI * 0.5) + PI * 0.25)
+				var scol: Color = ice_col if si % 2 == 0 else (gold_col if si == 1 else cream_col)
+				Lx.player.call("spawn_sparks", dpos, sdir, 3, scol, 34.0, 96.0, 0.32)
+		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+			LxDarknessLayer.active_instance.add_burst_light(dpos, 58.0, 1.38 * (0.62 if fred else 1.0), 0.34)
+	if Lx.hitstop != null and is_instance_valid(Lx.hitstop):
+		Lx.hitstop.trigger(0.065)

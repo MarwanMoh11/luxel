@@ -259,6 +259,7 @@ func _enter_commit() -> void:
 		leap_from = pos
 		ring_progress = 0.0
 		ring_hit = false
+		_boss_impact(0.14, 72.0, 74.0)
 		_emit_sfx("heron_gust_fire")
 		return
 	super._enter_commit()
@@ -401,6 +402,18 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
+	if abbess_z > 0.5:
+		var sh_sc: float = clampf(1.0 - abbess_z / 30.0, 0.32, 1.0)
+		var sh_rx: float = maxf(2.5, body_radius * 1.15 * sh_sc)
+		var sh_ry: float = maxf(1.4, body_radius * 0.50 * sh_sc)
+		var sh_outer := PackedVector2Array()
+		var sh_inner := PackedVector2Array()
+		for si: int in range(12):
+			var sa: float = (TAU * float(si)) / 12.0
+			sh_outer.append(Vector2(roundf(cos(sa) * sh_rx), roundf(sin(sa) * sh_ry)))
+			sh_inner.append(Vector2(roundf(cos(sa) * sh_rx * 0.62), roundf(sin(sa) * sh_ry * 0.62)))
+		draw_colored_polygon(sh_outer, Color(PAL["void"] as Color, 0.64))
+		draw_colored_polygon(sh_inner, Color(PAL["void"] as Color, 0.88))
 	# Guard parent Stab laser/thrust tell so it NEVER draws during WING_GUST, SHOCKWAVE_RING, or GALE_LEAP!
 	if active_move == BossMove.STAB or (state != State.TELL and state != State.COMMIT):
 		super._draw_extra(off)

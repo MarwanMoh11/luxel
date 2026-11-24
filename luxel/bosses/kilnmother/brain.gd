@@ -45,6 +45,7 @@ var cross_base_ang: float = 0.0
 var cross_progress: float = 0.0
 var cross_hit: bool = false
 var _roaring: bool = false
+var _armor_forged_roar: bool = false
 
 
 func _init() -> void:
@@ -88,6 +89,7 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	cross_progress = 0.0
 	cross_hit = false
 	_roaring = false
+	_armor_forged_roar = false
 
 
 func take_hit(hit: LxHit) -> int:
@@ -153,6 +155,7 @@ func _check_phase_transition() -> void:
 func _enter_phase(next_phase: int) -> void:
 	phase = next_phase
 	_roaring = true
+	_armor_forged_roar = false
 	active_move = KilnMove.MOLTEN_RING
 	ring_stage = RingStage.RING_1
 	stomp_progress = 0.0
@@ -160,6 +163,17 @@ func _enter_phase(next_phase: int) -> void:
 	if phase == 2 and not armour_intact:
 		armour_intact = true
 		armour_hp = 2.0
+		_armor_forged_roar = true
+		_emit_sfx("shield_clang")
+		var fred_f: bool = LxHudFx.flash_reduced()
+		if Lx.player != null and is_instance_valid(Lx.player):
+			if Lx.player.has_method("spawn_ring"):
+				Lx.player.call("spawn_ring", pos, body_radius + 2.0, 44.0, 0.34, PAL["gold"] as Color, 1.5 if fred_f else 2.0)
+				Lx.player.call("spawn_ring", pos, body_radius + 4.0, 32.0, 0.26, PAL["coral"] as Color, 1.2 if fred_f else 1.6)
+			if Lx.player.has_method("spawn_sparks"):
+				for fi: int in range(4):
+					var fdir: Vector2 = Vector2.from_angle(PI * 0.25 + float(fi) * (PI * 0.5))
+					Lx.player.call("spawn_sparks", pos, fdir, 3, (PAL["gold"] if fi % 2 == 0 else PAL["coral"]) as Color, 36.0, 92.0, 0.32)
 	_release_token()
 	state = State.NOTICE
 	state_timer = ROAR_TIME
@@ -175,6 +189,7 @@ func _step_brain(dt: float) -> void:
 		state_timer -= dt
 		if state_timer <= 0.0:
 			_roaring = false
+			_armor_forged_roar = false
 			state = State.POSITION
 			cooldown = 0.35
 		return
@@ -446,20 +461,11 @@ func _draw_extra(off: Vector2) -> void:
 			draw_circle(ep, 0.8, PAL["cream"] as Color)
 	elif active_move == KilnMove.FURNACE_CROSS and state == State.TELL:
 		var hot_c: bool = state_timer <= 0.22
-		var show_rings: bool = state_timer <= 0.35
-		var c_urg: float = 1.0 - clampf(state_timer / 0.35, 0.0, 1.0)
+		var c_urg: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		for ci: int in range(4):
 			var cdir: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
-			var cperp: Vector2 = Vector2(-cdir.y, cdir.x)
-			var cend: Vector2 = (c + cdir * CROSS_RANGE).round()
-			draw_line((c + cperp * (CROSS_HALF_W * 0.72)).round(), (cend + cperp * (CROSS_HALF_W * 0.72)).round(), PAL["void"] as Color, 2.4)
-			draw_line((c - cperp * (CROSS_HALF_W * 0.72)).round(), (cend - cperp * (CROSS_HALF_W * 0.72)).round(), PAL["void"] as Color, 2.4)
-			draw_line((c + cperp * (CROSS_HALF_W * 0.65)).round(), (cend + cperp * (CROSS_HALF_W * 0.65)).round(), PAL["coral"] as Color, 1.2)
-			draw_line((c - cperp * (CROSS_HALF_W * 0.65)).round(), (cend - cperp * (CROSS_HALF_W * 0.65)).round(), PAL["coral"] as Color, 1.2)
-			draw_line(c, cend, (PAL["cream"] if hot_c else PAL["gold"]) as Color, 1.8 if hot_c else 1.3)
-			if show_rings:
-				LxBossTelegraphFx.draw_ground_danger_ring(self, c + cdir * 42.0, 11.0, c_urg, anim_t, "coral", "gold")
-				LxBossTelegraphFx.draw_ground_danger_ring(self, c + cdir * 82.0, 12.0, c_urg, anim_t, "coral", "gold")
+			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + cdir * CROSS_RANGE, CROSS_HALF_W, c_urg, anim_t, "coral", "gold")
+		draw_circle(c, 3.0 if hot_c else 2.2, (PAL["cream"] if hot_c else PAL["gold"]) as Color)
 	elif active_move == KilnMove.FURNACE_CROSS and state == State.COMMIT:
 		var cur_len: float = lerpf(14.0, CROSS_RANGE, cross_progress)
 		for ci: int in range(4):
@@ -474,24 +480,12 @@ func _draw_extra(off: Vector2) -> void:
 			draw_circle(cend, 1.2, PAL["cream"] as Color)
 	elif active_move == KilnMove.MOLTEN_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		if state_timer <= 0.35:
-			var r_urg: float = 1.0 - clampf(state_timer / 0.35, 0.0, 1.0)
-			draw_arc(off, KILN_RING_MAX_R + 1.5, 0.0, TAU, 32, PAL["void"] as Color, 2.4)
-			for ki: int in range(4):
-				var kd: Vector2 = Vector2.from_angle(float(ki) * (PI * 0.5) + 0.4)
-				LxBossTelegraphFx.draw_ground_danger_ring(self, off + kd * 44.0, 12.0, r_urg, anim_t, "coral", "gold")
-		for ti: int in range(12):
-			var a0: float = float(ti) * (TAU / 12.0)
-			draw_arc(off, KILN_RING_MAX_R, a0, a0 + 0.24, 3, PAL["coral"] as Color, 1.0)
-		draw_arc(off, lerpf(KILN_RING_MAX_R, STOMP_START_R + 6.0, prog), 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["apricot"]) as Color, 1.8)
+		LxBossTelegraphFx.draw_ground_danger_ring(self, off, KILN_RING_MAX_R, prog, anim_t, "coral", "gold")
+		draw_arc(off, lerpf(KILN_RING_MAX_R, STOMP_START_R + 6.0, prog), 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["apricot"]) as Color, 1.6)
 	elif active_move == KilnMove.MOLTEN_RING and state == State.COMMIT:
 		if ring_stage == RingStage.PAUSE:
-			if state_timer <= 0.35:
-				var p_urg: float = 1.0 - clampf(state_timer / 0.35, 0.0, 1.0)
-				LxBossTelegraphFx.draw_ground_danger_ring(self, off, KILN_RING_MAX_R * 0.5, p_urg, anim_t, "coral", "gold")
-			for oi: int in range(12):
-				var oa0: float = float(oi) * (TAU / 12.0)
-				draw_arc(off, KILN_RING_MAX_R, oa0, oa0 + 0.24, 3, PAL["coral"] as Color, 1.0)
+			var p_urg: float = 1.0 - clampf(state_timer / maxf(RING_PAUSE_P3, 0.05), 0.0, 1.0)
+			LxBossTelegraphFx.draw_ground_danger_ring(self, off, KILN_RING_MAX_R, p_urg, anim_t, "coral", "gold")
 			var pr: float = KILN_RING_MAX_R * 0.5 + (0.0 if LxHudFx.flash_reduced() else 2.0 * sin(anim_t * 18.0))
 			var hot_k: bool = state_timer <= 0.14
 			draw_arc(off, pr + 2.0, 0.0, TAU, 24, (PAL["apricot"] if hot_k else PAL["coral"]) as Color, 2.0)
@@ -516,10 +510,18 @@ func _draw_extra(off: Vector2) -> void:
 				draw_line(base_c.round(), tip, PAL["gold"] as Color, 1.2)
 				draw_circle(tip, 1.1, PAL["apricot"] as Color)
 	elif _roaring:
+		var fred_r: bool = LxHudFx.flash_reduced()
 		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
 		var rr: float = body_radius + 11.0 + rp * 18.0
 		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["coral"] as Color, 2.2)
 		draw_arc(off, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)
+		if _armor_forged_roar:
+			var snap_r: float = lerpf(body_radius + 16.0, body_radius + 3.5, clampf(rp * 1.45, 0.0, 1.0))
+			for fi: int in range(4):
+				var fa: float = PI * 0.25 + float(fi) * (PI * 0.5)
+				var fcol: Color = (PAL["gold"] if (fred_r or int(anim_t * 14.0) % 2 == 0) else PAL["coral"]) as Color
+				draw_arc(off, snap_r + 1.4, fa - 0.42, fa + 0.42, 6, PAL["coral"] as Color, 1.8)
+				draw_arc(off, snap_r, fa - 0.38, fa + 0.38, 6, fcol, 2.0)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

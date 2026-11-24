@@ -34,30 +34,19 @@ var hit_ids: Array[int] = []
 
 var _owner_wick: LxWick = null
 var _anim_t: float = 0.0
+var _recall_start_dist: float = 0.0
+var _recall_curve_sign: float = 1.0
 
-
-func _ready() -> void:
-	top_level = true
-	z_index = 2
-
+func _ready() -> void: top_level = true; z_index = 2
 
 func setup(p_wick: LxWick) -> void:
 	_owner_wick = p_wick
 	reset_to_hand(p_wick.global_position if p_wick != null else Vector2.ZERO)
 
-
 func reset_to_hand(at_pos: Vector2) -> void:
-	state = State.IN_HAND
-	pos = at_pos
-	prev_pos = at_pos
-	global_position = at_pos.round()
-	vel = Vector2.ZERO
-	dist_traveled = 0.0
-	hang_timer = 0.0
-	harmless_recall = false
-	carrier = null
-	hit_ids.clear()
-	queue_redraw()
+	state = State.IN_HAND; pos = at_pos; prev_pos = at_pos; global_position = at_pos.round()
+	vel = Vector2.ZERO; dist_traveled = 0.0; hang_timer = 0.0; harmless_recall = false
+	_recall_start_dist = 0.0; carrier = null; hit_ids.clear(); queue_redraw()
 
 
 func _has_lantern() -> bool: return Lx.state == null or Lx.state.has_lantern()
@@ -123,11 +112,17 @@ func throw_out(
 	queue_redraw()
 
 
+func _begin_recall_arc(wick: LxWick) -> void:
+	_recall_start_dist = maxf(24.0, pos.distance_to(wick.global_position)) if wick != null else 64.0
+	_recall_curve_sign = 1.0 if (dir.x + dir.y * 0.5 >= 0.0) else -1.0
+
+
 func start_recall(wick: LxWick, world_ctx: Node, slam_radius: float = 18.0, hs: float = 0.085, sh: float = 0.14) -> void:
 	if state != State.FLYING and state != State.HANGING:
 		return
 	state = State.RECALLING
 	harmless_recall = false
+	_begin_recall_arc(wick)
 	hit_ids.clear()
 	if Lx.events != null:
 		Lx.events.lantern_recalled.emit(pos)
@@ -175,6 +170,9 @@ func catch_by_wick(wick: LxWick) -> void:
 		wick.spawn_sparks(pos, Vector2.UP, 4, PAL_CREAM, 14.0, 42.0, 0.18)
 		wick.spawn_sparks(pos, Vector2.UP, 3, c_gl, 18.0, 48.0, 0.20)
 		_emit_gust(pos, 32.0, 38.0)
+		if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+			var kdir_c: Vector2 = -dir if dir.length_squared() > 0.0001 else Vector2.LEFT
+			Lx.camera.call("add_kick", kdir_c, 1.0)
 		wick.emit_sfx("lantern_catch", pos, false)
 	if Lx.events != null:
 		Lx.events.lantern_caught.emit(pos)
@@ -233,30 +231,19 @@ func on_dropped(at_pos: Vector2) -> void:
 
 
 func on_perched_loss() -> void:
-	if state != State.CARRIED:
-		return
-	carrier = null
-	state = State.RECALLING
-	harmless_recall = true
-	hit_ids.clear()
-	if Lx.events != null:
-		Lx.events.lantern_perched_loss.emit(pos)
+	if state != State.CARRIED: return
+	carrier = null; state = State.RECALLING; harmless_recall = true; _begin_recall_arc(_owner_wick); hit_ids.clear()
+	if Lx.events != null: Lx.events.lantern_perched_loss.emit(pos)
 	if _owner_wick != null:
 		_owner_wick.emit_sfx("magpie_perch_loss", pos, false)
 		_owner_wick.on_lantern_lost(pos, "perched_loss")
 	queue_redraw()
 
-
 func on_struck() -> void:
-	if state != State.FLYING and state != State.HANGING:
-		return
-	state = State.RECALLING
-	harmless_recall = true
-	hit_ids.clear()
-	if Lx.events != null:
-		Lx.events.lantern_struck.emit(pos)
-	if _owner_wick != null:
-		_owner_wick.on_lantern_lost(pos, "struck")
+	if state != State.FLYING and state != State.HANGING: return
+	state = State.RECALLING; harmless_recall = true; _begin_recall_arc(_owner_wick); hit_ids.clear()
+	if Lx.events != null: Lx.events.lantern_struck.emit(pos)
+	if _owner_wick != null: _owner_wick.on_lantern_lost(pos, "struck")
 	queue_redraw()
 
 
@@ -297,11 +284,8 @@ func tick_sim(dt: float, wick: LxWick, world_ctx: Node) -> void:
 			if hang_timer < hang_max - 0.15 and not wick.is_zipping() and wick.global_position.distance_to(pos) <= 8.0:
 				catch_by_wick(wick)
 			elif hang_timer <= 0.0:
-				state = State.RECALLING
-				harmless_recall = false
-				hit_ids.clear()
-				if Lx.events != null:
-					Lx.events.lantern_recalled.emit(pos)
+				state = State.RECALLING; harmless_recall = false; _begin_recall_arc(wick); hit_ids.clear()
+				if Lx.events != null: Lx.events.lantern_recalled.emit(pos)
 				wick.emit_sfx("lantern_recall", pos, true)
 		State.RECALLING:
 			var to_w: Vector2 = wick.global_position - pos
@@ -311,19 +295,20 @@ func tick_sim(dt: float, wick: LxWick, world_ctx: Node) -> void:
 			else:
 				var rdir: Vector2 = to_w / dlen
 				var step: float = minf(recall_speed * dt, dlen)
-				pos += rdir * step
-				vel = rdir * recall_speed
+				var u_arc: float = clampf(dlen / maxf(_recall_start_dist, 24.0), 0.0, 1.0)
+				var arc_env: float = sin(u_arc * PI) * clampf((dlen - 8.0) / 18.0, 0.0, 1.0)
+				var perp := Vector2(-rdir.y, rdir.x) * _recall_curve_sign
+				var move_dir: Vector2 = (rdir + perp * (0.28 * arc_env)).normalized()
+				pos += (rdir * step) if dlen <= step + 6.0 else (move_dir * step)
+				vel = move_dir * recall_speed
 				if not harmless_recall:
-					_sweep_hits(wick, world_ctx, rdir, LxHit.SOURCE_RECALL, recall_damage)
+					_sweep_hits(wick, world_ctx, move_dir, LxHit.SOURCE_RECALL, recall_damage)
 		State.CARRIED:
 			vel = Vector2.ZERO
 			if carrier != null and is_instance_valid(carrier) and wick.is_entity_alive(carrier):
 				pos = wick.get_entity_pos(carrier)
 			else:
-				carrier = null
-				state = State.RECALLING
-				harmless_recall = false
-				hit_ids.clear()
+				carrier = null; state = State.RECALLING; harmless_recall = false; _begin_recall_arc(wick); hit_ids.clear()
 
 	global_position = pos.round()
 

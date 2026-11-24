@@ -66,6 +66,9 @@ func configure(island_id: int, is_dungeon: bool, cam_center: Vector2) -> void:
 			6: # Rising volcanic embers & ash columns
 				for i: int in range(20):
 					_drops.append({"ox": rng.randf_range(-HALF_W, HALF_W), "oy": rng.randf_range(-HALF_H, HALF_H), "spd": rng.randf_range(18.0, 38.0), "phase": rng.randf_range(0.0, TAU)})
+			7: # Slow-drifting silver-ice lunar crescent & star motes (warm to gold/cream when relit)
+				for i: int in range(16):
+					_drops.append({"ox": rng.randf_range(-HALF_W, HALF_W), "oy": rng.randf_range(-HALF_H, HALF_H), "spd": rng.randf_range(6.0, 14.0), "phase": rng.randf_range(0.0, TAU)})
 			8: # Swirling eclipse ash (reverses upward into golden dawn sparks once relit!)
 				for i: int in range(22):
 					_drops.append({"ox": rng.randf_range(-HALF_W, HALF_W), "oy": rng.randf_range(-HALF_H, HALF_H), "spd": rng.randf_range(16.0, 30.0), "phase": rng.randf_range(0.0, TAU)})
@@ -130,6 +133,10 @@ func tick(dt: float, cam_center: Vector2) -> void:
 			for d: Dictionary in _drops:
 				d["ox"] = wrapf(float(d["ox"]) + sin(_clock * 2.2 + float(d["phase"])) * 10.0 * dt, -HALF_W, HALF_W)
 				d["oy"] = wrapf(float(d["oy"]) - float(d["spd"]) * dt, -HALF_H, HALF_H)
+		7:
+			for d: Dictionary in _drops:
+				d["ox"] = wrapf(float(d["ox"]) + sin(_clock * 0.75 + float(d["phase"])) * 8.0 * dt, -HALF_W, HALF_W)
+				d["oy"] = wrapf(float(d["oy"]) - float(d["spd"]) * 0.55 * dt, -HALF_H, HALF_H)
 		8:
 			var dir_y: float = -1.0 if relit else 1.0
 			for d: Dictionary in _drops:
@@ -313,6 +320,23 @@ func _draw_lunar_aurora(fred: bool, relit: bool, lit_b: int) -> void:
 			pts.append(Vector2(roundf(fx), roundf(fy)))
 		for s: int in range(pts.size() - 1):
 			draw_line(pts[s], pts[s + 1], Color(col, a), 3.0 if band == 0 else 2.0)
+	var m_a: float = 0.44 if fred else (0.76 if relit else 0.62)
+	for i: int in range(_drops.size()):
+		var d: Dictionary = _drops[i]
+		var p: Vector2 = (_cam_center + Vector2(float(d["ox"]), float(d["oy"]))).round()
+		var tw: float = 0.80 if fred else (0.55 + 0.45 * sin(_clock * 2.2 + float(d["phase"])))
+		var warm_m: bool = relit or (lit_b > 0 and i % (4 - mini(lit_b, 3)) == 0)
+		var col_m: Color = ((PAL["cream"] if i % 3 == 0 else PAL["gold"]) if warm_m else (PAL["ice"] if i % 2 == 0 else PAL["sky"])) as Color
+		if i % 4 == 0:
+			draw_rect(Rect2(p + Vector2(0.0, -1.0), Vector2(2.0, 1.0)), Color(col_m, m_a * tw))
+			draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(1.0, 2.0)), Color(col_m, m_a * tw))
+			draw_rect(Rect2(p + Vector2(0.0, 1.0), Vector2(2.0, 1.0)), Color(col_m, m_a * tw))
+		elif i % 3 == 0:
+			draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(col_m, m_a * tw * 0.65))
+			draw_rect(Rect2(p + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), Color(col_m, m_a * tw * 0.65))
+			draw_rect(Rect2(p, Vector2.ONE), Color(PAL["cream"] as Color, m_a * tw))
+		else:
+			draw_rect(Rect2(p, Vector2(2.0 if i % 2 == 0 else 1.0, 1.0)), Color(col_m, m_a * tw))
 
 
 func _draw_eclipse_ash(fred: bool, relit: bool) -> void:

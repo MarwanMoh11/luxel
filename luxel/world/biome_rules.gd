@@ -28,9 +28,12 @@ var beam_buff_t: float = 0.0
 # Island 3: Light-Reactive Forest Bloom-Lamps + Hollow Oak Amber Sap Pools
 var _blooms: Array[Dictionary] = [] # {pos, lit_t}
 var _sap_pools: Array[Dictionary] = [] # {pos, r}
+var _sap_prev: Dictionary = {} # instance_id -> Vector2
+var _sap_spark_cd: float = 0.0
 
 # Island 4: Botanical Mist Updraft Geysers (refreshes Moth Wings mid-glide!)
 var _updrafts: Array[Dictionary] = [] # {pos, r, cd}
+var _updraft_kick_cd: float = 0.0
 
 # Island 5: Falling Star Meteors + Starlight Surge speed boost
 var _stars: Array[Dictionary] = [] # {pos, t, dur, landed}
@@ -43,38 +46,31 @@ var vent_cycle: float = 0.0
 
 # Island 7: Live Lunar Phase Cycle (Full Silver Moon <-> Lunar Eclipse)
 var lunar_phase: float = 1.0 # 1.0 = Full Silver Moon, 0.0 = Lunar Eclipse
+var _was_full_moon: bool = true
 
 # Island 8: The Hush's Encroaching Eclipse Pulse + Remix features
 var eclipse_pulse: float = 0.0
 
 
 func _ready() -> void:
-	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	z_index = -3
-	active_instance = self
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST; z_index = -3; active_instance = self
 
 func _exit_tree() -> void:
 	if active_instance == self: active_instance = null
 
 func configure(p_island_id: int, p_bounds: Rect2, p_is_dungeon: bool, region_node: Node) -> void:
-	active_instance = self
-	island_id = clampi(p_island_id, 1, 8)
-	is_dungeon = p_is_dungeon
-	bounds = p_bounds
-	_region = region_node
-	clock = 0.0
-	_cam_center = p_bounds.get_center()
+	active_instance = self; island_id = clampi(p_island_id, 1, 8); is_dungeon = p_is_dungeon
+	bounds = p_bounds; _region = region_node; clock = 0.0; _cam_center = p_bounds.get_center()
 	tide_phase = 0.0; tide_surging = false; _last_tide_surge = false
-	beam_angle = PI * 0.5
+	beam_angle = PI * 0.5; beam_buff_t = 0.0
 	beam_origin = Vector2(p_bounds.position.x + p_bounds.size.x * 0.5, p_bounds.position.y + 18.0)
-	beam_buff_t = 0.0
-	_blooms.clear(); _sap_pools.clear(); _updrafts.clear(); _stars.clear(); _vents.clear()
-	_star_cd = 2.4; starlight_surge_t = 0.0; vent_cycle = 0.0; lunar_phase = 1.0; eclipse_pulse = 0.0
+	_blooms.clear(); _sap_pools.clear(); _sap_prev.clear(); _sap_spark_cd = 0.0
+	_updrafts.clear(); _updraft_kick_cd = 0.0; _stars.clear(); _vents.clear()
+	_star_cd = 2.4; starlight_surge_t = 0.0; vent_cycle = 0.0; lunar_phase = 1.0; _was_full_moon = true; eclipse_pulse = 0.0
 	_populate_features()
 	if _mechanics == null and get_parent() != null:
 		_mechanics = LxBiomeMechanics.new(); _mechanics.name = "BiomeMechanics"; get_parent().add_child(_mechanics)
-	if _mechanics != null:
-		_mechanics.configure(self, _region)
+	if _mechanics != null: _mechanics.configure(self, _region)
 	queue_redraw()
 
 
@@ -198,8 +194,7 @@ static func _too_close(p: Vector2, pts: Array[Vector2], sep_sq: float) -> bool:
 
 func tick(dt: float, cam_center: Vector2) -> void:
 	_cam_center = cam_center
-	if dt <= 0.0:
-		return
+	if dt <= 0.0: return
 	clock += dt
 	match island_id:
 		2: _tick_island2(dt)
@@ -207,12 +202,10 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		4: _tick_island4(dt)
 		5: _tick_island5(dt)
 		6: _tick_island6(dt)
-		7: lunar_phase = 0.5 + 0.5 * cos(clock * (TAU / 9.0))
+		7: _tick_island7()
 		8: _tick_island8(dt)
-	if _mechanics != null and is_instance_valid(_mechanics):
-		_mechanics.tick(dt, cam_center)
+	if _mechanics != null and is_instance_valid(_mechanics): _mechanics.tick(dt, cam_center)
 	queue_redraw()
-
 
 func _tick_island2(dt: float) -> void:
 	if not is_dungeon:
@@ -227,64 +220,67 @@ func _tick_island2(dt: float) -> void:
 				if _region != null and _region.has_method("tile_at") and str(_region.call("tile_at", w.global_position)) == "tide":
 					w.apply_recoil(Vector2(28.0 * dt * 8.0, 0.0))
 	else:
-		# Single dungeon Fresnel searchlight is driven and drawn by LxBiomeDungeonTwists
 		beam_buff_t = maxf(0.0, beam_buff_t - dt)
-
 
 func get_lit_bloom_count() -> int:
 	var n: int = 0
 	for b: Dictionary in _blooms:
-		if float(b.get("lit_t", 0.0)) > 0.0:
-			n += 1
+		if float(b.get("lit_t", 0.0)) > 0.0: n += 1
 	return n
-
 
 func _tick_island3(dt: float) -> void:
 	if not is_dungeon:
-		var ppos: Vector2 = _player_pos()
-		var lpos: Vector2 = _lantern_pos()
-		var p_act: bool = _player_light_burst_active()
+		var ppos: Vector2 = _player_pos(); var lpos: Vector2 = _lantern_pos(); var p_act: bool = _player_light_burst_active()
 		for b: Dictionary in _blooms:
 			var lt: float = float(b["lit_t"])
-			if lt > 0.0:
-				b["lit_t"] = maxf(0.0, lt - dt)
+			if lt > 0.0: b["lit_t"] = maxf(0.0, lt - dt)
 			var bp: Vector2 = b["pos"] as Vector2
 			if (p_act and bp.distance_squared_to(ppos) <= 2304.0) or bp.distance_squared_to(lpos) <= 1296.0:
 				if lt <= 0.1:
-					if Lx.audio != null:
-						Lx.audio.play_sfx("prop_chime", bp, true)
-					if _mechanics != null and is_instance_valid(_mechanics):
-						_mechanics.on_bloom_ignited(bp, true)
+					if Lx.audio != null: Lx.audio.play_sfx("prop_chime", bp, true)
+					if _mechanics != null and is_instance_valid(_mechanics): _mechanics.on_bloom_ignited(bp, true)
 				b["lit_t"] = 16.0
 	else:
+		_sap_spark_cd = maxf(0.0, _sap_spark_cd - dt)
+		var w3: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
 		if _region != null and _region.has_method("get_enemies"):
 			var enemies_v: Variant = _region.call("get_enemies")
 			if enemies_v is Array:
 				for e_v: Variant in (enemies_v as Array):
-					if e_v is LxEnemyBrain and is_instance_valid(e_v):
-						var e: LxEnemyBrain = e_v as LxEnemyBrain
-						if not e.is_alive() or e.is_boss:
-							continue
-						for sp: Dictionary in _sap_pools:
-							if e.pos.distance_to(sp["pos"] as Vector2) <= float(sp["r"]):
-								e.knock *= maxf(0.0, 1.0 - 4.0 * dt)
-		var p_act_d: bool = _player_light_burst_active()
-		var ppos_d: Vector2 = _player_pos()
+					if not (e_v is LxEnemyBrain and is_instance_valid(e_v)): continue
+					var e: LxEnemyBrain = e_v as LxEnemyBrain
+					var eid: int = e.get_instance_id()
+					if not e.is_alive() or e.is_boss or e.is_flying(): _sap_prev.erase(eid); continue
+					var in_sap: bool = false
+					for sp: Dictionary in _sap_pools:
+						if e.pos.distance_to(sp["pos"] as Vector2) <= float(sp["r"]): in_sap = true; break
+					if in_sap:
+						e.knock *= maxf(0.0, 1.0 - 5.0 * dt)
+						if _sap_prev.has(eid):
+							var disp: Vector2 = e.pos - (_sap_prev[eid] as Vector2)
+							var d2: float = disp.length_squared()
+							if d2 > 0.0004 and d2 < 256.0:
+								e.apply_separation_push(-disp * 0.42)
+								if d2 > 0.04 and _sap_spark_cd <= 0.0 and w3 != null:
+									_sap_spark_cd = 0.22
+									w3.spawn_sparks(e.pos, -disp.normalized(), 2, LxWick.PAL_GOLD, 10.0, 26.0, 0.16)
+						_sap_prev[eid] = e.pos
+					else:
+						_sap_prev.erase(eid)
+		var p_act_d: bool = _player_light_burst_active(); var ppos_d: Vector2 = _player_pos()
 		for sp: Dictionary in _sap_pools:
 			sp["lit_t"] = maxf(0.0, float(sp.get("lit_t", 0.0)) - dt)
 			if p_act_d and ppos_d.distance_to(sp["pos"] as Vector2) <= float(sp["r"]) + 10.0 and float(sp["lit_t"]) <= 0.1:
 				sp["lit_t"] = 6.0
 				if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 					LxDarknessLayer.active_instance.add_burst_light(sp["pos"] as Vector2, 72.0, 0.85 if LxHudFx.flash_reduced() else 1.18, 0.45)
-				if Lx.audio != null:
-					Lx.audio.play_sfx("prop_chime", sp["pos"] as Vector2, true)
-
+				if Lx.audio != null: Lx.audio.play_sfx("prop_chime", sp["pos"] as Vector2, true)
 
 func _tick_island4(dt: float) -> void:
+	_updraft_kick_cd = maxf(0.0, _updraft_kick_cd - dt)
 	for u: Dictionary in _updrafts:
 		u["cd"] = maxf(0.0, float(u["cd"]) - dt)
-		if float(u["cd"]) > 0.0:
-			continue
+		if float(u["cd"]) > 0.0: continue
 		if Lx.player is LxWick and is_instance_valid(Lx.player):
 			var w: LxWick = Lx.player as LxWick
 			if w.is_gliding() and w.move_wings != null and w.global_position.distance_to(u["pos"] as Vector2) <= float(u["r"]) + 8.0:
@@ -294,8 +290,20 @@ func _tick_island4(dt: float) -> void:
 				w.spawn_ring(u["pos"] as Vector2, 4.0, 22.0, 0.28, LxWick.PAL_ICE, 1.4)
 				w.spawn_sparks(w.global_position, Vector2.UP, 6, LxWick.PAL_CREAM, 22.0, 56.0, 0.22)
 				w.emit_sfx("wing_gale", u["pos"] as Vector2, true)
-				if _mechanics != null and is_instance_valid(_mechanics):
-					_mechanics.on_updraft_caught(u["pos"] as Vector2)
+				if _updraft_kick_cd <= 0.0 and Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+					_updraft_kick_cd = 0.35
+					Lx.camera.call("add_kick", Vector2.UP, 1.4)
+				if _mechanics != null and is_instance_valid(_mechanics): _mechanics.on_updraft_caught(u["pos"] as Vector2)
+
+func _tick_island7() -> void:
+	lunar_phase = 0.5 + 0.5 * cos(clock * (TAU / 9.0))
+	var is_full: bool = lunar_phase > 0.65
+	if is_full and not _was_full_moon and Lx.player is LxWick and is_instance_valid(Lx.player):
+		var w7: LxWick = Lx.player as LxWick
+		if not w7.dead:
+			w7.spawn_ring(w7.global_position, 4.0, 22.0, 0.30, LxWick.PAL_ICE, 1.2 if LxHudFx.flash_reduced() else 1.5)
+			w7.emit_sfx("lens_reveal", w7.global_position, true)
+	_was_full_moon = is_full
 
 
 func _tick_island5(dt: float) -> void:
@@ -319,10 +327,8 @@ func _tick_island5(dt: float) -> void:
 
 
 func _on_star_impact(at: Vector2) -> void:
-	if Lx.audio != null:
-		Lx.audio.play_sfx("star_lance", at, true)
-	if _mechanics != null and is_instance_valid(_mechanics):
-		_mechanics.spawn_star_crystal(at)
+	if Lx.audio != null: Lx.audio.play_sfx("star_lance", at, true)
+	if _mechanics != null and is_instance_valid(_mechanics): _mechanics.spawn_star_crystal(at)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		LxDarknessLayer.active_instance.add_burst_light(at, 66.0, 0.85 if LxHudFx.flash_reduced() else 1.38, 0.34)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
@@ -342,7 +348,6 @@ func _on_star_impact(at: Vector2) -> void:
 						var kdir: Vector2 = (e.pos - at).normalized() if e.pos.distance_to(at) > 0.5 else Vector2.RIGHT
 						e.knock += kdir * 75.0
 
-
 func _tick_island6(dt: float) -> void:
 	vent_cycle = fposmod(clock / 5.2, 1.0)
 	for v: Dictionary in _vents:
@@ -353,8 +358,7 @@ func _tick_island6(dt: float) -> void:
 			v["erupted"] = true
 			if (v["pos"] as Vector2).distance_to(_cam_center) <= 180.0 and Lx.audio != null:
 				Lx.audio.play_sfx("forge_gust", v["pos"] as Vector2, true)
-		elif not erupting:
-			v["erupted"] = false
+		elif not erupting: v["erupted"] = false
 		if erupting and float(v["ember_cd"]) <= 0.0 and Lx.player is LxWick and is_instance_valid(Lx.player):
 			var w: LxWick = Lx.player as LxWick
 			if w.is_dashing() and w.global_position.distance_to(v["pos"] as Vector2) <= 34.0:
@@ -363,31 +367,23 @@ func _tick_island6(dt: float) -> void:
 					w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 18.0)
 				w.spawn_ring(w.global_position, 3.0, 18.0, 0.24, LxWick.PAL_GOLD, 1.4)
 				w.emit_sfx("ember_pickup", w.global_position, false)
-				if _mechanics != null and is_instance_valid(_mechanics):
-					_mechanics.grant_molten_overdrive(3)
-
+				if _mechanics != null and is_instance_valid(_mechanics): _mechanics.grant_molten_overdrive(3)
 
 func _tick_island8(dt: float) -> void:
 	var lit_b: int = 0
 	if Lx.state != null:
 		for bid: String in ["beacon_8_1", "beacon_8_2", "beacon_8_3"]:
-			if Lx.state.lit_beacons.has(bid):
-				lit_b += 1
+			if Lx.state.lit_beacons.has(bid): lit_b += 1
 	eclipse_pulse = (0.5 + 0.5 * sin(clock * (TAU / 9.0))) * clampf(1.0 - float(lit_b) / 3.0, 0.0, 1.0)
-	if not is_dungeon:
-		_tick_island4(dt)
-		_tick_island6(dt)
-
+	if not is_dungeon: _tick_island4(dt); _tick_island6(dt)
 
 func get_darkness_offset() -> float:
-	if Lx.state != null and Lx.state.relit_islands.has(island_id) and not is_dungeon:
-		return 0.0
+	if Lx.state != null and Lx.state.relit_islands.has(island_id) and not is_dungeon: return 0.0
 	match island_id:
 		3: return 0.16 if not is_dungeon else 0.06
 		7: return lerpf(0.14, -0.16, lunar_phase)
 		8: return eclipse_pulse * 0.15
 		_: return 0.0
-
 
 func get_shader_phase() -> float:
 	match island_id:
@@ -397,19 +393,15 @@ func get_shader_phase() -> float:
 		8: return eclipse_pulse
 		_: return 0.5 + 0.5 * sin(clock * 0.8)
 
-
 func get_light_pools() -> Array[Vector4]:
 	var pools: Array[Vector4] = []
 	if island_id == 2 and is_dungeon:
 		var bdir: Vector2 = Vector2.from_angle(beam_angle)
-		var p1: Vector2 = beam_origin + bdir * 52.0
-		var p2: Vector2 = beam_origin + bdir * 116.0
-		pools.append(Vector4(p1.x, p1.y, 54.0, 1.05))
-		pools.append(Vector4(p2.x, p2.y, 62.0, 0.95))
+		var p1: Vector2 = beam_origin + bdir * 52.0; var p2: Vector2 = beam_origin + bdir * 116.0
+		pools.append(Vector4(p1.x, p1.y, 54.0, 1.05)); pools.append(Vector4(p2.x, p2.y, 62.0, 0.95))
 	elif island_id == 3 and not is_dungeon:
 		for b: Dictionary in _blooms:
-			var lt: float = float(b["lit_t"])
-			var bp: Vector2 = b["pos"] as Vector2
+			var lt: float = float(b["lit_t"]); var bp: Vector2 = b["pos"] as Vector2
 			pools.append(Vector4(bp.x, bp.y, 86.0 * clampf(lt / 2.0, 0.0, 1.0), 1.15 * clampf(lt / 2.0, 0.0, 1.0)) if lt > 0.0 else Vector4(bp.x, bp.y, 24.0, 0.35))
 	elif island_id == 6 or (island_id == 8 and not is_dungeon):
 		for v: Dictionary in _vents:
@@ -419,22 +411,17 @@ func get_light_pools() -> Array[Vector4]:
 				pools.append(Vector4(p.x, p.y, 58.0 if vp >= 0.56 else 36.0, 1.10 if vp >= 0.56 else 0.58))
 	return pools
 
-
 func _is_walkable(pt: Vector2) -> bool:
 	return _region != null and _region.has_method("tile_at") and str(_region.call("tile_at", pt)) in ["ground", "path"]
-
 
 func _draw_stepped_ring(c: Vector2, rad: int, col: Color, dots: int = 16, only_walkable: bool = false) -> void:
 	for k: int in range(dots):
 		var a: float = (TAU * float(k)) / float(dots)
 		var pt: Vector2 = (c + Vector2(cos(a), sin(a)) * float(rad)).round()
-		if not only_walkable or _is_walkable(pt):
-			draw_rect(Rect2(pt, Vector2.ONE), col)
-
+		if not only_walkable or _is_walkable(pt): draw_rect(Rect2(pt, Vector2.ONE), col)
 
 func _draw() -> void:
-	if island_id <= 1:
-		return
+	if island_id <= 1: return
 	var fred: bool = LxHudFx.flash_reduced()
 	match island_id:
 		2: _draw_island2(fred)
@@ -444,17 +431,12 @@ func _draw() -> void:
 		6: _draw_vents(fred)
 		7: _draw_mirror_reflection(fred)
 		8:
-			if not is_dungeon:
-				_draw_updrafts(fred)
-				_draw_vents(fred)
-
+			if not is_dungeon: _draw_updrafts(fred); _draw_vents(fred)
 
 func _draw_island2(fred: bool) -> void:
-	if is_dungeon or (not tide_surging and tide_phase < 0.46):
-		return
+	if is_dungeon or (not tide_surging and tide_phase < 0.46): return
 	var col: Color = (PAL["ice"] if tide_surging else PAL["sky"]) as Color
-	var min_x: float = _cam_center.x - HALF_W
-	var min_y: float = _cam_center.y - HALF_H
+	var min_x: float = _cam_center.x - HALF_W; var min_y: float = _cam_center.y - HALF_H
 	var drift: float = fposmod(clock * (48.0 if tide_surging else 18.0), 32.0)
 	for row: int in range(8):
 		var wy: float = roundf(min_y + float(row) * 28.0 + 10.0)
@@ -479,24 +461,31 @@ func _draw_island3(fred: bool) -> void:
 			_draw_stepped_ring(p, 7 + (0 if fred else int(roundf(sin(clock * 3.0)))), Color(PAL["gold"] as Color, 0.36), 12, true)
 	for sp: Dictionary in _sap_pools:
 		var p: Vector2 = (sp["pos"] as Vector2).round()
-		if not _on_screen(p) or not _is_walkable(p):
-			continue
+		if not _on_screen(p) or not _is_walkable(p): continue
 		var r: float = float(sp["r"])
-		draw_rect(Rect2(p + Vector2(-r + 2.0, -r * 0.6), Vector2((r - 2.0) * 2.0, r * 1.2)), Color(PAL["apricot"] as Color, 0.18))
-		draw_rect(Rect2(p + Vector2(-r * 0.6, -r * 0.8), Vector2(r * 1.2, r * 1.6)), Color(PAL["apricot"] as Color, 0.18))
-		_draw_stepped_ring(p, int(r * 0.85), Color(PAL["gold"] as Color, 0.28), 16, true)
+		var lit_t: float = float(sp.get("lit_t", 0.0))
+		var lit_u: float = clampf(lit_t / 6.0, 0.0, 1.0)
+		var fill_a: float = (0.22 if fred else 0.28) if lit_t > 0.0 else 0.18
+		var fill_c: Color = (PAL["gold"] if lit_t > 0.0 else PAL["apricot"]) as Color
+		draw_rect(Rect2(p + Vector2(-r + 2.0, -r * 0.6), Vector2((r - 2.0) * 2.0, r * 1.2)), Color(fill_c, fill_a))
+		draw_rect(Rect2(p + Vector2(-r * 0.6, -r * 0.8), Vector2(r * 1.2, r * 1.6)), Color(fill_c, fill_a))
+		_draw_stepped_ring(p, int(r * 0.85), Color(PAL["gold"] as Color, (0.48 if fred else 0.72) if lit_t > 0.0 else 0.28), 16, true)
+		if lit_t > 0.0:
+			_draw_stepped_ring(p, int(r * 0.96), Color(PAL["cream"] as Color, (0.36 if fred else 0.58) * lit_u), 16, true)
+			for ei: int in range(3):
+				var eu: float = fposmod(clock * (0.9 if fred else 1.45) + float(ei) * 0.33 + p.x * 0.02, 1.0)
+				var ex: float = roundf(p.x + sin(clock * 2.4 + float(ei) * 2.1 + p.y) * (r * 0.42))
+				var ey: float = roundf(p.y + 2.0 - eu * 13.0)
+				draw_rect(Rect2(ex, ey, 2.0 if ei == 0 else 1.0, 1.0), Color((PAL["cream"] if eu < 0.4 else PAL["gold"]) as Color, sin(eu * PI) * (0.62 if fred else 0.88) * lit_u))
 		var bx: float = roundf(p.x + sin(clock * 1.7 + p.x) * (r * 0.35))
 		var by: float = roundf(p.y + cos(clock * 1.3 + p.y) * (r * 0.25))
 		draw_rect(Rect2(bx, by, 2.0, 1.0), Color(PAL["cream"] as Color, 0.65))
 
-
 func _draw_updrafts(fred: bool) -> void:
 	for u: Dictionary in _updrafts:
 		var p: Vector2 = (u["pos"] as Vector2).round()
-		if not _on_screen(p):
-			continue
-		var r: float = float(u["r"])
-		var rot: float = clock * (1.1 if fred else 2.4)
+		if not _on_screen(p): continue
+		var r: float = float(u["r"]); var rot: float = clock * (1.1 if fred else 2.4)
 		for k: int in range(6):
 			var a: float = rot + float(k) * (TAU / 6.0)
 			var pt: Vector2 = (p + Vector2(cos(a) * r * 0.58, sin(a) * r * 0.42)).round()
@@ -507,20 +496,26 @@ func _draw_updrafts(fred: bool) -> void:
 			var my: float = roundf(p.y + 4.0 - uu * 16.0)
 			draw_rect(Rect2(mx, my, 1.0, 2.0), Color((PAL["cream"] if uu < 0.35 else PAL["ice"]) as Color, sin(uu * PI) * 0.72))
 
-
 func _draw_stars(fred: bool) -> void:
 	for s: Dictionary in _stars:
 		var p: Vector2 = (s["pos"] as Vector2).round()
-		if not _is_walkable(p):
-			continue
-		var t: float = float(s["t"])
-		var dur: float = float(s["dur"])
+		if not _is_walkable(p): continue
+		var t: float = float(s["t"]); var dur: float = float(s["dur"])
 		if not bool(s["landed"]):
 			var u: float = clampf(t / maxf(dur, 0.01), 0.0, 1.0)
 			var rr: int = int(roundf(lerpf(18.0, 3.0, u)))
 			_draw_stepped_ring(p, rr, Color((PAL["cream"] if u > 0.75 else PAL["gold"]) as Color, 0.55 if fred else 0.75), 12, true)
 			draw_rect(Rect2(p + Vector2(-3.0, 0.0), Vector2(7.0, 1.0)), Color(PAL["ice"] as Color, 0.65))
 			draw_rect(Rect2(p + Vector2(0.0, -3.0), Vector2(1.0, 7.0)), Color(PAL["ice"] as Color, 0.65))
+			var sky_p: Vector2 = p + Vector2(-56.0, -84.0)
+			var head: Vector2 = sky_p.lerp(p, u).round()
+			var mdir: Vector2 = (p - sky_p).normalized()
+			var ma: float = clampf(u * 2.2, 0.25, 1.0) * (0.68 if fred else 0.96)
+			draw_line((head - mdir * 24.0).round(), head, Color(PAL["sky"] as Color, ma * 0.55), 1.0)
+			draw_line((head - mdir * 15.0).round(), head, Color(PAL["gold"] as Color, ma * 0.82), 1.4)
+			draw_line((head - mdir * 7.0).round(), head, Color(PAL["cream"] as Color, ma), 1.8)
+			draw_rect(Rect2(head - Vector2.ONE, Vector2(2.0, 2.0)), Color(PAL["cream"] as Color, ma))
+			draw_rect(Rect2(head + Vector2(-2.0, -1.0), Vector2(1.0, 2.0)), Color(PAL["gold"] as Color, ma * 0.85))
 		else:
 			var a: float = clampf(1.0 - (t - dur) / 0.55, 0.0, 1.0)
 			var br: int = int(roundf(lerpf(5.0, 22.0, 1.0 - a)))
@@ -551,47 +546,36 @@ func _draw_vents(fred: bool) -> void:
 
 
 func _draw_mirror_reflection(fred: bool) -> void:
-	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
-		return
+	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player): return
 	var w: LxWick = Lx.player as LxWick
 	if _region != null and _region.has_method("tile_at"):
 		var tt: String = str(_region.call("tile_at", w.global_position))
-		if not is_dungeon and tt not in ["glass", "mirror", "path", "ground"]:
-			return
+		if not is_dungeon and tt not in ["glass", "mirror", "path", "ground"]: return
 	var rp: Vector2 = (w.global_position + Vector2(0.0, 6.0)).round()
 	var a: float = (0.20 if fred else (0.16 + 0.12 * lunar_phase))
 	draw_rect(Rect2(rp + Vector2(-3.0, 0.0), Vector2(6.0, 7.0)), Color(PAL["sky"] as Color, a))
 	draw_rect(Rect2(rp + Vector2(-2.0, 5.0), Vector2(4.0, 3.0)), Color(PAL["ice"] as Color, a * 1.1))
 	draw_rect(Rect2(rp + Vector2(3.0, 2.0), Vector2(2.0, 2.0)), Color(PAL["gold"] as Color, a * 1.15))
 
-
 func _find_walkable_near_cam() -> Vector2:
-	if _region == null or not _region.has_method("tile_at"):
-		return Vector2.ZERO
+	if _region == null or not _region.has_method("tile_at"): return Vector2.ZERO
 	for attempt: int in range(10):
 		var a: float = clock * 2.7 + float(attempt) * 1.9
 		var r: float = 42.0 + float(attempt % 4) * 20.0
 		var cand: Vector2 = (_cam_center + Vector2.from_angle(a) * r).round()
-		if bounds.grow(-24.0).has_point(cand) and _is_walkable(cand):
-			return cand
+		if bounds.grow(-24.0).has_point(cand) and _is_walkable(cand): return cand
 	return Vector2.ZERO
 
-
-func _on_screen(p: Vector2) -> bool:
-	return absf(p.x - _cam_center.x) <= HALF_W and absf(p.y - _cam_center.y) <= HALF_H
-
-func _player_pos() -> Vector2:
-	return (Lx.player as Node2D).global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2(-9999.0, -9999.0)
+func _on_screen(p: Vector2) -> bool: return absf(p.x - _cam_center.x) <= HALF_W and absf(p.y - _cam_center.y) <= HALF_H
+func _player_pos() -> Vector2: return (Lx.player as Node2D).global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2(-9999.0, -9999.0)
 
 func _lantern_pos() -> Vector2:
 	if Lx.player != null and is_instance_valid(Lx.player):
 		var lan: Variant = Lx.player.get("lantern")
-		if lan is Object and is_instance_valid(lan) and (lan as Object).get("pos") is Vector2:
-			return (lan as Object).get("pos") as Vector2
+		if lan is Object and is_instance_valid(lan) and (lan as Object).get("pos") is Vector2: return (lan as Object).get("pos") as Vector2
 	return _player_pos()
 
 func _player_light_burst_active() -> bool:
-	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
-		return false
+	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player): return false
 	var w: LxWick = Lx.player as LxWick
 	return w.is_dashing() or w.muzzle_t > 0.0 or w.throw_anim_t > 0.0 or w.is_zipping()

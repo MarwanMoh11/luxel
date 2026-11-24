@@ -180,8 +180,10 @@ static func trigger_boss_phase_reset(boss: LxEnemyBrain, next_phase: int) -> voi
 	var hs: float = 0.14 if (boss.kind == "the_hush" and next_phase >= 3) else 0.11
 	if Lx.hitstop != null and is_instance_valid(Lx.hitstop):
 		Lx.hitstop.trigger(hs)
+		Lx.hitstop.trigger_slowmo(0.42, 0.24)
 	if Lx.camera != null and is_instance_valid(Lx.camera):
 		Lx.camera.add_kick(Vector2.UP, 2.8)
+		Lx.camera.trigger_focus_nudge(boss.pos, 0.45)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		LxDarknessLayer.active_instance.trigger_focus_flash(0.55)
 		LxDarknessLayer.active_instance.add_burst_light(boss.pos, 112.0, 1.45 * (0.62 if fred else 1.0), 0.45)

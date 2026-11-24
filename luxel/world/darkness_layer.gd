@@ -48,6 +48,8 @@ var _phase_flash: float = 0.0
 var _focus_flash: float = 0.0
 var _beacon_lift: float = 0.0
 var _sanctum_cleared: bool = false
+var _boss_phase: int = 0
+var _boss_vig: float = 0.0
 var _burst_lights: Array[Dictionary] = []
 var _bound_events: LxEventBus = null
 
@@ -112,6 +114,8 @@ func reset_zones() -> void:
 	_zone_fades.clear()
 	_burst_lights.clear()
 	_sanctum_cleared = false
+	_boss_phase = 0
+	_boss_vig = 0.0
 
 func trigger_dawn_wave(origin: Vector2, speed: float = 280.0, max_radius: float = 1600.0) -> void:
 	wave_active = true
@@ -148,6 +152,7 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	if _bound_events != Lx.events:
 		_sync_events()
 	_clock += dt
+	_boss_phase = _active_boss_phase(region)
 	_update_biome_tint(dt, region)
 	_tick_burst_lights(dt)
 
@@ -178,13 +183,18 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	var is_dng: bool = region != null and region.is_dungeon
 	var max_dark: float = 0.38 if is_dng else 0.44
 	var eff_dark: float = clampf((darkness_strength + b_off) * 0.58 - _beacon_lift, 0.0, max_dark)
+	var target_vig: float = 0.0
+	if b_id >= 2 and _boss_phase >= 2:
+		var fr_v: float = 0.65 if LxHudFx.flash_reduced() else 1.0
+		target_vig = minf(float(_boss_phase - 1) * 0.03 * fr_v, maxf(0.0, 0.18 - vignette_strength))
+	_boss_vig = move_toward(_boss_vig, target_vig, dt * 0.18) if dt > 0.0 else target_vig
 	_mat.set_shader_parameter("cam_origin", (cam_center - view_sz * 0.5).round())
 	_mat.set_shader_parameter("view_size", view_sz)
 	_mat.set_shader_parameter("darkness_strength", eff_dark)
 	_mat.set_shader_parameter("biome_tint", _current_tint)
 	_mat.set_shader_parameter("biome_id", b_id)
 	_mat.set_shader_parameter("biome_phase", clampf(b_phase, 0.0, 1.0))
-	_mat.set_shader_parameter("vignette_strength", clampf(vignette_strength, 0.0, 0.5))
+	_mat.set_shader_parameter("vignette_strength", clampf(vignette_strength + _boss_vig, 0.0, 0.5))
 	var dpulse: float = 0.0
 	if Lx.state != null and is_instance_valid(Lx.state) and Lx.state.hearts > 0.0 and Lx.state.hearts <= 1.0:
 		var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
@@ -357,6 +367,19 @@ func _update_biome_tint(dt: float, region: LxRegionLoader) -> void:
 				desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.085 * float(lit_b))
 	elif region != null and region.is_dungeon and (_sanctum_cleared or (Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(isl_id))):
 		desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.32 if _sanctum_cleared else 0.18)
+	if isl_id >= 2 and _boss_phase >= 2:
+		var fr_p: float = 0.65 if LxHudFx.flash_reduced() else 1.0
+		if isl_id == 8 and _boss_phase >= 4:
+			desired = desired.lerp(Vector3(0.76, 0.56, 0.64), 0.38 * fr_p)
+		else:
+			var avg: float = (desired.x + desired.y + desired.z) / 3.0
+			var intense := Vector3(
+				clampf((desired.x + (desired.x - avg) * 0.28) * 0.88, 0.38, 0.90),
+				clampf((desired.y + (desired.y - avg) * 0.28) * 0.88, 0.38, 0.90),
+				clampf((desired.z + (desired.z - avg) * 0.28) * 0.88, 0.38, 0.90)
+			)
+			var step: float = float(mini(_boss_phase - 1, 2))
+			desired = desired.lerp(intense, clampf(0.45 * step * fr_p, 0.0, 0.90))
 	if not _tint_ready:
 		_current_tint = desired
 		_from_tint = desired
@@ -371,6 +394,16 @@ func _update_biome_tint(dt: float, region: LxRegionLoader) -> void:
 	if _tint_t < 1.0 and dt > 0.0:
 		_tint_t = minf(1.0, _tint_t + dt / TINT_LERP_S)
 		_current_tint = _from_tint.lerp(_target_tint, _tint_t * _tint_t * (3.0 - 2.0 * _tint_t))
+
+
+func _active_boss_phase(region: LxRegionLoader) -> int:
+	if region == null or not region.has_method("get_enemies"):
+		return 0
+	var max_p: int = 0
+	for e: LxEnemyBrain in region.get_enemies():
+		if e != null and is_instance_valid(e) and e.is_alive() and e.is_boss:
+			max_p = maxi(max_p, clampi(e.phase, 1, 4))
+	return max_p
 
 func _lit_beacon_count(region: LxRegionLoader) -> int:
 	if region == null or region.is_dungeon or not region.has_method("get_interactables"):

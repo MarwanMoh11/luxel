@@ -25,6 +25,7 @@ var _world_ctx: Node = null
 var _charge_spark_cd: float = 0.0
 var _buffer_t: float = 0.0
 var _held: bool = false
+var _vis_clock: float = 0.0
 
 
 func set_world_ctx(world_ctx: Node) -> void: _world_ctx = world_ctx
@@ -306,7 +307,7 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 
 
 func tick(dt: float) -> void:
-	super.tick(dt)
+	super.tick(dt); _vis_clock += dt
 	if beam_vis_t > 0.0:
 		beam_vis_t = maxf(0.0, beam_vis_t - dt)
 	if _buffer_t > 0.0:
@@ -339,7 +340,7 @@ func cancel() -> void:
 	if Lx.input != null: Lx.input.clear_toggle("lx_beam")
 
 func reset() -> void:
-	super.reset(); cancel(); beam_vis_t = 0.0; beam_segments.clear(); beams_fired = 0
+	super.reset(); cancel(); beam_vis_t = 0.0; beam_segments.clear(); beams_fired = 0; _vis_clock = 0.0
 
 
 func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
@@ -353,7 +354,7 @@ func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
 		var r: float = lerpf(14.0, 4.5, prog)
 		var ring_col: Color = LxWick.PAL_CREAM if ready else LxWick.PAL_GOLD
 		canvas.draw_arc(hand_pos, r, -PI * 0.5, -PI * 0.5 + TAU * prog, 20, ring_col, 1.5)
-		var spin: float = float(Time.get_ticks_msec()) * (0.0032 if flash_red else 0.0055)
+		var spin: float = _vis_clock * (3.2 if flash_red else 5.5)
 		var mote_r: float = lerpf(15.0, 3.0, prog)
 		for i: int in range(4):
 			var ang: float = spin + TAU * float(i) * 0.25 + prog * 2.4

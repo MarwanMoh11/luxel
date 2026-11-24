@@ -150,17 +150,18 @@ def build_part_sheet(
     canvas = Image.new("RGBA", (SHEET_W, SHEET_H), BG_SHEET)
     draw = ImageDraw.Draw(canvas)
 
-    range_label = f"ROOMS {start_idx + 1:02d}-{start_idx + 8:02d}"
+    panel_count = min(8, max(0, len(shots) - start_idx))
+    end_idx = start_idx + max(1, panel_count)
+    range_label = f"ROOMS {start_idx + 1:02d}-{end_idx:02d}"
     top_title = header_text or (
-        f"LUXEL TIER-1 DUNGEON SWEEP (PART {part_num}/2: {range_label})  |  2x4 CONTACT SHEET  (640x360 2x nearest)"
+        f"LUXEL DUNGEON SWEEP (PART {part_num}/2: {range_label})  |  2x4 CONTACT SHEET  (640x360 2x nearest)"
     )
     draw.rectangle([0, 0, SHEET_W - 1, SHEET_TOP_H - 1], fill=BG_HEADER)
     draw.text((MARGIN_X, 4), top_title, fill=TEXT_GOLD, font=font_top)
 
-    panel_count = min(8, max(0, len(shots) - start_idx)) if single_sheet else 8
     for slot_i in range(panel_count):
         global_i = start_idx + slot_i
-        shot = shots[global_i] if global_i < len(shots) else dict(DEFAULT_SHOTS[global_i])
+        shot = shots[global_i]
         col = slot_i % COLS
         row = slot_i // COLS
         x0 = MARGIN_X + col * (TILE_W + GAP_X)
@@ -196,10 +197,15 @@ def build_single_sheet(
     return build_part_sheet(sweep_dir, shots, 0, 1, target, header_text=hdr, single_sheet=True)
 
 
-def build_rooms_sweep_sheets(sweep_dir: str) -> Tuple[str, str]:
-    shots = _load_manifest(sweep_dir)
-    part1 = build_part_sheet(sweep_dir, shots, 0, 1, os.path.join(sweep_dir, "rooms_sweep_part1.png"))
-    part2 = build_part_sheet(sweep_dir, shots, 8, 2, os.path.join(sweep_dir, "rooms_sweep_part2.png"))
+def build_rooms_sweep_sheets(sweep_dir: str, set_name: str = "tier1") -> Tuple[str, str]:
+    shots, detected_set = _load_manifest_with_meta(sweep_dir)
+    tier_tag = (detected_set or set_name or "tier1").upper().replace("TIER", "TIER-")
+    p1_end = min(8, len(shots))
+    p2_end = len(shots)
+    hdr1 = f"LUXEL {tier_tag} DUNGEON SWEEP (PART 1/2: ROOMS 01-{p1_end:02d})  |  2x4 CONTACT SHEET  (640x360 2x nearest)"
+    hdr2 = f"LUXEL {tier_tag} DUNGEON SWEEP (PART 2/2: ROOMS 09-{p2_end:02d})  |  2x4 CONTACT SHEET  (640x360 2x nearest)"
+    part1 = build_part_sheet(sweep_dir, shots, 0, 1, os.path.join(sweep_dir, "rooms_sweep_part1.png"), header_text=hdr1)
+    part2 = build_part_sheet(sweep_dir, shots, 8, 2, os.path.join(sweep_dir, "rooms_sweep_part2.png"), header_text=hdr2)
     return part1, part2
 
 

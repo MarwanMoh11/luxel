@@ -144,7 +144,11 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 	cooldown_left = 0.35
 
 	wick.trigger_hitstop(hs)
+	if Lx.hitstop != null and is_instance_valid(Lx.hitstop) and Lx.hitstop.has_method("trigger_slowmo"):
+		Lx.hitstop.trigger_slowmo(0.45, 0.22)
 	wick.trigger_shake(sh)
+	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+		Lx.camera.call("add_kick", Vector2.UP, 3.0)
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):

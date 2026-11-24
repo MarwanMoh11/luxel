@@ -22,6 +22,7 @@ var _water_pts: Array[Vector2] = [] # Isl 2 caustic shimmer anchor tiles
 var _spore_caps: Array[Dictionary] = [] # Isl 3 interactive spore-cap puffs
 var _twist_cd: float = 0.0
 var _was_dashing: bool = false
+var _was_gust_on: bool = false
 var _story_fx: LxDungeonStoryFx = LxDungeonStoryFx.new()
 
 
@@ -47,6 +48,7 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_spore_caps.clear()
 	_twist_cd = 0.0
 	_was_dashing = false
+	_was_gust_on = false
 	_room_idx = _parse_room_index(region_node)
 	var rid_s: String = str(region_node.get("current_region_id")) if (region_node != null and region_node.get("current_region_id") != null) else ""
 	_story_fx.configure(rules, _room_idx, rid_s)
@@ -167,7 +169,12 @@ func tick(dt: float) -> void:
 				var b_span2: float = minf(_bounds.size.x, _bounds.size.y) * 0.85
 				if delta2.length() <= b_span2 and delta2.length_squared() > 16.0:
 					if absf(wrapf(delta2.angle() - b_ang2, -PI, PI)) <= 0.17:
+						var fresh_entry: bool = _rules.beam_buff_t <= 0.05
 						_rules.beam_buff_t = maxf(_rules.beam_buff_t, 1.4)
+						if fresh_entry:
+							w.spawn_ring(w.global_position, 3.0, 16.0, 0.24, LxWick.PAL_ICE, 1.2 if LxHudFx.flash_reduced() else 1.5)
+							if Lx.audio != null:
+								Lx.audio.play_sfx("prop_chime", w.global_position, true)
 		3: # Hollow Oak: floating forest spores + interactive Spore-Caps
 			for sp: Dictionary in _sparks:
 				sp["y"] = float(sp["y"]) - float(sp["spd"]) * 0.45 * dt
@@ -208,6 +215,9 @@ func tick(dt: float) -> void:
 							break
 		6: # Great Kiln: furnace ember gust empowers Flare-Dashing west with +1 Molten Overdrive charge
 			var gust_on: bool = fposmod(_clock, 6.0) >= 4.4
+			if gust_on and not _was_gust_on and Lx.audio != null:
+				Lx.audio.play_sfx("furnace_draw", _center, true)
+			_was_gust_on = gust_on
 			var gust: float = 2.2 if gust_on else 1.0
 			for sp: Dictionary in _sparks:
 				sp["x"] = float(sp["x"]) - float(sp["spd"]) * gust * dt
@@ -216,7 +226,8 @@ func tick(dt: float) -> void:
 					sp["x"] = _bounds.end.x - 14.0
 				if float(sp["y"]) < _bounds.position.y + 12.0:
 					sp["y"] = _bounds.end.y - 14.0
-			if gust_on and dash_started and _twist_cd <= 0.0 and w != null and w.facing.x < -0.25:
+			var dash_dx: float = (w.move_dash.dash_dir.x if w.move_dash != null else w.facing.x) if w != null else 0.0
+			if gust_on and dash_started and _twist_cd <= 0.0 and w != null and dash_dx < -0.25:
 				_twist_cd = 2.2
 				if LxBiomeMechanics.active_instance != null:
 					LxBiomeMechanics.active_instance.molten_charges = mini(3, LxBiomeMechanics.active_instance.molten_charges + 1)
@@ -357,7 +368,17 @@ func _draw() -> void:
 			var b_span: float = minf(_bounds.size.x, _bounds.size.y) * 0.85
 			var b_p1: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle - 0.14) * b_span).round()
 			var b_p2: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle + 0.14) * b_span).round()
-			draw_colored_polygon(PackedVector2Array([b_orig, b_p1, b_p2]), Color(PAL["ice"] as Color, 0.05 if fred else 0.08))
+			draw_colored_polygon(PackedVector2Array([b_orig, b_p1, b_p2]), Color(PAL["ice"] as Color, 0.06 if fred else 0.10))
+			var rail_c := Color(PAL["ice"] as Color, 0.16 if fred else 0.24)
+			draw_line(b_orig, b_p1, rail_c, 1.0)
+			draw_line(b_orig, b_p2, rail_c, 1.0)
+			var b_mid: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle) * b_span).round()
+			var glint_u: float = fposmod(_clock * (0.42 if fred else 0.78), 1.0)
+			var glint_p: Vector2 = b_orig.lerp(b_mid, 0.18 + glint_u * 0.72).round()
+			if _is_floor(glint_p):
+				var ga: float = sin(glint_u * PI) * (0.36 if fred else 0.62)
+				draw_rect(Rect2(glint_p + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), Color(PAL["ice"] as Color, ga))
+				draw_rect(Rect2(glint_p, Vector2.ONE), Color(PAL["cream"] as Color, ga))
 			var a2: float = 0.20 if fred else 0.32
 			for wp: Vector2 in _water_pts:
 				var phase: float = fposmod(_clock * 1.1 + wp.x * 0.03 + wp.y * 0.02, 1.0)

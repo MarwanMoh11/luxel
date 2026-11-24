@@ -22,6 +22,7 @@ var _world_ctx: Node = null
 var _wave_t: float = 0.0
 var _wave_dur: float = 0.36
 var _warn_tick_cd: float = 0.0
+var _vis_clock: float = 0.0
 
 
 func set_world_ctx(world_ctx: Node) -> void:
@@ -96,6 +97,12 @@ func press() -> bool:
 	_warn_tick_cd = 0.0
 
 	wick.emit_sfx("lens_reveal", wick.global_position, false)
+	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+		Lx.camera.call("add_kick", Vector2.UP, 1.4)
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+			(amb as Object).call("_gust_particles", pulse_origin, pulse_radius, 72.0)
 	wick.spawn_ring(wick.global_position, 4.0, pulse_radius, _wave_dur, LxWick.PAL_ICE, 1.8)
 	wick.spawn_ring(wick.global_position, 2.0, pulse_radius * 0.72, 0.28, LxWick.PAL_SKY, 1.2)
 	wick.spawn_sparks(wick.global_position, Vector2.UP, 10, LxWick.PAL_ICE, 30.0, 95.0, 0.28)
@@ -108,6 +115,7 @@ func press() -> bool:
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	_vis_clock += dt
 	if _wave_t > 0.0:
 		_wave_t = maxf(0.0, _wave_t - dt)
 	if pulse_left > 0.0:
@@ -242,9 +250,8 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 		return
 
 	var flash_red: bool = LxHudFx.flash_reduced()
-	var now_ms: float = float(Time.get_ticks_msec())
-	var rot: float = now_ms * 0.00035
-	var flicker_coral: bool = flash_red or (int(floorf(now_ms * 0.014)) % 2 == 0)
+	var rot: float = _vis_clock * 0.35
+	var flicker_coral: bool = flash_red or (int(floorf(_vis_clock * 14.0)) % 2 == 0)
 
 	# 1. Expanding reveal wave on cast
 	if _wave_t > 0.0:
@@ -468,3 +475,4 @@ func reset() -> void:
 	anchor_radius = 0.0
 	_wave_t = 0.0
 	_warn_tick_cd = 0.0
+	_vis_clock = 0.0

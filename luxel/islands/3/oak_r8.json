@@ -259,6 +259,18 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        368,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
     }
   ],
   "is_2x2_room": true

@@ -89,8 +89,9 @@ func on_shockwave_cleared() -> void:
 
 
 func stop_glide(emit_land: bool = true) -> void:
-	if emit_land and gliding and wick != null and not wick.dead and glide_dist_traveled >= 36.0:
+	if emit_land and gliding and wick != null and not wick.dead and glide_dist_traveled >= 14.0:
 		var isl_l: int = Lx.state.island_id if Lx.state != null else 1
+		wick.spawn_ring(wick.global_position, 2.0, 8.0, 0.14, LxWick.PAL_ICE, 1.0)
 		wick.spawn_sparks(wick.global_position, -glide_dir, 2, LxWick.PAL_ICE, 12.0, 32.0, 0.18)
 		wick.spawn_sparks(wick.global_position, -glide_dir, 2, LxBiomePalette.col(isl_l, "glow"), 14.0, 36.0, 0.20)
 		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):

@@ -17,7 +17,7 @@ const FLARE_COMMIT_TIME: float = 0.30
 const FLARE_START_R: float = 10.0
 const FLARE_MAX_R: float = 70.0
 const FLARE_BAND: float = 9.5
-const ROAR_TIME: float = 0.58
+const ROAR_TIME: float = 0.66
 
 var flare_progress: float = 0.0
 var _roaring: bool = false
@@ -77,7 +77,7 @@ func _enter_phase(next_phase: int) -> void:
 	state_timer = ROAR_TIME
 	if Lx.events != null:
 		Lx.events.boss_phase_changed.emit(boss_id, phase)
-		Lx.events.shake_requested.emit(0.30)
+		Lx.events.shake_requested.emit(0.34)
 	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
 	_emit_sfx("hollow_wick_phase")
 
@@ -309,10 +309,30 @@ func _draw_extra(off: Vector2) -> void:
 			if is_card:
 				draw_circle((off + rd * r_out).round(), 1.2, PAL["cream"] as Color)
 	elif _roaring:
+		var fred_r: bool = LxHudFx.flash_reduced()
 		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
-		var rr: float = body_radius + 10.0 + rp * 16.0
-		draw_arc(off, rr + 2.5, 0.0, TAU, 26, PAL["blue"] as Color, 1.8)
-		draw_arc(off, rr, 0.0, TAU, 26, PAL["ice"] as Color, 2.2)
+		var rr: float = body_radius + 10.0 + rp * 18.0
+		var rot: float = anim_t * (1.2 if fred_r else 3.4)
+		var c_r: Vector2 = off.round()
+		draw_arc(c_r, rr + 2.5, 0.0, TAU, 26, PAL["blue"] as Color, 1.6)
+		draw_arc(c_r, rr, 0.0, TAU, 26, PAL["ice"] as Color, 1.8)
+		for ci: int in range(2):
+			var base_a: float = rot + float(ci) * PI
+			var cr: float = rr * 0.78 + float(ci) * 3.5
+			draw_arc(c_r, cr + 1.4, base_a, base_a + PI * 0.72, 14, PAL["void"] as Color, 2.4)
+			draw_arc(c_r, cr, base_a, base_a + PI * 0.72, 14, (PAL["sky"] if ci == 0 else PAL["ice"]) as Color, 2.0)
+			draw_arc(c_r, maxf(3.0, cr - 1.6), base_a + 0.14, base_a + PI * 0.58, 10, PAL["cream"] as Color, 1.1)
+		var sh_in: float = body_radius + 5.0 + rp * 12.0
+		var sh_out: float = sh_in + lerpf(7.0, 13.0, rp)
+		for si: int in range(6):
+			var sa: float = -rot * 0.6 + float(si) * (TAU / 6.0)
+			var sd: Vector2 = Vector2.from_angle(sa)
+			var p0: Vector2 = (c_r + sd * sh_in).round()
+			var p1: Vector2 = (c_r + sd * sh_out).round()
+			draw_line(p0, p1, PAL["void"] as Color, 2.4)
+			draw_line(p0, p1, (PAL["ice"] if si % 2 == 0 else PAL["sky"]) as Color, 1.4)
+			if not fred_r or si % 2 == 0:
+				draw_circle(p1, 1.1, PAL["cream"] as Color)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

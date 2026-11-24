@@ -73,6 +73,8 @@ func _build_island_setpieces(region: LxRegionLoader) -> void:
 			_add_fan(Vector2(296, 200), Vector2.RIGHT, Vector2.RIGHT, false, "switch_eye_2_1")
 			_add_guide(PackedVector2Array([Vector2(264, 200), Vector2(296, 200)]), 0, "apricot", "gold", "cream", "switch_eye_2_1")
 			_add_guide(PackedVector2Array([Vector2(296, 200), Vector2(376, 200)]), 0, "sky", "ice", "cream", "switch_eye_2_1")
+		"2:lighthouse_r3":
+			_add_fan(Vector2(200, 120), Vector2.RIGHT, (Vector2(328, 56) - Vector2(200, 120)).normalized(), true, "lh_r3_cleared")
 		"2:lighthouse_r5":
 			_add_fan(Vector2(120, 136), Vector2.RIGHT, Vector2.RIGHT, true, "lh_r5_prism_solved")
 			_add_fan(Vector2(136, 184), Vector2.RIGHT, (Vector2(264, 88) - Vector2(136, 184)).normalized(), false, "lh_r5_bridge_open")
@@ -93,14 +95,16 @@ func _build_island_setpieces(region: LxRegionLoader) -> void:
 			_add_ring(Vector2(464, 760), 6, 12.0, Vector2.RIGHT, "bramble_3_shortcut_east")
 			_add_ring(Vector2(224, 488), 6, 12.0, Vector2.UP, "bramble_3_shortcut_canopy")
 		"4:conservatory_r5":
-			_add_glide(Vector2(124, 112), Vector2(196, 112), true, Vector2(152, 112), Vector2(168, 124), true, Vector2(160, 112))
-			_add_glide(Vector2(284, 112), Vector2(356, 112), true, Vector2(312, 112), Vector2(328, 124), true, Vector2(320, 112))
+			_add_glide(Vector2(124, 112), Vector2(196, 112), true, Vector2(152, 104), Vector2(168, 124), true, Vector2(160, 112))
+			_add_glide(Vector2(284, 112), Vector2(356, 112), true, Vector2(312, 104), Vector2(328, 124), true, Vector2(320, 112))
 			_add_glide(Vector2(124, 208), Vector2(180, 208))
 			_add_glide(Vector2(252, 208), Vector2(356, 208))
 		"4:conservatory_r2", "4:overworld":
 			var centers: PackedVector2Array = PackedVector2Array()
 			var bridges: Array[Rect2] = _collect_bridge_rects(region)
 			_scan_lagoon_gaps(region, true, centers, bridges); _scan_lagoon_gaps(region, false, centers, bridges)
+		"5:orrery_r2":
+			_add_guide(PackedVector2Array([Vector2(176, 108), Vector2(176, 64)]), 4, "apricot", "gold", "cream", "cracked_o5_r2")
 		"5:orrery_r5":
 			_add_ring(Vector2(112, 88), 1, 13.0, Vector2.RIGHT, "shrine_lens")
 			_add_ring(Vector2(248, 120), 2, 78.0, Vector2.RIGHT, "shrine_lens")
@@ -315,12 +319,16 @@ func _draw_guide(g: Dictionary, st: float, fred: bool, ember_full: bool) -> void
 		var lit: bool = flag_on if bool(g["inv"]) else not flag_on
 		_draw_beaded_line(pts[0], pts[1], _c("gold" if (lit and _island_id == 8) else ca_k, (0.76 if lit else 0.44) * asc), _c("cream" if lit else cb_k, (0.90 if lit else 0.56) * asc), 10.0, st * (22.0 if fred else 36.0), true)
 	elif kind == 4:
-		var c_m: Color = _c("cream" if flag_on else ca_k, (0.92 if flag_on else 0.65) * asc); var off: float = fposmod(st * (18.0 if fred else 30.0), 12.0)
+		if flag_on and not bool(g["inv"]): return
+		var c_bg: Color = _c("night", 0.55)
+		var c_m: Color = _c("cream" if flag_on else ca_k, (0.92 if flag_on else 0.78) * asc); var off: float = fposmod(st * (18.0 if fred else 30.0), 12.0)
 		for i: int in range(pts.size() - 1):
 			var sa: Vector2 = pts[i]; var sb: Vector2 = pts[i + 1]; var slen: float = maxf(1.0, sa.distance_to(sb))
 			var dir: Vector2 = (sb - sa) / slen; var perp := Vector2(-dir.y, dir.x); var d: float = off
 			while d < slen - 3.0:
-				var p: Vector2 = (sa + dir * d).round(); draw_line(p - dir * 2.0 + perp * 3.0, p, c_m, 1.0, false); draw_line(p - dir * 2.0 - perp * 3.0, p, c_m, 1.0, false); d += 12.0
+				var p: Vector2 = (sa + dir * d).round()
+				if not bool(g["inv"]): draw_line(p - dir * 2.0 + perp * 3.0 + Vector2(0.0, 1.0), p + Vector2(0.0, 1.0), c_bg, 1.0, false); draw_line(p - dir * 2.0 - perp * 3.0 + Vector2(0.0, 1.0), p + Vector2(0.0, 1.0), c_bg, 1.0, false)
+				draw_line(p - dir * 2.0 + perp * 3.0, p, c_m, 1.0, false); draw_line(p - dir * 2.0 - perp * 3.0, p, c_m, 1.0, false); d += 12.0
 	elif kind == 5:
 		var c_line: Color = _c("gold" if flag_on else ca_k, (0.78 if flag_on else 0.50) * asc); var c_pip: Color = _c("cream" if flag_on else chi_k, (0.95 if flag_on else 0.72) * asc)
 		var tlen: float = float(g["len"]); var cum: PackedFloat32Array = g["cum"] as PackedFloat32Array
@@ -339,7 +347,8 @@ func _draw_beaded_line(a: Vector2, b: Vector2, col_dim: Color, col_hi: Color, sp
 	while d < slen - 4.0:
 		var p: Vector2 = (a + dir * d).round()
 		draw_rect(Rect2(p + Vector2(0.0, 1.0), Vector2(2.0, 1.0)), c_bg)
-		draw_rect(Rect2(p, Vector2(2.0, 1.0)), col_hi if (idx % 3 == 0) else col_dim); d += spacing; idx += 1
+		var hi_mod: int = 2 if (_region != null and _is_wet(_region.tile_at(p))) else 3
+		draw_rect(Rect2(p, Vector2(2.0, 1.0)), col_hi if (idx % hi_mod == 0) else col_dim); d += spacing; idx += 1
 
 func _draw_glide(gs: Dictionary, st: float, fred: bool) -> void:
 	var a: Vector2 = gs["a"] as Vector2; var b: Vector2 = gs["b"] as Vector2; var dir: Vector2 = gs["dir"] as Vector2; var perp: Vector2 = gs["perp"] as Vector2; var gl: float = float(gs["len"])
@@ -397,10 +406,10 @@ func _draw_ring(r: Dictionary, st: float, step: int, fred: bool, ember_full: boo
 			var c_out: Color = _c("gold" if ember_full else ("apricot" if claimed else "coral"), (0.88 if ember_full else (0.62 if claimed else 0.40)) * asc)
 			_draw_dotted_ring(p, 12.0, c_in, 16, st * 0.5); draw_line(p + Vector2(-4.0, 0.0), p + Vector2(4.0, 0.0), c_in, 1.0, false); draw_line(p + Vector2(0.0, -4.0), p + Vector2(0.0, 4.0), c_in, 1.0, false)
 			var rot: float = -st * (0.12 if fred else 0.24)
-			for k: int in range(16):
-				var a0: float = rot + float(k) * (TAU / 16.0)
-				draw_arc(p, rad, a0, a0 + 0.18, 4, c_out, 1.0)
-				if ember_full and (k & 3) == 0: draw_rect(Rect2((p + Vector2.from_angle(a0 + 0.09) * rad).round() - Vector2.ONE, Vector2(2.0, 2.0)), _c("cream", 0.92 * asc))
+			for k: int in range(24):
+				var a0: float = rot + float(k) * (TAU / 24.0)
+				draw_arc(p, rad, a0, a0 + 0.09, 4, c_out, 1.0)
+				if ember_full and (k % 6) == 0: draw_rect(Rect2((p + Vector2.from_angle(a0 + 0.045) * rad).round() - Vector2.ONE, Vector2(2.0, 2.0)), _c("cream", 0.92 * asc))
 		4: # spire_r5 return portal moon-arc
 			var ang: float = st * (0.6 if fred else 1.2)
 			draw_arc(p, rad, ang, ang + PI * 0.85, 10, _c("cream" if _is_flag_active(flag) else "sky", 0.72 * asc), 1.0)
@@ -475,6 +484,7 @@ func _is_flag_active(key: String) -> bool:
 	if it is LxSwitchEye: return (it as LxSwitchEye).activated
 	if it is LxBrazier: return (it as LxBrazier).lit
 	if it is LxObsidianSeal: return (it as LxObsidianSeal).shattered
+	if it is LxCrackedWall: return (it as LxCrackedWall).broken
 	if it is LxBramble: return (it as LxBramble).burned
 	if it is LxBluePortal: return (it as LxBluePortal).powered
 	if it is LxShrine: return (it as LxShrine).claimed

@@ -184,7 +184,8 @@
           16,
           48
         ],
-        "clear_zone": "spire_r8"
+        "clear_zone": "spire_r8",
+        "sets_flag": "spire_r8_cleared"
       }
     }
   ],
@@ -309,6 +310,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.9
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        168,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "moon_dial_floor",
+      "pos": [
+        216,
+        120
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
     }
   ],
   "is_2x2_room": true

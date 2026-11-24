@@ -110,7 +110,8 @@ func _collect_portal_link(region: LxRegionLoader, src: LxInteractable, seen: Dic
 func _add_conduit(region: LxRegionLoader, src: LxInteractable, dst: LxInteractable, is_blue: bool, is_portal: bool) -> void:
 	var c := Conduit.new()
 	c.src = src; c.dst = dst; c.is_blue = is_blue; c.is_portal = is_portal
-	var allow_bridge: bool = region.current_island_id > 1 and (is_portal or (is_blue and region.is_dungeon))
+	var is_bridge_target: bool = (dst is LxDoor and (dst as LxDoor).door_type == "bridge_platform") or dst.kind == "bridge_platform" or dst.kind == "bridge"
+	var allow_bridge: bool = region.current_island_id > 1 and (is_portal or (region.is_dungeon and (is_blue or is_bridge_target)))
 	_build_masked_path(region, src.pos, dst.pos, c, allow_bridge)
 	if c.runs.is_empty() and c.void_runs.is_empty(): return
 	c.powered = _is_source_powered(src, dst, is_portal)
@@ -260,13 +261,16 @@ func _draw_void_bridge(c: Conduit, lit: bool, anim_step: int, reduced: bool) -> 
 			var pp: Vector2 = vr.a.lerp(vr.b, d_p / slen).round()
 			var vc: Color
 			if lit:
-				vc = (PAL["ice"] if (p_idx + anim_step) % 2 == 0 else PAL["sky"]) as Color
+				if c.is_blue or c.is_portal:
+					vc = (PAL["ice"] if (p_idx + anim_step) % 2 == 0 else PAL["sky"]) as Color
+				else:
+					vc = (PAL["cream"] if (p_idx + anim_step) % 2 == 0 else PAL["gold"]) as Color
 			elif c.is_portal and (p_idx % 3 == 1) and not reduced:
 				vc = PAL["ice"] as Color
 			elif c.is_blue or c.is_portal:
 				vc = (PAL["ice"] if p_idx % 3 == 0 else PAL["sky"]) as Color
 			else:
-				vc = (PAL["sky"] if p_idx % 2 == 0 else PAL["deep"]) as Color
+				vc = (PAL["gold"] if p_idx % 2 == 0 else PAL["apricot"]) as Color
 			draw_rect(Rect2(pp + sh_off, bead_sz), c_sh)
 			draw_rect(Rect2(pp, bead_sz), vc)
 			d_p += step_px
