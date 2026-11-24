@@ -38,9 +38,12 @@ class OpticalChevron:
 	var is_relay: bool = false
 	var is_blue: bool = false
 	var phase: int = 0
+	var target: LxInteractable = null
+	var solved: bool = false
 
 var _conduits: Array[Conduit] = []
 var _chevrons: Array[OpticalChevron] = []
+var _island_id: int = 1
 var _clock: float = 0.0
 var _last_step: int = -1
 
@@ -49,13 +52,14 @@ func _ready() -> void:
 	z_index = -6
 
 func clear() -> void:
-	_conduits.clear(); _chevrons.clear(); _clock = 0.0; _last_step = -1
+	_conduits.clear(); _chevrons.clear(); _island_id = 1; _clock = 0.0; _last_step = -1
 	queue_redraw()
 
 func rebuild(region: LxRegionLoader) -> void:
-	_conduits.clear(); _chevrons.clear(); _clock = 0.0; _last_step = -1
+	_conduits.clear(); _chevrons.clear(); _island_id = 1; _clock = 0.0; _last_step = -1
 	if region == null:
 		queue_redraw(); return
+	_island_id = region.current_island_id
 	var seen: Dictionary = {}
 	var by_pair: Dictionary = {}
 	for it: LxInteractable in region.get_interactables():
@@ -196,6 +200,9 @@ func _is_source_powered(src: LxInteractable, dst: LxInteractable, is_portal: boo
 func _is_target_opened(dst: LxInteractable) -> bool:
 	return dst is LxDoor and is_instance_valid(dst) and (dst as LxDoor).opened
 
+func _is_chevron_solved(ch: OpticalChevron) -> bool:
+	return ch.target != null and _is_source_powered(ch.target, null, ch.target is LxBluePortal)
+
 func tick(dt: float) -> void:
 	if _conduits.is_empty() and _chevrons.is_empty(): return
 	_clock += dt
@@ -206,9 +213,16 @@ func tick(dt: float) -> void:
 		var o_now: bool = _is_target_opened(c.dst)
 		if p_now != c.powered or o_now != c.opened:
 			c.powered = p_now; c.opened = o_now; changed = true
-		if p_now or o_now: active_now = true
+		if (p_now and not (o_now and _island_id > 1)) or (o_now and _island_id <= 1):
+			active_now = true
+	var any_unsolved_chev: bool = false
+	for ch: OpticalChevron in _chevrons:
+		var s_now: bool = _is_chevron_solved(ch)
+		if s_now != ch.solved:
+			ch.solved = s_now; changed = true
+		if not s_now: any_unsolved_chev = true
 	var hz: float = PULSE_HZ * (0.5 if LxHudFx.flash_reduced() else 1.0)
-	var has_anim: bool = active_now or not _chevrons.is_empty()
+	var has_anim: bool = active_now or any_unsolved_chev
 	var step: int = int(floorf(_clock * hz))
 	if changed or (has_anim and step != _last_step):
 		_last_step = step; queue_redraw()
@@ -225,8 +239,9 @@ func _draw() -> void:
 	var stepped_t: float = floorf(_clock * hz) / hz
 	for c: Conduit in _conduits:
 		var lit: bool = c.powered or c.opened
+		var settled: bool = _island_id > 1 and c.opened
 		var inlay_col: Color = inlay_blue if c.is_blue else inlay_gold
-		var chan_col: Color = Color((PAL["sky"] if c.is_blue else PAL["apricot"]) as Color, 0.55)
+		var chan_col: Color = Color((PAL["sky"] if c.is_blue else PAL["apricot"]) as Color, 0.38 if settled else 0.55)
 		for r: FloorRun in c.runs:
 			draw_line(r.a, r.b, groove_col, 2.0, false)
 			if lit:
@@ -237,8 +252,8 @@ func _draw() -> void:
 				while d_in < slen - 2.0:
 					draw_rect(Rect2(r.a.lerp(r.b, d_in / slen).round(), Vector2.ONE), inlay_col)
 					d_in += INLAY_STEP
-		_draw_void_bridge(c, lit, anim_step, reduced)
-		if not lit: continue
+		_draw_void_bridge(c, lit, anim_step, reduced, settled)
+		if not lit or settled: continue
 		var bead_d: float = fposmod(stepped_t * speed, maxf(1.0, c.total_len) + PULSE_PAD)
 		var bead_outer: Color = (PAL["ice"] if c.is_blue else PAL["gold"]) as Color
 		var bead_core: Color = PAL["cream"] as Color
@@ -246,10 +261,11 @@ func _draw() -> void:
 			_draw_pulse_bead_on_runs(c.void_runs, bead_d, bead_outer, bead_core)
 	_draw_optical_chevrons(anim_step, reduced)
 
-func _draw_void_bridge(c: Conduit, lit: bool, anim_step: int, reduced: bool) -> void:
+func _draw_void_bridge(c: Conduit, lit: bool, anim_step: int, reduced: bool, settled: bool) -> void:
 	if c.void_runs.is_empty(): return
-	var step_px: float = 5.0 if lit else VOID_PIP_STEP
-	var c_sh: Color = Color(PAL["night"] as Color, 0.85)
+	var step_px: float = 5.0 if (lit and not settled) else VOID_PIP_STEP
+	var is_gold_pit: bool = _island_id > 1 and not c.is_blue and not c.is_portal and not settled
+	var c_sh: Color = Color((PAL["void"] if is_gold_pit else PAL["night"]) as Color, 0.92 if is_gold_pit else 0.85)
 	var bead_sz := Vector2(2.0, 1.0)
 	var sh_off := Vector2(0.0, 1.0)
 	for vr: FloorRun in c.void_runs:
@@ -260,7 +276,9 @@ func _draw_void_bridge(c: Conduit, lit: bool, anim_step: int, reduced: bool) -> 
 		while d_p < slen - 1.0:
 			var pp: Vector2 = vr.a.lerp(vr.b, d_p / slen).round()
 			var vc: Color
-			if lit:
+			if settled:
+				vc = Color((PAL["sky"] if (c.is_blue or c.is_portal) else PAL["apricot"]) as Color, 0.44)
+			elif lit:
 				if c.is_blue or c.is_portal:
 					vc = (PAL["ice"] if (p_idx + anim_step) % 2 == 0 else PAL["sky"]) as Color
 				else:
@@ -269,9 +287,14 @@ func _draw_void_bridge(c: Conduit, lit: bool, anim_step: int, reduced: bool) -> 
 				vc = PAL["ice"] as Color
 			elif c.is_blue or c.is_portal:
 				vc = (PAL["ice"] if p_idx % 3 == 0 else PAL["sky"]) as Color
+			elif is_gold_pit:
+				vc = (PAL["cream"] if (p_idx % 3 == 0 and not reduced) else PAL["gold"]) as Color
 			else:
 				vc = (PAL["gold"] if p_idx % 2 == 0 else PAL["apricot"]) as Color
-			draw_rect(Rect2(pp + sh_off, bead_sz), c_sh)
+			if is_gold_pit:
+				draw_rect(Rect2(pp - Vector2.ONE, Vector2(4.0, 3.0)), c_sh)
+			else:
+				draw_rect(Rect2(pp + sh_off, bead_sz), c_sh)
 			draw_rect(Rect2(pp, bead_sz), vc)
 			d_p += step_px
 			p_idx += 1
@@ -320,7 +343,7 @@ func _collect_optical_chevrons(region: LxRegionLoader) -> void:
 			var best_tgt: LxInteractable = primary_target[it] as LxInteractable
 			p_axis = (best_tgt.pos - it.pos).normalized()
 			var p_dists: Array[float] = [16.0, 28.0]
-			_emit_chevron_pair(region, it.pos, p_axis, p_dists, false, is_blue_t, occ_tiles)
+			_emit_chevron_pair(region, it.pos, p_axis, p_dists, false, is_blue_t, occ_tiles, best_tgt)
 		if region.current_island_id <= 1: continue
 		var best_m: LxInteractable = null
 		var best_md: float = MAX_OPTICAL_DIST + 0.01
@@ -342,9 +365,10 @@ func _collect_optical_chevrons(region: LxRegionLoader) -> void:
 		var r_dists: Array[float] = [16.0, 28.0]
 		if best_md >= 80.0:
 			r_dists.append(best_md * 0.5)
-		_emit_chevron_pair(region, it.pos, m_vec.normalized(), r_dists, true, is_blue_t, occ_tiles)
+		var relay_tgt: LxInteractable = primary_target.get(best_m, primary_target.get(it, null)) as LxInteractable
+		_emit_chevron_pair(region, it.pos, m_vec.normalized(), r_dists, true, is_blue_t, occ_tiles, relay_tgt)
 
-func _emit_chevron_pair(region: LxRegionLoader, origin: Vector2, axis: Vector2, dists: Array[float], is_relay: bool, is_blue: bool, occ_tiles: Dictionary) -> void:
+func _emit_chevron_pair(region: LxRegionLoader, origin: Vector2, axis: Vector2, dists: Array[float], is_relay: bool, is_blue: bool, occ_tiles: Dictionary, target_it: LxInteractable = null) -> void:
 	var sdir: Vector2i = _snap_dir8(axis)
 	for di: int in range(dists.size()):
 		var pt: Vector2 = (origin + axis * dists[di]).round()
@@ -355,6 +379,7 @@ func _emit_chevron_pair(region: LxRegionLoader, origin: Vector2, axis: Vector2, 
 		if occ_tiles.has(tk): continue
 		var ch := OpticalChevron.new()
 		ch.pos = pt; ch.dir = sdir; ch.is_relay = is_relay; ch.is_blue = is_blue; ch.phase = di
+		ch.target = target_it; ch.solved = _is_chevron_solved(ch)
 		_chevrons.append(ch)
 
 func _is_walkable_floor(region: LxRegionLoader, pt: Vector2) -> bool:
@@ -386,8 +411,27 @@ func _draw_optical_chevrons(anim_step: int, reduced: bool) -> void:
 		var p: Vector2 = ch.pos
 		var dx: float = float(ch.dir.x)
 		var dy: float = float(ch.dir.y)
+		var c_tail: Color = c_deep if (ch.is_relay or ch.is_blue) else c_dusk
+		if ch.solved:
+			draw_rect(Rect2(p, Vector2.ONE), c_groove)
+			if ch.dir.x == 0 or ch.dir.y == 0:
+				var px_s: float = -dy; var py_s: float = dx
+				draw_rect(Rect2(p + Vector2(dx, dy), Vector2.ONE), c_tail)
+				draw_rect(Rect2(p + Vector2(-dx + px_s, -dy + py_s), Vector2.ONE), c_tail)
+				draw_rect(Rect2(p + Vector2(-dx - px_s, -dy - py_s), Vector2.ONE), c_tail)
+			else:
+				draw_rect(Rect2(p + Vector2(dx, dy), Vector2.ONE), c_tail)
+				draw_rect(Rect2(p + Vector2(-dx, dy), Vector2.ONE), c_tail)
+				draw_rect(Rect2(p + Vector2(dx, -dy), Vector2.ONE), c_tail)
+			continue
+		var k: int = posmod(anim_step + ch.phase, 4)
+		var v := Vector2(dx, dy)
+		if _island_id > 1:
+			var c_hi: Color = (c_cream if (k == 2 and not reduced) else c_ice) if (ch.is_blue or ch.is_relay) else (c_cream if (k == 2 and not reduced) else c_gold)
+			var c_mid: Color = (c_ice if k == 1 else c_sky) if (ch.is_blue or ch.is_relay) else (c_gold if k == 1 else c_apricot)
+			LxPixelGlyphs.draw_dir_chevron(self, (p + v).round(), v, c_hi, c_mid)
+			continue
 		var c_head: Color = c_sky if ch.is_relay else c_gold
-		var c_tail: Color = c_deep if ch.is_relay else c_dusk
 		draw_rect(Rect2(p, Vector2.ONE), c_groove)
 		if ch.dir.x == 0 or ch.dir.y == 0:
 			var px: float = -dy
@@ -403,8 +447,6 @@ func _draw_optical_chevrons(anim_step: int, reduced: bool) -> void:
 			draw_rect(Rect2(p + Vector2(0.0, dy), Vector2.ONE), c_head)
 			draw_rect(Rect2(p + Vector2(-dx, dy), Vector2.ONE), c_tail)
 			draw_rect(Rect2(p + Vector2(dx, -dy), Vector2.ONE), c_tail)
-		var k: int = posmod(anim_step + ch.phase, 4)
-		var v := Vector2(dx, dy)
 		if ch.is_blue or ch.is_relay:
 			if k == 0: draw_rect(Rect2(p - v * 2.0, Vector2.ONE), c_gold)
 			elif k == 1: draw_rect(Rect2(p, Vector2.ONE), c_sky)

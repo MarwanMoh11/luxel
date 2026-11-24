@@ -365,6 +365,10 @@ func _tick_island6(dt: float) -> void:
 				v["ember_cd"] = 2.0
 				if w.move_sunflare != null and w.move_sunflare.unlocked:
 					w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 18.0)
+					if Lx.state != null:
+						var vc: int = int(Lx.state.story_flags.get("vent_dash_mastery", 0)) + 1
+						Lx.state.story_flags["vent_dash_mastery"] = vc
+						if vc >= 2: Lx.state.story_flags["tut_vent_dashed"] = true
 				w.spawn_ring(w.global_position, 3.0, 18.0, 0.24, LxWick.PAL_GOLD, 1.4)
 				w.emit_sfx("ember_pickup", w.global_position, false)
 				if _mechanics != null and is_instance_valid(_mechanics): _mechanics.grant_molten_overdrive(3)

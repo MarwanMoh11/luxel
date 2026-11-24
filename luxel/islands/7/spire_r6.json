@@ -61,7 +61,8 @@
   "enemies": [
     {
       "id": "mini_moonshade_warden",
-      "kind": "moonshade_warden",
+      "kind": "spire_warden",
+      "boss_id": "moonshade_warden",
       "variant": "moonshade_warden",
       "is_boss": true,
       "max_hp": 7.5,

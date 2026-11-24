@@ -1,6 +1,6 @@
 class_name LxEnemyFactory
 extends RefCounted
-## Factory instantiating all 20 Luxel 1.0 enemy kinds + all 15 mini-bosses & island bosses by kind ID.
+## Factory instantiating all 20 Luxel 1.0 enemy kinds + all 16 mini-bosses & island bosses by kind ID.
 
 const KNOWN_KINDS: PackedStringArray = [
 	"warden",
@@ -37,6 +37,7 @@ const KNOWN_KINDS: PackedStringArray = [
 	"astronomer",
 	"forge_warden",
 	"kilnmother",
+	"spire_warden",
 	"hollow_wick_boss",
 	"night_harbinger",
 	"the_hush",
@@ -77,6 +78,7 @@ const KIND_SCRIPTS: Dictionary = {
 	"astronomer": "res://luxel/bosses/astronomer/brain.gd",
 	"forge_warden": "res://luxel/bosses/forge_warden/brain.gd",
 	"kilnmother": "res://luxel/bosses/kilnmother/brain.gd",
+	"spire_warden": "res://luxel/bosses/spire_warden/brain.gd",
 	"hollow_wick_boss": "res://luxel/bosses/hollow_wick_boss/brain.gd",
 	"night_harbinger": "res://luxel/bosses/night_harbinger/brain.gd",
 	"the_hush": "res://luxel/bosses/the_hush/brain.gd",
@@ -249,6 +251,10 @@ static func default_data(kind: String) -> LxEnemyData:
 			return _make_data("forge_warden", 8.5, 8.5, 26.0, 150.0, 132.0, 0.64, 1.45, 0.0, 18, 1.5, true)
 		"kilnmother":
 			return _make_data("kilnmother", 13.5, 9.5, 26.0, 160.0, 140.0, 0.66, 1.45, 0.0, 36, 1.5, true)
+		"spire_warden":
+			var sw: LxEnemyData = _make_data("spire_warden", 7.5, 6.5, 40.0, 175.0, 142.0, 0.48, 1.12, 2.2, 14, 1.0, true)
+			sw.shield_gone_time = 4.6
+			return sw
 		"hollow_wick_boss":
 			return _make_data("hollow_wick_boss", 13.0, 5.5, 56.0, 185.0, 152.0, 0.45, 1.05, 0.0, 40, 1.0, true)
 		"night_harbinger":

@@ -98,6 +98,10 @@ func stop_glide(emit_land: bool = true) -> void:
 			var wdk: int = LxGroundDecals.Kind.RIPPLE if isl_l in [2, 4] else (LxGroundDecals.Kind.BLOSSOM if isl_l == 3 else (LxGroundDecals.Kind.PRISM_STAR if isl_l in [5, 7] else LxGroundDecals.Kind.FOOTSTEP))
 			LxGroundDecals.active_instance.add_decal(wdk, wick.global_position + Vector2(0.0, 4.0), 9.0, 3.2)
 		wick.emit_sfx("feather_flutter", wick.global_position, false)
+	if emit_land and gliding and wick != null and not wick.dead and glide_dist_traveled >= 48.0 and Lx.state != null:
+		var on_void: bool = Lx.world != null and Lx.world.has_method("is_lethal_void_at") and bool(Lx.world.call("is_lethal_void_at", wick.global_position))
+		if not on_void:
+			Lx.state.story_flags["tut_wings_glided"] = true
 	gliding = false
 	glide_time_left = 0.0
 	glide_dist_left = 0.0
