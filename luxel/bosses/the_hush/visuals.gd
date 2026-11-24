@@ -215,3 +215,27 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 			var ba: float = float(bi) * (TAU / 8.0) + rp * 0.5
 			var bp_r: Vector2 = (off + Vector2.from_angle(ba) * (r1 + 3.0)).round()
 			b.draw_rect(Rect2(bp_r, Vector2(2.0, 2.0)), LxBiomePalette.col(bi + 1, "glow"))
+
+	# Island 8 Upgraded Crown FX: P2 E/W fissures, P3 center phantom ring, P4 36px dark edge band, & Beauty Toll Sparks!
+	var band_px: float = float(b.get("dark_band_px"))
+	if band_px > 0.5 and b.world_ctx != null and is_instance_valid(b.world_ctx) and b.world_ctx.has_method("get_bounds"):
+		var ar: Rect2 = b.world_ctx.call("get_bounds") as Rect2
+		if ar.has_area():
+			var loc_p: Vector2 = (ar.position - b.pos + off).round()
+			var dc := Color(pal["void"] as Color, 0.45 if fred else 0.62)
+			b.draw_rect(Rect2(loc_p.x, loc_p.y, ar.size.x, band_px), dc, true)
+			b.draw_rect(Rect2(loc_p.x, loc_p.y + ar.size.y - band_px, ar.size.x, band_px), dc, true)
+			b.draw_rect(Rect2(loc_p.x, loc_p.y + band_px, band_px, ar.size.y - band_px * 2.0), dc, true)
+			b.draw_rect(Rect2(loc_p.x + ar.size.x - band_px, loc_p.y + band_px, band_px, ar.size.y - band_px * 2.0), dc, true)
+	if phase == 3 and active_move == 3 and b.state in [LxEnemyBrain.State.TELL, LxEnemyBrain.State.COMMIT]:
+		var ph_c: Vector2 = (b.home - b.pos + off).round()
+		b.draw_rect(Rect2(ph_c - Vector2(36.0, 24.0), Vector2(72.0, 48.0)), Color(pal["plum"] as Color, 0.16), true)
+		b.draw_rect(Rect2(ph_c - Vector2(36.0, 24.0), Vector2(72.0, 48.0)), pal["ice"] as Color, false, 1.0)
+	var b_sparks: int = int(b.get("beauty_sparks"))
+	if b_sparks > 0 and Lx.player is Node2D and is_instance_valid(Lx.player):
+		var w_loc: Vector2 = ((Lx.player as Node2D).global_position - b.pos + off).round()
+		for si: int in range(mini(b_sparks, 4)):
+			var sa: float = b.anim_t * (1.2 if fred else 2.6) + float(si) * (TAU / float(mini(b_sparks, 4)))
+			var sp: Vector2 = (w_loc + Vector2.from_angle(sa) * 14.0).round()
+			b.draw_circle(sp, 2.2, pal["gold"] as Color)
+			b.draw_rect(Rect2(sp - Vector2(0.5, 0.5), Vector2.ONE), pal["cream"] as Color)

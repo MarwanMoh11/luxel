@@ -1,0 +1,76 @@
+{
+  "id": "corridor",
+  "island_id": 0,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "cave_1",
+  "name_key": "ZONE_HUB_CORRIDOR",
+  "music": "hub",
+  "spawn": [72, 52],
+  "zones": [
+    {"id": "hub_corridor", "name_key": "ZONE_HUB_CORRIDOR", "rect": [0, 0, 544, 256], "dark": false}
+  ],
+  "design": {
+    "idea": "Carved limestone underpass beneath the workshop hosting the Dash Corridor perfect-dodge gauntlet.",
+    "kind": "story",
+    "beat": "sho",
+    "teaches": "perfect dodge timing through telegraphed energy waves and instant dash cooldown chains",
+    "decisions": 5,
+    "expert_s": 60,
+    "reward": "dash corridor medals (shards, rose flame, glass_step pane, +1 lead)",
+    "why": "West rock foundation passage linking the Workshop straight into the Endless Cellar.",
+    "optional": true,
+    "solution": [
+      {"op": "goto", "to": "curio_cor_tally"},
+      {"op": "interact", "target": "curio_cor_tally"},
+      {"op": "goto", "to": "hub_mg_dash"},
+      {"op": "interact", "target": "hub_mg_dash"},
+      {"op": "goto", "to": "curio_cor_chime"},
+      {"op": "interact", "target": "curio_cor_chime"}
+    ]
+  },
+  "decor": [
+    {"kind": "cracks", "pos": [208, 128], "radius": 36, "glow": true},
+    {"kind": "cracks", "pos": [384, 136], "radius": 32, "glow": false},
+    {"kind": "stain", "pos": [128, 204], "radius": 28, "style": "water"},
+    {"kind": "light_shaft", "pos": [296, 80], "size": [48, 84], "tint": "cool", "shear": 0.35}
+  ],
+  "exits": [
+    {"id": "ex_corr_ws", "rect": [48, 0, 48, 16], "to_island": 0, "to_region": "workshop", "to_spawn": [184, 240]},
+    {"id": "ex_corr_cellar", "rect": [528, 112, 16, 48], "to_island": 0, "to_region": "cellar", "to_spawn": [48, 160]}
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "relit_2",
+      "when": "hub_relit>=2",
+      "tiles": [[8, 6, 18, 1, "path"]],
+      "enable": ["lamp_cor_relit_2"]
+    }
+  ],
+  "interactables": [
+    {"id": "anc_corridor", "kind": "room_anchor", "pos": [72, 64], "props": {"auto": true}},
+    {
+      "id": "hub_mg_dash",
+      "kind": "mg_dash_corridor",
+      "pos": [112, 136],
+      "props": {"rect": [128, 64, 344, 128]}
+    },
+    {"id": "curio_cor_tally", "kind": "hub_curio", "pos": [168, 44], "props": {"curio": "tally_board"}},
+    {"id": "curio_cor_chime", "kind": "hub_curio", "pos": [480, 52], "props": {"curio": "chime_rack"}},
+    {"id": "curio_cor_cask", "kind": "hub_curio", "pos": [52, 212], "props": {"curio": "cellar_cask"}},
+    {"id": "curio_cor_jar", "kind": "hub_curio", "pos": [484, 212], "props": {"curio": "moth_jar"}},
+    {"id": "lamp_cor_w", "kind": "road_lamp", "pos": [116, 84], "props": {"lit": true}},
+    {"id": "lamp_cor_m", "kind": "road_lamp", "pos": [296, 68], "props": {"lit": true}},
+    {"id": "lamp_cor_e", "kind": "road_lamp", "pos": [456, 184], "props": {"lit": true}},
+    {"id": "lamp_cor_relit_2", "kind": "road_lamp", "pos": [296, 172], "props": {"lit": true}}
+  ],
+  "triggers": [],
+  "scenery": [
+    {"sheet": "theme_cave_1", "prop": "glow_mineral_vein", "pos": [224, 48], "layer": "sort"},
+    {"sheet": "theme_cave_1", "prop": "glow_mineral_vein", "pos": [416, 48], "layer": "sort"},
+    {"sheet": "theme_cave_1", "prop": "stalagmite_cluster", "pos": [348, 224], "layer": "sort"},
+    {"sheet": "theme_cave_1", "prop": "cave_lantern_post", "pos": [180, 196], "layer": "sort"},
+    {"sheet": "theme_cave_1", "prop": "dripping_pool_basin", "pos": [264, 212], "layer": "ground"}
+  ]
+}

@@ -9,10 +9,10 @@
   "exits": [
     {
       "id": "exit_to_proof_2",
-      "rect": [416, 96, 16, 48],
+      "rect": [416, 112, 16, 48],
       "to_island": 8,
       "to_region": "_proof_i8_2",
-      "to_spawn": [48, 120]
+      "to_spawn": [56, 232]
     }
   ],
   "interactables": [
@@ -25,7 +25,7 @@
     {
       "id": "scale_gate_1",
       "kind": "toll_scale",
-      "pos": [88, 72],
+      "pos": [104, 56],
       "props": {
         "mode": "gate",
         "min_weight": 1,
@@ -68,7 +68,7 @@
     {
       "id": "door_sensor",
       "kind": "door",
-      "pos": [280, 120],
+      "pos": [280, 168],
       "props": {
         "door_type": "switch_door",
         "size": [16, 48],
@@ -89,11 +89,20 @@
     {
       "id": "door_exit_1",
       "kind": "door",
-      "pos": [344, 120],
+      "pos": [344, 136],
       "props": {
         "door_type": "switch_door",
         "size": [16, 48],
         "requires_signals": ["scale_redeem"]
+      }
+    },
+    {
+      "id": "chest_toll_reward",
+      "kind": "chest",
+      "pos": [392, 64],
+      "props": {
+        "reward": "shards",
+        "amount": 15
       }
     }
   ],
@@ -110,7 +119,7 @@
     "reward": "unlock_proof_2",
     "why": "End-to-end automated proof of Island 8 Toll House scales, gates, sensors, and free redemption.",
     "solution": [
-      { "op": "goto", "to": [88, 92], "tol": 6.0 },
+      { "op": "goto", "to": [104, 76], "tol": 6.0 },
       { "op": "interact", "target": "scale_gate_1" },
       { "op": "expect", "var": "toll_weight>=1" },
       { "op": "wait_until", "target": "toll_gate_1", "prop": "opened", "value": true, "timeout": 3.0 },

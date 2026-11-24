@@ -16,12 +16,19 @@ const FISSURE_COMMIT_TIME: float = 0.34
 const FISSURE_RANGE: float = 114.0
 const FISSURE_HALF_W: float = 13.0
 const PHASE2_ROAR_TIME: float = 0.60
+const FISSURE_REFLECT_STAGGER: float = 0.85
+const MAX_SLAG_BOULDERS: int = 2
 
 var quake_stage: int = QuakeStage.RING_1
 var fissure_dir: Vector2 = Vector2.RIGHT
 var fissure_progress: float = 0.0
 var fissure_hit: bool = false
 var _roaring: bool = false
+var _slag_boulders: Array[Dictionary] = []
+var _fissure_block_dist: float = FISSURE_RANGE
+var _fissure_reflected: bool = false
+var _reflect_fx_t: float = 0.0
+var _reflect_fx_pos: Vector2 = Vector2.ZERO
 
 
 func _init() -> void:
@@ -62,6 +69,10 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	fissure_progress = 0.0
 	fissure_hit = false
 	_roaring = false
+	_slag_boulders.clear()
+	_fissure_block_dist = FISSURE_RANGE
+	_fissure_reflected = false
+	_reflect_fx_t = 0.0
 
 
 func take_hit(hit: LxHit) -> int:
@@ -88,9 +99,14 @@ func _check_phase_transition() -> void:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
 		_boss_impact(0.28, 98.0, 96.0)
 		_emit_sfx("forge_warden_phase2")
+		_trigger_room_slag_pourers()
+		_splash_slag_boulder(pos + Vector2.from_angle(facing + 0.65) * 48.0)
 
 
 func _step_brain(dt: float) -> void:
+	if _reflect_fx_t > 0.0:
+		_reflect_fx_t = maxf(0.0, _reflect_fx_t - dt)
+	_tick_slag_boulders(dt)
 	if state == State.NOTICE and _roaring:
 		state_timer -= dt
 		if state_timer <= 0.0:
@@ -137,16 +153,34 @@ func _step_commit(dt: float) -> void:
 			state_timer = FISSURE_COMMIT_TIME
 			fissure_progress = 0.0
 			fissure_hit = false
+			_fissure_reflected = false
 			fissure_dir = Vector2.from_angle(facing)
+			_fissure_block_dist = _compute_fissure_block_dist(fissure_dir)
 			_boss_impact(0.22, 98.0, 102.0)
 			_emit_sfx("golem_stomp_shockwave")
+			_trigger_room_slag_pourers()
+			_splash_slag_boulder(pos + fissure_dir.rotated(0.55) * 52.0)
 		return
 
 	if quake_stage == QuakeStage.FISSURE_COMMIT:
 		state_timer = maxf(0.0, state_timer - dt)
 		fissure_progress = 1.0 - clampf(state_timer / FISSURE_COMMIT_TIME, 0.0, 1.0)
-		var cur_len: float = lerpf(12.0, FISSURE_RANGE, fissure_progress)
+		var raw_len: float = lerpf(12.0, FISSURE_RANGE, fissure_progress)
+		var cur_len: float = minf(raw_len, _fissure_block_dist)
 		var fend: Vector2 = pos + fissure_dir * cur_len
+		# Cooled slag boulder blocks follow-up fissure & reflects sparks for 0.85s mini-stagger!
+		if not _fissure_reflected and _fissure_block_dist < FISSURE_RANGE - 1.0 and raw_len >= _fissure_block_dist:
+			_fissure_reflected = true
+			_reflect_fx_t = 0.35
+			_reflect_fx_pos = pos + fissure_dir * _fissure_block_dist
+			_emit_sfx("magma_crack")
+			_emit_sfx("shield_shatter")
+			quake_stage = QuakeStage.RING_1
+			fissure_progress = 0.0
+			_release_token()
+			state = State.STAGGER
+			state_timer = FISSURE_REFLECT_STAGGER
+			return
 		if not fissure_hit and _has_player():
 			var wp: Vector2 = _get_wick_pos()
 			if Geometry2D.get_closest_point_to_segment(wp, pos, fend).distance_to(wp) <= FISSURE_HALF_W:
@@ -238,7 +272,7 @@ func _draw_extra(off: Vector2) -> void:
 				var zig: float = (4.0 if ci % 2 == 0 else -4.0)
 				draw_line(mp, (mp + perp * zig).round(), PAL["gold"] as Color, 1.2)
 		elif quake_stage == QuakeStage.FISSURE_COMMIT:
-			var cur_len: float = lerpf(12.0, FISSURE_RANGE, fissure_progress)
+			var cur_len: float = minf(lerpf(12.0, FISSURE_RANGE, fissure_progress), _fissure_block_dist)
 			var perp2: Vector2 = Vector2(-fissure_dir.y, fissure_dir.x)
 			var fend2: Vector2 = (c + fissure_dir * cur_len).round()
 			draw_line(c, fend2, PAL["wine"] as Color, 10.0)
@@ -274,6 +308,80 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, rr + 2.4, 0.0, TAU, 28, PAL["coral"] as Color, 2.2)
 		draw_arc(c, rr, 0.0, TAU, 28, PAL["apricot"] as Color, 2.4)
 		draw_arc(c, maxf(3.0, rr - 2.2), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
+	# Draw splashed molten/cooled slag boulders & reflected spark arc!
+	for sb: Dictionary in _slag_boulders:
+		var sp: Vector2 = ((sb["pos"] as Vector2) - pos + off).round()
+		var cool: bool = bool(sb["cooled"])
+		draw_circle(sp, 8.5, PAL["night"] as Color)
+		draw_circle(sp, 7.0, (PAL["mauve"] if cool else PAL["coral"]) as Color)
+		draw_arc(sp, 7.5, 0.0, TAU, 14, (PAL["ice"] if cool else PAL["gold"]) as Color, 1.3)
+	if _reflect_fx_t > 0.0:
+		var rp_l: Vector2 = (_reflect_fx_pos - pos + off).round()
+		draw_line(rp_l, c, PAL["ice"] as Color, 2.4)
+		draw_line(rp_l, c, PAL["cream"] as Color, 1.0)
+
+
+func _trigger_room_slag_pourers() -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("get_interactables"):
+		return
+	for it_v: Variant in (world_ctx.call("get_interactables") as Array):
+		if it_v is LxInteractable and (it_v as LxInteractable).kind == "slag_pourer" and (it_v as Object).has_method("trigger_pour"):
+			(it_v as Object).call("trigger_pour")
+
+
+func _splash_slag_boulder(at_p: Vector2) -> void:
+	var p: Vector2 = at_p
+	if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("get_bounds"):
+		var b: Rect2 = (world_ctx.call("get_bounds") as Rect2).grow(-24.0)
+		if b.has_area():
+			p = Vector2(clampf(p.x, b.position.x, b.end.x), clampf(p.y, b.position.y, b.end.y))
+	while _slag_boulders.size() >= MAX_SLAG_BOULDERS:
+		_slag_boulders.pop_front()
+	_slag_boulders.append({"pos": p, "cooled": false, "ttl": 16.0})
+
+
+func _tick_slag_boulders(dt: float) -> void:
+	var wick_node: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	for i: int in range(_slag_boulders.size() - 1, -1, -1):
+		var sb: Dictionary = _slag_boulders[i]
+		sb["ttl"] = float(sb["ttl"]) - dt
+		if float(sb["ttl"]) <= 0.0:
+			_slag_boulders.remove_at(i)
+			continue
+		if not bool(sb["cooled"]) and wick_node != null:
+			var bp_s: Vector2 = sb["pos"] as Vector2
+			for bi: int in range(wick_node.bolts.size() - 1, -1, -1):
+				var bv: Variant = wick_node.bolts[bi]
+				if bv is Object and (bv.get("pos") as Vector2).distance_to(bp_s) <= 10.0:
+					if str(bv.get("light_color")).to_lower() == LxHit.COLOR_BLUE:
+						sb["cooled"] = true
+						sb["ttl"] = 14.0
+						_emit_sfx("magma_crack")
+						wick_node.bolts.remove_at(bi)
+						break
+
+
+func _compute_fissure_block_dist(dir: Vector2) -> float:
+	var best: float = FISSURE_RANGE
+	var candidates: Array[Vector2] = []
+	for sb: Dictionary in _slag_boulders:
+		if bool(sb["cooled"]):
+			candidates.append(sb["pos"] as Vector2)
+	if world_ctx != null and is_instance_valid(world_ctx):
+		if world_ctx.has_method("get_interactables"):
+			for it_v: Variant in (world_ctx.call("get_interactables") as Array):
+				if it_v is LxInteractable and (it_v as LxInteractable).kind == "push_block" and bool((it_v as Object).get("cooled")):
+					candidates.append((it_v as LxInteractable).pos)
+		if world_ctx.has_method("get_enemies"):
+			for ev: Variant in (world_ctx.call("get_enemies") as Array):
+				if ev is LxEnemyBrain and ev != self and (ev as LxEnemyBrain).is_alive() and (ev as Object).has_method("is_frozen_block") and bool((ev as Object).call("is_frozen_block")):
+					candidates.append((ev as LxEnemyBrain).pos)
+	for cp: Vector2 in candidates:
+		var rel: Vector2 = cp - pos
+		var proj: float = rel.dot(dir)
+		if proj > 14.0 and proj < best and (rel - dir * proj).length() <= FISSURE_HALF_W + 4.0:
+			best = proj
+	return best
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

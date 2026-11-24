@@ -8,7 +8,7 @@ extends LxBossBase
 ## Only the killing blow BREAKS THE SILENCE with a colossal resonant D-minor Dawn chord!
 
 const MOUTH_THROW_RADIUS: float = 28.0
-const MOUTH_BONUS_DMG: float = 3.5
+const MOUTH_BONUS_DMG: float = 2.5
 const MOUTH_STAGGER_S: float = 2.20
 const PENDULUM_RADIUS: float = 60.0
 
@@ -30,8 +30,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = ""
 	music_p2_cue = ""
-	max_hp = 58.0
-	hp = 58.0
+	max_hp = 92.0
+	hp = 92.0
 	body_radius = 13.0
 	move_speed = 40.0
 	stagger_threshold = 12.5
@@ -55,70 +55,71 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_ring(pos, 72.0, last_tell_duration, 0.0, "ice", "cream")
 			ground.warn_lane(pos, clamp_to_arena(pos + Vector2.from_angle(aim_a) * 140.0), 8.0, last_tell_duration, 0.0, "cream", "ice"),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			var aim_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			var cnt: int = 14 if phase >= 2 else 11
-			patterns.emit_gap_ring(pos, cnt, 128.0 if phase >= 2 else 112.0, aim_a + PI * 0.38, 0.78, {"color": "ice", "source": "silence_ring"})
+			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			var aim_a: float = aim_d.angle()
+			var cnt: int = 9 if phase >= 2 else 7
+			patterns.emit_lane(pos, aim_d, 1, 114.0, 0.08, {"color": "cream", "source": "silence_ring"})
+			patterns.emit_gap_ring(pos, cnt, 94.0 if phase >= 2 else 88.0, aim_a + PI * 0.36, 0.96, {"color": "ice", "source": "silence_ring"})
 			_dust_pulse_t = 0.55
-			stage.shake(0.16),
+			stage.shake(0.14),
 	})
 
 	# Attack 2: Mute Curtain (dims Wick light 50% while stark cream floor lanes shine clearly!)
 	register_attack("mute_curtain", {
-		"weight": 1.15, "tell": 0.50, "commit": 0.36, "recover": 1.00, "cooldown": 1.7,
+		"weight": 1.25, "tell": 0.56, "commit": 0.36, "recover": 1.05, "cooldown": 1.7,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = aim_d.angle()
 			var perp := Vector2(-aim_d.y, aim_d.x)
-			stage.darkness_pulse(0.78, 2.2)
+			stage.darkness_pulse(0.72, 1.8)
 			ground.warn_lane(pos, clamp_to_arena(pos + aim_d * 145.0), 10.0, last_tell_duration, 0.0, "cream", "ice")
 			ground.warn_lane(pos, clamp_to_arena(pos + perp * 125.0), 9.0, last_tell_duration, 0.0, "ice", "cream")
 			ground.warn_lane(pos, clamp_to_arena(pos - perp * 125.0), 9.0, last_tell_duration, 0.0, "ice", "cream"),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, aim_d, 7 if phase >= 2 else 5, 0.95, 126.0, {"color": "cream", "source": "mute_curtain"})
+			patterns.emit_fan(pos, aim_d, 3, 0.58, 108.0, {"color": "cream", "source": "mute_curtain"})
 			_dust_pulse_t = 0.45
 			stage.shake(0.14),
 	})
 
 	# Attack 3: Hollow Pendulum (floor shadow-clapper sweep -> opens hollow mouth in RECOVER for Lantern Throw!)
 	register_attack("hollow_pendulum", {
-		"weight": 1.35, "tell": 0.58, "commit": 0.34, "recover": 1.35, "cooldown": 1.4,
+		"weight": 1.35, "tell": 0.60, "commit": 0.34, "recover": 1.35, "cooldown": 1.5,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_pend_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _pend_dir.angle()
 			_pend_hit = false
-			ground.warn_sector(pos, facing - 1.15, facing + 1.15, PENDULUM_RADIUS, last_tell_duration, 0.0, "mauve", "cream")
-			ground.warn_lane(pos, clamp_to_arena(pos + _pend_dir * 135.0), 11.0, last_tell_duration, 0.0, "ice", "cream"),
+			ground.warn_sector(pos, facing - 1.05, facing + 1.05, PENDULUM_RADIUS * 0.85, last_tell_duration, 0.0, "mauve", "cream")
+			ground.warn_lane(pos, clamp_to_arena(pos + _pend_dir * 135.0), 10.0, last_tell_duration, 0.0, "ice", "cream"),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_boomerang(pos, _pend_dir.rotated(-0.32), 132.0, 0.68, 0.55, {"color": "ice", "source": "shadow_clapper"})
-			patterns.emit_boomerang(pos, _pend_dir.rotated(0.32), 132.0, 0.68, -0.55, {"color": "ice", "source": "shadow_clapper"})
-			if phase >= 2:
-				patterns.emit_boomerang(pos, _pend_dir, 140.0, 0.62, 0.0, {"color": "cream", "source": "shadow_clapper"})
+			patterns.emit_lane(pos, _pend_dir, 1, 112.0, 0.08, {"color": "cream", "source": "shadow_clapper"})
+			patterns.emit_boomerang(pos, _pend_dir.rotated(-0.42), 96.0, 0.65, 0.45, {"color": "ice", "source": "shadow_clapper"})
+			patterns.emit_boomerang(pos, _pend_dir.rotated(0.42), 96.0, 0.65, -0.45, {"color": "ice", "source": "shadow_clapper"})
 			_dust_pulse_t = 0.50
-			stage.shake(0.18),
+			stage.shake(0.14),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _elapsed: float) -> void:
-			move_boss(_pend_dir * 78.0 * dt, true)
-			if not _pend_hit and pos.distance_to(tgt) <= PENDULUM_RADIUS:
+			move_boss(_pend_dir * 46.0 * dt, true)
+			if not _pend_hit and pos.distance_to(tgt) <= PENDULUM_RADIUS * 0.78:
 				var rel: Vector2 = tgt - pos
-				if rel.length() < 1.0 or absf(angle_difference(facing, rel.angle())) <= 1.20:
+				if rel.length() < 1.0 or absf(angle_difference(facing, rel.angle())) <= 1.05:
 					_pend_hit = true
 					emit_boss_damage(_pend_dir, 1.0, "hollow_pendulum", pos, true),
 		"on_recover": func(_b: LxBossBase, _dt: float) -> void:
 			_mouth_open = true,
 	})
 
-	# Attack 4 (P2): Fracture Zones (3 stark bell floor cracks erupt + 2 silent orbiting shadow-clappers!)
+	# Attack 4 (P2): Fracture Zones (stark bell floor cracks erupt + 2 silent orbiting shadow-clappers!)
 	register_attack("fracture_zones", {
-		"phases": [2], "weight": 2.75, "tell": 0.62, "commit": 0.30, "recover": 1.20, "cooldown": 1.1,
+		"phases": [2], "weight": 2.75, "tell": 0.68, "commit": 0.30, "recover": 1.25, "cooldown": 1.3,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			var pts: Array[Vector2] = _build_fracture_targets(tgt)
-			patterns.emit_pillars(pts, last_tell_duration, 20.0, 0.55, 1.0, "ice"),
+			var pts: Array[Vector2] = _build_fracture_targets(tgt).slice(0, 2)
+			patterns.emit_pillars(pts, last_tell_duration, 14.0, 0.40, 1.0, "ice"),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			patterns.emit_orbit(pos, 2, 54.0, 2.35, 3.2, {"color": "mauve", "source": "orbit_clapper", "follow_boss": true})
+			patterns.emit_orbit(pos, 2, 36.0, 1.55, 2.2, {"color": "mauve", "source": "orbit_clapper", "follow_boss": true})
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, aim_d, 3, 0.60, 124.0, {"color": "cream", "source": "fracture_shard"})
+			patterns.emit_fan(pos, aim_d, 3, 0.62, 102.0, {"color": "cream", "source": "fracture_shard"})
 			_dust_pulse_t = 0.60
-			stage.shake(0.20),
+			stage.shake(0.16),
 	})
 
 
@@ -217,7 +218,7 @@ func _on_phase_enter(new_phase: int) -> void:
 		stage.set_tiles(world_ctx, Rect2i(br_tx - 1, tl_ty, 2, 1), "pit")
 		stage.set_tiles(world_ctx, Rect2i(tl_tx, br_ty, 2, 1), "pit")
 		stage.set_tiles(world_ctx, Rect2i(br_tx - 1, br_ty, 2, 1), "pit")
-		patterns.emit_orbit(pos, 2, 56.0, 2.2, 4.5, {"color": "mauve", "source": "orbit_clapper", "follow_boss": true})
+		patterns.emit_orbit(pos, 2, 36.0, 1.55, 3.0, {"color": "mauve", "source": "orbit_clapper", "follow_boss": true})
 		stage.darkness_pulse(0.74, 1.2)
 		stage.shake(0.24)
 		# Intentionally ZERO SFX!

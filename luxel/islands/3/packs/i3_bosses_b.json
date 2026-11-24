@@ -30,9 +30,9 @@
     "loom_widow": {
       "script": "res://luxel/bosses/loom_widow/brain.gd",
       "data": {
-        "max_hp": 76.0,
+        "max_hp": 72.0,
         "body_radius": 12.5,
-        "routine_speed": 40.0,
+        "routine_speed": 38.0,
         "leash_radius": 0.0,
         "notice_radius": 190.0,
         "tell_time": 0.54,

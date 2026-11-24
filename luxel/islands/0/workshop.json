@@ -1,0 +1,110 @@
+{
+  "id": "workshop",
+  "island_id": 0,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "wick_house",
+  "name_key": "ZONE_HUB_WORKSHOP",
+  "music": "hub",
+  "spawn": [400, 144],
+  "zones": [
+    {"id": "hub_workshop", "name_key": "ZONE_HUB_WORKSHOP", "rect": [0, 0, 448, 288], "dark": false}
+  ],
+  "design": {
+    "idea": "Craft workshop housing the Pane Workbench, Kiln Lead Smith, Flame Tailor, and Tempo Training Dummy.",
+    "kind": "story",
+    "beat": "sho",
+    "teaches": "pane fitting, lead upgrades, flame colours, and combat tempo testing",
+    "decisions": 5,
+    "expert_s": 65,
+    "reward": "extra lead capacity, 8 flame colours, pane builds",
+    "why": "Warm studio where Wick tunes stained-glass builds and tests bolt tempo before expeditions.",
+    "optional": true,
+    "solution": [
+      {"op": "goto", "to": "hub_training_dummy"},
+      {"op": "shoot", "target": "hub_training_dummy", "count": 3},
+      {"op": "goto", "to": "curio_ws_anvil"},
+      {"op": "interact", "target": "curio_ws_anvil"},
+      {"op": "goto", "to": "curio_ws_kettle"},
+      {"op": "interact", "target": "curio_ws_kettle"}
+    ]
+  },
+  "decor": [
+    {"kind": "rug", "rect": [288, 176, 96, 64], "style": "hearth"},
+    {"kind": "inlay", "rect": [48, 40, 112, 64]},
+    {"kind": "window_strip", "y": 14, "x0": 176, "x1": 288, "style": "slag"},
+    {"kind": "light_shaft", "pos": [232, 64], "size": [56, 84], "tint": "warm", "shear": 0.3}
+  ],
+  "exits": [
+    {"id": "ex_ws_ow", "rect": [432, 128, 16, 48], "to_island": 0, "to_region": "overworld", "to_spawn": [64, 168]},
+    {"id": "ex_ws_corr", "rect": [160, 272, 48, 16], "to_island": 0, "to_region": "corridor", "to_spawn": [72, 48]}
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "folk_kiln",
+      "when": "flag:folk:kiln_salamander",
+      "tiles": [[11, 2, 5, 3, "path"]],
+      "enable": ["lamp_ws_kiln"]
+    },
+    {
+      "id": "folk_tailor",
+      "when": "flag:folk:tailor_spider",
+      "tiles": [[19, 2, 5, 3, "path"]],
+      "enable": ["lamp_ws_tailor"]
+    }
+  ],
+  "interactables": [
+    {"id": "hub_pane_bench", "kind": "hub_station", "pos": [104, 72], "props": {"role": "pane_workbench"}},
+    {"id": "hub_lead_forge", "kind": "hub_station", "pos": [216, 68], "props": {"role": "lead_forge"}},
+    {"id": "hub_tailor_loom", "kind": "hub_station", "pos": [344, 68], "props": {"role": "tailor_loom"}},
+    {"id": "hub_training_dummy", "kind": "training_dummy", "pos": [336, 208], "props": {}},
+    {
+      "id": "npc_hub_salamander",
+      "kind": "hub_npc",
+      "pos": [216, 108],
+      "props": {
+        "folk": "kiln_salamander",
+        "require_flag": "folk:kiln_salamander",
+        "quest": "q_hub_kiln_cinder",
+        "service": "lead_shop",
+        "routine": [
+          {"pos": [216, 108], "wait": 3.0, "anim": "happy"},
+          {"pos": [144, 112], "wait": 2.4, "anim": "idle"}
+        ],
+        "bubbles": [["ember", "pane", "flame"]]
+      }
+    },
+    {
+      "id": "npc_hub_tailor",
+      "kind": "hub_npc",
+      "pos": [344, 116],
+      "props": {
+        "folk": "tailor_spider",
+        "require_flag": "folk:tailor_spider",
+        "service": "tailor",
+        "routine": [
+          {"pos": [344, 116], "wait": 3.2, "anim": "idle"},
+          {"pos": [380, 112], "wait": 2.4, "anim": "happy"}
+        ],
+        "bubbles": [["flame", "pane", "gift"]]
+      }
+    },
+    {"id": "curio_ws_anvil", "kind": "hub_curio", "pos": [52, 64], "props": {"curio": "anvil_spark"}},
+    {"id": "curio_ws_kettle", "kind": "hub_curio", "pos": [56, 232], "props": {"curio": "kettle"}},
+    {"id": "curio_ws_trunk", "kind": "hub_curio", "pos": [396, 232], "props": {"curio": "old_trunk"}},
+    {"id": "curio_ws_tally", "kind": "hub_curio", "pos": [256, 224], "props": {"curio": "tally_board"}},
+    {"id": "lamp_ws_w", "kind": "road_lamp", "pos": [148, 176], "props": {"lit": true}},
+    {"id": "lamp_ws_e", "kind": "road_lamp", "pos": [392, 168], "props": {"lit": true}},
+    {"id": "lamp_ws_kiln", "kind": "road_lamp", "pos": [256, 68], "props": {"lit": true}},
+    {"id": "lamp_ws_tailor", "kind": "road_lamp", "pos": [396, 68], "props": {"lit": true}}
+  ],
+  "triggers": [],
+  "scenery": [
+    {"sheet": "theme_wick_house", "prop": "wooden_workbench", "pos": [104, 48], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "pane_stained_easel", "pos": [152, 52], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "training_straw_dummy", "pos": [380, 196], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [128, 240], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [216, 248], "layer": "sort"}
+  ]
+}

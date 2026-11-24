@@ -253,10 +253,24 @@ func _spawn_smoke_pool(at: Vector2) -> void:
 	_smoke_pools.append({"pos": at, "ttl": SMOKE_DUR, "max_ttl": SMOKE_DUR})
 
 
+func _is_wick_gliding() -> bool:
+	if Lx.player == null or not is_instance_valid(Lx.player):
+		return false
+	var gv: Variant = Lx.player.get("gliding")
+	if gv is bool and (gv as bool):
+		return true
+	var mw: Variant = Lx.player.get("move_wings")
+	if mw is Object and is_instance_valid(mw):
+		var mg: Variant = (mw as Object).get("gliding")
+		if mg is bool and (mg as bool):
+			return true
+	return false
+
+
 func _tick_smoke_pools(dt: float) -> void:
 	var wick_in_smoke: bool = false
 	var wp: Vector2 = _get_real_wick_pos()
-	var gliding: bool = Lx.player != null and is_instance_valid(Lx.player) and bool(Lx.player.get("gliding"))
+	var gliding: bool = _is_wick_gliding()
 	for i: int in range(_smoke_pools.size() - 1, -1, -1):
 		var sp: Dictionary = _smoke_pools[i]
 		sp["ttl"] = float(sp["ttl"]) - dt

@@ -3,7 +3,10 @@
   "island_id": 0,
   "tile_size": 16,
   "is_dungeon": false,
-  "spawn": [256, 296],
+  "theme": "wick_house",
+  "name_key": "ZONE_WICK_HOUSE",
+  "music": "hub",
+  "spawn": [240, 260],
   "zones": [
     {
       "id": "wick_house_hall",
@@ -13,86 +16,99 @@
     }
   ],
   "design": {
-    "idea": "Lamplit island sanctuary between the eight islands where rescued folk, panes, moths, journal, music, and training live.",
+    "idea": "Cozy Great Hall of Wick House that grows visibly brighter and fuller with every relit island and rescued lamp-folk.",
     "kind": "story",
     "beat": "ki",
-    "teaches": "panes, moths, quests, hub stations",
-    "decisions": 3,
-    "expert_s": 40,
-    "reward": "moth tiers, pane builds, music box",
-    "why": "Living home that grows brighter with every rescued lamp-folk and caught moth.",
-    "solution": [{"op": "interact", "target": "ws_hub"}]
+    "teaches": "hub navigation, journal, music box, waystone travel, folk routines",
+    "decisions": 4,
+    "expert_s": 55,
+    "reward": "hub wings, journal, music box, folk quests",
+    "why": "Central hearth sanctuary connecting all 8 rooms of Wick House and the archipelago.",
+    "optional": true,
+    "solution": [
+      {"op": "interact", "target": "ws_hub"},
+      {"op": "goto", "to": "curio_ow_hearth"},
+      {"op": "interact", "target": "curio_ow_hearth"},
+      {"op": "goto", "to": "curio_ow_kettle"},
+      {"op": "interact", "target": "curio_ow_kettle"}
+    ]
   },
-  "exits": [],
+  "decor": [
+    {"kind": "rug", "rect": [176, 96, 112, 80], "style": "hearth"},
+    {"kind": "window_strip", "y": 24, "x0": 80, "x1": 176, "style": "sunset"},
+    {"kind": "window_strip", "y": 24, "x0": 320, "x1": 432, "style": "stars"},
+    {"kind": "light_shaft", "pos": [128, 72], "size": [48, 84], "tint": "warm", "shear": 0.35},
+    {"kind": "light_shaft", "pos": [356, 72], "size": [44, 80], "tint": "cool", "shear": 0.35},
+    {"kind": "inlay", "rect": [200, 224, 80, 48]}
+  ],
+  "exits": [
+    {"id": "ex_ow_attic", "rect": [208, 16, 48, 16], "to_island": 0, "to_region": "attic", "to_spawn": [224, 240]},
+    {"id": "ex_ow_workshop", "rect": [32, 144, 16, 48], "to_island": 0, "to_region": "workshop", "to_spawn": [400, 144]},
+    {"id": "ex_ow_gallery", "rect": [464, 144, 16, 48], "to_island": 0, "to_region": "gallery", "to_spawn": [48, 144]},
+    {"id": "ex_ow_cellar", "rect": [400, 240, 48, 16], "to_island": 0, "to_region": "cellar", "to_spawn": [240, 48]}
+  ],
   "enemies": [],
+  "layers": [
+    {
+      "id": "relit_1",
+      "when": "hub_relit>=1",
+      "tiles": [[11, 6, 7, 1, "path"], [11, 11, 7, 1, "path"]],
+      "enable": ["lamp_ow_growth_1", "curio_ow_moth_jar"]
+    },
+    {
+      "id": "relit_3",
+      "when": "hub_relit>=3",
+      "tiles": [[6, 8, 2, 4, "path"], [22, 8, 3, 4, "path"]],
+      "enable": ["lamp_ow_growth_3", "curio_ow_chimes"]
+    },
+    {
+      "id": "relit_6",
+      "when": "hub_relit>=6",
+      "tiles": [[10, 4, 9, 2, "path"]],
+      "enable": ["lamp_ow_growth_6"]
+    },
+    {
+      "id": "folk_scribe",
+      "when": "flag:folk:scribe_worm",
+      "enable": ["lamp_ow_scribe"]
+    }
+  ],
   "interactables": [
     {
       "id": "ws_hub",
       "kind": "waystone",
-      "pos": [256, 272],
+      "pos": [240, 248],
       "props": {"lit": true, "zone": "wick_house_hall", "name_key": "ZONE_WICK_HOUSE"}
     },
     {
       "id": "hub_return_jetty",
-      "kind": "hub_door",
-      "pos": [256, 326],
-      "props": {"door_role": "return_waystone"}
-    },
-    {
-      "id": "hub_moth_lantern",
-      "kind": "hub_door",
-      "pos": [256, 76],
-      "props": {"door_role": "moth_lantern"}
-    },
-    {
-      "id": "hub_pane_workshop",
-      "kind": "hub_door",
-      "pos": [84, 152],
-      "props": {"door_role": "pane_workshop"}
+      "kind": "hub_station",
+      "pos": [240, 326],
+      "props": {"role": "return_jetty"}
     },
     {
       "id": "hub_journal_desk",
-      "kind": "hub_door",
-      "pos": [128, 208],
-      "props": {"door_role": "journal_desk"}
+      "kind": "hub_station",
+      "pos": [108, 200],
+      "props": {"role": "journal_desk"}
     },
     {
       "id": "hub_music_box",
-      "kind": "hub_door",
-      "pos": [168, 212],
-      "props": {"door_role": "music_box"}
-    },
-    {
-      "id": "hub_gallery_door",
-      "kind": "hub_door",
-      "pos": [120, 72],
-      "props": {"door_role": "gallery"}
-    },
-    {
-      "id": "hub_race_door",
-      "kind": "hub_door",
-      "pos": [392, 72],
-      "props": {"door_role": "race"}
-    },
-    {
-      "id": "hub_rematch_mirror",
-      "kind": "hub_door",
-      "pos": [424, 148],
-      "props": {"door_role": "rematch"}
-    },
-    {
-      "id": "hub_training_dummy",
-      "kind": "training_dummy",
-      "pos": [384, 198],
-      "props": {}
+      "kind": "hub_station",
+      "pos": [182, 198],
+      "props": {"role": "music_box"}
     },
     {
       "id": "npc_hub_grandma",
-      "kind": "npc",
-      "pos": [232, 148],
+      "kind": "hub_npc",
+      "pos": [216, 136],
       "props": {
         "folk": "candle_grandma",
-        "wander_radius": 10,
+        "routine": [
+          {"pos": [216, 136], "wait": 3.0, "anim": "idle"},
+          {"pos": [152, 112], "wait": 2.4, "anim": "happy"},
+          {"pos": [256, 152], "wait": 2.8, "anim": "idle"}
+        ],
         "bubbles": [
           ["home", "lantern", "heart"],
           ["moth", "arrow_n", "light_on"]
@@ -100,137 +116,45 @@
       }
     },
     {
-      "id": "npc_hub_moth_kid",
-      "kind": "npc",
-      "pos": [284, 152],
-      "props": {
-        "folk": "moth_kid",
-        "quest": "q_hub_moths",
-        "wander_radius": 14,
-        "bubbles": [
-          ["moth", "light_on", "happy"],
-          ["pane", "arrow_w", "gear"]
-        ]
-      }
-    },
-    {
-      "id": "npc_hub_ferry_beetle",
-      "kind": "npc",
-      "pos": [216, 240],
-      "props": {
-        "folk": "ferry_beetle",
-        "require_flag": "folk:ferry_beetle",
-        "wander_radius": 12,
-        "bubbles": [["toy_skiff", "wave", "happy"]]
-      }
-    },
-    {
-      "id": "npc_hub_bell_snail",
-      "kind": "npc",
-      "pos": [296, 236],
-      "props": {
-        "folk": "bell_snail",
-        "require_flag": "folk:bell_snail",
-        "wander_radius": 8,
-        "bubbles": [["bell", "music", "happy"]]
-      }
-    },
-    {
-      "id": "npc_hub_gardener_frog",
-      "kind": "npc",
-      "pos": [188, 128],
-      "props": {
-        "folk": "gardener_frog",
-        "require_flag": "folk:gardener_frog",
-        "wander_radius": 12,
-        "bubbles": [["seed", "toy_plant", "heart"]]
-      }
-    },
-    {
-      "id": "npc_hub_owl_chick",
-      "kind": "npc",
-      "pos": [324, 128],
-      "props": {
-        "folk": "owl_chick",
-        "require_flag": "folk:owl_chick",
-        "wander_radius": 10,
-        "bubbles": [["star", "isl_5", "eye"]]
-      }
-    },
-    {
-      "id": "npc_hub_kiln_salamander",
-      "kind": "npc",
-      "pos": [112, 120],
-      "props": {
-        "folk": "kiln_salamander",
-        "require_flag": "folk:kiln_salamander",
-        "wander_radius": 10,
-        "bubbles": [["ember", "pane", "flame"]]
-      }
-    },
-    {
-      "id": "npc_hub_mirror_crab",
-      "kind": "npc",
-      "pos": [396, 120],
-      "props": {
-        "folk": "mirror_crab",
-        "require_flag": "folk:mirror_crab",
-        "wander_radius": 10,
-        "bubbles": [["mirror", "isl_7", "spark"]]
-      }
-    },
-    {
-      "id": "npc_hub_scribe_worm",
-      "kind": "shop_npc",
-      "pos": [146, 198],
+      "id": "npc_hub_scribe",
+      "kind": "hub_npc",
+      "pos": [140, 174],
       "props": {
         "folk": "scribe_worm",
         "require_flag": "folk:scribe_worm",
-        "shop_mode": "journal",
-        "wander_radius": 6
+        "quest": "q_hub_dusk_ink",
+        "service": "journal",
+        "routine": [
+          {"pos": [140, 174], "wait": 3.2, "anim": "idle"},
+          {"pos": [116, 168], "wait": 2.2, "anim": "happy"}
+        ],
+        "bubbles": [["book", "clock", "happy"]]
       }
     },
-    {
-      "id": "npc_hub_tailor_spider",
-      "kind": "shop_npc",
-      "pos": [98, 174],
-      "props": {
-        "folk": "tailor_spider",
-        "require_flag": "folk:tailor_spider",
-        "shop_mode": "panes",
-        "wander_radius": 8
-      }
-    },
-    {
-      "id": "lamp_hub_nw",
-      "kind": "road_lamp",
-      "pos": [210, 108],
-      "props": {"lit": true}
-    },
-    {
-      "id": "lamp_hub_ne",
-      "kind": "road_lamp",
-      "pos": [302, 108],
-      "props": {"lit": true}
-    },
-    {
-      "id": "lamp_hub_sw",
-      "kind": "road_lamp",
-      "pos": [208, 224],
-      "props": {"lit": true}
-    },
-    {
-      "id": "lamp_hub_se",
-      "kind": "road_lamp",
-      "pos": [304, 224],
-      "props": {"lit": true}
-    }
+    {"id": "curio_ow_hearth", "kind": "hub_curio", "pos": [288, 72], "props": {"curio": "hearth_fire"}},
+    {"id": "curio_ow_kettle", "kind": "hub_curio", "pos": [80, 72], "props": {"curio": "kettle"}},
+    {"id": "curio_ow_trophy", "kind": "hub_curio", "pos": [424, 76], "props": {"curio": "trophy_rack"}},
+    {"id": "curio_ow_porch_bell", "kind": "hub_curio", "pos": [304, 248], "props": {"curio": "porch_bell"}},
+    {"id": "curio_ow_moth_jar", "kind": "hub_curio", "pos": [192, 68], "props": {"curio": "moth_jar"}},
+    {"id": "curio_ow_chimes", "kind": "hub_curio", "pos": [344, 184], "props": {"curio": "chime_rack"}},
+    {"id": "lamp_ow_nw", "kind": "road_lamp", "pos": [184, 88], "props": {"lit": true}},
+    {"id": "lamp_ow_ne", "kind": "road_lamp", "pos": [316, 92], "props": {"lit": true}},
+    {"id": "lamp_ow_sw", "kind": "road_lamp", "pos": [196, 224], "props": {"lit": true}},
+    {"id": "lamp_ow_se", "kind": "road_lamp", "pos": [304, 224], "props": {"lit": true}},
+    {"id": "lamp_ow_growth_1", "kind": "road_lamp", "pos": [88, 136], "props": {"lit": true}},
+    {"id": "lamp_ow_growth_3", "kind": "road_lamp", "pos": [420, 136], "props": {"lit": true}},
+    {"id": "lamp_ow_growth_6", "kind": "road_lamp", "pos": [256, 88], "props": {"lit": true}},
+    {"id": "lamp_ow_scribe", "kind": "road_lamp", "pos": [92, 208], "props": {"lit": true}}
   ],
   "triggers": [],
   "scenery": [
-    {"sheet": "island1_scenery", "prop": "candelabra_tall", "pos": [224, 72], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1},
-    {"sheet": "island1_scenery", "prop": "candelabra_tall", "pos": [288, 72], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.55},
-    {"sheet": "island1_scenery", "prop": "stone_bench", "pos": [216, 176], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0},
-    {"sheet": "island1_scenery", "prop": "stone_bench", "pos": [296, 176], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0}
+    {"sheet": "theme_wick_house", "prop": "cozy_stone_hearth", "pos": [288, 56], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "braided_hearth_rug", "pos": [232, 136], "layer": "ground"},
+    {"sheet": "theme_wick_house", "prop": "cottage_dining_table", "pos": [368, 124], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "wooden_bookshelf_home", "pos": [96, 184], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [168, 56], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [432, 120], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [204, 288], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [284, 288], "layer": "sort"}
   ]
 }

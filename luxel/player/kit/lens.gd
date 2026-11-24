@@ -23,6 +23,7 @@ var _wave_t: float = 0.0
 var _wave_dur: float = 0.36
 var _warn_tick_cd: float = 0.0
 var _vis_clock: float = 0.0
+var _puzzle_sheet: LxSpriteSheet = null
 
 
 func set_world_ctx(world_ctx: Node) -> void:
@@ -254,14 +255,20 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 	var rot: float = _vis_clock * 0.35
 	var flicker_coral: bool = flash_red or (int(floorf(_vis_clock * 14.0)) % 2 == 0)
 
-	# 1. Expanding reveal wave on cast
+	# 1. Expanding pixel-stepped starlight reveal wave on cast (zero smooth vector arcs)
 	if _wave_t > 0.0:
 		var wu: float = 1.0 - clampf(_wave_t / maxf(_wave_dur, 0.01), 0.0, 1.0)
 		var wc: Vector2 = (pulse_origin + off).round() + Vector2(0.0, -5.0)
 		var wr: float = lerpf(8.0, pulse_radius, wu)
 		var wa: float = (1.0 - wu) * (0.55 if flash_red else 0.85)
-		canvas.draw_arc(wc, wr, 0.0, TAU, 28, Color(LxWick.PAL_ICE, wa), 1.6)
-		canvas.draw_arc(wc, maxf(4.0, wr - 4.0), 0.0, TAU, 24, Color(LxWick.PAL_SKY, wa * 0.65), 1.0)
+		var wpips: int = clampi(int(roundf(wr * 0.55)), 16, 44)
+		for wi: int in range(wpips):
+			var wang: float = rot * 0.6 + (TAU * float(wi)) / float(wpips)
+			var p_out: Vector2 = (wc + Vector2(cos(wang) * wr, sin(wang) * wr)).round()
+			canvas.draw_rect(Rect2(p_out, Vector2(2.0 if wi % 2 == 0 else 1.0, 1.0)), Color(LxWick.PAL_ICE, wa))
+			if wi % 2 == 0 and wr > 8.0:
+				var p_in: Vector2 = (wc + Vector2(cos(wang + 0.08) * (wr - 4.0), sin(wang + 0.08) * (wr - 4.0))).round()
+				canvas.draw_rect(Rect2(p_in, Vector2.ONE), Color(LxWick.PAL_SKY, wa * 0.65))
 
 	# 2. Revealed raw "phantom" ('P') tiles across all active lens circles
 	var circles: Array[Dictionary] = []
@@ -378,8 +385,10 @@ func _draw_revealed_phantom_tiles(
 					tiles[key] = false
 
 	var alpha_sc: float = 0.80 if flash_red else 1.0
-	var psheet: LxSpriteSheet = LxInteractable._get_puzzle_sheet()
-	var shimmer_f: int = int(floorf(anim_t * 2.4)) % 2
+	if _puzzle_sheet == null:
+		_puzzle_sheet = LxSpriteSheet.load_sheet("res://luxel/art/props/puzzle_interactables.json")
+	var psheet: LxSpriteSheet = _puzzle_sheet
+	var shimmer_f: int = int(floorf(_vis_clock * 2.4)) % 2
 	for key_v: Variant in tiles.keys():
 		var tk: Vector2i = key_v as Vector2i
 		var is_warn_tile: bool = bool(tiles[tk])
@@ -388,7 +397,7 @@ func _draw_revealed_phantom_tiles(
 		var use_coral: bool = is_warn_tile and flicker_coral
 		# Render revealed phantom floor as carved starlight-stone masonry (no wireframe boxes/diamonds!)
 		var prop_k: String = "phantom_warn" if is_warn_tile else "phantom_solid"
-		if psheet != null and psheet.draw_prop(canvas, mc, prop_k, anim_t, Color(1.0, 1.0, 1.0, 0.92 * alpha_sc), 1 if use_coral else shimmer_f):
+		if psheet != null and psheet.draw_prop(canvas, mc, prop_k, _vis_clock, Color(1.0, 1.0, 1.0, 0.92 * alpha_sc), 1 if use_coral else shimmer_f):
 			continue
 		var body_c := Color(LxPalette.PAL["plum"] as Color if use_coral else (LxPalette.PAL["deep"] as Color), 0.72 * alpha_sc)
 		var slab_c := Color(LxPalette.PAL["wine"] as Color if use_coral else (LxPalette.PAL["blue"] as Color), 0.78 * alpha_sc)

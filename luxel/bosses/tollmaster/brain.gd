@@ -63,7 +63,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_slam_hit = false
 			ground.warn_sector(pos, facing - 1.22, facing + 1.22, SLAM_R, last_tell_duration, 0.0, "coral", "gold")
 			ground.warn_lane(pos, clamp_to_arena(pos + _slam_dir * 140.0), 9.0, last_tell_duration, 0.0, "gold", "cream")
-			stage.play_sfx("invoice_stamp", pos),
+			stage.play_sfx("tollmaster_invoice", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			patterns.emit_fan(pos, _slam_dir, 5 if phase >= 2 else 3, 0.82, 144.0 if phase >= 2 else 128.0, {"color": "gold", "source": "ledger_wave"})
 			stage.shake(0.18)
@@ -106,7 +106,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			var rx: float = arena_rect.position.x if _tilt_left else (c.x + 4.0)
 			var danger_r := Rect2(rx, arena_rect.position.y + 4.0, half_w, arena_rect.size.y - 8.0)
 			ground.warn_rect(danger_r, last_tell_duration, 1.0, "coral", "gold", 0.30)
-			stage.play_sfx("invoice_stamp", pos),
+			stage.play_sfx("tollmaster_invoice", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
 			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 126.0, aim_a + 0.55, 0.72, {"color": "apricot", "source": "scale_tilt"})
@@ -148,11 +148,16 @@ func _on_reset_encounter() -> void:
 
 func _get_sold_count() -> int:
 	# Guarded LxSold integration: safely works whether T8's LxSold is present or absent!
-	if ResourceLoader.exists("res://luxel/islands/8/sold.gd"):
-		var sc: Variant = ResourceLoader.load("res://luxel/islands/8/sold.gd")
-		if sc is GDScript and (sc as GDScript).has_method("sold_count"):
-			return int((sc as GDScript).call("sold_count"))
+	if ResourceLoader.exists("res://luxel/core/sold_settings.gd"):
+		var sc: Variant = ResourceLoader.load("res://luxel/core/sold_settings.gd")
+		if sc is GDScript and (sc as GDScript).has_method("current"):
+			var inst: Variant = (sc as GDScript).call("current")
+			if inst is Object and (inst as Object).has_method("get_sold_count"):
+				return int((inst as Object).call("get_sold_count"))
 	if Lx.vars != null:
+		var g: int = int(Lx.vars.get_var("game", "sold_count", 0))
+		if g > 0:
+			return g
 		return int(Lx.vars.get_var("island:8", "sold_count", 0))
 	return 0
 
@@ -168,7 +173,7 @@ func _on_phase_enter(new_phase: int) -> void:
 		_trigger_invoice(1)
 		stage.darkness_pulse(0.60, 1.0)
 		stage.shake(0.24)
-		stage.play_sfx("invoice_stamp", pos)
+		stage.play_sfx("tollmaster_invoice", pos)
 	elif new_phase == 3:
 		# P3 Arena Change: corner floor scales drop into lethal pits (rolled back on reset!)
 		var cx_t: int = int(c.x / 16.0)
@@ -180,7 +185,7 @@ func _on_phase_enter(new_phase: int) -> void:
 		_trigger_invoice(2)
 		stage.darkness_pulse(0.72, 1.2)
 		stage.shake(0.28)
-		stage.play_sfx("invoice_stamp", pos)
+		stage.play_sfx("tollmaster_invoice", pos)
 
 
 func _trigger_invoice(num: int) -> void:
@@ -211,7 +216,7 @@ func _on_register_smashed() -> void:
 	_invoice_active = false
 	_invoices_refused += 1
 	_monocle_popped_t = 3.2
-	stage.play_sfx("register_shatter", pos)
+	stage.play_sfx("tollmaster_register_break", pos)
 	if _invoices_refused >= 2:
 		_emit_narr("ISL8_TAX_EVASION", "title", 2.8)
 	else:
@@ -263,7 +268,7 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 			# Fair punishment for ignoring Invoice 8s: summons 1-2 toll_clerks!
 			var c: Vector2 = arena_rect.get_center()
 			adds.queue_wave([{"kind": "toll_clerk", "pos": clamp_to_arena(c + Vector2(-52.0, -24.0))}], 0.70, 2)
-			stage.play_sfx("invoice_stamp", pos)
+			stage.play_sfx("tollmaster_invoice", pos)
 
 
 func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:

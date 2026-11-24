@@ -38,33 +38,33 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island4_boss_p1"
 	music_p2_cue = "island4_boss_p2"
-	max_hp = 136.0
-	hp = 136.0
+	max_hp = 138.0
+	hp = 138.0
 	body_radius = 11.0
-	move_speed = 46.0
-	stagger_threshold = 18.0
+	move_speed = 42.0
+	stagger_threshold = 17.0
 	stagger_duration = 1.95
-	post_recover_cd = 0.28
+	post_recover_cd = 0.50
 	shard_drop = 120
 	death_duration = 2.4
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.66, 0.36])
+	configure_phases([0.66, 0.38])
 
-	# Attack 1: Un-Fired Ring — 10-12 glass bolts spawn on outer clock numerals & fly INWARD!
+	# Attack 1: Un-Fired Ring — 7-8 glass bolts spawn on outer clock numerals & fly INWARD!
 	register_attack("unfired_ring", {
-		"weight": 1.30, "tell": 0.60, "commit": 0.45, "recover": 1.05, "cooldown": 1.4,
+		"weight": 1.30, "tell": 0.68, "commit": 0.45, "recover": 1.18, "cooldown": 1.6,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_inward_origins.clear()
 			var c: Vector2 = arena_rect.get_center()
 			var rx: float = arena_rect.size.x * 0.46
 			var ry: float = arena_rect.size.y * 0.44
-			var cnt: int = 12 if phase >= 2 else 10
-			var gap_a: float = (tgt - c).angle() + 0.55
+			var cnt: int = 8 if phase >= 2 else 7
+			var gap_a: float = (tgt - c).angle() + 0.58
 			for i: int in range(cnt):
 				var a: float = -float(i) * (TAU / float(cnt)) + _hour_ang
-				if absf(angle_difference(a, gap_a)) < 0.46:
+				if absf(angle_difference(a, gap_a)) < 0.78:
 					continue
 				var op: Vector2 = clamp_to_arena(c + Vector2(cos(a) * rx, sin(a) * ry))
 				_inward_origins.append(op)
@@ -75,7 +75,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_lane(rim_w, pos, 6.5, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("last_hour_rev_bell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			var spd: float = 148.0 if phase >= 3 else (136.0 if phase >= 2 else 124.0)
+			var spd: float = 110.0 if phase >= 3 else (104.0 if phase >= 2 else 96.0)
 			for op: Vector2 in _inward_origins:
 				var inward: Vector2 = (pos - op).normalized() if pos.distance_to(op) > 2.0 else Vector2.LEFT
 				patterns.emit_fan(op, inward, 1, 0.0, spd, {"color": "ice", "source": "unfired_ring", "max_age": 2.4})
@@ -83,64 +83,64 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("last_hour_time_snap", pos),
 	})
 
-	# Attack 2: Un-Broken Tiles — 5-6 void floor cracks snap whole in reverse with 36 px rings!
+	# Attack 2: Un-Broken Tiles — 3-4 void floor cracks snap whole in reverse with rings!
 	register_attack("unbroken_tiles", {
-		"weight": 1.25, "tell": 0.62, "commit": 0.36, "recover": 1.00, "cooldown": 1.5,
+		"weight": 1.20, "tell": 0.70, "commit": 0.36, "recover": 1.12, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var pts: Array[Vector2] = _build_crack_targets(tgt)
-			patterns.emit_rain(ground, pts, last_tell_duration, 24.0, 1.0, "ice", "gold")
+			patterns.emit_rain(ground, pts, last_tell_duration + 0.04, 17.0, 1.0, "ice", "gold")
 			stage.play_sfx("last_hour_rev_tick", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, d, 5 if phase >= 2 else 3, 0.72, 134.0, {"color": "gold", "source": "unbroken_shards"})
+			patterns.emit_fan(pos, d, 3, 0.72, 108.0, {"color": "gold", "source": "unbroken_shards"})
 			stage.shake(0.16)
 			stage.play_sfx("last_hour_time_snap", pos),
 	})
 
 	# Attack 3: Rewind Lunge — future afterimage appears FIRST at target; body rewinds into it!
 	register_attack("rewind_lunge", {
-		"weight": 1.20, "tell": 0.55, "commit": 0.34, "recover": 1.15, "cooldown": 1.6,
+		"weight": 1.20, "tell": 0.64, "commit": 0.42, "recover": 1.22, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_afterimage_from = pos
 			_afterimage_pos = clamp_to_arena(tgt)
 			_afterimage_active = true
 			var d: Vector2 = (_afterimage_pos - pos).normalized() if _afterimage_pos.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = d.angle()
-			ground.warn_lane(pos, _afterimage_pos, 12.0, last_tell_duration, 0.0, "coral", "ice")
-			ground.warn_ring(_afterimage_pos, 18.0, last_tell_duration, 0.0, "ice", "cream")
+			ground.warn_lane(pos, _afterimage_pos, 10.0, last_tell_duration, 0.0, "coral", "ice")
+			ground.warn_ring(_afterimage_pos, 17.0, last_tell_duration, 0.0, "ice", "cream")
 			stage.play_sfx("last_hour_rev_tick", _afterimage_pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			stage.shake(0.16)
 			stage.play_sfx("hollow_dash", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, elapsed: float) -> void:
-			var u: float = clampf(elapsed / 0.34, 0.0, 1.0)
+			var u: float = clampf(elapsed / 0.42, 0.0, 1.0)
 			var want: Vector2 = _afterimage_from.lerp(_afterimage_pos, u)
 			move_boss(want - pos, true)
 			var ldir: Vector2 = (_afterimage_pos - _afterimage_from).normalized() if _afterimage_pos.distance_to(_afterimage_from) > 1.0 else Vector2.from_angle(facing)
-			check_contact_damage(16.0, ldir, 1.0, "rewind_lunge")
+			check_contact_damage(14.0, ldir, 1.0, "rewind_lunge")
 			if u >= 0.92 and _afterimage_active:
 				_afterimage_active = false
-				patterns.emit_fan(pos, -ldir, 5, 0.95, 134.0, {"color": "coral", "source": "rewind_trail"}),
+				patterns.emit_fan(pos, -ldir, 3, 0.90, 104.0, {"color": "coral", "source": "rewind_trail"}),
 	})
 
 	# Attack 4 (Phase 2 & 3): Minute-Hand Sweep — counter-clockwise sweeping radial clock hand!
 	register_attack("minute_hand_sweep", {
-		"phases": [2, 3], "weight": 1.50, "tell": 0.62, "commit": 0.52, "recover": 1.10, "cooldown": 1.8,
+		"phases": [2, 3], "weight": 1.45, "tell": 0.70, "commit": 0.52, "recover": 1.20, "cooldown": 2.0,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
-			_sweep_ang = (tgt - c).angle() + 0.70
-			_sweep_len = minf(arena_rect.size.x, arena_rect.size.y) * 0.48
-			ground.warn_sector(c, _sweep_ang - 1.40, _sweep_ang, _sweep_len, last_tell_duration, 0.0, "coral", "gold")
-			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.04, 1.0, "ice", "gold")
+			_sweep_ang = (tgt - c).angle() + 0.65
+			_sweep_len = minf(arena_rect.size.x, arena_rect.size.y) * 0.44
+			ground.warn_sector(c, _sweep_ang - 1.10, _sweep_ang, _sweep_len, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 17.0, last_tell_duration + 0.06, 1.0, "ice", "gold")
 			stage.play_sfx("last_hour_rev_bell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() + 0.45
-			patterns.emit_gap_ring(pos, 14, 126.0, gap_a, 0.70, {"color": "gold", "source": "minute_hand_ring"})
+			patterns.emit_gap_ring(pos, 10, 102.0, gap_a, 1.05, {"color": "gold", "source": "minute_hand_ring"})
 			stage.shake(0.18)
 			stage.play_sfx("last_hour_time_snap", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
 			# Counter-clockwise sweep! Gliding Wick passes cleanly over the hand!
-			_sweep_ang -= 2.75 * dt
+			_sweep_ang -= 1.85 * dt
 			_minute_ang = _sweep_ang
 			var c: Vector2 = arena_rect.get_center()
 			var tip: Vector2 = c + Vector2.from_angle(_sweep_ang) * _sweep_len
@@ -148,27 +148,26 @@ func _configure_boss(_spec: Dictionary) -> void:
 				var gliding: bool = Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).is_gliding()
 				if not gliding:
 					var wp: Vector2 = _get_wick_pos()
-					if Geometry2D.get_closest_point_to_segment(wp, c, tip).distance_to(wp) <= 10.0:
+					if Geometry2D.get_closest_point_to_segment(wp, c, tip).distance_to(wp) <= 8.5:
 						_commit_hit_done = true
 						emit_boss_damage(Vector2.from_angle(_sweep_ang - PI * 0.5), 1.0, "minute_hand_sweep", c, true),
 	})
 
 	# Attack 5 (Phase 3): Reverse Spiral & Dual-Hand Cross — inward CCW spiral + cross clock hands!
 	register_attack("reverse_spiral", {
-		"phases": [3], "weight": 1.85, "tell": 0.60, "commit": 0.48, "recover": 1.15, "cooldown": 1.9,
-		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+		"phases": [3], "weight": 2.40, "tell": 0.70, "commit": 0.46, "recover": 1.24, "cooldown": 1.5,
+		"on_tell_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
 			var rx: float = arena_rect.size.x * 0.44
 			var ry: float = arena_rect.size.y * 0.42
-			ground.warn_lane(c + Vector2(-rx, 0.0), c + Vector2(rx, 0.0), 10.0, last_tell_duration, 1.0, "coral", "gold")
-			ground.warn_lane(c + Vector2(0.0, -ry), c + Vector2(0.0, ry), 10.0, last_tell_duration, 1.0, "ice", "cream")
-			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.05, 1.0, "gold", "coral")
+			ground.warn_lane(c + Vector2(-rx, 0.0), c + Vector2(rx, 0.0), 8.0, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_lane(c + Vector2(0.0, -ry), c + Vector2(0.0, ry), 8.0, last_tell_duration, 1.0, "ice", "cream")
 			stage.play_sfx("last_hour_rev_bell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var base_a: float = (tgt - pos).angle()
-			patterns.emit_spiral(pos, 5, 134.0, base_a, -0.44, 3, 0.15, {"color": "ice", "source": "reverse_spiral"})
+			patterns.emit_spiral(pos, 3, 104.0, base_a, -0.52, 2, 0.22, {"color": "ice", "source": "reverse_spiral"})
 			stage.light_burst(pos, 96.0, 1.45, 0.36)
-			stage.shake(0.22)
+			stage.shake(0.20)
 			stage.play_sfx("echo_annihilate", pos),
 	})
 
@@ -229,7 +228,7 @@ func _on_boss_tick(dt: float, tgt: Vector2) -> void:
 		if eb.active and not eb.reflected and eb.source_kind == "unfired_ring" and eb.age >= 0.30 and eb.pos.distance_to(pos) <= body_radius + 4.0:
 			eb.deactivate()
 
-	# Phase 3: Zero O'Clock Rewind every 10 s restores cover pillars & replays a telegraphed ring!
+	# Phase 3: Zero O'Clock Rewind every 10 s restores cover pillars & replays reverse visual pulse!
 	if phase >= 3 and boss_state != BossState.DEATH:
 		_rewind_t -= dt
 		if _rewind_t <= 0.0:
@@ -238,7 +237,6 @@ func _on_boss_tick(dt: float, tgt: Vector2) -> void:
 			_hour_ang = -PI * 0.5
 			_minute_ang = -PI * 0.5
 			_spawn_clock_pillars()
-			ground.warn_ring(clamp_to_arena(tgt), 26.0, 0.62, 1.0, "gold", "ice")
 			stage.play_sfx("last_hour_rev_bell", pos)
 
 	for i: int in range(_annihilate_fx.size() - 1, -1, -1):
@@ -292,7 +290,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if hit != null and (hit.source == LxHit.SOURCE_PRISM or hit.source == "reflected_bolt"):
 		add_stagger(4.5)
 		return dmg * 1.50
-	if not is_punishable():
+	if not is_punishable() and hit != null and hit.source == LxHit.SOURCE_BOLT:
 		return dmg * 0.74
 	return dmg
 
@@ -323,10 +321,9 @@ func _build_crack_targets(tgt: Vector2) -> Array[Vector2]:
 	]
 	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
 	out.append(corners[0])
-	out.append(corners[1])
-	out.append(clamp_to_arena(arena_rect.get_center().lerp(tgt, 0.48)))
+	out.append(clamp_to_arena(arena_rect.get_center().lerp(tgt, 0.50)))
 	if phase >= 2:
-		out.append(corners[2])
+		out.append(corners[1])
 	return out
 
 

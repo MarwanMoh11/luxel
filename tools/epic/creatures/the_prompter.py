@@ -67,7 +67,8 @@ def draw_the_prompter(ctx: FrameCtx) -> Image.Image:
     # Spotlight glow pool beneath conductor + crisp SE shadow
     shadow.contact_shadow(ax + 2.0, ay + 2.0, 16.0, 3.4, "night")
     if p2:
-        fx_back.ring(ax, ay + 1.0, 19.0, "gold", 1.2)
+        fx_back.ellipse(ax, ay + 1.5, 19.0, 4.5, "gold")
+        fx_back.ellipse(ax, ay + 1.5, 16.5, 3.2, "night")
 
     # Overhead marionette wooden crossbar & twin glowing rose-gold cords (THE signature silhouette!)
     bar_y = 9.0 + (2.0 if ctx.is_recover else 0.0)

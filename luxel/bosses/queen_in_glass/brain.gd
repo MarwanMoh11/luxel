@@ -27,47 +27,47 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island7_boss_p1"
 	music_p2_cue = "island7_boss_p2"
-	max_hp = 186.0
-	hp = 186.0
+	max_hp = 192.0
+	hp = 192.0
 	body_radius = 11.0
-	move_speed = 36.0
+	move_speed = 34.0
 	stagger_threshold = 24.0
 	stagger_duration = 1.60
-	post_recover_cd = 0.34
+	post_recover_cd = 0.44
 	shard_drop = 40
 
 
 func _configure_boss(_spec: Dictionary) -> void:
 	configure_phases([0.66, 0.33])
 
-	# Attack 1: Crown Shard Fan — 5 (P2+: 7) reflectable silver-ice needles + perimeter check
+	# Attack 1: Crown Shard Fan — 5 (P2+: 6) reflectable silver-ice needles
 	register_attack("crown_shard_fan", {
-		"weight": 1.25, "tell": 0.50, "commit": 0.32, "recover": 1.15, "cooldown": 1.4,
+		"weight": 1.25, "tell": 0.54, "commit": 0.32, "recover": 1.20, "cooldown": 1.6,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			var a: float = _aim_dir.angle()
-			ground.warn_sector(pos, a - 0.55, a + 0.55, 130.0, last_tell_duration, 0.0, "sky", "ice")
+			ground.warn_sector(pos, a - 0.55, a + 0.55, 125.0, last_tell_duration, 0.0, "sky", "ice")
 			stage.play_sfx("glass_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
-			var cnt: int = 7 if phase >= 2 else 5
-			var spd: float = 152.0 if phase >= 3 else 140.0
-			patterns.emit_fan(pos, _aim_dir, cnt, 0.92, spd, {"color": "ice", "source": "crown_shard", "reflectable": true})
+			var cnt: int = 6 if phase >= 2 else 5
+			var spd: float = 122.0 if phase >= 3 else 112.0
+			patterns.emit_fan(pos, _aim_dir, cnt, 1.08, spd, {"color": "ice", "source": "crown_shard", "reflectable": true})
 			stage.shake(0.12)
 			stage.play_sfx("mirror_ping", pos),
 	})
 
 	# Attack 2: Looking-Glass Beam — 175px prism sweep; opens back cleanly during 1.30s recover!
 	register_attack("looking_glass_beam", {
-		"weight": 1.20, "tell": 0.58, "commit": 0.34, "recover": 1.30, "cooldown": 1.8,
+		"weight": 1.20, "tell": 0.60, "commit": 0.34, "recover": 1.30, "cooldown": 2.0,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			ground.warn_lane(pos, pos + _aim_dir * 185.0, 12.0, last_tell_duration, 1.0, "sky", "cream")
+			ground.warn_lane(pos, pos + _aim_dir * 185.0, 11.0, last_tell_duration, 1.0, "sky", "cream")
 			stage.play_sfx("beam_charge", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_lane(pos, _aim_dir, 4 if phase >= 2 else 3, 185.0, 0.055, {"color": "sky", "source": "looking_glass_beam", "reflectable": true})
+			patterns.emit_lane(pos, _aim_dir, 3, 140.0, 0.07, {"color": "sky", "source": "looking_glass_beam", "reflectable": true})
 			if phase >= 2:
-				patterns.emit_fan(pos, _aim_dir, 3, 0.45, 135.0, {"color": "rose", "source": "prism_split", "reflectable": true})
+				patterns.emit_fan(pos, _aim_dir, 3, 0.68, 110.0, {"color": "rose", "source": "prism_split", "reflectable": true})
 			stage.light_burst(pos, 84.0, 1.35, 0.30)
 			stage.shake(0.18)
 			stage.play_sfx("prism_beam", pos),
@@ -75,56 +75,56 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 3: Prism Rain Court — drops crystalline rings on Wick & nearest corners (zero safe spots!)
 	register_attack("prism_rain_court", {
-		"weight": 1.05, "tell": 0.54, "commit": 0.36, "recover": 1.20, "cooldown": 2.1,
+		"weight": 1.05, "tell": 0.56, "commit": 0.36, "recover": 1.25, "cooldown": 2.3,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = _build_court_rain(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 24.0, 1.0, "rose" if phase >= 2 else "sky", "ice")
+			patterns.emit_rain(ground, drops, last_tell_duration, 18.0, 1.0, "rose" if phase >= 2 else "sky", "ice")
 			stage.play_sfx("glass_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			patterns.emit_gap_ring(pos, 10, 118.0, d.angle() + PI * 0.4, 0.72, {"color": "ice", "source": "court_ring", "reflectable": true})
+			patterns.emit_gap_ring(pos, 8, 104.0, d.angle() + PI * 0.4, 0.90, {"color": "ice", "source": "court_ring", "reflectable": true})
 			stage.shake(0.14)
 			stage.play_sfx("mirror_crack", pos),
 	})
 
 	# Attack 4 (P2+): Mirror Carousel — 3 orbiting glass panes + expanding ice gap-rings!
 	register_attack("mirror_carousel", {
-		"phases": [2, 3], "weight": 1.35, "tell": 0.54, "commit": 0.85, "recover": 1.25, "cooldown": 2.4,
+		"phases": [2, 3], "weight": 1.35, "tell": 0.56, "commit": 0.80, "recover": 1.25, "cooldown": 2.6,
 		"on_tell_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			ground.warn_ring(pos, 42.0, last_tell_duration, 1.0, "rose", "ice")
+			ground.warn_ring(pos, 38.0, last_tell_duration, 1.0, "rose", "ice")
 			stage.play_sfx("glass_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.RIGHT
-			patterns.emit_orbit(pos, 3, 44.0, 2.4, 2.2, {"color": "ice", "source": "carousel_pane", "reflectable": true, "follow_boss": true})
-			patterns.emit_gap_ring(pos, 12, 122.0, d.angle(), 0.72, {"color": "sky", "source": "carousel_ring", "reflectable": true})
+			patterns.emit_orbit(pos, 3, 40.0, 2.2, 1.4, {"color": "ice", "source": "carousel_pane", "reflectable": true, "follow_boss": true})
+			patterns.emit_gap_ring(pos, 8, 106.0, d.angle(), 0.90, {"color": "sky", "source": "carousel_ring", "reflectable": true})
 			stage.shake(0.16)
 			stage.play_sfx("mirror_ping", pos),
 	})
 
 	# Attack 5 (P3): Royal Reflection — 2 NW-shadow clones cross-lunge while real SE-shadow Queen leads!
 	register_attack("royal_reflection", {
-		"phases": [3], "weight": 1.50, "tell": 0.56, "commit": 0.34, "recover": 1.35, "cooldown": 2.1,
+		"phases": [3], "weight": 1.50, "tell": 0.58, "commit": 0.34, "recover": 1.35, "cooldown": 2.3,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_lunge_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			_spawn_p3_clones(tgt)
-			ground.warn_lane(pos, clamp_to_arena(pos + _lunge_dir * 110.0), 11.0, last_tell_duration, 0.0, "rose", "cream")
+			ground.warn_lane(pos, clamp_to_arena(pos + _lunge_dir * 96.0), 10.0, last_tell_duration, 0.0, "rose", "cream")
 			for cl: Dictionary in _clones:
 				var cp: Vector2 = cl["pos"] as Vector2
 				var cd: Vector2 = (tgt - cp).normalized() if tgt.distance_to(cp) > 0.1 else -_lunge_dir
 				cl["dir"] = cd
-				ground.warn_lane(cp, clamp_to_arena(cp + cd * 95.0), 9.0, last_tell_duration, 1.0, "sky", "ice")
+				ground.warn_lane(cp, clamp_to_arena(cp + cd * 86.0), 8.0, last_tell_duration, 1.0, "sky", "ice")
 			stage.play_sfx("glass_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			stage.play_sfx("hollow_dash", pos)
 			for cl: Dictionary in _clones:
 				var cp: Vector2 = cl["pos"] as Vector2
 				var cd: Vector2 = cl["dir"] as Vector2
-				patterns.emit_fan(cp, cd, 3, 0.50, 138.0, {"color": "sky", "source": "clone_shard", "reflectable": true}),
+				patterns.emit_fan(cp, cd, 2, 0.55, 112.0, {"color": "sky", "source": "clone_shard", "reflectable": true}),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
-			move_boss(_lunge_dir * 210.0 * dt, false)
-			check_contact_damage(18.0, _lunge_dir, 1.0, "royal_lunge")
+			move_boss(_lunge_dir * 175.0 * dt, false)
+			check_contact_damage(17.0, _lunge_dir, 1.0, "royal_lunge")
 			for cl: Dictionary in _clones:
-				cl["pos"] = clamp_to_arena((cl["pos"] as Vector2) + (cl["dir"] as Vector2) * 185.0 * dt),
+				cl["pos"] = clamp_to_arena((cl["pos"] as Vector2) + (cl["dir"] as Vector2) * 165.0 * dt),
 	})
 
 

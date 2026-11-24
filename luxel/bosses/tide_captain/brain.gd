@@ -6,21 +6,21 @@ extends LxCrabWardenBrain
 ## P2 Lateral Claw-Rush Feint, P2 Double Cross-Surge (twin +-45 deg cones with safe center lane!),
 ## and P2 Arena Mutation (tower_tide -> "mid", surging basin foam, floating mirror drift, & bicorne snatch beat!).
 
-const SURGE_TELL_P1: float = 0.58
-const SURGE_TELL_P2: float = 0.52
-const CROSS_TELL_P2: float = 0.56
+const SURGE_TELL_P1: float = 0.62
+const SURGE_TELL_P2: float = 0.56
+const CROSS_TELL_P2: float = 0.60
 const SURGE_FIRE_TIME: float = 0.32
 const CROSS_FIRE_TIME: float = 0.34
-const SURGE_RECOVER_P1: float = 1.22
-const SURGE_RECOVER_P2: float = 1.15
+const SURGE_RECOVER_P1: float = 1.35
+const SURGE_RECOVER_P2: float = 1.25
 const SURGE_START_R: float = 10.0
-const SURGE_MAX_R: float = 88.0
-const SURGE_HALF_ARC: float = 0.56
+const SURGE_MAX_R: float = 84.0
+const SURGE_HALF_ARC: float = 0.52
 const CROSS_OFFSET_RAD: float = 0.785 # +-45 deg cones with safe center lane
-const CROSS_HALF_ARC: float = 0.36
-const SURGE_BAND: float = 13.0
-const SURGE_CD_P1: float = 4.2
-const SURGE_CD_P2: float = 2.9
+const CROSS_HALF_ARC: float = 0.34
+const SURGE_BAND: float = 12.0
+const SURGE_CD_P1: float = 5.0
+const SURGE_CD_P2: float = 3.8
 const GUARD_CRACK_STAGGER: float = 1.40
 const GUARD_CRACK_MULT: float = 1.50
 const FEINT_DIST: float = 18.0
@@ -56,18 +56,18 @@ func _init() -> void:
 	hp = 18.0
 	shield_max = 4.0
 	shield_hp = 4.0
-	shield_gone_duration = 4.5
+	shield_gone_duration = 5.2
 	body_radius = 7.0
-	routine_speed = 38.0
+	routine_speed = 36.0
 	leash_radius = 175.0
 	notice_radius = 140.0
 	reach = 40.0
-	lunge_reach = 100.0
-	swing_r = 30.0
-	swing_arc = 1.24
-	tell_time = 0.48
-	lunge_tell_time = 0.54
-	recover_time = 1.15
+	lunge_reach = 96.0
+	swing_r = 28.0
+	swing_arc = 1.18
+	tell_time = 0.52
+	lunge_tell_time = 0.58
+	recover_time = 1.25
 	shard_drop = 16
 
 
@@ -383,7 +383,12 @@ func _step_commit(dt: float) -> void:
 	surge_progress = 1.0 - clampf(state_timer / fire_dur, 0.0, 1.0)
 	var wave_r: float = lerpf(SURGE_START_R, SURGE_MAX_R, surge_progress)
 	var base_a: float = surge_dir.angle()
-	var cones: Array[Vector2] = [Vector2(base_a - CROSS_OFFSET_RAD, CROSS_HALF_ARC), Vector2(base_a + CROSS_OFFSET_RAD, CROSS_HALF_ARC)] if cross_surge else [Vector2(base_a, SURGE_HALF_ARC)]
+	var cones: Array[Vector2] = []
+	if cross_surge:
+		cones.append(Vector2(base_a - CROSS_OFFSET_RAD, CROSS_HALF_ARC))
+		cones.append(Vector2(base_a + CROSS_OFFSET_RAD, CROSS_HALF_ARC))
+	else:
+		cones.append(Vector2(base_a, SURGE_HALF_ARC))
 	if not surge_hit and _has_player():
 		var wv: Vector2 = _get_wick_pos() - pos
 		var wd: float = wv.length()
@@ -414,7 +419,7 @@ func _step_commit(dt: float) -> void:
 		surge_cd = SURGE_CD_P2 if phase >= 2 else SURGE_CD_P1
 
 
-func _swing_tell_base() -> float: return 0.42 if phase >= 2 else tell_time
+func _swing_tell_base() -> float: return 0.46 if phase >= 2 else tell_time
 func _lunge_tell_base() -> float: return 0.48 if phase >= 2 else lunge_tell_time
 func _post_recover_cooldown() -> float: return 0.72 if phase >= 2 else 0.92
 func _body_color() -> Color: return (PAL["wine"] as Color) if phase >= 2 else (PAL["coral"] as Color)
@@ -444,7 +449,7 @@ func _draw_extra(off: Vector2) -> void:
 	if surge_attack and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var base_a: float = surge_dir.angle()
-		var cones: Array[Vector2] = [Vector2(base_a - CROSS_OFFSET_RAD, CROSS_HALF_ARC), Vector2(base_a + CROSS_OFFSET_RAD, CROSS_HALF_ARC)] if cross_surge else [Vector2(base_a, SURGE_HALF_ARC)]
+		var cones: Array[Vector2] = _surge_cones(base_a)
 		var hot: bool = state_timer <= 0.16
 		var edge_c: Color = (PAL["cream"] if hot else PAL["sky"]) as Color
 		for ci: Vector2 in cones:
@@ -458,7 +463,7 @@ func _draw_extra(off: Vector2) -> void:
 	elif surge_attack and state == State.COMMIT:
 		var wave_r: float = lerpf(SURGE_START_R, SURGE_MAX_R, surge_progress)
 		var base_a: float = surge_dir.angle()
-		var cones: Array[Vector2] = [Vector2(base_a - CROSS_OFFSET_RAD, CROSS_HALF_ARC), Vector2(base_a + CROSS_OFFSET_RAD, CROSS_HALF_ARC)] if cross_surge else [Vector2(base_a, SURGE_HALF_ARC)]
+		var cones: Array[Vector2] = _surge_cones(base_a)
 		for ci: Vector2 in cones:
 			var a0: float = ci.x - ci.y
 			var a1: float = ci.x + ci.y
@@ -471,6 +476,16 @@ func _draw_extra(off: Vector2) -> void:
 		var rr: float = body_radius + 10.0 + rp * 16.0
 		draw_arc(c, rr + 2.4, 0.0, TAU, 28, PAL["sky"] as Color, 2.0)
 		draw_arc(c, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)
+
+
+func _surge_cones(base_a: float) -> Array[Vector2]:
+	var out: Array[Vector2] = []
+	if cross_surge:
+		out.append(Vector2(base_a - CROSS_OFFSET_RAD, CROSS_HALF_ARC))
+		out.append(Vector2(base_a + CROSS_OFFSET_RAD, CROSS_HALF_ARC))
+	else:
+		out.append(Vector2(base_a, SURGE_HALF_ARC))
+	return out
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

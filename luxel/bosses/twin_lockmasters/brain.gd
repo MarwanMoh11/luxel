@@ -51,13 +51,13 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 68.0
-	hp = 68.0
+	max_hp = 116.0
+	hp = 116.0
 	body_radius = 11.0
 	move_speed = 42.0
-	stagger_threshold = 13.0
+	stagger_threshold = 15.0
 	stagger_duration = 1.55
-	punish_dmg_mult = 1.45
+	punish_dmg_mult = 1.40
 	post_recover_cd = 0.32
 	shard_drop = 32
 	intro_duration = 0.75
@@ -100,12 +100,12 @@ func _configure_boss(_spec: Dictionary) -> void:
 			var ex_p: Vector2 = _portals[ex_i] if ex_i >= 0 else _bilge_pos
 			var s_dir: Vector2 = (tgt - ex_p).normalized() if tgt.distance_to(ex_p) > 2.0 else Vector2.LEFT
 			ground.warn_ring(ex_p, 20.0, last_tell_duration, 0.0, "sky", "ice")
-			ground.warn_lane(ex_p, clamp_to_arena(ex_p + s_dir * 160.0), 8.0, last_tell_duration, 1.0, "sky", "cream")
+			ground.warn_lane(ex_p, clamp_to_arena(ex_p + s_dir * 160.0), 8.0, last_tell_duration, 0.0, "sky", "cream")
 			stage.play_sfx("portal_swap_chime", ex_p),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var ex_p: Vector2 = _portals[_portal_glow_idx] if (_portal_glow_idx >= 0 and _portal_glow_idx < _portals.size()) else _bilge_pos
 			var s_dir: Vector2 = (tgt - ex_p).normalized() if tgt.distance_to(ex_p) > 2.0 else Vector2.LEFT
-			patterns.emit_lane(ex_p, s_dir, 4 if phase >= 2 else 3, 162.0, 0.07, {"color": "sky", "source": "bilge_snipe", "field_scale": 0.85})
+			patterns.emit_lane(ex_p, s_dir, 4 if phase >= 2 else 3, 138.0, 0.09, {"color": "sky", "source": "bilge_snipe", "field_scale": 0.65})
 			# Bilge warps to the opposite portal!
 			if _portals.size() >= 4:
 				_bilge_pos = _portals[(_portal_glow_idx + 2) % _portals.size()]

@@ -1,0 +1,157 @@
+{
+  "pack_id": "i8_bosses_b",
+  "version": 1,
+  "owner": "I8-bosses-b",
+  "comment": "Island 8 (The Long Night - Finale) Boss Package B: archivist (Archive boss), stair_warden (3-tier Endless Stair boss), rose_seraph (Bell Sanctum mini-boss), first_dark (80-moth superboss), plus strings and SFX for upgraded night_harbinger and the_hush.",
+  "strings": {
+    "ISL8_BOSS_ARCHIVIST": "THE ARCHIVIST",
+    "ISL8_BOSS_STAIR1": "STAIR WARDEN",
+    "ISL8_BOSS_STAIR3": "ECLIPSE SOVEREIGN",
+    "ISL8_BOSS_SERAPH": "ROSE-WINDOW SERAPH",
+    "ISL8_BOSS_FIRST_DARK": "THE FIRST DARK",
+    "ISL8_ASK_FINALE_1": "ONE SETTING LEFT. IT IS THE SCREEN.",
+    "ISL8_ASK_FINALE_2": "KEEP DISPLAY - STAND ALONE",
+    "ISL8_FINALE_SWELL": "THE DARK IS COMING ALL AT ONCE.",
+    "ISL8_FINALE_REFUSE": "THEN STAND WITH WHAT YOU KEPT.",
+    "ISL8_FINALE_PIXELS_ROW": "PIXELS: %d%% - OFF",
+    "ISL8_FINALE_AUTOSELL": "AUTO-SELLING DISPLAY...",
+    "ISL8_FINALE_STAND_FMT": "UNBROKEN STAND: %dS",
+    "ISL8_FINALE_STAND_DONE": "THE NIGHT BREAKS! FINISH THE HUSH!",
+    "ISL8_HUSH_FEW": "YOU HELD TOO MUCH BACK.",
+    "ISL8_HUSH_NONE": "NOTHING LEFT TO TAKE THERE.",
+    "ISL8_END_FEW": "THE LANTERN BARELY HELD WHAT YOU GAVE.",
+    "ISL8_END_MID": "THE LANTERN KEPT EVERY PIECE YOU GAVE.",
+    "ISL8_END_ALL": "ALL 12 SOLD. NOT ONE PIXEL WASTED.",
+    "ISL8_DAWN_FEW": "YOU KEPT MOST OF THE WORLD INTACT.",
+    "ISL8_DAWN_MID": "THE SUN BUYS BACK WHAT THE NIGHT TOOK.",
+    "ISL8_DAWN_ALL": "NOTHING LEFT TO GIVE. STILL YOU STOOD.",
+    "ISL8_RES_TOLLS": "TOLLS PAID: %d/12"
+  },
+  "enemies": {
+    "archivist": {
+      "script": "res://luxel/bosses/archivist/brain.gd",
+      "data": {
+        "max_hp": 220.0,
+        "body_radius": 13.0,
+        "routine_speed": 42.0,
+        "leash_radius": 0.0,
+        "notice_radius": 190.0,
+        "tell_time": 0.58,
+        "recover_time": 1.20,
+        "shard_drop": 48,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "stair_warden": {
+      "script": "res://luxel/bosses/stair_warden/brain.gd",
+      "data": {
+        "max_hp": 210.0,
+        "body_radius": 12.5,
+        "routine_speed": 44.0,
+        "leash_radius": 0.0,
+        "notice_radius": 190.0,
+        "tell_time": 0.54,
+        "recover_time": 1.15,
+        "shard_drop": 40,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "rose_seraph": {
+      "script": "res://luxel/bosses/rose_seraph/brain.gd",
+      "data": {
+        "max_hp": 128.0,
+        "body_radius": 12.0,
+        "routine_speed": 46.0,
+        "leash_radius": 0.0,
+        "notice_radius": 185.0,
+        "tell_time": 0.54,
+        "recover_time": 1.10,
+        "shard_drop": 30,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "first_dark": {
+      "script": "res://luxel/bosses/first_dark/brain.gd",
+      "data": {
+        "max_hp": 275.0,
+        "body_radius": 14.0,
+        "routine_speed": 32.0,
+        "leash_radius": 0.0,
+        "notice_radius": 200.0,
+        "tell_time": 0.62,
+        "recover_time": 1.20,
+        "shard_drop": 80,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "archivist": {
+      "island": 8,
+      "name_key": "ISL8_BOSS_ARCHIVIST",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "archive",
+      "region": "archive_r12",
+      "music": "island8_boss_p1",
+      "music_p2": "island8_boss_p2",
+      "heart": "half",
+      "flag": "archivist_defeated",
+      "arena_lock": true
+    },
+    "stair_warden": {
+      "island": 8,
+      "name_key": "ISL8_BOSS_STAIR1",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "endless_stair",
+      "region": "stair_r10",
+      "music": "island8_boss_p1",
+      "music_p2": "island8_boss_p2",
+      "heart": "none",
+      "flag": "stair_warden_defeated",
+      "arena_lock": true
+    },
+    "rose_seraph": {
+      "island": 8,
+      "name_key": "ISL8_BOSS_SERAPH",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "bell_sanctum",
+      "region": "sanctum_r12",
+      "music": "island8_boss_p1",
+      "music_p2": "island8_boss_p2",
+      "heart": "half",
+      "flag": "rose_seraph_defeated",
+      "arena_lock": true
+    },
+    "first_dark": {
+      "island": 8,
+      "name_key": "ISL8_BOSS_FIRST_DARK",
+      "phases": [0.6, 0.25],
+      "mini": false,
+      "dungeon": "superboss",
+      "region": "superboss_first_dark",
+      "music": "island8_boss_p1",
+      "music_p2": "island8_boss_p2",
+      "heart": "full",
+      "flag": "first_dark_defeated",
+      "arena_lock": true
+    }
+  },
+  "sfx": {
+    "page_turn_heavy": { "id": "prop_rustle", "pitch": 0.78, "db": 0.0 },
+    "tile_erase": { "id": "seal_shatter_heavy", "pitch": 0.72, "db": -0.5 },
+    "moth_spark_rip": { "id": "prism_chain", "pitch": 1.24, "db": -0.5 },
+    "seraph_hue_shift": { "id": "clockwork_chime", "pitch": 1.26, "db": -1.5 },
+    "seraph_glass_shatter": { "id": "shield_shatter", "pitch": 1.18, "db": 0.0 },
+    "stair_tread_drop": { "id": "stone_break", "pitch": 0.82, "db": 0.0 },
+    "eclipse_mirror_shatter": { "id": "shield_shatter", "pitch": 1.28, "db": 0.0 },
+    "hush_pixel_sell": { "id": "waystone_lit", "pitch": 1.15, "db": -1.0 },
+    "hush_big_blast": { "id": "dawn_burst", "pitch": 0.90, "db": 0.5 }
+  }
+}

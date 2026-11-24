@@ -128,7 +128,7 @@
           32,
           16
         ],
-        "hold_secs": 2.4,
+        "hold_secs": 3.4,
         "target_id": "gate_r6_echo"
       }
     },
@@ -145,7 +145,7 @@
           32,
           16
         ],
-        "hold_secs": 2.4,
+        "hold_secs": 3.4,
         "target_id": "gate_r6_echo"
       }
     },
@@ -258,7 +258,7 @@
       "kind": "grave_hand",
       "pos": [
         416,
-        184
+        224
       ],
       "zone": "uc_echo"
     }
@@ -480,7 +480,7 @@
         "op": "goto",
         "to": [
           80,
-          152
+          144
         ]
       },
       {
@@ -508,16 +508,12 @@
       {
         "op": "goto",
         "to": [
-          384,
-          224
+          392,
+          168
         ]
       },
       {
         "op": "shoot",
-        "from": [
-          432,
-          160
-        ],
         "target": "bell_r6_dusk"
       },
       {
@@ -525,7 +521,11 @@
         "interactable": "door_r6_north",
         "prop": "opened",
         "value": true,
-        "timeout": 3.0
+        "timeout": 3.5
+      },
+      {
+        "op": "clear",
+        "timeout": 18.0
       },
       {
         "op": "shoot",

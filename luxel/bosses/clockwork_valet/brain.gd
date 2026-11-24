@@ -34,8 +34,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island1_boss_p1"
 	music_p2_cue = "island1_boss_p2"
-	max_hp = 36.0
-	hp = 36.0
+	max_hp = 44.0
+	hp = 44.0
 	body_radius = 10.5
 	move_speed = 42.0
 	stagger_threshold = 9.0
@@ -164,11 +164,12 @@ func _spawn_workshop_bells() -> void:
 				break
 	if not has_room_bell:
 		var c: Vector2 = arena_rect.get_center()
-		var dusk_p := Vector2(c.x, arena_rect.position.y + 18.0)
-		props.spawn_bell(dusk_p, func(p: Dictionary) -> void:
+		var dusk_p := Vector2(c.x + 34.0, arena_rect.position.y + 20.0)
+		var b_dusk: Dictionary = props.spawn_bell(dusk_p, func(p: Dictionary) -> void:
 			var bp: Vector2 = p["pos"] as Vector2
 			on_ring("dusk", (pos - bp).normalized())
 			stage.play_sfx("clockwork_chime", bp), "valet_lab_bell_dusk")
+		b_dusk["solid"] = false
 
 
 func _build_candle_targets(tgt: Vector2) -> Array[Vector2]:

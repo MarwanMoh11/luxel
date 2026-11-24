@@ -6,15 +6,20 @@ extends LxCinderGolemBrain
 ## P2 adds a 4-Way Furnace Cross-Blast (tell >= 0.55s) alongside Bellows Gust & Molten Rings.
 
 signal gust_emitted(origin: Vector2, dir: Vector2, gust_range: float, half_width: float, source: LxEnemyBrain)
+signal add_spawn_requested(specs: Array, source: LxEnemyBrain)
 
-enum KilnMove { MOLTEN_RING, BELLOWS_GUST, FURNACE_CROSS }
+enum KilnMove { MOLTEN_RING, BELLOWS_GUST, FURNACE_CROSS, SLAG_LOB }
 enum RingStage { RING_1, PAUSE, RING_2 }
 
 const KILN_ARMOUR_MAX: float = 4.5
 const KILN_RING_MAX_R: float = 80.0
 const KILN_RING_BAND: float = 10.5
 const KILN_TRIGGER_R: float = 128.0
-const RING_PAUSE_P3: float = 0.46
+const RING_PAUSE_P3: float = 0.62
+const MELTDOWN_STAGGER: float = 2.00
+const SLAG_LOB_TELL: float = 0.54
+const SLAG_LOB_COMMIT: float = 0.32
+const SLAG_LOB_RECOVER: float = 1.15
 
 const GUST_TELL_P1: float = 0.60
 const GUST_TELL_P3: float = 0.54
@@ -46,52 +51,31 @@ var cross_progress: float = 0.0
 var cross_hit: bool = false
 var _roaring: bool = false
 var _armor_forged_roar: bool = false
+var _slag: LxKilnSlagHelper = LxKilnSlagHelper.new()
+var _slimes_spawned_p2: bool = false
+var _lob_done: bool = false
 
 
 func _init() -> void:
 	super._init()
-	kind = "kilnmother"
-	boss_id = "kilnmother"
-	island_id = 6
-	is_boss = true
-	max_hp = 20.0
-	hp = 20.0
-	armour_max = KILN_ARMOUR_MAX
-	armour_hp = KILN_ARMOUR_MAX
-	body_radius = 9.5
-	routine_speed = 26.0
-	leash_radius = 160.0
-	notice_radius = 140.0
-	tell_time = 0.66
-	recover_time = 1.45
-	give_up_time = 1.1
-	attack_damage = 1.5
-	reach = KILN_TRIGGER_R
-	lunge_reach = KILN_TRIGGER_R
-	shard_drop = 36
+	kind = "kilnmother"; boss_id = "kilnmother"; island_id = 6; is_boss = true
+	max_hp = 20.0; hp = 20.0; armour_max = KILN_ARMOUR_MAX; armour_hp = KILN_ARMOUR_MAX
+	body_radius = 9.5; routine_speed = 26.0; leash_radius = 160.0; notice_radius = 140.0
+	tell_time = 0.66; recover_time = 1.45; give_up_time = 1.1; attack_damage = 1.5
+	reach = KILN_TRIGGER_R; lunge_reach = KILN_TRIGGER_R; shard_drop = 36
 
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
-	max_hp = maxf(20.0, max_hp)
-	hp = max_hp
-	is_boss = true
-	boss_id = str(spec.get("boss_id", "kilnmother"))
-	island_id = int(spec.get("island_id", 6))
+	max_hp = maxf(20.0, max_hp); hp = max_hp; is_boss = true
+	boss_id = str(spec.get("boss_id", "kilnmother")); island_id = int(spec.get("island_id", 6))
 	armour_max = maxf(1.0, float(spec.get("armour_hp", KILN_ARMOUR_MAX)))
-	armour_hp = armour_max
-	armour_intact = true
-	active_move = KilnMove.MOLTEN_RING
-	ring_stage = RingStage.RING_1
-	move_cycle = 0
-	gust_dir = Vector2.from_angle(facing)
-	gust_hit = false
-	gust_announced = false
-	cross_base_ang = facing
-	cross_progress = 0.0
-	cross_hit = false
-	_roaring = false
-	_armor_forged_roar = false
+	armour_hp = armour_max; armour_intact = true
+	active_move = KilnMove.MOLTEN_RING; ring_stage = RingStage.RING_1; move_cycle = 0
+	gust_dir = Vector2.from_angle(facing); gust_hit = false; gust_announced = false
+	cross_base_ang = facing; cross_progress = 0.0; cross_hit = false
+	_roaring = false; _armor_forged_roar = false; _slag.reset()
+	_slimes_spawned_p2 = false; _lob_done = false
 
 
 func take_hit(hit: LxHit) -> int:
@@ -101,6 +85,26 @@ func take_hit(hit: LxHit) -> int:
 		_emit_enemy_hit(hit, HitResult.GLANCED)
 		return HitResult.GLANCED
 	var h: Dictionary = _read_hit(hit)
+	# P3 Core Meltdown: hitting her exposed furnace mouth during Double-Ring inhale PAUSE with Sunflare/Lance staggers 2.0s!
+	var in_meltdown_inhale: bool = phase >= 3 and state == State.COMMIT and active_move == KilnMove.MOLTEN_RING and ring_stage == RingStage.PAUSE
+	if in_meltdown_inhale and (bool(h.get("cracks_armour", false)) or str(h.get("source", "")) == LxHit.SOURCE_SUNFLARE):
+		if armour_intact:
+			_crack_armour()
+		hp -= float(h["damage"]) + 1.5
+		flash_t = 0.22
+		ring_stage = RingStage.RING_1
+		_boss_impact(0.26, 94.0, 96.0)
+		_emit_sfx("kilnmother_belly_interrupt")
+		_emit_sfx("magma_crack")
+		if hp <= 0.001:
+			opened_kill = true
+			_die(hit)
+			return HitResult.KILLED
+		_release_token()
+		state = State.STAGGER
+		state_timer = MELTDOWN_STAGGER
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
 	# Hitting her glowing exposed belly during BELLOWS_GUST inhale (TELL) interrupts & staggers her 0.9s!
 	if state == State.TELL and active_move == KilnMove.BELLOWS_GUST:
 		var dmg: float = float(h["damage"])
@@ -184,9 +188,19 @@ func _enter_phase(next_phase: int) -> void:
 		Lx.events.shake_requested.emit(0.35)
 	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
 	_emit_sfx("kilnmother_phase")
+	_slag.trigger_room_pourers(world_ctx)
+	if phase == 2:
+		_slag.rim_cracked = true
+		if not _slimes_spawned_p2 and Lx.packs != null and not Lx.packs.enemy_script("slag_slime").is_empty():
+			_slimes_spawned_p2 = true
+			add_spawn_requested.emit([
+				{"kind": "slag_slime", "pos": pos + Vector2(-58.0, 24.0), "island_id": 6},
+				{"kind": "slag_slime", "pos": pos + Vector2(58.0, 24.0), "island_id": 6},
+			], self)
 
 
 func _step_brain(dt: float) -> void:
+	_slag.tick(dt, self)
 	if state == State.NOTICE and _roaring:
 		state_timer -= dt
 		if state_timer <= 0.0:
@@ -203,20 +217,27 @@ func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
 		return false
 	var chosen: int = KilnMove.MOLTEN_RING
 	if phase >= 2:
-		var slot_m: int = move_cycle % 3
+		var slot_m: int = move_cycle % 4
 		if _is_lantern_out() and dist <= GUST_RANGE and slot_m != 2:
 			chosen = KilnMove.BELLOWS_GUST
 		elif slot_m == 1:
 			chosen = KilnMove.BELLOWS_GUST
 		elif slot_m == 2:
 			chosen = KilnMove.FURNACE_CROSS
+		elif slot_m == 3:
+			chosen = KilnMove.SLAG_LOB
 		else:
 			chosen = KilnMove.MOLTEN_RING if dist <= KILN_RING_MAX_R + 14.0 else KilnMove.FURNACE_CROSS
 	else:
-		var want_gust: bool = (_is_lantern_out() and dist <= GUST_RANGE) or (move_cycle % 2 == 1)
-		if not want_gust and dist > KILN_RING_MAX_R + 14.0:
-			want_gust = true
-		chosen = KilnMove.BELLOWS_GUST if want_gust else KilnMove.MOLTEN_RING
+		var slot_p1: int = move_cycle % 3
+		if _is_lantern_out() and dist <= GUST_RANGE:
+			chosen = KilnMove.BELLOWS_GUST
+		elif slot_p1 == 1:
+			chosen = KilnMove.BELLOWS_GUST
+		elif slot_p1 == 2:
+			chosen = KilnMove.SLAG_LOB
+		else:
+			chosen = KilnMove.MOLTEN_RING if dist <= KILN_RING_MAX_R + 14.0 else KilnMove.BELLOWS_GUST
 	if not _claim_token():
 		return false
 
@@ -243,6 +264,11 @@ func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
 		var base_c: float = CROSS_TELL_P3 if phase >= 3 else CROSS_TELL_P2
 		last_tell_duration = _scaled_tell(base_c, false, attack_damage)
 		_emit_sfx("golem_stomp_tell")
+	elif active_move == KilnMove.SLAG_LOB:
+		_lob_done = false
+		_slag.pick_lob_targets(pos, target_pos, world_ctx)
+		last_tell_duration = _scaled_tell(SLAG_LOB_TELL, false, 1.0)
+		_emit_sfx("furnace_draw")
 	else:
 		ring_stage = RingStage.RING_1
 		stomp_progress = 0.0
@@ -289,6 +315,13 @@ func _enter_commit() -> void:
 		_boss_impact(0.22, 108.0, 104.0)
 		_emit_sfx("kilnmother_bellows_gust")
 		return
+	if active_move == KilnMove.SLAG_LOB:
+		state = State.COMMIT
+		state_timer = SLAG_LOB_COMMIT
+		_lob_done = false
+		_boss_impact(0.16, 80.0, 82.0)
+		_emit_sfx("magma_crack")
+		return
 	ring_stage = RingStage.RING_1
 	super._enter_commit()
 
@@ -299,6 +332,16 @@ func _step_commit(dt: float) -> void:
 		return
 	if active_move == KilnMove.FURNACE_CROSS:
 		_step_cross_commit(dt)
+		return
+	if active_move == KilnMove.SLAG_LOB:
+		if not _lob_done:
+			_lob_done = true
+			_slag.commit_lobs(self)
+		state_timer -= dt
+		if state_timer <= 0.0:
+			state = State.RECOVER
+			state_timer = maxf(MIN_RECOVER_TIME, SLAG_LOB_RECOVER)
+			last_recover_duration = state_timer
 		return
 	if ring_stage == RingStage.PAUSE:
 		state_timer -= dt
@@ -341,12 +384,13 @@ func _step_commit(dt: float) -> void:
 func _step_cross_commit(dt: float) -> void:
 	state_timer = maxf(0.0, state_timer - dt)
 	cross_progress = 1.0 - clampf(state_timer / CROSS_COMMIT_TIME, 0.0, 1.0)
-	var cur_len: float = lerpf(14.0, CROSS_RANGE, cross_progress)
+	var raw_len: float = lerpf(14.0, CROSS_RANGE, cross_progress)
 	if not cross_hit and _has_player():
 		var wp: Vector2 = _get_wick_pos()
 		for ci: int in range(4):
 			var cdir: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
-			if Geometry2D.get_closest_point_to_segment(wp, pos, pos + cdir * cur_len).distance_to(wp) <= CROSS_HALF_W:
+			var arm_len: float = _slag.arm_length_with_cover(pos, cdir, raw_len, CROSS_HALF_W, world_ctx, self)
+			if Geometry2D.get_closest_point_to_segment(wp, pos, pos + cdir * arm_len).distance_to(wp) <= CROSS_HALF_W:
 				cross_hit = true
 				_emit_player_hit(cdir, attack_damage)
 				break
@@ -354,7 +398,8 @@ func _step_cross_commit(dt: float) -> void:
 		var lp: Vector2 = _get_lantern_pos()
 		for ci: int in range(4):
 			var cdir_l: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
-			if Geometry2D.get_closest_point_to_segment(lp, pos, pos + cdir_l * cur_len).distance_to(lp) <= CROSS_HALF_W + 3.0:
+			var arm_len_l: float = _slag.arm_length_with_cover(pos, cdir_l, raw_len, CROSS_HALF_W, world_ctx, self)
+			if Geometry2D.get_closest_point_to_segment(lp, pos, pos + cdir_l * arm_len_l).distance_to(lp) <= CROSS_HALF_W + 3.0:
 				if Lx.events != null:
 					Lx.events.lantern_struck.emit(lp)
 				break
@@ -469,16 +514,17 @@ func _draw_extra(off: Vector2) -> void:
 			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + cdir * CROSS_RANGE, CROSS_HALF_W, c_urg, anim_t, "coral", "gold")
 		draw_circle(c, 3.0 if hot_c else 2.2, (PAL["cream"] if hot_c else PAL["gold"]) as Color)
 	elif active_move == KilnMove.FURNACE_CROSS and state == State.COMMIT:
-		var cur_len: float = lerpf(14.0, CROSS_RANGE, cross_progress)
+		var raw_len: float = lerpf(14.0, CROSS_RANGE, cross_progress)
 		for ci: int in range(4):
 			var cdir: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
-			var cend: Vector2 = (c + cdir * cur_len).round()
+			var arm_len: float = _slag.arm_length_with_cover(pos, cdir, raw_len, CROSS_HALF_W, world_ctx, self)
+			var cend: Vector2 = (c + cdir * arm_len).round()
 			draw_line(c, cend, PAL["wine"] as Color, 9.0)
 			draw_line(c, cend, PAL["coral"] as Color, 6.0)
 			draw_line(c, cend, PAL["apricot"] as Color, 3.6)
 			draw_line(c, cend, PAL["gold"] as Color, 2.0)
 			draw_line(c, cend, PAL["cream"] as Color, 1.0)
-			draw_circle(cend, 2.4, PAL["gold"] as Color)
+			draw_circle(cend, 2.4, (PAL["ice"] if arm_len < raw_len - 1.0 else PAL["gold"]) as Color)
 			draw_circle(cend, 1.2, PAL["cream"] as Color)
 	elif active_move == KilnMove.MOLTEN_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
@@ -524,6 +570,8 @@ func _draw_extra(off: Vector2) -> void:
 				var fcol: Color = (PAL["gold"] if (fred_r or int(anim_t * 14.0) % 2 == 0) else PAL["coral"]) as Color
 				draw_arc(off, snap_r + 1.4, fa - 0.42, fa + 0.42, 6, PAL["coral"] as Color, 1.8)
 				draw_arc(off, snap_r, fa - 0.38, fa + 0.38, 6, fcol, 2.0)
+	var lob_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+	_slag.draw_slag(self, pos, off, lob_prog, active_move == KilnMove.SLAG_LOB and state == State.TELL, anim_t)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

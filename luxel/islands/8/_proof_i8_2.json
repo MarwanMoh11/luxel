@@ -5,18 +5,18 @@
   "debug_only": true,
   "theme": "endless_stair",
   "name_key": "ISL8_PROOF_2_NAME",
-  "spawn": [48, 120],
+  "spawn": [56, 232],
   "exits": [
     {
       "id": "exit_back_proof_1",
-      "rect": [16, 96, 16, 48],
+      "rect": [16, 224, 16, 32],
       "to_island": 8,
       "to_region": "_proof_i8_1",
-      "to_spawn": [384, 120]
+      "to_spawn": [384, 136]
     },
     {
       "id": "exit_done_proof_1",
-      "rect": [416, 96, 16, 48],
+      "rect": [224, 16, 64, 16],
       "to_island": 8,
       "to_region": "_proof_i8_1",
       "to_spawn": [48, 120]
@@ -26,13 +26,13 @@
     {
       "id": "anc_proof_i8_2",
       "kind": "room_anchor",
-      "pos": [48, 120],
+      "pos": [56, 232],
       "props": { "auto": true }
     },
     {
       "id": "plinth_dash",
       "kind": "memory_plinth",
-      "pos": [88, 72],
+      "pos": [200, 232],
       "props": {
         "move_id": "dash",
         "target_id": "door_plinth",
@@ -42,17 +42,17 @@
     {
       "id": "door_plinth",
       "kind": "door",
-      "pos": [152, 120],
+      "pos": [152, 200],
       "props": {
         "door_type": "switch_door",
-        "size": [16, 48],
+        "size": [48, 16],
         "requires_signals": ["plinth_dash"]
       }
     },
     {
       "id": "stair_ctrl_1",
       "kind": "stair_controller",
-      "pos": [232, 112],
+      "pos": [168, 136],
       "props": {
         "tier": 1,
         "floor_range": [1, 4],
@@ -63,12 +63,18 @@
       }
     },
     {
+      "id": "chest_stair_reward",
+      "kind": "chest",
+      "pos": [248, 136],
+      "props": { "reward": "shards", "amount": 15 }
+    },
+    {
       "id": "door_stair",
       "kind": "door",
-      "pos": [312, 120],
+      "pos": [168, 88],
       "props": {
         "door_type": "switch_door",
-        "size": [16, 48],
+        "size": [48, 16],
         "requires_signals": ["stair_ctrl_1"]
       }
     }
@@ -86,12 +92,12 @@
     "reward": "proof_complete",
     "why": "End-to-end automated proof of Island 8 Memory Plinth move lock/reclaim and Endless Stair Boon Draft.",
     "solution": [
-      { "op": "goto", "to": [88, 92], "tol": 6.0 },
+      { "op": "goto", "to": [182, 232], "tol": 6.0 },
       { "op": "interact", "target": "plinth_dash" },
       { "op": "wait_until", "target": "door_plinth", "prop": "opened", "value": true, "timeout": 3.0 },
       { "op": "interact", "target": "plinth_dash" },
       { "op": "expect", "target": "plinth_dash", "prop": "powered", "value": false },
-      { "op": "goto", "to": [232, 128], "tol": 8.0 },
+      { "op": "goto", "to": [168, 152], "tol": 8.0 },
       { "op": "wait_until", "target": "stair_ctrl_1", "prop": "state", "value": 1, "timeout": 2.0 },
       { "op": "interact", "target": "stair_ctrl_1" },
       { "op": "wait_until", "target": "door_stair", "prop": "opened", "value": true, "timeout": 3.0 },

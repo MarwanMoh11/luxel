@@ -36,44 +36,46 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island4_boss_p1"
 	music_p2_cue = "island4_boss_p2"
-	max_hp = 104.0
-	hp = 104.0
+	max_hp = 112.0
+	hp = 112.0
 	body_radius = 12.0
 	move_speed = 26.0
 	stagger_threshold = 15.0
 	stagger_duration = 1.85
-	post_recover_cd = 0.30
+	post_recover_cd = 0.52
 	shard_drop = 65
 	death_duration = 2.4
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.66, 0.36])
+	configure_phases([0.66, 0.38])
 
 	# Attack 1: Choral Stanza — sings 3 (P1) / 4 (P2) / 5 (P3) voices in order + glass-note volleys!
 	register_attack("choral_stanza", {
-		"weight": 1.40, "tell": 0.62, "commit": 0.44, "recover": 1.05, "cooldown": 1.5,
+		"weight": 1.35, "tell": 0.68, "commit": 0.44, "recover": 1.16, "cooldown": 1.7,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_begin_new_stanza()
 			var first_bi: int = _stanza_seq[0] if not _stanza_seq.is_empty() else 2
 			var bp: Vector2 = _busts[first_bi]["pos"] as Vector2
 			ground.warn_ring(bp, 20.0, last_tell_duration, 0.0, BUST_COLORS[first_bi], "cream")
-			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.06, 1.0, "sky", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 17.0, last_tell_duration + 0.08, 1.0, "sky", "gold")
 			stage.play_sfx(BUST_NOTES[first_bi], bp),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			# Each active voice in the stanza sings a resonant bolt toward Wick!
-			for bi: int in _stanza_seq:
+			# Lead voices sing resonant bolts toward Wick (3 max simultaneously for readable weaving)
+			var fire_n: int = mini(3, _stanza_seq.size())
+			for si: int in range(fire_n):
+				var bi: int = _stanza_seq[si]
 				if bi < 0 or bi >= _busts.size():
 					continue
 				var bp: Vector2 = _busts[bi]["pos"] as Vector2
 				var d: Vector2 = (tgt - bp).normalized() if tgt.distance_to(bp) > 1.0 else Vector2.DOWN
-				patterns.emit_fan(bp, d, 1 if phase == 1 else 2, 0.24, 132.0 + float(phase) * 8.0, {"color": BUST_COLORS[bi], "source": "choral_note"})
-			stage.play_sfx("choir_chord", pos),
+				patterns.emit_fan(bp, d, 1, 0.0, 96.0 + float(phase) * 5.0, {"color": BUST_COLORS[bi], "source": "choral_note"})
+			stage.play_sfx("drowned_choir_chord", pos),
 	})
 
 	# Attack 2: Raindrop Curtain — sweeping wall across the nave + corner rain chime
 	register_attack("raindrop_curtain", {
-		"weight": 1.20, "tell": 0.58, "commit": 0.45, "recover": 1.00, "cooldown": 1.5,
+		"weight": 1.15, "tell": 0.66, "commit": 0.45, "recover": 1.14, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
 			var horiz: bool = int(anim_t * 10.0) % 2 == 0
@@ -82,52 +84,50 @@ func _configure_boss(_spec: Dictionary) -> void:
 			else:
 				ground.warn_lane(Vector2(c.x, arena_rect.position.y + 10.0), Vector2(c.x, arena_rect.end.y - 10.0), arena_rect.size.x * 0.36, last_tell_duration, 0.0, "sky", "ice")
 			var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
-			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "sky", "cream")
+			patterns.emit_rain(ground, drops, last_tell_duration + 0.06, 16.0, 1.0, "sky", "cream")
 			stage.play_sfx("deacon_rain_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
 			var horiz: bool = int(anim_t * 10.0) % 2 == 0
 			var gap_i: int = 3 if int(anim_t) % 2 == 0 else 5
 			if horiz:
-				patterns.emit_sweep_wall(Vector2(arena_rect.position.x + 12.0, c.y), Vector2.RIGHT, arena_rect.size.y - 22.0, 10, gap_i, 2, 124.0, {"color": "sky", "source": "raindrop_curtain"})
+				patterns.emit_sweep_wall(Vector2(arena_rect.position.x + 12.0, c.y), Vector2.RIGHT, arena_rect.size.y - 22.0, 8, gap_i, 3, 94.0, {"color": "sky", "source": "raindrop_curtain"})
 			else:
-				patterns.emit_sweep_wall(Vector2(c.x, arena_rect.position.y + 12.0), Vector2.DOWN, arena_rect.size.x - 24.0, 11, gap_i, 2, 122.0, {"color": "ice", "source": "raindrop_curtain"})
+				patterns.emit_sweep_wall(Vector2(c.x, arena_rect.position.y + 12.0), Vector2.DOWN, arena_rect.size.x - 24.0, 9, gap_i, 3, 94.0, {"color": "ice", "source": "raindrop_curtain"})
 			stage.shake(0.15)
 			stage.play_sfx("marsh_splash", pos),
 	})
 
 	# Attack 3 (Phase 2 & 3): Tide Pulse Ring — expanding choral flood shockwave + gap ring
 	register_attack("tide_pulse_ring", {
-		"phases": [2, 3], "weight": 1.45, "tell": 0.55, "commit": 0.36, "recover": 1.05, "cooldown": 1.8,
+		"phases": [2, 3], "weight": 1.35, "tell": 0.64, "commit": 0.36, "recover": 1.16, "cooldown": 2.0,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			ground.warn_ring(pos, 58.0, last_tell_duration, 1.0, "sky", "coral")
-			var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
-			patterns.emit_rain(ground, drops, last_tell_duration + 0.05, 22.0, 1.0, "blue", "ice")
+			ground.warn_ring(pos, 50.0, last_tell_duration, 1.0, "sky", "coral")
+			ground.warn_ring(clamp_to_arena(tgt), 17.0, last_tell_duration + 0.08, 1.0, "blue", "ice")
 			stage.play_sfx("tide_surge", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() + 0.44
-			patterns.emit_gap_ring(pos, 14 if phase >= 3 else 12, 124.0, gap_a, 0.72, {"color": "sky", "source": "tide_pulse_ring"})
+			patterns.emit_gap_ring(pos, 10, 102.0, gap_a, 1.05, {"color": "sky", "source": "tide_pulse_ring"})
 			stage.light_burst(pos, 90.0, 1.35, 0.32)
 			stage.shake(0.18)
-			stage.play_sfx("choir_chord", pos),
+			stage.play_sfx("drowned_choir_chord", pos),
 	})
 
 	# Attack 4 (Phase 3): Five-Voice Canon — grand Conductor Organ harmonic spiral + choral pillars!
 	register_attack("five_voice_canon", {
-		"phases": [3], "weight": 1.80, "tell": 0.64, "commit": 0.48, "recover": 1.18, "cooldown": 2.0,
+		"phases": [3], "weight": 2.50, "tell": 0.70, "commit": 0.46, "recover": 1.24, "cooldown": 1.4,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var pts: Array[Vector2] = [
 				clamp_to_arena(tgt),
 				_nearest_corner(tgt),
-				clamp_to_arena(arena_rect.get_center().lerp(tgt, 0.5)),
 			]
-			patterns.emit_pillars(pts, last_tell_duration, 18.0, 0.48, 1.0, "gold")
+			patterns.emit_pillars(pts, last_tell_duration + 0.04, 15.0, 0.36, 1.0, "gold")
 			stage.play_sfx("choir_organ_swell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var base_a: float = (tgt - pos).angle()
-			patterns.emit_spiral(pos, 5, 122.0, base_a, 0.36, 3, 0.16, {"color": "rose", "source": "five_voice_canon"})
-			stage.shake(0.22)
-			stage.play_sfx("choir_chord", pos),
+			patterns.emit_spiral(pos, 3, 100.0, base_a, 0.48, 2, 0.22, {"color": "rose", "source": "five_voice_canon"})
+			stage.shake(0.20)
+			stage.play_sfx("drowned_choir_chord", pos),
 	})
 
 
@@ -303,10 +303,10 @@ func _trigger_resonant_shatter() -> void:
 	stage.play_sfx("choir_shatter", pos)
 
 
-func _modify_incoming_damage(_hit: LxHit, dmg: float) -> float:
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if boss_state == BossState.STAGGER:
 		return dmg * 1.75
-	if not is_punishable():
+	if not is_punishable() and hit != null and hit.source == LxHit.SOURCE_BOLT:
 		return dmg * 0.72
 	return dmg
 
@@ -318,7 +318,7 @@ func _on_death_start() -> void:
 	for i: int in range(5):
 		var bp: Vector2 = _busts[i]["pos"] as Vector2 if i < _busts.size() else pos
 		_death_petals.append({"pos": bp, "vel": Vector2(0.0, -20.0 - float(i) * 3.0), "color": BUST_COLORS[i]})
-	stage.play_sfx("choir_chord", pos)
+	stage.play_sfx("drowned_choir_chord", pos)
 
 
 func _cycle_local_weather() -> void:

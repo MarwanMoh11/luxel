@@ -50,23 +50,7 @@ func on_hit(hit: LxHit) -> bool:
 	if hit == null or not active or broken:
 		return false
 	if hit.source in ["beam", "sunflare"]:
-		broken = true
-		active = false
-		z_index = -4
-		_break_t = 0.38
-		_hint_t = 0.0
-		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.16)
-			Lx.events.hitstop_requested.emit(0.045)
-		_emit_gust(maxf(size.x, size.y) + 34.0, 74.0)
-		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.CRATER, pos, 13.0, 7.0)
-		_emit_sfx("stone_break")
-		if region != null and region.has_method("save_interactables_to_state"):
-			region.call("save_interactables_to_state")
-		_emit_save("cracked_" + id)
-		_notify_linked_targets(true)
-		queue_redraw()
+		break_wall()
 		return true
 	if hit.source in ["bolt", "prism_bolt", "throw", "recall"]:
 		_hint_t = 0.30
@@ -74,6 +58,35 @@ func on_hit(hit: LxHit) -> bool:
 		queue_redraw()
 		return false
 	return false
+
+
+func on_ring(tone: String, _dir: Vector2) -> void:
+	if not active or broken:
+		return
+	if tone.strip_edges().to_lower() == "war" and bool(props.get("war_breakable", true)):
+		break_wall()
+
+
+func break_wall() -> void:
+	if broken:
+		return
+	broken = true
+	active = false
+	z_index = -4
+	_break_t = 0.38
+	_hint_t = 0.0
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(0.16)
+		Lx.events.hitstop_requested.emit(0.045)
+	_emit_gust(maxf(size.x, size.y) + 34.0, 74.0)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.CRATER, pos, 13.0, 7.0)
+	_emit_sfx("stone_break")
+	if region != null and region.has_method("save_interactables_to_state"):
+		region.call("save_interactables_to_state")
+	_emit_save("cracked_" + id)
+	_notify_linked_targets(true)
+	queue_redraw()
 
 
 func is_solid() -> bool:

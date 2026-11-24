@@ -30,13 +30,13 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 76.0
-	hp = 76.0
+	max_hp = 72.0
+	hp = 72.0
 	body_radius = 12.5
-	move_speed = 40.0
+	move_speed = 38.0
 	stagger_threshold = 13.0
 	stagger_duration = 1.75
-	post_recover_cd = 0.48
+	post_recover_cd = 0.54
 	intro_duration = 0.70
 	phase_shift_duration = 0.70
 	death_duration = 2.4
@@ -58,8 +58,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("lw_widow_plucks", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			var cnt: int = 5 if phase >= 3 else 3
-			patterns.emit_fan(pos, aim_d, cnt, 0.85, 102.0 if phase >= 2 else 94.0, {
+			patterns.emit_fan(pos, aim_d, 3, 0.80, 92.0, {
 				"color": "rose", "reflectable": true, "source": "silk_volley",
 			})
 			stage.shake(0.14)
@@ -68,20 +67,19 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 2: Spindle Drop (8 ice eyes blink -> ceiling drop slam onto Wick + radial gap ring)
 	register_attack("spindle_drop", {
-		"weight": 1.25, "tell": 0.70, "commit": 0.34, "recover": 1.30, "cooldown": 1.7,
+		"weight": 1.25, "tell": 0.72, "commit": 0.34, "recover": 1.32, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_eye_blink_t = last_tell_duration
 			_drop_target = clamp_to_arena(tgt)
 			_dropping_now = false
-			ground.warn_ring(_drop_target, 28.0, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_ring(_drop_target, 26.0, last_tell_duration, 1.0, "coral", "gold")
 			stage.play_sfx("lw_widow_plucks", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_dropping_now = true
 			pos = _drop_target
 			position = pos.round()
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			var cnt: int = 8
-			patterns.emit_gap_ring(pos, cnt, 88.0, gap_a, 1.15, {"color": "gold", "source": "spindle_ring"})
+			patterns.emit_gap_ring(pos, 6, 82.0, gap_a, 1.30, {"color": "gold", "source": "spindle_ring"})
 			stage.shake(0.22)
 			stage.play_sfx("lw_widow_drop_thud", pos),
 		"on_recover": func(_b: LxBossBase, _dt: float) -> void:
@@ -90,26 +88,26 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 3: Web-Lash Spiral (rotating silk spiral + charged spoke lines)
 	register_attack("web_lash_spiral", {
-		"weight": 1.10, "tell": 0.62, "commit": 0.46, "recover": 1.20, "cooldown": 1.8,
+		"weight": 1.10, "tell": 0.66, "commit": 0.46, "recover": 1.25, "cooldown": 1.9,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var s_idx: int = _nearest_spoke_to(tgt)
 			var opp: int = (s_idx + 3) % SPOKE_COUNT
 			if s_idx < _spokes.size() and opp < _spokes.size():
-				patterns.emit_chain_lightning([_spokes[s_idx]["end_pos"] as Vector2, _spindle_pos, _spokes[opp]["end_pos"] as Vector2], last_tell_duration + 0.12, 7.0, 0.22, 1.0)
+				patterns.emit_chain_lightning([_spokes[s_idx]["end_pos"] as Vector2, _spindle_pos, _spokes[opp]["end_pos"] as Vector2], last_tell_duration + 0.14, 6.0, 0.20, 1.0)
 			ground.warn_ring(pos, 24.0, last_tell_duration, 0.0, "gold", "cream")
 			stage.play_sfx("lw_widow_plucks", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_spiral(pos, 4, 88.0, facing, 0.44, 2, 0.24, {"color": "apricot", "source": "web_spiral"})
+			patterns.emit_spiral(pos, 4, 80.0, facing, 0.50, 2, 0.26, {"color": "apricot", "source": "web_spiral"})
 			stage.shake(0.15)
 			stage.play_sfx("lw_spoke_ignite", pos),
 	})
 
 	# Attack 4: P2+ Blue Tension Lock (freezes 2 rim spools fireproof + frost sweep wall + corner pillars)
 	register_attack("blue_tension_lock", {
-		"phases": [2, 3], "weight": 2.40, "tell": 0.66, "commit": 0.38, "recover": 1.25, "cooldown": 1.4,
+		"phases": [2, 3], "weight": 2.40, "tell": 0.68, "commit": 0.38, "recover": 1.28, "cooldown": 1.5,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_freeze_two_spokes()
-			patterns.emit_pillars([clamp_to_arena(tgt)], last_tell_duration + 0.14, 15.0, 0.28, 1.0, "sky")
+			patterns.emit_pillars([clamp_to_arena(tgt)], last_tell_duration + 0.16, 15.0, 0.24, 1.0, "sky")
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.DOWN
 			ground.warn_lane(pos, clamp_to_arena(pos + aim_d * 155.0), 9.0, last_tell_duration, 0.0, "sky", "ice")
 			stage.play_sfx("lw_widow_plucks", pos),
@@ -118,7 +116,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			var from_top: bool = tgt.y >= c.y
 			var origin := Vector2(c.x, arena_rect.position.y + 10.0 if from_top else arena_rect.end.y - 10.0)
 			var mdir: Vector2 = Vector2.DOWN if from_top else Vector2.UP
-			patterns.emit_sweep_wall(origin, mdir, arena_rect.size.x - 28.0, 6, 2, 3, 88.0, {"color": "ice", "source": "frost_silk"})
+			patterns.emit_sweep_wall(origin, mdir, arena_rect.size.x - 28.0, 5, 1, 3, 82.0, {"color": "ice", "source": "frost_silk"})
 			stage.shake(0.18)
 			stage.play_sfx("crystal_clank", pos),
 	})
@@ -256,9 +254,9 @@ func _drop_onto_spindle() -> void:
 
 func _on_phase_enter(new_phase: int) -> void:
 	if new_phase == 2:
-		# P2 Arena Mutation: cut 2 outer corner chasm notches + string 2 cuttable tension tethers!
-		stage.set_tiles(world_ctx, Rect2i(2, 1, 1, 2), "pit")
-		stage.set_tiles(world_ctx, Rect2i(17, 7, 1, 2), "pit")
+		# P2 Arena Mutation: raise 2 frost-silk rim barricades + string 2 cuttable tension tethers!
+		stage.set_tiles(world_ctx, Rect2i(2, 1, 1, 2), "wall")
+		stage.set_tiles(world_ctx, Rect2i(17, 7, 1, 2), "wall")
 		if _spokes.size() >= 6:
 			tethers.add_tether("lw_rim_n", _spokes[1]["end_pos"] as Vector2, _spokes[2]["end_pos"] as Vector2, {
 				"hp": 1.8, "cuttable": true, "color": "gold",
@@ -272,8 +270,8 @@ func _on_phase_enter(new_phase: int) -> void:
 		stage.shake(0.24)
 		stage.play_sfx("lw_spoke_ignite", pos)
 	elif new_phase == 3:
-		stage.set_tiles(world_ctx, Rect2i(17, 1, 1, 2), "pit")
-		stage.set_tiles(world_ctx, Rect2i(2, 7, 1, 2), "pit")
+		stage.set_tiles(world_ctx, Rect2i(17, 1, 1, 2), "wall")
+		stage.set_tiles(world_ctx, Rect2i(2, 7, 1, 2), "wall")
 		stage.darkness_pulse(0.72, 1.15)
 		stage.shake(0.28)
 		stage.play_sfx("lw_widow_drop_thud", pos)

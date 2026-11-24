@@ -92,7 +92,7 @@
     "chief_auditor": {
       "script": "res://luxel/bosses/chief_auditor/brain.gd",
       "data": {
-        "max_hp": 118.0,
+        "max_hp": 108.0,
         "body_radius": 12.0,
         "routine_speed": 40.0,
         "leash_radius": 0.0,
@@ -189,8 +189,8 @@
     "page_hop": { "id": "feather_flutter", "pitch": 1.12, "db": -1.5 },
     "auditor_ding": { "id": "clockwork_chime", "pitch": 1.32, "db": -1.0 },
     "register_chime": { "id": "shop_buy", "pitch": 1.12, "db": -0.5 },
-    "invoice_stamp": { "id": "bell_slam", "pitch": 0.92, "db": 0.0 },
-    "register_shatter": { "id": "seal_shatter_heavy", "pitch": 1.08, "db": 0.5 },
+    "tollmaster_invoice": { "id": "bell_slam", "pitch": 0.92, "db": 0.0 },
+    "tollmaster_register_break": { "id": "seal_shatter_heavy", "pitch": 1.08, "db": 0.5 },
     "drawer_clack": { "id": "harbor_creak", "pitch": 1.18, "db": -1.0 }
   }
 }

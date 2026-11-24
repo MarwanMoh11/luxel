@@ -30,13 +30,13 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island7_boss_p1"
 	music_p2_cue = "island7_boss_p2"
-	max_hp = 136.0
-	hp = 136.0
+	max_hp = 192.0
+	hp = 192.0
 	body_radius = 9.5
 	move_speed = 46.0
-	stagger_threshold = 18.0
+	stagger_threshold = 22.0
 	stagger_duration = 1.80
-	post_recover_cd = 0.30
+	post_recover_cd = 0.36
 	shard_drop = 60
 
 
@@ -57,9 +57,9 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_echo_dir = (tgt - _echo_pos).normalized() if tgt.distance_to(_echo_pos) > 0.1 else _echo_dir
 			var cnt: int = 5 if phase >= 2 else 3
-			patterns.emit_fan(_echo_pos, _echo_dir, cnt, 0.56, 152.0, {"color": "gold", "source": "lag_echo_bolt", "reflectable": true})
+			patterns.emit_fan(_echo_pos, _echo_dir, cnt, 0.62, 134.0, {"color": "gold", "source": "lag_echo_bolt", "reflectable": true})
 			if _echo_was_dash:
-				patterns.emit_boomerang(pos, _echo_dir, 148.0, 0.60, 0.60, {"color": "coral", "source": "lag_echo_dash", "reflectable": true})
+				patterns.emit_boomerang(pos, _echo_dir, 132.0, 0.60, 0.60, {"color": "coral", "source": "lag_echo_dash", "reflectable": true})
 			stage.shake(0.12)
 			stage.play_sfx("hollow_dash", _echo_pos),
 	})
@@ -70,10 +70,10 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			var a: float = _aim_dir.angle()
-			ground.warn_sector(pos, a - 1.50, a + 1.50, 96.0, last_tell_duration, 1.0, "gold", "coral")
+			ground.warn_sector(pos, a - 1.40, a + 1.40, 82.0, last_tell_duration, 1.0, "gold", "coral")
 			stage.play_sfx("sun_hum", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _aim_dir, 7 if phase >= 2 else 5, 1.65, 138.0, {"color": "coral", "source": "noon_blade", "reflectable": true})
+			patterns.emit_fan(pos, _aim_dir, 5, 1.55, 130.0, {"color": "coral", "source": "noon_blade", "reflectable": true})
 			stage.light_burst(pos, 84.0, 1.40, 0.28)
 			stage.shake(0.18)
 			stage.play_sfx("sunflare_burst", pos),
@@ -108,7 +108,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			for ts: Dictionary in _tri_shadows:
 				var sp: Vector2 = ts["pos"] as Vector2
 				var sd: Vector2 = ts["dir"] as Vector2
-				patterns.emit_fan(sp, sd, 3 if _merged_t <= 0.0 else 1, 0.42, 144.0, {"color": "coral", "source": "tri_pincer", "reflectable": true})
+				patterns.emit_fan(sp, sd, 2 if _merged_t <= 0.0 else 1, 0.36, 134.0, {"color": "coral", "source": "tri_pincer", "reflectable": true})
 			stage.shake(0.16)
 			stage.play_sfx("hollow_dash", pos),
 	})
@@ -118,12 +118,11 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"phases": [3], "weight": 1.55, "tell": 0.60, "commit": 0.30, "recover": 1.35, "cooldown": 2.1,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			ground.warn_ring(pos, 64.0, last_tell_duration, 1.0, "gold", "cream")
-			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_ring(pos, 62.0, last_tell_duration, 1.0, "gold", "cream")
 			stage.play_sfx("sun_hum", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_gap_ring(pos, 12, 134.0, _aim_dir.angle(), 0.72, {"color": "gold", "source": "eclipse_ring", "reflectable": true})
-			patterns.emit_fan(pos, _aim_dir, 5, 0.75, 148.0, {"color": "coral", "source": "eclipse_sparks", "reflectable": true})
+			patterns.emit_gap_ring(pos, 10, 124.0, _aim_dir.angle(), 0.78, {"color": "gold", "source": "eclipse_ring", "reflectable": true})
+			patterns.emit_fan(pos, _aim_dir, 3, 0.65, 132.0, {"color": "coral", "source": "eclipse_sparks", "reflectable": true})
 			stage.light_burst(pos, 96.0, 1.48, 0.34)
 			stage.shake(0.22)
 			stage.play_sfx("sunflare_burst", pos),
@@ -170,29 +169,36 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var h: Dictionary = _read_hit(hit)
 	var src: String = str(h["source"])
 	var orig: Vector2 = h["origin"] as Vector2
-	var is_cast_move: bool = src in [LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_ZIP, LxHit.SOURCE_SUNFLARE, LxHit.SOURCE_BEAM, LxHit.SOURCE_DASH] or hit.is_blue()
+	var is_pierce: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_SUNFLARE] or bool(h["pierce"])
+	var is_cast_move: bool = is_pierce or src in [LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_ZIP, LxHit.SOURCE_DASH] or hit.is_blue()
 
 	if phase == 2 and is_cast_move and _merged_t <= 0.0:
 		_merged_t = 4.5
 		_tri_shadows.clear()
 		add_stagger(stagger_threshold * 0.65)
-		return dmg * 1.45
+		return dmg if is_pierce else dmg * 0.78
 
 	if phase >= 3:
 		if is_cast_move:
 			_stretched_t = 4.2
 			if pos.distance_to(orig) > 2.0:
 				_stretch_dir = (pos - orig).normalized()
-			return dmg * 1.55
+			return dmg if is_pierce else dmg * (0.85 if is_punishable() else 0.58)
 		if _stretched_t > 0.0 or is_punishable():
-			return dmg * 1.40
+			return dmg * (0.75 if is_punishable() else 0.48)
 		# Zenith 0-deg dot resists unstretched raw yellow bolts!
 		clank_t = 0.10
-		return dmg * 0.42
+		return dmg * 0.25
 
-	if _merged_t > 0.0 or boss_state == BossState.STAGGER:
-		return dmg * 1.45
-	return dmg
+	if is_pierce:
+		return dmg
+	if boss_state == BossState.STAGGER:
+		return dmg * 0.90
+	if boss_state == BossState.RECOVER:
+		return dmg * 0.72
+	if _merged_t > 0.0:
+		return dmg * 0.60
+	return dmg * 0.40
 
 
 func _on_phase_enter(new_phase: int) -> void:

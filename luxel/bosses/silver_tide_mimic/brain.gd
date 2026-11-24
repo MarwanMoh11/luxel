@@ -26,13 +26,13 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island7_boss_p1"
 	music_p2_cue = "island7_boss_p2"
-	max_hp = 132.0
-	hp = 132.0
+	max_hp = 136.0
+	hp = 136.0
 	body_radius = 12.0
-	move_speed = 38.0
+	move_speed = 36.0
 	stagger_threshold = 22.0
 	stagger_duration = 1.60
-	post_recover_cd = 0.36
+	post_recover_cd = 0.46
 	shard_drop = 28
 
 
@@ -46,9 +46,9 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_copied_move = _last_wick_move
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			if _copied_move == "sunflare":
-				ground.warn_ring(pos, 56.0, last_tell_duration, 1.0, "ice", "gold")
+				ground.warn_ring(pos, 52.0, last_tell_duration, 1.0, "ice", "gold")
 			elif _copied_move == "beam":
-				ground.warn_lane(pos, pos + _aim_dir * 165.0, 11.0, last_tell_duration, 1.0, "sky", "cream")
+				ground.warn_lane(pos, pos + _aim_dir * 165.0, 10.0, last_tell_duration, 0.0, "sky", "cream")
 			elif _copied_move != "lens":
 				ground.warn_lane(pos, pos + _aim_dir * 135.0, 10.0, last_tell_duration, 0.0, "sky", "gold")
 			stage.play_sfx("chest_creak", pos),
@@ -75,39 +75,39 @@ func _configure_boss(_spec: Dictionary) -> void:
 				_hop_stage = 1
 				_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
 				stage.play_sfx("mercury_splash", pos)
-				patterns.emit_fan(pos, _aim_dir, 3, 0.65, 132.0, {"color": "sky", "source": "chomp_spray"})
-			move_boss(_aim_dir * 210.0 * dt, false)
-			check_contact_damage(20.0, _aim_dir, 1.0, "vaulting_chomp"),
+				patterns.emit_fan(pos, _aim_dir, 3, 1.05, 98.0, {"color": "sky", "source": "chomp_spray"})
+			move_boss(_aim_dir * 162.0 * dt, false)
+			check_contact_damage(16.0, _aim_dir, 1.0, "vaulting_chomp"),
 	})
 
 	# Attack 3: Silver Tide Wave (pressures all perimeter spots!)
 	register_attack("silver_tide_wave", {
-		"weight": 1.10, "tell": 0.52, "commit": 0.34, "recover": 1.15, "cooldown": 2.0,
+		"weight": 1.10, "tell": 0.56, "commit": 0.34, "recover": 1.25, "cooldown": 2.4,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			var drops: Array[Vector2] = _corner_targets(tgt, 2)
-			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "sky", "ice")
+			patterns.emit_rain(ground, drops, last_tell_duration, 16.0, 1.0, "sky", "ice")
 			stage.play_sfx("mercury_splash", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
-			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 128.0, _aim_dir.angle() + PI, 0.72, {"color": "ice", "source": "silver_tide", "reflectable": true})
+			patterns.emit_gap_ring(pos, 8, 96.0, _aim_dir.angle() + PI, 0.96, {"color": "ice", "source": "silver_tide", "reflectable": true})
 			stage.shake(0.14)
 			stage.play_sfx("tide_wave", pos),
 	})
 
-	# Attack 4 (Phase 2): Quicksilver Spill — 4 lingering mercury puddles (crystallize in Black!)
+	# Attack 4 (Phase 2): Quicksilver Spill — lingering mercury puddles (crystallize in Black!)
 	register_attack("quicksilver_spill", {
-		"phases": [2], "weight": 1.45, "tell": 0.52, "commit": 0.35, "recover": 1.10, "cooldown": 2.2,
+		"phases": [2], "weight": 1.45, "tell": 0.56, "commit": 0.35, "recover": 1.25, "cooldown": 2.5,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			var spots: Array[Vector2] = _corner_targets(tgt, 4)
+			var spots: Array[Vector2] = _corner_targets(tgt, 3)
 			var is_blk: bool = _is_black_world()
 			for i: int in range(spots.size()):
 				var sp: Vector2 = spots[i]
-				ground.warn_ring(sp, 20.0, last_tell_duration + float(i) * 0.06, 1.0, "sky" if not is_blk else "rose", "ice", 0.0 if is_blk else 3.0)
+				ground.warn_ring(sp, 15.0, last_tell_duration + float(i) * 0.08, 1.0, "sky" if not is_blk else "rose", "ice", 0.0 if is_blk else 0.9)
 			stage.play_sfx("mercury_splash", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, d, 5, 0.80, 134.0, {"color": "sky", "source": "quicksilver_burst", "reflectable": true})
+			patterns.emit_fan(pos, d, 3, 1.05, 96.0, {"color": "sky", "source": "quicksilver_burst", "reflectable": true})
 			stage.shake(0.16),
 	})
 
@@ -132,16 +132,16 @@ func _exec_mimic_echo(tgt: Vector2) -> void:
 				patterns.emit_boomerang(pos, _aim_dir.rotated(0.35), 135.0, 0.65, -0.70, {"color": "ice", "source": "mimic_orb", "reflectable": true})
 		"beam":
 			stage.play_sfx("prism_beam", pos)
-			patterns.emit_lane(pos, _aim_dir, 4 if phase >= 2 else 3, 175.0, 0.06, {"color": "ice", "source": "mimic_beam", "reflectable": true})
+			patterns.emit_lane(pos, _aim_dir, 3, 124.0, 0.08, {"color": "ice", "source": "mimic_beam", "reflectable": true})
 			stage.shake(0.16)
 		"sunflare":
 			stage.play_sfx("sunflare_burst", pos)
-			patterns.emit_gap_ring(pos, 12, 120.0, _aim_dir.angle() + PI * 0.5, 0.72, {"color": "gold", "source": "mimic_flare"})
+			patterns.emit_gap_ring(pos, 8, 96.0, _aim_dir.angle() + PI * 0.5, 0.96, {"color": "gold", "source": "mimic_flare"})
 			stage.shake(0.18)
 		_:
 			stage.play_sfx("orrery_bolt", pos)
-			var cnt: int = 5 if phase >= 2 else 3
-			patterns.emit_fan(pos, _aim_dir, cnt, 0.55, 148.0, {"color": "ice", "source": "mimic_bolt", "reflectable": true})
+			var cnt: int = 3
+			patterns.emit_fan(pos, _aim_dir, cnt, 0.88, 108.0, {"color": "ice", "source": "mimic_bolt", "reflectable": true})
 
 
 func _on_reset_encounter() -> void:

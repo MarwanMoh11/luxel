@@ -307,7 +307,9 @@ func _draw_fan(f: Dictionary, step: int, fred: bool) -> void:
 		var ip: Vector2 = (p - idir * lerpf(18.0, 6.0, u_in)).round()
 		draw_rect(Rect2(ip, Vector2.ONE), _c("gold", sin(u_in * PI) * asc))
 	# Outgoing drifting prism-dust motes along split fan or reflection vector
-	var rays: Array[float] = [-18.0, 0.0, 18.0] if bool(f["fan"]) else [0.0]
+	var rays: Array[float] = [0.0]
+	if bool(f["fan"]):
+		rays = [-18.0, 0.0, 18.0]
 	for ri: int in range(rays.size()):
 		var rd: Vector2 = odir.rotated(deg_to_rad(rays[ri]))
 		for mi: int in range(2):
@@ -329,9 +331,9 @@ func _draw_guide(g: Dictionary, st: float, fred: bool, ember_full: bool) -> void
 	if (kind == 1 or kind == 2 or kind == 4) and flag_on and not bool(g["inv"]): return
 	var calm: bool = (flag_on and not bool(g["inv"])) and kind != 5
 	var lit: bool = (flag_on if bool(g["inv"]) else not flag_on) if kind == 3 else not calm
-	var col_base: Color = _c("gold" if ((ember_full and is_kiln) or (kind == 5 and flag_on)) else ca_k, (0.28 if calm else 0.52) * asc)
-	var col_mote: Color = _c("cream" if (ember_full and is_kiln) else cb_k, (0.36 if calm else 0.84) * asc)
-	var col_hi: Color = _c(chi_k, (0.42 if calm else 0.92) * asc)
+	var col_base: Color = _c("gold" if ((ember_full and is_kiln) or (kind == 5 and flag_on)) else ca_k, (0.30 if calm else 0.64) * asc)
+	var col_mote: Color = _c("cream" if (ember_full and is_kiln) else cb_k, (0.38 if calm else 0.90) * asc)
+	var col_hi: Color = _c(chi_k, (0.44 if calm else 0.96) * asc)
 	var c_rec: Color = _c("night", 0.32 * asc)
 	var sp_idx: int = int(g["split"])
 	for i: int in range(pts.size() - 1):

@@ -40,6 +40,12 @@ DEFAULT_LEGEND: Dict[str, str] = {
     "P": "phantom",
     "+": "bridge",
     "G": "glass",
+    "M": "mirror",
+    "D": "carpet",
+    "S": "stairs",
+    "H": "grate",
+    "R": "rail",
+    "F": "foliage",
     " ": "void",
 }
 
@@ -47,10 +53,13 @@ KNOWN_TILE_TYPES: Set[str] = {
     "ground", "wall", "path", "water", "pit", "void", "bramble", "cracked",
     "tide", "phantom", "bridge", "glass", "mirror", "obsidian", "web",
     "floor", "sand", "grass", "stone", "spawn", "door", "shallow",
-    "grate", "rail",
+    "grate", "rail", "carpet", "stairs", "foliage",
 }
 
-WALKABLE_BASE: Set[str] = {"ground", "path", "bridge", "floor", "sand", "grass", "stone", "spawn", "door", "shallow"}
+WALKABLE_BASE: Set[str] = {
+    "ground", "path", "bridge", "floor", "sand", "grass", "stone", "spawn",
+    "door", "shallow", "carpet", "stairs",
+}
 HAZARD_TILES: Set[str] = {"pit", "void", "water", "tide", "phantom"}
 SIGHT_BLOCKING: Set[str] = {"wall", "bramble", "cracked", "glass", "mirror"}
 
@@ -103,6 +112,31 @@ GLOW_PROP_RADII: Dict[str, float] = {
     "crystal_archway": 42.0, "dark_candelabra": 46.0, "eclipse_brazier": 50.0,
     "void_lantern_post": 42.0, "remix_kiln_crucible": 52.0, "eclipse_floor_seal": 40.0,
     "shattered_rose_window": 44.0,
+    # E0-7 Epic theme light props (mirrors LxSceneryProp.GLOW_PROPS)
+    "archive_lantern_sconce": 42.0, "briar_lantern_post": 42.0, "thorn_hedge_brazier": 46.0,
+    "cave_lantern_post": 42.0, "cavern_brazier_bowl": 46.0, "glow_mineral_vein": 36.0,
+    "spot_lantern_rig": 48.0, "carriage_wall_lamp": 42.0, "iron_stove_brazier": 48.0,
+    "train_window_slag": 40.0, "train_window_sunset": 40.0, "cinder_brazier_cage": 46.0,
+    "roof_signal_lantern": 42.0, "stair_lantern_candelabra": 46.0, "bellows_hearth_stand": 48.0,
+    "ember_brazier_pillar": 48.0, "molten_slag_crucible": 54.0, "slag_chimney_vent": 46.0,
+    "tempering_floor_seal": 40.0, "drifting_star_lantern": 44.0, "star_chime_crystal": 36.0,
+    "brass_porthole_lamp": 40.0, "hanging_ship_lantern": 44.0, "hedgerow_lamp_urn": 40.0,
+    "lily_pond_lantern": 40.0, "paper_lantern_post": 42.0, "shaft_lantern_cage": 44.0,
+    "amber_lantern_post": 42.0, "brass_sundial_pedestal": 38.0, "hourglass_floor_dial": 40.0,
+    "black_candelabra": 44.0, "dark_reflection_pool": 38.0, "eclipse_brazier_bowl": 48.0,
+    "crystal_chandelier_arch": 48.0, "lunar_brazier_bowl": 46.0, "moon_glass_urn": 38.0,
+    "reflection_floor_pool": 40.0, "silver_candelabra": 46.0, "colossus_lantern_post": 44.0,
+    "furnace_vent_grate": 42.0, "molten_crucible_vat": 54.0, "acid_vent_sac": 38.0,
+    "whale_lantern_jar": 44.0, "lock_lantern_post": 42.0, "loom_lantern_brazier": 46.0,
+    "brass_lamp_sconce": 40.0, "hearth_fireplace": 52.0, "manor_candelabra": 46.0,
+    "crystal_candelabra": 46.0, "moon_lantern_urn": 42.0, "gravity_floor_seal": 40.0,
+    "meteor_crystal_cluster": 38.0, "vault_lantern_brazier": 46.0, "brass_star_globe": 40.0,
+    "floating_prism_lens": 42.0, "planetarium_lantern": 44.0, "zodiac_floor_dial": 42.0,
+    "rain_lantern_post": 42.0, "storm_brazier_bowl": 46.0, "pearl_lantern_post": 42.0,
+    "sea_anemone_glow": 36.0, "toll_clerk_lantern": 42.0, "ant_lantern_post": 42.0,
+    "glow_spore_cluster": 38.0, "bell_floor_seal": 40.0, "crypt_candelabra": 46.0,
+    "toll_brazier": 48.0, "belfry_torch": 44.0, "cozy_stone_hearth": 52.0,
+    "moth_lantern_tree": 48.0, "pane_stained_easel": 38.0, "warm_porch_lantern": 44.0,
 }
 
 INTERACTABLE_LIGHT_RADII: Dict[str, float] = {
@@ -146,13 +180,13 @@ ALLOWED_PROPS_COMMON: Set[str] = {
 }
 KIND_PROPS: Dict[str, Set[str]] = {
     "beacon": {"lit", "require_clear", "guard_zone", "index", "relit_zones"},
-    "blue_portal": {"dest_pos", "pair_id", "pair_sync", "powered", "requires_blue", "starts_powered", "target_portal_id"},
-    "portal": {"dest_pos", "pair_id", "pair_sync", "powered", "requires_blue", "starts_powered", "target_portal_id"},
+    "blue_portal": {"dest_pos", "pair_id", "pair_sync", "powered", "requires_blue", "starts_powered", "target_portal_id", "allows_skiff", "warps_bolts", "exit_dir"},
+    "portal": {"dest_pos", "pair_id", "pair_sync", "powered", "requires_blue", "starts_powered", "target_portal_id", "allows_skiff", "warps_bolts", "exit_dir"},
     "bramble": {"burned", "from_map_tile"},
-    "brazier": {"allow_interact", "lit", "lit_by_default", "light_by_lantern"},
+    "brazier": {"allow_interact", "lit", "lit_by_default", "light_by_lantern", "dawn_relight", "dusk_douse"},
     "chest": {"amount", "dungeon_id", "opened", "reward", "reward_kind"},
-    "cracked_wall": {"broken", "from_map_tile"},
-    "cracked": {"broken", "from_map_tile"},
+    "cracked_wall": {"broken", "from_map_tile", "war_breakable"},
+    "cracked": {"broken", "from_map_tile", "war_breakable"},
     "door": {"clear_zone", "door_kind", "door_type", "dungeon_id", "key_id", "key_kind", "opened", "persistent", "required_beacons", "required_count", "required_flags", "requires_beacons", "seal_id", "starts_open"},
     "great_lamp": {"island_id", "lit", "requires_boss", "requires_flag"},
     "great_belfry_brazier": {"island_id", "lit", "requires_boss", "requires_flag"},
@@ -180,7 +214,7 @@ KIND_PROPS: Dict[str, Set[str]] = {
     # Epic toys (CONTRACTS.md + TOYS_PHYS.md + TOYS_LOGIC.md)
     "push_block": {"variant", "cooled"},
     "moving_platform": {"path", "speed", "loop", "pingpong", "needs_power", "mode"},
-    "conveyor": {"speed", "flip_on_signal"},
+    "conveyor": {"speed", "flip_on_signal", "needs_var", "carry_mirrors", "speed_mult"},
     "spinner": {"length", "speed", "arms", "start_deg", "on_signal"},
     "crumble_floor": {"delay", "respawn"},
     "bounce_bloom": {"dist"},
@@ -202,7 +236,7 @@ KIND_PROPS: Dict[str, Set[str]] = {
     "beam_emitter": {"color", "duty", "range", "max_bounces", "harms_wick", "damage", "needs_signal"},
     "beam_sensor": {"color", "hold", "latch", "pass_through"},
     "turret_eye": {"aim", "cadence", "tell_secs", "recover_secs", "bolt_speed", "damage", "color", "sight_range", "can_disable"},
-    "bell": {"tone", "wave_radius", "speed", "cooldown", "relay"},
+    "bell": {"tone", "wave_radius", "speed", "cooldown", "relay", "echo_delay", "echo_enabled", "relay_any_tone"},
     "tone_door": {"tone", "hold_secs", "toggle"},
     "light_plant": {"grow", "secs", "decay", "bounce_dir", "bounce_dist"},
     "shadow_gate": {"threshold"},
@@ -218,7 +252,7 @@ KIND_PROPS: Dict[str, Set[str]] = {
     "room_anchor": {"auto", "activate_radius"},
     "light_sensor": {"need_secs", "decay_rate", "threshold", "hold"},
     "color_glass": {"color", "solid", "movable", "cycles_color"},
-    "state_lever": {"scope", "var", "values", "index", "shootable"},
+    "state_lever": {"scope", "var", "values", "index", "shootable", "style", "step_trigger", "prompt"},
     "npc": {"folk", "bubbles", "quest", "wander_radius", "require_flag"},
     "quest_item": {"id", "item_id"},
     "moth": {"id", "moth_id"},
@@ -228,16 +262,79 @@ KIND_PROPS: Dict[str, Set[str]] = {
 }
 
 
+def load_toy_meta() -> Dict[str, Dict[str, Any]]:
+    """Load island toy metadata from docs/fullgame/epic/toys/meta_i*.json."""
+    out: Dict[str, Dict[str, Any]] = {}
+    toys_dir = REPO_ROOT / "docs" / "fullgame" / "epic" / "toys"
+    if not toys_dir.is_dir():
+        return out
+    for mp in sorted(toys_dir.glob("meta_i*.json")):
+        try:
+            data = json.loads(mp.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if isinstance(data, dict):
+            for k, v in data.items():
+                if isinstance(v, dict):
+                    out[str(k).strip().lower()] = v
+    return out
+
+
+def _scan_script_props(gd_path: Path, class_index: Dict[str, Path], depth: int = 0) -> Set[str]:
+    """Extract props.get/has/[...] and dir_vec(...) keys from a GDScript file and its parent toy class."""
+    found: Set[str] = set()
+    if depth > 4 or not gd_path.exists():
+        return found
+    try:
+        txt = gd_path.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return found
+    for pat in (
+        r'\bprops\.get\(\s*"([a-zA-Z0-9_]+)"',
+        r'\bprops\.has\(\s*"([a-zA-Z0-9_]+)"',
+        r'\bprops\[\s*"([a-zA-Z0-9_]+)"\s*\]',
+        r'\bdir_vec\(\s*"([a-zA-Z0-9_]+)"',
+    ):
+        for m in re.finditer(pat, txt):
+            found.add(m.group(1))
+    ext_m = re.search(r"^\s*extends\s+([A-Za-z0-9_]+)", txt, re.M)
+    if ext_m:
+        parent = ext_m.group(1)
+        if parent not in ("LxToy", "LxInteractable", "Node2D", "Node", "RefCounted") and parent in class_index:
+            found |= _scan_script_props(class_index[parent], class_index, depth + 1)
+    return found
+
+
 def load_engine_catalog() -> Dict[str, Any]:
-    """Load built-in interactables, enemies, strings, islands, and packs."""
+    """Load built-in interactables, enemies, strings, islands, packs, toy meta, and code-scanned props."""
     inter_kinds: Set[str] = set(CONTRACT_INTERACTABLES)
+    inter_scripts: Dict[str, Path] = {}
     enemy_kinds: Set[str] = set()
     strings: Set[str] = set()
     dungeons: Dict[str, Dict[str, Any]] = {}
+    toy_meta: Dict[str, Dict[str, Any]] = load_toy_meta()
+
+    # Build quick class_name -> Path index across luxel/world and luxel/islands/*/toys
+    class_index: Dict[str, Path] = {}
+    for base_d in [REPO_ROOT / "luxel" / "world", *(REPO_ROOT / "luxel" / "islands").glob("*/toys")]:
+        if not base_d.is_dir():
+            continue
+        for gd in base_d.rglob("*.gd"):
+            try:
+                head = gd.read_text(encoding="utf-8", errors="ignore")[:400]
+            except OSError:
+                continue
+            cm = re.search(r"^\s*class_name\s+([A-Za-z0-9_]+)", head, re.M)
+            if cm:
+                class_index[cm.group(1)] = gd
 
     if_path = REPO_ROOT / "luxel" / "world" / "interactables" / "interactable_factory.gd"
     if if_path.exists():
         txt = if_path.read_text(encoding="utf-8")
+        for m in re.finditer(r'^\s*"([a-z0-9_]+)"\s*:\s*preload\(\s*"(res://[^"]+)"\s*\)', txt, re.M):
+            k = m.group(1).lower()
+            inter_kinds.add(k)
+            inter_scripts[k] = REPO_ROOT / m.group(2).replace("res://", "")
         for m in re.finditer(r'^\s*"([a-z0-9_]+)"\s*:\s*preload', txt, re.M):
             inter_kinds.add(m.group(1).lower())
 
@@ -268,6 +365,7 @@ def load_engine_catalog() -> Dict[str, Any]:
                 dungeons[did] = {"id": did, "island": iid, "regions": [], "built_in": True}
 
     pack_paths = sorted(glob.glob(str(REPO_ROOT / "luxel" / "data" / "packs" / "*.json")))
+    pack_paths += sorted(glob.glob(str(REPO_ROOT / "luxel" / "hub" / "packs" / "*.json")))
     pack_paths += sorted(glob.glob(str(REPO_ROOT / "luxel" / "islands" / "*" / "packs" / "*.json")))
     for pp in pack_paths:
         try:
@@ -276,17 +374,41 @@ def load_engine_catalog() -> Dict[str, Any]:
             continue
         if not isinstance(pd, dict):
             continue
-        for k in (pd.get("interactables") or {}).keys():
-            inter_kinds.add(str(k).lower())
+        for k, v in (pd.get("interactables") or {}).items():
+            kl = str(k).lower()
+            inter_kinds.add(kl)
+            sp = v if isinstance(v, str) else (v.get("script", "") if isinstance(v, dict) else "")
+            if sp:
+                inter_scripts[kl] = REPO_ROOT / str(sp).replace("res://", "")
         for k in (pd.get("enemies") or {}).keys():
             enemy_kinds.add(str(k).lower())
         for k in (pd.get("bosses") or {}).keys():
             enemy_kinds.add(str(k).lower())
         for k in (pd.get("strings") or {}).keys():
             strings.add(str(k))
-        for d in pd.get("dungeons") or []:
+        d_raw = pd.get("dungeons")
+        d_items = d_raw if isinstance(d_raw, list) else (list(d_raw.values()) if isinstance(d_raw, dict) else [])
+        for d in d_items:
             if isinstance(d, dict) and d.get("id"):
                 dungeons[str(d["id"])] = d
+
+    # Merge toy metadata kinds and scripts
+    for tk, tmeta in toy_meta.items():
+        inter_kinds.add(tk)
+        sp = str(tmeta.get("script", "")).strip()
+        if sp and tk not in inter_scripts:
+            inter_scripts[tk] = REPO_ROOT / sp.replace("res://", "")
+
+    # Auto-derive kind_props from hand defaults + code-scanned script props + toy_meta
+    kind_props: Dict[str, Set[str]] = {k: set(v) for k, v in KIND_PROPS.items()}
+    for k, gd_p in inter_scripts.items():
+        scanned = _scan_script_props(gd_p, class_index)
+        if scanned:
+            kind_props.setdefault(k, set()).update(scanned)
+    for tk, tmeta in toy_meta.items():
+        mprops = tmeta.get("props")
+        if isinstance(mprops, list):
+            kind_props.setdefault(tk, set()).update(str(p) for p in mprops)
 
     return {
         "interactables": inter_kinds,
@@ -294,6 +416,8 @@ def load_engine_catalog() -> Dict[str, Any]:
         "strings": strings,
         "islands": islands_data,
         "dungeons": dungeons,
+        "toy_meta": toy_meta,
+        "kind_props": kind_props,
     }
 
 
@@ -507,19 +631,50 @@ def _is_tile_walkable(tt: str, moves: Set[str]) -> bool:
     return False
 
 
-def flood_fill_region(reg: Dict[str, Any], starts: List[Tuple[float, float]], moves: Set[str], ignore_doors: bool = True) -> Set[Tuple[int, int]]:
+def _parse_dir_vec(val: Any) -> Tuple[float, float]:
+    if isinstance(val, list) and len(val) >= 2:
+        dx, dy = float(val[0]), float(val[1])
+        ln = math.hypot(dx, dy)
+        return (dx / ln, dy / ln) if ln > 1e-4 else (1.0, 0.0)
+    s = str(val or "e").strip().lower()
+    if s in ("n", "up", "north"):
+        return (0.0, -1.0)
+    if s in ("s", "down", "south"):
+        return (0.0, 1.0)
+    if s in ("w", "left", "west"):
+        return (-1.0, 0.0)
+    return (1.0, 0.0)
+
+
+def flood_fill_region(
+    reg: Dict[str, Any],
+    starts: List[Tuple[float, float]],
+    moves: Set[str],
+    ignore_doors: bool = True,
+    toy_meta: Optional[Dict[str, Dict[str, Any]]] = None,
+) -> Set[Tuple[int, int]]:
     w, h, ts, grid = reg["width"], reg["height"], reg["tile_size"], reg["grid"]
     if w <= 0 or h <= 0:
         return set()
+    toy_meta = toy_meta or {}
     bridge_tiles: Set[Tuple[int, int]] = set()
     blocked_tiles: Set[Tuple[int, int]] = set()
     portal_pos: Dict[str, Tuple[int, int]] = {}
     portal_edges: Dict[Tuple[int, int], List[Tuple[int, int]]] = defaultdict(list)
 
+    def _mark_bridge_rect(cx: float, cy: float, rw: float, rh: float) -> None:
+        rx0, ry0 = cx - rw * 0.5, cy - rh * 0.5
+        for ty in range(max(0, int(ry0 // ts)), min(h, int((ry0 + rh - 0.1) // ts) + 1)):
+            for tx in range(max(0, int(rx0 // ts)), min(w, int((rx0 + rw - 0.1) // ts) + 1)):
+                bridge_tiles.add((tx, ty))
+
+    star_pos_by_id: Dict[str, Tuple[float, float]] = {}
     for it in reg["interactables"]:
         k = str(it.get("kind", "")).lower()
         p = it.get("pos", [0, 0])
         props = it.get("props") or {}
+        if k == "star_node" and it.get("id") and isinstance(p, list) and len(p) >= 2:
+            star_pos_by_id[str(it["id"])] = (float(p[0]), float(p[1]))
         if k in ("blue_portal", "portal"):
             pid = str(it.get("id", ""))
             if pid:
@@ -538,10 +693,59 @@ def flood_fill_region(reg: Dict[str, Any], starts: List[Tuple[float, float]], mo
             if k in ("phantom_platform", "phantom") and "lens" not in moves:
                 continue
             sz = props.get("size", [32, 16])
-            rx0, ry0 = p[0] - sz[0] * 0.5, p[1] - sz[1] * 0.5
-            for ty in range(max(0, int(ry0 // ts)), min(h, int((ry0 + sz[1] - 0.1) // ts) + 1)):
-                for tx in range(max(0, int(rx0 // ts)), min(w, int((rx0 + sz[0] - 0.1) // ts) + 1)):
-                    bridge_tiles.add((tx, ty))
+            _mark_bridge_rect(float(p[0]), float(p[1]), float(sz[0]), float(sz[1]))
+            path = props.get("path")
+            if k == "moving_platform" and isinstance(path, list) and len(path) >= 2:
+                pts = [(float(pt[0]), float(pt[1])) for pt in path if isinstance(pt, list) and len(pt) >= 2]
+                for a, b in zip(pts, pts[1:]):
+                    steps_n = max(1, int(math.hypot(b[0] - a[0], b[1] - a[1]) // 8))
+                    for si in range(steps_n + 1):
+                        u = si / steps_n
+                        _mark_bridge_rect(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, float(sz[0]), float(sz[1]))
+        elif k == "tone_coffin":
+            if not bool(props.get("solid_blocker", False)) or bool(props.get("platform_after_shatter", False)):
+                dx, dy = _parse_dir_vec(props.get("dir", "e"))
+                def_sz = [32, 16] if abs(dx) >= abs(dy) else [16, 32]
+                sz = props.get("size", def_sz)
+                sw, sh = float(sz[0]), float(sz[1])
+                slide_px = float(props.get("slide_tiles", 2.0)) * ts
+                steps_n = max(1, int(slide_px // 8))
+                for si in range(steps_n + 1):
+                    u = si / steps_n
+                    _mark_bridge_rect(float(p[0]) + dx * slide_px * u, float(p[1]) + dy * slide_px * u, sw, sh)
+        elif k == "falling_bell_platform":
+            rad = float(props.get("radius_px", 52.0))
+            _mark_bridge_rect(float(p[0]), float(p[1]), rad * 2.0, rad * 2.0)
+        elif k == "clock_hand":
+            length = float(props.get("length", 64.0))
+            _mark_bridge_rect(float(p[0]), float(p[1]), length * 2.0, length * 2.0)
+        elif toy_meta.get(k, {}).get("blocks") == "platform":
+            sz = props.get("size", [32, 32] if k == "tide_raft" else [24, 24])
+            _mark_bridge_rect(float(p[0]), float(p[1]), float(sz[0]), float(sz[1]))
+        elif not ignore_doors and toy_meta.get(k, {}).get("blocks") == "solid":
+            clear_ps = toy_meta.get(k, {}).get("clear_props", [])
+            if not any(bool(props.get(cp, False)) for cp in clear_ps):
+                sz = props.get("size", [16, 16])
+                rx0, ry0 = float(p[0]) - float(sz[0]) * 0.5, float(p[1]) - float(sz[1]) * 0.5
+                for ty in range(max(0, int(ry0 // ts)), min(h, int((ry0 + float(sz[1]) - 0.1) // ts) + 1)):
+                    for tx in range(max(0, int(rx0 // ts)), min(w, int((rx0 + float(sz[0]) - 0.1) // ts) + 1)):
+                        blocked_tiles.add((tx, ty))
+
+    # Linked star_node constellations bridge gaps between linked nodes
+    for it in reg["interactables"]:
+        if str(it.get("kind", "")).lower() == "star_node":
+            p = it.get("pos", [0, 0])
+            props = it.get("props") or {}
+            if props.get("lens_only") and "lens" not in moves:
+                continue
+            for lid in props.get("links", []) or []:
+                lp = star_pos_by_id.get(str(lid))
+                if lp:
+                    dist = math.hypot(lp[0] - float(p[0]), lp[1] - float(p[1]))
+                    steps_n = max(1, int(dist // 8))
+                    for si in range(steps_n + 1):
+                        u = si / steps_n
+                        _mark_bridge_rect(float(p[0]) + (lp[0] - float(p[0])) * u, float(p[1]) + (lp[1] - float(p[1])) * u, 16.0, 16.0)
 
     for it in reg["interactables"]:
         k = str(it.get("kind", "")).lower()
@@ -953,7 +1157,7 @@ def lint_region(
         check_str(props.get("prompt_key"), f"interactable '{iid}'")
         check_str(props.get("string_id"), f"interactable '{iid}'")
 
-        allowed_p = KIND_PROPS.get(k)
+        allowed_p = catalog.get("kind_props", KIND_PROPS).get(k)
         if allowed_p is not None:
             unknown_p = sorted(pk for pk in props.keys() if pk not in allowed_p and pk not in ALLOWED_PROPS_COMMON)
             if unknown_p:
@@ -1018,7 +1222,8 @@ def lint_region(
 
     # 10 & 11. Walkable flood-fill from each entry + unreachable chests/switches/interactables
     isl_moves = moves_for_island(reg["island_id"], catalog["islands"], include_island=True)
-    reached = flood_fill_region(reg, entry_points, isl_moves, ignore_doors=True)
+    toy_meta = catalog.get("toy_meta") or {}
+    reached = flood_fill_region(reg, entry_points, isl_moves, ignore_doors=True, toy_meta=toy_meta)
     for it in reg["interactables"]:
         iid = str(it.get("id", "?"))
         k = str(it.get("kind", "")).lower()
@@ -1031,7 +1236,7 @@ def lint_region(
             if not _tile_or_adj_reached(reached, itx, ity, 1):
                 req_m = set(str(m) for m in ((it.get("props") or {}).get("requires_moves") or []) if m)
                 if req_m and not req_m.issubset(isl_moves):
-                    backtrack_reached = flood_fill_region(reg, entry_points, isl_moves | req_m, ignore_doors=True)
+                    backtrack_reached = flood_fill_region(reg, entry_points, isl_moves | req_m, ignore_doors=True, toy_meta=toy_meta)
                     if not _tile_or_adj_reached(backtrack_reached, itx, ity, 1):
                         err("UNREACHABLE_INTERACTABLE", f"{k} '{iid}' at ({ix:.0f},{iy:.0f}) unreachable even with required moves {sorted(req_m)}")
                 else:
@@ -1104,7 +1309,20 @@ def lint_region(
             warn("EMPTY_BOX", f"high empty walkable ratio ({empty_ratio:.2f}) with minimal geometry/toys")
         if smax >= 0.88:
             warn("HIGH_SYMMETRY", f"symmetric layout (sym_h={sh}, sym_v={sv}, sym_max={smax})")
-        has_puzzle = any(str(it.get("kind", "")).lower() in SIGNAL_EMITTERS or str(it.get("kind", "")).lower() in ("mirror", "blue_transformer", "blue_portal", "tide_gate", "push_block", "bell") for it in reg["interactables"])
+        puzzle_base = SIGNAL_EMITTERS | {
+            "mirror", "blue_transformer", "transformer", "blue_portal", "portal",
+            "tide_gate", "push_block", "bell", "moving_platform", "conveyor",
+            "spinner", "crumble_floor", "bounce_bloom", "gravity_well", "wind_zone",
+            "pull_ring", "carry_orb", "rotor", "tilt_group", "beam_emitter",
+            "light_plant", "shadow_gate", "scale", "mimic_statue", "lantern_hook",
+            "echo_rose", "trial_gate", "color_glass", "state_lever",
+            "vehicle_skiff", "vehicle_cart", "tone_door", "toggle_block",
+        }
+        has_puzzle = any(
+            str(it.get("kind", "")).lower() in puzzle_base
+            or bool(toy_meta.get(str(it.get("kind", "")).lower(), {}).get("puzzle", False))
+            for it in reg["interactables"]
+        )
         has_reward = any(str(it.get("kind", "")).lower() in ("chest", "shrine", "wick_key", "keepers_flame", "moth", "pane_pickup", "great_lamp") for it in reg["interactables"])
         has_combat = len(reg["enemies"]) > 0 or any("wave" in act for ev in reg["events"] for act in (ev.get("do") or []) if isinstance(act, dict))
         has_story = len(reg["triggers"]) > 0 or any(str(it.get("kind", "")).lower() in ("npc", "lore_stone") for it in reg["interactables"])

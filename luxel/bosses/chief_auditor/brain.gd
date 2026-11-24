@@ -31,8 +31,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island8_boss_p1"
 	music_p2_cue = "island8_boss_p2"
-	max_hp = 118.0
-	hp = 118.0
+	max_hp = 108.0
+	hp = 108.0
 	body_radius = 12.0
 	move_speed = 40.0
 	stagger_threshold = 18.0
@@ -156,7 +156,13 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 	# Apply gentle red-ink slow strips in P2 (movement drag only, never unwarned damage!)
 	if not _ink_strips.is_empty() and Lx.player != null and is_instance_valid(Lx.player):
 		var wp: Vector2 = _get_real_wick_pos()
-		var gliding: bool = bool(Lx.player.get("gliding"))
+		var gv: Variant = Lx.player.get("gliding")
+		var gliding: bool = gv is bool and (gv as bool)
+		if not gliding:
+			var mw: Variant = Lx.player.get("move_wings")
+			if mw is Object and is_instance_valid(mw):
+				var mg: Variant = (mw as Object).get("gliding")
+				gliding = mg is bool and (mg as bool)
 		if not gliding and Lx.player.has_method("push_external"):
 			for strip: Rect2 in _ink_strips:
 				if strip.has_point(wp):

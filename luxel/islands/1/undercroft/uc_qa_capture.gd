@@ -134,9 +134,9 @@ func _setup_clip() -> bool:
 		# Place baffle already half-pushed so viewer sees final shove + Echo Clapper Dawn -> Dusk Freeze -> Dawn Echo -> crossing!
 		var blk: LxInteractable = w.find_interactable("blk_r9_baffle")
 		if blk != null:
-			blk.pos = Vector2(104.0, 240.0)
+			blk.pos = Vector2(128.0, 248.0)
 			blk.position = blk.pos.round()
-		_place_wick(Vector2(96.0, 152.0), Vector2.LEFT)
+		_place_wick(Vector2(116.0, 184.0), Vector2(-0.6, -0.8))
 		return true
 	if _clip == "r11_sexton":
 		if not _prepare_room("undercroft_r11"):
@@ -150,34 +150,34 @@ func _choreograph(f: int, w: LxWick, world: LxRegionLoader) -> void:
 	if w == null or world == null:
 		return
 	if _clip == "r9_choir":
-		# f 0..10: aim at Dawn Bell (64, 152) and THROW lantern (arms 1.4s Echo Clapper!)
+		# f 0..10: aim at Dawn Bell (96, 160) and THROW lantern (arms 1.4s Echo Clapper!)
 		if f < 8:
-			_set_in(Vector2(96.0, 152.0) - w.global_position, Vector2(64.0, 152.0) - w.global_position)
+			_set_in(Vector2(116.0, 184.0) - w.global_position, Vector2(96.0, 160.0) - w.global_position)
 		elif f == 8:
-			_set_in(Vector2.ZERO, Vector2(64.0, 152.0) - w.global_position)
+			_set_in(Vector2.ZERO, Vector2(96.0, 160.0) - w.global_position)
 			w.press_throw()
 		elif f == 16:
 			# Recall lantern immediately while Echo countdown spins on Dawn Bell!
 			w.press_throw()
-		elif f > 18 and f < 34:
-			# Hustle south to (104, 224) aimed at Center Dusk Bell (248, 224)
-			_set_in(Vector2(104.0, 224.0) - w.global_position, Vector2(248.0, 224.0) - w.global_position)
-		elif f == 34:
-			# Bolt Dusk Bell -> cyan Dusk wave freezes F2 in bridge slot just before t=1.4s Dawn Echo!
-			_set_in(Vector2.ZERO, Vector2(248.0, 224.0) - w.global_position)
+		elif f > 18 and f < 46:
+			# Hustle south-east to (132, 224) aimed at Center Dusk Bell (232, 224) (96px <= 118px bolt range!)
+			_set_in(Vector2(132.0, 224.0) - w.global_position, Vector2(232.0, 224.0) - w.global_position)
+		elif f == 46:
+			# Bolt Dusk Bell -> cyan Dusk wave freezes F2 in bridge slot before Dawn Echo arrives!
+			_set_in(Vector2.ZERO, Vector2(232.0, 224.0) - w.global_position)
 			w.press_fire()
-		elif f == 36:
+		elif f == 48:
 			w.release_fire()
-		elif f >= 38 and f < 58:
-			# Hold & watch Dawn Echo fire at ~f=50 while F2 stays frozen and F1 slides into North Bridge!
-			_set_in(Vector2(104.0, 296.0) - w.global_position, Vector2.RIGHT)
-		elif f >= 58 and f < 110:
+		elif f >= 50 and f < 74:
+			# Watch Dawn Echo sweep across while F2 stays frozen and F1 slides into North Bridge!
+			_set_in(Vector2(132.0, 296.0) - w.global_position, Vector2.RIGHT)
+		elif f >= 74 and f < 120:
 			# Run across South Catwalk to Center Pier (280, 296)
 			_set_in(Vector2(280.0, 296.0) - w.global_position, Vector2.RIGHT)
-		elif f >= 110 and f < 142:
+		elif f >= 120 and f < 148:
 			# Head north up Center Pier to F2 bridge lane (288, 200)
 			_set_in(Vector2(288.0, 200.0) - w.global_position, Vector2.UP)
-		elif f >= 142 and f < 185:
+		elif f >= 148 and f < 190:
 			# Cross F2 coffin bridge to East Reliquary Pier (456, 200)!
 			_set_in(Vector2(456.0, 200.0) - w.global_position, Vector2.RIGHT)
 		else:

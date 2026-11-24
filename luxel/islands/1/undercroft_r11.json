@@ -378,9 +378,23 @@
   ],
   "events": [
     {
-      "id": "uc_r11_victory",
+      "id": "uc_r11_victory_msg",
       "on": "flag:undercroft_cleared",
       "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "ISL1_UC_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "uc_r11_spawn_pane",
+      "on": "flag:undercroft_cleared",
+      "once": false,
       "do": [
         {
           "spawn": {
@@ -393,13 +407,6 @@
             "props": {
               "pane": "bell_clapper"
             }
-          }
-        },
-        {
-          "narrate": {
-            "id": "ISL1_UC_CLEARED",
-            "style": "title",
-            "duration": 3.5
           }
         }
       ]

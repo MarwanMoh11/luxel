@@ -272,7 +272,7 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	cooldown_left = float(data.get("cooldown", 0.45))
 	beams_fired += 1
 
-	wick.apply_recoil(-aim * 85.0)
+	wick.apply_recoil(-aim * 52.0)
 	wick.fired.emit(aim, "beam")
 	wick.muzzle_t = 0.11
 	wick.shoot_anim_t = 0.26

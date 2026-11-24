@@ -80,10 +80,12 @@ func reset_toy() -> void:
 
 
 func is_platform_solid() -> bool:
-	if not active or solid_blocker:
+	if not active:
 		return false
 	if state == State.SHATTERED:
 		return platform_after_shatter
+	if solid_blocker:
+		return false
 	return true
 
 

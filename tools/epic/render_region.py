@@ -65,6 +65,57 @@ ENEMY_VARIANT_SHEET: Dict[str, str] = {
 }
 
 _SHEET_CACHE: Dict[str, Optional[Tuple[Dict[str, Any], Image.Image]]] = {}
+_TOY_META_CACHE: Optional[Dict[str, Dict[str, Any]]] = None
+
+THEME_ALIASES: Dict[str, str] = {
+    "ember_express_interior": "ember_express",
+    "inverted_palace": "inverted_palace_silver",
+    "wick_house_hub": "wick_house",
+    "undercroft_catacomb": "undercroft",
+    "manor_parlor": "manor",
+    "bell_estate": "manor",
+    "bell_forecourt": "undercroft",
+    "bell_foundry": "great_toll_shaft",
+    "bell_graveyard": "undercroft",
+    "bell_town": "wick_house",
+    "silent_sanctum": "undercroft",
+    "great_toll": "great_toll_shaft",
+    "toll_shaft": "great_toll_shaft",
+    "drowned_galleon": "galleon",
+    "smugglers_locks": "locks",
+    "camp": "locks",
+    "caves": "cave_2",
+    "superboss": "leviathan_belly",
+    "isl3_underroot": "under_root",
+    "underroot": "under_root",
+    "isl3_cave": "cave_3",
+    "isl3_camp": "under_root",
+    "isl3_shift": "briar_court",
+    "isl3_spine": "briar_court",
+    "isl3_superboss": "briar_court",
+    "isl3_trial": "loom",
+    "weavers_loom": "loom",
+    "hourglass": "hourglass_maze",
+    "mausoleum": "rain_mausoleum",
+    "party": "garden_party",
+    "fall": "freefall",
+    "kiln_deep": "forge_deep",
+    "palace": "inverted_palace_silver",
+    "theatre": "doppel_theatre",
+    "stair": "endless_stair",
+}
+
+
+def _get_toy_meta() -> Dict[str, Dict[str, Any]]:
+    global _TOY_META_CACHE
+    if _TOY_META_CACHE is None:
+        _TOY_META_CACHE = rl.load_toy_meta()
+    return _TOY_META_CACHE
+
+
+def resolve_theme_name(raw: str) -> str:
+    k = raw.strip().lower()
+    return THEME_ALIASES.get(k, k)
 
 
 def _load_font(size: int) -> ImageFont.ImageFont:
@@ -202,6 +253,11 @@ def _paint_tile_rect(draw: ImageDraw.ImageDraw, x: int, y: int, ts: int, tt: str
     bmap = dict(BIOME_TILE_MAP.get(isl_id, BIOME_TILE_MAP[1]))
     if is_dungeon and isl_id in DUNGEON_GROUND_OVERRIDE:
         bmap["ground"], bmap["path"] = DUNGEON_GROUND_OVERRIDE[isl_id]
+    bmap.setdefault("carpet", "wine")
+    bmap.setdefault("stairs", "stone")
+    bmap.setdefault("grate", "night")
+    bmap.setdefault("rail", "mauve")
+    bmap.setdefault("foliage", "pine")
     cname = bmap.get(tt, "void")
     rgb = PAL[cname]
     x0, y0, x1, y1 = x * ts, y * ts, (x + 1) * ts - 1, (y + 1) * ts - 1
@@ -213,6 +269,16 @@ def _paint_tile_rect(draw: ImageDraw.ImageDraw, x: int, y: int, ts: int, tt: str
     elif tt in ("ground", "path"):
         if (x + y) % 2 == 0:
             draw.point((x0 + 2, y0 + 2), fill=PAL["stone" if tt == "path" else "night"] + (255,))
+    elif tt == "carpet":
+        draw.rectangle([x0 + 1, y0 + 1, x1 - 1, y1 - 1], outline=PAL["gold"] + (255,))
+    elif tt == "stairs":
+        for sy in range(y0 + 3, y1, 4):
+            draw.line([(x0, sy), (x1, sy)], fill=PAL["dusk"] + (255,))
+    elif tt == "grate":
+        for gx in range(x0 + 3, x1, 4):
+            draw.line([(gx, y0), (gx, y1)], fill=PAL["stone"] + (255,))
+    elif tt == "rail":
+        draw.line([(x0, y0 + ts // 2), (x1, y0 + ts // 2)], fill=PAL["gold"] + (255,))
     elif tt == "water":
         draw.line([(x0 + 2, y0 + 4), (x0 + 9, y0 + 4)], fill=PAL["sky"] + (255,))
         draw.line([(x0 + 6, y0 + 11), (x0 + 13, y0 + 11)], fill=PAL["deep"] + (255,))
@@ -283,12 +349,22 @@ def _draw_tiled_sprite(base: Image.Image, spr: Image.Image, cx: float, cy: float
         yy += sh
 
 
-def _interactable_sprite(it: Dict[str, Any], isl_id: int) -> Optional[Tuple[Image.Image, Tuple[int, int]]]:
+def _interactable_sprite(it: Dict[str, Any], isl_id: int, theme: str = "") -> Optional[Tuple[Image.Image, Tuple[int, int]]]:
     k = str(it.get("kind", "")).lower()
     props = it.get("props") or {}
     puz = REPO_ROOT / "luxel" / "art" / "props" / "puzzle_interactables.json"
     iprop = REPO_ROOT / "luxel" / "art" / "props" / f"island{isl_id}_props.json"
-    idoor = REPO_ROOT / "luxel" / "art" / "props" / f"island{isl_id}_doors.json"
+    tname = resolve_theme_name(theme) if theme else ""
+    tdoor = REPO_ROOT / "luxel" / "art" / "props" / f"theme_{tname}_doors.json" if tname else None
+    idoor = tdoor if (tdoor is not None and tdoor.exists()) else (REPO_ROOT / "luxel" / "art" / "props" / f"island{isl_id}_doors.json")
+    # Direct island toy sprite override if present
+    toy_png = REPO_ROOT / "luxel" / "art" / "islands" / str(isl_id) / "toys" / f"{k}.png"
+    if toy_png.exists():
+        try:
+            timg = Image.open(toy_png).convert("RGBA")
+            return timg, (timg.width // 2, timg.height // 2)
+        except Exception:
+            pass
 
     if k in ("mirror", "blue_transformer", "transformer"):
         a = _snap_mirror_angle(props)
@@ -345,18 +421,52 @@ def _interactable_sprite(it: Dict[str, Any], isl_id: int) -> Optional[Tuple[Imag
     return None
 
 
-def _draw_interactable_glyph(draw: ImageDraw.ImageDraw, it: Dict[str, Any]) -> None:
+def _draw_glyph_tag(draw: ImageDraw.ImageDraw, cx: float, cy: float, glyph: str, fg: Tuple[int, int, int]) -> None:
+    if not glyph:
+        return
+    f = _load_font(8)
+    bb = draw.textbbox((0, 0), glyph, font=f)
+    tw, th = bb[2] - bb[0], bb[3] - bb[1]
+    draw.text((round(cx - tw * 0.5), round(cy - th * 0.5) - 1), glyph, font=f, fill=fg + (255,))
+
+
+def _draw_interactable_glyph(draw: ImageDraw.ImageDraw, it: Dict[str, Any], toy_meta: Optional[Dict[str, Dict[str, Any]]] = None) -> None:
     k = str(it.get("kind", "")).lower()
     px, py = float(it["pos"][0]), float(it["pos"][1])
     props = it.get("props") or {}
     sz = props.get("size", [16, 16])
     w, h = float(sz[0]), float(sz[1])
     x0, y0, x1, y1 = px - w * 0.5, py - h * 0.5, px + w * 0.5, py + h * 0.5
+    tmeta = (toy_meta or {}).get(k)
 
     if k in rl.DOOR_KINDS:
         dk = str(props.get("door_kind", props.get("door_type", k))).lower()
         col = PAL["apricot"] if dk == "bridge_platform" else (PAL["rose"] if dk in ("boss_key", "boss_door") else (PAL["gold"] if dk in ("wick_key", "locked_door") else (PAL["coral"] if dk == "combat_gate" else PAL["sky"])))
         draw.rectangle([x0, y0, x1, y1], fill=col + (150,), outline=PAL["cream"] + (255,), width=1)
+    elif k == "tone_coffin":
+        dx, dy = rl._parse_dir_vec(props.get("dir", "e"))
+        def_sz = [32, 16] if abs(dx) >= abs(dy) else [16, 32]
+        csz = props.get("size", def_sz)
+        cw, ch = float(csz[0]), float(csz[1])
+        slide_px = float(props.get("slide_tiles", 2.0)) * 16.0
+        end_p = (px + dx * slide_px, py + dy * slide_px)
+        _draw_dashed(draw, (px, py), end_p, PAL["gold"] + (220,), width=2, dash=4.0, gap=3.0)
+        _draw_arrow(draw, (px + dx * max(0.0, slide_px - 10.0), py + dy * max(0.0, slide_px - 10.0)), end_p, PAL["gold"] + (230,), width=1, head=4.0)
+        fill_c = PAL["coral"] if props.get("solid_blocker") else PAL["mauve"]
+        draw.rectangle([px - cw * 0.5, py - ch * 0.5, px + cw * 0.5 - 1, py + ch * 0.5 - 1], fill=fill_c + (225,), outline=PAL["cream"] + (255,), width=1)
+        _draw_glyph_tag(draw, px, py, "TC", PAL["cream"])
+    elif k == "clock_hand":
+        length = float(props.get("length", 64.0))
+        ang = math.radians(float(props.get("start_deg", 0.0)))
+        tip = (px + math.cos(ang) * length, py + math.sin(ang) * length)
+        draw.ellipse([px - length, py - length, px + length, py + length], outline=PAL["mauve"] + (130,), width=1)
+        draw.line([(px, py), tip], fill=PAL["gold"] + (235,), width=4)
+        draw.ellipse([px - 6, py - 6, px + 6, py + 6], fill=PAL["dusk"] + (240,), outline=PAL["gold"] + (255,))
+        _draw_glyph_tag(draw, px, py, "CH", PAL["cream"])
+    elif k == "falling_bell_platform":
+        rad = float(props.get("radius_px", 52.0))
+        draw.ellipse([px - rad, py - rad, px + rad, py + rad], fill=PAL["dusk"] + (120,), outline=PAL["gold"] + (220,), width=2)
+        _draw_glyph_tag(draw, px, py, "FB", PAL["cream"])
     elif k in ("mirror", "blue_transformer", "transformer"):
         draw.rectangle([px - 6, py - 6, px + 6, py + 6], fill=PAL["sky"] + (230,), outline=PAL["void"] + (255,))
         ang = math.radians(float(props.get("angle_deg", 45.0)))
@@ -387,12 +497,27 @@ def _draw_interactable_glyph(draw: ImageDraw.ImageDraw, it: Dict[str, Any]) -> N
     elif k in ("chest", "wick_key", "keepers_flame", "key", "pane_pickup", "moth"):
         col = PAL["gold"] if k in ("chest", "wick_key", "key") else (PAL["rose"] if k == "keepers_flame" else PAL["lime"])
         draw.rectangle([px - 5, py - 5, px + 5, py + 5], fill=col + (240,), outline=PAL["void"] + (255,))
-    elif k in ("gravity_well", "bell"):
+    elif k in ("gravity_well", "bell", "polarity_well", "updraft_vent"):
         r = float(props.get("radius", 36.0))
-        draw.ellipse([px - r, py - r, px + r, py + r], outline=PAL["sky" if k == "gravity_well" else "gold"] + (160,), width=1)
-        draw.ellipse([px - 5, py - 5, px + 5, py + 5], fill=PAL["ice" if k == "gravity_well" else "gold"] + (240,), outline=PAL["void"] + (255,))
+        col_ring = PAL["sky"] if "well" in k else (PAL["lime"] if "updraft" in k else PAL["gold"])
+        draw.ellipse([px - r, py - r, px + r, py + r], outline=col_ring + (160,), width=1)
+        draw.ellipse([px - 6, py - 6, px + 6, py + 6], fill=col_ring + (235,), outline=PAL["void"] + (255,))
+        if tmeta and tmeta.get("glyph"):
+            _draw_glyph_tag(draw, px, py, str(tmeta["glyph"]), PAL["void"])
     elif k in ("push_block", "pressure_plate", "toggle_block", "crystal_toggle", "logic_gate"):
         draw.rectangle([px - 6, py - 6, px + 6, py + 6], fill=PAL["mauve"] + (220,), outline=PAL["cream"] + (255,))
+    elif tmeta is not None:
+        blocks = str(tmeta.get("blocks", "none"))
+        glyph = str(tmeta.get("glyph", k[:2].upper()))
+        if blocks == "solid":
+            draw.rectangle([x0, y0, x1, y1], fill=PAL["wine"] + (215,), outline=PAL["cream"] + (255,), width=1)
+            _draw_glyph_tag(draw, px, py, glyph, PAL["cream"])
+        elif blocks == "platform":
+            draw.rectangle([x0, y0, x1, y1], fill=PAL["jade"] + (185,), outline=PAL["gold"] + (245,), width=1)
+            _draw_glyph_tag(draw, px, py, glyph, PAL["void"])
+        else:
+            draw.rectangle([px - 7, py - 6, px + 7, py + 6], fill=PAL["deep"] + (235,), outline=PAL["gold"] + (255,), width=1)
+            _draw_glyph_tag(draw, px, py, glyph, PAL["gold"])
     else:
         draw.ellipse([px - 5, py - 5, px + 5, py + 5], fill=PAL["apricot"] + (230,), outline=PAL["void"] + (255,))
 
@@ -552,6 +677,8 @@ def render_region_image(
                     _draw_dashed(wdraw, p0, p1, col, width=1, dash=4.0, gap=2.0)
         base = Image.alpha_composite(base, wov)
 
+    toy_meta = _get_toy_meta()
+    reg_theme = str((reg.get("raw") or {}).get("theme", ""))
     for _, kind_tag, obj in sort_items:
         if kind_tag == "scenery":
             _draw_scenery_item(obj)
@@ -559,7 +686,7 @@ def render_region_image(
             ik = str(obj.get("kind", "")).lower()
             props = obj.get("props") or {}
             px, py = float(obj["pos"][0]), float(obj["pos"][1])
-            spr = _interactable_sprite(obj, isl_id)
+            spr = _interactable_sprite(obj, isl_id, reg_theme)
             tiled_kinds = rl.DOOR_KINDS | {"bramble", "cracked_wall", "cracked", "web", "obsidian_seal", "seal", "tide_gate", "tide", "phantom_platform", "phantom"}
             if spr:
                 if ik in tiled_kinds and isinstance(props.get("size"), list) and len(props["size"]) >= 2:
@@ -578,7 +705,7 @@ def render_region_image(
                     _draw_arrow(idraw, (px, py), (px + nx * 13, py + ny * 13), PAL["ice"] + (255,), width=1, head=4.0)
             else:
                 iov = Image.new("RGBA", (px_w, px_h), (0, 0, 0, 0))
-                _draw_interactable_glyph(ImageDraw.Draw(iov), obj)
+                _draw_interactable_glyph(ImageDraw.Draw(iov), obj, toy_meta)
                 base = Image.alpha_composite(base, iov)
         elif kind_tag == "enemy":
             ex, ey = float(obj["pos"][0]), float(obj["pos"][1])

@@ -88,7 +88,7 @@ func take_hit(hit: LxHit) -> int:
 	var src: String = str(h["source"])
 	var dmg: float = float(h["damage"])
 	var orig: Vector2 = h["origin"] as Vector2
-	var is_lens: bool = src == LxHit.SOURCE_LENS
+	var is_lens: bool = src == "lens"
 	var is_throw: bool = src == LxHit.SOURCE_THROW or src == LxHit.SOURCE_RECALL or src == LxHit.SOURCE_ZIP
 	var is_heavy: bool = bool(h["stagger"]) or is_throw or src == LxHit.SOURCE_SUNFLARE
 

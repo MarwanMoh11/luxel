@@ -11,7 +11,7 @@
     "clockwork_valet": {
       "script": "res://luxel/bosses/clockwork_valet/brain.gd",
       "data": {
-        "max_hp": 36.0,
+        "max_hp": 44.0,
         "body_radius": 10.5,
         "routine_speed": 42.0,
         "leash_radius": 0.0,
@@ -26,7 +26,7 @@
     "chandelier": {
       "script": "res://luxel/bosses/chandelier/brain.gd",
       "data": {
-        "max_hp": 54.0,
+        "max_hp": 92.0,
         "body_radius": 12.5,
         "routine_speed": 38.0,
         "leash_radius": 0.0,
@@ -56,7 +56,7 @@
     "silent_bell": {
       "script": "res://luxel/bosses/silent_bell/brain.gd",
       "data": {
-        "max_hp": 58.0,
+        "max_hp": 92.0,
         "body_radius": 13.0,
         "routine_speed": 40.0,
         "leash_radius": 0.0,
@@ -85,7 +85,7 @@
     "chandelier": {
       "island": 1,
       "name_key": "ISL1_BOSS_CHAND",
-      "phases": [0.6, 0.28],
+      "phases": [0.65, 0.32],
       "mini": false,
       "dungeon": "manor",
       "region": "manor_r11",
@@ -126,7 +126,9 @@
     "valet_unwind": { "id": "clockwork_chime", "pitch": 0.78, "db": 0.0 },
     "chandelier_wax_splash": { "id": "brazier_lit", "pitch": 0.88, "db": 0.0 },
     "chandelier_blackout": { "id": "snuffer_gulp", "pitch": 0.82, "db": 0.5 },
+    "chandelier_chain_snap": { "id": "shield_shatter", "pitch": 1.24, "db": 0.0 },
     "metronome_tick": { "id": "clockwork_chime", "pitch": 1.32, "db": -2.0 },
+    "metronome_cuckoo_pop": { "id": "prop_chime", "pitch": 1.48, "db": 0.0 },
     "metronome_winddown": { "id": "clockwork_chime", "pitch": 0.72, "db": 0.0 }
   }
 }

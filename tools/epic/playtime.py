@@ -315,6 +315,190 @@ def compute_fit_stats(actuals: List[float], preds: List[float]) -> Dict[str, flo
     }
 
 
+def load_bible_targets(mults: Dict[str, float]) -> Dict[int, Dict[str, Any]]:
+    """Parse docs/fullgame/epic/bibles/island<N>_graph.json into per-island and per-dungeon targets."""
+    bibles_dir = REPO_ROOT / "docs" / "fullgame" / "epic" / "bibles"
+    out: Dict[int, Dict[str, Any]] = {}
+    if not bibles_dir.is_dir():
+        return out
+    for gp in sorted(bibles_dir.glob("island*_graph.json")):
+        m_isl = re.search(r"island(\d+)_graph\.json$", gp.name)
+        if not m_isl:
+            continue
+        isl_id = int(m_isl.group(1))
+        try:
+            data = json.loads(gp.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        dungeons: Dict[str, Dict[str, Any]] = {}
+        region_to_dun: Dict[str, str] = {}
+        tot_exp_s = 0.0
+        tot_first_s = 0.0
+        crit_exp_s = 0.0
+        crit_first_s = 0.0
+        regs = data.get("regions") or []
+        for r in regs:
+            if not isinstance(r, dict):
+                continue
+            rid = str(r.get("id", ""))
+            dn = str(r.get("dungeon", "overworld")).strip().lower() or "overworld"
+            rk = str(r.get("kind", "default")).strip().lower()
+            exp_s = float(r.get("expert_s", 0.0) or 0.0)
+            fm = float(mults.get(rk, mults.get("default", 2.7)))
+            first_s = exp_s * fm
+            is_crit = bool(r.get("critical", True))
+            if rid:
+                region_to_dun[rid] = dn
+            d = dungeons.setdefault(dn, {
+                "dungeon": dn, "target_rooms": 0, "region_ids": [],
+                "target_exp_s": 0.0, "target_first_s": 0.0,
+                "crit_exp_s": 0.0, "crit_first_s": 0.0,
+            })
+            d["target_rooms"] += 1
+            if rid:
+                d["region_ids"].append(rid)
+            d["target_exp_s"] += exp_s
+            d["target_first_s"] += first_s
+            tot_exp_s += exp_s
+            tot_first_s += first_s
+            if is_crit:
+                d["crit_exp_s"] += exp_s
+                d["crit_first_s"] += first_s
+                crit_exp_s += exp_s
+                crit_first_s += first_s
+        out[isl_id] = {
+            "island": isl_id,
+            "name": str(data.get("name", f"ISLAND {isl_id}")),
+            "target_rooms": len(regs),
+            "target_exp_min": round(tot_exp_s / 60.0, 1),
+            "target_first_min": round(tot_first_s / 60.0, 1),
+            "crit_exp_min": round(crit_exp_s / 60.0, 1),
+            "crit_first_min": round(crit_first_s / 60.0, 1),
+            "dungeons": dungeons,
+            "region_to_dun": region_to_dun,
+        }
+    return out
+
+
+def _map_region_to_bible_dungeon(row: Dict[str, Any], b_isl: Optional[Dict[str, Any]]) -> str:
+    if b_isl and row["region"] in b_isl["region_to_dun"]:
+        return b_isl["region_to_dun"][row["region"]]
+    dn = str(row["dungeon"]).lower()
+    if dn in ("(overworld)", "overworld", ""):
+        return "overworld"
+    aliases = {
+        "oak": "hollow_oak", "kiln": "great_kiln", "sanctum": "bell_sanctum",
+        "toll": "great_toll", "mirror_spire": "spire",
+    }
+    dn = aliases.get(dn, dn)
+    if b_isl and dn in b_isl["dungeons"]:
+        return dn
+    # Prefix match against bible dungeon names
+    if b_isl:
+        for bdn in b_isl["dungeons"].keys():
+            if row["region"].startswith(bdn + "_") or dn.endswith("_" + bdn):
+                return bdn
+    return dn
+
+
+def build_bible_comparison(room_rows: List[Dict[str, Any]], bibles: Dict[int, Dict[str, Any]]) -> Dict[str, Any]:
+    rows_by_isl_dun: Dict[Tuple[int, str], List[Dict[str, Any]]] = defaultdict(list)
+    for r in room_rows:
+        isl = int(r["island"])
+        if isl <= 0:
+            continue
+        bdn = _map_region_to_bible_dungeon(r, bibles.get(isl))
+        rows_by_isl_dun[(isl, bdn)].append(r)
+
+    dun_comp: List[Dict[str, Any]] = []
+    isl_comp: List[Dict[str, Any]] = []
+    tot_built_rms = 0
+    tot_target_rms = 0
+    tot_mod_exp = 0.0
+    tot_mod_first = 0.0
+    tot_tgt_exp = 0.0
+    tot_tgt_first = 0.0
+
+    for isl in sorted(bibles.keys()):
+        bi = bibles[isl]
+        i_built = 0
+        i_mod_exp_s = 0.0
+        i_mod_first_s = 0.0
+        duns_done = 0
+        duns_total = len(bi["dungeons"])
+        seen_duns = set()
+        for dn, bd in sorted(bi["dungeons"].items()):
+            seen_duns.add(dn)
+            matched = rows_by_isl_dun.get((isl, dn), [])
+            b_cnt = len(matched)
+            m_exp_s = sum(float(x["expert_s"]) for x in matched)
+            m_first_s = sum(float(x["first_s"]) for x in matched)
+            t_exp_m = round(bd["target_exp_s"] / 60.0, 1)
+            t_first_m = round(bd["target_first_s"] / 60.0, 1)
+            m_exp_m = round(m_exp_s / 60.0, 1)
+            m_first_m = round(m_first_s / 60.0, 1)
+            pct = round(m_exp_s / max(1.0, bd["target_exp_s"]) * 100.0, 1)
+            t_rms = int(bd["target_rooms"])
+            status = "DONE" if b_cnt >= t_rms and pct >= 80.0 else ("PARTIAL" if b_cnt > 0 else "UNBUILT")
+            if b_cnt >= t_rms:
+                duns_done += 1
+            dun_comp.append({
+                "island": isl, "dungeon": dn,
+                "built_rooms": b_cnt, "target_rooms": t_rms,
+                "model_exp_min": m_exp_m, "target_exp_min": t_exp_m,
+                "delta_exp_min": round(m_exp_m - t_exp_m, 1),
+                "model_first_min": m_first_m, "target_first_min": t_first_m,
+                "pct_of_target": pct, "status": status,
+            })
+            i_built += b_cnt
+            i_mod_exp_s += m_exp_s
+            i_mod_first_s += m_first_s
+        # Include any extra on-disk dungeons not in bible
+        for (k_isl, k_dn), matched in sorted(rows_by_isl_dun.items()):
+            if k_isl == isl and k_dn not in seen_duns:
+                m_exp_s = sum(float(x["expert_s"]) for x in matched)
+                m_first_s = sum(float(x["first_s"]) for x in matched)
+                i_built += len(matched)
+                i_mod_exp_s += m_exp_s
+                i_mod_first_s += m_first_s
+                dun_comp.append({
+                    "island": isl, "dungeon": k_dn,
+                    "built_rooms": len(matched), "target_rooms": 0,
+                    "model_exp_min": round(m_exp_s / 60.0, 1), "target_exp_min": 0.0,
+                    "delta_exp_min": round(m_exp_s / 60.0, 1),
+                    "model_first_min": round(m_first_s / 60.0, 1), "target_first_min": 0.0,
+                    "pct_of_target": 100.0, "status": "EXTRA",
+                })
+        i_mod_exp_m = round(i_mod_exp_s / 60.0, 1)
+        i_mod_first_m = round(i_mod_first_s / 60.0, 1)
+        isl_comp.append({
+            "island": isl, "name": bi["name"],
+            "built_rooms": i_built, "target_rooms": bi["target_rooms"],
+            "dungeons_done": duns_done, "dungeons_total": duns_total,
+            "model_exp_min": i_mod_exp_m, "target_exp_min": bi["target_exp_min"],
+            "model_first_min": i_mod_first_m, "target_first_min": bi["target_first_min"],
+            "pct_of_target": round(i_mod_exp_m / max(0.1, bi["target_exp_min"]) * 100.0, 1),
+        })
+        tot_built_rms += i_built
+        tot_target_rms += bi["target_rooms"]
+        tot_mod_exp += i_mod_exp_s / 60.0
+        tot_mod_first += i_mod_first_s / 60.0
+        tot_tgt_exp += bi["target_exp_min"]
+        tot_tgt_first += bi["target_first_min"]
+
+    return {
+        "totals": {
+            "built_rooms": tot_built_rms, "target_rooms": tot_target_rms,
+            "rooms_pct": round(tot_built_rms / max(1, tot_target_rms) * 100.0, 1),
+            "model_exp_min": round(tot_mod_exp, 1), "target_exp_min": round(tot_tgt_exp, 1),
+            "model_first_min": round(tot_mod_first, 1), "target_first_min": round(tot_tgt_first, 1),
+            "pct_of_target": round(tot_mod_exp / max(0.1, tot_tgt_exp) * 100.0, 1),
+        },
+        "islands": isl_comp,
+        "dungeons": dun_comp,
+    }
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="Luxel Epic calibrated playtime model (stdlib only)")
     ap.add_argument("--island", type=int, action="append", default=[], help="Filter by island ID(s)")
@@ -322,6 +506,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--by", choices=["room", "dungeon", "island", "game", "all"], default="all", help="Table granularity")
     ap.add_argument("--fixtures", type=str, default="", help="Optional fixture overlay dir")
     ap.add_argument("--fit-report", action="store_true", help="Print detailed calibration residuals")
+    ap.add_argument("--bibles", action="store_true", help="Compare modelled minutes vs each island bible target per dungeon")
+    ap.add_argument("--summary", action="store_true", help="Print a one-screen executive summary for the lead")
     ap.add_argument("--json", type=str, default="", help="Write JSON output to path (or '-' for stdout)")
     args = ap.parse_args(argv)
 
@@ -473,6 +659,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "rooms": room_rows,
     }
 
+    bibles_comp: Optional[Dict[str, Any]] = None
+    if args.bibles or args.summary:
+        bibles = load_bible_targets(mults)
+        if want_isls:
+            bibles = {k: v for k, v in bibles.items() if k in want_isls}
+        bibles_comp = build_bible_comparison(room_rows, bibles)
+        if want_duns:
+            bibles_comp["dungeons"] = [d for d in bibles_comp["dungeons"] if d["dungeon"].lower() in want_duns]
+        payload["bibles"] = bibles_comp
+
     if args.json == "-":
         print(json.dumps(payload, indent=2))
         return 0
@@ -480,6 +676,27 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         out_p = Path(args.json)
         out_p.parent.mkdir(parents=True, exist_ok=True)
         out_p.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    if args.summary and bibles_comp is not None:
+        bt = bibles_comp["totals"]
+        g = payload["game"]
+        print(f"LUXEL EPIC PLAYTIME SUMMARY (modelled, R2={fit_clean['r2']} MAE={fit_clean['mae_s']}s | eff mult {g['effective_multiplier']:.2f}x)")
+        print(f"  Built:  {bt['built_rooms']}/{bt['target_rooms']} rooms ({bt['rooms_pct']:.1f}%) | Exp {bt['model_exp_min']:.1f}m / {bt['target_exp_min']:.1f}m ({bt['model_exp_min']/60:.2f}h / {bt['target_exp_min']/60:.2f}h) | 1st {bt['model_first_min']:.1f}m / {bt['target_first_min']:.1f}m ({bt['model_first_min']/60:.2f}h / {bt['target_first_min']/60:.2f}h)")
+        print(f"  {'Isl':>3s} {'Name':20s} {'Rooms':>9s} {'Dungs':>6s} {'ModelExp':>9s} {'TgtExp':>8s} {'Model1st':>9s} {'Tgt1st':>8s} {'%Tgt':>6s}")
+        for ic in bibles_comp["islands"]:
+            print(f"  {ic['island']:3d} {ic['name'][:20]:20s} {ic['built_rooms']:4d}/{ic['target_rooms']:<4d} {ic['dungeons_done']:2d}/{ic['dungeons_total']:<3d} {ic['model_exp_min']:8.1f}m {ic['target_exp_min']:7.1f}m {ic['model_first_min']:8.1f}m {ic['target_first_min']:7.1f}m {ic['pct_of_target']:5.1f}%")
+        print(f"  {'TOT':>3s} {'ALL 8 ISLANDS':20s} {bt['built_rooms']:4d}/{bt['target_rooms']:<4d} {'-':>6s} {bt['model_exp_min']:8.1f}m {bt['target_exp_min']:7.1f}m {bt['model_first_min']:8.1f}m {bt['target_first_min']:7.1f}m {bt['pct_of_target']:5.1f}%")
+        if not args.bibles:
+            return 0
+
+    if args.bibles and bibles_comp is not None:
+        bt = bibles_comp["totals"]
+        print("\nLUXEL PLAYTIME vs BIBLE TARGETS (per dungeon, modelled vs bible expert/1st-time)")
+        print(f"{'Isl':>3s} {'Dungeon':16s} {'Rooms':>8s} {'ModExp':>7s} {'TgtExp':>7s} {'Delta':>7s} {'Mod1st':>7s} {'Tgt1st':>7s} {'%':>6s} {'Status':8s}")
+        for d in bibles_comp["dungeons"]:
+            print(f"{d['island']:3d} {d['dungeon'][:16]:16s} {d['built_rooms']:3d}/{d['target_rooms']:<4d} {d['model_exp_min']:6.1f}m {d['target_exp_min']:6.1f}m {d['delta_exp_min']:+6.1f}m {d['model_first_min']:6.1f}m {d['target_first_min']:6.1f}m {d['pct_of_target']:5.1f}% {d['status']:8s}")
+        print(f"TOTAL: {bt['built_rooms']}/{bt['target_rooms']} rooms ({bt['rooms_pct']:.1f}%) | modelled exp {bt['model_exp_min']:.1f}m vs bible {bt['target_exp_min']:.1f}m ({bt['pct_of_target']:.1f}%) | 1st-time {bt['model_first_min']:.1f}m ({bt['model_first_min']/60:.2f}h) vs {bt['target_first_min']:.1f}m ({bt['target_first_min']/60:.2f}h)")
+        return 0
 
     print("LUXEL PLAYTIME MODEL (modelled, calibrated on Marwan's 41 complete rooms; 5:overworld partial)")
     print("Weights: " + ", ".join(f"{k}={v}" for k, v in payload["weights"].items()))

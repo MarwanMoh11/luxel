@@ -55,6 +55,12 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 
 
 func _is_world_anims_sold() -> bool:
+	if ResourceLoader.exists("res://luxel/core/sold_settings.gd"):
+		var sc: Variant = ResourceLoader.load("res://luxel/core/sold_settings.gd")
+		if sc is GDScript and (sc as GDScript).has_method("current"):
+			var inst: Variant = (sc as GDScript).call("current")
+			if inst is Object and (inst as Object).has_method("is_sold"):
+				return bool((inst as Object).call("is_sold", "world_anims"))
 	if Lx.vars != null:
 		return bool(Lx.vars.get_var("island:8", "sold_world_anims", false))
 	return false

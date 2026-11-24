@@ -1,0 +1,98 @@
+{
+  "id": "gallery",
+  "island_id": 0,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "wick_house",
+  "name_key": "ZONE_HUB_GALLERY",
+  "music": "hub",
+  "spawn": [48, 144],
+  "zones": [
+    {"id": "hub_gallery", "name_key": "ZONE_HUB_GALLERY", "rect": [0, 0, 512, 288], "dark": false}
+  ],
+  "design": {
+    "idea": "Shooting Gallery with 3 manual-aim sets (classic, prism bounce, gravity curve) beside the Rematch Mirror dais.",
+    "kind": "story",
+    "beat": "ten",
+    "teaches": "manual aim target patterns, prism bank shots, gravity curve shots, and boss rematches",
+    "decisions": 8,
+    "expert_s": 90,
+    "reward": "gallery medals (shards, lead, vesper_chime pane, apricot flame) and boss rematch marks",
+    "why": "East hall for sharpening lantern marksmanship and revisiting fallen keepers in the glass.",
+    "optional": true,
+    "solution": [
+      {"op": "goto", "to": "hub_mg_gallery"},
+      {"op": "shoot", "target": "hub_mg_gallery"},
+      {"op": "interact", "target": "hub_mg_gallery"},
+      {"op": "goto", "to": "curio_gal_tally"},
+      {"op": "interact", "target": "curio_gal_tally"},
+      {"op": "goto", "to": "curio_gal_trophy"},
+      {"op": "interact", "target": "curio_gal_trophy"},
+      {"op": "goto", "to": "curio_gal_chime"},
+      {"op": "interact", "target": "curio_gal_chime"}
+    ]
+  },
+  "decor": [
+    {"kind": "inlay", "rect": [400, 40, 80, 96]},
+    {"kind": "rug", "rect": [80, 152, 240, 40], "style": "ornate"},
+    {"kind": "circle", "pos": [208, 108], "radius": 28, "style": "astrolabe"},
+    {"kind": "window_strip", "y": 14, "x0": 80, "x1": 288, "style": "sunset"},
+    {"kind": "light_shaft", "pos": [440, 64], "size": [48, 96], "tint": "cool", "shear": 0.25}
+  ],
+  "exits": [
+    {"id": "ex_gal_ow", "rect": [0, 128, 16, 48], "to_island": 0, "to_region": "overworld", "to_spawn": [448, 168]},
+    {"id": "ex_gal_pier", "rect": [288, 272, 48, 16], "to_island": 0, "to_region": "pier", "to_spawn": [112, 48]}
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "folk_crab",
+      "when": "flag:folk:mirror_crab",
+      "enable": ["lamp_gal_crab"]
+    },
+    {
+      "id": "relit_5",
+      "when": "hub_relit>=5",
+      "tiles": [[25, 4, 4, 8, "path"]],
+      "enable": ["lamp_gal_relit_5"]
+    }
+  ],
+  "interactables": [
+    {"id": "hub_mg_gallery", "kind": "mg_shooting_gallery", "pos": [104, 188], "props": {}},
+    {"id": "gal_rail_1", "kind": "rail", "pos": [144, 136], "props": {"size": [128, 12]}},
+    {"id": "gal_rail_2", "kind": "rail", "pos": [272, 136], "props": {"size": [96, 12]}},
+    {"id": "gal_mirror_1", "kind": "blue_transformer", "pos": [96, 108], "props": {"angle_deg": 45, "rotatable": true, "movable": false}},
+    {"id": "gal_mirror_2", "kind": "blue_transformer", "pos": [320, 108], "props": {"angle_deg": 135, "rotatable": true, "movable": false}},
+    {"id": "gal_grav_1", "kind": "gravity_well", "pos": [208, 104], "props": {"radius": 62, "strength": 210, "mode": "pull"}},
+    {"id": "hub_rematch_mirror", "kind": "hub_station", "pos": [440, 88], "props": {"role": "rematch_mirror"}},
+    {
+      "id": "npc_hub_crab",
+      "kind": "hub_npc",
+      "pos": [420, 148],
+      "props": {
+        "folk": "mirror_crab",
+        "require_flag": "folk:mirror_crab",
+        "routine": [
+          {"pos": [420, 148], "wait": 2.8, "anim": "idle"},
+          {"pos": [456, 136], "wait": 2.4, "anim": "happy"}
+        ],
+        "bubbles": [["mirror", "crown", "spark"]]
+      }
+    },
+    {"id": "curio_gal_trophy", "kind": "hub_curio", "pos": [456, 224], "props": {"curio": "trophy_rack"}},
+    {"id": "curio_gal_chime", "kind": "hub_curio", "pos": [52, 232], "props": {"curio": "chime_rack"}},
+    {"id": "curio_gal_jar", "kind": "hub_curio", "pos": [348, 52], "props": {"curio": "moth_jar"}},
+    {"id": "curio_gal_tally", "kind": "hub_curio", "pos": [208, 228], "props": {"curio": "tally_board"}},
+    {"id": "lamp_gal_w", "kind": "road_lamp", "pos": [56, 104], "props": {"lit": true}},
+    {"id": "lamp_gal_e", "kind": "road_lamp", "pos": [396, 172], "props": {"lit": true}},
+    {"id": "lamp_gal_crab", "kind": "road_lamp", "pos": [468, 64], "props": {"lit": true}},
+    {"id": "lamp_gal_relit_5", "kind": "road_lamp", "pos": [264, 212], "props": {"lit": true}}
+  ],
+  "triggers": [],
+  "scenery": [
+    {"sheet": "theme_wick_house", "prop": "boss_rematch_mirror", "pos": [440, 56], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [264, 248], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [408, 244], "layer": "sort"},
+    {"sheet": "theme_wick_house", "prop": "wooden_bookshelf_home", "pos": [56, 48], "layer": "sort"}
+  ]
+}

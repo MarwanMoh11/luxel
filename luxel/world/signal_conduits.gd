@@ -404,10 +404,10 @@ func _draw_optical_inlays(anim_step: int, reduced: bool) -> void:
 			draw_rect(Rect2(p, Vector2.ONE), c_tail)
 			continue
 		var k: int = posmod(anim_step / 2 + ch.phase, 4)
-		var c_base := Color((PAL["sky"] if cool else PAL["apricot"]) as Color, 0.48 if k == 0 else 0.62)
-		var c_hi := Color((PAL["ice"] if cool else PAL["gold"]) as Color, 0.82 if k == 2 else 0.56)
+		var c_base := Color((PAL["sky"] if cool else PAL["apricot"]) as Color, 0.60 if k == 0 else 0.74)
+		var c_hi := Color((PAL["ice"] if cool else PAL["gold"]) as Color, 0.92 if k == 2 else 0.68)
 		if k == 2 and not reduced:
-			c_hi = Color(PAL["cream"] as Color, 0.85)
+			c_hi = Color(PAL["cream"] as Color, 0.94)
 		# Recessed carved stone groove + delicate 3-dot directional floor glyph
 		var tip: Vector2 = p + Vector2(dx, dy)
 		var wing_a: Vector2

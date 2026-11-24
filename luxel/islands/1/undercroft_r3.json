@@ -76,7 +76,7 @@
       "kind": "bell",
       "pos": [
         344,
-        104
+        88
       ],
       "props": {
         "tone": "dawn",
@@ -110,21 +110,26 @@
       }
     },
     {
-      "id": "plate_r3_baffle",
-      "kind": "pressure_plate",
+      "id": "hook_r3_baffle",
+      "kind": "lantern_hook",
       "pos": [
-        344,
-        184
+        400,
+        232
       ],
       "props": {
-        "by": [
-          "lantern"
-        ],
+        "light_radius": 84
+      }
+    },
+    {
+      "id": "sensor_r3_baffle",
+      "kind": "light_sensor",
+      "pos": [
+        432,
+        232
+      ],
+      "props": {
+        "need_secs": 0.25,
         "hold": true,
-        "size": [
-          22,
-          18
-        ],
         "target_id": "wall_r3_baffle"
       }
     },
@@ -150,7 +155,7 @@
             40
           ]
         ],
-        "speed": 120,
+        "speed": 140,
         "on_signal": "move"
       }
     },
@@ -261,7 +266,7 @@
       "kind": "circle",
       "pos": [
         344,
-        104
+        88
       ],
       "radius": 22,
       "style": "clock"
@@ -287,9 +292,9 @@
     {
       "kind": "inlay",
       "rect": [
-        328,
-        168,
-        32,
+        384,
+        216,
+        64,
         32
       ]
     },
@@ -322,7 +327,7 @@
       "prop": "bell_floor_seal",
       "pos": [
         344,
-        104
+        88
       ],
       "layer": "ground",
       "flip_x": false,
@@ -406,7 +411,7 @@
       "prop": "crypt_urn",
       "pos": [
         424,
-        268
+        276
       ],
       "layer": "sort",
       "flip_x": false,
@@ -451,10 +456,10 @@
     }
   ],
   "design": {
-    "idea": "Hold a sliding stone baffle open with your thrown lantern on a pressure plate so an unarmed ring chains a 3-bell Dawn relay around a crypt chasm.",
+    "idea": "Hang your lantern on a distant brass hook to hold a stone acoustic baffle open so an unarmed bell ring chains a 3-bell Dawn relay around a crypt chasm.",
     "kind": "puzzle",
     "beat": "sho",
-    "teaches": "Unarmed interact bell ringing while your thrown lantern holds a mechanism open, plus relay bell chaining.",
+    "teaches": "Lantern Hook + Light Sensor holding a baffle open while Wick walks unarmed to strike a Dawn relay chain.",
     "decisions": 6,
     "expert_s": 50,
     "reward": "uc_west_relay",
@@ -466,19 +471,11 @@
         "timeout": 18.0
       },
       {
-        "op": "goto",
-        "to": [
-          344,
-          152
-        ]
+        "op": "recall"
       },
       {
-        "op": "throw",
-        "dir": [
-          0,
-          1
-        ],
-        "hold": 0.35
+        "op": "interact",
+        "target": "hook_r3_baffle"
       },
       {
         "op": "wait_phase",

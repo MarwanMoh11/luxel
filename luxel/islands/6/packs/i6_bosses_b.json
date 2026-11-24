@@ -1,0 +1,165 @@
+{
+  "pack_id": "i6_bosses_b",
+  "version": 1,
+  "owner": "I6-bosses-b",
+  "comment": "Island 6 (Ashen Kiln) Boss Package B: piston_marshal (Iron Colossus mini), colossus_heart (Iron Colossus boss), hollow_ram_phantom (Iron Collision duel), crucible_weaver (Great Kiln mini #2), first_forge (Superboss).",
+  "strings": {
+    "ISL6_BOSS_MARSHAL": "THE PISTON MARSHAL",
+    "ISL6_BOSS_HEART": "THE COLOSSUS HEART",
+    "ISL6_BOSS_PHANTOM": "IRON PHANTOM",
+    "ISL6_BOSS_WEAVER": "THE CRUCIBLE WEAVER",
+    "ISL6_BOSS_FIRST": "THE FIRST FORGE"
+  },
+  "sfx": {
+    "marshal_rattle": {"id": "shield_clang", "pitch": 1.38, "db": -1.5},
+    "heart_pendulum_bonk": {"id": "bell_slam", "pitch": 0.78, "db": 0.5},
+    "weaver_glass_clink": {"id": "crystal_clank", "pitch": 1.32, "db": -0.5},
+    "weaver_spin_mirror": {"id": "mirror_turn", "pitch": 1.18, "db": -1.0},
+    "forge_stance_shift": {"id": "clockwork_chime", "pitch": 0.88, "db": -0.5},
+    "forge_bless_chord": {"id": "great_lamp_bloom", "pitch": 0.94, "db": 0.5}
+  },
+  "enemies": {
+    "piston_marshal": {
+      "script": "res://luxel/bosses/piston_marshal/brain.gd",
+      "data": {
+        "max_hp": 68.0,
+        "body_radius": 11.0,
+        "routine_speed": 38.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.56,
+        "recover_time": 1.25,
+        "shard_drop": 24,
+        "attack_damage": 1.0,
+        "is_boss": true,
+        "island": 6
+      }
+    },
+    "colossus_heart": {
+      "script": "res://luxel/bosses/colossus_heart/brain.gd",
+      "data": {
+        "max_hp": 148.0,
+        "body_radius": 13.0,
+        "routine_speed": 28.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.58,
+        "recover_time": 1.20,
+        "shard_drop": 36,
+        "attack_damage": 1.0,
+        "is_boss": true,
+        "island": 6
+      }
+    },
+    "hollow_ram_phantom": {
+      "script": "res://luxel/bosses/hollow_ram_phantom/brain.gd",
+      "data": {
+        "max_hp": 96.0,
+        "body_radius": 8.5,
+        "routine_speed": 54.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.50,
+        "recover_time": 1.10,
+        "shard_drop": 22,
+        "attack_damage": 1.0,
+        "is_boss": true,
+        "island": 6
+      }
+    },
+    "crucible_weaver": {
+      "script": "res://luxel/bosses/crucible_weaver/brain.gd",
+      "data": {
+        "max_hp": 108.0,
+        "body_radius": 11.5,
+        "routine_speed": 44.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.54,
+        "recover_time": 1.15,
+        "shard_drop": 26,
+        "attack_damage": 1.0,
+        "is_boss": true,
+        "island": 6
+      }
+    },
+    "first_forge": {
+      "script": "res://luxel/bosses/first_forge/brain.gd",
+      "data": {
+        "max_hp": 178.0,
+        "body_radius": 13.5,
+        "routine_speed": 32.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.60,
+        "recover_time": 1.25,
+        "shard_drop": 60,
+        "attack_damage": 1.0,
+        "is_boss": true,
+        "island": 6
+      }
+    }
+  },
+  "bosses": {
+    "piston_marshal": {
+      "name_key": "ISL6_BOSS_MARSHAL",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "iron_colossus",
+      "region": "colossus_r5",
+      "music": "island6_boss_p1",
+      "music_p2": "island6_boss_p2",
+      "heart": "none",
+      "flag": "piston_marshal_defeated",
+      "island": 6
+    },
+    "colossus_heart": {
+      "name_key": "ISL6_BOSS_HEART",
+      "phases": [0.6, 0.25],
+      "mini": false,
+      "dungeon": "iron_colossus",
+      "region": "colossus_r11",
+      "music": "island6_boss_p1",
+      "music_p2": "island6_boss_p2",
+      "heart": "half",
+      "flag": "colossus_heart_beaten",
+      "island": 6
+    },
+    "hollow_ram_phantom": {
+      "name_key": "ISL6_BOSS_PHANTOM",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "iron_collision",
+      "region": "crash_r3",
+      "music": "island6_boss_p1",
+      "music_p2": "island6_boss_p2",
+      "heart": "none",
+      "flag": "crash_throttle_locked",
+      "island": 6
+    },
+    "crucible_weaver": {
+      "name_key": "ISL6_BOSS_WEAVER",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "great_kiln",
+      "region": "kiln_r15",
+      "music": "island6_boss_p1",
+      "music_p2": "island6_boss_p2",
+      "heart": "none",
+      "flag": "crucible_weaver_defeated",
+      "island": 6
+    },
+    "first_forge": {
+      "name_key": "ISL6_BOSS_FIRST",
+      "phases": [0.65, 0.3],
+      "mini": false,
+      "dungeon": "superboss",
+      "region": "superboss_first_forge",
+      "music": "island6_boss_p1",
+      "music_p2": "island6_boss_p2",
+      "heart": "full",
+      "flag": "first_forge_defeated",
+      "island": 6
+    }
+  }
+}

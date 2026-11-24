@@ -97,8 +97,8 @@
       "id": "bell_r9_dawn",
       "kind": "bell",
       "pos": [
-        64,
-        152
+        96,
+        160
       ],
       "props": {
         "tone": "dawn",
@@ -109,12 +109,12 @@
       "id": "bell_r9_dusk",
       "kind": "bell",
       "pos": [
-        248,
+        232,
         224
       ],
       "props": {
         "tone": "dusk",
-        "wave_radius": 148
+        "wave_radius": 172
       }
     },
     {
@@ -133,8 +133,8 @@
       "id": "blk_r9_baffle",
       "kind": "push_block",
       "pos": [
-        104,
-        164
+        128,
+        172
       ],
       "props": {
         "variant": "stone",
@@ -155,7 +155,7 @@
         "dir": "e",
         "slide_tiles": 12.0,
         "steps": 2,
-        "speed": 180,
+        "speed": 220,
         "size": [
           112,
           32
@@ -170,19 +170,19 @@
       "id": "coffin_r9_2",
       "kind": "tone_coffin",
       "pos": [
-        272,
+        288,
         200
       ],
       "props": {
         "dir": "e",
-        "slide_tiles": 6.5,
+        "slide_tiles": 5.5,
         "steps": 1,
-        "speed": 180,
+        "speed": 260,
         "size": [
           112,
           32
         ],
-        "freeze_secs": 5.0,
+        "freeze_secs": 6.0,
         "tone_map": {
           "dawn": "slide",
           "dusk": "freeze"
@@ -375,8 +375,8 @@
     {
       "kind": "circle",
       "pos": [
-        64,
-        152
+        96,
+        160
       ],
       "radius": 24,
       "style": "clock"
@@ -384,7 +384,7 @@
     {
       "kind": "circle",
       "pos": [
-        248,
+        232,
         224
       ],
       "radius": 20,
@@ -447,8 +447,8 @@
       "sheet": "theme_undercroft",
       "prop": "bell_floor_seal",
       "pos": [
-        64,
-        152
+        96,
+        160
       ],
       "layer": "ground",
       "flip_x": false,
@@ -608,15 +608,15 @@
         "op": "push",
         "target": "blk_r9_baffle",
         "to": [
-          104,
-          240
+          128,
+          248
         ]
       },
       {
         "op": "goto",
         "to": [
-          96,
-          152
+          116,
+          184
         ]
       },
       {
@@ -630,7 +630,7 @@
       {
         "op": "goto",
         "to": [
-          104,
+          132,
           224
         ]
       },
@@ -656,7 +656,7 @@
           80
         ],
         "tol": 8.0,
-        "timeout": 4.0
+        "timeout": 4.5
       },
       {
         "op": "goto",
@@ -669,6 +669,13 @@
         "op": "goto",
         "to": [
           288,
+          200
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          376,
           200
         ]
       },

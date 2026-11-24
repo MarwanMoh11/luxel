@@ -11,7 +11,7 @@ extends LxBossBase
 ## SAFETY LAW: Every stolen move is ALWAYS given back on mask break, death, retry, exit, and victory!
 
 const PHASE_STEAL_MOVES: Array[String] = ["throw", "dash", "bolt"]
-const PHASE_MASK_HP: Array[float] = [3.5, 4.0, 4.5]
+const PHASE_MASK_HP: Array[float] = [4.5, 5.0, 5.5]
 
 var _aim_dir: Vector2 = Vector2.LEFT
 var _dash_step: int = 0
@@ -36,13 +36,13 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island7_boss_p1"
 	music_p2_cue = "island7_boss_p2"
-	max_hp = 132.0
-	hp = 132.0
+	max_hp = 188.0
+	hp = 188.0
 	body_radius = 10.5
-	move_speed = 44.0
-	stagger_threshold = 18.0
+	move_speed = 42.0
+	stagger_threshold = 24.0
 	stagger_duration = 2.00
-	post_recover_cd = 0.30
+	post_recover_cd = 0.50
 	shard_drop = 45
 
 
@@ -55,7 +55,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 1: Curtain Snatch — steals phase's signature move into hovering Spotlight Mask + curtain fan!
 	register_attack("curtain_snatch", {
-		"weight": 1.25, "tell": 0.62, "commit": 0.30, "recover": 1.15, "cooldown": 4.2,
+		"weight": 1.35, "tell": 0.62, "commit": 0.30, "recover": 1.15, "cooldown": 3.0,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			ground.warn_ring(pos, 46.0, last_tell_duration, 0.0, "gold", "coral")
@@ -79,77 +79,77 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if phase == 1:
 				var dest: Vector2 = clamp_to_arena(tgt)
 				set_meta("_zip_dest", dest)
-				ground.warn_ring(dest, 24.0, last_tell_duration, 1.0, "wine", "gold")
+				ground.warn_ring(dest, 22.0, last_tell_duration, 0.0, "wine", "gold")
 				stage.play_sfx("lantern_throw", pos)
 			elif phase == 2:
-				ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 96.0), 12.0, last_tell_duration, 0.0, "coral", "gold")
+				ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 88.0), 11.0, last_tell_duration, 0.0, "coral", "gold")
 				stage.play_sfx("hollow_wick_tell", pos)
 			else:
-				ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 175.0), 11.0, last_tell_duration, 1.0, "sky", "coral")
+				ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 165.0), 10.0, last_tell_duration, 0.0, "sky", "coral")
 				stage.play_sfx("beam_charge", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
 			if phase == 1:
-				patterns.emit_boomerang(pos, _aim_dir, 152.0, 0.62, 0.65, {"color": "coral", "source": "stolen_throw", "reflectable": true})
+				patterns.emit_boomerang(pos, _aim_dir, 138.0, 0.62, 0.65, {"color": "coral", "source": "stolen_throw", "reflectable": true})
 				stage.play_sfx("hollow_wick_zip", pos)
 			elif phase == 2:
 				stage.play_sfx("hollow_dash", pos)
 			else:
-				patterns.emit_fan(pos, _aim_dir, 5, 0.72, 150.0, {"color": "ice", "source": "stolen_volley", "reflectable": true})
-				patterns.emit_lane(pos, _aim_dir, 4, 185.0, 0.05, {"color": "coral", "source": "stolen_beam", "reflectable": true})
-				stage.shake(0.18)
+				patterns.emit_fan(pos, _aim_dir, 3, 0.85, 124.0, {"color": "ice", "source": "stolen_volley", "reflectable": true})
+				patterns.emit_lane(pos, _aim_dir, 3, 146.0, 0.08, {"color": "coral", "source": "stolen_beam", "reflectable": true})
+				stage.shake(0.16)
 				stage.play_sfx("beam_fire", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, el: float) -> void:
 			if phase == 1:
 				var dest: Vector2 = get_meta("_zip_dest", pos) as Vector2
-				move_boss((dest - pos).limit_length(290.0 * dt), true)
+				move_boss((dest - pos).limit_length(250.0 * dt), true)
 				if pos.distance_to(dest) <= 10.0:
-					check_contact_damage(22.0, _aim_dir, 1.0, "stolen_zip")
+					check_contact_damage(20.0, _aim_dir, 1.0, "stolen_zip")
 			elif phase == 2:
 				if _dash_step == 0 and el >= 0.12:
 					_dash_step = 1
 					_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
-					patterns.emit_fan(pos, _aim_dir, 3, 0.55, 132.0, {"color": "coral", "source": "dash_trail", "reflectable": true})
+					patterns.emit_fan(pos, _aim_dir, 3, 0.65, 122.0, {"color": "coral", "source": "dash_trail", "reflectable": true})
 					stage.play_sfx("hollow_dash", pos)
 				elif _dash_step == 1 and el >= 0.24:
 					_dash_step = 2
 					_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
 					stage.play_sfx("hollow_dash", pos)
-				move_boss(_aim_dir * 240.0 * dt, false)
-				check_contact_damage(17.0, _aim_dir, 1.0, "stolen_dash"),
+				move_boss(_aim_dir * 215.0 * dt, false)
+				check_contact_damage(16.0, _aim_dir, 1.0, "stolen_dash"),
 	})
 
 	# Attack 3: Trapdoor Drop — coral floor trapdoors under Wick & corners (pressures all 8 perimeter spots!)
 	register_attack("trapdoor_drop", {
-		"weight": 1.15, "tell": 0.54, "commit": 0.30, "recover": 1.10, "cooldown": 2.0,
+		"weight": 1.15, "tell": 0.56, "commit": 0.30, "recover": 1.15, "cooldown": 2.2,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var spots: Array[Vector2] = _trapdoor_targets(tgt, 3 if phase >= 2 else 2)
 			for i: int in range(spots.size()):
 				var sp: Vector2 = spots[i]
-				ground.warn_rect(Rect2(sp - Vector2(14.0, 14.0), Vector2(28.0, 28.0)), last_tell_duration + float(i) * 0.06, 1.0, "coral", "gold", 2.6)
+				ground.warn_rect(Rect2(sp - Vector2(10.0, 10.0), Vector2(20.0, 20.0)), last_tell_duration + float(i) * 0.06, 1.0, "coral", "gold", 0.8)
 			stage.play_sfx("curtain_whoosh", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 124.0, d.angle() + PI, 0.74, {"color": "gold", "source": "trapdoor_sparks", "reflectable": true})
-			stage.shake(0.15)
+			patterns.emit_gap_ring(pos, 8, 118.0, d.angle() + PI, 0.80, {"color": "gold", "source": "trapdoor_sparks", "reflectable": true})
+			stage.shake(0.14)
 			stage.play_sfx("timpani_hit", pos),
 	})
 
 	# Attack 4: Encore Bow — 44px sweeping rose arc + reflectable foil daggers
 	register_attack("encore_bow", {
-		"weight": 1.15, "tell": 0.50, "commit": 0.26, "recover": 1.15, "cooldown": 1.7,
+		"weight": 1.25, "tell": 0.52, "commit": 0.26, "recover": 1.20, "cooldown": 1.7,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			var a: float = _aim_dir.angle()
-			ground.warn_sector(pos, a - 0.95, a + 0.95, 52.0, last_tell_duration, 1.0, "rose", "gold")
+			ground.warn_sector(pos, a - 0.90, a + 0.90, 48.0, last_tell_duration, 1.0, "rose", "gold")
 			stage.play_sfx("applause_ghost", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 3 else 3, 0.68, 146.0, {"color": "rose", "source": "encore_arc", "reflectable": true})
+			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 3 else 3, 0.72, 132.0, {"color": "rose", "source": "encore_arc", "reflectable": true})
 			stage.shake(0.12)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
-			move_boss(_aim_dir * 135.0 * dt, false)
-			check_contact_damage(20.0, _aim_dir, 1.0, "encore_bow"),
+			move_boss(_aim_dir * 125.0 * dt, false)
+			check_contact_damage(18.0, _aim_dir, 1.0, "encore_bow"),
 	})
 
 
@@ -275,16 +275,28 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 					break
 
 
+func _has_active_shield() -> bool:
+	return _mask_active
+
+
 func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var h: Dictionary = _read_hit(hit)
 	var src: String = str(h["source"])
-	# Resonance strikes on The Understudy also fracture the hovering Spotlight Mask!
+	var is_pierce: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_SUNFLARE] or bool(h["pierce"])
+	# While the hovering Spotlight Mask holds Wick's stolen light, Understudy wears a spotlight veil!
 	if _mask_active:
-		var is_heavy: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_ZIP, LxHit.SOURCE_SUNFLARE, LxHit.SOURCE_DASH] or hit.is_blue()
-		_damage_mask(dmg * (0.90 if is_heavy else 0.55))
+		var is_heavy: bool = is_pierce or src in [LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_ZIP, LxHit.SOURCE_DASH] or hit.is_blue()
+		_damage_mask(dmg * (0.90 if is_heavy else 0.50))
+		if is_pierce:
+			return dmg * 0.85
+		return dmg * (0.24 if is_punishable() else 0.15)
+	if is_pierce:
+		return dmg * 0.85
 	if boss_state == BossState.STAGGER:
-		return dmg * 1.45
-	return dmg
+		return dmg * 0.72
+	if boss_state == BossState.RECOVER:
+		return dmg * 0.55
+	return dmg * 0.30
 
 
 func _on_death_start() -> void:

@@ -116,15 +116,27 @@
       "kind": "crumble_floor",
       "pos": [
         64,
-        40
+        32
       ],
       "props": {
         "size": [
           32,
-          16
+          32
         ],
-        "delay": 0.8,
-        "respawn": 3.0
+        "delay": 1.2,
+        "respawn": 2.6
+      }
+    },
+    {
+      "id": "chest_r8_nw",
+      "kind": "chest",
+      "pos": [
+        32,
+        32
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
       }
     },
     {
@@ -448,7 +460,7 @@
     "kind": "combat",
     "beat": "ten",
     "teaches": "Reading hinge-glint tells on disguised Pew Mimics and choosing Dusk control vs War chaos.",
-    "decisions": 6,
+    "decisions": 8,
     "expert_s": 50,
     "reward": "moth_1_05+open_r9",
     "why": "Chapel nave ambush escalating into the Choir of Coffins.",
@@ -491,6 +503,24 @@
       {
         "op": "wait",
         "secs": 0.9
+      },
+      {
+        "op": "goto",
+        "to": [
+          96,
+          32
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_r8_nw"
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          32
+        ]
       },
       {
         "op": "expect_exit",

@@ -190,7 +190,34 @@ static func draw_bar(ci: CanvasItem, top_left: Vector2, w: float, frac: float, c
 		ci.draw_rect(Rect2(p.x, p.y, fw, 1.0), col("cream") if f > 0.28 else c_fill)
 
 
+## Helper checking line-of-sight between a light emitter and a receiver, ignoring both nodes.
+static func _clear_light_view(region: Node, a: Vector2, b: Vector2, ignore_a: Object, ignore_b: Object) -> bool:
+	if region == null or not is_instance_valid(region):
+		return true
+	var dist: float = a.distance_to(b)
+	if dist <= 1.0:
+		return true
+	if region is LxRegionLoader:
+		var rl: LxRegionLoader = region as LxRegionLoader
+		var steps: int = maxi(1, int(ceil(dist / 4.0)))
+		var items: Array[LxInteractable] = rl.get_interactables()
+		for i: int in range(1, steps):
+			var pt: Vector2 = a.lerp(b, float(i) / float(steps))
+			if LxMapFormat.blocks_sight_tile(rl.tile_at(pt)):
+				return false
+			for it: LxInteractable in items:
+				if it == null or it == ignore_a or it == ignore_b:
+					continue
+				if it.blocks_sight() and it.get_solid_rect().has_point(pt):
+					return false
+		return true
+	if region.has_method("clear_view"):
+		return bool(region.call("clear_view", a, b))
+	return true
+
+
 ## Samples total light intensity at world_pos from region light pools, Wick's lantern, and active beams.
+## Respects clear_view occlusion (walls and sight-blocking solids block light per CONTRACTS.md).
 static func sample_light_at(region: Node, world_pos: Vector2, ignore: Object = null) -> float:
 	var best: float = 0.0
 	if region != null and is_instance_valid(region) and region.has_method("get_interactables"):
@@ -204,8 +231,9 @@ static func sample_light_at(region: Node, world_pos: Vector2, ignore: Object = n
 					continue
 				var pool: Vector4 = it.get_light_pool()
 				if pool.z > 1.0 and pool.w > 0.01:
-					var d: float = world_pos.distance_to(Vector2(pool.x, pool.y))
-					if d < pool.z:
+					var pool_pos := Vector2(pool.x, pool.y)
+					var d: float = world_pos.distance_to(pool_pos)
+					if d < pool.z and _clear_light_view(region, pool_pos, world_pos, ignore, it):
 						var fall: float = (1.0 - d / pool.z) * pool.w
 						best = maxf(best, fall)
 				if it.has_method("beam_illuminates_point") and bool(it.call("beam_illuminates_point", world_pos)):
@@ -221,7 +249,7 @@ static func sample_light_at(region: Node, world_pos: Vector2, ignore: Object = n
 			var has_l: bool = (not Lx.player.has_method("has_lantern")) or bool(Lx.player.call("has_lantern"))
 			if has_l and lrad > 1.0:
 				var dl: float = world_pos.distance_to(lpos)
-				if dl < lrad:
+				if dl < lrad and _clear_light_view(region, lpos, world_pos, ignore, null):
 					best = maxf(best, (1.0 - dl / lrad) * 1.05)
 	return best
 

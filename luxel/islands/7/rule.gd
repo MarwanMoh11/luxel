@@ -257,74 +257,74 @@ func detach() -> void:
 
 
 func _attach_hud() -> void:
-	if _hud != null and is_instance_valid(_hud):
-		return
-	if Lx.root == null or not is_instance_valid(Lx.root):
-		return
-	_hud = Island7HudOverlay.new()
-	_hud.name = "Island7HudOverlay"
-	_hud.rule = self
-	Lx.root.add_child(_hud)
-
+	if (_hud != null and is_instance_valid(_hud)) or Lx.root == null or not is_instance_valid(Lx.root): return
+	_hud = Island7HudOverlay.new(); _hud.name = "Island7HudOverlay"; _hud.rule = self; Lx.root.add_child(_hud)
 
 func _ensure_defaults() -> void:
-	if _vars == null:
-		return
+	if _vars == null: return
 	for sc: String in [SCOPE_ISLAND, SCOPE_PALACE, SCOPE_SPIRE]:
 		var v: String = str(_vars.get_var(sc, "world_face", "")).strip_edges().to_lower()
-		if v != "silver" and v != "black":
-			_vars.set_var(sc, "world_face", "silver")
-	var act_v: String = str(_vars.get_var(SCOPE_THEATRE, "stolen_act", "")).strip_edges().to_lower()
-	if act_v.is_empty():
+		if v != "silver" and v != "black": _vars.set_var(sc, "world_face", "silver")
+	if str(_vars.get_var(SCOPE_THEATRE, "stolen_act", "")).strip_edges().is_empty():
 		_vars.set_var(SCOPE_THEATRE, "stolen_act", "none")
-
 
 # ---- SILVER / BLACK World State ----
 
 static func resolve_face_scope(region_id: String, explicit_scope: String = "") -> String:
 	var exp_s: String = explicit_scope.strip_edges()
 	if not exp_s.is_empty():
-		if exp_s == "island":
-			return SCOPE_ISLAND
-		if exp_s == "room":
-			return "room:%d:%s" % [ISLAND_ID, region_id]
+		if exp_s == "island": return SCOPE_ISLAND
+		if exp_s == "room": return "room:%d:%s" % [ISLAND_ID, region_id]
 		return exp_s
-	if region_id.begins_with("palace_"):
-		return SCOPE_PALACE
-	if region_id.begins_with("spire_"):
-		return SCOPE_SPIRE
+	if region_id.begins_with("palace_"): return SCOPE_PALACE
+	if region_id.begins_with("spire_"): return SCOPE_SPIRE
 	return SCOPE_ISLAND
 
-
 func get_world_face(scope: String = SCOPE_ISLAND) -> String:
-	if _vars == null:
-		return "silver"
-	var raw: String = str(_vars.get_var(scope, "world_face", "silver")).strip_edges().to_lower()
-	return "black" if raw == "black" else "silver"
-
+	if _vars == null: return "silver"
+	return "black" if str(_vars.get_var(scope, "world_face", "silver")).strip_edges().to_lower() == "black" else "silver"
 
 func get_active_world_face(region_id: String = "") -> String:
-	var rid: String = region_id if not region_id.is_empty() else _active_region_id
-	return get_world_face(resolve_face_scope(rid))
+	return get_world_face(resolve_face_scope(region_id if not region_id.is_empty() else _active_region_id))
 
 
 func set_world_face(scope: String, face: String, trigger_fx: bool = true, origin: Vector2 = Vector2.ZERO) -> String:
 	var norm: String = "black" if face.strip_edges().to_lower() == "black" else "silver"
 	var sc: String = scope if not scope.is_empty() else SCOPE_ISLAND
-	if _vars != null:
-		_vars.set_var(sc, "world_face", norm)
+	if _vars != null: _vars.set_var(sc, "world_face", norm)
 	if Lx.world != null and is_instance_valid(Lx.world) and Lx.world.has_method("apply_layers"):
 		Lx.world.call("apply_layers", trigger_fx)
+	_sync_layer_enabled_interactables()
 	if trigger_fx:
-		if _events != null:
-			_events.sfx_requested.emit("moon_pool_flip", origin, origin != Vector2.ZERO)
+		if _events != null: _events.sfx_requested.emit("moon_pool_flip", origin, origin != Vector2.ZERO)
 		if _hud != null:
-			_hud.flip_to_black = (norm == "black")
-			_hud.flip_flash_t = 1.2
-			_hud.refresh()
-	elif _hud != null:
-		_hud.refresh()
+			_hud.flip_to_black = (norm == "black"); _hud.flip_flash_t = 1.2; _hud.refresh()
+	elif _hud != null: _hud.refresh()
 	return norm
+
+func _sync_layer_enabled_interactables() -> void:
+	# Guard against LxRegionLayers saving layer-disabled active=false across room leave/re-entry.
+	if Lx.world == null or not is_instance_valid(Lx.world) or _vars == null: return
+	var rdata: Variant = Lx.world.get("region_data")
+	if not (rdata is Dictionary): return
+	var layers_v: Variant = (rdata as Dictionary).get("layers", [])
+	if not (layers_v is Array): return
+	var isl_id: int = int(Lx.world.get("current_island_id"))
+	var reg_id: String = str(Lx.world.get("current_region_id"))
+	var en_ids: Dictionary = {}; var dis_ids: Dictionary = {}
+	for lv: Variant in (layers_v as Array):
+		if not (lv is Dictionary): continue
+		var ld: Dictionary = lv as Dictionary
+		var when_s: String = str(ld.get("when", "")).strip_edges()
+		if when_s.is_empty() or not _vars.eval(when_s, isl_id, reg_id): continue
+		for ev: Variant in (ld.get("enable", []) as Array if ld.get("enable") is Array else []): en_ids[str(ev)] = true
+		for dv: Variant in (ld.get("disable", []) as Array if ld.get("disable") is Array else []): dis_ids[str(dv)] = true
+	for iid_v: Variant in en_ids.keys():
+		var iid: String = str(iid_v)
+		if dis_ids.has(iid) or not Lx.world.has_method("find_interactable"): continue
+		var it: Variant = Lx.world.call("find_interactable", iid)
+		if it is LxInteractable and is_instance_valid(it) and not (it as LxInteractable).active:
+			(it as LxInteractable).active = true; (it as LxInteractable).visible = true
 
 
 func flip_world_face(scope: String = SCOPE_ISLAND, origin: Vector2 = Vector2.ZERO) -> String:
@@ -538,55 +538,44 @@ static func draw_truth_shadow(
 # ---- Event Handlers ----
 
 func _on_region_entered(island_id: int, region_id: String) -> void:
-	# Always restore stolen moves on every region change; any active mask_plinth in the new room re-applies cleanly
 	restore_all_moves("region_change")
 	if island_id != ISLAND_ID:
 		_active_region_id = ""
-		if _hud != null:
-			_hud.refresh()
+		if _hud != null: _hud.refresh()
 		return
 	_active_region_id = region_id
+	_sync_layer_enabled_interactables()
 	_apply_cue_mirror_echo_bonus()
 	_activate_region_mask_plinths()
-	if _hud != null:
-		_hud.refresh()
-
+	if _hud != null: _hud.refresh()
 
 func on_region_loaded(region_id: String) -> void:
 	_active_region_id = region_id
+	_sync_layer_enabled_interactables()
 	_apply_cue_mirror_echo_bonus()
 	_reapply_active_locks_to_wick()
-	if _hud != null:
-		_hud.refresh()
-
+	if _hud != null: _hud.refresh()
 
 func _activate_region_mask_plinths() -> void:
-	if Lx.world == null or not is_instance_valid(Lx.world) or not Lx.world.has_method("get_interactables"):
-		return
+	if Lx.world == null or not is_instance_valid(Lx.world) or not Lx.world.has_method("get_interactables"): return
 	for it_v: Variant in (Lx.world.call("get_interactables") as Array):
 		if it_v is LxInteractable and (it_v as LxInteractable).kind == "mask_plinth":
 			var mp: LxInteractable = it_v as LxInteractable
 			if bool(mp.get("auto_steal")) and float(mp.get("steal_radius")) <= 0.0 and mp.has_method("apply_room_theft"):
 				mp.call("apply_room_theft", true)
 
-
-func _on_player_died() -> void:
-	restore_all_moves("player_died")
-
+func _on_player_died() -> void: restore_all_moves("player_died")
 
 func _on_lantern_thrown(at_pos: Vector2, _dir: Vector2) -> void:
-	if has_moon_pocket():
-		trigger_pocket_ripple(at_pos)
-
+	if has_moon_pocket(): trigger_pocket_ripple(at_pos)
 
 func _on_var_changed(_scope: String, var_name: String, value: Variant) -> void:
-	if var_name == "world_face" and _hud != null:
-		_hud.flip_to_black = str(value).strip_edges().to_lower() == "black"
-		_hud.flip_flash_t = maxf(_hud.flip_flash_t, 1.2)
-		_hud.refresh()
-	elif var_name == "stolen_act" and _hud != null:
-		_hud.refresh()
-
+	if var_name == "world_face":
+		_sync_layer_enabled_interactables()
+		if _hud != null:
+			_hud.flip_to_black = str(value).strip_edges().to_lower() == "black"
+			_hud.flip_flash_t = maxf(_hud.flip_flash_t, 1.2); _hud.refresh()
+	elif var_name == "stolen_act" and _hud != null: _hud.refresh()
 
 func _get_wick() -> LxWick:
 	return Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null

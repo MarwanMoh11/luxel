@@ -133,7 +133,7 @@ func take_hit(hit: LxHit) -> int:
 	var use_hit: LxHit = hit
 	var is_open: bool = beak_stuck or state == State.RECOVER or state == State.STAGGER
 	if not is_open and not gliding and str(h["source"]) == LxHit.SOURCE_BOLT:
-		use_hit = LxHit.make(hit.source, float(h["damage"]) * 0.85, hit.dir, hit.origin, hit.shield_wear, hit.stagger, hit.pierce, hit.attacker, hit.cracks_armour, hit.color)
+		use_hit = LxHit.make(hit.source, float(h["damage"]) * 0.85, hit.dir, hit.origin, hit.shield_wear, hit.stagger, hit.pierce, hit.attacker, hit.cracks_armour)
 	var res: int = super.take_hit(use_hit)
 	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
 		_check_phase_transition()

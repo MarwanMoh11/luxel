@@ -379,7 +379,8 @@ func _draw_moves_tray(origin: Vector2) -> void:
 				var lfrac: float = clampf(1.0 - lens_cd / maxf(0.1, float(mdata.get("cooldown", 6.0))), 0.0, 1.0)
 				draw_rect(Rect2(slot_x + 2.0, origin.y + 9.0, floorf(9.0 * lfrac), 1.0), LxPalette.PAL["sky"])
 		if mid == "wings":
-			var dg: String = LxStrings.sanitize(Lx.input.get_glyph("lx_dash").to_upper(), 3) if Lx.input != null else ""
+			var raw_dg: String = Lx.input.get_glyph("lx_dash").to_upper() if Lx.input != null else ""
+			var dg: String = "SHF" if raw_dg == "SHIFT" else LxStrings.sanitize(raw_dg, 3)
 			var wlbl: String = LxStrings.fmt("HUD_HOLD_SHORT_FMT", [dg]) if (not dg.is_empty() and LxStrings.has_id("HUD_HOLD_SHORT_FMT")) else LxStrings.text("OPT_MODE_HOLD")
 			LxPixelFont.draw_centered(self, wlbl, slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["ice"] if wings_gliding else LxPalette.PAL["stone"], 1)
 		elif not is_passive and not action_id.is_empty() and Lx.input != null:

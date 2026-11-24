@@ -83,8 +83,8 @@
           40,
           32
         ],
-        "delay": 1.1,
-        "respawn": 2.8
+        "delay": 1.8,
+        "respawn": 2.4
       }
     },
     {
@@ -99,8 +99,8 @@
           40,
           32
         ],
-        "delay": 1.1,
-        "respawn": 2.8
+        "delay": 1.8,
+        "respawn": 2.4
       }
     },
     {
@@ -260,17 +260,17 @@
       "id": "owl_r10",
       "kind": "owl",
       "pos": [
-        280,
-        72
+        224,
+        96
       ],
       "perches": [
         [
-          280,
-          72
+          224,
+          96
         ],
         [
-          360,
-          184
+          280,
+          72
         ]
       ],
       "zone": "uc_balcony"
@@ -458,15 +458,15 @@
     },
     "solution": [
       {
-        "op": "clear",
-        "timeout": 28.0
-      },
-      {
         "op": "goto",
         "to": [
           248,
           128
         ]
+      },
+      {
+        "op": "clear",
+        "timeout": 28.0
       },
       {
         "op": "shoot",

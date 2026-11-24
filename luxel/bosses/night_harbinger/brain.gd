@@ -1,9 +1,11 @@
 class_name LxNightHarbingerBoss
 extends LxMoonshadeBrain
-## The Long Night mini-boss (Island 8): Night Harbinger, elite lunar Moonshade Warden.
-## 2 phases, HP 14.5, lunar shield 2.4.
-## Pairs blink-feint lunges with Twin Blink-Cross Slash (lateral blink leaving a moon-echo
-## that fires a delayed crescent arc, tell >= 0.50s)!
+## The Long Night mini-boss (Island 8, sanctum_r4): Night Harbinger, elite lunar Moonshade Warden.
+## Upgraded (Bible §4.6): 2 phases, HP 15.0, lunar shield 2.4.
+## Preserves blink-feint lunges + Twin Blink-Cross Slash (tells >= 0.50s, recovers >= 1.00s).
+## P2 (<=50%) Eclipse-Brazier Twist: snuffs West Eclipse Brazier summoning a stationary
+## Eclipse Mirror duplicating his delayed crescent arc; relighting the West Brazier (or
+## striking the Eclipse Mirror) with Bolt/Beam/Throw/Sunflare shatters it for a 1.8s stagger!
 
 const BLINK_TELL_P1: float = 0.56
 const BLINK_TELL_P2: float = 0.50
@@ -20,6 +22,11 @@ const BLINK_RECOVER_P2: float = 1.00
 const BLINK_CD_P1: float = 3.8
 const BLINK_CD_P2: float = 2.7
 const PHASE2_ROAR_TIME: float = 0.58
+const MIRROR_STAGGER_TIME: float = 1.80
+const MIRROR_RESPAWN_CD: float = 12.5
+const MIRROR_ARC_RANGE: float = 84.0
+const MIRROR_ARC_DELAY: float = 0.24
+const MIRROR_ARC_DUR: float = 0.28
 
 var blink_slash_attack: bool = false
 var blink_cd: float = 1.6
@@ -33,6 +40,19 @@ var echo_hit: bool = false
 var swings_since_blink: int = 0
 var _roaring: bool = false
 
+# P2 Eclipse-Brazier & Stationary Eclipse Mirror state
+var _west_brazier_pos: Vector2 = Vector2.ZERO
+var _west_brazier_ref: Object = null
+var _west_brazier_snuffed: bool = false
+var _mirror_active: bool = false
+var _mirror_pos: Vector2 = Vector2.ZERO
+var _mirror_dir: Vector2 = Vector2.LEFT
+var _mirror_firing: bool = false
+var _mirror_fire_t: float = 0.0
+var _mirror_hit: bool = false
+var _mirror_respawn_t: float = 0.0
+var _mirror_shatter_t: float = 0.0
+
 
 func _init() -> void:
 	super._init()
@@ -41,8 +61,8 @@ func _init() -> void:
 	island_id = 8
 	is_boss = true
 	variant = VARIANT_WARDEN
-	max_hp = 14.5
-	hp = 14.5
+	max_hp = 15.0
+	hp = 15.0
 	shield_max = 2.4
 	shield_hp = 2.4
 	shield_gone_duration = 4.6
@@ -54,7 +74,7 @@ func _init() -> void:
 	lunge_reach = 104.0
 	swing_r = 32.0
 	swing_arc = 1.28
-	tell_time = 0.48
+	tell_time = 0.50
 	lunge_tell_time = 0.54
 	recover_time = 1.10
 	give_up_time = 1.8
@@ -66,7 +86,7 @@ func _configure_variant_defaults() -> void:
 	body_radius = 7.0
 	routine_speed = 42.0
 	shield_max = 2.4
-	tell_time = 0.48
+	tell_time = 0.50
 	recover_time = 1.10
 
 
@@ -74,7 +94,7 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	var forced: Dictionary = spec.duplicate()
 	forced["variant"] = VARIANT_WARDEN
 	super.setup(forced, p_director, p_world)
-	max_hp = maxf(14.5, max_hp)
+	max_hp = maxf(15.0, max_hp)
 	hp = max_hp
 	variant = VARIANT_WARDEN
 	kind = "night_harbinger"
@@ -92,10 +112,29 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	echo_hit = false
 	swings_since_blink = 0
 	_roaring = false
+	_west_brazier_ref = null
+	_west_brazier_pos = _clamp_arena_pt(home + Vector2(-76.0, 0.0))
+	_west_brazier_snuffed = false
+	_mirror_active = false
+	_mirror_pos = _clamp_arena_pt(home + Vector2(68.0, -18.0))
+	_mirror_dir = Vector2.LEFT
+	_mirror_firing = false
+	_mirror_fire_t = 0.0
+	_mirror_hit = false
+	_mirror_respawn_t = 0.0
+	_mirror_shatter_t = 0.0
+	_find_west_brazier()
 
 
 func _is_hit_invulnerable() -> bool:
 	return _roaring
+
+
+func take_hit(hit: LxHit) -> int:
+	# Guarded LxSold hit_flash bonus: +40% lunar shield wear (Bible §1.2)
+	if hit != null and _is_setting_sold("hit_flash") and shield_hp > 0.0 and shield_gone_t <= 0.0:
+		shield_hp = maxf(0.0, shield_hp - hit.shield_wear * 0.40)
+	return super.take_hit(hit)
 
 
 func _on_damaged_alive(_hit: LxHit) -> bool:
@@ -114,6 +153,7 @@ func _on_damaged_alive(_hit: LxHit) -> bool:
 		state = State.NOTICE
 		state_timer = PHASE2_ROAR_TIME
 		blink_cd = 0.80
+		_summon_eclipse_mirror()
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
 		_boss_impact(0.28, 96.0, 96.0)
@@ -123,8 +163,11 @@ func _on_damaged_alive(_hit: LxHit) -> bool:
 
 
 func _step_brain(dt: float) -> void:
-	if _roaring and state != State.NOTICE: _roaring = false
+	if _roaring and state != State.NOTICE:
+		_roaring = false
 	blink_cd = maxf(0.0, blink_cd - dt)
+	_mirror_shatter_t = maxf(0.0, _mirror_shatter_t - dt)
+	_tick_eclipse_mirror(dt)
 	super._step_brain(dt)
 
 
@@ -163,6 +206,8 @@ func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
 			facing = to_t.angle()
 		main_slash_dir = Vector2.from_angle(facing)
 		echo_dir = main_slash_dir
+		if _mirror_active and target_pos.distance_to(_mirror_pos) > 1.0:
+			_mirror_dir = (target_pos - _mirror_pos).normalized()
 		blink_elapsed = 0.0
 		main_slash_hit = false
 		echo_fired = false
@@ -176,6 +221,8 @@ func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
 
 
 func _step_tell(dt: float, target_pos: Vector2) -> void:
+	if _mirror_active and state_timer > 0.18 and target_pos.distance_to(_mirror_pos) > 1.0:
+		_mirror_dir = (target_pos - _mirror_pos).normalized()
 	if not blink_slash_attack:
 		super._step_tell(dt, target_pos)
 		return
@@ -197,6 +244,10 @@ func _step_tell(dt: float, target_pos: Vector2) -> void:
 
 
 func _enter_commit() -> void:
+	if _mirror_active:
+		_mirror_firing = true
+		_mirror_fire_t = 0.0
+		_mirror_hit = false
 	if blink_slash_attack:
 		state = State.COMMIT
 		state_timer = BLINK_COMMIT_TIME
@@ -219,7 +270,6 @@ func _step_commit(dt: float) -> void:
 	blink_elapsed += dt
 	state_timer = maxf(0.0, state_timer - dt)
 	if blink_elapsed <= MAIN_SLASH_TIME:
-		# Phase A: Harbinger's primary crescent lunge-slash
 		_move_step(main_slash_dir * 155.0 * dt, false)
 		if not main_slash_hit and _has_player():
 			var wv: Vector2 = _get_wick_pos() - pos
@@ -230,7 +280,6 @@ func _step_commit(dt: float) -> void:
 			if Lx.events != null:
 				Lx.events.lantern_struck.emit(_get_lantern_pos())
 	else:
-		# Phase B: Moon-echo fires its delayed crossing crescent arc!
 		if not echo_fired:
 			echo_fired = true
 			LxDamageFx.boss_impact(echo_pos, 0.14, 72.0, 76.0, 68.0, 1.32, 0.28, "ice")
@@ -254,12 +303,129 @@ func _step_commit(dt: float) -> void:
 		blink_cd = BLINK_CD_P2 if phase >= 2 else BLINK_CD_P1
 
 
+func _find_west_brazier() -> void:
+	_west_brazier_ref = null
+	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("get_interactables"):
+		return
+	var best_x: float = INF
+	for it_v: Variant in (world_ctx.call("get_interactables") as Array):
+		if it_v is Object and str((it_v as Object).get("kind")) == "brazier":
+			var bp: Vector2 = (it_v as Object).get("pos") as Vector2
+			if bp.x < best_x:
+				best_x = bp.x
+				_west_brazier_ref = it_v as Object
+				_west_brazier_pos = bp
+
+
+func _summon_eclipse_mirror() -> void:
+	_west_brazier_snuffed = true
+	if _west_brazier_ref != null and is_instance_valid(_west_brazier_ref):
+		_west_brazier_ref.set("lit", false)
+		if _west_brazier_ref is CanvasItem:
+			(_west_brazier_ref as CanvasItem).queue_redraw()
+	_mirror_active = true
+	_mirror_firing = false
+	_mirror_fire_t = 0.0
+	_mirror_hit = false
+	_mirror_pos = _clamp_arena_pt(home + Vector2(68.0, -18.0))
+	if _has_player() and _get_wick_pos().distance_to(_mirror_pos) > 1.0:
+		_mirror_dir = (_get_wick_pos() - _mirror_pos).normalized()
+
+
+func _shatter_eclipse_mirror() -> void:
+	if not _mirror_active:
+		return
+	_mirror_active = false
+	_mirror_firing = false
+	_west_brazier_snuffed = false
+	_mirror_respawn_t = MIRROR_RESPAWN_CD
+	_mirror_shatter_t = 0.65
+	if _west_brazier_ref != null and is_instance_valid(_west_brazier_ref):
+		_west_brazier_ref.set("lit", true)
+		if _west_brazier_ref is CanvasItem:
+			(_west_brazier_ref as CanvasItem).queue_redraw()
+	LxDamageFx.boss_impact(_mirror_pos, 0.18, 86.0, 90.0, 88.0, 1.44, 0.34, "gold")
+	_emit_sfx("eclipse_mirror_shatter")
+	if hp > 2.0:
+		hp -= 1.5
+	if state != State.DEAD and not _roaring:
+		_release_token()
+		blink_slash_attack = false
+		lunge_attack = false
+		state = State.STAGGER
+		state_timer = MIRROR_STAGGER_TIME
+
+
+func _tick_eclipse_mirror(dt: float) -> void:
+	if state == State.DEAD or phase < 2:
+		return
+	if not _mirror_active:
+		if _mirror_respawn_t > 0.0:
+			_mirror_respawn_t -= dt
+			if _mirror_respawn_t <= 0.0 and state != State.STAGGER and not _roaring:
+				_summon_eclipse_mirror()
+		return
+	# Check if actual room West Brazier was relit by Wick!
+	if _west_brazier_ref != null and is_instance_valid(_west_brazier_ref) and bool(_west_brazier_ref.get("lit")):
+		_shatter_eclipse_mirror()
+		return
+	# Also allow Wick's Bolt, Beam, Throw, or Sunflare to relight virtual West Brazier OR shatter Mirror directly!
+	if Lx.player is LxWick and is_instance_valid(Lx.player):
+		var w: LxWick = Lx.player as LxWick
+		var targets: Array[Vector2] = [_west_brazier_pos, _mirror_pos]
+		for tp: Vector2 in targets:
+			for bi: int in range(w.bolts.size() - 1, -1, -1):
+				var bv: Variant = w.bolts[bi]
+				if bv is Object and (bv.get("pos") as Vector2).distance_to(tp) <= 14.0:
+					w.bolts.remove_at(bi)
+					_shatter_eclipse_mirror()
+					return
+			if w.move_beam != null and w.move_beam.beam_vis_t > 0.0:
+				if Geometry2D.get_closest_point_to_segment(tp, w.move_beam.beam_start, w.move_beam.beam_end).distance_to(tp) <= 14.0:
+					_shatter_eclipse_mirror()
+					return
+			if w.lantern != null and w.lantern.is_out() and w.lantern.pos.distance_to(tp) <= 18.0:
+				_shatter_eclipse_mirror()
+				return
+	# Step delayed crescent arc fired by Eclipse Mirror after Harbinger commits!
+	if _mirror_firing:
+		_mirror_fire_t += dt
+		if _mirror_fire_t >= MIRROR_ARC_DELAY:
+			var prog: float = clampf((_mirror_fire_t - MIRROR_ARC_DELAY) / MIRROR_ARC_DUR, 0.0, 1.0)
+			var arc_p: Vector2 = _mirror_pos + _mirror_dir * lerpf(8.0, MIRROR_ARC_RANGE, prog)
+			if not _mirror_hit and _has_player() and arc_p.distance_to(_get_wick_pos()) <= 13.0:
+				_mirror_hit = true
+				_emit_player_hit(_mirror_dir)
+			if prog >= 1.0:
+				_mirror_firing = false
+
+
+func _clamp_arena_pt(pt: Vector2) -> Vector2:
+	if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("get_bounds"):
+		var b: Rect2 = (world_ctx.call("get_bounds") as Rect2).grow(-24.0)
+		if b.has_area():
+			return Vector2(clampf(pt.x, b.position.x, b.end.x), clampf(pt.y, b.position.y, b.end.y))
+	return pt
+
+
+static func _is_setting_sold(setting_id: String) -> bool:
+	if ResourceLoader.exists("res://luxel/core/sold_settings.gd"):
+		var sc: Variant = ResourceLoader.load("res://luxel/core/sold_settings.gd")
+		if sc is GDScript and (sc as GDScript).has_method("current"):
+			var inst: Variant = (sc as GDScript).call("current")
+			if inst is Object and (inst as Object).has_method("is_sold"):
+				return bool((inst as Object).call("is_sold", setting_id))
+	if Lx.vars != null:
+		return bool(Lx.vars.get_var("island:8", "sold_" + setting_id, Lx.vars.get_var("game", "sold_" + setting_id, false)))
+	return false
+
+
 func _swing_tell_base() -> float:
-	return 0.42 if phase >= 2 else tell_time
+	return 0.50 if phase >= 2 else tell_time
 
 
 func _lunge_tell_base() -> float:
-	return 0.48 if phase >= 2 else lunge_tell_time
+	return 0.50 if phase >= 2 else lunge_tell_time
 
 
 func _post_recover_cooldown() -> float:
@@ -278,17 +444,45 @@ func _draw_extra(off: Vector2) -> void:
 	if not blink_slash_attack:
 		super._draw_extra(off)
 	if _sprite_sheet == null:
-		# Twin lunar crescent horns
 		draw_arc(off + Vector2(0.0, -body_radius - 2.0), 5.5, 0.25, PI - 0.25, 12, PAL["ice"] as Color, 1.8)
 	var c: Vector2 = off.round()
+	# Sold sound_off crisp cream tell rim ring!
+	if state == State.TELL and _is_setting_sold("sound_off"):
+		draw_arc(c, body_radius + 7.0, 0.0, TAU, 20, PAL["cream"] as Color, 1.2)
+	# P2 Snuffed West Eclipse Brazier + Stationary Eclipse Mirror visuals!
+	if phase >= 2 and state != State.DEAD:
+		var bp: Vector2 = (_west_brazier_pos - pos + off).round()
+		draw_circle(bp, 7.0, PAL["night"] as Color)
+		draw_arc(bp, 7.5, 0.0, TAU, 16, (PAL["plum"] if _west_brazier_snuffed else PAL["gold"]) as Color, 1.4)
+		if not _west_brazier_snuffed:
+			draw_circle(bp, 3.5, PAL["gold"] as Color)
+			draw_rect(Rect2(bp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
+		else:
+			draw_arc(bp, 10.5, anim_t * 2.0, anim_t * 2.0 + PI, 10, PAL["coral"] as Color, 1.0)
+	if _mirror_active and state != State.DEAD:
+		var mp: Vector2 = (_mirror_pos - pos + off).round()
+		draw_circle(mp, 8.0, PAL["void"] as Color)
+		draw_arc(mp, 9.0, 0.0, TAU, 18, PAL["ice"] as Color, 1.6)
+		_draw_eclipse_diamond(mp, 4.0, PAL["sky"] as Color, PAL["cream"] as Color)
+		if state == State.TELL:
+			draw_line(mp, (mp + _mirror_dir * MIRROR_ARC_RANGE).round(), PAL["sky"] as Color, 1.2)
+		elif _mirror_firing and _mirror_fire_t >= MIRROR_ARC_DELAY:
+			var mprog: float = clampf((_mirror_fire_t - MIRROR_ARC_DELAY) / MIRROR_ARC_DUR, 0.0, 1.0)
+			var mac: Vector2 = (mp + _mirror_dir * lerpf(8.0, MIRROR_ARC_RANGE, mprog)).round()
+			var ma_m: float = _mirror_dir.angle()
+			draw_arc(mac, 13.0, ma_m - 1.0, ma_m + 1.0, 12, PAL["sky"] as Color, 2.8)
+			draw_arc(mac, 11.0, ma_m - 0.85, ma_m + 0.85, 10, PAL["cream"] as Color, 1.2)
+	if _mirror_shatter_t > 0.0:
+		var mp2: Vector2 = (_mirror_pos - pos + off).round()
+		var su: float = 1.0 - clampf(_mirror_shatter_t / 0.65, 0.0, 1.0)
+		draw_arc(mp2, lerpf(10.0, 40.0, su), 0.0, TAU, 20, Color(PAL["gold"] as Color, 1.0 - su), 1.8)
+
 	if blink_slash_attack and state == State.TELL:
 		var ep: Vector2 = (echo_pos - pos + off).round()
 		var hot: bool = state_timer <= 0.18
 		var ma: float = main_slash_dir.angle()
-		# Primary slash arc preview
 		draw_arc(c, MAIN_SLASH_R, ma - MAIN_SLASH_ARC * 0.75, ma + MAIN_SLASH_ARC * 0.75, 14, (PAL["coral"] if hot else PAL["gold"]) as Color, 1.6 if hot else 1.2)
 		draw_line(c, (c + main_slash_dir * MAIN_SLASH_R).round(), (PAL["cream"] if hot else PAL["coral"]) as Color, 1.2)
-		# Moon-echo silhouette + delayed crossing crescent sightline
 		if feint_done:
 			draw_line(ep, c, PAL["blue"] as Color, 1.2)
 			draw_arc(ep, body_radius + 1.0, 0.0, TAU, 14, PAL["sky"] as Color, 1.4)
@@ -308,7 +502,6 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(c, MAIN_SLASH_R, a0, a1, 16, PAL["coral"] as Color, 3.0)
 			draw_arc(c, MAIN_SLASH_R - 2.5, a0, a1, 14, PAL["gold"] as Color, 1.8)
 			draw_arc(c, MAIN_SLASH_R - 4.0, a0 + 0.1, a1, 12, PAL["cream"] as Color, 1.0)
-			# Moon-echo charging for delayed cross-slash
 			draw_arc(ep2, body_radius + 3.0, 0.0, TAU, 14, PAL["ice"] as Color, 1.6)
 			draw_line(ep2, (ep2 + echo_dir * ECHO_CRESCENT_RANGE).round(), PAL["sky"] as Color, 1.2)
 		else:

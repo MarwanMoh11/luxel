@@ -51,13 +51,13 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 40.0
-	hp = 40.0
+	max_hp = 66.0
+	hp = 66.0
 	body_radius = 11.0
 	move_speed = 46.0
-	stagger_threshold = 10.0
+	stagger_threshold = 12.5
 	stagger_duration = 2.00
-	punish_dmg_mult = 1.45
+	punish_dmg_mult = 1.38
 	post_recover_cd = 0.30
 	shard_drop = 22
 	intro_duration = 0.70

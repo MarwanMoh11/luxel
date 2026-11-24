@@ -36,7 +36,7 @@
       "script": "res://luxel/bosses/the_understudy/brain.gd",
       "data": {
         "island": 7,
-        "max_hp": 132.0,
+        "max_hp": 188.0,
         "body_radius": 10.5,
         "routine_speed": 44.0,
         "tell_time": 0.54,
@@ -64,7 +64,7 @@
       "script": "res://luxel/bosses/shadow_at_noon/brain.gd",
       "data": {
         "island": 7,
-        "max_hp": 136.0,
+        "max_hp": 192.0,
         "body_radius": 9.5,
         "routine_speed": 46.0,
         "tell_time": 0.52,

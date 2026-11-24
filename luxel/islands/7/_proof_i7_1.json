@@ -75,12 +75,12 @@
     {
       "id": "p1_pool",
       "kind": "moon_pool",
-      "pos": [152, 152],
+      "pos": [152, 162],
       "props": {
         "scope": "island:7",
         "var": "world_face",
         "allow_bolt_flip": true,
-        "radius_px": 18
+        "radius_px": 15
       }
     },
     {
@@ -141,15 +141,19 @@
     "why": "End-to-end proof room for Island 7 mirror_avatar and moon_pool world flip.",
     "solution": [
       { "op": "shoot", "from": [88, 136], "at": [168, 136], "wait_hit": 0.45 },
-      { "op": "wait", "secs": 0.45 },
-      { "op": "goto", "to": [44, 136], "tol": 5 },
-      { "op": "wait", "secs": 0.15 },
-      { "op": "goto", "to": [152, 152], "tol": 10 },
+      { "op": "wait", "secs": 0.50 },
+      { "op": "expect", "target": "p1_mirror_eye", "prop": "activated", "value": true },
+      { "op": "goto", "to": [38, 136], "tol": 3 },
+      { "op": "wait", "secs": 0.20 },
+      { "op": "expect", "target": "p1_plate", "prop": "pressed", "value": true },
+      { "op": "goto", "to": [152, 162], "tol": 10 },
       { "op": "interact", "target": "p1_pool" },
       { "op": "wait", "secs": 0.25 },
+      { "op": "expect", "var": "world_face==black" },
       { "op": "goto", "to": [232, 136], "tol": 8 },
       { "op": "shoot", "target": "p1_black_eye" },
       { "op": "wait", "secs": 0.25 },
+      { "op": "expect", "target": "p1_black_eye", "prop": "activated", "value": true },
       { "op": "expect_exit", "id": "exit_proof_east", "open": true }
     ]
   }

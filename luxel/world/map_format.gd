@@ -18,6 +18,12 @@ const DEFAULT_LEGEND: Dictionary = {
 	"P": "phantom",
 	"+": "bridge",
 	"G": "glass",
+	"M": "mirror",
+	"D": "carpet",
+	"S": "stairs",
+	"H": "grate",
+	"R": "rail",
+	"F": "foliage",
 	" ": "void",
 }
 
@@ -178,13 +184,13 @@ static func tile_at_grid(region_dict: Dictionary, world_pos: Vector2) -> String:
 
 static func is_solid_tile(tile_type: String, can_cross_pit: bool = false, can_cross_water: bool = false) -> bool:
 	match tile_type:
-		"ground", "path", "bridge":
+		"ground", "path", "bridge", "carpet", "stairs", "floor", "sand", "grass", "stone", "spawn", "door", "shallow":
 			return false
 		"pit", "phantom", "void":
 			return not can_cross_pit
 		"water", "tide":
 			return not can_cross_water
-		"wall", "bramble", "cracked", "glass", "mirror":
+		"wall", "bramble", "cracked", "glass", "mirror", "grate", "rail", "foliage":
 			return true
 		_:
 			return true

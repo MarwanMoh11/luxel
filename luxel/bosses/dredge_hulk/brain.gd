@@ -37,7 +37,7 @@ class _DredgeSwirlField:
 		if d < 12.0 or d > radius:
 			return Vector2.ZERO
 		var tang := Vector2(-rel.y, rel.x) / d * swirl_sign
-		var mult: float = 0.95 if what in ["bolt", "lantern", "block"] else (0.28 if what == "wick" else 0.35)
+		var mult: float = 0.26 if what in ["bolt", "lantern", "block"] else (0.24 if what == "wick" else 0.30)
 		return tang * (strength * mult)
 
 
@@ -51,11 +51,11 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 38.0
-	hp = 38.0
+	max_hp = 58.0
+	hp = 58.0
 	body_radius = 13.0
 	move_speed = 36.0
-	stagger_threshold = 9.5
+	stagger_threshold = 11.0
 	stagger_duration = 1.45
 	punish_dmg_mult = 1.40
 	post_recover_cd = 0.30
@@ -126,7 +126,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 4 (P2): Bilge Ram (high-speed foam ram charge + twin wake spreads)
 	register_attack("bilge_ram", {
-		"phases": [2], "weight": 1.55, "tell": 0.62, "commit": 0.44, "recover": 1.30, "cooldown": 1.65,
+		"phases": [2], "weight": 2.25, "tell": 0.62, "commit": 0.44, "recover": 1.30, "cooldown": 1.15,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_ram_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			ground.warn_lane(pos, clamp_to_arena(pos + _ram_dir * 144.0), 14.0, last_tell_duration, 1.0, "sky", "coral")
@@ -277,7 +277,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		# Armored iron prow & flanks reduce non-punish yellow chip bolts
 		if not is_punishable() and absf(angle_difference(facing, ang)) <= FRONT_ARMOR_HALF and hit.source == LxHit.SOURCE_BOLT and not hit.pierce:
 			clank_t = 0.12
-			return dmg * 0.40
+			return dmg * 0.45
 	return dmg
 
 

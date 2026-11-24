@@ -15,6 +15,42 @@ ALIASES: dict[str, str] = {
     "ember_express_interior": "ember_express",
     "inverted_palace": "inverted_palace_silver",
     "wick_house_hub": "wick_house",
+    # Island 1 bible aliases
+    "undercroft_catacomb": "undercroft",
+    "manor_parlor": "manor",
+    "bell_estate": "manor",
+    "bell_forecourt": "undercroft",
+    "bell_foundry": "great_toll_shaft",
+    "bell_graveyard": "undercroft",
+    "bell_town": "wick_house",
+    "silent_sanctum": "undercroft",
+    "great_toll": "great_toll_shaft",
+    "toll_shaft": "great_toll_shaft",
+    # Island 2 bible aliases
+    "drowned_galleon": "galleon",
+    "smugglers_locks": "locks",
+    "camp": "locks",
+    "caves": "cave_2",
+    "superboss": "leviathan_belly",
+    # Island 3 bible aliases
+    "isl3_underroot": "under_root",
+    "underroot": "under_root",
+    "isl3_cave": "cave_3",
+    "isl3_camp": "under_root",
+    "isl3_shift": "briar_court",
+    "isl3_spine": "briar_court",
+    "isl3_superboss": "briar_court",
+    "isl3_trial": "loom",
+    "weavers_loom": "loom",
+    # Islands 4-8 shorthand aliases
+    "hourglass": "hourglass_maze",
+    "mausoleum": "rain_mausoleum",
+    "party": "garden_party",
+    "fall": "freefall",
+    "kiln_deep": "forge_deep",
+    "palace": "inverted_palace_silver",
+    "theatre": "doppel_theatre",
+    "stair": "endless_stair",
 }
 
 

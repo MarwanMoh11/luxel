@@ -41,7 +41,7 @@ func _init() -> void:
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.52])
+	configure_phases([0.56])
 
 	# Attack 1: Silver Tray — boomerang platter throw (twin trays in P2) + teacup splash
 	register_attack("silver_tray", {
@@ -205,8 +205,8 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		if not _bowing and stagger_immunity_t <= 0.0:
 			_trigger_etiquette_bow()
 		return dmg * 1.65
-	if not is_punishable():
-		# Held Silver Platter slightly deflects frontal bolts
+	if not is_punishable() and hit != null and hit.source == LxHit.SOURCE_BOLT:
+		# Held Silver Platter slightly deflects frontal bolts (Beam & Throw punch through!)
 		var h: Dictionary = _read_hit(hit)
 		var to_hit: Vector2 = (h["origin"] as Vector2) - pos
 		if to_hit.length_squared() > 1.0 and Vector2.from_angle(facing).dot(to_hit.normalized()) > 0.35:

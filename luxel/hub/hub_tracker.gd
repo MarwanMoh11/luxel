@@ -286,7 +286,7 @@ func _draw_rematch_hud() -> void:
 	_hud_draw.draw_rect(Rect2(bar.position.x + 1.0, bar.position.y + 1.0, bar.size.x - 2.0, 1.0), LxPalette.PAL["gold"])
 	var t_str: String = "%02d:%04.1f" % [int(rematch_elapsed / 60.0), fmod(rematch_elapsed, 60.0)]
 	var lbl: String = LxStrings.fmt("HUB_REMATCH_HUD", [t_str])
-	LxPixelFont.draw(_hud_draw, lbl, bar.position.x + 5.0, bar.position.y + 5.0, LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw(_hud_draw, lbl, Vector2(bar.position.x + 5.0, bar.position.y + 5.0), LxPalette.PAL["cream"], 1)
 	var nh_col: Color = LxPalette.PAL["lime"] if rematch_hits == 0 else LxPalette.PAL["coral"]
 	var nh_str: String = LxStrings.text("HUB_NO_HIT_OK" if rematch_hits == 0 else "HUB_NO_HIT_LOST")
-	LxPixelFont.draw(_hud_draw, nh_str, bar.end.x - float(nh_str.length() * 4) - 4.0, bar.position.y + 5.0, nh_col, 1)
+	LxPixelFont.draw(_hud_draw, nh_str, Vector2(bar.end.x - float(nh_str.length() * 4) - 4.0, bar.position.y + 5.0), nh_col, 1)

@@ -162,7 +162,7 @@ def draw_the_understudy(ctx: FrameCtx) -> Image.Image:
     if ctx.is_tell and u > 0.25:
         fx_front.star4(hx, hy - 10, 3 if u > 0.65 else 2, "cream", "coral")
     elif ctx.is_commit and ctx.fi in (1, 2, 3):
-        fx_front.slash_arc(cx + (15 if d == "side" else 4), cy - 24, 24, 16, -65, 65, 5.5, ("coral", "gold", "cream"))
+        fx_front.slash_arc(cx + (11 if d == "side" else 4), cy - 24, 21, 15, -65, 65, 5.5, ("coral", "gold", "cream"))
     elif ctx.is_stagger:
         # Mask visibly cracks cleanly down the middle during standing-ovation stagger!
         body.crack(hx - 3, hy - 6, hx + 3, hy + 6, "void", "coral", seed=71)

@@ -58,13 +58,13 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 78.0
-	hp = 78.0
+	max_hp = 128.0
+	hp = 128.0
 	body_radius = 14.0
-	move_speed = 32.0
-	stagger_threshold = 14.0
+	move_speed = 38.0
+	stagger_threshold = 18.0
 	stagger_duration = 1.85
-	punish_dmg_mult = 1.45
+	punish_dmg_mult = 1.38
 	post_recover_cd = 0.34
 	shard_drop = 60
 	intro_duration = 0.85
@@ -79,7 +79,7 @@ func _exit_tree() -> void:
 func _configure_boss(_spec: Dictionary) -> void:
 	configure_phases([0.66, 0.33])
 
-	# Attack 1: Spoke Sweeps (4 rotating sky spokes + eye volley)
+	# Attack 1: Spoke Sweeps (4 rotating sky spokes + eye volley + targeted whirlpool burst)
 	register_attack("spoke_sweeps", {
 		"weight": 1.25, "tell": 0.58, "commit": 0.40, "recover": 1.10, "cooldown": 1.45,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
@@ -87,12 +87,13 @@ func _configure_boss(_spec: Dictionary) -> void:
 			for k: int in range(4):
 				var sa: float = _spoke_ang + float(k) * (PI * 0.5)
 				var sd: Vector2 = Vector2.from_angle(sa)
-				ground.warn_lane(pos, pos + sd * 148.0, 8.5, last_tell_duration, 0.0, "sky", "ice")
+				ground.warn_lane(pos, pos + sd * 184.0, 8.5, last_tell_duration, 0.0, "sky", "ice")
+			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.04, 1.0, "sky", "gold")
 			stage.play_sfx("maelstrom_drone", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.RIGHT
-			patterns.emit_spiral(pos, 4, 128.0 if phase >= 2 else 114.0, _spoke_ang, 0.30, 3 if phase >= 2 else 2, 0.14, {"color": "sky", "source": "undertow_spoke", "field_scale": 0.90})
-			patterns.emit_fan(pos, aim, 3, 0.44, 146.0, {"color": "gold", "source": "undertow_fang", "field_scale": 0.80})
+			patterns.emit_spiral(pos, 4, 148.0 if phase >= 2 else 132.0, _spoke_ang, 0.30, 3 if phase >= 2 else 2, 0.14, {"color": "sky", "source": "undertow_spoke", "field_scale": 0.30})
+			patterns.emit_fan(pos, aim, 3, 0.44, 168.0, {"color": "gold", "source": "undertow_fang", "field_scale": 0.20})
 			stage.shake(0.16)
 			stage.play_sfx("riptide_crack", pos),
 	})
@@ -110,7 +111,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 				_main_well.radial_strength = 140.0
 				_main_well.is_push = false
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else 0.0
-			patterns.emit_gap_ring(pos, 16 if phase >= 2 else 12, 122.0, gap_a, 0.72, {"color": "coral", "source": "undertow_gulp", "field_scale": 0.85})
+			patterns.emit_gap_ring(pos, 16 if phase >= 2 else 12, 138.0, gap_a, 0.72, {"color": "coral", "source": "undertow_gulp", "field_scale": 0.25})
 			stage.shake(0.20)
 			stage.play_sfx("riptide_crack", pos),
 		"on_recover": func(_b: LxBossBase, _dt: float) -> void:
@@ -135,14 +136,14 @@ func _configure_boss(_spec: Dictionary) -> void:
 				var ma: float = anim_t + float(k) * (TAU / 3.0)
 				_orbit_mines.append({"ang": ma, "r": 58.0, "batted": false, "pos": pos + Vector2.from_angle(ma) * 58.0, "vel": Vector2.ZERO})
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-			patterns.emit_fan(pos, aim, 5, 0.78, 138.0, {"color": "ice", "source": "undertow_mine_spray", "field_scale": 0.90})
+			patterns.emit_fan(pos, aim, 5, 0.78, 152.0, {"color": "ice", "source": "undertow_mine_spray", "field_scale": 0.30})
 			stage.shake(0.18)
 			stage.play_sfx("tide_surge", pos),
 	})
 
 	# Attack 4 (P3): Twin-Eye Riptide (figure-8 dual-vortex lanes + twin counter-rotating spirals!)
 	register_attack("twin_eye_riptide", {
-		"phases": [3], "weight": 1.65, "tell": 0.68, "commit": 0.52, "recover": 1.30, "cooldown": 1.70,
+		"phases": [3], "weight": 2.40, "tell": 0.68, "commit": 0.52, "recover": 1.30, "cooldown": 1.15,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			ground.warn_lane(pos, _twin_eye_pos, 11.0, last_tell_duration, 0.0, "sky", "gold")
 			ground.warn_ring(clamp_to_arena(tgt), 24.0, last_tell_duration + 0.04, 1.0, "coral", "gold")

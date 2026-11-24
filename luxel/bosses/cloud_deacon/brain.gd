@@ -48,7 +48,7 @@ func _init() -> void:
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.54])
+	configure_phases([0.56])
 
 	# Attack 1: Downpour Barrage — 5 telegraphed raindrop puddle circles (pressures corners + Wick)
 	register_attack("downpour_barrage", {
@@ -255,8 +255,8 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if _weather == "sun":
 		# SUN evaporates rain-shield completely!
 		return dmg * (1.45 if (hit != null and hit.source == LxHit.SOURCE_BEAM) else 1.25)
-	if _weather == "rain" and _intact_urn_count() > 0 and not is_punishable():
-		# Rain-urn shield softens unfocused spam while urns orbit tightly
+	if _weather == "rain" and _intact_urn_count() > 0 and not is_punishable() and hit != null and hit.source == LxHit.SOURCE_BOLT:
+		# Rain-urn shield softens unfocused bolt spam while urns orbit tightly (Beam pierces!)
 		return dmg * 0.68
 	return dmg
 
