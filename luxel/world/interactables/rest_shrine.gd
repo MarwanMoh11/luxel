@@ -33,7 +33,7 @@ func tick(dt: float) -> void:
 
 
 func interact(_actor: Node = null) -> bool:
-	if not active:
+	if not active or _is_dormant():
 		return false
 	_heal_t = 0.48
 	if Lx.state != null:
@@ -59,7 +59,7 @@ func get_light_pool() -> Vector4:
 
 
 func get_interact_prompt() -> String:
-	return "PROMPT_REST_SHRINE"
+	return "" if _is_dormant() else "PROMPT_REST_SHRINE"
 
 
 func _draw() -> void:

@@ -331,6 +331,12 @@ const PATTERNS: Array = [
 
 
 static func resolve(sfx_id: String) -> Dictionary:
+	if Lx.packs != null:
+		var pe: Dictionary = Lx.packs.sfx_entry(sfx_id)
+		if not pe.is_empty():
+			var cid: String = str(pe.get("id", pe.get("cue", "")))
+			if not cid.is_empty():
+				return {"id": cid, "pitch": float(pe.get("pitch", 1.0)), "db": float(pe.get("db", 0.0))}
 	if EXACT.has(sfx_id):
 		return EXACT[sfx_id] as Dictionary
 	var is_tell: bool = sfx_id.contains("_tell") or sfx_id.contains("_windup")
@@ -343,3 +349,21 @@ static func resolve(sfx_id: String) -> Dictionary:
 			if sfx_id.contains(token):
 				return rule[1] as Dictionary
 	return FALLBACK
+
+
+static func base_trim_db(sfx_id: String) -> float:
+	if Lx.packs != null:
+		var pe: Dictionary = Lx.packs.sfx_entry(sfx_id)
+		if pe.has("trim_db"):
+			return float(pe["trim_db"])
+	return float(SFX_BASE_TRIM_DB.get(sfx_id, 0.0))
+
+
+static func variant_list(sfx_id: String) -> Array:
+	if Lx.packs != null:
+		var pe: Dictionary = Lx.packs.sfx_entry(sfx_id)
+		if pe.get("variants") is Array and not (pe["variants"] as Array).is_empty():
+			return pe["variants"] as Array
+	if SFX_VARIANTS.has(sfx_id):
+		return SFX_VARIANTS[sfx_id] as Array
+	return []

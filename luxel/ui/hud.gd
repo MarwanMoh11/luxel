@@ -17,25 +17,6 @@ const PHASE2_CUES: Dictionary = {
 	5: "CUE_PHASE_2_ISL5", 6: "CUE_PHASE_2_ISL6", 7: "CUE_PHASE_2_ISL7", 8: "CUE_PHASE_2_ISL8",
 }
 
-const BOSS_NAME_KEYS: Dictionary = {
-	"bellkeeper": "BOSS_BELLKEEPER", "boss_bellkeeper": "BOSS_BELLKEEPER", "grand_bellkeeper": "BOSS_BELLKEEPER",
-	"lighthouse_hermit": "BOSS_HERMIT", "boss_hermit": "BOSS_HERMIT", "hermit": "BOSS_HERMIT",
-	"briar_matron": "BOSS_MATRON", "boss_matron": "BOSS_MATRON", "matron": "BOSS_MATRON",
-	"heron_abbess": "BOSS_ABBESS", "boss_abbess": "BOSS_ABBESS", "abbess": "BOSS_ABBESS",
-	"astronomer": "BOSS_ASTRONOMER", "boss_astronomer": "BOSS_ASTRONOMER", "the_astronomer": "BOSS_ASTRONOMER",
-	"kilnmother": "BOSS_KILNMOTHER", "boss_kilnmother": "BOSS_KILNMOTHER", "the_kilnmother": "BOSS_KILNMOTHER",
-	"hollow_wick": "BOSS_HOLLOW", "hollow_wick_boss": "BOSS_HOLLOW", "boss_hollow": "BOSS_HOLLOW", "hollow": "BOSS_HOLLOW",
-	"the_hush": "BOSS_HUSH", "boss_hush": "BOSS_HUSH", "hush": "BOSS_HUSH",
-	"bell_warden": "MINIBOSS_1", "bell_warden_r5": "MINIBOSS_1",
-	"tide_captain": "MINIBOSS_2", "boss_tide_captain": "MINIBOSS_2",
-	"elder_sporecap": "MINIBOSS_3", "boss_elder_sporecap": "MINIBOSS_3",
-	"great_lily_hopper": "MINIBOSS_4", "boss_great_lily_hopper": "MINIBOSS_4",
-	"clockwork_warden": "MINIBOSS_5", "boss_clockwork_warden": "MINIBOSS_5",
-	"forge_warden": "MINIBOSS_6", "boss_forge_warden": "MINIBOSS_6",
-	"moonshade_warden": "MINIBOSS_7", "boss_moonshade_warden": "MINIBOSS_7",
-	"night_harbinger": "MINIBOSS_8", "mini_night_harbinger": "MINIBOSS_8", "boss_night_harbinger": "MINIBOSS_8",
-}
-
 var _cues: Array[Dictionary] = [] # {text, pos, is_world, color, t, dur}
 var _notice_text: String = ""
 var _notice_t: float = 0.0
@@ -47,6 +28,7 @@ var _boss_hp: float = 0.0
 var _boss_max_hp: float = 1.0
 var _boss_trail_hp: float = 0.0
 var _boss_phase: int = 1
+var _boss_entries: Array[Dictionary] = [] # [{id, name_key, hp, max_hp, trail_hp, phase}]
 
 var _ember_val: float = 0.0
 var _ember_max: float = 100.0
@@ -80,9 +62,7 @@ func set_ember(current: float, maximum: float) -> void:
 	_ember_max = maxf(1.0, maximum); _ember_val = clampf(current, 0.0, _ember_max); queue_redraw()
 
 static func resolve_boss_name_key(boss_id_or_key: String) -> String:
-	if LxStrings.has_id(boss_id_or_key): return boss_id_or_key
-	var low: String = boss_id_or_key.to_lower().strip_edges()
-	return str(BOSS_NAME_KEYS[low]) if BOSS_NAME_KEYS.has(low) else boss_id_or_key
+	return LxBossHud.resolve_name_key(boss_id_or_key)
 
 func show_boss(name_key: String, hp: float, max_hp: float, phase: int = 1) -> void:
 	_boss_active = true
@@ -91,20 +71,50 @@ func show_boss(name_key: String, hp: float, max_hp: float, phase: int = 1) -> vo
 	_boss_hp = clampf(hp, 0.0, _boss_max_hp)
 	_boss_trail_hp = _boss_hp
 	_boss_phase = maxi(1, phase)
-	if _boss_name_key == "BOSS_HOLLOW" and Lx.state != null \
+	_boss_entries = [{"id": name_key, "name_key": _boss_name_key, "hp": _boss_hp, "max_hp": _boss_max_hp, "trail_hp": _boss_trail_hp, "phase": _boss_phase}]
+	_check_hollow_twist(_boss_name_key)
+	queue_redraw()
+
+func sync_bosses(live_bosses: Array) -> void:
+	if live_bosses.is_empty():
+		hide_boss(); return
+	var prev_trails: Dictionary = {}
+	for pe: Dictionary in _boss_entries: prev_trails[str(pe.get("id", ""))] = float(pe.get("trail_hp", pe.get("hp", 0.0)))
+	var next_list: Array[Dictionary] = []
+	for item: Variant in live_bosses:
+		if not (item is LxEnemyBrain) or not is_instance_valid(item): continue
+		var b: LxEnemyBrain = item as LxEnemyBrain
+		var bid: String = b.boss_id if not b.boss_id.is_empty() else b.kind
+		var nk: String = resolve_boss_name_key(bid)
+		var mh: float = maxf(1.0, b.max_hp)
+		var ch: float = clampf(b.hp, 0.0, mh)
+		var tr: float = clampf(float(prev_trails.get(bid, ch)), ch, mh)
+		next_list.append({"id": bid, "name_key": nk, "hp": ch, "max_hp": mh, "trail_hp": tr, "phase": maxi(1, b.phase)})
+		_check_hollow_twist(nk)
+		if next_list.size() >= 2: break
+	if next_list.is_empty(): hide_boss(); return
+	_boss_entries = next_list
+	_boss_active = true
+	var b0: Dictionary = _boss_entries[0]
+	_boss_name_key = str(b0["name_key"]); _boss_hp = float(b0["hp"]); _boss_max_hp = float(b0["max_hp"])
+	_boss_trail_hp = float(b0["trail_hp"]); _boss_phase = int(b0["phase"])
+	queue_redraw()
+
+func _check_hollow_twist(nk: String) -> void:
+	if nk == "BOSS_HOLLOW" and Lx.state != null \
 			and not bool(Lx.state.story_flags.get("twist_hollow_shown", false)) \
 			and not bool(Lx.state.story_flags.get("trig_7_overworld_trig_twist_hollow_1", false)):
 		Lx.state.story_flags["twist_hollow_shown"] = true
-		if Lx.events != null:
-			Lx.events.narration_requested.emit("TWIST_HOLLOW", "ice", 4.0)
-	queue_redraw()
+		if Lx.events != null: Lx.events.narration_requested.emit("TWIST_HOLLOW", "ice", 4.0)
 
 func update_boss(hp: float, max_hp: float, phase: int = -1) -> void:
 	_boss_max_hp = maxf(1.0, max_hp); _boss_hp = clampf(hp, 0.0, _boss_max_hp)
 	if phase > 0: _boss_phase = phase
+	if not _boss_entries.is_empty():
+		_boss_entries[0]["hp"] = _boss_hp; _boss_entries[0]["max_hp"] = _boss_max_hp; _boss_entries[0]["phase"] = _boss_phase
 	queue_redraw()
 
-func hide_boss() -> void: _boss_active = false; queue_redraw()
+func hide_boss() -> void: _boss_active = false; _boss_entries.clear(); queue_redraw()
 
 func show_notice(string_id: String, duration: float = 3.5) -> void:
 	_notice_text = LxStrings.text(string_id); _notice_t = 0.0; _notice_dur = maxf(duration, 1.0); queue_redraw()
@@ -182,8 +192,11 @@ func _process(delta: float) -> void:
 		_last_shards = Lx.state.shards
 		if _last_hearts >= 0.0 and not is_equal_approx(Lx.state.hearts, _last_hearts): _heart_pop_t = 0.24
 		_last_hearts = Lx.state.hearts
-	if _boss_active and _boss_trail_hp > _boss_hp:
-		_boss_trail_hp = maxf(_boss_hp, _boss_trail_hp - _boss_max_hp * 0.45 * delta)
+	if _boss_active:
+		if _boss_trail_hp > _boss_hp: _boss_trail_hp = maxf(_boss_hp, _boss_trail_hp - _boss_max_hp * 0.45 * delta)
+		for be: Dictionary in _boss_entries:
+			var b_hp: float = float(be["hp"]); var b_tr: float = float(be["trail_hp"])
+			if b_tr > b_hp: be["trail_hp"] = maxf(b_hp, b_tr - float(be["max_hp"]) * 0.45 * delta)
 	if not _cues.is_empty():
 		var kept: Array[Dictionary] = []
 		for cue: Dictionary in _cues:
@@ -209,7 +222,8 @@ func _draw() -> void:
 	var notice_col: Color = _notice_color()
 	var notice_r: Rect2 = _compute_notice_rect() if notice_col.a > 0.0 else Rect2()
 	_draw_hearts(Vector2(5.0, 5.0))
-	if not _boss_active and _notice_text.is_empty() and not LxHudFx.is_ceremony_active(): _draw_beacon_gauge(160.0, 4.0)
+	var in_dng: bool = Lx.world != null and bool(Lx.world.get("is_dungeon"))
+	if not _boss_active and not in_dng and Lx.state.island_id > 0 and _notice_text.is_empty() and not LxHudFx.is_ceremony_active(): _draw_beacon_gauge(160.0, 4.0)
 	var keys_shown: bool = _draw_shards_and_keys(Vector2(315.0, 5.0))
 	_draw_moves_tray(Vector2(5.0, 160.0))
 	if not _boss_active: _draw_zip_cue(Vector2(5.0, 148.0))
@@ -282,7 +296,8 @@ func _draw_shards_and_keys(top_right: Vector2) -> bool:
 	draw_rect(Rect2(icon_x + 2.0, y + 1.0, 1.0, 2.0), LxPalette.PAL["cream"])
 	LxPixelFont.draw_right(self, shard_str, top_right.x, y, LxPalette.PAL["cream"] if _shard_pop_t > 0.0 else LxPalette.PAL["gold"], 1)
 	if Lx.state.region_id != "overworld" or not Lx.state.room_id.is_empty():
-		var dung_id: String = str(Lx.get_island_data(Lx.state.island_id).get("dungeon_id", ""))
+		var dung_id: String = Lx.packs.dungeon_of(Lx.state.island_id, Lx.state.region_id) if Lx.packs != null else ""
+		if dung_id.is_empty(): dung_id = str(Lx.get_island_data(Lx.state.island_id).get("dungeon_id", ""))
 		var keys: int = (Lx.state.get_key_count(dung_id, "wick_key") + Lx.state.get_key_count(dung_id, "keepers_flame")) if not dung_id.is_empty() else 0
 		if keys > 0:
 			LxPixelFont.draw_right(self, LxStrings.fmt("HUD_KEYS_FMT", [keys]), top_right.x, top_right.y + 9.0, LxPalette.PAL["apricot"], 1)
@@ -446,40 +461,10 @@ func _draw_ember_meter(at: Vector2) -> void:
 
 
 func _draw_boss_bar() -> void:
-	var bar_w: float = 160.0
-	var bar_h: float = 8.0
-	var hit_jolt: float = (1.0 if fmod(_blink_t, 0.08) < 0.04 else -1.0) if (LxHudFx.shake_enabled() and not LxHudFx.flash_reduced() and (_boss_trail_hp - _boss_hp) > (_boss_max_hp * 0.015)) else 0.0
-	var x: float = roundf(160.0 - bar_w * 0.5) + hit_jolt
-	var y: float = 14.0
-	var resolved_key: String = resolve_boss_name_key(_boss_name_key)
-	var name_txt: String = LxStrings.text(resolved_key) if LxStrings.has_id(resolved_key) else LxStrings.sanitize(resolved_key)
-	var nw: float = float(LxPixelFont.width(name_txt, 1))
-	var pill_bg := Color(LxPalette.PAL["void"] as Color, 0.68)
-	draw_rect(Rect2(roundf(160.0 - nw * 0.5 - 3.0), 3.0, nw + 6.0, 8.0), pill_bg)
-	LxPixelFont.draw_centered(self, name_txt, 160.0, 5.0, LxPalette.PAL["gold"], 1)
-	if _boss_phase >= 2:
-		var ptxt: String = LxStrings.text("HUD_BOSS_P4" if _boss_phase >= 4 else ("HUD_BOSS_P3" if _boss_phase == 3 else "HUD_BOSS_P2"))
-		var pw: float = float(LxPixelFont.width(ptxt, 1))
-		var pr: float = roundf(160.0 + bar_w * 0.5)
-		draw_rect(Rect2(pr - pw - 2.0, 3.0, pw + 4.0, 8.0), pill_bg)
-		LxPixelFont.draw_right(self, ptxt, pr, 5.0, LxPalette.PAL["coral"], 1)
-	LxPixelFont.draw_panel(self, Rect2(x, y, bar_w, bar_h), "night", "gold" if _boss_phase >= 2 else "mauve", "void")
-	draw_rect(Rect2(x - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
-	draw_rect(Rect2(x + bar_w - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
-	LxHudFx.draw_boss_biome_header(self, Lx.state.island_id if Lx.state != null else 1, nw, x, y, bar_w, _boss_phase)
-	var cur_frac: float = clampf(_boss_hp / maxf(1.0, _boss_max_hp), 0.0, 1.0)
-	var trail_w: float = floorf((bar_w - 4.0) * clampf(_boss_trail_hp / maxf(1.0, _boss_max_hp), 0.0, 1.0))
-	var cur_w: float = floorf((bar_w - 4.0) * cur_frac)
-	if trail_w > 0.0:
-		draw_rect(Rect2(x + 2.0, y + 2.0, trail_w, bar_h - 4.0), LxPalette.PAL["apricot"])
-		if trail_w > cur_w:
-			draw_rect(Rect2(x + 2.0 + cur_w, y + 2.0, minf(2.0, trail_w - cur_w), bar_h - 4.0), LxPalette.PAL["cream"])
-	if cur_w > 0.0:
-		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, bar_h - 4.0), LxPalette.PAL["coral"])
-		draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, 1.0), LxPalette.PAL["rose"])
-	var notches: Array = [0.25, 0.5, 0.75] if resolved_key == "BOSS_HUSH" else ([0.2, 0.5] if resolved_key == "BOSS_BELLKEEPER" else ([0.33, 0.66] if resolved_key in ["BOSS_HERMIT", "BOSS_MATRON", "BOSS_ABBESS", "BOSS_ASTRONOMER", "BOSS_KILNMOTHER", "BOSS_HOLLOW"] else [0.5]))
-	for frac: float in notches:
-		draw_rect(Rect2(roundf(x + 2.0 + (bar_w - 4.0) * frac), y + 1.0, 1.0, bar_h - 2.0), LxPalette.PAL["gold"] if cur_frac > frac else LxPalette.PAL["dusk"])
+	if _boss_entries.is_empty():
+		LxBossHud.draw_boss_bars(self, [{"id": _boss_name_key, "name_key": _boss_name_key, "hp": _boss_hp, "max_hp": _boss_max_hp, "trail_hp": _boss_trail_hp, "phase": _boss_phase}], _blink_t)
+	else:
+		LxBossHud.draw_boss_bars(self, _boss_entries, _blink_t)
 
 
 func _draw_interact_prompt(notice_rect: Rect2 = Rect2()) -> Rect2:

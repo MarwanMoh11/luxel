@@ -1,0 +1,401 @@
+{
+ "id": "theme_archive",
+ "name": "The Archive of Lost Lamps Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_archive.png",
+ "sheet_size": [
+  80,
+  394
+ ],
+ "props": {
+  "tall_bookshelf_unit": {
+   "frame": [
+    24,
+    36
+   ],
+   "anchor": [
+    12,
+    34
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     24,
+     36
+    ]
+   ]
+  },
+  "wide_library_bookcase": {
+   "frame": [
+    36,
+    36
+   ],
+   "anchor": [
+    18,
+    34
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     36,
+     36,
+     36
+    ]
+   ]
+  },
+  "rolling_library_ladder": {
+   "frame": [
+    14,
+    36
+   ],
+   "anchor": [
+    7,
+    34
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     72,
+     14,
+     36
+    ]
+   ]
+  },
+  "memory_glass_jar_stand": {
+   "frame": [
+    20,
+    26
+   ],
+   "anchor": [
+    10,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    280.0,
+    280.0,
+    280.0,
+    280.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     108,
+     20,
+     26
+    ],
+    [
+     20,
+     108,
+     20,
+     26
+    ],
+    [
+     40,
+     108,
+     20,
+     26
+    ],
+    [
+     60,
+     108,
+     20,
+     26
+    ]
+   ]
+  },
+  "scholar_reading_desk": {
+   "frame": [
+    34,
+    24
+   ],
+   "anchor": [
+    17,
+    22
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     134,
+     34,
+     24
+    ]
+   ]
+  },
+  "archive_lantern_sconce": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     158,
+     18,
+     30
+    ],
+    [
+     18,
+     158,
+     18,
+     30
+    ],
+    [
+     36,
+     158,
+     18,
+     30
+    ],
+    [
+     54,
+     158,
+     18,
+     30
+    ]
+   ]
+  },
+  "scroll_cubby_rack": {
+   "frame": [
+    24,
+    36
+   ],
+   "anchor": [
+    12,
+    34
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     188,
+     24,
+     36
+    ]
+   ]
+  },
+  "index_card_cabinet": {
+   "frame": [
+    18,
+    26
+   ],
+   "anchor": [
+    9,
+    24
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     224,
+     18,
+     26
+    ]
+   ]
+  },
+  "archive_arch_portal": {
+   "frame": [
+    46,
+    46
+   ],
+   "anchor": [
+    23,
+    44
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     250,
+     46,
+     46
+    ]
+   ]
+  },
+  "memory_orb_pedestal": {
+   "frame": [
+    20,
+    26
+   ],
+   "anchor": [
+    10,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     296,
+     20,
+     26
+    ],
+    [
+     20,
+     296,
+     20,
+     26
+    ],
+    [
+     40,
+     296,
+     20,
+     26
+    ],
+    [
+     60,
+     296,
+     20,
+     26
+    ]
+   ]
+  },
+  "hanging_archive_banner": {
+   "frame": [
+    18,
+    34
+   ],
+   "anchor": [
+    9,
+    32
+   ],
+   "frames": 4,
+   "ms": [
+    340.0,
+    340.0,
+    340.0,
+    340.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     322,
+     18,
+     34
+    ],
+    [
+     18,
+     322,
+     18,
+     34
+    ],
+    [
+     36,
+     322,
+     18,
+     34
+    ],
+    [
+     54,
+     322,
+     18,
+     34
+    ]
+   ]
+  },
+  "compass_rug_medallion": {
+   "frame": [
+    38,
+    38
+   ],
+   "anchor": [
+    19,
+    19
+   ],
+   "frames": 2,
+   "ms": [
+    520.0,
+    520.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     356,
+     38,
+     38
+    ],
+    [
+     38,
+     356,
+     38,
+     38
+    ]
+   ]
+  }
+ }
+}

@@ -1,0 +1,399 @@
+{
+ "id": "theme_loom",
+ "name": "The Weaver's Loom Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_loom.png",
+ "sheet_size": [
+  144,
+  330
+ ],
+ "props": {
+  "standing_oak_loom": {
+   "frame": [
+    36,
+    36
+   ],
+   "anchor": [
+    18,
+    34
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     36,
+     36
+    ],
+    [
+     36,
+     0,
+     36,
+     36
+    ],
+    [
+     72,
+     0,
+     36,
+     36
+    ],
+    [
+     108,
+     0,
+     36,
+     36
+    ]
+   ]
+  },
+  "wooden_thread_spool": {
+   "frame": [
+    18,
+    22
+   ],
+   "anchor": [
+    9,
+    20
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     36,
+     18,
+     22
+    ]
+   ]
+  },
+  "hanging_silk_banner": {
+   "frame": [
+    18,
+    34
+   ],
+   "anchor": [
+    9,
+    32
+   ],
+   "frames": 4,
+   "ms": [
+    320.0,
+    320.0,
+    320.0,
+    320.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     58,
+     18,
+     34
+    ],
+    [
+     18,
+     58,
+     18,
+     34
+    ],
+    [
+     36,
+     58,
+     18,
+     34
+    ],
+    [
+     54,
+     58,
+     18,
+     34
+    ]
+   ]
+  },
+  "brass_shuttle_rack": {
+   "frame": [
+    16,
+    28
+   ],
+   "anchor": [
+    8,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     92,
+     16,
+     28
+    ]
+   ]
+  },
+  "tension_peg_pillar": {
+   "frame": [
+    14,
+    28
+   ],
+   "anchor": [
+    7,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     120,
+     14,
+     28
+    ]
+   ]
+  },
+  "luminous_yarn_basket": {
+   "frame": [
+    18,
+    22
+   ],
+   "anchor": [
+    9,
+    20
+   ],
+   "frames": 4,
+   "ms": [
+    340.0,
+    340.0,
+    340.0,
+    340.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     148,
+     18,
+     22
+    ],
+    [
+     18,
+     148,
+     18,
+     22
+    ],
+    [
+     36,
+     148,
+     18,
+     22
+    ],
+    [
+     54,
+     148,
+     18,
+     22
+    ]
+   ]
+  },
+  "tapestry_frame_stand": {
+   "frame": [
+    44,
+    44
+   ],
+   "anchor": [
+    22,
+    42
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     170,
+     44,
+     44
+    ]
+   ]
+  },
+  "loom_lantern_brazier": {
+   "frame": [
+    20,
+    26
+   ],
+   "anchor": [
+    10,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     214,
+     20,
+     26
+    ],
+    [
+     20,
+     214,
+     20,
+     26
+    ],
+    [
+     40,
+     214,
+     20,
+     26
+    ],
+    [
+     60,
+     214,
+     20,
+     26
+    ]
+   ]
+  },
+  "spindle_totem": {
+   "frame": [
+    16,
+    32
+   ],
+   "anchor": [
+    8,
+    30
+   ],
+   "frames": 4,
+   "ms": [
+    280.0,
+    280.0,
+    280.0,
+    280.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     240,
+     16,
+     32
+    ],
+    [
+     16,
+     240,
+     16,
+     32
+    ],
+    [
+     32,
+     240,
+     16,
+     32
+    ],
+    [
+     48,
+     240,
+     16,
+     32
+    ]
+   ]
+  },
+  "dyed_bolt_of_cloth": {
+   "frame": [
+    18,
+    22
+   ],
+   "anchor": [
+    9,
+    20
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     272,
+     18,
+     22
+    ]
+   ]
+  },
+  "woven_floor_medallion": {
+   "frame": [
+    36,
+    36
+   ],
+   "anchor": [
+    18,
+    18
+   ],
+   "frames": 2,
+   "ms": [
+    500.0,
+    500.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     294,
+     36,
+     36
+    ],
+    [
+     36,
+     294,
+     36,
+     36
+    ]
+   ]
+  }
+ }
+}

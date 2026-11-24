@@ -22,6 +22,7 @@ const AMB_INDOOR_DUCK_DB: float = -5.0
 const AMB_PAUSE_DUCK_DB: float = -7.0
 const PAUSE_DUCK_DB: float = -6.0
 const CROSSFADE_S: float = 1.6
+const CUE_XFADE_S: float = 0.65
 const AMB_FADE_S: float = 1.0
 const COMBAT_DWELL_S: float = 1.2
 const COMBAT_TAIL_S: float = 6.0
@@ -55,16 +56,18 @@ var _is_indoor: bool = false
 var _stinger_duck_t: float = 0.0
 var _music_fade: float = 1.0
 var _music_fade_target: float = 1.0
-var _music_fade_rate: float = 3.5
+var _music_fade_rate: float = 1.0 / CUE_XFADE_S
+var _fade_out_gain: float = 0.0
 
-# Primary (explore/track) and synced combat stem players — both stay running for seamless layering.
+# Primary (explore/track), outgoing crossfade deck, and synced combat stem players.
 var _explore_player: AudioStreamPlayer = null
+var _fade_player: AudioStreamPlayer = null
 var _combat_player: AudioStreamPlayer = null
 var _stinger_player: AudioStreamPlayer = null
 var _amb_players: Array[AudioStreamPlayer] = []
 var _amb_gains: Array[float] = []
 var _amb_target_gains: Array[float] = []
-var _current_amb_island: int = -1
+var _current_amb_key: String = ""
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _sfx_2d_pool: Array[AudioStreamPlayer2D] = []
 var _sfx_cursor: int = 0
@@ -167,6 +170,9 @@ func _setup_players() -> void:
 	_explore_player = AudioStreamPlayer.new()
 	_explore_player.bus = BUS_MUSIC; _explore_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_explore_player)
+	_fade_player = AudioStreamPlayer.new()
+	_fade_player.bus = BUS_MUSIC; _fade_player.volume_db = SILENT_DB; _fade_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(_fade_player)
 	_combat_player = AudioStreamPlayer.new()
 	_combat_player.bus = BUS_MUSIC; _combat_player.volume_db = SILENT_DB; _combat_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_combat_player)
@@ -176,16 +182,26 @@ func _setup_players() -> void:
 	for i: int in range(2):
 		var ap := AudioStreamPlayer.new()
 		ap.bus = BUS_AMBIENCE; ap.volume_db = SILENT_DB; ap.process_mode = Node.PROCESS_MODE_ALWAYS
-		add_child(ap)
-		_amb_players.append(ap); _amb_gains.append(0.0); _amb_target_gains.append(0.0)
+		add_child(ap); _amb_players.append(ap); _amb_gains.append(0.0); _amb_target_gains.append(0.0)
 	for i: int in range(SFX_POOL_SIZE):
 		var sp := AudioStreamPlayer.new()
 		sp.bus = BUS_SFX; sp.process_mode = Node.PROCESS_MODE_ALWAYS
 		add_child(sp); _sfx_pool.append(sp)
 	for i: int in range(SFX_2D_POOL_SIZE):
 		var sp2 := AudioStreamPlayer2D.new()
-		sp2.bus = BUS_SFX; sp2.max_distance = 360.0; sp2.panning_strength = 0.72; sp2.attenuation = 0.85
+		sp2.bus = BUS_SFX; sp2.process_mode = Node.PROCESS_MODE_ALWAYS
+		sp2.max_distance = 360.0; sp2.panning_strength = 0.72; sp2.attenuation = 0.85
 		add_child(sp2); _sfx_2d_pool.append(sp2)
+
+
+func _handoff_to_fade_deck() -> void:
+	if _fade_player == null or _explore_player == null or not _explore_player.playing or _explore_player.stream == null:
+		return
+	var pos: float = _explore_player.get_playback_position()
+	_fade_player.stream = _explore_player.stream
+	_fade_out_gain = clampf(_music_fade, 0.0, 1.0)
+	_fade_player.volume_db = _explore_player.volume_db
+	_fade_player.play(pos)
 
 
 func apply_settings(cfg: Dictionary) -> void:
@@ -237,12 +253,13 @@ func start_island_music(island_id: int) -> void:
 	var resume_pos: float = float(_saved_positions.get(group, 0.0))
 
 	if exp_stream != null:
+		_handoff_to_fade_deck()
 		if _explore_player.playing: _explore_player.stop()
 		_explore_player.stream = exp_stream; _explore_player.volume_db = SILENT_DB; _explore_player.play(resume_pos)
 	if cmb_stream != null:
 		if _combat_player.playing: _combat_player.stop()
 		_combat_player.stream = cmb_stream; _combat_player.volume_db = SILENT_DB; _combat_player.play(resume_pos)
-	_music_fade = 0.0; _music_fade_target = 1.0; _music_fade_rate = 3.5
+	_music_fade = 0.0; _music_fade_target = 1.0; _music_fade_rate = 1.0 / CUE_XFADE_S
 	_start_island_ambience(island_id)
 	_set_indoor_acoustics(false)
 
@@ -252,6 +269,51 @@ func start_dungeon_music(island_id: int) -> void:
 	_start_island_ambience(island_id)
 	_set_indoor_acoustics(true)
 	play_cue("island%d_dungeon" % island_id)
+
+
+func start_region_music(island_id: int, region_id: String, region_data: Dictionary = {}) -> void:
+	_current_island_id = island_id
+	var rmeta: Dictionary = Lx.packs.region_meta(island_id, region_id) if Lx.packs != null else {}
+	var did: String = Lx.packs.dungeon_of(island_id, region_id) if Lx.packs != null else ""
+	var dmeta: Dictionary = Lx.packs.dungeon(did) if (Lx.packs != null and not did.is_empty()) else {}
+	var is_dng: bool = bool(region_data.get("is_dungeon", not did.is_empty() or region_id != "overworld"))
+	var custom_amb: Array = _resolve_ambience_arg(region_data.get("ambience", null))
+	if custom_amb.is_empty(): custom_amb = _resolve_ambience_arg(rmeta.get("ambience", null))
+	var cue: String = str(region_data.get("music", "")).strip_edges()
+	if cue.is_empty(): cue = str(rmeta.get("music", "")).strip_edges()
+	if cue.is_empty() and is_dng: cue = str(dmeta.get("music", "")).strip_edges()
+	if not cue.is_empty() and cue != ("island%d_explore" % island_id):
+		if custom_amb.is_empty(): _start_island_ambience(island_id)
+		else: _start_ambience_layers(custom_amb, "%d:%s" % [island_id, region_id])
+		_set_indoor_acoustics(is_dng, _is_boss_cue(cue))
+		play_cue(cue)
+		return
+	if is_dng:
+		start_dungeon_music(island_id)
+		if not custom_amb.is_empty(): _start_ambience_layers(custom_amb, "%d:%s" % [island_id, region_id])
+	else:
+		start_island_music(island_id)
+		if not custom_amb.is_empty(): _start_ambience_layers(custom_amb, "%d:%s" % [island_id, region_id])
+
+
+func _resolve_ambience_arg(raw: Variant) -> Array:
+	if raw is Array and not (raw as Array).is_empty(): return raw as Array
+	if raw is String:
+		var s: String = (raw as String).strip_edges()
+		if s.begins_with("island"): return ISLAND_AMBIENCE.get(int(s.substr(6)), []) as Array
+		if not s.is_empty(): return [s]
+	return []
+
+
+func _is_boss_cue(cue: String) -> bool:
+	if Lx.packs != null: return Lx.packs.is_boss_music_cue(cue)
+	return cue.contains("_boss_")
+
+
+func _is_phase_pair(prev_cue: String, next_cue: String) -> bool:
+	if prev_cue.is_empty() or next_cue.is_empty() or prev_cue == next_cue: return false
+	if Lx.packs != null and Lx.packs.is_boss_phase_pair(prev_cue, next_cue): return true
+	return prev_cue.ends_with("_p1") and next_cue.ends_with("_p2") and prev_cue.trim_suffix("_p1") == next_cue.trim_suffix("_p2")
 
 
 func _set_indoor_acoustics(indoor: bool, is_boss: bool = false) -> void:
@@ -264,20 +326,20 @@ func _set_indoor_acoustics(indoor: bool, is_boss: bool = false) -> void:
 
 
 func _start_island_ambience(island_id: int) -> void:
-	if _amb_players.is_empty():
-		return
 	var names: Array = ISLAND_AMBIENCE.get(island_id, ["night_breeze"]) as Array
-	if _current_amb_island == island_id:
+	_start_ambience_layers(names, "isl:%d" % island_id)
+
+
+func _start_ambience_layers(names: Array, key: String) -> void:
+	if _amb_players.is_empty(): return
+	if _current_amb_key == key:
 		var all_active: bool = true
 		for i: int in range(mini(names.size(), _amb_players.size())):
-			if not _amb_players[i].playing:
-				all_active = false
-				break
+			if not _amb_players[i].playing: all_active = false; break
 		if all_active:
-			for i: int in range(_amb_players.size()):
-				_amb_target_gains[i] = 1.0 if i < names.size() else 0.0
+			for i: int in range(_amb_players.size()): _amb_target_gains[i] = 1.0 if i < names.size() else 0.0
 			return
-	_current_amb_island = island_id
+	_current_amb_key = key
 	for i: int in range(_amb_players.size()):
 		var ap: AudioStreamPlayer = _amb_players[i]
 		if i < names.size():
@@ -285,41 +347,32 @@ func _start_island_ambience(island_id: int) -> void:
 			if st != null:
 				_amb_target_gains[i] = 1.0
 				if ap.stream != st or not ap.playing:
-					ap.stream = st
-					_amb_gains[i] = 0.0
-					ap.volume_db = SILENT_DB
-					ap.play()
-			else:
-				_amb_target_gains[i] = 0.0
-		else:
-			_amb_target_gains[i] = 0.0
+					ap.stream = st; _amb_gains[i] = 0.0; ap.volume_db = SILENT_DB; ap.play()
+			else: _amb_target_gains[i] = 0.0
+		else: _amb_target_gains[i] = 0.0
 
 
 func _fade_out_ambience(immediate: bool = false) -> void:
-	_current_amb_island = -1
+	_current_amb_key = ""
 	for i: int in range(_amb_players.size()):
 		_amb_target_gains[i] = 0.0
 		if immediate:
-			_amb_gains[i] = 0.0
-			_amb_players[i].volume_db = SILENT_DB
-			if _amb_players[i].playing:
-				_amb_players[i].stop()
+			_amb_gains[i] = 0.0; _amb_players[i].volume_db = SILENT_DB
+			if _amb_players[i].playing: _amb_players[i].stop()
 
 
 func play_cue(cue_name: String) -> void:
 	if cue_name == "explore" or cue_name == "combat":
-		set_music_mode(cue_name, true)
-		return
+		set_music_mode(cue_name, true); return
 	if cue_name in ["title", "ending_dawn", "credits"]:
-		_fade_out_ambience(cue_name == "ending_dawn")
-		_set_indoor_acoustics(false)
+		_fade_out_ambience(cue_name == "ending_dawn"); _set_indoor_acoustics(false)
 	elif cue_name == "hub":
 		_set_indoor_acoustics(false)
-	elif cue_name.contains("_boss_"):
+	elif _is_boss_cue(cue_name):
 		_set_indoor_acoustics(true, true)
 	if current_track_group == cue_name and _explore_player.playing:
 		_music_fade_target = 1.0; return
-	var boss_carry: bool = current_track_group.ends_with("_boss_p1") and cue_name.ends_with("_boss_p2") and current_track_group.left(7) == cue_name.left(7)
+	var boss_carry: bool = _is_phase_pair(current_track_group, cue_name)
 	var carry_pos: float = _explore_player.get_playback_position() if (boss_carry and _explore_player.playing) else -1.0
 	if current_track_group != "" and _explore_player.playing:
 		_saved_positions[current_track_group] = _explore_player.get_playback_position()
@@ -327,10 +380,11 @@ func play_cue(cue_name: String) -> void:
 	_target_combat_blend = 0.0; combat_blend = 0.0; _combat_request_timer = 0.0; _combat_tail_timer = 0.0
 	var st: AudioStream = _load_music_stream(cue_name, "title")
 	if st != null:
+		if not boss_carry: _handoff_to_fade_deck()
 		if _explore_player.playing: _explore_player.stop()
 		_explore_player.stream = st
 		_music_fade = 1.0 if boss_carry else 0.0
-		_music_fade_target = 1.0; _music_fade_rate = 3.5
+		_music_fade_target = 1.0; _music_fade_rate = 1.0 / CUE_XFADE_S
 		_explore_player.volume_db = BASE_MUSIC_DB if boss_carry else SILENT_DB
 		var pos: float = carry_pos if carry_pos >= 0.0 else float(_saved_positions.get(cue_name, 0.0))
 		_explore_player.play(pos)
@@ -379,29 +433,21 @@ func tick(dt: float, in_combat: bool = false) -> void:
 	_sfx_clock += dt
 	_stinger_duck_t = maxf(0.0, _stinger_duck_t - dt)
 	_music_fade = move_toward(_music_fade, _music_fade_target, dt * _music_fade_rate)
+	if _fade_out_gain > 0.0:
+		_fade_out_gain = move_toward(_fade_out_gain, 0.0, dt / CUE_XFADE_S)
 	if _is_overworld_layer_active():
 		if in_combat:
-			_combat_request_timer += dt
-			_combat_tail_timer = COMBAT_TAIL_S
-			if _combat_request_timer >= COMBAT_DWELL_S:
-				_target_combat_blend = 1.0
+			_combat_request_timer += dt; _combat_tail_timer = COMBAT_TAIL_S
+			if _combat_request_timer >= COMBAT_DWELL_S: _target_combat_blend = 1.0
 		else:
 			_combat_request_timer = maxf(0.0, _combat_request_timer - dt * 2.0)
-			if _combat_tail_timer > 0.0:
-				_combat_tail_timer -= dt
-			else:
-				_target_combat_blend = 0.0
-		var step: float = dt / maxf(CROSSFADE_S, 0.05)
-		combat_blend = move_toward(combat_blend, _target_combat_blend, step)
+			if _combat_tail_timer > 0.0: _combat_tail_timer -= dt
+			else: _target_combat_blend = 0.0
+		combat_blend = move_toward(combat_blend, _target_combat_blend, dt / maxf(CROSSFADE_S, 0.05))
 	else:
-		_combat_request_timer = 0.0
-		_combat_tail_timer = 0.0
-		_target_combat_blend = 0.0
-		combat_blend = 0.0
-
+		_combat_request_timer = 0.0; _combat_tail_timer = 0.0; _target_combat_blend = 0.0; combat_blend = 0.0
 	var amb_step: float = dt / maxf(AMB_FADE_S, 0.05)
-	for i: int in range(_amb_players.size()):
-		_amb_gains[i] = move_toward(_amb_gains[i], _amb_target_gains[i], amb_step)
+	for i: int in range(_amb_players.size()): _amb_gains[i] = move_toward(_amb_gains[i], _amb_target_gains[i], amb_step)
 	_update_layer_volumes()
 
 
@@ -411,41 +457,38 @@ func _update_layer_volumes() -> void:
 	var cmb_gain: float = sin(combat_blend * PI * 0.5) * _music_fade
 	if _explore_player != null:
 		_explore_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(exp_gain, 0.0001)) if exp_gain > 0.001 else SILENT_DB
+	if _fade_player != null:
+		if _fade_out_gain > 0.001:
+			_fade_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(_fade_out_gain)
+		else:
+			_fade_player.volume_db = SILENT_DB
+			if _fade_player.playing: _fade_player.stop()
 	if _combat_player != null and _combat_player.stream != null:
 		_combat_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(cmb_gain, 0.0001)) if cmb_gain > 0.001 else SILENT_DB
 	var amb_duck: float = (AMB_PAUSE_DUCK_DB if is_paused else 0.0) + (AMB_INDOOR_DUCK_DB if _is_indoor else 0.0)
-	var is_boss_cue: bool = current_track_group.contains("_boss_")
-	amb_duck += AMB_COMBAT_DUCK_DB * (1.0 if is_boss_cue else combat_blend)
+	amb_duck += AMB_COMBAT_DUCK_DB * (1.0 if _is_boss_cue(current_track_group) else combat_blend)
 	for i: int in range(_amb_players.size()):
-		var ap: AudioStreamPlayer = _amb_players[i]
-		var g: float = _amb_gains[i]
+		var ap: AudioStreamPlayer = _amb_players[i]; var g: float = _amb_gains[i]
 		if g > 0.001:
-			var layer_off: float = AMB_LAYER2_OFFSET_DB if i > 0 else 0.0
-			ap.volume_db = BASE_AMBIENCE_DB + layer_off + amb_duck + linear_to_db(g)
+			ap.volume_db = BASE_AMBIENCE_DB + (AMB_LAYER2_OFFSET_DB if i > 0 else 0.0) + amb_duck + linear_to_db(g)
 		else:
 			ap.volume_db = SILENT_DB
-			if _amb_target_gains[i] <= 0.001 and ap.playing:
-				ap.stop()
+			if _amb_target_gains[i] <= 0.001 and ap.playing: ap.stop()
 
 
 func play_stinger(stinger_name: String) -> void:
 	var st: AudioStream = _load_music_stream(stinger_name, "")
 	if st != null and _stinger_player != null:
-		_stinger_player.stream = st
-		_stinger_player.volume_db = -1.5
-		_stinger_player.play()
-		_stinger_duck_t = 2.8
+		_stinger_player.stream = st; _stinger_player.volume_db = -1.5; _stinger_player.play(); _stinger_duck_t = 2.8
 
 
 func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool = false, ui_bus: bool = false) -> void:
-	if sfx_id.is_empty():
-		return
-	if not ui_bus and _sfx_last_t.has(sfx_id) and (_sfx_clock - float(_sfx_last_t[sfx_id])) < SFX_MIN_INTERVAL_S:
-		return
+	if sfx_id.is_empty(): return
+	if not ui_bus and _sfx_last_t.has(sfx_id) and (_sfx_clock - float(_sfx_last_t[sfx_id])) < SFX_MIN_INTERVAL_S: return
 	var base_id: String = sfx_id
 	var st: AudioStream = _pick_variant_stream(sfx_id)
 	var pitch_mul: float = 1.0
-	var gain_db: float = float(SfxMap.SFX_BASE_TRIM_DB.get(sfx_id, 0.0))
+	var gain_db: float = SfxMap.base_trim_db(sfx_id)
 	if st == null:
 		var mapped: Dictionary = SfxMap.resolve(sfx_id)
 		var mapped_id: String = str(mapped.get("id", ""))
@@ -453,147 +496,93 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 			base_id = mapped_id
 			st = _pick_variant_stream(mapped_id)
 			pitch_mul = float(mapped.get("pitch", 1.0))
-			gain_db = float(mapped.get("db", 0.0)) + float(SfxMap.SFX_BASE_TRIM_DB.get(mapped_id, 0.0))
-	if st == null:
-		return
-	if not ui_bus and base_id != sfx_id and _sfx_last_t.has(base_id) and (_sfx_clock - float(_sfx_last_t[base_id])) < SFX_MIN_INTERVAL_S:
-		return
-	if base_id == "shield_clang" and (_sfx_clock - float(_sfx_last_t.get("shield_strain", -1.0))) < 0.08:
-		return
-	_sfx_last_t[sfx_id] = _sfx_clock
-	_sfx_last_t[base_id] = _sfx_clock
+			gain_db = float(mapped.get("db", 0.0)) + SfxMap.base_trim_db(mapped_id)
+	if st == null: return
+	if not ui_bus and base_id != sfx_id and _sfx_last_t.has(base_id) and (_sfx_clock - float(_sfx_last_t[base_id])) < SFX_MIN_INTERVAL_S: return
+	if base_id == "shield_clang" and (_sfx_clock - float(_sfx_last_t.get("shield_strain", -1.0))) < 0.08: return
+	_sfx_last_t[sfx_id] = _sfx_clock; _sfx_last_t[base_id] = _sfx_clock
 	var jit: float = 1.0 if ui_bus else randf_range(0.96, 1.04)
-	if base_id == "bolt_fire":
-		jit = randf_range(0.95, 1.05)
+	if base_id == "bolt_fire": jit = randf_range(0.95, 1.05)
 	elif base_id == "shard_pickup":
 		_shard_streak = mini(SHARD_SCALE.size() - 1, _shard_streak + 1) if (_sfx_clock - _shard_streak_t) <= 0.85 else 0
-		_shard_streak_t = _sfx_clock
-		jit = SHARD_SCALE[_shard_streak]
-	elif base_id == "mirror_ping" or base_id == "prism_bounce" or base_id == "prism_chain" or base_id == "prop_chime":
+		_shard_streak_t = _sfx_clock; jit = SHARD_SCALE[_shard_streak]
+	elif base_id in ["mirror_ping", "prism_bounce", "prism_chain", "prop_chime"]:
 		_mirror_streak = mini(SHARD_SCALE.size() - 1, _mirror_streak + 1) if (_sfx_clock - _mirror_streak_t) <= 0.75 else 0
-		_mirror_streak_t = _sfx_clock
-		jit = SHARD_SCALE[_mirror_streak]
+		_mirror_streak_t = _sfx_clock; jit = SHARD_SCALE[_mirror_streak]
 	if spatial and not _sfx_2d_pool.is_empty():
-		var p2: AudioStreamPlayer2D = _sfx_2d_pool[_sfx_2d_cursor]
-		_sfx_2d_cursor = (_sfx_2d_cursor + 1) % _sfx_2d_pool.size()
-		if p2.playing:
-			p2.stop()
-		p2.global_position = world_pos
-		p2.stream = st
-		p2.volume_db = gain_db + randf_range(-1.1, 1.1)
-		p2.pitch_scale = pitch_mul * jit
-		p2.play()
+		var p2: AudioStreamPlayer2D = _pick_free_2d()
+		if p2.playing: p2.stop()
+		p2.global_position = world_pos; p2.stream = st; p2.volume_db = gain_db + randf_range(-1.1, 1.1); p2.pitch_scale = pitch_mul * jit; p2.play()
 	elif not _sfx_pool.is_empty():
-		var p: AudioStreamPlayer = _sfx_pool[_sfx_cursor]
-		_sfx_cursor = (_sfx_cursor + 1) % _sfx_pool.size()
-		if p.playing:
-			p.stop()
-		p.bus = BUS_UI if ui_bus else BUS_SFX
-		p.stream = st
-		p.volume_db = gain_db if ui_bus else gain_db + randf_range(-1.1, 1.1)
-		p.pitch_scale = pitch_mul * jit
-		p.play()
+		var p: AudioStreamPlayer = _pick_free_1d()
+		if p.playing: p.stop()
+		p.bus = BUS_UI if ui_bus else BUS_SFX; p.stream = st; p.volume_db = gain_db if ui_bus else gain_db + randf_range(-1.1, 1.1); p.pitch_scale = pitch_mul * jit; p.play()
+
+
+func _pick_free_1d() -> AudioStreamPlayer:
+	for k: int in range(_sfx_pool.size()):
+		var idx: int = (_sfx_cursor + k) % _sfx_pool.size()
+		if not _sfx_pool[idx].playing: _sfx_cursor = (idx + 1) % _sfx_pool.size(); return _sfx_pool[idx]
+	var out: AudioStreamPlayer = _sfx_pool[_sfx_cursor]; _sfx_cursor = (_sfx_cursor + 1) % _sfx_pool.size(); return out
+
+
+func _pick_free_2d() -> AudioStreamPlayer2D:
+	for k: int in range(_sfx_2d_pool.size()):
+		var idx: int = (_sfx_2d_cursor + k) % _sfx_2d_pool.size()
+		if not _sfx_2d_pool[idx].playing: _sfx_2d_cursor = (idx + 1) % _sfx_2d_pool.size(); return _sfx_2d_pool[idx]
+	var out: AudioStreamPlayer2D = _sfx_2d_pool[_sfx_2d_cursor]; _sfx_2d_cursor = (_sfx_2d_cursor + 1) % _sfx_2d_pool.size(); return out
 
 
 func _pick_variant_stream(sfx_id: String) -> AudioStream:
-	if SfxMap.SFX_VARIANTS.has(sfx_id):
-		var arr: Array = SfxMap.SFX_VARIANTS[sfx_id] as Array
-		if not arr.is_empty():
-			var idx: int = int(_sfx_variant_idx.get(sfx_id, 0)) % arr.size()
-			_sfx_variant_idx[sfx_id] = (idx + 1) % arr.size()
-			var cand: AudioStream = _load_sfx_stream(str(arr[idx]))
-			if cand != null:
-				return cand
+	var arr: Array = SfxMap.variant_list(sfx_id)
+	if not arr.is_empty():
+		var idx: int = int(_sfx_variant_idx.get(sfx_id, 0)) % arr.size()
+		_sfx_variant_idx[sfx_id] = (idx + 1) % arr.size()
+		var cand: AudioStream = _load_sfx_stream(str(arr[idx]))
+		if cand != null: return cand
 	return _load_sfx_stream(sfx_id)
 
 
-func get_music_position() -> float:
-	if _explore_player != null and _explore_player.playing:
-		return _explore_player.get_playback_position()
-	return 0.0
-
-
-func is_music_playing() -> bool:
-	return _explore_player != null and _explore_player.playing
-
-
-func get_lowpass_cutoff() -> float:
-	return _lowpass.cutoff_hz if _lowpass != null else OPEN_LP_HZ
-
+func get_music_position() -> float: return _explore_player.get_playback_position() if (_explore_player != null and _explore_player.playing) else 0.0
+func is_music_playing() -> bool: return _explore_player != null and _explore_player.playing
+func get_lowpass_cutoff() -> float: return _lowpass.cutoff_hz if _lowpass != null else OPEN_LP_HZ
 
 func _load_music_stream(cue_name: String, fallback: String) -> AudioStream:
-	var candidates: Array[String] = [
-		"res://luxel/audio/music/%s.ogg" % cue_name,
-	]
-	if not fallback.is_empty() and fallback != cue_name:
-		candidates.append("res://luxel/audio/music/%s.ogg" % fallback)
-	for path: String in candidates:
-		if _stream_cache.has(path):
-			return _stream_cache[path] as AudioStream
-		if ResourceLoader.exists(path):
-			var res: Resource = ResourceLoader.load(path)
-			if res is AudioStream:
-				if res is AudioStreamOggVorbis:
-					(res as AudioStreamOggVorbis).loop = not cue_name.begins_with("stinger_") and cue_name != "ending_dawn"
-				_stream_cache[path] = res
-				return res as AudioStream
-		var abs_p: String = ProjectSettings.globalize_path(path)
-		if FileAccess.file_exists(abs_p):
-			var ogg: AudioStreamOggVorbis = AudioStreamOggVorbis.load_from_file(abs_p)
-			if ogg != null:
-				ogg.loop = not cue_name.begins_with("stinger_") and cue_name != "ending_dawn"
-				_stream_cache[path] = ogg
-				return ogg
-	# Fallback silent procedural stream so headless tests without audio files still verify continuous playback.
-	var gen := AudioStreamGenerator.new()
-	gen.mix_rate = 44100.0
-	gen.buffer_length = 0.5
+	var cands: Array[String] = ["res://luxel/audio/music/%s.ogg" % cue_name]
+	if not fallback.is_empty() and fallback != cue_name: cands.append("res://luxel/audio/music/%s.ogg" % fallback)
+	var do_loop: bool = not cue_name.begins_with("stinger_") and cue_name != "ending_dawn"
+	for path: String in cands:
+		var loaded: AudioStream = _load_cached_ogg(path, do_loop)
+		if loaded != null: return loaded
+	var gen := AudioStreamGenerator.new(); gen.mix_rate = 44100.0; gen.buffer_length = 0.5
 	return gen
 
-
 func _load_ambience_stream(amb_name: String, fallback: String = "night_breeze") -> AudioStream:
-	var candidates: Array[String] = [
-		"res://luxel/audio/ambience/%s.ogg" % amb_name,
-	]
-	if not fallback.is_empty() and fallback != amb_name:
-		candidates.append("res://luxel/audio/ambience/%s.ogg" % fallback)
-	for path: String in candidates:
-		if _stream_cache.has(path):
-			return _stream_cache[path] as AudioStream
-		if ResourceLoader.exists(path):
-			var res: Resource = ResourceLoader.load(path)
-			if res is AudioStream:
-				if res is AudioStreamOggVorbis:
-					(res as AudioStreamOggVorbis).loop = true
-				_stream_cache[path] = res
-				return res as AudioStream
+	var cands: Array[String] = ["res://luxel/audio/ambience/%s.ogg" % amb_name]
+	if not fallback.is_empty() and fallback != amb_name: cands.append("res://luxel/audio/ambience/%s.ogg" % fallback)
+	for path: String in cands:
+		var loaded: AudioStream = _load_cached_ogg(path, true)
+		if loaded != null: return loaded
+	return null
+
+func _load_sfx_stream(sfx_id: String) -> AudioStream:
+	if _sfx_missing.has(sfx_id): return null
+	for ext: String in [".ogg", ".wav"]:
+		var loaded: AudioStream = _load_cached_ogg("res://luxel/audio/sfx/%s%s" % [sfx_id, ext], false, ext == ".ogg")
+		if loaded != null: return loaded
+	_sfx_missing[sfx_id] = true
+	return null
+
+func _load_cached_ogg(path: String, set_loop: bool, allow_disk_ogg: bool = true) -> AudioStream:
+	if _stream_cache.has(path): return _stream_cache[path] as AudioStream
+	if ResourceLoader.exists(path):
+		var res: Resource = ResourceLoader.load(path)
+		if res is AudioStream:
+			if res is AudioStreamOggVorbis and allow_disk_ogg: (res as AudioStreamOggVorbis).loop = set_loop
+			_stream_cache[path] = res; return res as AudioStream
+	if allow_disk_ogg:
 		var abs_p: String = ProjectSettings.globalize_path(path)
 		if FileAccess.file_exists(abs_p):
 			var ogg: AudioStreamOggVorbis = AudioStreamOggVorbis.load_from_file(abs_p)
-			if ogg != null:
-				ogg.loop = true
-				_stream_cache[path] = ogg
-				return ogg
-	return null
-
-
-func _load_sfx_stream(sfx_id: String) -> AudioStream:
-	if _sfx_missing.has(sfx_id):
-		return null
-	for ext: String in [".ogg", ".wav"]:
-		var path: String = "res://luxel/audio/sfx/%s%s" % [sfx_id, ext]
-		if _stream_cache.has(path):
-			return _stream_cache[path] as AudioStream
-		if ResourceLoader.exists(path):
-			var res: Resource = ResourceLoader.load(path)
-			if res is AudioStream:
-				_stream_cache[path] = res
-				return res as AudioStream
-		var abs_p: String = ProjectSettings.globalize_path(path)
-		if ext == ".ogg" and FileAccess.file_exists(abs_p):
-			var ogg: AudioStreamOggVorbis = AudioStreamOggVorbis.load_from_file(abs_p)
-			if ogg != null:
-				_stream_cache[path] = ogg
-				return ogg
-	_sfx_missing[sfx_id] = true
+			if ogg != null: ogg.loop = set_loop; _stream_cache[path] = ogg; return ogg
 	return null

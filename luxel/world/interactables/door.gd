@@ -22,7 +22,7 @@ var _open_t: float = 0.0
 var _rattle_t: float = 0.0
 var _is_light_bridge: bool = false
 var _door_sheet: LxSpriteSheet = null
-var _door_sheet_island: int = -1
+var _door_sheet_key: String = ""
 
 func setup(spec: Dictionary) -> void:
 	super.setup(spec)
@@ -69,10 +69,23 @@ func setup(spec: Dictionary) -> void:
 	queue_redraw()
 
 func _load_door_sheet() -> LxSpriteSheet:
+	var th: String = ""
+	if region != null and region.get("region_data") is Dictionary:
+		th = str((region.get("region_data") as Dictionary).get("theme", "")).strip_edges().to_lower()
+	if th == "ember_express_roof" or th == "ember_express_interior": th = "ember_express"
+	elif th.begins_with("archive_"): th = "archive"
+	elif th == "inverted_palace": th = "inverted_palace_silver"
+	elif th == "wick_house_hub": th = "wick_house"
 	var iid: int = clampi(island_id, 1, 8)
-	if _door_sheet != null and _door_sheet_island == iid: return _door_sheet
-	_door_sheet_island = iid
-	_door_sheet = LxSpriteSheet.load_sheet("res://luxel/art/props/island%d_doors.json" % iid)
+	var skey: String = "%s|%d" % [th, iid]
+	if _door_sheet != null and _door_sheet_key == skey: return _door_sheet
+	_door_sheet_key = skey; _door_sheet = null
+	if not th.is_empty():
+		var tpath: String = "res://luxel/art/props/theme_%s_doors.json" % th
+		if ResourceLoader.exists(tpath) or FileAccess.file_exists(tpath):
+			_door_sheet = LxSpriteSheet.load_sheet(tpath)
+	if _door_sheet == null:
+		_door_sheet = LxSpriteSheet.load_sheet("res://luxel/art/props/island%d_doors.json" % iid)
 	if _door_sheet == null and iid != 1:
 		_door_sheet = LxSpriteSheet.load_sheet("res://luxel/art/props/island1_doors.json")
 	return _door_sheet
@@ -137,12 +150,22 @@ func on_signal(from_id: String, powered: bool) -> void:
 	elif powered:
 		_rattle_t = 0.10; queue_redraw()
 
+func _count_island_beacons() -> int:
+	if Lx.state == null: return 0
+	var got_isl: int = 0
+	var p1: String = "isl%d_" % island_id; var p2: String = "%d:" % island_id
+	var p3: String = "beacon_%d_" % island_id; var p4: String = "beacon_isl%d_" % island_id
+	for b: String in Lx.state.lit_beacons:
+		if b.begins_with(p1) or b.begins_with(p2) or b.begins_with(p3) or b.begins_with(p4) or (island_id == 1 and b in ["beacon_orchard", "beacon_observatory", "beacon_bridge"]):
+			got_isl += 1
+	return got_isl
+
 func _ward_requirements_met() -> bool:
 	if Lx.state == null: return false
 	if not required_beacon_ids.is_empty():
 		for bid: String in required_beacon_ids:
 			if not Lx.state.lit_beacons.has(bid): return false
-	elif required_beacons > 0 and Lx.state.lit_beacons.size() < required_beacons:
+	elif required_beacons > 0 and _count_island_beacons() < required_beacons:
 		return false
 	for fl: String in required_flags:
 		if region != null and region.has_method("is_flag_set"):
@@ -188,41 +211,30 @@ func _open(persist: bool) -> bool:
 	return true
 
 func get_light_pool() -> Vector4:
-	if not active:
-		return Vector4.ZERO
-	if _is_light_bridge and opened:
-		return Vector4(pos.x, pos.y, 68.0, 1.15)
-	if door_type == "bridge_platform" and opened:
-		return Vector4(pos.x, pos.y, 46.0, 0.72)
-	if not opened and door_type == "wick_key":
-		return Vector4(pos.x, pos.y - 2.0, 34.0, 0.68 if _player_can_unlock_key_door() else 0.48)
-	if not opened and (door_type == "boss_key" or door_type == "ward_barrier"):
-		return Vector4(pos.x, pos.y - 4.0, 44.0, 0.75)
+	if not active: return Vector4.ZERO
+	if _is_light_bridge and opened: return Vector4(pos.x, pos.y, 68.0, 1.15)
+	if door_type == "bridge_platform" and opened: return Vector4(pos.x, pos.y, 46.0, 0.72)
+	if not opened and door_type == "wick_key": return Vector4(pos.x, pos.y - 2.0, 34.0, 0.68 if _player_can_unlock_key_door() else 0.48)
+	if not opened and (door_type == "boss_key" or door_type == "ward_barrier"): return Vector4(pos.x, pos.y - 4.0, 44.0, 0.75)
 	return Vector4.ZERO
 
-func is_solid() -> bool:
-	return false if door_type == "bridge_platform" else (active and not opened)
-
-func is_solid_blocker() -> bool:
-	return is_solid()
-
-func is_platform_solid() -> bool:
-	return active and door_type == "bridge_platform" and opened
-
-func get_platform_rect() -> Rect2:
-	return Rect2(pos - size * 0.5, size) if is_platform_solid() else Rect2()
-
-func get_solid_rect() -> Rect2:
-	return Rect2(pos - size * 0.5, size) if is_solid() else Rect2()
+func is_solid() -> bool: return false if door_type == "bridge_platform" else (active and not opened)
+func is_solid_blocker() -> bool: return is_solid()
+func is_platform_solid() -> bool: return active and door_type == "bridge_platform" and opened
+func get_platform_rect() -> Rect2: return Rect2(pos - size * 0.5, size) if is_platform_solid() else Rect2()
+func get_solid_rect() -> Rect2: return Rect2(pos - size * 0.5, size) if is_solid() else Rect2()
 
 func get_interact_prompt() -> String:
-	if opened:
-		return ""
-	if door_type == "wick_key":
-		return "PROMPT_UNLOCK_WICK_KEY"
-	if door_type == "boss_key":
-		return "PROMPT_UNLOCK_BOSS_KEY"
+	if opened: return ""
+	if door_type == "wick_key": return "PROMPT_UNLOCK_WICK_KEY" if _has_unlock_key() else ("PROMPT_DOOR_NEED_KEY" if LxStrings.has_id("PROMPT_DOOR_NEED_KEY") else "")
+	if door_type == "boss_key": return "PROMPT_UNLOCK_BOSS_KEY" if _has_unlock_key() else ("PROMPT_DOOR_NEED_FLAME" if LxStrings.has_id("PROMPT_DOOR_NEED_FLAME") else "")
 	return ""
+
+func _has_unlock_key() -> bool:
+	if Lx.state == null: return false
+	var kflag: String = str(props.get("key_id", ""))
+	if not kflag.is_empty() and bool(Lx.state.story_flags.get(kflag, false)): return true
+	return Lx.state.get_key_count(dungeon_id, "keepers_flame" if door_type == "boss_key" else "wick_key") > 0
 
 func save_state() -> Dictionary:
 	return {"active": active, "opened": opened, "signals": _active_signals.duplicate()}
@@ -433,19 +445,15 @@ func _draw_pip_strip(x0: float, y0: float, w: float, h: float, got: int, need: i
 
 func _draw_ward_pips(x0: float, y0: float, w: float, h: float) -> void:
 	var need: int = required_beacon_ids.size() if not required_beacon_ids.is_empty() else required_beacons
-	if need <= 1 or Lx.state == null:
-		return
+	if need <= 1 or Lx.state == null: return
 	var got: int = 0
 	if not required_beacon_ids.is_empty():
 		for bid: String in required_beacon_ids:
-			if Lx.state.lit_beacons.has(bid):
-				got += 1
-	else:
-		got = mini(need, Lx.state.lit_beacons.size())
+			if Lx.state.lit_beacons.has(bid): got += 1
+	else: got = mini(need, _count_island_beacons())
 	_draw_pip_strip(x0, y0, w, h, got, need, -3.0)
 	if got > 0 and got < need:
-		var cx: float = floorf(x0 + w * 0.5)
-		var cy: float = floorf(y0 + h * 0.5)
+		var cx: float = floorf(x0 + w * 0.5); var cy: float = floorf(y0 + h * 0.5)
 		var fc: Color = PAL["cream"] as Color if (LxHudFx.flash_reduced() or _pulse_stage % 2 == 0) else LxBiomePalette.col(island_id, "glow")
 		if w >= h:
 			draw_line(Vector2(cx - 2.0, y0 + 5.0), Vector2(cx - 5.0 - float(got) * 2.0, y0 + 8.0), fc, 1.0)
@@ -454,18 +462,12 @@ func _draw_ward_pips(x0: float, y0: float, w: float, h: float) -> void:
 				draw_line(Vector2(cx + 6.0, y0 + 3.0), Vector2(cx + 9.0, y0 + 7.0), PAL["gold"] as Color, 1.0)
 		else:
 			draw_line(Vector2(cx - 3.0, cy - 4.0), Vector2(cx + 3.0, cy - 8.0 - float(got) * 2.0), fc, 1.0)
-			if got >= 2:
-				draw_line(Vector2(cx + 3.0, cy + 4.0), Vector2(cx - 3.0, cy + 9.0), PAL["gold"] as Color, 1.0)
+			if got >= 2: draw_line(Vector2(cx + 3.0, cy + 4.0), Vector2(cx - 3.0, cy + 9.0), PAL["gold"] as Color, 1.0)
 
 func _player_can_unlock_key_door() -> bool:
-	if Lx.state == null or Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
-		return false
-	if (Lx.player as Node2D).global_position.distance_squared_to(pos) > 2704.0:
-		return false
-	var kflag: String = str(props.get("key_id", ""))
-	if not kflag.is_empty() and bool(Lx.state.story_flags.get(kflag, false)):
-		return true
-	return Lx.state.get_key_count(dungeon_id, "keepers_flame" if door_type == "boss_key" else "wick_key") > 0
+	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D): return false
+	if (Lx.player as Node2D).global_position.distance_squared_to(pos) > 2704.0: return false
+	return _has_unlock_key()
 
 func _draw_fallback_box(x0: float, y0: float, w: float, h: float, fill: Color) -> void:
 	draw_rect(Rect2(x0, y0, w, h), PAL["void"] as Color)

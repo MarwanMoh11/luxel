@@ -3,6 +3,7 @@ extends RefCounted
 ## Parses command-line args after `--` (SWARM_SPEC 5.6).
 
 var island: int = 0
+var has_island: bool = false
 var region: String = ""
 var room: String = ""
 var moves_override: String = ""
@@ -35,7 +36,8 @@ func parse(args: PackedStringArray = PackedStringArray()) -> void:
 			smoke = true
 			any_debug_flag = true
 		elif tok.begins_with("island="):
-			island = maxi(1, int(tok.get_slice("=", 1)))
+			island = maxi(0, int(tok.get_slice("=", 1)))
+			has_island = true
 			any_debug_flag = true
 		elif tok.begins_with("region="):
 			region = tok.get_slice("=", 1)

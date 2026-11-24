@@ -36,7 +36,7 @@ func _ready() -> void:
 func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_rules = rules; _region = region_node
 	_island_id = rules.island_id if rules != null else 1
-	_active = rules != null and not rules.is_dungeon
+	_active = rules != null and not rules.is_dungeon and LxLegacy.is_legacy_node(region_node)
 	_clock = 0.0
 	_cam_center = rules.bounds.get_center() if rules != null else Vector2.ZERO
 	_door_pos = _default_anchor(_island_id)

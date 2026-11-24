@@ -1,0 +1,60 @@
+{
+  "id": "_demo_a",
+  "island_id": 2,
+  "is_dungeon": true,
+  "debug_only": true,
+  "name_key": "DEMO_REGION_A",
+  "spawn": [56, 88],
+  "exits": [
+    {
+      "id": "exit_demo_east",
+      "rect": [288, 64, 16, 48],
+      "to_island": 2,
+      "to_region": "_demo_b",
+      "to_spawn": [48, 88]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "demo_tide_lever",
+      "kind": "state_lever",
+      "pos": [80, 64],
+      "props": {
+        "scope": "island:2",
+        "var": "demo_tide",
+        "values": ["high", "low"]
+      }
+    },
+    {
+      "id": "demo_tide_chest",
+      "kind": "chest",
+      "pos": [224, 88],
+      "props": {
+        "reward": "shards",
+        "amount": 5
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "demo_low_tide",
+      "when": "demo_tide==low",
+      "tiles": [
+        [8, 4, 4, 3, "bridge"]
+      ],
+      "enable": ["demo_tide_chest", "exit_demo_east"],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "demo_drop_tide",
+      "on": "var:demo_tide==low",
+      "once": true,
+      "do": [
+        { "narrate": "DEMO_TIDE_SHIFT" }
+      ]
+    }
+  ]
+}

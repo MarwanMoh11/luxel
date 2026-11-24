@@ -130,8 +130,9 @@ func _surface_at(world_pos: Vector2) -> String:
 	var tile: String = str(Lx.world.call("tile_at", world_pos)) if Lx.world.has_method("tile_at") else "floor"
 	if tile == "water" or tile == "tide": return "water"
 	if tile == "bridge": return "wood"
-	var is_dung: bool = bool(Lx.world.get("is_dungeon"))
-	var isl: int = int(Lx.world.get("current_island_id"))
+	var is_dung: bool = Lx.world.get("is_dungeon") == true
+	var isl_v: Variant = Lx.world.get("current_island_id")
+	var isl: int = int(isl_v) if isl_v is int else (Lx.state.island_id if Lx.state != null else 1)
 	if isl == 6 and tile in ["floor", "path", "ground"]: return "ash"
 	if (isl == 7 and tile in ["floor", "path", "ground", "mirror", "glass"]) or tile in ["mirror", "glass"]: return "crystal"
 	if not is_dung:
@@ -350,8 +351,8 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		var beat: float = 0.0 if flash_red else sin(clock_t * (9.5 if low_hp else 7.0))
 		var pulse: float = 1.0 if flash_red else ((0.86 + 0.14 * beat) if low_hp else (0.92 + 0.08 * beat))
 		var swell: float = (sin((1.0 - clampf(_lantern_ignite_t / 0.48, 0.0, 1.0)) * PI) * 8.0) if _lantern_ignite_t > 0.0 else 0.0
-		wick.draw_circle(hand_pos, 13.0 * pulse + swell, Color(LxWick.PAL_CORAL if low_hp else LxWick.PAL_GOLD, 0.13 if low_hp else 0.10))
-		wick.draw_circle(hand_pos, 6.5 * pulse + swell * 0.5, Color(LxWick.PAL_APRICOT, 0.17 if low_hp else 0.15))
+		wick.draw_circle(hand_pos, (13.0 * pulse + swell) * wick.light_scale, Color(LxWick.PAL_CORAL if low_hp else LxWick.PAL_GOLD, 0.13 if low_hp else 0.10))
+		wick.draw_circle(hand_pos, (6.5 * pulse + swell * 0.5) * wick.light_scale, Color(LxWick.PAL_APRICOT, 0.17 if low_hp else 0.15))
 		if not low_hp and Lx.state != null and Lx.state.relit_islands.size() >= 8:
 			var sg: float = 2.0 if flash_red else roundf(2.0 + absf(sin(clock_t * 3.0)))
 			wick.draw_line(hand_pos + Vector2(-sg, 0.0), hand_pos + Vector2(sg, 0.0), Color(LxWick.PAL_GOLD, 0.55), 1.0)
@@ -431,6 +432,7 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 				wick.draw_rect(Rect2(pip, Vector2.ONE), LxWick.PAL_VOID)
 	if wick.muzzle_t > 0.0:
 		_draw_muzzle_star(wick, hand_pos, flash_red)
+	LxWickFxExtra.draw_overlays(wick, off, clock_t)
 
 func _draw_shadow(wick: LxWick, air_lift: float) -> void:
 	var sc: float = clampf(1.0 - air_lift * 0.09, 0.55, 1.0)

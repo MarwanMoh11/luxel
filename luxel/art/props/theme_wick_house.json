@@ -1,0 +1,459 @@
+{
+ "id": "theme_wick_house",
+ "name": "The Wick House Hub Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_wick_house.png",
+ "sheet_size": [
+  160,
+  372
+ ],
+ "props": {
+  "cozy_stone_hearth": {
+   "frame": [
+    40,
+    34
+   ],
+   "anchor": [
+    20,
+    32
+   ],
+   "frames": 4,
+   "ms": [
+    220.0,
+    220.0,
+    220.0,
+    220.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     40,
+     34
+    ],
+    [
+     40,
+     0,
+     40,
+     34
+    ],
+    [
+     80,
+     0,
+     40,
+     34
+    ],
+    [
+     120,
+     0,
+     40,
+     34
+    ]
+   ]
+  },
+  "wooden_workbench": {
+   "frame": [
+    34,
+    24
+   ],
+   "anchor": [
+    17,
+    22
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     34,
+     34,
+     24
+    ]
+   ]
+  },
+  "moth_lantern_tree": {
+   "frame": [
+    32,
+    40
+   ],
+   "anchor": [
+    16,
+    38
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     58,
+     32,
+     40
+    ],
+    [
+     32,
+     58,
+     32,
+     40
+    ],
+    [
+     64,
+     58,
+     32,
+     40
+    ],
+    [
+     96,
+     58,
+     32,
+     40
+    ]
+   ]
+  },
+  "boss_rematch_mirror": {
+   "frame": [
+    24,
+    36
+   ],
+   "anchor": [
+    12,
+    34
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     98,
+     24,
+     36
+    ],
+    [
+     24,
+     98,
+     24,
+     36
+    ],
+    [
+     48,
+     98,
+     24,
+     36
+    ],
+    [
+     72,
+     98,
+     24,
+     36
+    ]
+   ]
+  },
+  "pane_stained_easel": {
+   "frame": [
+    20,
+    28
+   ],
+   "anchor": [
+    10,
+    26
+   ],
+   "frames": 4,
+   "ms": [
+    360.0,
+    360.0,
+    360.0,
+    360.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     134,
+     20,
+     28
+    ],
+    [
+     20,
+     134,
+     20,
+     28
+    ],
+    [
+     40,
+     134,
+     20,
+     28
+    ],
+    [
+     60,
+     134,
+     20,
+     28
+    ]
+   ]
+  },
+  "music_box_phonograph": {
+   "frame": [
+    22,
+    26
+   ],
+   "anchor": [
+    11,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    280.0,
+    280.0,
+    280.0,
+    280.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     162,
+     22,
+     26
+    ],
+    [
+     22,
+     162,
+     22,
+     26
+    ],
+    [
+     44,
+     162,
+     22,
+     26
+    ],
+    [
+     66,
+     162,
+     22,
+     26
+    ]
+   ]
+  },
+  "training_straw_dummy": {
+   "frame": [
+    22,
+    30
+   ],
+   "anchor": [
+    11,
+    28
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     188,
+     22,
+     30
+    ]
+   ]
+  },
+  "wooden_bookshelf_home": {
+   "frame": [
+    24,
+    36
+   ],
+   "anchor": [
+    12,
+    34
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     218,
+     24,
+     36
+    ]
+   ]
+  },
+  "cottage_dining_table": {
+   "frame": [
+    28,
+    16
+   ],
+   "anchor": [
+    14,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     254,
+     28,
+     16
+    ]
+   ]
+  },
+  "warm_porch_lantern": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     270,
+     18,
+     30
+    ],
+    [
+     18,
+     270,
+     18,
+     30
+    ],
+    [
+     36,
+     270,
+     18,
+     30
+    ],
+    [
+     54,
+     270,
+     18,
+     30
+    ]
+   ]
+  },
+  "potted_herb_urn": {
+   "frame": [
+    16,
+    24
+   ],
+   "anchor": [
+    8,
+    22
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     300,
+     16,
+     24
+    ]
+   ]
+  },
+  "braided_hearth_rug": {
+   "frame": [
+    42,
+    30
+   ],
+   "anchor": [
+    21,
+    15
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     324,
+     42,
+     30
+    ]
+   ]
+  },
+  "wooden_cot_bed": {
+   "frame": [
+    24,
+    18
+   ],
+   "anchor": [
+    12,
+    16
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     354,
+     24,
+     18
+    ]
+   ]
+  }
+ }
+}

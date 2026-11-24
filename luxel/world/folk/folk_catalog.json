@@ -1,0 +1,312 @@
+{
+  "folk": {
+    "ferry_beetle": {
+      "island": 2,
+      "sheet": "res://luxel/art/folk/ferry_beetle.json",
+      "default_bubbles": [
+        [
+          "toy_skiff",
+          "wave",
+          "lantern"
+        ]
+      ]
+    },
+    "moth_kid": {
+      "island": 0,
+      "sheet": "res://luxel/art/folk/moth_kid.json",
+      "default_bubbles": [
+        [
+          "moth",
+          "light_on",
+          "happy"
+        ]
+      ]
+    },
+    "bell_snail": {
+      "island": 1,
+      "sheet": "res://luxel/art/folk/bell_snail.json",
+      "default_bubbles": [
+        [
+          "bell",
+          "music",
+          "lantern"
+        ]
+      ]
+    },
+    "gardener_frog": {
+      "island": 3,
+      "sheet": "res://luxel/art/folk/gardener_frog.json",
+      "default_bubbles": [
+        [
+          "seed",
+          "toy_plant",
+          "happy"
+        ]
+      ]
+    },
+    "owl_chick": {
+      "island": 5,
+      "sheet": "res://luxel/art/folk/owl_chick.json",
+      "default_bubbles": [
+        [
+          "star",
+          "eye",
+          "isl_5"
+        ]
+      ]
+    },
+    "kiln_salamander": {
+      "island": 6,
+      "sheet": "res://luxel/art/folk/kiln_salamander.json",
+      "default_bubbles": [
+        [
+          "ember",
+          "flame",
+          "pane"
+        ]
+      ]
+    },
+    "mirror_crab": {
+      "island": 7,
+      "sheet": "res://luxel/art/folk/mirror_crab.json",
+      "default_bubbles": [
+        [
+          "mirror",
+          "spark",
+          "isl_7"
+        ]
+      ]
+    },
+    "candle_grandma": {
+      "island": 0,
+      "sheet": "res://luxel/art/folk/candle_grandma.json",
+      "default_bubbles": [
+        [
+          "home",
+          "heart",
+          "lantern"
+        ]
+      ]
+    },
+    "scribe_worm": {
+      "island": 4,
+      "sheet": "res://luxel/art/folk/scribe_worm.json",
+      "default_bubbles": [
+        [
+          "book",
+          "clock",
+          "isl_4"
+        ]
+      ]
+    },
+    "tailor_spider": {
+      "island": 8,
+      "sheet": "res://luxel/art/folk/tailor_spider.json",
+      "default_bubbles": [
+        [
+          "pane",
+          "gift",
+          "home"
+        ]
+      ]
+    }
+  },
+  "moth_tiers": [
+    {
+      "count": 5,
+      "cue_key": "MOTH_TIER_5",
+      "reward": {
+        "kind": "lead",
+        "amount": 1
+      }
+    },
+    {
+      "count": 10,
+      "cue_key": "MOTH_TIER_10",
+      "reward": {
+        "kind": "ember_piece",
+        "amount": 1
+      }
+    },
+    {
+      "count": 20,
+      "cue_key": "MOTH_TIER_20",
+      "reward": {
+        "kind": "slot",
+        "amount": 1
+      }
+    },
+    {
+      "count": 35,
+      "cue_key": "MOTH_TIER_35",
+      "reward": {
+        "kind": "flame",
+        "value": "ice",
+        "amount": 1
+      }
+    },
+    {
+      "count": 50,
+      "cue_key": "MOTH_TIER_50",
+      "reward": {
+        "kind": "slot",
+        "amount": 1
+      }
+    },
+    {
+      "count": 65,
+      "cue_key": "MOTH_TIER_65",
+      "reward": {
+        "kind": "ember_piece",
+        "amount": 1
+      }
+    },
+    {
+      "count": 80,
+      "cue_key": "MOTH_TIER_80",
+      "reward": {
+        "kind": "flame",
+        "value": "gold",
+        "amount": 1
+      }
+    }
+  ],
+  "bestiary_weakness": {
+    "warden": "weak_heavy",
+    "snatcher": "weak_bolt",
+    "owl": "weak_light",
+    "barnacle_sentry": "weak_prism",
+    "gull_thief": "weak_bolt",
+    "crab_warden": "weak_heavy",
+    "sporecap": "weak_bolt",
+    "bramble_knight": "weak_heavy",
+    "gloam": "weak_light",
+    "lily_hopper": "weak_bolt",
+    "heron_stalker": "weak_heavy",
+    "mire_snuffer": "weak_light",
+    "phantom_owl": "weak_light",
+    "orrery_sentinel": "weak_prism",
+    "echo_moth": "weak_bolt",
+    "cinder_golem": "weak_heavy",
+    "ash_mole": "weak_bolt",
+    "bellows_imp": "weak_prism",
+    "moonshade_warden": "weak_light",
+    "moonshade_snatcher": "weak_light",
+    "moonshade_owl": "weak_light",
+    "hollow_wick": "weak_heavy",
+    "bell_warden": "weak_heavy",
+    "bellkeeper": "weak_heavy",
+    "tide_captain": "weak_prism",
+    "lighthouse_hermit": "weak_prism",
+    "elder_sporecap": "weak_bolt",
+    "briar_matron": "weak_heavy",
+    "great_lily_hopper": "weak_bolt",
+    "heron_abbess": "weak_heavy",
+    "clockwork_warden": "weak_prism",
+    "astronomer": "weak_light",
+    "forge_warden": "weak_heavy",
+    "kilnmother": "weak_heavy",
+    "spire_warden": "weak_prism",
+    "hollow_wick_boss": "weak_heavy",
+    "night_harbinger": "weak_light",
+    "the_hush": "weak_light"
+  },
+  "toys_catalog": [
+    {
+      "id": "push_block",
+      "icon": "toy_block",
+      "name_key": "TOY_BLOCK",
+      "move": ""
+    },
+    {
+      "id": "pressure_plate",
+      "icon": "toy_plate",
+      "name_key": "TOY_PLATE",
+      "move": ""
+    },
+    {
+      "id": "timed_brazier",
+      "icon": "toy_brazier",
+      "name_key": "TOY_BRAZIER",
+      "move": "bolt"
+    },
+    {
+      "id": "crystal_toggle",
+      "icon": "toy_crystal",
+      "name_key": "TOY_CRYSTAL",
+      "move": "bolt"
+    },
+    {
+      "id": "moving_platform",
+      "icon": "toy_platform",
+      "name_key": "TOY_PLATFORM",
+      "move": "dash"
+    },
+    {
+      "id": "conveyor",
+      "icon": "toy_conveyor",
+      "name_key": "TOY_CONVEYOR",
+      "move": "dash"
+    },
+    {
+      "id": "wind_zone",
+      "icon": "toy_wind",
+      "name_key": "TOY_WIND",
+      "move": "wings"
+    },
+    {
+      "id": "gravity_well",
+      "icon": "toy_gravity",
+      "name_key": "TOY_GRAVITY",
+      "move": "prism"
+    },
+    {
+      "id": "light_plant",
+      "icon": "toy_plant",
+      "name_key": "TOY_PLANT",
+      "move": "throw"
+    },
+    {
+      "id": "shadow_gate",
+      "icon": "toy_shadow",
+      "name_key": "TOY_SHADOW",
+      "move": "throw"
+    },
+    {
+      "id": "scale",
+      "icon": "toy_scale",
+      "name_key": "TOY_SCALE",
+      "move": ""
+    },
+    {
+      "id": "pull_ring",
+      "icon": "toy_ring",
+      "name_key": "TOY_RING",
+      "move": "throw"
+    },
+    {
+      "id": "carry_orb",
+      "icon": "toy_orb",
+      "name_key": "TOY_ORB",
+      "move": ""
+    },
+    {
+      "id": "lantern_hook",
+      "icon": "toy_hook",
+      "name_key": "TOY_HOOK",
+      "move": "throw"
+    },
+    {
+      "id": "echo_rose",
+      "icon": "toy_rose",
+      "name_key": "TOY_ROSE",
+      "move": "wings"
+    },
+    {
+      "id": "vehicle_skiff",
+      "icon": "toy_skiff",
+      "name_key": "TOY_SKIFF",
+      "move": "prism"
+    }
+  ]
+}

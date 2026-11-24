@@ -27,11 +27,14 @@ const REGIONS: Array[String] = [
 	"conservatory_r10",
 ]
 
+const Island4Rule := preload("res://luxel/islands/4/rule.gd")
+
 var _events: LxEventBus = null
 var _state: LxGameState = null
 var _attached: bool = false
 var _r3_kills: int = 0
 var _r8_kills: int = 0
+var _rule: LxIsland4Rule = null
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -49,9 +52,14 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.boss_phase_changed.connect(_on_boss_phase_changed)
 	_events.boss_defeated.connect(_on_boss_defeated)
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
+	_rule = Island4Rule.new()
+	_rule.attach(_events, _state)
 
 
 func detach() -> void:
+	if _rule != null:
+		_rule.detach_and_free()
+		_rule = null
 	if not _attached or _events == null:
 		_attached = false
 		return
@@ -70,6 +78,15 @@ func detach() -> void:
 	if _events.great_lamp_relit.is_connected(_on_great_lamp_relit):
 		_events.great_lamp_relit.disconnect(_on_great_lamp_relit)
 	_attached = false
+
+
+func on_region_loaded(region_id: String) -> void:
+	if _rule != null:
+		_rule.on_region_loaded(region_id)
+
+
+func get_rule() -> LxIsland4Rule:
+	return _rule
 
 
 func get_region_list() -> PackedStringArray:

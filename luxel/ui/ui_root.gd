@@ -17,7 +17,7 @@ signal intro_finished()
 signal ending_finished()
 signal credits_finished()
 
-enum Screen { NONE, TITLE, INTRO, HUD, PAUSE, MAP, OPTIONS, REBIND, SHOP, DEATH, ENDING, RESULTS, CREDITS }
+enum Screen { NONE, TITLE, INTRO, HUD, PAUSE, MAP, OPTIONS, REBIND, SHOP, DEATH, ENDING, RESULTS, CREDITS, JOURNAL, PANES }
 
 var current_screen: int = Screen.NONE
 var _return_screen: int = Screen.TITLE
@@ -31,6 +31,8 @@ var map_screen: LxMapScreen = null
 var options: LxOptionsMenu = null
 var rebind: LxRebindScreen = null
 var rest_shop: LxRestShop = null
+var journal: LxJournal = null
+var panes_menu: LxPanesMenu = null
 var cards: LxCards = null
 var _scrim_node: Node2D = null
 var _cursor_node: Node2D = null
@@ -57,6 +59,8 @@ func _build_children() -> void:
 	options = LxOptionsMenu.new(); options.name = "Options"; add_child(options)
 	rebind = LxRebindScreen.new(); rebind.name = "Rebind"; add_child(rebind)
 	rest_shop = LxRestShop.new(); rest_shop.name = "RestShop"; add_child(rest_shop)
+	journal = LxJournal.new(); journal.name = "Journal"; add_child(journal)
+	panes_menu = LxPanesMenu.new(); panes_menu.name = "PanesMenu"; add_child(panes_menu)
 	cards = LxCards.new(); cards.name = "Cards"; add_child(cards)
 	_cursor_node = Node2D.new(); _cursor_node.name = "Reticle"
 	_cursor_node.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -91,6 +95,8 @@ func _connect_signals() -> void:
 		else:
 			show_map(Screen.PAUSE)
 	)
+	pause.journal_requested.connect(func() -> void: show_journal(Screen.PAUSE))
+	pause.panes_requested.connect(func() -> void: show_panes(true, Screen.PAUSE))
 	pause.options_requested.connect(func() -> void: show_options(Screen.PAUSE))
 	pause.retry_checkpoint_requested.connect(func() -> void:
 		show_hud()
@@ -145,14 +151,10 @@ func _connect_signals() -> void:
 			_main.call("apply_runtime_settings")
 	)
 
-	rest_shop.closed.connect(func() -> void:
-		show_hud()
-		resume_requested.emit()
-		_notify_main_resume()
-	)
-	rest_shop.upgrade_bought.connect(func(uid: String, rank: int) -> void:
-		upgrade_bought.emit(uid, rank)
-	)
+	rest_shop.closed.connect(func() -> void: show_hud(); resume_requested.emit(); _notify_main_resume())
+	rest_shop.upgrade_bought.connect(func(uid: String, rank: int) -> void: upgrade_bought.emit(uid, rank))
+	journal.closed.connect(func() -> void: _return_from_tab())
+	panes_menu.closed.connect(func() -> void: _return_from_tab())
 
 	cards.retry_requested.connect(func() -> void:
 		show_hud()
@@ -213,24 +215,23 @@ func is_modal_open() -> bool:
 	return current_screen != Screen.HUD and current_screen != Screen.NONE
 
 
-func _any_overlay_visible() -> bool:
-	return (title != null and title.visible) \
-		or (pause != null and pause.visible) \
-		or (map_screen != null and map_screen.visible) \
-		or (options != null and options.visible) \
-		or (rebind != null and rebind.visible) \
-		or (rest_shop != null and rest_shop.visible) \
-		or (cards != null and cards.visible)
+func _return_from_tab() -> void:
+	if _return_screen == Screen.PAUSE:
+		show_pause()
+	elif _return_screen == Screen.SHOP:
+		show_shop()
+	else:
+		show_hud(); resume_requested.emit(); _notify_main_resume()
 
+func _any_overlay_visible() -> bool:
+	return (title != null and title.visible) or (pause != null and pause.visible) or (map_screen != null and map_screen.visible) \
+		or (options != null and options.visible) or (rebind != null and rebind.visible) or (rest_shop != null and rest_shop.visible) \
+		or (journal != null and journal.visible) or (panes_menu != null and panes_menu.visible) or (cards != null and cards.visible)
 
 func _should_show_scrim() -> bool:
-	return (pause != null and pause.visible) \
-		or (map_screen != null and map_screen.visible) \
-		or (rest_shop != null and rest_shop.visible) \
-		or (options != null and options.visible) \
-		or (rebind != null and rebind.visible) \
-		or (cards != null and cards.visible and cards.mode == LxCards.Mode.DEATH)
-
+	return (pause != null and pause.visible) or (map_screen != null and map_screen.visible) or (rest_shop != null and rest_shop.visible) \
+		or (journal != null and journal.visible) or (panes_menu != null and panes_menu.visible) or (options != null and options.visible) \
+		or (rebind != null and rebind.visible) or (cards != null and cards.visible and cards.mode == LxCards.Mode.DEATH)
 
 func _sync_overlay_state() -> void:
 	var any_ov: bool = _any_overlay_visible()
@@ -238,30 +239,19 @@ func _sync_overlay_state() -> void:
 		var want_scrim: bool = _should_show_scrim()
 		if _scrim_node.visible != want_scrim:
 			_scrim_node.visible = want_scrim
-			if want_scrim:
-				_scrim_node.queue_redraw()
+			if want_scrim: _scrim_node.queue_redraw()
 	if _cursor_node != null:
 		_cursor_node.visible = (current_screen == Screen.HUD) and not any_ov
 
-
 func _draw_modal_scrim() -> void:
-	if _scrim_node == null or not _should_show_scrim():
-		return
-	_scrim_node.draw_rect(Rect2(0.0, 0.0, 320.0, 180.0), Color(LxPalette.PAL["void"] as Color, 0.65))
-
+	if _scrim_node != null and _should_show_scrim():
+		_scrim_node.draw_rect(Rect2(0.0, 0.0, 320.0, 180.0), Color(LxPalette.PAL["void"] as Color, 0.65))
 
 func _hide_all_modals() -> void:
-	title.close()
-	pause.close()
-	map_screen.close()
-	options.close()
-	rebind.close()
-	rest_shop.close()
-	cards.close()
-	if _scrim_node != null:
-		_scrim_node.visible = false
-	if _cursor_node != null:
-		_cursor_node.visible = false
+	title.close(); pause.close(); map_screen.close(); options.close(); rebind.close()
+	rest_shop.close(); journal.close(); panes_menu.close(); cards.close()
+	if _scrim_node != null: _scrim_node.visible = false
+	if _cursor_node != null: _cursor_node.visible = false
 
 
 func show_title(open_slots: bool = false) -> void:
@@ -352,11 +342,23 @@ func show_rebind() -> void:
 
 
 func show_shop() -> void:
-	_hide_all_modals()
-	hud.visible = false
-	current_screen = Screen.SHOP
-	rest_shop.open()
-	_sync_overlay_state()
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.SHOP
+	rest_shop.open(); _sync_overlay_state()
+
+func show_journal(from_screen: int = -1, page: int = 0) -> void:
+	if from_screen >= 0: _return_screen = from_screen
+	elif current_screen in [Screen.PAUSE, Screen.HUD]: _return_screen = current_screen
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.JOURNAL
+	journal.open(page); _sync_overlay_state()
+
+func show_panes(read_only: bool = false, from_screen: int = -1) -> void:
+	if from_screen >= 0: _return_screen = from_screen
+	elif current_screen in [Screen.PAUSE, Screen.HUD, Screen.SHOP]: _return_screen = current_screen
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.PANES
+	panes_menu.open(read_only); _sync_overlay_state()
+
+func open_panes_menu() -> void:
+	show_panes(false, Screen.HUD)
 
 
 func show_death(is_boss: bool = false) -> void:

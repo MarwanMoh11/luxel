@@ -1,0 +1,357 @@
+{
+ "id": "theme_toll_house",
+ "name": "The Toll House Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_toll_house.png",
+ "sheet_size": [
+  104,
+  340
+ ],
+ "props": {
+  "ledger_counter_desk": {
+   "frame": [
+    34,
+    24
+   ],
+   "anchor": [
+    17,
+    22
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     34,
+     24
+    ]
+   ]
+  },
+  "stacked_ledger_tower": {
+   "frame": [
+    24,
+    36
+   ],
+   "anchor": [
+    12,
+    34
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     24,
+     24,
+     36
+    ]
+   ]
+  },
+  "brass_balance_scale": {
+   "frame": [
+    26,
+    30
+   ],
+   "anchor": [
+    13,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    320.0,
+    320.0,
+    320.0,
+    320.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     60,
+     26,
+     30
+    ],
+    [
+     26,
+     60,
+     26,
+     30
+    ],
+    [
+     52,
+     60,
+     26,
+     30
+    ],
+    [
+     78,
+     60,
+     26,
+     30
+    ]
+   ]
+  },
+  "iron_teller_grille": {
+   "frame": [
+    24,
+    26
+   ],
+   "anchor": [
+    12,
+    24
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     90,
+     24,
+     26
+    ]
+   ]
+  },
+  "toll_clerk_lantern": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     116,
+     18,
+     30
+    ],
+    [
+     18,
+     116,
+     18,
+     30
+    ],
+    [
+     36,
+     116,
+     18,
+     30
+    ],
+    [
+     54,
+     116,
+     18,
+     30
+    ]
+   ]
+  },
+  "inkwell_lectern_stand": {
+   "frame": [
+    16,
+    26
+   ],
+   "anchor": [
+    8,
+    24
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     146,
+     16,
+     26
+    ]
+   ]
+  },
+  "wax_seal_pedestal": {
+   "frame": [
+    16,
+    22
+   ],
+   "anchor": [
+    8,
+    20
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     172,
+     16,
+     22
+    ]
+   ]
+  },
+  "toll_gate_arch": {
+   "frame": [
+    46,
+    46
+   ],
+   "anchor": [
+    23,
+    44
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     194,
+     46,
+     46
+    ]
+   ]
+  },
+  "filing_cabinet_tall": {
+   "frame": [
+    18,
+    32
+   ],
+   "anchor": [
+    9,
+    30
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     240,
+     18,
+     32
+    ]
+   ]
+  },
+  "hanging_receipt_banner": {
+   "frame": [
+    16,
+    32
+   ],
+   "anchor": [
+    8,
+    30
+   ],
+   "frames": 4,
+   "ms": [
+    340.0,
+    340.0,
+    340.0,
+    340.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     272,
+     16,
+     32
+    ],
+    [
+     16,
+     272,
+     16,
+     32
+    ],
+    [
+     32,
+     272,
+     16,
+     32
+    ],
+    [
+     48,
+     272,
+     16,
+     32
+    ]
+   ]
+  },
+  "stamp_floor_emblem": {
+   "frame": [
+    36,
+    36
+   ],
+   "anchor": [
+    18,
+    18
+   ],
+   "frames": 2,
+   "ms": [
+    480.0,
+    480.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     304,
+     36,
+     36
+    ],
+    [
+     36,
+     304,
+     36,
+     36
+    ]
+   ]
+  }
+ }
+}

@@ -1,0 +1,415 @@
+{
+ "id": "theme_manor",
+ "name": "The Bellmaker's Manor Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_manor.png",
+ "sheet_size": [
+  152,
+  336
+ ],
+ "props": {
+  "gilded_portrait_a": {
+   "frame": [
+    22,
+    28
+   ],
+   "anchor": [
+    11,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     22,
+     28
+    ]
+   ]
+  },
+  "gilded_portrait_b": {
+   "frame": [
+    22,
+    28
+   ],
+   "anchor": [
+    11,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     28,
+     22,
+     28
+    ]
+   ]
+  },
+  "gilded_portrait_c": {
+   "frame": [
+    22,
+    28
+   ],
+   "anchor": [
+    11,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     56,
+     22,
+     28
+    ]
+   ]
+  },
+  "velvet_settee": {
+   "frame": [
+    32,
+    20
+   ],
+   "anchor": [
+    16,
+    18
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     84,
+     32,
+     20
+    ]
+   ]
+  },
+  "tall_grandfather_clock": {
+   "frame": [
+    20,
+    38
+   ],
+   "anchor": [
+    10,
+    36
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     104,
+     20,
+     38
+    ],
+    [
+     20,
+     104,
+     20,
+     38
+    ],
+    [
+     40,
+     104,
+     20,
+     38
+    ],
+    [
+     60,
+     104,
+     20,
+     38
+    ]
+   ]
+  },
+  "brass_lamp_sconce": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     142,
+     18,
+     30
+    ],
+    [
+     18,
+     142,
+     18,
+     30
+    ],
+    [
+     36,
+     142,
+     18,
+     30
+    ],
+    [
+     54,
+     142,
+     18,
+     30
+    ]
+   ]
+  },
+  "mahogany_table": {
+   "frame": [
+    32,
+    20
+   ],
+   "anchor": [
+    16,
+    18
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     172,
+     32,
+     20
+    ]
+   ]
+  },
+  "tea_trolley": {
+   "frame": [
+    22,
+    20
+   ],
+   "anchor": [
+    11,
+    18
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     192,
+     22,
+     20
+    ]
+   ]
+  },
+  "wall_curtain_drape": {
+   "frame": [
+    18,
+    34
+   ],
+   "anchor": [
+    9,
+    32
+   ],
+   "frames": 4,
+   "ms": [
+    360.0,
+    360.0,
+    360.0,
+    360.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     212,
+     18,
+     34
+    ],
+    [
+     18,
+     212,
+     18,
+     34
+    ],
+    [
+     36,
+     212,
+     18,
+     34
+    ],
+    [
+     54,
+     212,
+     18,
+     34
+    ]
+   ]
+  },
+  "bellmaker_pedestal": {
+   "frame": [
+    18,
+    28
+   ],
+   "anchor": [
+    9,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     246,
+     18,
+     28
+    ]
+   ]
+  },
+  "hearth_fireplace": {
+   "frame": [
+    38,
+    32
+   ],
+   "anchor": [
+    19,
+    30
+   ],
+   "frames": 4,
+   "ms": [
+    220.0,
+    220.0,
+    220.0,
+    220.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     274,
+     38,
+     32
+    ],
+    [
+     38,
+     274,
+     38,
+     32
+    ],
+    [
+     76,
+     274,
+     38,
+     32
+    ],
+    [
+     114,
+     274,
+     38,
+     32
+    ]
+   ]
+  },
+  "manor_candelabra": {
+   "frame": [
+    20,
+    30
+   ],
+   "anchor": [
+    10,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     306,
+     20,
+     30
+    ],
+    [
+     20,
+     306,
+     20,
+     30
+    ],
+    [
+     40,
+     306,
+     20,
+     30
+    ],
+    [
+     60,
+     306,
+     20,
+     30
+    ]
+   ]
+  }
+ }
+}

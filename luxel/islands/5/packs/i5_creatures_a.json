@@ -1,0 +1,160 @@
+{
+  "pack_id": "i5_creatures_a",
+  "version": 1,
+  "owner": "I5-creatures-a",
+  "comment": "Island 5 (Starfall Observatory) new enemies (comet_hound, satellite_eye, star_jelly, null_moth, meteor_carrier) and Dungeon A bosses (apogee_hound, twin_moons).",
+  "strings": {
+    "I5_BOSS_HOUND": "APOGEE HOUND",
+    "I5_BOSS_MOONS": "THE TWIN MOONS",
+    "I5_EN_COMET_HOUND": "COMET HOUND",
+    "I5_EN_SATELLITE_EYE": "SATELLITE EYE",
+    "I5_EN_STAR_JELLY": "STAR JELLY",
+    "I5_EN_NULL_MOTH": "NULL MOTH",
+    "I5_EN_METEOR_CARRIER": "METEOR CARRIER"
+  },
+  "enemies": {
+    "comet_hound": {
+      "script": "res://luxel/enemies/comet_hound/brain.gd",
+      "data": {
+        "max_hp": 2.5,
+        "body_radius": 6.0,
+        "routine_speed": 46.0,
+        "leash_radius": 158.0,
+        "notice_radius": 120.0,
+        "tell_time": 0.50,
+        "recover_time": 0.95,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "satellite_eye": {
+      "script": "res://luxel/enemies/satellite_eye/brain.gd",
+      "data": {
+        "max_hp": 2.5,
+        "body_radius": 6.0,
+        "routine_speed": 38.0,
+        "leash_radius": 152.0,
+        "notice_radius": 135.0,
+        "tell_time": 0.58,
+        "recover_time": 1.05,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "star_jelly": {
+      "script": "res://luxel/enemies/star_jelly/brain.gd",
+      "data": {
+        "max_hp": 2.2,
+        "body_radius": 6.5,
+        "routine_speed": 34.0,
+        "leash_radius": 152.0,
+        "notice_radius": 110.0,
+        "tell_time": 0.55,
+        "recover_time": 1.00,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "null_moth": {
+      "script": "res://luxel/enemies/null_moth/brain.gd",
+      "data": {
+        "max_hp": 2.2,
+        "body_radius": 5.5,
+        "routine_speed": 48.0,
+        "leash_radius": 158.0,
+        "notice_radius": 124.0,
+        "tell_time": 0.48,
+        "recover_time": 0.95,
+        "shard_drop": 5,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "meteor_carrier": {
+      "script": "res://luxel/enemies/meteor_carrier/brain.gd",
+      "data": {
+        "max_hp": 4.5,
+        "body_radius": 7.5,
+        "routine_speed": 26.0,
+        "leash_radius": 148.0,
+        "notice_radius": 130.0,
+        "tell_time": 0.68,
+        "recover_time": 1.20,
+        "shard_drop": 6,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "apogee_hound": {
+      "script": "res://luxel/bosses/apogee_hound/brain.gd",
+      "data": {
+        "max_hp": 48.0,
+        "body_radius": 10.5,
+        "routine_speed": 54.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.58,
+        "recover_time": 0.95,
+        "shard_drop": 18,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "twin_moons": {
+      "script": "res://luxel/bosses/twin_moons/brain.gd",
+      "data": {
+        "max_hp": 72.0,
+        "body_radius": 12.0,
+        "routine_speed": 48.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.60,
+        "recover_time": 1.00,
+        "shard_drop": 28,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "apogee_hound": {
+      "name_key": "I5_BOSS_HOUND",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "meteor_vault",
+      "region": "meteor_r6",
+      "music": "island5_boss_p1",
+      "music_p2": "island5_boss_p2",
+      "heart": "half",
+      "flag": "mv_miniboss_done",
+      "arena_lock": true
+    },
+    "twin_moons": {
+      "name_key": "I5_BOSS_MOONS",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "meteor_vault",
+      "region": "meteor_r11",
+      "music": "island5_boss_p1",
+      "music_p2": "island5_boss_p2",
+      "heart": "half",
+      "flag": "meteor_done",
+      "arena_lock": true
+    }
+  },
+  "sfx": {
+    "meteor_clank": {"id": "crystal_clank", "pitch": 0.84, "db": -0.5},
+    "gravity_curve": {"id": "phantom_phase", "pitch": 1.16, "db": -1.5},
+    "comet_bark": {"id": "owl_lock", "pitch": 1.24, "db": -2.0},
+    "boss_stagger": {"id": "shield_shatter", "pitch": 0.90, "db": 0.0},
+    "moon_clash_bong": {"id": "bell_toll_heavy", "pitch": 1.06, "db": 0.5},
+    "polarity_flip": {"id": "clockwork_chime", "pitch": 1.18, "db": -1.0},
+    "null_moth_eat": {"id": "snuffer_gulp", "pitch": 0.86, "db": -1.5},
+    "star_jelly_swell": {"id": "spore_pop", "pitch": 1.22, "db": -3.0},
+    "star_jelly_pulse": {"id": "hush_pulse", "pitch": 1.18, "db": -1.5},
+    "star_jelly_split": {"id": "spore_pop", "pitch": 1.32, "db": -1.0}
+  }
+}

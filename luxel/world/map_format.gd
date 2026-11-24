@@ -151,6 +151,9 @@ static func parse_region(map_path: String, json_path: String) -> Dictionary:
 	out["interactables"] = _ensure_dict_array(j.get("interactables", []))
 	out["triggers"] = _ensure_dict_array(j.get("triggers", []))
 	out["scenery"] = _ensure_dict_array(j.get("scenery", []))
+	out["layers"] = _ensure_dict_array(j.get("layers", []))
+	out["events"] = _ensure_dict_array(j.get("events", []))
+	out["debug_only"] = bool(j.get("debug_only", false))
 	return out
 
 
@@ -235,36 +238,74 @@ static func _empty_map() -> Dictionary:
 
 
 static var _waystone_cache: Dictionary = {}
+static var _waystone_by_id: Dictionary = {}
+static var _waystone_indexed: bool = false
+
+
+static func clear_waystone_cache() -> void:
+	_waystone_cache.clear()
+	_waystone_by_id.clear()
+	_waystone_indexed = false
+
+
+static func build_waystone_index() -> void:
+	clear_waystone_cache()
+	var n_isl: int = Lx.packs.island_count() if Lx.packs != null else 8
+	for isl: int in range(0, n_isl + 1):
+		_index_island_waystones(isl)
+	_waystone_indexed = true
+
+
+static func _index_island_waystones(island_id: int) -> void:
+	var map_dict: Dictionary = {}
+	var dir_path: String = "res://luxel/islands/%d" % island_id
+	if not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(dir_path)):
+		_waystone_cache[island_id] = map_dict
+		return
+	var region_names: Array[String] = []
+	if Lx.packs != null:
+		for r: String in Lx.packs.region_ids(island_id):
+			if not region_names.has(r):
+				region_names.append(r)
+	var da: DirAccess = DirAccess.open(dir_path)
+	if da != null:
+		for fname: String in da.get_files():
+			if fname.ends_with(".json"):
+				var stem: String = fname.trim_suffix(".json")
+				if not region_names.has(stem):
+					region_names.append(stem)
+	for reg_id: String in region_names:
+		var jpath: String = dir_path + "/" + reg_id + ".json"
+		if not FileAccess.file_exists(jpath):
+			continue
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(jpath))
+		if not (parsed is Dictionary):
+			continue
+		var inters: Array = (parsed as Dictionary).get("interactables", []) as Array
+		for it_v: Variant in inters:
+			if it_v is Dictionary and str((it_v as Dictionary).get("kind", "")) == "waystone":
+				var wid: String = str((it_v as Dictionary).get("id", ""))
+				var wpos: Vector2 = to_vec2((it_v as Dictionary).get("pos", []), Vector2(-1.0, -1.0))
+				if not wid.is_empty() and wpos.x >= 0.0:
+					var entry: Dictionary = {"island": island_id, "region": reg_id, "pos": wpos + Vector2(0.0, 14.0)}
+					var pr_v: Variant = (it_v as Dictionary).get("props", {})
+					var nk: String = ""
+					if pr_v is Dictionary:
+						nk = str((pr_v as Dictionary).get("name_key", "")).strip_edges()
+					if nk.is_empty() and Lx.packs != null:
+						nk = str(Lx.packs.region_meta(island_id, reg_id).get("name_key", "")).strip_edges()
+					if not nk.is_empty():
+						entry["name_key"] = nk
+					map_dict[wid] = entry
+					_waystone_by_id[wid] = entry
+	_waystone_cache[island_id] = map_dict
 
 
 static func find_waystone(island_id: int, waystone_id: String) -> Dictionary:
 	if waystone_id.is_empty():
 		return {}
 	if not _waystone_cache.has(island_id):
-		var map_dict: Dictionary = {}
-		var dir_path: String = "res://luxel/islands/%d" % island_id
-		var da: DirAccess = DirAccess.open(dir_path)
-		if da != null:
-			for fname: String in da.get_files():
-				if not fname.ends_with(".json"):
-					continue
-				var reg_id: String = fname.trim_suffix(".json")
-				var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(dir_path + "/" + fname))
-				if parsed is Dictionary:
-					var inters: Array = (parsed as Dictionary).get("interactables", []) as Array
-					for it_v: Variant in inters:
-						if it_v is Dictionary and str((it_v as Dictionary).get("kind", "")) == "waystone":
-							var wid: String = str((it_v as Dictionary).get("id", ""))
-							var wpos: Vector2 = to_vec2((it_v as Dictionary).get("pos", []), Vector2(-1.0, -1.0))
-							if not wid.is_empty() and wpos.x >= 0.0:
-								var entry: Dictionary = {"island": island_id, "region": reg_id, "pos": wpos + Vector2(0.0, 14.0)}
-								var pr_v: Variant = (it_v as Dictionary).get("props", {})
-								if pr_v is Dictionary:
-									var nk: String = str((pr_v as Dictionary).get("name_key", "")).strip_edges()
-									if not nk.is_empty():
-										entry["name_key"] = nk
-								map_dict[wid] = entry
-		_waystone_cache[island_id] = map_dict
+		_index_island_waystones(island_id)
 	var island_ws: Dictionary = _waystone_cache.get(island_id, {}) as Dictionary
 	return (island_ws.get(waystone_id, {}) as Dictionary).duplicate()
 
@@ -272,7 +313,11 @@ static func find_waystone(island_id: int, waystone_id: String) -> Dictionary:
 static func find_waystone_any(waystone_id: String) -> Dictionary:
 	if waystone_id.is_empty():
 		return {}
-	for isl: int in range(1, 9):
+	if _waystone_indexed:
+		var cached: Variant = _waystone_by_id.get(waystone_id, null)
+		return (cached as Dictionary).duplicate() if cached is Dictionary else {}
+	var n_isl: int = Lx.packs.island_count() if Lx.packs != null else 8
+	for isl: int in range(0, n_isl + 1):
 		var found: Dictionary = find_waystone(isl, waystone_id)
 		if not found.is_empty():
 			return found

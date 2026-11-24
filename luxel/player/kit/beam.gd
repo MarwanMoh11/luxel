@@ -126,7 +126,7 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	var reflections: Array[Dictionary] = []
 	var segs: Array[Dictionary] = _trace_beam_segments(ctx, start_p, aim, max_range, max_bounces, reflections)
 	if segs.is_empty():
-		segs.append({"start": start_p, "end": start_p + aim * max_range, "dir": aim, "color": LxHit.COLOR_YELLOW, "bounce": 0})
+		segs.append({"start": start_p, "end": start_p + aim * max_range, "dir": aim, "color": LxHit.COLOR_YELLOW, "bounce": 0, "curve_angle_deg": 0.0})
 	var end_p: Vector2 = segs[segs.size() - 1]["end"] as Vector2
 	var end_dir: Vector2 = segs[segs.size() - 1]["dir"] as Vector2
 	var end_blue: bool = str(segs[segs.size() - 1]["color"]) == LxHit.COLOR_BLUE
@@ -189,9 +189,10 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 		var s_bounce: int = int(seg["bounce"])
 		var s_dmg: float = dmg * pow(prism_mult, float(s_bounce)) if s_bounce > 0 else dmg
 		var s_cracks: bool = wick.move_prism != null and wick.move_prism.should_crack_armour(s_bounce)
+		var s_curve_deg: float = float(seg.get("curve_angle_deg", 0.0))
 		var seg_hit: LxHit = LxHit.make(
 			LxHit.SOURCE_BEAM, s_dmg, s_dir, s_a,
-			wear, stagger, pierce, wick, s_cracks, s_col
+			wear, stagger, pierce, wick, s_cracks, s_col, s_curve_deg
 		)
 
 		for e_var: Variant in enemies:
@@ -272,6 +273,7 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	beams_fired += 1
 
 	wick.apply_recoil(-aim * 85.0)
+	wick.fired.emit(aim, "beam")
 	wick.muzzle_t = 0.11
 	wick.shoot_anim_t = 0.26
 	wick.recoil_vis = 1.0
@@ -473,127 +475,8 @@ func _trace_beam_segments(
 	max_bounces: int,
 	reflections_out: Array[Dictionary] = []
 ) -> Array[Dictionary]:
-	var segs: Array[Dictionary] = []
-	var cur_pos: Vector2 = origin
-	var cur_dir: Vector2 = aim_dir.normalized() if aim_dir.length_squared() > 0.0001 else Vector2.RIGHT
-	var cur_color: String = LxHit.COLOR_YELLOW
-	var ignore_mirror_id: int = -1
-	var bounces_done: int = 0
-	var has_tile_at: bool = ctx != null and ctx.has_method("tile_at")
-	var has_is_wall: bool = ctx != null and ctx.has_method("is_wall")
-	var can_reflect: bool = wick != null and wick.move_prism != null
+	return LxBeamTrace.trace_segments(wick, ctx, origin, aim_dir, max_range, max_bounces, reflections_out)
 
-	# Collect active reflective interactables once for this trace
-	var mirrors: Array[Object] = []
-	if wick != null:
-		for it_var: Variant in wick.world_get_interactables(ctx):
-			if not (it_var is Object):
-				continue
-			var item: Object = it_var as Object
-			if not is_instance_valid(item):
-				continue
-			if item.get("active") is bool and not bool(item.get("active")):
-				continue
-			if item.has_method("is_reflective") and bool(item.call("is_reflective")):
-				mirrors.append(item)
-
-	while bounces_done <= max_bounces:
-		var dist: float = 0.0
-		var prev_p: Vector2 = cur_pos
-		var seg_end: Vector2 = cur_pos
-		var reflected: bool = false
-		while dist < max_range:
-			dist = minf(max_range, dist + RAY_STEP_PX)
-			var pt: Vector2 = cur_pos + cur_dir * dist
-			var ttype: String = ""
-			if has_tile_at:
-				ttype = str(ctx.call("tile_at", pt))
-				if ttype == "wall":
-					seg_end = prev_p
-					break
-			elif has_is_wall:
-				if bool(ctx.call("is_wall", pt)):
-					seg_end = prev_p
-					break
-
-			# Check reflective interactables (LxMirror / Blue Transformer)
-			var hit_m: Object = null
-			for m: Object in mirrors:
-				if m.get_instance_id() == ignore_mirror_id:
-					continue
-				if _ray_hits_mirror(prev_p, pt, m):
-					hit_m = m
-					break
-			if hit_m != null:
-				if can_reflect and bounces_done < max_bounces:
-					var refl: Dictionary = wick.move_prism.try_reflect_interactable(hit_m, prev_p, pt, cur_dir)
-					if bool(refl.get("hit", false)):
-						var rpos: Vector2 = refl.get("pos", pt) as Vector2
-						var exit_pos: Vector2 = refl.get("exit_pos", rpos) as Vector2
-						var rdir: Vector2 = refl.get("dir", -cur_dir) as Vector2
-						var t_col: String = str(hit_m.call("get_transform_color")) if hit_m.has_method("get_transform_color") else LxHit.COLOR_BLUE
-						if t_col.is_empty():
-							t_col = LxHit.COLOR_BLUE
-						segs.append({"start": cur_pos, "end": rpos, "dir": cur_dir, "color": cur_color, "bounce": bounces_done})
-						reflections_out.append({"item": hit_m, "pos": rpos, "exit_pos": exit_pos, "dir": rdir, "color": t_col, "bounce": bounces_done + 1})
-						cur_pos = exit_pos
-						cur_dir = rdir
-						cur_color = t_col
-						ignore_mirror_id = hit_m.get_instance_id()
-						bounces_done += 1
-						reflected = true
-						break
-				seg_end = prev_p
-				break
-
-			# Check glass / mirror tiles
-			if (ttype == "glass" or ttype == "mirror") and can_reflect and bounces_done < max_bounces:
-				var wrefl: Dictionary = wick.move_prism.try_reflect_world(ctx, prev_p, pt, cur_dir)
-				if bool(wrefl.get("hit", false)):
-					var wpos: Vector2 = wrefl.get("pos", prev_p) as Vector2
-					var wexit: Vector2 = wrefl.get("exit_pos", wpos) as Vector2
-					var wdir: Vector2 = wrefl.get("dir", -cur_dir) as Vector2
-					segs.append({"start": cur_pos, "end": wpos, "dir": cur_dir, "color": cur_color, "bounce": bounces_done})
-					reflections_out.append({"item": null, "pos": wpos, "exit_pos": wexit, "dir": wdir, "color": LxHit.COLOR_BLUE, "bounce": bounces_done + 1})
-					cur_pos = wexit
-					cur_dir = wdir
-					cur_color = LxHit.COLOR_BLUE
-					ignore_mirror_id = -1
-					bounces_done += 1
-					reflected = true
-					break
-
-			prev_p = pt
-			seg_end = pt
-
-		if not reflected:
-			segs.append({"start": cur_pos, "end": seg_end, "dir": cur_dir, "color": cur_color, "bounce": bounces_done})
-			break
-
-	return segs
-
-
-func _ray_hits_mirror(prev_p: Vector2, pt: Vector2, item: Object) -> bool:
-	var ipos: Vector2 = wick.get_entity_pos(item) if wick != null else Vector2.ZERO
-	var irad: float = wick.get_entity_radius(item, 8.0) if wick != null else 8.0
-	if item.has_method("get_solid_rect"):
-		var srect: Rect2 = item.call("get_solid_rect") as Rect2
-		if srect.has_area():
-			var grown: Rect2 = srect.grow(1.5)
-			if grown.has_point(pt) or grown.has_point(prev_p.lerp(pt, 0.5)):
-				return true
-	return Geometry2D.get_closest_point_to_segment(ipos, prev_p, pt).distance_to(ipos) <= irad + 1.5
 
 func _segment_hits_item(a: Vector2, b: Vector2, half_w: float, item: Object, ipos: Vector2, irad: float) -> bool:
-	var closest: Vector2 = Geometry2D.get_closest_point_to_segment(ipos, a, b)
-	if closest.distance_to(ipos) <= irad + half_w:
-		return true
-	if item.has_method("get_solid_rect"):
-		var srect: Rect2 = item.call("get_solid_rect") as Rect2
-		if srect.has_area():
-			var grown: Rect2 = srect.grow(half_w)
-			var steps: int = maxi(1, int(ceil(a.distance_to(b) / 6.0)))
-			for i: int in range(steps + 1):
-				if grown.has_point(a.lerp(b, float(i) / float(steps))):
-					return true
-	return false
+	return LxBeamTrace.segment_hits_item(a, b, half_w, item, ipos, irad)

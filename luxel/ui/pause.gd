@@ -4,6 +4,8 @@ extends Node2D
 
 signal resume_requested()
 signal map_requested()
+signal journal_requested()
+signal panes_requested()
 signal options_requested()
 signal retry_checkpoint_requested()
 signal title_requested()
@@ -11,12 +13,14 @@ signal title_requested()
 const ITEMS: Array[String] = [
 	"PAUSE_RESUME",
 	"PAUSE_MAP",
+	"PAUSE_JOURNAL",
+	"PAUSE_PANES",
 	"PAUSE_OPTIONS",
 	"PAUSE_RETRY",
 	"PAUSE_TITLE_BTN",
 ]
 
-const PANEL_RECT := Rect2(70.0, 20.0, 180.0, 140.0)
+const PANEL_RECT := Rect2(70.0, 12.0, 180.0, 156.0)
 
 var _idx: int = 0
 var _elapsed: float = 0.0
@@ -96,16 +100,13 @@ func _unhandled_input(event: InputEvent) -> void:
 func _activate(i: int) -> void:
 	_play_ui_sfx("ui_confirm")
 	match i:
-		0:
-			resume_requested.emit()
-		1:
-			map_requested.emit()
-		2:
-			options_requested.emit()
-		3:
-			retry_checkpoint_requested.emit()
-		4:
-			title_requested.emit()
+		0: resume_requested.emit()
+		1: map_requested.emit()
+		2: journal_requested.emit()
+		3: panes_requested.emit()
+		4: options_requested.emit()
+		5: retry_checkpoint_requested.emit()
+		6: title_requested.emit()
 
 
 func _draw() -> void:
@@ -127,7 +128,7 @@ func _draw() -> void:
 			_draw_wick_lantern(r.position.x + 5.0, r.position.y + 2.0)
 			_draw_wick_lantern(r.end.x - 12.0, r.position.y + 2.0)
 		var col: Color = LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"]
-		LxPixelFont.draw_centered(self, LxStrings.text(ITEMS[i]), r.get_center().x, r.position.y + 3.0, col, 1)
+		LxPixelFont.draw_centered(self, LxFolkData.tr_id(ITEMS[i]), r.get_center().x, r.position.y + 3.0, col, 1)
 	LxPixelFont.draw_centered(self, LxStrings.text("PAUSE_HINT"), 160.0, PANEL_RECT.end.y - 11.0, LxPalette.PAL["stone"], 1)
 
 
@@ -263,7 +264,7 @@ func _draw_wick_lantern(ox: float, oy: float) -> void:
 
 
 func _row_rect(i: int) -> Rect2:
-	return Rect2(PANEL_RECT.position.x + 12.0, PANEL_RECT.position.y + 42.0 + float(i) * 16.0, PANEL_RECT.size.x - 24.0, 12.0)
+	return Rect2(PANEL_RECT.position.x + 12.0, PANEL_RECT.position.y + 40.0 + float(i) * 14.0, PANEL_RECT.size.x - 24.0, 11.0)
 
 
 func _play_ui_sfx(sfx_id: String) -> void:

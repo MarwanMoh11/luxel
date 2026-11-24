@@ -1,0 +1,1193 @@
+{
+  "pack_id": "folk_panes_e0_5",
+  "version": 1,
+  "owner": "E0-5",
+  "interactables": {
+    "npc": "res://luxel/world/folk/npc.gd",
+    "quest_item": "res://luxel/world/folk/quest_item.gd",
+    "moth": "res://luxel/world/folk/moth.gd",
+    "pane_pickup": "res://luxel/world/folk/pane_pickup.gd",
+    "shop_npc": "res://luxel/world/folk/shop_npc.gd",
+    "hub_door": "res://luxel/world/folk/hub_door.gd",
+    "training_dummy": "res://luxel/hub/training_dummy.gd"
+  },
+  "panes": {
+    "bell_clapper": {
+      "id": "bell_clapper",
+      "island": 1,
+      "source": "dungeon",
+      "lead": 2,
+      "tint": "gold",
+      "icon_index": 0,
+      "name_key": "PANE_BELL_CLAPPER_NAME",
+      "desc_key": "PANE_BELL_CLAPPER_DESC",
+      "script": "res://luxel/player/panes/p_bell_clapper.gd"
+    },
+    "vesper_chime": {
+      "id": "vesper_chime",
+      "island": 1,
+      "source": "trial",
+      "lead": 1,
+      "tint": "apricot",
+      "icon_index": 1,
+      "name_key": "PANE_VESPER_CHIME_NAME",
+      "desc_key": "PANE_VESPER_CHIME_DESC",
+      "script": "res://luxel/player/panes/p_vesper_chime.gd"
+    },
+    "toll_echo": {
+      "id": "toll_echo",
+      "island": 1,
+      "source": "quest",
+      "lead": 2,
+      "tint": "gold",
+      "icon_index": 2,
+      "name_key": "PANE_TOLL_ECHO_NAME",
+      "desc_key": "PANE_TOLL_ECHO_DESC",
+      "script": "res://luxel/player/panes/p_toll_echo.gd"
+    },
+    "belfry_weight": {
+      "id": "belfry_weight",
+      "island": 1,
+      "source": "secret",
+      "lead": 3,
+      "tint": "coral",
+      "icon_index": 3,
+      "name_key": "PANE_BELFRY_WEIGHT_NAME",
+      "desc_key": "PANE_BELFRY_WEIGHT_DESC",
+      "script": "res://luxel/player/panes/p_belfry_weight.gd"
+    },
+    "rip_tide": {
+      "id": "rip_tide",
+      "island": 2,
+      "source": "dungeon",
+      "lead": 2,
+      "tint": "sky",
+      "icon_index": 4,
+      "name_key": "PANE_RIP_TIDE_NAME",
+      "desc_key": "PANE_RIP_TIDE_DESC",
+      "script": "res://luxel/player/panes/p_rip_tide.gd"
+    },
+    "sea_glass": {
+      "id": "sea_glass",
+      "island": 2,
+      "source": "trial",
+      "lead": 1,
+      "tint": "ice",
+      "icon_index": 5,
+      "name_key": "PANE_SEA_GLASS_NAME",
+      "desc_key": "PANE_SEA_GLASS_DESC",
+      "script": "res://luxel/player/panes/p_sea_glass.gd"
+    },
+    "harbor_wake": {
+      "id": "harbor_wake",
+      "island": 2,
+      "source": "quest",
+      "lead": 2,
+      "tint": "sky",
+      "icon_index": 6,
+      "name_key": "PANE_HARBOR_WAKE_NAME",
+      "desc_key": "PANE_HARBOR_WAKE_DESC",
+      "script": "res://luxel/player/panes/p_harbor_wake.gd"
+    },
+    "anchor_lead": {
+      "id": "anchor_lead",
+      "island": 2,
+      "source": "secret",
+      "lead": 3,
+      "tint": "blue",
+      "icon_index": 7,
+      "name_key": "PANE_ANCHOR_LEAD_NAME",
+      "desc_key": "PANE_ANCHOR_LEAD_DESC",
+      "script": "res://luxel/player/panes/p_anchor_lead.gd"
+    },
+    "ember_seed": {
+      "id": "ember_seed",
+      "island": 3,
+      "source": "dungeon",
+      "lead": 2,
+      "tint": "lime",
+      "icon_index": 8,
+      "name_key": "PANE_EMBER_SEED_NAME",
+      "desc_key": "PANE_EMBER_SEED_DESC",
+      "script": "res://luxel/player/panes/p_ember_seed.gd"
+    },
+    "briar_thorn": {
+      "id": "briar_thorn",
+      "island": 3,
+      "source": "trial",
+      "lead": 1,
+      "tint": "jade",
+      "icon_index": 9,
+      "name_key": "PANE_BRIAR_THORN_NAME",
+      "desc_key": "PANE_BRIAR_THORN_DESC",
+      "script": "res://luxel/player/panes/p_briar_thorn.gd"
+    },
+    "vine_snare": {
+      "id": "vine_snare",
+      "island": 3,
+      "source": "quest",
+      "lead": 2,
+      "tint": "jade",
+      "icon_index": 10,
+      "name_key": "PANE_VINE_SNARE_NAME",
+      "desc_key": "PANE_VINE_SNARE_DESC",
+      "script": "res://luxel/player/panes/p_vine_snare.gd"
+    },
+    "canopy_dew": {
+      "id": "canopy_dew",
+      "island": 3,
+      "source": "secret",
+      "lead": 3,
+      "tint": "lime",
+      "icon_index": 11,
+      "name_key": "PANE_CANOPY_DEW_NAME",
+      "desc_key": "PANE_CANOPY_DEW_DESC",
+      "script": "res://luxel/player/panes/p_canopy_dew.gd"
+    },
+    "hourglass_sand": {
+      "id": "hourglass_sand",
+      "island": 4,
+      "source": "dungeon",
+      "lead": 2,
+      "tint": "gold",
+      "icon_index": 12,
+      "name_key": "PANE_HOURGLASS_SAND_NAME",
+      "desc_key": "PANE_HOURGLASS_SAND_DESC",
+      "script": "res://luxel/player/panes/p_hourglass_sand.gd"
+    },
+    "petal_mirror": {
+      "id": "petal_mirror",
+      "island": 4,
+      "source": "trial",
+      "lead": 1,
+      "tint": "rose",
+      "icon_index": 13,
+      "name_key": "PANE_PETAL_MIRROR_NAME",
+      "desc_key": "PANE_PETAL_MIRROR_DESC",
+      "script": "res://luxel/player/panes/p_petal_mirror.gd"
+    },
+    "dusk_dew": {
+      "id": "dusk_dew",
+      "island": 4,
+      "source": "quest",
+      "lead": 2,
+      "tint": "ice",
+      "icon_index": 14,
+      "name_key": "PANE_DUSK_DEW_NAME",
+      "desc_key": "PANE_DUSK_DEW_DESC",
+      "script": "res://luxel/player/panes/p_dusk_dew.gd"
+    },
+    "rain_prism": {
+      "id": "rain_prism",
+      "island": 4,
+      "source": "secret",
+      "lead": 3,
+      "tint": "ice",
+      "icon_index": 15,
+      "name_key": "PANE_RAIN_PRISM_NAME",
+      "desc_key": "PANE_RAIN_PRISM_DESC",
+      "script": "res://luxel/player/panes/p_rain_prism.gd"
+    },
+    "orbit_shard": {
+      "id": "orbit_shard",
+      "island": 5,
+      "source": "dungeon",
+      "lead": 2,
+      "tint": "gold",
+      "icon_index": 16,
+      "name_key": "PANE_ORBIT_SHARD_NAME",
+      "desc_key": "PANE_ORBIT_SHARD_DESC",
+      "script": "res://luxel/player/panes/p_orbit_shard.gd"
+    },
+    "comet_tail": {
+      "id": "comet_tail",
+      "island": 5,
+      "source": "trial",
+      "lead": 1,
+      "tint": "sky",
+      "icon_index": 17,
+      "name_key": "PANE_COMET_TAIL_NAME",
+      "desc_key": "PANE_COMET_TAIL_DESC",
+      "script": "res://luxel/player/panes/p_comet_tail.gd"
+    },
+    "zenith_lens": {
+      "id": "zenith_lens",
+      "island": 5,
+      "source": "quest",
+      "lead": 2,
+      "tint": "cream",
+      "icon_index": 18,
+      "name_key": "PANE_ZENITH_LENS_NAME",
+      "desc_key": "PANE_ZENITH_LENS_DESC",
+      "script": "res://luxel/player/panes/p_zenith_lens.gd"
+    },
+    "null_well": {
+      "id": "null_well",
+      "island": 5,
+      "source": "secret",
+      "lead": 3,
+      "tint": "deep",
+      "icon_index": 19,
+      "name_key": "PANE_NULL_WELL_NAME",
+      "desc_key": "PANE_NULL_WELL_DESC",
+      "script": "res://luxel/player/panes/p_null_well.gd"
+    },
+    "cinder_blast": {
+      "id": "cinder_blast",
+      "island": 6,
+      "source": "dungeon",
+      "lead": 2,
+      "tint": "coral",
+      "icon_index": 20,
+      "name_key": "PANE_CINDER_BLAST_NAME",
+      "desc_key": "PANE_CINDER_BLAST_DESC",
+      "script": "res://luxel/player/panes/p_cinder_blast.gd"
+    },
+    "slag_coat": {
+      "id": "slag_coat",
+      "island": 6,
+      "source": "trial",
+      "lead": 2,
+      "tint": "apricot",
+      "icon_index": 21,
+      "name_key": "PANE_SLAG_COAT_NAME",
+      "desc_key": "PANE_SLAG_COAT_DESC",
+      "script": "res://luxel/player/panes/p_slag_coat.gd"
+    },
+    "bellows_vent": {
+      "id": "bellows_vent",
+      "island": 6,
+      "source": "quest",
+      "lead": 1,
+      "tint": "coral",
+      "icon_index": 22,
+      "name_key": "PANE_BELLOWS_VENT_NAME",
+      "desc_key": "PANE_BELLOWS_VENT_DESC",
+      "script": "res://luxel/player/panes/p_bellows_vent.gd"
+    },
+    "anvil_strike": {
+      "id": "anvil_strike",
+      "island": 6,
+      "source": "secret",
+      "lead": 3,
+      "tint": "apricot",
+      "icon_index": 23,
+      "name_key": "PANE_ANVIL_STRIKE_NAME",
+      "desc_key": "PANE_ANVIL_STRIKE_DESC",
+      "script": "res://luxel/player/panes/p_anvil_strike.gd"
+    },
+    "silver_twin": {
+      "id": "silver_twin",
+      "island": 7,
+      "source": "dungeon",
+      "lead": 3,
+      "tint": "ice",
+      "icon_index": 24,
+      "name_key": "PANE_SILVER_TWIN_NAME",
+      "desc_key": "PANE_SILVER_TWIN_DESC",
+      "script": "res://luxel/player/panes/p_silver_twin.gd"
+    },
+    "moon_phase": {
+      "id": "moon_phase",
+      "island": 7,
+      "source": "trial",
+      "lead": 1,
+      "tint": "ice",
+      "icon_index": 25,
+      "name_key": "PANE_MOON_PHASE_NAME",
+      "desc_key": "PANE_MOON_PHASE_DESC",
+      "script": "res://luxel/player/panes/p_moon_phase.gd"
+    },
+    "glass_step": {
+      "id": "glass_step",
+      "island": 7,
+      "source": "quest",
+      "lead": 2,
+      "tint": "sky",
+      "icon_index": 26,
+      "name_key": "PANE_GLASS_STEP_NAME",
+      "desc_key": "PANE_GLASS_STEP_DESC",
+      "script": "res://luxel/player/panes/p_glass_step.gd"
+    },
+    "mirror_ward": {
+      "id": "mirror_ward",
+      "island": 7,
+      "source": "secret",
+      "lead": 2,
+      "tint": "ice",
+      "icon_index": 27,
+      "name_key": "PANE_MIRROR_WARD_NAME",
+      "desc_key": "PANE_MIRROR_WARD_DESC",
+      "script": "res://luxel/player/panes/p_mirror_ward.gd"
+    },
+    "toll_wick": {
+      "id": "toll_wick",
+      "island": 8,
+      "source": "dungeon",
+      "lead": 1,
+      "tint": "rose",
+      "icon_index": 28,
+      "name_key": "PANE_TOLL_WICK_NAME",
+      "desc_key": "PANE_TOLL_WICK_DESC",
+      "script": "res://luxel/player/panes/p_toll_wick.gd"
+    },
+    "hush_glass": {
+      "id": "hush_glass",
+      "island": 8,
+      "source": "trial",
+      "lead": 2,
+      "tint": "plum",
+      "icon_index": 29,
+      "name_key": "PANE_HUSH_GLASS_NAME",
+      "desc_key": "PANE_HUSH_GLASS_DESC",
+      "script": "res://luxel/player/panes/p_hush_glass.gd"
+    },
+    "dawn_spark": {
+      "id": "dawn_spark",
+      "island": 8,
+      "source": "quest",
+      "lead": 3,
+      "tint": "gold",
+      "icon_index": 30,
+      "name_key": "PANE_DAWN_SPARK_NAME",
+      "desc_key": "PANE_DAWN_SPARK_DESC",
+      "script": "res://luxel/player/panes/p_dawn_spark.gd"
+    },
+    "last_glass": {
+      "id": "last_glass",
+      "island": 8,
+      "source": "secret",
+      "lead": 3,
+      "tint": "rose",
+      "icon_index": 31,
+      "name_key": "PANE_LAST_GLASS_NAME",
+      "desc_key": "PANE_LAST_GLASS_DESC",
+      "script": "res://luxel/player/panes/p_last_glass.gd"
+    }
+  },
+  "moths": [
+    {
+      "id": "moth_1_01",
+      "island": 1,
+      "index": 1
+    },
+    {
+      "id": "moth_1_02",
+      "island": 1,
+      "index": 2
+    },
+    {
+      "id": "moth_1_03",
+      "island": 1,
+      "index": 3
+    },
+    {
+      "id": "moth_1_04",
+      "island": 1,
+      "index": 4
+    },
+    {
+      "id": "moth_1_05",
+      "island": 1,
+      "index": 5
+    },
+    {
+      "id": "moth_1_06",
+      "island": 1,
+      "index": 6
+    },
+    {
+      "id": "moth_1_07",
+      "island": 1,
+      "index": 7
+    },
+    {
+      "id": "moth_1_08",
+      "island": 1,
+      "index": 8
+    },
+    {
+      "id": "moth_1_09",
+      "island": 1,
+      "index": 9
+    },
+    {
+      "id": "moth_1_10",
+      "island": 1,
+      "index": 10
+    },
+    {
+      "id": "moth_2_01",
+      "island": 2,
+      "index": 11
+    },
+    {
+      "id": "moth_2_02",
+      "island": 2,
+      "index": 12
+    },
+    {
+      "id": "moth_2_03",
+      "island": 2,
+      "index": 13
+    },
+    {
+      "id": "moth_2_04",
+      "island": 2,
+      "index": 14
+    },
+    {
+      "id": "moth_2_05",
+      "island": 2,
+      "index": 15
+    },
+    {
+      "id": "moth_2_06",
+      "island": 2,
+      "index": 16
+    },
+    {
+      "id": "moth_2_07",
+      "island": 2,
+      "index": 17
+    },
+    {
+      "id": "moth_2_08",
+      "island": 2,
+      "index": 18
+    },
+    {
+      "id": "moth_2_09",
+      "island": 2,
+      "index": 19
+    },
+    {
+      "id": "moth_2_10",
+      "island": 2,
+      "index": 20
+    },
+    {
+      "id": "moth_3_01",
+      "island": 3,
+      "index": 21
+    },
+    {
+      "id": "moth_3_02",
+      "island": 3,
+      "index": 22
+    },
+    {
+      "id": "moth_3_03",
+      "island": 3,
+      "index": 23
+    },
+    {
+      "id": "moth_3_04",
+      "island": 3,
+      "index": 24
+    },
+    {
+      "id": "moth_3_05",
+      "island": 3,
+      "index": 25
+    },
+    {
+      "id": "moth_3_06",
+      "island": 3,
+      "index": 26
+    },
+    {
+      "id": "moth_3_07",
+      "island": 3,
+      "index": 27
+    },
+    {
+      "id": "moth_3_08",
+      "island": 3,
+      "index": 28
+    },
+    {
+      "id": "moth_3_09",
+      "island": 3,
+      "index": 29
+    },
+    {
+      "id": "moth_3_10",
+      "island": 3,
+      "index": 30
+    },
+    {
+      "id": "moth_4_01",
+      "island": 4,
+      "index": 31
+    },
+    {
+      "id": "moth_4_02",
+      "island": 4,
+      "index": 32
+    },
+    {
+      "id": "moth_4_03",
+      "island": 4,
+      "index": 33
+    },
+    {
+      "id": "moth_4_04",
+      "island": 4,
+      "index": 34
+    },
+    {
+      "id": "moth_4_05",
+      "island": 4,
+      "index": 35
+    },
+    {
+      "id": "moth_4_06",
+      "island": 4,
+      "index": 36
+    },
+    {
+      "id": "moth_4_07",
+      "island": 4,
+      "index": 37
+    },
+    {
+      "id": "moth_4_08",
+      "island": 4,
+      "index": 38
+    },
+    {
+      "id": "moth_4_09",
+      "island": 4,
+      "index": 39
+    },
+    {
+      "id": "moth_4_10",
+      "island": 4,
+      "index": 40
+    },
+    {
+      "id": "moth_5_01",
+      "island": 5,
+      "index": 41
+    },
+    {
+      "id": "moth_5_02",
+      "island": 5,
+      "index": 42
+    },
+    {
+      "id": "moth_5_03",
+      "island": 5,
+      "index": 43
+    },
+    {
+      "id": "moth_5_04",
+      "island": 5,
+      "index": 44
+    },
+    {
+      "id": "moth_5_05",
+      "island": 5,
+      "index": 45
+    },
+    {
+      "id": "moth_5_06",
+      "island": 5,
+      "index": 46
+    },
+    {
+      "id": "moth_5_07",
+      "island": 5,
+      "index": 47
+    },
+    {
+      "id": "moth_5_08",
+      "island": 5,
+      "index": 48
+    },
+    {
+      "id": "moth_5_09",
+      "island": 5,
+      "index": 49
+    },
+    {
+      "id": "moth_5_10",
+      "island": 5,
+      "index": 50
+    },
+    {
+      "id": "moth_6_01",
+      "island": 6,
+      "index": 51
+    },
+    {
+      "id": "moth_6_02",
+      "island": 6,
+      "index": 52
+    },
+    {
+      "id": "moth_6_03",
+      "island": 6,
+      "index": 53
+    },
+    {
+      "id": "moth_6_04",
+      "island": 6,
+      "index": 54
+    },
+    {
+      "id": "moth_6_05",
+      "island": 6,
+      "index": 55
+    },
+    {
+      "id": "moth_6_06",
+      "island": 6,
+      "index": 56
+    },
+    {
+      "id": "moth_6_07",
+      "island": 6,
+      "index": 57
+    },
+    {
+      "id": "moth_6_08",
+      "island": 6,
+      "index": 58
+    },
+    {
+      "id": "moth_6_09",
+      "island": 6,
+      "index": 59
+    },
+    {
+      "id": "moth_6_10",
+      "island": 6,
+      "index": 60
+    },
+    {
+      "id": "moth_7_01",
+      "island": 7,
+      "index": 61
+    },
+    {
+      "id": "moth_7_02",
+      "island": 7,
+      "index": 62
+    },
+    {
+      "id": "moth_7_03",
+      "island": 7,
+      "index": 63
+    },
+    {
+      "id": "moth_7_04",
+      "island": 7,
+      "index": 64
+    },
+    {
+      "id": "moth_7_05",
+      "island": 7,
+      "index": 65
+    },
+    {
+      "id": "moth_7_06",
+      "island": 7,
+      "index": 66
+    },
+    {
+      "id": "moth_7_07",
+      "island": 7,
+      "index": 67
+    },
+    {
+      "id": "moth_7_08",
+      "island": 7,
+      "index": 68
+    },
+    {
+      "id": "moth_7_09",
+      "island": 7,
+      "index": 69
+    },
+    {
+      "id": "moth_7_10",
+      "island": 7,
+      "index": 70
+    },
+    {
+      "id": "moth_8_01",
+      "island": 8,
+      "index": 71
+    },
+    {
+      "id": "moth_8_02",
+      "island": 8,
+      "index": 72
+    },
+    {
+      "id": "moth_8_03",
+      "island": 8,
+      "index": 73
+    },
+    {
+      "id": "moth_8_04",
+      "island": 8,
+      "index": 74
+    },
+    {
+      "id": "moth_8_05",
+      "island": 8,
+      "index": 75
+    },
+    {
+      "id": "moth_8_06",
+      "island": 8,
+      "index": 76
+    },
+    {
+      "id": "moth_8_07",
+      "island": 8,
+      "index": 77
+    },
+    {
+      "id": "moth_8_08",
+      "island": 8,
+      "index": 78
+    },
+    {
+      "id": "moth_8_09",
+      "island": 8,
+      "index": 79
+    },
+    {
+      "id": "moth_8_10",
+      "island": 8,
+      "index": 80
+    }
+  ],
+  "quests": [
+    {
+      "id": "q_bell_clapper",
+      "island": 1,
+      "kind": "carry_back",
+      "folk": "bell_snail",
+      "icon": "quest_carry",
+      "rescue_folk": "bell_snail",
+      "steps": [
+        {
+          "icons": [
+            "bell",
+            "question",
+            "arrow_e",
+            "quest_carry"
+          ],
+          "need": "quest:item:brass_clapper",
+          "consume_item": "brass_clapper",
+          "flag": "quest:q_bell_clapper:s0"
+        },
+        {
+          "icons": [
+            "bell",
+            "happy",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_bell_clapper:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "toll_echo",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q_harbor_post",
+      "island": 2,
+      "kind": "timed_delivery",
+      "folk": "ferry_beetle",
+      "icon": "quest_timer",
+      "time_limit_s": 45,
+      "rescue_folk": "ferry_beetle",
+      "steps": [
+        {
+          "icons": [
+            "toy_skiff",
+            "clock",
+            "arrow_e",
+            "lantern"
+          ],
+          "need": "quest:item:harbor_parcel",
+          "consume_item": "harbor_parcel",
+          "flag": "quest:q_harbor_post:s0"
+        },
+        {
+          "icons": [
+            "check",
+            "wave",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_harbor_post:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "harbor_wake",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q_canopy_hide",
+      "island": 3,
+      "kind": "hide_and_seek",
+      "folk": "gardener_frog",
+      "icon": "quest_hide",
+      "rescue_folk": "gardener_frog",
+      "steps": [
+        {
+          "icons": [
+            "quest_hide",
+            "seed",
+            "eye"
+          ],
+          "need": "quest:hide:hollow_stump",
+          "flag": "quest:q_canopy_hide:s0"
+        },
+        {
+          "icons": [
+            "happy",
+            "toy_plant",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_canopy_hide:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "vine_snare",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q_dusk_vista",
+      "island": 4,
+      "kind": "light_view",
+      "folk": "scribe_worm",
+      "icon": "quest_photo",
+      "rescue_folk": "scribe_worm",
+      "steps": [
+        {
+          "icons": [
+            "quest_photo",
+            "light_on",
+            "isl_4"
+          ],
+          "need": "quest:view:mirefen_arch",
+          "flag": "quest:q_dusk_vista:s0"
+        },
+        {
+          "icons": [
+            "book",
+            "heart",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_dusk_vista:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "dusk_dew",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q_star_chart",
+      "island": 5,
+      "kind": "trade_chain",
+      "folk": "owl_chick",
+      "icon": "quest_trade",
+      "rescue_folk": "owl_chick",
+      "steps": [
+        {
+          "icons": [
+            "star",
+            "trade",
+            "key"
+          ],
+          "need": "quest:item:brass_lens",
+          "consume_item": "brass_lens",
+          "give_item": "star_ink",
+          "flag": "quest:q_star_chart:s0"
+        },
+        {
+          "icons": [
+            "book",
+            "trade",
+            "star"
+          ],
+          "need": "quest:item:star_ink",
+          "consume_item": "star_ink",
+          "flag": "quest:q_star_chart:s1"
+        },
+        {
+          "icons": [
+            "star",
+            "happy",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_star_chart:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "zenith_lens",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q_kiln_ember",
+      "island": 6,
+      "kind": "fetch",
+      "folk": "kiln_salamander",
+      "icon": "ember",
+      "rescue_folk": "kiln_salamander",
+      "steps": [
+        {
+          "icons": [
+            "ember",
+            "isl_6",
+            "arrow_n"
+          ],
+          "need": "quest:item:slag_coal",
+          "consume_item": "slag_coal",
+          "flag": "quest:q_kiln_ember:s0"
+        },
+        {
+          "icons": [
+            "flame",
+            "happy",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_kiln_ember:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "bellows_vent",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q_silver_lens",
+      "island": 7,
+      "kind": "light_view",
+      "folk": "mirror_crab",
+      "icon": "mirror",
+      "rescue_folk": "mirror_crab",
+      "steps": [
+        {
+          "icons": [
+            "mirror",
+            "light_on",
+            "isl_7"
+          ],
+          "need": "quest:view:moon_pool",
+          "flag": "quest:q_silver_lens:s0"
+        },
+        {
+          "icons": [
+            "spark",
+            "happy",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_silver_lens:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "glass_step",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q_golden_thread",
+      "island": 8,
+      "kind": "fetch",
+      "folk": "tailor_spider",
+      "icon": "quest_rescue",
+      "rescue_folk": "tailor_spider",
+      "steps": [
+        {
+          "icons": [
+            "lantern",
+            "spark",
+            "isl_8"
+          ],
+          "need": "quest:item:dawn_spool",
+          "consume_item": "dawn_spool",
+          "flag": "quest:q_golden_thread:s0"
+        },
+        {
+          "icons": [
+            "home",
+            "heart",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_golden_thread:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "dawn_spark",
+        "amount": 1
+      }
+    }
+  ],
+  "strings": {
+    "PAUSE_JOURNAL": "JOURNAL",
+    "PAUSE_PANES": "PANES",
+    "FMT_RATIO": "%d/%d",
+    "PANES_TITLE": "LANTERN PANES",
+    "PANES_VIEW_ONLY": "VIEW",
+    "PANES_LEAD_FMT": "LEAD %d/%d",
+    "PANES_OWNED_FMT": "%d/%d",
+    "PANES_TAB_ALL": "ALL",
+    "PANES_ISL_COUNT_FMT": "ISL %d: %d/%d",
+    "PANES_HINT_EDIT": "ENTER/DRAG: FIT  Q/E: ISLE  ESC: BACK",
+    "PANES_HINT_VIEW": "VIEW ONLY - FIT AT REST SHRINES",
+    "PANES_READONLY_TIP": "FIT PANES AT A REST SHRINE OR HUB",
+    "PANE_UNKNOWN_NAME": "UNFOUND GLASS",
+    "PANE_SRC_FMT": "ISLAND %d - %s",
+    "PANE_SRC_DUNGEON": "DUNGEON",
+    "PANE_SRC_TRIAL": "TRIAL",
+    "PANE_SRC_QUEST": "QUEST",
+    "PANE_SRC_SECRET": "SECRET",
+    "PANE_COST_FMT": "LEAD %d  ISL %d",
+    "PANE_EQUIPPED": "PANE FITTED",
+    "PANE_REMOVED": "PANE REMOVED",
+    "PANE_FOUND": "STAINED PANE FOUND",
+    "PANE_ERR_UNOWNED": "NOT YET FOUND",
+    "PANE_ERR_EQUIPPED": "ALREADY FITTED",
+    "PANE_ERR_SLOTS": "NO OPEN GLASS SLOT",
+    "PANE_ERR_LEAD": "NOT ENOUGH LEAD",
+    "JOURNAL_TITLE": "JOURNAL",
+    "JOURNAL_TAB_QUESTS": "QUESTS",
+    "JOURNAL_TAB_MOTHS": "MOTHS",
+    "JOURNAL_TAB_BESTIARY": "FOES",
+    "JOURNAL_TAB_TOYS": "TOYS",
+    "JOURNAL_NO_QUESTS": "NO FOLK ERRANDS YET",
+    "JOURNAL_Q_DONE": "DONE",
+    "JOURNAL_Q_OPEN": "OPEN",
+    "JOURNAL_Q_NEW": "NEW",
+    "JOURNAL_MOTHS_FMT": "LOST MOTHS: %d/%d",
+    "JOURNAL_TIERS": "TIERS:",
+    "JOURNAL_UNSEEN": "UNSEEN",
+    "JOURNAL_SD_FMT": "S:%d D:%d",
+    "JOURNAL_HINT": "Q/E: PAGE   ARROWS: BROWSE   ESC: BACK",
+    "PROMPT_TALK": "LISTEN",
+    "PROMPT_TALK_NEXT": "NEXT",
+    "PROMPT_PICKUP": "TAKE",
+    "PROMPT_TAKE_PANE": "TAKE PANE",
+    "FOLK_RESCUED": "A FRIEND FOUND THE WAY TO WICK HOUSE.",
+    "MOTH_CAUGHT": "A LOST MOTH DRAWS TO THE LANTERN.",
+    "MOTH_REWARD_CLAIMED": "THE MOTH LANTERN GRANTS A GIFT.",
+    "MOTH_LANTERN_INFO": "BRING LOST MOTHS TO GROW THIS LIGHT.",
+    "QUEST_TIMER_EXPIRED": "THE DUSK BELL RAN OUT. TRY AGAIN.",
+    "MOTH_TIER_5": "5 MOTHS: EXTRA LEAD GAINED.",
+    "MOTH_TIER_10": "10 MOTHS: EMBER PIECE GAINED.",
+    "MOTH_TIER_20": "20 MOTHS: 4TH GLASS SLOT OPENED.",
+    "MOTH_TIER_35": "35 MOTHS: ICE FLAME UNLOCKED.",
+    "MOTH_TIER_50": "50 MOTHS: 5TH GLASS SLOT OPENED.",
+    "MOTH_TIER_65": "65 MOTHS: EMBER PIECE GAINED.",
+    "MOTH_TIER_80": "80 MOTHS: THE FIRST DARK STIRS.",
+    "TOY_BLOCK": "PUSH BLOCK",
+    "TOY_PLATE": "PRESS PLATE",
+    "TOY_BRAZIER": "TIMED FLAME",
+    "TOY_CRYSTAL": "CRYSTAL SWAP",
+    "TOY_PLATFORM": "MOVER RAFT",
+    "TOY_CONVEYOR": "CONVEYOR",
+    "TOY_WIND": "WIND LANE",
+    "TOY_GRAVITY": "STAR WELL",
+    "TOY_PLANT": "SEED LIGHT",
+    "TOY_SHADOW": "SHADOW GATE",
+    "TOY_SCALE": "TWIN SCALE",
+    "TOY_RING": "PULL RING",
+    "TOY_ORB": "CARRY ORB",
+    "TOY_HOOK": "LAMP HOOK",
+    "TOY_ROSE": "ECHO ROSE",
+    "TOY_SKIFF": "HARBOR SKIFF",
+    "PANE_BELL_CLAPPER_NAME": "CLAPPER GLASS",
+    "PANE_BELL_CLAPPER_DESC": "RECALL RINGS 36PX CHIME - SHORTER THROW",
+    "PANE_VESPER_CHIME_NAME": "VESPER PANE",
+    "PANE_VESPER_CHIME_DESC": "EVERY 4TH BOLT PIERCES - SLOWER FIRE",
+    "PANE_TOLL_ECHO_NAME": "TOLL ECHO",
+    "PANE_TOLL_ECHO_DESC": "PERFECT DODGE LEAVES A RINGING DECOY",
+    "PANE_BELFRY_WEIGHT_NAME": "BELFRY WEIGHT",
+    "PANE_BELFRY_WEIGHT_DESC": "HEAVY RECOIL KICK - CLOSE BOLTS BLAST",
+    "PANE_RIP_TIDE_NAME": "RIP TIDE",
+    "PANE_RIP_TIDE_DESC": "ZIP DRAGS NEARBY FOES - SHORTER HANG",
+    "PANE_SEA_GLASS_NAME": "SEA GLASS",
+    "PANE_SEA_GLASS_DESC": "BOLTS BOUNCE +1 TIME - SHORTER REACH",
+    "PANE_HARBOR_WAKE_NAME": "HARBOR WAKE",
+    "PANE_HARBOR_WAKE_DESC": "DASH DROPS SLOWING FOAM - LONGER CD",
+    "PANE_ANCHOR_LEAD_NAME": "ANCHOR LEAD",
+    "PANE_ANCHOR_LEAD_DESC": "HEAVY LONG HANG - SLOWER WHEN OUT",
+    "PANE_EMBER_SEED_NAME": "EMBER SEED",
+    "PANE_EMBER_SEED_DESC": "BOLT HITS DROP EMBER POOLS - SLOWER",
+    "PANE_BRIAR_THORN_NAME": "BRIAR THORN",
+    "PANE_BRIAR_THORN_DESC": "HURT BURSTS THORN RING - LESS EMBER",
+    "PANE_VINE_SNARE_NAME": "VINE SNARE",
+    "PANE_VINE_SNARE_DESC": "THROW ROOTS FOES ON LAND - SLOWER",
+    "PANE_CANOPY_DEW_NAME": "CANOPY DEW",
+    "PANE_CANOPY_DEW_DESC": "3 ROOM KILLS HEAL HALF - SLOWER FIRE",
+    "PANE_HOURGLASS_SAND_NAME": "HOURGLASS SAND",
+    "PANE_HOURGLASS_SAND_DESC": "PERFECT DODGE ARMS LANCE - LONGER CD",
+    "PANE_PETAL_MIRROR_NAME": "PETAL DECOY",
+    "PANE_PETAL_MIRROR_DESC": "DASH LEAVES 2S PETAL DECOY - LONGER CD",
+    "PANE_DUSK_DEW_NAME": "DUSK CLOCK",
+    "PANE_DUSK_DEW_DESC": "FIRST 4S IN ROOM: x2 EMBER THEN LESS",
+    "PANE_RAIN_PRISM_NAME": "RAIN PRISM",
+    "PANE_RAIN_PRISM_DESC": "RECALL RAINS 4 SPARKS - SLOWER RETURN",
+    "PANE_ORBIT_SHARD_NAME": "ORBIT SHARD",
+    "PANE_ORBIT_SHARD_DESC": "KILLS SPAWN ORBITING STAR - DIMMER",
+    "PANE_COMET_TAIL_NAME": "COMET TAIL",
+    "PANE_COMET_TAIL_DESC": "FAR BOLTS FLARE HARD - WEAKER CLOSE",
+    "PANE_ZENITH_LENS_NAME": "ZENITH LENS",
+    "PANE_ZENITH_LENS_DESC": "FULL HEARTS: 3RD BOLT IS A LANCE",
+    "PANE_NULL_WELL_NAME": "NULL WELL",
+    "PANE_NULL_WELL_DESC": "HUNG LANTERN PULLS MOTHS - DIMMER",
+    "PANE_CINDER_BLAST_NAME": "CINDER BLAST",
+    "PANE_CINDER_BLAST_DESC": "RECALL DETONATES HUNG LANTERN",
+    "PANE_SLAG_COAT_NAME": "SLAG COAT",
+    "PANE_SLAG_COAT_DESC": "ROOM ENTRY GRANTS ASH WARD - SLOWER",
+    "PANE_BELLOWS_VENT_NAME": "BELLOWS VENT",
+    "PANE_BELLOWS_VENT_DESC": "DASH BLASTS EMBER CONE - MORE RECOIL",
+    "PANE_ANVIL_STRIKE_NAME": "ANVIL STRIKE",
+    "PANE_ANVIL_STRIKE_DESC": "ZIP CRACKS SHIELDS WIDE - LONGER CD",
+    "PANE_SILVER_TWIN_NAME": "SILVER TWIN",
+    "PANE_SILVER_TWIN_DESC": "THROW FIRES BACKWARD SILVER BOLT",
+    "PANE_MOON_PHASE_NAME": "MOON PHASE",
+    "PANE_MOON_PHASE_DESC": "BOLTS ALTERNATE FAR ICE AND CLOSE GOLD",
+    "PANE_GLASS_STEP_NAME": "GLASS STEP",
+    "PANE_GLASS_STEP_DESC": "DASH PAST FOE HALVES CD - DIMMER",
+    "PANE_MIRROR_WARD_NAME": "MIRROR WARD",
+    "PANE_MIRROR_WARD_DESC": "HURT BLINKS TO HUNG LANTERN",
+    "PANE_TOLL_WICK_NAME": "TOLL WICK",
+    "PANE_TOLL_WICK_DESC": "LOW HEARTS PIERCE HARD - DIMMER LIGHT",
+    "PANE_HUSH_GLASS_NAME": "HUSH GLASS",
+    "PANE_HUSH_GLASS_DESC": "DIMMER LANTERN - FASTER STEP AND DASH",
+    "PANE_DAWN_SPARK_NAME": "DAWN SPARK",
+    "PANE_DAWN_SPARK_DESC": "KILLS FLASH LIGHT + EMBER - SHORT BOLT",
+    "PANE_LAST_GLASS_NAME": "LAST GLASS",
+    "PANE_LAST_GLASS_DESC": "EMPTY EMBER BOOSTS BOLTS - SLOW FILL"
+  }
+}

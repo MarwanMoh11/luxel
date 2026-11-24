@@ -23,7 +23,7 @@ func configure(rules: LxBiomeRules, room_idx: int, rid: String) -> void:
 	_sfx_cd = 0.0
 	_island_id = rules.island_id if rules != null else 1
 	_room_idx = clampi(room_idx, 1, 10)
-	_active = rules != null and rules.is_dungeon and not LxBiomeBossSynergy.BOSS_REGIONS.has(rid)
+	_active = rules != null and rules.is_dungeon and LxLegacy.is_legacy_region(_island_id, rid) and not LxBiomeBossSynergy.BOSS_REGIONS.has(rid)
 	if not _active:
 		return
 	var b: Rect2 = rules.bounds

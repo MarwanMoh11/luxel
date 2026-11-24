@@ -1,0 +1,390 @@
+{
+ "id": "theme_endless_stair",
+ "name": "The Endless Stair Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_endless_stair.png",
+ "sheet_size": [
+  80,
+  282
+ ],
+ "props": {
+  "spiral_newel_pillar": {
+   "frame": [
+    16,
+    36
+   ],
+   "anchor": [
+    8,
+    34
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     16,
+     36
+    ]
+   ]
+  },
+  "floating_stair_shard": {
+   "frame": [
+    16,
+    24
+   ],
+   "anchor": [
+    8,
+    22
+   ],
+   "frames": 4,
+   "ms": [
+    280.0,
+    280.0,
+    280.0,
+    280.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     36,
+     16,
+     24
+    ],
+    [
+     16,
+     36,
+     16,
+     24
+    ],
+    [
+     32,
+     36,
+     16,
+     24
+    ],
+    [
+     48,
+     36,
+     16,
+     24
+    ]
+   ]
+  },
+  "ascension_boon_plinth": {
+   "frame": [
+    18,
+    28
+   ],
+   "anchor": [
+    9,
+    26
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     60,
+     18,
+     28
+    ],
+    [
+     18,
+     60,
+     18,
+     28
+    ],
+    [
+     36,
+     60,
+     18,
+     28
+    ],
+    [
+     54,
+     60,
+     18,
+     28
+    ]
+   ]
+  },
+  "stone_balustrade_rail": {
+   "frame": [
+    26,
+    14
+   ],
+   "anchor": [
+    13,
+    12
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     88,
+     26,
+     14
+    ]
+   ]
+  },
+  "stair_lantern_candelabra": {
+   "frame": [
+    20,
+    28
+   ],
+   "anchor": [
+    10,
+    26
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     102,
+     20,
+     28
+    ],
+    [
+     20,
+     102,
+     20,
+     28
+    ],
+    [
+     40,
+     102,
+     20,
+     28
+    ],
+    [
+     60,
+     102,
+     20,
+     28
+    ]
+   ]
+  },
+  "arch_landing_gate": {
+   "frame": [
+    46,
+    46
+   ],
+   "anchor": [
+    23,
+    44
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     130,
+     46,
+     46
+    ]
+   ]
+  },
+  "tattered_climb_banner": {
+   "frame": [
+    18,
+    34
+   ],
+   "anchor": [
+    9,
+    32
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     176,
+     18,
+     34
+    ],
+    [
+     18,
+     176,
+     18,
+     34
+    ],
+    [
+     36,
+     176,
+     18,
+     34
+    ],
+    [
+     54,
+     176,
+     18,
+     34
+    ]
+   ]
+  },
+  "hourglass_milestone": {
+   "frame": [
+    20,
+    26
+   ],
+   "anchor": [
+    10,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     210,
+     20,
+     26
+    ],
+    [
+     20,
+     210,
+     20,
+     26
+    ],
+    [
+     40,
+     210,
+     20,
+     26
+    ],
+    [
+     60,
+     210,
+     20,
+     26
+    ]
+   ]
+  },
+  "cracked_step_rubble": {
+   "frame": [
+    18,
+    16
+   ],
+   "anchor": [
+    9,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     236,
+     18,
+     16
+    ]
+   ]
+  },
+  "void_chime_post": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     252,
+     18,
+     30
+    ],
+    [
+     18,
+     252,
+     18,
+     30
+    ],
+    [
+     36,
+     252,
+     18,
+     30
+    ],
+    [
+     54,
+     252,
+     18,
+     30
+    ]
+   ]
+  }
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "pack_id": "toys_phys",
+  "owner": "E0-2",
+  "interactables": {
+    "push_block": "res://luxel/world/toys/phys_push_block.gd",
+    "moving_platform": "res://luxel/world/toys/phys_moving_platform.gd",
+    "conveyor": "res://luxel/world/toys/phys_conveyor.gd",
+    "spinner": "res://luxel/world/toys/phys_spinner.gd",
+    "crumble_floor": "res://luxel/world/toys/phys_crumble_floor.gd",
+    "bounce_bloom": "res://luxel/world/toys/phys_bounce_bloom.gd",
+    "gravity_well": "res://luxel/world/toys/phys_gravity_well.gd",
+    "wind_zone": "res://luxel/world/toys/phys_wind_zone.gd",
+    "spike_floor": "res://luxel/world/toys/phys_spike_floor.gd",
+    "pull_ring": "res://luxel/world/toys/phys_pull_ring.gd",
+    "carry_orb": "res://luxel/world/toys/phys_carry_orb.gd",
+    "one_way_gate": "res://luxel/world/toys/phys_one_way_gate.gd",
+    "mover_wall": "res://luxel/world/toys/phys_mover_wall.gd",
+    "vehicle_skiff": "res://luxel/world/vehicles/skiff.gd",
+    "vehicle_cart": "res://luxel/world/vehicles/cart.gd",
+    "rotor": "res://luxel/world/toys/phys_rotor.gd",
+    "tilt_group": "res://luxel/world/toys/phys_tilt_group.gd",
+    "grate": "res://luxel/world/toys/phys_grate.gd",
+    "rail": "res://luxel/world/toys/phys_rail.gd"
+  },
+  "strings": {
+    "PROMPT_CARRY_ORB": "LIFT ORB",
+    "PROMPT_BOARD_SKIFF": "BOARD SKIFF",
+    "PROMPT_LEAVE_SKIFF": "LEAVE SKIFF",
+    "PROMPT_BOARD_CART": "BOARD CART",
+    "PROMPT_LEAVE_CART": "LEAVE CART",
+    "PROMPT_PULL_RING": "PULL WITH LANTERN"
+  }
+}

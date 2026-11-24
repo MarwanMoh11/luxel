@@ -12,11 +12,13 @@ static func should_autosave_region_load(
 	if region_id != "overworld" or island_changed: return true
 	return not (island_id == 1 and not state.has_lantern())
 
-static func save_now(active_slot: int, state: LxGameState, save_svc: LxSaveService, region_loader: Node) -> bool:
+static func save_now(
+	active_slot: int, state: LxGameState, save_svc: LxSaveService, region_loader: Node, immediate: bool = false
+) -> bool:
 	if state == null or save_svc == null: return false
 	if region_loader != null and is_instance_valid(region_loader) and region_loader.has_method("save_interactables_to_state"):
 		region_loader.call("save_interactables_to_state")
-	return save_svc.save_slot(active_slot, state)
+	return save_svc.autosave_slot(active_slot, state, immediate)
 
 static func flush_and_save(
 	active_slot: int, state: LxGameState, save_svc: LxSaveService, region_loader: Node, player: Node, _reason: String = "exit"
@@ -26,7 +28,22 @@ static func flush_and_save(
 		region_loader.call("save_interactables_to_state")
 	var safe_pos: Vector2 = _resolve_safe_player_pos(player, region_loader)
 	if safe_pos.x >= 0.0: state.spawn_pos = safe_pos
+	save_svc.flush_pending()
 	return save_svc.save_slot(active_slot, state)
+
+static func resolve_dungeon_respawn(state: LxGameState, region_loader: Node) -> Vector2:
+	if region_loader != null and is_instance_valid(region_loader):
+		if region_loader.has_method("get_room_anchor"):
+			var anch: Vector2 = region_loader.call("get_room_anchor") as Vector2
+			if anch.x >= 0.0 and _is_safe_spawn_point(anch, region_loader):
+				return anch
+	if state != null:
+		var key: String = "%d:%s" % [state.island_id, state.region_id]
+		if state.room_anchor_region == key and state.room_anchor_pos.x >= 0.0 and _is_safe_spawn_point(state.room_anchor_pos, region_loader):
+			return state.room_anchor_pos
+	if region_loader != null and is_instance_valid(region_loader) and region_loader.has_method("get_spawn_pos"):
+		return region_loader.call("get_spawn_pos") as Vector2
+	return state.spawn_pos if state != null else Vector2(160.0, 90.0)
 
 static func _resolve_safe_player_pos(player: Node, region_loader: Node) -> Vector2:
 	if player == null or not is_instance_valid(player) or not (player is Node2D) or bool(player.get("dead")):

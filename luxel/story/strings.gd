@@ -448,6 +448,10 @@ const TABLE: Dictionary = {
 static func text(id: String) -> String:
 	if TABLE.has(id):
 		return str(TABLE[id])
+	if Lx.packs != null:
+		var p: String = Lx.packs.string(id)
+		if not p.is_empty():
+			return p
 	push_warning("LxStrings: missing id " + id)
 	return id
 
@@ -458,13 +462,18 @@ static func fmt(id: String, args: Array) -> String:
 
 
 static func has_id(id: String) -> bool:
-	return TABLE.has(id)
+	return TABLE.has(id) or (Lx.packs != null and not Lx.packs.string(id).is_empty())
 
 
 static func all_ids() -> PackedStringArray:
 	var out := PackedStringArray()
 	for k: Variant in TABLE.keys():
 		out.append(str(k))
+	if Lx.packs != null:
+		for k: Variant in Lx.packs.all_strings().keys():
+			var ks: String = str(k)
+			if not TABLE.has(ks):
+				out.append(ks)
 	return out
 
 
@@ -503,28 +512,34 @@ static func sanitize(raw: String, max_chars: int = MAX_LEN) -> String:
 static func validate() -> PackedStringArray:
 	var errors := PackedStringArray()
 	for key: Variant in TABLE.keys():
-		var id: String = str(key)
-		var val: Variant = TABLE[key]
-		if not (val is String):
-			errors.append(id + ": NOT A STRING")
-			continue
-		var raw: String = val as String
-		var placeholders: Array[String] = _find_placeholders(raw)
-		if placeholders.is_empty():
-			_check_line(id, raw, errors)
-		else:
-			var low_args: Array = []
-			var high_args: Array = []
-			for kind: String in placeholders:
-				if kind == "d":
-					low_args.append(0)
-					high_args.append(999)
-				else:
-					low_args.append("0")
-					high_args.append("999")
-			_check_line(id + "(0)", _apply_fmt(raw, low_args), errors)
-			_check_line(id + "(999)", _apply_fmt(raw, high_args), errors)
+		_validate_entry(str(key), TABLE[key], errors)
+	if Lx.packs != null:
+		var pack_strs: Dictionary = Lx.packs.all_strings()
+		for pkey: Variant in pack_strs.keys():
+			_validate_entry(str(pkey), pack_strs[pkey], errors)
 	return errors
+
+
+static func _validate_entry(id: String, val: Variant, errors: PackedStringArray) -> void:
+	if not (val is String):
+		errors.append(id + ": NOT A STRING")
+		return
+	var raw: String = val as String
+	var placeholders: Array[String] = _find_placeholders(raw)
+	if placeholders.is_empty():
+		_check_line(id, raw, errors)
+	else:
+		var low_args: Array = []
+		var high_args: Array = []
+		for kind: String in placeholders:
+			if kind == "d":
+				low_args.append(0)
+				high_args.append(999)
+			else:
+				low_args.append("0")
+				high_args.append("999")
+		_check_line(id + "(0)", _apply_fmt(raw, low_args), errors)
+		_check_line(id + "(999)", _apply_fmt(raw, high_args), errors)
 
 
 static func _apply_fmt(tmpl: String, args: Array) -> String:

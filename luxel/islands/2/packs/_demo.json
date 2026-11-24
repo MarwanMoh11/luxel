@@ -1,0 +1,29 @@
+{
+  "pack_id": "island2_demo",
+  "owner": "E0-1",
+  "comment": "Debug-only two-room demo proving LxPackRegistry, LxWorldState, dynamic layers, and room events. Reachable only via --island=2 --region=_demo_a.",
+  "strings": {
+    "DEMO_REGION_A": "DEMO TIDE ANTECHAMBER",
+    "DEMO_REGION_B": "DEMO TIDE SANCTUM",
+    "DEMO_TIDE_SHIFT": "THE DEMO TIDE RECEDES!"
+  },
+  "state_vars": {
+    "demo_tide": {
+      "scope": "island:2",
+      "values": ["high", "low"],
+      "default": "high"
+    }
+  },
+  "regions": {
+    "_demo_a": {
+      "name_key": "DEMO_REGION_A",
+      "debug_only": true,
+      "map": [0, 0]
+    },
+    "_demo_b": {
+      "name_key": "DEMO_REGION_B",
+      "debug_only": true,
+      "map": [1, 0]
+    }
+  }
+}

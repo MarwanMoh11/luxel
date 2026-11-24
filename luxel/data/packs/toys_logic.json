@@ -1,0 +1,40 @@
+{
+  "interactables": {
+    "pressure_plate": "res://luxel/world/toys/logic_plate.gd",
+    "timed_brazier": "res://luxel/world/toys/logic_timed_brazier.gd",
+    "crystal_toggle": "res://luxel/world/toys/logic_crystal_toggle.gd",
+    "toggle_block": "res://luxel/world/toys/logic_toggle_block.gd",
+    "beam_emitter": "res://luxel/world/toys/light_beam_emitter.gd",
+    "beam_sensor": "res://luxel/world/toys/light_beam_sensor.gd",
+    "turret_eye": "res://luxel/world/toys/light_turret_eye.gd",
+    "bell": "res://luxel/world/toys/logic_bell.gd",
+    "tone_door": "res://luxel/world/toys/logic_tone_door.gd",
+    "light_plant": "res://luxel/world/toys/light_plant.gd",
+    "shadow_gate": "res://luxel/world/toys/light_shadow_gate.gd",
+    "scale": "res://luxel/world/toys/logic_scale.gd",
+    "floor_sigil": "res://luxel/world/toys/logic_floor_sigil.gd",
+    "sequence_orbs": "res://luxel/world/toys/logic_sequence_orbs.gd",
+    "mimic_statue": "res://luxel/world/toys/logic_mimic_statue.gd",
+    "logic_gate": "res://luxel/world/toys/logic_gate.gd",
+    "lantern_hook": "res://luxel/world/toys/light_lantern_hook.gd",
+    "echo_rose": "res://luxel/world/toys/logic_echo_rose.gd",
+    "trial_gate": "res://luxel/world/toys/logic_trial_gate.gd",
+    "lore_stone": "res://luxel/world/toys/logic_lore_stone.gd",
+    "room_anchor": "res://luxel/world/toys/logic_room_anchor.gd",
+    "light_sensor": "res://luxel/world/toys/light_sensor.gd",
+    "color_glass": "res://luxel/world/toys/light_color_glass.gd",
+    "state_lever": "res://luxel/world/toys/logic_state_lever.gd"
+  },
+  "strings": {
+    "PROMPT_RING_BELL": "RING BELL",
+    "PROMPT_PULL_LEVER": "PULL LEVER",
+    "PROMPT_READ_LORE": "READ STONE",
+    "PROMPT_HANG_LANTERN": "HANG LANTERN",
+    "PROMPT_TAKE_LANTERN": "TAKE LANTERN",
+    "PROMPT_START_TRIAL": "BEGIN TRIAL",
+    "PROMPT_ECHO_ROSE": "RECORD ECHO",
+    "PROMPT_RESET_PUZZLE": "RESET PUZZLE",
+    "PROMPT_CYCLE_GLASS": "SHIFT GLASS",
+    "PROMPT_ANCHOR_SET": "SET ANCHOR"
+  }
+}

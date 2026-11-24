@@ -26,6 +26,7 @@ var stagger: bool = false
 var origin: Vector2 = Vector2.ZERO
 var attacker: Object = null
 var cracks_armour: bool = false
+var curve_angle_deg: float = 0.0
 
 
 static func make(
@@ -38,7 +39,8 @@ static func make(
 	p_pierce: bool = false,
 	p_attacker: Object = null,
 	p_cracks_armour: bool = false,
-	p_light_color: String = ""
+	p_light_color: String = "",
+	p_curve_angle_deg: float = 0.0
 ) -> LxHit:
 	var hit := LxHit.new()
 	hit.source = p_source
@@ -54,6 +56,7 @@ static func make(
 	hit.pierce = p_pierce
 	hit.attacker = p_attacker
 	hit.cracks_armour = p_cracks_armour
+	hit.curve_angle_deg = maxf(0.0, p_curve_angle_deg)
 	return hit
 
 

@@ -13,6 +13,9 @@ static var camera: LxCameraRig = null
 static var rng: LxRng = null
 static var platform: LxPlatformService = null
 static var debug: LxDebugArgs = null
+static var packs: LxPackRegistry = null
+static var vars: LxWorldState = null
+static var panes: Object = null
 
 static var world: Node = null
 static var player: Node = null
@@ -36,10 +39,26 @@ static func reset() -> void:
 	rng = null
 	platform = null
 	debug = null
+	packs = null
+	vars = null
+	panes = null
 	world = null
 	player = null
 	ui = null
 	director = null
+
+
+static func ensure_packs() -> LxPackRegistry:
+	if packs == null:
+		packs = LxPackRegistry.new()
+		packs.load_all()
+	return packs
+
+
+static func ensure_vars() -> LxWorldState:
+	if vars == null:
+		vars = LxWorldState.new()
+	return vars
 
 
 static func load_json(path: String) -> Dictionary:

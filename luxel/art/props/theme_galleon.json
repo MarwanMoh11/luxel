@@ -1,0 +1,415 @@
+{
+ "id": "theme_galleon",
+ "name": "The Drowned Galleon Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_galleon.png",
+ "sheet_size": [
+  112,
+  318
+ ],
+ "props": {
+  "oak_ship_barrel": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    22
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     20,
+     24
+    ]
+   ]
+  },
+  "rope_coil_crate": {
+   "frame": [
+    20,
+    20
+   ],
+   "anchor": [
+    10,
+    18
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     24,
+     20,
+     20
+    ]
+   ]
+  },
+  "brass_capstan": {
+   "frame": [
+    26,
+    26
+   ],
+   "anchor": [
+    13,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    320.0,
+    320.0,
+    320.0,
+    320.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     44,
+     26,
+     26
+    ],
+    [
+     26,
+     44,
+     26,
+     26
+    ],
+    [
+     52,
+     44,
+     26,
+     26
+    ],
+    [
+     78,
+     44,
+     26,
+     26
+    ]
+   ]
+  },
+  "ship_helm_wheel": {
+   "frame": [
+    26,
+    28
+   ],
+   "anchor": [
+    13,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     70,
+     26,
+     28
+    ]
+   ]
+  },
+  "tangled_cargo_net": {
+   "frame": [
+    28,
+    24
+   ],
+   "anchor": [
+    14,
+    22
+   ],
+   "frames": 4,
+   "ms": [
+    340.0,
+    340.0,
+    340.0,
+    340.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     98,
+     28,
+     24
+    ],
+    [
+     28,
+     98,
+     28,
+     24
+    ],
+    [
+     56,
+     98,
+     28,
+     24
+    ],
+    [
+     84,
+     98,
+     28,
+     24
+    ]
+   ]
+  },
+  "brass_porthole_lamp": {
+   "frame": [
+    18,
+    28
+   ],
+   "anchor": [
+    9,
+    26
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     122,
+     18,
+     28
+    ],
+    [
+     18,
+     122,
+     18,
+     28
+    ],
+    [
+     36,
+     122,
+     18,
+     28
+    ],
+    [
+     54,
+     122,
+     18,
+     28
+    ]
+   ]
+  },
+  "mast_stump_pillar": {
+   "frame": [
+    18,
+    34
+   ],
+   "anchor": [
+    9,
+    32
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     150,
+     18,
+     34
+    ]
+   ]
+  },
+  "broken_cannon": {
+   "frame": [
+    28,
+    20
+   ],
+   "anchor": [
+    14,
+    18
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     184,
+     28,
+     20
+    ]
+   ]
+  },
+  "hanging_ship_lantern": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     204,
+     18,
+     30
+    ],
+    [
+     18,
+     204,
+     18,
+     30
+    ],
+    [
+     36,
+     204,
+     18,
+     30
+    ],
+    [
+     54,
+     204,
+     18,
+     30
+    ]
+   ]
+  },
+  "barnacle_anchor": {
+   "frame": [
+    22,
+    26
+   ],
+   "anchor": [
+    11,
+    24
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     234,
+     22,
+     26
+    ]
+   ]
+  },
+  "bilge_grate_hatch": {
+   "frame": [
+    28,
+    24
+   ],
+   "anchor": [
+    14,
+    12
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     260,
+     28,
+     24
+    ]
+   ]
+  },
+  "tattered_sail_banner": {
+   "frame": [
+    18,
+    34
+   ],
+   "anchor": [
+    9,
+    32
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     284,
+     18,
+     34
+    ],
+    [
+     18,
+     284,
+     18,
+     34
+    ],
+    [
+     36,
+     284,
+     18,
+     34
+    ],
+    [
+     54,
+     284,
+     18,
+     34
+    ]
+   ]
+  }
+ }
+}

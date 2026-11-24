@@ -101,6 +101,8 @@ static func _canonical_kind(raw_kind: String) -> String:
 		"grand_bellkeeper":
 			return "bellkeeper"
 		_:
+			if Lx.packs != null:
+				return Lx.packs.canonical_enemy_kind(key)
 			return key
 
 
@@ -123,8 +125,15 @@ static func create(
 ) -> LxEnemyBrain:
 	var key: String = _canonical_kind(kind)
 	var brain: LxEnemyBrain = null
+	var pack_script: String = ""
 	if KIND_SCRIPTS.has(key):
 		brain = _instantiate_from_path(str(KIND_SCRIPTS[key]))
+	else:
+		var packs: LxPackRegistry = Lx.packs if Lx.packs != null else Lx.ensure_packs()
+		key = packs.canonical_enemy_kind(key)
+		pack_script = packs.enemy_script(key)
+		if not pack_script.is_empty():
+			brain = _instantiate_from_path(pack_script)
 	if brain == null:
 		push_warning("LxEnemyFactory: unknown or missing kind '%s', defaulting to warden" % kind)
 		brain = LxWardenBrain.new()
@@ -133,13 +142,22 @@ static func create(
 	if key.begins_with("moonshade_") and (not merged.has("variant") or str(merged["variant"]).is_empty()):
 		merged["variant"] = key
 	if not merged.has("kind") or str(merged["kind"]).is_empty():
-		merged["kind"] = key if KIND_SCRIPTS.has(key) else brain.kind
+		merged["kind"] = key if (KIND_SCRIPTS.has(key) or not pack_script.is_empty()) else brain.kind
+	if Lx.packs != null and (not merged.has("boss_id") or str(merged["boss_id"]).is_empty()):
+		var bmeta: Dictionary = Lx.packs.boss_meta(key)
+		if not bmeta.is_empty():
+			merged["boss_id"] = str(bmeta.get("id", key))
 	brain.setup(merged, director, world_ctx)
 	return brain
 
 
 static func known_kinds() -> PackedStringArray:
-	return KNOWN_KINDS
+	var out: PackedStringArray = KNOWN_KINDS.duplicate()
+	if Lx.packs != null:
+		for pk: String in Lx.packs.enemy_kinds():
+			if not out.has(pk):
+				out.append(pk)
+	return out
 
 
 static func _make_data(
@@ -264,6 +282,28 @@ static func default_data(kind: String) -> LxEnemyData:
 		"the_hush":
 			return _make_data("the_hush", 28.0, 10.0, 42.0, 190.0, 160.0, 0.56, 1.05, 0.0, 60, 1.0, true)
 		_:
+			if Lx.packs != null:
+				var pd: Dictionary = Lx.packs.enemy_data(key)
+				var bm: Dictionary = Lx.packs.boss_meta(key)
+				if not pd.is_empty() or not bm.is_empty():
+					var is_b: bool = bool(pd.get("is_boss", not bm.is_empty()))
+					var ed: LxEnemyData = _make_data(
+						key,
+						float(pd.get("max_hp", pd.get("hp", 12.0 if is_b else 3.0))),
+						float(pd.get("body_radius", pd.get("radius", 7.0 if is_b else 5.0))),
+						float(pd.get("routine_speed", pd.get("speed", 40.0))),
+						float(pd.get("leash_radius", 180.0 if is_b else 156.0)),
+						float(pd.get("notice_radius", 148.0 if is_b else 124.0)),
+						float(pd.get("tell_time", 0.52)),
+						float(pd.get("recover_time", 1.15)),
+						float(pd.get("shield_hp", 0.0)),
+						int(pd.get("shard_drop", pd.get("shards", 18 if is_b else 3))),
+						float(pd.get("attack_damage", pd.get("damage", 1.0))),
+						is_b
+					)
+					if pd.has("shield_gone_time"):
+						ed.shield_gone_time = float(pd["shield_gone_time"])
+					return ed
 			var wd: LxEnemyData = _make_data("warden", 4.0, 5.0, 36.0, 158.0, 120.0, 0.48, 1.15, 1.75, 3)
 			wd.shield_gone_time = 4.8
 			return wd

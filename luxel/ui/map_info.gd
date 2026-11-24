@@ -38,6 +38,14 @@ static func draw_header_progress(ci: CanvasItem, elapsed: float) -> void:
 
 
 static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: bool) -> void:
+	if isl_id == 0:
+		LxPixelFont.draw_panel(ci, box, "dusk", "gold", "night")
+		LxHudFx.draw_biome_crest(ci, 1, box.position + Vector2(8.0, 8.0), LxPalette.PAL["gold"] as Color, LxPalette.PAL["cream"] as Color)
+		LxPixelFont.draw_left(ci, LxStrings.text("MAP_HUB_LABEL"), box.position + Vector2(14.0, 5.0), LxPalette.PAL["gold"], 1)
+		if Lx.state != null and Lx.state.island_id == 0:
+			LxPixelFont.draw_right(ci, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 5.0, LxPalette.PAL["cream"], 1)
+		_draw_footer_counts(ci, box)
+		return
 	LxPixelFont.draw_panel(ci, box, "dusk", LxBiomePalette.key(isl_id, "border") if explored else "mauve", "night")
 	var data: Dictionary = Lx.get_island_data(isl_id)
 	if not explored:
@@ -67,13 +75,66 @@ static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: 
 		ci.draw_rect(Rect2(bx, box.position.y + 14.0, 4.0, 4.0), isl_glow if lit_b else LxPalette.PAL["night"])
 		ci.draw_rect(Rect2(bx + 1.0, box.position.y + 15.0, 2.0, 2.0), LxPalette.PAL["cream" if lit_b else "mauve"])
 
-	var isl_relit: bool = Lx.state != null and Lx.state.relit_islands.has(isl_id)
-	var dungeon_label: String = get_dungeon_name(isl_id, data)
-	var d_line: String = LxStrings.text("MAP_DUNGEON_CLEAR") if isl_relit else (LxStrings.fmt("MAP_DUNGEON", [dungeon_label]) if beacons >= 3 else LxStrings.text("MAP_DUNGEON_SEALED"))
-	LxPixelFont.draw_left(ci, d_line, box.position + Vector2(6.0, 23.0), LxPalette.PAL["lime"] if isl_relit else LxPalette.PAL["apricot"], 1)
-
-	_draw_relic_and_harmony(ci, box, isl_id, data)
+	var dngs: Array[Dictionary] = get_island_dungeons(isl_id)
+	if dngs.size() <= 1:
+		var isl_relit: bool = Lx.state != null and Lx.state.relit_islands.has(isl_id)
+		var dungeon_label: String = get_dungeon_name(isl_id, data)
+		var d_line: String = LxStrings.text("MAP_DUNGEON_CLEAR") if isl_relit else (LxStrings.fmt("MAP_DUNGEON", [dungeon_label]) if beacons >= 3 else LxStrings.text("MAP_DUNGEON_SEALED"))
+		LxPixelFont.draw_left(ci, d_line, box.position + Vector2(6.0, 23.0), LxPalette.PAL["lime"] if isl_relit else LxPalette.PAL["apricot"], 1)
+		if not dngs.is_empty():
+			_draw_dungeon_pips(ci, box.end.x - 6.0, box.position.y + 23.0, dngs[0], isl_glow)
+		_draw_relic_and_harmony(ci, box, isl_id, data)
+	else:
+		_draw_multi_dungeons(ci, box, dngs, isl_glow)
 	_draw_footer_counts(ci, box)
+
+
+static func get_island_dungeons(isl_id: int) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	if Lx.packs != null:
+		for d: Dictionary in Lx.packs.dungeons_for_island(isl_id):
+			if not bool(d.get("debug_only", false)):
+				out.append(d)
+	return out
+
+
+static func _draw_multi_dungeons(ci: CanvasItem, box: Rect2, dngs: Array[Dictionary], glow: Color) -> void:
+	var done_n: int = 0
+	for d: Dictionary in dngs:
+		if LxMapDungeon.is_dungeon_done(d): done_n += 1
+	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_DUNGEON_COUNT_FMT", [done_n, dngs.size()]), box.position + Vector2(6.0, 21.0), LxPalette.PAL["lime"] if done_n == dngs.size() else LxPalette.PAL["apricot"], 1)
+	var shown: int = mini(dngs.size(), 3)
+	for i: int in range(shown):
+		var d: Dictionary = dngs[i]
+		var ry: float = box.position.y + 28.0 + float(i) * 5.0
+		var done: bool = LxMapDungeon.is_dungeon_done(d)
+		var nm: String = LxMapDungeon._dungeon_display_name(d, str(d.get("id", ""))).substr(0, 14)
+		ci.draw_rect(Rect2(box.position.x + 6.0, ry + 1.0, 3.0, 3.0), LxPalette.PAL["lime"] if done else glow)
+		LxPixelFont.draw_left(ci, nm, Vector2(box.position.x + 11.0, ry), LxPalette.PAL["lime"] if done else LxPalette.PAL["cream"], 1)
+		_draw_dungeon_pips(ci, box.end.x - 6.0, ry, d, glow)
+
+
+static func _draw_dungeon_pips(ci: CanvasItem, right_x: float, y: float, d: Dictionary, glow: Color) -> void:
+	var did: String = str(d.get("id", ""))
+	var done: bool = LxMapDungeon.is_dungeon_done(d)
+	var boss_dead: bool = LxMapDungeon._is_boss_dead(str(d.get("boss", "")))
+	var mini_id: String = str(d.get("mini_boss", ""))
+	var mini_dead: bool = LxMapDungeon._is_boss_dead(mini_id)
+	var keys: int = (Lx.state.get_key_count(did, "wick_key") + Lx.state.get_key_count(did, "keepers_flame")) if Lx.state != null else 0
+	var cx: float = right_x - 3.0
+	# Done pip (rightmost)
+	ci.draw_rect(Rect2(cx, y + 1.0, 3.0, 3.0), LxPalette.PAL["lime"] if done else LxPalette.PAL["night"])
+	cx -= 5.0
+	# Boss pip
+	ci.draw_rect(Rect2(cx, y + 1.0, 3.0, 3.0), LxPalette.PAL["gold"] if boss_dead else LxPalette.PAL["coral"])
+	cx -= 5.0
+	# Mini-boss pip (if dungeon has one)
+	if not mini_id.is_empty():
+		ci.draw_rect(Rect2(cx, y + 1.0, 3.0, 3.0), glow if mini_dead else LxPalette.PAL["mauve"])
+		cx -= 5.0
+	# Keys held count
+	if keys > 0:
+		LxPixelFont.draw_right(ci, "x%d" % keys, cx + 2.0, y, LxPalette.PAL["apricot"], 1)
 
 
 static func _draw_relic_and_harmony(ci: CanvasItem, box: Rect2, isl_id: int, data: Dictionary) -> void:

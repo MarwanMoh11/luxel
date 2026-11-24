@@ -1,0 +1,174 @@
+{
+  "pack_id": "i1_creatures_a",
+  "owner": "C1-A",
+  "strings": {
+    "ISL1_BOSS_HOUND": "THE TOLL-HOUND",
+    "ISL1_BOSS_SEXTON": "THE SEXTON"
+  },
+  "enemies": {
+    "toll_moth": {
+      "script": "res://luxel/enemies/toll_moth/brain.gd",
+      "data": {
+        "max_hp": 1.5,
+        "body_radius": 6.5,
+        "routine_speed": 44.0,
+        "leash_radius": 156.0,
+        "notice_radius": 110.0,
+        "tell_time": 0.50,
+        "recover_time": 1.20,
+        "shard_drop": 3,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "snuffer_acolyte": {
+      "script": "res://luxel/enemies/snuffer_acolyte/brain.gd",
+      "data": {
+        "max_hp": 2.0,
+        "body_radius": 6.0,
+        "routine_speed": 38.0,
+        "leash_radius": 160.0,
+        "notice_radius": 140.0,
+        "tell_time": 0.48,
+        "recover_time": 1.15,
+        "shard_drop": 3,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "portrait_eye": {
+      "script": "res://luxel/enemies/portrait_eye/brain.gd",
+      "data": {
+        "max_hp": 2.5,
+        "body_radius": 7.0,
+        "routine_speed": 24.0,
+        "leash_radius": 128.0,
+        "notice_radius": 112.0,
+        "tell_time": 0.52,
+        "recover_time": 1.25,
+        "shard_drop": 3,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "lamp_butler": {
+      "script": "res://luxel/enemies/lamp_butler/brain.gd",
+      "data": {
+        "max_hp": 3.5,
+        "body_radius": 6.5,
+        "routine_speed": 34.0,
+        "leash_radius": 158.0,
+        "notice_radius": 108.0,
+        "tell_time": 0.46,
+        "recover_time": 1.15,
+        "shield_hp": 1.5,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "pew_mimic": {
+      "script": "res://luxel/enemies/pew_mimic/brain.gd",
+      "data": {
+        "max_hp": 4.0,
+        "body_radius": 7.5,
+        "routine_speed": 34.0,
+        "leash_radius": 148.0,
+        "notice_radius": 72.0,
+        "tell_time": 0.55,
+        "recover_time": 1.35,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "grave_hand": {
+      "script": "res://luxel/enemies/grave_hand/brain.gd",
+      "data": {
+        "max_hp": 2.0,
+        "body_radius": 5.5,
+        "routine_speed": 24.0,
+        "leash_radius": 96.0,
+        "notice_radius": 54.0,
+        "tell_time": 0.50,
+        "recover_time": 1.20,
+        "shard_drop": 2,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "toll_hound": {
+      "script": "res://luxel/bosses/toll_hound/brain.gd",
+      "data": {
+        "max_hp": 38.0,
+        "body_radius": 11.0,
+        "routine_speed": 44.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.58,
+        "recover_time": 1.20,
+        "shard_drop": 18,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "sexton": {
+      "script": "res://luxel/bosses/sexton/brain.gd",
+      "data": {
+        "max_hp": 54.0,
+        "body_radius": 12.0,
+        "routine_speed": 36.0,
+        "leash_radius": 0.0,
+        "notice_radius": 190.0,
+        "tell_time": 0.65,
+        "recover_time": 1.35,
+        "shard_drop": 32,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "toll_hound": {
+      "island": 1,
+      "name_key": "ISL1_BOSS_HOUND",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "undercroft",
+      "region": "undercroft_r5",
+      "music": "island1_boss_p1",
+      "music_p2": "island1_boss_p2",
+      "heart": "half",
+      "flag": "uc_miniboss_done"
+    },
+    "sexton": {
+      "island": 1,
+      "name_key": "ISL1_BOSS_SEXTON",
+      "phases": [0.6, 0.32],
+      "mini": false,
+      "dungeon": "undercroft",
+      "region": "undercroft_r11",
+      "music": "island1_boss_p1",
+      "music_p2": "island1_boss_p2",
+      "heart": "half",
+      "flag": "undercroft_cleared"
+    }
+  },
+  "sfx": {
+    "toll_moth_tell": { "id": "clockwork_chime", "pitch": 1.22, "db": -3.0 },
+    "toll_moth_ring": { "id": "bell_slam", "pitch": 1.35, "db": -1.5 },
+    "toll_moth_war_ring": { "id": "bell_slam", "pitch": 1.15, "db": 0.0 },
+    "snuffer_cone_knock": { "id": "shield_clang", "pitch": 1.18, "db": -1.0 },
+    "portrait_blink": { "id": "switch_eye", "pitch": 1.08, "db": -2.0 },
+    "portrait_glass_crack": { "id": "crystal_clank", "pitch": 1.22, "db": -0.5 },
+    "butler_whistle": { "id": "warden_alert", "pitch": 1.28, "db": -2.5 },
+    "pew_creak": { "id": "harbor_creak", "pitch": 0.90, "db": -2.0 },
+    "pew_chomp": { "id": "shell_snap", "pitch": 0.85, "db": 0.0 },
+    "grave_grab": { "id": "magpie_grab", "pitch": 0.82, "db": -1.0 },
+    "grave_wrist_snap": { "id": "stone_break", "pitch": 1.25, "db": -1.5 },
+    "toll_hound_bark": { "id": "bell_slam", "pitch": 0.95, "db": 0.5 },
+    "toll_hound_bonk": { "id": "stone_break", "pitch": 0.86, "db": 1.0 },
+    "sexton_cave_in": { "id": "stone_break", "pitch": 0.78, "db": 1.0 },
+    "sexton_cleave": { "id": "warden_swing", "pitch": 0.80, "db": 0.5 }
+  }
+}

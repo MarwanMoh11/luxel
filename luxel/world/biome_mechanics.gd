@@ -140,19 +140,20 @@ func tick(dt: float, cam_center: Vector2) -> void:
 		_setpieces.tick(dt, cam_center)
 	if _portals != null and is_instance_valid(_portals):
 		_portals.tick(dt, cam_center)
-	match _rules.island_id:
-		2:
-			_tick_island2(dt)
-		3:
-			_tick_island3(dt)
-		4:
-			_tick_island4(dt)
-		5:
-			_tick_island5(dt)
-		7:
-			_tick_island7(dt)
-		8:
-			_tick_island8(dt)
+	if _rules.legacy_active:
+		match _rules.island_id:
+			2:
+				_tick_island2(dt)
+			3:
+				_tick_island3(dt)
+			4:
+				_tick_island4(dt)
+			5:
+				_tick_island5(dt)
+			7:
+				_tick_island7(dt)
+			8:
+				_tick_island8(dt)
 	queue_redraw()
 
 

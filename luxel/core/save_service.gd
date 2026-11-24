@@ -6,6 +6,7 @@ extends Node
 const SAVE_DIR: String = "user://luxel1"
 const CURRENT_VERSION: int = 2
 const SLOT_COUNT: int = 3
+const AUTOSAVE_DEBOUNCE_S: float = 1.5
 const OBSIDIAN_SEAL_IDS: Array[String] = [
 	"obsidian_5_secret", "seal_kiln_r5", "seal_kiln_r7", "seal_kiln_r9", "seal_7_ow_terrace",
 	"seal_spire_r5", "seal_spire_r9", "seal_8_g3", "seal_sanctum_r5",
@@ -16,12 +17,25 @@ var settings: Dictionary = {}
 var last_load_used_backup: bool = false
 var last_notice_key: String = ""
 
+var _debounce_timer: float = -1.0
+var _pending_slot: int = -1
+var _pending_state: LxGameState = null
+var _io_thread: Thread = null
+var _io_mutex: Mutex = Mutex.new()
+var _io_queue: Array[Dictionary] = []
+var _io_running: bool = false
+
 
 func _init() -> void:
 	settings = default_settings()
 
 
+func _exit_tree() -> void:
+	flush_pending()
+
+
 func setup(is_debug: bool) -> void:
+	flush_pending()
 	debug_mode = is_debug
 	_ensure_dir()
 	load_settings()
@@ -45,6 +59,7 @@ func settings_path() -> String:
 
 
 func slot_exists(slot_num: int) -> bool:
+	flush_pending()
 	var p: String = slot_path(slot_num)
 	return FileAccess.file_exists(p) or FileAccess.file_exists(p + ".bak")
 
@@ -80,9 +95,127 @@ func slot_summary(slot_num: int) -> Dictionary:
 func save_slot(slot_num: int, state: LxGameState) -> bool:
 	if state == null:
 		return false
+	flush_pending()
 	state.slot_id = str(clampi(slot_num, 1, SLOT_COUNT))
 	state.version = CURRENT_VERSION
 	return _write_atomic_json(slot_path(slot_num), state.to_dict())
+
+
+func autosave_slot(slot_num: int, state: LxGameState, immediate: bool = false) -> bool:
+	if state == null:
+		return false
+	state.slot_id = str(clampi(slot_num, 1, SLOT_COUNT))
+	state.version = CURRENT_VERSION
+	if not immediate:
+		_pending_slot = slot_num
+		_pending_state = state
+		_debounce_timer = AUTOSAVE_DEBOUNCE_S
+		return true
+	_pending_slot = -1
+	_pending_state = null
+	_debounce_timer = -1.0
+	return _dispatch_async_write(slot_path(slot_num), _snapshot_state_fast(state))
+
+
+func tick_autosave(dt: float) -> void:
+	if _debounce_timer >= 0.0:
+		_debounce_timer -= maxf(0.0, dt)
+		if _debounce_timer <= 0.0:
+			var sl: int = _pending_slot
+			var st: LxGameState = _pending_state
+			_pending_slot = -1
+			_pending_state = null
+			_debounce_timer = -1.0
+			if sl > 0 and st != null and is_instance_valid(st):
+				_dispatch_async_write(slot_path(sl), _snapshot_state_fast(st))
+	_reap_finished_thread()
+
+
+func flush_pending() -> void:
+	if _pending_slot > 0 and _pending_state != null and is_instance_valid(_pending_state):
+		var sl: int = _pending_slot
+		var st: LxGameState = _pending_state
+		_pending_slot = -1
+		_pending_state = null
+		_debounce_timer = -1.0
+		_dispatch_async_write(slot_path(sl), _snapshot_state_fast(st))
+	if _io_thread != null:
+		if _io_thread.is_started():
+			_io_thread.wait_to_finish()
+		_io_thread = null
+		_io_running = false
+
+
+func _snapshot_state_fast(state: LxGameState) -> Dictionary:
+	# Shallow-copy interactable_states map (entries are replaced atomically on save) so
+	# even 5,000+ entries snapshot in < 1 ms on the main thread while JSON stringify runs off-thread.
+	var d: Dictionary = {
+		"version": state.version, "slot_id": state.slot_id,
+		"island_id": state.island_id, "region_id": state.region_id, "room_id": state.room_id,
+		"spawn_pos": [state.spawn_pos.x, state.spawn_pos.y],
+		"room_anchor_region": state.room_anchor_region,
+		"room_anchor_pos": [state.room_anchor_pos.x, state.room_anchor_pos.y],
+		"last_waystone_island": state.last_waystone_island, "last_waystone_id": state.last_waystone_id,
+		"max_hearts": state.max_hearts, "hearts": state.hearts,
+		"ember_pieces": state.ember_pieces, "half_lanterns": state.half_lanterns, "shards": state.shards,
+		"unlocked_moves": state.unlocked_moves.duplicate(), "upgrades": state.upgrades.duplicate(),
+		"lit_waystones": state.lit_waystones.duplicate(), "lit_beacons": state.lit_beacons.duplicate(),
+		"claimed_shrines": state.claimed_shrines.duplicate(), "broken_seals": state.broken_seals.duplicate(),
+		"relit_islands": state.relit_islands.duplicate(), "defeated_bosses": state.defeated_bosses.duplicate(),
+		"collected_keys": state.collected_keys.duplicate(), "opened_doors": state.opened_doors.duplicate(),
+		"visited_regions": state.visited_regions.duplicate(),
+		"interactable_states": state.interactable_states.duplicate(false),
+		"story_flags": state.story_flags.duplicate(true), "world_vars": state.world_vars.duplicate(true),
+		"play_time_s": state.play_time_s, "deaths": state.deaths, "hits_taken": state.hits_taken,
+		"boss_retries": state.boss_retries.duplicate(), "zone_times": state.zone_times.duplicate(),
+	}
+	return d
+
+
+func _dispatch_async_write(user_path: String, data: Dictionary) -> bool:
+	_ensure_dir()
+	var abs_target: String = ProjectSettings.globalize_path(user_path)
+	if OS.has_feature("web"):
+		return _write_atomic_abs(abs_target, data)
+	_reap_finished_thread()
+	_io_mutex.lock()
+	# Coalesce multiple queued writes to the same slot file.
+	var replaced: bool = false
+	for i: int in range(_io_queue.size()):
+		if str(_io_queue[i].get("path", "")) == abs_target:
+			_io_queue[i]["data"] = data
+			replaced = true
+			break
+	if not replaced:
+		_io_queue.append({"path": abs_target, "data": data})
+	var start_worker: bool = not _io_running
+	if start_worker:
+		_io_running = true
+	_io_mutex.unlock()
+	if start_worker:
+		if _io_thread != null and _io_thread.is_started():
+			_io_thread.wait_to_finish()
+		_io_thread = Thread.new()
+		_io_thread.start(_io_worker_loop)
+	return true
+
+
+func _io_worker_loop() -> void:
+	while true:
+		_io_mutex.lock()
+		if _io_queue.is_empty():
+			_io_running = false
+			_io_mutex.unlock()
+			return
+		var job: Dictionary = _io_queue.pop_front() as Dictionary
+		_io_mutex.unlock()
+		_write_atomic_abs(str(job["path"]), job["data"] as Dictionary)
+
+
+func _reap_finished_thread() -> void:
+	if _io_thread != null and _io_thread.is_started() and not _io_thread.is_alive():
+		_io_thread.wait_to_finish()
+		_io_thread = null
 
 
 func load_slot(slot_num: int, state: LxGameState) -> bool:
@@ -94,6 +227,7 @@ func load_slot(slot_num: int, state: LxGameState) -> bool:
 
 
 func load_slot_dict(slot_num: int) -> Dictionary:
+	flush_pending()
 	last_load_used_backup = false
 	last_notice_key = ""
 	var p: String = slot_path(slot_num)
@@ -110,6 +244,7 @@ func load_slot_dict(slot_num: int) -> Dictionary:
 
 
 func delete_slot(slot_num: int) -> void:
+	flush_pending()
 	var p: String = slot_path(slot_num)
 	for suffix: String in ["", ".bak", ".tmp"]:
 		var full: String = ProjectSettings.globalize_path(p + suffix)
@@ -177,6 +312,10 @@ static func _normalize_save_dict(out: Dictionary) -> void:
 				has_obsidian_seal = true
 	var sf: Dictionary = out["story_flags"] as Dictionary if out.get("story_flags") is Dictionary else {}
 	out["story_flags"] = sf
+	if not (out.get("world_vars") is Dictionary):
+		out["world_vars"] = {}
+	if not out.has("half_lanterns"):
+		out["half_lanterns"] = 0
 	if relit_set.has(2):
 		sf["tut_blue_refract_done"] = true
 	if relit_set.has(3):
@@ -258,10 +397,13 @@ func save_settings() -> bool:
 
 func _write_atomic_json(user_path: String, data: Dictionary) -> bool:
 	_ensure_dir()
-	var abs_target: String = ProjectSettings.globalize_path(user_path)
+	return _write_atomic_abs(ProjectSettings.globalize_path(user_path), data)
+
+
+static func _write_atomic_abs(abs_target: String, data: Dictionary) -> bool:
 	var abs_tmp: String = abs_target + ".tmp"
 	var abs_bak: String = abs_target + ".bak"
-	var json_text: String = JSON.stringify(data, "  ") + "\n"
+	var json_text: String = JSON.stringify(data)
 	var f: FileAccess = FileAccess.open(abs_tmp, FileAccess.WRITE)
 	if f == null:
 		push_warning("LxSaveService: failed to open tmp " + abs_tmp)

@@ -1,0 +1,188 @@
+class_name LxPhysCarryOrb
+extends LxToy
+## Liftable, droppable, throwable orb with 4 kinds:
+## - light: emits a real light pool and calls on_light() on nearby interactables
+## - stone: heavy weight orb for plates/scales
+## - seed: living seed orb for Thornwood growth sockets
+## - key: luminous key orb for sockets / linked doors.
+
+const ORB_RADIUS: float = 6.0
+
+var orb_kind: String = "light"
+var origin_pos: Vector2 = Vector2.ZERO
+var carrier: LxWick = null
+var vel: Vector2 = Vector2.ZERO
+var airborne: bool = false
+var _air_t: float = 0.0
+
+
+func _toy_setup() -> void:
+	kind = "carry_orb"
+	orb_kind = str(props.get("kind", props.get("orb_kind", "light"))).strip_edges().to_lower()
+	if orb_kind not in ["light", "stone", "seed", "key"]:
+		orb_kind = "light"
+	radius = 10.0
+	origin_pos = pos
+	carrier = null
+	vel = Vector2.ZERO
+	airborne = false
+	_air_t = 0.0
+	queue_redraw()
+
+
+func interact(actor: Node = null) -> bool:
+	if not active or carrier != null or not (actor is LxWick):
+		return false
+	return (actor as LxWick).carry(self)
+
+
+func on_carried(w: LxWick) -> void:
+	carrier = w
+	vel = Vector2.ZERO
+	airborne = false
+	z_index = 3
+	queue_redraw()
+
+
+func set_carry_pos(p: Vector2) -> void:
+	pos = p
+	position = p.round()
+	queue_redraw()
+
+
+func on_dropped(drop_pos: Vector2) -> void:
+	carrier = null
+	vel = Vector2.ZERO
+	airborne = false
+	z_index = 0
+	pos = _safe_land_pos(drop_pos)
+	position = pos.round()
+	queue_redraw()
+
+
+func on_thrown(from_pos: Vector2, dir: Vector2, speed: float) -> void:
+	carrier = null
+	pos = from_pos
+	position = pos.round()
+	vel = dir.normalized() * maxf(60.0, speed)
+	airborne = true
+	_air_t = 0.42
+	z_index = 2
+	queue_redraw()
+
+
+func push_orb(delta: Vector2) -> void:
+	if carrier != null or airborne or not delta.is_finite():
+		return
+	var nxt: Vector2 = pos + delta
+	if region != null and region.has_method("collide"):
+		nxt = region.call("collide", nxt, ORB_RADIUS, false, false, id) as Vector2
+	pos = nxt
+	position = pos.round()
+	queue_redraw()
+
+
+func _safe_land_pos(p: Vector2) -> Vector2:
+	if region == null:
+		return p
+	var c: Vector2 = region.call("collide", p, ORB_RADIUS, false, false, id) as Vector2 if region.has_method("collide") else p
+	if region.has_method("is_lethal_void_at") and bool(region.call("is_lethal_void_at", c)):
+		_emit_sfx("phantom_phase")
+		return origin_pos
+	return c
+
+
+func tick(dt: float) -> void:
+	super.tick(dt)
+	if not active:
+		return
+	if airborne:
+		_air_t -= dt
+		if LxFields.has_fields():
+			var fa: Vector2 = LxFields.accel_at(pos, "block")
+			if fa.length_squared() > 0.01:
+				vel += fa * dt
+		var nxt: Vector2 = pos + vel * dt
+		var hit_wall: bool = region != null and region.has_method("tile_at") and LxMapFormat.blocks_sight_tile(str(region.call("tile_at", nxt)))
+		if hit_wall or _air_t <= 0.0:
+			airborne = false
+			vel = Vector2.ZERO
+			z_index = 0
+			pos = _safe_land_pos(pos if hit_wall else nxt)
+			position = pos.round()
+			_emit_sfx("lantern_land")
+		else:
+			pos = nxt
+			position = pos.round()
+		queue_redraw()
+	elif carrier == null and LxFields.has_fields():
+		var fa2: Vector2 = LxFields.accel_at(pos, "block")
+		if fa2.length_squared() > 4.0:
+			push_orb(fa2 * dt * 0.12)
+
+	# Light orb radiates real illumination to nearby on_light interactables!
+	if orb_kind == "light" and region != null and region.has_method("apply_light"):
+		region.call("apply_light", pos, 44.0, "carry_orb")
+
+
+func get_interact_prompt() -> String:
+	return "PROMPT_CARRY_ORB" if (active and carrier == null and not airborne) else ""
+
+
+func get_light_pool() -> Vector4:
+	if not active:
+		return Vector4.ZERO
+	if orb_kind == "light":
+		return Vector4(pos.x, pos.y, 52.0, 0.88)
+	if orb_kind == "key":
+		return Vector4(pos.x, pos.y, 28.0, 0.50)
+	return Vector4.ZERO
+
+
+func save_state() -> Dictionary:
+	var d: Dictionary = super.save_state()
+	if persist:
+		d["pos"] = [pos.x, pos.y]
+	return d
+
+
+func load_state(d: Dictionary) -> void:
+	super.load_state(d)
+	if persist and d.has("pos"):
+		pos = _parse_vec2(d.get("pos"), origin_pos)
+		position = pos.round()
+	queue_redraw()
+
+
+func _draw() -> void:
+	var lift: float = -4.0 if airborne else 0.0
+	if carrier == null:
+		_draw_ground_shadow(6.0, 3.0, Vector2(1.0, 4.0))
+	var c_out: Color = PAL["void"] as Color
+	var c_mid: Color = PAL["gold"] as Color
+	var c_hi: Color = PAL["cream"] as Color
+	var c_sh: Color = PAL["apricot"] as Color
+	match orb_kind:
+		"stone":
+			c_mid = PAL["stone"] as Color
+			c_hi = PAL["cream"] as Color
+			c_sh = PAL["dusk"] as Color
+		"seed":
+			c_mid = PAL["jade"] as Color
+			c_hi = PAL["lime"] as Color
+			c_sh = PAL["pine"] as Color
+		"key":
+			c_mid = PAL["sky"] as Color
+			c_hi = PAL["ice"] as Color
+			c_sh = PAL["deep"] as Color
+	var c := Vector2(0.0, lift)
+	draw_circle(c, 6.5, c_out)
+	draw_circle(c, 5.5, c_sh)
+	draw_circle(c + Vector2(-0.5, -0.5), 4.5, c_mid)
+	draw_rect(Rect2(c + Vector2(-2.0, -3.0), Vector2(2.0, 2.0)), c_hi)
+	if orb_kind == "key":
+		draw_rect(Rect2(c + Vector2(-1.0, 0.0), Vector2(2.0, 3.0)), PAL["gold"] as Color)
+	elif orb_kind == "seed":
+		draw_line(c + Vector2(0.0, -5.0), c + Vector2(2.0, -8.0), PAL["lime"] as Color, 1.0)
+	elif orb_kind == "light":
+		draw_arc(c, 8.0, 0.0, TAU, 14, Color(PAL["gold"] as Color, 0.35), 1.0)

@@ -32,6 +32,7 @@ var _upgrades: Array[Dictionary] = []
 var _idx: int = 0
 var _scroll: int = 0
 var _close_hover: bool = false
+var _panes_hover: bool = false
 var _feedback_txt: String = ""
 var _feedback_col: String = "lime"
 var _feedback_t: float = 0.0
@@ -78,80 +79,60 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not visible:
-		return
+	if not visible: return
 	if event is InputEventMouseMotion:
 		var pos: Vector2 = (event as InputEventMouseMotion).position
 		var over_close: bool = _close_btn_rect().has_point(pos)
-		if over_close != _close_hover:
-			_close_hover = over_close
-			if over_close:
-				_play_ui_sfx("ui_move")
+		var over_panes: bool = _panes_btn_rect().has_point(pos)
+		if over_close != _close_hover or over_panes != _panes_hover:
+			_close_hover = over_close; _panes_hover = over_panes
+			if over_close or over_panes: _play_ui_sfx("ui_move")
 			queue_redraw()
 		for vis_i: int in range(VISIBLE_ROWS):
 			var row_i: int = _scroll + vis_i
-			if row_i >= _upgrades.size():
-				break
+			if row_i >= _upgrades.size(): break
 			if _row_rect(vis_i).has_point(pos):
-				if _idx != row_i:
-					_idx = row_i
-					_play_ui_sfx("ui_move")
-					queue_redraw()
+				if _idx != row_i: _idx = row_i; _play_ui_sfx("ui_move"); queue_redraw()
 				return
 		return
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			if _panes_btn_rect().has_point(mb.position):
+				_open_panes(); get_viewport().set_input_as_handled(); return
 			if _close_btn_rect().has_point(mb.position):
-				_play_ui_sfx("menu_close")
-				closed.emit()
-				get_viewport().set_input_as_handled()
-				return
+				_play_ui_sfx("menu_close"); closed.emit(); get_viewport().set_input_as_handled(); return
 			for vis_i: int in range(VISIBLE_ROWS):
 				var row_i: int = _scroll + vis_i
-				if row_i >= _upgrades.size():
-					break
+				if row_i >= _upgrades.size(): break
 				if _row_rect(vis_i).has_point(mb.position):
-					_idx = row_i
-					_try_buy(_idx)
-					get_viewport().set_input_as_handled()
-					return
+					_idx = row_i; _try_buy(_idx); get_viewport().set_input_as_handled(); return
 		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
-			_play_ui_sfx("menu_close")
-			closed.emit()
-			get_viewport().set_input_as_handled()
+			_play_ui_sfx("menu_close"); closed.emit(); get_viewport().set_input_as_handled()
 		elif mb.pressed and (mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN):
 			var max_s: int = maxi(0, _upgrades.size() - VISIBLE_ROWS)
-			var delta_s: int = -1 if mb.button_index == MOUSE_BUTTON_WHEEL_UP else 1
-			var next_s: int = clampi(_scroll + delta_s, 0, max_s)
+			var next_s: int = clampi(_scroll + (-1 if mb.button_index == MOUSE_BUTTON_WHEEL_UP else 1), 0, max_s)
 			if next_s != _scroll:
-				_scroll = next_s
-				_idx = clampi(_idx, _scroll, mini(_upgrades.size() - 1, _scroll + VISIBLE_ROWS - 1))
-				_play_ui_sfx("ui_move")
-				queue_redraw()
+				_scroll = next_s; _idx = clampi(_idx, _scroll, mini(_upgrades.size() - 1, _scroll + VISIBLE_ROWS - 1))
+				_play_ui_sfx("ui_move"); queue_redraw()
 			get_viewport().set_input_as_handled()
 		return
-
+	if _key_just(event, KEY_TAB) or _key_just(event, KEY_Q) or _key_just(event, KEY_E):
+		_open_panes(); get_viewport().set_input_as_handled(); return
 	var count: int = maxi(1, _upgrades.size())
 	if event.is_action_pressed("lx_move_up") or _key_just(event, KEY_UP):
-		_idx = (_idx - 1 + count) % count
-		_sync_scroll()
-		_play_ui_sfx("ui_move")
-		queue_redraw()
-		get_viewport().set_input_as_handled()
+		_idx = (_idx - 1 + count) % count; _sync_scroll(); _play_ui_sfx("ui_move"); queue_redraw(); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_down") or _key_just(event, KEY_DOWN):
-		_idx = (_idx + 1) % count
-		_sync_scroll()
-		_play_ui_sfx("ui_move")
-		queue_redraw()
-		get_viewport().set_input_as_handled()
+		_idx = (_idx + 1) % count; _sync_scroll(); _play_ui_sfx("ui_move"); queue_redraw(); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
-		_try_buy(_idx)
-		get_viewport().set_input_as_handled()
+		_try_buy(_idx); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_pause") or _key_just(event, KEY_ESCAPE):
-		_play_ui_sfx("menu_close")
-		closed.emit()
-		get_viewport().set_input_as_handled()
+		_play_ui_sfx("menu_close"); closed.emit(); get_viewport().set_input_as_handled()
+
+func _open_panes() -> void:
+	if Lx.ui != null and Lx.ui.has_method("show_panes"):
+		_play_ui_sfx("ui_confirm")
+		Lx.ui.call("show_panes", false, LxUiRoot.Screen.SHOP)
 
 
 func _sync_scroll() -> void:
@@ -250,6 +231,9 @@ func _draw() -> void:
 		_draw_shard_preview_pill(desc_rect, sel_u, shards, unlocked)
 
 	LxPixelFont.draw_left(self, LxStrings.text("SHOP_BUY_HINT"), Vector2(28.0, 157.0), LxPalette.PAL["stone"], 1)
+	var pr_btn: Rect2 = _panes_btn_rect()
+	LxPixelFont.draw_panel(self, pr_btn, "plum" if _panes_hover else "night", "gold" if _panes_hover else "sky", "void")
+	LxPixelFont.draw_centered(self, LxStrings.text("SHOP_TAB_PANES"), pr_btn.get_center().x, pr_btn.position.y + 3.0, LxPalette.PAL["gold"] if _panes_hover else LxPalette.PAL["sky"], 1)
 	var cr: Rect2 = _close_btn_rect()
 	LxPixelFont.draw_panel(self, cr, "plum" if _close_hover else "night", "gold" if _close_hover else "mauve", "void")
 	LxPixelFont.draw_centered(self, LxStrings.text("SHOP_CLOSE"), cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["gold"] if _close_hover else LxPalette.PAL["cream"], 1)
@@ -573,6 +557,7 @@ func _draw_purchase_sparkle(center: Vector2) -> void:
 func _row_rect(vis_i: int) -> Rect2:
 	return Rect2(28.0, 38.0 + float(vis_i) * 15.0, 257.0 if _upgrades.size() > VISIBLE_ROWS else 264.0, 13.0)
 
+func _panes_btn_rect() -> Rect2: return Rect2(174.0, 154.0, 52.0, 11.0)
 func _close_btn_rect() -> Rect2: return Rect2(230.0, 154.0, 62.0, 11.0)
 func _play_ui_sfx(sfx_id: String) -> void:
 	if Lx.audio != null: Lx.audio.play_sfx(sfx_id, Vector2.ZERO, false, true)

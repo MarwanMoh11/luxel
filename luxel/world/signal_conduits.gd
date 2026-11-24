@@ -64,7 +64,7 @@ func rebuild(region: LxRegionLoader) -> void:
 	var by_pair: Dictionary = {}
 	for it: LxInteractable in region.get_interactables():
 		if it == null or not is_instance_valid(it): continue
-		if it.kind == "switch_eye" or it.kind == "brazier":
+		if it.kind == "switch_eye" or it.kind == "brazier" or it is LxToy:
 			_collect_switch_links(region, it, seen)
 		elif it.kind == "blue_portal":
 			_collect_portal_link(region, it, seen, by_pair)
@@ -83,9 +83,14 @@ func _collect_switch_links(region: LxRegionLoader, src: LxInteractable, seen: Di
 	var is_blue: bool = (src is LxSwitchEye and (src as LxSwitchEye).requires_prism) or bool(src.props.get("requires_blue", false))
 	for tid: String in tids:
 		var dst: LxInteractable = region.find_interactable(tid)
-		if dst == null or not (dst is LxDoor): continue
-		var door: LxDoor = dst as LxDoor
-		if door.door_type != "switch_door" and door.door_type != "bridge_platform": continue
+		if dst == null or dst == src: continue
+		var ok_dst: bool = false
+		if dst is LxDoor:
+			var door: LxDoor = dst as LxDoor
+			ok_dst = door.door_type == "switch_door" or door.door_type == "bridge_platform"
+		elif src is LxToy and dst is LxToy:
+			ok_dst = true
+		if not ok_dst: continue
 		var dist: float = src.pos.distance_to(dst.pos)
 		var key: String = "sw:%s->%s" % [src.id, dst.id]
 		if dist <= 8.0 or dist > MAX_LINK_DIST or seen.has(key): continue
@@ -193,12 +198,16 @@ func _is_source_powered(src: LxInteractable, dst: LxInteractable, is_portal: boo
 	if src == null or not is_instance_valid(src): return false
 	if src is LxSwitchEye: return (src as LxSwitchEye).activated
 	if src is LxBrazier: return (src as LxBrazier).lit
+	if src is LxToy: return (src as LxToy).powered
 	if is_portal and src is LxBluePortal:
 		return (src as LxBluePortal).powered or (dst != null and is_instance_valid(dst) and dst is LxBluePortal and (dst as LxBluePortal).powered)
 	return false
 
 func _is_target_opened(dst: LxInteractable) -> bool:
-	return dst != null and is_instance_valid(dst) and dst is LxDoor and (dst as LxDoor).opened
+	if dst == null or not is_instance_valid(dst): return false
+	if dst is LxDoor: return (dst as LxDoor).opened
+	if dst is LxToy: return (dst as LxToy).powered
+	return false
 
 func _is_chevron_solved(ch: OpticalChevron) -> bool:
 	return ch.target != null and is_instance_valid(ch.target) and _is_source_powered(ch.target, null, ch.target is LxBluePortal)

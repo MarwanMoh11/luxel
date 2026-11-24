@@ -51,15 +51,16 @@ func press() -> bool:
 
 	if lan.state == LxLantern.State.IN_HAND:
 		var aim: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
-		var spd: float = float(data.get("throw_speed", 360.0))
-		var rng: float = float(data.get("throw_range", 108.0))
-		var hang: float = float(data.get("hang_time", 4.5))
-		var rspd: float = float(data.get("recall_speed", 440.0))
+		var spd: float = _mod_stat("throw_speed", float(data.get("throw_speed", 360.0)))
+		var rng: float = _mod_stat("throw_range", float(data.get("throw_range", 108.0)))
+		var hang: float = _mod_stat("hang_time", float(data.get("hang_time", 4.5)))
+		var rspd: float = _mod_stat("recall_speed", float(data.get("recall_speed", 440.0)))
 		var lure_r: float = float(data.get("lure_radius", 135.0))
 		var empowered: bool = wick.move_dash != null and wick.move_dash.consume_counter()
 		if empowered:
 			dmg *= 1.25
 		lan.throw_out(wick.global_position, aim, spd, rng, hang, rspd, dmg, dmg, wear, lure_r)
+		wick.fired.emit(aim, "throw")
 		wick.throw_anim_t = 0.25
 		wick.spawn_sparks(wick.global_position, aim, 8 if empowered else 5, LxWick.PAL_CREAM if empowered else LxWick.PAL_GOLD, 35.0, 95.0, 0.18)
 		wick.spawn_ring(wick.global_position, 2.0, 14.0 if empowered else 10.0, 0.16, LxWick.PAL_GOLD if empowered else LxWick.PAL_CREAM, 1.2 if empowered else 1.0)
@@ -101,6 +102,9 @@ func try_zip() -> bool:
 
 	var to: Vector2 = lan.pos - wick.global_position
 	var dist: float = to.length()
+	if dist > 4.0 and wick.world_zip_blocked(_world_ctx, wick.global_position, lan.pos):
+		wick.emit_sfx("denied", wick.global_position, false)
+		return false
 	if dist <= 6.0:
 		_trigger_zip_arrival_burst(_world_ctx)
 		lan.catch_by_wick(wick)
@@ -126,6 +130,9 @@ func try_zip() -> bool:
 	wick.emit_sfx("zip_streak", wick.global_position, false)
 	if _zip_empowered:
 		wick.emit_sfx("perfect_counter", wick.global_position, false)
+	var panes_z: LxPanes = LxPanes.current()
+	if panes_z != null and not panes_z.equipped_ids().is_empty():
+		panes_z.fire_zip({"from_pos": wick.global_position, "to_pos": lan.pos, "phase": "start", "wick": wick, "world": _world_ctx if _world_ctx != null else Lx.world})
 	return true
 
 
@@ -193,16 +200,22 @@ func tick_zip(dt: float, world_ctx: Node) -> void:
 				wick.spawn_ring(wick.global_position, 2.0, 13.0, 0.18, LxWick.PAL_STONE, 1.2)
 				return
 
+	if wick.global_position.distance_to(lan.pos) > 8.0 and wick.world_zip_blocked(world_ctx, wick.global_position, lan.pos):
+		cancel_zip()
+		return
+
 	if zipping and (zip_time_left <= 0.0 or wick.global_position.distance_to(lan.pos) <= 8.0):
-		if wick.global_position.distance_to(lan.pos) <= 18.0:
+		var blocked_end: bool = wick.world_zip_blocked(world_ctx, wick.global_position, lan.pos)
+		if not blocked_end and wick.global_position.distance_to(lan.pos) <= 18.0:
 			wick.global_position = wick.world_collide_step(world_ctx, wick.global_position, lan.pos, LxWick.BODY_RADIUS, true)
 		zipping = false
 		zip_time_left = 0.0
 		wick.mercy_t = maxf(wick.mercy_t, 0.14)
-		_trigger_zip_arrival_burst(world_ctx)
-		if lan.state != LxLantern.State.IN_HAND and lan.state != LxLantern.State.CARRIED:
-			if wick.global_position.distance_to(lan.pos) <= 18.0:
-				lan.catch_by_wick(wick)
+		if not blocked_end:
+			_trigger_zip_arrival_burst(world_ctx)
+			if lan.state != LxLantern.State.IN_HAND and lan.state != LxLantern.State.CARRIED:
+				if wick.global_position.distance_to(lan.pos) <= 18.0:
+					lan.catch_by_wick(wick)
 
 
 func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
@@ -243,6 +256,9 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 			(amb as Object).call("_gust_particles", center, burst_r * 2.2, 85.0)
 	if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
 		LxBiomeMechanics.active_instance.try_hit_biome_target(center - zip_dir * burst_r, center + zip_dir * burst_r, zip_dir, wick)
+	var panes_za: LxPanes = LxPanes.current()
+	if panes_za != null and not panes_za.equipped_ids().is_empty():
+		panes_za.fire_zip({"from_pos": wick.global_position, "to_pos": center, "phase": "arrival", "wick": wick, "world": world_ctx if world_ctx != null else Lx.world})
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
 	for e_var: Variant in enemies:
@@ -286,6 +302,8 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 				LxHit.SOURCE_ZIP, zdmg, idir, center,
 				wear, stag, false, wick, false
 			)
+			if item.has_method("on_lantern_pull"):
+				item.call("on_lantern_pull", -zip_dir, "zip")
 			var consumed: Variant = item.call("on_hit", hit_i)
 			if consumed is bool and bool(consumed):
 				if str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
@@ -316,7 +334,13 @@ func reset() -> void:
 	cancel_zip()
 
 
+func _mod_stat(stat_name: String, base_val: float) -> float:
+	var panes: LxPanes = LxPanes.current()
+	if panes != null and not panes.equipped_ids().is_empty():
+		return panes.modify_stat(stat_name, base_val, {"wick": wick})
+	return base_val
+
+
 func _get_effective_throw_damage() -> float:
-	if Lx.state != null:
-		return Lx.state.get_effective_throw_damage()
-	return float(get_data().get("throw_damage", 2.0))
+	var base: float = Lx.state.get_effective_throw_damage() if Lx.state != null else float(get_data().get("throw_damage", 2.0))
+	return _mod_stat("throw_damage", base)

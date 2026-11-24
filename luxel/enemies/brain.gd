@@ -103,84 +103,46 @@ static func _to_vec2(v: Variant, fallback: Vector2 = Vector2.ZERO) -> Vector2:
 
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
-	if p_director != null:
-		director = p_director
-	elif spec.get("director") is LxAttackDirector:
-		director = spec["director"] as LxAttackDirector
-	else:
-		director = null
-	if p_world != null:
-		world_ctx = p_world
-	elif spec.get("region") is Node:
-		world_ctx = spec["region"] as Node
-	elif spec.get("world") is Node:
-		world_ctx = spec["world"] as Node
+	director = p_director if p_director != null else (spec["director"] as LxAttackDirector if spec.get("director") is LxAttackDirector else null)
+	if p_world != null: world_ctx = p_world
+	elif spec.get("region") is Node: world_ctx = spec["region"] as Node
+	elif spec.get("world") is Node: world_ctx = spec["world"] as Node
 	_fallback_rng.seed = int(spec.get("seed", 101))
 
-	if spec.has("data") and spec["data"] is LxEnemyData:
-		_apply_data(spec["data"] as LxEnemyData)
-	if spec.has("kind"):
-		kind = str(spec["kind"])
-	if spec.has("id"):
-		enemy_id = str(spec["id"])
-	if spec.has("home"):
-		home = _to_vec2(spec["home"], home)
-	elif spec.has("post"):
-		home = _to_vec2(spec["post"], home)
-	elif spec.has("pos"):
-		home = _to_vec2(spec["pos"], home)
+	if spec.has("data") and spec["data"] is LxEnemyData: _apply_data(spec["data"] as LxEnemyData)
+	if spec.has("kind"): kind = str(spec["kind"])
+	if spec.has("id"): enemy_id = str(spec["id"])
+	if spec.has("home"): home = _to_vec2(spec["home"], home)
+	elif spec.has("post"): home = _to_vec2(spec["post"], home)
+	elif spec.has("pos"): home = _to_vec2(spec["pos"], home)
 
 	pos = _to_vec2(spec["pos"], home) if spec.has("pos") else home
 	facing = float(spec.get("facing", facing))
-	if spec.has("leash_radius"):
-		leash_radius = maxf(16.0, float(spec["leash_radius"]))
-	elif spec.has("leash"):
-		leash_radius = maxf(16.0, float(spec["leash"]))
-	if spec.has("notice_radius"):
-		notice_radius = maxf(16.0, float(spec["notice_radius"]))
-	if spec.has("tell_time"):
-		tell_time = float(spec["tell_time"])
-	if spec.has("recover_time"):
-		recover_time = maxf(MIN_RECOVER_TIME, float(spec["recover_time"]))
-	if spec.has("routine_speed"):
-		routine_speed = maxf(8.0, float(spec["routine_speed"]))
-	if spec.has("body_radius"):
-		body_radius = maxf(2.0, float(spec["body_radius"]))
-	if spec.has("max_hp"):
-		max_hp = maxf(0.25, float(spec["max_hp"]))
+	if spec.has("leash_radius"): leash_radius = maxf(16.0, float(spec["leash_radius"]))
+	elif spec.has("leash"): leash_radius = maxf(16.0, float(spec["leash"]))
+	if spec.has("notice_radius"): notice_radius = maxf(16.0, float(spec["notice_radius"]))
+	if spec.has("tell_time"): tell_time = float(spec["tell_time"])
+	if spec.has("recover_time"): recover_time = maxf(MIN_RECOVER_TIME, float(spec["recover_time"]))
+	if spec.has("routine_speed"): routine_speed = maxf(8.0, float(spec["routine_speed"]))
+	if spec.has("body_radius"): body_radius = maxf(2.0, float(spec["body_radius"]))
+	if spec.has("max_hp"): max_hp = maxf(0.25, float(spec["max_hp"]))
 	max_hp *= maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	hp = max_hp
-	if spec.has("attack_damage"):
-		attack_damage = maxf(0.5, float(spec["attack_damage"]))
-	if spec.has("shard_drop"):
-		shard_drop = maxi(0, int(spec["shard_drop"]))
-	if spec.has("zone"):
-		zone = str(spec["zone"])
-	if spec.has("island_id"):
-		island_id = int(spec["island_id"])
+	if spec.has("attack_damage"): attack_damage = maxf(0.5, float(spec["attack_damage"]))
+	if spec.has("shard_drop"): shard_drop = maxi(0, int(spec["shard_drop"]))
+	if spec.has("zone"): zone = str(spec["zone"])
+	if spec.has("island_id"): island_id = int(spec["island_id"])
 
-	state = State.ROUTINE
-	phase = 1
-	state_timer = 0.0
-	anim_t = 0.0
-	flash_t = 0.0
-	clank_t = 0.0
-	awaken_t = 0.0
-	alert_t = 0.0
-	lost_t = 0.0
-	cooldown = 0.0
-	rally_t = -1.0
-	knock = Vector2.ZERO
-	opened_kill = false
-	is_counter_attack = false
-	last_tell_duration = 0.0
-	last_recover_duration = 0.0
+	state = State.ROUTINE; phase = 1; state_timer = 0.0; anim_t = 0.0
+	flash_t = 0.0; clank_t = 0.0; awaken_t = 0.0; alert_t = 0.0; lost_t = 0.0
+	cooldown = 0.0; rally_t = -1.0; knock = Vector2.ZERO
+	opened_kill = false; is_counter_attack = false
+	last_tell_duration = 0.0; last_recover_duration = 0.0
 
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_clamp_to_leash()
 	_try_load_optional_sprite()
-	if director != null:
-		director.register(self)
+	if director != null: director.register(self)
 	queue_redraw()
 
 
@@ -337,25 +299,45 @@ func _has_player() -> bool:
 	return Lx.player != null and is_instance_valid(Lx.player)
 
 
-func _get_wick_pos() -> Vector2:
+func _get_real_wick_pos() -> Vector2:
 	if world_ctx != null and is_instance_valid(world_ctx):
 		if world_ctx.has_method("get_wick_pos"):
 			var vp: Variant = world_ctx.call("get_wick_pos")
-			if vp is Vector2:
-				return vp as Vector2
-		if world_ctx.get("wick_pos") is Vector2:
-			return world_ctx.get("wick_pos") as Vector2
+			if vp is Vector2: return vp as Vector2
+		if world_ctx.get("wick_pos") is Vector2: return world_ctx.get("wick_pos") as Vector2
 		var wv: Variant = world_ctx.get("wick")
-		if wv is Vector2:
-			return wv as Vector2
-		if wv is Node2D and is_instance_valid(wv):
-			return (wv as Node2D).global_position
+		if wv is Vector2: return wv as Vector2
+		if wv is Node2D and is_instance_valid(wv): return (wv as Node2D).global_position
 	if Lx.player != null and is_instance_valid(Lx.player):
-		if Lx.player.get("pos") is Vector2:
-			return Lx.player.get("pos") as Vector2
-		if Lx.player is Node2D:
-			return (Lx.player as Node2D).global_position
+		if Lx.player.get("pos") is Vector2: return Lx.player.get("pos") as Vector2
+		if Lx.player is Node2D: return (Lx.player as Node2D).global_position
 	return home + Vector2(9999.0, 9999.0)
+
+
+func _find_closer_echo_decoy(wick_p: Vector2) -> Node:
+	if not is_inside_tree():
+		return null
+	var best: Node = null
+	var best_d2: float = pos.distance_squared_to(wick_p)
+	for n: Node in get_tree().get_nodes_in_group("lx_echo_decoys"):
+		if n == null or not is_instance_valid(n) or not n.has_method("is_echo_active") or not bool(n.call("is_echo_active")):
+			continue
+		if not n.has_method("get_echo_pos"):
+			continue
+		var ep: Vector2 = n.call("get_echo_pos") as Vector2
+		var d2: float = pos.distance_squared_to(ep)
+		if d2 < best_d2:
+			best_d2 = d2
+			best = n
+	return best
+
+
+func _get_wick_pos() -> Vector2:
+	var wp: Vector2 = _get_real_wick_pos()
+	var decoy: Node = _find_closer_echo_decoy(wp)
+	if decoy != null:
+		return decoy.call("get_echo_pos") as Vector2
+	return wp
 
 
 func _get_lantern_state() -> int:
@@ -473,6 +455,10 @@ func _emit_attack_started() -> void:
 func _emit_player_hit(hit_dir: Vector2, dmg: float = -1.0) -> void:
 	var amt: float = attack_damage if dmg < 0.0 else dmg
 	var d: Vector2 = hit_dir.normalized() if hit_dir.length_squared() > 0.001 else Vector2.from_angle(facing)
+	var decoy: Node = _find_closer_echo_decoy(_get_real_wick_pos())
+	if decoy != null and decoy.has_method("take_echo_hit"):
+		decoy.call("take_echo_hit", null)
+		return
 	if Lx.events != null:
 		Lx.events.enemy_attack_landed.emit(self, kind, pos, d, amt)
 		Lx.events.player_damaged.emit(amt, pos, d, kind)

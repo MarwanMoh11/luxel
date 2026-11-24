@@ -45,9 +45,14 @@ const SCRIPTS: Dictionary = {
 }
 
 
+static var _pack_script_cache: Dictionary = {}
+
+
 static func create(spec: Dictionary) -> LxInteractable:
 	var kind: String = str(spec.get("kind", "")).strip_edges().to_lower()
 	var scr: Variant = SCRIPTS.get(kind, null)
+	if scr == null:
+		scr = _load_pack_script(kind)
 	if scr is GDScript:
 		var inst: Variant = (scr as GDScript).new()
 		if inst is LxInteractable:
@@ -56,8 +61,27 @@ static func create(spec: Dictionary) -> LxInteractable:
 	return LxInteractable.new()
 
 
+static func _load_pack_script(kind: String) -> GDScript:
+	var packs: LxPackRegistry = Lx.packs if Lx.packs != null else Lx.ensure_packs()
+	var spath: String = packs.interactable_script(kind)
+	if spath.is_empty():
+		return null
+	if _pack_script_cache.has(spath):
+		return _pack_script_cache[spath] as GDScript
+	if ResourceLoader.exists(spath):
+		var res: Resource = ResourceLoader.load(spath)
+		if res is GDScript:
+			_pack_script_cache[spath] = res
+			return res as GDScript
+	return null
+
+
 static func known_kinds() -> PackedStringArray:
 	var out := PackedStringArray()
 	for k: Variant in SCRIPTS.keys():
 		out.append(str(k))
+	if Lx.packs != null:
+		for pk: String in Lx.packs.all_interactable_kinds():
+			if not SCRIPTS.has(pk):
+				out.append(pk)
 	return out

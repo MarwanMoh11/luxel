@@ -57,23 +57,19 @@ func is_lure_active() -> bool: return _has_lantern() and (state == State.FLYING 
 
 
 func get_light_radius() -> float:
+	var scale_m: float = _owner_wick.light_scale if _owner_wick != null else 1.0
 	if not _has_lantern():
-		return 40.0
-	if state == State.CARRIED:
-		return 48.0
-	if _owner_wick != null and _owner_wick.move_lens != null and _owner_wick.move_lens.is_pulse_active():
-		return maxf(96.0, _owner_wick.move_lens.pulse_radius)
-	if is_lure_active():
-		var has_lens: bool = (_owner_wick != null and _owner_wick.move_lens != null and _owner_wick.move_lens.unlocked) \
-			or (Lx.state != null and Lx.state.has_move("lens"))
-		if has_lens:
-			return maxf(92.0, float(Lx.get_move_data("lens").get("hung_radius", 78.0)))
-		return 82.0
-	match state:
-		State.IN_HAND:
-			return 96.0
-		_:
-			return 82.0
+		return 40.0 * scale_m
+	var base_r: float = 96.0 if state == State.IN_HAND else (48.0 if state == State.CARRIED else 82.0)
+	if state != State.CARRIED and _owner_wick != null and _owner_wick.move_lens != null and _owner_wick.move_lens.is_pulse_active():
+		base_r = maxf(96.0, _owner_wick.move_lens.pulse_radius)
+	elif state != State.CARRIED and is_lure_active():
+		var has_lens: bool = (_owner_wick != null and _owner_wick.move_lens != null and _owner_wick.move_lens.unlocked) or (Lx.state != null and Lx.state.has_move("lens"))
+		base_r = maxf(92.0, float(Lx.get_move_data("lens").get("hung_radius", 78.0))) if has_lens else 82.0
+	var panes: LxPanes = LxPanes.current()
+	if panes != null and not panes.equipped_ids().is_empty():
+		base_r = panes.modify_stat("light_radius", base_r, {"wick": _owner_wick})
+	return base_r * scale_m
 
 
 func throw_out(
@@ -150,6 +146,14 @@ func start_recall(wick: LxWick, world_ctx: Node, slam_radius: float = 18.0, hs: 
 				)
 				var res: int = wick.apply_hit_to_entity(enemy, hit)
 				wick.on_hit_landed(hit, res, epos, hs, sh)
+		# Pull-ring / recall-sensitive interactables at lantern anchor position
+		var r_inters: Array = wick.world_get_interactables(world_ctx)
+		var pull_dir: Vector2 = (wick.global_position - pos).normalized() if wick.global_position.distance_to(pos) > 0.5 else -dir
+		for it_v: Variant in r_inters:
+			if it_v is Object and is_instance_valid(it_v as Object) and (it_v as Object).has_method("on_lantern_pull"):
+				var item_p: Object = it_v as Object
+				if wick.get_entity_pos(item_p).distance_to(pos) <= wick.get_entity_radius(item_p, 10.0) + slam_radius:
+					item_p.call("on_lantern_pull", pull_dir, "recall")
 
 
 func catch_by_wick(wick: LxWick) -> void:
@@ -267,9 +271,15 @@ func tick_sim(dt: float, wick: LxWick, world_ctx: Node) -> void:
 			pos = wick.global_position
 			vel = Vector2.ZERO
 		State.FLYING:
+			if LxFields.has_fields():
+				var fa: Vector2 = LxFields.accel_at(pos, "lantern")
+				if fa.length_squared() > 0.01:
+					var lv: Vector2 = dir * throw_speed + fa * dt
+					if lv.length_squared() > 1.0:
+						dir = lv.normalized()
 			var step_d: float = throw_speed * dt
 			var nxt: Vector2 = pos + dir * step_d
-			if wick.world_shot_blocked(world_ctx, pos, nxt):
+			if wick.world_lantern_blocked(world_ctx, pos, nxt):
 				_land_hanging(wick)
 			else:
 				pos = nxt
@@ -380,7 +390,7 @@ func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: S
 		wick.on_hit_landed(hit, res, epos, hs, sh)
 		if res == 0 and state == State.FLYING:
 			var back: Vector2 = pos - move_dir * 6.0
-			if not wick.world_shot_blocked(world_ctx, pos, back):
+			if not wick.world_lantern_blocked(world_ctx, pos, back):
 				pos = back
 			wick.spawn_ring(pos, 2.0, 12.0, 0.18, LxWick.PAL_STONE, 1.2)
 			state = State.HANGING
@@ -449,6 +459,9 @@ func _notify_light(wick: LxWick, world_ctx: Node) -> void:
 				continue
 		elif dist > rad + irad:
 			continue
+		var pad_i: float = irad + 2.0 if (item.has_method("blocks_sight") and bool(item.call("blocks_sight"))) else 2.0
+		if not wick.world_has_clear_view(world_ctx, pos, ipos, pad_i):
+			continue
 		item.call("on_light", rad, src_tag)
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
@@ -462,7 +475,7 @@ func _notify_light(wick: LxWick, world_ctx: Node) -> void:
 			continue
 		var epos: Vector2 = wick.get_entity_pos(enemy)
 		var erad: float = wick.get_entity_radius(enemy, 8.0)
-		if epos.distance_to(pos) <= rad + erad:
+		if epos.distance_to(pos) <= rad + erad and wick.world_has_clear_view(world_ctx, pos, epos, erad + 2.0):
 			var arity: int = wick.get_method_arity(enemy, "on_light")
 			if arity >= 3:
 				enemy.call("on_light", rad, pos, src_tag)

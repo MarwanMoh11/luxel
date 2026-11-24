@@ -79,7 +79,7 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 			continue
 		var epos: Vector2 = wick.get_entity_pos(enemy)
 		var erad: float = wick.get_entity_radius(enemy, 8.0)
-		if epos.distance_to(origin) <= rad + erad:
+		if epos.distance_to(origin) <= rad + erad and wick.world_has_clear_view(ctx, origin, epos, erad + 2.0):
 			var dir: Vector2 = (epos - origin).normalized() if epos.distance_to(origin) > 0.1 else wick.facing
 			var hit: LxHit = LxHit.make(
 				LxHit.SOURCE_SUNFLARE, dmg, dir, origin,
@@ -112,7 +112,7 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 		var is_brazier: bool = (item is LxBrazier) or (str(item.get("kind")) == "brazier")
 		if is_brazier:
 			var in_room: bool = (not room_rect.has_area()) or room_rect.grow(8.0).has_point(ipos)
-			if in_room:
+			if in_room and _has_clear_view_to_item(ctx, origin, item, ipos, irad):
 				if item.has_method("on_light"):
 					item.call("on_light", 999.0, "sunflare")
 				elif item.has_method("on_hit"):
@@ -121,7 +121,7 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 				wick.spawn_sparks(ipos, Vector2.UP, 6, LxWick.PAL_GOLD, 24.0, 72.0, 0.24)
 				continue
 
-		if item.has_method("on_hit") and _within_burst(origin, rad, item, ipos, irad):
+		if item.has_method("on_hit") and _within_burst(origin, rad, item, ipos, irad) and _has_clear_view_to_item(ctx, origin, item, ipos, irad):
 			var idir: Vector2 = (ipos - origin).normalized() if ipos.distance_to(origin) > 0.1 else wick.facing
 			var hit_i: LxHit = LxHit.make(
 				LxHit.SOURCE_SUNFLARE, dmg, idir, origin,
@@ -240,6 +240,17 @@ func reset() -> void:
 	flare_vis_t = 0.0
 	flares_fired = 0
 	_buffer_t = 0.0
+
+
+func _has_clear_view_to_item(ctx: Node, origin: Vector2, item: Object, ipos: Vector2, irad: float) -> bool:
+	var target: Vector2 = ipos
+	var pad: float = irad + 2.0 if (item.has_method("blocks_sight") and bool(item.call("blocks_sight"))) else 2.0
+	if item.has_method("get_solid_rect"):
+		var srect: Rect2 = item.call("get_solid_rect") as Rect2
+		if srect.has_area():
+			target = Vector2(clampf(origin.x, srect.position.x, srect.end.x), clampf(origin.y, srect.position.y, srect.end.y))
+			pad = 2.0
+	return wick.world_has_clear_view(ctx, origin, target, pad)
 
 
 func _within_burst(origin: Vector2, rad: float, item: Object, ipos: Vector2, irad: float) -> bool:

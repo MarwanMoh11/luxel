@@ -32,7 +32,7 @@ func _ready() -> void:
 
 func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	_island_id = rules.island_id if rules != null else 1
-	_active = rules != null and not rules.is_dungeon
+	_active = rules != null and not rules.is_dungeon and LxLegacy.is_legacy_node(region_node)
 	_clock = 0.0
 	_wick_still_t = 0.0
 	_bounds = rules.bounds if rules != null else Rect2()

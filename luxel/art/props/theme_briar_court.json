@@ -1,0 +1,392 @@
+{
+ "id": "theme_briar_court",
+ "name": "The Briar Court Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_briar_court.png",
+ "sheet_size": [
+  80,
+  318
+ ],
+ "props": {
+  "rose_thorn_arch": {
+   "frame": [
+    46,
+    46
+   ],
+   "anchor": [
+    23,
+    44
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     46,
+     46
+    ]
+   ]
+  },
+  "heraldic_court_banner": {
+   "frame": [
+    18,
+    34
+   ],
+   "anchor": [
+    9,
+    32
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     46,
+     18,
+     34
+    ],
+    [
+     18,
+     46,
+     18,
+     34
+    ],
+    [
+     36,
+     46,
+     18,
+     34
+    ],
+    [
+     54,
+     46,
+     18,
+     34
+    ]
+   ]
+  },
+  "stone_verdict_throne": {
+   "frame": [
+    32,
+    34
+   ],
+   "anchor": [
+    16,
+    32
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     80,
+     32,
+     34
+    ]
+   ]
+  },
+  "jousting_lance_rack": {
+   "frame": [
+    16,
+    32
+   ],
+   "anchor": [
+    8,
+    30
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     114,
+     16,
+     32
+    ]
+   ]
+  },
+  "briar_lantern_post": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     146,
+     18,
+     30
+    ],
+    [
+     18,
+     146,
+     18,
+     30
+    ],
+    [
+     36,
+     146,
+     18,
+     30
+    ],
+    [
+     54,
+     146,
+     18,
+     30
+    ]
+   ]
+  },
+  "clipped_rose_urn": {
+   "frame": [
+    18,
+    26
+   ],
+   "anchor": [
+    9,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    360.0,
+    360.0,
+    360.0,
+    360.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     176,
+     18,
+     26
+    ],
+    [
+     18,
+     176,
+     18,
+     26
+    ],
+    [
+     36,
+     176,
+     18,
+     26
+    ],
+    [
+     54,
+     176,
+     18,
+     26
+    ]
+   ]
+  },
+  "trial_bell_stand": {
+   "frame": [
+    20,
+    30
+   ],
+   "anchor": [
+    10,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    320.0,
+    320.0,
+    320.0,
+    320.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     202,
+     20,
+     30
+    ],
+    [
+     20,
+     202,
+     20,
+     30
+    ],
+    [
+     40,
+     202,
+     20,
+     30
+    ],
+    [
+     60,
+     202,
+     20,
+     30
+    ]
+   ]
+  },
+  "mossy_shield_plinth": {
+   "frame": [
+    16,
+    26
+   ],
+   "anchor": [
+    8,
+    24
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     232,
+     16,
+     26
+    ]
+   ]
+  },
+  "thorn_hedge_brazier": {
+   "frame": [
+    20,
+    26
+   ],
+   "anchor": [
+    10,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     258,
+     20,
+     26
+    ],
+    [
+     20,
+     258,
+     20,
+     26
+    ],
+    [
+     40,
+     258,
+     20,
+     26
+    ],
+    [
+     60,
+     258,
+     20,
+     26
+    ]
+   ]
+  },
+  "court_bench_stone": {
+   "frame": [
+    26,
+    14
+   ],
+   "anchor": [
+    13,
+    12
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     284,
+     26,
+     14
+    ]
+   ]
+  },
+  "petal_drift_floor": {
+   "frame": [
+    24,
+    20
+   ],
+   "anchor": [
+    12,
+    10
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     298,
+     24,
+     20
+    ]
+   ]
+  }
+ }
+}

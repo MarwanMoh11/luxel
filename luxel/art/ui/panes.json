@@ -1,0 +1,980 @@
+{
+  "sheet": "panes.png",
+  "icon_size": [
+    12,
+    12
+  ],
+  "grid": [
+    8,
+    4
+  ],
+  "count": 32,
+  "anchor": [
+    6,
+    6
+  ],
+  "icons": {
+    "bell_clapper": {
+      "index": 0,
+      "island": 1,
+      "source": "dungeon",
+      "lead": 2,
+      "rect": [
+        0,
+        0,
+        12,
+        12
+      ]
+    },
+    "vesper_chime": {
+      "index": 1,
+      "island": 1,
+      "source": "trial",
+      "lead": 1,
+      "rect": [
+        12,
+        0,
+        12,
+        12
+      ]
+    },
+    "toll_echo": {
+      "index": 2,
+      "island": 1,
+      "source": "quest",
+      "lead": 2,
+      "rect": [
+        24,
+        0,
+        12,
+        12
+      ]
+    },
+    "belfry_weight": {
+      "index": 3,
+      "island": 1,
+      "source": "secret",
+      "lead": 3,
+      "rect": [
+        36,
+        0,
+        12,
+        12
+      ]
+    },
+    "rip_tide": {
+      "index": 4,
+      "island": 2,
+      "source": "dungeon",
+      "lead": 2,
+      "rect": [
+        48,
+        0,
+        12,
+        12
+      ]
+    },
+    "sea_glass": {
+      "index": 5,
+      "island": 2,
+      "source": "trial",
+      "lead": 1,
+      "rect": [
+        60,
+        0,
+        12,
+        12
+      ]
+    },
+    "harbor_wake": {
+      "index": 6,
+      "island": 2,
+      "source": "quest",
+      "lead": 2,
+      "rect": [
+        72,
+        0,
+        12,
+        12
+      ]
+    },
+    "anchor_lead": {
+      "index": 7,
+      "island": 2,
+      "source": "secret",
+      "lead": 3,
+      "rect": [
+        84,
+        0,
+        12,
+        12
+      ]
+    },
+    "ember_seed": {
+      "index": 8,
+      "island": 3,
+      "source": "dungeon",
+      "lead": 2,
+      "rect": [
+        0,
+        12,
+        12,
+        12
+      ]
+    },
+    "briar_thorn": {
+      "index": 9,
+      "island": 3,
+      "source": "trial",
+      "lead": 1,
+      "rect": [
+        12,
+        12,
+        12,
+        12
+      ]
+    },
+    "vine_snare": {
+      "index": 10,
+      "island": 3,
+      "source": "quest",
+      "lead": 2,
+      "rect": [
+        24,
+        12,
+        12,
+        12
+      ]
+    },
+    "canopy_dew": {
+      "index": 11,
+      "island": 3,
+      "source": "secret",
+      "lead": 3,
+      "rect": [
+        36,
+        12,
+        12,
+        12
+      ]
+    },
+    "hourglass_sand": {
+      "index": 12,
+      "island": 4,
+      "source": "dungeon",
+      "lead": 2,
+      "rect": [
+        48,
+        12,
+        12,
+        12
+      ]
+    },
+    "petal_mirror": {
+      "index": 13,
+      "island": 4,
+      "source": "trial",
+      "lead": 1,
+      "rect": [
+        60,
+        12,
+        12,
+        12
+      ]
+    },
+    "dusk_dew": {
+      "index": 14,
+      "island": 4,
+      "source": "quest",
+      "lead": 2,
+      "rect": [
+        72,
+        12,
+        12,
+        12
+      ]
+    },
+    "rain_prism": {
+      "index": 15,
+      "island": 4,
+      "source": "secret",
+      "lead": 3,
+      "rect": [
+        84,
+        12,
+        12,
+        12
+      ]
+    },
+    "orbit_shard": {
+      "index": 16,
+      "island": 5,
+      "source": "dungeon",
+      "lead": 2,
+      "rect": [
+        0,
+        24,
+        12,
+        12
+      ]
+    },
+    "comet_tail": {
+      "index": 17,
+      "island": 5,
+      "source": "trial",
+      "lead": 1,
+      "rect": [
+        12,
+        24,
+        12,
+        12
+      ]
+    },
+    "zenith_lens": {
+      "index": 18,
+      "island": 5,
+      "source": "quest",
+      "lead": 2,
+      "rect": [
+        24,
+        24,
+        12,
+        12
+      ]
+    },
+    "null_well": {
+      "index": 19,
+      "island": 5,
+      "source": "secret",
+      "lead": 3,
+      "rect": [
+        36,
+        24,
+        12,
+        12
+      ]
+    },
+    "cinder_blast": {
+      "index": 20,
+      "island": 6,
+      "source": "dungeon",
+      "lead": 2,
+      "rect": [
+        48,
+        24,
+        12,
+        12
+      ]
+    },
+    "slag_coat": {
+      "index": 21,
+      "island": 6,
+      "source": "trial",
+      "lead": 2,
+      "rect": [
+        60,
+        24,
+        12,
+        12
+      ]
+    },
+    "bellows_vent": {
+      "index": 22,
+      "island": 6,
+      "source": "quest",
+      "lead": 1,
+      "rect": [
+        72,
+        24,
+        12,
+        12
+      ]
+    },
+    "anvil_strike": {
+      "index": 23,
+      "island": 6,
+      "source": "secret",
+      "lead": 3,
+      "rect": [
+        84,
+        24,
+        12,
+        12
+      ]
+    },
+    "silver_twin": {
+      "index": 24,
+      "island": 7,
+      "source": "dungeon",
+      "lead": 3,
+      "rect": [
+        0,
+        36,
+        12,
+        12
+      ]
+    },
+    "moon_phase": {
+      "index": 25,
+      "island": 7,
+      "source": "trial",
+      "lead": 1,
+      "rect": [
+        12,
+        36,
+        12,
+        12
+      ]
+    },
+    "glass_step": {
+      "index": 26,
+      "island": 7,
+      "source": "quest",
+      "lead": 2,
+      "rect": [
+        24,
+        36,
+        12,
+        12
+      ]
+    },
+    "mirror_ward": {
+      "index": 27,
+      "island": 7,
+      "source": "secret",
+      "lead": 2,
+      "rect": [
+        36,
+        36,
+        12,
+        12
+      ]
+    },
+    "toll_wick": {
+      "index": 28,
+      "island": 8,
+      "source": "dungeon",
+      "lead": 1,
+      "rect": [
+        48,
+        36,
+        12,
+        12
+      ]
+    },
+    "hush_glass": {
+      "index": 29,
+      "island": 8,
+      "source": "trial",
+      "lead": 2,
+      "rect": [
+        60,
+        36,
+        12,
+        12
+      ]
+    },
+    "dawn_spark": {
+      "index": 30,
+      "island": 8,
+      "source": "quest",
+      "lead": 3,
+      "rect": [
+        72,
+        36,
+        12,
+        12
+      ]
+    },
+    "last_glass": {
+      "index": 31,
+      "island": 8,
+      "source": "secret",
+      "lead": 3,
+      "rect": [
+        84,
+        36,
+        12,
+        12
+      ]
+    }
+  },
+  "props": {
+    "bell_clapper": {
+      "rects": [
+        [
+          0,
+          0,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "vesper_chime": {
+      "rects": [
+        [
+          12,
+          0,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "toll_echo": {
+      "rects": [
+        [
+          24,
+          0,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "belfry_weight": {
+      "rects": [
+        [
+          36,
+          0,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "rip_tide": {
+      "rects": [
+        [
+          48,
+          0,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "sea_glass": {
+      "rects": [
+        [
+          60,
+          0,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "harbor_wake": {
+      "rects": [
+        [
+          72,
+          0,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "anchor_lead": {
+      "rects": [
+        [
+          84,
+          0,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "ember_seed": {
+      "rects": [
+        [
+          0,
+          12,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "briar_thorn": {
+      "rects": [
+        [
+          12,
+          12,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "vine_snare": {
+      "rects": [
+        [
+          24,
+          12,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "canopy_dew": {
+      "rects": [
+        [
+          36,
+          12,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "hourglass_sand": {
+      "rects": [
+        [
+          48,
+          12,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "petal_mirror": {
+      "rects": [
+        [
+          60,
+          12,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "dusk_dew": {
+      "rects": [
+        [
+          72,
+          12,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "rain_prism": {
+      "rects": [
+        [
+          84,
+          12,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "orbit_shard": {
+      "rects": [
+        [
+          0,
+          24,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "comet_tail": {
+      "rects": [
+        [
+          12,
+          24,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "zenith_lens": {
+      "rects": [
+        [
+          24,
+          24,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "null_well": {
+      "rects": [
+        [
+          36,
+          24,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "cinder_blast": {
+      "rects": [
+        [
+          48,
+          24,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "slag_coat": {
+      "rects": [
+        [
+          60,
+          24,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "bellows_vent": {
+      "rects": [
+        [
+          72,
+          24,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "anvil_strike": {
+      "rects": [
+        [
+          84,
+          24,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "silver_twin": {
+      "rects": [
+        [
+          0,
+          36,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "moon_phase": {
+      "rects": [
+        [
+          12,
+          36,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "glass_step": {
+      "rects": [
+        [
+          24,
+          36,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "mirror_ward": {
+      "rects": [
+        [
+          36,
+          36,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "toll_wick": {
+      "rects": [
+        [
+          48,
+          36,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "hush_glass": {
+      "rects": [
+        [
+          60,
+          36,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "dawn_spark": {
+      "rects": [
+        [
+          72,
+          36,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    },
+    "last_glass": {
+      "rects": [
+        [
+          84,
+          36,
+          12,
+          12
+        ]
+      ],
+      "ms": [
+        200
+      ],
+      "loop": false,
+      "anchor": [
+        6,
+        6
+      ]
+    }
+  }
+}

@@ -95,6 +95,9 @@ func _execute_dash() -> bool:
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 		LxGroundDecals.active_instance.add_dir_decal(LxGroundDecals.Kind.SKID, wick.global_position + Vector2(0.0, 4.0), dash_dir, 7.0, 2.4, false)
 	wick.emit_sfx("dash_whoosh", wick.global_position, false)
+	var panes_d: LxPanes = LxPanes.current()
+	if panes_d != null and not panes_d.equipped_ids().is_empty():
+		panes_d.fire_dash({"pos": wick.global_position, "dir": dash_dir, "wick": wick, "world": wick._world_ctx if wick._world_ctx != null else Lx.world})
 	return true
 
 
@@ -253,6 +256,9 @@ func on_perfect_dodge() -> bool:
 			LxDarknessLayer.active_instance.trigger_focus_flash(0.85)
 			LxDarknessLayer.active_instance.add_burst_light(wick.global_position, 74.0, 0.94 if LxHudFx.flash_reduced() else 1.45, 0.30)
 		wick.emit_sfx("perfect_dodge", wick.global_position, false)
+		var panes_pd: LxPanes = LxPanes.current()
+		if panes_pd != null and not panes_pd.equipped_ids().is_empty():
+			panes_pd.fire_perfect_dodge({"pos": wick.global_position, "dir": dash_dir, "wick": wick, "world": wick._world_ctx if wick._world_ctx != null else Lx.world})
 		if Lx.ui != null and Lx.ui.get("hud") != null and (Lx.ui.get("hud") as Node).has_method("spawn_world_cue"):
 			(Lx.ui.get("hud") as Node).call("spawn_world_cue", "CUE_PERFECT_DODGE", wick.global_position + Vector2(0.0, -10.0), "ice", 1.1)
 		if wick.move_sunflare != null and wick.move_sunflare.unlocked:
@@ -294,9 +300,11 @@ func reset() -> void:
 
 
 func _get_effective_cooldown() -> float:
-	if Lx.state != null:
-		return Lx.state.get_effective_dash_cooldown()
-	return float(get_data().get("cooldown", 0.55))
+	var base: float = Lx.state.get_effective_dash_cooldown() if Lx.state != null else float(get_data().get("cooldown", 0.55))
+	var panes: LxPanes = LxPanes.current()
+	if panes != null and not panes.equipped_ids().is_empty():
+		return panes.modify_stat("dash_cooldown", base, {"wick": wick})
+	return base
 
 
 func _gust(radius: float, strength: float) -> void:

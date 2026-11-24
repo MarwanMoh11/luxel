@@ -1,0 +1,67 @@
+{
+  "pack_id": "island5_toys",
+  "owner": "I5-TOYS",
+  "comment": "Island 5 Starfall Observatory toy pack: gravity polarity wells, star bells, meteor orbs, constellation star nodes, state vars, SFX cues, and debug-only proof regions.",
+  "strings": {
+    "I5_PROMPT_RING_BELL": "RING STAR BELL",
+    "I5_CUE_DIAL_TURN": "THE ISLAND TURNS ONE QUARTER.",
+    "I5_CUE_WELL_FLIP": "GRAVITY FLIPS POLARITY!",
+    "I5_CUE_STAR_CAP": "THE OLDEST STAR FADES OUT.",
+    "I5_PROOF_1_NAME": "GRAVITY AND ORBIT PROOF",
+    "I5_PROOF_2_NAME": "STAR BELL AND SKY PROOF"
+  },
+  "state_vars": {
+    "ow_dial": {
+      "scope": "island:5",
+      "values": [0, 90, 180, 270],
+      "default": 0
+    },
+    "well_phase": {
+      "scope": "dungeon:meteor_vault",
+      "values": ["pull", "push"],
+      "default": "pull"
+    },
+    "sky_turn": {
+      "scope": "dungeon:planetarium",
+      "values": [0, 90, 180, 270],
+      "default": 0
+    },
+    "orrery_ring": {
+      "scope": "dungeon:orrery",
+      "values": [0, 90, 180, 270],
+      "default": 0
+    },
+    "dream_best": {
+      "scope": "island:5",
+      "values": [],
+      "default": 0
+    }
+  },
+  "interactables": {
+    "star_node": "res://luxel/islands/5/toys/star_node.gd",
+    "star_bell": "res://luxel/islands/5/toys/star_bell.gd",
+    "meteor_orb": "res://luxel/islands/5/toys/meteor_orb.gd",
+    "polarity_well": "res://luxel/islands/5/toys/polarity_well.gd"
+  },
+  "sfx": {
+    "gravity_curve": { "id": "phantom_phase", "pitch": 1.24, "db": -2.5 },
+    "polarity_flip": { "id": "mirror_turn", "pitch": 1.16, "db": -1.0 },
+    "star_ignite": { "id": "prop_chime", "pitch": 1.28, "db": -0.5 },
+    "star_snuff": { "id": "phantom_phase", "pitch": 0.78, "db": -3.0 },
+    "star_bell_turn": { "id": "clockwork_chime", "pitch": 0.88, "db": 0.0 },
+    "meteor_clank": { "id": "crystal_clank", "pitch": 0.82, "db": -0.5 },
+    "horizon_pull": { "id": "void_hum", "pitch": 0.86, "db": -2.0 }
+  },
+  "regions": {
+    "_proof_i5_1": {
+      "name_key": "I5_PROOF_1_NAME",
+      "debug_only": true,
+      "map": [0, 0]
+    },
+    "_proof_i5_2": {
+      "name_key": "I5_PROOF_2_NAME",
+      "debug_only": true,
+      "map": [1, 0]
+    }
+  }
+}

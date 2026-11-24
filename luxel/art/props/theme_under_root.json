@@ -1,0 +1,392 @@
+{
+ "id": "theme_under_root",
+ "name": "The Under-Root Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_under_root.png",
+ "sheet_size": [
+  104,
+  290
+ ],
+ "props": {
+  "ant_lantern_post": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     18,
+     30
+    ],
+    [
+     18,
+     0,
+     18,
+     30
+    ],
+    [
+     36,
+     0,
+     18,
+     30
+    ],
+    [
+     54,
+     0,
+     18,
+     30
+    ]
+   ]
+  },
+  "giant_dew_lens": {
+   "frame": [
+    26,
+    24
+   ],
+   "anchor": [
+    13,
+    22
+   ],
+   "frames": 4,
+   "ms": [
+    320.0,
+    320.0,
+    320.0,
+    320.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     30,
+     26,
+     24
+    ],
+    [
+     26,
+     30,
+     26,
+     24
+    ],
+    [
+     52,
+     30,
+     26,
+     24
+    ],
+    [
+     78,
+     30,
+     26,
+     24
+    ]
+   ]
+  },
+  "braided_root_arch": {
+   "frame": [
+    46,
+    46
+   ],
+   "anchor": [
+    23,
+    44
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     54,
+     46,
+     46
+    ]
+   ]
+  },
+  "colossal_acorn_dome": {
+   "frame": [
+    26,
+    28
+   ],
+   "anchor": [
+    13,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     100,
+     26,
+     28
+    ]
+   ]
+  },
+  "moss_cap_shroom": {
+   "frame": [
+    24,
+    26
+   ],
+   "anchor": [
+    12,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    320.0,
+    320.0,
+    320.0,
+    320.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     128,
+     24,
+     26
+    ],
+    [
+     24,
+     128,
+     24,
+     26
+    ],
+    [
+     48,
+     128,
+     24,
+     26
+    ],
+    [
+     72,
+     128,
+     24,
+     26
+    ]
+   ]
+  },
+  "glow_spore_cluster": {
+   "frame": [
+    24,
+    26
+   ],
+   "anchor": [
+    12,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     154,
+     24,
+     26
+    ],
+    [
+     24,
+     154,
+     24,
+     26
+    ],
+    [
+     48,
+     154,
+     24,
+     26
+    ],
+    [
+     72,
+     154,
+     24,
+     26
+    ]
+   ]
+  },
+  "fallen_bark_bench": {
+   "frame": [
+    22,
+    14
+   ],
+   "anchor": [
+    11,
+    12
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     180,
+     22,
+     14
+    ]
+   ]
+  },
+  "amber_sap_urn": {
+   "frame": [
+    16,
+    22
+   ],
+   "anchor": [
+    8,
+    20
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     194,
+     16,
+     22
+    ]
+   ]
+  },
+  "fern_canopy_frond": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    340.0,
+    340.0,
+    340.0,
+    340.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     216,
+     18,
+     30
+    ],
+    [
+     18,
+     216,
+     18,
+     30
+    ],
+    [
+     36,
+     216,
+     18,
+     30
+    ],
+    [
+     54,
+     216,
+     18,
+     30
+    ]
+   ]
+  },
+  "beetle_hitching_post": {
+   "frame": [
+    14,
+    24
+   ],
+   "anchor": [
+    7,
+    22
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     246,
+     14,
+     24
+    ]
+   ]
+  },
+  "pebble_milestone": {
+   "frame": [
+    16,
+    20
+   ],
+   "anchor": [
+    8,
+    18
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     270,
+     16,
+     20
+    ]
+   ]
+  }
+ }
+}

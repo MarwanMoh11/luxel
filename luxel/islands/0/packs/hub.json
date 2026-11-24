@@ -1,0 +1,40 @@
+{
+  "regions": {
+    "overworld": {
+      "name_key": "ZONE_WICK_HOUSE",
+      "music": "hub",
+      "ambience": "island1",
+      "theme": "wick_house",
+      "dark": false,
+      "map": [0, 0]
+    }
+  },
+  "quests": [
+    {
+      "id": "q_hub_moths",
+      "island": 0,
+      "kind": "fetch",
+      "folk": "moth_kid",
+      "icon": "moth",
+      "steps": [
+        {"icons": ["moth", "light_on", "arrow_n", "lantern"], "need": "moths>=5", "flag": "quest:q_hub_moths:s0"},
+        {"icons": ["moth", "heart", "pane"], "need": "", "flag": "quest:q_hub_moths:done"}
+      ],
+      "reward": {"kind": "shards", "amount": 40}
+    }
+  ],
+  "strings": {
+    "ZONE_WICK_HOUSE": "WICK HOUSE",
+    "HUB_WELCOME": "A WARM ROCK BETWEEN THE EIGHT ISLANDS.",
+    "HUB_DOOR_SOON": "THIS ROOM OPENS AS THE HOUSE GROWS.",
+    "HUB_MUSIC_NEXT": "THE MUSIC BOX TURNS TO A NEW TUNE.",
+    "PROMPT_MOTH_LANTERN": "MOTH LANTERN",
+    "PROMPT_PANE_WORKSHOP": "PANE WORKSHOP",
+    "PROMPT_JOURNAL": "READ JOURNAL",
+    "PROMPT_MUSIC_BOX": "MUSIC BOX",
+    "PROMPT_HUB_GALLERY": "GALLERY DOOR",
+    "PROMPT_HUB_RACE": "SKIFF PIER",
+    "PROMPT_HUB_REMATCH": "REMATCH MIRROR",
+    "PROMPT_RETURN_ISLANDS": "SAIL BACK"
+  }
+}

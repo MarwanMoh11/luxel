@@ -11,6 +11,7 @@ static var active_instance: LxBiomeRules = null
 
 var island_id: int = 1
 var is_dungeon: bool = false
+var legacy_active: bool = true
 var clock: float = 0.0
 var bounds: Rect2 = Rect2()
 var _region: Node = null
@@ -60,6 +61,7 @@ func _exit_tree() -> void:
 
 func configure(p_island_id: int, p_bounds: Rect2, p_is_dungeon: bool, region_node: Node) -> void:
 	active_instance = self; island_id = clampi(p_island_id, 1, 8); is_dungeon = p_is_dungeon
+	legacy_active = LxLegacy.is_legacy_node(region_node)
 	bounds = p_bounds; _region = region_node; clock = 0.0; _cam_center = p_bounds.get_center()
 	tide_phase = 0.0; tide_surging = false; _last_tide_surge = false
 	beam_angle = PI * 0.5; beam_buff_t = 0.0
@@ -67,7 +69,8 @@ func configure(p_island_id: int, p_bounds: Rect2, p_is_dungeon: bool, region_nod
 	_blooms.clear(); _sap_pools.clear(); _sap_prev.clear(); _sap_spark_cd = 0.0
 	_updrafts.clear(); _updraft_kick_cd = 0.0; _stars.clear(); _vents.clear()
 	_star_cd = 2.4; starlight_surge_t = 0.0; vent_cycle = 0.0; lunar_phase = 1.0; _was_full_moon = true; eclipse_pulse = 0.0
-	_populate_features()
+	if legacy_active:
+		_populate_features()
 	if _mechanics == null and get_parent() != null:
 		_mechanics = LxBiomeMechanics.new(); _mechanics.name = "BiomeMechanics"; get_parent().add_child(_mechanics)
 	if _mechanics != null: _mechanics.configure(self, _region)
@@ -196,14 +199,15 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	_cam_center = cam_center
 	if dt <= 0.0: return
 	clock += dt
-	match island_id:
-		2: _tick_island2(dt)
-		3: _tick_island3(dt)
-		4: _tick_island4(dt)
-		5: _tick_island5(dt)
-		6: _tick_island6(dt)
-		7: _tick_island7()
-		8: _tick_island8(dt)
+	if legacy_active:
+		match island_id:
+			2: _tick_island2(dt)
+			3: _tick_island3(dt)
+			4: _tick_island4(dt)
+			5: _tick_island5(dt)
+			6: _tick_island6(dt)
+			7: _tick_island7()
+			8: _tick_island8(dt)
 	if _mechanics != null and is_instance_valid(_mechanics): _mechanics.tick(dt, cam_center)
 	queue_redraw()
 
@@ -399,6 +403,8 @@ func get_shader_phase() -> float:
 
 func get_light_pools() -> Array[Vector4]:
 	var pools: Array[Vector4] = []
+	if not legacy_active:
+		return pools
 	if island_id == 2 and is_dungeon:
 		var bdir: Vector2 = Vector2.from_angle(beam_angle)
 		var p1: Vector2 = beam_origin + bdir * 52.0; var p2: Vector2 = beam_origin + bdir * 116.0
@@ -425,7 +431,7 @@ func _draw_stepped_ring(c: Vector2, rad: int, col: Color, dots: int = 16, only_w
 		if not only_walkable or _is_walkable(pt): draw_rect(Rect2(pt, Vector2.ONE), col)
 
 func _draw() -> void:
-	if island_id <= 1: return
+	if island_id <= 1 or not legacy_active: return
 	var fred: bool = LxHudFx.flash_reduced()
 	match island_id:
 		2: _draw_island2(fred)

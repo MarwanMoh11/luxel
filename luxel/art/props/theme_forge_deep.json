@@ -1,0 +1,436 @@
+{
+ "id": "theme_forge_deep",
+ "name": "The Deep Forge Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_forge_deep.png",
+ "sheet_size": [
+  112,
+  370
+ ],
+ "props": {
+  "great_forge_anvil": {
+   "frame": [
+    30,
+    22
+   ],
+   "anchor": [
+    15,
+    20
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     30,
+     22
+    ]
+   ]
+  },
+  "molten_slag_crucible": {
+   "frame": [
+    28,
+    28
+   ],
+   "anchor": [
+    14,
+    26
+   ],
+   "frames": 4,
+   "ms": [
+    220.0,
+    220.0,
+    220.0,
+    220.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     22,
+     28,
+     28
+    ],
+    [
+     28,
+     22,
+     28,
+     28
+    ],
+    [
+     56,
+     22,
+     28,
+     28
+    ],
+    [
+     84,
+     22,
+     28,
+     28
+    ]
+   ]
+  },
+  "bellows_hearth_stand": {
+   "frame": [
+    22,
+    26
+   ],
+   "anchor": [
+    11,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    200.0,
+    200.0,
+    200.0,
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     50,
+     22,
+     26
+    ],
+    [
+     22,
+     50,
+     22,
+     26
+    ],
+    [
+     44,
+     50,
+     22,
+     26
+    ],
+    [
+     66,
+     50,
+     22,
+     26
+    ]
+   ]
+  },
+  "iron_weapon_rack": {
+   "frame": [
+    20,
+    28
+   ],
+   "anchor": [
+    10,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     76,
+     20,
+     28
+    ]
+   ]
+  },
+  "ingot_mold_trough": {
+   "frame": [
+    32,
+    22
+   ],
+   "anchor": [
+    16,
+    11
+   ],
+   "frames": 2,
+   "ms": [
+    360.0,
+    360.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     104,
+     32,
+     22
+    ],
+    [
+     32,
+     104,
+     32,
+     22
+    ]
+   ]
+  },
+  "foundry_crane_hook": {
+   "frame": [
+    46,
+    46
+   ],
+   "anchor": [
+    23,
+    44
+   ],
+   "frames": 2,
+   "ms": [
+    460.0,
+    460.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     126,
+     46,
+     46
+    ],
+    [
+     46,
+     126,
+     46,
+     46
+    ]
+   ]
+  },
+  "ember_brazier_pillar": {
+   "frame": [
+    20,
+    28
+   ],
+   "anchor": [
+    10,
+    26
+   ],
+   "frames": 4,
+   "ms": [
+    200.0,
+    200.0,
+    200.0,
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     172,
+     20,
+     28
+    ],
+    [
+     20,
+     172,
+     20,
+     28
+    ],
+    [
+     40,
+     172,
+     20,
+     28
+    ],
+    [
+     60,
+     172,
+     20,
+     28
+    ]
+   ]
+  },
+  "basalt_forge_arch": {
+   "frame": [
+    46,
+    46
+   ],
+   "anchor": [
+    23,
+    44
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     200,
+     46,
+     46
+    ]
+   ]
+  },
+  "quench_barrel_tub": {
+   "frame": [
+    18,
+    22
+   ],
+   "anchor": [
+    9,
+    20
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     246,
+     18,
+     22
+    ]
+   ]
+  },
+  "chained_slag_cauldron": {
+   "frame": [
+    28,
+    28
+   ],
+   "anchor": [
+    14,
+    26
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     268,
+     28,
+     28
+    ],
+    [
+     28,
+     268,
+     28,
+     28
+    ],
+    [
+     56,
+     268,
+     28,
+     28
+    ],
+    [
+     84,
+     268,
+     28,
+     28
+    ]
+   ]
+  },
+  "tempering_floor_seal": {
+   "frame": [
+    38,
+    38
+   ],
+   "anchor": [
+    19,
+    19
+   ],
+   "frames": 2,
+   "ms": [
+    440.0,
+    440.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     296,
+     38,
+     38
+    ],
+    [
+     38,
+     296,
+     38,
+     38
+    ]
+   ]
+  },
+  "slag_chimney_vent": {
+   "frame": [
+    26,
+    36
+   ],
+   "anchor": [
+    13,
+    34
+   ],
+   "frames": 4,
+   "ms": [
+    220.0,
+    220.0,
+    220.0,
+    220.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     334,
+     26,
+     36
+    ],
+    [
+     26,
+     334,
+     26,
+     36
+    ],
+    [
+     52,
+     334,
+     26,
+     36
+    ],
+    [
+     78,
+     334,
+     26,
+     36
+    ]
+   ]
+  }
+ }
+}

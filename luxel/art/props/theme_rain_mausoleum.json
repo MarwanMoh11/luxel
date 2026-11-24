@@ -1,0 +1,413 @@
+{
+ "id": "theme_rain_mausoleum",
+ "name": "The Rain Mausoleum Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_rain_mausoleum.png",
+ "sheet_size": [
+  88,
+  318
+ ],
+ "props": {
+  "weeping_stone_urn": {
+   "frame": [
+    22,
+    26
+   ],
+   "anchor": [
+    11,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     22,
+     26
+    ],
+    [
+     22,
+     0,
+     22,
+     26
+    ],
+    [
+     44,
+     0,
+     22,
+     26
+    ],
+    [
+     66,
+     0,
+     22,
+     26
+    ]
+   ]
+  },
+  "weather_vane_spire": {
+   "frame": [
+    18,
+    36
+   ],
+   "anchor": [
+    9,
+    34
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     26,
+     18,
+     36
+    ],
+    [
+     18,
+     26,
+     18,
+     36
+    ],
+    [
+     36,
+     26,
+     18,
+     36
+    ],
+    [
+     54,
+     26,
+     18,
+     36
+    ]
+   ]
+  },
+  "carved_sarcophagus": {
+   "frame": [
+    24,
+    16
+   ],
+   "anchor": [
+    12,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     62,
+     24,
+     16
+    ]
+   ]
+  },
+  "bronze_drain_gargoyle": {
+   "frame": [
+    22,
+    26
+   ],
+   "anchor": [
+    11,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     78,
+     22,
+     26
+    ],
+    [
+     22,
+     78,
+     22,
+     26
+    ],
+    [
+     44,
+     78,
+     22,
+     26
+    ],
+    [
+     66,
+     78,
+     22,
+     26
+    ]
+   ]
+  },
+  "rain_lantern_post": {
+   "frame": [
+    18,
+    30
+   ],
+   "anchor": [
+    9,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     104,
+     18,
+     30
+    ],
+    [
+     18,
+     104,
+     18,
+     30
+    ],
+    [
+     36,
+     104,
+     18,
+     30
+    ],
+    [
+     54,
+     104,
+     18,
+     30
+    ]
+   ]
+  },
+  "mausoleum_arch_gate": {
+   "frame": [
+    46,
+    46
+   ],
+   "anchor": [
+    23,
+    44
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     134,
+     46,
+     46
+    ]
+   ]
+  },
+  "wet_moss_pillar": {
+   "frame": [
+    16,
+    34
+   ],
+   "anchor": [
+    8,
+    32
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     180,
+     16,
+     34
+    ]
+   ]
+  },
+  "chime_rain_rod": {
+   "frame": [
+    16,
+    30
+   ],
+   "anchor": [
+    8,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     214,
+     16,
+     30
+    ],
+    [
+     16,
+     214,
+     16,
+     30
+    ],
+    [
+     32,
+     214,
+     16,
+     30
+    ],
+    [
+     48,
+     214,
+     16,
+     30
+    ]
+   ]
+  },
+  "flood_gauge_marker": {
+   "frame": [
+    14,
+    26
+   ],
+   "anchor": [
+    7,
+    24
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     244,
+     14,
+     26
+    ]
+   ]
+  },
+  "storm_brazier_bowl": {
+   "frame": [
+    20,
+    26
+   ],
+   "anchor": [
+    10,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     270,
+     20,
+     26
+    ],
+    [
+     20,
+     270,
+     20,
+     26
+    ],
+    [
+     40,
+     270,
+     20,
+     26
+    ],
+    [
+     60,
+     270,
+     20,
+     26
+    ]
+   ]
+  },
+  "slate_memorial_plinth": {
+   "frame": [
+    18,
+    22
+   ],
+   "anchor": [
+    9,
+    20
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     296,
+     18,
+     22
+    ]
+   ]
+  }
+ }
+}

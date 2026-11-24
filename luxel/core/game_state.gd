@@ -18,7 +18,10 @@ var last_waystone_id: String = "ws_plaza"
 var max_hearts: int = 4
 var hearts: float = 4.0
 var ember_pieces: int = 0
+var half_lanterns: int = 0
 var shards: int = 0
+var room_anchor_region: String = ""
+var room_anchor_pos: Vector2 = Vector2(-1.0, -1.0)
 
 var unlocked_moves: Dictionary = {}
 var upgrades: Dictionary = {}
@@ -33,6 +36,7 @@ var opened_doors: Array[String] = []
 var visited_regions: Array[String] = []
 var interactable_states: Dictionary = {}
 var story_flags: Dictionary = {}
+var world_vars: Dictionary = {}
 
 var play_time_s: float = 0.0
 var deaths: int = 0
@@ -54,7 +58,10 @@ func reset_new_game(new_slot: String = "1") -> void:
 	max_hearts = int(Lx.get_decision("hearts_start", 4))
 	hearts = float(max_hearts)
 	ember_pieces = 0
+	half_lanterns = 0
 	shards = 0
+	room_anchor_region = ""
+	room_anchor_pos = Vector2(-1.0, -1.0)
 
 	unlocked_moves.clear()
 	if Lx.data_moves.is_empty():
@@ -84,6 +91,7 @@ func reset_new_game(new_slot: String = "1") -> void:
 	interactable_states.clear()
 	story_flags.clear()
 	story_flags["lantern_picked_up"] = false
+	world_vars.clear()
 
 	play_time_s = 0.0
 	deaths = 0
@@ -215,6 +223,19 @@ func add_boss_heart() -> void:
 			Lx.events.sfx_requested.emit("shard_pickup", Vector2.ZERO, false)
 
 
+func add_half_lantern() -> bool:
+	half_lanterns += 1
+	if half_lanterns >= 2:
+		half_lanterns -= 2
+		add_boss_heart()
+		return true
+	if Lx.events != null:
+		var cue: String = "CUE_HALF_LANTERN" if LxStrings.has_id("CUE_HALF_LANTERN") else "CUE_EMBER_FOUND"
+		Lx.events.narration_requested.emit(cue, "title", 2.6)
+		Lx.events.sfx_requested.emit("ember_pickup", Vector2.ZERO, false)
+	return false
+
+
 func heal_full() -> void:
 	hearts = float(max_hearts)
 	if Lx.events != null:
@@ -298,9 +319,39 @@ func get_completion_pct(relit_override: int = -1, embers_override: int = -1) -> 
 	var harm_n: int = get_harmony_count()
 	var upg_t: Vector2i = get_upgrade_totals()
 	var upg_ratio: float = float(upg_t.x) / float(maxi(1, upg_t.y))
-	var score: float = (float(relit_n) / 8.0) * 40.0 + (float(moves_n) / 7.0) * 14.0 \
+	var base_score: float = (float(relit_n) / 8.0) * 40.0 + (float(moves_n) / 7.0) * 14.0 \
 		+ (float(ember_n) / 16.0) * 16.0 + (float(harm_n) / 8.0) * 16.0 + upg_ratio * 14.0
-	return clampi(roundi(score), 0, 100)
+	var extra_pts: float = 0.0
+	var extra_max: float = 0.0
+	if Lx.packs != null:
+		var side_total: int = 0
+		var side_done: int = 0
+		for d: Dictionary in Lx.packs.all_dungeons():
+			if bool(d.get("builtin", false)) or bool(d.get("debug_only", false)):
+				continue
+			side_total += 1
+			var df: String = str(d.get("done_flag", "dungeon_done:" + str(d.get("id", ""))))
+			if bool(story_flags.get(df, false)):
+				side_done += 1
+		if side_total > 0:
+			extra_max += 12.0
+			extra_pts += (float(side_done) / float(side_total)) * 12.0
+		var moths_d: Dictionary = Lx.packs.moths()
+		if not moths_d.is_empty():
+			var mdone: int = 0
+			for mk: Variant in moths_d.keys():
+				if bool(story_flags.get("moth_found:" + str(mk), false)):
+					mdone += 1
+			extra_max += 6.0
+			extra_pts += (float(mdone) / float(moths_d.size())) * 6.0
+		var panes_d: Dictionary = Lx.packs.panes()
+		if not panes_d.is_empty() and Lx.panes != null and Lx.panes.has_method("owned_ids"):
+			var owned: PackedStringArray = Lx.panes.call("owned_ids") as PackedStringArray
+			extra_max += 6.0
+			extra_pts += clampf(float(owned.size()) / float(panes_d.size()), 0.0, 1.0) * 6.0
+	if extra_max > 0.0:
+		return clampi(roundi(((base_score + extra_pts) / (100.0 + extra_max)) * 100.0), 0, 100)
+	return clampi(roundi(base_score), 0, 100)
 
 
 func _upgrade_val(upgrade_id: String, base: float) -> float:
@@ -367,11 +418,14 @@ func to_dict() -> Dictionary:
 		"region_id": region_id,
 		"room_id": room_id,
 		"spawn_pos": [spawn_pos.x, spawn_pos.y],
+		"room_anchor_region": room_anchor_region,
+		"room_anchor_pos": [room_anchor_pos.x, room_anchor_pos.y],
 		"last_waystone_island": last_waystone_island,
 		"last_waystone_id": last_waystone_id,
 		"max_hearts": max_hearts,
 		"hearts": hearts,
 		"ember_pieces": ember_pieces,
+		"half_lanterns": half_lanterns,
 		"shards": shards,
 		"unlocked_moves": unlocked_moves.duplicate(true),
 		"upgrades": upgrades.duplicate(true),
@@ -386,6 +440,7 @@ func to_dict() -> Dictionary:
 		"visited_regions": visited_regions.duplicate(),
 		"interactable_states": interactable_states.duplicate(true),
 		"story_flags": story_flags.duplicate(true),
+		"world_vars": world_vars.duplicate(true),
 		"play_time_s": play_time_s,
 		"deaths": deaths,
 		"hits_taken": hits_taken,
@@ -403,12 +458,17 @@ func from_dict(d: Dictionary) -> void:
 	var sp: Variant = d.get("spawn_pos", [708.0, 366.0])
 	if sp is Array and (sp as Array).size() >= 2:
 		spawn_pos = Vector2(float((sp as Array)[0]), float((sp as Array)[1]))
+	room_anchor_region = str(d.get("room_anchor_region", ""))
+	var ra: Variant = d.get("room_anchor_pos", [-1.0, -1.0])
+	if ra is Array and (ra as Array).size() >= 2:
+		room_anchor_pos = Vector2(float((ra as Array)[0]), float((ra as Array)[1]))
 	last_waystone_island = int(d.get("last_waystone_island", 1))
 	last_waystone_id = str(d.get("last_waystone_id", "ws_plaza"))
 	max_hearts = clampi(int(d.get("max_hearts", 4)), 4, 12)
 	var raw_hearts: float = float(d.get("hearts", float(max_hearts)))
 	hearts = float(max_hearts) if raw_hearts <= 0.0 else minf(raw_hearts, float(max_hearts))
 	ember_pieces = maxi(0, int(d.get("ember_pieces", 0)))
+	half_lanterns = maxi(0, int(d.get("half_lanterns", 0)))
 	shards = maxi(0, int(d.get("shards", 0)))
 
 	var um: Variant = d.get("unlocked_moves", {})
@@ -438,6 +498,11 @@ func from_dict(d: Dictionary) -> void:
 	var sf: Variant = d.get("story_flags", {})
 	if sf is Dictionary:
 		story_flags = (sf as Dictionary).duplicate(true)
+	var wv: Variant = d.get("world_vars", {})
+	if wv is Dictionary:
+		world_vars = (wv as Dictionary).duplicate(true)
+	else:
+		world_vars = {}
 	var br: Variant = d.get("boss_retries", {})
 	if br is Dictionary:
 		boss_retries = (br as Dictionary).duplicate(true)

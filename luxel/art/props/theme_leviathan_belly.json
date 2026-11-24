@@ -1,0 +1,327 @@
+{
+ "id": "theme_leviathan_belly",
+ "name": "The Leviathan's Belly Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_leviathan_belly.png",
+ "sheet_size": [
+  88,
+  256
+ ],
+ "props": {
+  "ivory_rib_arch": {
+   "frame": [
+    46,
+    44
+   ],
+   "anchor": [
+    23,
+    42
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     46,
+     44
+    ]
+   ]
+  },
+  "curled_rib_pillar": {
+   "frame": [
+    16,
+    32
+   ],
+   "anchor": [
+    8,
+    30
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     44,
+     16,
+     32
+    ]
+   ]
+  },
+  "barnacle_cluster": {
+   "frame": [
+    24,
+    18
+   ],
+   "anchor": [
+    12,
+    16
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     76,
+     24,
+     18
+    ]
+   ]
+  },
+  "acid_vent_sac": {
+   "frame": [
+    22,
+    24
+   ],
+   "anchor": [
+    11,
+    22
+   ],
+   "frames": 4,
+   "ms": [
+    280.0,
+    280.0,
+    280.0,
+    280.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     94,
+     22,
+     24
+    ],
+    [
+     22,
+     94,
+     22,
+     24
+    ],
+    [
+     44,
+     94,
+     22,
+     24
+    ],
+    [
+     66,
+     94,
+     22,
+     24
+    ]
+   ]
+  },
+  "swallowed_ship_crate": {
+   "frame": [
+    20,
+    20
+   ],
+   "anchor": [
+    10,
+    18
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     118,
+     20,
+     20
+    ]
+   ]
+  },
+  "swallowed_anchor": {
+   "frame": [
+    22,
+    26
+   ],
+   "anchor": [
+    11,
+    24
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     138,
+     22,
+     26
+    ]
+   ]
+  },
+  "digestive_spore_bulb": {
+   "frame": [
+    22,
+    24
+   ],
+   "anchor": [
+    11,
+    22
+   ],
+   "frames": 4,
+   "ms": [
+    320.0,
+    320.0,
+    320.0,
+    320.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     164,
+     22,
+     24
+    ],
+    [
+     22,
+     164,
+     22,
+     24
+    ],
+    [
+     44,
+     164,
+     22,
+     24
+    ],
+    [
+     66,
+     164,
+     22,
+     24
+    ]
+   ]
+  },
+  "tendon_bridge_post": {
+   "frame": [
+    14,
+    24
+   ],
+   "anchor": [
+    7,
+    22
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     188,
+     14,
+     24
+    ]
+   ]
+  },
+  "whale_lantern_jar": {
+   "frame": [
+    18,
+    26
+   ],
+   "anchor": [
+    9,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     212,
+     18,
+     26
+    ],
+    [
+     18,
+     212,
+     18,
+     26
+    ],
+    [
+     36,
+     212,
+     18,
+     26
+    ],
+    [
+     54,
+     212,
+     18,
+     26
+    ]
+   ]
+  },
+  "cartilage_mound": {
+   "frame": [
+    24,
+    18
+   ],
+   "anchor": [
+    12,
+    16
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     238,
+     24,
+     18
+    ]
+   ]
+  }
+ }
+}

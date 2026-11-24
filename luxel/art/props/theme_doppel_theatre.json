@@ -1,0 +1,436 @@
+{
+ "id": "theme_doppel_theatre",
+ "name": "The Doppel Theatre Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_doppel_theatre.png",
+ "sheet_size": [
+  128,
+  340
+ ],
+ "props": {
+  "velvet_stage_curtain": {
+   "frame": [
+    24,
+    42
+   ],
+   "anchor": [
+    12,
+    40
+   ],
+   "frames": 4,
+   "ms": [
+    340.0,
+    340.0,
+    340.0,
+    340.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     24,
+     42
+    ],
+    [
+     24,
+     0,
+     24,
+     42
+    ],
+    [
+     48,
+     0,
+     24,
+     42
+    ],
+    [
+     72,
+     0,
+     24,
+     42
+    ]
+   ]
+  },
+  "proscenium_mask_arch": {
+   "frame": [
+    46,
+    46
+   ],
+   "anchor": [
+    23,
+    44
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     42,
+     46,
+     46
+    ]
+   ]
+  },
+  "brass_footlight_row": {
+   "frame": [
+    32,
+    12
+   ],
+   "anchor": [
+    16,
+    10
+   ],
+   "frames": 4,
+   "ms": [
+    260.0,
+    260.0,
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     88,
+     32,
+     12
+    ],
+    [
+     32,
+     88,
+     32,
+     12
+    ],
+    [
+     64,
+     88,
+     32,
+     12
+    ],
+    [
+     96,
+     88,
+     32,
+     12
+    ]
+   ]
+  },
+  "dressing_vanity_mirror": {
+   "frame": [
+    22,
+    32
+   ],
+   "anchor": [
+    11,
+    30
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     100,
+     22,
+     32
+    ],
+    [
+     22,
+     100,
+     22,
+     32
+    ],
+    [
+     44,
+     100,
+     22,
+     32
+    ],
+    [
+     66,
+     100,
+     22,
+     32
+    ]
+   ]
+  },
+  "puppet_crossbar_stand": {
+   "frame": [
+    18,
+    32
+   ],
+   "anchor": [
+    9,
+    30
+   ],
+   "frames": 4,
+   "ms": [
+    280.0,
+    280.0,
+    280.0,
+    280.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     132,
+     18,
+     32
+    ],
+    [
+     18,
+     132,
+     18,
+     32
+    ],
+    [
+     36,
+     132,
+     18,
+     32
+    ],
+    [
+     54,
+     132,
+     18,
+     32
+    ]
+   ]
+  },
+  "theatre_box_seat": {
+   "frame": [
+    24,
+    18
+   ],
+   "anchor": [
+    12,
+    16
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     164,
+     24,
+     18
+    ]
+   ]
+  },
+  "stage_prop_trunk": {
+   "frame": [
+    22,
+    16
+   ],
+   "anchor": [
+    11,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     182,
+     22,
+     16
+    ]
+   ]
+  },
+  "cardboard_moon_flat": {
+   "frame": [
+    20,
+    28
+   ],
+   "anchor": [
+    10,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     198,
+     20,
+     28
+    ]
+   ]
+  },
+  "spot_lantern_rig": {
+   "frame": [
+    18,
+    32
+   ],
+   "anchor": [
+    9,
+    30
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     226,
+     18,
+     32
+    ],
+    [
+     18,
+     226,
+     18,
+     32
+    ],
+    [
+     36,
+     226,
+     18,
+     32
+    ],
+    [
+     54,
+     226,
+     18,
+     32
+    ]
+   ]
+  },
+  "playbill_easel_stand": {
+   "frame": [
+    18,
+    26
+   ],
+   "anchor": [
+    9,
+    24
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     258,
+     18,
+     26
+    ]
+   ]
+  },
+  "tattered_act_banner": {
+   "frame": [
+    18,
+    34
+   ],
+   "anchor": [
+    9,
+    32
+   ],
+   "frames": 4,
+   "ms": [
+    300.0,
+    300.0,
+    300.0,
+    300.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     284,
+     18,
+     34
+    ],
+    [
+     18,
+     284,
+     18,
+     34
+    ],
+    [
+     36,
+     284,
+     18,
+     34
+    ],
+    [
+     54,
+     284,
+     18,
+     34
+    ]
+   ]
+  },
+  "trapdoor_stage_hatch": {
+   "frame": [
+    26,
+    22
+   ],
+   "anchor": [
+    13,
+    11
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     318,
+     26,
+     22
+    ]
+   ]
+  }
+ }
+}

@@ -4,6 +4,7 @@ extends RefCounted
 
 var id: String = ""
 var unlocked: bool = false
+var locked: bool = false
 var cooldown_left: float = 0.0
 var wick: LxWick = null
 
@@ -23,8 +24,12 @@ func sync_unlock() -> void:
 		unlocked = bool(data.get("start_unlocked", false))
 
 
+func is_locked() -> bool:
+	return locked
+
+
 func can_use() -> bool:
-	return unlocked and cooldown_left <= 0.0 and wick != null
+	return unlocked and not locked and cooldown_left <= 0.0 and wick != null
 
 
 func press() -> bool:

@@ -1,0 +1,79 @@
+{
+  "pack_id": "i2_toys",
+  "owner": "TOYPACK_I2",
+  "interactables": {
+    "tide_raft": "res://luxel/islands/2/toys/tide_raft.gd",
+    "mooring_post": "res://luxel/islands/2/toys/mooring_post.gd",
+    "optic_well": "res://luxel/islands/2/toys/optic_well.gd",
+    "ballast_keg": "res://luxel/islands/2/toys/ballast_keg.gd"
+  },
+  "state_vars": {
+    "tide": {
+      "scope": "island:2",
+      "values": ["ebb", "half", "flood"],
+      "default": "ebb"
+    },
+    "tower_tide": {
+      "scope": "dungeon:lighthouse",
+      "values": ["low", "mid", "high"],
+      "default": "low"
+    },
+    "list": {
+      "scope": "dungeon:galleon",
+      "values": ["port", "starboard"],
+      "default": "port"
+    },
+    "lock_water": {
+      "scope": "dungeon:locks",
+      "values": ["west_high", "east_high"],
+      "default": "west_high"
+    },
+    "relay_f1": {
+      "scope": "dungeon:lighthouse",
+      "values": [0, 1],
+      "default": 0
+    },
+    "relay_f2": {
+      "scope": "dungeon:lighthouse",
+      "values": [0, 1],
+      "default": 0
+    },
+    "relay_f3": {
+      "scope": "dungeon:lighthouse",
+      "values": [0, 1],
+      "default": 0
+    }
+  },
+  "strings": {
+    "ISL2_TIDE_EBB": "THE HARBOR EXHALES. LOW TIDE.",
+    "ISL2_TIDE_HALF": "THE CANALS FILL. HALF TIDE.",
+    "ISL2_TIDE_FLOOD": "THE SEA RISES HIGH. FLOOD TIDE.",
+    "LH2_RELAY_ON": "OPTIC SHAFT LIT! BEAM RISES HIGHER.",
+    "PROMPT_TIDE_ORGAN": "SOUND TIDE ORGAN",
+    "PROMPT_BALLAST": "SHIFT BALLAST",
+    "HUD_I2_EBB": "EBB",
+    "HUD_I2_HALF": "HALF",
+    "HUD_I2_FLOOD": "FLOOD",
+    "HUD_I2_TLOW": "T:LOW",
+    "HUD_I2_TMID": "T:MID",
+    "HUD_I2_THIGH": "T:HIGH",
+    "HUD_I2_PORT": "PORT",
+    "HUD_I2_STBD": "STBD",
+    "HUD_I2_LWEST": "W-HI",
+    "HUD_I2_LEAST": "E-HI",
+    "PROOF_I2_1_NAME": "TIDEWATER PROOF BASIN",
+    "PROOF_I2_2_NAME": "BALLAST AND OPTIC PROOF"
+  },
+  "regions": {
+    "_proof_i2_1": {
+      "name_key": "PROOF_I2_1_NAME",
+      "debug_only": true,
+      "map": [0, 0]
+    },
+    "_proof_i2_2": {
+      "name_key": "PROOF_I2_2_NAME",
+      "debug_only": true,
+      "map": [1, 0]
+    }
+  }
+}

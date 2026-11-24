@@ -1,0 +1,202 @@
+{
+  "pack_id": "i3_creatures_a",
+  "owner": "C3-A",
+  "comment": "Island 3 (Thornwood Hollow) creature package A: 6 new enemies + Under-Root mini-boss Stag Colossus and boss Hundred Lamps.",
+  "strings": {
+    "ISL3_BOSS_STAG": "STAG COLOSSUS",
+    "ISL3_BOSS_CENTIPEDE": "HUNDRED LAMPS"
+  },
+  "enemies": {
+    "burrow_beetle": {
+      "script": "res://luxel/enemies/burrow_beetle/brain.gd",
+      "data": {
+        "max_hp": 4.5,
+        "body_radius": 6.5,
+        "routine_speed": 36.0,
+        "leash_radius": 156.0,
+        "notice_radius": 112.0,
+        "tell_time": 0.54,
+        "recover_time": 1.15,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "dandelion_drifter": {
+      "script": "res://luxel/enemies/dandelion_drifter/brain.gd",
+      "data": {
+        "max_hp": 2.2,
+        "body_radius": 5.5,
+        "routine_speed": 40.0,
+        "leash_radius": 160.0,
+        "notice_radius": 130.0,
+        "tell_time": 0.48,
+        "recover_time": 1.10,
+        "shard_drop": 3,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "vine_strangler": {
+      "script": "res://luxel/enemies/vine_strangler/brain.gd",
+      "data": {
+        "max_hp": 3.5,
+        "body_radius": 6.5,
+        "routine_speed": 32.0,
+        "leash_radius": 148.0,
+        "notice_radius": 96.0,
+        "tell_time": 0.50,
+        "recover_time": 1.20,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "thorn_archer": {
+      "script": "res://luxel/enemies/thorn_archer/brain.gd",
+      "data": {
+        "max_hp": 2.8,
+        "body_radius": 5.5,
+        "routine_speed": 38.0,
+        "leash_radius": 158.0,
+        "notice_radius": 144.0,
+        "tell_time": 0.46,
+        "recover_time": 1.00,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "false_lantern": {
+      "script": "res://luxel/enemies/false_lantern/brain.gd",
+      "data": {
+        "max_hp": 3.2,
+        "body_radius": 6.0,
+        "routine_speed": 42.0,
+        "leash_radius": 152.0,
+        "notice_radius": 112.0,
+        "tell_time": 0.46,
+        "recover_time": 1.15,
+        "shard_drop": 5,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "jumping_spider": {
+      "script": "res://luxel/enemies/jumping_spider/brain.gd",
+      "data": {
+        "max_hp": 3.0,
+        "body_radius": 6.0,
+        "routine_speed": 44.0,
+        "leash_radius": 160.0,
+        "notice_radius": 124.0,
+        "tell_time": 0.52,
+        "recover_time": 1.10,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "stag_colossus": {
+      "script": "res://luxel/bosses/stag_colossus/brain.gd",
+      "aliases": ["boss_stag_colossus"],
+      "data": {
+        "max_hp": 46.0,
+        "body_radius": 12.5,
+        "routine_speed": 38.0,
+        "leash_radius": 185.0,
+        "notice_radius": 160.0,
+        "tell_time": 0.58,
+        "recover_time": 1.15,
+        "shard_drop": 18,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "hundred_lamps": {
+      "script": "res://luxel/bosses/hundred_lamps/brain.gd",
+      "aliases": ["boss_hundred_lamps"],
+      "data": {
+        "max_hp": 74.0,
+        "body_radius": 11.5,
+        "routine_speed": 44.0,
+        "leash_radius": 185.0,
+        "notice_radius": 160.0,
+        "tell_time": 0.52,
+        "recover_time": 1.15,
+        "shard_drop": 32,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "stag_colossus": {
+      "island": 3,
+      "name_key": "ISL3_BOSS_STAG",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "underroot",
+      "region": "underroot_r6",
+      "music": "island3_boss_p1",
+      "music_p2": "island3_boss_p2",
+      "heart": "none",
+      "flag": "stag_colossus_defeated",
+      "aliases": ["boss_stag_colossus"]
+    },
+    "hundred_lamps": {
+      "island": 3,
+      "name_key": "ISL3_BOSS_CENTIPEDE",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "underroot",
+      "region": "underroot_r11",
+      "music": "island3_boss_p1",
+      "music_p2": "island3_boss_p2",
+      "heart": "half",
+      "flag": "boss_hundred_lamps_defeated",
+      "aliases": ["boss_hundred_lamps"]
+    }
+  },
+  "sfx": {
+    "burrow_beetle_clank": { "id": "crystal_clank", "pitch": 0.92, "db": -1.5 },
+    "burrow_beetle_crack": { "id": "shell_snap", "pitch": 0.86, "db": 0.0 },
+    "burrow_beetle_flip": { "id": "golem_stomp", "pitch": 1.18, "db": -1.0 },
+    "burrow_beetle_dig": { "id": "earth_burrow", "pitch": 1.05, "db": -1.5 },
+    "burrow_beetle_surface": { "id": "earth_burrow", "pitch": 1.18, "db": -1.0 },
+    "burrow_beetle_notice": { "id": "shell_snap", "pitch": 1.16, "db": -3.5 },
+    "burrow_beetle_tell": { "id": "earth_burrow", "pitch": 0.88, "db": -2.5 },
+    "burrow_beetle_charge": { "id": "hollow_dash", "pitch": 0.86, "db": -0.5 },
+    "dandelion_notice": { "id": "prop_rustle", "pitch": 1.18, "db": -3.5 },
+    "dandelion_tell": { "id": "furnace_draw", "pitch": 1.24, "db": -3.0 },
+    "dandelion_puff": { "id": "spore_pop", "pitch": 1.20, "db": -1.0 },
+    "dandelion_pop": { "id": "spore_pop", "pitch": 1.32, "db": -1.5 },
+    "dandelion_bloom": { "id": "thorn_burst", "pitch": 1.16, "db": -1.5 },
+    "vine_strangler_notice": { "id": "prop_rustle", "pitch": 0.86, "db": -3.0 },
+    "vine_strangler_tell": { "id": "warden_alert", "pitch": 0.88, "db": -3.0 },
+    "vine_strangler_lash": { "id": "thorn_burst", "pitch": 1.05, "db": -0.5 },
+    "vine_strangler_snap": { "id": "web_burn", "pitch": 1.12, "db": -1.0 },
+    "vine_strangler_burn": { "id": "bramble_burn", "pitch": 1.00, "db": 0.0 },
+    "thorn_archer_notice": { "id": "owl_lock", "pitch": 1.14, "db": -4.0 },
+    "thorn_archer_tell": { "id": "owl_lock", "pitch": 1.22, "db": -3.0 },
+    "thorn_archer_fire": { "id": "barnacle_shot", "pitch": 1.22, "db": -0.5 },
+    "thorn_archer_jam": { "id": "prop_rustle", "pitch": 0.94, "db": -1.0 },
+    "false_lantern_unmask": { "id": "shell_snap", "pitch": 1.10, "db": -1.0 },
+    "false_lantern_swallow": { "id": "magpie_gulp", "pitch": 0.88, "db": -0.5 },
+    "false_lantern_tell": { "id": "warden_alert", "pitch": 1.08, "db": -3.0 },
+    "false_lantern_lunge": { "id": "hollow_dash", "pitch": 1.08, "db": -0.5 },
+    "jumping_spider_notice": { "id": "prop_rustle", "pitch": 1.24, "db": -3.5 },
+    "jumping_spider_tell": { "id": "owl_lock", "pitch": 1.08, "db": -3.5 },
+    "jumping_spider_leap": { "id": "dash_whoosh", "pitch": 1.18, "db": -1.5 },
+    "jumping_spider_land": { "id": "footstep_wood", "pitch": 0.88, "db": -1.0 },
+    "jumping_spider_silk_cut": { "id": "web_burn", "pitch": 1.24, "db": -0.5 },
+    "stag_horn_scrape": { "id": "crystal_clank", "pitch": 0.78, "db": -1.5 },
+    "stag_charge": { "id": "golem_stomp", "pitch": 0.92, "db": 0.5 },
+    "stag_flip_thud": { "id": "anchor_slam", "pitch": 0.94, "db": 0.5 },
+    "stag_overheat": { "id": "magma_crack", "pitch": 1.08, "db": 0.5 },
+    "centipede_chime_step": { "id": "clockwork_chime", "pitch": 1.12, "db": -2.5 },
+    "centipede_wave": { "id": "spore_pop", "pitch": 0.82, "db": 0.0 },
+    "centipede_burrow": { "id": "earth_burrow", "pitch": 0.86, "db": 0.0 },
+    "egg_snuff": { "id": "snuffer_gulp", "pitch": 1.16, "db": -0.5 }
+  }
+}

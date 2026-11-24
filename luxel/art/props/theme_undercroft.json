@@ -1,0 +1,401 @@
+{
+ "id": "theme_undercroft",
+ "name": "The Undercroft Scenery",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "theme_undercroft.png",
+ "sheet_size": [
+  96,
+  356
+ ],
+ "props": {
+  "crypt_coffin": {
+   "frame": [
+    20,
+    28
+   ],
+   "anchor": [
+    10,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     0,
+     20,
+     28
+    ]
+   ]
+  },
+  "open_sarcophagus": {
+   "frame": [
+    20,
+    28
+   ],
+   "anchor": [
+    10,
+    26
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     28,
+     20,
+     28
+    ]
+   ]
+  },
+  "chapel_pew": {
+   "frame": [
+    32,
+    18
+   ],
+   "anchor": [
+    16,
+    16
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     56,
+     32,
+     18
+    ]
+   ]
+  },
+  "crypt_urn": {
+   "frame": [
+    16,
+    22
+   ],
+   "anchor": [
+    8,
+    20
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     74,
+     16,
+     22
+    ]
+   ]
+  },
+  "bone_ossuary_arch": {
+   "frame": [
+    46,
+    48
+   ],
+   "anchor": [
+    23,
+    46
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     96,
+     46,
+     48
+    ]
+   ]
+  },
+  "bronze_bell_stand": {
+   "frame": [
+    24,
+    30
+   ],
+   "anchor": [
+    12,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    340.0,
+    340.0,
+    340.0,
+    340.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     144,
+     24,
+     30
+    ],
+    [
+     24,
+     144,
+     24,
+     30
+    ],
+    [
+     48,
+     144,
+     24,
+     30
+    ],
+    [
+     72,
+     144,
+     24,
+     30
+    ]
+   ]
+  },
+  "crypt_candelabra": {
+   "frame": [
+    20,
+    30
+   ],
+   "anchor": [
+    10,
+    28
+   ],
+   "frames": 4,
+   "ms": [
+    240.0,
+    240.0,
+    240.0,
+    240.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     174,
+     20,
+     30
+    ],
+    [
+     20,
+     174,
+     20,
+     30
+    ],
+    [
+     40,
+     174,
+     20,
+     30
+    ],
+    [
+     60,
+     174,
+     20,
+     30
+    ]
+   ]
+  },
+  "stone_crypt_pillar": {
+   "frame": [
+    16,
+    36
+   ],
+   "anchor": [
+    8,
+    34
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     204,
+     16,
+     36
+    ]
+   ]
+  },
+  "tattered_crypt_banner": {
+   "frame": [
+    16,
+    32
+   ],
+   "anchor": [
+    8,
+    30
+   ],
+   "frames": 4,
+   "ms": [
+    320.0,
+    320.0,
+    320.0,
+    320.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     240,
+     16,
+     32
+    ],
+    [
+     16,
+     240,
+     16,
+     32
+    ],
+    [
+     32,
+     240,
+     16,
+     32
+    ],
+    [
+     48,
+     240,
+     16,
+     32
+    ]
+   ]
+  },
+  "toll_brazier": {
+   "frame": [
+    20,
+    26
+   ],
+   "anchor": [
+    10,
+    24
+   ],
+   "frames": 4,
+   "ms": [
+    220.0,
+    220.0,
+    220.0,
+    220.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     272,
+     20,
+     26
+    ],
+    [
+     20,
+     272,
+     20,
+     26
+    ],
+    [
+     40,
+     272,
+     20,
+     26
+    ],
+    [
+     60,
+     272,
+     20,
+     26
+    ]
+   ]
+  },
+  "bell_floor_seal": {
+   "frame": [
+    36,
+    36
+   ],
+   "anchor": [
+    18,
+    18
+   ],
+   "frames": 2,
+   "ms": [
+    500.0,
+    500.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     298,
+     36,
+     36
+    ],
+    [
+     36,
+     298,
+     36,
+     36
+    ]
+   ]
+  },
+  "mossy_headstone": {
+   "frame": [
+    16,
+    22
+   ],
+   "anchor": [
+    8,
+    20
+   ],
+   "frames": 1,
+   "ms": [
+    1000.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     0,
+     334,
+     16,
+     22
+    ]
+   ]
+  }
+ }
+}
