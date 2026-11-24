@@ -87,7 +87,7 @@ func press() -> bool:
 	warn_time = clampf(float(data.get("warn_time", 1.2)), 0.2, pulse_duration)
 	pulse_radius = float(data.get("pulse_radius", 104.0))
 	hung_radius = float(data.get("hung_radius", 78.0))
-	var cd: float = maxf(pulse_duration, float(data.get("cooldown", 6.0)))
+	var cd: float = maxf(float(data.get("cooldown", 6.0)), pulse_duration + 2.0)
 
 	pulse_left = pulse_duration
 	cooldown_left = cd

@@ -81,17 +81,18 @@ func take_hit(hit: LxHit) -> int:
 	var orig: Vector2 = h["origin"] as Vector2
 	var rel: Vector2 = orig - pos
 	var mid_air: bool = is_flying()
+	var intercept: bool = mid_air and (is_heavy or not is_boss) # Bosses: heavy hits only
 	var post_ring: bool = state == State.RECOVER
 	if mid_air:
 		dmg *= AIR_INTERCEPT_MULT
 	elif post_ring:
 		dmg *= RECOVER_PUNISH_MULT
 	hp -= dmg
-	flash_t = 0.16 if (mid_air or is_heavy) else (0.12 if post_ring else 0.08)
+	flash_t = 0.16 if (intercept or is_heavy) else (0.12 if post_ring else 0.08)
 	if rel.length() > 0.01:
-		var k_spd: float = 125.0 if (mid_air or is_heavy) else 40.0
+		var k_spd: float = 125.0 if (intercept or is_heavy) else 40.0
 		knock = -rel.normalized() * k_spd
-	if mid_air:
+	if intercept:
 		hop_z = 0.0
 		commit_stage = CommitStage.LEAP
 		ring_progress = 0.0
@@ -102,7 +103,7 @@ func take_hit(hit: LxHit) -> int:
 		opened_kill = mid_air or post_ring or state == State.STAGGER or state == State.ROUTINE
 		_die(hit)
 		return HitResult.KILLED
-	if mid_air:
+	if intercept:
 		_release_token()
 		state = State.STAGGER
 		state_timer = AIR_STAGGER_TIME

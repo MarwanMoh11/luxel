@@ -335,16 +335,19 @@ func _clamp_rail_point(pt: Vector2) -> Vector2:
 func _clamped_beam_len(dir: Vector2, max_len: float) -> float:
 	var step_px: float = 8.0
 	var clear_d: float = body_radius + 2.0
+	# Each segment starts 4 px back: clear_view never samples a segment's end points
+	var seg_d: float = 0.0
 	var d: float = clear_d + step_px
 	while d <= max_len:
-		if not _has_clear_view(pos, pos + dir * d):
+		if not _has_clear_view(pos + dir * seg_d, pos + dir * d):
 			var mid_d: float = clear_d + step_px * 0.5
-			if mid_d < d and _has_clear_view(pos, pos + dir * mid_d):
+			if mid_d < d and _has_clear_view(pos + dir * seg_d, pos + dir * mid_d):
 				return mid_d
 			return clear_d
 		clear_d = d
+		seg_d = d - 4.0
 		d += step_px
-	if clear_d < max_len and not _has_clear_view(pos, pos + dir * max_len):
+	if clear_d < max_len and not _has_clear_view(pos + dir * seg_d, pos + dir * max_len):
 		return clear_d
 	return max_len
 

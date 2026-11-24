@@ -1,7 +1,7 @@
 class_name LxForgeWardenBoss
 extends LxCinderGolemBrain
 ## Ashen Kiln mini-boss (Island 6): Forge Warden.
-## 2 phases, HP 8.5, heavy armour 3.5 (cracked by Sunflare).
+## 2 phases, HP 12.5, heavy armour 3.5 (cracked by Sunflare).
 ## Phase 2 follows its Forge Quake with a telegraphed Molten Line-Fissure hammer slam
 ## aimed along Wick's lane (tell >= 0.52s) instead of a 2nd shockwave ring!
 
@@ -30,8 +30,8 @@ func _init() -> void:
 	boss_id = "forge_warden"
 	island_id = 6
 	is_boss = true
-	max_hp = 8.5
-	hp = 8.5
+	max_hp = 12.5
+	hp = 12.5
 	armour_max = FORGE_ARMOUR_MAX
 	armour_hp = FORGE_ARMOUR_MAX
 	body_radius = 8.5
@@ -49,6 +49,8 @@ func _init() -> void:
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
+	max_hp = maxf(12.5, max_hp)
+	hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "forge_warden"))
 	island_id = int(spec.get("island_id", 6))

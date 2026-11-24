@@ -194,14 +194,14 @@ func _is_source_powered(src: LxInteractable, dst: LxInteractable, is_portal: boo
 	if src is LxSwitchEye: return (src as LxSwitchEye).activated
 	if src is LxBrazier: return (src as LxBrazier).lit
 	if is_portal and src is LxBluePortal:
-		return (src as LxBluePortal).powered or (dst is LxBluePortal and is_instance_valid(dst) and (dst as LxBluePortal).powered)
+		return (src as LxBluePortal).powered or (dst != null and is_instance_valid(dst) and dst is LxBluePortal and (dst as LxBluePortal).powered)
 	return false
 
 func _is_target_opened(dst: LxInteractable) -> bool:
-	return dst is LxDoor and is_instance_valid(dst) and (dst as LxDoor).opened
+	return dst != null and is_instance_valid(dst) and dst is LxDoor and (dst as LxDoor).opened
 
 func _is_chevron_solved(ch: OpticalChevron) -> bool:
-	return ch.target != null and _is_source_powered(ch.target, null, ch.target is LxBluePortal)
+	return ch.target != null and is_instance_valid(ch.target) and _is_source_powered(ch.target, null, ch.target is LxBluePortal)
 
 func tick(dt: float) -> void:
 	if _conduits.is_empty() and _chevrons.is_empty(): return
@@ -209,8 +209,10 @@ func tick(dt: float) -> void:
 	var changed: bool = false
 	var active_now: bool = false
 	for c: Conduit in _conduits:
-		var p_now: bool = _is_source_powered(c.src, c.dst, c.is_portal)
-		var o_now: bool = _is_target_opened(c.dst)
+		var src_ok: LxInteractable = c.src if (c.src != null and is_instance_valid(c.src)) else null
+		var dst_ok: LxInteractable = c.dst if (c.dst != null and is_instance_valid(c.dst)) else null
+		var p_now: bool = _is_source_powered(src_ok, dst_ok, c.is_portal) if src_ok != null else false
+		var o_now: bool = _is_target_opened(dst_ok) if dst_ok != null else false
 		if p_now != c.powered or o_now != c.opened:
 			c.powered = p_now; c.opened = o_now; changed = true
 		if (p_now and not (o_now and _island_id > 1)) or (o_now and _island_id <= 1):

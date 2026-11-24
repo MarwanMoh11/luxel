@@ -174,6 +174,11 @@ func _step_brain(dt: float) -> void:
 	super._step_brain(dt)
 
 
+func _on_stagger_end(target_pos: Vector2) -> void:
+	surge_attack = false
+	super._on_stagger_end(target_pos)
+
+
 func _step_notice(dt: float, target_pos: Vector2) -> void:
 	var to_t: Vector2 = target_pos - pos
 	if to_t.length() > 0.01:

@@ -234,35 +234,35 @@ static func default_data(kind: String) -> LxEnemyData:
 			lh.shield_gone_time = 4.8
 			return lh
 		"elder_sporecap":
-			return _make_data("elder_sporecap", 7.5, 7.5, 30.0, 165.0, 136.0, 0.56, 1.25, 0.0, 14, 1.0, true)
+			return _make_data("elder_sporecap", 9.0, 7.5, 30.0, 165.0, 136.0, 0.56, 1.25, 0.0, 14, 1.0, true)
 		"briar_matron":
 			var bm: LxEnemyData = _make_data("briar_matron", 12.5, 8.5, 34.0, 185.0, 152.0, 0.50, 1.20, 3.5, 30, 1.0, true)
 			bm.shield_gone_time = 5.2
 			return bm
 		"great_lily_hopper":
-			return _make_data("great_lily_hopper", 7.5, 7.5, 44.0, 172.0, 140.0, 0.52, 1.20, 0.0, 15, 1.0, true)
+			return _make_data("great_lily_hopper", 10.5, 7.5, 44.0, 172.0, 140.0, 0.52, 1.20, 0.0, 15, 1.0, true)
 		"heron_abbess":
-			return _make_data("heron_abbess", 12.5, 7.5, 42.0, 185.0, 152.0, 0.56, 1.30, 0.0, 32, 1.0, true)
+			return _make_data("heron_abbess", 17.0, 7.5, 42.0, 185.0, 152.0, 0.56, 1.30, 0.0, 32, 1.0, true)
 		"clockwork_warden":
-			return _make_data("clockwork_warden", 8.0, 8.0, 36.0, 168.0, 144.0, 0.56, 1.15, 0.0, 16, 1.0, true)
+			return _make_data("clockwork_warden", 11.5, 8.0, 36.0, 168.0, 144.0, 0.56, 1.15, 0.0, 16, 1.0, true)
 		"astronomer":
-			return _make_data("astronomer", 12.5, 8.5, 76.0, 185.0, 152.0, 0.62, 1.35, 0.0, 34, 1.0, true)
+			return _make_data("astronomer", 18.0, 8.5, 76.0, 185.0, 152.0, 0.62, 1.35, 0.0, 34, 1.0, true)
 		"forge_warden":
-			return _make_data("forge_warden", 8.5, 8.5, 26.0, 150.0, 132.0, 0.64, 1.45, 0.0, 18, 1.5, true)
+			return _make_data("forge_warden", 12.5, 8.5, 26.0, 150.0, 132.0, 0.64, 1.45, 0.0, 18, 1.5, true)
 		"kilnmother":
-			return _make_data("kilnmother", 13.5, 9.5, 26.0, 160.0, 140.0, 0.66, 1.45, 0.0, 36, 1.5, true)
+			return _make_data("kilnmother", 20.0, 9.5, 26.0, 160.0, 140.0, 0.66, 1.45, 0.0, 36, 1.5, true)
 		"spire_warden":
-			var sw: LxEnemyData = _make_data("spire_warden", 7.5, 6.5, 40.0, 175.0, 142.0, 0.48, 1.12, 2.2, 14, 1.0, true)
+			var sw: LxEnemyData = _make_data("spire_warden", 13.0, 6.5, 40.0, 175.0, 142.0, 0.48, 1.12, 2.2, 14, 1.0, true)
 			sw.shield_gone_time = 4.6
 			return sw
 		"hollow_wick_boss":
-			return _make_data("hollow_wick_boss", 13.0, 5.5, 56.0, 185.0, 152.0, 0.45, 1.05, 0.0, 40, 1.0, true)
+			return _make_data("hollow_wick_boss", 22.0, 5.5, 56.0, 185.0, 152.0, 0.45, 1.05, 0.0, 40, 1.0, true)
 		"night_harbinger":
-			var nh: LxEnemyData = _make_data("night_harbinger", 9.0, 7.0, 42.0, 175.0, 144.0, 0.48, 1.10, 2.4, 22, 1.0, true)
+			var nh: LxEnemyData = _make_data("night_harbinger", 14.5, 7.0, 42.0, 175.0, 144.0, 0.48, 1.10, 2.4, 22, 1.0, true)
 			nh.shield_gone_time = 4.6
 			return nh
 		"the_hush":
-			return _make_data("the_hush", 16.0, 10.0, 42.0, 190.0, 160.0, 0.56, 1.05, 0.0, 60, 1.0, true)
+			return _make_data("the_hush", 28.0, 10.0, 42.0, 190.0, 160.0, 0.56, 1.05, 0.0, 60, 1.0, true)
 		_:
 			var wd: LxEnemyData = _make_data("warden", 4.0, 5.0, 36.0, 158.0, 120.0, 0.48, 1.15, 1.75, 3)
 			wd.shield_gone_time = 4.8

@@ -32,7 +32,11 @@ func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; _build_backdrop(
 
 func open(show_slots: bool = false) -> void:
 	visible = true; mode = Mode.SLOTS if show_slots else Mode.MAIN
+	_main_idx = clampi(_main_idx, 0, _main_items().size() - 1)
 	_elapsed = 0.0; _confirm_idx = 1; _hover_del = -1; _hover_back = false; refresh_slots(); queue_redraw()
+
+func _main_items() -> Array[String]:
+	return ["TITLE_PLAY", "TITLE_OPTIONS"] if OS.has_feature("web") else MAIN_ITEMS
 
 func close() -> void: visible = false
 
@@ -98,19 +102,22 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _input_main(event: InputEvent) -> void:
+	var n: int = _main_items().size()
 	if event.is_action_pressed("lx_move_up") or _key_just(event, KEY_UP):
-		_main_idx = (_main_idx - 1 + MAIN_ITEMS.size()) % MAIN_ITEMS.size(); _play_ui_sfx("ui_move"); get_viewport().set_input_as_handled()
+		_main_idx = (_main_idx - 1 + n) % n; _play_ui_sfx("ui_move"); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_down") or _key_just(event, KEY_DOWN):
-		_main_idx = (_main_idx + 1) % MAIN_ITEMS.size(); _play_ui_sfx("ui_move"); get_viewport().set_input_as_handled()
+		_main_idx = (_main_idx + 1) % n; _play_ui_sfx("ui_move"); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
 		_activate_main(_main_idx); get_viewport().set_input_as_handled()
 
 func _activate_main(idx: int) -> void:
+	var items: Array[String] = _main_items()
+	if idx < 0 or idx >= items.size(): return
 	_play_ui_sfx("ui_confirm")
-	match idx:
-		0: refresh_slots(); _hover_del = -1; _hover_back = false; mode = Mode.SLOTS
-		1: options_requested.emit()
-		2: quit_requested.emit()
+	match items[idx]:
+		"TITLE_PLAY": refresh_slots(); _hover_del = -1; _hover_back = false; mode = Mode.SLOTS
+		"TITLE_OPTIONS": options_requested.emit()
+		"TITLE_QUIT": quit_requested.emit()
 	queue_redraw()
 
 func _input_slots(event: InputEvent) -> void:
@@ -141,7 +148,7 @@ func _input_confirm(event: InputEvent) -> void:
 
 func _handle_mouse_hover(pos: Vector2) -> void:
 	if mode == Mode.MAIN:
-		for i: int in range(MAIN_ITEMS.size()):
+		for i: int in range(_main_items().size()):
 			if _main_btn_rect(i).has_point(pos):
 				if _main_idx != i: _main_idx = i; _play_ui_sfx("ui_move")
 				return
@@ -171,7 +178,7 @@ func _handle_mouse_hover(pos: Vector2) -> void:
 
 func _handle_mouse_click(pos: Vector2) -> bool:
 	if mode == Mode.MAIN:
-		for i: int in range(MAIN_ITEMS.size()):
+		for i: int in range(_main_items().size()):
 			if _main_btn_rect(i).has_point(pos): _main_idx = i; _activate_main(i); return true
 	elif mode == Mode.SLOTS:
 		if _back_btn_rect().has_point(pos):
@@ -436,13 +443,14 @@ func _draw_main() -> void:
 		HORIZONTAL_ALIGNMENT_CENTER
 	)
 
-	for i: int in range(MAIN_ITEMS.size()):
+	var items: Array[String] = _main_items()
+	for i: int in range(items.size()):
 		var r: Rect2 = _main_btn_rect(i)
 		var sel: bool = i == _main_idx
 		LxPixelFont.draw_panel(self, r, "plum" if sel else "dusk", "gold" if sel else "mauve", "night")
 		_px([[r.position.x + 2.0, r.position.y + 2.0, 1.0, 1.0], [r.end.x - 3.0, r.position.y + 2.0, 1.0, 1.0], [r.position.x + 2.0, r.end.y - 3.0, 1.0, 1.0], [r.end.x - 3.0, r.end.y - 3.0, 1.0, 1.0]], LxPalette.PAL["gold" if sel else "apricot"])
 		var ink: Color = LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"]
-		LxPixelFont.draw_centered(self, LxStrings.text(MAIN_ITEMS[i]), r.get_center().x, r.position.y + 4.0, ink, 1)
+		LxPixelFont.draw_centered(self, LxStrings.text(items[i]), r.get_center().x, r.position.y + 4.0, ink, 1)
 		if sel:
 			_draw_wick_lantern(r.position.x + 5.0, r.position.y + 3.0)
 			_draw_wick_lantern(r.end.x - 12.0, r.position.y + 3.0)

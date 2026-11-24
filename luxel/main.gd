@@ -122,6 +122,7 @@ func _apply_debug_args() -> void:
 	enter_title()
 
 func enter_title() -> void:
+	_mark_ending_seen()
 	_pending_ending_t = 0.0
 	flow = Flow.TITLE
 	Lx.audio.set_paused(false)
@@ -135,7 +136,9 @@ func flush_and_save(reason: String = "exit") -> void:
 func start_new_game(slot_num: int, play_intro: bool = true) -> void:
 	_pending_ending_t = 0.0
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
+	if _region_loader != null and _region_loader.has_method("discard_loaded"): _region_loader.call("discard_loaded")
 	Lx.state.reset_new_game(str(active_slot))
+	if _wick != null: _wick.call("sync_unlocks_from_state"); _wick.set("ember", 0.0)
 	Lx.save.save_slot(active_slot, Lx.state)
 	Lx.state.append_run_log("new_game")
 	flow = Flow.INTRO if play_intro else Flow.PLAY
@@ -163,15 +166,16 @@ func continue_slot(slot_num: int) -> bool:
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
 	if not Lx.save.load_slot(active_slot, Lx.state):
 		return false
+	if _region_loader != null and _region_loader.has_method("discard_loaded"): _region_loader.call("discard_loaded")
 	if Lx.state.hearts <= 0.0: Lx.state.heal_full()
-	if _wick != null and _wick.has_method("sync_unlocks_from_state"):
-		_wick.call("sync_unlocks_from_state")
+	if _wick != null: _wick.call("sync_unlocks_from_state"); _wick.set("ember", 0.0)
 	load_island_region(Lx.state.island_id, Lx.state.region_id, Lx.state.spawn_pos)
 	flow = Flow.PLAY
 	Lx.audio.set_paused(false)
 	_sync_ui_flow()
 	if Lx.save.last_load_used_backup and not Lx.save.last_notice_key.is_empty() and _ui_root != null and _ui_root.has_method("show_notice"):
 		_ui_root.call("show_notice", Lx.save.last_notice_key, 4.0)
+	if Lx.state.relit_islands.has(8) and not bool(Lx.state.story_flags.get("ending_seen", false)): _pending_ending_t = 1.45
 	return true
 
 func load_island_region(island_id: int, region_id: String, spawn_override: Vector2 = Vector2(-1.0, -1.0)) -> bool:
@@ -304,7 +308,13 @@ func trigger_ending(mode: String = "") -> void:
 	Lx.state.append_run_log("ending:" + ending_mode)
 	_sync_ui_flow()
 
+func _mark_ending_seen() -> void:
+	if flow == Flow.ENDING and Lx.state != null:
+		Lx.state.story_flags["ending_seen"] = true
+		_on_save_requested("ending_seen")
+
 func enter_credits() -> void:
+	_mark_ending_seen()
 	flow = Flow.CREDITS
 	Lx.audio.play_cue("credits")
 	_sync_ui_flow()
@@ -467,6 +477,7 @@ func _sync_ui_flow() -> void:
 	if flow != Flow.PLAY and Lx.input != null: Lx.input.clear_all_toggles()
 	if _ui_root != null and _ui_root.has_method("set_flow"): _ui_root.call("set_flow", flow)
 	if _darkness_layer != null: _darkness_layer.visible = flow in [Flow.PLAY, Flow.PAUSE, Flow.MAP, Flow.REST_SHOP, Flow.DEATH]
+	if flow == Flow.PLAY and _wick != null and _wick.has_method("prime_input_edges"): _wick.call("prime_input_edges")
 
 func _sync_boss_hud() -> void:
 	var hud: Node = Lx.ui.get("hud") as Node if (Lx.ui != null and Lx.ui.get("hud") != null) else null

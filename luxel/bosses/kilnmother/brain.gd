@@ -1,7 +1,7 @@
 class_name LxKilnmotherBoss
 extends LxCinderGolemBrain
 ## Ashen Kiln Boss (Island 6): the Kilnmother, a towering furnace with heavy slag armour (4.5).
-## 3 phases, HP 13.5. Sunflare cracks her armour and stuns her for huge damage.
+## 3 phases, HP 20.0. Sunflare cracks her armour and stuns her for huge damage.
 ## Hitting her glowing belly during BELLOWS_GUST inhale (TELL) interrupts & staggers her 0.9s!
 ## P2 adds a 4-Way Furnace Cross-Blast (tell >= 0.55s) alongside Bellows Gust & Molten Rings.
 
@@ -54,8 +54,8 @@ func _init() -> void:
 	boss_id = "kilnmother"
 	island_id = 6
 	is_boss = true
-	max_hp = 13.5
-	hp = 13.5
+	max_hp = 20.0
+	hp = 20.0
 	armour_max = KILN_ARMOUR_MAX
 	armour_hp = KILN_ARMOUR_MAX
 	body_radius = 9.5
@@ -73,6 +73,8 @@ func _init() -> void:
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
+	max_hp = maxf(20.0, max_hp)
+	hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "kilnmother"))
 	island_id = int(spec.get("island_id", 6))

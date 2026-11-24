@@ -552,7 +552,8 @@
         1064
       ],
       "props": {
-        "zone": "dark_hub"
+        "zone": "dark_hub",
+        "lit": true
       }
     },
     {

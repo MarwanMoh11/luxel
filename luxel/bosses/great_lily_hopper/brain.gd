@@ -1,7 +1,7 @@
 class_name LxGreatLilyHopperBoss
 extends LxLilyHopperBrain
 ## Mirefen Gardens mini-boss (Island 4): Great Lily Hopper.
-## 2 phases, HP 7.5. Pairs twin shockwave hops with a mid-range 3-Arc Lily-Petal Spit!
+## 2 phases, HP 10.5. Pairs twin shockwave hops with a mid-range 3-Arc Lily-Petal Spit!
 
 enum HopperMove { LEAP_HOP, PETAL_SPIT }
 
@@ -39,8 +39,8 @@ func _init() -> void:
 	boss_id = "great_lily_hopper"
 	island_id = 4
 	is_boss = true
-	max_hp = 7.5
-	hp = 7.5
+	max_hp = 10.5
+	hp = 10.5
 	body_radius = 7.5
 	routine_speed = 44.0
 	leash_radius = 172.0
@@ -53,6 +53,8 @@ func _init() -> void:
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
+	max_hp = maxf(10.5, max_hp)
+	hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "great_lily_hopper"))
 	island_id = int(spec.get("island_id", 4))

@@ -1,7 +1,7 @@
 class_name LxHollowWickBoss
 extends LxHollowWickBrain
 ## Moon Shoals Boss (Island 7): the Hollow Wick duel — the dark wearing Wick's full kit.
-## 3 phases, HP 13.0, boss_id = "hollow_wick".
+## 3 phases, HP 22.0, boss_id = "hollow_wick".
 ## Honest tells >= 0.40s across all phases, LURE works on him!
 ## Phase 1: Bolt Volley, Flare Dash, Lantern Throw+Zip.
 ## Phase 2: adds Dark Beam piercing line + 5-bolt spread. Phase 3: adds Eclipse Flare ring.
@@ -29,8 +29,8 @@ func _init() -> void:
 	boss_id = "hollow_wick"
 	island_id = 7
 	is_boss = true
-	max_hp = 13.0
-	hp = 13.0
+	max_hp = 22.0
+	hp = 22.0
 	body_radius = 5.5
 	routine_speed = 56.0
 	leash_radius = 185.0
@@ -43,6 +43,8 @@ func _init() -> void:
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
+	max_hp = maxf(22.0, max_hp)
+	hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "hollow_wick"))
 	island_id = int(spec.get("island_id", 7))

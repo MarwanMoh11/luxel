@@ -168,6 +168,11 @@ func load_region_from_paths(
 		Lx.events.region_entered.emit(current_island_id, current_region_id)
 	return true
 
+func discard_loaded() -> void:
+	## Drops the live region without saving it (LxMain, before Lx.state switches to another save slot).
+	_clear_loaded()
+	current_region_id = ""
+
 func _clear_loaded() -> void:
 	if _director != null:
 		_director.clear()

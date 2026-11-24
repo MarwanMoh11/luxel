@@ -1,7 +1,7 @@
 class_name LxSpireWardenBoss
 extends LxMoonshadeBrain
 ## Mirror Spire mini-boss (Island 7): Silver Mirror-Knight Sentinel.
-## 2 phases, HP 7.5, prismatic mirror-buckler 2.2 (cracked by refracted Blue Bolts or Moon-Mirror Pedestal).
+## 2 phases, HP 13.0, prismatic mirror-buckler 2.2 (cracked by refracted Blue Bolts or Moon-Mirror Pedestal).
 ## P1: Prismatic Spear Lunge + Lunar Arc. P2 (<=55% HP): Roar + buckler reform + Mirror-Blink Cross-Lunge.
 
 const SPEAR_TELL_P1: float = 0.56
@@ -41,7 +41,7 @@ var _roaring: bool = false
 func _init() -> void:
 	super._init()
 	kind = "spire_warden"; boss_id = "moonshade_warden"; island_id = 7; is_boss = true; variant = VARIANT_WARDEN
-	max_hp = 7.5; hp = 7.5; shield_max = 2.2; shield_hp = 2.2; shield_gone_duration = 4.6
+	max_hp = 13.0; hp = 13.0; shield_max = 2.2; shield_hp = 2.2; shield_gone_duration = 4.6
 	body_radius = 6.5; routine_speed = 40.0; leash_radius = 175.0; notice_radius = 142.0
 	reach = 38.0; lunge_reach = 98.0; swing_r = 30.0; swing_arc = 1.20
 	tell_time = 0.48; lunge_tell_time = 0.54; recover_time = 1.12; give_up_time = 1.8; shard_drop = 14
@@ -55,6 +55,7 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	forced["variant"] = VARIANT_WARDEN
 	forced["kind"] = "spire_warden"
 	super.setup(forced, p_director, p_world)
+	max_hp = maxf(13.0, max_hp); hp = max_hp
 	variant = VARIANT_WARDEN; kind = "spire_warden"; is_boss = true
 	boss_id = str(spec.get("boss_id", "moonshade_warden"))
 	island_id = int(spec.get("island_id", 7))
@@ -122,10 +123,15 @@ func _check_phase_transition() -> bool:
 	return false
 
 func _step_brain(dt: float) -> void:
+	if _roaring and state != State.NOTICE: _roaring = false
 	spear_cd = maxf(0.0, spear_cd - dt)
 	guard_cracked_t = maxf(0.0, guard_cracked_t - dt)
 	shimmer_t = maxf(0.0, shimmer_t - dt)
 	super._step_brain(dt)
+
+func _on_stagger_end(target_pos: Vector2) -> void:
+	spear_attack = false; feint_done = false
+	super._on_stagger_end(target_pos)
 
 func _step_notice(dt: float, target_pos: Vector2) -> void:
 	var to_t: Vector2 = target_pos - pos

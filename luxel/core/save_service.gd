@@ -6,6 +6,10 @@ extends Node
 const SAVE_DIR: String = "user://luxel1"
 const CURRENT_VERSION: int = 2
 const SLOT_COUNT: int = 3
+const OBSIDIAN_SEAL_IDS: Array[String] = [
+	"obsidian_5_secret", "seal_kiln_r5", "seal_kiln_r7", "seal_kiln_r9", "seal_7_ow_terrace",
+	"seal_spire_r5", "seal_spire_r9", "seal_8_g3", "seal_sanctum_r5",
+]
 
 var debug_mode: bool = false
 var settings: Dictionary = {}
@@ -161,33 +165,32 @@ static func _normalize_save_dict(out: Dictionary) -> void:
 	if out.has("hearts"):
 		var mh: int = clampi(int(out.get("max_hearts", 4)), 4, 12)
 		out["hearts"] = clampf(float(out.get("hearts", float(mh))), 0.0, float(mh))
-	# Backfill Round 17 tut_* flags when corresponding islands are already relit or seals broken.
+	# Backfill Round 17 tut_* flags only for relit islands (a gate seal breaks before its move is owned).
 	var relit_set: Dictionary = {}
 	if out.get("relit_islands") is Array:
 		for r_v: Variant in (out["relit_islands"] as Array):
 			relit_set[int(r_v)] = true
-	var seal_set: Dictionary = {}
 	var has_obsidian_seal: bool = false
 	if out.get("broken_seals") is Array:
 		for s_v: Variant in (out["broken_seals"] as Array):
-			var sid: String = str(s_v)
-			seal_set[sid] = true
-			if sid.contains("obsidian"):
+			if OBSIDIAN_SEAL_IDS.has(str(s_v)):
 				has_obsidian_seal = true
 	var sf: Dictionary = out["story_flags"] as Dictionary if out.get("story_flags") is Dictionary else {}
 	out["story_flags"] = sf
-	if relit_set.has(2) or seal_set.has("lighthouse_seal"):
+	if relit_set.has(2):
 		sf["tut_blue_refract_done"] = true
-	if relit_set.has(3) or seal_set.has("hollow_oak_seal"):
+	if relit_set.has(3):
 		sf["tut_beam_break_done"] = true
-	if relit_set.has(4) or seal_set.has("conservatory_seal"):
+	if relit_set.has(4):
 		sf["tut_wings_glided"] = true
-	if relit_set.has(5) or seal_set.has("orrery_seal"):
+	if relit_set.has(5):
 		sf["tut_lens_pulsed"] = true
 		sf["tut_lens_anchored"] = true
-	if relit_set.has(6) or seal_set.has("kiln_gate_seal") or has_obsidian_seal:
+	if relit_set.has(6) or has_obsidian_seal:
 		sf["tut_seal_shattered"] = true
-	if relit_set.has(6) or seal_set.has("kiln_gate_seal"):
+	elif not relit_set.has(8):
+		sf.erase("tut_seal_shattered") # older builds set it from the beacon gate seals
+	if relit_set.has(6):
 		sf["tut_vent_dashed"] = true
 
 

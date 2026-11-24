@@ -6,12 +6,18 @@ extends RefCounted
 const ICON_PAL: Dictionary = {
 	"k": "void", "n": "night", "d": "dusk", "m": "mauve", "s": "stone",
 	"w": "wine", "r": "coral", "a": "apricot", "g": "gold", "c": "cream",
-	"b": "blue", "y": "sky", "i": "ice", "l": "lime", "p": "pine",
+	"b": "blue", "y": "sky", "i": "ice", "l": "lime", "p": "pine", "o": "rose",
 }
 const STAT_ICONS: Array[Array] = [
 	["ggggg", ".ici.", "..c..", ".i.i.", "ggggg"], # Time: hourglass
 	[".sss.", "snsns", "ssrss", ".s.s.", "..m.."], # Deaths: fallen wick
 	["..c..", ".cgc.", "agaga", "ragar", ".wrw."], # Embers: flame
+	[".aga.", "aggga", "agcga", "aggga", ".ddd."], # Lamps relit: lantern
+]
+const RIGHT_STAT_ICONS: Array[Array] = [
+	["..c..", "g.g.g", "ggcgg", "ggggg", ".aaa."], # Clear %: gold/cream laurel crown
+	["..i..", ".icy.", "iccyb", ".yyb.", "..b.."], # Upgrades: sky/ice spark gem
+	["..ooc", "..o.o", "..o..", "coo..", ".ow.."], # Harmony: rose/cream chime note
 	[".aga.", "aggga", "agcga", "aggga", ".ddd."], # Lamps relit: lantern
 ]
 const RANK_STYLE: Dictionary = {
@@ -445,7 +451,7 @@ static func draw_results_ornaments(ci: CanvasItem, panel: Rect2, rank_key: Strin
 	for row: int in range(STAT_ICONS.size()):
 		var iy: float = 78.0 + float(row) * 12.0
 		_draw_mini_icon(ci, STAT_ICONS[row], 82.0, iy)
-		_draw_mini_icon(ci, STAT_ICONS[row], 233.0, iy)
+		_draw_mini_icon(ci, RIGHT_STAT_ICONS[row], 233.0, iy)
 	_draw_filigree_divider(ci, panel.position.x + 22.0, panel.end.x - 22.0, 124.0, "mauve", "apricot", false)
 	var eff_relit: int = relit_count if relit_count >= 0 else (Lx.state.relit_islands.size() if Lx.state != null else 8)
 	for isl_c: int in range(1, 9):

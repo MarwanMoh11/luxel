@@ -409,8 +409,12 @@ func _current_stat_val(uid: String) -> float:
 
 func _fmt_stat_val(uid: String, v: float) -> String:
 	match uid:
-		"prism_bounce", "ember_meter":
+		"prism_bounce":
 			return str(roundi(v))
+		"ember_meter":
+			var base_e: float = float(Lx.get_move_data("sunflare").get("ember_max", 100.0))
+			var eff_v: float = v if v > 0.0 else base_e
+			return LxStrings.fmt("FMT_PCT", [roundi((base_e / maxf(1.0, eff_v)) * 100.0)])
 		"wings_glide":
 			return LxStrings.fmt("SHOP_UNIT_PX_FMT", [str(roundi(v))])
 		"bolt_rate":

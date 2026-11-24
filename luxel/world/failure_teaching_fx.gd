@@ -5,6 +5,7 @@ extends Node2D
 
 const PAL: Dictionary = LxPalette.PAL; const REJECT_DUR: float = 0.85; const F6_REJECT_DUR: float = 0.75; const GUIDE_FADE: float = 0.45
 static var _pending_f3: Dictionary = {}
+static var _pending_f3_slot: String = ""
 
 var _region: LxRegionLoader = null; var _island_id: int = 0; var _region_id: String = ""
 var _clock: float = 0.0; var _cam_center: Vector2 = Vector2.ZERO; var _bound_events: LxEventBus = null
@@ -35,15 +36,26 @@ func clear() -> void:
 	visible = false; queue_redraw()
 func rebuild(region: LxRegionLoader) -> void:
 	clear()
-	if region == null or region.current_island_id <= 1: return
+	if region == null or region.current_island_id <= 1:
+		_pending_f3.clear(); _pending_f3_slot = ""
+		return
 	_region = region; _island_id = region.current_island_id; _region_id = region.current_region_id
 	_cam_center = region.spawn_pos if region.spawn_pos != Vector2.ZERO else region.bounds.get_center()
-	if Lx.state != null and not Lx.state.broken_seals.is_empty(): Lx.state.story_flags["tut_seal_shattered"] = true
 	_cache_region_nodes(region); _sync_events()
-	if _island_id == 4 and (_region_id == "conservatory_r5" or _region_id == "overworld") \
-			and not _flag("tut_wings_glided") and _has_move("wings") and str(_pending_f3.get("region", "")) == _region_id:
-		_f3_lip = _pending_f3.get("lip", region.spawn_pos) as Vector2; _f3_dest = _pending_f3.get("dest", Vector2.INF) as Vector2
-		_f3_rej_t = REJECT_DUR; _f3_g_t = 3.0; _pending_f3.clear()
+	for s: LxObsidianSeal in _seals:
+		if s.shattered: _set_flag("tut_seal_shattered"); break
+	if not _pending_f3.is_empty():
+		var cur_slot: String = Lx.state.slot_id if Lx.state != null else ""
+		if Lx.state == null or cur_slot != _pending_f3_slot or _island_id != 4 or str(_pending_f3.get("region", "")) != _region_id:
+			_pending_f3.clear(); _pending_f3_slot = ""
+		elif (_region_id == "conservatory_r5" or _region_id == "overworld") and not _flag("tut_wings_glided") and _has_move("wings"):
+			var lip: Vector2 = _pending_f3.get("lip", region.spawn_pos) as Vector2
+			var dest: Vector2 = _pending_f3.get("dest", Vector2.INF) as Vector2
+			_pending_f3.clear(); _pending_f3_slot = ""
+			if lip.distance_to(region.spawn_pos) <= 200.0:
+				_f3_lip = lip; _f3_dest = dest; _f3_rej_t = REJECT_DUR; _f3_g_t = 3.0
+		else:
+			_pending_f3.clear(); _pending_f3_slot = ""
 	visible = true; queue_redraw()
 func _cache_region_nodes(region: LxRegionLoader) -> void:
 	var is_orr: bool = _island_id == 5 and (_region_id == "orrery_r5" or _region_id == "orrery_r7")
@@ -151,8 +163,8 @@ func _poll_f3_f4(dt: float, wick: LxWick) -> void:
 			if ln.is_finite(): _f4_anc_p = ln; want_b = true
 	_f4a_w = move_toward(_f4a_w, 1.0 if want_a else 0.0, dt * 4.2); _f4b_w = move_toward(_f4b_w, 1.0 if want_b else 0.0, dt * 4.2)
 
-func _on_seal_broken(_isl: int, _seal_id: String) -> void:
-	if _island_id <= 1: return
+func _on_seal_broken(_isl: int, seal_id: String) -> void:
+	if _island_id <= 1 or _region == null or not (_region.find_interactable(seal_id) is LxObsidianSeal): return
 	_set_flag("tut_seal_shattered"); _f5_rej_t = 0.0; _f5_g_t = 0.0
 func _on_player_damaged(_amount: float, from_pos: Vector2, _knock_dir: Vector2, source: String) -> void:
 	if _island_id <= 1 or not (source in ["void", "water", "pit", "hazard"]): return
@@ -163,6 +175,7 @@ func _on_player_damaged(_amount: float, from_pos: Vector2, _knock_dir: Vector2, 
 			if sp != Vector2.ZERO and sp.distance_to(from_pos) <= 72.0: lip = sp
 		_f3_lip = lip; _f3_dest = _nearest_updraft_or_shore(lip, from_pos); _f3_rej_t = REJECT_DUR; _f3_g_t = 3.0
 		_pending_f3 = {"region": _region_id, "lip": lip, "dest": _f3_dest}
+		_pending_f3_slot = Lx.state.slot_id if Lx.state != null else ""
 	elif _island_id == 5 and (_region_id == "orrery_r5" or _region_id == "orrery_r7") and _has_move("lens") and not _flag("tut_lens_pulsed"):
 		_f4_rej_p = from_pos; _f4_rej_t = REJECT_DUR
 func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
@@ -179,7 +192,7 @@ func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
 		_set_flag(fk)
 		if _f6_flag == fk or _f6_enemy == eb: _f6_rej_t = 0.0; _f6_g_t = 0.0; _f6_enemy = null
 		return
-	if result != LxEnemyBrain.HitResult.BLOCKED and not (mode == 2 and result == LxEnemyBrain.HitResult.CHIPPED and bool(eb.get("armour_intact"))): return
+	if result != LxEnemyBrain.HitResult.BLOCKED and not (mode == 2 and result == LxEnemyBrain.HitResult.CHIPPED and eb.get("armour_intact") == true): return
 	var cnt: int = int(_f6_blocks.get(fk, 0)) + 1
 	if cnt >= 2: _f6_blocks[fk] = 0; _f6_enemy = eb; _f6_pos = eb.pos; _f6_mode = mode; _f6_flag = fk; _f6_rej_t = F6_REJECT_DUR; _f6_g_t = 2.60
 	else: _f6_blocks[fk] = cnt

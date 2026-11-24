@@ -4,6 +4,7 @@ extends Node
 
 const CURRENT_VERSION: int = 2
 const RUN_LOG_PATH: String = "user://luxel1/runs.log"
+const HEART_CAP_OVERFLOW_SHARDS: int = 40
 
 var version: int = CURRENT_VERSION
 var slot_id: String = "1"
@@ -178,15 +179,23 @@ func add_ember_piece() -> bool:
 	var per_heart: int = int(Lx.get_decision("ember_pieces_per_heart", 4))
 	var max_cap: int = int(Lx.get_decision("hearts_max", 12))
 	var gained_heart: bool = false
-	if ember_pieces % per_heart == 0 and max_hearts < max_cap:
-		max_hearts += 1
-		hearts = float(max_hearts)
-		gained_heart = true
+	var overflowed: bool = false
+	if ember_pieces % per_heart == 0:
+		if max_hearts < max_cap:
+			max_hearts += 1
+			hearts = float(max_hearts)
+			gained_heart = true
+		else:
+			overflowed = true
+			heal_full()
+			add_shards(HEART_CAP_OVERFLOW_SHARDS)
 	if Lx.events != null:
 		Lx.events.ember_piece_collected.emit(ember_pieces)
 		if gained_heart:
 			Lx.events.narration_requested.emit("CUE_HEART_GAINED", "title", 3.0)
 			Lx.events.sfx_requested.emit("heart_pickup", Vector2.ZERO, false)
+		elif overflowed:
+			Lx.events.sfx_requested.emit("shard_pickup", Vector2.ZERO, false)
 	return gained_heart
 
 
@@ -195,10 +204,15 @@ func add_boss_heart() -> void:
 	var gained: bool = max_hearts < max_cap
 	if gained:
 		max_hearts += 1
-	hearts = float(max_hearts)
-	if gained and Lx.events != null:
-		Lx.events.narration_requested.emit("CUE_HEART_GAINED", "title", 3.0)
-		Lx.events.sfx_requested.emit("heart_pickup", Vector2.ZERO, false)
+		hearts = float(max_hearts)
+		if Lx.events != null:
+			Lx.events.narration_requested.emit("CUE_HEART_GAINED", "title", 3.0)
+			Lx.events.sfx_requested.emit("heart_pickup", Vector2.ZERO, false)
+	else:
+		heal_full()
+		add_shards(HEART_CAP_OVERFLOW_SHARDS)
+		if Lx.events != null:
+			Lx.events.sfx_requested.emit("shard_pickup", Vector2.ZERO, false)
 
 
 func heal_full() -> void:
@@ -392,8 +406,8 @@ func from_dict(d: Dictionary) -> void:
 	last_waystone_island = int(d.get("last_waystone_island", 1))
 	last_waystone_id = str(d.get("last_waystone_id", "ws_plaza"))
 	max_hearts = clampi(int(d.get("max_hearts", 4)), 4, 12)
-	var min_h: float = 1.0 if max_hearts >= 1 else 0.0
-	hearts = clampf(float(d.get("hearts", float(max_hearts))), min_h, float(max_hearts))
+	var raw_hearts: float = float(d.get("hearts", float(max_hearts)))
+	hearts = float(max_hearts) if raw_hearts <= 0.0 else minf(raw_hearts, float(max_hearts))
 	ember_pieces = maxi(0, int(d.get("ember_pieces", 0)))
 	shards = maxi(0, int(d.get("shards", 0)))
 

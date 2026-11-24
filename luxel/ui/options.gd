@@ -75,6 +75,8 @@ func _rows_for_tab(tab: int) -> Array[String]:
 		Tab.AUDIO:
 			return ["master_vol", "music_vol", "sfx_vol", "ambience_vol", "mute_unfocus"]
 		Tab.DISPLAY:
+			if OS.has_feature("web"):
+				return ["screen_shake", "flash_reduction", "cursor_size", "cursor_color"]
 			return ["fullscreen", "window_scale", "screen_shake", "flash_reduction", "cursor_size", "cursor_color"]
 		Tab.CONTROLS:
 			return ["rebind", "hold_fire", "hold_beam", "hold_wings", "reset_controls"]

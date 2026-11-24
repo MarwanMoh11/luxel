@@ -24,10 +24,6 @@ func _sync_lit_registration() -> void:
 		return
 	if not Lx.state.lit_waystones.has(id):
 		Lx.state.lit_waystones.append(id)
-	if island_id > 0 and (Lx.state.last_waystone_island != island_id or Lx.state.last_waystone_id.is_empty()):
-		Lx.state.last_waystone_island = island_id
-		Lx.state.last_waystone_id = id
-		Lx.state.spawn_pos = pos + Vector2(0.0, 14.0)
 
 
 func tick(dt: float) -> void:

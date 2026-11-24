@@ -27,6 +27,11 @@ const ISLAND_ZONE_KEYS: Dictionary = {
 	8: ["ZONE_ISL8_1", "ZONE_ISL8_2", "ZONE_ISL8_3", "ZONE_ISL8_4"],
 }
 
+const WAYSTONE_LABEL_KEYS: Dictionary = {
+	"ws_lighthouse_upper": "WS_LIGHTHOUSE_UPPER",
+	"ws_oak_upper": "WS_OAK_UPPER",
+}
+
 var _selected_island: int = 1
 var _hover_island: int = 0
 var _waystone_idx: int = 0
@@ -73,7 +78,11 @@ func _sync_ws_scroll() -> void:
 
 func _collect_waystones(filter_isl: int, use_prefix: bool) -> void:
 	var seen: Dictionary = {}
+	var seen_ids: Dictionary = {}
 	for ws: String in Lx.state.lit_waystones:
+		if seen_ids.has(ws):
+			continue
+		seen_ids[ws] = true
 		var isl: int = _waystone_island(ws)
 		if filter_isl != 0 and isl != filter_isl:
 			continue
@@ -82,7 +91,7 @@ func _collect_waystones(filter_isl: int, use_prefix: bool) -> void:
 		var key: String = "%d:%s" % [isl, base_lbl]
 		var canon: bool = not LxMapFormat.find_waystone(isl, ws).is_empty()
 		var entry: Dictionary = {"island_id": isl, "waystone_id": ws, "label": lbl, "_canon": canon}
-		if seen.has(key):
+		if seen.has(key) and not (canon and bool(_waystone_list[int(seen[key])].get("_canon", false))):
 			var prev_i: int = int(seen[key])
 			if canon and not bool(_waystone_list[prev_i].get("_canon", false)):
 				_waystone_list[prev_i] = entry
@@ -465,6 +474,14 @@ func _waystone_label(isl_id: int, ws_id: String) -> String:
 	if LxStrings.has_id(ws_id):
 		return LxStrings.text(ws_id).substr(0, 18)
 	var low: String = ws_id.to_lower()
+	if WAYSTONE_LABEL_KEYS.has(low):
+		var wkey: String = str(WAYSTONE_LABEL_KEYS[low])
+		if LxStrings.has_id(wkey):
+			return LxStrings.text(wkey).substr(0, 18)
+	var loc: Dictionary = LxMapFormat.find_waystone(isl_id, ws_id)
+	var nkey: String = str(loc.get("name_key", ""))
+	if not nkey.is_empty() and LxStrings.has_id(nkey):
+		return LxStrings.text(nkey).substr(0, 18)
 	var zones: Array = ISLAND_ZONE_KEYS.get(isl_id, []) as Array
 	if isl_id == 1:
 		for pair: Array in [["plaza", "ZONE_PLAZA"], ["orchard", "ZONE_ORCHARD"], ["observatory", "ZONE_OBSERVATORY"], ["glasshouse", "ZONE_GLASSHOUSE"], ["bridge", "ZONE_BRIDGE"], ["tower", "ZONE_BELL_TOWER"], ["bell", "ZONE_BELL_TOWER"]]:
@@ -476,7 +493,6 @@ func _waystone_label(isl_id: int, ws_id: String) -> String:
 			return LxStrings.text(str(zones[z_idx])).substr(0, 18)
 	if not zones.is_empty() and (low.contains("entry") or low.contains("landing") or low.contains("hub") or low.contains("quay") or low.contains("gate")):
 		return LxStrings.text(str(zones[0])).substr(0, 18)
-	var loc: Dictionary = LxMapFormat.find_waystone(isl_id, ws_id)
 	if not loc.is_empty() and str(loc.get("region", "overworld")) != "overworld":
 		var dkey: String = str(LxMapInfo.DUNGEON_NAME_KEYS.get(isl_id, ""))
 		if not dkey.is_empty() and LxStrings.has_id(dkey):

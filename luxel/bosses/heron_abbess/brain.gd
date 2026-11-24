@@ -1,7 +1,7 @@
 class_name LxHeronAbbessBoss
 extends LxHeronStalkerBrain
 ## Mirefen Gardens Boss (Island 4): the Heron Abbess.
-## 3 phases, HP 12.5. Combines long spear stabs (beak-stuck punish), wing gust push,
+## 3 phases, HP 17.0. Combines long spear stabs (beak-stuck punish), wing gust push,
 ## expanding shockwave rings, and P3 Gale-Leap Swoop (rewarding Wings glide!).
 
 signal gust_emitted(origin: Vector2, dir: Vector2, gust_range: float, half_width: float, source: LxEnemyBrain)
@@ -54,8 +54,8 @@ func _init() -> void:
 	boss_id = "heron_abbess"
 	island_id = 4
 	is_boss = true
-	max_hp = 12.5
-	hp = 12.5
+	max_hp = 17.0
+	hp = 17.0
 	body_radius = 7.5
 	routine_speed = 42.0
 	leash_radius = 185.0
@@ -68,6 +68,8 @@ func _init() -> void:
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
+	max_hp = maxf(17.0, max_hp)
+	hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "heron_abbess"))
 	island_id = int(spec.get("island_id", 4))

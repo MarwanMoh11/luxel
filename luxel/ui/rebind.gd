@@ -346,7 +346,7 @@ func _draw_frame_ornaments() -> void:
 func _draw_keycap(r: Rect2, glyph: String, sel: bool) -> void:
 	var gw: float = float(LxPixelFont.width(glyph, 1))
 	var cap_w: float = maxf(16.0, gw + 8.0)
-	var cap := Rect2(roundf(r.end.x - 5.0 - cap_w), r.position.y + 1.0, cap_w, 10.0)
+	var cap := Rect2(roundf(r.end.x - 5.0 - cap_w), r.position.y, cap_w, 12.0)
 	draw_rect(cap, LxPalette.PAL["void"])
 	var inner := Rect2(cap.position.x + 1.0, cap.position.y + 1.0, cap.size.x - 2.0, cap.size.y - 2.0)
 	draw_rect(inner, LxPalette.PAL["night"])

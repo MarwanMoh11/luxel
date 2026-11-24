@@ -291,6 +291,14 @@ func _poll_inputs(world_ctx: Node) -> void:
 				"lx_beam": release_beam()
 				"lx_interact": _release_interact(world_ctx)
 
+func prime_input_edges() -> void:
+	## Swallows presses made in a menu. Keys let go there keep their release edge (beam, glide, grab).
+	if Lx.input == null: return
+	Lx.input.clear_all_toggles()
+	release_fire()
+	for act: String in ["lx_fire", "lx_throw", "lx_dash", "lx_beam", "lx_lens", "lx_sunflare", "lx_interact"]:
+		if Lx.input.is_action_active(act): _prev_act[act] = true
+
 func press_fire() -> bool:
 	_ensure_kit()
 	if dead or is_grabbing() or not has_lantern():

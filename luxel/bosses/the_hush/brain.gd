@@ -1,7 +1,7 @@
 class_name LxTheHushBoss
 extends LxEnemyBrain
 ## The Long Night Final Boss (Island 8): the Hush, source of the dark.
-## 4 phases (SWARM_SPEC 4.2), HP 16.0, boss_id = "the_hush", every tell >= 0.50s, recover >= 0.90s:
+## 4 phases (SWARM_SPEC 4.2), HP 28.0, boss_id = "the_hush", every tell >= 0.50s, recover >= 0.90s:
 ## P1: Shooting (Bolts+Prism + Close Ward-Bash) | P2: Throwing (Void Zip + Dark-Lantern Recall Slam)
 ## P3: Moving (Dash+Wings) | P4: Light (Beam+Lens+Sunflare with responsive True Lens veil reveal).
 
@@ -52,12 +52,13 @@ var _roaring: bool = false
 
 func _init() -> void:
 	kind = "the_hush"; boss_id = "the_hush"; island_id = 8; is_boss = true
-	max_hp = 16.0; hp = 16.0; body_radius = 10.0; routine_speed = 42.0
+	max_hp = 28.0; hp = 28.0; body_radius = 10.0; routine_speed = 42.0
 	leash_radius = 190.0; notice_radius = 160.0; tell_time = 0.56
 	recover_time = 1.05; give_up_time = 1.8; attack_damage = 1.0; shard_drop = 60
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
+	max_hp = maxf(28.0, max_hp); hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "the_hush"))
 	island_id = int(spec.get("island_id", 8))

@@ -1,7 +1,7 @@
 class_name LxNightHarbingerBoss
 extends LxMoonshadeBrain
 ## The Long Night mini-boss (Island 8): Night Harbinger, elite lunar Moonshade Warden.
-## 2 phases, HP 9.0, lunar shield 2.4.
+## 2 phases, HP 14.5, lunar shield 2.4.
 ## Pairs blink-feint lunges with Twin Blink-Cross Slash (lateral blink leaving a moon-echo
 ## that fires a delayed crescent arc, tell >= 0.50s)!
 
@@ -41,8 +41,8 @@ func _init() -> void:
 	island_id = 8
 	is_boss = true
 	variant = VARIANT_WARDEN
-	max_hp = 9.0
-	hp = 9.0
+	max_hp = 14.5
+	hp = 14.5
 	shield_max = 2.4
 	shield_hp = 2.4
 	shield_gone_duration = 4.6
@@ -74,6 +74,8 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	var forced: Dictionary = spec.duplicate()
 	forced["variant"] = VARIANT_WARDEN
 	super.setup(forced, p_director, p_world)
+	max_hp = maxf(14.5, max_hp)
+	hp = max_hp
 	variant = VARIANT_WARDEN
 	kind = "night_harbinger"
 	is_boss = true
@@ -121,8 +123,14 @@ func _on_damaged_alive(_hit: LxHit) -> bool:
 
 
 func _step_brain(dt: float) -> void:
+	if _roaring and state != State.NOTICE: _roaring = false
 	blink_cd = maxf(0.0, blink_cd - dt)
 	super._step_brain(dt)
+
+
+func _on_stagger_end(target_pos: Vector2) -> void:
+	blink_slash_attack = false
+	super._on_stagger_end(target_pos)
 
 
 func _step_notice(dt: float, target_pos: Vector2) -> void:

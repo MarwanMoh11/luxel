@@ -138,16 +138,21 @@ func _draw_status_ribbon(isl: int) -> void:
 	var isl_name: String = LxStrings.sanitize(str(data.get("name", "")), 20)
 	var left_txt: String = LxStrings.fmt("MAP_ISLAND_FMT", [isl, isl_name])
 	var b_glow: Color = LxBiomePalette.col(isl, "glow")
-	LxPixelFont.draw_left(self, left_txt, Vector2(rib.position.x + 5.0, rib.position.y + 3.0), b_glow, 1)
+	LxPixelFont.draw_left(self, left_txt, Vector2(rib.position.x + 4.0, rib.position.y + 3.0), b_glow, 1)
 	var beacons: int = _count_beacons(isl)
 	var relit: bool = Lx.state != null and Lx.state.relit_islands.has(isl)
 	var b_txt: String = LxStrings.fmt("MAP_BEACONS", [beacons])
+	var b_short: String = LxStrings.fmt("MAP_WS_COUNT_FMT", [beacons, 3])
+	var b_col: Color = LxPalette.PAL["lime"] if relit else LxPalette.PAL["cream"]
 	var left_w: float = float(LxPixelFont.width(left_txt, 1))
 	var right_w: float = float(LxPixelFont.width(b_txt, 1))
-	if left_w + right_w + 28.0 <= rib.size.x - 10.0:
-		LxPixelFont.draw_right(self, b_txt, rib.end.x - 24.0, rib.position.y + 3.0, LxPalette.PAL["lime"] if relit else LxPalette.PAL["cream"], 1)
+	var avail_w: float = rib.size.x - 25.0
+	if left_w + right_w + 6.0 <= avail_w:
+		LxPixelFont.draw_right(self, b_txt, rib.end.x - 21.0, rib.position.y + 3.0, b_col, 1)
+	elif left_w + float(LxPixelFont.width(b_short, 1)) + 3.0 <= avail_w:
+		LxPixelFont.draw_right(self, b_short, rib.end.x - 21.0, rib.position.y + 3.0, b_col, 1)
 	for bk: int in range(3):
-		var bx: float = rib.end.x - 20.0 + float(bk) * 5.0
+		var bx: float = rib.end.x - 18.0 + float(bk) * 5.0
 		var lit_b: bool = bk < beacons
 		draw_rect(Rect2(bx, rib.position.y + 3.0, 4.0, 4.0), b_glow if lit_b else LxPalette.PAL["void"])
 		draw_rect(Rect2(bx + 1.0, rib.position.y + 4.0, 2.0, 2.0), LxPalette.PAL["cream" if lit_b else "mauve"])

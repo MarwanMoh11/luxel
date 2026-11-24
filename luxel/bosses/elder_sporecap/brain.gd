@@ -1,7 +1,7 @@
 class_name LxElderSporecapBoss
 extends LxSporecapBrain
 ## Thornwood Hollow mini-boss (Island 3): Elder Sporecap.
-## 2 phases, HP 7.5. Features Combat Burrow-Reposition (0.85s glowing mycelial trail;
+## 2 phases, HP 9.0. Features Combat Burrow-Reposition (0.85s glowing mycelial trail;
 ## Beam pierces mound early for instant cap_open stagger) and P2 4-Cardinal Spore Lanes!
 
 enum PulseStage { RING_1, PAUSE, CARDINAL_LANES }
@@ -32,8 +32,8 @@ func _init() -> void:
 	boss_id = "elder_sporecap"
 	island_id = 3
 	is_boss = true
-	max_hp = 7.5
-	hp = 7.5
+	max_hp = 9.0
+	hp = 9.0
 	body_radius = 7.5
 	routine_speed = 30.0
 	leash_radius = 165.0
@@ -46,6 +46,8 @@ func _init() -> void:
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
+	max_hp = maxf(9.0, max_hp)
+	hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "elder_sporecap"))
 	island_id = int(spec.get("island_id", 3))

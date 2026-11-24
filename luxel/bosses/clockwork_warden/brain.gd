@@ -1,7 +1,7 @@
 class_name LxClockworkWardenBoss
 extends LxOrrerySentinelBrain
 ## Starfall Observatory mini-boss (Island 5): Clockwork Warden.
-## 2 phases, HP 8.0. Front brass armour blocks plain bolts; Prism, Beam, or rear-core hits pierce.
+## 2 phases, HP 11.5. Front brass armour blocks plain bolts; Prism, Beam, or rear-core hits pierce.
 ## Phase 2 upgrades into a Reverse-Gear Double-Fan; active True Lens grants rear-core 1.5x crit!
 
 enum FanStage { FAN_1, REVERSE_PAUSE, FAN_2 }
@@ -22,8 +22,8 @@ func _init() -> void:
 	boss_id = "clockwork_warden"
 	island_id = 5
 	is_boss = true
-	max_hp = 8.0
-	hp = 8.0
+	max_hp = 11.5
+	hp = 11.5
 	body_radius = 8.0
 	routine_speed = 36.0
 	leash_radius = 168.0
@@ -36,6 +36,8 @@ func _init() -> void:
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
+	max_hp = maxf(11.5, max_hp)
+	hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "clockwork_warden"))
 	island_id = int(spec.get("island_id", 5))

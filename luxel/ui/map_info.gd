@@ -49,7 +49,12 @@ static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: 
 	var isl_glow: Color = LxBiomePalette.col(isl_id, "glow")
 	LxHudFx.draw_biome_crest(ci, isl_id, box.position + Vector2(8.0, 8.0), isl_glow, LxPalette.PAL["cream"] as Color)
 	var is_cur: bool = Lx.state != null and Lx.state.island_id == isl_id
-	var isl_name: String = LxStrings.sanitize(str(data.get("name", "")), 15 if is_cur else 20)
+	var max_name: int = 16 if is_cur else 20
+	var isl_name: String = LxStrings.sanitize(str(data.get("name", "")), 0)
+	if isl_name.length() > max_name:
+		var cut: String = isl_name.substr(0, max_name)
+		var sp: int = cut.rfind(" ")
+		isl_name = (cut.substr(0, sp) if sp >= 4 else cut).strip_edges()
 	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_ISLAND_FMT", [isl_id, isl_name]), box.position + Vector2(14.0, 5.0), isl_glow, 1)
 	if is_cur:
 		LxPixelFont.draw_right(ci, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 5.0, LxPalette.PAL["cream"], 1)

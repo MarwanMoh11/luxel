@@ -1,7 +1,7 @@
 class_name LxAstronomerBoss
 extends LxPhantomOwlBrain
 ## Starfall Observatory Boss (Island 5): the Astronomer, a great celestial phantom owl.
-## 3 phases, HP 12.5. During P2/P3 Constellation TELL, renders 1-2 decoy phantom silhouettes;
+## 3 phases, HP 18.0. During P2/P3 Constellation TELL, renders 1-2 decoy phantom silhouettes;
 ## active True Lens (on_light(..., "lens")) exposes her true gold core and staggers her 0.8s!
 
 enum AstroMove { DIVE, CONSTELLATION }
@@ -34,8 +34,8 @@ func _init() -> void:
 	boss_id = "astronomer"
 	island_id = 5
 	is_boss = true
-	max_hp = 12.5
-	hp = 12.5
+	max_hp = 18.0
+	hp = 18.0
 	body_radius = 8.5
 	routine_speed = 76.0
 	leash_radius = 185.0
@@ -48,6 +48,8 @@ func _init() -> void:
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
+	max_hp = maxf(18.0, max_hp)
+	hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "astronomer"))
 	island_id = int(spec.get("island_id", 5))
@@ -275,8 +277,29 @@ func _body_color() -> Color:
 	return PAL["sky"] as Color
 
 
+func _is_constellation_tell() -> bool:
+	return state == State.TELL and active_move == AstroMove.CONSTELLATION
+
+
+func _draw() -> void:
+	if revealed or not _is_constellation_tell():
+		super._draw()
+		return
+	# Unrevealed: keep the wisps, drop the phantom-owl dive ring, show the real Constellation telegraph
+	state = State.POSITION
+	super._draw()
+	state = State.TELL
+	_draw_extra(_visual_offset())
+
+
 func _draw_extra(off: Vector2) -> void:
-	super._draw_extra(off)
+	if _is_constellation_tell():
+		# Nothing lands on lock_target here: draw the owl layers without their TELL dive marker
+		state = State.POSITION
+		super._draw_extra(off)
+		state = State.TELL
+	else:
+		super._draw_extra(off)
 	var c_orig: Vector2 = off.round()
 	if _sprite_sheet == null:
 		# Astrolabe celestial halo
