@@ -180,7 +180,7 @@ func _step_position(dt: float) -> void:
 		state_timer = last_tell_duration
 		_update_curve_preview()
 		_emit_attack_started()
-		_emit_sfx("comet_bark")
+		_emit_sfx("i5_comet_bark")
 
 
 func _step_tell(dt: float) -> void:
@@ -198,7 +198,7 @@ func _step_tell(dt: float) -> void:
 		_lunge_vel = _lunge_dir * LUNGE_SPEED
 		_lunge_hit = false
 		_bonked = false
-		_emit_sfx("gravity_curve")
+		_emit_sfx("i5_gravity_bend")
 
 
 func _step_commit(dt: float) -> void:
@@ -234,7 +234,7 @@ func _step_commit(dt: float) -> void:
 		knock = -_lunge_dir * 75.0
 		_lunge_vel = Vector2.ZERO
 		LxDamageFx.boss_impact(pos, 0.08, 42.0, 48.0, 44.0, 1.18, 0.20)
-		_emit_sfx("meteor_clank")
+		_emit_sfx("i5_meteor_hit")
 		return
 
 	state_timer -= dt
@@ -306,7 +306,7 @@ func _enter_notice() -> void:
 	state_timer = NOTICE_TIME
 	alert_t = 0.72
 	lost_t = 0.0
-	_emit_sfx("comet_bark")
+	_emit_sfx("i5_comet_bark")
 
 
 func _body_color() -> Color:

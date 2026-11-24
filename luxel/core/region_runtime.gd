@@ -297,10 +297,24 @@ static func spawn_enemy_for_region(region: LxRegionLoader, spec: Dictionary, dir
 				or Lx.state.defeated_bosses.has(brain.kind) or (not alt.is_empty() and Lx.state.defeated_bosses.has(alt)):
 			brain.free(); return null
 	root.add_child(brain)
+	if not brain.is_flying and not brain.is_boss and region.tile_at(brain.pos) in ["water", "tide", "pit", "void", "wall"]:
+		var safe_p: Vector2 = _nearest_walkable_tile(region, brain.pos)
+		if safe_p != brain.pos:
+			brain.pos = safe_p
+			brain.home_pos = safe_p
 	brain.position = brain.pos.round()
 	LxRegionArena.tune_boss_ranges(brain, region)
 	list.append(brain)
 	return brain
+
+
+static func _nearest_walkable_tile(region: LxRegionLoader, origin: Vector2) -> Vector2:
+	for r: float in [16.0, 24.0, 32.0, 48.0]:
+		for k: int in range(8):
+			var cand: Vector2 = (origin + Vector2.from_angle(TAU * float(k) / 8.0) * r).round()
+			if region.bounds.grow(-16.0).has_point(cand) and region.tile_at(cand) in ["ground", "path", "bridge"]:
+				return cand
+	return origin
 
 
 static func resolve_room_for_pos(region: LxRegionLoader, p: Vector2, room_w: float, room_h: float) -> Dictionary:

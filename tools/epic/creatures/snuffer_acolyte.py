@@ -38,8 +38,8 @@ def _draw_snuffer_pole(buf: PixelBuf, px: float, py: float, ang_deg: float, hot:
 
 
 def draw_snuffer_acolyte(ctx: FrameCtx) -> Image.Image:
-    w, h = 66, 62
-    ax, ay = 33.0, 52.0
+    w, h = 72, 62
+    ax, ay = 34.0, 52.0
     body = PixelBuf(w, h)
     fx_back = PixelBuf(w, h)
     fx_front = PixelBuf(w, h)
@@ -170,8 +170,8 @@ def draw_snuffer_acolyte(ctx: FrameCtx) -> Image.Image:
 
 SPEC = CreatureSpec(
     id="snuffer_acolyte", name="Snuffer Acolyte", out_dir=ART_ENEMIES,
-    frame=(66, 62), anchor=(33, 52),
-    body_radius=6.0, hit_radius=10.5, body_centre=(33, 33),
+    frame=(72, 62), anchor=(34, 52),
+    body_radius=6.0, hit_radius=10.5, body_centre=(34, 33),
     anims=list(ENEMY_ANIMS), cool_rim=False, biome_bg="dusk",
     draw_frame=draw_snuffer_acolyte,
 )

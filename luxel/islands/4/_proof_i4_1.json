@@ -1,0 +1,131 @@
+{
+  "id": "_proof_i4_1",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "debug_only": true,
+  "theme": "hourglass_maze",
+  "name_key": "ISL4_PROOF_1_NAME",
+  "spawn": [56, 128],
+  "zones": [
+    {
+      "id": "_proof_i4_1",
+      "name_key": "ISL4_PROOF_1_NAME",
+      "rect": [0, 0, 384, 256],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_p4_1_east",
+      "rect": [368, 112, 16, 32],
+      "to_island": 4,
+      "to_region": "_proof_i4_2",
+      "to_spawn": [48, 128],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_p4_east"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "sundial_p4_1",
+      "kind": "garden_sundial",
+      "pos": [80, 72],
+      "props": { "can_rewind": true, "visual_radius": 14 }
+    },
+    {
+      "id": "cgate_p4_1",
+      "kind": "clock_gate",
+      "pos": [216, 128],
+      "props": {
+        "var": "dusk_hour",
+        "open_on": [2, 3],
+        "size": [16, 32],
+        "pin_sconce_id": "brazier_p4_pin",
+        "pin_flag": "proof_i4_gate_pinned"
+      }
+    },
+    {
+      "id": "brazier_p4_pin",
+      "kind": "timed_brazier",
+      "pos": [256, 104],
+      "props": { "secs": 12.0, "roofed": true, "target_id": "cgate_p4_1" }
+    },
+    {
+      "id": "rose_p4_1",
+      "kind": "echo_rose",
+      "pos": [248, 152],
+      "props": { "secs": 1.4 }
+    },
+    {
+      "id": "plate_p4_a",
+      "kind": "pressure_plate",
+      "pos": [288, 104],
+      "props": { "by": ["wick"], "hold": true, "target_id": "gate_p4_both" }
+    },
+    {
+      "id": "plate_p4_b",
+      "kind": "pressure_plate",
+      "pos": [288, 152],
+      "props": { "by": ["wick"], "hold": true, "target_id": "gate_p4_both" }
+    },
+    {
+      "id": "gate_p4_both",
+      "kind": "logic_gate",
+      "pos": [312, 96],
+      "props": { "op": "all", "inputs": ["plate_p4_a", "plate_p4_b"], "target_id": "door_p4_east" }
+    },
+    {
+      "id": "door_p4_east",
+      "kind": "door",
+      "pos": [312, 128],
+      "props": { "door_kind": "shutter", "size": [16, 32], "requires_signals": ["gate_p4_both"] }
+    }
+  ],
+  "layers": [
+    {
+      "id": "hour2_drain",
+      "when": "dusk_hour==2 || flag:proof_i4_gate_pinned",
+      "tiles": [[8, 6, 3, 4, "bridge"]],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_p4_1_enter",
+      "on": "enter",
+      "once": false,
+      "do": []
+    }
+  ],
+  "decor": [
+    { "kind": "compass", "pos": [80, 72], "radius": 24 },
+    { "kind": "inlay", "rect": [224, 88, 88, 80] }
+  ],
+  "design": {
+    "idea": "Advance dusk_hour via garden_sundial to drain the canal and open the clock_gate, pin the gate permanently with the inner brazier, then pair an Echo Rose with Wick on twin plates to open the east exit.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "sundial hour skip, dynamic hour layers, clock_gate pin-sconce, and Echo Rose dual-plate puzzle",
+    "decisions": 5,
+    "expert_s": 35,
+    "reward": "proof_i4_gate_pinned + passage to _proof_i4_2",
+    "why": "End-to-end proof room 1 for Island 4 dusk-loop and echo toys.",
+    "exit": "exit_p4_1_east",
+    "solution": [
+      { "op": "interact", "target": "sundial_p4_1" },
+      { "op": "expect", "var": "dusk_hour==2 || dusk_hour==3" },
+      { "op": "goto", "to": [240, 128], "tol": 10 },
+      { "op": "shoot", "target": "brazier_p4_pin" },
+      { "op": "expect", "flag": "proof_i4_gate_pinned" },
+      { "op": "interact", "target": "rose_p4_1" },
+      { "op": "stand_on", "target": "plate_p4_a", "secs": 1.6 },
+      { "op": "stand_on", "target": "plate_p4_b", "secs": 1.2 },
+      { "op": "expect", "interactable": "door_p4_east", "prop": "opened", "value": true },
+      { "op": "expect_exit", "exit": "exit_p4_1_east" }
+    ]
+  }
+}

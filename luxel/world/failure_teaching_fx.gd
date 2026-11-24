@@ -220,7 +220,7 @@ func _draw_f1_f2_f3(wpos: Vector2, wick: LxWick, bob: float, fred: bool) -> void
 		var w3: float = clampf(_f3_g_t / GUIDE_FADE, 0.0, 1.0)
 		var orig: Vector2 = wpos if (wick != null and wpos.distance_squared_to(_f3_dest) < _f3_lip.distance_squared_to(_f3_dest)) else _f3_lip
 		_draw_chevrons(orig, _f3_dest, 3, w3, "rose", "ice", fred); _draw_brackets(_f3_dest, 9.0, w3, "rose")
-		if wick != null: _draw_cap(wpos, _f3_dest, "lx_dash", w3, bob, fred, "rose")
+		if wick != null: _draw_cap(wpos, _f3_dest, "lx_dash", w3, bob, fred, "rose", true)
 
 func _draw_f4_f5(wpos: Vector2, wick: LxWick, bob: float, fred: bool) -> void:
 	if _f4_rej_t > 0.0: LxPixelGlyphs.draw_reject_x(self, _f4_rej_p, 1.0 - _f4_rej_t / REJECT_DUR, 1.0, fred)
@@ -289,8 +289,8 @@ func _draw_f6(wpos: Vector2, wick: LxWick, bob: float, fred: bool) -> void:
 func _draw_brackets(center: Vector2, r: float, w: float, col_k: String) -> void:
 	var c: Color = LxPalette.fade_step(w, col_k)
 	if c.a > 0.0: LxPixelGlyphs.draw_target_brackets(self, center.round(), r, c)
-func _draw_cap(wpos: Vector2, tgt: Vector2, act: String, w: float, bob: float, fred: bool, acc: String) -> void:
-	LxPixelGlyphs.draw_action_keycap(self, LxPixelGlyphs.opposite_glyph_pos(wpos, tgt, bob), act, w, _clock, fred, acc)
+func _draw_cap(wpos: Vector2, tgt: Vector2, act: String, w: float, bob: float, fred: bool, acc: String, hold_prefix: bool = false) -> void:
+	LxPixelGlyphs.draw_action_keycap(self, LxPixelGlyphs.opposite_glyph_pos(wpos, tgt, bob), act, w, _clock, fred, acc, hold_prefix)
 func _draw_chevrons(a: Vector2, b: Vector2, count: int, w: float, hi_k: String, mid_k: String, fred: bool) -> void:
 	var dv: Vector2 = b - a
 	if dv.length_squared() < 256.0: return

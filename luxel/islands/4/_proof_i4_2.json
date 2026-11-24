@@ -1,0 +1,112 @@
+{
+  "id": "_proof_i4_2",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "debug_only": true,
+  "theme": "rain_mausoleum",
+  "name_key": "ISL4_PROOF_2_NAME",
+  "spawn": [48, 128],
+  "zones": [
+    {
+      "id": "_proof_i4_2",
+      "name_key": "ISL4_PROOF_2_NAME",
+      "rect": [0, 0, 384, 256],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_p4_2_west",
+      "rect": [0, 112, 16, 32],
+      "to_island": 4,
+      "to_region": "_proof_i4_1",
+      "to_spawn": [336, 128],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "wheel_p4_2",
+      "kind": "weather_wheel",
+      "pos": [96, 80],
+      "props": {
+        "scope": "room:4:_proof_i4_2",
+        "start": "rain",
+        "reset_on_enter": true,
+        "states": ["sun", "rain", "wind"],
+        "wind_dir": "e"
+      }
+    },
+    {
+      "id": "brazier_p4_sun",
+      "kind": "timed_brazier",
+      "pos": [96, 168],
+      "props": { "secs": 14.0, "roofed": false, "target_id": "vent_p4_wind" }
+    },
+    {
+      "id": "wind_p4_gust",
+      "kind": "wind_zone",
+      "pos": [216, 128],
+      "props": { "size": [80, 48], "dir": "e", "strength": 360.0, "weather_req": "wind", "weather_driven": true }
+    },
+    {
+      "id": "vent_p4_wind",
+      "kind": "updraft_vent",
+      "pos": [216, 128],
+      "props": {
+        "radius": 24,
+        "on": false,
+        "requires_signals": ["brazier_p4_sun"],
+        "weather_req": "wind",
+        "dir": [1, 0],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "eye_p4_done",
+      "kind": "switch_eye",
+      "pos": [312, 128],
+      "props": { "sets_flag": "proof_i4_2_cleared" }
+    }
+  ],
+  "layers": [
+    {
+      "id": "sun_dry_step",
+      "when": "weather==sun",
+      "tiles": [[11, 7, 2, 2, "ground"]],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    { "kind": "circle", "pos": [96, 80], "radius": 24, "style": "clock" },
+    { "kind": "grate", "rect": [200, 112, 32, 32] }
+  ],
+  "design": {
+    "idea": "Shift the Weather Wheel from rain to wind to wake the updraft_vent and wind_zone, light the dry brazier to arm the vent, then glide across the 5-tile lagoon to strike the eastern eye.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "weather_wheel SUN/RAIN/WIND states, rain brazier snuffing, and weather-gated updraft glide",
+    "decisions": 5,
+    "expert_s": 35,
+    "reward": "proof_i4_2_cleared",
+    "why": "End-to-end proof room 2 for Island 4 weather wheels and updraft vents.",
+    "allow_presolve_pass": true,
+    "start": { "moves": ["bolt", "dash", "throw", "prism", "beam", "wings"] },
+    "solution": [
+      { "op": "interact", "target": "wheel_p4_2" },
+      { "op": "expect", "var": "weather==wind" },
+      { "op": "shoot", "target": "brazier_p4_sun" },
+      { "op": "expect", "interactable": "vent_p4_wind", "prop": "state", "value": 1 },
+      { "op": "goto", "to": [160, 128], "tol": 8 },
+      { "op": "glide", "to": [288, 128], "tol": 14 },
+      { "op": "shoot", "target": "eye_p4_done" },
+      { "op": "expect", "flag": "proof_i4_2_cleared" }
+    ]
+  }
+}

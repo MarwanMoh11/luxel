@@ -29,8 +29,18 @@ var _vars_bound: LxWorldState = null
 func _toy_setup() -> void:
 	kind = "star_bell"
 	radius = 12.0
+	var_name = str(props.get("var_name", props.get("var", "ow_dial"))).strip_edges()
+	if var_name.is_empty():
+		var_name = "ow_dial"
 	var raw_scope: String = str(props.get("scope", "")).strip_edges()
-	if raw_scope.is_empty() or raw_scope == "island":
+	if raw_scope.is_empty():
+		var pack_scope: String = ""
+		if Lx.packs != null:
+			var sv: Dictionary = Lx.packs.state_vars()
+			if sv.has(var_name) and sv[var_name] is Dictionary:
+				pack_scope = str((sv[var_name] as Dictionary).get("scope", "")).strip_edges()
+		var_scope = pack_scope if not pack_scope.is_empty() else ("island:%d" % clampi(island_id, 1, 8))
+	elif raw_scope == "island":
 		var_scope = "island:%d" % clampi(island_id, 1, 8)
 	elif raw_scope == "dungeon":
 		var did: String = Lx.packs.dungeon_of(island_id, region_id) if Lx.packs != null else ""
@@ -39,9 +49,6 @@ func _toy_setup() -> void:
 		var_scope = "room:%d:%s" % [clampi(island_id, 1, 8), region_id]
 	else:
 		var_scope = raw_scope
-	var_name = str(props.get("var_name", props.get("var", "ow_dial"))).strip_edges()
-	if var_name.is_empty():
-		var_name = "ow_dial"
 	rotors = PackedStringArray()
 	var raw_r: Variant = props.get("rotors", [])
 	if raw_r is Array:

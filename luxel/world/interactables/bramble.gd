@@ -110,6 +110,11 @@ func _draw() -> void:
 		# Transparent-backed charred stumps & ash flecks so the real painted ground shines cleanly underneath
 		_draw_puzzle_tiled("bramble_charred", size)
 		if _burn_t > 0.0:
+			var el: float = 0.36 - _burn_t
+			if el < 0.18:
+				var stage_u: float = clampf(el / 0.18, 0.0, 1.0)
+				var tint_c: Color = Color(PAL["cream"] as Color, 0.85) if stage_u < 0.34 else (Color(PAL["coral"] as Color, 0.68) if stage_u < 0.68 else Color(PAL["wine"] as Color, 0.42))
+				_draw_puzzle_tiled("bramble_tile", size, Vector2(0.0, roundf(stage_u * 2.0)), _clock, tint_c, _sway_stage)
 			_draw_burn_burst()
 		_draw_signal_pulses()
 		return

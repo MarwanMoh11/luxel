@@ -29,12 +29,17 @@ var _skid_cd: float = 0.0
 var _idle_t: float = 0.0
 var _lantern_ignite_t: float = 0.0
 var _land_squash_t: float = 0.0
+var _turn_squash_t: float = 0.0
+var _squash_vec: Vector2 = Vector2.ONE
+var _prev_face_quad: int = 0
+var _was_moving: bool = false
 
 func clear() -> void:
 	afterimages.clear(); rings.clear(); sparks.clear(); motes.clear(); streaks.clear(); wedges.clear()
 	_last_clock_t = -1.0; _dust_cd = 0.0; _mote_cd = 0.0; _streak_cd = 0.0; _ripple_cd = 0.0
 	_step_parity = 0; _was_airborne = false; _prev_move_dir = Vector2.ZERO
 	_skid_cd = 0.0; _idle_t = 0.0; _lantern_ignite_t = 0.0; _land_squash_t = 0.0
+	_turn_squash_t = 0.0; _squash_vec = Vector2.ONE; _prev_face_quad = 0; _was_moving = false
 
 func trigger_lantern_ignite(wick: LxWick) -> void:
 	_lantern_ignite_t = 0.48
@@ -374,7 +379,18 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 	var draw_base: Vector2 = base
 	if not flash_red and (wick.catch_anim_t > 0.14 or _lantern_ignite_t > 0.24):
 		draw_base += Vector2(0.0, -1.0)
-	var drew_sprite: bool = sprite_sheet != null and sprite_sheet.draw_actor(wick, draw_base, "throw" if not has_lan else anim_name, wick.facing, 1.0 if not has_lan else clock_t, mod, Vector2.ONE)
+	var cur_moving: bool = wick.velocity.length_squared() > 144.0
+	var cur_quad: int = posmod(roundi(wick.facing.angle() / (PI * 0.5)), 4) if wick.facing.length_squared() > 0.01 else _prev_face_quad
+	if cur_moving and not _was_moving:
+		_turn_squash_t = 0.08; _squash_vec = Vector2(0.90, 1.12)
+	elif cur_quad != _prev_face_quad and not flash_red:
+		_turn_squash_t = 0.08; _squash_vec = Vector2(1.14, 0.88)
+	_was_moving = cur_moving; _prev_face_quad = cur_quad
+	var dscale: Vector2 = Vector2.ONE
+	if _turn_squash_t > 0.0 and not flash_red:
+		_turn_squash_t = maxf(0.0, _turn_squash_t - 0.016)
+		dscale = Vector2.ONE.lerp(_squash_vec, clampf(_turn_squash_t / 0.08, 0.0, 1.0))
+	var drew_sprite: bool = sprite_sheet != null and sprite_sheet.draw_actor(wick, draw_base, "throw" if not has_lan else anim_name, wick.facing, 1.0 if not has_lan else clock_t, mod, dscale)
 	if not drew_sprite:
 		_draw_fallback_moth(wick, draw_base, hit_white, alpha, lan_in_hand, hand_pos)
 	if wick.catch_anim_t > 0.14 and has_lan:
@@ -415,7 +431,7 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		wick.move_beam.draw_fx(wick, off, hand_pos)
 	for s: Dictionary in sparks:
 		wick.draw_rect(Rect2(((s["pos"] as Vector2) + off).round(), Vector2(1.0, 1.0)), s["col"] as Color)
-	_draw_bolts(wick, off)
+	LxWickFxExtra.draw_bolts(wick, off)
 
 	if has_lan and not wick.is_grabbing():
 		var pip: Vector2 = (wick.facing * 12.0 + Vector2(0.0, -6.0)).round()
@@ -453,51 +469,6 @@ func _draw_motes(wick: LxWick, off: Vector2, foreground: bool) -> void:
 		var sz: float = maxf(1.0, roundf(lerpf(base_sz, 1.0, t))) if bool(m["shrink"]) else base_sz
 		var p: Vector2 = ((m["pos"] as Vector2) + off).round() - Vector2(floorf(sz * 0.5), floorf(sz * 0.5))
 		wick.draw_rect(Rect2(p, Vector2(sz, sz)), Color(m["col"] as Color, (1.0 - t) * float(m["alpha"])))
-
-func _draw_bolts(wick: LxWick, off: Vector2) -> void:
-	for b_var: Variant in wick.bolts:
-		var b: LxMoveBolt.Bolt = b_var as LxMoveBolt.Bolt
-		if b == null:
-			continue
-		var bdir: Vector2 = b.dir.normalized() if b.dir.length_squared() > 0.0001 else Vector2.RIGHT
-		var bp: Vector2 = (b.pos + off).round()
-		if b.is_split_shard:
-			var perp := Vector2(-bdir.y, bdir.x)
-			wick.draw_line((bp - bdir * 7.0).round(), bp, LxWick.PAL_SKY, 1.0)
-			wick.draw_line((bp - bdir * 3.0).round(), bp, LxWick.PAL_ICE, 1.0)
-			wick.draw_line((bp - perp * 2.0).round(), (bp + perp * 2.0).round(), LxWick.PAL_ICE, 1.0)
-			wick.draw_line((bp - bdir * 2.0).round(), (bp + bdir * 2.0).round(), LxWick.PAL_ICE, 1.0)
-			wick.draw_rect(Rect2(bp - Vector2.ONE, Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
-			wick.draw_rect(Rect2((bp + bdir).round(), Vector2.ONE), LxWick.PAL_CREAM)
-			continue
-		var has_bt: bool = not b.biome_tint.is_empty() and LxPalette.PAL.has(b.biome_tint)
-		var bt_col: Color = (LxPalette.PAL[b.biome_tint] as Color) if has_bt else LxWick.PAL_GOLD
-		var is_blue: bool = b.is_prism or b.light_color == LxHit.COLOR_BLUE
-		var c_body: Color = LxWick.PAL_ICE if is_blue else (LxWick.PAL_CORAL if b.is_pierce else (bt_col if has_bt else (LxWick.PAL_CREAM if b.is_counter else LxWick.PAL_GOLD)))
-		var c_tail: Color = LxWick.PAL_SKY if is_blue else (LxWick.PAL_APRICOT if b.is_pierce else (LxWick.PAL_SKY if b.biome_tint == "ice" else (LxWick.PAL_GOLD if (b.is_counter or has_bt) else LxWick.PAL_APRICOT)))
-		var mid_end: Vector2 = (bp - bdir * (6.0 if (b.is_counter or b.is_pierce or has_bt or b.bounce_count >= 2) else 5.0)).round()
-		var tail_end: Vector2 = (bp - bdir * (12.0 if (b.is_counter or b.is_pierce or has_bt or b.bounce_count >= 2) else 9.0)).round()
-		wick.draw_line(tail_end, mid_end, Color(c_tail, 0.85), 1.0)
-		wick.draw_rect(Rect2(tail_end, Vector2(1.0, 1.0)), c_tail)
-		wick.draw_line(mid_end, bp, c_body, 2.0)
-		wick.draw_line((bp - bdir * 2.0).round(), bp, LxWick.PAL_GOLD if b.is_pierce else LxWick.PAL_CREAM, 1.0)
-		wick.draw_rect(Rect2(bp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
-		if is_blue:
-			var arm: float = 4.0 if b.bounce_count >= 2 else 3.0
-			wick.draw_line(bp + Vector2(-arm, 0.0), bp + Vector2(arm, 0.0), LxWick.PAL_ICE, 1.0)
-			wick.draw_line(bp + Vector2(0.0, -arm), bp + Vector2(0.0, arm), LxWick.PAL_ICE, 1.0)
-			if b.age < 0.08:
-				wick.draw_arc(bp, 4.5, 0.0, TAU, 10, Color(LxWick.PAL_SKY, 0.85), 1.0, false)
-			if b.bounce_count >= 2:
-				wick.draw_rect(Rect2(bp + Vector2(-2.0, -2.0), Vector2.ONE), LxWick.PAL_CREAM)
-				wick.draw_rect(Rect2(bp + Vector2(2.0, 2.0), Vector2.ONE), LxWick.PAL_CREAM)
-		elif b.is_pierce:
-			wick.draw_line(bp + Vector2(-3.0, 0.0), bp + Vector2(3.0, 0.0), LxWick.PAL_CORAL, 1.0)
-			wick.draw_line(bp + Vector2(0.0, -3.0), bp + Vector2(0.0, 3.0), LxWick.PAL_GOLD, 1.0)
-		elif b.is_counter or has_bt:
-			var star_c: Color = bt_col if has_bt else LxWick.PAL_GOLD
-			wick.draw_line(bp + Vector2(-3.0, 0.0), bp + Vector2(3.0, 0.0), star_c, 1.0)
-			wick.draw_line(bp + Vector2(0.0, -3.0), bp + Vector2(0.0, 3.0), star_c, 1.0)
 
 func _draw_muzzle_star(wick: LxWick, hand_pos: Vector2, flash_red: bool) -> void:
 	var aim: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT

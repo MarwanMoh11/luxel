@@ -96,18 +96,25 @@ func follow(target: Vector2, dt: float) -> void:
 	else:
 		var desired_lead: Vector2 = Vector2.ZERO
 		var lead_rate: float = 3.8
+		var follow_rate: float = 10.0
 		if Lx.player != null and is_instance_valid(Lx.player):
+			var is_zip: bool = Lx.player.has_method("is_zipping") and bool(Lx.player.call("is_zipping"))
 			var lan_v: Variant = Lx.player.get("lantern")
 			var framed: bool = false
 			if lan_v is Object and is_instance_valid(lan_v):
 				var lan_o: Object = lan_v as Object
 				var is_lure: bool = lan_o.has_method("is_lure_active") and bool(lan_o.call("is_lure_active"))
 				var is_stolen: bool = int(lan_o.get("state")) == 4
-				if is_lure or is_stolen:
+				if is_zip or is_lure or is_stolen:
 					var lpos_v: Variant = lan_o.get("pos")
 					if lpos_v is Vector2:
 						var to_lan: Vector2 = (lpos_v as Vector2) - target
-						desired_lead = (to_lan * (0.30 if is_stolen else 0.32)).limit_length(26.0 if is_stolen else 28.0)
+						if is_zip:
+							desired_lead = (to_lan * 0.44).limit_length(36.0)
+							lead_rate = 11.0
+							follow_rate = 19.0
+						else:
+							desired_lead = (to_lan * (0.30 if is_stolen else 0.32)).limit_length(26.0 if is_stolen else 28.0)
 						framed = true
 			if not framed:
 				var boss_lead: Vector2 = _find_active_boss_lead(target)
@@ -143,7 +150,7 @@ func follow(target: Vector2, dt: float) -> void:
 						desired_lead = (fv as Vector2).normalized() * (24.0 if charging_beam else 14.0)
 		_look_ahead = _look_ahead.lerp(desired_lead, minf(1.0, dt * lead_rate))
 		var clamped: Vector2 = _clamp_center(target + _look_ahead)
-		_target_pos = _target_pos.lerp(clamped, minf(1.0, dt * 10.0))
+		_target_pos = _target_pos.lerp(clamped, minf(1.0, dt * follow_rate))
 
 	var shake_off: Vector2 = Vector2.ZERO
 	if _shake_trauma > 0.02:

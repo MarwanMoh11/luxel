@@ -29,19 +29,19 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island4_boss_p1"
 	music_p2_cue = "island4_boss_p2"
-	max_hp = 52.0
-	hp = 52.0
+	max_hp = 64.0
+	hp = 64.0
 	body_radius = 11.0
 	move_speed = 46.0
-	stagger_threshold = 11.0
+	stagger_threshold = 14.0
 	stagger_duration = 1.65
-	post_recover_cd = 0.26
+	post_recover_cd = 0.28
 	shard_drop = 45
 	death_duration = 2.2
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.50])
+	configure_phases([0.56])
 
 	# Attack 1: Shear Charge — charges glowing decoy/Echo/Wick; snips brass-thorn cages & jams blades!
 	register_attack("shear_charge", {
@@ -99,24 +99,24 @@ func _configure_boss(_spec: Dictionary) -> void:
 				patterns.emit_gap_ring(pos, 8, 118.0, facing + PI * 0.4, 0.78, {"color": "gold", "source": "snap_shards"}),
 	})
 
-	# Attack 4 (Phase 2): Whirlwind Trim — sweeping 48 px scissor cyclone + leaf spiral
+	# Attack 4 (Phase 2): Whirlwind Trim — sweeping scissor cyclone + leaf spiral
 	register_attack("whirlwind_trim", {
-		"phases": [2], "weight": 1.45, "tell": 0.60, "commit": 0.55, "recover": 1.25, "cooldown": 2.0,
+		"phases": [2], "weight": 1.45, "tell": 0.60, "commit": 0.55, "recover": 1.25, "cooldown": 2.1,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_whirl_spin = facing
-			ground.warn_ring(pos, 50.0, last_tell_duration, 0.0, "coral", "gold")
-			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.05, 1.0, "lime", "gold")
+			ground.warn_ring(pos, 38.0, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 20.0, last_tell_duration + 0.08, 1.0, "lime", "gold")
 			stage.play_sfx("shear_whirl", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_spiral(pos, 4, 128.0, _whirl_spin, 0.44, 3, 0.16, {"color": "lime", "source": "whirlwind_trim"})
+			patterns.emit_spiral(pos, 4, 122.0, _whirl_spin, 0.46, 3, 0.17, {"color": "lime", "source": "whirlwind_trim"})
 			stage.shake(0.18)
 			stage.play_sfx("shear_whirl", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _el: float) -> void:
 			facing = wrapf(facing + 14.0 * dt, -PI, PI)
 			var to_w: Vector2 = tgt - pos
-			if to_w.length() > 4.0:
-				move_boss(to_w.normalized() * 68.0 * dt, false)
-			check_contact_damage(44.0, to_w.normalized(), 1.0, "whirlwind_trim"),
+			if to_w.length() > 14.0:
+				move_boss(to_w.normalized() * 34.0 * dt, false)
+			check_contact_damage(32.0, to_w.normalized(), 1.0, "whirlwind_trim"),
 	})
 
 
@@ -156,9 +156,14 @@ func _on_phase_enter(new_phase: int) -> void:
 		stage.play_sfx("boss_roar", pos)
 
 
-func _modify_incoming_damage(_hit: LxHit, dmg: float) -> float:
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if _jammed and boss_state == BossState.STAGGER:
 		return dmg * JAM_DMG_MULT
+	if hit != null and (hit.pierce or hit.cracks_armour):
+		return dmg
+	if not is_punishable():
+		# Dense topiary hedge hide absorbs unfocused bolt spam; Beam pierces, recover/jam pays full!
+		return dmg * 0.55
 	return dmg
 
 

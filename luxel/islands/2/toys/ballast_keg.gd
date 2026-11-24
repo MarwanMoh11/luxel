@@ -219,7 +219,9 @@ func tick(dt: float) -> void:
 func _sample_galleon_list_vel() -> Vector2:
 	if not obey_list or Lx.vars == null:
 		return Vector2.ZERO
-	var lv: String = str(Lx.vars.resolve_var("list", island_id, region_id, "")).strip_edges().to_lower()
+	var lv: String = str(Lx.vars.get_var("dungeon:galleon", "list", "")).strip_edges().to_lower()
+	if lv.is_empty():
+		lv = str(Lx.vars.resolve_var("list", island_id, region_id, "")).strip_edges().to_lower()
 	if lv == "port":
 		return Vector2.LEFT * tilt_speed
 	if lv == "starboard":

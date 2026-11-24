@@ -26,7 +26,7 @@ class MoonField:
 		var dist: float = sqrt(d2)
 		var u: float = clampf(1.0 - dist / radius, 0.0, 1.0)
 		var falloff: float = (0.35 + 0.65 * u) * (1.0 - exp(-dist / 10.0))
-		var mult: float = 1.15 if what in ["bolt", "beam"] else (0.90 if what == "lantern" else (0.18 if what == "wick" else 0.25))
+		var mult: float = 1.15 if what in ["bolt", "beam"] else (0.90 if what == "lantern" else (0.10 if what == "wick" else 0.25))
 		var dn: Vector2 = delta / dist
 		if is_push:
 			dn = -dn
@@ -59,8 +59,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island5_boss_p1"
 	music_p2_cue = "island5_boss_p2"
-	max_hp = 72.0
-	hp = 72.0
+	max_hp = 116.0
+	hp = 116.0
 	body_radius = 12.0
 	move_speed = 48.0
 	stagger_threshold = 12.0
@@ -84,7 +84,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_ring(pos, 26.0, last_tell_duration, 0.0, "gold", "cream")
 			ground.warn_ring(_umbra_pos, 26.0, last_tell_duration, 0.0, "sky", "ice")
 			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.06, 1.0, "coral", "gold")
-			stage.play_sfx("gravity_curve", pos),
+			stage.play_sfx("i5_gravity_bend", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var cnt: int = 12 if phase >= 2 else 10
 			var spd: float = 124.0 if phase >= 3 else 110.0
@@ -123,7 +123,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = _build_hail_targets(tgt)
 			patterns.emit_rain(ground, drops, last_tell_duration, 23.0, 1.0, "coral", "gold")
-			stage.play_sfx("meteor_clank", pos),
+			stage.play_sfx("i5_meteor_hit", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d1: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
 			patterns.emit_boomerang(pos, d1.rotated(0.32), 144.0, 0.68, 0.85, {"color": "apricot", "source": "periapsis_orb", "field_scale": 1.0})
@@ -131,7 +131,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if phase >= 3:
 				patterns.emit_expanding_square(arena_rect.get_center(), 3, 106.0, anim_t, 1, {"color": "gold", "source": "eclipse_square", "field_scale": 0.8})
 			stage.shake(0.16)
-			stage.play_sfx("gravity_curve", pos),
+			stage.play_sfx("i5_gravity_bend", pos),
 	})
 
 	# Attack 4 (P2/P3): Syzygy Eclipse — safe-zone inversion + orbiting star motes
@@ -143,7 +143,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			var s1: Vector2 = clamp_to_arena(tgt + to_c * 44.0)
 			var s2: Vector2 = clamp_to_arena(c + (c - s1).limit_length(54.0))
 			ground.warn_safe_inversion(arena_rect, [s1, s2], 28.0, last_tell_duration, 0.28, 1.0, "ice", "plum")
-			stage.play_sfx("moon_clash_bong", c),
+			stage.play_sfx("i5_moon_clash_bong", c),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			patterns.emit_orbit(arena_rect.get_center(), 5 if phase >= 3 else 4, 48.0, 2.1, 2.2, {"color": "gold", "source": "syzygy_mote", "follow_boss": false})
 			stage.light_burst(arena_rect.get_center(), 96.0, 1.4, 0.36)
@@ -187,7 +187,7 @@ func _on_phase_enter(new_phase: int) -> void:
 		stage.set_tiles(world_ctx, Rect2i(tx_e, ty_n, 1, 2), "pit")
 		stage.darkness_pulse(0.64, 1.0)
 		stage.shake(0.22)
-		stage.play_sfx("moon_clash_bong", c)
+		stage.play_sfx("i5_moon_clash_bong", c)
 	elif new_phase == 3:
 		_swap_polarities()
 		# Crumble 2 bumper pillars leaving wide orbital space
@@ -254,7 +254,7 @@ func _trigger_moon_clash() -> void:
 	hp = maxf(1.0, hp - 3.5)
 	_swap_polarities()
 	_orbit_r = BASE_ORBIT_R + 12.0
-	stage.play_sfx("moon_clash_bong", mid)
+	stage.play_sfx("i5_moon_clash_bong", mid)
 	stage.shake(0.24)
 	stage.light_burst(mid, 92.0, 1.5, 0.35)
 	add_stagger(stagger_threshold)
@@ -262,7 +262,7 @@ func _trigger_moon_clash() -> void:
 
 func _swap_polarities() -> void:
 	_swapped = not _swapped
-	stage.play_sfx("polarity_flip", arena_rect.get_center())
+	stage.play_sfx("i5_well_polarity", arena_rect.get_center())
 
 
 func _ensure_fields() -> void:

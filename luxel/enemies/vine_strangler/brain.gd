@@ -66,7 +66,7 @@ func take_hit(hit: LxHit) -> int:
 		dmg *= 0.65
 	var knot_open: bool = state == State.RECOVER or state == State.STAGGER or tethered_wick
 	if is_burn:
-		dmg *= 1.40
+		dmg *= 1.20
 	elif knot_open:
 		dmg *= KNOT_CRIT_MULT
 

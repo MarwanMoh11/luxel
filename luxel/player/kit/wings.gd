@@ -286,10 +286,10 @@ func _effective_speed_mult() -> float:
 
 
 func _world_ctx_node() -> Node:
-	if wick != null and wick._world_ctx != null and is_instance_valid(wick._world_ctx):
-		return wick._world_ctx
 	if Lx.world != null and is_instance_valid(Lx.world):
 		return Lx.world
+	if wick != null and wick._world_ctx != null and is_instance_valid(wick._world_ctx):
+		return wick._world_ctx
 	return null
 
 

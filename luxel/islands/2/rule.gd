@@ -334,7 +334,8 @@ func _tick_ballast_clamp() -> void:
 		if it.kind == "ballast_keg" and str(it.get("state")) in ["detonating", "respawning"]:
 			continue
 		var reach: float = CLAMP_CATCH_RADIUS + it.radius * 0.5
-		var d: float = it.pos.distance_to(lan.pos)
+		var closest: Vector2 = Geometry2D.get_closest_point_to_segment(it.pos, lan.prev_pos, lan.pos)
+		var d: float = it.pos.distance_to(closest)
 		if d <= reach and d < best_d:
 			best_d = d
 			best = it
@@ -488,7 +489,7 @@ func _draw_tide_hud(ci: CanvasItem) -> void:
 		if on:
 			ci.draw_rect(Rect2(bx, by, 3.0, 1.0), c_cream)
 	var label_txt: String = LxStrings.text(label_id) if LxStrings.has_id(label_id) else "EBB"
-	LxPixelFont.draw(ci, label_txt, origin + Vector2(18.0, 4.0), 1, c_cream if _transition_flash_t > 0.0 else c_sky)
+	LxPixelFont.draw(ci, label_txt, origin + Vector2(18.0, 4.0), c_cream if _transition_flash_t > 0.0 else c_sky, 1)
 
 	# Power badges (Ballast Clamp anchor pip + Sluice Harpoon hook pip)
 	var px: float = origin.x + box_w + 2.0

@@ -75,17 +75,17 @@ static func _draw_one(ci: CanvasItem, b: Dictionary, idx: int, dual: bool, blink
 	var hit_jolt: float = (1.0 if fmod(blink_t, 0.08) < 0.04 else -1.0) if (LxHudFx.shake_enabled() and not LxHudFx.flash_reduced() and (trail_hp - hp) > (max_hp * 0.015)) else 0.0
 	var cx: float = (86.0 if idx == 0 else 234.0) if dual else 160.0
 	var x: float = roundf(cx - bar_w * 0.5) + hit_jolt
-	var y: float = 14.0
+	var y: float = 148.0
 	var nw: float = float(LxPixelFont.width(name_txt, 1))
-	var pill_bg := Color(LxPalette.PAL["void"] as Color, 0.68)
-	ci.draw_rect(Rect2(roundf(cx - nw * 0.5 - 3.0), 3.0, nw + 6.0, 8.0), pill_bg)
-	LxPixelFont.draw_centered(ci, name_txt, cx, 5.0, LxPalette.PAL["gold"], 1)
+	var pill_bg := Color(LxPalette.PAL["void"] as Color, 0.72)
+	ci.draw_rect(Rect2(roundf(cx - nw * 0.5 - 3.0), y - 10.0, nw + 6.0, 8.0), pill_bg)
+	LxPixelFont.draw_centered(ci, name_txt, cx, y - 8.0, LxPalette.PAL["gold"], 1)
 	if phase >= 2 and not dual:
 		var ptxt: String = LxStrings.text("HUD_BOSS_P4" if phase >= 4 else ("HUD_BOSS_P3" if phase == 3 else "HUD_BOSS_P2"))
 		var pw: float = float(LxPixelFont.width(ptxt, 1))
 		var pr: float = roundf(cx + bar_w * 0.5)
-		ci.draw_rect(Rect2(pr - pw - 2.0, 3.0, pw + 4.0, 8.0), pill_bg)
-		LxPixelFont.draw_right(ci, ptxt, pr, 5.0, LxPalette.PAL["coral"], 1)
+		ci.draw_rect(Rect2(pr - pw - 2.0, y - 10.0, pw + 4.0, 8.0), pill_bg)
+		LxPixelFont.draw_right(ci, ptxt, pr, y - 8.0, LxPalette.PAL["coral"], 1)
 	LxPixelFont.draw_panel(ci, Rect2(x, y, bar_w, bar_h), "night", "gold" if phase >= 2 else "mauve", "void")
 	ci.draw_rect(Rect2(x - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
 	ci.draw_rect(Rect2(x + bar_w - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])

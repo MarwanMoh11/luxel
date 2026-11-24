@@ -56,7 +56,11 @@ func _check_needs_var() -> bool:
 	if needs_var.is_empty():
 		return true
 	if Lx.vars != null:
-		return Lx.vars.eval(needs_var, island_id, region_id)
+		if Lx.vars.eval(needs_var, island_id, region_id):
+			return true
+		if needs_var.contains("kiln_heat") and not needs_var.contains(".kiln_heat"):
+			return Lx.vars.eval(needs_var.replace("kiln_heat", "dungeon:great_kiln.kiln_heat"), island_id, region_id)
+		return false
 	return true
 
 

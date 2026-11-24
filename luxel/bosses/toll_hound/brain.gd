@@ -7,10 +7,10 @@ extends LxBossBase
 ## P2 (<= 50% HP): Cracks bronze collar, fractures arena corners, wakes 2 grave_hands,
 ## and upgrades Ear-Lock Charge into a chained double-charge!
 
-const CHARGE_SPEED: float = 265.0
-const CHARGE_HIT_R: float = 20.0
-const BARK_RADIUS: float = 56.0
-const SNAP_RADIUS: float = 38.0
+const CHARGE_SPEED: float = 240.0
+const CHARGE_HIT_R: float = 15.5
+const BARK_RADIUS: float = 52.0
+const SNAP_RADIUS: float = 32.0
 const COLLAR_ARMOR_MULT: float = 0.72
 const BONK_STAGGER_TIME: float = 2.20
 
@@ -37,13 +37,13 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island1_boss_p1"
 	music_p2_cue = "island1_boss_p2"
-	max_hp = 38.0
-	hp = 38.0
+	max_hp = 36.0
+	hp = 36.0
 	body_radius = 11.0
-	move_speed = 44.0
+	move_speed = 42.0
 	stagger_threshold = 9.0
 	stagger_duration = 1.65
-	post_recover_cd = 0.30
+	post_recover_cd = 0.34
 	intro_duration = 0.55
 	phase_shift_duration = 0.65
 	death_duration = 2.2
@@ -51,18 +51,18 @@ func _init() -> void:
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.50])
+	configure_phases([0.58])
 
 	# Attack 1: Ear-Lock Charge (sound-guided rocket charge; bonks pillars for 2.2s stagger!)
 	register_attack("ear_lock_charge", {
-		"weight": 1.35, "tell": 0.58, "commit": 0.48, "recover": 1.20, "cooldown": 1.4,
+		"weight": 1.35, "tell": 0.58, "commit": 0.44, "recover": 1.20, "cooldown": 1.5,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var lock_p: Vector2 = _pick_sound_target(tgt)
 			_charge_dir = (lock_p - pos).normalized() if lock_p.distance_to(pos) > 2.0 else Vector2.from_angle(facing)
 			facing = _charge_dir.angle()
 			_charge_hit = false
 			_charge_leg = 0
-			ground.warn_lane(pos, clamp_to_arena(pos + _charge_dir * 136.0), 13.0, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_lane(pos, clamp_to_arena(pos + _charge_dir * 136.0), 14.0, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("warden_lunge_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_charge_hit = false
@@ -73,40 +73,40 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_step_charge_commit(tgt, dt, elapsed),
 	})
 
-	# Attack 2: Collar Bark (56px shockwave + gap-ring sonic bolts pressuring all corners!)
+	# Attack 2: Collar Bark (52px shockwave + gap-ring sonic bolts pressuring all corners!)
 	register_attack("collar_bark", {
-		"weight": 1.15, "tell": 0.48, "commit": 0.28, "recover": 1.10, "cooldown": 1.6,
+		"weight": 1.15, "tell": 0.52, "commit": 0.28, "recover": 1.15, "cooldown": 1.7,
 		"on_tell_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			ground.warn_ring(pos, BARK_RADIUS, last_tell_duration, 1.0, "coral", "gold")
 			stage.play_sfx("bell_slam_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			var cnt: int = 10 if phase >= 2 else 8
-			patterns.emit_gap_ring(pos, cnt, 118.0 if phase >= 2 else 104.0, aim_a + PI * 0.42, 0.72, {"color": "coral", "source": "collar_bark"})
+			var cnt: int = 8 if phase >= 2 else 7
+			patterns.emit_gap_ring(pos, cnt, 102.0 if phase >= 2 else 92.0, aim_a + PI * 0.35, 0.84, {"color": "coral", "source": "collar_bark"})
 			stage.shake(0.18)
 			stage.play_sfx("toll_hound_bark", pos),
 	})
 
 	# Attack 3: Twin Snap (close cone lunge + 3-bolt coral fang volley covering long range)
 	register_attack("twin_snap", {
-		"weight": 1.10, "tell": 0.46, "commit": 0.28, "recover": 1.05, "cooldown": 1.5,
+		"weight": 1.10, "tell": 0.50, "commit": 0.26, "recover": 1.10, "cooldown": 1.6,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_snap_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _snap_dir.angle()
 			_snap_hit = false
-			ground.warn_sector(pos, facing - 0.75, facing + 0.75, SNAP_RADIUS, last_tell_duration, 0.0, "coral", "apricot")
-			ground.warn_lane(pos, clamp_to_arena(pos + _snap_dir * 124.0), 8.0, last_tell_duration, 0.0, "apricot", "gold")
+			ground.warn_sector(pos, facing - 0.72, facing + 0.72, SNAP_RADIUS, last_tell_duration, 0.0, "coral", "apricot")
+			ground.warn_lane(pos, clamp_to_arena(pos + _snap_dir * 124.0), 9.0, last_tell_duration, 0.0, "apricot", "gold")
 			stage.play_sfx("warden_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			var cnt: int = 5 if phase >= 2 else 3
-			patterns.emit_fan(pos, _snap_dir, cnt, 0.58, 134.0 if phase >= 2 else 118.0, {"color": "apricot", "source": "hound_snap"})
+			var cnt: int = 3
+			patterns.emit_fan(pos, _snap_dir, cnt, 0.54, 114.0 if phase >= 2 else 102.0, {"color": "apricot", "source": "hound_snap"})
 			stage.shake(0.12)
 			stage.play_sfx("pew_chomp", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _elapsed: float) -> void:
-			move_boss(_snap_dir * 96.0 * dt, false)
+			move_boss(_snap_dir * 72.0 * dt, false)
 			if not _snap_hit and pos.distance_to(tgt) <= SNAP_RADIUS:
 				var rel: Vector2 = tgt - pos
-				if rel.length() < 1.0 or absf(angle_difference(facing, rel.angle())) <= 0.85:
+				if rel.length() < 1.0 or absf(angle_difference(facing, rel.angle())) <= 0.75:
 					_snap_hit = true
 					emit_boss_damage(_snap_dir, 1.0, "twin_snap", pos, true),
 	})
@@ -160,14 +160,12 @@ func _pick_sound_target(wick_p: Vector2) -> Vector2:
 
 
 func _step_charge_commit(tgt: Vector2, dt: float, elapsed: float) -> void:
-	# P2 chained pivot charge halfway through commit!
-	if phase >= 2 and _charge_leg == 0 and elapsed >= 0.24:
+	# P2 ends charge with a crisp telegraphed sonic dust shock-fan (never unwarned pivot!)
+	if phase >= 2 and _charge_leg == 0 and elapsed >= 0.34:
 		_charge_leg = 1
-		var lock2: Vector2 = _pick_sound_target(tgt)
-		_charge_dir = (lock2 - pos).normalized() if lock2.distance_to(pos) > 2.0 else -_charge_dir
-		facing = _charge_dir.angle()
-		_charge_hit = false
-		stage.play_sfx("hollow_dash", pos)
+		var aim_f: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 2.0 else _charge_dir
+		patterns.emit_fan(pos, aim_f, 3, 0.65, 98.0, {"color": "gold", "source": "hound_dust"})
+		stage.play_sfx("toll_hound_bark", pos)
 
 	var step_v: Vector2 = _charge_dir * CHARGE_SPEED * dt
 	move_boss(step_v, false)

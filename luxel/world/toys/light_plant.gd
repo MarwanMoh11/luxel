@@ -271,7 +271,7 @@ func _sample_occluded_light() -> float:
 func _sync_stage(with_fx: bool) -> void:
 	var prev_stage: int = stage
 	var next_stage: int = Stage.SEED
-	if growth >= 0.999:
+	if growth >= 0.999 or (prev_stage == Stage.GROWN and growth > 0.35):
 		next_stage = Stage.GROWN
 	elif growth >= 0.35:
 		next_stage = Stage.SPROUT

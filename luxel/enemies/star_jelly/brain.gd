@@ -107,7 +107,7 @@ func take_hit(hit: LxHit) -> int:
 
 func _spawn_dwarf_split() -> void:
 	_did_split = true
-	_emit_sfx("star_jelly_split")
+	_emit_sfx("i5_star_jelly_split")
 	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("spawn_enemy"):
 		return
 	for sgn: float in [-1.0, 1.0]:
@@ -144,7 +144,7 @@ func _step_brain(dt: float) -> void:
 				state_timer = COMMIT_TIME
 				_pulse_hit = false
 				_spores_fired = false
-				_emit_sfx("star_jelly_pulse")
+				_emit_sfx("i5_star_jelly_pulse")
 		State.COMMIT:
 			_step_commit(dt)
 		State.RECOVER:
@@ -192,7 +192,7 @@ func _step_position(dt: float) -> void:
 		last_tell_duration = _scaled_tell(tell_time, false, attack_damage)
 		state_timer = last_tell_duration
 		_emit_attack_started()
-		_emit_sfx("star_jelly_swell")
+		_emit_sfx("i5_star_jelly_swell")
 
 
 func _step_commit(dt: float) -> void:
@@ -286,7 +286,7 @@ func _enter_notice() -> void:
 	state_timer = NOTICE_TIME
 	alert_t = 0.70
 	lost_t = 0.0
-	_emit_sfx("star_jelly_swell")
+	_emit_sfx("i5_star_jelly_swell")
 
 
 func _visual_offset() -> Vector2:

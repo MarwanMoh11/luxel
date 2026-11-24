@@ -1,0 +1,56 @@
+{
+  "pack_id": "island1_toys",
+  "owner": "I1-TOYPACK",
+  "interactables": {
+    "tone_coffin": "res://luxel/islands/1/toys/tone_coffin.gd",
+    "lying_portrait": "res://luxel/islands/1/toys/lying_portrait.gd",
+    "falling_bell_platform": "res://luxel/islands/1/toys/falling_bell_platform.gd",
+    "clock_hand": "res://luxel/islands/1/toys/clock_hand.gd"
+  },
+  "state_vars": {
+    "bell_hour": {
+      "scope": "island:1",
+      "values": ["evening", "midnight"],
+      "default": "evening"
+    },
+    "manor_verdict": {
+      "scope": "dungeon:manor",
+      "values": ["none", "right", "wrong"],
+      "default": "none"
+    },
+    "belfry_clock_hand": {
+      "scope": "dungeon:belfry",
+      "values": ["west", "north", "east", "south"],
+      "default": "west"
+    }
+  },
+  "sfx": {
+    "bell_dawn_ring": { "id": "bell_toll_heavy", "pitch": 1.28, "db": -1.0 },
+    "bell_dusk_ring": { "id": "clockwork_chime", "pitch": 1.18, "db": -0.5 },
+    "bell_war_ring": { "id": "bell_slam", "pitch": 0.78, "db": 0.0 },
+    "portrait_blink": { "id": "switch_eye", "pitch": 0.92, "db": -2.0 },
+    "cuckoo_pop": { "id": "prop_chime", "pitch": 1.48, "db": -1.0 }
+  },
+  "regions": {
+    "_proof_i1_1": {
+      "name_key": "ISL1_PROOF_1",
+      "debug_only": true,
+      "map": [0, 0]
+    },
+    "_proof_i1_2": {
+      "name_key": "ISL1_PROOF_2",
+      "debug_only": true,
+      "map": [1, 0]
+    }
+  },
+  "strings": {
+    "ISL1_HOUR_MID": "MIDNIGHT TOLLS. THE GRAVEYARD OPENS.",
+    "ISL1_HOUR_EVE": "EVENING RETURNS OVER BELL ISLE.",
+    "ISL1_HUD_EVE": "EVE",
+    "ISL1_HUD_MID": "MID",
+    "ISL1_VERDICT_OK": "THE CORAL PORTRAIT CLICKS WIDE OPEN!",
+    "ISL1_VERDICT_BAD": "WRONG CULPRIT! THE FLOOR DROPS AWAY!",
+    "ISL1_PROOF_1": "BELL ISLE PROOF COURTYARD",
+    "ISL1_PROOF_2": "BELL ISLE PROOF VAULT"
+  }
+}

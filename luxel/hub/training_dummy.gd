@@ -1,12 +1,25 @@
 class_name LxTrainingDummy
 extends LxInteractable
-## Wick House Training Dummy: absorbs any player hit and displays damage numbers as crisp glowing pips!
+## Wick House Training Dummy: absorbs any player hit, displays floating damage pips,
+## and renders a live Tempo (hits/s), DPS, and Combo Streak readout plaque above the post.
+
+const WINDOW_SECS: float = 4.0
+const COMBO_TIMEOUT: float = 2.6
 
 var _hit_t: float = 0.0
 var _recoil_dir: Vector2 = Vector2.RIGHT
-var _pips: Array[Dictionary] = [] # {pips: int, heavy: bool, age: float, pos: Vector2}
+var _pips: Array[Dictionary] = [] # {pips, heavy, age, life, dx}
+var _samples: Array[Dictionary] = [] # {t: float, dmg: float}
+var _sim_t: float = 0.0
+var _since_hit: float = 99.0
+var _plaque_t: float = 0.0
+
 var total_hits: int = 0
 var last_damage: float = 0.0
+var combo_streak: int = 0
+var tempo_hps: float = 0.0
+var live_dps: float = 0.0
+var peak_dps: float = 0.0
 
 
 func setup(spec: Dictionary) -> void:
@@ -22,6 +35,11 @@ func on_hit(hit: LxHit) -> bool:
 	total_hits += 1
 	last_damage = hit.damage
 	_hit_t = 0.28
+	_since_hit = 0.0
+	_plaque_t = 4.5
+	combo_streak += 1
+	_samples.append({"t": _sim_t, "dmg": hit.damage})
+	_recompute_tempo()
 	_recoil_dir = hit.dir.normalized() if hit.dir.length_squared() > 0.01 else Vector2.RIGHT
 	var pip_count: int = clampi(roundi(hit.damage * 4.0), 1, 12)
 	_pips.append({
@@ -40,9 +58,39 @@ func on_hit(hit: LxHit) -> bool:
 	return true
 
 
+func _recompute_tempo() -> void:
+	var cutoff: float = _sim_t - WINDOW_SECS
+	while not _samples.is_empty() and float(_samples[0]["t"]) < cutoff:
+		_samples.remove_at(0)
+	if _samples.is_empty():
+		tempo_hps = 0.0
+		live_dps = 0.0
+		return
+	var span: float = maxf(0.5, _sim_t - float(_samples[0]["t"]))
+	if _samples.size() == 1:
+		span = 1.0
+	var sum_d: float = 0.0
+	for s: Dictionary in _samples:
+		sum_d += float(s["dmg"])
+	tempo_hps = float(_samples.size()) / span
+	live_dps = sum_d / span
+	if live_dps > peak_dps:
+		peak_dps = live_dps
+
+
 func tick(dt: float) -> void:
 	super.tick(dt)
+	_sim_t += dt
+	_since_hit += dt
 	var dirty: bool = false
+	if _since_hit > COMBO_TIMEOUT and combo_streak > 0:
+		combo_streak = 0
+		_recompute_tempo()
+		dirty = true
+	if _plaque_t > 0.0:
+		_plaque_t = maxf(0.0, _plaque_t - dt)
+		_recompute_tempo()
+		dirty = true
 	if _hit_t > 0.0:
 		_hit_t = maxf(0.0, _hit_t - dt)
 		dirty = true
@@ -76,7 +124,24 @@ func _draw() -> void:
 	draw_rect(Rect2(-2.0 + tilt, -18.0, 1.0, 1.0), LxPalette.PAL["gold"])
 	draw_rect(Rect2(1.0 + tilt, -18.0, 1.0, 1.0), LxPalette.PAL["gold"])
 
-	# Floating damage pips!
+	# Live Tempo & DPS Readout Plaque
+	if _plaque_t > 0.0:
+		var pr := Rect2(-32.0, -42.0, 64.0, 18.0)
+		draw_rect(pr, LxPalette.PAL["void"])
+		draw_rect(pr.grow(-1.0), LxPalette.PAL["night"])
+		draw_rect(Rect2(pr.position.x + 1.0, pr.position.y + 1.0, pr.size.x - 2.0, 1.0), LxPalette.PAL["gold"])
+		var bpm: int = clampi(roundi(tempo_hps * 60.0), 0, 999)
+		var l1: String = "%d BPM x%d" % [bpm, combo_streak]
+		var l2: String = "DPS %.1f" % live_dps
+		LxPixelFont.draw_centered(self, l1, 0.0, pr.position.y + 3.0, LxPalette.PAL["gold"], 1)
+		LxPixelFont.draw_centered(self, l2, 0.0, pr.position.y + 10.0, LxPalette.PAL["cream"], 1)
+		# Tempo meter pips along plaque bottom
+		var lit_pips: int = clampi(roundi(tempo_hps * 2.0), 0, 8)
+		for bi: int in range(8):
+			var bc: Color = LxPalette.PAL["coral"] if bi >= 6 else (LxPalette.PAL["gold"] if bi >= 3 else LxPalette.PAL["lime"])
+			draw_rect(Rect2(-15.0 + float(bi * 4), pr.end.y - 2.0, 3.0, 1.0), bc if bi < lit_pips else LxPalette.PAL["dusk"])
+
+	# Floating damage pips
 	for entry: Dictionary in _pips:
 		var age: float = float(entry["age"])
 		var life: float = float(entry["life"])
@@ -86,7 +151,7 @@ func _draw() -> void:
 		var col: Color = LxPalette.PAL["gold"] if heavy else LxPalette.PAL["cream"]
 		if u > 0.72:
 			col = LxPalette.PAL["mauve"]
-		var py: float = roundf(-25.0 - u * 16.0)
+		var py: float = roundf(-25.0 - u * 14.0)
 		var row_w: float = float(count * 3 - 1)
 		var px0: float = roundf(float(entry["dx"]) - row_w * 0.5)
 		draw_rect(Rect2(px0 - 1.0, py - 1.0, row_w + 2.0, 4.0), LxPalette.PAL["void"])

@@ -1,0 +1,104 @@
+{
+  "id": "_proof_i5_1",
+  "island_id": 5,
+  "is_dungeon": true,
+  "debug_only": true,
+  "name_key": "I5_PROOF_1_NAME",
+  "spawn": [56, 136],
+  "exits": [
+    {
+      "id": "ex_to_proof2",
+      "rect": [288, 128, 32, 32],
+      "to_island": 5,
+      "to_region": "_proof_i5_2",
+      "to_spawn": [56, 128],
+      "locked_door_id": "door_p1_exit"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_p1",
+      "kind": "room_anchor",
+      "pos": [56, 136],
+      "props": { "auto": true }
+    },
+    {
+      "id": "well_p1",
+      "kind": "polarity_well",
+      "pos": [172, 128],
+      "props": {
+        "mode": "pull",
+        "radius": 84.0,
+        "strength": 620.0,
+        "orbit_capture": true,
+        "orbit_r": 32.0,
+        "linked_var": "well_phase",
+        "writes_var": true
+      }
+    },
+    {
+      "id": "eye_p1_curved",
+      "kind": "switch_eye",
+      "pos": [220, 128],
+      "props": {
+        "target_ids": ["bridge_p1", "door_p1_exit"]
+      }
+    },
+    {
+      "id": "bridge_p1",
+      "kind": "door",
+      "pos": [184, 200],
+      "props": {
+        "door_type": "bridge_platform",
+        "size": [144, 32],
+        "requires_signals": ["eye_p1_curved"]
+      }
+    },
+    {
+      "id": "door_p1_exit",
+      "kind": "door",
+      "pos": [280, 144],
+      "props": {
+        "door_type": "shutter",
+        "size": [16, 32],
+        "requires_signals": ["eye_p1_curved"]
+      }
+    },
+    {
+      "id": "orb_p1",
+      "kind": "meteor_orb",
+      "pos": [80, 196],
+      "props": {
+        "cradle_pos": [80, 196],
+        "respawn_s": 0.8
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Curve a manual bolt through a polarity well around a stone baffle to pop an occluded eye switch and extend the chasm bridge.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Curved manual shots around cover through a gravity polarity well",
+    "decisions": 5,
+    "expert_s": 30,
+    "reward": "Opens passage to _proof_i5_2",
+    "why": "Island 5 toy pack proof room 1 (gravity curve + polarity well + meteor orb).",
+    "exit": "ex_to_proof2",
+    "start": {
+      "spawn": [56, 136],
+      "moves": ["bolt", "dash", "throw", "prism", "beam", "wings", "lens"],
+      "flags": ["power_orbit_ring", "power_sextant"]
+    },
+    "solution": [
+      { "op": "goto", "to": [104, 152] },
+      { "op": "shoot", "target": [240, 176], "wait_hit": 0.7 },
+      { "op": "expect", "interactable": "eye_p1_curved", "prop": "activated", "value": true },
+      { "op": "goto", "to": [96, 200] },
+      { "op": "goto", "to": [264, 200] },
+      { "op": "expect_exit", "exit": "ex_to_proof2" }
+    ]
+  }
+}

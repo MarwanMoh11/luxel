@@ -355,8 +355,9 @@ func _draw_miniboss_arena(fred: bool) -> void:
 	var r_out: float = roundf((44.0 if live else 26.0) + pulse * 2.0)
 	var a_ring: float = (0.34 if live else 0.16) * (0.75 if fred else 1.0)
 	var rot_a: float = _clock * 0.5 if live else 0.0
-	draw_arc(c, r_out, rot_a, rot_a + PI * 0.85, 18, Color(col_a, a_ring), 1.4 if live else 1.0)
-	draw_arc(c, r_out, rot_a + PI, rot_a + PI * 1.85, 18, Color(col_b, a_ring), 1.4 if live else 1.0)
+	var c_rec := Color(PAL["night"] as Color, 0.35)
+	LxBossTelegraphFx._draw_pixel_rune_arc(self, c, r_out, rot_a, rot_a + PI * 0.85, Color(col_a, a_ring), c_rec, 1.0, true, 0.0)
+	LxBossTelegraphFx._draw_pixel_rune_arc(self, c, r_out, rot_a + PI, rot_a + PI * 1.85, Color(col_b, a_ring), c_rec, 1.0, true, 0.0)
 	var spokes: int = 8 if _island_id == 5 else (6 if _island_id in [3, 6] else 4)
 	if live:
 		for k: int in range(spokes):
@@ -402,20 +403,27 @@ func _draw() -> void:
 				draw_line(_center + Vector2(-14.0, 0.0), _center + Vector2(14.0, 0.0), Color(PAL["cream"] as Color, 0.32), 1.0)
 				draw_line(_center + Vector2(0.0, -14.0), _center + Vector2(0.0, 14.0), Color(PAL["cream"] as Color, 0.32), 1.0)
 		2:
+			var c_rec2 := Color(PAL["void"] as Color, 0.55)
 			for buoy: Dictionary in _fresnel_buoys:
 				var bp2: Vector2 = (buoy["pos"] as Vector2).round()
 				var rdy2: bool = float(buoy["cd"]) <= 0.0
 				var ft2: float = float(buoy["flash_t"])
-				draw_circle(bp2, 5.5 if (rdy2 or cleared) else 3.5, Color((PAL["sky"] if (rdy2 or cleared) else PAL["deep"]) as Color, 0.58))
-				draw_arc(bp2, 8.0 if (rdy2 or cleared) else 5.0, 0.0, TAU, 14, (PAL["gold"] if cleared else (PAL["ice"] if rdy2 else PAL["blue"])) as Color, 1.2)
+				# Carved recessed brass-and-glass floor lens socket (zero smooth vector circles)
+				draw_rect(Rect2(bp2 + Vector2(-6.0, -5.0), Vector2(12.0, 10.0)), c_rec2)
+				draw_rect(Rect2(bp2 + Vector2(-5.0, -4.0), Vector2(10.0, 8.0)), PAL["deep"] as Color)
+				var rim2: Color = (PAL["gold"] if cleared else (PAL["ice"] if rdy2 else PAL["blue"])) as Color
+				draw_rect(Rect2(bp2 + Vector2(-4.0, -4.0), Vector2(8.0, 1.0)), rim2)
+				draw_rect(Rect2(bp2 + Vector2(-4.0, 3.0), Vector2(8.0, 1.0)), rim2)
+				draw_rect(Rect2(bp2 + Vector2(-5.0, -3.0), Vector2(1.0, 6.0)), rim2)
+				draw_rect(Rect2(bp2 + Vector2(4.0, -3.0), Vector2(1.0, 6.0)), rim2)
+				draw_rect(Rect2(bp2 + Vector2(-3.0, -2.0), Vector2(6.0, 4.0)), Color((PAL["sky"] if (rdy2 or cleared) else PAL["night"]) as Color, 0.78))
 				if rdy2 or cleared:
 					draw_rect(Rect2(bp2 - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 				if ft2 > 0.0:
 					var u2: float = 1.0 - clampf(ft2 / 0.55, 0.0, 1.0)
-					draw_arc(bp2, roundf(lerpf(8.0, 44.0, u2)), 0.0, TAU, 18, Color(PAL["ice"] as Color, (1.0 - u2) * 0.85), 1.4)
+					LxBossTelegraphFx._draw_pixel_rune_arc(self, bp2, roundf(lerpf(8.0, 44.0, u2)), 0.0, TAU, Color(PAL["ice"] as Color, (1.0 - u2) * 0.85), c_rec2, 2.0, true, 0.0)
 			if cleared:
-				draw_arc(Vector2(_center.x, 56.0), roundf(22.0 + (0.0 if fred else sin(_clock * 2.0) * 3.0)), 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.42), 1.4)
-				draw_arc(Vector2(_center.x, 56.0), 34.0, PI * 0.18, PI * 0.82, 16, Color(PAL["ice"] as Color, 0.36), 1.2)
+				LxBossTelegraphFx._draw_pixel_rune_arc(self, Vector2(_center.x, 56.0).round(), roundf(22.0 + (0.0 if fred else sin(_clock * 2.0) * 3.0)), 0.0, TAU, Color(PAL["gold"] as Color, 0.42), c_rec2, 1.0, true, 0.0)
 		3:
 			var lit_c: int = 0
 			for b: Dictionary in _rules._blooms:
@@ -553,32 +561,29 @@ func _draw_center_ritual_ring(fred: bool, ph: int, boss: LxEnemyBrain) -> void:
 	var c: Vector2 = _center.round()
 	var r: float = 54.0 + float(clampi(ph, 1, 4) - 1) * 4.0
 	var base_c: Color = (PAL["sky"] if ph >= 4 else (PAL["coral"] if ph >= 3 else (LxBiomePalette.col(_island_id, "glow") if ph == 2 else LxBiomePalette.col(_island_id, "hi")))) as Color
-	var a_ring: float = (0.18 + float(ph - 1) * 0.11) * (0.82 if fred else (0.88 + 0.16 * sin(_clock * (1.8 + float(ph) * 0.7))))
-	if ph <= 2:
-		draw_arc(c, r, 0.0, TAU, 32, Color(base_c, a_ring), 1.0 if ph == 1 else 1.4)
-		if ph == 2:
-			for k: int in range(4):
-				var d: Vector2 = Vector2.from_angle(float(k) * (PI * 0.5) + _clock * 0.25)
-				draw_line((c + d * (r - 4.0)).round(), (c + d * (r + 4.0)).round(), Color(PAL["gold"] as Color, a_ring * 1.2), 1.2)
-	else:
-		var segs: int = 8 if ph >= 4 else 6
-		var rot: float = 0.0 if fred else _clock * (0.45 if ph >= 4 else 0.28)
-		for k: int in range(segs):
-			var a0: float = rot + float(k) * (TAU / float(segs))
-			draw_arc(c, r, a0 + 0.08, a0 + (TAU / float(segs)) - 0.14, 6, Color(base_c, a_ring), 1.6)
-			var fd: Vector2 = Vector2.from_angle(a0)
-			draw_line((c + fd * (r - 6.0)).round(), (c + fd * (r + 5.0)).round(), Color((PAL["gold"] if ph >= 4 else PAL["apricot"]) as Color, a_ring * 1.15), 1.2)
-		draw_arc(c, r - 6.0, 0.0, TAU, 28, Color((PAL["gold"] if ph >= 4 else PAL["wine"]) as Color, a_ring * 0.7), 1.0)
+	var a_ring: float = (0.16 + float(ph - 1) * 0.10) * (0.82 if fred else (0.88 + 0.16 * sin(_clock * (1.8 + float(ph) * 0.7))))
+	var c_rec := Color(PAL["night"] as Color, a_ring * 0.7)
+	# Carved floor-stone ritual inlay ring (pixel-stepped notches, zero smooth vector draw_arc)
+	var notches: int = 16 if ph <= 2 else (20 if ph == 3 else 24)
+	var rot: float = 0.0 if (fred or ph == 1) else _clock * (0.18 if ph == 2 else (0.28 if ph == 3 else 0.42))
+	for k: int in range(notches):
+		var a0: float = rot + float(k) * (TAU / float(notches))
+		var pt: Vector2 = (c + Vector2(cos(a0) * r, sin(a0) * r)).round()
+		var sz := Vector2(2.0, 1.0) if absf(sin(a0)) >= absf(cos(a0)) else Vector2(1.0, 2.0)
+		draw_rect(Rect2(pt + Vector2(0.0, 1.0), sz), c_rec)
+		draw_rect(Rect2(pt, sz), Color(base_c, a_ring))
+		if ph >= 2 and (k % (notches / 4)) == 0:
+			var out_p: Vector2 = (c + Vector2(cos(a0) * (r + 4.0), sin(a0) * (r + 4.0))).round()
+			draw_rect(Rect2(out_p, Vector2(2.0, 2.0)), Color((PAL["gold"] if ph >= 4 else PAL["apricot"]) as Color, a_ring * 1.15))
 	if _island_id == 8 and ph >= 4 and boss != null and not bool(boss.get("veil_intact")):
 		for ki: int in range(8):
 			var ka: float = float(ki) * (TAU / 8.0)
 			var kd: Vector2 = Vector2.from_angle(ka)
 			var col_i: Color = LxBiomePalette.col(ki + 1, "glow")
 			var ra: float = 0.42 if fred else (0.46 + 0.20 * sin(_clock * 4.0 + float(ki)))
-			draw_line((c + kd * 92.0).round(), (c + kd * 20.0).round(), Color(col_i, ra), 1.5)
+			LxBossTelegraphFx._draw_pixel_line(self, (c + kd * 92.0).round(), (c + kd * 20.0).round(), Color(col_i, ra), c_rec, true)
 			var gt: float = 0.5 if fred else fposmod(_clock * 0.85 + float(ki) * 0.125, 1.0)
-			var gp: Vector2 = (c + kd * lerpf(90.0, 22.0, gt)).round()
-			draw_rect(Rect2(gp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
+			draw_rect(Rect2((c + kd * lerpf(90.0, 22.0, gt)).round() - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 
 
 func _draw_boss_phase_corners(fred: bool, ph: int) -> void:
@@ -590,5 +595,5 @@ func _draw_boss_phase_corners(fred: bool, ph: int) -> void:
 	var rad: float = 7.0 if ph == 2 else 9.0
 	for pt: Vector2 in [r_in.position, Vector2(r_in.end.x, r_in.position.y), Vector2(r_in.position.x, r_in.end.y), r_in.end]:
 		var cp: Vector2 = pt.round()
-		draw_arc(cp, rad, _clock * 0.9, _clock * 0.9 + PI * 1.4, 10, Color(col, a), 1.2)
+		LxBossTelegraphFx._draw_pixel_rune_arc(self, cp, rad, _clock * 0.9, _clock * 0.9 + PI * 1.4, Color(col, a), Color(PAL["night"] as Color, a * 0.5), 1.0, true, 0.0)
 		LxHudFx.draw_biome_crest(self, _island_id, cp, Color(col, a * 1.25), Color(PAL["cream"] as Color, a))

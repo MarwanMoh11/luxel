@@ -1,0 +1,135 @@
+{
+  "id": "_proof_i2_1",
+  "island_id": 2,
+  "is_dungeon": true,
+  "debug_only": true,
+  "name_key": "PROOF_I2_1_NAME",
+  "spawn": [48, 112],
+  "exits": [
+    {
+      "id": "exit_proof_east",
+      "rect": [352, 96, 16, 48],
+      "to_island": 2,
+      "to_region": "_proof_i2_2",
+      "to_spawn": [48, 112]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anchor_proof_1",
+      "kind": "room_anchor",
+      "pos": [48, 112],
+      "props": { "auto": true }
+    },
+    {
+      "id": "organ_1",
+      "kind": "state_lever",
+      "pos": [72, 48],
+      "props": {
+        "scope": "island:2",
+        "var": "tide",
+        "values": ["ebb", "half", "flood"],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "raft_mirror_1",
+      "kind": "tide_raft",
+      "pos": [120, 112],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_min": "half",
+        "normal": [-0.7071, 0.7071],
+        "rotatable": true,
+        "reflect_only_floating": true,
+        "allow_clamp_always": true,
+        "allow_harpoon_always": true
+      }
+    },
+    {
+      "id": "post_1",
+      "kind": "mooring_post",
+      "pos": [184, 144],
+      "props": {
+        "orbit_r": 44.0,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "skiff_1",
+      "kind": "vehicle_skiff",
+      "pos": [120, 208],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "portal_w",
+      "kind": "blue_portal",
+      "pos": [120, 176],
+      "props": {
+        "target_portal_id": "portal_e",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_e",
+      "kind": "blue_portal",
+      "pos": [296, 176],
+      "props": {
+        "target_portal_id": "portal_w",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "half_tide",
+      "when": "tide==half || tide==flood",
+      "tiles": [
+        [4, 10, 5, 2, "bridge"]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "flood_tide",
+      "when": "tide==flood",
+      "tiles": [
+        [4, 10, 5, 2, "bridge"],
+        [16, 12, 1, 3, "water"]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Sound the Quay Tide Organ to float the mirror raft and extend the half-tide pier, bank a blue bolt into the Waterway Portal, and cross the harbor wall.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Tide Organ ebb/half/flood + floating Tide Raft mirror + Waterway Blue Portal",
+    "decisions": 3,
+    "expert_s": 30,
+    "reward": "Opens passage to Ballast and Optic Proof",
+    "why": "End-to-end Island 2 toy pack proof room 1",
+    "solution": [
+      { "op": "shoot", "from": [48, 48], "target": "organ_1" },
+      { "op": "expect", "var": "tide!=ebb" },
+      { "op": "expect", "interactable": "raft_mirror_1", "prop": "state", "value": "floating" },
+      { "op": "shoot", "from": [64, 112], "target": "raft_mirror_1" },
+      { "op": "expect", "interactable": "portal_e", "prop": "powered", "value": true },
+      { "op": "goto", "to": [104, 176] },
+      { "op": "dash", "dir": "e" },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "expect_exit", "exit": "exit_proof_east" }
+    ]
+  }
+}

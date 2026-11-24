@@ -1,0 +1,156 @@
+{
+  "id": "_proof_i7_1",
+  "island_id": 7,
+  "is_dungeon": true,
+  "debug_only": true,
+  "name_key": "ISL7_PROOF_1",
+  "theme": "inverted_palace_silver",
+  "music": "island7_dungeon",
+  "spawn": [88, 136],
+  "exits": [
+    {
+      "id": "exit_proof_east",
+      "rect": [304, 112, 16, 48],
+      "locked_door_id": "p1_door_east",
+      "to_island": 7,
+      "to_region": "_proof_i7_2",
+      "to_spawn": [40, 104]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "p1_anchor",
+      "kind": "room_anchor",
+      "pos": [88, 136],
+      "props": { "auto": true }
+    },
+    {
+      "id": "p1_avatar",
+      "kind": "mirror_avatar",
+      "pos": [88, 40],
+      "props": {
+        "axis": "y",
+        "pivot": [160, 88],
+        "fires_mirror_bolts": true,
+        "mirror_world": "opposite"
+      }
+    },
+    {
+      "id": "p1_mirror",
+      "kind": "blue_transformer",
+      "pos": [168, 40],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": false,
+        "movable": false
+      }
+    },
+    {
+      "id": "p1_mirror_eye",
+      "kind": "switch_eye",
+      "pos": [168, 72],
+      "props": {
+        "requires_blue": true,
+        "target_id": "p1_gate"
+      }
+    },
+    {
+      "id": "p1_block",
+      "kind": "push_block",
+      "pos": [64, 40],
+      "props": { "variant": "stone", "persist": true }
+    },
+    {
+      "id": "p1_plate",
+      "kind": "pressure_plate",
+      "pos": [40, 40],
+      "props": {
+        "by": ["block", "wick"],
+        "latch": true,
+        "size": [22, 22],
+        "persist": true,
+        "target_id": "p1_gate"
+      }
+    },
+    {
+      "id": "p1_pool",
+      "kind": "moon_pool",
+      "pos": [152, 152],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 18
+      }
+    },
+    {
+      "id": "p1_orb",
+      "kind": "carry_orb",
+      "pos": [120, 120],
+      "props": { "kind": "light" }
+    },
+    {
+      "id": "p1_black_eye",
+      "kind": "switch_eye",
+      "pos": [248, 136],
+      "props": { "target_id": "p1_gate" }
+    },
+    {
+      "id": "p1_gate",
+      "kind": "logic_gate",
+      "pos": [264, 104],
+      "props": {
+        "op": "all",
+        "inputs": ["p1_mirror_eye", "p1_plate", "p1_black_eye"],
+        "target_id": "p1_door_east",
+        "persist": true
+      }
+    },
+    {
+      "id": "p1_door_east",
+      "kind": "switch_door",
+      "pos": [296, 136],
+      "props": {
+        "size": [16, 48],
+        "requires_signals": ["p1_gate"],
+        "persistent": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "tiles": [
+        [12, 7, 2, 3, "bridge"]
+      ],
+      "enable": ["p1_black_eye"],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Bank a mirrored bolt off a Blue Transformer and push a stone block through your reflection across glass, then flip the Moon Pool from Silver to Black to cross the bridge and light the Black switch.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "mirror_avatar + moon_pool SILVER/BLACK flip",
+    "decisions": 3,
+    "expert_s": 35,
+    "reward": "unlock_proof_2",
+    "why": "End-to-end proof room for Island 7 mirror_avatar and moon_pool world flip.",
+    "solution": [
+      { "op": "shoot", "from": [88, 136], "at": [168, 136], "wait_hit": 0.45 },
+      { "op": "wait", "secs": 0.45 },
+      { "op": "goto", "to": [44, 136], "tol": 5 },
+      { "op": "wait", "secs": 0.15 },
+      { "op": "goto", "to": [152, 152], "tol": 10 },
+      { "op": "interact", "target": "p1_pool" },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "goto", "to": [232, 136], "tol": 8 },
+      { "op": "shoot", "target": "p1_black_eye" },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "expect_exit", "id": "exit_proof_east", "open": true }
+    ]
+  }
+}

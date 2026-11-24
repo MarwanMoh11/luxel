@@ -100,7 +100,7 @@
     "toll_hound": {
       "script": "res://luxel/bosses/toll_hound/brain.gd",
       "data": {
-        "max_hp": 38.0,
+        "max_hp": 36.0,
         "body_radius": 11.0,
         "routine_speed": 44.0,
         "leash_radius": 0.0,
@@ -115,7 +115,7 @@
     "sexton": {
       "script": "res://luxel/bosses/sexton/brain.gd",
       "data": {
-        "max_hp": 54.0,
+        "max_hp": 68.0,
         "body_radius": 12.0,
         "routine_speed": 36.0,
         "leash_radius": 0.0,
@@ -132,7 +132,7 @@
     "toll_hound": {
       "island": 1,
       "name_key": "ISL1_BOSS_HOUND",
-      "phases": [0.5],
+      "phases": [0.58],
       "mini": true,
       "dungeon": "undercroft",
       "region": "undercroft_r5",
@@ -159,7 +159,7 @@
     "toll_moth_ring": { "id": "bell_slam", "pitch": 1.35, "db": -1.5 },
     "toll_moth_war_ring": { "id": "bell_slam", "pitch": 1.15, "db": 0.0 },
     "snuffer_cone_knock": { "id": "shield_clang", "pitch": 1.18, "db": -1.0 },
-    "portrait_blink": { "id": "switch_eye", "pitch": 1.08, "db": -2.0 },
+    "portrait_eye_blink": { "id": "switch_eye", "pitch": 1.08, "db": -2.0 },
     "portrait_glass_crack": { "id": "crystal_clank", "pitch": 1.22, "db": -0.5 },
     "butler_whistle": { "id": "warden_alert", "pitch": 1.28, "db": -2.5 },
     "pew_creak": { "id": "harbor_creak", "pitch": 0.90, "db": -2.0 },

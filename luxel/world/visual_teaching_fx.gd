@@ -1,7 +1,8 @@
 class_name LxVisualTeachingFx
 extends Node2D
-## Visual-first diegetic teaching FX across Islands 2..8 (z_index = -4, strictly 20 Last Light colours).
-## Strictly excludes Island 1. Zero per-frame allocations in _draw(); all caches precomputed in rebuild/configure.
+## Carved, worn in-world light inlays, drifting petals, wind currents, and rune stones
+## for Islands 2..8 (z_index = -4, strictly 20 Last Light colours, zero CAD wires/overlays).
+## Strictly excludes Island 1. Zero per-frame allocations in _draw(); caches built in rebuild().
 
 const PAL: Dictionary = LxPalette.PAL
 const PULSE_HZ: float = 10.0
@@ -26,10 +27,6 @@ var _fans: Array[Dictionary] = []
 var _glides: Array[Dictionary] = []
 var _rings: Array[Dictionary] = []
 var _leylines: Array[Dictionary] = []
-var _oct_pts: PackedVector2Array = PackedVector2Array([
-	Vector2(4.0, -8.0), Vector2(8.0, -4.0), Vector2(8.0, 4.0), Vector2(4.0, 8.0),
-	Vector2(-4.0, 8.0), Vector2(-8.0, 4.0), Vector2(-8.0, -4.0), Vector2(-4.0, -8.0),
-])
 
 func _ready() -> void: texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST; z_index = -4
 func configure(region: LxRegionLoader) -> void: rebuild(region)
@@ -95,9 +92,10 @@ func _build_island_setpieces(region: LxRegionLoader) -> void:
 			_add_ring(Vector2(464, 760), 6, 12.0, Vector2.RIGHT, "bramble_3_shortcut_east")
 			_add_ring(Vector2(224, 488), 6, 12.0, Vector2.UP, "bramble_3_shortcut_canopy")
 		"4:conservatory_r5":
+			# Real updrafts now live in LxBiomeRules at (160,112) & (320,112); upd=false here (D04)
 			var c4_done: String = "door_c4_r5_exit|visited:4:conservatory_r6|island_4_relit"
-			_add_glide(Vector2(124, 112), Vector2(196, 112), true, Vector2(152, 104), Vector2(168, 124), true, Vector2(160, 112), c4_done)
-			_add_glide(Vector2(284, 112), Vector2(356, 112), true, Vector2(312, 104), Vector2(328, 124), true, Vector2(320, 112), c4_done)
+			_add_glide(Vector2(124, 112), Vector2(196, 112), true, Vector2(152, 104), Vector2(168, 124), false, Vector2.ZERO, c4_done)
+			_add_glide(Vector2(284, 112), Vector2(348, 112), true, Vector2(312, 104), Vector2(328, 124), false, Vector2.ZERO, c4_done)
 			_add_glide(Vector2(124, 208), Vector2(180, 208), false, Vector2.ZERO, Vector2.ZERO, false, Vector2.ZERO, c4_done)
 			_add_glide(Vector2(252, 208), Vector2(356, 208), false, Vector2.ZERO, Vector2.ZERO, false, Vector2.ZERO, c4_done)
 		"4:conservatory_r2", "4:overworld":
@@ -122,7 +120,7 @@ func _build_island_setpieces(region: LxRegionLoader) -> void:
 			_add_guide(PackedVector2Array([Vector2(232, 184), Vector2(232, 88)]), 0, "sky", "ice", "cream", "switch_eye_kiln_r7|door_kiln_r7_west|island_6_relit", "", false, 0, "island_6_relit")
 		"7:spire_r5":
 			_add_guide(PackedVector2Array([Vector2(120, 168), Vector2(168, 56)]), 0, "sky", "ice", "cream", "switch_eye_spire_r5_west|island_7_relit", "", false, 0, "island_7_relit")
-			_add_guide(PackedVector2Array([Vector2(120, 168), Vector2(248, 136), Vector2(312, 152), Vector2(440, 72)]), 1, "sky", "ice", "cream", "switch_eye_spire_r5_east|island_7_relit", "bramble_spire_r5_baffle")
+			_add_guide(PackedVector2Array([Vector2(120, 168), Vector2(248, 136), Vector2(312, 152), Vector2(440, 72)]), 0, "sky", "ice", "cream", "switch_eye_spire_r5_east|island_7_relit", "bramble_spire_r5_baffle", false, 0, "island_7_relit")
 			_add_ring(Vector2(392, 200), 4, 15.0, Vector2.UP, "spire_r5_portal_lit")
 		"7:spire_r7":
 			_add_guide(PackedVector2Array([Vector2(104, 104), Vector2(184, 40)]), 3, "sky", "ice", "cream", "spire_r7_terrace_portal", "", true, 0, "door_spire_r7_west|island_7_relit")
@@ -226,6 +224,14 @@ static func _far_from_all(p: Vector2, pts: PackedVector2Array, min_sq: float) ->
 		if p.distance_squared_to(o) < min_sq: return false
 	return true
 
+func _is_blocked_point(pt: Vector2) -> bool:
+	if _region == null: return false
+	if _region.tile_at(pt) == "wall": return true
+	for it: LxInteractable in _region.get_interactables():
+		if it != null and is_instance_valid(it) and it.is_solid() and it.kind in ["bramble", "cracked_wall", "obsidian_seal"]:
+			if it.get_solid_rect().grow(2.0).has_point(pt): return true
+	return false
+
 func _draw() -> void:
 	if _island_id <= 1 or _region == null: return
 	var fred: bool = LxHudFx.flash_reduced(); var hz: float = (PULSE_HZ * 0.5) if fred else PULSE_HZ
@@ -248,7 +254,7 @@ func _draw() -> void:
 		if absf(rp.x - _cam_center.x) <= HALF_W + rr and absf(rp.y - _cam_center.y) <= HALF_H + rr: _draw_ring(r, st, step, fred, ember_full)
 	if not _phantom_tiles.is_empty(): _draw_phantom_tiles(cam_rect, step, fred, wick_ok, wick_pos, wick)
 	_draw_cloaked_owls(cam_rect, step, fred, wick_ok, wick_pos)
-	if (_island_id == 6 or _island_id == 8) and not _is_dungeon: _draw_vent_chevrons(cam_rect, st, fred, wick)
+	if (_island_id == 6 or _island_id == 8) and not _is_dungeon: _draw_vent_petals(cam_rect, st, fred, wick)
 
 func _draw_phantom_tiles(cam_rect: Rect2, step: int, fred: bool, wick_ok: bool, wick_pos: Vector2, wick: LxWick) -> void:
 	var has_lens: bool = Lx.state != null and Lx.state.has_move("lens")
@@ -262,17 +268,16 @@ func _draw_phantom_tiles(cam_rect: Rect2, step: int, fred: bool, wick_ok: bool, 
 		if not cam_rect.has_point(pt): continue
 		if (p_on and pt.distance_squared_to(wick_pos) <= p_r2) or (a_on and pt.distance_squared_to(a_pos) <= a_r2): continue
 		var near: bool = wick_ok and pt.distance_squared_to(wick_pos) <= PHANTOM_NEAR_SQ
-		var ph: int = (int(pt.x) * 3 + int(pt.y) * 7) & 15; var tw: int = (step + ph) & 7; var flip: bool = ((step >> 2) + ph) % 2 == 0
-		draw_rect(Rect2((pt + (Vector2(-5.0, -5.0) if flip else Vector2(-5.0, 4.0))).round(), Vector2.ONE), _c("ice" if (near and (has_lens or tw < 4)) else "sky", (0.86 if near else 0.58) * asc))
-		draw_rect(Rect2((pt + (Vector2(4.0, 4.0) if flip else Vector2(4.0, -5.0))).round(), Vector2.ONE), _c("sky" if near else "deep", (0.72 if near else 0.48) * asc))
-		if tw == 0 or (near and tw == 4): draw_rect(Rect2(pt.round(), Vector2.ONE), _c("cream" if (near and has_lens) else "ice", (0.84 if near else 0.54) * asc))
-		var even_p: bool = (ph & 1) == 0; var ew: float = 3.0 if even_p else 2.0
-		var ec: Color = _c("blue" if near else "deep", (0.55 if near else 0.36) * asc)
-		draw_rect(Rect2((pt + Vector2(-2.0 if even_p else -1.0, -6.0)).round(), Vector2(ew, 1.0)), ec); draw_rect(Rect2((pt + Vector2(-1.0, 5.0)).round(), Vector2(ew, 1.0)), ec)
+		var ph: int = (int(pt.x) * 3 + int(pt.y) * 7) & 15; var tw: int = (step + ph) & 7
+		var d_off: float = 0.0 if fred else roundf(sin(_clock * 1.8 + float(ph)) * 1.0)
+		draw_rect(Rect2((pt + Vector2(-4.0, -3.0 + d_off)).round(), Vector2.ONE), _c("ice" if (near and (has_lens or tw < 4)) else "sky", (0.76 if near else 0.44) * asc))
+		draw_rect(Rect2((pt + Vector2(3.0, 3.0 - d_off)).round(), Vector2.ONE), _c("sky" if near else "deep", (0.62 if near else 0.36) * asc))
+		if tw == 0 or (near and tw == 4):
+			draw_rect(Rect2(pt.round(), Vector2.ONE), _c("cream" if (near and has_lens) else "ice", (0.80 if near else 0.46) * asc))
 
 func _draw_cloaked_owls(cam_rect: Rect2, step: int, fred: bool, wick_ok: bool, wick_pos: Vector2) -> void:
 	var ref_pos: Vector2 = wick_pos if wick_ok else _cam_center
-	var c_ice: Color = _c("ice", 0.72 if fred else 0.92); var c_sky: Color = _c("sky", 0.45 if fred else 0.68)
+	var c_ice: Color = _c("ice", 0.72 if fred else 0.90); var c_sky: Color = _c("sky", 0.42 if fred else 0.62)
 	for e: LxEnemyBrain in _region.get_enemies():
 		if e == null or not is_instance_valid(e) or not e.is_alive() or e.kind != "phantom_owl": continue
 		if e is LxPhantomOwlBrain and (e as LxPhantomOwlBrain).revealed: continue
@@ -280,219 +285,246 @@ func _draw_cloaked_owls(cam_rect: Rect2, step: int, fred: bool, wick_ok: bool, w
 		var p: Vector2 = (e.pos + Vector2(0.0, -4.0)).round()
 		if (step % 6) != 0:
 			draw_rect(Rect2(p + Vector2(-3.0, -2.0), Vector2(2.0, 1.0)), c_ice); draw_rect(Rect2(p + Vector2(1.0, -2.0), Vector2(2.0, 1.0)), c_ice)
-			draw_rect(Rect2(p + Vector2(-3.0, -1.0), Vector2.ONE), c_sky); draw_rect(Rect2(p + Vector2(2.0, -1.0), Vector2.ONE), c_sky)
-		for k: int in range(4):
-			var a0: float = float(step) * 0.18 + float(k) * (PI * 0.5); draw_arc(p, 10.0, a0, a0 + 0.55, 4, c_sky, 1.0)
+		for k: int in range(6):
+			var a0: float = float(step) * 0.14 + float(k) * (TAU / 6.0)
+			draw_rect(Rect2((p + Vector2(cos(a0) * 9.0, sin(a0) * 6.0)).round(), Vector2.ONE), c_sky)
 
 func _draw_fan(f: Dictionary, step: int, fred: bool) -> void:
+	# Carved floor prism-rose inlay + drifting prism-dust motes (zero rigid laser spokes)
 	if _is_flag_active(str(f["done"])): return
-	var calm: bool = _is_flag_active(str(f["flag"])); var asc: float = (0.26 if calm else 0.84) * (0.75 if fred else 1.0)
+	var calm: bool = _is_flag_active(str(f["flag"])); var asc: float = (0.24 if calm else 0.78) * (0.75 if fred else 1.0)
 	var p: Vector2 = (f["pos"] as Vector2).round(); var idir: Vector2 = f["in"] as Vector2; var odir: Vector2 = f["out"] as Vector2
-	var c_sky: Color = _c("stone" if calm else "sky", asc); var c_ice: Color = _c("mauve" if calm else "ice", asc)
-	draw_line((p - idir * 16.0).round(), (p - idir * 6.0).round(), _c("mauve" if calm else "apricot", asc * 0.85), 1.0, false)
+	var c_rec: Color = _c("night", 0.36 * asc)
+	var c_in: Color = _c("mauve" if calm else "apricot", 0.60 * asc)
+	var c_sky: Color = _c("stone" if calm else "sky", 0.66 * asc); var c_ice: Color = _c("mauve" if calm else "ice", 0.85 * asc)
+	# Subtle carved diamond stone inlay beneath the prism/mirror pedestal
+	for dp: Vector2 in [Vector2(0, -4), Vector2(4, 0), Vector2(0, 4), Vector2(-4, 0)]:
+		draw_rect(Rect2(p + dp + Vector2(0, 1), Vector2.ONE), c_rec)
+		draw_rect(Rect2(p + dp, Vector2.ONE), c_ice)
+	# Incoming golden spark mote
 	if not calm:
-		draw_rect(Rect2((p - idir * (14.0 - float(step % 6))).round(), Vector2(2.0, 2.0)), _c("gold", asc))
-	draw_line(p + Vector2(0.0, -4.0), p + Vector2(4.0, 0.0), c_ice, 1.0, false); draw_line(p + Vector2(4.0, 0.0), p + Vector2(0.0, 4.0), c_sky, 1.0, false)
-	draw_line(p + Vector2(0.0, 4.0), p + Vector2(-4.0, 0.0), c_sky, 1.0, false); draw_line(p + Vector2(-4.0, 0.0), p + Vector2(0.0, -4.0), c_ice, 1.0, false)
-	if bool(f["fan"]):
-		for ri: int in range(-1, 2):
-			var rd: Vector2 = odir.rotated(deg_to_rad(float(ri) * 18.0))
-			draw_line((p + rd * 7.0).round(), (p + rd * 26.0).round(), c_sky if ri != 0 else c_ice, 1.0, false)
-			if not calm:
-				draw_rect(Rect2((p + rd * (9.0 + float((step + ri + 2) % 8) * 2.2)).round(), Vector2.ONE), _c("cream", asc))
-	else:
-		draw_line((p + odir * 6.0).round(), (p + odir * 17.0).round(), c_sky, 1.0, false)
-		if not calm:
-			draw_rect(Rect2((p + odir * (8.0 + float(step % 6) * 1.5)).round(), Vector2(2.0, 1.0)), c_ice)
-	if not calm:
-		LxPixelGlyphs.draw_dir_chevron(self, (p + odir * 18.0).round(), odir, c_ice, c_sky)
+		var u_in: float = fposmod(_clock * (0.55 if fred else 0.95), 1.0)
+		var ip: Vector2 = (p - idir * lerpf(18.0, 6.0, u_in)).round()
+		draw_rect(Rect2(ip, Vector2.ONE), _c("gold", sin(u_in * PI) * asc))
+	# Outgoing drifting prism-dust motes along split fan or reflection vector
+	var rays: Array[float] = [-18.0, 0.0, 18.0] if bool(f["fan"]) else [0.0]
+	for ri: int in range(rays.size()):
+		var rd: Vector2 = odir.rotated(deg_to_rad(rays[ri]))
+		for mi: int in range(2):
+			var u: float = fposmod(_clock * (0.42 if fred else 0.76) + float(mi) * 0.5 + float(ri) * 0.19, 1.0)
+			var mp: Vector2 = (p + rd * lerpf(7.0, 26.0 if bool(f["fan"]) else 20.0, u)).round()
+			var ma: float = (0.30 if calm else sin(u * PI) * 0.92) * asc
+			draw_rect(Rect2(mp + Vector2(0, 1), Vector2.ONE), _c("night", ma * 0.45))
+			draw_rect(Rect2(mp, Vector2.ONE), _c("cream", ma) if (ri == 1 or not bool(f["fan"])) and u > 0.35 and u < 0.7 else (c_ice if mi == 0 else c_sky))
+	if not calm and (step % 4) != 3:
+		draw_rect(Rect2((p + odir * 16.0).round(), Vector2.ONE), _c("cream", 0.72 * asc))
 
 func _draw_guide(g: Dictionary, st: float, fred: bool, ember_full: bool) -> void:
+	# Worn carved floor-stone notches + gentle drifting light-dust motes (never cuts through solid walls/brambles)
 	var pts: PackedVector2Array = g["pts"] as PackedVector2Array; var kind: int = int(g["kind"])
 	var flag_on: bool = _is_flag_active(str(g["flag"])); var extra_on: bool = _is_flag_active(str(g["extra"])); var done_on: bool = _is_flag_active(str(g["done"]))
-	var ca_k: String = str(g["ca"]); var cb_k: String = str(g["cb"]); var chi_k: String = str(g["chi"]); var asc: float = 0.72 if fred else 1.0
-	if kind == 0:
-		var calm: bool = (flag_on and not bool(g["inv"])) or done_on
-		var ca: Color = _c(ca_k, (0.22 if done_on else (0.36 if calm else 0.72)) * asc)
-		var cb: Color = _c(cb_k, (0.28 if done_on else (0.48 if calm else 0.95)) * asc)
-		for i: int in range(pts.size() - 1): _draw_beaded_line(pts[i], pts[i + 1], ca, Color(cb, minf(1.0, cb.a * (1.15 if (extra_on and i >= 1 and not calm) else 1.0))), 8.0, st * (26.0 if fred else 42.0), not calm)
-	elif kind == 1 or kind == 2:
-		var is_kiln: bool = _region_id == "kiln_r5"
-		if done_on or (is_kiln and flag_on): return
-		var beam_ok: bool = Lx.state != null and Lx.state.has_move("beam"); var sp_idx: int = int(g["split"])
-		var c_a: Color = _c("jade" if flag_on else ("gold" if (ember_full and is_kiln) else ca_k), (0.22 if flag_on else (0.88 if (ember_full and is_kiln) else (0.78 if beam_ok else 0.62))) * asc)
-		for i: int in range(pts.size() - 1):
-			draw_line(pts[i].round(), pts[i + 1].round(), _c("night", 0.32 if flag_on else 0.70), 2.0 if flag_on else 3.0, false)
-			draw_line(pts[i].round(), pts[i + 1].round(), _c("gold", c_a.a) if (kind == 2 and i < sp_idx) else c_a, 1.0, false)
-		if not flag_on: _draw_bead(_sample_poly(pts, g["cum"] as PackedFloat32Array, float(g["len"]), fposmod(st * (52.0 if fred else 84.0), float(g["len"]) + 20.0)), _c("gold" if (ember_full and is_kiln) else cb_k, 0.90 * asc), PAL[chi_k] as Color)
-	elif kind == 3:
-		if done_on:
-			_draw_beaded_line(pts[0], pts[1], _c(ca_k, 0.24 * asc), _c(cb_k, 0.32 * asc), 10.0, 0.0, false); return
-		var lit: bool = flag_on if bool(g["inv"]) else not flag_on
-		_draw_beaded_line(pts[0], pts[1], _c("gold" if (lit and _island_id == 8) else ca_k, (0.76 if lit else 0.44) * asc), _c("cream" if lit else cb_k, (0.90 if lit else 0.56) * asc), 10.0, st * (22.0 if fred else 36.0), true)
-	elif kind == 4:
-		if done_on or (flag_on and not bool(g["inv"])): return
-		var c_m: Color = _c("cream" if flag_on else ca_k, (0.92 if flag_on else 0.78) * asc); var c_mid: Color = _c(cb_k, c_m.a); var off: float = fposmod(st * (18.0 if fred else 30.0), 12.0)
-		for i: int in range(pts.size() - 1):
-			var sa: Vector2 = pts[i]; var sb: Vector2 = pts[i + 1]; var slen: float = maxf(1.0, sa.distance_to(sb))
-			var dir: Vector2 = (sb - sa) / slen; var d: float = off
-			while d < slen - 3.0:
-				LxPixelGlyphs.draw_dir_chevron(self, (sa + dir * d).round(), dir, c_m, c_mid); d += 12.0
-	elif kind == 5:
-		var c_line: Color = _c("gold" if (flag_on or done_on) else ca_k, (0.42 if done_on else (0.78 if flag_on else 0.50)) * asc)
-		var c_pip: Color = _c("cream" if flag_on else chi_k, (0.95 if flag_on else 0.72) * asc)
-		var tlen: float = float(g["len"]); var cum: PackedFloat32Array = g["cum"] as PackedFloat32Array
-		for i: int in range(pts.size() - 1): draw_line(pts[i].round(), pts[i + 1].round(), _c("night", 0.36 if done_on else 0.52), 4.0, false); draw_line(pts[i].round(), pts[i + 1].round(), c_line, 2.0 if (flag_on or done_on) else 1.0, false)
-		if not done_on:
-			var d0: float = fposmod(st * (38.0 if fred else 64.0), tlen)
-			for k: int in range(3): _draw_bead(_sample_poly(pts, cum, tlen, fposmod(d0 + float(k) * (tlen / 3.0), tlen)), c_line, c_pip)
-
-func _draw_bead(bp: Vector2, c_out: Color, c_in: Color) -> void:
-	if bp.x > -9000.0: draw_rect(Rect2(bp - Vector2.ONE, Vector2(3.0, 3.0)), c_out); draw_rect(Rect2(bp, Vector2.ONE), c_in)
-
-func _draw_beaded_line(a: Vector2, b: Vector2, col_dim: Color, col_hi: Color, spacing: float, scroll: float, anim: bool) -> void:
-	var slen: float = a.distance_to(b)
-	if slen < 2.0: return
-	var dir: Vector2 = (b - a) / slen; var d: float = 4.0 + (fposmod(scroll, spacing) if anim else 0.0); var idx: int = 0
-	var c_bg: Color = _c("night", minf(0.86, col_dim.a + 0.16))
-	while d < slen - 4.0:
-		var p: Vector2 = (a + dir * d).round()
-		draw_rect(Rect2(p + Vector2(0.0, 1.0), Vector2(2.0, 1.0)), c_bg)
-		var hi_mod: int = 2 if (_region != null and _is_wet(_region.tile_at(p))) else 3
-		draw_rect(Rect2(p, Vector2(2.0, 1.0)), col_hi if (idx % hi_mod == 0) else col_dim); d += spacing; idx += 1
+	if done_on: return
+	var ca_k: String = str(g["ca"]); var cb_k: String = str(g["cb"]); var chi_k: String = str(g["chi"]); var asc: float = 0.74 if fred else 1.0
+	var is_kiln: bool = _region_id == "kiln_r5"
+	if (kind == 1 or kind == 2 or kind == 4) and flag_on and not bool(g["inv"]): return
+	var calm: bool = (flag_on and not bool(g["inv"])) and kind != 5
+	var lit: bool = (flag_on if bool(g["inv"]) else not flag_on) if kind == 3 else not calm
+	var col_base: Color = _c("gold" if ((ember_full and is_kiln) or (kind == 5 and flag_on)) else ca_k, (0.28 if calm else 0.52) * asc)
+	var col_mote: Color = _c("cream" if (ember_full and is_kiln) else cb_k, (0.36 if calm else 0.84) * asc)
+	var col_hi: Color = _c(chi_k, (0.42 if calm else 0.92) * asc)
+	var c_rec: Color = _c("night", 0.32 * asc)
+	var sp_idx: int = int(g["split"])
+	for i: int in range(pts.size() - 1):
+		var a: Vector2 = pts[i]; var b: Vector2 = pts[i + 1]; var slen: float = a.distance_to(b)
+		if slen < 4.0: continue
+		var seg_c: Color = _c("gold", col_base.a) if (kind == 2 and i < sp_idx) else col_base
+		var d: float = 8.0
+		var idx: int = 0
+		while d < slen - 6.0:
+			var pt: Vector2 = a.lerp(b, d / slen).round()
+			if not _is_blocked_point(pt):
+				draw_rect(Rect2(pt + Vector2(0.0, 1.0), Vector2(2.0 if idx % 2 == 0 else 1.0, 1.0)), c_rec)
+				draw_rect(Rect2(pt, Vector2(2.0 if idx % 2 == 0 else 1.0, 1.0)), seg_c)
+			d += 11.0
+			idx += 1
+	if not lit and kind != 5: return
+	# Gentle drifting light-dust motes traveling along the sightline (stops cleanly if blocked)
+	var tlen: float = float(g["len"]); var cum: PackedFloat32Array = g["cum"] as PackedFloat32Array
+	var mote_n: int = 3 if tlen >= 120.0 else 2
+	var spd: float = (26.0 if fred else 42.0) * (1.25 if extra_on else 1.0)
+	var d0: float = fposmod(st * spd, tlen + 16.0)
+	for k: int in range(mote_n):
+		var md: float = fposmod(d0 + float(k) * (tlen / float(mote_n)), tlen)
+		var bp: Vector2 = _sample_poly(pts, cum, tlen, md)
+		if bp.x > -9000.0 and not _is_blocked_point(bp):
+			var edge_a: float = sin(clampf(md / maxf(1.0, tlen), 0.0, 1.0) * PI)
+			draw_rect(Rect2(bp + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(col_mote, col_mote.a * edge_a * 0.55))
+			draw_rect(Rect2(bp, Vector2.ONE), Color(col_hi, col_hi.a * edge_a))
 
 func _draw_glide(gs: Dictionary, st: float, fred: bool) -> void:
+	# Organic drifting petals & pale wind-mist ribbons masked strictly to water tiles (zero CAD rails/arrows)
 	var a: Vector2 = gs["a"] as Vector2; var b: Vector2 = gs["b"] as Vector2; var dir: Vector2 = gs["dir"] as Vector2; var perp: Vector2 = gs["perp"] as Vector2; var gl: float = float(gs["len"])
 	var settled: bool = _is_flag_active(str(gs["done"]))
-	var asc: float = (0.22 if settled else (0.94 if (Lx.state != null and Lx.state.has_move("wings")) else 0.74)) * (0.76 if fred else 1.0)
-	var c_rose: Color = _c("rose", 0.78 * asc); var c_cream: Color = _c("cream", 0.92 * asc); var c_ice: Color = _c("ice", 0.72 * asc); var spd: float = (8.0 if settled else 20.0) if fred else (12.0 if settled else 34.0)
-	var rsz: Vector2 = Vector2(5.0, 1.0) if absf(dir.x) >= absf(dir.y) else Vector2(1.0, 5.0)
+	if settled: return
+	var asc: float = (0.86 if (Lx.state != null and Lx.state.has_move("wings")) else 0.68) * (0.76 if fred else 1.0)
+	var c_rose: Color = _c("rose", 0.72 * asc); var c_cream: Color = _c("cream", 0.82 * asc); var c_ice: Color = _c("ice", 0.58 * asc)
+	var spd: float = 16.0 if fred else 28.0
+	var rsz: Vector2 = Vector2(3.0, 1.0) if absf(dir.x) >= absf(dir.y) else Vector2(1.0, 3.0)
 	for lane: int in range(-1, 2):
-		var loff: Vector2 = perp * (float(lane) * 9.0)
-		if not settled:
-			draw_line((a + loff + dir * 2.0).round(), (b + loff - dir * 2.0).round(), _c("ice" if lane == 1 else "rose", 0.28 * asc), 1.0, false)
-		var step_g: float = 18.0 if settled else 12.0
-		var d: float = fposmod(st * spd + float(lane + 1) * 4.0, step_g)
-		while d < gl - 5.0:
-			var rc: Color = _c("ice" if lane != 0 else "sky", asc) if settled else (c_cream if (lane == 0 and int(d) % 2 == 0) else (c_rose if lane != 1 else c_ice))
-			draw_rect(Rect2((a + loff + dir * d + perp * roundf(sin(d * 0.14 + st * 2.5) * 1.4)).round(), rsz), rc); d += step_g
-	if not settled:
-		for end_i: int in range(2):
-			var ep: Vector2 = (a - dir * 2.0) if end_i == 0 else (b + dir * 2.0); var ed: Vector2 = dir if end_i == 0 else -dir
-			for k: int in range(2):
-				var o: Vector2 = (ep + ed * float(k * 3)).round()
-				LxPixelGlyphs.draw_dir_chevron(self, o, ed, c_cream if k == 1 else c_rose, _c("wine", asc))
+		var loff: Vector2 = perp * (float(lane) * 8.0)
+		var step_g: float = 18.0
+		var d: float = fposmod(st * spd + float(lane + 1) * 6.0, step_g)
+		while d < gl - 4.0:
+			var wp: Vector2 = (a + loff + dir * d + perp * roundf(sin(d * 0.12 + st * 2.2 + float(lane)) * 1.8)).round()
+			if _region == null or _is_wet(_region.tile_at(wp)):
+				var edge_f: float = sin(clampf(d / gl, 0.0, 1.0) * PI)
+				var is_petal: bool = lane != 1 and (int(d) % 2 == 0)
+				var col: Color = Color(c_cream if (lane == 0 and int(d) % 3 == 0) else (c_rose if is_petal else c_ice), edge_f * asc)
+				draw_rect(Rect2(wp, Vector2(2.0, 1.0) if is_petal else rsz), col)
+			d += step_g
+	# Subtle carved stone takeoff-lip notches on dry banks only (never floating over water)
+	for end_i: int in range(2):
+		var ep: Vector2 = (a - dir * 3.0) if end_i == 0 else (b + dir * 3.0)
+		if _region != null and _is_walk(_region.tile_at(ep)):
+			for sgn: float in [-3.0, 0.0, 3.0]:
+				var np: Vector2 = (ep + perp * sgn).round()
+				draw_rect(Rect2(np + Vector2(0.0, 1.0), Vector2.ONE), _c("night", 0.38 * asc))
+				draw_rect(Rect2(np, Vector2.ONE), c_rose if sgn == 0.0 else c_ice)
 	if bool(gs["lil"]):
 		for li: int in range(2):
 			var lp: Vector2 = (gs["la"] as Vector2) if li == 0 else (gs["lb"] as Vector2)
-			var p: Vector2 = (lp + Vector2(0.0, 0.0 if fred else roundf(sin(st * 2.8 + float(li) * 0.9 + lp.x * 0.05)))).round()
+			if _region != null and not _is_wet(_region.tile_at(lp)): continue
+			var p: Vector2 = (lp + Vector2(0.0, 0.0 if fred else roundf(sin(st * 2.4 + float(li) * 0.9 + lp.x * 0.05)))).round()
 			draw_rect(Rect2(p + Vector2(-3.0, -2.0), Vector2(6.0, 5.0)), PAL["pine"] as Color); draw_rect(Rect2(p + Vector2(-4.0, -1.0), Vector2(8.0, 3.0)), PAL["pine"] as Color)
-			draw_rect(Rect2(p + Vector2(-2.0, -1.0), Vector2(5.0, 3.0)), PAL["jade"] as Color); draw_rect(Rect2(p + Vector2(-3.0, 0.0), Vector2(5.0, 1.0)), PAL["jade"] as Color)
-			draw_rect(Rect2(p + Vector2(-2.0, -1.0), Vector2(2.0, 1.0)), PAL["lime"] as Color); draw_rect(Rect2(p + Vector2(2.0, 0.0), Vector2(2.0, 1.0)), PAL["deep"] as Color)
-	if bool(gs["upd"]):
-		var up: Vector2 = gs["up"] as Vector2; var rot: float = st * (1.2 if fred else 2.6)
-		for k: int in range(8):
-			var ang: float = rot + float(k) * (TAU / 8.0)
-			var uc: Color = _c("ice" if (k % 2 == 0) else "sky", 0.28 * (0.76 if fred else 1.0)) if settled else (c_cream if (k == 0 or k == 4) else (c_rose if (k % 2 == 0) else c_ice))
-			draw_rect(Rect2((up + Vector2(cos(ang) * 14.0, sin(ang) * 10.0)).round(), Vector2(2.0, 1.0)), uc)
+			draw_rect(Rect2(p + Vector2(-2.0, -1.0), Vector2(5.0, 3.0)), PAL["jade"] as Color); draw_rect(Rect2(p + Vector2(-2.0, -1.0), Vector2(2.0, 1.0)), PAL["lime"] as Color)
 
 func _draw_ring(r: Dictionary, st: float, step: int, fred: bool, ember_full: bool) -> void:
 	var p: Vector2 = (r["pos"] as Vector2).round(); var kind: int = int(r["kind"]); var rad: float = float(r["rad"])
 	var dir: Vector2 = r["dir"] as Vector2; var flag: String = str(r["flag"]); var extra: String = str(r["extra"]); var done: String = str(r["done"]); var asc: float = 0.75 if fred else 1.0
+	var c_rec: Color = _c("night", 0.36 * asc)
 	match kind:
-		0: # oak_r5 inward-pulsing charge-focus stance pad
+		0: # oak_r5 carved moss-stone focus stance inlay
 			var solved: bool = _is_flag_active(flag); var claimed: bool = _is_flag_active(extra) or (Lx.state != null and Lx.state.has_move("beam"))
-			_draw_dotted_ring(p, 11.0 if solved else lerpf(13.0, 6.0, fposmod(st * (0.7 if fred else 1.25), 1.0)), _c("jade" if solved else ("gold" if claimed else "lime"), (0.22 if solved else 0.85) * asc), 12, 0.0 if solved else st * 0.6)
-			draw_rect(Rect2(p - Vector2.ONE, Vector2(2.0, 2.0)), _c("cream" if (claimed and not solved) else "jade", (0.22 if solved else 0.85) * asc))
-		1: # orrery_r5 astrolabe pulse-stance ring
+			if solved: return
+			var rr: float = lerpf(11.0, 6.0, fposmod(st * (0.55 if fred else 0.95), 1.0))
+			_draw_carved_rune_ring(p, rr, _c("gold" if claimed else "lime", 0.72 * asc), c_rec, 8, st * 0.35)
+			draw_rect(Rect2(p - Vector2.ONE, Vector2(2.0, 2.0)), _c("cream" if claimed else "jade", 0.78 * asc))
+		1: # orrery_r5 astrolabe floor star-inlay
 			if _is_flag_active(done): return
 			var has_lens: bool = _is_flag_active(flag) or (Lx.state != null and Lx.state.has_move("lens"))
-			var u: float = fposmod(st * (0.55 if fred else 0.95), 1.0); var c_sky: Color = _c("sky", (0.72 if has_lens else 0.52) * asc)
-			_draw_dotted_ring(p, 11.0, c_sky, 12, st * 0.4); _draw_dotted_ring(p, lerpf(6.0, 22.0, u), _c("ice", (1.0 - u) * (0.85 if has_lens else 0.55) * asc), 16, -st * 0.5)
-			draw_line((p + dir * 13.0).round(), (p + dir * 26.0).round(), c_sky, 1.0, false); draw_rect(Rect2((p + dir * (14.0 + u * 12.0)).round(), Vector2(2.0, 1.0)), PAL["cream"] as Color)
-		2: # orrery_r5 / orrery_r7 78px Lantern-Anchor cradle rune
+			var u: float = fposmod(st * (0.48 if fred else 0.82), 1.0)
+			_draw_carved_rune_ring(p, 10.0, _c("sky", (0.60 if has_lens else 0.42) * asc), c_rec, 8, st * 0.25)
+			_draw_carved_rune_ring(p, lerpf(6.0, 20.0, u), _c("ice", (1.0 - u) * (0.72 if has_lens else 0.44) * asc), Color(0, 0, 0, 0), 8, -st * 0.35)
+			var mp: Vector2 = (p + dir * lerpf(10.0, 24.0, u)).round()
+			draw_rect(Rect2(mp, Vector2.ONE), _c("cream", sin(u * PI) * 0.85 * asc))
+		2: # orrery_r5 / orrery_r7 carved lantern-cradle floor stone + sparse constellation flecks (no 78px CAD ring!)
 			var settled: bool = _is_flag_active(done) if not done.is_empty() else _is_flag_active(flag)
-			var c_gold: Color = _c("apricot" if settled else "gold", (0.24 if settled else 0.84) * asc)
+			if settled: return
+			var c_gold: Color = _c("gold", 0.76 * asc); var c_ice: Color = _c("ice", 0.68 * asc)
+			# Carved circular floor-stone cradle (4 diagonal notches + tiny hanging lantern emblem)
 			for si: int in range(4):
-				var sx: float = -1.0 if (si & 1) == 0 else 1.0; var sy: float = -1.0 if si < 2 else 1.0
-				draw_line(p + Vector2(sx * 7.0, sy * 7.0), p + Vector2(sx * 4.0, sy * 7.0), c_gold, 1.0, false); draw_line(p + Vector2(sx * 7.0, sy * 7.0), p + Vector2(sx * 7.0, sy * 4.0), c_gold, 1.0, false)
-			draw_arc(p, 3.0, PI, TAU, 6, _c("mauve" if settled else "ice", (0.24 if settled else 0.78) * asc), 1.0); draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(2.0, 3.0)), c_gold)
-			if not settled:
-				_draw_dotted_ring(p, rad, _c("sky", 0.54 * asc), 28, st * (0.12 if fred else 0.25))
-		3: # kiln_r5 Solar Detonation Focus Ring (r_inner=12, r_outer=76)
+				var ca: float = float(si) * (PI * 0.5) + PI * 0.25
+				var np: Vector2 = (p + Vector2(cos(ca) * 7.0, sin(ca) * 7.0)).round()
+				draw_rect(Rect2(np + Vector2(0, 1), Vector2(2.0, 1.0)), c_rec)
+				draw_rect(Rect2(np, Vector2(2.0, 1.0)), c_gold)
+			draw_rect(Rect2(p + Vector2(-1.0, -2.0), Vector2(2.0, 1.0)), c_ice)
+			draw_rect(Rect2(p + Vector2(-1.0, -1.0), Vector2(2.0, 3.0)), c_gold)
+			# 8 gentle breathing starlight dust flecks marking lantern reach without a dotted wireframe circle
+			for k: int in range(8):
+				var ang: float = st * (0.08 if fred else 0.16) + float(k) * (TAU / 8.0)
+				var sp: Vector2 = (p + Vector2(cos(ang) * rad, sin(ang) * rad)).round()
+				var tw: float = 0.55 if fred else (0.35 + 0.35 * sin(st * 2.0 + float(k) * 1.3))
+				draw_rect(Rect2(sp, Vector2.ONE), _c("ice" if k % 2 == 0 else "sky", tw * asc))
+		3: # kiln_r5 carved solar hearth rune + drifting cinder sparks (no 24-arc CAD circle)
 			if _is_flag_active(flag): return
 			var claimed: bool = _is_flag_active(extra) or (Lx.state != null and Lx.state.has_move("sunflare"))
-			var c_in: Color = _c("cream" if ember_full else ("gold" if claimed else "apricot"), 0.90 * asc)
-			var c_out: Color = _c("gold" if ember_full else ("apricot" if claimed else "coral"), (0.88 if ember_full else (0.62 if claimed else 0.40)) * asc)
-			_draw_dotted_ring(p, 12.0, c_in, 16, st * 0.5); draw_line(p + Vector2(-4.0, 0.0), p + Vector2(4.0, 0.0), c_in, 1.0, false); draw_line(p + Vector2(0.0, -4.0), p + Vector2(0.0, 4.0), c_in, 1.0, false)
-			var rot: float = -st * (0.12 if fred else 0.24)
-			for k: int in range(24):
-				var a0: float = rot + float(k) * (TAU / 24.0)
-				draw_arc(p, rad, a0, a0 + 0.09, 4, c_out, 1.0)
-				if ember_full and (k % 6) == 0: draw_rect(Rect2((p + Vector2.from_angle(a0 + 0.045) * rad).round() - Vector2.ONE, Vector2(2.0, 2.0)), _c("cream", 0.92 * asc))
-		4: # spire_r5 return portal moon-arc
-			var ang: float = st * (0.6 if fred else 1.2)
-			draw_arc(p, rad, ang, ang + PI * 0.85, 10, _c("cream" if _is_flag_active(flag) else "sky", 0.72 * asc), 1.0)
-			draw_arc(p, rad - 3.0, ang + PI, ang + PI * 1.75, 8, _c("ice", 0.56 * asc), 1.0)
-		5: # sanctum_r6 transformer ticks
+			var c_in: Color = _c("cream" if ember_full else ("gold" if claimed else "apricot"), 0.82 * asc)
+			var c_out: Color = _c("gold" if ember_full else ("apricot" if claimed else "coral"), (0.74 if ember_full else 0.44) * asc)
+			_draw_carved_rune_ring(p, 11.0, c_in, c_rec, 8, st * 0.35)
+			draw_rect(Rect2(p + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), c_in); draw_rect(Rect2(p + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), c_in)
+			for k: int in range(12):
+				var a0: float = -st * (0.10 if fred else 0.20) + float(k) * (TAU / 12.0)
+				var sp: Vector2 = (p + Vector2(cos(a0) * rad, sin(a0) * rad)).round()
+				draw_rect(Rect2(sp, Vector2(2.0 if (ember_full and k % 3 == 0) else 1.0, 1.0)), _c("cream", 0.82 * asc) if (ember_full and k % 3 == 0) else c_out)
+		4: # spire_r5 return portal carved moon-dust arc
+			_draw_carved_rune_ring(p, rad, _c("cream" if _is_flag_active(flag) else "sky", 0.64 * asc), c_rec, 10, st * (0.45 if fred else 0.85))
+		5: # sanctum_r6 transformer floor rune flecks
 			if _is_flag_active(flag) or _is_flag_active(done): return
-			_draw_dotted_ring(p, rad, _c("ice" if (step % 4 == 0) else "sky", 0.65 * asc), 8, 0.0)
-		6: # island 3 overworld bramble beam-return ticks
+			_draw_carved_rune_ring(p, rad, _c("ice" if (step % 4 == 0) else "sky", 0.58 * asc), c_rec, 6, 0.0)
+		6: # island 3 overworld bramble beam-return moss ticks
 			if Lx.state == null or not Lx.state.has_move("beam") or _is_flag_active(flag): return
-			var c_g: Color = _c("gold" if (step % 2 == 0) else "jade", 0.76 * asc)
-			draw_line(p + Vector2(-10.0, 0.0), p + Vector2(-5.0, 0.0), c_g, 1.0, false); draw_line(p + Vector2(5.0, 0.0), p + Vector2(10.0, 0.0), c_g, 1.0, false); draw_rect(Rect2(p + Vector2(0.0, -10.0), Vector2(1.0, 4.0)), c_g)
-		7: # oak_r7 octagonal push-socket pad at L-bend
-			var solved: bool = _is_flag_active(flag); var sa: float = (0.42 if solved else 0.82) * asc
-			var c_bg: Color = _c("night", 0.58); var c_g: Color = _c("jade" if solved else "gold", sa); var c_s: Color = _c("jade" if solved else "sky", sa)
-			for oi: int in range(8):
-				var qa: Vector2 = p + _oct_pts[oi]; var qb: Vector2 = p + _oct_pts[(oi + 1) & 7]
-				draw_line(qa, qb, c_bg, 2.0, false); draw_line(qa, qb, c_g if (oi >= 2 and oi <= 5) else c_s, 1.0, false)
-			draw_rect(Rect2(p - Vector2.ONE, Vector2(2.0, 2.0)), _c("jade" if solved else ("cream" if (step % 4 == 0 and not fred) else "ice"), 0.86 * asc))
+			var c_g: Color = _c("gold" if (step % 2 == 0) else "jade", 0.68 * asc)
+			for off_t: Vector2 in [Vector2(-8, 0), Vector2(6, 0), Vector2(0, -8)]:
+				draw_rect(Rect2(p + off_t, Vector2(2.0, 1.0)), c_g)
+		7: # oak_r7 carved stone socket pad at L-bend (worn notches instead of solid octagon wire)
+			var solved: bool = _is_flag_active(flag); var sa: float = (0.32 if solved else 0.72) * asc
+			_draw_carved_rune_ring(p, 8.0, _c("jade" if solved else "gold", sa), c_rec, 8, 0.0)
+			draw_rect(Rect2(p - Vector2.ONE, Vector2(2.0, 2.0)), _c("jade" if solved else ("cream" if (step % 4 == 0 and not fred) else "ice"), 0.80 * asc))
+
+func _draw_carved_rune_ring(c: Vector2, rad: float, col: Color, rec_col: Color, notches: int, phase: float) -> void:
+	for k: int in range(notches):
+		var a: float = phase + (TAU * float(k)) / float(notches)
+		var pt: Vector2 = (c + Vector2(cos(a) * rad, sin(a) * rad)).round()
+		var sz := Vector2(2.0, 1.0) if absf(sin(a)) >= absf(cos(a)) else Vector2(1.0, 2.0)
+		if rec_col.a > 0.01:
+			draw_rect(Rect2(pt + Vector2(0.0, 1.0), sz), rec_col)
+		draw_rect(Rect2(pt, sz), col)
 
 func _draw_leyline(ll: Dictionary, st: float, fred: bool) -> void:
 	var lit: bool = Lx.state != null and Lx.state.lit_beacons.has(str(ll["bid"])); var gate_open: bool = _is_flag_active("door_dungeon_8|visited:8:sanctum_r1|island_8_relit")
 	var asc: float = 0.76 if fred else 1.0; var calm_lit: bool = lit and gate_open
-	var c_grv: Color = _c("night", 0.42 if calm_lit else 0.50); var c_main: Color = _c("gold" if lit else str(ll["ca"]), (0.45 if calm_lit else (0.78 if lit else 0.52)) * asc); var c_hi: Color = _c("cream" if lit else str(ll["cb"]), (0.94 if lit else 0.68) * asc)
+	var c_grv: Color = _c("night", 0.34 if calm_lit else 0.42); var c_main: Color = _c("gold" if lit else str(ll["ca"]), (0.38 if calm_lit else (0.70 if lit else 0.44)) * asc); var c_hi: Color = _c("cream" if lit else str(ll["cb"]), (0.88 if lit else 0.62) * asc)
 	var ra_arr: PackedVector2Array = ll["ra"] as PackedVector2Array; var rb_arr: PackedVector2Array = ll["rb"] as PackedVector2Array
 	var d0_arr: PackedFloat32Array = ll["d0"] as PackedFloat32Array; var d1_arr: PackedFloat32Array = ll["d1"] as PackedFloat32Array
-	var bead_d: float = fposmod(st * (44.0 if fred else 74.0), float(ll["len"]) + 28.0)
+	var bead_d: float = fposmod(st * (40.0 if fred else 66.0), float(ll["len"]) + 28.0)
 	for i: int in range(ra_arr.size()):
 		var ra: Vector2 = ra_arr[i]; var rb: Vector2 = rb_arr[i]; var d0: float = d0_arr[i]; var d1: float = d1_arr[i]
-		draw_line(ra, rb, c_grv, 3.0, false); draw_line(ra, rb, c_main, 1.0, false)
-		if lit and not calm_lit and bead_d >= d0 and bead_d <= d1 and d1 > d0: _draw_bead(ra.lerp(rb, (bead_d - d0) / (d1 - d0)).round(), c_main, c_hi)
+		var slen: float = ra.distance_to(rb)
+		var horiz: bool = absf(rb.x - ra.x) >= absf(rb.y - ra.y)
+		var dn: float = 3.0
+		while dn < slen - 2.0:
+			var np: Vector2 = ra.lerp(rb, dn / maxf(1.0, slen)).round()
+			var nsz := Vector2(3.0, 1.0) if horiz else Vector2(1.0, 3.0)
+			draw_rect(Rect2(np + Vector2(0.0, 1.0), nsz), c_grv); draw_rect(Rect2(np, nsz), c_main)
+			dn += 7.0
+		if lit and not calm_lit and bead_d >= d0 and bead_d <= d1 and d1 > d0:
+			var bp: Vector2 = ra.lerp(rb, (bead_d - d0) / (d1 - d0)).round()
+			draw_rect(Rect2(bp + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), c_main); draw_rect(Rect2(bp, Vector2.ONE), c_hi)
 
 func _draw_medallion(st: float, fred: bool) -> void:
-	var p: Vector2 = _medallion_pos.round(); var asc: float = 0.78 if fred else 1.0
+	var p: Vector2 = _medallion_pos.round(); var asc: float = 0.78 if fred else 1.0; var c_rec: Color = _c("night", 0.45)
 	var b1: bool = Lx.state != null and Lx.state.lit_beacons.has("beacon_8_1")
 	var b2: bool = Lx.state != null and Lx.state.lit_beacons.has("beacon_8_2")
 	var b3: bool = Lx.state != null and Lx.state.lit_beacons.has("beacon_8_3")
 	var lit_n: int = (1 if b1 else 0) + (1 if b2 else 0) + (1 if b3 else 0)
 	var gate_open: bool = _is_flag_active("door_dungeon_8|visited:8:sanctum_r1|island_8_relit")
-	draw_arc(p, 19.0, 0.0, TAU, 24, _c("night", 0.55), 2.0)
-	draw_arc(p, 18.0, deg_to_rad(130.0), deg_to_rad(235.0), 10, _c("gold" if b1 else "sky", (0.95 if b1 else 0.66) * asc), 2.0 if b1 else 1.0)
-	draw_arc(p, 18.0, deg_to_rad(250.0), deg_to_rad(355.0), 10, _c("gold" if b3 else "coral", (0.95 if b3 else 0.66) * asc), 2.0 if b3 else 1.0)
-	draw_arc(p, 18.0, deg_to_rad(10.0), deg_to_rad(115.0), 10, _c("gold" if b2 else "jade", (0.95 if b2 else 0.66) * asc), 2.0 if b2 else 1.0)
-	draw_arc(p, 11.0, 0.0, TAU, 16, _c("cream" if lit_n == 3 else "gold", (0.85 if lit_n > 0 else 0.32) * asc), 1.0)
+	_draw_carved_rune_ring(p, 18.0, _c("gold" if lit_n == 3 else "mauve", 0.52 * asc), c_rec, 18, 0.0)
+	for si: int in range(3):
+		var is_l: bool = (b1 if si == 0 else (b2 if si == 1 else b3))
+		var ck: String = "gold" if is_l else ("sky" if si == 0 else ("jade" if si == 1 else "coral"))
+		var base_a: float = deg_to_rad(180.0 if si == 0 else (60.0 if si == 1 else 300.0))
+		for k: int in range(-2, 3):
+			var sp: Vector2 = (p + Vector2.from_angle(base_a + float(k) * 0.22) * 18.0).round()
+			draw_rect(Rect2(sp, Vector2(2.0, 2.0) if is_l else Vector2.ONE), _c(ck, (0.90 if is_l else 0.58) * asc))
+	_draw_carved_rune_ring(p, 10.0, _c("cream" if lit_n == 3 else "gold", (0.78 if lit_n > 0 else 0.30) * asc), c_rec, 10, st * 0.2)
 	if lit_n > 0 and not _is_flag_active("island_8_relit"):
-		var u: float = fposmod(st * ((0.35 if fred else 0.55) if gate_open else (0.8 if fred else 1.4)), 1.0)
+		var u: float = fposmod(st * ((0.35 if fred else 0.55) if gate_open else (0.75 if fred else 1.25)), 1.0)
 		for k: int in range(lit_n):
-			draw_rect(Rect2(Vector2(p.x + float(k - 1) * 3.0, lerpf(p.y - 16.0, 168.0, fposmod(u + float(k) / float(lit_n), 1.0))).round(), Vector2(2.0, 2.0)), _c("cream", (0.55 if gate_open else 0.90) * asc))
+			draw_rect(Rect2(Vector2(p.x + float(k - 1) * 3.0, lerpf(p.y - 16.0, 168.0, fposmod(u + float(k) / float(lit_n), 1.0))).round(), Vector2(2.0, 2.0)), _c("cream", (0.50 if gate_open else 0.86) * asc))
 
-func _draw_vent_chevrons(cam_rect: Rect2, st: float, fred: bool, wick: LxWick) -> void:
+func _draw_vent_petals(cam_rect: Rect2, st: float, fred: bool, wick: LxWick) -> void:
 	if _is_flag_active("tut_vent_dashed|island_6_relit"): return
 	if wick == null or wick.move_sunflare == null or not wick.move_sunflare.unlocked or wick.ember >= wick.move_sunflare.get_ember_max() - 0.5: return
 	var br: LxBiomeRules = LxBiomeRules.active_instance
 	if br == null or not is_instance_valid(br): return
-	var asc: float = 0.72 if fred else 1.0; var c_g: Color = _c("gold", 0.82 * asc); var c_c: Color = _c("cream", 0.90 * asc)
+	var asc: float = 0.72 if fred else 1.0
 	for v: Dictionary in br._vents:
 		var p: Vector2 = v["pos"] as Vector2
 		if not cam_rect.has_point(p) or fposmod(br.vent_cycle + float(v["phase"]), 1.0) < 0.56: continue
-		var lift: float = fposmod(st * (14.0 if fred else 24.0), 10.0)
 		for side: int in range(-1, 2, 2):
-			LxPixelGlyphs.draw_dir_chevron(self, (p + Vector2(float(side) * 11.0, -2.0 - lift)).round(), Vector2.UP, c_c, c_g)
-
-func _draw_dotted_ring(c: Vector2, rad: float, col: Color, dots: int, phase: float) -> void:
-	for k: int in range(dots): draw_rect(Rect2((c + Vector2.from_angle(phase + (TAU * float(k)) / float(dots)) * rad).round(), Vector2.ONE), col)
+			var u: float = fposmod(st * (0.9 if fred else 1.6) + (0.0 if side < 0 else 0.5), 1.0)
+			var ep: Vector2 = (p + Vector2(float(side) * 9.0 + sin(u * 4.0) * 1.5, -2.0 - u * 14.0)).round()
+			draw_rect(Rect2(ep, Vector2(2.0 if u < 0.35 else 1.0, 1.0)), _c("cream" if u < 0.35 else "gold", sin(u * PI) * asc))
 
 func _sample_poly(pts: PackedVector2Array, cum: PackedFloat32Array, total_len: float, dist: float) -> Vector2:
 	if dist < 0.0 or dist > total_len: return Vector2(-99999.0, -99999.0)
@@ -510,8 +542,7 @@ func _is_flag_active(key: String) -> bool:
 		for term: String in key.split("&"):
 			if not _is_flag_active(term): return false
 		return true
-	if key.begins_with("visited:"):
-		return Lx.state != null and Lx.state.visited_regions.has(key.substr(8))
+	if key.begins_with("visited:"): return Lx.state != null and Lx.state.visited_regions.has(key.substr(8))
 	if _region.is_flag_set(key): return true
 	var it: LxInteractable = _region.find_interactable(key)
 	if it == null or not is_instance_valid(it): return false

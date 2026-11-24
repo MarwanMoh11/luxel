@@ -146,6 +146,15 @@ func reflect_dir(in_dir: Vector2) -> Vector2:
 	return d.bounce(n).normalized()
 
 
+func reflect_bolt(_hit_pos: Vector2, in_dir: Vector2) -> Dictionary:
+	if not is_reflective():
+		return {"hit": false}
+	var rdir: Vector2 = reflect_dir(in_dir)
+	if rdir.length_squared() <= 0.0001:
+		return {"hit": false}
+	return {"hit": true, "pos": pos, "dir": rdir}
+
+
 func on_ballast_clamp(pinned: bool, _anchor_pos: Vector2 = Vector2.ZERO) -> void:
 	if clamped == pinned:
 		return

@@ -9,6 +9,7 @@ var shattered: bool = false
 var size: Vector2 = Vector2(32.0, 16.0)
 var _resonate_t: float = 0.0
 var _shatter_t: float = 0.0
+var _ember_cd: float = 0.0
 var _pulse_stage: int = 0
 var _was_ready: bool = false
 var _veins: Array[PackedVector2Array] = []
@@ -32,6 +33,8 @@ func setup(spec: Dictionary) -> void:
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	if _ember_cd > 0.0:
+		_ember_cd = maxf(0.0, _ember_cd - dt)
 	if _shatter_t > 0.0:
 		_shatter_t = maxf(0.0, _shatter_t - dt)
 		queue_redraw()
@@ -90,7 +93,17 @@ func on_hit(hit: LxHit) -> bool:
 		_resonate_t = 0.22
 		_emit_sfx("shield_clang")
 		queue_redraw()
-		return true
+		# Prevent combat Ember-battery farming (D33): only grant resonance when room has no live foes and off cooldown
+		var has_live_foe: bool = false
+		if region != null and region.has_method("get_enemies"):
+			for e: Variant in (region.call("get_enemies") as Array):
+				if e is LxEnemyBrain and is_instance_valid(e) and (e as LxEnemyBrain).is_alive():
+					has_live_foe = true
+					break
+		if not has_live_foe and _ember_cd <= 0.0:
+			_ember_cd = 0.85
+			return true
+		return false
 	return false
 
 
@@ -131,6 +144,11 @@ func _draw() -> void:
 	if shattered:
 		_draw_puzzle_tiled("obsidian_shattered", size)
 		if _shatter_t > 0.0:
+			var el: float = 0.42 - _shatter_t
+			if el < 0.18:
+				var stage_u: float = clampf(el / 0.18, 0.0, 1.0)
+				var tint_c: Color = Color(PAL["cream"] as Color, 0.88) if stage_u < 0.34 else (Color(PAL["gold"] as Color, 0.65) if stage_u < 0.68 else Color(PAL["coral"] as Color, 0.38))
+				_draw_puzzle_tiled("obsidian_tile", size, Vector2(0.0, roundf(stage_u * 2.0)), _clock, tint_c, 2)
 			_draw_shatter_burst()
 		_draw_signal_pulses()
 		return

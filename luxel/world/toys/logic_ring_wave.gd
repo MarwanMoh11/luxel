@@ -92,7 +92,7 @@ func _is_wall_at(pt: Vector2, ignore_obj: Object = null) -> bool:
 				continue
 			if not source_id.is_empty() and it.id == source_id:
 				continue
-			if it.kind in ["tone_door", "bell", "cracked_wall", "tone_coffin"]:
+			if it.kind in ["tone_door", "bell", "cracked_wall", "tone_coffin", "spinner"]:
 				continue
 			if it.blocks_sight() and it.get_solid_rect().has_point(pt):
 				return true

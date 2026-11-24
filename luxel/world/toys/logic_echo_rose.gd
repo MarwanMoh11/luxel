@@ -153,7 +153,7 @@ func take_echo_hit(hit: Variant = null) -> int:
 func on_hit(hit: LxHit) -> bool:
 	if hit == null or not active or _cd > 0.0:
 		return false
-	if hit.attacker == self:
+	if hit.attacker == self or hit.attacker is LxEchoRose:
 		return false
 	if hit.source in ["bolt", "prism_bolt", "beam", "throw", "recall", "sunflare"]:
 		return _activate()
@@ -416,7 +416,7 @@ func _try_reflect_echo_bolt(b: Dictionary, it: LxInteractable, hit_pt: Vector2, 
 			return false
 	var refl: Vector2 = bdir.bounce(n).normalized()
 	b["dir"] = refl
-	b["pos"] = hit_pt + refl * 4.0
+	b["pos"] = it.pos + refl * 4.0
 	b["bounces"] = int(b["bounces"]) + 1
 	b["max_range"] = float(b["max_range"]) + 96.0
 	var makes_blue: bool = it.kind == "blue_transformer" or str(it.props.get("transforms_to", "")).to_lower() == "blue"

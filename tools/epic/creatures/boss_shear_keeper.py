@@ -28,13 +28,13 @@ def _draw_scissor_jaws(buf: PixelBuf, jx: float, jy: float, open_deg: float, jam
         b = PixelBuf(buf.w, buf.h)
         pts = [
             (jx - 2, jy - sgn * 1.2),
-            (jx + 16, jy - sgn * 3.8),
-            (jx + 20, jy - sgn * 0.4),
-            (jx + 14, jy + sgn * 2.2),
+            (jx + 13, jy - sgn * 3.5),
+            (jx + 16.5, jy - sgn * 0.4),
+            (jx + 11.5, jy + sgn * 2.0),
             (jx - 2, jy + sgn * 2.0),
         ]
         b.shaded_poly(pts, GOLD_BLADE)
-        b.line(jx + 2, jy - sgn * 0.8, jx + 18, jy - sgn * 0.4, "cream", protect=True)
+        b.line(jx + 2, jy - sgn * 0.8, jx + 15, jy - sgn * 0.4, "cream", protect=True)
         # Rivet notch
         b.set(jx + 7, jy + sgn * 0.4, "plum")
         tmp.composite(rotate_buf(b, jx, jy, sgn * ang))
@@ -201,7 +201,7 @@ def draw_boss_shear_keeper(ctx: FrameCtx) -> Image.Image:
         fx_front.star4(gx, gy, 4 if u > 0.72 else 3, "cream", "gold")
     elif ctx.is_commit and ctx.fi in (1, 2, 3):
         if d == "side":
-            fx_front.slash_arc(hx + 8, hy + 2, 14, 12, -62, 62, 5.2, ("coral", "gold", "cream"))
+            fx_front.slash_arc(hx + 5, hy + 2, 13, 12, -62, 62, 4.8, ("coral", "gold", "cream"))
         else:
             fx_front.slash_arc(hx, hy + 7, 21, 11, 15, 165, 5.4, ("coral", "gold", "cream"))
         for k in range(4):

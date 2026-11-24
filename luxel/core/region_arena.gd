@@ -113,7 +113,8 @@ func _draw() -> void:
 
 static func collide_world(
 	region: LxRegionLoader, pos: Vector2, radius: float,
-	can_cross_pit: bool, can_cross_water: bool, ignore_id: String, arena_locked: bool
+	can_cross_pit: bool, can_cross_water: bool, ignore_id: String, arena_locked: bool,
+	is_flying: bool = false
 ) -> Vector2:
 	if region.width <= 0 or region.height <= 0:
 		return pos
@@ -140,6 +141,8 @@ static func collide_world(
 					p = push_circle_out_of_rect(p, radius, tile_rect)
 		for it: LxInteractable in items:
 			if it != null and it.is_solid() and (ignore_id.is_empty() or it.id != ignore_id):
+				if is_flying and it.has_method("blocks_flyer") and not bool(it.call("blocks_flyer")):
+					continue
 				var srect: Rect2 = it.get_solid_rect()
 				if srect.size.x > 0.0 and srect.size.y > 0.0:
 					p = push_circle_out_of_rect(p, radius, srect)

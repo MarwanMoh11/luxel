@@ -84,13 +84,13 @@ static func draw_cues(hud: CanvasItem, cues: Array[Dictionary], prompt_rect: Rec
 		if is_world and Lx.camera != null:
 			screen_pos = screen_pos - Lx.camera.global_position + Vector2(160.0, 90.0)
 		if is_boss_callout:
-			screen_pos.y = 24.0
+			screen_pos.y = 126.0
 		else:
 			screen_pos.y -= floorf(t * 14.0)
 		var txt: String = str(cue["text"])
 		var tw: float = float(LxPixelFont.width(txt, 1))
 		screen_pos.x = clampf(roundf(screen_pos.x), 8.0 + tw * 0.5, 312.0 - tw * 0.5)
-		screen_pos.y = 24.0 if is_boss_callout else clampf(roundf(screen_pos.y), 16.0, 152.0)
+		screen_pos.y = 126.0 if is_boss_callout else clampf(roundf(screen_pos.y), 16.0, 152.0)
 		var pad_y: float = 1.0 if is_world else 2.0
 		var box_h: float = 7.0 if is_world else 9.0
 		var cr := Rect2(roundf(screen_pos.x - tw * 0.5) - (2.0 if is_world else 3.0), screen_pos.y - pad_y, tw + (4.0 if is_world else 6.0), box_h)
@@ -463,7 +463,7 @@ static func _draw_boss_phase_filigree(hud: CanvasItem, blink_t: float, phase: in
 	var hi: Color = (LxPalette.PAL["cream"] as Color) if lit else col
 	for side: float in [-1.0, 1.0]:
 		var px: float = roundf(160.0 + side * 86.0)
-		var py: float = 15.0
+		var py: float = 152.0
 		hud.draw_rect(Rect2(px - 1.0, py - 1.0, 3.0, 3.0), LxPalette.PAL["void"] as Color)
 		hud.draw_rect(Rect2(px, py, 1.0, 1.0), hi)
 		hud.draw_rect(Rect2(px + side * 2.0, py, 2.0, 1.0), col)
@@ -495,10 +495,10 @@ static func draw_boss_biome_header(hud: CanvasItem, island_id: int, name_w: floa
 	var cream: Color = LxPalette.PAL["cream"] as Color
 	var half: float = floorf(name_w * 0.5) + 7.0
 	var lx: float = maxf(bar_x + 3.0, 160.0 - half)
-	draw_biome_crest(hud, island_id, Vector2(lx, 7.0), pri, cream)
+	draw_biome_crest(hud, island_id, Vector2(lx, bar_y - 6.0), pri, cream)
 	if phase < 2 or (160.0 + half) < (bar_x + bar_w - 22.0):
 		var rx: float = minf(bar_x + bar_w - 4.0, 160.0 + half)
-		draw_biome_crest(hud, island_id, Vector2(rx, 7.0), pri, cream)
+		draw_biome_crest(hud, island_id, Vector2(rx, bar_y - 6.0), pri, cream)
 	# Subtle biome-tinted outer gem tips on the boss bar brass endcaps
 	hud.draw_rect(Rect2(bar_x - 2.0, bar_y + 3.0, 1.0, 2.0), glow)
 	hud.draw_rect(Rect2(bar_x + bar_w + 1.0, bar_y + 3.0, 1.0, 2.0), glow)

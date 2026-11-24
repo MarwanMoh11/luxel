@@ -24,9 +24,9 @@ def _draw_beak(buf: PixelBuf, bx: float, by: float, ang_deg: float, hot: bool) -
     ramp = GOLD if hot else ("dusk", "mauve", "gold", "cream")
     # Clock-hand lance beak with ornamental counter-ring
     tmp.ring(bx - 2.0, by, 2.0, "gold", 1.0, protect=True)
-    pts = [(bx, by - 2.0), (bx + 15.0, by - 0.5), (bx + 17.0, by), (bx + 15.0, by + 0.8), (bx, by + 1.8)]
+    pts = [(bx, by - 2.0), (bx + 12.5, by - 0.5), (bx + 14.5, by), (bx + 12.5, by + 0.8), (bx, by + 1.8)]
     tmp.shaded_poly(pts, ramp)
-    tmp.line(bx + 2.0, by, bx + 15.0, by, "cream", protect=True)
+    tmp.line(bx + 2.0, by, bx + 12.5, by, "cream", protect=True)
     buf.composite(rotate_buf(tmp, bx, by, ang_deg))
 
 
@@ -161,9 +161,9 @@ def draw_hour_heron(ctx: FrameCtx) -> Image.Image:
             fx_back.ring(cx, cy - 23.0, 11.0 + u * 4.0, "gold", 1.0, protect=True)
     elif ctx.is_commit and ctx.fi in (1, 2, 3):
         if d == "side":
-            fx_front.line(hx + 4, hy, hx + 19, hy + 1, "gold", protect=True)
-            fx_front.line(hx + 6, hy - 1, hx + 20, hy, "cream", protect=True)
-            fx_front.slash_arc(hx + 8, hy, 12, 7, -38, 38, 4.0, ("sky", "ice", "cream"))
+            fx_front.line(hx + 3, hy, hx + 16, hy + 1, "gold", protect=True)
+            fx_front.line(hx + 5, hy - 1, hx + 17, hy, "cream", protect=True)
+            fx_front.slash_arc(hx + 6, hy, 11, 7, -38, 38, 3.8, ("sky", "ice", "cream"))
         else:
             fx_front.slash_arc(cx, cy - 22, 16, 11, 20, 160, 4.2, ("gold", "ice", "cream"))
     elif ctx.is_stagger:

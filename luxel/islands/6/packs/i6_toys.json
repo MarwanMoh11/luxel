@@ -1,0 +1,77 @@
+{
+  "pack_id": "island6_toys",
+  "owner": "T6-TOYS",
+  "comment": "Island 6 (Ashen Kiln) island-only toys, state vars, SFX cues, strings, and debug-only proof regions.",
+  "interactables": {
+    "temper_anvil": "res://luxel/islands/6/toys/temper_anvil.gd",
+    "car_coupler": "res://luxel/islands/6/toys/car_coupler.gd",
+    "slag_pourer": "res://luxel/islands/6/toys/slag_pourer.gd",
+    "colossus_stride_cam": "res://luxel/islands/6/toys/colossus_stride_cam.gd"
+  },
+  "state_vars": {
+    "kiln_shift": {
+      "scope": "island:6",
+      "values": ["station_a", "station_b", "station_c"],
+      "default": "station_a"
+    },
+    "train_brake": {
+      "scope": "dungeon:ember_express",
+      "values": ["running", "braked"],
+      "default": "running"
+    },
+    "kiln_heat": {
+      "scope": "dungeon:great_kiln",
+      "values": ["low", "surge"],
+      "default": "low"
+    },
+    "wick_temper": {
+      "scope": "game",
+      "values": ["", "skip", "scatter", "lance"],
+      "default": ""
+    }
+  },
+  "sfx": {
+    "anvil_clang_skip": { "id": "prism_bounce", "pitch": 1.18, "db": 0.0 },
+    "anvil_clang_scatter": { "id": "shield_clang", "pitch": 1.24, "db": 0.0 },
+    "anvil_clang_lance": { "id": "bell_slam", "pitch": 0.86, "db": 0.5 },
+    "anvil_clang_heavy": { "id": "bell_toll_heavy", "pitch": 0.78, "db": 0.5 },
+    "heart_thump": { "id": "golem_stomp", "pitch": 0.76, "db": 0.5 },
+    "colossus_horn": { "id": "harbor_creak", "pitch": 0.72, "db": 0.5 }
+  },
+  "strings": {
+    "ISL6_SHIFT_A": "SHIFT A: EXPRESS AT SWITCHYARD.",
+    "ISL6_SHIFT_B": "SHIFT B: COLOSSUS AT STRIDE FLATS.",
+    "ISL6_SHIFT_C": "SHIFT C: EXPRESS AT SLAG SLUICE.",
+    "ISL6_HEAT_LOW": "KILN DAMPER LOW: CHANNELS CRUST.",
+    "ISL6_HEAT_SURGE": "KILN DAMPER SURGE: MOLTEN MOLDS POUR!",
+    "ISL6_TEMP_SKIP": "TEMPERED: SKIP BOLT BOUNCES OFF WALLS!",
+    "ISL6_TEMP_SCAT": "TEMPERED: SCATTER FIRES 3 WIDE BOLTS!",
+    "ISL6_TEMP_LANCE": "TEMPERED: LANCE PIERCES AND CRACKS ARMOUR!",
+    "ISL6_PROMPT_ANVIL": "TEMPER BOLT",
+    "ISL6_PROMPT_SHIFT": "SHIFT TIMETABLE",
+    "ISL6_PROMPT_DAMPER": "TOGGLE KILN HEAT",
+    "ISL6_HUD_SKIP": "SKIP",
+    "ISL6_HUD_SCAT": "SCAT",
+    "ISL6_HUD_LANC": "LANC",
+    "ISL6_HUD_BASE": "BASE",
+    "ISL6_HUD_SHIFT_A": "SHIFT A",
+    "ISL6_HUD_SHIFT_B": "SHIFT B",
+    "ISL6_HUD_SHIFT_C": "SHIFT C",
+    "ISL6_HUD_LOW": "HEAT:LOW",
+    "ISL6_HUD_SURGE": "HEAT:SURGE",
+    "ISL6_PROOF_1_NAME": "PROOF: EXPRESS TIMETABLE",
+    "ISL6_PROOF_2_NAME": "PROOF: COLOSSUS KILN"
+  },
+  "regions": {
+    "_proof_i6_1": {
+      "name_key": "ISL6_PROOF_1_NAME",
+      "debug_only": true,
+      "map": [0, 0]
+    },
+    "_proof_i6_2": {
+      "name_key": "ISL6_PROOF_2_NAME",
+      "debug_only": true,
+      "map": [1, 0]
+    }
+  }
+}

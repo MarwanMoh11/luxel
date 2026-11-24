@@ -1,0 +1,177 @@
+{
+  "pack_id": "i6_creatures_a",
+  "owner": "C6-A",
+  "comment": "Island 6 (Ashen Kiln) 6 new enemies + Ember Express mini-boss (The Brakeman) & dungeon boss (The Engineer).",
+  "strings": {
+    "ISL6_BOSS_BRAKE": "THE BRAKEMAN",
+    "ISL6_BOSS_ENG": "THE ENGINEER"
+  },
+  "sfx": {
+    "steam_whistle": {"id": "bell_toll_heavy", "pitch": 1.52, "db": -2.5},
+    "coupler_snap": {"id": "shield_clang", "pitch": 0.86, "db": -0.5},
+    "piston_hiss": {"id": "forge_gust", "pitch": 1.24, "db": -1.5},
+    "magnet_hum": {"id": "void_hum", "pitch": 1.26, "db": -2.0}
+  },
+  "enemies": {
+    "stoker": {
+      "script": "res://luxel/enemies/stoker/brain.gd",
+      "data": {
+        "max_hp": 2.5,
+        "body_radius": 6.0,
+        "routine_speed": 36.0,
+        "leash_radius": 148.0,
+        "notice_radius": 124.0,
+        "tell_time": 0.52,
+        "recover_time": 1.20,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "island": 6,
+        "family": "CATALYST",
+        "answer": "SCATTER MID-TELL OR LURE WITH LANTERN"
+      }
+    },
+    "rail_hopper": {
+      "script": "res://luxel/enemies/rail_hopper/brain.gd",
+      "data": {
+        "max_hp": 2.0,
+        "body_radius": 5.5,
+        "routine_speed": 56.0,
+        "leash_radius": 156.0,
+        "notice_radius": 132.0,
+        "tell_time": 0.46,
+        "recover_time": 1.10,
+        "shard_drop": 3,
+        "attack_damage": 1.0,
+        "island": 6,
+        "family": "FLANKER",
+        "answer": "INTERCEPT LEAP OR PUNISH LANDING"
+      }
+    },
+    "slag_slime": {
+      "script": "res://luxel/enemies/slag_slime/brain.gd",
+      "data": {
+        "max_hp": 3.5,
+        "body_radius": 7.0,
+        "routine_speed": 22.0,
+        "leash_radius": 136.0,
+        "notice_radius": 108.0,
+        "tell_time": 0.58,
+        "recover_time": 1.30,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "island": 6,
+        "family": "PUZZLE TANK",
+        "answer": "COOL WITH BLUE THEN SHATTER OR PUSH"
+      }
+    },
+    "piston_knight": {
+      "script": "res://luxel/enemies/piston_knight/brain.gd",
+      "data": {
+        "max_hp": 5.0,
+        "body_radius": 7.5,
+        "routine_speed": 28.0,
+        "leash_radius": 144.0,
+        "notice_radius": 120.0,
+        "tell_time": 0.56,
+        "recover_time": 1.35,
+        "shard_drop": 6,
+        "attack_damage": 1.0,
+        "island": 6,
+        "family": "VANGUARD",
+        "answer": "CRACK ARMOUR OR BANK REAR EXHAUST VALVE"
+      }
+    },
+    "smelter_wasp": {
+      "script": "res://luxel/enemies/smelter_wasp/brain.gd",
+      "data": {
+        "max_hp": 1.75,
+        "body_radius": 5.0,
+        "routine_speed": 52.0,
+        "leash_radius": 158.0,
+        "notice_radius": 140.0,
+        "tell_time": 0.52,
+        "recover_time": 1.15,
+        "shard_drop": 3,
+        "attack_damage": 1.0,
+        "island": 6,
+        "family": "AERIAL",
+        "answer": "SWAT OVER LAVA WITH SCATTER OR BEAM"
+      }
+    },
+    "magnet_golem": {
+      "script": "res://luxel/enemies/magnet_golem/brain.gd",
+      "data": {
+        "max_hp": 4.5,
+        "body_radius": 7.5,
+        "routine_speed": 24.0,
+        "leash_radius": 140.0,
+        "notice_radius": 130.0,
+        "tell_time": 0.54,
+        "recover_time": 1.25,
+        "shard_drop": 5,
+        "attack_damage": 1.0,
+        "island": 6,
+        "family": "DISRUPTER",
+        "answer": "CRACK MAGNET WITH LANCE OR ZIP-STRIKE"
+      }
+    },
+    "brakeman": {
+      "script": "res://luxel/bosses/brakeman/brain.gd",
+      "data": {
+        "max_hp": 62.0,
+        "body_radius": 10.0,
+        "routine_speed": 42.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.56,
+        "recover_time": 1.15,
+        "shard_drop": 22,
+        "attack_damage": 1.0,
+        "is_boss": true,
+        "island": 6
+      }
+    },
+    "engineer": {
+      "script": "res://luxel/bosses/engineer/brain.gd",
+      "data": {
+        "max_hp": 152.0,
+        "body_radius": 12.0,
+        "routine_speed": 36.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.55,
+        "recover_time": 1.20,
+        "shard_drop": 34,
+        "attack_damage": 1.0,
+        "is_boss": true,
+        "island": 6
+      }
+    }
+  },
+  "bosses": {
+    "brakeman": {
+      "name_key": "ISL6_BOSS_BRAKE",
+      "phases": [0.58],
+      "mini": true,
+      "dungeon": "ember_express",
+      "region": "train_r5",
+      "music": "island6_boss_p1",
+      "music_p2": "island6_boss_p2",
+      "heart": "none",
+      "flag": "brakeman_defeated",
+      "island": 6
+    },
+    "engineer": {
+      "name_key": "ISL6_BOSS_ENG",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "ember_express",
+      "region": "train_r11",
+      "music": "island6_boss_p1",
+      "music_p2": "island6_boss_p2",
+      "heart": "half",
+      "flag": "engineer_defeated",
+      "island": 6
+    }
+  }
+}

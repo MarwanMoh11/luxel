@@ -19,7 +19,7 @@ const BIOME_TINTS: Dictionary = {
 	4: Vector3(0.58, 0.70, 0.80), # Mirefen Gardens: luminous moonlit rose-teal lagoon
 	5: Vector3(0.50, 0.58, 0.88), # Starfall Observatory: rich royal astral sapphire
 	6: Vector3(0.74, 0.50, 0.60), # Ashen Kiln: warm glowing volcanic hearth-crimson
-	7: Vector3(0.62, 0.70, 0.88), # Moon Shoals: clear silver-ice moonlight
+	7: Vector3(0.46, 0.56, 0.78), # Moon Shoals: deeper slate-moonlight for crisp figure-ground contrast
 	8: Vector3(0.62, 0.56, 0.78), # The Long Night: readable eclipsed plum-twilight
 }
 
@@ -449,15 +449,17 @@ func _append_player_lights(lights: PackedVector4Array, flicker: float, is_dungeo
 	var gliding: bool = Lx.player.has_method("is_gliding") and bool(Lx.player.call("is_gliding"))
 	var move_boost: float = 16.0 if dashing else (12.0 if gliding else 0.0)
 	var b_boost: Vector2 = _biome_and_harmony_light_boost()
+	var lscale: float = clampf(float(Lx.player.call("get_light_scale")), 0.1, 4.0) if Lx.player.has_method("get_light_scale") else 1.0
+	var iscale: float = clampf(lerpf(0.58, 1.0, lscale), 0.58, 1.25) if not is_equal_approx(lscale, 1.0) else 1.0
 	if not lantern_out:
 		var hand_r: float = (144.0 if has_lens else 132.0) if is_dungeon else (132.0 if has_lens else 118.0)
-		var base_hand: float = maxf(hand_r, custom_r) + move_boost + b_boost.x
-		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, base_hand * flicker, (1.52 if dashing else 1.42) + b_boost.y))
+		var base_hand: float = (maxf(hand_r, custom_r) + move_boost + b_boost.x) * lscale
+		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, base_hand * flicker, ((1.52 if dashing else 1.42) + b_boost.y) * iscale))
 	else:
-		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, 56.0 + move_boost + b_boost.x * 0.45, (1.10 if dashing else 0.85) + b_boost.y * 0.5))
+		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, (56.0 + move_boost + b_boost.x * 0.45) * lscale, ((1.10 if dashing else 0.85) + b_boost.y * 0.5) * iscale))
 		var hung_r: float = (144.0 if has_lens else 116.0) if is_dungeon else (136.0 if has_lens else 104.0)
-		var base_hung: float = maxf(hung_r, custom_r) + b_boost.x
-		lights.append(Vector4(lan_pos.x, lan_pos.y - 6.0, base_hung * flicker, 1.45 + b_boost.y))
+		var base_hung: float = (maxf(hung_r, custom_r) + b_boost.x) * lscale
+		lights.append(Vector4(lan_pos.x, lan_pos.y - 6.0, base_hung * flicker, (1.45 + b_boost.y) * iscale))
 
 
 func _biome_and_harmony_light_boost() -> Vector2:

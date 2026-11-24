@@ -31,8 +31,8 @@ def _draw_heavy_anchor(buf: PixelBuf, cx: float, cy: float, ang_deg: float, hot:
 
 
 def draw_anchor_drowned(ctx: FrameCtx) -> Image.Image:
-    w, h = 80, 66
-    ax, ay = 40.0, 54.0
+    w, h = 84, 66
+    ax, ay = 42.0, 54.0
     body = PixelBuf(w, h)
     fx_back = PixelBuf(w, h)
     fx_front = PixelBuf(w, h)
@@ -135,8 +135,8 @@ def draw_anchor_drowned(ctx: FrameCtx) -> Image.Image:
 
 SPEC = CreatureSpec(
     id="anchor_drowned", name="Anchor Drowned", out_dir=ART_ENEMIES,
-    frame=(80, 66), anchor=(40, 54),
-    body_radius=7.5, hit_radius=12.0, body_centre=(40, 38),
+    frame=(84, 66), anchor=(42, 54),
+    body_radius=7.5, hit_radius=12.0, body_centre=(42, 38),
     anims=list(ENEMY_ANIMS), cool_rim=True, biome_bg="pine",
     draw_frame=draw_anchor_drowned,
 )

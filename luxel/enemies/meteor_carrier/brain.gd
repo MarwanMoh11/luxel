@@ -79,7 +79,7 @@ func take_hit(hit: LxHit) -> int:
 		flash_t = 0.16
 		_blast_nearby_foes()
 		LxDamageFx.boss_impact(pos, 0.16, 66.0, 74.0, 70.0, 1.35, 0.28)
-		_emit_sfx("meteor_clank")
+		_emit_sfx("i5_meteor_hit")
 		if hp <= 0.001:
 			opened_kill = true
 			_boulders.clear()
@@ -215,7 +215,7 @@ func _step_tell(dt: float) -> void:
 		state = State.COMMIT
 		state_timer = COMMIT_TIME
 		_boulder_thrown = false
-		_emit_sfx("meteor_clank")
+		_emit_sfx("i5_meteor_hit")
 
 
 func _step_commit(dt: float) -> void:
@@ -268,7 +268,7 @@ func _tick_boulders(dt: float) -> void:
 						hit_other = true
 						break
 			if hit_other:
-				_emit_sfx("meteor_clank")
+				_emit_sfx("i5_meteor_hit")
 				_boulders.remove_at(i)
 				continue
 		if has_p and Geometry2D.get_closest_point_to_segment(wp, p0, p1).distance_to(wp) <= BOULDER_RADIUS + 4.0:

@@ -1,0 +1,130 @@
+{
+  "id": "_proof_i8_1",
+  "island_id": 8,
+  "is_dungeon": true,
+  "debug_only": true,
+  "theme": "toll_house",
+  "name_key": "ISL8_PROOF_1_NAME",
+  "spawn": [48, 120],
+  "exits": [
+    {
+      "id": "exit_to_proof_2",
+      "rect": [416, 96, 16, 48],
+      "to_island": 8,
+      "to_region": "_proof_i8_2",
+      "to_spawn": [48, 120]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_proof_i8_1",
+      "kind": "room_anchor",
+      "pos": [48, 120],
+      "props": { "auto": true }
+    },
+    {
+      "id": "scale_gate_1",
+      "kind": "toll_scale",
+      "pos": [88, 72],
+      "props": {
+        "mode": "gate",
+        "min_weight": 1,
+        "auto_sell_id": "hud_hearts",
+        "target_id": "toll_gate_1",
+        "persist": true
+      }
+    },
+    {
+      "id": "toll_gate_1",
+      "kind": "toll_gate",
+      "pos": [152, 120],
+      "props": {
+        "min_weight": 1,
+        "size": [16, 48],
+        "requires_signals": ["scale_gate_1"],
+        "persist": true
+      }
+    },
+    {
+      "id": "scale_beauty",
+      "kind": "toll_scale",
+      "pos": [200, 72],
+      "props": {
+        "mode": "shop",
+        "auto_sell_id": "palette_4",
+        "persist": true
+      }
+    },
+    {
+      "id": "sensor_beauty",
+      "kind": "toll_sensor",
+      "pos": [248, 72],
+      "props": {
+        "check": "sold_tab:BEAUTY && toll_weight>=3",
+        "target_id": "door_sensor",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_sensor",
+      "kind": "door",
+      "pos": [280, 120],
+      "props": {
+        "door_type": "switch_door",
+        "size": [16, 48],
+        "requires_signals": ["sensor_beauty"]
+      }
+    },
+    {
+      "id": "scale_redeem",
+      "kind": "toll_scale",
+      "pos": [312, 72],
+      "props": {
+        "mode": "redemption",
+        "auto_sell_id": "palette_4",
+        "target_id": "door_exit_1",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_exit_1",
+      "kind": "door",
+      "pos": [344, 120],
+      "props": {
+        "door_type": "switch_door",
+        "size": [16, 48],
+        "requires_signals": ["scale_redeem"]
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Prove Toll Scale gate payment, Beauty tab sale + Toll Sensor unlock, and Redemption desk buy-back keeping Toll Weight and power.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "toll_scale[gate,shop,redemption] + toll_gate + toll_sensor + LxSold",
+    "decisions": 4,
+    "expert_s": 30,
+    "reward": "unlock_proof_2",
+    "why": "End-to-end automated proof of Island 8 Toll House scales, gates, sensors, and free redemption.",
+    "solution": [
+      { "op": "goto", "to": [88, 92], "tol": 6.0 },
+      { "op": "interact", "target": "scale_gate_1" },
+      { "op": "expect", "var": "toll_weight>=1" },
+      { "op": "wait_until", "target": "toll_gate_1", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "goto", "to": [200, 92], "tol": 6.0 },
+      { "op": "interact", "target": "scale_beauty" },
+      { "op": "expect", "var": "toll_weight>=3" },
+      { "op": "wait_until", "target": "sensor_beauty", "prop": "powered", "value": true, "timeout": 3.0 },
+      { "op": "wait_until", "target": "door_sensor", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "goto", "to": [312, 92], "tol": 6.0 },
+      { "op": "interact", "target": "scale_redeem" },
+      { "op": "expect", "var": "redemption_used==true" },
+      { "op": "expect", "var": "toll_weight>=3" },
+      { "op": "wait_until", "target": "door_exit_1", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "expect_exit", "exit": "exit_to_proof_2" }
+    ]
+  }
+}

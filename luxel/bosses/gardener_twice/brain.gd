@@ -52,13 +52,13 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island4_boss_p1"
 	music_p2_cue = "island4_boss_p2"
-	max_hp = 96.0
-	hp = 96.0
+	max_hp = 235.0
+	hp = 235.0
 	body_radius = 10.0
 	move_speed = 44.0
-	stagger_threshold = 15.0
+	stagger_threshold = 22.0
 	stagger_duration = 1.75
-	post_recover_cd = 0.28
+	post_recover_cd = 0.34
 	shard_drop = 65
 	death_duration = 2.4
 
@@ -96,24 +96,22 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("warden_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			var cnt: int = 9 if phase >= 2 else 7
-			patterns.emit_fan(pos, d, cnt, 1.10, 144.0 if phase >= 3 else 132.0, {"color": "rose", "source": "rose_thorn_arc"})
+			var cnt: int = 7 if phase >= 2 else 5
+			patterns.emit_fan(pos, d, cnt, 1.18, 132.0 if phase >= 3 else 124.0, {"color": "rose", "source": "rose_thorn_arc"})
 			stage.play_sfx("petal_lunge", pos),
 	})
 
 	# Attack 3: Memory Lantern (rose halo recording Wick's past + hourglass ring)
 	register_attack("memory_lantern", {
-		"weight": 1.10, "tell": 0.70, "commit": 0.36, "recover": 1.00, "cooldown": 2.0,
+		"weight": 1.10, "tell": 0.70, "commit": 0.36, "recover": 1.05, "cooldown": 2.1,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			ground.warn_ring(pos, 52.0, last_tell_duration, 0.0, "rose", "cream")
+			ground.warn_ring(pos, 48.0, last_tell_duration, 0.0, "rose", "cream")
 			var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
-			if phase >= 2:
-				drops.append(arena_rect.get_center().lerp(tgt, 0.45))
-			patterns.emit_rain(ground, drops, last_tell_duration, 24.0, 1.0, "gold", "rose")
+			patterns.emit_rain(ground, drops, last_tell_duration + 0.05, 22.0, 1.0, "gold", "rose")
 			stage.play_sfx("gardener_record", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() + 0.48
-			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 122.0, gap_a, 0.72, {"color": "gold", "source": "memory_lantern"})
+			patterns.emit_gap_ring(pos, 10, 114.0, gap_a, 0.86, {"color": "gold", "source": "memory_lantern"})
 			if _echo_active:
 				_fire_echo_gardener_volley(tgt)
 			stage.light_burst(pos, 86.0, 1.35, 0.32)
@@ -122,17 +120,17 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 4 (Phase 2 & 3): Pruned Scissor Cross — Present & Echo Gardener converge; clash = 2.4s Stagger!
 	register_attack("pruned_scissor_cross", {
-		"phases": [2, 3], "weight": 1.40, "tell": 0.60, "commit": 0.38, "recover": 1.15, "cooldown": 2.2,
+		"phases": [2, 3], "weight": 1.40, "tell": 0.62, "commit": 0.38, "recover": 1.20, "cooldown": 2.4,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_cross_clashed = false
 			var meet: Vector2 = clamp_to_arena(tgt)
 			var p_dir: Vector2 = (meet - pos).normalized() if meet.distance_to(pos) > 1.0 else Vector2.LEFT
-			_cross_present_to = clamp_to_arena(pos + p_dir * 108.0)
+			_cross_present_to = clamp_to_arena(pos + p_dir * 96.0)
 			_cross_echo_from = _echo_pos if _echo_active else clamp_to_arena(arena_rect.get_center() * 2.0 - pos)
 			var e_dir: Vector2 = (meet - _cross_echo_from).normalized() if meet.distance_to(_cross_echo_from) > 1.0 else Vector2.RIGHT
-			_cross_echo_to = clamp_to_arena(_cross_echo_from + e_dir * 108.0)
-			ground.warn_lane(pos, _cross_present_to, 11.0, last_tell_duration, 0.0, "gold", "coral")
-			ground.warn_lane(_cross_echo_from, _cross_echo_to, 11.0, last_tell_duration, 0.0, "rose", "cream")
+			_cross_echo_to = clamp_to_arena(_cross_echo_from + e_dir * 96.0)
+			ground.warn_lane(pos, _cross_present_to, 10.0, last_tell_duration, 0.0, "gold", "coral")
+			ground.warn_lane(_cross_echo_from, _cross_echo_to, 10.0, last_tell_duration, 0.0, "rose", "cream")
 			stage.play_sfx("shear_clack", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			stage.shake(0.16)
@@ -140,14 +138,14 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, elapsed: float) -> void:
 			var u: float = clampf(elapsed / 0.38, 0.0, 1.0)
 			var pd: Vector2 = (_cross_present_to - pos).normalized() if _cross_present_to.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			move_boss(pd * 255.0 * dt, true)
-			check_contact_damage(15.0, pd, 1.0, "pruned_scissor_cross")
+			move_boss(pd * 220.0 * dt, true)
+			check_contact_damage(14.0, pd, 1.0, "pruned_scissor_cross")
 			if _echo_active:
 				_echo_pos = _cross_echo_from.lerp(_cross_echo_to, u)
 				if not _cross_clashed and pos.distance_to(_echo_pos) <= CLASH_DIST:
 					_cross_clashed = true
 					_trigger_cloche_stagger(CLASH_STAGGER_S, "gardener_clash")
-				elif _has_player() and _echo_pos.distance_to(_get_wick_pos()) <= 15.0 and not _commit_hit_done:
+				elif _has_player() and _echo_pos.distance_to(_get_wick_pos()) <= 13.0 and not _commit_hit_done:
 					_commit_hit_done = true
 					emit_boss_damage((_cross_echo_to - _cross_echo_from).normalized(), 1.0, "pruned_scissor_cross", _echo_pos, true),
 	})
@@ -174,25 +172,25 @@ func _on_reset_encounter() -> void:
 func _setup_arena_mirrors() -> void:
 	_mirrors.clear()
 	var c: Vector2 = arena_rect.get_center()
-	_mirrors.append({"pos": clamp_to_arena(c + Vector2(0.0, -40.0)), "radius": 11.0, "flash_t": 0.0})
-	_mirrors.append({"pos": clamp_to_arena(c + Vector2(0.0, 40.0)), "radius": 11.0, "flash_t": 0.0})
+	_mirrors.append({"pos": clamp_to_arena(c + Vector2(0.0, -40.0)), "radius": 11.0, "flash_t": 0.0, "cd": 0.0})
+	_mirrors.append({"pos": clamp_to_arena(c + Vector2(0.0, 40.0)), "radius": 11.0, "flash_t": 0.0, "cd": 0.0})
 
 
 func _on_phase_enter(new_phase: int) -> void:
 	var c: Vector2 = arena_rect.get_center()
 	if new_phase == 2:
-		# Split into Present Gardener + Echo Gardener! Arena cracks symmetrically!
+		# Split into Present Gardener + Echo Gardener! Twin topiary hedge dividers rise cleanly!
 		_echo_active = true
 		_echo_pos = clamp_to_arena(c + Vector2(-46.0, 0.0))
-		stage.set_tiles(world_ctx, Rect2i(3, 2, 1, 2), "pit")
-		stage.set_tiles(world_ctx, Rect2i(16, 7, 1, 2), "pit")
+		stage.set_tiles(world_ctx, Rect2i(2, 1, 1, 2), "wall")
+		stage.set_tiles(world_ctx, Rect2i(17, 8, 1, 2), "wall")
 		stage.darkness_pulse(0.58, 0.95)
 		stage.shake(0.22)
 		stage.play_sfx("gardener_record", pos)
 	elif new_phase == 3:
-		# Outer corners flood into P3 moat + 3 perimeter echo roses bloom!
-		stage.set_tiles(world_ctx, Rect2i(3, 7, 1, 2), "water")
-		stage.set_tiles(world_ctx, Rect2i(16, 2, 1, 2), "water")
+		# Outer rim corners flood into P3 moat + 3 perimeter echo roses bloom!
+		stage.set_tiles(world_ctx, Rect2i(2, 9, 1, 1), "water")
+		stage.set_tiles(world_ctx, Rect2i(17, 1, 1, 1), "water")
 		_p3_roses = [
 			clamp_to_arena(c + Vector2(-68.0, -34.0)),
 			clamp_to_arena(c + Vector2(68.0, -34.0)),
@@ -200,7 +198,7 @@ func _on_phase_enter(new_phase: int) -> void:
 		]
 		stage.darkness_pulse(0.68, 1.05)
 		stage.shake(0.26)
-		stage.play_sfx("echo_annihilate", pos)
+		stage.play_sfx("gardener_annihilate", pos)
 
 
 func _on_boss_tick(dt: float, target: Vector2) -> void:
@@ -210,6 +208,7 @@ func _on_boss_tick(dt: float, target: Vector2) -> void:
 	_tick_wick_recorder(dt)
 	for m: Dictionary in _mirrors:
 		m["flash_t"] = maxf(0.0, float(m["flash_t"]) - dt)
+		m["cd"] = maxf(0.0, float(m.get("cd", 0.0)) - dt)
 	if _echo_active and boss_state != BossState.DEATH:
 		_tick_echo_gardener(dt, target)
 	_check_mirror_reflections()
@@ -262,30 +261,29 @@ func _tick_echo_gardener(dt: float, target: Vector2) -> void:
 	_echo_pos = _echo_pos.move_toward(desired, 180.0 * dt)
 	_echo_facing = (prev_s["facing"] as Vector2).normalized()
 
-	# Replay Wick's recorded shots ONLY after a telegraph or during active combat (never unwarned!)
-	if not shot_trigger.is_empty() and _echo_shot_cd <= 0.0 and boss_state in [BossState.COMMIT, BossState.READY]:
-		_echo_shot_cd = 1.65
+	# Replay Wick's recorded shots ONLY during READY pauses (so Echo never dogpiles a Present commit!)
+	if not shot_trigger.is_empty() and _echo_shot_cd <= 0.0 and boss_state == BossState.READY:
+		_echo_shot_cd = 2.85
 		var sdir: Vector2 = (shot_trigger["facing"] as Vector2).normalized()
-		# Aim toward nearest mirror if Wick aimed near one, otherwise along Wick's exact past aim!
-		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + sdir * 120.0), 6.0, 0.48, 0.0, "rose", "cream", 0.0, func(_d: Dictionary) -> void:
+		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + sdir * 120.0), 6.0, 0.50, 0.0, "rose", "cream", 0.0, func(_d: Dictionary) -> void:
 			if boss_state != BossState.DEATH and _echo_active:
-				patterns.emit_fan(_echo_pos, sdir, 1, 0.0, 152.0, {"color": "rose", "source": "echo_gardener_bolt"})
+				patterns.emit_fan(_echo_pos, sdir, 1, 0.0, 142.0, {"color": "rose", "source": "echo_gardener_bolt"})
 				stage.play_sfx("bolt_fire", _echo_pos)
 		)
 	elif _echo_shot_cd <= 0.0 and _echo_dash_cd <= 0.0 and boss_state == BossState.READY and _rec_clock > 8.0:
 		# Fallback if Wick fired 0 bolts: telegraphed Rose Shear-Dash from Echo Gardener
-		_echo_dash_cd = 4.2
+		_echo_dash_cd = 5.0
 		var d: Vector2 = (target - _echo_pos).normalized() if target.distance_to(_echo_pos) > 1.0 else _echo_facing
-		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + d * 80.0), 9.0, 0.52, 0.0, "rose", "gold", 0.0, func(_d: Dictionary) -> void:
+		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + d * 80.0), 9.0, 0.54, 0.0, "rose", "gold", 0.0, func(_d: Dictionary) -> void:
 			if boss_state != BossState.DEATH and _echo_active:
-				patterns.emit_fan(_echo_pos, d, 3, 0.42, 136.0, {"color": "rose", "source": "echo_shear_dash"})
+				patterns.emit_fan(_echo_pos, d, 2, 0.36, 126.0, {"color": "rose", "source": "echo_shear_dash"})
 				stage.play_sfx("petal_echo", _echo_pos)
 		)
 
 
 func _fire_echo_gardener_volley(tgt: Vector2) -> void:
 	var d: Vector2 = (tgt - _echo_pos).normalized() if tgt.distance_to(_echo_pos) > 1.0 else _echo_facing
-	patterns.emit_fan(_echo_pos, d, 3, 0.48, 138.0, {"color": "rose", "source": "echo_gardener_bolt"})
+	patterns.emit_fan(_echo_pos, d, 1, 0.0, 132.0, {"color": "rose", "source": "echo_gardener_bolt"})
 
 
 func _check_mirror_reflections() -> void:
@@ -302,6 +300,8 @@ func _check_mirror_reflections() -> void:
 		if not b.active or b.reflected:
 			continue
 		for mi: int in range(mirror_pts.size()):
+			if mi < _mirrors.size() and float(_mirrors[mi].get("cd", 0.0)) > 0.0:
+				continue
 			var mp: Vector2 = mirror_pts[mi]
 			if b.pos.distance_to(mp) <= 13.0:
 				var to_boss: Vector2 = (pos - mp).normalized() if pos.distance_to(mp) > 1.0 else -b.dir
@@ -309,6 +309,7 @@ func _check_mirror_reflections() -> void:
 				b.color_key = "sky"
 				if mi < _mirrors.size():
 					_mirrors[mi]["flash_t"] = 0.28
+					_mirrors[mi]["cd"] = 3.5
 				stage.play_sfx("mirror_ping", mp)
 				break
 
@@ -316,10 +317,15 @@ func _check_mirror_reflections() -> void:
 func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if hit != null and (hit.source == "reflected_bolt" or hit.source == LxHit.SOURCE_PRISM):
 		if boss_state != BossState.STAGGER and stagger_immunity_t <= 0.0:
-			_trigger_cloche_stagger(MIRROR_STAGGER_S, "echo_annihilate")
+			_trigger_cloche_stagger(MIRROR_STAGGER_S, "gardener_annihilate")
 		return dmg * 2.0
 	if _cloche_broken and boss_state == BossState.STAGGER:
 		return dmg * 2.0
+	if hit != null and (hit.pierce or hit.cracks_armour):
+		return dmg
+	if not is_punishable():
+		# Intact glass bell-jar cloche wards off unfocused bolts; Beam pierces, recover & cloche break pay big!
+		return dmg * 0.38
 	return dmg
 
 

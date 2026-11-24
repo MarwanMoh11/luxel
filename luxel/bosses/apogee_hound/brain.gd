@@ -26,7 +26,7 @@ class WellField:
 		var dist: float = sqrt(d2)
 		var u: float = clampf(1.0 - dist / radius, 0.0, 1.0)
 		var falloff: float = (0.35 + 0.65 * u) * (1.0 - exp(-dist / 10.0))
-		var mult: float = 1.20 if what in ["bolt", "beam"] else (0.90 if what == "lantern" else (0.20 if what == "wick" else 0.32))
+		var mult: float = 1.20 if what in ["bolt", "beam"] else (0.90 if what == "lantern" else (0.10 if what == "wick" else 0.32))
 		var dn: Vector2 = delta / dist
 		if is_push:
 			dn = -dn
@@ -56,8 +56,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island5_boss_p1"
 	music_p2_cue = "island5_boss_p2"
-	max_hp = 48.0
-	hp = 48.0
+	max_hp = 64.0
+	hp = 64.0
 	body_radius = 10.5
 	move_speed = 54.0
 	stagger_threshold = 9.0
@@ -82,7 +82,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if phase >= 2:
 				var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
 				patterns.emit_rain(ground, drops, last_tell_duration + 0.06, 22.0, 1.0, "coral", "gold")
-			stage.play_sfx("comet_bark", pos),
+			stage.play_sfx("i5_comet_bark", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
 			var cnt: int = 5 if phase >= 2 else 3
@@ -91,7 +91,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if phase >= 2:
 				patterns.emit_fan(pos, -_aim_dir, 3, 0.65, 118.0, {"color": "coral", "source": "apogee_scatter", "field_scale": 1.15})
 			stage.shake(0.14)
-			stage.play_sfx("meteor_clank", pos),
+			stage.play_sfx("i5_meteor_hit", pos),
 	})
 
 	# Attack 2: Orbital Pounce — curved LxFields-bent lunge; PUSH well derails into wall -> stagger!
@@ -101,10 +101,10 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			_pounce_curve_pts = LxFields.sample_curve(pos, _aim_dir, POUNCE_SPEED, "enemy", 104.0, 8.0, world_ctx).get("points", PackedVector2Array()) as PackedVector2Array
 			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 108.0), 12.0, last_tell_duration, 0.0, "sky", "gold")
-			stage.play_sfx("gravity_curve", pos),
+			stage.play_sfx("i5_gravity_bend", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_pounce_vel = _aim_dir * POUNCE_SPEED
-			stage.play_sfx("comet_bark", pos),
+			stage.play_sfx("i5_comet_bark", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
 			var fa: Vector2 = LxFields.accel_at(pos, "enemy")
 			if fa.length_squared() > 0.5:
@@ -117,7 +117,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			check_contact_damage(body_radius + 6.0, _pounce_vel.normalized(), 1.0, "apogee_pounce")
 			# PUSH polarity derails pounce into arena rim/spur -> dinner-bell bonk stagger!
 			if _well != null and _well.is_push and prev_p.distance_to(pos) < _pounce_vel.length() * dt * 0.42:
-				stage.play_sfx("boss_stagger", pos)
+				stage.play_sfx("i5_hound_stagger", pos)
 				stage.shake(0.20)
 				if add_stagger(stagger_threshold):
 					return,
@@ -133,7 +133,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			ground.warn_ring(clamp_to_arena(tgt), 24.0, last_tell_duration, 1.0, "coral", "gold")
 			ground.warn_ring(_nearest_corner(tgt), 22.0, last_tell_duration + 0.08, 1.0, "sky", "ice")
-			stage.play_sfx("comet_bark", pos),
+			stage.play_sfx("i5_comet_bark", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var arms: int = 4 if phase >= 2 else 3
 			var waves: int = 3 if phase >= 2 else 2
@@ -141,7 +141,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if phase >= 2:
 				patterns.emit_gap_ring(pos, 10, 108.0, (tgt - pos).angle() + PI * 0.5, 0.72, {"color": "gold", "source": "comet_ring", "field_scale": 1.0})
 			stage.shake(0.18)
-			stage.play_sfx("gravity_curve", pos),
+			stage.play_sfx("i5_gravity_bend", pos),
 	})
 
 
@@ -168,13 +168,14 @@ func _on_phase_enter(new_phase: int) -> void:
 	if new_phase == 2:
 		_flip_well_polarity()
 		var c: Vector2 = arena_rect.get_center()
-		# Crack outer E/W corner tiles cleanly (auto-rolled back on reset_encounter!)
+		# Crack outer NW/SE corner tiles cleanly (auto-rolled back on reset_encounter!)
 		var ts: float = 16.0
 		var tx_w: int = int(floorf((arena_rect.position.x + 8.0) / ts))
 		var tx_e: int = int(floorf((arena_rect.end.x - 20.0) / ts))
-		var ty_m: int = int(floorf((c.y - 16.0) / ts))
-		stage.set_tiles(world_ctx, Rect2i(tx_w, ty_m, 1, 2), "pit")
-		stage.set_tiles(world_ctx, Rect2i(tx_e, ty_m, 1, 2), "pit")
+		var ty_n: int = int(floorf((arena_rect.position.y + 8.0) / ts))
+		var ty_s: int = int(floorf((arena_rect.end.y - 24.0) / ts))
+		stage.set_tiles(world_ctx, Rect2i(tx_w, ty_n, 1, 1), "pit")
+		stage.set_tiles(world_ctx, Rect2i(tx_e, ty_s, 1, 1), "pit")
 		props.spawn_pillar(c + Vector2(-56.0, -30.0), 4.5, "apogee_spur_w")
 		props.spawn_pillar(c + Vector2(56.0, 30.0), 4.5, "apogee_spur_e")
 		stage.darkness_pulse(0.60, 0.95)
@@ -221,7 +222,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var front_hit: bool = rel.length() > 0.1 and absf(angle_difference(facing, rel.angle())) < FRONT_BROW_HALF
 	if front_hit and not bypass and not is_punishable():
 		clank_t = 0.12
-		stage.play_sfx("meteor_clank", pos)
+		stage.play_sfx("i5_meteor_hit", pos)
 		return dmg * 0.45
 	if (not front_hit) or is_curved:
 		return dmg * 1.30
@@ -249,7 +250,7 @@ func _flip_well_polarity() -> void:
 	if _well == null:
 		return
 	_well.is_push = not _well.is_push
-	stage.play_sfx("polarity_flip", _well.pos)
+	stage.play_sfx("i5_well_polarity", _well.pos)
 	stage.light_burst(_well.pos, 72.0, 1.25, 0.30)
 
 

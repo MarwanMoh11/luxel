@@ -79,7 +79,7 @@ func _rows_for_tab(tab: int) -> Array[String]:
 				return ["screen_shake", "flash_reduction", "cursor_size", "cursor_color"]
 			return ["fullscreen", "window_scale", "screen_shake", "flash_reduction", "cursor_size", "cursor_color"]
 		Tab.CONTROLS:
-			return ["rebind", "hold_fire", "hold_beam", "hold_wings", "reset_controls"]
+			return ["rebind", "hold_fire", "hold_beam", "reset_controls"]
 		Tab.ASSIST:
 			return ["assist_damage_mult", "assist_tell_scale", "assist_game_speed"]
 		_:

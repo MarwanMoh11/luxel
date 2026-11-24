@@ -299,32 +299,32 @@ func _draw_lens_ring(
 	tick_col: Color
 ) -> void:
 	var center: Vector2 = (origin + off).round() + Vector2(0.0, -5.0)
-	var inner_r: float = maxf(4.0, rad - 2.5)
-	var seg_step: float = TAU / 8.0
-	var arc_span: float = seg_step * 0.56
-	var inner_span: float = seg_step * 0.42
 	var outer_c: Color = LxWick.PAL_CORAL if (warn and flicker_coral) else LxWick.PAL_ICE
 	var inner_c: Color = LxWick.PAL_ICE if (warn and flicker_coral) else LxWick.PAL_SKY
-	var outer_a: float = 0.62 if warn else 0.34
-	var inner_a: float = 0.36 if warn else 0.20
-	for i: int in range(8):
-		var shim: float = 1.0 if flash_red else (0.84 + 0.16 * sin(rot * 4.0 + float(i) * 1.1))
-		var a0: float = rot + float(i) * seg_step
-		canvas.draw_arc(center, rad, a0, a0 + arc_span, 6, Color(outer_c, outer_a * shim), 1.2 if warn else 1.0)
-		var b0: float = -rot * 0.65 + (float(i) + 0.35) * seg_step
-		canvas.draw_arc(center, inner_r, b0, b0 + inner_span, 5, Color(inner_c, inner_a * shim), 1.0)
+	var outer_a: float = 0.70 if warn else 0.42
+	var inner_a: float = 0.42 if warn else 0.24
+	# Pixel-stepped starlight dust rim (zero smooth vector draw_arc circles)
+	var pips: int = clampi(int(roundf(rad * 0.42)), 16, 40)
+	for i: int in range(pips):
+		if i % 3 == 2:
+			continue
+		var shim: float = 1.0 if flash_red else (0.76 + 0.24 * sin(rot * 3.5 + float(i) * 0.9))
+		var a: float = rot * 0.5 + (TAU * float(i)) / float(pips)
+		var pp: Vector2 = (center + Vector2(cos(a) * rad, sin(a) * rad)).round()
+		var sz := Vector2(2.0, 1.0) if (i % 4 == 0) else Vector2.ONE
+		canvas.draw_rect(Rect2(pp, sz), Color(outer_c, outer_a * shim))
+		if i % 4 == 0:
+			var ip: Vector2 = (center + Vector2(cos(a - 0.08) * (rad - 3.0), sin(a - 0.08) * (rad - 3.0))).round()
+			canvas.draw_rect(Rect2(ip, Vector2.ONE), Color(inner_c, inner_a * shim))
+	# 4 delicate cardinal starlight glints instead of CAD tick lines
 	for j: int in range(4):
-		var pang: float = rot + (float(j) * 2.0 + 0.78) * seg_step
-		var pip: Vector2 = (center + Vector2.from_angle(pang) * rad).round()
-		var tw: float = 0.78 if flash_red else (0.66 + 0.28 * sin(rot * 5.0 + float(j) * 1.57))
+		var pang: float = rot * 0.4 + float(j) * (PI * 0.5)
+		var sp: Vector2 = (center + Vector2(cos(pang) * rad, sin(pang) * rad)).round()
+		var tw: float = 0.78 if flash_red else (0.62 + 0.30 * sin(rot * 4.5 + float(j) * 1.57))
 		var pcol: Color = (LxWick.PAL_CORAL if flicker_coral else LxWick.PAL_CREAM) if warn else (LxWick.PAL_CREAM if (j % 2 == 0) else b_glow)
-		canvas.draw_rect(Rect2(pip, Vector2(1.0, 1.0)), Color(pcol, tw))
-		var inner_pip: Vector2 = (center + Vector2.from_angle(pang) * inner_r).round()
-		canvas.draw_rect(Rect2(inner_pip, Vector2(1.0, 1.0)), Color(inner_c, tw * 0.55))
-		var cdir: Vector2 = Vector2.from_angle(float(j) * (PI * 0.5))
-		var ct0: Vector2 = (center + cdir * (rad - 2.0)).round()
-		var ct1: Vector2 = (center + cdir * (rad + 1.5)).round()
-		canvas.draw_line(ct0, ct1, Color(outer_c if warn else tick_col, 0.65 if warn else 0.48), 1.0)
+		canvas.draw_rect(Rect2(sp + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), Color(tick_col if not warn else outer_c, tw * 0.65))
+		canvas.draw_rect(Rect2(sp + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), Color(tick_col if not warn else outer_c, tw * 0.65))
+		canvas.draw_rect(Rect2(sp, Vector2.ONE), Color(pcol, tw))
 
 
 func _draw_revealed_phantom_tiles(
@@ -377,24 +377,33 @@ func _draw_revealed_phantom_tiles(
 				elif not warn:
 					tiles[key] = false
 
-	var alpha_sc: float = 0.78 if flash_red else 1.0
+	var alpha_sc: float = 0.80 if flash_red else 1.0
+	var psheet: LxSpriteSheet = LxInteractable._get_puzzle_sheet()
+	var shimmer_f: int = int(floorf(anim_t * 2.4)) % 2
 	for key_v: Variant in tiles.keys():
 		var tk: Vector2i = key_v as Vector2i
 		var is_warn_tile: bool = bool(tiles[tk])
 		var tl: Vector2 = (Vector2(float(tk.x) * ts, float(tk.y) * ts) + off).round()
-		var rect := Rect2(tl + Vector2(1.0, 1.0), Vector2(ts - 2.0, ts - 2.0))
-		var use_coral: bool = is_warn_tile and flicker_coral
-		var fill_c: Color = Color(LxWick.PAL_CORAL if use_coral else LxWick.PAL_SKY, (0.20 if use_coral else 0.16) * alpha_sc)
-		var border_c: Color = Color(LxWick.PAL_CORAL if use_coral else LxWick.PAL_ICE, (0.85 if is_warn_tile else 0.72) * alpha_sc)
-		var dia_c: Color = Color(LxWick.PAL_CORAL if use_coral else LxWick.PAL_CREAM, 0.90 * alpha_sc)
-		canvas.draw_rect(rect, fill_c, true)
-		canvas.draw_rect(rect, border_c, false, 1.0)
 		var mc: Vector2 = (tl + Vector2(ts * 0.5, ts * 0.5)).round()
-		canvas.draw_line(mc + Vector2(0.0, -3.0), mc + Vector2(3.0, 0.0), border_c, 1.0)
-		canvas.draw_line(mc + Vector2(3.0, 0.0), mc + Vector2(0.0, 3.0), border_c, 1.0)
-		canvas.draw_line(mc + Vector2(0.0, 3.0), mc + Vector2(-3.0, 0.0), border_c, 1.0)
-		canvas.draw_line(mc + Vector2(-3.0, 0.0), mc + Vector2(0.0, -3.0), border_c, 1.0)
-		canvas.draw_rect(Rect2(mc - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), dia_c)
+		var use_coral: bool = is_warn_tile and flicker_coral
+		# Render revealed phantom floor as carved starlight-stone masonry (no wireframe boxes/diamonds!)
+		var prop_k: String = "phantom_warn" if is_warn_tile else "phantom_solid"
+		if psheet != null and psheet.draw_prop(canvas, mc, prop_k, anim_t, Color(1.0, 1.0, 1.0, 0.92 * alpha_sc), 1 if use_coral else shimmer_f):
+			continue
+		var body_c := Color(LxPalette.PAL["plum"] as Color if use_coral else (LxPalette.PAL["deep"] as Color), 0.72 * alpha_sc)
+		var slab_c := Color(LxPalette.PAL["wine"] as Color if use_coral else (LxPalette.PAL["blue"] as Color), 0.78 * alpha_sc)
+		var bevel_c := Color(LxWick.PAL_CORAL if use_coral else LxWick.PAL_SKY, 0.82 * alpha_sc)
+		var glint_c := Color(LxWick.PAL_CREAM if not use_coral else LxWick.PAL_GOLD, 0.88 * alpha_sc)
+		canvas.draw_rect(Rect2(tl + Vector2(1.0, 1.0), Vector2(ts - 2.0, ts - 2.0)), body_c)
+		canvas.draw_rect(Rect2(tl + Vector2(2.0, 2.0), Vector2(ts - 4.0, ts - 5.0)), slab_c)
+		# Chiseled bevelled stone top/left edge & recessed bottom mortar
+		canvas.draw_rect(Rect2(tl + Vector2(2.0, 1.0), Vector2(ts - 5.0, 1.0)), bevel_c)
+		canvas.draw_rect(Rect2(tl + Vector2(1.0, 2.0), Vector2(1.0, ts - 5.0)), bevel_c)
+		canvas.draw_rect(Rect2(tl + Vector2(2.0, ts - 2.0), Vector2(ts - 4.0, 1.0)), Color(LxWick.PAL_VOID, 0.65 * alpha_sc))
+		# Carved miniature 4-point astral inlay in stone center
+		canvas.draw_rect(Rect2(mc + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), bevel_c)
+		canvas.draw_rect(Rect2(mc + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), bevel_c)
+		canvas.draw_rect(Rect2(mc, Vector2.ONE), glint_c)
 
 
 func _draw_hidden_biome_runes(

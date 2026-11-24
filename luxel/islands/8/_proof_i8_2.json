@@ -1,0 +1,101 @@
+{
+  "id": "_proof_i8_2",
+  "island_id": 8,
+  "is_dungeon": true,
+  "debug_only": true,
+  "theme": "endless_stair",
+  "name_key": "ISL8_PROOF_2_NAME",
+  "spawn": [48, 120],
+  "exits": [
+    {
+      "id": "exit_back_proof_1",
+      "rect": [16, 96, 16, 48],
+      "to_island": 8,
+      "to_region": "_proof_i8_1",
+      "to_spawn": [384, 120]
+    },
+    {
+      "id": "exit_done_proof_1",
+      "rect": [416, 96, 16, 48],
+      "to_island": 8,
+      "to_region": "_proof_i8_1",
+      "to_spawn": [48, 120]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_proof_i8_2",
+      "kind": "room_anchor",
+      "pos": [48, 120],
+      "props": { "auto": true }
+    },
+    {
+      "id": "plinth_dash",
+      "kind": "memory_plinth",
+      "pos": [88, 72],
+      "props": {
+        "move_id": "dash",
+        "target_id": "door_plinth",
+        "auto_return_on_clear": true
+      }
+    },
+    {
+      "id": "door_plinth",
+      "kind": "door",
+      "pos": [152, 120],
+      "props": {
+        "door_type": "switch_door",
+        "size": [16, 48],
+        "requires_signals": ["plinth_dash"]
+      }
+    },
+    {
+      "id": "stair_ctrl_1",
+      "kind": "stair_controller",
+      "pos": [232, 112],
+      "props": {
+        "tier": 1,
+        "floor_range": [1, 4],
+        "pool_layers": ["stair_a1", "stair_a2"],
+        "boon_count": 3,
+        "target_exit_id": "door_stair",
+        "seed": 8080
+      }
+    },
+    {
+      "id": "door_stair",
+      "kind": "door",
+      "pos": [312, 120],
+      "props": {
+        "door_type": "switch_door",
+        "size": [16, 48],
+        "requires_signals": ["stair_ctrl_1"]
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Surrender Dash at Memory Plinth to open the sealed gate, reclaim Dash cleanly, then draft an Endless Stair Boon from Stair Controller to unlock the ascent exit.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "memory_plinth + stair_controller + seeded boon draft",
+    "decisions": 4,
+    "expert_s": 28,
+    "reward": "proof_complete",
+    "why": "End-to-end automated proof of Island 8 Memory Plinth move lock/reclaim and Endless Stair Boon Draft.",
+    "solution": [
+      { "op": "goto", "to": [88, 92], "tol": 6.0 },
+      { "op": "interact", "target": "plinth_dash" },
+      { "op": "wait_until", "target": "door_plinth", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "interact", "target": "plinth_dash" },
+      { "op": "expect", "target": "plinth_dash", "prop": "powered", "value": false },
+      { "op": "goto", "to": [232, 128], "tol": 8.0 },
+      { "op": "wait_until", "target": "stair_ctrl_1", "prop": "state", "value": 1, "timeout": 2.0 },
+      { "op": "interact", "target": "stair_ctrl_1" },
+      { "op": "wait_until", "target": "door_stair", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "expect_exit", "exit": "exit_done_proof_1" }
+    ]
+  }
+}

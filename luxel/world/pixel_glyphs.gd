@@ -89,7 +89,8 @@ static func draw_action_keycap(
 	w: float,
 	clock: float,
 	fred: bool,
-	accent_key: String = "gold"
+	accent_key: String = "gold",
+	hold_prefix: bool = false
 ) -> void:
 	var acc_k: String = accent_key if PAL.has(accent_key) else "gold"
 	var fr: bool = fred or LxHudFx.flash_reduced()
@@ -103,6 +104,8 @@ static func draw_action_keycap(
 	var glyph: String = LxStrings.sanitize(raw_glyph, 6)
 	if glyph == "-":
 		glyph = ""
+	if hold_prefix and not glyph.is_empty():
+		glyph = LxStrings.fmt("HUD_HOLD_FMT", [glyph]) if LxStrings.has_id("HUD_HOLD_FMT") else glyph
 	var tw: float = float(LxPixelFont.width(glyph, 1)) if not glyph.is_empty() else 5.0
 	var bw: float = maxf(15.0, tw + 8.0)
 	var rect := Rect2(roundf(center.x - bw * 0.5), roundf(center.y - 5.5), bw, 11.0)

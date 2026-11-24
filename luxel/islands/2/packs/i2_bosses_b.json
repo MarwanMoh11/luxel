@@ -1,0 +1,145 @@
+{
+  "pack_id": "i2_bosses_b",
+  "owner": "C2-B",
+  "comment": "Island 2 Tidewater Harbor Boss Package B: The Dredge Hulk (mini), Twin Lockmasters (boss), The Gullet Lamprey (Leviathan set-piece), and The Undertow (superboss). Legacy Tide Captain & Lighthouse Hermit brains upgraded in place.",
+  "strings": {
+    "BOSS_DREDGE": "THE DREDGE HULK",
+    "BOSS_TWINS": "TWIN LOCKMASTERS",
+    "BOSS_LAMPREY": "THE GULLET LAMPREY",
+    "BOSS_UNDERTOW": "THE UNDERTOW"
+  },
+  "enemies": {
+    "dredge_hulk": {
+      "script": "res://luxel/bosses/dredge_hulk/brain.gd",
+      "aliases": ["boss_dredge_hulk", "the_dredge_hulk"],
+      "data": {
+        "max_hp": 38.0,
+        "body_radius": 13.0,
+        "routine_speed": 36.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.56,
+        "recover_time": 1.10,
+        "shard_drop": 18,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "twin_lockmasters": {
+      "script": "res://luxel/bosses/twin_lockmasters/brain.gd",
+      "aliases": ["boss_twin_lockmasters", "lockmasters"],
+      "data": {
+        "max_hp": 68.0,
+        "body_radius": 11.0,
+        "routine_speed": 42.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.56,
+        "recover_time": 1.15,
+        "shard_drop": 32,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "gullet_lamprey": {
+      "script": "res://luxel/bosses/gullet_lamprey/brain.gd",
+      "aliases": ["boss_gullet_lamprey", "the_gullet_lamprey"],
+      "data": {
+        "max_hp": 40.0,
+        "body_radius": 11.0,
+        "routine_speed": 46.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.58,
+        "recover_time": 1.15,
+        "shard_drop": 22,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "undertow": {
+      "script": "res://luxel/bosses/undertow/brain.gd",
+      "aliases": ["boss_undertow", "the_undertow"],
+      "data": {
+        "max_hp": 78.0,
+        "body_radius": 14.0,
+        "routine_speed": 32.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.60,
+        "recover_time": 1.20,
+        "shard_drop": 60,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "dredge_hulk": {
+      "island": 2,
+      "name_key": "BOSS_DREDGE",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "locks",
+      "region": "locks_r6",
+      "music": "island2_boss_p1",
+      "music_p2": "island2_boss_p2",
+      "heart": "none",
+      "flag": "boss_dredge_hulk_defeated",
+      "aliases": ["boss_dredge_hulk", "the_dredge_hulk"]
+    },
+    "twin_lockmasters": {
+      "island": 2,
+      "name_key": "BOSS_TWINS",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "locks",
+      "region": "locks_r12",
+      "music": "island2_boss_p1",
+      "music_p2": "island2_boss_p2",
+      "heart": "half",
+      "flag": "boss_twin_lockmasters_defeated",
+      "aliases": ["boss_twin_lockmasters", "lockmasters"]
+    },
+    "gullet_lamprey": {
+      "island": 2,
+      "name_key": "BOSS_LAMPREY",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "leviathan",
+      "region": "leviathan_r4",
+      "music": "island2_boss_p1",
+      "music_p2": "island2_boss_p2",
+      "heart": "none",
+      "flag": "boss_gullet_lamprey_defeated",
+      "aliases": ["boss_gullet_lamprey", "the_gullet_lamprey"]
+    },
+    "undertow": {
+      "island": 2,
+      "name_key": "BOSS_UNDERTOW",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "undertow",
+      "region": "cave_undertow_maw",
+      "music": "island2_boss_p1",
+      "music_p2": "island2_boss_p2",
+      "heart": "full",
+      "flag": "boss_undertow_defeated",
+      "aliases": ["boss_undertow", "the_undertow"]
+    }
+  },
+  "sfx": {
+    "dredge_whistle": { "id": "bell_toll_heavy", "pitch": 0.72, "db": -1.0 },
+    "hull_sink": { "id": "marsh_splash", "pitch": 0.70, "db": 0.5 },
+    "portal_swap_chime": { "id": "clockwork_chime", "pitch": 1.18, "db": -1.0 },
+    "twin_bicker_clack": { "id": "shell_snap", "pitch": 1.32, "db": 0.0 },
+    "whale_groan_low": { "id": "boss_hermit_roar", "pitch": 0.62, "db": -1.5 },
+    "lamprey_hiss": { "id": "shadow_whisper", "pitch": 1.12, "db": -1.5 },
+    "gastric_surge": { "id": "marsh_splash", "pitch": 0.82, "db": 0.0 },
+    "heart_buoy_chime": { "id": "beacon_lit", "pitch": 0.94, "db": 0.0 },
+    "maelstrom_drone": { "id": "void_hum", "pitch": 0.84, "db": -1.5 },
+    "undertow_inhale": { "id": "furnace_draw", "pitch": 0.76, "db": -1.0 },
+    "riptide_crack": { "id": "eclipse_wave", "pitch": 0.92, "db": 0.5 },
+    "abyss_chime": { "id": "great_lamp_bloom", "pitch": 0.86, "db": 0.0 }
+  }
+}

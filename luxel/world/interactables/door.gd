@@ -120,15 +120,11 @@ func interact(_actor: Node = null) -> bool:
 	if not active or opened: return false
 	match door_type:
 		"wick_key":
-			if Lx.state != null:
-				var kflag: String = str(props.get("key_id", ""))
-				if Lx.state.consume_key(dungeon_id, "wick_key") or (not kflag.is_empty() and bool(Lx.state.story_flags.get(kflag, false))):
-					return _open(true)
+			if Lx.state != null and Lx.state.consume_key(dungeon_id, "wick_key"):
+				return _open(true)
 		"boss_key":
-			if Lx.state != null:
-				var bflag: String = str(props.get("key_id", ""))
-				if Lx.state.consume_key(dungeon_id, "keepers_flame") or (not bflag.is_empty() and bool(Lx.state.story_flags.get(bflag, false))):
-					return _open(true)
+			if Lx.state != null and Lx.state.consume_key(dungeon_id, "keepers_flame"):
+				return _open(true)
 		"ward_barrier":
 			if _ward_requirements_met(): return _open(true)
 	_rattle_t = 0.22; _emit_sfx("door_locked"); queue_redraw()
@@ -232,8 +228,6 @@ func get_interact_prompt() -> String:
 
 func _has_unlock_key() -> bool:
 	if Lx.state == null: return false
-	var kflag: String = str(props.get("key_id", ""))
-	if not kflag.is_empty() and bool(Lx.state.story_flags.get(kflag, false)): return true
 	return Lx.state.get_key_count(dungeon_id, "keepers_flame" if door_type == "boss_key" else "wick_key") > 0
 
 func save_state() -> Dictionary:
@@ -299,10 +293,25 @@ func _draw_bridge(sheet: LxSpriteSheet, x0: float, y0: float, w: float, h: float
 			_draw_fallback_box(x0, y0, aw, h, PAL["dusk"] as Color)
 			_draw_fallback_box(x0 + w - aw, y0, aw, h, PAL["dusk"] as Color)
 		return
+	var ext_u: float = clampf((OPEN_DUR - _open_t) / 0.28, 0.0, 1.0) if _open_t > 0.0 else 1.0
+	var cols: int = maxi(1, int(roundf(w / 16.0)))
+	var rows: int = maxi(1, int(roundf(h / 16.0)))
+	if ext_u < 1.0:
+		var ew: float = maxf(6.0, roundf(w * ext_u)) if horiz else w
+		var eh: float = h if horiz else maxf(6.0, roundf(h * ext_u))
+		draw_rect(Rect2(x0, y0 + eh, ew, 2.0), PAL["void"] as Color)
+		for ry: int in range(rows):
+			var cy: float = minf(y0 + float(ry) * 16.0 + 8.0, y0 + h - 8.0)
+			for rx: int in range(cols):
+				var cx: float = minf(x0 + float(rx) * 16.0 + 8.0, x0 + w - 8.0)
+				var frac_p: float = (float(rx) + 0.5) / float(cols) if horiz else (float(ry) + 0.5) / float(rows)
+				if frac_p <= ext_u + 0.08:
+					if sheet != null: _draw_sheet_prop(sheet, "bridge_tile", Vector2(cx, cy))
+					else: _draw_fallback_box(cx - 8.0, cy - 8.0, 16.0, 16.0, LxBiomePalette.col(island_id, "mid"))
+		if sheet != null: _draw_bridge_caps(sheet, x0, y0, w, h, horiz)
+		return
 	draw_rect(Rect2(x0, y0 + h, w, 2.0), PAL["void"] as Color)
 	if sheet != null:
-		var cols: int = maxi(1, int(roundf(w / 16.0)))
-		var rows: int = maxi(1, int(roundf(h / 16.0)))
 		for ry: int in range(rows):
 			var cy: float = minf(y0 + float(ry) * 16.0 + 8.0, y0 + h - 8.0)
 			for rx: int in range(cols):
@@ -350,6 +359,17 @@ func _draw_boss_key(sheet: LxSpriteSheet, x0: float, y0: float, w: float, h: flo
 	var drawn: bool = _draw_sheet_prop(sheet, "boss_key_h", Vector2(rattle_dx, 0.0), true) if w >= h else _draw_sheet_prop(sheet, "wick_key_v", Vector2(rattle_dx, 0.0))
 	if not drawn:
 		_draw_fallback_box(x0, y0, w, h, PAL["plum"] as Color)
+	var ready_b: bool = _player_can_unlock_key_door()
+	var cx: float = rattle_dx
+	draw_rect(Rect2(cx - 3.0, -3.0, 6.0, 6.0), PAL["void"] as Color)
+	if ready_b:
+		var hot: bool = LxHudFx.flash_reduced() or (_pulse_stage % 2 == 0)
+		draw_rect(Rect2(cx - 2.0, -2.0, 4.0, 4.0), PAL["coral"] as Color)
+		draw_rect(Rect2(cx - 1.0, -3.0 if hot else -2.0, 2.0, 4.0 if hot else 3.0), PAL["gold"] as Color)
+		draw_rect(Rect2(cx - 1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
+	else:
+		draw_rect(Rect2(cx - 2.0, -2.0, 4.0, 4.0), PAL["plum"] as Color)
+		draw_rect(Rect2(cx - 1.0, -1.0, 2.0, 2.0), PAL["night"] as Color)
 	_draw_key_feedback(rattle_dx, 0.0, true)
 
 func _draw_wick_key(sheet: LxSpriteSheet, x0: float, y0: float, w: float, h: float, rattle_dx: float) -> void:
@@ -498,19 +518,14 @@ func _draw_parting_leaves(sheet: LxSpriteSheet, x0: float, y0: float, w: float, 
 		if not rects.is_empty():
 			var src: Rect2 = LxSpriteSheet._to_rect2(rects[0])
 			var anc: Vector2 = LxSpriteSheet._to_vec2(pinfo.get("anchor", null), sheet.default_anchor)
-			var ox: float = roundf(-anc.x)
-			var oy: float = roundf(-anc.y)
+			var ox: float = roundf(-anc.x); var oy: float = roundf(-anc.y)
 			if horiz:
-				var hw: float = floorf(src.size.x * 0.5)
-				var slide: float = roundf(lerpf(0.0, hw * 0.94, ease_p))
-				var vw: float = maxf(0.0, hw - slide)
+				var hw: float = floorf(src.size.x * 0.5); var slide: float = roundf(lerpf(0.0, hw * 0.94, ease_p)); var vw: float = maxf(0.0, hw - slide)
 				if vw >= 1.0:
 					draw_texture_rect_region(sheet.tex, Rect2(ox, oy, vw, src.size.y), Rect2(src.position.x + slide, src.position.y, vw, src.size.y))
 					draw_texture_rect_region(sheet.tex, Rect2(ox + hw + slide, oy, vw, src.size.y), Rect2(src.position.x + hw, src.position.y, vw, src.size.y))
 			else:
-				var hh: float = floorf(src.size.y * 0.5)
-				var slide_v: float = roundf(lerpf(0.0, hh * 0.94, ease_p))
-				var vh: float = maxf(0.0, hh - slide_v)
+				var hh: float = floorf(src.size.y * 0.5); var slide_v: float = roundf(lerpf(0.0, hh * 0.94, ease_p)); var vh: float = maxf(0.0, hh - slide_v)
 				if vh >= 1.0:
 					draw_texture_rect_region(sheet.tex, Rect2(ox, oy, src.size.x, vh), Rect2(src.position.x, src.position.y + slide_v, src.size.x, vh))
 					draw_texture_rect_region(sheet.tex, Rect2(ox, oy + hh + slide_v, src.size.x, vh), Rect2(src.position.x, src.position.y + hh, src.size.x, vh))
@@ -518,17 +533,11 @@ func _draw_parting_leaves(sheet: LxSpriteSheet, x0: float, y0: float, w: float, 
 	if not drew_tex:
 		var fill_c: Color = PAL["plum"] as Color if door_type == "boss_key" else (PAL["wine"] as Color if door_type == "wick_key" else PAL["dusk"] as Color)
 		if horiz:
-			var hw2: float = floorf(w * 0.5)
-			var vw2: float = maxf(0.0, hw2 - roundf(lerpf(0.0, hw2 * 0.92, ease_p)))
-			if vw2 >= 2.0:
-				_draw_fallback_box(x0, y0, vw2, h, fill_c)
-				_draw_fallback_box(x0 + w - vw2, y0, vw2, h, fill_c)
+			var hw2: float = floorf(w * 0.5); var vw2: float = maxf(0.0, hw2 - roundf(lerpf(0.0, hw2 * 0.92, ease_p)))
+			if vw2 >= 2.0: _draw_fallback_box(x0, y0, vw2, h, fill_c); _draw_fallback_box(x0 + w - vw2, y0, vw2, h, fill_c)
 		else:
-			var hh2: float = floorf(h * 0.5)
-			var vh2: float = maxf(0.0, hh2 - roundf(lerpf(0.0, hh2 * 0.92, ease_p)))
-			if vh2 >= 2.0:
-				_draw_fallback_box(x0, y0, w, vh2, fill_c)
-				_draw_fallback_box(x0, y0 + h - vh2, w, vh2, fill_c)
+			var hh2: float = floorf(h * 0.5); var vh2: float = maxf(0.0, hh2 - roundf(lerpf(0.0, hh2 * 0.92, ease_p)))
+			if vh2 >= 2.0: _draw_fallback_box(x0, y0, w, vh2, fill_c); _draw_fallback_box(x0, y0 + h - vh2, w, vh2, fill_c)
 	# Glowing seam crack between parting leaves
 	if p < 0.78:
 		var sa: float = clampf(1.0 - p / 0.78, 0.0, 1.0)

@@ -1,0 +1,181 @@
+{
+  "pack_id": "i2_creatures_a",
+  "owner": "C2-A",
+  "comment": "Island 2 Tidewater Harbor creature package A: 6 coastal enemies + The Bosun's Rig (mini) + The Figurehead (boss).",
+  "strings": {
+    "BOSS_BOSUN": "THE BOSUNS RIG",
+    "BOSS_FIGURE": "THE FIGUREHEAD"
+  },
+  "enemies": {
+    "reef_skate": {
+      "script": "res://luxel/enemies/reef_skate/brain.gd",
+      "data": {
+        "max_hp": 3.0,
+        "body_radius": 5.5,
+        "routine_speed": 46.0,
+        "leash_radius": 158.0,
+        "notice_radius": 132.0,
+        "tell_time": 0.46,
+        "recover_time": 0.95,
+        "shard_drop": 3,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "net_caster": {
+      "script": "res://luxel/enemies/net_caster/brain.gd",
+      "data": {
+        "max_hp": 2.5,
+        "body_radius": 5.5,
+        "routine_speed": 32.0,
+        "leash_radius": 152.0,
+        "notice_radius": 136.0,
+        "tell_time": 0.58,
+        "recover_time": 1.20,
+        "shard_drop": 3,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "buoy_mine": {
+      "script": "res://luxel/enemies/buoy_mine/brain.gd",
+      "data": {
+        "max_hp": 1.0,
+        "body_radius": 6.5,
+        "routine_speed": 24.0,
+        "leash_radius": 156.0,
+        "notice_radius": 120.0,
+        "tell_time": 0.90,
+        "recover_time": 0.85,
+        "shard_drop": 2,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "anchor_drowned": {
+      "script": "res://luxel/enemies/anchor_drowned/brain.gd",
+      "data": {
+        "max_hp": 6.5,
+        "body_radius": 7.5,
+        "routine_speed": 28.0,
+        "leash_radius": 148.0,
+        "notice_radius": 128.0,
+        "tell_time": 0.62,
+        "recover_time": 1.40,
+        "shard_drop": 5,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "pistol_shrimp": {
+      "script": "res://luxel/enemies/pistol_shrimp/brain.gd",
+      "data": {
+        "max_hp": 3.0,
+        "body_radius": 5.5,
+        "routine_speed": 34.0,
+        "leash_radius": 154.0,
+        "notice_radius": 148.0,
+        "tell_time": 0.64,
+        "recover_time": 1.25,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "brine_lamprey": {
+      "script": "res://luxel/enemies/brine_lamprey/brain.gd",
+      "data": {
+        "max_hp": 2.0,
+        "body_radius": 5.0,
+        "routine_speed": 46.0,
+        "leash_radius": 156.0,
+        "notice_radius": 132.0,
+        "tell_time": 0.50,
+        "recover_time": 1.05,
+        "shard_drop": 2,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "bosun_rig": {
+      "script": "res://luxel/bosses/bosun_rig/brain.gd",
+      "aliases": ["bosuns_rig", "boss_bosun_rig"],
+      "data": {
+        "max_hp": 38.0,
+        "body_radius": 12.0,
+        "routine_speed": 34.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.56,
+        "recover_time": 1.15,
+        "shard_drop": 18,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "figurehead": {
+      "script": "res://luxel/bosses/figurehead/brain.gd",
+      "aliases": ["boss_figurehead", "the_figurehead"],
+      "data": {
+        "max_hp": 98.0,
+        "body_radius": 12.0,
+        "routine_speed": 40.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.58,
+        "recover_time": 1.20,
+        "shard_drop": 32,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "bosun_rig": {
+      "island": 2,
+      "name_key": "BOSS_BOSUN",
+      "phases": [0.58],
+      "mini": true,
+      "dungeon": "galleon",
+      "region": "galleon_r6",
+      "music": "island2_boss_p1",
+      "music_p2": "island2_boss_p2",
+      "heart": "none",
+      "flag": "boss_bosun_rig_defeated",
+      "aliases": ["bosuns_rig", "boss_bosun_rig"]
+    },
+    "figurehead": {
+      "island": 2,
+      "name_key": "BOSS_FIGURE",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "galleon",
+      "region": "galleon_r12",
+      "music": "island2_boss_p1",
+      "music_p2": "island2_boss_p2",
+      "heart": "half",
+      "flag": "boss_figurehead_defeated",
+      "aliases": ["boss_figurehead", "the_figurehead"]
+    }
+  },
+  "sfx": {
+    "bosun_whistle": { "id": "owl_lock", "pitch": 1.38, "db": -1.5 },
+    "anchor_clang": { "id": "shield_clang", "pitch": 0.78, "db": 0.0 },
+    "figurehead_creak": { "id": "harbor_creak", "pitch": 0.82, "db": 0.0 },
+    "chain_whip": { "id": "warden_swing", "pitch": 0.86, "db": 0.0 },
+    "wood_splinter": { "id": "stone_break", "pitch": 1.24, "db": -0.5 },
+    "skate_skim": { "id": "tide_wave", "pitch": 1.22, "db": -2.0 },
+    "skate_flop": { "id": "marsh_splash", "pitch": 1.18, "db": -2.0 },
+    "net_cast": { "id": "gust_whoosh", "pitch": 1.16, "db": -1.5 },
+    "net_pin": { "id": "magpie_grab", "pitch": 0.90, "db": -1.0 },
+    "net_cut": { "id": "dash_whoosh", "pitch": 1.28, "db": -1.5 },
+    "mine_clang": { "id": "shield_clang", "pitch": 1.14, "db": -1.0 },
+    "mine_arm": { "id": "clockwork_chime", "pitch": 1.30, "db": -2.0 },
+    "mine_blast": { "id": "golem_stomp", "pitch": 0.92, "db": 0.5 },
+    "shrimp_charge": { "id": "beam_charge", "pitch": 1.28, "db": -3.0 },
+    "shrimp_snap": { "id": "shell_snap", "pitch": 1.26, "db": 0.5 },
+    "lamprey_boil": { "id": "marsh_splash", "pitch": 0.92, "db": -2.0 },
+    "lamprey_latch": { "id": "magpie_grab", "pitch": 0.84, "db": -1.0 },
+    "lamprey_shake": { "id": "marsh_splash", "pitch": 1.24, "db": -1.0 }
+  }
+}

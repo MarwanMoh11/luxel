@@ -1,0 +1,651 @@
+{
+  "name_key": "ISL1_UC_SCALES",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "uc_scales",
+      "name_key": "ISL1_UC_SCALES",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r6",
+      "to_spawn": [
+        256,
+        56
+      ]
+    },
+    {
+      "id": "exit_r7_west_shortcut",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r2",
+      "to_spawn": [
+        80,
+        56
+      ],
+      "locked_door_id": "seal_r7_seam"
+    },
+    {
+      "id": "exit_r7_east",
+      "rect": [
+        464,
+        128,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r8",
+      "to_spawn": [
+        48,
+        152
+      ],
+      "requires_flags": [
+        "uc_key_2"
+      ],
+      "locked_door_id": "door_r7_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_south",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r7_war",
+      "kind": "bell",
+      "pos": [
+        144,
+        88
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 236
+      }
+    },
+    {
+      "id": "bell_r7_dusk",
+      "kind": "bell",
+      "pos": [
+        248,
+        224
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 220
+      }
+    },
+    {
+      "id": "scale_r7",
+      "kind": "scale",
+      "pos": [
+        120,
+        144
+      ],
+      "props": {
+        "left": [
+          -28,
+          0
+        ],
+        "right": [
+          28,
+          0
+        ],
+        "pan_radius": 14,
+        "mode": "left_heavy",
+        "need_weight": 1.5,
+        "target_ids": [
+          "wall_r7_north",
+          "wall_r7_south"
+        ]
+      }
+    },
+    {
+      "id": "blk_r7",
+      "kind": "push_block",
+      "pos": [
+        60,
+        144
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "wall_r7_north",
+      "kind": "mover_wall",
+      "pos": [
+        200,
+        64
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "path": [
+          [
+            200,
+            64
+          ],
+          [
+            200,
+            16
+          ]
+        ],
+        "speed": 120,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "wall_r7_south",
+      "kind": "mover_wall",
+      "pos": [
+        152,
+        184
+      ],
+      "props": {
+        "size": [
+          64,
+          16
+        ],
+        "path": [
+          [
+            152,
+            184
+          ],
+          [
+            80,
+            184
+          ]
+        ],
+        "speed": 140,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "seal_r7_vault",
+      "kind": "tone_door",
+      "pos": [
+        248,
+        64
+      ],
+      "props": {
+        "tone": "war",
+        "size": [
+          16,
+          32
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "seal_r7_seam",
+      "kind": "tone_door",
+      "pos": [
+        24,
+        232
+      ],
+      "props": {
+        "tone": "war",
+        "size": [
+          16,
+          48
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "uc_key_2",
+      "kind": "wick_key",
+      "pos": [
+        296,
+        64
+      ],
+      "props": {
+        "dungeon_id": "undercroft",
+        "key_kind": "wick_key",
+        "flag_id": "uc_key_2"
+      }
+    },
+    {
+      "id": "door_r7_east",
+      "kind": "door",
+      "pos": [
+        456,
+        152
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "undercroft",
+        "key_kind": "wick_key",
+        "key_id": "uc_key_2",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        264
+      ],
+      "props": {
+        "zone": "uc_scales",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_nw",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        64
+      ],
+      "props": {
+        "zone": "uc_scales",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        112
+      ],
+      "props": {
+        "zone": "uc_scales",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "hand_r7_a",
+      "kind": "grave_hand",
+      "pos": [
+        288,
+        128
+      ],
+      "zone": "uc_scales"
+    },
+    {
+      "id": "hand_r7_b",
+      "kind": "grave_hand",
+      "pos": [
+        344,
+        224
+      ],
+      "zone": "uc_scales"
+    },
+    {
+      "id": "moth_r7",
+      "kind": "toll_moth",
+      "pos": [
+        272,
+        168
+      ],
+      "perches": [
+        [
+          264,
+          152
+        ],
+        [
+          320,
+          184
+        ]
+      ],
+      "zone": "uc_scales"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        72,
+        124,
+        96,
+        40
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        144,
+        88
+      ],
+      "radius": 22,
+      "style": "ritual"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        264,
+        44,
+        64,
+        36
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        48,
+        232
+      ],
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        384,
+        240
+      ],
+      "radius": 26,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        144,
+        88
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        408,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        56,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "open_sarcophagus",
+      "pos": [
+        384,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_coffin",
+      "pos": [
+        416,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        176,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        272,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        360,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        176,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        336,
+        268
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "uc_r7_seam",
+      "on": "signal:seal_r7_seam",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "uc_ossuary_seam"
+        },
+        {
+          "narrate": "ISL1_UC_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Weight a stone scale to swap north and south acoustic baffles so War waves blast open both the Key 2 vault and the ossuary shortcut seam back to r2.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Counterweight scales invert dual baffles, and War Echo waves shatter bone seals while Dusk hushes awakened Grave Hands.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "uc_key_2+uc_ossuary_seam",
+    "why": "Counterweight crypt forming the second internal dungeon cycle back to the Coffin Vault.",
+    "exit": "exit_r7_east",
+    "start": {
+      "flags": [
+        "item_echo_clapper"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          176,
+          224
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "bell_r7_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "push",
+        "target": "blk_r7",
+        "to": [
+          92,
+          144
+        ]
+      },
+      {
+        "op": "wait_phase",
+        "target": "wall_r7_north",
+        "near": [
+          200,
+          16
+        ],
+        "tol": 10.0,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          120
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "bell_r7_war",
+        "hold": 0.25
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "seal_r7_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "interact",
+        "target": "uc_key_2"
+      },
+      {
+        "op": "push",
+        "target": "blk_r7",
+        "to": [
+          56,
+          144
+        ]
+      },
+      {
+        "op": "wait_phase",
+        "target": "wall_r7_south",
+        "near": [
+          152,
+          184
+        ],
+        "tol": 10.0,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          144,
+          120
+        ],
+        "target": "bell_r7_war"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "seal_r7_seam",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "interact",
+        "target": "door_r7_east"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_east"
+      }
+    ]
+  },
+  "id": "undercroft_r7",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "undercroft",
+  "music": "island1_dungeon",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "triggers": [],
+  "layers": []
+}

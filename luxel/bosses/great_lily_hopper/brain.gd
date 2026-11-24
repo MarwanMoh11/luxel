@@ -1,7 +1,9 @@
 class_name LxGreatLilyHopperBoss
 extends LxLilyHopperBrain
-## Mirefen Gardens mini-boss (Island 4): Great Lily Hopper.
-## 2 phases, HP 10.5. Pairs twin shockwave hops with a mid-range 3-Arc Lily-Petal Spit!
+## Mirefen Gardens mini-boss (Island 4): Great Lily Hopper (Bible §4.6 upgrade).
+## 2 phases, HP 12.0. Pairs twin shockwave hops & 3-Arc Lily-Petal Spit (0.95 s punish)
+## with 4 perimeter thermal updraft plumes (Wings hover + 1.35x air intercepts) and
+## Phase 2 Submerging Rim Pads on twin-hop landings.
 
 enum HopperMove { LEAP_HOP, PETAL_SPIT }
 
@@ -22,6 +24,8 @@ const PETAL_RADIUS: float = 4.5
 const PETAL_MAX_DIST: float = 128.0
 const PETAL_SPREAD: float = 0.28
 const PHASE2_ROAR_TIME: float = 0.56
+const UPDRAFT_R: float = 20.0
+const SUBMERGE_DUR: float = 2.4
 
 var active_move: int = HopperMove.LEAP_HOP
 var twin_hop_pending: bool = false
@@ -31,6 +35,8 @@ var spit_dir: Vector2 = Vector2.RIGHT
 var spit_fired: bool = false
 var petals: Array[Dictionary] = []
 var _roaring: bool = false
+var _updrafts: Array[Dictionary] = []        # [{pos, catch_cd, burst_t}]
+var _submerged_pads: Array[Dictionary] = []  # [{pos, ttl, max_ttl}]
 
 
 func _init() -> void:
@@ -39,8 +45,8 @@ func _init() -> void:
 	boss_id = "great_lily_hopper"
 	island_id = 4
 	is_boss = true
-	max_hp = 10.5
-	hp = 10.5
+	max_hp = 12.0
+	hp = 12.0
 	body_radius = 7.5
 	routine_speed = 44.0
 	leash_radius = 172.0
@@ -53,7 +59,7 @@ func _init() -> void:
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
-	max_hp = maxf(10.5, max_hp)
+	max_hp = maxf(12.0, max_hp)
 	hp = max_hp
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "great_lily_hopper"))
@@ -66,15 +72,35 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	spit_fired = false
 	petals.clear()
 	_roaring = false
+	_submerged_pads.clear()
+	_setup_perimeter_updrafts()
+
+
+func _setup_perimeter_updrafts() -> void:
+	_updrafts.clear()
+	# Skip built-in corner thermals if room already places real updraft_vent interactables
+	if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("get_interactables"):
+		for it_v: Variant in (world_ctx.call("get_interactables") as Array):
+			if it_v is LxInteractable and str((it_v as LxInteractable).kind) == "updraft_vent":
+				return
+	for off_v: Vector2 in [Vector2(-76.0, -44.0), Vector2(76.0, -44.0), Vector2(-76.0, 44.0), Vector2(76.0, 44.0)]:
+		_updrafts.append({"pos": _clamp_pt(home + off_v), "catch_cd": 0.0, "burst_t": 0.0})
 
 
 func take_hit(hit: LxHit) -> int:
 	if _roaring:
 		_emit_enemy_hit(hit, HitResult.GLANCED)
 		return HitResult.GLANCED
+	# Allow gliding Wick's mid-air bolt intercepts to trigger 1.35x air-stagger too!
+	var gliding_intercept: bool = is_flying() and Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).is_gliding()
+	var saved_boss: bool = is_boss
+	if gliding_intercept:
+		is_boss = false
 	var res: int = super.take_hit(hit)
+	is_boss = saved_boss
 	if res == HitResult.KILLED:
 		petals.clear()
+		_submerged_pads.clear()
 	elif is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
 		_check_phase_transition()
 	return res
@@ -101,6 +127,7 @@ func _check_phase_transition() -> void:
 func _step_brain(dt: float) -> void:
 	spit_cd = maxf(0.0, spit_cd - dt)
 	_step_petals(dt)
+	_step_updrafts_and_pads(dt)
 	if state == State.NOTICE and _roaring:
 		hop_z = 0.0
 		state_timer -= dt
@@ -278,6 +305,7 @@ func _step_commit(dt: float) -> void:
 
 	if state_timer <= 0.0:
 		if twin_hop_pending:
+			_trigger_submerging_rim_pads()
 			twin_hop_pending = false
 			twin_pause_active = true
 			state_timer = _scaled_tell(TWIN_CROUCH_PAUSE, false, attack_damage)
@@ -286,9 +314,40 @@ func _step_commit(dt: float) -> void:
 			ring_hit = false
 			_emit_sfx("hopper_crouch")
 		else:
+			if phase >= 2:
+				_trigger_submerging_rim_pads()
 			state = State.RECOVER
 			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
 			last_recover_duration = state_timer
+
+
+func _trigger_submerging_rim_pads() -> void:
+	_submerged_pads.clear()
+	for off_v: Vector2 in [Vector2(-60.0, -34.0), Vector2(60.0, -34.0), Vector2(-60.0, 34.0), Vector2(60.0, 34.0)]:
+		_submerged_pads.append({"pos": _clamp_pt(home + off_v), "ttl": SUBMERGE_DUR, "max_ttl": SUBMERGE_DUR})
+
+
+func _step_updrafts_and_pads(dt: float) -> void:
+	var wick: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var gliding: bool = wick != null and not wick.dead and wick.is_gliding()
+	for ud: Dictionary in _updrafts:
+		ud["catch_cd"] = maxf(0.0, float(ud["catch_cd"]) - dt)
+		ud["burst_t"] = maxf(0.0, float(ud["burst_t"]) - dt)
+		if gliding and wick.move_wings != null and wick.global_position.distance_to(ud["pos"] as Vector2) <= UPDRAFT_R + 6.0:
+			wick.move_wings.refresh_glide(1.25, 2.2)
+			if float(ud["catch_cd"]) <= 0.0:
+				ud["catch_cd"] = 0.42
+				ud["burst_t"] = 0.30
+				_emit_sfx("updraft_catch")
+	for i: int in range(_submerged_pads.size() - 1, -1, -1):
+		var sp: Dictionary = _submerged_pads[i]
+		sp["ttl"] = float(sp["ttl"]) - dt
+		if wick != null and not wick.dead and not gliding and wick.global_position.distance_to(sp["pos"] as Vector2) <= 15.0:
+			if wick.has_method("push_external"):
+				var away: Vector2 = (wick.global_position - (sp["pos"] as Vector2)).normalized()
+				wick.push_external(away * 22.0, "submerged_pad")
+		if float(sp["ttl"]) <= 0.0:
+			_submerged_pads.remove_at(i)
 
 
 func _body_color() -> Color:
@@ -352,6 +411,21 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, rr + 2.2, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
 		draw_arc(c, rr, 0.0, TAU, 28, PAL["lime"] as Color, 2.4)
 		draw_arc(c, maxf(3.0, rr - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+
+	# Perimeter thermal updraft plumes (Wings hover + air-intercept support!)
+	for ud: Dictionary in _updrafts:
+		var up: Vector2 = ((ud["pos"] as Vector2) - pos).round()
+		draw_arc(up, UPDRAFT_R, 0.0, TAU, 18, Color(PAL["sky"] as Color, 0.42), 1.0)
+		draw_arc(up, UPDRAFT_R - 5.0, anim_t * 3.5, anim_t * 3.5 + PI * 1.1, 12, Color(PAL["ice"] as Color, 0.78), 1.2)
+		draw_rect(Rect2(up + Vector2(-4.0, -4.0), Vector2(8.0, 8.0)), Color(PAL["night"] as Color, 0.70))
+		draw_rect(Rect2(up + Vector2(-3.0, -1.0), Vector2(6.0, 2.0)), PAL["sky"] as Color)
+
+	# Phase 2 Submerging Rim Pads (tidal ripple indicator)
+	for sp: Dictionary in _submerged_pads:
+		var pp_s: Vector2 = ((sp["pos"] as Vector2) - pos).round()
+		var frac_s: float = clampf(float(sp["ttl"]) / maxf(float(sp["max_ttl"]), 0.05), 0.0, 1.0)
+		draw_circle(pp_s, 14.0, Color(PAL["blue"] as Color, 0.36 * frac_s))
+		draw_arc(pp_s, 14.0, 0.0, TAU, 14, Color(PAL["sky"] as Color, 0.78 * frac_s), 1.4)
 
 	# Active Lily-Petal projectiles
 	for p: Dictionary in petals:

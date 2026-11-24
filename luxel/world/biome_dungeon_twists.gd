@@ -363,20 +363,20 @@ func _draw() -> void:
 				var u: float = clampf(_bell_wave_r / maxf(max_r, 1.0), 0.0, 1.0)
 				_draw_pixel_ring(_center.round(), int(roundf(_bell_wave_r)), Color(PAL["gold"] as Color, (1.0 - u) * (0.20 if fred else 0.34)), 10)
 		2:
-			# Single crisp Lighthouse Fresnel beam (synced to _rules.beam_origin/beam_angle)
+			# Smooth feathered Lighthouse Fresnel beam (synced to _rules.beam_origin/beam_angle)
 			var b_orig: Vector2 = _rules.beam_origin.round()
 			var b_span: float = minf(_bounds.size.x, _bounds.size.y) * 0.85
-			var b_p1: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle - 0.14) * b_span).round()
-			var b_p2: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle + 0.14) * b_span).round()
-			draw_colored_polygon(PackedVector2Array([b_orig, b_p1, b_p2]), Color(PAL["ice"] as Color, 0.06 if fred else 0.10))
-			var rail_c := Color(PAL["ice"] as Color, 0.16 if fred else 0.24)
-			draw_line(b_orig, b_p1, rail_c, 1.0)
-			draw_line(b_orig, b_p2, rail_c, 1.0)
+			var b_out1: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle - 0.16) * b_span).round()
+			var b_out2: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle + 0.16) * b_span).round()
+			var b_in1: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle - 0.08) * b_span).round()
+			var b_in2: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle + 0.08) * b_span).round()
+			draw_colored_polygon(PackedVector2Array([b_orig, b_out1, b_out2]), Color(PAL["sky"] as Color, 0.04 if fred else 0.06))
+			draw_colored_polygon(PackedVector2Array([b_orig, b_in1, b_in2]), Color(PAL["ice"] as Color, 0.05 if fred else 0.08))
 			var b_mid: Vector2 = (b_orig + Vector2.from_angle(_rules.beam_angle) * b_span).round()
 			var glint_u: float = fposmod(_clock * (0.42 if fred else 0.78), 1.0)
 			var glint_p: Vector2 = b_orig.lerp(b_mid, 0.18 + glint_u * 0.72).round()
 			if _is_floor(glint_p):
-				var ga: float = sin(glint_u * PI) * (0.36 if fred else 0.62)
+				var ga: float = sin(glint_u * PI) * (0.32 if fred else 0.52)
 				draw_rect(Rect2(glint_p + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), Color(PAL["ice"] as Color, ga))
 				draw_rect(Rect2(glint_p, Vector2.ONE), Color(PAL["cream"] as Color, ga))
 			var a2: float = 0.20 if fred else 0.32

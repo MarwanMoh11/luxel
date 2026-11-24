@@ -1,0 +1,110 @@
+{
+  "id": "_proof_i3_1",
+  "island_id": 3,
+  "is_dungeon": true,
+  "debug_only": true,
+  "shift_clearing": "w",
+  "name_key": "ISL3_PROOF_1_NAME",
+  "music": "island3_dungeon",
+  "spawn": [64, 112],
+  "exits": [
+    {
+      "id": "exit_proof_east",
+      "rect": [336, 96, 32, 32],
+      "to_island": 3,
+      "to_region": "_proof_i3_2",
+      "to_spawn": [64, 112],
+      "locked_door_id": "door_proof_1"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_p1",
+      "kind": "room_anchor",
+      "pos": [64, 112],
+      "props": { "auto": true }
+    },
+    {
+      "id": "lamp_pin_w",
+      "kind": "wood_pin_lamp",
+      "pos": [80, 64],
+      "props": { "clearing": "w", "lit": false, "snuff_on_hit": false, "persist": false }
+    },
+    {
+      "id": "valve_sap_1",
+      "kind": "sap_clock",
+      "pos": [112, 160],
+      "props": { "mode": "timed", "secs": 20.0, "scope": "dungeon:hollow_oak", "var": "oak_sap" }
+    },
+    {
+      "id": "spool_w",
+      "kind": "silk_loom_spool",
+      "pos": [144, 112],
+      "props": { "linked_to": ["tb_silk"], "accepts_shuttle": true, "conduct_speed": 140.0 }
+    },
+    {
+      "id": "door_proof_1",
+      "kind": "door",
+      "pos": [184, 112],
+      "props": { "door_type": "shutter", "size": [16, 32], "requires_signals": ["tb_silk"] }
+    },
+    {
+      "id": "lp_bridge_1",
+      "kind": "light_plant",
+      "pos": [208, 112],
+      "props": { "grow": "bridge", "size": [32, 32], "secs": 0.4, "decay": 14.0 }
+    },
+    {
+      "id": "tb_silk",
+      "kind": "timed_brazier",
+      "pos": [256, 112],
+      "props": { "secs": 18.0, "target_id": "door_proof_1" }
+    },
+    {
+      "id": "stump_to_2",
+      "kind": "stump_shrink",
+      "pos": [288, 160],
+      "props": {
+        "to_region": "_proof_i3_2",
+        "to_spawn": [64, 112],
+        "target_size": "tiny",
+        "powered_by_sap": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "sap_bridge_high",
+      "when": "dungeon:hollow_oak.oak_sap==high",
+      "tiles": [[12, 9, 2, 2, "bridge"]],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Pin the shifting woods, flood oak_sap with the Sap Valve to wake the Shrink Stump, and fire silk-spark across a chasm to bloom a seedlight bridge and open the exit.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "wood_pin_lamp, sap_clock, silk_loom_spool, light_plant, stump_shrink",
+    "decisions": 3,
+    "expert_s": 35,
+    "reward": "Proof exit to tiny world",
+    "why": "End-to-end debug proof room 1 for Island 3 rule and toy pack",
+    "solution": [
+      { "op": "goto", "to": [80, 96], "tol": 4.0 },
+      { "op": "shoot", "target": "lamp_pin_w" },
+      { "op": "expect", "var": "pin_w==1" },
+      { "op": "goto", "to": [112, 144], "tol": 4.0 },
+      { "op": "interact", "target": "valve_sap_1" },
+      { "op": "expect", "var": "dungeon:hollow_oak.oak_sap==high" },
+      { "op": "goto", "to": [112, 112], "tol": 4.0 },
+      { "op": "shoot", "target": "spool_w" },
+      { "op": "wait", "secs": 1.2 },
+      { "op": "expect", "target": "door_proof_1", "prop": "opened", "value": true },
+      { "op": "expect", "target": "lp_bridge_1", "prop": "powered", "value": true },
+      { "op": "expect_exit", "exit": "exit_proof_east" }
+    ]
+  }
+}

@@ -1,0 +1,607 @@
+{
+  "name_key": "ISL1_UC_NAVE",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "uc_nave",
+      "name_key": "ISL1_UC_NAVE",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r1_return_ow",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_island": 1,
+      "to_region": "overworld",
+      "to_spawn": [
+        424,
+        184
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_r1_west",
+      "rect": [
+        0,
+        160,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r2",
+      "to_spawn": [
+        400,
+        152
+      ],
+      "locked_door_id": "door_r1_west"
+    },
+    {
+      "id": "exit_r1_nw_shortcut",
+      "rect": [
+        0,
+        64,
+        16,
+        32
+      ],
+      "to_region": "undercroft_r5",
+      "to_spawn": [
+        384,
+        152
+      ],
+      "requires_flags": [
+        "uc_west_shortcut"
+      ],
+      "locked_door_id": "door_r1_nw_short"
+    },
+    {
+      "id": "exit_r1_east",
+      "rect": [
+        432,
+        160,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r6",
+      "to_spawn": [
+        48,
+        168
+      ],
+      "requires_flags": [
+        "uc_key_1"
+      ],
+      "locked_door_id": "door_r1_east"
+    },
+    {
+      "id": "exit_r1_ne_shortcut",
+      "rect": [
+        432,
+        64,
+        16,
+        32
+      ],
+      "to_region": "undercroft_r10",
+      "to_spawn": [
+        224,
+        200
+      ],
+      "requires_flags": [
+        "uc_balcony_bridge"
+      ],
+      "locked_door_id": "door_r1_ne_balc"
+    },
+    {
+      "id": "exit_r1_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r11",
+      "to_spawn": [
+        240,
+        296
+      ],
+      "requires_flags": [
+        "uc_boss_key"
+      ],
+      "locked_door_id": "door_r1_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_undercroft",
+      "kind": "waystone",
+      "pos": [
+        224,
+        216
+      ],
+      "props": {
+        "zone": "uc_nave",
+        "name_key": "ISL1_UC_NAVE"
+      }
+    },
+    {
+      "id": "lore_r1_tones",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "string_id": "ISL1_UC_LORE_NAVE",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "bell_r1_dawn",
+      "kind": "bell",
+      "pos": [
+        128,
+        184
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 168
+      }
+    },
+    {
+      "id": "door_r1_west",
+      "kind": "tone_door",
+      "pos": [
+        24,
+        184
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          16,
+          48
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r1_nw_short",
+      "kind": "door",
+      "pos": [
+        24,
+        80
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "uc_west_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_east",
+      "kind": "door",
+      "pos": [
+        424,
+        184
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "undercroft",
+        "key_kind": "wick_key",
+        "key_id": "uc_key_1",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_r1_ne_balc",
+      "kind": "door",
+      "pos": [
+        424,
+        80
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "uc_balcony_bridge"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_key",
+        "dungeon_id": "undercroft",
+        "key_kind": "keepers_flame",
+        "key_id": "uc_boss_key",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r1_entry_w",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        280
+      ],
+      "props": {
+        "zone": "uc_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_entry_e",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        280
+      ],
+      "props": {
+        "zone": "uc_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_west",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        168
+      ],
+      "props": {
+        "zone": "uc_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_east",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        168
+      ],
+      "props": {
+        "zone": "uc_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_north",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        72
+      ],
+      "props": {
+        "zone": "uc_nave",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        200,
+        36,
+        48,
+        252
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        216
+      ],
+      "radius": 34,
+      "style": "ritual"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        128,
+        184
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        64,
+        264
+      ],
+      "radius": 22,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        352,
+        232
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        112
+      ],
+      "size": [
+        44,
+        68
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bone_ossuary_arch",
+      "pos": [
+        224,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        128,
+        184
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        184,
+        54
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        264,
+        54
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        168,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        280,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "open_sarcophagus",
+      "pos": [
+        56,
+        260
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_coffin",
+      "pos": [
+        392,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "chapel_pew",
+      "pos": [
+        344,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        96,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        352,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        144,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        304,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        304,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "uc_mark_entered",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "uc_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Catacomb nave teasing the Sexton Boss Door north, key door east, and Dawn Ring Wave gate west from minute one.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Ringing a Dawn Bell sends a visible gold wave that opens matching Dawn tone doors.",
+    "decisions": 4,
+    "expert_s": 35,
+    "reward": "waystone+boss_tease",
+    "why": "Central nave hub of the chapel catacombs anchoring all three Undercroft shortcut cycles.",
+    "exit": "exit_r1_west",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_undercroft"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r1_tones"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          176,
+          184
+        ],
+        "target": "bell_r1_dawn"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r1_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r1_west"
+      }
+    ]
+  },
+  "id": "undercroft_r1",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "undercroft",
+  "music": "island1_dungeon",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "triggers": [],
+  "layers": []
+}

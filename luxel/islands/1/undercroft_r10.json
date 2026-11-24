@@ -1,0 +1,535 @@
+{
+  "name_key": "ISL1_UC_BALCONY",
+  "spawn": [
+    392,
+    120
+  ],
+  "zones": [
+    {
+      "id": "uc_balcony",
+      "name_key": "ISL1_UC_BALCONY",
+      "rect": [
+        0,
+        0,
+        448,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_east",
+      "rect": [
+        432,
+        96,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r9",
+      "to_spawn": [
+        464,
+        48
+      ]
+    },
+    {
+      "id": "exit_r10_south_shortcut",
+      "rect": [
+        208,
+        240,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r1",
+      "to_spawn": [
+        384,
+        72
+      ],
+      "locked_door_id": "door_r10_south"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10_east",
+      "kind": "room_anchor",
+      "pos": [
+        392,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r10_center",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "crumble_r10_a",
+      "kind": "crumble_floor",
+      "pos": [
+        292,
+        128
+      ],
+      "props": {
+        "size": [
+          40,
+          32
+        ],
+        "delay": 1.1,
+        "respawn": 2.8
+      }
+    },
+    {
+      "id": "crumble_r10_b",
+      "kind": "crumble_floor",
+      "pos": [
+        332,
+        128
+      ],
+      "props": {
+        "size": [
+          40,
+          32
+        ],
+        "delay": 1.1,
+        "respawn": 2.8
+      }
+    },
+    {
+      "id": "sw_r10_bridge",
+      "kind": "switch_eye",
+      "pos": [
+        224,
+        184
+      ],
+      "props": {
+        "target_id": "door_r10_south",
+        "sets_flag": "uc_balcony_bridge"
+      }
+    },
+    {
+      "id": "door_r10_south",
+      "kind": "door",
+      "pos": [
+        224,
+        232
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r10_bridge"
+        ],
+        "sets_flag": "uc_balcony_bridge",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "bell_r10_war",
+      "kind": "bell",
+      "pos": [
+        176,
+        128
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 144
+      }
+    },
+    {
+      "id": "plate_r10_shutter",
+      "kind": "pressure_plate",
+      "pos": [
+        240,
+        72
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "size": [
+          20,
+          20
+        ],
+        "target_id": "wall_r10_shutter"
+      }
+    },
+    {
+      "id": "wall_r10_shutter",
+      "kind": "mover_wall",
+      "pos": [
+        136,
+        128
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "path": [
+          [
+            136,
+            128
+          ],
+          [
+            136,
+            72
+          ]
+        ],
+        "speed": 140,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "seal_r10_pane",
+      "kind": "tone_door",
+      "pos": [
+        88,
+        128
+      ],
+      "props": {
+        "tone": "war",
+        "size": [
+          16,
+          32
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "pane_belfry_weight",
+      "kind": "pane_pickup",
+      "pos": [
+        48,
+        128
+      ],
+      "props": {
+        "pane": "belfry_weight"
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        72
+      ],
+      "props": {
+        "zone": "uc_balcony",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_c",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        136
+      ],
+      "props": {
+        "zone": "uc_balcony",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        88
+      ],
+      "props": {
+        "zone": "uc_balcony",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "owl_r10",
+      "kind": "owl",
+      "pos": [
+        280,
+        72
+      ],
+      "perches": [
+        [
+          280,
+          72
+        ],
+        [
+          360,
+          184
+        ]
+      ],
+      "zone": "uc_balcony"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        176,
+        128
+      ],
+      "radius": 20,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        28,
+        108,
+        40,
+        40
+      ]
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        160,
+        32,
+        64
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        104,
+        128
+      ],
+      "radius": 16,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        392,
+        112
+      ],
+      "size": [
+        40,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.4
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        176,
+        128
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        408,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        176,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        184,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        264,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        408,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "open_sarcophagus",
+      "pos": [
+        48,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        384,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "events": [
+    {
+      "id": "uc_r10_short_msg",
+      "on": "signal:sw_r10_bridge",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "uc_balcony_bridge"
+        },
+        {
+          "narrate": "ISL1_UC_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Sprint crumbling chandelier catwalks above the Nave to drop the balcony shortcut to r1, and time a War Echo through a plate-lifted shutter to claim Pane Belfry Weight.",
+    "kind": "traversal",
+    "beat": "ketsu",
+    "teaches": "Combining Echo Clapper throw timing with a player-held shutter plate for optional mastery secrets.",
+    "decisions": 8,
+    "expert_s": 45,
+    "reward": "pane_belfry_weight+r1_shortcut",
+    "why": "High balcony loop returning straight to the Nave hub with the Boss Key in hand.",
+    "exit": "exit_r10_south_shortcut",
+    "start": {
+      "flags": [
+        "item_echo_clapper"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 28.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          128
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          152
+        ],
+        "target": "sw_r10_bridge"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          152
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "bell_r10_war",
+        "hold": 0.25
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_r10_shutter",
+        "secs": 1.6
+      },
+      {
+        "op": "wait_until",
+        "interactable": "seal_r10_pane",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          192
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "pane_belfry_weight"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_south_shortcut"
+      }
+    ]
+  },
+  "id": "undercroft_r10",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "undercroft",
+  "music": "island1_dungeon",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "triggers": [],
+  "layers": []
+}

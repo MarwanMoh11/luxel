@@ -2,7 +2,7 @@ class_name LxTideGate
 extends LxInteractable
 ## Cyclic tidal boardwalk: rises and falls on a readable timer, exposing or flooding water tiles.
 
-var period: float = 8.0
+var period: float = 6.8
 var phase_offset: float = 0.0
 var low_ratio: float = 0.55
 var warn_time: float = 1.2
@@ -12,12 +12,14 @@ var is_warning: bool = false
 var _wave_stage: int = 0
 var _low_remain_frac: float = 1.0
 var _lit_runes: int = -1
+var _custom_period: bool = false
 
 
 func setup(spec: Dictionary) -> void:
 	super.setup(spec)
 	kind = "tide_gate"
-	period = maxf(2.0, float(props.get("period", 8.0)))
+	_custom_period = props.has("period")
+	period = maxf(2.0, float(props.get("period", 6.8)))
 	phase_offset = float(props.get("phase_offset", 0.0))
 	low_ratio = clampf(float(props.get("low_ratio", 0.55)), 0.2, 0.85)
 	warn_time = maxf(0.2, float(props.get("warn_time", 1.2)))
@@ -56,11 +58,16 @@ func tick(dt: float) -> void:
 
 
 func _update_phase() -> void:
-	var t: float = fposmod(_clock + phase_offset, period)
-	var low_end: float = period * low_ratio
+	var clk: float = _clock
+	var eff_period: float = period
+	if island_id == 2 and not _custom_period and LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance):
+		clk = LxBiomeRules.active_instance.clock
+		eff_period = 6.8
+	var t: float = fposmod(clk + phase_offset, eff_period)
+	var low_end: float = eff_period * low_ratio
 	is_flooded = t >= low_end
 	_low_remain_frac = 0.0 if is_flooded else clampf((low_end - t) / maxf(0.01, low_end), 0.0, 1.0)
-	is_warning = (not is_flooded and (low_end - t) <= warn_time) or (is_flooded and (period - t) <= warn_time)
+	is_warning = (not is_flooded and (low_end - t) <= warn_time) or (is_flooded and (eff_period - t) <= warn_time)
 
 
 func is_platform_solid() -> bool:

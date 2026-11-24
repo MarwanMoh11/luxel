@@ -1,0 +1,75 @@
+{
+  "pack_id": "i1_undercroft",
+  "owner": "P1-A",
+  "comment": "Island 1 Minor Dungeon A: The Undercroft (11 rooms, 3 internal cycles). Debug-only on dungeon/regions meta until P1-OW hooks vesper_graveyard -> undercroft_r1.",
+  "strings": {
+    "ISL1_Z_UC": "THE UNDERCROFT",
+    "ISL1_UC_NAVE": "UNDERCROFT NAVE",
+    "ISL1_UC_COFFINS": "SLIDING COFFIN VAULT",
+    "ISL1_UC_RELAY": "THE BAFFLE GALLERY",
+    "ISL1_UC_SNUFF": "ACOLYTE CLOISTER",
+    "ISL1_UC_KENNEL": "HOUND OSSUARY",
+    "ISL1_UC_ECHO": "ECHO CHASM",
+    "ISL1_UC_SCALES": "COUNTERWEIGHT CRYPT",
+    "ISL1_UC_PEWS": "CHAPEL OF MIMICS",
+    "ISL1_UC_CHOIR": "THE CHOIR OF COFFINS",
+    "ISL1_UC_BALCONY": "CHANDELIER BALCONY",
+    "ISL1_UC_TOMB": "THE SEXTONS TOMB",
+    "ISL1_POW_ECHO": "ECHO CLAPPER: THROWN BELLS RING TWICE!",
+    "ISL1_PROMPT_CLAPPER": "CLAIM ECHO CLAPPER",
+    "ISL1_UC_LORE_NAVE": "DAWN WAKES. DUSK HUSHES. WAR SHATTERS.",
+    "ISL1_UC_LORE_CHOIR": "THREE COFFINS ANSWER. ONE BLOCK SHIELDS.",
+    "ISL1_UC_SHORTCUT": "A CRYPT SHORTCUT GRATES OPEN!",
+    "ISL1_UC_CLEARED": "THE SEXTON FALLS. HALF-LANTERN CLAIMED!"
+  },
+  "interactables": {
+    "uc_echo_altar": "res://luxel/islands/1/undercroft/uc_echo_altar.gd"
+  },
+  "dungeons": [
+    {
+      "id": "undercroft",
+      "name_key": "ISL1_Z_UC",
+      "island": 1,
+      "entry": "undercroft_r1",
+      "regions": [
+        "undercroft_r1",
+        "undercroft_r2",
+        "undercroft_r3",
+        "undercroft_r4",
+        "undercroft_r5",
+        "undercroft_r6",
+        "undercroft_r7",
+        "undercroft_r8",
+        "undercroft_r9",
+        "undercroft_r10",
+        "undercroft_r11"
+      ],
+      "mini_boss": "toll_hound",
+      "boss": "sexton",
+      "theme": "undercroft",
+      "music": "island1_dungeon",
+      "requires_flags": [],
+      "done_flag": "undercroft_cleared",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "undercroft_r1": { "name_key": "ISL1_UC_NAVE", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [2, 3], "debug_only": true },
+    "undercroft_r2": { "name_key": "ISL1_UC_COFFINS", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [1, 3], "debug_only": true },
+    "undercroft_r3": { "name_key": "ISL1_UC_RELAY", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [0, 3], "debug_only": true },
+    "undercroft_r4": { "name_key": "ISL1_UC_SNUFF", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [0, 2], "debug_only": true },
+    "undercroft_r5": { "name_key": "ISL1_UC_KENNEL", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [1, 2], "debug_only": true },
+    "undercroft_r6": { "name_key": "ISL1_UC_ECHO", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [3, 3], "debug_only": true },
+    "undercroft_r7": { "name_key": "ISL1_UC_SCALES", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [3, 2], "debug_only": true },
+    "undercroft_r8": { "name_key": "ISL1_UC_PEWS", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [4, 2], "debug_only": true },
+    "undercroft_r9": { "name_key": "ISL1_UC_CHOIR", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [4, 1], "debug_only": true },
+    "undercroft_r10": { "name_key": "ISL1_UC_BALCONY", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [3, 1], "debug_only": true },
+    "undercroft_r11": { "name_key": "ISL1_UC_TOMB", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [2, 1], "debug_only": true }
+  },
+  "sfx": {
+    "echo_clapper_pulse": { "id": "clockwork_chime", "pitch": 1.32, "db": -1.0 },
+    "coffin_slide": { "id": "golem_stomp", "pitch": 0.84, "db": -2.5 },
+    "coffin_freeze": { "id": "clockwork_chime", "pitch": 1.42, "db": -2.0 },
+    "coffin_shatter": { "id": "stone_break", "pitch": 0.92, "db": 0.0 }
+  }
+}

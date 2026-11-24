@@ -1,0 +1,179 @@
+{
+  "pack_id": "i7_creatures_a",
+  "owner": "P7-CREATURES-A",
+  "comment": "Island 7 Moon Shoals: 6 new enemies (reflection, glass_knight, puppet, false_chest, moon_jelly, silvered_owl) + Inverted Palace bosses (silver_tide_mimic, queen_in_glass).",
+  "strings": {
+    "ISL7_BOSS_MIMIC": "SILVER-TIDE MIMIC",
+    "ISL7_BOSS_QUEEN": "QUEEN IN THE GLASS"
+  },
+  "sfx": {
+    "mercury_splash": { "id": "marsh_splash", "pitch": 1.18, "db": -1.0 },
+    "glass_shatter": { "id": "hush_shatter", "pitch": 1.16, "db": 0.0 },
+    "mirror_crack": { "id": "shield_shatter", "pitch": 1.18, "db": 0.0 },
+    "glass_chime": { "id": "clockwork_chime", "pitch": 1.24, "db": -1.5 },
+    "prism_beam": { "id": "lighthouse_beam", "pitch": 1.14, "db": -0.5 },
+    "chest_creak": { "id": "harbor_creak", "pitch": 1.12, "db": -2.0 },
+    "cord_snap": { "id": "shell_snap", "pitch": 1.28, "db": -0.5 },
+    "moon_jelly_split": { "id": "spore_pop", "pitch": 1.22, "db": -1.0 }
+  },
+  "enemies": {
+    "reflection": {
+      "script": "res://luxel/enemies/reflection/brain.gd",
+      "data": {
+        "island": 7,
+        "family": "MIRROR",
+        "answer": "SIDESTEP ECHO OR BLUE BREAK",
+        "max_hp": 3.5,
+        "body_radius": 6.0,
+        "routine_speed": 42.0,
+        "leash_radius": 156.0,
+        "notice_radius": 135.0,
+        "tell_time": 0.46,
+        "recover_time": 1.15,
+        "shard_drop": 6,
+        "attack_damage": 1.0
+      }
+    },
+    "glass_knight": {
+      "script": "res://luxel/enemies/glass_knight/brain.gd",
+      "data": {
+        "island": 7,
+        "family": "MIRROR TANK",
+        "answer": "BLUE BOLT BEAM LURE OR BLACK",
+        "max_hp": 5.0,
+        "shield_hp": 2.5,
+        "shield_gone_time": 5.0,
+        "body_radius": 7.5,
+        "routine_speed": 34.0,
+        "leash_radius": 154.0,
+        "notice_radius": 124.0,
+        "tell_time": 0.50,
+        "recover_time": 1.20,
+        "shard_drop": 7,
+        "attack_damage": 1.0
+      }
+    },
+    "puppet": {
+      "script": "res://luxel/enemies/puppet/brain.gd",
+      "data": {
+        "island": 7,
+        "family": "MARIONETTE",
+        "answer": "BEAM OR THROW CUTS CORD",
+        "max_hp": 4.0,
+        "body_radius": 6.5,
+        "routine_speed": 28.0,
+        "leash_radius": 148.0,
+        "notice_radius": 130.0,
+        "tell_time": 0.52,
+        "recover_time": 1.15,
+        "shard_drop": 6,
+        "attack_damage": 1.0
+      }
+    },
+    "false_chest": {
+      "script": "res://luxel/enemies/false_chest/brain.gd",
+      "data": {
+        "island": 7,
+        "family": "MIMIC",
+        "answer": "SPOT NW SHADOW THROW IN JAW",
+        "max_hp": 4.5,
+        "body_radius": 7.5,
+        "routine_speed": 32.0,
+        "leash_radius": 148.0,
+        "notice_radius": 72.0,
+        "tell_time": 0.52,
+        "recover_time": 1.30,
+        "shard_drop": 7,
+        "attack_damage": 1.0
+      }
+    },
+    "moon_jelly": {
+      "script": "res://luxel/enemies/moon_jelly/brain.gd",
+      "data": {
+        "island": 7,
+        "family": "SPLITTER",
+        "answer": "BLUE OR BEAM SHATTERS CLEAN",
+        "max_hp": 3.0,
+        "body_radius": 6.5,
+        "routine_speed": 36.0,
+        "leash_radius": 152.0,
+        "notice_radius": 120.0,
+        "tell_time": 0.50,
+        "recover_time": 1.15,
+        "shard_drop": 5,
+        "attack_damage": 1.0
+      }
+    },
+    "silvered_owl": {
+      "script": "res://luxel/enemies/silvered_owl/brain.gd",
+      "data": {
+        "island": 7,
+        "family": "STEALTH",
+        "answer": "LENS DECLOAK OR TRACK SHADOW",
+        "max_hp": 4.0,
+        "body_radius": 6.5,
+        "routine_speed": 68.0,
+        "leash_radius": 176.0,
+        "notice_radius": 148.0,
+        "tell_time": 0.62,
+        "recover_time": 1.25,
+        "shard_drop": 6,
+        "attack_damage": 1.0
+      }
+    },
+    "silver_tide_mimic": {
+      "script": "res://luxel/bosses/silver_tide_mimic/brain.gd",
+      "data": {
+        "island": 7,
+        "max_hp": 132.0,
+        "body_radius": 12.0,
+        "routine_speed": 38.0,
+        "tell_time": 0.56,
+        "recover_time": 1.20,
+        "shard_drop": 28,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "queen_in_glass": {
+      "script": "res://luxel/bosses/queen_in_glass/brain.gd",
+      "data": {
+        "island": 7,
+        "max_hp": 186.0,
+        "body_radius": 11.0,
+        "routine_speed": 36.0,
+        "tell_time": 0.54,
+        "recover_time": 1.25,
+        "shard_drop": 40,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "silver_tide_mimic": {
+      "name_key": "ISL7_BOSS_MIMIC",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "palace",
+      "region": "palace_r5",
+      "music": "island7_boss_p1",
+      "music_p2": "island7_boss_p2",
+      "heart": "none",
+      "flag": "palace_miniboss_done",
+      "island": 7
+    },
+    "queen_in_glass": {
+      "name_key": "ISL7_BOSS_QUEEN",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "palace",
+      "region": "palace_r12",
+      "music": "island7_boss_p1",
+      "music_p2": "island7_boss_p2",
+      "heart": "half",
+      "flag": "palace_cleared",
+      "island": 7
+    }
+  }
+}

@@ -319,8 +319,8 @@ func update_dungeon_room(player_pos: Vector2) -> void:
 func get_current_room_rect() -> Rect2: return _current_room_rect if _current_room_rect.size.x > 0.0 else bounds
 func get_current_room_id() -> String: return _current_room_id
 
-func collide(pos: Vector2, radius: float, can_cross_pit: bool = false, can_cross_water: bool = false, ignore_id: String = "") -> Vector2:
-	return LxRegionArena.collide_world(self, pos, radius, can_cross_pit, can_cross_water, ignore_id, is_arena_locked())
+func collide(pos: Vector2, radius: float, can_cross_pit: bool = false, can_cross_water: bool = false, ignore_id: String = "", is_flying: bool = false) -> Vector2:
+	return LxRegionArena.collide_world(self, pos, radius, can_cross_pit, can_cross_water, ignore_id, is_arena_locked(), is_flying)
 
 func collide_ignoring(pos: Vector2, radius: float, ignore_id: String, can_cross_pit: bool = false, can_cross_water: bool = false) -> Vector2:
 	return collide(pos, radius, can_cross_pit, can_cross_water, ignore_id)
@@ -351,7 +351,15 @@ func is_lethal_void_at(world_pos: Vector2) -> bool:
 	if ttype in ["pit", "void", "phantom", "water", "tide"]:
 		var ts: float = float(tile_size)
 		var tc := Vector2((floorf(world_pos.x / ts) + 0.5) * ts, (floorf(world_pos.y / ts) + 0.5) * ts)
-		return not (_is_tile_supported(ttype, world_pos) or _is_tile_supported(ttype, tc))
+		if _is_tile_supported(ttype, world_pos) or _is_tile_supported(ttype, tc):
+			return false
+		# 2.5px foot-rim coyote footing so Wick doesn't dangle/die on a 1px floor edge
+		for off: Vector2 in [Vector2(2.5, 0.0), Vector2(-2.5, 0.0), Vector2(0.0, 2.5), Vector2(0.0, -2.5)]:
+			var p2: Vector2 = world_pos + off
+			var t2: String = tile_at(p2)
+			if t2 in ["ground", "path", "bridge"] or (t2 in ["pit", "void", "phantom", "water", "tide"] and _is_tile_supported(t2, p2)):
+				return false
+		return true
 	return false
 
 func is_hazard_at(world_pos: Vector2) -> bool: return is_lethal_void_at(world_pos)
@@ -420,7 +428,7 @@ func tick_region(dt: float, player_pos: Vector2 = Vector2.ZERO) -> int:
 	return engaged
 
 func get_spawn_pos() -> Vector2: return spawn_pos
-func collide_fly(pos: Vector2, radius: float) -> Vector2: return collide(pos, radius, true, true)
+func collide_fly(pos: Vector2, radius: float) -> Vector2: return collide(pos, radius, true, true, "", true)
 func get_bounds() -> Rect2: return bounds
 func get_enemies() -> Array[LxEnemyBrain]: return _enemies
 func get_interactables() -> Array[LxInteractable]: return _interactables

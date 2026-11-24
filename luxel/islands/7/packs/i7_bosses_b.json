@@ -1,0 +1,128 @@
+{
+  "pack_id": "i7_bosses_b",
+  "owner": "P7-BOSSES-B",
+  "comment": "Island 7 Moon Shoals Boss Package B: The Prompter (theatre_r5), The Understudy (theatre_r12), Kaleidoscope Duchess (spire_r13), and Your Shadow at Noon (superboss_noon).",
+  "strings": {
+    "ISL7_BOSS_PROMPTER": "THE PROMPTER",
+    "ISL7_BOSS_UNDER": "THE UNDERSTUDY",
+    "ISL7_BOSS_DUCHESS": "KALEIDOSCOPE DUCHESS",
+    "ISL7_BOSS_NOON": "YOUR SHADOW AT NOON",
+    "ISL7_NOON_ENTER": "AT HIGH NOON NO SHADOW CAN HIDE."
+  },
+  "sfx": {
+    "violin_screech": { "id": "owl_lock", "pitch": 1.32, "db": -1.5 },
+    "timpani_hit": { "id": "bell_slam", "pitch": 0.78, "db": 0.5 },
+    "curtain_whoosh": { "id": "wing_gale", "pitch": 0.90, "db": -1.0 },
+    "applause_ghost": { "id": "feather_flutter", "pitch": 0.88, "db": -1.5 },
+    "prism_chime": { "id": "clockwork_chime", "pitch": 1.32, "db": -1.0 },
+    "sun_hum": { "id": "void_hum", "pitch": 1.24, "db": -2.0 }
+  },
+  "enemies": {
+    "the_prompter": {
+      "script": "res://luxel/bosses/the_prompter/brain.gd",
+      "data": {
+        "island": 7,
+        "max_hp": 82.0,
+        "body_radius": 11.0,
+        "routine_speed": 36.0,
+        "tell_time": 0.56,
+        "recover_time": 1.20,
+        "shard_drop": 30,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "the_understudy": {
+      "script": "res://luxel/bosses/the_understudy/brain.gd",
+      "data": {
+        "island": 7,
+        "max_hp": 132.0,
+        "body_radius": 10.5,
+        "routine_speed": 44.0,
+        "tell_time": 0.54,
+        "recover_time": 1.15,
+        "shard_drop": 45,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "kaleidoscope_duchess": {
+      "script": "res://luxel/bosses/kaleidoscope_duchess/brain.gd",
+      "data": {
+        "island": 7,
+        "max_hp": 88.0,
+        "body_radius": 10.5,
+        "routine_speed": 38.0,
+        "tell_time": 0.52,
+        "recover_time": 1.15,
+        "shard_drop": 34,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "shadow_at_noon": {
+      "script": "res://luxel/bosses/shadow_at_noon/brain.gd",
+      "data": {
+        "island": 7,
+        "max_hp": 136.0,
+        "body_radius": 9.5,
+        "routine_speed": 46.0,
+        "tell_time": 0.52,
+        "recover_time": 1.20,
+        "shard_drop": 60,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "the_prompter": {
+      "name_key": "ISL7_BOSS_PROMPTER",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "theatre",
+      "region": "theatre_r5",
+      "music": "island7_boss_p1",
+      "music_p2": "island7_boss_p2",
+      "heart": "none",
+      "flag": "theatre_miniboss_done",
+      "island": 7
+    },
+    "the_understudy": {
+      "name_key": "ISL7_BOSS_UNDER",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "theatre",
+      "region": "theatre_r12",
+      "music": "island7_boss_p1",
+      "music_p2": "island7_boss_p2",
+      "heart": "half",
+      "flag": "theatre_cleared",
+      "island": 7
+    },
+    "kaleidoscope_duchess": {
+      "name_key": "ISL7_BOSS_DUCHESS",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "spire",
+      "region": "spire_r13",
+      "music": "island7_boss_p1",
+      "music_p2": "island7_boss_p2",
+      "heart": "none",
+      "flag": "kaleidoscope_duchess_defeated",
+      "island": 7
+    },
+    "shadow_at_noon": {
+      "name_key": "ISL7_BOSS_NOON",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "",
+      "region": "superboss_noon",
+      "music": "island7_boss_p1",
+      "music_p2": "island7_boss_p2",
+      "heart": "none",
+      "flag": "shadow_at_noon_defeated",
+      "island": 7
+    }
+  }
+}

@@ -26,9 +26,9 @@ def _draw_rapier(buf: PixelBuf, px: float, py: float, ang_deg: float, hot: bool)
     tmp.circle(px, py, 1.4, "gold", protect=True)
     tmp.line(px - 4.0, py, px - 1.0, py, "gold")
     bcol = "cream" if hot else "ice"
-    tmp.line(px + 2.0, py, px + 18.0, py, "sky", protect=True)
-    tmp.line(px + 2.0, py - 1.0, px + 17.0, py - 1.0, bcol, protect=True)
-    tmp.set(px + 19.0, py, "cream", protect=True)
+    tmp.line(px + 2.0, py, px + 13.0, py, "sky", protect=True)
+    tmp.line(px + 2.0, py - 1.0, px + 12.0, py - 1.0, bcol, protect=True)
+    tmp.set(px + 14.0, py, "cream", protect=True)
     buf.composite(rotate_buf(tmp, px, py, ang_deg))
 
 
@@ -140,7 +140,7 @@ def draw_petal_duelist(ctx: FrameCtx) -> Image.Image:
     elif ctx.is_commit and ctx.fi in (1, 2, 3):
         # Rose-echo ribbon smear + bright rapier thrust
         if d == "side":
-            fx_front.slash_arc(cx + 9, cy - 16, 17, 9, -45, 45, 4.8, ("wine", "rose", "cream"))
+            fx_front.slash_arc(cx + 6, cy - 16, 15, 9, -45, 45, 4.4, ("wine", "rose", "cream"))
             fx_back.line(cx - 12, cy - 18, cx + 4, cy - 18, "rose", protect=True)
             fx_back.line(cx - 10, cy - 12, cx + 2, cy - 12, "wine", protect=True)
         else:

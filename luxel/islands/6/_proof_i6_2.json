@@ -1,0 +1,165 @@
+{
+  "id": "_proof_i6_2",
+  "island_id": 6,
+  "is_dungeon": true,
+  "debug_only": true,
+  "theme": "iron_colossus",
+  "name_key": "ISL6_PROOF_2_NAME",
+  "spawn": [48, 120],
+  "exits": [
+    {
+      "id": "exit_back_proof_1",
+      "rect": [16, 96, 16, 48],
+      "to_island": 6,
+      "to_region": "_proof_i6_1",
+      "to_spawn": [288, 120]
+    },
+    {
+      "id": "exit_done_proof_1",
+      "rect": [384, 96, 16, 48],
+      "to_island": 6,
+      "to_region": "_proof_i6_1",
+      "to_spawn": [48, 120]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_proof_2",
+      "kind": "room_anchor",
+      "pos": [48, 120],
+      "props": { "auto": true }
+    },
+    {
+      "id": "stride_cam_1",
+      "kind": "colossus_stride_cam",
+      "pos": [56, 48],
+      "props": {
+        "step_period": 3.6,
+        "axis": "x",
+        "shake_amp": 0.06,
+        "tilt_group_ids": ["tilt_deck_1"]
+      }
+    },
+    {
+      "id": "tilt_deck_1",
+      "kind": "tilt_group",
+      "pos": [168, 56],
+      "props": {
+        "size": [144, 32],
+        "axis": "e",
+        "strength": 92.0
+      }
+    },
+    {
+      "id": "crate_tilt",
+      "kind": "push_block",
+      "pos": [120, 72],
+      "props": { "variant": "crate", "size": [16, 16], "persist": true }
+    },
+    {
+      "id": "plate_tilt",
+      "kind": "pressure_plate",
+      "pos": [216, 56],
+      "props": { "by": ["block"], "latch": true, "target_id": "gate_proof_2", "persist": true }
+    },
+    {
+      "id": "lever_heat",
+      "kind": "state_lever",
+      "pos": [72, 168],
+      "props": {
+        "scope": "dungeon:great_kiln",
+        "var": "kiln_heat",
+        "values": ["low", "surge"],
+        "prompt_key": "ISL6_PROMPT_DAMPER",
+        "persist": true
+      }
+    },
+    {
+      "id": "pourer_cast",
+      "kind": "slag_pourer",
+      "pos": [152, 144],
+      "props": {
+        "spawn_pos": [152, 168],
+        "spawn_kind": "block",
+        "needs_var": "kiln_heat==surge",
+        "pour_warn_secs": 0.5,
+        "max_live": 1
+      }
+    },
+    {
+      "id": "mirror_cool",
+      "kind": "blue_transformer",
+      "pos": [152, 112],
+      "props": { "angle_deg": 135.0, "rotatable": false, "movable": false }
+    },
+    {
+      "id": "conv_cast",
+      "kind": "conveyor",
+      "pos": [192, 168],
+      "props": {
+        "size": [96, 24],
+        "dir": "e",
+        "speed": 72.0,
+        "flip_on_signal": false
+      }
+    },
+    {
+      "id": "plate_cast",
+      "kind": "pressure_plate",
+      "pos": [232, 168],
+      "props": { "by": ["block"], "latch": true, "target_id": "gate_proof_2", "persist": true }
+    },
+    {
+      "id": "gate_proof_2",
+      "kind": "logic_gate",
+      "pos": [264, 120],
+      "props": { "op": "all", "inputs": ["plate_tilt", "plate_cast"], "target_id": "door_proof_2", "persist": true }
+    },
+    {
+      "id": "door_proof_2",
+      "kind": "door",
+      "pos": [296, 120],
+      "props": { "door_type": "switch_door", "size": [16, 16], "requires_signals": ["gate_proof_2"] }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "heat_surge_channels",
+      "when": "dungeon:great_kiln.kiln_heat==surge || kiln_heat==surge",
+      "tiles": [
+        [2, 11, 2, 1, "bridge"]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Push a crate out of its bumper pocket so Colossus stride tilts it onto plate_tilt, then surge Kiln Heat to cast, cool, and convey slag onto plate_cast.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "colossus_stride_cam + tilt_group + kiln_heat + slag_pourer + conveyor",
+    "decisions": 6,
+    "expert_s": 38,
+    "reward": "proof_complete",
+    "why": "End-to-end automated proof of Island 6 Iron Colossus tilting and Great Kiln molten casting.",
+    "solution": [
+      { "op": "goto", "to": [120, 88], "tol": 4.0 },
+      { "op": "push", "target": "crate_tilt", "to": [120, 56], "tol": 4.0 },
+      { "op": "wait_until", "target": "plate_tilt", "prop": "powered", "value": true, "timeout": 6.0 },
+      { "op": "expect", "target": "plate_tilt", "prop": "powered", "value": true },
+      { "op": "goto", "to": [96, 88], "tol": 4.0 },
+      { "op": "goto", "to": [72, 120], "tol": 4.0 },
+      { "op": "goto", "to": [72, 152], "tol": 4.0 },
+      { "op": "interact", "target": "lever_heat" },
+      { "op": "expect", "var": "dungeon:great_kiln.kiln_heat==surge" },
+      { "op": "wait", "secs": 0.75 },
+      { "op": "goto", "to": [104, 112], "tol": 4.0 },
+      { "op": "shoot", "target": "mirror_cool", "wait_hit": 0.65 },
+      { "op": "wait_until", "target": "plate_cast", "prop": "powered", "value": true, "timeout": 5.0 },
+      { "op": "wait_until", "target": "door_proof_2", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "expect_exit", "exit": "exit_done_proof_1" }
+    ]
+  }
+}

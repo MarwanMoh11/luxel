@@ -52,22 +52,22 @@ func is_flying() -> bool:
 
 
 func _check_stranded() -> bool:
-	if Lx.vars == null:
+	if Lx.vars == null or world_ctx == null or not is_instance_valid(world_ctx):
+		return false
+	var in_real_region: bool = world_ctx is LxRegionLoader
+	var var_store: Dictionary = Lx.vars.to_dict()
+	var has_explicit_tide: bool = var_store.has("island:2") and (var_store["island:2"] is Dictionary) and (var_store["island:2"] as Dictionary).has("tide")
+	var has_explicit_list: bool = var_store.has("dungeon:galleon") and (var_store["dungeon:galleon"] is Dictionary) and (var_store["dungeon:galleon"] as Dictionary).has("list")
+	if not in_real_region and not has_explicit_tide and not has_explicit_list:
+		return false
+	var tile: String = str(world_ctx.call("tile_at", pos)) if world_ctx.has_method("tile_at") else "water"
+	if tile == "water":
 		return false
 	var tide: String = str(Lx.vars.resolve_var("tide", island_id, zone, "")).to_lower()
-	var list_v: String = str(Lx.vars.resolve_var("list", island_id, zone, "")).to_lower()
 	if tide == "ebb":
-		var tile: String = ""
-		if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("tile_at"):
-			tile = str(world_ctx.call("tile_at", pos))
-		if tile != "water":
-			return true
-	if not list_v.is_empty():
-		var tile2: String = ""
-		if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("tile_at"):
-			tile2 = str(world_ctx.call("tile_at", pos))
-		if tile2 == "ground" or tile2 == "path":
-			return true
+		return true
+	if has_explicit_list and (tile == "ground" or tile == "path"):
+		return true
 	return false
 
 

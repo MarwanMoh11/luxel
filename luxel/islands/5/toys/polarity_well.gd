@@ -34,8 +34,16 @@ func _toy_setup() -> void:
 	writes_var = bool(props.get("writes_var", false))
 	var raw_scope: String = str(props.get("scope", "")).strip_edges()
 	if raw_scope.is_empty():
-		var did: String = Lx.packs.dungeon_of(island_id, region_id) if Lx.packs != null else ""
-		var_scope = ("dungeon:" + did) if not did.is_empty() else ("island:%d" % clampi(island_id, 1, 8))
+		var pack_scope: String = ""
+		if not linked_var.is_empty() and Lx.packs != null:
+			var sv: Dictionary = Lx.packs.state_vars()
+			if sv.has(linked_var) and sv[linked_var] is Dictionary:
+				pack_scope = str((sv[linked_var] as Dictionary).get("scope", "")).strip_edges()
+		if not pack_scope.is_empty():
+			var_scope = pack_scope
+		else:
+			var did: String = Lx.packs.dungeon_of(island_id, region_id) if Lx.packs != null else ""
+			var_scope = ("dungeon:" + did) if not did.is_empty() else ("island:%d" % clampi(island_id, 1, 8))
 	else:
 		var_scope = raw_scope
 	_prism_cd = 0.0
@@ -83,20 +91,20 @@ func _on_var_changed(_scope: String, vname: String, val: Variant) -> void:
 		queue_redraw()
 
 
-## Calibrated curve multipliers so bible default strength=420 bends bolts 55-95° around stone baffles
-## and curves meteor_orbs cleanly around chasms.
+## Calibrated curve multipliers so bible default strength=420 bends bolts 45-95° around stone baffles
+## within the 118 px bolt range and curves meteor_orbs cleanly around chasms.
 func _what_multiplier(what: String) -> float:
 	match what:
 		"bolt", "beam":
-			return 2.05
+			return 3.8
 		"lantern":
-			return 1.65
+			return 2.4
 		"block":
-			return 1.35
+			return 2.6
 		"enemy":
-			return 0.45
+			return 0.48
 		"wick":
-			return 0.28
+			return 0.08
 	return 1.0
 
 

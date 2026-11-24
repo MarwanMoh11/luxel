@@ -1,0 +1,65 @@
+{
+  "pack_id": "island7_toys",
+  "owner": "I7-TOYS",
+  "comment": "Island 7 Moon Shoals toy pack: Moon Pool, Mirror Avatar, Mask Plinth, Masquerade Dancer, state vars, SFX, HUD/prompt strings, and debug-only proof regions.",
+  "interactables": {
+    "moon_pool": "res://luxel/islands/7/toys/moon_pool.gd",
+    "mirror_avatar": "res://luxel/islands/7/toys/mirror_avatar.gd",
+    "mask_plinth": "res://luxel/islands/7/toys/mask_plinth.gd",
+    "masquerade_dancer": "res://luxel/islands/7/toys/masquerade_dancer.gd"
+  },
+  "state_vars": {
+    "world_face": {
+      "scope": "island:7",
+      "values": ["silver", "black"],
+      "default": "silver"
+    },
+    "stolen_act": {
+      "scope": "dungeon:theatre",
+      "values": ["none", "act1", "act2", "act3", "act4", "act5"],
+      "default": "none"
+    }
+  },
+  "sfx": {
+    "moon_pool_flip": { "id": "phantom_phase", "pitch": 0.88, "db": -0.5 },
+    "mask_steal": { "id": "shadow_whisper", "pitch": 1.15, "db": 0.0 },
+    "mask_shatter": { "id": "shield_shatter", "pitch": 1.12, "db": 0.0 },
+    "cotillion_dim": { "id": "hush_pulse", "pitch": 0.92, "db": -1.5 },
+    "shadow_reunite": { "id": "great_lamp_bloom", "pitch": 1.08, "db": -1.0 },
+    "string_snap": { "id": "crystal_clank", "pitch": 1.24, "db": -1.0 }
+  },
+  "strings": {
+    "ISL7_HUD_SILVER": "SILVER",
+    "ISL7_HUD_BLACK": "BLACK",
+    "ISL7_HUD_STOLEN": "STOLEN",
+    "ISL7_HUD_RESTORED": "LIGHT RETURNS!",
+    "ISL7_HUD_POCKET": "POCKET",
+    "ISL7_HUD_CUE": "CUE",
+    "ISL7_HUD_M_BOLT": "BOLT",
+    "ISL7_HUD_M_DASH": "DASH",
+    "ISL7_HUD_M_THROW": "THROW",
+    "ISL7_HUD_M_PRISM": "PRISM",
+    "ISL7_HUD_M_BEAM": "BEAM",
+    "ISL7_HUD_M_WINGS": "WINGS",
+    "ISL7_HUD_M_LENS": "LENS",
+    "ISL7_HUD_M_SUNFLARE": "FLARE",
+    "ISL7_ACT_RECLAIM": "THE MASK SHATTERS! YOUR LIGHT RETURNS!",
+    "ISL7_PROMPT_POOL": "FLIP SILVER / BLACK",
+    "ISL7_PROMPT_UNMASK": "UNMASK GUEST",
+    "ISL7_PROMPT_RECLAIM": "RECLAIM MOVE",
+    "ISL7_PROOF_1": "PROOF: SILVER AND BLACK",
+    "ISL7_PROOF_2": "PROOF: MASK AND SHADOWS"
+  },
+  "regions": {
+    "_proof_i7_1": {
+      "name_key": "ISL7_PROOF_1",
+      "debug_only": true,
+      "map": [0, 0]
+    },
+    "_proof_i7_2": {
+      "name_key": "ISL7_PROOF_2",
+      "debug_only": true,
+      "map": [1, 0]
+    }
+  }
+}

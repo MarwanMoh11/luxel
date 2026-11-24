@@ -1,0 +1,196 @@
+{
+  "pack_id": "i8_creatures_a",
+  "version": 1,
+  "owner": "C8-A",
+  "comment": "Island 8 (The Long Night) new enemies (toll_clerk, censer, choir_gloam, eclipse_eye, page_wraith) and bosses (chief_auditor, tollmaster, indexer).",
+  "strings": {
+    "ISL8_BOSS_AUDITOR": "THE CHIEF AUDITOR",
+    "ISL8_BOSS_TOLLMASTER": "THE TOLLMASTER",
+    "ISL8_BOSS_INDEXER": "THE INDEXER",
+    "ISL8_INVOICE": "INVOICE DUE! SELL OR BREAK THE REGISTER!",
+    "ISL8_TAX_EVADE": "REGISTER SMASHED! TAX REFUSED!",
+    "ISL8_TAX_EVASION": "TAX EVASION!",
+    "ISL8_OVERPAID": "OVERPAID! NOTHING LEFT TO TAKE!"
+  },
+  "enemies": {
+    "toll_clerk": {
+      "script": "res://luxel/enemies/toll_clerk/brain.gd",
+      "data": {
+        "max_hp": 3.5,
+        "body_radius": 7.0,
+        "routine_speed": 36.0,
+        "leash_radius": 158.0,
+        "notice_radius": 120.0,
+        "tell_time": 0.50,
+        "recover_time": 1.20,
+        "shield_hp": 2.0,
+        "shard_drop": 5,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "censer": {
+      "script": "res://luxel/enemies/censer/brain.gd",
+      "data": {
+        "max_hp": 3.0,
+        "body_radius": 6.5,
+        "routine_speed": 46.0,
+        "leash_radius": 160.0,
+        "notice_radius": 130.0,
+        "tell_time": 0.52,
+        "recover_time": 1.15,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "choir_gloam": {
+      "script": "res://luxel/enemies/choir_gloam/brain.gd",
+      "data": {
+        "max_hp": 2.5,
+        "body_radius": 6.0,
+        "routine_speed": 40.0,
+        "leash_radius": 160.0,
+        "notice_radius": 145.0,
+        "tell_time": 0.56,
+        "recover_time": 1.25,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "eclipse_eye": {
+      "script": "res://luxel/enemies/eclipse_eye/brain.gd",
+      "data": {
+        "max_hp": 3.0,
+        "body_radius": 7.0,
+        "routine_speed": 24.0,
+        "leash_radius": 128.0,
+        "notice_radius": 155.0,
+        "tell_time": 0.54,
+        "recover_time": 1.30,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "page_wraith": {
+      "script": "res://luxel/enemies/page_wraith/brain.gd",
+      "data": {
+        "max_hp": 2.5,
+        "body_radius": 6.0,
+        "routine_speed": 38.0,
+        "leash_radius": 150.0,
+        "notice_radius": 64.0,
+        "tell_time": 0.50,
+        "recover_time": 1.15,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "chief_auditor": {
+      "script": "res://luxel/bosses/chief_auditor/brain.gd",
+      "data": {
+        "max_hp": 118.0,
+        "body_radius": 12.0,
+        "routine_speed": 40.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.56,
+        "recover_time": 1.15,
+        "shard_drop": 28,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "tollmaster": {
+      "script": "res://luxel/bosses/tollmaster/brain.gd",
+      "data": {
+        "max_hp": 215.0,
+        "body_radius": 12.5,
+        "routine_speed": 40.0,
+        "leash_radius": 0.0,
+        "notice_radius": 190.0,
+        "tell_time": 0.54,
+        "recover_time": 1.15,
+        "shard_drop": 45,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "indexer": {
+      "script": "res://luxel/bosses/indexer/brain.gd",
+      "data": {
+        "max_hp": 122.0,
+        "body_radius": 12.0,
+        "routine_speed": 46.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.55,
+        "recover_time": 1.10,
+        "shard_drop": 28,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "chief_auditor": {
+      "island": 8,
+      "name_key": "ISL8_BOSS_AUDITOR",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "toll_house",
+      "region": "toll_r5",
+      "music": "island8_boss_p1",
+      "music_p2": "island8_boss_p2",
+      "heart": "half",
+      "flag": "chief_auditor_defeated",
+      "arena_lock": true
+    },
+    "tollmaster": {
+      "island": 8,
+      "name_key": "ISL8_BOSS_TOLLMASTER",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "toll_house",
+      "region": "toll_r11",
+      "music": "island8_boss_p1",
+      "music_p2": "island8_boss_p2",
+      "heart": "half",
+      "flag": "tollmaster_defeated",
+      "arena_lock": true
+    },
+    "indexer": {
+      "island": 8,
+      "name_key": "ISL8_BOSS_INDEXER",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "archive",
+      "region": "archive_r6",
+      "music": "island8_boss_p1",
+      "music_p2": "island8_boss_p2",
+      "heart": "half",
+      "flag": "indexer_defeated",
+      "arena_lock": true
+    }
+  },
+  "sfx": {
+    "clerk_bell": { "id": "clockwork_chime", "pitch": 1.24, "db": -2.0 },
+    "tax_ring_drop": { "id": "bell_slam", "pitch": 1.18, "db": -1.5 },
+    "censer_swing": { "id": "gust_whoosh", "pitch": 0.92, "db": -2.0 },
+    "censer_chain_cut": { "id": "shield_shatter", "pitch": 1.16, "db": -0.5 },
+    "choir_chord": { "id": "hush_pulse", "pitch": 1.18, "db": -2.0 },
+    "choir_silence": { "id": "clockwork_chime", "pitch": 0.86, "db": -2.0 },
+    "eclipse_lock": { "id": "beam_charge", "pitch": 1.10, "db": -3.0 },
+    "eclipse_beam": { "id": "lighthouse_beam", "pitch": 1.06, "db": -1.0 },
+    "paper_snap": { "id": "prop_rustle", "pitch": 1.22, "db": -1.5 },
+    "page_hop": { "id": "feather_flutter", "pitch": 1.12, "db": -1.5 },
+    "auditor_ding": { "id": "clockwork_chime", "pitch": 1.32, "db": -1.0 },
+    "register_chime": { "id": "shop_buy", "pitch": 1.12, "db": -0.5 },
+    "invoice_stamp": { "id": "bell_slam", "pitch": 0.92, "db": 0.0 },
+    "register_shatter": { "id": "seal_shatter_heavy", "pitch": 1.08, "db": 0.5 },
+    "drawer_clack": { "id": "harbor_creak", "pitch": 1.18, "db": -1.0 }
+  }
+}

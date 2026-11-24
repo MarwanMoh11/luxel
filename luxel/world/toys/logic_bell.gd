@@ -21,8 +21,8 @@ var _cd_left: float = 0.0
 var _swing_t: float = 0.0
 var _relay_delay: float = -1.0
 var _relay_chain: PackedStringArray = PackedStringArray()
-var _echo_left: float = -1.0
-var _echo_total: float = DEFAULT_ECHO_DELAY
+var _clapper_echo_left: float = -1.0
+var _clapper_echo_total: float = DEFAULT_ECHO_DELAY
 var _waves: Array[LxRingWave] = []
 
 
@@ -41,8 +41,8 @@ func _toy_setup() -> void:
 	_swing_t = 0.0
 	_relay_delay = -1.0
 	_relay_chain = PackedStringArray()
-	_echo_left = -1.0
-	_echo_total = echo_delay_s
+	_clapper_echo_left = -1.0
+	_clapper_echo_total = echo_delay_s
 	_clear_waves()
 	queue_redraw()
 
@@ -53,7 +53,7 @@ func reset_toy() -> void:
 	_swing_t = 0.0
 	_relay_delay = -1.0
 	_relay_chain = PackedStringArray()
-	_echo_left = -1.0
+	_clapper_echo_left = -1.0
 	if not persist and powered:
 		set_powered(false)
 		_notify_linked_targets(false)
@@ -68,7 +68,7 @@ func _clear_waves() -> void:
 
 
 func is_echo_armed() -> bool:
-	return _echo_left > 0.0
+	return _clapper_echo_left > 0.0
 
 
 func has_echo_clapper() -> bool:
@@ -93,11 +93,11 @@ func tick(dt: float) -> void:
 			var ch: PackedStringArray = _relay_chain.duplicate()
 			_relay_chain = PackedStringArray()
 			ring(false, ch)
-	if _echo_left > 0.0:
-		_echo_left -= dt
+	if _clapper_echo_left > 0.0:
+		_clapper_echo_left -= dt
 		dirty = true
-		if _echo_left <= 0.0:
-			_echo_left = -1.0
+		if _clapper_echo_left <= 0.0:
+			_clapper_echo_left = -1.0
 			ring(true)
 	for i: int in range(_waves.size() - 1, -1, -1):
 		var w: LxRingWave = _waves[i]
@@ -131,8 +131,8 @@ func on_hit(hit: LxHit) -> bool:
 
 
 func _arm_echo_clapper() -> void:
-	_echo_total = echo_delay_s
-	_echo_left = echo_delay_s
+	_clapper_echo_total = echo_delay_s
+	_clapper_echo_left = echo_delay_s
 	_emit_sfx(_pick_sfx("echo_clapper_pulse", "prop_chime"))
 	queue_redraw()
 
@@ -217,8 +217,8 @@ func get_interact_prompt() -> String:
 func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
-	if _swing_t > 0.0 or _echo_left > 0.0:
-		return Vector4(pos.x, pos.y - 6.0, 52.0 if _echo_left > 0.0 else 48.0, 0.88)
+	if _swing_t > 0.0 or _clapper_echo_left > 0.0:
+		return Vector4(pos.x, pos.y - 6.0, 52.0 if _clapper_echo_left > 0.0 else 48.0, 0.88)
 	return Vector4(pos.x, pos.y - 6.0, 26.0, 0.35)
 
 
@@ -246,17 +246,17 @@ func _draw() -> void:
 	draw_rect(Rect2(bx - 2.0, -8.0, 3.0, 5.0), trip[1])
 	draw_rect(Rect2(bx - 2.0, -8.0, 1.0, 4.0), trip[2])
 	# Clapper
-	draw_rect(Rect2(bx - 1.0 + sway_x * 0.5, -1.0, 2.0, 2.0), PAL["cream"] as Color if (_swing_t > 0.0 or _echo_left > 0.0) else trip[2])
+	draw_rect(Rect2(bx - 1.0 + sway_x * 0.5, -1.0, 2.0, 2.0), PAL["cream"] as Color if (_swing_t > 0.0 or _clapper_echo_left > 0.0) else trip[2])
 	# Relay chime dots on posts
 	if relay:
 		draw_rect(Rect2(-8.0, -7.0, 2.0, 2.0), trip[2])
 		draw_rect(Rect2(6.0, -7.0, 2.0, 2.0), trip[2])
 	# Echo Clapper armed countdown ring (1.4 s delayed second wave)
-	if _echo_left > 0.0:
-		var frac: float = clampf(_echo_left / maxf(0.05, _echo_total), 0.0, 1.0)
+	if _clapper_echo_left > 0.0:
+		var frac: float = clampf(_clapper_echo_left / maxf(0.05, _clapper_echo_total), 0.0, 1.0)
 		var pulse_r: float = roundf(lerpf(11.0, 16.0, frac))
 		draw_arc(Vector2(0.0, -6.0), pulse_r, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, PAL["cream"] as Color, 1.0)
 		draw_arc(Vector2(0.0, -6.0), pulse_r - 2.0, 0.0, TAU, 16, Color(trip[1], 0.65), 1.0)
 	# Tone crest on top crossbar (colour-blind distinct)
-	LxToyDraw.draw_tone_crest(self, Vector2(0.0, -18.0), tone, _swing_t > 0.0 or _echo_left > 0.0)
+	LxToyDraw.draw_tone_crest(self, Vector2(0.0, -18.0), tone, _swing_t > 0.0 or _clapper_echo_left > 0.0)
 	_draw_signal_pulses()

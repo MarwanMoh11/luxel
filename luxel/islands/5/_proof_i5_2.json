@@ -1,0 +1,115 @@
+{
+  "id": "_proof_i5_2",
+  "island_id": 5,
+  "is_dungeon": true,
+  "debug_only": true,
+  "name_key": "I5_PROOF_2_NAME",
+  "spawn": [56, 128],
+  "exits": [
+    {
+      "id": "ex_back_proof1",
+      "rect": [16, 112, 16, 32],
+      "to_island": 5,
+      "to_region": "_proof_i5_1",
+      "to_spawn": [56, 136]
+    },
+    {
+      "id": "ex_p2_loop",
+      "rect": [352, 112, 16, 32],
+      "to_island": 5,
+      "to_region": "_proof_i5_1",
+      "to_spawn": [56, 136]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_p2",
+      "kind": "room_anchor",
+      "pos": [56, 128],
+      "props": { "auto": true }
+    },
+    {
+      "id": "star_a",
+      "kind": "star_node",
+      "pos": [96, 96],
+      "props": { "cap_group": "p2_tri", "max_lit": 4, "link_range": 96.0 }
+    },
+    {
+      "id": "star_b",
+      "kind": "star_node",
+      "pos": [96, 160],
+      "props": { "cap_group": "p2_tri", "max_lit": 4, "link_range": 96.0 }
+    },
+    {
+      "id": "star_c",
+      "kind": "star_node",
+      "pos": [140, 128],
+      "props": { "cap_group": "p2_tri", "max_lit": 4, "link_range": 96.0 }
+    },
+    {
+      "id": "rotor_p2",
+      "kind": "rotor",
+      "pos": [172, 128],
+      "props": {
+        "size": [64, 64],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_p2",
+      "kind": "star_bell",
+      "pos": [172, 108],
+      "props": {
+        "scope": "island:5",
+        "var_name": "ow_dial",
+        "rotors": ["rotor_p2"],
+        "allow_ccw_blue": true
+      }
+    },
+    {
+      "id": "chest_p2",
+      "kind": "chest",
+      "pos": [44, 72],
+      "props": { "reward": "shards", "amount": 15 }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "sky_90",
+      "when": "ow_dial==90",
+      "tiles": [
+        [12, 7, 7, 2, "bridge"]
+      ],
+      "enable": ["ex_p2_loop", "chest_p2"],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Light a 3-star constellation triangle to walk across void onto a brass rotor, then ring the Star Bell to turn the island dial 90 degrees and reveal the east star-bridge.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Constellation star triangles as walkable void ground and Star Bell quarter turns",
+    "decisions": 5,
+    "expert_s": 30,
+    "reward": "Completes Island 5 rule proof loop and shard chest",
+    "why": "Island 5 toy pack proof room 2 (star_node triangle + star_bell + rotor + Lx.vars layer).",
+    "exit": "ex_p2_loop",
+    "start": {
+      "spawn": [56, 128],
+      "moves": ["bolt", "dash", "throw", "prism", "beam", "wings", "lens"],
+      "flags": ["power_orbit_ring", "power_sextant"]
+    },
+    "solution": [
+      { "op": "shoot", "target": "star_a", "wait_hit": 0.45 },
+      { "op": "shoot", "target": "star_b", "wait_hit": 0.45 },
+      { "op": "shoot", "target": "star_c", "wait_hit": 0.55 },
+      { "op": "goto", "to": [172, 132] },
+      { "op": "shoot", "target": "bell_p2", "wait_hit": 0.6 },
+      { "op": "expect", "var": "ow_dial==90" },
+      { "op": "wait", "secs": 0.55 },
+      { "op": "expect_exit", "exit": "ex_p2_loop" }
+    ]
+  }
+}

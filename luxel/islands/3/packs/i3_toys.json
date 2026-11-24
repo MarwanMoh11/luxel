@@ -1,0 +1,74 @@
+{
+  "pack_id": "i3_toys",
+  "owner": "E2-TOYS-3",
+  "comment": "Island 3 (Thornwood Hollow) rule engine state vars, island-only toys, SFX mappings, and debug-only proof region pair.",
+  "interactables": {
+    "stump_shrink": "res://luxel/islands/3/toys/stump_shrink.gd",
+    "dew_lens": "res://luxel/islands/3/toys/dew_lens.gd",
+    "dry_root_knot": "res://luxel/islands/3/toys/dry_root_knot.gd",
+    "silk_loom_spool": "res://luxel/islands/3/toys/silk_loom_spool.gd",
+    "wood_pin_lamp": "res://luxel/islands/3/toys/wood_pin_lamp.gd",
+    "beetle_mount": "res://luxel/islands/3/toys/beetle_mount.gd",
+    "sap_clock": "res://luxel/islands/3/toys/sap_clock.gd"
+  },
+  "state_vars": {
+    "wood_turn": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
+    "pin_w": { "scope": "island:3", "values": [0, 1], "default": 0 },
+    "pin_e": { "scope": "island:3", "values": [0, 1], "default": 0 },
+    "pin_n": { "scope": "island:3", "values": [0, 1], "default": 0 },
+    "pin_turn_w": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
+    "pin_turn_e": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
+    "pin_turn_n": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
+    "eff_turn_w": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
+    "eff_turn_e": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
+    "eff_turn_n": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
+    "size": { "scope": "island:3", "values": ["normal", "tiny"], "default": "normal" },
+    "loom_warp": { "scope": "dungeon:loom", "values": ["high", "low"], "default": "high" },
+    "court_v1": { "scope": "island:3", "values": ["none", "mercy", "fire"], "default": "none" },
+    "court_v2": { "scope": "island:3", "values": ["none", "mercy", "fire"], "default": "none" },
+    "oak_sap": { "scope": "dungeon:hollow_oak", "values": ["low", "high"], "default": "low" }
+  },
+  "strings": {
+    "PROMPT_SHRINK_STUMP": "SHRINK INTO STUMP",
+    "PROMPT_GROW_STUMP": "RETURN NORMAL",
+    "PROMPT_ROLL_DEW": "HOLD E: ROLL DEW",
+    "PROMPT_PIN_WOOD": "PIN WOODS",
+    "PROMPT_SNUFF_WOOD": "SNUFF LAMP",
+    "PROMPT_RIDE_BEETLE": "RIDE BEETLE",
+    "PROMPT_LEAVE_BEETLE": "DISMOUNT BEETLE",
+    "PROMPT_HALT_BEETLE": "SAP-HORN: HALT",
+    "PROMPT_SAP_VALVE": "TURN SAP VALVE",
+    "ISL3_HUD_MOSS": "MOSS",
+    "ISL3_HUD_SILK": "SILK",
+    "ISL3_HUD_CROWN": "CROWN",
+    "ISL3_HUD_PIN": "PIN",
+    "ISL3_HUD_TINY": "TINY 1.8x",
+    "ISL3_HUD_SAP_HI": "SAP HI",
+    "ISL3_HUD_SAP_LO": "SAP LO",
+    "ISL3_PROOF_1_NAME": "SHIFTING SAP GLADE",
+    "ISL3_PROOF_2_NAME": "TINY UNDER-ROOT"
+  },
+  "sfx": {
+    "seed_bloom": { "id": "spore_pop", "pitch": 1.18, "db": -1.5 },
+    "seed_wilt": { "id": "prop_rustle", "pitch": 0.84, "db": -2.0 },
+    "wood_shift": { "id": "harbor_creak", "pitch": 0.78, "db": -0.5 },
+    "shrink_swirl": { "id": "phantom_phase", "pitch": 1.24, "db": -1.0 },
+    "dew_focus_ray": { "id": "prism_chain", "pitch": 1.16, "db": -1.0 },
+    "silk_spark_run": { "id": "brazier_lit", "pitch": 1.26, "db": -2.5 },
+    "silk_snap": { "id": "web_burn", "pitch": 1.15, "db": -1.0 },
+    "sap_horn_call": { "id": "bell_toll_heavy", "pitch": 0.72, "db": -1.0 },
+    "sap_clock_tick": { "id": "clockwork_chime", "pitch": 0.88, "db": -1.5 }
+  },
+  "regions": {
+    "_proof_i3_1": {
+      "name_key": "ISL3_PROOF_1_NAME",
+      "debug_only": true,
+      "map": [0, 0]
+    },
+    "_proof_i3_2": {
+      "name_key": "ISL3_PROOF_2_NAME",
+      "debug_only": true,
+      "map": [1, 0]
+    }
+  }
+}

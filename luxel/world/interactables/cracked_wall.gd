@@ -113,6 +113,12 @@ func _draw() -> void:
 		# Transparent-backed scattered rubble ring so painted ground shines cleanly underneath
 		_draw_puzzle_tiled("cracked_rubble", size)
 		if _break_t > 0.0:
+			var el: float = 0.38 - _break_t
+			if el < 0.18:
+				var stage_u: float = clampf(el / 0.18, 0.0, 1.0)
+				var tint_c: Color = Color(PAL["cream"] as Color, 0.82) if stage_u < 0.34 else (Color(PAL["stone"] as Color, 0.62) if stage_u < 0.68 else Color(PAL["dusk"] as Color, 0.36))
+				var jx_b: float = (1.0 if int(floorf(el * 40.0)) % 2 == 0 else -1.0) if LxHudFx.shake_enabled() else 0.0
+				_draw_puzzle_tiled(_cracked_prop_key(), size, Vector2(jx_b, roundf(stage_u * 3.0)), _clock, tint_c, 1)
 			_draw_shatter_burst()
 		_draw_signal_pulses()
 		return

@@ -1,0 +1,116 @@
+{
+  "id": "_proof_i3_2",
+  "island_id": 3,
+  "is_dungeon": true,
+  "debug_only": true,
+  "tiny": true,
+  "name_key": "ISL3_PROOF_2_NAME",
+  "music": "island3_dungeon",
+  "spawn": [64, 112],
+  "exits": [
+    {
+      "id": "exit_proof_west",
+      "rect": [16, 96, 16, 32],
+      "to_island": 3,
+      "to_region": "_proof_i3_1",
+      "to_spawn": [304, 112]
+    },
+    {
+      "id": "exit_proof_east_return",
+      "rect": [336, 96, 32, 32],
+      "to_island": 3,
+      "to_region": "_proof_i3_1",
+      "to_spawn": [64, 112],
+      "locked_door_id": "door_proof_2"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_p2",
+      "kind": "room_anchor",
+      "pos": [64, 112],
+      "props": { "auto": true }
+    },
+    {
+      "id": "hook_shade",
+      "kind": "lantern_hook",
+      "pos": [48, 48],
+      "props": { "light_radius": 76.0 }
+    },
+    {
+      "id": "lp_wall_2",
+      "kind": "light_plant",
+      "pos": [128, 48],
+      "props": { "grow": "wall", "size": [16, 16], "secs": 0.4, "decay": 1.2 }
+    },
+    {
+      "id": "dew_1",
+      "kind": "dew_lens",
+      "pos": [136, 136],
+      "props": { "movable": true, "rail_axis": "y", "focus_range": 140.0 }
+    },
+    {
+      "id": "knot_1",
+      "kind": "dry_root_knot",
+      "pos": [184, 112],
+      "props": { "size": [16, 32], "persist": false, "target_id": "door_proof_2" }
+    },
+    {
+      "id": "door_proof_2",
+      "kind": "door",
+      "pos": [328, 112],
+      "props": { "door_type": "shutter", "size": [16, 32], "requires_signals": ["knot_1"] }
+    },
+    {
+      "id": "cw_proof",
+      "kind": "cracked_wall",
+      "pos": [232, 112],
+      "props": { "size": [16, 16] }
+    },
+    {
+      "id": "bt_proof_2",
+      "kind": "blue_transformer",
+      "pos": [288, 64],
+      "props": { "angle_deg": 135, "movable": false, "rotatable": true }
+    },
+    {
+      "id": "beetle_1",
+      "kind": "beetle_mount",
+      "pos": [80, 176],
+      "props": { "tame": true, "dir": "e" }
+    },
+    {
+      "id": "stump_return",
+      "kind": "stump_shrink",
+      "pos": [288, 160],
+      "props": {
+        "to_region": "_proof_i3_1",
+        "to_spawn": [64, 112],
+        "target_size": "normal"
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "In tiny mode (1.8x sun-lantern), roll a dew_lens onto the center firing line and shoot a yellow bolt to focus a dew_ray that burns the dry_root_knot without cracking the big-world cracked_wall behind it.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "tiny size mode, dew_lens, dew_ray vs cracked_wall, dry_root_knot, beetle_mount",
+    "decisions": 3,
+    "expert_s": 35,
+    "reward": "Return to normal-scale glade",
+    "why": "End-to-end debug proof room 2 for Island 3 tiny world and dew_ray",
+    "solution": [
+      { "op": "expect", "var": "size==tiny" },
+      { "op": "push", "target": "dew_1", "to": [136, 112] },
+      { "op": "goto", "to": [96, 112] },
+      { "op": "shoot", "target": "dew_1" },
+      { "op": "wait", "secs": 0.35 },
+      { "op": "expect", "target": "knot_1", "prop": "burned", "value": true },
+      { "op": "expect", "target": "cw_proof", "prop": "broken", "value": false },
+      { "op": "expect_exit", "exit": "exit_proof_east_return" }
+    ]
+  }
+}

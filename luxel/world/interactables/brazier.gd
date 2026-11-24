@@ -64,6 +64,9 @@ func _ignite() -> bool:
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, pos, 10.0, 6.0)
 	_emit_sfx("brazier_lit")
+	if region != null and region.has_method("save_interactables_to_state"):
+		region.call("save_interactables_to_state")
+	_emit_save("brazier_" + id)
 	_notify_linked_targets(true)
 	queue_redraw()
 	return true

@@ -1,0 +1,597 @@
+{
+  "name_key": "ISL1_UC_COFFINS",
+  "spawn": [
+    400,
+    120
+  ],
+  "zones": [
+    {
+      "id": "uc_coffins",
+      "name_key": "ISL1_UC_COFFINS",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_east",
+      "rect": [
+        432,
+        96,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r1",
+      "to_spawn": [
+        56,
+        184
+      ]
+    },
+    {
+      "id": "exit_r2_west",
+      "rect": [
+        0,
+        80,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r3",
+      "to_spawn": [
+        424,
+        152
+      ],
+      "locked_door_id": "door_r2_west"
+    },
+    {
+      "id": "exit_r2_north_shortcut",
+      "rect": [
+        64,
+        0,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r7",
+      "to_spawn": [
+        56,
+        232
+      ],
+      "requires_flags": [
+        "uc_ossuary_seam"
+      ],
+      "locked_door_id": "door_r2_north_short"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_east",
+      "kind": "room_anchor",
+      "pos": [
+        400,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r2_west",
+      "kind": "room_anchor",
+      "pos": [
+        64,
+        104
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r2_dawn",
+      "kind": "bell",
+      "pos": [
+        304,
+        120
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 240
+      }
+    },
+    {
+      "id": "bell_r2_dusk",
+      "kind": "bell",
+      "pos": [
+        304,
+        176
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 240
+      }
+    },
+    {
+      "id": "bell_r2_war",
+      "kind": "bell",
+      "pos": [
+        344,
+        248
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 110
+      }
+    },
+    {
+      "id": "bell_r2_relay_w",
+      "kind": "bell",
+      "pos": [
+        96,
+        104
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 120,
+        "relay": true
+      }
+    },
+    {
+      "id": "coffin_r2_e",
+      "kind": "tone_coffin",
+      "pos": [
+        240,
+        80
+      ],
+      "props": {
+        "dir": "s",
+        "slide_tiles": 6.0,
+        "steps": 1,
+        "speed": 120,
+        "size": [
+          64,
+          36
+        ],
+        "freeze_secs": 4.0,
+        "tone_map": {
+          "dawn": "slide",
+          "dusk": "freeze"
+        },
+        "persist": true
+      }
+    },
+    {
+      "id": "coffin_r2_w",
+      "kind": "tone_coffin",
+      "pos": [
+        176,
+        80
+      ],
+      "props": {
+        "dir": "s",
+        "slide_tiles": 6.0,
+        "steps": 1,
+        "speed": 120,
+        "size": [
+          64,
+          36
+        ],
+        "freeze_secs": 4.0,
+        "tone_map": {
+          "dawn": "slide",
+          "dusk": "freeze"
+        },
+        "persist": true
+      }
+    },
+    {
+      "id": "blk_r2_baffle",
+      "kind": "push_block",
+      "pos": [
+        376,
+        200
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "seal_r2_chest",
+      "kind": "tone_door",
+      "pos": [
+        312,
+        248
+      ],
+      "props": {
+        "tone": "war",
+        "size": [
+          16,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "chest_r2_shards",
+      "kind": "chest",
+      "pos": [
+        288,
+        256
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 15
+      }
+    },
+    {
+      "id": "door_r2_west",
+      "kind": "tone_door",
+      "pos": [
+        24,
+        104
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          16,
+          48
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r2_north_short",
+      "kind": "door",
+      "pos": [
+        80,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "uc_ossuary_seam"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        88
+      ],
+      "props": {
+        "zone": "uc_coffins",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        196
+      ],
+      "props": {
+        "zone": "uc_coffins",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        152
+      ],
+      "props": {
+        "zone": "uc_coffins",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "grave_hand_r2",
+      "kind": "grave_hand",
+      "pos": [
+        120,
+        176
+      ],
+      "zone": "uc_coffins"
+    },
+    {
+      "id": "pew_mimic_r2",
+      "kind": "pew_mimic",
+      "pos": [
+        408,
+        248
+      ],
+      "zone": "uc_coffins"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        288,
+        104,
+        32,
+        88
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        304,
+        120
+      ],
+      "radius": 20,
+      "style": "ritual"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        344,
+        248
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        72,
+        216
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        32,
+        92,
+        96,
+        24
+      ],
+      "style": "ornate"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        304,
+        120
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        416,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        56,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "open_sarcophagus",
+      "pos": [
+        360,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_coffin",
+      "pos": [
+        56,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "chapel_pew",
+      "pos": [
+        408,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        288,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        104,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        408,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "events": [
+    {
+      "id": "uc_r2_mark",
+      "on": "signal:door_r2_west",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "uc_r2_solved"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Dawn slides twin stone coffins into an abyss bridge while a pushed block shields a Pew Mimic from a War Bell and Dusk hushes a Grave Hand.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Tone Coffins respond to Dawn, Dusk hushes Grave Hands, and push blocks occlude Ring Waves.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "open_r3+15sh",
+    "why": "Tomb gallery where all three bell tones and stone acoustic occlusion are introduced safely.",
+    "exit": "exit_r2_west",
+    "solution": [
+      {
+        "op": "push",
+        "target": "blk_r2_baffle",
+        "to": [
+          376,
+          248
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          344,
+          216
+        ],
+        "target": "bell_r2_war"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "seal_r2_chest",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_r2_shards"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          336,
+          120
+        ],
+        "target": "bell_r2_dawn"
+      },
+      {
+        "op": "wait_phase",
+        "target": "coffin_r2_w",
+        "near": [
+          176,
+          176
+        ],
+        "tol": 6.0,
+        "timeout": 4.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          336,
+          176
+        ],
+        "target": "bell_r2_dusk"
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          152
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          136
+        ],
+        "target": "bell_r2_relay_w"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r2_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_west"
+      }
+    ]
+  },
+  "id": "undercroft_r2",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "undercroft",
+  "music": "island1_dungeon",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "triggers": [],
+  "layers": []
+}

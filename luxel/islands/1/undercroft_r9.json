@@ -1,0 +1,748 @@
+{
+  "name_key": "ISL1_UC_CHOIR",
+  "spawn": [
+    64,
+    304
+  ],
+  "zones": [
+    {
+      "id": "uc_choir",
+      "name_key": "ISL1_UC_CHOIR",
+      "rect": [
+        0,
+        0,
+        544,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_south",
+      "rect": [
+        48,
+        336,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r8",
+      "to_spawn": [
+        224,
+        56
+      ]
+    },
+    {
+      "id": "exit_r9_north",
+      "rect": [
+        448,
+        0,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r10",
+      "to_spawn": [
+        392,
+        120
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r9_south",
+      "kind": "room_anchor",
+      "pos": [
+        64,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r9_center",
+      "kind": "room_anchor",
+      "pos": [
+        280,
+        296
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r9_east",
+      "kind": "room_anchor",
+      "pos": [
+        480,
+        200
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r9_choir",
+      "kind": "lore_stone",
+      "pos": [
+        40,
+        272
+      ],
+      "props": {
+        "string_id": "ISL1_UC_LORE_CHOIR",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "bell_r9_dawn",
+      "kind": "bell",
+      "pos": [
+        64,
+        152
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 360
+      }
+    },
+    {
+      "id": "bell_r9_dusk",
+      "kind": "bell",
+      "pos": [
+        248,
+        224
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 148
+      }
+    },
+    {
+      "id": "bell_r9_war",
+      "kind": "bell",
+      "pos": [
+        464,
+        288
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 156
+      }
+    },
+    {
+      "id": "blk_r9_baffle",
+      "kind": "push_block",
+      "pos": [
+        104,
+        164
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          20
+        ]
+      }
+    },
+    {
+      "id": "coffin_r9_1",
+      "kind": "tone_coffin",
+      "pos": [
+        184,
+        80
+      ],
+      "props": {
+        "dir": "e",
+        "slide_tiles": 12.0,
+        "steps": 2,
+        "speed": 180,
+        "size": [
+          112,
+          32
+        ],
+        "tone_map": {
+          "dawn": "slide",
+          "dusk": "freeze"
+        }
+      }
+    },
+    {
+      "id": "coffin_r9_2",
+      "kind": "tone_coffin",
+      "pos": [
+        272,
+        200
+      ],
+      "props": {
+        "dir": "e",
+        "slide_tiles": 6.5,
+        "steps": 1,
+        "speed": 180,
+        "size": [
+          112,
+          32
+        ],
+        "freeze_secs": 5.0,
+        "tone_map": {
+          "dawn": "slide",
+          "dusk": "freeze"
+        }
+      }
+    },
+    {
+      "id": "coffin_r9_3",
+      "kind": "tone_coffin",
+      "pos": [
+        448,
+        256
+      ],
+      "props": {
+        "dir": "w",
+        "slide_tiles": 1.0,
+        "steps": 1,
+        "size": [
+          20,
+          32
+        ],
+        "solid_blocker": true,
+        "tone_map": {
+          "war": "shatter"
+        },
+        "target_id": "bridge_r9_return",
+        "persist": true
+      }
+    },
+    {
+      "id": "bridge_r9_return",
+      "kind": "door",
+      "pos": [
+        376,
+        256
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "coffin_r9_3"
+        ],
+        "size": [
+          112,
+          32
+        ]
+      }
+    },
+    {
+      "id": "hook_r9",
+      "kind": "lantern_hook",
+      "pos": [
+        456,
+        224
+      ],
+      "props": {
+        "light_radius": 88
+      }
+    },
+    {
+      "id": "sensor_r9",
+      "kind": "light_sensor",
+      "pos": [
+        488,
+        224
+      ],
+      "props": {
+        "need_secs": 0.55,
+        "hold": false,
+        "persist": true,
+        "target_id": "door_r9_key_grate"
+      }
+    },
+    {
+      "id": "door_r9_key_grate",
+      "kind": "door",
+      "pos": [
+        480,
+        168
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sensor_r9"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "uc_boss_key",
+      "kind": "wick_key",
+      "pos": [
+        480,
+        136
+      ],
+      "props": {
+        "dungeon_id": "undercroft",
+        "key_kind": "keepers_flame",
+        "flag_id": "uc_boss_key"
+      }
+    },
+    {
+      "id": "lamp_r9_sw",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        296
+      ],
+      "props": {
+        "zone": "uc_choir",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        40,
+        224
+      ],
+      "props": {
+        "zone": "uc_choir",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_nw",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        80
+      ],
+      "props": {
+        "zone": "uc_choir",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_c",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        160
+      ],
+      "props": {
+        "zone": "uc_choir",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        496,
+        272
+      ],
+      "props": {
+        "zone": "uc_choir",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_ne",
+      "kind": "road_lamp",
+      "pos": [
+        496,
+        48
+      ],
+      "props": {
+        "zone": "uc_choir",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "grave_hand_r9",
+      "kind": "grave_hand",
+      "pos": [
+        288,
+        280
+      ],
+      "zone": "uc_choir"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        64,
+        152
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        224
+      ],
+      "radius": 20,
+      "style": "ritual"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        456,
+        120,
+        48,
+        36
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        448,
+        16,
+        32,
+        72
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        444,
+        210,
+        60,
+        28
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        48,
+        88
+      ],
+      "radius": 22,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        480,
+        128
+      ],
+      "size": [
+        44,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        64,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        464,
+        280
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bone_ossuary_arch",
+      "pos": [
+        464,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        40,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        512,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_coffin",
+      "pos": [
+        44,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "open_sarcophagus",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        256,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        504,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        440,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        112,
+        260
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        512,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "design": {
+    "idea": "The Choir of Coffins: three parallel tone coffins share one movable baffle and Echo Clapper + Dusk freeze timing to build twin abyss bridges and unlock the Boss Key.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Synthesizing acoustic occlusion, Echo Clapper delayed waves, Dusk coffin-freezing, Lantern Hook sensors, and War shattering in one grand chamber.",
+    "decisions": 11,
+    "expert_s": 75,
+    "reward": "uc_boss_key",
+    "why": "Reliquary choir vault holding the Sexton's Boss Key \u2014 the signature centerpiece puzzle of The Undercroft.",
+    "exit": "exit_r9_north",
+    "start": {
+      "flags": [
+        "item_echo_clapper"
+      ]
+    },
+    "solution": [
+      {
+        "op": "push",
+        "target": "blk_r9_baffle",
+        "to": [
+          104,
+          240
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          96,
+          152
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "bell_r9_dawn",
+        "hold": 0.25
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          224
+        ]
+      },
+      {
+        "op": "wait_phase",
+        "target": "coffin_r9_2",
+        "near": [
+          376,
+          200
+        ],
+        "tol": 8.0,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": "bell_r9_dusk"
+      },
+      {
+        "op": "wait_phase",
+        "target": "coffin_r9_1",
+        "near": [
+          376,
+          80
+        ],
+        "tol": 8.0,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          280,
+          304
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          200
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          456,
+          200
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r9"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r9_key_grate",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "uc_boss_key"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          488,
+          256
+        ],
+        "target": "bell_r9_war"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_r9_return",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          256
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          80
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_north"
+      }
+    ]
+  },
+  "id": "undercroft_r9",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "undercroft",
+  "music": "island1_dungeon",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": []
+}

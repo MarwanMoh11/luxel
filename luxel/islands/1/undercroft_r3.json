@@ -1,0 +1,539 @@
+{
+  "name_key": "ISL1_UC_RELAY",
+  "spawn": [
+    424,
+    152
+  ],
+  "zones": [
+    {
+      "id": "uc_relay",
+      "name_key": "ISL1_UC_RELAY",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_east",
+      "rect": [
+        464,
+        128,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r2",
+      "to_spawn": [
+        48,
+        104
+      ]
+    },
+    {
+      "id": "exit_r3_west",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r4",
+      "to_spawn": [
+        392,
+        152
+      ],
+      "locked_door_id": "door_r3_west"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_east",
+      "kind": "room_anchor",
+      "pos": [
+        424,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r3_west",
+      "kind": "room_anchor",
+      "pos": [
+        96,
+        256
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r3_d1",
+      "kind": "bell",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 240
+      }
+    },
+    {
+      "id": "bell_r3_d2",
+      "kind": "bell",
+      "pos": [
+        136,
+        104
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 200,
+        "relay": true
+      }
+    },
+    {
+      "id": "bell_r3_d3",
+      "kind": "bell",
+      "pos": [
+        136,
+        248
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 220,
+        "relay": true
+      }
+    },
+    {
+      "id": "plate_r3_baffle",
+      "kind": "pressure_plate",
+      "pos": [
+        344,
+        184
+      ],
+      "props": {
+        "by": [
+          "lantern"
+        ],
+        "hold": true,
+        "size": [
+          22,
+          18
+        ],
+        "target_id": "wall_r3_baffle"
+      }
+    },
+    {
+      "id": "wall_r3_baffle",
+      "kind": "mover_wall",
+      "pos": [
+        312,
+        104
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "path": [
+          [
+            312,
+            104
+          ],
+          [
+            312,
+            40
+          ]
+        ],
+        "speed": 120,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "door_r3_mid",
+      "kind": "tone_door",
+      "pos": [
+        312,
+        256
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          16,
+          32
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r3_west",
+      "kind": "tone_door",
+      "pos": [
+        24,
+        136
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          16,
+          48
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        96
+      ],
+      "props": {
+        "zone": "uc_relay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_mid",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        264
+      ],
+      "props": {
+        "zone": "uc_relay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_w1",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        96
+      ],
+      "props": {
+        "zone": "uc_relay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_w2",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        248
+      ],
+      "props": {
+        "zone": "uc_relay",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "toll_moth_r3",
+      "kind": "toll_moth",
+      "pos": [
+        368,
+        252
+      ],
+      "perches": [
+        [
+          368,
+          240
+        ],
+        [
+          424,
+          260
+        ]
+      ],
+      "zone": "uc_relay"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        344,
+        104
+      ],
+      "radius": 22,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        136,
+        104
+      ],
+      "radius": 22,
+      "style": "ritual"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        136,
+        248
+      ],
+      "radius": 22,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        328,
+        168,
+        32,
+        32
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        48,
+        224
+      ],
+      "radius": 26,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        368,
+        80
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.4
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        344,
+        104
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        136,
+        248
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bronze_bell_stand",
+      "pos": [
+        104,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        432,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        56,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "stone_crypt_pillar",
+      "pos": [
+        280,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_coffin",
+      "pos": [
+        48,
+        268
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        424,
+        268
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        328,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        280,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "events": [
+    {
+      "id": "uc_r3_relay",
+      "on": "signal:bell_r3_d3",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "uc_west_relay"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Hold a sliding stone baffle open with your thrown lantern on a pressure plate so an unarmed ring chains a 3-bell Dawn relay around a crypt chasm.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Unarmed interact bell ringing while your thrown lantern holds a mechanism open, plus relay bell chaining.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "uc_west_relay",
+    "why": "Acoustic gallery linking the Coffin Vault to the Acolyte Cloister via bell relays.",
+    "exit": "exit_r3_west",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 18.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          152
+        ]
+      },
+      {
+        "op": "throw",
+        "dir": [
+          0,
+          1
+        ],
+        "hold": 0.35
+      },
+      {
+        "op": "wait_phase",
+        "target": "wall_r3_baffle",
+        "near": [
+          312,
+          40
+        ],
+        "tol": 10.0,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "bell_r3_d1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r3_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 5.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          256
+        ]
+      },
+      {
+        "op": "dash",
+        "dir": [
+          -1,
+          0
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_west"
+      }
+    ]
+  },
+  "id": "undercroft_r3",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "undercroft",
+  "music": "island1_dungeon",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "triggers": [],
+  "layers": []
+}

@@ -461,7 +461,6 @@ func _emit_player_hit(hit_dir: Vector2, dmg: float = -1.0) -> void:
 		return
 	if Lx.events != null:
 		Lx.events.enemy_attack_landed.emit(self, kind, pos, d, amt)
-		Lx.events.player_damaged.emit(amt, pos, d, kind)
 
 
 func _emit_sfx(sfx_id: String) -> void:

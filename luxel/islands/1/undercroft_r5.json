@@ -1,0 +1,472 @@
+{
+  "name_key": "ISL1_UC_KENNEL",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "uc_kennel",
+      "name_key": "ISL1_UC_KENNEL",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r4",
+      "to_spawn": [
+        224,
+        72
+      ]
+    },
+    {
+      "id": "exit_r5_east_shortcut",
+      "rect": [
+        432,
+        128,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r1",
+      "to_spawn": [
+        56,
+        80
+      ],
+      "requires_flags": [
+        "uc_miniboss_done",
+        "uc_west_shortcut"
+      ],
+      "locked_door_id": "door_r5_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r5_south",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r5_dawn_w",
+      "kind": "bell",
+      "pos": [
+        64,
+        152
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 260
+      }
+    },
+    {
+      "id": "bell_r5_dawn_e",
+      "kind": "bell",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 260
+      }
+    },
+    {
+      "id": "bell_r5_war_n",
+      "kind": "bell",
+      "pos": [
+        224,
+        56
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 260
+      }
+    },
+    {
+      "id": "altar_echo_clapper",
+      "kind": "uc_echo_altar",
+      "pos": [
+        176,
+        120
+      ],
+      "props": {
+        "requires_flag": "uc_miniboss_done"
+      }
+    },
+    {
+      "id": "uc_key_1",
+      "kind": "wick_key",
+      "pos": [
+        272,
+        120
+      ],
+      "props": {
+        "dungeon_id": "undercroft",
+        "key_kind": "wick_key",
+        "flag_id": "uc_key_1",
+        "requires_flag": "uc_miniboss_done"
+      }
+    },
+    {
+      "id": "sw_r5_short",
+      "kind": "switch_eye",
+      "pos": [
+        376,
+        224
+      ],
+      "props": {
+        "target_id": "door_r5_east",
+        "sets_flag": "uc_west_shortcut"
+      }
+    },
+    {
+      "id": "door_r5_east",
+      "kind": "door",
+      "pos": [
+        424,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r5_short"
+        ],
+        "sets_flag": "uc_west_shortcut",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        272
+      ],
+      "props": {
+        "zone": "uc_kennel",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        272
+      ],
+      "props": {
+        "zone": "uc_kennel",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        56
+      ],
+      "props": {
+        "zone": "uc_kennel",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        56
+      ],
+      "props": {
+        "zone": "uc_kennel",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "toll_hound_r5",
+      "kind": "toll_hound",
+      "pos": [
+        224,
+        144
+      ],
+      "zone": "uc_kennel"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        152
+      ],
+      "radius": 52,
+      "style": "ritual"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        160,
+        120
+      ],
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        288,
+        184
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        72,
+        240
+      ],
+      "radius": 24,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        224,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bone_ossuary_arch",
+      "pos": [
+        224,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        88,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        360,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_coffin",
+      "pos": [
+        44,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "open_sarcophagus",
+      "pos": [
+        392,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        156,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        292,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        52,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        112,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        336,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "events": [
+    {
+      "id": "uc_r5_short_msg",
+      "on": "signal:sw_r5_short",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "uc_west_shortcut"
+        },
+        {
+          "narrate": "ISL1_UC_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Blind mini-boss The Toll-Hound hunts sound; ring perimeter Dawn and War bells to crash it into pillars and earn the Echo Clapper plus Key 1.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Sound lures blind foes into hazards, War breaks collar armor, and Echo Clapper makes thrown bells ring twice.",
+    "decisions": 6,
+    "expert_s": 85,
+    "reward": "item_echo_clapper+uc_key_1",
+    "why": "Ossuary kennel guarding the dungeon power that unlocks the second half of the Undercroft.",
+    "exit": "exit_r5_east_shortcut",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          232
+        ],
+        "target": "bell_r5_war_n"
+      },
+      {
+        "op": "clear",
+        "timeout": 85.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "uc_miniboss_done",
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "altar_echo_clapper"
+      },
+      {
+        "op": "interact",
+        "target": "uc_key_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          224
+        ],
+        "target": "sw_r5_short"
+      },
+      {
+        "op": "expect",
+        "flag": "item_echo_clapper"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_east_shortcut"
+      }
+    ]
+  },
+  "id": "undercroft_r5",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "undercroft",
+  "music": "island1_dungeon",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "triggers": [],
+  "layers": []
+}

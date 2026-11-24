@@ -1,0 +1,128 @@
+{
+  "id": "_proof_i1_2",
+  "island_id": 1,
+  "is_dungeon": true,
+  "debug_only": true,
+  "name_key": "ISL1_PROOF_2",
+  "music": "island1_dungeon",
+  "spawn": [48, 112],
+  "exits": [
+    {
+      "id": "exit_p2_west",
+      "rect": [16, 96, 16, 32],
+      "to_island": 1,
+      "to_region": "_proof_i1_1",
+      "to_spawn": [320, 112]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_p2",
+      "kind": "room_anchor",
+      "pos": [48, 112],
+      "props": { "auto": true }
+    },
+    {
+      "id": "hook_p2",
+      "kind": "lantern_hook",
+      "pos": [64, 160],
+      "props": { "light_radius": 52 }
+    },
+    {
+      "id": "watcher_p2",
+      "kind": "lying_portrait",
+      "pos": [144, 48],
+      "props": {
+        "mode": "watcher",
+        "dir": "s",
+        "cone_range": 96,
+        "cone_deg": 56,
+        "sweep_deg": 0,
+        "target_id": "wall_p2_shift"
+      }
+    },
+    {
+      "id": "wall_p2_shift",
+      "kind": "mover_wall",
+      "pos": [144, 176],
+      "props": {
+        "size": [24, 16],
+        "path": [[144, 176], [144, 144]],
+        "speed": 64,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "sg_p2",
+      "kind": "shadow_gate",
+      "pos": [200, 112],
+      "props": { "size": [16, 32], "threshold": 0.35 }
+    },
+    {
+      "id": "port_p2_steward",
+      "kind": "lying_portrait",
+      "pos": [256, 56],
+      "props": {
+        "mode": "verdict",
+        "suspect": "steward",
+        "is_culprit": true,
+        "clue_flag": "clue_steward",
+        "verdict_bell_id": "bell_p2_verdict",
+        "open_door_id": "door_p2_vault",
+        "persist": true
+      }
+    },
+    {
+      "id": "bell_p2_verdict",
+      "kind": "bell",
+      "pos": [256, 112],
+      "props": { "tone": "dawn", "wave_radius": 112, "target_id": "port_p2_steward" }
+    },
+    {
+      "id": "door_p2_vault",
+      "kind": "door",
+      "pos": [312, 112],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [16, 32],
+        "requires_signals": ["port_p2_steward"]
+      }
+    },
+    {
+      "id": "chest_p2_reward",
+      "kind": "chest",
+      "pos": [344, 112],
+      "props": { "reward": "shards", "amount": 25 }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Proof manor vault combining Shutter Hood darkness, wall-shifting watcher portrait, shadow gate, and Lying Portrait verdict.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Shutter Hood stealth cloak (0.18 light scale), watcher cone avoidance, and verdict bell accusation.",
+    "decisions": 5,
+    "expert_s": 35,
+    "reward": "chest_p2_reward",
+    "why": "End-to-end verification of Bellmaker Manor stealth and whodunit verdict toys.",
+    "target": "chest_p2_reward",
+    "start": {
+      "moves": ["bolt", "dash", "throw"],
+      "flags": ["item_echo_clapper", "item_shutter_hood", "clue_steward"]
+    },
+    "solution": [
+      { "op": "interact", "target": "hook_p2" },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "expect", "interactable": "sg_p2", "prop": "opened", "value": true },
+      { "op": "goto", "to": [244, 112] },
+      { "op": "interact", "target": "bell_p2_verdict" },
+      { "op": "wait", "secs": 0.45 },
+      { "op": "expect", "var": "dungeon:manor.manor_verdict==right" },
+      { "op": "expect", "interactable": "door_p2_vault", "prop": "opened", "value": true },
+      { "op": "goto", "to": [344, 112] },
+      { "op": "interact", "target": "chest_p2_reward" }
+    ]
+  }
+}

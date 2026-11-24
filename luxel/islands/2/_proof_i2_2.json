@@ -1,0 +1,155 @@
+{
+  "id": "_proof_i2_2",
+  "island_id": 2,
+  "is_dungeon": true,
+  "debug_only": true,
+  "name_key": "PROOF_I2_2_NAME",
+  "spawn": [48, 112],
+  "exits": [
+    {
+      "id": "exit_proof_west",
+      "rect": [16, 96, 16, 48],
+      "to_island": 2,
+      "to_region": "_proof_i2_1",
+      "to_spawn": [336, 112]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anchor_proof_2",
+      "kind": "room_anchor",
+      "pos": [48, 112],
+      "props": { "auto": true }
+    },
+    {
+      "id": "wheel_tower",
+      "kind": "state_lever",
+      "pos": [96, 56],
+      "props": {
+        "scope": "dungeon:lighthouse",
+        "var": "tower_tide",
+        "values": ["low", "mid", "high"],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "keg_1",
+      "kind": "ballast_keg",
+      "pos": [160, 112],
+      "props": {
+        "respawn_s": 5.0,
+        "blast_r": 36.0,
+        "obey_list": false,
+        "allow_clamp_always": true,
+        "allow_harpoon_always": true
+      }
+    },
+    {
+      "id": "cracked_1",
+      "kind": "cracked_wall",
+      "pos": [184, 112],
+      "props": {
+        "size": [16, 32]
+      }
+    },
+    {
+      "id": "mir_optic",
+      "kind": "blue_transformer",
+      "pos": [224, 112],
+      "props": {
+        "normal": [-0.7071, 0.7071],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "well_rx",
+      "kind": "optic_well",
+      "pos": [224, 176],
+      "props": {
+        "var_name": "relay_f1",
+        "scope": "dungeon:lighthouse",
+        "role": "receiver",
+        "persist": false
+      }
+    },
+    {
+      "id": "well_tx",
+      "kind": "optic_well",
+      "pos": [256, 176],
+      "props": {
+        "var_name": "relay_f1",
+        "scope": "dungeon:lighthouse",
+        "role": "emitter",
+        "emit_dir": "e",
+        "persist": false
+      }
+    },
+    {
+      "id": "sens_optic",
+      "kind": "beam_sensor",
+      "pos": [304, 176],
+      "props": {
+        "color": "blue",
+        "hold": true,
+        "target_id": "door_proof_2"
+      }
+    },
+    {
+      "id": "door_proof_2",
+      "kind": "switch_door",
+      "pos": [328, 120],
+      "props": {
+        "size": [16, 48],
+        "requires_signals": ["sens_optic"]
+      }
+    },
+    {
+      "id": "chest_proof_2",
+      "kind": "chest",
+      "pos": [352, 112],
+      "props": {
+        "reward": "shards",
+        "amount": 10
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "tower_mid_bridge",
+      "when": "dungeon:lighthouse.tower_tide==mid || dungeon:lighthouse.tower_tide==high",
+      "tiles": [
+        [5, 12, 6, 2, "bridge"]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Turn the Brass Tide-Wheel, detonate the Ballast Keg to shatter the bulkhead, and bank blue light into the Optic Well relay to unseal the vault.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "tower_tide wheel + Ballast Keg blast + Optic Well receiver/emitter relay",
+    "decisions": 4,
+    "expert_s": 35,
+    "reward": "Unseals Optic Vault chest",
+    "why": "End-to-end Island 2 toy pack proof room 2",
+    "solution": [
+      { "op": "shoot", "from": [64, 56], "target": "wheel_tower" },
+      { "op": "expect", "var": "dungeon:lighthouse.tower_tide!=low" },
+      { "op": "shoot", "from": [112, 112], "target": "keg_1" },
+      { "op": "wait", "secs": 0.65 },
+      { "op": "expect", "interactable": "cracked_1", "prop": "broken", "value": true },
+      { "op": "shoot", "from": [144, 112], "target": "mir_optic" },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "expect", "var": "dungeon:lighthouse.relay_f1==1" },
+      { "op": "expect", "interactable": "door_proof_2", "prop": "opened", "value": true },
+      { "op": "goto", "to": "chest_proof_2" },
+      { "op": "interact", "target": "chest_proof_2" }
+    ]
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "id": "_proof_i7_2",
+  "island_id": 7,
+  "is_dungeon": true,
+  "debug_only": true,
+  "name_key": "ISL7_PROOF_2",
+  "theme": "doppel_theatre",
+  "music": "island7_dungeon",
+  "spawn": [40, 104],
+  "exits": [
+    {
+      "id": "exit_proof_west",
+      "rect": [0, 80, 16, 48],
+      "to_island": 7,
+      "to_region": "_proof_i7_1",
+      "to_spawn": [264, 136]
+    },
+    {
+      "id": "exit_proof_done",
+      "rect": [304, 80, 16, 48],
+      "locked_door_id": "p2_door_east",
+      "to_island": 7,
+      "to_region": "_proof_i7_1",
+      "to_spawn": [88, 136]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "p2_anchor",
+      "kind": "room_anchor",
+      "pos": [40, 104],
+      "props": { "auto": true }
+    },
+    {
+      "id": "p2_mask",
+      "kind": "mask_plinth",
+      "pos": [120, 104],
+      "props": {
+        "act": 1,
+        "steals": ["throw"],
+        "mask_icon": "throw",
+        "hp": 1.4,
+        "auto_steal": true,
+        "breakable": true,
+        "release_flag": "proof_i7_mask_cleared",
+        "persist": true,
+        "target_id": "p2_gate"
+      }
+    },
+    {
+      "id": "p2_spotlight",
+      "kind": "mirror",
+      "pos": [120, 152],
+      "props": {
+        "cue_spotlight": true,
+        "floor_only": true,
+        "spotlight_radius": 30
+      }
+    },
+    {
+      "id": "p2_curtain",
+      "kind": "mirror",
+      "pos": [168, 152],
+      "props": {
+        "cue_curtain": true,
+        "size": [16, 32]
+      }
+    },
+    {
+      "id": "p2_curtain_brazier",
+      "kind": "brazier",
+      "pos": [216, 152],
+      "props": {}
+    },
+    {
+      "id": "p2_dancer_liar1",
+      "kind": "masquerade_dancer",
+      "pos": [168, 48],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "nw_wrong",
+        "speed": 0
+      }
+    },
+    {
+      "id": "p2_dancer_truth",
+      "kind": "masquerade_dancer",
+      "pos": [216, 48],
+      "props": {
+        "role": "truth",
+        "shadow_mode": "se_gold",
+        "speed": 0,
+        "unmask_by_bolt": true,
+        "reveal_flag": "proof_i7_truth_found",
+        "persist": true,
+        "target_id": "p2_gate"
+      }
+    },
+    {
+      "id": "p2_dancer_liar2",
+      "kind": "masquerade_dancer",
+      "pos": [248, 104],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "none",
+        "speed": 0
+      }
+    },
+    {
+      "id": "p2_gate",
+      "kind": "logic_gate",
+      "pos": [232, 80],
+      "props": {
+        "op": "all",
+        "inputs": ["p2_mask", "p2_dancer_truth"],
+        "target_id": "p2_door_east",
+        "persist": true
+      }
+    },
+    {
+      "id": "p2_door_east",
+      "kind": "switch_door",
+      "pos": [296, 104],
+      "props": {
+        "size": [16, 48],
+        "requires_signals": ["p2_gate"],
+        "persistent": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Shatter the Act Mask stealing your Lantern Throw, then read the cast shadows to unmask the lone SE-shadow Masquerade guest.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "mask_plinth move theft + masquerade_dancer truth shadows",
+    "decisions": 3,
+    "expert_s": 35,
+    "reward": "proof_complete",
+    "why": "End-to-end proof room for Island 7 move theft, Cue-Mirror curtain, and truth shadows.",
+    "solution": [
+      { "op": "shoot", "from": [72, 104], "target": "p2_mask", "count": 5 },
+      { "op": "wait", "secs": 0.2 },
+      { "op": "goto", "to": [216, 80], "tol": 8 },
+      { "op": "shoot", "target": "p2_dancer_truth" },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "expect_exit", "id": "exit_proof_done", "open": true }
+    ]
+  }
+}

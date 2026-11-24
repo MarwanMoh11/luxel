@@ -89,7 +89,7 @@ func take_hit(hit: LxHit) -> int:
 	if _has_void_halo() and src == LxHit.SOURCE_BOLT and not is_curved and not bool(h["pierce"]):
 		_eat_flash_t = 0.24
 		clank_t = 0.14
-		_emit_sfx("null_moth_eat")
+		_emit_sfx("i5_null_moth_eat")
 		_emit_enemy_hit(hit, HitResult.BLOCKED)
 		return HitResult.BLOCKED
 

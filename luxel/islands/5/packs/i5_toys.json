@@ -44,12 +44,12 @@
     "polarity_well": "res://luxel/islands/5/toys/polarity_well.gd"
   },
   "sfx": {
-    "gravity_curve": { "id": "phantom_phase", "pitch": 1.24, "db": -2.5 },
-    "polarity_flip": { "id": "mirror_turn", "pitch": 1.16, "db": -1.0 },
+    "gravity_curve": { "id": "phantom_phase", "pitch": 1.18, "db": -3.0 },
+    "polarity_flip": { "id": "clockwork_chime", "pitch": 1.16, "db": -1.5 },
     "star_ignite": { "id": "prop_chime", "pitch": 1.28, "db": -0.5 },
     "star_snuff": { "id": "phantom_phase", "pitch": 0.78, "db": -3.0 },
     "star_bell_turn": { "id": "clockwork_chime", "pitch": 0.88, "db": 0.0 },
-    "meteor_clank": { "id": "crystal_clank", "pitch": 0.82, "db": -0.5 },
+    "meteor_clank": { "id": "crystal_clank", "pitch": 0.84, "db": -0.5 },
     "horizon_pull": { "id": "void_hum", "pitch": 0.86, "db": -2.0 }
   },
   "regions": {

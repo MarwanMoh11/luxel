@@ -1,0 +1,134 @@
+{
+  "pack_id": "i5_bosses_b",
+  "version": 1,
+  "owner": "I5-bosses-b",
+  "comment": "Island 5 (Starfall Observatory) Boss Package B: meridian_weaver (Planetarium mini), the_zodiac (Planetarium boss), the_counterweight (Fall boss), event_horizon (superboss).",
+  "strings": {
+    "I5_BOSS_WEAVER": "MERIDIAN WEAVER",
+    "I5_BOSS_ZODIAC": "THE ZODIAC",
+    "I5_BOSS_WEIGHT": "THE COUNTERWEIGHT",
+    "I5_BOSS_HORIZON": "THE EVENT HORIZON"
+  },
+  "enemies": {
+    "meridian_weaver": {
+      "script": "res://luxel/bosses/meridian_weaver/brain.gd",
+      "data": {
+        "max_hp": 74.0,
+        "body_radius": 11.0,
+        "routine_speed": 46.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.52,
+        "recover_time": 0.90,
+        "shard_drop": 20,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "the_zodiac": {
+      "script": "res://luxel/bosses/the_zodiac/brain.gd",
+      "data": {
+        "max_hp": 94.0,
+        "body_radius": 12.0,
+        "routine_speed": 46.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.55,
+        "recover_time": 0.95,
+        "shard_drop": 32,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "the_counterweight": {
+      "script": "res://luxel/bosses/the_counterweight/brain.gd",
+      "data": {
+        "max_hp": 108.0,
+        "body_radius": 12.5,
+        "routine_speed": 48.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.58,
+        "recover_time": 1.00,
+        "shard_drop": 26,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "event_horizon": {
+      "script": "res://luxel/bosses/event_horizon/brain.gd",
+      "data": {
+        "max_hp": 175.0,
+        "body_radius": 13.5,
+        "routine_speed": 24.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.60,
+        "recover_time": 1.00,
+        "shard_drop": 45,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "meridian_weaver": {
+      "name_key": "I5_BOSS_WEAVER",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "planetarium",
+      "region": "planet_r6",
+      "music": "island5_boss_p1",
+      "music_p2": "island5_boss_p2",
+      "heart": "half",
+      "flag": "pl_miniboss_done",
+      "arena_lock": true
+    },
+    "the_zodiac": {
+      "name_key": "I5_BOSS_ZODIAC",
+      "phases": [0.75, 0.5, 0.25],
+      "mini": false,
+      "dungeon": "planetarium",
+      "region": "planet_r11",
+      "music": "island5_boss_p1",
+      "music_p2": "island5_boss_p2",
+      "heart": "half",
+      "flag": "planetarium_done",
+      "arena_lock": true
+    },
+    "the_counterweight": {
+      "name_key": "I5_BOSS_WEIGHT",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "fall",
+      "region": "fall_r4",
+      "music": "island5_boss_p1",
+      "music_p2": "island5_boss_p2",
+      "heart": "none",
+      "flag": "fall_done",
+      "arena_lock": true
+    },
+    "event_horizon": {
+      "name_key": "I5_BOSS_HORIZON",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "superboss",
+      "region": "superboss_horizon",
+      "music": "island5_boss_p1",
+      "music_p2": "island5_boss_p2",
+      "heart": "full",
+      "flag": "superboss_5_defeated",
+      "arena_lock": true
+    }
+  },
+  "sfx": {
+    "compass_tick": {"id": "clockwork_chime", "pitch": 1.32, "db": -2.5},
+    "zodiac_chord": {"id": "great_lamp_bloom", "pitch": 1.08, "db": -1.0},
+    "chain_groan": {"id": "harbor_creak", "pitch": 0.78, "db": -1.0},
+    "horizon_swallow": {"id": "snuffer_gulp", "pitch": 0.72, "db": -1.0},
+    "white_hole_flip": {"id": "dawn_burst", "pitch": 1.16, "db": 0.5},
+    "i5b_gravity_curve": {"id": "phantom_phase", "pitch": 1.16, "db": -1.5},
+    "i5b_polarity_flip": {"id": "clockwork_chime", "pitch": 1.18, "db": -1.0},
+    "i5b_chain_snap": {"id": "shield_shatter", "pitch": 1.12, "db": 0.5}
+  }
+}

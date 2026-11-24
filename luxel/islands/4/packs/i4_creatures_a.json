@@ -1,0 +1,167 @@
+{
+  "pack_id": "i4_creatures_a",
+  "owner": "C4-A",
+  "comment": "Island 4 Mirefen Gardens new enemies (5) and Hourglass Maze bosses (Brass Shear-Keeper, The Gardener Twice).",
+  "strings": {
+    "ISL4_BOSS_SHEAR": "BRASS SHEAR-KEEPER",
+    "ISL4_BOSS_GARDENER": "THE GARDENER TWICE"
+  },
+  "enemies": {
+    "topiary_knight": {
+      "script": "res://luxel/enemies/topiary_knight/brain.gd",
+      "data": {
+        "max_hp": 4.5,
+        "body_radius": 7.0,
+        "routine_speed": 64.0,
+        "leash_radius": 158.0,
+        "notice_radius": 148.0,
+        "tell_time": 0.50,
+        "recover_time": 1.15,
+        "shard_drop": 6,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "hour_heron": {
+      "script": "res://luxel/enemies/hour_heron/brain.gd",
+      "data": {
+        "max_hp": 3.5,
+        "body_radius": 6.0,
+        "routine_speed": 46.0,
+        "leash_radius": 158.0,
+        "notice_radius": 140.0,
+        "tell_time": 0.55,
+        "recover_time": 1.10,
+        "shard_drop": 5,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "petal_duelist": {
+      "script": "res://luxel/enemies/petal_duelist/brain.gd",
+      "data": {
+        "max_hp": 3.5,
+        "body_radius": 5.5,
+        "routine_speed": 48.0,
+        "leash_radius": 158.0,
+        "notice_radius": 132.0,
+        "tell_time": 0.48,
+        "recover_time": 1.05,
+        "shard_drop": 5,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "mist_eel": {
+      "script": "res://luxel/enemies/mist_eel/brain.gd",
+      "data": {
+        "max_hp": 2.75,
+        "body_radius": 6.0,
+        "routine_speed": 46.0,
+        "leash_radius": 160.0,
+        "notice_radius": 145.0,
+        "tell_time": 0.52,
+        "recover_time": 1.00,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "rain_frog": {
+      "script": "res://luxel/enemies/rain_frog/brain.gd",
+      "data": {
+        "max_hp": 3.0,
+        "body_radius": 6.0,
+        "routine_speed": 40.0,
+        "leash_radius": 158.0,
+        "notice_radius": 136.0,
+        "tell_time": 0.50,
+        "recover_time": 1.05,
+        "shard_drop": 4,
+        "attack_damage": 1.0,
+        "is_boss": false
+      }
+    },
+    "boss_shear_keeper": {
+      "script": "res://luxel/bosses/shear_keeper/brain.gd",
+      "aliases": ["brass_shear_keeper", "shear_keeper"],
+      "data": {
+        "max_hp": 64.0,
+        "body_radius": 11.0,
+        "routine_speed": 46.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.55,
+        "recover_time": 1.15,
+        "shard_drop": 45,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "boss_gardener_twice": {
+      "script": "res://luxel/bosses/gardener_twice/brain.gd",
+      "aliases": ["gardener_twice"],
+      "data": {
+        "max_hp": 235.0,
+        "body_radius": 10.0,
+        "routine_speed": 44.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.55,
+        "recover_time": 1.10,
+        "shard_drop": 65,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "boss_shear_keeper": {
+      "name_key": "ISL4_BOSS_SHEAR",
+      "island": 4,
+      "phases": [0.56],
+      "mini": true,
+      "dungeon": "hourglass_maze",
+      "region": "hourglass_r5",
+      "music": "island4_boss_p1",
+      "music_p2": "island4_boss_p2",
+      "heart": "none",
+      "flag": "boss_shear_keeper_defeated",
+      "aliases": ["brass_shear_keeper", "shear_keeper"]
+    },
+    "boss_gardener_twice": {
+      "name_key": "ISL4_BOSS_GARDENER",
+      "island": 4,
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "hourglass_maze",
+      "region": "hourglass_r12",
+      "music": "island4_boss_p1",
+      "music_p2": "island4_boss_p2",
+      "heart": "half",
+      "flag": "boss_gardener_twice_defeated",
+      "aliases": ["gardener_twice"]
+    }
+  },
+  "sfx": {
+    "topiary_freeze": {"id": "prop_rustle", "pitch": 1.15, "db": -1.0},
+    "topiary_cleave": {"id": "warden_swing", "pitch": 1.12, "db": -0.5},
+    "hour_heron_tick": {"id": "clockwork_chime", "pitch": 1.08, "db": -3.0},
+    "hour_heron_clank": {"id": "crystal_clank", "pitch": 1.16, "db": -1.5},
+    "hour_heron_lunge": {"id": "beak_strike", "pitch": 1.10, "db": 0.0},
+    "petal_parry": {"id": "crystal_clank", "pitch": 1.24, "db": -1.0},
+    "petal_lunge": {"id": "hollow_dash", "pitch": 1.18, "db": -1.0},
+    "petal_echo": {"id": "lens_reveal", "pitch": 1.14, "db": -2.0},
+    "mist_eel_arc": {"id": "marsh_splash", "pitch": 1.16, "db": -1.0},
+    "mist_eel_flop": {"id": "marsh_splash", "pitch": 0.84, "db": -1.5},
+    "rain_frog_swell": {"id": "marsh_croak", "pitch": 0.90, "db": -2.0},
+    "rain_frog_spit": {"id": "spore_pop", "pitch": 1.08, "db": -1.0},
+    "rain_frog_shrink": {"id": "marsh_croak", "pitch": 1.32, "db": -2.0},
+    "shear_clack": {"id": "shell_snap", "pitch": 1.16, "db": -0.5},
+    "shear_jam": {"id": "shield_shatter", "pitch": 1.06, "db": 0.0},
+    "shear_whirl": {"id": "wing_gale", "pitch": 1.14, "db": -0.5},
+    "gardener_record": {"id": "clockwork_chime", "pitch": 0.96, "db": -1.0},
+    "gardener_clash": {"id": "perfect_counter", "pitch": 1.08, "db": 0.5},
+    "gardener_annihilate": {"id": "prism_chain", "pitch": 1.12, "db": 0.5}
+  }
+}

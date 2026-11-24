@@ -1,0 +1,209 @@
+{
+  "pack_id": "i3_bosses_b",
+  "version": 1,
+  "owner": "I3-bosses-b",
+  "comment": "Island 3 (Thornwood Hollow) Boss Package B: Thread-Keeper, The Loom Widow, The Briar Court trio (Sir Taproot, Dame Spindle, Briar Arbiter), and The Mother Root.",
+  "strings": {
+    "ISL3_BOSS_KEEPER": "THREAD-KEEPER",
+    "ISL3_BOSS_WIDOW": "THE LOOM WIDOW",
+    "ISL3_BOSS_TAPROOT": "SIR TAPROOT",
+    "ISL3_BOSS_SPINDLE": "DAME SPINDLE",
+    "ISL3_BOSS_ARBITER": "BRIAR ARBITER",
+    "ISL3_BOSS_MOTHER": "THE MOTHER ROOT"
+  },
+  "enemies": {
+    "thread_keeper": {
+      "script": "res://luxel/bosses/thread_keeper/brain.gd",
+      "data": {
+        "max_hp": 64.0,
+        "body_radius": 10.5,
+        "routine_speed": 44.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.52,
+        "recover_time": 1.10,
+        "shard_drop": 22,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "loom_widow": {
+      "script": "res://luxel/bosses/loom_widow/brain.gd",
+      "data": {
+        "max_hp": 76.0,
+        "body_radius": 12.5,
+        "routine_speed": 40.0,
+        "leash_radius": 0.0,
+        "notice_radius": 190.0,
+        "tell_time": 0.54,
+        "recover_time": 1.15,
+        "shard_drop": 36,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "knight_taproot": {
+      "script": "res://luxel/bosses/knight_taproot/brain.gd",
+      "data": {
+        "max_hp": 54.0,
+        "body_radius": 11.0,
+        "routine_speed": 44.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.55,
+        "recover_time": 1.20,
+        "shard_drop": 22,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "knight_spindle": {
+      "script": "res://luxel/bosses/knight_spindle/brain.gd",
+      "data": {
+        "max_hp": 56.0,
+        "body_radius": 9.5,
+        "routine_speed": 48.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.52,
+        "recover_time": 1.15,
+        "shard_drop": 24,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "briar_arbiter": {
+      "script": "res://luxel/bosses/briar_arbiter/brain.gd",
+      "data": {
+        "max_hp": 88.0,
+        "body_radius": 12.5,
+        "routine_speed": 36.0,
+        "leash_radius": 0.0,
+        "notice_radius": 190.0,
+        "tell_time": 0.56,
+        "recover_time": 1.15,
+        "shard_drop": 34,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "mother_root": {
+      "script": "res://luxel/bosses/mother_root/brain.gd",
+      "data": {
+        "max_hp": 96.0,
+        "body_radius": 15.5,
+        "routine_speed": 24.0,
+        "leash_radius": 0.0,
+        "notice_radius": 200.0,
+        "tell_time": 0.58,
+        "recover_time": 1.15,
+        "shard_drop": 100,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "thread_keeper": {
+      "island": 3,
+      "name_key": "ISL3_BOSS_KEEPER",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "loom",
+      "region": "loom_r6",
+      "music": "island3_boss_p1",
+      "music_p2": "island3_boss_p2",
+      "heart": "none",
+      "flag": "brass_shuttle",
+      "arena_lock": true
+    },
+    "loom_widow": {
+      "island": 3,
+      "name_key": "ISL3_BOSS_WIDOW",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "loom",
+      "region": "loom_r11",
+      "music": "island3_boss_p1",
+      "music_p2": "island3_boss_p2",
+      "heart": "half",
+      "flag": "loom_done",
+      "arena_lock": true
+    },
+    "knight_taproot": {
+      "island": 3,
+      "name_key": "ISL3_BOSS_TAPROOT",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "briar_court",
+      "region": "court_r2",
+      "music": "island3_boss_p1",
+      "music_p2": "island3_boss_p2",
+      "heart": "none",
+      "flag": "court_taproot_done",
+      "arena_lock": true
+    },
+    "knight_spindle": {
+      "island": 3,
+      "name_key": "ISL3_BOSS_SPINDLE",
+      "phases": [0.5],
+      "mini": true,
+      "dungeon": "briar_court",
+      "region": "court_r3",
+      "music": "island3_boss_p1",
+      "music_p2": "island3_boss_p2",
+      "heart": "none",
+      "flag": "court_spindle_done",
+      "arena_lock": true
+    },
+    "briar_arbiter": {
+      "island": 3,
+      "name_key": "ISL3_BOSS_ARBITER",
+      "phases": [0.5],
+      "mini": false,
+      "dungeon": "briar_court",
+      "region": "court_r4",
+      "music": "island3_boss_p1",
+      "music_p2": "island3_boss_p2",
+      "heart": "none",
+      "flag": "briar_court_done",
+      "arena_lock": true
+    },
+    "mother_root": {
+      "island": 3,
+      "name_key": "ISL3_BOSS_MOTHER",
+      "phases": [0.66, 0.33],
+      "mini": false,
+      "dungeon": "",
+      "region": "sb_mother_root",
+      "music": "island3_boss_p1",
+      "music_p2": "island3_boss_p2",
+      "heart": "none",
+      "flag": "mother_root_defeated",
+      "arena_lock": true
+    }
+  },
+  "sfx": {
+    "tk_loom_clack": { "id": "clockwork_chime", "pitch": 0.86, "db": -1.0 },
+    "tk_shuttle_zip": { "id": "zip_streak", "pitch": 1.12, "db": -1.0 },
+    "tk_silk_needle": { "id": "star_lance", "pitch": 1.24, "db": -2.0 },
+    "tk_wood_unspool": { "id": "harbor_creak", "pitch": 1.14, "db": -1.0 },
+    "lw_widow_plucks": { "id": "prop_chime", "pitch": 0.78, "db": -1.0 },
+    "lw_spoke_ignite": { "id": "web_burn", "pitch": 1.06, "db": 0.0 },
+    "lw_widow_drop_thud": { "id": "bell_slam", "pitch": 0.86, "db": 0.5 },
+    "lw_silk_choir_die": { "id": "boss_victory", "pitch": 0.94, "db": 0.0 },
+    "kt_court_horn": { "id": "boss_awaken", "pitch": 1.14, "db": -1.0 },
+    "kt_beetle_gallop": { "id": "golem_stomp", "pitch": 1.22, "db": -2.0 },
+    "kt_lance_crack": { "id": "shield_shatter", "pitch": 1.08, "db": 0.0 },
+    "ks_tether_whip": { "id": "zip_streak", "pitch": 1.22, "db": -1.0 },
+    "ks_spindle_ring": { "id": "clockwork_chime", "pitch": 1.18, "db": -1.5 },
+    "ks_unhorse_thud": { "id": "heavy_hit", "pitch": 0.90, "db": 0.5 },
+    "ba_court_gavel": { "id": "bell_slam", "pitch": 0.80, "db": 0.5 },
+    "ba_scale_clang": { "id": "shield_clang", "pitch": 0.88, "db": 0.0 },
+    "ba_seed_verdict": { "id": "dawn_burst", "pitch": 1.06, "db": -0.5 },
+    "mr_mother_groan": { "id": "boss_matron_roar", "pitch": 0.78, "db": 0.5 },
+    "mr_bark_seal": { "id": "stone_break", "pitch": 0.74, "db": 0.5 },
+    "mr_heart_pulse_tiny": { "id": "hush_pulse", "pitch": 0.76, "db": -1.0 },
+    "mr_canopy_bloom": { "id": "great_lamp_bloom", "pitch": 1.02, "db": 0.0 }
+  }
+}

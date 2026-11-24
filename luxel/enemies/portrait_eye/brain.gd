@@ -230,7 +230,7 @@ func _step_brain(dt: float) -> void:
 					state_timer = last_tell_duration
 					_fired_this_commit = false
 					_emit_attack_started()
-					_emit_sfx("portrait_blink")
+					_emit_sfx("portrait_eye_blink")
 		State.TELL:
 			eye_open = true
 			if sees_light and state_timer > 0.16:
@@ -358,7 +358,7 @@ func _enter_notice() -> void:
 	state_timer = NOTICE_TIME
 	alert_t = 0.60
 	lost_t = 0.0
-	_emit_sfx("portrait_blink")
+	_emit_sfx("portrait_eye_blink")
 
 
 func _spawn_death_burst() -> void:

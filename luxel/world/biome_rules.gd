@@ -97,8 +97,11 @@ func _populate_features() -> void:
 			_sap_pools.append({"pos": p, "r": 14.0})
 		)
 	elif island_id == 4 or (island_id == 8 and not is_dungeon):
+		if island_id == 4 and is_dungeon and _region != null and str(_region.get("current_region_id")) == "conservatory_r5":
+			_updrafts.append({"pos": Vector2(160.0, 112.0), "r": 22.0, "cd": 0.0})
+			_updrafts.append({"pos": Vector2(320.0, 112.0), "r": 22.0, "cd": 0.0})
 		var want_tiles := PackedStringArray(["water", "pit", "void"] if is_dungeon else (["water", "tide", "pit", "void"] if island_id == 8 else ["water", "tide"]))
-		var max_u: int = 12 if (island_id == 4 and not is_dungeon) else 4
+		var max_u: int = 12 if (island_id == 4 and not is_dungeon) else (2 if not _updrafts.is_empty() else 4)
 		var mire_rect: Rect2 = _find_zone_rect(PackedStringArray(["mire", "wing", "isl8_2"])) if island_id == 8 else Rect2()
 		var u_filter: Callable = Callable()
 		if island_id == 8:
@@ -218,11 +221,6 @@ func _tick_island2(dt: float) -> void:
 		if tide_surging and not _last_tide_surge and Lx.audio != null:
 			Lx.audio.play_sfx("tide_surge", _cam_center, true)
 		_last_tide_surge = tide_surging
-		if tide_surging and Lx.player is LxWick and is_instance_valid(Lx.player):
-			var w: LxWick = Lx.player as LxWick
-			if not w.dead and not w.is_dashing() and not w.is_gliding() and not w.is_zipping():
-				if _region != null and _region.has_method("tile_at") and str(_region.call("tile_at", w.global_position)) == "tide":
-					w.apply_recoil(Vector2(28.0 * dt * 8.0, 0.0))
 	else:
 		beam_buff_t = maxf(0.0, beam_buff_t - dt)
 
@@ -389,7 +387,7 @@ func get_darkness_offset() -> float:
 	if Lx.state != null and Lx.state.relit_islands.has(island_id) and not is_dungeon: return 0.0
 	match island_id:
 		3: return 0.16 if not is_dungeon else 0.06
-		7: return lerpf(0.14, -0.16, lunar_phase)
+		7: return lerpf(0.14, -0.04, lunar_phase)
 		8: return eclipse_pulse * 0.15
 		_: return 0.0
 

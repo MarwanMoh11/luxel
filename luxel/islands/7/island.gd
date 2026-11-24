@@ -37,6 +37,7 @@ const REGIONS: Array[String] = [
 var _events: LxEventBus = null
 var _state: LxGameState = null
 var _attached: bool = false
+var _rule: LxIsland7Rule = null
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -54,9 +55,14 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.boss_defeated.connect(_on_boss_defeated)
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
 	_events.narration_requested.connect(_on_narration_requested)
+	_rule = LxIsland7Rule.new()
+	_rule.attach(_events, _state)
 
 
 func detach() -> void:
+	if _rule != null:
+		_rule.detach()
+		_rule = null
 	if not _attached or _events == null:
 		_attached = false
 		return
@@ -75,6 +81,15 @@ func detach() -> void:
 	if _events.narration_requested.is_connected(_on_narration_requested):
 		_events.narration_requested.disconnect(_on_narration_requested)
 	_attached = false
+
+
+func on_region_loaded(region_id: String) -> void:
+	if _rule != null:
+		_rule.on_region_loaded(region_id)
+
+
+func get_rule() -> LxIsland7Rule:
+	return _rule
 
 
 func get_region_list() -> PackedStringArray:

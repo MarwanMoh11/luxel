@@ -75,14 +75,18 @@ func take_hit(hit: LxHit) -> int:
 	var orig: Vector2 = h["origin"] as Vector2
 	var is_heavy: bool = bool(h["stagger"])
 
+	var was_shrunk: bool = is_shrunk()
 	if src == LxHit.SOURCE_BEAM or src == LxHit.SOURCE_SUNFLARE:
 		_shrunk_t = SHRINK_BEAM_S
 		_emit_sfx("rain_frog_shrink")
 
-	var shrunk: bool = is_shrunk()
-	if shrunk:
+	if was_shrunk:
 		dmg *= 1.50
+	elif src == LxHit.SOURCE_BEAM:
+		# First Beam shrinks the swollen toad (leaving a crisp follow-up finish so players see it shrink!)
+		dmg = minf(dmg, maxf(0.5, hp - 0.6))
 	hp -= dmg
+	var shrunk: bool = is_shrunk()
 	flash_t = 0.15 if (shrunk or is_heavy) else 0.08
 	var rel: Vector2 = orig - pos
 	if rel.length() > 0.01:
@@ -345,7 +349,10 @@ func _die(hit: Object) -> void:
 
 func _read_weather() -> String:
 	if Lx.vars != null:
-		var w: String = str(Lx.vars.resolve_var("weather", island_id, "", ""))
+		var reg_id: String = str(world_ctx.get("region_id")) if (world_ctx != null and is_instance_valid(world_ctx) and world_ctx.get("region_id") != null) else ""
+		var w: String = str(Lx.vars.resolve_var("weather", island_id, reg_id, ""))
+		if w.is_empty():
+			w = str(Lx.vars.get_var("dungeon:mausoleum", "weather", ""))
 		if not w.is_empty():
 			return w.to_lower()
 	return ""

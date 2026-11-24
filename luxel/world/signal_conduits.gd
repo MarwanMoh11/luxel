@@ -1,7 +1,8 @@
 class_name LxSignalConduits
 extends Node2D
-## Carved floor-rune signal conduits linking switches/braziers to doors/bridges
-## and nearby paired blue portals (z_index = -6, strictly 20 Last Light colours).
+## Carved, worn floor-stone rune inlays linking switches/braziers to doors/bridges
+## and paired blue portals (z_index = -6, strictly 20 Last Light colours).
+## Replaces CAD-like wires with chiseled stone notches, circular rune nodes, and drifting light dust.
 
 const PAL: Dictionary = LxInteractable.PAL
 const MAX_LINK_DIST: float = 260.0
@@ -9,11 +10,11 @@ const MAX_PORTAL_DIST: float = 280.0
 const MAX_OPTICAL_DIST: float = 210.0
 const GRID_SNAP: float = 8.0
 const SAMPLE_STEP: float = 2.0
-const INLAY_STEP: float = 10.0
-const VOID_PIP_STEP: float = 6.0
+const NOTCH_STEP: float = 7.0
+const VOID_WISP_STEP: float = 10.0
 const PULSE_HZ: float = 10.0
-const PULSE_SPEED: float = 68.0
-const PULSE_PAD: float = 28.0
+const PULSE_SPEED: float = 52.0
+const PULSE_PAD: float = 24.0
 
 class FloorRun:
 	var a: Vector2 = Vector2.ZERO
@@ -128,8 +129,7 @@ func _add_conduit(region: LxRegionLoader, src: LxInteractable, dst: LxInteractab
 	_conduits.append(c)
 
 func _build_masked_path(region: LxRegionLoader, a: Vector2, b: Vector2, out_c: Conduit, allow_bridge: bool) -> void:
-	var p0: Vector2 = a.round()
-	var p1: Vector2 = b.round()
+	var p0: Vector2 = a.round(); var p1: Vector2 = b.round()
 	var cands: Array[PackedVector2Array] = []
 	if absf(p1.x - p0.x) <= 4.0 or absf(p1.y - p0.y) <= 4.0:
 		cands.append(PackedVector2Array([p0, p1]))
@@ -142,44 +142,28 @@ func _build_masked_path(region: LxRegionLoader, a: Vector2, b: Vector2, out_c: C
 		cands.append(PackedVector2Array([p0, Vector2(p0.x, sy), Vector2(p1.x, sy), p1]))
 	var best_score: float = -1.0
 	for poly: PackedVector2Array in cands:
-		var runs: Array[FloorRun] = []
-		var vruns: Array[FloorRun] = []
+		var runs: Array[FloorRun] = []; var vruns: Array[FloorRun] = []
 		var stats: Vector3 = _mask_polyline_to_floor(region, poly, runs, vruns, allow_bridge)
 		var score: float = stats.x + stats.y * 0.72
 		if score > best_score + 4.0:
 			best_score = score; out_c.runs = runs; out_c.void_runs = vruns; out_c.total_len = stats.z
 
 func _mask_polyline_to_floor(region: LxRegionLoader, poly: PackedVector2Array, out_runs: Array[FloorRun], out_void_runs: Array[FloorRun], allow_bridge: bool) -> Vector3:
-	var walk_len: float = 0.0
-	var void_len: float = 0.0
-	var accum_d: float = 0.0
+	var walk_len: float = 0.0; var void_len: float = 0.0; var accum_d: float = 0.0
 	for i: int in range(poly.size() - 1):
-		var sa: Vector2 = poly[i]
-		var sb: Vector2 = poly[i + 1]
-		var slen: float = sa.distance_to(sb)
+		var sa: Vector2 = poly[i]; var sb: Vector2 = poly[i + 1]; var slen: float = sa.distance_to(sb)
 		if slen < 1.0: continue
 		var steps: int = maxi(1, int(ceilf(slen / SAMPLE_STEP)))
-		var mode: int = 0
-		var r_a: Vector2 = sa
-		var r_b: Vector2 = sa
-		var r_d0: float = accum_d
-		var r_d1: float = accum_d
+		var mode: int = 0; var r_a: Vector2 = sa; var r_b: Vector2 = sa; var r_d0: float = accum_d; var r_d1: float = accum_d
 		for s: int in range(steps + 1):
-			var t: float = float(s) / float(steps)
-			var pt: Vector2 = sa.lerp(sb, t)
-			var d_now: float = accum_d + slen * t
+			var t: float = float(s) / float(steps); var pt: Vector2 = sa.lerp(sb, t); var d_now: float = accum_d + slen * t
 			var tt: String = region.tile_at(pt)
-			var next_mode: int = 0
-			if tt == "ground" or tt == "path":
-				next_mode = 1
-			elif allow_bridge and (tt == "water" or tt == "pit" or tt == "void"):
-				next_mode = 2
+			var next_mode: int = 1 if (tt == "ground" or tt == "path") else (2 if (allow_bridge and (tt == "water" or tt == "pit" or tt == "void")) else 0)
 			if next_mode != mode:
 				if mode == 1: walk_len += _push_run(out_runs, r_a, r_b, r_d0, r_d1)
 				elif mode == 2: void_len += _push_run(out_void_runs, r_a, r_b, r_d0, r_d1)
 				mode = next_mode
-				if mode != 0:
-					r_a = pt.round(); r_b = r_a; r_d0 = d_now; r_d1 = d_now
+				if mode != 0: r_a = pt.round(); r_b = r_a; r_d0 = d_now; r_d1 = d_now
 			elif mode != 0:
 				r_b = pt.round(); r_d1 = d_now
 		if mode == 1: walk_len += _push_run(out_runs, r_a, r_b, r_d0, r_d1)
@@ -215,8 +199,7 @@ func _is_chevron_solved(ch: OpticalChevron) -> bool:
 func tick(dt: float) -> void:
 	if _conduits.is_empty() and _chevrons.is_empty(): return
 	_clock += dt
-	var changed: bool = false
-	var active_now: bool = false
+	var changed: bool = false; var active_now: bool = false
 	for c: Conduit in _conduits:
 		var src_ok: LxInteractable = c.src if (c.src != null and is_instance_valid(c.src)) else null
 		var dst_ok: LxInteractable = c.dst if (c.dst != null and is_instance_valid(c.dst)) else null
@@ -224,7 +207,7 @@ func tick(dt: float) -> void:
 		var o_now: bool = _is_target_opened(dst_ok) if dst_ok != null else false
 		if p_now != c.powered or o_now != c.opened:
 			c.powered = p_now; c.opened = o_now; changed = true
-		if (p_now and not (o_now and _island_id > 1)) or (o_now and _island_id <= 1):
+		if (p_now and not (o_now and _island_id > 1)) or (o_now and _island_id <= 1) or not c.void_runs.is_empty():
 			active_now = true
 	var any_unsolved_chev: bool = false
 	for ch: OpticalChevron in _chevrons:
@@ -233,9 +216,8 @@ func tick(dt: float) -> void:
 			ch.solved = s_now; changed = true
 		if not s_now: any_unsolved_chev = true
 	var hz: float = PULSE_HZ * (0.5 if LxHudFx.flash_reduced() else 1.0)
-	var has_anim: bool = active_now or any_unsolved_chev
 	var step: int = int(floorf(_clock * hz))
-	if changed or (has_anim and step != _last_step):
+	if changed or ((active_now or any_unsolved_chev) and step != _last_step):
 		_last_step = step; queue_redraw()
 
 func _draw() -> void:
@@ -243,78 +225,85 @@ func _draw() -> void:
 	var reduced: bool = LxHudFx.flash_reduced()
 	var hz: float = PULSE_HZ * (0.5 if reduced else 1.0)
 	var anim_step: int = int(floorf(_clock * hz))
-	var groove_col: Color = Color(PAL["night"] as Color, 0.42)
-	var inlay_gold: Color = PAL["dusk"] as Color
-	var inlay_blue: Color = PAL["deep"] as Color
-	var speed: float = PULSE_SPEED * (0.65 if reduced else 1.0)
+	var groove_col: Color = Color(PAL["night"] as Color, 0.34)
+	var moss_stone: Color = Color(PAL["dusk"] as Color, 0.44)
+	var slate_stone: Color = Color(PAL["deep"] as Color, 0.48)
+	var speed: float = PULSE_SPEED * (0.62 if reduced else 1.0)
 	var stepped_t: float = floorf(_clock * hz) / hz
 	for c: Conduit in _conduits:
 		var lit: bool = c.powered or c.opened
 		var settled: bool = _island_id > 1 and c.opened
-		var inlay_col: Color = inlay_blue if c.is_blue else inlay_gold
-		var chan_col: Color = Color((PAL["sky"] if c.is_blue else PAL["apricot"]) as Color, 0.38 if settled else 0.55)
-		for r: FloorRun in c.runs:
-			draw_line(r.a, r.b, groove_col, 2.0, false)
-			if lit:
-				draw_line(r.a, r.b, chan_col, 1.0, false)
-			else:
-				var slen: float = r.a.distance_to(r.b)
-				var d_in: float = 5.0
-				while d_in < slen - 2.0:
-					draw_rect(Rect2(r.a.lerp(r.b, d_in / slen).round(), Vector2.ONE), inlay_col)
-					d_in += INLAY_STEP
-		_draw_void_bridge(c, lit, anim_step, reduced, settled)
+		var notch_dim: Color = slate_stone if c.is_blue else moss_stone
+		var glow_c: Color = Color((PAL["sky"] if c.is_blue else PAL["apricot"]) as Color, 0.28 if settled else 0.54)
+		var spark_c: Color = Color((PAL["ice"] if c.is_blue else PAL["gold"]) as Color, 0.36 if settled else 0.72)
+		for ri: int in range(c.runs.size()):
+			var r: FloorRun = c.runs[ri]
+			var slen: float = r.a.distance_to(r.b)
+			if slen < 2.0: continue
+			var horiz: bool = absf(r.b.x - r.a.x) >= absf(r.b.y - r.a.y)
+			# Worn intermittent stone chisel notches instead of a continuous CAD line
+			var d_n: float = 3.0
+			var n_idx: int = 0
+			while d_n < slen - 2.0:
+				var np: Vector2 = r.a.lerp(r.b, d_n / slen).round()
+				var nsz := Vector2(3.0 if (n_idx % 2 == 0) else 2.0, 1.0) if horiz else Vector2(1.0, 3.0 if (n_idx % 2 == 0) else 2.0)
+				draw_rect(Rect2(np + Vector2(0.0, 1.0), nsz), groove_col)
+				draw_rect(Rect2(np, nsz), glow_c if lit else notch_dim)
+				if lit and not settled and ((n_idx + anim_step) % 5 == 0):
+					draw_rect(Rect2(np, Vector2.ONE), spark_c)
+				d_n += NOTCH_STEP
+				n_idx += 1
+			# Small circular carved rune node at segment endpoints/bends
+			_draw_rune_node(r.a, lit, settled, c.is_blue, groove_col, notch_dim, spark_c)
+			if ri == c.runs.size() - 1:
+				_draw_rune_node(r.b, lit, settled, c.is_blue, groove_col, notch_dim, spark_c)
+		_draw_void_wisps(c, lit, anim_step, reduced, settled)
 		if not lit or settled: continue
 		var bead_d: float = fposmod(stepped_t * speed, maxf(1.0, c.total_len) + PULSE_PAD)
-		var bead_outer: Color = (PAL["ice"] if c.is_blue else PAL["gold"]) as Color
-		var bead_core: Color = PAL["cream"] as Color
-		if not _draw_pulse_bead_on_runs(c.runs, bead_d, bead_outer, bead_core):
-			_draw_pulse_bead_on_runs(c.void_runs, bead_d, bead_outer, bead_core)
-	_draw_optical_chevrons(anim_step, reduced)
+		var bead_outer: Color = Color((PAL["ice"] if c.is_blue else PAL["gold"]) as Color, 0.78)
+		var bead_core: Color = Color(PAL["cream"] as Color, 0.90)
+		if not _draw_pulse_mote_on_runs(c.runs, bead_d, bead_outer, bead_core):
+			_draw_pulse_mote_on_runs(c.void_runs, bead_d, bead_outer, bead_core)
+	_draw_optical_inlays(anim_step, reduced)
 
-func _draw_void_bridge(c: Conduit, lit: bool, anim_step: int, reduced: bool, settled: bool) -> void:
+func _draw_rune_node(at: Vector2, lit: bool, settled: bool, is_blue: bool, groove_col: Color, dim_col: Color, spark_col: Color) -> void:
+	var p: Vector2 = at.round()
+	draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(3.0, 2.0)), groove_col)
+	draw_rect(Rect2(p + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), groove_col)
+	var ic: Color = spark_col if (lit and not settled) else (Color((PAL["sky"] if is_blue else PAL["apricot"]) as Color, 0.32) if lit else dim_col)
+	draw_rect(Rect2(p, Vector2.ONE), ic)
+
+func _draw_void_wisps(c: Conduit, lit: bool, anim_step: int, reduced: bool, settled: bool) -> void:
 	if c.void_runs.is_empty(): return
-	var step_px: float = 5.0 if (lit and not settled) else VOID_PIP_STEP
-	var is_gold_pit: bool = _island_id > 1 and not c.is_blue and not c.is_portal and not settled
-	var c_sh: Color = Color((PAL["void"] if is_gold_pit else PAL["night"]) as Color, 0.92 if is_gold_pit else 0.85)
-	var bead_sz := Vector2(2.0, 1.0)
-	var sh_off := Vector2(0.0, 1.0)
+	# Soft drifting firefly/starlight wisps over water/void instead of dashed CAD lines
+	var step_px: float = 8.0 if (lit and not settled) else VOID_WISP_STEP
 	for vr: FloorRun in c.void_runs:
 		var slen: float = vr.a.distance_to(vr.b)
-		if slen < 2.0: continue
-		var d_p: float = 3.0
+		if slen < 4.0: continue
+		var d_p: float = 5.0
 		var p_idx: int = 0
-		while d_p < slen - 1.0:
-			var pp: Vector2 = vr.a.lerp(vr.b, d_p / slen).round()
-			var vc: Color
-			if settled:
-				vc = Color((PAL["sky"] if (c.is_blue or c.is_portal) else PAL["apricot"]) as Color, 0.44)
-			elif lit:
-				if c.is_blue or c.is_portal:
-					vc = (PAL["ice"] if (p_idx + anim_step) % 2 == 0 else PAL["sky"]) as Color
-				else:
-					vc = (PAL["cream"] if (p_idx + anim_step) % 2 == 0 else PAL["gold"]) as Color
-			elif c.is_portal and (p_idx % 3 == 1) and not reduced:
-				vc = PAL["ice"] as Color
-			elif c.is_blue or c.is_portal:
-				vc = (PAL["ice"] if p_idx % 3 == 0 else PAL["sky"]) as Color
-			elif is_gold_pit:
-				vc = (PAL["cream"] if (p_idx % 3 == 0 and not reduced) else PAL["gold"]) as Color
-			else:
-				vc = (PAL["gold"] if p_idx % 2 == 0 else PAL["apricot"]) as Color
-			if is_gold_pit:
-				draw_rect(Rect2(pp - Vector2.ONE, Vector2(4.0, 3.0)), c_sh)
-			else:
-				draw_rect(Rect2(pp + sh_off, bead_sz), c_sh)
-			draw_rect(Rect2(pp, bead_sz), vc)
+		while d_p < slen - 3.0:
+			var base_p: Vector2 = vr.a.lerp(vr.b, d_p / slen)
+			var bob: float = 0.0 if reduced else roundf(sin(_clock * 2.2 + float(p_idx) * 1.4 + base_p.x * 0.05) * 1.2)
+			var pp: Vector2 = (base_p + Vector2(0.0, bob)).round()
+			var a_w: float = 0.26 if settled else (0.76 if lit else 0.46)
+			if not reduced and ((p_idx + anim_step / 2) % 4 == 0):
+				a_w = minf(0.92, a_w + 0.18)
+			var halo_c: Color = Color((PAL["sky"] if (c.is_blue or c.is_portal) else PAL["apricot"]) as Color, a_w * 0.45)
+			var core_c: Color = Color((PAL["ice"] if (c.is_blue or c.is_portal) else PAL["gold"]) as Color, a_w)
+			draw_rect(Rect2(pp + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), halo_c)
+			draw_rect(Rect2(pp, Vector2.ONE), core_c)
+			if lit and not settled and ((p_idx + anim_step) % 3 == 0):
+				draw_rect(Rect2(pp, Vector2.ONE), Color(PAL["cream"] as Color, a_w))
 			d_p += step_px
 			p_idx += 1
 
-func _draw_pulse_bead_on_runs(runs: Array[FloorRun], bead_d: float, bead_outer: Color, bead_core: Color) -> bool:
+func _draw_pulse_mote_on_runs(runs: Array[FloorRun], bead_d: float, bead_outer: Color, bead_core: Color) -> bool:
 	for r: FloorRun in runs:
 		if bead_d >= r.d0 and bead_d <= r.d1 and r.d1 > r.d0:
 			var bp: Vector2 = r.a.lerp(r.b, (bead_d - r.d0) / (r.d1 - r.d0)).round()
-			draw_rect(Rect2(bp - Vector2.ONE, Vector2(3.0, 3.0)), bead_outer)
+			draw_rect(Rect2(bp + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), bead_outer)
+			draw_rect(Rect2(bp + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), bead_outer)
 			draw_rect(Rect2(bp, Vector2.ONE), bead_core)
 			return true
 	return false
@@ -345,19 +334,16 @@ func _collect_optical_chevrons(region: LxRegionLoader) -> void:
 			if d > 16.0 and d < best_d:
 				best_d = d; best_tgt = tgt
 		if best_tgt != null:
-			primary_target[it] = best_tgt
-			primary_dist[it] = best_d
+			primary_target[it] = best_tgt; primary_dist[it] = best_d
 	for it: LxInteractable in mirrors:
 		var is_blue_t: bool = (it is LxMirror and (it as LxMirror).transforms_to == LxHit.COLOR_BLUE) or it.kind == "blue_transformer"
 		var p_axis: Vector2 = Vector2.ZERO
 		if primary_target.has(it):
 			var best_tgt: LxInteractable = primary_target[it] as LxInteractable
 			p_axis = (best_tgt.pos - it.pos).normalized()
-			var p_dists: Array[float] = [16.0, 28.0]
-			_emit_chevron_pair(region, it.pos, p_axis, p_dists, false, is_blue_t, occ_tiles, best_tgt)
+			_emit_chevron_pair(region, it.pos, p_axis, [18.0, 30.0], false, is_blue_t, occ_tiles, best_tgt)
 		if region.current_island_id <= 1: continue
-		var best_m: LxInteractable = null
-		var best_md: float = MAX_OPTICAL_DIST + 0.01
+		var best_m: LxInteractable = null; var best_md: float = MAX_OPTICAL_DIST + 0.01
 		for m2: LxInteractable in mirrors:
 			if m2 == it: continue
 			var d: float = it.pos.distance_to(m2.pos)
@@ -369,22 +355,17 @@ func _collect_optical_chevrons(region: LxRegionLoader) -> void:
 		var m_vec: Vector2 = best_m.pos - it.pos
 		var fwd_b: bool = primary_target.has(best_m) and ((primary_target[best_m] as LxInteractable).pos - best_m.pos).dot(m_vec) > 0.0
 		var fwd_a: bool = primary_target.has(it) and ((primary_target[it] as LxInteractable).pos - it.pos).dot(-m_vec) > 0.0
-		var d_a: float = float(primary_dist.get(it, 9999.0))
-		var d_b: float = float(primary_dist.get(best_m, 9999.0))
-		var allow_dir: bool = (fwd_b and not fwd_a) or (fwd_b == fwd_a and (d_b < d_a - 4.0 or (absf(d_b - d_a) <= 4.0 and it.id < best_m.id)))
-		if not allow_dir: continue
-		var r_dists: Array[float] = [16.0, 28.0]
-		if best_md >= 80.0:
-			r_dists.append(best_md * 0.5)
-		var relay_tgt: LxInteractable = primary_target.get(best_m, primary_target.get(it, null)) as LxInteractable
-		_emit_chevron_pair(region, it.pos, m_vec.normalized(), r_dists, true, is_blue_t, occ_tiles, relay_tgt)
+		var d_a: float = float(primary_dist.get(it, 9999.0)); var d_b: float = float(primary_dist.get(best_m, 9999.0))
+		if not ((fwd_b and not fwd_a) or (fwd_b == fwd_a and (d_b < d_a - 4.0 or (absf(d_b - d_a) <= 4.0 and it.id < best_m.id)))): continue
+		var r_dists: Array[float] = [18.0, 30.0]
+		if best_md >= 80.0: r_dists.append(best_md * 0.5)
+		_emit_chevron_pair(region, it.pos, m_vec.normalized(), r_dists, true, is_blue_t, occ_tiles, primary_target.get(best_m, primary_target.get(it, null)) as LxInteractable)
 
 func _emit_chevron_pair(region: LxRegionLoader, origin: Vector2, axis: Vector2, dists: Array[float], is_relay: bool, is_blue: bool, occ_tiles: Dictionary, target_it: LxInteractable = null) -> void:
 	var sdir: Vector2i = _snap_dir8(axis)
 	for di: int in range(dists.size()):
 		var pt: Vector2 = (origin + axis * dists[di]).round()
-		if not _is_walkable_floor(region, pt) and di == 1:
-			pt = (origin + axis * 22.0).round()
+		if not _is_walkable_floor(region, pt) and di == 1: pt = (origin + axis * 22.0).round()
 		if not _is_walkable_floor(region, pt): continue
 		var tk := Vector2i(int(floorf(pt.x / 16.0)), int(floorf(pt.y / 16.0)))
 		if occ_tiles.has(tk): continue
@@ -398,8 +379,7 @@ func _is_walkable_floor(region: LxRegionLoader, pt: Vector2) -> bool:
 	return tt == "ground" or tt == "path"
 
 static func _snap_dir8(v: Vector2) -> Vector2i:
-	var idx: int = int(posmod(roundi(v.angle() / (PI * 0.25)), 8))
-	match idx:
+	match int(posmod(roundi(v.angle() / (PI * 0.25)), 8)):
 		0: return Vector2i(1, 0)
 		1: return Vector2i(1, 1)
 		2: return Vector2i(0, 1)
@@ -409,61 +389,39 @@ static func _snap_dir8(v: Vector2) -> Vector2i:
 		6: return Vector2i(0, -1)
 		_: return Vector2i(1, -1)
 
-func _draw_optical_chevrons(anim_step: int, reduced: bool) -> void:
-	var c_groove: Color = Color(PAL["night"] as Color, 0.45)
-	var c_dusk: Color = PAL["dusk"] as Color
-	var c_gold: Color = PAL["gold"] as Color
-	var c_deep: Color = PAL["deep"] as Color
-	var c_sky: Color = PAL["sky"] as Color
-	var c_ice: Color = PAL["ice"] as Color
-	var c_cream: Color = PAL["cream"] as Color
-	var c_apricot: Color = PAL["apricot"] as Color
+func _draw_optical_inlays(anim_step: int, reduced: bool) -> void:
+	# Subtle carved floor-stone directional rune inlays (no floating black-outlined debug arrows)
+	var c_recess := Color(PAL["night"] as Color, 0.36)
+	var c_dim_b := Color(PAL["deep"] as Color, 0.42)
+	var c_dim_g := Color(PAL["dusk"] as Color, 0.42)
 	for ch: OpticalChevron in _chevrons:
 		var p: Vector2 = ch.pos
-		var dx: float = float(ch.dir.x)
-		var dy: float = float(ch.dir.y)
-		var c_tail: Color = c_deep if (ch.is_relay or ch.is_blue) else c_dusk
+		var dx: float = float(ch.dir.x); var dy: float = float(ch.dir.y)
+		var cool: bool = ch.is_blue or ch.is_relay
+		var c_tail: Color = c_dim_b if cool else c_dim_g
 		if ch.solved:
-			draw_rect(Rect2(p, Vector2.ONE), c_groove)
-			if ch.dir.x == 0 or ch.dir.y == 0:
-				var px_s: float = -dy; var py_s: float = dx
-				draw_rect(Rect2(p + Vector2(dx, dy), Vector2.ONE), c_tail)
-				draw_rect(Rect2(p + Vector2(-dx + px_s, -dy + py_s), Vector2.ONE), c_tail)
-				draw_rect(Rect2(p + Vector2(-dx - px_s, -dy - py_s), Vector2.ONE), c_tail)
-			else:
-				draw_rect(Rect2(p + Vector2(dx, dy), Vector2.ONE), c_tail)
-				draw_rect(Rect2(p + Vector2(-dx, dy), Vector2.ONE), c_tail)
-				draw_rect(Rect2(p + Vector2(dx, -dy), Vector2.ONE), c_tail)
+			draw_rect(Rect2(p + Vector2(0.0, 1.0), Vector2(2.0, 1.0)), c_recess)
+			draw_rect(Rect2(p, Vector2.ONE), c_tail)
 			continue
-		var k: int = posmod(anim_step + ch.phase, 4)
-		var v := Vector2(dx, dy)
-		if _island_id > 1:
-			var c_hi: Color = (c_cream if (k == 2 and not reduced) else c_ice) if (ch.is_blue or ch.is_relay) else (c_cream if (k == 2 and not reduced) else c_gold)
-			var c_mid: Color = (c_ice if k == 1 else c_sky) if (ch.is_blue or ch.is_relay) else (c_gold if k == 1 else c_apricot)
-			LxPixelGlyphs.draw_dir_chevron(self, (p + v).round(), v, c_hi, c_mid)
-			continue
-		var c_head: Color = c_sky if ch.is_relay else c_gold
-		draw_rect(Rect2(p, Vector2.ONE), c_groove)
+		var k: int = posmod(anim_step / 2 + ch.phase, 4)
+		var c_base := Color((PAL["sky"] if cool else PAL["apricot"]) as Color, 0.48 if k == 0 else 0.62)
+		var c_hi := Color((PAL["ice"] if cool else PAL["gold"]) as Color, 0.82 if k == 2 else 0.56)
+		if k == 2 and not reduced:
+			c_hi = Color(PAL["cream"] as Color, 0.85)
+		# Recessed carved stone groove + delicate 3-dot directional floor glyph
+		var tip: Vector2 = p + Vector2(dx, dy)
+		var wing_a: Vector2
+		var wing_b: Vector2
 		if ch.dir.x == 0 or ch.dir.y == 0:
-			var px: float = -dy
-			var py: float = dx
-			draw_rect(Rect2(p + Vector2(dx, dy), Vector2.ONE), c_head)
-			draw_rect(Rect2(p + Vector2(px, py), Vector2.ONE), c_head)
-			draw_rect(Rect2(p + Vector2(-px, -py), Vector2.ONE), c_head)
-			draw_rect(Rect2(p + Vector2(-dx + px, -dy + py), Vector2.ONE), c_tail)
-			draw_rect(Rect2(p + Vector2(-dx - px, -dy - py), Vector2.ONE), c_tail)
+			var px: float = -dy; var py: float = dx
+			wing_a = p + Vector2(-dx + px, -dy + py)
+			wing_b = p + Vector2(-dx - px, -dy - py)
 		else:
-			draw_rect(Rect2(p + Vector2(dx, dy), Vector2.ONE), c_head)
-			draw_rect(Rect2(p + Vector2(dx, 0.0), Vector2.ONE), c_head)
-			draw_rect(Rect2(p + Vector2(0.0, dy), Vector2.ONE), c_head)
-			draw_rect(Rect2(p + Vector2(-dx, dy), Vector2.ONE), c_tail)
-			draw_rect(Rect2(p + Vector2(dx, -dy), Vector2.ONE), c_tail)
-		if ch.is_blue or ch.is_relay:
-			if k == 0: draw_rect(Rect2(p - v * 2.0, Vector2.ONE), c_gold)
-			elif k == 1: draw_rect(Rect2(p, Vector2.ONE), c_sky)
-			elif k == 2: draw_rect(Rect2(p + v * 2.0, Vector2.ONE), c_ice)
-			elif k == 3 and not reduced: draw_rect(Rect2(p + v * 2.0, Vector2.ONE), c_cream)
-		else:
-			if k == 0: draw_rect(Rect2(p - v * 2.0, Vector2.ONE), c_apricot)
-			elif k == 1: draw_rect(Rect2(p, Vector2.ONE), c_gold)
-			elif k == 2 and not reduced: draw_rect(Rect2(p + v * 2.0, Vector2.ONE), c_cream)
+			wing_a = p + Vector2(-dx, 0.0)
+			wing_b = p + Vector2(0.0, -dy)
+		for pt: Vector2 in [tip, p, wing_a, wing_b]:
+			draw_rect(Rect2(pt + Vector2(0.0, 1.0), Vector2.ONE), c_recess)
+		draw_rect(Rect2(wing_a, Vector2.ONE), c_base)
+		draw_rect(Rect2(wing_b, Vector2.ONE), c_base)
+		draw_rect(Rect2(p, Vector2.ONE), c_hi if k == 1 else c_base)
+		draw_rect(Rect2(tip, Vector2.ONE), c_hi)

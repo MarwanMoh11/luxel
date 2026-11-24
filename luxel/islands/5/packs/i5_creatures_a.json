@@ -91,7 +91,7 @@
     "apogee_hound": {
       "script": "res://luxel/bosses/apogee_hound/brain.gd",
       "data": {
-        "max_hp": 48.0,
+        "max_hp": 64.0,
         "body_radius": 10.5,
         "routine_speed": 54.0,
         "leash_radius": 0.0,
@@ -106,7 +106,7 @@
     "twin_moons": {
       "script": "res://luxel/bosses/twin_moons/brain.gd",
       "data": {
-        "max_hp": 72.0,
+        "max_hp": 116.0,
         "body_radius": 12.0,
         "routine_speed": 48.0,
         "leash_radius": 0.0,
@@ -146,15 +146,15 @@
     }
   },
   "sfx": {
-    "meteor_clank": {"id": "crystal_clank", "pitch": 0.84, "db": -0.5},
-    "gravity_curve": {"id": "phantom_phase", "pitch": 1.16, "db": -1.5},
-    "comet_bark": {"id": "owl_lock", "pitch": 1.24, "db": -2.0},
-    "boss_stagger": {"id": "shield_shatter", "pitch": 0.90, "db": 0.0},
-    "moon_clash_bong": {"id": "bell_toll_heavy", "pitch": 1.06, "db": 0.5},
-    "polarity_flip": {"id": "clockwork_chime", "pitch": 1.18, "db": -1.0},
-    "null_moth_eat": {"id": "snuffer_gulp", "pitch": 0.86, "db": -1.5},
-    "star_jelly_swell": {"id": "spore_pop", "pitch": 1.22, "db": -3.0},
-    "star_jelly_pulse": {"id": "hush_pulse", "pitch": 1.18, "db": -1.5},
-    "star_jelly_split": {"id": "spore_pop", "pitch": 1.32, "db": -1.0}
+    "i5_meteor_hit": {"id": "crystal_clank", "pitch": 0.84, "db": -0.5},
+    "i5_gravity_bend": {"id": "phantom_phase", "pitch": 1.16, "db": -1.5},
+    "i5_well_polarity": {"id": "clockwork_chime", "pitch": 1.18, "db": -1.0},
+    "i5_comet_bark": {"id": "owl_lock", "pitch": 1.24, "db": -2.0},
+    "i5_hound_stagger": {"id": "shield_shatter", "pitch": 0.90, "db": 0.0},
+    "i5_moon_clash_bong": {"id": "bell_toll_heavy", "pitch": 1.06, "db": 0.5},
+    "i5_null_moth_eat": {"id": "snuffer_gulp", "pitch": 0.86, "db": -1.5},
+    "i5_star_jelly_swell": {"id": "spore_pop", "pitch": 1.22, "db": -3.0},
+    "i5_star_jelly_pulse": {"id": "hush_pulse", "pitch": 1.18, "db": -1.5},
+    "i5_star_jelly_split": {"id": "spore_pop", "pitch": 1.32, "db": -1.0}
   }
 }

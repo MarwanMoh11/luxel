@@ -38,6 +38,8 @@ var _last_shards: int = -1
 var _shard_pop_t: float = 0.0
 var _last_hearts: float = -1.0
 var _heart_pop_t: float = 0.0
+var _zip_cue_alpha: float = 0.0
+var _challenge: Dictionary = {"active": false, "kind": "", "limit": 1.0, "rem": 0.0, "frac": 1.0, "state": 0}
 var _bound: bool = false
 
 func _ready() -> void:
@@ -115,6 +117,11 @@ func update_boss(hp: float, max_hp: float, phase: int = -1) -> void:
 	queue_redraw()
 
 func hide_boss() -> void: _boss_active = false; _boss_entries.clear(); queue_redraw()
+func show_challenge_timer(kind: String, time_limit: float) -> void:
+	_challenge = {"active": true, "kind": kind, "limit": maxf(0.1, time_limit), "rem": time_limit, "frac": 1.0, "state": 0}; queue_redraw()
+func update_challenge_timer(rem: float, frac: float, state: int) -> void:
+	_challenge["active"] = true; _challenge["rem"] = rem; _challenge["frac"] = frac; _challenge["state"] = state; queue_redraw()
+func hide_challenge_timer() -> void: _challenge["active"] = false; queue_redraw()
 
 func show_notice(string_id: String, duration: float = 3.5) -> void:
 	_notice_text = LxStrings.text(string_id); _notice_t = 0.0; _notice_dur = maxf(duration, 1.0); queue_redraw()
@@ -136,7 +143,7 @@ func spawn_screen_cue(string_id: String, screen_pos: Vector2, color_name: String
 	_cues.append({"text": txt, "pos": screen_pos, "is_world": false, "color": color_name, "t": 0.0, "dur": maxf(duration, 0.4)})
 	queue_redraw()
 
-func clear_cues() -> void: _cues.clear(); _notice_text = ""; _notice_t = 0.0; queue_redraw()
+func clear_cues() -> void: _cues.clear(); _notice_text = ""; _notice_t = 0.0; _challenge["active"] = false; _zip_cue_alpha = 0.0; queue_redraw()
 
 func _on_beacon_lit(island_id: int, _beacon_id: String) -> void:
 	var ck: String = str(BEACON_CUES.get(island_id, "CUE_BEACON_LIT"))
@@ -160,7 +167,7 @@ func _on_boss_phase(boss_id: String, phase: int) -> void:
 		var isl_p: int = Lx.state.island_id if Lx.state != null else 1
 		var p2_k: String = str(PHASE2_CUES.get(isl_p, "CUE_PHASE_2"))
 		var p_cue: String = ("CUE_HUSH_P4" if phase >= 4 else "CUE_HUSH_P3") if (_boss_name_key == "BOSS_HUSH" and phase >= 3) else ("CUE_PHASE_3" if phase >= 3 else p2_k)
-		spawn_screen_cue(p_cue, Vector2(160.0, 24.0), "coral", 1.8)
+		spawn_screen_cue(p_cue, Vector2(160.0, 126.0), "coral", 1.8)
 		if not _cues.is_empty(): _cues[_cues.size() - 1]["boss_callout"] = true
 
 func _on_boss_defeated(_boss_id: String, _island_id: int) -> void: hide_boss()
@@ -206,6 +213,11 @@ func _process(delta: float) -> void:
 	if not _notice_text.is_empty():
 		_notice_t += delta
 		if _notice_t >= _notice_dur: _notice_text = ""
+	var want_zip: bool = not _boss_active and _has_lantern() and Lx.state != null and Lx.state.has_move("throw") and Lx.player != null
+	if want_zip:
+		var lo: Variant = Lx.player.get("lantern")
+		want_zip = lo is Object and (lo as Object).has_method("is_lure_active") and bool((lo as Object).call("is_lure_active"))
+	_zip_cue_alpha = clampf(_zip_cue_alpha + (delta * 7.5 if want_zip else -delta * 5.5), 0.0, 1.0)
 	_sync_player_ember()
 	LxHudFx.sync_reticle_visibility(self)
 	queue_redraw()
@@ -224,6 +236,8 @@ func _draw() -> void:
 	_draw_hearts(Vector2(5.0, 5.0))
 	var in_dng: bool = Lx.world != null and bool(Lx.world.get("is_dungeon"))
 	if not _boss_active and not in_dng and Lx.state.island_id > 0 and _notice_text.is_empty() and not LxHudFx.is_ceremony_active(): _draw_beacon_gauge(160.0, 4.0)
+	if bool(_challenge.get("active", false)):
+		LxHudOverlays.draw_challenge_timer(self, _challenge, _blink_t, 4.0 if (in_dng or _boss_active) else 18.0)
 	var keys_shown: bool = _draw_shards_and_keys(Vector2(315.0, 5.0))
 	_draw_moves_tray(Vector2(5.0, 160.0))
 	if not _boss_active: _draw_zip_cue(Vector2(5.0, 148.0))
@@ -241,27 +255,19 @@ func _draw() -> void:
 	LxHudFx.draw_indicators(self, _blink_t, _boss_active, _boss_phase)
 
 func _draw_hearts(origin: Vector2) -> void:
-	var max_h: int = clampi(Lx.state.max_hearts, 4, 12)
-	var cur_h: float = clampf(Lx.state.hearts, 0.0, float(max_h))
-	var per_row: int = 6
+	var max_h: int = clampi(Lx.state.max_hearts, 4, 12); var cur_h: float = clampf(Lx.state.hearts, 0.0, float(max_h))
 	for i: int in range(max_h):
-		var col: int = i % per_row
-		var row: int = i / per_row
-		var pos: Vector2 = origin + Vector2(float(col * 7), float(row * 7) - (1.0 if (_heart_pop_t > 0.0 and i == maxi(0, ceili(cur_h) - 1)) else 0.0))
+		var pos: Vector2 = origin + Vector2(float((i % 6) * 7), float((i / 6) * 7) - (1.0 if (_heart_pop_t > 0.0 and i == maxi(0, ceili(cur_h) - 1)) else 0.0))
 		draw_rect(Rect2(pos - Vector2.ONE, Vector2(7.0, 7.0)), LxPalette.PAL["night"])
-		for r: Rect2 in HEART_PIXELS:
-			draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["plum"])
+		for r: Rect2 in HEART_PIXELS: draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["plum"])
 		var fill_amt: float = cur_h - float(i)
 		if fill_amt >= 0.75:
-			for r: Rect2 in HEART_PIXELS:
-				draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["coral"])
+			for r: Rect2 in HEART_PIXELS: draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["coral"])
 			draw_rect(Rect2(pos + Vector2(1.0, 1.0), Vector2(1.0, 1.0)), LxPalette.PAL["rose"])
 		elif fill_amt >= 0.25:
-			for r: Rect2 in HALF_HEART_PIXELS:
-				draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["coral"])
+			for r: Rect2 in HALF_HEART_PIXELS: draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["coral"])
 	if cur_h > 0.0 and cur_h <= 1.0 and (LxHudFx.flash_reduced() or fmod(_blink_t, 0.6) < 0.35):
-		var warn_y: float = origin.y + (15.0 if max_h > per_row else 8.0)
-		LxPixelFont.draw_left(self, LxStrings.text("HUD_LAST_HEART"), Vector2(origin.x, warn_y), LxPalette.PAL["coral"], 1)
+		LxPixelFont.draw_left(self, LxStrings.text("HUD_LAST_HEART"), Vector2(origin.x, origin.y + (15.0 if max_h > 6 else 8.0)), LxPalette.PAL["coral"], 1)
 
 
 func _draw_beacon_gauge(cx: float, y: float) -> void:
@@ -298,10 +304,8 @@ func _draw_shards_and_keys(top_right: Vector2) -> bool:
 	if Lx.state.region_id != "overworld" or not Lx.state.room_id.is_empty():
 		var dung_id: String = Lx.packs.dungeon_of(Lx.state.island_id, Lx.state.region_id) if Lx.packs != null else ""
 		if dung_id.is_empty(): dung_id = str(Lx.get_island_data(Lx.state.island_id).get("dungeon_id", ""))
-		var keys: int = (Lx.state.get_key_count(dung_id, "wick_key") + Lx.state.get_key_count(dung_id, "keepers_flame")) if not dung_id.is_empty() else 0
-		if keys > 0:
-			LxPixelFont.draw_right(self, LxStrings.fmt("HUD_KEYS_FMT", [keys]), top_right.x, top_right.y + 9.0, LxPalette.PAL["apricot"], 1)
-			return true
+		if not dung_id.is_empty():
+			return LxHudOverlays.draw_dungeon_keys(self, top_right, Lx.state.get_key_count(dung_id, "wick_key"), Lx.state.get_key_count(dung_id, "keepers_flame"))
 	return false
 
 
@@ -340,7 +344,10 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		var col_name: String = str(MOVE_COLORS.get(mid, "gold"))
 		var bdr_col: String = col_name
 		var icon_col: Color = LxPalette.color(col_name)
-		if (mid == "dash" and dash_cd > 0.02) or (mid == "beam" and beam_cd > 0.02):
+		var is_locked: bool = Lx.player != null and Lx.player.has_method("is_move_locked") and bool(Lx.player.call("is_move_locked", mid))
+		if is_locked:
+			bdr_col = "wine"; icon_col = LxPalette.PAL["mauve"]
+		elif (mid == "dash" and dash_cd > 0.02) or (mid == "beam" and beam_cd > 0.02):
 			bdr_col = "dusk"; icon_col = LxPalette.PAL["mauve"]
 		elif mid == "wings" and wings_gliding:
 			bdr_col = "cream" if pulse_fast else "ice"; icon_col = LxPalette.PAL["ice"]
@@ -355,6 +362,8 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		var box := Rect2(slot_x, origin.y, 13.0, 11.0)
 		LxPixelFont.draw_panel(self, box, "night", bdr_col, "void")
 		_draw_move_icon(mid, box.position + Vector2(3.0, 2.0), icon_col)
+		if is_locked:
+			LxHudOverlays.draw_locked_move_badge(self, box)
 		if mid == "dash" and dash_cd > 0.02:
 			var frac: float = clampf(1.0 - dash_cd / maxf(0.15, Lx.state.get_effective_dash_cooldown() + 0.17), 0.0, 1.0)
 			draw_rect(Rect2(slot_x + 2.0, origin.y + 9.0, floorf(9.0 * frac), 1.0), LxPalette.PAL["coral"])
@@ -370,7 +379,9 @@ func _draw_moves_tray(origin: Vector2) -> void:
 				var lfrac: float = clampf(1.0 - lens_cd / maxf(0.1, float(mdata.get("cooldown", 6.0))), 0.0, 1.0)
 				draw_rect(Rect2(slot_x + 2.0, origin.y + 9.0, floorf(9.0 * lfrac), 1.0), LxPalette.PAL["sky"])
 		if mid == "wings":
-			LxPixelFont.draw_centered(self, LxStrings.text("OPT_MODE_HOLD"), slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["ice"] if wings_gliding else LxPalette.PAL["stone"], 1)
+			var dg: String = LxStrings.sanitize(Lx.input.get_glyph("lx_dash").to_upper(), 3) if Lx.input != null else ""
+			var wlbl: String = LxStrings.fmt("HUD_HOLD_SHORT_FMT", [dg]) if (not dg.is_empty() and LxStrings.has_id("HUD_HOLD_SHORT_FMT")) else LxStrings.text("OPT_MODE_HOLD")
+			LxPixelFont.draw_centered(self, wlbl, slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["ice"] if wings_gliding else LxPalette.PAL["stone"], 1)
 		elif not is_passive and not action_id.is_empty() and Lx.input != null:
 			var glyph: String = LxStrings.sanitize(Lx.input.get_glyph(action_id).to_upper(), 5)
 			LxPixelFont.draw_centered(self, glyph, slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["stone"], 1)
@@ -383,10 +394,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		slot_x += step_x
 
 func _draw_zip_cue(origin: Vector2) -> void:
-	if _boss_active or not _has_lantern() or not Lx.state.has_move("throw") or Lx.player == null: return
-	var lantern_obj: Variant = Lx.player.get("lantern")
-	if lantern_obj == null or not (lantern_obj is Object): return
-	if not (lantern_obj as Object).has_method("is_lure_active") or not bool((lantern_obj as Object).call("is_lure_active")): return
+	if _zip_cue_alpha <= 0.02: return
 	var pos: Vector2 = origin
 	if Lx.ui != null:
 		var nar_v: Variant = Lx.ui.get("narration")
@@ -398,8 +406,12 @@ func _draw_zip_cue(origin: Vector2) -> void:
 	var glyph: String = LxStrings.sanitize(Lx.input.get_glyph("lx_fire"), 6) if Lx.input != null else "-"
 	var txt: String = LxStrings.fmt("HUD_ZIP_CUE", [glyph])
 	var w: float = float(LxPixelFont.width(txt, 1)) + 8.0
-	LxPixelFont.draw_panel(self, Rect2(pos, Vector2(w, 9.0)), "dusk", "gold", "night")
-	LxPixelFont.draw_left(self, txt, pos + Vector2(4.0, 2.0), LxPalette.PAL["gold"], 1)
+	var a: float = _zip_cue_alpha
+	draw_rect(Rect2(pos, Vector2(w, 9.0)), Color(LxPalette.PAL["night"] as Color, a * 0.85))
+	draw_rect(Rect2(pos + Vector2(1.0, 1.0), Vector2(w - 2.0, 7.0)), Color(LxPalette.PAL["dusk"] as Color, a * 0.90))
+	draw_rect(Rect2(pos, Vector2(w, 1.0)), Color(LxPalette.PAL["gold"] as Color, a))
+	draw_rect(Rect2(pos + Vector2(0.0, 8.0), Vector2(w, 1.0)), Color(LxPalette.PAL["gold"] as Color, a))
+	LxPixelFont.draw_left(self, txt, pos + Vector2(4.0, 2.0), Color(LxPalette.PAL["gold"] as Color, a), 1)
 
 
 func _draw_move_icon(move_id: String, at: Vector2, col: Color) -> void:
@@ -548,8 +560,7 @@ func _notice_color() -> Color:
 
 func _compute_notice_rect() -> Rect2:
 	var w: float = float(LxPixelFont.width(_notice_text, 1)) + 24.0
-	var ny: float = 25.0 if _boss_active else 4.0
-	return Rect2(roundf(160.0 - w * 0.5), ny, w, 9.0)
+	return Rect2(roundf(160.0 - w * 0.5), 4.0, w, 9.0)
 
 func _draw_notice(rect: Rect2, col: Color) -> void:
 	var isl: int = Lx.state.island_id if Lx.state != null else 1

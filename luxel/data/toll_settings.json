@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "tabs": ["INTERFACE", "FEEL", "BEAUTY"],
+  "unsellables": [
+    "pause_menu",
+    "quit_to_title",
+    "flash_reduction",
+    "assist_damage_mult",
+    "assist_tell_scale",
+    "assist_game_speed",
+    "input_rebind",
+    "hold_toggle",
+    "manual_aim",
+    "aim_pip",
+    "narration_text",
+    "boss_names",
+    "window_scale",
+    "mute_unfocus"
+  ],
+  "settings": [
+    {
+      "id": "hud_hearts",
+      "tab": "INTERFACE",
+      "weight": 1,
+      "name_key": "ISL8_SET_HUD_HEARTS",
+      "now_key": "ISL8_VAL_ON",
+      "after_key": "ISL8_VAL_OFF",
+      "lose_key": "ISL8_LOSE_HUD_HEARTS",
+      "get_key": "ISL8_GET_HUD_HEARTS",
+      "power_key": "ISL8_PWR_WICKS_GRIT",
+      "reduced_note_key": "ISL8_RED_HUD_HEARTS",
+      "world_layer": false,
+      "hud_flag": "show_hearts",
+      "stat_mods": {
+        "bolt_damage_low_hp_mult": 1.15
+      },
+      "is_finale": false
+    },
+    {
+      "id": "minimap_hud",
+      "tab": "INTERFACE",
+      "weight": 1,
+      "name_key": "ISL8_SET_MINIMAP",
+      "now_key": "ISL8_VAL_ON",
+      "after_key": "ISL8_VAL_OFF",
+      "lose_key": "ISL8_LOSE_MINIMAP",
+      "get_key": "ISL8_GET_MINIMAP",
+      "power_key": "ISL8_PWR_WAYFINDER",
+      "reduced_note_key": "ISL8_RED_NONE",
+      "world_layer": false,
+      "hud_flag": "show_minimap",
+      "stat_mods": {
+        "move_speed_mult": 1.12
+      },
+      "is_finale": false
+    },
+    {
+      "id": "ember_hud",
+      "tab": "INTERFACE",
+      "weight": 1,
+      "name_key": "ISL8_SET_EMBER",
+      "now_key": "ISL8_VAL_ON",
+      "after_key": "ISL8_VAL_OFF",
+      "lose_key": "ISL8_LOSE_EMBER",
+      "get_key": "ISL8_GET_EMBER",
+      "power_key": "ISL8_PWR_BLIND_BURN",
+      "reduced_note_key": "ISL8_RED_EMBER",
+      "world_layer": false,
+      "hud_flag": "show_ember",
+      "stat_mods": {
+        "ember_rate_mult": 1.20
+      },
+      "is_finale": false
+    },
+    {
+      "id": "cursor_ring",
+      "tab": "INTERFACE",
+      "weight": 1,
+      "name_key": "ISL8_SET_CURSOR",
+      "now_key": "ISL8_VAL_RING",
+      "after_key": "ISL8_VAL_PIP",
+      "lose_key": "ISL8_LOSE_CURSOR",
+      "get_key": "ISL8_GET_CURSOR",
+      "power_key": "ISL8_PWR_SURE_HAND",
+      "reduced_note_key": "ISL8_RED_NONE",
+      "world_layer": false,
+      "hud_flag": "show_cursor_ring",
+      "stat_mods": {
+        "bolt_cooldown_mult": 0.85
+      },
+      "is_finale": false
+    },
+    {
+      "id": "dash_trail",
+      "tab": "FEEL",
+      "weight": 1,
+      "name_key": "ISL8_SET_DASH_TRAIL",
+      "now_key": "ISL8_VAL_ON",
+      "after_key": "ISL8_VAL_OFF",
+      "lose_key": "ISL8_LOSE_DASH_TRAIL",
+      "get_key": "ISL8_GET_DASH_TRAIL",
+      "power_key": "ISL8_PWR_GHOST_STEP",
+      "reduced_note_key": "ISL8_RED_NONE",
+      "world_layer": false,
+      "hud_flag": "show_dash_trail",
+      "stat_mods": {
+        "dash_iframe_bonus_s": 0.035
+      },
+      "is_finale": false
+    },
+    {
+      "id": "hit_flash",
+      "tab": "FEEL",
+      "weight": 1,
+      "name_key": "ISL8_SET_HIT_FLASH",
+      "now_key": "ISL8_VAL_ON",
+      "after_key": "ISL8_VAL_OFF",
+      "lose_key": "ISL8_LOSE_HIT_FLASH",
+      "get_key": "ISL8_GET_HIT_FLASH",
+      "power_key": "ISL8_PWR_COLD_PREC",
+      "reduced_note_key": "ISL8_RED_NONE",
+      "world_layer": false,
+      "hud_flag": "show_hit_flash",
+      "stat_mods": {
+        "opened_damage_mult": 1.20
+      },
+      "is_finale": false
+    },
+    {
+      "id": "camera_shake",
+      "tab": "FEEL",
+      "weight": 1,
+      "name_key": "ISL8_SET_CAM_SHAKE",
+      "now_key": "ISL8_VAL_ON",
+      "after_key": "ISL8_VAL_OFF",
+      "lose_key": "ISL8_LOSE_CAM_SHAKE",
+      "get_key": "ISL8_GET_CAM_SHAKE",
+      "power_key": "ISL8_PWR_STEADY_LENS",
+      "reduced_note_key": "ISL8_RED_NONE",
+      "world_layer": false,
+      "hud_flag": "show_camera_shake",
+      "stat_mods": {
+        "lens_duration_bonus_s": 1.2
+      },
+      "is_finale": false
+    },
+    {
+      "id": "world_anims",
+      "tab": "FEEL",
+      "weight": 1,
+      "name_key": "ISL8_SET_WORLD_ANIMS",
+      "now_key": "ISL8_VAL_LIVE",
+      "after_key": "ISL8_VAL_STILL",
+      "lose_key": "ISL8_LOSE_WORLD_ANIMS",
+      "get_key": "ISL8_GET_WORLD_ANIMS",
+      "power_key": "ISL8_PWR_STILL_AIR",
+      "reduced_note_key": "ISL8_RED_NONE",
+      "world_layer": true,
+      "hud_flag": "",
+      "stat_mods": {
+        "wings_glide_mult": 1.15
+      },
+      "is_finale": false
+    },
+    {
+      "id": "palette_4",
+      "tab": "BEAUTY",
+      "weight": 2,
+      "name_key": "ISL8_SET_PALETTE",
+      "now_key": "ISL8_VAL_20_COL",
+      "after_key": "ISL8_VAL_4_COL",
+      "lose_key": "ISL8_LOSE_PALETTE",
+      "get_key": "ISL8_GET_PALETTE",
+      "power_key": "ISL8_PWR_CHIAROSCURO",
+      "reduced_note_key": "ISL8_RED_PALETTE",
+      "world_layer": true,
+      "hud_flag": "",
+      "stat_mods": {
+        "beam_sunflare_damage_mult": 1.18
+      },
+      "is_finale": false
+    },
+    {
+      "id": "music_off",
+      "tab": "BEAUTY",
+      "weight": 2,
+      "name_key": "ISL8_SET_MUSIC",
+      "now_key": "ISL8_VAL_ON",
+      "after_key": "ISL8_VAL_SILENT",
+      "lose_key": "ISL8_LOSE_MUSIC",
+      "get_key": "ISL8_GET_MUSIC",
+      "power_key": "ISL8_PWR_QUIET_FOCUS",
+      "reduced_note_key": "ISL8_RED_MUSIC",
+      "world_layer": true,
+      "hud_flag": "",
+      "stat_mods": {
+        "perfect_dodge_mult": 1.25
+      },
+      "is_finale": false
+    },
+    {
+      "id": "sound_off",
+      "tab": "BEAUTY",
+      "weight": 2,
+      "name_key": "ISL8_SET_SOUND",
+      "now_key": "ISL8_VAL_ON",
+      "after_key": "ISL8_VAL_MUTE",
+      "lose_key": "ISL8_LOSE_SOUND",
+      "get_key": "ISL8_GET_SOUND",
+      "power_key": "ISL8_PWR_SILENT_WICK",
+      "reduced_note_key": "ISL8_RED_SOUND",
+      "world_layer": true,
+      "hud_flag": "",
+      "stat_mods": {
+        "enemy_notice_mult": 0.70
+      },
+      "is_finale": false
+    },
+    {
+      "id": "fps_step",
+      "tab": "BEAUTY",
+      "weight": 2,
+      "name_key": "ISL8_SET_FPS",
+      "now_key": "ISL8_VAL_60FPS",
+      "after_key": "ISL8_VAL_24FPS",
+      "lose_key": "ISL8_LOSE_FPS",
+      "get_key": "ISL8_GET_FPS",
+      "power_key": "ISL8_PWR_FRAME_SKIP",
+      "reduced_note_key": "ISL8_RED_FPS",
+      "world_layer": true,
+      "hud_flag": "",
+      "stat_mods": {
+        "post_dash_bolt_mult": 1.60
+      },
+      "is_finale": false
+    },
+    {
+      "id": "display_pixels",
+      "tab": "FINALE",
+      "weight": 3,
+      "name_key": "ISL8_SET_DISPLAY",
+      "now_key": "ISL8_VAL_320X180",
+      "after_key": "ISL8_VAL_DEAD_PX",
+      "lose_key": "ISL8_LOSE_DISPLAY",
+      "get_key": "ISL8_GET_DISPLAY",
+      "power_key": "ISL8_PWR_LAST_CLARITY",
+      "reduced_note_key": "ISL8_RED_DISPLAY",
+      "world_layer": true,
+      "hud_flag": "",
+      "stat_mods": {
+        "finale_damage_mult": 1.25
+      },
+      "is_finale": true
+    }
+  ]
+}

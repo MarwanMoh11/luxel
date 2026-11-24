@@ -7,6 +7,7 @@ const CHAIN_PREVIEW_RANGE: float = 210.0
 const CLOSE_HINT_RANGE: float = 72.0
 
 var normal: Vector2 = Vector2(0.707107, 0.707107)
+var _init_normal: Vector2 = Vector2(0.707107, 0.707107)
 var rotatable: bool = false
 var movable: bool = false
 var transforms_to: String = LxHit.COLOR_BLUE
@@ -15,8 +16,14 @@ var origin_pos: Vector2 = Vector2.ZERO
 var angle_step_deg: float = 45.0
 var double_sided: bool = true
 var size: Vector2 = Vector2(16.0, 16.0)
+var cue_spotlight: bool = false
+var spotlight_radius: float = 34.0
+var cue_curtain: bool = false
+var floor_only: bool = false
+var world_face: String = ""
 var _flash_t: float = 0.0
 var _turn_t: float = 0.0
+var _pierce_t: float = 0.0
 var _glint_stage: int = 0
 var _aim_was_on: bool = false
 var _has_rotated: bool = false
@@ -30,8 +37,13 @@ func setup(spec: Dictionary) -> void:
 	origin_pos = pos
 	size = _parse_size(props.get("size", [16.0, 16.0]), Vector2(16.0, 16.0))
 	radius = maxf(size.x, size.y) * 0.5
-	movable = bool(props.get("movable", is_transformer_kind))
-	rotatable = bool(props.get("rotatable", is_transformer_kind))
+	cue_spotlight = bool(props.get("cue_spotlight", props.get("spotlight", false)))
+	spotlight_radius = maxf(18.0, float(props.get("spotlight_radius", 34.0)))
+	cue_curtain = bool(props.get("cue_curtain", props.get("curtain", false)))
+	floor_only = bool(props.get("floor_only", cue_spotlight and not bool(props.get("cue_mirror", false))))
+	world_face = str(props.get("world_face", "")).strip_edges().to_lower()
+	movable = bool(props.get("movable", is_transformer_kind)) and not floor_only and not cue_curtain
+	rotatable = bool(props.get("rotatable", is_transformer_kind)) and not floor_only and not cue_curtain
 	transforms_to = str(props.get("transforms_to", LxHit.COLOR_BLUE)).strip_edges().to_lower()
 	if transforms_to.is_empty():
 		transforms_to = LxHit.COLOR_BLUE
@@ -45,9 +57,62 @@ func setup(spec: Dictionary) -> void:
 	elif props.has("angle_deg"):
 		var rad: float = deg_to_rad(float(props.get("angle_deg", 45.0)))
 		normal = Vector2(cos(rad), sin(rad)).normalized()
+	_init_normal = normal
 	_turn_t = 0.0
+	_pierce_t = 0.0
 	_has_rotated = false
+	if floor_only:
+		z_index = -5
 	queue_redraw()
+
+
+func reset_toy() -> void:
+	if persist_pos:
+		return
+	normal = _init_normal
+	move_to(origin_pos)
+	_turn_t = 0.0
+	_pierce_t = 0.0
+	queue_redraw()
+
+
+func rotate_by(deg: float) -> void:
+	normal = normal.rotated(deg_to_rad(deg)).normalized()
+	_turn_t = 0.18
+	_has_rotated = true
+	queue_redraw()
+
+
+func _world_face_active() -> bool:
+	if world_face.is_empty():
+		return true
+	if Lx.vars != null:
+		return str(Lx.vars.resolve_var("world_face", island_id, region_id, "silver")).to_lower() == world_face
+	return world_face == "silver"
+
+
+func is_cue_spotlight() -> bool:
+	return active and cue_spotlight and _world_face_active()
+
+
+func contains_spotlight(world_pos: Vector2) -> bool:
+	return is_cue_spotlight() and world_pos.distance_to(pos) <= spotlight_radius
+
+
+func _can_player_pierce_curtain() -> bool:
+	if not cue_curtain:
+		return false
+	var has_cue: bool = Lx.state != null and bool(Lx.state.story_flags.get("item_cue_mirror", false))
+	if not has_cue:
+		return false
+	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
+		return false
+	var wpos: Vector2 = (Lx.player as Node2D).global_position
+	if region != null and region.has_method("get_interactables"):
+		for it_v: Variant in (region.call("get_interactables") as Array):
+			if it_v is LxMirror and (it_v as LxMirror).contains_spotlight(wpos):
+				return true
+	return false
 
 
 func tick(dt: float) -> void:
@@ -59,13 +124,16 @@ func tick(dt: float) -> void:
 	if _turn_t > 0.0:
 		_turn_t = maxf(0.0, _turn_t - dt)
 		dirty = true
+	if _pierce_t > 0.0:
+		_pierce_t = maxf(0.0, _pierce_t - dt)
+		dirty = true
 	if active:
 		var g_rate: float = 0.9 if LxHudFx.flash_reduced() else 1.6
 		var st: int = int(floorf(_clock * g_rate + absf(pos.x * 0.03))) % 6
 		if st != _glint_stage:
 			_glint_stage = st
 			dirty = true
-		var aim_now: bool = _is_player_aiming_here()
+		var aim_now: bool = _is_player_aiming_here() if not floor_only and not cue_curtain else false
 		if aim_now or aim_now != _aim_was_on:
 			_aim_was_on = aim_now
 			dirty = true
@@ -74,7 +142,7 @@ func tick(dt: float) -> void:
 
 
 func interact(_actor: Node = null) -> bool:
-	if not active or not rotatable:
+	if not active or not rotatable or not _world_face_active():
 		return false
 	normal = normal.rotated(deg_to_rad(angle_step_deg)).normalized()
 	_turn_t = 0.18
@@ -85,8 +153,20 @@ func interact(_actor: Node = null) -> bool:
 
 
 func on_hit(hit: LxHit) -> bool:
-	if hit == null or not active:
+	if hit == null or not active or not _world_face_active():
 		return false
+	if floor_only:
+		return false
+	if cue_curtain:
+		if _can_player_pierce_curtain() or hit.light_color == "cream":
+			_pierce_t = 0.24
+			_emit_sfx("mirror_ping")
+			queue_redraw()
+			return false
+		_flash_t = 0.18
+		_emit_sfx("prop_rustle")
+		queue_redraw()
+		return true
 	if hit.source in ["bolt", "prism_bolt", "beam"]:
 		_flash_t = 0.2
 		_emit_gust(38.0, 28.0)
@@ -97,7 +177,15 @@ func on_hit(hit: LxHit) -> bool:
 
 
 func is_solid() -> bool:
-	return active
+	return active and not floor_only and _world_face_active()
+
+
+func blocks_sight() -> bool:
+	if not active or floor_only or not _world_face_active():
+		return false
+	if cue_curtain:
+		return not _can_player_pierce_curtain()
+	return true
 
 
 func get_solid_rect() -> Rect2:
@@ -107,11 +195,11 @@ func get_solid_rect() -> Rect2:
 
 
 func is_reflective() -> bool:
-	return active
+	return active and not floor_only and not cue_curtain and _world_face_active()
 
 
 func is_movable() -> bool:
-	return active and movable
+	return active and movable and _world_face_active()
 
 
 func get_transform_color() -> String:
@@ -130,7 +218,7 @@ func move_to(new_pos: Vector2) -> void:
 
 
 func get_interact_prompt() -> String:
-	if not active:
+	if not active or floor_only or cue_curtain or not _world_face_active():
 		return ""
 	if movable and rotatable:
 		return "PROMPT_TRANSFORMER"
@@ -142,7 +230,12 @@ func get_interact_prompt() -> String:
 
 
 func get_light_pool() -> Vector4:
-	if not active:
+	if not active or not _world_face_active():
+		return Vector4.ZERO
+	if cue_spotlight:
+		var has_cue: bool = Lx.state != null and bool(Lx.state.story_flags.get("item_cue_mirror", false))
+		return Vector4(pos.x, pos.y, spotlight_radius * (1.25 if has_cue else 0.9), 0.72 if has_cue else 0.42)
+	if cue_curtain:
 		return Vector4.ZERO
 	var lit: bool = _flash_t > 0.0
 	if transforms_to == LxHit.COLOR_BLUE:
@@ -181,6 +274,17 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	var face_ok: bool = _world_face_active()
+	if cue_spotlight:
+		_draw_cue_spotlight(face_ok)
+		if floor_only:
+			return
+	if cue_curtain:
+		_draw_cue_curtain(face_ok)
+		return
+	if not face_ok:
+		draw_rect(Rect2((-size * 0.5).round(), size.round()), Color(PAL["sky"] as Color, 0.25), false, 1.0)
+		return
 	var lit: bool = _flash_t > 0.0
 	var is_blue_t: bool = transforms_to == LxHit.COLOR_BLUE
 	# Unified contact shadow under the octagonal turntable base
@@ -387,3 +491,50 @@ func _is_player_aiming_here() -> bool:
 		return false
 	var perp: float = (to_m - fdir * proj).length()
 	return perp <= maxf(size.x, size.y) * 0.65
+
+
+func _draw_cue_spotlight(face_ok: bool) -> void:
+	if not face_ok:
+		return
+	var has_cue: bool = Lx.state != null and bool(Lx.state.story_flags.get("item_cue_mirror", false))
+	var wick_in: bool = Lx.player is Node2D and is_instance_valid(Lx.player) and contains_spotlight((Lx.player as Node2D).global_position)
+	var r: float = roundf(spotlight_radius)
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var fill_a: float = 0.22 if (has_cue and wick_in) else (0.14 if has_cue else 0.08)
+	draw_circle(Vector2.ZERO, r, Color(c_gold if has_cue else c_apricot, fill_a))
+	draw_arc(Vector2.ZERO, r, 0.0, TAU, 24, Color(c_cream if (has_cue and wick_in) else c_gold, 0.85 if has_cue else 0.45), 1.5 if wick_in else 1.0)
+	draw_arc(Vector2.ZERO, maxf(6.0, r - 5.0), 0.0, TAU, 18, Color(c_apricot, 0.40), 1.0)
+	# Crisp 4-point stage mark at center (greyscale-distinct Cue-Mirror emblem)
+	draw_rect(Rect2(-1.0, -3.0, 2.0, 6.0), c_cream if wick_in else c_gold)
+	draw_rect(Rect2(-3.0, -1.0, 6.0, 2.0), c_cream if wick_in else c_gold)
+
+
+func _draw_cue_curtain(face_ok: bool) -> void:
+	if not face_ok:
+		return
+	var r := Rect2((-size * 0.5).round(), size.round())
+	var piercing: bool = _can_player_pierce_curtain()
+	var c_void: Color = PAL["void"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_plum: Color = PAL["plum"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	draw_rect(r.grow(1.0), c_void)
+	draw_rect(r, c_plum if piercing else c_wine)
+	# Vertical pleated velvet folds
+	var x: float = r.position.x + 2.0
+	var fold_i: int = 0
+	while x < r.end.x - 1.0:
+		var fc: Color = (c_gold if (piercing and fold_i % 2 == 0) else (c_coral if fold_i % 2 == 0 else c_void))
+		draw_rect(Rect2(x, r.position.y + 1.0, 1.0, maxf(1.0, r.size.y - 2.0)), fc)
+		x += 3.0
+		fold_i += 1
+	# Top gilded curtain rod & tassels
+	draw_rect(Rect2(r.position.x, r.position.y, r.size.x, 2.0), c_cream if (_pierce_t > 0.0 or piercing) else c_gold)
+	if _flash_t > 0.0:
+		draw_rect(r, c_coral, false, 1.0)
+	elif _pierce_t > 0.0:
+		draw_rect(r, c_cream, false, 1.5)

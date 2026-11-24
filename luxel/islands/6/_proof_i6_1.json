@@ -1,0 +1,133 @@
+{
+  "id": "_proof_i6_1",
+  "island_id": 6,
+  "is_dungeon": true,
+  "debug_only": true,
+  "theme": "ember_express",
+  "name_key": "ISL6_PROOF_1_NAME",
+  "spawn": [48, 120],
+  "exits": [
+    {
+      "id": "exit_to_proof_2",
+      "rect": [416, 96, 16, 48],
+      "to_island": 6,
+      "to_region": "_proof_i6_2",
+      "to_spawn": [48, 120]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_proof_1",
+      "kind": "room_anchor",
+      "pos": [48, 120],
+      "props": { "auto": true }
+    },
+    {
+      "id": "grate_baffle",
+      "kind": "grate",
+      "pos": [152, 40],
+      "props": { "size": [16, 48] }
+    },
+    {
+      "id": "anvil_skip",
+      "kind": "temper_anvil",
+      "pos": [64, 72],
+      "props": { "mode": "skip", "sets_flag": "temper_skip_known" }
+    },
+    {
+      "id": "coupler_bank",
+      "kind": "car_coupler",
+      "pos": [176, 80],
+      "props": { "lock_type": "bank", "target_id": "door_mid", "persist": true }
+    },
+    {
+      "id": "door_mid",
+      "kind": "door",
+      "pos": [152, 120],
+      "props": { "door_type": "switch_door", "size": [16, 16], "requires_signals": ["coupler_bank"] }
+    },
+    {
+      "id": "anvil_lance",
+      "kind": "temper_anvil",
+      "pos": [184, 184],
+      "props": { "mode": "lance", "sets_flag": "temper_lance_known" }
+    },
+    {
+      "id": "coupler_arm_1",
+      "kind": "car_coupler",
+      "pos": [208, 136],
+      "props": { "lock_type": "armoured", "target_id": "gate_arm", "persist": true }
+    },
+    {
+      "id": "coupler_arm_2",
+      "kind": "car_coupler",
+      "pos": [240, 136],
+      "props": { "lock_type": "armoured", "target_id": "gate_arm", "persist": true }
+    },
+    {
+      "id": "gate_arm",
+      "kind": "logic_gate",
+      "pos": [224, 96],
+      "props": { "op": "all", "inputs": ["coupler_arm_1", "coupler_arm_2"], "target_id": "door_armoured", "persist": true }
+    },
+    {
+      "id": "door_armoured",
+      "kind": "door",
+      "pos": [264, 120],
+      "props": { "door_type": "switch_door", "size": [16, 16], "requires_signals": ["gate_arm"] }
+    },
+    {
+      "id": "lever_timetable",
+      "kind": "state_lever",
+      "pos": [296, 104],
+      "props": {
+        "scope": "island:6",
+        "var": "kiln_shift",
+        "values": ["station_a", "station_b", "station_c"],
+        "prompt_key": "ISL6_PROMPT_SHIFT",
+        "persist": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "station_b_bridge",
+      "when": "kiln_shift==station_b",
+      "tiles": [
+        [20, 6, 6, 3, "bridge"]
+      ],
+      "enable": ["exit_to_proof_2"],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Prove Skip wall-bank coupler, piercing Lance twin-armoured couplers, and Timetable shift bridge in a moving train car.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "temper_anvil + car_coupler[bank,armoured] + kiln_shift timetable layers",
+    "decisions": 5,
+    "expert_s": 35,
+    "reward": "unlock_proof_2",
+    "why": "End-to-end automated proof of Island 6 Tempering, Couplers, and Foundry Timetable.",
+    "solution": [
+      { "op": "goto", "to": [64, 88], "tol": 4.0 },
+      { "op": "interact", "target": "anvil_skip" },
+      { "op": "expect", "var": "wick_temper==skip" },
+      { "op": "goto", "to": [112, 80], "tol": 3.0 },
+      { "op": "shoot", "target": [144, 16], "wait_hit": 0.65 },
+      { "op": "wait_until", "target": "door_mid", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "goto", "to": [184, 168], "tol": 4.0 },
+      { "op": "interact", "target": "anvil_lance" },
+      { "op": "expect", "var": "wick_temper==lance" },
+      { "op": "goto", "to": [176, 136], "tol": 4.0 },
+      { "op": "shoot", "target": [240, 136], "wait_hit": 0.75 },
+      { "op": "wait_until", "target": "door_armoured", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "goto", "to": [296, 120], "tol": 4.0 },
+      { "op": "interact", "target": "lever_timetable" },
+      { "op": "expect", "var": "kiln_shift==station_b" },
+      { "op": "expect_exit", "exit": "exit_to_proof_2" }
+    ]
+  }
+}

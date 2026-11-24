@@ -1,0 +1,556 @@
+{
+  "name_key": "ISL1_UC_ECHO",
+  "spawn": [
+    48,
+    168
+  ],
+  "zones": [
+    {
+      "id": "uc_echo",
+      "name_key": "ISL1_UC_ECHO",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r1",
+      "to_spawn": [
+        384,
+        184
+      ]
+    },
+    {
+      "id": "exit_r6_north",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r7",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "locked_door_id": "door_r6_north"
+    },
+    {
+      "id": "exit_r6_south_shortcut",
+      "rect": [
+        416,
+        304,
+        32,
+        16
+      ],
+      "to_island": 1,
+      "to_region": "overworld",
+      "to_spawn": [
+        424,
+        184
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "uc_backdoor_open"
+      ],
+      "locked_door_id": "door_r6_south"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r6_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r6_center",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r6_dawn",
+      "kind": "bell",
+      "pos": [
+        80,
+        112
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 144
+      }
+    },
+    {
+      "id": "bell_r6_dusk",
+      "kind": "bell",
+      "pos": [
+        432,
+        112
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 144
+      }
+    },
+    {
+      "id": "td_r6_dawn",
+      "kind": "tone_door",
+      "pos": [
+        112,
+        48
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          32,
+          16
+        ],
+        "hold_secs": 2.4,
+        "target_id": "gate_r6_echo"
+      }
+    },
+    {
+      "id": "td_r6_dusk",
+      "kind": "tone_door",
+      "pos": [
+        400,
+        48
+      ],
+      "props": {
+        "tone": "dusk",
+        "size": [
+          32,
+          16
+        ],
+        "hold_secs": 2.4,
+        "target_id": "gate_r6_echo"
+      }
+    },
+    {
+      "id": "gate_r6_echo",
+      "kind": "logic_gate",
+      "pos": [
+        256,
+        72
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "td_r6_dawn",
+          "td_r6_dusk"
+        ],
+        "persist": true,
+        "target_id": "door_r6_north"
+      }
+    },
+    {
+      "id": "door_r6_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "gate_r6_echo"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sw_r6_backdoor",
+      "kind": "switch_eye",
+      "pos": [
+        464,
+        248
+      ],
+      "props": {
+        "target_id": "door_r6_south",
+        "sets_flag": "uc_backdoor_open"
+      }
+    },
+    {
+      "id": "door_r6_south",
+      "kind": "door",
+      "pos": [
+        432,
+        296
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r6_backdoor"
+        ],
+        "sets_flag": "uc_backdoor_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        216
+      ],
+      "props": {
+        "zone": "uc_echo",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_c",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        128
+      ],
+      "props": {
+        "zone": "uc_echo",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_e",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        152
+      ],
+      "props": {
+        "zone": "uc_echo",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "grave_hand_r6",
+      "kind": "grave_hand",
+      "pos": [
+        416,
+        184
+      ],
+      "zone": "uc_echo"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        80,
+        112
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        432,
+        112
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        240,
+        36,
+        32,
+        160
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        56,
+        256
+      ],
+      "radius": 26,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        448,
+        224
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        80,
+        112
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        432,
+        112
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bone_ossuary_arch",
+      "pos": [
+        256,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        48,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        464,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_coffin",
+      "pos": [
+        56,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "open_sarcophagus",
+      "pos": [
+        208,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        216,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        296,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        208,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        476,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "events": [
+    {
+      "id": "uc_r6_back_msg",
+      "on": "signal:sw_r6_backdoor",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "uc_backdoor_open"
+        },
+        {
+          "narrate": "ISL1_UC_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "First Echo Clapper puzzle: throw at the West Dawn Bell to arm a 1.4s delayed Echo, recall, dash the chasm, and strike the East Dusk Bell in overlap.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Echo Clapper's 1.4s delayed second wave lets Wick bridge time-and-distance gaps that single bolt strikes cannot span.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "uc_backdoor_open",
+    "why": "Split acoustic chasm validating mastery of the Echo Clapper before the deep east wing.",
+    "exit": "exit_r6_north",
+    "start": {
+      "flags": [
+        "item_echo_clapper"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          80,
+          152
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "bell_r6_dawn",
+        "hold": 0.25
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          132,
+          172
+        ]
+      },
+      {
+        "op": "dash",
+        "dir": [
+          1,
+          0
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          384,
+          224
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          432,
+          160
+        ],
+        "target": "bell_r6_dusk"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r6_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          432,
+          248
+        ],
+        "target": "sw_r6_backdoor"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_north"
+      }
+    ]
+  },
+  "id": "undercroft_r6",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "undercroft",
+  "music": "island1_dungeon",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "triggers": [],
+  "layers": []
+}

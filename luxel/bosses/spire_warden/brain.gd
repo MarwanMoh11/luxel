@@ -1,11 +1,16 @@
 class_name LxSpireWardenBoss
 extends LxMoonshadeBrain
-## Mirror Spire mini-boss (Island 7): Silver Mirror-Knight Sentinel.
-## 2 phases, HP 13.0, prismatic mirror-buckler 2.2 (cracked by refracted Blue Bolts or Moon-Mirror Pedestal).
-## P1: Prismatic Spear Lunge + Lunar Arc. P2 (<=55% HP): Roar + buckler reform + Mirror-Blink Cross-Lunge.
+## Mirror Spire mini-boss (Island 7, spire_r6): MOONSHADE WARDEN (Upgraded to Epic Bible 4.5).
+## 2 phases, HP 15.0, prismatic mirror-buckler 2.2 (cracked by refracted Blue Bolts or Moon-Mirror Pedestal).
+## P1: Prismatic Spear Lunge (0.56s / rec 1.15s) + Lunar Arc (0.48s).
+## P2 (<=55% HP): Flips arena to BLACK while leaving a solid Silver Blink-Ghost executing
+##   crossing spear lanes (0.54s tell) that keeps swinging 0.50s after he stops (horror beat!).
+##   Banking Blue off a transformer hits BOTH bodies for instant buckler shatter + 1.8s stagger!
+##   Flipping a moon_pool back to Silver also erases the Silver Blink-Ghost.
 
 const SPEAR_TELL_P1: float = 0.56
 const SPEAR_TELL_P2: float = 0.48
+const SPEAR_TELL_P2_CROSS: float = 0.54
 const SPEAR_COMMIT_TIME: float = 0.24
 const MIRROR_COMMIT_TIME: float = 0.22
 const SPEAR_RANGE: float = 96.0
@@ -20,9 +25,11 @@ const SPEAR_RECOVER_P1: float = 1.15
 const SPEAR_RECOVER_P2: float = 0.98
 const SPEAR_CD_P1: float = 3.4
 const SPEAR_CD_P2: float = 2.3
-const GUARD_CRACK_STAGGER: float = 1.35
+const GUARD_CRACK_STAGGER_P1: float = 1.35
+const GUARD_CRACK_STAGGER_P2: float = 1.80
 const GUARD_CRACK_MULT: float = 1.45
 const PHASE2_ROAR_TIME: float = 0.58
+const GHOST_HORROR_LINGER: float = 0.50
 
 var spear_attack: bool = false
 var spear_cd: float = 1.4
@@ -38,24 +45,33 @@ var guard_cracked_t: float = 0.0
 var shimmer_t: float = 0.0
 var _roaring: bool = false
 
+# Epic Bible 4.5 P2 upgrades: Silver Blink-Ghost + Black World flip + 0.5s horror after-swing
+var silver_ghost_active: bool = false
+var silver_ghost_linger_t: float = 0.0
+var _p2_flipped_black: bool = false
+var _ghost_respawn_cd: float = 0.0
+
+
 func _init() -> void:
 	super._init()
 	kind = "spire_warden"; boss_id = "moonshade_warden"; island_id = 7; is_boss = true; variant = VARIANT_WARDEN
-	max_hp = 13.0; hp = 13.0; shield_max = 2.2; shield_hp = 2.2; shield_gone_duration = 4.6
+	max_hp = 15.0; hp = 15.0; shield_max = 2.2; shield_hp = 2.2; shield_gone_duration = 4.6
 	body_radius = 6.5; routine_speed = 40.0; leash_radius = 175.0; notice_radius = 142.0
 	reach = 38.0; lunge_reach = 98.0; swing_r = 30.0; swing_arc = 1.20
-	tell_time = 0.48; lunge_tell_time = 0.54; recover_time = 1.12; give_up_time = 1.8; shard_drop = 14
+	tell_time = 0.48; lunge_tell_time = 0.54; recover_time = 1.12; give_up_time = 1.8; shard_drop = 16
+
 
 func _configure_variant_defaults() -> void:
 	variant = VARIANT_WARDEN; body_radius = 6.5; routine_speed = 40.0
 	shield_max = 2.2; tell_time = 0.48; recover_time = 1.12
+
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	var forced: Dictionary = spec.duplicate()
 	forced["variant"] = VARIANT_WARDEN
 	forced["kind"] = "spire_warden"
 	super.setup(forced, p_director, p_world)
-	max_hp = maxf(13.0, max_hp); hp = max_hp
+	max_hp = maxf(15.0, max_hp); hp = max_hp
 	variant = VARIANT_WARDEN; kind = "spire_warden"; is_boss = true
 	boss_id = str(spec.get("boss_id", "moonshade_warden"))
 	island_id = int(spec.get("island_id", 7))
@@ -63,6 +79,9 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	spear_dir = Vector2.from_angle(facing); mirror_pos = pos; mirror_dir = spear_dir
 	mirror_fired = false; mirror_hit = false; swings_since_spear = 0
 	guard_cracked_t = 0.0; shimmer_t = 0.0; _roaring = false
+	silver_ghost_active = false; silver_ghost_linger_t = 0.0
+	_p2_flipped_black = false; _ghost_respawn_cd = 0.0
+
 
 func take_hit(hit: LxHit) -> int:
 	if state == State.DEAD or hit == null: return HitResult.GLANCED
@@ -71,20 +90,26 @@ func take_hit(hit: LxHit) -> int:
 		return HitResult.GLANCED
 	var h: Dictionary = _read_hit(hit)
 	var is_blue_hit: bool = hit.is_blue() or str(h["source"]) == LxHit.SOURCE_PRISM
-	if is_blue_hit and _has_active_shield():
+	if is_blue_hit and (_has_active_shield() or silver_ghost_active):
 		var rel: Vector2 = (h["origin"] as Vector2) - pos
-		shield_hp = 0.0; shield_gone_t = shield_gone_duration; guard_cracked_t = GUARD_CRACK_STAGGER
+		var shattered_both: bool = silver_ghost_active
+		shield_hp = 0.0; shield_gone_t = shield_gone_duration
+		silver_ghost_active = false; silver_ghost_linger_t = 0.0; _ghost_respawn_cd = 6.0
+		var stag_dur: float = GUARD_CRACK_STAGGER_P2 if (phase >= 2 or shattered_both) else GUARD_CRACK_STAGGER_P1
+		guard_cracked_t = stag_dur
 		wary = true; spear_attack = false; lunge_attack = false; is_counter_attack = false
-		hp -= float(h["damage"]) * GUARD_CRACK_MULT
-		flash_t = 0.18
+		hp -= float(h["damage"]) * (GUARD_CRACK_MULT + (0.25 if shattered_both else 0.0))
+		flash_t = 0.20
 		if rel.length() > 0.01: knock = -rel.normalized() * 72.0
 		shield_broken.emit(self, pos)
-		_boss_impact(0.18, 78.0, 82.0)
+		_boss_impact(0.20, 82.0, 86.0)
 		_emit_sfx("warden_shield_break"); _emit_sfx("lens_reveal")
+		if shattered_both:
+			_emit_sfx("glass_shatter")
 		if hp <= 0.001:
 			opened_kill = true; _die(hit); return HitResult.KILLED
 		if not _check_phase_transition():
-			_release_token(); state = State.STAGGER; state_timer = GUARD_CRACK_STAGGER
+			_release_token(); state = State.STAGGER; state_timer = stag_dur
 		_emit_enemy_hit(hit, HitResult.OPENED)
 		return HitResult.OPENED
 	var hp_before: float = hp
@@ -99,20 +124,37 @@ func take_hit(hit: LxHit) -> int:
 		_check_phase_transition()
 	return res
 
+
 func _is_hit_invulnerable() -> bool: return _roaring
 func _on_damaged_alive(_hit: LxHit) -> bool: return _check_phase_transition()
 func _swing_tell_base() -> float: return 0.42 if phase >= 2 else tell_time
 func _lunge_tell_base() -> float: return 0.48 if phase >= 2 else lunge_tell_time
 func _post_recover_cooldown() -> float: return 0.68 if phase >= 2 else 0.88
 func _body_color() -> Color: return (LxPalette.PAL["sky"] if phase >= 2 else LxPalette.PAL["deep"]) as Color
-func _shield_color() -> Color: return LxPalette.PAL["ice"] as Color
+func _shield_color() -> Color: return (LxPalette.PAL["rose"] if phase >= 2 else LxPalette.PAL["ice"]) as Color
+
+
+func _is_spire_black() -> bool:
+	if Lx.vars == null:
+		return _p2_flipped_black
+	return Lx.vars.eval("world_face==black", 7, "spire_r6")
+
 
 func _check_phase_transition() -> bool:
 	if phase < 2 and hp <= max_hp * 0.55 and hp > 0.001:
 		phase = 2; wary = false; _roaring = true
 		spear_attack = false; lunge_attack = false; is_counter_attack = false
-		spear_elapsed = 0.0; guard_cracked_t = 0.0; shimmer_t = 0.65
+		spear_elapsed = 0.0; guard_cracked_t = 0.0; shimmer_t = 0.70
 		shield_gone_t = 0.0; shield_hp = shield_max
+		# Bible 4.5: P2 flips arena BLACK while leaving a solid Silver Blink-Ghost!
+		_p2_flipped_black = true
+		silver_ghost_active = true
+		mirror_pos = pos + Vector2(-24.0, 0.0)
+		mirror_dir = Vector2.from_angle(facing)
+		if LxIsland7Rule.active_rule != null:
+			LxIsland7Rule.active_rule.set_world_face(LxIsland7Rule.SCOPE_SPIRE, "black", true, pos)
+		elif Lx.vars != null:
+			Lx.vars.set_var("dungeon:spire", "world_face", "black")
 		shield_reformed.emit(self, pos)
 		_release_token(); state = State.NOTICE; state_timer = PHASE2_ROAR_TIME; spear_cd = 0.75
 		LxDamageFx.trigger_boss_phase_reset(self, 2)
@@ -122,16 +164,33 @@ func _check_phase_transition() -> bool:
 		return true
 	return false
 
+
 func _step_brain(dt: float) -> void:
 	if _roaring and state != State.NOTICE: _roaring = false
 	spear_cd = maxf(0.0, spear_cd - dt)
 	guard_cracked_t = maxf(0.0, guard_cracked_t - dt)
 	shimmer_t = maxf(0.0, shimmer_t - dt)
+	silver_ghost_linger_t = maxf(0.0, silver_ghost_linger_t - dt)
+	if phase >= 2:
+		if silver_ghost_active and _p2_flipped_black and Lx.vars != null and not _is_spire_black():
+			# Flipping a Moon Pool back to Silver erases the Silver Blink-Ghost!
+			silver_ghost_active = false
+			silver_ghost_linger_t = 0.0
+			_p2_flipped_black = false
+			_ghost_respawn_cd = 6.5
+			_emit_sfx("glass_shatter")
+		elif not silver_ghost_active and _ghost_respawn_cd > 0.0:
+			_ghost_respawn_cd = maxf(0.0, _ghost_respawn_cd - dt)
+			if _ghost_respawn_cd <= 0.0 and _is_spire_black():
+				silver_ghost_active = true
+				mirror_pos = pos
 	super._step_brain(dt)
+
 
 func _on_stagger_end(target_pos: Vector2) -> void:
 	spear_attack = false; feint_done = false
 	super._on_stagger_end(target_pos)
+
 
 func _step_notice(dt: float, target_pos: Vector2) -> void:
 	var to_t: Vector2 = target_pos - pos
@@ -140,11 +199,13 @@ func _step_notice(dt: float, target_pos: Vector2) -> void:
 	if state_timer <= 0.0:
 		_roaring = false; state = State.POSITION; step_clock = 0.0; cooldown = 0.35
 
+
 func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
 	if spear_cd <= 0.0 and (phase >= 2 or swings_since_spear >= 1) and dist < SPEAR_RANGE + 16.0 and _claim_token():
 		spear_attack = true; lunge_attack = false; is_counter_attack = false
 		feint_done = false; feint_side = -feint_side; state = State.TELL
-		last_tell_duration = _scaled_tell(SPEAR_TELL_P2 if phase >= 2 else SPEAR_TELL_P1, false, attack_damage)
+		var base_tell: float = (SPEAR_TELL_P2_CROSS if silver_ghost_active else SPEAR_TELL_P2) if phase >= 2 else SPEAR_TELL_P1
+		last_tell_duration = _scaled_tell(base_tell, false, attack_damage)
 		state_timer = last_tell_duration; mirror_pos = pos
 		var to_t: Vector2 = target_pos - pos
 		if to_t.length() > 0.01: facing = to_t.angle()
@@ -154,6 +215,7 @@ func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
 		return true
 	spear_attack = false
 	return super._try_start_attack(target_pos, dist)
+
 
 func _step_tell(dt: float, target_pos: Vector2) -> void:
 	if not spear_attack:
@@ -170,16 +232,19 @@ func _step_tell(dt: float, target_pos: Vector2) -> void:
 	state_timer -= dt
 	if state_timer <= 0.0: _enter_commit()
 
+
 func _enter_commit() -> void:
 	if spear_attack:
 		state = State.COMMIT
-		state_timer = (SPEAR_COMMIT_TIME + MIRROR_COMMIT_TIME) if (phase >= 2 and feint_done) else SPEAR_COMMIT_TIME
+		var has_ghost_lane: bool = phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black())
+		state_timer = (SPEAR_COMMIT_TIME + MIRROR_COMMIT_TIME) if has_ghost_lane else SPEAR_COMMIT_TIME
 		spear_elapsed = 0.0; spear_hit = false; mirror_fired = false; mirror_hit = false
 		spear_dir = Vector2.from_angle(facing)
 		_boss_impact(0.16, 76.0, 80.0); _emit_sfx("warden_swing")
 		return
 	swings_since_spear += 1
 	super._enter_commit()
+
 
 func _step_commit(dt: float) -> void:
 	if not spear_attack:
@@ -194,7 +259,7 @@ func _step_commit(dt: float) -> void:
 				spear_hit = true; _emit_player_hit(spear_dir)
 		if _is_lured() and _get_lantern_pos().distance_to(pos) <= SPEAR_ARC_R and Lx.events != null:
 			Lx.events.lantern_struck.emit(_get_lantern_pos())
-	elif phase >= 2 and feint_done:
+	elif phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
 		if not mirror_fired:
 			mirror_fired = true
 			LxDamageFx.boss_impact(mirror_pos, 0.14, 72.0, 76.0, 68.0, 1.32, 0.28, "ice")
@@ -206,30 +271,49 @@ func _step_commit(dt: float) -> void:
 		if _is_lured() and m_pt.distance_to(_get_lantern_pos()) <= MIRROR_HALF_W + 2.0 and Lx.events != null:
 			Lx.events.lantern_struck.emit(_get_lantern_pos())
 	if state_timer <= 0.0:
+		if phase >= 2 and silver_ghost_active:
+			# Horror beat: Silver afterimage keeps swinging 0.50s after Warden stops!
+			silver_ghost_linger_t = GHOST_HORROR_LINGER
 		spear_attack = false; spear_elapsed = 0.0; state = State.RECOVER
 		state_timer = maxf(MIN_RECOVER_TIME, SPEAR_RECOVER_P2 if phase >= 2 else SPEAR_RECOVER_P1)
 		last_recover_duration = state_timer
 		spear_cd = SPEAR_CD_P2 if phase >= 2 else SPEAR_CD_P1
+
 
 func _draw_extra(off: Vector2) -> void:
 	if not spear_attack: super._draw_extra(off)
 	var pal: Dictionary = LxPalette.PAL
 	var c: Vector2 = off.round()
 	var fred: bool = LxHudFx.flash_reduced()
+
+	# Bible 4.5: P2 rose/ice world-split rim around Warden
+	if phase >= 2:
+		draw_arc(c, body_radius + 3.2, -PI * 0.5, PI * 0.5, 14, pal["rose"] as Color, 1.4)
+		draw_arc(c, body_radius + 3.2, PI * 0.5, PI * 1.5, 14, pal["ice"] as Color, 1.4)
+
+	# Horror beat: Silver Blink-Ghost keeps swinging 0.50s after Warden stops!
+	if silver_ghost_linger_t > 0.0 and silver_ghost_active:
+		var mp_l: Vector2 = (mirror_pos - pos + off).round()
+		var lu: float = 1.0 - clampf(silver_ghost_linger_t / GHOST_HORROR_LINGER, 0.0, 1.0)
+		var sw_a: float = mirror_dir.angle() + sin(lu * TAU) * 1.1
+		draw_circle(mp_l, body_radius * 0.72, Color(pal["ice"] as Color, 0.45 * (1.0 - lu)))
+		draw_arc(mp_l, body_radius + 2.0, sw_a - 0.85, sw_a + 0.85, 12, Color(pal["cream"] as Color, 0.80 * (1.0 - lu)), 1.6)
+		draw_line(mp_l, (mp_l + Vector2.from_angle(sw_a) * 24.0).round(), Color(pal["ice"] as Color, 0.75 * (1.0 - lu)), 1.6)
+
 	if guard_cracked_t > 0.0:
 		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, pal["sky"] as Color, 1.8)
 		draw_arc(c, body_radius + 2.5, 0.0, TAU, 14, pal["cream"] as Color, 1.0)
 	if shimmer_t > 0.0:
-		var sp: float = 1.0 - clampf(shimmer_t / 0.65, 0.0, 1.0)
-		draw_arc(c, body_radius + 6.0 + sp * 14.0, 0.0, TAU, 24, pal["ice"] as Color, 1.8 if fred else 2.2)
-		draw_arc(c, body_radius + 3.0 + sp * 9.0, 0.0, TAU, 20, pal["sky"] as Color, 1.2)
+		var sp: float = 1.0 - clampf(shimmer_t / 0.70, 0.0, 1.0)
+		draw_arc(c, body_radius + 6.0 + sp * 14.0, 0.0, TAU, 24, pal["rose"] as Color, 1.8 if fred else 2.2)
+		draw_arc(c, body_radius + 3.0 + sp * 9.0, 0.0, TAU, 20, pal["ice"] as Color, 1.2)
 	if spear_attack and state == State.TELL:
 		var urg: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + spear_dir * SPEAR_RANGE, SPEAR_HALF_W, urg, anim_t, "coral", "gold")
-		if phase >= 2 and feint_done:
+		if phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
 			var mp: Vector2 = (mirror_pos - pos + off).round()
 			LxBossTelegraphFx.draw_ground_danger_lane(self, mp, mp + mirror_dir * MIRROR_RANGE, MIRROR_HALF_W, urg, anim_t, "sky", "ice")
-			draw_line(mp, c, pal["blue"] as Color, 1.2)
+			draw_line(mp, c, pal["rose"] as Color, 1.2)
 			draw_circle(mp, body_radius * 0.68, pal["deep"] as Color)
 			draw_arc(mp, body_radius + 1.2, 0.0, TAU, 14, pal["ice"] as Color, 1.4)
 			_draw_lunar_glint(mp, 3.5)
@@ -242,10 +326,10 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(c, SPEAR_ARC_R, a0, a1, 16, pal["blue"] as Color, 3.0)
 			draw_arc(c, SPEAR_ARC_R - 2.2, a0, a1, 14, pal["sky"] as Color, 2.0)
 			draw_arc(c, SPEAR_ARC_R - 3.8, a0 + 0.1, a1, 12, pal["cream"] as Color, 1.1)
-			if phase >= 2 and feint_done:
+			if phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
 				draw_arc(mp2, body_radius + 2.5, 0.0, TAU, 14, pal["ice"] as Color, 1.5)
 				draw_line(mp2, (mp2 + mirror_dir * MIRROR_RANGE).round(), pal["sky"] as Color, 1.2)
-		elif phase >= 2 and feint_done:
+		elif phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
 			var p2: float = clampf((spear_elapsed - SPEAR_COMMIT_TIME) / MIRROR_COMMIT_TIME, 0.0, 1.0)
 			var tip: Vector2 = (mp2 + mirror_dir * lerpf(8.0, MIRROR_RANGE, p2)).round()
 			draw_line(mp2, tip, pal["sky"] as Color, 2.6)
@@ -255,9 +339,10 @@ func _draw_extra(off: Vector2) -> void:
 	elif _roaring:
 		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
 		var r1: float = body_radius + 10.0 + rp * 18.0
-		draw_arc(c, r1, 0.0, TAU, 28, pal["sky"] as Color, 2.2)
+		draw_arc(c, r1, 0.0, TAU, 28, pal["rose"] as Color, 2.2)
 		draw_arc(c, maxf(4.0, r1 - 4.0), 0.0, TAU, 24, pal["ice"] as Color, 1.6)
 		draw_arc(c, maxf(3.0, r1 - 6.5), 0.0, TAU, 20, pal["cream"] as Color, 1.0)
+
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
 	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.10, 1.38, 0.38, "ice")

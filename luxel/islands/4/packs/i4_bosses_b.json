@@ -1,0 +1,154 @@
+{
+  "pack_id": "i4_bosses_b",
+  "owner": "B4-B",
+  "comment": "Island 4 Mirefen Gardens Boss Package B: Cloud-Urn Deacon, The Drowned Choir, The Toastmaster, and The Last Hour.",
+  "strings": {
+    "ISL4_BOSS_DEACON": "CLOUD-URN DEACON",
+    "ISL4_BOSS_CHOIR": "THE DROWNED CHOIR",
+    "ISL4_BOSS_TOAST": "THE TOASTMASTER",
+    "ISL4_BOSS_LAST_HOUR": "THE LAST HOUR"
+  },
+  "enemies": {
+    "boss_cloud_deacon": {
+      "script": "res://luxel/bosses/cloud_deacon/brain.gd",
+      "aliases": ["cloud_deacon"],
+      "data": {
+        "max_hp": 66.0,
+        "body_radius": 10.5,
+        "routine_speed": 42.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.54,
+        "recover_time": 1.05,
+        "shard_drop": 45,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "boss_drowned_choir": {
+      "script": "res://luxel/bosses/drowned_choir/brain.gd",
+      "aliases": ["drowned_choir"],
+      "data": {
+        "max_hp": 104.0,
+        "body_radius": 12.0,
+        "routine_speed": 26.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.60,
+        "recover_time": 1.05,
+        "shard_drop": 65,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "boss_toastmaster": {
+      "script": "res://luxel/bosses/toastmaster/brain.gd",
+      "aliases": ["toastmaster", "toastmaster_auto"],
+      "data": {
+        "max_hp": 64.0,
+        "body_radius": 10.0,
+        "routine_speed": 46.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.52,
+        "recover_time": 1.00,
+        "shard_drop": 50,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    },
+    "boss_last_hour": {
+      "script": "res://luxel/bosses/last_hour/brain.gd",
+      "aliases": ["last_hour"],
+      "data": {
+        "max_hp": 136.0,
+        "body_radius": 11.0,
+        "routine_speed": 46.0,
+        "leash_radius": 0.0,
+        "notice_radius": 180.0,
+        "tell_time": 0.60,
+        "recover_time": 1.08,
+        "shard_drop": 120,
+        "attack_damage": 1.0,
+        "is_boss": true
+      }
+    }
+  },
+  "bosses": {
+    "boss_cloud_deacon": {
+      "name_key": "ISL4_BOSS_DEACON",
+      "island": 4,
+      "phases": [0.54],
+      "mini": true,
+      "dungeon": "rain_mausoleum",
+      "region": "mausoleum_r5",
+      "music": "island4_boss_p1",
+      "music_p2": "island4_boss_p2",
+      "heart": "none",
+      "flag": "boss_cloud_deacon_defeated",
+      "aliases": ["cloud_deacon"]
+    },
+    "boss_drowned_choir": {
+      "name_key": "ISL4_BOSS_CHOIR",
+      "island": 4,
+      "phases": [0.66, 0.36],
+      "mini": false,
+      "dungeon": "rain_mausoleum",
+      "region": "mausoleum_r12",
+      "music": "island4_boss_p1",
+      "music_p2": "island4_boss_p2",
+      "heart": "half",
+      "flag": "boss_drowned_choir_defeated",
+      "aliases": ["drowned_choir"]
+    },
+    "boss_toastmaster": {
+      "name_key": "ISL4_BOSS_TOAST",
+      "island": 4,
+      "phases": [0.52],
+      "mini": true,
+      "dungeon": "garden_party",
+      "region": "party_r5",
+      "music": "island4_boss_p1",
+      "music_p2": "island4_boss_p2",
+      "heart": "none",
+      "flag": "boss_toastmaster_defeated",
+      "aliases": ["toastmaster", "toastmaster_auto"]
+    },
+    "boss_last_hour": {
+      "name_key": "ISL4_BOSS_LAST_HOUR",
+      "island": 4,
+      "phases": [0.66, 0.36],
+      "mini": false,
+      "dungeon": "vault_last_hour",
+      "region": "vault_last_hour",
+      "music": "island4_boss_p1",
+      "music_p2": "island4_boss_p2",
+      "heart": "none",
+      "flag": "boss_last_hour_defeated",
+      "aliases": ["last_hour"]
+    }
+  },
+  "sfx": {
+    "deacon_rain_chime": {"id": "prop_chime", "pitch": 0.94, "db": -1.5},
+    "deacon_censer_swing": {"id": "warden_swing", "pitch": 0.92, "db": -0.5},
+    "deacon_steam_hiss": {"id": "bramble_burn", "pitch": 1.18, "db": -1.5},
+    "deacon_squall": {"id": "wing_gale", "pitch": 0.96, "db": 0.0},
+    "deacon_urn_break": {"id": "shield_shatter", "pitch": 1.14, "db": 0.0},
+    "choir_note_1": {"id": "prop_chime", "pitch": 0.88, "db": -1.0},
+    "choir_note_2": {"id": "prop_chime", "pitch": 1.00, "db": -1.0},
+    "choir_note_3": {"id": "prop_chime", "pitch": 1.16, "db": -1.0},
+    "choir_note_4": {"id": "prop_chime", "pitch": 1.32, "db": -1.0},
+    "choir_note_5": {"id": "prop_chime", "pitch": 1.44, "db": -1.0},
+    "choir_chord": {"id": "bell_toll_heavy", "pitch": 1.10, "db": -1.0},
+    "choir_organ_swell": {"id": "boss_abbess_roar", "pitch": 0.88, "db": -0.5},
+    "choir_discord": {"id": "denied", "pitch": 0.86, "db": -1.5},
+    "choir_shatter": {"id": "hush_shatter", "pitch": 1.08, "db": 0.5},
+    "toast_glass_clink": {"id": "mirror_ping", "pitch": 1.20, "db": -1.5},
+    "toast_tray_fling": {"id": "lantern_throw", "pitch": 1.14, "db": -0.5},
+    "toast_cork_pop": {"id": "spore_pop", "pitch": 1.28, "db": 0.0},
+    "toast_bow_creak": {"id": "harbor_creak", "pitch": 1.18, "db": -1.5},
+    "last_hour_rev_bell": {"id": "bell_toll_heavy", "pitch": 0.78, "db": 0.0},
+    "last_hour_rev_tick": {"id": "clockwork_chime", "pitch": 0.84, "db": -2.0},
+    "last_hour_time_snap": {"id": "hush_shatter", "pitch": 1.18, "db": 0.0}
+  }
+}

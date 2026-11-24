@@ -1,0 +1,132 @@
+{
+  "id": "_proof_i1_1",
+  "island_id": 1,
+  "is_dungeon": true,
+  "debug_only": true,
+  "name_key": "ISL1_PROOF_1",
+  "music": "island1_dungeon",
+  "spawn": [48, 112],
+  "exits": [
+    {
+      "id": "exit_p1_east",
+      "rect": [336, 96, 32, 32],
+      "to_island": 1,
+      "to_region": "_proof_i1_2",
+      "to_spawn": [48, 112],
+      "locked_door_id": "td_p1_exit"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_p1",
+      "kind": "room_anchor",
+      "pos": [48, 112],
+      "props": { "auto": true }
+    },
+    {
+      "id": "bell_p1_town",
+      "kind": "bell",
+      "pos": [72, 80],
+      "props": { "tone": "dusk", "wave_radius": 144 }
+    },
+    {
+      "id": "bell_p1_war",
+      "kind": "bell",
+      "pos": [192, 64],
+      "props": { "tone": "war", "wave_radius": 144 }
+    },
+    {
+      "id": "cw_p1_seal",
+      "kind": "cracked_wall",
+      "pos": [232, 64],
+      "props": { "size": [16, 32] }
+    },
+    {
+      "id": "bell_p1_dusk",
+      "kind": "bell",
+      "pos": [192, 160],
+      "props": { "tone": "dusk", "wave_radius": 144 }
+    },
+    {
+      "id": "coffin_p1",
+      "kind": "tone_coffin",
+      "pos": [216, 176],
+      "props": {
+        "dir": "e",
+        "slide_tiles": 2,
+        "speed": 56,
+        "tone_map": { "dawn": "slide", "dusk": "freeze", "war": "shatter" }
+      }
+    },
+    {
+      "id": "hand_p1",
+      "kind": "clock_hand",
+      "pos": [264, 176],
+      "props": { "hand": "minute", "length": 32, "width": 16, "speed": 0.45, "dusk_freezable": true }
+    },
+    {
+      "id": "bell_p1_dawn",
+      "kind": "bell",
+      "pos": [256, 112],
+      "props": { "tone": "dawn", "wave_radius": 144 }
+    },
+    {
+      "id": "td_p1_exit",
+      "kind": "tone_door",
+      "pos": [296, 112],
+      "props": { "tone": "dawn", "size": [16, 32], "persist": true }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "midnight_ghost_bridge",
+      "when": "bell_hour==midnight",
+      "tiles": [
+        [6, 6, 4, 2, "bridge"]
+      ],
+      "enable": ["bell_p1_dawn"],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_p1_toll_midnight",
+      "on": "signal:bell_p1_town",
+      "once": true,
+      "do": [
+        { "set_var": { "scope": "island:1", "name": "bell_hour", "value": "midnight" } }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Proof courtyard exercising Town Bell Midnight ghost bridge, War shatter, Dusk clock-hand freeze, and Dawn coffin plus tone door.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Evening to Midnight shift, three ring-wave tones, tone coffin, and Dusk freeze.",
+    "decisions": 5,
+    "expert_s": 35,
+    "reward": "unlock _proof_i1_2",
+    "why": "End-to-end verification of Bell Isle macro state and three-tone ring waves.",
+    "exit": "exit_p1_east",
+    "start": {
+      "moves": ["bolt", "dash", "throw"],
+      "vars": { "island:1:bell_hour": "evening" }
+    },
+    "solution": [
+      { "op": "shoot", "target": "bell_p1_town" },
+      { "op": "wait", "secs": 0.2 },
+      { "op": "expect", "var": "bell_hour==midnight" },
+      { "op": "goto", "to": [176, 112] },
+      { "op": "shoot", "target": "bell_p1_war" },
+      { "op": "wait", "secs": 0.65 },
+      { "op": "expect", "interactable": "cw_p1_seal", "prop": "broken", "value": true },
+      { "op": "shoot", "target": "bell_p1_dusk" },
+      { "op": "wait", "secs": 0.65 },
+      { "op": "shoot", "target": "bell_p1_dawn" },
+      { "op": "wait", "secs": 0.65 },
+      { "op": "expect", "interactable": "td_p1_exit", "prop": "opened", "value": true },
+      { "op": "expect_exit", "exit": "exit_p1_east" }
+    ]
+  }
+}

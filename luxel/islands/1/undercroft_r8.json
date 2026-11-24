@@ -1,0 +1,513 @@
+{
+  "name_key": "ISL1_UC_PEWS",
+  "spawn": [
+    48,
+    152
+  ],
+  "zones": [
+    {
+      "id": "uc_chapel",
+      "name_key": "ISL1_UC_PEWS",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "undercroft_r7",
+      "to_spawn": [
+        416,
+        152
+      ]
+    },
+    {
+      "id": "exit_r8_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r9",
+      "to_spawn": [
+        64,
+        288
+      ],
+      "locked_door_id": "door_r8_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r8_dusk",
+      "kind": "bell",
+      "pos": [
+        112,
+        216
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 240
+      }
+    },
+    {
+      "id": "bell_r8_war",
+      "kind": "bell",
+      "pos": [
+        288,
+        152
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 200
+      }
+    },
+    {
+      "id": "seal_r8_pew4",
+      "kind": "tone_door",
+      "pos": [
+        352,
+        216
+      ],
+      "props": {
+        "tone": "war",
+        "size": [
+          32,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "moth_1_05",
+      "kind": "moth",
+      "pos": [
+        352,
+        240
+      ],
+      "props": {
+        "id": "moth_1_05"
+      }
+    },
+    {
+      "id": "crumble_r8_nw",
+      "kind": "crumble_floor",
+      "pos": [
+        64,
+        40
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "delay": 0.8,
+        "respawn": 3.0
+      }
+    },
+    {
+      "id": "door_r8_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "uc_chapel",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "zone": "uc_chapel",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_c",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        96
+      ],
+      "props": {
+        "zone": "uc_chapel",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        112
+      ],
+      "props": {
+        "zone": "uc_chapel",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mimic_r8_1",
+      "kind": "pew_mimic",
+      "pos": [
+        152,
+        136
+      ],
+      "zone": "uc_chapel"
+    },
+    {
+      "id": "mimic_r8_2",
+      "kind": "pew_mimic",
+      "pos": [
+        312,
+        128
+      ],
+      "zone": "uc_chapel"
+    },
+    {
+      "id": "mimic_r8_3",
+      "kind": "pew_mimic",
+      "pos": [
+        168,
+        224
+      ],
+      "zone": "uc_chapel"
+    },
+    {
+      "id": "snuffer_r8_1",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        344,
+        104
+      ],
+      "route": [
+        [
+          320,
+          88
+        ],
+        [
+          392,
+          128
+        ]
+      ],
+      "zone": "uc_chapel"
+    },
+    {
+      "id": "snuffer_r8_2",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        248,
+        232
+      ],
+      "route": [
+        [
+          208,
+          240
+        ],
+        [
+          288,
+          224
+        ]
+      ],
+      "zone": "uc_chapel"
+    },
+    {
+      "id": "moth_r8_cat",
+      "kind": "toll_moth",
+      "pos": [
+        248,
+        152
+      ],
+      "perches": [
+        [
+          216,
+          144
+        ],
+        [
+          280,
+          168
+        ]
+      ],
+      "zone": "uc_chapel"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        36,
+        32,
+        228
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        152
+      ],
+      "radius": 24,
+      "style": "ritual"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        80,
+        240
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        128
+      ],
+      "size": [
+        44,
+        80
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        288,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bone_ossuary_arch",
+      "pos": [
+        224,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "chapel_pew",
+      "pos": [
+        144,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "chapel_pew",
+      "pos": [
+        280,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "chapel_pew",
+      "pos": [
+        168,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        152,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        296,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        112,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        400,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        408,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "uc_r8_clr",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "uc_r8_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Six chapel pews conceal three Pew Mimics and Lost Moth 05 behind Pew #4; Dusk clamps mimics shut while War unmasks the brawl and cracks Pew #4.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Reading hinge-glint tells on disguised Pew Mimics and choosing Dusk control vs War chaos.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "moth_1_05+open_r9",
+    "why": "Chapel nave ambush escalating into the Choir of Coffins.",
+    "exit": "exit_r8_north",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          88,
+          192
+        ],
+        "target": "bell_r8_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 52.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          152
+        ],
+        "target": "bell_r8_war"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "seal_r8_pew4",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          240
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_north"
+      }
+    ]
+  },
+  "id": "undercroft_r8",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "undercroft",
+  "music": "island1_dungeon",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "triggers": [],
+  "layers": []
+}

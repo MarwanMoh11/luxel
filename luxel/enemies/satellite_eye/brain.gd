@@ -99,13 +99,13 @@ func take_hit(hit: LxHit) -> int:
 	if front_hit and not bypass and _has_active_shield():
 		clank_t = 0.14
 		if src == LxHit.SOURCE_BOLT:
-			_emit_sfx("meteor_clank")
+			_emit_sfx("i5_meteor_hit")
 			_emit_enemy_hit(hit, HitResult.BLOCKED)
 			return HitResult.BLOCKED
 		# Heavy front throw chips lightly without full stagger
 		dmg *= 0.45
 		is_heavy = false
-		_emit_sfx("meteor_clank")
+		_emit_sfx("i5_meteor_hit")
 	elif (not front_hit) or is_curved or src == LxHit.SOURCE_RECALL:
 		dmg *= REAR_CRIT_MULT
 

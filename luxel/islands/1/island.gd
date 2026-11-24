@@ -25,12 +25,14 @@ const REGIONS: Array[String] = [
 ]
 
 const TutorialCuesScript := preload("res://luxel/islands/1/tutorial_cues.gd")
+const RuleScript := preload("res://luxel/islands/1/rule.gd")
 
 var _events: LxEventBus = null
 var _state: LxGameState = null
 var _attached: bool = false
 var _r4_kills: int = 0
 var _tutorial_cues: Node2D = null
+var _rule: LxIsland1Rule = null
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -49,9 +51,15 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.boss_defeated.connect(_on_boss_defeated)
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
 	_events.lantern_picked_up.connect(_on_lantern_picked_up)
+	_rule = RuleScript.new() as LxIsland1Rule
+	if _rule != null:
+		_rule.attach(_events, _state)
 
 
 func detach() -> void:
+	if _rule != null:
+		_rule.detach()
+		_rule = null
 	_unmount_tutorial_cues()
 	if not _attached or _events == null:
 		_attached = false
@@ -83,6 +91,8 @@ func on_region_loaded(region_id: String) -> void:
 		_mount_tutorial_cues()
 	else:
 		_unmount_tutorial_cues()
+	if _rule != null:
+		_rule.on_region_loaded(region_id)
 
 
 func _mark_belfry_entered() -> void:

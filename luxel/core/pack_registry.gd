@@ -340,9 +340,10 @@ func _reg_sfx(v: Variant, source: String) -> void:
 		var raw: Variant = (v as Dictionary)[id_v]
 		if sid.is_empty():
 			continue
-		if _builtin_sfx_ids.has(sid) or _sfx.has(sid):
-			_record_error("%s: sfx collision '%s'" % [source, sid])
-			continue
+		if _builtin_sfx_ids.has(sid):
+			continue  # a built-in id always wins; redundant alias
+		if _sfx.has(sid):
+			continue  # first pack to name an alias wins
 		if raw is String:
 			_sfx[sid] = {"id": raw as String, "pitch": 1.0, "db": 0.0}
 		elif raw is Dictionary:

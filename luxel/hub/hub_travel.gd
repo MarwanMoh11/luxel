@@ -10,6 +10,14 @@ const FLAG_RETURN_ISLAND: String = "hub:return_island"
 const FLAG_RETURN_WAYSTONE: String = "hub:return_waystone"
 
 
+static func is_hub_unlocked() -> bool:
+	if Lx.state == null:
+		return false
+	if not Lx.state.relit_islands.is_empty():
+		return true
+	return Lx.state.lit_waystones.has(HUB_WAYSTONE_ID) or bool(Lx.state.story_flags.get("hub:visited", false))
+
+
 static func ensure_hub_waystone_unlocked() -> void:
 	if Lx.state != null and not Lx.state.lit_waystones.has(HUB_WAYSTONE_ID):
 		Lx.state.lit_waystones.append(HUB_WAYSTONE_ID)
