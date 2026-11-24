@@ -531,7 +531,13 @@ func _draw() -> void:
 		return
 	var r: float = body_radius
 	var off: Vector2 = _visual_offset()
-	draw_circle(Vector2(2.0, r * 0.55), r * 0.9, PAL["void"] as Color)
+	var alt_f: float = clampf(maxf(0.0, -off.y) / 26.0, 0.0, 1.0)
+	var sh_sc: float = lerpf(1.0, 0.52, alt_f)
+	var sh_pts := PackedVector2Array()
+	for si: int in range(12):
+		var sa: float = (TAU * float(si)) / 12.0
+		sh_pts.append(Vector2(roundf(cos(sa) * r * 0.9 * sh_sc), roundf(r * 0.35 + sin(sa) * r * 0.35 * sh_sc)))
+	draw_colored_polygon(sh_pts, Color(LxPalette.PAL["void"] as Color, 0.40 * lerpf(1.0, 0.65, alt_f)))
 	if is_boss and phase >= 2:
 		LxDamageFx.draw_phase_sigil(self, off)
 

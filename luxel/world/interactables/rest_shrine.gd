@@ -4,19 +4,29 @@ extends LxInteractable
 
 
 var _heal_t: float = 0.0
+var _was_dormant: bool = false
+
+
+func _is_dormant() -> bool:
+	return Lx.state != null and Lx.state.island_id == 1 and Lx.state.has_method("has_lantern") and not Lx.state.has_lantern()
 
 
 func setup(spec: Dictionary) -> void:
 	super.setup(spec)
 	kind = "rest_shrine"
-	_uses_prop_anim = active
+	_was_dormant = _is_dormant()
+	_uses_prop_anim = active and not _was_dormant
 	_heal_t = 0.0
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
-	_uses_prop_anim = active
+	var dormant: bool = _is_dormant()
+	_uses_prop_anim = active and not dormant
 	super.tick(dt)
+	if dormant != _was_dormant:
+		_was_dormant = dormant
+		queue_redraw()
 	if _heal_t > 0.0:
 		_heal_t = maxf(0.0, _heal_t - dt)
 		queue_redraw()
@@ -42,6 +52,8 @@ func interact(_actor: Node = null) -> bool:
 
 
 func get_light_pool() -> Vector4:
+	if _is_dormant():
+		return Vector4.ZERO
 	var surge: float = (sin((1.0 - clampf(_heal_t / 0.48, 0.0, 1.0)) * PI) * (0.55 if LxHudFx.flash_reduced() else 1.0)) if _heal_t > 0.0 else 0.0
 	return Vector4(pos.x, pos.y - 10.0, 74.0 + surge * 34.0, 1.2 + surge * 0.35)
 
@@ -51,16 +63,26 @@ func get_interact_prompt() -> String:
 
 
 func _draw() -> void:
-	var shadow: Color = PAL["void"] as Color
-	draw_rect(Rect2(-16.0, 2.0, 32.0, 2.0), shadow)
-	draw_rect(Rect2(-14.0, 1.0, 28.0, 4.0), shadow)
-	draw_rect(Rect2(-10.0, 0.0, 20.0, 6.0), shadow)
-	if active:
+	var dormant: bool = _is_dormant()
+	var lit_hearth: bool = active and not dormant
+	var shadow := Color(LxPalette.PAL["void"] as Color, 0.42)
+	draw_rect(Rect2(-12.0, 0.0, 24.0, 1.0), shadow)
+	draw_rect(Rect2(-15.0, 1.0, 30.0, 2.0), shadow)
+	draw_rect(Rect2(-13.0, 3.0, 26.0, 1.0), shadow)
+	draw_rect(Rect2(-9.0, 4.0, 18.0, 1.0), shadow)
+	if lit_hearth:
 		_draw_hearth_ring()
-	var frame_ov: int = -1 if active else 0
+	var frame_ov: int = -1 if lit_hearth else 0
 	if not _draw_prop_sprite("rest_shrine", Vector2.ZERO, frame_ov):
 		_draw_fallback()
-	if active:
+	elif dormant:
+		# Mask baked flame inside hearth arch with cold dormant stone recess & unlit charcoal basin
+		draw_rect(Rect2(-5.0, -25.0, 11.0, 12.0), LxPalette.PAL["night"] as Color)
+		draw_rect(Rect2(-4.0, -24.0, 9.0, 10.0), LxPalette.PAL["void"] as Color)
+		draw_rect(Rect2(-5.0, -13.0, 11.0, 4.0), LxPalette.PAL["dusk"] as Color)
+		draw_rect(Rect2(-4.0, -13.0, 9.0, 1.0), LxPalette.PAL["mauve"] as Color)
+		draw_rect(Rect2(-3.0, -12.0, 7.0, 2.0), LxPalette.PAL["night"] as Color)
+	if lit_hearth:
 		_draw_hearth_embers()
 	if _heal_t > 0.0:
 		var p: float = 1.0 - clampf(_heal_t / 0.48, 0.0, 1.0)
@@ -77,6 +99,9 @@ func _draw_fallback() -> void:
 	draw_rect(Rect2(-10.0, -4.0, 20.0, 8.0), PAL["night"] as Color)
 	draw_rect(Rect2(-9.0, -6.0, 18.0, 8.0), PAL["mauve"] as Color)
 	draw_rect(Rect2(-6.0, -16.0, 12.0, 12.0), PAL["stone"] as Color)
+	if _is_dormant():
+		draw_rect(Rect2(-3.0, -14.0, 6.0, 4.0), LxPalette.PAL["night"] as Color)
+		return
 	draw_circle(Vector2(0.0, -12.0), 4.0, LxBiomePalette.col(island_id, "hi"))
 	draw_circle(Vector2(0.0, -12.0), 2.5, LxBiomePalette.col(island_id, "glow"))
 	draw_circle(Vector2(0.0, -12.0), 1.2, LxBiomePalette.col(island_id, "core"))

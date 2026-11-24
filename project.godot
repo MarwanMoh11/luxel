@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Luxel"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://luxel/luxel.tscn"
 config/icon="res://icon.png"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
@@ -22,8 +22,6 @@ general/default_playback_type.web=0
 [autoload]
 
 Conductor="*res://scripts/conductor.gd"
-Display="*res://scripts/display.gd"
-Touch="*res://scripts/touch.gd"
 
 [display]
 

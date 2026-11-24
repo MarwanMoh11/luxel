@@ -214,14 +214,17 @@ func _draw() -> void:
 	_draw_moves_tray(Vector2(5.0, 160.0))
 	if not _boss_active: _draw_zip_cue(Vector2(5.0, 148.0))
 	if Lx.world != null and not _boss_active:
-		LxMinimap.draw_minimap(self, Vector2(263.0, 22.0 if keys_shown else 16.0), _blink_t)
+		var mm_o := Vector2(263.0, 22.0 if keys_shown else 16.0)
+		var mg: String = LxStrings.sanitize(Lx.input.get_glyph("lx_map"), 6) if Lx.input != null else "-"
+		var mw: float = float(LxPixelFont.width(LxStrings.fmt("HUD_MAP_HINT", [mg if not mg.is_empty() else "-"]), 1))
+		draw_rect(Rect2(mm_o.x + 50.0 - mw, mm_o.y + 30.0, mw + 4.0, 9.0), Color(LxPalette.PAL["void"] as Color, 0.72))
+		LxMinimap.draw_minimap(self, mm_o, _blink_t)
 	if Lx.state.has_move("sunflare"): _draw_ember_meter(Vector2(246.0, 166.0))
 	if _boss_active: _draw_boss_bar()
 	var prompt_r: Rect2 = _draw_interact_prompt(notice_r)
 	LxHudFx.draw_cues(self, _cues, prompt_r, notice_r)
 	if notice_r.has_area(): _draw_notice(notice_r, notice_col)
 	LxHudFx.draw_indicators(self, _blink_t, _boss_active, _boss_phase)
-
 
 func _draw_hearts(origin: Vector2) -> void:
 	var max_h: int = clampi(Lx.state.max_hearts, 4, 12)
@@ -252,6 +255,7 @@ func _draw_beacon_gauge(cx: float, y: float) -> void:
 	var lit_count: int = _count_island_beacons(isl)
 	var spacing: float = 11.0
 	var start_x: float = roundf(cx - spacing)
+	draw_rect(Rect2(start_x - 5.0, y - 2.0, spacing * 2.0 + 11.0, 11.0), Color(LxPalette.PAL["void"] as Color, 0.72))
 	var lit_glass: Color = LxBiomePalette.col(isl, "glow")
 	var lit_frame: Color = LxBiomePalette.col(isl, "hi")
 	for i: int in range(3):
@@ -265,7 +269,6 @@ func _draw_beacon_gauge(cx: float, y: float) -> void:
 			draw_rect(Rect2(p + Vector2(2.0, 3.0), Vector2(1.0, 2.0)), LxPalette.PAL["cream"])
 		for r: Rect2 in LANTERN_FRAME:
 			draw_rect(Rect2(p + r.position, r.size), frame_col)
-
 
 func _draw_shards_and_keys(top_right: Vector2) -> bool:
 	var shard_str: String = LxStrings.fmt("HUD_SHARDS_FMT", [Lx.state.shards])
@@ -295,7 +298,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 	for item: Variant in order:
 		var mid: String = str(item)
 		if Lx.state.has_move(mid): unlocked.append(mid)
-	var step_x: float = 19.0
+	var step_x: float = 21.0
 	var slot_x: float = origin.x
 	var pulse_fast: bool = LxHudFx.flash_reduced() or fmod(_blink_t, 0.44) < 0.22
 	var lan_v: Variant = Lx.player.get("lantern") if Lx.player != null else null
@@ -314,7 +317,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 	var wings_frac: float = clampf(float((wings_v as Object).get("glide_time_left")) / maxf(0.05, float((wings_v as Object).get("glide_duration"))), 0.0, 1.0) if wings_gliding else 0.0
 	var ember_ready: bool = _ember_val >= _ember_max - 0.001
 	if not unlocked.is_empty():
-		draw_rect(Rect2(origin.x - 1.0, origin.y + 11.0, float(unlocked.size()) * step_x - 4.0, 7.0), Color(LxPalette.PAL["void"] as Color, 0.62))
+		draw_rect(Rect2(origin.x - 1.0, origin.y + 11.0, float(unlocked.size()) * step_x - 2.0, 7.0), Color(LxPalette.PAL["void"] as Color, 0.62))
 	for mid: String in unlocked:
 		var mdata: Dictionary = Lx.get_move_data(mid)
 		var is_passive: bool = bool(mdata.get("passive", false))
@@ -354,7 +357,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		if mid == "wings":
 			LxPixelFont.draw_centered(self, LxStrings.text("OPT_MODE_HOLD"), slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["ice"] if wings_gliding else LxPalette.PAL["stone"], 1)
 		elif not is_passive and not action_id.is_empty() and Lx.input != null:
-			var glyph: String = LxStrings.sanitize(Lx.input.get_glyph(action_id).to_upper().replace("SHIFT", "SHFT"), 4)
+			var glyph: String = LxStrings.sanitize(Lx.input.get_glyph(action_id).to_upper(), 5)
 			LxPixelFont.draw_centered(self, glyph, slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["stone"], 1)
 		elif mid == "prism":
 			draw_rect(Rect2(slot_x + 3.0, origin.y + 13.0, 1.0, 2.0), LxPalette.PAL["sky"])

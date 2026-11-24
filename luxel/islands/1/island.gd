@@ -76,32 +76,52 @@ func detach() -> void:
 
 
 func on_region_loaded(region_id: String) -> void:
-	if region_id == "overworld":
+	if region_id.begins_with("belfry_"):
+		_mark_belfry_entered()
+		_unmount_tutorial_cues()
+	elif region_id == "overworld":
 		_mount_tutorial_cues()
 	else:
 		_unmount_tutorial_cues()
 
 
+func _mark_belfry_entered() -> void:
+	var st: LxGameState = _get_state()
+	if st != null:
+		st.story_flags["tut_belfry_entered"] = true
+
+
 func _mount_tutorial_cues() -> void:
 	if Lx.world == null or not is_instance_valid(Lx.world):
 		return
-	if _tutorial_cues != null and is_instance_valid(_tutorial_cues) and _tutorial_cues.get_parent() == Lx.world:
+	if _tutorial_cues != null and is_instance_valid(_tutorial_cues) \
+			and not _tutorial_cues.is_queued_for_deletion() and _tutorial_cues.get_parent() == Lx.world:
+		if _tutorial_cues.has_method("hydrate_from_state"):
+			_tutorial_cues.call("hydrate_from_state")
 		return
 	var existing: Node = Lx.world.get_node_or_null("Island1TutorialCues")
-	if existing is Node2D and is_instance_valid(existing):
+	if existing is Node2D and is_instance_valid(existing) and not existing.is_queued_for_deletion():
 		_tutorial_cues = existing as Node2D
+		if _tutorial_cues.has_method("hydrate_from_state"):
+			_tutorial_cues.call("hydrate_from_state")
 		return
 	var cues: Node2D = TutorialCuesScript.new() as Node2D
 	if cues != null:
 		cues.name = "Island1TutorialCues"
 		Lx.world.add_child(cues)
 		_tutorial_cues = cues
+		if _tutorial_cues.has_method("hydrate_from_state"):
+			_tutorial_cues.call("hydrate_from_state")
 
 
 func _unmount_tutorial_cues() -> void:
 	if _tutorial_cues != null and is_instance_valid(_tutorial_cues):
 		_tutorial_cues.queue_free()
 	_tutorial_cues = null
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var leftover: Node = Lx.world.get_node_or_null("Island1TutorialCues")
+		if leftover != null and is_instance_valid(leftover) and not leftover.is_queued_for_deletion():
+			leftover.queue_free()
 
 
 func get_region_list() -> PackedStringArray:
@@ -179,7 +199,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_beacon_bridge",
 			"region": "overworld",
 			"zone": "moonlit_bridge",
-			"pos": [1136.0, 360.0],
+			"pos": [1156.0, 344.0],
 			"action": "light_beacon",
 			"target": "beacon_bridge",
 			"grants_flag": "beacon_bridge",
@@ -314,6 +334,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "belfry_r7":
+		_mark_belfry_entered()
 		_unmount_tutorial_cues()
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_BELLKEEPER", "title", 3.5)
@@ -322,6 +343,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		elif st != null and st.relit_islands.has(ISLAND_ID) and _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id.begins_with("belfry_"):
+		_mark_belfry_entered()
 		_unmount_tutorial_cues()
 		if region_id == "belfry_r1" and st != null and not bool(st.story_flags.get("isl1_belfry_entered", false)):
 			st.story_flags["isl1_belfry_entered"] = true
@@ -383,6 +405,10 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 	var st: LxGameState = _get_state()
 	if st == null or st.island_id != ISLAND_ID:
 		return
+	if kind == "snatcher":
+		st.story_flags["tut_snatcher_killed"] = true
+	if _enemy is LxEnemyBrain and (_enemy as LxEnemyBrain).enemy_id == "warden_plaza_0":
+		st.story_flags["tut_plaza_warden_dead"] = true
 	if st.region_id == "belfry_r4":
 		_r4_kills += 1
 		if _r4_kills >= 3 and not bool(st.story_flags.get("r4_cleared", false)):

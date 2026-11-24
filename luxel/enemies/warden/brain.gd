@@ -72,7 +72,6 @@ var tutorial_wait_lantern: bool = false
 var _full_sheet: LxSpriteSheet = null
 var _bare_sheet: LxSpriteSheet = null
 
-
 func _init() -> void:
 	kind = "warden"; max_hp = 4.0; hp = 4.0; body_radius = 5.0; routine_speed = 36.0
 	leash_radius = 158.0; notice_radius = 120.0; tell_time = DEFAULT_WINDUP
@@ -516,7 +515,7 @@ func _build_bare_sheet() -> void:
 	_full_sheet = _sprite_sheet
 	_bare_sheet = null
 	if _full_sheet == null or not _full_sheet.animations.has("stagger"): return
-	if kind != "warden" and not (kind in ["bell_warden", "crab_warden", "moonshade_warden"]): return
+	if kind != "warden": return
 	var stag: Dictionary = _full_sheet.animations["stagger"] as Dictionary
 	var src_dirs: Dictionary = stag.get("dirs", {}) as Dictionary
 	if src_dirs.is_empty(): return
@@ -543,11 +542,20 @@ func _draw() -> void:
 	_sync_warden_sheet()
 	super._draw()
 
-
 func _draw_extra(off: Vector2) -> void:
 	var c := Vector2(roundf(off.x), roundf(off.y))
 	var fwd: Vector2 = Vector2.from_angle(facing)
 	var side := Vector2(-fwd.y, fwd.x)
+	if (tutorial_wait_lantern or shield_max <= 0.001) and state == State.ROUTINE:
+		var ec: Color = (PAL["gold"] if (LxHudFx.flash_reduced() or int(anim_t * 3.0) % 2 == 0) else PAL["coral"]) as Color
+		if absf(fwd.x) >= absf(fwd.y):
+			var ex: float = c.x + (4.0 if fwd.x >= 0.0 else -6.0)
+			draw_rect(Rect2(ex, c.y - 9.0, 2.0, 2.0), PAL["coral"] as Color)
+			draw_rect(Rect2(ex + (1.0 if fwd.x >= 0.0 else 0.0), c.y - 9.0, 1.0, 1.0), ec)
+		elif fwd.y > 0.0:
+			for sx: float in [-4.0, 2.0]:
+				draw_rect(Rect2(c.x + sx, c.y - 8.0, 2.0, 1.0), PAL["coral"] as Color)
+				draw_rect(Rect2(c.x + sx, c.y - 8.0, 1.0, 1.0), ec)
 	if clank_t > 0.0:
 		var cp: float = clampf(clank_t / 0.14, 0.0, 1.0)
 		var sc := Vector2(roundf(c.x + fwd.x * (body_radius + 3.5)), roundf(c.y + fwd.y * (body_radius + 3.5)))

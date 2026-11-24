@@ -370,15 +370,15 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		anim_name = "shoot"
 	elif wick.velocity.length() > 10.0:
 		anim_name = "walk"
-	var sp_sc: Vector2 = Vector2.ONE
-	if not flash_red:
-		if wick.catch_anim_t > 0.14: sp_sc = Vector2(1.10, 0.90)
-		elif wick.is_dashing() or wick.is_zipping(): sp_sc = Vector2(0.92, 1.08)
-		elif _land_squash_t > 0.0: sp_sc = Vector2.ONE.lerp(Vector2(1.12, 0.88), clampf(_land_squash_t / 0.085, 0.0, 1.0))
-		elif wick.recoil_vis > 0.15: sp_sc = Vector2.ONE.lerp(Vector2(1.06, 0.94), clampf(wick.recoil_vis, 0.0, 1.0))
-	var drew_sprite: bool = sprite_sheet != null and sprite_sheet.draw_actor(wick, base, "throw" if not has_lan else anim_name, wick.facing, 1.0 if not has_lan else clock_t, mod, sp_sc)
+	var draw_base: Vector2 = base
+	if not flash_red and (wick.catch_anim_t > 0.14 or _lantern_ignite_t > 0.24):
+		draw_base += Vector2(0.0, -1.0)
+	var drew_sprite: bool = sprite_sheet != null and sprite_sheet.draw_actor(wick, draw_base, "throw" if not has_lan else anim_name, wick.facing, 1.0 if not has_lan else clock_t, mod, Vector2.ONE)
 	if not drew_sprite:
-		_draw_fallback_moth(wick, base, hit_white, alpha, lan_in_hand, hand_pos)
+		_draw_fallback_moth(wick, draw_base, hit_white, alpha, lan_in_hand, hand_pos)
+	if wick.catch_anim_t > 0.14 and has_lan:
+		var cp_u: float = 1.0 - clampf((wick.catch_anim_t - 0.14) / 0.12, 0.0, 1.0)
+		wick.draw_arc(draw_base + Vector2(0.0, -6.0), roundf(lerpf(6.0, 12.0, cp_u)), 0.0, TAU, 16, Color(LxWick.PAL_GOLD, 1.0 - cp_u * 0.65), 1.0)
 
 	_draw_motes(wick, off, true)
 	if wick.move_dash != null and wick.move_dash.counter_t > 0.0:
@@ -399,6 +399,7 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		var ir: float = roundf(lerpf(3.0, 12.0, iu) * (0.75 if flash_red else 1.0))
 		var c_ig: Color = LxPalette.color("gold"); c_ig.a = iu * 0.90
 		var c_ic: Color = LxPalette.color("cream"); c_ic.a = iu
+		wick.draw_arc(draw_base + Vector2(0.0, -6.0), roundf(lerpf(14.0, 6.0, iu)), 0.0, TAU, 16, c_ig, 1.0)
 		wick.draw_line(hand_pos + Vector2(-ir, 0.0), hand_pos + Vector2(ir, 0.0), c_ig, 1.0)
 		wick.draw_line(hand_pos + Vector2(0.0, -ir), hand_pos + Vector2(0.0, ir), c_ig, 1.0)
 		wick.draw_circle(hand_pos, maxf(1.5, ir * 0.35), c_ic)

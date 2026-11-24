@@ -397,8 +397,8 @@
       "id": "rest_shrine_plaza",
       "kind": "rest_shrine",
       "pos": [
-        640,
-        412
+        600,
+        404
       ],
       "props": {
         "zone": "plaza",
@@ -563,8 +563,8 @@
       "id": "beacon_bridge",
       "kind": "beacon",
       "pos": [
-        1136,
-        360
+        1156,
+        344
       ],
       "props": {
         "index": 2,
@@ -582,7 +582,7 @@
       "kind": "waystone",
       "pos": [
         888,
-        356
+        326
       ],
       "props": {
         "zone": "moonlit_bridge",
@@ -697,7 +697,7 @@
       "id": "lamp_orchard_s",
       "kind": "road_lamp",
       "pos": [
-        184,
+        216,
         296
       ],
       "props": {
@@ -1294,8 +1294,8 @@
       "sheet": "island1_scenery",
       "prop": "orchard_tree_warm",
       "pos": [
-        152,
-        294
+        132,
+        308
       ],
       "layer": "sort",
       "flip_x": true,

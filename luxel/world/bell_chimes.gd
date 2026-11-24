@@ -52,7 +52,7 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 		Vector2(304.0, 224.0), # Lantern Orchard path
 		Vector2(264.0, 368.0), # Observatory terrace
 		Vector2(640.0, 512.0), # Glasshouse approach
-		Vector2(968.0, 352.0), # Moonlit Bridge entrance
+		Vector2(936.0, 396.0), # Moonlit Bridge south grass verge
 	]
 	for idx: int in range(candidates.size()):
 		var pt: Vector2 = _snap_walkable(region_node, candidates[idx])

@@ -223,12 +223,8 @@ func _fire_bell_shockwave(origin: Vector2, w: LxWick) -> void:
 		var sh_before: float = float(sh_v) if (sh_v != null and (sg_v == null or float(sg_v) <= 0.0)) else 0.0
 		var hit: LxHit = LxHit.make(LxHit.SOURCE_DASH, 0.55, kdir, origin, 1.6, true, false, w, false)
 		var res: int = e.take_hit(hit)
-		if sh_before > 0.01 and e.is_alive():
-			if float(e.get("shield_hp")) >= sh_before - 0.001 and e.has_method("_wear_shield"):
-				if not bool(e.call("_wear_shield", 1.6)):
-					e.clank_t = 0.18
-					if Lx.audio != null: Lx.audio.play_sfx("shield_strain", e.pos, true)
-			if res == LxEnemyBrain.HitResult.BLOCKED: e.knock += kdir * 48.0
+		_apply_extra_shield_wear(e, sh_before, 1.6)
+		if sh_before > 0.01 and e.is_alive() and res == LxEnemyBrain.HitResult.BLOCKED: e.knock += kdir * 48.0
 		if not e.is_boss and e.is_alive(): e.knock += kdir * 52.0
 		if w != null and is_instance_valid(w):
 			w.spawn_sparks(e.pos + Vector2(0.0, -4.0), kdir, 6, PAL["gold"] as Color, 32.0, 96.0, 0.24)

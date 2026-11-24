@@ -58,8 +58,14 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 
 
 func _step_brain(dt: float) -> void:
+	if _roaring and state != State.NOTICE: _roaring = false
 	slam_cd = maxf(0.0, slam_cd - dt)
 	super._step_brain(dt)
+
+
+func _on_stagger_end(target_pos: Vector2) -> void:
+	slam_attack = false
+	super._on_stagger_end(target_pos)
 
 
 func _step_notice(dt: float, target_pos: Vector2) -> void:
@@ -169,11 +175,11 @@ func _post_recover_cooldown() -> float:
 
 
 func _body_color() -> Color:
-	return PAL["wine"] as Color if phase >= 2 else PAL["plum"] as Color
+	return PAL["apricot"] as Color if phase >= 2 else PAL["jade"] as Color
 
 
 func _shield_color() -> Color:
-	return PAL["apricot"] as Color
+	return PAL["sky"] as Color
 
 
 func _draw_extra(off: Vector2) -> void:

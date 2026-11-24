@@ -9,7 +9,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="apple-mobile-web-app-title" content="Luxel">
 	<meta name="color-scheme" content="dark">
-	<meta name="description" content="Luxel: sell the game's own settings to keep the last lantern lit. A Godot game for a jam on the theme Trade-off.">
+	<meta name="description" content="Luxel: carry the last lantern across eight twilight islands to rekindle the Great Lamps.">
 	<title>Luxel</title>
 	<style>
 :root {
@@ -213,8 +213,10 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 	const LIT = [PAL.gold, PAL.cream, PAL.apricot];
 	const FLASH = [PAL.cream, PAL.cream, PAL.gold];
 	const HINT = [
-		['ARROWS / WASD', PAL.stone], [' MOVE   ', PAL.mauve], ['SPACE', PAL.stone], [' SELECT   ', PAL.mauve],
-		['ESC', PAL.stone], [' PAUSE   ', PAL.mauve], ['HOLD R', PAL.stone], [' RESTART', PAL.mauve],
+		['WASD', PAL.stone], [' MOVE  ', PAL.mauve], ['LMB', PAL.stone], [' BOLT  ', PAL.mauve],
+		['RMB', PAL.stone], [' THROW  ', PAL.mauve], ['SHIFT', PAL.stone], [' DASH  ', PAL.mauve],
+		['R', PAL.stone], [' LENS  ', PAL.mauve], ['E', PAL.stone], [' USE  ', PAL.mauve],
+		['ESC', PAL.stone], [' PAUSE', PAL.mauve],
 	];
 	const ICON_FULL = ['XX...XX', 'X.....X', '.......', '.......', '.......', 'X.....X', 'XX...XX'];
 	const ICON_EXIT = ['..X.X..', 'XXX.XXX', '.......', '.......', '.......', 'XXX.XXX', '..X.X..'];
@@ -802,19 +804,17 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 		}
 		focusGame();
 		layout();
-		// Let the lantern's flash paint first: booting blocks the page until the game's first frame.
-		window.setTimeout(function () {
-			engine.start({ 'args': ['--main-pack', pack].concat(GODOT_CONFIG['args'] || []) }).then(function () {
-				started = true;
-				startedAt = performance.now();
-				steady = 0;
-				layoutKey = '';
-				layout();
-				focusGame();
-			}, function (err) {
-				fail('start', err);
-			});
-		}, 150);
+		// Call engine.start() synchronously in the click/key gesture so WebAudio unlocks immediately on Safari/itch.io.
+		engine.start({ 'args': ['--main-pack', pack].concat(GODOT_CONFIG['args'] || []) }).then(function () {
+			started = true;
+			startedAt = performance.now();
+			steady = 0;
+			layoutKey = '';
+			layout();
+			focusGame();
+		}, function (err) {
+			fail('start', err);
+		});
 	}
 
 	loader.addEventListener('click', function () {
@@ -885,6 +885,12 @@ const GODOT_THREADS_ENABLED = $GODOT_THREADS_ENABLED;
 	stage.addEventListener('mousemove', wake);
 	window.addEventListener('resize', layout);
 	window.addEventListener('orientationchange', layout);
+	stage.addEventListener('contextmenu', function (e) {
+		e.preventDefault();
+	});
+	canvas.addEventListener('contextmenu', function (e) {
+		e.preventDefault();
+	});
 	if (touchOnly) {
 		// No page gestures: no pinch, no double-tap zoom, no pull-to-refresh, no long-press menu.
 		['gesturestart', 'gesturechange', 'gestureend'].forEach(function (name) {

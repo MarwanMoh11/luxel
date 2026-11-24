@@ -116,6 +116,14 @@ func _draw() -> void:
 				var pt := Vector2(roundf(cos(a) * rad), roundf(-10.0 + sin(a) * rad * 0.7 - u * 4.0))
 				draw_rect(Rect2(pt, Vector2(2.0 if u < 0.35 else 1.0, 2.0 if u < 0.35 else 1.0)), sc)
 	else:
+		# Readable unlit copper/ochre bronze bowl rim + crisp 1px cream top-lip highlight
+		draw_rect(Rect2(-6.0, -6.0, 12.0, 2.0), LxPalette.PAL["coral"] as Color)
+		draw_rect(Rect2(-5.0, -4.0, 10.0, 1.0), LxPalette.PAL["wine"] as Color)
+		draw_rect(Rect2(-6.0, -6.0, 9.0, 1.0), LxPalette.PAL["apricot"] as Color)
+		draw_rect(Rect2(-5.0, -5.0, 4.0, 1.0), LxPalette.PAL["apricot"] as Color)
+		draw_rect(Rect2(-5.0, -7.0, 10.0, 1.0), LxPalette.PAL["apricot"] as Color)
+		draw_rect(Rect2(-4.0, -7.0, 8.0, 1.0), LxPalette.PAL["gold"] as Color)
+		draw_rect(Rect2(-3.0, -7.0, 5.0, 1.0), LxPalette.PAL["cream"] as Color)
 		# Subtle opaque pixel ember glint above cold coals when Wick approaches
 		if Lx.player is Node2D and is_instance_valid(Lx.player):
 			var d_b: float = (Lx.player as Node2D).global_position.distance_to(pos)

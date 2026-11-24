@@ -294,7 +294,9 @@ func _draw_claim_burst(c_main: Color, c_hi: Color) -> void:
 		var rp: float = u2 / 0.72
 		draw_arc(Vector2(0.0, -8.0), roundf(lerpf(6.0, 36.0, rp)), 0.0, TAU, 22, Color(cream if rp < 0.30 else c_hi, 1.0 - rp), 2.0 if rp < 0.35 else 1.0)
 	var rise_p: float = 1.0 - pow(1.0 - clampf(u2 * 1.55, 0.0, 1.0), 2.0)
-	var emb_y: float = roundf(lerpf(-24.0, -40.0, rise_p))
+	var emb_y: float = roundf(lerpf(-20.0, -26.0, rise_p))
+	if Lx.camera != null and is_instance_valid(Lx.camera):
+		emb_y = maxf(emb_y, roundf((Lx.camera.global_position.y - 76.0) - global_position.y))
 	var emb_a: float = clampf((1.0 - u2) * 1.65, 0.0, 1.0)
 	if emb_a > 0.05:
 		_draw_rising_emblem_halo(emb_y, emb_a)

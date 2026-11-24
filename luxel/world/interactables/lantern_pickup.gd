@@ -161,12 +161,15 @@ func _draw() -> void:
 	var fr: bool = LxHudFx.flash_reduced()
 	var center := Vector2(0.0, -3.0)
 
-	# Crisp pixel-stepped warm stone halo matching tutorial_cues.gd (zero translucent ring clash)
-	var flk: bool = fr or fmod(_clock * 3.2, 1.0) < 0.58
-	_draw_pixel_ellipse(Vector2(0.0, 1.0), 10.0, 4.0, 16, LxPalette.color("apricot" if flk else "coral"))
-	_draw_pixel_ellipse(Vector2(0.0, 1.0), 7.0, 3.0, 12, LxPalette.color("gold" if flk else "apricot"))
+	# Solid dark contrast disc with subtle dusk outer bevel & crisp cream rim so lantern pops off Sundial star
+	var disc_c := Vector2(0.0, -1.0)
+	draw_circle(disc_c, 11.0, LxPalette.PAL["dusk"] as Color)
+	draw_circle(disc_c, 10.0, LxPalette.PAL["night"] as Color)
+	_draw_pixel_ellipse(disc_c, 10.0, 10.0, 32, LxPalette.PAL["cream"] as Color)
 
-	# Clean opaque Last Light contact shadow beneath resting brass lantern
+	# Crisp inner warm ground glow & contact shadow beneath resting brass lantern
+	var flk: bool = fr or fmod(_clock * 3.2, 1.0) < 0.58
+	_draw_pixel_ellipse(Vector2(0.0, 1.0), 7.0, 3.0, 12, LxPalette.color("gold" if flk else "apricot"))
 	draw_rect(Rect2(-5.0, 2.0, 10.0, 2.0), LxPalette.color("void"))
 	draw_rect(Rect2(-4.0, 1.0, 8.0, 4.0), LxPalette.color("night"))
 	draw_rect(Rect2(-3.0, 2.0, 6.0, 2.0), LxPalette.color("void"))
