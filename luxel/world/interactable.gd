@@ -27,6 +27,7 @@ const PAL: Dictionary = {
 }
 
 const PROP_SHEET_PATH: String = "res://luxel/art/props/island1_props.json"
+const PUZZLE_SHEET_PATH: String = "res://luxel/art/props/puzzle_interactables.json"
 
 var id: String = ""
 var kind: String = ""
@@ -100,6 +101,84 @@ func tick(dt: float) -> void:
 		queue_redraw()
 	if _uses_prop_anim:
 		queue_redraw()
+
+
+static func get_puzzle_sheet() -> LxSpriteSheet:
+	return LxSpriteSheet.load_sheet(PUZZLE_SHEET_PATH)
+
+
+func _draw_ground_shadow(rx: float, ry: float, offset: Vector2 = Vector2(2.0, 1.0)) -> void:
+	var pts := PackedVector2Array()
+	pts.resize(12)
+	for i: int in range(12):
+		var a: float = (TAU * float(i)) / 12.0
+		var sx: float = cos(a) * rx + sin(a) * ry * 0.35 + offset.x
+		var sy: float = sin(a) * ry + offset.y
+		pts[i] = Vector2(roundf(sx), roundf(sy))
+	draw_colored_polygon(pts, Color(PAL["void"] as Color, 0.32))
+
+
+func _draw_puzzle_sprite(
+	prop_key: String,
+	offset: Vector2 = Vector2.ZERO,
+	time_s: float = -1.0,
+	modulate: Color = Color.WHITE,
+	frame_override: int = -1
+) -> bool:
+	var sheet: LxSpriteSheet = get_puzzle_sheet()
+	if sheet == null:
+		return false
+	var t_use: float = time_s if time_s >= 0.0 else _clock
+	return sheet.draw_prop(self, offset, prop_key, t_use, modulate, frame_override)
+
+
+func _draw_puzzle_tiled(
+	prop_key: String,
+	rect_size: Vector2,
+	offset: Vector2 = Vector2.ZERO,
+	time_s: float = -1.0,
+	modulate: Color = Color.WHITE,
+	frame_override: int = -1
+) -> bool:
+	var sheet: LxSpriteSheet = get_puzzle_sheet()
+	if sheet == null or sheet.tex == null or not sheet.props.has(prop_key):
+		return false
+	var pinfo_v: Variant = sheet.props.get(prop_key, null)
+	if not (pinfo_v is Dictionary):
+		return false
+	var pinfo: Dictionary = pinfo_v as Dictionary
+	var rects_v: Variant = pinfo.get("rects", null)
+	if not (rects_v is Array) or (rects_v as Array).is_empty():
+		return false
+	var rects: Array = rects_v as Array
+	var idx: int = 0
+	if frame_override >= 0:
+		idx = clampi(frame_override, 0, rects.size() - 1)
+	else:
+		var ms_v: Variant = pinfo.get("ms", [])
+		var ms_arr: Array = ms_v as Array if ms_v is Array else []
+		var t_use: float = time_s if time_s >= 0.0 else _clock
+		idx = LxSpriteSheet._pick_frame(rects.size(), ms_arr, t_use, bool(pinfo.get("loop", true)))
+	var src: Rect2 = LxSpriteSheet._to_rect2(rects[idx])
+	if src.size.x <= 0.0 or src.size.y <= 0.0:
+		return false
+	var w: float = roundf(rect_size.x)
+	var h: float = roundf(rect_size.y)
+	var x0: float = floorf(-w * 0.5) + roundf(offset.x)
+	var y0: float = floorf(-h * 0.5) + roundf(offset.y)
+	var ty: float = y0
+	while ty < y0 + h - 0.01:
+		var th: float = minf(src.size.y, y0 + h - ty)
+		var sy_off: float = (src.size.y - th) if (th < src.size.y and ty > y0) else 0.0
+		var tx: float = x0
+		while tx < x0 + w - 0.01:
+			var tw: float = minf(src.size.x, x0 + w - tx)
+			var sx_off: float = (src.size.x - tw) if (tw < src.size.x and tx > x0) else 0.0
+			var sub_src := Rect2(src.position.x + sx_off, src.position.y + sy_off, tw, th)
+			draw_texture_rect_region(sheet.tex, Rect2(tx, ty, tw, th), sub_src, modulate)
+			tx += tw
+		ty += th
+	return true
 
 
 func _draw_prop_sprite(

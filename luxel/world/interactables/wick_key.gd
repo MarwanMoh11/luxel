@@ -5,8 +5,18 @@ extends LxInteractable
 var collected: bool = false
 var key_kind: String = "wick_key"
 var dungeon_id: String = ""
+var requires_flag: String = ""
+var _unlocked: bool = true
 var _anim_frame: int = 0
 var _pickup_t: float = 0.0
+
+
+func _flag_satisfied() -> bool:
+	if requires_flag.is_empty():
+		return true
+	if region != null and region.has_method("is_flag_set"):
+		return bool(region.call("is_flag_set", requires_flag))
+	return Lx.state != null and bool(Lx.state.story_flags.get(requires_flag, false))
 
 
 func setup(spec: Dictionary) -> void:
@@ -17,8 +27,11 @@ func setup(spec: Dictionary) -> void:
 	dungeon_id = str(props.get("dungeon_id", "island_%d" % island_id))
 	if dungeon_id.is_empty():
 		dungeon_id = "island_%d" % island_id
+	requires_flag = str(props.get("requires_flag", ""))
 	collected = bool(props.get("collected", false))
-	active = not collected
+	_unlocked = _flag_satisfied()
+	active = (not collected) and _unlocked
+	visible = active
 	_pickup_t = 0.0
 	queue_redraw()
 
@@ -27,6 +40,16 @@ func tick(dt: float) -> void:
 	super.tick(dt)
 	if _pickup_t > 0.0:
 		_pickup_t = maxf(0.0, _pickup_t - dt)
+		visible = active or _pickup_t > 0.0
+		queue_redraw()
+		return
+	if not collected and not _unlocked and _flag_satisfied():
+		_unlocked = true
+		active = true
+		visible = true
+		_emit_sfx("shrine_unlock")
+		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 14.0, 5.0)
 		queue_redraw()
 		return
 	if collected or not active:
@@ -38,11 +61,12 @@ func tick(dt: float) -> void:
 
 
 func interact(_actor: Node = null) -> bool:
-	if not active or collected:
+	if not active or collected or not _unlocked:
 		return false
 	collected = true
 	active = false
 	_pickup_t = 0.36
+	visible = true
 	if Lx.state != null:
 		Lx.state.add_key(dungeon_id, key_kind, 1)
 		var flag_name: String = str(props.get("flag_id", props.get("sets_flag", "")))
@@ -74,7 +98,7 @@ func get_light_pool() -> Vector4:
 
 
 func get_interact_prompt() -> String:
-	return "" if collected else "PROMPT_TAKE_KEY"
+	return "" if (collected or not active or not _unlocked) else "PROMPT_TAKE_KEY"
 
 
 func save_state() -> Dictionary:
@@ -84,7 +108,9 @@ func save_state() -> Dictionary:
 func load_state(d: Dictionary) -> void:
 	super.load_state(d)
 	collected = bool(d.get("collected", collected))
-	active = not collected
+	_unlocked = _flag_satisfied()
+	active = (not collected) and _unlocked
+	visible = active or _pickup_t > 0.0
 	queue_redraw()
 
 

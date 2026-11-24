@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    208,
-    184
+    176,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        416,
-        224
+        432,
+        256
       ],
       "dark": true
     }
@@ -24,15 +24,15 @@
     {
       "id": "exit_o5_r3_south",
       "rect": [
-        192,
-        208,
+        160,
+        240,
         32,
         16
       ],
       "to_region": "orrery_r2",
       "to_spawn": [
-        192,
-        72
+        176,
+        40
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,14 +41,14 @@
     {
       "id": "exit_o5_r3_east",
       "rect": [
-        400,
+        416,
         80,
         16,
         48
       ],
       "to_region": "orrery_r4",
       "to_spawn": [
-        88,
+        48,
         104
       ],
       "requires_moves": [],
@@ -63,43 +63,43 @@
       "id": "orrery_sentinel_o5_r3",
       "kind": "orrery_sentinel",
       "pos": [
-        208,
-        72
+        200,
+        104
       ],
       "route": [
         [
-          168,
-          72
+          152,
+          104
         ],
         [
-          248,
-          72
+          240,
+          104
         ]
       ],
       "perches": [],
       "zone": "orrery_r3",
-      "leash": 135
+      "leash": 140
     },
     {
       "id": "echo_moth_o5_r3",
       "kind": "echo_moth",
       "pos": [
         344,
-        112
+        104
       ],
       "route": [
         [
-          344,
+          328,
           72
         ],
         [
-          344,
-          152
+          360,
+          136
         ]
       ],
       "perches": [],
       "zone": "orrery_r3",
-      "leash": 145
+      "leash": 150
     }
   ],
   "interactables": [
@@ -107,7 +107,7 @@
       "id": "door_o5_r3_combat",
       "kind": "door",
       "pos": [
-        392,
+        408,
         104
       ],
       "props": {
@@ -130,8 +130,8 @@
       "sheet": "island5_scenery",
       "prop": "astro_floor_compass",
       "pos": [
-        208,
-        112
+        200,
+        120
       ],
       "layer": "ground",
       "flip_x": false,
@@ -140,46 +140,10 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "hanging_pendulum",
-      "pos": [
-        96,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "hanging_pendulum",
-      "pos": [
-        320,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        52,
-        112
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        156,
-        184
+        136,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -190,13 +154,61 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        260,
-        184
+        216,
+        212
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.65
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        368,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        368,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "hanging_pendulum",
+      "pos": [
+        140,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "hanging_pendulum",
+      "pos": [
+        312,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
     }
   ],
   "is_2x2_room": true

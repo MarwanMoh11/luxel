@@ -13,13 +13,16 @@ const POST_COOLDOWN: float = 1.05
 const OPEN_DMG_MULT: float = 1.5
 const BURROW_PHASE_TIME: float = 1.5
 const SURFACE_PHASE_TIME: float = 2.2
+const COMBAT_BURROW_TIME: float = 0.85
 
 var burrowed: bool = false
 var cap_open: bool = false
+var combat_burrowing: bool = false
 var burrow_t: float = SURFACE_PHASE_TIME
 var burrow_goal: Vector2 = Vector2.ZERO
 var ring_progress: float = 0.0
 var ring_hit: bool = false
+var _recover_count: int = 0
 
 
 func _init() -> void:
@@ -41,48 +44,70 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	super.setup(spec, p_director, p_world)
 	burrowed = false
 	cap_open = false
+	combat_burrowing = false
 	burrow_t = SURFACE_PHASE_TIME
 	burrow_goal = home
 	ring_progress = 0.0
 	ring_hit = false
+	_recover_count = 0
 
 
 func take_hit(hit: LxHit) -> int:
 	if state == State.DEAD or hit == null:
 		return HitResult.GLANCED
 	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
 	var dmg: float = float(h["damage"])
 	var orig: Vector2 = h["origin"] as Vector2
 	var is_heavy: bool = bool(h["stagger"])
 	var pierce: bool = bool(h["pierce"])
 	var cracks: bool = bool(h["cracks_armour"])
 
-	# Burrowed underground: blocks light bolts; heavy/pierce deals reduced damage and unearths.
+	# Burrowed underground: SOURCE_BEAM unearths for 1.0x + instant cap_open stagger;
+	# other light bolts are blocked; other heavy/pierce deals 0.25x and unearths.
+	var beam_unearthed: bool = false
 	if burrowed:
-		if not is_heavy and not pierce and not cracks:
+		if src == LxHit.SOURCE_BEAM:
+			burrowed = false
+			combat_burrowing = false
+			cap_open = true
+			beam_unearthed = true
+			_emit_sfx("sporecap_surface")
+		elif not is_heavy and not pierce and not cracks:
 			clank_t = 0.12
 			_emit_sfx("sporecap_burrow_block")
 			_emit_enemy_hit(hit, HitResult.BLOCKED)
 			return HitResult.BLOCKED
-		dmg *= 0.25
-		burrowed = false
-		state = State.NOTICE
-		state_timer = 0.30
+		else:
+			dmg *= 0.25
+			burrowed = false
+			combat_burrowing = false
+			state = State.NOTICE
+			state_timer = 0.30
 
-	var is_open_hit: bool = cap_open or state == State.RECOVER
+	var is_open_hit: bool = (cap_open or state == State.RECOVER) and not beam_unearthed
 	if is_open_hit:
 		dmg *= OPEN_DMG_MULT
 
 	hp -= dmg
-	flash_t = 0.15 if (is_open_hit or is_heavy) else 0.08
+	flash_t = 0.15 if (is_open_hit or is_heavy or beam_unearthed) else 0.08
 	var rel: Vector2 = orig - pos
 	if rel.length() > 0.01:
 		knock = -rel.normalized() * (95.0 if is_heavy else 24.0)
 
 	if hp <= 0.001:
-		opened_kill = is_open_hit or state == State.STAGGER
+		opened_kill = is_open_hit or beam_unearthed or state == State.STAGGER
 		_die(hit)
 		return HitResult.KILLED
+
+	if beam_unearthed:
+		_release_token()
+		cap_open = true
+		state = State.STAGGER
+		state_timer = 0.75
+		LxDamageFx.boss_impact(pos, 0.12, 54.0, 60.0, 48.0, 1.25, 0.26)
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
 
 	if is_heavy and not is_open_hit:
 		_release_token()
@@ -94,6 +119,7 @@ func take_hit(hit: LxHit) -> int:
 
 	if state == State.ROUTINE or state == State.RETURN:
 		burrowed = false
+		combat_burrowing = false
 		state = State.NOTICE
 		state_timer = 0.30
 		alert_t = 0.75
@@ -107,6 +133,7 @@ func _step_brain(dt: float) -> void:
 	match state:
 		State.ROUTINE:
 			cap_open = false
+			combat_burrowing = false
 			_step_routine(dt)
 			if _sees_target(target_pos):
 				burrowed = false
@@ -117,16 +144,21 @@ func _step_brain(dt: float) -> void:
 				_emit_sfx("sporecap_surface")
 		State.NOTICE:
 			burrowed = false
+			combat_burrowing = false
 			_face_point(target_pos, 3.0, dt)
 			state_timer -= dt
 			if state_timer <= 0.0:
 				state = State.POSITION
 		State.POSITION, State.WAIT_TOKEN:
-			burrowed = false
 			cap_open = false
-			_step_position(dt, target_pos)
+			if combat_burrowing:
+				_step_combat_burrow(dt)
+			else:
+				burrowed = false
+				_step_position(dt, target_pos)
 		State.TELL:
 			burrowed = false
+			combat_burrowing = false
 			cap_open = false
 			state_timer -= dt
 			if state_timer <= 0.0:
@@ -140,8 +172,17 @@ func _step_brain(dt: float) -> void:
 				cap_open = false
 				_release_token()
 				cooldown = POST_COOLDOWN
-				state = State.POSITION
+				_recover_count += 1
+				var wick_p: Vector2 = _get_wick_pos()
+				var should_return: bool = not _is_lured() and (not _has_player() or wick_p.distance_to(home) > leash_radius + 16.0)
+				if should_return:
+					state = State.RETURN
+				elif _recover_count % 2 == 1:
+					_start_combat_burrow()
+				else:
+					state = State.POSITION
 		State.STAGGER:
+			combat_burrowing = false
 			state_timer -= dt
 			if state_timer <= 0.0:
 				cap_open = false
@@ -149,6 +190,7 @@ func _step_brain(dt: float) -> void:
 				state = State.POSITION
 		State.RETURN:
 			cap_open = false
+			combat_burrowing = false
 			burrowed = true
 			var to_h: Vector2 = home - pos
 			if to_h.length() <= 2.5:
@@ -160,6 +202,45 @@ func _step_brain(dt: float) -> void:
 			else:
 				_move_step(to_h.limit_length(routine_speed * dt), false)
 				facing = to_h.angle()
+
+
+func _start_combat_burrow() -> void:
+	combat_burrowing = true
+	burrowed = true
+	burrow_t = COMBAT_BURROW_TIME
+	var ang: float = _randf_range(-PI, PI)
+	var dist_b: float = _randf_range(26.0, 44.0)
+	var candidate: Vector2 = pos + Vector2.from_angle(ang) * dist_b
+	var cap: float = maxf(0.0, leash_radius - 10.0)
+	if candidate.distance_to(home) > cap:
+		candidate = home + (candidate - home).normalized() * cap
+	burrow_goal = candidate
+	state = State.POSITION
+	_emit_sfx("sporecap_burrow")
+
+
+func _step_combat_burrow(dt: float) -> void:
+	var wick_p: Vector2 = _get_wick_pos()
+	if not _is_lured() and (not _has_player() or wick_p.distance_to(home) > leash_radius + 16.0):
+		lost_t += dt
+		if lost_t >= give_up_time:
+			combat_burrowing = false
+			_release_token()
+			state = State.RETURN
+			lost_t = 0.0
+			return
+	else:
+		lost_t = 0.0
+	burrow_t -= dt
+	var to_g: Vector2 = burrow_goal - pos
+	if to_g.length() > 2.0:
+		var spd: float = minf(routine_speed * 0.85, routine_speed - 1.5)
+		_move_step(to_g.limit_length(spd * dt), false)
+		facing = to_g.angle()
+	if burrow_t <= 0.0:
+		combat_burrowing = false
+		burrowed = false
+		_emit_sfx("sporecap_surface")
 
 
 func _step_routine(dt: float) -> void:

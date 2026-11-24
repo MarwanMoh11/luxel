@@ -10,6 +10,7 @@ class Bolt:
 	var dir: Vector2 = Vector2.RIGHT
 	var speed: float = 330.0
 	var dist: float = 0.0
+	var skim_dist: float = 0.0
 	var max_range: float = 118.0
 	var damage: float = 0.35
 	var shield_wear: float = 0.25
@@ -17,8 +18,11 @@ class Bolt:
 	var bounces_left: int = 0
 	var bounce_count: int = 0
 	var is_prism: bool = false
+	var is_split_shard: bool = false
+	var light_color: String = LxHit.COLOR_YELLOW
 	var is_counter: bool = false
 	var is_pierce: bool = false
+	var cracks_armour: bool = false
 	var biome_tint: String = ""
 	var hit_ids: Array[int] = []
 
@@ -28,7 +32,9 @@ var is_held: bool = false
 func can_use() -> bool:
 	if not super.can_use():
 		return false
-	if wick.dead or wick.is_dashing() or wick.is_zipping() or wick.is_beam_charging():
+	if not wick.has_lantern():
+		return false
+	if wick.dead or wick.is_dashing() or wick.is_zipping() or wick.is_beam_charging() or wick.is_grabbing():
 		return false
 	if wick.lantern != null and not wick.lantern.is_in_hand():
 		return false
@@ -72,9 +78,9 @@ func _get_effective_cooldown() -> float:
 func _get_prism_bounces() -> int:
 	if wick != null and wick.move_prism != null:
 		return wick.move_prism.get_bounces()
-	if Lx.state != null and Lx.state.has_move("prism"):
-		return maxi(1, Lx.state.get_effective_prism_bounces())
-	return 0
+	if Lx.state != null and Lx.state.get_upgrade_rank("prism_bounce") > 0:
+		return 3
+	return 2
 
 
 func _fire_bolt() -> bool:
@@ -135,6 +141,7 @@ func _fire_bolt() -> bool:
 		eb.shield_wear = b.shield_wear * 0.6
 		eb.bounces_left = 0
 		eb.is_prism = true
+		eb.light_color = LxHit.COLOR_BLUE
 		wick.bolts.append(eb)
 		wick.spawn_sparks(eb.pos, aim, 3, LxWick.PAL_ICE, 35.0, 85.0, 0.14)
 	wick.shots_fired += 1
@@ -203,7 +210,7 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 					dmg_f *= 1.25
 				var hit: LxHit = LxHit.make(
 					src, dmg_f, b.dir, b.pos,
-					b.shield_wear, stagger, pierce or b.is_pierce, wick, false
+					b.shield_wear, stagger, pierce or b.is_pierce, wick, b.cracks_armour, b.light_color
 				)
 				var res: int = wick.apply_hit_to_entity(enemy, hit)
 				wick.on_hit_landed(hit, res, epos, hs_chip, shake_chip)
@@ -263,9 +270,12 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 						var rpos: Vector2 = refl.get("pos", ipos) as Vector2
 						var exit_pos: Vector2 = refl.get("exit_pos", rpos) as Vector2
 						var rdir: Vector2 = refl.get("dir", -b.dir) as Vector2
-						_apply_prism_bounce(b, rpos, exit_pos, rdir, prism_mult, prism_range, iid)
+						var t_col: String = str(item.call("get_transform_color")) if item.has_method("get_transform_color") else LxHit.COLOR_BLUE
+						if t_col.is_empty():
+							t_col = LxHit.COLOR_BLUE
+						_apply_prism_bounce(b, rpos, exit_pos, rdir, prism_mult, prism_range, iid, t_col)
 						if item.has_method("on_hit"):
-							var ping: LxHit = LxHit.make(LxHit.SOURCE_PRISM, b.damage, b.dir, rpos, b.shield_wear, false, false, wick, false)
+							var ping: LxHit = LxHit.make(LxHit.SOURCE_PRISM if b.is_prism else LxHit.SOURCE_BOLT, b.damage, b.dir, rpos, b.shield_wear, false, false, wick, false, b.light_color)
 							item.call("on_hit", ping)
 						reflected = true
 						break
@@ -273,7 +283,7 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				if item.has_method("on_hit"):
 					b.hit_ids.append(iid)
 					var src_i: String = LxHit.SOURCE_PRISM if b.is_prism else LxHit.SOURCE_BOLT
-					var hit_i: LxHit = LxHit.make(src_i, b.damage, b.dir, b.pos, b.shield_wear, false, false, wick, false)
+					var hit_i: LxHit = LxHit.make(src_i, b.damage, b.dir, b.pos, b.shield_wear, false, b.is_pierce, wick, b.cracks_armour, b.light_color)
 					var consumed: Variant = item.call("on_hit", hit_i)
 					if consumed is bool and bool(consumed):
 						if str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
@@ -285,7 +295,8 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 								wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
 								wick.emit_sfx("beam_ready", wick.global_position, false)
 						else:
-							wick.spawn_sparks(ipos, -b.dir, 4, LxWick.PAL_GOLD, 25.0, 65.0, 0.14)
+							var sp_col: Color = LxWick.PAL_ICE if (b.is_prism or b.light_color == LxHit.COLOR_BLUE) else LxWick.PAL_GOLD
+							wick.spawn_sparks(ipos, -b.dir, 4, sp_col, 25.0, 65.0, 0.14)
 						dead = true
 						break
 
@@ -296,8 +307,24 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				var wpos: Vector2 = wrefl.get("pos", b.pos) as Vector2
 				var wexit: Vector2 = wrefl.get("exit_pos", wpos) as Vector2
 				var wdir: Vector2 = wrefl.get("dir", -b.dir) as Vector2
-				_apply_prism_bounce(b, wpos, wexit, wdir, prism_mult, prism_range, -1)
+				_apply_prism_bounce(b, wpos, wexit, wdir, prism_mult, prism_range, -1, LxHit.COLOR_BLUE)
 				reflected = true
+
+		# 3b. Scenery prop grazing (once per bolt per prop)
+		if not dead and not reflected and world_ctx != null and is_instance_valid(world_ctx):
+			var props_v: Variant = world_ctx.get("_scenery_props")
+			if props_v is Array:
+				for pv: Variant in (props_v as Array):
+					if not (pv is LxSceneryProp) or not is_instance_valid(pv as Object):
+						continue
+					var sp: LxSceneryProp = pv as LxSceneryProp
+					var pid: int = sp.get_instance_id()
+					if b.hit_ids.has(pid):
+						continue
+					var cp: Vector2 = Geometry2D.get_closest_point_to_segment(sp.position, b.pos, nxt)
+					if cp.distance_squared_to(sp.position) <= 169.0:
+						b.hit_ids.append(pid)
+						sp.on_bolt_graze(cp, b.dir, b.is_prism or b.light_color == LxHit.COLOR_BLUE)
 
 		# 4. Wall / max range check
 		if not dead and not reflected:
@@ -309,10 +336,20 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				wick.spawn_sparks(b.pos, -b.dir, 3, wcol, 20.0, 52.0, 0.14)
 				if hit_wall:
 					wick.spawn_ring(b.pos, 1.5, 5.5, 0.12, wcol, 1.0)
+					if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+						LxGroundDecals.active_instance.add_dir_decal(LxGroundDecals.Kind.WALL_SCUFF, b.pos, b.dir, 3.0, 1.8, b.is_prism or b.light_color == LxHit.COLOR_BLUE)
 					wick.emit_sfx("bolt_wall", b.pos, true)
 				dead = true
 			else:
+				if b.is_prism and b.bounce_count >= 1 and b.age < 0.14 and wick._fx != null:
+					wick._fx._spawn_streak(b.pos, nxt, 0.09, LxWick.PAL_SKY if b.is_split_shard else LxWick.PAL_ICE, 1.5)
+					wick._fx._spawn_mote(nxt, Vector2.ZERO, 0.045, LxWick.PAL_CREAM, 2.0, false, 0.5, true, 0.96)
 				b.pos = nxt
+				b.skim_dist += step_dist
+				if b.skim_dist >= 18.0:
+					b.skim_dist = fmod(b.skim_dist, 18.0)
+					if LxWaterFx.active_instance != null and is_instance_valid(LxWaterFx.active_instance):
+						LxWaterFx.active_instance.on_bolt_skim(b.pos, b.dir, b.is_prism or b.light_color == LxHit.COLOR_BLUE)
 
 		if dead:
 			wick.bolts.remove_at(i)
@@ -326,22 +363,63 @@ func _apply_prism_bounce(
 	rdir: Vector2,
 	prism_mult: float,
 	prism_range: float,
-	ignore_id: int
+	ignore_id: int,
+	transform_color: String = LxHit.COLOR_BLUE
 ) -> void:
 	b.dir = rdir.normalized() if rdir.length_squared() > 0.0001 else -b.dir
 	b.prev_pos = rpos
 	b.pos = exit_pos
 	b.bounces_left -= 1
 	b.bounce_count += 1
-	b.is_prism = true
+	b.light_color = transform_color
+	b.is_prism = (transform_color == LxHit.COLOR_BLUE)
+	if wick.move_prism != null and wick.move_prism.should_crack_armour(b.bounce_count):
+		b.cracks_armour = true
+		b.is_pierce = true
+	b.age = 0.0
 	b.damage *= prism_mult
 	b.dist = 0.0
+	b.skim_dist = 0.0
 	b.max_range = prism_range
 	b.hit_ids.clear()
 	if ignore_id != -1:
 		b.hit_ids.append(ignore_id)
 	if wick.move_prism != null:
-		wick.move_prism.on_bolt_reflected(rpos, b.dir, b.bounce_count)
+		wick.move_prism.on_bolt_reflected(rpos, b.dir, b.bounce_count, b.light_color)
+	# Prism Split: primary bolt's 1st reflection spawns 2 flanking shards (bounded max 3 bolts, never re-splits)
+	if wick.move_prism != null and wick.move_prism.has_split() and not b.is_split_shard and b.bounce_count == 1:
+		var split_rad: float = deg_to_rad(wick.move_prism.SPLIT_ANGLE_DEG)
+		var split_dmg: float = b.damage * wick.move_prism.SPLIT_DMG_MULT
+		for sign_a: float in [-1.0, 1.0]:
+			var sb := Bolt.new()
+			sb.dir = b.dir.rotated(sign_a * split_rad).normalized()
+			sb.prev_pos = rpos
+			sb.pos = exit_pos
+			sb.speed = b.speed
+			sb.dist = 0.0
+			sb.max_range = prism_range * 0.92
+			sb.damage = split_dmg
+			sb.shield_wear = b.shield_wear
+			sb.age = 0.0
+			sb.bounces_left = 1
+			sb.bounce_count = 1
+			sb.is_prism = true
+			sb.is_split_shard = true
+			sb.light_color = transform_color
+			sb.is_counter = b.is_counter
+			sb.is_pierce = b.is_pierce
+			sb.cracks_armour = true
+			sb.biome_tint = b.biome_tint
+			if ignore_id != -1:
+				sb.hit_ids.append(ignore_id)
+			wick.bolts.append(sb)
+		wick.trigger_hitstop(0.028)
+		if Lx.camera != null and is_instance_valid(Lx.camera):
+			Lx.camera.add_kick(b.dir, 1.6)
+		wick.move_prism.spawn_split_wedge(rpos, b.dir)
+		wick.spawn_sparks(rpos, b.dir, 6, LxWick.PAL_SKY, 42.0, 108.0, 0.20)
+		wick.spawn_sparks(rpos, b.dir, 4, LxWick.PAL_CREAM, 55.0, 118.0, 0.16)
+		wick.emit_sfx("prism_chain", rpos, true)
 
 
 func _bolt_hits_item(from_p: Vector2, to_p: Vector2, item: Object, ipos: Vector2, irad: float) -> bool:

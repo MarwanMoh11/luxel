@@ -3,9 +3,10 @@
   "island_id": 2,
   "tile_size": 16,
   "is_dungeon": true,
+  "is_2x2_room": true,
   "spawn": [
-    88,
-    104
+    40,
+    120
   ],
   "zones": [
     {
@@ -14,8 +15,8 @@
       "rect": [
         0,
         0,
-        416,
-        208
+        448,
+        240
       ],
       "dark": true
     }
@@ -25,14 +26,14 @@
       "id": "exit_lh_r7_west",
       "rect": [
         0,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "lighthouse_r6",
       "to_spawn": [
-        440,
-        112
+        432,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,14 +42,14 @@
     {
       "id": "exit_lh_r7_north",
       "rect": [
-        192,
+        176,
         0,
         32,
         16
       ],
       "to_region": "lighthouse_r8",
       "to_spawn": [
-        208,
+        192,
         216
       ],
       "requires_moves": [
@@ -64,8 +65,8 @@
       "id": "door_lh_r7_key",
       "kind": "door",
       "pos": [
-        120,
-        104
+        72,
+        120
       ],
       "props": {
         "door_kind": "key_door",
@@ -82,15 +83,18 @@
       }
     },
     {
-      "id": "mirror_lh_r7_a",
-      "kind": "mirror",
+      "id": "transformer_lh_r7_a",
+      "kind": "blue_transformer",
       "pos": [
-        232,
-        152
+        120,
+        184
       ],
       "props": {
-        "angle_deg": 225,
+        "angle_deg": 0,
         "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -98,15 +102,45 @@
       }
     },
     {
-      "id": "mirror_lh_r7_b",
-      "kind": "mirror",
+      "id": "portal_lh_r7_in",
+      "kind": "blue_portal",
       "pos": [
-        312,
+        184,
+        72
+      ],
+      "props": {
+        "target_portal_id": "portal_lh_r7_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "lh_r7_portal_lit"
+      }
+    },
+    {
+      "id": "portal_lh_r7_out",
+      "kind": "blue_portal",
+      "pos": [
+        280,
         152
       ],
       "props": {
-        "angle_deg": 225,
-        "rotatable": false,
+        "target_portal_id": "portal_lh_r7_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "transformer_lh_r7_b",
+      "kind": "blue_transformer",
+      "pos": [
+        296,
+        168
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -117,12 +151,36 @@
       "id": "switch_eye_lh_r7",
       "kind": "switch_eye",
       "pos": [
-        312,
-        72
+        392,
+        104
       ],
       "props": {
+        "requires_blue": true,
         "requires_prism": true,
-        "target_id": "door_lh_r7_shutter",
+        "target_ids": [
+          "door_lh_r7_shutter",
+          "bridge_lh_r7"
+        ],
+        "sets_flag": "lh_r7_gallery_open"
+      }
+    },
+    {
+      "id": "bridge_lh_r7",
+      "kind": "door",
+      "pos": [
+        232,
+        112
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          32
+        ],
+        "zone": "lighthouse_r7",
+        "requires_signals": [
+          "switch_eye_lh_r7"
+        ],
         "sets_flag": "lh_r7_gallery_open"
       }
     },
@@ -130,7 +188,7 @@
       "id": "door_lh_r7_shutter",
       "kind": "door",
       "pos": [
-        208,
+        192,
         40
       ],
       "props": {
@@ -152,8 +210,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        160,
-        58
+        150,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -164,20 +222,20 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        264,
-        58
+        234,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.6
+      "phase": 0.55
     },
     {
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        92,
-        60
+        104,
+        88
       ],
       "layer": "sort",
       "flip_x": false,
@@ -186,22 +244,22 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "coastal_lantern_post",
+      "prop": "mooring_bollard",
       "pos": [
-        92,
-        154
+        264,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.8
+      "phase": 0.0
     },
     {
       "sheet": "island2_scenery",
       "prop": "buoy_bobbing",
       "pos": [
-        280,
-        124
+        232,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -210,16 +268,39 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "mooring_bollard",
+      "prop": "barnacle_piling",
       "pos": [
-        160,
-        154
+        352,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        312,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        376,
+        88
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.6
     }
-  ],
-  "is_2x2_room": true
+  ]
 }

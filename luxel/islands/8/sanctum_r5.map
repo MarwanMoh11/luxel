@@ -1,4 +1,4 @@
-# Bell Sanctum r5 - The Grand Sunflare Choir (28x16)
+# Bell Sanctum r5 - Grand Synthesis Vault (30x18)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,19 +13,21 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-#############,,#############
-####.........,,.........####
-####.........,,.........####
-#............,,............#
-#............,,............#
-#............,,............#
-#######......,,......#######
-#............,,............#
-#............,,............#
-#.OOO........,,........OOO.#
-#.OOO........,,........OOO.#
-#.OOO........,,........OOO.#
-#.OOO........,,........OOO.#
-#............,,............#
-#............,,............#
-#############,,#############
+############,,################
+#OOOOOOO#..#,,#..#OOOOOOOOOOO#
+#OOOOOOO#...,,...#OOOOOOOOOOO#
+#OOOOOOO#...,,...#OOOOOOOOOOO#
+#OOOOOOO#...,,...#OOOOOOOOOOO#
+#OOOOOOO#...,,...#OOOOOOOOOOO#
+#OOOOOOO####,,####OOOOOOOOOOO#
+#OOOOOOOOOOOPOOOOO#OOOOOOOOOO#
+#OOOOOOOOOOPPOOOO.#.....OO...#
+#OOOOOOOOPPPOOOOO.......OO...#
+#OOOOOOOOPPOOOOOOO......OOOOO#
+#OOOOOOO.#,,#.............##.#
+#O...OOO.#..#.......#####..#.#
+#O...OOO.,,,,,,,,,,,,,,#,...,,
+#O...OOO........,,.....#....,,
+#OOOOOOO........,,.....#..##.#
+#OOOOOOO........,,........#..#
+################,,############

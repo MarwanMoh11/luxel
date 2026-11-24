@@ -27,6 +27,10 @@ const SCRIPTS: Dictionary = {
 	"great_lamp": preload("res://luxel/world/interactables/great_lamp.gd"),
 	"great_belfry_brazier": preload("res://luxel/world/interactables/great_lamp.gd"),
 	"mirror": preload("res://luxel/world/interactables/mirror.gd"),
+	"blue_transformer": preload("res://luxel/world/interactables/mirror.gd"),
+	"transformer": preload("res://luxel/world/interactables/mirror.gd"),
+	"blue_portal": preload("res://luxel/world/interactables/blue_portal.gd"),
+	"portal": preload("res://luxel/world/interactables/blue_portal.gd"),
 	"cracked_wall": preload("res://luxel/world/interactables/cracked_wall.gd"),
 	"cracked": preload("res://luxel/world/interactables/cracked_wall.gd"),
 	"bramble": preload("res://luxel/world/interactables/bramble.gd"),
@@ -37,6 +41,7 @@ const SCRIPTS: Dictionary = {
 	"phantom": preload("res://luxel/world/interactables/phantom_platform.gd"),
 	"obsidian_seal": preload("res://luxel/world/interactables/obsidian_seal.gd"),
 	"seal": preload("res://luxel/world/interactables/obsidian_seal.gd"),
+	"lantern_pickup": preload("res://luxel/world/interactables/lantern_pickup.gd"),
 }
 
 

@@ -16,6 +16,11 @@ const CARRY_SPEED: float = 38.0
 const BAFFLED_TIME: float = 0.85
 const STAGGER_TIME: float = 0.55
 const AGAIN_CD: float = 1.25
+const SWOOP_CD: float = 3.2
+const SWOOP_TELL: float = 0.45
+const SWOOP_COMMIT_TIME: float = 0.52
+const SWOOP_HIT_R: float = 12.0
+const SWOOP_RECOVER_TIME: float = 0.72
 const ALT_CIRCLE: float = 14.0
 const ALT_CARRY: float = 10.0
 
@@ -27,6 +32,10 @@ var altitude: float = ALT_CIRCLE
 var dive_target: Vector2 = Vector2.ZERO
 var carry_goal: Vector2 = Vector2.ZERO
 var carrying_lantern: bool = false
+var attack_cd: float = 1.6
+var swoop_mode: bool = false
+var swoop_hit: bool = false
+var glint_t: float = 0.0
 
 func _init() -> void:
 	kind = "gull_thief"
@@ -61,6 +70,10 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	carrying_lantern = false
 	carry_goal = home
 	dive_target = home
+	attack_cd = 1.6
+	swoop_mode = false
+	swoop_hit = false
+	glint_t = 0.0
 	if Lx.events != null:
 		if not Lx.events.lantern_recalled.is_connected(_on_lantern_recalled):
 			Lx.events.lantern_recalled.connect(_on_lantern_recalled)
@@ -71,71 +84,121 @@ func is_flying() -> bool:
 	return true
 
 func wants_token() -> bool:
-	return sub_state == SubState.CIRCLE and cooldown <= 0.0 and _is_lantern_hung()
+	if sub_state != SubState.CIRCLE or cooldown > 0.0:
+		return false
+	if _is_lantern_hung():
+		return true
+	return attack_cd <= 0.0 and _has_player() and _get_wick_pos().distance_to(home) <= leash_radius
 
 func take_hit(hit: LxHit) -> int:
 	if state == State.DEAD or hit == null:
 		return HitResult.GLANCED
 	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
 	var dmg: float = float(h["damage"])
 	var orig: Vector2 = h["origin"] as Vector2
 	var is_heavy: bool = bool(h["stagger"])
+	var is_blue_hit: bool = hit.is_blue() or src == LxHit.SOURCE_PRISM
+	var pierce: bool = bool(h["pierce"])
+	var cracks: bool = bool(h["cracks_armour"])
+
+	# While circling/perched, glint-dodges straight yellow bolts; blue-transformed bolts / Dash / Recall stagger & open it!
+	if sub_state == SubState.CIRCLE and src == LxHit.SOURCE_BOLT and not is_blue_hit \
+			and not is_heavy and not pierce and not cracks:
+		glint_t = 0.28
+		var dodge_rel: Vector2 = pos - orig
+		var perp: Vector2 = (dodge_rel.normalized() if dodge_rel.length() > 0.01 else Vector2.from_angle(facing)).rotated(PI * 0.5 * orbit_spin)
+		_move_step(perp * 10.0, true)
+		_emit_sfx("gull_dodge")
+		_emit_enemy_hit(hit, HitResult.BLOCKED)
+		return HitResult.BLOCKED
+
 	var was_carrying: bool = carrying_lantern
-	var is_opening: bool = was_carrying or sub_state == SubState.HOIST \
-			or sub_state == SubState.BAFFLED or sub_state == SubState.DIVE
+	var is_opening: bool = was_carrying or is_blue_hit or sub_state == SubState.HOIST \
+			or sub_state == SubState.BAFFLED or sub_state == SubState.DIVE or sub_state == SubState.STAGGER
+	if is_blue_hit:
+		dmg *= 1.25
 	hp -= dmg
-	flash_t = 0.14 if (is_heavy or was_carrying) else 0.09
+	flash_t = 0.14 if (is_heavy or was_carrying or is_blue_hit) else 0.09
 	var rel: Vector2 = orig - pos
 	if rel.length() > 0.01:
 		knock = -rel.normalized() * (135.0 if is_heavy else 65.0)
 	if was_carrying:
 		_drop_carried_lantern()
+	swoop_mode = false
 	_release_all_claims()
 	if hp <= 0.001:
 		opened_kill = is_opening
 		_die(hit)
 		return HitResult.KILLED
-	if is_heavy or was_carrying or sub_state == SubState.DIVE or sub_state == SubState.HOIST:
+	if is_heavy or is_blue_hit or src == LxHit.SOURCE_DASH or src == LxHit.SOURCE_RECALL \
+			or was_carrying or sub_state == SubState.DIVE or sub_state == SubState.HOIST:
 		sub_state = SubState.STAGGER
 		state = State.STAGGER
-		state_timer = STAGGER_TIME if is_heavy else 0.38
+		state_timer = STAGGER_TIME if (is_heavy or is_blue_hit) else 0.38
 		_emit_enemy_hit(hit, HitResult.OPENED)
 		return HitResult.OPENED
 	_emit_enemy_hit(hit, HitResult.CHIPPED)
 	return HitResult.CHIPPED
 
 func _step_brain(dt: float) -> void:
+	attack_cd = maxf(0.0, attack_cd - dt)
+	glint_t = maxf(0.0, glint_t - dt)
 	match sub_state:
 		SubState.CIRCLE:
 			state = State.ROUTINE
 			altitude = move_toward(altitude, ALT_CIRCLE, 42.0 * dt)
 			_step_circle(dt)
-			_try_mark_lantern()
+			if not _try_mark_lantern():
+				_try_start_swoop()
 		SubState.TELL:
 			state = State.TELL
 			altitude = move_toward(altitude, ALT_CIRCLE + 2.0, 32.0 * dt)
-			var lan_p: Vector2 = _get_lantern_pos()
-			if (lan_p - pos).length() > 0.01:
-				facing = (lan_p - pos).angle()
 			state_timer -= dt
-			if not _is_lantern_hung():
-				_enter_baffled()
-			elif state_timer <= 0.0:
-				sub_state = SubState.DIVE
-				state = State.COMMIT
-				state_timer = DIVE_MAX_TIME
-				dive_target = _clamp_pt(lan_p)
-				_emit_sfx("gull_dive")
+			if swoop_mode:
+				if state_timer > 0.16 and _has_player():
+					dive_target = _clamp_pt(_get_wick_pos())
+				var to_w: Vector2 = dive_target - pos
+				if to_w.length() > 0.01:
+					facing = to_w.angle()
+				if state_timer <= 0.0:
+					sub_state = SubState.DIVE
+					state = State.COMMIT
+					state_timer = SWOOP_COMMIT_TIME
+					swoop_hit = false
+					_emit_sfx("gull_dive")
+			else:
+				var lan_p: Vector2 = _get_lantern_pos()
+				if (lan_p - pos).length() > 0.01:
+					facing = (lan_p - pos).angle()
+				if not _is_lantern_hung():
+					_enter_baffled()
+				elif state_timer <= 0.0:
+					sub_state = SubState.DIVE
+					state = State.COMMIT
+					state_timer = DIVE_MAX_TIME
+					dive_target = _clamp_pt(lan_p)
+					_emit_sfx("gull_dive")
 		SubState.DIVE:
 			state = State.COMMIT
-			altitude = move_toward(altitude, 2.0, 75.0 * dt)
+			altitude = move_toward(altitude, 2.0, 85.0 * dt)
 			state_timer -= dt
 			var arrived: bool = _fly_to(dive_target, DIVE_SPEED, dt)
-			var lan_p: Vector2 = _get_lantern_pos()
-			if _is_lantern_hung() and pos.distance_to(lan_p) <= GRAB_R:
-				_begin_hoist()
-			elif arrived or state_timer <= 0.0:
-				_enter_baffled()
+			if swoop_mode:
+				if not swoop_hit and _has_player() and pos.distance_to(_get_wick_pos()) <= SWOOP_HIT_R:
+					swoop_hit = true
+					var sdir: Vector2 = (dive_target - pos).normalized() if dive_target.distance_to(pos) > 0.01 else Vector2.from_angle(facing)
+					_emit_player_hit(sdir)
+				if arrived or state_timer <= 0.0:
+					swoop_mode = false
+					attack_cd = SWOOP_CD
+					_enter_baffled(SWOOP_RECOVER_TIME)
+			else:
+				var lan_p: Vector2 = _get_lantern_pos()
+				if _is_lantern_hung() and pos.distance_to(lan_p) <= GRAB_R:
+					_begin_hoist()
+				elif arrived or state_timer <= 0.0:
+					_enter_baffled()
 		SubState.HOIST:
 			state = State.RECOVER
 			altitude = move_toward(altitude, ALT_CARRY, 26.0 * dt)
@@ -200,12 +263,33 @@ func _try_mark_lantern() -> bool:
 		if not director.claim_token(self):
 			director.release_light(self)
 			return false
+	swoop_mode = false
 	sub_state = SubState.TELL
 	state = State.TELL
 	is_counter_attack = false
 	last_tell_duration = _scaled_tell(tell_time, false, 1.0)
 	state_timer = last_tell_duration
 	dive_target = _clamp_pt(lan_p)
+	_emit_attack_started()
+	_emit_sfx("gull_mark")
+	return true
+
+func _try_start_swoop() -> bool:
+	if attack_cd > 0.0 or cooldown > 0.0 or _is_lantern_hung() or not _has_player() or not _is_on_screen():
+		return false
+	var wp: Vector2 = _get_wick_pos()
+	if pos.distance_to(wp) > notice_radius or wp.distance_to(home) > leash_radius:
+		return false
+	if not _claim_token():
+		return false
+	swoop_mode = true
+	swoop_hit = false
+	sub_state = SubState.TELL
+	state = State.TELL
+	is_counter_attack = false
+	last_tell_duration = _scaled_tell(SWOOP_TELL, false, attack_damage)
+	state_timer = last_tell_duration
+	dive_target = _clamp_pt(wp)
 	_emit_attack_started()
 	_emit_sfx("gull_mark")
 	return true
@@ -221,12 +305,13 @@ func _begin_hoist() -> void:
 		Lx.events.lantern_stolen.emit(self, pos)
 	_emit_sfx("gull_snatch")
 
-func _enter_baffled() -> void:
+func _enter_baffled(dur: float = BAFFLED_TIME) -> void:
 	_release_all_claims()
 	carrying_lantern = false
+	swoop_mode = false
 	sub_state = SubState.BAFFLED
 	state = State.RECOVER
-	state_timer = maxf(MIN_RECOVER_TIME, BAFFLED_TIME)
+	state_timer = maxf(MIN_RECOVER_TIME, dur)
 	last_recover_duration = state_timer
 	cooldown = AGAIN_CD
 
@@ -285,6 +370,11 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(off, off + side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
 		draw_line(off, off - side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
 		draw_line(off + fwd * 3.0, off + fwd * 8.0, PAL["apricot"] as Color, 1.5)
+	if glint_t > 0.0:
+		var gr: float = body_radius + 3.0 + (1.0 - clampf(glint_t / 0.28, 0.0, 1.0)) * 4.0
+		draw_arc(c, gr, 0.0, TAU, 12, PAL["ice"] as Color, 1.2)
+		draw_line(c + Vector2(-4.0, 0.0), c + Vector2(4.0, 0.0), PAL["cream"] as Color, 1.0)
+		draw_line(c + Vector2(0.0, -4.0), c + Vector2(0.0, 4.0), PAL["cream"] as Color, 1.0)
 	if state == State.TELL:
 		var rel := Vector2(roundf(dive_target.x - pos.x), roundf(dive_target.y - pos.y))
 		var delta: Vector2 = rel - c

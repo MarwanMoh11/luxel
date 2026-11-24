@@ -1,4 +1,4 @@
-# Bell Sanctum r1 - Towering Vertical Gothic Narthex (24x18)
+# Bell Sanctum r1 - Shattered Narthex Hub (26x18)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,21 +13,21 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-###########,,###########
-#OOOOOO....,,....OOOOOO#
-#OOOOOO....,,....OOOOOO#
-#OOOOOO.#..,,..#.OOOOOO#
-#OOOOOO....,,....OOOOOO#
-#OOO.......,,.......OOO#
-#OOO.......,,.......OOO#
-#OOO.......,,.......OOO#
-#OOO.......,,.......OOO#
-#OOO.......,,.......OOO#
-#OOO.......,,.......OOO#
-#OOO.......,,.......OOO#
-#OOO.......,,.......OOO#
-#OOOOOO....,,....OOOOOO#
-#OOOOOO.#..,,..#.OOOOOO#
-#OOOOOO....,,....OOOOOO#
-#OOOOOO....,,....OOOOOO#
-###########,,###########
+################,,########
+#OOOOOOOOO......,,.....OO#
+#OOOOOOOO.......,,....OOO#
+#OOOOO....#.....,,...OOOO#
+#OO.............,,...OOOO#
+#O..............,,....OOO#
+#O...##.........,,...OOOO#
+#O..............,,..OOOOO#
+#O.......,,,,...,,..OOOOO#
+#O.......,,,,...,,..OO...#
+#OO......,,.........OO...#
+#OOO.....,,.........OO..##
+#OOOO....,,..####...OO..,,
+#OOOOO...,,.....#...OO..,,
+#OOOOOO..,,.....#...OO..##
+#OOOOOO..,,........OOOOOO#
+#OOOOOOO.,,.......OOOOOOO#
+########,,################

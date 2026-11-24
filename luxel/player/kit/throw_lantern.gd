@@ -26,7 +26,7 @@ func set_world_ctx(world_ctx: Node) -> void:
 func can_use() -> bool:
 	if not super.can_use():
 		return false
-	if wick.dead or wick.lantern == null:
+	if wick.dead or not wick.has_lantern() or wick.lantern == null:
 		return false
 	if wick.lantern.state == LxLantern.State.CARRIED:
 		return false
@@ -34,11 +34,10 @@ func can_use() -> bool:
 
 
 func press() -> bool:
-	if not unlocked:
-		if wick != null:
-			wick.emit_sfx("denied", wick.global_position, false)
+	if wick == null or wick.dead or not wick.has_lantern() or wick.lantern == null:
 		return false
-	if wick == null or wick.dead or wick.lantern == null:
+	if not unlocked:
+		wick.emit_sfx("denied", wick.global_position, false)
 		return false
 
 	var lan: LxLantern = wick.lantern
@@ -86,7 +85,7 @@ func press() -> bool:
 
 
 func try_zip() -> bool:
-	if not unlocked or wick == null or wick.dead or wick.lantern == null:
+	if not unlocked or wick == null or wick.dead or not wick.has_lantern() or wick.lantern == null:
 		return false
 	var lan: LxLantern = wick.lantern
 	if lan.state == LxLantern.State.CARRIED:
@@ -195,6 +194,8 @@ func tick_zip(dt: float, world_ctx: Node) -> void:
 				return
 
 	if zipping and (zip_time_left <= 0.0 or wick.global_position.distance_to(lan.pos) <= 8.0):
+		if wick.global_position.distance_to(lan.pos) <= 18.0:
+			wick.global_position = wick.world_collide_step(world_ctx, wick.global_position, lan.pos, LxWick.BODY_RADIUS, true)
 		zipping = false
 		zip_time_left = 0.0
 		wick.mercy_t = maxf(wick.mercy_t, 0.14)
@@ -263,6 +264,38 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 			)
 			var res: int = wick.apply_hit_to_entity(enemy, hit)
 			wick.on_hit_landed(hit, res, epos, hs, sh)
+
+	var inters: Array = wick.world_get_interactables(world_ctx)
+	for it_var: Variant in inters:
+		if not (it_var is Object):
+			continue
+		var item: Object = it_var as Object
+		if not is_instance_valid(item) or not item.has_method("on_hit"):
+			continue
+		if item.get("active") is bool and not bool(item.get("active")):
+			continue
+		var iid: int = item.get_instance_id()
+		if zip_hit_ids.has(iid):
+			continue
+		var ipos: Vector2 = wick.get_entity_pos(item)
+		var irad: float = wick.get_entity_radius(item, 8.0)
+		if ipos.distance_to(center) <= burst_r + irad:
+			zip_hit_ids.append(iid)
+			var idir: Vector2 = (ipos - center).normalized() if ipos.distance_to(center) > 0.1 else zip_dir
+			var hit_i: LxHit = LxHit.make(
+				LxHit.SOURCE_ZIP, zdmg, idir, center,
+				wear, stag, false, wick, false
+			)
+			var consumed: Variant = item.call("on_hit", hit_i)
+			if consumed is bool and bool(consumed):
+				if str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
+					var emax: float = Lx.state.get_effective_ember_max()
+					var was_full: bool = wick.ember >= emax - 0.001
+					wick.ember = minf(emax, wick.ember + 22.0)
+					if not was_full and wick.ember >= emax - 0.001:
+						wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
+						wick.emit_sfx("beam_ready", wick.global_position, false)
+				wick.spawn_sparks(ipos, idir, 6, LxWick.PAL_GOLD, 28.0, 82.0, 0.20)
 
 
 func get_zip_velocity() -> Vector2:

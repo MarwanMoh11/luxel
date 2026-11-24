@@ -13,9 +13,9 @@
       "name_key": "ZONE_ISL2_1",
       "rect": [
         0,
-        208,
-        416,
-        240
+        224,
+        336,
+        256
       ],
       "dark": true
     },
@@ -25,8 +25,8 @@
       "rect": [
         0,
         0,
-        416,
-        208
+        496,
+        224
       ],
       "dark": true
     },
@@ -34,10 +34,21 @@
       "id": "tide_causeway",
       "name_key": "ZONE_ISL2_3",
       "rect": [
-        416,
-        0,
-        464,
-        448
+        496,
+        32,
+        400,
+        208
+      ],
+      "dark": true
+    },
+    {
+      "id": "lighthouse_promontory",
+      "name_key": "ZONE_ISL2_6",
+      "rect": [
+        896,
+        64,
+        320,
+        320
       ],
       "dark": true
     },
@@ -45,9 +56,9 @@
       "id": "breakwater_reef",
       "name_key": "ZONE_ISL2_5",
       "rect": [
-        880,
-        0,
-        448,
+        656,
+        384,
+        464,
         224
       ],
       "dark": true
@@ -56,21 +67,10 @@
       "id": "smugglers_cove",
       "name_key": "ZONE_ISL2_4",
       "rect": [
-        880,
-        224,
-        448,
-        224
-      ],
-      "dark": true
-    },
-    {
-      "id": "lighthouse_promontory",
-      "name_key": "ZONE_ISL2_6",
-      "rect": [
-        1328,
-        0,
-        400,
-        448
+        336,
+        384,
+        320,
+        320
       ],
       "dark": true
     }
@@ -79,14 +79,14 @@
     {
       "id": "exit_to_lighthouse",
       "rect": [
-        1520,
+        1024,
         96,
         32,
         24
       ],
       "to_region": "lighthouse_r1",
       "to_spawn": [
-        176,
+        184,
         216
       ],
       "requires_moves": [
@@ -103,8 +103,8 @@
     {
       "id": "exit_to_island_3",
       "rect": [
-        1648,
-        208,
+        1168,
+        240,
         32,
         64
       ],
@@ -126,8 +126,8 @@
       "id": "barnacle_sentry_2_1",
       "kind": "barnacle_sentry",
       "pos": [
-        232,
-        136
+        248,
+        88
       ],
       "route": [],
       "perches": [],
@@ -138,17 +138,17 @@
       "id": "crab_warden_2_1",
       "kind": "crab_warden",
       "pos": [
-        296,
-        104
+        232,
+        120
       ],
       "route": [
         [
-          264,
-          104
+          184,
+          120
         ],
         [
-          328,
-          104
+          264,
+          120
         ]
       ],
       "perches": [],
@@ -159,22 +159,22 @@
       "id": "gull_thief_2_1",
       "kind": "gull_thief",
       "pos": [
-        632,
-        200
+        600,
+        120
       ],
       "route": [],
       "perches": [
         [
-          632,
-          200
-        ],
-        [
-          728,
-          184
+          600,
+          120
         ],
         [
           632,
-          296
+          104
+        ],
+        [
+          568,
+          168
         ]
       ],
       "zone": "tide_causeway",
@@ -184,17 +184,17 @@
       "id": "crab_warden_2_2",
       "kind": "crab_warden",
       "pos": [
-        744,
-        280
+        632,
+        152
       ],
       "route": [
         [
-          728,
-          280
+          584,
+          152
         ],
         [
-          792,
-          280
+          648,
+          152
         ]
       ],
       "perches": [],
@@ -205,8 +205,8 @@
       "id": "barnacle_sentry_2_2",
       "kind": "barnacle_sentry",
       "pos": [
-        1128,
-        152
+        824,
+        488
       ],
       "route": [],
       "perches": [],
@@ -217,22 +217,22 @@
       "id": "gull_thief_2_2",
       "kind": "gull_thief",
       "pos": [
-        1064,
-        168
+        856,
+        456
       ],
       "route": [],
       "perches": [
         [
-          1064,
-          168
+          856,
+          456
         ],
         [
-          1160,
-          168
+          936,
+          472
         ],
         [
-          1208,
-          120
+          808,
+          536
         ]
       ],
       "zone": "breakwater_reef",
@@ -242,17 +242,17 @@
       "id": "crab_warden_2_3",
       "kind": "crab_warden",
       "pos": [
-        1192,
-        168
+        936,
+        504
       ],
       "route": [
         [
-          1144,
-          168
+          872,
+          504
         ],
         [
-          1224,
-          168
+          968,
+          504
         ]
       ],
       "perches": [],
@@ -263,17 +263,17 @@
       "id": "crab_warden_2_trial",
       "kind": "crab_warden",
       "pos": [
-        1080,
-        328
+        488,
+        552
       ],
       "route": [
         [
-          1048,
-          328
+          472,
+          552
         ],
         [
-          1128,
-          328
+          536,
+          552
         ]
       ],
       "perches": [],
@@ -284,22 +284,22 @@
       "id": "gull_thief_2_trial",
       "kind": "gull_thief",
       "pos": [
-        1128,
-        296
+        552,
+        520
       ],
       "route": [],
       "perches": [
         [
-          1128,
-          296
+          552,
+          520
         ],
         [
-          1048,
-          360
+          472,
+          520
         ],
         [
-          1144,
-          360
+          568,
+          568
         ]
       ],
       "zone": "smugglers_cove",
@@ -325,8 +325,8 @@
       "id": "rest_shrine_2",
       "kind": "rest_shrine",
       "pos": [
-        200,
-        312
+        184,
+        328
       ],
       "props": {
         "zone": "harbor_landing",
@@ -338,7 +338,7 @@
       "kind": "chest",
       "pos": [
         104,
-        360
+        408
       ],
       "props": {
         "reward_kind": "shards",
@@ -351,7 +351,7 @@
       "id": "ws_2_drydock",
       "kind": "waystone",
       "pos": [
-        312,
+        216,
         168
       ],
       "props": {
@@ -360,48 +360,18 @@
       }
     },
     {
-      "id": "mirror_2_drydock",
-      "kind": "mirror",
+      "id": "bramble_2_boathouse",
+      "kind": "bramble",
       "pos": [
-        232,
-        184
+        104,
+        72
       ],
       "props": {
-        "angle_deg": 45,
-        "rotatable": true,
         "size": [
           16,
           16
-        ]
-      }
-    },
-    {
-      "id": "switch_eye_2_1",
-      "kind": "switch_eye",
-      "pos": [
-        152,
-        120
-      ],
-      "props": {
-        "sets_flag": "isl2_drydock_eye"
-      }
-    },
-    {
-      "id": "beacon_2_1",
-      "kind": "beacon",
-      "pos": [
-        200,
-        88
-      ],
-      "props": {
-        "index": 0,
-        "zone": "drydock_quays",
-        "guard_zone": "drydock_quays",
-        "relit_zones": [
-          "drydock_quays",
-          "harbor_landing"
         ],
-        "name_key": "ZONE_ISL2_2"
+        "zone": "drydock_quays"
       }
     },
     {
@@ -423,28 +393,143 @@
       }
     },
     {
-      "id": "ws_2_mid",
-      "kind": "waystone",
+      "id": "beacon_2_1",
+      "kind": "beacon",
       "pos": [
-        504,
+        200,
+        88
+      ],
+      "props": {
+        "index": 0,
+        "zone": "drydock_quays",
+        "guard_zone": "drydock_quays",
+        "relit_zones": [
+          "drydock_quays",
+          "harbor_landing"
+        ],
+        "name_key": "ZONE_ISL2_2"
+      }
+    },
+    {
+      "id": "transformer_2_drydock_a",
+      "kind": "blue_transformer",
+      "pos": [
+        296,
         200
       ],
       "props": {
-        "zone": "tide_causeway",
-        "name_key": "ZONE_ISL2_3"
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_2_1",
+      "kind": "switch_eye",
+      "pos": [
+        376,
+        200
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "bridge_2_drydock",
+        "sets_flag": "isl2_drydock_eye"
+      }
+    },
+    {
+      "id": "bridge_2_drydock",
+      "kind": "door",
+      "pos": [
+        352,
+        160
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          32,
+          32
+        ],
+        "zone": "drydock_quays",
+        "requires_signals": [
+          "switch_eye_2_1"
+        ],
+        "sets_flag": "isl2_drydock_bridge_open"
+      }
+    },
+    {
+      "id": "chest_2_drydock_quay",
+      "kind": "chest",
+      "pos": [
+        408,
+        168
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "zone": "drydock_quays"
+      }
+    },
+    {
+      "id": "portal_2_drydock_in",
+      "kind": "blue_portal",
+      "pos": [
+        392,
+        120
+      ],
+      "props": {
+        "target_portal_id": "portal_2_drydock_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "isl2_drydock_portal_lit"
+      }
+    },
+    {
+      "id": "portal_2_drydock_out",
+      "kind": "blue_portal",
+      "pos": [
+        440,
+        56
+      ],
+      "props": {
+        "target_portal_id": "portal_2_drydock_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "chest_2_drydock_islet",
+      "kind": "chest",
+      "pos": [
+        472,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 50,
+        "zone": "drydock_quays",
+        "secret_id": "isl2_drydock_seastack"
       }
     },
     {
       "id": "tide_gate_2_a",
       "kind": "tide_gate",
       "pos": [
-        576,
-        256
+        512,
+        160
       ],
       "props": {
         "period": 8.0,
         "phase_offset": 0.0,
-        "low_ratio": 0.6,
+        "low_ratio": 0.62,
         "size": [
           32,
           32
@@ -452,16 +537,28 @@
       }
     },
     {
+      "id": "ws_2_mid",
+      "kind": "waystone",
+      "pos": [
+        568,
+        152
+      ],
+      "props": {
+        "zone": "tide_causeway",
+        "name_key": "ZONE_ISL2_3"
+      }
+    },
+    {
       "id": "tide_gate_2_b",
       "kind": "tide_gate",
       "pos": [
         688,
-        256
+        128
       ],
       "props": {
         "period": 8.0,
         "phase_offset": 2.0,
-        "low_ratio": 0.6,
+        "low_ratio": 0.62,
         "size": [
           32,
           32
@@ -473,7 +570,7 @@
       "kind": "beacon",
       "pos": [
         760,
-        184
+        120
       ],
       "props": {
         "index": 1,
@@ -486,29 +583,57 @@
       }
     },
     {
-      "id": "chest_2_ember_1",
-      "kind": "chest",
+      "id": "transformer_2_bay",
+      "kind": "blue_transformer",
       "pos": [
-        632,
-        408
+        744,
+        200
       ],
       "props": {
-        "reward_kind": "ember_piece",
-        "reward": "ember_piece",
-        "amount": 1,
-        "zone": "tide_causeway",
-        "requires_moves": [
-          "throw"
-        ],
-        "secret_id": "isl2_tide_cove"
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "portal_2_bay_n",
+      "kind": "blue_portal",
+      "pos": [
+        808,
+        200
+      ],
+      "props": {
+        "target_portal_id": "portal_2_bay_s",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "isl2_bay_portal_lit"
+      }
+    },
+    {
+      "id": "portal_2_bay_s",
+      "kind": "blue_portal",
+      "pos": [
+        584,
+        472
+      ],
+      "props": {
+        "target_portal_id": "portal_2_bay_n",
+        "requires_blue": true,
+        "pair_sync": true
       }
     },
     {
       "id": "ws_2_reef",
       "kind": "waystone",
       "pos": [
-        1000,
-        136
+        936,
+        440
       ],
       "props": {
         "zone": "breakwater_reef",
@@ -519,8 +644,8 @@
       "id": "beacon_2_3",
       "kind": "beacon",
       "pos": [
-        1176,
-        88
+        872,
+        520
       ],
       "props": {
         "index": 2,
@@ -537,8 +662,8 @@
       "id": "door_2_trial_reward",
       "kind": "door",
       "pos": [
-        1192,
-        344
+        440,
+        552
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -554,8 +679,8 @@
       "id": "chest_2_ember_2",
       "kind": "chest",
       "pos": [
-        1224,
-        344
+        408,
+        552
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -566,10 +691,28 @@
       }
     },
     {
+      "id": "chest_2_ember_1",
+      "kind": "chest",
+      "pos": [
+        504,
+        664
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "smugglers_cove",
+        "requires_moves": [
+          "throw"
+        ],
+        "secret_id": "isl2_tide_cove"
+      }
+    },
+    {
       "id": "door_dungeon_2",
       "kind": "door",
       "pos": [
-        1536,
+        1040,
         168
       ],
       "props": {
@@ -596,8 +739,8 @@
       "id": "bridge_of_light_2",
       "kind": "door",
       "pos": [
-        1640,
-        240
+        1160,
+        272
       ],
       "props": {
         "door_kind": "bridge_of_light",
@@ -616,7 +759,7 @@
       "kind": "road_lamp",
       "pos": [
         152,
-        232
+        264
       ],
       "props": {
         "zone": "harbor_landing"
@@ -626,8 +769,8 @@
       "id": "lamp_2_landing_e",
       "kind": "road_lamp",
       "pos": [
-        328,
-        232
+        232,
+        248
       ],
       "props": {
         "zone": "harbor_landing"
@@ -637,8 +780,8 @@
       "id": "lamp_2_causeway_w",
       "kind": "road_lamp",
       "pos": [
-        520,
-        232
+        552,
+        136
       ],
       "props": {
         "zone": "tide_causeway"
@@ -648,77 +791,66 @@
       "id": "lamp_2_causeway_e",
       "kind": "road_lamp",
       "pos": [
-        808,
-        232
+        840,
+        136
       ],
       "props": {
         "zone": "tide_causeway"
       }
     },
     {
-      "id": "lamp_2_reef_s",
+      "id": "lamp_2_prom_s",
       "kind": "road_lamp",
       "pos": [
-        1016,
-        232
+        1000,
+        280
       ],
       "props": {
-        "zone": "breakwater_reef"
+        "zone": "lighthouse_promontory"
       }
     },
     {
       "id": "lamp_2_reef_e",
       "kind": "road_lamp",
       "pos": [
-        1272,
-        232
+        968,
+        424
       ],
       "props": {
         "zone": "breakwater_reef"
       }
     },
     {
-      "id": "lamp_2_citadel_w",
+      "id": "lamp_2_reef_w",
       "kind": "road_lamp",
       "pos": [
-        1448,
-        216
+        760,
+        520
       ],
       "props": {
-        "zone": "lighthouse_promontory"
+        "zone": "breakwater_reef"
       }
     },
     {
-      "id": "lamp_2_citadel_e",
+      "id": "lamp_2_cove_n",
       "kind": "road_lamp",
       "pos": [
-        1608,
-        216
+        616,
+        504
       ],
       "props": {
-        "zone": "lighthouse_promontory"
+        "zone": "smugglers_cove"
       }
     }
   ],
   "triggers": [
     {
-      "id": "trig_isl2_arrival",
-      "rect": [
-        96,
-        336,
-        64,
-        48
-      ],
-      "string_id": "ISL2_ARRIVAL",
-      "once": true
-    },
-    {
       "id": "trig_isl2_drydock",
       "rect": [
-        96,
-        208,
-        64,
-        48
+        176,
+        128,
+        80,
+        64
       ],
       "string_id": "ZONE_ISL2_2",
       "once": true
@@ -726,45 +858,45 @@
     {
       "id": "trig_isl2_causeway",
       "rect": [
-        368,
-        320,
-        64,
-        48
+        544,
+        112,
+        80,
+        64
       ],
       "string_id": "ZONE_ISL2_3",
       "once": true
     },
     {
-      "id": "trig_isl2_cove",
+      "id": "trig_isl2_prom",
       "rect": [
-        704,
-        336,
-        64,
-        48
+        992,
+        192,
+        96,
+        64
       ],
-      "string_id": "ZONE_ISL2_4",
+      "string_id": "ZONE_ISL2_6",
       "once": true
     },
     {
       "id": "trig_isl2_reef",
       "rect": [
-        704,
-        160,
-        64,
-        48
+        880,
+        416,
+        96,
+        64
       ],
       "string_id": "ZONE_ISL2_5",
       "once": true
     },
     {
-      "id": "trig_isl2_prom",
+      "id": "trig_isl2_cove",
       "rect": [
-        480,
-        144,
-        64,
-        32
+        512,
+        512,
+        96,
+        64
       ],
-      "string_id": "DUNGEON_2_NAME",
+      "string_id": "ZONE_ISL2_4",
       "once": true
     }
   ],
@@ -774,91 +906,19 @@
       "prop": "brass_compass_floor",
       "pos": [
         184,
-        248
+        256
       ],
       "layer": "ground",
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "brass_compass_floor",
-      "pos": [
-        760,
-        248
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "brass_compass_floor",
-      "pos": [
-        1536,
-        240
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "fishing_sloop",
-      "pos": [
-        280,
-        412
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "moored_skiff",
-      "pos": [
-        32,
-        340
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        22,
-        224
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        248,
-        392
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
     },
     {
       "sheet": "island2_scenery",
       "prop": "harbor_crane",
       "pos": [
-        296,
-        336
+        264,
+        296
       ],
       "layer": "sort",
       "flip_x": false,
@@ -870,7 +930,31 @@
       "prop": "wooden_crates",
       "pos": [
         252,
+        308
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "rope_coil",
+      "pos": [
+        272,
         312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "mooring_bollard",
+      "pos": [
+        280,
+        272
       ],
       "layer": "sort",
       "flip_x": false,
@@ -882,7 +966,7 @@
       "prop": "mooring_bollard",
       "pos": [
         72,
-        328
+        376
       ],
       "layer": "sort",
       "flip_x": false,
@@ -893,224 +977,44 @@
       "sheet": "island2_scenery",
       "prop": "rope_coil",
       "pos": [
-        88,
-        332
+        126,
+        376
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
-      "pos": [
-        328,
-        192
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "coastal_lantern_post",
-      "pos": [
-        148,
-        192
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "shipwreck_ribs",
-      "pos": [
-        116,
-        176
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "harbor_crane",
-      "pos": [
-        240,
-        84
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "harbor_wind_vane",
-      "pos": [
-        272,
-        68
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        408,
-        176
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        424,
-        304
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
-      "pos": [
-        504,
-        288
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "coastal_lantern_post",
-      "pos": [
-        624,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "coastal_lantern_post",
-      "pos": [
-        824,
-        272
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "mooring_bollard",
-      "pos": [
-        536,
-        304
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "rope_coil",
-      "pos": [
-        552,
-        308
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "shipwreck_ribs",
-      "pos": [
-        536,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
       "phase": 0.0
     },
     {
       "sheet": "island2_scenery",
       "prop": "wooden_crates",
       "pos": [
-        784,
-        156
+        144,
+        360
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "fishing_sloop",
-      "pos": [
-        596,
-        76
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        528,
-        84
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
     },
     {
       "sheet": "island2_scenery",
       "prop": "moored_skiff",
       "pos": [
-        724,
-        376
+        42,
+        360
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.3
+      "phase": 0.2
     },
     {
       "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
+      "prop": "fishing_sloop",
       "pos": [
-        880,
-        212
+        188,
+        432
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1121,44 +1025,32 @@
       "sheet": "island2_scenery",
       "prop": "buoy_bobbing",
       "pos": [
-        892,
-        308
+        288,
+        344
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.8
+      "phase": 0.1
     },
     {
       "sheet": "island2_scenery",
-      "prop": "sea_glass_arch",
+      "prop": "barnacle_piling",
       "pos": [
-        1128,
-        76
+        240,
+        356
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
+      "shadow": false,
+      "phase": 0.35
     },
     {
       "sheet": "island2_scenery",
       "prop": "harbor_wind_vane",
       "pos": [
-        1232,
-        80
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.75
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "coastal_lantern_post",
-      "pos": [
-        984,
-        184
+        164,
+        72
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1167,70 +1059,58 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "fresnel_pedestal",
+      "prop": "coastal_lantern_post",
       "pos": [
-        1176,
-        188
+        240,
+        68
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "shipwreck_ribs",
-      "pos": [
-        972,
-        364
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "phase": 0.45
     },
     {
       "sheet": "island2_scenery",
       "prop": "harbor_crane",
       "pos": [
-        1128,
-        376
+        304,
+        104
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.7
+      "phase": 0.5
     },
     {
       "sheet": "island2_scenery",
       "prop": "wooden_crates",
       "pos": [
-        1012,
-        292
+        284,
+        118
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
       "phase": 0.0
     },
     {
       "sheet": "island2_scenery",
-      "prop": "rope_coil",
+      "prop": "shipwreck_ribs",
       "pos": [
-        1032,
-        300
+        68,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
+      "shadow": true,
       "phase": 0.0
     },
     {
       "sheet": "island2_scenery",
       "prop": "mooring_bollard",
       "pos": [
-        1084,
-        372
+        80,
+        120
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1241,68 +1121,188 @@
       "sheet": "island2_scenery",
       "prop": "tide_bell_post",
       "pos": [
-        1244,
-        296
+        416,
+        200
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
       "phase": 0.3
     },
     {
       "sheet": "island2_scenery",
-      "prop": "fishing_sloop",
-      "pos": [
-        1280,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island2_scenery",
       "prop": "buoy_bobbing",
       "pos": [
-        1336,
-        176
+        352,
+        264
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.1
+      "phase": 0.6
     },
     {
       "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
-        1344,
-        292
+        352,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "brass_compass_floor",
+      "pos": [
+        760,
+        128
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "tide_bell_post",
+      "pos": [
+        588,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        644,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "tide_bell_post",
+      "pos": [
+        728,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "wooden_crates",
+      "pos": [
+        856,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "rope_coil",
+      "pos": [
+        872,
+        118
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fishing_sloop",
+      "pos": [
+        592,
+        42
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
-      "phase": 0.6
+      "phase": 0.3
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "buoy_bobbing",
+      "pos": [
+        688,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "barnacle_piling",
+      "pos": [
+        640,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "moored_skiff",
+      "pos": [
+        520,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
     },
     {
       "sheet": "island2_scenery",
       "prop": "lighthouse_arch",
       "pos": [
-        1536,
-        172
+        1040,
+        152
       ],
-      "layer": "sort",
+      "layer": "overhead",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "brass_compass_floor",
+      "pos": [
+        1040,
+        272
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
       "phase": 0.0
     },
     {
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        1488,
-        188
+        1012,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1313,32 +1313,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        1584,
-        188
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "coastal_lantern_post",
-      "pos": [
-        1432,
+        1068,
         200
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "coastal_lantern_post",
-      "pos": [
-        1464,
-        288
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1347,22 +1323,34 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "tide_bell_post",
+      "prop": "coastal_lantern_post",
       "pos": [
-        1424,
-        304
+        1120,
+        226
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.3
+      "phase": 0.25
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        1120,
+        316
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
     },
     {
       "sheet": "island2_scenery",
       "prop": "harbor_wind_vane",
       "pos": [
-        1624,
-        312
+        952,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1371,10 +1359,94 @@
     },
     {
       "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        968,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island2_scenery",
       "prop": "sea_glass_arch",
       "pos": [
-        1536,
-        336
+        1080,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "buoy_bobbing",
+      "pos": [
+        1144,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "brass_compass_floor",
+      "pos": [
+        872,
+        520
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        824,
+        472
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        920,
+        472
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        896,
+        536
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "sea_glass_arch",
+      "pos": [
+        984,
+        476
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1383,10 +1455,46 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "mooring_bollard",
+      "prop": "harbor_wind_vane",
       "pos": [
-        1472,
-        332
+        1004,
+        512
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fishing_sloop",
+      "pos": [
+        1088,
+        560
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "barnacle_piling",
+      "pos": [
+        720,
+        448
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "wooden_crates",
+      "pos": [
+        472,
+        504
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1395,13 +1503,61 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "wooden_crates",
+      "prop": "rope_coil",
       "pos": [
-        1596,
-        328
+        488,
+        504
       ],
       "layer": "sort",
       "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "tide_bell_post",
+      "pos": [
+        544,
+        484
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "mooring_bollard",
+      "pos": [
+        648,
+        476
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "harbor_crane",
+      "pos": [
+        520,
+        568
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "shipwreck_ribs",
+      "pos": [
+        604,
+        560
+      ],
+      "layer": "sort",
+      "flip_x": true,
       "shadow": true,
       "phase": 0.0
     },
@@ -1409,25 +1565,25 @@
       "sheet": "island2_scenery",
       "prop": "moored_skiff",
       "pos": [
-        1468,
-        412
+        368,
+        608
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": false,
-      "phase": 0.7
+      "phase": 0.9
     },
     {
       "sheet": "island2_scenery",
       "prop": "buoy_bobbing",
       "pos": [
-        1676,
-        384
+        416,
+        480
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.5
+      "phase": 0.2
     }
   ]
 }

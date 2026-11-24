@@ -3,9 +3,11 @@ extends LxInteractable
 ## Dense thorn barrier burned away by Beam.
 
 var burned: bool = false
+var from_map_tile: bool = false
 var size: Vector2 = Vector2(16.0, 16.0)
 var _burn_t: float = 0.0
 var _rustle_t: float = 0.0
+var _sway_stage: int = 0
 
 
 func setup(spec: Dictionary) -> void:
@@ -13,10 +15,13 @@ func setup(spec: Dictionary) -> void:
 	kind = "bramble"
 	size = _parse_size(props.get("size", [16.0, 16.0]), Vector2(16.0, 16.0))
 	radius = maxf(size.x, size.y) * 0.5
+	from_map_tile = bool(props.get("from_map_tile", false))
 	burned = bool(props.get("burned", false))
 	active = not burned
+	z_index = -4 if burned else 0
 	_burn_t = 0.0
 	_rustle_t = 0.0
+	_sway_stage = 0
 	queue_redraw()
 
 
@@ -29,10 +34,15 @@ func tick(dt: float) -> void:
 	if _rustle_t > 0.0:
 		_rustle_t = maxf(0.0, _rustle_t - dt)
 		dirty = true
-	if active and not burned and Lx.player is LxWick and is_instance_valid(Lx.player):
-		var wb: LxWick = Lx.player as LxWick
-		if wb.is_beam_charging() and wb.global_position.distance_squared_to(pos) <= 9216.0:
+	if active and not burned:
+		var st: int = int(floorf(_clock / 0.45 + absf(pos.x * 0.03))) % 2
+		if st != _sway_stage:
+			_sway_stage = st
 			dirty = true
+		if Lx.player is LxWick and is_instance_valid(Lx.player):
+			var wb: LxWick = Lx.player as LxWick
+			if wb.is_beam_charging() and wb.global_position.distance_squared_to(pos) <= 9216.0:
+				dirty = true
 	if dirty:
 		queue_redraw()
 
@@ -43,6 +53,7 @@ func on_hit(hit: LxHit) -> bool:
 	if hit.source in ["beam", "sunflare"]:
 		burned = true
 		active = false
+		z_index = -4
 		_burn_t = 0.36
 		_rustle_t = 0.0
 		if Lx.events != null:
@@ -51,6 +62,8 @@ func on_hit(hit: LxHit) -> bool:
 		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, pos, 12.0, 6.0)
 		_emit_sfx("bramble_burn")
+		if region != null and region.has_method("save_interactables_to_state"):
+			region.call("save_interactables_to_state")
 		_emit_save("bramble_" + id)
 		_notify_linked_targets(true)
 		queue_redraw()
@@ -88,109 +101,51 @@ func load_state(d: Dictionary) -> void:
 	super.load_state(d)
 	burned = bool(d.get("burned", burned))
 	active = not burned
+	z_index = -4 if burned else 0
 	queue_redraw()
 
 
 func _draw() -> void:
-	if _burn_t > 0.0:
-		_draw_burn_burst()
+	if burned:
+		# Transparent-backed charred stumps & ash flecks so the real painted ground shines cleanly underneath
+		_draw_puzzle_tiled("bramble_charred", size)
+		if _burn_t > 0.0:
+			_draw_burn_burst()
 		_draw_signal_pulses()
 		return
-	if burned or not active:
+	if not active:
 		_draw_signal_pulses()
 		return
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
 	var x0: float = floorf(-w * 0.5)
 	var y0: float = floorf(-h * 0.5)
-	var cols: int = maxi(2, int(roundf(w / 6.0)))
-	var rows: int = maxi(2, int(roundf(h / 6.0)))
-	var seed_n: int = int(absf(pos.x * 13.0 + pos.y * 7.0))
-	var pal_b: Array[String] = _biome_bramble_colors()
-	var c_leaf0: Color = PAL[pal_b[0]] as Color
-	var c_leaf1: Color = PAL[pal_b[1]] as Color
-	var c_leaf2: Color = PAL[pal_b[2]] as Color
-	var c_leaf3: Color = PAL[pal_b[3]] as Color
-	var c_vine0: Color = PAL[pal_b[4]] as Color
-	var c_vine1: Color = PAL[pal_b[5]] as Color
-	var c_bud0: Color = PAL[pal_b[6]] as Color
-	var c_bud1: Color = PAL[pal_b[7]] as Color
-	for r: int in range(rows):
-		for c: int in range(cols):
-			var jx: float = float(((c * 5 + r * 3 + seed_n) % 3) - 1)
-			var jy: float = float(((c * 3 + r * 7 + seed_n) % 3) - 1)
-			var cx: float = floorf(x0 + 3.0 + float(c) * (w - 6.0) / float(maxi(1, cols - 1)) + jx)
-			var cy: float = floorf(y0 + 3.0 + float(r) * (h - 6.0) / float(maxi(1, rows - 1)) + jy)
-			draw_rect(Rect2(cx - 3.0, cy - 2.0, 7.0, 6.0), PAL["void"])
-			draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 6.0), PAL["night"])
-			draw_rect(Rect2(cx - 2.0, cy - 2.0, 5.0, 4.0), c_leaf0)
-			draw_rect(Rect2(cx - 2.0, cy - 2.0, 3.0, 2.0), c_leaf1)
-			if (c + r + seed_n) % 2 == 0:
-				draw_rect(Rect2(cx - 2.0, cy - 2.0, 2.0, 1.0), c_leaf2)
-				draw_rect(Rect2(cx - 2.0, cy - 2.0, 1.0, 1.0), c_leaf3)
-	var v1a: Vector2 = Vector2(x0 + 1.0, y0 + h - 3.0)
-	var v1m: Vector2 = Vector2(floorf(x0 + w * 0.5), floorf(y0 + h * 0.4))
-	var v1b: Vector2 = Vector2(x0 + w - 2.0, y0 + 2.0)
-	draw_line(v1a, v1m, c_vine0, 2.0)
-	draw_line(v1m, v1b, c_vine0, 2.0)
-	draw_line(v1a, v1m, c_vine1, 1.0)
-	draw_line(v1m, v1b, c_vine1, 1.0)
-	var v2a: Vector2 = Vector2(x0 + 2.0, y0 + 2.0)
-	var v2m: Vector2 = Vector2(floorf(x0 + w * 0.45), floorf(y0 + h * 0.6))
-	var v2b: Vector2 = Vector2(x0 + w - 2.0, y0 + h - 3.0)
-	draw_line(v2a, v2m, c_vine0, 2.0)
-	draw_line(v2m, v2b, c_vine0, 2.0)
-	draw_line(v2a, v2m, c_vine1, 1.0)
-	draw_line(v2m, v2b, c_vine1, 1.0)
-	var thorns: Array[Vector2] = [
-		Vector2(floorf(x0 + w * 0.25), floorf(y0 + h * 0.3)),
-		Vector2(floorf(x0 + w * 0.7), floorf(y0 + h * 0.28)),
-		Vector2(floorf(x0 + w * 0.3), floorf(y0 + h * 0.72)),
-		Vector2(floorf(x0 + w * 0.72), floorf(y0 + h * 0.68)),
-	]
-	for ti: int in range(thorns.size()):
-		var tp: Vector2 = thorns[ti]
-		draw_rect(Rect2(tp.x - 1.0, tp.y, 1.0, 1.0), PAL["mauve"])
-		draw_rect(Rect2(tp.x, tp.y - 1.0, 2.0, 2.0), c_bud0 if ti % 2 == 0 else c_bud1)
-		draw_rect(Rect2(tp.x, tp.y - 1.0, 1.0, 1.0), c_bud1)
+	_draw_ground_shadow(w * 0.44, 2.5, Vector2(2.0, floorf(h * 0.5)))
+	_draw_puzzle_tiled("bramble_tile", size, Vector2.ZERO, _clock, Color.WHITE, _sway_stage)
 	if _rustle_t > 0.0:
 		var u: float = 1.0 - clampf(_rustle_t / 0.24, 0.0, 1.0)
-		var b_gl: Color = LxBiomePalette.col(island_id, "glow")
 		for k: int in range(4):
 			var a: float = (TAU * float(k)) / 4.0 + 0.4
-			var dp: Vector2 = Vector2(roundf(cos(a) * (4.0 + u * 5.0)), roundf(sin(a) * (3.0 + u * 4.0) - u * 4.0))
-			draw_rect(Rect2(dp, Vector2.ONE), b_gl if k % 2 == 0 else c_leaf3)
+			var dp := Vector2(roundf(cos(a) * (4.0 + u * 5.0)), roundf(sin(a) * (3.0 + u * 4.0) - u * 4.0))
+			draw_rect(Rect2(dp, Vector2.ONE), (PAL["rose"] if k % 2 == 0 else PAL["lime"]) as Color)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
 		var wb_d: LxWick = Lx.player as LxWick
 		if wb_d.is_beam_charging() and wb_d.global_position.distance_squared_to(pos) <= 9216.0:
 			var bp: float = clampf(wb_d.beam_charge_progress(), 0.2, 1.0)
-			draw_rect(Rect2(x0, y0, w, h), Color((PAL["cream"] if bp >= 0.99 else PAL["gold"]) as Color, bp * 0.58), false, 1.0)
-
-
-func _biome_bramble_colors() -> Array[String]:
-	match island_id:
-		2: # Tidewater sea-kelp & barnacle briar
-			return ["deep", "teal", "jade", "ice", "blue", "sky", "sky", "ice"]
-		4: # Mirefen conservatory rose-briar
-			return ["pine", "teal", "jade", "ice", "dusk", "mauve", "rose", "cream"]
-		5: # Starfall celestial ivy-briar
-			return ["deep", "blue", "sky", "gold", "dusk", "plum", "gold", "ice"]
-		6: # Ashen Kiln charred cinder-briar
-			return ["night", "dusk", "wine", "coral", "wine", "coral", "coral", "gold"]
-		7: # Moon Shoals frosted silver-briar
-			return ["deep", "blue", "sky", "ice", "dusk", "mauve", "ice", "cream"]
-		8: # Long Night eclipsed nightshade-briar
-			return ["void", "night", "plum", "rose", "dusk", "wine", "rose", "gold"]
-		_: # Bell Isle & Thornwood classic forest briar
-			return ["pine", "teal", "jade", "lime", "dusk", "plum", "coral", "rose"]
+			var hc: Color = (PAL["cream"] if bp >= 0.99 else PAL["gold"]) as Color
+			draw_rect(Rect2(x0, y0, 3.0, 1.0), hc)
+			draw_rect(Rect2(x0, y0, 1.0, 3.0), hc)
+			draw_rect(Rect2(x0 + w - 3.0, y0, 3.0, 1.0), hc)
+			draw_rect(Rect2(x0 + w - 1.0, y0, 1.0, 3.0), hc)
+			draw_rect(Rect2(x0, y0 + h - 1.0, 3.0, 1.0), hc)
+			draw_rect(Rect2(x0, y0 + h - 3.0, 1.0, 3.0), hc)
+			draw_rect(Rect2(x0 + w - 3.0, y0 + h - 1.0, 3.0, 1.0), hc)
+			draw_rect(Rect2(x0 + w - 1.0, y0 + h - 3.0, 1.0, 3.0), hc)
 
 
 func _draw_burn_burst() -> void:
 	var u: float = 1.0 - clampf(_burn_t / 0.36, 0.0, 1.0)
 	var spread: float = maxf(size.x, size.y) * 0.45
-	var ring_r: float = roundf(lerpf(4.0, spread + 10.0, u))
-	if u < 0.65:
-		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 14, (PAL["gold"] if u < 0.3 else PAL["coral"]) as Color, 2.0 if u < 0.25 else 1.0, false)
 	for i: int in range(8):
 		var a: float = (TAU * float(i)) / 8.0 + 0.3
 		var d: float = lerpf(2.0, spread + 11.0, u)

@@ -1,4 +1,4 @@
-# The Great Kiln r6 - Suspended Obsidian Anvil (32x16)
+# The Great Kiln r6 - Forge Warden Asymmetric Basalt Anvil (32x16)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,19 +13,19 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-###############,,###############
-#OOOOOOOOOOOOOO,,OOOOOOOOOOOOOO#
-#OOOOOOOO......,,.........OOOOO#
-#OOOOOO........,,...........OOO#
-#OOOOOO........,,...........OOO#
-#OOOOOO........,,...........OOO#
-,,++++,,.......,,...........OOO#
-,,++++,,,,,,,,,,,,,,,,,,....OOO#
-,,++++,,,,,,,,,,,,,,,,,,....OOO#
-,,++++,,....................OOO#
-#OOOOOO.....................OOO#
-#OOOOOO.....................OOO#
-#OOOOOO.....................OOO#
-#OOOOOOOO.................OOOOO#
-#OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO#
+#################,,#############
+#OOOOOOOOOOOOOOOO,,OOOOOOOOOOOO#
+#OOOOOOOOOOOO....,,.......OOOOO#
+#OOOOOOOOOOOO....,,.......OOOOO#
+#OOOOOOOOOOOO....,,..#....OOOOO#
+#OOOOOO..........,,..#........O#
+,,+++++.....##...,,...........O#
+,,+++++,,,,,,,,,,,,,,,...#....O#
+,,+++++,,,,,,,,,,,,,,,...#....O#
+,,+++++....................OOOO#
+#OOOOOO.........##.........OOOO#
+#OOOOOOOOOOOOOO.......OOOOOOOOO#
+#OOOOOOOOOOOOOO.......OOOOOOOOO#
+#OOOOOOOOOOOOOO#######OOOOOOOOO#
+#OOOOOOOOOOOOOO#######OOOOOOOOO#
 ################################

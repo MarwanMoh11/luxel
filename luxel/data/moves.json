@@ -67,9 +67,11 @@
       "island": 2,
       "start_unlocked": false,
       "passive": true,
-      "bounces": 1,
-      "damage_mult": 1.15,
-      "range_refresh": 118.0
+      "bounces": 3,
+      "damage_mult": 1.30,
+      "range_refresh": 118.0,
+      "split_rays": 3,
+      "split_angle_deg": 18.0
     },
     "beam": {
       "id": "beam",
@@ -105,9 +107,13 @@
       "name_key": "MOVE_LENS_NAME",
       "island": 5,
       "start_unlocked": false,
-      "passive": true,
-      "hand_radius": 68.0,
-      "hung_radius": 118.0
+      "action": "lx_lens",
+      "passive": false,
+      "duration": 4.0,
+      "warn_time": 1.2,
+      "cooldown": 6.0,
+      "pulse_radius": 104.0,
+      "hung_radius": 78.0
     },
     "sunflare": {
       "id": "sunflare",

@@ -113,7 +113,7 @@
       "kind": "door",
       "pos": [
         360,
-        128
+        120
       ],
       "props": {
         "door_kind": "key_door",
@@ -169,26 +169,14 @@
       }
     }
   ],
-  "triggers": [
-    {
-      "id": "trig_belfry_entry",
-      "rect": [
-        144,
-        176,
-        96,
-        48
-      ],
-      "string_id": "CH5_TITLE",
-      "once": true
-    }
-  ],
+  "triggers": [],
   "scenery": [
     {
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        148,
-        36
+        150,
+        38
       ],
       "layer": "sort",
       "flip_x": false,
@@ -199,13 +187,85 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        236,
-        36
+        234,
+        38
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.45
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        150,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        234,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        40,
+        86
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        40,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        328,
+        86
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        328,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
     },
     {
       "sheet": "island1_scenery",
@@ -233,10 +293,10 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "mossy_column",
+      "prop": "stone_bench",
       "pos": [
-        104,
-        176
+        136,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -245,39 +305,15 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "broken_column",
+      "prop": "stone_bench",
       "pos": [
-        280,
-        176
+        248,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "candelabra_tall",
-      "pos": [
-        148,
-        224
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "candelabra_tall",
-      "pos": [
-        236,
-        224
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.75
     }
   ],
   "is_2x2_room": true

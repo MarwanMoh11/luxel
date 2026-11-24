@@ -171,8 +171,9 @@ func _step_snatcher_shade(dt: float) -> void:
 			var to_t: Vector2 = target - pos
 			if to_t.length() > 0.01:
 				facing = to_t.angle()
-			state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
-			if cooldown <= 0.0 and _is_on_screen() and to_t.length() <= notice_radius and _claim_token():
+			var can_act: bool = director == null or director.can_claim_ranged_token(self)
+			state = State.POSITION if can_act else State.WAIT_TOKEN
+			if can_act and cooldown <= 0.0 and _is_on_screen() and to_t.length() <= notice_radius and _claim_token():
 				_enter_shade_tell(target, "moonshade_feint")
 		State.TELL:
 			if not feint_done and state_timer <= last_tell_duration * 0.55:
@@ -210,8 +211,9 @@ func _step_owl_shade(dt: float) -> void:
 			var to_t: Vector2 = target - pos
 			if to_t.length() > 0.01:
 				facing = to_t.angle()
-			state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
-			if cooldown <= 0.0 and altitude >= 14.0 and _is_on_screen() and to_t.length() <= 156.0 and _claim_token():
+			var can_act: bool = director == null or director.can_claim_ranged_token(self)
+			state = State.POSITION if can_act else State.WAIT_TOKEN
+			if can_act and cooldown <= 0.0 and altitude >= 14.0 and _is_on_screen() and to_t.length() <= 156.0 and _claim_token():
 				_enter_shade_tell(target, "moonshade_twin_lock")
 		State.TELL:
 			altitude = 18.0
@@ -365,17 +367,19 @@ func _draw_extra(off: Vector2) -> void:
 			draw_rect(Rect2(gp.lerp(c, 0.45).round(), Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 		_draw_lunar_glint(gp, 3.0 if gt > 0.45 else 2.0)
 	if variant == VARIANT_OWL and state == State.TELL:
-		var local_t: Vector2 = lock_target - pos
+		var tgt_pt: Vector2 = (lock_target - pos).round()
+		var delta: Vector2 = tgt_pt - c
 		var locked_o: bool = state_timer <= 0.20
-		var spread: float = twin_offset_rad * clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var len_t: float = local_t.length()
-		var base_a: float = local_t.angle() if len_t > 0.01 else facing
+		var lock_frac: float = clampf((state_timer - 0.20) / maxf(last_tell_duration - 0.20, 0.05), 0.0, 1.0)
+		var spread: float = twin_offset_rad * lock_frac
+		var len_t: float = delta.length()
+		var base_a: float = delta.angle() if len_t > 0.01 else facing
 		var tip_a: Vector2 = (c + Vector2.from_angle(base_a + spread * feint_side) * len_t).round()
-		var tip_b: Vector2 = (c + Vector2.from_angle(base_a - spread * feint_side * 0.5) * len_t).round()
-		draw_line(c, tip_a, (PAL["coral"] if locked_o else PAL["sky"]) as Color, 1.0)
+		var tip_b: Vector2 = (c + Vector2.from_angle(base_a - spread * feint_side) * len_t).round()
+		draw_line(c, tip_a, (PAL["coral"] if locked_o else PAL["sky"]) as Color, 1.2 if locked_o else 1.0)
 		draw_line(c, tip_b, (PAL["cream"] if locked_o else PAL["ice"]) as Color, 1.6 if locked_o else 1.4)
-		_draw_lunar_glint(tip_a, 3.0)
-		_draw_lunar_glint(tip_b, 5.0 if locked_o else 4.5)
+		_draw_lunar_glint(tip_a, 3.0 if not locked_o else 4.5)
+		_draw_lunar_glint(tip_b, 5.0 if locked_o else 4.0)
 	elif variant == VARIANT_SNATCHER and state == State.TELL:
 		var tgt: Vector2 = (lock_target - pos).round()
 		draw_line(c, tgt, PAL["blue"] as Color, 1.8)

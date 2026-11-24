@@ -39,14 +39,40 @@
       "locked_door_id": ""
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "owl_r2_0",
+      "kind": "owl",
+      "pos": [
+        224,
+        136
+      ],
+      "route": [],
+      "perches": [
+        [
+          224,
+          136
+        ],
+        [
+          224,
+          96
+        ],
+        [
+          176,
+          148
+        ]
+      ],
+      "zone": "belfry_chasm",
+      "leash": 145
+    }
+  ],
   "interactables": [
     {
       "id": "switch_eye_r2",
       "kind": "switch_eye",
       "pos": [
         200,
-        72
+        56
       ],
       "props": {
         "target_id": "bridge_r2",
@@ -93,9 +119,9 @@
     {
       "id": "trig_r2_dash",
       "rect": [
-        248,
-        64,
-        48,
+        176,
+        96,
+        40,
         48
       ],
       "string_id": "PROMPT_DASH",
@@ -107,8 +133,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        300,
-        68
+        296,
+        84
       ],
       "layer": "sort",
       "flip_x": false,
@@ -119,8 +145,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        300,
-        176
+        296,
+        152
       ],
       "layer": "sort",
       "flip_x": true,
@@ -131,8 +157,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        200,
-        176
+        180,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -141,27 +167,39 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "broken_column",
+      "prop": "candelabra_tall",
       "pos": [
-        88,
-        94
+        68,
+        88
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.2
     },
     {
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        88,
-        154
+        68,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        96,
+        54
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.35
+      "phase": 0.0
     }
   ],
   "is_2x2_room": true

@@ -24,6 +24,7 @@ var counter_t: float = 0.0
 var hit_ids: Array[int] = []
 var _afterimage_cd: float = 0.0
 var _buffer_t: float = 0.0
+var _mid_spray_done: bool = false
 
 
 func can_use() -> bool:
@@ -82,6 +83,7 @@ func _execute_dash() -> bool:
 	cooldown_left = eff_cd + duration
 	hit_ids.clear()
 	_afterimage_cd = 0.0
+	_mid_spray_done = false
 
 	var isl_d: int = Lx.state.island_id if Lx.state != null else 1
 	var b_hi: Color = LxBiomePalette.col(isl_d, "hi")
@@ -89,10 +91,9 @@ func _execute_dash() -> bool:
 	wick.spawn_afterimage(b_hi)
 	wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.16, b_glow, 1.0)
 	_gust(38.0, 42.0)
-	if Lx.world != null and is_instance_valid(Lx.world):
-		var wfx: Variant = Lx.world.get("_water_fx")
-		if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
-			(wfx as Object).call("spawn_ripple", wick.global_position, "ice", 10.0)
+	_shore_spray(true)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_dir_decal(LxGroundDecals.Kind.SKID, wick.global_position + Vector2(0.0, 4.0), dash_dir, 7.0, 2.4, false)
 	wick.emit_sfx("dash_whoosh", wick.global_position, false)
 	return true
 
@@ -136,9 +137,13 @@ func tick_dash(dt: float, world_ctx: Node) -> void:
 		wick.spawn_sparks(wick.global_position, -dash_dir, 1, LxBiomePalette.col(isl_t, "glow"), 8.0, 22.0, 0.16)
 
 		_check_dash_hits(world_ctx)
+		if active and not _mid_spray_done and dash_elapsed >= dash_time_left:
+			_mid_spray_done = true
+			_shore_spray(true)
 
 		if active and dash_time_left <= 0.0:
 			active = false
+			_shore_spray(true)
 			_maybe_start_wings_glide()
 		return
 
@@ -271,6 +276,7 @@ func cancel() -> void:
 	active = false
 	is_gliding = false
 	dash_time_left = 0.0
+	_mid_spray_done = false
 	if wick != null and wick.move_wings != null:
 		wick.move_wings.stop_glide()
 
@@ -280,6 +286,7 @@ func reset() -> void:
 	cancel()
 	dash_held = false
 	_buffer_t = 0.0
+	_mid_spray_done = false
 	iframes_left = 0.0
 	perfect_refund_done = false
 	counter_t = 0.0
@@ -297,3 +304,8 @@ func _gust(radius: float, strength: float) -> void:
 		var amb: Variant = Lx.world.get("_ambient_life")
 		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", wick.global_position, radius, strength)
+
+
+func _shore_spray(burst: bool = true) -> void:
+	if wick != null and LxWaterFx.active_instance != null and is_instance_valid(LxWaterFx.active_instance):
+		LxWaterFx.active_instance.spawn_shore_spray(wick.global_position, dash_dir, burst)

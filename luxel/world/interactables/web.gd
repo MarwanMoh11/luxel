@@ -15,6 +15,7 @@ func setup(spec: Dictionary) -> void:
 	radius = maxf(size.x, size.y) * 0.5
 	burned = bool(props.get("burned", false))
 	active = not burned
+	z_index = -4 if burned else 0
 	_burn_t = 0.0
 	_tremble_t = 0.0
 	queue_redraw()
@@ -43,6 +44,7 @@ func on_hit(hit: LxHit) -> bool:
 	if hit.source in ["beam", "sunflare"]:
 		burned = true
 		active = false
+		z_index = -4
 		_burn_t = 0.34
 		_tremble_t = 0.0
 		if Lx.events != null:
@@ -92,66 +94,45 @@ func load_state(d: Dictionary) -> void:
 	super.load_state(d)
 	burned = bool(d.get("burned", burned))
 	active = not burned
+	z_index = -4 if burned else 0
 	queue_redraw()
 
 
 func _draw() -> void:
-	if _burn_t > 0.0:
-		_draw_burn_burst()
+	if burned:
+		_draw_puzzle_tiled("web_torn", size)
+		if _burn_t > 0.0:
+			_draw_burn_burst()
 		_draw_signal_pulses()
 		return
-	if burned or not active:
+	if not active:
 		_draw_signal_pulses()
 		return
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
-	var x0: float = floorf(-w * 0.5)
+	var jx: float = (1.0 if int(floorf(_tremble_t * 32.0)) % 2 == 0 else -1.0) if (_tremble_t > 0.0 and LxHudFx.shake_enabled()) else 0.0
+	var x0: float = floorf(-w * 0.5) + jx
 	var y0: float = floorf(-h * 0.5)
-	var hub: Vector2 = Vector2(floorf(x0 + w * 0.48), floorf(y0 + h * 0.46))
-	var anchors: Array[Vector2] = [
-		Vector2(x0, y0), Vector2(floorf(x0 + w * 0.5), y0), Vector2(x0 + w - 1.0, y0),
-		Vector2(x0 + w - 1.0, floorf(y0 + h * 0.5)), Vector2(x0 + w - 1.0, y0 + h - 1.0),
-		Vector2(floorf(x0 + w * 0.5), y0 + h - 1.0), Vector2(x0, y0 + h - 1.0),
-		Vector2(x0, floorf(y0 + h * 0.5)),
-	]
-	for a: Vector2 in anchors:
-		var ax: float = clampf(a.x - 1.0, x0, x0 + w - 2.0)
-		var ay: float = clampf(a.y - 1.0, y0, y0 + h - 2.0)
-		draw_rect(Rect2(ax, ay, 2.0, 2.0), PAL["night"])
-		draw_rect(Rect2(ax, ay, 1.0, 1.0), PAL["dusk"])
-	var w_hi: Color = LxBiomePalette.col(island_id, "hi")
-	var w_gl: Color = LxBiomePalette.col(island_id, "glow")
-	var w_dk: Color = LxBiomePalette.col(island_id, "dark")
-	for i: int in range(anchors.size()):
-		var ap: Vector2 = anchors[i]
-		draw_line(hub + Vector2(0.0, 1.0), ap + Vector2(0.0, 1.0), w_dk, 1.0)
-		draw_line(hub, ap, w_gl if i % 2 == 1 else PAL["stone"], 1.0)
-	var rings: Array[float] = [0.34, 0.64, 0.88]
-	var ring_cols: Array[Color] = [PAL["cream"] as Color, w_gl, w_hi]
-	for ri: int in range(rings.size()):
-		var t: float = rings[ri]
-		var sag: float = t * 0.84
-		var col: Color = ring_cols[ri]
-		for i: int in range(anchors.size()):
-			var p1: Vector2 = hub.lerp(anchors[i], t).round()
-			var p2: Vector2 = hub.lerp(anchors[(i + 1) % anchors.size()], t).round()
-			var mid: Vector2 = hub.lerp((anchors[i] + anchors[(i + 1) % anchors.size()]) * 0.5, sag).round()
-			draw_line(p1, mid, col, 1.0)
-			draw_line(mid, p2, col, 1.0)
-			if ri == 1 and (i == 0 or i == 1 or i == 7):
-				draw_rect(Rect2(p1, Vector2(1.0, 1.0)), PAL["cream"])
-	draw_rect(Rect2(hub - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["gold"] if _tremble_t > 0.0 else w_gl)
-	draw_rect(Rect2(hub, Vector2(1.0, 1.0)), PAL["cream"])
+	_draw_puzzle_tiled("web_tile", size, Vector2(jx, 0.0))
 	if _tremble_t > 0.0:
 		var u: float = 1.0 - clampf(_tremble_t / 0.22, 0.0, 1.0)
 		for k: int in range(4):
 			var a: float = (TAU * float(k)) / 4.0
-			draw_rect(Rect2(hub + Vector2(roundf(cos(a) * (3.0 + u * 5.0)), roundf(sin(a) * (2.0 + u * 4.0))), Vector2.ONE), PAL["gold"] if k % 2 == 0 else w_gl)
+			var pt := Vector2(roundf(cos(a) * (3.0 + u * 5.0)), roundf(sin(a) * (2.0 + u * 4.0)))
+			draw_rect(Rect2(pt, Vector2.ONE), (PAL["gold"] if k % 2 == 0 else PAL["ice"]) as Color)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
 		var ww_d: LxWick = Lx.player as LxWick
 		if ww_d.is_beam_charging() and ww_d.global_position.distance_squared_to(pos) <= 9216.0:
 			var bp_w: float = clampf(ww_d.beam_charge_progress(), 0.2, 1.0)
-			draw_rect(Rect2(x0, y0, w, h), Color((PAL["cream"] if bp_w >= 0.99 else w_gl) as Color, bp_w * 0.56), false, 1.0)
+			var hc: Color = (PAL["cream"] if bp_w >= 0.99 else PAL["gold"]) as Color
+			draw_rect(Rect2(x0, y0, 3.0, 1.0), hc)
+			draw_rect(Rect2(x0, y0, 1.0, 3.0), hc)
+			draw_rect(Rect2(x0 + w - 3.0, y0, 3.0, 1.0), hc)
+			draw_rect(Rect2(x0 + w - 1.0, y0, 1.0, 3.0), hc)
+			draw_rect(Rect2(x0, y0 + h - 1.0, 3.0, 1.0), hc)
+			draw_rect(Rect2(x0, y0 + h - 3.0, 1.0, 3.0), hc)
+			draw_rect(Rect2(x0 + w - 3.0, y0 + h - 1.0, 3.0, 1.0), hc)
+			draw_rect(Rect2(x0 + w - 1.0, y0 + h - 3.0, 1.0, 3.0), hc)
 
 
 func _draw_burn_burst() -> void:

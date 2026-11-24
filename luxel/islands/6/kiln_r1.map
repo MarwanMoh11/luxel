@@ -1,4 +1,4 @@
-# The Great Kiln r1 - Slag-Flanked Foundry Crossroads (28x14)
+# The Great Kiln r1 - Asymmetric Cyclic Foundry Hearth (28x16)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,17 +13,19 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-#############,,#############
-#OOOOO.......,,.......OOOOO#
-#OOOOO.......,,.......OOOOO#
-#OOOOO.......,,.......OOOOO#
-#............,,............#
-,............,,............,
+##############,,############
+#OOOOOOOOO...#,,#..OOOOOOOO#
+#O....OOOO....,,...OOOOOOOO#
+#O....OOOO....,,...OOOOOOOO#
+#O....OOOO....,,...OOOOOOOO#
+#OOOOOOOOO....,,.......OOOO#
+#OOOOOOOOO..##,,.......OOOO#
+#...........##,,...........#
+,,,...........,,.........,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-#............,,............#
-#............,,............#
-#OOOOO.......,,.......OOOOO#
-#OOOOO.......,,.......OOOOO#
-#OOOOO.......,,.......OOOOO#
-#############,,#############
+#...........,,......#,,,,..#
+#OOOOOOOO...,,......#,,,,..#
+#OOOOOOOOOO.,,...OOO.,,,,..#
+#OOOOOOOOOO.,,...OOO..#,,#.#
+############,,#########,,###

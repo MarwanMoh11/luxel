@@ -1,8 +1,10 @@
 class_name LxMoveBeam
 extends LxMove
 ## Beam (Island 3): hold lx_beam (F / X) for charge_time (0.6 s) while standing still with lantern
-## IN_HAND, then release to fire ONE instant piercing line shot along manual wick.facing (ZERO aim assist).
-## Stopped only by solid "wall" tiles; pierces enemies, shields, brambles, webs, and cracked walls.
+## IN_HAND, then release to fire ONE instant piercing polyline shot along manual wick.facing (ZERO aim assist).
+## Stopped by solid "wall" tiles; pierces enemies, shields, brambles, webs, and cracked walls.
+## Refracts off Blue Transformers (LxMirror) and glass/mirror tiles up to move_prism.get_bounces(),
+## transforming remaining segments into a vivid Blue Piercing Beam (light_color = COLOR_BLUE).
 
 const BEAM_VIS_DURATION: float = 0.24
 const RAY_STEP_PX: float = 2.0
@@ -15,6 +17,7 @@ var beam_vis_t: float = 0.0
 var beam_vis_max: float = BEAM_VIS_DURATION
 var beam_start: Vector2 = Vector2.ZERO
 var beam_end: Vector2 = Vector2.ZERO
+var beam_segments: Array[Dictionary] = [] # [{start, end, dir, color, bounce}]
 var beam_width: float = 6.0
 var beams_fired: int = 0
 
@@ -24,36 +27,19 @@ var _buffer_t: float = 0.0
 var _held: bool = false
 
 
-func set_world_ctx(world_ctx: Node) -> void:
-	_world_ctx = world_ctx
-
+func set_world_ctx(world_ctx: Node) -> void: _world_ctx = world_ctx
+func is_charging() -> bool: return charging
+func press() -> bool: return press_beam()
+func release() -> void: release_beam()
 
 func can_use() -> bool:
-	if not super.can_use():
-		return false
-	if wick.dead or wick.is_dashing() or wick.is_gliding() or wick.is_zipping() or wick.bounce_t > 0.0:
-		return false
-	if wick.lantern != null and not wick.lantern.is_in_hand():
-		return false
+	if not super.can_use(): return false
+	if wick.dead or wick.is_dashing() or wick.is_gliding() or wick.is_zipping() or wick.bounce_t > 0.0: return false
+	if wick.lantern != null and not wick.lantern.is_in_hand(): return false
 	return true
 
-
-func is_charging() -> bool:
-	return charging
-
-
 func charge_progress() -> float:
-	if not charging:
-		return 0.0
-	return clampf(charge_t / maxf(charge_time, 0.01), 0.0, 1.0)
-
-
-func press() -> bool:
-	return press_beam()
-
-
-func release() -> void:
-	release_beam()
+	return clampf(charge_t / maxf(charge_time, 0.01), 0.0, 1.0) if charging else 0.0
 
 
 func press_beam() -> bool:
@@ -130,71 +116,154 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	var stagger: bool = bool(data.get("stagger", true))
 	var hs: float = float(data.get("hitstop", 0.095))
 	var sh: float = float(data.get("shake", 0.16))
+	var max_bounces: int = wick.move_prism.get_bounces() if wick.move_prism != null else 2
+	var prism_mult: float = wick.move_prism.get_damage_mult() if wick.move_prism != null else 1.15
 
 	# Strictly manual aim along wick.facing (ZERO aim assist)
 	var aim: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
 	var start_p: Vector2 = wick.global_position
-	var end_p: Vector2 = _raycast_walls_only(ctx, start_p, aim, max_range)
+	var reflections: Array[Dictionary] = []
+	var segs: Array[Dictionary] = _trace_beam_segments(ctx, start_p, aim, max_range, max_bounces, reflections)
+	if segs.is_empty():
+		segs.append({"start": start_p, "end": start_p + aim * max_range, "dir": aim, "color": LxHit.COLOR_YELLOW, "bounce": 0})
+	var end_p: Vector2 = segs[segs.size() - 1]["end"] as Vector2
+	var end_dir: Vector2 = segs[segs.size() - 1]["dir"] as Vector2
+	var end_blue: bool = str(segs[segs.size() - 1]["color"]) == LxHit.COLOR_BLUE
 
-	var hit: LxHit = LxHit.make(
-		LxHit.SOURCE_BEAM, dmg, aim, start_p,
-		wear, stagger, pierce, wick, false
-	)
+	var reflected_mirror_ids: Dictionary = {}
+	for refl: Dictionary in reflections:
+		var m_obj: Object = refl.get("item") as Object
+		var rpos: Vector2 = refl.get("pos", start_p) as Vector2
+		var exit_p: Vector2 = refl.get("exit_pos", rpos + (refl.get("dir", aim) as Vector2) * 2.0) as Vector2
+		var rdir: Vector2 = refl.get("dir", aim) as Vector2
+		var t_col: String = str(refl.get("color", LxHit.COLOR_BLUE))
+		var b_idx: int = int(refl.get("bounce", 1))
+		if wick.move_prism != null:
+			wick.move_prism.on_bolt_reflected(rpos, rdir, b_idx, t_col)
+		if m_obj != null and is_instance_valid(m_obj):
+			reflected_mirror_ids[m_obj.get_instance_id()] = true
+			if m_obj.has_method("on_hit"):
+				var ping: LxHit = LxHit.make(LxHit.SOURCE_BEAM, dmg, rdir, rpos, wear, false, pierce, wick, false, t_col)
+				m_obj.call("on_hit", ping)
+		if b_idx == 1 and wick.move_prism != null and wick.move_prism.has_split() and wick.move_bolt != null:
+			var split_rad: float = deg_to_rad(wick.move_prism.SPLIT_ANGLE_DEG)
+			var bolt_spd: float = float(wick.move_bolt.get_data().get("speed", 330.0))
+			var m_id: int = m_obj.get_instance_id() if (m_obj != null and is_instance_valid(m_obj)) else -1
+			for sign_a: float in [-1.0, 1.0]:
+				var sb := LxMoveBolt.Bolt.new()
+				sb.dir = rdir.rotated(sign_a * split_rad).normalized()
+				sb.prev_pos = rpos
+				sb.pos = exit_p
+				sb.speed = bolt_spd
+				sb.max_range = 110.0
+				sb.damage = dmg * 0.45
+				sb.shield_wear = 0.5
+				sb.bounces_left = 0
+				sb.bounce_count = 1
+				sb.is_prism = true
+				sb.is_split_shard = true
+				sb.light_color = t_col
+				sb.cracks_armour = true
+				if m_id != -1:
+					sb.hit_ids.append(m_id)
+				wick.bolts.append(sb)
+			wick.move_prism.spawn_split_wedge(rpos, rdir)
+			wick.spawn_sparks(rpos, rdir, 6, LxWick.PAL_SKY, 42.0, 108.0, 0.20)
+			wick.spawn_sparks(rpos, rdir, 4, LxWick.PAL_CREAM, 55.0, 118.0, 0.16)
+			wick.emit_sfx("prism_chain", rpos, true)
+	if not reflections.is_empty():
+		wick.trigger_hitstop(0.035)
 
 	var any_enemy_hit: bool = false
+	var hit_enemy_ids: Dictionary = {}
+	var hit_inter_keys: Dictionary = {}
 	var enemies: Array = wick.world_get_enemies(ctx)
-	for e_var: Variant in enemies:
-		if not (e_var is Object):
-			continue
-		var enemy: Object = e_var as Object
-		if not wick.is_entity_alive(enemy):
-			continue
-		var epos: Vector2 = wick.get_entity_pos(enemy)
-		var erad: float = wick.get_entity_radius(enemy, 8.0)
-		var closest: Vector2 = Geometry2D.get_closest_point_to_segment(epos, start_p, end_p)
-		if closest.distance_to(epos) <= erad + half_w:
-			var res: int = wick.apply_hit_to_entity(enemy, hit)
-			wick.on_hit_landed(hit, res, epos, hs, sh)
-			if res >= 0:
-				any_enemy_hit = true
-
 	var inters: Array = wick.world_get_interactables(ctx)
-	for it_var: Variant in inters:
-		if not (it_var is Object):
-			continue
-		var item: Object = it_var as Object
-		if not is_instance_valid(item) or not item.has_method("on_hit"):
-			continue
-		if item.get("active") is bool and not bool(item.get("active")):
-			continue
-		var ipos: Vector2 = wick.get_entity_pos(item)
-		var irad: float = wick.get_entity_radius(item, 8.0)
-		if _segment_hits_item(start_p, end_p, half_w, item, ipos, irad):
-			var consumed: Variant = item.call("on_hit", hit)
-			if consumed is bool and bool(consumed):
-				if str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
-					var emax: float = Lx.state.get_effective_ember_max()
-					var was_full: bool = wick.ember >= emax - 0.001
-					wick.ember = minf(emax, wick.ember + 22.0)
-					if not was_full and wick.ember >= emax - 0.001:
-						wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
-						wick.emit_sfx("beam_ready", wick.global_position, false)
-				wick.spawn_sparks(ipos, aim, 6, LxWick.PAL_GOLD, 30.0, 90.0, 0.22)
-	if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
-		LxBiomeMechanics.active_instance.try_hit_biome_target(start_p, end_p, aim, wick)
+
+	for seg: Dictionary in segs:
+		var s_a: Vector2 = seg["start"] as Vector2
+		var s_b: Vector2 = seg["end"] as Vector2
+		var s_dir: Vector2 = seg["dir"] as Vector2
+		var s_col: String = str(seg["color"])
+		var s_bounce: int = int(seg["bounce"])
+		var s_dmg: float = dmg * pow(prism_mult, float(s_bounce)) if s_bounce > 0 else dmg
+		var s_cracks: bool = wick.move_prism != null and wick.move_prism.should_crack_armour(s_bounce)
+		var seg_hit: LxHit = LxHit.make(
+			LxHit.SOURCE_BEAM, s_dmg, s_dir, s_a,
+			wear, stagger, pierce, wick, s_cracks, s_col
+		)
+
+		for e_var: Variant in enemies:
+			if not (e_var is Object):
+				continue
+			var enemy: Object = e_var as Object
+			if not wick.is_entity_alive(enemy):
+				continue
+			var eid: int = enemy.get_instance_id()
+			if hit_enemy_ids.has(eid):
+				continue
+			var epos: Vector2 = wick.get_entity_pos(enemy)
+			var erad: float = wick.get_entity_radius(enemy, 8.0)
+			var closest: Vector2 = Geometry2D.get_closest_point_to_segment(epos, s_a, s_b)
+			if closest.distance_to(epos) <= erad + half_w:
+				hit_enemy_ids[eid] = true
+				var res: int = wick.apply_hit_to_entity(enemy, seg_hit)
+				wick.on_hit_landed(seg_hit, res, epos, hs, sh)
+				if res >= 0:
+					any_enemy_hit = true
+					if s_col == LxHit.COLOR_BLUE:
+						wick.spawn_ring(epos, 2.0, 14.0, 0.20, LxWick.PAL_ICE, 1.2)
+						wick.spawn_sparks(epos, s_dir, 6, LxWick.PAL_ICE, 34.0, 96.0, 0.20)
+
+		for it_var: Variant in inters:
+			if not (it_var is Object):
+				continue
+			var item: Object = it_var as Object
+			if not is_instance_valid(item) or not item.has_method("on_hit"):
+				continue
+			if item.get("active") is bool and not bool(item.get("active")):
+				continue
+			var iid: int = item.get_instance_id()
+			if reflected_mirror_ids.has(iid):
+				continue
+			var ikey: String = "%d:%s" % [iid, s_col]
+			if hit_inter_keys.has(ikey):
+				continue
+			var ipos: Vector2 = wick.get_entity_pos(item)
+			var irad: float = wick.get_entity_radius(item, 8.0)
+			if _segment_hits_item(s_a, s_b, half_w, item, ipos, irad):
+				hit_inter_keys[ikey] = true
+				var consumed: Variant = item.call("on_hit", seg_hit)
+				if consumed is bool and bool(consumed):
+					if str(item.get("kind")) == "obsidian_seal" and Lx.state != null and Lx.state.has_move("sunflare"):
+						var emax: float = Lx.state.get_effective_ember_max()
+						var was_full: bool = wick.ember >= emax - 0.001
+						wick.ember = minf(emax, wick.ember + 22.0)
+						if not was_full and wick.ember >= emax - 0.001:
+							wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
+							wick.emit_sfx("beam_ready", wick.global_position, false)
+					var sp_c: Color = LxWick.PAL_ICE if s_col == LxHit.COLOR_BLUE else LxWick.PAL_GOLD
+					wick.spawn_sparks(ipos, s_dir, 6, sp_c, 30.0, 90.0, 0.22)
+
+		if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
+			LxBiomeMechanics.active_instance.try_hit_biome_target(s_a, s_b, s_dir, wick)
+		LxSceneryProp.graze_segment(ctx, s_a, s_b, s_dir, s_col == LxHit.COLOR_BLUE)
+
 	var isl_dec: int = Lx.state.island_id if Lx.state != null else 1
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-		var dk: int = LxGroundDecals.Kind.SCORCH
-		if isl_dec in [2, 4]:
-			dk = LxGroundDecals.Kind.RIPPLE
-		elif isl_dec == 3:
-			dk = LxGroundDecals.Kind.BLOSSOM
-		elif isl_dec in [5, 7]:
-			dk = LxGroundDecals.Kind.PRISM_STAR
+		var dk: int = LxGroundDecals.Kind.PRISM_STAR if end_blue else LxGroundDecals.Kind.SCORCH
+		if not end_blue:
+			if isl_dec in [2, 4]:
+				dk = LxGroundDecals.Kind.RIPPLE
+			elif isl_dec == 3:
+				dk = LxGroundDecals.Kind.BLOSSOM
+			elif isl_dec in [5, 7]:
+				dk = LxGroundDecals.Kind.PRISM_STAR
 		LxGroundDecals.active_instance.add_decal(dk, end_p, 11.0, 5.2)
 
 	beam_start = start_p
 	beam_end = end_p
+	beam_segments = segs
 	beam_width = width_px
 	beam_vis_max = BEAM_VIS_DURATION
 	beam_vis_t = BEAM_VIS_DURATION
@@ -209,17 +278,21 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 		Lx.camera.call("add_kick", -aim, 2.6)
 	if not any_enemy_hit:
 		wick.trigger_shake(sh * 0.6)
+	var end_col: Color = LxWick.PAL_ICE if end_blue else LxWick.PAL_GOLD
 	wick.spawn_ring(start_p, 2.0, 16.0 if empowered else 12.0, 0.22, LxWick.PAL_CREAM, 1.8 if empowered else 1.5)
-	wick.spawn_ring(end_p, 2.0, 14.0 if empowered else 10.0, 0.22, LxWick.PAL_GOLD, 1.8 if empowered else 1.5)
+	wick.spawn_ring(end_p, 2.0, 14.0 if empowered else 10.0, 0.22, end_col, 1.8 if empowered else 1.5)
 	wick.spawn_sparks(start_p, aim, 9 if empowered else 6, LxWick.PAL_CREAM, 35.0, 105.0, 0.20)
 	wick.spawn_sparks(start_p, aim, 3, LxBiomePalette.col(isl_dec, "glow"), 28.0, 92.0, 0.22)
-	wick.spawn_sparks(end_p, -aim, 10 if empowered else 8, LxWick.PAL_GOLD, 30.0, 105.0, 0.22)
-	wick.spawn_sparks(end_p, -aim, 3, LxBiomePalette.col(isl_dec, "glow"), 26.0, 88.0, 0.24)
+	wick.spawn_sparks(end_p, -end_dir, 10 if empowered else 8, end_col, 30.0, 105.0, 0.22)
+	wick.spawn_sparks(end_p, -end_dir, 3, LxWick.PAL_SKY if end_blue else LxBiomePalette.col(isl_dec, "glow"), 26.0, 88.0, 0.24)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		var fred_b: bool = LxHudFx.flash_reduced()
 		var bi_b: float = (1.12 if empowered else 0.92) if fred_b else (1.72 if empowered else 1.45)
 		LxDarknessLayer.active_instance.add_burst_light(start_p, 74.0 if empowered else 62.0, bi_b, 0.28)
-		LxDarknessLayer.active_instance.add_burst_light(start_p.lerp(end_p, 0.5), 68.0 if empowered else 56.0, bi_b * 0.85, 0.24)
+		for seg_l: Dictionary in segs:
+			var la: Vector2 = seg_l["start"] as Vector2
+			var lb: Vector2 = seg_l["end"] as Vector2
+			LxDarknessLayer.active_instance.add_burst_light(la.lerp(lb, 0.5), 68.0 if empowered else 56.0, bi_b * 0.85, 0.24)
 		LxDarknessLayer.active_instance.add_burst_light(end_p, 78.0 if empowered else 64.0, bi_b, 0.30)
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
@@ -262,19 +335,11 @@ func tick(dt: float) -> void:
 
 
 func cancel() -> void:
-	charging = false
-	charge_t = 0.0
-	_buffer_t = 0.0
-	_held = false
-	if Lx.input != null:
-		Lx.input.clear_toggle("lx_beam")
-
+	charging = false; charge_t = 0.0; _buffer_t = 0.0; _held = false
+	if Lx.input != null: Lx.input.clear_toggle("lx_beam")
 
 func reset() -> void:
-	super.reset()
-	cancel()
-	beam_vis_t = 0.0
-	beams_fired = 0
+	super.reset(); cancel(); beam_vis_t = 0.0; beam_segments.clear(); beams_fired = 0
 
 
 func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
@@ -302,53 +367,95 @@ func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
 			canvas.draw_arc(hand_pos, 7.5, 0.0, TAU, 16, Color(LxWick.PAL_GOLD, 0.70 * flash_sc), 1.0)
 			canvas.draw_arc(hand_pos, 9.5, 0.0, TAU, 16, Color(b_glow, 0.45 * flash_sc), 1.0)
 			var sr: float = roundf(5.5 if flash_red else (6.0 + 1.5 * sin(spin * 2.6)))
-			_draw_star_flare(canvas, hand_pos, Vector2.RIGHT, sr, sr, 0.92 * flash_sc)
+			_draw_star_flare(canvas, hand_pos, Vector2.RIGHT, sr, sr, 0.92 * flash_sc, false)
+
+		# Charge-up aim preview (previews 1st reflected blue segment when aiming at a Blue Transformer!)
 		var aim_dir: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
-		var aim_len: float = 76.0 if ready else lerpf(10.0, 42.0, prog)
+		var aim_len: float = 128.0 if ready else lerpf(18.0, 76.0, prog)
 		var ctx: Node = _world_ctx if _world_ctx != null else Lx.world
-		var w_end: Vector2 = _raycast_walls_only(ctx, wick.global_position, aim_dir, aim_len)
-		var local_len: float = minf(aim_len, wick.global_position.distance_to(w_end))
-		var tip_p: Vector2 = (hand_pos + aim_dir * local_len).round()
-		if ready:
-			for si: int in range(0, 12, 2):
-				var p0: Vector2 = (hand_pos + aim_dir * (local_len * float(si) / 12.0)).round()
-				var p1: Vector2 = (hand_pos + aim_dir * (local_len * float(si + 1) / 12.0)).round()
-				canvas.draw_line(p0, p1, Color(LxWick.PAL_GOLD, 0.62 * flash_sc), 1.0)
-			canvas.draw_rect(Rect2(tip_p - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
-		else:
-			canvas.draw_line(hand_pos, tip_p, Color(ring_col, 0.48), 1.0)
+		var preview_segs: Array[Dictionary] = _trace_beam_segments(ctx, wick.global_position, aim_dir, aim_len, 1)
+		if not preview_segs.is_empty():
+			var s0: Dictionary = preview_segs[0]
+			var seg0_len: float = minf(aim_len, (s0["start"] as Vector2).distance_to(s0["end"] as Vector2))
+			var tip0: Vector2 = (hand_pos + aim_dir * seg0_len).round()
+			if ready:
+				for si: int in range(0, 12, 2):
+					var p0: Vector2 = (hand_pos + aim_dir * (seg0_len * float(si) / 12.0)).round()
+					var p1: Vector2 = (hand_pos + aim_dir * (seg0_len * float(si + 1) / 12.0)).round()
+					canvas.draw_line(p0, p1, Color(LxWick.PAL_GOLD, 0.62 * flash_sc), 1.0)
+				canvas.draw_rect(Rect2(tip0 - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
+			else:
+				canvas.draw_line(hand_pos, tip0, Color(ring_col, 0.48), 1.0)
+
+			if preview_segs.size() >= 2:
+				var s1: Dictionary = preview_segs[1]
+				var r_start: Vector2 = (s1["start"] as Vector2) + off + Vector2(0.0, -5.0)
+				var r_dir: Vector2 = s1["dir"] as Vector2
+				var r_max: float = 72.0 if ready else lerpf(14.0, 44.0, prog)
+				var r_len: float = minf(r_max, (s1["start"] as Vector2).distance_to(s1["end"] as Vector2))
+				var r_end: Vector2 = (r_start + r_dir * r_len).round()
+				var b_vtx: Vector2 = ((s0["end"] as Vector2) + off + Vector2(0.0, -5.0)).round()
+				canvas.draw_rect(Rect2(b_vtx - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_ICE)
+				if ready:
+					for sj: int in range(0, 10, 2):
+						var q0: Vector2 = (r_start + r_dir * (r_len * float(sj) / 10.0)).round()
+						var q1: Vector2 = (r_start + r_dir * (r_len * float(sj + 1) / 10.0)).round()
+						canvas.draw_line(q0, q1, Color(LxWick.PAL_ICE if (sj % 4 == 0) else LxWick.PAL_SKY, 0.78 * flash_sc), 1.0)
+					canvas.draw_rect(Rect2(r_end - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_ICE)
+				else:
+					canvas.draw_line(r_start.round(), r_end, Color(LxWick.PAL_SKY, 0.58 * flash_sc), 1.0)
 
 	if beam_vis_t > 0.0:
 		var t: float = clampf(beam_vis_t / maxf(beam_vis_max, 0.01), 0.0, 1.0)
-		var a: Vector2 = (beam_start + off).round() + Vector2(0.0, -5.0)
-		var b: Vector2 = (beam_end + off).round() + Vector2(0.0, -5.0)
-		var delta: Vector2 = b - a
-		var blen: float = delta.length()
-		var bdir: Vector2 = delta / blen if blen > 0.5 else Vector2.RIGHT
-		var perp := Vector2(-bdir.y, bdir.x)
+		var hot_pulse: bool = beam_vis_t > beam_vis_max * 0.78 and not flash_red
 		var isl_b: int = Lx.state.island_id if Lx.state != null else 1
-		canvas.draw_line(a, b, Color(LxBiomePalette.col(isl_b, "glow"), t * 0.42 * flash_sc), maxf(2.0, (beam_width + 3.0) * t))
-		canvas.draw_line(a, b, Color(LxWick.PAL_APRICOT, t * 0.85 * flash_sc), maxf(1.0, beam_width * t))
-		canvas.draw_line(a, b, Color(LxWick.PAL_GOLD, t * lerpf(1.0, 0.85, 1.0 - flash_sc)), maxf(1.0, beam_width * 0.65 * t))
-		canvas.draw_line(a, b, Color(LxWick.PAL_CREAM, t), maxf(1.0, beam_width * 0.30 * t))
-		var cursor: float = 12.0 + (1.0 - t) * 10.0
-		while cursor < blen - 8.0:
-			var np: Vector2 = (a + bdir * cursor).round()
-			var hw: float = maxf(1.0, roundf((1.5 + beam_width * 0.35) * t))
-			canvas.draw_line((np - perp * hw).round(), (np + perp * hw).round(), Color(LxWick.PAL_GOLD, t * 0.82 * flash_sc), 1.0)
-			canvas.draw_rect(Rect2(np - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), Color(LxWick.PAL_CREAM, t * 0.92))
-			cursor += 18.0
-		canvas.draw_circle(a, 4.0 * t, Color(LxWick.PAL_CREAM, t * flash_sc))
-		canvas.draw_circle(b, 4.5 * t, Color(LxWick.PAL_GOLD, t * flash_sc))
-		_draw_star_flare(canvas, a, bdir, roundf(9.0 * t * flash_sc), roundf(6.5 * t * flash_sc), t)
-		_draw_star_flare(canvas, b, bdir, roundf(10.0 * t * flash_sc), roundf(8.5 * t * flash_sc), t)
+		var draw_segs: Array[Dictionary] = beam_segments
+		if draw_segs.is_empty():
+			draw_segs = [{"start": beam_start, "end": beam_end, "dir": (beam_end - beam_start).normalized(), "color": LxHit.COLOR_YELLOW, "bounce": 0}]
+		for idx: int in range(draw_segs.size()):
+			var seg: Dictionary = draw_segs[idx]
+			var a: Vector2 = ((seg["start"] as Vector2) + off).round() + Vector2(0.0, -5.0)
+			var b: Vector2 = ((seg["end"] as Vector2) + off).round() + Vector2(0.0, -5.0)
+			var is_blue: bool = str(seg.get("color", LxHit.COLOR_YELLOW)) == LxHit.COLOR_BLUE
+			var delta: Vector2 = b - a
+			var blen: float = delta.length()
+			var bdir: Vector2 = delta / blen if blen > 0.5 else Vector2.RIGHT
+			var perp := Vector2(-bdir.y, bdir.x)
+			var core_w: float = maxf(1.0, beam_width * 0.30 * t) + (2.0 if hot_pulse else 0.0)
+			if is_blue:
+				canvas.draw_line(a, b, Color(LxWick.PAL_SKY, t * 0.48 * flash_sc), maxf(2.0, (beam_width + 3.5) * t))
+				canvas.draw_line(a, b, Color(LxWick.PAL_SKY, t * 0.90 * flash_sc), maxf(1.0, beam_width * t))
+				canvas.draw_line(a, b, Color(LxWick.PAL_ICE, t * lerpf(1.0, 0.88, 1.0 - flash_sc)), maxf(1.0, beam_width * 0.65 * t))
+				canvas.draw_line(a, b, Color(LxWick.PAL_CREAM, t), core_w)
+			else:
+				canvas.draw_line(a, b, Color(LxBiomePalette.col(isl_b, "glow"), t * 0.42 * flash_sc), maxf(2.0, (beam_width + 3.0) * t))
+				canvas.draw_line(a, b, Color(LxWick.PAL_APRICOT, t * 0.85 * flash_sc), maxf(1.0, beam_width * t))
+				canvas.draw_line(a, b, Color(LxWick.PAL_GOLD, t * lerpf(1.0, 0.85, 1.0 - flash_sc)), maxf(1.0, beam_width * 0.65 * t))
+				canvas.draw_line(a, b, Color(LxWick.PAL_CREAM, t), core_w)
+			var node_col: Color = LxWick.PAL_ICE if is_blue else LxWick.PAL_GOLD
+			var cursor: float = 12.0 + (1.0 - t) * 10.0
+			while cursor < blen - 8.0:
+				var np: Vector2 = (a + bdir * cursor).round()
+				var hw: float = maxf(1.0, roundf((1.5 + beam_width * 0.35) * t))
+				canvas.draw_line((np - perp * hw).round(), (np + perp * hw).round(), Color(node_col, t * 0.85 * flash_sc), 1.0)
+				canvas.draw_rect(Rect2(np - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), Color(LxWick.PAL_CREAM, t * 0.92))
+				cursor += 18.0
+			if idx == 0:
+				canvas.draw_circle(a, 4.0 * t, Color(LxWick.PAL_CREAM, t * flash_sc))
+				_draw_star_flare(canvas, a, bdir, roundf(9.0 * t * flash_sc), roundf(6.5 * t * flash_sc), t, is_blue)
+			else:
+				canvas.draw_circle(a, 4.2 * t, Color(LxWick.PAL_ICE, t * flash_sc))
+				_draw_star_flare(canvas, a, bdir, roundf(8.5 * t * flash_sc), roundf(7.5 * t * flash_sc), t, true)
+			if idx == draw_segs.size() - 1:
+				canvas.draw_circle(b, 4.5 * t, Color(LxWick.PAL_ICE if is_blue else LxWick.PAL_GOLD, t * flash_sc))
+				_draw_star_flare(canvas, b, bdir, roundf(10.0 * t * flash_sc), roundf(8.5 * t * flash_sc), t, is_blue)
 
 
-func _draw_star_flare(canvas: CanvasItem, c: Vector2, axis: Vector2, main_r: float, cross_r: float, alpha: float) -> void:
+func _draw_star_flare(canvas: CanvasItem, c: Vector2, axis: Vector2, main_r: float, cross_r: float, alpha: float, is_blue: bool = false) -> void:
 	if main_r < 1.5 and cross_r < 1.5:
 		return
 	var perp := Vector2(-axis.y, axis.x)
-	var cg := Color(LxWick.PAL_GOLD, alpha * 0.92)
+	var cg := Color(LxWick.PAL_ICE if is_blue else LxWick.PAL_GOLD, alpha * 0.92)
 	var cc := Color(LxWick.PAL_CREAM, alpha)
 	canvas.draw_line((c - axis * main_r).round(), (c + axis * main_r).round(), cg, 1.0)
 	canvas.draw_line((c - perp * cross_r).round(), (c + perp * cross_r).round(), cg, 1.0)
@@ -357,23 +464,124 @@ func _draw_star_flare(canvas: CanvasItem, c: Vector2, axis: Vector2, main_r: flo
 	canvas.draw_rect(Rect2(c - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), cc)
 
 
-func _raycast_walls_only(ctx: Node, start_p: Vector2, aim: Vector2, max_range: float) -> Vector2:
-	var dist: float = 0.0
-	var last_p: Vector2 = start_p
+func _trace_beam_segments(
+	ctx: Node,
+	origin: Vector2,
+	aim_dir: Vector2,
+	max_range: float,
+	max_bounces: int,
+	reflections_out: Array[Dictionary] = []
+) -> Array[Dictionary]:
+	var segs: Array[Dictionary] = []
+	var cur_pos: Vector2 = origin
+	var cur_dir: Vector2 = aim_dir.normalized() if aim_dir.length_squared() > 0.0001 else Vector2.RIGHT
+	var cur_color: String = LxHit.COLOR_YELLOW
+	var ignore_mirror_id: int = -1
+	var bounces_done: int = 0
 	var has_tile_at: bool = ctx != null and ctx.has_method("tile_at")
 	var has_is_wall: bool = ctx != null and ctx.has_method("is_wall")
-	while dist < max_range:
-		dist = minf(max_range, dist + RAY_STEP_PX)
-		var pt: Vector2 = start_p + aim * dist
-		if has_tile_at:
-			if str(ctx.call("tile_at", pt)) == "wall":
-				return last_p
-		elif has_is_wall:
-			if bool(ctx.call("is_wall", pt)):
-				return last_p
-		last_p = pt
-	return start_p + aim * max_range
+	var can_reflect: bool = wick != null and wick.move_prism != null
 
+	# Collect active reflective interactables once for this trace
+	var mirrors: Array[Object] = []
+	if wick != null:
+		for it_var: Variant in wick.world_get_interactables(ctx):
+			if not (it_var is Object):
+				continue
+			var item: Object = it_var as Object
+			if not is_instance_valid(item):
+				continue
+			if item.get("active") is bool and not bool(item.get("active")):
+				continue
+			if item.has_method("is_reflective") and bool(item.call("is_reflective")):
+				mirrors.append(item)
+
+	while bounces_done <= max_bounces:
+		var dist: float = 0.0
+		var prev_p: Vector2 = cur_pos
+		var seg_end: Vector2 = cur_pos
+		var reflected: bool = false
+		while dist < max_range:
+			dist = minf(max_range, dist + RAY_STEP_PX)
+			var pt: Vector2 = cur_pos + cur_dir * dist
+			var ttype: String = ""
+			if has_tile_at:
+				ttype = str(ctx.call("tile_at", pt))
+				if ttype == "wall":
+					seg_end = prev_p
+					break
+			elif has_is_wall:
+				if bool(ctx.call("is_wall", pt)):
+					seg_end = prev_p
+					break
+
+			# Check reflective interactables (LxMirror / Blue Transformer)
+			var hit_m: Object = null
+			for m: Object in mirrors:
+				if m.get_instance_id() == ignore_mirror_id:
+					continue
+				if _ray_hits_mirror(prev_p, pt, m):
+					hit_m = m
+					break
+			if hit_m != null:
+				if can_reflect and bounces_done < max_bounces:
+					var refl: Dictionary = wick.move_prism.try_reflect_interactable(hit_m, prev_p, pt, cur_dir)
+					if bool(refl.get("hit", false)):
+						var rpos: Vector2 = refl.get("pos", pt) as Vector2
+						var exit_pos: Vector2 = refl.get("exit_pos", rpos) as Vector2
+						var rdir: Vector2 = refl.get("dir", -cur_dir) as Vector2
+						var t_col: String = str(hit_m.call("get_transform_color")) if hit_m.has_method("get_transform_color") else LxHit.COLOR_BLUE
+						if t_col.is_empty():
+							t_col = LxHit.COLOR_BLUE
+						segs.append({"start": cur_pos, "end": rpos, "dir": cur_dir, "color": cur_color, "bounce": bounces_done})
+						reflections_out.append({"item": hit_m, "pos": rpos, "exit_pos": exit_pos, "dir": rdir, "color": t_col, "bounce": bounces_done + 1})
+						cur_pos = exit_pos
+						cur_dir = rdir
+						cur_color = t_col
+						ignore_mirror_id = hit_m.get_instance_id()
+						bounces_done += 1
+						reflected = true
+						break
+				seg_end = prev_p
+				break
+
+			# Check glass / mirror tiles
+			if (ttype == "glass" or ttype == "mirror") and can_reflect and bounces_done < max_bounces:
+				var wrefl: Dictionary = wick.move_prism.try_reflect_world(ctx, prev_p, pt, cur_dir)
+				if bool(wrefl.get("hit", false)):
+					var wpos: Vector2 = wrefl.get("pos", prev_p) as Vector2
+					var wexit: Vector2 = wrefl.get("exit_pos", wpos) as Vector2
+					var wdir: Vector2 = wrefl.get("dir", -cur_dir) as Vector2
+					segs.append({"start": cur_pos, "end": wpos, "dir": cur_dir, "color": cur_color, "bounce": bounces_done})
+					reflections_out.append({"item": null, "pos": wpos, "exit_pos": wexit, "dir": wdir, "color": LxHit.COLOR_BLUE, "bounce": bounces_done + 1})
+					cur_pos = wexit
+					cur_dir = wdir
+					cur_color = LxHit.COLOR_BLUE
+					ignore_mirror_id = -1
+					bounces_done += 1
+					reflected = true
+					break
+
+			prev_p = pt
+			seg_end = pt
+
+		if not reflected:
+			segs.append({"start": cur_pos, "end": seg_end, "dir": cur_dir, "color": cur_color, "bounce": bounces_done})
+			break
+
+	return segs
+
+
+func _ray_hits_mirror(prev_p: Vector2, pt: Vector2, item: Object) -> bool:
+	var ipos: Vector2 = wick.get_entity_pos(item) if wick != null else Vector2.ZERO
+	var irad: float = wick.get_entity_radius(item, 8.0) if wick != null else 8.0
+	if item.has_method("get_solid_rect"):
+		var srect: Rect2 = item.call("get_solid_rect") as Rect2
+		if srect.has_area():
+			var grown: Rect2 = srect.grow(1.5)
+			if grown.has_point(pt) or grown.has_point(prev_p.lerp(pt, 0.5)):
+				return true
+	return Geometry2D.get_closest_point_to_segment(ipos, prev_p, pt).distance_to(ipos) <= irad + 1.5
 
 func _segment_hits_item(a: Vector2, b: Vector2, half_w: float, item: Object, ipos: Vector2, irad: float) -> bool:
 	var closest: Vector2 = Geometry2D.get_closest_point_to_segment(ipos, a, b)

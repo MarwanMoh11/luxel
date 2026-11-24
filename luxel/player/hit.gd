@@ -4,6 +4,7 @@ extends RefCounted
 
 const SOURCE_BOLT: String = "bolt"
 const SOURCE_PRISM: String = "prism_bolt"
+const SOURCE_PRISM_BOLT: String = SOURCE_PRISM
 const SOURCE_BEAM: String = "beam"
 const SOURCE_THROW: String = "throw"
 const SOURCE_RECALL: String = "recall"
@@ -12,7 +13,11 @@ const SOURCE_DASH: String = "dash"
 const SOURCE_SUNFLARE: String = "sunflare"
 const SOURCE_HAZARD: String = "hazard"
 
+const COLOR_YELLOW: String = "yellow"
+const COLOR_BLUE: String = "blue"
+
 var source: String = SOURCE_BOLT
+var light_color: String = COLOR_YELLOW
 var damage: float = 0.0
 var dir: Vector2 = Vector2.RIGHT
 var pierce: bool = false
@@ -32,10 +37,15 @@ static func make(
 	p_stagger: bool = false,
 	p_pierce: bool = false,
 	p_attacker: Object = null,
-	p_cracks_armour: bool = false
+	p_cracks_armour: bool = false,
+	p_light_color: String = ""
 ) -> LxHit:
 	var hit := LxHit.new()
 	hit.source = p_source
+	if not p_light_color.is_empty():
+		hit.light_color = p_light_color
+	else:
+		hit.light_color = COLOR_BLUE if p_source == SOURCE_PRISM else COLOR_YELLOW
 	hit.damage = maxf(0.0, p_damage)
 	hit.dir = p_dir.normalized() if p_dir.length_squared() > 0.0001 else Vector2.RIGHT
 	hit.origin = p_origin
@@ -45,6 +55,10 @@ static func make(
 	hit.attacker = p_attacker
 	hit.cracks_armour = p_cracks_armour
 	return hit
+
+
+func is_blue() -> bool:
+	return light_color == COLOR_BLUE or source == SOURCE_PRISM
 
 
 func is_bolt() -> bool:

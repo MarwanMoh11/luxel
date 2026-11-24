@@ -13,10 +13,14 @@ enum Mode { NONE, INTRO, DEATH, ENDING, RESULTS, CREDITS }
 
 const CREDITS_PATH: String = "res://luxel/credits.json"
 const INTRO_KEYS: Array[String] = ["INTRO_1", "INTRO_2", "INTRO_3"]
-const INTRO_BEAT_SECS: float = 2.0
+const INTRO_BEAT_SECS: float = 2.5
 const ENDING_DISPLAY_OFF_SECS: float = 7.8
 const ENDING_DAWN_SECS: float = 7.6
 const CREDITS_SPEED: float = 18.0
+const CREDITS_HOLD_SECS: float = 2.2
+const CREDITS_CLIP_TOP: float = 16.0
+const CREDITS_CLIP_BOT: float = 134.0
+const CREDITS_FADE_PX: float = 12.0
 const DEATH_PANEL := Rect2(44.0, 36.0, 232.0, 102.0)
 const RESULTS_PANEL := Rect2(40.0, 24.0, 240.0, 132.0)
 const LANTERN_POS := Vector2(160.0, 96.0)
@@ -33,8 +37,9 @@ var ending_mode: String = "display_off"
 var _is_boss_death: bool = false
 var _elapsed: float = 0.0
 var _stats: Dictionary = {}
-var _credit_lines: Array[Dictionary] = [] # {text, color, scale}
-var _scroll_y: float = 184.0
+var _credit_lines: Array[Dictionary] = [] # {text, color, scale, divider?}
+var _scroll_y: float = 138.0
+var _credits_hold_t: float = 0.0
 var _ending_cue_stage: int = 0
 var _intro_cue_stage: int = 0
 var _eyes: Array[Dictionary] = [] # {start, heap, dir, blink_off, recoil}
@@ -45,56 +50,29 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
 
-
 func show_intro() -> void:
-	mode = Mode.INTRO
-	_elapsed = 0.0
-	_intro_cue_stage = 0
-	visible = true
-	queue_redraw()
-
+	mode = Mode.INTRO; _elapsed = 0.0; _intro_cue_stage = 0; visible = true; queue_redraw()
 
 func show_death(is_boss: bool = false) -> void:
-	mode = Mode.DEATH
-	_is_boss_death = is_boss
-	_elapsed = 0.0
-	visible = true
-	queue_redraw()
-
+	mode = Mode.DEATH; _is_boss_death = is_boss; _elapsed = 0.0; visible = true; queue_redraw()
 
 func show_ending(p_mode: String = "display_off") -> void:
 	ending_mode = "dawn" if p_mode == "dawn" else "display_off"
-	mode = Mode.ENDING
-	_elapsed = 0.0
-	_ending_cue_stage = 0
-	_build_ending_actors()
-	visible = true
-	queue_redraw()
-
+	mode = Mode.ENDING; _elapsed = 0.0; _ending_cue_stage = 0; _build_ending_actors(); visible = true; queue_redraw()
 
 func show_results(stats: Dictionary = {}) -> void:
-	mode = Mode.RESULTS
-	_stats = stats.duplicate(true)
-	_elapsed = 0.0
-	visible = true
+	mode = Mode.RESULTS; _stats = stats.duplicate(true); _elapsed = 0.0; visible = true
 	if Lx.audio != null:
 		var deaths: int = int(_stats.get("deaths", Lx.state.deaths if Lx.state != null else 0))
 		Lx.audio.play_sfx("shrine_unlock" if deaths <= 3 else "waystone_lit", Vector2.ZERO, false, true)
 	queue_redraw()
 
-
 func show_credits() -> void:
-	mode = Mode.CREDITS
-	_elapsed = 0.0
-	_scroll_y = 184.0
-	_load_credits()
-	visible = true
-	queue_redraw()
-
+	mode = Mode.CREDITS; _elapsed = 0.0; _scroll_y = 138.0; _credits_hold_t = 0.0
+	_load_credits(); visible = true; queue_redraw()
 
 func close() -> void:
-	mode = Mode.NONE
-	visible = false
+	mode = Mode.NONE; _credits_hold_t = 0.0; visible = false
 
 
 func _process(delta: float) -> void:
@@ -106,7 +84,7 @@ func _process(delta: float) -> void:
 			if _intro_cue_stage == 0 and _elapsed >= 0.04:
 				_intro_cue_stage = 1
 				Lx.audio.play_sfx("intro_toll", Vector2.ZERO, false, true)
-			elif _intro_cue_stage == 1 and _elapsed >= 4.0:
+			elif _intro_cue_stage == 1 and _elapsed >= INTRO_BEAT_SECS * 2.0:
 				_intro_cue_stage = 2
 				Lx.audio.play_sfx("lamp_lit", Vector2.ZERO, false, true)
 		if _elapsed >= INTRO_BEAT_SECS * float(INTRO_KEYS.size()):
@@ -120,16 +98,17 @@ func _process(delta: float) -> void:
 			_finish_ending()
 			return
 	elif mode == Mode.CREDITS:
-		var fast_fwd: bool = Input.is_key_pressed(KEY_DOWN) or (InputMap.has_action("lx_move_down") and Input.is_action_pressed("lx_move_down"))
-		_scroll_y -= CREDITS_SPEED * (3.2 if fast_fwd else 1.0) * delta
-		var total_h: float = 40.0
-		for entry: Dictionary in _credit_lines:
-			total_h += 12.0 * float(int(entry.get("scale", 1)))
-		if _scroll_y + total_h < -12.0:
-			mode = Mode.NONE
-			visible = false
-			credits_finished.emit()
-			return
+		var fast_fwd: bool = Input.is_key_pressed(KEY_DOWN) or Input.is_key_pressed(KEY_SPACE) or (InputMap.has_action("lx_move_down") and Input.is_action_pressed("lx_move_down"))
+		var total_h: float = _credits_total_height()
+		if _scroll_y + total_h >= CREDITS_CLIP_TOP:
+			_scroll_y -= CREDITS_SPEED * (3.2 if fast_fwd else 1.0) * delta
+			_credits_hold_t = 0.0
+		else:
+			_credits_hold_t += delta
+			if _credits_hold_t >= CREDITS_HOLD_SECS:
+				close()
+				credits_finished.emit()
+				return
 	queue_redraw()
 
 
@@ -186,8 +165,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 	elif mode == Mode.CREDITS:
-		var mb_cred: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]
-		if mb_cred or event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_SPACE):
+		var rmb_c: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT
+		if rmb_c or event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
 			if Lx.audio != null: Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
 			close()
 			credits_finished.emit()
@@ -195,50 +174,35 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _finish_ending() -> void:
-	if Lx.ui != null and Lx.ui.has_method("show_results"):
-		Lx.ui.call("show_results")
-	else:
-		show_results()
-
+	if Lx.ui != null and Lx.ui.has_method("show_results"): Lx.ui.call("show_results")
+	else: show_results()
 
 func _tick_ending_audio() -> void:
-	if Lx.audio == null:
-		return
+	if Lx.audio == null: return
 	if ending_mode == "display_off":
 		if _ending_cue_stage == 0 and _elapsed >= 1.35:
-			_ending_cue_stage = 1
-			Lx.audio.play_sfx("display_sell", Vector2.ZERO, false, true)
+			_ending_cue_stage = 1; Lx.audio.play_sfx("display_sell", Vector2.ZERO, false, true)
 		elif _ending_cue_stage == 1 and _elapsed >= 4.35:
-			_ending_cue_stage = 2
-			Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, true)
+			_ending_cue_stage = 2; Lx.audio.play_sfx("shard_pickup", Vector2.ZERO, false, true)
 		elif _ending_cue_stage == 2 and _elapsed >= 4.90:
-			_ending_cue_stage = 3
-			Lx.audio.play_sfx("dawn_burst", Vector2.ZERO, false, true)
+			_ending_cue_stage = 3; Lx.audio.play_sfx("dawn_burst", Vector2.ZERO, false, true)
 	else:
 		if _ending_cue_stage == 0 and _elapsed >= 1.0:
-			_ending_cue_stage = 1
-			Lx.audio.play_sfx("dawn_burst", Vector2.ZERO, false, true)
+			_ending_cue_stage = 1; Lx.audio.play_sfx("dawn_burst", Vector2.ZERO, false, true)
 		elif _ending_cue_stage < 9 and _elapsed >= 1.0 + float(_ending_cue_stage) * 0.35:
 			var dawn_sfx: Array[String] = ["bell_toll_heavy", "lighthouse_beam", "prop_chime", "wing_gale", "prism_chain", "forge_gust", "lens_reveal", "great_lamp_bloom"]
 			Lx.audio.play_sfx(dawn_sfx[clampi(_ending_cue_stage - 1, 0, 7)], Vector2.ZERO, false, true)
 			_ending_cue_stage += 1
 
-
 func _draw() -> void:
 	match mode:
-		Mode.INTRO:
-			_draw_intro()
-		Mode.DEATH:
-			_draw_death()
+		Mode.INTRO: _draw_intro()
+		Mode.DEATH: _draw_death()
 		Mode.ENDING:
-			if ending_mode == "dawn":
-				_draw_ending_dawn()
-			else:
-				_draw_ending_display_off()
-		Mode.RESULTS:
-			_draw_results()
-		Mode.CREDITS:
-			_draw_credits()
+			if ending_mode == "dawn": _draw_ending_dawn()
+			else: _draw_ending_display_off()
+		Mode.RESULTS: _draw_results()
+		Mode.CREDITS: _draw_credits()
 
 
 func _draw_intro() -> void:
@@ -339,20 +303,17 @@ func _draw_ending_display_off() -> void:
 func _draw_ending_dawn() -> void:
 	var t: float = _elapsed
 	LxEndingArt.draw_ending_dawn(self, t, DAWN_ISLANDS, _motes)
-
-	# Dawn lines
 	if t >= 1.5:
 		var p_title: float = _window_fade(t, 1.5, ENDING_DAWN_SECS, 0.35)
 		LxPixelFont.draw_faded(self, LxStrings.text("END_DAWN_TITLE"), Vector2(160.0, 34.0), p_title, "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
-	if t >= 3.6:
-		var p_sub: float = _window_fade(t, 3.6, ENDING_DAWN_SECS, 0.35)
-		LxPixelFont.draw_faded(self, LxStrings.text("END_DAWN_SUB"), Vector2(160.0, 144.0), p_sub, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
-
 	# Cinematic letterbox
 	draw_rect(Rect2(0.0, 0.0, 320.0, 16.0), LxPalette.PAL["void"])
 	draw_rect(Rect2(0.0, 164.0, 320.0, 16.0), LxPalette.PAL["void"])
+	if t >= 3.6:
+		var p_sub: float = _window_fade(t, 3.6, ENDING_DAWN_SECS, 0.35)
+		LxPixelFont.draw_faded(self, LxStrings.text("END_DAWN_SUB"), Vector2(160.0, 169.0), p_sub, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
 	if t >= 0.5:
-		LxPixelFont.draw_right(self, LxStrings.text("INTRO_SKIP"), 312.0, 168.0, LxPalette.PAL["mauve"], 1)
+		LxPixelFont.draw_right(self, LxStrings.text("INTRO_SKIP"), 312.0, 169.0, LxPalette.PAL["mauve"], 1)
 
 
 func _draw_lantern_core(at: Vector2, tier: int) -> void:
@@ -446,7 +407,7 @@ func _draw_results() -> void:
 	var embers: int = int(_stats.get("ember_pieces", Lx.state.ember_pieces if Lx.state != null else 0))
 	var relit: int = int(_stats.get("relit_count", Lx.state.relit_islands.size() if Lx.state != null else 0))
 	var rank_key: String = _compute_rank_key(deaths, relit)
-	LxEndingArt.draw_results_ornaments(self, RESULTS_PANEL, rank_key, _elapsed)
+	LxEndingArt.draw_results_ornaments(self, RESULTS_PANEL, rank_key, _elapsed, relit)
 
 	var p: float = clampf(_elapsed / 0.35, 0.0, 1.0)
 	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_TITLE"), Vector2(160.0, 34.0), p, "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
@@ -455,142 +416,152 @@ func _draw_results() -> void:
 	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_DEATHS_FMT", [deaths]), Vector2(160.0, 90.0), clampf((_elapsed - 0.18) / 0.25, 0.0, 1.0), "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
 	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_EMBERS_FMT", [embers]), Vector2(160.0, 102.0), clampf((_elapsed - 0.26) / 0.25, 0.0, 1.0), "apricot", 1, HORIZONTAL_ALIGNMENT_CENTER)
 	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(160.0, 114.0), clampf((_elapsed - 0.34) / 0.25, 0.0, 1.0), "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
-	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_HINT"), Vector2(160.0, 140.0), clampf((_elapsed - 0.42) / 0.25, 0.0, 1.0), "stone", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_HINT"), Vector2(160.0, 143.0), clampf((_elapsed - 0.42) / 0.25, 0.0, 1.0), "stone", 1, HORIZONTAL_ALIGNMENT_CENTER)
+
+
+func _credits_total_height() -> float:
+	var total_h: float = 12.0
+	for entry: Dictionary in _credit_lines:
+		total_h += 10.0 if bool(entry.get("divider", false)) else 11.0 * float(int(entry.get("scale", 1)))
+	return total_h
 
 
 func _draw_credits() -> void:
 	LxEndingArt.draw_credits_backdrop(self, _elapsed)
 	var y: float = roundf(_scroll_y)
 	for entry: Dictionary in _credit_lines:
-		var line: String = str(entry["text"])
-		var sc: int = int(entry["scale"])
-		if y >= -16.0 and y <= 184.0 and not line.is_empty():
-			LxPixelFont.draw_centered(self, line, 160.0, y, LxPalette.color(str(entry["color"])), sc)
-		y += 12.0 * float(sc)
-	LxPixelFont.draw_right(self, LxStrings.text("CREDITS_SKIP"), 312.0, 168.0, LxPalette.PAL["mauve"], 1)
+		var is_div: bool = bool(entry.get("divider", false))
+		var sc: int = int(entry.get("scale", 1))
+		var line_h: float = 10.0 if is_div else 11.0 * float(sc)
+		if is_div:
+			var dy: float = y + 4.0
+			if dy >= CREDITS_CLIP_TOP + 2.0 and dy <= CREDITS_CLIP_BOT - 2.0:
+				var fp_d: float = clampf(minf((dy - CREDITS_CLIP_TOP) / CREDITS_FADE_PX, (CREDITS_CLIP_BOT - dy) / CREDITS_FADE_PX), 0.0, 1.0)
+				if fp_d > 0.30:
+					LxEndingArt._draw_filigree_divider(self, 92.0, 228.0, dy, "apricot" if fp_d > 0.65 else "mauve", "gold" if fp_d > 0.65 else "apricot")
+		else:
+			var line: String = str(entry["text"])
+			var bot_y: float = y + 5.0 * float(sc)
+			if not line.is_empty() and y >= CREDITS_CLIP_TOP and bot_y <= CREDITS_CLIP_BOT:
+				var fp: float = clampf(minf((y - CREDITS_CLIP_TOP) / CREDITS_FADE_PX, (CREDITS_CLIP_BOT - bot_y) / CREDITS_FADE_PX), 0.0, 1.0)
+				var col: Color = LxPalette.fade_step(fp, str(entry["color"]))
+				if col.a > 0.0:
+					LxPixelFont.draw_centered(self, line, 160.0, y, col, sc)
+		y += line_h
+	if _credits_hold_t > 0.0:
+		var hp: float = _window_fade(_credits_hold_t, 0.0, CREDITS_HOLD_SECS, 0.35)
+		if hp > 0.30:
+			LxEndingArt._draw_filigree_divider(self, 108.0, 212.0, 74.0, "apricot", "gold")
+		LxPixelFont.draw_faded(self, LxStrings.text("CREDITS_END"), Vector2(160.0, 84.0), hp, "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	LxPixelFont.draw_centered(self, LxStrings.text("CREDITS_HINT"), 160.0, 171.0, LxPalette.PAL["mauve"], 1)
 
 
 func _load_credits() -> void:
 	_credit_lines.clear()
 	_credit_lines.append({"text": LxStrings.text("CREDITS_TITLE"), "color": "gold", "scale": 2})
-	_credit_lines.append({"text": "", "color": "cream", "scale": 1})
-
 	var loaded: bool = false
 	if FileAccess.file_exists(CREDITS_PATH):
-		var raw: String = FileAccess.get_file_as_string(CREDITS_PATH)
-		var parsed: Variant = JSON.parse_string(raw)
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(CREDITS_PATH))
 		if parsed is Dictionary:
 			loaded = _parse_credits_dict(parsed as Dictionary)
 		elif parsed is Array:
 			loaded = _parse_credits_array(parsed as Array)
-
 	if not loaded:
+		_credit_lines.append({"divider": true, "text": "", "color": "gold", "scale": 1})
 		_credit_lines.append({"text": LxStrings.text("CREDITS_DEFAULT_1"), "color": "cream", "scale": 1})
 		_credit_lines.append({"text": LxStrings.text("CREDITS_DEFAULT_2"), "color": "stone", "scale": 1})
 		_credit_lines.append({"text": LxStrings.text("CREDITS_DEFAULT_3"), "color": "apricot", "scale": 1})
 
-	_credit_lines.append({"text": "", "color": "cream", "scale": 1})
-	_credit_lines.append({"text": LxStrings.text("CREDITS_END"), "color": "gold", "scale": 1})
-
 
 func _parse_credits_dict(d: Dictionary) -> bool:
 	var added: bool = false
-	for list_key: String in ["sections", "entries", "engine", "art", "audio", "third_party_audio", "third_party", "credits"]:
-		if d.has(list_key) and d[list_key] is Array:
-			if _parse_credits_array(d[list_key] as Array):
+	if d.has("sections") and d["sections"] is Array:
+		added = _parse_credits_array(d["sections"] as Array, true)
+	else:
+		for list_key: String in ["entries", "engine", "art", "audio", "third_party_audio", "third_party", "credits"]:
+			if d.has(list_key) and d[list_key] is Array and _parse_credits_array(d[list_key] as Array):
 				added = true
 	if d.has("disclosure") and d["disclosure"] is String:
-		var disc: String = str(d["disclosure"])
-		for wrapped: String in _wrap_sanitized(disc, LxStrings.MAX_LEN):
-			_credit_lines.append({"text": wrapped, "color": "stone", "scale": 1})
-			added = true
+		var wrapped_disc: PackedStringArray = _wrap_sanitized(str(d["disclosure"]), LxStrings.MAX_LEN)
+		if not wrapped_disc.is_empty():
+			_credit_lines.append({"divider": true, "text": "", "color": "gold", "scale": 1})
+			for wrapped: String in wrapped_disc:
+				_credit_lines.append({"text": wrapped, "color": "stone", "scale": 1})
+				added = true
 	if not added:
 		for k: Variant in d.keys():
-			var ks: String = LxStrings.sanitize(str(k))
-			var vs: String = LxStrings.sanitize(str(d[k]))
+			var ks: String = _clean_credit(str(k))
+			var vs: String = _clean_credit(str(d[k]))
 			if not ks.is_empty() and not vs.is_empty():
 				_credit_lines.append({"text": LxStrings.fmt("FMT_PAIR", [ks, vs]).substr(0, LxStrings.MAX_LEN), "color": "cream", "scale": 1})
 				added = true
 	return added
 
 
-func _parse_credits_array(arr: Array) -> bool:
+func _parse_credits_array(arr: Array, curated: bool = false) -> bool:
 	var added: bool = false
 	for item: Variant in arr:
 		if item is String:
-			added = _add_credit_line(LxStrings.sanitize(item as String), "cream") or added
+			added = _add_credit_line(_clean_credit(item as String), "cream") or added
 		elif item is Dictionary:
 			var md: Dictionary = item as Dictionary
-			var title: String = LxStrings.sanitize(str(md.get("title", md.get("role", md.get("id", md.get("file", ""))))))
-			var name_s: String = LxStrings.sanitize(str(md.get("name", md.get("author", md.get("source", md.get("generator", ""))))))
-			var lic: String = LxStrings.sanitize(str(md.get("license", "")))
-			added = _add_credit_line(title, "gold") or added
-			var sub: String = (name_s if lic.is_empty() else LxStrings.sanitize(LxStrings.fmt("FMT_DASH_PAIR", [name_s, lic]))) if not name_s.is_empty() else lic
-			added = _add_credit_line(sub, "cream") or added
+			if curated:
+				_credit_lines.append({"divider": true, "text": "", "color": "gold", "scale": 1})
+			var title: String = _clean_credit(str(md.get("title", md.get("role", md.get("id", md.get("file", ""))))))
+			var name_s: String = _clean_credit(str(md.get("name", md.get("author", md.get("source", md.get("generator", ""))))))
+			var lic: String = _clean_credit(str(md.get("license", "")))
+			var sec_added: bool = _add_credit_line(title, "gold")
+			var sub: String = (name_s if lic.is_empty() else _clean_credit(LxStrings.fmt("FMT_DASH_PAIR", [name_s, lic]))) if not name_s.is_empty() else lic
+			sec_added = _add_credit_line(sub, "cream") or sec_added
 			for wrapped: String in _wrap_sanitized(str(md.get("description", "")), LxStrings.MAX_LEN):
-				added = _add_credit_line(wrapped, "stone") or added
+				sec_added = _add_credit_line(wrapped, "stone") or sec_added
 			var lines: Variant = md.get("lines", [])
 			if lines is Array:
+				var line_idx: int = 0
 				for ln: Variant in (lines as Array):
-					added = _add_credit_line(LxStrings.sanitize(str(ln)), "stone") or added
-			if added:
+					if _add_credit_line(_clean_credit(str(ln)), "cream" if (curated and line_idx == 0) else "stone"):
+						sec_added = true
+						line_idx += 1
+			if sec_added:
+				added = true
 				_credit_lines.append({"text": "", "color": "cream", "scale": 1})
 	return added
 
 
 func _add_credit_line(txt: String, col: String, sc: int = 1) -> bool:
-	if txt.is_empty():
-		return false
+	if txt.is_empty(): return false
 	_credit_lines.append({"text": txt, "color": col, "scale": sc})
 	return true
 
+static func _clean_credit(raw: String, max_chars: int = LxStrings.MAX_LEN) -> String:
+	return LxStrings.sanitize(raw.replace("_", " "), max_chars)
 
 static func _wrap_sanitized(raw: String, max_chars: int) -> PackedStringArray:
-	var clean: String = LxStrings.sanitize(raw, 0)
+	var clean: String = _clean_credit(raw, 0)
 	var out := PackedStringArray()
-	if clean.is_empty():
-		return out
-	var words: PackedStringArray = clean.split(" ", false)
+	if clean.is_empty(): return out
 	var cur: String = ""
-	for w: String in words:
-		if cur.is_empty():
-			cur = w.substr(0, max_chars)
-		elif cur.length() + 1 + w.length() <= max_chars:
-			cur += " " + w
-		else:
-			out.append(cur)
-			cur = w.substr(0, max_chars)
-	if not cur.is_empty():
-		out.append(cur)
+	for w: String in clean.split(" ", false):
+		if cur.is_empty(): cur = w.substr(0, max_chars)
+		elif cur.length() + 1 + w.length() <= max_chars: cur += " " + w
+		else: out.append(cur); cur = w.substr(0, max_chars)
+	if not cur.is_empty(): out.append(cur)
 	return out
 
-
 static func _window_fade(t: float, from_t: float, to_t: float, edge: float) -> float:
-	if t < from_t or t > to_t:
-		return 0.0
+	if t < from_t or t > to_t: return 0.0
 	var fade_e: float = maxf(edge, 0.05)
 	return clampf(minf((t - from_t) / fade_e, (to_t - t) / fade_e), 0.0, 1.0)
 
-
 func _compute_rank_key(deaths: int, relit: int) -> String:
-	if deaths == 0 and relit >= 8:
-		return "RANK_S"
-	if deaths <= 3:
-		return "RANK_A"
-	if deaths <= 8:
-		return "RANK_B"
-	return "RANK_C"
-
+	if deaths == 0 and relit >= 8: return "RANK_S"
+	if deaths <= 3: return "RANK_A"
+	return "RANK_B" if deaths <= 8 else "RANK_C"
 
 static func _key_just(event: InputEvent, kc: Key) -> bool:
 	return event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo and (event as InputEventKey).keycode == kc
 
-
 static func _is_any_action_press(event: InputEvent) -> bool:
-	if event is InputEventKey:
-		return (event as InputEventKey).pressed and not (event as InputEventKey).echo
-	if event is InputEventJoypadButton:
-		return (event as InputEventJoypadButton).pressed
-	if event is InputEventMouseButton:
-		return (event as InputEventMouseButton).pressed
-	return false
+	if event is InputEventKey: return (event as InputEventKey).pressed and not (event as InputEventKey).echo
+	if event is InputEventJoypadButton: return (event as InputEventJoypadButton).pressed
+	return event is InputEventMouseButton and (event as InputEventMouseButton).pressed

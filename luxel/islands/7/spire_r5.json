@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    112
+    120
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        480,
-        224
+        512,
+        256
       ],
       "dark": true
     }
@@ -25,14 +25,14 @@
       "id": "exit_spire_r5_west",
       "rect": [
         0,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "spire_r4",
       "to_spawn": [
-        312,
-        120
+        344,
+        136
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,32 +41,89 @@
     {
       "id": "exit_spire_r5_east",
       "rect": [
-        464,
-        80,
+        496,
+        96,
         16,
         48
       ],
       "to_region": "spire_r6",
       "to_spawn": [
         40,
-        128
+        136
       ],
       "requires_moves": [
-        "sunflare",
-        "throw"
+        "beam",
+        "prism"
       ],
       "requires_flags": [],
       "locked_door_id": "door_spire_r5_east"
+    },
+    {
+      "id": "exit_spire_r5_portal_r1",
+      "rect": [
+        376,
+        184,
+        32,
+        32
+      ],
+      "to_region": "spire_r1",
+      "to_spawn": [
+        136,
+        192
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "spire_r5_portal_lit"
+      ],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
   "interactables": [
     {
-      "id": "seal_spire_r5",
-      "kind": "obsidian_seal",
+      "id": "transformer_spire_r5_a",
+      "kind": "blue_transformer",
       "pos": [
-        232,
-        112
+        120,
+        168
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "transformer_spire_r5_b",
+      "kind": "blue_transformer",
+      "pos": [
+        312,
+        152
+      ],
+      "props": {
+        "angle_deg": 90,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "bramble_spire_r5_baffle",
+      "kind": "bramble",
+      "pos": [
+        248,
+        136
       ],
       "props": {
         "size": [
@@ -77,55 +134,64 @@
       }
     },
     {
-      "id": "brazier_spire_r5_a",
-      "kind": "brazier",
+      "id": "seal_spire_r5",
+      "kind": "obsidian_seal",
+      "pos": [
+        248,
+        48
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "zone": "spire_r5"
+      }
+    },
+    {
+      "id": "switch_eye_spire_r5_west",
+      "kind": "switch_eye",
       "pos": [
         168,
         56
       ],
       "props": {
+        "requires_prism": true,
+        "requires_blue": true,
         "target_id": "door_spire_r5_east"
       }
     },
     {
-      "id": "brazier_spire_r5_b",
-      "kind": "brazier",
+      "id": "switch_eye_spire_r5_east",
+      "kind": "switch_eye",
       "pos": [
-        168,
-        168
+        440,
+        72
       ],
       "props": {
+        "requires_prism": true,
+        "requires_blue": true,
         "target_id": "door_spire_r5_east"
       }
     },
     {
-      "id": "brazier_spire_r5_c",
-      "kind": "brazier",
+      "id": "portal_spire_r5_to_r1",
+      "kind": "blue_portal",
       "pos": [
-        376,
-        56
+        392,
+        200
       ],
       "props": {
-        "target_id": "door_spire_r5_east"
-      }
-    },
-    {
-      "id": "brazier_spire_r5_d",
-      "kind": "brazier",
-      "pos": [
-        376,
-        168
-      ],
-      "props": {
-        "target_id": "door_spire_r5_east"
+        "requires_blue": true,
+        "sets_flag": "spire_r5_portal_lit"
       }
     },
     {
       "id": "door_spire_r5_east",
       "kind": "door",
       "pos": [
-        456,
-        112
+        472,
+        120
       ],
       "props": {
         "door_kind": "switch_door",
@@ -134,10 +200,8 @@
           48
         ],
         "requires_signals": [
-          "brazier_spire_r5_a",
-          "brazier_spire_r5_b",
-          "brazier_spire_r5_c",
-          "brazier_spire_r5_d"
+          "switch_eye_spire_r5_west",
+          "switch_eye_spire_r5_east"
         ]
       }
     }
@@ -149,19 +213,31 @@
       "prop": "glass_colonade_pillar",
       "pos": [
         56,
-        48
+        88
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.1
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "glass_colonade_pillar",
+      "pos": [
+        56,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
     },
     {
       "sheet": "island7_scenery",
       "prop": "standing_mirror_tall",
       "pos": [
-        104,
-        60
+        152,
+        216
       ],
       "layer": "sort",
       "flip_x": false,
@@ -170,51 +246,87 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
+      "prop": "inverted_bell_statue",
       "pos": [
-        56,
-        180
+        328,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.45
     },
     {
       "sheet": "island7_scenery",
-      "prop": "inverted_bell_statue",
+      "prop": "silver_brazier_stand",
       "pos": [
-        264,
-        56
+        432,
+        92
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.15
+      "phase": 0.2
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        432,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
     },
     {
       "sheet": "island7_scenery",
       "prop": "floating_prism_totem",
       "pos": [
-        264,
-        176
+        344,
+        184
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.65
+      "phase": 0.35
     },
     {
       "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        432,
-        48
+        440,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        124,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        204,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.25
+      "phase": 0.65
     }
   ],
   "is_2x2_room": true

@@ -1,18 +1,28 @@
 class_name LxElderSporecapBoss
 extends LxSporecapBrain
-## Thornwood Hollow mini-boss (Island 3): Elder Sporecap with wider spore burst rings.
-## 2 phases, HP 7.5. Phase 2 chains a twin spore pulse before leaving its huge cap wide open.
+## Thornwood Hollow mini-boss (Island 3): Elder Sporecap.
+## 2 phases, HP 7.5. Features Combat Burrow-Reposition (0.85s glowing mycelial trail;
+## Beam pierces mound early for instant cap_open stagger) and P2 4-Cardinal Spore Lanes!
 
-enum PulseStage { RING_1, PAUSE, RING_2 }
+enum PulseStage { RING_1, PAUSE, CARDINAL_LANES }
 
 const ELDER_RING_MAX_R: float = 84.0
 const ELDER_RING_BAND: float = 10.0
 const ELDER_ATTACK_RANGE: float = 90.0
 const ELDER_COMMIT_TIME: float = 0.36
-const DOUBLE_PULSE_PAUSE: float = 0.42
+const LANE_PAUSE_TIME: float = 0.45
+const LANE_COMMIT_TIME: float = 0.38
+const LANE_MAX_RANGE: float = 96.0
+const LANE_HALF_W: float = 11.0
+const ELDER_BURROW_TIME: float = 0.85
 const PHASE2_ROAR_TIME: float = 0.58
 
 var pulse_stage: int = PulseStage.RING_1
+var lane_base_ang: float = 0.0
+var lane_progress: float = 0.0
+var lane_hit: bool = false
+var _mycelial_trail: Array[Vector2] = []
+var _trail_sample_t: float = 0.0
 var _roaring: bool = false
 
 
@@ -40,6 +50,11 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	boss_id = str(spec.get("boss_id", "elder_sporecap"))
 	island_id = int(spec.get("island_id", 3))
 	pulse_stage = PulseStage.RING_1
+	lane_base_ang = facing
+	lane_progress = 0.0
+	lane_hit = false
+	_mycelial_trail.clear()
+	_trail_sample_t = 0.0
 	_roaring = false
 
 
@@ -48,6 +63,8 @@ func take_hit(hit: LxHit) -> int:
 		_emit_enemy_hit(hit, HitResult.GLANCED)
 		return HitResult.GLANCED
 	var res: int = super.take_hit(hit)
+	if not burrowed:
+		_mycelial_trail.clear()
 	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
 		_check_phase_transition()
 	return res
@@ -57,6 +74,8 @@ func _check_phase_transition() -> void:
 	if phase < 2 and hp <= max_hp * 0.50 and hp > 0.001:
 		phase = 2
 		burrowed = false
+		combat_burrowing = false
+		_mycelial_trail.clear()
 		cap_open = false
 		_roaring = true
 		pulse_stage = PulseStage.RING_1
@@ -72,6 +91,7 @@ func _check_phase_transition() -> void:
 func _step_brain(dt: float) -> void:
 	if state == State.NOTICE and _roaring:
 		burrowed = false
+		combat_burrowing = false
 		state_timer -= dt
 		if state_timer <= 0.0:
 			_roaring = false
@@ -79,6 +99,37 @@ func _step_brain(dt: float) -> void:
 			cooldown = 0.35
 		return
 	super._step_brain(dt)
+
+
+func _start_combat_burrow() -> void:
+	combat_burrowing = true
+	burrowed = true
+	burrow_t = ELDER_BURROW_TIME
+	_mycelial_trail.clear()
+	_mycelial_trail.append(pos)
+	_trail_sample_t = 0.0
+	var to_w: Vector2 = _attention_target() - pos
+	var base_a: float = to_w.angle() if to_w.length() > 0.01 else facing
+	var side_a: float = base_a + (PI * 0.55 if (_recover_count % 2 == 1) else -PI * 0.55)
+	var candidate: Vector2 = pos + Vector2.from_angle(side_a) * _randf_range(34.0, 52.0)
+	var cap: float = maxf(0.0, leash_radius - 12.0)
+	if candidate.distance_to(home) > cap:
+		candidate = home + (candidate - home).normalized() * cap
+	burrow_goal = candidate
+	state = State.POSITION
+	_emit_sfx("sporecap_burrow")
+
+
+func _step_combat_burrow(dt: float) -> void:
+	_trail_sample_t -= dt
+	if _trail_sample_t <= 0.0:
+		_trail_sample_t = 0.09
+		_mycelial_trail.append(pos)
+		if _mycelial_trail.size() > 14:
+			_mycelial_trail.pop_front()
+	super._step_combat_burrow(dt)
+	if not combat_burrowing:
+		_mycelial_trail.clear()
 
 
 func _step_position(dt: float, target_pos: Vector2) -> void:
@@ -106,6 +157,7 @@ func _step_position(dt: float, target_pos: Vector2) -> void:
 		var base_t: float = 0.50 if phase >= 2 else tell_time
 		last_tell_duration = _scaled_tell(base_t, false, attack_damage)
 		state_timer = last_tell_duration
+		lane_base_ang = to_t.angle() if dist > 0.01 else facing
 		_emit_attack_started()
 		_emit_sfx("elder_sporecap_swell")
 		return
@@ -122,26 +174,60 @@ func _enter_commit() -> void:
 	cap_open = true
 	ring_progress = 0.0
 	ring_hit = false
+	lane_progress = 0.0
+	lane_hit = false
 	_boss_impact(0.18, 92.0, 90.0)
 	_emit_sfx("elder_sporecap_burst")
 
 
 func _step_commit(dt: float) -> void:
 	if pulse_stage == PulseStage.PAUSE:
+		if state_timer > 0.16:
+			var to_t: Vector2 = _attention_target() - pos
+			if to_t.length() > 0.01:
+				lane_base_ang = to_t.angle()
 		state_timer -= dt
 		if state_timer <= 0.0:
-			pulse_stage = PulseStage.RING_2
-			state_timer = ELDER_COMMIT_TIME
-			ring_progress = 0.0
-			ring_hit = false
+			pulse_stage = PulseStage.CARDINAL_LANES
+			state_timer = LANE_COMMIT_TIME
+			lane_progress = 0.0
+			lane_hit = false
 			_boss_impact(0.20, 98.0, 96.0)
 			_emit_sfx("elder_sporecap_burst")
 		return
 
+	if pulse_stage == PulseStage.CARDINAL_LANES:
+		state_timer = maxf(0.0, state_timer - dt)
+		lane_progress = 1.0 - clampf(state_timer / LANE_COMMIT_TIME, 0.0, 1.0)
+		var cur_len: float = lerpf(10.0, LANE_MAX_RANGE, lane_progress)
+		if not lane_hit and _has_player():
+			var wp: Vector2 = _get_wick_pos()
+			for li: int in range(4):
+				var ldir: Vector2 = Vector2.from_angle(lane_base_ang + float(li) * (PI * 0.5))
+				var lend: Vector2 = pos + ldir * cur_len
+				if Geometry2D.get_closest_point_to_segment(wp, pos, lend).distance_to(wp) <= LANE_HALF_W:
+					lane_hit = true
+					_emit_player_hit(ldir)
+					break
+		if _is_lured():
+			var lp: Vector2 = _get_lantern_pos()
+			for li: int in range(4):
+				var ldir_l: Vector2 = Vector2.from_angle(lane_base_ang + float(li) * (PI * 0.5))
+				if Geometry2D.get_closest_point_to_segment(lp, pos, pos + ldir_l * cur_len).distance_to(lp) <= LANE_HALF_W + 2.0:
+					if Lx.events != null:
+						Lx.events.lantern_struck.emit(lp)
+					break
+		if state_timer <= 0.0:
+			pulse_stage = PulseStage.RING_1
+			state = State.RECOVER
+			cap_open = true
+			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
+			last_recover_duration = state_timer
+		return
+
 	state_timer = maxf(0.0, state_timer - dt)
 	ring_progress = 1.0 - clampf(state_timer / ELDER_COMMIT_TIME, 0.0, 1.0)
-	var max_r: float = ELDER_RING_MAX_R + (10.0 if pulse_stage == PulseStage.RING_2 else 0.0)
-	var ring_r: float = lerpf(RING_START_R, max_r, ring_progress)
+	var ring_r: float = lerpf(RING_START_R, ELDER_RING_MAX_R, ring_progress)
 	if not ring_hit and _has_player():
 		var wv: Vector2 = _get_wick_pos() - pos
 		if absf(wv.length() - ring_r) <= ELDER_RING_BAND:
@@ -155,9 +241,12 @@ func _step_commit(dt: float) -> void:
 	if state_timer <= 0.0:
 		if pulse_stage == PulseStage.RING_1 and phase >= 2:
 			pulse_stage = PulseStage.PAUSE
-			state_timer = _scaled_tell(DOUBLE_PULSE_PAUSE, false, attack_damage)
-			ring_progress = 0.0
-			ring_hit = false
+			state_timer = _scaled_tell(LANE_PAUSE_TIME, false, attack_damage)
+			lane_progress = 0.0
+			lane_hit = false
+			var to_t2: Vector2 = _attention_target() - pos
+			if to_t2.length() > 0.01:
+				lane_base_ang = to_t2.angle()
 			_emit_sfx("elder_sporecap_swell")
 		else:
 			pulse_stage = PulseStage.RING_1
@@ -176,8 +265,18 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
+	var c: Vector2 = off.round()
 	if burrowed:
-		draw_arc(off + Vector2(0.0, 2.0), body_radius + 1.5, PI, TAU, 14, PAL["pine"] as Color, 2.8)
+		# Glowing mycelial burrow trail + vulnerable mound (Beam pierces early!)
+		for ti: int in range(_mycelial_trail.size()):
+			var tp: Vector2 = (_mycelial_trail[ti] - pos + off).round()
+			var col_t: Color = (PAL["lime"] if ti % 2 == 0 else PAL["jade"]) as Color
+			draw_circle(tp, 2.2 if ti == _mycelial_trail.size() - 1 else 1.5, col_t)
+			if ti > 0:
+				var prev_tp: Vector2 = (_mycelial_trail[ti - 1] - pos + off).round()
+				draw_line(prev_tp, tp, PAL["jade"] as Color, 1.4)
+		draw_arc(c + Vector2(0.0, 2.0), body_radius + 1.5, PI, TAU, 14, PAL["pine"] as Color, 2.8)
+		draw_arc(c + Vector2(0.0, 1.0), body_radius + 0.5, PI, TAU, 12, PAL["lime"] as Color, 1.2)
 		return
 	var swell: float = 0.0
 	if state == State.TELL:
@@ -190,7 +289,6 @@ func _draw_extra(off: Vector2) -> void:
 		draw_circle(off + Vector2(-3.5, -5.0), 1.8, PAL["lime"] as Color)
 		draw_circle(off + Vector2(3.5, -3.5), 1.8, PAL["lime"] as Color)
 
-	var c: Vector2 = off.round()
 	if state == State.TELL:
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
@@ -203,18 +301,28 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, maxf(4.0, tr * 0.62 + pulse * 0.6), 0.0, TAU, 22, (PAL["cream"] if hot else PAL["gold"]) as Color, 1.4)
 	elif state == State.COMMIT:
 		if pulse_stage == PulseStage.PAUSE:
-			var r2_max: float = ELDER_RING_MAX_R + 10.0
-			for oi: int in range(14):
-				var oa0: float = float(oi) * (TAU / 14.0)
-				draw_arc(c, r2_max, oa0, oa0 + 0.22, 3, PAL["lime"] as Color, 1.0)
-			var pr: float = ELDER_RING_MAX_R * 0.48 + (0.0 if LxHudFx.flash_reduced() else 2.0 * sin(anim_t * 20.0))
-			var hot_p: bool = state_timer <= 0.14
-			draw_arc(c, pr + 2.4, 0.0, TAU, 28, (PAL["gold"] if hot_p else PAL["lime"]) as Color, 1.8)
-			draw_arc(c, pr, 0.0, TAU, 28, (PAL["cream"] if hot_p else PAL["gold"]) as Color, 2.4 if hot_p else 2.2)
-			draw_arc(c, maxf(4.0, pr - 2.2), 0.0, TAU, 22, PAL["cream"] as Color, 1.0)
+			var hot_p: bool = state_timer <= 0.16
+			var lcol: Color = (PAL["cream"] if hot_p else PAL["lime"]) as Color
+			for li: int in range(4):
+				var ldir: Vector2 = Vector2.from_angle(lane_base_ang + float(li) * (PI * 0.5))
+				var perp: Vector2 = Vector2(-ldir.y, ldir.x)
+				var lend: Vector2 = (c + ldir * LANE_MAX_RANGE).round()
+				draw_line((c + perp * (LANE_HALF_W * 0.65)).round(), (lend + perp * (LANE_HALF_W * 0.65)).round(), lcol, 1.3 if hot_p else 1.0)
+				draw_line((c - perp * (LANE_HALF_W * 0.65)).round(), (lend - perp * (LANE_HALF_W * 0.65)).round(), lcol, 1.3 if hot_p else 1.0)
+				draw_line(c, lend, (PAL["gold"] if hot_p else PAL["jade"]) as Color, 1.5)
+		elif pulse_stage == PulseStage.CARDINAL_LANES:
+			var cur_len: float = lerpf(10.0, LANE_MAX_RANGE, lane_progress)
+			for li: int in range(4):
+				var ldir: Vector2 = Vector2.from_angle(lane_base_ang + float(li) * (PI * 0.5))
+				var lend: Vector2 = (c + ldir * cur_len).round()
+				draw_line(c, lend, PAL["pine"] as Color, 8.0)
+				draw_line(c, lend, PAL["jade"] as Color, 5.2)
+				draw_line(c, lend, PAL["lime"] as Color, 2.8)
+				draw_line(c, lend, PAL["cream"] as Color, 1.1)
+				draw_circle(lend, 2.4, PAL["lime"] as Color)
+				draw_circle(lend, 1.2, PAL["cream"] as Color)
 		else:
-			var max_r: float = ELDER_RING_MAX_R + (10.0 if pulse_stage == PulseStage.RING_2 else 0.0)
-			var ring_r: float = lerpf(RING_START_R, max_r, ring_progress)
+			var ring_r: float = lerpf(RING_START_R, ELDER_RING_MAX_R, ring_progress)
 			draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, PAL["pine"] as Color, 2.4)
 			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["jade"] as Color, 3.6)
 			draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["lime"] as Color, 2.2)

@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    128
+    136
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        448,
-        256
+        464,
+        288
       ],
       "dark": true
     }
@@ -25,14 +25,14 @@
       "id": "exit_o5_r5_west",
       "rect": [
         0,
-        96,
+        112,
         16,
         48
       ],
       "to_region": "orrery_r4",
       "to_spawn": [
-        320,
-        104
+        368,
+        136
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_o5_r5_north",
       "rect": [
-        208,
+        368,
         0,
         32,
         16
       ],
       "to_region": "orrery_r6",
       "to_spawn": [
-        240,
-        216
+        320,
+        232
       ],
       "requires_moves": [
         "lens"
@@ -64,8 +64,8 @@
       "id": "shrine_lens",
       "kind": "shrine",
       "pos": [
-        64,
-        72
+        72,
+        80
       ],
       "props": {
         "move_id": "lens",
@@ -74,17 +74,60 @@
       }
     },
     {
-      "id": "phantom_o5_r5",
+      "id": "phantom_o5_r5_south",
       "kind": "phantom_platform",
       "pos": [
-        144,
-        120
+        160,
+        232
       ],
       "props": {
         "size": [
-          64,
-          48
+          32,
+          16
         ],
+        "zone": "orrery_r5"
+      }
+    },
+    {
+      "id": "phantom_o5_r5_east",
+      "kind": "phantom_platform",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "zone": "orrery_r5"
+      }
+    },
+    {
+      "id": "chest_o5_r5_secret",
+      "kind": "chest",
+      "pos": [
+        200,
+        28
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 55,
+        "zone": "orrery_r5",
+        "requires_moves": [
+          "lens"
+        ]
+      }
+    },
+    {
+      "id": "lamp_o5_r5_mid",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        120
+      ],
+      "props": {
         "zone": "orrery_r5"
       }
     },
@@ -92,7 +135,7 @@
       "id": "lamp_o5_r5_e",
       "kind": "road_lamp",
       "pos": [
-        312,
+        408,
         128
       ],
       "props": {
@@ -104,10 +147,46 @@
   "scenery": [
     {
       "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        40,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        104,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        104,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island5_scenery",
       "prop": "astro_floor_compass",
       "pos": [
-        312,
-        128
+        392,
+        152
       ],
       "layer": "ground",
       "flip_x": false,
@@ -118,44 +197,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        32,
-        42
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "star_chart_lectern",
-      "pos": [
-        48,
-        208
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "armillary_sphere",
-      "pos": [
-        352,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "brass_orrery_stand",
-      "pos": [
-        352,
-        192
+        368,
+        128
       ],
       "layer": "sort",
       "flip_x": true,
@@ -164,10 +207,58 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
+      "prop": "star_chart_lectern",
       "pos": [
-        264,
-        48
+        384,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "brass_orrery_stand",
+      "pos": [
+        420,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        116,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        260,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        120,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -176,15 +267,15 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "moon_phase_obelisk",
+      "prop": "observatory_brazier_stand",
       "pos": [
-        408,
-        128
+        216,
+        152
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.75
+      "phase": 0.55
     }
   ],
   "is_2x2_room": true

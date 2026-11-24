@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    112
+    104
   ],
   "zones": [
     {
@@ -15,7 +15,7 @@
         0,
         0,
         480,
-        224
+        256
       ],
       "dark": true
     }
@@ -31,8 +31,8 @@
       ],
       "to_region": "kiln_r4",
       "to_spawn": [
-        312,
-        120
+        376,
+        104
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -42,7 +42,7 @@
       "id": "exit_kiln_r5_east",
       "rect": [
         464,
-        80,
+        96,
         16,
         48
       ],
@@ -56,6 +56,25 @@
       ],
       "requires_flags": [],
       "locked_door_id": "door_kiln_r5_east"
+    },
+    {
+      "id": "exit_kiln_r5_shortcut_r1",
+      "rect": [
+        352,
+        240,
+        32,
+        16
+      ],
+      "to_region": "kiln_r1",
+      "to_spawn": [
+        384,
+        208
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "seal_kiln_r5"
+      ],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -64,8 +83,8 @@
       "id": "shrine_sunflare",
       "kind": "shrine",
       "pos": [
-        208,
-        112
+        200,
+        104
       ],
       "props": {
         "move_id": "sunflare",
@@ -77,8 +96,8 @@
       "id": "seal_kiln_r5",
       "kind": "obsidian_seal",
       "pos": [
-        296,
-        112
+        312,
+        120
       ],
       "props": {
         "size": [
@@ -92,8 +111,8 @@
       "id": "brazier_kiln_r5_a",
       "kind": "brazier",
       "pos": [
-        248,
-        64
+        264,
+        56
       ],
       "props": {
         "target_id": "door_kiln_r5_east"
@@ -103,8 +122,8 @@
       "id": "brazier_kiln_r5_b",
       "kind": "brazier",
       "pos": [
-        248,
-        160
+        360,
+        168
       ],
       "props": {
         "target_id": "door_kiln_r5_east"
@@ -115,7 +134,7 @@
       "kind": "door",
       "pos": [
         456,
-        112
+        120
       ],
       "props": {
         "door_kind": "switch_door",
@@ -128,16 +147,103 @@
           "brazier_kiln_r5_b"
         ]
       }
+    },
+    {
+      "id": "cracked_wall_kiln_r5",
+      "kind": "cracked_wall",
+      "pos": [
+        152,
+        200
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "zone": "kiln_r5"
+      }
+    },
+    {
+      "id": "tf_kiln_r5",
+      "kind": "blue_transformer",
+      "pos": [
+        152,
+        168
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "portal_kiln_r5_in",
+      "kind": "blue_portal",
+      "pos": [
+        200,
+        216
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r5_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "kiln_r5_crucible_portal_lit"
+      }
+    },
+    {
+      "id": "portal_kiln_r5_out",
+      "kind": "blue_portal",
+      "pos": [
+        72,
+        216
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r5_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "chest_kiln_r5_crucible",
+      "kind": "chest",
+      "pos": [
+        56,
+        200
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 50,
+        "zone": "kiln_r5"
+      }
     }
   ],
   "triggers": [],
   "scenery": [
     {
       "sheet": "island6_scenery",
+      "prop": "crucible_floor_seal",
+      "pos": [
+        200,
+        104
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
         160,
-        48
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -148,20 +254,44 @@
       "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        160,
-        176
+        240,
+        44
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
       "phase": 0.5
     },
     {
       "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
+      "prop": "hearth_brazier_tall",
       "pos": [
-        48,
-        48
+        420,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        420,
+        164
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        84,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -170,39 +300,51 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
+      "prop": "slag_crucible",
       "pos": [
-        48,
-        176
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        336,
-        48
+        124,
+        228
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.1
+      "phase": 0.55
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "forge_anvil_stand",
+      "pos": [
+        44,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "bellows_frame",
+      "pos": [
+        120,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
     },
     {
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        336,
-        176
+        176,
+        88
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.6
+      "phase": 0.45
     }
   ],
   "is_2x2_room": true

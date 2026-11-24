@@ -15,8 +15,11 @@ var _slide_to: Vector2 = Vector2.ZERO
 var _slide_t: float = 1.0
 var _slide_dur: float = DEFAULT_SLIDE_S
 var _shake_trauma: float = 0.0
+var _shake_clock: float = 0.0
+var _shake_seed: float = 0.0
 var _look_ahead: Vector2 = Vector2.ZERO
 var _kick_offset: Vector2 = Vector2.ZERO
+var _kick_vel: Vector2 = Vector2.ZERO
 var _focus_pos: Vector2 = Vector2.ZERO
 var _focus_t: float = 0.0
 var _focus_dur: float = 0.55
@@ -40,8 +43,10 @@ func snap_to(pos: Vector2) -> void:
 	_slide_t = 1.0
 	_look_ahead = Vector2.ZERO
 	_kick_offset = Vector2.ZERO
+	_kick_vel = Vector2.ZERO
 	_focus_t = 0.0
 	_shake_trauma = 0.0
+	_shake_clock = 0.0
 	_target_pos = _clamp_center(pos)
 	global_position = _target_pos.round()
 
@@ -57,15 +62,21 @@ func slide_to_room(room_rect: Rect2, duration: float = DEFAULT_SLIDE_S) -> void:
 
 
 func add_shake(intensity: float) -> void:
+	if _shake_trauma <= 0.02 and intensity > 0.02:
+		_shake_seed = fmod(_shake_seed + 1.6180339, TAU)
 	_shake_trauma = clampf(maxf(_shake_trauma, intensity), 0.0, 1.0)
 
 
 func add_kick(dir: Vector2, px: float = 3.0) -> void:
 	if shake_scale <= 0.01 or dir.length_squared() <= 0.0001:
 		return
-	var target_kick: Vector2 = dir.normalized() * clampf(px, 0.5, 5.0) * shake_scale
+	var fr_k: float = 0.55 if (Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))) else 1.0
+	var target_kick: Vector2 = dir.normalized() * clampf(px, 0.5, 5.0) * shake_scale * fr_k
 	if target_kick.length_squared() >= _kick_offset.length_squared():
 		_kick_offset = target_kick
+		_kick_vel = target_kick * 5.0
+	else:
+		_kick_vel += target_kick * 3.5
 
 
 func trigger_focus_nudge(world_pos: Vector2, duration: float = 0.55) -> void:
@@ -114,15 +125,25 @@ func follow(target: Vector2, dt: float) -> void:
 
 	var shake_off: Vector2 = Vector2.ZERO
 	if _shake_trauma > 0.02:
-		var mag: float = _shake_trauma * _shake_trauma * 6.5 * shake_scale
-		shake_off = Vector2(randf_range(-mag, mag), randf_range(-mag, mag))
+		_shake_clock += dt
+		var fr_sh: float = 0.45 if (Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))) else 1.0
+		var mag: float = _shake_trauma * _shake_trauma * 6.5 * shake_scale * fr_sh
+		var t30: float = floorf(_shake_clock * 30.0) / 30.0
+		var sx: float = sin(t30 * 53.0 + _shake_seed) * 0.65 + sin(t30 * 89.0 + _shake_seed * 2.1) * 0.35
+		var sy: float = cos(t30 * 47.0 + _shake_seed * 1.3) * 0.65 + sin(t30 * 79.0 - _shake_seed * 1.7) * 0.35
+		shake_off = Vector2(sx * mag, sy * mag)
 		_shake_trauma = maxf(0.0, _shake_trauma - dt * 2.6)
 	else:
 		_shake_trauma = 0.0
-	if _kick_offset.length_squared() > 0.01:
-		_kick_offset = _kick_offset.lerp(Vector2.ZERO, minf(1.0, dt * 18.0))
+		_shake_clock = 0.0
+	if _kick_offset.length_squared() > 0.0025 or _kick_vel.length_squared() > 0.25:
+		var sdt: float = minf(dt, 0.033)
+		var acc: Vector2 = -_kick_offset * 340.0 - _kick_vel * 26.0
+		_kick_vel += acc * sdt
+		_kick_offset = (_kick_offset + _kick_vel * sdt).limit_length(6.0)
 	else:
 		_kick_offset = Vector2.ZERO
+		_kick_vel = Vector2.ZERO
 	var focus_off: Vector2 = Vector2.ZERO
 	if _focus_t > 0.0:
 		_focus_t = maxf(0.0, _focus_t - dt)

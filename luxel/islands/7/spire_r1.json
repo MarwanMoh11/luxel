@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     224,
-    184
+    200
   ],
   "zones": [
     {
@@ -15,7 +15,7 @@
         0,
         0,
         448,
-        224
+        240
       ],
       "dark": true
     }
@@ -25,14 +25,14 @@
       "id": "exit_spire_r1_south",
       "rect": [
         208,
-        208,
+        224,
         32,
         16
       ],
       "to_region": "overworld",
       "to_spawn": [
-        672,
-        216
+        704,
+        200
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -42,13 +42,13 @@
       "id": "exit_spire_r1_west",
       "rect": [
         0,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "spire_r2",
       "to_spawn": [
-        312,
+        376,
         120
       ],
       "requires_moves": [],
@@ -59,14 +59,14 @@
       "id": "exit_spire_r1_east",
       "rect": [
         432,
-        80,
+        112,
         16,
         48
       ],
       "to_region": "spire_r3",
       "to_spawn": [
         40,
-        112
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -75,21 +75,40 @@
     {
       "id": "exit_spire_r1_north",
       "rect": [
-        208,
+        176,
         0,
         32,
         16
       ],
       "to_region": "spire_r9",
       "to_spawn": [
-        224,
-        184
+        256,
+        192
       ],
       "requires_moves": [],
       "requires_flags": [
         "keepers_flame_7"
       ],
       "locked_door_id": "door_spire_r1_north"
+    },
+    {
+      "id": "exit_spire_r1_portal_r5",
+      "rect": [
+        64,
+        176,
+        32,
+        32
+      ],
+      "to_region": "spire_r5",
+      "to_spawn": [
+        344,
+        192
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "spire_r5_portal_lit"
+      ],
+      "locked_door_id": "door_spire_r1_r5_shortcut"
     }
   ],
   "enemies": [],
@@ -98,8 +117,8 @@
       "id": "ws_spire",
       "kind": "waystone",
       "pos": [
-        224,
-        112
+        216,
+        136
       ],
       "props": {
         "zone": "spire_r1",
@@ -110,7 +129,7 @@
       "id": "door_spire_r1_north",
       "kind": "door",
       "pos": [
-        224,
+        192,
         24
       ],
       "props": {
@@ -125,25 +144,36 @@
       }
     },
     {
-      "id": "mirror_spire_r1_w",
-      "kind": "mirror",
+      "id": "door_spire_r1_r5_shortcut",
+      "kind": "door",
       "pos": [
-        152,
-        72
+        120,
+        192
       ],
       "props": {
-        "angle_deg": 45
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "spire_r5_portal_lit"
+        ]
       }
     },
     {
-      "id": "mirror_spire_r1_e",
-      "kind": "mirror",
+      "id": "portal_spire_r1_from_r5",
+      "kind": "blue_portal",
       "pos": [
-        296,
-        72
+        80,
+        192
       ],
       "props": {
-        "angle_deg": 135
+        "requires_blue": true,
+        "starts_powered": true,
+        "requires_flags": [
+          "spire_r5_portal_lit"
+        ]
       }
     },
     {
@@ -151,7 +181,7 @@
       "kind": "road_lamp",
       "pos": [
         168,
-        152
+        168
       ],
       "props": {
         "zone": "spire_r1"
@@ -161,8 +191,8 @@
       "id": "lamp_spire_r1_e",
       "kind": "road_lamp",
       "pos": [
-        280,
-        152
+        296,
+        112
       ],
       "props": {
         "zone": "spire_r1"
@@ -174,9 +204,9 @@
       "id": "trig_spire_enter",
       "rect": [
         176,
-        144,
+        160,
         96,
-        40
+        48
       ],
       "string_id": "DUNGEON_7_NAME",
       "once": true
@@ -187,8 +217,8 @@
       "sheet": "island7_scenery",
       "prop": "moon_dial_floor",
       "pos": [
-        224,
-        112
+        216,
+        136
       ],
       "layer": "ground",
       "flip_x": false,
@@ -197,75 +227,99 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
+      "prop": "reflection_ripple_ring",
       "pos": [
-        184,
+        88,
         48
       ],
-      "layer": "sort",
+      "layer": "ground",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": false,
+      "phase": 0.2
     },
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
-      "pos": [
-        264,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "silver_brazier_stand",
-      "pos": [
-        120,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "silver_brazier_stand",
+      "prop": "reflection_ripple_ring",
       "pos": [
         328,
-        184
+        48
       ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.7
     },
     {
       "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
+      "prop": "glass_colonade_pillar",
       "pos": [
-        112,
-        84
+        160,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.25
+      "phase": 0.1
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "glass_colonade_pillar",
+      "pos": [
+        224,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        184,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        264,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
     },
     {
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        336,
-        84
+        104,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        328,
+        104
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.75
+      "phase": 0.8
     }
   ],
   "is_2x2_room": true

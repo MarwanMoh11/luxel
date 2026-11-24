@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    408,
-    112
+    400,
+    120
   ],
   "zones": [
     {
@@ -15,7 +15,7 @@
         0,
         0,
         448,
-        224
+        240
       ],
       "dark": true
     }
@@ -25,14 +25,14 @@
       "id": "exit_c4_r9_east",
       "rect": [
         432,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "conservatory_r8",
       "to_spawn": [
         40,
-        112
+        104
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -48,7 +48,7 @@
       ],
       "to_region": "conservatory_r10",
       "to_spawn": [
-        256,
+        240,
         240
       ],
       "requires_moves": [
@@ -66,8 +66,8 @@
       "id": "cracked_c4_r9",
       "kind": "cracked_wall",
       "pos": [
-        136,
-        104
+        296,
+        120
       ],
       "props": {
         "size": [
@@ -80,39 +80,79 @@
       "id": "brazier_c4_r9",
       "kind": "brazier",
       "pos": [
-        48,
+        136,
         72
       ],
       "props": {
-        "target_id": "bridge_c4_r9",
+        "target_ids": [
+          "bridge_c4_r9",
+          "door_c4_r9_vault"
+        ],
         "light_by_lantern": true
+      }
+    },
+    {
+      "id": "switch_eye_c4_r9",
+      "kind": "switch_eye",
+      "pos": [
+        40,
+        200
+      ],
+      "props": {
+        "target_ids": [
+          "bridge_c4_r9",
+          "door_c4_r9_vault"
+        ]
       }
     },
     {
       "id": "bridge_c4_r9",
       "kind": "door",
       "pos": [
-        104,
-        176
+        48,
+        120
       ],
       "props": {
         "door_kind": "bridge_platform",
         "size": [
-          48,
-          32
+          32,
+          16
         ],
         "starts_open": false,
         "requires_signals": [
-          "brazier_c4_r9"
-        ]
+          "brazier_c4_r9",
+          "switch_eye_c4_r9"
+        ],
+        "required_count": 2
+      }
+    },
+    {
+      "id": "door_c4_r9_vault",
+      "kind": "door",
+      "pos": [
+        48,
+        104
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "brazier_c4_r9",
+          "switch_eye_c4_r9"
+        ],
+        "required_count": 2,
+        "sets_flag": "c4_r9_vault_open"
       }
     },
     {
       "id": "keepers_flame_4",
       "kind": "wick_key",
       "pos": [
-        48,
-        112
+        40,
+        56
       ],
       "props": {
         "dungeon_id": "conservatory",
@@ -151,8 +191,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        280,
-        74
+        240,
+        120
       ],
       "layer": "ground",
       "flip_x": false,
@@ -161,46 +201,34 @@
     },
     {
       "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
+      "prop": "conservatory_pillar",
       "pos": [
-        104,
-        48
+        200,
+        52
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        104,
-        108
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        88,
-        134
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
+      "shadow": true,
+      "phase": 0.0
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        280,
-        48
+        252,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        344,
+        84
       ],
       "layer": "sort",
       "flip_x": false,
@@ -212,31 +240,31 @@
       "prop": "conservatory_pillar",
       "pos": [
         344,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "mossy_planter_urn",
-      "pos": [
-        280,
-        178
+        168
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.6
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        344,
-        178
+        392,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        392,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -247,25 +275,109 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        396,
-        32
+        172,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.4
+      "phase": 0.2
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "floating_lantern_lily",
+      "pos": [
+        276,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "cattail_reeds",
+      "pos": [
+        148,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
     },
     {
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        396,
-        192
+        168,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "giant_lotus_pad",
+      "pos": [
+        224,
+        200
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
-      "phase": 0.8
+      "phase": 0.4
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "floating_lantern_lily",
+      "pos": [
+        384,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "giant_lotus_pad",
+      "pos": [
+        416,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "blooming_lotus",
+      "pos": [
+        384,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "cattail_reeds",
+      "pos": [
+        416,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
     }
   ],
   "is_2x2_room": true

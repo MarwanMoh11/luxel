@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    208,
-    184
+    176,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        416,
-        224
+        448,
+        256
       ],
       "dark": true
     }
@@ -24,14 +24,14 @@
     {
       "id": "exit_sanctum_r2_south",
       "rect": [
-        192,
-        208,
+        160,
+        240,
         32,
         16
       ],
       "to_region": "sanctum_r1",
       "to_spawn": [
-        192,
+        272,
         48
       ],
       "requires_moves": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_sanctum_r2_north",
       "rect": [
-        192,
+        320,
         0,
         32,
         16
       ],
       "to_region": "sanctum_r3",
       "to_spawn": [
-        208,
-        216
+        320,
+        248
       ],
       "requires_moves": [
         "prism",
@@ -64,40 +64,35 @@
   "enemies": [],
   "interactables": [
     {
-      "id": "mirror_sanctum_r2_n",
-      "kind": "mirror",
+      "id": "transformer_sanctum_r2",
+      "kind": "blue_transformer",
       "pos": [
-        264,
-        48
+        248,
+        184
       ],
       "props": {
-        "angle_deg": 45,
-        "rotatable": true
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
       }
     },
     {
-      "id": "mirror_sanctum_r2_s",
-      "kind": "mirror",
+      "id": "bramble_sanctum_r2",
+      "kind": "bramble",
       "pos": [
-        264,
-        176
-      ],
-      "props": {
-        "angle_deg": 315,
-        "rotatable": true
-      }
-    },
-    {
-      "id": "cracked_sanctum_r2",
-      "kind": "cracked_wall",
-      "pos": [
-        328,
-        112
+        360,
+        88
       ],
       "props": {
         "size": [
           16,
-          32
+          16
         ],
         "zone": "sanctum_r2"
       }
@@ -106,10 +101,11 @@
       "id": "switch_eye_sanctum_r2_a",
       "kind": "switch_eye",
       "pos": [
-        368,
-        48
+        408,
+        88
       ],
       "props": {
+        "requires_blue": true,
         "requires_prism": true,
         "target_id": "door_sanctum_r2_key"
       }
@@ -118,11 +114,12 @@
       "id": "switch_eye_sanctum_r2_b",
       "kind": "switch_eye",
       "pos": [
-        368,
-        176
+        408,
+        200
       ],
       "props": {
-        "requires_prism": false,
+        "requires_blue": true,
+        "requires_prism": true,
         "target_id": "door_sanctum_r2_key"
       }
     },
@@ -130,8 +127,8 @@
       "id": "door_sanctum_r2_key",
       "kind": "door",
       "pos": [
-        88,
-        104
+        120,
+        72
       ],
       "props": {
         "door_kind": "switch_door",
@@ -149,8 +146,8 @@
       "id": "wick_key_8_1",
       "kind": "wick_key",
       "pos": [
-        48,
-        112
+        72,
+        72
       ],
       "props": {
         "dungeon_id": "bell_sanctum",
@@ -162,7 +159,7 @@
       "id": "door_sanctum_r2_north",
       "kind": "door",
       "pos": [
-        208,
+        336,
         24
       ],
       "props": {
@@ -183,34 +180,130 @@
   "scenery": [
     {
       "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
+      "prop": "eclipse_floor_seal",
       "pos": [
-        48,
-        52
+        72,
+        72
       ],
-      "layer": "sort",
+      "layer": "ground",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {
       "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
+      "prop": "stained_glass_debris",
       "pos": [
-        48,
-        178
+        216,
+        54
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        216,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        160,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        272,
+        40
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
+      "shadow": false,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        152,
+        110
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
       "phase": 0.5
     },
     {
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        148,
-        46
+        296,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        376,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        40,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        40,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        136,
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -219,10 +312,46 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "tattered_sanctum_banner",
+      "prop": "eclipse_brazier",
       "pos": [
-        148,
-        180
+        216,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        168,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        296,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        200,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -231,27 +360,27 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "cracked_choir_pew",
+      "prop": "eclipse_brazier",
       "pos": [
-        360,
-        140
+        376,
+        152
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.8
     },
     {
       "sheet": "island8_scenery",
-      "prop": "stained_glass_debris",
+      "prop": "dark_candelabra",
       "pos": [
-        148,
-        140
+        120,
+        184
       ],
-      "layer": "ground",
+      "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.25
+      "shadow": true,
+      "phase": 0.5
     }
   ],
   "is_2x2_room": true

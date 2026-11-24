@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    112
+    152
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        448,
-        224
+        480,
+        272
       ],
       "dark": true
     }
@@ -25,14 +25,14 @@
       "id": "exit_o5_r9_west",
       "rect": [
         0,
-        80,
+        128,
         16,
         48
       ],
       "to_region": "orrery_r8",
       "to_spawn": [
-        376,
-        128
+        384,
+        152
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_o5_r9_north",
       "rect": [
-        208,
+        112,
         0,
         32,
         16
       ],
       "to_region": "orrery_r10",
       "to_spawn": [
-        240,
-        272
+        176,
+        288
       ],
       "requires_moves": [
         "lens"
@@ -58,55 +58,120 @@
         "keepers_flame_5"
       ],
       "locked_door_id": "door_boss_5"
+    },
+    {
+      "id": "exit_o5_r9_return",
+      "rect": [
+        464,
+        32,
+        16,
+        48
+      ],
+      "to_region": "orrery_r1",
+      "to_spawn": [
+        392,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "o5_r9_return_open"
+      ],
+      "locked_door_id": "door_o5_r9_return"
     }
   ],
   "enemies": [],
   "interactables": [
     {
-      "id": "phantom_o5_r9",
+      "id": "phantom_o5_r9_se",
       "kind": "phantom_platform",
       "pos": [
-        304,
+        232,
+        232
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "zone": "orrery_r9"
+      }
+    },
+    {
+      "id": "phantom_o5_r9_e",
+      "kind": "phantom_platform",
+      "pos": [
+        408,
         160
       ],
       "props": {
         "size": [
-          64,
+          16,
           32
         ],
         "zone": "orrery_r9"
       }
     },
     {
-      "id": "mirror_o5_r9",
-      "kind": "mirror",
+      "id": "transformer_o5_r9",
+      "kind": "blue_transformer",
       "pos": [
-        368,
-        80
+        376,
+        56
       ],
       "props": {
-        "angle_deg": 135,
-        "rotatable": true
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
       }
     },
     {
       "id": "switch_eye_o5_r9",
       "kind": "switch_eye",
       "pos": [
-        368,
-        40
+        440,
+        104
       ],
       "props": {
-        "target_id": "bridge_o5_r9",
-        "sets_flag": "o5_r9_bridge"
+        "requires_blue": true,
+        "target_ids": [
+          "door_orrery_r9_vault",
+          "bridge_o5_r9",
+          "door_o5_r9_return"
+        ],
+        "sets_flag": "o5_r9_return_open"
+      }
+    },
+    {
+      "id": "door_orrery_r9_vault",
+      "kind": "door",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_o5_r9"
+        ],
+        "sets_flag": "o5_r9_vault_open"
       }
     },
     {
       "id": "bridge_o5_r9",
       "kind": "door",
       "pos": [
-        304,
-        80
+        208,
+        96
       ],
       "props": {
         "door_kind": "bridge_platform",
@@ -121,11 +186,32 @@
       }
     },
     {
+      "id": "door_o5_r9_return",
+      "kind": "door",
+      "pos": [
+        456,
+        56
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_o5_r9"
+        ],
+        "requires_flags": [
+          "o5_r9_return_open"
+        ]
+      }
+    },
+    {
       "id": "keepers_flame_5",
       "kind": "wick_key",
       "pos": [
-        384,
-        160
+        272,
+        88
       ],
       "props": {
         "dungeon_id": "orrery",
@@ -140,7 +226,7 @@
       "id": "door_boss_5",
       "kind": "door",
       "pos": [
-        224,
+        128,
         24
       ],
       "props": {
@@ -156,64 +242,39 @@
           "keepers_flame_5"
         ]
       }
+    },
+    {
+      "id": "lamp_o5_r9_islet",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        224
+      ],
+      "props": {
+        "zone": "orrery_r9"
+      }
     }
   ],
   "triggers": [],
   "scenery": [
     {
       "sheet": "island5_scenery",
-      "prop": "astro_floor_compass",
+      "prop": "constellation_arch",
       "pos": [
         128,
-        112
+        60
       ],
-      "layer": "ground",
+      "layer": "over",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "clockwork_gear_pillar",
-      "pos": [
-        72,
-        54
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "clockwork_gear_pillar",
-      "pos": [
-        176,
-        54
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "armillary_sphere",
-      "pos": [
-        128,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
     },
     {
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        72,
-        174
+        96,
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -222,10 +283,46 @@
     },
     {
       "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        160,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "astro_floor_compass",
+      "pos": [
+        104,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        152,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        176,
-        174
+        344,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -236,8 +333,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        412,
-        160
+        436,
+        128
       ],
       "layer": "sort",
       "flip_x": true,

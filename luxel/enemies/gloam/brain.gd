@@ -4,9 +4,10 @@ extends LxEnemyBrain
 ## (reduces bolts until illuminated), becomes solid & targetable in Wick's lantern
 ## or Lens light; lunges from dark after 0.45s tell, recovers 1.00s.
 
-const DEFAULT_HAND_LIGHT_R: float = 76.0
-const DEFAULT_HUNG_LIGHT_R: float = 98.0
+const DEFAULT_HAND_LIGHT_R: float = 52.0
+const DEFAULT_HUNG_LIGHT_R: float = 104.0
 const LIGHT_HOLD_DURATION: float = 0.25
+const BEAM_FLASH_DURATION: float = 1.20
 const DARK_BOLT_MULT: float = 0.15
 const LUNGE_RANGE: float = 96.0
 const LUNGE_SPEED: float = 245.0
@@ -83,8 +84,12 @@ func take_hit(hit: LxHit) -> int:
 	var dmg: float = float(h["damage"])
 	var orig: Vector2 = h["origin"] as Vector2
 	var is_heavy: bool = bool(h["stagger"])
-	if src == LxHit.SOURCE_SUNFLARE or src == LxHit.SOURCE_THROW or src == LxHit.SOURCE_RECALL:
-		light_hold_t = LIGHT_HOLD_DURATION * 2.0
+	if src == LxHit.SOURCE_BEAM:
+		light_hold_t = maxf(light_hold_t, BEAM_FLASH_DURATION)
+		illuminated = true
+		_emit_sfx("gloam_reveal")
+	elif src == LxHit.SOURCE_SUNFLARE or src == LxHit.SOURCE_THROW or src == LxHit.SOURCE_RECALL:
+		light_hold_t = maxf(light_hold_t, LIGHT_HOLD_DURATION * 2.0)
 		illuminated = true
 	var solid: bool = illuminated or state == State.RECOVER or state == State.STAGGER
 	if not solid:
@@ -174,17 +179,11 @@ func _update_illumination(dt: float) -> void:
 	light_hold_t = maxf(0.0, light_hold_t - dt)
 	var hand_r: float = DEFAULT_HAND_LIGHT_R
 	var hung_r: float = DEFAULT_HUNG_LIGHT_R
-	if Lx.player != null and is_instance_valid(Lx.player):
-		var lan: Variant = Lx.player.get("lantern")
-		if lan is Object and is_instance_valid(lan) and (lan as Object).has_method("get_light_radius"):
-			var lr: float = float((lan as Object).call("get_light_radius"))
-			hand_r = lr
-			hung_r = lr
 	if _is_lantern_out():
 		if pos.distance_to(_get_lantern_pos()) <= hung_r + body_radius:
-			light_hold_t = LIGHT_HOLD_DURATION
+			light_hold_t = maxf(light_hold_t, LIGHT_HOLD_DURATION)
 	elif _has_player() and pos.distance_to(_get_wick_pos()) <= hand_r + body_radius:
-		light_hold_t = LIGHT_HOLD_DURATION
+		light_hold_t = maxf(light_hold_t, LIGHT_HOLD_DURATION)
 	illuminated = light_hold_t > 0.0
 
 func _step_routine(dt: float) -> void:

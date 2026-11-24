@@ -68,41 +68,28 @@ var deflect_charge: int = 0
 var swing_dir: Vector2 = Vector2.RIGHT
 var swing_hit: bool = false
 var swings_count: int = 0
+var tutorial_wait_lantern: bool = false
+var _full_sheet: LxSpriteSheet = null
+var _bare_sheet: LxSpriteSheet = null
 
 
 func _init() -> void:
-	kind = "warden"
-	max_hp = 4.0
-	hp = 4.0
-	body_radius = 5.0
-	routine_speed = 36.0
-	leash_radius = 158.0
-	notice_radius = 120.0
-	tell_time = DEFAULT_WINDUP
-	recover_time = DEFAULT_RECOVER
-	give_up_time = 2.2
-	shard_drop = 3
-
+	kind = "warden"; max_hp = 4.0; hp = 4.0; body_radius = 5.0; routine_speed = 36.0
+	leash_radius = 158.0; notice_radius = 120.0; tell_time = DEFAULT_WINDUP
+	recover_time = DEFAULT_RECOVER; give_up_time = 2.2; shard_drop = 3
 
 func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
 	super.setup(spec, p_director, p_world)
 	if data != null and data.shield_hp > 0.0:
-		shield_max = data.shield_hp
-		shield_gone_duration = data.shield_gone_time
-	if spec.has("shield_hp"):
-		shield_max = maxf(0.0, float(spec["shield_hp"]))
-	if spec.has("shield_gone_time"):
-		shield_gone_duration = maxf(0.5, float(spec["shield_gone_time"]))
-	shield_hp = shield_max
-	shield_gone_t = 0.0
-	wary = false
-	lunge_attack = false
-	deflect_charge = 0
-	swing_hit = false
-	swings_count = 0
-	pause_t = 0.0
-	look_t = 0.0
-	step_clock = 0.0
+		shield_max = data.shield_hp; shield_gone_duration = data.shield_gone_time
+	if spec.has("shield_hp"): shield_max = maxf(0.0, float(spec["shield_hp"]))
+	if spec.has("shield_gone_time"): shield_gone_duration = maxf(0.5, float(spec["shield_gone_time"]))
+	tutorial_wait_lantern = bool(spec.get("tutorial_wait_lantern", false))
+	shield_hp = shield_max; shield_gone_t = 0.0
+	wary = false; lunge_attack = false; deflect_charge = 0; swing_hit = false; swings_count = 0
+	pause_t = 0.0; look_t = 0.0; step_clock = 0.0
+	_build_bare_sheet()
+	_sync_warden_sheet()
 
 	route.clear()
 	var raw_route: Variant = spec.get("route", [])
@@ -219,6 +206,7 @@ func _wear_shield(amount: float) -> bool:
 		return false
 	shield_hp = 0.0
 	shield_gone_t = shield_gone_duration
+	_sync_warden_sheet()
 	wary = true
 	lunge_attack = false
 	is_counter_attack = false
@@ -233,11 +221,15 @@ func _wear_shield(amount: float) -> bool:
 
 
 func _step_brain(dt: float) -> void:
-	if shield_gone_t > 0.0:
+	if tutorial_wait_lantern and Lx.state != null and not Lx.state.has_lantern():
+		state = State.ROUTINE; state_timer = 0.0; alert_t = 0.0; rally_t = -1.0; facing = home_facing
+		return
+	if shield_max > 0.001 and shield_gone_t > 0.0:
 		shield_gone_t -= dt
 		if shield_gone_t <= 0.0:
 			shield_gone_t = 0.0
 			shield_hp = shield_max
+			_sync_warden_sheet()
 			shield_reformed.emit(self, pos)
 			_emit_sfx("warden_shield_reform")
 
@@ -469,6 +461,7 @@ func _walk_toward(dest: Vector2, dt: float) -> void:
 
 
 func _sees_target() -> bool:
+	if tutorial_wait_lantern and Lx.state != null and not Lx.state.has_lantern(): return false
 	var target_pos: Vector2 = _attention_target()
 	var to_t: Vector2 = target_pos - pos
 	var dist: float = to_t.length()
@@ -506,42 +499,49 @@ func _attention_target() -> Vector2:
 
 # --- Virtual hooks for Boss subclasses ------------------------------------------------------------------------
 
-func _is_hit_invulnerable() -> bool:
-	return false
-
-
-func _on_damaged_alive(_hit: LxHit) -> bool:
-	return false
-
-
-func _swing_tell_base() -> float:
-	return tell_time
-
-
-func _lunge_tell_base() -> float:
-	return lunge_tell_time
-
-
-func _swing_recover_duration() -> float:
-	return recover_time
-
-
-func _post_recover_cooldown() -> float:
-	return 0.95
-
+func _is_hit_invulnerable() -> bool: return false
+func _on_damaged_alive(_hit: LxHit) -> bool: return false
+func _swing_tell_base() -> float: return tell_time
+func _lunge_tell_base() -> float: return lunge_tell_time
+func _swing_recover_duration() -> float: return recover_time
+func _post_recover_cooldown() -> float: return 0.95
+func _body_color() -> Color: return PAL["jade"] as Color
+func _shield_color() -> Color: return PAL["teal"] as Color
 
 func _has_active_shield() -> bool:
-	var guarding: bool = state == State.NOTICE or state == State.POSITION \
-			or state == State.WAIT_TOKEN or state == State.TELL
-	return guarding and shield_max > 0.001 and shield_gone_t <= 0.0
+	var guarding: bool = state == State.NOTICE or state == State.POSITION or state == State.WAIT_TOKEN or state == State.TELL
+	return guarding and shield_max > 0.001 and shield_hp > 0.001 and shield_gone_t <= 0.0
 
+func _build_bare_sheet() -> void:
+	_full_sheet = _sprite_sheet
+	_bare_sheet = null
+	if _full_sheet == null or not _full_sheet.animations.has("stagger"): return
+	if kind != "warden" and not (kind in ["bell_warden", "crab_warden", "moonshade_warden"]): return
+	var stag: Dictionary = _full_sheet.animations["stagger"] as Dictionary
+	var src_dirs: Dictionary = stag.get("dirs", {}) as Dictionary
+	if src_dirs.is_empty(): return
+	var bare_dirs: Dictionary = {}
+	for dk: Variant in src_dirs.keys():
+		var di: Dictionary = src_dirs[dk] as Dictionary
+		var rects_out: Array = []
+		for rv: Variant in (di.get("rects", []) as Array):
+			var r: Array = rv as Array
+			rects_out.append([r[0], float(r[1]) + 27.0, r[2], maxf(1.0, float(r[3]) - 27.0)])
+		bare_dirs[dk] = {"rects": rects_out, "ms": di.get("ms", [])}
+	var anc: Vector2 = _to_vec2(stag.get("anchor", null), _full_sheet.default_anchor)
+	_bare_sheet = LxSpriteSheet.new()
+	_bare_sheet.tex = _full_sheet.tex
+	_bare_sheet.default_anchor = Vector2(anc.x, anc.y - 27.0)
+	_bare_sheet.animations = {"routine": {"loop": true, "anchor": [anc.x, anc.y - 27.0], "dirs": bare_dirs}}
 
-func _body_color() -> Color:
-	return PAL["jade"] as Color
+func _sync_warden_sheet() -> void:
+	if _full_sheet == null or _bare_sheet == null: return
+	var bare: bool = (shield_max <= 0.001 or shield_hp <= 0.001 or shield_gone_t > 0.0) and state != State.STAGGER
+	_sprite_sheet = _bare_sheet if bare else _full_sheet
 
-
-func _shield_color() -> Color:
-	return PAL["teal"] as Color
+func _draw() -> void:
+	_sync_warden_sheet()
+	super._draw()
 
 
 func _draw_extra(off: Vector2) -> void:

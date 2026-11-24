@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     408,
-    112
+    120
   ],
   "zones": [
     {
@@ -15,7 +15,7 @@
         0,
         0,
         448,
-        224
+        240
       ],
       "dark": true
     }
@@ -25,13 +25,13 @@
       "id": "exit_spire_r8_east",
       "rect": [
         432,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "spire_r7",
       "to_spawn": [
-        88,
+        72,
         120
       ],
       "requires_moves": [],
@@ -42,14 +42,14 @@
       "id": "exit_spire_r8_west",
       "rect": [
         0,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "spire_r9",
       "to_spawn": [
         408,
-        112
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -62,17 +62,17 @@
       "kind": "moonshade_warden",
       "variant": "moonshade_warden",
       "pos": [
-        224,
-        112
+        216,
+        120
       ],
       "route": [
         [
           160,
-          112
+          120
         ],
         [
-          288,
-          112
+          280,
+          120
         ]
       ],
       "perches": [],
@@ -84,22 +84,22 @@
       "kind": "moonshade_snatcher",
       "variant": "moonshade_snatcher",
       "pos": [
-        120,
-        160
+        152,
+        168
       ],
       "route": [],
       "perches": [
         [
-          96,
-          160
+          152,
+          168
         ],
         [
-          144,
+          168,
           72
         ],
         [
-          320,
-          72
+          312,
+          168
         ]
       ],
       "zone": "spire_r8",
@@ -110,22 +110,22 @@
       "kind": "moonshade_owl",
       "variant": "moonshade_owl",
       "pos": [
-        328,
-        96
+        312,
+        104
       ],
       "route": [],
       "perches": [
         [
-          328,
-          96
+          312,
+          104
         ],
         [
           144,
-          144
+          152
         ],
         [
-          224,
-          96
+          232,
+          88
         ]
       ],
       "zone": "spire_r8",
@@ -134,11 +134,49 @@
   ],
   "interactables": [
     {
+      "id": "transformer_spire_r8_a",
+      "kind": "blue_transformer",
+      "pos": [
+        168,
+        88
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "transformer_spire_r8_b",
+      "kind": "blue_transformer",
+      "pos": [
+        296,
+        168
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
       "id": "door_spire_r8_west",
       "kind": "door",
       "pos": [
         24,
-        104
+        120
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -154,34 +192,82 @@
   "scenery": [
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
+      "prop": "reflection_ripple_ring",
       "pos": [
-        48,
-        52
+        328,
+        40
       ],
-      "layer": "sort",
+      "layer": "ground",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "reflection_ripple_ring",
+      "pos": [
+        104,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.7
     },
     {
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        400,
-        52
+        56,
+        88
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.1
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "glass_colonade_pillar",
+      "pos": [
+        56,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "glass_colonade_pillar",
+      "pos": [
+        392,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "glass_colonade_pillar",
+      "pos": [
+        392,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.8
     },
     {
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        112,
-        46
+        120,
+        40
       ],
       "layer": "sort",
       "flip_x": false,
@@ -192,37 +278,37 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        336,
-        184
+        344,
+        200
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
       "phase": 0.7
     },
     {
       "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
+      "prop": "moon_crystal_cluster",
       "pos": [
-        52,
-        188
+        56,
+        40
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.35
+      "phase": 0.4
     },
     {
       "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        400,
-        188
+        408,
+        200
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.8
+      "phase": 0.9
     }
   ],
   "is_2x2_room": true

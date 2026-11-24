@@ -33,8 +33,10 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	reveal_t = REVEAL_GRACE if revealed else 0.0
 
 
-func on_light(a: Variant, b: Variant = Vector2.ZERO, _source: String = "") -> void:
+func on_light(a: Variant, b: Variant = Vector2.ZERO, source: String = "") -> void:
 	if state == State.DEAD:
+		return
+	if source == "lantern_hand" or source == "lantern_recall":
 		return
 	var in_light: bool = true
 	if a is Vector2 and (b is float or b is int):
@@ -83,18 +85,20 @@ func _step_brain(dt: float) -> void:
 
 
 func _check_lens_reveal() -> void:
-	var has_lens: bool = Lx.state != null and Lx.state.has_move("lens")
-	if not has_lens:
+	if Lx.state == null or not Lx.state.has_move("lens"):
 		return
 	var ldata: Dictionary = Lx.get_move_data("lens")
-	var hand_r: float = float(ldata.get("hand_radius", HAND_LENS_FALLBACK))
-	var hung_r: float = float(ldata.get("hung_radius", HUNG_LENS_FALLBACK))
+	var pulse_r: float = float(ldata.get("pulse_radius", 104.0))
+	var hung_r: float = float(ldata.get("hung_radius", 78.0))
 	if _is_lantern_out():
 		if pos.distance_to(_get_lantern_pos()) <= hung_r + body_radius:
 			reveal_t = maxf(reveal_t, REVEAL_GRACE)
 			return
-	if _has_player() and pos.distance_to(_get_wick_pos()) <= hand_r + body_radius:
-		reveal_t = maxf(reveal_t, REVEAL_GRACE)
+	if _has_player() and Lx.player != null and is_instance_valid(Lx.player):
+		var ml: Variant = Lx.player.get("move_lens")
+		if ml is Object and (ml as Object).has_method("is_pulse_active") and bool((ml as Object).call("is_pulse_active")):
+			if pos.distance_to(_get_wick_pos()) <= pulse_r + body_radius:
+				reveal_t = maxf(reveal_t, REVEAL_GRACE)
 
 
 func _body_color() -> Color:

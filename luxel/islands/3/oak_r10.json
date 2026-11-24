@@ -69,12 +69,12 @@
       ],
       "route": [
         [
-          168,
-          112
+          160,
+          120
         ],
         [
-          312,
-          176
+          320,
+          168
         ]
       ],
       "perches": [],
@@ -101,7 +101,7 @@
       "id": "web_oak_r10_nw",
       "kind": "web",
       "pos": [
-        120,
+        104,
         88
       ],
       "props": {
@@ -115,7 +115,7 @@
       "id": "web_oak_r10_ne",
       "kind": "web",
       "pos": [
-        360,
+        376,
         88
       ],
       "props": {
@@ -129,8 +129,8 @@
       "id": "web_oak_r10_sw",
       "kind": "web",
       "pos": [
-        120,
-        200
+        128,
+        192
       ],
       "props": {
         "size": [
@@ -143,8 +143,8 @@
       "id": "web_oak_r10_se",
       "kind": "web",
       "pos": [
-        360,
-        200
+        352,
+        192
       ],
       "props": {
         "size": [
@@ -158,7 +158,7 @@
       "kind": "brazier",
       "pos": [
         72,
-        144
+        136
       ],
       "props": {
         "lit_by_default": true
@@ -168,8 +168,8 @@
       "id": "brazier_oak_r10_e",
       "kind": "brazier",
       "pos": [
-        408,
-        144
+        400,
+        160
       ],
       "props": {
         "lit_by_default": true
@@ -180,7 +180,7 @@
       "kind": "door",
       "pos": [
         456,
-        144
+        136
       ],
       "props": {
         "door_kind": "bridge_of_light",
@@ -211,6 +211,30 @@
   "scenery": [
     {
       "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        240,
+        56
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        240,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
         192,
@@ -231,79 +255,31 @@
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        56,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        376,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
       "phase": 0.5
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        156,
-        62
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        324,
-        62
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        156,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        324,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.85
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spore_brazier_stump",
-      "pos": [
-        192,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spore_brazier_stump",
-      "pos": [
-        288,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.75
     },
     {
       "sheet": "island3_scenery",
@@ -323,6 +299,54 @@
       "pos": [
         416,
         108
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        196,
+        244
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        284,
+        244
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        160,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        320,
+        72
       ],
       "layer": "sort",
       "flip_x": true,

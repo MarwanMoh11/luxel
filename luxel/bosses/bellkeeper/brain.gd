@@ -127,6 +127,7 @@ func _enter_phase2() -> void:
 	if Lx.events != null:
 		Lx.events.boss_phase_changed.emit(boss_id, 2)
 		Lx.events.shake_requested.emit(0.35)
+	LxDamageFx.trigger_boss_phase_reset(self, 2)
 	_emit_sfx("bellkeeper_phase2_roar")
 	_request_phase2_adds()
 
@@ -138,6 +139,7 @@ func _enter_phase3() -> void:
 	if Lx.events != null:
 		Lx.events.boss_phase_changed.emit(boss_id, 3)
 		Lx.events.shake_requested.emit(0.25)
+	LxDamageFx.trigger_boss_phase_reset(self, 3)
 	_emit_sfx("bellkeeper_phase3_chime")
 
 
@@ -308,24 +310,17 @@ func _draw_extra(off: Vector2) -> void:
 
 	if slam_attack and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		for ti: int in range(12):
-			var a0: float = float(ti) * (TAU / 12.0)
-			draw_arc(off, SLAM_MAX_R, a0, a0 + 0.24, 3, PAL["apricot"] as Color, 1.0)
-		var r: float = lerpf(SLAM_MAX_R, SLAM_START_R + 6.0, prog)
-		draw_arc(off, r, 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["gold"]) as Color, 1.8)
+		LxBossTelegraphFx.draw_ground_danger_ring(self, off, SLAM_MAX_R, prog, anim_t, "gold", "coral")
 		if double_toll_enabled:
-			draw_arc(off, maxf(4.0, r * 0.6), 0.0, TAU, 20, PAL["coral"] as Color, 1.2)
+			var r_dbl: float = maxf(6.0, lerpf(SLAM_MAX_R, SLAM_START_R + 6.0, prog) * 0.55)
+			draw_arc(off, r_dbl, 0.0, TAU, 20, PAL["coral"] as Color, 1.3)
 	elif slam_attack and state == State.COMMIT:
 		if slam_stage == SlamStage.TOLL_PAUSE:
-			for oi: int in range(12):
-				var oa0: float = float(oi) * (TAU / 12.0)
-				draw_arc(off, SLAM_MAX_R, oa0, oa0 + 0.24, 3, PAL["coral"] as Color, 1.0)
+			var p_den: float = _scaled_tell(DOUBLE_TOLL_GAP_P3 if phase >= 3 else DOUBLE_TOLL_GAP, false, attack_damage)
+			var p_urg: float = 1.0 - clampf(state_timer / maxf(p_den, 0.05), 0.0, 1.0)
+			LxBossTelegraphFx.draw_ground_danger_ring(self, off, SLAM_MAX_R, p_urg, anim_t, "gold", "coral")
 			var pr: float = SLAM_MAX_R * 0.5 + (0.0 if LxHudFx.flash_reduced() else 2.0 * sin(anim_t * 18.0))
-			draw_arc(off, pr + 2.0, 0.0, TAU, 24, PAL["apricot"] as Color, 1.8)
-			draw_arc(off, pr, 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
-			for ti: int in range(4):
-				var td: Vector2 = Vector2.from_angle(float(ti) * (TAU * 0.25))
-				draw_line((off + td * (pr - 3.0)).round(), (off + td * (pr + 4.0)).round(), PAL["cream"] as Color, 1.2)
+			draw_arc(off, pr, 0.0, TAU, 24, (PAL["cream"] if state_timer <= 0.14 else PAL["gold"]) as Color, 2.0)
 		else:
 			var ring_r: float = lerpf(SLAM_START_R, SLAM_MAX_R, slam_progress)
 			draw_arc(off, ring_r + 3.0, 0.0, TAU, 36, PAL["apricot"] as Color, 2.2)
@@ -348,6 +343,10 @@ func _draw_extra(off: Vector2) -> void:
 		for ri: int in range(4):
 			var rd: Vector2 = Vector2.from_angle(float(ri) * (TAU * 0.25))
 			draw_line((off + rd * (rr - 3.0)).round(), (off + rd * (rr + 4.5)).round(), PAL["cream"] as Color, 1.2)
+		if phase == 2 and _adds_requested:
+			var sr: float = minf(72.0, leash_radius * 0.5)
+			LxBossTelegraphFx.draw_ground_summon_ring(self, home + Vector2(-sr, -sr * 0.5) - pos, 16.0, rp, anim_t, "gold")
+			LxBossTelegraphFx.draw_ground_summon_ring(self, home + Vector2(sr, -sr * 0.5) - pos, 16.0, rp, anim_t, "gold")
 	if _p3_chime_t > 0.0:
 		var cp: float = 1.0 - clampf(_p3_chime_t / 0.55, 0.0, 1.0)
 		var cr: float = body_radius + 10.0 + cp * 22.0

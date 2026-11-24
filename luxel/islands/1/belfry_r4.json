@@ -63,28 +63,28 @@
       "id": "warden_r4_0",
       "kind": "warden",
       "pos": [
-        200,
-        72
+        184,
+        64
       ],
       "route": [
         [
-          160,
-          72
+          152,
+          64
         ],
         [
           248,
-          72
+          64
         ]
       ],
       "perches": [],
       "zone": "belfry_nave",
-      "leash": 130
+      "leash": 135
     },
     {
       "id": "warden_r4_1",
       "kind": "warden",
       "pos": [
-        200,
+        216,
         152
       ],
       "route": [
@@ -99,32 +99,32 @@
       ],
       "perches": [],
       "zone": "belfry_nave",
-      "leash": 130
+      "leash": 135
     },
     {
       "id": "owl_r4_0",
       "kind": "owl",
       "pos": [
-        336,
-        112
+        344,
+        120
       ],
       "route": [],
       "perches": [
         [
-          336,
-          112
+          344,
+          120
         ],
         [
-          336,
-          56
+          312,
+          48
         ],
         [
-          336,
+          264,
           168
         ]
       ],
       "zone": "belfry_nave",
-      "leash": 150
+      "leash": 155
     }
   ],
   "interactables": [
@@ -155,8 +155,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        56,
-        44
+        168,
+        38
       ],
       "layer": "sort",
       "flip_x": false,
@@ -167,109 +167,85 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        360,
-        44
+        248,
+        38
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "candelabra_tall",
-      "pos": [
-        56,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "candelabra_tall",
-      "pos": [
-        360,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "mossy_column",
-      "pos": [
-        136,
-        78
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "mossy_column",
-      "pos": [
-        280,
-        78
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "broken_column",
-      "pos": [
-        136,
-        158
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "broken_column",
-      "pos": [
-        280,
-        158
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
+      "phase": 0.45
     },
     {
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        160,
-        34
+        72,
+        40
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.1
+      "phase": 0.15
     },
     {
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        256,
-        34
+        344,
+        54
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.55
+      "phase": 0.6
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        64,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        108,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        272,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        312,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.75
     }
   ],
   "is_2x2_room": true

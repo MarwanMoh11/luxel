@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    208,
-    216
+    192,
+    232
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        416,
-        256
+        432,
+        272
       ],
       "dark": true
     }
@@ -24,15 +24,15 @@
     {
       "id": "exit_o5_r8_south",
       "rect": [
-        192,
-        240,
+        176,
+        256,
         32,
         16
       ],
       "to_region": "orrery_r7",
       "to_spawn": [
         192,
-        72
+        56
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_o5_r8_east",
       "rect": [
-        400,
-        96,
+        416,
+        128,
         16,
         48
       ],
       "to_region": "orrery_r9",
       "to_spawn": [
         40,
-        112
+        152
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -64,67 +64,67 @@
       "kind": "phantom_owl",
       "pos": [
         208,
-        56
+        64
       ],
       "route": [],
       "perches": [
         [
           208,
-          56
+          64
         ],
         [
-          152,
-          88
+          168,
+          112
         ],
         [
-          264,
-          88
+          296,
+          112
         ]
       ],
       "zone": "orrery_r8",
-      "leash": 155
+      "leash": 160
     },
     {
       "id": "orrery_sentinel_o5_r8",
       "kind": "orrery_sentinel",
       "pos": [
-        136,
-        128
+        168,
+        144
       ],
       "route": [
         [
-          96,
-          128
+          136,
+          144
         ],
         [
-          176,
-          128
-        ]
-      ],
-      "perches": [],
-      "zone": "orrery_r8",
-      "leash": 135
-    },
-    {
-      "id": "echo_moth_o5_r8",
-      "kind": "echo_moth",
-      "pos": [
-        280,
-        128
-      ],
-      "route": [
-        [
-          264,
-          96
-        ],
-        [
-          280,
-          160
+          208,
+          144
         ]
       ],
       "perches": [],
       "zone": "orrery_r8",
       "leash": 140
+    },
+    {
+      "id": "echo_moth_o5_r8",
+      "kind": "echo_moth",
+      "pos": [
+        312,
+        152
+      ],
+      "route": [
+        [
+          280,
+          120
+        ],
+        [
+          320,
+          184
+        ]
+      ],
+      "perches": [],
+      "zone": "orrery_r8",
+      "leash": 145
     }
   ],
   "interactables": [
@@ -132,8 +132,8 @@
       "id": "door_o5_r8_combat",
       "kind": "door",
       "pos": [
-        392,
-        120
+        408,
+        152
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -153,34 +153,10 @@
   "scenery": [
     {
       "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
+      "prop": "observatory_brazier_stand",
       "pos": [
-        160,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        256,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "moon_phase_obelisk",
-      "pos": [
-        64,
-        128
+        152,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -191,37 +167,85 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        160,
-        210
+        232,
+        232
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
-      "phase": 0.3
+      "phase": 0.7
     },
     {
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        256,
-        210
+        372,
+        116
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.8
+      "phase": 0.15
     },
     {
       "sheet": "island5_scenery",
-      "prop": "broken_astrolabe_ring",
+      "prop": "observatory_brazier_stand",
       "pos": [
-        332,
-        180
+        372,
+        188
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "clockwork_gear_pillar",
+      "pos": [
+        136,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "clockwork_gear_pillar",
+      "pos": [
+        248,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        92,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.75
     }
   ],
   "is_2x2_room": true

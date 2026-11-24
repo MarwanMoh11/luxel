@@ -49,7 +49,10 @@ func slot_summary(slot_num: int) -> Dictionary:
 	var d: Dictionary = load_slot_dict(slot_num)
 	if d.is_empty():
 		return {"empty": true, "slot": slot_num}
-	var relit_arr: Array = d.get("relit_islands", []) as Array
+	var relit_raw: Array = d.get("relit_islands", []) as Array
+	var relit_arr: Array[int] = []
+	for v: Variant in relit_raw:
+		relit_arr.append(int(v))
 	var harmony_arr: Array[int] = []
 	var sflags_v: Variant = d.get("story_flags", {})
 	if sflags_v is Dictionary:

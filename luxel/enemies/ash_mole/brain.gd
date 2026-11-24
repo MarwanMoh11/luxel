@@ -8,9 +8,18 @@ extends LxSnatcherBrain
 const ASH_GRAB_TIME: float = 0.85
 const ASH_TELL_TIME: float = 0.50
 const ERUPT_DIST: float = 14.0
+const AMBUSH_CD: float = 3.2
+const AMBUSH_COMMIT_TIME: float = 0.30
+const AMBUSH_BURROW_SPEED: float = 240.0
+const AMBUSH_HIT_R: float = 16.0
+const AMBUSH_RECOVER: float = 0.78
 
 var surfaced: bool = false
 var _was_surfaced: bool = false
+var ambush_cd: float = 1.6
+var ambush_attack: bool = false
+var ambush_target: Vector2 = Vector2.ZERO
+var ambush_hit: bool = false
 
 
 func _init() -> void:
@@ -36,6 +45,10 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	recover_time = grab_time
 	surfaced = false
 	_was_surfaced = false
+	ambush_cd = 1.6
+	ambush_attack = false
+	ambush_target = home
+	ambush_hit = false
 
 
 func is_flying() -> bool:
@@ -46,23 +59,45 @@ func is_targetable() -> bool:
 	return is_alive() and surfaced
 
 
+func wants_token() -> bool:
+	if cooldown > 0.0:
+		return false
+	if sub_state != SubState.PERCH and sub_state != SubState.SHIFT:
+		return false
+	if _is_lantern_hung():
+		return true
+	return ambush_cd <= 0.0 and _has_player() and _get_wick_pos().distance_to(home) <= leash_radius
+
+
 func take_hit(hit: LxHit) -> int:
 	if state == State.DEAD or hit == null:
 		return HitResult.GLANCED
-	if not surfaced:
-		_emit_sfx("ash_mole_burrowed")
-		_emit_enemy_hit(hit, HitResult.GLANCED)
-		return HitResult.GLANCED
-
 	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var cracks: bool = bool(h["cracks_armour"])
+	# Sunflare unearths Ash Mole even while burrowed!
+	var sunflare_unearth: bool = false
+	if not surfaced:
+		if src == LxHit.SOURCE_SUNFLARE or cracks:
+			surfaced = true
+			_was_surfaced = true
+			ambush_attack = false
+			sunflare_unearth = true
+			LxDamageFx.boss_impact(pos, 0.14, 58.0, 68.0, 52.0, 1.25, 0.28)
+			_emit_sfx("ash_mole_unearth")
+		else:
+			_emit_sfx("ash_mole_burrowed")
+			_emit_enemy_hit(hit, HitResult.GLANCED)
+			return HitResult.GLANCED
+
 	var dmg: float = float(h["damage"])
-	var is_heavy: bool = bool(h["stagger"])
+	var is_heavy: bool = bool(h["stagger"]) or sunflare_unearth
 	var orig: Vector2 = h["origin"] as Vector2
-	if is_heavy and state == State.STAGGER:
+	if is_heavy and state == State.STAGGER and not sunflare_unearth:
 		_emit_enemy_hit(hit, HitResult.GLANCED)
 		return HitResult.GLANCED
 
-	var is_opening: bool = sub_state == SubState.GRAB or sub_state == SubState.CARRY \
+	var is_opening: bool = sunflare_unearth or sub_state == SubState.GRAB or sub_state == SubState.CARRY \
 			or sub_state == SubState.BAFFLED or sub_state == SubState.STAGGER
 	hp -= dmg
 	flash_t = 0.14 if is_heavy else 0.08
@@ -70,6 +105,7 @@ func take_hit(hit: LxHit) -> int:
 	if rel.length() > 0.01:
 		knock = -rel.normalized() * (135.0 if is_heavy else 35.0)
 
+	ambush_attack = false
 	_drop_carried_lantern()
 	_release_all_claims()
 
@@ -81,7 +117,7 @@ func take_hit(hit: LxHit) -> int:
 	if is_heavy or sub_state == SubState.GRAB or sub_state == SubState.CARRY:
 		sub_state = SubState.STAGGER
 		state = State.STAGGER
-		state_timer = 1.4 if str(h["source"]) == LxHit.SOURCE_SUNFLARE else STAGGER_TIME
+		state_timer = 1.4 if (src == LxHit.SOURCE_SUNFLARE or sunflare_unearth) else STAGGER_TIME
 		_emit_enemy_hit(hit, HitResult.OPENED)
 		return HitResult.OPENED
 
@@ -96,6 +132,17 @@ func debug_state() -> Dictionary:
 
 
 func _step_brain(dt: float) -> void:
+	ambush_cd = maxf(0.0, ambush_cd - dt)
+	if ambush_attack:
+		_step_ambush(dt)
+		if surfaced and not _was_surfaced:
+			LxDamageFx.boss_impact(pos, 0.06, 40.0, 52.0, 34.0, 1.15, 0.22)
+		_was_surfaced = surfaced
+		return
+	if not _is_lantern_hung() and (sub_state == SubState.PERCH or sub_state == SubState.SHIFT):
+		if _try_start_ambush():
+			_was_surfaced = surfaced
+			return
 	super._step_brain(dt)
 	# Surfaced when erupting at the lantern, wrestling/grabbing, baffled, dragging, or staggered
 	match sub_state:
@@ -108,6 +155,72 @@ func _step_brain(dt: float) -> void:
 	if surfaced and not _was_surfaced:
 		LxDamageFx.boss_impact(pos, 0.06, 40.0, 52.0, 34.0, 1.15, 0.22)
 	_was_surfaced = surfaced
+
+
+func _try_start_ambush() -> bool:
+	if ambush_cd > 0.0 or cooldown > 0.0 or not _has_player() or not _is_on_screen():
+		return false
+	var wp: Vector2 = _get_wick_pos()
+	if pos.distance_to(wp) > notice_radius or wp.distance_to(home) > leash_radius:
+		return false
+	if not _claim_token():
+		return false
+	ambush_attack = true
+	ambush_hit = false
+	ambush_target = _clamp_point(wp)
+	surfaced = false
+	sub_state = SubState.TELL
+	state = State.TELL
+	is_counter_attack = false
+	last_tell_duration = _scaled_tell(ASH_TELL_TIME, false, attack_damage)
+	state_timer = last_tell_duration
+	_emit_attack_started()
+	_emit_sfx("ash_mole_tremor")
+	return true
+
+
+func _step_ambush(dt: float) -> void:
+	if sub_state == SubState.TELL:
+		state = State.TELL
+		surfaced = false
+		if state_timer > 0.22 and _has_player():
+			ambush_target = _clamp_point(_get_wick_pos())
+		var to_t: Vector2 = ambush_target - pos
+		if to_t.length() > 2.0:
+			facing = to_t.angle()
+			_move_step(to_t.limit_length(routine_speed * 0.85 * dt), false)
+		state_timer -= dt
+		if state_timer <= 0.0:
+			sub_state = SubState.RUN
+			state = State.COMMIT
+			state_timer = AMBUSH_COMMIT_TIME
+			ambush_hit = false
+			_emit_sfx("ash_mole_erupt")
+	elif sub_state == SubState.RUN:
+		state = State.COMMIT
+		var to_t: Vector2 = ambush_target - pos
+		if to_t.length() > 2.0:
+			facing = to_t.angle()
+			_move_step(to_t.limit_length(AMBUSH_BURROW_SPEED * dt), false)
+		if pos.distance_to(ambush_target) <= ERUPT_DIST or state_timer <= AMBUSH_COMMIT_TIME * 0.55:
+			surfaced = true
+		if surfaced and not ambush_hit and _has_player() and pos.distance_to(_get_wick_pos()) <= AMBUSH_HIT_R:
+			ambush_hit = true
+			var hdir: Vector2 = (_get_wick_pos() - pos).normalized() if _get_wick_pos().distance_to(pos) > 0.01 else Vector2.from_angle(facing)
+			_emit_player_hit(hdir)
+		state_timer -= dt
+		if state_timer <= 0.0:
+			ambush_attack = false
+			ambush_cd = AMBUSH_CD
+			surfaced = true
+			_release_all_claims()
+			sub_state = SubState.BAFFLED
+			state = State.RECOVER
+			state_timer = maxf(MIN_RECOVER_TIME, AMBUSH_RECOVER)
+			last_recover_duration = state_timer
+			cooldown = AGAIN_CD
+	else:
+		ambush_attack = false
 
 
 func _walk_to(dest: Vector2, spd: float, dt: float) -> bool:
@@ -152,9 +265,12 @@ func _draw() -> void:
 		draw_rect(Rect2(cx, cy, 1.0, 1.0), cc, true)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var r: float = roundf(lerpf(body_radius + 8.5, body_radius + 2.5, prog))
-		draw_arc(c, r, 0.0, TAU, 16, PAL["coral"] as Color, 1.5)
-		draw_arc(c, maxf(2.0, r - 2.0), 0.0, TAU, 12, (PAL["cream"] if state_timer <= 0.14 else PAL["apricot"]) as Color, 1.0)
+		var tc: Vector2 = ((ambush_target - pos) if ambush_attack else c).round()
+		var r: float = roundf(lerpf(body_radius + 10.0, body_radius + 2.5, prog))
+		if ambush_attack:
+			draw_line(c, tc, PAL["wine"] as Color, 1.0)
+		draw_arc(tc, r, 0.0, TAU, 16, PAL["coral"] as Color, 1.5)
+		draw_arc(tc, maxf(2.0, r - 2.0), 0.0, TAU, 12, (PAL["cream"] if state_timer <= 0.16 else PAL["apricot"]) as Color, 1.0)
 	elif state == State.COMMIT:
 		var br: float = roundf(body_radius + 4.5 + (0.0 if LxHudFx.flash_reduced() else sin(anim_t * 22.0) * 1.0))
 		draw_arc(c, br, 0.0, TAU, 14, PAL["apricot"] as Color, 1.8)

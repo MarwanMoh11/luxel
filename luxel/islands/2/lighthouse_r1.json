@@ -3,8 +3,9 @@
   "island_id": 2,
   "tile_size": 16,
   "is_dungeon": true,
+  "is_2x2_room": true,
   "spawn": [
-    176,
+    184,
     216
   ],
   "zones": [
@@ -14,7 +15,7 @@
       "rect": [
         0,
         0,
-        352,
+        384,
         256
       ],
       "dark": true
@@ -24,14 +25,14 @@
     {
       "id": "exit_lh_r1_south",
       "rect": [
-        160,
+        176,
         240,
         32,
         16
       ],
       "to_region": "overworld",
       "to_spawn": [
-        1536,
+        1040,
         136
       ],
       "requires_moves": [],
@@ -41,19 +42,59 @@
     {
       "id": "exit_lh_r1_east",
       "rect": [
-        336,
-        96,
+        368,
+        112,
         16,
         48
       ],
       "to_region": "lighthouse_r2",
       "to_spawn": [
-        72,
-        120
+        48,
+        136
       ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r1_shortcut_r5",
+      "rect": [
+        272,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r5",
+      "to_spawn": [
+        400,
+        192
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "lh_r5_prism_solved"
+      ],
+      "locked_door_id": "door_lh_r1_shortcut"
+    },
+    {
+      "id": "exit_lh_r1_shortcut_r9",
+      "rect": [
+        128,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r9",
+      "to_spawn": [
+        392,
+        192
+      ],
+      "requires_moves": [
+        "prism"
+      ],
+      "requires_flags": [
+        "keepers_flame_2"
+      ],
+      "locked_door_id": "door_lh_r1_shortcut_r9"
     }
   ],
   "enemies": [],
@@ -62,8 +103,8 @@
       "id": "ws_lighthouse",
       "kind": "waystone",
       "pos": [
-        176,
-        128
+        184,
+        136
       ],
       "props": {
         "zone": "lighthouse_r1",
@@ -71,11 +112,49 @@
       }
     },
     {
+      "id": "door_lh_r1_shortcut",
+      "kind": "door",
+      "pos": [
+        288,
+        40
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "lighthouse_r1",
+        "requires_flags": [
+          "lh_r5_prism_solved"
+        ]
+      }
+    },
+    {
+      "id": "door_lh_r1_shortcut_r9",
+      "kind": "door",
+      "pos": [
+        144,
+        40
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "lighthouse_r1",
+        "requires_flags": [
+          "keepers_flame_2"
+        ]
+      }
+    },
+    {
       "id": "lamp_lh_r1_w",
       "kind": "road_lamp",
       "pos": [
-        128,
-        88
+        136,
+        136
       ],
       "props": {
         "zone": "lighthouse_r1"
@@ -85,34 +164,22 @@
       "id": "lamp_lh_r1_e",
       "kind": "road_lamp",
       "pos": [
-        224,
-        88
+        264,
+        120
       ],
       "props": {
         "zone": "lighthouse_r1"
       }
     }
   ],
-  "triggers": [
-    {
-      "id": "trig_lh_entry",
-      "rect": [
-        128,
-        168,
-        96,
-        48
-      ],
-      "string_id": "DUNGEON_2_NAME",
-      "once": true
-    }
-  ],
+  "triggers": [],
   "scenery": [
     {
       "sheet": "island2_scenery",
       "prop": "brass_compass_floor",
       "pos": [
-        176,
-        128
+        184,
+        136
       ],
       "layer": "ground",
       "flip_x": false,
@@ -121,10 +188,34 @@
     },
     {
       "sheet": "island2_scenery",
+      "prop": "sea_glass_arch",
+      "pos": [
+        144,
+        22
+      ],
+      "layer": "overhead",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "sea_glass_arch",
+      "pos": [
+        288,
+        22
+      ],
+      "layer": "overhead",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        136,
-        48
+        196,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -135,20 +226,32 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        216,
-        48
+        236,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.45
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        328,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.75
     },
     {
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        120,
-        212
+        148,
+        216
       ],
       "layer": "sort",
       "flip_x": false,
@@ -159,8 +262,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        232,
-        212
+        236,
+        216
       ],
       "layer": "sort",
       "flip_x": true,
@@ -171,8 +274,8 @@
       "sheet": "island2_scenery",
       "prop": "buoy_bobbing",
       "pos": [
-        40,
-        40
+        48,
+        120
       ],
       "layer": "sort",
       "flip_x": false,
@@ -181,40 +284,15 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        312,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
-        40,
-        216
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        312,
-        216
+        328,
+        212
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.6
     }
-  ],
-  "is_2x2_room": true
+  ]
 }

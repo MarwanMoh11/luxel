@@ -15,6 +15,8 @@ const BODY_RADIUS: float = 4.0
 const MERCY_TIME: float = 1.05
 const KNOCK_DECAY: float = 700.0
 const INTERACT_RADIUS: float = 24.0
+const GRAB_HOLD_DELAY: float = 0.16
+const GRAB_SLIDE_SPEED: float = 58.0
 const HS_HURT: float = 0.12
 const HS_BLOCK: float = 0.045
 const SHAKE_HURT: float = 0.25
@@ -66,6 +68,14 @@ var shots_fired: int = 0
 var zips_count: int = 0
 var perfect_dodges: int = 0
 
+var grabbed_block: Object = null
+var grab_axis: Vector2 = Vector2.ZERO
+var grab_slide_speed: float = 0.0
+var _interact_held: bool = false
+var _interact_hold_t: float = 0.0
+var _interact_cand: Object = null
+var _last_safe_pos: Vector2 = Vector2.ZERO
+
 var _world_ctx: Node = null
 var _prev_act: Dictionary = {}
 var _walk_phase: float = 0.0
@@ -74,7 +84,7 @@ var _arity_cache: Dictionary = {}
 var _fx: WickFx = WickFx.new()
 
 func _ready() -> void:
-	z_index = 1
+	z_index = 0
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_ensure_kit()
 	_fx.try_load_sprite()
@@ -89,6 +99,8 @@ func setup(world_ctx: Node) -> void:
 	_bind_world_ctx(world_ctx)
 	if Lx.events != null and not Lx.events.move_unlocked.is_connected(_on_move_unlocked):
 		Lx.events.move_unlocked.connect(_on_move_unlocked)
+	if Lx.events != null and not Lx.events.lantern_picked_up.is_connected(_on_lantern_picked_up):
+		Lx.events.lantern_picked_up.connect(_on_lantern_picked_up)
 	sync_unlocks_from_state()
 	if Lx.state != null:
 		_local_max_hearts = Lx.state.max_hearts
@@ -98,6 +110,7 @@ func setup(world_ctx: Node) -> void:
 func _bind_world_ctx(world_ctx: Node) -> void:
 	if move_throw != null: move_throw.set_world_ctx(world_ctx)
 	if move_beam != null: move_beam.set_world_ctx(world_ctx)
+	if move_lens != null: move_lens.set_world_ctx(world_ctx)
 	if move_sunflare != null: move_sunflare.set_world_ctx(world_ctx)
 
 func _ensure_kit() -> void:
@@ -126,13 +139,20 @@ func sync_unlocks_from_state() -> void:
 		if mv_var is LxMove:
 			(mv_var as LxMove).sync_unlock()
 
-func _on_move_unlocked(_move_id: String) -> void:
+func has_lantern() -> bool: return Lx.state == null or Lx.state.has_lantern()
+func _on_move_unlocked(_move_id: String) -> void: sync_unlocks_from_state()
+func _on_lantern_picked_up(_pickup_id: String, _at_pos: Vector2) -> void:
 	sync_unlocks_from_state()
+	if lantern != null: lantern.reset_to_hand(global_position)
+	catch_anim_t = 0.28
+	_fx.trigger_lantern_ignite(self)
+	queue_redraw()
 
 func reset_for_room(at_pos: Vector2) -> void:
 	_ensure_kit()
 	global_position = at_pos
 	last_pos = at_pos
+	_last_safe_pos = at_pos
 	velocity = Vector2.ZERO
 	knock = Vector2.ZERO
 	mercy_t = 0.0
@@ -144,6 +164,12 @@ func reset_for_room(at_pos: Vector2) -> void:
 	catch_anim_t = 0.0
 	recoil_vis = 0.0
 	dead = false
+	grabbed_block = null
+	grab_axis = Vector2.ZERO
+	grab_slide_speed = 0.0
+	_interact_held = false
+	_interact_hold_t = 0.0
+	_interact_cand = null
 	bolts.clear()
 	_fx.clear()
 	_prev_act.clear()
@@ -152,6 +178,9 @@ func reset_for_room(at_pos: Vector2) -> void:
 	for mv_var: Variant in moves.values():
 		if mv_var is LxMove:
 			(mv_var as LxMove).reset()
+	if not has_lantern():
+		facing = Vector2.LEFT
+		if Lx.input != null: Lx.input.last_aim_dir = Vector2.LEFT
 	if lantern != null:
 		lantern.reset_to_hand(at_pos)
 	queue_redraw()
@@ -177,42 +206,61 @@ func tick_sim(dt: float, world_ctx: Node) -> void:
 
 	_update_manual_aim()
 	_poll_inputs(world_ctx)
+	_tick_grab_hold(dt, world_ctx)
 	for mv_var: Variant in moves.values():
 		if mv_var is LxMove:
 			(mv_var as LxMove).tick(dt)
-	if move_lens != null:
+	if move_lens != null and has_lantern():
 		move_lens.register_circle(world_ctx)
 
 	last_pos = global_position
-	var desired_vel: Vector2 = Vector2.ZERO
-	var airborne: bool = false
-	if is_zipping():
-		desired_vel = move_throw.get_zip_velocity()
-		airborne = true
-	elif is_dashing() or is_gliding():
-		desired_vel = move_dash.get_active_velocity()
-		airborne = move_dash.can_cross_gaps()
-	elif is_beam_charging():
-		desired_vel = Vector2.ZERO
-	elif bounce_t <= 0.0:
-		desired_vel = get_move_input() * MOVE_SPEED * (1.14 if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance) and LxBiomeRules.active_instance.starlight_surge_t > 0.0) else 1.0)
+	if is_grabbing():
+		_tick_grab_move(dt, world_ctx)
+		_walk_phase = _walk_phase + dt * 10.0 if grab_slide_speed > 8.0 else 0.0
+	else:
+		grab_slide_speed = 0.0
+		var desired_vel: Vector2 = Vector2.ZERO
+		var airborne: bool = false
+		if is_zipping():
+			desired_vel = move_throw.get_zip_velocity()
+			airborne = true
+		elif is_dashing() or is_gliding():
+			desired_vel = move_dash.get_active_velocity()
+			airborne = move_dash.can_cross_gaps()
+		elif is_beam_charging():
+			desired_vel = Vector2.ZERO
+		elif bounce_t <= 0.0:
+			desired_vel = get_move_input() * MOVE_SPEED * (1.14 if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance) and LxBiomeRules.active_instance.starlight_surge_t > 0.0) else 1.0)
 
-	desired_vel += knock
-	knock = knock.move_toward(Vector2.ZERO, KNOCK_DECAY * dt)
-	var next_pos: Vector2 = world_collide_step(world_ctx, global_position, global_position + desired_vel * dt, BODY_RADIUS, airborne)
-	velocity = (next_pos - global_position) / maxf(dt, 0.0001)
-	global_position = next_pos
-	var walking: bool = velocity.length() > 10.0 and not is_dashing() and not is_gliding() and not is_zipping() and not is_beam_charging()
-	_walk_phase = _walk_phase + dt * 13.0 if walking else 0.0
+		desired_vel += knock
+		knock = knock.move_toward(Vector2.ZERO, KNOCK_DECAY * dt)
+		var next_pos: Vector2 = world_collide_step(world_ctx, global_position, global_position + desired_vel * dt, BODY_RADIUS, airborne)
+		velocity = (next_pos - global_position) / maxf(dt, 0.0001)
+		global_position = next_pos
+		var walking: bool = velocity.length() > 10.0 and not is_dashing() and not is_gliding() and not is_zipping() and not is_beam_charging()
+		_walk_phase = _walk_phase + dt * 13.0 if walking else 0.0
 
 	if move_dash != null: move_dash.tick_dash(dt, world_ctx)
 	if move_throw != null: move_throw.tick_zip(dt, world_ctx)
+	_check_void_fall(world_ctx)
+	if dead:
+		queue_redraw()
+		return
 	if lantern != null: lantern.tick_sim(dt, self, world_ctx)
-	if move_lens != null: move_lens.tick_lens(dt, world_ctx)
+	if move_lens != null and has_lantern(): move_lens.tick_lens(dt, world_ctx)
 	if move_bolt != null: move_bolt.tick_bolts(dt, world_ctx)
 	queue_redraw()
 
 func _update_manual_aim() -> void:
+	if is_grabbing():
+		if grab_axis.length_squared() > 0.0001:
+			facing = grab_axis
+		return
+	if not has_lantern():
+		var mv: Vector2 = get_move_input()
+		if mv.length_squared() > 0.01:
+			facing = mv.normalized()
+		return
 	if Lx.input == null:
 		return
 	var mw: Vector2 = get_global_mouse_position() if is_inside_tree() else (global_position + facing * 32.0)
@@ -223,7 +271,7 @@ func _update_manual_aim() -> void:
 func _poll_inputs(world_ctx: Node) -> void:
 	if Lx.input == null:
 		return
-	for act: String in ["lx_fire", "lx_throw", "lx_dash", "lx_beam", "lx_sunflare", "lx_interact"]:
+	for act: String in ["lx_fire", "lx_throw", "lx_dash", "lx_beam", "lx_lens", "lx_sunflare", "lx_interact"]:
 		var now: bool = Lx.input.is_action_active(act)
 		var was: bool = bool(_prev_act.get(act, false))
 		_prev_act[act] = now
@@ -233,17 +281,19 @@ func _poll_inputs(world_ctx: Node) -> void:
 				"lx_throw": press_throw()
 				"lx_dash": press_dash()
 				"lx_beam": press_beam()
+				"lx_lens": press_lens()
 				"lx_sunflare": press_sunflare()
-				"lx_interact": try_interact(world_ctx)
+				"lx_interact": _press_interact(world_ctx)
 		elif not now and was:
 			match act:
 				"lx_fire": release_fire()
 				"lx_dash": release_dash()
 				"lx_beam": release_beam()
+				"lx_interact": _release_interact(world_ctx)
 
 func press_fire() -> bool:
 	_ensure_kit()
-	if dead:
+	if dead or is_grabbing() or not has_lantern():
 		return false
 	if lantern != null and lantern.is_lure_active():
 		return try_zip()
@@ -258,7 +308,7 @@ func release_fire() -> void:
 
 func press_throw() -> bool:
 	_ensure_kit()
-	if dead or move_throw == null:
+	if dead or is_grabbing() or not has_lantern() or move_throw == null:
 		return false
 	var ok: bool = move_throw.press()
 	if ok and move_beam != null:
@@ -267,7 +317,7 @@ func press_throw() -> bool:
 
 func press_dash() -> bool:
 	_ensure_kit()
-	if dead or move_dash == null:
+	if dead or is_grabbing() or move_dash == null:
 		return false
 	var ok: bool = move_dash.press()
 	if ok and move_beam != null:
@@ -280,7 +330,7 @@ func release_dash() -> void:
 
 func press_beam() -> bool:
 	_ensure_kit()
-	if dead or move_beam == null:
+	if dead or is_grabbing() or not has_lantern() or move_beam == null:
 		return false
 	move_beam.set_world_ctx(_world_ctx)
 	return move_beam.press_beam()
@@ -293,21 +343,33 @@ func release_beam() -> bool:
 
 func press_sunflare() -> bool:
 	_ensure_kit()
-	if dead or move_sunflare == null:
+	if dead or is_grabbing() or not has_lantern() or move_sunflare == null:
 		return false
 	move_sunflare.set_world_ctx(_world_ctx)
 	return move_sunflare.press()
 
+func press_lens() -> bool:
+	_ensure_kit()
+	if dead or is_grabbing() or not has_lantern() or move_lens == null:
+		return false
+	move_lens.set_world_ctx(_world_ctx)
+	return move_lens.press()
+
 func try_zip() -> bool:
 	_ensure_kit()
-	return false if dead or move_throw == null else move_throw.try_zip()
+	return false if dead or is_grabbing() or not has_lantern() or move_throw == null else move_throw.try_zip()
 
-func try_interact(world_ctx: Node) -> bool:
+func _is_obj_movable(obj: Object) -> bool:
+	return obj != null and is_instance_valid(obj) and obj.has_method("is_movable") and bool(obj.call("is_movable"))
+
+func _get_interact_candidates(world_ctx: Node) -> Array[Dictionary]:
 	var candidates: Array[Dictionary] = []
 	for it_var: Variant in world_get_interactables(world_ctx):
-		if not (it_var is Object and is_instance_valid(it_var as Object)) or not (it_var as Object).has_method("interact"):
+		if not (it_var is Object and is_instance_valid(it_var as Object)):
 			continue
 		var obj: Object = it_var as Object
+		if not obj.has_method("interact") and not _is_obj_movable(obj):
+			continue
 		if obj.get("active") is bool and not bool(obj.get("active")):
 			continue
 		if obj.get("opened") is bool and bool(obj.get("opened")):
@@ -329,12 +391,165 @@ func try_interact(world_ctx: Node) -> bool:
 			return ap
 		return float(a.get("d", INF)) < float(b.get("d", INF))
 	)
+	return candidates
+
+func _call_interact_on(cand_obj: Object, world_ctx: Node) -> bool:
+	if cand_obj == null or not is_instance_valid(cand_obj) or not cand_obj.has_method("interact"):
+		return false
+	var arity: int = get_method_arity(cand_obj, "interact")
+	var res: Variant = cand_obj.call("interact", self) if arity >= 1 else cand_obj.call("interact")
+	if res is bool and bool(res):
+		if world_ctx != null and world_ctx.has_method("save_interactables_to_state"):
+			world_ctx.call("save_interactables_to_state")
+		return true
+	return false
+
+func _press_interact(world_ctx: Node) -> void:
+	if dead:
+		return
+	var cands: Array[Dictionary] = _get_interact_candidates(world_ctx)
+	if cands.is_empty():
+		return
+	var top: Object = cands[0].get("obj") as Object
+	if _is_obj_movable(top):
+		_interact_held = true
+		_interact_hold_t = 0.0
+		_interact_cand = top
+		return
+	try_interact(world_ctx)
+
+func _release_interact(world_ctx: Node) -> void:
+	if is_grabbing():
+		release_grab(world_ctx)
+		_interact_held = false
+		_interact_hold_t = 0.0
+		_interact_cand = null
+		return
+	if _interact_held and _interact_cand != null and is_instance_valid(_interact_cand):
+		_call_interact_on(_interact_cand, world_ctx)
+	_interact_held = false
+	_interact_hold_t = 0.0
+	_interact_cand = null
+
+func _tick_grab_hold(dt: float, world_ctx: Node) -> void:
+	if not _interact_held or is_grabbing():
+		return
+	if _interact_cand == null or not is_instance_valid(_interact_cand) or not _is_obj_movable(_interact_cand):
+		_interact_held = false
+		_interact_cand = null
+		return
+	var irad_v: Variant = _interact_cand.get("radius")
+	var reach: float = maxf(INTERACT_RADIUS, (float(irad_v) if (irad_v is float or irad_v is int) else 0.0) + 8.0)
+	if get_entity_pos(_interact_cand).distance_to(global_position) > reach:
+		_interact_held = false
+		_interact_cand = null
+		return
+	_interact_hold_t += dt
+	if _interact_hold_t >= GRAB_HOLD_DELAY or get_move_input().length() > 0.25:
+		begin_grab(_interact_cand, world_ctx)
+
+func begin_grab(block: Object, world_ctx: Node = null) -> bool:
+	if dead or not _is_obj_movable(block):
+		return false
+	if is_dashing() or is_gliding() or is_zipping() or is_beam_charging():
+		return false
+	var bpos: Vector2 = get_entity_pos(block)
+	var rel: Vector2 = bpos - global_position
+	if rel.length_squared() <= 0.0001:
+		rel = facing if facing.length_squared() > 0.0001 else Vector2.RIGHT
+	if absf(rel.x) >= absf(rel.y):
+		grab_axis = Vector2(1.0 if rel.x >= 0.0 else -1.0, 0.0)
+	else:
+		grab_axis = Vector2(0.0, 1.0 if rel.y >= 0.0 else -1.0)
+	grabbed_block = block
+	facing = grab_axis
+	grab_slide_speed = 0.0
+	velocity = Vector2.ZERO
+	knock = Vector2.ZERO
+	# Gently align Wick onto the cardinal face center if unobstructed
+	var ctx: Node = world_ctx if world_ctx != null else _world_ctx
+	var half_b: float = 8.0
+	if block.has_method("get_solid_rect"):
+		var srect: Rect2 = block.call("get_solid_rect") as Rect2
+		if srect.has_area():
+			half_b = (srect.size.x * 0.5) if absf(grab_axis.x) > 0.5 else (srect.size.y * 0.5)
+	var ideal_pos: Vector2 = bpos - grab_axis * (half_b + BODY_RADIUS + 1.5)
+	var bid: String = str(block.get("id")) if block.get("id") != null else ""
+	if ctx != null and ctx.has_method("collide_ignoring"):
+		var checked: Vector2 = ctx.call("collide_ignoring", ideal_pos, BODY_RADIUS, bid, false, false) as Vector2
+		if checked.distance_to(ideal_pos) < 1.5:
+			global_position = checked
+	emit_sfx("mirror_turn", bpos, true)
+	return true
+
+func release_grab(world_ctx: Node = null) -> void:
+	if not is_grabbing():
+		grabbed_block = null
+		grab_axis = Vector2.ZERO
+		grab_slide_speed = 0.0
+		return
+	var blk: Object = grabbed_block
+	var ctx: Node = world_ctx if world_ctx != null else _world_ctx
+	if blk != null and is_instance_valid(blk) and blk.has_method("move_to"):
+		var bpos: Vector2 = get_entity_pos(blk)
+		var snapped := Vector2(roundf(bpos.x / 8.0) * 8.0, roundf(bpos.y / 8.0) * 8.0)
+		if snapped.distance_to(bpos) <= 3.2 and snapped.distance_to(bpos) > 0.01:
+			var bid: String = str(blk.get("id")) if blk.get("id") != null else ""
+			var can_snap: bool = true
+			if ctx != null and ctx.has_method("can_place_rect") and blk.has_method("get_push_rect_at"):
+				var prect: Rect2 = blk.call("get_push_rect_at", snapped) as Rect2
+				can_snap = bool(ctx.call("can_place_rect", prect, bid))
+			if can_snap:
+				blk.call("move_to", snapped)
+				if ctx != null and ctx.has_method("collide"):
+					global_position = ctx.call("collide", global_position, BODY_RADIUS, false, false) as Vector2
+		if ctx != null and ctx.has_method("save_interactables_to_state"):
+			ctx.call("save_interactables_to_state")
+	grabbed_block = null
+	grab_axis = Vector2.ZERO
+	grab_slide_speed = 0.0
+
+func _tick_grab_move(dt: float, world_ctx: Node) -> void:
+	if not is_grabbing() or not _is_obj_movable(grabbed_block):
+		release_grab(world_ctx)
+		return
+	var blk: Object = grabbed_block
+	var move_in: Vector2 = get_move_input()
+	var proj: float = move_in.dot(grab_axis)
+	if absf(proj) <= 0.15:
+		velocity = Vector2.ZERO
+		grab_slide_speed = 0.0
+		return
+	var step: Vector2 = grab_axis * (signf(proj) * GRAB_SLIDE_SPEED * dt)
+	var bpos: Vector2 = get_entity_pos(blk)
+	var bnext: Vector2 = bpos + step
+	var wnext: Vector2 = global_position + step
+	var bid: String = str(blk.get("id")) if blk.get("id") != null else ""
+	var ctx: Node = world_ctx if world_ctx != null else _world_ctx
+	var block_ok: bool = true
+	if ctx != null and ctx.has_method("can_place_rect") and blk.has_method("get_push_rect_at"):
+		var prect: Rect2 = blk.call("get_push_rect_at", bnext) as Rect2
+		block_ok = bool(ctx.call("can_place_rect", prect, bid))
+	var wick_ok: bool = true
+	if ctx != null and ctx.has_method("collide_ignoring"):
+		var wchk: Vector2 = ctx.call("collide_ignoring", wnext, BODY_RADIUS, bid, false, false) as Vector2
+		if wchk.distance_to(wnext) > 0.35:
+			wick_ok = false
+	if block_ok and wick_ok:
+		if blk.has_method("move_to"):
+			blk.call("move_to", bnext)
+		global_position = wnext
+		velocity = step / maxf(dt, 0.0001)
+		grab_slide_speed = velocity.length()
+	else:
+		velocity = Vector2.ZERO
+		grab_slide_speed = 0.0
+
+func try_interact(world_ctx: Node) -> bool:
+	var candidates: Array[Dictionary] = _get_interact_candidates(world_ctx)
 	for cand: Dictionary in candidates:
 		var cand_obj: Object = cand.get("obj") as Object
-		if cand_obj == null or not is_instance_valid(cand_obj):
-			continue
-		var res: Variant = cand_obj.call("interact")
-		if res is bool and bool(res):
+		if _call_interact_on(cand_obj, world_ctx):
 			return true
 	return false
 
@@ -358,6 +573,10 @@ func on_lantern_lost(at_pos: Vector2, reason: String) -> void:
 		_apply_damage_internal(1.0, at_pos, Vector2.ZERO, reason)
 
 func _apply_damage_internal(amount: float, from_pos: Vector2, knock_dir: Vector2, source: String) -> void:
+	if is_grabbing():
+		release_grab(_world_ctx)
+	_interact_held = false
+	_interact_cand = null
 	var mult: float = clampf(float(Lx.save.settings.get("assist_damage_mult", 1.0)), 0.0, 1.0) if Lx.save != null else 1.0
 	var dmg: float = 0.0 if god else maxf(0.0, amount * mult)
 	if Lx.state != null:
@@ -390,6 +609,65 @@ func _apply_damage_internal(amount: float, from_pos: Vector2, knock_dir: Vector2
 		if Lx.state != null: Lx.state.deaths += 1
 		if Lx.events != null: Lx.events.player_died.emit()
 
+func _check_void_fall(world_ctx: Node) -> void:
+	if dead or is_dashing() or is_gliding() or is_zipping():
+		return
+	var ctx: Node = world_ctx if world_ctx != null else _world_ctx
+	if ctx == null:
+		return
+	var lethal: bool = false
+	if ctx.has_method("is_lethal_void_at"):
+		lethal = bool(ctx.call("is_lethal_void_at", global_position))
+	elif ctx.has_method("tile_at"):
+		var ttype: String = str(ctx.call("tile_at", global_position))
+		lethal = ttype in ["pit", "void"]
+	if not lethal:
+		_last_safe_pos = global_position
+		return
+	kill_by_void(global_position)
+
+func kill_by_void(at_pos: Vector2) -> void:
+	if dead:
+		return
+	var assist_zero: bool = (Lx.save != null and float(Lx.save.settings.get("assist_damage_mult", 1.0)) <= 0.001) \
+			or (Lx.state != null and Lx.state.get("assist_damage_mult") != null and float(Lx.state.get("assist_damage_mult")) <= 0.001)
+	if god or assist_zero:
+		if _last_safe_pos != Vector2.ZERO:
+			global_position = _last_safe_pos
+			last_pos = _last_safe_pos
+		velocity = Vector2.ZERO
+		knock = Vector2.ZERO
+		return
+	if is_grabbing():
+		release_grab(_world_ctx)
+	_interact_held = false
+	_interact_cand = null
+	var lost_hp: float = maxf(1.0, get_hearts())
+	if Lx.state != null:
+		Lx.state.hearts = 0.0
+		Lx.state.hits_taken += 1
+		Lx.state.deaths += 1
+		_local_hearts = 0.0
+	else:
+		_local_hearts = 0.0
+	dead = true
+	velocity = Vector2.ZERO
+	knock = Vector2.ZERO
+	hurt_flash = 1.0
+	if move_dash != null: move_dash.cancel()
+	if move_wings != null: move_wings.stop_glide()
+	if move_beam != null: move_beam.cancel()
+	if move_throw != null: move_throw.cancel_zip()
+	trigger_hitstop(HS_HURT)
+	trigger_shake(SHAKE_HURT)
+	spawn_ring(at_pos, 10.0, 2.0, 0.28, PAL_DUSK, 2.0)
+	spawn_ring(at_pos, 2.0, 14.0, 0.24, PAL_CORAL, 1.2)
+	spawn_sparks(at_pos, Vector2.UP, 10, PAL_CORAL, 20.0, 75.0, 0.28)
+	emit_sfx("wick_hurt", at_pos, false)
+	if Lx.events != null:
+		Lx.events.player_damaged.emit(lost_hp, at_pos, Vector2.ZERO, "void")
+		Lx.events.player_died.emit()
+
 func get_hearts() -> float:
 	return Lx.state.hearts if Lx.state != null else _local_hearts
 
@@ -417,6 +695,9 @@ func is_zipping() -> bool:
 
 func is_beam_charging() -> bool:
 	return move_beam != null and move_beam.is_charging()
+
+func is_grabbing() -> bool:
+	return grabbed_block != null and is_instance_valid(grabbed_block)
 
 func beam_charge_progress() -> float:
 	return move_beam.charge_progress() if move_beam != null else 0.0

@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    128
+    136
   ],
   "zones": [
     {
@@ -25,14 +25,14 @@
       "id": "exit_spire_r6_west",
       "rect": [
         0,
-        96,
+        112,
         16,
         48
       ],
       "to_region": "spire_r5",
       "to_spawn": [
-        440,
-        112
+        456,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_spire_r6_north",
       "rect": [
-        224,
+        240,
         0,
         32,
         16
       ],
       "to_region": "spire_r7",
       "to_spawn": [
-        208,
-        168
+        288,
+        216
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -68,16 +68,16 @@
       "shard_drop": 14,
       "pos": [
         256,
-        128
+        136
       ],
       "route": [
         [
-          184,
-          128
+          192,
+          136
         ],
         [
           328,
-          128
+          136
         ]
       ],
       "perches": [],
@@ -87,23 +87,62 @@
   ],
   "interactables": [
     {
+      "id": "transformer_spire_r6_nw",
+      "kind": "blue_transformer",
+      "pos": [
+        168,
+        104
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "transformer_spire_r6_se",
+      "kind": "blue_transformer",
+      "pos": [
+        336,
+        168
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
       "id": "wick_key_7_2",
       "kind": "wick_key",
       "pos": [
-        336,
-        128
+        368,
+        120
       ],
       "props": {
         "dungeon_id": "mirror_spire",
         "key_kind": "wick_key",
-        "flag_id": "wick_key_7_2"
+        "flag_id": "wick_key_7_2",
+        "requires_flag": "moonshade_warden_defeated"
       }
     },
     {
       "id": "door_spire_r6_north",
       "kind": "door",
       "pos": [
-        240,
+        256,
         24
       ],
       "props": {
@@ -125,34 +164,70 @@
   "scenery": [
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
+      "prop": "moon_dial_floor",
       "pos": [
-        192,
+        368,
+        120
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "reflection_ripple_ring",
+      "pos": [
+        104,
         48
       ],
-      "layer": "sort",
+      "layer": "ground",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": false,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "reflection_ripple_ring",
+      "pos": [
+        392,
+        48
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.75
     },
     {
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        288,
-        48
+        216,
+        56
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.1
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "glass_colonade_pillar",
+      "pos": [
+        296,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
     },
     {
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        184,
-        212
+        168,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -163,25 +238,25 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        296,
-        212
+        344,
+        200
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
       "phase": 0.7
     },
     {
       "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
+      "prop": "moon_crystal_cluster",
       "pos": [
-        376,
-        128
+        440,
+        144
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.35
+      "phase": 0.45
     }
   ],
   "is_2x2_room": true

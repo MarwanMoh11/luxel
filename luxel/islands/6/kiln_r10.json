@@ -32,7 +32,7 @@
       "to_region": "kiln_r9",
       "to_spawn": [
         224,
-        40
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -70,11 +70,11 @@
       ],
       "route": [
         [
-          176,
+          192,
           136
         ],
         [
-          336,
+          312,
           136
         ]
       ],
@@ -120,8 +120,8 @@
       "id": "brazier_kiln_r10_w",
       "kind": "brazier",
       "pos": [
-        144,
-        96
+        152,
+        136
       ],
       "props": {
         "lit_by_default": true,
@@ -132,8 +132,8 @@
       "id": "brazier_kiln_r10_e",
       "kind": "brazier",
       "pos": [
-        368,
-        96
+        376,
+        136
       ],
       "props": {
         "lit_by_default": true,
@@ -145,9 +145,9 @@
     {
       "id": "trig_boss_kilnmother",
       "rect": [
-        176,
         192,
-        160,
+        192,
+        128,
         48
       ],
       "string_id": "BOSS_KILNMOTHER",
@@ -157,10 +157,22 @@
   "scenery": [
     {
       "sheet": "island6_scenery",
+      "prop": "crucible_floor_seal",
+      "pos": [
+        256,
+        136
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        176,
-        56
+        200,
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -171,8 +183,8 @@
       "sheet": "island6_scenery",
       "prop": "iron_chain_pillar",
       "pos": [
-        336,
-        56
+        312,
+        64
       ],
       "layer": "sort",
       "flip_x": true,
@@ -181,34 +193,10 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
-      "pos": [
-        88,
-        144
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
-      "pos": [
-        424,
-        144
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        176,
-        232
+        232,
+        216
       ],
       "layer": "sort",
       "flip_x": false,
@@ -219,8 +207,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        336,
-        232
+        280,
+        216
       ],
       "layer": "sort",
       "flip_x": true,
@@ -229,27 +217,27 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
+      "prop": "obsidian_obelisk",
       "pos": [
-        120,
-        196
+        128,
+        100
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.35
+      "phase": 0.15
     },
     {
       "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
+      "prop": "obsidian_obelisk",
       "pos": [
-        392,
-        196
+        384,
+        100
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.85
+      "phase": 0.65
     }
   ],
   "is_2x2_room": true

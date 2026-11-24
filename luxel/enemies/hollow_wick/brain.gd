@@ -180,8 +180,9 @@ func _step_position(dt: float) -> void:
 	var dist: float = to_t.length()
 	if dist > 0.01:
 		_turn_toward(to_t.angle(), 4.2, dt)
-	state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
-	if cooldown <= 0.0 and dist <= notice_radius and _is_on_screen() and _claim_token():
+	var can_act: bool = director == null or director.can_claim_ranged_token(self)
+	state = State.POSITION if can_act else State.WAIT_TOKEN
+	if can_act and cooldown <= 0.0 and dist <= notice_radius and _is_on_screen() and _claim_token():
 		_begin_move_tell(target)
 		return
 	if dist > 0.01:
@@ -199,15 +200,20 @@ func _begin_move_tell(target: Vector2) -> void:
 	if target.distance_to(pos) > 0.01:
 		facing = (target - pos).angle()
 	commit_dir = Vector2.from_angle(facing)
+	if active_move == MoveKind.LANTERN_ZIP:
+		dark_lantern_pos = _clamp_point(pos + commit_dir * clampf(target.distance_to(pos), 32.0, 92.0))
 	_emit_attack_started()
 	_emit_sfx("hollow_wick_tell")
 
 func _step_tell(dt: float) -> void:
 	if state_timer > 0.16:
-		var to_t: Vector2 = _attention_target() - pos
+		var target_now: Vector2 = _attention_target()
+		var to_t: Vector2 = target_now - pos
 		if to_t.length() > 0.01:
 			_turn_toward(to_t.angle(), 3.2, dt)
 			commit_dir = Vector2.from_angle(facing)
+		if active_move == MoveKind.LANTERN_ZIP:
+			dark_lantern_pos = _clamp_point(pos + commit_dir * clampf(target_now.distance_to(pos), 32.0, 92.0))
 	state_timer -= dt
 	if state_timer <= 0.0:
 		state = State.COMMIT
@@ -221,7 +227,7 @@ func _step_tell(dt: float) -> void:
 			state_timer = DASH_COMMIT_TIME
 		else:
 			state_timer = ZIP_THROW_TIME + ZIP_FLY_TIME
-			dark_lantern_pos = _clamp_point(pos + commit_dir * clampf(_attention_target().distance_to(pos), 32.0, 92.0))
+			dark_lantern_pos = _clamp_point(dark_lantern_pos)
 			dark_lantern_out = true
 			hollow_lantern_thrown.emit(pos, dark_lantern_pos, self)
 		_emit_sfx("hollow_wick_commit")
@@ -336,6 +342,9 @@ func _draw_lunar_bolt(pt: Vector2, dir: Vector2) -> void:
 
 func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	if state == State.COMMIT and active_move == MoveKind.LANTERN_ZIP and dark_lantern_out and (commit_elapsed < ZIP_THROW_TIME or pos.distance_to(dark_lantern_pos) > 6.0):
+		var z_urg: float = lerpf(0.75, 1.0, clampf(commit_elapsed / maxf(ZIP_THROW_TIME, 0.05), 0.0, 1.0))
+		LxBossTelegraphFx.draw_ground_danger_ring(self, dark_lantern_pos - pos, 26.0, z_urg, anim_t, "sky", "coral")
 	if dark_lantern_out or _sprite_sheet == null:
 		var lan_off: Vector2 = ((dark_lantern_pos - pos) if dark_lantern_out else (c + Vector2.from_angle(facing) * 6.0)).round()
 		if dark_lantern_out:
@@ -354,10 +363,14 @@ func _draw_extra(off: Vector2) -> void:
 		draw_rect(Rect2(lan_off + Vector2(-1.0, -1.0), Vector2(2.0, 2.0)), PAL["ice"] as Color, true)
 		draw_rect(Rect2(lan_off + Vector2(0.0, -1.0), Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	if state == State.TELL:
+		var t_urg: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var hot_t: bool = state_timer <= 0.22 * _assist_tell_scale()
 		var tc: Color = (PAL["coral"] if hot_t else (PAL["gold"] if lured_now else PAL["ice"])) as Color
-		draw_line(c, (c + commit_dir * (36.0 if active_move == MoveKind.FLARE_DASH else 50.0)).round(), tc, 1.8 if hot_t else 1.4)
-		if active_move == MoveKind.BOLT_VOLLEY:
+		if active_move == MoveKind.FLARE_DASH:
+			var dash_len: float = DASH_SPEED * DASH_COMMIT_TIME + DASH_HIT_R
+			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + commit_dir * dash_len, DASH_HIT_R, t_urg, anim_t, "coral", "gold")
+		elif active_move == MoveKind.BOLT_VOLLEY:
+			draw_line(c, (c + commit_dir * 50.0).round(), tc, 1.8 if hot_t else 1.4)
 			var vc: int = _volley_count()
 			var vs: float = _volley_spread()
 			var vm: float = float(vc - 1) * 0.5
@@ -365,12 +378,11 @@ func _draw_extra(off: Vector2) -> void:
 				var vdir: Vector2 = commit_dir.rotated((float(vi) - vm) * vs)
 				draw_line(c, (c + vdir * VOLLEY_RANGE).round(), (PAL["coral"] if hot_t else PAL["blue"]) as Color, 1.4 if hot_t else 1.0)
 				_draw_lunar_bolt(c + vdir * 22.0, vdir)
-		elif active_move == MoveKind.LANTERN_ZIP and dark_lantern_out:
+		elif active_move == MoveKind.LANTERN_ZIP:
 			var zc: Vector2 = (dark_lantern_pos - pos).round()
-			var zcol: Color = (PAL["cream"] if hot_t else PAL["coral"]) as Color
-			for zi: int in range(10):
-				var za: float = float(zi) * (TAU / 10.0)
-				draw_arc(zc, ZIP_BURST_R, za, za + 0.30, 3, zcol, 1.4 if hot_t else 1.0)
+			LxBossTelegraphFx.draw_ground_danger_ring(self, zc, 26.0, t_urg, anim_t, "sky", "coral")
+			draw_line(c, zc, (PAL["coral"] if hot_t else PAL["sky"]) as Color, 1.3)
+			draw_circle(zc, 2.2, (PAL["cream"] if hot_t else PAL["ice"]) as Color)
 	elif state == State.COMMIT and active_move == MoveKind.BOLT_VOLLEY:
 		var prog: float = clampf(commit_elapsed / VOLLEY_COMMIT_TIME, 0.0, 1.0)
 		var vc2: int = _volley_count()

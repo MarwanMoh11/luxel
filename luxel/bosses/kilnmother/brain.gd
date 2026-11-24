@@ -2,11 +2,12 @@ class_name LxKilnmotherBoss
 extends LxCinderGolemBrain
 ## Ashen Kiln Boss (Island 6): the Kilnmother, a towering furnace with heavy slag armour (4.5).
 ## 3 phases, HP 13.5. Sunflare cracks her armour and stuns her for huge damage.
-## Combines Bellows Gust (pushes Wick & thrown lantern straight back) and Molten Shockwave rings!
+## Hitting her glowing belly during BELLOWS_GUST inhale (TELL) interrupts & staggers her 0.9s!
+## P2 adds a 4-Way Furnace Cross-Blast (tell >= 0.55s) alongside Bellows Gust & Molten Rings.
 
 signal gust_emitted(origin: Vector2, dir: Vector2, gust_range: float, half_width: float, source: LxEnemyBrain)
 
-enum KilnMove { MOLTEN_RING, BELLOWS_GUST }
+enum KilnMove { MOLTEN_RING, BELLOWS_GUST, FURNACE_CROSS }
 enum RingStage { RING_1, PAUSE, RING_2 }
 
 const KILN_ARMOUR_MAX: float = 4.5
@@ -24,6 +25,14 @@ const GUST_DMG_R: float = 60.0
 const GUST_PUSH_WICK: float = 275.0
 const GUST_PUSH_LANTERN: float = 175.0
 const GUST_RECOVER: float = 1.25
+const BELLY_INTERRUPT_STAGGER: float = 0.90
+
+const CROSS_TELL_P2: float = 0.58
+const CROSS_TELL_P3: float = 0.55
+const CROSS_COMMIT_TIME: float = 0.36
+const CROSS_RANGE: float = 114.0
+const CROSS_HALF_W: float = 12.0
+const CROSS_RECOVER: float = 1.30
 const ROAR_TIME: float = 0.70
 
 var active_move: int = KilnMove.MOLTEN_RING
@@ -32,6 +41,9 @@ var move_cycle: int = 0
 var gust_dir: Vector2 = Vector2.RIGHT
 var gust_hit: bool = false
 var gust_announced: bool = false
+var cross_base_ang: float = 0.0
+var cross_progress: float = 0.0
+var cross_hit: bool = false
 var _roaring: bool = false
 
 
@@ -72,15 +84,46 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	gust_dir = Vector2.from_angle(facing)
 	gust_hit = false
 	gust_announced = false
+	cross_base_ang = facing
+	cross_progress = 0.0
+	cross_hit = false
 	_roaring = false
 
 
 func take_hit(hit: LxHit) -> int:
+	if state == State.DEAD or hit == null:
+		return HitResult.GLANCED
 	if _roaring:
 		_emit_enemy_hit(hit, HitResult.GLANCED)
 		return HitResult.GLANCED
-	var h: Dictionary = _read_hit(hit) if hit != null else {}
-	var sunflare_crack: bool = hit != null and bool(h.get("cracks_armour", false)) and armour_intact
+	var h: Dictionary = _read_hit(hit)
+	# Hitting her glowing exposed belly during BELLOWS_GUST inhale (TELL) interrupts & staggers her 0.9s!
+	if state == State.TELL and active_move == KilnMove.BELLOWS_GUST:
+		var dmg: float = float(h["damage"])
+		var orig: Vector2 = h["origin"] as Vector2
+		var rel: Vector2 = orig - pos
+		if bool(h.get("cracks_armour", false)) and armour_intact:
+			_crack_armour()
+		hp -= dmg
+		wary = true
+		flash_t = 0.18
+		if rel.length() > 0.01:
+			knock = -rel.normalized() * 72.0
+		active_move = KilnMove.MOLTEN_RING
+		_boss_impact(0.22, 84.0, 88.0)
+		_emit_sfx("kilnmother_belly_interrupt")
+		if hp <= 0.001:
+			opened_kill = true
+			_die(hit)
+			return HitResult.KILLED
+		if not _check_phase_transition_bool():
+			_release_token()
+			state = State.STAGGER
+			state_timer = BELLY_INTERRUPT_STAGGER
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
+
+	var sunflare_crack: bool = bool(h.get("cracks_armour", false)) and armour_intact
 	var res: int = super.take_hit(hit)
 	if is_alive() and sunflare_crack:
 		hp = maxf(0.0, hp - float(h.get("damage", 0.0)) * 0.25)
@@ -93,11 +136,18 @@ func take_hit(hit: LxHit) -> int:
 	return res
 
 
-func _check_phase_transition() -> void:
+func _check_phase_transition_bool() -> bool:
 	if phase < 2 and hp <= max_hp * 0.66 and hp > 0.001:
 		_enter_phase(2)
-	elif phase < 3 and hp <= max_hp * 0.33 and hp > 0.001:
+		return true
+	if phase < 3 and hp <= max_hp * 0.33 and hp > 0.001:
 		_enter_phase(3)
+		return true
+	return false
+
+
+func _check_phase_transition() -> void:
+	_check_phase_transition_bool()
 
 
 func _enter_phase(next_phase: int) -> void:
@@ -106,6 +156,7 @@ func _enter_phase(next_phase: int) -> void:
 	active_move = KilnMove.MOLTEN_RING
 	ring_stage = RingStage.RING_1
 	stomp_progress = 0.0
+	cross_progress = 0.0
 	if phase == 2 and not armour_intact:
 		armour_intact = true
 		armour_hp = 2.0
@@ -115,6 +166,7 @@ func _enter_phase(next_phase: int) -> void:
 	if Lx.events != null:
 		Lx.events.boss_phase_changed.emit(boss_id, phase)
 		Lx.events.shake_requested.emit(0.35)
+	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
 	_emit_sfx("kilnmother_phase")
 
 
@@ -132,13 +184,27 @@ func _step_brain(dt: float) -> void:
 func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
 	if dist > KILN_TRIGGER_R:
 		return false
-	var want_gust: bool = (_is_lantern_out() and dist <= GUST_RANGE) or (move_cycle % 2 == 1)
-	if not want_gust and dist > KILN_RING_MAX_R + 14.0:
-		want_gust = true
+	var chosen: int = KilnMove.MOLTEN_RING
+	if phase >= 2:
+		var slot_m: int = move_cycle % 3
+		if _is_lantern_out() and dist <= GUST_RANGE and slot_m != 2:
+			chosen = KilnMove.BELLOWS_GUST
+		elif slot_m == 1:
+			chosen = KilnMove.BELLOWS_GUST
+		elif slot_m == 2:
+			chosen = KilnMove.FURNACE_CROSS
+		else:
+			chosen = KilnMove.MOLTEN_RING if dist <= KILN_RING_MAX_R + 14.0 else KilnMove.FURNACE_CROSS
+	else:
+		var want_gust: bool = (_is_lantern_out() and dist <= GUST_RANGE) or (move_cycle % 2 == 1)
+		if not want_gust and dist > KILN_RING_MAX_R + 14.0:
+			want_gust = true
+		chosen = KilnMove.BELLOWS_GUST if want_gust else KilnMove.MOLTEN_RING
 	if not _claim_token():
 		return false
 
 	move_cycle += 1
+	active_move = chosen
 	state = State.TELL
 	lunge_attack = false
 	is_counter_attack = false
@@ -146,16 +212,21 @@ func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
 	if to_t.length() > 0.01:
 		facing = to_t.angle()
 
-	if want_gust:
-		active_move = KilnMove.BELLOWS_GUST
+	if active_move == KilnMove.BELLOWS_GUST:
 		gust_dir = to_t.normalized() if to_t.length() > 0.01 else Vector2.from_angle(facing)
 		gust_hit = false
 		gust_announced = false
 		var base_g: float = GUST_TELL_P3 if phase >= 3 else GUST_TELL_P1
 		last_tell_duration = _scaled_tell(base_g, false, attack_damage)
 		_emit_sfx("kilnmother_bellows_inhale")
+	elif active_move == KilnMove.FURNACE_CROSS:
+		cross_base_ang = facing
+		cross_progress = 0.0
+		cross_hit = false
+		var base_c: float = CROSS_TELL_P3 if phase >= 3 else CROSS_TELL_P2
+		last_tell_duration = _scaled_tell(base_c, false, attack_damage)
+		_emit_sfx("golem_stomp_tell")
 	else:
-		active_move = KilnMove.MOLTEN_RING
 		ring_stage = RingStage.RING_1
 		stomp_progress = 0.0
 		stomp_hit = false
@@ -174,6 +245,11 @@ func _step_tell(dt: float, target_pos: Vector2) -> void:
 		if to_t.length() > 0.01:
 			_turn_toward(to_t.angle(), 2.4, dt)
 			gust_dir = Vector2.from_angle(facing)
+	elif active_move == KilnMove.FURNACE_CROSS and state_timer > 0.22:
+		var to_c: Vector2 = target_pos - pos
+		if to_c.length() > 0.01:
+			_turn_toward(to_c.angle(), 2.4, dt)
+			cross_base_ang = facing
 	state_timer -= dt
 	if state_timer <= 0.0:
 		_enter_commit()
@@ -188,6 +264,14 @@ func _enter_commit() -> void:
 		_boss_impact(0.20, 115.0, 110.0)
 		_emit_sfx("kilnmother_bellows_gust")
 		return
+	if active_move == KilnMove.FURNACE_CROSS:
+		state = State.COMMIT
+		state_timer = CROSS_COMMIT_TIME
+		cross_progress = 0.0
+		cross_hit = false
+		_boss_impact(0.22, 108.0, 104.0)
+		_emit_sfx("kilnmother_bellows_gust")
+		return
 	ring_stage = RingStage.RING_1
 	super._enter_commit()
 
@@ -195,6 +279,9 @@ func _enter_commit() -> void:
 func _step_commit(dt: float) -> void:
 	if active_move == KilnMove.BELLOWS_GUST:
 		_step_bellows_commit(dt)
+		return
+	if active_move == KilnMove.FURNACE_CROSS:
+		_step_cross_commit(dt)
 		return
 	if ring_stage == RingStage.PAUSE:
 		state_timer -= dt
@@ -232,6 +319,32 @@ func _step_commit(dt: float) -> void:
 			state = State.RECOVER
 			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
 			last_recover_duration = state_timer
+
+
+func _step_cross_commit(dt: float) -> void:
+	state_timer = maxf(0.0, state_timer - dt)
+	cross_progress = 1.0 - clampf(state_timer / CROSS_COMMIT_TIME, 0.0, 1.0)
+	var cur_len: float = lerpf(14.0, CROSS_RANGE, cross_progress)
+	if not cross_hit and _has_player():
+		var wp: Vector2 = _get_wick_pos()
+		for ci: int in range(4):
+			var cdir: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
+			if Geometry2D.get_closest_point_to_segment(wp, pos, pos + cdir * cur_len).distance_to(wp) <= CROSS_HALF_W:
+				cross_hit = true
+				_emit_player_hit(cdir, attack_damage)
+				break
+	if _is_lantern_out():
+		var lp: Vector2 = _get_lantern_pos()
+		for ci: int in range(4):
+			var cdir_l: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
+			if Geometry2D.get_closest_point_to_segment(lp, pos, pos + cdir_l * cur_len).distance_to(lp) <= CROSS_HALF_W + 3.0:
+				if Lx.events != null:
+					Lx.events.lantern_struck.emit(lp)
+				break
+	if state_timer <= 0.0:
+		state = State.RECOVER
+		state_timer = maxf(MIN_RECOVER_TIME, CROSS_RECOVER)
+		last_recover_duration = state_timer
 
 
 func _step_bellows_commit(dt: float) -> void:
@@ -283,26 +396,33 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
+	var c: Vector2 = off.round()
+	var belly_exposed: bool = active_move == KilnMove.BELLOWS_GUST and state == State.TELL
 	if _sprite_sheet == null:
 		# Kiln chimney crown + glowing furnace belly
 		draw_rect(Rect2(off + Vector2(-4.0, -body_radius - 5.0), Vector2(8.0, 5.0)), PAL["night"] as Color, true)
 		draw_rect(Rect2(off + Vector2(-2.5, -body_radius - 4.0), Vector2(5.0, 3.0)), PAL["apricot"] as Color, true)
-		draw_circle(off + Vector2(0.0, 1.0), 4.2, PAL["night"] as Color)
-		draw_circle(off + Vector2(0.0, 1.0), 2.8, (PAL["cream"] as Color) if not armour_intact else (PAL["coral"] as Color))
+		draw_circle(off + Vector2(0.0, 1.0), 4.8 if belly_exposed else 4.2, PAL["night"] as Color)
+		draw_circle(off + Vector2(0.0, 1.0), 3.4 if belly_exposed else 2.8, (PAL["cream"] as Color) if (belly_exposed or not armour_intact) else (PAL["coral"] as Color))
 	if armour_intact:
 		LxDamageFx.draw_armour_plates(self, off, body_radius + 3.5, 2.0, armour_hp, armour_max)
-	if active_move == KilnMove.BELLOWS_GUST and state == State.TELL:
+	if belly_exposed:
+		# Blazing belly target reticle during inhale TELL (shoot to interrupt & stagger!)
+		var br: float = 5.5 + (0.0 if LxHudFx.flash_reduced() else 1.2 * sin(anim_t * 22.0))
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		var g_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var g_locked: bool = state_timer <= 0.22
-		var rail_col: Color = (PAL["coral"] if g_locked else PAL["gold"]) as Color
-		draw_line((off - side * GUST_HALF_W * 0.72).round(), (off - side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE).round(), rail_col, 1.4)
-		draw_line((off + side * GUST_HALF_W * 0.72).round(), (off + side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE).round(), rail_col, 1.4)
 		var dmg_pt: Vector2 = off + gust_dir * GUST_DMG_R
-		draw_line((dmg_pt - side * GUST_HALF_W * 0.72).round(), (dmg_pt + side * GUST_HALF_W * 0.72).round(), (PAL["cream"] if g_locked else PAL["coral"]) as Color, 1.4)
+		var end_pt: Vector2 = off + gust_dir * GUST_RANGE
+		LxBossTelegraphFx.draw_ground_danger_lane(self, dmg_pt, end_pt, GUST_HALF_W, g_prog, anim_t, "apricot", "gold")
+		LxBossTelegraphFx.draw_ground_danger_lane(self, off, dmg_pt, GUST_HALF_W, g_prog, anim_t, "coral", "gold")
+		draw_arc(c + Vector2(0.0, 1.0), br, 0.0, TAU, 16, PAL["gold"] as Color, 1.8)
+		draw_circle(c + Vector2(0.0, 1.0), 2.5, PAL["cream"] as Color)
 		var pull_d: float = lerpf(46.0, 12.0, g_prog)
 		draw_line((off + gust_dir * pull_d - side * 14.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["apricot"] as Color, 1.3)
 		draw_line((off + gust_dir * pull_d + side * 14.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["apricot"] as Color, 1.3)
+		if state_timer <= 0.35:
+			var g_urg: float = 1.0 - clampf(state_timer / 0.35, 0.0, 1.0)
+			LxBossTelegraphFx.draw_ground_danger_ring(self, off + gust_dir * (GUST_DMG_R * 0.72), 15.0, g_urg, anim_t, "coral", "gold")
 	elif active_move == KilnMove.BELLOWS_GUST and state == State.COMMIT:
 		var side2: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		var g_len: float = GUST_RANGE * 0.88
@@ -324,14 +444,51 @@ func _draw_extra(off: Vector2) -> void:
 			draw_line(ep, (ep - gust_dir * 5.0).round(), PAL["coral"] as Color, 1.5)
 			draw_circle(ep, 1.6, PAL["gold"] as Color)
 			draw_circle(ep, 0.8, PAL["cream"] as Color)
+	elif active_move == KilnMove.FURNACE_CROSS and state == State.TELL:
+		var hot_c: bool = state_timer <= 0.22
+		var show_rings: bool = state_timer <= 0.35
+		var c_urg: float = 1.0 - clampf(state_timer / 0.35, 0.0, 1.0)
+		for ci: int in range(4):
+			var cdir: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
+			var cperp: Vector2 = Vector2(-cdir.y, cdir.x)
+			var cend: Vector2 = (c + cdir * CROSS_RANGE).round()
+			draw_line((c + cperp * (CROSS_HALF_W * 0.72)).round(), (cend + cperp * (CROSS_HALF_W * 0.72)).round(), PAL["void"] as Color, 2.4)
+			draw_line((c - cperp * (CROSS_HALF_W * 0.72)).round(), (cend - cperp * (CROSS_HALF_W * 0.72)).round(), PAL["void"] as Color, 2.4)
+			draw_line((c + cperp * (CROSS_HALF_W * 0.65)).round(), (cend + cperp * (CROSS_HALF_W * 0.65)).round(), PAL["coral"] as Color, 1.2)
+			draw_line((c - cperp * (CROSS_HALF_W * 0.65)).round(), (cend - cperp * (CROSS_HALF_W * 0.65)).round(), PAL["coral"] as Color, 1.2)
+			draw_line(c, cend, (PAL["cream"] if hot_c else PAL["gold"]) as Color, 1.8 if hot_c else 1.3)
+			if show_rings:
+				LxBossTelegraphFx.draw_ground_danger_ring(self, c + cdir * 42.0, 11.0, c_urg, anim_t, "coral", "gold")
+				LxBossTelegraphFx.draw_ground_danger_ring(self, c + cdir * 82.0, 12.0, c_urg, anim_t, "coral", "gold")
+	elif active_move == KilnMove.FURNACE_CROSS and state == State.COMMIT:
+		var cur_len: float = lerpf(14.0, CROSS_RANGE, cross_progress)
+		for ci: int in range(4):
+			var cdir: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
+			var cend: Vector2 = (c + cdir * cur_len).round()
+			draw_line(c, cend, PAL["wine"] as Color, 9.0)
+			draw_line(c, cend, PAL["coral"] as Color, 6.0)
+			draw_line(c, cend, PAL["apricot"] as Color, 3.6)
+			draw_line(c, cend, PAL["gold"] as Color, 2.0)
+			draw_line(c, cend, PAL["cream"] as Color, 1.0)
+			draw_circle(cend, 2.4, PAL["gold"] as Color)
+			draw_circle(cend, 1.2, PAL["cream"] as Color)
 	elif active_move == KilnMove.MOLTEN_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		if state_timer <= 0.35:
+			var r_urg: float = 1.0 - clampf(state_timer / 0.35, 0.0, 1.0)
+			draw_arc(off, KILN_RING_MAX_R + 1.5, 0.0, TAU, 32, PAL["void"] as Color, 2.4)
+			for ki: int in range(4):
+				var kd: Vector2 = Vector2.from_angle(float(ki) * (PI * 0.5) + 0.4)
+				LxBossTelegraphFx.draw_ground_danger_ring(self, off + kd * 44.0, 12.0, r_urg, anim_t, "coral", "gold")
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(off, KILN_RING_MAX_R, a0, a0 + 0.24, 3, PAL["coral"] as Color, 1.0)
 		draw_arc(off, lerpf(KILN_RING_MAX_R, STOMP_START_R + 6.0, prog), 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["apricot"]) as Color, 1.8)
 	elif active_move == KilnMove.MOLTEN_RING and state == State.COMMIT:
 		if ring_stage == RingStage.PAUSE:
+			if state_timer <= 0.35:
+				var p_urg: float = 1.0 - clampf(state_timer / 0.35, 0.0, 1.0)
+				LxBossTelegraphFx.draw_ground_danger_ring(self, off, KILN_RING_MAX_R * 0.5, p_urg, anim_t, "coral", "gold")
 			for oi: int in range(12):
 				var oa0: float = float(oi) * (TAU / 12.0)
 				draw_arc(off, KILN_RING_MAX_R, oa0, oa0 + 0.24, 3, PAL["coral"] as Color, 1.0)

@@ -24,10 +24,13 @@ const REGIONS: Array[String] = [
 	"belfry_r7",
 ]
 
+const TutorialCuesScript := preload("res://luxel/islands/1/tutorial_cues.gd")
+
 var _events: LxEventBus = null
 var _state: LxGameState = null
 var _attached: bool = false
 var _r4_kills: int = 0
+var _tutorial_cues: Node2D = null
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -45,9 +48,11 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.boss_phase_changed.connect(_on_boss_phase_changed)
 	_events.boss_defeated.connect(_on_boss_defeated)
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
+	_events.lantern_picked_up.connect(_on_lantern_picked_up)
 
 
 func detach() -> void:
+	_unmount_tutorial_cues()
 	if not _attached or _events == null:
 		_attached = false
 		return
@@ -65,7 +70,38 @@ func detach() -> void:
 		_events.boss_defeated.disconnect(_on_boss_defeated)
 	if _events.great_lamp_relit.is_connected(_on_great_lamp_relit):
 		_events.great_lamp_relit.disconnect(_on_great_lamp_relit)
+	if _events.lantern_picked_up.is_connected(_on_lantern_picked_up):
+		_events.lantern_picked_up.disconnect(_on_lantern_picked_up)
 	_attached = false
+
+
+func on_region_loaded(region_id: String) -> void:
+	if region_id == "overworld":
+		_mount_tutorial_cues()
+	else:
+		_unmount_tutorial_cues()
+
+
+func _mount_tutorial_cues() -> void:
+	if Lx.world == null or not is_instance_valid(Lx.world):
+		return
+	if _tutorial_cues != null and is_instance_valid(_tutorial_cues) and _tutorial_cues.get_parent() == Lx.world:
+		return
+	var existing: Node = Lx.world.get_node_or_null("Island1TutorialCues")
+	if existing is Node2D and is_instance_valid(existing):
+		_tutorial_cues = existing as Node2D
+		return
+	var cues: Node2D = TutorialCuesScript.new() as Node2D
+	if cues != null:
+		cues.name = "Island1TutorialCues"
+		Lx.world.add_child(cues)
+		_tutorial_cues = cues
+
+
+func _unmount_tutorial_cues() -> void:
+	if _tutorial_cues != null and is_instance_valid(_tutorial_cues):
+		_tutorial_cues.queue_free()
+	_tutorial_cues = null
 
 
 func get_region_list() -> PackedStringArray:
@@ -75,10 +111,22 @@ func get_region_list() -> PackedStringArray:
 func get_main_path_waypoints() -> Array[Dictionary]:
 	return [
 		{
+			"id": "wp_lantern_pickup",
+			"region": "overworld",
+			"zone": "plaza",
+			"pos": [640.0, 366.0],
+			"action": "interact",
+			"target": "lantern_pickup_1",
+			"grants_move": "throw",
+			"grants_flag": "lantern_picked_up",
+			"requires_moves": [],
+			"requires_flags": [],
+		},
+		{
 			"id": "wp_plaza_warden",
 			"region": "overworld",
 			"zone": "plaza",
-			"pos": [692.0, 362.0],
+			"pos": [574.0, 366.0],
 			"action": "clear_encounter",
 			"target": "warden_plaza_0",
 			"requires_moves": ["bolt"],
@@ -88,7 +136,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_shrine_dash",
 			"region": "overworld",
 			"zone": "orchard",
-			"pos": [360.0, 198.0],
+			"pos": [164.0, 176.0],
 			"action": "claim_shrine",
 			"target": "shrine_dash",
 			"grants_move": "dash",
@@ -99,7 +147,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_beacon_orchard",
 			"region": "overworld",
 			"zone": "orchard",
-			"pos": [204.0, 196.0],
+			"pos": [224.0, 176.0],
 			"action": "light_beacon",
 			"target": "beacon_orchard",
 			"grants_flag": "beacon_orchard",
@@ -107,21 +155,10 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_flags": [],
 		},
 		{
-			"id": "wp_shrine_throw",
-			"region": "overworld",
-			"zone": "observatory",
-			"pos": [314.0, 372.0],
-			"action": "claim_shrine",
-			"target": "shrine_throw",
-			"grants_move": "throw",
-			"requires_moves": ["bolt", "dash"],
-			"requires_flags": ["beacon_orchard"],
-		},
-		{
 			"id": "wp_beacon_observatory",
 			"region": "overworld",
 			"zone": "observatory",
-			"pos": [182.0, 376.0],
+			"pos": [184.0, 376.0],
 			"action": "light_beacon",
 			"target": "beacon_observatory",
 			"grants_flag": "beacon_observatory",
@@ -142,7 +179,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_beacon_bridge",
 			"region": "overworld",
 			"zone": "moonlit_bridge",
-			"pos": [1128.0, 360.0],
+			"pos": [1136.0, 360.0],
 			"action": "light_beacon",
 			"target": "beacon_bridge",
 			"grants_flag": "beacon_bridge",
@@ -186,7 +223,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_belfry_nave",
 			"region": "belfry_r4",
 			"zone": "belfry_nave",
-			"pos": [208.0, 112.0],
+			"pos": [208.0, 136.0],
 			"action": "clear_room",
 			"target": "door_r4_combat",
 			"grants_flag": "r4_cleared",
@@ -266,15 +303,18 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		return
 	var st: LxGameState = _get_state()
 	if region_id == "overworld":
+		_mount_tutorial_cues()
+		if Lx.root != null and int(Lx.root.get("flow")) == LxMain.Flow.INTRO:
+			return
 		if st != null and not bool(st.story_flags.get("isl1_arrived", false)):
 			st.story_flags["isl1_arrived"] = true
 			_emit_narration("ISL1_ARRIVAL", "narration", 4.0)
 			if _events != null:
 				_events.sfx_requested.emit("bell_toll", Vector2.ZERO, false)
-				_events.prompt_requested.emit("PROMPT_AIM_SHOOT", "lx_fire", 4.5)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "belfry_r7":
+		_unmount_tutorial_cues()
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_BELLKEEPER", "title", 3.5)
 			if _events != null:
@@ -282,6 +322,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		elif st != null and st.relit_islands.has(ISLAND_ID) and _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id.begins_with("belfry_"):
+		_unmount_tutorial_cues()
 		if region_id == "belfry_r1" and st != null and not bool(st.story_flags.get("isl1_belfry_entered", false)):
 			st.story_flags["isl1_belfry_entered"] = true
 			_emit_narration("CH5_TITLE", "title", 3.5)
@@ -296,16 +337,17 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_events.music_mode_requested.emit("island1_boss_p1" if mb_live else "island1_dungeon")
 
 
+func _on_lantern_picked_up(_pickup_id: String, _pos: Vector2) -> void:
+	if _events != null:
+		_events.prompt_requested.emit("PROMPT_AIM_SHOOT", "lx_fire", 5.5)
+
+
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	if _events == null:
 		return
 	if shrine_id == "shrine_dash" or move_id == "dash":
 		_emit_narration("MOVE_DASH_NAME", "title", 3.0)
-		_events.prompt_requested.emit("PROMPT_DASH", "lx_dash", 4.5)
-		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
-	elif shrine_id == "shrine_throw" or move_id == "throw":
-		_emit_narration("MOVE_THROW_NAME", "title", 3.0)
-		_events.prompt_requested.emit("PROMPT_THROW", "lx_throw", 4.5)
+		_events.prompt_requested.emit("PROMPT_DASH", "lx_dash", 5.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 
 
@@ -317,7 +359,6 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	_emit_narration("CUE_BEACON_LIT", "title", 2.5)
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 
@@ -356,7 +397,6 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
 			_events.music_mode_requested.emit("island1_dungeon")
-			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("bell_warden_defeated")
 
 
@@ -366,7 +406,6 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island1_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
-		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2", "warning", 3.5)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:

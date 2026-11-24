@@ -464,7 +464,7 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 	_sfx_last_t[base_id] = _sfx_clock
 	var jit: float = 1.0 if ui_bus else randf_range(0.96, 1.04)
 	if base_id == "bolt_fire":
-		jit = randf_range(0.95, 1.06)
+		jit = randf_range(0.95, 1.05)
 	elif base_id == "shard_pickup":
 		_shard_streak = mini(SHARD_SCALE.size() - 1, _shard_streak + 1) if (_sfx_clock - _shard_streak_t) <= 0.85 else 0
 		_shard_streak_t = _sfx_clock

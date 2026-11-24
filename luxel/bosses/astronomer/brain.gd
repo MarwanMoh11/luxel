@@ -1,8 +1,8 @@
 class_name LxAstronomerBoss
 extends LxPhantomOwlBrain
 ## Starfall Observatory Boss (Island 5): the Astronomer, a great celestial phantom owl.
-## 3 phases, HP 12.5. Constellation attacks are revealed by Lens light, and she stays
-## briefly solid & visible during COMMIT/RECOVER/STAGGER so players & bots always have windows.
+## 3 phases, HP 12.5. During P2/P3 Constellation TELL, renders 1-2 decoy phantom silhouettes;
+## active True Lens (on_light(..., "lens")) exposes her true gold core and staggers her 0.8s!
 
 enum AstroMove { DIVE, CONSTELLATION }
 
@@ -15,6 +15,7 @@ const NOVA_BAND: float = 9.5
 const NOVA_RAY_RANGE: float = 124.0
 const NOVA_RAY_HALF_W: float = 8.0
 const NOVA_RECOVER: float = 1.35
+const LENS_STAGGER_TIME: float = 0.80
 const ROAR_TIME: float = 0.65
 
 var active_move: int = AstroMove.DIVE
@@ -22,6 +23,8 @@ var move_cycle: int = 0
 var nova_progress: float = 0.0
 var nova_hit: bool = false
 var star_base_ang: float = 0.0
+var decoy_offsets: Array[Vector2] = []
+var true_core_lit_t: float = 0.0
 var _roaring: bool = false
 
 
@@ -53,7 +56,44 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	nova_progress = 0.0
 	nova_hit = false
 	star_base_ang = 0.0
+	decoy_offsets.clear()
+	true_core_lit_t = 0.0
 	_roaring = false
+
+
+func on_light(a: Variant, b: Variant = Vector2.ZERO, source: String = "") -> void:
+	var orig: Vector2 = Vector2.ZERO
+	var rad: float = 0.0
+	var src: String = source
+	if a is Vector2 and (b is float or b is int):
+		orig = a as Vector2
+		rad = float(b)
+	elif a is float or a is int:
+		rad = float(a)
+		if b is Vector2:
+			orig = b as Vector2
+		elif b is String and src.is_empty():
+			src = str(b)
+	super.on_light(a, b, src)
+	if state == State.DEAD or src != "lens" or rad <= 0.0:
+		return
+	var in_light: bool = orig == Vector2.ZERO or pos.distance_to(orig) <= rad + body_radius
+	if not in_light:
+		return
+	true_core_lit_t = maxf(true_core_lit_t, 0.85)
+	if state == State.TELL and active_move == AstroMove.CONSTELLATION:
+		# Active True Lens pulse during Constellation TELL shatters decoys and staggers her 0.8s!
+		active_move = AstroMove.DIVE
+		decoy_offsets.clear()
+		_release_token()
+		state = State.STAGGER
+		state_timer = LENS_STAGGER_TIME
+		altitude = ALT_PERCH
+		vel = Vector2.ZERO
+		reveal_t = maxf(reveal_t, 1.35)
+		revealed = true
+		_boss_impact(0.18, 76.0, 74.0)
+		_emit_sfx("astronomer_lens_shatter")
 
 
 func is_targetable() -> bool:
@@ -85,6 +125,7 @@ func _enter_phase(next_phase: int) -> void:
 	phase = next_phase
 	_roaring = true
 	active_move = AstroMove.DIVE
+	decoy_offsets.clear()
 	nova_progress = 0.0
 	reveal_t = maxf(reveal_t, ROAR_TIME + 0.35)
 	revealed = true
@@ -96,11 +137,13 @@ func _enter_phase(next_phase: int) -> void:
 	if Lx.events != null:
 		Lx.events.boss_phase_changed.emit(boss_id, phase)
 		Lx.events.shake_requested.emit(0.30)
+	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
 	_emit_sfx("astronomer_phase")
 
 
 func _step_brain(dt: float) -> void:
 	reveal_t = maxf(0.0, reveal_t - dt)
+	true_core_lit_t = maxf(0.0, true_core_lit_t - dt)
 	_check_lens_reveal()
 	if state == State.NOTICE and _roaring:
 		reveal_t = maxf(reveal_t, 0.30)
@@ -152,10 +195,17 @@ func _enter_lock(target: Vector2, lured: bool) -> void:
 		nova_hit = false
 		star_base_ang = (target - pos).angle() if target.distance_to(pos) > 0.01 else facing
 		facing = star_base_ang
+		decoy_offsets.clear()
+		if phase == 2:
+			decoy_offsets.append(Vector2.from_angle(star_base_ang + PI * 0.55) * 44.0)
+		else:
+			decoy_offsets.append(Vector2.from_angle(star_base_ang + 2.1) * 46.0)
+			decoy_offsets.append(Vector2.from_angle(star_base_ang - 2.1) * 46.0)
 		_emit_attack_started()
 		_emit_sfx("astronomer_constellation_tell")
 		return
 	active_move = AstroMove.DIVE
+	decoy_offsets.clear()
 	super._enter_lock(target, lured)
 	if phase >= 3:
 		last_tell_duration = _scaled_tell(0.55, false, attack_damage)
@@ -166,6 +216,7 @@ func _enter_constellation_commit() -> void:
 	state = State.COMMIT
 	state_timer = NOVA_COMMIT_TIME
 	altitude = ALT_PERCH
+	decoy_offsets.clear()
 	nova_progress = 0.0
 	nova_hit = false
 	reveal_t = maxf(reveal_t, 0.55)
@@ -225,33 +276,48 @@ func _body_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	super._draw_extra(off)
+	var c_orig: Vector2 = off.round()
 	if _sprite_sheet == null:
 		# Astrolabe celestial halo
 		draw_arc(off, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.2)
+	if true_core_lit_t > 0.0:
+		# Active True Lens exposes the true gold core!
+		draw_arc(c_orig, body_radius + 6.5, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
+		draw_arc(c_orig, body_radius + 3.5, 0.0, TAU, 16, PAL["cream"] as Color, 1.2)
+		draw_circle(c_orig, 3.0, PAL["gold"] as Color)
+		draw_circle(c_orig, 1.5, PAL["cream"] as Color)
 	var ray_count: int = 5 if phase >= 3 else 3
-	var c_orig: Vector2 = off.round()
 	if active_move == AstroMove.CONSTELLATION and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		for ti: int in range(12):
-			var a0: float = float(ti) * (TAU / 12.0)
-			draw_arc(off, NOVA_MAX_R, a0, a0 + 0.24, 3, PAL["sky"] as Color, 1.0)
-		var t_r: float = lerpf(NOVA_MAX_R, NOVA_START_R + 8.0, prog)
-		draw_arc(off, t_r, 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["ice"]) as Color, 1.8)
-		var ray_len: float = NOVA_RAY_RANGE
-		var locked_a: bool = state_timer <= 0.22
-		var ray_col: Color = (PAL["gold"] if locked_a else PAL["sky"]) as Color
+		var fred: bool = LxHudFx.flash_reduced()
+		LxBossTelegraphFx.draw_ground_danger_ring(self, off, NOVA_MAX_R, prog, anim_t, "sky", "gold")
 		for i: int in range(ray_count):
 			var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
 			var nb: float = star_base_ang + float((i + 1) % ray_count) * (TAU / float(ray_count))
-			var p_a: Vector2 = (off + Vector2.from_angle(ra) * ray_len).round()
-			var p_b: Vector2 = (off + Vector2.from_angle(nb) * ray_len).round()
-			draw_line(c_orig, p_a, ray_col, 1.8 if locked_a else 1.3)
-			if locked_a:
-				draw_line(c_orig, p_a, PAL["cream"] as Color, 0.9)
-			draw_line(p_a, p_b, PAL["gold"] as Color, 1.0)
-			draw_line(p_a + Vector2(-4.5, 0.0), p_a + Vector2(4.5, 0.0), PAL["gold"] as Color, 1.3)
-			draw_line(p_a + Vector2(0.0, -4.5), p_a + Vector2(0.0, 4.5), PAL["gold"] as Color, 1.3)
-			draw_circle(p_a, 1.4, PAL["cream"] as Color)
+			var p_a: Vector2 = off + Vector2.from_angle(ra) * NOVA_RAY_RANGE
+			var p_b: Vector2 = (off + Vector2.from_angle(nb) * NOVA_RAY_RANGE).round()
+			LxBossTelegraphFx.draw_ground_danger_lane(self, off, p_a, NOVA_RAY_HALF_W, prog, anim_t, "sky", "gold")
+			var pa_r: Vector2 = p_a.round()
+			draw_line(pa_r, p_b, PAL["gold"] as Color, 1.0)
+			draw_line(pa_r + Vector2(-4.5, 0.0), pa_r + Vector2(4.5, 0.0), PAL["gold"] as Color, 1.3)
+			draw_line(pa_r + Vector2(0.0, -4.5), pa_r + Vector2(0.0, 4.5), PAL["gold"] as Color, 1.3)
+			draw_circle(pa_r, 1.4, PAL["cream"] as Color)
+		# Render 1-2 decoy phantom silhouettes with faint ground tether & shimmering ice-diamond True-Lens halo
+		var tether_a: float = 0.24 if fred else (0.20 + 0.12 * sin(anim_t * 10.0))
+		for d_off: Vector2 in decoy_offsets:
+			var dc: Vector2 = (c_orig + d_off).round()
+			draw_line(c_orig, dc, Color(PAL["ice"] as Color, tether_a), 1.0)
+			var dr: float = body_radius + 6.0 + (0.0 if fred else 1.2 * sin(anim_t * 14.0 + d_off.x))
+			var dpts: PackedVector2Array = PackedVector2Array([dc + Vector2(0.0, -dr), dc + Vector2(dr, 0.0), dc + Vector2(0.0, dr), dc + Vector2(-dr, 0.0), dc + Vector2(0.0, -dr)])
+			draw_polyline(dpts, PAL["void"] as Color, 2.2)
+			draw_polyline(dpts, PAL["ice"] as Color, 1.2)
+			draw_arc(dc, body_radius + 4.0, 0.0, TAU, 16, PAL["plum"] as Color, 1.2)
+			draw_circle(dc, body_radius * 0.72, PAL["deep"] as Color)
+			draw_arc(dc, body_radius * 0.85, 0.0, TAU, 14, PAL["sky"] as Color, 1.0)
+			draw_line(dc + Vector2(-5.0, -2.0), dc + Vector2(-9.0, -5.0), PAL["sky"] as Color, 1.4)
+			draw_line(dc + Vector2(5.0, -2.0), dc + Vector2(9.0, -5.0), PAL["sky"] as Color, 1.4)
+			draw_rect(Rect2(dc + Vector2(-2.0, -1.0), Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
+			draw_rect(Rect2(dc + Vector2(2.0, -1.0), Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
 		var cf: float = lerpf(4.0, 8.0, prog)
 		draw_line(c_orig + Vector2(-cf, 0.0), c_orig + Vector2(cf, 0.0), PAL["gold"] as Color, 1.5)
 		draw_line(c_orig + Vector2(0.0, -cf), c_orig + Vector2(0.0, cf), PAL["gold"] as Color, 1.5)

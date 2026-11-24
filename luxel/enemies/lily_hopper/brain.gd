@@ -32,8 +32,8 @@ var ring_hit: bool = false
 func _init() -> void:
 	kind = "lily_hopper"
 	island_id = 4
-	max_hp = 2.5
-	hp = 2.5
+	max_hp = 3.0
+	hp = 3.0
 	body_radius = 6.0
 	routine_speed = 42.0
 	leash_radius = 156.0

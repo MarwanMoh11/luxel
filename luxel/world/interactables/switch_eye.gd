@@ -15,9 +15,12 @@ var _gaze_off: Vector2i = Vector2i.ZERO
 func setup(spec: Dictionary) -> void:
 	super.setup(spec)
 	kind = "switch_eye"
-	requires_prism = bool(props.get("requires_prism", false))
+	requires_prism = bool(props.get("requires_prism", false)) or bool(props.get("requires_blue", false))
 	reset_time = maxf(0.0, float(props.get("reset_time", 0.0)))
 	activated = bool(props.get("activated", false))
+	var sf: String = str(props.get("sets_flag", "")).strip_edges()
+	if not sf.is_empty() and Lx.state != null and bool(Lx.state.story_flags.get(sf, false)):
+		activated = true
 	_reject_t = 0.0
 	_act_t = 0.0
 	queue_redraw()
@@ -65,18 +68,22 @@ func _compute_gaze() -> Vector2i:
 func on_hit(hit: LxHit) -> bool:
 	if hit == null or not active:
 		return false
-	if requires_prism and hit.source != "prism_bolt":
+	var is_blue_hit: bool = (hit.has_method("is_blue") and hit.is_blue()) or hit.source == LxHit.SOURCE_PRISM
+	if requires_prism and not is_blue_hit:
 		if hit.source in ["bolt", "beam", "throw", "recall"]:
-			_reject_t = 0.24
+			_reject_t = 0.30
 			_emit_sfx("mirror_ping")
 			queue_redraw()
-		return false
+		return true
 	if hit.source not in ["bolt", "prism_bolt", "beam", "throw", "recall", "sunflare"]:
 		return false
 	var was_active: bool = activated
 	activated = true
 	if reset_time > 0.0:
 		_reset_left = reset_time
+	var sf: String = str(props.get("sets_flag", "")).strip_edges()
+	if not sf.is_empty() and Lx.state != null:
+		Lx.state.story_flags[sf] = true
 	if not was_active:
 		_act_t = 0.34
 		if Lx.events != null:
@@ -110,59 +117,35 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(-7.0, 5.0, 14.0, 3.0), PAL["void"])
-	draw_rect(Rect2(-6.0, 2.0, 12.0, 5.0), PAL["night"])
-	draw_rect(Rect2(-5.0, 3.0, 10.0, 3.0), PAL["dusk"])
-	draw_rect(Rect2(-5.0, 3.0, 10.0, 1.0), PAL["stone"])
-	draw_rect(Rect2(-4.0, -7.0, 8.0, 11.0), PAL["night"])
-	draw_rect(Rect2(-3.0, -6.0, 6.0, 9.0), PAL["dusk"])
-	draw_rect(Rect2(-3.0, -6.0, 2.0, 8.0), PAL["mauve"])
-	draw_rect(Rect2(-3.0, -6.0, 5.0, 1.0), PAL["stone"])
-	draw_rect(Rect2(-8.0, -4.0, 16.0, 7.0), PAL["void"])
-	draw_rect(Rect2(-7.0, -5.0, 14.0, 9.0), PAL["void"])
-	draw_rect(Rect2(-6.0, -4.0, 12.0, 7.0), PAL["apricot"])
-	draw_rect(Rect2(-7.0, -2.0, 14.0, 3.0), PAL["apricot"])
-	draw_rect(Rect2(-5.0, -4.0, 10.0, 1.0), PAL["gold"])
-	draw_rect(Rect2(-6.0, -3.0, 1.0, 3.0), PAL["gold"])
-	draw_rect(Rect2(-5.0, 2.0, 10.0, 1.0), PAL["wine"])
-	draw_rect(Rect2(-7.0, -1.0, 1.0, 1.0), PAL["gold"])
-	draw_rect(Rect2(6.0, -1.0, 1.0, 1.0), PAL["gold"])
-	if requires_prism:
-		draw_rect(Rect2(-2.0, -7.0, 4.0, 2.0), PAL["deep"])
-		draw_rect(Rect2(-1.0, -7.0, 2.0, 2.0), PAL["sky"])
-		draw_rect(Rect2(-1.0, -7.0, 1.0, 1.0), PAL["ice"])
-	draw_rect(Rect2(-5.0, -3.0, 10.0, 5.0), PAL["void"])
+	# Unified contact shadow under sculpted stone eye-plinth
+	_draw_ground_shadow(8.0, 3.0, Vector2(2.0, 6.0))
+	var key: String = ("eye_blue_lit" if activated else "eye_blue_dormant") if requires_prism else ("eye_gold_lit" if activated else "eye_gold_dormant")
+	var frame_ov: int = (_pulse_stage % 2) if activated else 0
+	_draw_puzzle_sprite(key, Vector2.ZERO, _clock, Color.WHITE, frame_ov)
 	if activated:
-		var b_hi: Color = LxBiomePalette.col(island_id, "hi")
-		var b_glow: Color = LxBiomePalette.col(island_id, "glow")
-		var b_core: Color = LxBiomePalette.col(island_id, "core")
-		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), b_hi)
-		draw_rect(Rect2(-3.0, -3.0, 6.0, 5.0), b_glow)
-		draw_rect(Rect2(-2.0, -2.0, 4.0, 3.0), b_core)
-		var glint_c: Color = b_core if _pulse_stage < 2 else b_glow
-		draw_rect(Rect2(0.0, -5.0, 1.0, 1.0), glint_c)
-		draw_rect(Rect2(0.0, 3.0, 1.0, 1.0), glint_c)
-		draw_rect(Rect2(-6.0, -1.0, 1.0, 1.0), glint_c)
-		draw_rect(Rect2(5.0, -1.0, 1.0, 1.0), glint_c)
 		if reset_time > 0.0 and _reset_left > 0.0:
 			var frac: float = clampf(_reset_left / reset_time, 0.0, 1.0)
 			var bar_w: float = roundf(10.0 * frac)
-			draw_rect(Rect2(-5.0, 6.0, 10.0, 2.0), PAL["void"])
+			var b_core: Color = (PAL["ice"] if requires_prism else PAL["gold"]) as Color
+			draw_rect(Rect2(-5.0, 6.0, 10.0, 2.0), PAL["void"] as Color)
 			if bar_w >= 1.0:
-				draw_rect(Rect2(-5.0, 6.0, bar_w, 1.0), b_core if frac > 0.35 else PAL["coral"])
+				draw_rect(Rect2(-5.0, 6.0, bar_w, 1.0), b_core if frac > 0.35 else (PAL["coral"] as Color))
 	else:
-		draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), PAL["sky"] if _reject_t > 0.0 else PAL["deep"])
-		draw_rect(Rect2(-3.0, -2.0, 6.0, 3.0), PAL["ice"] if _reject_t > 0.0 else PAL["blue"])
-		var shine: Color = (PAL["cream"] if _reject_t > 0.0 else (PAL["ice"] if (requires_prism or _pulse_stage == 0) else PAL["sky"])) as Color
-		var gx: float = float(_gaze_off.x)
-		var gy: float = float(_gaze_off.y) * 0.5
-		draw_rect(Rect2(-2.0, -2.0, 4.0, 1.0), PAL["sky"])
-		draw_rect(Rect2(-2.0, -2.0, 2.0, 1.0), shine)
-		draw_rect(Rect2(-1.0 + gx, -2.0 + roundf(gy), 2.0, 3.0), PAL["void"])
-		draw_rect(Rect2(-1.0 + gx, -1.0 + roundf(gy), 1.0, 1.0), shine)
+		# Crisp 2x2 pixel pupil tracking Wick's direction inside the recessed eye socket (centered at (0, -4))
+		var gx: float = float(_gaze_off.x) * 2.0
+		var gy: float = float(_gaze_off.y)
+		var glint_c: Color = (PAL["coral"] if _reject_t > 0.0 else (PAL["ice"] if requires_prism else PAL["gold"])) as Color
+		draw_rect(Rect2(-1.0 + gx, -5.0 + gy, 2.0, 2.0), PAL["void"] as Color)
+		draw_rect(Rect2(-1.0 + gx, -5.0 + gy, 1.0, 1.0), glint_c)
 		if _reject_t > 0.0:
-			draw_arc(Vector2(0.0, -1.0), 8.0, 0.0, TAU, 12, PAL["ice"], 1.0, false)
+			for sp: Vector2 in [Vector2(-7.0, -4.0), Vector2(6.0, -4.0), Vector2(0.0, -9.0), Vector2(0.0, 1.0)]:
+				draw_rect(Rect2(sp, Vector2.ONE), PAL["coral"] as Color)
 	if _act_t > 0.0:
 		var ap: float = 1.0 - clampf(_act_t / 0.34, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -1.0), roundf(lerpf(5.0, 19.0, ap)), 0.0, TAU, 16, PAL["cream"] if ap < 0.4 else LxBiomePalette.col(island_id, "glow"), 2.0 if ap < 0.35 else 1.0, false)
+		var rad: float = lerpf(5.0, 16.0, ap)
+		var c_ac: Color = (PAL["cream"] if ap < 0.4 else (PAL["sky"] if requires_prism else PAL["gold"])) as Color
+		for k: int in range(8):
+			var a: float = (TAU * float(k)) / 8.0
+			var pt := Vector2(roundf(cos(a) * rad), roundf(-4.0 + sin(a) * rad))
+			draw_rect(Rect2(pt, Vector2(2.0 if ap < 0.35 else 1.0, 2.0 if ap < 0.35 else 1.0)), c_ac)
 	_draw_signal_pulses()

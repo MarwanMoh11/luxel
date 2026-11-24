@@ -80,24 +80,24 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 	if bool(b.get("void_orb_out")):
 		var orb_off: Vector2 = ((b.get("void_orb_pos") as Vector2) - b.pos).round()
 		var o_orig: Vector2 = off.round()
-		b.draw_line(o_orig, orb_off, pal["deep"] as Color, 2.4)
-		b.draw_line(o_orig, orb_off, pal["sky"] as Color, 1.1)
+		var active_m0: int = int(b.get("active_move"))
+		if b.state == LxEnemyBrain.State.COMMIT and active_m0 == 1 and not bool(b.get("_zip_landed")):
+			var hang_u: float = clampf(float(b.get("commit_elapsed")) / 0.20, 0.0, 1.0)
+			LxBossTelegraphFx.draw_ground_danger_ring(b, orb_off, 26.0, lerpf(0.75, 1.0, hang_u), b.anim_t, "sky", "coral")
+		var is_recall_hot: bool = active_m0 == 6 and b.state == LxEnemyBrain.State.TELL and b.state_timer <= 0.22
+		b.draw_line(o_orig, orb_off, (pal["coral"] if is_recall_hot else pal["deep"]) as Color, 2.4)
+		b.draw_line(o_orig, orb_off, (pal["ice"] if active_m0 == 6 else pal["sky"]) as Color, 1.1)
 		for bi: int in range(4):
 			var bt: float = fposmod(b.anim_t * 2.4 + float(bi) * 0.25, 1.0)
 			var bp: Vector2 = o_orig.lerp(orb_off, bt).round()
 			b.draw_circle(bp, 1.8, pal["deep"] as Color)
 			b.draw_circle(bp, 1.0, (pal["ice"] if bi % 2 == 0 else pal["sky"]) as Color)
 		var pulse: float = 0.0 if fred else 0.8 * sin(b.anim_t * 14.0)
-		if b.state == LxEnemyBrain.State.COMMIT and int(b.get("active_move")) == 1:
-			var zip_danger_col: Color = (pal["coral"] if (fred or fmod(b.anim_t * 12.0, 1.0) < 0.5) else pal["sky"]) as Color
-			for zi: int in range(8):
-				var za0: float = b.anim_t * 1.8 + float(zi) * (TAU / 8.0)
-				b.draw_arc(orb_off, 26.0, za0, za0 + 0.36, 3, zip_danger_col, 1.2)
 		b.draw_arc(orb_off, 6.8 + pulse, 0.0, TAU, 16, pal["sky"] as Color, 1.3)
 		b.draw_circle(orb_off, 5.2 + pulse * 0.4, pal["deep"] as Color)
 		b.draw_circle(orb_off, 3.5, pal["void"] as Color)
 		b.draw_arc(orb_off, 3.8, b.anim_t * 4.2, b.anim_t * 4.2 + PI * 1.15, 10, pal["ice"] as Color, 1.4)
-		b.draw_circle(orb_off, 1.4, pal["ice"] as Color)
+		b.draw_circle(orb_off, 1.4, pal["cream"] as Color if active_m0 == 6 else pal["ice"] as Color)
 
 	var active_move: int = int(b.get("active_move"))
 	var commit_dir: Vector2 = b.get("commit_dir") as Vector2
@@ -110,23 +110,13 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 	if b.state == LxEnemyBrain.State.TELL:
 		var prog: float = 1.0 - clampf(b.state_timer / maxf(b.last_tell_duration, 0.05), 0.0, 1.0)
 		if active_move == 3: # SILENCE_RING
-			for ti: int in range(12):
-				var a0: float = float(ti) * (TAU / 12.0)
-				b.draw_arc(off, 84.0, a0, a0 + 0.24, 3, pal["deep"] as Color, 1.2)
-			var tr: float = lerpf(84.0, 20.0, prog)
-			b.draw_arc(off, tr, 0.0, TAU, 28, (pal["cream"] if b.state_timer <= 0.14 else pal["sky"]) as Color, 2.0)
-			b.draw_arc(off, maxf(4.0, tr - 2.5), 0.0, TAU, 24, (pal["gold"] if b.state_timer <= 0.14 else pal["ice"]) as Color, 1.1)
+			LxBossTelegraphFx.draw_ground_danger_ring(b, off, 84.0, prog, b.anim_t, "sky", "coral")
 		elif active_move == 4: # ECLIPSE_BEAM
 			var sw_end: float = sweep_start + sweep_sign * 1.45
 			var locked_e: bool = b.state_timer <= 0.22
-			var pulse_w: float = (2.2 if locked_e else 1.6) + (0.0 if fred else 0.9 * absf(sin(b.anim_t * 18.0)))
+			LxBossTelegraphFx.draw_ground_danger_sector(b, off, sweep_start, sw_end, 158.0, prog, b.anim_t, "plum", "coral")
 			var s_tip: Vector2 = (off + Vector2.from_angle(sweep_start) * 158.0).round()
-			var e_tip: Vector2 = (off + Vector2.from_angle(sw_end) * 158.0).round()
-			b.draw_line(off.round(), s_tip, (pal["coral"] if locked_e else pal["gold"]) as Color, pulse_w)
-			if locked_e:
-				b.draw_line(off.round(), s_tip, pal["cream"] as Color, 1.0)
-			b.draw_line(off.round(), e_tip, pal["coral"] as Color, 1.1)
-			b.draw_arc(off, lerpf(118.0, 42.0, prog), minf(sweep_start, sw_end), maxf(sweep_start, sw_end), 14, (pal["cream"] if locked_e else pal["gold"]) as Color, 1.2)
+			b.draw_line(off.round(), s_tip, (pal["cream"] if locked_e else pal["gold"]) as Color, 1.6 if locked_e else 1.2)
 			_draw_star_flare(b, off, lerpf(4.5, 9.0, prog), (pal["coral"] if locked_e else pal["gold"]) as Color, pal["cream"] as Color)
 		elif active_move == 0: # VOLLEY (honest 5-ray spread preview)
 			for vi: int in range(5):
@@ -134,29 +124,24 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 				var is_edge: bool = (vi == 0 or vi == 4 or vi == 2)
 				b.draw_line(off.round(), (off + vdir * (152.0 if is_edge else 96.0)).round(), (pal["sky"] if is_edge else pal["deep"]) as Color, 1.4 if vi == 2 else 1.0)
 				b.draw_circle((off + vdir * 26.0).round(), 1.3, pal["ice"] as Color)
-		elif active_move == 1: # VOID_ZIP (tether preview + arrival blast diamond)
+		elif active_move == 1: # VOID_ZIP (exact void_orb_pos ground danger ring + tether)
 			var locked_z: bool = b.state_timer <= 0.22
-			var z_tip: Vector2 = (off + commit_dir * 72.0).round()
+			var z_tip: Vector2 = ((b.get("void_orb_pos") as Vector2) - b.pos).round()
 			var z_col: Color = (pal["gold"] if locked_z else pal["sky"]) as Color
+			LxBossTelegraphFx.draw_ground_danger_ring(b, z_tip, 26.0, prog, b.anim_t, "sky", "coral")
 			for di: int in range(6):
 				var dt0: float = float(di) / 6.0
 				var dt1: float = minf(1.0, dt0 + 0.10)
 				b.draw_line(off.lerp(z_tip, dt0).round(), off.lerp(z_tip, dt1).round(), z_col, 1.4 if locked_z else 1.1)
 			_draw_diamond(b, z_tip, lerpf(6.0, 3.5, prog), z_col, (pal["cream"] if locked_z else pal["ice"]) as Color)
-			for zi: int in range(4):
-				var za: float = float(zi) * (TAU * 0.25)
-				b.draw_arc(z_tip, 26.0, za - 0.18, za + 0.18, 3, (pal["coral"] if locked_z else pal["deep"]) as Color, 1.1)
-		else: # SHADOW_DASH (honest 76px coral-locked dash lane matching 290*0.26 = 75.4px)
-			var locked_d: bool = b.state_timer <= 0.22
-			var d_perp: Vector2 = Vector2(-commit_dir.y, commit_dir.x)
-			var d_end: Vector2 = (off + commit_dir * 76.0).round()
-			var d_col: Color = (pal["coral"] if locked_d else pal["sky"]) as Color
-			b.draw_line(off.round(), d_end, d_col, 2.0 if locked_d else 1.5)
-			b.draw_line((off - d_perp * 10.0).round(), (d_end - d_perp * 10.0).round(), (pal["gold"] if locked_d else pal["deep"]) as Color, 1.0)
-			b.draw_line((off + d_perp * 10.0).round(), (d_end + d_perp * 10.0).round(), (pal["gold"] if locked_d else pal["deep"]) as Color, 1.0)
-			var chev_col: Color = (pal["cream"] if locked_d else pal["ice"]) as Color
-			b.draw_line(d_end, (d_end - commit_dir * 7.0 + d_perp * 5.0).round(), chev_col, 1.5)
-			b.draw_line(d_end, (d_end - commit_dir * 7.0 - d_perp * 5.0).round(), chev_col, 1.5)
+		elif active_move == 5: # WARD_BASH (lunge lane + forward bash arc)
+			var ca_b: float = commit_dir.angle()
+			LxBossTelegraphFx.draw_ground_danger_lane(b, off, off + commit_dir * 52.0, 16.0, prog, b.anim_t, "sky", "coral")
+			b.draw_arc(off.round(), 32.0, ca_b - 1.0, ca_b + 1.0, 14, (pal["cream"] if b.state_timer <= 0.20 else pal["ice"]) as Color, 1.8)
+		elif active_move == 6: # RECALL_SLAM (r=38 arrival blast ring)
+			LxBossTelegraphFx.draw_ground_danger_ring(b, off, 38.0, prog, b.anim_t, "sky", "coral")
+		else: # SHADOW_DASH (honest 76px dash lane matching 290*0.26 = 75.4px)
+			LxBossTelegraphFx.draw_ground_danger_lane(b, off, off + commit_dir * 76.0, 16.0, prog, b.anim_t, "sky", "coral")
 	elif b.state == LxEnemyBrain.State.COMMIT:
 		if active_move == 3 and ring_stage != 1:
 			var ring_r: float = lerpf(12.0, 84.0, ring_prog)
@@ -169,13 +154,20 @@ static func draw_hush(b: LxEnemyBrain, off: Vector2) -> void:
 				var np: Vector2 = off + Vector2.from_angle(na) * ring_r
 				_draw_diamond(b, np, 3.0, pal["ice"] as Color, pal["cream"] as Color)
 		elif active_move == 3 and ring_stage == 1:
-			for ti: int in range(12):
-				var a0: float = float(ti) * (TAU / 12.0)
-				b.draw_arc(off, 84.0, a0, a0 + 0.24, 3, pal["sky"] as Color, 1.2)
-			var pr_h: float = 42.0 + (0.0 if fred else 2.0 * sin(b.anim_t * 18.0))
-			var hot_h: bool = b.state_timer <= 0.14
-			b.draw_arc(off, pr_h, 0.0, TAU, 24, (pal["gold"] if hot_h else pal["sky"]) as Color, 2.2 if hot_h else 1.8)
-			b.draw_arc(off, pr_h - 3.0, 0.0, TAU, 20, (pal["cream"] if hot_h else pal["ice"]) as Color, 1.2)
+			var p_urg: float = 1.0 - clampf(b.state_timer / 0.44, 0.0, 1.0)
+			LxBossTelegraphFx.draw_ground_danger_ring(b, off, 84.0, p_urg, b.anim_t, "sky", "coral")
+		elif active_move == 5: # WARD_BASH commit arc
+			var ca_c: float = commit_dir.angle()
+			var c_wb: Vector2 = off.round()
+			b.draw_arc(c_wb, 34.0, ca_c - 1.18, ca_c + 1.18, 16, pal["sky"] as Color, 3.2)
+			b.draw_arc(c_wb, 31.0, ca_c - 1.00, ca_c + 1.00, 14, pal["ice"] as Color, 1.8)
+			b.draw_arc(c_wb, 29.0, ca_c - 0.82, ca_c + 0.82, 12, pal["cream"] as Color, 1.1)
+		elif active_move == 6: # RECALL_SLAM burst commit
+			if bool(b.get("_slam_burst_done")):
+				var c_rs: Vector2 = off.round()
+				b.draw_arc(c_rs, 40.0, 0.0, TAU, 24, pal["deep"] as Color, 2.4)
+				b.draw_arc(c_rs, 38.0, 0.0, TAU, 24, pal["sky"] as Color, 3.2)
+				b.draw_arc(c_rs, 35.0, 0.0, TAU, 20, pal["cream"] as Color, 1.4)
 		elif active_move == 2: # SHADOW_DASH ink-ice slash wake
 			var d_perp2: Vector2 = Vector2(-commit_dir.y, commit_dir.x)
 			var tail_p: Vector2 = (off - commit_dir * 26.0).round()

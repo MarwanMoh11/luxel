@@ -112,19 +112,7 @@
       }
     }
   ],
-  "triggers": [
-    {
-      "id": "trig_boss_intro",
-      "rect": [
-        144,
-        192,
-        160,
-        48
-      ],
-      "string_id": "BOSS_BELLKEEPER",
-      "once": true
-    }
-  ],
+  "triggers": [],
   "scenery": [
     {
       "sheet": "island1_scenery",
@@ -154,7 +142,7 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        76,
+        72,
         120
       ],
       "layer": "sort",
@@ -166,7 +154,7 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        372,
+        376,
         120
       ],
       "layer": "sort",
@@ -178,8 +166,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        76,
-        178
+        72,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -190,8 +178,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        372,
-        178
+        376,
+        180
       ],
       "layer": "sort",
       "flip_x": true,
@@ -202,8 +190,8 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        128,
-        224
+        132,
+        228
       ],
       "layer": "sort",
       "flip_x": false,
@@ -214,8 +202,8 @@
       "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
-        320,
-        224
+        316,
+        228
       ],
       "layer": "sort",
       "flip_x": true,

@@ -73,7 +73,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_isl8_beacon_1",
 			"region": "overworld",
 			"zone": "gauntlet_tide",
-			"pos": [152.0, 776.0],
+			"pos": [88.0, 808.0],
 			"action": "light_beacon",
 			"target": "beacon_8_1",
 			"grants_flag": "beacon_8_1",
@@ -84,7 +84,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_isl8_beacon_2",
 			"region": "overworld",
 			"zone": "gauntlet_mire",
-			"pos": [152.0, 520.0],
+			"pos": [632.0, 504.0],
 			"action": "light_beacon",
 			"target": "beacon_8_2",
 			"grants_flag": "beacon_8_2",
@@ -95,7 +95,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_isl8_beacon_3",
 			"region": "overworld",
 			"zone": "gauntlet_kiln",
-			"pos": [136.0, 296.0],
+			"pos": [136.0, 312.0],
 			"action": "light_beacon",
 			"target": "beacon_8_3",
 			"grants_flag": "beacon_8_3",
@@ -106,7 +106,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_enter_sanctum",
 			"region": "overworld",
 			"zone": "dark_hub",
-			"pos": [336.0, 64.0],
+			"pos": [400.0, 64.0],
 			"action": "enter_exit",
 			"target": "exit_to_sanctum",
 			"to_region": "sanctum_r1",
@@ -117,7 +117,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_sanctum_r2_flame",
 			"region": "sanctum_r2",
 			"zone": "sanctum_r2",
-			"pos": [48.0, 112.0],
+			"pos": [72.0, 72.0],
 			"action": "collect_key",
 			"target": "wick_key_8_1",
 			"grants_flag": "wick_key_8_1",
@@ -128,7 +128,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_sanctum_r3_flight",
 			"region": "sanctum_r3",
 			"zone": "sanctum_r3",
-			"pos": [208.0, 64.0],
+			"pos": [160.0, 64.0],
 			"action": "clear_room",
 			"target": "door_sanctum_r3_north",
 			"requires_moves": ["wings", "lens"],
@@ -138,18 +138,29 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_sanctum_miniboss",
 			"region": "sanctum_r4",
 			"zone": "sanctum_r4",
-			"pos": [224.0, 128.0],
+			"pos": [248.0, 152.0],
 			"action": "defeat_miniboss",
 			"target": "mini_night_harbinger",
-			"grants_flag": "keepers_flame_8",
+			"grants_flag": "night_harbinger_defeated",
 			"requires_moves": ["dash", "throw", "sunflare"],
 			"requires_flags": [],
+		},
+		{
+			"id": "wp_sanctum_r5_flame",
+			"region": "sanctum_r5",
+			"zone": "sanctum_r5",
+			"pos": [208.0, 72.0],
+			"action": "collect_key",
+			"target": "keepers_flame_8",
+			"grants_flag": "keepers_flame_8",
+			"requires_moves": ["throw", "prism", "lens", "sunflare"],
+			"requires_flags": ["night_harbinger_defeated"],
 		},
 		{
 			"id": "wp_sanctum_r5_choir",
 			"region": "sanctum_r5",
 			"zone": "sanctum_r5",
-			"pos": [224.0, 24.0],
+			"pos": [208.0, 24.0],
 			"action": "unlock_door",
 			"target": "door_boss_8",
 			"requires_moves": ["sunflare"],
@@ -159,7 +170,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_sanctum_boss",
 			"region": "sanctum_r6",
 			"zone": "sanctum_r6",
-			"pos": [240.0, 152.0],
+			"pos": [264.0, 168.0],
 			"action": "defeat_boss",
 			"target": "boss_the_hush",
 			"grants_flag": "boss_the_hush_defeated",
@@ -170,7 +181,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_great_lamp_8",
 			"region": "sanctum_r6",
 			"zone": "sanctum_r6",
-			"pos": [240.0, 64.0],
+			"pos": [296.0, 72.0],
 			"action": "light_great_lamp",
 			"target": "great_lamp_8",
 			"grants_flag": "great_lamp_8",
@@ -231,7 +242,6 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	_emit_narration("CUE_BEACON_LIT_8", "title", 2.5)
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 
@@ -265,7 +275,6 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
 			_events.music_mode_requested.emit("island8_dungeon")
-			_emit_narration("CUE_BOSS_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("night_harbinger_defeated")
 
 
@@ -275,8 +284,6 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island8_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else 0.36)
-		var cue: String = "CUE_PHASE_2_ISL8" if boss_id == MINI_BOSS_KIND else ("CUE_HUSH_P4" if phase >= 4 else ("CUE_HUSH_P3" if phase == 3 else "CUE_PHASE_2_ISL8"))
-		_emit_narration(cue, "warning", 3.2)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:

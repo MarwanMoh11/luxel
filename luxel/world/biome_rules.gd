@@ -21,7 +21,7 @@ var _mechanics: LxBiomeMechanics = null
 var tide_phase: float = 0.0 # 0..1 cycle (0.60..1.0 = High Tide Surge)
 var tide_surging: bool = false
 var _last_tide_surge: bool = false
-var beam_angle: float = 0.0
+var beam_angle: float = PI * 0.5
 var beam_origin: Vector2 = Vector2.ZERO
 var beam_buff_t: float = 0.0
 
@@ -53,11 +53,8 @@ func _ready() -> void:
 	z_index = -3
 	active_instance = self
 
-
 func _exit_tree() -> void:
-	if active_instance == self:
-		active_instance = null
-
+	if active_instance == self: active_instance = null
 
 func configure(p_island_id: int, p_bounds: Rect2, p_is_dungeon: bool, region_node: Node) -> void:
 	active_instance = self
@@ -67,27 +64,15 @@ func configure(p_island_id: int, p_bounds: Rect2, p_is_dungeon: bool, region_nod
 	_region = region_node
 	clock = 0.0
 	_cam_center = p_bounds.get_center()
-	tide_phase = 0.0
-	tide_surging = false
-	_last_tide_surge = false
-	beam_angle = 0.0
-	beam_origin = Vector2(p_bounds.position.x + p_bounds.size.x * 0.5, p_bounds.position.y + 34.0)
+	tide_phase = 0.0; tide_surging = false; _last_tide_surge = false
+	beam_angle = PI * 0.5
+	beam_origin = Vector2(p_bounds.position.x + p_bounds.size.x * 0.5, p_bounds.position.y + 18.0)
 	beam_buff_t = 0.0
-	_blooms.clear()
-	_sap_pools.clear()
-	_updrafts.clear()
-	_stars.clear()
-	_star_cd = 2.4
-	starlight_surge_t = 0.0
-	_vents.clear()
-	vent_cycle = 0.0
-	lunar_phase = 1.0
-	eclipse_pulse = 0.0
+	_blooms.clear(); _sap_pools.clear(); _updrafts.clear(); _stars.clear(); _vents.clear()
+	_star_cd = 2.4; starlight_surge_t = 0.0; vent_cycle = 0.0; lunar_phase = 1.0; eclipse_pulse = 0.0
 	_populate_features()
 	if _mechanics == null and get_parent() != null:
-		_mechanics = LxBiomeMechanics.new()
-		_mechanics.name = "BiomeMechanics"
-		get_parent().add_child(_mechanics)
+		_mechanics = LxBiomeMechanics.new(); _mechanics.name = "BiomeMechanics"; get_parent().add_child(_mechanics)
 	if _mechanics != null:
 		_mechanics.configure(self, _region)
 	queue_redraw()
@@ -110,57 +95,104 @@ func _populate_features() -> void:
 		)
 	elif island_id == 3 and is_dungeon:
 		_scan_and_place(grid, w, h, ts, PackedStringArray(["ground", "path"]), 5, 3, func(p: Vector2, _hv: int) -> void:
-			_sap_pools.append({"pos": p, "r": 16.0})
+			_sap_pools.append({"pos": p, "r": 14.0})
 		)
 	elif island_id == 4 or (island_id == 8 and not is_dungeon):
-		var want_tiles := PackedStringArray(["water", "pit", "void"] if is_dungeon else ["water", "tide"])
+		var want_tiles := PackedStringArray(["water", "pit", "void"] if is_dungeon else (["water", "tide", "pit", "void"] if island_id == 8 else ["water", "tide"]))
 		var max_u: int = 12 if (island_id == 4 and not is_dungeon) else 4
+		var mire_rect: Rect2 = _find_zone_rect(PackedStringArray(["mire", "wing", "isl8_2"])) if island_id == 8 else Rect2()
+		var u_filter: Callable = Callable()
+		if island_id == 8:
+			u_filter = func(p: Vector2) -> bool:
+				if mire_rect.has_area():
+					return mire_rect.has_point(p)
+				var prog: float = _route_progress(p)
+				return prog >= 0.22 and prog <= 0.72 and _has_walkable_near(grid, w, h, ts, p, 4)
 		_scan_and_place(grid, w, h, ts, want_tiles, 5, max_u, func(p: Vector2, _hv: int) -> void:
-			if island_id == 8 and (p.y < bounds.size.y * 0.28 or p.y > bounds.size.y * 0.68):
-				return
 			_updrafts.append({"pos": p, "r": 18.0, "cd": 0.0})
-		)
+		, u_filter)
 	if island_id == 6 or (island_id == 8 and not is_dungeon):
 		var max_v: int = 9 if (island_id == 6 and not is_dungeon) else 3
+		var kiln_rect: Rect2 = _find_zone_rect(PackedStringArray(["kiln", "forge", "ash", "isl8_3"])) if island_id == 8 else Rect2()
+		var v_filter: Callable = Callable()
+		if island_id == 8:
+			v_filter = func(p: Vector2) -> bool:
+				if kiln_rect.has_area():
+					return kiln_rect.has_point(p)
+				return _route_progress(p) >= 0.55
 		_scan_and_place(grid, w, h, ts, PackedStringArray(["ground", "path"]), 7, max_v, func(p: Vector2, hv: int) -> void:
-			if island_id == 8 and p.y > bounds.size.y * 0.36:
-				return
 			_vents.append({"pos": p, "phase": float(hv % 100) * 0.005, "ember_cd": 0.0, "erupted": false})
-		)
+		, v_filter)
 
+
+func _find_zone_rect(keywords: PackedStringArray) -> Rect2:
+	if _region == null or not is_instance_valid(_region): return Rect2()
+	var zones_v: Variant = _region.get("zones")
+	if not (zones_v is Array): return Rect2()
+	for z_v: Variant in (zones_v as Array):
+		if not (z_v is Dictionary): continue
+		var z: Dictionary = z_v as Dictionary
+		var z_id: String = str(z.get("id", "")).to_lower()
+		var z_name: String = str(z.get("name_key", "")).to_lower()
+		var matched: bool = false
+		for kw: String in keywords:
+			if z_id.find(kw) >= 0 or z_name.find(kw) >= 0: matched = true; break
+		if not matched: continue
+		var rv: Variant = z.get("rect")
+		if rv is Array and (rv as Array).size() >= 4:
+			var ra: Array = rv as Array
+			return Rect2(float(ra[0]), float(ra[1]), float(ra[2]), float(ra[3]))
+		if rv is Rect2: return rv as Rect2
+	return Rect2()
+
+func _route_progress(p: Vector2) -> float:
+	var sp: Vector2 = bounds.position + Vector2(bounds.size.x * 0.5, bounds.size.y * 0.85)
+	var dp: Vector2 = bounds.position + Vector2(bounds.size.x * 0.5, bounds.size.y * 0.15)
+	if _region != null and is_instance_valid(_region):
+		var sp_v: Variant = _region.get("spawn_pos")
+		if sp_v is Vector2 and (sp_v as Vector2) != Vector2.ZERO: sp = sp_v as Vector2
+		if _region.has_method("find_interactable"):
+			var door_v: Variant = _region.call("find_interactable", "door_dungeon_%d" % island_id)
+			if door_v is Node2D and is_instance_valid(door_v): dp = (door_v as Node2D).global_position
+	var d_spawn: float = p.distance_to(sp)
+	return clampf(d_spawn / maxf(1.0, d_spawn + p.distance_to(dp)), 0.0, 1.0)
+
+static func _has_walkable_near(grid: Array, w: int, h: int, ts: float, p: Vector2, rad_tiles: int) -> bool:
+	var cx: int = int(floor(p.x / maxf(ts, 1.0)))
+	var cy: int = int(floor(p.y / maxf(ts, 1.0)))
+	for dy: int in range(-rad_tiles, rad_tiles + 1):
+		var ty: int = cy + dy
+		if ty < 0 or ty >= h: continue
+		var row: PackedStringArray = grid[ty] as PackedStringArray
+		for dx: int in range(-rad_tiles, rad_tiles + 1):
+			var tx: int = cx + dx
+			if tx >= 0 and tx < w and row[tx] in ["ground", "path", "bridge"]: return true
+	return false
 
 func _scan_and_place(
 	grid: Array, w: int, h: int, ts: float, match_tiles: PackedStringArray,
-	stride: int, limit: int, on_place: Callable
+	stride: int, limit: int, on_place: Callable, filter: Callable = Callable()
 ) -> void:
 	var placed: Array[Vector2] = []
 	var min_sep_sq: float = (float(stride) * ts * 0.72) ** 2
 	for ty: int in range(2, h - 2, 2):
 		var row: PackedStringArray = grid[ty] as PackedStringArray
 		for tx: int in range(2, w - 2, 2):
-			if placed.size() >= limit:
-				return
-			if not match_tiles.has(row[tx]):
-				continue
-			# Require open neighborhood so features never clip into walls
-			var up_ok: bool = match_tiles.has((grid[ty - 1] as PackedStringArray)[tx]) or (grid[ty - 1] as PackedStringArray)[tx] in ["ground", "path", "water"]
-			var dn_ok: bool = match_tiles.has((grid[ty + 1] as PackedStringArray)[tx]) or (grid[ty + 1] as PackedStringArray)[tx] in ["ground", "path", "water"]
-			if not (up_ok and dn_ok):
-				continue
+			if placed.size() >= limit: return
+			if not match_tiles.has(row[tx]): continue
+			var up_t: String = (grid[ty - 1] as PackedStringArray)[tx]
+			var dn_t: String = (grid[ty + 1] as PackedStringArray)[tx]
+			if not ((match_tiles.has(up_t) or up_t in ["ground", "path", "water"]) and (match_tiles.has(dn_t) or dn_t in ["ground", "path", "water"])): continue
 			var hv: int = (tx * 73856093 ^ ty * 19349663 ^ island_id * 83492791) & 0x7FFFFFFF
-			if (hv % stride) != 0:
-				continue
+			if (hv % stride) != 0: continue
 			var p := Vector2((float(tx) + 0.5) * ts, (float(ty) + 0.5) * ts)
-			if _too_close(p, placed, min_sep_sq):
-				continue
+			if (filter.is_valid() and not bool(filter.call(p))) or _too_close(p, placed, min_sep_sq): continue
 			placed.append(p)
 			on_place.call(p, hv)
 
-
 static func _too_close(p: Vector2, pts: Array[Vector2], sep_sq: float) -> bool:
 	for o: Vector2 in pts:
-		if o.distance_squared_to(p) < sep_sq:
-			return true
+		if o.distance_squared_to(p) < sep_sq: return true
 	return false
 
 
@@ -169,22 +201,14 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	if dt <= 0.0:
 		return
 	clock += dt
-	if island_id > 1:
-		match island_id:
-			2:
-				_tick_island2(dt)
-			3:
-				_tick_island3(dt)
-			4:
-				_tick_island4(dt)
-			5:
-				_tick_island5(dt)
-			6:
-				_tick_island6(dt)
-			7:
-				_tick_island7(dt)
-			8:
-				_tick_island8(dt)
+	match island_id:
+		2: _tick_island2(dt)
+		3: _tick_island3(dt)
+		4: _tick_island4(dt)
+		5: _tick_island5(dt)
+		6: _tick_island6(dt)
+		7: lunar_phase = 0.5 + 0.5 * cos(clock * (TAU / 9.0))
+		8: _tick_island8(dt)
 	if _mechanics != null and is_instance_valid(_mechanics):
 		_mechanics.tick(dt, cam_center)
 	queue_redraw()
@@ -203,14 +227,8 @@ func _tick_island2(dt: float) -> void:
 				if _region != null and _region.has_method("tile_at") and str(_region.call("tile_at", w.global_position)) == "tide":
 					w.apply_recoil(Vector2(28.0 * dt * 8.0, 0.0))
 	else:
-		beam_angle = wrapf(beam_angle + dt * 0.46, -PI, PI)
+		# Single dungeon Fresnel searchlight is driven and drawn by LxBiomeDungeonTwists
 		beam_buff_t = maxf(0.0, beam_buff_t - dt)
-		if Lx.player is LxWick and is_instance_valid(Lx.player):
-			var w: LxWick = Lx.player as LxWick
-			var bdir: Vector2 = Vector2.from_angle(beam_angle)
-			var bend: Vector2 = beam_origin + bdir * 190.0
-			if Geometry2D.get_closest_point_to_segment(w.global_position, beam_origin, bend).distance_to(w.global_position) <= 18.0:
-				beam_buff_t = 0.85
 
 
 func get_lit_bloom_count() -> int:
@@ -342,16 +360,11 @@ func _tick_island6(dt: float) -> void:
 			if w.is_dashing() and w.global_position.distance_to(v["pos"] as Vector2) <= 34.0:
 				v["ember_cd"] = 2.0
 				if w.move_sunflare != null and w.move_sunflare.unlocked:
-					var emax: float = w.move_sunflare.get_ember_max()
-					w.ember = minf(emax, w.ember + 18.0)
+					w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 18.0)
 				w.spawn_ring(w.global_position, 3.0, 18.0, 0.24, LxWick.PAL_GOLD, 1.4)
 				w.emit_sfx("ember_pickup", w.global_position, false)
 				if _mechanics != null and is_instance_valid(_mechanics):
 					_mechanics.grant_molten_overdrive(3)
-
-
-func _tick_island7(_dt: float) -> void:
-	lunar_phase = 0.5 + 0.5 * cos(clock * (TAU / 9.0))
 
 
 func _tick_island8(dt: float) -> void:
@@ -360,8 +373,7 @@ func _tick_island8(dt: float) -> void:
 		for bid: String in ["beacon_8_1", "beacon_8_2", "beacon_8_3"]:
 			if Lx.state.lit_beacons.has(bid):
 				lit_b += 1
-	var rem: float = clampf(1.0 - float(lit_b) / 3.0, 0.0, 1.0)
-	eclipse_pulse = (0.5 + 0.5 * sin(clock * (TAU / 9.0))) * rem
+	eclipse_pulse = (0.5 + 0.5 * sin(clock * (TAU / 9.0))) * clampf(1.0 - float(lit_b) / 3.0, 0.0, 1.0)
 	if not is_dungeon:
 		_tick_island4(dt)
 		_tick_island6(dt)
@@ -371,28 +383,19 @@ func get_darkness_offset() -> float:
 	if Lx.state != null and Lx.state.relit_islands.has(island_id) and not is_dungeon:
 		return 0.0
 	match island_id:
-		3:
-			return 0.16 if not is_dungeon else 0.06
-		7:
-			return lerpf(0.14, -0.16, lunar_phase)
-		8:
-			return eclipse_pulse * 0.15
-		_:
-			return 0.0
+		3: return 0.16 if not is_dungeon else 0.06
+		7: return lerpf(0.14, -0.16, lunar_phase)
+		8: return eclipse_pulse * 0.15
+		_: return 0.0
 
 
 func get_shader_phase() -> float:
 	match island_id:
-		2:
-			return 1.0 if tide_surging else tide_phase
-		6:
-			return vent_cycle
-		7:
-			return lunar_phase
-		8:
-			return eclipse_pulse
-		_:
-			return 0.5 + 0.5 * sin(clock * 0.8)
+		2: return 1.0 if tide_surging else tide_phase
+		6: return vent_cycle
+		7: return lunar_phase
+		8: return eclipse_pulse
+		_: return 0.5 + 0.5 * sin(clock * 0.8)
 
 
 func get_light_pools() -> Array[Vector4]:
@@ -407,11 +410,7 @@ func get_light_pools() -> Array[Vector4]:
 		for b: Dictionary in _blooms:
 			var lt: float = float(b["lit_t"])
 			var bp: Vector2 = b["pos"] as Vector2
-			if lt > 0.0:
-				var f: float = clampf(lt / 2.0, 0.0, 1.0)
-				pools.append(Vector4(bp.x, bp.y, 86.0 * f, 1.15 * f))
-			else:
-				pools.append(Vector4(bp.x, bp.y, 24.0, 0.35))
+			pools.append(Vector4(bp.x, bp.y, 86.0 * clampf(lt / 2.0, 0.0, 1.0), 1.15 * clampf(lt / 2.0, 0.0, 1.0)) if lt > 0.0 else Vector4(bp.x, bp.y, 24.0, 0.35))
 	elif island_id == 6 or (island_id == 8 and not is_dungeon):
 		for v: Dictionary in _vents:
 			var vp: float = fposmod(vent_cycle + float(v["phase"]), 1.0)
@@ -421,23 +420,29 @@ func get_light_pools() -> Array[Vector4]:
 	return pools
 
 
+func _is_walkable(pt: Vector2) -> bool:
+	return _region != null and _region.has_method("tile_at") and str(_region.call("tile_at", pt)) in ["ground", "path"]
+
+
+func _draw_stepped_ring(c: Vector2, rad: int, col: Color, dots: int = 16, only_walkable: bool = false) -> void:
+	for k: int in range(dots):
+		var a: float = (TAU * float(k)) / float(dots)
+		var pt: Vector2 = (c + Vector2(cos(a), sin(a)) * float(rad)).round()
+		if not only_walkable or _is_walkable(pt):
+			draw_rect(Rect2(pt, Vector2.ONE), col)
+
+
 func _draw() -> void:
 	if island_id <= 1:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
 	match island_id:
-		2:
-			_draw_island2(fred)
-		3:
-			_draw_island3(fred)
-		4:
-			_draw_updrafts(fred)
-		5:
-			_draw_stars(fred)
-		6:
-			_draw_vents(fred)
-		7:
-			_draw_mirror_reflection(fred)
+		2: _draw_island2(fred)
+		3: _draw_island3(fred)
+		4: _draw_updrafts(fred)
+		5: _draw_stars(fred)
+		6: _draw_vents(fred)
+		7: _draw_mirror_reflection(fred)
 		8:
 			if not is_dungeon:
 				_draw_updrafts(fred)
@@ -445,52 +450,44 @@ func _draw() -> void:
 
 
 func _draw_island2(fred: bool) -> void:
-	if not is_dungeon:
-		if not tide_surging and tide_phase < 0.46:
-			return
-		var col: Color = (PAL["ice"] if tide_surging else PAL["sky"]) as Color
-		var min_x: float = _cam_center.x - HALF_W
-		var min_y: float = _cam_center.y - HALF_H
-		var drift: float = fposmod(clock * (48.0 if tide_surging else 18.0), 32.0)
-		for row: int in range(8):
-			var wy: float = roundf(min_y + float(row) * 28.0 + 10.0)
-			var wx: float = roundf(min_x + drift + float((row * 19) % 48))
-			if _region != null and _region.has_method("tile_at") and str(_region.call("tile_at", Vector2(wx, wy))) in ["tide", "water"]:
-				draw_rect(Rect2(wx, wy, 14.0 if tide_surging else 8.0, 1.0), Color(col, 0.55 if fred else 0.80))
-				draw_rect(Rect2(wx + 2.0, wy - 1.0, 6.0, 1.0), Color(PAL["cream"] as Color, 0.35 if fred else 0.65))
-	else:
-		var bdir: Vector2 = Vector2.from_angle(beam_angle)
-		var perp := Vector2(-bdir.y, bdir.x)
-		var alpha: float = 0.14 if fred else 0.22
-		var p_a: Vector2 = beam_origin.round()
-		var p_b: Vector2 = (beam_origin + bdir * 185.0 + perp * 22.0).round()
-		var p_c: Vector2 = (beam_origin + bdir * 185.0 - perp * 22.0).round()
-		draw_colored_polygon(PackedVector2Array([p_a, p_b, p_c]), Color(PAL["gold"] as Color, alpha))
-		draw_line(p_a, (beam_origin + bdir * 185.0).round(), Color(PAL["cream"] as Color, alpha * 1.4), 1.5)
+	if is_dungeon or (not tide_surging and tide_phase < 0.46):
+		return
+	var col: Color = (PAL["ice"] if tide_surging else PAL["sky"]) as Color
+	var min_x: float = _cam_center.x - HALF_W
+	var min_y: float = _cam_center.y - HALF_H
+	var drift: float = fposmod(clock * (48.0 if tide_surging else 18.0), 32.0)
+	for row: int in range(8):
+		var wy: float = roundf(min_y + float(row) * 28.0 + 10.0)
+		var wx: float = roundf(min_x + drift + float((row * 19) % 48))
+		if _region != null and _region.has_method("tile_at") and str(_region.call("tile_at", Vector2(wx, wy))) in ["tide", "water"]:
+			draw_rect(Rect2(wx, wy, 14.0 if tide_surging else 8.0, 1.0), Color(col, 0.45 if fred else 0.72))
+			draw_rect(Rect2(wx + 2.0, wy - 1.0, 6.0, 1.0), Color(PAL["cream"] as Color, 0.30 if fred else 0.55))
 
 
 func _draw_island3(fred: bool) -> void:
 	for b: Dictionary in _blooms:
 		var p: Vector2 = (b["pos"] as Vector2).round()
-		if not _on_screen(p):
+		if not _on_screen(p) or not _is_walkable(p):
 			continue
 		var lit: bool = float(b["lit_t"]) > 0.0
-		draw_circle(p, 5.0 if lit else 3.5, PAL["pine"] as Color)
-		draw_circle(p, 3.0 if lit else 2.0, (PAL["lime"] if lit else PAL["jade"]) as Color)
+		var r_pad: float = 4.0 if lit else 3.0
+		draw_rect(Rect2(p + Vector2(-r_pad, -r_pad + 1.0), Vector2(r_pad * 2.0, r_pad * 2.0 - 2.0)), PAL["pine"] as Color)
+		draw_rect(Rect2(p + Vector2(-r_pad + 1.0, -r_pad), Vector2(r_pad * 2.0 - 2.0, r_pad * 2.0)), PAL["pine"] as Color)
+		draw_rect(Rect2(p + Vector2(-2.0, -2.0), Vector2(4.0, 4.0)), (PAL["lime"] if lit else PAL["jade"]) as Color)
 		if lit:
 			draw_rect(Rect2(p - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
-			var r_b: float = roundf(8.0 + (0.0 if fred else sin(clock * 3.0) * 1.5))
-			draw_arc(p, r_b, 0.0, TAU, 16, Color(PAL["gold"] as Color, 0.55), 1.0)
+			_draw_stepped_ring(p, 7 + (0 if fred else int(roundf(sin(clock * 3.0)))), Color(PAL["gold"] as Color, 0.36), 12, true)
 	for sp: Dictionary in _sap_pools:
 		var p: Vector2 = (sp["pos"] as Vector2).round()
-		if not _on_screen(p):
+		if not _on_screen(p) or not _is_walkable(p):
 			continue
 		var r: float = float(sp["r"])
-		draw_circle(p, r, Color(PAL["apricot"] as Color, 0.28))
-		draw_arc(p, r, 0.0, TAU, 18, Color(PAL["gold"] as Color, 0.65), 1.0)
-		var bx: float = roundf(p.x + sin(clock * 1.7 + p.x) * (r * 0.4))
-		var by: float = roundf(p.y + cos(clock * 1.3 + p.y) * (r * 0.3))
-		draw_rect(Rect2(bx, by, 2.0, 1.0), PAL["cream"] as Color)
+		draw_rect(Rect2(p + Vector2(-r + 2.0, -r * 0.6), Vector2((r - 2.0) * 2.0, r * 1.2)), Color(PAL["apricot"] as Color, 0.18))
+		draw_rect(Rect2(p + Vector2(-r * 0.6, -r * 0.8), Vector2(r * 1.2, r * 1.6)), Color(PAL["apricot"] as Color, 0.18))
+		_draw_stepped_ring(p, int(r * 0.85), Color(PAL["gold"] as Color, 0.28), 16, true)
+		var bx: float = roundf(p.x + sin(clock * 1.7 + p.x) * (r * 0.35))
+		var by: float = roundf(p.y + cos(clock * 1.3 + p.y) * (r * 0.25))
+		draw_rect(Rect2(bx, by, 2.0, 1.0), Color(PAL["cream"] as Color, 0.65))
 
 
 func _draw_updrafts(fred: bool) -> void:
@@ -499,54 +496,58 @@ func _draw_updrafts(fred: bool) -> void:
 		if not _on_screen(p):
 			continue
 		var r: float = float(u["r"])
-		var rot: float = clock * (1.2 if fred else 2.6)
-		draw_arc(p, r * 0.68, rot, rot + 2.2, 10, Color(PAL["sky"] as Color, 0.65), 1.2)
-		draw_arc(p, r * 0.68, rot + PI, rot + PI + 2.2, 10, Color(PAL["ice"] as Color, 0.72), 1.2)
+		var rot: float = clock * (1.1 if fred else 2.4)
+		for k: int in range(6):
+			var a: float = rot + float(k) * (TAU / 6.0)
+			var pt: Vector2 = (p + Vector2(cos(a) * r * 0.58, sin(a) * r * 0.42)).round()
+			draw_rect(Rect2(pt, Vector2(2.0 if k % 2 == 0 else 1.0, 1.0)), Color((PAL["ice"] if k % 2 == 0 else PAL["sky"]) as Color, 0.48))
 		for k: int in range(3):
-			var uu: float = fposmod(clock * 0.9 + float(k) * 0.33, 1.0)
-			var mx: float = roundf(p.x + cos(rot + float(k) * 2.1) * (r * 0.45 * (1.0 - uu * 0.4)))
-			var my: float = roundf(p.y + 4.0 - uu * 18.0)
-			draw_rect(Rect2(mx, my, 1.0, 2.0), (PAL["cream"] if uu < 0.35 else PAL["ice"]) as Color)
+			var uu: float = fposmod(clock * 0.85 + float(k) * 0.33, 1.0)
+			var mx: float = roundf(p.x + cos(rot + float(k) * 2.1) * (r * 0.40 * (1.0 - uu * 0.4)))
+			var my: float = roundf(p.y + 4.0 - uu * 16.0)
+			draw_rect(Rect2(mx, my, 1.0, 2.0), Color((PAL["cream"] if uu < 0.35 else PAL["ice"]) as Color, sin(uu * PI) * 0.72))
 
 
 func _draw_stars(fred: bool) -> void:
 	for s: Dictionary in _stars:
 		var p: Vector2 = (s["pos"] as Vector2).round()
+		if not _is_walkable(p):
+			continue
 		var t: float = float(s["t"])
 		var dur: float = float(s["dur"])
 		if not bool(s["landed"]):
 			var u: float = clampf(t / maxf(dur, 0.01), 0.0, 1.0)
-			var rr: float = roundf(lerpf(26.0, 4.0, u))
-			draw_arc(p, rr, 0.0, TAU, 18, (PAL["cream"] if u > 0.75 else PAL["gold"]) as Color, 1.2)
-			draw_line(p + Vector2(-4.0, 0.0), p + Vector2(4.0, 0.0), PAL["ice"] as Color, 1.0)
-			draw_line(p + Vector2(0.0, -4.0), p + Vector2(0.0, 4.0), PAL["ice"] as Color, 1.0)
+			var rr: int = int(roundf(lerpf(18.0, 3.0, u)))
+			_draw_stepped_ring(p, rr, Color((PAL["cream"] if u > 0.75 else PAL["gold"]) as Color, 0.55 if fred else 0.75), 12, true)
+			draw_rect(Rect2(p + Vector2(-3.0, 0.0), Vector2(7.0, 1.0)), Color(PAL["ice"] as Color, 0.65))
+			draw_rect(Rect2(p + Vector2(0.0, -3.0), Vector2(1.0, 7.0)), Color(PAL["ice"] as Color, 0.65))
 		else:
 			var a: float = clampf(1.0 - (t - dur) / 0.55, 0.0, 1.0)
-			var br: float = roundf(lerpf(6.0, 28.0, 1.0 - a))
-			draw_arc(p, br, 0.0, TAU, 20, Color(PAL["gold"] as Color, a * (0.6 if fred else 0.95)), 1.6)
-			draw_arc(p, br * 0.65, 0.0, TAU, 16, Color(PAL["cream"] as Color, a), 1.0)
+			var br: int = int(roundf(lerpf(5.0, 22.0, 1.0 - a)))
+			_draw_stepped_ring(p, br, Color(PAL["gold"] as Color, a * (0.45 if fred else 0.72)), 16, true)
 
 
 func _draw_vents(fred: bool) -> void:
 	for v: Dictionary in _vents:
 		var p: Vector2 = (v["pos"] as Vector2).round()
-		if not _on_screen(p):
+		if not _on_screen(p) or not _is_walkable(p):
 			continue
 		var vp: float = fposmod(vent_cycle + float(v["phase"]), 1.0)
-		draw_circle(p, 7.0, PAL["night"] as Color)
-		draw_circle(p, 5.0, (PAL["coral"] if vp >= 0.45 else PAL["wine"]) as Color)
+		draw_rect(Rect2(p + Vector2(-6.0, -4.0), Vector2(12.0, 8.0)), PAL["night"] as Color)
+		draw_rect(Rect2(p + Vector2(-5.0, -3.0), Vector2(10.0, 6.0)), PAL["void"] as Color)
+		var core_c: Color = (PAL["gold"] if vp >= 0.56 else (PAL["coral"] if vp >= 0.45 else PAL["wine"])) as Color
+		for sy: float in [-2.0, 0.0, 2.0]:
+			draw_rect(Rect2(p + Vector2(-4.0, sy), Vector2(8.0, 1.0)), core_c)
 		if vp >= 0.56:
 			var u: float = (vp - 0.56) / 0.44
-			var er: float = roundf(lerpf(8.0, 22.0, sin(u * PI)))
-			draw_arc(p, er, 0.0, TAU, 18, Color(PAL["coral"] as Color, 0.65 if fred else 0.90), 1.6)
-			draw_circle(p, 3.0, PAL["gold"] as Color)
+			_draw_stepped_ring(p, int(roundf(lerpf(7.0, 18.0, sin(u * PI)))), Color(PAL["coral"] as Color, 0.42 if fred else 0.62), 14, true)
 			for ei: int in range(4):
 				var eu: float = fposmod(clock * 1.8 + float(ei) * 0.25, 1.0)
-				var ex: float = roundf(p.x + sin(clock * 4.0 + float(ei) * 1.7) * 6.0)
-				var ey: float = roundf(p.y - eu * 20.0)
+				var ex: float = roundf(p.x + sin(clock * 4.0 + float(ei) * 1.7) * 5.0)
+				var ey: float = roundf(p.y - eu * 18.0)
 				draw_rect(Rect2(ex, ey, 2.0 if ei == 0 else 1.0, 1.0), (PAL["cream"] if eu < 0.3 else PAL["gold"]) as Color)
 		elif vp >= 0.32:
-			draw_arc(p, 11.0, 0.0, TAU, 14, Color(PAL["apricot"] as Color, 0.55), 1.0)
+			_draw_stepped_ring(p, 9, Color(PAL["apricot"] as Color, 0.32), 10, true)
 
 
 func _draw_mirror_reflection(fred: bool) -> void:
@@ -558,10 +559,10 @@ func _draw_mirror_reflection(fred: bool) -> void:
 		if not is_dungeon and tt not in ["glass", "mirror", "path", "ground"]:
 			return
 	var rp: Vector2 = (w.global_position + Vector2(0.0, 6.0)).round()
-	var a: float = (0.24 if fred else (0.20 + 0.14 * lunar_phase))
+	var a: float = (0.20 if fred else (0.16 + 0.12 * lunar_phase))
 	draw_rect(Rect2(rp + Vector2(-3.0, 0.0), Vector2(6.0, 7.0)), Color(PAL["sky"] as Color, a))
-	draw_rect(Rect2(rp + Vector2(-2.0, 5.0), Vector2(4.0, 3.0)), Color(PAL["ice"] as Color, a * 1.15))
-	draw_rect(Rect2(rp + Vector2(3.0, 2.0), Vector2(2.0, 2.0)), Color(PAL["gold"] as Color, a * 1.25))
+	draw_rect(Rect2(rp + Vector2(-2.0, 5.0), Vector2(4.0, 3.0)), Color(PAL["ice"] as Color, a * 1.1))
+	draw_rect(Rect2(rp + Vector2(3.0, 2.0), Vector2(2.0, 2.0)), Color(PAL["gold"] as Color, a * 1.15))
 
 
 func _find_walkable_near_cam() -> Vector2:
@@ -571,9 +572,7 @@ func _find_walkable_near_cam() -> Vector2:
 		var a: float = clock * 2.7 + float(attempt) * 1.9
 		var r: float = 42.0 + float(attempt % 4) * 20.0
 		var cand: Vector2 = (_cam_center + Vector2.from_angle(a) * r).round()
-		if not bounds.grow(-24.0).has_point(cand):
-			continue
-		if str(_region.call("tile_at", cand)) in ["ground", "path"]:
+		if bounds.grow(-24.0).has_point(cand) and _is_walkable(cand):
 			return cand
 	return Vector2.ZERO
 

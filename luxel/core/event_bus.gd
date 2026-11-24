@@ -22,6 +22,7 @@ signal lantern_stolen(thief: Object, pos: Vector2)
 signal lantern_dropped(pos: Vector2)
 signal lantern_perched_loss(pos: Vector2)
 signal lantern_struck(pos: Vector2)
+signal lantern_picked_up(pickup_id: String, pos: Vector2)
 
 signal move_unlocked(move_id: String)
 signal shrine_claimed(shrine_id: String, move_id: String)

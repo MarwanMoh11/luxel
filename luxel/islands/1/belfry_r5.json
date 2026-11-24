@@ -127,7 +127,7 @@
       "prop": "candelabra_tall",
       "pos": [
         104,
-        54
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -139,36 +139,12 @@
       "prop": "candelabra_tall",
       "pos": [
         344,
-        54
+        56
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "belfry_bell_hanging",
-      "pos": [
-        136,
-        78
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "belfry_bell_hanging",
-      "pos": [
-        312,
-        78
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
     },
     {
       "sheet": "island1_scenery",
@@ -196,13 +172,61 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "stone_bench",
+      "prop": "belfry_bell_hanging",
       "pos": [
-        384,
-        128
+        168,
+        40
       ],
       "layer": "sort",
       "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        280,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        56,
+        86
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        56,
+        154
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        408,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
       "shadow": true,
       "phase": 0.0
     }

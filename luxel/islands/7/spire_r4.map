@@ -1,4 +1,4 @@
-# Mirror Spire r4 - Lunar Glass Chasm (24x15)
+# Mirror Spire r4 - Winding Lunar Abyss Ribbon (26x16)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,18 +13,19 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-########################
-##~~~~~~~~~~~~~~~~~~~~##
-#~~~~~~~~~~~~~~~~~~~~~~#
-#~~~~~.......OO..##..~~#
-#~~~~~.......OO..##..~~#
-#~~~~~.......OO..PP..~~#
-#~~~~~.....,,OO..PP,,,,,
-#~~~~~.,,,,,,OO,,PP,,,,,
-#~~~~~.....,,OO..PP,,,,,
-#~~~~~.....,,OO..PP..~~#
-#~~~~~.....,,OO..##..~~#
-#~~~~~.....,,OO..##..~~#
-#~~~~~~~~~~,,~~~~~~~~~~#
-##~~~~~~~~~,,~~~~~~~~~##
-###########,,###########
+##########################
+#OOOOOOOOOOOOO~~~~~~~~~~~#
+#O.....OOOOOOO~~~~~~~~~~~#
+#O.....OOOOOOO~~~~~~~~~~~#
+#O.....OOOOOOOOOOO~~~~~~~#
+#O...OOOOOOOOOOOOOOO..#..#
+###OOOOOOOOOOOOOOOOO..#..#
+###OOOOOOOOOOOOOOOOO..,,,,
+#OOOOOOOOOOOOOOOOOOO..,,,,
+#O.......OOOOOOOOOOP..,,,,
+#O.......OOOO..OOPPP..#..#
+#O..###..OOPP..OPPOO..#..#
+#~.......OPPOOPPPOOOOOOOO#
+#~...,,..PPOOOOOOOOOOOOOO#
+#~...,,..OOOOOOOOOOOOOOOO#
+#####,,###################

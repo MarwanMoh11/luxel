@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    208,
-    168
+    152,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        416,
-        240
+        448,
+        256
       ],
       "dark": true
     }
@@ -24,14 +24,14 @@
     {
       "id": "exit_kiln_r7_south",
       "rect": [
-        192,
-        224,
+        144,
+        240,
         32,
         16
       ],
       "to_region": "kiln_r6",
       "to_spawn": [
-        256,
+        288,
         48
       ],
       "requires_moves": [],
@@ -49,7 +49,7 @@
       "to_region": "kiln_r8",
       "to_spawn": [
         408,
-        112
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -62,8 +62,8 @@
       "id": "seal_kiln_r7",
       "kind": "obsidian_seal",
       "pos": [
-        152,
-        120
+        136,
+        128
       ],
       "props": {
         "size": [
@@ -74,11 +74,71 @@
       }
     },
     {
+      "id": "cracked_wall_kiln_r7",
+      "kind": "cracked_wall",
+      "pos": [
+        376,
+        56
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "zone": "kiln_r7"
+      }
+    },
+    {
+      "id": "chest_kiln_r7_foundry",
+      "kind": "chest",
+      "pos": [
+        408,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40,
+        "zone": "kiln_r7"
+      }
+    },
+    {
+      "id": "tf_kiln_r7",
+      "kind": "blue_transformer",
+      "pos": [
+        232,
+        184
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_kiln_r7",
+      "kind": "switch_eye",
+      "pos": [
+        232,
+        88
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_kiln_r7_west"
+      }
+    },
+    {
       "id": "brazier_kiln_r7_nw",
       "kind": "brazier",
       "pos": [
         168,
-        88
+        56
       ],
       "props": {
         "target_id": "door_kiln_r7_west"
@@ -88,8 +148,8 @@
       "id": "brazier_kiln_r7_ne",
       "kind": "brazier",
       "pos": [
-        248,
-        88
+        328,
+        56
       ],
       "props": {
         "target_id": "door_kiln_r7_west"
@@ -99,8 +159,8 @@
       "id": "brazier_kiln_r7_sw",
       "kind": "brazier",
       "pos": [
-        168,
-        152
+        184,
+        200
       ],
       "props": {
         "target_id": "door_kiln_r7_west"
@@ -110,8 +170,8 @@
       "id": "brazier_kiln_r7_se",
       "kind": "brazier",
       "pos": [
-        248,
-        152
+        328,
+        168
       ],
       "props": {
         "target_id": "door_kiln_r7_west"
@@ -121,7 +181,7 @@
       "id": "door_kiln_r7_west",
       "kind": "door",
       "pos": [
-        72,
+        48,
         120
       ],
       "props": {
@@ -134,8 +194,50 @@
           "brazier_kiln_r7_nw",
           "brazier_kiln_r7_ne",
           "brazier_kiln_r7_sw",
-          "brazier_kiln_r7_se"
+          "brazier_kiln_r7_se",
+          "switch_eye_kiln_r7"
         ]
+      }
+    },
+    {
+      "id": "portal_kiln_r7_in",
+      "kind": "blue_portal",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r7_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "kiln_r7_crucible_portal_lit"
+      }
+    },
+    {
+      "id": "portal_kiln_r7_out",
+      "kind": "blue_portal",
+      "pos": [
+        408,
+        168
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r7_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "chest_kiln_r7_crucible",
+      "kind": "chest",
+      "pos": [
+        408,
+        152
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 50,
+        "zone": "kiln_r7"
       }
     }
   ],
@@ -143,63 +245,75 @@
   "scenery": [
     {
       "sheet": "island6_scenery",
-      "prop": "crucible_floor_seal",
+      "prop": "hearth_brazier_tall",
       "pos": [
-        208,
-        120
+        96,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        96,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        248,
+        52
       ],
       "layer": "ground",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.25
+      "phase": 0.1
     },
     {
       "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
+      "prop": "ember_grate_vent",
       "pos": [
-        90,
-        77
+        280,
+        188
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "forge_anvil_stand",
+      "pos": [
+        312,
+        224
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
-      "pos": [
-        326,
-        77
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
     },
     {
       "sheet": "island6_scenery",
       "prop": "coal_hopper",
       "pos": [
-        90,
-        172
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "ash_urn_cluster",
-      "pos": [
-        326,
-        172
+        344,
+        224
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.4
     }
   ],
   "is_2x2_room": true

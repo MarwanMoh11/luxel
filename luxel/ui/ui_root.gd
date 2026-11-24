@@ -32,6 +32,7 @@ var options: LxOptionsMenu = null
 var rebind: LxRebindScreen = null
 var rest_shop: LxRestShop = null
 var cards: LxCards = null
+var _scrim_node: Node2D = null
 var _cursor_node: Node2D = null
 
 
@@ -45,47 +46,21 @@ func _ready() -> void:
 
 
 func _build_children() -> void:
-	hud = LxHud.new()
-	hud.name = "Hud"
-	add_child(hud)
-
-	narration = LxNarration.new()
-	narration.name = "Narration"
-	add_child(narration)
-
-	title = LxTitleScreen.new()
-	title.name = "Title"
-	add_child(title)
-
-	pause = LxPauseMenu.new()
-	pause.name = "Pause"
-	add_child(pause)
-
-	map_screen = LxMapScreen.new()
-	map_screen.name = "Map"
-	add_child(map_screen)
-
-	options = LxOptionsMenu.new()
-	options.name = "Options"
-	add_child(options)
-
-	rebind = LxRebindScreen.new()
-	rebind.name = "Rebind"
-	add_child(rebind)
-
-	rest_shop = LxRestShop.new()
-	rest_shop.name = "RestShop"
-	add_child(rest_shop)
-
-	cards = LxCards.new()
-	cards.name = "Cards"
-	add_child(cards)
-
-	_cursor_node = Node2D.new()
-	_cursor_node.name = "Reticle"
+	hud = LxHud.new(); hud.name = "Hud"; add_child(hud)
+	narration = LxNarration.new(); narration.name = "Narration"; add_child(narration)
+	_scrim_node = Node2D.new(); _scrim_node.name = "ModalScrim"
+	_scrim_node.process_mode = Node.PROCESS_MODE_ALWAYS; _scrim_node.visible = false
+	_scrim_node.draw.connect(_draw_modal_scrim); add_child(_scrim_node)
+	title = LxTitleScreen.new(); title.name = "Title"; add_child(title)
+	pause = LxPauseMenu.new(); pause.name = "Pause"; add_child(pause)
+	map_screen = LxMapScreen.new(); map_screen.name = "Map"; add_child(map_screen)
+	options = LxOptionsMenu.new(); options.name = "Options"; add_child(options)
+	rebind = LxRebindScreen.new(); rebind.name = "Rebind"; add_child(rebind)
+	rest_shop = LxRestShop.new(); rest_shop.name = "RestShop"; add_child(rest_shop)
+	cards = LxCards.new(); cards.name = "Cards"; add_child(cards)
+	_cursor_node = Node2D.new(); _cursor_node.name = "Reticle"
 	_cursor_node.process_mode = Node.PROCESS_MODE_ALWAYS
-	_cursor_node.draw.connect(_draw_reticle)
-	add_child(_cursor_node)
+	_cursor_node.draw.connect(_draw_reticle); add_child(_cursor_node)
 
 
 func _connect_signals() -> void:
@@ -228,6 +203,43 @@ func is_modal_open() -> bool:
 	return current_screen != Screen.HUD and current_screen != Screen.NONE
 
 
+func _any_overlay_visible() -> bool:
+	return (title != null and title.visible) \
+		or (pause != null and pause.visible) \
+		or (map_screen != null and map_screen.visible) \
+		or (options != null and options.visible) \
+		or (rebind != null and rebind.visible) \
+		or (rest_shop != null and rest_shop.visible) \
+		or (cards != null and cards.visible)
+
+
+func _should_show_scrim() -> bool:
+	return (pause != null and pause.visible) \
+		or (map_screen != null and map_screen.visible) \
+		or (rest_shop != null and rest_shop.visible) \
+		or (options != null and options.visible) \
+		or (rebind != null and rebind.visible) \
+		or (cards != null and cards.visible and cards.mode == LxCards.Mode.DEATH)
+
+
+func _sync_overlay_state() -> void:
+	var any_ov: bool = _any_overlay_visible()
+	if _scrim_node != null:
+		var want_scrim: bool = _should_show_scrim()
+		if _scrim_node.visible != want_scrim:
+			_scrim_node.visible = want_scrim
+			if want_scrim:
+				_scrim_node.queue_redraw()
+	if _cursor_node != null:
+		_cursor_node.visible = (current_screen == Screen.HUD) and not any_ov
+
+
+func _draw_modal_scrim() -> void:
+	if _scrim_node == null or not _should_show_scrim():
+		return
+	_scrim_node.draw_rect(Rect2(0.0, 0.0, 320.0, 180.0), Color(LxPalette.PAL["void"] as Color, 0.65))
+
+
 func _hide_all_modals() -> void:
 	title.close()
 	pause.close()
@@ -236,6 +248,8 @@ func _hide_all_modals() -> void:
 	rebind.close()
 	rest_shop.close()
 	cards.close()
+	if _scrim_node != null:
+		_scrim_node.visible = false
 	if _cursor_node != null:
 		_cursor_node.visible = false
 
@@ -249,6 +263,7 @@ func show_title(open_slots: bool = false) -> void:
 	hud.visible = false
 	current_screen = Screen.TITLE
 	title.open(open_slots)
+	_sync_overlay_state()
 
 
 func show_intro() -> void:
@@ -256,6 +271,7 @@ func show_intro() -> void:
 	hud.visible = false
 	current_screen = Screen.INTRO
 	cards.show_intro()
+	_sync_overlay_state()
 
 
 func open_rest_shop() -> void:
@@ -267,37 +283,30 @@ func open_rest_shop() -> void:
 
 func set_flow(flow_id: int) -> void:
 	match flow_id:
-		0:
-			show_title()
-		1:
-			show_intro()
-		2:
-			show_hud()
-		3:
-			show_pause()
-		4:
-			show_map()
-		5:
-			show_shop()
-		6:
-			show_death(hud != null and bool(hud.get("_boss_active")))
-		7:
-			show_ending()
-		8:
-			show_credits()
+		0: show_title()
+		1: show_intro()
+		2: show_hud()
+		3: show_pause()
+		4: show_map()
+		5: show_shop()
+		6: show_death(hud != null and bool(hud.get("_boss_active")))
+		7: show_ending()
+		8: show_credits()
 
 
 func show_hud() -> void:
 	_hide_all_modals()
 	hud.visible = true
 	current_screen = Screen.HUD
+	_sync_overlay_state()
 
 
 func show_pause() -> void:
 	_hide_all_modals()
-	hud.visible = true
+	hud.visible = false
 	current_screen = Screen.PAUSE
 	pause.open()
+	_sync_overlay_state()
 
 
 func show_map(from_screen: int = -1) -> void:
@@ -306,9 +315,10 @@ func show_map(from_screen: int = -1) -> void:
 	elif current_screen == Screen.PAUSE or current_screen == Screen.HUD:
 		_return_screen = current_screen
 	_hide_all_modals()
-	hud.visible = true
+	hud.visible = false
 	current_screen = Screen.MAP
 	map_screen.open()
+	_sync_overlay_state()
 
 
 func show_options(from_screen: int = -1) -> void:
@@ -317,30 +327,34 @@ func show_options(from_screen: int = -1) -> void:
 	elif current_screen == Screen.TITLE or current_screen == Screen.PAUSE:
 		_return_screen = current_screen
 	_hide_all_modals()
-	hud.visible = _return_screen != Screen.TITLE
+	hud.visible = false
 	current_screen = Screen.OPTIONS
 	options.open()
+	_sync_overlay_state()
 
 
 func show_rebind() -> void:
 	_hide_all_modals()
-	hud.visible = _return_screen != Screen.TITLE
+	hud.visible = false
 	current_screen = Screen.REBIND
 	rebind.open()
+	_sync_overlay_state()
 
 
 func show_shop() -> void:
 	_hide_all_modals()
-	hud.visible = true
+	hud.visible = false
 	current_screen = Screen.SHOP
 	rest_shop.open()
+	_sync_overlay_state()
 
 
 func show_death(is_boss: bool = false) -> void:
 	_hide_all_modals()
-	hud.visible = true
+	hud.visible = false
 	current_screen = Screen.DEATH
 	cards.show_death(is_boss)
+	_sync_overlay_state()
 
 
 func show_ending(p_mode: String = "") -> void:
@@ -355,6 +369,7 @@ func show_ending(p_mode: String = "") -> void:
 	hud.visible = false
 	current_screen = Screen.ENDING
 	cards.show_ending(mode_str)
+	_sync_overlay_state()
 
 
 func show_results(stats: Dictionary = {}) -> void:
@@ -362,6 +377,7 @@ func show_results(stats: Dictionary = {}) -> void:
 	hud.visible = false
 	current_screen = Screen.RESULTS
 	cards.show_results(stats)
+	_sync_overlay_state()
 
 
 func show_credits() -> void:
@@ -369,6 +385,7 @@ func show_credits() -> void:
 	hud.visible = false
 	current_screen = Screen.CREDITS
 	cards.show_credits()
+	_sync_overlay_state()
 
 
 func advance_ending() -> void:
@@ -416,19 +433,22 @@ func _exit_tree() -> void:
 
 
 func _process(_delta: float) -> void:
+	_sync_overlay_state()
 	if _cursor_node != null:
-		var in_hud: bool = (current_screen == Screen.HUD)
-		_cursor_node.visible = in_hud
+		var in_hud: bool = _cursor_node.visible
 		if DisplayServer.get_name() != "headless":
 			var want_mode: Input.MouseMode = Input.MOUSE_MODE_HIDDEN if in_hud else Input.MOUSE_MODE_VISIBLE
 			if Input.get_mouse_mode() != want_mode:
 				Input.set_mouse_mode(want_mode)
-		if _cursor_node.visible:
+		if in_hud:
 			_cursor_node.queue_redraw()
 
 
 func _draw_reticle() -> void:
-	if _cursor_node == null or current_screen != Screen.HUD:
+	var in_hud: bool = (current_screen == Screen.HUD) and not _any_overlay_visible()
+	if _cursor_node == null or not in_hud:
+		if _cursor_node != null:
+			_cursor_node.visible = false
 		return
 	var cfg: Dictionary = Lx.save.settings if Lx.save != null else LxSaveService.default_settings()
 	var sz: int = clampi(int(cfg.get("cursor_size", 1)), 1, 3)
@@ -441,6 +461,10 @@ func _draw_reticle() -> void:
 			center = (Lx.player as Node2D).global_position - Lx.camera.global_position + Vector2(160.0, 90.0)
 		pos = (center + Lx.input.last_aim_dir.normalized() * 42.0).round()
 		pos = Vector2(clampf(pos.x, 8.0, 312.0), clampf(pos.y, 8.0, 172.0))
+	if Lx.state != null and not Lx.state.has_lantern():
+		_cursor_node.draw_rect(Rect2(pos.x - 1.0, pos.y - 1.0, 3.0, 3.0), LxPalette.PAL["mauve"] as Color)
+		_cursor_node.draw_rect(Rect2(pos.x, pos.y, 1.0, 1.0), LxPalette.PAL["stone"] as Color)
+		return
 	var arm: float = float(sz + 2)
 	var gap: float = float(sz + 1)
 	var zip_ready: bool = false

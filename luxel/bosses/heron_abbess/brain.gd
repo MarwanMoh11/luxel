@@ -1,12 +1,12 @@
 class_name LxHeronAbbessBoss
 extends LxHeronStalkerBrain
 ## Mirefen Gardens Boss (Island 4): the Heron Abbess.
-## 3 phases, HP 12.5. Combines long spear stabs (beak-stuck punish), wing gust push
-## (pushes Wick & thrown lantern), and expanding shockwave rings cleared by Wings glide!
+## 3 phases, HP 12.5. Combines long spear stabs (beak-stuck punish), wing gust push,
+## expanding shockwave rings, and P3 Gale-Leap Swoop (rewarding Wings glide!).
 
 signal gust_emitted(origin: Vector2, dir: Vector2, gust_range: float, half_width: float, source: LxEnemyBrain)
 
-enum BossMove { STAB, WING_GUST, SHOCKWAVE_RING }
+enum BossMove { STAB, WING_GUST, SHOCKWAVE_RING, GALE_LEAP }
 
 const GUST_TELL_P1: float = 0.56
 const GUST_TELL_P3: float = 0.50
@@ -25,6 +25,13 @@ const RING_START_R: float = 10.0
 const RING_MAX_R: float = 76.0
 const RING_BAND: float = 9.5
 const RING_RECOVER: float = 1.20
+
+const LEAP_TELL_P3: float = 0.54
+const LEAP_AIR_TIME: float = 0.34
+const LEAP_HEIGHT: float = 22.0
+const LEAP_RING_TIME: float = 0.30
+const LEAP_RING_MAX_R: float = 72.0
+const LEAP_RECOVER: float = 1.25
 const ROAR_TIME: float = 0.66
 
 var active_move: int = BossMove.STAB
@@ -34,6 +41,10 @@ var gust_hit: bool = false
 var gust_announced: bool = false
 var ring_progress: float = 0.0
 var ring_hit: bool = false
+var leap_stage: int = 0
+var leap_from: Vector2 = Vector2.ZERO
+var leap_to: Vector2 = Vector2.ZERO
+var abbess_z: float = 0.0
 var _roaring: bool = false
 
 
@@ -67,7 +78,15 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	gust_announced = false
 	ring_progress = 0.0
 	ring_hit = false
+	leap_stage = 0
+	leap_from = pos
+	leap_to = pos
+	abbess_z = 0.0
 	_roaring = false
+
+
+func is_flying() -> bool:
+	return active_move == BossMove.GALE_LEAP and state == State.COMMIT and leap_stage == 0 and abbess_z > 5.0
 
 
 func take_hit(hit: LxHit) -> int:
@@ -93,17 +112,21 @@ func _enter_phase(next_phase: int) -> void:
 	beak_stuck = false
 	active_move = BossMove.STAB
 	ring_progress = 0.0
+	leap_stage = 0
+	abbess_z = 0.0
 	_release_token()
 	state = State.NOTICE
 	state_timer = ROAR_TIME
 	if Lx.events != null:
 		Lx.events.boss_phase_changed.emit(boss_id, phase)
 		Lx.events.shake_requested.emit(0.30)
+	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
 	_emit_sfx("heron_abbess_phase")
 
 
 func _step_brain(dt: float) -> void:
 	if state == State.NOTICE and _roaring:
+		abbess_z = 0.0
 		state_timer -= dt
 		if state_timer <= 0.0:
 			_roaring = false
@@ -111,15 +134,22 @@ func _step_brain(dt: float) -> void:
 			cooldown = 0.35
 		return
 	if state == State.TELL and active_move != BossMove.STAB:
+		abbess_z = 0.0
 		if active_move == BossMove.WING_GUST and state_timer > 0.18:
 			var to_t: Vector2 = _attention_target() - pos
 			if to_t.length() > 0.01:
 				_turn_toward(to_t.angle(), 2.8, dt)
 				gust_dir = Vector2.from_angle(facing)
+		elif active_move == BossMove.GALE_LEAP and state_timer > 0.18:
+			var tpos: Vector2 = _attention_target()
+			_face_point(tpos, 3.2, dt)
+			leap_to = _clamp_pt(tpos)
 		state_timer -= dt
 		if state_timer <= 0.0:
 			_enter_commit()
 		return
+	if state != State.COMMIT:
+		abbess_z = 0.0
 	super._step_brain(dt)
 
 
@@ -155,15 +185,17 @@ func _step_stalk(dt: float, target_pos: Vector2) -> void:
 
 
 func _begin_next_move(target_pos: Vector2, dist: float) -> void:
-	var seq_len: int = 3 if phase >= 2 else 2
+	var seq_len: int = 4 if phase >= 3 else (3 if phase >= 2 else 2)
 	var pick: int = move_cycle % seq_len
 	move_cycle += 1
 	if pick == 0:
 		active_move = BossMove.STAB
 	elif pick == 1:
 		active_move = BossMove.WING_GUST
-	else:
+	elif pick == 2:
 		active_move = BossMove.SHOCKWAVE_RING
+	else:
+		active_move = BossMove.GALE_LEAP
 
 	state = State.TELL
 	is_counter_attack = false
@@ -184,12 +216,20 @@ func _begin_next_move(target_pos: Vector2, dist: float) -> void:
 		gust_hit = false
 		gust_announced = false
 		_emit_sfx("heron_gust_inhale")
-	else:
+	elif active_move == BossMove.SHOCKWAVE_RING:
 		var base_r: float = RING_TELL_P3 if phase >= 3 else RING_TELL_P2
 		last_tell_duration = _scaled_tell(base_r, false, attack_damage)
 		ring_progress = 0.0
 		ring_hit = false
 		_emit_sfx("heron_ring_tell")
+	else:
+		last_tell_duration = _scaled_tell(LEAP_TELL_P3, false, attack_damage)
+		leap_from = pos
+		leap_to = _clamp_pt(target_pos)
+		leap_stage = 0
+		ring_progress = 0.0
+		ring_hit = false
+		_emit_sfx("heron_gust_inhale")
 
 	state_timer = last_tell_duration
 	_emit_attack_started()
@@ -212,6 +252,15 @@ func _enter_commit() -> void:
 		_boss_impact(0.20, 94.0, 92.0)
 		_emit_sfx("heron_ring_fire")
 		return
+	if active_move == BossMove.GALE_LEAP:
+		state = State.COMMIT
+		leap_stage = 0
+		state_timer = LEAP_AIR_TIME
+		leap_from = pos
+		ring_progress = 0.0
+		ring_hit = false
+		_emit_sfx("heron_gust_fire")
+		return
 	super._enter_commit()
 
 
@@ -221,6 +270,9 @@ func _step_commit(dt: float) -> void:
 		return
 	if active_move == BossMove.SHOCKWAVE_RING:
 		_step_ring_commit(dt)
+		return
+	if active_move == BossMove.GALE_LEAP:
+		_step_leap_commit(dt)
 		return
 	super._step_commit(dt)
 
@@ -272,6 +324,47 @@ func _step_ring_commit(dt: float) -> void:
 		last_recover_duration = state_timer
 
 
+func _step_leap_commit(dt: float) -> void:
+	if leap_stage == 0:
+		state_timer = maxf(0.0, state_timer - dt)
+		var prog: float = 1.0 - clampf(state_timer / LEAP_AIR_TIME, 0.0, 1.0)
+		abbess_z = sin(prog * PI) * LEAP_HEIGHT
+		var desired: Vector2 = leap_from.lerp(leap_to, prog)
+		_move_step(desired - pos, true)
+		if state_timer <= 0.0:
+			abbess_z = 0.0
+			leap_stage = 1
+			state_timer = LEAP_RING_TIME
+			ring_progress = 0.0
+			ring_hit = false
+			_boss_impact(0.22, 108.0, 104.0)
+			_emit_sfx("heron_ring_fire")
+			if _has_player() and pos.distance_to(_get_wick_pos()) <= 16.0:
+				ring_hit = true
+				var pdir: Vector2 = (_get_wick_pos() - pos).normalized() if _get_wick_pos().distance_to(pos) > 0.01 else Vector2.from_angle(facing)
+				_emit_shockwave_hit(pdir)
+		return
+	state_timer = maxf(0.0, state_timer - dt)
+	ring_progress = 1.0 - clampf(state_timer / LEAP_RING_TIME, 0.0, 1.0)
+	var ring_r: float = lerpf(RING_START_R, LEAP_RING_MAX_R, ring_progress)
+	if _has_player():
+		var wv: Vector2 = _get_wick_pos() - pos
+		if absf(wv.length() - ring_r) <= RING_BAND:
+			var push: Vector2 = wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing)
+			if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil"):
+				Lx.player.call("apply_recoil", push * 180.0 * dt)
+			if not ring_hit:
+				ring_hit = true
+				_emit_shockwave_hit(push)
+	if state_timer <= 0.0:
+		abbess_z = 0.0
+		leap_stage = 0
+		state = State.RECOVER
+		beak_stuck = false
+		state_timer = maxf(MIN_RECOVER_TIME, LEAP_RECOVER)
+		last_recover_duration = state_timer
+
+
 func _push_thrown_lantern(dt: float) -> void:
 	if Lx.player == null or not is_instance_valid(Lx.player):
 		return
@@ -295,6 +388,10 @@ func _emit_shockwave_hit(push_dir: Vector2) -> void:
 	kind = prev_kind
 
 
+func _visual_offset() -> Vector2:
+	return Vector2(0.0, -abbess_z)
+
+
 func _body_color() -> Color:
 	if phase >= 3:
 		return PAL["ice"] as Color
@@ -304,7 +401,9 @@ func _body_color() -> Color:
 
 
 func _draw_extra(off: Vector2) -> void:
-	super._draw_extra(off)
+	# Guard parent Stab laser/thrust tell so it NEVER draws during WING_GUST, SHOCKWAVE_RING, or GALE_LEAP!
+	if active_move == BossMove.STAB or (state != State.TELL and state != State.COMMIT):
+		super._draw_extra(off)
 	if _sprite_sheet == null:
 		# Mitered abbess crest
 		var top: Vector2 = off + Vector2(0.0, -body_radius - 6.0)
@@ -314,44 +413,62 @@ func _draw_extra(off: Vector2) -> void:
 	if active_move == BossMove.WING_GUST and state == State.TELL:
 		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
 		var g_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var g_locked: bool = state_timer <= 0.18
-		var rail_col: Color = (PAL["gold"] if g_locked else PAL["sky"]) as Color
-		draw_line((off - side * GUST_HALF_W * 0.72).round(), (off - side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE).round(), rail_col, 1.4)
-		draw_line((off + side * GUST_HALF_W * 0.72).round(), (off + side * GUST_HALF_W * 0.72 + gust_dir * GUST_RANGE).round(), rail_col, 1.4)
 		var dmg_pt: Vector2 = off + gust_dir * GUST_DMG_R
-		draw_line((dmg_pt - side * GUST_HALF_W * 0.72).round(), (dmg_pt + side * GUST_HALF_W * 0.72).round(), (PAL["cream"] if g_locked else PAL["gold"]) as Color, 1.4)
+		var end_pt: Vector2 = off + gust_dir * GUST_RANGE
+		LxBossTelegraphFx.draw_ground_danger_lane(self, dmg_pt, end_pt, GUST_HALF_W, g_prog, anim_t, "sky", "ice")
+		LxBossTelegraphFx.draw_ground_danger_lane(self, off, dmg_pt, GUST_HALF_W, g_prog, anim_t, "coral", "gold")
 		var pull_d: float = lerpf(44.0, 10.0, g_prog)
 		draw_line((off + gust_dir * pull_d - side * 12.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.2)
 		draw_line((off + gust_dir * pull_d + side * 12.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.2)
 	elif active_move == BossMove.WING_GUST and state == State.COMMIT:
-		var side2: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
-		var g_len: float = GUST_RANGE * 0.88
+		var perp: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
+		var fred_g: bool = LxHudFx.flash_reduced()
+		var g_start: Vector2 = off
+		var g_end: Vector2 = off + gust_dir * GUST_RANGE
+		var outer_w: Vector2 = perp * GUST_HALF_W
+		var inner_w: Vector2 = perp * (GUST_HALF_W * 0.45)
+		draw_colored_polygon(PackedVector2Array([
+			(g_start - outer_w).round(), (g_end - outer_w).round(),
+			(g_end + outer_w).round(), (g_start + outer_w).round(),
+		]), Color(PAL["sky"] as Color, 0.16 if fred_g else 0.22))
+		draw_colored_polygon(PackedVector2Array([
+			(g_start - inner_w).round(), (g_end - inner_w).round(),
+			(g_end + inner_w).round(), (g_start + inner_w).round(),
+		]), Color(PAL["ice"] as Color, 0.16 if fred_g else 0.26))
+		var g_len: float = GUST_RANGE * 0.92
 		for idx: int in range(-1, 2):
-			var s_off: Vector2 = side2 * float(idx) * (GUST_HALF_W * 0.50)
-			var l_end: float = g_len if idx == 0 else g_len * 0.86
+			var s_off: Vector2 = perp * float(idx) * (GUST_HALF_W * 0.50)
+			var l_end: float = g_len if idx == 0 else g_len * 0.88
 			var p0: Vector2 = (off + s_off).round()
 			var p1: Vector2 = (off + s_off + gust_dir * l_end).round()
-			draw_line(p0, p1, PAL["sky"] as Color, 3.2 if idx == 0 else 2.2)
-			draw_line(p0, p1, (PAL["cream"] if idx == 0 else PAL["ice"]) as Color, 1.5 if idx == 0 else 1.2)
+			draw_line(p0, p1, Color(PAL["sky"] as Color, 0.70 if fred_g else 0.90), 2.4 if idx == 0 else 1.6)
+			draw_line(p0, p1, Color((PAL["cream"] if idx == 0 else PAL["ice"]) as Color, 0.75 if fred_g else 0.95), 1.2 if idx == 0 else 1.0)
 		for ci: int in range(4):
 			var ct: float = fposmod(anim_t * 4.6 + float(ci) * 0.25, 1.0)
 			var dist_c: float = lerpf(12.0, g_len, ct)
 			var span: float = lerpf(GUST_HALF_W * 0.42, GUST_HALF_W * 0.90, ct)
 			var tip: Vector2 = (off + gust_dir * dist_c).round()
-			var wing_l: Vector2 = (off + gust_dir * (dist_c - 10.0) - side2 * span).round()
-			var wing_r: Vector2 = (off + gust_dir * (dist_c - 10.0) + side2 * span).round()
-			draw_line(wing_l, tip, PAL["sky"] as Color, 2.2)
-			draw_line(wing_r, tip, PAL["sky"] as Color, 2.2)
-			draw_line((tip - gust_dir * 6.0 - side2 * (span * 0.62)).round(), tip, PAL["ice"] as Color, 1.4)
-			draw_line((tip - gust_dir * 6.0 + side2 * (span * 0.62)).round(), tip, PAL["ice"] as Color, 1.4)
-			draw_line((tip - gust_dir * 3.5 - side2 * (span * 0.30)).round(), tip, PAL["cream"] as Color, 1.0)
-			draw_line((tip - gust_dir * 3.5 + side2 * (span * 0.30)).round(), tip, PAL["cream"] as Color, 1.0)
+			var wing_l: Vector2 = (off + gust_dir * (dist_c - 10.0) - perp * span).round()
+			var wing_r: Vector2 = (off + gust_dir * (dist_c - 10.0) + perp * span).round()
+			draw_line(wing_l, tip, Color(PAL["sky"] as Color, 0.72 if fred_g else 0.92), 2.0)
+			draw_line(wing_r, tip, Color(PAL["sky"] as Color, 0.72 if fred_g else 0.92), 2.0)
+			draw_line((tip - gust_dir * 6.0 - perp * (span * 0.62)).round(), tip, PAL["ice"] as Color, 1.2)
+			draw_line((tip - gust_dir * 6.0 + perp * (span * 0.62)).round(), tip, PAL["ice"] as Color, 1.2)
+		for k: int in range(8):
+			var s_len: float = 8.0 + float((k * 5) % 7)
+			var prog_k: float = fposmod(anim_t * 220.0 + float(k) * 29.0, GUST_RANGE)
+			var lat_u: float = -0.85 + 1.70 * (float((k * 3 + 1) % 8) / 7.0)
+			var lat_off: Vector2 = perp * (GUST_HALF_W * lat_u)
+			var head_p: Vector2 = (g_start + lat_off + gust_dir * prog_k).round()
+			var tail_p: Vector2 = (g_start + lat_off + gust_dir * maxf(0.0, prog_k - s_len)).round()
+			var s_col: Color = (PAL["cream"] if k % 2 == 0 else PAL["ice"]) as Color
+			draw_line(tail_p, head_p, Color(s_col, 0.72 if fred_g else 0.92), 1.0)
+			if k % 2 == 0:
+				var pet_c: Color = (PAL["rose"] if (k % 4 == 0) else PAL["cream"]) as Color
+				draw_rect(Rect2(head_p - Vector2.ONE, Vector2(2.0, 2.0)), pet_c)
 	elif active_move == BossMove.SHOCKWAVE_RING and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		for ti: int in range(12):
-			var a0: float = float(ti) * (TAU / 12.0)
-			draw_arc(off, RING_MAX_R, a0, a0 + 0.24, 3, PAL["blue"] as Color, 1.0)
-		draw_arc(off, lerpf(RING_MAX_R, RING_START_R + 6.0, prog), 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["sky"]) as Color, 1.8)
+		LxBossTelegraphFx.draw_ground_danger_ring(self, off, RING_MAX_R, prog, anim_t, "sky", "coral")
 	elif active_move == BossMove.SHOCKWAVE_RING and state == State.COMMIT:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
 		draw_arc(off, ring_r + 3.0, 0.0, TAU, 36, PAL["blue"] as Color, 2.2)
@@ -360,6 +477,29 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(off, maxf(2.0, ring_r - 4.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.1)
 		if ring_r > 16.0:
 			draw_arc(off, ring_r - 8.5, 0.0, TAU, 24, PAL["blue"] as Color, 1.1)
+	elif active_move == BossMove.GALE_LEAP and state == State.TELL:
+		var rel: Vector2 = (leap_to - pos).round()
+		var l_urg: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var col_l: Color = (PAL["gold"] if state_timer <= 0.18 else PAL["sky"]) as Color
+		LxBossTelegraphFx.draw_ground_danger_ring(self, rel, LEAP_RING_MAX_R, l_urg * 0.72, anim_t, "sky", "gold")
+		LxBossTelegraphFx.draw_ground_danger_ring(self, rel, 16.0, l_urg, anim_t, "coral", "gold")
+		for bi: int in range(1, 6):
+			var t: float = float(bi) / 6.0
+			var bp: Vector2 = (off.lerp(rel, t) + Vector2(0.0, -sin(t * PI) * 18.0)).round()
+			draw_circle(bp, 1.6, col_l)
+			draw_circle(bp, 0.8, PAL["cream"] as Color)
+	elif active_move == BossMove.GALE_LEAP and state == State.COMMIT and leap_stage == 0:
+		var rel_air: Vector2 = (leap_to - pos).round()
+		var air_u: float = 1.0 - clampf(state_timer / maxf(LEAP_AIR_TIME, 0.05), 0.0, 1.0)
+		LxBossTelegraphFx.draw_ground_danger_ring(self, rel_air, LEAP_RING_MAX_R, lerpf(0.72, 1.0, air_u), anim_t, "sky", "coral")
+		LxBossTelegraphFx.draw_ground_danger_ring(self, rel_air, 16.0, lerpf(0.78, 1.0, air_u), anim_t, "coral", "gold")
+		draw_line(off.round(), rel_air, Color(PAL["ice"] as Color, 0.45), 1.1)
+	elif active_move == BossMove.GALE_LEAP and state == State.COMMIT and leap_stage == 1:
+		var ring_r2: float = lerpf(RING_START_R, LEAP_RING_MAX_R, ring_progress)
+		draw_arc(Vector2.ZERO, ring_r2 + 2.8, 0.0, TAU, 36, PAL["blue"] as Color, 2.2)
+		draw_arc(Vector2.ZERO, ring_r2, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
+		draw_arc(Vector2.ZERO, maxf(2.0, ring_r2 - 2.4), 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
+		draw_arc(Vector2.ZERO, maxf(2.0, ring_r2 - 4.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.1)
 	elif _roaring:
 		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
 		var rr: float = body_radius + 10.0 + rp * 16.0
@@ -368,5 +508,5 @@ func _draw_extra(off: Vector2) -> void:
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	var rip: String = "ice" if active_move == BossMove.SHOCKWAVE_RING else ""
+	var rip: String = "ice" if (active_move == BossMove.SHOCKWAVE_RING or active_move == BossMove.GALE_LEAP) else ""
 	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.12, 1.42, 0.40, rip)

@@ -3,8 +3,9 @@
   "island_id": 2,
   "tile_size": 16,
   "is_dungeon": true,
+  "is_2x2_room": true,
   "spawn": [
-    72,
+    40,
     104
   ],
   "zones": [
@@ -14,8 +15,8 @@
       "rect": [
         0,
         0,
-        384,
-        208
+        416,
+        224
       ],
       "dark": true
     }
@@ -31,8 +32,8 @@
       ],
       "to_region": "lighthouse_r3",
       "to_spawn": [
-        376,
-        112
+        368,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,7 +42,7 @@
     {
       "id": "exit_lh_r4_east",
       "rect": [
-        368,
+        400,
         80,
         16,
         48
@@ -49,7 +50,7 @@
       "to_region": "lighthouse_r5",
       "to_spawn": [
         40,
-        112
+        136
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -62,7 +63,7 @@
       "id": "door_lh_r4_key",
       "kind": "door",
       "pos": [
-        104,
+        72,
         104
       ],
       "props": {
@@ -84,7 +85,7 @@
       "kind": "brazier",
       "pos": [
         248,
-        56
+        72
       ],
       "props": {
         "target_id": "door_lh_r4_shutter"
@@ -94,7 +95,7 @@
       "id": "brazier_lh_r4_s",
       "kind": "brazier",
       "pos": [
-        248,
+        216,
         152
       ],
       "props": {
@@ -105,7 +106,7 @@
       "id": "door_lh_r4_shutter",
       "kind": "door",
       "pos": [
-        328,
+        360,
         104
       ],
       "props": {
@@ -122,16 +123,62 @@
       }
     },
     {
+      "id": "transformer_lh_r4",
+      "kind": "blue_transformer",
+      "pos": [
+        104,
+        168
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "portal_lh_r4_in",
+      "kind": "blue_portal",
+      "pos": [
+        136,
+        40
+      ],
+      "props": {
+        "target_portal_id": "portal_lh_r4_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "lh_r4_portal_lit"
+      }
+    },
+    {
+      "id": "portal_lh_r4_out",
+      "kind": "blue_portal",
+      "pos": [
+        312,
+        184
+      ],
+      "props": {
+        "target_portal_id": "portal_lh_r4_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
       "id": "chest_lh_r4_shards",
       "kind": "chest",
       "pos": [
-        296,
-        152
+        360,
+        184
       ],
       "props": {
         "reward_kind": "shards",
         "reward": "shards",
-        "amount": 30,
+        "amount": 35,
         "zone": "lighthouse_r4"
       }
     }
@@ -142,8 +189,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        76,
-        60
+        100,
+        54
       ],
       "layer": "sort",
       "flip_x": false,
@@ -154,20 +201,20 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        76,
-        154
+        134,
+        138
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.6
+      "phase": 0.55
     },
     {
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        144,
-        58
+        328,
+        74
       ],
       "layer": "sort",
       "flip_x": false,
@@ -178,20 +225,20 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        144,
-        154
+        328,
+        138
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.8
+      "phase": 0.75
     },
     {
       "sheet": "island2_scenery",
       "prop": "wooden_crates",
       "pos": [
-        300,
-        58
+        376,
+        36
       ],
       "layer": "sort",
       "flip_x": true,
@@ -202,14 +249,25 @@
       "sheet": "island2_scenery",
       "prop": "rope_coil",
       "pos": [
-        278,
-        64
+        392,
+        46
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "buoy_bobbing",
+      "pos": [
+        256,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.5
     }
-  ],
-  "is_2x2_room": true
+  ]
 }

@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    208,
-    168
+    288,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        416,
-        240
+        448,
+        256
       ],
       "dark": true
     }
@@ -24,14 +24,14 @@
     {
       "id": "exit_spire_r7_south",
       "rect": [
-        192,
-        224,
+        272,
+        240,
         32,
         16
       ],
       "to_region": "spire_r6",
       "to_spawn": [
-        240,
+        256,
         48
       ],
       "requires_moves": [],
@@ -49,12 +49,11 @@
       "to_region": "spire_r8",
       "to_spawn": [
         408,
-        112
+        120
       ],
       "requires_moves": [
         "prism",
-        "lens",
-        "wings"
+        "lens"
       ],
       "requires_flags": [],
       "locked_door_id": "door_spire_r7_west"
@@ -63,50 +62,80 @@
   "enemies": [],
   "interactables": [
     {
-      "id": "mirror_spire_r7_n",
-      "kind": "mirror",
+      "id": "transformer_spire_r7_a",
+      "kind": "blue_transformer",
+      "pos": [
+        184,
+        168
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "transformer_spire_r7_b",
+      "kind": "blue_transformer",
       "pos": [
         232,
         72
       ],
       "props": {
-        "angle_deg": 45,
-        "rotatable": true
+        "angle_deg": 90,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
       }
     },
     {
-      "id": "mirror_spire_r7_s",
-      "kind": "mirror",
+      "id": "portal_spire_r7_in",
+      "kind": "blue_portal",
       "pos": [
-        232,
-        168
+        104,
+        104
       ],
       "props": {
-        "angle_deg": 315,
-        "rotatable": true
+        "target_portal_id": "portal_spire_r7_north",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "spire_r7_terrace_portal"
+      }
+    },
+    {
+      "id": "portal_spire_r7_north",
+      "kind": "blue_portal",
+      "pos": [
+        184,
+        40
+      ],
+      "props": {
+        "target_portal_id": "portal_spire_r7_in",
+        "requires_blue": true,
+        "pair_sync": true
       }
     },
     {
       "id": "switch_eye_spire_r7_a",
       "kind": "switch_eye",
       "pos": [
-        328,
-        72
+        344,
+        40
       ],
       "props": {
         "requires_prism": true,
-        "target_id": "door_spire_r7_west"
-      }
-    },
-    {
-      "id": "switch_eye_spire_r7_b",
-      "kind": "switch_eye",
-      "pos": [
-        328,
-        168
-      ],
-      "props": {
-        "requires_prism": true,
+        "requires_blue": true,
         "target_id": "door_spire_r7_west"
       }
     },
@@ -114,7 +143,7 @@
       "id": "door_spire_r7_west",
       "kind": "door",
       "pos": [
-        72,
+        56,
         120
       ],
       "props": {
@@ -124,8 +153,7 @@
           48
         ],
         "requires_signals": [
-          "switch_eye_spire_r7_a",
-          "switch_eye_spire_r7_b"
+          "switch_eye_spire_r7_a"
         ]
       }
     }
@@ -134,34 +162,34 @@
   "scenery": [
     {
       "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
+      "prop": "silver_brazier_stand",
       "pos": [
-        84,
-        80
+        264,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.15
     },
     {
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        84,
-        178
+        328,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.45
+      "phase": 0.65
     },
     {
       "sheet": "island7_scenery",
-      "prop": "floating_prism_totem",
+      "prop": "glass_colonade_pillar",
       "pos": [
-        186,
-        84
+        152,
+        104
       ],
       "layer": "sort",
       "flip_x": false,
@@ -170,27 +198,87 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "shattered_mirror_shard",
+      "prop": "glass_colonade_pillar",
       "pos": [
-        118,
-        182
+        216,
+        104
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "floating_prism_totem",
+      "pos": [
+        168,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "moon_crystal_cluster",
+      "pos": [
+        380,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "shattered_mirror_shard",
+      "pos": [
+        88,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "shattered_mirror_shard",
+      "pos": [
+        344,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
       "phase": 0.6
     },
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
+      "prop": "lunar_lantern_post",
       "pos": [
-        330,
-        124
+        88,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        140,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.7
     }
   ],
   "is_2x2_room": true

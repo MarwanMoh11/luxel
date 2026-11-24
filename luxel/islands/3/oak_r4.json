@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    88,
+    40,
     120
   ],
   "zones": [
@@ -31,8 +31,8 @@
       ],
       "to_region": "oak_r3",
       "to_spawn": [
-        376,
-        112
+        368,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -42,14 +42,14 @@
       "id": "exit_oak_r4_east",
       "rect": [
         400,
-        96,
+        80,
         16,
         48
       ],
       "to_region": "oak_r5",
       "to_spawn": [
         40,
-        112
+        104
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -62,7 +62,7 @@
       "id": "door_oak_r4_key",
       "kind": "door",
       "pos": [
-        120,
+        88,
         120
       ],
       "props": {
@@ -83,8 +83,8 @@
       "id": "brazier_oak_r4_nw",
       "kind": "brazier",
       "pos": [
-        184,
-        72
+        168,
+        56
       ],
       "props": {
         "target_id": "door_oak_r4_shutter"
@@ -94,7 +94,7 @@
       "id": "brazier_oak_r4_ne",
       "kind": "brazier",
       "pos": [
-        280,
+        296,
         72
       ],
       "props": {
@@ -105,8 +105,8 @@
       "id": "brazier_oak_r4_s",
       "kind": "brazier",
       "pos": [
-        280,
-        168
+        232,
+        184
       ],
       "props": {
         "target_id": "door_oak_r4_shutter"
@@ -116,8 +116,8 @@
       "id": "door_oak_r4_shutter",
       "kind": "door",
       "pos": [
-        344,
-        120
+        376,
+        104
       ],
       "props": {
         "door_kind": "switch_door",
@@ -140,32 +140,32 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        88,
-        74
+        56,
+        84
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.1
+      "phase": 0.0
     },
     {
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        88,
-        174
+        56,
+        152
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
-      "phase": 0.6
+      "phase": 0.4
     },
     {
       "sheet": "island3_scenery",
-      "prop": "canopy_vine_post",
+      "prop": "spore_brazier_stump",
       "pos": [
-        144,
-        74
+        332,
+        86
       ],
       "layer": "sort",
       "flip_x": false,
@@ -174,39 +174,63 @@
     },
     {
       "sheet": "island3_scenery",
-      "prop": "canopy_vine_post",
+      "prop": "spore_brazier_stump",
       "pos": [
-        326,
-        74
+        332,
+        124
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.7
+      "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        152,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
     },
     {
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        144,
-        174
+        204,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.3
+      "phase": 0.2
     },
     {
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        326,
-        174
+        260,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
-      "phase": 0.8
+      "phase": 0.6
     }
   ],
   "is_2x2_room": true

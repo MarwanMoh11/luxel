@@ -1,0 +1,988 @@
+{
+ "id": "puzzle_interactables",
+ "name": "Luxel Shared Puzzle Interactables",
+ "version": 1,
+ "palette": {
+  "void": "#0d0b1e",
+  "night": "#211a3b",
+  "dusk": "#3d2c5c",
+  "plum": "#6a3d6f",
+  "wine": "#a0466a",
+  "coral": "#e2725b",
+  "apricot": "#f5a96a",
+  "gold": "#ffd98c",
+  "cream": "#fff4dc",
+  "pine": "#1d3d4c",
+  "teal": "#2b6b68",
+  "jade": "#4c9e78",
+  "lime": "#a3cf7d",
+  "deep": "#263873",
+  "blue": "#3e6db0",
+  "sky": "#78a9da",
+  "ice": "#c7e5ef",
+  "mauve": "#8a6e91",
+  "stone": "#c2a7ae",
+  "rose": "#ec9fa8"
+ },
+ "sheet": "puzzle_interactables.png",
+ "sheet_size": [
+  192,
+  166
+ ],
+ "props": {
+  "portal_dormant": {
+   "frame": [
+    24,
+    24
+   ],
+   "anchor": [
+    12,
+    12
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     2,
+     2,
+     24,
+     24
+    ]
+   ]
+  },
+  "portal_active": {
+   "frame": [
+    24,
+    24
+   ],
+   "anchor": [
+    12,
+    12
+   ],
+   "frames": 4,
+   "ms": [
+    110.0,
+    110.0,
+    110.0,
+    110.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     28,
+     2,
+     24,
+     24
+    ],
+    [
+     54,
+     2,
+     24,
+     24
+    ],
+    [
+     80,
+     2,
+     24,
+     24
+    ],
+    [
+     106,
+     2,
+     24,
+     24
+    ]
+   ]
+  },
+  "portal_reject": {
+   "frame": [
+    24,
+    24
+   ],
+   "anchor": [
+    12,
+    12
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     132,
+     2,
+     24,
+     24
+    ]
+   ]
+  },
+  "mirror_base_fixed": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     158,
+     2,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_base_push": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     2,
+     28,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_blue_0": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     24,
+     28,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_blue_45": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     46,
+     28,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_blue_90": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     68,
+     28,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_blue_135": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     90,
+     28,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_blue_flash": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    120.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     112,
+     28,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_brass_0": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     134,
+     28,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_brass_45": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     156,
+     28,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_brass_90": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     2,
+     54,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_brass_135": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     24,
+     54,
+     20,
+     24
+    ]
+   ]
+  },
+  "mirror_brass_flash": {
+   "frame": [
+    20,
+    24
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    120.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     46,
+     54,
+     20,
+     24
+    ]
+   ]
+  },
+  "eye_gold_dormant": {
+   "frame": [
+    20,
+    22
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     68,
+     54,
+     20,
+     22
+    ]
+   ]
+  },
+  "eye_gold_lit": {
+   "frame": [
+    20,
+    22
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 2,
+   "ms": [
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     90,
+     54,
+     20,
+     22
+    ],
+    [
+     112,
+     54,
+     20,
+     22
+    ]
+   ]
+  },
+  "eye_blue_dormant": {
+   "frame": [
+    20,
+    22
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     134,
+     54,
+     20,
+     22
+    ]
+   ]
+  },
+  "eye_blue_lit": {
+   "frame": [
+    20,
+    22
+   ],
+   "anchor": [
+    10,
+    14
+   ],
+   "frames": 2,
+   "ms": [
+    260.0,
+    260.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     2,
+     80,
+     20,
+     22
+    ],
+    [
+     24,
+     80,
+     20,
+     22
+    ]
+   ]
+  },
+  "bramble_tile": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 2,
+   "ms": [
+    450.0,
+    450.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     46,
+     80,
+     16,
+     16
+    ],
+    [
+     64,
+     80,
+     16,
+     16
+    ]
+   ]
+  },
+  "bramble_charred": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     82,
+     80,
+     16,
+     16
+    ]
+   ]
+  },
+  "cracked_slate": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 2,
+   "ms": [
+    550.0,
+    550.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     100,
+     80,
+     16,
+     16
+    ],
+    [
+     118,
+     80,
+     16,
+     16
+    ]
+   ]
+  },
+  "cracked_coastal": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 2,
+   "ms": [
+    550.0,
+    550.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     136,
+     80,
+     16,
+     16
+    ],
+    [
+     154,
+     80,
+     16,
+     16
+    ]
+   ]
+  },
+  "cracked_basalt": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 2,
+   "ms": [
+    550.0,
+    550.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     2,
+     104,
+     16,
+     16
+    ],
+    [
+     20,
+     104,
+     16,
+     16
+    ]
+   ]
+  },
+  "cracked_rubble": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     38,
+     104,
+     16,
+     16
+    ]
+   ]
+  },
+  "tide_closed": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 2,
+   "ms": [
+    280.0,
+    280.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     56,
+     104,
+     16,
+     16
+    ],
+    [
+     74,
+     104,
+     16,
+     16
+    ]
+   ]
+  },
+  "tide_open": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     92,
+     104,
+     16,
+     16
+    ]
+   ]
+  },
+  "phantom_solid": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 2,
+   "ms": [
+    360.0,
+    360.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     110,
+     104,
+     16,
+     16
+    ],
+    [
+     128,
+     104,
+     16,
+     16
+    ]
+   ]
+  },
+  "phantom_warn": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 2,
+   "ms": [
+    140.0,
+    140.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     146,
+     104,
+     16,
+     16
+    ],
+    [
+     164,
+     104,
+     16,
+     16
+    ]
+   ]
+  },
+  "phantom_hint": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     2,
+     122,
+     16,
+     16
+    ]
+   ]
+  },
+  "obsidian_tile": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 4,
+   "ms": [
+    220.0,
+    220.0,
+    220.0,
+    220.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     20,
+     122,
+     16,
+     16
+    ],
+    [
+     38,
+     122,
+     16,
+     16
+    ],
+    [
+     56,
+     122,
+     16,
+     16
+    ],
+    [
+     74,
+     122,
+     16,
+     16
+    ]
+   ]
+  },
+  "obsidian_shattered": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     92,
+     122,
+     16,
+     16
+    ]
+   ]
+  },
+  "brazier_unlit": {
+   "frame": [
+    16,
+    20
+   ],
+   "anchor": [
+    8,
+    14
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     110,
+     122,
+     16,
+     20
+    ]
+   ]
+  },
+  "brazier_lit": {
+   "frame": [
+    16,
+    20
+   ],
+   "anchor": [
+    8,
+    14
+   ],
+   "frames": 4,
+   "ms": [
+    110.0,
+    110.0,
+    110.0,
+    110.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     2,
+     144,
+     16,
+     20
+    ],
+    [
+     20,
+     144,
+     16,
+     20
+    ],
+    [
+     38,
+     144,
+     16,
+     20
+    ],
+    [
+     56,
+     144,
+     16,
+     20
+    ]
+   ]
+  },
+  "web_tile": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     74,
+     144,
+     16,
+     16
+    ]
+   ]
+  },
+  "web_torn": {
+   "frame": [
+    16,
+    16
+   ],
+   "anchor": [
+    8,
+    8
+   ],
+   "frames": 1,
+   "ms": [
+    200.0
+   ],
+   "loop": true,
+   "rects": [
+    [
+     92,
+     144,
+     16,
+     16
+    ]
+   ]
+  }
+ }
+}

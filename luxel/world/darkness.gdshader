@@ -22,8 +22,8 @@ uniform float focus_flash : hint_range(0.0, 1.0) = 0.0;
 uniform int biome_id = 1;
 uniform float biome_phase : hint_range(0.0, 1.0) = 0.5;
 
-// Up to 16 camera-prioritized light pools: xy = world pos, z = radius (px), w = intensity (0..2)
-uniform vec4 lights[16];
+// Up to 24 camera-prioritized light pools: xy = world pos, z = radius (px), w = intensity (0..2)
+uniform vec4 lights[24];
 uniform int light_count = 0;
 
 // Up to 8 feathered zone relight rectangles: xy = top-left world pos, zw = size (world px)
@@ -97,7 +97,7 @@ void fragment() {
 
 		// Smooth radial light pools (Wick lantern, thrown lantern, beacons, lamps, bursts)
 		float warm_glow = 0.0;
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < 24; i++) {
 			if (i >= light_count) break;
 			vec4 L = lights[i];
 			if (L.z <= 1.0 || L.w <= 0.001) continue;
@@ -115,24 +115,27 @@ void fragment() {
 		vec3 out_col = src;
 
 		if (shadow_amt > 0.002) {
-			// Preserve bright emissive pixels (flames, eyes, golden tells) cleanly in darkness
+			// Preserve bright emissive pixels (flames, eyes, golden tells) cleanly in twilight
 			float luma = dot(src, vec3(0.299, 0.587, 0.114));
-			float bright_guard = smoothstep(0.66, 0.88, luma);
-			float eff = shadow_amt * (1.0 - bright_guard * 0.85);
+			float bright_guard = smoothstep(0.58, 0.84, luma);
+			float eff = shadow_amt * (1.0 - bright_guard * 0.88);
 
-			vec3 night_graded = src * biome_tint + col_night * 0.06;
-			vec3 deep_tint = biome_tint * vec3(0.62, 0.60, 0.69);
-			vec3 deep_graded = mix(src * deep_tint, col_void, 0.22);
-			vec3 dark_col = mix(night_graded, deep_graded, smoothstep(0.45, 1.0, eff));
+			// Luma-preserving shadow floor: keep deep col_void abyss pixels dark while preventing
+			// walkable dungeon bricks (luma >= ~0.12) from crushing below readable twilight.
+			float floor_guard = smoothstep(0.065, 0.115, luma);
+			vec3 night_graded = max(src * biome_tint + col_night * (0.14 * floor_guard), col_night * (0.85 * floor_guard));
+			vec3 deep_tint = biome_tint * vec3(0.88, 0.88, 0.94);
+			vec3 deep_graded = max(mix(src * deep_tint, col_night, 0.16 * floor_guard), col_night * (0.78 * floor_guard));
+			vec3 dark_col = mix(night_graded, deep_graded, smoothstep(0.48, 1.0, eff));
 			out_col = mix(src, dark_col, eff);
 		}
 
 		// Warm candlelight transition bloom at pool rims in shadowed areas
-		if (warm_glow > 0.003 && shadow_amt > 0.04) {
+		if (warm_glow > 0.003 && shadow_amt > 0.03) {
 			out_col = mix(
 				out_col,
-				out_col * vec3(1.08, 1.03, 0.92) + col_gold * 0.09,
-				warm_glow * min(shadow_amt * 2.2, 1.0)
+				out_col * vec3(1.10, 1.05, 0.94) + col_gold * 0.12,
+				warm_glow * min(shadow_amt * 2.4, 1.0)
 			);
 		}
 
@@ -170,12 +173,13 @@ void fragment() {
 			out_col = mix(out_col, col_wine, clamp(dvig, 0.0, 0.22));
 		}
 
-		// Biome-matched diagonal skylight/hearth shafts across shadowed dungeon chambers
+		// Biome-matched world-anchored diagonal skylight/hearth shafts (gentle 0.85 parallax)
 		if (dungeon_shafts > 0.01 && shadow_amt > 0.08) {
-			float diag = (screen_px.x * 0.58 + screen_px.y * 0.82) / 56.0;
+			vec2 shaft_px = world_px * 0.85;
+			float diag = (shaft_px.x * 0.58 + shaft_px.y * 0.82) / 56.0;
 			float band = pow(max(0.0, sin(diag + shader_clock * 0.18)), 6.0);
-			float vfade = smoothstep(0.0, 0.18, UV.y) * (1.0 - smoothstep(0.62, 0.96, UV.y));
-			float shaft_a = band * vfade * dungeon_shafts * shadow_amt * 0.13;
+			float vfade = 0.55 + 0.45 * sin(shaft_px.y * 0.022);
+			float shaft_a = band * vfade * dungeon_shafts * shadow_amt * 0.17;
 			vec3 shaft_col = col_sky;
 			if (biome_id == 1) {
 				shaft_col = mix(col_apricot, col_gold, 0.55);
@@ -192,34 +196,43 @@ void fragment() {
 			} else if (biome_id == 8) {
 				shaft_col = mix(col_wine, col_gold, 0.35);
 			}
-			out_col = mix(out_col, mix(out_col, shaft_col, 0.48) + shaft_col * 0.05, clamp(shaft_a, 0.0, 0.15));
+			out_col = mix(out_col, mix(out_col, shaft_col, 0.48) + shaft_col * 0.05, clamp(shaft_a, 0.0, 0.19));
 		}
 
-		// Distinct per-island atmospheric shader signature (bell shimmer, coastal mist, forest canopy, lagoon caustics, astral grid, kiln glow, lunar sheen, eclipse corona)
+		// World-anchored per-island atmospheric shader signature (no screen-sliding glass patterns)
 		if (biome_id == 1 && shadow_amt > 0.06) {
-			float chime_w = pow(max(0.0, sin((screen_px.x * 0.03 + screen_px.y * 0.04) - shader_clock * 0.45)), 6.0);
-			out_col = mix(out_col, col_apricot * 0.55 + col_gold * 0.45, chime_w * shadow_amt * 0.07);
+			float chime_w = pow(max(0.0, sin((world_px.x * 0.028 + world_px.y * 0.036) - shader_clock * 0.38)), 6.0);
+			out_col = mix(out_col, col_apricot * 0.55 + col_gold * 0.45, chime_w * shadow_amt * 0.06);
 		} else if (biome_id == 2 && shadow_amt > 0.06) {
-			float mist = pow(max(0.0, sin((screen_px.y * 0.08) + sin(screen_px.x * 0.03 + shader_clock * 0.7))), 4.0);
-			out_col = mix(out_col, col_sky, mist * shadow_amt * (0.09 + 0.06 * biome_phase));
+			float mist = pow(max(0.0, sin((world_px.y * 0.065) + sin(world_px.x * 0.026 + shader_clock * 0.55))), 4.0);
+			out_col = mix(out_col, col_sky, mist * shadow_amt * (0.08 + 0.05 * biome_phase));
 		} else if (biome_id == 3 && shadow_amt > 0.06) {
-			float canopy = pow(max(0.0, sin((screen_px.x * 0.045 - screen_px.y * 0.03) + shader_clock * 0.25)), 5.0);
-			out_col = mix(out_col, mix(col_jade, col_gold, 0.38), canopy * shadow_amt * 0.10);
+			float canopy = pow(max(0.0, sin((world_px.x * 0.042 - world_px.y * 0.028) + shader_clock * 0.22)), 5.0);
+			out_col = mix(out_col, mix(col_jade, col_gold, 0.38), canopy * shadow_amt * 0.09);
 		} else if (biome_id == 4 && shadow_amt > 0.06) {
-			float caust = pow(max(0.0, sin(screen_px.x * 0.09 + shader_clock * 1.1) * cos(screen_px.y * 0.09 - shader_clock * 0.8)), 3.0);
-			out_col = mix(out_col, mix(col_rose, col_sky, 0.55), caust * shadow_amt * 0.11);
+			float caust = pow(max(0.0, sin(world_px.x * 0.075 + shader_clock * 0.85) * cos(world_px.y * 0.075 - shader_clock * 0.65)), 3.0);
+			out_col = mix(out_col, mix(col_rose, col_sky, 0.55), caust * shadow_amt * 0.09);
 		} else if (biome_id == 5 && shadow_amt > 0.06) {
-			float grid_g = max(0.0, sin(screen_px.x * 0.11 + shader_clock * 0.2) * sin(screen_px.y * 0.11 - shader_clock * 0.2));
-			out_col = mix(out_col, col_gold, pow(grid_g, 8.0) * shadow_amt * 0.14);
+			vec2 wp_cell = floor(world_px);
+			float h = fract(sin(dot(wp_cell, vec2(127.1, 311.7))) * 43758.5453);
+			float dust = step(0.996, h) * (0.45 + 0.55 * sin(shader_clock * 1.5 + h * 62.8));
+			float neb = 0.5 + 0.5 * sin(world_px.x * 0.016 + sin(world_px.y * 0.019));
+			vec2 auv = (UV - vec2(0.5)) * vec2(1.0, 0.92);
+			float avig = smoothstep(0.30, 0.78, length(auv)) * 0.09;
+			vec3 astral_col = mix(col_sky, col_gold, 0.22 + 0.25 * neb);
+			out_col = mix(out_col, astral_col, clamp((avig * (0.65 + 0.35 * neb) + dust * 0.18) * shadow_amt, 0.0, 0.16));
 		} else if (biome_id == 6 && shadow_amt > 0.04) {
-			float heat = smoothstep(0.55, 1.0, UV.y) * (0.65 + 0.35 * sin(shader_clock * 1.8 + biome_phase * 6.283));
-			out_col = mix(out_col, col_coral, clamp(heat * shadow_amt * 0.22, 0.0, 0.20));
+			float thermal = 0.5 + 0.5 * sin(world_px.y * 0.024 + sin(world_px.x * 0.018) * 1.4 + shader_clock * 0.9);
+			float heat = thermal * (0.60 + 0.40 * sin(shader_clock * 1.6 + biome_phase * 6.283));
+			out_col = mix(out_col, col_coral, clamp(heat * shadow_amt * 0.15, 0.0, 0.15));
 		} else if (biome_id == 7 && shadow_amt > 0.04) {
-			out_col = mix(out_col, col_sky * 0.8 + col_cream * 0.2, biome_phase * shadow_amt * 0.14);
+			float sheen = 0.65 + 0.35 * sin(world_px.x * 0.022 - world_px.y * 0.018 + shader_clock * 0.35);
+			out_col = mix(out_col, col_sky * 0.8 + col_cream * 0.2, biome_phase * sheen * shadow_amt * 0.10);
 		} else if (biome_id == 8 && shadow_amt > 0.04) {
 			float ec_r = length((UV - vec2(0.5)) * vec2(1.0, 0.92));
-			float ec_ring = smoothstep(0.32, 0.72, ec_r) * biome_phase * 0.24;
-			out_col = mix(out_col, col_wine * 0.65 + col_void * 0.35, clamp(ec_ring, 0.0, 0.22));
+			float ec_w = 0.70 + 0.30 * sin(world_px.x * 0.020 + world_px.y * 0.020 - shader_clock * 0.4);
+			float ec_ring = smoothstep(0.34, 0.74, ec_r) * biome_phase * ec_w * 0.20;
+			out_col = mix(out_col, col_wine * 0.65 + col_void * 0.35, clamp(ec_ring, 0.0, 0.18));
 		}
 
 		// Dramatic crimson-gold rim pulse on Boss Phase 2/3/4 escalations

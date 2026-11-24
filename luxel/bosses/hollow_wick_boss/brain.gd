@@ -78,6 +78,7 @@ func _enter_phase(next_phase: int) -> void:
 	if Lx.events != null:
 		Lx.events.boss_phase_changed.emit(boss_id, phase)
 		Lx.events.shake_requested.emit(0.30)
+	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
 	_emit_sfx("hollow_wick_phase")
 
 
@@ -126,16 +127,21 @@ func _begin_move_tell(target: Vector2) -> void:
 	if target.distance_to(pos) > 0.01:
 		facing = (target - pos).angle()
 	commit_dir = Vector2.from_angle(facing)
+	if active_move == BossMove.LANTERN_ZIP:
+		dark_lantern_pos = _clamp_point(pos + commit_dir * clampf(target.distance_to(pos), 34.0, 98.0))
 	_emit_attack_started()
 	_emit_sfx("hollow_wick_tell")
 
 
 func _step_tell(dt: float) -> void:
 	if state_timer > 0.16:
-		var to_t: Vector2 = _attention_target() - pos
+		var target_now: Vector2 = _attention_target()
+		var to_t: Vector2 = target_now - pos
 		if to_t.length() > 0.01:
 			_turn_toward(to_t.angle(), 3.4, dt)
 			commit_dir = Vector2.from_angle(facing)
+		if active_move == BossMove.LANTERN_ZIP:
+			dark_lantern_pos = _clamp_point(pos + commit_dir * clampf(target_now.distance_to(pos), 34.0, 98.0))
 	state_timer -= dt
 	if state_timer <= 0.0:
 		state = State.COMMIT
@@ -153,7 +159,7 @@ func _step_tell(dt: float) -> void:
 				_emit_sfx("hollow_wick_commit")
 			BossMove.LANTERN_ZIP:
 				state_timer = ZIP_THROW_TIME + ZIP_FLY_TIME
-				dark_lantern_pos = _clamp_point(pos + commit_dir * clampf(_attention_target().distance_to(pos), 34.0, 98.0))
+				dark_lantern_pos = _clamp_point(dark_lantern_pos)
 				dark_lantern_out = true
 				hollow_lantern_thrown.emit(pos, dark_lantern_pos, self)
 				_emit_sfx("lantern_throw")
@@ -263,14 +269,9 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(off + Vector2(3.0, -body_radius), off + Vector2(5.5, -body_radius - 4.0), PAL["ice"] as Color, 1.4)
 	super._draw_extra(off)
 	if active_move == BossMove.DARK_BEAM and state == State.TELL:
+		var b_urg: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var locked_hw: bool = state_timer <= 0.16
-		var t_col: Color = (PAL["coral"] if locked_hw else (PAL["gold"] if lured_now else PAL["sky"])) as Color
-		var b_perp: Vector2 = Vector2(-commit_dir.y, commit_dir.x)
-		var b_tip: Vector2 = (off + commit_dir * BEAM_RANGE).round()
-		draw_line(off.round(), b_tip, t_col, 2.2 if locked_hw else 1.6)
-		if locked_hw:
-			draw_line(off.round(), b_tip, PAL["cream"] as Color, 1.0)
-		draw_line((b_tip - b_perp * BEAM_HALF_W).round(), (b_tip + b_perp * BEAM_HALF_W).round(), t_col, 1.2)
+		LxBossTelegraphFx.draw_ground_danger_lane(self, off, off + commit_dir * BEAM_RANGE, BEAM_HALF_W, b_urg, anim_t, "sky", "coral")
 		draw_circle(off.round(), 2.8 if locked_hw else 2.2, (PAL["cream"] if locked_hw else PAL["ice"]) as Color)
 	elif active_move == BossMove.DARK_BEAM and state == State.COMMIT:
 		var orig: Vector2 = off.round()
@@ -291,10 +292,7 @@ func _draw_extra(off: Vector2) -> void:
 			draw_circle(fp, 2.0, PAL["cream"] as Color)
 	elif active_move == BossMove.ECLIPSE_FLARE and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		for ti: int in range(12):
-			var a0: float = float(ti) * (TAU / 12.0)
-			draw_arc(off, FLARE_MAX_R, a0, a0 + 0.24, 3, PAL["sky"] as Color, 1.0)
-		draw_arc(off, lerpf(FLARE_MAX_R, FLARE_START_R + 6.0, prog), 0.0, TAU, 26, (PAL["cream"] if state_timer <= 0.14 else PAL["ice"]) as Color, 1.8)
+		LxBossTelegraphFx.draw_ground_danger_ring(self, off, FLARE_MAX_R, prog, anim_t, "sky", "coral")
 	elif active_move == BossMove.ECLIPSE_FLARE and state == State.COMMIT:
 		var ring_r: float = lerpf(FLARE_START_R, FLARE_MAX_R, flare_progress)
 		draw_arc(off, ring_r + 2.6, 0.0, TAU, 36, PAL["blue"] as Color, 2.2)

@@ -2,18 +2,25 @@ class_name LxForgeWardenBoss
 extends LxCinderGolemBrain
 ## Ashen Kiln mini-boss (Island 6): Forge Warden.
 ## 2 phases, HP 8.5, heavy armour 3.5 (cracked by Sunflare).
-## Phase 2 chains a Double Forge Quake shockwave ring before its long recovery.
+## Phase 2 follows its Forge Quake with a telegraphed Molten Line-Fissure hammer slam
+## aimed along Wick's lane (tell >= 0.52s) instead of a 2nd shockwave ring!
 
-enum QuakeStage { RING_1, PAUSE, RING_2 }
+enum QuakeStage { RING_1, FISSURE_TELL, FISSURE_COMMIT }
 
 const FORGE_ARMOUR_MAX: float = 3.5
 const FORGE_RING_MAX_R: float = 76.0
 const FORGE_RING_BAND: float = 10.5
 const FORGE_TRIGGER_R: float = 84.0
-const QUAKE_PAUSE_TIME: float = 0.46
+const FISSURE_TELL_TIME: float = 0.54
+const FISSURE_COMMIT_TIME: float = 0.34
+const FISSURE_RANGE: float = 114.0
+const FISSURE_HALF_W: float = 13.0
 const PHASE2_ROAR_TIME: float = 0.60
 
 var quake_stage: int = QuakeStage.RING_1
+var fissure_dir: Vector2 = Vector2.RIGHT
+var fissure_progress: float = 0.0
+var fissure_hit: bool = false
 var _roaring: bool = false
 
 
@@ -49,6 +56,9 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	armour_hp = armour_max
 	armour_intact = true
 	quake_stage = QuakeStage.RING_1
+	fissure_dir = Vector2.from_angle(facing)
+	fissure_progress = 0.0
+	fissure_hit = false
 	_roaring = false
 
 
@@ -68,6 +78,7 @@ func _check_phase_transition() -> void:
 		_roaring = true
 		quake_stage = QuakeStage.RING_1
 		stomp_progress = 0.0
+		fissure_progress = 0.0
 		_release_token()
 		state = State.NOTICE
 		state_timer = PHASE2_ROAR_TIME
@@ -112,20 +123,49 @@ func _enter_commit() -> void:
 
 
 func _step_commit(dt: float) -> void:
-	if quake_stage == QuakeStage.PAUSE:
+	if quake_stage == QuakeStage.FISSURE_TELL:
+		if state_timer > 0.20:
+			var to_t: Vector2 = _attention_target() - pos
+			if to_t.length() > 0.01:
+				_turn_toward(to_t.angle(), 3.2, dt)
+				fissure_dir = Vector2.from_angle(facing)
 		state_timer -= dt
 		if state_timer <= 0.0:
-			quake_stage = QuakeStage.RING_2
-			state_timer = STOMP_COMMIT_TIME
-			stomp_progress = 0.0
-			stomp_hit = false
+			quake_stage = QuakeStage.FISSURE_COMMIT
+			state_timer = FISSURE_COMMIT_TIME
+			fissure_progress = 0.0
+			fissure_hit = false
+			fissure_dir = Vector2.from_angle(facing)
 			_boss_impact(0.22, 98.0, 102.0)
 			_emit_sfx("golem_stomp_shockwave")
 		return
 
+	if quake_stage == QuakeStage.FISSURE_COMMIT:
+		state_timer = maxf(0.0, state_timer - dt)
+		fissure_progress = 1.0 - clampf(state_timer / FISSURE_COMMIT_TIME, 0.0, 1.0)
+		var cur_len: float = lerpf(12.0, FISSURE_RANGE, fissure_progress)
+		var fend: Vector2 = pos + fissure_dir * cur_len
+		if not fissure_hit and _has_player():
+			var wp: Vector2 = _get_wick_pos()
+			if Geometry2D.get_closest_point_to_segment(wp, pos, fend).distance_to(wp) <= FISSURE_HALF_W:
+				fissure_hit = true
+				_emit_player_hit(fissure_dir, attack_damage)
+		if _is_lured():
+			var lp: Vector2 = _get_lantern_pos()
+			if Geometry2D.get_closest_point_to_segment(lp, pos, fend).distance_to(lp) <= FISSURE_HALF_W + 2.0:
+				if Lx.events != null:
+					Lx.events.lantern_struck.emit(lp)
+		if state_timer <= 0.0:
+			quake_stage = QuakeStage.RING_1
+			fissure_progress = 0.0
+			state = State.RECOVER
+			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
+			last_recover_duration = state_timer
+		return
+
 	state_timer = maxf(0.0, state_timer - dt)
 	stomp_progress = 1.0 - clampf(state_timer / STOMP_COMMIT_TIME, 0.0, 1.0)
-	var max_r: float = FORGE_RING_MAX_R if (phase >= 2 or quake_stage == QuakeStage.RING_2) else STOMP_MAX_R + 6.0
+	var max_r: float = FORGE_RING_MAX_R if phase >= 2 else STOMP_MAX_R + 6.0
 	var ring_r: float = lerpf(STOMP_START_R, max_r, stomp_progress)
 	if not stomp_hit and _has_player():
 		var wv: Vector2 = _get_wick_pos() - pos
@@ -139,10 +179,15 @@ func _step_commit(dt: float) -> void:
 
 	if state_timer <= 0.0:
 		if quake_stage == QuakeStage.RING_1 and phase >= 2:
-			quake_stage = QuakeStage.PAUSE
-			state_timer = _scaled_tell(QUAKE_PAUSE_TIME, false, attack_damage)
-			stomp_progress = 0.0
-			stomp_hit = false
+			# P2 chains a telegraphed Molten Line-Fissure aimed along Wick's lane!
+			quake_stage = QuakeStage.FISSURE_TELL
+			state_timer = _scaled_tell(FISSURE_TELL_TIME, false, attack_damage)
+			var to_w: Vector2 = _attention_target() - pos
+			if to_w.length() > 0.01:
+				facing = to_w.angle()
+			fissure_dir = Vector2.from_angle(facing)
+			fissure_progress = 0.0
+			fissure_hit = false
 			_emit_sfx("golem_stomp_tell")
 		else:
 			quake_stage = QuakeStage.RING_1
@@ -177,16 +222,35 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, tr, 0.0, TAU, 28, (PAL["cream"] if hot else PAL["apricot"]) as Color, 2.0 if hot else 1.8)
 		draw_arc(c, maxf(3.0, tr - 2.0), 0.0, TAU, 24, (PAL["cream"] if hot else PAL["gold"]) as Color, 1.0)
 	elif state == State.COMMIT:
-		if quake_stage == QuakeStage.PAUSE:
-			for oi: int in range(12):
-				var oa0: float = float(oi) * (TAU / 12.0)
-				draw_arc(c, FORGE_RING_MAX_R, oa0, oa0 + 0.24, 3, PAL["coral"] as Color, 1.0)
-			var pr: float = FORGE_RING_MAX_R * 0.48 + (0.0 if LxHudFx.flash_reduced() else 2.0 * sin(anim_t * 18.0))
-			var hot_p: bool = state_timer <= 0.14
-			draw_arc(c, pr + 2.2, 0.0, TAU, 24, (PAL["apricot"] if hot_p else PAL["coral"]) as Color, 2.0)
-			draw_arc(c, pr, 0.0, TAU, 24, (PAL["cream"] if hot_p else PAL["gold"]) as Color, 2.4 if hot_p else 2.2)
+		if quake_stage == QuakeStage.FISSURE_TELL:
+			var perp: Vector2 = Vector2(-fissure_dir.y, fissure_dir.x)
+			var fend: Vector2 = (c + fissure_dir * FISSURE_RANGE).round()
+			var hot_f: bool = state_timer <= 0.20
+			var fc: Color = (PAL["cream"] if hot_f else PAL["apricot"]) as Color
+			draw_line((c + perp * (FISSURE_HALF_W * 0.72)).round(), (fend + perp * (FISSURE_HALF_W * 0.72)).round(), PAL["coral"] as Color, 1.4)
+			draw_line((c - perp * (FISSURE_HALF_W * 0.72)).round(), (fend - perp * (FISSURE_HALF_W * 0.72)).round(), PAL["coral"] as Color, 1.4)
+			draw_line(c, fend, fc, 2.0 if hot_f else 1.4)
+			for ci: int in range(1, 6):
+				var t: float = float(ci) / 6.0
+				var mp: Vector2 = c.lerp(fend, t).round()
+				var zig: float = (4.0 if ci % 2 == 0 else -4.0)
+				draw_line(mp, (mp + perp * zig).round(), PAL["gold"] as Color, 1.2)
+		elif quake_stage == QuakeStage.FISSURE_COMMIT:
+			var cur_len: float = lerpf(12.0, FISSURE_RANGE, fissure_progress)
+			var perp2: Vector2 = Vector2(-fissure_dir.y, fissure_dir.x)
+			var fend2: Vector2 = (c + fissure_dir * cur_len).round()
+			draw_line(c, fend2, PAL["wine"] as Color, 10.0)
+			draw_line(c, fend2, PAL["coral"] as Color, 6.8)
+			draw_line(c, fend2, PAL["apricot"] as Color, 4.0)
+			draw_line(c, fend2, PAL["gold"] as Color, 2.2)
+			draw_line(c, fend2, PAL["cream"] as Color, 1.0)
+			for ei: int in range(5):
+				var et: float = float(ei + 1) / 5.5
+				var ep: Vector2 = (c + fissure_dir * (cur_len * et) + perp2 * (sin(anim_t * 18.0 + float(ei) * 2.1) * 6.0)).round()
+				draw_circle(ep, 2.0, PAL["gold"] as Color)
+				draw_circle(ep, 1.0, PAL["cream"] as Color)
 		else:
-			var max_r: float = FORGE_RING_MAX_R if (phase >= 2 or quake_stage == QuakeStage.RING_2) else STOMP_MAX_R + 6.0
+			var max_r: float = FORGE_RING_MAX_R if phase >= 2 else STOMP_MAX_R + 6.0
 			var ring_r: float = lerpf(STOMP_START_R, max_r, stomp_progress)
 			draw_arc(c, ring_r + 2.8, 0.0, TAU, 36, PAL["wine"] as Color, 2.5)
 			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.8)

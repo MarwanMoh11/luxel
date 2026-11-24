@@ -3,6 +3,7 @@
   "island_id": 2,
   "tile_size": 16,
   "is_dungeon": true,
+  "is_2x2_room": true,
   "spawn": [
     224,
     240
@@ -32,7 +33,7 @@
       "to_region": "lighthouse_r9",
       "to_spawn": [
         224,
-        40
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -98,15 +99,18 @@
       }
     },
     {
-      "id": "mirror_lh_r10_nw",
-      "kind": "mirror",
+      "id": "transformer_lh_r10_nw",
+      "kind": "blue_transformer",
       "pos": [
         120,
-        88
+        104
       ],
       "props": {
         "angle_deg": 45,
-        "rotatable": false,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -114,15 +118,18 @@
       }
     },
     {
-      "id": "mirror_lh_r10_ne",
-      "kind": "mirror",
+      "id": "transformer_lh_r10_ne",
+      "kind": "blue_transformer",
       "pos": [
         328,
-        88
+        104
       ],
       "props": {
         "angle_deg": 135,
-        "rotatable": false,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -130,15 +137,18 @@
       }
     },
     {
-      "id": "mirror_lh_r10_sw",
-      "kind": "mirror",
+      "id": "transformer_lh_r10_sw",
+      "kind": "blue_transformer",
       "pos": [
-        120,
-        200
+        152,
+        216
       ],
       "props": {
         "angle_deg": 315,
-        "rotatable": false,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -146,15 +156,18 @@
       }
     },
     {
-      "id": "mirror_lh_r10_se",
-      "kind": "mirror",
+      "id": "transformer_lh_r10_se",
+      "kind": "blue_transformer",
       "pos": [
-        328,
-        200
+        312,
+        216
       ],
       "props": {
         "angle_deg": 225,
-        "rotatable": false,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -166,7 +179,7 @@
       "kind": "door",
       "pos": [
         424,
-        144
+        136
       ],
       "props": {
         "door_kind": "bridge_of_light",
@@ -181,19 +194,7 @@
       }
     }
   ],
-  "triggers": [
-    {
-      "id": "trig_boss_hermit",
-      "rect": [
-        144,
-        192,
-        160,
-        48
-      ],
-      "string_id": "BOSS_HERMIT",
-      "once": true
-    }
-  ],
+  "triggers": [],
   "scenery": [
     {
       "sheet": "island2_scenery",
@@ -247,8 +248,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        72,
-        144
+        64,
+        104
       ],
       "layer": "sort",
       "flip_x": false,
@@ -259,8 +260,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        376,
-        108
+        372,
+        104
       ],
       "layer": "sort",
       "flip_x": true,
@@ -269,34 +270,34 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
+      "prop": "harbor_wind_vane",
       "pos": [
-        48,
-        44
+        392,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "buoy_bobbing",
+      "pos": [
+        152,
+        24
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.1
+      "phase": 0.15
     },
     {
       "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
+      "prop": "buoy_bobbing",
       "pos": [
-        400,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        48,
-        244
+        56,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -307,14 +308,13 @@
       "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
-        400,
-        244
+        328,
+        264
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
       "phase": 0.8
     }
-  ],
-  "is_2x2_room": true
+  ]
 }

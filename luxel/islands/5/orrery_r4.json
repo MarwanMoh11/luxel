@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    88,
+    48,
     104
   ],
   "zones": [
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        416,
-        208
+        448,
+        240
       ],
       "dark": true
     }
@@ -31,8 +31,8 @@
       ],
       "to_region": "orrery_r3",
       "to_spawn": [
-        376,
-        112
+        384,
+        104
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_o5_r4_east",
       "rect": [
-        400,
-        80,
+        432,
+        112,
         16,
         48
       ],
       "to_region": "orrery_r5",
       "to_spawn": [
         40,
-        128
+        136
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -64,7 +64,7 @@
       "id": "door_o5_r4_key",
       "kind": "door",
       "pos": [
-        152,
+        136,
         104
       ],
       "props": {
@@ -82,37 +82,52 @@
       }
     },
     {
-      "id": "mirror_o5_r4_n",
-      "kind": "mirror",
+      "id": "transformer_o5_r4_s",
+      "kind": "blue_transformer",
       "pos": [
-        200,
+        216,
+        200
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "transformer_o5_r4_n",
+      "kind": "blue_transformer",
+      "pos": [
+        264,
         56
       ],
       "props": {
         "angle_deg": 45,
-        "rotatable": true
-      }
-    },
-    {
-      "id": "mirror_o5_r4_s",
-      "kind": "mirror",
-      "pos": [
-        200,
-        152
-      ],
-      "props": {
-        "angle_deg": 135,
-        "rotatable": true
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
       }
     },
     {
       "id": "switch_eye_o5_r4_n",
       "kind": "switch_eye",
       "pos": [
-        248,
+        344,
         56
       ],
       "props": {
+        "requires_blue": true,
         "target_id": "door_o5_r4_shutter"
       }
     },
@@ -120,19 +135,61 @@
       "id": "switch_eye_o5_r4_s",
       "kind": "switch_eye",
       "pos": [
-        248,
-        152
+        328,
+        168
       ],
       "props": {
+        "requires_blue": true,
         "target_id": "door_o5_r4_shutter"
+      }
+    },
+    {
+      "id": "portal_o5_r4_in",
+      "kind": "blue_portal",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "target_portal_id": "portal_o5_r4_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "o5_r4_portal_lit"
+      }
+    },
+    {
+      "id": "portal_o5_r4_out",
+      "kind": "blue_portal",
+      "pos": [
+        200,
+        28
+      ],
+      "props": {
+        "target_portal_id": "portal_o5_r4_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "chest_o5_r4_optics",
+      "kind": "chest",
+      "pos": [
+        168,
+        28
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45,
+        "zone": "orrery_r4"
       }
     },
     {
       "id": "door_o5_r4_shutter",
       "kind": "door",
       "pos": [
-        344,
-        104
+        392,
+        136
       ],
       "props": {
         "door_kind": "shutter",
@@ -153,34 +210,46 @@
   "scenery": [
     {
       "sheet": "island5_scenery",
-      "prop": "moon_phase_obelisk",
+      "prop": "observatory_brazier_stand",
       "pos": [
-        90,
-        62
+        104,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "moon_phase_obelisk",
-      "pos": [
-        90,
-        162
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
+      "phase": 0.15
     },
     {
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        132,
-        54
+        104,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "star_chart_lectern",
+      "pos": [
+        56,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        168,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -191,61 +260,25 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        132,
-        162
+        364,
+        96
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.7
+      "phase": 0.25
     },
     {
       "sheet": "island5_scenery",
-      "prop": "clockwork_gear_pillar",
+      "prop": "observatory_brazier_stand",
       "pos": [
-        330,
-        60
+        364,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "clockwork_gear_pillar",
-      "pos": [
-        330,
-        162
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "star_chart_lectern",
-      "pos": [
-        296,
-        54
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "celestial_globe",
-      "pos": [
-        302,
-        162
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
+      "phase": 0.75
     }
   ],
   "is_2x2_room": true

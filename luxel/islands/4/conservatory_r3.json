@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    208,
-    184
+    176,
+    192
   ],
   "zones": [
     {
@@ -15,7 +15,7 @@
         0,
         0,
         416,
-        224
+        240
       ],
       "dark": true
     }
@@ -24,15 +24,15 @@
     {
       "id": "exit_c4_r3_south",
       "rect": [
-        192,
-        208,
+        160,
+        224,
         32,
         16
       ],
       "to_region": "conservatory_r2",
       "to_spawn": [
-        192,
-        72
+        176,
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -48,7 +48,7 @@
       ],
       "to_region": "conservatory_r4",
       "to_spawn": [
-        88,
+        56,
         104
       ],
       "requires_moves": [],
@@ -63,43 +63,47 @@
       "id": "lily_hopper_c4_r3",
       "kind": "lily_hopper",
       "pos": [
-        208,
-        48
+        200,
+        104
       ],
       "route": [
         [
-          144,
-          48
+          184,
+          104
         ],
         [
-          272,
-          48
-        ]
-      ],
-      "perches": [],
-      "zone": "conservatory_r3",
-      "leash": 135
-    },
-    {
-      "id": "heron_stalker_c4_r3",
-      "kind": "heron_stalker",
-      "pos": [
-        328,
-        112
-      ],
-      "route": [
-        [
-          328,
-          56
-        ],
-        [
-          328,
-          168
+          248,
+          120
         ]
       ],
       "perches": [],
       "zone": "conservatory_r3",
       "leash": 140
+    },
+    {
+      "id": "mire_snuffer_c4_r3",
+      "kind": "mire_snuffer",
+      "pos": [
+        328,
+        88
+      ],
+      "route": [],
+      "perches": [
+        [
+          328,
+          88
+        ],
+        [
+          232,
+          56
+        ],
+        [
+          360,
+          136
+        ]
+      ],
+      "zone": "conservatory_r3",
+      "leash": 150
     }
   ],
   "interactables": [
@@ -130,32 +134,80 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        208,
-        112
+        200,
+        128
       ],
       "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        44,
-        32
-      ],
-      "layer": "sort",
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
     },
     {
       "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        348,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        348,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        132,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        216,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        372,
-        32
+        48,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "giant_lotus_pad",
+      "pos": [
+        84,
+        52
       ],
       "layer": "sort",
       "flip_x": false,
@@ -164,58 +216,10 @@
     },
     {
       "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
+      "prop": "floating_lantern_lily",
       "pos": [
-        128,
-        80
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        288,
-        80
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        128,
-        144
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        288,
-        144
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.9
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        44,
-        192
+        272,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -226,13 +230,49 @@
       "sheet": "island4_scenery",
       "prop": "cattail_reeds",
       "pos": [
-        372,
-        192
+        40,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "giant_lotus_pad",
+      "pos": [
+        248,
+        180
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
-      "phase": 0.8
+      "phase": 0.6
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "blooming_lotus",
+      "pos": [
+        252,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.9
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "cattail_reeds",
+      "pos": [
+        368,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.4
     }
   ],
   "is_2x2_room": true

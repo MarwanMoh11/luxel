@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    192,
-    168
+    96,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        384,
-        240
+        416,
+        256
       ],
       "dark": true
     }
@@ -24,15 +24,15 @@
     {
       "id": "exit_spire_r4_south",
       "rect": [
-        176,
-        224,
+        80,
+        240,
         32,
         16
       ],
       "to_region": "spire_r3",
       "to_spawn": [
-        208,
-        40
+        240,
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_spire_r4_east",
       "rect": [
-        368,
-        96,
+        400,
+        112,
         16,
         48
       ],
       "to_region": "spire_r5",
       "to_spawn": [
         40,
-        112
+        120
       ],
       "requires_moves": [
         "wings",
@@ -64,11 +64,72 @@
   "enemies": [],
   "interactables": [
     {
+      "id": "transformer_spire_r4_a",
+      "kind": "blue_transformer",
+      "pos": [
+        56,
+        216
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "portal_spire_r4_in",
+      "kind": "blue_portal",
+      "pos": [
+        136,
+        152
+      ],
+      "props": {
+        "target_portal_id": "portal_spire_r4_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "spire_r4_chest_portal"
+      }
+    },
+    {
+      "id": "portal_spire_r4_out",
+      "kind": "blue_portal",
+      "pos": [
+        72,
+        56
+      ],
+      "props": {
+        "target_portal_id": "portal_spire_r4_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "chest_spire_r4_side",
+      "kind": "chest",
+      "pos": [
+        48,
+        80
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 55,
+        "zone": "spire_r4",
+        "secret_id": "spire_r4_abyss_portal"
+      }
+    },
+    {
       "id": "door_spire_r4_east",
       "kind": "door",
       "pos": [
-        328,
-        120
+        360,
+        136
       ],
       "props": {
         "door_kind": "key_door",
@@ -87,8 +148,8 @@
       "id": "lamp_spire_r4_c",
       "kind": "road_lamp",
       "pos": [
-        248,
-        72
+        216,
+        168
       ],
       "props": {
         "zone": "spire_r4"
@@ -99,46 +160,22 @@
   "scenery": [
     {
       "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
+      "prop": "glass_colonade_pillar",
       "pos": [
-        114,
-        82
+        340,
+        96
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.1
     },
     {
       "sheet": "island7_scenery",
-      "prop": "silver_brazier_stand",
+      "prop": "glass_colonade_pillar",
       "pos": [
-        114,
-        178
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "floating_prism_totem",
-      "pos": [
-        150,
-        84
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "shattered_mirror_shard",
-      "pos": [
-        150,
-        180
+        340,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -147,27 +184,135 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
+      "prop": "silver_brazier_stand",
       "pos": [
-        250,
-        180
+        392,
+        88
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.25
     },
     {
       "sheet": "island7_scenery",
-      "prop": "moon_crystal_cluster",
+      "prop": "silver_brazier_stand",
       "pos": [
-        324,
-        74
+        392,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "floating_prism_totem",
+      "pos": [
+        104,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        40,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "shattered_mirror_shard",
+      "pos": [
+        200,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "shattered_mirror_shard",
+      "pos": [
+        264,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        104,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "floating_prism_totem",
+      "pos": [
+        232,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "floating_prism_totem",
+      "pos": [
+        48,
+        44
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
+      "phase": 0.85
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        328,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
       "phase": 0.3
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        328,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
     }
   ],
   "is_2x2_room": true

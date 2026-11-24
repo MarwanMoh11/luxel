@@ -31,7 +31,7 @@
       ],
       "to_region": "oak_r8",
       "to_spawn": [
-        208,
+        192,
         48
       ],
       "requires_moves": [],
@@ -68,8 +68,8 @@
       "id": "ws_oak_upper",
       "kind": "waystone",
       "pos": [
-        168,
-        152
+        248,
+        168
       ],
       "props": {
         "zone": "oak_r9",
@@ -77,16 +77,16 @@
       }
     },
     {
-      "id": "web_oak_r9",
-      "kind": "web",
+      "id": "cracked_wall_oak_r9",
+      "kind": "cracked_wall",
       "pos": [
-        168,
-        96
+        176,
+        104
       ],
       "props": {
         "size": [
-          16,
-          32
+          32,
+          16
         ]
       }
     },
@@ -94,8 +94,8 @@
       "id": "bramble_oak_r9",
       "kind": "bramble",
       "pos": [
-        280,
-        152
+        120,
+        136
       ],
       "props": {
         "size": [
@@ -105,15 +105,32 @@
       }
     },
     {
-      "id": "mirror_oak_r9",
-      "kind": "mirror",
+      "id": "web_oak_r9",
+      "kind": "web",
       "pos": [
-        168,
-        56
+        296,
+        72
       ],
       "props": {
-        "angle_deg": 135,
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "transformer_oak_r9",
+      "kind": "blue_transformer",
+      "pos": [
+        168,
+        72
+      ],
+      "props": {
+        "angle_deg": 90,
         "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -124,8 +141,8 @@
       "id": "brazier_oak_r9",
       "kind": "brazier",
       "pos": [
-        48,
-        72
+        56,
+        56
       ],
       "props": {
         "target_id": "door_oak_r9_vault"
@@ -135,10 +152,12 @@
       "id": "switch_eye_oak_r9",
       "kind": "switch_eye",
       "pos": [
-        48,
-        152
+        56,
+        136
       ],
       "props": {
+        "requires_blue": true,
+        "requires_prism": true,
         "target_id": "door_oak_r9_vault",
         "sets_flag": "oak_r9_vault_open"
       }
@@ -148,13 +167,13 @@
       "kind": "door",
       "pos": [
         328,
-        88
+        80
       ],
       "props": {
         "door_kind": "switch_door",
         "size": [
           16,
-          16
+          32
         ],
         "requires_signals": [
           "brazier_oak_r9",
@@ -166,8 +185,8 @@
       "id": "keepers_flame_3",
       "kind": "keepers_flame",
       "pos": [
-        384,
-        88
+        392,
+        72
       ],
       "props": {
         "dungeon_id": "hollow_oak",
@@ -201,10 +220,22 @@
   "scenery": [
     {
       "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        248,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        280,
-        48
+        184,
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -215,20 +246,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        136,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        384,
-        48
+        268,
+        44
       ],
       "layer": "sort",
       "flip_x": true,
@@ -239,8 +258,20 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        384,
-        172
+        156,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        292,
+        44
       ],
       "layer": "sort",
       "flip_x": true,
@@ -249,27 +280,99 @@
     },
     {
       "sheet": "island3_scenery",
-      "prop": "hanging_spore_lantern",
+      "prop": "spider_silk_banner",
       "pos": [
-        280,
-        186
+        392,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        312,
+        140
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        356,
+        102
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.25
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        420,
+        102
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        176,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        288,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
     },
     {
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        48,
-        188
+        72,
+        196
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.5
+      "phase": 0.4
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        96,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.8
     }
   ],
   "is_2x2_room": true

@@ -1,4 +1,4 @@
-# The Orrery r7 - Starlight Phantom Crossing (24x15)
+# The Orrery r7 - Sho: Starlight Labyrinth (29x18)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,18 +13,21 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-###########,,###########
-#__________,,__________#
-#__________,,__________#
-#__...####.,,....####__#
-#__...####.,,....####__#
-#__...####.,,....####__#
-#__...P.P..,,..P.P..,,,,
-#__...P.P..,,..P.P,,,,,,
-#__...P.P..,,..P.P..,,,,
-#__...####....####...__#
-#__...####....####...__#
-#__...####....####...__#
-#______________________#
-#______________________#
-########################
+###########,,################
+#__OOOOPPP#,,####OOOOOOOO___#
+#O.....POP#,,####OOOOOOOO___#
+#O.....OOP.,,..##OOOOOOOO___#
+#O.....OOOOOOOO##OOOOOO.....#
+#OOPOOOOOOOOOOOOOOOOPPP.....#
+#OOPPPO....OOOO##OOOPOO.,,,,,
+#OOOOPP.,,.OOOO##OOPPOO.,,,,,
+#OOOOO#....OOOO##OOPO##.,,,,,
+#OOOOO#OOPOOOOO##OOPO##.....#
+#OOOOOOOPPOOOOOOO....##.....#
+#OOOOOOPPOOOOOOPP.,,.##.....#
+#OOOOPPPOOOO..OPO....##.....#
+#O....OOOOOO..PPOOOOOOOOOOOO#
+#O.,,.OOOOPP..OOOOOOOOOO____#
+#O.,,.OOPPPOOOOOOOOOOOOO____#
+#O....PPPOOOOOOOOOOOOOOO____#
+#############################

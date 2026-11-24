@@ -4,6 +4,8 @@ extends RefCounted
 ## Guarantees peak simultaneous committing attackers <= 1 across all enemies and boss adds.
 
 const DEFAULT_ATTACK_GAP: float = 0.35
+const RECENT_PENALTY_DIST: float = 48.0
+const RECENT_PENALTY_TIME: float = 2.2
 
 var enemies: Array[LxEnemyBrain] = []
 var token_holder: LxEnemyBrain = null
@@ -13,6 +15,7 @@ var attack_gap: float = 0.0
 var attack_gap_duration: float = DEFAULT_ATTACK_GAP
 var peak_attackers: int = 0
 var peak_claims: int = 0
+var _recent_attackers: Dictionary = {}
 
 
 func register(e: LxEnemyBrain) -> void:
@@ -33,6 +36,7 @@ func unregister(e: LxEnemyBrain) -> void:
 		light_claimer = null
 	if lead_enemy == e:
 		lead_enemy = null
+	_recent_attackers.erase(e.get_instance_id())
 	enemies.erase(e)
 
 
@@ -42,6 +46,7 @@ func clear() -> void:
 	light_claimer = null
 	lead_enemy = null
 	attack_gap = 0.0
+	_recent_attackers.clear()
 
 
 func reset_stats() -> void:
@@ -60,6 +65,12 @@ func can_claim_token(e: LxEnemyBrain, ignore_gap: bool = false) -> bool:
 	return ignore_gap or attack_gap <= 0.001
 
 
+func can_claim_ranged_token(enemy: LxEnemyBrain) -> bool:
+	if not can_claim_token(enemy):
+		return false
+	return lead_enemy == null or lead_enemy == enemy or lead_enemy.cooldown > 0.35
+
+
 func claim_token(e: LxEnemyBrain, ignore_gap: bool = false) -> bool:
 	if not can_claim_token(e, ignore_gap):
 		return false
@@ -72,10 +83,14 @@ func claim_token(e: LxEnemyBrain, ignore_gap: bool = false) -> bool:
 func release_token(e: LxEnemyBrain) -> void:
 	if e == null:
 		if token_holder != null:
+			if is_instance_valid(token_holder):
+				_recent_attackers[token_holder.get_instance_id()] = RECENT_PENALTY_TIME
 			token_holder = null
 			attack_gap = attack_gap_duration
 		return
 	if token_holder == e:
+		if is_instance_valid(e):
+			_recent_attackers[e.get_instance_id()] = RECENT_PENALTY_TIME
 		token_holder = null
 		attack_gap = attack_gap_duration
 
@@ -115,6 +130,17 @@ func active_claims() -> int:
 
 func tick(dt: float) -> void:
 	attack_gap = maxf(0.0, attack_gap - dt)
+	var expired_ids: Array[int] = []
+	for key_v: Variant in _recent_attackers.keys():
+		var eid: int = int(key_v)
+		var rem: float = float(_recent_attackers[eid]) - dt
+		if rem <= 0.0:
+			expired_ids.append(eid)
+		else:
+			_recent_attackers[eid] = rem
+	for eid: int in expired_ids:
+		_recent_attackers.erase(eid)
+
 	_prune_invalid()
 	_sanitize_holders()
 
@@ -122,6 +148,7 @@ func tick(dt: float) -> void:
 		var st: int = token_holder.state
 		if st == LxEnemyBrain.State.ROUTINE or st == LxEnemyBrain.State.RETURN \
 				or st == LxEnemyBrain.State.DEAD or st == LxEnemyBrain.State.STAGGER:
+			_recent_attackers[token_holder.get_instance_id()] = RECENT_PENALTY_TIME
 			token_holder = null
 			attack_gap = attack_gap_duration
 
@@ -133,7 +160,8 @@ func tick(dt: float) -> void:
 				continue
 			var dist: float = e.distance_to_attention_target()
 			if dist <= e.leash_radius + 60.0:
-				var score: float = dist + (60.0 if e.cooldown > 0.0 else 0.0)
+				var recent_pen: float = RECENT_PENALTY_DIST if _recent_attackers.has(e.get_instance_id()) else 0.0
+				var score: float = dist + (60.0 if e.cooldown > 0.0 else 0.0) + recent_pen
 				if score < best_score:
 					best_score = score
 					lead_enemy = e

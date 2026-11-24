@@ -43,21 +43,36 @@ func take_hit(hit: LxHit) -> int:
 		return HitResult.GLANCED
 	var h: Dictionary = _read_hit(hit)
 	var src: String = str(h["source"])
-	# Prism bank shots curve around the front claw shield cleanly.
-	if src == LxHit.SOURCE_PRISM and _has_active_shield():
-		var dmg: float = float(h["damage"])
+	var is_blue_hit: bool = hit.is_blue() or src == LxHit.SOURCE_PRISM
+	# Blue/Prism hits deal 1.6x damage, wear 1.0 claw shield, and inflict 0.45s open flinch.
+	if is_blue_hit:
+		var dmg: float = float(h["damage"]) * 1.6
 		var orig: Vector2 = h["origin"] as Vector2
 		var rel: Vector2 = orig - pos
 		hp -= dmg
 		wary = true
 		flash_t = 0.14
 		if rel.length() > 0.01:
-			knock = -rel.normalized() * 48.0
+			knock = -rel.normalized() * 52.0
+		if _has_active_shield():
+			shield_hp -= 1.0
+			if shield_hp <= 0.001:
+				shield_hp = 0.0
+				shield_gone_t = shield_gone_duration
+				shield_broken.emit(self, pos)
+				LxDamageFx.boss_impact(pos, 0.14, 62.0, 74.0, 58.0, 1.28, 0.30, "ice")
+				_emit_sfx("warden_shield_break")
 		if hp <= 0.001:
 			opened_kill = true
 			_die(hit)
 			return HitResult.KILLED
-		if state == State.ROUTINE or state == State.RETURN:
+		if state != State.STAGGER:
+			_release_token()
+			lunge_attack = false
+			is_counter_attack = false
+			state = State.STAGGER
+			state_timer = 0.45
+		elif state == State.ROUTINE or state == State.RETURN:
 			_enter_notice()
 		_emit_sfx("crab_flank_hit")
 		_emit_enemy_hit(hit, HitResult.OPENED)

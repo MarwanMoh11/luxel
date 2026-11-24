@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    192,
+    208,
     216
   ],
   "zones": [
@@ -14,7 +14,7 @@
       "rect": [
         0,
         0,
-        384,
+        416,
         256
       ],
       "dark": true
@@ -24,15 +24,15 @@
     {
       "id": "exit_c4_r1_south",
       "rect": [
-        176,
+        192,
         240,
         32,
         16
       ],
       "to_region": "overworld",
       "to_spawn": [
-        608,
-        208
+        544,
+        192
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,19 +41,38 @@
     {
       "id": "exit_c4_r1_east",
       "rect": [
-        368,
-        96,
+        400,
+        112,
         16,
         48
       ],
       "to_region": "conservatory_r2",
       "to_spawn": [
-        72,
-        120
+        56,
+        136
       ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r1_shortcut",
+      "rect": [
+        128,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r5",
+      "to_spawn": [
+        392,
+        184
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "c4_r5_shortcut"
+      ],
+      "locked_door_id": "door_c4_r1_shortcut"
     }
   ],
   "enemies": [],
@@ -62,7 +81,7 @@
       "id": "ws_conservatory",
       "kind": "waystone",
       "pos": [
-        192,
+        208,
         128
       ],
       "props": {
@@ -71,11 +90,90 @@
       }
     },
     {
+      "id": "door_c4_r1_shortcut",
+      "kind": "door",
+      "pos": [
+        144,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "c4_r5_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "transformer_c4_r1",
+      "kind": "blue_transformer",
+      "pos": [
+        88,
+        152
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "portal_c4_r1_in",
+      "kind": "blue_portal",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "target_portal_id": "portal_c4_r1_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "c4_r1_portal_lit"
+      }
+    },
+    {
+      "id": "portal_c4_r1_out",
+      "kind": "blue_portal",
+      "pos": [
+        328,
+        56
+      ],
+      "props": {
+        "target_portal_id": "portal_c4_r1_in",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "c4_r1_portal_lit"
+      }
+    },
+    {
+      "id": "chest_c4_r1_atrium",
+      "kind": "chest",
+      "pos": [
+        360,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "zone": "conservatory_r1"
+      }
+    },
+    {
       "id": "lamp_c4_r1_w",
       "kind": "road_lamp",
       "pos": [
-        128,
-        128
+        136,
+        96
       ],
       "props": {
         "zone": "conservatory_r1"
@@ -85,8 +183,8 @@
       "id": "lamp_c4_r1_e",
       "kind": "road_lamp",
       "pos": [
-        256,
-        128
+        296,
+        168
       ],
       "props": {
         "zone": "conservatory_r1"
@@ -97,7 +195,7 @@
     {
       "id": "trig_c4_entry",
       "rect": [
-        144,
+        160,
         168,
         96,
         48
@@ -111,8 +209,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        132,
-        76
+        208,
+        128
       ],
       "layer": "ground",
       "flip_x": false,
@@ -123,32 +221,56 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        252,
-        76
+        144,
+        80
       ],
       "layer": "ground",
       "flip_x": true,
       "shadow": false,
-      "phase": 0.5
+      "phase": 0.4
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        148,
-        46
+        116,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.1
+      "phase": 0.0
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        236,
-        46
+        172,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        356,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        356,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -157,22 +279,94 @@
     },
     {
       "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
+      "prop": "heron_lantern_post",
       "pos": [
-        44,
-        40
+        172,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        248,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
     },
     {
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        340,
+        48,
         40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "giant_lotus_pad",
+      "pos": [
+        72,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "floating_lantern_lily",
+      "pos": [
+        264,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "cattail_reeds",
+      "pos": [
+        240,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "blooming_lotus",
+      "pos": [
+        56,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "cattail_reeds",
+      "pos": [
+        36,
+        196
       ],
       "layer": "sort",
       "flip_x": false,
@@ -183,49 +377,25 @@
       "sheet": "island4_scenery",
       "prop": "blooming_lotus",
       "pos": [
-        44,
-        212
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        340,
+        360,
         212
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
-      "phase": 0.7
+      "phase": 0.4
     },
     {
       "sheet": "island4_scenery",
-      "prop": "mossy_planter_urn",
+      "prop": "giant_lotus_pad",
       "pos": [
-        148,
-        212
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "mossy_planter_urn",
-      "pos": [
-        236,
-        212
+        332,
+        200
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": false,
+      "phase": 0.8
     }
   ],
   "is_2x2_room": true

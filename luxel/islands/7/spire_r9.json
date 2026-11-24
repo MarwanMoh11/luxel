@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     408,
-    112
+    120
   ],
   "zones": [
     {
@@ -15,7 +15,7 @@
         0,
         0,
         448,
-        224
+        240
       ],
       "dark": true
     }
@@ -25,14 +25,14 @@
       "id": "exit_spire_r9_east",
       "rect": [
         432,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "spire_r8",
       "to_spawn": [
-        40,
-        112
+        48,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,14 +41,14 @@
     {
       "id": "exit_spire_r9_south",
       "rect": [
-        208,
-        208,
+        240,
+        224,
         32,
         16
       ],
       "to_region": "spire_r1",
       "to_spawn": [
-        224,
+        192,
         48
       ],
       "requires_moves": [],
@@ -60,7 +60,7 @@
     {
       "id": "exit_spire_r9_north",
       "rect": [
-        208,
+        176,
         0,
         32,
         16
@@ -80,11 +80,26 @@
   "enemies": [],
   "interactables": [
     {
+      "id": "bramble_spire_r9",
+      "kind": "bramble",
+      "pos": [
+        216,
+        120
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "zone": "spire_r9"
+      }
+    },
+    {
       "id": "seal_spire_r9",
       "kind": "obsidian_seal",
       "pos": [
-        136,
-        104
+        152,
+        120
       ],
       "props": {
         "size": [
@@ -99,7 +114,7 @@
       "kind": "keepers_flame",
       "pos": [
         72,
-        112
+        120
       ],
       "props": {
         "dungeon_id": "mirror_spire",
@@ -112,7 +127,7 @@
       "kind": "cracked_wall",
       "pos": [
         360,
-        48
+        56
       ],
       "props": {
         "size": [
@@ -140,8 +155,8 @@
       "id": "door_spire_r9_south",
       "kind": "door",
       "pos": [
-        224,
-        200
+        256,
+        216
       ],
       "props": {
         "door_kind": "shortcut_door",
@@ -158,7 +173,7 @@
       "id": "door_boss_7",
       "kind": "door",
       "pos": [
-        224,
+        192,
         24
       ],
       "props": {
@@ -179,34 +194,58 @@
   "scenery": [
     {
       "sheet": "island7_scenery",
-      "prop": "inverted_bell_statue",
+      "prop": "crystal_archway",
       "pos": [
-        198,
-        54
+        192,
+        64
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "moon_dial_floor",
+      "pos": [
+        72,
+        120
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
       "phase": 0.0
     },
     {
       "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
-        250,
-        54
+        164,
+        56
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.1
     },
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
+      "prop": "inverted_bell_statue",
       "pos": [
-        198,
-        174
+        220,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "standing_mirror_tall",
+      "pos": [
+        40,
+        80
       ],
       "layer": "sort",
       "flip_x": false,
@@ -215,13 +254,13 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "glass_colonade_pillar",
+      "prop": "standing_mirror_tall",
       "pos": [
-        250,
-        174
+        40,
+        160
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
       "phase": 0.7
     },
@@ -229,32 +268,56 @@
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        198,
-        90
+        112,
+        88
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.15
+      "phase": 0.3
     },
     {
       "sheet": "island7_scenery",
       "prop": "silver_brazier_stand",
       "pos": [
-        250,
-        90
+        112,
+        152
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.65
+      "phase": 0.8
     },
     {
       "sheet": "island7_scenery",
-      "prop": "standing_mirror_tall",
+      "prop": "glass_colonade_pillar",
       "pos": [
-        312,
-        56
+        232,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "glass_colonade_pillar",
+      "pos": [
+        280,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        384,
+        92
       ],
       "layer": "sort",
       "flip_x": true,
@@ -265,13 +328,13 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        412,
-        190
+        384,
+        152
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.6
+      "phase": 0.9
     }
   ],
   "is_2x2_room": true

@@ -1,4 +1,4 @@
-# Bell Sanctum r4 - Cruciform Gothic Harbinger Transept (28x18)
+# Bell Sanctum r4 - Shattered Harbinger Transept (28x18)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,21 +13,21 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-#############,,#############
-#OOOOOO......,,......OOOOOO#
-#OOOOOO......,,......OOOOOO#
-#OOOOOO......,,......OOOOOO#
-#OOOOOO......,,......OOOOOO#
-#O......#....,,....#......O#
-#O...........,,...........O#
-#O...........,,...........O#
-#O...........,,...........O#
-#O...........,,...........O#
-#O...........,,...........O#
-#O...........,,...........O#
-#O......#....,,....#......O#
-#OOOOOO......,,......OOOOOO#
-#OOOOOO......,,......OOOOOO#
-#OOOOOO......,,......OOOOOO#
-#OOOOOO......,,......OOOOOO#
-#############,,#############
+##################,,########
+#OOOOOOO.........#,,#..OOOO#
+#OOOOOOO..........,,...OOOO#
+#OOOOOOO..........,,...OOOO#
+#OOOOOOO......#...,,.......#
+#OOOOOOO..........,,.#.....#
+#OOOO....##.....,,,,.#..OOO#
+#OOOO.........,,,,,,....OOO#
+#.............,,,.......OOO#
+#.............,,,.......OOO#
+#.....#.......,,,..........#
+#.....#.......,,,.##.......#
+#OOO......,,,,,,,......OOOO#
+#OOO.....,,,,,,,....OOOOOOO#
+#OOO.....,,...#.....OOOOOOO#
+#OOOOOO..,,.........OOOOOOO#
+#OOOOOO..,,.........OOOOOOO#
+#########,,#################

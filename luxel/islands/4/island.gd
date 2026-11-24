@@ -82,7 +82,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_entry_hopper",
 			"region": "overworld",
 			"zone": "fen_landing",
-			"pos": [312.0, 560.0],
+			"pos": [328.0, 552.0],
 			"action": "clear_encounter",
 			"target": "lily_hopper_4_entry",
 			"requires_moves": ["bolt", "dash", "throw", "prism", "beam"],
@@ -92,7 +92,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_beacon_1",
 			"region": "overworld",
 			"zone": "sunken_beds",
-			"pos": [296.0, 264.0],
+			"pos": [296.0, 232.0],
 			"action": "light_beacon",
 			"target": "beacon_4_1",
 			"grants_flag": "beacon_4_1",
@@ -103,7 +103,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_beacon_2",
 			"region": "overworld",
 			"zone": "glass_walk",
-			"pos": [608.0, 520.0],
+			"pos": [600.0, 536.0],
 			"action": "light_beacon",
 			"target": "beacon_4_2",
 			"grants_flag": "beacon_4_2",
@@ -114,7 +114,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_beacon_3",
 			"region": "overworld",
 			"zone": "reed_causeway",
-			"pos": [952.0, 536.0],
+			"pos": [968.0, 504.0],
 			"action": "light_beacon",
 			"target": "beacon_4_3",
 			"grants_flag": "beacon_4_3",
@@ -125,7 +125,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_enter_conservatory",
 			"region": "overworld",
 			"zone": "conservatory_court",
-			"pos": [608.0, 172.0],
+			"pos": [544.0, 148.0],
 			"action": "enter_exit",
 			"target": "exit_to_conservatory",
 			"to_region": "conservatory_r1",
@@ -136,7 +136,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_key_1",
 			"region": "conservatory_r2",
 			"zone": "conservatory_r2",
-			"pos": [296.0, 152.0],
+			"pos": [360.0, 152.0],
 			"action": "collect_key",
 			"target": "wick_key_4_1",
 			"grants_flag": "wick_key_4_1",
@@ -158,7 +158,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_r4_shutter",
 			"region": "conservatory_r4",
 			"zone": "conservatory_r4",
-			"pos": [264.0, 104.0],
+			"pos": [344.0, 104.0],
 			"action": "open_shutter",
 			"target": "door_c4_r4_shutter",
 			"grants_flag": "c4_r4_shutter_open",
@@ -169,7 +169,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_shrine_wings",
 			"region": "conservatory_r5",
 			"zone": "conservatory_r5",
-			"pos": [64.0, 72.0],
+			"pos": [72.0, 104.0],
 			"action": "claim_shrine",
 			"target": "shrine_wings",
 			"grants_move": "wings",
@@ -191,7 +191,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_r7_chasm",
 			"region": "conservatory_r7",
 			"zone": "conservatory_r7",
-			"pos": [296.0, 120.0],
+			"pos": [288.0, 40.0],
 			"action": "open_shutter",
 			"target": "door_c4_r7_shutter",
 			"grants_flag": "c4_r7_shutter_open",
@@ -213,7 +213,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_keepers_flame",
 			"region": "conservatory_r9",
 			"zone": "conservatory_r9",
-			"pos": [48.0, 112.0],
+			"pos": [40.0, 56.0],
 			"action": "collect_key",
 			"target": "keepers_flame_4",
 			"grants_flag": "keepers_flame_4",
@@ -224,7 +224,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_boss",
 			"region": "conservatory_r10",
 			"zone": "conservatory_r10",
-			"pos": [256.0, 128.0],
+			"pos": [240.0, 128.0],
 			"action": "defeat_boss",
 			"target": "boss_heron_abbess",
 			"grants_flag": "boss_heron_abbess_defeated",
@@ -235,7 +235,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_great_lamp",
 			"region": "conservatory_r10",
 			"zone": "conservatory_r10",
-			"pos": [256.0, 56.0],
+			"pos": [240.0, 56.0],
 			"action": "light_great_lamp",
 			"target": "great_lamp_4",
 			"grants_flag": "island_4_relit",
@@ -246,7 +246,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_4_bridge_to_5",
 			"region": "conservatory_r10",
 			"zone": "conservatory_r10",
-			"pos": [504.0, 144.0],
+			"pos": [504.0, 136.0],
 			"action": "enter_exit",
 			"target": "exit_c4_r10_bridge",
 			"to_region": "island5:overworld",
@@ -319,7 +319,6 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	_emit_narration("CUE_BEACON_LIT_4", "title", 2.5)
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 
@@ -366,7 +365,6 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
 			_events.music_mode_requested.emit("island4_dungeon")
-			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("great_lily_hopper_defeated")
 
 
@@ -376,7 +374,6 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island4_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
-		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2_ISL4", "warning", 3.5)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:

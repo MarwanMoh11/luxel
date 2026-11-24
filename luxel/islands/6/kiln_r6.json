@@ -27,12 +27,12 @@
         0,
         96,
         16,
-        48
+        64
       ],
       "to_region": "kiln_r5",
       "to_spawn": [
         440,
-        112
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_kiln_r6_north",
       "rect": [
-        240,
+        272,
         0,
         32,
         16
       ],
       "to_region": "kiln_r7",
       "to_spawn": [
-        208,
-        168
+        152,
+        216
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -64,16 +64,16 @@
       "kind": "forge_warden",
       "boss_id": "forge_warden",
       "pos": [
-        272,
+        288,
         128
       ],
       "route": [
         [
-          200,
+          216,
           128
         ],
         [
-          344,
+          352,
           128
         ]
       ],
@@ -87,20 +87,21 @@
       "id": "wick_key_6_2",
       "kind": "wick_key",
       "pos": [
-        344,
+        384,
         128
       ],
       "props": {
         "dungeon_id": "great_kiln",
         "key_kind": "wick_key",
-        "flag_id": "wick_key_6_2"
+        "flag_id": "wick_key_6_2",
+        "requires_flag": "forge_warden_defeated"
       }
     },
     {
       "id": "door_kiln_r6_north",
       "kind": "door",
       "pos": [
-        256,
+        288,
         24
       ],
       "props": {
@@ -124,8 +125,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        184,
-        56
+        240,
+        52
       ],
       "layer": "sort",
       "flip_x": false,
@@ -136,8 +137,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        328,
-        56
+        336,
+        52
       ],
       "layer": "sort",
       "flip_x": true,
@@ -146,10 +147,34 @@
     },
     {
       "sheet": "island6_scenery",
+      "prop": "obsidian_obelisk",
+      "pos": [
+        136,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "obsidian_obelisk",
+      "pos": [
+        136,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
       "prop": "forge_anvil_stand",
       "pos": [
-        184,
-        200
+        264,
+        196
       ],
       "layer": "sort",
       "flip_x": false,
@@ -160,20 +185,20 @@
       "sheet": "island6_scenery",
       "prop": "coal_hopper",
       "pos": [
-        328,
-        200
+        304,
+        196
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.4
     },
     {
       "sheet": "island6_scenery",
       "prop": "ash_urn_cluster",
       "pos": [
-        416,
-        88
+        340,
+        196
       ],
       "layer": "sort",
       "flip_x": true,
@@ -182,15 +207,39 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
+      "prop": "hearth_brazier_tall",
       "pos": [
-        416,
-        168
+        184,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        392,
+        152
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.7
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        288,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.85
     }
   ],
   "is_2x2_room": true

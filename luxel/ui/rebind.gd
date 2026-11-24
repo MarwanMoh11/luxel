@@ -14,6 +14,7 @@ const ACTION_ROWS: Array[Array] = [
 	["lx_throw", "ACT_THROW"],
 	["lx_dash", "ACT_DASH"],
 	["lx_beam", "ACT_BEAM"],
+	["lx_lens", "ACT_LENS"],
 	["lx_sunflare", "ACT_SUNFLARE"],
 	["lx_interact", "ACT_INTERACT"],
 	["lx_pause", "ACT_PAUSE"],

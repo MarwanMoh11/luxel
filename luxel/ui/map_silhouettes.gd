@@ -16,59 +16,69 @@ static func draw_plinth(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool
 			_px(canvas, c, [[-7, 1, 14, 2], [-5, 3, 10, 1], [-3, 4, 6, 1]], night)
 			_px(canvas, c, [[-7, -1, 14, 2]], rim_col)
 			_px(canvas, c, [[-6, -2, 12, 2]], top_col)
-		2: # Tidewater Harbor: wide 4-islet sea-stack archipelago bridged across tide channels
-			_px(canvas, c, [[-11, 2, 22, 2]], water)
-			_px(canvas, c, [[-10, 1, 4, 2], [-4, 1, 4, 2], [2, 1, 4, 2], [7, 1, 4, 2]], night)
-			_px(canvas, c, [[-10, -1, 4, 2], [-4, -1, 4, 2], [2, -1, 4, 2], [7, -1, 4, 2]], top_col)
-			_px(canvas, c, [[-6, 0, 2, 1], [0, 0, 2, 1], [6, 0, 1, 1]], gold if relit else dusk)
-		3: # Thornwood Hollow: tall vertical 3-tier root massif climb
-			_px(canvas, c, [[-5, 2, 10, 3], [-4, 5, 8, 1]], night)
-			_px(canvas, c, [[-6, -1, 12, 3]], rim_col)
-			_px(canvas, c, [[-5, -3, 10, 3]], top_col)
-		4: # Mirefen Gardens: circular floating botanical lagoon ring atoll
-			_px(canvas, c, [[-8, 1, 16, 3], [-6, 4, 12, 1]], night)
-			_px(canvas, c, [[-8, -1, 16, 2]], rim_col)
-			_px(canvas, c, [[-7, -2, 14, 2]], top_col)
-			_px(canvas, c, [[-4, -1, 8, 2]], water)
-			_px(canvas, c, [[-2, -1, 4, 1]], sky)
-		5: # Starfall Observatory: circular brass Astrolabe Wheel w/ 4 cardinal spokes
-			_px(canvas, c, [[-7, 1, 14, 2], [-4, 3, 8, 2]], night)
-			_px(canvas, c, [[-8, -1, 16, 2]], rim_col)
-			_px(canvas, c, [[-6, -2, 12, 2]], top_col)
-			_px(canvas, c, [[-7, -1, 14, 1], [-1, -2, 2, 4]], gold)
-		6: # Ashen Kiln: jagged obsidian canyon split by glowing molten lava river
-			_px(canvas, c, [[-10, 1, 20, 3], [-7, 4, 14, 1]], night)
-			_px(canvas, c, [[-10, -1, 8, 2], [2, -1, 8, 2]], rim_col)
-			_px(canvas, c, [[-9, -2, 7, 2], [2, -2, 7, 2]], top_col)
-			_px(canvas, c, [[-2, -1, 4, 3]], lava)
-			_px(canvas, c, [[-1, -1, 2, 2]], gold)
-		7: # Moon Shoals: twin silver crescent sandbars cradling a mirror lake
-			_px(canvas, c, [[-9, 1, 18, 2], [-6, 3, 12, 1]], water)
-			_px(canvas, c, [[-9, -2, 5, 3], [4, -2, 5, 3]], rim_col)
-			_px(canvas, c, [[-8, -2, 4, 2], [4, -2, 4, 2]], top_col)
-			_px(canvas, c, [[-3, -1, 6, 2]], sky)
-		8: # The Long Night: towering 5-tier vertical Gothic eclipse pilgrimage causeway
-			_px(canvas, c, [[-4, 2, 8, 4], [-2, 6, 4, 1]], night)
-			_px(canvas, c, [[-5, -1, 10, 3]], rim_col)
-			_px(canvas, c, [[-4, -3, 8, 3]], top_col)
-			_px(canvas, c, [[-1, -2, 2, 5]], gold if relit else dusk)
+		2: # Tidewater Harbor: curved horseshoe cove wrapping a choppy sea bay + eastern lighthouse headland
+			_px(canvas, c, [[-9, 1, 18, 3], [-6, 4, 12, 1]], water)
+			_px(canvas, c, [[-10, -1, 4, 4], [-8, -3, 14, 2], [5, -2, 5, 4], [2, 2, 6, 2], [-4, 3, 6, 1]], night)
+			_px(canvas, c, [[-10, -2, 4, 3], [-8, -4, 14, 2], [5, -3, 5, 4], [2, 1, 6, 2], [-4, 2, 6, 1]], top_col)
+			_px(canvas, c, [[-5, -1, 9, 3]], water)
+			_px(canvas, c, [[-3, 0, 5, 1]], sky)
+			_px(canvas, c, [[7, -4, 2, 2]], gold if relit else dusk)
+		3: # Thornwood Hollow: Coiling Root Spiral ascending into the Hollow Oak
+			_px(canvas, c, [[-9, 2, 16, 2], [-7, 4, 12, 1], [-4, 5, 7, 1]], night)
+			_px(canvas, c, [[-10, 0, 5, 2], [-8, 1, 14, 2], [5, -2, 5, 3], [-5, -3, 11, 2]], rim_col)
+			_px(canvas, c, [[-9, -1, 4, 2], [-6, 1, 11, 1], [6, -2, 3, 3], [-4, -3, 10, 1], [-4, -2, 3, 2], [-1, -1, 5, 1]], top_col)
+			_px(canvas, c, [[-5, 0, 4, 1], [3, -1, 2, 2]], night)
+		4: # Mirefen Gardens: Winding Lily Archipelago (4 staggered lily-pad islets)
+			_px(canvas, c, [[-10, 0, 20, 4], [-7, 4, 14, 1], [-6, -2, 12, 2]], water)
+			_px(canvas, c, [[-10, 1, 5, 2], [-5, -2, 5, 2], [1, 0, 5, 2], [5, -3, 5, 2]], rim_col)
+			_px(canvas, c, [[-9, 0, 4, 2], [-4, -3, 4, 2], [2, -1, 4, 2], [6, -4, 4, 2]], top_col)
+			_px(canvas, c, [[-5, 0, 2, 1], [0, -1, 2, 1], [5, -2, 2, 1]], gold if relit else dusk)
+			_px(canvas, c, [[-2, 2, 4, 1], [-8, -2, 2, 1], [7, 2, 2, 1]], sky)
+		5: # Starfall Observatory: Shattered Crescent Orbital Arcs around starlight core
+			_px(canvas, c, [[-10, 1, 5, 2], [-5, 3, 10, 2], [6, 0, 4, 2]], night)
+			_px(canvas, c, [[-10, -2, 3, 3], [-8, 1, 5, 2], [7, -3, 3, 3], [4, 1, 5, 2], [-3, -4, 6, 1]], rim_col)
+			_px(canvas, c, [[-9, -2, 2, 2], [-7, 1, 4, 1], [7, -3, 2, 2], [4, 1, 4, 1], [-2, -4, 4, 1], [-2, -1, 4, 2]], top_col)
+			_px(canvas, c, [[-6, -2, 3, 1], [3, -2, 3, 1], [-2, 2, 5, 1]], gold)
+		6: # Ashen Kiln: Jagged Horseshoe Caldera cradling a glowing molten breach
+			_px(canvas, c, [[-10, 0, 5, 4], [5, 0, 5, 4], [-7, 3, 5, 2], [2, 3, 5, 2], [-8, -2, 16, 2]], night)
+			_px(canvas, c, [[-10, -2, 4, 4], [-7, -4, 14, 2], [6, -2, 4, 4], [-8, 2, 4, 2], [4, 2, 4, 2]], rim_col)
+			_px(canvas, c, [[-9, -2, 3, 3], [-6, -4, 12, 2], [6, -2, 3, 3], [-7, 1, 3, 2], [4, 1, 3, 2]], top_col)
+			_px(canvas, c, [[-5, -1, 10, 3], [-3, 2, 6, 2], [-2, 4, 4, 1]], lava)
+			_px(canvas, c, [[-3, 0, 6, 1], [-1, 1, 2, 2]], gold)
+		7: # Moon Shoals: Offset Yin-Yang Twin Crescents cradling staggered mirror pools
+			_px(canvas, c, [[-10, -1, 20, 4], [-7, 3, 14, 2]], water)
+			_px(canvas, c, [[-10, -3, 7, 2], [-10, -1, 4, 3], [-7, 1, 3, 2], [3, 1, 7, 2], [6, -2, 4, 3], [4, -3, 3, 2]], rim_col)
+			_px(canvas, c, [[-9, -3, 6, 1], [-9, -2, 3, 3], [-7, 1, 2, 1], [4, 1, 5, 1], [7, -2, 2, 3], [5, -3, 2, 1]], top_col)
+			_px(canvas, c, [[-5, -1, 4, 2], [1, 0, 4, 2]], sky)
+		8: # The Long Night: Fractured Cathedral Shards tethered across the eclipse void
+			_px(canvas, c, [[-9, 3, 5, 2], [-2, 4, 5, 2], [4, 1, 5, 2], [-7, -1, 5, 2], [-2, -3, 6, 2]], night)
+			_px(canvas, c, [[-9, 1, 5, 2], [-2, 2, 5, 2], [4, -1, 5, 2], [-7, -2, 5, 1], [-3, -4, 7, 2]], rim_col)
+			_px(canvas, c, [[-8, 1, 4, 1], [-1, 2, 3, 1], [5, -1, 3, 1], [-6, -2, 4, 1], [-2, -4, 5, 1]], top_col)
+			_px(canvas, c, [[-4, 2, 2, 1], [2, 1, 2, 1], [-3, -1, 2, 1], [2, -2, 2, 1]], gold if relit else dusk)
 	if relit:
 		var glow_c: Color = LxBiomePalette.col(isl_id, "glow")
 		match isl_id:
 			2:
-				_px(canvas, c, [[-9, -1, 3, 1], [-3, -1, 3, 1], [3, -1, 3, 1], [8, -1, 2, 1]], glow_c)
-				_px(canvas, c, [[-8, 3, 16, 1]], sky)
+				_px(canvas, c, [[-9, -2, 3, 1], [-7, -4, 12, 1], [6, -3, 3, 1], [3, 1, 4, 1], [-3, 2, 4, 1]], glow_c)
+				_px(canvas, c, [[-4, 0, 7, 1]], LxPalette.PAL["ice"] as Color)
+			3:
+				_px(canvas, c, [[-8, -1, 3, 1], [-5, 1, 9, 1], [6, -1, 2, 2], [-3, -3, 8, 1]], glow_c)
+				_px(canvas, c, [[-1, -1, 3, 1]], gold)
 			4:
-				_px(canvas, c, [[-6, -2, 12, 1]], glow_c)
-				_px(canvas, c, [[-3, -1, 6, 1]], LxPalette.PAL["ice"] as Color)
+				_px(canvas, c, [[-9, 0, 3, 1], [-4, -3, 3, 1], [2, -1, 3, 1], [6, -4, 3, 1]], glow_c)
+				_px(canvas, c, [[-3, 2, 5, 1], [6, 1, 3, 1]], LxPalette.PAL["ice"] as Color)
+			5:
+				_px(canvas, c, [[-9, -2, 2, 1], [7, -3, 2, 1], [-2, -1, 4, 1]], glow_c)
+				_px(canvas, c, [[-6, -2, 3, 1], [3, -2, 3, 1], [-2, 2, 5, 1]], LxPalette.PAL["cream"] as Color)
 			6:
-				_px(canvas, c, [[-8, -2, 5, 1], [3, -2, 5, 1]], gold)
-				_px(canvas, c, [[-1, 0, 2, 2]], LxPalette.PAL["cream"] as Color)
+				_px(canvas, c, [[-8, -2, 2, 1], [-5, -4, 10, 1], [6, -2, 2, 1]], gold)
+				_px(canvas, c, [[-2, 0, 4, 1], [-1, 1, 2, 2]], LxPalette.PAL["cream"] as Color)
 			7:
-				_px(canvas, c, [[-8, -2, 4, 1], [4, -2, 4, 1]], LxPalette.PAL["ice"] as Color)
-				_px(canvas, c, [[-2, 0, 4, 1]], LxPalette.PAL["cream"] as Color)
+				_px(canvas, c, [[-9, -3, 5, 1], [4, 1, 5, 1]], LxPalette.PAL["ice"] as Color)
+				_px(canvas, c, [[-4, -1, 2, 1], [2, 0, 2, 1]], LxPalette.PAL["cream"] as Color)
 			8:
-				_px(canvas, c, [[-3, -3, 6, 1], [-1, -2, 2, 5]], gold)
+				_px(canvas, c, [[-2, -4, 5, 1], [-4, 2, 2, 1], [2, 1, 2, 1], [-3, -1, 2, 1], [2, -2, 2, 1]], gold)
+				_px(canvas, c, [[-7, 1, 2, 1], [6, -1, 2, 1], [0, -4, 2, 1]], LxPalette.PAL["cream"] as Color)
 			_:
 				_px(canvas, c, [[-5, -2, 10, 1]], glow_c)
 				canvas.draw_rect(Rect2(roundf(c.x - 3.0), roundf(c.y - 2.0), 4.0, 1.0), gold)
@@ -84,7 +94,7 @@ static func draw_plinth(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool
 	if Lx.state != null and Lx.state.island_id == isl_id:
 		var fred_c: bool = LxHudFx.flash_reduced()
 		var ca_c: float = 0.34 if fred_c else (0.28 + 0.16 * sin(elapsed * 2.6))
-		var cr_c: float = 13.0 if isl_id in [2, 6, 7] else 11.0
+		var cr_c: float = 13.0 if isl_id >= 2 else 11.0
 		canvas.draw_arc(c.round(), cr_c, 0.0, TAU, 16, Color(LxBiomePalette.col(isl_id, "glow"), ca_c), 1.0)
 	if isl_id == 1:
 		_draw_harmony_constellation(canvas, elapsed)
@@ -136,11 +146,11 @@ static func _draw_island_atmosphere(canvas: CanvasItem, c: Vector2, isl_id: int,
 		1: # Warm brass bell-chime shimmer rising off Bell Isle
 			var u1: float = fposmod(t * 0.65, 1.0)
 			canvas.draw_rect(Rect2(roundf(c.x + sin(t * 2.0) * 3.0), roundf(c.y - 10.0 - u1 * 4.0), 1.0, 1.0), LxPalette.PAL["gold" if relit else "apricot"] as Color)
-		2: # Animated coastal sea-foam beneath the 4 sea-stack islets + sweeping lighthouse glint
-			var fx: float = roundf(c.x - 9.0 + fposmod(t * 7.0, 18.0))
-			canvas.draw_rect(Rect2(fx, roundf(c.y + 3.0), 2.0, 1.0), LxPalette.PAL["ice"] as Color)
+		2: # Animated coastal sea-foam inside the horseshoe bay + sweeping lighthouse headland glint
+			var fx: float = roundf(c.x - 5.0 + fposmod(t * 5.0, 10.0))
+			canvas.draw_rect(Rect2(fx, roundf(c.y + 1.0), 2.0, 1.0), LxPalette.PAL["ice"] as Color)
 			if not fred and sin(t * 2.2) > 0.2:
-				canvas.draw_line((c + Vector2(2.0, -10.0)).round(), (c + Vector2(9.0, -11.0)).round(), Color(LxPalette.PAL["gold"] as Color, 0.55), 1.0)
+				canvas.draw_line((c + Vector2(8.0, -4.0)).round(), (c + Vector2(1.0, -7.0)).round(), Color(LxPalette.PAL["gold"] as Color, 0.55), 1.0)
 		3: # Rising emerald-lime canopy fireflies framing the Hollow Oak
 			for k: int in range(2):
 				var u3: float = fposmod(t * 0.5 + float(k) * 0.5, 1.0)

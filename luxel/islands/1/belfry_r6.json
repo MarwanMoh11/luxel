@@ -116,7 +116,12 @@
         72
       ],
       "props": {
-        "light_by_lantern": true
+        "light_by_lantern": true,
+        "target_ids": [
+          "bridge_r6_west",
+          "bridge_r6_bonus"
+        ],
+        "sets_flag": "r6_vault_brazier_lit"
       }
     },
     {
@@ -166,8 +171,10 @@
         ],
         "starts_open": false,
         "requires_signals": [
+          "brazier_r6_vault",
           "switch_eye_r6"
-        ]
+        ],
+        "required_count": 2
       }
     },
     {
@@ -187,6 +194,38 @@
         "requires_signals": [
           "switch_eye_r6"
         ]
+      }
+    },
+    {
+      "id": "bridge_r6_bonus",
+      "kind": "door",
+      "pos": [
+        328,
+        48
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "brazier_r6_vault"
+        ]
+      }
+    },
+    {
+      "id": "chest_r6_vault",
+      "kind": "chest",
+      "pos": [
+        392,
+        40
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 50,
+        "zone": "belfry_vault"
       }
     },
     {
@@ -234,8 +273,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        392,
-        54
+        184,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -246,8 +285,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        392,
-        174
+        264,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -258,8 +297,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        180,
-        44
+        156,
+        84
       ],
       "layer": "sort",
       "flip_x": false,
@@ -270,8 +309,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        268,
-        44
+        292,
+        84
       ],
       "layer": "sort",
       "flip_x": true,
@@ -282,8 +321,8 @@
       "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
-        180,
-        182
+        184,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -294,8 +333,8 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        268,
-        182
+        260,
+        152
       ],
       "layer": "sort",
       "flip_x": true,
@@ -306,25 +345,25 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        152,
-        86
+        408,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.35
+      "phase": 0.2
     },
     {
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        296,
-        86
+        392,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.85
+      "phase": 0.65
     }
   ],
   "is_2x2_room": true

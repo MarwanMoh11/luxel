@@ -10,7 +10,7 @@ var slot_id: String = "1"
 var island_id: int = 1
 var region_id: String = "overworld"
 var room_id: String = ""
-var spawn_pos: Vector2 = Vector2(572.0, 366.0)
+var spawn_pos: Vector2 = Vector2(708.0, 366.0)
 var last_waystone_island: int = 1
 var last_waystone_id: String = "ws_plaza"
 
@@ -46,7 +46,7 @@ func reset_new_game(new_slot: String = "1") -> void:
 	island_id = 1
 	region_id = "overworld"
 	room_id = ""
-	spawn_pos = Vector2(572.0, 366.0)
+	spawn_pos = Vector2(708.0, 366.0)
 	last_waystone_island = 1
 	last_waystone_id = "ws_plaza"
 
@@ -82,12 +82,37 @@ func reset_new_game(new_slot: String = "1") -> void:
 	visited_regions = ["1:overworld"]
 	interactable_states.clear()
 	story_flags.clear()
+	story_flags["lantern_picked_up"] = false
 
 	play_time_s = 0.0
 	deaths = 0
 	hits_taken = 0
 	boss_retries.clear()
 	zone_times.clear()
+
+
+func has_lantern() -> bool:
+	if bool(story_flags.get("lantern_picked_up", false)):
+		return true
+	if island_id > 1 or region_id != "overworld":
+		return true
+	if not lit_beacons.is_empty() or not claimed_shrines.is_empty() \
+			or not broken_seals.is_empty() or not relit_islands.is_empty() \
+			or not defeated_bosses.is_empty():
+		return true
+	for mid: String in ["dash", "throw", "prism", "beam", "wings", "lens", "sunflare"]:
+		if bool(unlocked_moves.get(mid, false)):
+			return true
+	return false
+
+
+func grant_lantern() -> bool:
+	if bool(story_flags.get("lantern_picked_up", false)) and has_move("throw"):
+		return false
+	story_flags["lantern_picked_up"] = true
+	unlocked_moves["bolt"] = true
+	unlock_move("throw")
+	return true
 
 
 func has_move(move_id: String) -> bool:
@@ -301,7 +326,7 @@ func from_dict(d: Dictionary) -> void:
 	island_id = int(d.get("island_id", 1))
 	region_id = str(d.get("region_id", "overworld"))
 	room_id = str(d.get("room_id", ""))
-	var sp: Variant = d.get("spawn_pos", [572.0, 366.0])
+	var sp: Variant = d.get("spawn_pos", [708.0, 366.0])
 	if sp is Array and (sp as Array).size() >= 2:
 		spawn_pos = Vector2(float((sp as Array)[0]), float((sp as Array)[1]))
 	last_waystone_island = int(d.get("last_waystone_island", 1))

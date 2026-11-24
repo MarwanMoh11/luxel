@@ -1,4 +1,4 @@
-# Bell Sanctum r3 - Cathedral Trial of Flight (26x16)
+# Bell Sanctum r3 - Abyssal Crossing (28x18)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,19 +13,21 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-############,,############
-#...........,,...........#
-#...........,,...........#
-#...........,,...........#
-#...........,,...........#
-#...........,,...........#
-#...........,,...........#
-#OOOOPPPPOOOOOOOOPPPPOOOO#
-#OOOOPPPPOOOOOOOOPPPPOOOO#
-#OOOOPPPPOOOOOOOOPPPPOOOO#
-#...........,,...........#
-#...........,,...........#
-#...........,,...........#
-#...........,,...........#
-#...........,,...........#
-############,,############
+#########,,#################
+#OOOOO..#,,#............OOO#
+#OOOO....,,....#.....#...OO#
+#OOOO..#.,,..........#...OO#
+#OOOO....,,.............OOO#
+#OOOOOOOOPOO###OOOOOOOOOOOO#
+#OOOOOOOOPPPPPOOOOOOOOOOOOO#
+######OOOOOOOPOOOOOOOOOOOOO#
+#OOOOOOOOOOO#..OOOOOOOOOOOO#
+#OOOOOOOOPPP...OOOOOOOOOOOO#
+#OOOOOPPPPOOOOPPPPPOOOOOOOO#
+##...PPOOOOOOOOOOOPPPPOOOOO#
+#....OOOOOOOOOOOOOOOOPOOOOO#
+#....OOOOOOOOOOOOO.........#
+#OOOOOOOOOOOOOOOO..,,......#
+#OOOOOOOOOOOOOOOO..,,...#..#
+#OOOOOOOOOOOOOOOOO.,,......#
+###################,,#######

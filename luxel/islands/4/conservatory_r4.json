@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    88,
+    56,
     104
   ],
   "zones": [
@@ -15,7 +15,7 @@
         0,
         0,
         416,
-        208
+        240
       ],
       "dark": true
     }
@@ -31,8 +31,8 @@
       ],
       "to_region": "conservatory_r3",
       "to_spawn": [
-        376,
-        112
+        368,
+        104
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -48,7 +48,7 @@
       ],
       "to_region": "conservatory_r5",
       "to_spawn": [
-        40,
+        48,
         128
       ],
       "requires_moves": [],
@@ -64,8 +64,8 @@
       "id": "door_c4_r4_key",
       "kind": "door",
       "pos": [
-        168,
-        104
+        136,
+        152
       ],
       "props": {
         "door_kind": "key_door",
@@ -85,7 +85,7 @@
       "id": "brazier_c4_r4",
       "kind": "brazier",
       "pos": [
-        264,
+        200,
         56
       ],
       "props": {
@@ -97,8 +97,8 @@
       "id": "switch_eye_c4_r4",
       "kind": "switch_eye",
       "pos": [
-        264,
-        152
+        296,
+        200
       ],
       "props": {
         "target_id": "door_c4_r4_shutter"
@@ -132,8 +132,8 @@
       "sheet": "island4_scenery",
       "prop": "stained_floor_pool",
       "pos": [
-        296,
-        104
+        252,
+        124
       ],
       "layer": "ground",
       "flip_x": false,
@@ -144,8 +144,56 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        94,
-        56
+        56,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        56,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        168,
+        132
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        168,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        376,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -154,22 +202,22 @@
     },
     {
       "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
+      "prop": "heron_lantern_post",
       "pos": [
-        94,
-        160
+        376,
+        136
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
-      "phase": 0.6
+      "phase": 0.5
     },
     {
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        224,
-        56
+        164,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -178,63 +226,51 @@
     },
     {
       "sheet": "island4_scenery",
+      "prop": "giant_lotus_pad",
+      "pos": [
+        244,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        224,
-        152
+        248,
+        196
       ],
       "layer": "sort",
       "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "blooming_lotus",
+      "pos": [
+        364,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
       "shadow": false,
       "phase": 0.7
     },
     {
       "sheet": "island4_scenery",
-      "prop": "mossy_planter_urn",
+      "prop": "cattail_reeds",
       "pos": [
-        314,
-        56
+        56,
+        204
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "mossy_planter_urn",
-      "pos": [
-        314,
-        160
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "heron_lantern_post",
-      "pos": [
-        144,
-        58
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "heron_lantern_post",
-      "pos": [
-        144,
-        160
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
+      "shadow": false,
+      "phase": 0.4
     }
   ],
   "is_2x2_room": true

@@ -11,8 +11,19 @@ const SNUFF_GRAB_GUARDED: float = 0.85
 const GUARD_CHECK_R: float = 60.0
 const BOLT_STAGGER_TIME: float = 0.42
 const SNUFF_CARRY_SPEED: float = 40.0
+const PUFF_CD: float = 3.2
+const PUFF_TELL: float = 0.44
+const PUFF_COMMIT_TIME: float = 0.26
+const PUFF_SPEED: float = 165.0
+const PUFF_RANGE: float = 96.0
+const PUFF_HIT_R: float = 20.0
+const PUFF_RECOVER: float = 0.72
 
 var snuff_fx_t: float = 0.0
+var puff_cd: float = 1.6
+var puff_attack: bool = false
+var puff_dir: Vector2 = Vector2.RIGHT
+var puff_hit: bool = false
 
 
 func _init() -> void:
@@ -43,6 +54,20 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 		merged["carry_speed"] = SNUFF_CARRY_SPEED
 	super.setup(merged, p_director, p_world)
 	snuff_fx_t = 0.0
+	puff_cd = 1.6
+	puff_attack = false
+	puff_dir = Vector2.from_angle(facing)
+	puff_hit = false
+
+
+func wants_token() -> bool:
+	if cooldown > 0.0:
+		return false
+	if sub_state != SubState.PERCH and sub_state != SubState.SHIFT:
+		return false
+	if _is_lantern_hung():
+		return true
+	return puff_cd <= 0.0 and _has_player() and _get_wick_pos().distance_to(home) <= leash_radius
 
 
 func catch_lantern() -> bool:
@@ -72,6 +97,7 @@ func take_hit(hit: LxHit) -> int:
 	if rel.length() > 0.01:
 		knock = -rel.normalized() * (KNOCK_SPEED if is_heavy else 88.0)
 
+	puff_attack = false
 	_drop_carried_lantern()
 	_release_all_claims()
 
@@ -90,11 +116,79 @@ func take_hit(hit: LxHit) -> int:
 
 func _step_brain(dt: float) -> void:
 	snuff_fx_t = maxf(0.0, snuff_fx_t - dt)
+	puff_cd = maxf(0.0, puff_cd - dt)
+	if puff_attack:
+		_step_puff_attack(dt)
+		return
+	# When Wick does not have the lantern hung, threaten with a telegraphed dim-mist puff lunge on 3.2s CD.
+	if not _is_lantern_hung() and (sub_state == SubState.PERCH or sub_state == SubState.SHIFT):
+		if _try_start_puff():
+			return
 	# Snuff faster (0.65s) when the hung lantern is unguarded; slightly slower (0.85s) if Wick guards it.
 	if sub_state == SubState.RUN:
 		var unguarded: bool = not _has_player() or _get_wick_pos().distance_to(_get_lantern_pos()) > GUARD_CHECK_R
 		grab_time = SNUFF_GRAB_UNGUARDED if unguarded else SNUFF_GRAB_GUARDED
 	super._step_brain(dt)
+
+
+func _try_start_puff() -> bool:
+	if puff_cd > 0.0 or cooldown > 0.0 or not _has_player() or not _is_on_screen():
+		return false
+	var wp: Vector2 = _get_wick_pos()
+	if pos.distance_to(wp) > PUFF_RANGE or wp.distance_to(home) > leash_radius:
+		return false
+	if not _claim_token():
+		return false
+	puff_attack = true
+	puff_hit = false
+	var to_w: Vector2 = wp - pos
+	puff_dir = to_w.normalized() if to_w.length() > 0.01 else Vector2.from_angle(facing)
+	facing = puff_dir.angle()
+	sub_state = SubState.TELL
+	state = State.TELL
+	is_counter_attack = false
+	last_tell_duration = _scaled_tell(PUFF_TELL, false, attack_damage)
+	state_timer = last_tell_duration
+	_emit_attack_started()
+	_emit_sfx("snuffer_puff_tell")
+	return true
+
+
+func _step_puff_attack(dt: float) -> void:
+	if sub_state == SubState.TELL:
+		state = State.TELL
+		if state_timer > 0.16 and _has_player():
+			var to_w: Vector2 = _get_wick_pos() - pos
+			if to_w.length() > 0.01:
+				_turn_toward(to_w.angle(), 4.2, dt)
+				puff_dir = Vector2.from_angle(facing)
+		state_timer -= dt
+		if state_timer <= 0.0:
+			sub_state = SubState.RUN
+			state = State.COMMIT
+			state_timer = PUFF_COMMIT_TIME
+			puff_hit = false
+			snuff_fx_t = 0.35
+			_emit_sfx("snuffer_snuff")
+	elif sub_state == SubState.RUN:
+		state = State.COMMIT
+		_move_step(puff_dir * PUFF_SPEED * dt, false)
+		var puff_center: Vector2 = pos + puff_dir * 8.0
+		if not puff_hit and _has_player() and puff_center.distance_to(_get_wick_pos()) <= PUFF_HIT_R:
+			puff_hit = true
+			_emit_player_hit(puff_dir)
+		state_timer -= dt
+		if state_timer <= 0.0:
+			puff_attack = false
+			puff_cd = PUFF_CD
+			_release_all_claims()
+			sub_state = SubState.BAFFLED
+			state = State.RECOVER
+			state_timer = maxf(MIN_RECOVER_TIME, PUFF_RECOVER)
+			last_recover_duration = state_timer
+			cooldown = AGAIN_CD
+	else:
+		puff_attack = false
 
 
 func _take_lantern() -> void:
@@ -131,6 +225,21 @@ func _draw_extra(off: Vector2) -> void:
 		draw_circle(off + Vector2(-1.5, -2.0), 1.0, PAL["lime"] as Color)
 		draw_circle(off + Vector2(1.5, -2.0), 1.0, PAL["lime"] as Color)
 	var c := Vector2(roundf(off.x), roundf(off.y))
+	if puff_attack and state == State.TELL:
+		var prog_p: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var p_len: float = PUFF_SPEED * PUFF_COMMIT_TIME
+		var p_end: Vector2 = (c + puff_dir * p_len).round()
+		var p_side: Vector2 = Vector2(-puff_dir.y, puff_dir.x)
+		var p_col: Color = (PAL["coral"] if state_timer <= 0.16 else PAL["lime"]) as Color
+		draw_line(c, p_end, p_col, 1.4)
+		draw_line((c + p_side * 10.0).round(), (p_end + p_side * 14.0).round(), PAL["plum"] as Color, 1.0)
+		draw_line((c - p_side * 10.0).round(), (p_end - p_side * 14.0).round(), PAL["plum"] as Color, 1.0)
+		draw_arc(p_end, lerpf(12.0, PUFF_HIT_R * 0.75, prog_p), 0.0, TAU, 14, p_col, 1.2)
+	elif puff_attack and state == State.COMMIT:
+		var cloud_c: Vector2 = (c + puff_dir * 8.0).round()
+		draw_arc(cloud_c, PUFF_HIT_R, 0.0, TAU, 16, PAL["dusk"] as Color, 2.4)
+		draw_arc(cloud_c, PUFF_HIT_R - 3.0, 0.0, TAU, 14, PAL["plum"] as Color, 1.8)
+		draw_arc(cloud_c, PUFF_HIT_R - 6.0, 0.0, TAU, 12, PAL["lime"] as Color, 1.2)
 	if sub_state == SubState.GRAB:
 		var spin: float = anim_t * 6.5
 		var vr: float = roundf(body_radius + 5.5 + (0.0 if LxHudFx.flash_reduced() else sin(anim_t * 16.0) * 1.0))

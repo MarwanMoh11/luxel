@@ -2,11 +2,15 @@ class_name LxGreatLamp
 extends LxInteractable
 ## End-of-island Great Lamp / Great Belfry Brazier: relights the island and opens the bridge to the next island.
 
+const RELIGHT_DUR: float = 1.40
+const APEX_T: float = 0.22
+
 var lit: bool = false
 var requires_boss: String = ""
 var requires_flag: String = ""
 var _ready_cache: bool = false
 var _relight_t: float = 0.0
+var _dawn_apex_fired: bool = false
 
 
 func setup(spec: Dictionary) -> void:
@@ -19,12 +23,15 @@ func setup(spec: Dictionary) -> void:
 		lit = true
 	_ready_cache = _can_relight()
 	_relight_t = 0.0
+	_dawn_apex_fired = false
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	if _relight_t > 0.0:
 		_relight_t = maxf(0.0, _relight_t - dt)
+		if not _dawn_apex_fired and (RELIGHT_DUR - _relight_t) >= APEX_T:
+			_fire_dawn_apex()
 		queue_redraw()
 	var ready: bool = _can_relight()
 	if ready != _ready_cache:
@@ -72,7 +79,8 @@ func on_hit(hit: LxHit) -> bool:
 
 func _relight() -> bool:
 	lit = true
-	_relight_t = 0.72
+	_relight_t = RELIGHT_DUR
+	_dawn_apex_fired = false
 	if Lx.state != null:
 		if not Lx.state.relit_islands.has(island_id):
 			Lx.state.relit_islands.append(island_id)
@@ -82,10 +90,11 @@ func _relight() -> bool:
 		Lx.state.heal_full()
 	if Lx.events != null:
 		Lx.events.great_lamp_relit.emit(island_id)
-		Lx.events.shake_requested.emit(0.24)
+		Lx.events.shake_requested.emit(0.16)
 	if Lx.hitstop != null:
-		Lx.hitstop.trigger(0.09)
-	_emit_gust(144.0, 125.0, Vector2(0.0, -14.0))
+		Lx.hitstop.trigger(0.12)
+	if Lx.camera != null and is_instance_valid(Lx.camera):
+		Lx.camera.trigger_focus_nudge(pos, 1.1)
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, pos, 22.0, 9.0)
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 26.0, 10.0)
@@ -99,10 +108,33 @@ func _relight() -> bool:
 	return true
 
 
+func _fire_dawn_apex() -> void:
+	_dawn_apex_fired = true
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(0.26)
+	if Lx.camera != null and is_instance_valid(Lx.camera):
+		Lx.camera.add_kick(Vector2.UP, 3.5)
+	_emit_gust(156.0, 135.0, Vector2(0.0, -14.0))
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		var dl: LxDarknessLayer = LxDarknessLayer.active_instance
+		dl.trigger_focus_flash(0.85)
+		dl.add_burst_light(pos, 168.0, 1.25 if LxHudFx.flash_reduced() else 1.85, 0.72)
+		if not dl.wave_active:
+			dl.trigger_dawn_wave(pos, 260.0, 1400.0)
+
+
 func get_light_pool() -> Vector4:
 	if lit:
-		var surge: float = (sin((1.0 - clampf(_relight_t / 0.72, 0.0, 1.0)) * PI) * (0.55 if LxHudFx.flash_reduced() else 1.0)) if _relight_t > 0.0 else 0.0
-		return Vector4(pos.x, pos.y - 16.0, 148.0 + surge * 76.0, 1.6 + surge * 0.55)
+		var surge: float = 0.0
+		if _relight_t > 0.0:
+			var el: float = RELIGHT_DUR - _relight_t
+			if el < APEX_T:
+				surge = lerpf(0.30, 0.65, el / APEX_T)
+			else:
+				var u2: float = clampf((el - APEX_T) / (RELIGHT_DUR - APEX_T), 0.0, 1.0)
+				surge = (1.0 - u2) * (1.0 - u2 * 0.35)
+			surge *= (0.55 if LxHudFx.flash_reduced() else 1.0)
+		return Vector4(pos.x, pos.y - 16.0, 148.0 + surge * 92.0, 1.6 + surge * 0.65)
 	if _can_relight():
 		return Vector4(pos.x, pos.y - 14.0, 58.0, 0.9)
 	return Vector4(pos.x, pos.y - 12.0, 26.0, 0.4)
@@ -141,16 +173,58 @@ func _draw() -> void:
 	elif lit:
 		_draw_dawn_embers()
 	if _relight_t > 0.0:
-		var p: float = 1.0 - clampf(_relight_t / 0.72, 0.0, 1.0)
-		var rc: Array[Color] = _island_relight_colors()
-		var col_w: float = roundf(maxf(0.0, (1.0 - p) * 16.0))
-		if col_w >= 2.0:
-			draw_rect(Rect2(-floorf(col_w * 0.5), -68.0, col_w, 72.0), rc[0] if p > 0.3 else rc[1])
-		if p < 0.75:
-			draw_rect(Rect2(-2.0, -68.0, 4.0, 72.0), PAL["cream"])
-		draw_arc(Vector2(0.0, -14.0), roundf(8.0 + p * 44.0), 0.0, TAU, 24, rc[1] if p < 0.35 else rc[0], 2.0 if p < 0.4 else 1.0)
-		draw_arc(Vector2(0.0, -14.0), roundf(4.0 + p * 28.0), 0.0, TAU, 18, PAL["cream"], 1.0)
+		_draw_dawn_crescendo()
 	_draw_signal_pulses()
+
+
+func _draw_dawn_crescendo() -> void:
+	var el: float = RELIGHT_DUR - _relight_t
+	var rc: Array[Color] = _island_relight_colors()
+	var cream: Color = PAL["cream"] as Color
+	var gold: Color = PAL["gold"] as Color
+	# Stage 1 (0.00-0.22s): Golden core compression pulling radiance inward
+	if el < APEX_T:
+		var u1: float = clampf(el / APEX_T, 0.0, 1.0)
+		draw_arc(Vector2(0.0, -18.0), roundf(lerpf(42.0, 6.0, u1 * u1)), 0.0, TAU, 24, gold, 1.5)
+		draw_arc(Vector2(0.0, -18.0), roundf(lerpf(28.0, 4.0, u1)), 0.0, TAU, 18, rc[1], 1.2)
+		draw_circle(Vector2(0.0, -20.0), roundf(lerpf(3.0, 9.0, u1)), cream if u1 > 0.55 else gold)
+		for k: int in range(8):
+			var a: float = float(k) * (TAU / 8.0) + u1 * 1.8
+			var d: float = roundf(lerpf(36.0, 5.0, u1))
+			draw_rect(Rect2(roundf(cos(a) * d), roundf(-20.0 + sin(a) * d * 0.6), 2.0, 2.0), cream if k % 2 == 0 else gold)
+		return
+	# Stage 2 (0.22-1.40s): Huge cream/gold dawn flare + 24 rising biome-colored dawn embers
+	var u2: float = clampf((el - APEX_T) / (RELIGHT_DUR - APEX_T), 0.0, 1.0)
+	var fade: float = 1.0 - u2
+	var e2: float = 1.0 - pow(1.0 - u2, 2.0)
+	var outer_w: float = roundf(maxf(0.0, fade * 22.0))
+	if outer_w >= 2.0:
+		draw_rect(Rect2(-floorf(outer_w * 0.5), -96.0, outer_w, 100.0), Color(rc[0], fade * 0.72))
+	var mid_w: float = roundf(maxf(0.0, (1.0 - u2 * 1.15) * 12.0))
+	if mid_w >= 2.0:
+		draw_rect(Rect2(-floorf(mid_w * 0.5), -96.0, mid_w, 100.0), Color(gold, fade * 0.90))
+	var core_w: float = roundf(maxf(0.0, (1.0 - u2 * 1.35) * 5.0))
+	if core_w >= 1.0:
+		draw_rect(Rect2(-floorf(core_w * 0.5), -96.0, core_w, 100.0), Color(cream, minf(1.0, fade * 1.25)))
+	draw_arc(Vector2(0.0, -16.0), roundf(lerpf(8.0, 74.0, e2)), 0.0, TAU, 28, Color(cream if u2 < 0.28 else gold, fade), 2.0 if u2 < 0.35 else 1.0)
+	draw_arc(Vector2(0.0, -16.0), roundf(lerpf(6.0, 56.0, e2)), 0.0, TAU, 24, Color(rc[1], fade * 0.90), 1.5 if u2 < 0.4 else 1.0)
+	draw_arc(Vector2(0.0, -16.0), roundf(lerpf(4.0, 38.0, e2)), 0.0, TAU, 18, Color(rc[0], fade * 0.85), 1.0)
+	if u2 < 0.35:
+		var ray_f: float = 1.0 - (u2 / 0.35)
+		var rlen: float = roundf(lerpf(12.0, 44.0, 1.0 - ray_f))
+		for rk: int in range(8):
+			var ra: float = float(rk) * (TAU / 8.0) + u2 * 0.6
+			draw_line(Vector2(0.0, -20.0), Vector2(roundf(cos(ra) * rlen), roundf(-20.0 + sin(ra) * rlen * 0.72)), Color(cream if rk % 2 == 0 else gold, ray_f), 1.0)
+	for ei: int in range(24):
+		var frac: float = float(ei) / 24.0
+		var seed_x: float = (fmod(float(ei) * 37.0, 19.0) - 9.0) * 10.5
+		var sway: float = sin(u2 * 5.0 + float(ei) * 1.3) * 5.0
+		var rise: float = lerpf(0.0, 78.0 + float(ei % 4) * 12.0, clampf(u2 * 1.15 - frac * 0.15, 0.0, 1.0))
+		var ex: float = roundf(seed_x + sway)
+		var ey: float = roundf(-6.0 + float(ei % 3) * 5.0 - rise)
+		var ecol: Color = cream if (ei % 4 == 0) else (gold if (ei % 4 == 1) else (rc[1] if (ei % 4 == 2) else rc[0]))
+		var esz: float = 2.0 if (u2 < 0.55 and ei % 3 == 0) else 1.0
+		draw_rect(Rect2(ex, ey, esz, esz), Color(ecol, fade))
 
 
 func _island_relight_colors() -> Array[Color]:

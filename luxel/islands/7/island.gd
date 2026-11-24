@@ -52,6 +52,7 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.boss_phase_changed.connect(_on_boss_phase_changed)
 	_events.boss_defeated.connect(_on_boss_defeated)
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
+	_events.narration_requested.connect(_on_narration_requested)
 
 
 func detach() -> void:
@@ -70,6 +71,8 @@ func detach() -> void:
 		_events.boss_defeated.disconnect(_on_boss_defeated)
 	if _events.great_lamp_relit.is_connected(_on_great_lamp_relit):
 		_events.great_lamp_relit.disconnect(_on_great_lamp_relit)
+	if _events.narration_requested.is_connected(_on_narration_requested):
+		_events.narration_requested.disconnect(_on_narration_requested)
 	_attached = false
 
 
@@ -83,7 +86,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_hollow_enc_1",
 			"region": "overworld",
 			"zone": "mirror_shallows",
-			"pos": [360.0, 184.0],
+			"pos": [312.0, 168.0],
 			"action": "clear_encounter",
 			"target": "hollow_wick_enc_1",
 			"grants_flag": "hollow_wick_enc_1_cleared",
@@ -94,7 +97,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_isl7_beacon_1",
 			"region": "overworld",
 			"zone": "mirror_shallows",
-			"pos": [296.0, 168.0],
+			"pos": [200.0, 184.0],
 			"action": "light_beacon",
 			"target": "beacon_7_1",
 			"grants_flag": "beacon_7_1",
@@ -105,7 +108,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_isl7_beacon_2",
 			"region": "overworld",
 			"zone": "tideglass_basin",
-			"pos": [376.0, 536.0],
+			"pos": [312.0, 536.0],
 			"action": "light_beacon",
 			"target": "beacon_7_2",
 			"grants_flag": "beacon_7_2",
@@ -116,7 +119,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_hollow_enc_2",
 			"region": "overworld",
 			"zone": "inverted_causeway",
-			"pos": [664.0, 600.0],
+			"pos": [680.0, 600.0],
 			"action": "clear_encounter",
 			"target": "hollow_wick_enc_2",
 			"grants_flag": "hollow_wick_enc_2_cleared",
@@ -127,7 +130,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_hollow_enc_3",
 			"region": "overworld",
 			"zone": "lunar_glasscourt",
-			"pos": [1080.0, 384.0],
+			"pos": [1112.0, 392.0],
 			"action": "clear_encounter",
 			"target": "hollow_wick_enc_3",
 			"grants_flag": "hollow_wick_enc_3_cleared",
@@ -138,7 +141,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_isl7_beacon_3",
 			"region": "overworld",
 			"zone": "lunar_glasscourt",
-			"pos": [1080.0, 184.0],
+			"pos": [1096.0, 184.0],
 			"action": "light_beacon",
 			"target": "beacon_7_3",
 			"grants_flag": "beacon_7_3",
@@ -149,7 +152,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_enter_spire",
 			"region": "overworld",
 			"zone": "spire_terrace",
-			"pos": [672.0, 80.0],
+			"pos": [704.0, 80.0],
 			"action": "enter_exit",
 			"target": "exit_to_spire",
 			"to_region": "spire_r1",
@@ -160,7 +163,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_key_1",
 			"region": "spire_r2",
 			"zone": "spire_r2",
-			"pos": [72.0, 120.0],
+			"pos": [72.0, 112.0],
 			"action": "collect_key",
 			"target": "wick_key_7_1",
 			"grants_flag": "wick_key_7_1",
@@ -171,7 +174,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_r3_combat",
 			"region": "spire_r3",
 			"zone": "spire_r3",
-			"pos": [208.0, 112.0],
+			"pos": [240.0, 24.0],
 			"action": "clear_room",
 			"target": "door_spire_r3_north",
 			"requires_moves": ["dash", "throw"],
@@ -181,7 +184,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_r4_crossing",
 			"region": "spire_r4",
 			"zone": "spire_r4",
-			"pos": [328.0, 120.0],
+			"pos": [360.0, 136.0],
 			"action": "unlock_door",
 			"target": "door_spire_r4_east",
 			"requires_moves": ["wings", "lens"],
@@ -191,7 +194,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_r5_refraction",
 			"region": "spire_r5",
 			"zone": "spire_r5",
-			"pos": [456.0, 112.0],
+			"pos": [472.0, 120.0],
 			"action": "solve_puzzle",
 			"target": "door_spire_r5_east",
 			"requires_moves": ["sunflare", "throw"],
@@ -201,7 +204,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_miniboss",
 			"region": "spire_r6",
 			"zone": "spire_r6",
-			"pos": [256.0, 128.0],
+			"pos": [256.0, 136.0],
 			"action": "defeat_miniboss",
 			"target": "mini_moonshade_warden",
 			"grants_flag": "wick_key_7_2",
@@ -212,7 +215,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_r7_inverted",
 			"region": "spire_r7",
 			"zone": "spire_r7",
-			"pos": [72.0, 120.0],
+			"pos": [56.0, 120.0],
 			"action": "solve_puzzle",
 			"target": "door_spire_r7_west",
 			"requires_moves": ["prism", "lens", "wings"],
@@ -222,7 +225,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_r8_combat",
 			"region": "spire_r8",
 			"zone": "spire_r8",
-			"pos": [224.0, 112.0],
+			"pos": [24.0, 120.0],
 			"action": "clear_room",
 			"target": "door_spire_r8_west",
 			"requires_moves": ["dash", "throw", "lens"],
@@ -232,7 +235,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_boss_key",
 			"region": "spire_r9",
 			"zone": "spire_r9",
-			"pos": [72.0, 112.0],
+			"pos": [72.0, 120.0],
 			"action": "collect_key",
 			"target": "keepers_flame_7",
 			"grants_flag": "keepers_flame_7",
@@ -243,7 +246,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_boss",
 			"region": "spire_r10",
 			"zone": "spire_r10",
-			"pos": [240.0, 128.0],
+			"pos": [240.0, 144.0],
 			"action": "defeat_boss",
 			"target": "boss_hollow_wick",
 			"grants_flag": "boss_hollow_wick_defeated",
@@ -318,6 +321,13 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_events.music_mode_requested.emit("island7_boss_p1" if mb_live else "island7_dungeon")
 
 
+func _on_narration_requested(string_id: String, _style: String, _duration: float) -> void:
+	if string_id == "TWIST_HOLLOW":
+		var st: LxGameState = _get_state()
+		if st != null:
+			st.story_flags["twist_hollow_shown"] = true
+
+
 func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 	if island_id != ISLAND_ID:
 		return
@@ -326,7 +336,6 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	_emit_narration("CUE_BEACON_LIT_7", "title", 2.5)
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 
@@ -357,8 +366,10 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 			st.story_flags[eid + "_cleared"] = true
 		var count: int = int(st.story_flags.get("hollow_wick_encounters_cleared", 0)) + 1
 		st.story_flags["hollow_wick_encounters_cleared"] = count
-		if not bool(st.story_flags.get("twist_hollow_shown", false)):
-			st.story_flags["twist_hollow_shown"] = true
+		var twist_already: bool = bool(st.story_flags.get("twist_hollow_shown", false)) \
+				or bool(st.story_flags.get("trig_7_overworld_trig_twist_hollow_1", false))
+		st.story_flags["twist_hollow_shown"] = true
+		if not twist_already:
 			_emit_narration("TWIST_HOLLOW", "ominous", 4.5)
 	elif st.region_id == "spire_r6" and (kind == MINI_BOSS_KIND or eid == "mini_moonshade_warden"):
 		if not st.defeated_bosses.has(MINI_BOSS_KIND):
@@ -368,7 +379,6 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
 			_events.music_mode_requested.emit("island7_dungeon")
-			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("moonshade_warden_defeated")
 	elif st.region_id == "spire_r10" and (kind == "hollow_wick_boss" or eid == "boss_hollow_wick"):
 		if not st.defeated_bosses.has(BOSS_ID):
@@ -382,7 +392,6 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island7_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
-		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2_ISL7", "warning", 3.0)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:

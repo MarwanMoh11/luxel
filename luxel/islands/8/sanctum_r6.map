@@ -1,4 +1,4 @@
-# Bell Sanctum r6 - Colossal Gothic Eclipse Cathedral (30x22)
+# Bell Sanctum r6 - Ruined Bell-Sanctum Crown (30x22)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -14,24 +14,24 @@ LEGEND + bridge
 LEGEND G mirror
 MAP
 ##############################
-#OOOOOO................OOOOOO#
-#OOOOOO.......,,.......OOOOOO#
-#OOOOOO.......,,.......OOOOOO#
-#OOOOOO.......,,.......OOOOOO#
-#OOOOOO.......,,.......OOOOOO#
-#OOOOO........,,........OOOOO#
-#O............,,............O#
-#O............,,............O#
-#O............,,............O#
-#O..,,,,,,,,,,,,,,,,,,,,,,..O#
-#O..,,,,,,,,,,,,,,,,,,,,,,..O#
-#O............,,............O#
-#O............,,............O#
-#O............,,............O#
-#OOOOO........,,........OOOOO#
-#OOOOOO.......,,.......OOOOOO#
-#OOOOOO.......,,.......OOOOOO#
-#OOOOOO.......,,.......OOOOOO#
-#OOOOOO.......,,.......OOOOOO#
-#OOOOOO.......,,.......OOOOOO#
-##############,,##############
+#OOOOOOOOOOOOOO...........OOO#
+#OOOOOOOOOOOOOO...........OOO#
+#OOOOOOOOOOOO....,,,,..#..OOO#
+#OOOOOOOOOOOO....,,,,..#.....#
+#OOOOOOOOOOOO.#..,,,,........#
+#OOOOOOOOOOOO.#,,,,,,........#
+#OOOOOO........,,,...........#
+#OOOOOO........,,,...........#
+#....#.........,,,...........#
+#....#........#,,,...........#
+#.....,,,,,,,,,,,,,,,,.......#
+#..............,,,...#..OOOOO#
+#OO............,,,...#..OOOOO#
+#OO.........,,,,,,......OOOOO#
+#OOOOOOO.#.,,,,,,..OOOOOOOOOO#
+#OOOOOOO...,,......OOOOOOOOOO#
+#OOOOOOO...,,......OOOOOOOOOO#
+#OOOOOOO...,,...OOOOOOOOOOOOO#
+#OOOOOOO...,,...OOOOOOOOOOOOO#
+#OOOOOOO...,,...OOOOOOOOOOOOO#
+###########,,#################

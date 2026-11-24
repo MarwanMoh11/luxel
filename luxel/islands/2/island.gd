@@ -78,21 +78,21 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 	return [
 		_wp("wp_2_entry_ws", "overworld", "harbor_landing", [104.0, 296.0], "waystone", "interact", "ws_2_entry", "Arrive at Tidewater Harbor landing pier", ["bolt", "dash", "throw"], []),
 		_wp("wp_2_beacon_1", "overworld", "drydock_quays", [200.0, 88.0], "beacon", "light_beacon", "beacon_2_1", "Clear Drydock Quays and light Beacon 1", ["bolt", "dash", "throw"], [], "", "beacon_2_1"),
-		_wp("wp_2_beacon_2", "overworld", "tide_causeway", [760.0, 184.0], "beacon", "light_beacon", "beacon_2_2", "Cross Tide Causeway and light Beacon 2", ["bolt", "dash", "throw"], [], "", "beacon_2_2"),
-		_wp("wp_2_beacon_3", "overworld", "breakwater_reef", [1176.0, 88.0], "beacon", "light_beacon", "beacon_2_3", "Clear Breakwater Reef and light Beacon 3", ["bolt", "dash", "throw"], [], "", "beacon_2_3"),
-		_wp("wp_2_enter_lighthouse", "overworld", "lighthouse_promontory", [1536.0, 108.0], "exit", "enter_exit", "exit_to_lighthouse", "Enter The Lighthouse past the shattered ward barrier", ["dash", "throw"], ["beacon_2_1", "beacon_2_2", "beacon_2_3"], "", "", "lighthouse_r1"),
-		_wp("wp_lh_r1_ws", "lighthouse_r1", "lighthouse_r1", [176.0, 128.0], "waystone", "interact", "ws_lighthouse", "Light Lighthouse Entry Hall Waystone", ["dash", "throw"], []),
-		_wp("wp_lh_r2_key1", "lighthouse_r2", "lighthouse_r2", [296.0, 72.0], "wick_key", "collect_key", "wick_key_2_1", "Solve Tide Lock switch puzzle and take wick_key_2_1", ["dash", "throw"], [], "", "wick_key_2_1"),
-		_wp("wp_lh_r3_combat", "lighthouse_r3", "lighthouse_r3", [392.0, 104.0], "combat_gate", "clear_room", "door_lh_r3_combat", "Clear Pier Ward enemies to open combat gate", ["dash", "throw"], [], "", "lh_r3_cleared"),
-		_wp("wp_lh_r4_atrium", "lighthouse_r4", "lighthouse_r4", [328.0, 104.0], "switch_door", "open_shutter", "door_lh_r4_shutter", "Unlock Glass Atrium key door and light twin chasm braziers", ["dash", "throw"], ["wick_key_2_1"], "", "lh_r4_shutter_open"),
-		_wp("wp_lh_r5_shrine_prism", "lighthouse_r5", "lighthouse_r5", [152.0, 112.0], "shrine", "claim_shrine", "shrine_prism", "Claim Prism Shrine and reflect bolt off mirror into switch_eye", ["dash", "throw"], [], "prism"),
-		_wp("wp_lh_r6_miniboss", "lighthouse_r6", "lighthouse_r6", [344.0, 112.0], "mini_boss", "defeat_miniboss", "boss_tide_captain", "Defeat Tide Captain on Captains Deck and claim wick_key_2_2", ["dash", "throw", "prism"], [], "", "wick_key_2_2"),
-		_wp("wp_lh_r7_mirror_gallery", "lighthouse_r7", "lighthouse_r7", [208.0, 40.0], "switch_door", "open_shutter", "door_lh_r7_shutter", "Unlock Mirror Gallery key door and bank Prism bolt into switch_eye", ["dash", "throw", "prism"], ["wick_key_2_2"], "", "lh_r7_gallery_open"),
-		_wp("wp_lh_r8_belfry", "lighthouse_r8", "lighthouse_r8", [208.0, 24.0], "combat_gate", "clear_room", "door_lh_r8_combat", "Clear Gulls Belfry encounter using brass mirrors", ["dash", "throw", "prism"], [], "", "lh_r8_cleared"),
-		_wp("wp_lh_r9_boss_key", "lighthouse_r9", "lighthouse_r9", [384.0, 104.0], "keepers_flame", "collect_key", "keepers_flame_2", "Solve Keepers Prism Vault for keepers_flame_2 and unlock door_boss_2", ["dash", "throw", "prism"], [], "", "keepers_flame_2"),
-		_wp("wp_lh_r10_boss", "lighthouse_r10", "lighthouse_r10", [224.0, 144.0], "boss", "defeat_boss", "boss_lighthouse_hermit", "Defeat the Lighthouse Hermit in the Lantern Room", ["dash", "throw", "prism"], ["keepers_flame_2"], "", "boss_lighthouse_hermit_defeated"),
+		_wp("wp_2_beacon_2", "overworld", "tide_causeway", [760.0, 120.0], "beacon", "light_beacon", "beacon_2_2", "Cross Tide Causeway and light Beacon 2", ["bolt", "dash", "throw"], [], "", "beacon_2_2"),
+		_wp("wp_2_beacon_3", "overworld", "breakwater_reef", [872.0, 520.0], "beacon", "light_beacon", "beacon_2_3", "Clear Breakwater Reef and light Beacon 3", ["bolt", "dash", "throw"], [], "", "beacon_2_3"),
+		_wp("wp_2_enter_lighthouse", "overworld", "lighthouse_promontory", [1040.0, 108.0], "exit", "enter_exit", "exit_to_lighthouse", "Enter The Lighthouse past the shattered ward barrier", ["dash", "throw"], ["beacon_2_1", "beacon_2_2", "beacon_2_3"], "", "", "lighthouse_r1"),
+		_wp("wp_lh_r1_ws", "lighthouse_r1", "lighthouse_r1", [184.0, 136.0], "waystone", "interact", "ws_lighthouse", "Light Lighthouse Cyclic Hub Waystone", ["dash", "throw"], []),
+		_wp("wp_lh_r2_key1", "lighthouse_r2", "lighthouse_r2", [312.0, 72.0], "wick_key", "collect_key", "wick_key_2_1", "Solve Tide Lock Blue Transformer puzzle and take wick_key_2_1", ["dash", "throw"], [], "", "wick_key_2_1"),
+		_wp("wp_lh_r3_combat", "lighthouse_r3", "lighthouse_r3", [392.0, 120.0], "combat_gate", "clear_room", "door_lh_r3_combat", "Clear Pier Ward enemies to open combat gate", ["dash", "throw"], [], "", "lh_r3_cleared"),
+		_wp("wp_lh_r4_atrium", "lighthouse_r4", "lighthouse_r4", [360.0, 104.0], "switch_door", "open_shutter", "door_lh_r4_shutter", "Unlock Glass Atrium key door and light twin chasm braziers", ["dash", "throw"], ["wick_key_2_1"], "", "lh_r4_shutter_open"),
+		_wp("wp_lh_r5_shrine_prism", "lighthouse_r5", "lighthouse_r5", [120.0, 136.0], "shrine", "claim_shrine", "shrine_prism", "Claim Prism Shrine and solve dual Blue Transformer Rotunda", ["dash", "throw"], [], "prism"),
+		_wp("wp_lh_r6_miniboss", "lighthouse_r6", "lighthouse_r6", [352.0, 128.0], "mini_boss", "defeat_miniboss", "boss_tide_captain", "Defeat Tide Captain on Flooded Drydock Basin and claim wick_key_2_2", ["dash", "throw", "prism"], [], "", "wick_key_2_2"),
+		_wp("wp_lh_r7_mirror_gallery", "lighthouse_r7", "lighthouse_r7", [192.0, 40.0], "switch_door", "open_shutter", "door_lh_r7_shutter", "Unlock Mirror Gallery key door and solve Blue Portal & Transformer puzzle", ["dash", "throw", "prism"], ["wick_key_2_2"], "", "lh_r7_gallery_open"),
+		_wp("wp_lh_r8_belfry", "lighthouse_r8", "lighthouse_r8", [224.0, 24.0], "combat_gate", "clear_room", "door_lh_r8_combat", "Clear Gulls Belfry encounter using movable Blue Transformers", ["dash", "throw", "prism"], [], "", "lh_r8_cleared"),
+		_wp("wp_lh_r9_boss_key", "lighthouse_r9", "lighthouse_r9", [392.0, 120.0], "keepers_flame", "collect_key", "keepers_flame_2", "Solve Upper Prism Nave for keepers_flame_2 and unlock door_boss_2", ["dash", "throw", "prism"], [], "", "keepers_flame_2"),
+		_wp("wp_lh_r10_boss", "lighthouse_r10", "lighthouse_r10", [224.0, 144.0], "boss", "defeat_boss", "boss_lighthouse_hermit", "Defeat the Lighthouse Hermit in the Circular Fresnel Crown", ["dash", "throw", "prism"], ["keepers_flame_2"], "", "boss_lighthouse_hermit_defeated"),
 		_wp("wp_lh_r10_great_lamp", "lighthouse_r10", "lighthouse_r10", [224.0, 56.0], "great_lamp", "light_great_lamp", "great_lamp_2", "Relight Great Lamp 2 to wake Tidewater Harbor", ["dash", "throw", "prism"], ["boss_lighthouse_hermit_defeated"], "", "island_2_relit"),
-		_wp("wp_2_bridge_to_island_3", "lighthouse_r10", "lighthouse_r10", [440.0, 144.0], "exit", "enter_exit", "exit_lh_r10_island3", "Cross Bridge of Light to Island 3 Thornwood Hollow", ["prism"], ["island_2_relit"], "", "", "overworld", 3),
+		_wp("wp_2_bridge_to_island_3", "lighthouse_r10", "lighthouse_r10", [440.0, 136.0], "exit", "enter_exit", "exit_lh_r10_island3", "Cross Bridge of Light to Island 3 Thornwood Hollow", ["prism"], ["island_2_relit"], "", "", "overworld", 3),
 	]
 
 
@@ -195,7 +195,6 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	_emit_narration("CUE_BEACON_LIT_2", "title", 2.5)
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 
@@ -228,7 +227,6 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
 			_events.music_mode_requested.emit("island2_dungeon")
-			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("tide_captain_defeated")
 
 
@@ -238,7 +236,6 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island2_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
-		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2_ISL2", "warning", 3.5)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:

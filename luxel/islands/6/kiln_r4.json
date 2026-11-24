@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    192,
-    168
+    120,
+    216
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        384,
-        240
+        416,
+        256
       ],
       "dark": true
     }
@@ -24,15 +24,15 @@
     {
       "id": "exit_kiln_r4_south",
       "rect": [
-        176,
-        224,
+        112,
+        240,
         32,
         16
       ],
       "to_region": "kiln_r3",
       "to_spawn": [
-        208,
-        40
+        272,
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_kiln_r4_east",
       "rect": [
-        368,
-        96,
+        400,
+        80,
         16,
         48
       ],
       "to_region": "kiln_r5",
       "to_spawn": [
         40,
-        112
+        104
       ],
       "requires_moves": [
         "lens"
@@ -66,8 +66,8 @@
       "id": "door_kiln_r4_east",
       "kind": "door",
       "pos": [
-        328,
-        120
+        344,
+        104
       ],
       "props": {
         "door_kind": "key_door",
@@ -86,8 +86,8 @@
       "id": "lamp_kiln_r4_mid",
       "kind": "road_lamp",
       "pos": [
-        248,
-        88
+        136,
+        104
       ],
       "props": {
         "zone": "kiln_r4"
@@ -97,8 +97,8 @@
       "id": "chest_kiln_r4_shards",
       "kind": "chest",
       "pos": [
-        88,
-        168
+        56,
+        200
       ],
       "props": {
         "reward_kind": "shards",
@@ -112,10 +112,34 @@
   "scenery": [
     {
       "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        312,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        312,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island6_scenery",
       "prop": "ember_grate_vent",
       "pos": [
-        144,
-        164
+        104,
+        128
       ],
       "layer": "ground",
       "flip_x": false,
@@ -124,63 +148,39 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
+      "prop": "ember_grate_vent",
       "pos": [
-        140,
-        77
+        104,
+        168
       ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        184,
-        74
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "coal_hopper",
-      "pos": [
-        314,
-        74
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "ash_urn_cluster",
-      "pos": [
-        314,
-        172
-      ],
-      "layer": "sort",
+      "layer": "ground",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": false,
+      "phase": 0.6
     },
     {
       "sheet": "island6_scenery",
       "prop": "cooled_magma_vent",
       "pos": [
-        268,
-        172
+        56,
+        112
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.3
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "cooled_magma_vent",
+      "pos": [
+        56,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
     }
   ],
   "is_2x2_room": true

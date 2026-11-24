@@ -2,11 +2,17 @@ class_name LxClockworkWardenBoss
 extends LxOrrerySentinelBrain
 ## Starfall Observatory mini-boss (Island 5): Clockwork Warden.
 ## 2 phases, HP 8.0. Front brass armour blocks plain bolts; Prism, Beam, or rear-core hits pierce.
-## Phase 2 upgrades its sight-cone beam-bolt into a 3-ray clockwork fan!
+## Phase 2 upgrades into a Reverse-Gear Double-Fan; active True Lens grants rear-core 1.5x crit!
+
+enum FanStage { FAN_1, REVERSE_PAUSE, FAN_2 }
 
 const PHASE2_ROAR_TIME: float = 0.56
 const FAN_SPREAD_RAD: float = 0.26
+const REVERSE_PAUSE_TIME: float = 0.42
+const REVERSE_OFFSET_RAD: float = 0.18
+const LENS_REAR_CRIT_MULT: float = 1.50
 
+var fan_stage: int = FanStage.FAN_1
 var _roaring: bool = false
 
 
@@ -33,7 +39,12 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "clockwork_warden"))
 	island_id = int(spec.get("island_id", 5))
+	fan_stage = FanStage.FAN_1
 	_roaring = false
+
+
+func _back_crit_mult() -> float:
+	return LENS_REAR_CRIT_MULT if lens_highlight_t > 0.0 else BACK_CRIT_MULT
 
 
 func take_hit(hit: LxHit) -> int:
@@ -50,6 +61,7 @@ func _check_phase_transition() -> void:
 	if phase < 2 and hp <= max_hp * 0.50 and hp > 0.001:
 		phase = 2
 		_roaring = true
+		fan_stage = FanStage.FAN_1
 		_release_token()
 		state = State.NOTICE
 		state_timer = PHASE2_ROAR_TIME
@@ -83,11 +95,13 @@ func _step_position(dt: float) -> void:
 		lost_t = 0.0
 
 	_step_rail_patrol(dt)
-	var spin_mult: float = 1.30 if phase >= 2 else 1.05
-	facing = wrapf(facing + rail_spin * SCAN_TURN_SPEED * spin_mult * dt, -PI, PI)
+	if lens_pause_t <= 0.0:
+		var spin_mult: float = 1.30 if phase >= 2 else 1.05
+		facing = wrapf(facing + rail_spin * SCAN_TURN_SPEED * spin_mult * dt, -PI, PI)
 	state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
 
 	if cooldown <= 0.0 and _is_on_screen() and _target_in_cone() and _claim_token():
+		fan_stage = FanStage.FAN_1
 		state = State.TELL
 		is_counter_attack = false
 		var base_t: float = 0.50 if phase >= 2 else tell_time
@@ -98,6 +112,17 @@ func _step_position(dt: float) -> void:
 
 
 func _step_commit(dt: float) -> void:
+	if fan_stage == FanStage.REVERSE_PAUSE:
+		state_timer -= dt
+		if state_timer <= 0.0:
+			fan_stage = FanStage.FAN_2
+			state_timer = COMMIT_TIME
+			shot_dir = Vector2.from_angle(facing)
+			shot_fired = false
+			shot_hit = false
+			_emit_sfx("orrery_beam_bolt")
+		return
+
 	var angles: Array[float] = [0.0]
 	if phase >= 2:
 		angles = [0.0, -FAN_SPREAD_RAD, FAN_SPREAD_RAD]
@@ -126,10 +151,21 @@ func _step_commit(dt: float) -> void:
 				break
 	state_timer -= dt
 	if state_timer <= 0.0:
-		state = State.RECOVER
-		state_timer = maxf(MIN_RECOVER_TIME, recover_time)
-		last_recover_duration = state_timer
-		facing = wrapf(facing + rail_spin * 0.55, -PI, PI)
+		if fan_stage == FanStage.FAN_1 and phase >= 2:
+			# P2 Reverse-Gear Double-Fan: gears click in reverse and fire an offset 2nd fan!
+			fan_stage = FanStage.REVERSE_PAUSE
+			rail_spin = -rail_spin
+			facing = wrapf(facing + rail_spin * REVERSE_OFFSET_RAD, -PI, PI)
+			state_timer = REVERSE_PAUSE_TIME
+			shot_fired = false
+			shot_hit = false
+			_emit_sfx("orrery_bell_tell")
+		else:
+			fan_stage = FanStage.FAN_1
+			state = State.RECOVER
+			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
+			last_recover_duration = state_timer
+			facing = wrapf(facing + rail_spin * 0.55, -PI, PI)
 
 
 func _body_color() -> Color:
@@ -150,8 +186,9 @@ func _draw_extra(off: Vector2) -> void:
 			draw_line(g0, g1, PAL["apricot"] as Color, 1.5)
 	super._draw_extra(off)
 	var c: Vector2 = off.round()
-	if state == State.TELL:
-		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+	if state == State.TELL or (state == State.COMMIT and fan_stage == FanStage.REVERSE_PAUSE):
+		var denom: float = REVERSE_PAUSE_TIME if fan_stage == FanStage.REVERSE_PAUSE else maxf(last_tell_duration, 0.05)
+		var prog: float = 1.0 - clampf(state_timer / maxf(denom, 0.05), 0.0, 1.0)
 		var locked_c: bool = state_timer <= 0.24
 		var ray_n: int = 3 if phase >= 2 else 1
 		for ri: int in range(ray_n):

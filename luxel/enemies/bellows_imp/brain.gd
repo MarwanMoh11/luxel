@@ -182,14 +182,16 @@ func _step_position(dt: float) -> void:
 	if dist > 0.01:
 		_turn_toward(to_t.angle(), 3.4, dt)
 
-	state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
-	if cooldown <= 0.0 and dist <= GUST_RANGE and _is_on_screen() and _claim_token():
+	var can_act: bool = director == null or director.can_claim_ranged_token(self)
+	state = State.POSITION if can_act else State.WAIT_TOKEN
+	if can_act and cooldown <= 0.0 and dist <= GUST_RANGE and _is_on_screen() and _claim_token():
 		state = State.TELL
 		is_counter_attack = false
 		last_tell_duration = _scaled_tell(tell_time, false, attack_damage)
 		state_timer = last_tell_duration
 		if dist > 0.01:
 			facing = to_t.angle()
+		gust_dir = Vector2.from_angle(facing)
 		_emit_attack_started()
 		_emit_sfx("bellows_inhale")
 		return
@@ -208,6 +210,7 @@ func _step_tell(dt: float) -> void:
 		var to_t: Vector2 = _attention_target() - pos
 		if to_t.length() > 0.01:
 			_turn_toward(to_t.angle(), 2.2, dt)
+	gust_dir = Vector2.from_angle(facing)
 	state_timer -= dt
 	if state_timer <= 0.0:
 		state = State.COMMIT

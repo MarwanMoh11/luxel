@@ -6,27 +6,27 @@ extends CanvasLayer
 
 const DARKNESS_SHADER: Shader = preload("res://luxel/world/darkness.gdshader")
 const VIEW_SIZE: Vector2 = Vector2(320.0, 180.0)
-const MAX_LIGHTS: int = 16
+const MAX_LIGHTS: int = 24
 const MAX_LIT_ZONES: int = 8
 const MAX_BURST_LIGHTS: int = 12
 const TINT_LERP_S: float = 0.6
-const DEFAULT_TINT: Vector3 = Vector3(0.42, 0.40, 0.64)
+const DEFAULT_TINT: Vector3 = Vector3(0.60, 0.58, 0.78)
 
 const BIOME_TINTS: Dictionary = {
-	1: Vector3(0.46, 0.40, 0.62), # Bell Isle: warm dusk indigo
-	2: Vector3(0.28, 0.50, 0.68), # Tidewater Harbor: stormy oceanic teal
-	3: Vector3(0.26, 0.52, 0.48), # Thornwood Hollow: deep nocturnal forest emerald
-	4: Vector3(0.40, 0.52, 0.64), # Mirefen Gardens: moonlit rose-teal lagoon
-	5: Vector3(0.30, 0.38, 0.74), # Starfall Observatory: deep royal astral sapphire
-	6: Vector3(0.58, 0.32, 0.44), # Ashen Kiln: glowing volcanic soot-crimson
-	7: Vector3(0.46, 0.54, 0.76), # Moon Shoals: pale silver-ice moonlight
-	8: Vector3(0.30, 0.22, 0.48), # The Long Night: pitch eclipsed plum-void
+	1: Vector3(0.64, 0.58, 0.78), # Bell Isle: luminous warm dusk indigo
+	2: Vector3(0.48, 0.68, 0.84), # Tidewater Harbor: crisp moonlit oceanic teal
+	3: Vector3(0.56, 0.76, 0.72), # Thornwood Hollow: vibrant nocturnal forest emerald
+	4: Vector3(0.58, 0.70, 0.80), # Mirefen Gardens: luminous moonlit rose-teal lagoon
+	5: Vector3(0.50, 0.58, 0.88), # Starfall Observatory: rich royal astral sapphire
+	6: Vector3(0.74, 0.50, 0.60), # Ashen Kiln: warm glowing volcanic hearth-crimson
+	7: Vector3(0.62, 0.70, 0.88), # Moon Shoals: clear silver-ice moonlight
+	8: Vector3(0.62, 0.56, 0.78), # The Long Night: readable eclipsed plum-twilight
 }
 
 static var active_instance: LxDarknessLayer = null
 
-var darkness_strength: float = 0.56
-var vignette_strength: float = 0.14
+var darkness_strength: float = 0.36
+var vignette_strength: float = 0.08
 var wave_active: bool = false
 var wave_origin: Vector2 = Vector2.ZERO
 var wave_radius: float = 0.0
@@ -175,7 +175,9 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	var b_off: float = LxBiomeRules.active_instance.get_darkness_offset() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.0
 	var b_phase: float = LxBiomeRules.active_instance.get_shader_phase() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.5
 	var b_id: int = region.current_island_id if (region != null and region.current_island_id > 0) else 1
-	var eff_dark: float = clampf(darkness_strength + b_off - _beacon_lift, 0.0, 0.88)
+	var is_dng: bool = region != null and region.is_dungeon
+	var max_dark: float = 0.38 if is_dng else 0.44
+	var eff_dark: float = clampf((darkness_strength + b_off) * 0.58 - _beacon_lift, 0.0, max_dark)
 	_mat.set_shader_parameter("cam_origin", (cam_center - view_sz * 0.5).round())
 	_mat.set_shader_parameter("view_size", view_sz)
 	_mat.set_shader_parameter("darkness_strength", eff_dark)
@@ -198,14 +200,14 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	_mat.set_shader_parameter("phase_flash", clampf(_phase_flash, 0.0, 1.0))
 	_mat.set_shader_parameter("focus_flash", clampf(_focus_flash, 0.0, 1.0))
 	_mat.set_shader_parameter("shader_clock", _clock)
-	var use_shafts: float = 0.65 if (region != null and region.is_dungeon) else 0.0
+	var use_shafts: float = 0.80 if is_dng else 0.0
 	_mat.set_shader_parameter("dungeon_shafts", use_shafts)
 
 	# Dual-frequency organic flame breath (calm gentle breath when flash_reduction is enabled)
 	var fr_flk: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 	var flicker: float = (0.985 + 0.015 * sin(_clock * 2.4)) if fr_flk else (0.955 + 0.030 * sin(_clock * 5.2) + 0.015 * sin(_clock * 13.7))
 	var lights := PackedVector4Array()
-	_append_player_lights(lights, flicker)
+	_append_player_lights(lights, flicker, is_dng)
 
 	var candidates: Array[Dictionary] = []
 	for b: Dictionary in _burst_lights:
@@ -394,7 +396,7 @@ func _tick_burst_lights(dt: float) -> void:
 		else:
 			b["age"] = age
 
-func _append_player_lights(lights: PackedVector4Array, flicker: float) -> void:
+func _append_player_lights(lights: PackedVector4Array, flicker: float, is_dungeon: bool = false) -> void:
 	if Lx.player == null or not is_instance_valid(Lx.player):
 		return
 	var p_pos: Vector2 = _player_pos()
@@ -415,12 +417,14 @@ func _append_player_lights(lights: PackedVector4Array, flicker: float) -> void:
 	var move_boost: float = 16.0 if dashing else (12.0 if gliding else 0.0)
 	var b_boost: Vector2 = _biome_and_harmony_light_boost()
 	if not lantern_out:
-		var base_hand: float = maxf(108.0 if has_lens else 96.0, custom_r) + move_boost + b_boost.x
-		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, base_hand * flicker, (1.46 if dashing else 1.35) + b_boost.y))
+		var hand_r: float = (144.0 if has_lens else 132.0) if is_dungeon else (132.0 if has_lens else 118.0)
+		var base_hand: float = maxf(hand_r, custom_r) + move_boost + b_boost.x
+		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, base_hand * flicker, (1.52 if dashing else 1.42) + b_boost.y))
 	else:
-		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, 42.0 + move_boost + b_boost.x * 0.45, (1.05 if dashing else 0.72) + b_boost.y * 0.5))
-		var base_hung: float = maxf(118.0 if has_lens else 86.0, custom_r) + b_boost.x
-		lights.append(Vector4(lan_pos.x, lan_pos.y - 6.0, base_hung * flicker, 1.38 + b_boost.y))
+		lights.append(Vector4(p_pos.x, p_pos.y - 8.0, 56.0 + move_boost + b_boost.x * 0.45, (1.10 if dashing else 0.85) + b_boost.y * 0.5))
+		var hung_r: float = (144.0 if has_lens else 116.0) if is_dungeon else (136.0 if has_lens else 104.0)
+		var base_hung: float = maxf(hung_r, custom_r) + b_boost.x
+		lights.append(Vector4(lan_pos.x, lan_pos.y - 6.0, base_hung * flicker, 1.45 + b_boost.y))
 
 
 func _biome_and_harmony_light_boost() -> Vector2:

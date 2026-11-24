@@ -3,9 +3,10 @@
   "island_id": 2,
   "tile_size": 16,
   "is_dungeon": true,
+  "is_2x2_room": true,
   "spawn": [
     40,
-    112
+    136
   ],
   "zones": [
     {
@@ -15,7 +16,7 @@
         0,
         0,
         448,
-        224
+        256
       ],
       "dark": true
     }
@@ -25,13 +26,13 @@
       "id": "exit_lh_r5_west",
       "rect": [
         0,
-        80,
+        112,
         16,
         48
       ],
       "to_region": "lighthouse_r4",
       "to_spawn": [
-        312,
+        368,
         104
       ],
       "requires_moves": [],
@@ -42,19 +43,38 @@
       "id": "exit_lh_r5_east",
       "rect": [
         432,
-        80,
+        112,
         16,
         48
       ],
       "to_region": "lighthouse_r6",
       "to_spawn": [
         40,
-        112
+        128
       ],
       "requires_moves": [
         "prism"
       ],
       "requires_flags": [],
+      "locked_door_id": "door_lh_r5_shutter"
+    },
+    {
+      "id": "exit_lh_r5_shortcut_r1",
+      "rect": [
+        384,
+        240,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r1",
+      "to_spawn": [
+        288,
+        64
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "lh_r5_prism_solved"
+      ],
       "locked_door_id": "door_lh_r5_shutter"
     }
   ],
@@ -64,8 +84,8 @@
       "id": "shrine_prism",
       "kind": "shrine",
       "pos": [
-        152,
-        112
+        120,
+        136
       ],
       "props": {
         "move_id": "prism",
@@ -74,15 +94,71 @@
       }
     },
     {
-      "id": "mirror_lh_r5_a",
-      "kind": "mirror",
+      "id": "transformer_lh_r5_a",
+      "kind": "blue_transformer",
       "pos": [
-        280,
-        152
+        136,
+        184
       ],
       "props": {
-        "angle_deg": 225,
-        "rotatable": false,
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_lh_r5_bridge",
+      "kind": "switch_eye",
+      "pos": [
+        264,
+        88
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "bridge_lh_r5",
+        "sets_flag": "lh_r5_bridge_open"
+      }
+    },
+    {
+      "id": "bridge_lh_r5",
+      "kind": "door",
+      "pos": [
+        232,
+        176
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          32
+        ],
+        "zone": "lighthouse_r5",
+        "requires_signals": [
+          "switch_eye_lh_r5_bridge"
+        ],
+        "sets_flag": "lh_r5_bridge_open"
+      }
+    },
+    {
+      "id": "transformer_lh_r5_b",
+      "kind": "blue_transformer",
+      "pos": [
+        312,
+        184
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -93,10 +169,11 @@
       "id": "switch_eye_lh_r5",
       "kind": "switch_eye",
       "pos": [
-        280,
-        48
+        360,
+        56
       ],
       "props": {
+        "requires_blue": true,
         "requires_prism": true,
         "target_id": "door_lh_r5_shutter",
         "sets_flag": "lh_r5_prism_solved"
@@ -106,8 +183,8 @@
       "id": "door_lh_r5_shutter",
       "kind": "door",
       "pos": [
-        424,
-        112
+        408,
+        136
       ],
       "props": {
         "door_kind": "switch_door",
@@ -128,8 +205,8 @@
       "sheet": "island2_scenery",
       "prop": "brass_compass_floor",
       "pos": [
-        152,
-        112
+        120,
+        136
       ],
       "layer": "ground",
       "flip_x": false,
@@ -140,8 +217,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        136,
-        48
+        104,
+        72
       ],
       "layer": "sort",
       "flip_x": false,
@@ -152,8 +229,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        136,
-        180
+        152,
+        72
       ],
       "layer": "sort",
       "flip_x": true,
@@ -162,10 +239,22 @@
     },
     {
       "sheet": "island2_scenery",
+      "prop": "mooring_bollard",
+      "pos": [
+        264,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        192,
-        48
+        280,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -176,38 +265,37 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        192,
-        180
+        376,
+        120
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
-      "phase": 0.75
+      "phase": 0.7
     },
     {
       "sheet": "island2_scenery",
-      "prop": "mooring_bollard",
+      "prop": "sea_glass_arch",
       "pos": [
-        344,
-        56
+        400,
+        224
       ],
-      "layer": "sort",
+      "layer": "overhead",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": false,
+      "phase": 0.4
     },
     {
       "sheet": "island2_scenery",
-      "prop": "wooden_crates",
+      "prop": "buoy_bobbing",
       "pos": [
-        344,
-        168
+        232,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": false,
+      "phase": 0.3
     }
-  ],
-  "is_2x2_room": true
+  ]
 }

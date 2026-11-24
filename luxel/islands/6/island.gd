@@ -80,7 +80,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_isl6_beacon_1",
 			"region": "overworld",
 			"zone": "ash_drifts",
-			"pos": [456.0, 120.0],
+			"pos": [440.0, 120.0],
 			"action": "light_beacon",
 			"target": "beacon_6_1",
 			"grants_flag": "beacon_6_1",
@@ -91,7 +91,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_isl6_beacon_2",
 			"region": "overworld",
 			"zone": "slag_foundry",
-			"pos": [488.0, 376.0],
+			"pos": [552.0, 440.0],
 			"action": "light_beacon",
 			"target": "beacon_6_2",
 			"grants_flag": "beacon_6_2",
@@ -102,7 +102,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_isl6_beacon_3",
 			"region": "overworld",
 			"zone": "furnace_causeway",
-			"pos": [1032.0, 120.0],
+			"pos": [1016.0, 120.0],
 			"action": "light_beacon",
 			"target": "beacon_6_3",
 			"grants_flag": "beacon_6_3",
@@ -124,7 +124,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_kiln_key_1",
 			"region": "kiln_r2",
 			"zone": "kiln_r2",
-			"pos": [72.0, 120.0],
+			"pos": [72.0, 168.0],
 			"action": "collect_key",
 			"target": "wick_key_6_1",
 			"grants_flag": "wick_key_6_1",
@@ -135,7 +135,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_kiln_r3_combat",
 			"region": "kiln_r3",
 			"zone": "kiln_r3",
-			"pos": [208.0, 112.0],
+			"pos": [272.0, 24.0],
 			"action": "clear_room",
 			"target": "door_kiln_r3_north",
 			"requires_moves": ["dash", "throw"],
@@ -145,7 +145,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_kiln_r4_crossing",
 			"region": "kiln_r4",
 			"zone": "kiln_r4",
-			"pos": [328.0, 120.0],
+			"pos": [344.0, 104.0],
 			"action": "unlock_door",
 			"target": "door_kiln_r4_east",
 			"requires_moves": ["wings", "lens"],
@@ -155,7 +155,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_shrine_sunflare",
 			"region": "kiln_r5",
 			"zone": "kiln_r5",
-			"pos": [208.0, 112.0],
+			"pos": [200.0, 104.0],
 			"action": "claim_shrine",
 			"target": "shrine_sunflare",
 			"grants_move": "sunflare",
@@ -166,7 +166,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_kiln_miniboss",
 			"region": "kiln_r6",
 			"zone": "kiln_r6",
-			"pos": [272.0, 128.0],
+			"pos": [288.0, 128.0],
 			"action": "defeat_miniboss",
 			"target": "mini_forge_warden",
 			"grants_flag": "wick_key_6_2",
@@ -177,7 +177,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_kiln_furnace_hall",
 			"region": "kiln_r7",
 			"zone": "kiln_r7",
-			"pos": [208.0, 120.0],
+			"pos": [48.0, 120.0],
 			"action": "solve_puzzle",
 			"target": "door_kiln_r7_west",
 			"requires_moves": ["sunflare"],
@@ -187,7 +187,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_kiln_r8_combat",
 			"region": "kiln_r8",
 			"zone": "kiln_r8",
-			"pos": [224.0, 112.0],
+			"pos": [24.0, 136.0],
 			"action": "clear_room",
 			"target": "door_kiln_r8_west",
 			"requires_moves": ["sunflare"],
@@ -197,7 +197,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_kiln_boss_key",
 			"region": "kiln_r9",
 			"zone": "kiln_r9",
-			"pos": [72.0, 112.0],
+			"pos": [72.0, 136.0],
 			"action": "collect_key",
 			"target": "keepers_flame_6",
 			"grants_flag": "keepers_flame_6",
@@ -288,6 +288,10 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	if _events == null:
 		return
 	if shrine_id == "shrine_sunflare" or move_id == "sunflare":
+		var st: LxGameState = _get_state()
+		var emax: float = st.get_effective_ember_max() if st != null else 100.0
+		if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.get("ember") != null:
+			Lx.player.set("ember", emax)
 		_emit_narration("MOVE_SUNFLARE_NAME", "title", 3.5)
 		_events.prompt_requested.emit("PROMPT_SUNFLARE", "lx_sunflare", 6.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
@@ -301,7 +305,6 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	_emit_narration("CUE_BEACON_LIT_6", "title", 2.5)
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 
@@ -335,7 +338,6 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
 			_events.music_mode_requested.emit("island6_dungeon")
-			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("forge_warden_defeated")
 
 
@@ -345,7 +347,6 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island6_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
-		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2_ISL6", "warning", 3.0)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:

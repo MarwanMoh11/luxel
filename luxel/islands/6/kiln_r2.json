@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    312,
-    120
+    368,
+    168
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        384,
-        240
+        416,
+        256
       ],
       "dark": true
     }
@@ -24,15 +24,15 @@
     {
       "id": "exit_kiln_r2_east",
       "rect": [
-        368,
-        96,
+        400,
+        144,
         16,
         48
       ],
       "to_region": "kiln_r1",
       "to_spawn": [
         40,
-        112
+        152
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -45,8 +45,8 @@
       "id": "brazier_kiln_r2_n",
       "kind": "brazier",
       "pos": [
-        248,
-        72
+        328,
+        88
       ],
       "props": {
         "target_id": "door_kiln_r2_key"
@@ -56,21 +56,41 @@
       "id": "brazier_kiln_r2_s",
       "kind": "brazier",
       "pos": [
-        248,
-        168
+        264,
+        200
       ],
       "props": {
         "target_id": "door_kiln_r2_key"
       }
     },
     {
+      "id": "tf_kiln_r2",
+      "kind": "blue_transformer",
+      "pos": [
+        248,
+        136
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
       "id": "switch_eye_kiln_r2",
       "kind": "switch_eye",
       "pos": [
-        136,
-        72
+        152,
+        136
       ],
       "props": {
+        "requires_blue": true,
         "target_id": "door_kiln_r2_key"
       }
     },
@@ -79,13 +99,13 @@
       "kind": "door",
       "pos": [
         104,
-        120
+        176
       ],
       "props": {
         "door_kind": "switch_door",
         "size": [
           16,
-          48
+          32
         ],
         "requires_signals": [
           "brazier_kiln_r2_n",
@@ -99,12 +119,53 @@
       "kind": "wick_key",
       "pos": [
         72,
-        120
+        168
       ],
       "props": {
         "dungeon_id": "great_kiln",
         "key_kind": "wick_key",
         "flag_id": "wick_key_6_1"
+      }
+    },
+    {
+      "id": "portal_kiln_r2_in",
+      "kind": "blue_portal",
+      "pos": [
+        360,
+        72
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r2_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "kiln_r2_sluice_portal_lit"
+      }
+    },
+    {
+      "id": "portal_kiln_r2_out",
+      "kind": "blue_portal",
+      "pos": [
+        104,
+        56
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r2_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "chest_kiln_r2_sluice",
+      "kind": "chest",
+      "pos": [
+        56,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45,
+        "zone": "kiln_r2"
       }
     }
   ],
@@ -114,44 +175,32 @@
       "sheet": "island6_scenery",
       "prop": "ember_grate_vent",
       "pos": [
-        280,
-        76
+        312,
+        168
       ],
       "layer": "ground",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.0
+      "phase": 0.2
     },
     {
       "sheet": "island6_scenery",
-      "prop": "ember_grate_vent",
+      "prop": "hearth_brazier_tall",
       "pos": [
-        280,
-        164
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
-      "pos": [
-        306,
-        77
+        368,
+        132
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
       "phase": 0.1
     },
     {
       "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
+      "prop": "hearth_brazier_tall",
       "pos": [
-        306,
-        172
+        368,
+        204
       ],
       "layer": "sort",
       "flip_x": true,
@@ -162,8 +211,8 @@
       "sheet": "island6_scenery",
       "prop": "forge_anvil_stand",
       "pos": [
-        72,
-        74
+        48,
+        136
       ],
       "layer": "sort",
       "flip_x": false,
@@ -174,25 +223,49 @@
       "sheet": "island6_scenery",
       "prop": "coal_hopper",
       "pos": [
-        72,
-        172
+        80,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ash_urn_cluster",
+      "pos": [
+        136,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.0
     },
     {
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        136,
-        170
+        64,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.3
+      "phase": 0.25
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        80,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
     }
   ],
   "is_2x2_room": true

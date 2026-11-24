@@ -23,8 +23,11 @@ func setup(spec: Dictionary) -> void:
 func on_light(light_radius: float, source: String) -> void:
 	if not active or light_radius <= 0.0:
 		return
-	var has_lens: bool = source == "lens" or Lx.state == null or Lx.state.has_move("lens")
-	if not has_lens:
+	var allow: bool = source == "lens" or (
+		(source == "lantern_hung" or source == "lens_anchor")
+		and Lx.state != null and Lx.state.has_move("lens")
+	)
+	if not allow:
 		return
 	var was: bool = revealed
 	revealed = true
@@ -34,6 +37,34 @@ func on_light(light_radius: float, source: String) -> void:
 		_emit_gust(48.0, 34.0)
 		_emit_sfx("phantom_phase")
 		queue_redraw()
+
+
+func _is_reveal_warning() -> bool:
+	if not revealed:
+		return false
+	if _reveal_left > 0.0 and _reveal_left < 0.14:
+		return true
+	if Lx.player == null or not is_instance_valid(Lx.player):
+		return false
+	var ml: Variant = Lx.player.get("move_lens")
+	var lan: Variant = Lx.player.get("lantern")
+	var pulse_active: bool = ml is Object and (ml as Object).has_method("is_pulse_active") and bool((ml as Object).call("is_pulse_active"))
+	var pulse_warn: bool = ml is Object and (ml as Object).has_method("is_warning") and bool((ml as Object).call("is_warning"))
+	var anchor_in_range: bool = false
+	var anchor_warn: bool = false
+	if lan is Object and (lan as Object).has_method("is_lure_active") and bool((lan as Object).call("is_lure_active")) \
+			and Lx.state != null and Lx.state.has_move("lens"):
+		var lpos_v: Variant = (lan as Object).get("pos")
+		var hung_r: float = float(Lx.get_move_data("lens").get("hung_radius", 78.0))
+		if lpos_v is Vector2 and (lpos_v as Vector2).distance_to(pos) <= hung_r + radius:
+			anchor_in_range = true
+			if (lan as Object).has_method("is_hanging") and bool((lan as Object).call("is_hanging")):
+				anchor_warn = float((lan as Object).get("hang_timer")) <= 1.1
+	if pulse_active and not pulse_warn:
+		return false
+	if anchor_in_range and not anchor_warn:
+		return false
+	return pulse_warn or anchor_warn
 
 
 func tick(dt: float) -> void:
@@ -50,6 +81,8 @@ func tick(dt: float) -> void:
 			changed = true
 		elif _reveal_left < 0.14 or was_warn:
 			changed = true
+	if revealed and _is_reveal_warning():
+		changed = true
 	if active:
 		var rate: float = 3.0 if revealed else 1.5
 		var st: int = int(floorf(_clock * rate + absf(pos.x * 0.02 + pos.y * 0.03))) % 4
@@ -90,84 +123,31 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	# Flat floor pad — no drop shadow.
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
 	var x0: float = floorf(-w * 0.5)
 	var y0: float = floorf(-h * 0.5)
-	var b_dk: Color = LxBiomePalette.col(island_id, "ward_a")
-	var b_md: Color = LxBiomePalette.col(island_id, "ward_b")
-	var b_hi: Color = LxBiomePalette.col(island_id, "ward_hi")
-	var b_glow: Color = LxBiomePalette.col(island_id, "glow")
 	if revealed:
-		draw_rect(Rect2(x0, y0 + 1.0, w, h), PAL["night"])
-		draw_rect(Rect2(x0, y0, w, h), b_dk)
-		draw_rect(Rect2(x0 + 1.0, y0 + 1.0, w - 2.0, h - 2.0), PAL["blue"] if island_id in [2, 5, 7] else b_dk)
-		var tile_w: float = 8.0
-		var tile_h: float = 8.0
-		var ty: float = y0 + 1.0
-		var row: int = 0
-		while ty < y0 + h - 1.0:
-			var th: float = minf(tile_h, y0 + h - 1.0 - ty)
-			var tx: float = x0 + 1.0
-			var col_i: int = 0
-			while tx < x0 + w - 1.0:
-				var tw: float = minf(tile_w, x0 + w - 1.0 - tx)
-				draw_rect(Rect2(tx, ty, tw - 1.0, th - 1.0), b_md)
-				draw_rect(Rect2(tx, ty, tw - 1.0, 1.0), b_hi)
-				draw_rect(Rect2(tx, ty, 1.0, th - 1.0), b_hi)
-				draw_rect(Rect2(tx + tw - 1.0, ty, 1.0, th), b_dk)
-				draw_rect(Rect2(tx, ty + th - 1.0, tw, 1.0), b_dk)
-				var cx: float = floorf(tx + (tw - 1.0) * 0.5)
-				var cy: float = floorf(ty + (th - 1.0) * 0.5)
-				draw_rect(Rect2(cx, cy - 1.0, 1.0, 3.0), b_hi)
-				draw_rect(Rect2(cx - 1.0, cy, 3.0, 1.0), b_hi)
-				if (row + col_i + _shimmer_stage) % 4 == 0:
-					draw_rect(Rect2(cx, cy, 1.0, 1.0), PAL["cream"])
-				tx += tile_w
-				col_i += 1
-			ty += tile_h
-			row += 1
-		var stars: Array[Vector2] = [
+		var warn: bool = _is_reveal_warning()
+		if warn:
+			var wf: int = 0 if LxHudFx.flash_reduced() else (int(floorf(_clock / 0.14)) % 2)
+			_draw_puzzle_tiled("phantom_warn", size, Vector2.ZERO, _clock, Color.WHITE, wf)
+		else:
+			_draw_puzzle_tiled("phantom_solid", size, Vector2.ZERO, _clock, Color.WHITE, _shimmer_stage % 2)
+		if _reveal_fx_t > 0.0:
+			var sc: Color = (PAL["cream"] if _reveal_fx_t > 0.12 else PAL["ice"]) as Color
+			draw_rect(Rect2(x0, y0, 2.0, 1.0), sc)
+			draw_rect(Rect2(x0 + w - 2.0, y0, 2.0, 1.0), sc)
+			draw_rect(Rect2(x0, y0 + h - 1.0, 2.0, 1.0), sc)
+			draw_rect(Rect2(x0 + w - 2.0, y0 + h - 1.0, 2.0, 1.0), sc)
+		return
+	# Subtle 4-corner star-dust glints on transparent background (no opaque boxes or alpha washes)
+	_draw_puzzle_tiled("phantom_hint", size)
+	var near_player: bool = Lx.player != null and is_instance_valid(Lx.player) and Lx.player is Node2D and (Lx.player as Node2D).global_position.distance_squared_to(pos) < 3025.0
+	if near_player:
+		var corners: Array[Vector2] = [
 			Vector2(x0 + 1.0, y0 + 1.0), Vector2(x0 + w - 2.0, y0 + 1.0),
 			Vector2(x0 + 1.0, y0 + h - 2.0), Vector2(x0 + w - 2.0, y0 + h - 2.0),
 		]
-		for si: int in range(stars.size()):
-			var sp: Vector2 = stars[si]
-			var bright: bool = (si + _shimmer_stage) % 2 == 0
-			draw_rect(Rect2(sp.x - 1.0, sp.y, 3.0, 1.0), b_glow if bright else b_md)
-			draw_rect(Rect2(sp.x, sp.y - 1.0, 1.0, 3.0), b_glow if bright else b_md)
-			draw_rect(Rect2(sp.x, sp.y, 1.0, 1.0), PAL["cream"] if bright else b_glow)
-		if _reveal_fx_t > 0.0:
-			var ru: float = 1.0 - clampf(_reveal_fx_t / 0.24, 0.0, 1.0)
-			draw_rect(Rect2(x0, y0, w, h), PAL["cream"] if _reveal_fx_t > 0.12 else b_glow, false, 1.0)
-			draw_arc(Vector2.ZERO, roundf(lerpf(4.0, maxf(w, h) * 0.56, ru)), 0.0, TAU, 14, Color(PAL["cream"] if ru < 0.4 else b_glow, (1.0 - ru) * 0.85), 1.0)
-		elif _reveal_left > 0.0 and _reveal_left < 0.14:
-			var no_flash: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
-			var warn_c: Color = (b_md if (no_flash or int(floorf(_clock * 24.0)) % 2 == 0) else b_dk)
-			draw_rect(Rect2(x0, y0, w, h), warn_c, false, 1.0)
-		return
-	var br_c: Color = b_dk
-	var tip_c: Color = b_md
-	var near_player: bool = Lx.player != null and is_instance_valid(Lx.player) and Lx.player is Node2D and (Lx.player as Node2D).global_position.distance_squared_to(pos) < 3025.0
-	if near_player:
-		br_c = b_md
-		tip_c = b_hi
-	draw_rect(Rect2(x0, y0, 4.0, 1.0), br_c)
-	draw_rect(Rect2(x0, y0, 1.0, 4.0), br_c)
-	draw_rect(Rect2(x0 + w - 4.0, y0, 4.0, 1.0), br_c)
-	draw_rect(Rect2(x0 + w - 1.0, y0, 1.0, 4.0), br_c)
-	draw_rect(Rect2(x0, y0 + h - 1.0, 4.0, 1.0), br_c)
-	draw_rect(Rect2(x0, y0 + h - 4.0, 1.0, 4.0), br_c)
-	draw_rect(Rect2(x0 + w - 4.0, y0 + h - 1.0, 4.0, 1.0), br_c)
-	draw_rect(Rect2(x0 + w - 1.0, y0 + h - 4.0, 1.0, 4.0), br_c)
-	var glint_c: Color = (PAL["cream"] if near_player else b_hi) as Color
-	draw_rect(Rect2(x0, y0, 1.0, 1.0), glint_c if _shimmer_stage == 0 else tip_c)
-	draw_rect(Rect2(x0 + w - 1.0, y0, 1.0, 1.0), glint_c if (_shimmer_stage == 1 and near_player) else tip_c)
-	draw_rect(Rect2(x0, y0 + h - 1.0, 1.0, 1.0), glint_c if (_shimmer_stage == 2 and near_player) else tip_c)
-	draw_rect(Rect2(x0 + w - 1.0, y0 + h - 1.0, 1.0, 1.0), glint_c if (_shimmer_stage == 3 and near_player) else tip_c)
-	var m1x: float = floorf(-w * 0.18)
-	var m1y: float = floorf(-h * 0.12)
-	var m2x: float = floorf(w * 0.18)
-	var m2y: float = floorf(h * 0.12)
-	draw_rect(Rect2(m1x, m1y, 1.0, 1.0), (b_hi if near_player else b_md) if _shimmer_stage % 2 == 0 else br_c)
-	draw_rect(Rect2(m2x, m2y, 1.0, 1.0), br_c if _shimmer_stage % 2 == 0 else (b_hi if near_player else b_md))
+		draw_rect(Rect2(corners[_shimmer_stage % 4], Vector2.ONE), PAL["sky"] as Color)

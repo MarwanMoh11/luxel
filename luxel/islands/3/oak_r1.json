@@ -48,12 +48,31 @@
       ],
       "to_region": "oak_r2",
       "to_spawn": [
-        72,
+        40,
         120
       ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r1_shortcut",
+      "rect": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "to_region": "oak_r5",
+      "to_spawn": [
+        80,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "oak_r5_beam_solved"
+      ],
+      "locked_door_id": "door_oak_r1_shortcut"
     }
   ],
   "enemies": [],
@@ -62,7 +81,7 @@
       "id": "ws_oak",
       "kind": "waystone",
       "pos": [
-        208,
+        200,
         120
       ],
       "props": {
@@ -71,10 +90,44 @@
       }
     },
     {
+      "id": "door_oak_r1_shortcut",
+      "kind": "door",
+      "pos": [
+        104,
+        64
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          32
+        ],
+        "zone": "oak_r1",
+        "requires_flags": [
+          "oak_r5_beam_solved"
+        ]
+      }
+    },
+    {
+      "id": "portal_oak_r1_shortcut",
+      "kind": "blue_portal",
+      "pos": [
+        48,
+        48
+      ],
+      "props": {
+        "starts_powered": true,
+        "requires_blue": false,
+        "requires_flags": [
+          "oak_r5_beam_solved"
+        ]
+      }
+    },
+    {
       "id": "lamp_oak_r1_w",
       "kind": "road_lamp",
       "pos": [
-        152,
+        144,
         72
       ],
       "props": {
@@ -85,8 +138,8 @@
       "id": "lamp_oak_r1_e",
       "kind": "road_lamp",
       "pos": [
-        264,
-        72
+        296,
+        88
       ],
       "props": {
         "zone": "oak_r1"
@@ -111,7 +164,7 @@
       "sheet": "island3_scenery",
       "prop": "root_ring_floor",
       "pos": [
-        208,
+        200,
         120
       ],
       "layer": "ground",
@@ -121,10 +174,22 @@
     },
     {
       "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        48,
+        48
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        104,
-        62
+        144,
+        42
       ],
       "layer": "sort",
       "flip_x": false,
@@ -135,20 +200,68 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        312,
-        62
+        264,
+        42
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        312,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        360,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
       "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        368,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        368,
+        140
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
     },
     {
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        104,
-        168
+        168,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -159,37 +272,49 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        312,
-        168
+        248,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.7
+      "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        128,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
     },
     {
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
         148,
-        184
+        178
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.3
+      "phase": 0.7
     },
     {
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        268,
-        184
+        288,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
-      "phase": 0.6
+      "phase": 0.5
     }
   ],
   "is_2x2_room": true

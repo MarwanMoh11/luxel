@@ -13,33 +13,129 @@ static func shake_enabled() -> bool:
 	return Lx.save == null or float(Lx.save.settings.get("screen_shake", 1.0)) > 0.01
 
 
-static func draw_cues(hud: CanvasItem, cues: Array[Dictionary], prompt_rect: Rect2) -> void:
+static func narration_has_title() -> bool:
+	if Lx.ui == null:
+		return false
+	var nar_v: Variant = Lx.ui.get("narration")
+	return nar_v is Object and is_instance_valid(nar_v) and (nar_v as Object).has_method("is_saying") and bool((nar_v as Object).call("is_saying", "title"))
+
+
+static func is_ceremony_active() -> bool:
+	if narration_has_title():
+		return true
+	if Lx.ui != null:
+		var nar_v: Variant = Lx.ui.get("narration")
+		if nar_v is Object and is_instance_valid(nar_v) and (nar_v as Object).has_method("is_letterbox_on") and bool((nar_v as Object).call("is_letterbox_on")):
+			return true
+	if Lx.world != null and is_instance_valid(Lx.world) and Lx.world.has_method("get_interactables"):
+		var items_v: Variant = Lx.world.call("get_interactables")
+		if items_v is Array:
+			for it: Variant in (items_v as Array):
+				if not (it is Object) or not is_instance_valid(it):
+					continue
+				var obj: Object = it as Object
+				var k: String = str(obj.get("kind"))
+				if k != "shrine" and k != "great_lamp":
+					continue
+				for prop: String in ["_claim_t", "_relight_t", "_dawn_t"]:
+					var tv: Variant = obj.get(prop)
+					if (tv is float or tv is int) and float(tv) > 0.0:
+						return true
+	return false
+
+
+static func sync_reticle_visibility(hud: Node) -> void:
+	if Lx.ui == null:
+		return
+	var cn: Variant = Lx.ui.get("_cursor_node")
+	if not (cn is CanvasItem) or not is_instance_valid(cn) or not (cn as CanvasItem).visible:
+		return
+	var vp: Viewport = hud.get_viewport()
+	if vp == null:
+		return
+	var pos: Vector2 = vp.get_mouse_position().round()
+	if Lx.input != null and Lx.input.last_device == "gamepad":
+		var center := Vector2(160.0, 90.0)
+		if Lx.player != null and Lx.camera != null and Lx.player is Node2D:
+			center = (Lx.player as Node2D).global_position - Lx.camera.global_position + Vector2(160.0, 90.0)
+		pos = (center + Lx.input.last_aim_dir.normalized() * 42.0).round()
+		pos = Vector2(clampf(pos.x, 8.0, 312.0), clampf(pos.y, 8.0, 172.0))
+	if Rect2(0.0, 150.0, 166.0, 30.0).has_point(pos) or Rect2(242.0, 156.0, 78.0, 24.0).has_point(pos):
+		(cn as CanvasItem).visible = false
+
+
+static func draw_cues(hud: CanvasItem, cues: Array[Dictionary], prompt_rect: Rect2, notice_rect: Rect2 = Rect2()) -> void:
 	var has_prompt: bool = prompt_rect.has_area()
+	var has_notice: bool = notice_rect.has_area()
+	var hide_titles: bool = narration_has_title()
 	var placed: Array[Rect2] = []
 	for cue: Dictionary in cues:
+		if bool(cue.get("hide_on_title", false)) and hide_titles:
+			continue
 		var t: float = float(cue["t"])
 		var dur: float = float(cue["dur"])
 		var fade_p: float = minf(t / 0.15, (dur - t) / 0.35)
 		var col: Color = LxPalette.fade_step(fade_p, str(cue["color"]))
 		if col.a <= 0.0:
 			continue
+		var is_world: bool = bool(cue["is_world"])
+		var is_boss_callout: bool = bool(cue.get("boss_callout", false))
 		var screen_pos: Vector2 = cue["pos"] as Vector2
-		if bool(cue["is_world"]) and Lx.camera != null:
+		if is_world and Lx.camera != null:
 			screen_pos = screen_pos - Lx.camera.global_position + Vector2(160.0, 90.0)
-		screen_pos.y -= floorf(t * 14.0)
+		if is_boss_callout:
+			screen_pos.y = 24.0
+		else:
+			screen_pos.y -= floorf(t * 14.0)
 		var txt: String = str(cue["text"])
 		var tw: float = float(LxPixelFont.width(txt, 1))
 		screen_pos.x = clampf(roundf(screen_pos.x), 8.0 + tw * 0.5, 312.0 - tw * 0.5)
-		screen_pos.y = clampf(roundf(screen_pos.y), 16.0, 152.0)
-		var cr := Rect2(screen_pos.x - tw * 0.5 - 2.0, screen_pos.y - 1.0, tw + 4.0, 7.0)
-		if has_prompt and cr.intersects(prompt_rect.grow(2.0)):
-			screen_pos.y = maxf(14.0, prompt_rect.position.y - 8.0)
-			cr.position.y = screen_pos.y - 1.0
-		for prev: Rect2 in placed:
-			if cr.intersects(prev):
-				screen_pos.y = maxf(14.0, prev.position.y - 8.0)
-				cr.position.y = screen_pos.y - 1.0
+		screen_pos.y = 24.0 if is_boss_callout else clampf(roundf(screen_pos.y), 16.0, 152.0)
+		var pad_y: float = 1.0 if is_world else 2.0
+		var box_h: float = 7.0 if is_world else 9.0
+		var cr := Rect2(roundf(screen_pos.x - tw * 0.5) - (2.0 if is_world else 3.0), screen_pos.y - pad_y, tw + (4.0 if is_world else 6.0), box_h)
+		if not is_boss_callout:
+			if has_notice and cr.intersects(notice_rect.grow(2.0)):
+				screen_pos.y = clampf(notice_rect.end.y + 3.0, 16.0, 152.0)
+				cr.position.y = screen_pos.y - pad_y
+			if has_prompt and cr.intersects(prompt_rect.grow(2.0)):
+				var above_y: float = prompt_rect.position.y - (box_h + 1.0)
+				var cand_above := Rect2(cr.position.x, above_y - pad_y, cr.size.x, cr.size.y)
+				if above_y >= 16.0 and not (has_notice and cand_above.intersects(notice_rect.grow(2.0))):
+					screen_pos.y = above_y
+				else:
+					screen_pos.y = clampf(prompt_rect.end.y + 3.0, 16.0, 152.0)
+				cr.position.y = screen_pos.y - pad_y
+			for prev: Rect2 in placed:
+				if cr.intersects(prev):
+					var next_y: float = prev.position.y - (box_h + 1.0)
+					var cand_prev := Rect2(cr.position.x, next_y - pad_y, cr.size.x, cr.size.y)
+					if next_y >= 16.0 and not (has_notice and cand_prev.intersects(notice_rect.grow(2.0))) and not (has_prompt and cand_prev.intersects(prompt_rect.grow(2.0))):
+						screen_pos.y = next_y
+					else:
+						screen_pos.y = clampf(prev.end.y + 2.0, 16.0, 152.0)
+					cr.position.y = screen_pos.y - pad_y
+			if has_notice and cr.intersects(notice_rect.grow(2.0)):
+				screen_pos.y = clampf(notice_rect.end.y + 3.0, 16.0, 152.0)
+				cr.position.y = screen_pos.y - pad_y
+			if has_prompt and cr.intersects(prompt_rect.grow(2.0)):
+				screen_pos.y = clampf(prompt_rect.end.y + 3.0, 16.0, 152.0)
+				cr.position.y = screen_pos.y - pad_y
 		placed.append(cr)
+		if is_boss_callout:
+			var tx: float = roundf(screen_pos.x - tw * 0.5)
+			var ty: float = roundf(screen_pos.y)
+			hud.draw_rect(Rect2(tx - 5.0, ty - 2.0, tw + 10.0, 9.0), Color(LxPalette.PAL["void"] as Color, col.a))
+			hud.draw_rect(Rect2(tx - 4.0, ty - 1.0, tw + 8.0, 7.0), Color(LxPalette.PAL["night"] as Color, col.a))
+			hud.draw_rect(Rect2(tx - 3.0, ty + 2.0, 1.0, 1.0), Color(LxPalette.PAL["gold"] as Color, col.a))
+			hud.draw_rect(Rect2(tx + tw + 2.0, ty + 2.0, 1.0, 1.0), Color(LxPalette.PAL["gold"] as Color, col.a))
+		elif not is_world:
+			var tx: float = roundf(screen_pos.x - tw * 0.5)
+			var ty: float = roundf(screen_pos.y)
+			var pill_col := Color(LxPalette.PAL["void"] as Color, 0.72 * col.a)
+			hud.draw_rect(Rect2(tx - 2.0, ty - 2.0, tw + 4.0, 9.0), pill_col)
+			hud.draw_rect(Rect2(tx - 3.0, ty - 1.0, 1.0, 7.0), pill_col)
+			hud.draw_rect(Rect2(tx + tw + 2.0, ty - 1.0, 1.0, 7.0), pill_col)
 		LxPixelFont.draw_centered(hud, txt, screen_pos.x, screen_pos.y, col, 1)
 
 
@@ -84,15 +180,23 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 		2:
 			if not br.is_dungeon:
 				has_top_badge = true
+				hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
+				draw_biome_crest(hud, 2, o + Vector2(3.0, 3.0), LxPalette.PAL["sky"] as Color, LxPalette.PAL["ice"] as Color)
+				if br.tide_surging:
+					hud.draw_rect(Rect2(o + Vector2(2.0, 1.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+				var bo2: Vector2 = o + Vector2(8.0, 1.0)
 				var fill_w: float = floorf(18.0 * clampf(br.tide_phase, 0.0, 1.0))
-				hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
-				hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), night)
+				hud.draw_rect(Rect2(bo2, Vector2(22.0, 5.0)), bg)
+				hud.draw_rect(Rect2(bo2 + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), LxPalette.PAL["dusk"] as Color)
+				hud.draw_rect(Rect2(bo2 + Vector2(1.0, 1.0), Vector2(20.0, 1.0)), LxPalette.PAL["mauve"] as Color)
+				hud.draw_rect(Rect2(bo2 + Vector2(1.0, 1.0), Vector2(1.0, 3.0)), LxPalette.PAL["mauve"] as Color)
+				hud.draw_rect(Rect2(bo2 + Vector2(2.0, 2.0), Vector2(18.0, 1.0)), night)
 				var tc: Color = (LxPalette.PAL["ice"] if br.tide_surging else LxPalette.PAL["sky"]) as Color
 				if fill_w > 0.0:
-					hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(fill_w, 1.0)), tc)
+					hud.draw_rect(Rect2(bo2 + Vector2(2.0, 2.0), Vector2(fill_w, 1.0)), tc)
 			if br.beam_buff_t > 0.0:
 				has_top_badge = true
-				var fo: Vector2 = (o + Vector2(25.0, -1.0)) if not br.is_dungeon else o
+				var fo: Vector2 = (o + Vector2(33.0, 0.0)) if not br.is_dungeon else o
 				hud.draw_rect(Rect2(fo, Vector2(7.0, 7.0)), bg)
 				hud.draw_rect(Rect2(fo + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(fo + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), LxPalette.PAL["gold"] as Color)
@@ -138,52 +242,99 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				hud.draw_rect(Rect2(o + Vector2(2.0 + sw - 1.0, 2.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
 		6:
 			has_top_badge = true
+			hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
+			draw_biome_crest(hud, 6, o + Vector2(3.0, 3.0), LxPalette.PAL["coral"] as Color, LxPalette.PAL["gold"] as Color)
+			if br.vent_cycle >= 0.56:
+				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+			var bo6: Vector2 = o + Vector2(8.0, 1.0)
 			var vw: float = floorf(18.0 * clampf(br.vent_cycle, 0.0, 1.0))
-			hud.draw_rect(Rect2(o, Vector2(22.0, 5.0)), bg)
-			hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), night)
+			hud.draw_rect(Rect2(bo6, Vector2(22.0, 5.0)), bg)
+			hud.draw_rect(Rect2(bo6 + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), LxPalette.PAL["dusk"] as Color)
+			hud.draw_rect(Rect2(bo6 + Vector2(1.0, 1.0), Vector2(20.0, 1.0)), LxPalette.PAL["mauve"] as Color)
+			hud.draw_rect(Rect2(bo6 + Vector2(1.0, 1.0), Vector2(1.0, 3.0)), LxPalette.PAL["mauve"] as Color)
+			hud.draw_rect(Rect2(bo6 + Vector2(2.0, 2.0), Vector2(18.0, 1.0)), night)
 			var vc: Color = (LxPalette.PAL["gold"] if br.vent_cycle >= 0.56 else LxPalette.PAL["coral"]) as Color
 			if vw > 0.0:
-				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(vw, 1.0)), vc)
+				hud.draw_rect(Rect2(bo6 + Vector2(2.0, 2.0), Vector2(vw, 1.0)), vc)
 			if bm != null and is_instance_valid(bm) and bm.molten_charges > 0:
 				for k: int in range(bm.molten_charges):
-					var px: float = o.x + 25.0 + float(k) * 5.0
-					hud.draw_rect(Rect2(px, o.y, 4.0, 5.0), bg)
-					hud.draw_rect(Rect2(px + 1.0, o.y + 1.0, 2.0, 3.0), LxPalette.PAL["coral"] as Color)
-					hud.draw_rect(Rect2(px + 1.0, o.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
+					var px: float = o.x + 33.0 + float(k) * 5.0
+					hud.draw_rect(Rect2(px, o.y + 1.0, 4.0, 5.0), bg)
+					hud.draw_rect(Rect2(px + 1.0, o.y + 2.0, 2.0, 3.0), LxPalette.PAL["coral"] as Color)
+					hud.draw_rect(Rect2(px + 1.0, o.y + 2.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
 		7:
 			has_top_badge = true
-			hud.draw_rect(Rect2(o, Vector2(9.0, 9.0)), bg)
-			hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(7.0, 7.0)), night)
+			var m: Vector2 = o + Vector2(1.0, 1.0)
+			# Rounded 9x9 void backing behind sculpted 7x7 circular moon disk
+			hud.draw_rect(Rect2(o + Vector2(2.0, 0.0), Vector2(5.0, 9.0)), bg)
+			hud.draw_rect(Rect2(o + Vector2(1.0, 1.0), Vector2(7.0, 7.0)), bg)
+			hud.draw_rect(Rect2(o + Vector2(0.0, 2.0), Vector2(9.0, 5.0)), bg)
 			var full_m: bool = br.lunar_phase > 0.5
-			hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(5.0, 5.0)), (LxPalette.PAL["ice"] if full_m else LxPalette.PAL["plum"]) as Color)
+			var rim_c: Color = (LxPalette.PAL["sky"] if full_m else LxPalette.PAL["plum"]) as Color
+			hud.draw_rect(Rect2(m + Vector2(2.0, 0.0), Vector2(3.0, 7.0)), rim_c)
+			hud.draw_rect(Rect2(m + Vector2(1.0, 1.0), Vector2(5.0, 5.0)), rim_c)
+			hud.draw_rect(Rect2(m + Vector2(0.0, 2.0), Vector2(7.0, 3.0)), rim_c)
+			var body_c: Color = (LxPalette.PAL["ice"] if full_m else night) as Color
+			hud.draw_rect(Rect2(m + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), body_c)
+			hud.draw_rect(Rect2(m + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), body_c)
 			if full_m:
-				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2(3.0, 3.0)), LxPalette.PAL["cream"] as Color)
-				if bm != null and is_instance_valid(bm) and bm.mirror_echo_active:
-					hud.draw_rect(Rect2(o + Vector2(11.0, 2.0), Vector2(5.0, 5.0)), bg)
-					hud.draw_rect(Rect2(o + Vector2(12.0, 3.0), Vector2(3.0, 3.0)), LxPalette.PAL["ice"] as Color)
-					hud.draw_rect(Rect2(o + Vector2(13.0, 4.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(2.0, 1.0), Vector2(2.0, 1.0)), LxPalette.PAL["cream"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(1.0, 2.0), Vector2(2.0, 1.0)), LxPalette.PAL["cream"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(1.0, 3.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(4.0, 3.0), Vector2.ONE), LxPalette.PAL["dusk"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(3.0, 5.0), Vector2.ONE), LxPalette.PAL["dusk"] as Color)
 			else:
-				hud.draw_rect(Rect2(o + Vector2(4.0, 2.0), Vector2(3.0, 5.0)), night)
-				hud.draw_rect(Rect2(o + Vector2(2.0, 3.0), Vector2(1.0, 3.0)), LxPalette.PAL["sky"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(2.0, 0.0), Vector2.ONE), LxPalette.PAL["sky"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(1.0, 1.0), Vector2.ONE), LxPalette.PAL["sky"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(0.0, 2.0), Vector2(1.0, 3.0)), LxPalette.PAL["sky"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(1.0, 5.0), Vector2.ONE), LxPalette.PAL["sky"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(2.0, 6.0), Vector2.ONE), LxPalette.PAL["sky"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(2.0, 1.0), Vector2.ONE), LxPalette.PAL["ice"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(1.0, 2.0), Vector2(1.0, 3.0)), LxPalette.PAL["ice"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(2.0, 5.0), Vector2.ONE), LxPalette.PAL["ice"] as Color)
+				hud.draw_rect(Rect2(m + Vector2(1.0, 2.0), Vector2(1.0, 2.0)), LxPalette.PAL["cream"] as Color)
+			if bm != null and is_instance_valid(bm) and bm.mirror_echo_active:
+				var sc: Vector2 = o + Vector2(13.0, 4.0)
+				hud.draw_rect(Rect2(sc + Vector2(-1.0, -3.0), Vector2(3.0, 7.0)), bg)
+				hud.draw_rect(Rect2(sc + Vector2(-3.0, -1.0), Vector2(7.0, 3.0)), bg)
+				hud.draw_rect(Rect2(sc + Vector2(-2.0, -2.0), Vector2(5.0, 5.0)), bg)
+				hud.draw_rect(Rect2(sc + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), LxPalette.PAL["sky"] as Color)
+				hud.draw_rect(Rect2(sc + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), LxPalette.PAL["ice"] as Color)
+				hud.draw_rect(Rect2(sc + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), LxPalette.PAL["ice"] as Color)
+				hud.draw_rect(Rect2(sc + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), LxPalette.PAL["cream"] as Color)
+				hud.draw_rect(Rect2(sc + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), LxPalette.PAL["cream"] as Color)
 		8:
 			has_top_badge = true
 			var seals_b: int = bm.dawn_seals_broken if (bm != null and is_instance_valid(bm)) else 0
+			var pulse_on: bool = fred or (int(blink_t * 4.0) % 2 == 0)
 			for k: int in range(3):
-				var sx: float = o.x + float(k) * 7.0
-				hud.draw_rect(Rect2(sx, o.y, 6.0, 6.0), bg)
-				if k < seals_b:
-					hud.draw_rect(Rect2(sx + 1.0, o.y + 1.0, 4.0, 4.0), LxPalette.PAL["gold"] as Color)
-					hud.draw_rect(Rect2(sx + 2.0, o.y + 2.0, 2.0, 2.0), LxPalette.PAL["cream"] as Color)
+				var so := Vector2(o.x + float(k) * 9.0, o.y)
+				var dm: Vector2 = so + Vector2(1.0, 1.0)
+				hud.draw_rect(Rect2(so + Vector2(3.0, 0.0), Vector2(3.0, 9.0)), bg)
+				hud.draw_rect(Rect2(so + Vector2(2.0, 1.0), Vector2(5.0, 7.0)), bg)
+				hud.draw_rect(Rect2(so + Vector2(1.0, 2.0), Vector2(7.0, 5.0)), bg)
+				hud.draw_rect(Rect2(so + Vector2(0.0, 3.0), Vector2(9.0, 3.0)), bg)
+				var broken: bool = k < seals_b
+				var rim_d: Color = (LxPalette.PAL["gold"] if broken else (LxPalette.PAL["rose"] if pulse_on else LxPalette.PAL["plum"])) as Color
+				hud.draw_rect(Rect2(dm + Vector2(3.0, 0.0), Vector2(1.0, 7.0)), rim_d)
+				hud.draw_rect(Rect2(dm + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), rim_d)
+				hud.draw_rect(Rect2(dm + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), rim_d)
+				hud.draw_rect(Rect2(dm + Vector2(0.0, 3.0), Vector2(7.0, 1.0)), rim_d)
+				if broken:
+					hud.draw_rect(Rect2(dm + Vector2(3.0, 2.0), Vector2(1.0, 3.0)), LxPalette.PAL["cream"] as Color)
+					hud.draw_rect(Rect2(dm + Vector2(2.0, 3.0), Vector2(3.0, 1.0)), LxPalette.PAL["cream"] as Color)
+					hud.draw_rect(Rect2(dm + Vector2(2.0, 1.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
 				else:
-					var pulse_on: bool = fred or (int(blink_t * 4.0) % 2 == 0)
-					hud.draw_rect(Rect2(sx + 1.0, o.y + 1.0, 4.0, 4.0), (LxPalette.PAL["rose"] if pulse_on else LxPalette.PAL["plum"]) as Color)
-					hud.draw_rect(Rect2(sx + 2.0, o.y + 2.0, 2.0, 2.0), bg)
+					hud.draw_rect(Rect2(dm + Vector2(3.0, 1.0), Vector2(1.0, 5.0)), night)
+					hud.draw_rect(Rect2(dm + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), night)
+					hud.draw_rect(Rect2(dm + Vector2(1.0, 3.0), Vector2(5.0, 1.0)), night)
+					hud.draw_rect(Rect2(dm + Vector2(3.0, 3.0), Vector2.ONE), bg)
 	# Compact overworld micro-discovery pips (Islands 2..8) once at least 1 toy is discovered
 	if not br.is_dungeon and br.island_id >= 2 and LxBiomeDiscoveries.active_instance != null and is_instance_valid(LxBiomeDiscoveries.active_instance):
 		var found_d: int = LxBiomeDiscoveries.active_instance.get_found_count()
 		var tot_d: int = LxBiomeDiscoveries.active_instance.get_total_count()
 		if found_d > 0 and tot_d > 0:
-			var dy: float = (o.y + (10.0 if br.island_id == 7 else 7.0)) if has_top_badge else o.y
+			var dy: float = (o.y + (10.0 if (br.island_id == 7 or br.island_id == 8) else (8.0 if (br.island_id == 2 or br.island_id == 6) else 7.0))) if has_top_badge else o.y
 			var d_col: Color = LxBiomePalette.col(br.island_id, "glow")
 			var show_d: int = mini(tot_d, 5)
 			for k: int in range(show_d):
@@ -321,6 +472,21 @@ static func _draw_boss_phase_filigree(hud: CanvasItem, blink_t: float, phase: in
 			var sy_b: float = roundf(py - 2.0 - u_b * 7.0)
 			var sx_b: float = roundf(px + side * (1.0 + sin(blink_t * 4.0 + side) * 1.5))
 			hud.draw_rect(Rect2(sx_b, sy_b, 1.0, 1.0), (LxPalette.PAL["cream"] as Color) if u_b < 0.35 else b_glow)
+	# Crisp 2 px crimson-gold pulsing screen-corner rim vignette (4 L-brackets)
+	var p_v: float = 0.45 if fred else (0.55 + 0.45 * sin(blink_t * (7.2 if phase >= 3 else 5.0)))
+	var arm_h: float = 22.0 if phase >= 3 else 18.0
+	var arm_v: float = 16.0 if phase >= 3 else 14.0
+	var out_c := Color(LxPalette.PAL["coral"] as Color, 0.55 if fred else (0.65 + 0.30 * p_v))
+	var in_c := Color(LxPalette.PAL["gold"] as Color, 0.48 if fred else (0.55 + 0.35 * p_v))
+	for c: Vector2 in [Vector2(0.0, 0.0), Vector2(320.0, 0.0), Vector2(0.0, 180.0), Vector2(320.0, 180.0)]:
+		var left: bool = c.x < 160.0
+		var top: bool = c.y < 90.0
+		hud.draw_rect(Rect2(0.0 if left else 320.0 - arm_h, 0.0 if top else 179.0, arm_h, 1.0), out_c)
+		hud.draw_rect(Rect2(1.0 if left else 322.0 - arm_h, 1.0 if top else 178.0, arm_h - 3.0, 1.0), in_c)
+		hud.draw_rect(Rect2(0.0 if left else 319.0, 0.0 if top else 180.0 - arm_v, 1.0, arm_v), out_c)
+		hud.draw_rect(Rect2(1.0 if left else 318.0, 1.0 if top else 182.0 - arm_v, 1.0, arm_v - 3.0), in_c)
+		if lit:
+			hud.draw_rect(Rect2(1.0 if left else 318.0, 1.0 if top else 178.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
 
 
 static func draw_boss_biome_header(hud: CanvasItem, island_id: int, name_w: float, bar_x: float, bar_y: float, bar_w: float, phase: int) -> void:

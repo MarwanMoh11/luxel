@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    224,
+    160,
     248
   ],
   "zones": [
@@ -24,14 +24,14 @@
     {
       "id": "exit_sanctum_r4_south",
       "rect": [
-        208,
+        144,
         272,
         32,
         16
       ],
       "to_region": "sanctum_r3",
       "to_spawn": [
-        208,
+        160,
         40
       ],
       "requires_moves": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_sanctum_r4_north",
       "rect": [
-        208,
+        288,
         0,
         32,
         16
       ],
       "to_region": "sanctum_r5",
       "to_spawn": [
-        224,
-        216
+        272,
+        248
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -62,17 +62,17 @@
       "kind": "night_harbinger",
       "boss_id": "night_harbinger",
       "pos": [
-        224,
-        128
+        248,
+        152
       ],
       "route": [
         [
-          152,
-          128
+          168,
+          152
         ],
         [
-          296,
-          128
+          328,
+          152
         ]
       ],
       "perches": [],
@@ -82,23 +82,10 @@
   ],
   "interactables": [
     {
-      "id": "keepers_flame_8",
-      "kind": "keepers_flame",
-      "pos": [
-        224,
-        144
-      ],
-      "props": {
-        "dungeon_id": "bell_sanctum",
-        "key_kind": "keepers_flame",
-        "flag_id": "keepers_flame_8"
-      }
-    },
-    {
       "id": "door_sanctum_r4_north",
       "kind": "door",
       "pos": [
-        224,
+        304,
         24
       ],
       "props": {
@@ -115,34 +102,34 @@
   "scenery": [
     {
       "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
+      "prop": "stained_glass_debris",
       "pos": [
-        168,
-        46
+        200,
+        54
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        200,
+        40
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": false,
+      "phase": 0.1
     },
     {
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        280,
-        46
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "tattered_sanctum_banner",
-      "pos": [
-        56,
-        116
+        264,
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -151,86 +138,158 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "tattered_sanctum_banner",
+      "prop": "dark_candelabra",
       "pos": [
-        392,
-        116
+        344,
+        44
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
       "phase": 0.65
     },
     {
       "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
+      "prop": "tattered_sanctum_banner",
       "pos": [
-        168,
-        240
+        160,
+        110
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.25
     },
     {
       "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
+      "prop": "tattered_sanctum_banner",
       "pos": [
-        280,
-        240
+        304,
+        190
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.75
     },
     {
       "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
+      "prop": "stone_gargoyle_perch",
       "pos": [
-        56,
-        48
+        40,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        392,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        56,
-        240
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
+      "shadow": true,
       "phase": 0.3
     },
     {
       "sheet": "island8_scenery",
+      "prop": "stone_gargoyle_perch",
+      "pos": [
+        408,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        124,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        196,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "floating_cathedral_shard",
+      "pos": [
+        56,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
       "prop": "floating_cathedral_shard",
       "pos": [
         392,
-        240
+        48
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": false,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "floating_cathedral_shard",
+      "pos": [
+        40,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "floating_cathedral_shard",
+      "pos": [
+        392,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.85
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        136,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        344,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
       "phase": 0.8
     }
   ],

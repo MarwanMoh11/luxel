@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     408,
-    112
+    152
   ],
   "zones": [
     {
@@ -15,7 +15,7 @@
         0,
         0,
         448,
-        224
+        256
       ],
       "dark": true
     }
@@ -25,14 +25,14 @@
       "id": "exit_kiln_r9_east",
       "rect": [
         432,
-        80,
+        128,
         16,
         48
       ],
       "to_region": "kiln_r8",
       "to_spawn": [
         40,
-        112
+        136
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,14 +41,14 @@
     {
       "id": "exit_kiln_r9_south",
       "rect": [
-        208,
-        208,
+        192,
+        240,
         32,
         16
       ],
       "to_region": "kiln_r1",
       "to_spawn": [
-        224,
+        240,
         48
       ],
       "requires_moves": [],
@@ -80,11 +80,75 @@
   "enemies": [],
   "interactables": [
     {
+      "id": "bramble_kiln_r9",
+      "kind": "bramble",
+      "pos": [
+        360,
+        160
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "zone": "kiln_r9"
+      }
+    },
+    {
+      "id": "tf_kiln_r9",
+      "kind": "blue_transformer",
+      "pos": [
+        280,
+        168
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_kiln_r9",
+      "kind": "switch_eye",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_kiln_r9_vault"
+      }
+    },
+    {
+      "id": "door_kiln_r9_vault",
+      "kind": "door",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_kiln_r9"
+        ]
+      }
+    },
+    {
       "id": "seal_kiln_r9",
       "kind": "obsidian_seal",
       "pos": [
-        136,
-        104
+        104,
+        136
       ],
       "props": {
         "size": [
@@ -99,7 +163,7 @@
       "kind": "keepers_flame",
       "pos": [
         72,
-        112
+        136
       ],
       "props": {
         "dungeon_id": "great_kiln",
@@ -108,11 +172,38 @@
       }
     },
     {
+      "id": "portal_kiln_r9_in",
+      "kind": "blue_portal",
+      "pos": [
+        232,
+        72
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r9_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "kiln_r9_vault_portal_lit"
+      }
+    },
+    {
+      "id": "portal_kiln_r9_out",
+      "kind": "blue_portal",
+      "pos": [
+        376,
+        56
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r9_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
       "id": "chest_kiln_r9",
       "kind": "chest",
       "pos": [
-        376,
-        48
+        392,
+        56
       ],
       "props": {
         "reward_kind": "shards",
@@ -125,8 +216,8 @@
       "id": "door_kiln_r9_south",
       "kind": "door",
       "pos": [
-        224,
-        200
+        208,
+        232
       ],
       "props": {
         "door_kind": "shortcut_door",
@@ -164,46 +255,46 @@
   "scenery": [
     {
       "sheet": "island6_scenery",
-      "prop": "ember_grate_vent",
+      "prop": "iron_arch_rib",
       "pos": [
-        312,
-        156
+        224,
+        48
       ],
-      "layer": "ground",
+      "layer": "over",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
-      "pos": [
-        184,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
-      "pos": [
-        264,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
     },
     {
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
+        188,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        260,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
         184,
-        174
+        204
       ],
       "layer": "sort",
       "flip_x": false,
@@ -212,10 +303,10 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
+      "prop": "iron_chain_pillar",
       "pos": [
-        264,
-        174
+        232,
+        204
       ],
       "layer": "sort",
       "flip_x": true,
@@ -224,27 +315,51 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
+      "prop": "ember_grate_vent",
       "pos": [
-        344,
-        168
+        208,
+        152
       ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
     },
     {
       "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
+      "prop": "ember_grate_vent",
       "pos": [
-        344,
-        62
+        320,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        64,
+        96
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.8
+      "phase": 0.25
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        64,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
     }
   ],
   "is_2x2_room": true

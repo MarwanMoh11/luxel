@@ -25,11 +25,14 @@ var triggers: Array[Dictionary] = []
 var rooms: Array[Dictionary] = []
 
 var _ground_sprite: Sprite2D = null
+var _floor_interactables_root: Node2D = null
 var _scenery_ground_root: Node2D = null
+var _world_ysort_root: Node2D = null
 var _scenery_sort_root: Node2D = null
 var _scenery_over_root: Node2D = null
 var _scenery_props: Array[LxSceneryProp] = []
 var _water_fx: LxWaterFx = null
+var _signal_conduits: LxSignalConduits = null
 var _ambient_life: LxAmbientLife = null
 var _interactables_root: Node2D = null
 var _enemies_root: Node2D = null
@@ -48,14 +51,20 @@ func _ready() -> void:
 func _ensure_containers() -> void:
 	if _water_fx == null:
 		_water_fx = LxWaterFx.new(); _water_fx.name = "WaterFx"; add_child(_water_fx)
+	if _signal_conduits == null:
+		_signal_conduits = LxSignalConduits.new(); _signal_conduits.name = "SignalConduits"; _signal_conduits.z_index = -6; add_child(_signal_conduits)
+	if _floor_interactables_root == null:
+		_floor_interactables_root = _make_layer("FloorInteractables", -6, false)
 	if _scenery_ground_root == null:
 		_scenery_ground_root = _make_layer("SceneryGround", -5, false)
+	if _world_ysort_root == null:
+		_world_ysort_root = _make_layer("WorldYSort", 0, true)
 	if _scenery_sort_root == null:
-		_scenery_sort_root = _make_layer("ScenerySort", 0, true)
+		_scenery_sort_root = _make_layer("ScenerySort", 0, true, _world_ysort_root)
 	if _interactables_root == null:
-		_interactables_root = _make_layer("Interactables", 0, true)
+		_interactables_root = _make_layer("Interactables", 0, true, _world_ysort_root)
 	if _enemies_root == null:
-		_enemies_root = _make_layer("Enemies", 0, true)
+		_enemies_root = _make_layer("Enemies", 0, true, _world_ysort_root)
 	if _ambient_life == null:
 		_ambient_life = LxAmbientLife.new()
 		_ambient_life.name = "AmbientLife"
@@ -64,13 +73,17 @@ func _ensure_containers() -> void:
 	if _scenery_over_root == null:
 		_scenery_over_root = _make_layer("SceneryOver", 4, false)
 
-func _make_layer(layer_name: String, z: int, y_sort: bool) -> Node2D:
+func _make_layer(layer_name: String, z: int, y_sort: bool, parent_node: Node = null) -> Node2D:
 	var n := Node2D.new()
 	n.name = layer_name
 	n.z_index = z
 	n.y_sort_enabled = y_sort
-	add_child(n)
+	(parent_node if parent_node != null else self).add_child(n)
 	return n
+
+func get_ysort_root() -> Node2D:
+	_ensure_containers()
+	return _world_ysort_root
 
 func load_region(island_id: int, region_id: String, director: LxAttackDirector) -> bool:
 	var map_path: String = "res://luxel/islands/%d/%s.map" % [island_id, region_id]
@@ -120,7 +133,10 @@ func load_region_from_paths(
 	var inter_specs: Array[Dictionary] = []
 	inter_specs.assign(parsed.get("interactables", []))
 	_spawn_interactables(inter_specs)
+	_promote_destructible_map_tiles()
 	load_interactables_from_state()
+	if _signal_conduits != null:
+		_signal_conduits.rebuild(self)
 	var enemy_specs: Array[Dictionary] = []
 	enemy_specs.assign(parsed.get("enemies", []))
 	_spawn_enemies(enemy_specs, director)
@@ -146,6 +162,8 @@ func _clear_loaded() -> void:
 	_enemies.clear()
 	_interactables.clear()
 	_interactables_by_id.clear()
+	if _signal_conduits != null:
+		_signal_conduits.clear()
 	_lens_circles.clear()
 	_fired_triggers.clear()
 	_current_room_id = ""
@@ -154,7 +172,7 @@ func _clear_loaded() -> void:
 		_ground_sprite.queue_free()
 		_ground_sprite = null
 	_scenery_props.clear()
-	for root_node: Node2D in [_interactables_root, _enemies_root, _scenery_ground_root, _scenery_sort_root, _scenery_over_root]:
+	for root_node: Node2D in [_floor_interactables_root, _interactables_root, _enemies_root, _scenery_ground_root, _scenery_sort_root, _scenery_over_root]:
 		if root_node != null:
 			for c: Node in root_node.get_children():
 				c.queue_free()
@@ -189,21 +207,114 @@ func _spawn_interactables(specs: Array[Dictionary]) -> void:
 		item.island_id = current_island_id
 		item.region_id = current_region_id
 		item.setup(spec)
-		_interactables_root.add_child(item)
+		_sync_interactable_layer(item)
 		_interactables.append(item)
 		if not item.id.is_empty():
 			_interactables_by_id[item.id] = item
 
+func _is_floor_interactable(item: LxInteractable) -> bool:
+	if item == null:
+		return false
+	if item.kind in ["blue_portal", "phantom_platform", "floor_switch"]:
+		return true
+	if item is LxDoor:
+		var d: LxDoor = item as LxDoor
+		return d.door_type == "bridge_platform" or (bool(d.get("_is_light_bridge")) and d.opened)
+	return false
+
+func _sync_interactable_layer(item: LxInteractable) -> void:
+	if item == null or not is_instance_valid(item):
+		return
+	var target: Node2D = _floor_interactables_root if _is_floor_interactable(item) else _interactables_root
+	if target == null:
+		return
+	if item.get_parent() == null:
+		target.add_child(item)
+	elif item.get_parent() != target:
+		item.reparent(target, false)
+
+
+func _promote_destructible_map_tiles() -> void:
+	if width <= 0 or height <= 0:
+		return
+	var ts: float = float(tile_size)
+	var visited: Dictionary = {}
+	for ty: int in range(height):
+		for tx: int in range(width):
+			var key := Vector2i(tx, ty)
+			if visited.has(key):
+				continue
+			var ttype: String = grid[ty][tx]
+			if ttype != "bramble" and ttype != "cracked":
+				continue
+			var target_kind: String = "bramble" if ttype == "bramble" else "cracked_wall"
+			var tile_center := Vector2((float(tx) + 0.5) * ts, (float(ty) + 0.5) * ts)
+			if _has_interactable_covering(target_kind, tile_center):
+				grid[ty][tx] = "ground"
+				visited[key] = true
+				continue
+			# Group contiguous horizontal run first; if single-wide, group vertical run.
+			var rx1: int = tx
+			while rx1 + 1 < width and grid[ty][rx1 + 1] == ttype and not visited.has(Vector2i(rx1 + 1, ty)):
+				var nc := Vector2((float(rx1 + 1) + 0.5) * ts, (float(ty) + 0.5) * ts)
+				if _has_interactable_covering(target_kind, nc):
+					break
+				rx1 += 1
+			var ry1: int = ty
+			if rx1 == tx:
+				while ry1 + 1 < height and grid[ry1 + 1][tx] == ttype and not visited.has(Vector2i(tx, ry1 + 1)):
+					var vc := Vector2((float(tx) + 0.5) * ts, (float(ry1 + 1) + 0.5) * ts)
+					if _has_interactable_covering(target_kind, vc):
+						break
+					ry1 += 1
+			for cy: int in range(ty, ry1 + 1):
+				for cx: int in range(tx, rx1 + 1):
+					visited[Vector2i(cx, cy)] = true
+					grid[cy][cx] = "ground"
+			var cols_n: int = rx1 - tx + 1
+			var rows_n: int = ry1 - ty + 1
+			var size_px := Vector2(float(cols_n) * ts, float(rows_n) * ts)
+			var center_px := Vector2((float(tx) + float(cols_n) * 0.5) * ts, (float(ty) + float(rows_n) * 0.5) * ts)
+			var auto_id: String = "map_%s_%d_%d" % [ttype, tx, ty]
+			var spec: Dictionary = {
+				"id": auto_id,
+				"kind": target_kind,
+				"pos": [center_px.x, center_px.y],
+				"props": {
+					"size": [size_px.x, size_px.y],
+					"from_map_tile": true,
+				},
+			}
+			var item: LxInteractable = LxInteractableFactory.create(spec)
+			if item != null:
+				item.region = self
+				item.island_id = current_island_id
+				item.region_id = current_region_id
+				item.setup(spec)
+				_interactables_root.add_child(item)
+				_interactables.append(item)
+				_interactables_by_id[auto_id] = item
+
+func _has_interactable_covering(target_kind: String, pt: Vector2) -> bool:
+	for it: LxInteractable in _interactables:
+		if it != null and it.kind == target_kind and it.get_solid_rect().grow(2.0).has_point(pt):
+			return true
+	return false
+
 func _spawn_enemies(specs: Array[Dictionary], director: LxAttackDirector) -> void:
 	for spec: Dictionary in specs:
 		var kind: String = str(spec.get("kind", "")).strip_edges()
-		if kind.is_empty():
-			continue
+		if kind.is_empty(): continue
 		var s: Dictionary = spec.duplicate(true)
 		s["island_id"] = current_island_id
+		var ep: Dictionary = s.get("props", {}) as Dictionary if s.get("props") is Dictionary else {}
+		for k: String in ["max_hp", "shield_hp", "facing", "notice_radius", "tutorial_wait_lantern"]:
+			if not s.has(k) and ep.has(k): s[k] = ep[k]
+		if s.has("max_hp") and float(s["max_hp"]) <= 0.0: s.erase("max_hp")
+		if s.has("notice_radius") and float(s["notice_radius"]) <= 0.0: s.erase("notice_radius")
+		if s.has("shield_hp"): s["shield_hp"] = maxf(0.0, float(s["shield_hp"]))
 		var brain: LxEnemyBrain = LxEnemyFactory.create(kind, s, director, self)
-		if brain == null:
-			continue
+		if brain == null: continue
 		if brain.is_boss and Lx.state != null:
 			var bid: String = brain.boss_id if not brain.boss_id.is_empty() else brain.kind
 			var alt: String = "hollow_wick" if brain.kind == "hollow_wick_boss" else ""
@@ -277,7 +388,7 @@ func get_current_room_rect() -> Rect2:
 func get_current_room_id() -> String:
 	return _current_room_id
 
-func collide(pos: Vector2, radius: float, can_cross_pit: bool = false, can_cross_water: bool = false) -> Vector2:
+func collide(pos: Vector2, radius: float, can_cross_pit: bool = false, can_cross_water: bool = false, ignore_id: String = "") -> Vector2:
 	if width <= 0 or height <= 0:
 		return pos
 	var p := Vector2(
@@ -300,17 +411,57 @@ func collide(pos: Vector2, radius: float, can_cross_pit: bool = false, can_cross
 				if not _is_tile_supported(ttype, tile_rect.get_center()):
 					p = _push_circle_out_of_rect(p, radius, tile_rect)
 		for it: LxInteractable in _interactables:
-			if it != null and it.is_solid():
+			if it != null and it.is_solid() and (ignore_id.is_empty() or it.id != ignore_id):
 				var srect: Rect2 = it.get_solid_rect()
 				if srect.size.x > 0.0 and srect.size.y > 0.0:
 					p = _push_circle_out_of_rect(p, radius, srect)
 	return p
+
+func collide_ignoring(pos: Vector2, radius: float, ignore_id: String, can_cross_pit: bool = false, can_cross_water: bool = false) -> Vector2:
+	return collide(pos, radius, can_cross_pit, can_cross_water, ignore_id)
+
+func can_place_rect(rect: Rect2, ignore_id: String = "") -> bool:
+	if width <= 0 or height <= 0 or not rect.has_area():
+		return false
+	if rect.position.x < bounds.position.x or rect.position.y < bounds.position.y \
+			or rect.end.x > bounds.end.x or rect.end.y > bounds.end.y:
+		return false
+	var eps: float = 0.25
+	var x0: float = rect.position.x + eps
+	var x1: float = rect.end.x - eps
+	var xm: float = (x0 + x1) * 0.5
+	var y0: float = rect.position.y + eps
+	var y1: float = rect.end.y - eps
+	var ym: float = (y0 + y1) * 0.5
+	var samples: Array[Vector2] = [
+		Vector2(x0, y0), Vector2(xm, y0), Vector2(x1, y0),
+		Vector2(x0, ym), Vector2(xm, ym), Vector2(x1, ym),
+		Vector2(x0, y1), Vector2(xm, y1), Vector2(x1, y1),
+	]
+	for pt: Vector2 in samples:
+		var ttype: String = tile_at(pt)
+		if is_solid_tile(ttype, false, false) and not _is_tile_supported(ttype, pt):
+			return false
+	for it: LxInteractable in _interactables:
+		if it != null and it.is_solid() and (ignore_id.is_empty() or it.id != ignore_id):
+			var srect: Rect2 = it.get_solid_rect()
+			if srect.has_area() and rect.intersects(srect):
+				return false
+	return true
 
 func _is_tile_supported(tile_type: String, tile_center: Vector2) -> bool:
 	if tile_type == "phantom":
 		for c: Vector3 in _lens_circles:
 			if tile_center.distance_squared_to(Vector2(c.x, c.y)) <= c.z * c.z:
 				return true
+		if Lx.player is LxWick and is_instance_valid(Lx.player):
+			var w: LxWick = Lx.player as LxWick
+			var ml: LxMoveLens = w.move_lens
+			if ml != null and ml.unlocked:
+				if ml.is_pulse_active() and tile_center.distance_squared_to(w.global_position) <= ml.pulse_radius * ml.pulse_radius:
+					return true
+				if ml.is_anchor_active() and w.lantern != null and tile_center.distance_squared_to(w.lantern.pos) <= ml.hung_radius * ml.hung_radius:
+					return true
 	if tile_type in ["pit", "void", "water", "tide", "phantom"]:
 		for it: LxInteractable in _interactables:
 			if it != null and it.is_platform_solid() and it.get_platform_rect().has_point(tile_center):
@@ -361,6 +512,21 @@ func tile_at(world_pos: Vector2) -> String:
 func is_solid_tile(tile_type: String, can_cross_pit: bool = false, can_cross_water: bool = false) -> bool:
 	return LxMapFormat.is_solid_tile(tile_type, can_cross_pit, can_cross_water)
 
+func is_lethal_void_at(world_pos: Vector2) -> bool:
+	if width <= 0 or height <= 0:
+		return false
+	var ttype: String = tile_at(world_pos)
+	if ttype in ["pit", "void", "phantom", "water", "tide"]:
+		var ts: float = float(tile_size)
+		var tile_center := Vector2((floorf(world_pos.x / ts) + 0.5) * ts, (floorf(world_pos.y / ts) + 0.5) * ts)
+		if _is_tile_supported(ttype, world_pos) or _is_tile_supported(ttype, tile_center):
+			return false
+		return true
+	return false
+
+func is_hazard_at(world_pos: Vector2) -> bool:
+	return is_lethal_void_at(world_pos)
+
 func find_interactable(id: String) -> LxInteractable:
 	var found: Variant = _interactables_by_id.get(id, null)
 	return found as LxInteractable if found is LxInteractable else null
@@ -406,6 +572,7 @@ func load_interactables_from_state() -> void:
 			var key: String = it.get_state_key()
 			if Lx.state.interactable_states.has(key) and Lx.state.interactable_states[key] is Dictionary:
 				it.load_state(Lx.state.interactable_states[key] as Dictionary)
+				_sync_interactable_layer(it)
 
 func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
 	_lens_circles.clear()
@@ -417,9 +584,13 @@ func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
 		_water_fx.tick(dt, cam_pos)
 	if _ambient_life != null:
 		_ambient_life.tick(dt, cam_pos)
+	if _signal_conduits != null:
+		_signal_conduits.tick(dt)
 	for it: LxInteractable in _interactables:
 		if it != null:
 			it.tick(dt)
+			if it is LxDoor:
+				_sync_interactable_layer(it)
 	if player_pos.x > -9000.0:
 		_check_triggers(player_pos)
 		if is_dungeon:
@@ -474,7 +645,7 @@ func get_lantern_pos() -> Vector2:
 func apply_light(world_pos: Vector2, light_radius: float, source: String) -> void:
 	if light_radius <= 0.0:
 		return
-	if Lx.state == null or Lx.state.has_move("lens") or source == "lens":
+	if source == "lens" or source == "lens_anchor":
 		_lens_circles.append(Vector3(world_pos.x, world_pos.y, light_radius))
 	for it: LxInteractable in _interactables:
 		if it != null and it.active:
@@ -543,13 +714,6 @@ func get_light_pools() -> Array[Vector4]:
 	for sp: LxSceneryProp in _scenery_props:
 		if sp != null and sp.light_pool.z > 1.0:
 			pools.append(sp.light_pool)
-	if is_dungeon:
-		for ex: Dictionary in exits:
-			var did: String = str(ex.get("locked_door_id", ""))
-			var door: LxInteractable = find_interactable(did) if not did.is_empty() else null
-			if (door == null or not door.is_solid()) and _exit_requirements_met(ex):
-				var ec: Vector2 = LxMapFormat.to_rect2(ex.get("rect", [])).get_center()
-				pools.append(Vector4(ec.x, ec.y, 38.0, 0.52))
 	return pools
 
 func is_flag_set(flag: String) -> bool:
@@ -573,6 +737,9 @@ func _check_triggers(player_pos: Vector2) -> void:
 	for trig: Dictionary in triggers:
 		var tid: String = str(trig.get("id", ""))
 		if tid.is_empty():
+			continue
+		var unless_flag: String = str(trig.get("unless_flag", ""))
+		if not unless_flag.is_empty() and is_flag_set(unless_flag):
 			continue
 		var once: bool = bool(trig.get("once", true))
 		var flag_key: String = "trig_%d_%s_%s" % [current_island_id, current_region_id, tid]

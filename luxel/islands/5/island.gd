@@ -82,7 +82,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_entry_moth",
 			"region": "overworld",
 			"zone": "star_landing",
-			"pos": [232.0, 544.0],
+			"pos": [248.0, 552.0],
 			"action": "clear_encounter",
 			"target": "echo_moth_5_entry",
 			"requires_moves": ["bolt", "dash", "throw", "prism", "beam", "wings"],
@@ -92,7 +92,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_beacon_1",
 			"region": "overworld",
 			"zone": "brass_terrace",
-			"pos": [504.0, 152.0],
+			"pos": [440.0, 152.0],
 			"action": "light_beacon",
 			"target": "beacon_5_1",
 			"grants_flag": "beacon_5_1",
@@ -103,7 +103,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_beacon_2",
 			"region": "overworld",
 			"zone": "echo_promenade",
-			"pos": [544.0, 840.0],
+			"pos": [600.0, 856.0],
 			"action": "light_beacon",
 			"target": "beacon_5_2",
 			"grants_flag": "beacon_5_2",
@@ -114,7 +114,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_beacon_3",
 			"region": "overworld",
 			"zone": "zenith_rim",
-			"pos": [920.0, 680.0],
+			"pos": [920.0, 696.0],
 			"action": "light_beacon",
 			"target": "beacon_5_3",
 			"grants_flag": "beacon_5_3",
@@ -125,7 +125,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_enter_orrery",
 			"region": "overworld",
 			"zone": "orrery_plaza",
-			"pos": [544.0, 412.0],
+			"pos": [496.0, 412.0],
 			"action": "enter_exit",
 			"target": "exit_to_orrery",
 			"to_region": "orrery_r1",
@@ -136,7 +136,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_key_1",
 			"region": "orrery_r2",
 			"zone": "orrery_r2",
-			"pos": [56.0, 120.0],
+			"pos": [72.0, 168.0],
 			"action": "collect_key",
 			"target": "wick_key_5_1",
 			"grants_flag": "wick_key_5_1",
@@ -147,7 +147,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_r3_combat",
 			"region": "orrery_r3",
 			"zone": "orrery_r3",
-			"pos": [208.0, 112.0],
+			"pos": [200.0, 104.0],
 			"action": "clear_room",
 			"target": "door_o5_r3_combat",
 			"grants_flag": "o5_r3_cleared",
@@ -158,7 +158,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_r4_mirrors",
 			"region": "orrery_r4",
 			"zone": "orrery_r4",
-			"pos": [248.0, 104.0],
+			"pos": [392.0, 136.0],
 			"action": "open_shutter",
 			"target": "door_o5_r4_shutter",
 			"grants_flag": "o5_r4_shutter_open",
@@ -169,7 +169,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_shrine_lens",
 			"region": "orrery_r5",
 			"zone": "orrery_r5",
-			"pos": [64.0, 72.0],
+			"pos": [72.0, 80.0],
 			"action": "claim_shrine",
 			"target": "shrine_lens",
 			"grants_move": "lens",
@@ -180,7 +180,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_miniboss",
 			"region": "orrery_r6",
 			"zone": "orrery_r6",
-			"pos": [240.0, 112.0],
+			"pos": [248.0, 128.0],
 			"action": "defeat_miniboss",
 			"target": "boss_clockwork_warden",
 			"grants_flag": "wick_key_5_2",
@@ -191,7 +191,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_r7_starlight",
 			"region": "orrery_r7",
 			"zone": "orrery_r7",
-			"pos": [72.0, 88.0],
+			"pos": [64.0, 56.0],
 			"action": "open_shutter",
 			"target": "door_o5_r7_shutter",
 			"grants_flag": "o5_r7_shutter_open",
@@ -202,7 +202,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_r8_combat",
 			"region": "orrery_r8",
 			"zone": "orrery_r8",
-			"pos": [208.0, 128.0],
+			"pos": [208.0, 144.0],
 			"action": "clear_room",
 			"target": "door_o5_r8_combat",
 			"grants_flag": "o5_r8_cleared",
@@ -213,7 +213,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_keepers_flame",
 			"region": "orrery_r9",
 			"zone": "orrery_r9",
-			"pos": [384.0, 160.0],
+			"pos": [272.0, 88.0],
 			"action": "collect_key",
 			"target": "keepers_flame_5",
 			"grants_flag": "keepers_flame_5",
@@ -224,7 +224,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_boss",
 			"region": "orrery_r10",
 			"zone": "orrery_r10",
-			"pos": [240.0, 144.0],
+			"pos": [248.0, 168.0],
 			"action": "defeat_boss",
 			"target": "boss_astronomer",
 			"grants_flag": "boss_astronomer_defeated",
@@ -235,7 +235,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_great_lamp",
 			"region": "orrery_r10",
 			"zone": "orrery_r10",
-			"pos": [240.0, 56.0],
+			"pos": [232.0, 64.0],
 			"action": "light_great_lamp",
 			"target": "great_lamp_5",
 			"grants_flag": "island_5_relit",
@@ -246,7 +246,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_bridge_to_6",
 			"region": "orrery_r10",
 			"zone": "orrery_r10",
-			"pos": [472.0, 160.0],
+			"pos": [488.0, 200.0],
 			"action": "enter_exit",
 			"target": "exit_o5_r10_bridge",
 			"to_region": "island6:overworld",
@@ -306,7 +306,7 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	if _events == null:
 		return
 	if shrine_id == "shrine_lens" or move_id == "lens":
-		_events.prompt_requested.emit("PROMPT_LENS", "", 6.0)
+		_events.prompt_requested.emit("PROMPT_LENS", "lx_lens", 6.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 		_emit_narration("MOVE_LENS_NAME", "title", 3.2)
 
@@ -319,7 +319,6 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	_emit_narration("CUE_BEACON_LIT_5", "title", 2.5)
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 
@@ -366,7 +365,6 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
 			_events.music_mode_requested.emit("island5_dungeon")
-			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("clockwork_warden_defeated")
 
 
@@ -376,7 +374,6 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island5_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
-		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2_ISL5", "warning", 3.5)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:

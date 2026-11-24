@@ -26,23 +26,13 @@ var _fireflies: Array[Dictionary] = []
 var _wisps: Array[Dictionary] = []
 
 
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	_build_backdrop()
-	refresh_slots()
-
+func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; _build_backdrop(); refresh_slots()
 
 func open(show_slots: bool = false) -> void:
-	visible = true
-	mode = Mode.SLOTS if show_slots else Mode.MAIN
-	_elapsed = 0.0
-	_confirm_idx = 1
-	refresh_slots()
-	queue_redraw()
+	visible = true; mode = Mode.SLOTS if show_slots else Mode.MAIN
+	_elapsed = 0.0; _confirm_idx = 1; refresh_slots(); queue_redraw()
 
-
-func close() -> void:
-	visible = false
+func close() -> void: visible = false
 
 
 func refresh_slots() -> void:
@@ -263,12 +253,12 @@ func _draw_sky_and_moon() -> void:
 	# Stepped twilight sky bands (warm western sunset, cool eastern moonlight).
 	draw_rect(Rect2(0.0, 66.0, 320.0, 32.0), LxPalette.PAL["night"])
 	draw_rect(Rect2(0.0, 98.0, 320.0, 48.0), LxPalette.PAL["dusk"])
-	_draw_dither_band(0.0, 320.0, 64.0, LxPalette.PAL["night"])
-	_draw_dither_band(0.0, 320.0, 96.0, LxPalette.PAL["dusk"])
+	_draw_dither_band(0.0, 320.0, 64.0, LxPalette.PAL["night"], 1)
+	_draw_dither_band(0.0, 320.0, 96.0, LxPalette.PAL["dusk"], 2)
 
 	# Western sunset glow (plum -> wine -> warm coral/apricot rim), tapering east.
 	draw_rect(Rect2(0.0, 122.0, 152.0, 14.0), LxPalette.PAL["plum"])
-	_draw_dither_band(0.0, 168.0, 120.0, LxPalette.PAL["plum"])
+	_draw_dither_band(0.0, 168.0, 120.0, LxPalette.PAL["plum"], 3)
 	for row: int in range(7):
 		var wy: float = 122.0 + float(row) * 2.0
 		var x: float = 152.0 + float((row % 2) * 3)
@@ -276,17 +266,17 @@ func _draw_sky_and_moon() -> void:
 			draw_rect(Rect2(x, wy, 4.0 if x < 176.0 else 2.0, 2.0), LxPalette.PAL["plum"])
 			x += 6.0 if x < 176.0 else 8.0
 	draw_rect(Rect2(0.0, 134.0, 114.0, 12.0), LxPalette.PAL["wine"])
-	_draw_dither_band(0.0, 126.0, 132.0, LxPalette.PAL["wine"])
+	_draw_dither_band(0.0, 126.0, 132.0, LxPalette.PAL["wine"], 4)
 	for row: int in range(6):
 		var ry: float = 134.0 + float(row) * 2.0
 		var rw: float = 44.0 - float((row * 5) % 19)
 		draw_rect(Rect2(112.0, ry, rw, 1.0), LxPalette.PAL["wine"])
 		draw_rect(Rect2(114.0 + rw + 6.0, ry + 1.0, maxf(6.0, rw * 0.35), 1.0), LxPalette.PAL["wine"])
 	draw_rect(Rect2(0.0, 143.0, 74.0, 3.0), LxPalette.PAL["coral"])
-	_draw_dither_band(56.0, 108.0, 143.0, LxPalette.PAL["coral"])
+	_draw_dither_band(56.0, 108.0, 143.0, LxPalette.PAL["coral"], 5)
 	draw_rect(Rect2(0.0, 145.0, 42.0, 1.0), LxPalette.PAL["apricot"])
 	draw_rect(Rect2(226.0, 126.0, 94.0, 20.0), LxPalette.PAL["deep"])
-	_draw_dither_band(212.0, 320.0, 124.0, LxPalette.PAL["deep"])
+	_draw_dither_band(212.0, 320.0, 124.0, LxPalette.PAL["deep"], 6)
 
 	# Twinkling 1 px and 3 px cross-sparkle stars.
 	for st: Dictionary in _stars:
@@ -302,12 +292,21 @@ func _draw_sky_and_moon() -> void:
 	LxTitleSkyFx.draw_sky_accents(self, _elapsed)
 
 
-func _draw_dither_band(x0: float, x1: float, y: float, col: Color) -> void:
+func _draw_dither_band(x0: float, x1: float, y: float, col: Color, seed_k: int = 0) -> void:
 	var x: float = x0
+	var s: int = seed_k
 	while x < x1:
-		draw_rect(Rect2(x, y, 2.0, 1.0), col)
-		draw_rect(Rect2(x + 4.0, y + 1.0, 4.0, 1.0), col)
-		x += 8.0
+		var h: int = (s * 37 + seed_k * 17 + 11) % 13
+		var w1: float = 3.0 + float(h % 5) * 2.0
+		var gap: float = 2.0 + float((h / 2) % 4) * 2.0
+		var dy: float = -1.0 if (h % 5 == 0) else (0.0 if (h % 2 == 0) else 1.0)
+		draw_rect(Rect2(x, y + dy, minf(w1, x1 - x), 1.0), col)
+		if h % 3 != 0 and x + 1.0 < x1:
+			draw_rect(Rect2(x + 1.0, y + 1.0, minf(w1 + 2.0, x1 - x - 1.0), 1.0), col)
+		if h % 4 == 0 and x + 2.0 < x1:
+			draw_rect(Rect2(x + 2.0, y - 1.0, minf(maxf(2.0, w1 - 3.0), x1 - x - 2.0), 1.0), col)
+		x += w1 + gap
+		s += 1
 
 
 func _draw_crescent_moon(ox: float, oy: float) -> void:
@@ -386,19 +385,23 @@ func _draw_archipelago() -> void:
 func _draw_sea() -> void:
 	draw_rect(Rect2(0.0, 146.0, 320.0, 34.0), LxPalette.PAL["night"])
 	draw_rect(Rect2(0.0, 149.0, 320.0, 22.0), LxPalette.PAL["deep"])
-	_draw_dither_band(0.0, 320.0, 148.0, LxPalette.PAL["deep"])
-	_draw_dither_band(0.0, 320.0, 170.0, LxPalette.PAL["night"])
+	_draw_dither_band(0.0, 320.0, 148.0, LxPalette.PAL["deep"], 7)
+	_draw_dither_band(0.0, 320.0, 170.0, LxPalette.PAL["night"], 8)
 	draw_rect(Rect2(0.0, 174.0, 320.0, 6.0), LxPalette.PAL["void"])
 	draw_rect(Rect2(0.0, 146.0, 320.0, 1.0), LxPalette.PAL["dusk"])
 	draw_rect(Rect2(0.0, 146.0, 120.0, 1.0), LxPalette.PAL["plum"])
 	draw_rect(Rect2(236.0, 146.0, 84.0, 1.0), LxPalette.PAL["blue"])
 
-	# Animated horizontal pixel wave glints.
+	# Animated horizontal pixel wave glints (keep ENTER OR CLICK TO BEGIN safe band clear).
+	var safe_band := Rect2(90.0, 158.0, 140.0, 14.0)
 	for i: int in range(18):
 		var wy: float = 149.0 + float((i * 5) % 23)
 		var bx: float = float((i * 53 + 11) % 304)
 		var drift: float = roundf(sin(_elapsed * (0.9 + float(i % 3) * 0.35) + float(i) * 1.1) * 3.0)
-		draw_rect(Rect2(bx + drift, wy, 5.0 + float(i % 4) * 2.0, 1.0), LxPalette.PAL["blue"] if (bx > 175.0 or i % 3 == 0) else LxPalette.PAL["dusk"])
+		var wr := Rect2(bx + drift, wy, 5.0 + float(i % 4) * 2.0, 1.0)
+		if mode == Mode.MAIN and wr.intersects(safe_band):
+			continue
+		draw_rect(wr, LxPalette.PAL["blue"] if (bx > 175.0 or i % 3 == 0) else LxPalette.PAL["dusk"])
 
 	# Vertical flickering golden reflection beneath Bell Tower lantern & ice/sky under moon.
 	var sway_ref: float = roundf(sin(_elapsed * 1.55) * 1.2)
@@ -474,6 +477,7 @@ func _draw_main() -> void:
 		var r: Rect2 = _main_btn_rect(i)
 		var sel: bool = i == _main_idx
 		LxPixelFont.draw_panel(self, r, "plum" if sel else "dusk", "gold" if sel else "mauve", "night")
+		_px([[r.position.x + 2.0, r.position.y + 2.0, 1.0, 1.0], [r.end.x - 3.0, r.position.y + 2.0, 1.0, 1.0], [r.position.x + 2.0, r.end.y - 3.0, 1.0, 1.0], [r.end.x - 3.0, r.end.y - 3.0, 1.0, 1.0]], LxPalette.PAL["gold" if sel else "apricot"])
 		var ink: Color = LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"]
 		LxPixelFont.draw_centered(self, LxStrings.text(MAIN_ITEMS[i]), r.get_center().x, r.position.y + 4.0, ink, 1)
 		if sel:
@@ -492,6 +496,7 @@ func _draw_slots() -> void:
 		var info: Dictionary = _summaries[i] if i < _summaries.size() else {"empty": true}
 		var is_empty: bool = bool(info.get("empty", true))
 		LxPixelFont.draw_panel(self, r, "plum" if sel else "dusk", "gold" if sel else "mauve", "night")
+		_px([[r.position.x + 2.0, r.position.y + 2.0, 1.0, 1.0], [r.end.x - 3.0, r.position.y + 2.0, 1.0, 1.0], [r.position.x + 2.0, r.end.y - 3.0, 1.0, 1.0], [r.end.x - 3.0, r.end.y - 3.0, 1.0, 1.0]], LxPalette.PAL["gold" if sel else "apricot"])
 
 		var slot_lbl: String = LxStrings.fmt("SLOT_LABEL", [i + 1])
 		LxPixelFont.draw_left(self, slot_lbl, r.position + Vector2(7.0, 5.0), LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"], 1)
@@ -544,21 +549,11 @@ func _draw_confirm_delete() -> void:
 		LxPixelFont.draw_centered(self, LxStrings.text(labels[i]), br.get_center().x, br.position.y + 4.0, LxPalette.PAL["cream"], 1)
 
 
-func _main_btn_rect(i: int) -> Rect2:
-	return Rect2(106.0, 76.0 + float(i) * 20.0, 108.0, 15.0)
-
-
-func _slot_rect(i: int) -> Rect2:
-	return Rect2(26.0, 40.0 + float(i) * 38.0, 268.0, 30.0)
-
-
+func _main_btn_rect(i: int) -> Rect2: return Rect2(106.0, 76.0 + float(i) * 20.0, 108.0, 15.0)
+func _slot_rect(i: int) -> Rect2: return Rect2(26.0, 40.0 + float(i) * 38.0, 268.0, 30.0)
 func _slot_del_rect(i: int) -> Rect2:
-	var r: Rect2 = _slot_rect(i)
-	return Rect2(r.end.x - 36.0, r.position.y + 9.0, 31.0, 12.0)
-
-
-func _confirm_btn_rect(i: int) -> Rect2:
-	return Rect2(86.0 + float(i) * 78.0, 92.0, 70.0, 15.0)
+	var r: Rect2 = _slot_rect(i); return Rect2(r.end.x - 36.0, r.position.y + 9.0, 31.0, 12.0)
+func _confirm_btn_rect(i: int) -> Rect2: return Rect2(86.0 + float(i) * 78.0, 92.0, 70.0, 15.0)
 
 
 func _build_backdrop() -> void:

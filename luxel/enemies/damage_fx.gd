@@ -172,6 +172,86 @@ static func trigger_boss_awaken(boss: LxEnemyBrain) -> void:
 		Lx.events.sfx_requested.emit("boss_awaken", boss.pos, true)
 
 
+static func trigger_boss_phase_reset(boss: LxEnemyBrain, next_phase: int) -> void:
+	if boss == null or not is_instance_valid(boss):
+		return
+	var fred: bool = LxHudFx.flash_reduced()
+	boss.awaken_t = maxf(boss.awaken_t, 0.55)
+	var hs: float = 0.14 if (boss.kind == "the_hush" and next_phase >= 3) else 0.11
+	if Lx.hitstop != null and is_instance_valid(Lx.hitstop):
+		Lx.hitstop.trigger(hs)
+	if Lx.camera != null and is_instance_valid(Lx.camera):
+		Lx.camera.add_kick(Vector2.UP, 2.8)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.trigger_focus_flash(0.55)
+		LxDarknessLayer.active_instance.add_burst_light(boss.pos, 112.0, 1.45 * (0.62 if fred else 1.0), 0.45)
+	var isl: int = boss.island_id if boss.island_id > 0 else (Lx.state.island_id if Lx.state != null else 1)
+	var ring_col: Color = LxBiomePalette.col(isl, "glow")
+	var spark_col: Color = LxBiomePalette.col(isl, "hi")
+	var cream_col: Color = LxPalette.PAL["cream"] as Color
+	if Lx.player != null and is_instance_valid(Lx.player):
+		if Lx.player.has_method("spawn_ring"):
+			Lx.player.call("spawn_ring", boss.pos, boss.body_radius + 4.0, 68.0, 0.36, ring_col, 2.0)
+			Lx.player.call("spawn_ring", boss.pos, boss.body_radius + 2.0, 44.0, 0.26, cream_col, 1.2)
+		if Lx.player.has_method("spawn_sparks"):
+			for di: int in range(4):
+				var sdir: Vector2 = Vector2.from_angle(float(di) * (PI * 0.5) + PI * 0.25)
+				Lx.player.call("spawn_sparks", boss.pos, sdir, 3, spark_col if di % 2 == 0 else cream_col, 42.0, 108.0, 0.34)
+	elif Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb):
+			if (amb as Object).has_method("_spawn_ring"):
+				(amb as Object).call("_spawn_ring", boss.pos, boss.body_radius + 4.0, 68.0, 0.36, LxBiomePalette.key(isl, "glow"), "cream", false)
+			if (amb as Object).has_method("_spawn_sparks"):
+				(amb as Object).call("_spawn_sparks", boss.pos, 12, 0, 42.0, 108.0, 0.26, 0.42)
+	if Lx.player is Node2D and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil"):
+		var diff: Vector2 = (Lx.player as Node2D).global_position - boss.pos
+		var dist: float = diff.length()
+		if dist < 72.0:
+			var push_dir: Vector2 = diff.normalized() if dist > 0.01 else Vector2.DOWN
+			var push_mag: float = lerpf(185.0, 80.0, clampf(dist / 72.0, 0.0, 1.0))
+			Lx.player.call("apply_recoil", push_dir * push_mag)
+
+
+static func spawn_boss_defeat_burst(boss: LxEnemyBrain) -> void:
+	if boss == null or not is_instance_valid(boss):
+		return
+	var fred: bool = LxHudFx.flash_reduced()
+	if Lx.hitstop != null and is_instance_valid(Lx.hitstop):
+		Lx.hitstop.trigger(0.14)
+	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("trigger_focus_nudge"):
+		Lx.camera.call("trigger_focus_nudge", boss.pos, 0.85)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.trigger_focus_flash(0.75)
+		LxDarknessLayer.active_instance.add_burst_light(boss.pos, 136.0, 1.65 * (0.62 if fred else 1.0), 0.65)
+	var isl: int = boss.island_id if boss.island_id > 0 else (Lx.state.island_id if Lx.state != null else 1)
+	var cream_col: Color = LxPalette.PAL["cream"] as Color
+	var gold_col: Color = LxPalette.PAL["gold"] as Color
+	var bio_col: Color = LxBiomePalette.col(isl, "glow")
+	var bio_hi: Color = LxBiomePalette.col(isl, "hi")
+	if Lx.player != null and is_instance_valid(Lx.player):
+		if Lx.player.has_method("spawn_ring"):
+			Lx.player.call("spawn_ring", boss.pos, 4.0, 42.0, 0.32, cream_col, 2.2)
+			Lx.player.call("spawn_ring", boss.pos, 8.0, 66.0, 0.46, gold_col, 2.0)
+			Lx.player.call("spawn_ring", boss.pos, 12.0, 92.0, 0.58, bio_col, 1.8)
+		if Lx.player.has_method("spawn_sparks"):
+			for si: int in range(5):
+				var sdir: Vector2 = Vector2.from_angle(float(si) * (TAU / 5.0))
+				var scol: Color = cream_col if si % 3 == 0 else (gold_col if si % 3 == 1 else bio_hi)
+				Lx.player.call("spawn_sparks", boss.pos, sdir, 4, scol, 36.0, 128.0, 0.55)
+	elif Lx.world != null and is_instance_valid(Lx.world):
+		var amb: Variant = Lx.world.get("_ambient_life")
+		if amb is Object and is_instance_valid(amb):
+			if (amb as Object).has_method("_spawn_ring"):
+				(amb as Object).call("_spawn_ring", boss.pos, 4.0, 42.0, 0.32, "cream", "gold", false)
+				(amb as Object).call("_spawn_ring", boss.pos, 8.0, 66.0, 0.46, "gold", LxBiomePalette.key(isl, "glow"), false)
+				(amb as Object).call("_spawn_ring", boss.pos, 12.0, 92.0, 0.58, LxBiomePalette.key(isl, "glow"), LxBiomePalette.key(isl, "hi"), true)
+			if (amb as Object).has_method("_spawn_sparks"):
+				(amb as Object).call("_spawn_sparks", boss.pos, 20, 0, 36.0, 128.0, 0.38, 0.60)
+	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, boss.pos, 24.0, 12.0)
+
+
 static func trigger_boss_phase_burst(boss_id: String, at_pos: Vector2) -> void:
 	gust_arena(at_pos, 118.0, 125.0)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):

@@ -16,7 +16,7 @@ const ITEMS: Array[String] = [
 	"PAUSE_TITLE_BTN",
 ]
 
-const PANEL_RECT := Rect2(84.0, 30.0, 152.0, 120.0)
+const PANEL_RECT := Rect2(70.0, 20.0, 180.0, 140.0)
 
 var _idx: int = 0
 var _elapsed: float = 0.0
@@ -118,6 +118,7 @@ func _draw() -> void:
 	LxHudFx.draw_biome_crest(self, isl, Vector2(PANEL_RECT.position.x + 14.0, PANEL_RECT.position.y + 12.0), b_hi, LxPalette.PAL["cream"] as Color)
 	LxHudFx.draw_biome_crest(self, isl, Vector2(PANEL_RECT.end.x - 15.0, PANEL_RECT.position.y + 12.0), b_hi, LxPalette.PAL["cream"] as Color)
 	LxPixelFont.draw_centered(self, LxStrings.text("PAUSE_TITLE"), 160.0, PANEL_RECT.position.y + 8.0, LxPalette.PAL["gold"], 2)
+	_draw_status_ribbon(isl)
 	for i: int in range(ITEMS.size()):
 		var r: Rect2 = _row_rect(i)
 		var sel: bool = i == _idx
@@ -127,7 +128,43 @@ func _draw() -> void:
 			_draw_wick_lantern(r.end.x - 12.0, r.position.y + 2.0)
 		var col: Color = LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"]
 		LxPixelFont.draw_centered(self, LxStrings.text(ITEMS[i]), r.get_center().x, r.position.y + 3.0, col, 1)
-	LxPixelFont.draw_centered(self, LxStrings.text("PAUSE_HINT"), 160.0, PANEL_RECT.end.y - 10.0, LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_centered(self, LxStrings.text("PAUSE_HINT"), 160.0, PANEL_RECT.end.y - 11.0, LxPalette.PAL["stone"], 1)
+
+
+func _draw_status_ribbon(isl: int) -> void:
+	var rib := Rect2(PANEL_RECT.position.x + 10.0, PANEL_RECT.position.y + 25.0, PANEL_RECT.size.x - 20.0, 11.0)
+	LxPixelFont.draw_panel(self, rib, "night", "dusk", "void")
+	var data: Dictionary = Lx.get_island_data(isl)
+	var isl_name: String = LxStrings.sanitize(str(data.get("name", "")), 20)
+	var left_txt: String = LxStrings.fmt("MAP_ISLAND_FMT", [isl, isl_name])
+	var b_glow: Color = LxBiomePalette.col(isl, "glow")
+	LxPixelFont.draw_left(self, left_txt, Vector2(rib.position.x + 5.0, rib.position.y + 3.0), b_glow, 1)
+	var beacons: int = _count_beacons(isl)
+	var relit: bool = Lx.state != null and Lx.state.relit_islands.has(isl)
+	var b_txt: String = LxStrings.fmt("MAP_BEACONS", [beacons])
+	var left_w: float = float(LxPixelFont.width(left_txt, 1))
+	var right_w: float = float(LxPixelFont.width(b_txt, 1))
+	if left_w + right_w + 28.0 <= rib.size.x - 10.0:
+		LxPixelFont.draw_right(self, b_txt, rib.end.x - 24.0, rib.position.y + 3.0, LxPalette.PAL["lime"] if relit else LxPalette.PAL["cream"], 1)
+	for bk: int in range(3):
+		var bx: float = rib.end.x - 20.0 + float(bk) * 5.0
+		var lit_b: bool = bk < beacons
+		draw_rect(Rect2(bx, rib.position.y + 3.0, 4.0, 4.0), b_glow if lit_b else LxPalette.PAL["void"])
+		draw_rect(Rect2(bx + 1.0, rib.position.y + 4.0, 2.0, 2.0), LxPalette.PAL["cream" if lit_b else "mauve"])
+
+
+func _count_beacons(isl_id: int) -> int:
+	if Lx.state == null:
+		return 0
+	var count: int = 0
+	var p1: String = "isl%d_" % isl_id
+	var p2: String = "%d:" % isl_id
+	var p3: String = "beacon_%d_" % isl_id
+	var p4: String = "beacon_isl%d_" % isl_id
+	for b: String in Lx.state.lit_beacons:
+		if b.begins_with(p1) or b.begins_with(p2) or b.begins_with(p3) or b.begins_with(p4) or (isl_id == 1 and b in ["beacon_orchard", "beacon_observatory", "beacon_bridge"]):
+			count += 1
+	return mini(count, 3)
 
 
 func _draw_dimmed_frame() -> void:
@@ -221,7 +258,7 @@ func _draw_wick_lantern(ox: float, oy: float) -> void:
 
 
 func _row_rect(i: int) -> Rect2:
-	return Rect2(PANEL_RECT.position.x + 12.0, PANEL_RECT.position.y + 26.0 + float(i) * 16.0, PANEL_RECT.size.x - 24.0, 12.0)
+	return Rect2(PANEL_RECT.position.x + 12.0, PANEL_RECT.position.y + 42.0 + float(i) * 16.0, PANEL_RECT.size.x - 24.0, 12.0)
 
 
 func _play_ui_sfx(sfx_id: String) -> void:

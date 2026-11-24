@@ -31,8 +31,8 @@
       ],
       "to_region": "spire_r9",
       "to_spawn": [
-        224,
-        40
+        192,
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -66,16 +66,16 @@
       "boss_id": "hollow_wick",
       "pos": [
         240,
-        128
+        144
       ],
       "route": [
         [
           168,
-          128
+          144
         ],
         [
           312,
-          128
+          144
         ]
       ],
       "perches": [],
@@ -117,33 +117,87 @@
       }
     },
     {
-      "id": "mirror_spire_r10_w",
-      "kind": "mirror",
+      "id": "transformer_spire_r10_nw",
+      "kind": "blue_transformer",
       "pos": [
         120,
-        96
+        120
       ],
       "props": {
-        "angle_deg": 45
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
       }
     },
     {
-      "id": "mirror_spire_r10_e",
-      "kind": "mirror",
+      "id": "transformer_spire_r10_ne",
+      "kind": "blue_transformer",
       "pos": [
-        360,
-        96
+        344,
+        104
       ],
       "props": {
-        "angle_deg": 135
+        "angle_deg": 225,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "transformer_spire_r10_sw",
+      "kind": "blue_transformer",
+      "pos": [
+        152,
+        200
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "transformer_spire_r10_se",
+      "kind": "blue_transformer",
+      "pos": [
+        328,
+        192
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
       }
     },
     {
       "id": "brazier_spire_r10_w",
       "kind": "brazier",
       "pos": [
-        120,
-        192
+        104,
+        168
       ],
       "props": {
         "lit_by_default": true,
@@ -154,8 +208,8 @@
       "id": "brazier_spire_r10_e",
       "kind": "brazier",
       "pos": [
-        360,
-        192
+        376,
+        152
       ],
       "props": {
         "lit_by_default": true,
@@ -179,6 +233,42 @@
   "scenery": [
     {
       "sheet": "island7_scenery",
+      "prop": "crystal_archway",
+      "pos": [
+        240,
+        48
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "moon_dial_floor",
+      "pos": [
+        240,
+        64
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "reflection_ripple_ring",
+      "pos": [
+        392,
+        40
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island7_scenery",
       "prop": "inverted_bell_statue",
       "pos": [
         184,
@@ -187,7 +277,7 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.1
     },
     {
       "sheet": "island7_scenery",
@@ -197,16 +287,16 @@
         58
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.5
+      "phase": 0.6
     },
     {
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        104,
-        144
+        88,
+        128
       ],
       "layer": "sort",
       "flip_x": false,
@@ -217,11 +307,11 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        376,
-        144
+        392,
+        128
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
       "phase": 0.7
     },
@@ -229,56 +319,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        184,
+        192,
         248
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "lunar_lantern_post",
-      "pos": [
-        296,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "shattered_mirror_shard",
-      "pos": [
-        136,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "shattered_mirror_shard",
-      "pos": [
-        344,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "shattered_mirror_shard",
-      "pos": [
-        136,
-        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -287,15 +329,39 @@
     },
     {
       "sheet": "island7_scenery",
-      "prop": "shattered_mirror_shard",
+      "prop": "lunar_lantern_post",
       "pos": [
-        344,
-        56
+        288,
+        248
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "moon_crystal_cluster",
+      "pos": [
+        72,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "moon_crystal_cluster",
+      "pos": [
+        424,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.9
     }
   ],
   "is_2x2_room": true

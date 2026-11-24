@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     40,
-    112
+    104
   ],
   "zones": [
     {
@@ -31,8 +31,8 @@
       ],
       "to_region": "oak_r2",
       "to_spawn": [
-        312,
-        120
+        344,
+        88
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -42,13 +42,13 @@
       "id": "exit_oak_r3_east",
       "rect": [
         400,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "oak_r4",
       "to_spawn": [
-        88,
+        40,
         120
       ],
       "requires_moves": [],
@@ -61,43 +61,43 @@
       "id": "sporecap_oak_r3",
       "kind": "sporecap",
       "pos": [
-        264,
-        64
+        312,
+        72
       ],
       "route": [
         [
-          240,
-          64
+          296,
+          72
         ],
         [
-          280,
-          64
+          344,
+          88
         ]
       ],
       "perches": [],
       "zone": "oak_r3",
-      "leash": 130
+      "leash": 140
     },
     {
       "id": "gloam_oak_r3",
       "kind": "gloam",
       "pos": [
-        256,
-        160
+        216,
+        168
       ],
       "route": [
         [
-          224,
-          160
+          168,
+          168
         ],
         [
-          280,
-          160
+          264,
+          152
         ]
       ],
       "perches": [],
       "zone": "oak_r3",
-      "leash": 136
+      "leash": 144
     }
   ],
   "interactables": [
@@ -105,8 +105,8 @@
       "id": "brazier_oak_r3_n",
       "kind": "brazier",
       "pos": [
-        208,
-        64
+        216,
+        56
       ],
       "props": {}
     },
@@ -114,8 +114,8 @@
       "id": "brazier_oak_r3_s",
       "kind": "brazier",
       "pos": [
-        208,
-        160
+        328,
+        168
       ],
       "props": {}
     },
@@ -124,7 +124,7 @@
       "kind": "door",
       "pos": [
         392,
-        104
+        120
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -142,34 +142,34 @@
   "scenery": [
     {
       "sheet": "island3_scenery",
-      "prop": "giant_glowshroom_cluster",
+      "prop": "spider_silk_banner",
       "pos": [
         72,
-        46
+        30
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": false,
+      "phase": 0.1
     },
     {
       "sheet": "island3_scenery",
-      "prop": "giant_glowshroom_cluster",
+      "prop": "spider_silk_banner",
       "pos": [
-        344,
-        46
+        312,
+        30
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.5
     },
     {
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        72,
-        184
+        56,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -180,37 +180,121 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        344,
+        56,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "heartwood_pillar",
+      "pos": [
+        360,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "heartwood_pillar",
+      "pos": [
+        360,
+        156
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        80,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        100,
+        38
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_monolith",
+      "pos": [
+        360,
         184
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.7
+      "phase": 0.2
     },
     {
       "sheet": "island3_scenery",
-      "prop": "tiny_shrooms",
+      "prop": "fern_cluster",
       "pos": [
-        208,
-        40
+        340,
+        190
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.35
+      "phase": 0.5
     },
     {
       "sheet": "island3_scenery",
-      "prop": "tiny_shrooms",
+      "prop": "hanging_spore_lantern",
       "pos": [
-        208,
-        188
+        308,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        296,
+        152
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": false,
-      "phase": 0.8
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        200,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
     }
   ],
   "is_2x2_room": true

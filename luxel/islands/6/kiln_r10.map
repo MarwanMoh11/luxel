@@ -1,4 +1,4 @@
-# The Great Kiln r10 - Octagonal Molten Caldera (32x18)
+# The Great Kiln r10 - Kilnmother Asymmetric Caldera Sanctum (32x18)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -15,19 +15,19 @@ LEGEND G mirror
 MAP
 ###############++###############
 #OOOOOOOOOOOOOO++OOOOOOOOOOOOOO#
-#OOOOOOOOOOO...,,...OOOOOOOOOOO#
-#OOOOOOOOO.....,,.....OOOOOOOOO#
-#OOOOOOOO......,,......OOOOOOOO#
-#OOOOOO........,,........OOOOOO#
-#OOOOO.........,,.........OOOOO#
-#OOO...........,,...........OOO#
-#OOO...........,,...........OOO#
-#OOO...........,,...........OOO#
-#OOO...........,,...........OOO#
-#OOOOO.........,,.........OOOOO#
-#OOOOOO........,,........OOOOOO#
-#OOOOOOOO......,,......OOOOOOOO#
-#OOOOOOOOO.....,,.....OOOOOOOOO#
-#OOOOOOOOOOO...,,...OOOOOOOOOOO#
-#OOOOOOOOOOOO..,,..OOOOOOOOOOOO#
+#OO#####OO.....,,......OOOOOOOO#
+#OO#####.......,,......OOOOOOOO#
+#OO#####.......,,......OOOOOOOO#
+#OOO.....##....,,......OOOOOOOO#
+#OOO...........,,...#.......OOO#
+#OOO.OO........,,...#.......OOO#
+#OOO.OO........,,............OO#
+#OOOOOOO.......,,.............O#
+#OOOOOOOOO.....,,.......OOO...O#
+#OOOOOOOOOOO#..,,....##.OOO...O#
+#OOOOOOOOOOO#O.,,.............O#
+#OOOOOOOOOOOOO.,,..........OOOO#
+#OOOOOOOOOOOOO.,,.......O#######
+#OOOOOOOOOOOOO.,,.OO.OOOO#######
+#OOOOOOOOOOOOOO,,OOOOOOOO#######
 ###############,,###############

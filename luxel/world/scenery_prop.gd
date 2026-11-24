@@ -58,6 +58,8 @@ const SWAY_PROPS: Dictionary = {
 	"tattered_sanctum_banner": true, "floating_cathedral_shard": true, "eclipse_brazier": true, "remix_kiln_crucible": true,
 }
 
+const MAX_FLAKES: int = 6
+
 static var _global_sway_sfx_ms: int = 0
 
 var sheet_name: String = ""
@@ -80,6 +82,8 @@ var _last_frame: int = -1
 var _can_occlude: bool = false
 var _occlude_a: float = 1.0
 var _can_sway: bool = false
+var _is_resonant: bool = false
+var _is_foliage: bool = false
 var _sway_t: float = 0.0
 var _sway_cd: float = 0.0
 var _sway_dir: float = 1.0
@@ -90,6 +94,12 @@ var _is_glow: bool = false
 var _flare_t: float = 0.0
 var _flare_cd: float = 0.0
 var _flare_dir: float = 1.0
+var _graze_cd: float = 0.0
+var _ring_t: float = 0.0
+var _ring_dur: float = 0.36
+var _ring_c1: Color = PAL["gold"] as Color
+var _ring_c2: Color = PAL["cream"] as Color
+var _flakes: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -152,9 +162,14 @@ func setup(spec: Dictionary) -> void:
 				_shadow_poly = _build_shadow_ellipse(_frame_size)
 			_can_occlude = layer_name == "sort" and _frame_size.y >= 26.0 and _frame_size.x >= 16.0
 			_can_sway = SWAY_PROPS.has(prop_key)
+			_is_resonant = _match_resonant(prop_key)
+			_is_foliage = (not _is_resonant) and (_can_sway or _match_foliage(prop_key))
 			_sway_t = 0.0
 			_sway_cd = 0.0
 			_sway_px = 0.0
+			_graze_cd = 0.0
+			_ring_t = 0.0
+			_flakes.clear()
 			_occlude_a = 1.0
 			modulate.a = 1.0
 			set_process(_can_occlude or _can_sway or _is_glow)
@@ -163,6 +178,10 @@ func setup(spec: Dictionary) -> void:
 
 func _process(dt: float) -> void:
 	var has_p: bool = Lx.player != null and is_instance_valid(Lx.player) and (Lx.player is Node2D)
+	if _graze_cd > 0.0:
+		_graze_cd = maxf(0.0, _graze_cd - dt)
+	if _sfx_cd > 0.0:
+		_sfx_cd = maxf(0.0, _sfx_cd - dt)
 	if _can_occlude and has_p:
 		var pp: Vector2 = (Lx.player as Node2D).global_position
 		var behind: bool = pp.y < position.y - 2.0 and pp.y > position.y - _frame_size.y - 2.0 and absf(pp.x - position.x) < _frame_size.x * 0.46
@@ -170,12 +189,10 @@ func _process(dt: float) -> void:
 		if not is_equal_approx(_occlude_a, target_a):
 			_occlude_a = move_toward(_occlude_a, target_a, dt * 4.5)
 			modulate.a = _occlude_a
-	if _can_sway:
+	if _can_sway or _sway_t > 0.0:
 		if _sway_cd > 0.0:
 			_sway_cd = maxf(0.0, _sway_cd - dt)
-		if _sfx_cd > 0.0:
-			_sfx_cd = maxf(0.0, _sfx_cd - dt)
-		if has_p and _sway_cd <= 0.0:
+		if _can_sway and has_p and _sway_cd <= 0.0:
 			var pp2: Vector2 = (Lx.player as Node2D).global_position
 			var d2: float = pp2.distance_squared_to(position)
 			if d2 < 324.0:
@@ -221,6 +238,28 @@ func _process(dt: float) -> void:
 					_flare_cd = 0.55
 					_flare_dir = signf((vel_g as Vector2).x) if absf((vel_g as Vector2).x) > 10.0 else 1.0
 					queue_redraw()
+	var fx_dirty: bool = false
+	if _ring_t > 0.0:
+		_ring_t = maxf(0.0, _ring_t - dt)
+		fx_dirty = true
+	if not _flakes.is_empty():
+		for fi: int in range(_flakes.size() - 1, -1, -1):
+			var fl: Dictionary = _flakes[fi]
+			var fage: float = float(fl["age"]) + dt
+			if fage >= float(fl["life"]):
+				_flakes.remove_at(fi)
+			else:
+				fl["age"] = fage
+				var fv: Vector2 = fl["vel"] as Vector2
+				fv.y += 74.0 * dt
+				fv.x *= pow(0.35, dt)
+				fl["vel"] = fv
+				fl["pos"] = (fl["pos"] as Vector2) + fv * dt
+		fx_dirty = true
+	if fx_dirty:
+		queue_redraw()
+	if not _can_occlude and not _can_sway and not _is_glow and _sway_t <= 0.0 and _ring_t <= 0.0 and _flakes.is_empty() and _flare_t <= 0.0 and _graze_cd <= 0.0:
+		set_process(false)
 
 
 func is_animated() -> bool:
@@ -248,6 +287,93 @@ func gust_sway(origin: Vector2, radius: float, strength: float) -> void:
 	if falloff > 0.35 and (prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("pendulum")):
 		_play_sway_sfx()
 	set_process(true)
+
+
+func on_bolt_graze(hit_pos: Vector2, bolt_dir: Vector2, is_blue: bool) -> void:
+	if not _valid or _graze_cd > 0.0:
+		return
+	if not _is_resonant and not _is_foliage and not _can_sway and not _is_glow:
+		return
+	_graze_cd = 0.10
+	var dn: Vector2 = bolt_dir.normalized() if bolt_dir.length_squared() > 0.0001 else Vector2.RIGHT
+	var side_dir: float = signf(dn.x) if absf(dn.x) > 0.15 else (1.0 if hit_pos.x < position.x else -1.0)
+	if _is_resonant:
+		_sway_dir = side_dir
+		_sway_amp = 2.4
+		_sway_t = maxf(_sway_t, 0.42)
+		_sway_cd = 0.18
+		_play_sway_sfx()
+		_ring_dur = 0.36
+		_ring_t = _ring_dur
+		var is_crys: bool = prop_key.contains("prism") or prop_key.contains("crystal") or prop_key.contains("mirror") or prop_key.contains("shard")
+		_ring_c1 = (PAL["ice"] if is_crys else PAL["gold"]) as Color
+		_ring_c2 = (PAL["sky"] if is_crys else PAL["cream"]) as Color
+		if is_crys and not LxHudFx.flash_reduced() and LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+			LxDarknessLayer.active_instance.add_burst_light(position, 34.0, 0.78, 0.18)
+	if _is_foliage or (_can_sway and not _is_resonant):
+		_sway_dir = side_dir
+		_sway_amp = maxf(_sway_amp if _sway_t > 0.0 else 0.0, 2.2)
+		_sway_t = maxf(_sway_t, 0.38)
+		_sway_cd = 0.18
+		_play_sway_sfx()
+		_spawn_graze_flakes(dn, is_blue)
+	if _is_glow:
+		_flare_t = maxf(_flare_t, 0.42)
+		_flare_cd = 0.25
+		_flare_dir = side_dir
+		if not LxHudFx.flash_reduced() and LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+			LxDarknessLayer.active_instance.add_burst_light(position + Vector2(0.0, -10.0), 42.0, 0.75, 0.20)
+	set_process(true)
+	queue_redraw()
+
+
+static func graze_segment(world_ctx: Node, p0: Vector2, p1: Vector2, dir: Vector2, is_blue: bool) -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx):
+		return
+	var props_v: Variant = world_ctx.get("_scenery_props")
+	if not (props_v is Array):
+		return
+	for pv: Variant in (props_v as Array):
+		if not (pv is LxSceneryProp) or not is_instance_valid(pv as Object):
+			continue
+		var sp: LxSceneryProp = pv as LxSceneryProp
+		if not sp._valid:
+			continue
+		var cp: Vector2 = Geometry2D.get_closest_point_to_segment(sp.position, p0, p1)
+		if cp.distance_squared_to(sp.position) <= 169.0:
+			sp.on_bolt_graze(cp, dir, is_blue)
+
+
+func _spawn_graze_flakes(dn: Vector2, is_blue: bool) -> void:
+	var cnt: int = randi_range(3, 5)
+	var base_y: float = -minf(18.0, _frame_size.y * 0.52)
+	for _i: int in range(cnt):
+		if _flakes.size() >= MAX_FLAKES:
+			_flakes.pop_front()
+		var fp := Vector2(randf_range(-4.0, 4.0), base_y + randf_range(-3.0, 3.0))
+		var fv: Vector2 = dn * randf_range(16.0, 32.0) + Vector2(randf_range(-10.0, 10.0), randf_range(-28.0, -13.0))
+		_flakes.append({
+			"pos": fp, "vel": fv, "age": 0.0, "life": randf_range(0.40, 0.58),
+			"col": _flake_color(is_blue), "phase": randf_range(0.0, 2.0),
+		})
+
+
+func _flake_color(is_blue: bool) -> Color:
+	if prop_key.contains("crucible") or prop_key.contains("vent") or prop_key.contains("hearth") or prop_key.contains("brazier") or prop_key.contains("ember") or prop_key.contains("kiln"):
+		return (PAL["coral"] if randf() < 0.52 else PAL["apricot"]) as Color
+	if prop_key.contains("silver") or prop_key.contains("crystal") or prop_key.contains("prism") or prop_key.contains("mirror") or prop_key.contains("lunar") or is_blue:
+		return (PAL["ice"] if randf() < 0.55 else PAL["sky"]) as Color
+	if prop_key.contains("flower") or prop_key.contains("lotus") or prop_key.contains("banner") or prop_key.contains("cathedral") or prop_key.contains("sanctum"):
+		return (PAL["rose"] if randf() < 0.60 else PAL["gold"]) as Color
+	return (PAL["lime"] if randf() < 0.55 else PAL["jade"]) as Color
+
+
+static func _match_resonant(k: String) -> bool:
+	return k.contains("bell") or k.contains("chime") or k.contains("prism") or k.contains("crystal") or k.contains("mirror") or k.contains("shard") or k.contains("armillary") or k.contains("orrery") or k.contains("globe") or k.contains("pendulum")
+
+
+static func _match_foliage(k: String) -> bool:
+	return k.contains("reed") or k.contains("flower") or k.contains("willow") or k.contains("fern") or k.contains("shroom") or k.contains("spore") or k.contains("banner") or k.contains("vine") or k.contains("lotus") or k.contains("moss") or k.contains("urn")
 
 
 func tick(dt: float) -> void:
@@ -290,6 +416,23 @@ func _draw() -> void:
 			var fx: float = roundf(_flare_dir * (1.5 + fu * (4.0 + float(fi) * 2.2)) + float(fi - 1) * 2.5)
 			var fy: float = roundf(-fh - fu * (6.0 + float(fi) * 2.5))
 			draw_rect(Rect2(fx, fy, 1.0, 1.0), Color(fc, (1.0 - fu) * 0.88))
+	if _ring_t > 0.0:
+		var ru: float = clampf(1.0 - _ring_t / maxf(_ring_dur, 0.01), 0.0, 1.0)
+		var rx: float = lerpf(3.0, 15.0, ru)
+		var ry: float = rx * 0.65
+		var cy: float = -minf(15.0, _frame_size.y * 0.48)
+		var fr_r: float = 0.72 if LxHudFx.flash_reduced() else 1.0
+		var ra: float = (1.0 - ru) * 0.92 * fr_r
+		for k: int in range(8):
+			var ang: float = float(k) * (TAU / 8.0) + ru * 0.35
+			var rp := Vector2(roundf(cos(ang) * rx), roundf(cy + sin(ang) * ry))
+			var rc: Color = _ring_c2 if (ru < 0.35 or k % 2 == 0) else _ring_c1
+			draw_rect(Rect2(rp, Vector2(1.0, 1.0)), Color(rc, ra))
+	for fl: Dictionary in _flakes:
+		var flu: float = clampf(float(fl["age"]) / maxf(float(fl["life"]), 0.01), 0.0, 1.0)
+		var tall: bool = int(floorf((float(fl["age"]) + float(fl["phase"])) * 9.0)) % 2 == 1
+		var sz := Vector2(1.0, 2.0) if tall else Vector2(2.0, 1.0)
+		draw_rect(Rect2((fl["pos"] as Vector2).round(), sz), Color(fl["col"] as Color, (1.0 - flu) * 0.92))
 
 
 func _play_sway_sfx() -> void:
@@ -308,7 +451,7 @@ func _play_sway_sfx() -> void:
 		sfx_id = "forge_gust"
 	elif prop_key.contains("buoy") or prop_key.contains("vane") or prop_key.contains("crane"):
 		sfx_id = "harbor_creak"
-	elif prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("crystal") or prop_key.contains("shard"):
+	elif prop_key.contains("chime") or prop_key.contains("bell") or prop_key.contains("prism") or prop_key.contains("crystal") or prop_key.contains("mirror") or prop_key.contains("shard"):
 		sfx_id = "prop_chime"
 	_sfx_cd = 0.72 if sfx_id != "prop_rustle" else 0.56
 	Lx.audio.play_sfx(sfx_id, global_position, true)

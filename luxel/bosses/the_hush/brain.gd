@@ -2,19 +2,24 @@ class_name LxTheHushBoss
 extends LxEnemyBrain
 ## The Long Night Final Boss (Island 8): the Hush, source of the dark.
 ## 4 phases (SWARM_SPEC 4.2), HP 16.0, boss_id = "the_hush", every tell >= 0.50s, recover >= 0.90s:
-## P1: Shooting (Bolts+Prism) | P2: Throwing (LURE+Zip) | P3: Moving (Dash+Wings) | P4: Light (Beam+Lens+Sunflare).
+## P1: Shooting (Bolts+Prism + Close Ward-Bash) | P2: Throwing (Void Zip + Dark-Lantern Recall Slam)
+## P3: Moving (Dash+Wings) | P4: Light (Beam+Lens+Sunflare with responsive True Lens veil reveal).
 
 signal hush_bolt_fired(origin: Vector2, dir: Vector2, source: LxEnemyBrain)
 
 const Visuals := preload("res://luxel/bosses/the_hush/visuals.gd")
 
-enum HushMove { VOLLEY, VOID_ZIP, SHADOW_DASH, SILENCE_RING, ECLIPSE_BEAM }
+enum HushMove { VOLLEY, VOID_ZIP, SHADOW_DASH, SILENCE_RING, ECLIPSE_BEAM, WARD_BASH, RECALL_SLAM }
 
 const P1_SHIELD_MAX: float = 2.4
 const P1_SHIELD_REFORM: float = 5.0
 const P4_VEIL_MAX: float = 3.0
 const P4_VEIL_RES: float = 0.35
 const VOLLEY_RANGE: float = 152.0
+const WARD_BASH_RANGE: float = 64.0
+const WARD_BASH_HIT_R: float = 32.0
+const WARD_BASH_ARC: float = 1.18
+const RECALL_SLAM_BURST_R: float = 38.0
 const RING_START_R: float = 12.0
 const RING_MAX_R: float = 84.0
 const BEAM_RANGE: float = 158.0
@@ -41,6 +46,7 @@ var sweep_sign: float = 1.0
 var beam_angle: float = 0.0
 var _beam_light_t: float = 0.0
 var _zip_landed: bool = false
+var _slam_burst_done: bool = false
 var _orbit_side: float = 1.0
 var _roaring: bool = false
 
@@ -59,17 +65,34 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	veil_intact = false; veil_hp = 0.0; lens_lit_t = 0.0; commit_dir = Vector2.from_angle(facing)
 	commit_elapsed = 0.0; commit_hit = false; volley_shots = 0; void_orb_pos = pos; void_orb_out = false
 	ring_stage = 0; ring_progress = 0.0; sweep_start_ang = facing; sweep_sign = 1.0; beam_angle = facing
-	_orbit_side = 1.0; _roaring = false
+	_slam_burst_done = false; _orbit_side = 1.0; _roaring = false
 
-func on_light(a: Variant, b: Variant = Vector2.ZERO, _source: String = "") -> void:
+func on_light(a: Variant, b: Variant = Vector2.ZERO, source: Variant = "") -> void:
 	if state == State.DEAD:
 		return
+	var orig: Vector2 = Vector2.ZERO
+	var rad: float = 0.0
+	var src: String = str(source)
 	var in_light: bool = true
 	if a is Vector2 and (b is float or b is int):
-		in_light = pos.distance_to(a as Vector2) <= float(b) + body_radius
-	elif (a is float or a is int) and b is Vector2:
-		in_light = pos.distance_to(b as Vector2) <= float(a) + body_radius
-	if in_light:
+		orig = a as Vector2
+		rad = float(b)
+		in_light = pos.distance_to(orig) <= rad + body_radius
+	elif a is float or a is int:
+		rad = float(a)
+		if b is Vector2:
+			orig = b as Vector2
+			in_light = orig == Vector2.ZERO or pos.distance_to(orig) <= rad + body_radius
+		elif b is String and src.is_empty():
+			src = str(b)
+	if not in_light or rad <= 0.0:
+		return
+	var was_unlit: bool = lens_lit_t <= 0.01
+	if src == "lens":
+		lens_lit_t = maxf(lens_lit_t, 1.35)
+		if phase == 4 and was_unlit:
+			_emit_sfx("phantom_reveal")
+	else:
 		lens_lit_t = maxf(lens_lit_t, 0.45)
 
 func take_hit(hit: LxHit) -> int:
@@ -84,10 +107,11 @@ func take_hit(hit: LxHit) -> int:
 	var pierce: bool = bool(h["pierce"])
 	var cracks: bool = bool(h["cracks_armour"])
 	var wear: float = float(h["shield_wear"])
+	var is_blue_hit: bool = hit.is_blue() or src == LxHit.SOURCE_PRISM
 	var rel: Vector2 = (h["origin"] as Vector2) - pos
 
-	# Phase 1: front shadow mirror ward; prism_bolt banks straight through
-	if _has_active_shield() and src != LxHit.SOURCE_PRISM and not pierce and not cracks \
+	# Phase 1: front shadow mirror ward; prism/blue bolts bank straight through
+	if _has_active_shield() and not is_blue_hit and not pierce and not cracks \
 			and rel.length() > 0.01 and absf(angle_difference(facing, rel.angle())) < 1.05:
 		clank_t = 0.14
 		shield_hp -= wear
@@ -115,7 +139,7 @@ func take_hit(hit: LxHit) -> int:
 		return HitResult.GLANCED
 
 	var opened: bool = state == State.RECOVER or state == State.STAGGER
-	if (phase == 1 and src == LxHit.SOURCE_PRISM) or (phase == 2 and _is_lured()):
+	if (phase == 1 and is_blue_hit) or (phase == 2 and _is_lured()):
 		dmg *= 1.25
 		opened = true
 	elif phase == 4:
@@ -168,14 +192,18 @@ func _check_phase_transition() -> bool:
 	var target_p: int = 4 if hp <= max_hp * 0.25 else (3 if hp <= max_hp * 0.50 else (2 if hp <= max_hp * 0.75 else 1))
 	if target_p <= phase:
 		return false
-	phase = target_p; _roaring = true; void_orb_out = false; ring_stage = 0; ring_progress = 0.0
+	_enter_phase(target_p)
+	return true
+
+func _enter_phase(next_phase: int) -> void:
+	phase = next_phase; _roaring = true; void_orb_out = false; ring_stage = 0; ring_progress = 0.0
 	shield_hp = 0.0; shield_gone_t = 0.0; veil_intact = (phase == 4); veil_hp = P4_VEIL_MAX if phase == 4 else 0.0
 	_release_token(); state = State.NOTICE; state_timer = 0.62
 	if Lx.events != null:
 		Lx.events.boss_phase_changed.emit(boss_id, phase)
 		Lx.events.shake_requested.emit(0.36)
+	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
 	_emit_sfx("hush_phase_shift")
-	return true
 
 func _step_brain(dt: float) -> void:
 	lens_lit_t = maxf(0.0, lens_lit_t - dt)
@@ -249,22 +277,32 @@ func _step_position(dt: float) -> void:
 		_turn_toward(to_t.angle(), 3.6, dt)
 	state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
 	if cooldown <= 0.0 and dist <= notice_radius and _is_on_screen() and _claim_token():
-		_begin_phase_attack(target)
+		_begin_phase_attack(target, dist)
 		return
 	if dist > 0.01:
 		var radial: Vector2 = to_t / dist
 		var mv: Vector2 = (radial.rotated(PI * 0.5 * _orbit_side) + radial * clampf((dist - 64.0) / 48.0, -0.5, 0.5)).normalized()
 		_move_step(mv * routine_speed * 0.84 * dt, false)
 
-func _begin_phase_attack(target: Vector2) -> void:
+func _begin_phase_attack(target: Vector2, dist: float) -> void:
 	move_toggle += 1
 	var odd: bool = (move_toggle % 2 == 1)
-	active_move = HushMove.VOLLEY if phase == 1 else (HushMove.VOID_ZIP if phase == 2 else (
-		(HushMove.SHADOW_DASH if odd else HushMove.SILENCE_RING) if phase == 3 else (
-		HushMove.ECLIPSE_BEAM if odd else HushMove.SILENCE_RING)))
+	if phase == 1:
+		# P1 close-range Ward-Bash variety alongside 5-bolt Volley
+		if dist <= WARD_BASH_RANGE or (move_toggle % 3 == 0 and dist <= 82.0):
+			active_move = HushMove.WARD_BASH
+		else:
+			active_move = HushMove.VOLLEY
+	elif phase == 2:
+		# P2 alternates Void Zip and Dark-Lantern Recall Slam
+		active_move = HushMove.VOID_ZIP if odd else HushMove.RECALL_SLAM
+	elif phase == 3:
+		active_move = HushMove.SHADOW_DASH if odd else HushMove.SILENCE_RING
+	else:
+		active_move = HushMove.ECLIPSE_BEAM if odd else HushMove.SILENCE_RING
 	state = State.TELL
 	is_counter_attack = false
-	var tells: Array[float] = [0.54, 0.56, 0.52, 0.58, 0.62]
+	var tells: Array[float] = [0.54, 0.56, 0.52, 0.58, 0.62, 0.52, 0.56]
 	last_tell_duration = _scaled_tell(maxf(0.50, tells[active_move]), false, attack_damage)
 	state_timer = last_tell_duration
 	if target.distance_to(pos) > 0.01:
@@ -275,32 +313,49 @@ func _begin_phase_attack(target: Vector2) -> void:
 	beam_angle = sweep_start_ang
 	ring_stage = 0
 	ring_progress = 0.0
+	if active_move == HushMove.RECALL_SLAM:
+		void_orb_pos = _clamp_pt(pos + commit_dir * clampf(dist + 22.0, 56.0, 108.0))
+		void_orb_out = true
+	elif active_move == HushMove.VOID_ZIP:
+		void_orb_pos = _clamp_pt(pos + commit_dir * clampf(dist, 36.0, 96.0))
+		void_orb_out = false
+	else:
+		void_orb_out = false
 	_emit_attack_started()
 	_emit_sfx("beam_charge" if active_move == HushMove.ECLIPSE_BEAM else "hush_tell")
 
 func _step_tell(dt: float) -> void:
 	if state_timer > 0.22:
-		var to_t: Vector2 = _attention_target() - pos
+		var tpos: Vector2 = _attention_target()
+		var to_t: Vector2 = tpos - pos
 		if to_t.length() > 0.01:
 			_turn_toward(to_t.angle(), 2.8, dt)
 			commit_dir = Vector2.from_angle(facing)
 			if active_move == HushMove.ECLIPSE_BEAM:
 				sweep_start_ang = wrapf(facing - sweep_sign * (BEAM_ARC * 0.5), -PI, PI)
 				beam_angle = sweep_start_ang
+			elif active_move == HushMove.RECALL_SLAM:
+				void_orb_pos = _clamp_pt(pos + commit_dir * clampf(to_t.length() + 22.0, 56.0, 108.0))
+			elif active_move == HushMove.VOID_ZIP:
+				void_orb_pos = _clamp_pt(pos + commit_dir * clampf(to_t.length(), 36.0, 96.0))
 	state_timer -= dt
 	if state_timer <= 0.0:
-		state = State.COMMIT; commit_elapsed = 0.0; commit_hit = false; volley_shots = 0; ring_stage = 0; ring_progress = 0.0; _beam_light_t = 0.0; _zip_landed = false
-		var durs: Array[float] = [0.36, 0.46, 0.26, 0.34, 0.58]
+		state = State.COMMIT; commit_elapsed = 0.0; commit_hit = false; volley_shots = 0; ring_stage = 0; ring_progress = 0.0; _beam_light_t = 0.0; _zip_landed = false; _slam_burst_done = false
+		var durs: Array[float] = [0.36, 0.46, 0.26, 0.34, 0.58, 0.24, 0.42]
 		state_timer = durs[active_move]
 		if active_move == HushMove.VOID_ZIP:
-			void_orb_pos = _clamp_pt(pos + commit_dir * clampf(_attention_target().distance_to(pos), 36.0, 96.0))
+			void_orb_pos = _clamp_pt(void_orb_pos)
 			void_orb_out = true
+		elif active_move == HushMove.RECALL_SLAM:
+			void_orb_out = true
+		elif active_move == HushMove.WARD_BASH:
+			_boss_impact(0.16, 74.0, 80.0)
 		elif active_move == HushMove.SILENCE_RING:
 			_boss_impact(0.24, 112.0, 108.0)
 		elif active_move == HushMove.ECLIPSE_BEAM:
 			beam_angle = sweep_start_ang
 			_boss_impact(0.18, 86.0, 84.0)
-		var csfx: Array[String] = ["bolt_fire", "zip_streak", "hollow_dash", "hush_pulse", "beam_fire"]
+		var csfx: Array[String] = ["bolt_fire", "zip_streak", "hollow_dash", "hush_pulse", "beam_fire", "warden_swing", "zip_streak"]
 		_emit_sfx(csfx[active_move])
 
 func _step_commit(dt: float) -> void:
@@ -314,6 +369,17 @@ func _step_commit(dt: float) -> void:
 				volley_shots += 1
 				hush_bolt_fired.emit(pos, bdir, self)
 				_check_line_hit(bdir, VOLLEY_RANGE, 8.5, true)
+		HushMove.WARD_BASH:
+			_move_step(commit_dir * 215.0 * dt, false)
+			if not commit_hit and _has_player():
+				var wv: Vector2 = _get_wick_pos() - pos
+				if wv.length() <= WARD_BASH_HIT_R and (wv.length() < 0.01 or absf(angle_difference(commit_dir.angle(), wv.angle())) <= WARD_BASH_ARC):
+					commit_hit = true
+					_emit_player_hit(commit_dir)
+					if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil"):
+						Lx.player.call("apply_recoil", commit_dir * 85.0)
+			if _is_lantern_out() and pos.distance_to(_get_lantern_pos()) <= WARD_BASH_HIT_R + 2.0 and Lx.events != null:
+				Lx.events.lantern_struck.emit(_get_lantern_pos())
 		HushMove.VOID_ZIP:
 			if commit_elapsed >= 0.20:
 				if void_orb_pos.distance_to(pos) > 3.0:
@@ -323,6 +389,24 @@ func _step_commit(dt: float) -> void:
 						_zip_landed = true
 						_boss_impact(0.16, 78.0, 82.0)
 					_check_area_hit(26.0)
+		HushMove.RECALL_SLAM:
+			var prev_orb: Vector2 = void_orb_pos
+			if not _slam_burst_done:
+				void_orb_pos = void_orb_pos.move_toward(pos, 380.0 * dt)
+				if not commit_hit and _has_player():
+					var wp: Vector2 = _get_wick_pos()
+					if Geometry2D.get_closest_point_to_segment(wp, prev_orb, void_orb_pos).distance_to(wp) <= 13.0:
+						commit_hit = true
+						var pull_d: Vector2 = (pos - prev_orb).normalized() if pos.distance_to(prev_orb) > 0.01 else -commit_dir
+						_emit_player_hit(pull_d)
+				if void_orb_pos.distance_to(pos) <= 5.0:
+					_slam_burst_done = true
+					void_orb_out = false
+					_boss_impact(0.22, 96.0, 98.0)
+					_emit_sfx("hush_pulse")
+					_check_area_hit(RECALL_SLAM_BURST_R)
+			else:
+				_check_area_hit(RECALL_SLAM_BURST_R)
 		HushMove.SHADOW_DASH:
 			_move_step(commit_dir * 290.0 * dt, true)
 			_check_area_hit(16.0)
@@ -409,7 +493,8 @@ func _enter_notice() -> void:
 	_emit_sfx("hush_notice")
 func _clamp_pt(pt: Vector2) -> Vector2:
 	var cap: float = maxf(0.0, leash_radius - 2.0)
-	return home + (pt - home).normalized() * cap if pt.distance_to(home) > cap else pt
+	var out: Vector2 = home + (pt - home).normalized() * cap if pt.distance_to(home) > cap else pt
+	return _collide_move(pos, out, true)
 func _has_active_shield() -> bool:
 	return phase == 1 and shield_gone_t <= 0.0 and shield_hp > 0.001 and state != State.DEAD and state != State.STAGGER
 func _body_color() -> Color:
@@ -418,6 +503,8 @@ func _body_color() -> Color:
 	return (PAL["deep"] as Color) if phase == 3 else ((PAL["dusk"] as Color) if phase == 2 else (PAL["night"] as Color))
 func _shield_color() -> Color:
 	return PAL["sky"] as Color
+
+
 func _draw_extra(off: Vector2) -> void:
 	Visuals.draw_hush(self, off)
 

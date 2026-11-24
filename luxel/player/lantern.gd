@@ -60,38 +60,29 @@ func reset_to_hand(at_pos: Vector2) -> void:
 	queue_redraw()
 
 
-func is_in_hand() -> bool:
-	return state == State.IN_HAND
-
-
-func is_hanging() -> bool:
-	return state == State.HANGING
-
-
-func is_out() -> bool:
-	return state != State.IN_HAND
-
-
-func is_lure_active() -> bool:
-	return state == State.FLYING or state == State.HANGING
+func _has_lantern() -> bool: return Lx.state == null or Lx.state.has_lantern()
+func is_in_hand() -> bool: return _has_lantern() and state == State.IN_HAND
+func is_hanging() -> bool: return _has_lantern() and state == State.HANGING
+func is_out() -> bool: return (not _has_lantern()) or state != State.IN_HAND
+func is_lure_active() -> bool: return _has_lantern() and (state == State.FLYING or state == State.HANGING)
 
 
 func get_light_radius() -> float:
-	if _owner_wick != null and _owner_wick.move_lens != null and _owner_wick.move_lens.unlocked:
-		return _owner_wick.move_lens.get_reveal_radius()
-	var has_lens: bool = Lx.state != null and Lx.state.has_move("lens")
-	if has_lens:
-		var ldata: Dictionary = Lx.get_move_data("lens")
-		if state == State.IN_HAND:
-			return float(ldata.get("hand_radius", 68.0))
-		if state == State.CARRIED:
-			return 44.0
-		return float(ldata.get("hung_radius", 118.0))
+	if not _has_lantern():
+		return 40.0
+	if state == State.CARRIED:
+		return 48.0
+	if _owner_wick != null and _owner_wick.move_lens != null and _owner_wick.move_lens.is_pulse_active():
+		return maxf(96.0, _owner_wick.move_lens.pulse_radius)
+	if is_lure_active():
+		var has_lens: bool = (_owner_wick != null and _owner_wick.move_lens != null and _owner_wick.move_lens.unlocked) \
+			or (Lx.state != null and Lx.state.has_move("lens"))
+		if has_lens:
+			return maxf(92.0, float(Lx.get_move_data("lens").get("hung_radius", 78.0)))
+		return 82.0
 	match state:
 		State.IN_HAND:
 			return 96.0
-		State.CARRIED:
-			return 48.0
 		_:
 			return 82.0
 
@@ -275,6 +266,14 @@ func tick_sim(dt: float, wick: LxWick, world_ctx: Node) -> void:
 	prev_pos = pos
 	if wick == null:
 		return
+	if not _has_lantern():
+		state = State.IN_HAND
+		vel = Vector2.ZERO
+		pos = _find_pickup_pos(wick, world_ctx)
+		prev_pos = pos
+		global_position = pos.round()
+		queue_redraw()
+		return
 
 	match state:
 		State.IN_HAND:
@@ -436,9 +435,20 @@ func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: S
 				wick.spawn_sparks(ipos, -move_dir, 6, PAL_GOLD, 30.0, 85.0, 0.20)
 
 
+func _find_pickup_pos(wick: LxWick, world_ctx: Node) -> Vector2:
+	for it_var: Variant in wick.world_get_interactables(world_ctx):
+		if it_var is Object and is_instance_valid(it_var as Object):
+			var item: Object = it_var as Object
+			if str(item.get("kind")) == "lantern_pickup" and bool(item.get("active")):
+				return wick.get_entity_pos(item)
+	return Vector2(-9999.0, -9999.0)
+
+
 func _notify_light(wick: LxWick, world_ctx: Node) -> void:
+	if not _has_lantern():
+		return
 	var rad: float = get_light_radius()
-	var src_tag: String = "lantern_hung" if is_lure_active() else "lantern_hand"
+	var src_tag: String = "lantern_hung" if is_lure_active() else ("lantern_recall" if state == State.RECALLING else "lantern_hand")
 	var inters: Array = wick.world_get_interactables(world_ctx)
 	for it_var: Variant in inters:
 		if not (it_var is Object):
@@ -448,8 +458,13 @@ func _notify_light(wick: LxWick, world_ctx: Node) -> void:
 			continue
 		var ipos: Vector2 = wick.get_entity_pos(item)
 		var irad: float = wick.get_entity_radius(item, 0.0)
-		if ipos.distance_to(pos) <= rad + irad:
-			item.call("on_light", rad, src_tag)
+		var dist: float = ipos.distance_to(pos)
+		if src_tag == "lantern_hand" and str(item.get("kind")) == "brazier":
+			if dist > 28.0:
+				continue
+		elif dist > rad + irad:
+			continue
+		item.call("on_light", rad, src_tag)
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
 	for e_var: Variant in enemies:
@@ -473,7 +488,7 @@ func _notify_light(wick: LxWick, world_ctx: Node) -> void:
 
 
 func _draw() -> void:
-	if state == State.IN_HAND:
+	if state == State.IN_HAND or not _has_lantern():
 		return
 	var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 	var pulse: float = (0.95 + 0.04 * sin(_anim_t * 5.0)) if flash_red else (0.90 + 0.10 * sin(_anim_t * 7.5))
@@ -522,7 +537,8 @@ func _draw() -> void:
 			for li: int in range(6):
 				var la: float = l_spin + float(li) * (TAU / 6.0)
 				var lp: Vector2 = (center + Vector2(cos(la) * 11.5, sin(la) * 11.5)).round()
-				draw_rect(Rect2(lp, Vector2(1.0, 1.0)), LxPalette.PAL["ice" if li % 2 == 0 else "sky"])
+				var lkey: String = ("coral" if (li % 2 == 0) else "ice") if urgent_arc else ("ice" if li % 2 == 0 else "sky")
+				draw_rect(Rect2(lp, Vector2(1.0, 1.0)), LxPalette.PAL[lkey])
 	if state == State.HANGING or state == State.FLYING:
 		LxWickEvolution.draw_lantern_constellation(self, center, _anim_t, flash_red)
 

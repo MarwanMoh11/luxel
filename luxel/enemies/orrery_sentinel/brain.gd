@@ -27,6 +27,9 @@ var shot_dir: Vector2 = Vector2.RIGHT
 var shot_hit: bool = false
 var shot_fired: bool = false
 var _beam_end: Vector2 = Vector2.ZERO
+var lens_pause_t: float = 0.0
+var lens_highlight_t: float = 0.0
+var lens_pause_cd: float = 0.0
 
 
 func _init() -> void:
@@ -62,6 +65,38 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	shot_hit = false
 	shot_fired = false
 	_beam_end = pos + shot_dir * BOLT_RANGE
+	lens_pause_t = 0.0
+	lens_highlight_t = 0.0
+	lens_pause_cd = 0.0
+
+
+func on_light(a: Variant, b: Variant = Vector2.ZERO, source: Variant = "") -> void:
+	if state == State.DEAD:
+		return
+	var orig: Vector2 = Vector2.ZERO
+	var rad: float = 0.0
+	var src: String = str(source)
+	if a is Vector2 and (b is float or b is int):
+		orig = a as Vector2
+		rad = float(b)
+	elif a is float or a is int:
+		rad = float(a)
+		if b is Vector2:
+			orig = b as Vector2
+		elif b is String and src.is_empty():
+			src = str(b)
+	if src != "lens" or rad <= 0.0:
+		return
+	if orig == Vector2.ZERO or pos.distance_to(orig) <= rad + body_radius:
+		lens_highlight_t = maxf(lens_highlight_t, 0.75)
+		if lens_pause_cd <= 0.0:
+			lens_pause_t = maxf(lens_pause_t, 0.60)
+			lens_pause_cd = 1.8
+			_emit_sfx("orrery_lens_pause")
+
+
+func _back_crit_mult() -> float:
+	return BACK_CRIT_MULT
 
 
 func take_hit(hit: LxHit) -> int:
@@ -89,7 +124,7 @@ func take_hit(hit: LxHit) -> int:
 		is_heavy = false
 		_emit_sfx("orrery_clank")
 	elif not front_hit:
-		dmg *= BACK_CRIT_MULT
+		dmg *= _back_crit_mult()
 
 	if is_heavy and state == State.STAGGER:
 		_emit_enemy_hit(hit, HitResult.GLANCED)
@@ -121,10 +156,14 @@ func take_hit(hit: LxHit) -> int:
 
 
 func _step_brain(dt: float) -> void:
+	lens_pause_t = maxf(0.0, lens_pause_t - dt)
+	lens_highlight_t = maxf(0.0, lens_highlight_t - dt)
+	lens_pause_cd = maxf(0.0, lens_pause_cd - dt)
 	match state:
 		State.ROUTINE:
 			_step_rail_patrol(dt)
-			facing = wrapf(facing + rail_spin * SCAN_TURN_SPEED * dt, -PI, PI)
+			if lens_pause_t <= 0.0:
+				facing = wrapf(facing + rail_spin * SCAN_TURN_SPEED * dt, -PI, PI)
 			if _target_in_cone():
 				_enter_notice()
 		State.NOTICE:
@@ -171,10 +210,12 @@ func _step_position(dt: float) -> void:
 		lost_t = 0.0
 
 	_step_rail_patrol(dt)
-	facing = wrapf(facing + rail_spin * SCAN_TURN_SPEED * dt, -PI, PI)
-	state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
+	if lens_pause_t <= 0.0:
+		facing = wrapf(facing + rail_spin * SCAN_TURN_SPEED * dt, -PI, PI)
+	var can_act: bool = director == null or director.can_claim_ranged_token(self)
+	state = State.POSITION if can_act else State.WAIT_TOKEN
 
-	if cooldown <= 0.0 and _is_on_screen() and _target_in_cone() and _claim_token():
+	if can_act and cooldown <= 0.0 and _is_on_screen() and _target_in_cone() and _claim_token():
 		state = State.TELL
 		is_counter_attack = false
 		last_tell_duration = _scaled_tell(tell_time, false, attack_damage)
@@ -320,6 +361,12 @@ func _draw_extra(off: Vector2) -> void:
 		var back_pos: Vector2 = off - Vector2.from_angle(facing) * (body_radius * 0.7)
 		draw_circle(back_pos, 2.5, PAL["coral"] as Color)
 		draw_circle(back_pos, 1.2, PAL["cream"] as Color)
+	if lens_highlight_t > 0.0:
+		var back_c: Vector2 = (c - Vector2.from_angle(facing) * (body_radius * 0.75)).round()
+		draw_arc(back_c, 5.5, 0.0, TAU, 14, PAL["gold"] as Color, 1.4)
+		draw_arc(back_c, 3.2, 0.0, TAU, 10, PAL["ice"] as Color, 1.0)
+		draw_line(back_c + Vector2(-4.0, 0.0), back_c + Vector2(4.0, 0.0), PAL["cream"] as Color, 1.0)
+		draw_line(back_c + Vector2(0.0, -4.0), back_c + Vector2(0.0, 4.0), PAL["cream"] as Color, 1.0)
 	# Rotating sight cone preview with brass astrolabe tick marks (strictly opaque 20-colour PAL).
 	var cone_r: float = minf(notice_radius, 72.0)
 	var cone_col: Color = (PAL["gold"] as Color) if state == State.TELL else (PAL["blue"] as Color)

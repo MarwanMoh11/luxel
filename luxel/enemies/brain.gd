@@ -490,6 +490,7 @@ func _die(hit: Object) -> void:
 	if director != null:
 		director.release_light(self)
 		director.unregister(self)
+	if is_boss: LxDamageFx.spawn_boss_defeat_burst(self)
 	_emit_enemy_hit(hit, HitResult.KILLED)
 	_emit_sfx("boss_kill" if is_boss else "enemy_kill")
 	if Lx.state != null and shard_drop > 0: Lx.state.add_shards(shard_drop + (1 if opened_kill else 0))

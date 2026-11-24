@@ -14,6 +14,7 @@ var rings: Array[Dictionary] = []
 var sparks: Array[Dictionary] = []
 var motes: Array[Dictionary] = []
 var streaks: Array[Dictionary] = []
+var wedges: Array[Dictionary] = []
 var sprite_sheet: LxSpriteSheet = null
 
 var _last_clock_t: float = -1.0
@@ -26,26 +27,31 @@ var _was_airborne: bool = false
 var _prev_move_dir: Vector2 = Vector2.ZERO
 var _skid_cd: float = 0.0
 var _idle_t: float = 0.0
+var _lantern_ignite_t: float = 0.0
+var _land_squash_t: float = 0.0
 
 func clear() -> void:
-	afterimages.clear()
-	rings.clear()
-	sparks.clear()
-	motes.clear()
-	streaks.clear()
-	_last_clock_t = -1.0
-	_dust_cd = 0.0
-	_mote_cd = 0.0
-	_streak_cd = 0.0
-	_ripple_cd = 0.0
-	_step_parity = 0
-	_was_airborne = false
-	_prev_move_dir = Vector2.ZERO
-	_skid_cd = 0.0
-	_idle_t = 0.0
+	afterimages.clear(); rings.clear(); sparks.clear(); motes.clear(); streaks.clear(); wedges.clear()
+	_last_clock_t = -1.0; _dust_cd = 0.0; _mote_cd = 0.0; _streak_cd = 0.0; _ripple_cd = 0.0
+	_step_parity = 0; _was_airborne = false; _prev_move_dir = Vector2.ZERO
+	_skid_cd = 0.0; _idle_t = 0.0; _lantern_ignite_t = 0.0; _land_squash_t = 0.0
 
-func spawn_afterimage(at_pos: Vector2, col: Color, dir: Vector2 = Vector2.RIGHT, anim: String = "dash") -> void:
-	afterimages.append({"pos": at_pos, "age": 0.0, "life": 0.20, "col": col, "dir": dir, "anim": anim})
+func trigger_lantern_ignite(wick: LxWick) -> void:
+	_lantern_ignite_t = 0.48
+	spawn_ring(wick.global_position + Vector2(0.0, -6.0), 3.0, 22.0, 0.36, LxPalette.color("gold"), 1.8)
+	spawn_ring(wick.global_position + Vector2(0.0, -6.0), 2.0, 15.0, 0.28, LxPalette.color("cream"), 1.2)
+	spawn_sparks(wick.global_position + Vector2(0.0, -6.0), Vector2.UP, 10, LxPalette.color("gold"), 24.0, 88.0, 0.30)
+	spawn_sparks(wick.global_position + Vector2(0.0, -6.0), Vector2.DOWN, 6, LxPalette.color("cream"), 20.0, 72.0, 0.26)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		var sc: float = 0.65 if LxHudFx.flash_reduced() else 1.0
+		LxDarknessLayer.active_instance.add_burst_light(wick.global_position, 108.0, 1.55 * sc, 0.46)
+
+func spawn_afterimage(at_pos: Vector2, col: Color, dir: Vector2 = Vector2.RIGHT, anim: String = "dash", life: float = 0.20) -> void:
+	afterimages.append({"pos": at_pos, "age": 0.0, "life": maxf(0.04, life), "col": col, "dir": dir, "anim": anim})
+
+func spawn_prism_wedge(at_pos: Vector2, base_dir: Vector2, angle_deg: float = 18.0, length_px: float = 16.0, life: float = 0.14) -> void:
+	var dn: Vector2 = base_dir.normalized() if base_dir.length_squared() > 0.0001 else Vector2.RIGHT
+	wedges.append({"pos": at_pos, "dir": dn, "ang": deg_to_rad(angle_deg), "len": length_px, "age": 0.0, "life": maxf(0.04, life)})
 
 func spawn_ring(at_pos: Vector2, r0: float, r1: float, life: float, col: Color, width: float = 1.0) -> void:
 	rings.append({"pos": at_pos, "r0": r0, "r1": r1, "age": 0.0, "life": maxf(0.02, life), "col": col, "w": width})
@@ -79,7 +85,9 @@ func _spawn_streak(p0: Vector2, p1: Vector2, life: float, col: Color, width: flo
 	streaks.append({"p0": p0, "p1": p1, "age": 0.0, "life": maxf(0.04, life), "col": col, "w": width})
 
 func age(dt: float) -> void:
-	for arr: Array[Dictionary] in [afterimages, rings, streaks]:
+	_lantern_ignite_t = maxf(0.0, _lantern_ignite_t - dt)
+	_land_squash_t = maxf(0.0, _land_squash_t - dt)
+	for arr: Array[Dictionary] in [afterimages, rings, streaks, wedges]:
 		for i: int in range(arr.size() - 1, -1, -1):
 			arr[i]["age"] = float(arr[i]["age"]) + dt
 			if float(arr[i]["age"]) >= float(arr[i]["life"]):
@@ -102,63 +110,42 @@ func age(dt: float) -> void:
 			motes.remove_at(i)
 
 func try_load_sprite() -> void:
-	if sprite_sheet != null:
-		return
+	if sprite_sheet != null: return
 	sprite_sheet = LxSpriteSheet.load_sheet("res://luxel/art/wick/wick.json")
 
-
 func _is_near_sanctuary(world_pos: Vector2) -> bool:
-	if Lx.world == null or not is_instance_valid(Lx.world) or not Lx.world.has_method("get_interactables"):
-		return false
+	if Lx.world == null or not is_instance_valid(Lx.world) or not Lx.world.has_method("get_interactables"): return false
 	var inters: Variant = Lx.world.call("get_interactables")
-	if not (inters is Array):
-		return false
+	if not (inters is Array): return false
 	for it: Variant in (inters as Array):
 		if it is Node2D and is_instance_valid(it):
 			var k: String = str((it as Object).get("kind"))
 			if k in ["rest_shrine", "waystone", "great_lamp", "brazier", "beacon"]:
-				if k != "rest_shrine" and not bool((it as Object).get("lit")):
-					continue
-				if (it as Node2D).global_position.distance_squared_to(world_pos) <= 4096.0:
-					return true
+				if k != "rest_shrine" and not bool((it as Object).get("lit")): continue
+				if (it as Node2D).global_position.distance_squared_to(world_pos) <= 4096.0: return true
 	return false
 
-
 func _surface_at(world_pos: Vector2) -> String:
-	if Lx.world == null or not is_instance_valid(Lx.world):
-		return "stone"
+	if Lx.world == null or not is_instance_valid(Lx.world): return "stone"
 	var tile: String = str(Lx.world.call("tile_at", world_pos)) if Lx.world.has_method("tile_at") else "floor"
-	if tile == "water" or tile == "tide":
-		return "water"
-	if tile == "bridge":
-		return "wood"
+	if tile == "water" or tile == "tide": return "water"
+	if tile == "bridge": return "wood"
 	var is_dung: bool = bool(Lx.world.get("is_dungeon"))
 	var isl: int = int(Lx.world.get("current_island_id"))
-	if isl == 6 and tile in ["floor", "path", "ground"]:
-		return "ash"
-	if isl == 7 and tile in ["floor", "path", "ground", "mirror", "glass"]:
-		return "crystal"
-	if tile in ["mirror", "glass"]:
-		return "crystal"
+	if isl == 6 and tile in ["floor", "path", "ground"]: return "ash"
+	if (isl == 7 and tile in ["floor", "path", "ground", "mirror", "glass"]) or tile in ["mirror", "glass"]: return "crystal"
 	if not is_dung:
-		if isl == 2 and tile == "path":
-			return "wood"
-		if tile in ["floor", "ground"] and isl in [1, 2, 3, 4]:
-			return "grass"
-	if isl == 8 and tile in ["floor", "ground"]:
-		return "crystal"
+		if isl == 2 and tile == "path": return "wood"
+		if tile in ["floor", "ground"] and isl in [1, 2, 3, 4]: return "grass"
+	if isl == 8 and tile in ["floor", "ground"]: return "crystal"
 	return "stone"
 
 
 func _dust_color_for(surf: String) -> Color:
-	if surf == "grass":
-		return LxPalette.color("lime") if randf() < 0.45 else LxPalette.color("jade")
-	if surf == "wood":
-		return LxWick.PAL_APRICOT if randf() < 0.45 else PAL_MAUVE
-	if surf == "ash":
-		return LxWick.PAL_CORAL if randf() < 0.35 else LxWick.PAL_STONE
-	if surf == "crystal" or surf == "water":
-		return LxWick.PAL_ICE if randf() < 0.45 else LxWick.PAL_SKY
+	if surf == "grass": return LxPalette.color("lime") if randf() < 0.45 else LxPalette.color("jade")
+	if surf == "wood": return LxWick.PAL_APRICOT if randf() < 0.45 else PAL_MAUVE
+	if surf == "ash": return LxWick.PAL_CORAL if randf() < 0.35 else LxWick.PAL_STONE
+	if surf == "crystal" or surf == "water": return LxWick.PAL_ICE if randf() < 0.45 else LxWick.PAL_SKY
 	return LxWick.PAL_STONE if randf() < 0.55 else PAL_MAUVE
 
 func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: Vector2, glide_lift: float) -> void:
@@ -178,15 +165,14 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 	var zipping: bool = wick.is_zipping()
 	var airborne: bool = dashing or gliding or zipping
 	if _was_airborne and not airborne:
+		_land_squash_t = 0.085
 		var surf_l: String = _surface_at(wick.global_position)
 		var lcol: Color = _dust_color_for(surf_l)
 		for side: float in [-1.0, 1.0]:
 			_spawn_mote(wick.global_position + Vector2(side * 3.0, 0.0), Vector2(side * 16.0, -7.0), 0.24, lcol, 2.0, true, 0.16, false, 0.80)
-		if surf_l == "water" and Lx.world != null and is_instance_valid(Lx.world):
-			var wfx_l: Variant = Lx.world.get("_water_fx")
-			if wfx_l is Object and is_instance_valid(wfx_l) and (wfx_l as Object).has_method("spawn_ripple"):
-				(wfx_l as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 1.0), "ice")
-		else:
+		if LxWaterFx.active_instance != null and is_instance_valid(LxWaterFx.active_instance):
+			LxWaterFx.active_instance.spawn_shore_spray(wick.global_position + Vector2(0.0, 1.0), wick.facing, true)
+		if surf_l != "water":
 			var r_col: Color = lcol
 			if Lx.state != null and Lx.world != null and is_instance_valid(Lx.world):
 				var isl_l: int = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 1
@@ -219,10 +205,8 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			_spawn_mote(foot, dvel, randf_range(0.26, 0.36), dcol, float(randi_range(2, 3)), true, 0.18, false, 0.72)
 			_step_parity = (_step_parity + 1) & 1
 			if _step_parity == 1:
-				if surf == "water" and Lx.world != null and is_instance_valid(Lx.world):
-					var wfx_s: Variant = Lx.world.get("_water_fx")
-					if wfx_s is Object and is_instance_valid(wfx_s) and (wfx_s as Object).has_method("spawn_ripple"):
-						(wfx_s as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 1.0), "ice", 10.0)
+				if LxWaterFx.active_instance != null and is_instance_valid(LxWaterFx.active_instance):
+					LxWaterFx.active_instance.spawn_shore_spray(wick.global_position + Vector2(0.0, 1.0), mdir, false)
 				wick.emit_sfx("footstep_" + surf, wick.global_position, false)
 	else:
 		_prev_move_dir = Vector2.ZERO
@@ -299,13 +283,14 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 	var glide_lift: float = -3.0 if wick.is_gliding() else 0.0
 	var hop_y: float = -roundf(absf(sin(walk_phase)) * 2.0)
 	var base: Vector2 = (-wick.facing * clampf(wick.recoil_vis * 1.5, 0.0, 1.5)).round() + Vector2(0.0, hop_y + glide_lift)
-	var lan_in_hand: bool = wick.lantern == null or wick.lantern.is_in_hand()
+	var has_lan: bool = wick.has_lantern()
+	var lan_in_hand: bool = has_lan and (wick.lantern == null or wick.lantern.is_in_hand())
 	var hand_pos: Vector2 = (base + wick.facing * 6.0 + Vector2(0.0, -6.0)).round()
 
 	_tick_emitters(wick, clock_t, lan_in_hand, hand_pos, glide_lift)
-	if wick.move_lens != null:
+	if has_lan and wick.move_lens != null:
 		wick.move_lens.draw_fx(wick, off)
-	if wick.move_sunflare != null:
+	if has_lan and wick.move_sunflare != null:
 		wick.move_sunflare.draw_fx(wick, off)
 
 	var air_lift: float = absf(hop_y) + absf(glide_lift) + (2.5 if wick.is_zipping() else 0.0)
@@ -319,24 +304,54 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 	for a: Dictionary in afterimages:
 		var t: float = 1.0 - clampf(float(a["age"]) / float(a["life"]), 0.0, 1.0)
 		var apos: Vector2 = ((a["pos"] as Vector2) + off).round()
-		var acol: Color = Color(a["col"] as Color, t * 0.52)
+		var base_c: Color = a["col"] as Color
+		var is_ice: bool = base_c.is_equal_approx(LxWick.PAL_ICE)
+		var a_alpha: float = minf(0.92, t * 0.78 + 0.14 * minf(1.0, t * 4.0)) if is_ice else (t * 0.52)
+		var acol: Color = Color(base_c, a_alpha)
 		if sprite_sheet == null or not sprite_sheet.draw_actor(wick, apos, str(a.get("anim", "dash")), a.get("dir", wick.facing) as Vector2, clock_t, acol):
 			wick.draw_rect(Rect2(apos + Vector2(-4.0, -10.0), Vector2(8.0, 10.0)), acol)
+		if is_ice:
+			wick.draw_rect(Rect2(apos + Vector2(0.0, -6.0), Vector2.ONE), Color(LxWick.PAL_CREAM, minf(1.0, t * 0.95)))
 	for st: Dictionary in streaks:
 		var t: float = clampf(float(st["age"]) / float(st["life"]), 0.0, 1.0)
 		var p0: Vector2 = (st["p0"] as Vector2) + off
 		var p1: Vector2 = (st["p1"] as Vector2) + off
 		wick.draw_line(p0.lerp(p1, t * 0.65).round(), p1.round(), Color(st["col"] as Color, (1.0 - t) * 0.85), float(st["w"]))
+	if wick.is_zipping() and wick.lantern != null and is_instance_valid(wick.lantern):
+		var l_rel: Vector2 = ((wick.lantern.pos + off) + Vector2(0.0, -5.0)).round()
+		var w_rel: Vector2 = (base + Vector2(0.0, -6.0)).round()
+		wick.draw_line(w_rel, l_rel, Color(LxWick.PAL_GOLD, 0.85), 2.0)
+		wick.draw_line(w_rel, l_rel, Color(LxWick.PAL_CREAM, 0.95), 1.0)
+		wick.draw_rect(Rect2(w_rel.lerp(l_rel, 0.35).round() - Vector2.ONE, Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
+		wick.draw_rect(Rect2(w_rel.lerp(l_rel, 0.70).round() - Vector2.ONE, Vector2(2.0, 2.0)), LxWick.PAL_GOLD)
 	for r: Dictionary in rings:
 		var t: float = clampf(float(r["age"]) / float(r["life"]), 0.0, 1.0)
 		wick.draw_arc(((r["pos"] as Vector2) + off).round(), lerpf(float(r["r0"]), float(r["r1"]), t), 0.0, TAU, 20, Color(r["col"] as Color, 1.0 - t), float(r["w"]))
+	for wg: Dictionary in wedges:
+		var wt: float = clampf(float(wg["age"]) / float(wg["life"]), 0.0, 1.0)
+		var winv: float = 1.0 - wt
+		var wp: Vector2 = ((wg["pos"] as Vector2) + off).round()
+		var wdir: Vector2 = wg["dir"] as Vector2
+		var wang: float = float(wg["ang"])
+		var wlen: float = roundf(lerpf(6.0, float(wg["len"]), minf(1.0, wt * 2.2)))
+		for sgn: float in [-1.0, 0.0, 1.0]:
+			var rdir: Vector2 = wdir.rotated(sgn * wang)
+			var tip: Vector2 = (wp + rdir * wlen).round()
+			wick.draw_line(wp, tip, Color(LxWick.PAL_ICE, winv * 0.92), 2.0 if wt < 0.45 else 1.0)
+			wick.draw_line(wp, (wp + rdir * roundf(wlen * 0.72)).round(), Color(LxWick.PAL_CREAM, winv), 1.0)
+		wick.draw_rect(Rect2(wp - Vector2.ONE, Vector2(2.0, 2.0)), Color(LxWick.PAL_CREAM, winv))
 
-	if lan_in_hand:
+	if not has_lan:
+		var ma: float = 0.09 if flash_red else (0.08 + 0.03 * sin(clock_t * 3.0))
+		var c_ice: Color = LxPalette.color("ice"); c_ice.a = ma
+		wick.draw_circle(base + Vector2(0.0, -6.0), 11.0, c_ice)
+	elif lan_in_hand:
 		var low_hp: bool = wick.get_hearts() > 0.0 and wick.get_hearts() <= 1.0
 		var beat: float = 0.0 if flash_red else sin(clock_t * (9.5 if low_hp else 7.0))
 		var pulse: float = 1.0 if flash_red else ((0.86 + 0.14 * beat) if low_hp else (0.92 + 0.08 * beat))
-		wick.draw_circle(hand_pos, 13.0 * pulse, Color(LxWick.PAL_CORAL if low_hp else LxWick.PAL_GOLD, 0.13 if low_hp else 0.10))
-		wick.draw_circle(hand_pos, 6.5 * pulse, Color(LxWick.PAL_APRICOT, 0.17 if low_hp else 0.15))
+		var swell: float = (sin((1.0 - clampf(_lantern_ignite_t / 0.48, 0.0, 1.0)) * PI) * 8.0) if _lantern_ignite_t > 0.0 else 0.0
+		wick.draw_circle(hand_pos, 13.0 * pulse + swell, Color(LxWick.PAL_CORAL if low_hp else LxWick.PAL_GOLD, 0.13 if low_hp else 0.10))
+		wick.draw_circle(hand_pos, 6.5 * pulse + swell * 0.5, Color(LxWick.PAL_APRICOT, 0.17 if low_hp else 0.15))
 		if not low_hp and Lx.state != null and Lx.state.relit_islands.size() >= 8:
 			var sg: float = 2.0 if flash_red else roundf(2.0 + absf(sin(clock_t * 3.0)))
 			wick.draw_line(hand_pos + Vector2(-sg, 0.0), hand_pos + Vector2(sg, 0.0), Color(LxWick.PAL_GOLD, 0.55), 1.0)
@@ -355,7 +370,13 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		anim_name = "shoot"
 	elif wick.velocity.length() > 10.0:
 		anim_name = "walk"
-	var drew_sprite: bool = sprite_sheet != null and sprite_sheet.draw_actor(wick, base, anim_name, wick.facing, clock_t, mod)
+	var sp_sc: Vector2 = Vector2.ONE
+	if not flash_red:
+		if wick.catch_anim_t > 0.14: sp_sc = Vector2(1.10, 0.90)
+		elif wick.is_dashing() or wick.is_zipping(): sp_sc = Vector2(0.92, 1.08)
+		elif _land_squash_t > 0.0: sp_sc = Vector2.ONE.lerp(Vector2(1.12, 0.88), clampf(_land_squash_t / 0.085, 0.0, 1.0))
+		elif wick.recoil_vis > 0.15: sp_sc = Vector2.ONE.lerp(Vector2(1.06, 0.94), clampf(wick.recoil_vis, 0.0, 1.0))
+	var drew_sprite: bool = sprite_sheet != null and sprite_sheet.draw_actor(wick, base, "throw" if not has_lan else anim_name, wick.facing, 1.0 if not has_lan else clock_t, mod, sp_sc)
 	if not drew_sprite:
 		_draw_fallback_moth(wick, base, hit_white, alpha, lan_in_hand, hand_pos)
 
@@ -371,22 +392,42 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 			var sp: Vector2 = (Vector2(0.0, -7.0) + Vector2(cos(sa) * 9.0, sin(sa) * 5.0)).round()
 			wick.draw_rect(Rect2(sp, Vector2.ONE), LxWick.PAL_CREAM if si == 0 else LxWick.PAL_GOLD)
 	_draw_biome_buff_halo(wick, clock_t, flash_red)
-	LxWickEvolution.draw_wick_evolution(wick, hand_pos, clock_t, flash_red)
+	if has_lan:
+		LxWickEvolution.draw_wick_evolution(wick, hand_pos, clock_t, flash_red)
+	if _lantern_ignite_t > 0.0 and has_lan:
+		var iu: float = clampf(_lantern_ignite_t / 0.48, 0.0, 1.0)
+		var ir: float = roundf(lerpf(3.0, 12.0, iu) * (0.75 if flash_red else 1.0))
+		var c_ig: Color = LxPalette.color("gold"); c_ig.a = iu * 0.90
+		var c_ic: Color = LxPalette.color("cream"); c_ic.a = iu
+		wick.draw_line(hand_pos + Vector2(-ir, 0.0), hand_pos + Vector2(ir, 0.0), c_ig, 1.0)
+		wick.draw_line(hand_pos + Vector2(0.0, -ir), hand_pos + Vector2(0.0, ir), c_ig, 1.0)
+		wick.draw_circle(hand_pos, maxf(1.5, ir * 0.35), c_ic)
+	if wick.is_grabbing():
+		var ga: Vector2 = wick.grab_axis.normalized() if wick.grab_axis.length_squared() > 0.01 else wick.facing
+		var gp: Vector2 = Vector2(-ga.y, ga.x)
+		var grip_c: Vector2 = (ga * 6.0 + Vector2(0.0, -5.0)).round()
+		wick.draw_rect(Rect2(grip_c + gp * 3.0 - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_ICE)
+		wick.draw_rect(Rect2(grip_c - gp * 3.0 - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_ICE)
+		wick.draw_line((grip_c + gp * 3.0).round(), (grip_c - gp * 3.0).round(), Color(LxWick.PAL_SKY, 0.7), 1.0)
 	if wick.move_beam != null:
 		wick.move_beam.draw_fx(wick, off, hand_pos)
 	for s: Dictionary in sparks:
 		wick.draw_rect(Rect2(((s["pos"] as Vector2) + off).round(), Vector2(1.0, 1.0)), s["col"] as Color)
 	_draw_bolts(wick, off)
 
-	var pip: Vector2 = (wick.facing * 12.0 + Vector2(0.0, -6.0)).round()
-	wick.draw_rect(Rect2(pip - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), LxWick.PAL_VOID)
-	if lan_in_hand:
-		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), _muzzle_biome_color())
-		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(1.0, 1.0)), LxWick.PAL_CREAM)
-	else:
-		var lan_stolen: bool = wick.lantern != null and wick.lantern.state == LxLantern.State.CARRIED
-		wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CORAL if lan_stolen else LxWick.PAL_APRICOT)
-		wick.draw_rect(Rect2(pip, Vector2.ONE), LxWick.PAL_VOID)
+	if has_lan and not wick.is_grabbing():
+		var pip: Vector2 = (wick.facing * 12.0 + Vector2(0.0, -6.0)).round()
+		var ret_world: Vector2 = wick.global_position + pip
+		var ret_sp: Vector2 = (ret_world - Lx.camera.global_position + Vector2(160.0, 90.0)) if Lx.camera != null else ret_world
+		if not Rect2(0.0, 150.0, 166.0, 30.0).has_point(ret_sp) and not Rect2(242.0, 156.0, 78.0, 24.0).has_point(ret_sp):
+			wick.draw_rect(Rect2(pip - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), LxWick.PAL_VOID)
+			if lan_in_hand:
+				wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), _muzzle_biome_color())
+				wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(1.0, 1.0)), LxWick.PAL_CREAM)
+			else:
+				var lan_stolen: bool = wick.lantern != null and wick.lantern.state == LxLantern.State.CARRIED
+				wick.draw_rect(Rect2(pip - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CORAL if lan_stolen else LxWick.PAL_APRICOT)
+				wick.draw_rect(Rect2(pip, Vector2.ONE), LxWick.PAL_VOID)
 	if wick.muzzle_t > 0.0:
 		_draw_muzzle_star(wick, hand_pos, flash_red)
 
@@ -417,10 +458,20 @@ func _draw_bolts(wick: LxWick, off: Vector2) -> void:
 			continue
 		var bdir: Vector2 = b.dir.normalized() if b.dir.length_squared() > 0.0001 else Vector2.RIGHT
 		var bp: Vector2 = (b.pos + off).round()
+		if b.is_split_shard:
+			var perp := Vector2(-bdir.y, bdir.x)
+			wick.draw_line((bp - bdir * 7.0).round(), bp, LxWick.PAL_SKY, 1.0)
+			wick.draw_line((bp - bdir * 3.0).round(), bp, LxWick.PAL_ICE, 1.0)
+			wick.draw_line((bp - perp * 2.0).round(), (bp + perp * 2.0).round(), LxWick.PAL_ICE, 1.0)
+			wick.draw_line((bp - bdir * 2.0).round(), (bp + bdir * 2.0).round(), LxWick.PAL_ICE, 1.0)
+			wick.draw_rect(Rect2(bp - Vector2.ONE, Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
+			wick.draw_rect(Rect2((bp + bdir).round(), Vector2.ONE), LxWick.PAL_CREAM)
+			continue
 		var has_bt: bool = not b.biome_tint.is_empty() and LxPalette.PAL.has(b.biome_tint)
 		var bt_col: Color = (LxPalette.PAL[b.biome_tint] as Color) if has_bt else LxWick.PAL_GOLD
-		var c_body: Color = LxWick.PAL_ICE if b.is_prism else (LxWick.PAL_CORAL if b.is_pierce else (bt_col if has_bt else (LxWick.PAL_CREAM if b.is_counter else LxWick.PAL_GOLD)))
-		var c_tail: Color = LxWick.PAL_SKY if b.is_prism else (LxWick.PAL_APRICOT if b.is_pierce else (LxWick.PAL_SKY if b.biome_tint == "ice" else (LxWick.PAL_GOLD if (b.is_counter or has_bt) else LxWick.PAL_APRICOT)))
+		var is_blue: bool = b.is_prism or b.light_color == LxHit.COLOR_BLUE
+		var c_body: Color = LxWick.PAL_ICE if is_blue else (LxWick.PAL_CORAL if b.is_pierce else (bt_col if has_bt else (LxWick.PAL_CREAM if b.is_counter else LxWick.PAL_GOLD)))
+		var c_tail: Color = LxWick.PAL_SKY if is_blue else (LxWick.PAL_APRICOT if b.is_pierce else (LxWick.PAL_SKY if b.biome_tint == "ice" else (LxWick.PAL_GOLD if (b.is_counter or has_bt) else LxWick.PAL_APRICOT)))
 		var mid_end: Vector2 = (bp - bdir * (6.0 if (b.is_counter or b.is_pierce or has_bt or b.bounce_count >= 2) else 5.0)).round()
 		var tail_end: Vector2 = (bp - bdir * (12.0 if (b.is_counter or b.is_pierce or has_bt or b.bounce_count >= 2) else 9.0)).round()
 		wick.draw_line(tail_end, mid_end, Color(c_tail, 0.85), 1.0)
@@ -428,10 +479,12 @@ func _draw_bolts(wick: LxWick, off: Vector2) -> void:
 		wick.draw_line(mid_end, bp, c_body, 2.0)
 		wick.draw_line((bp - bdir * 2.0).round(), bp, LxWick.PAL_GOLD if b.is_pierce else LxWick.PAL_CREAM, 1.0)
 		wick.draw_rect(Rect2(bp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), LxWick.PAL_CREAM)
-		if b.is_prism:
+		if is_blue:
 			var arm: float = 4.0 if b.bounce_count >= 2 else 3.0
 			wick.draw_line(bp + Vector2(-arm, 0.0), bp + Vector2(arm, 0.0), LxWick.PAL_ICE, 1.0)
 			wick.draw_line(bp + Vector2(0.0, -arm), bp + Vector2(0.0, arm), LxWick.PAL_ICE, 1.0)
+			if b.age < 0.08:
+				wick.draw_arc(bp, 4.5, 0.0, TAU, 10, Color(LxWick.PAL_SKY, 0.85), 1.0, false)
 			if b.bounce_count >= 2:
 				wick.draw_rect(Rect2(bp + Vector2(-2.0, -2.0), Vector2.ONE), LxWick.PAL_CREAM)
 				wick.draw_rect(Rect2(bp + Vector2(2.0, 2.0), Vector2.ONE), LxWick.PAL_CREAM)
@@ -462,19 +515,13 @@ func _draw_muzzle_star(wick: LxWick, hand_pos: Vector2, flash_red: bool) -> void
 func _muzzle_biome_color() -> Color:
 	var br: LxBiomeRules = LxBiomeRules.active_instance
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
-	if bm != null and is_instance_valid(bm) and bm.molten_charges > 0:
-		return LxWick.PAL_CORAL
-	if bm != null and is_instance_valid(bm) and bm.tailwind_t > 0.0:
-		return LxPalette.PAL["rose"] as Color
+	if bm != null and is_instance_valid(bm) and bm.molten_charges > 0: return LxWick.PAL_CORAL
+	if bm != null and is_instance_valid(bm) and bm.tailwind_t > 0.0: return LxPalette.PAL["rose"] as Color
 	if br != null and is_instance_valid(br):
-		if br.island_id == 2 and br.beam_buff_t > 0.0:
-			return LxWick.PAL_ICE
-		if br.island_id == 5 and br.starlight_surge_t > 0.0:
-			return LxWick.PAL_SKY
-		if br.island_id == 7 and br.lunar_phase > 0.65:
-			return LxWick.PAL_ICE
-		if br.island_id == 8 and bm != null and is_instance_valid(bm) and bm.dawn_seals_broken > 0 and bm.dawn_seals_broken < 3:
-			return LxPalette.PAL["rose"] as Color
+		if br.island_id == 2 and br.beam_buff_t > 0.0: return LxWick.PAL_ICE
+		if br.island_id == 5 and br.starlight_surge_t > 0.0: return LxWick.PAL_SKY
+		if br.island_id == 7 and br.lunar_phase > 0.65: return LxWick.PAL_ICE
+		if br.island_id == 8 and bm != null and is_instance_valid(bm) and bm.dawn_seals_broken > 0 and bm.dawn_seals_broken < 3: return LxPalette.PAL["rose"] as Color
 	return LxWick.PAL_GOLD
 
 
@@ -508,15 +555,8 @@ func _draw_biome_buff_halo(wick: LxWick, clock_t: float, flash_red: bool) -> voi
 
 func _draw_fallback_moth(wick: LxWick, base: Vector2, hit_white: bool, alpha: float, lan_in_hand: bool, hand_pos: Vector2) -> void:
 	var c_out := Color(LxWick.PAL_NIGHT, alpha)
-	var c_cloak := Color(
-		LxWick.PAL_CREAM if hit_white else (
-			LxWick.PAL_ICE if wick.is_dashing() else (
-				LxWick.PAL_SKY if wick.is_gliding() else (
-					LxWick.PAL_GOLD if wick.is_zipping() else LxWick.PAL_DUSK
-				)
-			)
-		), alpha
-	)
+	var base_cl: Color = LxWick.PAL_CREAM if hit_white else (LxWick.PAL_ICE if wick.is_dashing() else (LxWick.PAL_SKY if wick.is_gliding() else (LxWick.PAL_GOLD if wick.is_zipping() else LxWick.PAL_DUSK)))
+	var c_cloak := Color(base_cl, alpha)
 	var c_wing := Color(LxWick.PAL_CREAM if hit_white else (LxWick.PAL_ICE if wick.is_gliding() else LxWick.PAL_PLUM), alpha)
 	var wing_w: float = 14.0 if wick.is_gliding() else 10.0
 	wick.draw_rect(Rect2(base + Vector2(-wing_w * 0.5, -10.0), Vector2(wing_w, 6.0)), c_out)

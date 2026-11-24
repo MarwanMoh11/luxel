@@ -93,85 +93,33 @@ func _calc_flicker_frame() -> int:
 	return int(floorf(_clock * rate + absf(pos.x * 0.07 + pos.y * 0.05)))
 
 
-func _fill(key: String, rects: Array) -> void:
-	var c: Color = PAL[key] as Color
-	for r: Variant in rects:
-		draw_rect(r as Rect2, c)
-
-
 func _draw() -> void:
-	_fill("void", [
-		Rect2(-9.0, 2.0, 18.0, 2.0), Rect2(-7.0, 1.0, 14.0, 4.0), Rect2(-5.0, 0.0, 10.0, 5.0),
-		Rect2(-8.0, -2.0, 16.0, 5.0), Rect2(-6.0, -6.0, 12.0, 5.0),
-	])
-	_fill("night", [Rect2(-7.0, -1.0, 14.0, 3.0), Rect2(-5.0, -5.0, 10.0, 4.0)])
-	_fill("dusk", [Rect2(-7.0, -1.0, 12.0, 2.0), Rect2(-5.0, -5.0, 8.0, 3.0)])
-	_fill("mauve", [Rect2(-7.0, -1.0, 8.0, 1.0), Rect2(-5.0, -5.0, 3.0, 3.0), Rect2(0.0, -4.0, 1.0, 2.0)])
-	_fill("stone", [Rect2(-7.0, -1.0, 4.0, 1.0), Rect2(-5.0, -5.0, 2.0, 1.0)])
-	draw_rect(Rect2(-1.0, -4.0, 1.0, 2.0), PAL["night"] as Color)
-	_fill("void", [Rect2(-6.0, -7.0, 12.0, 2.0), Rect2(-7.0, -9.0, 14.0, 3.0), Rect2(-8.0, -12.0, 16.0, 4.0)])
-	_fill("plum", [Rect2(-6.0, -9.0, 12.0, 2.0), Rect2(-7.0, -11.0, 14.0, 2.0)])
-	_fill("night", [Rect2(-5.0, -7.0, 10.0, 2.0), Rect2(3.0, -9.0, 3.0, 2.0), Rect2(4.0, -11.0, 3.0, 2.0)])
-	_fill("wine", [Rect2(-6.0, -9.0, 4.0, 1.0), Rect2(-7.0, -11.0, 11.0, 1.0)])
-	draw_rect(Rect2(-6.0, -11.0, 12.0, 1.0), PAL["void"] as Color)
-	_fill("gold", [Rect2(-7.0, -10.0, 1.0, 1.0), Rect2(-3.0, -10.0, 1.0, 1.0)])
-	_fill("apricot", [Rect2(2.0, -10.0, 1.0, 1.0), Rect2(6.0, -10.0, 1.0, 1.0)])
+	# Unified contact shadow under fluted stone brazier pedestal
+	_draw_ground_shadow(7.0, 2.5, Vector2(2.0, 4.0))
+	var key: String = "brazier_lit" if lit else "brazier_unlit"
+	var frame_ov: int = (_flicker_frame % 4) if lit else 0
+	_draw_puzzle_sprite(key, Vector2.ZERO, _clock, Color.WHITE, frame_ov)
 	if lit:
-		_draw_flame()
+		var phase: float = absf(pos.x * 0.019 + pos.y * 0.013)
+		for i: int in range(2):
+			var t: float = fmod(_clock * 0.68 + phase + float(i) * 0.5, 1.0)
+			var ex: float = roundf(sin(_clock * 2.6 + float(i) * 3.1) * (2.0 + t * 2.5))
+			var ey: float = roundf(-14.0 - t * 10.0)
+			var ec: Color = (PAL["cream"] if t < 0.25 else (PAL["gold"] if t < 0.65 else PAL["apricot"])) as Color
+			draw_rect(Rect2(ex, ey, 1.0, 1.0), ec)
+		if _ignite_t > 0.0:
+			var u: float = 1.0 - clampf(_ignite_t / 0.32, 0.0, 1.0)
+			var rad: float = lerpf(4.0, 15.0, u)
+			var sc: Color = (PAL["cream"] if u < 0.4 else PAL["gold"]) as Color
+			for k: int in range(8):
+				var a: float = (TAU * float(k)) / 8.0
+				var pt := Vector2(roundf(cos(a) * rad), roundf(-10.0 + sin(a) * rad * 0.7 - u * 4.0))
+				draw_rect(Rect2(pt, Vector2(2.0 if u < 0.35 else 1.0, 2.0 if u < 0.35 else 1.0)), sc)
 	else:
-		draw_rect(Rect2(-5.0, -12.0, 10.0, 2.0), PAL["night"] as Color)
-		draw_rect(Rect2(-4.0, -13.0, 8.0, 2.0), PAL["dusk"] as Color)
-		draw_rect(Rect2(-2.0, -13.0, 4.0, 1.0), PAL["plum"] as Color)
-		_fill("wine", [Rect2(-3.0, -12.0, 2.0, 1.0), Rect2(1.0, -12.0, 2.0, 1.0)])
+		# Subtle opaque pixel ember glint above cold coals when Wick approaches
 		if Lx.player is Node2D and is_instance_valid(Lx.player):
 			var d_b: float = (Lx.player as Node2D).global_position.distance_to(pos)
-			if d_b <= 64.0:
-				var prox_b: float = clampf(1.0 - d_b / 64.0, 0.0, 1.0)
-				var bg: Color = LxBiomePalette.col(island_id, "glow")
-				var fr_b: bool = LxHudFx.flash_reduced()
-				var ba: float = (0.35 if fr_b else (0.38 + 0.28 * sin(_clock * 3.6))) * prox_b
-				draw_rect(Rect2(-1.0, -14.0, 3.0, 1.0), Color(bg, ba))
-				draw_rect(Rect2(0.0, -15.0, 1.0, 3.0), Color(PAL["cream"] as Color, ba))
-				draw_arc(Vector2(0.0, 1.0), 11.0, 0.0, TAU, 14, Color(bg, ba * 0.48), 1.0)
+			if d_b <= 64.0 and (LxHudFx.flash_reduced() or int(floorf(_clock * 3.2)) % 2 == 0):
+				draw_rect(Rect2(-1.0, -9.0, 3.0, 1.0), PAL["gold"] as Color)
+				draw_rect(Rect2(0.0, -10.0, 1.0, 3.0), PAL["cream"] as Color)
 	_draw_signal_pulses()
-
-
-func _draw_flame() -> void:
-	var st: int = _flicker_frame % 4
-	var sway: float = -1.0 if st == 0 else (1.0 if st == 2 else 0.0)
-	var tall: float = 1.0 if (st == 1 or st == 3) else 0.0
-	var lh: float = 2.0 if (st == 0 or st == 3) else 1.0
-	var rh: float = 2.0 if (st == 1 or st == 2) else 1.0
-	var c_dark: String = LxBiomePalette.key(island_id, "dark")
-	var c_mid: String = LxBiomePalette.key(island_id, "mid")
-	var c_hi: String = LxBiomePalette.key(island_id, "hi")
-	var c_glow: String = LxBiomePalette.key(island_id, "glow")
-	var c_core: String = LxBiomePalette.key(island_id, "core")
-	draw_rect(Rect2(-5.0, -12.0, 10.0, 2.0), PAL[c_dark] as Color)
-	_fill(c_mid, [
-		Rect2(-5.0, -14.0, 10.0, 3.0), Rect2(-4.0, -16.0, 8.0, 2.0),
-		Rect2(-2.0 + sway, -19.0 - tall, 4.0, 3.0 + tall), Rect2(-1.0 + sway, -20.0 - tall, 2.0, 1.0),
-		Rect2(-5.0, -15.0 - lh, 2.0, 1.0 + lh), Rect2(3.0, -15.0 - rh, 2.0, 1.0 + rh),
-	])
-	_fill(c_hi, [
-		Rect2(-4.0, -14.0, 8.0, 2.0), Rect2(-3.0, -16.0, 6.0, 2.0),
-		Rect2(-1.0 + sway, -18.0 - tall, 2.0, 2.0 + tall),
-		Rect2(-4.0, -14.0 - lh, 1.0, lh), Rect2(3.0, -14.0 - rh, 1.0, rh),
-	])
-	_fill(c_glow, [Rect2(-3.0, -14.0, 6.0, 2.0), Rect2(-2.0, -16.0, 4.0, 2.0), Rect2(-1.0 + sway, -17.0, 2.0, 1.0)])
-	_fill(c_core, [Rect2(-1.0, -14.0, 2.0, 2.0), Rect2(0.0 if sway > 0.0 else -1.0, -15.0, 1.0, 1.0)])
-	var c_cream: Color = PAL[c_core] as Color
-	var c_gold: Color = PAL[c_glow] as Color
-	var c_apr: Color = PAL[c_hi] as Color
-	var phase: float = absf(pos.x * 0.019 + pos.y * 0.013)
-	for i: int in range(2):
-		var t: float = fmod(_clock * 0.68 + phase + float(i) * 0.5, 1.0)
-		var ex: float = roundf(sin(_clock * 2.6 + float(i) * 3.1) * (2.0 + t * 2.5))
-		var ey: float = roundf(-19.0 - t * 11.0)
-		draw_rect(Rect2(ex, ey, 1.0, 1.0), c_cream if t < 0.25 else (c_gold if t < 0.65 else c_apr))
-	var fr_f: bool = LxHudFx.flash_reduced()
-	var ha_f: float = 0.24 if fr_f else (0.20 + 0.14 * sin(_clock * 4.2 + phase))
-	draw_arc(Vector2(0.0, -15.0), 9.0, 0.0, TAU, 14, Color(c_gold, ha_f), 1.0)
-	if _ignite_t > 0.0:
-		var u: float = 1.0 - clampf(_ignite_t / 0.32, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -14.0), roundf(lerpf(4.0, 18.0, u)), 0.0, TAU, 16, c_cream if u < 0.4 else c_gold, 2.0 if u < 0.35 else 1.0, false)

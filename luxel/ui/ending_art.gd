@@ -35,12 +35,19 @@ static func _px(ci: CanvasItem, rects: Array, col_key: String, ox: float = 0.0, 
 	for r: Array in rects:
 		ci.draw_rect(Rect2(ox + float(r[0]), oy + float(r[1]), float(r[2]), float(r[3])), c)
 
-static func _dither(ci: CanvasItem, x0: float, x1: float, y: float, col: Color) -> void:
+static func _dither(ci: CanvasItem, x0: float, x1: float, y: float, col: Color, seed_k: int = 0) -> void:
 	var x: float = x0
+	var s: int = seed_k
 	while x < x1:
-		ci.draw_rect(Rect2(x, y, 2.0, 1.0), col)
-		ci.draw_rect(Rect2(x + 4.0, y + 1.0, 4.0, 1.0), col)
-		x += 8.0
+		var h: int = (s * 37 + seed_k * 17 + 11) % 13
+		var w: float = 3.0 + float(h % 5) * 2.0
+		var gap: float = 2.0 + float((h / 2) % 4) * 2.0
+		var dy: float = 0.0 if (h % 2 == 0) else 1.0
+		ci.draw_rect(Rect2(x, y + dy, minf(w, x1 - x), 1.0), col)
+		if h % 3 != 0 and x + 1.0 < x1:
+			ci.draw_rect(Rect2(x + 1.0, y + 1.0, minf(w + 2.0, x1 - x - 1.0), 1.0), col)
+		x += w + gap
+		s += 1
 
 static func _draw_stars(ci: CanvasItem, t: float, count: int, y0: float, y1: float, seed_k: int, slow: bool, fade: float, q0: float, q1: float) -> void:
 	var span: int = maxi(1, int(y1 - y0))
@@ -65,44 +72,118 @@ static func _draw_rivets(ci: CanvasItem, rect: Rect2, body: String, hi: String) 
 		ci.draw_rect(Rect2(rv, Vector2(2.0, 2.0)), LxPalette.PAL[body])
 		ci.draw_rect(Rect2(rv, Vector2(1.0, 1.0)), LxPalette.PAL[hi])
 
-static func _draw_filigree_divider(ci: CanvasItem, x0: float, x1: float, y: float, link: String, gem: String) -> void:
+static func _draw_filigree_divider(ci: CanvasItem, x0: float, x1: float, y: float, link: String, gem: String, show_gem: bool = true) -> void:
 	var cx: float = roundf((x0 + x1) * 0.5)
 	ci.draw_rect(Rect2(x0, y, x1 - x0, 1.0), LxPalette.PAL["night"])
 	ci.draw_rect(Rect2(x0 + 4.0, y, x1 - x0 - 8.0, 1.0), LxPalette.PAL["dusk"])
 	var x: float = x0 + 8.0
+	var step_i: int = 0
 	while x < x1 - 8.0:
-		if absf(x - cx) > 6.0:
-			ci.draw_rect(Rect2(x, y, 3.0, 1.0), LxPalette.PAL[link if int(x) % 12 == 0 else "dusk"])
+		if not show_gem or absf(x - cx) > 6.0:
+			ci.draw_rect(Rect2(x, y, 3.0, 1.0), LxPalette.PAL[link if step_i % 2 == 0 else "dusk"])
 		x += 6.0
-	ci.draw_rect(Rect2(cx - 2.0, y, 5.0, 1.0), LxPalette.PAL[link])
-	ci.draw_rect(Rect2(cx - 1.0, y - 1.0, 3.0, 3.0), LxPalette.PAL[gem])
-	ci.draw_rect(Rect2(cx, y, 1.0, 1.0), LxPalette.PAL["cream"])
+		step_i += 1
+	if show_gem:
+		ci.draw_rect(Rect2(cx - 2.0, y, 5.0, 1.0), LxPalette.PAL[link])
+		ci.draw_rect(Rect2(cx - 1.0, y - 1.0, 3.0, 3.0), LxPalette.PAL[gem])
+		ci.draw_rect(Rect2(cx, y, 1.0, 1.0), LxPalette.PAL["cream"])
+	else:
+		ci.draw_rect(Rect2(x0, y, 2.0, 1.0), LxPalette.PAL[link])
+		ci.draw_rect(Rect2(x1 - 2.0, y, 2.0, 1.0), LxPalette.PAL[link])
+
+static func _draw_split_filigree_divider(ci: CanvasItem, x0: float, x1: float, gap_x0: float, gap_x1: float, y: float, link: String, gem: String) -> void:
+	for wing: Array in [[x0, gap_x0, true], [gap_x1, x1, false]]:
+		var wx0: float = float(wing[0])
+		var wx1: float = float(wing[1])
+		var is_left: bool = bool(wing[2])
+		ci.draw_rect(Rect2(wx0, y, wx1 - wx0, 1.0), LxPalette.PAL["night"])
+		ci.draw_rect(Rect2(wx0 + 2.0, y, wx1 - wx0 - 4.0, 1.0), LxPalette.PAL["dusk"])
+		var x: float = wx0 + 4.0
+		var wi: int = 0
+		while x < wx1 - 6.0:
+			ci.draw_rect(Rect2(x, y, 3.0, 1.0), LxPalette.PAL[link if wi % 2 == 0 else "dusk"])
+			x += 6.0
+			wi += 1
+		var tip_x: float = wx1 - 2.0 if is_left else wx0
+		ci.draw_rect(Rect2(tip_x, y, 2.0, 1.0), LxPalette.PAL[gem])
+		ci.draw_rect(Rect2(tip_x + (1.0 if is_left else 0.0), y, 1.0, 1.0), LxPalette.PAL["cream"])
+
+static func _draw_pixel_ring(ci: CanvasItem, center: Vector2, r: float, segs: int, col: Color, thickness: float = 1.0) -> void:
+	if col.a <= 0.0 or r < 1.0:
+		return
+	var cx: float = roundf(center.x)
+	var cy: float = roundf(center.y)
+	for i: int in range(segs):
+		var a: float = float(i) * TAU / float(segs)
+		ci.draw_rect(Rect2(roundf(cx + cos(a) * r), roundf(cy + sin(a) * r), thickness, thickness), col)
 
 static func draw_intro_backdrop(ci: CanvasItem, t: float) -> void:
 	ci.draw_rect(Rect2(0.0, 0.0, 320.0, 180.0), LxPalette.PAL["void"])
-	ci.draw_rect(Rect2(0.0, 138.0, 320.0, 26.0), LxPalette.PAL["night"])
-	_dither(ci, 0.0, 320.0, 136.0, LxPalette.PAL["night"])
-	_dither(ci, 0.0, 320.0, 162.0, LxPalette.PAL["void"])
-	_draw_stars(ci, t, 30, 8.0, 128.0, 73, true, 0.0, 76.0, 100.0)
-	# Subtle flickering golden Wick-lantern glow silhouette below text (y = 128).
-	var boost: bool = t >= 4.0
 	var fr: bool = LxHudFx.flash_reduced()
-	var flk: bool = fr or fmod(t * 2.5, 1.0) < 0.58
-	var dr: float = 0.0 if fr else roundf(sin(t * 2.2))
-	_px(ci, [[-10, 0, 1, 1], [10, 0, 1, 1], [-7, -5, 1, 1], [7, -5, 1, 1], [-7, 5, 1, 1], [7, 5, 1, 1], [-4 + dr, 10, 9, 1], [-2 - dr, 13, 5, 1]], "plum", 160.0, 128.0)
-	_px(ci, [[-6, 0, 1, 1], [6, 0, 1, 1], [0, -6, 1, 1], [0, 6, 1, 1], [-4, -3, 1, 1], [4, -3, 1, 1], [-4, 3, 1, 1], [4, 3, 1, 1]], "coral" if (boost and flk) else "wine", 160.0, 128.0)
-	_px(ci, [[-2, -5, 5, 1], [-3, -4, 7, 1], [-3, 4, 7, 1], [-2, 5, 5, 1]], "night", 160.0, 128.0)
-	_px(ci, [[-1, -6, 3, 1], [-2, -3, 1, 6], [2, -3, 1, 6], [-2, 3, 5, 1]], "apricot", 160.0, 128.0)
-	ci.draw_rect(Rect2(159.0, 125.0, 3.0, 6.0), LxPalette.PAL["gold" if flk else "apricot"])
-	ci.draw_rect(Rect2(160.0, 126.0, 1.0, 4.0), LxPalette.PAL["cream"])
-	ci.draw_rect(Rect2(159.0 + dr, 138.0, 3.0, 1.0), LxPalette.PAL["apricot" if boost else "coral"])
-	if boost:
-		var bt: float = clampf((t - 4.0) / 1.4, 0.0, 1.0)
-		var ring_r: float = roundf(lerpf(6.0, 42.0, 1.0 - pow(1.0 - bt, 2.0)))
-		if bt < 0.92:
-			ci.draw_arc(Vector2(160.0, 128.0), ring_r, 0.0, TAU, 24, Color(LxPalette.PAL["gold"], (1.0 - bt) * 0.72), 1.0)
+	if t < 2.5:
+		# Beat 1 (0.0-2.5s): Dusk horizon + Bell Tower silhouette + expanding brass toll waves.
+		var bt1: float = clampf(t / 2.5, 0.0, 1.0)
+		var sky_band: String = "plum" if bt1 < 0.45 else "dusk"
+		ci.draw_rect(Rect2(0.0, 130.0, 320.0, 8.0), LxPalette.PAL[sky_band])
+		_dither(ci, 0.0, 320.0, 128.0, LxPalette.PAL[sky_band], 3)
+		ci.draw_rect(Rect2(0.0, 138.0, 320.0, 26.0), LxPalette.PAL["night"])
+		_dither(ci, 0.0, 320.0, 136.0, LxPalette.PAL["night"])
+		_dither(ci, 0.0, 320.0, 162.0, LxPalette.PAL["void"])
+		_draw_stars(ci, t, 28, 8.0, 122.0, 73, true, 0.0, 76.0, 100.0)
+		# Expanding concentric pixel-stepped brass toll waves from the belfry (160, 126).
+		for wi: int in range(2):
+			var wu: float = fmod(t * (0.42 if fr else 0.72) + float(wi) * 0.5, 1.0)
+			var wr: float = roundf(lerpf(8.0, 52.0, 1.0 - (1.0 - wu) * (1.0 - wu)))
+			var wcol: Color = LxPalette.fade_step(1.0 - wu * 0.85, "gold" if wu < 0.42 else "apricot")
+			_draw_pixel_ring(ci, Vector2(160.0, 126.0), wr, 28, wcol)
+		# Bell Tower silhouette at x=160, y=126 grounded onto horizon hill.
+		_px(ci, [[-18, 12, 36, 5], [-12, 9, 24, 4], [-7, -2, 14, 14], [-9, -3, 18, 2], [-6, -7, 12, 4], [-4, -11, 8, 4], [-2, -14, 4, 3], [-1, -17, 2, 3]], "night", 160.0, 126.0)
+		_px(ci, [[-8, -3, 16, 1], [-5, -7, 10, 1], [-6, 10, 12, 1]], "dusk", 160.0, 126.0)
+		_px(ci, [[-3, -2, 6, 7]], "void", 160.0, 126.0)
+		var swing: float = 0.0 if fr else roundf(sin(t * 7.0) * 1.0)
+		_px(ci, [[-1 + swing, -1, 3, 4], [-2 + swing, 2, 5, 1]], "apricot", 160.0, 126.0)
+		ci.draw_rect(Rect2(160.0 + swing, 126.0, 1.0, 2.0), LxPalette.PAL["gold"])
+	elif t < 5.0:
+		# Beat 2 (2.5-5.0s): 8 bespoke biome archipelago silhouettes bookending Credits, snuffing west-to-east.
+		var lt2: float = t - 2.5
+		ci.draw_rect(Rect2(0.0, 138.0, 320.0, 26.0), LxPalette.PAL["night"])
+		_dither(ci, 0.0, 320.0, 136.0, LxPalette.PAL["night"])
+		_dither(ci, 0.0, 320.0, 162.0, LxPalette.PAL["void"])
+		_draw_stars(ci, t, 30, 8.0, 124.0, 73, true, 0.0, 76.0, 100.0)
+		var lit_states: Array = []
+		for ii: int in range(8):
+			var snuff_at: float = 0.25 + float(ii) * 0.24
+			if lt2 < snuff_at:
+				lit_states.append(1.0)
+			elif lt2 < snuff_at + 0.30:
+				lit_states.append(1.0 - (lt2 - snuff_at) / 0.30)
+			else:
+				lit_states.append(0.0)
+		_draw_archipelago_silhouettes(ci, 148.0, lit_states, t)
+	else:
+		# Beat 3 (5.0-7.5s): Single warm brass lantern ignites at (160, 128) with pixel gold ring & sparks.
+		var lt3: float = t - 5.0
+		ci.draw_rect(Rect2(0.0, 138.0, 320.0, 26.0), LxPalette.PAL["night"])
+		_dither(ci, 0.0, 320.0, 136.0, LxPalette.PAL["night"])
+		_dither(ci, 0.0, 320.0, 162.0, LxPalette.PAL["void"])
+		_draw_stars(ci, t, 30, 8.0, 124.0, 73, true, 0.0, 76.0, 100.0)
+		var flk: bool = fr or fmod(t * 2.8, 1.0) < 0.58
+		var dr: float = 0.0 if fr else roundf(sin(t * 2.2))
+		var bt3: float = clampf(lt3 / 1.5, 0.0, 1.0)
+		if bt3 < 0.94:
+			var ring_r: float = roundf(lerpf(6.0, 44.0, 1.0 - pow(1.0 - bt3, 2.0)))
+			_draw_pixel_ring(ci, Vector2(160.0, 128.0), ring_r, 30, LxPalette.fade_step(1.0 - bt3 * 0.85, "cream" if bt3 < 0.25 else "gold"))
+			if ring_r > 12.0:
+				_draw_pixel_ring(ci, Vector2(160.0, 128.0), ring_r - 6.0, 22, LxPalette.fade_step(1.0 - bt3, "apricot"))
+		_px(ci, [[-10, 0, 1, 1], [10, 0, 1, 1], [-7, -5, 1, 1], [7, -5, 1, 1], [-7, 5, 1, 1], [7, 5, 1, 1], [-4 + dr, 10, 9, 1], [-2 - dr, 13, 5, 1]], "plum", 160.0, 128.0)
+		_px(ci, [[-6, 0, 1, 1], [6, 0, 1, 1], [0, -6, 1, 1], [0, 6, 1, 1], [-4, -3, 1, 1], [4, -3, 1, 1], [-4, 3, 1, 1], [4, 3, 1, 1]], "coral" if flk else "wine", 160.0, 128.0)
+		_px(ci, [[-2, -5, 5, 1], [-3, -4, 7, 1], [-3, 4, 7, 1], [-2, 5, 5, 1]], "night", 160.0, 128.0)
+		_px(ci, [[-1, -6, 3, 1], [-2, -3, 1, 6], [2, -3, 1, 6], [-2, 3, 5, 1]], "apricot", 160.0, 128.0)
+		ci.draw_rect(Rect2(159.0, 125.0, 3.0, 6.0), LxPalette.PAL["gold" if flk else "apricot"])
+		ci.draw_rect(Rect2(160.0, 126.0, 1.0, 4.0), LxPalette.PAL["cream"])
+		ci.draw_rect(Rect2(159.0 + dr, 138.0, 3.0, 1.0), LxPalette.PAL["apricot"])
 		for mi: int in range(6):
-			var mu: float = fmod((t - 4.0) * 0.65 + float(mi) * 0.19, 1.0)
+			var mu: float = fmod(lt3 * (0.45 if fr else 0.70) + float(mi) * 0.19, 1.0)
 			var mx: float = roundf(160.0 + sin(t * 2.1 + float(mi) * 1.4) * (10.0 + mu * 12.0))
 			var my: float = roundf(124.0 - mu * 34.0)
 			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), LxPalette.PAL["cream" if mi % 2 == 0 else "gold"])
@@ -188,7 +269,7 @@ static func _draw_dawn_sky(ci: CanvasItem, t: float, rise: float) -> void:
 		var by: float = 16.0 + float(bi) * 18.0
 		ci.draw_rect(Rect2(0.0, by, 320.0, 16.0 if bi == 5 else 18.0), cols[bi])
 		if bi > 0:
-			_dither(ci, 0.0, 320.0, by - 2.0, cols[bi])
+			_dither(ci, 0.0, 320.0, by - 2.0, cols[bi], bi + 1)
 	_draw_stars(ci, t, 20, 18.0, 56.0, 67, true, rise * 1.15, 31.0, 42.0)
 	var sun_y: float = roundf(lerpf(128.0, 88.0, rise))
 	var ray_col: Color = LxPalette.PAL["gold" if rise > 0.45 else "apricot"]
@@ -329,10 +410,14 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 			ci.draw_rect(Rect2(roundf(x - rw * 0.5 + wob), y + 6.0 + float(rr) * 3.0, rw, 1.0), LxPalette.PAL["cream"] if rr == 0 else (bio_glow if rr < 3 else bio_hi))
 
 static func _draw_wick_silhouette(ci: CanvasItem, t: float) -> void:
-	# Foreground left cliff outcrop & Wick silhouette (moth-ears + cloak + softly glowing lantern).
+	# Foreground left cliff outcrop & Wick silhouette with warm eastern sunrise rim-light.
 	_px(ci, [[0, 152, 32, 12], [0, 149, 26, 4], [10, 148, 12, 2], [15, 136, 2, 3], [20, 136, 2, 3], [16, 139, 6, 4], [15, 143, 8, 6], [13, 146, 2, 4], [22, 144, 3, 2]], "void")
-	_px(ci, [[24, 150, 4, 2], [28, 152, 4, 3], [14, 148, 8, 1], [16, 145, 3, 3], [25, 144, 4, 1], [25, 148, 4, 1]], "night")
-	_px(ci, [[22, 149, 3, 1], [27, 152, 3, 1], [21, 137, 1, 6], [22, 143, 1, 5]], "plum")
+	_px(ci, [[0, 150, 25, 2], [26, 153, 5, 2], [14, 148, 8, 1], [16, 145, 3, 3], [25, 144, 4, 1], [25, 148, 4, 1]], "night")
+	_px(ci, [[0, 149, 13, 1], [14, 146, 1, 3], [15, 143, 1, 3], [16, 139, 1, 4]], "plum")
+	# Crisp 1 px warm sunrise rim-light along sunward eastern edge of cliff, cloak, hood & moth-ears.
+	_px(ci, [[13, 149, 13, 1], [26, 152, 6, 1], [31, 153, 1, 5], [16, 137, 1, 2], [17, 139, 4, 1], [22, 145, 1, 4]], "apricot")
+	_px(ci, [[16, 136, 1, 1], [21, 137, 1, 6], [22, 143, 1, 2], [23, 144, 2, 1], [25, 152, 2, 1]], "gold")
+	ci.draw_rect(Rect2(21.0, 136.0, 1.0, 1.0), LxPalette.PAL["cream"])
 	ci.draw_rect(Rect2(25.0, 145.0, 4.0, 3.0), LxPalette.PAL["apricot"])
 	ci.draw_rect(Rect2(26.0, 145.0, 2.0, 2.0), LxPalette.PAL["gold"])
 	ci.draw_rect(Rect2(26.0, 146.0, 1.0, 1.0), LxPalette.PAL["cream"])
@@ -349,31 +434,35 @@ static func draw_results_backdrop(ci: CanvasItem, panel: Rect2, t: float) -> voi
 	_draw_stars(ci, t, 32, 6.0, 142.0, 79, true, 0.0, 22.0, 158.0)
 	ci.draw_rect(Rect2(panel.position + Vector2(3.0, 3.0), panel.size), LxPalette.PAL["void"])
 
-static func draw_results_ornaments(ci: CanvasItem, panel: Rect2, rank_key: String, t: float) -> void:
+static func draw_results_ornaments(ci: CanvasItem, panel: Rect2, rank_key: String, t: float, relit_count: int = -1) -> void:
 	_draw_rivets(ci, panel, "apricot", "gold")
-	_draw_filigree_divider(ci, panel.position.x + 14.0, panel.end.x - 14.0, 47.0, "apricot", "gold")
+	if rank_key == "RANK_S" or rank_key == "RANK_A":
+		_draw_split_filigree_divider(ci, panel.position.x + 14.0, panel.end.x - 14.0, 144.0, 176.0, 47.0, "apricot", "gold")
+	else:
+		_draw_filigree_divider(ci, panel.position.x + 14.0, panel.end.x - 14.0, 47.0, "apricot", "gold")
 	_draw_rank_medallion(ci, rank_key, t)
-	LxPixelFont.draw_panel(ci, Rect2(70.0, 74.0, 180.0, 50.0), "night", "dusk", "void")
+	LxPixelFont.draw_panel(ci, Rect2(70.0, 73.0, 180.0, 50.0), "night", "dusk", "void")
 	for row: int in range(STAT_ICONS.size()):
 		var iy: float = 78.0 + float(row) * 12.0
 		_draw_mini_icon(ci, STAT_ICONS[row], 82.0, iy)
 		_draw_mini_icon(ci, STAT_ICONS[row], 233.0, iy)
-	_draw_filigree_divider(ci, panel.position.x + 22.0, panel.end.x - 22.0, 132.0, "mauve", "apricot")
+	_draw_filigree_divider(ci, panel.position.x + 22.0, panel.end.x - 22.0, 124.0, "mauve", "apricot", false)
+	var eff_relit: int = relit_count if relit_count >= 0 else (Lx.state.relit_islands.size() if Lx.state != null else 8)
 	for isl_c: int in range(1, 9):
-		var relit_c: bool = Lx.state == null or Lx.state.relit_islands.has(isl_c)
-		var cx_c: float = roundf(76.0 + float(isl_c - 1) * 24.0)
+		var relit_c: bool = eff_relit >= 8 or isl_c <= eff_relit or (Lx.state != null and Lx.state.relit_islands.has(isl_c))
+		var cx_c: float = roundf(83.0 + float(isl_c - 1) * 22.0)
 		var c1: Color = LxBiomePalette.col(isl_c, "glow") if relit_c else (LxPalette.PAL["dusk"] as Color)
 		var c2: Color = (LxPalette.PAL["cream"] if relit_c else LxPalette.PAL["mauve"]) as Color
-		LxHudFx.draw_biome_crest(ci, isl_c, Vector2(cx_c, 132.0), c1, c2)
+		LxHudFx.draw_biome_crest(ci, isl_c, Vector2(cx_c, 134.0), c1, c2)
 		if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % isl_c, false)):
 			var sg_c: bool = LxHudFx.flash_reduced() or fmod(t * 2.4 + float(isl_c) * 0.4, 1.0) < 0.55
-			ci.draw_rect(Rect2(cx_c, 126.0, 1.0, 3.0), c1)
-			ci.draw_rect(Rect2(cx_c - 1.0, 127.0, 3.0, 1.0), c1)
-			ci.draw_rect(Rect2(cx_c, 127.0, 1.0, 1.0), LxPalette.PAL["cream"] if sg_c else c1)
+			ci.draw_rect(Rect2(cx_c, 127.0, 1.0, 3.0), c1)
+			ci.draw_rect(Rect2(cx_c - 1.0, 128.0, 3.0, 1.0), c1)
+			ci.draw_rect(Rect2(cx_c, 128.0, 1.0, 1.0), LxPalette.PAL["cream"] if sg_c else c1)
 	if rank_key == "RANK_S" or rank_key == "RANK_A":
 		var fr_r: bool = LxHudFx.flash_reduced()
 		var cnt: int = 8 if rank_key == "RANK_S" else 4
-		var all_relit_r: bool = Lx.state != null and Lx.state.relit_islands.size() >= 8
+		var all_relit_r: bool = eff_relit >= 8
 		for pi: int in range(cnt):
 			var side_x: float = (panel.position.x + 12.0 + float(pi % 2) * 12.0) if pi < cnt / 2 else (panel.end.x - 14.0 - float(pi % 2) * 12.0)
 			var py: float = roundf(panel.position.y + 14.0 + fmod((0.0 if fr_r else t * (10.0 + float(pi % 3) * 3.0)) + float(pi) * 17.0, panel.size.y - 28.0))
@@ -414,40 +503,61 @@ static func _draw_mini_icon(ci: CanvasItem, rows: Array, ox: float, oy: float) -
 			if row[c] != ".":
 				ci.draw_rect(Rect2(ox + float(c), oy + float(r), 1.0, 1.0), LxPalette.color(str(ICON_PAL.get(row[c], "cream"))))
 
+static func _draw_archipelago_silhouettes(ci: CanvasItem, horizon_y: float, lit_states: Array, elapsed: float) -> void:
+	var oy: float = horizon_y - 164.0
+	var fr: bool = LxHudFx.flash_reduced()
+	# Shared 8-biome archipelago silhouettes (Bell Isle -> Sanctum) bookending Intro Beat 2 & Credits.
+	_px(ci, [
+		[8, 155, 28, 9], [14, 153, 16, 2], [18, 150, 5, 5], [19, 149, 3, 1],
+		[44, 157, 6, 7], [52, 157, 6, 7], [60, 157, 6, 7], [68, 157, 6, 7], [57, 151, 5, 6],
+		[84, 157, 28, 7], [88, 154, 20, 3], [91, 152, 14, 2], [94, 150, 8, 2],
+		[124, 157, 28, 7], [130, 153, 16, 4], [133, 151, 10, 2], [136, 150, 4, 1],
+		[162, 156, 30, 8], [166, 154, 22, 2], [171, 151, 12, 3], [174, 149, 6, 2],
+		[201, 156, 12, 8], [218, 156, 12, 8], [212, 151, 6, 6],
+		[240, 157, 10, 7], [258, 157, 10, 7], [252, 150, 4, 7],
+		[278, 157, 32, 7], [283, 155, 22, 2], [288, 150, 3, 6], [297, 150, 3, 6], [291, 151, 6, 2],
+	], "dusk", 0.0, oy)
+	_px(ci, [[213, 158, 5, 5]], "coral" if (lit_states.size() > 5 and float(lit_states[5]) > 0.0) else "wine", 0.0, oy)
+	_px(ci, [[250, 159, 8, 4]], "deep", 0.0, oy)
+	if horizon_y >= 160.0:
+		ci.draw_rect(Rect2(0.0, horizon_y, 320.0, 180.0 - horizon_y), LxPalette.PAL["void"])
+		_dither(ci, 0.0, 320.0, horizon_y - 1.0, LxPalette.PAL["void"])
+	else:
+		_dither(ci, 0.0, 320.0, horizon_y - 1.0, LxPalette.PAL["night"])
+	var lamps: Array = [[20, 149], [59, 150], [97, 152], [137, 149], [176, 148], [215, 150], [253, 149], [293, 149]]
+	for bi: int in range(8):
+		var bx: float = float((lamps[bi] as Array)[0])
+		var by: float = float((lamps[bi] as Array)[1]) + oy
+		var st: float = float(lit_states[bi]) if bi < lit_states.size() else 0.0
+		if st >= 1.5:
+			var lit_c: bool = fr or fmod(elapsed * 1.6 + float(bi) * 0.55, 1.0) < 0.6
+			var bc_glow: Color = LxBiomePalette.col(bi + 1, "glow")
+			var bc_hi: Color = LxBiomePalette.col(bi + 1, "hi")
+			ci.draw_rect(Rect2(bx, by - 5.0, 1.0, 5.0), bc_hi if lit_c else (LxPalette.PAL["dusk"] as Color))
+			ci.draw_rect(Rect2(bx, by, 1.0, 1.0), LxPalette.PAL["cream"] if lit_c else bc_glow)
+			ci.draw_rect(Rect2(bx - 1.0, horizon_y + 2.0 + float(bi % 3) * 2.0, 3.0, 1.0), bc_glow if lit_c else bc_hi)
+			if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % (bi + 1), false)):
+				ci.draw_rect(Rect2(bx - 1.0, by - 9.0, 3.0, 1.0), bc_glow)
+				ci.draw_rect(Rect2(bx, by - 10.0, 1.0, 3.0), bc_glow)
+				ci.draw_rect(Rect2(bx, by - 9.0, 1.0, 1.0), LxPalette.PAL["cream"] if lit_c else bc_glow)
+		elif st >= 1.0:
+			var flk2: bool = fr or fmod(elapsed * 3.0 + float(bi) * 0.4, 1.0) < 0.6
+			ci.draw_rect(Rect2(bx - 1.0, by - 1.0, 2.0, 2.0), LxPalette.PAL["gold" if flk2 else "apricot"])
+			ci.draw_rect(Rect2(bx, by - 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+			ci.draw_rect(Rect2(bx - 1.0, horizon_y + 2.0 + float(bi % 3) * 2.0, 2.0, 1.0), LxPalette.PAL["apricot" if flk2 else "wine"])
+		elif st > 0.0:
+			var su: float = 1.0 - st
+			ci.draw_rect(Rect2(bx, by - 1.0, 1.0, 1.0), LxPalette.PAL["coral" if su < 0.5 else "wine"])
+			ci.draw_rect(Rect2(bx + (0.0 if fr else roundf(sin(su * 5.0))), roundf(by - 3.0 - su * 6.0), 1.0, 1.0), LxPalette.PAL["mauve"])
+		else:
+			ci.draw_rect(Rect2(bx, by - 1.0, 1.0, 1.0), LxPalette.PAL["void"])
+
 static func draw_credits_backdrop(ci: CanvasItem, t: float) -> void:
 	ci.draw_rect(Rect2(0.0, 0.0, 320.0, 180.0), LxPalette.PAL["void"])
 	ci.draw_rect(Rect2(0.0, 146.0, 320.0, 34.0), LxPalette.PAL["night"])
 	_dither(ci, 0.0, 320.0, 144.0, LxPalette.PAL["night"])
 	_draw_stars(ci, t, 34, 6.0, 138.0, 73, true, 0.0, -1.0, -1.0)
-	# True reshaped 8-island archipelago silhouettes across the twilight credits horizon
-	_px(ci, [
-		[8, 155, 28, 9], [14, 153, 16, 2], [18, 150, 5, 5], [19, 149, 3, 1],                  # 1 Bell Isle cliff + belfry
-		[44, 157, 6, 7], [52, 157, 6, 7], [60, 157, 6, 7], [68, 157, 6, 7], [57, 151, 5, 6], # 2 Tidewater 4-islet piers + lighthouse
-		[84, 157, 28, 7], [88, 154, 20, 3], [91, 152, 14, 2], [94, 150, 8, 2],               # 3 Thornwood 3-tier oak massif
-		[124, 157, 28, 7], [130, 153, 16, 4], [133, 151, 10, 2], [136, 150, 4, 1],           # 4 Mirefen lagoon + conservatory dome
-		[162, 156, 30, 8], [166, 154, 22, 2], [171, 151, 12, 3], [174, 149, 6, 2],           # 5 Starfall astrolabe wheel + dome
-		[201, 156, 12, 8], [218, 156, 12, 8], [212, 151, 6, 6],                              # 6 Ashen Kiln split caldera + chimney
-		[240, 157, 10, 7], [258, 157, 10, 7], [252, 150, 4, 7],                              # 7 Moon Shoals twin crescents + spire
-		[278, 157, 32, 7], [283, 155, 22, 2], [288, 150, 3, 6], [297, 150, 3, 6], [291, 151, 6, 2], # 8 Long Night stepped cathedral arch
-	], "dusk")
-	_px(ci, [[213, 158, 5, 5]], "coral") # Subtle lava-river cleft glow in Ashen Kiln silhouette
-	_px(ci, [[250, 159, 8, 4]], "deep")  # Mirror lake reflection between Moon Shoals crescents
-	ci.draw_rect(Rect2(0.0, 164.0, 320.0, 16.0), LxPalette.PAL["void"])
-	_dither(ci, 0.0, 320.0, 163.0, LxPalette.PAL["void"])
-	for bi: int in range(8):
-		var b: Array = [[20, 149], [59, 150], [97, 152], [137, 149], [176, 148], [215, 150], [253, 149], [293, 149]][bi]
-		var bx: float = float(b[0])
-		var by: float = float(b[1])
-		var lit_c: bool = LxHudFx.flash_reduced() or fmod(t * 1.6 + float(bi) * 0.55, 1.0) < 0.6
-		var bc_glow: Color = LxBiomePalette.col(bi + 1, "glow")
-		var bc_hi: Color = LxBiomePalette.col(bi + 1, "hi")
-		ci.draw_rect(Rect2(bx, by - 5.0, 1.0, 5.0), bc_hi if lit_c else (LxPalette.PAL["dusk"] as Color))
-		ci.draw_rect(Rect2(bx, by, 1.0, 1.0), LxPalette.PAL["cream"] if lit_c else bc_glow)
-		ci.draw_rect(Rect2(bx - 1.0, 166.0 + float(bi % 3) * 2.0, 3.0, 1.0), bc_glow if lit_c else bc_hi)
-		if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % (bi + 1), false)):
-			ci.draw_rect(Rect2(bx - 1.0, by - 9.0, 3.0, 1.0), bc_glow)
-			ci.draw_rect(Rect2(bx, by - 10.0, 1.0, 3.0), bc_glow)
-			ci.draw_rect(Rect2(bx, by - 9.0, 1.0, 1.0), LxPalette.PAL["cream"] if lit_c else bc_glow)
+	_draw_archipelago_silhouettes(ci, 164.0, [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0], t)
 	# Gentle rising lantern fireflies along left/right margins in all 8 biome glows (center lane stays clean).
 	var fr_c: bool = LxHudFx.flash_reduced()
 	for mi: int in range(14):

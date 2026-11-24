@@ -54,7 +54,7 @@ var _biome_rules: LxBiomeRules = null
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	z_index = 5
+	z_index = 3
 	_vfx_rng.seed = 42421
 	_sync_events()
 
@@ -98,12 +98,7 @@ func configure(island_id: int, world_bounds: Rect2, is_dungeon: bool) -> void:
 	_is_dungeon = is_dungeon
 	_clock = 0.0
 	_cam_center = world_bounds.get_center()
-	_items.clear()
-	_sparks.clear()
-	_rings.clear()
-	_pillars.clear()
-	_slashes.clear()
-	_shard_orbs.clear()
+	_items.clear(); _sparks.clear(); _rings.clear(); _pillars.clear(); _slashes.clear(); _shard_orbs.clear()
 	if _biome_rules == null and get_parent() != null:
 		_biome_rules = LxBiomeRules.new()
 		_biome_rules.name = "BiomeRules"
@@ -115,39 +110,41 @@ func configure(island_id: int, world_bounds: Rect2, is_dungeon: bool) -> void:
 	rng.seed = int(_island_id * 7919 + (131 if is_dungeon else 17) + int(world_bounds.size.x) * 31)
 	_vfx_rng.seed = rng.seed ^ 0x5A17
 	var d: bool = is_dungeon
+	# Subtle close-up fireflies & drifting motes only (macro rain/comets/embers/ash live in LxBiomeWeather)
 	match _island_id:
-		1: # Bell Isle: warm fireflies, petals, void stars
-			_add_group(rng, 8 if d else 10, Kind.GLOW, "gold", "", "cream", -5.0, 5.0, -4.0, 2.0, 8.0, 1.6, 2.8)
-			_add_group(rng, 4 if d else 8, Kind.FLAKE, "rose", "cream", "cream", 3.0, 7.0, 6.0, 12.0, 10.0, 1.2, 2.2)
-			_add_group(rng, 6 if d else 8, Kind.TWINKLE, "ice", "", "cream", -1.5, 1.5, -1.0, 1.0, 1.5, 1.4, 2.6)
-		2: # Tidewater Harbor: sea-spray motes & lantern sparkles
-			_add_group(rng, 8 if d else 16, Kind.MOTE, "ice", "sky", "ice", 10.0, 22.0, -3.0, 3.0, 4.0, 1.4, 2.4, 1.0, 2.0)
-			_add_group(rng, 8 if d else 10, Kind.TWINKLE, "gold", "", "cream", -2.0, 4.0, -6.0, -2.0, 5.0, 2.0, 3.4)
-		3: # Thornwood Hollow: rising bioluminescent spores
-			_add_group(rng, 10 if d else 14, Kind.GLOW, "jade", "", "lime", -3.0, 3.0, -11.0, -5.0, 9.0, 1.3, 2.4)
-			_add_group(rng, 8 if d else 12, Kind.GLOW, "lime", "", "cream", -4.0, 4.0, -8.0, -3.0, 7.0, 1.8, 3.0)
-		4: # Mirefen Gardens: mist-rain streaks & fireflies
-			if d:
-				_add_group(rng, 8, Kind.MOTE, "sky", "ice", "ice", -6.0, -2.0, 4.0, 9.0, 3.0, 1.2, 2.0)
-			else:
-				_add_group(rng, 14, Kind.STREAK, "sky", "ice", "ice", -24.0, -18.0, 58.0, 74.0, 0.0, 1.0, 1.0)
-			_add_group(rng, 10 if d else 12, Kind.GLOW, "gold", "", "cream", -4.0, 4.0, -3.0, 2.0, 8.0, 1.5, 2.6)
-		5: # Starfall Observatory: stardust & shooting stars
-			_add_group(rng, 9 if d else 12, Kind.TWINKLE, "gold", "", "cream", -3.0, 3.0, -4.0, 2.0, 4.0, 1.6, 3.0)
-			_add_group(rng, 8 if d else 12, Kind.TWINKLE, "ice", "", "cream", -4.0, 4.0, -3.0, 3.0, 4.0, 1.8, 3.2)
-			_add_group(rng, 1 if d else 2, Kind.SHOOT, "ice", "", "gold", 150.0, 150.0, 62.0, 62.0, 0.0, 6.5, 6.5)
-		6: # Ashen Kiln: forge cinders & ash flakes
-			_add_group(rng, 7 if d else 10, Kind.GLOW, "apricot", "", "gold", -5.0, 6.0, -22.0, -11.0, 11.0, 2.2, 3.8)
-			_add_group(rng, 6 if d else 8, Kind.GLOW, "coral", "", "gold", -6.0, 6.0, -18.0, -9.0, 10.0, 2.0, 3.4)
-			_add_group(rng, 5 if d else 8, Kind.FLAKE, "stone", "", "mauve", -4.0, 4.0, 4.0, 9.0, 8.0, 1.1, 2.0)
-		7: # Moon Shoals: moonlit reflections & prism glints
-			_add_group(rng, 9 if d else 14, Kind.MOTE, "ice", "sky", "ice", 4.0, 11.0, -4.0, 2.0, 6.0, 1.2, 2.2, 2.0, 2.0)
-			_add_group(rng, 9 if d else 12, Kind.TWINKLE, "sky", "ice", "cream", -2.0, 2.0, -3.0, 1.0, 3.0, 2.0, 3.6)
-		_: # Island 8 (The Long Night): void ash & eclipse embers
-			_add_group(rng, 10 if d else 14, Kind.FLAKE, "mauve", "stone", "stone", -5.0, 3.0, 6.0, 13.0, 9.0, 1.0, 1.9)
-			_add_group(rng, 8 if d else 12, Kind.GLOW, "coral", "", "gold", -4.0, 4.0, -9.0, -3.0, 7.0, 1.1, 2.0)
+		1: # Bell Isle: warm fireflies, distant sparkles & eastward arrival petals toward Moonlit Bridge
+			_add_group(rng, 7 if d else 8, Kind.GLOW, "gold", "", "cream", -4.0, 4.0, -3.0, 2.0, 7.0, 1.5, 2.6)
+			_add_group(rng, 4 if d else 4, Kind.TWINKLE, "ice", "", "cream", -1.2, 1.2, -1.0, 1.0, 1.5, 1.4, 2.4)
+			if not d:
+				_add_group(rng, 4, Kind.FLAKE, "gold", "apricot", "cream", 10.0, 16.0, -1.4, 1.4, 2.2, 1.3, 2.1)
+		2: # Tidewater Harbor: gentle lantern sparkles & coastal dust motes
+			_add_group(rng, 6 if d else 8, Kind.TWINKLE, "gold", "", "cream", -2.0, 3.0, -4.0, -1.0, 4.0, 1.8, 3.0)
+			_add_group(rng, 5 if d else 6, Kind.MOTE, "ice", "sky", "ice", 3.0, 8.0, -2.0, 2.0, 3.0, 1.2, 2.2)
+		3: # Thornwood Hollow: bioluminescent spores & northward leading-line fireflies along Thornwood Gate
+			_add_group(rng, 7 if d else 8, Kind.GLOW, "jade", "", "lime", -2.5, 2.5, -7.0, -3.0, 7.0, 1.3, 2.3)
+			_add_group(rng, 5 if d else 5, Kind.GLOW, "lime", "", "cream", -3.0, 3.0, -5.0, -2.0, 6.0, 1.6, 2.8)
+			if not d:
+				_add_group(rng, 3, Kind.GLOW, "lime", "", "cream", -1.0, 1.0, -14.0, -9.0, 2.0, 1.8, 2.6)
+		4: # Mirefen Gardens: warm close-up fireflies (rain lives in LxBiomeWeather)
+			_add_group(rng, 8 if d else 10, Kind.GLOW, "gold", "", "cream", -3.5, 3.5, -3.0, 2.0, 7.0, 1.5, 2.5)
+			_add_group(rng, 5 if d else 4, Kind.MOTE, "rose", "ice", "ice", -3.0, 3.0, -2.0, 2.0, 3.0, 1.2, 2.0)
+		5: # Starfall Observatory: delicate stardust motes (comets live in LxBiomeWeather)
+			_add_group(rng, 7 if d else 9, Kind.TWINKLE, "gold", "", "cream", -2.5, 2.5, -3.0, 2.0, 3.5, 1.6, 2.8)
+			_add_group(rng, 6 if d else 7, Kind.TWINKLE, "ice", "", "cream", -3.0, 3.0, -2.0, 2.0, 3.5, 1.7, 3.0)
+		6: # Ashen Kiln: calm close-up hearth motes (volcanic cinders live in LxBiomeWeather)
+			_add_group(rng, 6 if d else 6, Kind.GLOW, "apricot", "", "gold", -3.0, 4.0, -9.0, -4.0, 6.0, 1.8, 3.0)
+			_add_group(rng, 4 if d else 4, Kind.MOTE, "coral", "apricot", "gold", -2.5, 2.5, -6.0, -2.0, 4.0, 1.4, 2.4)
+		7: # Moon Shoals: quiet prism glints & silver-ice crystal air arrival glints
+			_add_group(rng, 6 if d else 7, Kind.MOTE, "ice", "sky", "ice", 2.0, 6.0, -2.5, 1.5, 4.5, 1.2, 2.2, 1.0, 2.0)
+			_add_group(rng, 6 if d else 7, Kind.TWINKLE, "sky", "ice", "cream", -1.5, 1.5, -2.0, 1.0, 2.5, 1.8, 3.2)
+			if not d:
+				_add_group(rng, 4, Kind.TWINKLE, "ice", "cream", "cream", 4.5, 8.5, -2.8, -0.4, 1.6, 2.2, 3.4)
+		_: # Island 8 (The Long Night): sparse eclipse embers (ash lives in LxBiomeWeather)
+			_add_group(rng, 6 if d else 7, Kind.GLOW, "coral", "", "gold", -3.0, 3.0, -6.0, -2.0, 5.5, 1.1, 2.0)
+			_add_group(rng, 5 if d else 4, Kind.TWINKLE, "rose", "", "cream", -2.0, 2.0, -2.0, 2.0, 2.5, 1.4, 2.4)
 	if not d and Lx.state != null and Lx.state.relit_islands.has(_island_id):
-		_add_group(rng, 4, Kind.GLOW, "gold", "", "cream", -3.0, 3.0, -8.0, -3.0, 7.0, 1.4, 2.4)
+		_add_group(rng, 6, Kind.GLOW, "gold", "", "cream", -2.5, 2.5, -8.0, -3.5, 5.5, 1.3, 2.2)
+		_add_group(rng, 4, Kind.TWINKLE, "gold", "cream", "cream", -1.8, 1.8, -5.0, -1.5, 3.0, 1.6, 2.6)
 	queue_redraw()
 
 func _add_group(rng: RandomNumberGenerator, count: int, kind: int, c1: String, c1_alt: String, c2: String, vx0: float, vx1: float, vy0: float, vy1: float, sway: float, f0: float, f1: float, sz: float = 1.0, sz_third: float = 0.0) -> void:
@@ -253,14 +250,18 @@ func _draw_cross(pt: Vector2, arm_col: Color, core_col: Color) -> void:
 func _draw() -> void:
 	if _items.is_empty() and _sparks.is_empty() and _rings.is_empty() and _pillars.is_empty() and _slashes.is_empty() and _shard_orbs.is_empty():
 		return
+	var relit_ow: bool = not _is_dungeon and Lx.state != null and Lx.state.relit_islands.has(_island_id)
+	var cam_c: Vector2 = Lx.camera.global_position if (Lx.camera != null and is_instance_valid(Lx.camera)) else _cam_center
 	for p: Particle in _items:
 		var pt: Vector2 = p.pos.round()
+		if Rect2(284.0, 0.0, 36.0, 15.0).has_point(pt - cam_c + Vector2(160.0, 90.0)):
+			continue
 		match p.kind:
 			Kind.GLOW:
 				var pulse: float = 0.5 + 0.5 * sin(_clock * p.freq + p.phase)
-				if pulse > 0.72:
+				if pulse > (0.60 if relit_ow else 0.72):
 					_draw_cross(pt, p.col, p.col2)
-				elif pulse > 0.10:
+				elif pulse > (0.06 if relit_ow else 0.10):
 					draw_rect(Rect2(pt, Vector2.ONE), p.col2 if pulse > 0.28 else p.col)
 			Kind.FLAKE:
 				draw_rect(Rect2(pt, Vector2(2.0, 1.0) if sin(_clock * p.freq * 1.4 + p.phase) >= 0.0 else Vector2(1.0, 2.0)), p.col)
@@ -354,13 +355,11 @@ func _draw_slash(sl: Dictionary) -> void:
 	if u < 0.65:
 		draw_line((c - d * roundf(half_l * 0.7)).round(), (c + d * roundf(half_l * 0.7)).round(), sl["core"] as Color, 1.0, false)
 
-
 func _spawn_slash(pos: Vector2, dir: Vector2, length: float, dur: float, core_k: String, outer_k: String) -> void:
 	if _slashes.size() >= 10:
 		_slashes.pop_front()
 	var dn: Vector2 = dir.normalized() if dir.length_squared() > 0.001 else Vector2.RIGHT
 	_slashes.append({"pos": pos, "dir": dn, "len": length, "age": 0.0, "dur": dur, "core": LxPalette.color(core_k), "outer": LxPalette.color(outer_k)})
-
 
 func _spawn_shard_orbs(pos: Vector2, count: int) -> void:
 	var n: int = clampi(count, 1, 7)
@@ -370,7 +369,6 @@ func _spawn_shard_orbs(pos: Vector2, count: int) -> void:
 		var ang: float = _vfx_rng.randf_range(0.0, TAU)
 		var v: Vector2 = Vector2(cos(ang), sin(ang)) * _vfx_rng.randf_range(38.0, 74.0) + Vector2(0.0, -16.0)
 		_shard_orbs.append({"pos": pos, "vel": v, "age": 0.0, "delay": 0.12 + float(i) * 0.045, "sound": i == 0 or i == n - 1})
-
 
 func _tick_shard_orbs(dt: float) -> void:
 	if _shard_orbs.is_empty():
@@ -400,14 +398,12 @@ func _tick_shard_orbs(dt: float) -> void:
 		ob["pos"] = p
 		ob["vel"] = v
 
-
 func _draw_shard_orb(ob: Dictionary) -> void:
 	var p: Vector2 = (ob["pos"] as Vector2).round()
 	var bright: bool = LxHudFx.flash_reduced() or fmod(float(ob["age"]) * 8.0, 1.0) < 0.55
 	draw_rect(Rect2(p + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), PAL["gold"])
 	draw_rect(Rect2(p + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), PAL["gold"])
 	draw_rect(Rect2(p, Vector2.ONE), PAL["cream"] if bright else PAL["apricot"])
-
 
 func _spawn_ring(pos: Vector2, r0: float, r1: float, dur: float, c1: String, c2: String, dia: bool = false) -> void:
 	if _rings.size() >= MAX_RINGS:

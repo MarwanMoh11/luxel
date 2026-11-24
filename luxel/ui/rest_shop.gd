@@ -199,14 +199,16 @@ func _draw() -> void:
 	for i: int in range(_upgrades.size()):
 		_draw_upgrade_row(i, _upgrades[i])
 
-	# Selected item description box.
+	# Selected item description box with right-aligned shard-balance preview pill.
 	var desc_rect := Rect2(28.0, 134.0, 264.0, 18.0)
 	LxPixelFont.draw_panel(self, desc_rect, "night", "mauve", "void")
 	if not _feedback_key.is_empty():
 		LxPixelFont.draw_centered(self, LxStrings.text(_feedback_key), 160.0, 140.0, LxPalette.color(_feedback_col), 1)
 	elif _idx >= 0 and _idx < _upgrades.size():
-		var desc_key: String = str(_upgrades[_idx].get("desc_key", ""))
-		LxPixelFont.draw_centered(self, LxStrings.text(desc_key), 160.0, 140.0, LxPalette.PAL["cream"], 1)
+		var sel_u: Dictionary = _upgrades[_idx]
+		var desc_key: String = str(sel_u.get("desc_key", ""))
+		LxPixelFont.draw_left(self, LxStrings.text(desc_key), Vector2(35.0, 140.0), LxPalette.PAL["cream"], 1)
+		_draw_shard_preview_pill(desc_rect, sel_u, shards)
 
 	LxPixelFont.draw_left(self, LxStrings.text("SHOP_BUY_HINT"), Vector2(28.0, 157.0), LxPalette.PAL["stone"], 1)
 	var cr: Rect2 = _close_btn_rect()
@@ -229,6 +231,15 @@ func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 
 	if sel:
 		LxPixelFont.draw_panel(self, r, "plum", "coral" if denied else "gold", "night")
+		var bob: float = 0.0 if (denied or LxHudFx.flash_reduced()) else (1.0 if fmod(_elapsed * 3.0, 1.0) < 0.5 else 0.0)
+		var cx: float = 23.0 + bob
+		var cy: float = r.position.y + 4.0
+		var c_out: Color = LxPalette.PAL["coral"] if denied else LxPalette.PAL["gold"]
+		var c_hi: Color = LxPalette.PAL["apricot"] if denied else LxPalette.PAL["cream"]
+		draw_rect(Rect2(cx - 1.0, cy - 1.0, 3.0, 7.0), LxPalette.PAL["void"])
+		draw_rect(Rect2(cx, cy, 1.0, 5.0), c_out)
+		draw_rect(Rect2(cx + 1.0, cy + 1.0, 1.0, 3.0), c_hi)
+		draw_rect(Rect2(cx + 2.0, cy + 2.0, 1.0, 1.0), c_out)
 	else:
 		LxPixelFont.draw_panel(self, r, "night", "dusk", "void")
 
@@ -251,6 +262,47 @@ func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 		var cost: int = int(costs[rank]) if rank < costs.size() else 0
 		var c_col: Color = LxPalette.PAL["gold"] if affordable else LxPalette.PAL["coral"]
 		LxPixelFont.draw_right(self, LxStrings.fmt("SHOP_COST_FMT", [cost]), r.end.x - 6.0, r.position.y + 4.0, c_col, 1)
+
+
+func _draw_shard_preview_pill(desc_rect: Rect2, u: Dictionary, shards: int) -> void:
+	var uid: String = str(u.get("id", ""))
+	var rank: int = Lx.state.get_upgrade_rank(uid) if Lx.state != null else 0
+	var max_rank: int = int(u.get("max_rank", 1))
+	var costs: Array = u.get("costs", []) as Array
+	var maxed: bool = rank >= max_rank
+	var pill_h: float = 11.0
+	var py: float = desc_rect.position.y + 3.0
+	var pr_end: float = desc_rect.end.x - 5.0
+	if maxed:
+		var m_txt: String = LxStrings.text("SHOP_MAXED")
+		var mw: float = float(LxPixelFont.width(m_txt, 1)) + 10.0
+		var pill := Rect2(pr_end - mw, py, mw, pill_h)
+		LxPixelFont.draw_panel(self, pill, "void", "pine", "night")
+		LxPixelFont.draw_centered(self, m_txt, pill.get_center().x, py + 3.0, LxPalette.PAL["lime"], 1)
+		return
+	var cost: int = int(costs[rank]) if rank < costs.size() else 0
+	var affordable: bool = shards >= cost
+	var before_txt: String = LxStrings.fmt("HUD_SHARDS_FMT", [shards])
+	var after_txt: String = LxStrings.fmt("HUD_SHARDS_FMT", [shards - cost])
+	var bw: float = float(LxPixelFont.width(before_txt, 1))
+	var aw: float = float(LxPixelFont.width(after_txt, 1))
+	var pill_w: float = 28.0 + bw + aw
+	var pill := Rect2(pr_end - pill_w, py, pill_w, pill_h)
+	LxPixelFont.draw_panel(self, pill, "void", "gold" if affordable else "coral", "night")
+	var gx: float = pill.position.x + 4.0
+	var gy: float = py + 3.0
+	draw_rect(Rect2(gx + 1.0, gy, 1.0, 5.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(gx, gy + 1.0, 3.0, 3.0), LxPalette.PAL["apricot"])
+	draw_rect(Rect2(gx + 1.0, gy + 1.0, 1.0, 2.0), LxPalette.PAL["cream"])
+	var bx: float = gx + 6.0
+	LxPixelFont.draw_left(self, before_txt, Vector2(bx, gy), LxPalette.PAL["stone"], 1)
+	var ax: float = bx + bw + 3.0
+	var arr_col: Color = LxPalette.PAL["apricot"] if affordable else LxPalette.PAL["coral"]
+	draw_rect(Rect2(ax, gy + 2.0, 5.0, 1.0), arr_col)
+	draw_rect(Rect2(ax + 3.0, gy + 1.0, 1.0, 3.0), arr_col)
+	draw_rect(Rect2(ax + 2.0, gy, 1.0, 1.0), arr_col)
+	draw_rect(Rect2(ax + 2.0, gy + 4.0, 1.0, 1.0), arr_col)
+	LxPixelFont.draw_left(self, after_txt, Vector2(ax + 8.0, gy), LxPalette.PAL["gold"] if affordable else LxPalette.PAL["coral"], 1)
 
 
 func _draw_frame_ornaments(isl: int) -> void:

@@ -15,6 +15,7 @@ const ACTIONS: PackedStringArray = [
 	"lx_throw",
 	"lx_dash",
 	"lx_beam",
+	"lx_lens",
 	"lx_sunflare",
 	"lx_interact",
 	"lx_pause",
@@ -81,6 +82,10 @@ func register_default_actions() -> void:
 
 	_add_key("lx_beam", KEY_F)
 	_add_joy_btn("lx_beam", JOY_BUTTON_X)
+
+	_add_key("lx_lens", KEY_R)
+	_add_key("lx_lens", KEY_C)
+	_add_joy_btn("lx_lens", JOY_BUTTON_LEFT_SHOULDER)
 
 	_add_key("lx_sunflare", KEY_Q)
 	_add_joy_btn("lx_sunflare", JOY_BUTTON_Y)

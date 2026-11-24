@@ -1,26 +1,43 @@
 class_name LxMovePrism
 extends LxMove
-## Prism (Island 2, passive): Light Bolts bounce off brass LxMirrors and glass tiles
+## Prism Split (Island 2, passive): Light Bolts bounce off brass LxMirrors and glass tiles
 ## along the exact physical reflection vector (ZERO auto-aim), upgrading to SOURCE_PRISM,
-## scaling damage by damage_mult (1.15), refreshing range, and spawning gold sparks.
+## scaling damage by damage_mult, refreshing range, and (once unlocked) splitting into 3 rays.
+
+const SPLIT_ANGLE_DEG: float = 18.0
+const SPLIT_DMG_MULT: float = 0.70
 
 var bounces_count: int = 0
 
 
 func can_use() -> bool:
-	return unlocked and wick != null and not wick.dead
+	return wick != null and not wick.dead
+
+
+func has_split() -> bool:
+	return unlocked
 
 
 func get_bounces() -> int:
-	if not unlocked:
-		return 0
-	if Lx.state != null:
-		return maxi(1, Lx.state.get_effective_prism_bounces())
-	return maxi(1, int(get_data().get("bounces", 1)))
+	# Blue Transformers / mirrors reflect & transform yellow bolts immediately (2 bounces by default).
+	# Claiming Island 2's shrine_prism unlocks 3 bounces (4 with prism_bounce shop upgrade).
+	var has_upg: bool = Lx.state != null and Lx.state.get_upgrade_rank("prism_bounce") > 0
+	if unlocked:
+		var base_u: int = int(get_data().get("bounces", 3))
+		if has_upg and Lx.state != null:
+			return maxi(base_u + 1, Lx.state.get_effective_prism_bounces())
+		return base_u
+	return 3 if has_upg else 2
 
 
 func get_damage_mult() -> float:
-	return float(get_data().get("damage_mult", 1.15))
+	if unlocked:
+		return float(get_data().get("damage_mult", 1.30))
+	return 1.15
+
+
+func should_crack_armour(bounce_count: int) -> bool:
+	return unlocked and bounce_count >= 1
 
 
 func get_range_refresh() -> float:
@@ -108,26 +125,43 @@ func try_reflect_world(world_ctx: Node, from_p: Vector2, to_p: Vector2, in_dir: 
 	return {"hit": true, "pos": hit_pos, "exit_pos": exit_pos, "dir": reflected_dir}
 
 
-func on_bolt_reflected(at_pos: Vector2, out_dir: Vector2, chain_count: int = 1) -> void:
+func on_bolt_reflected(at_pos: Vector2, out_dir: Vector2, chain_count: int = 1, light_color: String = LxHit.COLOR_BLUE) -> void:
 	bounces_count += 1
 	if wick == null:
 		return
 	var isl_p: int = Lx.state.island_id if Lx.state != null else 1
-	wick.spawn_sparks(at_pos, out_dir, 6, LxWick.PAL_GOLD, 35.0, 90.0, 0.18)
-	wick.spawn_sparks(at_pos, out_dir, 2, LxWick.PAL_CREAM, 65.0, 115.0, 0.13)
-	wick.spawn_ring(at_pos, 2.0, 11.0, 0.18, LxBiomePalette.col(isl_p, "glow"), 1.0)
-	wick.spawn_ring(at_pos, 1.0, 7.0, 0.11, LxWick.PAL_CREAM, 1.0)
+	var is_blue: bool = light_color == LxHit.COLOR_BLUE
+	var primary_c: Color = LxWick.PAL_ICE if is_blue else LxWick.PAL_GOLD
+	var ring_c: Color = LxWick.PAL_SKY if is_blue else LxBiomePalette.col(isl_p, "glow")
+	wick.spawn_sparks(at_pos, out_dir, 6, primary_c, 38.0, 96.0, 0.19)
+	wick.spawn_sparks(at_pos, out_dir, 3, LxWick.PAL_CREAM, 65.0, 118.0, 0.14)
+	wick.spawn_ring(at_pos, 2.0, 12.0, 0.19, ring_c, 1.2)
+	wick.spawn_ring(at_pos, 1.0, 7.5, 0.12, LxWick.PAL_CREAM, 1.0)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		var bi_r: float = (0.92 if chain_count >= 2 else 0.72) if LxHudFx.flash_reduced() else (1.42 if chain_count >= 2 else 1.12)
-		LxDarknessLayer.active_instance.add_burst_light(at_pos, 48.0 if chain_count >= 2 else 36.0, bi_r, 0.20)
+		LxDarknessLayer.active_instance.add_burst_light(at_pos, 48.0 if chain_count >= 2 else 38.0, bi_r, 0.20)
 	if chain_count >= 2:
-		wick.spawn_sparks(at_pos, out_dir, 4, LxWick.PAL_ICE, 45.0, 110.0, 0.22)
+		wick.spawn_sparks(at_pos, out_dir, 5, LxWick.PAL_ICE, 45.0, 112.0, 0.22)
 		wick.spawn_ring(at_pos, 3.0, 15.0, 0.22, LxWick.PAL_ICE, 1.2)
+		if Lx.camera != null and is_instance_valid(Lx.camera):
+			Lx.camera.add_kick(out_dir, 1.0)
 		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, at_pos, 10.0, 5.5)
 		wick.emit_sfx("prism_chain", at_pos, true)
 	else:
 		wick.emit_sfx("prism_bounce", at_pos, true)
+
+
+func spawn_split_wedge(at_pos: Vector2, out_dir: Vector2) -> void:
+	if wick != null and wick._fx != null:
+		var dn: Vector2 = out_dir.normalized() if out_dir.length_squared() > 0.0001 else Vector2.RIGHT
+		wick._fx.spawn_prism_wedge(at_pos, dn, SPLIT_ANGLE_DEG, 18.0, 0.22)
+		var rad: float = deg_to_rad(SPLIT_ANGLE_DEG)
+		for sgn: float in [-1.0, 0.0, 1.0]:
+			var rdir: Vector2 = dn.rotated(sgn * rad)
+			wick._fx._spawn_streak(at_pos, at_pos + rdir * 18.0, 0.22, LxWick.PAL_ICE, 2.0 if sgn == 0.0 else 1.5)
+			wick._fx._spawn_streak(at_pos, at_pos + rdir * 13.0, 0.18, LxWick.PAL_CREAM, 1.0)
+			wick._fx._spawn_mote(at_pos + rdir * 18.0, rdir * 12.0, 0.14, LxWick.PAL_CREAM, 2.0, false, 0.25, true, 0.95)
 
 
 func reset() -> void:

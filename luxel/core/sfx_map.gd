@@ -80,7 +80,7 @@ const SFX_VARIANTS: Dictionary = {
 }
 
 const SFX_BASE_TRIM_DB: Dictionary = {
-	"bolt_fire": -2.5, "bolt_chip": -1.5, "bolt_wall": -5.5,
+	"bolt_fire": -5.5, "bolt_chip": -3.5, "bolt_wall": -6.5,
 	"footstep_stone": -5.5, "footstep_grass": -5.0, "footstep_wood": -4.5,
 	"footstep_ash": -5.0, "footstep_crystal": -5.5, "footstep_water": -5.0,
 	"prop_chime": -6.5, "prop_rustle": -8.0,

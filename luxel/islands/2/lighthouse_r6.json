@@ -3,9 +3,10 @@
   "island_id": 2,
   "tile_size": 16,
   "is_dungeon": true,
+  "is_2x2_room": true,
   "spawn": [
     40,
-    112
+    128
   ],
   "zones": [
     {
@@ -15,7 +16,7 @@
         0,
         0,
         480,
-        224
+        256
       ],
       "dark": true
     }
@@ -25,14 +26,14 @@
       "id": "exit_lh_r6_west",
       "rect": [
         0,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "lighthouse_r5",
       "to_spawn": [
-        408,
-        112
+        392,
+        136
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -42,14 +43,14 @@
       "id": "exit_lh_r6_east",
       "rect": [
         464,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "lighthouse_r7",
       "to_spawn": [
-        88,
-        104
+        40,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -61,17 +62,17 @@
       "id": "boss_tide_captain",
       "kind": "tide_captain",
       "pos": [
-        272,
-        112
+        280,
+        128
       ],
       "route": [
         [
           200,
-          80
+          88
         ],
         [
-          328,
-          144
+          336,
+          152
         ]
       ],
       "perches": [],
@@ -81,15 +82,18 @@
   ],
   "interactables": [
     {
-      "id": "mirror_lh_r6_nw",
-      "kind": "mirror",
+      "id": "transformer_lh_r6_nw",
+      "kind": "blue_transformer",
       "pos": [
-        160,
-        56
+        216,
+        72
       ],
       "props": {
         "angle_deg": 45,
-        "rotatable": false,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -97,15 +101,18 @@
       }
     },
     {
-      "id": "mirror_lh_r6_sw",
-      "kind": "mirror",
+      "id": "transformer_lh_r6_sw",
+      "kind": "blue_transformer",
       "pos": [
-        160,
-        168
+        184,
+        184
       ],
       "props": {
         "angle_deg": 315,
-        "rotatable": false,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
         "size": [
           16,
           16
@@ -116,8 +123,8 @@
       "id": "wick_key_2_2",
       "kind": "wick_key",
       "pos": [
-        344,
-        112
+        352,
+        128
       ],
       "props": {
         "dungeon_id": "lighthouse",
@@ -131,7 +138,7 @@
       "kind": "door",
       "pos": [
         456,
-        112
+        120
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -152,7 +159,7 @@
       "prop": "brass_compass_floor",
       "pos": [
         240,
-        112
+        128
       ],
       "layer": "ground",
       "flip_x": false,
@@ -161,33 +168,9 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "mooring_bollard",
-      "pos": [
-        64,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "rope_coil",
-      "pos": [
-        64,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        240,
+        248,
         40
       ],
       "layer": "sort",
@@ -199,8 +182,8 @@
       "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
-        240,
-        184
+        248,
+        216
       ],
       "layer": "sort",
       "flip_x": true,
@@ -209,10 +192,58 @@
     },
     {
       "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        424,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        424,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "mooring_bollard",
+      "pos": [
+        72,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "rope_coil",
+      "pos": [
+        88,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
-        56,
-        32
+        112,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -221,40 +252,15 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
+      "prop": "buoy_bobbing",
       "pos": [
-        424,
-        32
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        56,
-        192
+        392,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        424,
-        192
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
       "phase": 0.8
     }
-  ],
-  "is_2x2_room": true
+  ]
 }

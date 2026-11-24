@@ -17,6 +17,7 @@ const POST_COOLDOWN: float = 1.15
 var fire_dir: Vector2 = Vector2.RIGHT
 var globs: Array[Dictionary] = []
 var look_t: float = 0.0
+var shell_cracked_t: float = 0.0
 
 
 func _init() -> void:
@@ -39,9 +40,12 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	fire_dir = Vector2.from_angle(facing)
 	globs.clear()
 	look_t = 0.0
+	shell_cracked_t = 0.0
 
 
 func _has_active_shield() -> bool:
+	if shell_cracked_t > 0.0:
+		return false
 	return state == State.ROUTINE or state == State.NOTICE \
 			or state == State.POSITION or state == State.WAIT_TOKEN or state == State.TELL
 
@@ -56,17 +60,23 @@ func take_hit(hit: LxHit) -> int:
 	var pierce: bool = bool(h["pierce"])
 	var cracks: bool = bool(h["cracks_armour"])
 	var is_heavy: bool = bool(h["stagger"])
+	var is_blue_hit: bool = hit.is_blue() or src == LxHit.SOURCE_PRISM
 	var rel: Vector2 = orig - pos
 	var from_front: bool = rel.length() > 0.01 and absf(angle_difference(facing, rel.angle())) < SHELL_BLOCK_HALF
 
-	# Front shell blocks direct front bolts; prism_bolt, flank/rear, or open shell land cleanly.
-	if _has_active_shield() and src == LxHit.SOURCE_BOLT and not pierce and not cracks and from_front:
+	# Front shell blocks direct yellow front bolts; blue/prism bolts, flank/rear, or cracked shell land cleanly.
+	if _has_active_shield() and src == LxHit.SOURCE_BOLT and not is_blue_hit and not pierce and not cracks and from_front:
 		clank_t = 0.16
 		_emit_sfx("barnacle_clank")
 		_emit_enemy_hit(hit, HitResult.BLOCKED)
 		return HitResult.BLOCKED
 
-	var flank_or_prism: bool = (not from_front) or src == LxHit.SOURCE_PRISM or not _has_active_shield()
+	if is_blue_hit:
+		dmg *= 1.5
+		shell_cracked_t = 3.5
+		_emit_sfx("barnacle_shell_crack")
+
+	var flank_or_prism: bool = (not from_front) or is_blue_hit or not _has_active_shield()
 	hp -= dmg
 	flash_t = 0.14 if (is_heavy or flank_or_prism) else 0.08
 	if rel.length() > 0.01:
@@ -78,10 +88,10 @@ func take_hit(hit: LxHit) -> int:
 		_die(hit)
 		return HitResult.KILLED
 
-	if is_heavy or src == LxHit.SOURCE_PRISM:
+	if is_heavy or is_blue_hit:
 		_release_token()
 		state = State.STAGGER
-		state_timer = 0.55 if is_heavy else 0.35
+		state_timer = 0.55
 		_emit_enemy_hit(hit, HitResult.OPENED)
 		return HitResult.OPENED
 
@@ -95,6 +105,7 @@ func take_hit(hit: LxHit) -> int:
 
 
 func _step_brain(dt: float) -> void:
+	shell_cracked_t = maxf(0.0, shell_cracked_t - dt)
 	_step_globs(dt)
 	var target_pos: Vector2 = _attention_target()
 	match state:
@@ -168,7 +179,7 @@ func _step_guard(dt: float, target_pos: Vector2) -> void:
 	else:
 		lost_t = 0.0
 
-	var can_act: bool = _can_claim_token()
+	var can_act: bool = director == null or director.can_claim_ranged_token(self)
 	state = State.POSITION if can_act else State.WAIT_TOKEN
 	var dist: float = pos.distance_to(target_pos)
 	var ang_ok: bool = dist < 0.01 or absf(angle_difference(facing, (target_pos - pos).angle())) < 0.55
@@ -258,6 +269,13 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(off, body_radius + 1.5, 0.0, TAU, 16, PAL["night"] as Color, 1.5)
 		draw_circle(off + back * (body_radius * 0.72), 2.5, PAL["apricot"] as Color)
 		draw_circle(off + back * (body_radius * 0.72), 1.2, PAL["gold"] as Color)
+
+	if shell_cracked_t > 0.0:
+		var sc: Vector2 = off.round()
+		draw_arc(sc, body_radius + 2.2, facing - 1.1, facing + 1.1, 10, PAL["sky"] as Color, 1.4)
+		draw_line((sc + fwd * 2.0).round(), (sc + fwd * (body_radius + 3.0)).round(), PAL["cream"] as Color, 1.0)
+		draw_line((sc + Vector2.from_angle(facing + 0.45) * 2.0).round(), (sc + Vector2.from_angle(facing + 0.55) * (body_radius + 2.5)).round(), PAL["ice"] as Color, 1.0)
+		draw_line((sc + Vector2.from_angle(facing - 0.45) * 2.0).round(), (sc + Vector2.from_angle(facing - 0.55) * (body_radius + 2.5)).round(), PAL["ice"] as Color, 1.0)
 
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)

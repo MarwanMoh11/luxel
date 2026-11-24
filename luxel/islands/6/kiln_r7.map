@@ -1,4 +1,4 @@
-# Great Kiln r7 - Four-Flame Furnace Rotunda (26x15)
+# The Great Kiln r7 - Multi-Seal Foundry Loop (28x16)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,18 +13,19 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-##########################
-##OOOOOOOOOOOOOOOOOOOOOO##
-#OOOOOOOOOOOOOOOOOOOOOOOO#
-#OOO........##........OOO#
-#OOO...OO...##...OO...OOO#
-#OOO...OO........OO...OOO#
-,,,,,,................OOO#
-,,,,,,,,,,,,,,........OOO#
-,,,,,,......,,........OOO#
-#OOO...OO...,,...OO...OOO#
-#OOO...OO...,,...OO...OOO#
-#OOO........,,........OOO#
-#OOOOOOOOOOO,,OOOOOOOOOOO#
-##OOOOOOOOOO,,OOOOOOOOOO##
-############,,############
+############################
+#OOOOOOOO##OOOOOOOOOOO######
+#OOOOOOO#.............##..##
+#OOOOOOO..................##
+#OOOOOOO.,,,,,,,,,,,,.##..##
+#O##....#...........,.######
+,,,,....#.OOOOOOOOO.,.######
+,,,,,,,,,,OOOOOO##O.,.OOOOO#
+,,,,,,,,,,OOOOOO#OO.,.OO...#
+#O##....#.O...OOOOO.,.OO...#
+#O......#...........,.OO...#
+#######..,,,,,,,,,,,,.OO...#
+########..............OO...#
+#######..,,...#####...OOOOO#
+#######..,,...#####...OOOOO#
+#########,,#################

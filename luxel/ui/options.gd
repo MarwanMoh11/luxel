@@ -344,7 +344,7 @@ func _draw() -> void:
 	_draw_frame_ornaments()
 	LxHudFx.draw_biome_crest(self, isl_o, Vector2(PANEL_RECT.position.x + 16.0, PANEL_RECT.position.y + 8.0), LxBiomePalette.col(isl_o, "hi"), LxPalette.PAL["cream"] as Color)
 	LxHudFx.draw_biome_crest(self, isl_o, Vector2(PANEL_RECT.end.x - 17.0, PANEL_RECT.position.y + 8.0), LxBiomePalette.col(isl_o, "hi"), LxPalette.PAL["cream"] as Color)
-	LxPixelFont.draw_centered(self, LxStrings.text("OPT_TITLE"), 160.0, PANEL_RECT.position.y + 6.0, LxPalette.PAL["gold"], 1)
+	LxPixelFont.draw_centered(self, LxStrings.text("OPT_TITLE"), 160.0, PANEL_RECT.position.y + 5.0, LxPalette.PAL["gold"], 1)
 
 	for i: int in range(TAB_KEYS.size()):
 		var tr: Rect2 = _tab_rect(i)

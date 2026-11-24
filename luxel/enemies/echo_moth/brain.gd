@@ -28,6 +28,7 @@ var _echo_is_dash: bool = true
 var _attack_seq: int = 0
 var _commit_hit: bool = false
 var _bolt_fired: bool = false
+var lens_preview_t: float = 0.0
 
 
 func _init() -> void:
@@ -56,6 +57,28 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	_attack_seq = 0
 	_commit_hit = false
 	_bolt_fired = false
+	lens_preview_t = 0.0
+
+
+func on_light(a: Variant, b: Variant = Vector2.ZERO, source: Variant = "") -> void:
+	if state == State.DEAD:
+		return
+	var orig: Vector2 = Vector2.ZERO
+	var rad: float = 0.0
+	var src: String = str(source)
+	if a is Vector2 and (b is float or b is int):
+		orig = a as Vector2
+		rad = float(b)
+	elif a is float or a is int:
+		rad = float(a)
+		if b is Vector2:
+			orig = b as Vector2
+		elif b is String and src.is_empty():
+			src = str(b)
+	if src != "lens" or rad <= 0.0:
+		return
+	if orig == Vector2.ZERO or pos.distance_to(orig) <= rad + body_radius:
+		lens_preview_t = maxf(lens_preview_t, 0.45)
 
 
 func is_flying() -> bool:
@@ -97,6 +120,7 @@ func take_hit(hit: LxHit) -> int:
 
 func _step_brain(dt: float) -> void:
 	_clock += dt
+	lens_preview_t = maxf(0.0, lens_preview_t - dt)
 	_record_wick_motion(dt)
 	match state:
 		State.ROUTINE:
@@ -185,8 +209,9 @@ func _step_position(dt: float) -> void:
 	if to_w.length() > 0.01:
 		_turn_toward(to_w.angle(), 4.2, dt)
 
-	state = State.POSITION if _can_claim_token() else State.WAIT_TOKEN
-	if cooldown <= 0.0 and _is_on_screen() and _clock >= ECHO_DELAY * 0.5 \
+	var can_act: bool = director == null or director.can_claim_ranged_token(self)
+	state = State.POSITION if can_act else State.WAIT_TOKEN
+	if can_act and cooldown <= 0.0 and _is_on_screen() and _clock >= ECHO_DELAY * 0.5 \
 			and to_w.length() <= notice_radius and _claim_token():
 		var sample: Dictionary = _sample_echo()
 		_echo_dir = (sample["dir"] as Vector2).normalized()
@@ -305,6 +330,21 @@ func _draw_extra(off: Vector2) -> void:
 	if _sprite_sheet == null:
 		var wing: float = 3.0 + sin(anim_t * 14.0) * 1.5
 		draw_line(off + Vector2(-body_radius - wing, -1.0), off + Vector2(body_radius + wing, -1.0), PAL["sky"] as Color, 1.5)
+	if lens_preview_t > 0.0 and state != State.TELL and state != State.COMMIT and not _history.is_empty():
+		var sample: Dictionary = _sample_echo()
+		var pdir: Vector2 = (sample["dir"] as Vector2).normalized()
+		if pdir.length_squared() > 0.01:
+			var pc: Vector2 = off.round()
+			var p_is_dash: bool = bool(sample["fast"]) or (_attack_seq % 2 == 0)
+			var plen: float = 42.0 if p_is_dash else 58.0
+			var ptip: Vector2 = (pc + pdir * plen).round()
+			var pperp: Vector2 = Vector2(-pdir.y, pdir.x)
+			for pi: int in range(0, 8, 2):
+				var s0: Vector2 = (pc + pdir * (plen * float(pi) / 8.0)).round()
+				var s1: Vector2 = (pc + pdir * (plen * float(pi + 1) / 8.0)).round()
+				draw_line(s0, s1, (PAL["ice"] if p_is_dash else PAL["sky"]) as Color, 1.0)
+			draw_line((ptip - pdir * 4.0 + pperp * 3.0).round(), ptip, PAL["cream"] as Color, 1.0)
+			draw_line((ptip - pdir * 4.0 - pperp * 3.0).round(), ptip, PAL["cream"] as Color, 1.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var preview_len: float = (DASH_SPEED * DASH_COMMIT_TIME) if _echo_is_dash else BOLT_RANGE

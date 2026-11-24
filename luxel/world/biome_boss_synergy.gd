@@ -13,6 +13,10 @@ const MINIBOSS_REGIONS: PackedStringArray = [
 	"belfry_r5", "lighthouse_r6", "oak_r6", "conservatory_r6",
 	"orrery_r6", "kiln_r6", "spire_r6", "sanctum_r4",
 ]
+const ABYSS_STARS_5: Array[Vector2] = [
+	Vector2(-154.0, 38.0), Vector2(-136.0, 48.0), Vector2(-148.0, 62.0),
+	Vector2(-126.0, 56.0), Vector2(-152.0, 78.0), Vector2(-132.0, 74.0),
+]
 
 var _rules: LxBiomeRules = null
 var _mech: LxBiomeMechanics = null
@@ -69,41 +73,40 @@ func configure(rules: LxBiomeRules, mech: LxBiomeMechanics, region_node: Node) -
 
 func _seed_boss_arena_features() -> void:
 	match _island_id:
-		2: # Lighthouse Hermit: aim Fresnel origin from Great Lamp dais + 2 interactive Fresnel Prism Buoys
+		2: # Lighthouse Hermit: Fresnel origin + 2 Fresnel Prism Buoys
 			_rules.beam_origin = Vector2(_center.x, 56.0)
 			for off2: Vector2 in [Vector2(-104.0, 32.0), Vector2(104.0, 32.0)]:
 				_fresnel_buoys.append({"pos": _center + off2, "cd": 0.0, "flash_t": 0.0})
-		3: # Briar Matron: 4 interactive emerald canopy Bloom-Lamps in the Cruciform wing corners
+		3: # Briar Matron: 4 emerald canopy Bloom-Lamps
 			_rules._blooms.clear()
-			for off: Vector2 in [
-				Vector2(-120.0, -56.0), Vector2(120.0, -56.0),
-				Vector2(-120.0, 56.0), Vector2(120.0, 56.0),
-			]:
+			for off: Vector2 in [Vector2(-120.0, -56.0), Vector2(120.0, -56.0), Vector2(-120.0, 56.0), Vector2(120.0, 56.0)]:
 				_rules._blooms.append({"pos": _center + off, "lit_t": 4.0})
-		4: # Heron Abbess: 4 guaranteed live Mist Updrafts over the indoor lagoon corners
-			for off: Vector2 in [
-				Vector2(-148.0, -68.0), Vector2(148.0, -68.0),
-				Vector2(-148.0, 68.0), Vector2(148.0, 68.0),
-			]:
+		4: # Heron Abbess: 4 Mist Updrafts over the indoor lagoon corners
+			for off: Vector2 in [Vector2(-148.0, -68.0), Vector2(148.0, -68.0), Vector2(-148.0, 68.0), Vector2(148.0, 68.0)]:
 				_rules._updrafts.append({"pos": _center + off, "r": 20.0, "cd": 0.0})
-		5: # The Clockmaker: 4 orbiting Brass Conjunction Nodes (touch -> Starlight Surge!)
+		5: # The Clockmaker: 4 orbiting Brass Conjunction Nodes
 			for k: int in range(4):
 				_orrery_nodes.append({"ang": float(k) * (TAU / 4.0), "cd": 0.0})
-		6: # The Kilnmother: 4 rhythmic caldera Magma Vents for mid-fight Molten Overdrive!
+		6: # The Kilnmother: 4 rhythmic caldera Magma Vents
 			_rules._vents.clear()
-			var phases: Array[float] = [0.0, 0.25, 0.50, 0.75]
-			var offs: Array[Vector2] = [
-				Vector2(-116.0, -54.0), Vector2(116.0, -54.0),
-				Vector2(-116.0, 54.0), Vector2(116.0, 54.0),
-			]
+			var offs: Array[Vector2] = [Vector2(-116.0, -54.0), Vector2(116.0, -54.0), Vector2(-116.0, 54.0), Vector2(116.0, 54.0)]
 			for i: int in range(offs.size()):
-				_rules._vents.append({"pos": _center + offs[i], "phase": phases[i], "ember_cd": 0.0, "erupted": false})
-		7: # Hollow Wick: 2 Silver Lunar Mirror Anchors (dash/shoot -> snap Full Silver Moon + Mirror Echo!)
+				_rules._vents.append({"pos": _center + offs[i], "phase": float(i) * 0.25, "ember_cd": 0.0, "erupted": false})
+		7: # Hollow Wick: 2 Silver Lunar Mirror Anchors
 			for off7: Vector2 in [Vector2(-112.0, 0.0), Vector2(112.0, 0.0)]:
 				_lunar_anchors.append({"pos": _center + off7, "cd": 0.0, "flash_t": 0.0})
-		8: # The Hush: 3 Golden Dawn Bell Relics (dash/strike -> +12 Ember + golden dawn flare!)
-			for off8: Vector2 in [Vector2(-116.0, -40.0), Vector2(116.0, -40.0), Vector2(0.0, 68.0)]:
+		8: # The Hush: 3 Golden Dawn Bell Relics
+			for off8: Vector2 in [Vector2(-116.0, -40.0), Vector2(88.0, -56.0), Vector2(0.0, 68.0)]:
 				_dawn_relics.append({"pos": _center + off8, "cd": 0.0, "flash_t": 0.0})
+
+
+func _emit_feature_fx(p: Vector2, sfx: String, lr: float, ls_lo: float, ls_hi: float, lt: float, dk: int = -1, dr: float = 0.0, dt_s: float = 0.0) -> void:
+	if Lx.audio != null:
+		Lx.audio.play_sfx(sfx, p, true)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.add_burst_light(p, lr, ls_lo if LxHudFx.flash_reduced() else ls_hi, lt)
+	if dk >= 0 and LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
+		LxGroundDecals.active_instance.add_decal(dk, p, dr, dt_s)
 
 
 func tick(dt: float) -> void:
@@ -115,31 +118,22 @@ func tick(dt: float) -> void:
 		var live_now: bool = _has_live_enemies()
 		if _miniboss_was_live and not live_now:
 			_mb_clear_t = 0.72
-			if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-				LxDarknessLayer.active_instance.add_burst_light(_center, 128.0, 0.85 if LxHudFx.flash_reduced() else 1.32, 0.52)
+			_emit_feature_fx(_center, "prop_chime", 128.0, 0.85, 1.32, 0.52, LxGroundDecals.Kind.PRISM_STAR, 18.0, 9.0)
 			if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, _center, 18.0, 9.0)
 				LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, _center, 16.0, 8.0)
-			if Lx.audio != null:
-				Lx.audio.play_sfx("prop_chime", _center, true)
 		_miniboss_was_live = live_now
 		_mb_synergy.tick(dt, live_now)
 		queue_redraw()
 		return
 	_bell_pulse_t = maxf(0.0, _bell_pulse_t - dt)
 	_oak_harmony_cd = maxf(0.0, _oak_harmony_cd - dt)
-	if _island_id == 1:
-		_tick_belfry_ring()
-	elif _island_id == 2:
-		_tick_fresnel_buoys(dt)
-	elif _island_id == 3:
-		_tick_oak_boss_blooms(dt)
-	elif _island_id == 5:
-		_tick_orrery_boss_nodes(dt)
-	elif _island_id == 7:
-		_tick_lunar_anchors(dt)
-	elif _island_id == 8:
-		_tick_dawn_relics(dt)
+	match _island_id:
+		1: _tick_belfry_ring()
+		2: _tick_fresnel_buoys(dt)
+		3: _tick_oak_boss_blooms(dt)
+		5: _tick_orrery_boss_nodes(dt)
+		7: _tick_lunar_anchors(dt)
+		8: _tick_dawn_relics(dt)
 	_boss_victory.tick(dt, _has_live_enemies())
 	queue_redraw()
 
@@ -158,10 +152,7 @@ func _trigger_belfry_gong(w: LxWick, ember_gain: float) -> void:
 	_bell_pulse_t = 0.52
 	if w != null and is_instance_valid(w) and w.move_sunflare != null and w.move_sunflare.unlocked:
 		w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + ember_gain)
-	if Lx.audio != null:
-		Lx.audio.play_sfx("prop_chime", _center, true)
-	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(_center, 94.0, 0.85 if LxHudFx.flash_reduced() else 1.25, 0.36)
+	_emit_feature_fx(_center, "prop_chime", 94.0, 0.85, 1.25, 0.36)
 
 
 func _tick_fresnel_buoys(dt: float) -> void:
@@ -180,17 +171,11 @@ func _tick_fresnel_buoys(dt: float) -> void:
 
 func _activate_fresnel_buoy(buoy: Dictionary, w: LxWick) -> void:
 	var bp: Vector2 = buoy["pos"] as Vector2
-	buoy["cd"] = 6.0
-	buoy["flash_t"] = 0.55
+	buoy["cd"] = 6.0; buoy["flash_t"] = 0.55
 	_rules.beam_buff_t = maxf(_rules.beam_buff_t, 3.0)
 	if w != null and is_instance_valid(w):
 		w.spawn_ring(bp, 4.0, 28.0, 0.28, LxWick.PAL_ICE, 1.5)
-	if Lx.audio != null:
-		Lx.audio.play_sfx("lighthouse_toll", bp, true)
-	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(bp, 94.0, 0.85 if LxHudFx.flash_reduced() else 1.28, 0.42)
-	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.RIPPLE, bp, 15.0, 5.5)
+	_emit_feature_fx(bp, "lighthouse_toll", 94.0, 0.85, 1.28, 0.42, LxGroundDecals.Kind.RIPPLE, 15.0, 5.5)
 
 
 func _tick_orrery_boss_nodes(dt: float) -> void:
@@ -210,12 +195,7 @@ func _activate_orrery_node(nd: Dictionary, np: Vector2, w: LxWick) -> void:
 	_rules.starlight_surge_t = maxf(_rules.starlight_surge_t, 3.2)
 	if w != null and is_instance_valid(w):
 		w.spawn_ring(np, 3.0, 22.0, 0.24, LxWick.PAL_GOLD, 1.5)
-	if Lx.audio != null:
-		Lx.audio.play_sfx("clockwork_chime", np, true)
-	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(np, 76.0, 0.85 if LxHudFx.flash_reduced() else 1.20, 0.32)
-	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, np, 13.0, 5.0)
+	_emit_feature_fx(np, "clockwork_chime", 76.0, 0.85, 1.20, 0.32, LxGroundDecals.Kind.PRISM_STAR, 13.0, 5.0)
 
 
 func _tick_oak_boss_blooms(dt: float) -> void:
@@ -240,8 +220,7 @@ func _tick_oak_boss_blooms(dt: float) -> void:
 				if _mech != null and is_instance_valid(_mech):
 					_mech.on_bloom_ignited(bp, true)
 			b["lit_t"] = 14.0
-		if float(b["lit_t"]) > 0.0:
-			lit_n += 1
+		lit_n += 1 if float(b["lit_t"]) > 0.0 else 0
 	if lit_n >= 4 and _oak_harmony_cd <= 0.0 and not _is_boss_cleared():
 		_oak_harmony_cd = 22.0
 		if Lx.state != null and Lx.state.hearts < float(Lx.state.max_hearts):
@@ -269,10 +248,7 @@ func try_hit_boss_feature(from_p: Vector2, to_p: Vector2, w: LxWick) -> void:
 				return
 		2:
 			for buoy: Dictionary in _fresnel_buoys:
-				if float(buoy["cd"]) > 0.0:
-					continue
-				var bp2: Vector2 = buoy["pos"] as Vector2
-				if Geometry2D.get_closest_point_to_segment(bp2, from_p, to_p).distance_to(bp2) <= 16.0:
+				if float(buoy["cd"]) <= 0.0 and Geometry2D.get_closest_point_to_segment(buoy["pos"] as Vector2, from_p, to_p).distance_to(buoy["pos"] as Vector2) <= 16.0:
 					_activate_fresnel_buoy(buoy, w)
 					return
 		3:
@@ -296,36 +272,23 @@ func try_hit_boss_feature(from_p: Vector2, to_p: Vector2, w: LxWick) -> void:
 					return
 		6:
 			for v: Dictionary in _rules._vents:
-				if float(v.get("ember_cd", 0.0)) > 0.0:
-					continue
 				var vp: Vector2 = v["pos"] as Vector2
-				if Geometry2D.get_closest_point_to_segment(vp, from_p, to_p).distance_to(vp) <= 16.0:
+				if float(v.get("ember_cd", 0.0)) <= 0.0 and Geometry2D.get_closest_point_to_segment(vp, from_p, to_p).distance_to(vp) <= 16.0:
 					v["ember_cd"] = 5.5
 					if _mech != null and is_instance_valid(_mech):
 						_mech.grant_molten_overdrive(1)
 					if w != null and is_instance_valid(w):
 						w.spawn_ring(vp, 4.0, 26.0, 0.26, LxWick.PAL_APRICOT, 1.5)
-					if Lx.audio != null:
-						Lx.audio.play_sfx("forge_gust", vp, true)
-					if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-						LxDarknessLayer.active_instance.add_burst_light(vp, 86.0, 0.84 if LxHudFx.flash_reduced() else 1.24, 0.38)
-					if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-						LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, vp, 13.0, 5.5)
+					_emit_feature_fx(vp, "forge_gust", 86.0, 0.84, 1.24, 0.38, LxGroundDecals.Kind.SCORCH, 13.0, 5.5)
 					return
 		7:
 			for anc: Dictionary in _lunar_anchors:
-				if float(anc["cd"]) > 0.0:
-					continue
-				var ap: Vector2 = anc["pos"] as Vector2
-				if Geometry2D.get_closest_point_to_segment(ap, from_p, to_p).distance_to(ap) <= 16.0:
+				if float(anc["cd"]) <= 0.0 and Geometry2D.get_closest_point_to_segment(anc["pos"] as Vector2, from_p, to_p).distance_to(anc["pos"] as Vector2) <= 16.0:
 					_activate_lunar_anchor(anc, w)
 					return
 		8:
 			for rel: Dictionary in _dawn_relics:
-				if float(rel["cd"]) > 0.0:
-					continue
-				var rp: Vector2 = rel["pos"] as Vector2
-				if Geometry2D.get_closest_point_to_segment(rp, from_p, to_p).distance_to(rp) <= 16.0:
+				if float(rel["cd"]) <= 0.0 and Geometry2D.get_closest_point_to_segment(rel["pos"] as Vector2, from_p, to_p).distance_to(rel["pos"] as Vector2) <= 16.0:
 					_activate_dawn_relic(rel, w)
 					return
 
@@ -336,26 +299,16 @@ func _tick_lunar_anchors(dt: float) -> void:
 	for anc: Dictionary in _lunar_anchors:
 		anc["cd"] = maxf(0.0, float(anc["cd"]) - dt)
 		anc["flash_t"] = maxf(0.0, float(anc["flash_t"]) - dt)
-		if float(anc["cd"]) > 0.0 or not act or _is_boss_cleared():
-			continue
-		if w.global_position.distance_to(anc["pos"] as Vector2) <= 28.0:
+		if float(anc["cd"]) <= 0.0 and act and not _is_boss_cleared() and w.global_position.distance_to(anc["pos"] as Vector2) <= 28.0:
 			_activate_lunar_anchor(anc, w)
 
 
 func _activate_lunar_anchor(anc: Dictionary, w: LxWick) -> void:
 	var ap: Vector2 = anc["pos"] as Vector2
-	anc["cd"] = 6.5
-	anc["flash_t"] = 0.55
-	_rules.lunar_phase = 1.0
-	_rules.clock = 0.0
+	anc["cd"] = 6.5; anc["flash_t"] = 0.55; _rules.lunar_phase = 1.0; _rules.clock = 0.0
 	if w != null and is_instance_valid(w):
 		w.spawn_ring(ap, 4.0, 28.0, 0.28, LxWick.PAL_ICE, 1.5)
-	if Lx.audio != null:
-		Lx.audio.play_sfx("lens_reveal", ap, true)
-	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(ap, 92.0, 0.85 if LxHudFx.flash_reduced() else 1.28, 0.42)
-	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, ap, 15.0, 6.0)
+	_emit_feature_fx(ap, "lens_reveal", 92.0, 0.85, 1.28, 0.42, LxGroundDecals.Kind.PRISM_STAR, 15.0, 6.0)
 
 
 func _tick_dawn_relics(dt: float) -> void:
@@ -364,26 +317,18 @@ func _tick_dawn_relics(dt: float) -> void:
 	for rel: Dictionary in _dawn_relics:
 		rel["cd"] = maxf(0.0, float(rel["cd"]) - dt)
 		rel["flash_t"] = maxf(0.0, float(rel["flash_t"]) - dt)
-		if float(rel["cd"]) > 0.0 or not act or _is_boss_cleared():
-			continue
-		if w.global_position.distance_to(rel["pos"] as Vector2) <= 26.0:
+		if float(rel["cd"]) <= 0.0 and act and not _is_boss_cleared() and w.global_position.distance_to(rel["pos"] as Vector2) <= 26.0:
 			_activate_dawn_relic(rel, w)
 
 
 func _activate_dawn_relic(rel: Dictionary, w: LxWick) -> void:
 	var rp: Vector2 = rel["pos"] as Vector2
-	rel["cd"] = 7.5
-	rel["flash_t"] = 0.55
+	rel["cd"] = 7.5; rel["flash_t"] = 0.55
 	if w != null and is_instance_valid(w):
 		if w.move_sunflare != null and w.move_sunflare.unlocked:
 			w.ember = minf(w.move_sunflare.get_ember_max(), w.ember + 12.0)
 		w.spawn_ring(rp, 4.0, 30.0, 0.30, LxWick.PAL_GOLD, 1.6)
-	if Lx.audio != null:
-		Lx.audio.play_sfx("prop_chime", rp, true)
-	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(rp, 112.0, 0.88 if LxHudFx.flash_reduced() else 1.38, 0.48)
-	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
-		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.BLOSSOM, rp, 15.0, 6.0)
+	_emit_feature_fx(rp, "prop_chime", 112.0, 0.88, 1.38, 0.48, LxGroundDecals.Kind.BLOSSOM, 15.0, 6.0)
 
 
 func _is_boss_cleared() -> bool:
@@ -441,8 +386,11 @@ func _draw() -> void:
 	if not _active:
 		return
 	var cleared: bool = _is_boss_cleared()
+	var live_boss: LxEnemyBrain = null if cleared else _live_boss()
+	var ph: int = live_boss.phase if live_boss != null else 1
 	if not cleared:
-		_draw_boss_phase_corners(fred)
+		_draw_center_ritual_ring(fred, ph, live_boss)
+		_draw_boss_phase_corners(fred, ph)
 	_boss_victory.draw_celebration(self, _clock, fred, cleared)
 	match _island_id:
 		1:
@@ -451,11 +399,9 @@ func _draw() -> void:
 				draw_arc(_center.round(), 34.0, 0.0, TAU, 24, Color(PAL["apricot"] as Color, a1), 1.0)
 			if _bell_pulse_t > 0.0:
 				var u: float = 1.0 - clampf(_bell_pulse_t / 0.52, 0.0, 1.0)
-				var r: float = roundf(lerpf(18.0, 88.0, u))
-				draw_arc(_center.round(), r, 0.0, TAU, 24, Color(PAL["gold"] as Color, (1.0 - u) * (0.55 if fred else 0.85)), 1.6)
+				draw_arc(_center.round(), roundf(lerpf(18.0, 88.0, u)), 0.0, TAU, 24, Color(PAL["gold"] as Color, (1.0 - u) * (0.55 if fred else 0.85)), 1.6)
 			if cleared:
-				var r_c: float = roundf(36.0 + (0.0 if fred else sin(_clock * 1.8) * 4.0))
-				draw_arc(_center.round(), r_c, 0.0, TAU, 24, Color(PAL["gold"] as Color, 0.35), 1.2)
+				draw_arc(_center.round(), roundf(36.0 + (0.0 if fred else sin(_clock * 1.8) * 4.0)), 0.0, TAU, 24, Color(PAL["gold"] as Color, 0.35), 1.2)
 				draw_line(_center + Vector2(-14.0, 0.0), _center + Vector2(14.0, 0.0), Color(PAL["cream"] as Color, 0.32), 1.0)
 				draw_line(_center + Vector2(0.0, -14.0), _center + Vector2(0.0, 14.0), Color(PAL["cream"] as Color, 0.32), 1.0)
 		2:
@@ -478,30 +424,45 @@ func _draw() -> void:
 			for b: Dictionary in _rules._blooms:
 				var bp: Vector2 = (b["pos"] as Vector2).round()
 				var lit: bool = cleared or float(b["lit_t"]) > 0.0
-				if lit:
-					lit_c += 1
+				lit_c += 1 if lit else 0
 				draw_circle(bp, 5.5 if lit else 3.5, (PAL["jade"] if lit else PAL["pine"]) as Color)
 				draw_circle(bp, 2.5 if lit else 1.5, (PAL["cream"] if lit else PAL["teal"]) as Color)
 				if lit:
-					var rr: float = roundf(12.0 + (0.0 if fred else sin(_clock * 4.0 + bp.x) * 2.0))
-					draw_arc(bp, rr, 0.0, TAU, 16, Color(PAL["lime"] as Color, 0.65), 1.0)
+					draw_arc(bp, roundf(12.0 + (0.0 if fred else sin(_clock * 4.0 + bp.x) * 2.0)), 0.0, TAU, 16, Color(PAL["lime"] as Color, 0.65), 1.0)
 			if lit_c >= 4 and _rules._blooms.size() == 4:
 				var ha: float = 0.24 if fred else (0.28 + 0.10 * sin(_clock * 3.0))
 				var p0: Vector2 = (_rules._blooms[0]["pos"] as Vector2).round()
 				var p1: Vector2 = (_rules._blooms[1]["pos"] as Vector2).round()
 				var p2: Vector2 = (_rules._blooms[2]["pos"] as Vector2).round()
 				var p3: Vector2 = (_rules._blooms[3]["pos"] as Vector2).round()
-				draw_line(p0, p1, Color(PAL["lime"] as Color, ha), 1.0)
-				draw_line(p2, p3, Color(PAL["lime"] as Color, ha), 1.0)
-				draw_line(p0, p2, Color(PAL["gold"] as Color, ha), 1.0)
-				draw_line(p1, p3, Color(PAL["gold"] as Color, ha), 1.0)
+				draw_line(p0, p1, Color(PAL["lime"] as Color, ha), 1.0); draw_line(p2, p3, Color(PAL["lime"] as Color, ha), 1.0)
+				draw_line(p0, p2, Color(PAL["gold"] as Color, ha), 1.0); draw_line(p1, p3, Color(PAL["gold"] as Color, ha), 1.0)
 		4:
+			if not cleared and ph >= 2:
+				var sn: int = 6 if ph >= 3 else 4
+				var wa: float = 0.24 if fred else (0.26 + 0.10 * sin(_clock * 3.2))
+				for wi: int in range(sn):
+					var wt: float = float(wi) / float(sn) if fred else fposmod(_clock * (0.28 if ph == 2 else 0.44) + float(wi) * 0.21, 1.0)
+					var wy: float = _center.y + lerpf(-52.0, 52.0, float(wi) / float(maxi(1, sn - 1)))
+					var wx: float = _center.x + lerpf(-96.0, 96.0, wt)
+					draw_line(Vector2(wx - 16.0, wy + 3.0).round(), Vector2(wx + 16.0, wy - 3.0).round(), Color((PAL["ice"] if wi % 2 == 0 else PAL["sky"]) as Color, wa), 1.2)
+				var glints: Array[Vector2] = [Vector2(-72.0, -34.0), Vector2(72.0, -34.0), Vector2(-64.0, 38.0), Vector2(64.0, 38.0)]
+				for gi: int in range(glints.size()):
+					var gp: Vector2 = (_center + glints[gi]).round()
+					var gs: float = 3.5 if fred else (2.5 + 1.8 * absf(sin(_clock * 2.8 + float(gi) * 1.4)))
+					var gc: Color = Color((PAL["rose"] if (ph >= 3 and gi % 2 == 1) else PAL["ice"]) as Color, 0.48)
+					draw_line(gp + Vector2(-gs, 0.0), gp + Vector2(gs, 0.0), gc, 1.0)
+					draw_line(gp + Vector2(0.0, -gs), gp + Vector2(0.0, gs), gc, 1.0)
 			if cleared:
 				var c4: Vector2 = _center.round()
 				draw_arc(c4, 42.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["rose"] as Color, 0.42), 1.6)
 				draw_arc(c4, 38.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["gold"] as Color, 0.42), 1.4)
 				draw_arc(c4, 34.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["ice"] as Color, 0.42), 1.2)
 		5:
+			for si: int in range(ABYSS_STARS_5.size()):
+				var st_p: Vector2 = (_center + ABYSS_STARS_5[si]).round()
+				var tw5: float = 0.62 if fred else (0.35 + 0.55 * sin(_clock * (1.8 + float(si) * 0.35) + float(si) * 1.3))
+				draw_rect(Rect2(st_p, Vector2.ONE), Color((PAL["sky"] if tw5 > 0.60 else PAL["deep"]) as Color, clampf(tw5, 0.25, 0.85)))
 			for nd: Dictionary in _orrery_nodes:
 				var ready_n: bool = float(nd["cd"]) <= 0.0
 				var np: Vector2 = (_center + Vector2(cos(float(nd["ang"])) * 108.0, sin(float(nd["ang"])) * 62.0)).round()
@@ -515,6 +476,17 @@ func _draw() -> void:
 					draw_rect(Rect2(sp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["gold"] as Color)
 					draw_rect(Rect2(sp, Vector2.ONE), PAL["cream"] as Color)
 		6:
+			if not cleared and ph >= 2:
+				var c6: Vector2 = _center.round()
+				for v: Dictionary in _rules._vents:
+					var vp: Vector2 = (v["pos"] as Vector2).round()
+					var v_ph: float = float(v.get("phase", 0.0))
+					var pulse6: float = 0.55 if fred else (0.45 + 0.45 * sin(_clock * (3.2 if ph >= 3 else 2.0) + v_ph * TAU))
+					var mid6: Vector2 = c6.lerp(vp, 0.5) + Vector2(0.0, -6.0 if vp.y < c6.y else 6.0)
+					draw_line(c6, mid6.round(), Color(PAL["wine"] as Color, 0.38 + 0.18 * pulse6), 2.8)
+					draw_line(mid6.round(), vp, Color(PAL["wine"] as Color, 0.38 + 0.18 * pulse6), 2.8)
+					draw_line(c6, mid6.round(), Color((PAL["gold"] if ph >= 3 else PAL["coral"]) as Color, 0.32 + 0.30 * pulse6), 1.3)
+					draw_line(mid6.round(), vp, Color((PAL["gold"] if ph >= 3 else PAL["coral"]) as Color, 0.32 + 0.30 * pulse6), 1.3)
 			if cleared:
 				for k: int in range(6):
 					var u6: float = fposmod(_clock * 0.45 + float(k) * 0.17, 1.0)
@@ -552,9 +524,7 @@ func _draw() -> void:
 			if cleared:
 				for k: int in range(8):
 					var ang: float = float(k) * (TAU / 8.0) + _clock * 0.18
-					var p0: Vector2 = (_center + Vector2(cos(ang) * 18.0, sin(ang) * 14.0)).round()
-					var p1: Vector2 = (_center + Vector2(cos(ang) * 72.0, sin(ang) * 52.0)).round()
-					draw_line(p0, p1, Color(PAL["gold"] as Color, 0.30 if fred else 0.48), 1.4)
+					draw_line((_center + Vector2(cos(ang) * 18.0, sin(ang) * 14.0)).round(), (_center + Vector2(cos(ang) * 72.0, sin(ang) * 52.0)).round(), Color(PAL["gold"] as Color, 0.30 if fred else 0.48), 1.4)
 			var seals: int = _mech.dawn_seals_broken if _mech != null else 0
 			var relit: bool = Lx.state != null and Lx.state.relit_islands.has(8)
 			for k: int in range(3):
@@ -566,17 +536,52 @@ func _draw() -> void:
 					draw_rect(Rect2(sp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 
 
-func _draw_boss_phase_corners(fred: bool) -> void:
+func _live_boss() -> LxEnemyBrain:
 	if _region == null or not _region.has_method("get_enemies"):
-		return
-	var ph: int = 1
+		return null
 	var ev: Variant = _region.call("get_enemies")
 	if ev is Array:
 		for e_v: Variant in (ev as Array):
 			if e_v is LxEnemyBrain and is_instance_valid(e_v):
 				var e: LxEnemyBrain = e_v as LxEnemyBrain
 				if e.is_alive() and e.is_boss:
-					ph = maxi(ph, e.phase)
+					return e
+	return null
+
+
+func _draw_center_ritual_ring(fred: bool, ph: int, boss: LxEnemyBrain) -> void:
+	var c: Vector2 = _center.round()
+	var r: float = 54.0 + float(clampi(ph, 1, 4) - 1) * 4.0
+	var base_c: Color = (PAL["sky"] if ph >= 4 else (PAL["coral"] if ph >= 3 else (LxBiomePalette.col(_island_id, "glow") if ph == 2 else LxBiomePalette.col(_island_id, "hi")))) as Color
+	var a_ring: float = (0.18 + float(ph - 1) * 0.11) * (0.82 if fred else (0.88 + 0.16 * sin(_clock * (1.8 + float(ph) * 0.7))))
+	if ph <= 2:
+		draw_arc(c, r, 0.0, TAU, 32, Color(base_c, a_ring), 1.0 if ph == 1 else 1.4)
+		if ph == 2:
+			for k: int in range(4):
+				var d: Vector2 = Vector2.from_angle(float(k) * (PI * 0.5) + _clock * 0.25)
+				draw_line((c + d * (r - 4.0)).round(), (c + d * (r + 4.0)).round(), Color(PAL["gold"] as Color, a_ring * 1.2), 1.2)
+	else:
+		var segs: int = 8 if ph >= 4 else 6
+		var rot: float = 0.0 if fred else _clock * (0.45 if ph >= 4 else 0.28)
+		for k: int in range(segs):
+			var a0: float = rot + float(k) * (TAU / float(segs))
+			draw_arc(c, r, a0 + 0.08, a0 + (TAU / float(segs)) - 0.14, 6, Color(base_c, a_ring), 1.6)
+			var fd: Vector2 = Vector2.from_angle(a0)
+			draw_line((c + fd * (r - 6.0)).round(), (c + fd * (r + 5.0)).round(), Color((PAL["gold"] if ph >= 4 else PAL["apricot"]) as Color, a_ring * 1.15), 1.2)
+		draw_arc(c, r - 6.0, 0.0, TAU, 28, Color((PAL["gold"] if ph >= 4 else PAL["wine"]) as Color, a_ring * 0.7), 1.0)
+	if _island_id == 8 and ph >= 4 and boss != null and not bool(boss.get("veil_intact")):
+		for ki: int in range(8):
+			var ka: float = float(ki) * (TAU / 8.0)
+			var kd: Vector2 = Vector2.from_angle(ka)
+			var col_i: Color = LxBiomePalette.col(ki + 1, "glow")
+			var ra: float = 0.42 if fred else (0.46 + 0.20 * sin(_clock * 4.0 + float(ki)))
+			draw_line((c + kd * 92.0).round(), (c + kd * 20.0).round(), Color(col_i, ra), 1.5)
+			var gt: float = 0.5 if fred else fposmod(_clock * 0.85 + float(ki) * 0.125, 1.0)
+			var gp: Vector2 = (c + kd * lerpf(90.0, 22.0, gt)).round()
+			draw_rect(Rect2(gp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
+
+
+func _draw_boss_phase_corners(fred: bool, ph: int) -> void:
 	if ph < 2:
 		return
 	var r_in: Rect2 = _rules.bounds.grow(-30.0)

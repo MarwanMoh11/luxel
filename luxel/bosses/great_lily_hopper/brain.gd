@@ -1,16 +1,35 @@
 class_name LxGreatLilyHopperBoss
 extends LxLilyHopperBrain
-## Mirefen Gardens mini-boss (Island 4): Great Lily Hopper with twin shockwave hops.
-## 2 phases, HP 7.5. Phase 2 chains a second shockwave leap before a generous landing recovery.
+## Mirefen Gardens mini-boss (Island 4): Great Lily Hopper.
+## 2 phases, HP 7.5. Pairs twin shockwave hops with a mid-range 3-Arc Lily-Petal Spit!
+
+enum HopperMove { LEAP_HOP, PETAL_SPIT }
 
 const BOSS_RING_MAX_R: float = 70.0
 const BOSS_RING_BAND: float = 9.5
 const BOSS_LEAP_RANGE: float = 122.0
 const TWIN_CROUCH_PAUSE: float = 0.42
+const SPIT_MIN_RANGE: float = 44.0
+const SPIT_MAX_RANGE: float = 132.0
+const SPIT_TELL_P1: float = 0.50
+const SPIT_TELL_P2: float = 0.46
+const SPIT_COMMIT_TIME: float = 0.24
+const SPIT_RECOVER: float = 0.95
+const SPIT_CD_P1: float = 3.1
+const SPIT_CD_P2: float = 2.4
+const PETAL_SPEED: float = 112.0
+const PETAL_RADIUS: float = 4.5
+const PETAL_MAX_DIST: float = 128.0
+const PETAL_SPREAD: float = 0.28
 const PHASE2_ROAR_TIME: float = 0.56
 
+var active_move: int = HopperMove.LEAP_HOP
 var twin_hop_pending: bool = false
 var twin_pause_active: bool = false
+var spit_cd: float = 1.8
+var spit_dir: Vector2 = Vector2.RIGHT
+var spit_fired: bool = false
+var petals: Array[Dictionary] = []
 var _roaring: bool = false
 
 
@@ -37,8 +56,13 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	is_boss = true
 	boss_id = str(spec.get("boss_id", "great_lily_hopper"))
 	island_id = int(spec.get("island_id", 4))
+	active_move = HopperMove.LEAP_HOP
 	twin_hop_pending = false
 	twin_pause_active = false
+	spit_cd = 1.8
+	spit_dir = Vector2.from_angle(facing)
+	spit_fired = false
+	petals.clear()
 	_roaring = false
 
 
@@ -47,7 +71,9 @@ func take_hit(hit: LxHit) -> int:
 		_emit_enemy_hit(hit, HitResult.GLANCED)
 		return HitResult.GLANCED
 	var res: int = super.take_hit(hit)
-	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
+	if res == HitResult.KILLED:
+		petals.clear()
+	elif is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
 		_check_phase_transition()
 	return res
 
@@ -57,11 +83,13 @@ func _check_phase_transition() -> void:
 		phase = 2
 		_roaring = true
 		hop_z = 0.0
+		active_move = HopperMove.LEAP_HOP
 		twin_hop_pending = false
 		twin_pause_active = false
 		_release_token()
 		state = State.NOTICE
 		state_timer = PHASE2_ROAR_TIME
+		spit_cd = 0.90
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
 		_boss_impact(0.24, 90.0, 88.0)
@@ -69,6 +97,8 @@ func _check_phase_transition() -> void:
 
 
 func _step_brain(dt: float) -> void:
+	spit_cd = maxf(0.0, spit_cd - dt)
+	_step_petals(dt)
 	if state == State.NOTICE and _roaring:
 		hop_z = 0.0
 		state_timer -= dt
@@ -77,7 +107,43 @@ func _step_brain(dt: float) -> void:
 			state = State.POSITION
 			cooldown = 0.35
 		return
+	if state == State.TELL and active_move == HopperMove.PETAL_SPIT:
+		hop_z = 0.0
+		if state_timer > 0.16 * _assist_tell_scale():
+			var tpos: Vector2 = _attention_target()
+			_face_point(tpos, 3.6, dt)
+			spit_dir = Vector2.from_angle(facing)
+		state_timer -= dt
+		if state_timer <= 0.0:
+			_enter_commit()
+		return
 	super._step_brain(dt)
+
+
+func _step_petals(dt: float) -> void:
+	var wick_p: Vector2 = _get_wick_pos()
+	var lan_out: bool = _is_lantern_out()
+	var lan_p: Vector2 = _get_lantern_pos()
+	var i: int = petals.size() - 1
+	while i >= 0:
+		var p: Dictionary = petals[i]
+		var prev_p: Vector2 = p["pos"] as Vector2
+		var pdir: Vector2 = p["dir"] as Vector2
+		var step: float = PETAL_SPEED * dt
+		var nxt_p: Vector2 = prev_p + pdir * step
+		p["pos"] = nxt_p
+		p["traveled"] = float(p["traveled"]) + step
+		var remove_it: bool = float(p["traveled"]) >= PETAL_MAX_DIST or not _has_clear_view(prev_p, nxt_p)
+		if not remove_it and _has_player() and nxt_p.distance_to(wick_p) <= PETAL_RADIUS + 4.5:
+			_emit_player_hit(pdir)
+			remove_it = true
+		elif not remove_it and lan_out and nxt_p.distance_to(lan_p) <= PETAL_RADIUS + 5.0:
+			if Lx.events != null:
+				Lx.events.lantern_struck.emit(lan_p)
+			remove_it = true
+		if remove_it:
+			petals.remove_at(i)
+		i -= 1
 
 
 func _step_position(dt: float, target_pos: Vector2) -> void:
@@ -99,19 +165,38 @@ func _step_position(dt: float, target_pos: Vector2) -> void:
 	var is_lead: bool = director == null or director.lead_enemy == self or director.lead_enemy == null
 	state = State.POSITION if is_lead else State.WAIT_TOKEN
 
-	if is_lead and cooldown <= 0.0 and dist <= BOSS_LEAP_RANGE and _is_on_screen() and _claim_token():
-		state = State.TELL
-		is_counter_attack = false
-		var base_t: float = 0.46 if phase >= 2 else tell_time
-		last_tell_duration = _scaled_tell(base_t, false, attack_damage)
-		state_timer = last_tell_duration
-		leap_to = _clamp_pt(target_pos)
-		hop_z = 0.0
-		twin_hop_pending = phase >= 2
-		twin_pause_active = false
-		_emit_attack_started()
-		_emit_sfx("hopper_crouch")
-		return
+	if is_lead and cooldown <= 0.0 and _is_on_screen():
+		# Mid-range 3-Arc Lily-Petal Spit
+		if spit_cd <= 0.0 and dist >= SPIT_MIN_RANGE and dist <= SPIT_MAX_RANGE \
+				and _has_clear_view(pos, target_pos) and _claim_token():
+			active_move = HopperMove.PETAL_SPIT
+			state = State.TELL
+			is_counter_attack = false
+			var base_s: float = SPIT_TELL_P2 if phase >= 2 else SPIT_TELL_P1
+			last_tell_duration = _scaled_tell(base_s, false, attack_damage)
+			state_timer = last_tell_duration
+			if dist > 0.01:
+				facing = to_t.angle()
+			spit_dir = Vector2.from_angle(facing)
+			spit_fired = false
+			hop_z = 0.0
+			_emit_attack_started()
+			_emit_sfx("hopper_crouch")
+			return
+		if dist <= BOSS_LEAP_RANGE and _claim_token():
+			active_move = HopperMove.LEAP_HOP
+			state = State.TELL
+			is_counter_attack = false
+			var base_t: float = 0.46 if phase >= 2 else tell_time
+			last_tell_duration = _scaled_tell(base_t, false, attack_damage)
+			state_timer = last_tell_duration
+			leap_to = _clamp_pt(target_pos)
+			hop_z = 0.0
+			twin_hop_pending = phase >= 2
+			twin_pause_active = false
+			_emit_attack_started()
+			_emit_sfx("hopper_crouch")
+			return
 
 	hop_z = absf(sin(anim_t * 9.0)) * 4.5
 	var spd: float = minf(routine_speed * 0.84, routine_speed - 2.0)
@@ -122,7 +207,38 @@ func _step_position(dt: float, target_pos: Vector2) -> void:
 		_move_step(perp * spd * 0.65 * dt, false)
 
 
+func _enter_commit() -> void:
+	if active_move == HopperMove.PETAL_SPIT:
+		state = State.COMMIT
+		state_timer = SPIT_COMMIT_TIME
+		spit_dir = Vector2.from_angle(facing)
+		spit_fired = false
+		_emit_sfx("barnacle_fire")
+		return
+	super._enter_commit()
+
+
 func _step_commit(dt: float) -> void:
+	if active_move == HopperMove.PETAL_SPIT:
+		if not spit_fired:
+			spit_fired = true
+			for idx: int in [-1, 0, 1]:
+				var pdir: Vector2 = spit_dir.rotated(float(idx) * PETAL_SPREAD)
+				petals.append({
+					"pos": pos + pdir * (body_radius + 3.0),
+					"dir": pdir,
+					"traveled": 0.0,
+				})
+			_boss_impact(0.08, 48.0, 52.0)
+		state_timer -= dt
+		if state_timer <= 0.0:
+			active_move = HopperMove.LEAP_HOP
+			spit_cd = SPIT_CD_P2 if phase >= 2 else SPIT_CD_P1
+			state = State.RECOVER
+			state_timer = maxf(MIN_RECOVER_TIME, SPIT_RECOVER)
+			last_recover_duration = state_timer
+		return
+
 	if twin_pause_active:
 		hop_z = 0.0
 		var target_pos: Vector2 = _attention_target()
@@ -185,7 +301,14 @@ func _draw_extra(off: Vector2) -> void:
 		draw_circle(off + Vector2(-3.0, -body_radius - 1.5), 2.2, PAL["rose"] as Color)
 		draw_circle(off + Vector2(3.0, -body_radius - 1.5), 2.2, PAL["gold"] as Color)
 	var c: Vector2 = off.round()
-	if state == State.TELL or twin_pause_active:
+	if active_move == HopperMove.PETAL_SPIT and state == State.TELL:
+		var hot_s: bool = state_timer <= 0.16 * _assist_tell_scale()
+		var sc: Color = (PAL["coral"] if hot_s else PAL["rose"]) as Color
+		for idx: int in [-1, 0, 1]:
+			var pdir: Vector2 = spit_dir.rotated(float(idx) * PETAL_SPREAD)
+			draw_line(c, (c + pdir * 72.0).round(), sc, 1.4 if hot_s else 1.0)
+			draw_circle((c + pdir * 16.0).round(), 1.8, (PAL["cream"] if hot_s else PAL["rose"]) as Color)
+	elif (active_move == HopperMove.LEAP_HOP and state == State.TELL) or twin_pause_active:
 		var rel: Vector2 = (leap_to - pos).round()
 		for oi: int in range(10):
 			var a0: float = float(oi) * (TAU / 10.0)
@@ -207,7 +330,7 @@ func _draw_extra(off: Vector2) -> void:
 			var bp: Vector2 = (c.lerp(rel, t) + Vector2(0.0, arc_y)).round()
 			draw_circle(bp, 1.6, PAL["sky"] as Color)
 			draw_circle(bp, 0.9, PAL["cream"] as Color)
-	elif state == State.COMMIT and commit_stage == CommitStage.RING:
+	elif active_move == HopperMove.LEAP_HOP and state == State.COMMIT and commit_stage == CommitStage.RING:
 		var ring_r: float = lerpf(RING_START_R, BOSS_RING_MAX_R, ring_progress)
 		draw_arc(Vector2.ZERO, ring_r + 2.6, 0.0, TAU, 36, PAL["blue"] as Color, 2.4)
 		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
@@ -227,6 +350,15 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, rr + 2.2, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
 		draw_arc(c, rr, 0.0, TAU, 28, PAL["lime"] as Color, 2.4)
 		draw_arc(c, maxf(3.0, rr - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+
+	# Active Lily-Petal projectiles
+	for p: Dictionary in petals:
+		var pp: Vector2 = ((p["pos"] as Vector2) - pos).round()
+		var pd: Vector2 = p["dir"] as Vector2
+		draw_line((pp - pd * 6.0).round(), pp, PAL["wine"] as Color, 1.6)
+		draw_circle(pp, PETAL_RADIUS, PAL["coral"] as Color)
+		draw_circle(pp, PETAL_RADIUS * 0.65, PAL["rose"] as Color)
+		draw_circle(pp, 1.3, PAL["cream"] as Color)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

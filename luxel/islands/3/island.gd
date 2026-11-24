@@ -77,22 +77,22 @@ func get_region_list() -> PackedStringArray:
 func get_main_path_waypoints() -> Array[Dictionary]:
 	return [
 		_wp("wp_3_entry_ws", "overworld", "moss_trailhead", [312.0, 936.0], "waystone", "interact", "ws_3_entry", "Arrive at Thornwood Hollow moss trailhead", ["bolt", "dash", "throw", "prism"], []),
-		_wp("wp_3_beacon_1", "overworld", "spore_glade", [152.0, 552.0], "beacon", "light_beacon", "beacon_3_1", "Clear Spore Glade and light Beacon 1", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_1"),
-		_wp("wp_3_beacon_2", "overworld", "briar_crossing", [584.0, 584.0], "beacon", "light_beacon", "beacon_3_2", "Clear Briar Crossing and light Beacon 2", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_2"),
+		_wp("wp_3_beacon_1", "overworld", "spore_glade", [152.0, 568.0], "beacon", "light_beacon", "beacon_3_1", "Clear Spore Glade and light Beacon 1", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_1"),
+		_wp("wp_3_beacon_2", "overworld", "briar_crossing", [568.0, 568.0], "beacon", "light_beacon", "beacon_3_2", "Clear Briar Crossing and light Beacon 2", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_2"),
 		_wp("wp_3_beacon_3", "overworld", "canopy_bridge", [120.0, 312.0], "beacon", "light_beacon", "beacon_3_3", "Clear Canopy Bridge and light Beacon 3", ["bolt", "dash", "throw", "prism"], [], "", "beacon_3_3"),
 		_wp("wp_3_enter_oak", "overworld", "hollow_oak_glade", [352.0, 60.0], "exit", "enter_exit", "exit_to_oak", "Enter The Hollow Oak past the shattered ward barrier", ["dash", "throw", "prism"], ["beacon_3_1", "beacon_3_2", "beacon_3_3"], "", "", "oak_r1"),
-		_wp("wp_oak_r1_ws", "oak_r1", "oak_r1", [208.0, 120.0], "waystone", "interact", "ws_oak", "Light Hollow Oak Root Vestibule Waystone", ["dash", "throw", "prism"], []),
-		_wp("wp_oak_r2_key1", "oak_r2", "oak_r2", [312.0, 168.0], "wick_key", "collect_key", "wick_key_3_1", "Solve Knotwork Roots mirror switch puzzle and take wick_key_3_1", ["dash", "throw", "prism"], [], "", "wick_key_3_1"),
-		_wp("wp_oak_r3_combat", "oak_r3", "oak_r3", [392.0, 104.0], "combat_gate", "clear_room", "door_oak_r3_combat", "Clear Spore Gallery Sporecap and Gloam encounter", ["dash", "throw", "prism"], [], "", "oak_r3_cleared"),
-		_wp("wp_oak_r4_pool", "oak_r4", "oak_r4", [344.0, 120.0], "switch_door", "open_shutter", "door_oak_r4_shutter", "Unlock Sunshaft Pool key door and ignite three light-pool braziers", ["dash", "throw", "prism"], ["wick_key_3_1"], "", "oak_r4_pool_lit"),
-		_wp("wp_oak_r5_shrine_beam", "oak_r5", "oak_r5", [120.0, 112.0], "shrine", "claim_shrine", "shrine_beam", "Claim Beam Shrine and pierce bramble and cracked_wall teaching lane", ["dash", "throw", "prism"], [], "beam"),
+		_wp("wp_oak_r1_ws", "oak_r1", "oak_r1", [200.0, 120.0], "waystone", "interact", "ws_oak", "Light Hollow Oak Root Hub Waystone", ["dash", "throw", "prism"], []),
+		_wp("wp_oak_r2_key1", "oak_r2", "oak_r2", [328.0, 184.0], "wick_key", "collect_key", "wick_key_3_1", "Solve Knotwork Roots blue mirror switch puzzle and take wick_key_3_1", ["dash", "throw", "prism"], [], "", "wick_key_3_1"),
+		_wp("wp_oak_r3_combat", "oak_r3", "oak_r3", [392.0, 120.0], "combat_gate", "clear_room", "door_oak_r3_combat", "Clear Spore Gallery Sporecap and Gloam encounter", ["dash", "throw", "prism"], [], "", "oak_r3_cleared"),
+		_wp("wp_oak_r4_pool", "oak_r4", "oak_r4", [376.0, 104.0], "switch_door", "open_shutter", "door_oak_r4_shutter", "Unlock Sunshaft Pool key door and ignite three light-pool braziers", ["dash", "throw", "prism"], ["wick_key_3_1"], "", "oak_r4_pool_lit"),
+		_wp("wp_oak_r5_shrine_beam", "oak_r5", "oak_r5", [104.0, 104.0], "shrine", "claim_shrine", "shrine_beam", "Claim Beam Shrine and pierce bramble and cracked_wall teaching lane", ["dash", "throw", "prism"], [], "beam"),
 		_wp("wp_oak_r6_miniboss", "oak_r6", "oak_r6", [328.0, 128.0], "mini_boss", "defeat_miniboss", "boss_elder_sporecap", "Defeat Elder Sporecap in Spore Crown and claim wick_key_3_2", ["dash", "throw", "prism", "beam"], [], "", "wick_key_3_2"),
-		_wp("wp_oak_r7_loom", "oak_r7", "oak_r7", [192.0, 56.0], "switch_door", "open_shutter", "door_oak_r7_shutter", "Unlock Weavers Loom key door and pierce web, cracked_wall, and switch_eye", ["dash", "throw", "prism", "beam"], ["wick_key_3_2"], "", "oak_r7_loom_open"),
-		_wp("wp_oak_r8_bastion", "oak_r8", "oak_r8", [208.0, 24.0], "combat_gate", "clear_room", "door_oak_r8_combat", "Clear Bramble Bastion Bramble Knight and Gloam encounter", ["dash", "throw", "prism", "beam"], [], "", "oak_r8_cleared"),
-		_wp("wp_oak_r9_boss_key", "oak_r9", "oak_r9", [384.0, 88.0], "keepers_flame", "collect_key", "keepers_flame_3", "Solve Keepers Amber Vault for keepers_flame_3 and unlock door_boss_3", ["dash", "throw", "prism", "beam"], [], "", "keepers_flame_3"),
+		_wp("wp_oak_r7_loom", "oak_r7", "oak_r7", [160.0, 40.0], "switch_door", "open_shutter", "door_oak_r7_shutter", "Unlock Weavers Loom key door and refract Blue Piercing Beam through bramble into blue switch_eye", ["dash", "throw", "prism", "beam"], ["wick_key_3_2"], "", "oak_r7_loom_open"),
+		_wp("wp_oak_r8_bastion", "oak_r8", "oak_r8", [192.0, 24.0], "combat_gate", "clear_room", "door_oak_r8_combat", "Clear Bramble Bastion Bramble Knight and Gloam encounter", ["dash", "throw", "prism", "beam"], [], "", "oak_r8_cleared"),
+		_wp("wp_oak_r9_boss_key", "oak_r9", "oak_r9", [392.0, 72.0], "keepers_flame", "collect_key", "keepers_flame_3", "Solve Keepers Amber Vault Blue Transformer and Beam synthesis for keepers_flame_3 and unlock door_boss_3", ["dash", "throw", "prism", "beam"], [], "", "keepers_flame_3"),
 		_wp("wp_oak_r10_boss", "oak_r10", "oak_r10", [240.0, 144.0], "boss", "defeat_boss", "boss_briar_matron", "Defeat the Briar Matron in The Hollow Crown", ["dash", "throw", "prism", "beam"], ["keepers_flame_3"], "", "boss_briar_matron_defeated"),
 		_wp("wp_oak_r10_great_lamp", "oak_r10", "oak_r10", [240.0, 56.0], "great_lamp", "light_great_lamp", "great_lamp_3", "Relight Great Lamp 3 to wake Thornwood Hollow", ["dash", "throw", "prism", "beam"], ["boss_briar_matron_defeated"], "", "island_3_relit"),
-		_wp("wp_3_bridge_to_island_4", "oak_r10", "oak_r10", [472.0, 144.0], "exit", "enter_exit", "exit_oak_r10_island4", "Cross Bridge of Light to Island 4 Mirefen Gardens", ["beam"], ["island_3_relit"], "", "", "overworld", 4),
+		_wp("wp_3_bridge_to_island_4", "oak_r10", "oak_r10", [472.0, 136.0], "exit", "enter_exit", "exit_oak_r10_island4", "Cross Bridge of Light to Island 4 Mirefen Gardens", ["beam"], ["island_3_relit"], "", "", "overworld", 4),
 	]
 
 
@@ -195,7 +195,6 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	_emit_narration("CUE_BEACON_LIT_3", "title", 2.5)
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 
@@ -228,7 +227,6 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 		if _events != null:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
 			_events.music_mode_requested.emit("island3_dungeon")
-			_emit_narration("CUE_KEY_FOUND", "title", 3.0)
 			_events.save_requested.emit("elder_sporecap_defeated")
 
 
@@ -238,7 +236,6 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island3_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
-		_emit_narration("CUE_PHASE_3" if phase >= 3 else "CUE_PHASE_2_ISL3", "warning", 3.5)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:

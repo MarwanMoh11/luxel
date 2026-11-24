@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    304,
-    120
+    368,
+    136
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        384,
-        240
+        416,
+        256
       ],
       "dark": true
     }
@@ -24,15 +24,15 @@
     {
       "id": "exit_o5_r2_east",
       "rect": [
-        368,
-        96,
+        400,
+        112,
         16,
         48
       ],
       "to_region": "orrery_r1",
       "to_spawn": [
         40,
-        128
+        136
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,15 +41,15 @@
     {
       "id": "exit_o5_r2_north",
       "rect": [
-        176,
+        160,
         0,
         32,
         16
       ],
       "to_region": "orrery_r3",
       "to_spawn": [
-        208,
-        184
+        176,
+        216
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -62,8 +62,8 @@
       "id": "cracked_o5_r2",
       "kind": "cracked_wall",
       "pos": [
-        192,
-        88
+        176,
+        56
       ],
       "props": {
         "size": [
@@ -76,7 +76,7 @@
       "id": "switch_eye_o5_r2",
       "kind": "switch_eye",
       "pos": [
-        248,
+        264,
         72
       ],
       "props": {
@@ -88,13 +88,13 @@
       "id": "bridge_o5_r2",
       "kind": "door",
       "pos": [
-        280,
-        80
+        240,
+        144
       ],
       "props": {
         "door_kind": "bridge_platform",
         "size": [
-          48,
+          96,
           32
         ],
         "starts_open": false,
@@ -107,8 +107,8 @@
       "id": "wick_key_5_1",
       "kind": "wick_key",
       "pos": [
-        56,
-        120
+        72,
+        168
       ],
       "props": {
         "dungeon_id": "orrery",
@@ -121,34 +121,10 @@
   "scenery": [
     {
       "sheet": "island5_scenery",
-      "prop": "clockwork_gear_pillar",
-      "pos": [
-        64,
-        74
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "clockwork_gear_pillar",
-      "pos": [
-        320,
-        74
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island5_scenery",
       "prop": "hanging_pendulum",
       "pos": [
-        150,
-        74
+        324,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -157,38 +133,74 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
+      "prop": "clockwork_gear_pillar",
       "pos": [
-        64,
-        180
+        364,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        312,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        312,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        160,
+        112
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.4
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        160,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
     },
     {
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        148,
-        180
+        64,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "broken_astrolabe_ring",
-      "pos": [
-        318,
-        180
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
       "phase": 0.0
     }
   ],

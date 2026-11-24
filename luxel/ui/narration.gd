@@ -12,6 +12,19 @@ const STYLE_COLORS: Dictionary = {
 	"ominous": "ice",
 	"narration": "cream",
 }
+const PROMPT_ACTIONS: Dictionary = {
+	"PROMPT_AIM_SHOOT": "lx_fire",
+	"PROMPT_DASH": "lx_dash",
+	"PROMPT_THROW": "lx_throw",
+	"PROMPT_ZIP": "lx_fire",
+	"PROMPT_BEAM": "lx_beam",
+	"PROMPT_WINGS": "lx_dash",
+	"PROMPT_LENS": "lx_lens",
+	"PROMPT_SUNFLARE": "lx_sunflare",
+	"PROMPT_IGNITE": "lx_interact",
+	"HUD_ZIP_CUE": "lx_fire",
+	"HUD_MAP_HINT": "lx_map",
+}
 
 var _bar: float = 0.0
 var _bar_from: float = 0.0
@@ -61,11 +74,15 @@ func say_id(
 	secs: float = 3.5,
 	y: float = -1.0,
 	scale: int = 1,
-	slot: String = "main"
+	slot: String = "main",
+	action_id: String = ""
 ) -> void:
 	var line: String = LxStrings.text(string_id)
 	if line.find("%s") >= 0:
-		var glyph: String = LxStrings.sanitize(Lx.input.get_glyph("lx_interact"), 12) if Lx.input != null else "E"
+		var act: String = action_id if not action_id.is_empty() else str(PROMPT_ACTIONS.get(string_id, "lx_interact"))
+		var glyph: String = LxStrings.sanitize(Lx.input.get_glyph(act), 12) if Lx.input != null else "-"
+		if glyph.is_empty():
+			glyph = "-"
 		line = LxStrings.fmt(string_id, [glyph])
 	say_lines(PackedStringArray([line]), style, secs, y, scale, slot)
 
@@ -96,13 +113,16 @@ func show_prompt(string_id: String, action_id: String = "", secs: float = 4.0) -
 	if string_id.is_empty():
 		clear_prompt()
 		return
-	if action_id.is_empty():
-		_prompt_text = LxStrings.text(string_id)
+	var raw: String = LxStrings.text(string_id)
+	var eff_act: String = action_id
+	if eff_act.is_empty() and raw.find("%s") >= 0:
+		eff_act = str(PROMPT_ACTIONS.get(string_id, "lx_interact"))
+	if eff_act.is_empty():
+		_prompt_text = raw
 	else:
 		var glyph: String = "-"
 		if Lx.input != null:
-			glyph = LxStrings.sanitize(Lx.input.get_glyph(action_id), 12)
-		var raw: String = LxStrings.text(string_id)
+			glyph = LxStrings.sanitize(Lx.input.get_glyph(eff_act), 12)
 		if raw.find("%s") >= 0:
 			_prompt_text = LxStrings.fmt(string_id, [glyph])
 		else:
@@ -123,8 +143,29 @@ func is_saying(slot: String = "main") -> bool:
 	return _slots.has(slot)
 
 
+func has_active_prompt() -> bool:
+	return not _prompt_text.is_empty()
+
+
 func unsay(slot: String = "main") -> void:
 	_slots.erase(slot)
+	queue_redraw()
+
+
+func clear_overworld_caption() -> void:
+	if is_letterbox_on() or not _slots.has("main"):
+		return
+	_slots.erase("main")
+	queue_redraw()
+
+
+func clear_transient() -> void:
+	if is_letterbox_on():
+		return
+	_slots.erase("title")
+	_slots.erase("main")
+	_slots.erase("story")
+	clear_prompt()
 	queue_redraw()
 
 
@@ -134,9 +175,25 @@ func clear_all() -> void:
 	queue_redraw()
 
 
+static func _is_zone_or_chapter_id(string_id: String) -> bool:
+	if string_id.begins_with("ZONE_") or string_id.begins_with("DUNGEON_"):
+		return true
+	return string_id.begins_with("CH") and string_id.ends_with("_TITLE")
+
+
 func _on_narration_requested(string_id: String, style: String, duration: float) -> void:
+	var resolved: String = LxStrings.text(string_id)
+	var hud: Node = Lx.ui.get("hud") as Node if (Lx.ui != null and Lx.ui.get("hud") != null) else null
+	var cur_notice: String = str(hud.get("_notice_text")) if hud != null else ""
+	if _is_zone_or_chapter_id(string_id):
+		if hud != null and hud.has_method("show_notice") and cur_notice != resolved:
+			hud.call("show_notice", string_id, duration)
+		return
+	if not cur_notice.is_empty() and resolved == cur_notice:
+		return
 	var slot_name: String = "title" if (style == "title" or style == "warning") else "main"
-	say_id(string_id, style, duration, -1.0, 1, slot_name)
+	var eff_dur: float = minf(duration, 2.6) if (slot_name == "main" and style == "narration" and not is_letterbox_on()) else duration
+	say_id(string_id, style, eff_dur, -1.0, 1, slot_name)
 
 
 func _on_prompt_requested(string_id: String, action_id: String, duration: float) -> void:
@@ -212,7 +269,8 @@ func _draw_slot(s: Dictionary) -> void:
 		if is_letterbox_on():
 			y = 166.0 if lines.size() == 1 else 165.0
 		else:
-			var base_y: float = 136.0 if _unlocked_move_count() >= 4 else 150.0
+			var many_moves: bool = _unlocked_move_count() >= 4
+			var base_y: float = (129.0 if has_active_prompt() else 132.0) if many_moves else 146.0
 			if slot_name == "title":
 				base_y -= 13.0 if _slots.has("main") else 2.0
 			y = base_y - gap * float(lines.size() - 1)
@@ -251,7 +309,7 @@ func _draw_prompt() -> void:
 	var box_w: float = tw + 12.0
 	var box_h: float = 11.0
 	var lift_prompt: bool = is_letterbox_on() or _unlocked_move_count() >= 4
-	var y: float = 148.0 if lift_prompt else 164.0
+	var y: float = 145.0 if lift_prompt else 164.0
 	var no_motion: bool = LxHudFx.flash_reduced()
 	if not no_motion and _prompt_t < 0.20:
 		var pp: float = 1.0 - clampf(_prompt_t / 0.20, 0.0, 1.0)

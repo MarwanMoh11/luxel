@@ -268,31 +268,27 @@ func _draw_destination_landmark(next_isl: int, c: Vector2, col_b: Color, col_hi:
 
 func _draw_dungeon_entrance(r: Rect2, c: Vector2, col_g: Color, col_h: Color, cream: Color, pulse: float, fred: bool, wp: Vector2) -> void:
 	var prox: float = clampf(1.0 - c.distance_to(wp) / 88.0, 0.0, 1.0)
-	var w: float = minf(r.size.x, 32.0)
-	var x0: float = roundf(c.x - w * 0.5)
-	var y0: float = roundf(c.y - 6.0)
-	draw_rect(Rect2(x0, y0, w, 12.0), Color(col_h, (0.14 + prox * 0.16) * pulse))
-	draw_rect(Rect2(x0, y0, w, 1.0), Color(col_g, (0.55 + prox * 0.30) * pulse))
-	draw_rect(Rect2(x0, y0 + 11.0, w, 1.0), Color(col_g, (0.55 + prox * 0.30) * pulse))
-	if prox > 0.05:
-		var hw_p: float = roundf(w * 0.5) + 3.0
-		var pa: float = (0.38 if fred else 0.56) * prox * pulse
-		# Proximity-awakening vertical invitation pillars & floor welcome chevron
-		draw_rect(Rect2(c.x - hw_p, y0 - 4.0, 1.0, 18.0), Color(col_g, pa))
-		draw_rect(Rect2(c.x + hw_p, y0 - 4.0, 1.0, 18.0), Color(col_g, pa))
-		draw_rect(Rect2(c.x - hw_p, y0 - 5.0, 2.0, 2.0), Color(cream, pa * 1.25))
-		draw_rect(Rect2(c.x + hw_p - 1.0, y0 - 5.0, 2.0, 2.0), Color(cream, pa * 1.25))
-		var ch_y: float = roundf(y0 + 15.0 - (0.0 if fred else fposmod(_clock * 6.0, 3.0)))
-		draw_line(Vector2(c.x - 4.0, ch_y + 2.0), Vector2(c.x, ch_y), Color(cream, pa * 1.2), 1.0)
-		draw_line(Vector2(c.x + 4.0, ch_y + 2.0), Vector2(c.x, ch_y), Color(cream, pa * 1.2), 1.0)
-	_draw_biome_gateway_frame(c, w, col_g, col_h, cream, pulse * (1.0 + prox * 0.22), fred)
-	LxHudFx.draw_biome_crest(self, _island_id, c, Color(col_g, minf(0.96, (0.78 + prox * 0.18) * pulse)), Color(cream, 0.86))
+	var w: float = minf(r.size.x, 28.0)
+	var hw: float = floorf(w * 0.5)
+	var x0: float = roundf(c.x - hw)
+	var y0: float = roundf(c.y - 4.0)
+	var base_a: float = (0.12 + prox * 0.14) * pulse
+	# Soft architectural floor light-spill from the open dungeon doorway
+	draw_rect(Rect2(x0 + 2.0, y0, w - 4.0, 4.0), Color(col_g, base_a * 1.15))
+	draw_rect(Rect2(x0 + 4.0, y0 + 4.0, w - 8.0, 4.0), Color(col_h, base_a * 0.72))
+	draw_rect(Rect2(x0 + 6.0, y0 + 8.0, w - 12.0, 3.0), Color(col_h, base_a * 0.36))
+	# Recessed flanking doorframe sconce glints
+	for side: float in [-1.0, 1.0]:
+		var sx: float = roundf(c.x + side * (hw + 1.0))
+		draw_rect(Rect2(sx - 1.0, y0 - 1.0, 2.0, 3.0), Color(PAL["night"] as Color, 0.75))
+		draw_rect(Rect2(sx, y0, 1.0, 1.0), Color(cream if prox > 0.3 else col_g, (0.58 + prox * 0.32) * pulse))
+	_draw_biome_gateway_frame(c, w, col_g, col_h, cream, pulse * (0.72 + prox * 0.24), fred)
 	if not fred:
-		for k: int in range(3):
-			var u: float = fposmod(_clock * 0.65 + float(k) * 0.33, 1.0)
-			var mx: float = roundf(c.x + float(k - 1) * 8.0)
-			var my: float = roundf(c.y + 5.0 - u * (16.0 + prox * 8.0))
-			draw_rect(Rect2(mx, my, 1.0, 1.0), Color(cream if u < 0.4 else col_g, sin(u * PI) * (0.78 + prox * 0.18)))
+		for k: int in range(2):
+			var u: float = fposmod(_clock * 0.55 + float(k) * 0.5, 1.0)
+			var mx: float = roundf(c.x + float(k * 2 - 1) * 5.0)
+			var my: float = roundf(c.y + 4.0 - u * (12.0 + prox * 5.0))
+			draw_rect(Rect2(mx, my, 1.0, 1.0), Color(cream if u < 0.35 else col_g, sin(u * PI) * (0.55 + prox * 0.22)))
 
 
 func _draw_biome_gateway_frame(c: Vector2, w: float, col_g: Color, col_h: Color, cream: Color, pulse: float, fred: bool) -> void:
@@ -342,19 +338,37 @@ func _draw_biome_gateway_frame(c: Vector2, w: float, col_g: Color, col_h: Color,
 
 
 func _draw_room_threshold(r: Rect2, c: Vector2, col_g: Color, cream: Color, pulse: float, wp: Vector2) -> void:
-	var d2: float = c.distance_squared_to(wp)
-	var near_boost: float = 1.45 if d2 <= 19600.0 else 0.85
-	var a: float = clampf(0.30 * pulse * near_boost, 0.12, 0.62)
+	var prox: float = clampf(1.0 - c.distance_to(wp) / 96.0, 0.0, 1.0)
+	var spill_a: float = clampf((0.12 + prox * 0.10) * pulse, 0.06, 0.24)
+	var sconce_a: float = clampf((0.52 + prox * 0.34) * pulse, 0.32, 0.90)
+	var b_center: Vector2 = _cam_center
+	if _region != null and is_instance_valid(_region) and _region.get("bounds") is Rect2:
+		b_center = (_region.get("bounds") as Rect2).get_center()
+	var spill_c: Color = (PAL["apricot"] as Color) if _island_id in [1, 6, 8] else col_g
 	var horiz: bool = r.size.x >= r.size.y
 	if horiz:
-		var span: float = minf(r.size.x - 4.0, 24.0)
-		draw_rect(Rect2(roundf(c.x - span * 0.5), roundf(c.y), span, 1.0), Color(col_g, a))
-		for k: int in range(-1, 2):
-			draw_rect(Rect2(roundf(c.x + float(k) * 6.0), roundf(c.y - 1.0), 2.0, 2.0), Color(cream if k == 0 else col_g, a * 1.25))
+		var span: float = clampf(r.size.x - 4.0, 12.0, 28.0)
+		var half_s: float = floorf(span * 0.5)
+		var in_y: float = 1.0 if c.y < b_center.y else -1.0
+		var sill_y: float = roundf(c.y + in_y * (r.size.y * 0.5 - 2.0))
+		# Soft 3-step warm floor light-spill tapering gently into the room
+		draw_rect(Rect2(roundf(c.x - half_s + 1.0), sill_y, span - 2.0, 2.0), Color(spill_c, spill_a * 1.15))
+		draw_rect(Rect2(roundf(c.x - half_s + 3.0), sill_y + in_y * 2.0, maxf(4.0, span - 6.0), 3.0), Color(spill_c, spill_a * 0.68))
+		draw_rect(Rect2(roundf(c.x - half_s + 5.0), sill_y + in_y * 5.0, maxf(2.0, span - 10.0), 3.0), Color(col_g, spill_a * 0.32))
+		# Tiny recessed doorframe sconce glints flanking the opening
+		for side: float in [-1.0, 1.0]:
+			var sx: float = roundf(c.x + side * (half_s + 2.0))
+			draw_rect(Rect2(sx - 1.0, sill_y - 1.0, 2.0, 2.0), Color(PAL["night"] as Color, 0.72))
+			draw_rect(Rect2(sx, sill_y, 1.0, 1.0), Color(cream if prox > 0.35 else col_g, sconce_a))
 	else:
-		var span_v: float = minf(r.size.y - 4.0, 24.0)
-		draw_rect(Rect2(roundf(c.x), roundf(c.y - span_v * 0.5), 1.0, span_v), Color(col_g, a))
-		for k: int in range(-1, 2):
-			draw_rect(Rect2(roundf(c.x - 1.0), roundf(c.y + float(k) * 6.0), 2.0, 2.0), Color(cream if k == 0 else col_g, a * 1.25))
-	if d2 <= 5184.0:
-		LxHudFx.draw_biome_crest(self, _island_id, c, Color(col_g, a * 1.2), Color(cream, a * 1.35))
+		var span_v: float = clampf(r.size.y - 4.0, 12.0, 28.0)
+		var half_v: float = floorf(span_v * 0.5)
+		var in_x: float = 1.0 if c.x < b_center.x else -1.0
+		var sill_x: float = roundf(c.x + in_x * (r.size.x * 0.5 - 2.0))
+		draw_rect(Rect2(sill_x, roundf(c.y - half_v + 1.0), 2.0, span_v - 2.0), Color(spill_c, spill_a * 1.15))
+		draw_rect(Rect2(sill_x + in_x * 2.0, roundf(c.y - half_v + 3.0), 3.0, maxf(4.0, span_v - 6.0)), Color(spill_c, spill_a * 0.68))
+		draw_rect(Rect2(sill_x + in_x * 5.0, roundf(c.y - half_v + 5.0), 3.0, maxf(2.0, span_v - 10.0)), Color(col_g, spill_a * 0.32))
+		for side: float in [-1.0, 1.0]:
+			var sy: float = roundf(c.y + side * (half_v + 2.0))
+			draw_rect(Rect2(sill_x - 1.0, sy - 1.0, 2.0, 2.0), Color(PAL["night"] as Color, 0.72))
+			draw_rect(Rect2(sill_x, sy, 1.0, 1.0), Color(cream if prox > 0.35 else col_g, sconce_a))

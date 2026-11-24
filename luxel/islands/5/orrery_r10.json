@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    240,
-    272
+    176,
+    288
   ],
   "zones": [
     {
@@ -14,8 +14,8 @@
       "rect": [
         0,
         0,
-        480,
-        320
+        496,
+        336
       ],
       "dark": true
     }
@@ -24,15 +24,15 @@
     {
       "id": "exit_o5_r10_south",
       "rect": [
-        224,
-        304,
+        160,
+        320,
         32,
         16
       ],
       "to_region": "orrery_r9",
       "to_spawn": [
-        224,
-        40
+        128,
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,8 +41,8 @@
     {
       "id": "exit_o5_r10_bridge",
       "rect": [
-        464,
-        128,
+        480,
+        176,
         16,
         48
       ],
@@ -64,31 +64,31 @@
       "id": "boss_astronomer",
       "kind": "astronomer",
       "pos": [
-        240,
-        144
+        248,
+        168
       ],
       "route": [
         [
-          160,
-          144
+          168,
+          168
         ],
         [
-          320,
-          144
+          328,
+          168
         ]
       ],
       "perches": [
         [
-          136,
-          104
+          152,
+          120
         ],
         [
-          240,
-          64
+          232,
+          88
         ],
         [
-          344,
-          104
+          336,
+          136
         ]
       ],
       "zone": "orrery_r10",
@@ -100,8 +100,8 @@
       "id": "great_lamp_5",
       "kind": "great_lamp",
       "pos": [
-        240,
-        56
+        232,
+        64
       ],
       "props": {
         "island_id": 5,
@@ -114,8 +114,8 @@
       "id": "bridge_of_light_5_crown",
       "kind": "door",
       "pos": [
-        456,
-        160
+        472,
+        200
       ],
       "props": {
         "door_kind": "bridge_of_light",
@@ -133,7 +133,7 @@
       "kind": "brazier",
       "pos": [
         152,
-        72
+        80
       ],
       "props": {
         "lit_by_default": true
@@ -143,7 +143,7 @@
       "id": "brazier_o5_r10_e",
       "kind": "brazier",
       "pos": [
-        328,
+        312,
         72
       ],
       "props": {
@@ -155,9 +155,9 @@
     {
       "id": "trig_boss_astronomer",
       "rect": [
-        160,
-        216,
-        160,
+        128,
+        224,
+        144,
         48
       ],
       "string_id": "BOSS_ASTRONOMER",
@@ -167,9 +167,21 @@
   "scenery": [
     {
       "sheet": "island5_scenery",
+      "prop": "astro_floor_compass",
+      "pos": [
+        248,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        196,
+        192,
         56
       ],
       "layer": "sort",
@@ -181,7 +193,7 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        284,
+        272,
         56
       ],
       "layer": "sort",
@@ -191,10 +203,10 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
+      "prop": "observatory_brazier_stand",
       "pos": [
-        196,
-        280
+        144,
+        296
       ],
       "layer": "sort",
       "flip_x": false,
@@ -203,10 +215,10 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
+      "prop": "observatory_brazier_stand",
       "pos": [
-        284,
-        280
+        208,
+        296
       ],
       "layer": "sort",
       "flip_x": true,
@@ -215,10 +227,34 @@
     },
     {
       "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        368,
+        164
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        368,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        84,
-        160
+        76,
+        132
       ],
       "layer": "sort",
       "flip_x": false,
@@ -229,61 +265,13 @@
       "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        396,
-        120
+        368,
+        132
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        136,
-        244
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        344,
-        244
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        112,
-        108
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        368,
-        108
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.9
     }
   ],
   "is_2x2_room": true

@@ -60,14 +60,61 @@
       "locked_door_id": "door_r3_shutter"
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "warden_r3_0",
+      "kind": "warden",
+      "pos": [
+        248,
+        104
+      ],
+      "route": [
+        [
+          208,
+          104
+        ],
+        [
+          288,
+          104
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_gallery",
+      "leash": 115
+    },
+    {
+      "id": "owl_r3_0",
+      "kind": "owl",
+      "pos": [
+        280,
+        72
+      ],
+      "route": [],
+      "perches": [
+        [
+          280,
+          72
+        ],
+        [
+          200,
+          144
+        ],
+        [
+          296,
+          128
+        ]
+      ],
+      "zone": "belfry_gallery",
+      "leash": 140
+    }
+  ],
   "interactables": [
     {
       "id": "brazier_r3_a",
       "kind": "brazier",
       "pos": [
-        232,
-        56
+        216,
+        40
       ],
       "props": {
         "target_id": "door_r3_shutter",
@@ -78,8 +125,8 @@
       "id": "brazier_r3_b",
       "kind": "brazier",
       "pos": [
-        232,
-        152
+        280,
+        168
       ],
       "props": {
         "target_id": "door_r3_shutter",
@@ -90,7 +137,7 @@
       "id": "door_r3_shutter",
       "kind": "door",
       "pos": [
-        320,
+        328,
         104
       ],
       "props": {
@@ -111,8 +158,8 @@
       "id": "chest_r3_shards",
       "kind": "chest",
       "pos": [
-        312,
-        56
+        296,
+        40
       ],
       "props": {
         "reward": "shards",
@@ -141,8 +188,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        72,
-        50
+        48,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -153,8 +200,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        72,
-        164
+        76,
+        136
       ],
       "layer": "sort",
       "flip_x": true,
@@ -163,10 +210,10 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "belfry_bell_hanging",
+      "prop": "candelabra_tall",
       "pos": [
-        192,
-        48
+        296,
+        70
       ],
       "layer": "sort",
       "flip_x": false,
@@ -175,10 +222,22 @@
     },
     {
       "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        296,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        280,
-        48
+        268,
+        40
       ],
       "layer": "sort",
       "flip_x": true,
@@ -189,25 +248,13 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        296,
-        140
+        200,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "candelabra_tall",
-      "pos": [
-        280,
-        166
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.55
     }
   ],
   "is_2x2_room": true

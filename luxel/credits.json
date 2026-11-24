@@ -1,6 +1,55 @@
 {
   "version": 1,
   "project": "Luxel",
+  "sections": [
+    {
+      "title": "DIRECTION AND DESIGN",
+      "lines": [
+        "MARWAN MOHAMED",
+        "LUXEL STUDIO"
+      ]
+    },
+    {
+      "title": "ENGINE",
+      "lines": [
+        "GODOT 4.7.2 - MIT"
+      ]
+    },
+    {
+      "title": "WORLD AND PIXEL ART",
+      "lines": [
+        "LAST LIGHT 20-COLOUR PALETTE",
+        "8 ISLANDS - 81 HANDCRAFTED REGIONS"
+      ]
+    },
+    {
+      "title": "ORIGINAL SOUNDTRACK",
+      "lines": [
+        "LANTERN GOTHIC OST - 46 TRACKS",
+        "D HARMONIC MINOR - 144 BPM"
+      ]
+    },
+    {
+      "title": "SOUND DESIGN",
+      "lines": [
+        "300 ZERO-HISS PROCEDURAL SFX",
+        "16 ORGANIC BIOME SOUNDSCAPES"
+      ]
+    },
+    {
+      "title": "CRAFT AND PROVENANCE",
+      "lines": [
+        "100% DETERMINISTIC CODE ASSETS",
+        "NO STOCK ART - NO GENERATIVE MODELS"
+      ]
+    },
+    {
+      "title": "SPECIAL THANKS",
+      "lines": [
+        "THANK YOU FOR KEEPING THE LIGHT."
+      ]
+    }
+  ],
   "disclosure": "Every sprite, tile, sound effect, and musical note in Luxel is produced by deterministic Python code under human direction, with no generative image, music, or voice models and no stock art.",
   "engine": [
     {

@@ -177,11 +177,11 @@ static func is_solid_tile(tile_type: String, can_cross_pit: bool = false, can_cr
 	match tile_type:
 		"ground", "path", "bridge":
 			return false
-		"pit", "phantom":
+		"pit", "phantom", "void":
 			return not can_cross_pit
 		"water", "tide":
 			return not can_cross_water
-		"wall", "void", "bramble", "cracked", "glass", "mirror":
+		"wall", "bramble", "cracked", "glass", "mirror":
 			return true
 		_:
 			return true

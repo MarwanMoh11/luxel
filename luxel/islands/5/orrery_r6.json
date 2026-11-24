@@ -4,8 +4,8 @@
   "tile_size": 16,
   "is_dungeon": true,
   "spawn": [
-    240,
-    216
+    320,
+    232
   ],
   "zones": [
     {
@@ -15,7 +15,7 @@
         0,
         0,
         480,
-        256
+        272
       ],
       "dark": true
     }
@@ -24,14 +24,14 @@
     {
       "id": "exit_o5_r6_south",
       "rect": [
-        224,
-        240,
+        304,
+        256,
         32,
         16
       ],
       "to_region": "orrery_r5",
       "to_spawn": [
-        224,
+        384,
         48
       ],
       "requires_moves": [],
@@ -42,13 +42,13 @@
       "id": "exit_o5_r6_west",
       "rect": [
         0,
-        96,
+        80,
         16,
         48
       ],
       "to_region": "orrery_r7",
       "to_spawn": [
-        304,
+        416,
         120
       ],
       "requires_moves": [],
@@ -64,17 +64,17 @@
       "id": "boss_clockwork_warden",
       "kind": "clockwork_warden",
       "pos": [
-        240,
-        112
+        248,
+        128
       ],
       "route": [
         [
-          168,
-          112
+          184,
+          128
         ],
         [
-          312,
-          112
+          328,
+          128
         ]
       ],
       "perches": [],
@@ -87,8 +87,8 @@
       "id": "wick_key_5_2",
       "kind": "wick_key",
       "pos": [
-        240,
-        128
+        248,
+        144
       ],
       "props": {
         "dungeon_id": "orrery",
@@ -102,7 +102,7 @@
       "kind": "door",
       "pos": [
         24,
-        128
+        104
       ],
       "props": {
         "door_kind": "key_door",
@@ -125,9 +125,33 @@
   "scenery": [
     {
       "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        272,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        368,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        184,
+        176,
         48
       ],
       "layer": "sort",
@@ -139,7 +163,7 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        296,
+        320,
         48
       ],
       "layer": "sort",
@@ -149,63 +173,27 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "hanging_pendulum",
+      "prop": "observatory_brazier_stand",
       "pos": [
-        392,
-        128
+        64,
+        72
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
-      "phase": 0.25
+      "phase": 0.15
     },
     {
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        176,
-        208
+        64,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        304,
-        208
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "armillary_sphere",
-      "pos": [
-        128,
-        76
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "armillary_sphere",
-      "pos": [
-        352,
-        76
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.9
+      "phase": 0.65
     }
   ],
   "is_2x2_room": true

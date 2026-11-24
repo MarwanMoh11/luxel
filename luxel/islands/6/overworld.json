@@ -13,9 +13,9 @@
       "name_key": "ZONE_ISL6_1",
       "rect": [
         0,
-        144,
-        304,
-        256
+        160,
+        288,
+        224
       ],
       "dark": true
     },
@@ -26,7 +26,7 @@
         192,
         0,
         448,
-        256
+        240
       ],
       "dark": true
     },
@@ -34,10 +34,10 @@
       "id": "slag_foundry",
       "name_key": "ZONE_ISL6_3",
       "rect": [
-        192,
-        288,
-        448,
-        256
+        176,
+        304,
+        464,
+        240
       ],
       "dark": true
     },
@@ -47,7 +47,7 @@
       "rect": [
         640,
         272,
-        432,
+        464,
         272
       ],
       "dark": true
@@ -59,7 +59,7 @@
         640,
         0,
         464,
-        272
+        288
       ],
       "dark": true
     },
@@ -86,8 +86,8 @@
       ],
       "to_region": "kiln_r1",
       "to_spawn": [
-        224,
-        184
+        200,
+        216
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -132,7 +132,7 @@
           280
         ],
         [
-          264,
+          248,
           280
         ]
       ],
@@ -169,16 +169,16 @@
       "id": "bellows_ash_0",
       "kind": "bellows_imp",
       "pos": [
-        520,
+        504,
         120
       ],
       "route": [
         [
-          488,
+          472,
           120
         ],
         [
-          552,
+          536,
           120
         ]
       ],
@@ -190,17 +190,17 @@
       "id": "golem_slag_0",
       "kind": "cinder_golem",
       "pos": [
-        408,
-        392
+        376,
+        408
       ],
       "route": [
         [
-          376,
-          392
+          344,
+          408
         ],
         [
-          440,
-          392
+          408,
+          408
         ]
       ],
       "perches": [],
@@ -211,17 +211,17 @@
       "id": "bellows_slag_0",
       "kind": "bellows_imp",
       "pos": [
-        472,
-        424
+        440,
+        440
       ],
       "route": [
         [
-          440,
-          424
+          408,
+          440
         ],
         [
-          520,
-          424
+          488,
+          440
         ]
       ],
       "perches": [],
@@ -232,17 +232,17 @@
       "id": "golem_trial_6_0",
       "kind": "cinder_golem",
       "pos": [
-        792,
-        392
+        808,
+        408
       ],
       "route": [
         [
-          760,
-          392
+          776,
+          408
         ],
         [
-          840,
-          392
+          856,
+          408
         ]
       ],
       "perches": [],
@@ -253,22 +253,22 @@
       "id": "mole_trial_6_0",
       "kind": "ash_mole",
       "pos": [
-        760,
-        424
+        776,
+        440
       ],
       "route": [],
       "perches": [
         [
           744,
-          360
+          376
         ],
         [
-          840,
-          360
+          856,
+          376
         ],
         [
-          808,
-          424
+          824,
+          440
         ]
       ],
       "zone": "cinder_terrace",
@@ -278,16 +278,16 @@
       "id": "bellows_trial_6_0",
       "kind": "bellows_imp",
       "pos": [
-        856,
+        872,
         424
       ],
       "route": [
         [
-          824,
+          840,
           424
         ],
         [
-          872,
+          904,
           424
         ]
       ],
@@ -300,16 +300,16 @@
       "kind": "cinder_golem",
       "pos": [
         888,
-        152
+        136
       ],
       "route": [
         [
-          856,
-          152
+          840,
+          136
         ],
         [
           936,
-          152
+          136
         ]
       ],
       "perches": [],
@@ -334,7 +334,7 @@
           104
         ],
         [
-          968,
+          952,
           168
         ]
       ],
@@ -346,16 +346,16 @@
       "kind": "bellows_imp",
       "pos": [
         984,
-        184
+        168
       ],
       "route": [
         [
           936,
-          184
+          168
         ],
         [
           1016,
-          184
+          168
         ]
       ],
       "perches": [],
@@ -394,8 +394,8 @@
       "id": "ws_ash_drifts",
       "kind": "waystone",
       "pos": [
-        328,
-        168
+        312,
+        152
       ],
       "props": {
         "zone": "ash_drifts",
@@ -406,7 +406,7 @@
       "id": "beacon_6_1",
       "kind": "beacon",
       "pos": [
-        456,
+        440,
         120
       ],
       "props": {
@@ -423,7 +423,7 @@
       "id": "brazier_6_ow_1",
       "kind": "brazier",
       "pos": [
-        408,
+        392,
         104
       ],
       "props": {
@@ -434,8 +434,8 @@
       "id": "beacon_6_2",
       "kind": "beacon",
       "pos": [
-        488,
-        376
+        552,
+        440
       ],
       "props": {
         "index": 1,
@@ -447,10 +447,59 @@
       }
     },
     {
+      "id": "tf_6_caldera",
+      "kind": "blue_transformer",
+      "pos": [
+        472,
+        408
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ],
+        "zone": "slag_foundry"
+      }
+    },
+    {
+      "id": "portal_6_caldera_in",
+      "kind": "blue_portal",
+      "pos": [
+        552,
+        360
+      ],
+      "props": {
+        "target_portal_id": "portal_6_caldera_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "isl6_caldera_portal_lit",
+        "zone": "slag_foundry"
+      }
+    },
+    {
+      "id": "portal_6_caldera_out",
+      "kind": "blue_portal",
+      "pos": [
+        920,
+        184
+      ],
+      "props": {
+        "target_portal_id": "portal_6_caldera_in",
+        "requires_blue": true,
+        "pair_sync": true,
+        "zone": "furnace_causeway"
+      }
+    },
+    {
       "id": "chest_ember_6_1",
       "kind": "chest",
       "pos": [
-        248,
+        232,
         440
       ],
       "props": {
@@ -468,8 +517,8 @@
       "id": "chest_ember_6_2",
       "kind": "chest",
       "pos": [
-        824,
-        424
+        840,
+        440
       ],
       "props": {
         "reward_kind": "ember_piece",
@@ -483,8 +532,8 @@
       "id": "cracked_wall_6_ow",
       "kind": "cracked_wall",
       "pos": [
-        936,
-        360
+        952,
+        376
       ],
       "props": {
         "size": [
@@ -498,8 +547,8 @@
       "id": "chest_shards_6_1",
       "kind": "chest",
       "pos": [
-        968,
-        360
+        984,
+        376
       ],
       "props": {
         "reward_kind": "shards",
@@ -512,8 +561,8 @@
       "id": "ws_furnace_causeway",
       "kind": "waystone",
       "pos": [
-        792,
-        168
+        776,
+        152
       ],
       "props": {
         "zone": "furnace_causeway",
@@ -524,7 +573,7 @@
       "id": "beacon_6_3",
       "kind": "beacon",
       "pos": [
-        1032,
+        1016,
         120
       ],
       "props": {
@@ -598,7 +647,7 @@
       "id": "lamp_6_c",
       "kind": "road_lamp",
       "pos": [
-        1256,
+        1272,
         264
       ],
       "props": {
@@ -620,8 +669,8 @@
       "id": "lamp_6_e",
       "kind": "road_lamp",
       "pos": [
-        840,
-        168
+        824,
+        152
       ],
       "props": {
         "zone": "furnace_causeway"
@@ -630,20 +679,9 @@
   ],
   "triggers": [
     {
-      "id": "trig_isl6_arrival",
-      "rect": [
-        72,
-        240,
-        80,
-        64
-      ],
-      "string_id": "ISL6_ARRIVAL",
-      "once": true
-    },
-    {
       "id": "trig_isl6_z2",
       "rect": [
-        320,
+        304,
         112,
         80,
         48
@@ -654,8 +692,8 @@
     {
       "id": "trig_isl6_z3",
       "rect": [
-        368,
-        368,
+        336,
+        384,
         80,
         48
       ],
@@ -666,7 +704,7 @@
       "id": "trig_isl6_z4",
       "rect": [
         768,
-        368,
+        384,
         80,
         48
       ],
@@ -676,8 +714,8 @@
     {
       "id": "trig_isl6_z5",
       "rect": [
-        768,
-        128,
+        752,
+        112,
         64,
         64
       ],
@@ -688,7 +726,7 @@
       "id": "trig_isl6_z6",
       "rect": [
         1264,
-        176,
+        192,
         96,
         48
       ],
@@ -699,82 +737,10 @@
   "scenery": [
     {
       "sheet": "island6_scenery",
-      "prop": "crucible_floor_seal",
-      "pos": [
-        1312,
-        224
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "crucible_floor_seal",
-      "pos": [
-        1208,
-        296
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "ember_grate_vent",
-      "pos": [
-        1248,
-        224
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "ember_grate_vent",
-      "pos": [
-        1376,
-        224
-      ],
-      "layer": "ground",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "ember_grate_vent",
-      "pos": [
-        440,
-        360
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "ember_grate_vent",
-      "pos": [
-        856,
-        136
-      ],
-      "layer": "ground",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island6_scenery",
       "prop": "basalt_organ_cluster",
       "pos": [
-        96,
-        184
+        80,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
@@ -785,8 +751,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        152,
-        184
+        112,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -795,9 +761,21 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "ash_urn_cluster",
+      "prop": "hearth_brazier_tall",
       "pos": [
-        96,
+        192,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "forge_anvil_stand",
+      "pos": [
+        116,
         336
       ],
       "layer": "sort",
@@ -807,82 +785,22 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "cooled_magma_vent",
-      "pos": [
-        152,
-        344
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "forge_anvil_stand",
-      "pos": [
-        216,
-        192
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
       "prop": "coal_hopper",
       "pos": [
-        232,
-        344
+        148,
+        336
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "smelter_chimney",
-      "pos": [
-        264,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "basalt_organ_cluster",
-      "pos": [
-        328,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
-      "pos": [
-        568,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
+      "phase": 0.35
     },
     {
       "sheet": "island6_scenery",
       "prop": "ash_urn_cluster",
       "pos": [
-        264,
-        192
+        176,
+        336
       ],
       "layer": "sort",
       "flip_x": false,
@@ -891,370 +809,34 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "cooled_magma_vent",
-      "pos": [
-        456,
-        192
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "forge_anvil_stand",
-      "pos": [
-        568,
-        192
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        512,
-        192
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "coal_hopper",
-      "pos": [
-        488,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "slag_crucible",
-      "pos": [
-        328,
-        344
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "foundry_hook_crane",
-      "pos": [
-        568,
-        344
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "smelter_chimney",
-      "pos": [
-        384,
-        344
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "bellows_frame",
-      "pos": [
-        376,
-        448
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "forge_anvil_stand",
-      "pos": [
-        552,
-        448
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
+      "prop": "crucible_floor_seal",
       "pos": [
         440,
-        456
+        128
       ],
-      "layer": "sort",
+      "layer": "ground",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "cooled_magma_vent",
-      "pos": [
-        512,
-        456
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_arch_rib",
-      "pos": [
-        720,
-        328
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_arch_rib",
-      "pos": [
-        888,
-        328
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        720,
-        432
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        904,
-        432
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "slag_crucible",
-      "pos": [
-        792,
-        328
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "ash_urn_cluster",
-      "pos": [
-        936,
-        432
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {
       "sheet": "island6_scenery",
       "prop": "smelter_chimney",
       "pos": [
-        728,
+        268,
         88
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "smelter_chimney",
-      "pos": [
-        984,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "foundry_hook_crane",
-      "pos": [
-        792,
-        96
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "bellows_frame",
-      "pos": [
-        728,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
+      "phase": 0.0
     },
     {
       "sheet": "island6_scenery",
       "prop": "coal_hopper",
       "pos": [
-        888,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "cooled_magma_vent",
-      "pos": [
-        1032,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "great_kiln_arch",
-      "pos": [
-        1312,
-        166
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "smelter_chimney",
-      "pos": [
-        1184,
-        96
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "smelter_chimney",
-      "pos": [
-        1416,
-        96
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        1264,
-        136
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        1360,
-        136
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
-      "pos": [
-        1240,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
-      "pos": [
-        1384,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "slag_crucible",
-      "pos": [
-        1184,
-        256
+        298,
+        80
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1263,34 +845,10 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
-      "pos": [
-        1384,
-        240
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "obsidian_obelisk",
-      "pos": [
-        1384,
-        344
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island6_scenery",
       "prop": "basalt_organ_cluster",
       "pos": [
-        1184,
-        352
+        332,
+        76
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1299,10 +857,10 @@
     },
     {
       "sheet": "island6_scenery",
-      "prop": "forge_anvil_stand",
+      "prop": "smelter_chimney",
       "pos": [
-        1248,
-        352
+        480,
+        76
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1311,10 +869,250 @@
     },
     {
       "sheet": "island6_scenery",
+      "prop": "forge_anvil_stand",
+      "pos": [
+        512,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
       "prop": "bellows_frame",
       "pos": [
-        1384,
-        416
+        544,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        568,
+        116
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        568,
+        164
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "cooled_magma_vent",
+      "pos": [
+        408,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "cooled_magma_vent",
+      "pos": [
+        488,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        360,
+        384
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        424,
+        384
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "smelter_chimney",
+      "pos": [
+        380,
+        476
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "bellows_frame",
+      "pos": [
+        416,
+        480
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "slag_crucible",
+      "pos": [
+        456,
+        480
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "forge_anvil_stand",
+      "pos": [
+        492,
+        480
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.85
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "foundry_hook_crane",
+      "pos": [
+        580,
+        380
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        580,
+        412
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        580,
+        452
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "slag_crucible",
+      "pos": [
+        756,
+        336
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "forge_anvil_stand",
+      "pos": [
+        788,
+        340
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        824,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        888,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "obsidian_obelisk",
+      "pos": [
+        744,
+        456
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "obsidian_obelisk",
+      "pos": [
+        924,
+        456
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1325,13 +1123,457 @@
       "sheet": "island6_scenery",
       "prop": "ash_urn_cluster",
       "pos": [
-        1184,
-        384
+        948,
+        464
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        856,
+        136
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        936,
+        136
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "smelter_chimney",
+      "pos": [
+        732,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "coal_hopper",
+      "pos": [
+        764,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "foundry_hook_crane",
+      "pos": [
+        828,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "slag_crucible",
+      "pos": [
+        864,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "coal_hopper",
+      "pos": [
+        956,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "smelter_chimney",
+      "pos": [
+        988,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        1060,
+        132
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        1060,
+        188
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "great_kiln_arch",
+      "pos": [
+        1312,
+        136
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        1272,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        1352,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "smelter_chimney",
+      "pos": [
+        1192,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "smelter_chimney",
+      "pos": [
+        1408,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "crucible_floor_seal",
+      "pos": [
+        1312,
+        216
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        1252,
+        216
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        1372,
+        216
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
+        1240,
+        188
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
+        1384,
+        188
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "crucible_floor_seal",
+      "pos": [
+        1312,
+        296
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "obsidian_obelisk",
+      "pos": [
+        1396,
+        260
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "obsidian_obelisk",
+      "pos": [
+        1396,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "slag_crucible",
+      "pos": [
+        1284,
+        412
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "forge_anvil_stand",
+      "pos": [
+        1320,
+        416
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "bellows_frame",
+      "pos": [
+        1356,
+        416
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        128,
+        256
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        128,
+        288
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        216,
+        276
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        104,
+        298
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        192,
+        298
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        248,
+        258
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        248,
+        298
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.85
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "crucible_floor_seal",
+      "pos": [
+        104,
+        272
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "slag_crucible",
+      "pos": [
+        84,
+        244
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "slag_crucible",
+      "pos": [
+        224,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "slag_crucible",
+      "pos": [
+        224,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
     }
   ]
 }
