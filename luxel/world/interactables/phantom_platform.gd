@@ -2,12 +2,15 @@ class_name LxPhantomPlatform
 extends LxInteractable
 ## Hidden bridge/platform that turns solid and visible when illuminated with Lens unlocked.
 
+const SHIMMER_NEAR_SQ: float = 13924.0
+
 var revealed: bool = false
 var persist_grace: float = 0.25
 var size: Vector2 = Vector2(32.0, 16.0)
 var _reveal_left: float = 0.0
 var _reveal_fx_t: float = 0.0
 var _shimmer_stage: int = 0
+var _was_near: bool = false
 
 
 func setup(spec: Dictionary) -> void:
@@ -84,13 +87,22 @@ func tick(dt: float) -> void:
 	if revealed and _is_reveal_warning():
 		changed = true
 	if active:
-		var rate: float = 3.0 if revealed else 1.5
+		var f_mul: float = 0.55 if LxHudFx.flash_reduced() else 1.0
+		var rate: float = (3.0 if revealed else 1.8) * f_mul
 		var st: int = int(floorf(_clock * rate + absf(pos.x * 0.02 + pos.y * 0.03))) % 4
 		if st != _shimmer_stage:
 			_shimmer_stage = st
 			changed = true
+		var near_now: bool = not revealed and _is_player_near()
+		if near_now != _was_near:
+			_was_near = near_now
+			changed = true
 	if changed:
 		queue_redraw()
+
+
+func _is_player_near() -> bool:
+	return Lx.player != null and is_instance_valid(Lx.player) and Lx.player is Node2D and (Lx.player as Node2D).global_position.distance_squared_to(pos) <= SHIMMER_NEAR_SQ
 
 
 func is_platform_solid() -> bool:
@@ -144,10 +156,32 @@ func _draw() -> void:
 		return
 	# Subtle 4-corner star-dust glints on transparent background (no opaque boxes or alpha washes)
 	_draw_puzzle_tiled("phantom_hint", size)
-	var near_player: bool = Lx.player != null and is_instance_valid(Lx.player) and Lx.player is Node2D and (Lx.player as Node2D).global_position.distance_squared_to(pos) < 3025.0
-	if near_player:
-		var corners: Array[Vector2] = [
-			Vector2(x0 + 1.0, y0 + 1.0), Vector2(x0 + w - 2.0, y0 + 1.0),
-			Vector2(x0 + 1.0, y0 + h - 2.0), Vector2(x0 + w - 2.0, y0 + h - 2.0),
-		]
-		draw_rect(Rect2(corners[_shimmer_stage % 4], Vector2.ONE), PAL["sky"] as Color)
+	var corners: Array[Vector2] = [
+		Vector2(x0 + 1.0, y0 + 1.0), Vector2(x0 + w - 2.0, y0 + 1.0),
+		Vector2(x0 + w - 2.0, y0 + h - 2.0), Vector2(x0 + 1.0, y0 + h - 2.0),
+	]
+	var inward: Array[Vector2] = [
+		Vector2(1.0, 1.0), Vector2(-1.0, 1.0),
+		Vector2(-1.0, -1.0), Vector2(1.0, -1.0),
+	]
+	var pair_a: bool = (_shimmer_stage % 2) == 0
+	var near_player: bool = _is_player_near()
+	var c_deep: Color = PAL["deep"] as Color
+	var c_sky: Color = PAL["sky"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	for ci: int in range(4):
+		var is_active_pair: bool = (ci == 0 or ci == 2) if pair_a else (ci == 1 or ci == 3)
+		var cp: Vector2 = corners[ci]
+		if near_player:
+			if is_active_pair:
+				draw_rect(Rect2(cp, Vector2.ONE), c_ice)
+				draw_rect(Rect2(cp + Vector2(inward[ci].x, 0.0), Vector2.ONE), c_sky)
+				draw_rect(Rect2(cp + Vector2(0.0, inward[ci].y), Vector2.ONE), c_sky)
+			else:
+				draw_rect(Rect2(cp, Vector2.ONE), c_sky)
+		else:
+			draw_rect(Rect2(cp, Vector2.ONE), c_sky if is_active_pair else c_deep)
+	if near_player and Lx.state != null and Lx.state.has_move("lens"):
+		var reduced: bool = LxHudFx.flash_reduced()
+		var center_c: Color = (PAL["cream"] as Color) if (_shimmer_stage == 0 and not reduced) else (c_ice if pair_a else c_sky)
+		draw_rect(Rect2(Vector2.ZERO, Vector2.ONE), center_c)

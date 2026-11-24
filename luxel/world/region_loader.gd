@@ -33,6 +33,7 @@ var _scenery_over_root: Node2D = null
 var _scenery_props: Array[LxSceneryProp] = []
 var _water_fx: LxWaterFx = null
 var _signal_conduits: LxSignalConduits = null
+var _visual_teaching: LxVisualTeachingFx = null
 var _ambient_life: LxAmbientLife = null
 var _interactables_root: Node2D = null
 var _enemies_root: Node2D = null
@@ -53,6 +54,8 @@ func _ensure_containers() -> void:
 		_water_fx = LxWaterFx.new(); _water_fx.name = "WaterFx"; add_child(_water_fx)
 	if _signal_conduits == null:
 		_signal_conduits = LxSignalConduits.new(); _signal_conduits.name = "SignalConduits"; _signal_conduits.z_index = -6; add_child(_signal_conduits)
+	if _visual_teaching == null:
+		_visual_teaching = LxVisualTeachingFx.new(); _visual_teaching.name = "VisualTeachingFx"; _visual_teaching.z_index = -4; add_child(_visual_teaching)
 	if _floor_interactables_root == null:
 		_floor_interactables_root = _make_layer("FloorInteractables", -6, false)
 	if _scenery_ground_root == null:
@@ -137,6 +140,7 @@ func load_region_from_paths(
 	load_interactables_from_state()
 	if _signal_conduits != null:
 		_signal_conduits.rebuild(self)
+	if _visual_teaching != null: _visual_teaching.rebuild(self)
 	var enemy_specs: Array[Dictionary] = []
 	enemy_specs.assign(parsed.get("enemies", []))
 	_spawn_enemies(enemy_specs, director)
@@ -164,6 +168,7 @@ func _clear_loaded() -> void:
 	_interactables_by_id.clear()
 	if _signal_conduits != null:
 		_signal_conduits.clear()
+	if _visual_teaching != null: _visual_teaching.clear()
 	_lens_circles.clear()
 	_fired_triggers.clear()
 	_current_room_id = ""
@@ -586,6 +591,7 @@ func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
 		_ambient_life.tick(dt, cam_pos)
 	if _signal_conduits != null:
 		_signal_conduits.tick(dt)
+	if _visual_teaching != null: _visual_teaching.tick(dt, cam_pos)
 	for it: LxInteractable in _interactables:
 		if it != null:
 			it.tick(dt)

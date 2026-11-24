@@ -22,6 +22,8 @@ var _depart_t: float = 0.0
 var _warp_thread_t: float = 0.0
 var _warp_thread_to: Vector2 = Vector2.ZERO
 var _anim_stage: int = 0
+var _pair_phase: float = 0.0
+var _moon_step: int = -1
 
 
 func setup(spec: Dictionary) -> void:
@@ -46,6 +48,8 @@ func setup(spec: Dictionary) -> void:
 	_depart_t = 0.0
 	_warp_thread_t = 0.0
 	_warp_thread_to = Vector2.ZERO
+	_pair_phase = _compute_pair_phase()
+	_moon_step = -1
 	z_index = -1
 	queue_redraw()
 
@@ -74,6 +78,11 @@ func tick(dt: float) -> void:
 	var st: int = int(floorf(_clock * rate + absf(pos.x * 0.02))) % 4
 	if st != _anim_stage:
 		_anim_stage = st
+		dirty = true
+	var m_hz: float = 4.0 if LxHudFx.flash_reduced() else 8.0
+	var m_step: int = int(floorf(_clock * m_hz + _pair_phase))
+	if m_step != _moon_step:
+		_moon_step = m_step
 		dirty = true
 	if powered and active and warp_cd <= 0.0:
 		_check_player_warp()
@@ -187,6 +196,37 @@ func _get_paired_portal() -> LxBluePortal:
 	return found as LxBluePortal if found is LxBluePortal else null
 
 
+func _compute_pair_phase() -> float:
+	var partner_key: String = target_portal_id
+	if partner_key.is_empty():
+		partner_key = str(props.get("pair_id", "")).strip_edges()
+	if partner_key.is_empty():
+		return 0.0
+	var a: String = id if id < partner_key else partner_key
+	var b: String = partner_key if id < partner_key else id
+	var key: String = a + "|" + b
+	var h: int = 0
+	for i: int in range(key.length()):
+		h = (h * 31 + key.unicode_at(i)) & 0x7fffffff
+	return (float(h % 360) / 360.0) * TAU
+
+
+func _get_partner_pos() -> Vector2:
+	var paired: LxBluePortal = _get_paired_portal()
+	if paired != null and is_instance_valid(paired):
+		return paired.pos
+	if has_dest_pos:
+		return dest_pos
+	return Vector2.INF
+
+
+func _get_shared_clock() -> float:
+	var paired: LxBluePortal = _get_paired_portal()
+	if paired != null and is_instance_valid(paired):
+		return minf(_clock, paired._clock)
+	return _clock
+
+
 func is_solid() -> bool:
 	return false
 
@@ -221,6 +261,8 @@ func _draw() -> void:
 	var key: String = "portal_reject" if _reject_t > 0.0 else ("portal_active" if powered else "portal_dormant")
 	var frame_ov: int = _anim_stage if key == "portal_active" else 0
 	_draw_puzzle_sprite(key, Vector2.ZERO, _clock, Color.WHITE, frame_ov)
+	if _reject_t <= 0.0:
+		_draw_twin_moon_and_compass()
 	if _ignite_t > 0.0:
 		var ip: float = 1.0 - clampf(_ignite_t / 0.45, 0.0, 1.0)
 		var rad: float = lerpf(6.0, 20.0, ip)
@@ -261,3 +303,38 @@ func _draw() -> void:
 			var pt: Vector2 = Vector2(roundf(cos(a) * wrad), roundf(sin(a) * wrad))
 			draw_rect(Rect2(pt, Vector2.ONE), (PAL["cream"] if wp < 0.35 else PAL["ice"]) as Color)
 	_draw_signal_pulses()
+
+
+func _draw_twin_moon_and_compass() -> void:
+	var reduced: bool = LxHudFx.flash_reduced()
+	var sync_t: float = _get_shared_clock()
+	var speed: float = (1.1 if reduced else 2.2) if powered else (0.7 if reduced else 1.25)
+	var base_ang: float = sync_t * speed + _pair_phase
+	var crest: bool = sin(sync_t * (2.0 if reduced else 3.6) + _pair_phase) > 0.35
+	var c_deep: Color = PAL["deep"] as Color
+	var c_sky: Color = PAL["sky"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	# Synchronized twin moon-arc shimmer pulsing in unison across paired portals
+	for half_i: int in range(2):
+		var a0: float = base_ang + float(half_i) * PI
+		for j: int in range(-2, 3):
+			var ang: float = a0 + float(j) * 0.24
+			var mp: Vector2 = Vector2(roundf(cos(ang) * 10.5), roundf(sin(ang) * 10.5))
+			var mc: Color
+			if j == 0:
+				mc = c_cream if (powered and crest and not reduced) else c_ice
+			elif absi(j) == 1:
+				mc = c_ice if (powered or crest) else c_sky
+			else:
+				mc = c_sky if powered else c_deep
+			draw_rect(Rect2(mp, Vector2.ONE), mc)
+	# Crisp 2x2 directional partner compass pip on outer rim (r = 12 px)
+	var p_pos: Vector2 = _get_partner_pos()
+	if p_pos.is_finite() and pos.distance_squared_to(p_pos) > 4.0:
+		var dir: Vector2 = (p_pos - pos).normalized()
+		var tip: Vector2 = (dir * 12.0).round()
+		draw_rect(Rect2((dir * 10.0).round(), Vector2.ONE), c_sky)
+		draw_rect(Rect2(tip - Vector2.ONE, Vector2(2.0, 2.0)), c_cream if powered else c_ice)
+		if crest and not powered and not reduced:
+			draw_rect(Rect2(tip, Vector2.ONE), c_cream)

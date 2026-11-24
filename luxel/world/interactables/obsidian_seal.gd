@@ -2,11 +2,15 @@ class_name LxObsidianSeal
 extends LxInteractable
 ## Heavy obsidian barrier shattered only by Sunflare.
 
+const RESONATE_RANGE: float = 84.0
+const BLAST_RANGE: float = 76.0
+
 var shattered: bool = false
 var size: Vector2 = Vector2(32.0, 16.0)
 var _resonate_t: float = 0.0
 var _shatter_t: float = 0.0
 var _pulse_stage: int = 0
+var _was_ready: bool = false
 
 
 func setup(spec: Dictionary) -> void:
@@ -35,12 +39,26 @@ func tick(dt: float) -> void:
 		queue_redraw()
 		return
 	if active and not shattered:
-		var st: int = int(floorf(_clock * 2.2 + absf(pos.x * 0.03))) % 4
-		if st != _pulse_stage:
+		var rate: float = 1.2 if LxHudFx.flash_reduced() else 2.2
+		var st: int = int(floorf(_clock * rate + absf(pos.x * 0.03))) % 4
+		var sf: Vector2 = _player_sunflare_state()
+		var near_now: bool = sf.x <= RESONATE_RANGE + 4.0
+		var ready_now: bool = sf.y > 0.9 and sf.x <= RESONATE_RANGE
+		if st != _pulse_stage or ready_now != _was_ready or near_now:
 			_pulse_stage = st
+			_was_ready = ready_now
 			queue_redraw()
-		elif Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).global_position.distance_squared_to(pos) <= 4624.0:
-			queue_redraw()
+
+
+func _player_sunflare_state() -> Vector2:
+	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
+		return Vector2(9999.0, 0.0)
+	var w_s: LxWick = Lx.player as LxWick
+	var d_os: float = w_s.global_position.distance_to(pos)
+	if w_s.move_sunflare == null or not w_s.move_sunflare.unlocked:
+		return Vector2(d_os, 0.0)
+	var charged: bool = w_s.ember >= w_s.move_sunflare.get_ember_max() - 0.001
+	return Vector2(d_os, 1.0 if charged else 0.5)
 
 
 func on_hit(hit: LxHit) -> bool:
@@ -122,7 +140,13 @@ func _draw() -> void:
 	var jx: float = (1.0 if int(floorf(_resonate_t * 36.0)) % 2 == 0 else -1.0) if (_resonate_t > 0.0 and LxHudFx.shake_enabled()) else 0.0
 	var x0: float = floorf(-w * 0.5) + jx
 	var y0: float = floorf(-h * 0.5)
+	var sf: Vector2 = _player_sunflare_state()
+	var d_os: float = sf.x
+	var unlocked: bool = sf.y > 0.1
+	var charged: bool = sf.y > 0.9
+	var flare: bool = charged and d_os <= RESONATE_RANGE
 	_draw_ground_shadow(w * 0.45, 2.5, Vector2(2.0, floorf(h * 0.5)))
+	_draw_ember_veins(w, h, flare, d_os <= BLAST_RANGE)
 	var frame_ov: int = 2 if _resonate_t > 0.0 else _pulse_stage
 	_draw_puzzle_tiled("obsidian_tile", size, Vector2(jx, 0.0), _clock, Color.WHITE, frame_ov)
 	if _resonate_t > 0.0:
@@ -131,18 +155,55 @@ func _draw() -> void:
 		draw_rect(Rect2(x0, y0 + h - 1.0, 3.0, 1.0), PAL["gold"] as Color)
 		draw_rect(Rect2(x0 + w - 3.0, y0 + h - 1.0, 3.0, 1.0), PAL["gold"] as Color)
 	# Sympathetic solar crackle sparks when Wick carries Sunflare nearby
-	if Lx.player is LxWick and is_instance_valid(Lx.player):
-		var w_s: LxWick = Lx.player as LxWick
-		if w_s.move_sunflare != null and w_s.move_sunflare.unlocked:
-			var d_os: float = w_s.global_position.distance_to(pos)
-			if d_os <= 64.0:
-				var charged: bool = w_s.ember >= w_s.move_sunflare.get_ember_max() - 0.001
-				for si: int in range(3 if charged else 2):
-					var su: float = fposmod(_clock * (0.95 if charged else 0.65) + float(si) * 0.33, 1.0)
-					var sx: float = roundf(sin(_clock * 2.8 + float(si) * 2.4) * (w * 0.32))
-					var sy: float = roundf(-2.0 - su * 14.0)
-					var sc: Color = (PAL["cream"] if (charged and su < 0.4) else (PAL["gold"] if charged else PAL["coral"])) as Color
-					draw_rect(Rect2(sx, sy, 1.0, 1.0), sc)
+	if unlocked and d_os <= RESONATE_RANGE:
+		var sp_mul: float = 0.6 if LxHudFx.flash_reduced() else 1.0
+		for si: int in range(3 if charged else 2):
+			var su: float = fposmod(_clock * (0.95 if charged else 0.65) * sp_mul + float(si) * 0.33, 1.0)
+			var sx: float = roundf(sin(_clock * 2.8 * sp_mul + float(si) * 2.4) * (w * 0.32))
+			var sy: float = roundf(-2.0 - su * 14.0)
+			var sc: Color = (PAL["cream"] if (charged and su < 0.4 and not LxHudFx.flash_reduced()) else (PAL["gold"] if charged else PAL["coral"])) as Color
+			draw_rect(Rect2(sx, sy, 1.0, 1.0), sc)
+
+
+func _draw_ember_veins(w: float, h: float, flare: bool, in_blast: bool) -> void:
+	var reduced: bool = LxHudFx.flash_reduced()
+	var hw: float = floorf(w * 0.5)
+	var hh: float = floorf(h * 0.5)
+	var c_void: Color = PAL["void"] as Color
+	var c_in: Color = (PAL["cream"] if (flare and not reduced) else (PAL["gold"] if flare else PAL["coral"])) as Color
+	var c_mid: Color = (PAL["gold"] if flare else (PAL["coral"] if _pulse_stage % 2 == 0 else PAL["wine"])) as Color
+	var c_tip: Color = (PAL["apricot"] if flare else PAL["wine"]) as Color
+	var veins: Array[PackedVector2Array] = [
+		PackedVector2Array([Vector2(-hw, 1.0), Vector2(-hw - 3.0, 2.0), Vector2(-hw - 6.0, 1.0), Vector2(-hw - 10.0, 3.0)]),
+		PackedVector2Array([Vector2(-hw + 3.0, -hh), Vector2(-hw + 1.0, -hh - 3.0), Vector2(-hw - 2.0, -hh - 5.0), Vector2(-hw - 5.0, -hh - 8.0)]),
+		PackedVector2Array([Vector2(hw - 3.0, -hh), Vector2(hw - 1.0, -hh - 3.0), Vector2(hw + 2.0, -hh - 5.0), Vector2(hw + 5.0, -hh - 8.0)]),
+		PackedVector2Array([Vector2(hw, 1.0), Vector2(hw + 3.0, 2.0), Vector2(hw + 6.0, 1.0), Vector2(hw + 10.0, 3.0)]),
+		PackedVector2Array([Vector2(hw - 4.0, hh), Vector2(hw - 2.0, hh + 3.0), Vector2(hw + 1.0, hh + 5.0), Vector2(hw + 4.0, hh + 8.0)]),
+		PackedVector2Array([Vector2(-hw + 4.0, hh), Vector2(-hw + 2.0, hh + 3.0), Vector2(-hw - 1.0, hh + 5.0), Vector2(-hw - 4.0, hh + 8.0)]),
+	]
+	for vi: int in range(veins.size()):
+		var pts: PackedVector2Array = veins[vi]
+		for pi: int in range(pts.size()):
+			var vp: Vector2 = pts[pi].round()
+			if pi <= 1:
+				draw_rect(Rect2(vp + Vector2(0.0, 1.0), Vector2.ONE), c_void)
+			var vc: Color = c_in if pi == 0 else (c_mid if pi <= 2 else c_tip)
+			if flare and pi == 1 and in_blast and not reduced and (_pulse_stage + vi) % 2 == 0:
+				vc = PAL["cream"] as Color
+			draw_rect(Rect2(vp, Vector2.ONE), vc)
+	if not flare:
+		return
+	var base_a: float = _clock * (0.9 if reduced else 1.8)
+	var c_arc_g: Color = PAL["gold"] as Color
+	var c_arc_c: Color = PAL["cream"] as Color
+	var center_off := Vector2(0.0, 2.0)
+	for half_i: int in range(2):
+		var a0: float = base_a + float(half_i) * PI
+		for step_i: int in range(-2, 3):
+			var ang: float = a0 + float(step_i) * 0.26
+			var ap: Vector2 = (center_off + Vector2(cos(ang) * 16.0, sin(ang) * 16.0)).round()
+			var bright: bool = (step_i == 0) or (in_blast and absi(step_i) == 1 and not reduced)
+			draw_rect(Rect2(ap, Vector2.ONE), c_arc_c if bright else c_arc_g)
 
 
 func _draw_shatter_burst() -> void:

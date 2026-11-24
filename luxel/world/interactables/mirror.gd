@@ -3,6 +3,9 @@ extends LxInteractable
 ## Blue Transformer-Deflector & Brass Mirror: reflects yellow Light Bolts into blue light
 ## along its physical surface normal, rotatable in 45° steps and push/pull movable.
 
+const CHAIN_PREVIEW_RANGE: float = 210.0
+const CLOSE_HINT_RANGE: float = 72.0
+
 var normal: Vector2 = Vector2(0.707107, 0.707107)
 var rotatable: bool = false
 var movable: bool = false
@@ -57,7 +60,8 @@ func tick(dt: float) -> void:
 		_turn_t = maxf(0.0, _turn_t - dt)
 		dirty = true
 	if active:
-		var st: int = int(floorf(_clock * 1.6 + absf(pos.x * 0.03))) % 6
+		var g_rate: float = 0.9 if LxHudFx.flash_reduced() else 1.6
+		var st: int = int(floorf(_clock * g_rate + absf(pos.x * 0.03))) % 6
 		if st != _glint_stage:
 			_glint_stage = st
 			dirty = true
@@ -223,47 +227,82 @@ func _draw() -> void:
 	draw_rect(Rect2(sight_a, Vector2.ONE), (PAL["ice"] if (_turn_t > 0.0 or lit or aim_hit) else PAL["sky"]) as Color)
 	draw_rect(Rect2(sight_b, Vector2.ONE), (PAL["cream"] if (_turn_t > 0.0 or lit or aim_hit) else PAL["ice"]) as Color)
 	if aim_hit and Lx.player != null and is_instance_valid(Lx.player):
-		var fv: Variant = Lx.player.get("facing")
-		if fv is Vector2 and (fv as Vector2).length_squared() > 0.01:
-			var rdir: Vector2 = reflect_dir(fv as Vector2)
-			if rdir.length_squared() > 0.01:
-				var max_preview: float = 84.0
-				var chain_mirror: LxMirror = _find_preview_chain_target(rdir, 118.0)
-				if chain_mirror != null:
-					max_preview = minf(118.0, pos.distance_to(chain_mirror.pos))
-				var step_d: float = 6.0
-				var dist_p: float = 8.0
-				var idx_p: int = 0
-				while dist_p <= max_preview:
-					var pp: Vector2 = (rdir * dist_p).round()
-					var pcol: Color = (PAL["cream"] if idx_p == 0 else (PAL["ice"] if idx_p % 2 == 1 else PAL["sky"])) as Color
-					draw_rect(Rect2(pp, Vector2.ONE), pcol)
-					dist_p += step_d
-					idx_p += 1
-				if Lx.state != null and Lx.state.has_move("prism"):
-					for split_deg: float in [-18.0, 18.0]:
-						var sdir: Vector2 = rdir.rotated(deg_to_rad(split_deg))
-						var sdist: float = 10.0
-						var sidx: int = 0
-						while sdist <= 52.0:
-							var sp: Vector2 = (sdir * sdist).round()
-							var scol: Color = (PAL["sky"] if sidx % 2 == 0 else PAL["ice"]) as Color
-							draw_rect(Rect2(sp, Vector2.ONE), scol)
-							sdist += step_d
-							sidx += 1
-				if chain_mirror != null:
-					var rdir2: Vector2 = chain_mirror.reflect_dir(rdir)
-					if rdir2.length_squared() > 0.01:
-						var rel_m: Vector2 = chain_mirror.pos - pos
-						for pi2: int in range(1, 9):
-							var pp2: Vector2 = (rel_m + rdir2 * (8.0 + float(pi2) * 6.0)).round()
-							draw_rect(Rect2(pp2, Vector2.ONE), (PAL["ice"] if pi2 % 2 == 1 else PAL["sky"]) as Color)
+		_draw_aim_preview(is_blue_t)
 	if _turn_t > 0.0:
 		var tc: Color = (PAL["ice"] if is_blue_t else PAL["gold"]) as Color
 		for cp: Vector2 in [Vector2(-9.0, -2.0), Vector2(8.0, -2.0), Vector2(0.0, -11.0), Vector2(0.0, 7.0)]:
 			draw_rect(Rect2(cp, Vector2.ONE), tc)
 	if lit:
 		_draw_puzzle_sprite("mirror_blue_flash" if is_blue_t else "mirror_brass_flash")
+
+
+func _draw_aim_preview(is_blue_t: bool) -> void:
+	var fv: Variant = Lx.player.get("facing")
+	if not (fv is Vector2) or (fv as Vector2).length_squared() <= 0.01:
+		return
+	var in_dir: Vector2 = (fv as Vector2).normalized()
+	var rdir: Vector2 = reflect_dir(in_dir)
+	if rdir.length_squared() <= 0.01:
+		return
+	var reduced: bool = LxHudFx.flash_reduced()
+	var p_dist: float = (Lx.player as Node2D).global_position.distance_to(pos) if Lx.player is Node2D else 999.0
+	var close_hint: bool = p_dist <= CLOSE_HINT_RANGE
+	var c_gold: Color = PAL["gold"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_sky: Color = PAL["sky"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	# Incoming yellow aim pips (gold -> ice transformation cue before firing)
+	var in_max: float = minf(32.0, maxf(8.0, p_dist - 6.0))
+	var in_d: float = 8.0
+	var in_idx: int = 0
+	while in_d <= in_max:
+		var ip: Vector2 = (-in_dir * in_d).round()
+		draw_rect(Rect2(ip, Vector2.ONE), c_gold if in_idx % 2 == 0 else c_apricot)
+		in_d += 6.0
+		in_idx += 1
+	if close_hint and is_blue_t:
+		draw_rect(Rect2((-in_dir * 7.0).round(), Vector2.ONE), c_gold)
+		draw_rect(Rect2((rdir * 7.0).round(), Vector2.ONE), c_ice)
+	var max_preview: float = 84.0
+	var chain_mirror: LxMirror = _find_preview_chain_target(rdir, CHAIN_PREVIEW_RANGE)
+	if chain_mirror != null:
+		max_preview = minf(CHAIN_PREVIEW_RANGE, pos.distance_to(chain_mirror.pos))
+	var step_d: float = 6.0
+	var dist_p: float = 8.0
+	var idx_p: int = 0
+	while dist_p <= max_preview:
+		var pp: Vector2 = (rdir * dist_p).round()
+		var pcol: Color
+		if is_blue_t:
+			pcol = (c_cream if (idx_p == 0 and close_hint and not reduced) else (c_ice if idx_p % 2 == 0 else c_sky))
+		else:
+			pcol = (c_cream if (idx_p == 0 and not reduced) else (c_gold if idx_p % 2 == 0 else c_apricot))
+		draw_rect(Rect2(pp, Vector2.ONE), pcol)
+		dist_p += step_d
+		idx_p += 1
+	if Lx.state != null and Lx.state.has_move("prism"):
+		for split_deg: float in [-18.0, 18.0]:
+			var sdir: Vector2 = rdir.rotated(deg_to_rad(split_deg))
+			var sdist: float = 10.0
+			var sidx: int = 0
+			while sdist <= 52.0:
+				var sp: Vector2 = (sdir * sdist).round()
+				var scol: Color = (c_sky if sidx % 2 == 0 else c_ice) if is_blue_t else (c_apricot if sidx % 2 == 0 else c_gold)
+				draw_rect(Rect2(sp, Vector2.ONE), scol)
+				sdist += step_d
+				sidx += 1
+	if chain_mirror != null:
+		var rel_m: Vector2 = (chain_mirror.pos - pos).round()
+		draw_rect(Rect2(rel_m + Vector2(-1.0, -4.0), Vector2.ONE), c_ice)
+		draw_rect(Rect2(rel_m + Vector2(1.0, -4.0), Vector2.ONE), c_sky if reduced else c_cream)
+		var rdir2: Vector2 = chain_mirror.reflect_dir(rdir)
+		if rdir2.length_squared() > 0.01:
+			var chain_blue: bool = is_blue_t or chain_mirror.transforms_to == LxHit.COLOR_BLUE
+			for pi2: int in range(1, 11):
+				var pp2: Vector2 = (rel_m + rdir2 * (8.0 + float(pi2) * 6.0)).round()
+				var c2: Color = (c_ice if pi2 % 2 == 1 else c_sky) if chain_blue else (c_gold if pi2 % 2 == 1 else c_apricot)
+				draw_rect(Rect2(pp2, Vector2.ONE), c2)
 
 
 func _draw_floor_chevron(bright: bool, alpha: float) -> void:
