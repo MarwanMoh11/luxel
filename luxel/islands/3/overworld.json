@@ -639,7 +639,8 @@
         856
       ],
       "props": {
-        "zone": "moss_trailhead"
+        "zone": "moss_trailhead",
+        "lit": true
       }
     },
     {
@@ -717,6 +718,18 @@
       ],
       "props": {
         "zone": "hollow_oak_glade"
+      }
+    },
+    {
+      "id": "lamp_3_trail_mid",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        824
+      ],
+      "props": {
+        "zone": "moss_trailhead",
+        "lit": true
       }
     }
   ],

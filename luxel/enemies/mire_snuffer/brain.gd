@@ -157,7 +157,7 @@ func _try_start_puff() -> bool:
 func _step_puff_attack(dt: float) -> void:
 	if sub_state == SubState.TELL:
 		state = State.TELL
-		if state_timer > 0.16 and _has_player():
+		if state_timer > 0.16 * _assist_tell_scale() and _has_player():
 			var to_w: Vector2 = _get_wick_pos() - pos
 			if to_w.length() > 0.01:
 				_turn_toward(to_w.angle(), 4.2, dt)
@@ -230,7 +230,7 @@ func _draw_extra(off: Vector2) -> void:
 		var p_len: float = PUFF_SPEED * PUFF_COMMIT_TIME
 		var p_end: Vector2 = (c + puff_dir * p_len).round()
 		var p_side: Vector2 = Vector2(-puff_dir.y, puff_dir.x)
-		var p_col: Color = (PAL["coral"] if state_timer <= 0.16 else PAL["lime"]) as Color
+		var p_col: Color = (PAL["coral"] if state_timer <= 0.16 * _assist_tell_scale() else PAL["lime"]) as Color
 		draw_line(c, p_end, p_col, 1.4)
 		draw_line((c + p_side * 10.0).round(), (p_end + p_side * 14.0).round(), PAL["plum"] as Color, 1.0)
 		draw_line((c - p_side * 10.0).round(), (p_end - p_side * 14.0).round(), PAL["plum"] as Color, 1.0)

@@ -255,6 +255,8 @@ func _step_commit(dt: float) -> void:
 			hp = maxf(0.25, hp - 0.5)
 			flash_t = 0.14
 			hit_obstacle = true
+			_spawn_bonk_fx()
+			_emit_sfx("echo_moth_bonk")
 		if hit_obstacle or state_timer <= 0.0:
 			_enter_recover()
 	else:
@@ -310,6 +312,32 @@ func _check_hazard_at(p: Vector2) -> bool:
 	return false
 
 
+func _spawn_bonk_fx() -> void:
+	LxDamageFx.boss_impact(pos, 0.08, 42.0, 52.0, 42.0, 1.15, 0.22)
+	if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("spawn_sparks"):
+		for si: int in range(4):
+			var sdir: Vector2 = Vector2.from_angle(float(si) * (PI * 0.5) + PI * 0.25)
+			var scol: Color = (PAL["gold"] if si % 2 == 0 else PAL["cream"]) as Color
+			Lx.player.call("spawn_sparks", pos, sdir, 3, scol, 30.0, 82.0, 0.26)
+
+
+func _clamped_ray_len(dir: Vector2, max_len: float) -> float:
+	var step_px: float = 8.0
+	var clear_d: float = 0.0
+	var d: float = step_px
+	while d <= max_len:
+		if not _has_clear_view(pos, pos + dir * d):
+			var mid_d: float = clear_d + step_px * 0.5
+			if mid_d < d and _has_clear_view(pos, pos + dir * mid_d):
+				return mid_d
+			return maxf(body_radius + 2.0, clear_d)
+		clear_d = d
+		d += step_px
+	if clear_d < max_len and not _has_clear_view(pos, pos + dir * max_len):
+		return maxf(body_radius + 2.0, clear_d)
+	return max_len
+
+
 func _should_give_up() -> bool:
 	return not _has_player() or _get_wick_pos().distance_to(home) > leash_radius + 16.0
 
@@ -347,11 +375,12 @@ func _draw_extra(off: Vector2) -> void:
 			draw_line((ptip - pdir * 4.0 - pperp * 3.0).round(), ptip, PAL["cream"] as Color, 1.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var preview_len: float = (DASH_SPEED * DASH_COMMIT_TIME) if _echo_is_dash else BOLT_RANGE
+		var preview_len: float = (DASH_SPEED * DASH_COMMIT_TIME) if _echo_is_dash else _clamped_ray_len(_echo_dir, BOLT_RANGE)
 		var c: Vector2 = off.round()
 		var tip: Vector2 = (c + _echo_dir * preview_len).round()
 		var perp_t := Vector2(-_echo_dir.y, _echo_dir.x)
 		if _echo_is_dash:
+			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + _echo_dir * preview_len, DASH_HIT_R, prog, anim_t, "coral" if prog > 0.65 else "sky", "gold" if prog > 0.65 else "ice")
 			var dc: Color = (PAL["gold"] as Color) if prog > 0.65 else (PAL["ice"] as Color)
 			draw_line(c, tip, dc, 1.2)
 			draw_line((tip - _echo_dir * 5.0 + perp_t * 3.5).round(), tip, dc, 1.4)
@@ -359,13 +388,15 @@ func _draw_extra(off: Vector2) -> void:
 			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 		else:
 			var hot: bool = prog > 0.65
+			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + _echo_dir * preview_len, BOLT_HALF_W, prog, anim_t, "coral" if hot else "gold", "cream" if hot else "ice")
 			var lc: Color = (PAL["coral"] as Color) if hot else (PAL["gold"] as Color)
 			if hot:
 				draw_line(c, tip, lc, 1.4)
 			else:
-				for si: int in range(0, 16, 2):
-					var p0: Vector2 = (c + _echo_dir * (preview_len * float(si) / 16.0)).round()
-					var p1: Vector2 = (c + _echo_dir * (preview_len * float(si + 1) / 16.0)).round()
+				var segs_b: int = maxi(4, int(preview_len / 8.0))
+				for si: int in range(0, segs_b, 2):
+					var p0: Vector2 = (c + _echo_dir * (preview_len * float(si) / float(segs_b))).round()
+					var p1: Vector2 = (c + _echo_dir * (preview_len * minf(float(si + 1), float(segs_b)) / float(segs_b))).round()
 					draw_line(p0, p1, lc, 1.0)
 			draw_line(tip + Vector2(-3.0, 0.0), tip + Vector2(3.0, 0.0), PAL["ice"] as Color, 1.0)
 			draw_line(tip + Vector2(0.0, -3.0), tip + Vector2(0.0, 3.0), PAL["ice"] as Color, 1.0)
@@ -374,7 +405,7 @@ func _draw_extra(off: Vector2) -> void:
 		var c: Vector2 = off.round()
 		var perp: Vector2 = Vector2(-_echo_dir.y, _echo_dir.x)
 		var step_dir: Vector2 = (-_echo_dir) if _echo_is_dash else _echo_dir
-		var trail_len: float = 24.0 if _echo_is_dash else BOLT_RANGE
+		var trail_len: float = 24.0 if _echo_is_dash else _clamped_ray_len(_echo_dir, BOLT_RANGE)
 		var mid_p: Vector2 = c + step_dir * (trail_len * 0.55)
 		var end_p: Vector2 = c + step_dir * trail_len
 		var shim: float = 0.0 if LxHudFx.flash_reduced() else sin(anim_t * 36.0)

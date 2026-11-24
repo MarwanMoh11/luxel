@@ -350,6 +350,8 @@ func _claim_lens_secret(w: LxWick, sp: Vector2, shore_p: Vector2) -> void:
 		LxDarknessLayer.active_instance.add_burst_light(shore_p, 88.0, 0.80 if LxHudFx.flash_reduced() else 1.20, 0.55)
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, shore_p, 13.0, 7.0)
+	if Lx.events != null:
+		Lx.events.save_requested.emit("discovery")
 
 
 func _trigger_node(nd: Dictionary, w: LxWick) -> void:
@@ -419,6 +421,8 @@ func _trigger_node(nd: Dictionary, w: LxWick) -> void:
 		var all_k: String = "disc_all_%d" % _island_id
 		if get_total_count() > 0 and get_found_count() >= get_total_count() and Lx.state != null and not bool(Lx.state.story_flags.get(all_k, false)):
 			_celebrate_all_found(cp, w, glow_k)
+		elif Lx.events != null:
+			Lx.events.save_requested.emit("discovery")
 
 
 func _celebrate_all_found(cp: Vector2, w: LxWick, glow_k: String) -> void:
@@ -432,6 +436,7 @@ func _celebrate_all_found(cp: Vector2, w: LxWick, glow_k: String) -> void:
 		Lx.audio.play_sfx("great_lamp_bloom", cp, true)
 	if Lx.events != null:
 		Lx.events.narration_requested.emit(_harmony_cue_id(), "title", 3.4)
+		Lx.events.save_requested.emit("discovery")
 	if Lx.camera != null and is_instance_valid(Lx.camera):
 		Lx.camera.add_shake(0.30)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):

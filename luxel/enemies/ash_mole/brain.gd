@@ -183,7 +183,7 @@ func _step_ambush(dt: float) -> void:
 	if sub_state == SubState.TELL:
 		state = State.TELL
 		surfaced = false
-		if state_timer > 0.22 and _has_player():
+		if state_timer > 0.22 * _assist_tell_scale() and _has_player():
 			ambush_target = _clamp_point(_get_wick_pos())
 		var to_t: Vector2 = ambush_target - pos
 		if to_t.length() > 2.0:
@@ -265,12 +265,23 @@ func _draw() -> void:
 		draw_rect(Rect2(cx, cy, 1.0, 1.0), cc, true)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var locked_a: bool = state_timer <= 0.22 * _assist_tell_scale()
+		var fred: bool = LxHudFx.flash_reduced()
 		var tc: Vector2 = ((ambush_target - pos) if ambush_attack else c).round()
-		var r: float = roundf(lerpf(body_radius + 10.0, body_radius + 2.5, prog))
 		if ambush_attack:
 			draw_line(c, tc, PAL["wine"] as Color, 1.0)
+			draw_circle(tc, AMBUSH_HIT_R, Color(PAL["coral"] as Color, lerpf(0.10, 0.20, prog)))
+			var pulse_hi: bool = fred or (int(floorf(anim_t * 14.0)) % 2 == 0)
+			var dash_c: Color = (PAL["gold"] if (locked_a and pulse_hi) else PAL["coral"]) as Color
+			var spin_d: float = 0.0 if fred else anim_t * 1.4
+			for di: int in range(10):
+				var a0: float = spin_d + float(di) * (TAU / 10.0)
+				var a1: float = a0 + 0.38
+				draw_arc(tc, AMBUSH_HIT_R + 1.0, a0, a1, 4, PAL["void"] as Color, 2.2)
+				draw_arc(tc, AMBUSH_HIT_R, a0, a1, 4, dash_c, 1.4)
+		var r: float = roundf(lerpf(AMBUSH_HIT_R - 1.5 if ambush_attack else body_radius + 10.0, body_radius + 2.5, prog))
 		draw_arc(tc, r, 0.0, TAU, 16, PAL["coral"] as Color, 1.5)
-		draw_arc(tc, maxf(2.0, r - 2.0), 0.0, TAU, 12, (PAL["cream"] if state_timer <= 0.16 else PAL["apricot"]) as Color, 1.0)
+		draw_arc(tc, maxf(2.0, r - 2.0), 0.0, TAU, 12, (PAL["cream"] if locked_a else PAL["apricot"]) as Color, 1.0)
 	elif state == State.COMMIT:
 		var br: float = roundf(body_radius + 4.5 + (0.0 if LxHudFx.flash_reduced() else sin(anim_t * 22.0) * 1.0))
 		draw_arc(c, br, 0.0, TAU, 14, PAL["apricot"] as Color, 1.8)

@@ -253,6 +253,24 @@ func _sees_target(target_pos: Vector2) -> bool:
 	return pos.distance_to(target_pos) <= notice_radius and _has_clear_view(pos, target_pos)
 
 
+func _clamped_glob_len(dir: Vector2) -> float:
+	var max_len: float = body_radius + 2.0 + GLOB_MAX_DIST
+	var step_px: float = 8.0
+	var clear_d: float = body_radius + 4.0
+	var d: float = clear_d + step_px
+	while d <= max_len:
+		if not _has_clear_view(pos, pos + dir * d):
+			var mid_d: float = clear_d + step_px * 0.5
+			if mid_d < d and _has_clear_view(pos, pos + dir * mid_d):
+				return mid_d
+			return clear_d
+		clear_d = d
+		d += step_px
+	if clear_d < max_len and not _has_clear_view(pos, pos + dir * max_len):
+		return clear_d
+	return max_len
+
+
 func _body_color() -> Color:
 	return PAL["pine"] as Color
 
@@ -283,11 +301,17 @@ func _draw_extra(off: Vector2) -> void:
 		var muzzle: Vector2 = (off + fwd * (body_radius + 1.0)).round()
 		var fl: float = roundf(2.0 + prog * 3.0)
 		var aim_col: Color = (PAL["coral"] as Color) if locked_t else ((PAL["gold"] as Color) if prog > 0.50 else (PAL["sky"] as Color))
-		var tip: Vector2 = (off + fwd * (body_radius + 44.0)).round()
-		for si: int in range(0, 8, 2):
-			var s0: Vector2 = (off + fwd * (body_radius + 4.0 + float(si) * 5.0)).round()
-			var s1: Vector2 = (off + fwd * (body_radius + 4.0 + float(si + 1) * 5.0)).round()
+		var sight_len: float = _clamped_glob_len(fwd)
+		var tip: Vector2 = (off + fwd * sight_len).round()
+		var d_cur: float = body_radius + 4.0
+		while d_cur < sight_len - 2.0:
+			var d_end: float = minf(d_cur + 5.0, sight_len)
+			var s0: Vector2 = (off + fwd * d_cur).round()
+			var s1: Vector2 = (off + fwd * d_end).round()
+			draw_line(s0, s1, PAL["void"] as Color, 2.2)
 			draw_line(s0, s1, aim_col, 1.2 if locked_t else 1.0)
+			d_cur += 9.0
+		draw_rect(Rect2(tip + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), PAL["void"] as Color, true)
 		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 		draw_circle(muzzle, 1.8 + prog * 1.4, PAL["deep"] as Color)
 		draw_circle(muzzle, 1.2 + prog * 0.9, PAL["coral"] as Color if locked_t else PAL["sky"] as Color)

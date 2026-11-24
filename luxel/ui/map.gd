@@ -16,11 +16,6 @@ const PANEL_RECT := Rect2(12.0, 10.0, 296.0, 160.0)
 const PLINTH_TOP: Array[String] = ["jade", "teal", "jade", "teal", "blue", "plum", "sky", "dusk"]
 const PLINTH_RIM: Array[String] = ["pine", "pine", "pine", "jade", "deep", "wine", "blue", "plum"]
 
-const DUNGEON_NAME_KEYS: Dictionary = {
-	1: "ZONE_BELFRY", 2: "DUNGEON_2_NAME", 3: "DUNGEON_3_NAME", 4: "DUNGEON_4_NAME",
-	5: "DUNGEON_5_NAME", 6: "DUNGEON_6_NAME", 7: "DUNGEON_7_NAME", 8: "DUNGEON_8_NAME",
-}
-
 const ISLAND_ZONE_KEYS: Dictionary = {
 	1: ["ZONE_PLAZA", "ZONE_ORCHARD", "ZONE_OBSERVATORY", "ZONE_GLASSHOUSE", "ZONE_BRIDGE", "ZONE_BELL_TOWER"],
 	2: ["ZONE_ISL2_1", "ZONE_ISL2_2", "ZONE_ISL2_3", "ZONE_ISL2_4", "ZONE_ISL2_5", "ZONE_ISL2_6"],
@@ -35,6 +30,7 @@ const ISLAND_ZONE_KEYS: Dictionary = {
 var _selected_island: int = 1
 var _hover_island: int = 0
 var _waystone_idx: int = 0
+var _ws_scroll: int = 0
 var _waystone_list: Array[Dictionary] = [] # {island_id, waystone_id, label}
 var _elapsed: float = 0.0
 
@@ -45,8 +41,8 @@ func close() -> void: visible = false
 func open() -> void:
 	if Lx.data_islands.is_empty(): Lx.load_all_data()
 	_selected_island = Lx.state.island_id if Lx.state != null else 1
-	_rebuild_waystones()
-	_waystone_idx = 0; _elapsed = 0.0; visible = true
+	_waystone_idx = 0; _ws_scroll = 0; _rebuild_waystones()
+	_elapsed = 0.0; visible = true
 	_play_ui_sfx("map_open")
 	queue_redraw()
 
@@ -59,20 +55,31 @@ func _rebuild_waystones() -> void:
 	_waystone_list.clear()
 	if Lx.state == null:
 		return
-	_collect_waystones(_selected_island)
+	_collect_waystones(_selected_island, false)
 	if _waystone_list.is_empty():
-		_collect_waystones(0)
+		_collect_waystones(0, true)
 	_waystone_idx = clampi(_waystone_idx, 0, maxi(0, _waystone_list.size() - 1))
+	_sync_ws_scroll()
 
 
-func _collect_waystones(filter_isl: int) -> void:
+func _sync_ws_scroll() -> void:
+	var max_s: int = maxi(0, _waystone_list.size() - LxMapInfo.WS_VISIBLE)
+	if _waystone_idx < _ws_scroll:
+		_ws_scroll = _waystone_idx
+	elif _waystone_idx >= _ws_scroll + LxMapInfo.WS_VISIBLE:
+		_ws_scroll = _waystone_idx - LxMapInfo.WS_VISIBLE + 1
+	_ws_scroll = clampi(_ws_scroll, 0, max_s)
+
+
+func _collect_waystones(filter_isl: int, use_prefix: bool) -> void:
 	var seen: Dictionary = {}
 	for ws: String in Lx.state.lit_waystones:
 		var isl: int = _waystone_island(ws)
 		if filter_isl != 0 and isl != filter_isl:
 			continue
-		var lbl: String = _waystone_label(isl, ws)
-		var key: String = "%d:%s" % [isl, lbl]
+		var base_lbl: String = _waystone_label(isl, ws)
+		var lbl: String = LxStrings.fmt("MAP_WS_ISL_FMT", [isl, base_lbl]).substr(0, 18) if use_prefix else base_lbl
+		var key: String = "%d:%s" % [isl, base_lbl]
 		var canon: bool = not LxMapFormat.find_waystone(isl, ws).is_empty()
 		var entry: Dictionary = {"island_id": isl, "waystone_id": ws, "label": lbl, "_canon": canon}
 		if seen.has(key):
@@ -98,12 +105,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			_hover_island = next_hover
 			if next_hover > 0: _play_ui_sfx("ui_move")
 			queue_redraw()
-		var start_idx: int = maxi(0, _waystone_idx - 2)
-		var vis_count: int = mini(_waystone_list.size() - start_idx, 3)
+		var vis_count: int = mini(_waystone_list.size() - _ws_scroll, LxMapInfo.WS_VISIBLE)
 		for row: int in range(vis_count):
-			if _ws_row_rect(row).has_point(mpos):
-				if _waystone_idx != start_idx + row:
-					_waystone_idx = start_idx + row
+			if LxMapInfo.ws_row_rect(row).has_point(mpos):
+				if _waystone_idx != _ws_scroll + row:
+					_waystone_idx = _ws_scroll + row
 					_play_ui_sfx("ui_move")
 					queue_redraw()
 				return
@@ -114,28 +120,45 @@ func _unhandled_input(event: InputEvent) -> void:
 			if _handle_click(mb.position): get_viewport().set_input_as_handled()
 		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
 			_play_ui_sfx("menu_close"); closed.emit(); get_viewport().set_input_as_handled()
+		elif mb.pressed and (mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN):
+			if not _waystone_list.is_empty():
+				var step: int = -1 if mb.button_index == MOUSE_BUTTON_WHEEL_UP else 1
+				var max_s: int = maxi(0, _waystone_list.size() - LxMapInfo.WS_VISIBLE)
+				if max_s > 0:
+					var next_s: int = clampi(_ws_scroll + step, 0, max_s)
+					if next_s != _ws_scroll:
+						_ws_scroll = next_s
+						_waystone_idx = clampi(_waystone_idx, _ws_scroll, mini(_waystone_list.size() - 1, _ws_scroll + LxMapInfo.WS_VISIBLE - 1))
+						_play_ui_sfx("ui_move"); queue_redraw()
+				else:
+					var next_i: int = clampi(_waystone_idx + step, 0, _waystone_list.size() - 1)
+					if next_i != _waystone_idx:
+						_waystone_idx = next_i; _play_ui_sfx("ui_move"); queue_redraw()
+			get_viewport().set_input_as_handled()
 		return
 
 	if event.is_action_pressed("lx_move_left") or _key_just(event, KEY_LEFT):
 		_selected_island = 8 if _selected_island <= 1 else _selected_island - 1
-		_rebuild_waystones(); _play_ui_sfx("ui_move"); queue_redraw(); get_viewport().set_input_as_handled()
+		_waystone_idx = 0; _ws_scroll = 0; _rebuild_waystones(); _play_ui_sfx("ui_move"); queue_redraw(); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_right") or _key_just(event, KEY_RIGHT):
 		_selected_island = 1 if _selected_island >= 8 else _selected_island + 1
-		_rebuild_waystones(); _play_ui_sfx("ui_move"); queue_redraw(); get_viewport().set_input_as_handled()
+		_waystone_idx = 0; _ws_scroll = 0; _rebuild_waystones(); _play_ui_sfx("ui_move"); queue_redraw(); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_up") or _key_just(event, KEY_UP):
 		if not _waystone_list.is_empty():
 			_waystone_idx = (_waystone_idx - 1 + _waystone_list.size()) % _waystone_list.size()
-			_play_ui_sfx("ui_move"); queue_redraw()
+			_sync_ws_scroll(); _play_ui_sfx("ui_move"); queue_redraw()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_down") or _key_just(event, KEY_DOWN):
 		if not _waystone_list.is_empty():
 			_waystone_idx = (_waystone_idx + 1) % _waystone_list.size()
-			_play_ui_sfx("ui_move"); queue_redraw()
+			_sync_ws_scroll(); _play_ui_sfx("ui_move"); queue_redraw()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
 		if not _waystone_list.is_empty():
 			var item: Dictionary = _waystone_list[_waystone_idx]
 			_play_ui_sfx("ui_confirm"); fast_travel_requested.emit(int(item["island_id"]), str(item["waystone_id"]))
+		else:
+			_play_ui_sfx("denied")
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_map") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_TAB):
 		_play_ui_sfx("menu_close"); closed.emit(); get_viewport().set_input_as_handled()
@@ -146,15 +169,15 @@ func _handle_click(pos: Vector2) -> bool:
 		if pos.distance_to(ISLAND_POS[i]) <= 12.0:
 			_selected_island = i + 1
 			_waystone_idx = 0
+			_ws_scroll = 0
 			_rebuild_waystones()
 			_play_ui_sfx("ui_move")
 			queue_redraw()
 			return true
-	var start_idx: int = maxi(0, _waystone_idx - 2)
-	var vis_count: int = mini(_waystone_list.size() - start_idx, 3)
+	var vis_count: int = mini(_waystone_list.size() - _ws_scroll, LxMapInfo.WS_VISIBLE)
 	for row: int in range(vis_count):
-		if _ws_row_rect(row).has_point(pos):
-			var idx: int = start_idx + row
+		if LxMapInfo.ws_row_rect(row).has_point(pos):
+			var idx: int = _ws_scroll + row
 			_waystone_idx = idx
 			var item: Dictionary = _waystone_list[idx]
 			_play_ui_sfx("ui_confirm")
@@ -170,6 +193,7 @@ func _draw() -> void:
 	_draw_panel_brackets()
 	_draw_header_legend()
 	LxPixelFont.draw_centered(self, LxStrings.text("MAP_TITLE"), 160.0, 16.0, LxPalette.PAL["gold"], 1)
+	LxMapInfo.draw_header_progress(self, _elapsed)
 
 	# Illustrated nautical / astronomical Archipelago Sky-Chart.
 	var chart := Rect2(20.0, 26.0, 280.0, 66.0)
@@ -178,8 +202,8 @@ func _draw() -> void:
 	_draw_islands()
 
 	# Lower left: island details. Lower right: Waystone fast travel.
-	_draw_island_info(Rect2(20.0, 96.0, 146.0, 58.0))
-	_draw_waystones(Rect2(170.0, 96.0, 130.0, 58.0))
+	LxMapInfo.draw_island_info(self, Rect2(20.0, 96.0, 146.0, 58.0), _selected_island, _is_island_explored(_selected_island))
+	LxMapInfo.draw_waystones(self, Rect2(170.0, 96.0, 130.0, 58.0), _waystone_list, _waystone_idx, _ws_scroll, _elapsed)
 
 	LxPixelFont.draw_centered(self, LxStrings.text("MAP_HINT"), 160.0, 160.0, LxPalette.PAL["stone"], 1)
 
@@ -437,84 +461,6 @@ func _draw_selection_brackets(c: Vector2, is_hover: bool = false) -> void:
 	_px(Vector2.ZERO, [[l, t, 3, 1], [l, t, 1, 3], [r - 2, t, 3, 1], [r, t, 1, 3], [l, b, 3, 1], [l, b - 2, 1, 3], [r - 2, b, 3, 1], [r, b - 2, 1, 3]], col)
 
 
-func _draw_island_info(box: Rect2) -> void:
-	var explored: bool = _is_island_explored(_selected_island)
-	LxPixelFont.draw_panel(self, box, "dusk", LxBiomePalette.key(_selected_island, "border") if explored else "mauve", "night")
-	var data: Dictionary = Lx.get_island_data(_selected_island)
-	if not explored:
-		LxPixelFont.draw_left(self, LxStrings.text("MAP_UNEXPLORED"), box.position + Vector2(6.0, 8.0), LxPalette.PAL["mauve"], 1)
-		LxPixelFont.draw_left(self, LxStrings.text("MAP_LOCKED"), box.position + Vector2(6.0, 18.0), LxPalette.PAL["coral"], 1)
-		return
-	var isl_glow: Color = LxBiomePalette.col(_selected_island, "glow")
-	LxHudFx.draw_biome_crest(self, _selected_island, box.position + Vector2(8.0, 8.0), isl_glow, LxPalette.PAL["cream"] as Color)
-	var isl_name: String = LxStrings.sanitize(str(data.get("name", "")), 20)
-	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_ISLAND_FMT", [_selected_island, isl_name]), box.position + Vector2(14.0, 6.0), isl_glow, 1)
-	if Lx.state != null and Lx.state.island_id == _selected_island:
-		LxPixelFont.draw_right(self, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 6.0, LxPalette.PAL["cream"], 1)
-
-	var beacons: int = _count_beacons(_selected_island)
-	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_BEACONS", [beacons]), box.position + Vector2(6.0, 15.0), LxPalette.PAL["cream"], 1)
-	for bk: int in range(3):
-		var bx: float = box.end.x - 24.0 + float(bk) * 6.0
-		var lit_b: bool = bk < beacons
-		draw_rect(Rect2(bx, box.position.y + 15.0, 4.0, 4.0), isl_glow if lit_b else LxPalette.PAL["night"])
-		draw_rect(Rect2(bx + 1.0, box.position.y + 16.0, 2.0, 2.0), LxPalette.PAL["cream" if lit_b else "mauve"])
-
-	var isl_relit: bool = Lx.state != null and Lx.state.relit_islands.has(_selected_island)
-	var dungeon_label: String = _get_dungeon_name(_selected_island, data)
-	var d_line: String = LxStrings.text("MAP_DUNGEON_CLEAR") if isl_relit else (LxStrings.fmt("MAP_DUNGEON", [dungeon_label]) if beacons >= 3 else LxStrings.text("MAP_DUNGEON_SEALED"))
-	LxPixelFont.draw_left(self, d_line, box.position + Vector2(6.0, 24.0), LxPalette.PAL["lime"] if isl_relit else LxPalette.PAL["apricot"], 1)
-
-	var zone_label: String = _primary_zone_label(_selected_island)
-	if not zone_label.is_empty():
-		LxPixelFont.draw_left(self, zone_label, box.position + Vector2(6.0, 33.0), LxPalette.PAL["sky"], 1)
-
-	var embers: int = Lx.state.ember_pieces if Lx.state != null else 0
-	var secrets: int = _count_secrets()
-	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_EMBERS", [embers]), box.position + Vector2(6.0, 44.0), LxPalette.PAL["stone"], 1)
-	LxPixelFont.draw_left(self, LxStrings.fmt("MAP_SECRETS", [secrets]), box.position + Vector2(74.0, 44.0), LxPalette.PAL["stone"], 1)
-
-
-func _draw_waystones(box: Rect2) -> void:
-	LxPixelFont.draw_panel(self, box, "dusk", "mauve", "night")
-	LxPixelFont.draw_left(self, LxStrings.text("MAP_WAYSTONES"), box.position + Vector2(6.0, 6.0), LxPalette.PAL["sky"], 1)
-	if _waystone_list.is_empty():
-		LxPixelFont.draw_left(self, LxStrings.text("MAP_NO_WAYSTONES"), box.position + Vector2(6.0, 20.0), LxPalette.PAL["mauve"], 1)
-		return
-	var start_idx: int = maxi(0, _waystone_idx - 2)
-	var vis_count: int = mini(_waystone_list.size() - start_idx, 3)
-	for row: int in range(vis_count):
-		var idx: int = start_idx + row
-		var item: Dictionary = _waystone_list[idx]
-		var r: Rect2 = _ws_row_rect(row)
-		var sel: bool = idx == _waystone_idx
-		if sel:
-			draw_rect(r, LxPalette.PAL["gold"])
-			draw_rect(r.grow(-1.0), LxPalette.PAL["plum"])
-			var bob: float = 0.0 if LxHudFx.flash_reduced() else (1.0 if fmod(_elapsed * 3.0, 1.0) < 0.5 else 0.0)
-			var dc := Vector2(174.0 + bob, r.position.y + 4.0)
-			_px(dc, [[-1, 0, 3, 1], [0, -1, 1, 3]], LxPalette.PAL["gold"])
-			draw_rect(Rect2(dc, Vector2.ONE), LxPalette.PAL["cream"])
-		draw_rect(Rect2(r.position + Vector2(3.0, 2.0), Vector2(3.0, 5.0)), LxPalette.PAL["sky"] if sel else LxPalette.PAL["blue"])
-		LxPixelFont.draw_left(self, str(item["label"]), r.position + Vector2(9.0, 2.0), LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"], 1)
-	LxPixelFont.draw_left(self, LxStrings.text("MAP_TRAVEL_PROMPT"), box.position + Vector2(6.0, 48.0), LxPalette.PAL["stone"], 1)
-
-
-func _ws_row_rect(i: int) -> Rect2:
-	return Rect2(179.0, 112.0 + float(i) * 10.0, 116.0, 9.0)
-
-
-func _get_dungeon_name(isl_id: int, data: Dictionary) -> String:
-	var key: String = str(DUNGEON_NAME_KEYS.get(isl_id, ""))
-	return LxStrings.text(key) if (not key.is_empty() and LxStrings.has_id(key)) else LxStrings.sanitize(str(data.get("dungeon_name", "")), 20)
-
-func _primary_zone_label(isl_id: int) -> String:
-	var zones: Array = ISLAND_ZONE_KEYS.get(isl_id, []) as Array
-	if zones.is_empty(): return ""
-	var key: String = str(zones[0])
-	return LxStrings.text(key) if LxStrings.has_id(key) else ""
-
-
 func _waystone_label(isl_id: int, ws_id: String) -> String:
 	if LxStrings.has_id(ws_id):
 		return LxStrings.text(ws_id).substr(0, 18)
@@ -532,7 +478,7 @@ func _waystone_label(isl_id: int, ws_id: String) -> String:
 		return LxStrings.text(str(zones[0])).substr(0, 18)
 	var loc: Dictionary = LxMapFormat.find_waystone(isl_id, ws_id)
 	if not loc.is_empty() and str(loc.get("region", "overworld")) != "overworld":
-		var dkey: String = str(DUNGEON_NAME_KEYS.get(isl_id, ""))
+		var dkey: String = str(LxMapInfo.DUNGEON_NAME_KEYS.get(isl_id, ""))
 		if not dkey.is_empty() and LxStrings.has_id(dkey):
 			return LxStrings.text(dkey).substr(0, 18)
 	var clean_id: String = low
@@ -553,33 +499,6 @@ func _is_island_explored(isl_id: int) -> bool:
 		if _waystone_island(ws) == isl_id: return true
 	return false
 
-
-func _count_secrets() -> int:
-	if Lx.state == null: return 0
-	var count: int = 0
-	for k_var: Variant in Lx.state.interactable_states.keys():
-		var st_v: Variant = Lx.state.interactable_states[k_var]
-		if not (st_v is Dictionary) or not bool((st_v as Dictionary).get("opened", false)): continue
-		var key_s: String = str(k_var)
-		var sep: int = key_s.rfind(":")
-		var iid: String = key_s.substr(sep + 1) if sep >= 0 else key_s
-		if iid.begins_with("chest"): count += 1
-	for f_var: Variant in Lx.state.story_flags.keys():
-		if not bool(Lx.state.story_flags[f_var]): continue
-		var fk: String = str(f_var)
-		if (fk.begins_with("disc_") and not fk.begins_with("disc_all_")) or fk.begins_with("chime_1_"):
-			count += 1
-	return count
-
-func _count_beacons(isl_id: int) -> int:
-	if Lx.state == null: return 0
-	var count: int = 0
-	var p1: String = "isl%d_" % isl_id; var p2: String = "%d:" % isl_id
-	var p3: String = "beacon_%d_" % isl_id; var p4: String = "beacon_isl%d_" % isl_id
-	for b: String in Lx.state.lit_beacons:
-		if b.begins_with(p1) or b.begins_with(p2) or b.begins_with(p3) or b.begins_with(p4) or (isl_id == 1 and b in ["beacon_orchard", "beacon_observatory", "beacon_bridge"]):
-			count += 1
-	return mini(count, 3)
 
 func _waystone_island(ws_id: String) -> int:
 	var found: Dictionary = LxMapFormat.find_waystone_any(ws_id)

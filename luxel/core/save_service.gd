@@ -134,7 +134,61 @@ static func migrate(d: Dictionary) -> Dictionary:
 		if not out.has("story_flags"):
 			out["story_flags"] = {}
 		out["version"] = 2
+	_normalize_save_dict(out)
 	return out
+
+
+static func _normalize_save_dict(out: Dictionary) -> void:
+	# Normalize Island 7 mini-boss alias ("spire_warden" -> canonical "moonshade_warden") and deduplicate.
+	if out.get("defeated_bosses") is Array:
+		var bosses: Array = []
+		for b_v: Variant in (out["defeated_bosses"] as Array):
+			var bid: String = str(b_v)
+			if bid == "spire_warden":
+				bid = "moonshade_warden"
+			if not bid.is_empty() and not bosses.has(bid):
+				bosses.append(bid)
+		out["defeated_bosses"] = bosses
+	# Deduplicate lit_waystones while preserving order.
+	if out.get("lit_waystones") is Array:
+		var ws_clean: Array = []
+		for ws_v: Variant in (out["lit_waystones"] as Array):
+			var wid: String = str(ws_v)
+			if not wid.is_empty() and not ws_clean.has(wid):
+				ws_clean.append(wid)
+		out["lit_waystones"] = ws_clean
+	# Clamp loaded hearts safely within [0, max_hearts].
+	if out.has("hearts"):
+		var mh: int = clampi(int(out.get("max_hearts", 4)), 4, 12)
+		out["hearts"] = clampf(float(out.get("hearts", float(mh))), 0.0, float(mh))
+	# Backfill Round 17 tut_* flags when corresponding islands are already relit or seals broken.
+	var relit_set: Dictionary = {}
+	if out.get("relit_islands") is Array:
+		for r_v: Variant in (out["relit_islands"] as Array):
+			relit_set[int(r_v)] = true
+	var seal_set: Dictionary = {}
+	var has_obsidian_seal: bool = false
+	if out.get("broken_seals") is Array:
+		for s_v: Variant in (out["broken_seals"] as Array):
+			var sid: String = str(s_v)
+			seal_set[sid] = true
+			if sid.contains("obsidian"):
+				has_obsidian_seal = true
+	var sf: Dictionary = out["story_flags"] as Dictionary if out.get("story_flags") is Dictionary else {}
+	out["story_flags"] = sf
+	if relit_set.has(2) or seal_set.has("lighthouse_seal"):
+		sf["tut_blue_refract_done"] = true
+	if relit_set.has(3) or seal_set.has("hollow_oak_seal"):
+		sf["tut_beam_break_done"] = true
+	if relit_set.has(4) or seal_set.has("conservatory_seal"):
+		sf["tut_wings_glided"] = true
+	if relit_set.has(5) or seal_set.has("orrery_seal"):
+		sf["tut_lens_pulsed"] = true
+		sf["tut_lens_anchored"] = true
+	if relit_set.has(6) or seal_set.has("kiln_gate_seal") or has_obsidian_seal:
+		sf["tut_seal_shattered"] = true
+	if relit_set.has(6) or seal_set.has("kiln_gate_seal"):
+		sf["tut_vent_dashed"] = true
 
 
 static func _is_valid_save_dict(d: Dictionary) -> bool:

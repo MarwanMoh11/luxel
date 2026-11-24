@@ -82,7 +82,8 @@ func press() -> bool:
 		wick.emit_sfx("denied", wick.global_position, false)
 		return false
 	var data: Dictionary = get_data()
-	pulse_duration = maxf(0.5, float(data.get("duration", 4.0)))
+	var base_dur: float = float(data.get("duration", 4.0))
+	pulse_duration = maxf(0.5, Lx.state.get_effective_lens_duration() if Lx.state != null else base_dur)
 	warn_time = clampf(float(data.get("warn_time", 1.2)), 0.2, pulse_duration)
 	pulse_radius = float(data.get("pulse_radius", 104.0))
 	hung_radius = float(data.get("hung_radius", 78.0))

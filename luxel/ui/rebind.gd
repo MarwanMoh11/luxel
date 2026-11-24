@@ -47,6 +47,7 @@ func open() -> void:
 	_hover_dev = false
 	_hover_back = false
 	visible = true
+	_play_ui_sfx("menu_open")
 	queue_redraw()
 
 
@@ -109,7 +110,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if _handle_click(mb.position):
 				get_viewport().set_input_as_handled()
 		elif mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
-			_play_ui_sfx("ui_back")
+			_play_ui_sfx("menu_close")
 			closed.emit()
 			get_viewport().set_input_as_handled()
 		elif mb.pressed and (mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN):
@@ -146,7 +147,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_activate_current()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_pause") or _key_just(event, KEY_ESCAPE):
-		_play_ui_sfx("ui_back")
+		_play_ui_sfx("menu_close")
 		closed.emit()
 		get_viewport().set_input_as_handled()
 
@@ -219,7 +220,7 @@ func _persist_bindings() -> void:
 
 func _handle_click(pos: Vector2) -> bool:
 	if _back_btn_rect().has_point(pos):
-		_play_ui_sfx("ui_back")
+		_play_ui_sfx("menu_close")
 		closed.emit()
 		return true
 	if Rect2(26.0, 24.0, 268.0, 12.0).has_point(pos):

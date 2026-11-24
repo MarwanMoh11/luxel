@@ -60,7 +60,7 @@ func press_beam() -> bool:
 		return false
 	_buffer_t = 0.0
 	var data: Dictionary = get_data()
-	charge_time = maxf(0.05, float(data.get("charge_time", 0.6)))
+	charge_time = maxf(0.05, Lx.state.get_effective_beam_charge() if Lx.state != null else float(data.get("charge_time", 0.6)))
 	charging = true
 	charge_t = 0.0
 	_charge_spark_cd = 0.0

@@ -13,8 +13,21 @@ func setup(spec: Dictionary) -> void:
 	lit = bool(props.get("lit", false))
 	if Lx.state != null and Lx.state.lit_waystones.has(id):
 		lit = true
+	if lit:
+		_sync_lit_registration()
 	_dormant_pip_on = _is_dormant_pip_on()
 	queue_redraw()
+
+
+func _sync_lit_registration() -> void:
+	if Lx.state == null or id.is_empty():
+		return
+	if not Lx.state.lit_waystones.has(id):
+		Lx.state.lit_waystones.append(id)
+	if island_id > 0 and (Lx.state.last_waystone_island != island_id or Lx.state.last_waystone_id.is_empty()):
+		Lx.state.last_waystone_island = island_id
+		Lx.state.last_waystone_id = id
+		Lx.state.spawn_pos = pos + Vector2(0.0, 14.0)
 
 
 func tick(dt: float) -> void:
@@ -78,6 +91,8 @@ func load_state(d: Dictionary) -> void:
 	lit = bool(d.get("lit", lit))
 	if Lx.state != null and Lx.state.lit_waystones.has(id):
 		lit = true
+	if lit:
+		_sync_lit_registration()
 	queue_redraw()
 
 

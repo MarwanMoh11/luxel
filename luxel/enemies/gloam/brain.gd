@@ -20,6 +20,7 @@ var pool_i: int = 0
 var pause_t: float = 0.0
 var illuminated: bool = false
 var light_hold_t: float = 0.0
+var _reveal_sfx_cd: float = 0.0
 var phase_fx_t: float = 0.0
 var lunge_dir: Vector2 = Vector2.RIGHT
 var lunge_hit: bool = false
@@ -53,6 +54,7 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	pause_t = 0.4
 	illuminated = false
 	light_hold_t = 0.0
+	_reveal_sfx_cd = 0.0
 	phase_fx_t = 0.0
 	lunge_dir = Vector2.from_angle(facing)
 	lunge_hit = false
@@ -70,8 +72,12 @@ func on_light(a: Variant, b: Variant = Vector2.ZERO, _c: Variant = "") -> void:
 	if radius <= 0.0:
 		return
 	if orig == Vector2.ZERO or pos.distance_to(orig) <= radius + body_radius:
+		var was_dark: bool = not illuminated
 		light_hold_t = LIGHT_HOLD_DURATION
 		illuminated = true
+		if was_dark and _reveal_sfx_cd <= 0.0:
+			_reveal_sfx_cd = 0.85
+			_emit_sfx("gloam_reveal")
 
 func is_targetable() -> bool:
 	return is_alive() and (illuminated or state == State.RECOVER or state == State.STAGGER)
@@ -176,6 +182,8 @@ func _step_brain(dt: float) -> void:
 				_move_step(to_h.limit_length(routine_speed * dt), false)
 
 func _update_illumination(dt: float) -> void:
+	var was_dark: bool = not illuminated
+	_reveal_sfx_cd = maxf(0.0, _reveal_sfx_cd - dt)
 	light_hold_t = maxf(0.0, light_hold_t - dt)
 	var hand_r: float = DEFAULT_HAND_LIGHT_R
 	var hung_r: float = DEFAULT_HUNG_LIGHT_R
@@ -185,6 +193,9 @@ func _update_illumination(dt: float) -> void:
 	elif _has_player() and pos.distance_to(_get_wick_pos()) <= hand_r + body_radius:
 		light_hold_t = maxf(light_hold_t, LIGHT_HOLD_DURATION)
 	illuminated = light_hold_t > 0.0
+	if was_dark and illuminated and _reveal_sfx_cd <= 0.0:
+		_reveal_sfx_cd = 0.85
+		_emit_sfx("gloam_reveal")
 
 func _step_routine(dt: float) -> void:
 	if pause_t > 0.0:
@@ -286,10 +297,30 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(off, body_radius + 3.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)
 	var c: Vector2 = off.round()
 	if state == State.TELL:
+		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var locked: bool = state_timer <= 0.15 * _assist_tell_scale()
+		var fred: bool = LxHudFx.flash_reduced()
 		var reach_len: float = LUNGE_SPEED * LUNGE_TIME
 		var tip: Vector2 = (c + lunge_dir * reach_len).round()
+		var perp_t := Vector2(-lunge_dir.y, lunge_dir.x)
 		var line_c: Color = (PAL["coral"] as Color) if locked else (PAL["ice"] as Color)
+		var pulse_hi: bool = fred or (int(floorf(anim_t * 14.0)) % 2 == 0)
+		var rail_c: Color = (PAL["cream"] if (locked and pulse_hi) else line_c) as Color
+		var a0: Vector2 = (c - perp_t * LUNGE_HIT_R).round()
+		var a1: Vector2 = (tip - perp_t * LUNGE_HIT_R).round()
+		var b1: Vector2 = (tip + perp_t * LUNGE_HIT_R).round()
+		var b0: Vector2 = (c + perp_t * LUNGE_HIT_R).round()
+		draw_colored_polygon(PackedVector2Array([a0, a1, b1, b0]), Color((PAL["coral"] if locked else PAL["sky"]) as Color, lerpf(0.10, 0.20, prog)))
+		for si: int in range(0, 10, 2):
+			var t0: float = float(si) / 10.0
+			var t1: float = float(si + 1) / 10.0
+			for side_s: float in [-1.0, 1.0]:
+				var r0: Vector2 = (c + perp_t * (side_s * LUNGE_HIT_R) + lunge_dir * (reach_len * t0)).round()
+				var r1: Vector2 = (c + perp_t * (side_s * LUNGE_HIT_R) + lunge_dir * (reach_len * t1)).round()
+				draw_line(r0, r1, PAL["void"] as Color, 2.2)
+				draw_line(r0, r1, rail_c, 1.2)
+		draw_line(a1, b1, PAL["void"] as Color, 2.2)
+		draw_line(a1, b1, rail_c, 1.2)
 		if locked:
 			draw_line(c, tip, line_c, 1.4)
 		else:
@@ -297,7 +328,6 @@ func _draw_extra(off: Vector2) -> void:
 				var p0: Vector2 = (c + lunge_dir * (reach_len * float(si) / 10.0)).round()
 				var p1: Vector2 = (c + lunge_dir * (reach_len * float(si + 1) / 10.0)).round()
 				draw_line(p0, p1, line_c, 1.2)
-		var perp_t := Vector2(-lunge_dir.y, lunge_dir.x)
 		draw_line((tip - lunge_dir * 4.0 + perp_t * 3.0).round(), tip, line_c, 1.2)
 		draw_line((tip - lunge_dir * 4.0 - perp_t * 3.0).round(), tip, line_c, 1.2)
 		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)

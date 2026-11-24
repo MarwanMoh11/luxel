@@ -762,7 +762,8 @@
         264
       ],
       "props": {
-        "zone": "harbor_landing"
+        "zone": "harbor_landing",
+        "lit": true
       }
     },
     {
@@ -773,7 +774,8 @@
         248
       ],
       "props": {
-        "zone": "harbor_landing"
+        "zone": "harbor_landing",
+        "lit": true
       }
     },
     {
@@ -840,6 +842,28 @@
       ],
       "props": {
         "zone": "smugglers_cove"
+      }
+    },
+    {
+      "id": "lamp_2_drydock_w",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        136
+      ],
+      "props": {
+        "zone": "drydock_quays"
+      }
+    },
+    {
+      "id": "lamp_2_drydock_e",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        136
+      ],
+      "props": {
+        "zone": "drydock_quays"
       }
     }
   ],

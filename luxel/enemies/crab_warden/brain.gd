@@ -123,6 +123,26 @@ func _step_guard(dt: float, target_pos: Vector2) -> void:
 	_move_step(move_dir * spd * dt, false)
 
 
+func _begin_swing_tell(is_lunge: bool) -> void:
+	state = State.TELL
+	lunge_attack = is_lunge
+	is_counter_attack = false
+	var base_t: float = _lunge_tell_base() if is_lunge else _swing_tell_base()
+	last_tell_duration = _scaled_tell(base_t, false, attack_damage)
+	state_timer = last_tell_duration
+	_emit_attack_started()
+	_emit_sfx("crab_claw_tell")
+
+
+func _enter_commit() -> void:
+	state = State.COMMIT
+	state_timer = LUNGE_SWING_TIME if lunge_attack else SWING_TIME
+	swing_dir = Vector2.from_angle(facing)
+	swing_hit = false
+	swings_count += 1
+	_emit_sfx("crab_shell_clank")
+
+
 func _on_stagger_end(target_pos: Vector2) -> void:
 	var tw: Vector2 = _get_wick_pos() - pos
 	if _has_player() and tw.length() < PINCH_COUNTER_R and _is_on_screen() and _claim_token(true):
@@ -177,6 +197,15 @@ func _draw_extra(off: Vector2) -> void:
 			var tip := Vector2(roundf(sp.x + sd.x * sl), roundf(sp.y + sd.y * sl))
 			draw_line(sp, tip, (PAL["gold"] as Color) if (i % 2 == 0) else (PAL["apricot"] as Color), 1.2)
 			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
+	if state == State.TELL:
+		var urg: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		if lunge_attack:
+			var lane_len: float = minf(lunge_reach, GAP_LUNGE_SPEED * LUNGE_SWING_TIME + swing_r * 0.50)
+			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + fwd * lane_len, swing_r * 0.52, urg, anim_t, "coral", "gold")
+		else:
+			var fill_k: String = "gold" if is_counter_attack else "coral"
+			var rim_k: String = "cream" if is_counter_attack else "gold"
+			LxBossTelegraphFx.draw_ground_danger_sector(self, c, facing - swing_arc, facing + swing_arc, swing_r + (6.0 if is_counter_attack else 8.0), urg, anim_t, fill_k, rim_k)
 	if state == State.TELL or state == State.COMMIT:
 		var is_c: bool = state == State.COMMIT
 		var spread: float = 0.14 if is_c else 0.58

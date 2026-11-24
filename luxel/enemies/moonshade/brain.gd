@@ -9,6 +9,7 @@ extends LxWardenBrain
 const VARIANT_WARDEN: String = "moonshade_warden"
 const VARIANT_SNATCHER: String = "moonshade_snatcher"
 const VARIANT_OWL: String = "moonshade_owl"
+const SHADE_NOTICE_TIME: float = 0.26
 const BLINK_FEINT_DIST: float = 20.0
 const SNATCH_SHY_R: float = 54.0
 const SNATCH_SHY_SPEED: float = 138.0
@@ -144,6 +145,16 @@ func _begin_swing_tell(is_lunge: bool) -> void:
 	feint_side = -feint_side
 	super._begin_swing_tell(is_lunge)
 
+func _enter_notice() -> void:
+	if variant == VARIANT_WARDEN:
+		super._enter_notice()
+		return
+	state = State.NOTICE
+	state_timer = SHADE_NOTICE_TIME
+	alert_t = 0.7
+	lost_t = 0.0
+	_emit_sfx("shadow_whisper")
+
 func _step_snatcher_shade(dt: float) -> void:
 	var target: Vector2 = _attention_target()
 	match state:
@@ -156,6 +167,13 @@ func _step_snatcher_shade(dt: float) -> void:
 				perch_goal = perches[perch_i]
 				perch_wait = 1.4
 			if (_has_player() or _is_lantern_out()) and pos.distance_to(target) <= notice_radius:
+				_enter_notice()
+		State.NOTICE:
+			var to_n: Vector2 = target - pos
+			if to_n.length() > 0.01:
+				facing = to_n.angle()
+			state_timer -= dt
+			if state_timer <= 0.0:
 				state = State.POSITION
 				lost_t = 0.0
 		State.POSITION, State.WAIT_TOKEN:
@@ -198,6 +216,14 @@ func _step_owl_shade(dt: float) -> void:
 		State.ROUTINE:
 			altitude = move_toward(altitude, 0.0, 48.0 * dt)
 			if (_has_player() or _is_lantern_out()) and pos.distance_to(target) <= notice_radius:
+				_enter_notice()
+		State.NOTICE:
+			altitude = move_toward(altitude, 4.0, 48.0 * dt)
+			var to_n: Vector2 = target - pos
+			if to_n.length() > 0.01:
+				facing = to_n.angle()
+			state_timer -= dt
+			if state_timer <= 0.0:
 				state = State.POSITION
 				lost_t = 0.0
 				cooldown = 0.65
@@ -217,7 +243,7 @@ func _step_owl_shade(dt: float) -> void:
 				_enter_shade_tell(target, "moonshade_twin_lock")
 		State.TELL:
 			altitude = 18.0
-			if state_timer > 0.20:
+			if state_timer > 0.20 * _assist_tell_scale():
 				lock_target = target
 			_tick_shade_tell_common(dt, 0.36)
 		State.COMMIT:
@@ -369,8 +395,9 @@ func _draw_extra(off: Vector2) -> void:
 	if variant == VARIANT_OWL and state == State.TELL:
 		var tgt_pt: Vector2 = (lock_target - pos).round()
 		var delta: Vector2 = tgt_pt - c
-		var locked_o: bool = state_timer <= 0.20
-		var lock_frac: float = clampf((state_timer - 0.20) / maxf(last_tell_duration - 0.20, 0.05), 0.0, 1.0)
+		var lock_cut: float = 0.20 * _assist_tell_scale()
+		var locked_o: bool = state_timer <= lock_cut
+		var lock_frac: float = clampf((state_timer - lock_cut) / maxf(last_tell_duration - lock_cut, 0.05), 0.0, 1.0)
 		var spread: float = twin_offset_rad * lock_frac
 		var len_t: float = delta.length()
 		var base_a: float = delta.angle() if len_t > 0.01 else facing
@@ -386,4 +413,16 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(c, tgt, PAL["ice"] as Color, 1.0)
 		_draw_lunar_glint(tgt, 4.0)
 	elif variant == VARIANT_WARDEN and state == State.TELL:
-		_draw_lunar_glint(c + Vector2.from_angle(facing) * (body_radius + 7.0), 3.5)
+		var fwd_w: Vector2 = Vector2.from_angle(facing)
+		var urg_w: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		if lunge_attack:
+			var lane_len: float = minf(lunge_reach, GAP_LUNGE_SPEED * LUNGE_SWING_TIME + swing_r * 0.50)
+			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + fwd_w * lane_len, swing_r * 0.52, urg_w, anim_t, "sky" if feint_done else "coral", "ice" if feint_done else "gold")
+		else:
+			var fill_k: String = "sky" if (feint_done or is_counter_attack) else "coral"
+			var rim_k: String = "ice" if (feint_done or is_counter_attack) else "gold"
+			LxBossTelegraphFx.draw_ground_danger_sector(self, c, facing - swing_arc, facing + swing_arc, swing_r + (6.0 if is_counter_attack else 8.0), urg_w, anim_t, fill_k, rim_k)
+			if feint_done:
+				var post_len: float = SWING_LUNGE_SPEED * SWING_TIME + swing_r * 0.45
+				LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + fwd_w * post_len, swing_r * 0.40, urg_w, anim_t, "sky", "coral")
+		_draw_lunar_glint(c + fwd_w * (body_radius + 7.0), 3.5)

@@ -132,9 +132,17 @@ func get_upgrade_rank(upgrade_id: String) -> int:
 	return int(upgrades.get(upgrade_id, 0))
 
 
-func can_buy_upgrade(upgrade_id: String) -> bool:
+func is_upgrade_unlocked(upgrade_id: String) -> bool:
 	var u: Dictionary = Lx.get_upgrade_data(upgrade_id)
 	if u.is_empty():
+		return false
+	var req: String = str(u.get("requires_move", ""))
+	return req.is_empty() or has_move(req)
+
+
+func can_buy_upgrade(upgrade_id: String) -> bool:
+	var u: Dictionary = Lx.get_upgrade_data(upgrade_id)
+	if u.is_empty() or not is_upgrade_unlocked(upgrade_id):
 		return false
 	var rank: int = get_upgrade_rank(upgrade_id)
 	var max_rank: int = int(u.get("max_rank", 0))
@@ -227,6 +235,58 @@ func get_effective_ember_max() -> float:
 func get_effective_prism_bounces() -> int:
 	var base: int = int(Lx.get_move_data("prism").get("bounces", 1))
 	return int(_upgrade_val("prism_bounce", float(base)))
+
+
+func get_effective_beam_charge() -> float:
+	var base: float = float(Lx.get_move_data("beam").get("charge_time", 0.6))
+	return _upgrade_val("beam_charge", base)
+
+
+func get_effective_wings_glide() -> float:
+	var base: float = float(Lx.get_move_data("wings").get("glide_max_px", 96.0))
+	return _upgrade_val("wings_glide", base)
+
+
+func get_effective_lens_duration() -> float:
+	var base: float = float(Lx.get_move_data("lens").get("duration", 4.0))
+	return _upgrade_val("lens_duration", base)
+
+
+func get_upgrade_totals() -> Vector2i:
+	var owned: int = 0
+	var total: int = 0
+	if Lx.data_upgrades.is_empty():
+		Lx.load_all_data()
+	for item: Variant in (Lx.data_upgrades.get("upgrades", []) as Array):
+		if item is Dictionary:
+			var ud: Dictionary = item as Dictionary
+			var mr: int = int(ud.get("max_rank", 0))
+			total += mr
+			owned += mini(get_upgrade_rank(str(ud.get("id", ""))), mr)
+	return Vector2i(owned, total)
+
+
+func get_harmony_count() -> int:
+	var count: int = 0
+	for isl: int in range(1, 9):
+		if bool(story_flags.get("disc_all_%d" % isl, false)):
+			count += 1
+	return count
+
+
+func get_completion_pct(relit_override: int = -1, embers_override: int = -1) -> int:
+	var relit_n: int = clampi(relit_override if relit_override >= 0 else relit_islands.size(), 0, 8)
+	var ember_n: int = clampi(embers_override if embers_override >= 0 else ember_pieces, 0, 16)
+	var moves_n: int = 0
+	for mid: String in ["dash", "throw", "prism", "beam", "wings", "lens", "sunflare"]:
+		if has_move(mid):
+			moves_n += 1
+	var harm_n: int = get_harmony_count()
+	var upg_t: Vector2i = get_upgrade_totals()
+	var upg_ratio: float = float(upg_t.x) / float(maxi(1, upg_t.y))
+	var score: float = (float(relit_n) / 8.0) * 40.0 + (float(moves_n) / 7.0) * 14.0 \
+		+ (float(ember_n) / 16.0) * 16.0 + (float(harm_n) / 8.0) * 16.0 + upg_ratio * 14.0
+	return clampi(roundi(score), 0, 100)
 
 
 func _upgrade_val(upgrade_id: String, base: float) -> float:
@@ -332,7 +392,8 @@ func from_dict(d: Dictionary) -> void:
 	last_waystone_island = int(d.get("last_waystone_island", 1))
 	last_waystone_id = str(d.get("last_waystone_id", "ws_plaza"))
 	max_hearts = clampi(int(d.get("max_hearts", 4)), 4, 12)
-	hearts = clampf(float(d.get("hearts", float(max_hearts))), 0.0, float(max_hearts))
+	var min_h: float = 1.0 if max_hearts >= 1 else 0.0
+	hearts = clampf(float(d.get("hearts", float(max_hearts))), min_h, float(max_hearts))
 	ember_pieces = maxi(0, int(d.get("ember_pieces", 0)))
 	shards = maxi(0, int(d.get("shards", 0)))
 
@@ -345,7 +406,7 @@ func from_dict(d: Dictionary) -> void:
 		for k: String in (up as Dictionary).keys():
 			upgrades[k] = int((up as Dictionary)[k])
 
-	lit_waystones = _to_str_array(d.get("lit_waystones", ["ws_plaza"]))
+	lit_waystones = _to_unique_str_array(d.get("lit_waystones", ["ws_plaza"]))
 	lit_beacons = _to_str_array(d.get("lit_beacons", []))
 	claimed_shrines = _to_str_array(d.get("claimed_shrines", []))
 	broken_seals = _to_str_array(d.get("broken_seals", []))
@@ -380,6 +441,16 @@ static func _to_str_array(v: Variant) -> Array[String]:
 	if v is Array:
 		for item: Variant in v:
 			out.append(str(item))
+	return out
+
+
+static func _to_unique_str_array(v: Variant) -> Array[String]:
+	var out: Array[String] = []
+	if v is Array:
+		for item: Variant in v:
+			var s: String = str(item)
+			if not s.is_empty() and not out.has(s):
+				out.append(s)
 	return out
 
 

@@ -6,6 +6,7 @@ const ISLAND_ID: int = 7
 const SEAL_ID: String = "spire_gate_seal"
 const BOSS_ID: String = "hollow_wick"
 const MINI_BOSS_KIND: String = "moonshade_warden"
+const MINI_BOSS_ALT_KIND: String = "spire_warden"
 
 const REQUIRED_BEACONS: Array[String] = [
 	"beacon_7_1",
@@ -315,7 +316,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			if _events != null:
 				_events.sfx_requested.emit("phantom_phase", Vector2.ZERO, false)
 		if _events != null:
-			var mb_live: bool = region_id == "spire_r6" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
+			var mb_live: bool = region_id == "spire_r6" and st != null and not _is_miniboss_defeated(st)
 			if mb_live:
 				_emit_narration("MINIBOSS_7", "title", 3.2)
 			_events.music_mode_requested.emit("island7_boss_p1" if mb_live else "island7_dungeon")
@@ -371,9 +372,10 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 		st.story_flags["twist_hollow_shown"] = true
 		if not twist_already:
 			_emit_narration("TWIST_HOLLOW", "ominous", 4.5)
-	elif st.region_id == "spire_r6" and (kind == MINI_BOSS_KIND or eid == "mini_moonshade_warden"):
+	elif st.region_id == "spire_r6" and (_is_miniboss_id(kind) or eid == "mini_moonshade_warden"):
 		if not st.defeated_bosses.has(MINI_BOSS_KIND):
 			st.defeated_bosses.append(MINI_BOSS_KIND)
+		st.defeated_bosses.erase(MINI_BOSS_ALT_KIND)
 		st.story_flags["defeated_moonshade_warden"] = true
 		st.story_flags["moonshade_warden_defeated"] = true
 		if _events != null:
@@ -387,21 +389,22 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
-	if boss_id != BOSS_ID and boss_id != "hollow_wick_boss" and boss_id != MINI_BOSS_KIND:
+	if boss_id != BOSS_ID and boss_id != "hollow_wick_boss" and not _is_miniboss_id(boss_id):
 		return
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island7_boss_p2")
-		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
+		_events.shake_requested.emit(0.28 if _is_miniboss_id(boss_id) else (0.38 if phase >= 3 else 0.32))
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
 	if island_id != ISLAND_ID:
 		return
 	var st: LxGameState = _get_state()
-	if boss_id == MINI_BOSS_KIND:
+	if _is_miniboss_id(boss_id):
 		if st != null:
 			if not st.defeated_bosses.has(MINI_BOSS_KIND):
 				st.defeated_bosses.append(MINI_BOSS_KIND)
+			st.defeated_bosses.erase(MINI_BOSS_ALT_KIND)
 			st.story_flags["defeated_moonshade_warden"] = true
 			st.story_flags["moonshade_warden_defeated"] = true
 		return
@@ -441,3 +444,13 @@ func _emit_narration(string_id: String, style: String, duration: float) -> void:
 
 func _get_state() -> LxGameState:
 	return _state if _state != null else Lx.state
+
+
+static func _is_miniboss_id(id: String) -> bool:
+	return id == MINI_BOSS_KIND or id == MINI_BOSS_ALT_KIND
+
+
+static func _is_miniboss_defeated(st: LxGameState) -> bool:
+	if st == null:
+		return false
+	return st.defeated_bosses.has(MINI_BOSS_KIND) or st.defeated_bosses.has(MINI_BOSS_ALT_KIND)

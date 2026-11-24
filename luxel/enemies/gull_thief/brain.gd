@@ -156,7 +156,7 @@ func _step_brain(dt: float) -> void:
 			altitude = move_toward(altitude, ALT_CIRCLE + 2.0, 32.0 * dt)
 			state_timer -= dt
 			if swoop_mode:
-				if state_timer > 0.16 and _has_player():
+				if state_timer > 0.16 * _assist_tell_scale() and _has_player():
 					dive_target = _clamp_pt(_get_wick_pos())
 				var to_w: Vector2 = dive_target - pos
 				if to_w.length() > 0.01:

@@ -32,97 +32,38 @@ func _ready() -> void:
 
 
 func _boot_services() -> void:
-	if _services_ready:
-		return
+	if _services_ready: return
 	Lx.reset()
 	Lx.root = self
 	Lx.load_all_data()
-
-	var dbg := LxDebugArgs.new()
-	dbg.parse()
-	Lx.debug = dbg
-
-	var rng := LxRng.new(dbg.seed_val if dbg.has_seed else 101)
-	Lx.rng = rng
-
-	var plat := LxPlatformService.new()
-	plat.init()
-	Lx.platform = plat
-
-	var events := LxEventBus.new()
-	events.name = "EventBus"
-	add_child(events)
-	Lx.events = events
-
-	var state := LxGameState.new()
-	state.name = "GameState"
-	add_child(state)
-	state.reset_new_game("1")
-	Lx.state = state
-
-	var save_svc := LxSaveService.new()
-	save_svc.name = "SaveService"
-	add_child(save_svc)
-	save_svc.setup(dbg.is_debug_run())
-	Lx.save = save_svc
-
-	var input_svc := LxInputService.new()
-	input_svc.name = "InputService"
-	add_child(input_svc)
-	input_svc.setup()
-	if save_svc.settings.has("bindings"):
-		input_svc.import_bindings(save_svc.settings["bindings"] as Dictionary)
-	if save_svc.settings.has("hold_mode"):
-		input_svc.hold_modes = (save_svc.settings["hold_mode"] as Dictionary).duplicate(true)
+	var dbg := LxDebugArgs.new(); dbg.parse(); Lx.debug = dbg
+	Lx.rng = LxRng.new(dbg.seed_val if dbg.has_seed else 101)
+	var plat := LxPlatformService.new(); plat.init(); Lx.platform = plat
+	var events := LxEventBus.new(); events.name = "EventBus"; add_child(events); Lx.events = events
+	var state := LxGameState.new(); state.name = "GameState"; add_child(state); state.reset_new_game("1"); Lx.state = state
+	var save_svc := LxSaveService.new(); save_svc.name = "SaveService"; add_child(save_svc); save_svc.setup(dbg.is_debug_run()); Lx.save = save_svc
+	var input_svc := LxInputService.new(); input_svc.name = "InputService"; add_child(input_svc); input_svc.setup()
+	if save_svc.settings.has("bindings"): input_svc.import_bindings(save_svc.settings["bindings"] as Dictionary)
+	if save_svc.settings.has("hold_mode"): input_svc.hold_modes = (save_svc.settings["hold_mode"] as Dictionary).duplicate(true)
 	Lx.input = input_svc
-
-	var audio_svc := LxAudioService.new()
-	audio_svc.name = "AudioService"
-	add_child(audio_svc)
-	audio_svc.setup()
-	audio_svc.apply_settings(save_svc.settings)
-	Lx.audio = audio_svc
-
-	var hitstop := LxHitstop.new()
-	hitstop.name = "Hitstop"
-	hitstop.game_speed = float(save_svc.settings.get("assist_game_speed", 1.0))
-	add_child(hitstop)
-	Lx.hitstop = hitstop
-
-	var cam := LxCameraRig.new()
-	cam.name = "CameraRig"
-	cam.shake_scale = float(save_svc.settings.get("screen_shake", 100)) / 100.0
-	add_child(cam)
-	Lx.camera = cam
-
-	_director = _instantiate_script("res://luxel/enemies/attack_director.gd")
-	Lx.director = _director
-
+	var audio_svc := LxAudioService.new(); audio_svc.name = "AudioService"; add_child(audio_svc); audio_svc.setup(); audio_svc.apply_settings(save_svc.settings); Lx.audio = audio_svc
+	var hitstop := LxHitstop.new(); hitstop.name = "Hitstop"; hitstop.game_speed = float(save_svc.settings.get("assist_game_speed", 1.0)); add_child(hitstop); Lx.hitstop = hitstop
+	var cam := LxCameraRig.new(); cam.name = "CameraRig"; cam.shake_scale = float(save_svc.settings.get("screen_shake", 100)) / 100.0; add_child(cam); Lx.camera = cam
+	_director = _instantiate_script("res://luxel/enemies/attack_director.gd"); Lx.director = _director
 	_region_loader = _instantiate_node("res://luxel/world/region_loader.gd", "RegionLoader") as Node2D
-	if _region_loader != null:
-		add_child(_region_loader)
-		Lx.world = _region_loader
-
+	if _region_loader != null: add_child(_region_loader); Lx.world = _region_loader
 	_wick = _instantiate_node("res://luxel/player/wick.gd", "Wick") as Node2D
 	if _wick != null:
 		var ysort_p: Node = _region_loader.call("get_ysort_root") if (_region_loader != null and _region_loader.has_method("get_ysort_root")) else null
 		(ysort_p if ysort_p != null else self).add_child(_wick)
-		_wick.z_index = 0
-		Lx.player = _wick
-		if _wick.has_method("setup"):
-			_wick.call("setup", _region_loader)
-
+		_wick.z_index = 0; Lx.player = _wick
+		if _wick.has_method("setup"): _wick.call("setup", _region_loader)
 	_darkness_layer = _instantiate_node("res://luxel/world/darkness_layer.gd", "DarknessLayer") as CanvasLayer
-	if _darkness_layer != null:
-		add_child(_darkness_layer)
-
+	if _darkness_layer != null: add_child(_darkness_layer)
 	_ui_root = _instantiate_node("res://luxel/ui/ui_root.gd", "UiRoot") as CanvasLayer
 	if _ui_root != null:
-		add_child(_ui_root)
-		Lx.ui = _ui_root
-		if _ui_root.has_method("setup"):
-			_ui_root.call("setup", self)
-
+		add_child(_ui_root); Lx.ui = _ui_root
+		if _ui_root.has_method("setup"): _ui_root.call("setup", self)
 	_connect_events()
 	_validate_strings_debug()
 	_services_ready = true
@@ -187,6 +128,10 @@ func enter_title() -> void:
 	Lx.audio.play_cue("title")
 	_sync_ui_flow()
 
+func flush_and_save(reason: String = "exit") -> void:
+	if flow == Flow.TITLE or flow == Flow.INTRO: return
+	LxRunPersistence.flush_and_save(active_slot, Lx.state, Lx.save, _region_loader, _wick, reason)
+
 func start_new_game(slot_num: int, play_intro: bool = true) -> void:
 	_pending_ending_t = 0.0
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
@@ -240,6 +185,7 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 	_last_zone_id = ""
 	if _region_loader != null and _region_loader.has_method("save_interactables_to_state"):
 		_region_loader.call("save_interactables_to_state")
+	var prev_island: int = Lx.state.island_id
 	Lx.state.island_id = island_id
 	Lx.state.region_id = region_id
 	Lx.state.room_id = "" if region_id == "overworld" else region_id
@@ -247,27 +193,27 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 	if current_island_script != null and current_island_script.has_method("detach"):
 		current_island_script.call("detach")
 	current_island_script = null
+	var in_intro: bool = flow == Flow.INTRO
+	if in_intro:
+		Lx.audio.silence_music(0.45)
+		Lx.audio.call("_start_island_ambience", island_id)
+	elif region_id != "overworld": Lx.audio.start_dungeon_music(island_id)
+	else: Lx.audio.start_island_music(island_id)
+	_attach_island_controller(island_id)
 	var ok: bool = false
 	if _region_loader != null and _region_loader.has_method("load_region"):
 		ok = bool(_region_loader.call("load_region", island_id, region_id, _director))
 	var spawn_at: Vector2 = spawn_override
 	if spawn_at.x < 0.0 and _region_loader != null:
-		if _region_loader.has_method("get_spawn_pos"):
-			spawn_at = _region_loader.call("get_spawn_pos") as Vector2
-		else:
-			var sp_prop: Variant = _region_loader.get("spawn_pos")
-			if sp_prop is Vector2: spawn_at = sp_prop as Vector2
+		if _region_loader.has_method("get_spawn_pos"): spawn_at = _region_loader.call("get_spawn_pos") as Vector2
+		elif _region_loader.get("spawn_pos") is Vector2: spawn_at = _region_loader.get("spawn_pos") as Vector2
 	if spawn_at.x < 0.0: spawn_at = Vector2(160.0, 90.0)
 	Lx.state.spawn_pos = spawn_at
 	if Lx.hitstop != null: Lx.hitstop.clear()
 	if _wick != null and _wick.has_method("reset_for_room"): _wick.call("reset_for_room", spawn_at)
-	var is_dun: bool = false
 	if _region_loader != null and _region_loader.has_method("get_bounds"):
-		var b: Rect2 = _region_loader.call("get_bounds")
-		is_dun = bool(_region_loader.get("is_dungeon"))
-		Lx.camera.set_bounds(b, is_dun)
+		Lx.camera.set_bounds(_region_loader.call("get_bounds"), bool(_region_loader.get("is_dungeon")))
 		Lx.camera.snap_to(spawn_at)
-	var in_intro: bool = flow == Flow.INTRO
 	if _darkness_layer != null:
 		if _darkness_layer.has_method("reset_zones"): _darkness_layer.call("reset_zones")
 		if _darkness_layer.has_method("stop_dawn_wave"): _darkness_layer.call("stop_dawn_wave")
@@ -275,25 +221,20 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 		if not in_intro and _darkness_layer.has_method("trigger_transition_fade"): _darkness_layer.call("trigger_transition_fade", 0.22)
 		if _darkness_layer.has_method("sync"): _darkness_layer.call("sync", 0.0, _region_loader)
 	if not in_intro: _sync_zone_banner(spawn_at)
-	_load_island_controller(island_id)
-	if in_intro:
-		Lx.audio.silence_music(0.45)
-		Lx.audio.call("_start_island_ambience", island_id)
-	elif is_dun: Lx.audio.start_dungeon_music(island_id)
-	else: Lx.audio.start_island_music(island_id)
-	Lx.events.region_entered.emit(island_id, region_id)
-	if region_id != "overworld": Lx.save.save_slot(active_slot, Lx.state)
+	if current_island_script != null and current_island_script.has_method("on_region_loaded"):
+		current_island_script.call("on_region_loaded", Lx.state.region_id)
+	if _region_loader == null and Lx.events != null:
+		Lx.events.region_entered.emit(island_id, region_id)
+	if LxRunPersistence.should_autosave_region_load(flow != Flow.TITLE and not in_intro, prev_island != island_id, island_id, region_id, Lx.state):
+		Lx.save.save_slot(active_slot, Lx.state)
 	return ok
 
-func _load_island_controller(island_id: int) -> void:
+func _attach_island_controller(island_id: int) -> void:
 	var path: String = "res://luxel/islands/%d/island.gd" % island_id
 	if ResourceLoader.exists(path):
 		current_island_script = _instantiate_script(path)
-		if current_island_script != null:
-			if current_island_script.has_method("attach"):
-				current_island_script.call("attach", Lx.events, Lx.state)
-			if current_island_script.has_method("on_region_loaded"):
-				current_island_script.call("on_region_loaded", Lx.state.region_id)
+		if current_island_script != null and current_island_script.has_method("attach"):
+			current_island_script.call("attach", Lx.events, Lx.state)
 
 func fast_travel_waystone(island_id: int, waystone_id: String) -> bool:
 	if not Lx.state.lit_waystones.has(waystone_id):
@@ -347,9 +288,8 @@ func retry_from_death() -> void:
 	if Lx.state.region_id != "overworld":
 		load_island_region(Lx.state.island_id, Lx.state.region_id)
 	else:
-		var loc: Dictionary = LxMapFormat.find_waystone(Lx.state.last_waystone_island, Lx.state.last_waystone_id)
-		var sp: Vector2 = loc.get("pos", Lx.state.spawn_pos) as Vector2
-		load_island_region(Lx.state.last_waystone_island, str(loc.get("region", "overworld")), sp)
+		var loc: Dictionary = LxRunPersistence.resolve_overworld_respawn(Lx.state)
+		load_island_region(int(loc.get("island", Lx.state.island_id)), str(loc.get("region", "overworld")), loc.get("pos", Vector2(-1.0, -1.0)) as Vector2)
 	flow = Flow.PLAY
 	Lx.audio.set_paused(false)
 	_sync_ui_flow()
@@ -477,9 +417,7 @@ func _on_player_died() -> void:
 	_sync_ui_flow()
 
 func _on_save_requested(_reason: String) -> void:
-	if _region_loader != null and _region_loader.has_method("save_interactables_to_state"):
-		_region_loader.call("save_interactables_to_state")
-	Lx.save.save_slot(active_slot, Lx.state)
+	LxRunPersistence.save_now(active_slot, Lx.state, Lx.save, _region_loader)
 
 func _on_waystone_lit(isl: int, ws_id: String) -> void:
 	if not Lx.state.lit_waystones.has(ws_id):

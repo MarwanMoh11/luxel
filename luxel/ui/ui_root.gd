@@ -84,7 +84,13 @@ func _connect_signals() -> void:
 		resume_requested.emit()
 		_notify_main_resume()
 	)
-	pause.map_requested.connect(func() -> void: show_map())
+	pause.map_requested.connect(func() -> void:
+		_return_screen = Screen.PAUSE
+		if _main != null and _main.has_method("open_map"):
+			_main.call("open_map")
+		else:
+			show_map(Screen.PAUSE)
+	)
 	pause.options_requested.connect(func() -> void: show_options(Screen.PAUSE))
 	pause.retry_checkpoint_requested.connect(func() -> void:
 		show_hud()
@@ -93,6 +99,8 @@ func _connect_signals() -> void:
 			_main.call("retry_from_death")
 	)
 	pause.title_requested.connect(func() -> void:
+		if _main != null and _main.has_method("flush_and_save"):
+			_main.call("flush_and_save", "title_exit")
 		return_to_title_requested.emit()
 		if _main != null and _main.has_method("enter_title"):
 			_main.call("enter_title")
@@ -100,6 +108,8 @@ func _connect_signals() -> void:
 
 	map_screen.closed.connect(func() -> void:
 		if _return_screen == Screen.PAUSE:
+			if _main != null:
+				_main.set("flow", 3)
 			show_pause()
 		else:
 			show_hud()

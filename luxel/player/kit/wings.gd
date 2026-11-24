@@ -39,8 +39,8 @@ func start_glide(dir: Vector2) -> bool:
 		return false
 	var data: Dictionary = get_data()
 	glide_speed = float(data.get("glide_speed", 120.0))
-	glide_max_px = float(data.get("glide_max_px", 96.0))
-	glide_duration = float(data.get("glide_duration", 0.8))
+	glide_max_px = Lx.state.get_effective_wings_glide() if Lx.state != null else float(data.get("glide_max_px", 96.0))
+	glide_duration = maxf(float(data.get("glide_duration", 0.8)), glide_max_px / maxf(1.0, glide_speed))
 	if dir.length_squared() > 0.0001:
 		glide_dir = dir.normalized()
 	elif wick.facing.length_squared() > 0.0001:

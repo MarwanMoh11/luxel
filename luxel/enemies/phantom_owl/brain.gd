@@ -44,12 +44,16 @@ func on_light(a: Variant, b: Variant = Vector2.ZERO, source: String = "") -> voi
 	elif (a is float or a is int) and b is Vector2:
 		in_light = pos.distance_to(b as Vector2) <= float(a) + body_radius
 	if in_light:
-		var was_hidden: bool = not revealed
-		reveal_t = maxf(reveal_t, REVEAL_GRACE)
-		revealed = true
-		if was_hidden:
-			LxDamageFx.boss_impact(pos, 0.0, 38.0, 48.0, 44.0, 1.22, 0.24)
-			_emit_sfx("phantom_reveal")
+		_apply_reveal()
+
+
+func _apply_reveal() -> void:
+	var was_hidden: bool = not revealed
+	reveal_t = maxf(reveal_t, REVEAL_GRACE)
+	revealed = true
+	if was_hidden:
+		LxDamageFx.boss_impact(pos, 0.0, 38.0, 48.0, 44.0, 1.22, 0.24)
+		_emit_sfx("phantom_reveal")
 
 
 func is_targetable() -> bool:
@@ -92,13 +96,13 @@ func _check_lens_reveal() -> void:
 	var hung_r: float = float(ldata.get("hung_radius", 78.0))
 	if _is_lantern_out():
 		if pos.distance_to(_get_lantern_pos()) <= hung_r + body_radius:
-			reveal_t = maxf(reveal_t, REVEAL_GRACE)
+			_apply_reveal()
 			return
 	if _has_player() and Lx.player != null and is_instance_valid(Lx.player):
 		var ml: Variant = Lx.player.get("move_lens")
 		if ml is Object and (ml as Object).has_method("is_pulse_active") and bool((ml as Object).call("is_pulse_active")):
 			if pos.distance_to(_get_wick_pos()) <= pulse_r + body_radius:
-				reveal_t = maxf(reveal_t, REVEAL_GRACE)
+				_apply_reveal()
 
 
 func _body_color() -> Color:
@@ -123,19 +127,42 @@ func _draw() -> void:
 		draw_rect(Rect2(wp, Vector2(1.0, 1.0)), (PAL["stone"] as Color) if (wi % 2 == 0) else (PAL["mauve"] as Color), true)
 	if state == State.TELL:
 		var lt := Vector2(roundf(lock_target.x - pos.x), roundf(lock_target.y - pos.y))
+		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+		var locked_owl: bool = state_timer <= LOCK_AIM_CUTOFF * _assist_tell_scale()
+		var fred: bool = LxHudFx.flash_reduced()
+		var ring_c: Color = (PAL["coral"] if locked_owl else PAL["sky"]) as Color
+		var hi_c: Color = (PAL["cream"] if locked_owl else PAL["ice"]) as Color
 		var delta: Vector2 = lt - c
 		var dist: float = delta.length()
 		if dist > 6.0:
 			var dir: Vector2 = delta / dist
-			var steps: int = mini(20, int(dist / 8.0))
+			var shift: float = 0.0 if fred else fmod(anim_t * 18.0, 7.0)
+			var steps: int = mini(24, int(dist / 7.0))
 			for di: int in range(steps):
-				var d0: float = float(di) * 8.0 + fmod(anim_t * 16.0, 8.0)
+				var d0: float = float(di) * 7.0 + shift
 				if d0 >= dist - 4.0:
 					break
-				draw_rect(Rect2(roundf(c.x + dir.x * d0), roundf(c.y + dir.y * d0), 1.0, 1.0), (PAL["mauve"] as Color) if (di % 2 == 0) else (PAL["plum"] as Color), true)
+				var p0 := Vector2(roundf(c.x + dir.x * d0), roundf(c.y + dir.y * d0))
+				var p1 := Vector2(roundf(c.x + dir.x * minf(d0 + 3.0, dist - 3.0)), roundf(c.y + dir.y * minf(d0 + 3.0, dist - 3.0)))
+				draw_line(p0, p1, ring_c if (di % 2 == 0) else hi_c, 1.2 if locked_owl else 1.0)
+		# Readable dashed ground target ring matching dive hit radius
+		var fill_a: float = lerpf(0.10, 0.22, prog)
+		draw_circle(lt, DIVE_HIT_R, Color(ring_c, fill_a))
+		var rot_d: float = 0.0 if fred else anim_t * 1.6
+		for si: int in range(8):
+			var a0: float = rot_d + float(si) * (TAU / 8.0)
+			var a1: float = a0 + 0.44
+			draw_arc(lt, DIVE_HIT_R + 1.0, a0, a1, 4, PAL["void"] as Color, 2.2)
+			draw_arc(lt, DIVE_HIT_R, a0, a1, 4, ring_c if (si % 2 == 0 or locked_owl) else hi_c, 1.4)
+		var in_r: float = roundf(lerpf(DIVE_HIT_R * 0.80, 4.0, prog))
+		draw_arc(lt, in_r, 0.0, TAU, 16, hi_c, 1.2)
 		for ci: int in range(4):
 			var cd: Vector2 = Vector2.from_angle(float(ci) * (PI * 0.5))
-			draw_rect(Rect2(roundf(lt.x + cd.x * 3.0), roundf(lt.y + cd.y * 3.0), 1.0, 1.0), PAL["stone"] as Color, true)
+			var t0: Vector2 = (lt + cd * (DIVE_HIT_R - 2.5)).round()
+			var t1: Vector2 = (lt + cd * (DIVE_HIT_R + 2.0)).round()
+			draw_line(t0, t1, PAL["void"] as Color, 2.2)
+			draw_line(t0, t1, hi_c, 1.2)
+		draw_rect(Rect2(lt, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	elif state == State.COMMIT:
 		for si: int in range(-1, 2, 2):
 			var perp := Vector2(-dive_dir.y, dive_dir.x)

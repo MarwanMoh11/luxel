@@ -226,7 +226,7 @@ func _step_position(dt: float) -> void:
 
 func _step_tell(dt: float) -> void:
 	# Gentle aim lock during first portion of bell ring, then freezes angle so Wick can sidestep
-	if state_timer > 0.24:
+	if state_timer > 0.24 * _assist_tell_scale():
 		var to_t: Vector2 = _attention_target() - pos
 		if to_t.length() > 0.01:
 			_turn_toward(to_t.angle(), TRACK_TURN_SPEED * 0.8, dt)
@@ -237,7 +237,7 @@ func _step_tell(dt: float) -> void:
 		shot_dir = Vector2.from_angle(facing)
 		shot_hit = false
 		shot_fired = false
-		_beam_end = pos + shot_dir * BOLT_RANGE
+		_beam_end = pos + shot_dir * _clamped_beam_len(shot_dir, BOLT_RANGE)
 		_emit_sfx("orrery_beam_bolt")
 
 
@@ -332,6 +332,23 @@ func _clamp_rail_point(pt: Vector2) -> Vector2:
 	return pt
 
 
+func _clamped_beam_len(dir: Vector2, max_len: float) -> float:
+	var step_px: float = 8.0
+	var clear_d: float = body_radius + 2.0
+	var d: float = clear_d + step_px
+	while d <= max_len:
+		if not _has_clear_view(pos, pos + dir * d):
+			var mid_d: float = clear_d + step_px * 0.5
+			if mid_d < d and _has_clear_view(pos, pos + dir * mid_d):
+				return mid_d
+			return clear_d
+		clear_d = d
+		d += step_px
+	if clear_d < max_len and not _has_clear_view(pos, pos + dir * max_len):
+		return clear_d
+	return max_len
+
+
 func _has_active_shield() -> bool:
 	return state != State.DEAD and state != State.STAGGER
 
@@ -375,9 +392,10 @@ func _draw_extra(off: Vector2) -> void:
 	var right_d: Vector2 = Vector2.from_angle(facing + CONE_HALF)
 	if state == State.TELL:
 		var fwd_t: Vector2 = Vector2.from_angle(facing)
-		var locked_t: bool = state_timer <= 0.24
+		var locked_t: bool = state_timer <= 0.24 * _assist_tell_scale()
+		var beam_len: float = _clamped_beam_len(fwd_t, BOLT_RANGE)
 		var ray_start: Vector2 = (c + fwd_t * (body_radius + 1.0)).round()
-		var ray_end: Vector2 = (c + fwd_t * BOLT_RANGE).round()
+		var ray_end: Vector2 = (c + fwd_t * beam_len).round()
 		var ray_c: Color = (PAL["coral"] as Color) if locked_t else (PAL["gold"] as Color)
 		draw_line(c, (c + left_d * cone_r).round(), cone_col, 1.0)
 		draw_line(c, (c + right_d * cone_r).round(), cone_col, 1.0)
@@ -386,9 +404,10 @@ func _draw_extra(off: Vector2) -> void:
 			draw_line(ray_start, ray_end, ray_c, 1.5)
 			_draw_star_flare(ray_start, 3.5, PAL["coral"] as Color)
 		else:
-			for bi: int in range(0, 18, 2):
-				var b0: Vector2 = (c + fwd_t * lerpf(body_radius + 2.0, BOLT_RANGE, float(bi) / 18.0)).round()
-				var b1: Vector2 = (c + fwd_t * lerpf(body_radius + 2.0, BOLT_RANGE, float(bi + 1) / 18.0)).round()
+			var segs_o: int = maxi(4, int(beam_len / 8.0))
+			for bi: int in range(0, segs_o, 2):
+				var b0: Vector2 = (c + fwd_t * lerpf(body_radius + 2.0, beam_len, float(bi) / float(segs_o))).round()
+				var b1: Vector2 = (c + fwd_t * lerpf(body_radius + 2.0, beam_len, minf(float(bi + 1), float(segs_o)) / float(segs_o))).round()
 				draw_line(b0, b1, ray_c, 1.0)
 			_draw_star_flare(ray_start, 2.5, PAL["gold"] as Color)
 		draw_rect(Rect2(ray_end, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)

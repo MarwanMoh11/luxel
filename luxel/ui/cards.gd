@@ -98,7 +98,10 @@ func _process(delta: float) -> void:
 			_finish_ending()
 			return
 	elif mode == Mode.CREDITS:
-		var fast_fwd: bool = Input.is_key_pressed(KEY_DOWN) or Input.is_key_pressed(KEY_SPACE) or (InputMap.has_action("lx_move_down") and Input.is_action_pressed("lx_move_down"))
+		var fast_fwd: bool = Input.is_key_pressed(KEY_DOWN) or Input.is_key_pressed(KEY_SPACE) \
+			or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) \
+			or (InputMap.has_action("lx_move_down") and Input.is_action_pressed("lx_move_down")) \
+			or (InputMap.has_action("lx_ui_accept") and Input.is_action_pressed("lx_ui_accept"))
 		var total_h: float = _credits_total_height()
 		if _scroll_y + total_h >= CREDITS_CLIP_TOP:
 			_scroll_y -= CREDITS_SPEED * (3.2 if fast_fwd else 1.0) * delta
@@ -406,16 +409,26 @@ func _draw_results() -> void:
 	var deaths: int = int(_stats.get("deaths", Lx.state.deaths if Lx.state != null else 0))
 	var embers: int = int(_stats.get("ember_pieces", Lx.state.ember_pieces if Lx.state != null else 0))
 	var relit: int = int(_stats.get("relit_count", Lx.state.relit_islands.size() if Lx.state != null else 0))
+	var harmony: int = int(_stats.get("harmony_count", Lx.state.get_harmony_count() if Lx.state != null else 0))
+	var upg_t: Vector2i = Lx.state.get_upgrade_totals() if Lx.state != null else Vector2i(0, 20)
+	var comp_pct: int = int(_stats.get("completion_pct", Lx.state.get_completion_pct(relit, embers) if Lx.state != null else 0))
 	var rank_key: String = _compute_rank_key(deaths, relit)
 	LxEndingArt.draw_results_ornaments(self, RESULTS_PANEL, rank_key, _elapsed, relit)
 
 	var p: float = clampf(_elapsed / 0.35, 0.0, 1.0)
 	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_TITLE"), Vector2(160.0, 34.0), p, "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
 	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_RANK_FMT", [LxStrings.text(rank_key)]), 160.0, 56.0, LxEndingArt.rank_text_color(rank_key), 2)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_TIME_FMT", [LxStrings.format_time(play_s)]), Vector2(160.0, 78.0), clampf((_elapsed - 0.10) / 0.25, 0.0, 1.0), "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_DEATHS_FMT", [deaths]), Vector2(160.0, 90.0), clampf((_elapsed - 0.18) / 0.25, 0.0, 1.0), "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_EMBERS_FMT", [embers]), Vector2(160.0, 102.0), clampf((_elapsed - 0.26) / 0.25, 0.0, 1.0), "apricot", 1, HORIZONTAL_ALIGNMENT_CENTER)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(160.0, 114.0), clampf((_elapsed - 0.34) / 0.25, 0.0, 1.0), "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	var p1: float = clampf((_elapsed - 0.10) / 0.25, 0.0, 1.0)
+	var p2: float = clampf((_elapsed - 0.18) / 0.25, 0.0, 1.0)
+	var p3: float = clampf((_elapsed - 0.26) / 0.25, 0.0, 1.0)
+	var p4: float = clampf((_elapsed - 0.34) / 0.25, 0.0, 1.0)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_TIME_FMT", [LxStrings.format_time(play_s)]), Vector2(92.0, 78.0), p1, "cream", 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_COMPLETION_FMT", [comp_pct]), Vector2(228.0, 78.0), p1, "lime" if comp_pct >= 100 else "gold", 1, HORIZONTAL_ALIGNMENT_RIGHT)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_DEATHS_FMT", [deaths]), Vector2(92.0, 90.0), p2, "cream", 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_UPGRADES_FMT", [upg_t.x, upg_t.y]), Vector2(228.0, 90.0), p2, "sky", 1, HORIZONTAL_ALIGNMENT_RIGHT)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_EMBERS_FMT", [embers]), Vector2(92.0, 102.0), p3, "apricot", 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_HARMONY_FMT", [harmony]), Vector2(228.0, 102.0), p3, "gold", 1, HORIZONTAL_ALIGNMENT_RIGHT)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(160.0, 114.0), p4, "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
 	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_HINT"), Vector2(160.0, 143.0), clampf((_elapsed - 0.42) / 0.25, 0.0, 1.0), "stone", 1, HORIZONTAL_ALIGNMENT_CENTER)
 
 

@@ -206,7 +206,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.16:
+	if state_timer > 0.16 * _assist_tell_scale():
 		var to_t: Vector2 = _attention_target() - pos
 		if to_t.length() > 0.01:
 			_turn_toward(to_t.angle(), 2.2, dt)

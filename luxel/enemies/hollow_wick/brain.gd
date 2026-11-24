@@ -206,7 +206,7 @@ func _begin_move_tell(target: Vector2) -> void:
 	_emit_sfx("hollow_wick_tell")
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.16:
+	if state_timer > 0.16 * _assist_tell_scale():
 		var target_now: Vector2 = _attention_target()
 		var to_t: Vector2 = target_now - pos
 		if to_t.length() > 0.01:

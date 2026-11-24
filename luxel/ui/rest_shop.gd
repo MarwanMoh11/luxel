@@ -6,6 +6,7 @@ signal closed()
 signal upgrade_bought(upgrade_id: String, new_rank: int)
 
 const PANEL_RECT := Rect2(20.0, 12.0, 280.0, 156.0)
+const VISIBLE_ROWS: int = 6
 const SPARK_DUR: float = 0.45
 
 const ICON_PAL: Dictionary = {
@@ -19,15 +20,19 @@ const UPGRADE_ICONS: Dictionary = {
 	"bolt_rate": ["...cg..", "..cga..", ".cgag..", "..agac.", ".s.gag.", "..cga..", ".s.a..."],
 	"throw_damage": ["..aga..", ".dgggd.", ".a.c.a.", ".acgca.", ".a.g.a.", ".dgggd.", "..ddd.."],
 	"dash_cooldown": [".g...g.", "gg.c.gg", "agacaga", ".a.c.a.", ".s.g.s.", "..s.s..", "...a..."],
-	"ember_meter": [".rr.rr.", "ragagar", "ragcgar", "raggagr", ".rgggr.", "..rar..", "...w..."],
 	"prism_bounce": ["...g...", "..iic..", ".iissc.", ".iissb.", "gisbbbg", ".gbbbg.", "..ddd.."],
+	"beam_charge": [".....c.", "....cg.", "..iicg.", ".isccag", "..iicg.", "....cg.", ".....c."],
+	"wings_glide": [".i...i.", "iis.sii", "iscccsi", ".sgggs.", "..aga..", "..d.d..", "......."],
+	"lens_duration": ["..sss..", ".siiis.", "siiccis", "sicgcis", "siiccis", ".siiis.", "..bbb.."],
+	"ember_meter": [".rr.rr.", "ragagar", "ragcgar", "raggagr", ".rgggr.", "..rar..", "...w..."],
 }
 const DEFAULT_ICON: Array[String] = ["...g...", "..gag..", ".gacag.", "..gag..", "...g...", ".......", "......."]
 
 var _upgrades: Array[Dictionary] = []
 var _idx: int = 0
+var _scroll: int = 0
 var _close_hover: bool = false
-var _feedback_key: String = ""
+var _feedback_txt: String = ""
 var _feedback_col: String = "lime"
 var _feedback_t: float = 0.0
 var _elapsed: float = 0.0
@@ -38,59 +43,37 @@ var _deny_row: int = -1
 var _deny_t: float = 0.0
 
 
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	visible = false
-
+func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; visible = false
+func close() -> void: visible = false
 
 func open() -> void:
 	_load_upgrades()
-	_idx = 0
-	_feedback_key = ""
-	_feedback_t = 0.0
-	_elapsed = 0.0
-	_spark_row = -1
-	_spark_pip = -1
-	_spark_t = 0.0
-	_deny_row = -1
-	_deny_t = 0.0
+	_idx = 0; _scroll = 0; _feedback_txt = ""; _feedback_t = 0.0; _elapsed = 0.0
+	_spark_row = -1; _spark_pip = -1; _spark_t = 0.0; _deny_row = -1; _deny_t = 0.0
 	visible = true
 	_play_ui_sfx("menu_open")
 	queue_redraw()
 
-
-func close() -> void:
-	visible = false
-
-
 func _load_upgrades() -> void:
 	_upgrades.clear()
-	if Lx.data_upgrades.is_empty():
-		Lx.load_all_data()
+	if Lx.data_upgrades.is_empty(): Lx.load_all_data()
 	var arr: Variant = Lx.data_upgrades.get("upgrades", [])
 	if arr is Array:
 		for item: Variant in (arr as Array):
-			if item is Dictionary:
-				_upgrades.append(item as Dictionary)
-
+			if item is Dictionary: _upgrades.append(item as Dictionary)
 
 func _process(delta: float) -> void:
-	if not visible:
-		return
+	if not visible: return
 	_elapsed += delta
 	if _feedback_t > 0.0:
 		_feedback_t = maxf(0.0, _feedback_t - delta)
-		if _feedback_t <= 0.0:
-			_feedback_key = ""
+		if _feedback_t <= 0.0: _feedback_txt = ""
 	if _spark_t > 0.0:
 		_spark_t = maxf(0.0, _spark_t - delta)
-		if _spark_t <= 0.0:
-			_spark_row = -1
-			_spark_pip = -1
+		if _spark_t <= 0.0: _spark_row = -1; _spark_pip = -1
 	if _deny_t > 0.0:
 		_deny_t = maxf(0.0, _deny_t - delta)
-		if _deny_t <= 0.0:
-			_deny_row = -1
+		if _deny_t <= 0.0: _deny_row = -1
 	queue_redraw()
 
 
@@ -105,10 +88,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			if over_close:
 				_play_ui_sfx("ui_move")
 			queue_redraw()
-		for i: int in range(_upgrades.size()):
-			if _row_rect(i).has_point(pos):
-				if _idx != i:
-					_idx = i
+		for vis_i: int in range(VISIBLE_ROWS):
+			var row_i: int = _scroll + vis_i
+			if row_i >= _upgrades.size():
+				break
+			if _row_rect(vis_i).has_point(pos):
+				if _idx != row_i:
+					_idx = row_i
 					_play_ui_sfx("ui_move")
 					queue_redraw()
 				return
@@ -121,9 +107,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				closed.emit()
 				get_viewport().set_input_as_handled()
 				return
-			for i: int in range(_upgrades.size()):
-				if _row_rect(i).has_point(mb.position):
-					_idx = i
+			for vis_i: int in range(VISIBLE_ROWS):
+				var row_i: int = _scroll + vis_i
+				if row_i >= _upgrades.size():
+					break
+				if _row_rect(vis_i).has_point(mb.position):
+					_idx = row_i
 					_try_buy(_idx)
 					get_viewport().set_input_as_handled()
 					return
@@ -131,16 +120,28 @@ func _unhandled_input(event: InputEvent) -> void:
 			_play_ui_sfx("menu_close")
 			closed.emit()
 			get_viewport().set_input_as_handled()
+		elif mb.pressed and (mb.button_index == MOUSE_BUTTON_WHEEL_UP or mb.button_index == MOUSE_BUTTON_WHEEL_DOWN):
+			var max_s: int = maxi(0, _upgrades.size() - VISIBLE_ROWS)
+			var delta_s: int = -1 if mb.button_index == MOUSE_BUTTON_WHEEL_UP else 1
+			var next_s: int = clampi(_scroll + delta_s, 0, max_s)
+			if next_s != _scroll:
+				_scroll = next_s
+				_idx = clampi(_idx, _scroll, mini(_upgrades.size() - 1, _scroll + VISIBLE_ROWS - 1))
+				_play_ui_sfx("ui_move")
+				queue_redraw()
+			get_viewport().set_input_as_handled()
 		return
 
 	var count: int = maxi(1, _upgrades.size())
 	if event.is_action_pressed("lx_move_up") or _key_just(event, KEY_UP):
 		_idx = (_idx - 1 + count) % count
+		_sync_scroll()
 		_play_ui_sfx("ui_move")
 		queue_redraw()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_down") or _key_just(event, KEY_DOWN):
 		_idx = (_idx + 1) % count
+		_sync_scroll()
 		_play_ui_sfx("ui_move")
 		queue_redraw()
 		get_viewport().set_input_as_handled()
@@ -153,14 +154,28 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+func _sync_scroll() -> void:
+	if _idx < _scroll:
+		_scroll = _idx
+	elif _idx >= _scroll + VISIBLE_ROWS:
+		_scroll = _idx - VISIBLE_ROWS + 1
+
+
 func _try_buy(i: int) -> void:
 	if i < 0 or i >= _upgrades.size() or Lx.state == null:
 		return
 	var u: Dictionary = _upgrades[i]
 	var uid: String = str(u.get("id", ""))
-	if Lx.state.buy_upgrade(uid):
+	if not Lx.state.is_upgrade_unlocked(uid):
+		_feedback_txt = LxStrings.fmt("SHOP_NEED_MOVE_FMT", [_req_move_name(u)])
+		_feedback_col = "coral"
+		_feedback_t = 1.3
+		_deny_row = i
+		_deny_t = 0.22
+		_play_ui_sfx("denied")
+	elif Lx.state.buy_upgrade(uid):
 		var new_rank: int = Lx.state.get_upgrade_rank(uid)
-		_feedback_key = "SHOP_BOUGHT"
+		_feedback_txt = LxStrings.text("SHOP_BOUGHT")
 		_feedback_col = "lime"
 		_feedback_t = 1.6
 		_spark_row = i
@@ -171,8 +186,9 @@ func _try_buy(i: int) -> void:
 			Lx.events.save_requested.emit("upgrade")
 		upgrade_bought.emit(uid, new_rank)
 	else:
-		_feedback_key = "SHOP_MAXED" if Lx.state.get_upgrade_rank(uid) >= int(u.get("max_rank", 0)) else "SHOP_NO_SHARDS"
-		_feedback_col = "stone" if _feedback_key == "SHOP_MAXED" else "coral"
+		var is_max: bool = Lx.state.get_upgrade_rank(uid) >= int(u.get("max_rank", 0))
+		_feedback_txt = LxStrings.text("SHOP_MAXED" if is_max else "SHOP_NO_SHARDS")
+		_feedback_col = "stone" if is_max else "coral"
 		_feedback_t = 1.2
 		_deny_row = i
 		_deny_t = 0.22
@@ -189,26 +205,49 @@ func _draw() -> void:
 	LxPixelFont.draw_left(self, LxStrings.text("SHOP_TITLE"), Vector2(38.0, 18.0), LxBiomePalette.col(isl, "glow"), 1)
 	var title_end: float = 38.0 + float(LxPixelFont.width(LxStrings.text("SHOP_TITLE"), 1)) + 8.0
 	LxHudFx.draw_biome_crest(self, isl, Vector2(title_end, 20.0), LxBiomePalette.col(isl, "glow"), LxPalette.PAL["cream"] as Color)
+
 	var shards: int = Lx.state.shards if Lx.state != null else 0
 	var shard_txt: String = LxStrings.fmt("SHOP_SHARDS_FMT", [shards])
 	var gem_x: float = 292.0 - float(LxPixelFont.width(shard_txt, 1)) - 10.0
 	_draw_shard_gem_icon(Vector2(gem_x, 16.0))
 	LxPixelFont.draw_right(self, shard_txt, 292.0, 18.0, LxPalette.PAL["cream"] if _spark_t > 0.24 else LxPalette.PAL["apricot"], 1)
+
+	# Total upgrades progress badge (X/Y) in header.
+	var prog: Vector2i = Lx.state.get_upgrade_totals() if Lx.state != null else Vector2i(0, 20)
+	var prog_txt: String = LxStrings.fmt("SHOP_PROGRESS_FMT", [prog.x, prog.y])
+	var pw: float = float(LxPixelFont.width(prog_txt, 1)) + 8.0
+	var all_done: bool = prog.y > 0 and prog.x >= prog.y
+	var pill_r := Rect2(roundf(gem_x - pw - 6.0), 15.0, pw, 11.0)
+	LxPixelFont.draw_panel(self, pill_r, "night", "lime" if all_done else "mauve", "void")
+	LxPixelFont.draw_centered(self, prog_txt, pill_r.get_center().x, 18.0, LxPalette.PAL["lime" if all_done else "cream"], 1)
+
 	LxPixelFont.draw_left(self, LxStrings.text("SHOP_SUBTITLE"), Vector2(28.0, 27.0), LxPalette.PAL["stone"], 1)
 
-	for i: int in range(_upgrades.size()):
-		_draw_upgrade_row(i, _upgrades[i])
+	for vis_i: int in range(VISIBLE_ROWS):
+		var row_i: int = _scroll + vis_i
+		if row_i >= _upgrades.size():
+			break
+		_draw_upgrade_row(vis_i, row_i, _upgrades[row_i])
+	_draw_scrollbar()
 
-	# Selected item description box with right-aligned shard-balance preview pill.
-	var desc_rect := Rect2(28.0, 134.0, 264.0, 18.0)
+	# Selected item description + live mechanical stat-delta + shard-balance preview pill.
+	var desc_rect := Rect2(28.0, 129.0, 264.0, 23.0)
 	LxPixelFont.draw_panel(self, desc_rect, "night", "mauve", "void")
-	if not _feedback_key.is_empty():
-		LxPixelFont.draw_centered(self, LxStrings.text(_feedback_key), 160.0, 140.0, LxPalette.color(_feedback_col), 1)
+	if not _feedback_txt.is_empty():
+		LxPixelFont.draw_centered(self, _feedback_txt, 160.0, 138.0, LxPalette.color(_feedback_col), 1)
 	elif _idx >= 0 and _idx < _upgrades.size():
 		var sel_u: Dictionary = _upgrades[_idx]
+		var sel_uid: String = str(sel_u.get("id", ""))
+		var unlocked: bool = Lx.state == null or Lx.state.is_upgrade_unlocked(sel_uid)
 		var desc_key: String = str(sel_u.get("desc_key", ""))
-		LxPixelFont.draw_left(self, LxStrings.text(desc_key), Vector2(35.0, 140.0), LxPalette.PAL["cream"], 1)
-		_draw_shard_preview_pill(desc_rect, sel_u, shards)
+		if not unlocked:
+			LxPixelFont.draw_left(self, LxStrings.fmt("SHOP_NEED_MOVE_FMT", [_req_move_name(sel_u)]), Vector2(34.0, 133.0), LxPalette.PAL["coral"], 1)
+			LxPixelFont.draw_left(self, LxStrings.text(desc_key), Vector2(34.0, 142.0), LxPalette.PAL["stone"], 1)
+		else:
+			LxPixelFont.draw_left(self, LxStrings.text(desc_key), Vector2(34.0, 133.0), LxPalette.PAL["cream"], 1)
+			var is_max: bool = Lx.state != null and Lx.state.get_upgrade_rank(sel_uid) >= int(sel_u.get("max_rank", 1))
+			LxPixelFont.draw_left(self, _stat_delta_text(sel_u), Vector2(34.0, 142.0), LxPalette.PAL["lime" if is_max else "sky"], 1)
+		_draw_shard_preview_pill(desc_rect, sel_u, shards, unlocked)
 
 	LxPixelFont.draw_left(self, LxStrings.text("SHOP_BUY_HINT"), Vector2(28.0, 157.0), LxPalette.PAL["stone"], 1)
 	var cr: Rect2 = _close_btn_rect()
@@ -216,13 +255,27 @@ func _draw() -> void:
 	LxPixelFont.draw_centered(self, LxStrings.text("SHOP_CLOSE"), cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["gold"] if _close_hover else LxPalette.PAL["cream"], 1)
 
 
-func _draw_upgrade_row(i: int, u: Dictionary) -> void:
-	var r: Rect2 = _row_rect(i)
-	var denied: bool = _deny_t > 0.0 and i == _deny_row
+func _draw_scrollbar() -> void:
+	if _upgrades.size() <= VISIBLE_ROWS:
+		return
+	var track := Rect2(289.0, 38.0, 3.0, 88.0)
+	draw_rect(track.grow(1.0), LxPalette.PAL["night"])
+	draw_rect(track, LxPalette.PAL["void"])
+	var thumb_h: float = maxf(14.0, track.size.y * float(VISIBLE_ROWS) / float(_upgrades.size()))
+	var frac: float = float(_scroll) / float(maxi(1, _upgrades.size() - VISIBLE_ROWS))
+	var thumb_y: float = roundf(track.position.y + (track.size.y - thumb_h) * frac)
+	draw_rect(Rect2(track.position.x, thumb_y, track.size.x, roundf(thumb_h)), LxPalette.PAL["gold"])
+	draw_rect(Rect2(track.position.x, thumb_y, track.size.x, 1.0), LxPalette.PAL["cream"])
+
+
+func _draw_upgrade_row(vis_i: int, row_i: int, u: Dictionary) -> void:
+	var r: Rect2 = _row_rect(vis_i)
+	var denied: bool = _deny_t > 0.0 and row_i == _deny_row
 	if denied and LxHudFx.shake_enabled():
 		r.position.x += roundf(sin(_deny_t * 54.0) * 1.6)
-	var sel: bool = i == _idx
+	var sel: bool = row_i == _idx
 	var uid: String = str(u.get("id", ""))
+	var unlocked: bool = Lx.state == null or Lx.state.is_upgrade_unlocked(uid)
 	var rank: int = Lx.state.get_upgrade_rank(uid) if Lx.state != null else 0
 	var max_rank: int = int(u.get("max_rank", 1))
 	var costs: Array = u.get("costs", []) as Array
@@ -230,33 +283,37 @@ func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 	var affordable: bool = Lx.state != null and Lx.state.can_buy_upgrade(uid)
 
 	if sel:
-		LxPixelFont.draw_panel(self, r, "plum", "coral" if denied else "gold", "night")
+		var fill_k: String = "night" if not unlocked else "plum"
+		var bdr_k: String = "coral" if denied else ("mauve" if not unlocked else "gold")
+		LxPixelFont.draw_panel(self, r, fill_k, bdr_k, "night")
 		var bob: float = 0.0 if (denied or LxHudFx.flash_reduced()) else (1.0 if fmod(_elapsed * 3.0, 1.0) < 0.5 else 0.0)
 		var cx: float = 23.0 + bob
 		var cy: float = r.position.y + 4.0
-		var c_out: Color = LxPalette.PAL["coral"] if denied else LxPalette.PAL["gold"]
-		var c_hi: Color = LxPalette.PAL["apricot"] if denied else LxPalette.PAL["cream"]
+		var c_out: Color = LxPalette.PAL["coral"] if denied else (LxPalette.PAL["mauve"] if not unlocked else LxPalette.PAL["gold"])
+		var c_hi: Color = LxPalette.PAL["apricot"] if denied else (LxPalette.PAL["stone"] if not unlocked else LxPalette.PAL["cream"])
 		draw_rect(Rect2(cx - 1.0, cy - 1.0, 3.0, 7.0), LxPalette.PAL["void"])
 		draw_rect(Rect2(cx, cy, 1.0, 5.0), c_out)
 		draw_rect(Rect2(cx + 1.0, cy + 1.0, 1.0, 3.0), c_hi)
 		draw_rect(Rect2(cx + 2.0, cy + 2.0, 1.0, 1.0), c_out)
 	else:
-		LxPixelFont.draw_panel(self, r, "night", "dusk", "void")
+		LxPixelFont.draw_panel(self, r, "void" if not unlocked else "night", "night" if not unlocked else "dusk", "void")
 
-	_draw_upgrade_icon(r.position + Vector2(5.0, 3.0), uid, sel)
+	_draw_upgrade_icon(r.position + Vector2(5.0, 3.0), uid, sel and unlocked, not unlocked)
 	var name_key: String = str(u.get("name_key", ""))
-	var name_col: Color = LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"]
+	var name_col: Color = (LxPalette.PAL["stone"] if sel else LxPalette.PAL["mauve"]) if not unlocked else (LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"])
 	LxPixelFont.draw_left(self, LxStrings.text(name_key), r.position + Vector2(16.0, 4.0), name_col, 1)
 
-	# Polished glowing crystal rank pips.
-	var pip_x: float = r.position.x + 150.0
+	# Polished glowing crystal rank pips (up to 4).
+	var pip_x: float = r.position.x + 140.0
 	for p: int in range(max_rank):
 		var pr := Rect2(pip_x + float(p * 8), r.position.y + 4.0, 5.0, 5.0)
-		_draw_rank_pip(pr, p < rank, sel, p, sel and not maxed and affordable and p == rank)
-	if _spark_t > 0.0 and i == _spark_row and _spark_pip >= 0:
+		_draw_rank_pip(pr, p < rank, sel and unlocked, p, unlocked and sel and not maxed and affordable and p == rank)
+	if _spark_t > 0.0 and row_i == _spark_row and _spark_pip >= 0:
 		_draw_purchase_sparkle(Vector2(pip_x + float(_spark_pip * 8) + 2.0, r.position.y + 6.0))
 
-	if maxed:
+	if not unlocked:
+		LxPixelFont.draw_right(self, LxStrings.text("SHOP_LOCKED_MOVE"), r.end.x - 6.0, r.position.y + 4.0, LxPalette.PAL["coral"] if denied else LxPalette.PAL["mauve"], 1)
+	elif maxed:
 		LxPixelFont.draw_right(self, LxStrings.text("SHOP_MAXED"), r.end.x - 6.0, r.position.y + 4.0, LxPalette.PAL["lime"], 1)
 	else:
 		var cost: int = int(costs[rank]) if rank < costs.size() else 0
@@ -264,15 +321,22 @@ func _draw_upgrade_row(i: int, u: Dictionary) -> void:
 		LxPixelFont.draw_right(self, LxStrings.fmt("SHOP_COST_FMT", [cost]), r.end.x - 6.0, r.position.y + 4.0, c_col, 1)
 
 
-func _draw_shard_preview_pill(desc_rect: Rect2, u: Dictionary, shards: int) -> void:
+func _draw_shard_preview_pill(desc_rect: Rect2, u: Dictionary, shards: int, unlocked: bool) -> void:
 	var uid: String = str(u.get("id", ""))
 	var rank: int = Lx.state.get_upgrade_rank(uid) if Lx.state != null else 0
 	var max_rank: int = int(u.get("max_rank", 1))
 	var costs: Array = u.get("costs", []) as Array
 	var maxed: bool = rank >= max_rank
 	var pill_h: float = 11.0
-	var py: float = desc_rect.position.y + 3.0
+	var py: float = desc_rect.position.y + 6.0
 	var pr_end: float = desc_rect.end.x - 5.0
+	if not unlocked:
+		var l_txt: String = LxStrings.text("SHOP_LOCKED_MOVE")
+		var lw: float = float(LxPixelFont.width(l_txt, 1)) + 10.0
+		var lpill := Rect2(pr_end - lw, py, lw, pill_h)
+		LxPixelFont.draw_panel(self, lpill, "void", "coral", "night")
+		LxPixelFont.draw_centered(self, l_txt, lpill.get_center().x, py + 3.0, LxPalette.PAL["coral"], 1)
+		return
 	if maxed:
 		var m_txt: String = LxStrings.text("SHOP_MAXED")
 		var mw: float = float(LxPixelFont.width(m_txt, 1)) + 10.0
@@ -305,6 +369,68 @@ func _draw_shard_preview_pill(desc_rect: Rect2, u: Dictionary, shards: int) -> v
 	LxPixelFont.draw_left(self, after_txt, Vector2(ax + 8.0, gy), LxPalette.PAL["gold"] if affordable else LxPalette.PAL["coral"], 1)
 
 
+func _req_move_name(u: Dictionary) -> String:
+	var req: String = str(u.get("requires_move", ""))
+	if req.is_empty():
+		return ""
+	var mdata: Dictionary = Lx.get_move_data(req)
+	var mkey: String = str(mdata.get("name_key", ""))
+	if not mkey.is_empty() and LxStrings.has_id(mkey):
+		return LxStrings.text(mkey)
+	return LxStrings.sanitize(req, 16)
+
+
+func _stat_delta_text(u: Dictionary) -> String:
+	var uid: String = str(u.get("id", ""))
+	var rank: int = Lx.state.get_upgrade_rank(uid) if Lx.state != null else 0
+	var vals: Array = u.get("values", []) as Array
+	var cur_v: float = _current_stat_val(uid)
+	if rank >= vals.size():
+		return LxStrings.fmt("SHOP_STAT_MAX_FMT", [_fmt_stat_val(uid, cur_v)])
+	var nxt_v: float = float(vals[rank])
+	return LxStrings.fmt("SHOP_DELTA_FMT", [_fmt_stat_val(uid, cur_v), _fmt_stat_val(uid, nxt_v)])
+
+
+func _current_stat_val(uid: String) -> float:
+	if Lx.state == null:
+		return 0.0
+	match uid:
+		"bolt_damage": return Lx.state.get_effective_bolt_damage()
+		"bolt_rate": return Lx.state.get_effective_bolt_cooldown()
+		"throw_damage": return Lx.state.get_effective_throw_damage()
+		"dash_cooldown": return Lx.state.get_effective_dash_cooldown()
+		"prism_bounce": return float(Lx.state.get_effective_prism_bounces())
+		"beam_charge": return Lx.state.get_effective_beam_charge()
+		"wings_glide": return Lx.state.get_effective_wings_glide()
+		"lens_duration": return Lx.state.get_effective_lens_duration()
+		"ember_meter": return Lx.state.get_effective_ember_max()
+	return 0.0
+
+
+func _fmt_stat_val(uid: String, v: float) -> String:
+	match uid:
+		"prism_bounce", "ember_meter":
+			return str(roundi(v))
+		"wings_glide":
+			return LxStrings.fmt("SHOP_UNIT_PX_FMT", [str(roundi(v))])
+		"bolt_rate":
+			var s3: String = "%.3f" % v
+			if s3.ends_with("0"):
+				s3 = s3.substr(0, s3.length() - 1)
+			return LxStrings.fmt("SHOP_UNIT_SEC_FMT", [s3])
+		"dash_cooldown", "beam_charge":
+			return LxStrings.fmt("SHOP_UNIT_SEC_FMT", ["%.2f" % v])
+		"lens_duration":
+			return LxStrings.fmt("SHOP_UNIT_SEC_FMT", ["%.1f" % v])
+		"throw_damage":
+			var st: String = "%.2f" % v
+			if st.ends_with("0"):
+				st = st.substr(0, st.length() - 1)
+			return st
+		_:
+			return "%.2f" % v
+
+
 func _draw_frame_ornaments(isl: int) -> void:
 	var p: Vector2 = PANEL_RECT.position
 	var e: Vector2 = PANEL_RECT.end
@@ -312,7 +438,6 @@ func _draw_frame_ornaments(isl: int) -> void:
 	var apr: Color = LxBiomePalette.col(isl, "hi")
 	var dusk: Color = LxPalette.PAL["dusk"]
 	var night: Color = LxPalette.PAL["night"]
-	# Corner rivets with shadow depth.
 	for rv: Vector2 in [
 		Vector2(p.x + 3.0, p.y + 3.0), Vector2(e.x - 5.0, p.y + 3.0),
 		Vector2(p.x + 3.0, e.y - 5.0), Vector2(e.x - 5.0, e.y - 5.0),
@@ -320,7 +445,6 @@ func _draw_frame_ornaments(isl: int) -> void:
 		draw_rect(Rect2(rv + Vector2(1.0, 1.0), Vector2(2.0, 2.0)), night)
 		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), apr)
 		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), gold)
-	# Filigree divider beneath header.
 	var dy: float = 35.0
 	draw_rect(Rect2(28.0, dy, 264.0, 1.0), night)
 	draw_rect(Rect2(32.0, dy, 256.0, 1.0), dusk)
@@ -331,8 +455,7 @@ func _draw_frame_ornaments(isl: int) -> void:
 	draw_rect(Rect2(158.0, dy, 5.0, 1.0), apr)
 	draw_rect(Rect2(159.0, dy - 1.0, 3.0, 3.0), gold)
 	draw_rect(Rect2(160.0, dy, 1.0, 1.0), LxPalette.PAL["cream"])
-	var fr_s: bool = LxHudFx.flash_reduced()
-	if not fr_s:
+	if not LxHudFx.flash_reduced():
 		for ei: int in range(4):
 			var eu: float = fposmod(_elapsed * 0.28 + float(ei) * 0.25, 1.0)
 			var ex: float = (p.x + 3.0 + float(ei % 2) * 2.0) if ei < 2 else (e.x - 5.0 + float(ei % 2))
@@ -341,12 +464,8 @@ func _draw_frame_ornaments(isl: int) -> void:
 			if ea > 0.05:
 				draw_rect(Rect2(ex, ey, 1.0, 1.0), Color((LxPalette.PAL["cream"] as Color) if ei % 2 == 0 else gold, ea))
 	if Lx.state != null and not _upgrades.is_empty():
-		var all_max: bool = true
-		for u_m: Dictionary in _upgrades:
-			if Lx.state.get_upgrade_rank(str(u_m.get("id", ""))) < int(u_m.get("max_rank", 1)):
-				all_max = false
-				break
-		if all_max:
+		var tot: Vector2i = Lx.state.get_upgrade_totals()
+		if tot.y > 0 and tot.x >= tot.y:
 			draw_rect(Rect2(158.0, dy, 5.0, 1.0), LxPalette.PAL["gold"])
 			draw_rect(Rect2(160.0, dy - 2.0, 1.0, 5.0), LxPalette.PAL["gold"])
 			draw_rect(Rect2(160.0, dy, 1.0, 1.0), LxPalette.PAL["cream"])
@@ -374,7 +493,6 @@ func _draw_brazier_icon(at: Vector2, isl: int) -> void:
 	draw_rect(Rect2(x + 1.0, y + 2.0, 5.0, 2.0), c_hi)
 	draw_rect(Rect2(x + 2.0, y + 2.0, 3.0, 2.0), c_glow)
 	draw_rect(Rect2(x + 3.0, y + 3.0, 1.0, 1.0), c_core)
-	# Brazier bowl & pedestal.
 	draw_rect(Rect2(x, y + 4.0, 7.0, 1.0), c_mid)
 	draw_rect(Rect2(x + 1.0, y + 5.0, 5.0, 1.0), c_hi)
 	draw_rect(Rect2(x + 2.0, y + 6.0, 3.0, 1.0), LxPalette.PAL["dusk"])
@@ -397,7 +515,7 @@ func _draw_shard_gem_icon(at: Vector2) -> void:
 		draw_rect(Rect2(x + 5.0, y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
 
 
-func _draw_upgrade_icon(at: Vector2, uid: String, sel: bool) -> void:
+func _draw_upgrade_icon(at: Vector2, uid: String, sel: bool, dimmed: bool = false) -> void:
 	var x: float = roundf(at.x)
 	var y: float = roundf(at.y)
 	var rows: Array = UPGRADE_ICONS.get(uid, DEFAULT_ICON) as Array
@@ -407,9 +525,9 @@ func _draw_upgrade_icon(at: Vector2, uid: String, sel: bool) -> void:
 			var ch: String = row[c_i]
 			if ch == ".":
 				continue
-			var key: String = str(ICON_PAL.get(ch, "cream"))
+			var key: String = ("mauve" if (ch == "c" or ch == "g" or ch == "i") else "dusk") if dimmed else str(ICON_PAL.get(ch, "cream"))
 			draw_rect(Rect2(x + float(c_i), y + float(r_i), 1.0, 1.0), LxPalette.color(key))
-	if sel and (LxHudFx.flash_reduced() or fmod(_elapsed * 3.0, 1.0) < 0.45):
+	if sel and not dimmed and (LxHudFx.flash_reduced() or fmod(_elapsed * 3.0, 1.0) < 0.45):
 		draw_rect(Rect2(x + 6.0, y, 1.0, 1.0), LxPalette.PAL["cream"])
 
 
@@ -448,18 +566,11 @@ func _draw_purchase_sparkle(center: Vector2) -> void:
 		draw_rect(Rect2((center + off).round(), Vector2(1.0, 1.0)), col)
 
 
-func _row_rect(i: int) -> Rect2:
-	return Rect2(28.0, 38.0 + float(i) * 15.0, 264.0, 13.0)
+func _row_rect(vis_i: int) -> Rect2:
+	return Rect2(28.0, 38.0 + float(vis_i) * 15.0, 257.0 if _upgrades.size() > VISIBLE_ROWS else 264.0, 13.0)
 
-
-func _close_btn_rect() -> Rect2:
-	return Rect2(230.0, 154.0, 62.0, 11.0)
-
-
+func _close_btn_rect() -> Rect2: return Rect2(230.0, 154.0, 62.0, 11.0)
 func _play_ui_sfx(sfx_id: String) -> void:
-	if Lx.audio != null:
-		Lx.audio.play_sfx(sfx_id, Vector2.ZERO, false, true)
-
-
+	if Lx.audio != null: Lx.audio.play_sfx(sfx_id, Vector2.ZERO, false, true)
 static func _key_just(event: InputEvent, kc: Key) -> bool:
 	return event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo and (event as InputEventKey).keycode == kc

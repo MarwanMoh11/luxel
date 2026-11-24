@@ -5,17 +5,17 @@
       "id": "bolt_damage",
       "name_key": "UPG_BOLT_DMG_NAME",
       "desc_key": "UPG_BOLT_DMG_DESC",
-      "max_rank": 3,
-      "costs": [25, 60, 120],
-      "values": [0.45, 0.58, 0.72]
+      "max_rank": 4,
+      "costs": [25, 60, 110, 165],
+      "values": [0.45, 0.58, 0.72, 0.86]
     },
     {
       "id": "bolt_rate",
       "name_key": "UPG_BOLT_RATE_NAME",
       "desc_key": "UPG_BOLT_RATE_DESC",
-      "max_rank": 2,
-      "costs": [30, 80],
-      "values": [0.145, 0.12]
+      "max_rank": 3,
+      "costs": [30, 75, 135],
+      "values": [0.145, 0.12, 0.10]
     },
     {
       "id": "throw_damage",
@@ -29,25 +29,55 @@
       "id": "dash_cooldown",
       "name_key": "UPG_DASH_CD_NAME",
       "desc_key": "UPG_DASH_CD_DESC",
+      "requires_move": "dash",
       "max_rank": 2,
       "costs": [35, 90],
       "values": [0.42, 0.32]
     },
     {
-      "id": "ember_meter",
-      "name_key": "UPG_EMBER_NAME",
-      "desc_key": "UPG_EMBER_DESC",
-      "max_rank": 2,
-      "costs": [50, 110],
-      "values": [80.0, 62.0]
-    },
-    {
       "id": "prism_bounce",
       "name_key": "UPG_PRISM_NAME",
       "desc_key": "UPG_PRISM_DESC",
+      "requires_move": "prism",
       "max_rank": 1,
       "costs": [65],
       "values": [4]
+    },
+    {
+      "id": "beam_charge",
+      "name_key": "UPG_BEAM_NAME",
+      "desc_key": "UPG_BEAM_DESC",
+      "requires_move": "beam",
+      "max_rank": 2,
+      "costs": [80, 175],
+      "values": [0.48, 0.38]
+    },
+    {
+      "id": "wings_glide",
+      "name_key": "UPG_WINGS_NAME",
+      "desc_key": "UPG_WINGS_DESC",
+      "requires_move": "wings",
+      "max_rank": 2,
+      "costs": [90, 190],
+      "values": [120.0, 148.0]
+    },
+    {
+      "id": "lens_duration",
+      "name_key": "UPG_LENS_NAME",
+      "desc_key": "UPG_LENS_DESC",
+      "requires_move": "lens",
+      "max_rank": 2,
+      "costs": [95, 200],
+      "values": [5.2, 6.5]
+    },
+    {
+      "id": "ember_meter",
+      "name_key": "UPG_EMBER_NAME",
+      "desc_key": "UPG_EMBER_DESC",
+      "requires_move": "sunflare",
+      "max_rank": 2,
+      "costs": [50, 110],
+      "values": [80.0, 62.0]
     }
   ]
 }

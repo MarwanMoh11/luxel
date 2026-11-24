@@ -17,6 +17,9 @@ const RING_MAX_R: float = 56.0
 const RING_BAND: float = 8.5
 const STOMP_R: float = 12.0
 const POST_COOLDOWN: float = 1.05
+const AIR_INTERCEPT_MULT: float = 1.35
+const AIR_STAGGER_TIME: float = 0.60
+const RECOVER_PUNISH_MULT: float = 1.25
 
 var pads: Array[Vector2] = []
 var pad_i: int = 0
@@ -67,6 +70,76 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 
 func is_flying() -> bool:
 	return state == State.COMMIT and commit_stage == CommitStage.LEAP and hop_z > 5.0
+
+
+func take_hit(hit: LxHit) -> int:
+	if state == State.DEAD or hit == null:
+		return HitResult.GLANCED
+	var h: Dictionary = _read_hit(hit)
+	var dmg: float = float(h["damage"])
+	var is_heavy: bool = bool(h["stagger"])
+	var orig: Vector2 = h["origin"] as Vector2
+	var rel: Vector2 = orig - pos
+	var mid_air: bool = is_flying()
+	var post_ring: bool = state == State.RECOVER
+	if mid_air:
+		dmg *= AIR_INTERCEPT_MULT
+	elif post_ring:
+		dmg *= RECOVER_PUNISH_MULT
+	hp -= dmg
+	flash_t = 0.16 if (mid_air or is_heavy) else (0.12 if post_ring else 0.08)
+	if rel.length() > 0.01:
+		var k_spd: float = 125.0 if (mid_air or is_heavy) else 40.0
+		knock = -rel.normalized() * k_spd
+	if mid_air:
+		hop_z = 0.0
+		commit_stage = CommitStage.LEAP
+		ring_progress = 0.0
+		ring_hit = false
+		_spawn_air_splash_fx()
+		_emit_sfx("hopper_air_stagger")
+	if hp <= 0.001:
+		opened_kill = mid_air or post_ring or state == State.STAGGER or state == State.ROUTINE
+		_die(hit)
+		return HitResult.KILLED
+	if mid_air:
+		_release_token()
+		state = State.STAGGER
+		state_timer = AIR_STAGGER_TIME
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
+	if is_heavy:
+		_release_token()
+		hop_z = 0.0
+		state = State.STAGGER
+		state_timer = 1.5 if str(h["source"]) == LxHit.SOURCE_SUNFLARE else 0.45
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
+	if post_ring:
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
+	if state == State.ROUTINE or state == State.RETURN:
+		hop_z = 0.0
+		state = State.NOTICE
+		state_timer = 0.30
+		alert_t = 0.8
+		lost_t = 0.0
+		_emit_sfx("hopper_notice")
+	_emit_enemy_hit(hit, HitResult.CHIPPED)
+	return HitResult.CHIPPED
+
+
+func _spawn_air_splash_fx() -> void:
+	LxDamageFx.boss_impact(pos, 0.10, 50.0, 58.0, 46.0, 1.15, 0.24, "ice")
+	if Lx.player != null and is_instance_valid(Lx.player):
+		var fred: bool = LxHudFx.flash_reduced()
+		if Lx.player.has_method("spawn_ring"):
+			Lx.player.call("spawn_ring", pos, 4.0, 22.0, 0.26, PAL["sky"] as Color, 1.4 if fred else 1.8)
+		if Lx.player.has_method("spawn_sparks"):
+			for si: int in range(4):
+				var sdir: Vector2 = Vector2.from_angle(float(si) * (PI * 0.5) + PI * 0.25)
+				var scol: Color = (PAL["cream"] if si % 2 == 0 else PAL["ice"]) as Color
+				Lx.player.call("spawn_sparks", pos, sdir, 2, scol, 28.0, 76.0, 0.28)
 
 
 func _step_brain(dt: float) -> void:

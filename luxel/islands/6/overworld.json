@@ -123,17 +123,17 @@
       "id": "bellows_kiln_landing_0",
       "kind": "bellows_imp",
       "pos": [
-        232,
-        280
+        280,
+        360
       ],
       "route": [
         [
-          200,
-          280
+          280,
+          360
         ],
         [
-          248,
-          280
+          328,
+          360
         ]
       ],
       "perches": [],
@@ -640,7 +640,8 @@
         256
       ],
       "props": {
-        "zone": "kiln_landing"
+        "zone": "kiln_landing",
+        "lit": true
       }
     },
     {
@@ -674,6 +675,72 @@
       ],
       "props": {
         "zone": "furnace_causeway"
+      }
+    },
+    {
+      "id": "lamp_6_ash_w",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        152
+      ],
+      "props": {
+        "zone": "ash_drifts"
+      }
+    },
+    {
+      "id": "lamp_6_ash_e",
+      "kind": "road_lamp",
+      "pos": [
+        552,
+        152
+      ],
+      "props": {
+        "zone": "ash_drifts"
+      }
+    },
+    {
+      "id": "lamp_6_slag_w",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        376
+      ],
+      "props": {
+        "zone": "slag_foundry"
+      }
+    },
+    {
+      "id": "lamp_6_slag_e",
+      "kind": "road_lamp",
+      "pos": [
+        504,
+        456
+      ],
+      "props": {
+        "zone": "slag_foundry"
+      }
+    },
+    {
+      "id": "lamp_6_cinder_w",
+      "kind": "road_lamp",
+      "pos": [
+        744,
+        424
+      ],
+      "props": {
+        "zone": "cinder_terrace"
+      }
+    },
+    {
+      "id": "lamp_6_cinder_e",
+      "kind": "road_lamp",
+      "pos": [
+        856,
+        328
+      ],
+      "props": {
+        "zone": "cinder_terrace"
       }
     }
   ],
@@ -1574,6 +1641,66 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.75
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "forge_anvil_stand",
+      "pos": [
+        728,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "slag_crucible",
+      "pos": [
+        904,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "bellows_frame",
+      "pos": [
+        712,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        968,
+        424
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
+        1032,
+        456
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
     }
   ]
 }

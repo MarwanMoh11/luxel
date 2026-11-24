@@ -123,16 +123,16 @@
       "id": "lily_hopper_4_entry",
       "kind": "lily_hopper",
       "pos": [
-        328,
+        408,
         552
       ],
       "route": [
         [
-          296,
+          408,
           552
         ],
         [
-          352,
+          456,
           552
         ]
       ],
@@ -353,7 +353,8 @@
       "props": {
         "zone": "fen_landing",
         "lit_by_default": true,
-        "name_key": "ZONE_ISL4_1"
+        "name_key": "ZONE_ISL4_1",
+        "lit": true
       }
     },
     {
@@ -669,7 +670,8 @@
         520
       ],
       "props": {
-        "zone": "fen_landing"
+        "zone": "fen_landing",
+        "lit": true
       }
     },
     {
@@ -1961,6 +1963,66 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "marsh_willow",
+      "pos": [
+        1032,
+        456
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        936,
+        456
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        1048,
+        520
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "glass_cloche_bed",
+      "pos": [
+        888,
+        584
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "stone_bridge_post",
+      "pos": [
+        1000,
+        584
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
     }
   ]
 }

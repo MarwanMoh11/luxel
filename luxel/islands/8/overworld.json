@@ -81,17 +81,17 @@
       "id": "warden_hub_8_0",
       "kind": "warden",
       "pos": [
-        296,
-        1032
+        248,
+        920
       ],
       "route": [
         [
-          264,
-          1032
+          248,
+          936
         ],
         [
-          376,
-          1032
+          248,
+          904
         ]
       ],
       "perches": [],
@@ -586,6 +586,50 @@
       ],
       "props": {
         "zone": "gauntlet_kiln"
+      }
+    },
+    {
+      "id": "lamp_8_tide_s",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        856
+      ],
+      "props": {
+        "zone": "gauntlet_tide"
+      }
+    },
+    {
+      "id": "lamp_8_tide_n",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        776
+      ],
+      "props": {
+        "zone": "gauntlet_tide"
+      }
+    },
+    {
+      "id": "lamp_8_mire_w",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        568
+      ],
+      "props": {
+        "zone": "gauntlet_mire"
+      }
+    },
+    {
+      "id": "lamp_8_mire_e",
+      "kind": "road_lamp",
+      "pos": [
+        552,
+        536
+      ],
+      "props": {
+        "zone": "gauntlet_mire"
       }
     }
   ],
@@ -1416,6 +1460,150 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_harbor_bollard",
+      "pos": [
+        72,
+        760
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "broken_flying_buttress",
+      "pos": [
+        392,
+        760
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        440,
+        792
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "gothic_iron_fence",
+      "pos": [
+        104,
+        856
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        376,
+        872
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "fallen_bell_fragment",
+      "pos": [
+        424,
+        872
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.85
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "remix_thorn_root",
+      "pos": [
+        344,
+        472
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "broken_flying_buttress",
+      "pos": [
+        488,
+        488
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        616,
+        472
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "gothic_iron_fence",
+      "pos": [
+        344,
+        536
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        488,
+        536
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stone_gargoyle_perch",
+      "pos": [
+        616,
+        568
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.9
     }
   ]
 }

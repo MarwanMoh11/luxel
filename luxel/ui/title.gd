@@ -20,6 +20,8 @@ var _elapsed: float = 0.0
 var _main_idx: int = 0
 var _slot_idx: int = 0
 var _confirm_idx: int = 1 # 0 = YES, 1 = NO (safe default)
+var _hover_del: int = -1
+var _hover_back: bool = false
 var _summaries: Array[Dictionary] = []
 var _stars: Array[Dictionary] = []
 var _fireflies: Array[Dictionary] = []
@@ -30,7 +32,7 @@ func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; _build_backdrop(
 
 func open(show_slots: bool = false) -> void:
 	visible = true; mode = Mode.SLOTS if show_slots else Mode.MAIN
-	_elapsed = 0.0; _confirm_idx = 1; refresh_slots(); queue_redraw()
+	_elapsed = 0.0; _confirm_idx = 1; _hover_del = -1; _hover_back = false; refresh_slots(); queue_redraw()
 
 func close() -> void: visible = false
 
@@ -97,131 +99,92 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _input_main(event: InputEvent) -> void:
 	if event.is_action_pressed("lx_move_up") or _key_just(event, KEY_UP):
-		_main_idx = (_main_idx - 1 + MAIN_ITEMS.size()) % MAIN_ITEMS.size()
-		_play_ui_sfx("ui_move")
-		get_viewport().set_input_as_handled()
+		_main_idx = (_main_idx - 1 + MAIN_ITEMS.size()) % MAIN_ITEMS.size(); _play_ui_sfx("ui_move"); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_down") or _key_just(event, KEY_DOWN):
-		_main_idx = (_main_idx + 1) % MAIN_ITEMS.size()
-		_play_ui_sfx("ui_move")
-		get_viewport().set_input_as_handled()
+		_main_idx = (_main_idx + 1) % MAIN_ITEMS.size(); _play_ui_sfx("ui_move"); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
-		_activate_main(_main_idx)
-		get_viewport().set_input_as_handled()
-
+		_activate_main(_main_idx); get_viewport().set_input_as_handled()
 
 func _activate_main(idx: int) -> void:
 	_play_ui_sfx("ui_confirm")
 	match idx:
-		0:
-			refresh_slots()
-			mode = Mode.SLOTS
-		1:
-			options_requested.emit()
-		2:
-			quit_requested.emit()
+		0: refresh_slots(); _hover_del = -1; _hover_back = false; mode = Mode.SLOTS
+		1: options_requested.emit()
+		2: quit_requested.emit()
 	queue_redraw()
-
 
 func _input_slots(event: InputEvent) -> void:
 	if event.is_action_pressed("lx_move_up") or _key_just(event, KEY_UP):
-		_slot_idx = (_slot_idx - 1 + SLOT_COUNT) % SLOT_COUNT
-		_play_ui_sfx("ui_move")
-		get_viewport().set_input_as_handled()
+		_slot_idx = (_slot_idx - 1 + SLOT_COUNT) % SLOT_COUNT; _hover_del = -1; _play_ui_sfx("ui_move"); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_down") or _key_just(event, KEY_DOWN):
-		_slot_idx = (_slot_idx + 1) % SLOT_COUNT
-		_play_ui_sfx("ui_move")
-		get_viewport().set_input_as_handled()
+		_slot_idx = (_slot_idx + 1) % SLOT_COUNT; _hover_del = -1; _play_ui_sfx("ui_move"); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
-		select_slot(_slot_idx + 1)
-		get_viewport().set_input_as_handled()
+		select_slot(_slot_idx + 1); get_viewport().set_input_as_handled()
 	elif _key_just(event, KEY_DELETE) or _key_just(event, KEY_BACKSPACE) or _joy_just(event, JOY_BUTTON_X):
 		if _slot_idx < _summaries.size() and not bool(_summaries[_slot_idx].get("empty", true)):
-			mode = Mode.CONFIRM_DELETE
-			_confirm_idx = 1
-			_play_ui_sfx("ui_move")
+			mode = Mode.CONFIRM_DELETE; _confirm_idx = 1; _hover_del = -1; _hover_back = false; _play_ui_sfx("menu_open")
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
-		mode = Mode.MAIN
-		_play_ui_sfx("ui_back")
-		get_viewport().set_input_as_handled()
-
+		mode = Mode.MAIN; _hover_del = -1; _hover_back = false; _play_ui_sfx("ui_back"); get_viewport().set_input_as_handled()
 
 func _input_confirm(event: InputEvent) -> void:
 	if event.is_action_pressed("lx_move_left") or event.is_action_pressed("lx_move_right") or _key_just(event, KEY_LEFT) or _key_just(event, KEY_RIGHT):
-		_confirm_idx = 1 - _confirm_idx
-		_play_ui_sfx("ui_move")
-		get_viewport().set_input_as_handled()
+		_confirm_idx = 1 - _confirm_idx; _play_ui_sfx("ui_move"); get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
 		if _confirm_idx == 0 and Lx.save != null:
-			Lx.save.delete_slot(_slot_idx + 1)
-			refresh_slots()
-			_play_ui_sfx("ui_confirm")
+			Lx.save.delete_slot(_slot_idx + 1); refresh_slots(); _play_ui_sfx("ui_confirm")
 		else:
 			_play_ui_sfx("ui_back")
-		mode = Mode.SLOTS
-		get_viewport().set_input_as_handled()
+		mode = Mode.SLOTS; get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
-		mode = Mode.SLOTS
-		_play_ui_sfx("ui_back")
-		get_viewport().set_input_as_handled()
-
+		mode = Mode.SLOTS; _play_ui_sfx("ui_back"); get_viewport().set_input_as_handled()
 
 func _handle_mouse_hover(pos: Vector2) -> void:
 	if mode == Mode.MAIN:
 		for i: int in range(MAIN_ITEMS.size()):
 			if _main_btn_rect(i).has_point(pos):
-				if _main_idx != i:
-					_main_idx = i
-					_play_ui_sfx("ui_move")
+				if _main_idx != i: _main_idx = i; _play_ui_sfx("ui_move")
 				return
 	elif mode == Mode.SLOTS:
+		var hb: bool = _back_btn_rect().has_point(pos)
+		if hb != _hover_back:
+			_hover_back = hb
+			if hb: _play_ui_sfx("ui_move")
+		var next_del: int = -1
+		for i: int in range(SLOT_COUNT):
+			if i < _summaries.size() and not bool(_summaries[i].get("empty", true)) and _slot_del_rect(i).has_point(pos):
+				next_del = i
+				break
+		if next_del != _hover_del:
+			_hover_del = next_del
+			if next_del >= 0: _slot_idx = next_del; _play_ui_sfx("ui_move")
+		if next_del >= 0 or hb: return
 		for i: int in range(SLOT_COUNT):
 			if _slot_rect(i).has_point(pos):
-				if _slot_idx != i:
-					_slot_idx = i
-					_play_ui_sfx("ui_move")
+				if _slot_idx != i: _slot_idx = i; _play_ui_sfx("ui_move")
 				return
 	elif mode == Mode.CONFIRM_DELETE:
 		for i: int in range(2):
 			if _confirm_btn_rect(i).has_point(pos):
-				if _confirm_idx != i:
-					_confirm_idx = i
-					_play_ui_sfx("ui_move")
+				if _confirm_idx != i: _confirm_idx = i; _play_ui_sfx("ui_move")
 				return
-
 
 func _handle_mouse_click(pos: Vector2) -> bool:
 	if mode == Mode.MAIN:
 		for i: int in range(MAIN_ITEMS.size()):
-			if _main_btn_rect(i).has_point(pos):
-				_main_idx = i
-				_activate_main(i)
-				return true
+			if _main_btn_rect(i).has_point(pos): _main_idx = i; _activate_main(i); return true
 	elif mode == Mode.SLOTS:
+		if _back_btn_rect().has_point(pos):
+			mode = Mode.MAIN; _hover_back = false; _hover_del = -1; _play_ui_sfx("ui_back"); return true
 		for i: int in range(SLOT_COUNT):
-			var del_r: Rect2 = _slot_del_rect(i)
-			if i < _summaries.size() and not bool(_summaries[i].get("empty", true)) and del_r.has_point(pos):
-				_slot_idx = i
-				mode = Mode.CONFIRM_DELETE
-				_confirm_idx = 1
-				_play_ui_sfx("ui_move")
-				return true
-			if _slot_rect(i).has_point(pos):
-				_slot_idx = i
-				select_slot(i + 1)
-				return true
+			if i < _summaries.size() and not bool(_summaries[i].get("empty", true)) and _slot_del_rect(i).has_point(pos):
+				_slot_idx = i; mode = Mode.CONFIRM_DELETE; _confirm_idx = 1; _hover_del = -1; _hover_back = false; _play_ui_sfx("menu_open"); return true
+			if _slot_rect(i).has_point(pos): _slot_idx = i; select_slot(i + 1); return true
 	elif mode == Mode.CONFIRM_DELETE:
 		if _confirm_btn_rect(0).has_point(pos):
-			if Lx.save != null:
-				Lx.save.delete_slot(_slot_idx + 1)
-				refresh_slots()
-			_play_ui_sfx("ui_confirm")
-			mode = Mode.SLOTS
-			return true
-		if _confirm_btn_rect(1).has_point(pos):
-			_play_ui_sfx("ui_back")
-			mode = Mode.SLOTS
-			return true
+			if Lx.save != null: Lx.save.delete_slot(_slot_idx + 1); refresh_slots()
+			_play_ui_sfx("ui_confirm"); mode = Mode.SLOTS; return true
+		if _confirm_btn_rect(1).has_point(pos): _play_ui_sfx("ui_back"); mode = Mode.SLOTS; return true
 	return false
 
 
@@ -510,29 +473,50 @@ func _draw_slots() -> void:
 			var isl_name: String = LxStrings.sanitize(str(isl_data.get("name", "")), 20)
 			var relit: int = int(info.get("relit_count", 0))
 			var relit_arr: Array = info.get("relit_islands", []) as Array
+			var harm_cnt: int = int(info.get("harmony_count", 0))
+			var harm_arr: Array = info.get("harmony_islands", []) as Array
+			var hearts: int = int(info.get("hearts", 4))
 			var time_str: String = LxStrings.format_time(float(info.get("play_time_s", 0.0)))
 			var meta: String = LxStrings.fmt("SLOT_META", [isl_name, relit, time_str])
 			LxPixelFont.draw_left(self, meta, r.position + Vector2(7.0, 15.0), LxPalette.PAL["cream"], 1)
-			_draw_slot_pips(r.position + Vector2(46.0, 6.0), relit, relit_arr)
+			_draw_slot_pips(r.position + Vector2(46.0, 6.0), relit, relit_arr, harm_arr)
+			_draw_slot_badges(r.position + Vector2(106.0, 5.0), hearts, harm_cnt)
 			LxPixelFont.draw_right(self, LxStrings.text("SLOT_CONTINUE"), r.end.x - 42.0, r.position.y + 5.0, LxPalette.PAL["gold"] if sel else LxPalette.PAL["stone"], 1)
 			var del_r: Rect2 = _slot_del_rect(i)
-			LxPixelFont.draw_panel(self, del_r, "wine" if sel else "night", "coral" if sel else "mauve", "void")
+			var del_hi: bool = _hover_del == i
+			LxPixelFont.draw_panel(self, del_r, "coral" if del_hi else ("wine" if sel else "night"), "gold" if del_hi else ("coral" if sel else "mauve"), "void")
 			LxPixelFont.draw_centered(self, LxStrings.text("SLOT_DELETE"), del_r.get_center().x, del_r.position.y + 3.0, LxPalette.PAL["cream"], 1)
 
-	LxPixelFont.draw_centered(self, LxStrings.text("SLOT_HINT"), 160.0, 164.0, LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(self, LxStrings.text("SLOT_HINT"), Vector2(26.0, 164.0), LxPalette.PAL["stone"], 1)
+	var br: Rect2 = _back_btn_rect()
+	LxPixelFont.draw_panel(self, br, "plum" if _hover_back else "night", "gold" if _hover_back else "mauve", "void")
+	LxPixelFont.draw_centered(self, LxStrings.text("OPT_BACK"), br.get_center().x, br.position.y + 3.0, LxPalette.PAL["gold"] if _hover_back else LxPalette.PAL["cream"], 1)
 
 
-func _draw_slot_pips(origin: Vector2, relit: int, relit_arr: Array) -> void:
+func _draw_slot_pips(origin: Vector2, relit: int, relit_arr: Array, harm_arr: Array) -> void:
 	for k: int in range(8):
 		var lit: bool = relit_arr.has(k + 1) if not relit_arr.is_empty() else (k < relit)
 		var px: float = origin.x + float(k) * 5.0
 		draw_rect(Rect2(px, origin.y, 3.0, 3.0), LxBiomePalette.col(k + 1, "glow") if lit else LxPalette.PAL["night"])
 		draw_rect(Rect2(px + 1.0, origin.y + 1.0, 1.0, 1.0), LxPalette.PAL["cream" if lit else "dusk"])
+		if harm_arr.has(k + 1):
+			draw_rect(Rect2(px + 1.0, origin.y - 2.0, 1.0, 1.0), LxPalette.PAL["gold"])
 	if relit >= 8:
 		var cx: float = origin.x + 44.0; var cy: float = origin.y - 1.0
 		var hi: Color = LxPalette.PAL["cream"] if (LxHudFx.flash_reduced() or fmod(_elapsed * 2.2, 1.0) < 0.55) else LxPalette.PAL["gold"]
 		_px([[cx, cy + 2.0, 7.0, 2.0], [cx, cy + 1.0, 1.0, 1.0], [cx + 3.0, cy, 1.0, 2.0], [cx + 6.0, cy + 1.0, 1.0, 1.0]], LxPalette.PAL["gold"])
 		_px([[cx + 3.0, cy, 1.0, 1.0], [cx + 1.0, cy + 2.0, 1.0, 1.0], [cx + 5.0, cy + 2.0, 1.0, 1.0]], hi)
+
+
+func _draw_slot_badges(at: Vector2, hearts: int, harm_cnt: int) -> void:
+	var hx: float = roundf(at.x); var hy: float = roundf(at.y)
+	_px([[hx, hy, 2, 1], [hx + 3, hy, 2, 1], [hx, hy + 1, 5, 2], [hx + 1, hy + 3, 3, 1], [hx + 2, hy + 4, 1, 1]], LxPalette.PAL["coral"])
+	draw_rect(Rect2(hx + 1.0, hy + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+	LxPixelFont.draw_left(self, LxStrings.fmt("SLOT_HEARTS_FMT", [hearts]), Vector2(hx + 7.0, hy), LxPalette.PAL["rose"], 1)
+	var sx: float = hx + 27.0
+	_px([[sx - 1, hy + 2, 3, 1], [sx, hy + 1, 1, 3]], LxPalette.PAL["gold" if harm_cnt > 0 else "mauve"])
+	draw_rect(Rect2(sx, hy + 2.0, 1.0, 1.0), LxPalette.PAL["cream" if harm_cnt > 0 else "dusk"])
+	LxPixelFont.draw_left(self, LxStrings.fmt("SLOT_HARMONY_FMT", [harm_cnt]), Vector2(sx + 4.0, hy), LxPalette.PAL["gold" if harm_cnt > 0 else "stone"], 1)
 
 
 func _draw_confirm_delete() -> void:
@@ -554,6 +538,7 @@ func _slot_rect(i: int) -> Rect2: return Rect2(26.0, 40.0 + float(i) * 38.0, 268
 func _slot_del_rect(i: int) -> Rect2:
 	var r: Rect2 = _slot_rect(i); return Rect2(r.end.x - 36.0, r.position.y + 9.0, 31.0, 12.0)
 func _confirm_btn_rect(i: int) -> Rect2: return Rect2(86.0 + float(i) * 78.0, 92.0, 70.0, 15.0)
+func _back_btn_rect() -> Rect2: return Rect2(246.0, 161.0, 48.0, 11.0)
 
 
 func _build_backdrop() -> void:

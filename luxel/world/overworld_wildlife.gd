@@ -52,6 +52,10 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	var want_tiles: PackedStringArray = PackedStringArray(["water", "tide"]) if _island_id in [4, 7] else PackedStringArray(["ground", "path"])
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(_island_id * 31337 + gw * 97 + gh * 53)
+	if _island_id >= 2:
+		var sp_v: Variant = region_node.get("spawn_pos")
+		if sp_v is Vector2:
+			_seed_dock_critters(grid, gw, gh, ts, sp_v as Vector2, want_tiles, rng)
 	var target_count: int = 16
 	var tries: int = 0
 	while _critters.size() < target_count and tries < 220:
@@ -69,16 +73,62 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 				break
 		if too_near:
 			continue
-		_critters.append({
-			"home": p,
-			"pos": p,
-			"vel": Vector2.ZERO,
-			"phase": rng.randf_range(0.0, TAU),
-			"flee_t": 0.0,
-			"dir": 1.0 if rng.randf() > 0.5 else -1.0,
-			"hop": 0.0,
-		})
+		_critters.append(_make_critter(p, rng))
 	queue_redraw()
+
+
+func _seed_dock_critters(grid: Array, gw: int, gh: int, ts: float, spawn_pos: Vector2, want_tiles: PackedStringArray, rng: RandomNumberGenerator) -> void:
+	var fallback_tiles := PackedStringArray(["ground", "path", "bridge", "water", "tide"])
+	var preferred: Array[Vector2] = []
+	var fallback: Array[Vector2] = []
+	var min_x: int = maxi(1, int(floorf((spawn_pos.x - 116.0) / ts)))
+	var max_x: int = mini(gw - 2, int(ceilf((spawn_pos.x + 116.0) / ts)))
+	var min_y: int = maxi(1, int(floorf((spawn_pos.y - 116.0) / ts)))
+	var max_y: int = mini(gh - 2, int(ceilf((spawn_pos.y + 116.0) / ts)))
+	for ty: int in range(min_y, max_y + 1):
+		var row: PackedStringArray = grid[ty] as PackedStringArray
+		for tx: int in range(min_x, max_x + 1):
+			var p := Vector2((float(tx) + 0.5) * ts, (float(ty) + 0.5) * ts)
+			var d2: float = p.distance_squared_to(spawn_pos)
+			if d2 < 2304.0 or d2 > 12544.0:
+				continue
+			var t: String = row[tx]
+			if want_tiles.has(t):
+				preferred.append(p)
+			elif fallback_tiles.has(t):
+				fallback.append(p)
+	var pool: Array[Vector2] = preferred
+	if pool.size() < 2:
+		pool = preferred.duplicate()
+		pool.append_array(fallback)
+	if pool.is_empty():
+		return
+	var seeded: int = 0
+	var attempts: int = 0
+	while seeded < 2 and attempts < 48:
+		attempts += 1
+		var p: Vector2 = pool[rng.randi_range(0, pool.size() - 1)]
+		var too_close: bool = false
+		for c: Dictionary in _critters:
+			if (c["home"] as Vector2).distance_squared_to(p) < 1600.0:
+				too_close = true
+				break
+		if too_close:
+			continue
+		_critters.append(_make_critter(p, rng))
+		seeded += 1
+
+
+func _make_critter(p: Vector2, rng: RandomNumberGenerator) -> Dictionary:
+	return {
+		"home": p,
+		"pos": p,
+		"vel": Vector2.ZERO,
+		"phase": rng.randf_range(0.0, TAU),
+		"flee_t": 0.0,
+		"dir": 1.0 if rng.randf() > 0.5 else -1.0,
+		"hop": 0.0,
+	}
 
 
 func tick(dt: float, cam_center: Vector2) -> void:
