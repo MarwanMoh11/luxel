@@ -139,7 +139,7 @@ func _check_player_warp() -> void:
 		Lx.camera.add_kick((dest - pos).normalized(), 2.2)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 		LxDarknessLayer.active_instance.add_burst_light(dest, 60.0, 1.15, 0.24)
-	_emit_sfx("waystone_light")
+	_emit_sfx("waystone_lit")
 	queue_redraw()
 
 

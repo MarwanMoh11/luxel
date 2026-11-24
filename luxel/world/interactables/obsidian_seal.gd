@@ -11,6 +11,7 @@ var _resonate_t: float = 0.0
 var _shatter_t: float = 0.0
 var _pulse_stage: int = 0
 var _was_ready: bool = false
+var _veins: Array[PackedVector2Array] = []
 
 
 func setup(spec: Dictionary) -> void:
@@ -18,6 +19,7 @@ func setup(spec: Dictionary) -> void:
 	kind = "obsidian_seal"
 	size = _parse_size(props.get("size", [32.0, 16.0]), Vector2(32.0, 16.0))
 	radius = maxf(size.x, size.y) * 0.5
+	_rebuild_veins()
 	shattered = bool(props.get("shattered", false))
 	if Lx.state != null and Lx.state.broken_seals.has(id):
 		shattered = true
@@ -165,15 +167,10 @@ func _draw() -> void:
 			draw_rect(Rect2(sx, sy, 1.0, 1.0), sc)
 
 
-func _draw_ember_veins(w: float, h: float, flare: bool, in_blast: bool) -> void:
-	var reduced: bool = LxHudFx.flash_reduced()
-	var hw: float = floorf(w * 0.5)
-	var hh: float = floorf(h * 0.5)
-	var c_void: Color = PAL["void"] as Color
-	var c_in: Color = (PAL["cream"] if (flare and not reduced) else (PAL["gold"] if flare else PAL["coral"])) as Color
-	var c_mid: Color = (PAL["gold"] if flare else (PAL["coral"] if _pulse_stage % 2 == 0 else PAL["wine"])) as Color
-	var c_tip: Color = (PAL["apricot"] if flare else PAL["wine"]) as Color
-	var veins: Array[PackedVector2Array] = [
+func _rebuild_veins() -> void:
+	var hw: float = floorf(roundf(size.x) * 0.5)
+	var hh: float = floorf(roundf(size.y) * 0.5)
+	_veins = [
 		PackedVector2Array([Vector2(-hw, 1.0), Vector2(-hw - 3.0, 2.0), Vector2(-hw - 6.0, 1.0), Vector2(-hw - 10.0, 3.0)]),
 		PackedVector2Array([Vector2(-hw + 3.0, -hh), Vector2(-hw + 1.0, -hh - 3.0), Vector2(-hw - 2.0, -hh - 5.0), Vector2(-hw - 5.0, -hh - 8.0)]),
 		PackedVector2Array([Vector2(hw - 3.0, -hh), Vector2(hw - 1.0, -hh - 3.0), Vector2(hw + 2.0, -hh - 5.0), Vector2(hw + 5.0, -hh - 8.0)]),
@@ -181,16 +178,27 @@ func _draw_ember_veins(w: float, h: float, flare: bool, in_blast: bool) -> void:
 		PackedVector2Array([Vector2(hw - 4.0, hh), Vector2(hw - 2.0, hh + 3.0), Vector2(hw + 1.0, hh + 5.0), Vector2(hw + 4.0, hh + 8.0)]),
 		PackedVector2Array([Vector2(-hw + 4.0, hh), Vector2(-hw + 2.0, hh + 3.0), Vector2(-hw - 1.0, hh + 5.0), Vector2(-hw - 4.0, hh + 8.0)]),
 	]
-	for vi: int in range(veins.size()):
-		var pts: PackedVector2Array = veins[vi]
-		for pi: int in range(pts.size()):
-			var vp: Vector2 = pts[pi].round()
-			if pi <= 1:
-				draw_rect(Rect2(vp + Vector2(0.0, 1.0), Vector2.ONE), c_void)
-			var vc: Color = c_in if pi == 0 else (c_mid if pi <= 2 else c_tip)
+
+
+func _draw_ember_veins(_w: float, _h: float, flare: bool, in_blast: bool) -> void:
+	if _veins.is_empty():
+		_rebuild_veins()
+	var reduced: bool = LxHudFx.flash_reduced()
+	var c_void: Color = PAL["void"] as Color
+	var c_in: Color = (PAL["cream"] if (flare and not reduced) else (PAL["gold"] if flare else PAL["coral"])) as Color
+	var c_mid: Color = (PAL["gold"] if flare else (PAL["coral"] if _pulse_stage % 2 == 0 else PAL["wine"])) as Color
+	var c_tip: Color = (PAL["apricot"] if flare else PAL["wine"]) as Color
+	var sh_off := Vector2(0.0, 1.0)
+	for vi: int in range(_veins.size()):
+		var pts: PackedVector2Array = _veins[vi]
+		for pi: int in range(pts.size() - 1):
+			var p0: Vector2 = pts[pi]
+			var p1: Vector2 = pts[pi + 1]
+			draw_line(p0 + sh_off, p1 + sh_off, c_void, 1.0, false)
+			var vc: Color = c_in if pi == 0 else (c_mid if pi == 1 else c_tip)
 			if flare and pi == 1 and in_blast and not reduced and (_pulse_stage + vi) % 2 == 0:
 				vc = PAL["cream"] as Color
-			draw_rect(Rect2(vp, Vector2.ONE), vc)
+			draw_line(p0, p1, vc, 1.0, false)
 	if not flare:
 		return
 	var base_a: float = _clock * (0.9 if reduced else 1.8)

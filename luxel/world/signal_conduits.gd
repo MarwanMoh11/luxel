@@ -248,6 +248,9 @@ func _draw() -> void:
 func _draw_void_bridge(c: Conduit, lit: bool, anim_step: int, reduced: bool) -> void:
 	if c.void_runs.is_empty(): return
 	var step_px: float = 5.0 if lit else VOID_PIP_STEP
+	var c_sh: Color = Color(PAL["night"] as Color, 0.85)
+	var bead_sz := Vector2(2.0, 1.0)
+	var sh_off := Vector2(0.0, 1.0)
 	for vr: FloorRun in c.void_runs:
 		var slen: float = vr.a.distance_to(vr.b)
 		if slen < 2.0: continue
@@ -260,9 +263,12 @@ func _draw_void_bridge(c: Conduit, lit: bool, anim_step: int, reduced: bool) -> 
 				vc = (PAL["ice"] if (p_idx + anim_step) % 2 == 0 else PAL["sky"]) as Color
 			elif c.is_portal and (p_idx % 3 == 1) and not reduced:
 				vc = PAL["ice"] as Color
+			elif c.is_blue or c.is_portal:
+				vc = (PAL["ice"] if p_idx % 3 == 0 else PAL["sky"]) as Color
 			else:
 				vc = (PAL["sky"] if p_idx % 2 == 0 else PAL["deep"]) as Color
-			draw_rect(Rect2(pp, Vector2.ONE), vc)
+			draw_rect(Rect2(pp + sh_off, bead_sz), c_sh)
+			draw_rect(Rect2(pp, bead_sz), vc)
 			d_p += step_px
 			p_idx += 1
 
