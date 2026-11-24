@@ -1,0 +1,78 @@
+{
+  "pack_id": "i4_hourglass",
+  "owner": "D4A",
+  "comment": "Island 4 Minor Dungeon A: The Hourglass Maze (12 rooms, 4 internal cycles, Echo Roses & turning clock_gate hedges). Debug-only on dungeon/regions meta until P4-D hooks ow_weeping_orchard -> hourglass_r1.",
+  "strings": {
+    "ISL4_DNG_HOURGLASS": "THE HOURGLASS MAZE",
+    "ISL4_HG_R1": "SUNDIAL ROTUNDA",
+    "ISL4_HG_R2": "THE IRON ARBOR",
+    "ISL4_HG_R3": "TOPIARY CLOISTER",
+    "ISL4_HG_R4": "THE TURNING HEDGES",
+    "ISL4_HG_R5": "SHEAR-KEEPERS LAWN",
+    "ISL4_HG_R6": "PRISM PARTERRE",
+    "ISL4_HG_R7": "PENDULUM WALK",
+    "ISL4_HG_R8": "SHADED PERGOLA",
+    "ISL4_HG_R9": "COURT OF THREE WICKS",
+    "ISL4_HG_R10": "ECHO RELAY BASIN",
+    "ISL4_HG_R11": "SAND-GLASS PROMENADE",
+    "ISL4_HG_R12": "PRUNING AMPHITHEATRE",
+    "ISL4_PROMPT_ECHO_BUD": "ECHO BUD: SHOOT ROSES TO REPLAY!",
+    "ISL4_PROMPT_CLAIM_BUD": "CLAIM ECHO BUD",
+    "ISL4_LORE_GARDENER": "HE PRUNED ONE MINUTE UNTIL IT GREW THORNS.",
+    "ISL4_HG_LORE_HUB": "THE ROSE REMEMBERS SIX SECONDS OF YOUR STEP.",
+    "ISL4_HG_LORE_SHADOW": "EVEN YOUR ECHO CASTS LIGHT ON SHADOW GATES.",
+    "ISL4_HG_SHORTCUT": "A HEDGE SHORTCUT SWINGS OPEN!",
+    "ISL4_HG_CLEARED": "THE GARDENER BOWS. HALF-LANTERN CLAIMED!"
+  },
+  "interactables": {
+    "hg_echo_altar": "res://luxel/islands/4/hourglass/hg_echo_altar.gd",
+    "hg_rose_ghost": "res://luxel/islands/4/hourglass/hg_rose_ghost.gd"
+  },
+  "dungeons": [
+    {
+      "id": "hourglass_maze",
+      "name_key": "ISL4_DNG_HOURGLASS",
+      "island": 4,
+      "entry": "hourglass_r1",
+      "regions": [
+        "hourglass_r1",
+        "hourglass_r2",
+        "hourglass_r3",
+        "hourglass_r4",
+        "hourglass_r5",
+        "hourglass_r6",
+        "hourglass_r7",
+        "hourglass_r8",
+        "hourglass_r9",
+        "hourglass_r10",
+        "hourglass_r11",
+        "hourglass_r12"
+      ],
+      "mini_boss": "boss_shear_keeper",
+      "boss": "boss_gardener_twice",
+      "theme": "hourglass_maze",
+      "music": "isl4_hourglass",
+      "requires_flags": [],
+      "done_flag": "dungeon_hourglass_done",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "hourglass_r1":  { "name_key": "ISL4_HG_R1",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [2, 3], "debug_only": true },
+    "hourglass_r2":  { "name_key": "ISL4_HG_R2",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [1, 3], "debug_only": true },
+    "hourglass_r3":  { "name_key": "ISL4_HG_R3",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [0, 3], "debug_only": true },
+    "hourglass_r4":  { "name_key": "ISL4_HG_R4",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [0, 2], "debug_only": true },
+    "hourglass_r5":  { "name_key": "ISL4_HG_R5",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [1, 2], "debug_only": true },
+    "hourglass_r6":  { "name_key": "ISL4_HG_R6",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [3, 3], "debug_only": true },
+    "hourglass_r7":  { "name_key": "ISL4_HG_R7",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [3, 2], "debug_only": true },
+    "hourglass_r8":  { "name_key": "ISL4_HG_R8",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [4, 2], "debug_only": true },
+    "hourglass_r9":  { "name_key": "ISL4_HG_R9",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [3, 1], "debug_only": true },
+    "hourglass_r10": { "name_key": "ISL4_HG_R10", "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [4, 3], "debug_only": true },
+    "hourglass_r11": { "name_key": "ISL4_HG_R11", "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [2, 2], "debug_only": true },
+    "hourglass_r12": { "name_key": "ISL4_HG_R12", "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [2, 1], "debug_only": true }
+  },
+  "sfx": {
+    "hg_echo_bud_bloom": { "id": "lens_reveal", "pitch": 1.18, "db": -1.0 },
+    "hg_rose_prune":     { "id": "prop_rustle", "pitch": 1.04, "db": -3.5 }
+  }
+}

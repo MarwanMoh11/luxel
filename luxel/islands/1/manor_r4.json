@@ -1,0 +1,502 @@
+{
+  "name_key": "ISL1_MN_KITCHEN",
+  "spawn": [
+    48,
+    168
+  ],
+  "zones": [
+    {
+      "id": "mn_kitchen",
+      "name_key": "ISL1_MN_KITCHEN",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "manor_r1",
+      "to_spawn": [
+        456,
+        248
+      ]
+    },
+    {
+      "id": "exit_r4_tunnel",
+      "rect": [
+        112,
+        0,
+        32,
+        16
+      ],
+      "to_island": 1,
+      "to_region": "overworld",
+      "to_spawn": [
+        424,
+        184
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "manor_tunnel_open"
+      ],
+      "locked_door_id": "door_r4_tunnel"
+    },
+    {
+      "id": "exit_r4_east",
+      "rect": [
+        432,
+        128,
+        16,
+        48
+      ],
+      "to_region": "manor_r5",
+      "to_spawn": [
+        56,
+        152
+      ],
+      "locked_door_id": "gate_r4_hearth"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r4_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "hearth_r4_fire",
+      "kind": "brazier",
+      "pos": [
+        392,
+        152
+      ],
+      "props": {
+        "lit": true,
+        "dusk_douse": true
+      }
+    },
+    {
+      "id": "gate_r4_hearth",
+      "kind": "shadow_gate",
+      "pos": [
+        424,
+        152
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "bell_r4_dusk",
+      "kind": "bell",
+      "pos": [
+        344,
+        216
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 200
+      }
+    },
+    {
+      "id": "bell_r4_war",
+      "kind": "bell",
+      "pos": [
+        224,
+        176
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 240
+      }
+    },
+    {
+      "id": "hook_r4_scullery",
+      "kind": "lantern_hook",
+      "pos": [
+        264,
+        264
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "sw_r4_tunnel",
+      "kind": "switch_eye",
+      "pos": [
+        168,
+        56
+      ],
+      "props": {
+        "target_id": "door_r4_tunnel",
+        "sets_flag": "manor_tunnel_open"
+      }
+    },
+    {
+      "id": "door_r4_tunnel",
+      "kind": "door",
+      "pos": [
+        128,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r4_tunnel"
+        ],
+        "sets_flag": "manor_tunnel_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r4_entry_n",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        128
+      ],
+      "props": {
+        "zone": "mn_kitchen",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_entry_s",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        208
+      ],
+      "props": {
+        "zone": "mn_kitchen",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_tunnel",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        80
+      ],
+      "props": {
+        "zone": "mn_kitchen",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        264
+      ],
+      "props": {
+        "zone": "mn_kitchen",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "butler_r4_n",
+      "kind": "lamp_butler",
+      "pos": [
+        192,
+        72
+      ],
+      "zone": "mn_kitchen",
+      "route": [
+        [
+          168,
+          72
+        ],
+        [
+          256,
+          72
+        ]
+      ]
+    },
+    {
+      "id": "butler_r4_e",
+      "kind": "lamp_butler",
+      "pos": [
+        288,
+        88
+      ],
+      "zone": "mn_kitchen",
+      "route": [
+        [
+          264,
+          88
+        ],
+        [
+          328,
+          88
+        ]
+      ]
+    },
+    {
+      "id": "snuffer_r4",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        304,
+        256
+      ],
+      "zone": "mn_kitchen"
+    },
+    {
+      "id": "mimic_r4",
+      "kind": "pew_mimic",
+      "pos": [
+        168,
+        232
+      ],
+      "zone": "mn_kitchen"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        128,
+        128,
+        64
+      ],
+      "style": "brass"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        344,
+        168
+      ],
+      "radius": 24,
+      "style": "ash"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        168,
+        224
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        128,
+        88
+      ],
+      "size": [
+        36,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "hearth_fireplace",
+      "pos": [
+        392,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "mahogany_table",
+      "pos": [
+        256,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tea_trolley",
+      "pos": [
+        104,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tea_trolley",
+      "pos": [
+        328,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        192,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        104,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        120,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r4_tunnel_msg",
+      "on": "signal:sw_r4_tunnel",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "manor_tunnel_open"
+        },
+        {
+          "narrate": "ISL1_MN_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Reverse instinct: let the Snuffer Acolyte or Dusk Valve douse the blazing hearth holding the Shadow Gate shut, unmask the kitchen mimic with War, and hang your lantern to slip into the Valet's Workshop.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Ambient hearths seal Shadow Gates; Dusk bells douse hearths and War bells unmask Pew Mimics and crack Butler hoods.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "manor_tunnel_open+open_r5",
+    "why": "Combines stealth-brawl combat with reverse-instinct light dousing and unlocks the Midnight Garden tunnel.",
+    "exit": "exit_r4_east",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          176
+        ],
+        "target": "bell_r4_war"
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          112
+        ],
+        "target": "sw_r4_tunnel"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          288,
+          216
+        ],
+        "target": "bell_r4_dusk"
+      },
+      {
+        "op": "interact",
+        "target": "hook_r4_scullery"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "gate_r4_hearth",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect",
+        "flag": "manor_tunnel_open"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_east"
+      }
+    ]
+  },
+  "id": "manor_r4",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

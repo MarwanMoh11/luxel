@@ -1,0 +1,519 @@
+{
+  "id": "galleon_r3",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R3_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    400,
+    144
+  ],
+  "zones": [
+    {
+      "id": "gal_r3",
+      "name_key": "GAL_R3_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_east",
+      "rect": [
+        432,
+        128,
+        16,
+        32
+      ],
+      "to_region": "galleon_r2",
+      "to_spawn": [
+        48,
+        176
+      ]
+    },
+    {
+      "id": "exit_r3_south",
+      "rect": [
+        192,
+        272,
+        32,
+        16
+      ],
+      "to_region": "galleon_r4",
+      "to_spawn": [
+        224,
+        232
+      ],
+      "locked_door_id": "door_r3_south"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_e",
+      "kind": "room_anchor",
+      "pos": [
+        400,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r3",
+      "kind": "state_lever",
+      "pos": [
+        232,
+        104
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "drv_r3",
+      "kind": "gal_list_driver",
+      "pos": [
+        312,
+        104
+      ],
+      "props": {
+        "targets": [
+          "crate_r3"
+        ],
+        "speed": 140.0,
+        "surge_secs": 2.4
+      }
+    },
+    {
+      "id": "mir_r3",
+      "kind": "blue_transformer",
+      "pos": [
+        104,
+        152
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "sw_r3",
+      "kind": "switch_eye",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "gate_r3"
+      }
+    },
+    {
+      "id": "rail_r3_chute",
+      "kind": "rail",
+      "pos": [
+        312,
+        184
+      ],
+      "props": {
+        "size": [
+          144,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r3",
+      "kind": "pressure_plate",
+      "pos": [
+        264,
+        200
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "hold": true,
+        "size": [
+          20,
+          20
+        ],
+        "target_id": "gate_r3"
+      }
+    },
+    {
+      "id": "crate_r3",
+      "kind": "push_block",
+      "pos": [
+        344,
+        200
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "gate_r3",
+      "kind": "logic_gate",
+      "pos": [
+        216,
+        216
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_r3",
+          "sw_r3"
+        ],
+        "persist": true,
+        "target_id": "door_r3_south"
+      }
+    },
+    {
+      "id": "door_r3_south",
+      "kind": "door",
+      "pos": [
+        208,
+        264
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "gate_r3"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        104
+      ],
+      "props": {
+        "zone": "gal_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_c",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "zone": "gal_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        216
+      ],
+      "props": {
+        "zone": "gal_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "zone": "gal_r3",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        104,
+        152
+      ],
+      "radius": 34,
+      "style": "water"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        256,
+        192,
+        96,
+        16
+      ],
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        80,
+        128,
+        48
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        360,
+        72
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        376,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tangled_cargo_net",
+      "pos": [
+        408,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        248,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        344,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        136,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        312,
+        136
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "barnacle_anchor",
+      "pos": [
+        72,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "bilge_port_flood",
+      "when": "list==port",
+      "tiles": [
+        [
+          2,
+          4,
+          8,
+          9,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "bilge_starboard_dry",
+      "when": "list==starboard",
+      "tiles": [
+        [
+          2,
+          4,
+          8,
+          9,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Draining the port bilge exposes a sunken Blue Transformer to rotate, while rolling back to port slides a fenced cargo crate onto the sluice plate and leaves a clean cross-water blue bank.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Alternating port/starboard ballast solves two-stage water-drain and crate-weight dependencies.",
+    "decisions": 5,
+    "expert_s": 46,
+    "reward": "opens_starboard_gallery",
+    "why": "First pure Galleon ballast-roll puzzle combining bilge drainage, mirror rotation, and sliding crate weight.",
+    "exit": "exit_r3_south",
+    "start": {
+      "vars": {
+        "list": "port"
+      }
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          296,
+          136
+        ],
+        "target": "valve_r3"
+      },
+      {
+        "op": "expect",
+        "var": "list==starboard"
+      },
+      {
+        "op": "rotate",
+        "target": "mir_r3",
+        "angle": 315
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          152
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          152
+        ],
+        "target": "valve_r3"
+      },
+      {
+        "op": "expect",
+        "var": "list==port"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "plate_r3",
+        "prop": "pressed",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "shoot",
+        "from": [
+          200,
+          152
+        ],
+        "target": "mir_r3"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r3_south",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_south"
+      }
+    ]
+  }
+}

@@ -17,6 +17,7 @@ static var _fields_script: Variant = null
 static var _fields_checked: bool = false
 static var _room_script_res: Variant = null
 static var _room_script_checked: bool = false
+static var _ground_tex_cache: Dictionary = {}
 
 
 static func check_flag_static(flag: String) -> bool:
@@ -62,26 +63,34 @@ static func check_flag_static(flag: String) -> bool:
 
 
 static func prepare_interactable_spec(spec: Dictionary, island_id: int, region_id: String) -> Dictionary:
-	var out: Dictionary = spec.duplicate(true)
-	var kind: String = str(out.get("kind", "")).strip_edges().to_lower()
-	var pr: Dictionary = (out["props"] as Dictionary).duplicate(true) if out.get("props") is Dictionary else {}
-	if KEY_DUNGEON_KINDS.has(kind) and str(pr.get("dungeon_id", "")).strip_edges().is_empty():
-		var did: String = Lx.packs.dungeon_of(island_id, region_id) if Lx.packs != null else ""
-		if not did.is_empty():
-			pr["dungeon_id"] = did
-	if kind in ["great_lamp", "great_belfry_brazier"]:
-		var rflags: Variant = pr.get("requires_flags", out.get("requires_flags", []))
-		if rflags is Array and not (rflags as Array).is_empty():
-			var parts := PackedStringArray()
-			var existing_rf: String = str(pr.get("requires_flag", "")).strip_edges()
-			if not existing_rf.is_empty():
-				parts.append(existing_rf)
-			for fl: Variant in (rflags as Array):
-				var fs: String = str(fl).strip_edges()
-				if not fs.is_empty() and not parts.has(fs):
-					parts.append(fs)
-			if not parts.is_empty():
-				pr["requires_flag"] = " && ".join(parts)
+	var kind: String = str(spec.get("kind", "")).strip_edges().to_lower()
+	var need_dng: bool = KEY_DUNGEON_KINDS.has(kind)
+	var need_lamp: bool = kind in ["great_lamp", "great_belfry_brazier"]
+	if not need_dng and not need_lamp:
+		return spec
+	var raw_pr: Dictionary = spec["props"] as Dictionary if spec.get("props") is Dictionary else {}
+	var did: String = ""
+	if need_dng and str(raw_pr.get("dungeon_id", "")).strip_edges().is_empty():
+		did = Lx.packs.dungeon_of(island_id, region_id) if Lx.packs != null else ""
+	var rflags: Variant = raw_pr.get("requires_flags", spec.get("requires_flags", [])) if need_lamp else null
+	var has_rflags: bool = rflags is Array and not (rflags as Array).is_empty()
+	if did.is_empty() and not has_rflags:
+		return spec
+	var out: Dictionary = spec.duplicate(false)
+	var pr: Dictionary = raw_pr.duplicate(false)
+	if not did.is_empty():
+		pr["dungeon_id"] = did
+	if has_rflags:
+		var parts := PackedStringArray()
+		var existing_rf: String = str(pr.get("requires_flag", "")).strip_edges()
+		if not existing_rf.is_empty():
+			parts.append(existing_rf)
+		for fl: Variant in (rflags as Array):
+			var fs: String = str(fl).strip_edges()
+			if not fs.is_empty() and not parts.has(fs):
+				parts.append(fs)
+		if not parts.is_empty():
+			pr["requires_flag"] = " && ".join(parts)
 	out["props"] = pr
 	return out
 
@@ -99,7 +108,7 @@ static func capture_authored_default(item: LxInteractable, spec: Dictionary) -> 
 	return base
 
 
-static func save_dirty_interactables(interactables: Array[LxInteractable], defaults: Dictionary) -> void:
+static func save_dirty_interactables(interactables: Array[LxInteractable], defaults: Dictionary, layers: LxRegionLayers = null) -> void:
 	if Lx.state == null:
 		return
 	for it: LxInteractable in interactables:
@@ -107,6 +116,8 @@ static func save_dirty_interactables(interactables: Array[LxInteractable], defau
 			continue
 		var key: String = it.get_state_key()
 		var cur: Dictionary = it.save_state()
+		if layers != null and layers.is_interactable_disabled(it.id) and cur.has("active"):
+			cur["active"] = layers.get_saved_inter_active(it.id, true)
 		var def_d: Variant = defaults.get(key, null)
 		if def_d is Dictionary and _dicts_equal(cur, def_d as Dictionary):
 			if Lx.state.interactable_states.has(key):
@@ -137,12 +148,13 @@ static func promote_destructible_map_tiles(region: LxRegionLoader) -> void:
 	var ts: float = float(region.tile_size)
 	var visited: Dictionary = {}
 	for ty: int in range(region.height):
+		var row: PackedStringArray = region.grid[ty]
 		for tx: int in range(region.width):
+			var ttype: String = row[tx]
+			if ttype != "bramble" and ttype != "cracked":
+				continue
 			var key := Vector2i(tx, ty)
 			if visited.has(key):
-				continue
-			var ttype: String = region.grid[ty][tx]
-			if ttype != "bramble" and ttype != "cracked":
 				continue
 			var target_kind: String = "bramble" if ttype == "bramble" else "cracked_wall"
 			var tile_center := Vector2((float(tx) + 0.5) * ts, (float(ty) + 0.5) * ts)
@@ -261,13 +273,19 @@ static func _interactable_signal_state(it: LxInteractable) -> bool:
 static func setup_ground_visual(region: LxRegionLoader) -> Sprite2D:
 	var png_path: String = "res://luxel/art/islands/%d/%s_ground.png" % [region.current_island_id, region.current_region_id]
 	var tex: Texture2D = null
-	if ResourceLoader.exists(png_path):
+	if _ground_tex_cache.has(png_path):
+		tex = _ground_tex_cache[png_path] as Texture2D
+	elif ResourceLoader.exists(png_path):
 		var loaded: Resource = ResourceLoader.load(png_path)
 		if loaded is Texture2D: tex = loaded as Texture2D
+		_ground_tex_cache[png_path] = tex
 	elif FileAccess.file_exists(png_path):
 		var img := Image.new()
 		if img.load(ProjectSettings.globalize_path(png_path)) == OK:
 			tex = ImageTexture.create_from_image(img)
+		_ground_tex_cache[png_path] = tex
+	else:
+		_ground_tex_cache[png_path] = null
 	if tex == null: return null
 	var sp := Sprite2D.new()
 	sp.name = "PaintedGround"; sp.texture = tex; sp.centered = false
@@ -297,11 +315,11 @@ static func spawn_enemy_for_region(region: LxRegionLoader, spec: Dictionary, dir
 				or Lx.state.defeated_bosses.has(brain.kind) or (not alt.is_empty() and Lx.state.defeated_bosses.has(alt)):
 			brain.free(); return null
 	root.add_child(brain)
-	if not brain.is_flying and not brain.is_boss and region.tile_at(brain.pos) in ["water", "tide", "pit", "void", "wall"]:
+	if not brain.is_flying() and not brain.is_boss and region.tile_at(brain.pos) in ["water", "tide", "pit", "void", "wall"]:
 		var safe_p: Vector2 = _nearest_walkable_tile(region, brain.pos)
 		if safe_p != brain.pos:
 			brain.pos = safe_p
-			brain.home_pos = safe_p
+			brain.home = safe_p
 	brain.position = brain.pos.round()
 	LxRegionArena.tune_boss_ranges(brain, region)
 	list.append(brain)

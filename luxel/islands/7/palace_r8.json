@@ -1,0 +1,247 @@
+{
+  "id": "palace_r8",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_PL_R8",
+  "theme": "inverted_palace_silver",
+  "music": "isl7_palace",
+  "ambience": ["night_breeze"],
+  "spawn": [48, 168],
+  "zones": [
+    {
+      "id": "palace_scales",
+      "name_key": "ISL7_PL_R8",
+      "rect": [0, 0, 448, 320],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_west",
+      "rect": [0, 144, 16, 48],
+      "to_region": "palace_r6",
+      "to_spawn": [432, 176]
+    },
+    {
+      "id": "exit_r8_north",
+      "rect": [208, 0, 48, 16],
+      "to_region": "palace_r9",
+      "to_spawn": [368, 272],
+      "locked_door_id": "door_r8_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_west",
+      "kind": "room_anchor",
+      "pos": [48, 168],
+      "props": { "auto": true }
+    },
+    {
+      "id": "pool_r8_center",
+      "kind": "moon_pool",
+      "pos": [224, 272],
+      "props": {
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "scale_r8_twin",
+      "kind": "scale",
+      "pos": [224, 104],
+      "props": {
+        "left": "plate_r8_silver",
+        "right": "plate_r8_black",
+        "mode": "balance",
+        "need_weight": 3.0,
+        "persist": true,
+        "target_id": "door_r8_north",
+        "sets_flag": "palace_r8_solved"
+      }
+    },
+    {
+      "id": "plate_r8_silver",
+      "kind": "pressure_plate",
+      "pos": [152, 104],
+      "props": {
+        "by": ["block"],
+        "hold": true,
+        "size": [28, 28]
+      }
+    },
+    {
+      "id": "plate_r8_black",
+      "kind": "pressure_plate",
+      "pos": [336, 104],
+      "props": {
+        "by": ["block"],
+        "hold": true,
+        "size": [28, 28]
+      }
+    },
+    {
+      "id": "block_r8_stone",
+      "kind": "push_block",
+      "pos": [96, 104],
+      "props": {
+        "variant": "stone",
+        "persist": true
+      }
+    },
+    {
+      "id": "orb_r8_silver",
+      "kind": "carry_orb",
+      "pos": [88, 216],
+      "props": {
+        "kind": "stone",
+        "persist": true
+      }
+    },
+    {
+      "id": "orb_r8_smuggle",
+      "kind": "carry_orb",
+      "pos": [152, 248],
+      "props": {
+        "kind": "light",
+        "persist": true
+      }
+    },
+    {
+      "id": "mimic_r8_black",
+      "kind": "mimic_statue",
+      "pos": [336, 168],
+      "props": {
+        "mirror": "y",
+        "range": 380
+      }
+    },
+    {
+      "id": "reset_r8_brazier",
+      "kind": "timed_brazier",
+      "pos": [168, 192],
+      "props": {
+        "secs": 2.0,
+        "reset": true,
+        "allow_interact": true
+      }
+    },
+    {
+      "id": "palace_key_2",
+      "kind": "wick_key",
+      "pos": [88, 56],
+      "props": {
+        "dungeon_id": "palace",
+        "key_kind": "wick_key",
+        "flag_id": "palace_key_2",
+        "requires_flag": "palace_r8_solved"
+      }
+    },
+    {
+      "id": "cracked_r8_ember",
+      "kind": "cracked_wall",
+      "pos": [408, 248],
+      "props": { "from_map_tile": true }
+    },
+    {
+      "id": "chest_r8_ember",
+      "kind": "chest",
+      "pos": [408, 280],
+      "props": {
+        "reward_kind": "ember_piece",
+        "flag_id": "ember_7_palace"
+      }
+    },
+    {
+      "id": "door_r8_north",
+      "kind": "door",
+      "pos": [232, 24],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": ["scale_r8_twin"],
+        "persistent": true,
+        "size": [48, 16]
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [56, 128],
+      "props": { "zone": "palace_scales", "lit": true }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [224, 232],
+      "props": { "zone": "palace_scales", "lit": true }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [384, 128],
+      "props": { "zone": "palace_scales", "lit": true }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    { "kind": "circle", "x": 224, "y": 272, "r": 26, "col": "sky", "ring": "ice" },
+    { "kind": "inlay", "x": 80, "y": 80, "w": 96, "h": 96, "col": "stone", "border": "sky" },
+    { "kind": "inlay", "x": 288, "y": 80, "w": 96, "h": 112, "col": "ice", "border": "sky" }
+  ],
+  "scenery": [
+    { "sheet": "theme_inverted_palace_silver", "prop": "lunar_brazier_bowl", "pos": [168, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "lunar_brazier_bowl", "pos": [288, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "silver_bell_pedestal", "pos": [48, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "gilded_statue_bust", "pos": [392, 64], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "velvet_palace_bench", "pos": [288, 256], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "moon_glass_urn", "pos": [64, 88], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [13, 12, 3, 3, "bridge"]
+      ],
+      "enable": ["mimic_r8_black"],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Two-world balance scale vault: load the Silver pan with a stone block and stone orb (weight 3), then smuggle a Light Orb through the Moon Pool into Black and guide your mirrored Mimic Statue north onto the Black pan (1+2=3) to unlock Key 2 and the Conservatory.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Combining persistent Silver counterweights, Moon-Pocket orb smuggling, and Black-world mimic_statue alignment on a two-pan scale.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "palace_key_2+ember_7_palace",
+    "why": "Signature East Wing logic puzzle rewarding Small Key #2 and the dungeon's Ember Piece.",
+    "exit": "exit_r8_north",
+    "start": {
+      "flags": ["item_moon_pocket"]
+    },
+    "solution": [
+      { "op": "goto", "to": [74, 104], "tol": 8 },
+      { "op": "push", "target": "block_r8_stone", "to": [152, 104] },
+      { "op": "carry", "target": "orb_r8_silver", "action": "pickup" },
+      { "op": "carry", "target": "orb_r8_silver", "action": "drop", "to": [152, 104] },
+      { "op": "carry", "target": "orb_r8_smuggle", "action": "pickup" },
+      { "op": "goto", "to": [224, 272], "tol": 12 },
+      { "op": "interact", "target": "pool_r8_center" },
+      { "op": "expect", "var": "world_face==black" },
+      { "op": "carry", "target": "orb_r8_smuggle", "action": "drop", "to": [336, 104] },
+      { "op": "goto", "to": [288, 128], "tol": 8 },
+      { "op": "goto", "to": [288, 224], "tol": 8 },
+      { "op": "wait", "secs": 0.30 },
+      { "op": "expect", "target": "scale_r8_twin", "prop": "powered", "value": true },
+      { "op": "interact", "target": "palace_key_2" },
+      { "op": "expect_exit", "exit": "exit_r8_north" }
+    ]
+  }
+}

@@ -43,9 +43,9 @@ func press() -> bool:
 			wick.move_wings.stop_glide()
 		return true
 	if not can_use():
-		if not unlocked and wick != null:
+		if (not unlocked or locked) and wick != null:
 			wick.emit_sfx("denied", wick.global_position, false)
-		elif unlocked and wick != null and not wick.dead and not active and not is_gliding and not wick.is_gliding():
+		elif unlocked and not locked and wick != null and not wick.dead and not active and not is_gliding and not wick.is_gliding():
 			_buffer_t = 0.09
 		return false
 	return _execute_dash()

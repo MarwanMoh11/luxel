@@ -1,0 +1,411 @@
+{
+  "name_key": "ISL1_MN_DINING",
+  "spawn": [
+    368,
+    152
+  ],
+  "zones": [
+    {
+      "id": "mn_dining",
+      "name_key": "ISL1_MN_DINING",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_east",
+      "rect": [
+        400,
+        128,
+        16,
+        48
+      ],
+      "to_region": "manor_r1",
+      "to_spawn": [
+        56,
+        232
+      ]
+    },
+    {
+      "id": "exit_r2_west",
+      "rect": [
+        0,
+        80,
+        16,
+        48
+      ],
+      "to_region": "manor_r3",
+      "to_spawn": [
+        392,
+        104
+      ],
+      "locked_door_id": "gate_r2_shadow"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_east",
+      "kind": "room_anchor",
+      "pos": [
+        368,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r2_dusk",
+      "kind": "bell",
+      "pos": [
+        224,
+        152
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 230
+      }
+    },
+    {
+      "id": "hook_r2_screen",
+      "kind": "lantern_hook",
+      "pos": [
+        80,
+        224
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "gate_r2_shadow",
+      "kind": "shadow_gate",
+      "pos": [
+        24,
+        104
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "chest_r2_shards",
+      "kind": "chest",
+      "pos": [
+        48,
+        240
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 15
+      }
+    },
+    {
+      "id": "lamp_r2_entry_n",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        96
+      ],
+      "props": {
+        "zone": "mn_dining",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_entry_s",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        208
+      ],
+      "props": {
+        "zone": "mn_dining",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_center_e",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        224
+      ],
+      "props": {
+        "zone": "mn_dining",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_north_e",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        64
+      ],
+      "props": {
+        "zone": "mn_dining",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "butler_r2_n",
+      "kind": "lamp_butler",
+      "pos": [
+        208,
+        72
+      ],
+      "zone": "mn_dining",
+      "route": [
+        [
+          136,
+          72
+        ],
+        [
+          248,
+          72
+        ]
+      ]
+    },
+    {
+      "id": "butler_r2_s",
+      "kind": "lamp_butler",
+      "pos": [
+        224,
+        224
+      ],
+      "zone": "mn_dining",
+      "route": [
+        [
+          152,
+          224
+        ],
+        [
+          272,
+          224
+        ]
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        96,
+        68,
+        184,
+        36
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        144,
+        204,
+        160,
+        36
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        152
+      ],
+      "radius": 22,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        56,
+        208
+      ],
+      "radius": 18,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "mahogany_table",
+      "pos": [
+        136,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "mahogany_table",
+      "pos": [
+        240,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tea_trolley",
+      "pos": [
+        328,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        304,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        272,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        104,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "gilded_portrait_a",
+      "pos": [
+        192,
+        34
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        352,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r2_passed",
+      "on": "signal:gate_r2_shadow",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "manor_r2_passed"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Safe stealth intro: freeze patrolling Lamp Butlers with the central Dusk Bell and hang your lantern behind the SW dining screen so the Shadow Gate glides open.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Lamp Butlers sweep vision cones, Dusk freezes them, and hanging your lantern behind cover opens Shadow Gates.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "open_r3+15sh",
+    "why": "Introduces Manor stealth cones, Dusk-freezing patrols, and Shadow Gate light occlusion safely.",
+    "exit": "exit_r2_west",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          304,
+          152
+        ],
+        "target": "bell_r2_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 40.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "chest_r2_shards"
+      },
+      {
+        "op": "interact",
+        "target": "hook_r2_screen"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "gate_r2_shadow",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_west"
+      }
+    ]
+  },
+  "id": "manor_r2",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

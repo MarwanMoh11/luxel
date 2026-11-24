@@ -1,0 +1,627 @@
+{
+  "name_key": "ISL1_MN_FOYER",
+  "spawn": [
+    256,
+    328
+  ],
+  "zones": [
+    {
+      "id": "mn_foyer",
+      "name_key": "ISL1_MN_FOYER",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r1_return_ow",
+      "rect": [
+        240,
+        368,
+        32,
+        16
+      ],
+      "to_island": 1,
+      "to_region": "overworld",
+      "to_spawn": [
+        424,
+        184
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_r1_west",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_region": "manor_r2",
+      "to_spawn": [
+        368,
+        152
+      ]
+    },
+    {
+      "id": "exit_r1_nw_gallery",
+      "rect": [
+        0,
+        96,
+        16,
+        32
+      ],
+      "to_region": "manor_r7",
+      "to_spawn": [
+        56,
+        296
+      ],
+      "requires_flags": [
+        "manor_gallery_stair"
+      ],
+      "locked_door_id": "door_r1_nw_gallery"
+    },
+    {
+      "id": "exit_r1_east",
+      "rect": [
+        496,
+        224,
+        16,
+        48
+      ],
+      "to_region": "manor_r4",
+      "to_spawn": [
+        48,
+        168
+      ]
+    },
+    {
+      "id": "exit_r1_ne_dumbwaiter",
+      "rect": [
+        496,
+        96,
+        16,
+        32
+      ],
+      "to_region": "manor_r5",
+      "to_spawn": [
+        424,
+        152
+      ],
+      "requires_flags": [
+        "manor_dumbwaiter"
+      ],
+      "locked_door_id": "door_r1_ne_lift"
+    },
+    {
+      "id": "exit_r1_north_choir",
+      "rect": [
+        368,
+        0,
+        32,
+        16
+      ],
+      "to_region": "manor_r6",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "requires_flags": [
+        "manor_key_1"
+      ],
+      "locked_door_id": "door_r1_north_choir"
+    },
+    {
+      "id": "exit_r1_balcony",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "manor_r9",
+      "to_spawn": [
+        176,
+        176
+      ],
+      "requires_flags": [
+        "manor_parlor_key",
+        "manor_balcony_key"
+      ],
+      "locked_door_id": "door_r1_balcony"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_manor",
+      "kind": "waystone",
+      "pos": [
+        248,
+        248
+      ],
+      "props": {
+        "zone": "mn_foyer",
+        "name_key": "ISL1_MN_FOYER"
+      }
+    },
+    {
+      "id": "lore_r1_foyer",
+      "kind": "lore_stone",
+      "pos": [
+        192,
+        296
+      ],
+      "props": {
+        "string_id": "ISL1_MN_LORE_FOYER",
+        "icon": "scroll"
+      }
+    },
+    {
+      "id": "portrait_r1_butler",
+      "kind": "lying_portrait",
+      "pos": [
+        120,
+        48
+      ],
+      "props": {
+        "mode": "verdict",
+        "suspect": "butler",
+        "is_culprit": false,
+        "points_to": "portrait_r1_choir",
+        "clue_flag": "clue_butler"
+      }
+    },
+    {
+      "id": "portrait_r1_choir",
+      "kind": "lying_portrait",
+      "pos": [
+        184,
+        48
+      ],
+      "props": {
+        "mode": "verdict",
+        "suspect": "choir",
+        "is_culprit": false,
+        "points_to": "portrait_r1_steward",
+        "clue_flag": "clue_choir"
+      }
+    },
+    {
+      "id": "portrait_r1_steward",
+      "kind": "lying_portrait",
+      "pos": [
+        312,
+        48
+      ],
+      "props": {
+        "mode": "verdict",
+        "suspect": "steward",
+        "is_culprit": false,
+        "points_to": "portrait_r1_butler",
+        "clue_flag": "clue_steward"
+      }
+    },
+    {
+      "id": "door_r1_nw_gallery",
+      "kind": "door",
+      "pos": [
+        24,
+        112
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "manor_gallery_stair"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_ne_lift",
+      "kind": "door",
+      "pos": [
+        488,
+        112
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "manor_dumbwaiter"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_north_choir",
+      "kind": "door",
+      "pos": [
+        384,
+        24
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "manor",
+        "key_kind": "wick_key",
+        "key_id": "manor_key_1",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r1_balcony",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "manor_parlor_key",
+          "manor_balcony_key"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r1_entry_w",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        336
+      ],
+      "props": {
+        "zone": "mn_foyer",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_entry_e",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        336
+      ],
+      "props": {
+        "zone": "mn_foyer",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_west",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        184
+      ],
+      "props": {
+        "zone": "mn_foyer",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_east",
+      "kind": "road_lamp",
+      "pos": [
+        440,
+        192
+      ],
+      "props": {
+        "zone": "mn_foyer",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_balc_w",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        152
+      ],
+      "props": {
+        "zone": "mn_foyer",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_balc_e",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        152
+      ],
+      "props": {
+        "zone": "mn_foyer",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_north",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        64
+      ],
+      "props": {
+        "zone": "mn_foyer",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        216,
+        32,
+        64,
+        312
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        248
+      ],
+      "radius": 34,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        104,
+        28,
+        232,
+        36
+      ],
+      "style": "brass"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        136
+      ],
+      "size": [
+        48,
+        76
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "tall_grandfather_clock",
+      "pos": [
+        112,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tall_grandfather_clock",
+      "pos": [
+        400,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        128,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        368,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        200,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        296,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        96,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        416,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        64,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        448,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tea_trolley",
+      "pos": [
+        328,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        72,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "hearth_fireplace",
+      "pos": [
+        248,
+        34
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_mark_entered",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "manor_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Grand Manor Foyer where three lying portraits peer down from the locked upper balcony, anchoring all six shortcut cycles.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "The three suspect portraits watch the foyer while West Dining and East Kitchen invite free-order exploration.",
+    "decisions": 4,
+    "expert_s": 40,
+    "reward": "waystone+3_portraits_tease",
+    "why": "Central architectural hub of The Bellmaker's Manor connecting every wing and shortcut loop.",
+    "optional": true,
+    "exit": "exit_r1_west",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_manor"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r1_foyer"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          232
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r1_west"
+      }
+    ]
+  },
+  "id": "manor_r1",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

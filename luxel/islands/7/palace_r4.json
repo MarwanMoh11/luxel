@@ -1,0 +1,216 @@
+{
+  "id": "palace_r4",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_PL_R4",
+  "theme": "inverted_palace_silver",
+  "music": "isl7_palace",
+  "ambience": ["night_breeze"],
+  "spawn": [104, 248],
+  "zones": [
+    {
+      "id": "palace_courtyard",
+      "name_key": "ISL7_PL_R4",
+      "rect": [0, 0, 448, 288],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_south",
+      "rect": [80, 272, 48, 16],
+      "to_region": "palace_r3",
+      "to_spawn": [104, 48]
+    },
+    {
+      "id": "exit_r4_north",
+      "rect": [192, 0, 48, 16],
+      "to_region": "palace_r5",
+      "to_spawn": [240, 272],
+      "locked_door_id": "door_r4_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r4_south",
+      "kind": "room_anchor",
+      "pos": [104, 248],
+      "props": { "auto": true }
+    },
+    {
+      "id": "pool_r4_center",
+      "kind": "moon_pool",
+      "pos": [216, 144],
+      "props": {
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_r4_west",
+      "kind": "blue_transformer",
+      "pos": [136, 96],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "mirror_r4_east",
+      "kind": "blue_transformer",
+      "pos": [296, 96],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "door_r4_north",
+      "kind": "door",
+      "pos": [216, 24],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "palace_courtyard",
+        "size": [48, 16]
+      }
+    },
+    {
+      "id": "chest_r4_shards",
+      "kind": "chest",
+      "pos": [368, 216],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lamp_r4_sw",
+      "kind": "road_lamp",
+      "pos": [144, 248],
+      "props": { "zone": "palace_courtyard", "lit": true }
+    },
+    {
+      "id": "lamp_r4_nw",
+      "kind": "road_lamp",
+      "pos": [128, 48],
+      "props": { "zone": "palace_courtyard", "lit": true }
+    },
+    {
+      "id": "lamp_r4_ne",
+      "kind": "road_lamp",
+      "pos": [304, 48],
+      "props": { "zone": "palace_courtyard", "lit": true }
+    },
+    {
+      "id": "lamp_r4_se",
+      "kind": "road_lamp",
+      "pos": [344, 232],
+      "props": { "zone": "palace_courtyard", "lit": true }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "gk_r4_west",
+      "kind": "glass_knight",
+      "pos": [144, 144],
+      "zone": "palace_courtyard"
+    },
+    {
+      "id": "gk_r4_east",
+      "kind": "glass_knight",
+      "pos": [296, 144],
+      "zone": "palace_courtyard"
+    },
+    {
+      "id": "ref_r4_north",
+      "kind": "reflection",
+      "pos": [216, 72],
+      "zone": "palace_courtyard"
+    },
+    {
+      "id": "mimic_r4_se",
+      "kind": "false_chest",
+      "pos": [312, 224],
+      "zone": "palace_courtyard"
+    }
+  ],
+  "decor": [
+    { "kind": "circle", "x": 216, "y": 144, "r": 32, "col": "sky", "ring": "ice" },
+    { "kind": "inlay", "x": 176, "y": 56, "w": 80, "h": 144, "col": "stone", "border": "sky" },
+    { "kind": "cracks", "x": 288, "y": 216, "r": 20, "col": "deep" }
+  ],
+  "scenery": [
+    { "sheet": "theme_inverted_palace_silver", "prop": "alabaster_fluted_pillar", "pos": [88, 128], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "alabaster_fluted_pillar", "pos": [360, 128], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [168, 44], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [264, 44], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "floating_mirror_shard", "pos": [48, 136], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "floating_mirror_shard", "pos": [400, 136], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "moon_glass_urn", "pos": [64, 216], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [5, 3, 2, 3, "pit"],
+        [21, 3, 2, 3, "pit"],
+        [5, 10, 2, 3, "pit"],
+        [21, 10, 2, 3, "pit"]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "r4_sync_black",
+      "on": "var:world_face==black",
+      "once": false,
+      "do": [
+        { "set_var": { "scope": "island:7", "name": "world_face", "value": "black" } }
+      ]
+    },
+    {
+      "id": "r4_sync_silver",
+      "on": "var:world_face==silver",
+      "once": false,
+      "do": [
+        { "set_var": { "scope": "island:7", "name": "world_face", "value": "silver" } }
+      ]
+    },
+    {
+      "id": "r4_cleared_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        { "set_flag": "palace_r4_cleared" }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Flooded mirror courtyard where Silver Glass Knights bounce yellow bolts back; flipping the center Moon Pool to Black turns their shields rose-brittle while widening rim pits.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Combat risk/reward of Silver vs Black: Black shatters Glass Knight shields at the cost of tighter pit flanks.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "open_r5+20sh",
+    "why": "First Palace combat showcase pairing Glass Knights, Reflection, and a SE false_chest decoy around a live world-flip pool.",
+    "exit": "exit_r4_north",
+    "solution": [
+      { "op": "goto", "to": [216, 144], "tol": 14 },
+      { "op": "interact", "target": "pool_r4_center" },
+      { "op": "expect", "var": "world_face==black" },
+      { "op": "clear", "timeout": 45.0 },
+      { "op": "expect_exit", "exit": "exit_r4_north" }
+    ]
+  }
+}

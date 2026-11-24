@@ -1,0 +1,474 @@
+{
+  "id": "galleon_r11",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R11_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    224,
+    240
+  ],
+  "zones": [
+    {
+      "id": "gal_r11",
+      "name_key": "GAL_R11_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "galleon_r10",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_r11_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "galleon_r12",
+      "to_spawn": [
+        256,
+        328
+      ],
+      "requires_flags": [
+        "galleon_boss_key",
+        "gal_r11_cleared"
+      ],
+      "locked_door_id": "door_r11_boss"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r11_s",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r11",
+      "kind": "state_lever",
+      "pos": [
+        280,
+        216
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "drv_r11",
+      "kind": "gal_list_driver",
+      "pos": [
+        232,
+        216
+      ],
+      "props": {
+        "rail_targets": [
+          "mir_r11"
+        ],
+        "rail_min_x": 144.0,
+        "rail_max_x": 304.0,
+        "speed": 130.0,
+        "surge_secs": 1.8
+      }
+    },
+    {
+      "id": "mir_r11",
+      "kind": "blue_transformer",
+      "pos": [
+        224,
+        152
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          -0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "door_r11_combat",
+      "kind": "door",
+      "pos": [
+        224,
+        48
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "gal_r11",
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r11_boss",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_key",
+        "dungeon_id": "galleon",
+        "key_kind": "keepers_flame",
+        "key_id": "galleon_boss_key",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        248
+      ],
+      "props": {
+        "zone": "gal_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        248
+      ],
+      "props": {
+        "zone": "gal_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        72
+      ],
+      "props": {
+        "zone": "gal_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        72
+      ],
+      "props": {
+        "zone": "gal_r11",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "gull_r11_1",
+      "kind": "gull_thief",
+      "pos": [
+        152,
+        88
+      ],
+      "zone": "gal_r11"
+    },
+    {
+      "id": "gull_r11_2",
+      "kind": "gull_thief",
+      "pos": [
+        312,
+        88
+      ],
+      "zone": "gal_r11"
+    },
+    {
+      "id": "shrimp_r11",
+      "kind": "pistol_shrimp",
+      "pos": [
+        232,
+        88
+      ],
+      "zone": "gal_r11"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        232,
+        152
+      ],
+      "radius": 26
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        184,
+        184
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        232,
+        104
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "barnacle_anchor",
+      "pos": [
+        104,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "barnacle_anchor",
+      "pos": [
+        360,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "broken_cannon",
+      "pos": [
+        104,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "broken_cannon",
+      "pos": [
+        344,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        280,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        120,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        184,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        280,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "gal_r11_wave2",
+      "on": "cleared:gal_r11",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "anchor_r11",
+              "kind": "anchor_drowned",
+              "pos": [
+                232,
+                104
+              ],
+              "zone": "gal_r11"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gal_r11_all_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "gal_r11_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Storm-lashed tapered prow gauntlet where rolling and clamping a central Blue Transformer provides cover and blue banks against Gull Thieves, Pistol Shrimp, and an Anchor Drowned before the Boss Door.",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Combine moving rail cover, anti-snatch Gull timing, and blue flanking against a mixed coastal elite pack.",
+    "decisions": 8,
+    "expert_s": 48,
+    "reward": "boss_threshold",
+    "why": "Pre-boss forecastle exam testing coastal combat mastery right before The Figurehead.",
+    "exit": "exit_r11_north",
+    "start": {
+      "vars": {
+        "list": "port"
+      },
+      "flags": [
+        "power_ballast_clamp",
+        "galleon_boss_key"
+      ],
+      "keys": {
+        "keepers_flame": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          232,
+          200
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "wait",
+        "secs": 1.0
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "gal_r11_cleared",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "door_r11_boss"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_north"
+      }
+    ]
+  }
+}

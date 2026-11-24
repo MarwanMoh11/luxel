@@ -1,0 +1,518 @@
+{
+  "id": "hourglass_r12",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R12",
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "hg_r12_arena",
+      "name_key": "ISL4_HG_R12",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r12_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r11",
+      "to_spawn": [
+        176,
+        56
+      ]
+    },
+    {
+      "id": "exit_hg_r12_return",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_island": 4,
+      "to_region": "overworld",
+      "to_spawn": [
+        216,
+        560
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "dungeon_hourglass_done"
+      ],
+      "locked_door_id": "door_hg_r12_return"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r12",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mirror_hg_r12_n",
+      "kind": "blue_transformer",
+      "pos": [
+        248,
+        104
+      ],
+      "props": {
+        "angle_deg": 45,
+        "angle_step_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "double_sided": true,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "mirror_hg_r12_s",
+      "kind": "blue_transformer",
+      "pos": [
+        264,
+        248
+      ],
+      "props": {
+        "angle_deg": 135,
+        "angle_step_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "double_sided": true,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "rose_hg_r12_1",
+      "kind": "echo_rose",
+      "pos": [
+        120,
+        136
+      ],
+      "props": {
+        "secs": 5.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "rose_hg_r12_2",
+      "kind": "echo_rose",
+      "pos": [
+        392,
+        136
+      ],
+      "props": {
+        "secs": 5.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "rose_hg_r12_3",
+      "kind": "echo_rose",
+      "pos": [
+        376,
+        248
+      ],
+      "props": {
+        "secs": 5.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "door_hg_r12_return",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "dungeon_hourglass_done"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r12_sw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        296
+      ],
+      "props": {
+        "zone": "hg_r12_arena",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        296
+      ],
+      "props": {
+        "zone": "hg_r12_arena",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        72
+      ],
+      "props": {
+        "zone": "hg_r12_arena",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "zone": "hg_r12_arena",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "gardener_twice_r12",
+      "kind": "boss_gardener_twice",
+      "pos": [
+        264,
+        168
+      ],
+      "zone": "hg_r12_arena"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 68,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 40,
+      "style": "ritual"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        184,
+        184
+      ],
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        328,
+        200
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        136,
+        248
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        144
+      ],
+      "size": [
+        56,
+        84
+      ],
+      "tint": "warm",
+      "shear": 0.22
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "hourglass_floor_dial",
+      "pos": [
+        256,
+        176
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "garden_clock_arch",
+      "pos": [
+        256,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        136,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        376,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "brass_sundial_pedestal",
+      "pos": [
+        104,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "topiary_bird_statue",
+      "pos": [
+        424,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        88,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        424,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        152,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        360,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "events": [
+    {
+      "id": "hg_r12_victory_msg",
+      "on": "flag:boss_gardener_twice_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "dungeon_hourglass_done"
+        },
+        {
+          "set_flag": "half_lantern_4_a"
+        },
+        {
+          "narrate": {
+            "id": "ISL4_HG_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "hg_r12_spawn_pane",
+      "on": "flag:boss_gardener_twice_defeated",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "pane_hg_r12_sand",
+            "kind": "pane_pickup",
+            "pos": [
+              256,
+              160
+            ],
+            "props": {
+              "pane": "hourglass_sand"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "Grand Octagonal Pruning Amphitheatre vs The Gardener, Twice: records Wick's own kiting trail and bolts, splits into Present + Echo Gardener in Phase 2, and shatters when Echo bolts bank off arena Blue Transformers or cross shears in Phase 3.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Everything in The Hourglass Maze culminates in outsmarting your own recorded past with mirrors and Echo decoys.",
+    "decisions": 8,
+    "expert_s": 135,
+    "reward": "dungeon_hourglass_done+half_lantern_4_a+pane_hourglass_sand",
+    "why": "Dungeon A Boss Amphitheatre rewarding Half-Lantern 4A and the Hourglass Sand stained-glass pane.",
+    "exit": "exit_hg_r12_return",
+    "start": {
+      "flags": [
+        "hg_echo_bud",
+        "hg_boss_key"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "rose_hg_r12_1"
+      },
+      {
+        "op": "clear",
+        "timeout": 135.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "boss_gardener_twice_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.5
+      },
+      {
+        "op": "interact",
+        "target": "pane_hg_r12_sand"
+      },
+      {
+        "op": "expect",
+        "flag": "dungeon_hourglass_done"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r12_return"
+      }
+    ]
+  }
+}

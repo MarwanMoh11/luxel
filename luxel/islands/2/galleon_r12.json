@@ -1,0 +1,483 @@
+{
+  "id": "galleon_r12",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R12_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    256,
+    328
+  ],
+  "zones": [
+    {
+      "id": "gal_r12",
+      "name_key": "GAL_R12_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r12_south",
+      "rect": [
+        240,
+        368,
+        32,
+        16
+      ],
+      "to_region": "galleon_r11",
+      "to_spawn": [
+        224,
+        64
+      ]
+    },
+    {
+      "id": "exit_r12_warp",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "galleon_r1",
+      "to_spawn": [
+        192,
+        224
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "galleon_done"
+      ],
+      "locked_door_id": "door_r12_warp"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r12_s",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        328
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mir_r12_w",
+      "kind": "blue_transformer",
+      "pos": [
+        152,
+        216
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "mir_r12_e",
+      "kind": "blue_transformer",
+      "pos": [
+        344,
+        216
+      ],
+      "props": {
+        "normal": [
+          -0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "keg_r12_w",
+      "kind": "ballast_keg",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "respawn_s": 7.0,
+        "blast_r": 36.0,
+        "obey_list": true,
+        "tilt_speed": 72.0
+      }
+    },
+    {
+      "id": "keg_r12_e",
+      "kind": "ballast_keg",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "respawn_s": 7.0,
+        "blast_r": 36.0,
+        "obey_list": true,
+        "tilt_speed": 72.0
+      }
+    },
+    {
+      "id": "door_r12_warp",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "galleon_done"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r12_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        312
+      ],
+      "props": {
+        "zone": "gal_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_se",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        312
+      ],
+      "props": {
+        "zone": "gal_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "zone": "gal_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        88
+      ],
+      "props": {
+        "zone": "gal_r12",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "figurehead_r12",
+      "kind": "figurehead",
+      "pos": [
+        256,
+        168
+      ],
+      "zone": "gal_r12"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        256,
+        184
+      ],
+      "radius": 52
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        184
+      ],
+      "radius": 64,
+      "style": "ritual"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        184,
+        200
+      ],
+      "radius": 24,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        328,
+        200
+      ],
+      "radius": 24,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        152
+      ],
+      "size": [
+        64,
+        92
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "barnacle_anchor",
+      "pos": [
+        120,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "barnacle_anchor",
+      "pos": [
+        376,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "mast_stump_pillar",
+      "pos": [
+        104,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "mast_stump_pillar",
+      "pos": [
+        376,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        200,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        312,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        120,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        376,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        328,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        256,
+        280
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "gal_r12_victory_msg",
+      "on": "flag:galleon_done",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "GAL_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "gal_r12_spawn_pane",
+      "on": "flag:galleon_done",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "pane_r12_rip_tide",
+            "kind": "pane_pickup",
+            "pos": [
+              256,
+              200
+            ],
+            "props": {
+              "pane": "rip_tide"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Shattered Bowsprit Boss Arena: The Figurehead tears off the prow on a giant sliding anchor chain, listing the deck every phase; Ballast Clamp her fluke, bank blue off twin mirrors, and claim Half-Lantern #1 and Pane Rip Tide.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Synthesizes Galleon ship roll, Ballast Clamp tether pinning, Ballast Keg blasts, and blue mirror flanking across 3 escalating phases.",
+    "decisions": 10,
+    "expert_s": 132,
+    "reward": "galleon_done+half_lantern_1+pane_rip_tide+cycle_5",
+    "why": "Climax boss of The Drowned Galleon awarding Half-Lantern #1, Pane rip_tide, and setting galleon_done toward The Leviathan.",
+    "exit": "exit_r12_warp",
+    "start": {
+      "vars": {
+        "list": "port"
+      },
+      "flags": [
+        "power_ballast_clamp"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          280
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "gal_r12",
+        "timeout": 150.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "galleon_done",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "pane_r12_rip_tide"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r12_warp"
+      }
+    ]
+  }
+}

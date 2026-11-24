@@ -1,66 +1,289 @@
 class_name LxAstronomerBoss
-extends LxPhantomOwlBrain
-## Starfall Observatory Boss (Island 5): the Astronomer, a great celestial phantom owl.
-## 3 phases, HP 18.0. During P2/P3 Constellation TELL, renders 1-2 decoy phantom silhouettes;
-## active True Lens (on_light(..., "lens")) exposes her true gold core and staggers her 0.8s!
+extends LxBossBase
+## Starfall Observatory Keeper Boss (Island 5, orrery_r10): The Astronomer (Bible §4.7).
+## 3 phases (66%/33%) on LxBossBase. Starlight spectral veil reduces plain bolt spam outside
+## punish windows (ice/gold astrolabe glint); True Lens exposes her true gold core (1.35x) and
+## shatters her Constellation Nova decoy silhouettes for an instant 1.5s stagger!
+## Island 5 rule: P2 Astral Chime carves outer star-void alcoves with glowing star pedestals;
+## P3 Gravity Syzygy awakens 2 live orbiting LxFields polarity wells curving her 5-arm spirals!
 
 enum AstroMove { DIVE, CONSTELLATION }
 
-const NOVA_TELL_P2: float = 0.64
-const NOVA_TELL_P3: float = 0.56
-const NOVA_COMMIT_TIME: float = 0.36
-const NOVA_START_R: float = 10.0
-const NOVA_MAX_R: float = 76.0
-const NOVA_BAND: float = 9.5
-const NOVA_RAY_RANGE: float = 124.0
-const NOVA_RAY_HALF_W: float = 8.0
-const NOVA_RECOVER: float = 1.35
-const LENS_STAGGER_TIME: float = 0.80
-const ROAR_TIME: float = 0.65
+class SyzygyWellField:
+	extends RefCounted
+	var pos: Vector2 = Vector2.ZERO
+	var radius: float = 54.0
+	var strength: float = 420.0
+	var is_push: bool = false
+	var active: bool = false
 
+	func is_field_active() -> bool:
+		return active
+
+	func field_accel(p: Vector2, what: String) -> Vector2:
+		if not active:
+			return Vector2.ZERO
+		var delta: Vector2 = pos - p
+		var d2: float = delta.length_squared()
+		if d2 >= radius * radius or d2 <= 0.0001:
+			return Vector2.ZERO
+		var dist: float = sqrt(d2)
+		var u: float = clampf(1.0 - dist / radius, 0.0, 1.0)
+		var falloff: float = (0.35 + 0.65 * u) * (1.0 - exp(-dist / 10.0))
+		var mult: float = 1.15 if what in ["bolt", "beam"] else (0.85 if what == "lantern" else (0.05 if what == "wick" else 0.25))
+		var dn: Vector2 = delta / dist
+		if is_push:
+			dn = -dn
+		return dn * (strength * falloff * mult)
+
+
+const NOVA_TELL_P2: float = 0.62
+const NOVA_RAY_RANGE: float = 140.0
+const NOVA_RAY_HALF_W: float = 8.0
+const ALT_PERCH: float = 16.0
+const ALT_DIVE: float = 28.0
+
+# Compat fields referenced by tests/luxel/boss_qa_capture.gd
 var active_move: int = AstroMove.DIVE
-var move_cycle: int = 0
-var nova_progress: float = 0.0
-var nova_hit: bool = false
+var revealed: bool = true
+var reveal_t: float = 2.0
 var star_base_ang: float = 0.0
 var decoy_offsets: Array[Vector2] = []
-var true_core_lit_t: float = 0.0
 var _roaring: bool = false
+
+var altitude: float = ALT_PERCH
+var true_core_lit_t: float = 0.0
+var _dive_from: Vector2 = Vector2.ZERO
+var _dive_to: Vector2 = Vector2.ZERO
+var _dive_landed: bool = false
+var _sweep_dir: Vector2 = Vector2.DOWN
+var _well_a: SyzygyWellField = null
+var _well_b: SyzygyWellField = null
+var _wells_reg: bool = false
+var _well_orbit_a: float = 0.0
+var _star_pedestals: Array[Vector2] = []
+var _clank_sfx_cd: float = 0.0
 
 
 func _init() -> void:
 	super._init()
 	kind = "astronomer"
 	boss_id = "astronomer"
+	boss_name_key = "BOSS_ASTRONOMER"
 	island_id = 5
-	is_boss = true
-	max_hp = 18.0
-	hp = 18.0
-	body_radius = 8.5
-	routine_speed = 76.0
-	leash_radius = 185.0
-	notice_radius = 152.0
-	tell_time = 0.62
-	recover_time = 1.35
-	give_up_time = 1.8
-	shard_drop = 34
+	is_miniboss = false
+	reward_heart = "full"
+	music_cue = "island5_boss_p1"
+	music_p2_cue = "island5_boss_p2"
+	max_hp = 88.0
+	hp = 88.0
+	body_radius = 9.0
+	move_speed = 52.0
+	stagger_threshold = 15.0
+	stagger_duration = 1.65
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.28
+	shard_drop = 45
+	death_duration = 2.4
 
 
-func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
-	super.setup(spec, p_director, p_world)
-	max_hp = maxf(18.0, max_hp)
-	hp = max_hp
-	is_boss = true
-	boss_id = str(spec.get("boss_id", "astronomer"))
-	island_id = int(spec.get("island_id", 5))
+func _exit_tree() -> void:
+	_unregister_wells()
+
+
+func _configure_boss(_spec: Dictionary) -> void:
+	if world_ctx != null and str(world_ctx.get("current_region_id")) == "orrery_r10":
+		arena_rect = Rect2(144.0, 72.0, 192.0, 160.0)
+	configure_phases([0.66, 0.33])
+
+	# Attack 1: Phantom Dive — high spectral owl swoop onto target + star-feather scatter
+	register_attack("phantom_dive", {
+		"weight": 1.25, "tell": 0.56, "commit": 0.42, "recover": 1.15, "cooldown": 1.35,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = AstroMove.DIVE
+			decoy_offsets.clear()
+			_dive_from = pos
+			_dive_to = clamp_to_arena(tgt)
+			_dive_landed = false
+			ground.warn_ring(_dive_to, 26.0, last_tell_duration + 0.16, 1.0, "sky", "gold")
+			stage.play_sfx("astronomer_constellation_tell", pos),
+		"on_tell": func(_b: LxBossBase, _tgt: Vector2, dt: float, _prog: float) -> void:
+			altitude = move_toward(altitude, ALT_DIVE, 52.0 * dt),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			_dive_from = pos
+			_dive_landed = false
+			stage.play_sfx("owl_dive", pos),
+		"on_commit": func(_b: LxBossBase, tgt: Vector2, _dt: float, el: float) -> void:
+			var u: float = clampf(el / 0.30, 0.0, 1.0)
+			altitude = lerpf(ALT_DIVE, 4.0, u)
+			if el <= 0.30:
+				move_boss(_dive_from.lerp(_dive_to, u) - pos, true)
+			elif not _dive_landed:
+				_dive_landed = true
+				var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+				patterns.emit_fan(pos, d, 5 if phase >= 3 else 3, 0.85, 138.0, {"color": "ice", "source": "owl_dive_stars", "field_scale": 0.90})
+				stage.shake(0.16)
+				stage.play_sfx("astronomer_constellation_fire", pos),
+	})
+
+	# Attack 2: Starlight Barrage — shooting-star rain across Wick & corners + twin crescent boomerangs
+	register_attack("starlight_barrage", {
+		"weight": 1.20, "tell": 0.54, "commit": 0.38, "recover": 1.00, "cooldown": 1.40,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = AstroMove.DIVE
+			decoy_offsets.clear()
+			var drops: Array[Vector2] = _build_star_targets(tgt)
+			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "sky", "gold")
+			stage.play_sfx("astronomer_constellation_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			patterns.emit_boomerang(pos, d.rotated(0.28), 142.0, 0.68, 0.72, {"color": "gold", "source": "star_boomerang", "field_scale": 1.0})
+			patterns.emit_boomerang(pos, d.rotated(-0.28), 142.0, 0.68, -0.72, {"color": "ice", "source": "star_boomerang", "field_scale": 1.0})
+			stage.shake(0.14)
+			stage.play_sfx("astronomer_constellation_fire", pos),
+	})
+
+	# Attack 3: Astrolabe Sweep — meridian sweep-wall with dodge gap + targeted star-lance
+	register_attack("astrolabe_sweep", {
+		"weight": 1.15, "tell": 0.56, "commit": 0.38, "recover": 1.02, "cooldown": 1.50,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = AstroMove.DIVE
+			decoy_offsets.clear()
+			_sweep_dir = Vector2.LEFT if tgt.x < arena_rect.get_center().x else Vector2.RIGHT
+			var c: Vector2 = arena_rect.get_center()
+			var sx: float = arena_rect.end.x - 10.0 if _sweep_dir.x < 0.0 else arena_rect.position.x + 10.0
+			var ex: float = arena_rect.position.x + 10.0 if _sweep_dir.x < 0.0 else arena_rect.end.x - 10.0
+			ground.warn_lane(Vector2(sx, c.y), Vector2(ex, c.y), arena_rect.size.y * 0.30, last_tell_duration, 0.0, "sky", "ice")
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			ground.warn_lane(pos, pos + d * 150.0, 8.0, last_tell_duration, 0.0, "gold", "cream")
+			stage.play_sfx("clockwork_chime", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			var c: Vector2 = arena_rect.get_center()
+			var sx: float = arena_rect.end.x - 10.0 if _sweep_dir.x < 0.0 else arena_rect.position.x + 10.0
+			var gap_idx: int = 3 if int(anim_t * 10.0) % 2 == 0 else 5
+			patterns.emit_sweep_wall(Vector2(sx, c.y), _sweep_dir, arena_rect.size.y - 24.0, 10, gap_idx, 3, 118.0, {"color": "ice", "source": "meridian_wall"})
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			patterns.emit_lane(pos, d, 3, 152.0, 0.08, {"color": "gold", "source": "astrolabe_lance", "field_scale": 1.0})
+			stage.shake(0.16)
+			stage.play_sfx("astronomer_constellation_fire", pos),
+	})
+
+	# Attack 4 (P2/P3): Constellation Nova — 1-2 decoy silhouettes (True Lens shatters for stagger!) + star rays
+	register_attack("constellation_nova", {
+		"phases": [2, 3], "weight": 1.55, "tell": NOVA_TELL_P2, "commit": 0.42, "recover": 1.25, "cooldown": 1.75,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = AstroMove.CONSTELLATION
+			star_base_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			facing = star_base_ang
+			decoy_offsets.clear()
+			if phase == 2:
+				decoy_offsets.append(Vector2.from_angle(star_base_ang + PI * 0.55) * 44.0)
+			else:
+				decoy_offsets.append(Vector2.from_angle(star_base_ang + 2.1) * 46.0)
+				decoy_offsets.append(Vector2.from_angle(star_base_ang - 2.1) * 46.0)
+			var rays: int = 5 if phase >= 3 else 3
+			ground.warn_ring(pos, 74.0, last_tell_duration, 0.0, "sky", "gold")
+			for i: int in range(rays):
+				var rd: Vector2 = Vector2.from_angle(star_base_ang + float(i) * (TAU / float(rays)))
+				ground.warn_lane(pos, pos + rd * NOVA_RAY_RANGE, NOVA_RAY_HALF_W, last_tell_duration, 1.0, "sky", "gold")
+			stage.play_sfx("astronomer_constellation_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			decoy_offsets.clear()
+			var rays: int = 5 if phase >= 3 else 3
+			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			patterns.emit_gap_ring(pos, 12 if phase >= 3 else 10, 122.0, gap_a + 0.42, 0.72, {"color": "ice", "source": "constellation_ring", "field_scale": 1.05})
+			for i: int in range(rays):
+				var rd: Vector2 = Vector2.from_angle(star_base_ang + float(i) * (TAU / float(rays)))
+				patterns.emit_lane(pos, rd, 2, 148.0, 0.09, {"color": "gold", "source": "constellation_ray", "field_scale": 1.05})
+			stage.shake(0.22)
+			stage.play_sfx("astronomer_constellation_fire", pos),
+	})
+
+	# Attack 5 (P3): Gravity Syzygy — twin orbiting LxFields wells bend a 5-arm celestial spiral!
+	register_attack("gravity_syzygy", {
+		"phases": [3], "weight": 1.65, "tell": 0.64, "commit": 0.52, "recover": 1.25, "cooldown": 1.80,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = AstroMove.CONSTELLATION
+			_ensure_wells(true)
+			star_base_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			ground.warn_ring(pos, 52.0, last_tell_duration, 0.0, "gold", "ice")
+			ground.warn_ring(clamp_to_arena(tgt), 24.0, last_tell_duration + 0.06, 1.0, "sky", "gold")
+			stage.play_sfx("clockwork_chime", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			patterns.emit_spiral(pos, 5, 118.0, star_base_ang, 0.34, 3, 0.14, {"color": "gold", "source": "syzygy_spiral", "field_scale": 1.25})
+			stage.shake(0.22)
+			stage.play_sfx("eclipse_wave", pos),
+	})
+
+
+func _on_reset_encounter() -> void:
+	_unregister_wells()
 	active_move = AstroMove.DIVE
-	move_cycle = 0
-	nova_progress = 0.0
-	nova_hit = false
+	revealed = true
+	reveal_t = 2.0
 	star_base_ang = 0.0
 	decoy_offsets.clear()
-	true_core_lit_t = 0.0
 	_roaring = false
+	altitude = ALT_PERCH
+	true_core_lit_t = 0.0
+	_well_orbit_a = 0.0
+	_star_pedestals.clear()
+	_clank_sfx_cd = 0.0
+
+
+func _enter_phase(next_phase: int) -> void:
+	# Compat hook for tests/luxel/boss_qa_capture.gd
+	phase = clampi(next_phase, 1, 3)
+	if not phases_reached.has(phase):
+		phases_reached.append(phase)
+	_on_phase_enter(phase)
+
+
+func _on_phase_enter(new_phase: int) -> void:
+	_roaring = true
+	decoy_offsets.clear()
+	altitude = ALT_PERCH
+	var c: Vector2 = arena_rect.get_center()
+	if new_phase == 2:
+		# P2 Arena Mutation: Astral Chime carves 4 outer void alcoves + lights safe star pedestals!
+		_carve_safe_tile_near(c + Vector2(-92.0, -52.0), "pit")
+		_carve_safe_tile_near(c + Vector2(92.0, -52.0), "pit")
+		_carve_safe_tile_near(c + Vector2(-92.0, 52.0), "pit")
+		_carve_safe_tile_near(c + Vector2(92.0, 52.0), "pit")
+		_star_pedestals = [
+			clamp_to_arena(c + Vector2(-64.0, -34.0)), clamp_to_arena(c + Vector2(64.0, -34.0)),
+			clamp_to_arena(c + Vector2(-64.0, 34.0)), clamp_to_arena(c + Vector2(64.0, 34.0)),
+		]
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-56.0, 0.0)), 4.5, "astro_astrolabe_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(56.0, 0.0)), 4.5, "astro_astrolabe_e")
+		stage.darkness_pulse(0.64, 1.0)
+		stage.shake(0.24)
+		stage.play_sfx("astronomer_phase", pos)
+		stage.play_sfx("clockwork_chime", pos)
+	elif new_phase == 3:
+		# P3 Arena Mutation: Gravity Syzygy awakens twin live orbiting polarity wells!
+		_ensure_wells(true)
+		stage.darkness_pulse(0.74, 1.15)
+		stage.shake(0.28)
+		stage.play_sfx("astronomer_phase", pos)
+		stage.play_sfx("eclipse_wave", pos)
+
+
+func _on_boss_tick(dt: float, _target: Vector2) -> void:
+	if boss_state != BossState.PHASE_SHIFT:
+		_roaring = false
+	_clank_sfx_cd = maxf(0.0, _clank_sfx_cd - dt)
+	true_core_lit_t = maxf(0.0, true_core_lit_t - dt)
+	revealed = true
+	reveal_t = maxf(reveal_t, 1.0)
+	if boss_state != BossState.COMMIT and boss_state != BossState.TELL:
+		altitude = move_toward(altitude, ALT_PERCH + sin(anim_t * 3.0) * 2.5, 36.0 * dt)
+	if _well_a != null and _well_a.active and _well_b != null and _well_b.active:
+		_well_orbit_a = wrapf(_well_orbit_a + 1.15 * dt, -PI, PI)
+		var c: Vector2 = arena_rect.get_center()
+		var orb_v := Vector2(cos(_well_orbit_a) * 66.0, sin(_well_orbit_a) * 38.0)
+		_well_a.pos = clamp_to_arena(c + orb_v)
+		_well_b.pos = clamp_to_arena(c - orb_v)
 
 
 func on_light(a: Variant, b: Variant = Vector2.ZERO, source: String = "") -> void:
@@ -76,333 +299,154 @@ func on_light(a: Variant, b: Variant = Vector2.ZERO, source: String = "") -> voi
 			orig = b as Vector2
 		elif b is String and src.is_empty():
 			src = str(b)
-	super.on_light(a, b, src)
-	if state == State.DEAD or src != "lens" or rad <= 0.0:
+	if boss_state == BossState.DEATH or src != "lens" or rad <= 0.0:
 		return
-	var in_light: bool = orig == Vector2.ZERO or pos.distance_to(orig) <= rad + body_radius
-	if not in_light:
-		return
-	true_core_lit_t = maxf(true_core_lit_t, 0.85)
-	if state == State.TELL and active_move == AstroMove.CONSTELLATION:
-		# Active True Lens pulse during Constellation TELL shatters decoys and staggers her 0.8s!
-		_spawn_decoy_shatter_fx()
-		active_move = AstroMove.DIVE
-		decoy_offsets.clear()
-		_release_token()
-		state = State.STAGGER
-		state_timer = LENS_STAGGER_TIME
-		altitude = ALT_PERCH
-		vel = Vector2.ZERO
-		reveal_t = maxf(reveal_t, 1.35)
-		revealed = true
-		_boss_impact(0.18, 76.0, 74.0)
-		_emit_sfx("astronomer_lens_shatter")
+	if orig == Vector2.ZERO or pos.distance_to(orig) <= rad + body_radius:
+		true_core_lit_t = maxf(true_core_lit_t, 3.0)
+		patterns.freeze_bolts_in_radius(pos, 108.0, 1.2, "lens")
+		if boss_state == BossState.TELL and active_move == AstroMove.CONSTELLATION and not decoy_offsets.is_empty():
+			# Active True Lens during Constellation TELL shatters decoys & staggers her!
+			decoy_offsets.clear()
+			active_move = AstroMove.DIVE
+			add_stagger(stagger_threshold)
+			stage.light_burst(pos, 72.0, 1.45, 0.36)
+			stage.play_sfx("astronomer_lens_shatter", pos)
 
 
-func is_targetable() -> bool:
-	if not is_alive() or not revealed:
-		return false
-	# Always targetable when revealed in ROUTINE, TELL, COMMIT, RECOVER, STAGGER
-	return state == State.ROUTINE or state == State.TELL or state == State.COMMIT \
-			or state == State.RECOVER or state == State.STAGGER
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var curve_deg: float = float(hit.get("curve_angle_deg")) if hit.get("curve_angle_deg") != null else 0.0
+	var is_curved: bool = curve_deg >= 15.0
+	var heavy: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_PRISM, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_SUNFLARE] \
+			or bool(h["pierce"]) or bool(h["cracks_armour"])
+	var lens_mult: float = 1.35 if true_core_lit_t > 0.0 else 1.0
+
+	if boss_state == BossState.STAGGER:
+		return dmg * 1.45 * lens_mult
+	if is_curved:
+		return dmg * 1.35 * lens_mult
+	if is_punishable():
+		return dmg * (1.20 if heavy else 1.0) * lens_mult
+	if heavy:
+		return dmg * 1.15 * lens_mult
+
+	# Spectral starlight veil outside punish windows: reduced plain bolt chip + astrolabe glint!
+	clank_t = 0.12
+	if _clank_sfx_cd <= 0.0:
+		_clank_sfx_cd = 0.28
+		stage.play_sfx("crystal_clank", pos)
+	return dmg * (0.45 if true_core_lit_t > 0.0 else 0.30)
 
 
-func take_hit(hit: LxHit) -> int:
-	if _roaring:
-		_emit_enemy_hit(hit, HitResult.GLANCED)
-		return HitResult.GLANCED
-	var res: int = super.take_hit(hit)
-	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		_check_phase_transition()
-	return res
-
-
-func _check_phase_transition() -> void:
-	if phase < 2 and hp <= max_hp * 0.66 and hp > 0.001:
-		_enter_phase(2)
-	elif phase < 3 and hp <= max_hp * 0.33 and hp > 0.001:
-		_enter_phase(3)
-
-
-func _enter_phase(next_phase: int) -> void:
-	phase = next_phase
-	_roaring = true
-	active_move = AstroMove.DIVE
+func _on_death_start() -> void:
+	_unregister_wells()
 	decoy_offsets.clear()
-	nova_progress = 0.0
-	reveal_t = maxf(reveal_t, ROAR_TIME + 0.35)
-	revealed = true
-	altitude = ALT_PERCH
-	vel = Vector2.ZERO
-	_release_token()
-	state = State.NOTICE
-	state_timer = ROAR_TIME
-	if Lx.events != null:
-		Lx.events.boss_phase_changed.emit(boss_id, phase)
-		Lx.events.shake_requested.emit(0.30)
-	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
-	_emit_sfx("astronomer_phase")
+	stage.revert_tiles(world_ctx)
+	stage.play_sfx("astronomer_phase", pos)
 
 
-func _step_brain(dt: float) -> void:
-	reveal_t = maxf(0.0, reveal_t - dt)
-	true_core_lit_t = maxf(0.0, true_core_lit_t - dt)
-	_check_lens_reveal()
-	if state == State.NOTICE and _roaring:
-		reveal_t = maxf(reveal_t, 0.30)
-		revealed = true
-		state_timer -= dt
-		if state_timer <= 0.0:
-			_roaring = false
-			_enter_cruise(0.65)
-		return
-	if state == State.TELL and active_move == AstroMove.CONSTELLATION:
-		altitude = move_toward(altitude, ALT_DIVE, ALT_CLIMB_SPEED * dt)
-		vel = Vector2.ZERO
-		if state_timer > 0.22:
-			var to_t: Vector2 = (_get_lantern_pos() if _can_lure() else _get_wick_pos()) - pos
-			if to_t.length() > 0.01:
-				star_base_ang = to_t.angle()
-				facing = star_base_ang
-		state_timer -= dt
-		if state_timer <= 0.0:
-			_enter_constellation_commit()
-		revealed = reveal_t > 0.0
-		return
-	if state == State.COMMIT and active_move == AstroMove.CONSTELLATION:
-		_step_constellation_commit(dt)
-		reveal_t = maxf(reveal_t, 0.45)
-		revealed = true
-		return
-
-	super._step_brain(dt)
-	# Keep Astronomer reliably visible during COMMIT, RECOVER, STAGGER for readable windows
-	if state == State.COMMIT or state == State.RECOVER or state == State.STAGGER:
-		reveal_t = maxf(reveal_t, 0.45)
-		revealed = true
+func _ensure_wells(activate: bool) -> void:
+	if _well_a == null:
+		_well_a = SyzygyWellField.new()
+		_well_a.is_push = true
+	if _well_b == null:
+		_well_b = SyzygyWellField.new()
+		_well_b.is_push = false
+	_well_a.active = activate
+	_well_b.active = activate
+	var c: Vector2 = arena_rect.get_center()
+	_well_a.pos = clamp_to_arena(c + Vector2(66.0, 0.0))
+	_well_b.pos = clamp_to_arena(c + Vector2(-66.0, 0.0))
+	if activate and not _wells_reg:
+		LxFields.register(_well_a)
+		LxFields.register(_well_b)
+		_wells_reg = true
 
 
-func _enter_lock(target: Vector2, lured: bool) -> void:
-	move_cycle += 1
-	if phase >= 2 and (move_cycle % 2 == 0):
-		active_move = AstroMove.CONSTELLATION
-		state = State.TELL
-		is_counter_attack = false
-		var base_n: float = NOVA_TELL_P3 if phase >= 3 else NOVA_TELL_P2
-		last_tell_duration = _scaled_tell(base_n, false, attack_damage)
-		state_timer = last_tell_duration
-		vel = Vector2.ZERO
-		lock_target = target
-		lock_lured = lured
-		nova_progress = 0.0
-		nova_hit = false
-		star_base_ang = (target - pos).angle() if target.distance_to(pos) > 0.01 else facing
-		facing = star_base_ang
-		decoy_offsets.clear()
-		if phase == 2:
-			decoy_offsets.append(Vector2.from_angle(star_base_ang + PI * 0.55) * 44.0)
-		else:
-			decoy_offsets.append(Vector2.from_angle(star_base_ang + 2.1) * 46.0)
-			decoy_offsets.append(Vector2.from_angle(star_base_ang - 2.1) * 46.0)
-		_emit_attack_started()
-		_emit_sfx("astronomer_constellation_tell")
-		return
-	active_move = AstroMove.DIVE
-	decoy_offsets.clear()
-	super._enter_lock(target, lured)
+func _unregister_wells() -> void:
+	if _well_a != null:
+		_well_a.active = false
+		if _wells_reg:
+			LxFields.unregister(_well_a)
+	if _well_b != null:
+		_well_b.active = false
+		if _wells_reg:
+			LxFields.unregister(_well_b)
+	_wells_reg = false
+
+
+func _build_star_targets(tgt: Vector2) -> Array[Vector2]:
+	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var inset: Rect2 = arena_rect.grow(-18.0)
+	var corners: Array[Vector2] = [
+		inset.position, Vector2(inset.end.x, inset.position.y),
+		Vector2(inset.position.x, inset.end.y), inset.end,
+	]
+	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
+	out.append(corners[0])
+	out.append(corners[1])
+	if phase >= 2:
+		out.append(clamp_to_arena(arena_rect.get_center().lerp(tgt, 0.5)))
 	if phase >= 3:
-		last_tell_duration = _scaled_tell(0.55, false, attack_damage)
-		state_timer = last_tell_duration
+		out.append(corners[2])
+	return out
 
 
-func _enter_constellation_commit() -> void:
-	state = State.COMMIT
-	state_timer = NOVA_COMMIT_TIME
-	altitude = ALT_PERCH
-	decoy_offsets.clear()
-	nova_progress = 0.0
-	nova_hit = false
-	reveal_t = maxf(reveal_t, 0.55)
-	revealed = true
-	_boss_impact(0.22, 104.0, 98.0)
-	_emit_sfx("astronomer_constellation_fire")
+func _carve_safe_tile_near(world_pt: Vector2, tile_kind: String) -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("tile_at"):
+		return
+	var p: Vector2 = clamp_to_arena(world_pt)
+	var tx: int = int(floorf(p.x / 16.0))
+	var ty: int = int(floorf(p.y / 16.0))
+	var cp := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
+	if str(world_ctx.call("tile_at", cp)) == "ground" and cp.distance_to(home) > 34.0:
+		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), tile_kind)
 
 
-func _step_constellation_commit(dt: float) -> void:
-	state_timer = maxf(0.0, state_timer - dt)
-	nova_progress = 1.0 - clampf(state_timer / NOVA_COMMIT_TIME, 0.0, 1.0)
-	var ring_r: float = lerpf(NOVA_START_R, NOVA_MAX_R, nova_progress)
-	var ray_count: int = 5 if phase >= 3 else 3
-	if not nova_hit and _has_player():
-		var wp: Vector2 = _get_wick_pos()
-		var wv: Vector2 = wp - pos
-		if absf(wv.length() - ring_r) <= NOVA_BAND:
-			nova_hit = true
-			_emit_shockwave_hit(wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing))
-		else:
-			for i: int in range(ray_count):
-				var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
-				var rdir: Vector2 = Vector2.from_angle(ra)
-				if Geometry2D.get_closest_point_to_segment(wp, pos, pos + rdir * NOVA_RAY_RANGE).distance_to(wp) <= NOVA_RAY_HALF_W:
-					nova_hit = true
-					_emit_player_hit(rdir)
-					break
-	if _is_lantern_out() and _get_lantern_pos().distance_to(pos) <= ring_r:
-		if Lx.events != null:
-			Lx.events.lantern_struck.emit(_get_lantern_pos())
-	if state_timer <= 0.0:
-		active_move = AstroMove.DIVE
-		state = State.RECOVER
-		state_timer = maxf(MIN_RECOVER_TIME, NOVA_RECOVER)
-		last_recover_duration = state_timer
-		altitude = ALT_PERCH
-		vel = Vector2.ZERO
-		_emit_sfx("owl_recover")
-
-
-func _emit_shockwave_hit(push_dir: Vector2) -> void:
-	var prev_kind: String = kind
-	kind = "shockwave"
-	_emit_player_hit(push_dir)
-	kind = prev_kind
+func _visual_offset() -> Vector2:
+	return Vector2(0.0, -altitude)
 
 
 func _body_color() -> Color:
-	if not revealed:
-		return PAL["deep"] as Color
-	if phase >= 3:
-		return PAL["gold"] as Color
-	if phase >= 2:
-		return PAL["ice"] as Color
-	return PAL["sky"] as Color
+	return (PAL["gold"] if phase >= 3 else (PAL["ice"] if phase >= 2 else PAL["sky"])) as Color
 
 
-func _is_constellation_tell() -> bool:
-	return state == State.TELL and active_move == AstroMove.CONSTELLATION
+func _draw_boss_extra(off: Vector2) -> void:
+	var c: Vector2 = off.round()
+	# Ground shadow beneath floating owl
+	draw_circle(Vector2.ZERO, maxf(3.0, body_radius * 0.72), Color(PAL["void"] as Color, 0.48))
 
+	# P2 Star pedestals
+	for sp: Vector2 in _star_pedestals:
+		var lp: Vector2 = (sp - pos).round()
+		draw_arc(lp, 8.0, 0.0, TAU, 12, Color(PAL["gold"] as Color, 0.65), 1.1)
+		draw_circle(lp, 2.0, PAL["cream"] as Color)
 
-func _draw() -> void:
-	if revealed or not _is_constellation_tell():
-		super._draw()
-		return
-	# Unrevealed: keep the wisps, drop the phantom-owl dive ring, show the real Constellation telegraph
-	state = State.POSITION
-	super._draw()
-	state = State.TELL
-	_draw_extra(_visual_offset())
+	# P3 Twin Gravity Syzygy Wells
+	for wf: SyzygyWellField in [_well_a, _well_b]:
+		if wf != null and wf.active:
+			var wp: Vector2 = (wf.pos - pos).round()
+			var wcol: Color = (PAL["gold"] if wf.is_push else PAL["sky"]) as Color
+			draw_arc(wp, wf.radius * 0.68, 0.0, TAU, 20, Color(wcol, 0.35), 1.1)
+			draw_arc(wp, 14.0, anim_t * 3.0, anim_t * 3.0 + PI, 12, wcol, 1.4)
+			draw_circle(wp, 3.5, PAL["cream"] as Color)
 
-
-func _draw_extra(off: Vector2) -> void:
-	if _is_constellation_tell():
-		# Nothing lands on lock_target here: draw the owl layers without their TELL dive marker
-		state = State.POSITION
-		super._draw_extra(off)
-		state = State.TELL
-	else:
-		super._draw_extra(off)
-	var c_orig: Vector2 = off.round()
-	if _sprite_sheet == null:
-		# Astrolabe celestial halo
-		draw_arc(off, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.2)
-	if true_core_lit_t > 0.0:
-		# Active True Lens exposes the true gold core!
-		draw_arc(c_orig, body_radius + 6.5, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
-		draw_arc(c_orig, body_radius + 3.5, 0.0, TAU, 16, PAL["cream"] as Color, 1.2)
-		draw_circle(c_orig, 3.0, PAL["gold"] as Color)
-		draw_circle(c_orig, 1.5, PAL["cream"] as Color)
-	var ray_count: int = 5 if phase >= 3 else 3
-	if active_move == AstroMove.CONSTELLATION and state == State.TELL:
-		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var fred: bool = LxHudFx.flash_reduced()
-		LxBossTelegraphFx.draw_ground_danger_ring(self, off, NOVA_MAX_R, prog, anim_t, "sky", "gold")
-		for i: int in range(ray_count):
-			var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
-			var nb: float = star_base_ang + float((i + 1) % ray_count) * (TAU / float(ray_count))
-			var p_a: Vector2 = off + Vector2.from_angle(ra) * NOVA_RAY_RANGE
-			var p_b: Vector2 = (off + Vector2.from_angle(nb) * NOVA_RAY_RANGE).round()
-			LxBossTelegraphFx.draw_ground_danger_lane(self, off, p_a, NOVA_RAY_HALF_W, prog, anim_t, "sky", "gold")
-			var pa_r: Vector2 = p_a.round()
-			draw_line(pa_r, p_b, PAL["gold"] as Color, 1.0)
-			draw_line(pa_r + Vector2(-4.5, 0.0), pa_r + Vector2(4.5, 0.0), PAL["gold"] as Color, 1.3)
-			draw_line(pa_r + Vector2(0.0, -4.5), pa_r + Vector2(0.0, 4.5), PAL["gold"] as Color, 1.3)
-			draw_circle(pa_r, 1.4, PAL["cream"] as Color)
-		# Render 1-2 decoy phantom silhouettes with faint ground tether & shimmering ice-diamond True-Lens halo
-		var tether_a: float = 0.24 if fred else (0.20 + 0.12 * sin(anim_t * 10.0))
-		for d_off: Vector2 in decoy_offsets:
-			var dc: Vector2 = (c_orig + d_off).round()
-			draw_line(c_orig, dc, Color(PAL["ice"] as Color, tether_a), 1.0)
-			var dr: float = body_radius + 6.0 + (0.0 if fred else 1.2 * sin(anim_t * 14.0 + d_off.x))
-			var dpts: PackedVector2Array = PackedVector2Array([dc + Vector2(0.0, -dr), dc + Vector2(dr, 0.0), dc + Vector2(0.0, dr), dc + Vector2(-dr, 0.0), dc + Vector2(0.0, -dr)])
-			draw_polyline(dpts, PAL["void"] as Color, 2.2)
-			draw_polyline(dpts, PAL["ice"] as Color, 1.2)
-			draw_arc(dc, body_radius + 4.0, 0.0, TAU, 16, PAL["plum"] as Color, 1.2)
-			draw_circle(dc, body_radius * 0.72, PAL["deep"] as Color)
-			draw_arc(dc, body_radius * 0.85, 0.0, TAU, 14, PAL["sky"] as Color, 1.0)
-			draw_line(dc + Vector2(-5.0, -2.0), dc + Vector2(-9.0, -5.0), PAL["sky"] as Color, 1.4)
-			draw_line(dc + Vector2(5.0, -2.0), dc + Vector2(9.0, -5.0), PAL["sky"] as Color, 1.4)
-			draw_rect(Rect2(dc + Vector2(-2.0, -1.0), Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
-			draw_rect(Rect2(dc + Vector2(2.0, -1.0), Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
-		var cf: float = lerpf(4.0, 8.0, prog)
-		draw_line(c_orig + Vector2(-cf, 0.0), c_orig + Vector2(cf, 0.0), PAL["gold"] as Color, 1.5)
-		draw_line(c_orig + Vector2(0.0, -cf), c_orig + Vector2(0.0, cf), PAL["gold"] as Color, 1.5)
-		draw_circle(c_orig, 1.8, PAL["cream"] as Color)
-	elif active_move == AstroMove.CONSTELLATION and state == State.COMMIT:
-		var ring_r: float = lerpf(NOVA_START_R, NOVA_MAX_R, nova_progress)
-		draw_arc(off, ring_r + 2.2, 0.0, TAU, 36, PAL["sky"] as Color, 2.0)
-		draw_arc(off, ring_r, 0.0, TAU, 36, PAL["ice"] as Color, 3.2)
-		draw_arc(off, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, PAL["cream"] as Color, 1.3)
-		var fl: float = 6.5 + (0.0 if LxHudFx.flash_reduced() else 1.2 * sin(anim_t * 22.0))
-		for i: int in range(ray_count):
-			var ra: float = star_base_ang + float(i) * (TAU / float(ray_count))
-			var nb: float = star_base_ang + float((i + 1) % ray_count) * (TAU / float(ray_count))
-			var p_a: Vector2 = (off + Vector2.from_angle(ra) * NOVA_RAY_RANGE).round()
-			var p_b: Vector2 = (off + Vector2.from_angle(nb) * NOVA_RAY_RANGE).round()
-			draw_line(p_a, p_b, PAL["gold"] as Color, 1.2)
-			draw_line((off + Vector2.from_angle(ra) * ring_r).round(), (off + Vector2.from_angle(nb) * ring_r).round(), PAL["apricot"] as Color, 1.0)
-			draw_line(c_orig, p_a, PAL["apricot"] as Color, 4.2)
-			draw_line(c_orig, p_a, PAL["gold"] as Color, 2.5)
-			draw_line(c_orig, p_a, PAL["cream"] as Color, 1.1)
-			draw_line(p_a + Vector2(-fl, 0.0), p_a + Vector2(fl, 0.0), PAL["gold"] as Color, 1.6)
-			draw_line(p_a + Vector2(0.0, -fl), p_a + Vector2(0.0, fl), PAL["gold"] as Color, 1.6)
-			draw_line(p_a + Vector2(-fl * 0.6, 0.0), p_a + Vector2(fl * 0.6, 0.0), PAL["cream"] as Color, 1.0)
-			draw_line(p_a + Vector2(0.0, -fl * 0.6), p_a + Vector2(0.0, fl * 0.6), PAL["cream"] as Color, 1.0)
-			draw_circle(p_a, 1.8, PAL["cream"] as Color)
-		var c_fl: float = fl + 3.0
-		draw_line(c_orig + Vector2(-c_fl, 0.0), c_orig + Vector2(c_fl, 0.0), PAL["gold"] as Color, 2.0)
-		draw_line(c_orig + Vector2(0.0, -c_fl), c_orig + Vector2(0.0, c_fl), PAL["gold"] as Color, 2.0)
-		draw_line(c_orig + Vector2(-c_fl * 0.65, 0.0), c_orig + Vector2(c_fl * 0.65, 0.0), PAL["cream"] as Color, 1.2)
-		draw_line(c_orig + Vector2(0.0, -c_fl * 0.65), c_orig + Vector2(0.0, c_fl * 0.65), PAL["cream"] as Color, 1.2)
-		draw_circle(c_orig, 2.4, PAL["cream"] as Color)
-	elif _roaring:
-		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
-		var rr: float = body_radius + 11.0 + rp * 16.0
-		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
-		draw_arc(off, rr, 0.0, TAU, 28, PAL["ice"] as Color, 2.2)
-
-
-func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.24, 1.60, 0.48)
-
-
-func _spawn_decoy_shatter_fx() -> void:
-	var fred: bool = LxHudFx.flash_reduced()
-	var ice_col: Color = PAL["ice"] as Color
-	var gold_col: Color = PAL["gold"] as Color
-	var cream_col: Color = PAL["cream"] as Color
-	var has_p: bool = Lx.player != null and is_instance_valid(Lx.player)
-	var can_ring: bool = has_p and Lx.player.has_method("spawn_ring")
-	var can_spark: bool = has_p and Lx.player.has_method("spawn_sparks")
+	# Constellation decoy phantom silhouettes during TELL
 	for d_off: Vector2 in decoy_offsets:
-		var dpos: Vector2 = pos + d_off
-		if can_ring:
-			Lx.player.call("spawn_ring", dpos, 4.0, 26.0, 0.30, ice_col, 1.4 if fred else 1.8)
-			Lx.player.call("spawn_ring", dpos, 2.0, 16.0, 0.22, gold_col, 1.2 if fred else 1.5)
-		if can_spark:
-			for si: int in range(4):
-				var sdir: Vector2 = Vector2.from_angle(float(si) * (PI * 0.5) + PI * 0.25)
-				var scol: Color = ice_col if si % 2 == 0 else (gold_col if si == 1 else cream_col)
-				Lx.player.call("spawn_sparks", dpos, sdir, 3, scol, 34.0, 96.0, 0.32)
-		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-			LxDarknessLayer.active_instance.add_burst_light(dpos, 58.0, 1.38 * (0.62 if fred else 1.0), 0.34)
-	if Lx.hitstop != null and is_instance_valid(Lx.hitstop):
-		Lx.hitstop.trigger(0.065)
+		var dc: Vector2 = (c + d_off).round()
+		draw_line(c, dc, Color(PAL["ice"] as Color, 0.30), 1.0)
+		draw_arc(dc, body_radius + 4.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.3)
+		draw_circle(dc, body_radius * 0.70, PAL["deep"] as Color)
+
+	# True Lens exposed gold core
+	if true_core_lit_t > 0.0:
+		draw_arc(c, body_radius + 6.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.8)
+		draw_circle(c, 3.0, PAL["cream"] as Color)
+
+	# Spectral veil glint outside punish windows vs golden punish halo
+	if clank_t > 0.0:
+		draw_arc(c, body_radius + 5.0, facing - 1.15, facing + 1.15, 16, PAL["cream"] as Color, 2.2)
+		draw_arc(c, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["sky"] as Color, 1.2)
+	elif is_punishable() and boss_state != BossState.DEATH:
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)

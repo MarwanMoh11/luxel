@@ -1,0 +1,460 @@
+{
+  "name_key": "ISL1_MN_VAULT",
+  "spawn": [
+    176,
+    208
+  ],
+  "zones": [
+    {
+      "id": "mn_vault",
+      "name_key": "ISL1_MN_VAULT",
+      "rect": [
+        0,
+        0,
+        352,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10a_south",
+      "rect": [
+        160,
+        240,
+        32,
+        16
+      ],
+      "to_region": "manor_r9",
+      "to_spawn": [
+        272,
+        64
+      ]
+    },
+    {
+      "id": "exit_r10a_north",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_region": "manor_r11",
+      "to_spawn": [
+        272,
+        328
+      ],
+      "locked_door_id": "door_r10a_north"
+    },
+    {
+      "id": "exit_r10a_east_grate",
+      "rect": [
+        336,
+        112,
+        16,
+        32
+      ],
+      "to_region": "manor_r10b",
+      "to_spawn": [
+        56,
+        128
+      ],
+      "requires_flags": [
+        "manor_cleared"
+      ],
+      "locked_door_id": "door_r10a_grate"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10a_south",
+      "kind": "room_anchor",
+      "pos": [
+        176,
+        208
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r10a_war",
+      "kind": "bell",
+      "pos": [
+        168,
+        128
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 180
+      }
+    },
+    {
+      "id": "ring_r10a_winch",
+      "kind": "pull_ring",
+      "pos": [
+        232,
+        88
+      ],
+      "props": {
+        "axis": "s",
+        "dist": 24,
+        "latch": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "hook_r10a_pillar",
+      "kind": "lantern_hook",
+      "pos": [
+        144,
+        192
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "gate_r10a_moth",
+      "kind": "shadow_gate",
+      "pos": [
+        104,
+        80
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "ow_r10a_out",
+      "kind": "one_way_gate",
+      "pos": [
+        64,
+        152
+      ],
+      "props": {
+        "dir": "s",
+        "size": [
+          32,
+          12
+        ]
+      }
+    },
+    {
+      "id": "moth_1_07",
+      "kind": "moth",
+      "pos": [
+        56,
+        80
+      ],
+      "props": {
+        "id": "moth_1_07"
+      }
+    },
+    {
+      "id": "door_r10a_north",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "mn_vault",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r10a_grate",
+      "kind": "door",
+      "pos": [
+        328,
+        128
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "manor_cleared"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r10a_south",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        208
+      ],
+      "props": {
+        "zone": "mn_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10a_ne",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        64
+      ],
+      "props": {
+        "zone": "mn_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10a_sw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        192
+      ],
+      "props": {
+        "zone": "mn_vault",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mimic_r10a",
+      "kind": "pew_mimic",
+      "pos": [
+        144,
+        88
+      ],
+      "zone": "mn_vault"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        32,
+        88,
+        104
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        88
+      ],
+      "radius": 22,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        264,
+        64
+      ],
+      "size": [
+        40,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        208,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        312,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        296,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        112,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        48,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r10a_cut_chain",
+      "on": "signal:ring_r10a_winch",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "chandelier_chain_cut"
+        },
+        {
+          "sfx": "chain_snap"
+        },
+        {
+          "shake": 0.22
+        },
+        {
+          "narrate": {
+            "id": "ISL1_MN_CHAIN_CUT",
+            "style": "title",
+            "duration": 3.0
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Right-verdict Velvet Vault: unmask the velvet mimic with War, yank the brass ceiling winch to pre-cut one of The Chandelier's chains upstairs, and slip dark through the Shadow Gate to rescue Lost Moth #7.",
+    "kind": "reward",
+    "beat": "ketsu",
+    "teaches": "Solving the whodunit rewards both a tangible boss advantage (1 fewer Chandelier chain) and a stealth moth sanctum.",
+    "decisions": 8,
+    "expert_s": 45,
+    "reward": "chandelier_chain_cut+moth_1_07",
+    "why": "Right-verdict vault linking the Balustrade to the Grand Ballroom with post-boss grate access to r10b.",
+    "exit": "exit_r10a_north",
+    "start": {
+      "flags": [
+        "item_shutter_hood",
+        "manor_verdict_right"
+      ]
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          176
+        ],
+        "target": "bell_r10a_war"
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          136
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "ring_r10a_winch"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "flag": "chandelier_chain_cut",
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r10a_pillar"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "gate_r10a_moth",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          80
+        ]
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 0.8
+      },
+      {
+        "op": "expect",
+        "flag": "chandelier_chain_cut"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10a_north"
+      }
+    ]
+  },
+  "id": "manor_r10a",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

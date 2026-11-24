@@ -1,0 +1,77 @@
+{
+  "pack_id": "i6_train",
+  "owner": "D6A",
+  "comment": "Island 6 Minor Dungeon A: The Ember Express (11 rooms, 3 internal cycles). Debug-only on dungeon/regions meta until P6-OW hooks ow_rail_yard -> train_r1.",
+  "strings": {
+    "ISL6_TR_DUNGEON": "THE EMBER EXPRESS",
+    "ISL6_TR_R1": "CABOOSE VESTIBULE",
+    "ISL6_TR_R2": "BAGGAGE AND MAIL CAR",
+    "ISL6_TR_R3": "COAL HOPPER CAR",
+    "ISL6_TR_R4": "GRAND DINING SALON",
+    "ISL6_TR_R5": "BRAKE-VAN ROOF",
+    "ISL6_TR_R6": "WIND-SWEPT ROOF EXPRESS",
+    "ISL6_TR_R7": "PARALLEL FREIGHT SIDING",
+    "ISL6_TR_R8": "ARMORED BULLION CAR",
+    "ISL6_TR_R9": "THE UNCOUPLING GAUNTLET",
+    "ISL6_TR_R10": "SMOKESTACK CATWALK",
+    "ISL6_TR_R11": "THE LOCOMOTIVE CAB",
+    "ISL6_POW_HOOK": "COUPLER HOOK: YANK LOCKS AND VAULT GAPS!",
+    "ISL6_PROMPT_HOOK": "CLAIM COUPLER HOOK",
+    "ISL6_TR_LORE_TIMETABLE": "SKIP BANKS. SCATTER FANS. LANCE PIERCES.",
+    "ISL6_TR_SHORT_HATCH": "ROOF HATCH UNCOUPLED TO THE CABOOSE!",
+    "ISL6_TR_SHORT_TENDER": "BRAKE SHORTCUT OPEN TO DINING SALON!",
+    "ISL6_TR_P2_ROOF": "THE CAB ROOF TEARS OFF INTO THE GALE!",
+    "ISL6_TR_CLEARED": "THE ENGINEER FALLS. HALF-LANTERN CLAIMED!"
+  },
+  "state_vars": {
+    "train_roof_blown": {
+      "scope": "room:6:train_r11",
+      "values": ["no", "yes"],
+      "default": "no"
+    }
+  },
+  "interactables": {
+    "train_hook_altar": "res://luxel/islands/6/train/train_hook_altar.gd"
+  },
+  "dungeons": [
+    {
+      "id": "ember_express",
+      "name_key": "ISL6_TR_DUNGEON",
+      "island": 6,
+      "entry": "train_r1",
+      "regions": [
+        "train_r1",
+        "train_r2",
+        "train_r3",
+        "train_r4",
+        "train_r5",
+        "train_r6",
+        "train_r7",
+        "train_r8",
+        "train_r9",
+        "train_r10",
+        "train_r11"
+      ],
+      "mini_boss": "brakeman",
+      "boss": "engineer",
+      "theme": "ember_express",
+      "music": "isl6_express",
+      "requires_flags": [],
+      "done_flag": "express_cleared",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "train_r1": { "name_key": "ISL6_TR_R1", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [0, 1], "debug_only": true },
+    "train_r2": { "name_key": "ISL6_TR_R2", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [1, 1], "debug_only": true },
+    "train_r3": { "name_key": "ISL6_TR_R3", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [2, 1], "debug_only": true },
+    "train_r4": { "name_key": "ISL6_TR_R4", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [3, 1], "debug_only": true },
+    "train_r5": { "name_key": "ISL6_TR_R5", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [3, 0], "debug_only": true },
+    "train_r6": { "name_key": "ISL6_TR_R6", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [1, 0], "debug_only": true },
+    "train_r7": { "name_key": "ISL6_TR_R7", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [2, 2], "debug_only": true },
+    "train_r8": { "name_key": "ISL6_TR_R8", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [3, 2], "debug_only": true },
+    "train_r9": { "name_key": "ISL6_TR_R9", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [4, 2], "debug_only": true },
+    "train_r10": { "name_key": "ISL6_TR_R10", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [4, 1], "debug_only": true },
+    "train_r11": { "name_key": "ISL6_TR_R11", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [5, 1], "debug_only": true }
+  }
+}

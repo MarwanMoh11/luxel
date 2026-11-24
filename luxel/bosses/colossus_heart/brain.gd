@@ -32,8 +32,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 148.0
-	hp = 148.0
+	max_hp = 92.0
+	hp = 92.0
 	body_radius = 13.0
 	move_speed = 28.0
 	stagger_threshold = 17.0
@@ -45,7 +45,7 @@ func _init() -> void:
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.60, 0.25])
+	configure_phases([0.60, 0.30])
 
 	# Attack 1 (P1+P2+P3): Heartbeat Shockwave (lub-dub 84px ring + expanding gap volley!)
 	register_attack("heartbeat_shockwave", {

@@ -1,0 +1,482 @@
+{
+  "name_key": "ISL1_MN_STUDY",
+  "spawn": [
+    208,
+    240
+  ],
+  "zones": [
+    {
+      "id": "mn_study",
+      "name_key": "ISL1_MN_STUDY",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_south",
+      "rect": [
+        192,
+        272,
+        32,
+        16
+      ],
+      "to_region": "manor_r7",
+      "to_spawn": [
+        464,
+        56
+      ]
+    },
+    {
+      "id": "exit_r8_north",
+      "rect": [
+        336,
+        0,
+        32,
+        16
+      ],
+      "to_region": "manor_r9",
+      "to_spawn": [
+        296,
+        120
+      ],
+      "locked_door_id": "door_r8_study"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_south",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "hearth_r8_fire",
+      "kind": "brazier",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "block_r8_screen",
+      "kind": "push_block",
+      "pos": [
+        128,
+        136
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "gate_r8_hearth",
+      "kind": "shadow_gate",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.22
+      }
+    },
+    {
+      "id": "hook_r8_pillar",
+      "kind": "lantern_hook",
+      "pos": [
+        112,
+        224
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "bell_r8_dusk",
+      "kind": "bell",
+      "pos": [
+        248,
+        176
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 220
+      }
+    },
+    {
+      "id": "clue_r8_steward",
+      "kind": "lore_stone",
+      "pos": [
+        216,
+        72
+      ],
+      "props": {
+        "string_id": "ISL1_CLUE_STEWARD",
+        "icon": "scroll"
+      }
+    },
+    {
+      "id": "manor_balcony_key",
+      "kind": "wick_key",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "dungeon_id": "manor",
+        "key_kind": "keepers_flame",
+        "flag_id": "manor_balcony_key"
+      }
+    },
+    {
+      "id": "door_r8_study",
+      "kind": "door",
+      "pos": [
+        352,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_key",
+        "dungeon_id": "manor",
+        "key_kind": "keepers_flame",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8_south_w",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        248
+      ],
+      "props": {
+        "zone": "mn_study",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_south_e",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        248
+      ],
+      "props": {
+        "zone": "mn_study",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        72
+      ],
+      "props": {
+        "zone": "mn_study",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_se",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        184
+      ],
+      "props": {
+        "zone": "mn_study",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "butler_r8",
+      "kind": "lamp_butler",
+      "pos": [
+        168,
+        144
+      ],
+      "zone": "mn_study",
+      "route": [
+        [
+          152,
+          144
+        ],
+        [
+          224,
+          144
+        ]
+      ]
+    },
+    {
+      "id": "moth_r8",
+      "kind": "toll_moth",
+      "pos": [
+        344,
+        216
+      ],
+      "zone": "mn_study"
+    },
+    {
+      "id": "eye_r8_vault",
+      "kind": "portrait_eye",
+      "pos": [
+        328,
+        160
+      ],
+      "zone": "mn_study",
+      "facing": 3.14
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        176,
+        48,
+        144,
+        56
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        104,
+        88
+      ],
+      "radius": 24,
+      "style": "ash"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        176
+      ],
+      "radius": 22,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        280,
+        72
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "hearth_fireplace",
+      "pos": [
+        68,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "gilded_portrait_c",
+      "pos": [
+        216,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tall_grandfather_clock",
+      "pos": [
+        304,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "mahogany_table",
+      "pos": [
+        272,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        152,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        376,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        112,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r8_clue_steward",
+      "on": "signal:clue_r8_steward",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "clue_steward"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Push the iron fire-screen between the roaring fireplace and the Shadow Hearth to cast shadow, slip dark through the gate to uncover Clue #3 (the Coral Steward's smoking gun), and claim the Balcony Key.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Physical push-blocks cast real light shadows that unlock Shadow Gates when combined with Shutter Hood darkness.",
+    "decisions": 9,
+    "expert_s": 60,
+    "reward": "clue_steward+manor_balcony_key",
+    "why": "Delivers the smoking-gun Clue #3 and the Balcony Key unlocking the Whodunit Verdict Balustrade.",
+    "exit": "exit_r8_north",
+    "start": {
+      "flags": [
+        "item_shutter_hood"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 50.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "push",
+        "target": "block_r8_screen",
+        "to": [
+          128,
+          88
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r8_pillar"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "gate_r8_hearth",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "clue_r8_steward"
+      },
+      {
+        "op": "interact",
+        "target": "manor_balcony_key"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "door_r8_study"
+      },
+      {
+        "op": "expect",
+        "flag": "clue_steward"
+      },
+      {
+        "op": "expect",
+        "flag": "manor_balcony_key"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_north"
+      }
+    ]
+  },
+  "id": "manor_r8",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

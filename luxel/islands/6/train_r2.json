@@ -1,0 +1,553 @@
+{
+  "id": "train_r2",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_TR_R2",
+  "spawn": [
+    40,
+    184
+  ],
+  "zones": [
+    {
+      "id": "tr_r2",
+      "name_key": "ISL6_TR_R2",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_west",
+      "rect": [
+        0,
+        160,
+        16,
+        48
+      ],
+      "to_region": "train_r1",
+      "to_spawn": [
+        400,
+        136
+      ]
+    },
+    {
+      "id": "exit_r2_mail_hatch",
+      "rect": [
+        80,
+        0,
+        32,
+        16
+      ],
+      "to_region": "train_r6",
+      "to_spawn": [
+        272,
+        184
+      ],
+      "requires_flags": [
+        "train_mail_drop"
+      ],
+      "locked_door_id": "door_r2_mail_hatch"
+    },
+    {
+      "id": "exit_r2_east",
+      "rect": [
+        464,
+        160,
+        16,
+        48
+      ],
+      "to_region": "train_r3",
+      "to_spawn": [
+        40,
+        120
+      ],
+      "locked_door_id": "door_r2_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        184
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_r2_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        120,
+        240
+      ],
+      "props": {
+        "mode": "skip"
+      }
+    },
+    {
+      "id": "rail_r2_loft",
+      "kind": "rail",
+      "pos": [
+        56,
+        120
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "moth_r2_loft",
+      "kind": "moth",
+      "pos": [
+        64,
+        64
+      ],
+      "props": {
+        "id": "moth_6_06"
+      }
+    },
+    {
+      "id": "door_r2_mail_hatch",
+      "kind": "door",
+      "pos": [
+        96,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "train_mail_drop"
+        ]
+      }
+    },
+    {
+      "id": "door_r2_loft",
+      "kind": "door",
+      "pos": [
+        128,
+        120
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "train_mail_drop"
+        ]
+      }
+    },
+    {
+      "id": "grate_r2_track",
+      "kind": "grate",
+      "pos": [
+        240,
+        104
+      ],
+      "props": {
+        "size": [
+          128,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r2_dolly",
+      "kind": "pressure_plate",
+      "pos": [
+        184,
+        72
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_ids": [
+          "door_r2_east",
+          "mover_r2_cargo"
+        ]
+      }
+    },
+    {
+      "id": "block_r2_dolly",
+      "kind": "push_block",
+      "pos": [
+        264,
+        72
+      ],
+      "props": {
+        "variant": "crate",
+        "persist": true
+      }
+    },
+    {
+      "id": "grate_r2_baffle",
+      "kind": "grate",
+      "pos": [
+        344,
+        40
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "coupler_r2_dolly",
+      "kind": "car_coupler",
+      "pos": [
+        376,
+        80
+      ],
+      "props": {
+        "lock_type": "bank",
+        "release_block_id": "block_r2_dolly",
+        "release_dir": "w",
+        "release_speed": 260.0,
+        "sets_flag": "train_r2_uncoupled",
+        "persist": true
+      }
+    },
+    {
+      "id": "mover_r2_cargo",
+      "kind": "mover_wall",
+      "pos": [
+        360,
+        232
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "path": [
+          [
+            360,
+            232
+          ],
+          [
+            360,
+            264
+          ]
+        ],
+        "speed": 64.0,
+        "on_signal": "move",
+        "persist": true
+      }
+    },
+    {
+      "id": "chest_r2_luggage",
+      "kind": "chest",
+      "pos": [
+        408,
+        240
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "zone": "tr_r2"
+      }
+    },
+    {
+      "id": "door_r2_east",
+      "kind": "door",
+      "pos": [
+        456,
+        184
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "plate_r2_dolly"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        152
+      ],
+      "props": {
+        "zone": "tr_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_loft",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        64
+      ],
+      "props": {
+        "zone": "tr_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_mid",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        152
+      ],
+      "props": {
+        "zone": "tr_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        144
+      ],
+      "props": {
+        "zone": "tr_r2",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r2_hopper",
+      "kind": "rail_hopper",
+      "pos": [
+        328,
+        184
+      ],
+      "zone": "tr_r2"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 192,
+      "x1": 320,
+      "style": "sunset"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        176,
+        60,
+        112,
+        24
+      ],
+      "glow": false
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        80,
+        152,
+        144,
+        64
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        24,
+        24,
+        128,
+        80
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        296,
+        224
+      ],
+      "radius": 24,
+      "style": "soot"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express",
+      "prop": "brass_luggage_rack",
+      "pos": [
+        240,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "brass_luggage_rack",
+      "pos": [
+        272,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "coal_bucket_crate",
+      "pos": [
+        152,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        224,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        424,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "brass_coupling_link",
+      "pos": [
+        32,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "ticket_punch_desk",
+      "pos": [
+        136,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Two-deck baggage car where a Skip bank shot uncouples a cargo dolly so train inertia slides it west onto a floor plate, while an upper mail loft teases moth_6_06 from train_r6.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "car_coupler[bank] release_block_id train inertia + vertical Cycle 2 mail-hatch tease",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "train_r2_uncoupled+moth_6_06(via_r6)+open_r3",
+    "why": "Develops Skip ricochets into moving-train inertia physics and establishes Cycle 2's mail-loft reward loop.",
+    "exit": "exit_r2_east",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          120,
+          216
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r2_skip"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          312,
+          80
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          344,
+          16
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r2_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_east"
+      }
+    ]
+  }
+}

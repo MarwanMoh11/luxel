@@ -32,91 +32,91 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 178.0
-	hp = 178.0
+	max_hp = 215.0
+	hp = 215.0
 	body_radius = 13.5
 	move_speed = 32.0
-	stagger_threshold = 19.0
+	stagger_threshold = 18.0
 	stagger_duration = 2.25
-	post_recover_cd = 0.28
+	post_recover_cd = 0.40
 	intro_duration = 0.60
 	death_duration = 2.2
 	shard_drop = 60
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.65, 0.30])
+	configure_phases([0.66, 0.34])
 
-	# Attack 1 (P1+P2+P3): World-Hammer Grid Slam (checker/lane cracks; P2+ melts lanes into 5s molten channels!)
+	# Attack 1 (P1+P2+P3): World-Hammer Grid Slam (checker/lane cracks; P2+ melts lanes into molten channels!)
 	register_attack("world_hammer_grid", {
-		"weight": 1.30, "tell": 0.62, "commit": 0.32, "recover": 1.20, "cooldown": 1.5,
+		"weight": 1.25, "tell": 0.62, "commit": 0.32, "recover": 1.25, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_grid_axis_h = not _grid_axis_h
 			var rects: Array[Rect2] = _build_grid_lanes(tgt)
 			set_meta("_grid_rects", rects)
 			for rr: Rect2 in rects:
-				ground.warn_rect(rr, last_tell_duration, 1.0, "coral", "cream", 3.0 if phase >= 2 else 0.0)
+				ground.warn_rect(rr, last_tell_duration, 1.0, "coral", "cream", 1.35 if phase >= 2 else 0.0)
 			stage.play_sfx("anvil_clang_heavy", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else 0.0
-			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 126.0, gap_a, 0.68, {"color": "gold", "source": "forge_grid"})
+			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 114.0, gap_a, 0.78, {"color": "gold", "source": "forge_grid"})
 			stage.play_sfx("magma_crack", pos)
 			stage.shake(0.24),
 	})
 
 	# Attack 2 (P1+P2+P3): Stance-Wall Shield (SKIP stance — curved gold shields guard front; rear quench valve open!)
 	register_attack("stance_wall_shield", {
-		"weight": 1.25, "tell": 0.52, "commit": 0.36, "recover": 1.25, "cooldown": 1.5,
+		"weight": 1.25, "tell": 0.54, "commit": 0.36, "recover": 1.30, "cooldown": 1.7,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_set_stance(Stance.SKIP_SHIELD)
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
 			var ang: float = _aim_dir.angle()
-			ground.warn_sector(pos, ang - 0.82, ang + 0.82, 86.0, last_tell_duration, 1.0, "gold", "cream")
+			ground.warn_sector(pos, ang - 0.72, ang + 0.72, 82.0, last_tell_duration, 1.0, "gold", "cream")
 			stage.play_sfx("anvil_clang_skip", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			var cnt: int = 7 if phase >= 2 else 5
-			patterns.emit_fan(pos, _aim_dir, cnt, 1.25, 144.0, {"color": "gold", "source": "forge_shield_wave", "bounces": 1})
+			var cnt: int = 5 if phase >= 2 else 3
+			patterns.emit_fan(pos, _aim_dir, cnt, 1.05, 126.0, {"color": "gold", "source": "forge_shield_wave", "bounces": 1})
 			stage.play_sfx("warden_swing", pos)
 			stage.shake(0.18),
 	})
 
 	# Attack 3 (P1+P2+P3): Ember-Swarm Volley (SCATTER stance — orbiting sparks + perimeter rain!)
 	register_attack("ember_swarm_volley", {
-		"weight": 1.25, "tell": 0.52, "commit": 0.35, "recover": 1.20, "cooldown": 1.5,
+		"weight": 1.25, "tell": 0.54, "commit": 0.35, "recover": 1.25, "cooldown": 1.7,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_set_stance(Stance.SCATTER_SWARM)
 			var drops: Array[Vector2] = _build_perimeter_drops(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 24.0, 1.0, "apricot", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "apricot", "gold")
 			stage.play_sfx("anvil_clang_scatter", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			patterns.emit_orbit(pos, 6, 44.0, 2.6, 2.2, {"color": "apricot", "source": "forge_swarm"})
+			patterns.emit_orbit(pos, 4, 42.0, 2.3, 1.8, {"color": "apricot", "source": "forge_swarm"})
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
-			patterns.emit_fan(pos, d, 5, 0.90, 134.0, {"color": "coral", "source": "forge_swarm_shot"})
+			patterns.emit_fan(pos, d, 3, 0.72, 124.0, {"color": "coral", "source": "forge_swarm_shot"})
 			stage.play_sfx("forge_gust", pos)
 			stage.shake(0.16),
 	})
 
-	# Attack 4 (P1+P2+P3): Obsidian Anvil Drop (LANCE stance — levitates slag-anvil over Wick -> 44px slam!)
+	# Attack 4 (P1+P2+P3): Obsidian Anvil Drop (LANCE stance — levitates slag-anvil over Wick -> 38px slam!)
 	register_attack("obsidian_anvil_drop", {
-		"weight": 1.25, "tell": 0.60, "commit": 0.30, "recover": 1.40, "cooldown": 1.6,
+		"weight": 1.25, "tell": 0.60, "commit": 0.30, "recover": 1.40, "cooldown": 1.7,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_set_stance(Stance.LANCE_PLATE)
 			var drop_p: Vector2 = clamp_to_arena(tgt)
 			set_meta("_anvil_drop_p", drop_p)
-			ground.warn_ring(drop_p, 44.0, last_tell_duration, 1.0, "coral", "cream")
+			ground.warn_ring(drop_p, 38.0, last_tell_duration, 1.0, "coral", "cream")
 			stage.play_sfx("anvil_clang_lance", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var drop_p: Vector2 = get_meta("_anvil_drop_p", pos) as Vector2
-			patterns.emit_ring(drop_p, 8 if phase >= 2 else 6, 128.0, 0.25, {"color": "coral", "source": "forge_anvil_ring"})
+			patterns.emit_ring(drop_p, 6, 118.0, 0.25, {"color": "coral", "source": "forge_anvil_ring"})
 			stage.light_burst(drop_p, 76.0, 1.35, 0.28)
 			stage.play_sfx("anvil_clang_heavy", drop_p)
 			stage.shake(0.24),
 	})
 
-	# Attack 5 (P3): Crucible Spin (twin slow sweeping molten beams + overdrive gap ring!)
+	# Attack 5 (P3): Crucible Spin (twin rotating molten slag streams + overdrive gap ring!)
 	register_attack("crucible_spin", {
 		"phases": [3],
-		"weight": 2.10, "tell": 0.56, "commit": SPIN_COMMIT_S, "recover": 1.40, "cooldown": 1.6,
+		"weight": 2.10, "tell": 0.58, "commit": SPIN_COMMIT_S, "recover": 1.45, "cooldown": 1.7,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_spin_base_ang = (tgt - pos).angle() + 0.55 if tgt.distance_to(pos) > 0.1 else 0.0
 			_spin_hit = false
@@ -125,20 +125,11 @@ func _configure_boss(_spec: Dictionary) -> void:
 				ground.warn_lane(pos, pos + Vector2.from_angle(ba) * SPIN_RANGE, 10.0, last_tell_duration, 0.0, "coral", "cream")
 			stage.play_sfx("boss_kilnmother_roar", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			patterns.emit_spiral(pos, 2, 118.0, _spin_base_ang, 0.34, 4, 0.18, {"color": "coral", "source": "forge_crucible_spin"})
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else 0.0
-			patterns.emit_gap_ring(pos, 12, 122.0, gap_a, 0.72, {"color": "gold", "source": "forge_spin_ring"})
+			patterns.emit_gap_ring(pos, 10, 114.0, gap_a, 0.78, {"color": "gold", "source": "forge_spin_ring"})
 			stage.play_sfx("beam_fire", pos)
 			stage.shake(0.22),
-		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
-			var cur_a: float = _spin_base_ang + (el / SPIN_COMMIT_S) * PI * 1.15
-			if not _spin_hit and _has_player():
-				var wp: Vector2 = _get_wick_pos()
-				for bi: int in range(2):
-					var bd: Vector2 = Vector2.from_angle(cur_a + float(bi) * PI)
-					if Geometry2D.get_closest_point_to_segment(wp, pos, pos + bd * SPIN_RANGE).distance_to(wp) <= 10.5:
-						_spin_hit = true
-						emit_boss_damage(bd, 1.0, "forge_crucible_spin", pos, true)
-						break,
 	})
 
 
@@ -246,15 +237,15 @@ func _build_grid_lanes(tgt: Vector2) -> Array[Rect2]:
 	var r: Rect2 = arena_rect
 	var out: Array[Rect2] = []
 	if _grid_axis_h:
-		var y1: float = clampf(tgt.y - 9.0, r.position.y + 8.0, r.end.y - 26.0)
-		var y2: float = r.position.y + 12.0 if y1 > r.get_center().y else r.end.y - 30.0
-		out.append(Rect2(r.position.x + 6.0, y1, r.size.x - 12.0, 18.0))
-		out.append(Rect2(r.position.x + 6.0, y2, r.size.x - 12.0, 18.0))
+		var y1: float = clampf(tgt.y - 7.0, r.position.y + 8.0, r.end.y - 22.0)
+		var y2: float = r.position.y + 12.0 if y1 > r.get_center().y else r.end.y - 26.0
+		out.append(Rect2(r.position.x + 12.0, y1, r.size.x - 24.0, 14.0))
+		out.append(Rect2(r.position.x + 12.0, y2, r.size.x - 24.0, 14.0))
 	else:
-		var x1: float = clampf(tgt.x - 10.0, r.position.x + 8.0, r.end.x - 28.0)
-		var x2: float = r.position.x + 14.0 if x1 > r.get_center().x else r.end.x - 34.0
-		out.append(Rect2(x1, r.position.y + 6.0, 20.0, r.size.y - 12.0))
-		out.append(Rect2(x2, r.position.y + 6.0, 20.0, r.size.y - 12.0))
+		var x1: float = clampf(tgt.x - 8.0, r.position.x + 8.0, r.end.x - 24.0)
+		var x2: float = r.position.x + 14.0 if x1 > r.get_center().x else r.end.x - 30.0
+		out.append(Rect2(x1, r.position.y + 10.0, 16.0, r.size.y - 20.0))
+		out.append(Rect2(x2, r.position.y + 10.0, 16.0, r.size.y - 20.0))
 	return out
 
 

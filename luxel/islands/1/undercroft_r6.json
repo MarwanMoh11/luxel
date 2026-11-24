@@ -11,7 +11,7 @@
       "rect": [
         0,
         0,
-        512,
+        544,
         320
       ],
       "dark": true
@@ -28,29 +28,29 @@
       ],
       "to_region": "undercroft_r1",
       "to_spawn": [
-        384,
-        184
+        456,
+        216
       ]
     },
     {
       "id": "exit_r6_north",
       "rect": [
-        240,
+        256,
         0,
         32,
         16
       ],
       "to_region": "undercroft_r7",
       "to_spawn": [
-        224,
-        272
+        240,
+        304
       ],
       "locked_door_id": "door_r6_north"
     },
     {
       "id": "exit_r6_south_shortcut",
       "rect": [
-        416,
+        480,
         304,
         32,
         16
@@ -84,8 +84,8 @@
       "id": "anc_r6_center",
       "kind": "room_anchor",
       "pos": [
-        256,
-        168
+        288,
+        176
       ],
       "props": {
         "auto": true
@@ -107,12 +107,12 @@
       "id": "bell_r6_dusk",
       "kind": "bell",
       "pos": [
-        432,
+        472,
         112
       ],
       "props": {
         "tone": "dusk",
-        "wave_radius": 144
+        "wave_radius": 152
       }
     },
     {
@@ -128,7 +128,7 @@
           32,
           16
         ],
-        "hold_secs": 3.4,
+        "hold_secs": 3.6,
         "target_id": "gate_r6_echo"
       }
     },
@@ -136,7 +136,7 @@
       "id": "td_r6_dusk",
       "kind": "tone_door",
       "pos": [
-        400,
+        448,
         48
       ],
       "props": {
@@ -145,7 +145,7 @@
           32,
           16
         ],
-        "hold_secs": 3.4,
+        "hold_secs": 3.6,
         "target_id": "gate_r6_echo"
       }
     },
@@ -153,7 +153,7 @@
       "id": "gate_r6_echo",
       "kind": "logic_gate",
       "pos": [
-        256,
+        272,
         72
       ],
       "props": {
@@ -170,7 +170,7 @@
       "id": "door_r6_north",
       "kind": "door",
       "pos": [
-        256,
+        272,
         24
       ],
       "props": {
@@ -188,8 +188,8 @@
       "id": "sw_r6_backdoor",
       "kind": "switch_eye",
       "pos": [
-        464,
-        248
+        504,
+        256
       ],
       "props": {
         "target_id": "door_r6_south",
@@ -200,7 +200,7 @@
       "id": "door_r6_south",
       "kind": "door",
       "pos": [
-        432,
+        496,
         296
       ],
       "props": {
@@ -220,7 +220,7 @@
       "kind": "road_lamp",
       "pos": [
         64,
-        216
+        208
       ],
       "props": {
         "zone": "uc_echo",
@@ -231,7 +231,7 @@
       "id": "lamp_r6_c",
       "kind": "road_lamp",
       "pos": [
-        256,
+        288,
         128
       ],
       "props": {
@@ -243,7 +243,7 @@
       "id": "lamp_r6_e",
       "kind": "road_lamp",
       "pos": [
-        456,
+        496,
         152
       ],
       "props": {
@@ -257,7 +257,7 @@
       "id": "grave_hand_r6",
       "kind": "grave_hand",
       "pos": [
-        416,
+        456,
         224
       ],
       "zone": "uc_echo"
@@ -276,39 +276,51 @@
     {
       "kind": "circle",
       "pos": [
-        432,
+        472,
         112
       ],
       "radius": 24,
       "style": "clock"
     },
     {
-      "kind": "rug",
-      "rect": [
-        240,
-        36,
-        32,
-        160
-      ],
-      "style": "ornate"
-    },
-    {
       "kind": "stain",
       "pos": [
-        56,
-        256
+        248,
+        224
       ],
       "radius": 26,
       "style": "moss"
     },
     {
-      "kind": "cracks",
+      "kind": "stain",
       "pos": [
-        448,
-        224
+        480,
+        200
       ],
-      "radius": 18,
-      "glow": false
+      "radius": 22,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        64,
+        192
+      ],
+      "radius": 22,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        120
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "cool",
+      "shear": 0.35
     }
   ],
   "scenery": [
@@ -328,7 +340,7 @@
       "sheet": "theme_undercroft",
       "prop": "bell_floor_seal",
       "pos": [
-        432,
+        472,
         112
       ],
       "layer": "ground",
@@ -340,8 +352,8 @@
       "sheet": "theme_undercroft",
       "prop": "bone_ossuary_arch",
       "pos": [
-        256,
-        52
+        272,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -364,7 +376,7 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_candelabra",
       "pos": [
-        464,
+        504,
         64
       ],
       "layer": "sort",
@@ -374,21 +386,9 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_coffin",
+      "prop": "mossy_headstone",
       "pos": [
-        56,
-        256
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "open_sarcophagus",
-      "pos": [
-        208,
+        232,
         224
       ],
       "layer": "sort",
@@ -398,22 +398,10 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
+      "prop": "mossy_headstone",
       "pos": [
-        216,
-        64
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
-      "pos": [
-        296,
-        64
+        336,
+        224
       ],
       "layer": "sort",
       "flip_x": true,
@@ -422,27 +410,27 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "tattered_crypt_banner",
+      "prop": "chapel_pew",
       "pos": [
-        208,
-        128
+        240,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.2
+      "phase": 0.0
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "toll_brazier",
+      "prop": "chapel_pew",
       "pos": [
-        476,
-        196
+        344,
+        144
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.4
+      "phase": 0.0
     }
   ],
   "events": [
@@ -461,14 +449,14 @@
     }
   ],
   "design": {
-    "idea": "First Echo Clapper puzzle: throw at the West Dawn Bell to arm a 1.4s delayed Echo, recall, dash the chasm, and strike the East Dusk Bell in overlap.",
+    "idea": "Three stone peninsulas over a flooded crypt chasm: throw at the West Dawn Bell for a 1.4s Echo, dash across the center pier, and ring Dusk in overlap.",
     "kind": "puzzle",
     "beat": "ten",
-    "teaches": "Echo Clapper's 1.4s delayed second wave lets Wick bridge time-and-distance gaps that single bolt strikes cannot span.",
+    "teaches": "Echo Clapper's 1.4s delayed second wave lets Wick bridge time-and-distance gaps across flooded crypt chasms.",
     "decisions": 8,
     "expert_s": 55,
     "reward": "uc_backdoor_open",
-    "why": "Split acoustic chasm validating mastery of the Echo Clapper before the deep east wing.",
+    "why": "Flooded three-peninsula chasm validating Echo Clapper mastery at the start of the East Wing.",
     "exit": "exit_r6_north",
     "start": {
       "flags": [
@@ -508,8 +496,8 @@
       {
         "op": "goto",
         "to": [
-          392,
-          168
+          448,
+          176
         ]
       },
       {
@@ -530,8 +518,8 @@
       {
         "op": "shoot",
         "from": [
-          432,
-          248
+          456,
+          256
         ],
         "target": "sw_r6_backdoor"
       },
@@ -546,7 +534,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "undercroft",
-  "music": "island1_dungeon",
+  "music": "isl1_undercroft",
   "ambience": [
     "night_breeze",
     "sanctum_bells"

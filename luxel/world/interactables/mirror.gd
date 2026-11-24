@@ -47,7 +47,7 @@ func setup(spec: Dictionary) -> void:
 	transforms_to = str(props.get("transforms_to", LxHit.COLOR_BLUE)).strip_edges().to_lower()
 	if transforms_to.is_empty():
 		transforms_to = LxHit.COLOR_BLUE
-	persist_pos = bool(props.get("persist_pos", false))
+	persist_pos = bool(props.get("persist_pos", movable))
 	angle_step_deg = float(props.get("angle_step_deg", 45.0))
 	double_sided = bool(props.get("double_sided", true))
 	if props.has("normal"):
@@ -174,6 +174,10 @@ func on_hit(hit: LxHit) -> bool:
 		queue_redraw()
 		return true
 	return false
+
+
+func is_floor_toy() -> bool:
+	return floor_only
 
 
 func is_solid() -> bool:

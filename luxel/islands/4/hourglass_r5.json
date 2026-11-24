@@ -1,0 +1,457 @@
+{
+  "id": "hourglass_r5",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R5",
+  "spawn": [
+    240,
+    264
+  ],
+  "zones": [
+    {
+      "id": "hg_r5_lawn",
+      "name_key": "ISL4_HG_R5",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r5_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r4",
+      "to_spawn": [
+        368,
+        56
+      ]
+    },
+    {
+      "id": "exit_hg_r5_shortcut",
+      "rect": [
+        464,
+        208,
+        16,
+        48
+      ],
+      "to_region": "hourglass_r1",
+      "to_spawn": [
+        56,
+        96
+      ],
+      "requires_flags": [
+        "boss_shear_keeper_defeated",
+        "hg_west_shortcut"
+      ],
+      "locked_door_id": "door_hg_r5_shortcut"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r5",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        264
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rose_hg_r5_w",
+      "kind": "echo_rose",
+      "pos": [
+        104,
+        168
+      ],
+      "props": {
+        "secs": 4.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "rose_hg_r5_e",
+      "kind": "echo_rose",
+      "pos": [
+        376,
+        168
+      ],
+      "props": {
+        "secs": 4.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "bramble_hg_r5_1",
+      "kind": "bramble",
+      "pos": [
+        136,
+        88
+      ],
+      "props": {}
+    },
+    {
+      "id": "bramble_hg_r5_2",
+      "kind": "bramble",
+      "pos": [
+        344,
+        88
+      ],
+      "props": {}
+    },
+    {
+      "id": "bramble_hg_r5_3",
+      "kind": "bramble",
+      "pos": [
+        184,
+        232
+      ],
+      "props": {}
+    },
+    {
+      "id": "hg_key_1",
+      "kind": "wick_key",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "dungeon_id": "hourglass_maze",
+        "key_kind": "wick_key",
+        "flag_id": "hg_key_1",
+        "requires_flag": "boss_shear_keeper_defeated"
+      }
+    },
+    {
+      "id": "sw_hg_r5_short",
+      "kind": "switch_eye",
+      "pos": [
+        392,
+        248
+      ],
+      "props": {
+        "target_id": "door_hg_r5_shortcut",
+        "sets_flag": "hg_west_shortcut"
+      }
+    },
+    {
+      "id": "door_hg_r5_shortcut",
+      "kind": "door",
+      "pos": [
+        456,
+        232
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "sw_hg_r5_short"
+        ],
+        "persistent": true,
+        "sets_flag": "hg_west_shortcut"
+      }
+    },
+    {
+      "id": "lamp_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        280
+      ],
+      "props": {
+        "zone": "hg_r5_lawn",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        280
+      ],
+      "props": {
+        "zone": "hg_r5_lawn",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        56
+      ],
+      "props": {
+        "zone": "hg_r5_lawn",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        56
+      ],
+      "props": {
+        "zone": "hg_r5_lawn",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "shear_keeper_r5",
+      "kind": "boss_shear_keeper",
+      "pos": [
+        248,
+        152
+      ],
+      "zone": "hg_r5_lawn"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        152
+      ],
+      "radius": 52,
+      "style": "ritual"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        120,
+        216
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        344,
+        200
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        104
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "hourglass_floor_dial",
+      "pos": [
+        248,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "garden_clock_arch",
+      "pos": [
+        248,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        104,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        376,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "topiary_bird_statue",
+      "pos": [
+        56,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "topiary_bird_statue",
+      "pos": [
+        424,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        88,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        408,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        200,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        296,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "events": [
+    {
+      "id": "hg_r5_short_msg",
+      "on": "signal:sw_hg_r5_short",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "hg_west_shortcut"
+        },
+        {
+          "narrate": "ISL4_HG_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "Oval topiary mini-boss arena for The Brass Shear-Keeper: bait its blind light-hungry charge into 3 thorn cages to jam its scissor jaws, earn Key 1, and open the west shortcut back to the Rotunda.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Echo Rose decoys lure blind bosses into arena hazards for big stagger punishes.",
+    "decisions": 6,
+    "expert_s": 85,
+    "reward": "hg_key_1+hg_west_shortcut+45_shards",
+    "why": "West Wing climax awarding the key to the East Rose-Glass Wing and closing Cycle 1.",
+    "exit": "exit_hg_r5_shortcut",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "rose_hg_r5_w"
+      },
+      {
+        "op": "clear",
+        "timeout": 85.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "boss_shear_keeper_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "hg_key_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          248
+        ],
+        "target": "sw_hg_r5_short"
+      },
+      {
+        "op": "expect",
+        "flag": "hg_key_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r5_shortcut"
+      }
+    ]
+  }
+}

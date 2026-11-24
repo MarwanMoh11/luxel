@@ -1,0 +1,663 @@
+{
+  "id": "galleon_r10",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R10_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    240,
+    304
+  ],
+  "zones": [
+    {
+      "id": "gal_r10",
+      "name_key": "GAL_R10_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_south",
+      "rect": [
+        224,
+        336,
+        32,
+        16
+      ],
+      "to_region": "galleon_r9",
+      "to_spawn": [
+        416,
+        56
+      ]
+    },
+    {
+      "id": "exit_r10_winch",
+      "rect": [
+        464,
+        160,
+        16,
+        32
+      ],
+      "to_region": "galleon_r1",
+      "to_spawn": [
+        368,
+        112
+      ],
+      "requires_flags": [
+        "galleon_shortcut_open"
+      ],
+      "locked_door_id": "door_r10_winch"
+    },
+    {
+      "id": "exit_r10_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "galleon_r11",
+      "to_spawn": [
+        224,
+        240
+      ],
+      "locked_door_id": "door_r10_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10_s",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r10_pedal",
+      "kind": "state_lever",
+      "pos": [
+        200,
+        248
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 1,
+        "style": "pedal",
+        "step_trigger": true,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "beam_r10_h",
+      "kind": "beam_emitter",
+      "pos": [
+        232,
+        104
+      ],
+      "props": {
+        "dir": "s",
+        "color": "rose",
+        "period": 0.0,
+        "range": 120.0,
+        "harms_wick": false
+      }
+    },
+    {
+      "id": "drv_r10",
+      "kind": "gal_list_driver",
+      "pos": [
+        280,
+        248
+      ],
+      "props": {
+        "targets": [
+          "blk_r10_shield"
+        ],
+        "orb_targets": [
+          "orb_r10"
+        ],
+        "shield_targets": [
+          "blk_r10_shield"
+        ],
+        "beam_reset_id": "beam_r10_h",
+        "orb_reset_pos": [
+          184,
+          184
+        ],
+        "table_rect": [
+          160,
+          160,
+          176,
+          48
+        ],
+        "speed": 145.0,
+        "surge_secs": 2.2
+      }
+    },
+    {
+      "id": "rail_r10_table",
+      "kind": "rail",
+      "pos": [
+        256,
+        216
+      ],
+      "props": {
+        "size": [
+          128,
+          16
+        ]
+      }
+    },
+    {
+      "id": "blk_r10_shield",
+      "kind": "push_block",
+      "pos": [
+        312,
+        136
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "orb_r10",
+      "kind": "carry_orb",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "kind": "light"
+      }
+    },
+    {
+      "id": "plate_r10",
+      "kind": "pressure_plate",
+      "pos": [
+        328,
+        184
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "size": [
+          22,
+          22
+        ],
+        "target_ids": [
+          "door_r10_vault",
+          "door_r10_north"
+        ]
+      }
+    },
+    {
+      "id": "door_r10_vault",
+      "kind": "door",
+      "pos": [
+        136,
+        288
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "plate_r10"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "key_galleon_boss",
+      "kind": "keepers_flame",
+      "pos": [
+        72,
+        280
+      ],
+      "props": {
+        "dungeon_id": "galleon",
+        "key_kind": "keepers_flame",
+        "sets_flag": "galleon_boss_key"
+      }
+    },
+    {
+      "id": "sw_r10_winch",
+      "kind": "switch_eye",
+      "pos": [
+        424,
+        136
+      ],
+      "props": {
+        "target_id": "door_r10_winch",
+        "sets_flag": "galleon_shortcut_open"
+      }
+    },
+    {
+      "id": "door_r10_winch",
+      "kind": "door",
+      "pos": [
+        456,
+        176
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r10_winch"
+        ],
+        "sets_flag": "galleon_shortcut_open",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_r10_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "plate_r10"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        312
+      ],
+      "props": {
+        "zone": "gal_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_vault",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        248
+      ],
+      "props": {
+        "zone": "gal_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_nw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        104
+      ],
+      "props": {
+        "zone": "gal_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_ne",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        104
+      ],
+      "props": {
+        "zone": "gal_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        232
+      ],
+      "props": {
+        "zone": "gal_r10",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 8,
+      "x0": 80,
+      "x1": 192,
+      "style": "stars"
+    },
+    {
+      "kind": "window_strip",
+      "y": 8,
+      "x0": 288,
+      "x1": 400,
+      "style": "stars"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        248,
+        184
+      ],
+      "radius": 34
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        160,
+        112,
+        176,
+        96
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        72,
+        280
+      ],
+      "radius": 24,
+      "style": "spotlight"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        184
+      ],
+      "size": [
+        64,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "ship_helm_wheel",
+      "pos": [
+        360,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_capstan",
+      "pos": [
+        104,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        440,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        424,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        312,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        40,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        184,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        312,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        424,
+        184
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "gal_r10_winch_msg",
+      "on": "signal:sw_r10_winch",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "galleon_shortcut_open"
+        },
+        {
+          "narrate": "GAL_WINCH_OPEN"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Tilt the Captain's brass compass table to roll a light-orb onto the east socket while Ballast-Clamping a shield-crate directly inside a resetting rose beam, unlocking the Boss Key yardarm and Stern Winch shortcut.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Clamping a shield-crate mid-table creates a safe shadow corridor while the unarmed foot-pedal rolls the carry-orb across.",
+    "decisions": 9,
+    "expert_s": 56,
+    "reward": "galleon_boss_key+cycle_4",
+    "why": "Climax Ballast Clamp puzzle room awarding the Boss Key and opening Cycle 4 directly back to Stern Entry r1.",
+    "exit": "exit_r10_north",
+    "start": {
+      "vars": {
+        "list": "starboard"
+      },
+      "flags": [
+        "power_ballast_clamp"
+      ]
+    },
+    "solution": [
+      {
+        "op": "carry",
+        "target": "orb_r10",
+        "action": "pickup"
+      },
+      {
+        "op": "carry",
+        "action": "drop",
+        "to": [
+          184,
+          184
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          248
+        ]
+      },
+      {
+        "op": "expect",
+        "var": "list==port"
+      },
+      {
+        "op": "wait_phase",
+        "target": "blk_r10_shield",
+        "near": [
+          232,
+          136
+        ],
+        "tol": 8.0,
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          232
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "blk_r10_shield",
+        "hold": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          248
+        ]
+      },
+      {
+        "op": "expect",
+        "var": "list==starboard"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "plate_r10",
+        "prop": "pressed",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "key_galleon_boss"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          376,
+          136
+        ],
+        "target": "sw_r10_winch"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_north"
+      }
+    ]
+  }
+}

@@ -1,0 +1,349 @@
+{
+  "id": "hourglass_r3",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R3",
+  "spawn": [
+    208,
+    232
+  ],
+  "zones": [
+    {
+      "id": "hg_r3_cloister",
+      "name_key": "ISL4_HG_R3",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r3_south",
+      "rect": [
+        192,
+        272,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r2",
+      "to_spawn": [
+        128,
+        56
+      ]
+    },
+    {
+      "id": "exit_hg_r3_north",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r4",
+      "to_spawn": [
+        112,
+        232
+      ],
+      "locked_door_id": "door_hg_r3_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r3",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        232
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rose_hg_r3",
+      "kind": "echo_rose",
+      "pos": [
+        216,
+        168
+      ],
+      "props": {
+        "secs": 4.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "hook_hg_r3",
+      "kind": "lantern_hook",
+      "pos": [
+        88,
+        168
+      ],
+      "props": {
+        "light_radius": 76.0
+      }
+    },
+    {
+      "id": "chest_hg_r3",
+      "kind": "chest",
+      "pos": [
+        312,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "door_hg_r3_north",
+      "kind": "door",
+      "pos": [
+        208,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "hg_r3_cloister",
+        "size": [
+          32,
+          16
+        ],
+        "sets_flag": "hg_r3_cleared"
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "zone": "hg_r3_cloister",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_se",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        248
+      ],
+      "props": {
+        "zone": "hg_r3_cloister",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        72
+      ],
+      "props": {
+        "zone": "hg_r3_cloister",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_ne",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        104
+      ],
+      "props": {
+        "zone": "hg_r3_cloister",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "tk_r3_w",
+      "kind": "topiary_knight",
+      "pos": [
+        88,
+        104
+      ],
+      "zone": "hg_r3_cloister"
+    },
+    {
+      "id": "tk_r3_e",
+      "kind": "topiary_knight",
+      "pos": [
+        328,
+        136
+      ],
+      "zone": "hg_r3_cloister"
+    },
+    {
+      "id": "snuffer_r3",
+      "kind": "mire_snuffer",
+      "pos": [
+        232,
+        88
+      ],
+      "zone": "hg_r3_cloister"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        168
+      ],
+      "radius": 28,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        104,
+        200
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        312,
+        184
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        88,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "topiary_bird_statue",
+      "pos": [
+        264,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "mossy_garden_obelisk",
+      "pos": [
+        376,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        248,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        296,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "First Topiary Knights paired with a Mire Snuffer: hang your lantern or plant an Echo Rose to freeze one statue knight while flanking the other's blooming rose back.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Topiary Knights freeze armored under light/Echoes and take 2x damage from behind; Mire Snuffers punish careless hung lanterns.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "hg_r3_cleared+25_shards",
+    "why": "Introduces the Hourglass Maze signature enemy role pair in a cover-rich twin-lane cloister.",
+    "exit": "exit_hg_r3_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "rose_hg_r3"
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "chest_hg_r3"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r3_north"
+      }
+    ]
+  }
+}

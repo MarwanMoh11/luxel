@@ -1,8 +1,9 @@
 {
   "name_key": "ISL1_UC_KENNEL",
+  "music": "isl1_boss_minor_p1",
   "spawn": [
     224,
-    272
+    304
   ],
   "zones": [
     {
@@ -12,7 +13,7 @@
         0,
         0,
         448,
-        320
+        352
       ],
       "dark": true
     }
@@ -22,28 +23,28 @@
       "id": "exit_r5_south",
       "rect": [
         208,
-        304,
+        336,
         32,
         16
       ],
       "to_region": "undercroft_r4",
       "to_spawn": [
-        224,
-        72
+        240,
+        56
       ]
     },
     {
       "id": "exit_r5_east_shortcut",
       "rect": [
         432,
-        128,
+        144,
         16,
         48
       ],
       "to_region": "undercroft_r1",
       "to_spawn": [
-        56,
-        80
+        104,
+        120
       ],
       "requires_flags": [
         "uc_miniboss_done",
@@ -58,7 +59,7 @@
       "kind": "room_anchor",
       "pos": [
         224,
-        272
+        304
       ],
       "props": {
         "auto": true
@@ -69,7 +70,7 @@
       "kind": "bell",
       "pos": [
         64,
-        152
+        168
       ],
       "props": {
         "tone": "dawn",
@@ -81,7 +82,7 @@
       "kind": "bell",
       "pos": [
         376,
-        152
+        168
       ],
       "props": {
         "tone": "dawn",
@@ -105,7 +106,7 @@
       "kind": "uc_echo_altar",
       "pos": [
         176,
-        120
+        128
       ],
       "props": {
         "requires_flag": "uc_miniboss_done"
@@ -116,7 +117,7 @@
       "kind": "wick_key",
       "pos": [
         272,
-        120
+        128
       ],
       "props": {
         "dungeon_id": "undercroft",
@@ -129,8 +130,8 @@
       "id": "sw_r5_short",
       "kind": "switch_eye",
       "pos": [
-        376,
-        224
+        344,
+        240
       ],
       "props": {
         "target_id": "door_r5_east",
@@ -142,7 +143,7 @@
       "kind": "door",
       "pos": [
         424,
-        152
+        168
       ],
       "props": {
         "door_kind": "switch_door",
@@ -160,7 +161,7 @@
       "id": "lamp_r5_sw",
       "kind": "road_lamp",
       "pos": [
-        160,
+        152,
         272
       ],
       "props": {
@@ -172,7 +173,7 @@
       "id": "lamp_r5_se",
       "kind": "road_lamp",
       "pos": [
-        288,
+        296,
         272
       ],
       "props": {
@@ -184,8 +185,8 @@
       "id": "lamp_r5_nw",
       "kind": "road_lamp",
       "pos": [
-        128,
-        56
+        152,
+        64
       ],
       "props": {
         "zone": "uc_kennel",
@@ -196,8 +197,8 @@
       "id": "lamp_r5_ne",
       "kind": "road_lamp",
       "pos": [
-        320,
-        56
+        296,
+        64
       ],
       "props": {
         "zone": "uc_kennel",
@@ -211,7 +212,7 @@
       "kind": "toll_hound",
       "pos": [
         224,
-        144
+        168
       ],
       "zone": "uc_kennel"
     }
@@ -221,37 +222,46 @@
       "kind": "circle",
       "pos": [
         224,
-        152
+        168
       ],
-      "radius": 52,
+      "radius": 54,
       "style": "ritual"
     },
     {
       "kind": "cracks",
       "pos": [
         160,
-        120
+        136
       ],
-      "radius": 22,
+      "radius": 24,
       "glow": false
     },
     {
       "kind": "cracks",
       "pos": [
         288,
-        184
+        200
       ],
-      "radius": 20,
+      "radius": 22,
       "glow": false
     },
     {
       "kind": "stain",
       "pos": [
-        72,
-        240
+        96,
+        232
       ],
       "radius": 24,
-      "style": "moss"
+      "style": "soot"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        344,
+        104
+      ],
+      "radius": 22,
+      "style": "soot"
     }
   ],
   "scenery": [
@@ -260,7 +270,7 @@
       "prop": "bell_floor_seal",
       "pos": [
         224,
-        152
+        168
       ],
       "layer": "ground",
       "flip_x": false,
@@ -269,10 +279,10 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "bone_ossuary_arch",
+      "prop": "stone_crypt_pillar",
       "pos": [
-        224,
-        44
+        184,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -281,34 +291,10 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_candelabra",
+      "prop": "stone_crypt_pillar",
       "pos": [
-        88,
-        60
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_candelabra",
-      "pos": [
-        360,
-        60
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_coffin",
-      "pos": [
-        44,
-        240
+        264,
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -319,8 +305,8 @@
       "sheet": "theme_undercroft",
       "prop": "open_sarcophagus",
       "pos": [
-        392,
-        68
+        344,
+        92
       ],
       "layer": "sort",
       "flip_x": true,
@@ -329,10 +315,10 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
+      "prop": "crypt_coffin",
       "pos": [
-        156,
-        44
+        76,
+        228
       ],
       "layer": "sort",
       "flip_x": false,
@@ -343,32 +329,32 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_urn",
       "pos": [
-        292,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "tattered_crypt_banner",
-      "pos": [
-        52,
+        112,
         88
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.2
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        336,
+        268
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
     },
     {
       "sheet": "theme_undercroft",
       "prop": "toll_brazier",
       "pos": [
         112,
-        264
+        268
       ],
       "layer": "sort",
       "flip_x": false,
@@ -379,13 +365,25 @@
       "sheet": "theme_undercroft",
       "prop": "toll_brazier",
       "pos": [
-        336,
-        264
+        368,
+        112
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        80,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
     }
   ],
   "events": [
@@ -404,21 +402,21 @@
     }
   ],
   "design": {
-    "idea": "Blind mini-boss The Toll-Hound hunts sound; ring perimeter Dawn and War bells to crash it into pillars and earn the Echo Clapper plus Key 1.",
+    "idea": "Octagonal ossuary rotunda: blind mini-boss The Toll-Hound hunts sound; ring perimeter bells to crash it into pillars and earn the Echo Clapper plus Key 1.",
     "kind": "boss",
     "beat": "sho",
     "teaches": "Sound lures blind foes into hazards, War breaks collar armor, and Echo Clapper makes thrown bells ring twice.",
     "decisions": 6,
     "expert_s": 85,
     "reward": "item_echo_clapper+uc_key_1",
-    "why": "Ossuary kennel guarding the dungeon power that unlocks the second half of the Undercroft.",
+    "why": "Octagonal ossuary kennel guarding the dungeon power that unlocks the flooded east wing.",
     "exit": "exit_r5_east_shortcut",
     "solution": [
       {
         "op": "shoot",
         "from": [
           224,
-          232
+          248
         ],
         "target": "bell_r5_war_n"
       },
@@ -442,8 +440,8 @@
       {
         "op": "shoot",
         "from": [
-          328,
-          224
+          296,
+          240
         ],
         "target": "sw_r5_short"
       },
@@ -462,7 +460,6 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "undercroft",
-  "music": "island1_dungeon",
   "ambience": [
     "night_breeze",
     "sanctum_bells"

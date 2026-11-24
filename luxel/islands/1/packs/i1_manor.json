@@ -1,0 +1,80 @@
+{
+  "pack_id": "i1_manor",
+  "owner": "P1-B",
+  "comment": "Island 1 Minor Dungeon B: The Bellmaker's Manor (12 rooms, stealth whodunit, 6 internal cycles). Debug-only on dungeon/regions meta until P1-OW hooks manor_gardens -> manor_r1/r4/r11.",
+  "strings": {
+    "ISL1_Z_MANOR": "BELLMAKERS MANOR",
+    "ISL1_MN_FOYER": "THE GRAND FOYER",
+    "ISL1_MN_DINING": "BANQUET SCREEN HALL",
+    "ISL1_MN_PANTRY": "THE PANTRY SAFE",
+    "ISL1_MN_KITCHEN": "BLAZING HEARTH KITCHEN",
+    "ISL1_MN_WORKSHOP": "CLOCKWORK VALET WORKSHOP",
+    "ISL1_MN_CHOIR": "DRAPED CHOIR PARLOR",
+    "ISL1_MN_EYES": "HALL OF SHIFTING EYES",
+    "ISL1_MN_STUDY": "THE FIREPLACE STUDY",
+    "ISL1_MN_VERDICT": "WHISPERING BALUSTRADE",
+    "ISL1_MN_VAULT": "THE VELVET VAULT",
+    "ISL1_MN_CELLAR": "COAL-CHUTE CELLAR",
+    "ISL1_MN_BALLROOM": "THE GRAND BALLROOM",
+    "ISL1_POW_HOOD": "SHUTTER HOOD: UNARMED WICK WALKS UNSEEN!",
+    "ISL1_PROMPT_HOOD": "CLAIM SHUTTER HOOD",
+    "ISL1_CLUE_BUTLER": "CLEAN GLOVES. PANTRY LOCKED AT DUSK.",
+    "ISL1_CLUE_CHOIR": "SNAPPED FORK. TOO FRAIL FOR HEAVY BRASS.",
+    "ISL1_CLUE_STEWARD": "BRASS DUST AND CUT ROPE UNDER CORAL HEM.",
+    "ISL1_MN_LORE_FOYER": "THREE WATCHERS LIE. DARKNESS OPENS GATES.",
+    "ISL1_MN_LORE_EYES": "LIGHT SHIFTS WALLS. DUSK FREEZES THEIR GAZE.",
+    "ISL1_MN_LORE_VERDICT": "RING THE GUILTY PORTRAITS BELL!",
+    "ISL1_MN_SHORTCUT": "A MANOR SHORTCUT LATCHES OPEN!",
+    "ISL1_MN_CHAIN_CUT": "A BALLROOM CHANDELIER CHAIN SNAPS ABOVE!",
+    "ISL1_MN_CLEARED": "THE CHANDELIER FALLS. CLAPPER RECOVERED!"
+  },
+  "interactables": {
+    "mn_hood_altar": "res://luxel/islands/1/manor/mn_hood_altar.gd"
+  },
+  "dungeons": [
+    {
+      "id": "manor",
+      "name_key": "ISL1_Z_MANOR",
+      "island": 1,
+      "entry": "manor_r1",
+      "regions": [
+        "manor_r1",
+        "manor_r2",
+        "manor_r3",
+        "manor_r4",
+        "manor_r5",
+        "manor_r6",
+        "manor_r7",
+        "manor_r8",
+        "manor_r9",
+        "manor_r10a",
+        "manor_r10b",
+        "manor_r11"
+      ],
+      "mini_boss": "clockwork_valet",
+      "boss": "chandelier",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "requires_flags": [],
+      "done_flag": "manor_cleared",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "manor_r1": { "name_key": "ISL1_MN_FOYER", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [2, 4], "debug_only": true },
+    "manor_r2": { "name_key": "ISL1_MN_DINING", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [1, 4], "debug_only": true },
+    "manor_r3": { "name_key": "ISL1_MN_PANTRY", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [0, 4], "debug_only": true },
+    "manor_r4": { "name_key": "ISL1_MN_KITCHEN", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [3, 4], "debug_only": true },
+    "manor_r5": { "name_key": "ISL1_MN_WORKSHOP", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [4, 4], "debug_only": true },
+    "manor_r6": { "name_key": "ISL1_MN_CHOIR", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [2, 3], "debug_only": true },
+    "manor_r7": { "name_key": "ISL1_MN_EYES", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [1, 3], "debug_only": true },
+    "manor_r8": { "name_key": "ISL1_MN_STUDY", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [1, 2], "debug_only": true },
+    "manor_r9": { "name_key": "ISL1_MN_VERDICT", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [2, 2], "debug_only": true },
+    "manor_r10a": { "name_key": "ISL1_MN_VAULT", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [1, 1], "debug_only": true },
+    "manor_r10b": { "name_key": "ISL1_MN_CELLAR", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [3, 1], "debug_only": true },
+    "manor_r11": { "name_key": "ISL1_MN_BALLROOM", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [2, 0], "debug_only": true }
+  },
+  "sfx": {
+    "chain_snap": { "id": "shield_shatter", "pitch": 1.18, "db": 0.0 }
+  }
+}

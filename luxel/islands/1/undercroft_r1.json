@@ -1,8 +1,8 @@
 {
   "name_key": "ISL1_UC_NAVE",
   "spawn": [
-    224,
-    272
+    256,
+    336
   ],
   "zones": [
     {
@@ -11,8 +11,8 @@
       "rect": [
         0,
         0,
-        448,
-        320
+        512,
+        384
       ],
       "dark": true
     }
@@ -21,8 +21,8 @@
     {
       "id": "exit_r1_return_ow",
       "rect": [
-        208,
-        304,
+        240,
+        368,
         32,
         16
       ],
@@ -38,29 +38,29 @@
       "id": "exit_r1_west",
       "rect": [
         0,
-        160,
+        192,
         16,
         48
       ],
       "to_region": "undercroft_r2",
       "to_spawn": [
         400,
-        152
+        136
       ],
       "locked_door_id": "door_r1_west"
     },
     {
       "id": "exit_r1_nw_shortcut",
       "rect": [
-        0,
-        64,
+        48,
+        112,
         16,
         32
       ],
       "to_region": "undercroft_r5",
       "to_spawn": [
-        384,
-        152
+        392,
+        176
       ],
       "requires_flags": [
         "uc_west_shortcut"
@@ -70,8 +70,8 @@
     {
       "id": "exit_r1_east",
       "rect": [
-        432,
-        160,
+        496,
+        192,
         16,
         48
       ],
@@ -88,15 +88,15 @@
     {
       "id": "exit_r1_ne_shortcut",
       "rect": [
-        432,
-        64,
+        448,
+        112,
         16,
         32
       ],
       "to_region": "undercroft_r10",
       "to_spawn": [
-        224,
-        200
+        208,
+        176
       ],
       "requires_flags": [
         "uc_balcony_bridge"
@@ -106,7 +106,7 @@
     {
       "id": "exit_r1_north",
       "rect": [
-        208,
+        240,
         0,
         32,
         16
@@ -114,7 +114,7 @@
       "to_region": "undercroft_r11",
       "to_spawn": [
         240,
-        296
+        336
       ],
       "requires_flags": [
         "uc_boss_key"
@@ -127,8 +127,8 @@
       "id": "ws_undercroft",
       "kind": "waystone",
       "pos": [
-        224,
-        216
+        256,
+        272
       ],
       "props": {
         "zone": "uc_nave",
@@ -139,8 +139,8 @@
       "id": "lore_r1_tones",
       "kind": "lore_stone",
       "pos": [
-        168,
-        248
+        192,
+        304
       ],
       "props": {
         "string_id": "ISL1_UC_LORE_NAVE",
@@ -152,7 +152,7 @@
       "kind": "bell",
       "pos": [
         128,
-        184
+        216
       ],
       "props": {
         "tone": "dawn",
@@ -164,7 +164,7 @@
       "kind": "tone_door",
       "pos": [
         24,
-        184
+        216
       ],
       "props": {
         "tone": "dawn",
@@ -179,8 +179,8 @@
       "id": "door_r1_nw_short",
       "kind": "door",
       "pos": [
-        24,
-        80
+        72,
+        128
       ],
       "props": {
         "door_kind": "ward_barrier",
@@ -197,8 +197,8 @@
       "id": "door_r1_east",
       "kind": "door",
       "pos": [
-        424,
-        184
+        488,
+        216
       ],
       "props": {
         "door_kind": "wick_key",
@@ -215,8 +215,8 @@
       "id": "door_r1_ne_balc",
       "kind": "door",
       "pos": [
-        424,
-        80
+        440,
+        128
       ],
       "props": {
         "door_kind": "ward_barrier",
@@ -233,7 +233,7 @@
       "id": "door_r1_north",
       "kind": "door",
       "pos": [
-        224,
+        256,
         24
       ],
       "props": {
@@ -251,8 +251,8 @@
       "id": "lamp_r1_entry_w",
       "kind": "road_lamp",
       "pos": [
-        184,
-        280
+        208,
+        344
       ],
       "props": {
         "zone": "uc_nave",
@@ -263,8 +263,8 @@
       "id": "lamp_r1_entry_e",
       "kind": "road_lamp",
       "pos": [
-        264,
-        280
+        304,
+        344
       ],
       "props": {
         "zone": "uc_nave",
@@ -276,7 +276,7 @@
       "kind": "road_lamp",
       "pos": [
         88,
-        168
+        200
       ],
       "props": {
         "zone": "uc_nave",
@@ -287,8 +287,8 @@
       "id": "lamp_r1_east",
       "kind": "road_lamp",
       "pos": [
-        368,
-        168
+        424,
+        200
       ],
       "props": {
         "zone": "uc_nave",
@@ -299,8 +299,8 @@
       "id": "lamp_r1_north",
       "kind": "road_lamp",
       "pos": [
-        224,
-        72
+        256,
+        80
       ],
       "props": {
         "zone": "uc_nave",
@@ -313,18 +313,18 @@
     {
       "kind": "rug",
       "rect": [
-        200,
+        232,
         36,
         48,
-        252
+        316
       ],
       "style": "ornate"
     },
     {
       "kind": "circle",
       "pos": [
-        224,
-        216
+        256,
+        272
       ],
       "radius": 34,
       "style": "ritual"
@@ -333,38 +333,33 @@
       "kind": "circle",
       "pos": [
         128,
-        184
+        216
       ],
       "radius": 24,
       "style": "clock"
     },
     {
-      "kind": "stain",
+      "kind": "light_shaft",
       "pos": [
-        64,
-        264
+        256,
+        128
       ],
-      "radius": 22,
-      "style": "moss"
-    },
-    {
-      "kind": "cracks",
-      "pos": [
-        352,
-        232
+      "size": [
+        52,
+        84
       ],
-      "radius": 18,
-      "glow": false
+      "tint": "warm",
+      "shear": 0.35
     },
     {
       "kind": "light_shaft",
       "pos": [
-        224,
-        112
+        256,
+        272
       ],
       "size": [
-        44,
-        68
+        48,
+        64
       ],
       "tint": "warm",
       "shear": 0.35
@@ -375,7 +370,7 @@
       "sheet": "theme_undercroft",
       "prop": "bone_ossuary_arch",
       "pos": [
-        224,
+        256,
         52
       ],
       "layer": "sort",
@@ -388,7 +383,7 @@
       "prop": "bell_floor_seal",
       "pos": [
         128,
-        184
+        216
       ],
       "layer": "ground",
       "flip_x": false,
@@ -399,8 +394,8 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_candelabra",
       "pos": [
-        184,
-        54
+        200,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -411,8 +406,8 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_candelabra",
       "pos": [
-        264,
-        54
+        312,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -421,10 +416,34 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "tattered_crypt_banner",
+      "prop": "crypt_candelabra",
       "pos": [
         168,
-        92
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        344,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        200,
+        120
       ],
       "layer": "sort",
       "flip_x": false,
@@ -435,8 +454,8 @@
       "sheet": "theme_undercroft",
       "prop": "tattered_crypt_banner",
       "pos": [
-        280,
-        92
+        312,
+        120
       ],
       "layer": "sort",
       "flip_x": true,
@@ -445,10 +464,46 @@
     },
     {
       "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        200,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        312,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bronze_bell_stand",
+      "pos": [
+        384,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_undercroft",
       "prop": "open_sarcophagus",
       "pos": [
-        56,
-        260
+        88,
+        264
       ],
       "layer": "sort",
       "flip_x": false,
@@ -459,83 +514,11 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_coffin",
       "pos": [
-        392,
-        256
+        424,
+        260
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "chapel_pew",
-      "pos": [
-        344,
-        280
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
-      "pos": [
-        96,
-        120
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
-      "pos": [
-        352,
-        120
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "toll_brazier",
-      "pos": [
-        144,
-        240
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "toll_brazier",
-      "pos": [
-        304,
-        240
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "mossy_headstone",
-      "pos": [
-        304,
-        264
-      ],
-      "layer": "sort",
-      "flip_x": false,
       "shadow": true,
       "phase": 0.0
     }
@@ -553,14 +536,14 @@
     }
   ],
   "design": {
-    "idea": "Catacomb nave teasing the Sexton Boss Door north, key door east, and Dawn Ring Wave gate west from minute one.",
+    "idea": "Cruciform catacomb nave framing the Sexton Boss Door north, key door east, Dawn Ring Wave gate west, and twin raised shortcut galleries.",
     "kind": "story",
     "beat": "ki",
     "teaches": "Ringing a Dawn Bell sends a visible gold wave that opens matching Dawn tone doors.",
     "decisions": 4,
     "expert_s": 35,
     "reward": "waystone+boss_tease",
-    "why": "Central nave hub of the chapel catacombs anchoring all three Undercroft shortcut cycles.",
+    "why": "Cruciform nave hub of the chapel catacombs anchoring all three Undercroft shortcut cycles.",
     "exit": "exit_r1_west",
     "solution": [
       {
@@ -575,7 +558,7 @@
         "op": "shoot",
         "from": [
           176,
-          184
+          216
         ],
         "target": "bell_r1_dawn"
       },
@@ -597,7 +580,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "undercroft",
-  "music": "island1_dungeon",
+  "music": "isl1_undercroft",
   "ambience": [
     "night_breeze",
     "sanctum_bells"

@@ -1,0 +1,462 @@
+{
+  "id": "galleon_r4",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R4_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    224,
+    232
+  ],
+  "zones": [
+    {
+      "id": "gal_r4",
+      "name_key": "GAL_R4_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "galleon_r3",
+      "to_spawn": [
+        208,
+        232
+      ]
+    },
+    {
+      "id": "exit_r4_west",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_region": "galleon_r2",
+      "to_spawn": [
+        424,
+        176
+      ],
+      "locked_door_id": "door_r4_west"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r4_s",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        232
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r4",
+      "kind": "state_lever",
+      "pos": [
+        232,
+        200
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "mir_r4",
+      "kind": "blue_transformer",
+      "pos": [
+        232,
+        120
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "key_galleon_1",
+      "kind": "wick_key",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "dungeon_id": "galleon",
+        "key_kind": "wick_key",
+        "requires_flag": "gal_r4_cleared"
+      }
+    },
+    {
+      "id": "door_r4_west",
+      "kind": "door",
+      "pos": [
+        24,
+        144
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "gal_r4",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r4_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "zone": "gal_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        184
+      ],
+      "props": {
+        "zone": "gal_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        200
+      ],
+      "props": {
+        "zone": "gal_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        56
+      ],
+      "props": {
+        "zone": "gal_r4",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "skate_r4_w",
+      "kind": "reef_skate",
+      "pos": [
+        104,
+        88
+      ],
+      "zone": "gal_r4"
+    },
+    {
+      "id": "skate_r4_e",
+      "kind": "reef_skate",
+      "pos": [
+        360,
+        104
+      ],
+      "zone": "gal_r4"
+    },
+    {
+      "id": "crab_r4",
+      "kind": "crab_warden",
+      "pos": [
+        312,
+        136
+      ],
+      "zone": "gal_r4"
+    },
+    {
+      "id": "mine_r4",
+      "kind": "buoy_mine",
+      "pos": [
+        264,
+        152
+      ],
+      "zone": "gal_r4"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        88,
+        88
+      ],
+      "radius": 28,
+      "style": "water"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        360,
+        104
+      ],
+      "radius": 28,
+      "style": "water"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        232,
+        152
+      ],
+      "radius": 22
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        296,
+        232
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        408,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        392,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "broken_cannon",
+      "pos": [
+        88,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        152,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        312,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        56,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        232,
+        232
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        408,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r4_port_bilge",
+      "when": "list==port",
+      "tiles": [
+        [
+          3,
+          3,
+          4,
+          4,
+          "water"
+        ],
+        [
+          20,
+          4,
+          4,
+          4,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r4_starboard_bilge",
+      "when": "list==starboard",
+      "tiles": [
+        [
+          3,
+          3,
+          4,
+          4,
+          "ground"
+        ],
+        [
+          20,
+          4,
+          4,
+          4,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "gal_r4_clear_flag",
+      "on": "cleared:gal_r4",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "gal_r4_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "First rolling-deck battle where flipping ballast strands swimming Reef Skates dry on alternating bilge basins while billiard-shooting a Buoy Mine into a Crab Warden.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Flipping ship list weaponizes terrain against aquatic Reef Skates; Buoy Mines crack Crab Wardens.",
+    "decisions": 5,
+    "expert_s": 48,
+    "reward": "galleon_small_1+cycle_1",
+    "why": "Lower-wing combat climax awarding Key #1 and completing Cycle 1 back to the Mast-Well Hub.",
+    "exit": "exit_r4_west",
+    "start": {
+      "vars": {
+        "list": "port"
+      }
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          232
+        ],
+        "target": "valve_r4"
+      },
+      {
+        "op": "clear",
+        "zone": "gal_r4",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "gal_r4_cleared",
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "key_galleon_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_west"
+      }
+    ]
+  }
+}

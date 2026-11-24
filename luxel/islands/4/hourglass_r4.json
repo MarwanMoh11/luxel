@@ -1,0 +1,494 @@
+{
+  "id": "hourglass_r4",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R4",
+  "spawn": [
+    112,
+    232
+  ],
+  "zones": [
+    {
+      "id": "hg_r4_hedges",
+      "name_key": "ISL4_HG_R4",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r4_south",
+      "rect": [
+        96,
+        272,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r3",
+      "to_spawn": [
+        208,
+        56
+      ]
+    },
+    {
+      "id": "exit_hg_r4_north",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r5",
+      "to_spawn": [
+        240,
+        264
+      ],
+      "locked_door_id": "door_hg_r4_north"
+    },
+    {
+      "id": "exit_hg_r4_east",
+      "rect": [
+        464,
+        112,
+        16,
+        48
+      ],
+      "to_region": "hourglass_r7",
+      "to_spawn": [
+        56,
+        128
+      ],
+      "requires_flags": [
+        "hg_cross_shortcut"
+      ],
+      "locked_door_id": "door_hg_r4_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r4",
+      "kind": "room_anchor",
+      "pos": [
+        112,
+        232
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rose_hg_r4",
+      "kind": "echo_rose",
+      "pos": [
+        104,
+        184
+      ],
+      "props": {
+        "secs": 4.4,
+        "loop": true
+      }
+    },
+    {
+      "id": "dial_hg_r4",
+      "kind": "garden_sundial",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "region_hour_lock": true,
+        "scope": "room:4:hourglass_r4",
+        "var": "hg_room_hour",
+        "max_hour": 2,
+        "shootable": true,
+        "can_rewind": false,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "cgate_hg_r4_1",
+      "kind": "clock_gate",
+      "pos": [
+        184,
+        168
+      ],
+      "props": {
+        "var": "hg_room_hour",
+        "scope": "room:4:hourglass_r4",
+        "open_on": [
+          1
+        ],
+        "max_pip": 2,
+        "size": [
+          16,
+          48
+        ],
+        "pin_sconce_id": "plate_hg_r4_latch",
+        "pin_flag": "hg_r4_open"
+      }
+    },
+    {
+      "id": "cgate_hg_r4_2",
+      "kind": "clock_gate",
+      "pos": [
+        312,
+        104
+      ],
+      "props": {
+        "var": "hg_room_hour",
+        "scope": "room:4:hourglass_r4",
+        "open_on": [
+          2
+        ],
+        "max_pip": 2,
+        "size": [
+          16,
+          48
+        ],
+        "pin_sconce_id": "plate_hg_r4_latch",
+        "pin_flag": "hg_r4_open"
+      }
+    },
+    {
+      "id": "plate_hg_r4_latch",
+      "kind": "pressure_plate",
+      "pos": [
+        360,
+        104
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_ids": [
+          "door_hg_r4_north",
+          "cgate_hg_r4_1",
+          "cgate_hg_r4_2"
+        ],
+        "sets_flag": "hg_r4_open"
+      }
+    },
+    {
+      "id": "door_hg_r4_north",
+      "kind": "door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "plate_hg_r4_latch"
+        ],
+        "persistent": true,
+        "sets_flag": "hg_r4_open"
+      }
+    },
+    {
+      "id": "door_hg_r4_east",
+      "kind": "door",
+      "pos": [
+        456,
+        136
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "hg_cross_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        232
+      ],
+      "props": {
+        "zone": "hg_r4_hedges",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_mid",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        152
+      ],
+      "props": {
+        "zone": "hg_r4_hedges",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        168
+      ],
+      "props": {
+        "zone": "hg_r4_hedges",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        56
+      ],
+      "props": {
+        "zone": "hg_r4_hedges",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        88,
+        120
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        80,
+        80,
+        96
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        152,
+        120
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        104
+      ],
+      "size": [
+        36,
+        52
+      ],
+      "tint": "warm",
+      "shear": 0.28
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        216,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        280,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        40,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        216,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "topiary_bird_statue",
+      "pos": [
+        424,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        56,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        152,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "mossy_garden_obelisk",
+      "pos": [
+        280,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        344,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "Z-zigzag turning hedge maze: record an Echo shooting the local room sundial after a 2.5s delay, slip through Hour-1 Clock Gate 1, and let your past self flip the room to Hour 2 to swing Gate 2 open ahead.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Alternating clock_gate hedges rotate on hg_room_hour; Echoes can turn the room clock after you cross the first gate.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "hg_r4_open",
+    "why": "Marries the Hourglass Maze's turning hedges with delayed Echo Rose causal timing.",
+    "exit": "exit_hg_r4_north",
+    "start": {
+      "vars": {
+        "hg_room_hour": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "rose_hg_r4"
+      },
+      {
+        "op": "wait",
+        "secs": 2.4
+      },
+      {
+        "op": "shoot",
+        "from": [
+          120,
+          168
+        ],
+        "target": "dial_hg_r4"
+      },
+      {
+        "op": "wait",
+        "secs": 2.2
+      },
+      {
+        "op": "shoot",
+        "from": [
+          120,
+          168
+        ],
+        "target": "dial_hg_r4"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "cgate_hg_r4_2",
+        "prop": "powered",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_hg_r4_latch",
+        "secs": 0.4
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r4_north"
+      }
+    ]
+  }
+}

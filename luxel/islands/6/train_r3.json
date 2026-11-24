@@ -1,0 +1,455 @@
+{
+  "id": "train_r3",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_TR_R3",
+  "spawn": [
+    40,
+    120
+  ],
+  "zones": [
+    {
+      "id": "tr_r3",
+      "name_key": "ISL6_TR_R3",
+      "rect": [
+        0,
+        0,
+        480,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_west",
+      "rect": [
+        0,
+        96,
+        16,
+        48
+      ],
+      "to_region": "train_r2",
+      "to_spawn": [
+        432,
+        184
+      ]
+    },
+    {
+      "id": "exit_r3_east",
+      "rect": [
+        464,
+        96,
+        16,
+        48
+      ],
+      "to_region": "train_r4",
+      "to_spawn": [
+        40,
+        152
+      ],
+      "locked_door_id": "door_r3_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_r3_scatter",
+      "kind": "temper_anvil",
+      "pos": [
+        88,
+        64
+      ],
+      "props": {
+        "mode": "scatter",
+        "sets_flag": "temper_scatter_known"
+      }
+    },
+    {
+      "id": "conv_r3_coal",
+      "kind": "conveyor",
+      "pos": [
+        232,
+        120
+      ],
+      "props": {
+        "dir": "w",
+        "speed": 48.0,
+        "size": [
+          112,
+          32
+        ]
+      }
+    },
+    {
+      "id": "braz_r3_1",
+      "kind": "timed_brazier",
+      "pos": [
+        392,
+        104
+      ],
+      "props": {
+        "secs": 4.0,
+        "persist": true,
+        "target_id": "gate_r3_dampers"
+      }
+    },
+    {
+      "id": "braz_r3_2",
+      "kind": "timed_brazier",
+      "pos": [
+        392,
+        120
+      ],
+      "props": {
+        "secs": 4.0,
+        "persist": true,
+        "target_id": "gate_r3_dampers"
+      }
+    },
+    {
+      "id": "braz_r3_3",
+      "kind": "timed_brazier",
+      "pos": [
+        392,
+        136
+      ],
+      "props": {
+        "secs": 4.0,
+        "persist": true,
+        "target_id": "gate_r3_dampers"
+      }
+    },
+    {
+      "id": "gate_r3_dampers",
+      "kind": "logic_gate",
+      "pos": [
+        424,
+        64
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "braz_r3_1",
+          "braz_r3_2",
+          "braz_r3_3"
+        ],
+        "target_id": "door_r3_east",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r3_east",
+      "kind": "door",
+      "pos": [
+        456,
+        120
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_r3_dampers"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        168
+      ],
+      "props": {
+        "zone": "tr_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_mid",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        64
+      ],
+      "props": {
+        "zone": "tr_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        64
+      ],
+      "props": {
+        "zone": "tr_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_se",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        192
+      ],
+      "props": {
+        "zone": "tr_r3",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r3_stoker_1",
+      "kind": "stoker",
+      "pos": [
+        216,
+        80
+      ],
+      "zone": "tr_r3"
+    },
+    {
+      "id": "en_r3_hopper",
+      "kind": "rail_hopper",
+      "pos": [
+        264,
+        176
+      ],
+      "zone": "tr_r3"
+    },
+    {
+      "id": "en_r3_stoker_2",
+      "kind": "stoker",
+      "pos": [
+        344,
+        152
+      ],
+      "zone": "tr_r3"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 32,
+      "x1": 128,
+      "style": "slag"
+    },
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 340,
+      "x1": 436,
+      "style": "slag"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        176,
+        104,
+        112,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        152,
+        176
+      ],
+      "radius": 28,
+      "style": "soot"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        344,
+        88
+      ],
+      "radius": 24,
+      "style": "soot"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        368,
+        88,
+        48,
+        64
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express",
+      "prop": "coal_bucket_crate",
+      "pos": [
+        48,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "coal_bucket_crate",
+      "pos": [
+        72,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        416,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "steam_pipe_column",
+      "pos": [
+        144,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "steam_pipe_column",
+      "pos": [
+        336,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        240,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "tr_r3_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "train_r3_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Hourglass coal hopper car brawl introducing the Scatter Tempering Anvil: shatter Stoker shovels over a live coal conveyor, then light 3 clustered timed dampers in one Scatter fan.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "temper_anvil[scatter] 3-bolt close spread in combat and multi-brazier geometry",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "temper_scatter_known+train_r3_cleared+open_r4",
+    "why": "First combat room on the train; pairs Stokers with a Rail Hopper around a central belt and validates Scatter immediately on the exit lock.",
+    "exit": "exit_r3_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          88,
+          88
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r3_scatter"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==scatter"
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          336,
+          120
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          392,
+          120
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r3_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_east"
+      }
+    ]
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "id": "palace_r3",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_PL_R3",
+  "theme": "inverted_palace_silver",
+  "music": "isl7_palace",
+  "ambience": ["night_breeze"],
+  "spawn": [104, 272],
+  "zones": [
+    {
+      "id": "palace_gallery",
+      "name_key": "ISL7_PL_R3",
+      "rect": [0, 0, 448, 320],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_south",
+      "rect": [80, 304, 48, 16],
+      "to_region": "palace_r2",
+      "to_spawn": [104, 48]
+    },
+    {
+      "id": "exit_r3_north",
+      "rect": [80, 0, 48, 16],
+      "to_region": "palace_r4",
+      "to_spawn": [104, 248],
+      "locked_door_id": "door_r3_north"
+    },
+    {
+      "id": "exit_r3_east",
+      "rect": [432, 224, 16, 48],
+      "to_region": "palace_r7",
+      "to_spawn": [48, 152],
+      "locked_door_id": "door_r3_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_south",
+      "kind": "room_anchor",
+      "pos": [104, 272],
+      "props": { "auto": true }
+    },
+    {
+      "id": "pool_r3_sw",
+      "kind": "moon_pool",
+      "pos": [48, 224],
+      "props": {
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 15,
+        "persist": true
+      }
+    },
+    {
+      "id": "avatar_r3",
+      "kind": "mirror_avatar",
+      "pos": [368, 168],
+      "props": {
+        "axis": "x",
+        "pivot": [232, 112],
+        "fires_mirror_bolts": true,
+        "mirror_world": "same",
+        "range": 420
+      }
+    },
+    {
+      "id": "mirror_r3_east",
+      "kind": "blue_transformer",
+      "pos": [296, 88],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": false,
+        "movable": false
+      }
+    },
+    {
+      "id": "sw_r3_blue",
+      "kind": "switch_eye",
+      "pos": [296, 152],
+      "props": {
+        "requires_blue": true,
+        "target_id": "gate_r3"
+      }
+    },
+    {
+      "id": "block_r3_west",
+      "kind": "push_block",
+      "pos": [152, 168],
+      "props": {
+        "variant": "stone",
+        "persist": true
+      }
+    },
+    {
+      "id": "plate_r3_west",
+      "kind": "pressure_plate",
+      "pos": [152, 104],
+      "props": {
+        "by": ["block"],
+        "latch": true,
+        "size": [24, 24],
+        "persist": true,
+        "target_id": "gate_r3"
+      }
+    },
+    {
+      "id": "gate_r3",
+      "kind": "logic_gate",
+      "pos": [192, 48],
+      "props": {
+        "op": "all",
+        "inputs": ["sw_r3_blue", "plate_r3_west"],
+        "target_id": "door_r3_north",
+        "sets_flag": "palace_r3_solved",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r3_north",
+      "kind": "door",
+      "pos": [104, 24],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": ["gate_r3"],
+        "persistent": true,
+        "size": [48, 16]
+      }
+    },
+    {
+      "id": "door_r3_east",
+      "kind": "door",
+      "pos": [424, 248],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "palace",
+        "size": [16, 48]
+      }
+    },
+    {
+      "id": "chest_r3_black",
+      "kind": "chest",
+      "pos": [368, 280],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [144, 272],
+      "props": { "zone": "palace_gallery", "lit": true }
+    },
+    {
+      "id": "lamp_r3_w",
+      "kind": "road_lamp",
+      "pos": [48, 88],
+      "props": { "zone": "palace_gallery", "lit": true }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [368, 56],
+      "props": { "zone": "palace_gallery", "lit": true }
+    },
+    {
+      "id": "lamp_r3_se",
+      "kind": "road_lamp",
+      "pos": [328, 248],
+      "props": { "zone": "palace_gallery", "lit": true }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    { "kind": "inlay", "x": 64, "y": 56, "w": 112, "h": 112, "col": "stone", "border": "sky" },
+    { "kind": "inlay", "x": 264, "y": 56, "w": 128, "h": 112, "col": "ice", "border": "sky" },
+    { "kind": "circle", "x": 296, "y": 152, "r": 20, "col": "sky", "ring": "ice" },
+    { "kind": "cracks", "x": 304, "y": 272, "r": 18, "col": "deep" }
+  ],
+  "scenery": [
+    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [176, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [272, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [48, 160], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [408, 156], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "alabaster_fluted_pillar", "pos": [248, 224], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "velvet_palace_bench", "pos": [216, 280], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "moon_glass_urn", "pos": [384, 218], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [6, 17, 3, 2, "bridge"]
+      ],
+      "enable": ["chest_r3_black"],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Split looking-glass gallery where your X-mirrored Reflection behind glass banks a Blue Bolt into a sealed switch while you weight the West plate to unseal the Courtyard.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Calibrating mirror_avatar against walls to line up mirrored bolts off Blue Transformers across glass.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "open_r4+r7_seam_tease",
+    "why": "Introduces the Palace's signature mirror_avatar mechanic in a pure safe optical chamber while teasing the East Stairwell key seam.",
+    "exit": "exit_r3_north",
+    "solution": [
+      { "op": "goto", "to": [48, 56], "tol": 8 },
+      { "op": "goto", "to": [72, 88], "tol": 6 },
+      { "op": "shoot", "from": [72, 88], "at": [200, 88], "wait_hit": 0.55 },
+      { "op": "wait", "secs": 0.45 },
+      { "op": "expect", "target": "sw_r3_blue", "prop": "activated", "value": true },
+      { "op": "goto", "to": [152, 186], "tol": 8 },
+      { "op": "push", "target": "block_r3_west", "to": [152, 104] },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "expect", "target": "plate_r3_west", "prop": "pressed", "value": true },
+      { "op": "expect_exit", "exit": "exit_r3_north" }
+    ]
+  }
+}

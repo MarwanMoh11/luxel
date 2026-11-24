@@ -1,8 +1,9 @@
 {
   "name_key": "ISL1_UC_TOMB",
+  "music": "isl1_boss_minor_p1",
   "spawn": [
     240,
-    296
+    336
   ],
   "zones": [
     {
@@ -12,7 +13,7 @@
         0,
         0,
         480,
-        352
+        384
       ],
       "dark": true
     }
@@ -22,14 +23,14 @@
       "id": "exit_r11_south",
       "rect": [
         224,
-        336,
+        368,
         32,
         16
       ],
       "to_region": "undercroft_r1",
       "to_spawn": [
-        224,
-        56
+        256,
+        64
       ]
     },
     {
@@ -59,7 +60,7 @@
       "kind": "room_anchor",
       "pos": [
         240,
-        296
+        336
       ],
       "props": {
         "auto": true
@@ -69,8 +70,8 @@
       "id": "bell_r11_dawn",
       "kind": "bell",
       "pos": [
-        64,
-        176
+        56,
+        192
       ],
       "props": {
         "tone": "dawn",
@@ -93,8 +94,8 @@
       "id": "bell_r11_war",
       "kind": "bell",
       "pos": [
-        416,
-        176
+        424,
+        192
       ],
       "props": {
         "tone": "war",
@@ -124,7 +125,7 @@
       "kind": "road_lamp",
       "pos": [
         168,
-        296
+        304
       ],
       "props": {
         "zone": "uc_tomb",
@@ -136,7 +137,7 @@
       "kind": "road_lamp",
       "pos": [
         312,
-        296
+        304
       ],
       "props": {
         "zone": "uc_tomb",
@@ -147,8 +148,8 @@
       "id": "lamp_r11_nw",
       "kind": "road_lamp",
       "pos": [
-        144,
-        72
+        160,
+        80
       ],
       "props": {
         "zone": "uc_tomb",
@@ -159,8 +160,8 @@
       "id": "lamp_r11_ne",
       "kind": "road_lamp",
       "pos": [
-        336,
-        72
+        320,
+        80
       ],
       "props": {
         "zone": "uc_tomb",
@@ -174,7 +175,7 @@
       "kind": "sexton",
       "pos": [
         240,
-        160
+        176
       ],
       "zone": "uc_tomb"
     }
@@ -184,16 +185,16 @@
       "kind": "circle",
       "pos": [
         240,
-        176
+        192
       ],
-      "radius": 60,
+      "radius": 62,
       "style": "ritual"
     },
     {
       "kind": "cracks",
       "pos": [
         192,
-        176
+        192
       ],
       "radius": 24,
       "glow": false
@@ -202,29 +203,20 @@
       "kind": "cracks",
       "pos": [
         288,
-        176
+        192
       ],
       "radius": 24,
       "glow": false
     },
     {
-      "kind": "stain",
-      "pos": [
-        80,
-        272
-      ],
-      "radius": 28,
-      "style": "moss"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         240,
-        144
+        160
       ],
       "size": [
-        56,
-        88
+        60,
+        96
       ],
       "tint": "warm",
       "shear": 0.25
@@ -236,7 +228,7 @@
       "prop": "bell_floor_seal",
       "pos": [
         240,
-        176
+        192
       ],
       "layer": "ground",
       "flip_x": false,
@@ -259,8 +251,8 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_candelabra",
       "pos": [
-        96,
-        68
+        112,
+        92
       ],
       "layer": "sort",
       "flip_x": false,
@@ -271,8 +263,8 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_candelabra",
       "pos": [
-        384,
-        68
+        368,
+        92
       ],
       "layer": "sort",
       "flip_x": true,
@@ -281,34 +273,10 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "mossy_headstone",
+      "prop": "crypt_candelabra",
       "pos": [
-        52,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "open_sarcophagus",
-      "pos": [
-        424,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "bronze_bell_stand",
-      "pos": [
-        56,
-        272
+        112,
+        288
       ],
       "layer": "sort",
       "flip_x": false,
@@ -317,22 +285,22 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_coffin",
+      "prop": "crypt_candelabra",
       "pos": [
-        420,
-        264
+        368,
+        288
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.0
+      "phase": 0.6
     },
     {
       "sheet": "theme_undercroft",
       "prop": "tattered_crypt_banner",
       "pos": [
-        160,
-        44
+        184,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -343,8 +311,8 @@
       "sheet": "theme_undercroft",
       "prop": "tattered_crypt_banner",
       "pos": [
-        320,
-        44
+        296,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -353,10 +321,34 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "toll_brazier",
+      "prop": "tattered_crypt_banner",
       "pos": [
-        120,
-        296
+        184,
+        336
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        296,
+        336
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bronze_bell_stand",
+      "pos": [
+        76,
+        260
       ],
       "layer": "sort",
       "flip_x": false,
@@ -365,15 +357,15 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "toll_brazier",
+      "prop": "open_sarcophagus",
       "pos": [
-        360,
-        296
+        400,
+        260
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.6
+      "phase": 0.0
     }
   ],
   "events": [
@@ -402,7 +394,7 @@
             "kind": "pane_pickup",
             "pos": [
               240,
-              152
+              168
             ],
             "props": {
               "pane": "bell_clapper"
@@ -413,14 +405,14 @@
     }
   ],
   "design": {
-    "idea": "Boss The Sexton digs real pits beneath Wick; ring overhead Sanctuary Bells as he burrows to cave in his tunnel, hop his P2 cross-trench, and shatter his P3 coffin shield with War.",
+    "idea": "Cruciform cathedral sanctuary for The Sexton: ring transept Sanctuary Bells to cave in his burrow, hop his P2 cross-trench, and shatter his P3 coffin shield with War.",
     "kind": "boss",
     "beat": "ketsu",
     "teaches": "Every Undercroft tone pays off in combat: Dawn/Dusk cave in tunnels & freeze Grave Hands, War shatters the P3 coffin-lid shield.",
     "decisions": 8,
     "expert_s": 125,
     "reward": "undercroft_cleared+half_lantern_1+pane_bell_clapper",
-    "why": "Sanctuary tomb of The Undercroft's keeper, rewarding Half-Lantern #1 and Pane Bell Clapper.",
+    "why": "Cruciform cathedral tomb of The Undercroft's keeper, rewarding Half-Lantern #1 and Pane Bell Clapper.",
     "exit": "exit_r11_return",
     "start": {
       "flags": [
@@ -431,7 +423,7 @@
       {
         "op": "shoot",
         "from": [
-          168,
+          152,
           240
         ],
         "target": "bell_r11_dawn"
@@ -460,7 +452,6 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "undercroft",
-  "music": "island1_dungeon",
   "ambience": [
     "night_breeze",
     "sanctum_bells"

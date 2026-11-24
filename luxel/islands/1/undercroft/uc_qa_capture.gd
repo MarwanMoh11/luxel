@@ -141,7 +141,7 @@ func _setup_clip() -> bool:
 	if _clip == "r11_sexton":
 		if not _prepare_room("undercroft_r11"):
 			return false
-		_place_wick(Vector2(152.0, 224.0), Vector2(0.7, -0.7))
+		_place_wick(Vector2(152.0, 240.0), Vector2(0.7, -0.7))
 		return true
 	return false
 
@@ -191,9 +191,9 @@ func _choreograph(f: int, w: LxWick, world: LxRegionLoader) -> void:
 			return
 		# f 0..24: move toward West Dawn Bell & throw lantern to ring Sanctuary Bell!
 		if f < 12:
-			_set_in(Vector2(116.0, 176.0) - w.global_position, Vector2(64.0, 176.0) - w.global_position)
+			_set_in(Vector2(116.0, 192.0) - w.global_position, Vector2(56.0, 192.0) - w.global_position)
 		elif f == 12:
-			_set_in(Vector2.ZERO, Vector2(64.0, 176.0) - w.global_position)
+			_set_in(Vector2.ZERO, Vector2(56.0, 192.0) - w.global_position)
 			w.press_throw()
 		elif f == 22:
 			w.press_throw()
@@ -227,9 +227,9 @@ func _choreograph(f: int, w: LxWick, world: LxRegionLoader) -> void:
 				if boss.has_method("_enter_phase"):
 					boss.call("_enter_phase", 3)
 			if f < 145:
-				_set_in(Vector2(356.0, 176.0) - w.global_position, Vector2(416.0, 176.0) - w.global_position)
+				_set_in(Vector2(364.0, 192.0) - w.global_position, Vector2(424.0, 192.0) - w.global_position)
 			elif f == 145:
-				_set_in(Vector2.ZERO, Vector2(416.0, 176.0) - w.global_position)
+				_set_in(Vector2.ZERO, Vector2(424.0, 192.0) - w.global_position)
 				w.press_throw()
 			elif f == 156:
 				w.press_throw()

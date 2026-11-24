@@ -1,0 +1,450 @@
+{
+  "id": "train_r11",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_TR_R11",
+  "spawn": [
+    48,
+    152
+  ],
+  "zones": [
+    {
+      "id": "tr_r11",
+      "name_key": "ISL6_TR_R11",
+      "rect": [
+        0,
+        0,
+        544,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "train_r10",
+      "to_spawn": [
+        456,
+        120
+      ]
+    },
+    {
+      "id": "exit_r11_return",
+      "rect": [
+        528,
+        128,
+        16,
+        48
+      ],
+      "to_island": 6,
+      "to_region": "overworld",
+      "to_spawn": [
+        104,
+        272
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "express_cleared"
+      ],
+      "locked_door_id": "door_r11_return"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r11_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_r11_cycle",
+      "kind": "temper_anvil",
+      "pos": [
+        88,
+        240
+      ],
+      "props": {
+        "mode": "cycle"
+      }
+    },
+    {
+      "id": "door_r11_return",
+      "kind": "door",
+      "pos": [
+        520,
+        152
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "express_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        72
+      ],
+      "props": {
+        "zone": "tr_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        240
+      ],
+      "props": {
+        "zone": "tr_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        72
+      ],
+      "props": {
+        "zone": "tr_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        240
+      ],
+      "props": {
+        "zone": "tr_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_mid",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        72
+      ],
+      "props": {
+        "zone": "tr_r11",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_r11_engineer",
+      "kind": "engineer",
+      "pos": [
+        312,
+        152
+      ],
+      "zone": "tr_r11",
+      "arena": [
+        64,
+        56,
+        384,
+        208
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 96,
+      "x1": 208,
+      "style": "sunset"
+    },
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 288,
+      "x1": 400,
+      "style": "slag"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        152
+      ],
+      "radius": 58,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        144,
+        112,
+        256,
+        80
+      ],
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        216,
+        152
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        328,
+        152
+      ],
+      "radius": 24,
+      "glow": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express",
+      "prop": "steam_pipe_column",
+      "pos": [
+        72,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "steam_pipe_column",
+      "pos": [
+        408,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        248,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "emergency_brake_wheel",
+      "pos": [
+        464,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "emergency_brake_wheel",
+      "pos": [
+        464,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        160,
+        268
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        352,
+        268
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "roof_blown",
+      "when": "train_roof_blown==yes",
+      "theme": "ember_express_roof",
+      "full_frame": true
+    }
+  ],
+  "events": [
+    {
+      "id": "tr_r11_enter_reset",
+      "on": "enter",
+      "if": "!flag:engineer_defeated",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "room:6:train_r11",
+            "name": "train_roof_blown",
+            "value": "no"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tr_r11_p2_roof",
+      "on": "boss_hp:0.66",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "room:6:train_r11",
+            "name": "train_roof_blown",
+            "value": "yes"
+          }
+        },
+        {
+          "shake": 0.24
+        },
+        {
+          "narrate": {
+            "id": "ISL6_TR_P2_ROOF",
+            "style": "narration",
+            "duration": 2.8
+          }
+        }
+      ]
+    },
+    {
+      "id": "tr_r11_victory_msg",
+      "on": "flag:engineer_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "express_cleared"
+        },
+        {
+          "narrate": {
+            "id": "ISL6_TR_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "tr_r11_spawn_pane",
+      "on": "flag:engineer_defeated",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "pane_r11_cinder",
+            "kind": "pane_pickup",
+            "pos": [
+              312,
+              152
+            ],
+            "props": {
+              "pane": "cinder_blast"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Locomotive Cab boss showdown against The Engineer: dodge Coal-Shovel Spreads, Brake-Lurches, and Whistle Steam Lanes in P1; survive the dramatic P2 roof blow-off layer swap & Parallel Rail-Drone; snap his P3 twin Boiler Pressure Chains to claim Half-Lantern #1 and Pane Cinder Blast!",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Full Ember Express mastery: live temper swapping, Lance vs Rail-Drone, and breaking P3 boiler chains",
+    "decisions": 7,
+    "expert_s": 140,
+    "reward": "half_lantern_6a+pane_cinder_blast+express_cleared",
+    "why": "Climax boss of The Ember Express delivering Half-Lantern #1 and Pane Cinder Blast.",
+    "exit": "exit_r11_return",
+    "start": {
+      "flags": [
+        "brakeman_defeated",
+        "item_coupler_hook",
+        "temper_skip_known",
+        "temper_scatter_known",
+        "temper_lance_known"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "express_cleared",
+        "timeout": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "pane_r11_cinder"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_return"
+      }
+    ]
+  }
+}

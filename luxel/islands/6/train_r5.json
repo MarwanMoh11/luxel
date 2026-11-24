@@ -1,0 +1,397 @@
+{
+  "id": "train_r5",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express_roof",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
+  "name_key": "ISL6_TR_R5",
+  "spawn": [
+    256,
+    240
+  ],
+  "zones": [
+    {
+      "id": "tr_r5",
+      "name_key": "ISL6_TR_R5",
+      "rect": [
+        0,
+        0,
+        512,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_south",
+      "rect": [
+        240,
+        272,
+        32,
+        16
+      ],
+      "to_region": "train_r4",
+      "to_spawn": [
+        272,
+        48
+      ]
+    },
+    {
+      "id": "exit_r5_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "train_r6",
+      "to_spawn": [
+        496,
+        120
+      ],
+      "requires_flags": [
+        "brakeman_defeated",
+        "item_coupler_hook"
+      ],
+      "locked_door_id": "door_r5_west"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r5_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_r5_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        120,
+        208
+      ],
+      "props": {
+        "mode": "skip"
+      }
+    },
+    {
+      "id": "altar_r5_hook",
+      "kind": "train_hook_altar",
+      "pos": [
+        208,
+        128
+      ],
+      "props": {
+        "requires_flag": "brakeman_defeated"
+      }
+    },
+    {
+      "id": "key_r5_train_1",
+      "kind": "wick_key",
+      "pos": [
+        304,
+        128
+      ],
+      "props": {
+        "dungeon_id": "ember_express",
+        "key_kind": "wick_key",
+        "flag_id": "train_key_1",
+        "requires_flag": "brakeman_defeated"
+      }
+    },
+    {
+      "id": "door_r5_west",
+      "kind": "door",
+      "pos": [
+        24,
+        152
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "brakeman_defeated",
+          "item_coupler_hook"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        216
+      ],
+      "props": {
+        "zone": "tr_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        216
+      ],
+      "props": {
+        "zone": "tr_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        72
+      ],
+      "props": {
+        "zone": "tr_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        72
+      ],
+      "props": {
+        "zone": "tr_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_mid",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        72
+      ],
+      "props": {
+        "zone": "tr_r5",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_r5_brakeman",
+      "kind": "brakeman",
+      "pos": [
+        256,
+        136
+      ],
+      "zone": "tr_r5",
+      "arena": [
+        88,
+        64,
+        336,
+        160
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        128,
+        112,
+        256,
+        64
+      ],
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        64,
+        320,
+        160
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        144
+      ],
+      "radius": 44,
+      "style": "gear"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        184,
+        120
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        328,
+        168
+      ],
+      "radius": 20,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        96,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        416,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "wind_vane_fin",
+      "pos": [
+        416,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_vent_cowling",
+      "pos": [
+        112,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_vent_cowling",
+      "pos": [
+        400,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "riveted_hatch_cover",
+      "pos": [
+        256,
+        240
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        208,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        304,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "High-wind Brake-Van Roof mini-boss showdown against The Brakeman: bait his Coupling Charge into twin spinning brake wheels to cut roof gale 60% and stagger him, claiming the Coupler Hook and first Train Key.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Using train brake wheels against gale wind + awards Coupler Hook dungeon power",
+    "decisions": 6,
+    "expert_s": 90,
+    "reward": "item_coupler_hook+train_key_1+open_r6",
+    "why": "Mid-dungeon climax transforming the train roof into a kinetic wind arena and granting Coupler Hook.",
+    "exit": "exit_r5_west",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 110.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "brakeman_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "altar_r5_hook"
+      },
+      {
+        "op": "expect",
+        "flag": "item_coupler_hook"
+      },
+      {
+        "op": "interact",
+        "target": "key_r5_train_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_west"
+      }
+    ]
+  }
+}

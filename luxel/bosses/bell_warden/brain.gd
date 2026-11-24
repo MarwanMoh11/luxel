@@ -1,138 +1,305 @@
 class_name LxBellWardenBoss
-extends LxWardenBrain
-## Belfry Mini-Boss #1 (Island 1, belfry_r5): Upgraded Bell Warden.
-## Preserves child-acolyte art, parasol shield teaching role, and Sanctuary Pedestal synergy.
-## Upgrades to Island 1 Bible:
-## - P1/P2 slams telegraph DAWN (wide gold ring) vs WAR (fast coral spike ring + 6 radial bolts).
-## - P2 (<= 50% HP): Belfry Resonance Floor awakens + 0.55s Echo Slam pause before Ring 2;
-##   ringing a bell (on_ring) or hitting with a heavy/pedestal blow during Echo Pause cancels Ring 2,
-##   cracks shield, and opens a 1.8s counter-stagger!
+extends LxBossBase
+## Belfry Mini-Boss #1 (Island 1, belfry_r5): Bell Warden migrated onto LxBossBase.
+## Preserves child-acolyte art, parasol shield teaching role, Sanctuary Pedestal synergy,
+## and Island 1 Bible upgrades:
+## - Armour outside punish windows (parasol guard + brass bell-mantle; bolts chip with glint).
+## - P1/P2 slams telegraph DAWN (wide gold ring + fan) vs WAR (fast coral spike ring + gap-ring).
+## - P2 (<= 50% HP): Belfry Resonance Floor + 2 acoustic grate pits + 2 bronze pillars +
+##   0.55s Echo Slam pause before Ring 2 (bell ring or heavy/pedestal hit cancels Ring 2,
+##   shatters shield, and triggers 1.80s counter-stagger!).
 
-const SLAM_TELL_P1: float = 0.62
-const SLAM_TELL_P2: float = 0.56
-const SLAM_FIRE_TIME: float = 0.25
-const ECHO_PAUSE_TIME: float = 0.55
-const SLAM_RECOVER_TIME: float = 1.25
-const ECHO_CANCEL_STAGGER: float = 1.80
+signal shield_broken(enemy: LxEnemyBrain, at_pos: Vector2)
+signal shield_reformed(enemy: LxEnemyBrain, at_pos: Vector2)
+
+const FRONT_GUARD_HALF: float = 1.08
 const SLAM_START_R: float = 8.0
 const SLAM_MAX_R_DAWN: float = 64.0
 const SLAM_MAX_R_WAR: float = 54.0
-const SLAM_BAND: float = 9.0
-const SLAM_CD_P1: float = 4.4
-const SLAM_CD_P2: float = 3.2
-const PHASE2_ROAR_TIME: float = 0.65
+const SLAM_BAND: float = 9.5
+const SLAM_RING_TIME: float = 0.26
+const ECHO_PAUSE_TIME: float = 0.55
+const ECHO_CANCEL_STAGGER: float = 1.80
+const LUNGE_SPEED: float = 205.0
 
 enum SlamStage { NONE, RING_1, ECHO_PAUSE, RING_2 }
 
-var slam_attack: bool = false
-var slam_stage: int = SlamStage.NONE
+var shield_max: float = 2.4
+var shield_hp: float = 2.4
+var shield_gone_duration: float = 4.5
+var shield_gone_t: float = 0.0
+
 var slam_tone: String = "dawn"
-var slam_cd: float = 1.5
-var slam_progress: float = 0.0
-var slam_hit: bool = false
-var swings_since_slam: int = 0
-var _roaring: bool = false
+var slam_stage: int = SlamStage.NONE
+var _slam_stage_t: float = 0.0
+var _slam_progress: float = 0.0
+var _slam_hit: bool = false
+var _aim_dir: Vector2 = Vector2.LEFT
+var _lunge_hit: bool = false
 var _dusk_slow_t: float = 0.0
 var _resonance_pulse_t: float = 0.0
-var _patterns: LxBossPatterns = null
+var _echo_stagger_bonus: bool = false
+var _armour_glint_t: float = 0.0
+var _armour_glint_ang: float = 0.0
 
 
 func _init() -> void:
+	super._init()
 	kind = "bell_warden"
 	boss_id = "bell_warden"
+	boss_name_key = "MINIBOSS_1"
 	island_id = 1
-	is_boss = true
-	max_hp = 26.0
-	hp = 26.0
-	shield_max = 2.4
-	shield_hp = 2.4
-	shield_gone_duration = 4.5
-	body_radius = 6.5
-	routine_speed = 40.0
-	leash_radius = 175.0
-	notice_radius = 152.0
-	reach = 38.0
-	lunge_reach = 104.0
-	swing_r = 30.0
-	swing_arc = 1.24
-	tell_time = 0.48
-	lunge_tell_time = 0.54
-	recover_time = 1.15
+	is_miniboss = true
+	reward_heart = "none"
+	music_cue = "island1_boss_p1"
+	music_p2_cue = "island1_boss_p2"
+	max_hp = 62.0
+	hp = 62.0
+	body_radius = 7.0
+	move_speed = 42.0
+	stagger_threshold = 10.0
+	stagger_duration = 1.65
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.30
+	intro_duration = 0.15
+	phase_shift_duration = 0.65
+	death_duration = 1.8
 	shard_drop = 15
 
 
-func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
-	super.setup(spec, p_director, p_world)
-	is_boss = true
+func _configure_boss(spec: Dictionary) -> void:
+	var base_hp: float = 62.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	max_hp = base_hp
+	hp = base_hp
 	boss_id = str(spec.get("boss_id", "bell_warden"))
 	island_id = int(spec.get("island_id", 1))
-	slam_attack = false
-	slam_stage = SlamStage.NONE
+	configure_phases([0.50])
+
+	# Attack 1: Parasol Cleave — wide directional bell-parasol sweep + 3-bolt gold fan
+	register_attack("parasol_sweep", {
+		"weight": 1.25, "tell": 0.50, "commit": 0.28, "recover": 1.05, "cooldown": 1.3,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _aim_dir.angle()
+			ground.warn_sector(pos, facing - 1.15, facing + 1.15, 42.0, last_tell_duration, 1.0, "gold", "coral")
+			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 160.0), 8.0, last_tell_duration, 0.0, "apricot", "gold")
+			stage.play_sfx("warden_windup", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			var cnt: int = 5 if phase >= 2 else 3
+			patterns.emit_fan(pos, _aim_dir, cnt, 0.72, 134.0 if phase >= 2 else 118.0, {"color": "gold", "source": "bell_warden_sweep", "reflectable": true})
+			stage.shake(0.12)
+			stage.play_sfx("warden_swing", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			move_boss(_aim_dir * (70.0 if _dusk_slow_t <= 0.0 else 32.0) * dt, false),
+	})
+
+	# Attack 2: Belfry Lunge — telegraphed hop-lunge spear thrust + closing coral chime fan
+	register_attack("belfry_lunge", {
+		"weight": 1.20, "tell": 0.54, "commit": 0.34, "recover": 1.15, "cooldown": 1.5,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _aim_dir.angle()
+			_lunge_hit = false
+			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 116.0), 12.0, last_tell_duration, 0.0, "coral", "gold")
+			stage.play_sfx("warden_lunge_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			_lunge_hit = false
+			patterns.emit_fan(pos, _aim_dir, 3, 0.52, 128.0, {"color": "coral", "source": "bell_warden_lunge", "reflectable": true})
+			stage.shake(0.14)
+			stage.play_sfx("warden_swing", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			var spd: float = LUNGE_SPEED * (0.48 if _dusk_slow_t > 0.0 else (1.10 if phase >= 2 else 1.0))
+			move_boss(_aim_dir * spd * dt, false)
+			if not _lunge_hit:
+				_lunge_hit = check_contact_damage(20.0, _aim_dir, 1.0, "bell_warden_lunge"),
+	})
+
+	# Attack 3: Tone Slam — alternates DAWN (wide gold ring) vs WAR (fast coral spike ring + gap-ring);
+	# P2 adds 0.55s Echo Pause before Ring 2 (cancellable by bell ring or heavy/pedestal hit for 1.80s stagger!).
+	register_attack("tone_slam", {
+		"weight": 1.35, "tell": 0.60, "commit": 1.08, "recover": 1.25, "cooldown": 1.6,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			slam_tone = "war" if slam_tone == "dawn" else "dawn"
+			slam_stage = SlamStage.NONE
+			_slam_progress = 0.0
+			_slam_hit = false
+			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			var fk: String = "coral" if slam_tone == "war" else "gold"
+			ground.warn_ring(pos, _slam_max_r(), last_tell_duration, 0.0, fk, "cream")
+			stage.play_sfx("bell_slam_windup", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			slam_stage = SlamStage.RING_1
+			_slam_stage_t = SLAM_RING_TIME
+			_slam_progress = 0.0
+			_slam_hit = false
+			_resonance_pulse_t = 0.65
+			state_timer = (SLAM_RING_TIME * 2.0 + ECHO_PAUSE_TIME * get_tell_scale()) if phase >= 2 else SLAM_RING_TIME
+			_fire_tone_bolts()
+			LxDamageFx.boss_impact(pos, 0.16, 78.0, 82.0, 84.0, 1.38, 0.36)
+			stage.play_sfx("bell_slam_fire", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			_step_tone_slam_commit(dt),
+	})
+
+	# Attack 4 (P2): Resonance Chimes — Belfry floor rains bell impacts on Wick & perimeter corners
+	register_attack("resonance_chimes", {
+		"phases": [2], "weight": 2.20, "tell": 0.54, "commit": 0.34, "recover": 1.15, "cooldown": 1.2,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			var drops: Array[Vector2] = _perimeter_targets(tgt, 4)
+			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "coral", "gold")
+			stage.play_sfx("clockwork_chime", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else _aim_dir
+			patterns.emit_fan(pos, d, 5, 0.78, 134.0, {"color": "gold", "source": "bell_warden_chime", "reflectable": true})
+			_resonance_pulse_t = 0.75
+			stage.shake(0.16)
+			stage.play_sfx("bell_slam_fire", pos),
+	})
+
+
+func _on_reset_encounter() -> void:
+	shield_hp = shield_max
+	shield_gone_t = 0.0
 	slam_tone = "dawn"
-	slam_cd = 1.5
-	slam_progress = 0.0
-	slam_hit = false
-	swings_since_slam = 0
-	_roaring = false
+	slam_stage = SlamStage.NONE
+	_slam_stage_t = 0.0
+	_slam_progress = 0.0
+	_slam_hit = false
+	_lunge_hit = false
 	_dusk_slow_t = 0.0
 	_resonance_pulse_t = 0.0
-	if _patterns == null:
-		_patterns = LxBossPatterns.new(self)
-	_patterns.clear()
+	_echo_stagger_bonus = false
+	_armour_glint_t = 0.0
 
 
-func _step_brain(dt: float) -> void:
-	if _roaring and state != State.NOTICE:
-		_roaring = false
-	slam_cd = maxf(0.0, slam_cd - dt)
+func _on_boss_tick(dt: float, _target: Vector2) -> void:
 	_dusk_slow_t = maxf(0.0, _dusk_slow_t - dt)
 	_resonance_pulse_t = maxf(0.0, _resonance_pulse_t - dt)
-	routine_speed = 24.0 if _dusk_slow_t > 0.0 else (44.0 if phase >= 2 else 40.0)
-	if _patterns != null:
-		_patterns.tick(dt, world_ctx)
-	super._step_brain(dt)
+	_armour_glint_t = maxf(0.0, _armour_glint_t - dt)
+	move_speed = 22.0 if _dusk_slow_t > 0.0 else (46.0 if phase >= 2 else 42.0)
+	if shield_gone_t > 0.0:
+		shield_gone_t = maxf(0.0, shield_gone_t - dt)
+		if shield_gone_t <= 0.0:
+			shield_hp = shield_max
+			shield_reformed.emit(self, pos)
+			stage.play_sfx("warden_shield_reform", pos)
+	if boss_state != BossState.STAGGER:
+		_echo_stagger_bonus = false
+	if boss_state != BossState.COMMIT:
+		slam_stage = SlamStage.NONE
+
+
+func _step_tone_slam_commit(dt: float) -> void:
+	match slam_stage:
+		SlamStage.RING_1, SlamStage.RING_2:
+			_slam_stage_t = maxf(0.0, _slam_stage_t - dt)
+			_slam_progress = 1.0 - clampf(_slam_stage_t / SLAM_RING_TIME, 0.0, 1.0)
+			var ring_r: float = lerpf(SLAM_START_R, _slam_max_r(), _slam_progress)
+			if not _slam_hit and _has_player():
+				var wv: Vector2 = _get_wick_pos() - pos
+				if absf(wv.length() - ring_r) <= SLAM_BAND:
+					_slam_hit = true
+					var push: Vector2 = wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing)
+					emit_boss_damage(push, 1.0, "bell_warden_slam", pos, true)
+			if _is_lantern_out() and _get_lantern_pos().distance_to(pos) <= ring_r and Lx.events != null:
+				Lx.events.lantern_struck.emit(_get_lantern_pos())
+			if _slam_stage_t <= 0.0:
+				if slam_stage == SlamStage.RING_1 and phase >= 2:
+					slam_stage = SlamStage.ECHO_PAUSE
+					_slam_stage_t = ECHO_PAUSE_TIME * get_tell_scale()
+					_slam_progress = 0.0
+					_slam_hit = false
+					stage.play_sfx("clockwork_chime", pos)
+				else:
+					slam_stage = SlamStage.NONE
+					state_timer = 0.0
+		SlamStage.ECHO_PAUSE:
+			_slam_stage_t = maxf(0.0, _slam_stage_t - dt)
+			if _slam_stage_t <= 0.0:
+				slam_stage = SlamStage.RING_2
+				_slam_stage_t = SLAM_RING_TIME
+				_slam_progress = 0.0
+				_slam_hit = false
+				_resonance_pulse_t = 0.65
+				_fire_tone_bolts()
+				LxDamageFx.boss_impact(pos, 0.18, 82.0, 86.0, 88.0, 1.38, 0.36)
+				stage.play_sfx("bell_slam_fire", pos)
+
+
+func _fire_tone_bolts() -> void:
+	var aim_a: float = (_get_wick_pos() - pos).angle() if _has_player() else facing
+	if slam_tone == "war":
+		patterns.emit_gap_ring(pos, 8 if phase >= 2 else 6, 128.0 if phase >= 2 else 112.0, aim_a + PI * 0.45, 0.72, {"color": "coral", "source": "bell_warden_war", "reflectable": true})
+	else:
+		var aim_d: Vector2 = (_get_wick_pos() - pos).normalized() if (_has_player() and _get_wick_pos().distance_to(pos) > 1.0) else Vector2.from_angle(facing)
+		patterns.emit_fan(pos, aim_d, 5 if phase >= 2 else 3, 0.72, 122.0, {"color": "gold", "source": "bell_warden_dawn", "reflectable": true})
 
 
 func on_ring(tone: String, _dir: Vector2) -> void:
-	if state == State.DEAD:
+	if boss_state == BossState.DEATH:
 		return
 	var t: String = tone.strip_edges().to_lower()
-	# Bible rule: ringing a bell during P2 Echo Slam pause cancels Ring 2, cracks shield, & staggers 1.8s!
-	if slam_attack and state == State.COMMIT and slam_stage == SlamStage.ECHO_PAUSE:
+	# Bible rule: ringing a bell during P2 Echo Slam pause cancels Ring 2, cracks shield, & staggers 1.80s!
+	if boss_state == BossState.COMMIT and active_attack_id == "tone_slam" and slam_stage == SlamStage.ECHO_PAUSE:
 		_cancel_echo_slam_stagger()
 		return
 	if t == "war":
-		if shield_hp > 0.0:
+		if _has_active_shield():
 			_wear_shield(1.6)
+		add_stagger(4.5)
 	elif t == "dusk":
 		_dusk_slow_t = 2.0
-		if _patterns != null:
-			_patterns.freeze_bolts_in_radius(pos, 120.0, 1.5, "dusk")
-		_emit_sfx("clockwork_chime")
+		patterns.freeze_bolts_in_radius(pos, 130.0, 1.5, "dusk")
+		stage.play_sfx("clockwork_chime", pos)
 
 
 func _cancel_echo_slam_stagger() -> void:
-	slam_attack = false
 	slam_stage = SlamStage.NONE
-	slam_progress = 0.0
+	_slam_progress = 0.0
 	if shield_hp > 0.0:
 		shield_hp = 0.0
 		shield_gone_t = shield_gone_duration
-		_sync_warden_sheet()
+		shield_broken.emit(self, pos)
 	_release_token()
-	state = State.STAGGER
-	state_timer = ECHO_CANCEL_STAGGER
+	active_attack_id = ""
+	stagger_meter = 0.0
+	_echo_stagger_bonus = true
+	_set_boss_state(BossState.STAGGER, ECHO_CANCEL_STAGGER)
 	last_recover_duration = ECHO_CANCEL_STAGGER
-	slam_cd = SLAM_CD_P2
-	_boss_impact(0.22, 84.0, 86.0)
-	_emit_sfx("warden_shield_break")
+	staggered.emit(ECHO_CANCEL_STAGGER)
+	LxDamageFx.boss_impact(pos, 0.22, 84.0, 86.0, 88.0, 1.40, 0.36)
+	stage.play_sfx("warden_shield_break", pos)
+
+
+func _has_active_shield() -> bool:
+	return shield_hp > 0.001 and shield_gone_t <= 0.0
+
+
+func _is_hit_invulnerable() -> bool:
+	return boss_state == BossState.PHASE_SHIFT
+
+
+func _wear_shield(amount: float) -> bool:
+	if not _has_active_shield():
+		return false
+	shield_hp = maxf(0.0, shield_hp - maxf(0.0, amount))
+	if shield_hp <= 0.001:
+		shield_hp = 0.0
+		shield_gone_t = shield_gone_duration
+		shield_broken.emit(self, pos)
+		stage.play_sfx("warden_shield_break", pos)
+		add_stagger(stagger_threshold * 0.85)
+		return true
+	clank_t = 0.14
+	return false
 
 
 func take_hit(hit: LxHit) -> int:
-	# Allow Sanctuary Pedestal wave or heavy throw/dash during Echo Pause to trigger the 1.8s cancel-stagger!
-	if hit != null and slam_attack and state == State.COMMIT and slam_stage == SlamStage.ECHO_PAUSE:
+	# Allow Sanctuary Pedestal wave or heavy throw/dash during Echo Pause to trigger 1.80s cancel-stagger!
+	if hit != null and boss_state == BossState.COMMIT and active_attack_id == "tone_slam" and slam_stage == SlamStage.ECHO_PAUSE:
 		var h: Dictionary = _read_hit(hit)
-		if bool(h["stagger"]) or bool(h["cracks_armour"]):
+		if bool(h["stagger"]) or bool(h["cracks_armour"]) or float(h["shield_wear"]) >= 1.2:
 			hp = maxf(0.5, hp - float(h["damage"]))
 			_cancel_echo_slam_stagger()
 			_emit_enemy_hit(hit, HitResult.OPENED)
@@ -140,172 +307,84 @@ func take_hit(hit: LxHit) -> int:
 	return super.take_hit(hit)
 
 
-func _on_stagger_end(target_pos: Vector2) -> void:
-	slam_attack = false
-	slam_stage = SlamStage.NONE
-	super._on_stagger_end(target_pos)
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var orig: Vector2 = h["origin"] as Vector2
+	var rel: Vector2 = orig - pos
+	var is_pierce: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_SUNFLARE] or bool(h["pierce"])
+	var is_heavy: bool = is_pierce or bool(h["stagger"]) or bool(h["cracks_armour"]) or float(h["shield_wear"]) >= 1.2 or src in [LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_ZIP, LxHit.SOURCE_DASH]
+
+	if _has_active_shield() and (is_heavy or float(h["shield_wear"]) >= 1.0):
+		_wear_shield(maxf(float(h["shield_wear"]), 1.25))
+
+	if is_pierce:
+		return dmg * (1.20 if is_punishable() else 1.0)
+	if is_punishable():
+		return dmg * (1.15 if _echo_stagger_bonus else 1.0)
+
+	# Outside punish windows: parasol shield & brass mantle armour chip bolts with glint!
+	var ang_diff: float = absf(angle_difference(facing, rel.angle())) if rel.length() > 1.0 else 0.0
+	var is_front: bool = rel.length() > 1.0 and ang_diff < FRONT_GUARD_HALF
+	_armour_glint_t = 0.22
+	_armour_glint_ang = rel.angle() if rel.length() > 1.0 else facing
+	if _has_active_shield() and is_front:
+		clank_t = 0.14
+		if src == LxHit.SOURCE_BOLT:
+			_wear_shield(0.24)
+			stage.play_sfx("warden_clank", pos)
+			return dmg * 0.22
+		return dmg * 0.50
+	clank_t = 0.10
+	if src == LxHit.SOURCE_BOLT:
+		stage.play_sfx("warden_clank", pos)
+		return dmg * 0.36
+	return dmg * 0.62
 
 
-func _step_notice(dt: float, target_pos: Vector2) -> void:
-	var to_t: Vector2 = target_pos - pos
-	if to_t.length() > 0.01:
-		_turn_toward(to_t.angle(), TURN_PATROL * 1.4, dt)
-	state_timer -= dt
-	if state_timer <= 0.0:
-		_roaring = false
-		state = State.POSITION
-		step_clock = 0.0
-		cooldown = 0.35
-
-
-func _is_hit_invulnerable() -> bool:
-	return _roaring
-
-
-func _on_damaged_alive(_hit: LxHit) -> bool:
-	if phase < 2 and hp <= max_hp * 0.5 and hp > 0.001:
-		phase = 2
-		wary = false
-		_roaring = true
-		slam_attack = false
+func _on_phase_enter(new_phase: int) -> void:
+	if new_phase == 2:
 		slam_stage = SlamStage.NONE
-		lunge_attack = false
-		slam_progress = 0.0
 		_resonance_pulse_t = 1.0
-		_release_token()
-		state = State.NOTICE
-		state_timer = PHASE2_ROAR_TIME
-		slam_cd = 0.85
-		if Lx.events != null:
-			Lx.events.boss_phase_changed.emit(boss_id, 2)
-		_boss_impact(0.24, 90.0, 88.0)
-		_emit_sfx("bell_warden_phase2")
-		return true
-	return false
+		shield_gone_t = 0.0
+		shield_hp = shield_max
+		shield_reformed.emit(self, pos)
+		_carve_safe_pit(0.26, 0.20)
+		_carve_safe_pit(0.74, 0.78)
+		var c: Vector2 = arena_rect.get_center()
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-56.0, -34.0)), 4.0, "bw_acoustic_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(56.0, 34.0)), 4.0, "bw_acoustic_e")
+		stage.darkness_pulse(0.62, 1.0)
+		stage.shake(0.24)
+		stage.play_sfx("bell_warden_phase2", pos)
 
 
-func _die(hit: Object) -> void:
-	if _patterns != null:
-		_patterns.clear()
-	super._die(hit)
+func _carve_safe_pit(fx: float, fy: float) -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx):
+		return
+	var wp := Vector2(lerpf(arena_rect.position.x, arena_rect.end.x, fx), lerpf(arena_rect.position.y, arena_rect.end.y, fy))
+	var tx: int = int(wp.x / 16.0)
+	var ty: int = int(wp.y / 16.0)
+	var center_p := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
+	if world_ctx.has_method("tile_at") and str(world_ctx.call("tile_at", center_p)) in ["ground", "path"]:
+		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), "pit")
+
+
+func _perimeter_targets(tgt: Vector2, count: int) -> Array[Vector2]:
+	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var inset: Rect2 = arena_rect.grow(-18.0)
+	var corners: Array[Vector2] = [
+		inset.position, Vector2(inset.end.x, inset.position.y),
+		Vector2(inset.position.x, inset.end.y), inset.end,
+	]
+	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
+	for i: int in range(mini(count - 1, corners.size())):
+		out.append(clamp_to_arena(corners[i]))
+	return out
 
 
 func _slam_max_r() -> float:
 	return SLAM_MAX_R_WAR if slam_tone == "war" else SLAM_MAX_R_DAWN
-
-
-func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
-	if slam_cd <= 0.0 and (phase >= 2 or swings_since_slam >= 1) and dist < SLAM_MAX_R_DAWN + 22.0 \
-			and _claim_token():
-		slam_attack = true
-		slam_stage = SlamStage.NONE
-		slam_tone = "war" if slam_tone == "dawn" else "dawn"
-		lunge_attack = false
-		is_counter_attack = false
-		state = State.TELL
-		var base_t: float = SLAM_TELL_P2 if phase >= 2 else SLAM_TELL_P1
-		last_tell_duration = _scaled_tell(base_t, false, attack_damage)
-		state_timer = last_tell_duration
-		slam_progress = 0.0
-		slam_hit = false
-		swings_since_slam = 0
-		_emit_attack_started()
-		_emit_sfx("bell_slam_windup")
-		return true
-	slam_attack = false
-	slam_stage = SlamStage.NONE
-	return super._try_start_attack(target_pos, dist)
-
-
-func _enter_commit() -> void:
-	if slam_attack:
-		state = State.COMMIT
-		slam_stage = SlamStage.RING_1
-		state_timer = SLAM_FIRE_TIME
-		slam_progress = 0.0
-		slam_hit = false
-		_resonance_pulse_t = 0.65
-		_fire_tone_bolts()
-		_boss_impact(0.16, 78.0, 82.0)
-		_emit_sfx("bell_slam_fire")
-		return
-	swings_since_slam += 1
-	super._enter_commit()
-
-
-func _fire_tone_bolts() -> void:
-	if _patterns == null:
-		return
-	if slam_tone == "war":
-		var aim_a: float = (_get_wick_pos() - pos).angle() if _has_player() else facing
-		_patterns.emit_gap_ring(pos, 7 if phase >= 2 else 6, 118.0 if phase >= 2 else 104.0, aim_a + PI * 0.45, 0.72, {"color": "coral", "source": "bell_warden_war"})
-	elif phase >= 2:
-		var aim_d: Vector2 = (_get_wick_pos() - pos).normalized() if _has_player() and _get_wick_pos().distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-		_patterns.emit_fan(pos, aim_d, 3, 0.65, 108.0, {"color": "gold", "source": "bell_warden_dawn"})
-
-
-func _step_commit(dt: float) -> void:
-	if not slam_attack:
-		super._step_commit(dt)
-		return
-	match slam_stage:
-		SlamStage.RING_1, SlamStage.RING_2:
-			state_timer = maxf(0.0, state_timer - dt)
-			slam_progress = 1.0 - clampf(state_timer / SLAM_FIRE_TIME, 0.0, 1.0)
-			var ring_r: float = lerpf(SLAM_START_R, _slam_max_r(), slam_progress)
-			if not slam_hit and _has_player():
-				var wv: Vector2 = _get_wick_pos() - pos
-				if absf(wv.length() - ring_r) <= SLAM_BAND:
-					slam_hit = true
-					var push: Vector2 = wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing)
-					_emit_player_hit(push)
-			if _is_lured() and _get_lantern_pos().distance_to(pos) <= ring_r:
-				if Lx.events != null:
-					Lx.events.lantern_struck.emit(_get_lantern_pos())
-			if state_timer <= 0.0:
-				if slam_stage == SlamStage.RING_1 and phase >= 2:
-					slam_stage = SlamStage.ECHO_PAUSE
-					state_timer = _scaled_tell(ECHO_PAUSE_TIME, false, attack_damage)
-					slam_progress = 0.0
-					slam_hit = false
-					_emit_sfx("clockwork_chime")
-				else:
-					_finish_slam_into_recover()
-		SlamStage.ECHO_PAUSE:
-			state_timer -= dt
-			if state_timer <= 0.0:
-				slam_stage = SlamStage.RING_2
-				state_timer = SLAM_FIRE_TIME
-				slam_progress = 0.0
-				slam_hit = false
-				_resonance_pulse_t = 0.65
-				_fire_tone_bolts()
-				_boss_impact(0.18, 82.0, 86.0)
-				_emit_sfx("bell_slam_fire")
-		_:
-			_finish_slam_into_recover()
-
-
-func _finish_slam_into_recover() -> void:
-	slam_attack = false
-	slam_stage = SlamStage.NONE
-	slam_progress = 0.0
-	state = State.RECOVER
-	state_timer = maxf(MIN_RECOVER_TIME, SLAM_RECOVER_TIME)
-	last_recover_duration = state_timer
-	slam_cd = SLAM_CD_P2 if phase >= 2 else SLAM_CD_P1
-
-
-func _swing_tell_base() -> float:
-	return 0.45 if phase >= 2 else tell_time
-
-
-func _lunge_tell_base() -> float:
-	return 0.50 if phase >= 2 else lunge_tell_time
-
-
-func _post_recover_cooldown() -> float:
-	return 0.72 if phase >= 2 else 0.90
 
 
 func _body_color() -> Color:
@@ -316,53 +395,41 @@ func _shield_color() -> Color:
 	return PAL["sky"] as Color
 
 
-func _draw_extra(off: Vector2) -> void:
+func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
-	# P2 Arena Change: Belfry Resonance Floor etched around home!
-	if phase >= 2 and state != State.DEAD:
+	# P2 Arena Change: Belfry Resonance Floor rings etched around home
+	if phase >= 2 and boss_state != BossState.DEATH:
 		var hc: Vector2 = (home - pos).round()
 		var col_f: Color = PAL["coral"] as Color if slam_tone == "war" else PAL["gold"] as Color
-		var a_f: float = 0.34 if _resonance_pulse_t > 0.0 else 0.16
+		var a_f: float = 0.36 if _resonance_pulse_t > 0.0 else 0.18
 		draw_arc(hc, 64.0, 0.0, TAU, 36, Color(col_f, a_f), 1.4)
 		draw_arc(hc, 96.0, 0.0, TAU, 44, Color(PAL["gold"] as Color, a_f * 0.7), 1.0)
-	if _patterns != null:
-		_patterns.draw_patterns(self, pos)
+
+	# Armour glint when bolts chip outside punish windows
+	if _armour_glint_t > 0.0 and boss_state != BossState.DEATH:
+		var ga: float = clampf(_armour_glint_t / 0.22, 0.0, 1.0)
+		draw_arc(c, body_radius + 4.5, _armour_glint_ang - 0.75, _armour_glint_ang + 0.75, 10, Color(PAL["cream"] as Color, ga), 2.0)
 
 	var is_war: bool = slam_tone == "war"
 	var c_outer: Color = (PAL["coral"] if is_war else PAL["apricot"]) as Color
 	var c_mid: Color = (PAL["rose"] if is_war else PAL["gold"]) as Color
 	var max_r: float = _slam_max_r()
 
-	if slam_attack and state == State.TELL:
-		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		for ti: int in range(12):
-			var a0: float = float(ti) * (TAU / 12.0)
-			draw_arc(c, max_r, a0, a0 + 0.24, 3, c_outer, 1.2)
-		var r: float = lerpf(max_r, SLAM_START_R + 6.0, prog)
-		var pulse: float = 1.0 if LxHudFx.flash_reduced() else (1.0 + 0.6 * sin(anim_t * 18.0))
-		var hot: bool = state_timer <= 0.14
-		draw_arc(c, r + pulse, 0.0, TAU, 28, (PAL["gold"] if hot else c_outer) as Color, 1.3)
-		draw_arc(c, r, 0.0, TAU, 28, (PAL["cream"] if hot else c_mid) as Color, 2.0 if hot else 1.8)
-	elif slam_attack and state == State.COMMIT:
+	if boss_state == BossState.COMMIT and active_attack_id == "tone_slam":
 		if slam_stage == SlamStage.ECHO_PAUSE:
-			var p_den: float = _scaled_tell(ECHO_PAUSE_TIME, false, attack_damage)
-			var p_u: float = 1.0 - clampf(state_timer / maxf(p_den, 0.05), 0.0, 1.0)
+			var p_den: float = ECHO_PAUSE_TIME * get_tell_scale()
+			var p_u: float = 1.0 - clampf(_slam_stage_t / maxf(p_den, 0.05), 0.0, 1.0)
 			LxBossTelegraphFx.draw_ground_danger_ring(self, c, max_r, p_u, anim_t, "coral" if is_war else "gold", "cream")
-			# Pulsing bell-counter halo indicating Echo Slam can be cancelled!
 			draw_arc(c, body_radius + 10.0, 0.0, TAU, 20, PAL["ice"] as Color, 1.6)
-		else:
-			var ring_r: float = lerpf(SLAM_START_R, max_r, slam_progress)
+		elif slam_stage == SlamStage.RING_1 or slam_stage == SlamStage.RING_2:
+			var ring_r: float = lerpf(SLAM_START_R, max_r, _slam_progress)
 			draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, c_outer, 2.2)
 			draw_arc(c, ring_r, 0.0, TAU, 36, c_mid, 3.4)
 			draw_arc(c, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, PAL["cream"] as Color, 1.4)
-	elif _roaring:
-		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
+	elif boss_state == BossState.PHASE_SHIFT:
+		var rp: float = 1.0 - clampf(state_timer / maxf(phase_shift_duration, 0.05), 0.0, 1.0)
 		var rr: float = body_radius + 10.0 + rp * 16.0
 		draw_arc(c, rr + 2.5, 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
 		draw_arc(c, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)
 	if _dusk_slow_t > 0.0:
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)
-
-
-func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.08, 1.38, 0.36)
+		draw_arc(c, body_radius + 5.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)

@@ -8,7 +8,7 @@ extends LxBossBase
 ## all 80 rescued Moths form a golden safety halo around the rim!
 
 const MOTH_RING_COUNT: int = 80
-const ERASE_RESTORE_S: float = 7.5
+const ERASE_RESTORE_S: float = 6.5
 
 var _erased_patches: Array[Dictionary] = [] # {tiles: Array[Vector2i], orig: Array[String], ttl: float}
 var _moth_sparks: Array[Dictionary] = [] # {pos: Vector2, angle: float, rad: float, alive: bool}
@@ -45,84 +45,80 @@ func _init() -> void:
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.60, 0.25]) # P1 Quadrants -> P2 Radial Slices + 3 Moth-Sparks -> P3 80-Moth Safety Halo!
+	configure_phases([0.60, 0.28]) # P1 Quadrants -> P2 Radial Slices + 3 Moth-Sparks -> P3 80-Moth Safety Halo!
 
-	# Attack 1: Tile Erasure Wave (0.75s chalk-crack tell -> erases interior floor patches temporarily!)
+	# Attack 1: Tile Erasure Wave (0.75s chalk-crack tell -> erases outer-quadrant floor patches temporarily!)
 	register_attack("tile_erasure_wave", {
-		"weight": 1.35, "tell": 0.75, "commit": 0.34, "recover": 1.15, "cooldown": 1.8,
+		"weight": 1.35, "tell": 0.75, "commit": 0.34, "recover": 1.25, "cooldown": 2.0,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var rects: Array[Rect2i] = _pick_erasure_rects(tgt)
 			for tr: Rect2i in rects:
 				var wr := Rect2(float(tr.position.x) * 16.0, float(tr.position.y) * 16.0, float(tr.size.x) * 16.0, float(tr.size.y) * 16.0)
 				var captured_tr: Rect2i = tr
-				ground.warn_rect(wr, last_tell_duration, 1.0, "plum", "cream", 0.0, func(_d: Dictionary) -> void:
+				ground.warn_rect(wr, last_tell_duration, 0.5, "plum", "cream", 0.0, func(_d: Dictionary) -> void:
 					_apply_temp_erasure(captured_tr, ERASE_RESTORE_S))
 			# Also pressure Wick's current spot with an aimed eclipse ring
-			ground.warn_ring(clamp_to_arena(tgt), 23.0, last_tell_duration + 0.06, 1.0, "wine", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 19.0, last_tell_duration + 0.06, 0.5, "wine", "gold")
 			stage.play_sfx("tile_erase", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aa: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 124.0, aa + 0.60, 0.78, {"color": "ice", "source": "erasure_wave"})
-			stage.shake(0.24)
+			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 114.0, aa + 0.60, 0.85, {"color": "ice", "source": "erasure_wave"})
+			stage.shake(0.22)
 			stage.play_sfx("tile_erase", pos),
 	})
 
-	# Attack 2: Primordial Corona (8 rotating black-gold spokes + aimed corona fan)
+	# Attack 2: Primordial Corona (rotating black-gold spokes + aimed corona fan)
 	register_attack("primordial_corona", {
-		"weight": 1.25, "tell": 0.56, "commit": 0.45, "recover": 1.20, "cooldown": 1.4,
+		"weight": 1.25, "tell": 0.58, "commit": 0.42, "recover": 1.25, "cooldown": 1.6,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_corona_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
 			facing = _corona_ang
 			var spokes: int = 4 if phase == 1 else 6
 			for k: int in range(spokes):
 				var dv: Vector2 = Vector2.from_angle(_corona_ang + float(k) * (TAU / float(spokes)))
-				ground.warn_lane(pos, clamp_to_arena(pos + dv * 172.0), 8.0, last_tell_duration, 0.0, "gold", "cream")
+				ground.warn_lane(pos, clamp_to_arena(pos + dv * 170.0), 8.0, last_tell_duration, 0.0, "gold", "cream")
 			stage.play_sfx("beam_charge", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d1: Vector2 = Vector2.from_angle(_corona_ang)
-			var d2: Vector2 = d1.rotated(PI * 0.5)
-			patterns.emit_chain_lightning([clamp_to_arena(pos - d1 * 165.0), pos, clamp_to_arena(pos + d1 * 165.0)], 0.46, 8.5, 0.30, 1.0)
-			if phase >= 2:
-				patterns.emit_chain_lightning([clamp_to_arena(pos - d2 * 165.0), pos, clamp_to_arena(pos + d2 * 165.0)], 0.52, 8.5, 0.30, 1.0)
+			patterns.emit_chain_lightning([clamp_to_arena(pos - d1 * 165.0), pos, clamp_to_arena(pos + d1 * 165.0)], 0.48, 8.0, 0.28, 0.5)
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else d1
-			patterns.emit_fan(pos, aim, 5 if phase >= 2 else 3, 0.78, 146.0, {"color": "gold", "source": "corona_flare"})
-			patterns.emit_spiral(pos, 4, 122.0, _corona_ang, 0.38, 2, 0.14, {"color": "coral", "source": "corona_spoke"})
-			stage.shake(0.22)
+			patterns.emit_fan(pos, aim, 3 if phase < 3 else 5, 0.72, 132.0, {"color": "gold", "source": "corona_flare"})
+			patterns.emit_spiral(pos, 3, 112.0, _corona_ang, 0.36, 1 if phase == 1 else 2, 0.16, {"color": "coral", "source": "corona_spoke"})
+			stage.shake(0.20)
 			stage.play_sfx("beam_fire", pos),
 	})
 
 	# Attack 3: Spark Snatch (pulls hung lantern inward, launches boomerangs & spawns rippable Moth-Spark!)
 	register_attack("spark_snatch", {
-		"weight": 1.20, "tell": 0.54, "commit": 0.38, "recover": 1.30, "cooldown": 1.5,
+		"weight": 1.20, "tell": 0.54, "commit": 0.38, "recover": 1.30, "cooldown": 1.6,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			ground.warn_ring(pos, 52.0, last_tell_duration, 0.0, "gold", "ice")
-			patterns.emit_rain(ground, [clamp_to_arena(tgt), clamp_to_arena(tgt.lerp(pos, 0.35))], last_tell_duration + 0.04, 21.0, 1.0, "plum", "gold")
+			ground.warn_ring(pos, 48.0, last_tell_duration, 0.0, "gold", "ice")
+			patterns.emit_rain(ground, [clamp_to_arena(tgt)], last_tell_duration + 0.04, 19.0, 0.5, "plum", "gold")
 			stage.play_sfx("hush_pulse", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-			patterns.emit_boomerang(pos, aim.rotated(0.36), 148.0, 0.66, 0.85, {"color": "gold", "source": "snatch_arc"})
-			patterns.emit_boomerang(pos, aim.rotated(-0.36), 148.0, 0.66, -0.85, {"color": "ice", "source": "snatch_arc"})
+			patterns.emit_boomerang(pos, aim.rotated(0.36), 134.0, 0.64, 0.85, {"color": "gold", "source": "snatch_arc"})
+			patterns.emit_boomerang(pos, aim.rotated(-0.36), 134.0, 0.64, -0.85, {"color": "ice", "source": "snatch_arc"})
 			_pull_hung_lantern()
 			if _live_spark_count() < (3 if phase >= 2 else 1):
 				_spawn_moth_spark(aim.angle() + 0.7, 46.0)
-			stage.shake(0.16)
+			stage.shake(0.15)
 			stage.play_sfx("moth_spark_rip", pos),
 	})
 
 	# Attack 4 (P2 & P3): Abyssal Eclipse (shrinking safe-zone inversion + expanding obsidian square!)
 	register_attack("abyssal_eclipse", {
-		"phases": [2, 3], "weight": 2.05, "tell": 0.62, "commit": 0.44, "recover": 1.40, "cooldown": 1.5,
+		"phases": [2, 3], "weight": 1.25, "tell": 0.64, "commit": 0.42, "recover": 1.40, "cooldown": 2.4,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
-			var to_c: Vector2 = (c - tgt).normalized() if tgt.distance_to(c) > 4.0 else Vector2.RIGHT
-			var s1: Vector2 = clamp_to_arena(tgt + to_c * 38.0)
-			var s2: Vector2 = clamp_to_arena(c + (c - s1).limit_length(54.0))
-			ground.warn_safe_inversion(arena_rect, [s1, s2], 28.0, last_tell_duration + 0.14, 0.28, 1.0, "gold", "plum")
+			var s1: Vector2 = clamp_to_arena(c + (tgt - c).limit_length(48.0))
+			var s2: Vector2 = clamp_to_arena(c - (s1 - c))
+			ground.warn_safe_inversion(arena_rect, [s1, s2], 38.0, last_tell_duration + 0.14, 0.24, 0.5, "gold", "plum")
 			stage.play_sfx("bell_toll_heavy", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_expanding_square(pos, 3, 114.0, anim_t, 1, {"color": "cream" if phase >= 3 else "gold", "source": "abyssal_eclipse"})
+			patterns.emit_expanding_square(pos, 3, 106.0, anim_t, 1, {"color": "cream" if phase >= 3 else "gold", "source": "abyssal_eclipse"})
 			stage.light_burst(pos, 108.0, 1.5, 0.38)
-			stage.shake(0.24)
+			stage.shake(0.22)
 			stage.play_sfx("sunflare_burst", pos),
 	})
 
@@ -225,19 +221,18 @@ func _pick_erasure_rects(tgt: Vector2) -> Array[Rect2i]:
 	var w_t: int = int(tgt.x / 16.0)
 	var h_t: int = int(tgt.y / 16.0)
 	var cands: Array[Rect2i] = [
-		Rect2i(maxi(3, cx_t - 5), maxi(2, cy_t - 3), 2, 1),
-		Rect2i(cx_t + 3, maxi(2, cy_t - 3), 2, 1),
-		Rect2i(maxi(3, cx_t - 5), cy_t + 2, 2, 1),
-		Rect2i(cx_t + 3, cy_t + 2, 2, 1),
+		Rect2i(maxi(2, cx_t - 6), maxi(2, cy_t - 3), 1, 1),
+		Rect2i(cx_t + 5, maxi(2, cy_t - 3), 1, 1),
+		Rect2i(maxi(2, cx_t - 6), cy_t + 3, 1, 1),
+		Rect2i(cx_t + 5, cy_t + 3, 1, 1),
 	]
 	var out: Array[Rect2i] = []
 	for r: Rect2i in cands:
-		# Keep outer rim & center walkable; avoid erasing tile directly on boss center
+		# Keep boss center & main orbit ring cleanly navigable; carve outer-quadrant void wells!
 		if r.grow(1).has_point(Vector2i(cx_t, cy_t)):
 			continue
 		if out.size() < (2 if phase < 3 else 3):
-			# Prefer quadrants near Wick so erasure matters without trapping
-			if out.is_empty() or r.position.distance_to(Vector2i(w_t, h_t)) <= 8.0 or phase >= 2:
+			if out.is_empty() or r.position.distance_to(Vector2i(w_t, h_t)) <= 10.0 or phase >= 2:
 				out.append(r)
 	if out.is_empty():
 		out.append(cands[0])

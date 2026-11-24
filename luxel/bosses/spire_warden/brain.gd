@@ -1,137 +1,271 @@
 class_name LxSpireWardenBoss
-extends LxMoonshadeBrain
-## Mirror Spire mini-boss (Island 7, spire_r6): MOONSHADE WARDEN (Upgraded to Epic Bible 4.5).
-## 2 phases, HP 15.0, prismatic mirror-buckler 2.2 (cracked by refracted Blue Bolts or Moon-Mirror Pedestal).
-## P1: Prismatic Spear Lunge (0.56s / rec 1.15s) + Lunar Arc (0.48s).
-## P2 (<=55% HP): Flips arena to BLACK while leaving a solid Silver Blink-Ghost executing
-##   crossing spear lanes (0.54s tell) that keeps swinging 0.50s after he stops (horror beat!).
-##   Banking Blue off a transformer hits BOTH bodies for instant buckler shatter + 1.8s stagger!
-##   Flipping a moon_pool back to Silver also erases the Silver Blink-Ghost.
+extends LxBossBase
+## Mirror Spire Mini-Boss #1 (Island 7, spire_r6): MOONSHADE WARDEN migrated onto LxBossBase.
+## Preserves spire_warden sprite, boss_id = "moonshade_warden", prismatic mirror-buckler,
+## Moon-Mirror Pedestal synergy, and Island 7 Bible 4.5 upgrades:
+## - Prismatic buckler + lunar plate armour outside punish windows (yellow bolts chip with rose-ice glint).
+## - Banking a Blue Bolt (SOURCE_PRISM / is_blue) shatters BOTH buckler and Silver Blink-Ghost for 1.80s stagger!
+## - P2 (<= 55% HP): Flips arena to BLACK while leaving a solid Silver Blink-Ghost executing
+##   crossing spear lanes + 0.50s horror after-swing, carves obsidian reflection pits, and raises crystal pillars.
+## - Flipping a moon_pool back to Silver erases the Silver Blink-Ghost cleanly.
 
-const SPEAR_TELL_P1: float = 0.56
-const SPEAR_TELL_P2: float = 0.48
-const SPEAR_TELL_P2_CROSS: float = 0.54
-const SPEAR_COMMIT_TIME: float = 0.24
+signal shield_broken(enemy: LxEnemyBrain, at_pos: Vector2)
+signal shield_reformed(enemy: LxEnemyBrain, at_pos: Vector2)
+
+const FRONT_GUARD_HALF: float = 1.08
+const SPEAR_COMMIT_TIME: float = 0.26
 const MIRROR_COMMIT_TIME: float = 0.22
-const SPEAR_RANGE: float = 96.0
-const SPEAR_HALF_W: float = 11.0
-const SPEAR_LUNGE_SPEED: float = 250.0
+const SPEAR_RANGE: float = 104.0
+const SPEAR_LUNGE_SPEED: float = 248.0
 const SPEAR_ARC_R: float = 38.0
 const SPEAR_HALF_ARC: float = 1.05
-const MIRROR_RANGE: float = 88.0
+const MIRROR_RANGE: float = 96.0
 const MIRROR_HALF_W: float = 12.0
-const BLINK_DIST: float = 26.0
-const SPEAR_RECOVER_P1: float = 1.15
-const SPEAR_RECOVER_P2: float = 0.98
-const SPEAR_CD_P1: float = 3.4
-const SPEAR_CD_P2: float = 2.3
+const BLINK_DIST: float = 28.0
 const GUARD_CRACK_STAGGER_P1: float = 1.35
 const GUARD_CRACK_STAGGER_P2: float = 1.80
 const GUARD_CRACK_MULT: float = 1.45
-const PHASE2_ROAR_TIME: float = 0.58
 const GHOST_HORROR_LINGER: float = 0.50
 
-var spear_attack: bool = false
-var spear_cd: float = 1.4
-var spear_elapsed: float = 0.0
+var shield_max: float = 3.0
+var shield_hp: float = 3.0
+var shield_gone_duration: float = 4.6
+var shield_gone_t: float = 0.0
+
 var spear_dir: Vector2 = Vector2.RIGHT
-var spear_hit: bool = false
 var mirror_pos: Vector2 = Vector2.ZERO
 var mirror_dir: Vector2 = Vector2.RIGHT
-var mirror_fired: bool = false
-var mirror_hit: bool = false
-var swings_since_spear: int = 0
+var feint_done: bool = false
+var feint_side: float = 1.0
+var _spear_hit: bool = false
+var _mirror_fired: bool = false
+var _mirror_hit: bool = false
 var guard_cracked_t: float = 0.0
 var shimmer_t: float = 0.0
-var _roaring: bool = false
+var _armour_glint_t: float = 0.0
+var _armour_glint_ang: float = 0.0
 
-# Epic Bible 4.5 P2 upgrades: Silver Blink-Ghost + Black World flip + 0.5s horror after-swing
 var silver_ghost_active: bool = false
 var silver_ghost_linger_t: float = 0.0
 var _p2_flipped_black: bool = false
 var _ghost_respawn_cd: float = 0.0
+var _prev_world_face: String = "silver"
 
 
 func _init() -> void:
 	super._init()
-	kind = "spire_warden"; boss_id = "moonshade_warden"; island_id = 7; is_boss = true; variant = VARIANT_WARDEN
-	max_hp = 15.0; hp = 15.0; shield_max = 2.2; shield_hp = 2.2; shield_gone_duration = 4.6
-	body_radius = 6.5; routine_speed = 40.0; leash_radius = 175.0; notice_radius = 142.0
-	reach = 38.0; lunge_reach = 98.0; swing_r = 30.0; swing_arc = 1.20
-	tell_time = 0.48; lunge_tell_time = 0.54; recover_time = 1.12; give_up_time = 1.8; shard_drop = 16
+	kind = "spire_warden"
+	boss_id = "moonshade_warden"
+	boss_name_key = "MINIBOSS_7"
+	island_id = 7
+	is_miniboss = true
+	reward_heart = "none"
+	music_cue = "island7_boss_p1"
+	music_p2_cue = "island7_boss_p2"
+	max_hp = 152.0
+	hp = 152.0
+	body_radius = 7.5
+	move_speed = 44.0
+	stagger_threshold = 20.0
+	stagger_duration = 1.75
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.28
+	intro_duration = 0.45
+	phase_shift_duration = 0.62
+	death_duration = 1.8
+	shard_drop = 16
 
 
-func _configure_variant_defaults() -> void:
-	variant = VARIANT_WARDEN; body_radius = 6.5; routine_speed = 40.0
-	shield_max = 2.2; tell_time = 0.48; recover_time = 1.12
-
-
-func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
-	var forced: Dictionary = spec.duplicate()
-	forced["variant"] = VARIANT_WARDEN
-	forced["kind"] = "spire_warden"
-	super.setup(forced, p_director, p_world)
-	max_hp = maxf(15.0, max_hp); hp = max_hp
-	variant = VARIANT_WARDEN; kind = "spire_warden"; is_boss = true
+func _configure_boss(spec: Dictionary) -> void:
+	# Override legacy spire_r6.json max_hp=7.5 with tuned Epic LxBossBase HP
+	var base_hp: float = 152.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	max_hp = base_hp
+	hp = base_hp
+	kind = "spire_warden"
 	boss_id = str(spec.get("boss_id", "moonshade_warden"))
 	island_id = int(spec.get("island_id", 7))
-	spear_attack = false; spear_cd = 1.4; spear_elapsed = 0.0; spear_hit = false
-	spear_dir = Vector2.from_angle(facing); mirror_pos = pos; mirror_dir = spear_dir
-	mirror_fired = false; mirror_hit = false; swings_since_spear = 0
-	guard_cracked_t = 0.0; shimmer_t = 0.0; _roaring = false
-	silver_ghost_active = false; silver_ghost_linger_t = 0.0
-	_p2_flipped_black = false; _ghost_respawn_cd = 0.0
+	configure_phases([0.55])
+
+	# Attack 1: Lunar Arc — prismatic halberd sweep + sky/ice crescent fan
+	register_attack("lunar_arc", {
+		"weight": 1.25, "tell": 0.48, "commit": 0.28, "recover": 1.05, "cooldown": 1.3,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			spear_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = spear_dir.angle()
+			ground.warn_sector(pos, facing - 1.15, facing + 1.15, 48.0, last_tell_duration, 1.0, "sky", "ice")
+			ground.warn_lane(pos, clamp_to_arena(pos + spear_dir * 165.0), 9.0, last_tell_duration, 0.0, "rose", "ice")
+			stage.play_sfx("moonshade_feint", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			var cnt: int = 5 if phase >= 2 else 4
+			patterns.emit_fan(pos, spear_dir, cnt, 0.78, 144.0 if phase >= 2 else 130.0, {"color": "ice", "source": "spire_lunar_arc", "reflectable": true})
+			stage.shake(0.14)
+			stage.play_sfx("warden_swing", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			move_boss(spear_dir * 74.0 * dt, false),
+	})
+
+	# Attack 2: Prismatic Spear Lunge — lateral blink-feint + lunge + P2 Silver Blink-Ghost lane & 0.50s horror linger!
+	register_attack("prismatic_spear_lunge", {
+		"weight": 1.35, "tell": 0.56, "commit": 0.48, "recover": 1.08, "cooldown": 1.5,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			feint_done = false
+			feint_side = -feint_side
+			mirror_pos = pos
+			spear_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = spear_dir.angle()
+			mirror_dir = spear_dir
+			_spear_hit = false
+			_mirror_fired = false
+			_mirror_hit = false
+			ground.warn_lane(pos, clamp_to_arena(pos + spear_dir * SPEAR_RANGE), 11.0, last_tell_duration, 0.0, "coral", "gold")
+			stage.play_sfx("harbinger_wave_tell", pos),
+		"on_tell": func(_b: LxBossBase, tgt: Vector2, dt: float, _prog: float) -> void:
+			if phase >= 2 and not feint_done and state_timer <= last_tell_duration * 0.62:
+				feint_done = true
+				mirror_pos = pos
+				_do_lateral_feint(tgt, BLINK_DIST)
+				mirror_dir = (tgt - mirror_pos).normalized() if tgt.distance_to(mirror_pos) > 1.0 else spear_dir
+				if silver_ghost_active or _is_spire_black():
+					ground.warn_lane(mirror_pos, clamp_to_arena(mirror_pos + mirror_dir * MIRROR_RANGE), MIRROR_HALF_W, maxf(0.45, state_timer + SPEAR_COMMIT_TIME), 0.0, "sky", "ice")
+			if state_timer > 0.16:
+				_face_point(tgt, 4.2, dt)
+				spear_dir = Vector2.from_angle(facing)
+				if tgt.distance_to(mirror_pos) > 1.0:
+					mirror_dir = (tgt - mirror_pos).normalized(),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			var has_ghost: bool = phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black())
+			state_timer = (SPEAR_COMMIT_TIME + MIRROR_COMMIT_TIME) if has_ghost else SPEAR_COMMIT_TIME
+			_spear_hit = false
+			_mirror_fired = false
+			_mirror_hit = false
+			spear_dir = Vector2.from_angle(facing)
+			patterns.emit_fan(pos, spear_dir, 3, 0.42, 146.0, {"color": "sky", "source": "spire_spear_tip", "reflectable": true})
+			LxDamageFx.boss_impact(pos, 0.16, 76.0, 80.0, 82.0, 1.38, 0.34, "ice")
+			stage.play_sfx("warden_swing", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, el: float) -> void:
+			_step_spear_commit(dt, el),
+		"on_recover": func(_b: LxBossBase, _dt: float) -> void:
+			pass,
+	})
+
+	# Attack 3: Mirror Shard Barrage — rains lunar crystal rings on Wick & corners + gap-ring (anti-safe-spot!)
+	register_attack("mirror_shard_barrage", {
+		"weight": 1.15, "tell": 0.52, "commit": 0.32, "recover": 1.10, "cooldown": 1.6,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			spear_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			var spots: Array[Vector2] = _perimeter_targets(tgt, 4 if phase >= 2 else 3)
+			patterns.emit_rain(ground, spots, last_tell_duration, 22.0, 1.0, "sky", "ice")
+			stage.play_sfx("mirror_ping", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			var a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			patterns.emit_gap_ring(pos, 8 if phase >= 2 else 6, 134.0, a + PI * 0.42, 0.76, {"color": "ice", "source": "spire_shard_ring", "reflectable": true})
+			stage.shake(0.14)
+			stage.play_sfx("lens_reveal", pos),
+	})
+
+	# Attack 4 (P2): Cross-World Blink — Silver Blink-Ghost & Black Warden fire crossing spear lanes + boomerangs!
+	register_attack("cross_world_blink", {
+		"phases": [2], "weight": 2.30, "tell": 0.54, "commit": 0.44, "recover": 1.12, "cooldown": 1.2,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			feint_side = -feint_side
+			mirror_pos = pos
+			_do_lateral_feint(tgt, 42.0)
+			spear_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			mirror_dir = (tgt - mirror_pos).normalized() if tgt.distance_to(mirror_pos) > 1.0 else -spear_dir
+			facing = spear_dir.angle()
+			ground.warn_lane(pos, clamp_to_arena(pos + spear_dir * 160.0), 10.0, last_tell_duration, 0.0, "rose", "gold")
+			ground.warn_lane(mirror_pos, clamp_to_arena(mirror_pos + mirror_dir * 160.0), 10.0, last_tell_duration, 0.0, "sky", "ice")
+			stage.play_sfx("moonshade_blink", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			patterns.emit_fan(pos, spear_dir, 4, 0.56, 148.0, {"color": "rose", "source": "spire_cross_black", "reflectable": true})
+			patterns.emit_boomerang(pos, spear_dir, 140.0, 0.62, 0.55, {"color": "sky", "source": "spire_boomerang", "reflectable": true})
+			if silver_ghost_active or _is_spire_black():
+				patterns.emit_fan(mirror_pos, mirror_dir, 3, 0.48, 142.0, {"color": "ice", "source": "spire_cross_silver", "reflectable": true})
+				silver_ghost_linger_t = GHOST_HORROR_LINGER
+			stage.shake(0.18)
+			stage.play_sfx("lens_reveal", pos),
+	})
 
 
-func take_hit(hit: LxHit) -> int:
-	if state == State.DEAD or hit == null: return HitResult.GLANCED
-	if _roaring:
-		_emit_enemy_hit(hit, HitResult.GLANCED)
-		return HitResult.GLANCED
-	var h: Dictionary = _read_hit(hit)
-	var is_blue_hit: bool = hit.is_blue() or str(h["source"]) == LxHit.SOURCE_PRISM
-	if is_blue_hit and (_has_active_shield() or silver_ghost_active):
-		var rel: Vector2 = (h["origin"] as Vector2) - pos
-		var shattered_both: bool = silver_ghost_active
-		shield_hp = 0.0; shield_gone_t = shield_gone_duration
-		silver_ghost_active = false; silver_ghost_linger_t = 0.0; _ghost_respawn_cd = 6.0
-		var stag_dur: float = GUARD_CRACK_STAGGER_P2 if (phase >= 2 or shattered_both) else GUARD_CRACK_STAGGER_P1
-		guard_cracked_t = stag_dur
-		wary = true; spear_attack = false; lunge_attack = false; is_counter_attack = false
-		hp -= float(h["damage"]) * (GUARD_CRACK_MULT + (0.25 if shattered_both else 0.0))
-		flash_t = 0.20
-		if rel.length() > 0.01: knock = -rel.normalized() * 72.0
-		shield_broken.emit(self, pos)
-		_boss_impact(0.20, 82.0, 86.0)
-		_emit_sfx("warden_shield_break"); _emit_sfx("lens_reveal")
-		if shattered_both:
-			_emit_sfx("glass_shatter")
-		if hp <= 0.001:
-			opened_kill = true; _die(hit); return HitResult.KILLED
-		if not _check_phase_transition():
-			_release_token(); state = State.STAGGER; state_timer = stag_dur
-		_emit_enemy_hit(hit, HitResult.OPENED)
-		return HitResult.OPENED
-	var hp_before: float = hp
-	var res: int = super.take_hit(hit)
-	if is_alive() and guard_cracked_t > 0.0 and not is_blue_hit and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		var dealt: float = maxf(0.0, hp_before - hp)
-		if dealt > 0.001:
-			hp -= dealt * (GUARD_CRACK_MULT - 1.0)
-			if hp <= 0.001:
-				opened_kill = true; _die(hit); return HitResult.KILLED
-	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		_check_phase_transition()
-	return res
+func _on_reset_encounter() -> void:
+	shield_hp = shield_max
+	shield_gone_t = 0.0
+	feint_done = false
+	_spear_hit = false
+	_mirror_fired = false
+	_mirror_hit = false
+	guard_cracked_t = 0.0
+	shimmer_t = 0.0
+	_armour_glint_t = 0.0
+	silver_ghost_active = false
+	silver_ghost_linger_t = 0.0
+	_ghost_respawn_cd = 0.0
+	mirror_pos = home
+	if _p2_flipped_black:
+		_p2_flipped_black = false
+		_set_spire_face(_prev_world_face)
+	_prev_world_face = "black" if _is_spire_black() else "silver"
 
 
-func _is_hit_invulnerable() -> bool: return _roaring
-func _on_damaged_alive(_hit: LxHit) -> bool: return _check_phase_transition()
-func _swing_tell_base() -> float: return 0.42 if phase >= 2 else tell_time
-func _lunge_tell_base() -> float: return 0.48 if phase >= 2 else lunge_tell_time
-func _post_recover_cooldown() -> float: return 0.68 if phase >= 2 else 0.88
-func _body_color() -> Color: return (LxPalette.PAL["sky"] if phase >= 2 else LxPalette.PAL["deep"]) as Color
-func _shield_color() -> Color: return (LxPalette.PAL["rose"] if phase >= 2 else LxPalette.PAL["ice"]) as Color
+func _on_attack_recover_start(attack_id: String) -> void:
+	if attack_id == "prismatic_spear_lunge" and phase >= 2 and silver_ghost_active:
+		silver_ghost_linger_t = GHOST_HORROR_LINGER
+
+
+func _on_boss_tick(dt: float, _target: Vector2) -> void:
+	guard_cracked_t = maxf(0.0, guard_cracked_t - dt)
+	shimmer_t = maxf(0.0, shimmer_t - dt)
+	silver_ghost_linger_t = maxf(0.0, silver_ghost_linger_t - dt)
+	_armour_glint_t = maxf(0.0, _armour_glint_t - dt)
+	if shield_gone_t > 0.0:
+		shield_gone_t = maxf(0.0, shield_gone_t - dt)
+		if shield_gone_t <= 0.0:
+			shield_hp = shield_max
+			shield_reformed.emit(self, pos)
+			stage.play_sfx("warden_shield_reform", pos)
+	if phase >= 2:
+		if silver_ghost_active and _p2_flipped_black and Lx.vars != null and not _is_spire_black():
+			silver_ghost_active = false
+			silver_ghost_linger_t = 0.0
+			_p2_flipped_black = false
+			_ghost_respawn_cd = 6.5
+			stage.play_sfx("shield_shatter", pos)
+		elif not silver_ghost_active and _ghost_respawn_cd > 0.0:
+			_ghost_respawn_cd = maxf(0.0, _ghost_respawn_cd - dt)
+			if _ghost_respawn_cd <= 0.0 and _is_spire_black():
+				silver_ghost_active = true
+				mirror_pos = pos
+
+
+func _step_spear_commit(dt: float, el: float) -> void:
+	if el <= SPEAR_COMMIT_TIME:
+		move_boss(spear_dir * (SPEAR_LUNGE_SPEED * (1.12 if phase >= 2 else 1.0)) * dt, false)
+		if not _spear_hit and _has_player():
+			var wv: Vector2 = _get_wick_pos() - pos
+			if wv.length() <= SPEAR_ARC_R and (wv.length() < 0.01 or absf(angle_difference(spear_dir.angle(), wv.angle())) <= SPEAR_HALF_ARC):
+				_spear_hit = true
+				emit_boss_damage(spear_dir, 1.0, "spire_spear", pos, true)
+		if _is_lantern_out() and _get_lantern_pos().distance_to(pos) <= SPEAR_ARC_R and Lx.events != null:
+			Lx.events.lantern_struck.emit(_get_lantern_pos())
+	elif phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
+		if not _mirror_fired:
+			_mirror_fired = true
+			LxDamageFx.boss_impact(mirror_pos, 0.14, 72.0, 76.0, 68.0, 1.32, 0.28, "ice")
+			stage.play_sfx("lens_reveal", mirror_pos)
+		var m_prog: float = clampf((el - SPEAR_COMMIT_TIME) / MIRROR_COMMIT_TIME, 0.0, 1.0)
+		var m_pt: Vector2 = mirror_pos + mirror_dir * lerpf(8.0, MIRROR_RANGE, m_prog)
+		if not _mirror_hit and _has_player() and m_pt.distance_to(_get_wick_pos()) <= MIRROR_HALF_W:
+			_mirror_hit = true
+			emit_boss_damage(mirror_dir, 1.0, "spire_ghost_spear", mirror_pos, true)
+		if _is_lantern_out() and m_pt.distance_to(_get_lantern_pos()) <= MIRROR_HALF_W + 2.0 and Lx.events != null:
+			Lx.events.lantern_struck.emit(_get_lantern_pos())
+
+
+func _do_lateral_feint(tgt: Vector2, dist_px: float) -> void:
+	var to_t: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+	var lat: Vector2 = Vector2(-to_t.y, to_t.x) * feint_side
+	move_boss(lat * dist_px, false)
+	stage.play_sfx("moonshade_blink", pos)
 
 
 func _is_spire_black() -> bool:
@@ -140,209 +274,226 @@ func _is_spire_black() -> bool:
 	return Lx.vars.eval("world_face==black", 7, "spire_r6")
 
 
-func _check_phase_transition() -> bool:
-	if phase < 2 and hp <= max_hp * 0.55 and hp > 0.001:
-		phase = 2; wary = false; _roaring = true
-		spear_attack = false; lunge_attack = false; is_counter_attack = false
-		spear_elapsed = 0.0; guard_cracked_t = 0.0; shimmer_t = 0.70
-		shield_gone_t = 0.0; shield_hp = shield_max
-		# Bible 4.5: P2 flips arena BLACK while leaving a solid Silver Blink-Ghost!
-		_p2_flipped_black = true
-		silver_ghost_active = true
-		mirror_pos = pos + Vector2(-24.0, 0.0)
-		mirror_dir = Vector2.from_angle(facing)
-		if LxIsland7Rule.active_rule != null:
-			LxIsland7Rule.active_rule.set_world_face(LxIsland7Rule.SCOPE_SPIRE, "black", true, pos)
-		elif Lx.vars != null:
-			Lx.vars.set_var("dungeon:spire", "world_face", "black")
-		shield_reformed.emit(self, pos)
-		_release_token(); state = State.NOTICE; state_timer = PHASE2_ROAR_TIME; spear_cd = 0.75
-		LxDamageFx.trigger_boss_phase_reset(self, 2)
-		if Lx.events != null: Lx.events.boss_phase_changed.emit(boss_id, 2)
-		_boss_impact(0.26, 94.0, 94.0)
-		_emit_sfx("boss_roar_spire"); _emit_sfx("lens_reveal")
+func _set_spire_face(face_s: String) -> void:
+	if LxIsland7Rule.active_rule != null:
+		LxIsland7Rule.active_rule.set_world_face(LxIsland7Rule.SCOPE_SPIRE, face_s, true, pos)
+	elif Lx.vars != null:
+		Lx.vars.set_var("dungeon:spire", "world_face", face_s)
+
+
+func _has_active_shield() -> bool:
+	return shield_hp > 0.001 and shield_gone_t <= 0.0
+
+
+func _is_hit_invulnerable() -> bool:
+	return boss_state == BossState.PHASE_SHIFT
+
+
+func _wear_shield(amount: float) -> bool:
+	if not _has_active_shield():
+		return false
+	shield_hp = maxf(0.0, shield_hp - maxf(0.0, amount))
+	if shield_hp <= 0.001:
+		shield_hp = 0.0
+		shield_gone_t = shield_gone_duration
+		guard_cracked_t = GUARD_CRACK_STAGGER_P2 if phase >= 2 else GUARD_CRACK_STAGGER_P1
+		shield_broken.emit(self, pos)
+		stage.play_sfx("warden_shield_break", pos)
+		add_stagger(stagger_threshold * 0.85)
 		return true
+	clank_t = 0.14
 	return false
 
 
-func _step_brain(dt: float) -> void:
-	if _roaring and state != State.NOTICE: _roaring = false
-	spear_cd = maxf(0.0, spear_cd - dt)
-	guard_cracked_t = maxf(0.0, guard_cracked_t - dt)
-	shimmer_t = maxf(0.0, shimmer_t - dt)
-	silver_ghost_linger_t = maxf(0.0, silver_ghost_linger_t - dt)
-	if phase >= 2:
-		if silver_ghost_active and _p2_flipped_black and Lx.vars != null and not _is_spire_black():
-			# Flipping a Moon Pool back to Silver erases the Silver Blink-Ghost!
-			silver_ghost_active = false
-			silver_ghost_linger_t = 0.0
-			_p2_flipped_black = false
-			_ghost_respawn_cd = 6.5
-			_emit_sfx("glass_shatter")
-		elif not silver_ghost_active and _ghost_respawn_cd > 0.0:
-			_ghost_respawn_cd = maxf(0.0, _ghost_respawn_cd - dt)
-			if _ghost_respawn_cd <= 0.0 and _is_spire_black():
-				silver_ghost_active = true
-				mirror_pos = pos
-	super._step_brain(dt)
+func take_hit(hit: LxHit) -> int:
+	if boss_state == BossState.DEATH or hit == null:
+		return HitResult.GLANCED
+	if not engaged:
+		if not arena_rect.grow(2.0).has_point(_get_wick_pos()):
+			clank_t = 0.12
+			_emit_enemy_hit(hit, HitResult.GLANCED)
+			return HitResult.GLANCED
+		engage()
+	if boss_state == BossState.INTRO or boss_state == BossState.PHASE_SHIFT:
+		_emit_enemy_hit(hit, HitResult.GLANCED)
+		return HitResult.GLANCED
+	var h: Dictionary = _read_hit(hit)
+	var is_blue_hit: bool = hit.is_blue() or str(h["source"]) == LxHit.SOURCE_PRISM
+	if is_blue_hit and (_has_active_shield() or silver_ghost_active):
+		var rel: Vector2 = (h["origin"] as Vector2) - pos
+		var shattered_both: bool = silver_ghost_active
+		shield_hp = 0.0
+		shield_gone_t = shield_gone_duration
+		silver_ghost_active = false
+		silver_ghost_linger_t = 0.0
+		_ghost_respawn_cd = 6.0
+		var stag_dur: float = GUARD_CRACK_STAGGER_P2 if (phase >= 2 or shattered_both) else GUARD_CRACK_STAGGER_P1
+		guard_cracked_t = stag_dur
+		hp = maxf(0.0, hp - float(h["damage"]) * (GUARD_CRACK_MULT + (0.25 if shattered_both else 0.0)))
+		flash_t = 0.20
+		if rel.length() > 0.01:
+			knock = -rel.normalized() * 64.0
+		shield_broken.emit(self, pos)
+		LxDamageFx.boss_impact(pos, 0.20, 82.0, 86.0, 88.0, 1.38, 0.36, "ice")
+		stage.play_sfx("warden_shield_break", pos)
+		stage.play_sfx("lens_reveal", pos)
+		if shattered_both:
+			stage.play_sfx("shield_shatter", pos)
+		if hp <= 0.001:
+			opened_kill = true
+			_begin_death(hit)
+			return HitResult.KILLED
+		if not _check_phase_thresholds():
+			_release_token()
+			active_attack_id = ""
+			stagger_meter = 0.0
+			_set_boss_state(BossState.STAGGER, stag_dur)
+			staggered.emit(stag_dur)
+		_emit_enemy_hit(hit, HitResult.OPENED)
+		return HitResult.OPENED
+	return super.take_hit(hit)
 
 
-func _on_stagger_end(target_pos: Vector2) -> void:
-	spear_attack = false; feint_done = false
-	super._on_stagger_end(target_pos)
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var orig: Vector2 = h["origin"] as Vector2
+	var rel: Vector2 = orig - pos
+	var is_pierce: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_SUNFLARE] or bool(h["pierce"])
+	var is_heavy: bool = is_pierce or bool(h["stagger"]) or bool(h["cracks_armour"]) or float(h["shield_wear"]) >= 1.2 or src in [LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_ZIP, LxHit.SOURCE_DASH]
+
+	if _has_active_shield() and (is_heavy or float(h["shield_wear"]) >= 1.0):
+		_wear_shield(maxf(float(h["shield_wear"]), 1.25))
+
+	if is_pierce:
+		return dmg * (1.20 if (is_punishable() or guard_cracked_t > 0.0) else 0.95)
+	if is_punishable() or guard_cracked_t > 0.0:
+		return dmg * (1.15 if guard_cracked_t > 0.0 else 1.0)
+
+	# Outside punish windows: prismatic buckler & lunar plate armour chip yellow bolts with glint!
+	var ang_diff: float = absf(angle_difference(facing, rel.angle())) if rel.length() > 1.0 else 0.0
+	var is_front: bool = rel.length() > 1.0 and ang_diff < FRONT_GUARD_HALF
+	_armour_glint_t = 0.22
+	_armour_glint_ang = rel.angle() if rel.length() > 1.0 else facing
+	if _has_active_shield() and is_front:
+		clank_t = 0.14
+		if src == LxHit.SOURCE_BOLT:
+			_wear_shield(0.20)
+			stage.play_sfx("warden_clank", pos)
+			return dmg * 0.18
+		return dmg * 0.44
+	clank_t = 0.10
+	if src == LxHit.SOURCE_BOLT:
+		stage.play_sfx("mirror_ping", pos)
+		return dmg * 0.28
+	return dmg * 0.50
 
 
-func _step_notice(dt: float, target_pos: Vector2) -> void:
-	var to_t: Vector2 = target_pos - pos
-	if to_t.length() > 0.01: _turn_toward(to_t.angle(), TURN_PATROL * 1.5, dt)
-	state_timer -= dt
-	if state_timer <= 0.0:
-		_roaring = false; state = State.POSITION; step_clock = 0.0; cooldown = 0.35
+func _on_phase_enter(new_phase: int) -> void:
+	if new_phase == 2:
+		shimmer_t = 0.70
+		guard_cracked_t = 0.0
+		shield_gone_t = 0.0
+		shield_hp = shield_max
+		_prev_world_face = "black" if _is_spire_black() else "silver"
+		_p2_flipped_black = true
+		silver_ghost_active = true
+		mirror_pos = clamp_to_arena(pos + Vector2(-28.0, 0.0))
+		mirror_dir = Vector2.from_angle(facing)
+		_set_spire_face("black")
+		shield_reformed.emit(self, pos)
+		_carve_safe_pit(0.42, 0.24)
+		_carve_safe_pit(0.62, 0.76)
+		var c: Vector2 = arena_rect.get_center()
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-56.0, 26.0)), 4.0, "spire_prism_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(56.0, -26.0)), 4.0, "spire_prism_e")
+		stage.darkness_pulse(0.64, 1.1)
+		stage.shake(0.26)
+		stage.play_sfx("boss_roar", pos)
+		stage.play_sfx("lens_reveal", pos)
 
 
-func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
-	if spear_cd <= 0.0 and (phase >= 2 or swings_since_spear >= 1) and dist < SPEAR_RANGE + 16.0 and _claim_token():
-		spear_attack = true; lunge_attack = false; is_counter_attack = false
-		feint_done = false; feint_side = -feint_side; state = State.TELL
-		var base_tell: float = (SPEAR_TELL_P2_CROSS if silver_ghost_active else SPEAR_TELL_P2) if phase >= 2 else SPEAR_TELL_P1
-		last_tell_duration = _scaled_tell(base_tell, false, attack_damage)
-		state_timer = last_tell_duration; mirror_pos = pos
-		var to_t: Vector2 = target_pos - pos
-		if to_t.length() > 0.01: facing = to_t.angle()
-		spear_dir = Vector2.from_angle(facing); mirror_dir = spear_dir
-		spear_elapsed = 0.0; spear_hit = false; mirror_fired = false; mirror_hit = false; swings_since_spear = 0
-		_emit_attack_started(); _emit_sfx("harbinger_wave_tell")
-		return true
-	spear_attack = false
-	return super._try_start_attack(target_pos, dist)
-
-
-func _step_tell(dt: float, target_pos: Vector2) -> void:
-	if not spear_attack:
-		super._step_tell(dt, target_pos); return
-	if phase >= 2 and not feint_done and state_timer <= last_tell_duration * 0.62:
-		feint_done = true; mirror_pos = pos
-		_do_lateral_feint(target_pos, BLINK_DIST)
-	if state_timer > 0.16:
-		var to_m: Vector2 = target_pos - pos
-		if to_m.length() > 0.01:
-			_turn_toward(to_m.angle(), 4.2, dt); spear_dir = Vector2.from_angle(facing)
-		var to_r: Vector2 = target_pos - mirror_pos
-		if to_r.length() > 0.01: mirror_dir = to_r.normalized()
-	state_timer -= dt
-	if state_timer <= 0.0: _enter_commit()
-
-
-func _enter_commit() -> void:
-	if spear_attack:
-		state = State.COMMIT
-		var has_ghost_lane: bool = phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black())
-		state_timer = (SPEAR_COMMIT_TIME + MIRROR_COMMIT_TIME) if has_ghost_lane else SPEAR_COMMIT_TIME
-		spear_elapsed = 0.0; spear_hit = false; mirror_fired = false; mirror_hit = false
-		spear_dir = Vector2.from_angle(facing)
-		_boss_impact(0.16, 76.0, 80.0); _emit_sfx("warden_swing")
+func _carve_safe_pit(fx: float, fy: float) -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx):
 		return
-	swings_since_spear += 1
-	super._enter_commit()
+	var wp := Vector2(lerpf(arena_rect.position.x, arena_rect.end.x, fx), lerpf(arena_rect.position.y, arena_rect.end.y, fy))
+	var tx: int = int(wp.x / 16.0)
+	var ty: int = int(wp.y / 16.0)
+	var center_p := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
+	if world_ctx.has_method("tile_at") and str(world_ctx.call("tile_at", center_p)) in ["ground", "path"]:
+		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), "pit")
 
 
-func _step_commit(dt: float) -> void:
-	if not spear_attack:
-		super._step_commit(dt); return
-	spear_elapsed += dt
-	state_timer = maxf(0.0, state_timer - dt)
-	if spear_elapsed <= SPEAR_COMMIT_TIME:
-		_move_step(spear_dir * (SPEAR_LUNGE_SPEED * (1.14 if phase >= 2 else 1.0)) * dt, false)
-		if not spear_hit and _has_player():
-			var wv: Vector2 = _get_wick_pos() - pos
-			if wv.length() <= SPEAR_ARC_R and (wv.length() < 0.01 or absf(angle_difference(spear_dir.angle(), wv.angle())) <= SPEAR_HALF_ARC):
-				spear_hit = true; _emit_player_hit(spear_dir)
-		if _is_lured() and _get_lantern_pos().distance_to(pos) <= SPEAR_ARC_R and Lx.events != null:
-			Lx.events.lantern_struck.emit(_get_lantern_pos())
-	elif phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
-		if not mirror_fired:
-			mirror_fired = true
-			LxDamageFx.boss_impact(mirror_pos, 0.14, 72.0, 76.0, 68.0, 1.32, 0.28, "ice")
-			_emit_sfx("lens_reveal")
-		var m_prog: float = clampf((spear_elapsed - SPEAR_COMMIT_TIME) / MIRROR_COMMIT_TIME, 0.0, 1.0)
-		var m_pt: Vector2 = mirror_pos + mirror_dir * lerpf(8.0, MIRROR_RANGE, m_prog)
-		if not mirror_hit and _has_player() and m_pt.distance_to(_get_wick_pos()) <= MIRROR_HALF_W:
-			mirror_hit = true; _emit_player_hit(mirror_dir)
-		if _is_lured() and m_pt.distance_to(_get_lantern_pos()) <= MIRROR_HALF_W + 2.0 and Lx.events != null:
-			Lx.events.lantern_struck.emit(_get_lantern_pos())
-	if state_timer <= 0.0:
-		if phase >= 2 and silver_ghost_active:
-			# Horror beat: Silver afterimage keeps swinging 0.50s after Warden stops!
-			silver_ghost_linger_t = GHOST_HORROR_LINGER
-		spear_attack = false; spear_elapsed = 0.0; state = State.RECOVER
-		state_timer = maxf(MIN_RECOVER_TIME, SPEAR_RECOVER_P2 if phase >= 2 else SPEAR_RECOVER_P1)
-		last_recover_duration = state_timer
-		spear_cd = SPEAR_CD_P2 if phase >= 2 else SPEAR_CD_P1
+func _perimeter_targets(tgt: Vector2, count: int) -> Array[Vector2]:
+	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var inset: Rect2 = arena_rect.grow(-18.0)
+	var corners: Array[Vector2] = [
+		inset.position, Vector2(inset.end.x, inset.position.y),
+		Vector2(inset.position.x, inset.end.y), inset.end,
+	]
+	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
+	for i: int in range(mini(count - 1, corners.size())):
+		out.append(clamp_to_arena(corners[i]))
+	return out
 
 
-func _draw_extra(off: Vector2) -> void:
-	if not spear_attack: super._draw_extra(off)
-	var pal: Dictionary = LxPalette.PAL
+func _body_color() -> Color:
+	return (PAL["sky"] if phase >= 2 else PAL["deep"]) as Color
+
+
+func _shield_color() -> Color:
+	return (PAL["rose"] if phase >= 2 else PAL["ice"]) as Color
+
+
+func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
-	var fred: bool = LxHudFx.flash_reduced()
+	var fred: bool = is_flash_reduced()
 
-	# Bible 4.5: P2 rose/ice world-split rim around Warden
-	if phase >= 2:
-		draw_arc(c, body_radius + 3.2, -PI * 0.5, PI * 0.5, 14, pal["rose"] as Color, 1.4)
-		draw_arc(c, body_radius + 3.2, PI * 0.5, PI * 1.5, 14, pal["ice"] as Color, 1.4)
+	# Bible 4.5: P2 rose/ice world-split rim
+	if phase >= 2 and boss_state != BossState.DEATH:
+		draw_arc(c, body_radius + 3.2, -PI * 0.5, PI * 0.5, 14, PAL["rose"] as Color, 1.4)
+		draw_arc(c, body_radius + 3.2, PI * 0.5, PI * 1.5, 14, PAL["ice"] as Color, 1.4)
+
+	# Armour glint when yellow bolts chip outside punish windows
+	if _armour_glint_t > 0.0 and boss_state != BossState.DEATH:
+		var ga: float = clampf(_armour_glint_t / 0.22, 0.0, 1.0)
+		draw_arc(c, body_radius + 5.0, _armour_glint_ang - 0.80, _armour_glint_ang + 0.80, 10, Color(PAL["ice"] as Color, ga), 2.0)
 
 	# Horror beat: Silver Blink-Ghost keeps swinging 0.50s after Warden stops!
 	if silver_ghost_linger_t > 0.0 and silver_ghost_active:
 		var mp_l: Vector2 = (mirror_pos - pos + off).round()
 		var lu: float = 1.0 - clampf(silver_ghost_linger_t / GHOST_HORROR_LINGER, 0.0, 1.0)
 		var sw_a: float = mirror_dir.angle() + sin(lu * TAU) * 1.1
-		draw_circle(mp_l, body_radius * 0.72, Color(pal["ice"] as Color, 0.45 * (1.0 - lu)))
-		draw_arc(mp_l, body_radius + 2.0, sw_a - 0.85, sw_a + 0.85, 12, Color(pal["cream"] as Color, 0.80 * (1.0 - lu)), 1.6)
-		draw_line(mp_l, (mp_l + Vector2.from_angle(sw_a) * 24.0).round(), Color(pal["ice"] as Color, 0.75 * (1.0 - lu)), 1.6)
+		draw_circle(mp_l, body_radius * 0.72, Color(PAL["ice"] as Color, 0.45 * (1.0 - lu)))
+		draw_arc(mp_l, body_radius + 2.0, sw_a - 0.85, sw_a + 0.85, 12, Color(PAL["cream"] as Color, 0.80 * (1.0 - lu)), 1.6)
+		draw_line(mp_l, (mp_l + Vector2.from_angle(sw_a) * 24.0).round(), Color(PAL["ice"] as Color, 0.75 * (1.0 - lu)), 1.6)
 
 	if guard_cracked_t > 0.0:
-		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, pal["sky"] as Color, 1.8)
-		draw_arc(c, body_radius + 2.5, 0.0, TAU, 14, pal["cream"] as Color, 1.0)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, PAL["sky"] as Color, 1.8)
+		draw_arc(c, body_radius + 2.5, 0.0, TAU, 14, PAL["cream"] as Color, 1.0)
 	if shimmer_t > 0.0:
 		var sp: float = 1.0 - clampf(shimmer_t / 0.70, 0.0, 1.0)
-		draw_arc(c, body_radius + 6.0 + sp * 14.0, 0.0, TAU, 24, pal["rose"] as Color, 1.8 if fred else 2.2)
-		draw_arc(c, body_radius + 3.0 + sp * 9.0, 0.0, TAU, 20, pal["ice"] as Color, 1.2)
-	if spear_attack and state == State.TELL:
-		var urg: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + spear_dir * SPEAR_RANGE, SPEAR_HALF_W, urg, anim_t, "coral", "gold")
-		if phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
-			var mp: Vector2 = (mirror_pos - pos + off).round()
-			LxBossTelegraphFx.draw_ground_danger_lane(self, mp, mp + mirror_dir * MIRROR_RANGE, MIRROR_HALF_W, urg, anim_t, "sky", "ice")
-			draw_line(mp, c, pal["rose"] as Color, 1.2)
-			draw_circle(mp, body_radius * 0.68, pal["deep"] as Color)
-			draw_arc(mp, body_radius + 1.2, 0.0, TAU, 14, pal["ice"] as Color, 1.4)
-			_draw_lunar_glint(mp, 3.5)
-	elif spear_attack and state == State.COMMIT:
+		draw_arc(c, body_radius + 6.0 + sp * 14.0, 0.0, TAU, 24, PAL["rose"] as Color, 1.8 if fred else 2.2)
+		draw_arc(c, body_radius + 3.0 + sp * 9.0, 0.0, TAU, 20, PAL["ice"] as Color, 1.2)
+
+	if boss_state == BossState.COMMIT and active_attack_id == "prismatic_spear_lunge":
 		var mp2: Vector2 = (mirror_pos - pos + off).round()
-		if spear_elapsed <= SPEAR_COMMIT_TIME:
-			var p1: float = clampf(spear_elapsed / SPEAR_COMMIT_TIME, 0.0, 1.0)
+		if _commit_elapsed <= SPEAR_COMMIT_TIME:
+			var p1: float = clampf(_commit_elapsed / SPEAR_COMMIT_TIME, 0.0, 1.0)
 			var a0: float = spear_dir.angle() - SPEAR_HALF_ARC * 0.90
 			var a1: float = lerpf(a0 + 0.30, spear_dir.angle() + SPEAR_HALF_ARC * 0.90, p1)
-			draw_arc(c, SPEAR_ARC_R, a0, a1, 16, pal["blue"] as Color, 3.0)
-			draw_arc(c, SPEAR_ARC_R - 2.2, a0, a1, 14, pal["sky"] as Color, 2.0)
-			draw_arc(c, SPEAR_ARC_R - 3.8, a0 + 0.1, a1, 12, pal["cream"] as Color, 1.1)
-			if phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
-				draw_arc(mp2, body_radius + 2.5, 0.0, TAU, 14, pal["ice"] as Color, 1.5)
-				draw_line(mp2, (mp2 + mirror_dir * MIRROR_RANGE).round(), pal["sky"] as Color, 1.2)
+			draw_arc(c, SPEAR_ARC_R, a0, a1, 16, PAL["blue"] as Color, 3.0)
+			draw_arc(c, SPEAR_ARC_R - 2.2, a0, a1, 14, PAL["sky"] as Color, 2.0)
+			draw_arc(c, SPEAR_ARC_R - 3.8, a0 + 0.1, a1, 12, PAL["cream"] as Color, 1.1)
 		elif phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
-			var p2: float = clampf((spear_elapsed - SPEAR_COMMIT_TIME) / MIRROR_COMMIT_TIME, 0.0, 1.0)
+			var p2: float = clampf((_commit_elapsed - SPEAR_COMMIT_TIME) / MIRROR_COMMIT_TIME, 0.0, 1.0)
 			var tip: Vector2 = (mp2 + mirror_dir * lerpf(8.0, MIRROR_RANGE, p2)).round()
-			draw_line(mp2, tip, pal["sky"] as Color, 2.6)
-			draw_line(mp2, tip, pal["ice"] as Color, 1.6)
-			draw_arc(tip, 11.0, mirror_dir.angle() - 1.05, mirror_dir.angle() + 1.05, 12, pal["cream"] as Color, 1.8)
-			_draw_lunar_glint(tip, 4.0)
-	elif _roaring:
-		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
+			draw_line(mp2, tip, PAL["sky"] as Color, 2.6)
+			draw_line(mp2, tip, PAL["ice"] as Color, 1.6)
+			draw_arc(tip, 11.0, mirror_dir.angle() - 1.05, mirror_dir.angle() + 1.05, 12, PAL["cream"] as Color, 1.8)
+	elif boss_state == BossState.PHASE_SHIFT:
+		var rp: float = 1.0 - clampf(state_timer / maxf(phase_shift_duration, 0.05), 0.0, 1.0)
 		var r1: float = body_radius + 10.0 + rp * 18.0
-		draw_arc(c, r1, 0.0, TAU, 28, pal["rose"] as Color, 2.2)
-		draw_arc(c, maxf(4.0, r1 - 4.0), 0.0, TAU, 24, pal["ice"] as Color, 1.6)
-		draw_arc(c, maxf(3.0, r1 - 6.5), 0.0, TAU, 20, pal["cream"] as Color, 1.0)
-
-
-func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.10, 1.38, 0.38, "ice")
+		draw_arc(c, r1, 0.0, TAU, 28, PAL["rose"] as Color, 2.2)
+		draw_arc(c, maxf(4.0, r1 - 4.0), 0.0, TAU, 24, PAL["ice"] as Color, 1.6)
+		draw_arc(c, maxf(3.0, r1 - 6.5), 0.0, TAU, 20, PAL["cream"] as Color, 1.0)

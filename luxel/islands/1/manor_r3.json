@@ -1,0 +1,434 @@
+{
+  "name_key": "ISL1_MN_PANTRY",
+  "spawn": [
+    392,
+    104
+  ],
+  "zones": [
+    {
+      "id": "mn_pantry",
+      "name_key": "ISL1_MN_PANTRY",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_east",
+      "rect": [
+        432,
+        80,
+        16,
+        48
+      ],
+      "to_region": "manor_r2",
+      "to_spawn": [
+        56,
+        104
+      ]
+    },
+    {
+      "id": "exit_r3_chute",
+      "rect": [
+        64,
+        272,
+        32,
+        16
+      ],
+      "to_region": "manor_r1",
+      "to_spawn": [
+        80,
+        312
+      ],
+      "one_way": true,
+      "locked_door_id": "gate_r3_safe"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_east",
+      "kind": "room_anchor",
+      "pos": [
+        392,
+        104
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r3_dusk",
+      "kind": "bell",
+      "pos": [
+        264,
+        104
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 210
+      }
+    },
+    {
+      "id": "hook_r3_pillar",
+      "kind": "lantern_hook",
+      "pos": [
+        232,
+        232
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "gate_r3_safe",
+      "kind": "shadow_gate",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "clue_r3_butler",
+      "kind": "lore_stone",
+      "pos": [
+        56,
+        72
+      ],
+      "props": {
+        "string_id": "ISL1_CLUE_BUTLER",
+        "icon": "scroll"
+      }
+    },
+    {
+      "id": "manor_key_1",
+      "kind": "wick_key",
+      "pos": [
+        104,
+        144
+      ],
+      "props": {
+        "dungeon_id": "manor",
+        "key_kind": "wick_key",
+        "flag_id": "manor_key_1"
+      }
+    },
+    {
+      "id": "ow_r3_chute",
+      "kind": "one_way_gate",
+      "pos": [
+        80,
+        224
+      ],
+      "props": {
+        "dir": "s",
+        "size": [
+          32,
+          12
+        ]
+      }
+    },
+    {
+      "id": "lamp_r3_entry_n",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        64
+      ],
+      "props": {
+        "zone": "mn_pantry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_entry_s",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        144
+      ],
+      "props": {
+        "zone": "mn_pantry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        224
+      ],
+      "props": {
+        "zone": "mn_pantry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_sw_chute",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        192
+      ],
+      "props": {
+        "zone": "mn_pantry",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "butler_r3_pantry",
+      "kind": "lamp_butler",
+      "pos": [
+        320,
+        200
+      ],
+      "zone": "mn_pantry",
+      "route": [
+        [
+          272,
+          200
+        ],
+        [
+          360,
+          200
+        ]
+      ]
+    },
+    {
+      "id": "eye_r3_safe",
+      "kind": "portrait_eye",
+      "pos": [
+        216,
+        40
+      ],
+      "zone": "mn_pantry",
+      "facing": 2.35
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        40,
+        56,
+        80,
+        144
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        56,
+        160,
+        40
+      ],
+      "style": "brass"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        296,
+        168
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        184,
+        240
+      ],
+      "radius": 20,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "gilded_portrait_a",
+      "pos": [
+        56,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        104,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "mahogany_table",
+      "pos": [
+        344,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tea_trolley",
+      "pos": [
+        288,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        360,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        112,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        128,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r3_clue_butler",
+      "on": "signal:clue_r3_butler",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "clue_butler"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Freeze the Portrait Eye guarding the Pantry Safe with Dusk, hang your lantern behind the cellar pillar to open the Shadow Gate, claim Clue #1 plus Key 1, and drop down the chute to the Foyer.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Portrait Eyes guard Shadow Gates; Dusk freezes their gaze while hiding your lantern behind a wall opens the vault.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "clue_butler+manor_key_1",
+    "why": "Delivers Whodunit Clue #1 (Butler's Alibi), Key 1 for the Choir Parlor, and Cycle #1 back to Foyer.",
+    "exit": "exit_r3_chute",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          104
+        ],
+        "target": "bell_r3_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 40.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "hook_r3_pillar"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "gate_r3_safe",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "clue_r3_butler"
+      },
+      {
+        "op": "interact",
+        "target": "manor_key_1"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect",
+        "flag": "clue_butler"
+      },
+      {
+        "op": "expect",
+        "flag": "manor_key_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_chute"
+      }
+    ]
+  },
+  "id": "manor_r3",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

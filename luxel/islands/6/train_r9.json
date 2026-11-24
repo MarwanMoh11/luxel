@@ -1,0 +1,777 @@
+{
+  "id": "train_r9",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_TR_R9",
+  "spawn": [
+    40,
+    168
+  ],
+  "zones": [
+    {
+      "id": "tr_r9",
+      "name_key": "ISL6_TR_R9",
+      "rect": [
+        0,
+        0,
+        544,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "train_r8",
+      "to_spawn": [
+        432,
+        136
+      ]
+    },
+    {
+      "id": "exit_r9_north",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_region": "train_r4",
+      "to_spawn": [
+        384,
+        264
+      ],
+      "requires_flags": [
+        "train_tender_short"
+      ],
+      "locked_door_id": "door_r9_north_short"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r9_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_r9_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        72,
+        104
+      ],
+      "props": {
+        "mode": "skip"
+      }
+    },
+    {
+      "id": "anvil_r9_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        152,
+        232
+      ],
+      "props": {
+        "mode": "lance"
+      }
+    },
+    {
+      "id": "grate_r9_bank",
+      "kind": "grate",
+      "pos": [
+        168,
+        40
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "coupler_r9_bank",
+      "kind": "car_coupler",
+      "pos": [
+        200,
+        80
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_ids": [
+          "gate_r9_stage12",
+          "gate_r9_master"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "cart_r9_shuttle",
+      "kind": "vehicle_cart",
+      "pos": [
+        240,
+        160
+      ],
+      "props": {
+        "rail": [
+          [
+            240,
+            160
+          ],
+          [
+            320,
+            160
+          ]
+        ],
+        "speed": 96.0,
+        "loop": false,
+        "auto": false,
+        "persist": true
+      }
+    },
+    {
+      "id": "coupler_r9_pin",
+      "kind": "car_coupler",
+      "pos": [
+        320,
+        88
+      ],
+      "props": {
+        "lock_type": "pin",
+        "needs_hook": true,
+        "hook_vault": false,
+        "target_ids": [
+          "gate_r9_stage12",
+          "gate_r9_master"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_r9_stage12",
+      "kind": "logic_gate",
+      "pos": [
+        368,
+        56
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "coupler_r9_bank",
+          "coupler_r9_pin"
+        ],
+        "target_id": "door_r9_arm_shutter",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r9_arm_shutter",
+      "kind": "door",
+      "pos": [
+        408,
+        88
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_r9_stage12"
+        ]
+      }
+    },
+    {
+      "id": "coupler_r9_arm_1",
+      "kind": "car_coupler",
+      "pos": [
+        440,
+        88
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_r9_master",
+        "persist": true
+      }
+    },
+    {
+      "id": "coupler_r9_arm_2",
+      "kind": "car_coupler",
+      "pos": [
+        472,
+        88
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_r9_master",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_r9_master",
+      "kind": "logic_gate",
+      "pos": [
+        488,
+        144
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "coupler_r9_bank",
+          "coupler_r9_pin",
+          "coupler_r9_arm_1",
+          "coupler_r9_arm_2"
+        ],
+        "target_ids": [
+          "mover_r9_tender",
+          "door_r9_safe",
+          "door_r9_north_short"
+        ],
+        "sets_flag": "train_tender_short",
+        "persist": true
+      }
+    },
+    {
+      "id": "mover_r9_tender",
+      "kind": "mover_wall",
+      "pos": [
+        296,
+        256
+      ],
+      "props": {
+        "size": [
+          48,
+          24
+        ],
+        "path": [
+          [
+            296,
+            256
+          ],
+          [
+            192,
+            256
+          ]
+        ],
+        "speed": 96.0,
+        "on_signal": "move",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r9_safe",
+      "kind": "door",
+      "pos": [
+        120,
+        256
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_r9_master"
+        ]
+      }
+    },
+    {
+      "id": "key_r9_boss",
+      "kind": "wick_key",
+      "pos": [
+        64,
+        256
+      ],
+      "props": {
+        "dungeon_id": "ember_express",
+        "key_kind": "keepers_flame",
+        "flag_id": "train_boss_key"
+      }
+    },
+    {
+      "id": "door_r9_north_short",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r9_master"
+        ]
+      }
+    },
+    {
+      "id": "cracked_r9_vent",
+      "kind": "cracked_wall",
+      "pos": [
+        368,
+        280
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "chest_r9_ember",
+      "kind": "chest",
+      "pos": [
+        368,
+        296
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_6_train",
+        "zone": "tr_r9"
+      }
+    },
+    {
+      "id": "lamp_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        144
+      ],
+      "props": {
+        "zone": "tr_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        64
+      ],
+      "props": {
+        "zone": "tr_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        176
+      ],
+      "props": {
+        "zone": "tr_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_safe",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        240
+      ],
+      "props": {
+        "zone": "tr_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        224
+      ],
+      "props": {
+        "zone": "tr_r9",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r9_stoker",
+      "kind": "stoker",
+      "pos": [
+        448,
+        200
+      ],
+      "zone": "tr_r9"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 112,
+      "x1": 156,
+      "style": "slag"
+    },
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 320,
+      "x1": 432,
+      "style": "slag"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        144,
+        240,
+        184,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        24,
+        224,
+        80,
+        64
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        368,
+        264
+      ],
+      "radius": 20,
+      "glow": true
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        440,
+        216
+      ],
+      "radius": 24,
+      "style": "soot"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express",
+      "prop": "emergency_brake_wheel",
+      "pos": [
+        240,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "steam_pipe_column",
+      "pos": [
+        504,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        48,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "coal_bucket_crate",
+      "pos": [
+        480,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        136,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "brass_coupling_link",
+      "pos": [
+        184,
+        228
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "tr_r9_short_msg",
+      "on": "signal:gate_r9_master",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "train_tender_short"
+        },
+        {
+          "shake": 0.18
+        },
+        {
+          "narrate": {
+            "id": "ISL6_TR_SHORT_TENDER",
+            "style": "narration",
+            "duration": 2.8
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Astonishing 3-Temper Uncoupling Gauntlet: (1) Skip-bank the rear brake coupler behind the baffle, (2) ride the lava shuttle cart and Hook-pull the mid hitch pin to drop the armor shutter, (3) pierce twin armoured pins in ONE Lance shot so the Tender slams open the Boiler Safe (Boss Key) and Cycle 3 Express Shortcut to r4!",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Full synthesis of Skip + Shuttle Cart + Coupler Hook + Lance piercing in strict visual order",
+    "decisions": 10,
+    "expert_s": 60,
+    "reward": "train_boss_key+ember_6_train+train_tender_short",
+    "why": "Climax puzzle of The Ember Express rewarding the Locomotive Boss Key, secret Ember Piece, and Cycle 3 hub loop.",
+    "exit": "exit_r9_north",
+    "start": {
+      "flags": [
+        "brakeman_defeated",
+        "item_coupler_hook",
+        "temper_skip_known",
+        "temper_lance_known"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          72,
+          128
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r9_skip"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          136,
+          80
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          168,
+          16
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "expect",
+        "interactable": "coupler_r9_bank",
+        "prop": "uncoupled",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          212,
+          160
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "mount",
+        "target": "cart_r9_shuttle"
+      },
+      {
+        "op": "shoot",
+        "target": [
+          160,
+          160
+        ],
+        "count": 3,
+        "wait_hit": 0.35
+      },
+      {
+        "op": "wait_phase",
+        "target": "cart_r9_shuttle",
+        "near": [
+          320,
+          160
+        ],
+        "tol": 16.0,
+        "timeout": 8.0
+      },
+      {
+        "op": "throw",
+        "target": "coupler_r9_pin",
+        "hold": 0.4
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r9_arm_shutter",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          400,
+          160
+        ],
+        "count": 3,
+        "wait_hit": 0.35
+      },
+      {
+        "op": "wait_phase",
+        "target": "cart_r9_shuttle",
+        "near": [
+          240,
+          160
+        ],
+        "tol": 18.0,
+        "timeout": 8.0
+      },
+      {
+        "op": "dismount",
+        "to": [
+          208,
+          160
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          212
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r9_lance"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==lance"
+      },
+      {
+        "op": "clear",
+        "timeout": 40.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          376,
+          88
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          472,
+          88
+        ],
+        "wait_hit": 0.85
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r9_safe",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          256
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "key_r9_boss"
+      },
+      {
+        "op": "expect",
+        "flag": "train_boss_key"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_north"
+      }
+    ]
+  }
+}

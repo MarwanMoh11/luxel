@@ -1,0 +1,71 @@
+{
+  "pack_id": "i8_toll",
+  "version": 1,
+  "owner": "D8A",
+  "comment": "Island 8 Minor Dungeon A: The Toll House (11 rooms, 3 internal cycles, theme toll_house). Debug-only on dungeon/regions meta until P8-OW hooks toll_causeway -> toll_r1 and toll_r6 backdoor.",
+  "strings": {
+    "ISL8_D_TOLL": "THE TOLL HOUSE",
+    "ISL8_TOLL_R1": "COUNTING NARTHEX",
+    "ISL8_TOLL_R2": "HEART LEDGER VAULT",
+    "ISL8_TOLL_R3": "CARTOGRAPHY HALL",
+    "ISL8_TOLL_R4": "SIGHTLINE TREASURY",
+    "ISL8_TOLL_R5": "THE AUDIT CHAMBER",
+    "ISL8_TOLL_R6": "OPTICAL WAKE CORRIDOR",
+    "ISL8_TOLL_R7": "THE FLINCHING HALL",
+    "ISL8_TOLL_R8": "THE STILL LEDGER",
+    "ISL8_TOLL_R9": "FOUR-COLOUR MEZZANINE",
+    "ISL8_TOLL_R10": "THE MUTE ORGAN LOFT",
+    "ISL8_TOLL_R11": "TOLLMASTER COUNTER",
+    "ISL8_POW_RECEIPT": "BRASS RECEIPT: THROW STAMPS WEIGHTS 6S!",
+    "ISL8_PROMPT_RECEIPT": "CLAIM BRASS RECEIPT",
+    "ISL8_TOLL_LORE_NARTHEX": "RING THE COUNTER BELL TO OPEN THE WEST.",
+    "ISL8_TOLL_LORE_MEZZ": "GOLD DIAMOND. BLUE SQUARE. ROSE TRIANGLE.",
+    "ISL8_TOLL_LORE_ORGAN": "TWO FOUR ONE THREE. HUSH THE CHOIR FIRST.",
+    "ISL8_TOLL_SHORTCUT": "A TOLL HOUSE SHORTCUT UNLATCHES!",
+    "ISL8_TOLL_CLEARED": "TOLLMASTER FALLS! REDEMPTION RECEIPT WON!"
+  },
+  "interactables": {
+    "toll_receipt_altar": "res://luxel/islands/8/toll/toll_receipt_altar.gd"
+  },
+  "dungeons": [
+    {
+      "id": "toll_house",
+      "name_key": "ISL8_D_TOLL",
+      "island": 8,
+      "entry": "toll_r1",
+      "regions": [
+        "toll_r1",
+        "toll_r2",
+        "toll_r3",
+        "toll_r4",
+        "toll_r5",
+        "toll_r6",
+        "toll_r7",
+        "toll_r8",
+        "toll_r9",
+        "toll_r10",
+        "toll_r11"
+      ],
+      "mini_boss": "chief_auditor",
+      "boss": "tollmaster",
+      "theme": "toll_house",
+      "music": "isl8_tollhouse",
+      "requires_flags": [],
+      "done_flag": "toll_cleared",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "toll_r1": { "name_key": "ISL8_TOLL_R1", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [2, 3], "debug_only": true },
+    "toll_r2": { "name_key": "ISL8_TOLL_R2", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [1, 3], "debug_only": true },
+    "toll_r3": { "name_key": "ISL8_TOLL_R3", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [1, 2], "debug_only": true },
+    "toll_r4": { "name_key": "ISL8_TOLL_R4", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [0, 2], "debug_only": true },
+    "toll_r5": { "name_key": "ISL8_TOLL_R5", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [1, 1], "debug_only": true },
+    "toll_r6": { "name_key": "ISL8_TOLL_R6", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [3, 3], "debug_only": true },
+    "toll_r7": { "name_key": "ISL8_TOLL_R7", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [3, 2], "debug_only": true },
+    "toll_r8": { "name_key": "ISL8_TOLL_R8", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [3, 1], "debug_only": true },
+    "toll_r9": { "name_key": "ISL8_TOLL_R9", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [4, 1], "debug_only": true },
+    "toll_r10": { "name_key": "ISL8_TOLL_R10", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [3, 0], "debug_only": true },
+    "toll_r11": { "name_key": "ISL8_TOLL_R11", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [2, 0], "debug_only": true }
+  }
+}

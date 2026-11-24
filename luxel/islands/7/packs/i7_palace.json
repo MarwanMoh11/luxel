@@ -1,0 +1,79 @@
+{
+  "pack_id": "i7_palace",
+  "owner": "P7-A",
+  "comment": "Island 7 Minor Dungeon A: The Inverted Palace (12 rooms, SILVER/BLACK dual-world layers, 5 cycles). Debug-only on dungeon/regions meta until P7-OW hooks silver_quay -> palace_r1 and black_shoals <-> palace_r6.",
+  "strings": {
+    "ISL7_PL_NAME": "THE INVERTED PALACE",
+    "ISL7_PL_R1": "MIRRORED FOYER",
+    "ISL7_PL_R2": "BASIN OF FALSE BRIDGES",
+    "ISL7_PL_R3": "LOOKING-GLASS GALLERY",
+    "ISL7_PL_R4": "COURTYARD OF SHARDS",
+    "ISL7_PL_R5": "SILVER-TIDE TREASURY",
+    "ISL7_PL_R6": "EAST CLOISTER",
+    "ISL7_PL_R7": "HALF-WORLD STAIRWELL",
+    "ISL7_PL_R8": "VAULT OF TWIN SCALES",
+    "ISL7_PL_R9": "GLASS CONSERVATORY",
+    "ISL7_PL_R10": "DUAL-WORLD BALLROOM",
+    "ISL7_PL_R11": "THE FALSE THRONE",
+    "ISL7_PL_R12": "COURT OF THE GLASS QUEEN",
+    "ISL7_POW_POCKET": "MOON POCKET: CARRY LIGHT ACROSS WORLDS!",
+    "ISL7_PL_PROMPT_POCKET": "CLAIM MOON-GLASS POCKET",
+    "ISL7_PL_PROMPT_CROWN": "CLAIM GOLDEN SCEPTER",
+    "ISL7_PL_FAKE_CROWN": "THE CROWN WAS GLASS! FLIP TO BLACK!",
+    "ISL7_PL_LORE_FOYER": "SILVER LIES. BLACK HOLDS THE TRUE SEAMS.",
+    "ISL7_LORE_QUEEN": "SHE KEPT ONE ROOM WHERE NOTHING AGED.",
+    "ISL7_PL_CHORD": "THE MIRROR CHORD RINGS! BALCONY UNSEALED!",
+    "ISL7_PL_SHORTCUT": "A PALACE SHORTCUT UNSEALS!",
+    "ISL7_PL_CLEARED": "THE GLASS QUEEN FALLS. HALF-LANTERN CLAIMED!"
+  },
+  "interactables": {
+    "palace_moon_pocket_altar": "res://luxel/islands/7/palace/moon_pocket_altar.gd",
+    "palace_false_key": "res://luxel/islands/7/palace/false_key_decoy.gd"
+  },
+  "dungeons": [
+    {
+      "id": "palace",
+      "name_key": "ISL7_PL_NAME",
+      "island": 7,
+      "entry": "palace_r1",
+      "regions": [
+        "palace_r1",
+        "palace_r2",
+        "palace_r3",
+        "palace_r4",
+        "palace_r5",
+        "palace_r6",
+        "palace_r7",
+        "palace_r8",
+        "palace_r9",
+        "palace_r10",
+        "palace_r11",
+        "palace_r12"
+      ],
+      "mini_boss": "silver_tide_mimic",
+      "boss": "queen_in_glass",
+      "theme": "inverted_palace_silver",
+      "music": "isl7_palace",
+      "requires_flags": [],
+      "done_flag": "palace_cleared",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "palace_r1":  { "name_key": "ISL7_PL_R1",  "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [2, 4], "debug_only": true },
+    "palace_r2":  { "name_key": "ISL7_PL_R2",  "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [1, 4], "debug_only": true },
+    "palace_r3":  { "name_key": "ISL7_PL_R3",  "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [1, 3], "debug_only": true },
+    "palace_r4":  { "name_key": "ISL7_PL_R4",  "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [1, 2], "debug_only": true },
+    "palace_r5":  { "name_key": "ISL7_PL_R5",  "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [1, 1], "debug_only": true },
+    "palace_r6":  { "name_key": "ISL7_PL_R6",  "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [3, 4], "debug_only": true },
+    "palace_r7":  { "name_key": "ISL7_PL_R7",  "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [2, 3], "debug_only": true },
+    "palace_r8":  { "name_key": "ISL7_PL_R8",  "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [4, 3], "debug_only": true },
+    "palace_r9":  { "name_key": "ISL7_PL_R9",  "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [3, 2], "debug_only": true },
+    "palace_r10": { "name_key": "ISL7_PL_R10", "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [4, 2], "debug_only": true },
+    "palace_r11": { "name_key": "ISL7_PL_R11", "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [3, 1], "debug_only": true },
+    "palace_r12": { "name_key": "ISL7_PL_R12", "theme": "inverted_palace_silver", "music": "isl7_palace", "dark": true, "map": [2, 1], "debug_only": true }
+  },
+  "sfx": {
+    "palace_chord_chime": { "id": "clockwork_chime", "pitch": 1.38, "db": -0.5 }
+  }
+}

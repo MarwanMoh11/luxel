@@ -15,6 +15,17 @@ const REQUIRED_BEACONS: Array[String] = [
 
 const REGIONS: Array[String] = [
 	"overworld",
+	"bell_yard",
+	"vesper_graveyard",
+	"manor_gardens",
+	"belfry_forecourt",
+	"cliff_foundry",
+	"cave_echo_well",
+	"cave_whisper",
+	"cave_shed",
+	"cave_foundry_trial",
+	"cave_lens_grotto",
+	"superboss_silent",
 	"belfry_r1",
 	"belfry_r2",
 	"belfry_r3",
@@ -24,8 +35,17 @@ const REGIONS: Array[String] = [
 	"belfry_r7",
 ]
 
+const OUTDOOR_RELIT_REGIONS: PackedStringArray = [
+	"bell_yard",
+	"vesper_graveyard",
+	"manor_gardens",
+	"belfry_forecourt",
+	"cliff_foundry",
+]
+
 const TutorialCuesScript := preload("res://luxel/islands/1/tutorial_cues.gd")
 const RuleScript := preload("res://luxel/islands/1/rule.gd")
+const RelitFxScript := preload("res://luxel/islands/1/overworld/ow_relit_fx.gd")
 
 var _events: LxEventBus = null
 var _state: LxGameState = null
@@ -33,6 +53,7 @@ var _attached: bool = false
 var _r4_kills: int = 0
 var _tutorial_cues: Node2D = null
 var _rule: LxIsland1Rule = null
+var _relit_fx: Node2D = null
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:

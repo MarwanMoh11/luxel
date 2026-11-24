@@ -212,7 +212,7 @@ func _rebuild_active_enemies() -> void:
 	if _layers == null: return
 	for e: LxEnemyBrain in _enemies:
 		if e == null or not is_instance_valid(e): continue
-		var eid: String = str(e.get("id")) if e.get("id") != null else ""
+		var eid: String = e.enemy_id if not e.enemy_id.is_empty() else (str(e.get("id")) if e.get("id") != null else "")
 		e.visible = not (not eid.is_empty() and _layers.is_enemy_disabled(eid))
 
 func _redraw_ground() -> void:
@@ -280,10 +280,13 @@ func get_room_anchor() -> Vector2: return _room_anchor_pos if _room_anchor_pos.x
 
 func _is_floor_interactable(item: LxInteractable) -> bool:
 	if item == null: return false
+	if item.has_method("is_floor_toy") and bool(item.call("is_floor_toy")): return true
 	if item.kind in [
 		"blue_portal", "phantom_platform", "floor_switch", "room_anchor", "pressure_plate",
 		"floor_sigil", "scale", "logic_gate", "light_plant", "conveyor", "crumble_floor", "spike_floor",
+		"moon_pool", "star_node", "star_bell_socket", "updraft_vent", "optic_well", "tide_raft",
 	]: return true
+	if item.kind == "star_bell" and (not item.is_solid() or bool(item.props.get("socket", false))): return true
 	if item.kind in ["toggle_block", "tone_door", "shadow_gate"] and not item.is_solid(): return true
 	if item is LxDoor:
 		var d: LxDoor = item as LxDoor
@@ -383,7 +386,7 @@ func check_exit(pos: Vector2) -> Dictionary:
 	return {}
 
 func save_interactables_to_state() -> void:
-	LxRegionRuntime.save_dirty_interactables(_interactables, _inter_defaults)
+	LxRegionRuntime.save_dirty_interactables(_interactables, _inter_defaults, _layers)
 
 func load_interactables_from_state() -> void:
 	if Lx.state == null: return
@@ -408,7 +411,7 @@ func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
 	for it: LxInteractable in _interactables:
 		if it != null:
 			it.tick(dt)
-			if it is LxDoor or it.kind in ["toggle_block", "tone_door", "shadow_gate"]: _sync_interactable_layer(it)
+			if it is LxDoor or it.kind in ["toggle_block", "tone_door", "shadow_gate"] or it.has_method("is_floor_toy"): _sync_interactable_layer(it)
 	LxRegionRuntime.poll_signals(self, _signal_states)
 	if room_script != null and room_script.has_method("tick"): room_script.call("tick", dt)
 	if player_pos.x > -9000.0:

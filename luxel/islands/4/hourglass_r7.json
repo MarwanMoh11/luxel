@@ -1,0 +1,398 @@
+{
+  "id": "hourglass_r7",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R7",
+  "spawn": [
+    224,
+    208
+  ],
+  "zones": [
+    {
+      "id": "hg_r7_walk",
+      "name_key": "ISL4_HG_R7",
+      "rect": [
+        0,
+        0,
+        448,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r7_south",
+      "rect": [
+        208,
+        240,
+        48,
+        16
+      ],
+      "to_region": "hourglass_r6",
+      "to_spawn": [
+        280,
+        56
+      ]
+    },
+    {
+      "id": "exit_hg_r7_north",
+      "rect": [
+        208,
+        0,
+        48,
+        16
+      ],
+      "to_region": "hourglass_r8",
+      "to_spawn": [
+        240,
+        232
+      ],
+      "locked_door_id": "door_hg_r7_north"
+    },
+    {
+      "id": "exit_hg_r7_west",
+      "rect": [
+        0,
+        96,
+        16,
+        48
+      ],
+      "to_region": "hourglass_r4",
+      "to_spawn": [
+        424,
+        136
+      ],
+      "requires_flags": [
+        "hg_cross_shortcut"
+      ],
+      "locked_door_id": "door_hg_r7_west"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r7",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        208
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rose_hg_r7",
+      "kind": "echo_rose",
+      "pos": [
+        264,
+        152
+      ],
+      "props": {
+        "secs": 4.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "sw_hg_r7_short",
+      "kind": "switch_eye",
+      "pos": [
+        104,
+        152
+      ],
+      "props": {
+        "target_id": "door_hg_r7_west",
+        "sets_flag": "hg_cross_shortcut"
+      }
+    },
+    {
+      "id": "door_hg_r7_west",
+      "kind": "door",
+      "pos": [
+        24,
+        120
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "sw_hg_r7_short"
+        ],
+        "persistent": true,
+        "sets_flag": "hg_cross_shortcut"
+      }
+    },
+    {
+      "id": "door_hg_r7_north",
+      "kind": "door",
+      "pos": [
+        232,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "hg_r7_walk",
+        "size": [
+          48,
+          16
+        ],
+        "sets_flag": "hg_r7_cleared"
+      }
+    },
+    {
+      "id": "lamp_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        216
+      ],
+      "props": {
+        "zone": "hg_r7_walk",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        136
+      ],
+      "props": {
+        "zone": "hg_r7_walk",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        56
+      ],
+      "props": {
+        "zone": "hg_r7_walk",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        104
+      ],
+      "props": {
+        "zone": "hg_r7_walk",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "hh_r7_nw",
+      "kind": "hour_heron",
+      "pos": [
+        136,
+        104
+      ],
+      "zone": "hg_r7_walk"
+    },
+    {
+      "id": "pd_r7_mid",
+      "kind": "petal_duelist",
+      "pos": [
+        248,
+        88
+      ],
+      "zone": "hg_r7_walk"
+    },
+    {
+      "id": "hh_r7_e",
+      "kind": "hour_heron",
+      "pos": [
+        360,
+        104
+      ],
+      "zone": "hg_r7_walk"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        112,
+        96,
+        256,
+        64
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        120
+      ],
+      "radius": 32,
+      "style": "clock"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        152,
+        184
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "brass_sundial_pedestal",
+      "pos": [
+        296,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        120,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        360,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        408,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        136,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        280,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "events": [
+    {
+      "id": "hg_r7_short_msg",
+      "on": "signal:sw_hg_r7_short",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "hg_cross_shortcut"
+        },
+        {
+          "narrate": "ISL4_HG_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "T-Cross Pendulum combat arena pairing a parrying Petal Duelist with two metronomic Hour Herons; decoy the Duelist with an Echo Rose, punish Herons on their 1s tick, and unlock the cross-hedge shortcut to r4.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Echo Rose turns Petal Duelist parries away while cover pillars break Hour Heron cardinal lanes.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "hg_r7_cleared+hg_cross_shortcut",
+    "why": "Escalates East Wing combat and closes Cross-Hedge Cycle 2 back to r4.",
+    "exit": "exit_hg_r7_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "rose_hg_r7"
+      },
+      {
+        "op": "clear",
+        "timeout": 60.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          152,
+          152
+        ],
+        "target": "sw_hg_r7_short"
+      },
+      {
+        "op": "expect",
+        "flag": "hg_cross_shortcut"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r7_north"
+      }
+    ]
+  }
+}

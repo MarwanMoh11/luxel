@@ -172,7 +172,7 @@ func _step_puff_attack(dt: float) -> void:
 			_emit_sfx("snuffer_snuff")
 	elif sub_state == SubState.RUN:
 		state = State.COMMIT
-		_move_step(puff_dir * PUFF_SPEED * dt, false)
+		_move_step(puff_dir * PUFF_SPEED * dt, is_flying())
 		var puff_center: Vector2 = pos + puff_dir * 8.0
 		if not puff_hit and _has_player() and puff_center.distance_to(_get_wick_pos()) <= PUFF_HIT_R:
 			puff_hit = true

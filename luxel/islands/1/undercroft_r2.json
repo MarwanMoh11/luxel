@@ -2,7 +2,7 @@
   "name_key": "ISL1_UC_COFFINS",
   "spawn": [
     400,
-    120
+    136
   ],
   "zones": [
     {
@@ -12,7 +12,7 @@
         0,
         0,
         448,
-        288
+        320
       ],
       "dark": true
     }
@@ -22,27 +22,27 @@
       "id": "exit_r2_east",
       "rect": [
         432,
-        96,
+        112,
         16,
         48
       ],
       "to_region": "undercroft_r1",
       "to_spawn": [
         56,
-        184
+        216
       ]
     },
     {
       "id": "exit_r2_west",
       "rect": [
         0,
-        80,
+        96,
         16,
         48
       ],
       "to_region": "undercroft_r3",
       "to_spawn": [
-        424,
+        456,
         152
       ],
       "locked_door_id": "door_r2_west"
@@ -57,8 +57,8 @@
       ],
       "to_region": "undercroft_r7",
       "to_spawn": [
-        56,
-        232
+        48,
+        248
       ],
       "requires_flags": [
         "uc_ossuary_seam"
@@ -72,7 +72,7 @@
       "kind": "room_anchor",
       "pos": [
         400,
-        120
+        136
       ],
       "props": {
         "auto": true
@@ -83,7 +83,7 @@
       "kind": "room_anchor",
       "pos": [
         64,
-        104
+        120
       ],
       "props": {
         "auto": true
@@ -94,7 +94,7 @@
       "kind": "bell",
       "pos": [
         304,
-        120
+        136
       ],
       "props": {
         "tone": "dawn",
@@ -106,7 +106,7 @@
       "kind": "bell",
       "pos": [
         304,
-        176
+        192
       ],
       "props": {
         "tone": "dusk",
@@ -118,7 +118,7 @@
       "kind": "bell",
       "pos": [
         344,
-        248
+        264
       ],
       "props": {
         "tone": "war",
@@ -130,7 +130,7 @@
       "kind": "bell",
       "pos": [
         96,
-        104
+        120
       ],
       "props": {
         "tone": "dawn",
@@ -147,9 +147,9 @@
       ],
       "props": {
         "dir": "s",
-        "slide_tiles": 6.0,
+        "slide_tiles": 7.0,
         "steps": 1,
-        "speed": 120,
+        "speed": 130,
         "size": [
           64,
           36
@@ -171,9 +171,9 @@
       ],
       "props": {
         "dir": "s",
-        "slide_tiles": 6.0,
+        "slide_tiles": 7.0,
         "steps": 1,
-        "speed": 120,
+        "speed": 130,
         "size": [
           64,
           36
@@ -191,7 +191,7 @@
       "kind": "push_block",
       "pos": [
         376,
-        200
+        216
       ],
       "props": {
         "variant": "stone",
@@ -206,7 +206,7 @@
       "kind": "tone_door",
       "pos": [
         312,
-        248
+        264
       ],
       "props": {
         "tone": "war",
@@ -222,7 +222,7 @@
       "kind": "chest",
       "pos": [
         288,
-        256
+        272
       ],
       "props": {
         "reward": "shards",
@@ -234,7 +234,7 @@
       "kind": "tone_door",
       "pos": [
         24,
-        104
+        120
       ],
       "props": {
         "tone": "dawn",
@@ -268,7 +268,7 @@
       "kind": "road_lamp",
       "pos": [
         384,
-        88
+        96
       ],
       "props": {
         "zone": "uc_coffins",
@@ -280,7 +280,7 @@
       "kind": "road_lamp",
       "pos": [
         328,
-        196
+        216
       ],
       "props": {
         "zone": "uc_coffins",
@@ -292,7 +292,7 @@
       "kind": "road_lamp",
       "pos": [
         64,
-        152
+        168
       ],
       "props": {
         "zone": "uc_coffins",
@@ -305,8 +305,8 @@
       "id": "grave_hand_r2",
       "kind": "grave_hand",
       "pos": [
-        120,
-        176
+        128,
+        200
       ],
       "zone": "uc_coffins"
     },
@@ -315,26 +315,17 @@
       "kind": "pew_mimic",
       "pos": [
         408,
-        248
+        264
       ],
       "zone": "uc_coffins"
     }
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        288,
-        104,
-        32,
-        88
-      ]
-    },
-    {
       "kind": "circle",
       "pos": [
         304,
-        120
+        136
       ],
       "radius": 20,
       "style": "ritual"
@@ -343,7 +334,16 @@
       "kind": "cracks",
       "pos": [
         344,
-        248
+        264
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        368,
+        72
       ],
       "radius": 18,
       "glow": false
@@ -351,21 +351,20 @@
     {
       "kind": "stain",
       "pos": [
-        72,
-        216
+        64,
+        192
       ],
-      "radius": 24,
-      "style": "moss"
+      "radius": 22,
+      "style": "soot"
     },
     {
-      "kind": "rug",
-      "rect": [
-        32,
-        92,
-        96,
-        24
+      "kind": "stain",
+      "pos": [
+        344,
+        152
       ],
-      "style": "ornate"
+      "radius": 20,
+      "style": "soot"
     }
   ],
   "scenery": [
@@ -374,7 +373,7 @@
       "prop": "bell_floor_seal",
       "pos": [
         304,
-        120
+        136
       ],
       "layer": "ground",
       "flip_x": false,
@@ -383,33 +382,9 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_candelabra",
-      "pos": [
-        416,
-        76
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_candelabra",
-      "pos": [
-        56,
-        224
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.45
-    },
-    {
-      "sheet": "theme_undercroft",
       "prop": "open_sarcophagus",
       "pos": [
-        360,
+        344,
         56
       ],
       "layer": "sort",
@@ -422,7 +397,7 @@
       "prop": "crypt_coffin",
       "pos": [
         56,
-        176
+        196
       ],
       "layer": "sort",
       "flip_x": false,
@@ -431,10 +406,22 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "chapel_pew",
+      "prop": "crypt_coffin",
       "pos": [
         408,
-        176
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "stone_crypt_pillar",
+      "pos": [
+        288,
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -445,7 +432,7 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_urn",
       "pos": [
-        288,
+        304,
         56
       ],
       "layer": "sort",
@@ -455,27 +442,39 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "tattered_crypt_banner",
+      "prop": "crypt_urn",
       "pos": [
-        104,
-        48
+        112,
+        64
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
-      "phase": 0.2
+      "phase": 0.0
     },
     {
       "sheet": "theme_undercroft",
       "prop": "toll_brazier",
       "pos": [
         408,
-        152
+        176
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        48,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
     }
   ],
   "events": [
@@ -491,14 +490,14 @@
     }
   ],
   "design": {
-    "idea": "Dawn slides twin stone coffins into an abyss bridge while a pushed block shields a Pew Mimic from a War Bell and Dusk hushes a Grave Hand.",
+    "idea": "L-shaped ossuary vault: Dawn slides twin coffins across an 8-tile abyss while a pushed stone baffle shields a Pew Mimic from a War Bell.",
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Tone Coffins respond to Dawn, Dusk hushes Grave Hands, and push blocks occlude Ring Waves.",
     "decisions": 5,
     "expert_s": 45,
     "reward": "open_r3+15sh",
-    "why": "Tomb gallery where all three bell tones and stone acoustic occlusion are introduced safely.",
+    "why": "Dry stone ossuary introducing all three bell tones and acoustic occlusion.",
     "exit": "exit_r2_west",
     "solution": [
       {
@@ -506,14 +505,14 @@
         "target": "blk_r2_baffle",
         "to": [
           376,
-          248
+          264
         ]
       },
       {
         "op": "shoot",
         "from": [
           344,
-          216
+          232
         ],
         "target": "bell_r2_war"
       },
@@ -532,7 +531,7 @@
         "op": "shoot",
         "from": [
           336,
-          120
+          136
         ],
         "target": "bell_r2_dawn"
       },
@@ -541,7 +540,7 @@
         "target": "coffin_r2_w",
         "near": [
           176,
-          176
+          192
         ],
         "tol": 6.0,
         "timeout": 4.0
@@ -550,7 +549,7 @@
         "op": "shoot",
         "from": [
           336,
-          176
+          192
         ],
         "target": "bell_r2_dusk"
       },
@@ -558,14 +557,14 @@
         "op": "goto",
         "to": [
           104,
-          152
+          168
         ]
       },
       {
         "op": "shoot",
         "from": [
           104,
-          136
+          152
         ],
         "target": "bell_r2_relay_w"
       },
@@ -587,7 +586,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "undercroft",
-  "music": "island1_dungeon",
+  "music": "isl1_undercroft",
   "ambience": [
     "night_breeze",
     "sanctum_bells"

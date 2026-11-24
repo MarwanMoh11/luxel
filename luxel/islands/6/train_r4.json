@@ -1,0 +1,452 @@
+{
+  "id": "train_r4",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_TR_R4",
+  "spawn": [
+    40,
+    152
+  ],
+  "zones": [
+    {
+      "id": "tr_r4",
+      "name_key": "ISL6_TR_R4",
+      "rect": [
+        0,
+        0,
+        544,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "train_r3",
+      "to_spawn": [
+        432,
+        120
+      ]
+    },
+    {
+      "id": "exit_r4_north",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_region": "train_r5",
+      "to_spawn": [
+        256,
+        240
+      ]
+    },
+    {
+      "id": "exit_r4_south",
+      "rect": [
+        176,
+        304,
+        32,
+        16
+      ],
+      "to_region": "train_r7",
+      "to_spawn": [
+        256,
+        48
+      ],
+      "locked_door_id": "door_r4_south"
+    },
+    {
+      "id": "exit_r4_se_short",
+      "rect": [
+        368,
+        304,
+        32,
+        16
+      ],
+      "to_region": "train_r9",
+      "to_spawn": [
+        272,
+        48
+      ],
+      "requires_flags": [
+        "train_tender_short"
+      ],
+      "locked_door_id": "door_r4_se_short"
+    },
+    {
+      "id": "exit_r4_east",
+      "rect": [
+        528,
+        128,
+        16,
+        48
+      ],
+      "to_region": "train_r10",
+      "to_spawn": [
+        48,
+        120
+      ],
+      "locked_door_id": "door_r4_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_train_mid",
+      "kind": "waystone",
+      "pos": [
+        272,
+        152
+      ],
+      "props": {
+        "zone": "tr_r4",
+        "name_key": "ISL6_TR_R4"
+      }
+    },
+    {
+      "id": "anvil_r4_cycle",
+      "kind": "temper_anvil",
+      "pos": [
+        344,
+        112
+      ],
+      "props": {
+        "mode": "cycle"
+      }
+    },
+    {
+      "id": "lore_r4_timetable",
+      "kind": "lore_stone",
+      "pos": [
+        200,
+        112
+      ],
+      "props": {
+        "string_id": "ISL6_TR_LORE_TIMETABLE",
+        "icon": "flame"
+      }
+    },
+    {
+      "id": "door_r4_south",
+      "kind": "door",
+      "pos": [
+        192,
+        296
+      ],
+      "props": {
+        "door_type": "wick_key",
+        "dungeon_id": "ember_express",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r4_se_short",
+      "kind": "door",
+      "pos": [
+        384,
+        296
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "train_tender_short"
+        ]
+      }
+    },
+    {
+      "id": "door_r4_east",
+      "kind": "door",
+      "pos": [
+        520,
+        152
+      ],
+      "props": {
+        "door_type": "boss_key",
+        "dungeon_id": "ember_express",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "zone": "tr_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        64
+      ],
+      "props": {
+        "zone": "tr_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        240
+      ],
+      "props": {
+        "zone": "tr_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_se",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        240
+      ],
+      "props": {
+        "zone": "tr_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        120
+      ],
+      "props": {
+        "zone": "tr_r4",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 208,
+      "x1": 248,
+      "style": "sunset"
+    },
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 296,
+      "x1": 336,
+      "style": "sunset"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        176,
+        104,
+        192,
+        96
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        152
+      ],
+      "radius": 38,
+      "style": "compass"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        120
+      ],
+      "size": [
+        56,
+        80
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        440,
+        112,
+        64,
+        80
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express",
+      "prop": "plush_cabin_booth",
+      "pos": [
+        120,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "plush_cabin_booth",
+      "pos": [
+        120,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "plush_cabin_booth",
+      "pos": [
+        448,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        312,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "ticket_punch_desk",
+      "pos": [
+        216,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "hanging_strap_arch",
+      "pos": [
+        272,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "conductor_bell_post",
+      "pos": [
+        480,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        360,
+        100
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Plush cruciform Grand Dining Salon acting as the 5-way central hub, teasing the locked Siding (wick_key), Brake Shortcut (train_r9), and Locomotive Boss Bulkhead (keepers_flame) while inviting Wick up the North Roof Ladder.",
+    "kind": "hub",
+    "beat": "sho",
+    "teaches": "Multi-wing dungeon orientation, Cycle Anvil temper swapping, and 5-way landmark hub reading",
+    "decisions": 4,
+    "expert_s": 45,
+    "reward": "ws_train_mid+multi_hub",
+    "why": "Central spine hub of The Ember Express uniting the Roof loop, Parallel Freight wing, and Locomotive finale.",
+    "exit": "exit_r4_north",
+    "optional": true,
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_train_mid"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r4_timetable"
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          136
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r4_cycle"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_north"
+      }
+    ]
+  }
+}

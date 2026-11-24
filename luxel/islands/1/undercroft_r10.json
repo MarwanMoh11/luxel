@@ -1,8 +1,8 @@
 {
   "name_key": "ISL1_UC_BALCONY",
   "spawn": [
-    392,
-    120
+    368,
+    104
   ],
   "zones": [
     {
@@ -11,8 +11,8 @@
       "rect": [
         0,
         0,
-        448,
-        256
+        416,
+        224
       ],
       "dark": true
     }
@@ -21,8 +21,8 @@
     {
       "id": "exit_r10_east",
       "rect": [
-        432,
-        96,
+        400,
+        80,
         16,
         48
       ],
@@ -35,15 +35,15 @@
     {
       "id": "exit_r10_south_shortcut",
       "rect": [
+        192,
         208,
-        240,
         32,
         16
       ],
       "to_region": "undercroft_r1",
       "to_spawn": [
-        384,
-        72
+        408,
+        120
       ],
       "locked_door_id": "door_r10_south"
     }
@@ -53,8 +53,8 @@
       "id": "anc_r10_east",
       "kind": "room_anchor",
       "pos": [
-        392,
-        120
+        368,
+        104
       ],
       "props": {
         "auto": true
@@ -64,8 +64,8 @@
       "id": "anc_r10_center",
       "kind": "room_anchor",
       "pos": [
-        224,
-        152
+        208,
+        128
       ],
       "props": {
         "auto": true
@@ -75,12 +75,12 @@
       "id": "crumble_r10_a",
       "kind": "crumble_floor",
       "pos": [
-        292,
-        128
+        272,
+        112
       ],
       "props": {
         "size": [
-          40,
+          32,
           32
         ],
         "delay": 1.8,
@@ -91,12 +91,12 @@
       "id": "crumble_r10_b",
       "kind": "crumble_floor",
       "pos": [
-        332,
-        128
+        304,
+        112
       ],
       "props": {
         "size": [
-          40,
+          32,
           32
         ],
         "delay": 1.8,
@@ -107,8 +107,8 @@
       "id": "sw_r10_bridge",
       "kind": "switch_eye",
       "pos": [
-        224,
-        184
+        208,
+        160
       ],
       "props": {
         "target_id": "door_r10_south",
@@ -119,8 +119,8 @@
       "id": "door_r10_south",
       "kind": "door",
       "pos": [
-        224,
-        232
+        208,
+        200
       ],
       "props": {
         "door_kind": "switch_door",
@@ -138,8 +138,8 @@
       "id": "bell_r10_war",
       "kind": "bell",
       "pos": [
-        176,
-        128
+        168,
+        112
       ],
       "props": {
         "tone": "war",
@@ -150,8 +150,8 @@
       "id": "plate_r10_shutter",
       "kind": "pressure_plate",
       "pos": [
-        240,
-        72
+        216,
+        56
       ],
       "props": {
         "by": [
@@ -170,7 +170,7 @@
       "kind": "mover_wall",
       "pos": [
         136,
-        128
+        112
       ],
       "props": {
         "size": [
@@ -180,11 +180,11 @@
         "path": [
           [
             136,
-            128
+            112
           ],
           [
             136,
-            72
+            56
           ]
         ],
         "speed": 140,
@@ -196,7 +196,7 @@
       "kind": "tone_door",
       "pos": [
         88,
-        128
+        112
       ],
       "props": {
         "tone": "war",
@@ -212,7 +212,7 @@
       "kind": "pane_pickup",
       "pos": [
         48,
-        128
+        112
       ],
       "props": {
         "pane": "belfry_weight"
@@ -222,8 +222,8 @@
       "id": "lamp_r10_e",
       "kind": "road_lamp",
       "pos": [
-        384,
-        72
+        352,
+        64
       ],
       "props": {
         "zone": "uc_balcony",
@@ -234,8 +234,8 @@
       "id": "lamp_r10_c",
       "kind": "road_lamp",
       "pos": [
-        224,
-        136
+        208,
+        112
       ],
       "props": {
         "zone": "uc_balcony",
@@ -247,7 +247,7 @@
       "kind": "road_lamp",
       "pos": [
         48,
-        88
+        64
       ],
       "props": {
         "zone": "uc_balcony",
@@ -260,17 +260,17 @@
       "id": "owl_r10",
       "kind": "owl",
       "pos": [
-        224,
-        96
+        168,
+        48
       ],
       "perches": [
         [
-          224,
-          96
+          168,
+          48
         ],
         [
-          280,
-          72
+          232,
+          88
         ]
       ],
       "zone": "uc_balcony"
@@ -280,8 +280,8 @@
     {
       "kind": "circle",
       "pos": [
-        176,
-        128
+        168,
+        112
       ],
       "radius": 20,
       "style": "clock"
@@ -290,7 +290,7 @@
       "kind": "inlay",
       "rect": [
         28,
-        108,
+        92,
         40,
         40
       ]
@@ -298,27 +298,18 @@
     {
       "kind": "rug",
       "rect": [
-        208,
-        160,
+        192,
+        144,
         32,
-        64
+        56
       ],
       "style": "ornate"
     },
     {
-      "kind": "cracks",
-      "pos": [
-        104,
-        128
-      ],
-      "radius": 16,
-      "glow": false
-    },
-    {
       "kind": "light_shaft",
       "pos": [
-        392,
-        112
+        368,
+        96
       ],
       "size": [
         40,
@@ -333,8 +324,8 @@
       "sheet": "theme_undercroft",
       "prop": "bell_floor_seal",
       "pos": [
-        176,
-        128
+        168,
+        112
       ],
       "layer": "ground",
       "flip_x": false,
@@ -345,8 +336,8 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_candelabra",
       "pos": [
-        408,
-        64
+        384,
+        52
       ],
       "layer": "sort",
       "flip_x": true,
@@ -357,8 +348,8 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_candelabra",
       "pos": [
-        176,
-        56
+        168,
+        36
       ],
       "layer": "sort",
       "flip_x": false,
@@ -369,8 +360,8 @@
       "sheet": "theme_undercroft",
       "prop": "tattered_crypt_banner",
       "pos": [
-        184,
-        212
+        168,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -381,8 +372,8 @@
       "sheet": "theme_undercroft",
       "prop": "tattered_crypt_banner",
       "pos": [
-        264,
-        212
+        240,
+        176
       ],
       "layer": "sort",
       "flip_x": true,
@@ -391,39 +382,15 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
-      "pos": [
-        408,
-        192
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "open_sarcophagus",
+      "prop": "bronze_bell_stand",
       "pos": [
         48,
-        64
+        48
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "toll_brazier",
-      "pos": [
-        384,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
+      "phase": 0.2
     }
   ],
   "events": [
@@ -442,14 +409,14 @@
     }
   ],
   "design": {
-    "idea": "Sprint crumbling chandelier catwalks above the Nave to drop the balcony shortcut to r1, and time a War Echo through a plate-lifted shutter to claim Pane Belfry Weight.",
+    "idea": "Compact L-shaped chandelier balcony above the Nave: sprint crumbling catwalks, drop the shortcut to r1, and time a War Echo through a plate-lifted shutter for Pane Belfry Weight.",
     "kind": "traversal",
     "beat": "ketsu",
     "teaches": "Combining Echo Clapper throw timing with a player-held shutter plate for optional mastery secrets.",
     "decisions": 8,
     "expert_s": 45,
     "reward": "pane_belfry_weight+r1_shortcut",
-    "why": "High balcony loop returning straight to the Nave hub with the Boss Key in hand.",
+    "why": "Tight elevated balcony loop returning straight to the Nave hub with the Boss Key in hand.",
     "exit": "exit_r10_south_shortcut",
     "start": {
       "flags": [
@@ -460,8 +427,8 @@
       {
         "op": "goto",
         "to": [
-          248,
-          128
+          232,
+          112
         ]
       },
       {
@@ -471,16 +438,16 @@
       {
         "op": "shoot",
         "from": [
-          224,
-          152
+          208,
+          136
         ],
         "target": "sw_r10_bridge"
       },
       {
         "op": "goto",
         "to": [
-          176,
-          152
+          168,
+          136
         ]
       },
       {
@@ -507,7 +474,7 @@
         "op": "goto",
         "to": [
           112,
-          192
+          152
         ]
       },
       {
@@ -525,7 +492,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "undercroft",
-  "music": "island1_dungeon",
+  "music": "isl1_undercroft",
   "ambience": [
     "night_breeze",
     "sanctum_bells"

@@ -1,0 +1,688 @@
+{
+  "name_key": "ISL1_MN_EYES",
+  "spawn": [
+    272,
+    304
+  ],
+  "zones": [
+    {
+      "id": "mn_eyes",
+      "name_key": "ISL1_MN_EYES",
+      "rect": [
+        0,
+        0,
+        544,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [
+        256,
+        336,
+        32,
+        16
+      ],
+      "to_region": "manor_r6",
+      "to_spawn": [
+        368,
+        56
+      ]
+    },
+    {
+      "id": "exit_r7_sw_short",
+      "rect": [
+        0,
+        272,
+        16,
+        48
+      ],
+      "to_region": "manor_r1",
+      "to_spawn": [
+        56,
+        112
+      ],
+      "requires_flags": [
+        "manor_gallery_stair"
+      ],
+      "locked_door_id": "door_r7_sw"
+    },
+    {
+      "id": "exit_r7_north",
+      "rect": [
+        448,
+        0,
+        32,
+        16
+      ],
+      "to_region": "manor_r8",
+      "to_spawn": [
+        208,
+        240
+      ],
+      "locked_door_id": "mover_r7_m4"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_south",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r7_eyes",
+      "kind": "lore_stone",
+      "pos": [
+        224,
+        296
+      ],
+      "props": {
+        "string_id": "ISL1_MN_LORE_EYES",
+        "icon": "eye"
+      }
+    },
+    {
+      "id": "eye_r7_e1",
+      "kind": "lying_portrait",
+      "pos": [
+        188,
+        48
+      ],
+      "props": {
+        "mode": "watcher",
+        "suspect": "butler",
+        "dir": "s",
+        "cone_deg": 60,
+        "cone_range": 176,
+        "sweep_deg": 0,
+        "freeze_secs": 3.5,
+        "target_id": "mover_r7_m1"
+      }
+    },
+    {
+      "id": "mover_r7_m1",
+      "kind": "mover_wall",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "path": [
+          [
+            168,
+            152
+          ],
+          [
+            168,
+            96
+          ]
+        ],
+        "speed": 110,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "hook_r7_h1",
+      "kind": "lantern_hook",
+      "pos": [
+        188,
+        184
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "gate_r7_short",
+      "kind": "shadow_gate",
+      "pos": [
+        88,
+        216
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "plate_r7_stair",
+      "kind": "pressure_plate",
+      "pos": [
+        88,
+        288
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "door_r7_sw"
+      }
+    },
+    {
+      "id": "door_r7_sw",
+      "kind": "door",
+      "pos": [
+        24,
+        296
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "plate_r7_stair"
+        ],
+        "sets_flag": "manor_gallery_stair",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "eye_r7_e2",
+      "kind": "lying_portrait",
+      "pos": [
+        272,
+        48
+      ],
+      "props": {
+        "mode": "watcher",
+        "suspect": "choir",
+        "dir": "s",
+        "cone_deg": 65,
+        "cone_range": 168,
+        "sweep_deg": 0,
+        "freeze_secs": 3.5,
+        "target_id": "mover_r7_m2"
+      }
+    },
+    {
+      "id": "mover_r7_m2",
+      "kind": "mover_wall",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "path": [
+          [
+            328,
+            152
+          ],
+          [
+            328,
+            96
+          ]
+        ],
+        "speed": 110,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "hook_r7_h2",
+      "kind": "lantern_hook",
+      "pos": [
+        272,
+        160
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "bell_r7_dusk",
+      "kind": "bell",
+      "pos": [
+        272,
+        224
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 260
+      }
+    },
+    {
+      "id": "eye_r7_e3",
+      "kind": "lying_portrait",
+      "pos": [
+        376,
+        48
+      ],
+      "props": {
+        "mode": "watcher",
+        "suspect": "steward",
+        "dir": "s",
+        "cone_deg": 70,
+        "cone_range": 168,
+        "sweep_deg": 0,
+        "freeze_secs": 3.5,
+        "target_id": "mover_r7_m3"
+      }
+    },
+    {
+      "id": "mover_r7_m3",
+      "kind": "mover_wall",
+      "pos": [
+        424,
+        96
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "path": [
+          [
+            424,
+            96
+          ],
+          [
+            424,
+            152
+          ]
+        ],
+        "speed": 140,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "eye_r7_e4",
+      "kind": "lying_portrait",
+      "pos": [
+        472,
+        232
+      ],
+      "props": {
+        "mode": "watcher",
+        "suspect": "steward",
+        "dir": "n",
+        "cone_deg": 75,
+        "cone_range": 152,
+        "sweep_deg": 0,
+        "freeze_secs": 3.5,
+        "target_id": "mover_r7_m4"
+      }
+    },
+    {
+      "id": "mover_r7_m4",
+      "kind": "mover_wall",
+      "pos": [
+        464,
+        48
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "path": [
+          [
+            464,
+            48
+          ],
+          [
+            504,
+            48
+          ]
+        ],
+        "speed": 110,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "lamp_r7_south_w",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        320
+      ],
+      "props": {
+        "zone": "mn_eyes",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_south_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        320
+      ],
+      "props": {
+        "zone": "mn_eyes",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_nw",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        96
+      ],
+      "props": {
+        "zone": "mn_eyes",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_sw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        304
+      ],
+      "props": {
+        "zone": "mn_eyes",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_east",
+      "kind": "road_lamp",
+      "pos": [
+        504,
+        152
+      ],
+      "props": {
+        "zone": "mn_eyes",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        48,
+        128,
+        432,
+        48
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        224
+      ],
+      "radius": 28,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        448,
+        64,
+        48,
+        144
+      ],
+      "style": "brass"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        160
+      ],
+      "size": [
+        44,
+        72
+      ],
+      "tint": "cool",
+      "shear": 0.25
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        472,
+        144
+      ],
+      "size": [
+        36,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "tall_grandfather_clock",
+      "pos": [
+        136,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tall_grandfather_clock",
+      "pos": [
+        352,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        64,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        400,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        200,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        48,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        312,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        504,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r7_stair_msg",
+      "on": "signal:plate_r7_stair",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "manor_gallery_stair"
+        },
+        {
+          "narrate": "ISL1_MN_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Hall of Shifting Eyes: four painted Watcher Portraits slide heavy bookcases whenever they see light; pin your lantern on hooks to hold gates open while slipping past hostile eyes in Shutter Hood darkness, and use Dusk to freeze their gaze.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Weaponizing Shutter Hood darkness + pinned lantern hooks + Dusk freezes turns hostile Watcher Portraits into living architectural keys.",
+    "decisions": 11,
+    "expert_s": 75,
+    "reward": "manor_gallery_stair",
+    "why": "Signature astonishing centerpiece puzzle of Bellmaker's Manor unlocking Cycle #3 back to Foyer and the path to the Study.",
+    "exit": "exit_r7_north",
+    "start": {
+      "flags": [
+        "item_shutter_hood"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r7_eyes"
+      },
+      {
+        "op": "interact",
+        "target": "hook_r7_h1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.8
+      },
+      {
+        "op": "wait_until",
+        "interactable": "gate_r7_short",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_r7_stair",
+        "secs": 0.4
+      },
+      {
+        "op": "wait_until",
+        "flag": "manor_gallery_stair",
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          188,
+          152
+        ]
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "hook_r7_h2"
+      },
+      {
+        "op": "wait",
+        "secs": 0.8
+      },
+      {
+        "op": "interact",
+        "target": "bell_r7_dusk"
+      },
+      {
+        "op": "goto",
+        "to": [
+          472,
+          152
+        ]
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect",
+        "flag": "manor_gallery_stair"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_north"
+      }
+    ]
+  },
+  "id": "manor_r7",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

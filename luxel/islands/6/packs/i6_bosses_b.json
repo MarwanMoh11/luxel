@@ -38,7 +38,7 @@
     "colossus_heart": {
       "script": "res://luxel/bosses/colossus_heart/brain.gd",
       "data": {
-        "max_hp": 148.0,
+        "max_hp": 92.0,
         "body_radius": 13.0,
         "routine_speed": 28.0,
         "leash_radius": 0.0,
@@ -70,7 +70,7 @@
     "crucible_weaver": {
       "script": "res://luxel/bosses/crucible_weaver/brain.gd",
       "data": {
-        "max_hp": 108.0,
+        "max_hp": 136.0,
         "body_radius": 11.5,
         "routine_speed": 44.0,
         "leash_radius": 0.0,
@@ -86,7 +86,7 @@
     "first_forge": {
       "script": "res://luxel/bosses/first_forge/brain.gd",
       "data": {
-        "max_hp": 178.0,
+        "max_hp": 215.0,
         "body_radius": 13.5,
         "routine_speed": 32.0,
         "leash_radius": 0.0,
@@ -115,7 +115,7 @@
     },
     "colossus_heart": {
       "name_key": "ISL6_BOSS_HEART",
-      "phases": [0.6, 0.25],
+      "phases": [0.6, 0.3],
       "mini": false,
       "dungeon": "iron_colossus",
       "region": "colossus_r11",
@@ -139,7 +139,7 @@
     },
     "crucible_weaver": {
       "name_key": "ISL6_BOSS_WEAVER",
-      "phases": [0.5],
+      "phases": [0.58],
       "mini": true,
       "dungeon": "great_kiln",
       "region": "kiln_r15",
@@ -151,7 +151,7 @@
     },
     "first_forge": {
       "name_key": "ISL6_BOSS_FIRST",
-      "phases": [0.65, 0.3],
+      "phases": [0.66, 0.34],
       "mini": false,
       "dungeon": "superboss",
       "region": "superboss_first_forge",

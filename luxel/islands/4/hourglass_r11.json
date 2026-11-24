@@ -1,0 +1,298 @@
+{
+  "id": "hourglass_r11",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R11",
+  "spawn": [
+    176,
+    200
+  ],
+  "zones": [
+    {
+      "id": "hg_r11_promenade",
+      "name_key": "ISL4_HG_R11",
+      "rect": [
+        0,
+        0,
+        352,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r11_south",
+      "rect": [
+        160,
+        240,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r1",
+      "to_spawn": [
+        256,
+        56
+      ]
+    },
+    {
+      "id": "exit_hg_r11_north",
+      "rect": [
+        160,
+        0,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r12",
+      "to_spawn": [
+        256,
+        304
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r11",
+      "kind": "room_anchor",
+      "pos": [
+        176,
+        200
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_hg_r11_gardener",
+      "kind": "lore_stone",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "string_id": "ISL4_LORE_GARDENER",
+        "icon": "clock",
+        "sets_flag": "lore_4_gardener"
+      }
+    },
+    {
+      "id": "ghost_hg_r11",
+      "kind": "hg_rose_ghost",
+      "pos": [
+        184,
+        136
+      ],
+      "props": {}
+    },
+    {
+      "id": "rest_hg_r11",
+      "kind": "rest_shrine",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {}
+    },
+    {
+      "id": "lamp_r11_s",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        216
+      ],
+      "props": {
+        "zone": "hg_r11_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_n",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "zone": "hg_r11_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_w",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        136
+      ],
+      "props": {
+        "zone": "hg_r11_promenade",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        144,
+        16,
+        64,
+        224
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        184,
+        136
+      ],
+      "radius": 26,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        184,
+        136
+      ],
+      "size": [
+        40,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "hourglass_floor_dial",
+      "pos": [
+        184,
+        136
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "garden_clock_arch",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        120,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        232,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        232,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        72,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        296,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        72,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "Pinched hourglass-waist Sand-Glass Promenade: watch a wordless golden ghost of The Gardener prune one rose twice into sand, read the lore mural, heal at the dew shrine, and step into the Boss Amphitheatre.",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Wordless foreshadowing of The Gardener Twice's Phase 2 echo split and sand dissolution.",
+    "decisions": 2,
+    "expert_s": 30,
+    "reward": "lore_4_gardener+full_heal",
+    "why": "Pacing breath and emotional narrative beat right before the Hourglass Maze finale.",
+    "optional": true,
+    "exit": "exit_hg_r11_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_hg_r11_gardener"
+      },
+      {
+        "op": "interact",
+        "target": "rest_hg_r11"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r11_north"
+      }
+    ]
+  }
+}

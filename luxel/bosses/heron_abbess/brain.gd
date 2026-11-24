@@ -1,434 +1,287 @@
 class_name LxHeronAbbessBoss
-extends LxHeronStalkerBrain
-## Mirefen Gardens Boss (Island 4): the Heron Abbess (Bible §4.7 upgrade).
-## 3 phases, HP 22.0. Combines long spear stabs (beak-stuck punish), wing gust push,
-## expanding shockwave rings, P2 Shattered Skylights (4 corner thermal updraft columns),
-## P3 Clock-Chime Double Ripple on Gale-Leap (2x air-stagger!), & 15% ground bolt resistance.
+extends LxBossBase
+## Drowned Conservatory Keeper Boss (Island 4, conservatory_r10): The Heron Abbess (Bible §4.7).
+## 3 phases (66%/33%) on LxBossBase. Porcelain-feather mantle reduces ground bolt spam outside
+## punish windows (armour glint + reduced chip); Beak-Stuck recovery, Wings-gliding shots, and
+## P3 Gale-Leap 2x air-stagger intercepts reward aerial mastery!
+## Island 4 rule: P2 Shattered Skylights create 4 corner thermal updraft columns that counter
+## Wing Gust pushback and lift over P3 Clock-Chime Double Ripple shockwaves!
 
 signal gust_emitted(origin: Vector2, dir: Vector2, gust_range: float, half_width: float, source: LxEnemyBrain)
 
 enum BossMove { STAB, WING_GUST, SHOCKWAVE_RING, GALE_LEAP }
 
 const GUST_TELL_P1: float = 0.56
-const GUST_TELL_P3: float = 0.50
-const GUST_COMMIT_TIME: float = 0.34
-const GUST_RANGE: float = 128.0
+const GUST_COMMIT_TIME: float = 0.38
+const GUST_RANGE: float = 136.0
 const GUST_HALF_W: float = 28.0
 const GUST_DMG_R: float = 58.0
-const GUST_PUSH_WICK: float = 260.0
+const GUST_PUSH_WICK: float = 240.0
 const GUST_PUSH_LANTERN: float = 150.0
-const GUST_RECOVER: float = 1.15
-
-const RING_TELL_P2: float = 0.58
-const RING_TELL_P3: float = 0.50
-const RING_COMMIT_TIME: float = 0.32
 const RING_START_R: float = 10.0
-const RING_MAX_R: float = 76.0
-const RING_BAND: float = 9.5
-const RING_RECOVER: float = 1.20
-
-const LEAP_TELL_P3: float = 0.54
-const LEAP_AIR_TIME: float = 0.34
-const LEAP_HEIGHT: float = 22.0
-const LEAP_RING_TIME: float = 0.30
-const LEAP_RING_MAX_R: float = 72.0
-const LEAP_RECOVER: float = 1.25
+const RING_MAX_R: float = 78.0
+const LEAP_AIR_TIME: float = 0.36
+const LEAP_HEIGHT: float = 24.0
+const LEAP_RING_MAX_R: float = 74.0
 const DOUBLE_RIPPLE_GAP: float = 0.35
 const SKYLIGHT_UPDRAFT_R: float = 22.0
-const ROAR_TIME: float = 0.66
+const ROAR_TIME: float = 0.65
 
+# Compat fields referenced by tests/luxel/boss_qa_capture.gd & visuals.gd
 var active_move: int = BossMove.STAB
-var move_cycle: int = 0
 var gust_dir: Vector2 = Vector2.RIGHT
 var gust_hit: bool = false
 var gust_announced: bool = false
 var ring_progress: float = 0.0
-var ring_hit: bool = false
 var leap_stage: int = 0
 var leap_from: Vector2 = Vector2.ZERO
 var leap_to: Vector2 = Vector2.ZERO
 var abbess_z: float = 0.0
+var beak_stuck: bool = false
 var _roaring: bool = false
 var _skylights: Array[Dictionary] = []  # [{pos, shattered, catch_cd}]
-var _double_ripple_pending: bool = false
-var _double_ripple_wait: float = 0.0
+
+var _stab_dir: Vector2 = Vector2.RIGHT
+var _double_ripple_done: bool = false
+var _clank_sfx_cd: float = 0.0
 
 
 func _init() -> void:
 	super._init()
 	kind = "heron_abbess"
 	boss_id = "heron_abbess"
+	boss_name_key = "BOSS_ABBESS"
 	island_id = 4
-	is_boss = true
-	max_hp = 22.0
-	hp = 22.0
-	body_radius = 7.5
-	routine_speed = 42.0
-	leash_radius = 185.0
-	notice_radius = 152.0
-	tell_time = 0.56
-	recover_time = 1.30
-	give_up_time = 1.8
-	shard_drop = 32
+	is_miniboss = false
+	reward_heart = "full"
+	music_cue = "island4_boss_p1"
+	music_p2_cue = "island4_boss_p2"
+	max_hp = 84.0
+	hp = 84.0
+	body_radius = 9.0
+	move_speed = 46.0
+	stagger_threshold = 15.0
+	stagger_duration = 1.65
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.28
+	shard_drop = 42
+	death_duration = 2.4
 
 
-func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
-	super.setup(spec, p_director, p_world)
-	max_hp = maxf(22.0, max_hp)
-	hp = max_hp
-	is_boss = true
-	boss_id = str(spec.get("boss_id", "heron_abbess"))
-	island_id = int(spec.get("island_id", 4))
+func _configure_boss(_spec: Dictionary) -> void:
+	if world_ctx != null and str(world_ctx.get("current_region_id")) == "conservatory_r10":
+		arena_rect = Rect2(144.0, 72.0, 192.0, 112.0)
+	configure_phases([0.66, 0.33])
+
+	# Attack 1: Spear Stab — razor beak lunge leaving beak stuck in floor during RECOVER!
+	register_attack("spear_stab", {
+		"weight": 1.25, "tell": 0.54, "commit": 0.30, "recover": 1.25, "cooldown": 1.30,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = BossMove.STAB
+			beak_stuck = false
+			_stab_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _stab_dir.angle()
+			ground.warn_lane(pos, pos + _stab_dir * 132.0, 10.0, last_tell_duration, 0.0, "coral", "gold")
+			stage.play_sfx("heron_stare", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			patterns.emit_lane(pos, _stab_dir, 4 if phase >= 3 else 3, 168.0, 0.06, {"color": "ice", "source": "heron_spear"})
+			stage.shake(0.16)
+			stage.play_sfx("heron_stab", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			move_boss(_stab_dir * 165.0 * dt, false)
+			check_contact_damage(26.0, _stab_dir, 1.0, "heron_spear"),
+	})
+
+	# Attack 2: Wing Gust — broad gale corridor pushing Wick/lantern unless sheltered in a skylight!
+	register_attack("wing_gust", {
+		"weight": 1.20, "tell": GUST_TELL_P1, "commit": GUST_COMMIT_TIME, "recover": 1.12, "cooldown": 1.45,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = BossMove.WING_GUST
+			beak_stuck = false
+			gust_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = gust_dir.angle()
+			gust_hit = false
+			gust_announced = false
+			ground.warn_lane(pos, pos + gust_dir * GUST_RANGE, GUST_HALF_W * 0.72, last_tell_duration, 0.0, "sky", "ice")
+			stage.play_sfx("heron_gust_inhale", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			gust_announced = true
+			gust_emitted.emit(pos, gust_dir, GUST_RANGE, GUST_HALF_W, self)
+			if world_ctx != null and world_ctx.has_method("on_enemy_gust"):
+				world_ctx.call("on_enemy_gust", self, pos, gust_dir, GUST_RANGE, GUST_HALF_W)
+			patterns.emit_fan(pos, gust_dir, 7 if phase >= 3 else 5, 0.92, 142.0, {"color": "sky", "source": "wing_gust"})
+			stage.shake(0.16)
+			stage.play_sfx("heron_gust_fire", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			var end_p: Vector2 = pos + gust_dir * GUST_RANGE
+			if _has_player():
+				var wp: Vector2 = _get_wick_pos()
+				if Geometry2D.get_closest_point_to_segment(wp, pos, end_p).distance_to(wp) <= GUST_HALF_W:
+					if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and not _in_active_skylight(wp):
+						Lx.player.call("apply_recoil", gust_dir * GUST_PUSH_WICK * dt)
+					if not gust_hit and pos.distance_to(wp) <= 58.0:
+						gust_hit = true
+						emit_boss_damage(gust_dir, 1.0, "wing_gust", pos, true)
+			if _is_lantern_out():
+				var lp: Vector2 = _get_lantern_pos()
+				if Geometry2D.get_closest_point_to_segment(lp, pos, end_p).distance_to(lp) <= GUST_HALF_W + 4.0:
+					_push_thrown_lantern(dt),
+	})
+
+	# Attack 3: Feather Barrage — glass-feather rain across Wick & corners + twin plume boomerangs
+	register_attack("feather_barrage", {
+		"weight": 1.15, "tell": 0.54, "commit": 0.36, "recover": 0.98, "cooldown": 1.45,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = BossMove.STAB
+			beak_stuck = false
+			var drops: Array[Vector2] = _build_feather_targets(tgt)
+			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "sky", "gold")
+			stage.play_sfx("heron_ring_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			patterns.emit_boomerang(pos, d.rotated(0.28), 144.0, 0.68, 0.72, {"color": "ice", "source": "feather_plume"})
+			patterns.emit_boomerang(pos, d.rotated(-0.28), 144.0, 0.68, -0.72, {"color": "gold", "source": "feather_plume"})
+			stage.shake(0.14)
+			stage.play_sfx("heron_ring_fire", pos),
+	})
+
+	# Attack 4 (P2/P3): Choir Shockwave — expanding conservatory wave + orbiting glass halo
+	register_attack("choir_shockwave", {
+		"phases": [2, 3], "weight": 1.50, "tell": 0.56, "commit": 0.38, "recover": 1.15, "cooldown": 1.65,
+		"on_tell_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			active_move = BossMove.SHOCKWAVE_RING
+			beak_stuck = false
+			ring_progress = 0.0
+			ground.warn_ring(pos, RING_MAX_R, last_tell_duration, 0.0, "sky", "coral")
+			stage.play_sfx("heron_ring_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			patterns.emit_gap_ring(pos, 14 if phase >= 3 else 12, 126.0, gap_a + 0.40, 0.70, {"color": "sky", "source": "choir_ring"})
+			patterns.emit_orbit(pos, 4 if phase >= 3 else 3, 42.0, 2.2, 2.0, {"color": "ice", "source": "glass_halo"})
+			stage.shake(0.20)
+			stage.play_sfx("heron_ring_fire", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
+			ring_progress = clampf(el / 0.38, 0.0, 1.0),
+	})
+
+	# Attack 5 (P3): Gale-Leap & Clock-Chime Double Ripple (air-intercept = 2x stagger!)
+	register_attack("gale_leap", {
+		"phases": [3], "weight": 1.65, "tell": 0.54, "commit": 0.78, "recover": 1.25, "cooldown": 1.70,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = BossMove.GALE_LEAP
+			beak_stuck = false
+			leap_stage = 0
+			leap_from = pos
+			leap_to = clamp_to_arena(tgt)
+			_double_ripple_done = false
+			ring_progress = 0.0
+			ground.warn_ring(leap_to, 26.0, last_tell_duration + LEAP_AIR_TIME * 0.7, 1.0, "coral", "gold")
+			stage.play_sfx("heron_gust_inhale", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			leap_from = pos
+			leap_stage = 0
+			stage.play_sfx("heron_gust_fire", pos),
+		"on_commit": func(_b: LxBossBase, tgt: Vector2, _dt: float, el: float) -> void:
+			if el < LEAP_AIR_TIME:
+				var u: float = clampf(el / LEAP_AIR_TIME, 0.0, 1.0)
+				abbess_z = sin(u * PI) * LEAP_HEIGHT
+				move_boss(leap_from.lerp(leap_to, u) - pos, true)
+			elif leap_stage == 0:
+				leap_stage = 1
+				abbess_z = 0.0
+				var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+				patterns.emit_gap_ring(pos, 12, 128.0, gap_a + 0.36, 0.72, {"color": "sky", "source": "gale_ripple_1"})
+				stage.shake(0.22)
+				stage.play_sfx("heron_ring_fire", pos)
+			else:
+				ring_progress = clampf((el - LEAP_AIR_TIME) / maxf(DOUBLE_RIPPLE_GAP, 0.05), 0.0, 1.0)
+				if not _double_ripple_done and el >= LEAP_AIR_TIME + DOUBLE_RIPPLE_GAP:
+					_double_ripple_done = true
+					var gap_b: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+					patterns.emit_gap_ring(pos, 14, 134.0, gap_b - 0.38, 0.70, {"color": "gold", "source": "gale_ripple_2"})
+					stage.shake(0.20)
+					stage.play_sfx("clockwork_chime", pos)
+					stage.play_sfx("heron_ring_fire", pos),
+	})
+
+
+func is_flying() -> bool:
+	return active_move == BossMove.GALE_LEAP and boss_state == BossState.COMMIT and leap_stage == 0 and abbess_z > 5.0
+
+
+func _on_reset_encounter() -> void:
 	active_move = BossMove.STAB
-	move_cycle = 0
 	gust_dir = Vector2.from_angle(facing)
 	gust_hit = false
 	gust_announced = false
 	ring_progress = 0.0
-	ring_hit = false
 	leap_stage = 0
 	leap_from = pos
 	leap_to = pos
 	abbess_z = 0.0
+	beak_stuck = false
 	_roaring = false
+	_double_ripple_done = false
+	_clank_sfx_cd = 0.0
 	_skylights.clear()
-	_double_ripple_pending = false
-	_double_ripple_wait = 0.0
-	for off_v: Vector2 in [Vector2(-78.0, -42.0), Vector2(78.0, -42.0), Vector2(-78.0, 46.0), Vector2(78.0, 46.0)]:
-		_skylights.append({"pos": _clamp_pt(home + off_v), "shattered": false, "catch_cd": 0.0})
-
-
-func is_flying() -> bool:
-	return active_move == BossMove.GALE_LEAP and state == State.COMMIT and leap_stage == 0 and abbess_z > 5.0
-
-
-func take_hit(hit: LxHit) -> int:
-	if _roaring:
-		_emit_enemy_hit(hit, HitResult.GLANCED)
-		return HitResult.GLANCED
-	var h: Dictionary = _read_hit(hit)
-	var wick: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
-	var gliding: bool = wick != null and not wick.dead and wick.is_gliding()
-	# P3 Gale-Leap 2x air-stagger punish!
-	if is_flying() and (bool(h["stagger"]) or gliding):
-		var air_dmg: float = float(h["damage"]) * 2.0
-		hp = maxf(0.0, hp - air_dmg)
-		abbess_z = 0.0
-		leap_stage = 0
-		_double_ripple_pending = false
-		flash_t = 0.18
-		LxDamageFx.boss_impact(pos, 0.16, 78.0, 82.0, 74.0, 1.38, 0.34, "ice")
-		_emit_sfx("hopper_air_stagger")
-		if hp <= 0.001:
-			opened_kill = true
-			_die(hit)
-			return HitResult.KILLED
-		_release_token()
-		state = State.STAGGER
-		state_timer = 1.10
-		_emit_enemy_hit(hit, HitResult.OPENED)
-		_check_phase_transition()
-		return HitResult.OPENED
-	# 15% ground bolt-spam resistance while perched/stalking (rewards Wings & beak-stuck punishes!)
-	var use_hit: LxHit = hit
-	var is_open: bool = beak_stuck or state == State.RECOVER or state == State.STAGGER
-	if not is_open and not gliding and str(h["source"]) == LxHit.SOURCE_BOLT:
-		use_hit = LxHit.make(hit.source, float(h["damage"]) * 0.85, hit.dir, hit.origin, hit.shield_wear, hit.stagger, hit.pierce, hit.attacker, hit.cracks_armour)
-	var res: int = super.take_hit(use_hit)
-	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		_check_phase_transition()
-	return res
-
-
-func _check_phase_transition() -> void:
-	if phase < 2 and hp <= max_hp * 0.66 and hp > 0.001:
-		_enter_phase(2)
-	elif phase < 3 and hp <= max_hp * 0.33 and hp > 0.001:
-		_enter_phase(3)
+	var c: Vector2 = arena_rect.get_center()
+	var sx: float = minf(84.0, arena_rect.size.x * 0.32)
+	var sy: float = minf(48.0, arena_rect.size.y * 0.30)
+	for off_v: Vector2 in [Vector2(-sx, -sy), Vector2(sx, -sy), Vector2(-sx, sy), Vector2(sx, sy)]:
+		_skylights.append({"pos": clamp_to_arena(c + off_v), "shattered": false, "catch_cd": 0.0})
 
 
 func _enter_phase(next_phase: int) -> void:
-	phase = next_phase
+	# Compat hook for tests/luxel/boss_qa_capture.gd
+	phase = clampi(next_phase, 1, 3)
+	if not phases_reached.has(phase):
+		phases_reached.append(phase)
+	_on_phase_enter(phase)
+
+
+func _on_phase_enter(new_phase: int) -> void:
 	_roaring = true
 	beak_stuck = false
-	active_move = BossMove.STAB
-	ring_progress = 0.0
-	leap_stage = 0
 	abbess_z = 0.0
-	_release_token()
-	state = State.NOTICE
-	state_timer = ROAR_TIME
-	if Lx.events != null:
-		Lx.events.boss_phase_changed.emit(boss_id, phase)
-		Lx.events.shake_requested.emit(0.30)
-	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
-	_emit_sfx("heron_abbess_phase")
-	# P2 Shattered Skylights: crack 1st skylight visually on phase shift to teach thermal columns!
-	if next_phase == 2 and not _skylights.is_empty():
-		_skylights[0]["shattered"] = true
-	elif next_phase == 3:
+	var c: Vector2 = arena_rect.get_center()
+	if new_phase == 2:
+		if not _skylights.is_empty():
+			_skylights[0]["shattered"] = true
+		_carve_safe_tile_near(c + Vector2(-88.0, -44.0), "water")
+		_carve_safe_tile_near(c + Vector2(88.0, 44.0), "water")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-56.0, -18.0)), 4.5, "abbess_glass_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(56.0, -18.0)), 4.5, "abbess_glass_e")
+		stage.darkness_pulse(0.62, 1.0)
+		stage.shake(0.24)
+		stage.play_sfx("heron_abbess_phase", pos)
+	elif new_phase == 3:
 		for sk: Dictionary in _skylights:
 			sk["shattered"] = true
+		_carve_safe_tile_near(c + Vector2(88.0, -44.0), "water")
+		_carve_safe_tile_near(c + Vector2(-88.0, 44.0), "water")
+		stage.darkness_pulse(0.70, 1.1)
+		stage.shake(0.28)
+		stage.play_sfx("heron_abbess_phase", pos)
+		stage.play_sfx("clockwork_chime", pos)
 
 
-func _step_brain(dt: float) -> void:
+func _on_attack_recover_start(attack_id: String) -> void:
+	abbess_z = 0.0
+	beak_stuck = (attack_id == "spear_stab")
+	if beak_stuck:
+		stage.play_sfx("heron_beak_stuck", pos)
+
+
+func _on_boss_tick(dt: float, _target: Vector2) -> void:
+	if boss_state != BossState.PHASE_SHIFT:
+		_roaring = false
+	if boss_state != BossState.RECOVER:
+		beak_stuck = false
+	if boss_state != BossState.COMMIT:
+		abbess_z = 0.0
+	_clank_sfx_cd = maxf(0.0, _clank_sfx_cd - dt)
 	if phase >= 2:
 		_step_skylights(dt)
-	if state == State.NOTICE and _roaring:
-		abbess_z = 0.0
-		state_timer -= dt
-		if state_timer <= 0.0:
-			_roaring = false
-			state = State.POSITION
-			cooldown = 0.35
-		return
-	if state == State.TELL and active_move != BossMove.STAB:
-		abbess_z = 0.0
-		if active_move == BossMove.WING_GUST and state_timer > 0.18:
-			var to_t: Vector2 = _attention_target() - pos
-			if to_t.length() > 0.01:
-				_turn_toward(to_t.angle(), 2.8, dt)
-				gust_dir = Vector2.from_angle(facing)
-		elif active_move == BossMove.GALE_LEAP and state_timer > 0.18:
-			var tpos: Vector2 = _attention_target()
-			_face_point(tpos, 3.2, dt)
-			leap_to = _clamp_pt(tpos)
-		state_timer -= dt
-		if state_timer <= 0.0:
-			_enter_commit()
-		return
-	if state != State.COMMIT:
-		abbess_z = 0.0
-	super._step_brain(dt)
-
-
-func _step_stalk(dt: float, target_pos: Vector2) -> void:
-	var to_t: Vector2 = target_pos - pos
-	var dist: float = to_t.length()
-	_face_point(target_pos, 3.2, dt)
-
-	var wick_p: Vector2 = _get_wick_pos()
-	if not _is_lured() and (not _has_player() or wick_p.distance_to(home) > leash_radius + 16.0):
-		lost_t += dt
-		if lost_t >= give_up_time:
-			_release_token()
-			state = State.RETURN
-			lost_t = 0.0
-			return
-	else:
-		lost_t = 0.0
-
-	var is_lead: bool = director == null or director.lead_enemy == self or director.lead_enemy == null
-	state = State.POSITION if is_lead else State.WAIT_TOKEN
-
-	if is_lead and cooldown <= 0.0 and dist <= GUST_RANGE and _is_on_screen() \
-			and _has_clear_view(pos, target_pos) and _claim_token():
-		_begin_next_move(target_pos, dist)
-		return
-
-	var spd: float = minf(routine_speed * 0.84, routine_speed - 2.0)
-	if dist > STAB_RANGE * 0.80:
-		_move_step(to_t.normalized() * spd * dt, false)
-	elif dist < 34.0 and dist > 0.01:
-		_move_step(-to_t.normalized() * spd * 0.7 * dt, false)
-
-
-func _begin_next_move(target_pos: Vector2, dist: float) -> void:
-	var seq_len: int = 4 if phase >= 3 else (3 if phase >= 2 else 2)
-	var pick: int = move_cycle % seq_len
-	move_cycle += 1
-	if pick == 0:
-		active_move = BossMove.STAB
-	elif pick == 1:
-		active_move = BossMove.WING_GUST
-	elif pick == 2:
-		active_move = BossMove.SHOCKWAVE_RING
-	else:
-		active_move = BossMove.GALE_LEAP
-
-	state = State.TELL
-	is_counter_attack = false
-	var to_t: Vector2 = target_pos - pos
-	var aim_dir: Vector2 = to_t.normalized() if dist > 0.01 else Vector2.from_angle(facing)
-	facing = aim_dir.angle()
-
-	if active_move == BossMove.STAB:
-		var base_s: float = 0.50 if phase >= 3 else tell_time
-		last_tell_duration = _scaled_tell(base_s, false, attack_damage)
-		stab_dir = aim_dir
-		stab_len = clampf(dist + 26.0, STAB_MIN_LEN, STAB_MAX_LEN + 16.0)
-		_emit_sfx("heron_stare")
-	elif active_move == BossMove.WING_GUST:
-		var base_g: float = GUST_TELL_P3 if phase >= 3 else GUST_TELL_P1
-		last_tell_duration = _scaled_tell(base_g, false, attack_damage)
-		gust_dir = aim_dir
-		gust_hit = false
-		gust_announced = false
-		_emit_sfx("heron_gust_inhale")
-	elif active_move == BossMove.SHOCKWAVE_RING:
-		var base_r: float = RING_TELL_P3 if phase >= 3 else RING_TELL_P2
-		last_tell_duration = _scaled_tell(base_r, false, attack_damage)
-		ring_progress = 0.0
-		ring_hit = false
-		_emit_sfx("heron_ring_tell")
-	else:
-		last_tell_duration = _scaled_tell(LEAP_TELL_P3, false, attack_damage)
-		leap_from = pos
-		leap_to = _clamp_pt(target_pos)
-		leap_stage = 0
-		ring_progress = 0.0
-		ring_hit = false
-		_emit_sfx("heron_gust_inhale")
-
-	state_timer = last_tell_duration
-	_emit_attack_started()
-
-
-func _enter_commit() -> void:
-	if active_move == BossMove.WING_GUST:
-		state = State.COMMIT
-		state_timer = GUST_COMMIT_TIME
-		gust_hit = false
-		gust_announced = false
-		_boss_impact(0.15, 110.0, 105.0)
-		_emit_sfx("heron_gust_fire")
-		return
-	if active_move == BossMove.SHOCKWAVE_RING:
-		state = State.COMMIT
-		state_timer = RING_COMMIT_TIME
-		ring_progress = 0.0
-		ring_hit = false
-		_boss_impact(0.20, 94.0, 92.0)
-		_emit_sfx("heron_ring_fire")
-		return
-	if active_move == BossMove.GALE_LEAP:
-		state = State.COMMIT
-		leap_stage = 0
-		state_timer = LEAP_AIR_TIME
-		leap_from = pos
-		ring_progress = 0.0
-		ring_hit = false
-		_boss_impact(0.14, 72.0, 74.0)
-		_emit_sfx("heron_gust_fire")
-		return
-	super._enter_commit()
-
-
-func _step_commit(dt: float) -> void:
-	if active_move == BossMove.WING_GUST:
-		_step_gust_commit(dt)
-		return
-	if active_move == BossMove.SHOCKWAVE_RING:
-		_step_ring_commit(dt)
-		return
-	if active_move == BossMove.GALE_LEAP:
-		_step_leap_commit(dt)
-		return
-	super._step_commit(dt)
-
-
-func _step_gust_commit(dt: float) -> void:
-	if not gust_announced:
-		gust_announced = true
-		gust_emitted.emit(pos, gust_dir, GUST_RANGE, GUST_HALF_W, self)
-		if world_ctx != null and world_ctx.has_method("on_enemy_gust"):
-			world_ctx.call("on_enemy_gust", self, pos, gust_dir, GUST_RANGE, GUST_HALF_W)
-	var end_p: Vector2 = pos + gust_dir * GUST_RANGE
-	if _has_player():
-		var wp: Vector2 = _get_wick_pos()
-		if Geometry2D.get_closest_point_to_segment(wp, pos, end_p).distance_to(wp) <= GUST_HALF_W:
-			if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and not _in_active_skylight(wp):
-				Lx.player.call("apply_recoil", gust_dir * GUST_PUSH_WICK * dt)
-			if not gust_hit and pos.distance_to(wp) <= GUST_DMG_R:
-				gust_hit = true
-				_emit_player_hit(gust_dir)
-	if _is_lantern_out():
-		var lp: Vector2 = _get_lantern_pos()
-		if Geometry2D.get_closest_point_to_segment(lp, pos, end_p).distance_to(lp) <= GUST_HALF_W + 4.0:
-			_push_thrown_lantern(dt)
-	state_timer -= dt
-	if state_timer <= 0.0:
-		state = State.RECOVER
-		beak_stuck = false
-		state_timer = maxf(MIN_RECOVER_TIME, GUST_RECOVER)
-		last_recover_duration = state_timer
-
-
-func _step_ring_commit(dt: float) -> void:
-	state_timer = maxf(0.0, state_timer - dt)
-	ring_progress = 1.0 - clampf(state_timer / RING_COMMIT_TIME, 0.0, 1.0)
-	var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
-	if not ring_hit and _has_player():
-		var wv: Vector2 = _get_wick_pos() - pos
-		if absf(wv.length() - ring_r) <= RING_BAND:
-			ring_hit = true
-			var push: Vector2 = wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing)
-			_emit_shockwave_hit(push)
-	if _is_lured() and _get_lantern_pos().distance_to(pos) <= ring_r:
-		if Lx.events != null:
-			Lx.events.lantern_struck.emit(_get_lantern_pos())
-	if state_timer <= 0.0:
-		state = State.RECOVER
-		beak_stuck = false
-		state_timer = maxf(MIN_RECOVER_TIME, RING_RECOVER)
-		last_recover_duration = state_timer
-
-
-func _step_leap_commit(dt: float) -> void:
-	if leap_stage == 0:
-		state_timer = maxf(0.0, state_timer - dt)
-		var prog: float = 1.0 - clampf(state_timer / LEAP_AIR_TIME, 0.0, 1.0)
-		abbess_z = sin(prog * PI) * LEAP_HEIGHT
-		var desired: Vector2 = leap_from.lerp(leap_to, prog)
-		_move_step(desired - pos, true)
-		if state_timer <= 0.0:
-			abbess_z = 0.0
-			leap_stage = 1
-			state_timer = LEAP_RING_TIME
-			ring_progress = 0.0
-			ring_hit = false
-			_double_ripple_pending = phase >= 3
-			_double_ripple_wait = 0.0
-			_boss_impact(0.22, 108.0, 104.0)
-			_emit_sfx("heron_ring_fire")
-			if _has_player() and pos.distance_to(_get_wick_pos()) <= 16.0:
-				ring_hit = true
-				var pdir: Vector2 = (_get_wick_pos() - pos).normalized() if _get_wick_pos().distance_to(pos) > 0.01 else Vector2.from_angle(facing)
-				_emit_shockwave_hit(pdir)
-		return
-	if _double_ripple_wait > 0.0:
-		_double_ripple_wait -= dt
-		if _double_ripple_wait <= 0.0:
-			state_timer = LEAP_RING_TIME
-			ring_progress = 0.0
-			ring_hit = false
-			_boss_impact(0.18, 96.0, 96.0)
-			_emit_sfx("clockwork_chime")
-			_emit_sfx("heron_ring_fire")
-		return
-	state_timer = maxf(0.0, state_timer - dt)
-	ring_progress = 1.0 - clampf(state_timer / LEAP_RING_TIME, 0.0, 1.0)
-	var ring_r: float = lerpf(RING_START_R, LEAP_RING_MAX_R, ring_progress)
-	if _has_player():
-		var wv: Vector2 = _get_wick_pos() - pos
-		if absf(wv.length() - ring_r) <= RING_BAND:
-			var push: Vector2 = wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing)
-			if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil"):
-				Lx.player.call("apply_recoil", push * 180.0 * dt)
-			if not ring_hit:
-				ring_hit = true
-				_emit_shockwave_hit(push)
-	if state_timer <= 0.0:
-		if _double_ripple_pending:
-			_double_ripple_pending = false
-			_double_ripple_wait = DOUBLE_RIPPLE_GAP
-			return
-		abbess_z = 0.0
-		leap_stage = 0
-		state = State.RECOVER
-		beak_stuck = false
-		state_timer = maxf(MIN_RECOVER_TIME, LEAP_RECOVER)
-		last_recover_duration = state_timer
 
 
 func _step_skylights(dt: float) -> void:
@@ -442,16 +295,16 @@ func _step_skylights(dt: float) -> void:
 			for b_v: Variant in bolts:
 				if b_v is Dictionary and bool((b_v as Dictionary).get("active", true)):
 					var bp: Vector2 = (b_v as Dictionary).get("pos", Vector2.INF) as Vector2
-					if bp.is_finite() and bp.distance_to(sp) <= 14.0:
+					if bp.is_finite() and bp.distance_to(sp) <= 15.0:
 						sk["shattered"] = true
 						(b_v as Dictionary)["active"] = false
-						_emit_sfx("seal_break")
+						stage.play_sfx("seal_break", sp)
 						break
 		elif gliding and wick.move_wings != null and wick.global_position.distance_to(sp) <= SKYLIGHT_UPDRAFT_R + 6.0:
 			wick.move_wings.refresh_glide(1.25, 2.2)
 			if float(sk["catch_cd"]) <= 0.0:
-				sk["catch_cd"] = 0.42
-				_emit_sfx("updraft_catch")
+				sk["catch_cd"] = 0.45
+				stage.play_sfx("heron_gust_fire", sp)
 
 
 func _in_active_skylight(pt: Vector2) -> bool:
@@ -479,11 +332,72 @@ func _push_thrown_lantern(dt: float) -> void:
 					(lan as Node2D).global_position = pushed.round()
 
 
-func _emit_shockwave_hit(push_dir: Vector2) -> void:
-	var prev_kind: String = kind
-	kind = "shockwave"
-	_emit_player_hit(push_dir)
-	kind = prev_kind
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var wick: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var gliding: bool = wick != null and not wick.dead and wick.is_gliding()
+	var heavy: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_SUNFLARE] \
+			or bool(h["pierce"]) or bool(h["cracks_armour"])
+
+	# P3 Gale-Leap 2x air-stagger intercept!
+	if is_flying() and (gliding or heavy):
+		abbess_z = 0.0
+		leap_stage = 0
+		add_stagger(stagger_threshold)
+		stage.play_sfx("hopper_air_stagger", pos)
+		return dmg * 2.0
+
+	if boss_state == BossState.STAGGER:
+		return dmg * 1.45
+	if beak_stuck:
+		return dmg * 1.25
+	if is_punishable():
+		return dmg * (1.15 if (heavy or gliding) else 1.0)
+	if heavy or gliding:
+		return dmg * 1.15
+
+	# Porcelain-feather mantle outside punish windows: reduced ground bolt chip + clear glint!
+	clank_t = 0.12
+	if _clank_sfx_cd <= 0.0:
+		_clank_sfx_cd = 0.28
+		stage.play_sfx("crystal_clank", pos)
+	return dmg * 0.30
+
+
+func _on_death_start() -> void:
+	abbess_z = 0.0
+	beak_stuck = false
+	stage.revert_tiles(world_ctx)
+	stage.play_sfx("heron_abbess_phase", pos)
+
+
+func _build_feather_targets(tgt: Vector2) -> Array[Vector2]:
+	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var inset: Rect2 = arena_rect.grow(-18.0)
+	var corners: Array[Vector2] = [
+		inset.position, Vector2(inset.end.x, inset.position.y),
+		Vector2(inset.position.x, inset.end.y), inset.end,
+	]
+	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
+	out.append(corners[0])
+	out.append(corners[1])
+	if phase >= 2:
+		out.append(clamp_to_arena(arena_rect.get_center().lerp(tgt, 0.5)))
+	if phase >= 3:
+		out.append(corners[2])
+	return out
+
+
+func _carve_safe_tile_near(world_pt: Vector2, tile_kind: String) -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("tile_at"):
+		return
+	var p: Vector2 = clamp_to_arena(world_pt)
+	var tx: int = int(floorf(p.x / 16.0))
+	var ty: int = int(floorf(p.y / 16.0))
+	var cp := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
+	if str(world_ctx.call("tile_at", cp)) == "ground" and cp.distance_to(home) > 32.0:
+		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), tile_kind)
 
 
 func _visual_offset() -> Vector2:
@@ -491,20 +405,16 @@ func _visual_offset() -> Vector2:
 
 
 func _body_color() -> Color:
-	if phase >= 3:
-		return PAL["ice"] as Color
-	if phase >= 2:
-		return PAL["sky"] as Color
-	return PAL["stone"] as Color
+	return (PAL["ice"] if phase >= 3 else (PAL["sky"] if phase >= 2 else PAL["stone"])) as Color
 
 
-func _draw_extra(off: Vector2) -> void:
-	# Guard parent Stab laser/thrust tell so it NEVER draws during WING_GUST, SHOCKWAVE_RING, or GALE_LEAP!
-	if active_move == BossMove.STAB or (state != State.TELL and state != State.COMMIT):
-		super._draw_extra(off)
+func _draw_boss_extra(off: Vector2) -> void:
 	LxHeronAbbessVisuals.draw_extra(self, off)
-
-
-func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	var rip: String = "ice" if (active_move == BossMove.SHOCKWAVE_RING or active_move == BossMove.GALE_LEAP) else ""
-	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.12, 1.42, 0.40, rip)
+	var c: Vector2 = off.round()
+	if clank_t > 0.0:
+		draw_arc(c, body_radius + 5.0, facing - 1.1, facing + 1.1, 16, PAL["cream"] as Color, 2.2)
+		draw_arc(c, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["ice"] as Color, 1.2)
+	elif beak_stuck:
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.8)
+	elif is_punishable() and boss_state != BossState.DEATH:
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 18, PAL["gold"] as Color, 1.4)

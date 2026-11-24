@@ -1,0 +1,535 @@
+{
+  "id": "galleon_r5",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R5_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "gal_r5",
+      "name_key": "GAL_R5_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "galleon_r2",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_r5_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "galleon_r6",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r5_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r5_s",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r5",
+      "kind": "state_lever",
+      "pos": [
+        200,
+        232
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "drv_r5",
+      "kind": "gal_list_driver",
+      "pos": [
+        152,
+        232
+      ],
+      "props": {
+        "targets": [
+          "blk_r5_crate"
+        ],
+        "speed": 145.0,
+        "surge_secs": 2.4
+      }
+    },
+    {
+      "id": "blk_r5_stop",
+      "kind": "push_block",
+      "pos": [
+        152,
+        168
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "blk_r5_crate",
+      "kind": "push_block",
+      "pos": [
+        104,
+        184
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "rail_r5_lane",
+      "kind": "rail",
+      "pos": [
+        208,
+        152
+      ],
+      "props": {
+        "size": [
+          96,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r5",
+      "kind": "pressure_plate",
+      "pos": [
+        168,
+        136
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "hold": true,
+        "size": [
+          22,
+          22
+        ],
+        "target_id": "gate_r5"
+      }
+    },
+    {
+      "id": "mir_r5",
+      "kind": "blue_transformer",
+      "pos": [
+        376,
+        200
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          -0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "sw_r5",
+      "kind": "switch_eye",
+      "pos": [
+        376,
+        104
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "gate_r5"
+      }
+    },
+    {
+      "id": "gate_r5",
+      "kind": "logic_gate",
+      "pos": [
+        240,
+        88
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_r5",
+          "sw_r5"
+        ],
+        "persist": true,
+        "target_id": "door_r5_north"
+      }
+    },
+    {
+      "id": "door_r5_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "gate_r5"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5_s",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        280
+      ],
+      "props": {
+        "zone": "gal_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "zone": "gal_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_n",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        56
+      ],
+      "props": {
+        "zone": "gal_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_e",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        152
+      ],
+      "props": {
+        "zone": "gal_r5",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "barnacle_r5",
+      "kind": "barnacle_sentry",
+      "pos": [
+        424,
+        200
+      ],
+      "zone": "gal_r5"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        96,
+        112,
+        192,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        336,
+        80,
+        96,
+        128
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        120,
+        88
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        232,
+        200
+      ],
+      "radius": 20,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        72,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        56,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tangled_cargo_net",
+      "pos": [
+        440,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "mast_stump_pillar",
+      "pos": [
+        296,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        392,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        104,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        120,
+        88
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Alternate ballast rolls and place a planted stone ballast stopper so a sliding cargo crate catches dead-center on the middle sluice plate while cracking a Barnacle Sentry via blue bank.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Heavy stone blocks resist ship roll and act as custom catch-pegs for sliding wooden cargo crates.",
+    "decisions": 6,
+    "expert_s": 52,
+    "reward": "bosun_approach+r8_drop_landing",
+    "why": "Develops ballast-roll geometry into deliberate multi-block catch engineering before the mini-boss.",
+    "exit": "exit_r5_north",
+    "start": {
+      "vars": {
+        "list": "port"
+      }
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "gal_r5",
+        "timeout": 25.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "push",
+        "target": "blk_r5_stop",
+        "to": [
+          152,
+          136
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          200,
+          264
+        ],
+        "target": "valve_r5"
+      },
+      {
+        "op": "expect",
+        "var": "list==starboard"
+      },
+      {
+        "op": "wait_phase",
+        "target": "blk_r5_crate",
+        "near": [
+          312,
+          184
+        ],
+        "tol": 20.0,
+        "timeout": 4.0
+      },
+      {
+        "op": "push",
+        "target": "blk_r5_crate",
+        "to": [
+          280,
+          136
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          232
+        ],
+        "target": "valve_r5"
+      },
+      {
+        "op": "expect",
+        "var": "list==port"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "plate_r5",
+        "prop": "pressed",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          424,
+          200
+        ],
+        "target": "mir_r5"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r5_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_north"
+      }
+    ]
+  }
+}

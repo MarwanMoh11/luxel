@@ -58,7 +58,7 @@ var _arc_node: WingsArcOverlay = null
 
 
 func can_use() -> bool:
-	return unlocked and wick != null and not wick.dead and not gliding and not wick.is_zipping()
+	return unlocked and not locked and wick != null and not wick.dead and not gliding and not wick.is_zipping()
 
 
 func is_gliding() -> bool:
@@ -215,7 +215,7 @@ func _begin_coyote() -> void:
 func tick_glide(dt: float, dash_held: bool) -> void:
 	if not gliding:
 		return
-	if wick == null or wick.dead or wick.is_zipping():
+	if locked or wick == null or wick.dead or wick.is_zipping():
 		_finish_glide(false)
 		return
 	if coyote_active:

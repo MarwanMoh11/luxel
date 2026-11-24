@@ -28,8 +28,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 108.0
-	hp = 108.0
+	max_hp = 136.0
+	hp = 136.0
 	body_radius = 11.5
 	move_speed = 44.0
 	stagger_threshold = 13.0
@@ -41,7 +41,7 @@ func _init() -> void:
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.50])
+	configure_phases([0.58])
 
 	# Attack 1 (P1+P2): Spin-Blow Mirror (inflates glowing glass bubble -> drops live rotatable mirror + shard fan!)
 	register_attack("spin_blow_mirror", {
@@ -100,7 +100,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 	# Attack 4 (P2): Furnace Loom Sweep (90 deg sweeping molten glass beam + twin mirror flash!)
 	register_attack("furnace_loom_sweep", {
 		"phases": [2],
-		"weight": 1.65, "tell": 0.58, "commit": 0.45, "recover": 1.30, "cooldown": 1.6,
+		"weight": 2.35, "tell": 0.58, "commit": 0.45, "recover": 1.25, "cooldown": 1.0,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_sweep_base_ang = ((tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else facing) - 0.78
 			_sweep_hit = false

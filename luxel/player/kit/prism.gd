@@ -11,14 +11,16 @@ var bounces_count: int = 0
 
 
 func can_use() -> bool:
-	return wick != null and not wick.dead
+	return not locked and wick != null and not wick.dead
 
 
 func has_split() -> bool:
-	return unlocked
+	return unlocked and not locked
 
 
 func get_bounces() -> int:
+	if locked:
+		return 0
 	# Blue Transformers / mirrors reflect & transform yellow bolts immediately (2 bounces by default).
 	# Claiming Island 2's shrine_prism unlocks 3 bounces (4 with prism_bounce shop upgrade).
 	var has_upg: bool = Lx.state != null and Lx.state.get_upgrade_rank("prism_bounce") > 0
@@ -31,13 +33,15 @@ func get_bounces() -> int:
 
 
 func get_damage_mult() -> float:
+	if locked:
+		return 1.0
 	if unlocked:
 		return float(get_data().get("damage_mult", 1.30))
 	return 1.15
 
 
 func should_crack_armour(bounce_count: int) -> bool:
-	return unlocked and bounce_count >= 1
+	return unlocked and not locked and bounce_count >= 1
 
 
 func get_range_refresh() -> float:

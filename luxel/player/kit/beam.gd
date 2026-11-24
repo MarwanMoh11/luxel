@@ -48,14 +48,14 @@ func press_beam() -> bool:
 	if charging:
 		return true
 	if not can_use():
-		var can_buf: bool = unlocked and wick != null and not wick.dead and (
+		var can_buf: bool = unlocked and not locked and wick != null and not wick.dead and (
 			wick.is_dashing() or wick.is_gliding() or wick.is_zipping() or cooldown_left > 0.0
 			or (wick.lantern != null and wick.lantern.state == LxLantern.State.RECALLING)
 		)
 		if can_buf:
 			_buffer_t = 0.12
 			return false
-		if wick != null and (not unlocked or (wick.lantern != null and not wick.lantern.is_in_hand())):
+		if wick != null and (not unlocked or locked or (wick.lantern != null and not wick.lantern.is_in_hand())):
 			wick.emit_sfx("denied", wick.global_position, false)
 		return false
 	_buffer_t = 0.0
@@ -88,7 +88,7 @@ func release_beam() -> bool:
 
 
 func fire_instant_beam(world_ctx: Node = null) -> bool:
-	if wick == null or wick.dead or not unlocked:
+	if wick == null or wick.dead or not unlocked or locked:
 		return false
 	if wick.lantern != null and not wick.lantern.is_in_hand():
 		cancel()

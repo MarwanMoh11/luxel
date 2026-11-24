@@ -1,0 +1,576 @@
+{
+  "id": "galleon_r7",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R7_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "gal_r7",
+      "name_key": "GAL_R7_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "galleon_r6",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_r7_nw",
+      "rect": [
+        0,
+        176,
+        16,
+        32
+      ],
+      "to_region": "galleon_r8",
+      "to_spawn": [
+        400,
+        144
+      ],
+      "locked_door_id": "door_r7_nw"
+    },
+    {
+      "id": "exit_r7_ne",
+      "rect": [
+        384,
+        0,
+        32,
+        16
+      ],
+      "to_region": "galleon_r9",
+      "to_spawn": [
+        112,
+        304
+      ],
+      "locked_door_id": "door_r7_ne"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_s",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r7_clamp",
+      "kind": "lore_stone",
+      "pos": [
+        296,
+        248
+      ],
+      "props": {
+        "string_id": "GAL_LORE_CLAMP",
+        "icon": "lantern"
+      }
+    },
+    {
+      "id": "valve_r7_pedal",
+      "kind": "state_lever",
+      "pos": [
+        232,
+        216
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 0,
+        "style": "pedal",
+        "step_trigger": true,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "drv_r7",
+      "kind": "gal_list_driver",
+      "pos": [
+        232,
+        168
+      ],
+      "props": {
+        "rail_targets": [
+          "mir_r7_1",
+          "mir_r7_2"
+        ],
+        "rail_min_x": 160.0,
+        "rail_max_x": 264.0,
+        "rail_gap": 24.0,
+        "speed": 140.0,
+        "surge_secs": 1.6
+      }
+    },
+    {
+      "id": "rail_r7_gunport",
+      "kind": "rail",
+      "pos": [
+        168,
+        136
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "mir_r7_1",
+      "kind": "blue_transformer",
+      "pos": [
+        160,
+        104
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": false
+      }
+    },
+    {
+      "id": "mir_r7_2",
+      "kind": "blue_transformer",
+      "pos": [
+        184,
+        104
+      ],
+      "props": {
+        "normal": [
+          -0.7071,
+          -0.7071
+        ],
+        "movable": false,
+        "rotatable": false
+      }
+    },
+    {
+      "id": "keg_r7",
+      "kind": "ballast_keg",
+      "pos": [
+        168,
+        72
+      ],
+      "props": {
+        "respawn_s": 5.0,
+        "blast_r": 36.0,
+        "obey_list": true,
+        "tilt_speed": 110.0
+      }
+    },
+    {
+      "id": "cracked_r7",
+      "kind": "cracked_wall",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "size": [
+          24,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sw_r7",
+      "kind": "switch_eye",
+      "pos": [
+        264,
+        36
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_ids": [
+          "door_r7_nw",
+          "door_r7_ne"
+        ]
+      }
+    },
+    {
+      "id": "door_r7_nw",
+      "kind": "door",
+      "pos": [
+        24,
+        192
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r7"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_r7_ne",
+      "kind": "door",
+      "pos": [
+        400,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r7"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "zone": "gal_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        216
+      ],
+      "props": {
+        "zone": "gal_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        200
+      ],
+      "props": {
+        "zone": "gal_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_ne",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        88
+      ],
+      "props": {
+        "zone": "gal_r7",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        160,
+        64,
+        48
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        192,
+        192,
+        64,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        392,
+        248
+      ],
+      "radius": 22,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        168,
+        184
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "broken_cannon",
+      "pos": [
+        104,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "broken_cannon",
+      "pos": [
+        312,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        360,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        360,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        440,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        72,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        440,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        392,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "First Ballast Clamp aha: throw your lantern over the gunport rail to clamp Mirror 1 west, step on the brass foot-pedal while unarmed to roll Mirror 2 and a Ballast Keg east, then double-bank to blast open the bulkhead and light the blue switch.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Ballast Clamp pins one rail object uphill while the unarmed foot-pedal rolls the rest downhill to split a linked pair.",
+    "decisions": 8,
+    "expert_s": 54,
+    "reward": "opens_upper_ship_wings",
+    "why": "Signature aha room introducing Ballast Clamp + Foot-Pedal + Ballast Keg synergy immediately after the mini-boss.",
+    "exit": "exit_r7_ne",
+    "start": {
+      "vars": {
+        "list": "port"
+      },
+      "flags": [
+        "power_ballast_clamp"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          160,
+          164
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "mir_r7_1",
+        "hold": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          216
+        ]
+      },
+      {
+        "op": "expect",
+        "var": "list==starboard"
+      },
+      {
+        "op": "wait_phase",
+        "target": "mir_r7_2",
+        "near": [
+          264,
+          104
+        ],
+        "tol": 8.0,
+        "timeout": 3.5
+      },
+      {
+        "op": "wait_phase",
+        "target": "keg_r7",
+        "near": [
+          264,
+          72
+        ],
+        "tol": 14.0,
+        "timeout": 3.5
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          160,
+          168
+        ],
+        "target": "mir_r7_1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "cracked_r7",
+        "prop": "broken",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "shoot",
+        "from": [
+          160,
+          168
+        ],
+        "target": "mir_r7_1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r7_ne",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_ne"
+      }
+    ]
+  }
+}

@@ -1,0 +1,519 @@
+{
+  "id": "hourglass_r6",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R6",
+  "spawn": [
+    56,
+    152
+  ],
+  "zones": [
+    {
+      "id": "hg_r6_parterre",
+      "name_key": "ISL4_HG_R6",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r6_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "hourglass_r1",
+      "to_spawn": [
+        456,
+        200
+      ]
+    },
+    {
+      "id": "exit_hg_r6_north",
+      "rect": [
+        256,
+        0,
+        48,
+        16
+      ],
+      "to_region": "hourglass_r7",
+      "to_spawn": [
+        224,
+        208
+      ],
+      "locked_door_id": "door_hg_r6_north"
+    },
+    {
+      "id": "exit_hg_r6_east",
+      "rect": [
+        464,
+        160,
+        16,
+        48
+      ],
+      "to_region": "hourglass_r10",
+      "to_spawn": [
+        56,
+        128
+      ],
+      "locked_door_id": "door_hg_r6_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r6",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rose_hg_r6_1",
+      "kind": "echo_rose",
+      "pos": [
+        120,
+        184
+      ],
+      "props": {
+        "secs": 3.5,
+        "loop": true
+      }
+    },
+    {
+      "id": "rose_hg_r6_2",
+      "kind": "echo_rose",
+      "pos": [
+        232,
+        232
+      ],
+      "props": {
+        "secs": 3.5,
+        "loop": true
+      }
+    },
+    {
+      "id": "mirror_hg_r6",
+      "kind": "blue_transformer",
+      "pos": [
+        216,
+        152
+      ],
+      "props": {
+        "angle_deg": 0,
+        "angle_step_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "double_sided": true,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "sw_hg_r6_blue",
+      "kind": "switch_eye",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "requires_blue": true,
+        "reset_time": 6.0,
+        "target_id": "gate_hg_r6_all"
+      }
+    },
+    {
+      "id": "portal_hg_r6_in",
+      "kind": "blue_portal",
+      "pos": [
+        216,
+        232
+      ],
+      "props": {
+        "target_portal_id": "portal_hg_r6_out",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_hg_r6_out",
+      "kind": "blue_portal",
+      "pos": [
+        392,
+        72
+      ],
+      "props": {
+        "target_portal_id": "portal_hg_r6_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "chest_hg_r6_isle",
+      "kind": "chest",
+      "pos": [
+        424,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "crys_hg_r6",
+      "kind": "crystal_toggle",
+      "pos": [
+        312,
+        216
+      ],
+      "props": {
+        "group": "r6_bar",
+        "phase": 0
+      }
+    },
+    {
+      "id": "tbar_hg_r6",
+      "kind": "toggle_block",
+      "pos": [
+        280,
+        96
+      ],
+      "props": {
+        "group": "r6_bar",
+        "phase": 0,
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "brazier_hg_r6_t",
+      "kind": "timed_brazier",
+      "pos": [
+        392,
+        184
+      ],
+      "props": {
+        "secs": 5.5,
+        "target_id": "gate_hg_r6_all"
+      }
+    },
+    {
+      "id": "gate_hg_r6_all",
+      "kind": "logic_gate",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "sw_hg_r6_blue",
+          "brazier_hg_r6_t"
+        ],
+        "persist": true,
+        "target_ids": [
+          "door_hg_r6_north",
+          "door_hg_r6_east"
+        ],
+        "sets_flag": "hg_r6_open"
+      }
+    },
+    {
+      "id": "door_hg_r6_north",
+      "kind": "door",
+      "pos": [
+        280,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "gate_hg_r6_all"
+        ],
+        "persistent": true,
+        "sets_flag": "hg_r6_open"
+      }
+    },
+    {
+      "id": "door_hg_r6_east",
+      "kind": "door",
+      "pos": [
+        456,
+        184
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_hg_r6_all"
+        ],
+        "persistent": true,
+        "sets_flag": "hg_r6_open"
+      }
+    },
+    {
+      "id": "lamp_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "zone": "hg_r6_parterre",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_mid",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        200
+      ],
+      "props": {
+        "zone": "hg_r6_parterre",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        184
+      ],
+      "props": {
+        "zone": "hg_r6_parterre",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_isle",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        40
+      ],
+      "props": {
+        "zone": "hg_r6_parterre",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        120,
+        128,
+        144,
+        64
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        152
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        136,
+        232
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        136
+      ],
+      "size": [
+        40,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "brass_sundial_pedestal",
+      "pos": [
+        168,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        120,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        280,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        104,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        440,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        280,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        136,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "Rose-Glass Prism Parterre: rotate the Blue Transformer 45 deg so Echo 1 banks blue bolts north across water into the prism eye while Wick flips the crystal bar and lights the east brazier; turning 135 deg also opens the bonus chest portal.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Echo Rose bolts reflect off blue_transformer mirrors into blue prism bolts, holding distant prism eyes while Wick works elsewhere.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "hg_r6_open+35_shards_opt",
+    "why": "Introduces the East Wing's signature Echo + Prism Mirror synthesis and branches to optional r10.",
+    "exit": "exit_hg_r6_north",
+    "solution": [
+      {
+        "op": "rotate",
+        "target": "mirror_hg_r6",
+        "angle": 45
+      },
+      {
+        "op": "interact",
+        "target": "rose_hg_r6_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          136,
+          152
+        ],
+        "target": "mirror_hg_r6",
+        "count": 2
+      },
+      {
+        "op": "wait",
+        "secs": 2.4
+      },
+      {
+        "op": "shoot",
+        "from": [
+          264,
+          216
+        ],
+        "target": "crys_hg_r6"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          184
+        ],
+        "target": "brazier_hg_r6_t"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_hg_r6_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r6_north"
+      }
+    ]
+  }
+}

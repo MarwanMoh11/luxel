@@ -1,0 +1,92 @@
+{
+  "name_key": "ISL3_UR_R5_NAME",
+  "spawn": [
+    64,
+    216
+  ],
+  "zones": [
+    {
+      "id": "ur_r5",
+      "name_key": "ISL3_UR_R5_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_south",
+      "rect": [
+        48,
+        240,
+        32,
+        16
+      ],
+      "to_region": "underroot_r4",
+      "to_spawn": [
+        208,
+        48
+      ]
+    },
+    {
+      "id": "exit_r5_east",
+      "rect": [
+        464,
+        112,
+        16,
+        32
+      ],
+      "to_region": "underroot_r6",
+      "to_spawn": [
+        48,
+        144
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "lamp_r5_1",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        128
+      ],
+      "props": {
+        "zone": "ur_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "wick_key_ur_1",
+      "kind": "wick_key",
+      "pos": [
+        400,
+        128
+      ],
+      "props": {
+        "dungeon_id": "underroot",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_ur_1"
+      }
+    }
+  ],
+  "enemies": [],
+  "id": "underroot_r5",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "tiny": true,
+  "theme": "under_root",
+  "music": "isl3_underroot",
+  "ambience": [
+    "forest_wind",
+    "cave_drip"
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": []
+}

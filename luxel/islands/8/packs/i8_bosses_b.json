@@ -46,7 +46,7 @@
     "stair_warden": {
       "script": "res://luxel/bosses/stair_warden/brain.gd",
       "data": {
-        "max_hp": 210.0,
+        "max_hp": 195.0,
         "body_radius": 12.5,
         "routine_speed": 44.0,
         "leash_radius": 0.0,
@@ -132,7 +132,7 @@
     "first_dark": {
       "island": 8,
       "name_key": "ISL8_BOSS_FIRST_DARK",
-      "phases": [0.6, 0.25],
+      "phases": [0.6, 0.28],
       "mini": false,
       "dungeon": "superboss",
       "region": "superboss_first_dark",

@@ -27,6 +27,7 @@ class Bolt:
 	var temper: String = ""
 	var wall_bounces_left: int = 0
 	var wall_bounced: bool = false
+	var enemy_bounces_left: int = 1
 	var base_speed: float = 330.0
 	var curve_angle_deg: float = 0.0
 	var hit_ids: Array[int] = []
@@ -289,6 +290,7 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 			var erad: float = wick.get_entity_radius(enemy, 8.0)
 			if Geometry2D.get_closest_point_to_segment(epos, b.pos, nxt).distance_to(epos) <= erad + 2.5:
 				b.hit_ids.append(eid)
+				var enemy_refl: bool = enemy.has_method("is_reflective") and bool(enemy.call("is_reflective")) and enemy.has_method("reflect_dir")
 				var src: String = LxHit.SOURCE_PRISM if b.is_prism else LxHit.SOURCE_BOLT
 				var dmg_f: float = b.damage
 				var bm_h: LxBiomeMechanics = LxBiomeMechanics.active_instance
@@ -324,6 +326,9 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 						if not was_f and wick.ember >= emax_c - 0.001:
 							wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.28, LxWick.PAL_GOLD, 1.5)
 							wick.emit_sfx("beam_ready", wick.global_position, false)
+				if enemy_refl and b.enemy_bounces_left > 0 and _try_enemy_ricochet(b, enemy, epos, erad, nxt, eid, prism_range):
+					reflected = true
+					break
 				if not (pierce or b.is_pierce):
 					dead = true
 					break
@@ -538,6 +543,41 @@ func _bolt_hits_item(from_p: Vector2, to_p: Vector2, item: Object, ipos: Vector2
 		if srect.has_area() and (srect.grow(1.5).has_point(to_p) or srect.grow(1.5).has_point(from_p.lerp(to_p, 0.5))):
 			return true
 	return false
+
+
+func _try_enemy_ricochet(b: Bolt, enemy: Object, epos: Vector2, erad: float, nxt: Vector2, eid: int, prism_range: float) -> bool:
+	var rdir_v: Variant = enemy.call("reflect_dir", b.dir)
+	if not (rdir_v is Vector2) or (rdir_v as Vector2).length_squared() <= 0.0001:
+		return false
+	var rdir: Vector2 = (rdir_v as Vector2).normalized()
+	var hit_pt: Vector2 = Geometry2D.get_closest_point_to_segment(epos, b.pos, nxt)
+	b.dir = rdir
+	b.prev_pos = hit_pt
+	b.pos = hit_pt + rdir * maxf(2.5, erad * 0.4)
+	b.enemy_bounces_left -= 1
+	b.bounce_count += 1
+	b.dist = 0.0
+	b.skim_dist = 0.0
+	b.max_range = maxf(b.max_range, prism_range)
+	b.hit_ids.clear()
+	b.hit_ids.append(eid)
+	var t_col: String = ""
+	if enemy.has_method("get_transform_color"):
+		t_col = str(enemy.call("get_transform_color")).strip_edges().to_lower()
+	elif enemy.get("transforms_to") is String:
+		t_col = str(enemy.get("transforms_to")).strip_edges().to_lower()
+	elif enemy.has_method("converts_to_blue") and bool(enemy.call("converts_to_blue")):
+		t_col = LxHit.COLOR_BLUE
+	if t_col == LxHit.COLOR_BLUE:
+		b.light_color = LxHit.COLOR_BLUE
+		b.is_prism = true
+		if wick.move_prism != null and wick.move_prism.should_crack_armour(b.bounce_count):
+			b.cracks_armour = true
+	var is_b: bool = b.light_color == LxHit.COLOR_BLUE
+	wick.spawn_sparks(hit_pt, rdir, 5, LxWick.PAL_ICE if is_b else LxWick.PAL_GOLD, 34.0, 90.0, 0.16)
+	wick.spawn_ring(hit_pt, 2.0, 10.0, 0.16, LxWick.PAL_ICE if is_b else LxWick.PAL_CREAM, 1.1)
+	wick.emit_sfx("prism_bounce", hit_pt, true)
+	return true
 
 
 func _estimate_wall_normal(world_ctx: Node, from_p: Vector2, to_p: Vector2, dir: Vector2) -> Vector2:

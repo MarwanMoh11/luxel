@@ -1,0 +1,529 @@
+{
+  "id": "galleon_r8",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R8_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    400,
+    144
+  ],
+  "zones": [
+    {
+      "id": "gal_r8",
+      "name_key": "GAL_R8_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_east",
+      "rect": [
+        432,
+        128,
+        16,
+        32
+      ],
+      "to_region": "galleon_r7",
+      "to_spawn": [
+        56,
+        192
+      ]
+    },
+    {
+      "id": "exit_r8_chute",
+      "rect": [
+        160,
+        272,
+        32,
+        16
+      ],
+      "to_region": "galleon_r5",
+      "to_spawn": [
+        120,
+        88
+      ],
+      "one_way": true,
+      "locked_door_id": "door_r8_chute"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_e",
+      "kind": "room_anchor",
+      "pos": [
+        400,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r8_pedal",
+      "kind": "state_lever",
+      "pos": [
+        232,
+        168
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 0,
+        "style": "pedal",
+        "step_trigger": true,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "mir_r8",
+      "kind": "blue_transformer",
+      "pos": [
+        280,
+        136
+      ],
+      "props": {
+        "normal": [
+          -0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "keg_r8_1",
+      "kind": "ballast_keg",
+      "pos": [
+        168,
+        80
+      ],
+      "props": {
+        "respawn_s": 5.0,
+        "blast_r": 38.0,
+        "obey_list": true,
+        "tilt_speed": 90.0
+      }
+    },
+    {
+      "id": "keg_r8_2",
+      "kind": "ballast_keg",
+      "pos": [
+        216,
+        200
+      ],
+      "props": {
+        "respawn_s": 5.0,
+        "blast_r": 36.0,
+        "obey_list": true,
+        "tilt_speed": 90.0
+      }
+    },
+    {
+      "id": "cracked_r8_moth",
+      "kind": "cracked_wall",
+      "pos": [
+        120,
+        80
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "moth_2_08",
+      "kind": "moth",
+      "pos": [
+        56,
+        72
+      ],
+      "props": {
+        "id": "moth_2_08"
+      }
+    },
+    {
+      "id": "door_r8_vault",
+      "kind": "door",
+      "pos": [
+        120,
+        168
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "gal_r8",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_r8_chute",
+      "kind": "door",
+      "pos": [
+        176,
+        264
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "gal_r8",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "key_galleon_2",
+      "kind": "wick_key",
+      "pos": [
+        56,
+        184
+      ],
+      "props": {
+        "dungeon_id": "galleon",
+        "key_kind": "wick_key"
+      }
+    },
+    {
+      "id": "ship_log_2",
+      "kind": "quest_item",
+      "pos": [
+        56,
+        232
+      ],
+      "props": {
+        "id": "ship_log_2"
+      }
+    },
+    {
+      "id": "lore_r8_log2",
+      "kind": "lore_stone",
+      "pos": [
+        88,
+        232
+      ],
+      "props": {
+        "string_id": "ISL2_LOG_2",
+        "icon": "book"
+      }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        104
+      ],
+      "props": {
+        "zone": "gal_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_c",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "zone": "gal_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        248
+      ],
+      "props": {
+        "zone": "gal_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        200
+      ],
+      "props": {
+        "zone": "gal_r8",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "net_r8",
+      "kind": "net_caster",
+      "pos": [
+        312,
+        88
+      ],
+      "zone": "gal_r8"
+    },
+    {
+      "id": "anchor_r8",
+      "kind": "anchor_drowned",
+      "pos": [
+        200,
+        136
+      ],
+      "zone": "gal_r8"
+    },
+    {
+      "id": "shrimp_r8_n",
+      "kind": "pistol_shrimp",
+      "pos": [
+        184,
+        56
+      ],
+      "zone": "gal_r8"
+    },
+    {
+      "id": "shrimp_r8_s",
+      "kind": "pistol_shrimp",
+      "pos": [
+        248,
+        232
+      ],
+      "zone": "gal_r8"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        144,
+        240,
+        48,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        32,
+        160,
+        64,
+        80
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        184,
+        88
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        344,
+        216
+      ],
+      "radius": 24,
+      "style": "soot"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        376,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        392,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "broken_cannon",
+      "pos": [
+        168,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        40,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        328,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        88,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        184,
+        248
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tangled_cargo_net",
+      "pos": [
+        376,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Powder Magazine ambush where a Net Caster pins careless clamping lanterns while rolling Ballast Kegs shatter an Anchor Drowned and blast open the secret west wall hiding Lost Moth 2-08.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Clear lantern-pinning Net Casters before clamping Ballast Kegs in combat; kegs open secret walls too.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "galleon_small_2+moth_2_08+ship_log_2+cycle_3",
+    "why": "Tactical upper-deck combat wing awarding Key #2, Lost Moth 2-08, Hollow Wick Ship Log #2, and drop chute Cycle 3.",
+    "exit": "exit_r8_chute",
+    "start": {
+      "vars": {
+        "list": "port"
+      },
+      "flags": [
+        "power_ballast_clamp"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "gal_r8",
+        "timeout": 55.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "key_galleon_2"
+      },
+      {
+        "op": "interact",
+        "target": "ship_log_2"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r8_log2"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          200,
+          80
+        ],
+        "target": "keg_r8_1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "cracked_r8_moth",
+        "prop": "broken",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          72
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_chute"
+      }
+    ]
+  }
+}

@@ -97,6 +97,14 @@ func is_enemy_disabled(enemy_id: String) -> bool:
 	return not enemy_id.is_empty() and bool(_disabled_enemies.get(enemy_id, false))
 
 
+func is_interactable_disabled(inter_id: String) -> bool:
+	return not inter_id.is_empty() and bool(_disabled_inters.get(inter_id, false))
+
+
+func get_saved_inter_active(inter_id: String, fallback: bool = true) -> bool:
+	return bool(_saved_inter_active.get(inter_id, fallback))
+
+
 func record_tile_override(rect: Rect2i, tile: String) -> void:
 	_tile_overrides.append({"rect": rect, "tile": tile})
 	_rebuild_changed_cells()
@@ -225,6 +233,7 @@ func _find_nearest_safe_tile_center(from_pos: Vector2) -> Vector2:
 
 func _apply_entity_toggles(active_layers: Array[Dictionary]) -> void:
 	var all_enable_controlled: Dictionary = {}
+	var all_disable_controlled: Dictionary = {}
 	for layer: Dictionary in _layers:
 		var en_v: Variant = layer.get("enable", [])
 		if en_v is Array:
@@ -232,21 +241,32 @@ func _apply_entity_toggles(active_layers: Array[Dictionary]) -> void:
 				var eid: String = str(id_v).strip_edges()
 				if not eid.is_empty():
 					all_enable_controlled[eid] = true
+		var dis_all_v: Variant = layer.get("disable", [])
+		if dis_all_v is Array:
+			for id_v: Variant in (dis_all_v as Array):
+				var did: String = str(id_v).strip_edges()
+				if not did.is_empty():
+					all_disable_controlled[did] = true
 
 	var desired_disabled: Dictionary = {}
+	var explicitly_enabled: Dictionary = {}
 	for eid: Variant in all_enable_controlled.keys():
 		desired_disabled[str(eid)] = true
 	for layer: Dictionary in active_layers:
 		var en_v: Variant = layer.get("enable", [])
 		if en_v is Array:
 			for id_v: Variant in (en_v as Array):
-				desired_disabled.erase(str(id_v).strip_edges())
+				var eid: String = str(id_v).strip_edges()
+				if not eid.is_empty():
+					desired_disabled.erase(eid)
+					explicitly_enabled[eid] = true
 		var dis_v: Variant = layer.get("disable", [])
 		if dis_v is Array:
 			for id_v: Variant in (dis_v as Array):
 				var did: String = str(id_v).strip_edges()
 				if not did.is_empty():
 					desired_disabled[did] = true
+					explicitly_enabled.erase(did)
 
 	_disabled_exits.clear()
 	for ex: Dictionary in _region.exits:
@@ -263,19 +283,45 @@ func _apply_entity_toggles(active_layers: Array[Dictionary]) -> void:
 		if want_off:
 			_disabled_inters[it.id] = true
 			if not was_off:
-				_saved_inter_active[it.id] = it.active
+				var base_act: bool = it.active
+				if not base_act and not _is_permanently_spent(it) and (all_enable_controlled.has(it.id) or (all_disable_controlled.has(it.id) and _authored_active_default(it))):
+					base_act = true
+				_saved_inter_active[it.id] = base_act
 			it.active = false
 			it.visible = false
 		elif was_off:
 			var prev_act: bool = bool(_saved_inter_active[it.id])
 			_saved_inter_active.erase(it.id)
+			if not prev_act and not _is_permanently_spent(it) and explicitly_enabled.has(it.id):
+				prev_act = true
 			it.active = prev_act
 			it.visible = prev_act
+		elif explicitly_enabled.has(it.id) or (all_disable_controlled.has(it.id) and _authored_active_default(it)):
+			if not _is_permanently_spent(it):
+				it.active = true
+				it.visible = true
 
 	_disabled_enemies.clear()
 	for id_k: Variant in desired_disabled.keys():
 		_disabled_enemies[str(id_k)] = true
 	_region._rebuild_active_enemies()
+
+
+func _authored_active_default(it: LxInteractable) -> bool:
+	if _region == null or it == null:
+		return true
+	var def_v: Variant = _region._inter_defaults.get(it.get_state_key(), null)
+	if def_v is Dictionary and (def_v as Dictionary).has("active"):
+		return bool((def_v as Dictionary)["active"])
+	return true
+
+
+static func _is_permanently_spent(it: LxInteractable) -> bool:
+	for k: String in ["collected", "claimed", "shattered", "broken", "burned"]:
+		var v: Variant = it.get(k)
+		if v is bool and bool(v):
+			return true
+	return false
 
 
 func _sync_overlays(active_layers: Array[Dictionary]) -> void:

@@ -289,7 +289,10 @@ func _step_brain(dt: float) -> void:
 		if _finale_swell_t <= 0.0: _enter_finale_choice()
 		return
 	if finale_stage == FinaleStage.CHOICE:
-		state_timer = 1.0; return
+		state_timer = 1.0
+		if _finale_panel != null and is_instance_valid(_finale_panel) and _finale_panel.has_method("step_panel"):
+			_finale_panel.call("step_panel", dt, true)
+		return
 	if finale_stage == FinaleStage.UNBROKEN_STAND and unbroken_timer > 0.0:
 		unbroken_timer = maxf(0.0, unbroken_timer - dt)
 		if _finale_panel != null and is_instance_valid(_finale_panel):

@@ -31,30 +31,30 @@ func set_world_ctx(world_ctx: Node) -> void:
 
 
 func can_use() -> bool:
-	return unlocked and cooldown_left <= 0.0 and wick != null and not wick.dead and wick.has_lantern()
+	return unlocked and not locked and cooldown_left <= 0.0 and wick != null and not wick.dead and wick.has_lantern()
 
 
 func is_pulse_active() -> bool:
-	return unlocked and pulse_left > 0.0
+	return unlocked and not locked and pulse_left > 0.0
 
 
 func is_warning() -> bool:
-	return unlocked and pulse_left > 0.0 and pulse_left <= warn_time
+	return unlocked and not locked and pulse_left > 0.0 and pulse_left <= warn_time
 
 
 func get_pulse_ratio() -> float:
-	if not unlocked or pulse_left <= 0.0:
+	if not unlocked or locked or pulse_left <= 0.0:
 		return 0.0
 	return clampf(pulse_left / maxf(pulse_duration, 0.01), 0.0, 1.0)
 
 
 func is_anchor_active() -> bool:
-	return unlocked and wick != null and not wick.dead and wick.has_lantern() \
+	return unlocked and not locked and wick != null and not wick.dead and wick.has_lantern() \
 		and wick.lantern != null and wick.lantern.is_lure_active()
 
 
 func get_reveal_radius() -> float:
-	if not unlocked or wick == null or not wick.has_lantern():
+	if not unlocked or locked or wick == null or not wick.has_lantern():
 		return 0.0
 	var data: Dictionary = get_data()
 	pulse_radius = float(data.get("pulse_radius", 104.0))
@@ -138,7 +138,7 @@ func tick(dt: float) -> void:
 func register_circle(world_ctx: Node) -> void:
 	var ctx: Node = world_ctx if world_ctx != null else (_world_ctx if _world_ctx != null else Lx.world)
 	_world_ctx = ctx
-	if not unlocked or wick == null or wick.dead or not wick.has_lantern():
+	if not unlocked or locked or wick == null or wick.dead or not wick.has_lantern():
 		last_radius = 0.0
 		anchor_active = false
 		anchor_radius = 0.0
@@ -168,7 +168,7 @@ func register_circle(world_ctx: Node) -> void:
 func tick_lens(_dt: float, world_ctx: Node) -> void:
 	var ctx: Node = world_ctx if world_ctx != null else (_world_ctx if _world_ctx != null else Lx.world)
 	_world_ctx = ctx
-	if not unlocked or wick == null or wick.dead or not wick.has_lantern():
+	if not unlocked or locked or wick == null or wick.dead or not wick.has_lantern():
 		last_radius = 0.0
 		anchor_active = false
 		anchor_radius = 0.0
@@ -244,7 +244,7 @@ func _apply_reveal_circle(ctx: Node, origin: Vector2, rad: float, source: String
 
 
 func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
-	if not unlocked:
+	if not unlocked or locked:
 		return
 	var pulse_on: bool = is_pulse_active() and last_radius > 0.0
 	var anch_on: bool = anchor_active and anchor_radius > 0.0

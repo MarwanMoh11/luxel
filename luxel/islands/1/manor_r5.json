@@ -1,0 +1,428 @@
+{
+  "name_key": "ISL1_MN_WORKSHOP",
+  "spawn": [
+    56,
+    152
+  ],
+  "zones": [
+    {
+      "id": "mn_workshop",
+      "name_key": "ISL1_MN_WORKSHOP",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "manor_r4",
+      "to_spawn": [
+        384,
+        152
+      ]
+    },
+    {
+      "id": "exit_r5_east",
+      "rect": [
+        464,
+        128,
+        16,
+        48
+      ],
+      "to_region": "manor_r1",
+      "to_spawn": [
+        456,
+        112
+      ],
+      "requires_flags": [
+        "manor_miniboss_done",
+        "manor_dumbwaiter"
+      ],
+      "locked_door_id": "door_r5_lift"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r5_west",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "hook_r5_nw",
+      "kind": "lantern_hook",
+      "pos": [
+        144,
+        88
+      ],
+      "props": {
+        "light_radius": 84
+      }
+    },
+    {
+      "id": "hook_r5_ne",
+      "kind": "lantern_hook",
+      "pos": [
+        336,
+        88
+      ],
+      "props": {
+        "light_radius": 84
+      }
+    },
+    {
+      "id": "bell_r5_dusk",
+      "kind": "bell",
+      "pos": [
+        240,
+        256
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 260
+      }
+    },
+    {
+      "id": "altar_shutter_hood",
+      "kind": "mn_hood_altar",
+      "pos": [
+        240,
+        104
+      ],
+      "props": {
+        "requires_flag": "manor_miniboss_done"
+      }
+    },
+    {
+      "id": "sw_r5_lift",
+      "kind": "switch_eye",
+      "pos": [
+        392,
+        208
+      ],
+      "props": {
+        "target_id": "door_r5_lift",
+        "sets_flag": "manor_dumbwaiter"
+      }
+    },
+    {
+      "id": "door_r5_lift",
+      "kind": "door",
+      "pos": [
+        456,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r5_lift"
+        ],
+        "sets_flag": "manor_dumbwaiter",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        240
+      ],
+      "props": {
+        "zone": "mn_workshop",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        240
+      ],
+      "props": {
+        "zone": "mn_workshop",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        72
+      ],
+      "props": {
+        "zone": "mn_workshop",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        72
+      ],
+      "props": {
+        "zone": "mn_workshop",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "valet_r5",
+      "kind": "clockwork_valet",
+      "pos": [
+        264,
+        152
+      ],
+      "zone": "mn_workshop"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        152
+      ],
+      "radius": 56,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        88,
+        128,
+        128
+      ],
+      "style": "brass"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        168,
+        216
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        144
+      ],
+      "size": [
+        52,
+        80
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "tall_grandfather_clock",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tall_grandfather_clock",
+      "pos": [
+        296,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tea_trolley",
+      "pos": [
+        128,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "mahogany_table",
+      "pos": [
+        240,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        96,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        384,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        96,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        368,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r5_lift_msg",
+      "on": "signal:sw_r5_lift",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "manor_dumbwaiter"
+        },
+        {
+          "narrate": "ISL1_MN_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Mini-boss The Clockwork Valet deflects front bolts with silver trays; lure him into bowing politely toward thrown lantern hooks to expose his brass winding-key back and earn the Shutter Hood.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Thrown lantern placement turns disciplined foes around, Dusk freezes P2 spotlights, and Shutter Hood cloaks unarmed Wick in stealth.",
+    "decisions": 6,
+    "expert_s": 85,
+    "reward": "item_shutter_hood+manor_parlor_key",
+    "why": "Centerpiece mini-boss guarding the Manor's dungeon power and Cycle #2 dumbwaiter shortcut back to Foyer.",
+    "exit": "exit_r5_east",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          160,
+          240
+        ],
+        "target": "bell_r5_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 90.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "manor_miniboss_done",
+        "timeout": 4.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "altar_shutter_hood"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          336,
+          208
+        ],
+        "target": "sw_r5_lift"
+      },
+      {
+        "op": "expect",
+        "flag": "item_shutter_hood"
+      },
+      {
+        "op": "expect",
+        "flag": "manor_parlor_key"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_east"
+      }
+    ]
+  },
+  "id": "manor_r5",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

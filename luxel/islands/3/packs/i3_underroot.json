@@ -1,0 +1,72 @@
+{
+  "pack_id": "i3_underroot",
+  "owner": "P3-UNDERROOT",
+  "comment": "Island 3 Minor Dungeon A: The Under-Root (11 tiny-world rooms, 4 internal cycles, theme under_root). Debug-only on dungeon/region meta until P3-OW swaps r1/r11 overworld returns to ow_shift_w.",
+  "strings": {
+    "ISL3_DNG_UNDERROOT": "THE UNDER-ROOT",
+    "ISL3_UR_R1_NAME": "ROOT THRESHOLD",
+    "ISL3_UR_R2_NAME": "ACORN ATRIUM",
+    "ISL3_UR_R3_NAME": "LEAFCUTTER ROAD",
+    "ISL3_UR_R4_NAME": "THE BRASS THIMBLE",
+    "ISL3_UR_R5_NAME": "DEWDROP TERRACE",
+    "ISL3_UR_R6_NAME": "STAG COLOSSUS HOLLOW",
+    "ISL3_UR_R7_NAME": "SAP-RIVER FERRY",
+    "ISL3_UR_R8_NAME": "THE ANT-MILL RING",
+    "ISL3_UR_R9_NAME": "DISCARDED LANTERN-JAR",
+    "ISL3_UR_R10_NAME": "SHED-SKIN GALLERY",
+    "ISL3_UR_R11_NAME": "HUNDRED LAMPS LAIR",
+    "ISL3_HINT_TINY": "SMALL MOTH - BIG SUN. HIDE YOUR LIGHT.",
+    "ISL3_PWR_HORN": "SAP-HORN: CALL BEETLES WITH E!",
+    "ISL3_PROMPT_HORN": "CLAIM SAP-HORN",
+    "ISL3_LORE_RUB_1": "A DARK LANTERN BURNED THE FIRST SAPLING.",
+    "ISL3_UR_JAR_NOTE": "ONE BEAM IN GLASS WAKES ALL FOUR FRUITS.",
+    "ISL3_UR_SHORTCUT": "A ROOT-SLIDE SHORTCUT UNSEALS!",
+    "ISL3_UR_CLEARED": "HUNDRED LAMPS FALLS. HALF-LANTERN CLAIMED!"
+  },
+  "interactables": {
+    "ur_sap_horn_altar": "res://luxel/islands/3/underroot/ur_sap_horn_altar.gd",
+    "ur_tiny_landmark": "res://luxel/islands/3/underroot/ur_tiny_landmark.gd"
+  },
+  "dungeons": [
+    {
+      "id": "underroot",
+      "name_key": "ISL3_DNG_UNDERROOT",
+      "island": 3,
+      "entry": "underroot_r1",
+      "regions": [
+        "underroot_r1",
+        "underroot_r2",
+        "underroot_r3",
+        "underroot_r4",
+        "underroot_r5",
+        "underroot_r6",
+        "underroot_r7",
+        "underroot_r8",
+        "underroot_r9",
+        "underroot_r10",
+        "underroot_r11"
+      ],
+      "mini_boss": "stag_colossus",
+      "boss": "hundred_lamps",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "requires_flags": [],
+      "done_flag": "underroot_done",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "underroot_r1": { "name_key": "ISL3_UR_R1_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 4], "debug_only": true },
+    "underroot_r2": { "name_key": "ISL3_UR_R2_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 3], "debug_only": true },
+    "underroot_r3": { "name_key": "ISL3_UR_R3_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [1, 3], "debug_only": true },
+    "underroot_r4": { "name_key": "ISL3_UR_R4_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [0, 3], "debug_only": true },
+    "underroot_r5": { "name_key": "ISL3_UR_R5_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [0, 2], "debug_only": true },
+    "underroot_r6": { "name_key": "ISL3_UR_R6_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [1, 2], "debug_only": true },
+    "underroot_r7": { "name_key": "ISL3_UR_R7_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 2], "debug_only": true },
+    "underroot_r8": { "name_key": "ISL3_UR_R8_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [3, 2], "debug_only": true },
+    "underroot_r9": { "name_key": "ISL3_UR_R9_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [3, 1], "debug_only": true },
+    "underroot_r10": { "name_key": "ISL3_UR_R10_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [4, 3], "debug_only": true },
+    "underroot_r11": { "name_key": "ISL3_UR_R11_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [4, 2], "debug_only": true }
+  },
+  "sfx": {}
+}

@@ -25,6 +25,7 @@ var dead_pct: float = 0.0
 var stand_remaining: float = 25.0
 var _clock: float = 0.0
 var _stage_t: float = 0.0
+var _manual_step: bool = false
 var _canvas: Node2D = null
 var _eyes: Array[Vector2] = []
 
@@ -78,6 +79,15 @@ func hide_panel() -> void:
 
 
 func _process(dt: float) -> void:
+	if _manual_step:
+		_manual_step = false
+		return
+	step_panel(dt)
+
+
+func step_panel(dt: float, manual: bool = false) -> void:
+	if manual:
+		_manual_step = true
 	if stage == Stage.HIDDEN:
 		return
 	_clock += dt
@@ -300,9 +310,9 @@ static func is_tab_sold(tab_name: String) -> bool:
 	var s: Object = get_sold_singleton()
 	if s != null and s.has_method("is_tab_sold"):
 		return bool(s.call("is_tab_sold", tab_name))
-	var ids: Array[String] = ["hud_hearts", "minimap_hud", "ember_hud", "cursor_ring"] if tab_name.to_upper() == "INTERFACE" else ["palette_4", "music_off", "sound_off", "fps_step"]
-	for sid: String in ids:
-		if is_setting_sold(sid): return true
+	var ids: Array = ["hud_hearts", "minimap_hud", "ember_hud", "cursor_ring"] if tab_name.to_upper() == "INTERFACE" else ["palette_4", "music_off", "sound_off", "fps_step"]
+	for sid_v: Variant in ids:
+		if is_setting_sold(str(sid_v)): return true
 	return false
 
 
@@ -339,6 +349,8 @@ static func forced_finale_choice() -> String:
 
 
 static func is_automated_run() -> bool:
-	if Lx.input != null and bool(Lx.input.get("synthetic_active")):
-		return true
+	if Lx.input != null:
+		var syn: Variant = Lx.input.get("synthetic_active")
+		if syn is bool and (syn as bool):
+			return true
 	return DisplayServer.get_name() == "headless"

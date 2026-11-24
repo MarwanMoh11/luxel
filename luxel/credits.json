@@ -25,7 +25,7 @@
     {
       "title": "ORIGINAL SOUNDTRACK",
       "lines": [
-        "LANTERN GOTHIC OST - 46 TRACKS",
+        "LANTERN GOTHIC OST - 88 TRACKS",
         "D HARMONIC MINOR - 144 BPM"
       ]
     },
@@ -762,6 +762,56 @@
         "luxel/audio/sfx/lamp_lit_3.ogg",
         "luxel/audio/sfx/perfect_counter_3.ogg",
         "luxel/audio/sfx/star_lance_3.ogg"
+      ]
+    },
+    {
+      "id": "lantern_gothic_epic_ost",
+      "description": "Luxel Epic original Lantern Gothic soundtrack expansion: 42 seamless chamber/gothic Ogg Vorbis q3 loops across Islands 1-8 (minor dungeons A & B, sample-locked minor boss P1/P2 pairs, set pieces) plus Superboss Families A & B, synthesized deterministically in Python",
+      "generator": "epic_isl1_2.py, epic_isl3_5.py, epic_isl4_6.py, epic_isl7_8_super.py",
+      "license": "Original project asset",
+      "outputs": [
+        "luxel/audio/music/isl1_undercroft.ogg",
+        "luxel/audio/music/isl1_manor.ogg",
+        "luxel/audio/music/isl1_boss_minor_p1.ogg",
+        "luxel/audio/music/isl1_boss_minor_p2.ogg",
+        "luxel/audio/music/isl1_setpiece.ogg",
+        "luxel/audio/music/isl2_galleon.ogg",
+        "luxel/audio/music/isl2_locks.ogg",
+        "luxel/audio/music/isl2_boss_minor_p1.ogg",
+        "luxel/audio/music/isl2_boss_minor_p2.ogg",
+        "luxel/audio/music/isl2_setpiece.ogg",
+        "luxel/audio/music/isl3_underroot.ogg",
+        "luxel/audio/music/isl3_loom.ogg",
+        "luxel/audio/music/isl3_boss_minor_p1.ogg",
+        "luxel/audio/music/isl3_boss_minor_p2.ogg",
+        "luxel/audio/music/isl3_setpiece.ogg",
+        "luxel/audio/music/isl4_hourglass.ogg",
+        "luxel/audio/music/isl4_mausoleum.ogg",
+        "luxel/audio/music/isl4_boss_minor_p1.ogg",
+        "luxel/audio/music/isl4_boss_minor_p2.ogg",
+        "luxel/audio/music/isl4_setpiece.ogg",
+        "luxel/audio/music/isl5_meteor.ogg",
+        "luxel/audio/music/isl5_planetarium.ogg",
+        "luxel/audio/music/isl5_boss_minor_p1.ogg",
+        "luxel/audio/music/isl5_boss_minor_p2.ogg",
+        "luxel/audio/music/isl5_setpiece.ogg",
+        "luxel/audio/music/isl6_express.ogg",
+        "luxel/audio/music/isl6_colossus.ogg",
+        "luxel/audio/music/isl6_boss_minor_p1.ogg",
+        "luxel/audio/music/isl6_boss_minor_p2.ogg",
+        "luxel/audio/music/isl6_setpiece.ogg",
+        "luxel/audio/music/isl7_palace.ogg",
+        "luxel/audio/music/isl7_theatre.ogg",
+        "luxel/audio/music/isl7_boss_minor_p1.ogg",
+        "luxel/audio/music/isl7_boss_minor_p2.ogg",
+        "luxel/audio/music/isl7_setpiece.ogg",
+        "luxel/audio/music/isl8_tollhouse.ogg",
+        "luxel/audio/music/isl8_archive.ogg",
+        "luxel/audio/music/isl8_boss_minor_p1.ogg",
+        "luxel/audio/music/isl8_boss_minor_p2.ogg",
+        "luxel/audio/music/isl8_setpiece.ogg",
+        "luxel/audio/music/superboss_a.ogg",
+        "luxel/audio/music/superboss_b.ogg"
       ]
     }
   ],

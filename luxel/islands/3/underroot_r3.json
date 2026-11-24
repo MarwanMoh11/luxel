@@ -1,0 +1,79 @@
+{
+  "name_key": "ISL3_UR_R3_NAME",
+  "spawn": [
+    368,
+    200
+  ],
+  "zones": [
+    {
+      "id": "ur_r3",
+      "name_key": "ISL3_UR_R3_NAME",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_east",
+      "rect": [
+        400,
+        176,
+        16,
+        32
+      ],
+      "to_region": "underroot_r2",
+      "to_spawn": [
+        48,
+        192
+      ]
+    },
+    {
+      "id": "exit_r3_west",
+      "rect": [
+        0,
+        64,
+        16,
+        32
+      ],
+      "to_region": "underroot_r4",
+      "to_spawn": [
+        400,
+        128
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "lamp_r3_1",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        144
+      ],
+      "props": {
+        "zone": "ur_r3",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "id": "underroot_r3",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "tiny": true,
+  "theme": "under_root",
+  "music": "isl3_underroot",
+  "ambience": [
+    "forest_wind",
+    "cave_drip"
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": []
+}

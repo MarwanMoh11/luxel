@@ -113,14 +113,15 @@ func resolve_var(var_name: String, island: int = 0, region: String = "", default
 
 ## Evaluates condition grammar:
 ## `name==v`, `name!=v`, `name>=n`, `name<=n`, `name>n`, `name<n`, `flag:<f>`, `!flag:<f>`,
-## joined by ` && ` / ` || `.
+## grouped with nested `( )`, negated with `!`, joined by ` && ` / ` || `.
+## Supports explicit scopes like `dungeon:<id>.<var>`, `island:<n>.<var>`, `room:<n>:<r>.<var>`, `game.<var>`.
 func eval(cond: String, island: int = 0, region: String = "") -> bool:
-	var trimmed: String = cond.strip_edges()
+	var trimmed: String = _strip_outer_parens(cond.strip_edges())
 	if trimmed.is_empty():
 		return true
-	var or_parts: PackedStringArray = trimmed.split("||", false)
+	var or_parts: PackedStringArray = _split_top_level(trimmed, "||")
 	for or_raw: String in or_parts:
-		var and_parts: PackedStringArray = or_raw.split("&&", false)
+		var and_parts: PackedStringArray = _split_top_level(or_raw.strip_edges(), "&&")
 		var all_ok: bool = true
 		for term_raw: String in and_parts:
 			if not _eval_atom(term_raw.strip_edges(), island, region):
@@ -131,11 +132,12 @@ func eval(cond: String, island: int = 0, region: String = "") -> bool:
 	return false
 
 
-func _eval_atom(atom: String, island: int, region: String) -> bool:
+func _eval_atom(raw_atom: String, island: int, region: String) -> bool:
+	var atom: String = _strip_outer_parens(raw_atom.strip_edges())
 	if atom.is_empty():
 		return true
-	if atom.begins_with("(") and atom.ends_with(")"):
-		return eval(atom.substr(1, atom.length() - 2), island, region)
+	if _has_top_level_op(atom, "||") or _has_top_level_op(atom, "&&"):
+		return eval(atom, island, region)
 	if atom == "true":
 		return true
 	if atom == "false":
@@ -148,7 +150,7 @@ func _eval_atom(atom: String, island: int, region: String) -> bool:
 		return not _eval_atom(atom.substr(1).strip_edges(), island, region)
 
 	for op: String in ["==", "!=", ">=", "<=", ">", "<"]:
-		var idx: int = atom.find(op)
+		var idx: int = _find_top_level(atom, op)
 		if idx > 0:
 			var lhs_name: String = atom.left(idx).strip_edges()
 			var rhs_str: String = atom.substr(idx + op.length()).strip_edges()
@@ -157,6 +159,98 @@ func _eval_atom(atom: String, island: int, region: String) -> bool:
 
 	var v: Variant = resolve_var(atom, island, region, false)
 	return _is_truthy(v)
+
+
+static func _strip_outer_parens(s: String) -> String:
+	var cur: String = s.strip_edges()
+	while cur.length() >= 2 and cur[0] == "(" and cur[cur.length() - 1] == ")":
+		var depth: int = 0
+		var in_q: String = ""
+		var encloses: bool = true
+		for i: int in range(cur.length()):
+			var ch: String = cur[i]
+			if not in_q.is_empty():
+				if ch == in_q:
+					in_q = ""
+				continue
+			if ch == "\"" or ch == "'":
+				in_q = ch
+			elif ch == "(":
+				depth += 1
+			elif ch == ")":
+				depth -= 1
+				if depth == 0 and i < cur.length() - 1:
+					encloses = false
+					break
+		if encloses and depth == 0:
+			cur = cur.substr(1, cur.length() - 2).strip_edges()
+		else:
+			break
+	return cur
+
+
+static func _split_top_level(s: String, sep: String) -> PackedStringArray:
+	var out := PackedStringArray()
+	var n: int = s.length()
+	var slen: int = sep.length()
+	var depth: int = 0
+	var in_q: String = ""
+	var start: int = 0
+	var i: int = 0
+	while i < n:
+		var ch: String = s[i]
+		if not in_q.is_empty():
+			if ch == in_q:
+				in_q = ""
+			i += 1
+			continue
+		if ch == "\"" or ch == "'":
+			in_q = ch
+			i += 1
+			continue
+		if ch == "(":
+			depth += 1
+		elif ch == ")":
+			depth = maxi(0, depth - 1)
+		elif depth == 0 and i + slen <= n and s.substr(i, slen) == sep:
+			var part: String = s.substr(start, i - start).strip_edges()
+			if not part.is_empty():
+				out.append(part)
+			i += slen
+			start = i
+			continue
+		i += 1
+	var tail: String = s.substr(start).strip_edges()
+	if not tail.is_empty():
+		out.append(tail)
+	return out
+
+
+static func _has_top_level_op(s: String, op: String) -> bool:
+	return _find_top_level(s, op) >= 0
+
+
+static func _find_top_level(s: String, op: String) -> int:
+	var n: int = s.length()
+	var olen: int = op.length()
+	var depth: int = 0
+	var in_q: String = ""
+	for i: int in range(n - olen + 1):
+		var ch: String = s[i]
+		if not in_q.is_empty():
+			if ch == in_q:
+				in_q = ""
+			continue
+		if ch == "\"" or ch == "'":
+			in_q = ch
+			continue
+		if ch == "(":
+			depth += 1
+		elif ch == ")":
+			depth = maxi(0, depth - 1)
+		elif depth == 0 and s.substr(i, olen) == op:
+			return i
+	return -1
 
 
 static func _compare(lhs: Variant, op: String, rhs_str: String) -> bool:

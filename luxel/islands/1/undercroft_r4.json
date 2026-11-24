@@ -1,8 +1,8 @@
 {
   "name_key": "ISL1_UC_SNUFF",
   "spawn": [
-    392,
-    152
+    424,
+    160
   ],
   "zones": [
     {
@@ -11,8 +11,8 @@
       "rect": [
         0,
         0,
-        448,
-        288
+        480,
+        320
       ],
       "dark": true
     }
@@ -21,21 +21,21 @@
     {
       "id": "exit_r4_east",
       "rect": [
-        432,
-        128,
+        464,
+        144,
         16,
         48
       ],
       "to_region": "undercroft_r3",
       "to_spawn": [
-        56,
+        48,
         136
       ]
     },
     {
       "id": "exit_r4_north",
       "rect": [
-        208,
+        224,
         0,
         32,
         16
@@ -43,7 +43,7 @@
       "to_region": "undercroft_r5",
       "to_spawn": [
         224,
-        272
+        304
       ],
       "locked_door_id": "door_r4_north"
     }
@@ -53,8 +53,8 @@
       "id": "anc_r4_east",
       "kind": "room_anchor",
       "pos": [
-        392,
-        152
+        424,
+        160
       ],
       "props": {
         "auto": true
@@ -64,19 +64,19 @@
       "id": "bell_r4_dusk",
       "kind": "bell",
       "pos": [
-        224,
-        152
+        240,
+        176
       ],
       "props": {
         "tone": "dusk",
-        "wave_radius": 240
+        "wave_radius": 250
       }
     },
     {
       "id": "tb_r4_w",
       "kind": "timed_brazier",
       "pos": [
-        96,
+        120,
         72
       ],
       "props": {
@@ -88,7 +88,7 @@
       "id": "tb_r4_e",
       "kind": "timed_brazier",
       "pos": [
-        352,
+        360,
         72
       ],
       "props": {
@@ -100,7 +100,7 @@
       "id": "gate_r4_braziers",
       "kind": "logic_gate",
       "pos": [
-        224,
+        240,
         96
       ],
       "props": {
@@ -117,8 +117,8 @@
       "id": "door_r4_braziers",
       "kind": "door",
       "pos": [
-        224,
-        56
+        240,
+        64
       ],
       "props": {
         "door_kind": "switch_door",
@@ -135,7 +135,7 @@
       "id": "door_r4_north",
       "kind": "door",
       "pos": [
-        224,
+        240,
         24
       ],
       "props": {
@@ -151,8 +151,8 @@
       "id": "chest_r4_shards",
       "kind": "chest",
       "pos": [
-        48,
-        56
+        72,
+        48
       ],
       "props": {
         "reward": "shards",
@@ -163,8 +163,8 @@
       "id": "lamp_r4_e",
       "kind": "road_lamp",
       "pos": [
-        400,
-        112
+        416,
+        120
       ],
       "props": {
         "zone": "uc_cloister",
@@ -176,7 +176,7 @@
       "kind": "road_lamp",
       "pos": [
         64,
-        152
+        168
       ],
       "props": {
         "zone": "uc_cloister",
@@ -187,8 +187,8 @@
       "id": "lamp_r4_s",
       "kind": "road_lamp",
       "pos": [
-        224,
-        240
+        240,
+        272
       ],
       "props": {
         "zone": "uc_cloister",
@@ -201,17 +201,17 @@
       "id": "snuffer_r4_w",
       "kind": "snuffer_acolyte",
       "pos": [
-        104,
-        152
+        88,
+        160
       ],
       "route": [
         [
-          88,
+          72,
           128
         ],
         [
-          160,
-          176
+          104,
+          216
         ]
       ],
       "zone": "uc_cloister"
@@ -220,26 +220,26 @@
       "id": "snuffer_r4_s",
       "kind": "snuffer_acolyte",
       "pos": [
-        248,
-        224
+        240,
+        264
       ],
       "route": [
         [
-          192,
-          224
+          184,
+          264
         ],
         [
-          304,
-          216
+          312,
+          256
         ]
       ],
       "zone": "uc_cloister"
     },
     {
-      "id": "warden_r4_n",
+      "id": "warden_r4_c",
       "kind": "warden",
       "pos": [
-        184,
+        216,
         176
       ],
       "zone": "uc_cloister"
@@ -249,16 +249,16 @@
       "kind": "toll_moth",
       "pos": [
         112,
-        216
+        232
       ],
       "perches": [
         [
-          112,
-          200
+          104,
+          216
         ],
         [
           176,
-          232
+          256
         ]
       ],
       "zone": "uc_cloister"
@@ -268,39 +268,47 @@
     {
       "kind": "circle",
       "pos": [
-        224,
-        152
+        240,
+        176
       ],
-      "radius": 30,
+      "radius": 32,
       "style": "ritual"
     },
     {
-      "kind": "rug",
-      "rect": [
-        208,
-        64,
-        32,
-        196
+      "kind": "cracks",
+      "pos": [
+        352,
+        240
       ],
-      "style": "ornate"
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        88,
+        120
+      ],
+      "radius": 18,
+      "glow": false
     },
     {
       "kind": "stain",
       "pos": [
-        96,
-        232
+        120,
+        256
       ],
       "radius": 24,
       "style": "soot"
     },
     {
-      "kind": "cracks",
+      "kind": "stain",
       "pos": [
-        320,
-        216
+        368,
+        96
       ],
       "radius": 20,
-      "glow": false
+      "style": "soot"
     }
   ],
   "scenery": [
@@ -308,8 +316,8 @@
       "sheet": "theme_undercroft",
       "prop": "bell_floor_seal",
       "pos": [
-        224,
-        152
+        240,
+        176
       ],
       "layer": "ground",
       "flip_x": false,
@@ -318,10 +326,10 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "bone_ossuary_arch",
+      "prop": "stone_crypt_pillar",
       "pos": [
-        224,
-        80
+        184,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
@@ -330,37 +338,25 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_candelabra",
+      "prop": "stone_crypt_pillar",
       "pos": [
-        168,
-        72
+        296,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.1
+      "phase": 0.0
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_candelabra",
+      "prop": "open_sarcophagus",
       "pos": [
-        280,
-        72
+        392,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "chapel_pew",
-      "pos": [
-        80,
-        216
-      ],
-      "layer": "sort",
-      "flip_x": false,
       "shadow": true,
       "phase": 0.0
     },
@@ -368,8 +364,8 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_coffin",
       "pos": [
-        392,
-        232
+        360,
+        256
       ],
       "layer": "sort",
       "flip_x": true,
@@ -380,8 +376,8 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_urn",
       "pos": [
-        64,
-        112
+        72,
+        104
       ],
       "layer": "sort",
       "flip_x": false,
@@ -390,27 +386,51 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "tattered_crypt_banner",
+      "prop": "crypt_urn",
       "pos": [
-        168,
-        240
+        408,
+        224
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
-      "phase": 0.25
+      "phase": 0.0
     },
     {
       "sheet": "theme_undercroft",
       "prop": "toll_brazier",
       "pos": [
-        312,
-        112
+        184,
+        88
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        296,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        160,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
     }
   ],
   "events": [
@@ -426,22 +446,25 @@
     }
   ],
   "design": {
-    "idea": "Hold two timed altar braziers lit against sprinting Snuffer Acolytes using a central Dusk Bell to freeze them and a Toll Moth War burst to crack a Warden shield.",
+    "idea": "Cloister ring encircling a central Dusk Bell island via four bridges: freeze sprinting Snuffers around the moat ring and crack the Warden with the Toll Moth.",
     "kind": "combat",
     "beat": "sho",
-    "teaches": "Snuffer Acolytes rush lit fire, Dusk Bells freeze their sprint, and Toll Moths double as War shield-crackers.",
-    "decisions": 5,
+    "teaches": "Using ring chokepoints and a central Dusk Bell to intercept Snuffer Acolytes protecting timed altar braziers.",
+    "decisions": 6,
     "expert_s": 50,
     "reward": "open_r5+20sh",
-    "why": "Cloister gauntlet protecting the Toll-Hound's ossuary.",
+    "why": "Ringed ossuary cloister guarding the Toll-Hound's rotunda.",
     "exit": "exit_r4_north",
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          368,
+          176
+        ]
+      },
+      {
         "op": "shoot",
-        "from": [
-          344,
-          152
-        ],
         "target": "bell_r4_dusk"
       },
       {
@@ -451,16 +474,16 @@
       {
         "op": "shoot",
         "from": [
-          144,
-          104
+          168,
+          88
         ],
         "target": "tb_r4_w"
       },
       {
         "op": "goto",
         "to": [
-          288,
-          96
+          312,
+          88
         ]
       },
       {
@@ -485,7 +508,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "undercroft",
-  "music": "island1_dungeon",
+  "music": "isl1_undercroft",
   "ambience": [
     "night_breeze",
     "sanctum_bells"

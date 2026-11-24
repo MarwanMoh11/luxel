@@ -1,0 +1,714 @@
+{
+  "name_key": "ISL3_UR_R2_NAME",
+  "spawn": [
+    256,
+    280
+  ],
+  "zones": [
+    {
+      "id": "ur_r2",
+      "name_key": "ISL3_UR_R2_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_south",
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
+      "to_region": "underroot_r1",
+      "to_spawn": [
+        192,
+        48
+      ]
+    },
+    {
+      "id": "exit_r2_west",
+      "rect": [
+        0,
+        176,
+        16,
+        32
+      ],
+      "to_region": "underroot_r3",
+      "to_spawn": [
+        368,
+        200
+      ]
+    },
+    {
+      "id": "exit_r2_nw_sc",
+      "rect": [
+        0,
+        48,
+        16,
+        32
+      ],
+      "to_region": "underroot_r6",
+      "to_spawn": [
+        224,
+        48
+      ],
+      "requires_flags": [
+        "ur_r6_drop_open"
+      ],
+      "locked_door_id": "door_r2_nw_sc"
+    },
+    {
+      "id": "exit_r2_north_key",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_region": "underroot_r7",
+      "to_spawn": [
+        48,
+        144
+      ],
+      "requires_flags": [
+        "wick_key_ur_1"
+      ],
+      "locked_door_id": "door_r2_key_north"
+    },
+    {
+      "id": "exit_r2_ne_sc",
+      "rect": [
+        496,
+        64,
+        16,
+        32
+      ],
+      "to_region": "underroot_r9",
+      "to_spawn": [
+        456,
+        208
+      ],
+      "requires_flags": [
+        "ur_r9_bridge"
+      ],
+      "locked_door_id": "door_r2_ne_sc"
+    },
+    {
+      "id": "exit_r2_east_boss",
+      "rect": [
+        496,
+        176,
+        16,
+        32
+      ],
+      "to_region": "underroot_r10",
+      "to_spawn": [
+        48,
+        120
+      ],
+      "requires_flags": [
+        "keepers_flame_ur"
+      ],
+      "locked_door_id": "door_r2_boss_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        280
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r2_center",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        192
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sg_r2_west",
+      "kind": "shadow_gate",
+      "pos": [
+        64,
+        192
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "blk_r2_acorn",
+      "kind": "push_block",
+      "pos": [
+        88,
+        232
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          24
+        ]
+      }
+    },
+    {
+      "id": "braz_r2_west",
+      "kind": "brazier",
+      "pos": [
+        112,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "hook_r2_shade",
+      "kind": "lantern_hook",
+      "pos": [
+        152,
+        192
+      ],
+      "props": {
+        "light_radius": 96.0
+      }
+    },
+    {
+      "id": "door_r2_nw_sc",
+      "kind": "door",
+      "pos": [
+        24,
+        64
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "ur_r6_drop_open"
+        ]
+      }
+    },
+    {
+      "id": "door_r2_key_north",
+      "kind": "door",
+      "pos": [
+        208,
+        24
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "underroot",
+        "key_kind": "wick_key",
+        "key_id": "wick_key_ur_1",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r2_ne_sc",
+      "kind": "door",
+      "pos": [
+        488,
+        80
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "ur_r9_bridge"
+        ]
+      }
+    },
+    {
+      "id": "door_r2_boss_east",
+      "kind": "door",
+      "pos": [
+        488,
+        192
+      ],
+      "props": {
+        "door_kind": "boss_key",
+        "dungeon_id": "underroot",
+        "key_kind": "keepers_flame",
+        "key_id": "keepers_flame_ur",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r2_s_w",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        272
+      ],
+      "props": {
+        "zone": "ur_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_s_e",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        272
+      ],
+      "props": {
+        "zone": "ur_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        72
+      ],
+      "props": {
+        "zone": "ur_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        192
+      ],
+      "props": {
+        "zone": "ur_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_ne_balc",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        64
+      ],
+      "props": {
+        "zone": "ur_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_nw_balc",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        64
+      ],
+      "props": {
+        "zone": "ur_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r2_grass_c",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        304,
+        156
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r2_acorn_ne",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        384,
+        152
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": true
+      }
+    },
+    {
+      "id": "lm_r2_acorn_se",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        352,
+        240
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": false
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "r6_bridge",
+      "when": "flag:ur_r6_drop_open",
+      "tiles": [
+        [
+          8,
+          3,
+          2,
+          2,
+          "bridge"
+        ]
+      ]
+    },
+    {
+      "id": "r9_bridge",
+      "when": "flag:ur_r9_bridge",
+      "tiles": [
+        [
+          20,
+          4,
+          2,
+          2,
+          "bridge"
+        ]
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 38,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        176
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        416,
+        72
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        88,
+        224
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        368,
+        208
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        208,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        184,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        384,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        448,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "giant_dew_lens",
+      "pos": [
+        400,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        168,
+        260
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        336,
+        260
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        448,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        224,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        288,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        88,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        376,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        440,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "pebble_milestone",
+      "pos": [
+        224,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fallen_bark_bench",
+      "pos": [
+        320,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Split-level Acorn Atrium hub teasing the Wick Key gate north, Boss Door east, and elevated r6/r9 return overhangs; push an acorn crate to shadow the west shadow_gate from BOTH the gate brazier and your 1.8x sun-lantern hung on the hook.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Occluding both ambient braziers and your hung 1.8x sun-lantern with a push_block to open a shadow_gate and walk through unarmed.",
+    "decisions": 4,
+    "expert_s": 50,
+    "reward": "hub_access+boss_tease",
+    "why": "Central split-level hub of The Under-Root connecting all 4 wings and 3 return cycles.",
+    "exit": "exit_r2_west",
+    "solution": [
+      {
+        "op": "push",
+        "target": "blk_r2_acorn",
+        "to": [
+          88,
+          192
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          212
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r2_shade"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "sg_r2_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          232
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          228
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_west"
+      }
+    ]
+  },
+  "id": "underroot_r2",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "tiny": true,
+  "theme": "under_root",
+  "music": "isl3_underroot",
+  "ambience": [
+    "forest_wind",
+    "cave_drip"
+  ],
+  "triggers": [],
+  "events": []
+}

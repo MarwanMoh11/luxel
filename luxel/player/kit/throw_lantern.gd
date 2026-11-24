@@ -36,7 +36,7 @@ func can_use() -> bool:
 func press() -> bool:
 	if wick == null or wick.dead or not wick.has_lantern() or wick.lantern == null:
 		return false
-	if not unlocked:
+	if not unlocked or locked:
 		wick.emit_sfx("denied", wick.global_position, false)
 		return false
 
@@ -88,6 +88,9 @@ func press() -> bool:
 func try_zip() -> bool:
 	if not unlocked or wick == null or wick.dead or not wick.has_lantern() or wick.lantern == null:
 		return false
+	if locked:
+		wick.emit_sfx("denied", wick.global_position, false)
+		return false
 	var lan: LxLantern = wick.lantern
 	if lan.state == LxLantern.State.CARRIED:
 		wick.emit_sfx("denied", wick.global_position, false)
@@ -138,6 +141,12 @@ func try_zip() -> bool:
 
 func tick_zip(dt: float, world_ctx: Node) -> void:
 	_world_ctx = world_ctx
+	if locked:
+		_throw_buf_t = 0.0
+		_zip_buf_t = 0.0
+		if zipping:
+			cancel_zip()
+		return
 	if _throw_buf_t > 0.0:
 		_throw_buf_t = maxf(0.0, _throw_buf_t - dt)
 		if wick != null and wick.lantern != null and wick.lantern.state == LxLantern.State.IN_HAND:

@@ -1,0 +1,251 @@
+{
+  "id": "palace_r12",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_PL_R12",
+  "theme": "inverted_palace_silver",
+  "music": "isl7_palace",
+  "ambience": ["night_breeze"],
+  "spawn": [256, 296],
+  "zones": [
+    {
+      "id": "palace_queen_court",
+      "name_key": "ISL7_PL_R12",
+      "rect": [0, 0, 512, 352],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r12_south",
+      "rect": [240, 336, 32, 16],
+      "to_region": "palace_r1",
+      "to_spawn": [240, 48]
+    },
+    {
+      "id": "exit_r12_return",
+      "rect": [240, 0, 32, 16],
+      "to_island": 7,
+      "to_region": "overworld",
+      "to_spawn": [120, 384],
+      "one_way": true,
+      "requires_flags": ["palace_cleared"],
+      "locked_door_id": "door_r12_return"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r12_south",
+      "kind": "room_anchor",
+      "pos": [256, 296],
+      "props": { "auto": true }
+    },
+    {
+      "id": "pool_r12_west",
+      "kind": "moon_pool",
+      "pos": [128, 224],
+      "props": {
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "pool_r12_east",
+      "kind": "moon_pool",
+      "pos": [384, 224],
+      "props": {
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_r12_nw",
+      "kind": "blue_transformer",
+      "pos": [144, 104],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "mirror_r12_ne",
+      "kind": "blue_transformer",
+      "pos": [368, 104],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "mirror_r12_s",
+      "kind": "blue_transformer",
+      "pos": [256, 240],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "avatar_r12",
+      "kind": "mirror_avatar",
+      "pos": [448, 160],
+      "props": {
+        "axis": "x",
+        "pivot": [256, 176],
+        "fires_mirror_bolts": true,
+        "mirror_world": "same",
+        "vulnerable_boss_id": "queen_in_glass",
+        "range": 480
+      }
+    },
+    {
+      "id": "door_r12_return",
+      "kind": "door",
+      "pos": [256, 24],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": ["palace_cleared"],
+        "size": [32, 16]
+      }
+    },
+    {
+      "id": "lamp_r12_sw",
+      "kind": "road_lamp",
+      "pos": [168, 296],
+      "props": { "zone": "palace_queen_court", "lit": true }
+    },
+    {
+      "id": "lamp_r12_se",
+      "kind": "road_lamp",
+      "pos": [344, 296],
+      "props": { "zone": "palace_queen_court", "lit": true }
+    },
+    {
+      "id": "lamp_r12_nw",
+      "kind": "road_lamp",
+      "pos": [168, 56],
+      "props": { "zone": "palace_queen_court", "lit": true }
+    },
+    {
+      "id": "lamp_r12_ne",
+      "kind": "road_lamp",
+      "pos": [344, 56],
+      "props": { "zone": "palace_queen_court", "lit": true }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_queen_in_glass",
+      "kind": "queen_in_glass",
+      "pos": [256, 136],
+      "zone": "palace_queen_court"
+    }
+  ],
+  "decor": [
+    { "kind": "circle", "x": 256, "y": 136, "r": 54, "col": "sky", "ring": "ice" },
+    { "kind": "inlay", "x": 192, "y": 80, "w": 128, "h": 144, "col": "stone", "border": "sky" },
+    { "kind": "circle", "x": 128, "y": 224, "r": 24, "col": "sky", "ring": "ice" },
+    { "kind": "circle", "x": 384, "y": 224, "r": 24, "col": "sky", "ring": "ice" }
+  ],
+  "scenery": [
+    { "sheet": "theme_inverted_palace_silver", "prop": "crystal_chandelier_arch", "pos": [256, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [104, 52], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [408, 52], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [48, 160], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [464, 160], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "gilded_statue_bust", "pos": [128, 292], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "gilded_statue_bust", "pos": [384, 292], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "r12_sync_black",
+      "on": "var:world_face==black",
+      "once": false,
+      "do": [
+        { "set_var": { "scope": "island:7", "name": "world_face", "value": "black" } }
+      ]
+    },
+    {
+      "id": "r12_sync_silver",
+      "on": "var:world_face==silver",
+      "once": false,
+      "do": [
+        { "set_var": { "scope": "island:7", "name": "world_face", "value": "silver" } }
+      ]
+    },
+    {
+      "id": "r12_victory_msg",
+      "on": "flag:palace_cleared",
+      "once": true,
+      "do": [
+        { "set_flag": "half_lantern_7a" },
+        {
+          "narrate": {
+            "id": "ISL7_PL_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "r12_spawn_pane",
+      "on": "flag:palace_cleared",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "pane_r12_silver_twin",
+            "kind": "pane_pickup",
+            "pos": [256, 160],
+            "props": {
+              "pane": "silver_twin"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Boss THE QUEEN IN THE GLASS bounces direct yellow bolts off her mirror pane; defeat her via Blue banks off 3 prism transformers, your mirrored Reflection, and Black-World Moon Pool flips, then read her SE shadow among P3 clones to claim Half-Lantern and Pane Silver Twin.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Synthesizing every Inverted Palace mechanic — Blue banking, mirror_avatar reflection strikes, Silver/Black flips, and Shadow-Truth reading — in a three-phase royal duel.",
+    "decisions": 8,
+    "expert_s": 130,
+    "reward": "palace_cleared+silver_twin+half_lantern_7a",
+    "why": "Climactic boss court of The Inverted Palace awarding Half-Lantern #7A and Pane Silver Twin.",
+    "exit": "exit_r12_return",
+    "start": {
+      "flags": ["item_moon_pocket", "palace_mirror_chord", "palace_boss_key"]
+    },
+    "solution": [
+      { "op": "goto", "to": [128, 224], "tol": 14 },
+      { "op": "interact", "target": "pool_r12_west" },
+      { "op": "expect", "var": "world_face==black" },
+      { "op": "clear", "timeout": 140.0 },
+      { "op": "wait_until", "flag": "palace_cleared", "timeout": 5.0 },
+      { "op": "interact", "target": "pane_r12_silver_twin" },
+      { "op": "expect_exit", "exit": "exit_r12_return" }
+    ]
+  }
+}

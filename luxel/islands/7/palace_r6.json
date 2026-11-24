@@ -1,0 +1,277 @@
+{
+  "id": "palace_r6",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_PL_R6",
+  "theme": "inverted_palace_silver",
+  "music": "isl7_palace",
+  "ambience": ["night_breeze"],
+  "spawn": [48, 168],
+  "zones": [
+    {
+      "id": "palace_cloister",
+      "name_key": "ISL7_PL_R6",
+      "rect": [0, 0, 480, 320],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_west",
+      "rect": [0, 144, 16, 48],
+      "to_region": "palace_r1",
+      "to_spawn": [448, 200]
+    },
+    {
+      "id": "exit_r6_north",
+      "rect": [224, 0, 48, 16],
+      "to_region": "palace_r7",
+      "to_spawn": [232, 272],
+      "locked_door_id": "door_r6_north"
+    },
+    {
+      "id": "exit_r6_east",
+      "rect": [464, 160, 16, 32],
+      "to_region": "palace_r8",
+      "to_spawn": [48, 168],
+      "locked_door_id": "door_r6_east"
+    },
+    {
+      "id": "exit_r6_backdoor",
+      "rect": [336, 304, 48, 16],
+      "to_island": 7,
+      "to_region": "overworld",
+      "to_spawn": [120, 384],
+      "one_way": true,
+      "requires_flags": ["palace_backdoor_open"],
+      "locked_door_id": "door_r6_backdoor"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r6_west",
+      "kind": "room_anchor",
+      "pos": [48, 168],
+      "props": { "auto": true }
+    },
+    {
+      "id": "pool_r6_center",
+      "kind": "moon_pool",
+      "pos": [248, 168],
+      "props": {
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "orb_r6_light",
+      "kind": "carry_orb",
+      "pos": [96, 72],
+      "props": {
+        "kind": "light",
+        "persist": true
+      }
+    },
+    {
+      "id": "plate_r6_socket",
+      "kind": "pressure_plate",
+      "pos": [96, 240],
+      "props": {
+        "by": ["block"],
+        "latch": true,
+        "size": [26, 26],
+        "persist": true,
+        "target_id": "gate_r6"
+      }
+    },
+    {
+      "id": "ls_r6_black",
+      "kind": "light_sensor",
+      "pos": [96, 212],
+      "props": {
+        "need_secs": 0.45,
+        "hold": false,
+        "persist": true,
+        "target_id": "gate_r6"
+      }
+    },
+    {
+      "id": "gate_r6",
+      "kind": "logic_gate",
+      "pos": [144, 212],
+      "props": {
+        "op": "all",
+        "inputs": ["plate_r6_socket", "ls_r6_black"],
+        "target_ids": ["door_r6_north", "door_r6_east"],
+        "sets_flag": "palace_r6_orb_lit",
+        "persist": true
+      }
+    },
+    {
+      "id": "palace_key_3",
+      "kind": "wick_key",
+      "pos": [144, 248],
+      "props": {
+        "dungeon_id": "palace",
+        "key_kind": "wick_key",
+        "flag_id": "palace_key_3",
+        "requires_flag": "palace_r6_orb_lit"
+      }
+    },
+    {
+      "id": "hook_r6_east",
+      "kind": "lantern_hook",
+      "pos": [384, 152],
+      "props": { "light_radius": 44 }
+    },
+    {
+      "id": "sg_r6_east",
+      "kind": "shadow_gate",
+      "pos": [376, 224],
+      "props": {
+        "size": [48, 16],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "sw_r6_backdoor",
+      "kind": "switch_eye",
+      "pos": [384, 264],
+      "props": {
+        "target_id": "door_r6_backdoor",
+        "sets_flag": "palace_backdoor_open"
+      }
+    },
+    {
+      "id": "door_r6_north",
+      "kind": "door",
+      "pos": [248, 24],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": ["gate_r6"],
+        "persistent": true,
+        "size": [48, 16]
+      }
+    },
+    {
+      "id": "door_r6_east",
+      "kind": "door",
+      "pos": [456, 176],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": ["gate_r6"],
+        "persistent": true,
+        "size": [16, 32]
+      }
+    },
+    {
+      "id": "door_r6_backdoor",
+      "kind": "door",
+      "pos": [360, 296],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": ["palace_backdoor_open"],
+        "size": [48, 16]
+      }
+    },
+    {
+      "id": "lamp_r6_w",
+      "kind": "road_lamp",
+      "pos": [56, 120],
+      "props": { "zone": "palace_cloister", "lit": true }
+    },
+    {
+      "id": "lamp_r6_c",
+      "kind": "road_lamp",
+      "pos": [248, 120],
+      "props": { "zone": "palace_cloister", "lit": true }
+    },
+    {
+      "id": "lamp_r6_e",
+      "kind": "road_lamp",
+      "pos": [416, 96],
+      "props": { "zone": "palace_cloister", "lit": true }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "jelly_r6_n",
+      "kind": "moon_jelly",
+      "pos": [248, 88],
+      "zone": "palace_cloister"
+    },
+    {
+      "id": "jelly_r6_s",
+      "kind": "moon_jelly",
+      "pos": [248, 256],
+      "zone": "palace_cloister"
+    }
+  ],
+  "decor": [
+    { "kind": "circle", "x": 248, "y": 168, "r": 28, "col": "sky", "ring": "ice" },
+    { "kind": "inlay", "x": 64, "y": 56, "w": 64, "h": 208, "col": "stone", "border": "sky" },
+    { "kind": "inlay", "x": 360, "y": 80, "w": 64, "h": 112, "col": "ice", "border": "sky" }
+  ],
+  "scenery": [
+    { "sheet": "theme_inverted_palace_silver", "prop": "lunar_brazier_bowl", "pos": [196, 120], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "lunar_brazier_bowl", "pos": [300, 120], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "silver_bell_pedestal", "pos": [56, 268], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "alabaster_fluted_pillar", "pos": [184, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "alabaster_fluted_pillar", "pos": [312, 240], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "velvet_palace_bench", "pos": [400, 60], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "gilded_statue_bust", "pos": [128, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [14, 3, 3, 2, "bridge"],
+        [14, 14, 3, 2, "bridge"]
+      ],
+      "enable": ["plate_r6_socket", "ls_r6_black"],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "r6_backdoor_msg",
+      "on": "signal:sw_r6_backdoor",
+      "once": true,
+      "do": [
+        { "narrate": { "id": "ISL7_PL_SHORTCUT", "style": "narration", "duration": 2.6 } }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Three-chamber East Cloister teaching Moon-Glass Pocket: smuggle a Silver Light Orb across the Moon Pool flip to power a Black socket, claim Key 3, and slip unarmed through a Shadow Gate to unseal the Black Shoals backdoor.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Carrying a carry_orb through a moon_pool with item_moon_pocket, plus pairing lantern_hook with shadow_gate.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "palace_key_3+black_shoals_backdoor",
+    "why": "First East Wing room immediately paying off Moon-Glass Pocket and opening both Stairwell (r7) and Twin Scales (r8).",
+    "exit": "exit_r6_north",
+    "start": {
+      "flags": ["item_moon_pocket"]
+    },
+    "solution": [
+      { "op": "clear", "timeout": 35.0 },
+      { "op": "carry", "target": "orb_r6_light", "action": "pickup" },
+      { "op": "goto", "to": [248, 168], "tol": 12 },
+      { "op": "interact", "target": "pool_r6_center" },
+      { "op": "expect", "var": "world_face==black" },
+      { "op": "carry", "target": "orb_r6_light", "action": "drop", "to": [96, 240] },
+      { "op": "wait", "secs": 0.70 },
+      { "op": "expect", "target": "gate_r6", "prop": "powered", "value": true },
+      { "op": "interact", "target": "palace_key_3" },
+      { "op": "expect_exit", "exit": "exit_r6_north" }
+    ]
+  }
+}

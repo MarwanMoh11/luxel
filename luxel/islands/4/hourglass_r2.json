@@ -1,0 +1,451 @@
+{
+  "id": "hourglass_r2",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R2",
+  "spawn": [
+    392,
+    168
+  ],
+  "zones": [
+    {
+      "id": "hg_r2_arbor",
+      "name_key": "ISL4_HG_R2",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r2_east",
+      "rect": [
+        432,
+        144,
+        16,
+        48
+      ],
+      "to_region": "hourglass_r1",
+      "to_spawn": [
+        56,
+        200
+      ]
+    },
+    {
+      "id": "exit_hg_r2_north",
+      "rect": [
+        112,
+        0,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r3",
+      "to_spawn": [
+        208,
+        232
+      ],
+      "locked_door_id": "door_hg_r2_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r2",
+      "kind": "room_anchor",
+      "pos": [
+        392,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "grate_hg_r2",
+      "kind": "grate",
+      "pos": [
+        264,
+        96
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "shutter_hg_r2_u",
+      "kind": "toggle_block",
+      "pos": [
+        248,
+        96
+      ],
+      "props": {
+        "group": "r2_u",
+        "phase": 0,
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "sw_hg_r2_eye",
+      "kind": "switch_eye",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "reset_time": 4.8,
+        "target_id": "gate_hg_r2_all"
+      }
+    },
+    {
+      "id": "rose_hg_r2",
+      "kind": "echo_rose",
+      "pos": [
+        328,
+        120
+      ],
+      "props": {
+        "secs": 3.4,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_hg_r2_a",
+      "kind": "pressure_plate",
+      "pos": [
+        104,
+        152
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_ids": [
+          "shutter_hg_r2_u",
+          "gate_hg_r2_all"
+        ]
+      }
+    },
+    {
+      "id": "brazier_hg_r2_t",
+      "kind": "timed_brazier",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "secs": 5.5,
+        "target_id": "gate_hg_r2_all"
+      }
+    },
+    {
+      "id": "gate_hg_r2_all",
+      "kind": "logic_gate",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_hg_r2_a",
+          "sw_hg_r2_eye",
+          "brazier_hg_r2_t"
+        ],
+        "persist": true,
+        "target_id": "door_hg_r2_north",
+        "sets_flag": "hg_r2_open"
+      }
+    },
+    {
+      "id": "door_hg_r2_north",
+      "kind": "door",
+      "pos": [
+        128,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_hg_r2_all"
+        ],
+        "persistent": true,
+        "sets_flag": "hg_r2_open"
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        136
+      ],
+      "props": {
+        "zone": "hg_r2_arbor",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_s",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        248
+      ],
+      "props": {
+        "zone": "hg_r2_arbor",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        168
+      ],
+      "props": {
+        "zone": "hg_r2_arbor",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_n",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        40
+      ],
+      "props": {
+        "zone": "hg_r2_arbor",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        272,
+        72,
+        80,
+        64
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        64,
+        64,
+        64,
+        112
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        296,
+        232
+      ],
+      "radius": 22,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        168,
+        216
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        312,
+        88
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        296,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        408,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "topiary_bird_statue",
+      "pos": [
+        232,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        360,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        296,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "mossy_garden_obelisk",
+      "pos": [
+        56,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        168,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        88,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "L-bay Iron Arbor teaching Echo shooting: record an Echo firing West through iron bars at a shielded switch, then walk to the West terrace to step on the shutter plate and ignite the timed brazier.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Echoes replay your exact bolts through iron grates while Wick holds a distant shutter plate.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "hg_r2_open",
+    "why": "Escalates Echo Rose from passive plate-holding to active firing synchronization.",
+    "exit": "exit_hg_r2_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "rose_hg_r2"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          312,
+          88
+        ],
+        "target": "sw_hg_r2_eye",
+        "count": 2
+      },
+      {
+        "op": "wait",
+        "secs": 2.4
+      },
+      {
+        "op": "goto",
+        "to": "plate_hg_r2_a",
+        "tol": 5.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "sw_hg_r2_eye",
+        "prop": "activated",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_hg_r2_t"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_hg_r2_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r2_north"
+      }
+    ]
+  }
+}

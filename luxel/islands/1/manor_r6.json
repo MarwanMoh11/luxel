@@ -1,0 +1,540 @@
+{
+  "name_key": "ISL1_MN_CHOIR",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "mn_choir",
+      "name_key": "ISL1_MN_CHOIR",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "manor_r1",
+      "to_spawn": [
+        384,
+        56
+      ]
+    },
+    {
+      "id": "exit_r6_north",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_region": "manor_r7",
+      "to_spawn": [
+        272,
+        304
+      ],
+      "locked_door_id": "door_r6_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r6_south",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "hook_r6_west",
+      "kind": "lantern_hook",
+      "pos": [
+        80,
+        248
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "ring_r6_curtain",
+      "kind": "pull_ring",
+      "pos": [
+        128,
+        104
+      ],
+      "props": {
+        "axis": "s",
+        "dist": 24,
+        "latch": true,
+        "persist": true,
+        "target_id": "mover_r6_curtain"
+      }
+    },
+    {
+      "id": "mover_r6_curtain",
+      "kind": "mover_wall",
+      "pos": [
+        168,
+        48
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "path": [
+          [
+            168,
+            48
+          ],
+          [
+            168,
+            112
+          ]
+        ],
+        "speed": 96,
+        "on_signal": "move",
+        "persist": true
+      }
+    },
+    {
+      "id": "bell_r6_dawn",
+      "kind": "bell",
+      "pos": [
+        112,
+        48
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 290
+      }
+    },
+    {
+      "id": "door_r6_north",
+      "kind": "tone_door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          32,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_r6_shadow",
+      "kind": "shadow_gate",
+      "pos": [
+        248,
+        168
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "clue_r6_choir",
+      "kind": "lore_stone",
+      "pos": [
+        344,
+        128
+      ],
+      "props": {
+        "string_id": "ISL1_CLUE_CHOIR",
+        "icon": "scroll"
+      }
+    },
+    {
+      "id": "moth_1_06",
+      "kind": "moth",
+      "pos": [
+        56,
+        48
+      ],
+      "props": {
+        "id": "moth_1_06"
+      }
+    },
+    {
+      "id": "lamp_r6_south_w",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        272
+      ],
+      "props": {
+        "zone": "mn_choir",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_south_e",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        272
+      ],
+      "props": {
+        "zone": "mn_choir",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        72
+      ],
+      "props": {
+        "zone": "mn_choir",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        248
+      ],
+      "props": {
+        "zone": "mn_choir",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "butler_r6_w",
+      "kind": "lamp_butler",
+      "pos": [
+        104,
+        168
+      ],
+      "zone": "mn_choir",
+      "route": [
+        [
+          64,
+          168
+        ],
+        [
+          184,
+          168
+        ]
+      ]
+    },
+    {
+      "id": "butler_r6_e",
+      "kind": "lamp_butler",
+      "pos": [
+        360,
+        208
+      ],
+      "zone": "mn_choir",
+      "route": [
+        [
+          312,
+          208
+        ],
+        [
+          392,
+          208
+        ]
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        48,
+        144,
+        152,
+        48
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        288,
+        104,
+        112,
+        120
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        344,
+        128
+      ],
+      "radius": 24,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        112,
+        52
+      ],
+      "size": [
+        40,
+        44
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        152,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        200,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "gilded_portrait_b",
+      "pos": [
+        344,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        88,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "mahogany_table",
+      "pos": [
+        312,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        408,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        216,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        296,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r6_clue_choir",
+      "on": "signal:clue_r6_choir",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "clue_choir"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Use Shutter Hood stealth and the brass Pull-Ring to rip open the velvet stage drape, rescuing Lost Moth #6, ringing the hidden Dawn Bell to open the north door, and slipping dark through the Shadow Gate to inspect Clue #2.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Throw+Recall on a Pull-Ring opens sightlines for Ring Waves while Shutter Hood darkness opens Choir Shadow Gates.",
+    "decisions": 10,
+    "expert_s": 55,
+    "reward": "clue_choir+moth_1_06",
+    "why": "First post-Shutter-Hood puzzle chaining Pull-Ring occlusion, Dawn Bell acoustics, Lost Moth rescue, and Clue #2.",
+    "exit": "exit_r6_north",
+    "start": {
+      "flags": [
+        "item_shutter_hood",
+        "manor_key_1"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          144
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "ring_r6_curtain"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "ring_r6_curtain",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          48
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.7
+      },
+      {
+        "op": "shoot",
+        "from": [
+          136,
+          48
+        ],
+        "target": "bell_r6_dawn"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r6_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r6_west"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "gate_r6_shadow",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "clue_r6_choir"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect",
+        "flag": "clue_choir"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_north"
+      }
+    ]
+  },
+  "id": "manor_r6",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

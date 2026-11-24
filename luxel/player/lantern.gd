@@ -485,6 +485,14 @@ func _notify_light(wick: LxWick, world_ctx: Node) -> void:
 				enemy.call("on_light", rad)
 
 
+func get_flame_color() -> Color:
+	if Lx.state != null:
+		var cname: String = str(Lx.state.story_flags.get("cosmetic:flame", "gold")).strip_edges().to_lower()
+		if not cname.is_empty() and LxPalette.is_valid_color(cname):
+			return LxPalette.color(cname, "gold")
+	return PAL_GOLD
+
+
 func _draw() -> void:
 	if state == State.IN_HAND or not _has_lantern():
 		return
@@ -509,8 +517,10 @@ func _draw() -> void:
 		_draw_lantern_tether(t_a, t_b, flash_red, state == State.CARRIED)
 
 	var isl_id: int = Lx.state.island_id if Lx.state != null else 1
-	var glow_col: Color = PAL_CORAL if state == State.CARRIED else LxBiomePalette.col(isl_id, "glow")
-	var hi_col: Color = PAL_CORAL if state == State.CARRIED else LxBiomePalette.col(isl_id, "hi")
+	var flame_col: Color = get_flame_color()
+	var custom_flame: bool = flame_col != PAL_GOLD
+	var glow_col: Color = PAL_CORAL if state == State.CARRIED else (flame_col if custom_flame else LxBiomePalette.col(isl_id, "glow"))
+	var hi_col: Color = PAL_CORAL if state == State.CARRIED else (flame_col if custom_flame else LxBiomePalette.col(isl_id, "hi"))
 	var glow_sc: float = 0.78 if flash_red else 1.0
 	draw_circle(center, 15.0 * pulse, Color(glow_col, 0.13 * glow_sc))
 	draw_circle(center, 9.0 * pulse, Color(hi_col, 0.16 * glow_sc))
@@ -523,7 +533,7 @@ func _draw() -> void:
 	if state == State.HANGING and hang_max > 0.05:
 		var frac: float = clampf(hang_timer / hang_max, 0.0, 1.0)
 		var urgent_arc: bool = hang_timer <= 1.1 and (flash_red or fmod(_anim_t * 6.0, 1.0) < 0.6)
-		draw_arc(center, 7.5, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, Color(PAL_CORAL if urgent_arc else PAL_GOLD, 0.85 if urgent_arc else 0.72), 1.2 if urgent_arc else 1.0)
+		draw_arc(center, 7.5, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, Color(PAL_CORAL if urgent_arc else flame_col, 0.85 if urgent_arc else 0.72), 1.2 if urgent_arc else 1.0)
 		for mi: int in range(2):
 			var m_ph: float = fmod(_anim_t * 0.72 + float(mi) * 0.5, 1.0)
 			var m_ang: float = _anim_t * 1.85 + float(mi) * PI
@@ -549,8 +559,8 @@ func _draw() -> void:
 	draw_rect(Rect2(center + Vector2(-4.0, -4.0), Vector2(8.0, 1.0)), PAL_NIGHT)
 	draw_rect(Rect2(center + Vector2(-3.0, -4.0), Vector2(6.0, 1.0)), PAL_DUSK)
 	draw_rect(Rect2(center + Vector2(-4.0, -3.0), Vector2(8.0, 6.0)), PAL_NIGHT)
-	draw_rect(Rect2(center + Vector2(-3.0, -3.0), Vector2(6.0, 6.0)), PAL_APRICOT)
-	draw_rect(Rect2(center + Vector2(-2.0, -2.0), Vector2(4.0, 4.0)), PAL_GOLD)
+	draw_rect(Rect2(center + Vector2(-3.0, -3.0), Vector2(6.0, 6.0)), flame_col if custom_flame else PAL_APRICOT)
+	draw_rect(Rect2(center + Vector2(-2.0, -2.0), Vector2(4.0, 4.0)), flame_col)
 	var sway_x: float = 0.0 if flash_red else roundf(sin(_anim_t * 6.5) * 0.65)
 	draw_rect(Rect2(center + Vector2(-1.0 + sway_x, -1.0), Vector2(2.0, 2.0)), PAL_CREAM)
 	draw_rect(Rect2(center + Vector2(sway_x, -2.0), Vector2(1.0, 1.0)), Color(PAL_CREAM, 0.84))

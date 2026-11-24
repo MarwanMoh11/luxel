@@ -15,6 +15,22 @@ const REQUIRED_BEACONS: Array[String] = [
 
 const REGIONS: Array[String] = [
 	"overworld",
+	"ow_meteor_apron",
+	"ow_dome_causeway",
+	"ow_starfall_cliff",
+	"cave_gravity_well",
+	"cave_broken_pendulum",
+	"cave_star_cistern",
+	"cave_astrolabe_crypt",
+	"trial_comet_range",
+	"trial_constellation_sprint",
+	"dream_r1",
+	"dream_r2",
+	"dream_r3",
+	"dream_r4",
+	"dream_r5",
+	"dream_r6",
+	"superboss_horizon",
 	"orrery_r1",
 	"orrery_r2",
 	"orrery_r3",
@@ -33,6 +49,7 @@ var _attached: bool = false
 var _r3_kills: int = 0
 var _r8_kills: int = 0
 var _rule: LxI5Rule = null
+var _flow: LxI5OverworldFlow = null
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -52,9 +69,14 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
 	_rule = LxI5Rule.new()
 	_rule.attach(_events, _state)
+	_flow = LxI5OverworldFlow.new()
+	_flow.attach(_events, _state)
 
 
 func detach() -> void:
+	if _flow != null:
+		_flow.detach()
+		_flow = null
 	if _rule != null:
 		_rule.detach()
 		_rule = null
@@ -81,10 +103,16 @@ func detach() -> void:
 func on_region_loaded(region_id: String) -> void:
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
+	if _flow != null:
+		_flow.on_region_loaded(region_id)
 
 
 func get_rule() -> LxI5Rule:
 	return _rule
+
+
+func get_overworld_flow() -> LxI5OverworldFlow:
+	return _flow
 
 
 func get_region_list() -> PackedStringArray:
@@ -334,7 +362,8 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	if are_all_beacons_lit():
+	var seal_ready: bool = _flow.are_seal_requirements_met() if _flow != null else are_all_beacons_lit()
+	if seal_ready:
 		_trigger_seal_shatter()
 
 

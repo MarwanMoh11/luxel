@@ -1,0 +1,686 @@
+{
+  "id": "train_r6",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express_roof",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
+  "name_key": "ISL6_TR_R6",
+  "spawn": [
+    496,
+    120
+  ],
+  "zones": [
+    {
+      "id": "tr_r6",
+      "name_key": "ISL6_TR_R6",
+      "rect": [
+        0,
+        0,
+        544,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_east",
+      "rect": [
+        528,
+        96,
+        16,
+        48
+      ],
+      "to_region": "train_r5",
+      "to_spawn": [
+        56,
+        152
+      ]
+    },
+    {
+      "id": "exit_r6_mail",
+      "rect": [
+        256,
+        240,
+        32,
+        16
+      ],
+      "to_region": "train_r2",
+      "to_spawn": [
+        96,
+        48
+      ],
+      "requires_flags": [
+        "train_mail_drop"
+      ],
+      "locked_door_id": "door_r6_mail"
+    },
+    {
+      "id": "exit_r6_caboose",
+      "rect": [
+        48,
+        240,
+        32,
+        16
+      ],
+      "to_region": "train_r1",
+      "to_spawn": [
+        208,
+        48
+      ],
+      "requires_flags": [
+        "train_roof_hatch"
+      ],
+      "locked_door_id": "door_r6_caboose"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r6_east",
+      "kind": "room_anchor",
+      "pos": [
+        488,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r6_mid",
+      "kind": "room_anchor",
+      "pos": [
+        296,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "coupler_r6_gap1",
+      "kind": "car_coupler",
+      "pos": [
+        324,
+        120
+      ],
+      "props": {
+        "lock_type": "pin",
+        "needs_hook": true,
+        "hook_vault": true,
+        "target_id": "bridge_r6_1",
+        "persist": true
+      }
+    },
+    {
+      "id": "bridge_r6_1",
+      "kind": "door",
+      "pos": [
+        368,
+        120
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          64,
+          48
+        ],
+        "requires_signals": [
+          "coupler_r6_gap1"
+        ]
+      }
+    },
+    {
+      "id": "mover_r6_arch1",
+      "kind": "mover_wall",
+      "pos": [
+        248,
+        64
+      ],
+      "props": {
+        "size": [
+          16,
+          24
+        ],
+        "path": [
+          [
+            248,
+            64
+          ],
+          [
+            248,
+            168
+          ]
+        ],
+        "speed": 34.0,
+        "on_signal": "auto"
+      }
+    },
+    {
+      "id": "wind_r6_mid",
+      "kind": "wind_zone",
+      "pos": [
+        264,
+        120
+      ],
+      "props": {
+        "dir": "e",
+        "strength": 130.0,
+        "size": [
+          64,
+          48
+        ]
+      }
+    },
+    {
+      "id": "rail_r6_mail",
+      "kind": "rail",
+      "pos": [
+        288,
+        80
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "coupler_r6_mail",
+      "kind": "car_coupler",
+      "pos": [
+        288,
+        60
+      ],
+      "props": {
+        "lock_type": "pin",
+        "needs_hook": true,
+        "hook_vault": false,
+        "sets_flag": "train_mail_drop",
+        "target_id": "door_r6_mail",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r6_mail",
+      "kind": "door",
+      "pos": [
+        272,
+        232
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "coupler_r6_mail"
+        ]
+      }
+    },
+    {
+      "id": "coupler_r6_gap2",
+      "kind": "car_coupler",
+      "pos": [
+        116,
+        120
+      ],
+      "props": {
+        "lock_type": "pin",
+        "needs_hook": true,
+        "hook_vault": true,
+        "target_id": "bridge_r6_2",
+        "persist": true
+      }
+    },
+    {
+      "id": "bridge_r6_2",
+      "kind": "door",
+      "pos": [
+        160,
+        120
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          64,
+          48
+        ],
+        "requires_signals": [
+          "coupler_r6_gap2"
+        ]
+      }
+    },
+    {
+      "id": "wind_r6_west",
+      "kind": "wind_zone",
+      "pos": [
+        64,
+        120
+      ],
+      "props": {
+        "dir": "e",
+        "strength": 130.0,
+        "size": [
+          48,
+          48
+        ]
+      }
+    },
+    {
+      "id": "rail_r6_cab",
+      "kind": "rail",
+      "pos": [
+        56,
+        80
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "coupler_r6_caboose",
+      "kind": "car_coupler",
+      "pos": [
+        56,
+        60
+      ],
+      "props": {
+        "lock_type": "pin",
+        "needs_hook": true,
+        "hook_vault": false,
+        "sets_flag": "train_roof_hatch",
+        "target_id": "door_r6_caboose",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r6_caboose",
+      "kind": "door",
+      "pos": [
+        64,
+        232
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "coupler_r6_caboose"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r6_e",
+      "kind": "road_lamp",
+      "pos": [
+        464,
+        72
+      ],
+      "props": {
+        "zone": "tr_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_m1",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        176
+      ],
+      "props": {
+        "zone": "tr_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_m2",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        72
+      ],
+      "props": {
+        "zone": "tr_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        176
+      ],
+      "props": {
+        "zone": "tr_r6",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r6_wasp_1",
+      "kind": "smelter_wasp",
+      "pos": [
+        368,
+        72
+      ],
+      "zone": "tr_r6"
+    },
+    {
+      "id": "en_r6_wasp_2",
+      "kind": "smelter_wasp",
+      "pos": [
+        160,
+        168
+      ],
+      "zone": "tr_r6"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        416,
+        96,
+        80,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        208,
+        96,
+        104,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        32,
+        96,
+        64,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        408,
+        56,
+        96,
+        136
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        200,
+        56,
+        120,
+        136
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        24,
+        56,
+        80,
+        136
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "pantograph_spark_arc",
+      "pos": [
+        448,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_vent_cowling",
+      "pos": [
+        432,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        496,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "riveted_hatch_cover",
+      "pos": [
+        272,
+        200
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "wind_vane_fin",
+      "pos": [
+        208,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "riveted_hatch_cover",
+      "pos": [
+        64,
+        200
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "handbrake_wheel_post",
+      "pos": [
+        32,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        312,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "tr_r6_hatch_msg",
+      "on": "signal:coupler_r6_caboose",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "ISL6_TR_SHORT_HATCH",
+            "style": "narration",
+            "duration": 2.8
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Astonishing 3-car rooftop archipelago: use your brand-new Coupler Hook to yank coupling gangplanks across speeding void gaps, dodge a sweeping tunnel arch, swat Smelter Wasps, and uncouple BOTH the Mail Hatch (moth_6_06 in r2) and Caboose Hatch (Cycle 1 to r1)!",
+    "kind": "traversal",
+    "beat": "ten",
+    "teaches": "item_coupler_hook remote car_coupler[pin] pulls across void gaps + Cycle 1 & 2 rooftop shortcuts",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "train_mail_drop+train_roof_hatch+cycle_1_and_2",
+    "why": "Signature payoff for defeating The Brakeman; links the rooftop wing directly back over r2 (moth loft) and r1 (caboose).",
+    "exit": "exit_r6_caboose",
+    "start": {
+      "flags": [
+        "brakeman_defeated",
+        "item_coupler_hook"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          412,
+          120
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "coupler_r6_gap1",
+        "hold": 0.45
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "target": "bridge_r6_1",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          108
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "coupler_r6_mail",
+        "hold": 0.35
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r6_mail",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          204,
+          120
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "coupler_r6_gap2",
+        "hold": 0.45
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "target": "bridge_r6_2",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          108
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "coupler_r6_caboose",
+        "hold": 0.35
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r6_caboose",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_caboose"
+      }
+    ]
+  }
+}

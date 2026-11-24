@@ -1,0 +1,550 @@
+{
+  "id": "galleon_r2",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R2_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    240,
+    304
+  ],
+  "zones": [
+    {
+      "id": "gal_r2",
+      "name_key": "GAL_R2_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_south",
+      "rect": [
+        224,
+        336,
+        32,
+        16
+      ],
+      "to_region": "galleon_r1",
+      "to_spawn": [
+        192,
+        56
+      ]
+    },
+    {
+      "id": "exit_r2_west",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_region": "galleon_r3",
+      "to_spawn": [
+        400,
+        144
+      ]
+    },
+    {
+      "id": "exit_r2_east",
+      "rect": [
+        464,
+        160,
+        16,
+        32
+      ],
+      "to_region": "galleon_r4",
+      "to_spawn": [
+        48,
+        144
+      ]
+    },
+    {
+      "id": "exit_r2_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "galleon_r5",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r2_north"
+    },
+    {
+      "id": "exit_r2_ladder",
+      "rect": [
+        464,
+        64,
+        16,
+        32
+      ],
+      "to_region": "galleon_r6",
+      "to_spawn": [
+        416,
+        160
+      ],
+      "requires_flags": [
+        "galleon_r6_ladder"
+      ],
+      "locked_door_id": "door_r2_ladder"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_s",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r2",
+      "kind": "state_lever",
+      "pos": [
+        240,
+        216
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 1,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "valve_r2_east",
+      "kind": "state_lever",
+      "pos": [
+        440,
+        216
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 1,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "drv_r2",
+      "kind": "gal_list_driver",
+      "pos": [
+        240,
+        264
+      ],
+      "props": {
+        "targets": []
+      }
+    },
+    {
+      "id": "grate_r2_teaser",
+      "kind": "grate",
+      "pos": [
+        296,
+        64
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_r2_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "galleon",
+        "key_kind": "wick_key",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r2_ladder",
+      "kind": "door",
+      "pos": [
+        456,
+        80
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "galleon_r6_ladder"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r2_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        296
+      ],
+      "props": {
+        "zone": "gal_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_n",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "zone": "gal_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        40,
+        136
+      ],
+      "props": {
+        "zone": "gal_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        440,
+        136
+      ],
+      "props": {
+        "zone": "gal_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_tease",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        56
+      ],
+      "props": {
+        "zone": "gal_r2",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        176
+      ],
+      "radius": 32
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        360,
+        56
+      ],
+      "radius": 20,
+      "style": "spotlight"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        32,
+        96,
+        48
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        200,
+        248
+      ],
+      "radius": 20,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        136
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "mast_stump_pillar",
+      "pos": [
+        200,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "mast_stump_pillar",
+      "pos": [
+        280,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_capstan",
+      "pos": [
+        360,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        200,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        280,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        40,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        440,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        200,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        280,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        216,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        264,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        240,
+        296
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "mast_bridge_port",
+      "when": "list==port",
+      "tiles": [
+        [
+          4,
+          10,
+          7,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "mast_bridge_starboard",
+      "when": "list==starboard",
+      "tiles": [
+        [
+          19,
+          10,
+          7,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Three-tier Mast-Well hub where flipping the Ballast Valve swings a fallen mast-bridge across 7-tile bilge chasms between the Port and Starboard wings while teasing the Boss Key vault behind an iron grate.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "Swinging the hub mast-bridge port vs starboard routes between dungeon wings; key door north and grate vault NE set clear long-term goals.",
+    "decisions": 4,
+    "expert_s": 45,
+    "reward": "hub_routing+boss_key_tease",
+    "why": "Central multi-entrance ship hub anchoring Cycles 1 and 2 and telegraphing the Boss Key vault early.",
+    "exit": "exit_r2_west",
+    "start": {
+      "vars": {
+        "list": "starboard"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          264
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          264
+        ],
+        "target": "valve_r2"
+      },
+      {
+        "op": "expect",
+        "var": "list==port"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_west"
+      }
+    ]
+  }
+}

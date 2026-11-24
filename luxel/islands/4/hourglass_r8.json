@@ -1,0 +1,461 @@
+{
+  "id": "hourglass_r8",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R8",
+  "spawn": [
+    240,
+    232
+  ],
+  "zones": [
+    {
+      "id": "hg_r8_pergola",
+      "name_key": "ISL4_HG_R8",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r8_south",
+      "rect": [
+        224,
+        272,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r7",
+      "to_spawn": [
+        232,
+        56
+      ]
+    },
+    {
+      "id": "exit_hg_r8_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r9",
+      "to_spawn": [
+        272,
+        296
+      ],
+      "locked_door_id": "door_hg_r8_north"
+    },
+    {
+      "id": "exit_hg_r8_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "hourglass_r10",
+      "to_spawn": [
+        192,
+        56
+      ],
+      "requires_flags": [
+        "hg_r10_open"
+      ],
+      "locked_door_id": "door_hg_r8_west"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r8",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        232
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_hg_r8_shadow",
+      "kind": "lore_stone",
+      "pos": [
+        296,
+        248
+      ],
+      "props": {
+        "string_id": "ISL4_HG_LORE_SHADOW",
+        "icon": "clock"
+      }
+    },
+    {
+      "id": "rose_hg_r8",
+      "kind": "echo_rose",
+      "pos": [
+        360,
+        184
+      ],
+      "props": {
+        "secs": 4.2,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_hg_r8_a",
+      "kind": "pressure_plate",
+      "pos": [
+        392,
+        104
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "tbar_hg_r8"
+      }
+    },
+    {
+      "id": "hook_hg_r8",
+      "kind": "lantern_hook",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "tbar_hg_r8",
+      "kind": "toggle_block",
+      "pos": [
+        240,
+        168
+      ],
+      "props": {
+        "group": "r8_u",
+        "phase": 0,
+        "size": [
+          64,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sgate_hg_r8",
+      "kind": "shadow_gate",
+      "pos": [
+        240,
+        112
+      ],
+      "props": {
+        "size": [
+          64,
+          16
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "plate_hg_r8_latch",
+      "kind": "pressure_plate",
+      "pos": [
+        240,
+        64
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "door_hg_r8_north",
+        "sets_flag": "hg_r8_open"
+      }
+    },
+    {
+      "id": "door_hg_r8_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "plate_hg_r8_latch"
+        ],
+        "persistent": true,
+        "sets_flag": "hg_r8_open"
+      }
+    },
+    {
+      "id": "door_hg_r8_west",
+      "kind": "door",
+      "pos": [
+        24,
+        168
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "hg_r10_open"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        264
+      ],
+      "props": {
+        "zone": "hg_r8_pergola",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        184
+      ],
+      "props": {
+        "zone": "hg_r8_pergola",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "zone": "hg_r8_pergola",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        248
+      ],
+      "props": {
+        "zone": "hg_r8_pergola",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        48,
+        64,
+        144
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        392,
+        104
+      ],
+      "radius": 20,
+      "style": "ritual"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        152,
+        232
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        344,
+        216
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        408,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        328,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        168,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        328,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        88,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        392,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        136,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "mossy_garden_obelisk",
+      "pos": [
+        392,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "Inversion twist: Echo Rose light closes the central Shadow Gate, so route your ghost behind the opaque East wall onto the shutter plate, hang your own lantern in the walled West alcove, and walk dark through the Shadow Gate.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Shadow Gates close under both Wick's lantern AND Echo light; opaque walls let you hide both light sources.",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "hg_r8_open",
+    "why": "Signature ten-beat inversion turning your main tool (light & echoes) into a hazard to hide.",
+    "exit": "exit_hg_r8_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_hg_r8_shadow"
+      },
+      {
+        "op": "interact",
+        "target": "rose_hg_r8"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_hg_r8_a",
+        "secs": 4.4
+      },
+      {
+        "op": "interact",
+        "target": "hook_hg_r8"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "sgate_hg_r8",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_hg_r8_latch",
+        "secs": 0.4
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r8_north"
+      }
+    ]
+  }
+}

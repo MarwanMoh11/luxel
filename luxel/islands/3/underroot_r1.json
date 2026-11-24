@@ -1,0 +1,632 @@
+{
+  "name_key": "ISL3_UR_R1_NAME",
+  "spawn": [
+    192,
+    216
+  ],
+  "zones": [
+    {
+      "id": "ur_r1",
+      "name_key": "ISL3_UR_R1_NAME",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r1_return_ow",
+      "rect": [
+        176,
+        240,
+        32,
+        16
+      ],
+      "to_island": 3,
+      "to_region": "overworld",
+      "to_spawn": [
+        352,
+        912
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_r1_north",
+      "rect": [
+        176,
+        0,
+        32,
+        16
+      ],
+      "to_region": "underroot_r2",
+      "to_spawn": [
+        256,
+        280
+      ],
+      "locked_door_id": "door_r1_north"
+    },
+    {
+      "id": "exit_r1_east_sc",
+      "rect": [
+        368,
+        96,
+        16,
+        32
+      ],
+      "to_region": "underroot_r8",
+      "to_spawn": [
+        48,
+        128
+      ],
+      "requires_flags": [
+        "ur_r8_shortcut"
+      ],
+      "locked_door_id": "door_r1_east_sc"
+    },
+    {
+      "id": "exit_r1_se_sc",
+      "rect": [
+        368,
+        176,
+        16,
+        32
+      ],
+      "to_region": "underroot_r10",
+      "to_spawn": [
+        328,
+        168
+      ],
+      "requires_flags": [
+        "ur_r10_lift"
+      ],
+      "locked_door_id": "door_r1_se_sc"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r1_entry",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_underroot",
+      "kind": "waystone",
+      "pos": [
+        192,
+        172
+      ],
+      "props": {
+        "zone": "ur_r1",
+        "name_key": "ISL3_UR_R1_NAME"
+      }
+    },
+    {
+      "id": "lore_r1_tiny",
+      "kind": "lore_stone",
+      "pos": [
+        148,
+        200
+      ],
+      "props": {
+        "string_id": "ISL3_HINT_TINY",
+        "icon": "lantern"
+      }
+    },
+    {
+      "id": "hook_r1_shade",
+      "kind": "lantern_hook",
+      "pos": [
+        304,
+        136
+      ],
+      "props": {
+        "light_radius": 84.0
+      }
+    },
+    {
+      "id": "pw_r1_thorn",
+      "kind": "light_plant",
+      "pos": [
+        128,
+        128
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          16,
+          32
+        ],
+        "secs": 0.45,
+        "decay": 1.1
+      }
+    },
+    {
+      "id": "dew_r1",
+      "kind": "dew_lens",
+      "pos": [
+        80,
+        128
+      ],
+      "props": {
+        "movable": true,
+        "rail_axis": "x",
+        "focus_range": 140.0
+      }
+    },
+    {
+      "id": "pb_r1_bridge",
+      "kind": "light_plant",
+      "pos": [
+        192,
+        96
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          48,
+          32
+        ],
+        "secs": 0.5,
+        "decay": 6.0
+      }
+    },
+    {
+      "id": "knot_r1_north",
+      "kind": "dry_root_knot",
+      "pos": [
+        192,
+        56
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "persist": true,
+        "target_id": "door_r1_north"
+      }
+    },
+    {
+      "id": "door_r1_north",
+      "kind": "door",
+      "pos": [
+        192,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "knot_r1_north"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_east_sc",
+      "kind": "door",
+      "pos": [
+        360,
+        112
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "ur_r8_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_se_sc",
+      "kind": "door",
+      "pos": [
+        360,
+        192
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "ur_r10_lift"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r1_sw",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        232
+      ],
+      "props": {
+        "zone": "ur_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_se",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        232
+      ],
+      "props": {
+        "zone": "ur_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_ne",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        48
+      ],
+      "props": {
+        "zone": "ur_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r1_grass_w",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        56,
+        108
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r1_grass_e",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        328,
+        168
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": true
+      }
+    },
+    {
+      "id": "lm_r1_acorn_sw",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        112,
+        208
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": false
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        172
+      ],
+      "radius": 28,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        192,
+        172
+      ],
+      "size": [
+        40,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.32
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        80,
+        128
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        296,
+        136
+      ],
+      "radius": 18,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 16,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        192,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        64,
+        164
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        320,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        52,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        276,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        108,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        160,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        224,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        324,
+        156
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        248,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "pebble_milestone",
+      "pos": [
+        156,
+        172
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fallen_bark_bench",
+      "pos": [
+        280,
+        188
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ur_mark_entered",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ur_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Shrunk tiny, your 1.8x sun-lantern blooms a thorn-wall sealing the dewdrop until you hang it behind a root pillar, roll the dew lens onto the center line, bloom the pit bridge, and burn the north dry root-knot.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "1.8x sun-lantern blooms thorn-walls from afar; hiding light behind cover starves them; rolling dew_lens and shooting yellow focuses a dew_ray to burn dry_root_knot.",
+    "decisions": 4,
+    "expert_s": 40,
+    "reward": "ws_underroot+r2_access",
+    "why": "Entry threshold of The Under-Root anchoring Waystone 1 and two later return shortcuts (r8, r10).",
+    "exit": "exit_r1_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_underroot"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r1_tiny"
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          136
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r1_shade"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "pw_r1_thorn",
+        "prop": "powered",
+        "value": false,
+        "timeout": 3.5
+      },
+      {
+        "op": "push",
+        "target": "dew_r1",
+        "to": [
+          192,
+          128
+        ]
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          160
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "pb_r1_bridge",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          192,
+          160
+        ],
+        "target": "dew_r1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r1_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r1_north"
+      }
+    ]
+  },
+  "id": "underroot_r1",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "tiny": true,
+  "theme": "under_root",
+  "music": "isl3_underroot",
+  "ambience": [
+    "forest_wind",
+    "cave_drip"
+  ],
+  "triggers": [],
+  "layers": []
+}

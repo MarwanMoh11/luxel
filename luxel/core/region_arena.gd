@@ -8,6 +8,7 @@ const PAL: Dictionary = LxPalette.PAL
 
 var locked: bool = false
 var _lock_flash: float = 0.0
+var _rise_t: float = 0.0
 var _clock: float = 0.0
 var _region: LxRegionLoader = null
 
@@ -21,6 +22,7 @@ func reset(region: LxRegionLoader) -> void:
 	_region = region
 	locked = false
 	_lock_flash = 0.0
+	_rise_t = 0.0
 	_clock = 0.0
 	queue_redraw()
 
@@ -72,6 +74,10 @@ func tick(dt: float, region: LxRegionLoader, wick_pos: Vector2) -> void:
 			_lock_flash = 0.35
 			if Lx.events != null:
 				Lx.events.sfx_requested.emit("door_locked", wick_pos, false)
+				Lx.events.shake_requested.emit(0.04 if LxHudFx.flash_reduced() else 0.08)
+			queue_redraw()
+		elif _rise_t > 0.0:
+			_rise_t = maxf(0.0, _rise_t - dt / 0.26)
 			queue_redraw()
 	else:
 		if not any_live_lock_boss or wick_dead:
@@ -83,30 +89,49 @@ func tick(dt: float, region: LxRegionLoader, wick_pos: Vector2) -> void:
 		else:
 			_clock += dt
 			_lock_flash = maxf(0.0, _lock_flash - dt)
+			_rise_t = minf(1.0, _rise_t + dt / 0.34)
 			queue_redraw()
 
 
 func _draw() -> void:
-	if not locked or _region == null:
+	if (not locked and _rise_t <= 0.01) or _region == null:
 		return
 	var fr: bool = LxHudFx.flash_reduced()
+	var rise: float = clampf(_rise_t, 0.15 if locked else 0.0, 1.0)
 	var pulse: bool = fr or fmod(_clock * 4.0, 1.0) < 0.5
 	var bar_col: Color = (PAL["cream"] if _lock_flash > 0.1 else (PAL["coral"] if pulse else PAL["gold"])) as Color
+	var iron_col: Color = PAL["stone"] as Color
 	var rim_col: Color = PAL["void"] as Color
 	for ex: Dictionary in _region.exits:
 		var er: Rect2 = LxMapFormat.to_rect2(ex.get("rect", []))
 		if not er.has_area():
 			continue
-		draw_rect(er.grow(1.0), Color(rim_col, 0.72))
-		draw_rect(er, Color(PAL["wine"] as Color, 0.38))
+		draw_rect(er.grow(1.0), Color(rim_col, 0.72 * rise))
+		draw_rect(er, Color(PAL["wine"] as Color, 0.34 * rise))
 		if er.size.x >= er.size.y:
-			var y_mid: float = roundf(er.get_center().y)
-			draw_rect(Rect2(er.position.x, y_mid - 1.0, er.size.x, 3.0), rim_col)
-			draw_rect(Rect2(er.position.x + 1.0, y_mid, maxf(1.0, er.size.x - 2.0), 1.0), bar_col)
+			# Horizontal exit: vertical portcullis bars rising from the bottom threshold.
+			var span_h: float = maxf(2.0, roundf(er.size.y * rise))
+			var y_top: float = roundf(er.end.y - span_h)
+			var bx: float = roundf(er.position.x + 2.0)
+			while bx <= er.end.x - 3.0:
+				draw_rect(Rect2(bx - 1.0, y_top, 3.0, span_h), rim_col)
+				draw_rect(Rect2(bx, y_top, 1.0, span_h), iron_col)
+				draw_rect(Rect2(bx, y_top, 1.0, 2.0), bar_col)
+				bx += 5.0
+			draw_rect(Rect2(er.position.x, y_top - 1.0, er.size.x, 3.0), rim_col)
+			draw_rect(Rect2(er.position.x + 1.0, y_top, maxf(1.0, er.size.x - 2.0), 1.0), bar_col)
 		else:
-			var x_mid: float = roundf(er.get_center().x)
-			draw_rect(Rect2(x_mid - 1.0, er.position.y, 3.0, er.size.y), rim_col)
-			draw_rect(Rect2(x_mid, er.position.y + 1.0, 1.0, maxf(1.0, er.size.y - 2.0)), bar_col)
+			# Vertical exit: horizontal portcullis bars extending across the doorway.
+			var span_w: float = maxf(2.0, roundf(er.size.x * rise))
+			var x_edge: float = roundf(er.end.x - span_w)
+			var by: float = roundf(er.position.y + 2.0)
+			while by <= er.end.y - 3.0:
+				draw_rect(Rect2(x_edge, by - 1.0, span_w, 3.0), rim_col)
+				draw_rect(Rect2(x_edge, by, span_w, 1.0), iron_col)
+				draw_rect(Rect2(x_edge, by, 2.0, 1.0), bar_col)
+				by += 5.0
+			draw_rect(Rect2(x_edge - 1.0, er.position.y, 3.0, er.size.y), rim_col)
+			draw_rect(Rect2(x_edge, er.position.y + 1.0, 1.0, maxf(1.0, er.size.y - 2.0)), bar_col)
 
 
 # ---- Pure geometry & visibility helpers extracted from LxRegionLoader ----

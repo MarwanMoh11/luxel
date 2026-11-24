@@ -11,17 +11,17 @@ const SURGE_TELL_P2: float = 0.56
 const CROSS_TELL_P2: float = 0.60
 const SURGE_FIRE_TIME: float = 0.32
 const CROSS_FIRE_TIME: float = 0.34
-const SURGE_RECOVER_P1: float = 1.35
-const SURGE_RECOVER_P2: float = 1.25
+const SURGE_RECOVER_P1: float = 1.40
+const SURGE_RECOVER_P2: float = 1.40
 const SURGE_START_R: float = 10.0
-const SURGE_MAX_R: float = 84.0
-const SURGE_HALF_ARC: float = 0.52
+const SURGE_MAX_R: float = 82.0
+const SURGE_HALF_ARC: float = 0.50
 const CROSS_OFFSET_RAD: float = 0.785 # +-45 deg cones with safe center lane
-const CROSS_HALF_ARC: float = 0.34
+const CROSS_HALF_ARC: float = 0.32
 const SURGE_BAND: float = 12.0
-const SURGE_CD_P1: float = 5.0
-const SURGE_CD_P2: float = 3.8
-const GUARD_CRACK_STAGGER: float = 1.40
+const SURGE_CD_P1: float = 5.2
+const SURGE_CD_P2: float = 4.6
+const GUARD_CRACK_STAGGER: float = 1.60
 const GUARD_CRACK_MULT: float = 1.50
 const FEINT_DIST: float = 18.0
 const PHASE2_ROAR_TIME: float = 0.60
@@ -56,9 +56,9 @@ func _init() -> void:
 	hp = 18.0
 	shield_max = 4.0
 	shield_hp = 4.0
-	shield_gone_duration = 5.2
+	shield_gone_duration = 6.2
 	body_radius = 7.0
-	routine_speed = 36.0
+	routine_speed = 34.0
 	leash_radius = 175.0
 	notice_radius = 140.0
 	reach = 40.0
@@ -186,13 +186,12 @@ func _check_phase_transition() -> bool:
 		is_counter_attack = false
 		surge_progress = 0.0
 		guard_cracked_t = 0.0
-		if shield_gone_t > 0.0:
-			shield_gone_t = 0.0
-			shield_hp = shield_max * 0.65
+		if shield_gone_t <= 0.0:
+			shield_hp = maxf(shield_hp, shield_max * 0.50)
 		_release_token()
 		state = State.NOTICE
 		state_timer = PHASE2_ROAR_TIME
-		surge_cd = 0.75
+		surge_cd = 2.40
 		_trigger_p2_sluice_flood()
 		if Lx.events != null:
 			Lx.events.boss_phase_changed.emit(boss_id, 2)
@@ -297,7 +296,7 @@ func _step_notice(dt: float, target_pos: Vector2) -> void:
 		_roaring = false
 		state = State.POSITION
 		step_clock = 0.0
-		cooldown = 0.35
+		cooldown = 0.90
 
 
 func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
@@ -419,9 +418,9 @@ func _step_commit(dt: float) -> void:
 		surge_cd = SURGE_CD_P2 if phase >= 2 else SURGE_CD_P1
 
 
-func _swing_tell_base() -> float: return 0.46 if phase >= 2 else tell_time
-func _lunge_tell_base() -> float: return 0.48 if phase >= 2 else lunge_tell_time
-func _post_recover_cooldown() -> float: return 0.72 if phase >= 2 else 0.92
+func _swing_tell_base() -> float: return 0.50 if phase >= 2 else tell_time
+func _lunge_tell_base() -> float: return 0.54 if phase >= 2 else lunge_tell_time
+func _post_recover_cooldown() -> float: return 1.15 if phase >= 2 else 1.25
 func _body_color() -> Color: return (PAL["wine"] as Color) if phase >= 2 else (PAL["coral"] as Color)
 func _shield_color() -> Color: return PAL["gold"] as Color
 

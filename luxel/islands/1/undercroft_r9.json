@@ -28,8 +28,8 @@
       ],
       "to_region": "undercroft_r8",
       "to_spawn": [
-        224,
-        56
+        240,
+        48
       ]
     },
     {
@@ -42,8 +42,8 @@
       ],
       "to_region": "undercroft_r10",
       "to_spawn": [
-        392,
-        120
+        368,
+        104
       ]
     }
   ],
@@ -315,7 +315,7 @@
       "id": "lamp_r9_nw",
       "kind": "road_lamp",
       "pos": [
-        64,
+        96,
         80
       ],
       "props": {
@@ -340,7 +340,7 @@
       "kind": "road_lamp",
       "pos": [
         496,
-        272
+        264
       ],
       "props": {
         "zone": "uc_choir",
@@ -391,26 +391,6 @@
       "style": "ritual"
     },
     {
-      "kind": "rug",
-      "rect": [
-        456,
-        120,
-        48,
-        36
-      ],
-      "style": "ornate"
-    },
-    {
-      "kind": "rug",
-      "rect": [
-        448,
-        16,
-        32,
-        72
-      ],
-      "style": "ornate"
-    },
-    {
       "kind": "inlay",
       "rect": [
         444,
@@ -422,10 +402,28 @@
     {
       "kind": "stain",
       "pos": [
-        48,
-        88
+        56,
+        104
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        264,
+        112
       ],
       "radius": 22,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        480,
+        136
+      ],
+      "radius": 24,
       "style": "moss"
     },
     {
@@ -435,10 +433,10 @@
         128
       ],
       "size": [
-        44,
-        56
+        48,
+        60
       ],
-      "tint": "warm",
+      "tint": "cool",
       "shear": 0.3
     }
   ],
@@ -460,7 +458,7 @@
       "prop": "bell_floor_seal",
       "pos": [
         464,
-        280
+        288
       ],
       "layer": "ground",
       "flip_x": false,
@@ -483,8 +481,8 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_candelabra",
       "pos": [
-        40,
-        56
+        56,
+        80
       ],
       "layer": "sort",
       "flip_x": false,
@@ -505,19 +503,7 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_coffin",
-      "pos": [
-        44,
-        108
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "open_sarcophagus",
+      "prop": "mossy_headstone",
       "pos": [
         288,
         48
@@ -529,67 +515,43 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
+      "prop": "mossy_headstone",
       "pos": [
         256,
         112
       ],
       "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
-      "pos": [
-        504,
-        304
-      ],
-      "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "tattered_crypt_banner",
+      "prop": "chapel_pew",
       "pos": [
-        440,
-        40
+        52,
+        128
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
-      "phase": 0.15
+      "phase": 0.0
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "toll_brazier",
+      "prop": "chapel_pew",
       "pos": [
-        112,
-        260
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "toll_brazier",
-      "pos": [
-        512,
-        232
+        496,
+        200
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
-      "phase": 0.7
+      "phase": 0.0
     }
   ],
   "design": {
-    "idea": "The Choir of Coffins: three parallel tone coffins share one movable baffle and Echo Clapper + Dusk freeze timing to build twin abyss bridges and unlock the Boss Key.",
+    "idea": "The Choir of Coffins: stepped three-tower flooded cathedral where three parallel tone coffins share one baffle and Echo Clapper + Dusk freeze timing to unlock the Boss Key.",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Synthesizing acoustic occlusion, Echo Clapper delayed waves, Dusk coffin-freezing, Lantern Hook sensors, and War shattering in one grand chamber.",
@@ -744,7 +706,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "undercroft",
-  "music": "island1_dungeon",
+  "music": "isl1_undercroft",
   "ambience": [
     "night_breeze",
     "sanctum_bells"

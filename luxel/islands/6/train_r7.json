@@ -1,0 +1,614 @@
+{
+  "id": "train_r7",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express_roof",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
+  "name_key": "ISL6_TR_R7",
+  "spawn": [
+    256,
+    48
+  ],
+  "zones": [
+    {
+      "id": "tr_r7",
+      "name_key": "ISL6_TR_R7",
+      "rect": [
+        0,
+        0,
+        576,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_north",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "train_r4",
+      "to_spawn": [
+        192,
+        264
+      ]
+    },
+    {
+      "id": "exit_r7_east",
+      "rect": [
+        560,
+        224,
+        16,
+        48
+      ],
+      "to_region": "train_r8",
+      "to_spawn": [
+        40,
+        136
+      ],
+      "locked_door_id": "door_r7_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_north",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        48
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "cart_r7_express",
+      "kind": "vehicle_cart",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "rail": [
+          [
+            120,
+            88
+          ],
+          [
+            304,
+            88
+          ]
+        ],
+        "speed": 100.0,
+        "loop": false,
+        "auto": false,
+        "persist": true
+      }
+    },
+    {
+      "id": "toggle_r7_switch",
+      "kind": "crystal_toggle",
+      "pos": [
+        304,
+        112
+      ],
+      "props": {
+        "group": "r7_siding",
+        "target_id": "cart_r7_freight",
+        "persist": true
+      }
+    },
+    {
+      "id": "cart_r7_freight",
+      "kind": "vehicle_cart",
+      "pos": [
+        120,
+        192
+      ],
+      "props": {
+        "rail": [
+          [
+            120,
+            192
+          ],
+          [
+            416,
+            192
+          ]
+        ],
+        "alt_rail": [
+          [
+            304,
+            136
+          ],
+          [
+            304,
+            192
+          ]
+        ],
+        "speed": 100.0,
+        "loop": false,
+        "auto": false,
+        "persist": true
+      }
+    },
+    {
+      "id": "anvil_r7_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        112,
+        248
+      ],
+      "props": {
+        "mode": "lance",
+        "sets_flag": "temper_lance_known"
+      }
+    },
+    {
+      "id": "coupler_r7_arm_1",
+      "kind": "car_coupler",
+      "pos": [
+        328,
+        248
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_r7_arm",
+        "persist": true
+      }
+    },
+    {
+      "id": "coupler_r7_arm_2",
+      "kind": "car_coupler",
+      "pos": [
+        360,
+        248
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_r7_arm",
+        "persist": true
+      }
+    },
+    {
+      "id": "coupler_r7_arm_3",
+      "kind": "car_coupler",
+      "pos": [
+        392,
+        248
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_r7_arm",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_r7_arm",
+      "kind": "logic_gate",
+      "pos": [
+        360,
+        288
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "coupler_r7_arm_1",
+          "coupler_r7_arm_2",
+          "coupler_r7_arm_3"
+        ],
+        "target_id": "door_r7_east",
+        "persist": true
+      }
+    },
+    {
+      "id": "pull_r7_return",
+      "kind": "pull_ring",
+      "pos": [
+        464,
+        224
+      ],
+      "props": {
+        "axis": "s",
+        "dist": 24.0,
+        "latch": true,
+        "target_id": "bridge_r7_return",
+        "persist": true
+      }
+    },
+    {
+      "id": "bridge_r7_return",
+      "kind": "door",
+      "pos": [
+        464,
+        144
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          32,
+          128
+        ],
+        "requires_signals": [
+          "pull_r7_return"
+        ]
+      }
+    },
+    {
+      "id": "door_r7_east",
+      "kind": "door",
+      "pos": [
+        552,
+        248
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_r7_arm"
+        ],
+        "sets_flag": "train_siding_cleared"
+      }
+    },
+    {
+      "id": "lamp_r7_nw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        48
+      ],
+      "props": {
+        "zone": "tr_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_ne",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        48
+      ],
+      "props": {
+        "zone": "tr_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_sw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        248
+      ],
+      "props": {
+        "zone": "tr_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_smid",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        280
+      ],
+      "props": {
+        "zone": "tr_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_se",
+      "kind": "road_lamp",
+      "pos": [
+        504,
+        248
+      ],
+      "props": {
+        "zone": "tr_r7",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r7_hopper",
+      "kind": "rail_hopper",
+      "pos": [
+        216,
+        256
+      ],
+      "zone": "tr_r7"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        96,
+        32,
+        368,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        304,
+        232,
+        112,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        88,
+        224,
+        48,
+        48
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        248,
+        264
+      ],
+      "radius": 22,
+      "glow": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        104,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        456,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "coal_tender_crate",
+      "pos": [
+        64,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        248,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "handbrake_wheel_post",
+      "pos": [
+        496,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "pantograph_spark_arc",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Astonishing Twin-Train Track Jump: ride an Express siding cart over an 8-tile lava canyon, shoot a mid-chasm switch crystal to divert the parallel Freight Cart onto the inner spur, Dash-jump mid-air onto the Freight Cart, forge the Lance Temper, and pierce 3 aligned armoured couplers in ONE shot!",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "vehicle_cart branch switching + mid-air cart Dash-jump + temper_anvil[lance] multi-pierce",
+    "decisions": 9,
+    "expert_s": 60,
+    "reward": "temper_lance_known+train_siding_cleared+open_r8",
+    "why": "Signature parallel-freight set-piece puzzle introducing Lance armor-piercing bolts.",
+    "exit": "exit_r7_east",
+    "start": {
+      "flags": [
+        "brakeman_defeated",
+        "item_coupler_hook"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          120,
+          68
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "mount",
+        "target": "cart_r7_express"
+      },
+      {
+        "op": "shoot",
+        "target": [
+          80,
+          88
+        ],
+        "count": 4,
+        "wait_hit": 0.35
+      },
+      {
+        "op": "wait_phase",
+        "target": "cart_r7_express",
+        "near": [
+          304,
+          88
+        ],
+        "tol": 20.0,
+        "timeout": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "toggle_r7_switch",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "dash",
+        "dir": [
+          0,
+          1
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "shoot",
+        "target": [
+          304,
+          88
+        ],
+        "count": 2,
+        "wait_hit": 0.35
+      },
+      {
+        "op": "wait_phase",
+        "target": "cart_r7_freight",
+        "near": [
+          304,
+          192
+        ],
+        "tol": 20.0,
+        "timeout": 8.0
+      },
+      {
+        "op": "dismount",
+        "to": [
+          304,
+          224
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          228
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r7_lance"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==lance"
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          248
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          392,
+          248
+        ],
+        "wait_hit": 0.85
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r7_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          464,
+          256
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "pull_r7_return",
+        "hold": 0.35
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_east"
+      }
+    ]
+  }
+}

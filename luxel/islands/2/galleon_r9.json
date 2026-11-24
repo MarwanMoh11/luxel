@@ -1,0 +1,630 @@
+{
+  "id": "galleon_r9",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R9_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    112,
+    304
+  ],
+  "zones": [
+    {
+      "id": "gal_r9",
+      "name_key": "GAL_R9_NAME",
+      "rect": [
+        0,
+        0,
+        544,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_south",
+      "rect": [
+        96,
+        336,
+        32,
+        16
+      ],
+      "to_region": "galleon_r7",
+      "to_spawn": [
+        400,
+        56
+      ]
+    },
+    {
+      "id": "exit_r9_north",
+      "rect": [
+        400,
+        0,
+        32,
+        16
+      ],
+      "to_region": "galleon_r10",
+      "to_spawn": [
+        240,
+        304
+      ],
+      "locked_door_id": "door_r9_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r9_s",
+      "kind": "room_anchor",
+      "pos": [
+        112,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r9_e",
+      "kind": "room_anchor",
+      "pos": [
+        392,
+        184
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r9_capsize",
+      "kind": "state_lever",
+      "pos": [
+        104,
+        232
+      ],
+      "props": {
+        "scope": "room:2:galleon_r9",
+        "var": "capsize",
+        "values": [
+          "upright",
+          "capsized"
+        ],
+        "index": 0,
+        "style": "tide_wheel",
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "skiff_r9",
+      "kind": "vehicle_skiff",
+      "pos": [
+        168,
+        232
+      ],
+      "props": {
+        "dir": "e",
+        "active": false
+      }
+    },
+    {
+      "id": "post_r9_w",
+      "kind": "mooring_post",
+      "pos": [
+        200,
+        200
+      ],
+      "props": {
+        "orbit_r": 44.0,
+        "allow_dismount": true,
+        "active": false
+      }
+    },
+    {
+      "id": "post_r9_e",
+      "kind": "mooring_post",
+      "pos": [
+        328,
+        200
+      ],
+      "props": {
+        "orbit_r": 44.0,
+        "allow_dismount": true,
+        "active": false
+      }
+    },
+    {
+      "id": "raft_r9",
+      "kind": "tide_raft",
+      "pos": [
+        328,
+        136
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_var": "capsize",
+        "drift_dir": [
+          0,
+          1
+        ],
+        "drift_speed": 8.0,
+        "normal": [
+          0.7071,
+          -0.7071
+        ],
+        "rotatable": false,
+        "reflect_only_floating": true,
+        "active": false
+      }
+    },
+    {
+      "id": "sw_r9_porthole",
+      "kind": "switch_eye",
+      "pos": [
+        328,
+        56
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_ids": [
+          "bridge_r9_high",
+          "door_r9_shutter"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r9_high",
+      "kind": "door",
+      "pos": [
+        248,
+        232
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "sw_r9_porthole"
+        ],
+        "size": [
+          208,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_r9_shutter",
+      "kind": "door",
+      "pos": [
+        416,
+        104
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r9_porthole"
+        ],
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r9_north",
+      "kind": "door",
+      "pos": [
+        416,
+        24
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "galleon",
+        "key_kind": "wick_key",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r9_sw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        280
+      ],
+      "props": {
+        "zone": "gal_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_nw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "zone": "gal_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        216
+      ],
+      "props": {
+        "zone": "gal_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_ne",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        120
+      ],
+      "props": {
+        "zone": "gal_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        56
+      ],
+      "props": {
+        "zone": "gal_r9",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        424,
+        184
+      ],
+      "radius": 28
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        88,
+        200
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        368,
+        32,
+        96,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        424,
+        136
+      ],
+      "size": [
+        52,
+        72
+      ],
+      "tint": "cool",
+      "shear": 0.4
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "ship_helm_wheel",
+      "pos": [
+        72,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tangled_cargo_net",
+      "pos": [
+        72,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        56,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "mast_stump_pillar",
+      "pos": [
+        472,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "broken_cannon",
+      "pos": [
+        456,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        376,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        472,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        120,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        392,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "barnacle_anchor",
+      "pos": [
+        488,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "hull_capsized",
+      "when": "capsize==capsized",
+      "tiles": [
+        [
+          9,
+          5,
+          13,
+          12,
+          "water"
+        ],
+        [
+          14,
+          9,
+          3,
+          2,
+          "wall"
+        ],
+        [
+          9,
+          17,
+          13,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "skiff_r9",
+        "post_r9_w",
+        "post_r9_e",
+        "raft_r9"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "gal_r9_capsize_fx",
+      "on": "var:capsize==capsized",
+      "once": true,
+      "do": [
+        {
+          "shake": 0.25
+        },
+        {
+          "sfx": "tide_surge"
+        },
+        {
+          "narrate": {
+            "id": "GAL_CAPSIZE",
+            "style": "title",
+            "duration": 3.0
+          }
+        },
+        {
+          "wave": [
+            {
+              "id": "lamprey_r9_1",
+              "kind": "brine_lamprey",
+              "pos": [
+                280,
+                120
+              ],
+              "zone": "gal_r9"
+            },
+            {
+              "id": "lamprey_r9_2",
+              "kind": "brine_lamprey",
+              "pos": [
+                280,
+                248
+              ],
+              "zone": "gal_r9"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING: Pull the Master Capsize Wheel to roll the ship chamber 90 degrees onto its beam-ends, flooding the hull abyss into a Skiff canal, waking Brine Lampreys, and Ballast-Clamping a drifting mirror-raft in front of the porthole eye.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Capsize transforms architecture into navigable water; Ballast Clamp holds drifting Tide Rafts steady for tight blue-bank shots.",
+    "decisions": 10,
+    "expert_s": 62,
+    "reward": "chartroom_access",
+    "why": "Signature astonishing centerpiece of The Drowned Galleon synthesizing capsize, Skiff canal, lampreys, and Ballast Clamp.",
+    "exit": "exit_r9_north",
+    "start": {
+      "vars": {
+        "capsize": "upright"
+      },
+      "flags": [
+        "power_ballast_clamp"
+      ],
+      "keys": {
+        "wick_key": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "valve_r9_capsize"
+      },
+      {
+        "op": "expect",
+        "var": "capsize==capsized"
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "goto",
+        "to": [
+          376,
+          232
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "gal_r9",
+        "timeout": 35.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          376,
+          144
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "raft_r9",
+        "hold": 0.3
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          376,
+          144
+        ],
+        "target": "raft_r9"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r9_shutter",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "door_r9_north"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_north"
+      }
+    ]
+  }
+}

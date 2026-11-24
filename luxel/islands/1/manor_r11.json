@@ -1,0 +1,478 @@
+{
+  "name_key": "ISL1_MN_BALLROOM",
+  "spawn": [
+    272,
+    328
+  ],
+  "zones": [
+    {
+      "id": "mn_ballroom",
+      "name_key": "ISL1_MN_BALLROOM",
+      "rect": [
+        0,
+        0,
+        544,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_south_vault",
+      "rect": [
+        256,
+        368,
+        32,
+        16
+      ],
+      "to_region": "manor_r10a",
+      "to_spawn": [
+        272,
+        56
+      ]
+    },
+    {
+      "id": "exit_r11_sw_cellar",
+      "rect": [
+        112,
+        368,
+        32,
+        16
+      ],
+      "to_region": "manor_r10b",
+      "to_spawn": [
+        384,
+        56
+      ]
+    },
+    {
+      "id": "exit_r11_terrace",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_island": 1,
+      "to_region": "overworld",
+      "to_spawn": [
+        424,
+        184
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "manor_cleared"
+      ],
+      "locked_door_id": "door_r11_terrace"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r11_south",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        328
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r11_war",
+      "kind": "bell",
+      "pos": [
+        64,
+        192
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 340
+      }
+    },
+    {
+      "id": "bell_r11_dawn",
+      "kind": "bell",
+      "pos": [
+        480,
+        192
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 340
+      }
+    },
+    {
+      "id": "sconce_r11_nw",
+      "kind": "brazier",
+      "pos": [
+        128,
+        96
+      ],
+      "props": {
+        "lit": true,
+        "dawn_relight": true
+      }
+    },
+    {
+      "id": "sconce_r11_ne",
+      "kind": "brazier",
+      "pos": [
+        416,
+        96
+      ],
+      "props": {
+        "lit": true,
+        "dawn_relight": true
+      }
+    },
+    {
+      "id": "sconce_r11_sw",
+      "kind": "brazier",
+      "pos": [
+        128,
+        288
+      ],
+      "props": {
+        "lit": true,
+        "dawn_relight": true
+      }
+    },
+    {
+      "id": "sconce_r11_se",
+      "kind": "brazier",
+      "pos": [
+        416,
+        288
+      ],
+      "props": {
+        "lit": true,
+        "dawn_relight": true
+      }
+    },
+    {
+      "id": "door_r11_terrace",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "manor_cleared"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        336
+      ],
+      "props": {
+        "zone": "mn_ballroom",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        336
+      ],
+      "props": {
+        "zone": "mn_ballroom",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        64
+      ],
+      "props": {
+        "zone": "mn_ballroom",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        64
+      ],
+      "props": {
+        "zone": "mn_ballroom",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "chandelier_r11",
+      "kind": "chandelier",
+      "pos": [
+        272,
+        176
+      ],
+      "zone": "mn_ballroom"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        232,
+        36,
+        80,
+        312
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        184
+      ],
+      "radius": 68,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        104,
+        256,
+        160
+      ],
+      "style": "brass"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        168
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        152,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        392,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.45
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        88,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        456,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        88,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        456,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tall_grandfather_clock",
+      "pos": [
+        216,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tall_grandfather_clock",
+      "pos": [
+        328,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        72,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        408,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "gilded_portrait_c",
+      "pos": [
+        272,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r11_victory_msg",
+      "on": "flag:manor_cleared",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "ISL1_MN_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Boss The Chandelier swings overhead on 4 (or 3 with Right Verdict!) ceiling chains; vibrate chains brittle with the West War Bell, snap them to drop its molten wax heart, and relight P2 blackout sconces with the East Dawn Bell.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Mastery of Bell Isle's War and Dawn tones in a three-phase ballroom duel rewarding Half-Lantern #2 and the Stolen Clapper.",
+    "decisions": 8,
+    "expert_s": 130,
+    "reward": "manor_cleared+half_lantern_2",
+    "why": "Grand ballroom climax of The Bellmaker's Manor completing the Twin-Clapper Seal requirement.",
+    "exit": "exit_r11_terrace",
+    "start": {
+      "flags": [
+        "item_shutter_hood",
+        "chandelier_chain_cut"
+      ]
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          136,
+          192
+        ],
+        "target": "bell_r11_war"
+      },
+      {
+        "op": "clear",
+        "timeout": 140.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "manor_cleared",
+        "timeout": 5.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_terrace"
+      }
+    ]
+  },
+  "id": "manor_r11",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

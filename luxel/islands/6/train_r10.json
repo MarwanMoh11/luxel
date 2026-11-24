@@ -1,0 +1,397 @@
+{
+  "id": "train_r10",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express_roof",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
+  "name_key": "ISL6_TR_R10",
+  "spawn": [
+    48,
+    120
+  ],
+  "zones": [
+    {
+      "id": "tr_r10",
+      "name_key": "ISL6_TR_R10",
+      "rect": [
+        0,
+        0,
+        512,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_west",
+      "rect": [
+        0,
+        96,
+        16,
+        48
+      ],
+      "to_region": "train_r4",
+      "to_spawn": [
+        488,
+        152
+      ]
+    },
+    {
+      "id": "exit_r10_east",
+      "rect": [
+        496,
+        96,
+        16,
+        48
+      ],
+      "to_region": "train_r11",
+      "to_spawn": [
+        48,
+        152
+      ],
+      "locked_door_id": "door_r10_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10_boss",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_r10_cycle",
+      "kind": "temper_anvil",
+      "pos": [
+        88,
+        72
+      ],
+      "props": {
+        "mode": "cycle"
+      }
+    },
+    {
+      "id": "wind_r10_steam1",
+      "kind": "wind_zone",
+      "pos": [
+        184,
+        120
+      ],
+      "props": {
+        "dir": "n",
+        "strength": 135.0,
+        "size": [
+          64,
+          48
+        ]
+      }
+    },
+    {
+      "id": "wind_r10_steam2",
+      "kind": "wind_zone",
+      "pos": [
+        344,
+        120
+      ],
+      "props": {
+        "dir": "s",
+        "strength": 135.0,
+        "size": [
+          64,
+          48
+        ]
+      }
+    },
+    {
+      "id": "crumble_r10_1",
+      "kind": "crumble_floor",
+      "pos": [
+        184,
+        96
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "delay": 1.1,
+        "respawn": 2.4
+      }
+    },
+    {
+      "id": "crumble_r10_2",
+      "kind": "crumble_floor",
+      "pos": [
+        344,
+        144
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "delay": 1.1,
+        "respawn": 2.4
+      }
+    },
+    {
+      "id": "door_r10_east",
+      "kind": "door",
+      "pos": [
+        488,
+        120
+      ],
+      "props": {
+        "door_type": "combat_gate",
+        "zone": "tr_r10",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        168
+      ],
+      "props": {
+        "zone": "tr_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_mid",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        88
+      ],
+      "props": {
+        "zone": "tr_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        80
+      ],
+      "props": {
+        "zone": "tr_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_se",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        168
+      ],
+      "props": {
+        "zone": "tr_r10",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r10_stoker",
+      "kind": "stoker",
+      "pos": [
+        264,
+        128
+      ],
+      "zone": "tr_r10"
+    },
+    {
+      "id": "en_r10_hopper",
+      "kind": "rail_hopper",
+      "pos": [
+        416,
+        128
+      ],
+      "zone": "tr_r10"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        32,
+        88,
+        80,
+        64
+      ],
+      "glow": false
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        232,
+        80,
+        64,
+        80
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        392,
+        64,
+        80,
+        112
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        432,
+        120
+      ],
+      "radius": 24,
+      "glow": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "loco_smokestack",
+      "pos": [
+        104,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "brass_steam_whistle",
+      "pos": [
+        248,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "coal_tender_crate",
+      "pos": [
+        48,
+        180
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        272,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        456,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        456,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Blazing Smokestack Tender Catwalk leading into the Locomotive Cab: provides an 8-second boss checkpoint anchor, Cycle Anvil prep, and a tense sprint across dual steam-gust gratings past a Stoker and Rail Hopper.",
+    "kind": "traversal",
+    "beat": "ketsu",
+    "teaches": "Boss temper prep + fighting across narrow steam-swept catwalk ribs over molten lava",
+    "decisions": 6,
+    "expert_s": 45,
+    "reward": "boss_anchor+open_r11",
+    "why": "Dramatic sky-open prelude to The Engineer with instant boss retry and temper selection.",
+    "exit": "exit_r10_east",
+    "start": {
+      "flags": [
+        "brakeman_defeated",
+        "item_coupler_hook",
+        "train_boss_key"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          88,
+          96
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r10_cycle"
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r10_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_east"
+      }
+    ]
+  }
+}

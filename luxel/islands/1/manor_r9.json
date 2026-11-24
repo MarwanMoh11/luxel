@@ -1,0 +1,519 @@
+{
+  "name_key": "ISL1_MN_VERDICT",
+  "spawn": [
+    296,
+    120
+  ],
+  "zones": [
+    {
+      "id": "mn_verdict",
+      "name_key": "ISL1_MN_VERDICT",
+      "rect": [
+        0,
+        0,
+        352,
+        224
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_south",
+      "rect": [
+        160,
+        208,
+        32,
+        16
+      ],
+      "to_region": "manor_r1",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_r9_east",
+      "rect": [
+        336,
+        96,
+        16,
+        48
+      ],
+      "to_region": "manor_r8",
+      "to_spawn": [
+        352,
+        56
+      ]
+    },
+    {
+      "id": "exit_r9_vault",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_region": "manor_r10a",
+      "to_spawn": [
+        176,
+        208
+      ],
+      "locked_door_id": "door_r9_vault"
+    },
+    {
+      "id": "exit_r9_trap",
+      "rect": [
+        0,
+        96,
+        16,
+        32
+      ],
+      "to_region": "manor_r10b",
+      "to_spawn": [
+        224,
+        240
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "manor_verdict_wrong"
+      ],
+      "locked_door_id": "door_r9_trap"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r9_east",
+      "kind": "room_anchor",
+      "pos": [
+        296,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "portrait_r9_butler",
+      "kind": "lying_portrait",
+      "pos": [
+        80,
+        48
+      ],
+      "props": {
+        "mode": "verdict",
+        "suspect": "butler",
+        "is_culprit": false,
+        "points_to": "portrait_r9_choir",
+        "clue_flag": "clue_butler",
+        "verdict_bell_id": "bell_r9_butler"
+      }
+    },
+    {
+      "id": "portrait_r9_choir",
+      "kind": "lying_portrait",
+      "pos": [
+        176,
+        48
+      ],
+      "props": {
+        "mode": "verdict",
+        "suspect": "choir",
+        "is_culprit": false,
+        "points_to": "portrait_r9_steward",
+        "clue_flag": "clue_choir",
+        "verdict_bell_id": "bell_r9_choir"
+      }
+    },
+    {
+      "id": "portrait_r9_steward",
+      "kind": "lying_portrait",
+      "pos": [
+        272,
+        48
+      ],
+      "props": {
+        "mode": "verdict",
+        "suspect": "steward",
+        "is_culprit": true,
+        "points_to": "portrait_r9_butler",
+        "clue_flag": "clue_steward",
+        "verdict_bell_id": "bell_r9_steward",
+        "open_door_id": "door_r9_vault",
+        "persist": true
+      }
+    },
+    {
+      "id": "bell_r9_butler",
+      "kind": "bell",
+      "pos": [
+        80,
+        88
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 44,
+        "target_id": "portrait_r9_butler"
+      }
+    },
+    {
+      "id": "bell_r9_choir",
+      "kind": "bell",
+      "pos": [
+        176,
+        88
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 44,
+        "target_id": "portrait_r9_choir"
+      }
+    },
+    {
+      "id": "bell_r9_steward",
+      "kind": "bell",
+      "pos": [
+        272,
+        88
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 44,
+        "target_id": "portrait_r9_steward"
+      }
+    },
+    {
+      "id": "lectern_r9_butler",
+      "kind": "lore_stone",
+      "pos": [
+        80,
+        128
+      ],
+      "props": {
+        "string_id": "ISL1_CLUE_BUTLER",
+        "icon": "scroll"
+      }
+    },
+    {
+      "id": "lectern_r9_choir",
+      "kind": "lore_stone",
+      "pos": [
+        176,
+        128
+      ],
+      "props": {
+        "string_id": "ISL1_CLUE_CHOIR",
+        "icon": "scroll"
+      }
+    },
+    {
+      "id": "lectern_r9_steward",
+      "kind": "lore_stone",
+      "pos": [
+        272,
+        128
+      ],
+      "props": {
+        "string_id": "ISL1_CLUE_STEWARD",
+        "icon": "scroll"
+      }
+    },
+    {
+      "id": "lore_r9_verdict",
+      "kind": "lore_stone",
+      "pos": [
+        176,
+        168
+      ],
+      "props": {
+        "string_id": "ISL1_MN_LORE_VERDICT",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "door_r9_vault",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "portrait_r9_steward"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r9_trap",
+      "kind": "door",
+      "pos": [
+        24,
+        112
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "manor_verdict_wrong"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        152
+      ],
+      "props": {
+        "zone": "mn_verdict",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        152
+      ],
+      "props": {
+        "zone": "mn_verdict",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        72
+      ],
+      "props": {
+        "zone": "mn_verdict",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n2",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        72
+      ],
+      "props": {
+        "zone": "mn_verdict",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        56,
+        76,
+        240,
+        76
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        64,
+        36,
+        224,
+        24
+      ],
+      "style": "brass"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        176,
+        108
+      ],
+      "size": [
+        52,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        48,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        304,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        128,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        224,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        112,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        240,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "mn_r9_wrong_drop",
+      "on": "verdict_wrong",
+      "once": false,
+      "do": [
+        {
+          "wait": 0.7
+        },
+        {
+          "warp": {
+            "island": 1,
+            "region": "manor_r10b",
+            "pos": [
+              224,
+              240
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Whispering Balustrade: compare three lying portraits against your evidence lecterns and ring the Coral Steward's accusation bell to swing open the Velvet Vault (wrong accusations drop into the Coal-Chute Ambush instead of failing).",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Deduction pays off diegetically\u2014right verdict opens the velvet vault and pre-weakens the boss; wrong verdict triggers a playable ambush route.",
+    "decisions": 8,
+    "expert_s": 45,
+    "reward": "verdict_choice",
+    "why": "Climax of the Manor whodunit mystery branching cleanly into r10a (Velvet Vault) or r10b (Coal-Chute Cellar).",
+    "exit": "exit_r9_vault",
+    "start": {
+      "flags": [
+        "item_shutter_hood",
+        "clue_butler",
+        "clue_choir",
+        "clue_steward",
+        "manor_balcony_key"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r9_verdict"
+      },
+      {
+        "op": "interact",
+        "target": "lectern_r9_butler"
+      },
+      {
+        "op": "interact",
+        "target": "lectern_r9_choir"
+      },
+      {
+        "op": "interact",
+        "target": "lectern_r9_steward"
+      },
+      {
+        "op": "interact",
+        "target": "bell_r9_steward"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r9_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect",
+        "flag": "manor_verdict_right"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_vault"
+      }
+    ]
+  },
+  "id": "manor_r9",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

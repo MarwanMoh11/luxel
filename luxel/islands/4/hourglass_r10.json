@@ -1,0 +1,424 @@
+{
+  "id": "hourglass_r10",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R10",
+  "spawn": [
+    56,
+    128
+  ],
+  "zones": [
+    {
+      "id": "hg_r10_basin",
+      "name_key": "ISL4_HG_R10",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r10_west",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "hourglass_r6",
+      "to_spawn": [
+        424,
+        184
+      ]
+    },
+    {
+      "id": "exit_hg_r10_north",
+      "rect": [
+        176,
+        0,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r8",
+      "to_spawn": [
+        56,
+        168
+      ],
+      "locked_door_id": "door_hg_r10_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r10",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rose_hg_r10_1",
+      "kind": "echo_rose",
+      "pos": [
+        88,
+        168
+      ],
+      "props": {
+        "secs": 4.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_hg_r10_w",
+      "kind": "pressure_plate",
+      "pos": [
+        104,
+        120
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "gate_hg_r10_all"
+      }
+    },
+    {
+      "id": "rose_hg_r10_2",
+      "kind": "echo_rose",
+      "pos": [
+        296,
+        168
+      ],
+      "props": {
+        "secs": 4.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "orbs_hg_r10",
+      "kind": "sequence_orbs",
+      "pos": [
+        200,
+        104
+      ],
+      "props": {
+        "count": 3,
+        "order": [
+          0,
+          1,
+          2
+        ],
+        "positions": [
+          [
+            -96,
+            0
+          ],
+          [
+            0,
+            16
+          ],
+          [
+            96,
+            0
+          ]
+        ],
+        "persist": true,
+        "target_id": "gate_hg_r10_all"
+      }
+    },
+    {
+      "id": "gate_hg_r10_all",
+      "kind": "logic_gate",
+      "pos": [
+        232,
+        56
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_hg_r10_w",
+          "orbs_hg_r10"
+        ],
+        "persist": true,
+        "target_id": "door_hg_r10_north",
+        "sets_flag": "hg_r10_open"
+      }
+    },
+    {
+      "id": "door_hg_r10_north",
+      "kind": "door",
+      "pos": [
+        192,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_hg_r10_all"
+        ],
+        "persistent": true,
+        "sets_flag": "hg_r10_open"
+      }
+    },
+    {
+      "id": "moth_4_04",
+      "kind": "moth",
+      "pos": [
+        152,
+        40
+      ],
+      "props": {
+        "id": "moth_4_04"
+      }
+    },
+    {
+      "id": "chest_hg_r10",
+      "kind": "chest",
+      "pos": [
+        264,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 40
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        104
+      ],
+      "props": {
+        "zone": "hg_r10_basin",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        120
+      ],
+      "props": {
+        "zone": "hg_r10_basin",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_n",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        40
+      ],
+      "props": {
+        "zone": "hg_r10_basin",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        200,
+        136
+      ],
+      "radius": 20,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        64,
+        96,
+        64,
+        64
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        296,
+        184
+      ],
+      "radius": 18,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        56,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        328,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        104,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "brass_sundial_pedestal",
+      "pos": [
+        312,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        120,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        280,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "Optional Twin-Isle Crescent Basin linking r6 and r8: leave Echo 1 holding the West Isle plate while Wick chimes the 3 cross-water Sequence Orbs in order to claim Lost Moth #4, 40 shards, and the north link to r8.",
+    "kind": "reward",
+    "beat": "ten",
+    "teaches": "Combining sustained Echo plate-holding with ordered Sequence Orb chimes across a twin-island basin.",
+    "decisions": 8,
+    "expert_s": 45,
+    "reward": "moth_4_04+hg_r10_open+40_shards",
+    "why": "Optional reward vault closing Cycle 3 (r6 <-> r10 <-> r8) and rewarding Lost Moth #4.",
+    "exit": "exit_hg_r10_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "rose_hg_r10_1"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_hg_r10_w",
+        "secs": 4.2
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          152
+        ],
+        "target": [
+          104,
+          104
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          184,
+          152
+        ],
+        "target": [
+          200,
+          120
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          296,
+          152
+        ],
+        "target": [
+          296,
+          104
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_hg_r10_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
+        "op": "goto",
+        "to": "moth_4_04",
+        "tol": 10.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "interact",
+        "target": "chest_hg_r10"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r10_north"
+      }
+    ]
+  }
+}

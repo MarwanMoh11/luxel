@@ -63,9 +63,9 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("curtain_whoosh", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
-			if not _mask_active:
+			if not _mask_active and not _stolen_this_phase:
 				_activate_phase_mask(phase)
-			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 2 else 3, 0.78, 140.0, {"color": "rose", "source": "snatch_ribbon", "reflectable": true})
+			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 2 else 3, 0.82, 134.0, {"color": "rose", "source": "snatch_ribbon", "reflectable": true})
 			stage.shake(0.14)
 			stage.play_sfx("mask_steal", pos),
 	})
@@ -115,7 +115,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 					_dash_step = 2
 					_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
 					stage.play_sfx("hollow_dash", pos)
-				move_boss(_aim_dir * 215.0 * dt, false)
+				move_boss(_aim_dir * 185.0 * dt, false)
 				check_contact_damage(16.0, _aim_dir, 1.0, "stolen_dash"),
 	})
 
@@ -173,9 +173,9 @@ func _on_phase_enter(new_phase: int) -> void:
 	_stolen_this_phase = false
 	var c: Vector2 = arena_rect.get_center()
 	if new_phase == 2:
-		# Wing curtains drop + 2 stage trapdoor pits + 2 stage pillars!
-		stage.set_tiles(world_ctx, Rect2i(3, 2, 1, 2), "pit")
-		stage.set_tiles(world_ctx, Rect2i(16, 7, 1, 2), "pit")
+		# Wing curtains drop + 2 outer stage wing pits + 2 stage pillars!
+		stage.set_tiles(world_ctx, Rect2i(2, 1, 1, 1), "pit")
+		stage.set_tiles(world_ctx, Rect2i(17, 8, 1, 1), "pit")
 		props.spawn_pillar(c + Vector2(-50.0, -24.0), 4.0, "stage_curtain_w")
 		props.spawn_pillar(c + Vector2(50.0, 24.0), 4.0, "stage_curtain_e")
 		stage.darkness_pulse(0.58, 1.0)
@@ -293,10 +293,10 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if is_pierce:
 		return dmg * 0.85
 	if boss_state == BossState.STAGGER:
-		return dmg * 0.72
+		return dmg * 0.68
 	if boss_state == BossState.RECOVER:
-		return dmg * 0.55
-	return dmg * 0.30
+		return dmg * 0.48
+	return dmg * 0.24
 
 
 func _on_death_start() -> void:

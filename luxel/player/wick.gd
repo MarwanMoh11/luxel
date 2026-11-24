@@ -378,6 +378,9 @@ func set_move_locked(move_id: String, is_locked: bool) -> void:
 		elif move_id == "wings" and move_wings != null: move_wings.stop_glide(false)
 		elif move_id == "throw" and move_throw != null: move_throw.cancel_zip()
 		elif move_id == "bolt" and move_bolt != null: move_bolt.release()
+		elif move_id == "lens" and move_lens != null:
+			move_lens.pulse_left = 0.0; move_lens.anchor_active = false
+			move_lens.last_radius = 0.0; move_lens.anchor_radius = 0.0
 
 func is_move_locked(move_id: String) -> bool: return bool(_locked_moves.get(move_id, false))
 func get_locked_moves() -> Dictionary: return _locked_moves.duplicate()

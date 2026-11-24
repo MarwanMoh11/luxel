@@ -1,0 +1,694 @@
+{
+  "id": "hourglass_r9",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "music": "isl4_hourglass",
+  "name_key": "ISL4_HG_R9",
+  "spawn": [
+    272,
+    296
+  ],
+  "zones": [
+    {
+      "id": "hg_r9_three",
+      "name_key": "ISL4_HG_R9",
+      "rect": [
+        0,
+        0,
+        544,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_hg_r9_south",
+      "rect": [
+        256,
+        336,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r8",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_hg_r9_shortcut",
+      "rect": [
+        528,
+        240,
+        16,
+        48
+      ],
+      "to_region": "hourglass_r1",
+      "to_spawn": [
+        456,
+        96
+      ],
+      "requires_flags": [
+        "hg_east_shortcut"
+      ],
+      "locked_door_id": "door_hg_r9_shortcut"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_hg_r9",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        296
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "dial_hg_r9",
+      "kind": "garden_sundial",
+      "pos": [
+        216,
+        248
+      ],
+      "props": {
+        "region_hour_lock": true,
+        "scope": "room:4:hourglass_r9",
+        "var": "hg_room_hour",
+        "max_hour": 2,
+        "shootable": true,
+        "can_rewind": false,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "cgate_hg_r9_1",
+      "kind": "clock_gate",
+      "pos": [
+        152,
+        216
+      ],
+      "props": {
+        "var": "hg_room_hour",
+        "scope": "room:4:hourglass_r9",
+        "open_on": [
+          1
+        ],
+        "max_pip": 2,
+        "size": [
+          16,
+          48
+        ],
+        "pin_flag": "hg_boss_key"
+      }
+    },
+    {
+      "id": "cgate_hg_r9_2",
+      "kind": "clock_gate",
+      "pos": [
+        392,
+        216
+      ],
+      "props": {
+        "var": "hg_room_hour",
+        "scope": "room:4:hourglass_r9",
+        "open_on": [
+          2
+        ],
+        "max_pip": 2,
+        "size": [
+          16,
+          48
+        ],
+        "pin_flag": "hg_boss_key"
+      }
+    },
+    {
+      "id": "rose_hg_r9_1",
+      "kind": "echo_rose",
+      "pos": [
+        104,
+        232
+      ],
+      "props": {
+        "secs": 4.2,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_hg_r9_a",
+      "kind": "pressure_plate",
+      "pos": [
+        72,
+        184
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "gate_hg_r9_all"
+      }
+    },
+    {
+      "id": "rose_hg_r9_2",
+      "kind": "echo_rose",
+      "pos": [
+        200,
+        184
+      ],
+      "props": {
+        "secs": 4.2,
+        "loop": true
+      }
+    },
+    {
+      "id": "mirror_hg_r9",
+      "kind": "blue_transformer",
+      "pos": [
+        248,
+        184
+      ],
+      "props": {
+        "angle_deg": 0,
+        "angle_step_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "double_sided": true,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "grate_hg_r9",
+      "kind": "grate",
+      "pos": [
+        256,
+        136
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sw_hg_r9_eye",
+      "kind": "switch_eye",
+      "pos": [
+        248,
+        104
+      ],
+      "props": {
+        "requires_blue": true,
+        "reset_time": 6.5,
+        "target_id": "gate_hg_r9_all"
+      }
+    },
+    {
+      "id": "rose_hg_r9_3",
+      "kind": "echo_rose",
+      "pos": [
+        440,
+        216
+      ],
+      "props": {
+        "secs": 4.2,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_hg_r9_b",
+      "kind": "pressure_plate",
+      "pos": [
+        488,
+        184
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "gate_hg_r9_all"
+      }
+    },
+    {
+      "id": "gate_hg_r9_all",
+      "kind": "logic_gate",
+      "pos": [
+        344,
+        168
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_hg_r9_a",
+          "sw_hg_r9_eye",
+          "plate_hg_r9_b"
+        ],
+        "persist": true,
+        "target_ids": [
+          "door_hg_r9_sanctum",
+          "door_hg_r9_shortcut"
+        ],
+        "sets_flag": "hg_east_shortcut"
+      }
+    },
+    {
+      "id": "door_hg_r9_sanctum",
+      "kind": "door",
+      "pos": [
+        360,
+        96
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_hg_r9_all"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "door_hg_r9_shortcut",
+      "kind": "door",
+      "pos": [
+        520,
+        264
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_hg_r9_all"
+        ],
+        "persistent": true,
+        "sets_flag": "hg_east_shortcut"
+      }
+    },
+    {
+      "id": "hg_boss_key",
+      "kind": "keepers_flame",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "dungeon_id": "hourglass_maze",
+        "key_kind": "keepers_flame",
+        "flag_id": "hg_boss_key"
+      }
+    },
+    {
+      "id": "lamp_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        312
+      ],
+      "props": {
+        "zone": "hg_r9_three",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        312
+      ],
+      "props": {
+        "zone": "hg_r9_three",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        152
+      ],
+      "props": {
+        "zone": "hg_r9_three",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        152
+      ],
+      "props": {
+        "zone": "hg_r9_three",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        56
+      ],
+      "props": {
+        "zone": "hg_r9_three",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "tk_r9_east",
+      "kind": "topiary_knight",
+      "pos": [
+        456,
+        184
+      ],
+      "zone": "hg_r9_three"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        32,
+        96,
+        80
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        264,
+        56
+      ],
+      "radius": 28,
+      "style": "ritual"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        248
+      ],
+      "radius": 22,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        160,
+        80,
+        96
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        416,
+        160,
+        80,
+        96
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        264,
+        72
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "hourglass_floor_dial",
+      "pos": [
+        264,
+        264
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "garden_clock_arch",
+      "pos": [
+        264,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        216,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        328,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        56,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        440,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "brass_sundial_pedestal",
+      "pos": [
+        312,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        120,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "topiary_bird_statue",
+      "pos": [
+        424,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        184,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        376,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "events": [
+    {
+      "id": "hg_r9_short_msg",
+      "on": "signal:gate_hg_r9_all",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "hg_east_shortcut"
+        },
+        {
+          "narrate": "ISL4_HG_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "design": {
+    "idea": "ASTONISHING ROOM \u2014 The Three Wicks: maintain all 3 simultaneous Echo Roses across three clock-gated bays (Echo 1 holds West Plate, Echo 2 banks blue bolts through the grate into the Prism Eye, Echo 3 holds the East Topiary Plate) while live Wick enters the Bell-Jar Sanctum for the Boss Key.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Full 3-Echo causal choreography combining clock_gate rotation, blue_transformer bank shots, and Topiary Knight confrontation.",
+    "decisions": 11,
+    "expert_s": 75,
+    "reward": "hg_boss_key+hg_east_shortcut",
+    "why": "Signature Island 4 climax puzzle before the final boss; closes Cycle 4 back to the Rotunda.",
+    "exit": "exit_hg_r9_shortcut",
+    "start": {
+      "vars": {
+        "hg_room_hour": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "rose_hg_r9_1"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_hg_r9_a",
+        "secs": 4.4
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_hg_r9",
+        "angle": 45
+      },
+      {
+        "op": "interact",
+        "target": "rose_hg_r9_2"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          200,
+          184
+        ],
+        "target": "mirror_hg_r9",
+        "count": 2
+      },
+      {
+        "op": "wait",
+        "secs": 3.4
+      },
+      {
+        "op": "interact",
+        "target": "dial_hg_r9"
+      },
+      {
+        "op": "goto",
+        "to": [
+          424,
+          216
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "rose_hg_r9_3"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_hg_r9_b",
+        "secs": 4.4
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_hg_r9_sanctum",
+        "prop": "opened",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "hg_boss_key"
+      },
+      {
+        "op": "expect",
+        "flag": "hg_boss_key"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_hg_r9_shortcut"
+      }
+    ]
+  }
+}

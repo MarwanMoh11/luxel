@@ -364,6 +364,21 @@ func _fade_out_ambience(immediate: bool = false) -> void:
 func play_cue(cue_name: String) -> void:
 	if cue_name == "explore" or cue_name == "combat":
 		set_music_mode(cue_name, true); return
+	if cue_name == "silence":
+		if current_track_group != "" and current_track_group != "silence" and _explore_player != null and _explore_player.playing:
+			_saved_positions[current_track_group] = _explore_player.get_playback_position()
+			_handoff_to_fade_deck()
+		current_track_group = "silence"; current_mode = "silence"
+		_target_combat_blend = 0.0; combat_blend = 0.0; _combat_request_timer = 0.0; _combat_tail_timer = 0.0
+		_music_fade = 0.0; _music_fade_target = 0.0; _music_fade_rate = 1.0 / CUE_XFADE_S
+		if _explore_player != null:
+			_explore_player.volume_db = SILENT_DB
+			if _explore_player.playing: _explore_player.stop()
+		if _combat_player != null:
+			_combat_player.volume_db = SILENT_DB
+			if _combat_player.playing: _combat_player.stop()
+		_set_indoor_acoustics(true, true)
+		return
 	if cue_name in ["title", "ending_dawn", "credits"]:
 		_fade_out_ambience(cue_name == "ending_dawn"); _set_indoor_acoustics(false)
 	elif cue_name == "hub":
@@ -380,12 +395,13 @@ func play_cue(cue_name: String) -> void:
 	_target_combat_blend = 0.0; combat_blend = 0.0; _combat_request_timer = 0.0; _combat_tail_timer = 0.0
 	var st: AudioStream = _load_music_stream(cue_name, "title")
 	if st != null:
-		if not boss_carry: _handoff_to_fade_deck()
+		_handoff_to_fade_deck()
 		if _explore_player.playing: _explore_player.stop()
 		_explore_player.stream = st
-		_music_fade = 1.0 if boss_carry else 0.0
-		_music_fade_target = 1.0; _music_fade_rate = 1.0 / CUE_XFADE_S
-		_explore_player.volume_db = BASE_MUSIC_DB if boss_carry else SILENT_DB
+		_music_fade = 0.0
+		_music_fade_target = 1.0
+		_music_fade_rate = 1.0 / (0.35 if boss_carry else CUE_XFADE_S)
+		_explore_player.volume_db = SILENT_DB
 		var pos: float = carry_pos if carry_pos >= 0.0 else float(_saved_positions.get(cue_name, 0.0))
 		_explore_player.play(pos)
 	if _combat_player != null:
@@ -548,6 +564,8 @@ func is_music_playing() -> bool: return _explore_player != null and _explore_pla
 func get_lowpass_cutoff() -> float: return _lowpass.cutoff_hz if _lowpass != null else OPEN_LP_HZ
 
 func _load_music_stream(cue_name: String, fallback: String) -> AudioStream:
+	if cue_name == "silence":
+		return null
 	var cands: Array[String] = ["res://luxel/audio/music/%s.ogg" % cue_name]
 	if not fallback.is_empty() and fallback != cue_name: cands.append("res://luxel/audio/music/%s.ogg" % fallback)
 	var do_loop: bool = not cue_name.begins_with("stinger_") and cue_name != "ending_dawn"

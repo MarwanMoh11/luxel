@@ -1,0 +1,121 @@
+{
+  "pack_id": "i1_overworld",
+  "owner": "P1-OW",
+  "interactables": {
+    "ow_twin_clapper_seal": "res://luxel/islands/1/overworld/ow_twin_clapper_seal.gd",
+    "ow_carillon_trial": "res://luxel/islands/1/overworld/ow_carillon_trial.gd",
+    "ow_chime_relay": "res://luxel/islands/1/overworld/ow_chime_relay.gd",
+    "ow_foundry_trial": "res://luxel/islands/1/overworld/ow_foundry_trial.gd",
+    "ow_hide_moth": "res://luxel/islands/1/overworld/ow_hide_moth.gd",
+    "ow_hub_portal": "res://luxel/islands/1/overworld/ow_hub_portal.gd"
+  },
+  "quests": [
+    {
+      "id": "q1_midnight_hide",
+      "island": 1,
+      "kind": "hide_and_seek",
+      "folk": "moth_kid",
+      "icon": "quest_hide",
+      "steps": [
+        {
+          "icons": ["moth", "quest_hide", "clock", "arrow_n", "question"],
+          "need": "quest:hide:i1_town && quest:hide:i1_grave && quest:hide:i1_garden",
+          "flag": "quest:q1_midnight_hide:s0"
+        },
+        {
+          "icons": ["happy", "moth", "ember", "gift"],
+          "need": "",
+          "flag": "ember_1_quest"
+        }
+      ],
+      "reward": {
+        "kind": "ember_piece",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q1_cold_hearth",
+      "island": 1,
+      "kind": "fetch",
+      "folk": "candle_grandma",
+      "icon": "flame",
+      "rescue_folk": "candle_grandma",
+      "steps": [
+        {
+          "icons": ["flame", "light_off", "sad", "arrow_s", "toy_brazier"],
+          "need": "foundry_hearth_lit",
+          "flag": "quest:q1_cold_hearth:s0"
+        },
+        {
+          "icons": ["flame", "light_on", "happy", "home", "heart"],
+          "need": "",
+          "flag": "hub_door_1"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "amount": 40
+      }
+    }
+  ],
+  "regions": {
+    "bell_yard": { "name_key": "ISL1_Z_TOWN", "music": "explore", "dark": true, "map": [1, 2] },
+    "vesper_graveyard": { "name_key": "ISL1_Z_GRAVE", "music": "explore", "dark": true, "map": [0, 2] },
+    "manor_gardens": { "name_key": "ISL1_Z_GARDENS", "music": "explore", "dark": true, "map": [3, 2] },
+    "belfry_forecourt": { "name_key": "ISL1_Z_FORE", "music": "explore", "dark": true, "map": [2, 1] },
+    "cliff_foundry": { "name_key": "ISL1_Z_FOUNDRY", "theme": "forge_deep", "music": "explore", "dark": true, "map": [2, 4] },
+    "cave_echo_well": { "name_key": "ISL1_Z_WELL", "theme": "cave_1", "music": "isl1_undercroft", "dark": true, "map": [1, 1] },
+    "cave_whisper": { "name_key": "ISL1_Z_WHISPER", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [0, 3] },
+    "cave_shed": { "name_key": "ISL1_Z_SHED", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [4, 2] },
+    "cave_foundry_trial": { "name_key": "ISL1_Z_FTRIAL", "theme": "forge_deep", "music": "isl1_setpiece", "dark": true, "map": [3, 4] },
+    "cave_lens_grotto": { "name_key": "ISL1_Z_GROTTO", "theme": "cave_1", "music": "isl1_undercroft", "dark": true, "map": [1, 4] },
+    "superboss_silent": { "name_key": "ISL1_Z_SILENT", "theme": "undercroft", "music": "silence", "dark": true, "map": [0, 1] }
+  },
+  "strings": {
+    "ISL1_Z_TOWN": "CHIME TOWN",
+    "ISL1_Z_GRAVE": "VESPER GRAVEYARD",
+    "ISL1_Z_GARDENS": "MANOR GARDENS",
+    "ISL1_Z_FORE": "BELFRY FORECOURT",
+    "ISL1_Z_FOUNDRY": "SUNKEN FOUNDRY",
+    "ISL1_Z_WELL": "ECHO WELL CISTERN",
+    "ISL1_Z_WHISPER": "WHISPERING CRYPT",
+    "ISL1_Z_SHED": "GARDENERS TOOL SHED",
+    "ISL1_Z_FTRIAL": "FOUNDRY RING-DASH",
+    "ISL1_Z_GROTTO": "LENS GROTTO",
+    "ISL1_Z_SILENT": "SILENT SANCTUM",
+    "ISL1_Q1_HINT": "THE BELL RINGER LOST HIS BRASS CLAPPER.",
+    "ISL1_Q2_HINT": "THREE MOTH FRIENDS HID AT MIDNIGHT.",
+    "ISL1_Q3_HINT": "RELIGHT THE OLD FOUNDRY HEARTH.",
+    "ISL1_Q4_SILENT": "AT MIDNIGHT THE SILENT BELL WAKES WEST.",
+    "ISL1_HIDE_HINT": "RING A DAWN BELL AT MIDNIGHT TO WAKE ME!",
+    "ISL1_HIDE_FOUND": "A HIDING MOTH FRIEND POPS OUT CHEERING!",
+    "ISL1_FOUNDRY_LIT": "THE THREE BRONZE MOULDS BLAZE WITH DAWN!",
+    "ISL1_HUB_OPEN": "THE WICK HOUSE DOOR WARMS OPEN IN TOWN!",
+    "ISL1_PROMPT_HUB": "ENTER WICK HOUSE",
+    "ISL1_PROMPT_HOUR": "TOLL EVENING / MIDNIGHT",
+    "ISL1_PROMPT_FIT": "INSPECT TWIN CLAPPER SEAL",
+    "ISL1_SEAL_OPEN": "THE TWIN CLAPPER SEAL SHATTERS OPEN!",
+    "ISL1_SEAL_NEED_BOTH": "NEEDS UNDERCROFT SPADE + MANOR CLAPPER.",
+    "ISL1_SEAL_NEED_UC": "THE WEST UNDERCROFT SOCKET IS EMPTY.",
+    "ISL1_SEAL_NEED_MN": "THE EAST MANOR SOCKET IS STILL EMPTY.",
+    "ISL1_LORE_UC_HINT": "WEST THROUGH VESPER GRAVEYARD AT MIDNIGHT.",
+    "ISL1_LORE_MN_HINT": "EAST BEYOND THE MOONLIT BRIDGE LIES MANOR.",
+    "ISL1_LORE_MIDNIGHT": "TOLL THE TOWN BELL TO OPEN MIDNIGHT GATES.",
+    "ISL1_LORE_SHED_ROPE": "A FRAYED BELL ROPE AND CORAL THREAD.",
+    "ISL1_LORE_HOLLOW": "TWO MOTHS PASSED HERE. ONE HAD NO FLAME.",
+    "ISL1_LORE_SILENT": "ZERO SOUND HERE. THROW INTO ITS MOUTH.",
+    "ISL1_SILENT_BROKEN": "A DAWN CHORD SHATTERS THE SILENCE!",
+    "ISL1_PROMPT_CARILLON": "PLAY CARILLON EAR-TEST",
+    "ISL1_CARILLON_GO": "REPEAT THE THREE BELL NOTES!",
+    "ISL1_CARILLON_GOLD": "PERFECT CARILLON! GOLD MEDAL EARNED!",
+    "ISL1_CARILLON_MISS": "WRONG NOTE! TRY THE CARILLON AGAIN.",
+    "ISL1_PROMPT_RELAY": "START ESTATE CHIME RELAY",
+    "ISL1_RELAY_START": "RING ALL 4 BELLS WITHOUT BEING SPOTTED!",
+    "ISL1_RELAY_WON": "CHIME RELAY COMPLETE! WATCH THE CORAL HEM.",
+    "ISL1_RELAY_SPOTTED": "SPOTTED BY A BUTLER! RELAY RESET.",
+    "ISL1_RELAY_TIMEOUT": "TIME UP! RING THE 4 BELLS FASTER.",
+    "ISL1_FTRIAL_START": "RING ALL 5 FOUNDRY BELLS BEFORE TIME!",
+    "ISL1_FTRIAL_WON": "FOUNDRY RING-DASH CLEARED! VAULT OPEN!",
+    "ISL1_FTRIAL_FAIL": "OUT OF TIME! STEP UP TO RETRY."
+  }
+}

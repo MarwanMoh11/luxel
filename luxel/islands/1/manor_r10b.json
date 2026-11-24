@@ -1,0 +1,469 @@
+{
+  "name_key": "ISL1_MN_CELLAR",
+  "spawn": [
+    224,
+    240
+  ],
+  "zones": [
+    {
+      "id": "mn_cellar",
+      "name_key": "ISL1_MN_CELLAR",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10b_west_grate",
+      "rect": [
+        0,
+        112,
+        16,
+        32
+      ],
+      "to_region": "manor_r10a",
+      "to_spawn": [
+        296,
+        128
+      ],
+      "requires_flags": [
+        "manor_cleared"
+      ],
+      "locked_door_id": "door_r10b_grate"
+    },
+    {
+      "id": "exit_r10b_north_lift",
+      "rect": [
+        368,
+        0,
+        32,
+        16
+      ],
+      "to_region": "manor_r11",
+      "to_spawn": [
+        128,
+        328
+      ],
+      "locked_door_id": "door_r10b_lift"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10b_drop",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "conv_r10b_n",
+      "kind": "conveyor",
+      "pos": [
+        224,
+        104
+      ],
+      "props": {
+        "dir": "e",
+        "size": [
+          112,
+          32
+        ],
+        "speed": 42
+      }
+    },
+    {
+      "id": "conv_r10b_s",
+      "kind": "conveyor",
+      "pos": [
+        224,
+        200
+      ],
+      "props": {
+        "dir": "w",
+        "size": [
+          112,
+          32
+        ],
+        "speed": 42
+      }
+    },
+    {
+      "id": "bell_r10b_war",
+      "kind": "bell",
+      "pos": [
+        176,
+        152
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 260
+      }
+    },
+    {
+      "id": "bell_r10b_dusk",
+      "kind": "bell",
+      "pos": [
+        272,
+        152
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 260
+      }
+    },
+    {
+      "id": "ember_1_cellar",
+      "kind": "chest",
+      "pos": [
+        64,
+        56
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "amount": 1,
+        "flag_id": "ember_1_cellar"
+      }
+    },
+    {
+      "id": "door_r10b_lift",
+      "kind": "door",
+      "pos": [
+        384,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "mn_cellar",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r10b_grate",
+      "kind": "door",
+      "pos": [
+        24,
+        128
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "manor_cleared"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r10b_drop",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "zone": "mn_cellar",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10b_nw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        96
+      ],
+      "props": {
+        "zone": "mn_cellar",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10b_ne",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        80
+      ],
+      "props": {
+        "zone": "mn_cellar",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10b_se",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        200
+      ],
+      "props": {
+        "zone": "mn_cellar",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mimic_r10b_1",
+      "kind": "pew_mimic",
+      "pos": [
+        144,
+        64
+      ],
+      "zone": "mn_cellar"
+    },
+    {
+      "id": "butler_r10b_1",
+      "kind": "lamp_butler",
+      "pos": [
+        152,
+        160
+      ],
+      "zone": "mn_cellar",
+      "route": [
+        [
+          104,
+          160
+        ],
+        [
+          160,
+          160
+        ]
+      ]
+    },
+    {
+      "id": "mimic_r10b_2",
+      "kind": "pew_mimic",
+      "pos": [
+        320,
+        160
+      ],
+      "zone": "mn_cellar"
+    },
+    {
+      "id": "butler_r10b_2",
+      "kind": "lamp_butler",
+      "pos": [
+        368,
+        224
+      ],
+      "zone": "mn_cellar",
+      "route": [
+        [
+          328,
+          224
+        ],
+        [
+          384,
+          224
+        ]
+      ]
+    },
+    {
+      "id": "snuffer_r10b",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        256,
+        72
+      ],
+      "zone": "mn_cellar"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        224,
+        152
+      ],
+      "radius": 36,
+      "style": "ash"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        160,
+        152
+      ],
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        304,
+        152
+      ],
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        40,
+        36,
+        56,
+        48
+      ],
+      "style": "brass"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "hearth_fireplace",
+      "pos": [
+        64,
+        34
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tea_trolley",
+      "pos": [
+        112,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "mahogany_table",
+      "pos": [
+        352,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        352,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        408,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        104,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Wrong-verdict (or post-boss optional) coal-chute ambush across twin moving coal conveyors: Dusk-freeze the belts, unmask both mimics and crack butler hoods with War, claim the Cellar Ember Piece, and ride the lift to the Ballroom.",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Dusk freezes moving conveyors while War bursts crack multiple ambushing mimics and armored butlers at once.",
+    "decisions": 8,
+    "expert_s": 65,
+    "reward": "ember_1_cellar",
+    "why": "Playable, rewarding wrong-verdict consequence room (also reachable post-boss via the r10a grate for 100% Ember completion).",
+    "exit": "exit_r10b_north_lift",
+    "start": {
+      "flags": [
+        "item_shutter_hood",
+        "manor_verdict_wrong"
+      ]
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          224
+        ],
+        "target": "bell_r10b_dusk"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          200,
+          224
+        ],
+        "target": "bell_r10b_war"
+      },
+      {
+        "op": "clear",
+        "timeout": 75.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "ember_1_cellar"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r10b_lift",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10b_north_lift"
+      }
+    ]
+  },
+  "id": "manor_r10b",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze",
+    "clockwork_tick"
+  ],
+  "triggers": [],
+  "layers": []
+}

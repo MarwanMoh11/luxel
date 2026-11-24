@@ -1,261 +1,300 @@
 class_name LxElderSporecapBoss
-extends LxSporecapBrain
-## Thornwood Hollow mini-boss (Island 3): Elder Sporecap.
-## 2 phases, HP 9.0. Features Combat Burrow-Reposition (0.85s glowing mycelial trail;
-## Beam pierces mound early for instant cap_open stagger) and P2 4-Cardinal Spore Lanes!
+extends LxBossBase
+## Hollow Oak Mini-Boss (Island 3, oak_r6): Elder Sporecap (Bible §4.6).
+## 2 phases on LxBossBase. Closed fungal cap hardens outside punish windows (armour glint +
+## reduced bolt chip); open golden gills during RECOVER/STAGGER take full+ damage.
+## Island 3 rule: 2 Light-Plant bounce bulbs vault rings/cardinal lanes; Beam unearths the
+## glowing mycelial burrow early for an instant cap-open stagger and slices P2 bramble-walls!
 
-enum PulseStage { RING_1, PAUSE, CARDINAL_LANES }
-
-const ELDER_RING_MAX_R: float = 84.0
-const ELDER_RING_BAND: float = 10.0
-const ELDER_ATTACK_RANGE: float = 90.0
-const ELDER_COMMIT_TIME: float = 0.36
-const LANE_PAUSE_TIME: float = 0.45
-const LANE_COMMIT_TIME: float = 0.38
-const LANE_MAX_RANGE: float = 96.0
+const RING_RADIUS: float = 82.0
+const LANE_LEN: float = 136.0
 const LANE_HALF_W: float = 11.0
-const ELDER_BURROW_TIME: float = 0.85
-const PHASE2_ROAR_TIME: float = 0.58
+const BURROW_SPEED: float = 118.0
+const BULB_RADIUS: float = 16.0
 
-var pulse_stage: int = PulseStage.RING_1
-var lane_base_ang: float = 0.0
-var lane_progress: float = 0.0
-var lane_hit: bool = false
+var cap_open: bool = false
+var burrowed: bool = false
+var _burrow_goal: Vector2 = Vector2.ZERO
 var _mycelial_trail: Array[Vector2] = []
 var _trail_sample_t: float = 0.0
-var _roaring: bool = false
+var _lane_ang: float = 0.0
+var _lane_wave_done: bool = false
+var _clank_sfx_cd: float = 0.0
+var _bounce_bulbs: Array[Dictionary] = []  # [{pos, bloom, vault_cd}]
+var _pillar_seq: int = 0
 
 
 func _init() -> void:
 	super._init()
 	kind = "elder_sporecap"
 	boss_id = "elder_sporecap"
+	boss_name_key = "MINIBOSS_3"
 	island_id = 3
-	is_boss = true
-	max_hp = 9.0
-	hp = 9.0
-	body_radius = 7.5
-	routine_speed = 30.0
-	leash_radius = 165.0
-	notice_radius = 136.0
-	tell_time = 0.56
-	recover_time = 1.25
-	give_up_time = 1.8
-	shard_drop = 14
+	is_miniboss = true
+	reward_heart = "none"
+	music_cue = "island3_boss_p1"
+	music_p2_cue = "island3_boss_p2"
+	max_hp = 37.0
+	hp = 37.0
+	body_radius = 8.5
+	move_speed = 36.0
+	stagger_threshold = 10.5
+	stagger_duration = 1.55
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.30
+	shard_drop = 22
+	death_duration = 2.0
 
 
-func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
-	super.setup(spec, p_director, p_world)
-	max_hp = maxf(9.0, max_hp)
-	hp = max_hp
-	is_boss = true
-	boss_id = str(spec.get("boss_id", "elder_sporecap"))
-	island_id = int(spec.get("island_id", 3))
-	pulse_stage = PulseStage.RING_1
-	lane_base_ang = facing
-	lane_progress = 0.0
-	lane_hit = false
+func _configure_boss(_spec: Dictionary) -> void:
+	configure_phases([0.52])
+
+	# Attack 1: Spore Ring Burst — expanding fungal shockwave + perimeter spore scatter
+	register_attack("spore_ring_burst", {
+		"weight": 1.25, "tell": 0.56, "commit": 0.38, "recover": 1.12, "cooldown": 1.35,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			cap_open = false
+			ground.warn_ring(pos, RING_RADIUS, last_tell_duration, 0.0, "lime", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.06, 1.0, "jade", "lime")
+			stage.play_sfx("elder_sporecap_swell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			cap_open = true
+			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			var cnt: int = 12 if phase >= 2 else 10
+			patterns.emit_gap_ring(pos, cnt, 118.0 if phase >= 2 else 106.0, gap_a + 0.45, 0.72, {"color": "lime", "source": "spore_ring"})
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			patterns.emit_fan(pos, d, 5 if phase >= 2 else 3, 0.78, 134.0, {"color": "gold", "source": "spore_fan"})
+			stage.shake(0.18)
+			stage.play_sfx("elder_sporecap_burst", pos),
+	})
+
+	# Attack 2: Mycelial Burrow — burrows along glowing trail (Beam pierces mound for stagger!)
+	register_attack("mycelial_burrow", {
+		"weight": 1.15, "tell": 0.62, "commit": 0.44, "recover": 1.15, "cooldown": 1.55,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			cap_open = false
+			burrowed = true
+			_mycelial_trail.clear()
+			_mycelial_trail.append(pos)
+			_trail_sample_t = 0.0
+			var to_w: Vector2 = tgt - pos
+			var base_a: float = to_w.angle() if to_w.length() > 1.0 else facing
+			var flank: Vector2 = tgt - Vector2.from_angle(base_a + (0.65 if _orbit_side > 0.0 else -0.65)) * 34.0
+			_burrow_goal = clamp_to_arena(flank)
+			ground.warn_ring(_burrow_goal, 28.0, last_tell_duration, 1.0, "lime", "coral")
+			stage.play_sfx("sporecap_burrow", pos),
+		"on_tell": func(_b: LxBossBase, _tgt: Vector2, dt: float, _prog: float) -> void:
+			if not burrowed:
+				return
+			var step_v: Vector2 = (_burrow_goal - pos).limit_length(BURROW_SPEED * dt)
+			move_boss(step_v, true)
+			_trail_sample_t -= dt
+			if _trail_sample_t <= 0.0:
+				_trail_sample_t = 0.08
+				_mycelial_trail.append(pos)
+				if _mycelial_trail.size() > 14:
+					_mycelial_trail.pop_front(),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			burrowed = false
+			cap_open = true
+			if phase >= 2 and _mycelial_trail.size() >= 3:
+				var mid_pt: Vector2 = clamp_to_arena(_mycelial_trail[_mycelial_trail.size() / 2])
+				if props.active_count() < 4 and mid_pt.distance_to(tgt) > 22.0:
+					_pillar_seq += 1
+					props.spawn_pillar(mid_pt, 3.5, "mycelial_wall_%d" % _pillar_seq)
+			_mycelial_trail.clear()
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			patterns.emit_fan(pos, d, 5 if phase >= 2 else 3, 0.92, 132.0, {"color": "lime", "source": "burrow_eruption"})
+			stage.shake(0.18)
+			stage.play_sfx("elder_sporecap_burst", pos),
+	})
+
+	# Attack 3: Spore Mortar — telegraphed rain pods hitting Wick + corners + boomerang spore
+	register_attack("spore_mortar", {
+		"weight": 1.15, "tell": 0.56, "commit": 0.36, "recover": 0.98, "cooldown": 1.45,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			cap_open = false
+			var drops: Array[Vector2] = _build_mortar_targets(tgt)
+			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "lime", "gold")
+			stage.play_sfx("elder_sporecap_swell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			cap_open = true
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			patterns.emit_boomerang(pos, d.rotated(0.24), 138.0, 0.68, 0.65, {"color": "gold", "source": "spore_boomerang"})
+			if phase >= 2:
+				patterns.emit_boomerang(pos, d.rotated(-0.24), 138.0, 0.68, -0.65, {"color": "lime", "source": "spore_boomerang"})
+			stage.shake(0.14)
+			stage.play_sfx("elder_sporecap_burst", pos),
+	})
+
+	# Attack 4 (Phase 2): 4-Cardinal Spore Lanes — rotating cross-beam volley (vault with bulbs!)
+	register_attack("cardinal_spore_lanes", {
+		"phases": [2], "weight": 1.65, "tell": 0.60, "commit": 0.44, "recover": 1.20, "cooldown": 1.55,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			cap_open = false
+			_lane_wave_done = false
+			_lane_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			for li: int in range(4):
+				var ld: Vector2 = Vector2.from_angle(_lane_ang + float(li) * (PI * 0.5))
+				ground.warn_lane(pos, pos + ld * LANE_LEN, LANE_HALF_W, last_tell_duration, 1.0, "jade", "lime")
+			stage.play_sfx("elder_sporecap_swell", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			cap_open = true
+			for li: int in range(4):
+				var ld: Vector2 = Vector2.from_angle(_lane_ang + float(li) * (PI * 0.5))
+				patterns.emit_lane(pos, ld, 3, 146.0, 0.08, {"color": "lime", "source": "cardinal_spore"})
+			stage.shake(0.20)
+			stage.play_sfx("elder_sporecap_burst", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
+			if not _lane_wave_done and el >= 0.22:
+				_lane_wave_done = true
+				for li: int in range(4):
+					var ld2: Vector2 = Vector2.from_angle(_lane_ang + PI * 0.25 + float(li) * (PI * 0.5))
+					patterns.emit_lane(pos, ld2, 2, 134.0, 0.08, {"color": "gold", "source": "cardinal_spore"})
+				stage.play_sfx("elder_sporecap_burst", pos),
+	})
+
+
+func _on_reset_encounter() -> void:
+	cap_open = false
+	burrowed = false
 	_mycelial_trail.clear()
 	_trail_sample_t = 0.0
-	_roaring = false
+	_lane_wave_done = false
+	_clank_sfx_cd = 0.0
+	_pillar_seq = 0
+	_setup_bounce_bulbs()
 
 
-func take_hit(hit: LxHit) -> int:
-	if _roaring:
-		_emit_enemy_hit(hit, HitResult.GLANCED)
-		return HitResult.GLANCED
-	var res: int = super.take_hit(hit)
-	if not burrowed:
-		_mycelial_trail.clear()
-	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		_check_phase_transition()
-	return res
+func _setup_bounce_bulbs() -> void:
+	_bounce_bulbs.clear()
+	var c: Vector2 = arena_rect.get_center()
+	var span_x: float = minf(68.0, arena_rect.size.x * 0.26)
+	_bounce_bulbs.append({"pos": clamp_to_arena(c + Vector2(-span_x, 12.0)), "bloom": 0.45, "vault_cd": 0.0})
+	_bounce_bulbs.append({"pos": clamp_to_arena(c + Vector2(span_x, -12.0)), "bloom": 0.45, "vault_cd": 0.0})
 
 
-func _check_phase_transition() -> void:
-	if phase < 2 and hp <= max_hp * 0.50 and hp > 0.001:
-		phase = 2
+func _on_phase_enter(new_phase: int) -> void:
+	if new_phase == 2:
 		burrowed = false
-		combat_burrowing = false
-		_mycelial_trail.clear()
 		cap_open = false
-		_roaring = true
-		pulse_stage = PulseStage.RING_1
-		_release_token()
-		state = State.NOTICE
-		state_timer = PHASE2_ROAR_TIME
-		if Lx.events != null:
-			Lx.events.boss_phase_changed.emit(boss_id, 2)
-		_boss_impact(0.24, 92.0, 90.0)
-		_emit_sfx("elder_sporecap_phase2")
-
-
-func _step_brain(dt: float) -> void:
-	if state == State.NOTICE and _roaring:
-		burrowed = false
-		combat_burrowing = false
-		state_timer -= dt
-		if state_timer <= 0.0:
-			_roaring = false
-			state = State.POSITION
-			cooldown = 0.35
-		return
-	super._step_brain(dt)
-
-
-func _start_combat_burrow() -> void:
-	combat_burrowing = true
-	burrowed = true
-	burrow_t = ELDER_BURROW_TIME
-	_mycelial_trail.clear()
-	_mycelial_trail.append(pos)
-	_trail_sample_t = 0.0
-	var to_w: Vector2 = _attention_target() - pos
-	var base_a: float = to_w.angle() if to_w.length() > 0.01 else facing
-	var side_a: float = base_a + (PI * 0.55 if (_recover_count % 2 == 1) else -PI * 0.55)
-	var candidate: Vector2 = pos + Vector2.from_angle(side_a) * _randf_range(34.0, 52.0)
-	var cap: float = maxf(0.0, leash_radius - 12.0)
-	if candidate.distance_to(home) > cap:
-		candidate = home + (candidate - home).normalized() * cap
-	burrow_goal = candidate
-	state = State.POSITION
-	_emit_sfx("sporecap_burrow")
-
-
-func _step_combat_burrow(dt: float) -> void:
-	_trail_sample_t -= dt
-	if _trail_sample_t <= 0.0:
-		_trail_sample_t = 0.09
-		_mycelial_trail.append(pos)
-		if _mycelial_trail.size() > 14:
-			_mycelial_trail.pop_front()
-	super._step_combat_burrow(dt)
-	if not combat_burrowing:
 		_mycelial_trail.clear()
+		var c: Vector2 = arena_rect.get_center()
+		_carve_safe_tile_near(c + Vector2(-92.0, -44.0), "pit")
+		_carve_safe_tile_near(c + Vector2(92.0, 44.0), "pit")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-46.0, -32.0)), 4.0, "elder_bramble_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(46.0, 32.0)), 4.0, "elder_bramble_e")
+		for b_d: Dictionary in _bounce_bulbs:
+			b_d["bloom"] = 1.0
+		stage.darkness_pulse(0.60, 0.95)
+		stage.shake(0.24)
+		stage.play_sfx("elder_sporecap_phase2", pos)
 
 
-func _step_position(dt: float, target_pos: Vector2) -> void:
-	var to_t: Vector2 = target_pos - pos
-	var dist: float = to_t.length()
-	_face_point(target_pos, 2.6, dt)
-
-	var wick_p: Vector2 = _get_wick_pos()
-	if not _is_lured() and (not _has_player() or wick_p.distance_to(home) > leash_radius + 16.0):
-		lost_t += dt
-		if lost_t >= give_up_time:
-			_release_token()
-			state = State.RETURN
-			lost_t = 0.0
-			return
-	else:
-		lost_t = 0.0
-
-	var is_lead: bool = director == null or director.lead_enemy == self or director.lead_enemy == null
-	state = State.POSITION if is_lead else State.WAIT_TOKEN
-
-	if is_lead and cooldown <= 0.0 and dist <= ELDER_ATTACK_RANGE and _is_on_screen() and _claim_token():
-		state = State.TELL
-		is_counter_attack = false
-		var base_t: float = 0.50 if phase >= 2 else tell_time
-		last_tell_duration = _scaled_tell(base_t, false, attack_damage)
-		state_timer = last_tell_duration
-		lane_base_ang = to_t.angle() if dist > 0.01 else facing
-		_emit_attack_started()
-		_emit_sfx("elder_sporecap_swell")
-		return
-
-	if dist > ELDER_ATTACK_RANGE * 0.70:
-		var spd: float = minf(routine_speed * 0.85, routine_speed - 1.5)
-		_move_step(to_t.normalized() * spd * dt, false)
-
-
-func _enter_commit() -> void:
-	state = State.COMMIT
-	pulse_stage = PulseStage.RING_1
-	state_timer = ELDER_COMMIT_TIME
+func _on_attack_recover_start(_attack_id: String) -> void:
+	burrowed = false
 	cap_open = true
-	ring_progress = 0.0
-	ring_hit = false
-	lane_progress = 0.0
-	lane_hit = false
-	_boss_impact(0.18, 92.0, 90.0)
-	_emit_sfx("elder_sporecap_burst")
 
 
-func _step_commit(dt: float) -> void:
-	if pulse_stage == PulseStage.PAUSE:
-		if state_timer > 0.16:
-			var to_t: Vector2 = _attention_target() - pos
-			if to_t.length() > 0.01:
-				lane_base_ang = to_t.angle()
-		state_timer -= dt
-		if state_timer <= 0.0:
-			pulse_stage = PulseStage.CARDINAL_LANES
-			state_timer = LANE_COMMIT_TIME
-			lane_progress = 0.0
-			lane_hit = false
-			_boss_impact(0.20, 98.0, 96.0)
-			_emit_sfx("elder_sporecap_burst")
-		return
+func _on_boss_tick(dt: float, _target: Vector2) -> void:
+	_clank_sfx_cd = maxf(0.0, _clank_sfx_cd - dt)
+	if boss_state == BossState.READY or boss_state == BossState.PHASE_SHIFT:
+		cap_open = false
+		burrowed = false
+	elif boss_state == BossState.RECOVER or boss_state == BossState.STAGGER:
+		cap_open = true
+		burrowed = false
+	_step_bounce_bulbs(dt)
 
-	if pulse_stage == PulseStage.CARDINAL_LANES:
-		state_timer = maxf(0.0, state_timer - dt)
-		lane_progress = 1.0 - clampf(state_timer / LANE_COMMIT_TIME, 0.0, 1.0)
-		var cur_len: float = lerpf(10.0, LANE_MAX_RANGE, lane_progress)
-		if not lane_hit and _has_player():
-			var wp: Vector2 = _get_wick_pos()
-			for li: int in range(4):
-				var ldir: Vector2 = Vector2.from_angle(lane_base_ang + float(li) * (PI * 0.5))
-				var lend: Vector2 = pos + ldir * cur_len
-				if Geometry2D.get_closest_point_to_segment(wp, pos, lend).distance_to(wp) <= LANE_HALF_W:
-					lane_hit = true
-					_emit_player_hit(ldir)
-					break
-		if _is_lured():
-			var lp: Vector2 = _get_lantern_pos()
-			for li: int in range(4):
-				var ldir_l: Vector2 = Vector2.from_angle(lane_base_ang + float(li) * (PI * 0.5))
-				if Geometry2D.get_closest_point_to_segment(lp, pos, pos + ldir_l * cur_len).distance_to(lp) <= LANE_HALF_W + 2.0:
-					if Lx.events != null:
-						Lx.events.lantern_struck.emit(lp)
-					break
-		if state_timer <= 0.0:
-			pulse_stage = PulseStage.RING_1
-			state = State.RECOVER
-			cap_open = true
-			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
-			last_recover_duration = state_timer
-		return
 
-	state_timer = maxf(0.0, state_timer - dt)
-	ring_progress = 1.0 - clampf(state_timer / ELDER_COMMIT_TIME, 0.0, 1.0)
-	var ring_r: float = lerpf(RING_START_R, ELDER_RING_MAX_R, ring_progress)
-	if not ring_hit and _has_player():
-		var wv: Vector2 = _get_wick_pos() - pos
-		if absf(wv.length() - ring_r) <= ELDER_RING_BAND:
-			ring_hit = true
-			var push: Vector2 = wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing)
-			_emit_shockwave_hit(push)
-	if _is_lured() and _get_lantern_pos().distance_to(pos) <= ring_r:
-		if Lx.events != null:
-			Lx.events.lantern_struck.emit(_get_lantern_pos())
-
-	if state_timer <= 0.0:
-		if pulse_stage == PulseStage.RING_1 and phase >= 2:
-			pulse_stage = PulseStage.PAUSE
-			state_timer = _scaled_tell(LANE_PAUSE_TIME, false, attack_damage)
-			lane_progress = 0.0
-			lane_hit = false
-			var to_t2: Vector2 = _attention_target() - pos
-			if to_t2.length() > 0.01:
-				lane_base_ang = to_t2.angle()
-			_emit_sfx("elder_sporecap_swell")
+func _step_bounce_bulbs(dt: float) -> void:
+	var wick: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var lan_p: Vector2 = _get_lantern_pos()
+	var lan_r: float = 72.0 if _is_lantern_out() else 44.0
+	for b_d: Dictionary in _bounce_bulbs:
+		b_d["vault_cd"] = maxf(0.0, float(b_d["vault_cd"]) - dt)
+		var bp: Vector2 = b_d["pos"] as Vector2
+		if lan_p.distance_to(bp) <= lan_r:
+			b_d["bloom"] = minf(1.0, float(b_d["bloom"]) + dt * 0.9)
 		else:
-			pulse_stage = PulseStage.RING_1
-			state = State.RECOVER
+			b_d["bloom"] = maxf(0.45 if phase >= 2 else 0.25, float(b_d["bloom"]) - dt * 0.14)
+		if wick != null and not wick.dead and float(b_d["bloom"]) >= 0.70 and float(b_d["vault_cd"]) <= 0.0:
+			if wick.global_position.distance_to(bp) <= BULB_RADIUS and (ground.is_point_in_danger(bp) or boss_state == BossState.COMMIT):
+				b_d["vault_cd"] = 1.20
+				var away: Vector2 = (bp - pos).normalized() if bp.distance_to(pos) > 1.0 else Vector2.UP
+				if wick.has_method("push_external"):
+					wick.push_external(away * 145.0, "light_plant_bounce")
+				stage.light_burst(bp, 48.0, 1.15, 0.28)
+				stage.play_sfx("elder_sporecap_swell", bp)
+
+
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var pierce_like: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_SUNFLARE, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL] \
+			or bool(h["pierce"]) or bool(h["cracks_armour"])
+	# Beam / pierce unearths burrowed Elder Sporecap immediately for a cap-open stagger!
+	if burrowed:
+		if pierce_like:
+			burrowed = false
 			cap_open = true
-			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
-			last_recover_duration = state_timer
+			_mycelial_trail.clear()
+			add_stagger(stagger_threshold)
+			stage.light_burst(pos, 64.0, 1.35, 0.32)
+			return dmg * 1.35
+		clank_t = 0.10
+		if _clank_sfx_cd <= 0.0:
+			_clank_sfx_cd = 0.28
+			stage.play_sfx("bramble_thorn_block", pos)
+		return dmg * 0.22
+	if boss_state == BossState.STAGGER:
+		return dmg * 1.40
+	if is_punishable():
+		return dmg * (1.20 if pierce_like else 1.0)
+	if pierce_like:
+		return dmg * 1.15
+	# Closed hardened fungal cap outside punish windows: reduced bolt chip + clear armour glint!
+	clank_t = 0.10
+	if _clank_sfx_cd <= 0.0:
+		_clank_sfx_cd = 0.28
+		stage.play_sfx("bramble_thorn_block", pos)
+	return dmg * 0.34
+
+
+func _on_death_start() -> void:
+	burrowed = false
+	cap_open = true
+	_mycelial_trail.clear()
+	stage.revert_tiles(world_ctx)
+	stage.play_sfx("elder_sporecap_phase2", pos)
+
+
+func _build_mortar_targets(tgt: Vector2) -> Array[Vector2]:
+	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var inset: Rect2 = arena_rect.grow(-18.0)
+	var corners: Array[Vector2] = [
+		inset.position, Vector2(inset.end.x, inset.position.y),
+		Vector2(inset.position.x, inset.end.y), inset.end,
+	]
+	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
+	out.append(corners[0])
+	out.append(corners[1])
+	out.append(clamp_to_arena(arena_rect.get_center().lerp(tgt, 0.55)))
+	if phase >= 2:
+		out.append(corners[2])
+	return out
+
+
+func _carve_safe_tile_near(world_pt: Vector2, tile_kind: String) -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("tile_at"):
+		return
+	var p: Vector2 = clamp_to_arena(world_pt)
+	var ts: float = 16.0
+	var tx: int = int(floorf(p.x / ts))
+	var ty: int = int(floorf(p.y / ts))
+	var center_p := Vector2((float(tx) + 0.5) * ts, (float(ty) + 0.5) * ts)
+	if str(world_ctx.call("tile_at", center_p)) == "ground" and center_p.distance_to(home) > 28.0:
+		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), tile_kind)
 
 
 func _body_color() -> Color:
@@ -263,97 +302,44 @@ func _body_color() -> Color:
 		return PAL["dusk"] as Color
 	if cap_open:
 		return PAL["gold"] as Color
-	return (PAL["wine"] as Color) if phase >= 2 else (PAL["plum"] as Color)
+	return (PAL["wine"] if phase >= 2 else PAL["plum"]) as Color
 
 
-func _draw_extra(off: Vector2) -> void:
+func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	# Light-Plant Bounce Bulbs (Island 3 rule)
+	for b_d: Dictionary in _bounce_bulbs:
+		var bp: Vector2 = ((b_d["pos"] as Vector2) - pos).round()
+		var bl: float = float(b_d["bloom"])
+		var ready: bool = bl >= 0.70
+		draw_circle(bp, 6.0 + bl * 3.0, Color(PAL["pine"] as Color, 0.72))
+		draw_arc(bp, 7.0 + bl * 4.0, 0.0, TAU, 14, (PAL["lime"] if ready else PAL["jade"]) as Color, 1.4 if ready else 1.0)
+		draw_circle(bp, 2.2 + bl * 1.4, (PAL["gold"] if ready else PAL["lime"]) as Color)
+
 	if burrowed:
-		# Glowing mycelial burrow trail + vulnerable mound (Beam pierces early!)
 		for ti: int in range(_mycelial_trail.size()):
 			var tp: Vector2 = (_mycelial_trail[ti] - pos + off).round()
 			var col_t: Color = (PAL["lime"] if ti % 2 == 0 else PAL["jade"]) as Color
 			draw_circle(tp, 2.2 if ti == _mycelial_trail.size() - 1 else 1.5, col_t)
 			if ti > 0:
-				var prev_tp: Vector2 = (_mycelial_trail[ti - 1] - pos + off).round()
-				draw_line(prev_tp, tp, PAL["jade"] as Color, 1.4)
-		draw_arc(c + Vector2(0.0, 2.0), body_radius + 1.5, PI, TAU, 14, PAL["pine"] as Color, 2.8)
-		draw_arc(c + Vector2(0.0, 1.0), body_radius + 0.5, PI, TAU, 12, PAL["lime"] as Color, 1.2)
+				draw_line((_mycelial_trail[ti - 1] - pos + off).round(), tp, PAL["jade"] as Color, 1.4)
+		draw_arc(c + Vector2(0.0, 2.0), body_radius + 2.0, PI, TAU, 14, PAL["pine"] as Color, 2.8)
+		draw_arc(c + Vector2(0.0, 1.0), body_radius + 0.8, PI, TAU, 12, PAL["lime"] as Color, 1.4)
 		return
-	var swell: float = 0.0
-	if state == State.TELL:
-		swell = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-	if _sprite_sheet == null:
-		var cap_r: float = body_radius + 3.5 + swell * 4.0
-		draw_circle(off + Vector2(0.0, -4.0), cap_r, PAL["night"] as Color)
-		draw_circle(off + Vector2(0.0, -4.0), cap_r - 1.2, (PAL["coral"] as Color) if phase >= 2 else (PAL["wine"] as Color))
-		draw_circle(off + Vector2(0.0, -6.5), cap_r * 0.55, PAL["plum"] as Color)
-		draw_circle(off + Vector2(-3.5, -5.0), 1.8, PAL["lime"] as Color)
-		draw_circle(off + Vector2(3.5, -3.5), 1.8, PAL["lime"] as Color)
 
-	if state == State.TELL:
-		for ti: int in range(12):
-			var a0: float = float(ti) * (TAU / 12.0)
-			draw_arc(c, ELDER_RING_MAX_R, a0, a0 + 0.24, 3, PAL["jade"] as Color, 1.0)
-		var tr: float = lerpf(ELDER_RING_MAX_R * 0.85, RING_START_R + 5.0, swell)
-		var pulse: float = 0.0 if LxHudFx.flash_reduced() else 1.4 * sin(anim_t * 20.0)
-		var hot: bool = state_timer <= 0.14
-		draw_arc(c, tr + 2.2 + pulse * 0.4, 0.0, TAU, 28, (PAL["lime"] if hot else PAL["jade"]) as Color, 1.4)
-		draw_arc(c, tr, 0.0, TAU, 28, (PAL["cream"] if hot else PAL["lime"]) as Color, 2.2 if hot else 2.0)
-		draw_arc(c, maxf(4.0, tr * 0.62 + pulse * 0.6), 0.0, TAU, 22, (PAL["cream"] if hot else PAL["gold"]) as Color, 1.4)
-	elif state == State.COMMIT:
-		if pulse_stage == PulseStage.PAUSE:
-			var hot_p: bool = state_timer <= 0.16
-			var lcol: Color = (PAL["cream"] if hot_p else PAL["lime"]) as Color
-			for li: int in range(4):
-				var ldir: Vector2 = Vector2.from_angle(lane_base_ang + float(li) * (PI * 0.5))
-				var perp: Vector2 = Vector2(-ldir.y, ldir.x)
-				var lend: Vector2 = (c + ldir * LANE_MAX_RANGE).round()
-				draw_line((c + perp * (LANE_HALF_W * 0.65)).round(), (lend + perp * (LANE_HALF_W * 0.65)).round(), lcol, 1.3 if hot_p else 1.0)
-				draw_line((c - perp * (LANE_HALF_W * 0.65)).round(), (lend - perp * (LANE_HALF_W * 0.65)).round(), lcol, 1.3 if hot_p else 1.0)
-				draw_line(c, lend, (PAL["gold"] if hot_p else PAL["jade"]) as Color, 1.5)
-		elif pulse_stage == PulseStage.CARDINAL_LANES:
-			var cur_len: float = lerpf(10.0, LANE_MAX_RANGE, lane_progress)
-			for li: int in range(4):
-				var ldir: Vector2 = Vector2.from_angle(lane_base_ang + float(li) * (PI * 0.5))
-				var lend: Vector2 = (c + ldir * cur_len).round()
-				draw_line(c, lend, PAL["pine"] as Color, 8.0)
-				draw_line(c, lend, PAL["jade"] as Color, 5.2)
-				draw_line(c, lend, PAL["lime"] as Color, 2.8)
-				draw_line(c, lend, PAL["cream"] as Color, 1.1)
-				draw_circle(lend, 2.4, PAL["lime"] as Color)
-				draw_circle(lend, 1.2, PAL["cream"] as Color)
-		else:
-			var ring_r: float = lerpf(RING_START_R, ELDER_RING_MAX_R, ring_progress)
-			draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, PAL["pine"] as Color, 2.4)
-			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["jade"] as Color, 3.6)
-			draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["lime"] as Color, 2.2)
-			draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
-			for pi: int in range(8):
-				var pa: float = anim_t * 2.6 + float(pi) * (TAU / 8.0)
-				var wob: float = sin(anim_t * 10.0 + float(pi) * 1.6) * 2.6
-				var pp: Vector2 = (c + Vector2.from_angle(pa) * (ring_r + wob)).round()
-				draw_circle(pp, 2.2, PAL["pine"] as Color)
-				draw_circle(pp, 1.4, PAL["lime"] as Color)
-				draw_circle(pp, 0.7, PAL["cream"] as Color)
-	elif cap_open:
-		if _sprite_sheet == null:
-			draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.72, PAL["gold"] as Color)
-			draw_circle(off + Vector2(0.0, -4.0), body_radius * 0.35, PAL["cream"] as Color)
-		else:
-			var vr: float = body_radius + 4.0 + (0.0 if LxHudFx.flash_reduced() else 0.8 * sin(anim_t * 14.0))
-			draw_arc(c, vr + 1.4, 0.0, TAU, 24, PAL["apricot"] as Color, 1.2)
-			draw_arc(c, vr, 0.0, TAU, 24, PAL["gold"] as Color, 1.8)
-			for vi: int in range(4):
-				var vd: Vector2 = Vector2.from_angle(anim_t * 1.5 + float(vi) * (TAU * 0.25))
-				draw_circle((c + vd * (vr + 1.5)).round(), 1.1, PAL["cream"] as Color)
-	elif _roaring:
-		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
-		var rr: float = body_radius + 10.0 + rp * 16.0
-		draw_arc(c, rr + 2.2, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
-		draw_arc(c, rr, 0.0, TAU, 28, PAL["lime"] as Color, 2.4)
-		draw_arc(c, maxf(3.0, rr - 2.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
+	# Armour glint when closed cap deflects plain bolts outside punish windows
+	if clank_t > 0.0:
+		var ga: float = facing
+		draw_arc(c + Vector2(0.0, -3.0), body_radius + 4.5, ga - 1.1, ga + 1.1, 14, PAL["cream"] as Color, 2.2)
+		draw_arc(c + Vector2(0.0, -3.0), body_radius + 6.5, ga - 0.8, ga + 0.8, 12, PAL["gold"] as Color, 1.2)
+	elif not is_punishable() and boss_state != BossState.DEATH and boss_state != BossState.IDLE:
+		draw_arc(c + Vector2(0.0, -3.0), body_radius + 3.0, PI + 0.35, TAU - 0.35, 14, Color(PAL["apricot"] as Color, 0.42), 1.1)
 
-
-func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:
-	LxDamageFx.boss_impact(pos, shake, gust_r, gust_s, gust_r * 1.08, 1.38, 0.36)
+	# Open golden gill punish halo
+	if cap_open and is_punishable():
+		var vr: float = body_radius + 4.5 + (0.0 if is_flash_reduced() else 0.8 * sin(anim_t * 14.0))
+		draw_arc(c, vr + 1.4, 0.0, TAU, 24, PAL["apricot"] as Color, 1.2)
+		draw_arc(c, vr, 0.0, TAU, 24, PAL["gold"] as Color, 1.8)
+		for vi: int in range(4):
+			var vd: Vector2 = Vector2.from_angle(anim_t * 1.6 + float(vi) * (PI * 0.5))
+			draw_circle((c + vd * (vr + 1.5)).round(), 1.1, PAL["cream"] as Color)

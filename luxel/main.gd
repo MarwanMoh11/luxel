@@ -75,6 +75,7 @@ func _boot_services() -> void:
 		add_child(_ui_root); Lx.ui = _ui_root
 		if _ui_root.has_method("setup"): _ui_root.call("setup", self)
 	_connect_events()
+	LxHubTracker.ensure()
 	_validate_strings_debug()
 	_services_ready = true
 

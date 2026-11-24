@@ -1,0 +1,536 @@
+{
+  "id": "train_r8",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express",
+  "music": "isl6_express",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_TR_R8",
+  "spawn": [
+    40,
+    136
+  ],
+  "zones": [
+    {
+      "id": "tr_r8",
+      "name_key": "ISL6_TR_R8",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_west",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "train_r7",
+      "to_spawn": [
+        520,
+        248
+      ]
+    },
+    {
+      "id": "exit_r8_east",
+      "rect": [
+        464,
+        112,
+        16,
+        48
+      ],
+      "to_region": "train_r9",
+      "to_spawn": [
+        40,
+        160
+      ],
+      "locked_door_id": "door_r8_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_r8_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        104,
+        64
+      ],
+      "props": {
+        "mode": "lance"
+      }
+    },
+    {
+      "id": "anvil_r8_scatter",
+      "kind": "temper_anvil",
+      "pos": [
+        104,
+        176
+      ],
+      "props": {
+        "mode": "scatter"
+      }
+    },
+    {
+      "id": "grate_r8_cage_w",
+      "kind": "grate",
+      "pos": [
+        192,
+        200
+      ],
+      "props": {
+        "size": [
+          64,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r8_cage",
+      "kind": "door",
+      "pos": [
+        240,
+        200
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r8_cage"
+        ]
+      }
+    },
+    {
+      "id": "grate_r8_cage_e",
+      "kind": "grate",
+      "pos": [
+        288,
+        200
+      ],
+      "props": {
+        "size": [
+          64,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r8_cage",
+      "kind": "pressure_plate",
+      "pos": [
+        192,
+        232
+      ],
+      "props": {
+        "by": [
+          "wick",
+          "lantern",
+          "enemy"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r8_cage"
+      }
+    },
+    {
+      "id": "coupler_r8_cage",
+      "kind": "car_coupler",
+      "pos": [
+        288,
+        216
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_r8_cage",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_r8_cage",
+      "kind": "logic_gate",
+      "pos": [
+        240,
+        256
+      ],
+      "props": {
+        "op": "any",
+        "inputs": [
+          "plate_r8_cage",
+          "coupler_r8_cage"
+        ],
+        "target_id": "door_r8_cage",
+        "persist": true
+      }
+    },
+    {
+      "id": "chest_r8_bullion",
+      "kind": "chest",
+      "pos": [
+        176,
+        256
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "zone": "tr_r8"
+      }
+    },
+    {
+      "id": "key_r8_train_2",
+      "kind": "wick_key",
+      "pos": [
+        384,
+        136
+      ],
+      "props": {
+        "dungeon_id": "ember_express",
+        "key_kind": "wick_key",
+        "flag_id": "train_key_2",
+        "requires_flag": "train_r8_cleared"
+      }
+    },
+    {
+      "id": "door_r8_east",
+      "kind": "door",
+      "pos": [
+        456,
+        136
+      ],
+      "props": {
+        "door_type": "wick_key",
+        "dungeon_id": "ember_express",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        104
+      ],
+      "props": {
+        "zone": "tr_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_n",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        64
+      ],
+      "props": {
+        "zone": "tr_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        96
+      ],
+      "props": {
+        "zone": "tr_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_cage",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        240
+      ],
+      "props": {
+        "zone": "tr_r8",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r8_knight",
+      "kind": "piston_knight",
+      "pos": [
+        272,
+        136
+      ],
+      "zone": "tr_r8"
+    },
+    {
+      "id": "en_r8_wasp_1",
+      "kind": "smelter_wasp",
+      "pos": [
+        200,
+        72
+      ],
+      "zone": "tr_r8"
+    },
+    {
+      "id": "en_r8_wasp_2",
+      "kind": "smelter_wasp",
+      "pos": [
+        344,
+        72
+      ],
+      "zone": "tr_r8"
+    },
+    {
+      "id": "en_r8_magnet",
+      "kind": "magnet_golem",
+      "pos": [
+        288,
+        240
+      ],
+      "zone": "tr_r8"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 112,
+      "x1": 208,
+      "style": "slag"
+    },
+    {
+      "kind": "window_strip",
+      "y": 4,
+      "x0": 272,
+      "x1": 368,
+      "style": "slag"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        176,
+        216,
+        128,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        96,
+        208,
+        80
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        272,
+        136
+      ],
+      "radius": 24,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_ember_express",
+      "prop": "steam_pipe_column",
+      "pos": [
+        144,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "steam_pipe_column",
+      "pos": [
+        368,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        416,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "brass_luggage_rack",
+      "pos": [
+        392,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "emergency_brake_wheel",
+      "pos": [
+        424,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        240,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "tr_r8_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "train_r8_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Armored Bullion Car ambush pairing a Piston Knight and twin Smelter Wasps with a barred south Magnet Golem cage: crack the cage lock & Piston Knight armor with Lance, swap to Scatter for aerial cleanup, and claim Train Key #2.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Mid-fight Lance-to-Scatter temper swapping + shooting Lance through iron grate bars against Magnet Golem",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "train_key_2+bullion_chest+open_r9",
+    "why": "Escalates Express combat using role-paired Island 6 enemies (vanguard + aerial + barred lantern disrupter).",
+    "exit": "exit_r8_east",
+    "start": {
+      "flags": [
+        "brakeman_defeated",
+        "item_coupler_hook",
+        "temper_lance_known"
+      ],
+      "vars": {
+        "wick_temper": "lance"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          88
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r8_lance"
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          176
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "shoot",
+        "target": "coupler_r8_cage",
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r8_cage",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "clear",
+        "timeout": 60.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "train_r8_cleared",
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "key_r8_train_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          432,
+          136
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "door_r8_east"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_east"
+      }
+    ]
+  }
+}

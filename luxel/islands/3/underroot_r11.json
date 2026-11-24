@@ -1,0 +1,103 @@
+{
+  "name_key": "ISL3_UR_R11_NAME",
+  "spawn": [
+    256,
+    272
+  ],
+  "zones": [
+    {
+      "id": "ur_r11",
+      "name_key": "ISL3_UR_R11_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_south",
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
+      "to_region": "underroot_r10",
+      "to_spawn": [
+        192,
+        48
+      ]
+    },
+    {
+      "id": "exit_r11_return_ow",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_island": 3,
+      "to_region": "overworld",
+      "to_spawn": [
+        352,
+        912
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "underroot_done"
+      ],
+      "locked_door_id": "door_r11_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "lamp_r11_1",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        160
+      ],
+      "props": {
+        "zone": "ur_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "door_r11_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "underroot_done"
+        ]
+      }
+    }
+  ],
+  "enemies": [],
+  "id": "underroot_r11",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "tiny": true,
+  "theme": "under_root",
+  "music": "isl3_underroot",
+  "ambience": [
+    "forest_wind",
+    "cave_drip"
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": []
+}

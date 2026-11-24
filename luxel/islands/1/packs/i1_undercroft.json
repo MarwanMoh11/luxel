@@ -47,24 +47,24 @@
       "mini_boss": "toll_hound",
       "boss": "sexton",
       "theme": "undercroft",
-      "music": "island1_dungeon",
+      "music": "isl1_undercroft",
       "requires_flags": [],
       "done_flag": "undercroft_cleared",
       "debug_only": true
     }
   ],
   "regions": {
-    "undercroft_r1": { "name_key": "ISL1_UC_NAVE", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [2, 3], "debug_only": true },
-    "undercroft_r2": { "name_key": "ISL1_UC_COFFINS", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [1, 3], "debug_only": true },
-    "undercroft_r3": { "name_key": "ISL1_UC_RELAY", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [0, 3], "debug_only": true },
-    "undercroft_r4": { "name_key": "ISL1_UC_SNUFF", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [0, 2], "debug_only": true },
-    "undercroft_r5": { "name_key": "ISL1_UC_KENNEL", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [1, 2], "debug_only": true },
-    "undercroft_r6": { "name_key": "ISL1_UC_ECHO", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [3, 3], "debug_only": true },
-    "undercroft_r7": { "name_key": "ISL1_UC_SCALES", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [3, 2], "debug_only": true },
-    "undercroft_r8": { "name_key": "ISL1_UC_PEWS", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [4, 2], "debug_only": true },
-    "undercroft_r9": { "name_key": "ISL1_UC_CHOIR", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [4, 1], "debug_only": true },
-    "undercroft_r10": { "name_key": "ISL1_UC_BALCONY", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [3, 1], "debug_only": true },
-    "undercroft_r11": { "name_key": "ISL1_UC_TOMB", "theme": "undercroft", "music": "island1_dungeon", "dark": true, "map": [2, 1], "debug_only": true }
+    "undercroft_r1": { "name_key": "ISL1_UC_NAVE", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [2, 3], "debug_only": true },
+    "undercroft_r2": { "name_key": "ISL1_UC_COFFINS", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [1, 3], "debug_only": true },
+    "undercroft_r3": { "name_key": "ISL1_UC_RELAY", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [0, 3], "debug_only": true },
+    "undercroft_r4": { "name_key": "ISL1_UC_SNUFF", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [0, 2], "debug_only": true },
+    "undercroft_r5": { "name_key": "ISL1_UC_KENNEL", "theme": "undercroft", "music": "isl1_boss_minor_p1", "dark": true, "map": [1, 2], "debug_only": true },
+    "undercroft_r6": { "name_key": "ISL1_UC_ECHO", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [3, 3], "debug_only": true },
+    "undercroft_r7": { "name_key": "ISL1_UC_SCALES", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [3, 2], "debug_only": true },
+    "undercroft_r8": { "name_key": "ISL1_UC_PEWS", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [4, 2], "debug_only": true },
+    "undercroft_r9": { "name_key": "ISL1_UC_CHOIR", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [4, 1], "debug_only": true },
+    "undercroft_r10": { "name_key": "ISL1_UC_BALCONY", "theme": "undercroft", "music": "isl1_undercroft", "dark": true, "map": [3, 1], "debug_only": true },
+    "undercroft_r11": { "name_key": "ISL1_UC_TOMB", "theme": "undercroft", "music": "isl1_boss_minor_p1", "dark": true, "map": [2, 1], "debug_only": true }
   },
   "sfx": {
     "echo_clapper_pulse": { "id": "clockwork_chime", "pitch": 1.32, "db": -1.0 },

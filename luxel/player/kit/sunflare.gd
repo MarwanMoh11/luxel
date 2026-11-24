@@ -40,7 +40,7 @@ func press() -> bool:
 
 func trigger_sunflare(world_ctx: Node = null) -> bool:
 	if not can_use():
-		if unlocked and wick != null and not wick.dead and wick.ember >= get_ember_max() - 0.001 and (wick.is_zipping() or cooldown_left > 0.0):
+		if unlocked and not locked and wick != null and not wick.dead and wick.ember >= get_ember_max() - 0.001 and (wick.is_zipping() or cooldown_left > 0.0):
 			_buffer_t = 0.12
 			return false
 		if wick != null:

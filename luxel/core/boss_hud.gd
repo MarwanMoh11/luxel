@@ -80,7 +80,7 @@ static func _draw_one(ci: CanvasItem, b: Dictionary, idx: int, dual: bool, blink
 	var pill_bg := Color(LxPalette.PAL["void"] as Color, 0.72)
 	ci.draw_rect(Rect2(roundf(cx - nw * 0.5 - 3.0), y - 10.0, nw + 6.0, 8.0), pill_bg)
 	LxPixelFont.draw_centered(ci, name_txt, cx, y - 8.0, LxPalette.PAL["gold"], 1)
-	if phase >= 2 and not dual:
+	if phase >= 2:
 		var ptxt: String = LxStrings.text("HUD_BOSS_P4" if phase >= 4 else ("HUD_BOSS_P3" if phase == 3 else "HUD_BOSS_P2"))
 		var pw: float = float(LxPixelFont.width(ptxt, 1))
 		var pr: float = roundf(cx + bar_w * 0.5)
@@ -103,3 +103,97 @@ static func _draw_one(ci: CanvasItem, b: Dictionary, idx: int, dual: bool, blink
 		ci.draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, 1.0), LxPalette.PAL["rose"])
 	for frac: float in resolve_notches(bid, resolved_key):
 		ci.draw_rect(Rect2(roundf(x + 2.0 + (bar_w - 4.0) * frac), y + 1.0, 1.0, bar_h - 2.0), LxPalette.PAL["gold"] if cur_frac > frac else LxPalette.PAL["dusk"])
+
+
+# ---- Runtime boss HUD, pack music crossfade & boss-rush lifecycle helpers (extracted from LxMain) ----
+
+static func get_live_bosses(region_loader: Node, limit: int = 2) -> Array[LxEnemyBrain]:
+	var live: Array[LxEnemyBrain] = []
+	if region_loader != null and region_loader.has_method("get_enemies"):
+		for e: LxEnemyBrain in region_loader.call("get_enemies"):
+			if e != null and is_instance_valid(e) and e.is_alive() and e.visible and (e.is_boss or not e.boss_id.is_empty()):
+				live.append(e)
+				if live.size() >= limit:
+					break
+	return live
+
+
+static func region_has_live_boss(region_loader: Node) -> bool:
+	return not get_live_bosses(region_loader, 1).is_empty()
+
+
+static func sync_live_bosses(region_loader: Node, tracked_bosses: Array[Object], hud: Node) -> void:
+	var live: Array[LxEnemyBrain] = get_live_bosses(region_loader, 2)
+	if not live.is_empty() and hud != null:
+		for b: LxEnemyBrain in live:
+			if not tracked_bosses.has(b):
+				LxDamageFx.trigger_boss_awaken(b)
+				_crossfade_boss_music(b)
+		tracked_bosses.clear()
+		for b: LxEnemyBrain in live:
+			tracked_bosses.append(b)
+		if hud.has_method("sync_bosses"):
+			hud.call("sync_bosses", live)
+		else:
+			var b0: LxEnemyBrain = live[0]
+			hud.call("show_boss", b0.boss_id if not b0.boss_id.is_empty() else b0.kind, b0.hp, b0.max_hp, b0.phase)
+	elif live.is_empty() and not tracked_bosses.is_empty():
+		tracked_bosses.clear()
+		if hud != null:
+			hud.call("hide_boss")
+
+
+static func _crossfade_boss_music(b: LxEnemyBrain) -> void:
+	if Lx.packs == null or Lx.audio == null or b == null:
+		return
+	var bid: String = b.boss_id if not b.boss_id.is_empty() else b.kind
+	var bm: Dictionary = Lx.packs.boss_meta(bid)
+	var bm1: String = str(bm.get("music", "")).strip_edges()
+	var bm2: String = str(bm.get("music_p2", "")).strip_edges()
+	if bm1.is_empty():
+		return
+	var want: String = bm2 if (b.phase >= 2 and not bm2.is_empty()) else bm1
+	if Lx.audio.current_track_group != want and (want != bm1 or Lx.audio.current_track_group != bm2):
+		Lx.audio.play_cue(want)
+
+
+static func handle_boss_phase_changed(boss_id: String, phase: int) -> void:
+	if phase < 2 or Lx.packs == null or Lx.audio == null:
+		return
+	var bm: Dictionary = Lx.packs.boss_meta(boss_id)
+	var m2: String = str(bm.get("music_p2", "")).strip_edges()
+	if not m2.is_empty() and Lx.audio.current_track_group != m2:
+		Lx.audio.play_cue(m2)
+
+
+static func handle_boss_defeated(boss_id: String, isl: int, region_loader: Node) -> void:
+	var bmeta: Dictionary = Lx.packs.boss_meta(boss_id) if Lx.packs != null else {}
+	var canon: String = str(bmeta.get("id", boss_id))
+	if not Lx.state.defeated_bosses.has(canon):
+		Lx.state.defeated_bosses.append(canon)
+	var bflag: String = str(bmeta.get("flag", ""))
+	if not bflag.is_empty():
+		Lx.state.story_flags[bflag] = true
+	var dng: String = str(bmeta.get("dungeon", ""))
+	if not dng.is_empty() and not bool(bmeta.get("mini", false)):
+		Lx.state.story_flags["dungeon_done:" + dng] = true
+		var dm: Dictionary = Lx.packs.dungeon(dng) if Lx.packs != null else {}
+		var df: String = str(dm.get("done_flag", ""))
+		if not df.is_empty():
+			Lx.state.story_flags[df] = true
+	var heart_kind: String = str(bmeta.get("heart", ""))
+	if heart_kind.is_empty():
+		var is_major_fb: bool = str(Lx.get_island_data(isl).get("boss", "")) == boss_id or boss_id == "hollow_wick_boss"
+		heart_kind = "full" if is_major_fb else "none"
+	if heart_kind != "none" and not bool(Lx.state.story_flags.get("boss_heart_" + canon, false)):
+		Lx.state.story_flags["boss_heart_" + canon] = true
+		if heart_kind == "half":
+			Lx.state.add_half_lantern()
+		else:
+			Lx.state.add_boss_heart()
+	var is_major: bool = not bool(bmeta.get("mini", false)) if not bmeta.is_empty() else (heart_kind != "none")
+	var still_fighting: bool = region_has_live_boss(region_loader)
+	if is_major and not still_fighting and Lx.audio != null and Lx.audio._is_boss_cue(Lx.audio.current_track_group):
+		Lx.audio.silence_music(0.85)
+	if is_major and not still_fighting and Lx.audio != null:
+		Lx.audio.play_stinger("stinger_lamp")

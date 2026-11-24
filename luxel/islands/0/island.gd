@@ -40,15 +40,38 @@ func get_region_list() -> PackedStringArray:
 	return PackedStringArray(REGIONS)
 
 
-func on_region_loaded(_region_id: String) -> void:
+func on_region_loaded(region_id: String) -> void:
 	LxHubTravel.ensure_hub_waystone_unlocked()
 	LxHubTracker.ensure()
-	LxHubState.sync_hub_vars()
-	if Lx.world != null and Lx.world.has_method("apply_layers"):
-		Lx.world.call("apply_layers", false)
+	sync_hub_layers(region_id)
 	if Lx.audio != null:
 		var track: String = str(Lx.state.story_flags.get("hub:music_track", "hub")) if Lx.state != null else "hub"
 		Lx.audio.play_cue(track if not track.is_empty() else "hub")
+
+
+static func sync_hub_layers(region_id: String = "") -> void:
+	LxHubState.sync_hub_vars()
+	if Lx.world == null:
+		return
+	var rid: String = region_id if not region_id.is_empty() else str(Lx.world.current_region_id)
+	if Lx.world.has_method("apply_layers"):
+		Lx.world.call("apply_layers", false)
+	# Guard against dirty interactable_states saving active=false while a growth layer was previously off
+	var rdata: Dictionary = Lx.world.region_data if Lx.world.region_data is Dictionary else {}
+	var layers_v: Variant = rdata.get("layers", [])
+	if layers_v is Array and Lx.vars != null:
+		for lay_v: Variant in (layers_v as Array):
+			if not (lay_v is Dictionary):
+				continue
+			var lay: Dictionary = lay_v as Dictionary
+			var matched: bool = Lx.vars.eval(str(lay.get("when", "")), 0, rid)
+			var en_v: Variant = lay.get("enable", [])
+			if en_v is Array:
+				for id_v: Variant in (en_v as Array):
+					var it: LxInteractable = Lx.world.find_interactable(str(id_v))
+					if it != null:
+						it.active = matched
+						it.visible = matched
 
 
 func _on_region_entered(island_id: int, region_id: String) -> void:

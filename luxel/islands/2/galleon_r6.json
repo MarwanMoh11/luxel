@@ -1,0 +1,482 @@
+{
+  "id": "galleon_r6",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "GAL_R6_NAME",
+  "theme": "galleon",
+  "music": "isl2_galleon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "gal_r6",
+      "name_key": "GAL_R6_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "galleon_r5",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_r6_ladder",
+      "rect": [
+        464,
+        144,
+        16,
+        32
+      ],
+      "to_region": "galleon_r2",
+      "to_spawn": [
+        424,
+        80
+      ],
+      "requires_flags": [
+        "galleon_r6_ladder"
+      ],
+      "locked_door_id": "door_r6_ladder"
+    },
+    {
+      "id": "exit_r6_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "galleon_r7",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "requires_flags": [
+        "galleon_clamp_claimed"
+      ],
+      "locked_door_id": "door_r6_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r6_s",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r6",
+      "kind": "state_lever",
+      "pos": [
+        344,
+        232
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "port",
+          "starboard"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "mir_r6_w",
+      "kind": "blue_transformer",
+      "pos": [
+        152,
+        168
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "mir_r6_e",
+      "kind": "blue_transformer",
+      "pos": [
+        344,
+        168
+      ],
+      "props": {
+        "normal": [
+          -0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "altar_ballast_clamp",
+      "kind": "gal_clamp_altar",
+      "pos": [
+        240,
+        184
+      ],
+      "props": {
+        "requires_flag": "boss_bosun_rig_defeated",
+        "target_ids": [
+          "door_r6_north",
+          "door_r6_ladder"
+        ]
+      }
+    },
+    {
+      "id": "door_r6_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "galleon_clamp_claimed"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r6_ladder",
+      "kind": "door",
+      "pos": [
+        456,
+        160
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "galleon_r6_ladder"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r6_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        264
+      ],
+      "props": {
+        "zone": "gal_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        264
+      ],
+      "props": {
+        "zone": "gal_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "zone": "gal_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "zone": "gal_r6",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "bosun_r6",
+      "kind": "bosun_rig",
+      "pos": [
+        240,
+        120
+      ],
+      "zone": "gal_r6"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        168
+      ],
+      "radius": 48,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        192,
+        128,
+        96,
+        64
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        88,
+        200
+      ],
+      "radius": 22,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        152
+      ],
+      "size": [
+        56,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_capstan",
+      "pos": [
+        104,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        392,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        104,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tangled_cargo_net",
+      "pos": [
+        392,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        296,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        104,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        392,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        280,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "gal_r6_ladder_msg",
+      "on": "flag:galleon_r6_ladder",
+      "once": true,
+      "do": [
+        {
+          "narrate": "GAL_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Mini-Boss cargo well where The Bosun's Rig swings his crane gantry across a listing deck; victory unlocks the Ballast Clamp pedestal and opens the Hub Ladder shortcut back to r2.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Flank crane guard with blue banks and roll timing; claim Ballast Clamp to pin sliding deck cargo.",
+    "decisions": 6,
+    "expert_s": 88,
+    "reward": "power_ballast_clamp+cycle_2",
+    "why": "Mid-dungeon mini-boss exam awarding the Galleon's signature power and opening Cycle 2 back to the hub.",
+    "exit": "exit_r6_north",
+    "start": {
+      "vars": {
+        "list": "port"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          232
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "gal_r6",
+        "timeout": 110.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "boss_bosun_rig_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "altar_ballast_clamp"
+      },
+      {
+        "op": "expect",
+        "flag": "power_ballast_clamp"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_north"
+      }
+    ]
+  }
+}

@@ -1,8 +1,8 @@
 {
   "name_key": "ISL1_UC_SCALES",
   "spawn": [
-    224,
-    272
+    240,
+    304
   ],
   "zones": [
     {
@@ -12,7 +12,7 @@
         0,
         0,
         480,
-        320
+        352
       ],
       "dark": true
     }
@@ -21,14 +21,14 @@
     {
       "id": "exit_r7_south",
       "rect": [
-        208,
-        304,
+        240,
+        336,
         32,
         16
       ],
       "to_region": "undercroft_r6",
       "to_spawn": [
-        256,
+        272,
         56
       ]
     },
@@ -36,7 +36,7 @@
       "id": "exit_r7_west_shortcut",
       "rect": [
         0,
-        208,
+        224,
         16,
         48
       ],
@@ -51,7 +51,7 @@
       "id": "exit_r7_east",
       "rect": [
         464,
-        128,
+        144,
         16,
         48
       ],
@@ -71,8 +71,8 @@
       "id": "anc_r7_south",
       "kind": "room_anchor",
       "pos": [
-        224,
-        272
+        240,
+        304
       ],
       "props": {
         "auto": true
@@ -87,15 +87,15 @@
       ],
       "props": {
         "tone": "war",
-        "wave_radius": 236
+        "wave_radius": 244
       }
     },
     {
       "id": "bell_r7_dusk",
       "kind": "bell",
       "pos": [
-        248,
-        224
+        224,
+        240
       ],
       "props": {
         "tone": "dusk",
@@ -107,7 +107,7 @@
       "kind": "scale",
       "pos": [
         120,
-        144
+        152
       ],
       "props": {
         "left": [
@@ -132,7 +132,7 @@
       "kind": "push_block",
       "pos": [
         60,
-        144
+        152
       ],
       "props": {
         "variant": "stone",
@@ -173,7 +173,7 @@
       "kind": "mover_wall",
       "pos": [
         152,
-        184
+        200
       ],
       "props": {
         "size": [
@@ -183,11 +183,11 @@
         "path": [
           [
             152,
-            184
+            200
           ],
           [
             80,
-            184
+            200
           ]
         ],
         "speed": 140,
@@ -215,7 +215,7 @@
       "kind": "tone_door",
       "pos": [
         24,
-        232
+        248
       ],
       "props": {
         "tone": "war",
@@ -244,7 +244,7 @@
       "kind": "door",
       "pos": [
         456,
-        152
+        168
       ],
       "props": {
         "door_kind": "wick_key",
@@ -261,8 +261,8 @@
       "id": "lamp_r7_s",
       "kind": "road_lamp",
       "pos": [
-        224,
-        264
+        240,
+        296
       ],
       "props": {
         "zone": "uc_scales",
@@ -286,7 +286,7 @@
       "kind": "road_lamp",
       "pos": [
         416,
-        112
+        136
       ],
       "props": {
         "zone": "uc_scales",
@@ -308,7 +308,7 @@
       "id": "hand_r7_b",
       "kind": "grave_hand",
       "pos": [
-        344,
+        312,
         224
       ],
       "zone": "uc_scales"
@@ -317,8 +317,8 @@
       "id": "moth_r7",
       "kind": "toll_moth",
       "pos": [
-        272,
-        168
+        264,
+        176
       ],
       "perches": [
         [
@@ -327,7 +327,7 @@
         ],
         [
           320,
-          184
+          192
         ]
       ],
       "zone": "uc_scales"
@@ -338,7 +338,7 @@
       "kind": "inlay",
       "rect": [
         72,
-        124,
+        132,
         96,
         40
       ]
@@ -353,32 +353,35 @@
       "style": "ritual"
     },
     {
-      "kind": "rug",
-      "rect": [
-        264,
-        44,
-        64,
-        36
-      ],
-      "style": "ornate"
-    },
-    {
-      "kind": "cracks",
+      "kind": "stain",
       "pos": [
-        48,
-        232
+        336,
+        160
       ],
-      "radius": 22,
-      "glow": false
+      "radius": 26,
+      "style": "moss"
     },
     {
       "kind": "stain",
       "pos": [
-        384,
-        240
+        112,
+        256
       ],
-      "radius": 26,
+      "radius": 24,
       "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        296,
+        64
+      ],
+      "size": [
+        48,
+        44
+      ],
+      "tint": "cool",
+      "shear": 0.3
     }
   ],
   "scenery": [
@@ -398,18 +401,6 @@
       "sheet": "theme_undercroft",
       "prop": "crypt_candelabra",
       "pos": [
-        408,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_candelabra",
-      "pos": [
         56,
         64
       ],
@@ -420,82 +411,70 @@
     },
     {
       "sheet": "theme_undercroft",
-      "prop": "open_sarcophagus",
+      "prop": "crypt_candelabra",
       "pos": [
-        384,
-        68
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_coffin",
-      "pos": [
-        416,
-        248
+        320,
+        112
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
-      "pos": [
-        176,
-        264
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "crypt_urn",
-      "pos": [
-        272,
-        264
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "tattered_crypt_banner",
-      "pos": [
-        360,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "theme_undercroft",
-      "prop": "toll_brazier",
-      "pos": [
-        176,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
     },
     {
       "sheet": "theme_undercroft",
       "prop": "mossy_headstone",
       "pos": [
-        336,
+        304,
         268
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        168,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "chapel_pew",
+      "pos": [
+        288,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "chapel_pew",
+      "pos": [
+        320,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bone_ossuary_arch",
+      "pos": [
+        256,
+        304
       ],
       "layer": "sort",
       "flip_x": false,
@@ -519,14 +498,14 @@
     }
   ],
   "design": {
-    "idea": "Weight a stone scale to swap north and south acoustic baffles so War waves blast open both the Key 2 vault and the ossuary shortcut seam back to r2.",
+    "idea": "T-cross flooded crypt: weight a stone scale to invert twin baffles so War waves shatter both the projecting Key 2 vault and the ossuary shortcut seam to r2.",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Counterweight scales invert dual baffles, and War Echo waves shatter bone seals while Dusk hushes awakened Grave Hands.",
     "decisions": 9,
     "expert_s": 55,
     "reward": "uc_key_2+uc_ossuary_seam",
-    "why": "Counterweight crypt forming the second internal dungeon cycle back to the Coffin Vault.",
+    "why": "Multi-wing counterweight junction closing the second dungeon cycle back to the Coffin Vault.",
     "exit": "exit_r7_east",
     "start": {
       "flags": [
@@ -538,7 +517,7 @@
         "op": "goto",
         "to": [
           176,
-          224
+          240
         ]
       },
       {
@@ -554,7 +533,7 @@
         "target": "blk_r7",
         "to": [
           92,
-          144
+          152
         ]
       },
       {
@@ -598,7 +577,7 @@
         "target": "blk_r7",
         "to": [
           56,
-          144
+          152
         ]
       },
       {
@@ -606,7 +585,7 @@
         "target": "wall_r7_south",
         "near": [
           152,
-          184
+          200
         ],
         "tol": 10.0,
         "timeout": 3.0
@@ -641,7 +620,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "undercroft",
-  "music": "island1_dungeon",
+  "music": "isl1_undercroft",
   "ambience": [
     "night_breeze",
     "sanctum_bells"
