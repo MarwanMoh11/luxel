@@ -269,13 +269,17 @@ func _on_rider_fired(aim_dir: Vector2, fire_kind: String) -> void:
 		elif rider.temper == "lance": imp *= 1.45
 	vel = (vel + thrust_dir * imp).limit_length(MAX_SPEED)
 	if vel.length_squared() > 16.0:
-		heading = heading.lerp(vel.normalized(), 0.36).normalized()
+		heading = Vector2.from_angle(lerp_angle(heading.angle(), vel.angle(), 0.42))
 	_recoil_kick = 1.0
 	_spawn_wake(pos - thrust_dir * 8.0, 5.0)
 	_emit_sfx("skiff_recoil_pop")
 	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
-		Lx.camera.call("add_kick", thrust_dir, 0.9)
+		Lx.camera.call("add_kick", thrust_dir, 1.3)
 	queue_redraw()
+
+func _nudge_camera_ahead(dir: Vector2, dist_px: float = 44.0, dur: float = 0.42) -> void:
+	if dir.length_squared() > 0.01 and Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("trigger_focus_nudge"):
+		Lx.camera.call("trigger_focus_nudge", pos + dir.normalized() * dist_px, dur)
 
 func on_wick_dash(w: LxWick) -> bool:
 	if rider != w or _dash_cd > 0.0 or grounded:
@@ -292,6 +296,7 @@ func on_wick_dash(w: LxWick) -> bool:
 	_emit_sfx("skiff_wake")
 	_shake_off_latched_enemies(w)
 	_bat_nearby_mines(sdir, 210.0)
+	_nudge_camera_ahead(sdir, 40.0, 0.38)
 	queue_redraw()
 	return true
 
@@ -359,6 +364,7 @@ func on_wick_zip(w: LxWick) -> bool:
 	_shake_off_latched_enemies(w)
 	w.spawn_ring(_swing_post, 2.0, 16.0 if _swing_boosted else 12.0, 0.22, PAL["gold"] as Color, 1.4)
 	w.spawn_sparks(_swing_post, tang, 8 if _swing_boosted else 5, PAL["cream"] as Color, 40.0, 100.0, 0.20)
+	_nudge_camera_ahead(tang, 44.0, 0.45)
 	_emit_sfx("zip_streak")
 	return true
 
@@ -383,9 +389,13 @@ func _release_post_whip() -> void:
 func tick_mounted(dt: float, w: LxWick, world_ctx: Node) -> void:
 	if rider != w: return
 	var steer: Vector2 = w.get_move_input()
-	if not grounded and steer.length_squared() > 0.04 and vel.length() > 10.0:
+	if not grounded and steer.length_squared() > 0.04:
 		var spd: float = vel.length()
-		vel = (vel / spd).lerp(steer.normalized(), minf(1.0, dt * RUDDER_CARVE)).normalized() * spd
+		if spd > 10.0:
+			var new_ang: float = rotate_toward(vel.angle(), steer.angle(), dt * RUDDER_TURN_RATE)
+			vel = Vector2.from_angle(new_ang) * spd
+		elif spd < SCULL_MAX_SPEED:
+			vel = (vel + steer.normalized() * SCULL_ACCEL * dt).limit_length(SCULL_MAX_SPEED)
 	_step_water_physics(dt, world_ctx)
 	w.global_position = pos; w.velocity = vel
 	_cached_dock_pos = _find_safe_dock_pos(steer if steer.length_squared() > 0.04 else w.facing)
@@ -461,10 +471,12 @@ func _step_water_physics(dt: float, world_ctx: Node) -> void:
 	if resolved.distance_to(desired) > 0.45:
 		var bx: bool = not _can_float_at(ctx, Vector2(desired.x, pos.y))
 		var by: bool = not _can_float_at(ctx, Vector2(pos.x, desired.y))
-		if bx: vel.x = -vel.x * BUMP_RESTITUTION
-		if by: vel.y = -vel.y * BUMP_RESTITUTION
-		if not bx and not by: vel = -vel * BUMP_RESTITUTION
-		if _bump_cd <= 0.0 and vel.length() > 14.0:
+		var slipped: bool = resolved.distance_to(pos) > 0.45
+		if bx and not slipped: vel.x = 0.0 if absf(vel.x) < 28.0 else -vel.x * BUMP_RESTITUTION
+		elif bx: vel.x = 0.0 if absf(vel.x) < 28.0 else -vel.x * BUMP_RESTITUTION
+		if by: vel.y = 0.0 if absf(vel.y) < 28.0 else -vel.y * BUMP_RESTITUTION
+		if not bx and not by and not slipped: vel = -vel * BUMP_RESTITUTION
+		if _bump_cd <= 0.0 and vel.length() > 22.0 and not slipped:
 			_bump_cd = 0.25; _emit_sfx("skiff_hull_bump"); _spawn_wake(resolved, 5.0)
 	pos = resolved; position = pos.round()
 
@@ -472,7 +484,7 @@ func _step_water_physics(dt: float, world_ctx: Node) -> void:
 	if spd_now >= 52.0 or _dash_burst_t > 0.0:
 		_bat_nearby_mines(vel / maxf(spd_now, 1.0), maxf(165.0, spd_now * 1.25))
 	if spd_now > 10.0:
-		heading = heading.lerp(vel / spd_now, minf(1.0, dt * 7.5)).normalized()
+		heading = Vector2.from_angle(lerp_angle(heading.angle(), vel.angle(), minf(1.0, dt * 11.0)))
 		_wake_cd -= dt
 		if _wake_cd <= 0.0:
 			_wake_cd = clampf(0.15 - spd_now * 0.00055, 0.048, 0.15)
