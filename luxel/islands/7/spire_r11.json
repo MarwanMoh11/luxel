@@ -161,7 +161,7 @@
         88
       ],
       "props": {
-        "angle_deg": 135,
+        "angle_deg": 315,
         "rotatable": true,
         "movable": false,
         "transforms_to": "blue"
@@ -434,6 +434,21 @@
     "exit": "exit_spire_r11_east",
     "solution": [
       {
+        "op": "shoot",
+        "from": [
+          208,
+          240
+        ],
+        "target": [
+          152,
+          240
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
         "op": "goto",
         "to": [
           168,
@@ -477,29 +492,6 @@
       {
         "op": "wait",
         "secs": 0.65
-      },
-      {
-        "op": "goto",
-        "to": [
-          104,
-          184
-        ],
-        "tol": 14.0
-      },
-      {
-        "op": "shoot",
-        "from": [
-          104,
-          184
-        ],
-        "target": [
-          152,
-          184
-        ]
-      },
-      {
-        "op": "wait",
-        "secs": 0.4
       },
       {
         "op": "expect",

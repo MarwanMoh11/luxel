@@ -18,6 +18,9 @@
   "interactables": {
     "fall_wind_rig": "res://luxel/islands/5/fall/fall_wind_rig.gd"
   },
+  "state_vars": {
+    "fall_latch": { "scope": "room:5:fall_r3", "values": [0, 90, 180, 270], "default": 0 }
+  },
   "dungeons": [
     {
       "id": "fall",

@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "theme": "briar_court",
   "name_key": "ISL3_COURT_R3_NAME",
-  "music": "island3_boss_p1",
+  "music": "isl3_boss_minor_p1",
   "spawn": [256, 240],
   "zones": [
     {

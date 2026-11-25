@@ -165,7 +165,7 @@
     "reward": "keepers_flame_6+shortcut_r1+clamp_blessing",
     "why": "Grand vault nexus uniting the Legacy Wing, Heat-Flow Casting Wing, and Boss Sanctuary.",
     "exit": "exit_kiln_r9_north",
-    "start": { "moves": ["sunflare"] },
+    "start": { "moves": ["sunflare"], "ember": 100 },
     "solution": [
       { "op": "goto", "to": [392, 160], "tol": 6.0 },
       { "op": "beam", "target": "bramble_kiln_r9" },
@@ -180,6 +180,8 @@
       { "op": "goto", "to": [72, 136], "tol": 6.0 },
       { "op": "interact", "target": "keepers_flame_6" },
       { "op": "expect", "flag": "keepers_flame_6" },
+      { "op": "goto", "to": [224, 48], "tol": 6.0 },
+      { "op": "interact", "target": "door_boss_6" },
       { "op": "expect_exit", "exit": "exit_kiln_r9_north" }
     ]
   }

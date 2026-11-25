@@ -3,6 +3,8 @@
   "island_id": 8,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL8_SC_R5",
+  "music": "island8_dungeon",
   "spawn": [
     272,
     248
@@ -10,7 +12,7 @@
   "zones": [
     {
       "id": "sanctum_r5",
-      "name_key": "DUNGEON_8_NAME",
+      "name_key": "ISL8_SC_R5",
       "rect": [
         0,
         0,
@@ -69,7 +71,7 @@
       ],
       "to_region": "sanctum_r1",
       "to_spawn": [
-        368,
+        376,
         208
       ],
       "requires_moves": [],
@@ -77,10 +79,74 @@
         "sanctum_shortcut_r5_r1"
       ],
       "locked_door_id": "door_sanctum_r5_shortcut"
+    },
+    {
+      "id": "exit_sanctum_r5_west",
+      "rect": [
+        0,
+        240,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r11",
+      "to_spawn": [
+        432,
+        160
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r5_east_gallery",
+      "rect": [
+        464,
+        80,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r12",
+      "to_spawn": [
+        48,
+        176
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r5_ne",
+      "rect": [
+        368,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r14",
+      "to_spawn": [
+        48,
+        192
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "sanctum_bell_rung"
+      ],
+      "locked_door_id": "door_sanctum_r5_threshold"
     }
   ],
   "enemies": [],
   "interactables": [
+    {
+      "id": "anc_sanctum_r5",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
     {
       "id": "brazier_sanctum_r5_west",
       "kind": "brazier",
@@ -179,6 +245,25 @@
       }
     },
     {
+      "id": "door_sanctum_r5_threshold",
+      "kind": "door",
+      "pos": [
+        384,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "sanctum_r5",
+        "requires_flags": [
+          "sanctum_bell_rung"
+        ]
+      }
+    },
+    {
       "id": "keepers_flame_8",
       "kind": "keepers_flame",
       "pos": [
@@ -189,6 +274,17 @@
         "dungeon_id": "bell_sanctum",
         "key_kind": "keepers_flame",
         "flag_id": "keepers_flame_8"
+      }
+    },
+    {
+      "id": "chain_sanctum_r5",
+      "kind": "sanctum_bell_chain",
+      "pos": [
+        248,
+        48
+      ],
+      "props": {
+        "target_id": "door_sanctum_r5_threshold"
       }
     },
     {
@@ -209,6 +305,54 @@
         "requires_flags": [
           "keepers_flame_8"
         ]
+      }
+    },
+    {
+      "id": "lamp_sanctum_r5_s",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        248
+      ],
+      "props": {
+        "zone": "sanctum_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r5_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        184
+      ],
+      "props": {
+        "zone": "sanctum_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r5_n",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        56
+      ],
+      "props": {
+        "zone": "sanctum_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        88
+      ],
+      "props": {
+        "zone": "sanctum_r5",
+        "lit": true
       }
     }
   ],
@@ -266,20 +410,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        168,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
         248,
-        56
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -314,18 +446,6 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        232,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
-      "pos": [
         312,
         248
       ],
@@ -345,30 +465,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        72,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        392,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.65
     },
     {
       "sheet": "island8_scenery",
@@ -393,30 +489,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.65
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
-        328,
-        136
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
-        376,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.75
     },
     {
       "sheet": "island8_scenery",
@@ -453,19 +525,140 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
-        40,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.55
     }
   ],
-  "is_2x2_room": true
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        72
+      ],
+      "radius": 32,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        192,
+        40,
+        32,
+        56
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "trim": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        352,
+        80,
+        96,
+        32
+      ],
+      "color": "rose"
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Grand Synthesis Vault combining Throw, Prism, Sunflare, and True Lens for Keeper's Flame #8 while branching to the West Vigil (r11), East Rose-Window Gallery (r12), and Threshold (r14) beneath the Eclipse Bell Chain.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Multi-move synthesis (Throw + Prism + Sunflare + Lens) and Eclipse Bell Chain inspection.",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "keepers_flame_8+shortcut+bell_chain",
+    "why": "Unites the legacy synthesis climax with both deepened upper wings and the Belfry threshold.",
+    "exit": "exit_sanctum_r5_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          144,
+          216
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "throw",
+        "target": "brazier_sanctum_r5_west"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "push",
+        "target": "transformer_sanctum_r5",
+        "to": [
+          344,
+          152
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_sanctum_r5",
+        "angle": 45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          344,
+          184
+        ],
+        "target": "transformer_sanctum_r5"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          176,
+          216
+        ],
+        "target": "seal_sanctum_r5",
+        "count": 5
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          200
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "sunflare"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          72
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame_8"
+      },
+      {
+        "op": "interact",
+        "target": "chain_sanctum_r5"
+      },
+      {
+        "op": "interact",
+        "target": "door_boss_8"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r5_north"
+      }
+    ]
+  }
 }

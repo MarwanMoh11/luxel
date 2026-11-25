@@ -148,6 +148,14 @@ func tick(dt: float) -> void:
 	if _reject_t > 0.0:
 		_reject_t = maxf(0.0, _reject_t - dt)
 		dirty = true
+	# Dawn Resonance: once Chains 1 & 2 shatter, the Bell Dais charges Wick's Ember so Sunflare is never softlocked.
+	if active and chain_1_broken and chain_2_broken and not bell_rung and Lx.player is LxWick and is_instance_valid(Lx.player):
+		var w: LxWick = Lx.player as LxWick
+		if not w.dead and w.global_position.distance_to(pos) <= 64.0:
+			var emax: float = Lx.state.get_effective_ember_max() if Lx.state != null else 100.0
+			if w.ember < emax:
+				w.ember = minf(emax, w.ember + 220.0 * dt)
+				dirty = true
 	if dirty:
 		queue_redraw()
 

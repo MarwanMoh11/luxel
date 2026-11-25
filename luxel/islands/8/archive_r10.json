@@ -270,7 +270,7 @@
       "props": {
         "movable": false,
         "rotatable": true,
-        "angle_deg": 45.0
+        "angle_deg": 135.0
       }
     },
     {
@@ -693,7 +693,7 @@
       {
         "op": "rotate",
         "target": "mirror_r10_s3",
-        "angle": 135.0
+        "angle": 45.0
       },
       {
         "op": "shoot",
@@ -741,6 +741,10 @@
           48
         ],
         "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "key_archive_boss"
       },
       {
         "op": "expect",

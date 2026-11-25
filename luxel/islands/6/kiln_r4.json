@@ -128,10 +128,12 @@
       { "op": "goto", "to": [136, 104], "tol": 6.0 },
       { "op": "clear", "timeout": 25.0 },
       { "op": "lens" },
-      { "op": "goto", "to": [184, 40], "tol": 8.0 },
+      { "op": "goto", "to": [224, 40], "tol": 8.0 },
       { "op": "lens" },
       { "op": "goto", "to": [320, 104], "tol": 8.0 },
       { "op": "shoot", "target": "toggle_kiln_r4_bridge", "wait_hit": 0.45 },
+      { "op": "goto", "to": [328, 104], "tol": 6.0 },
+      { "op": "interact", "target": "door_kiln_r4_east" },
       { "op": "expect_exit", "exit": "exit_kiln_r4_east" }
     ]
   }

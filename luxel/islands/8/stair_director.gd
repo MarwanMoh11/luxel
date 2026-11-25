@@ -212,7 +212,7 @@ func pick_floor_template(floor_num: int, pool_layers: Array = [], seed_override:
 	if cands.is_empty():
 		cands.append(ROOM_TEMPLATES[0])
 
-	var slot_key: String = "%d:%s" % [_floor, ",".join(slot_parts)]
+	var slot_key: String = ",".join(slot_parts) if not slot_parts.is_empty() else "tier:%d" % tier
 	var prev_layer: String = str(_prev_climb_picks.get(slot_key, ""))
 
 	# 1) Avoid repeating exact same template twice in a row.

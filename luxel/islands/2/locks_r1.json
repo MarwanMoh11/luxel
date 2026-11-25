@@ -162,15 +162,35 @@
       }
     },
     {
-      "id": "post_r1_n",
+      "id": "post_r1_s",
       "kind": "mooring_post",
       "pos": [
-        184,
-        120
+        152,
+        232
       ],
       "props": {
         "orbit_r": 40.0,
-        "allow_dismount": true
+        "allow_dismount": true,
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "post_r1_n",
+      "kind": "mooring_post",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "orbit_r": 40.0,
+        "allow_dismount": true,
+        "size": [
+          32,
+          32
+        ]
       }
     },
     {

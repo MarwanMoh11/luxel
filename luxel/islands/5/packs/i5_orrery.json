@@ -33,6 +33,11 @@
     "o5_hollow_telescope": "res://luxel/islands/5/orrery/o5_hollow_telescope.gd",
     "o5_syzygy_conduit": "res://luxel/islands/5/orrery/o5_syzygy_conduit.gd"
   },
+  "state_vars": {
+    "o5_r11_ring": { "scope": "room:5:orrery_r11", "values": [0, 90, 180, 270], "default": 0 },
+    "o5_r13_sky":  { "scope": "room:5:orrery_r13", "values": [0, 90, 180, 270], "default": 0 },
+    "o5_r14_ring": { "scope": "room:5:orrery_r14", "values": [0, 90, 180, 270], "default": 0 }
+  },
   "regions": {
     "orrery_r1":  { "name_key": "I5_OR_R1",  "music": "island5_dungeon", "dark": true, "map": [2, 5] },
     "orrery_r2":  { "name_key": "I5_OR_R2",  "music": "island5_dungeon", "dark": true, "map": [1, 5] },

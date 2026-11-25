@@ -97,7 +97,10 @@
       "requires_flags": [
         "beacon_3_1",
         "beacon_3_2",
-        "beacon_3_3"
+        "beacon_3_3",
+        "underroot_done",
+        "loom_done",
+        "briar_court_done"
       ],
       "locked_door_id": "door_dungeon_3"
     },
@@ -692,7 +695,10 @@
         "requires_flags": [
           "beacon_3_1",
           "beacon_3_2",
-          "beacon_3_3"
+          "beacon_3_3",
+          "underroot_done",
+          "loom_done",
+          "briar_court_done"
         ]
       }
     },

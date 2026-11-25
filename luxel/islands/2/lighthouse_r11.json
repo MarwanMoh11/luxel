@@ -149,7 +149,7 @@
       "kind": "vehicle_skiff",
       "pos": [
         184,
-        200
+        184
       ],
       "props": {
         "dir": "e"
@@ -265,7 +265,7 @@
   "layers": [
     {
       "id": "r11_tide_low",
-      "when": "tower_tide==low",
+      "when": "dungeon:lighthouse.tower_tide==low",
       "theme": "seabed",
       "tiles": [
         [
@@ -288,7 +288,7 @@
     },
     {
       "id": "r11_tide_mid",
-      "when": "tower_tide==mid || tower_tide==high",
+      "when": "dungeon:lighthouse.tower_tide==mid || dungeon:lighthouse.tower_tide==high",
       "theme": "seabed",
       "tiles": [
         [

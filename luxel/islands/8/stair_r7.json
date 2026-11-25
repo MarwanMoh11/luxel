@@ -91,13 +91,15 @@
       }
     },
     {
-      "id": "rest_r7_brazier",
-      "kind": "rest_shrine",
+      "id": "braz_r7_heal",
+      "kind": "brazier",
       "pos": [
         128,
         112
       ],
-      "props": {}
+      "props": {
+        "lit": false
+      }
     },
     {
       "id": "scale_r7_crowned",
@@ -344,6 +346,18 @@
   "layers": [],
   "events": [
     {
+      "id": "ev_r7_heal",
+      "on": "signal:braz_r7_heal",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        }
+      ]
+    },
+    {
       "id": "ev_r7_chute",
       "on": "signal:sw_r7_chute",
       "once": true,
@@ -373,13 +387,13 @@
         "op": "goto",
         "to": [
           128,
-          128
+          144
         ],
         "tol": 10.0
       },
       {
-        "op": "interact",
-        "target": "rest_r7_brazier"
+        "op": "shoot",
+        "target": "braz_r7_heal"
       },
       {
         "op": "goto",
@@ -412,18 +426,18 @@
       {
         "op": "goto",
         "to": [
-          232,
+          244,
           144
         ],
-        "tol": 8.0
+        "tol": 6.0
       },
       {
         "op": "glide",
         "to": [
-          344,
+          332,
           144
         ],
-        "secs": 1.2
+        "secs": 1.1
       },
       {
         "op": "goto",
@@ -434,12 +448,20 @@
         "tol": 10.0
       },
       {
-        "op": "glide",
+        "op": "goto",
         "to": [
-          232,
+          328,
           144
         ],
-        "secs": 1.2
+        "tol": 6.0
+      },
+      {
+        "op": "glide",
+        "to": [
+          240,
+          144
+        ],
+        "secs": 1.1
       },
       {
         "op": "expect_exit",

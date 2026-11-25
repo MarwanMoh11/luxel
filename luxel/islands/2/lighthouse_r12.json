@@ -113,7 +113,7 @@
       ],
       "props": {
         "mounts": "blue_transformer",
-        "tide_var": "tower_tide",
+        "tide_var": "dungeon:lighthouse.tower_tide",
         "tide_min": "mid",
         "angle_deg": 0,
         "rotatable": true,
@@ -227,7 +227,7 @@
   "layers": [
     {
       "id": "r12_tide_low",
-      "when": "tower_tide==low",
+      "when": "dungeon:lighthouse.tower_tide==low",
       "theme": "seabed",
       "tiles": [
         [
@@ -243,7 +243,7 @@
     },
     {
       "id": "r12_tide_mid",
-      "when": "tower_tide==mid || tower_tide==high",
+      "when": "dungeon:lighthouse.tower_tide==mid || dungeon:lighthouse.tower_tide==high",
       "theme": "seabed",
       "tiles": [
         [

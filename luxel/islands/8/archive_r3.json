@@ -116,7 +116,7 @@
         "index": 0,
         "style": "tide_organ",
         "shootable": true,
-        "persist": false
+        "persist": true
       }
     },
     {
@@ -131,7 +131,7 @@
         "tide_var": "mem_tide",
         "tide_min": "flood",
         "rotatable": true,
-        "angle_deg": 45.0,
+        "angle_deg": 225.0,
         "size": [
           32,
           32
@@ -428,7 +428,7 @@
     "exit": "exit_r3_north",
     "start": {
       "vars": {
-        "mem_tide": "flood"
+        "dungeon:archive:mem_tide": "flood"
       }
     },
     "solution": [
@@ -499,7 +499,7 @@
       {
         "op": "rotate",
         "target": "raft_r3_mirror",
-        "angle": 315.0
+        "steps": 2
       },
       {
         "op": "shoot",
@@ -520,9 +520,16 @@
         "op": "goto",
         "to": [
           240,
-          104
+          128
         ],
-        "tol": 10.0
+        "tol": 6.0
+      },
+      {
+        "op": "dash",
+        "dir": [
+          0,
+          -1
+        ]
       },
       {
         "op": "wait",

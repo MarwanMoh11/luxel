@@ -84,13 +84,13 @@
     {
       "id": "tf_r14_w",
       "kind": "blue_transformer",
-      "pos": [96, 88],
+      "pos": [96, 184],
       "props": { "angle_deg": 45, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
     },
     {
       "id": "tf_r14_e",
       "kind": "blue_transformer",
-      "pos": [392, 88],
+      "pos": [432, 184],
       "props": { "angle_deg": 135, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
     },
     {
@@ -102,7 +102,7 @@
     {
       "id": "slag_r14_2",
       "kind": "push_block",
-      "pos": [344, 184],
+      "pos": [376, 184],
       "props": { "variant": "slag", "cooled": false, "size": [16, 16], "persist": true }
     },
     {
@@ -114,7 +114,7 @@
     {
       "id": "plate_r14_2",
       "kind": "pressure_plate",
-      "pos": [344, 88],
+      "pos": [376, 88],
       "props": { "by": ["block", "enemy"], "latch": true, "target_id": "gate_r14_north", "persist": true }
     },
     {
@@ -173,17 +173,16 @@
       { "op": "goto", "to": [72, 182], "tol": 4.0 },
       { "op": "interact", "target": "anvil_r14_lance" },
       { "op": "clear", "timeout": 45.0 },
-      { "op": "goto", "to": [96, 112], "tol": 4.0 },
+      { "op": "goto", "to": [96, 160], "tol": 4.0 },
       { "op": "rotate", "target": "tf_r14_w", "angle": 315 },
-      { "op": "goto", "to": [152, 88], "tol": 6.0 },
-      { "op": "shoot", "from": [96, 56], "target": "tf_r14_w", "wait_hit": 0.45 },
+      { "op": "shoot", "from": [96, 144], "target": "tf_r14_w", "wait_hit": 0.45 },
       { "op": "goto", "to": [152, 208], "tol": 6.0 },
       { "op": "push", "target": "slag_r14_1", "to": [152, 88] },
-      { "op": "goto", "to": [392, 112], "tol": 4.0 },
-      { "op": "rotate", "target": "tf_r14_e", "angle": 225 },
-      { "op": "shoot", "from": [392, 56], "target": "tf_r14_e", "wait_hit": 0.45 },
-      { "op": "goto", "to": [344, 208], "tol": 6.0 },
-      { "op": "push", "target": "slag_r14_2", "to": [344, 88] },
+      { "op": "goto", "to": [432, 160], "tol": 4.0 },
+      { "op": "rotate", "target": "tf_r14_e", "angle": 45 },
+      { "op": "shoot", "from": [432, 144], "target": "tf_r14_e", "wait_hit": 0.45 },
+      { "op": "goto", "to": [376, 208], "tol": 6.0 },
+      { "op": "push", "target": "slag_r14_2", "to": [376, 88] },
       { "op": "wait_until", "target": "door_kiln_r14_north", "prop": "opened", "value": true, "timeout": 3.5 },
       { "op": "expect_exit", "exit": "exit_kiln_r14_north" }
     ]

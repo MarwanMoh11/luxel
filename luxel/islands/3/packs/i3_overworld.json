@@ -129,7 +129,7 @@
     "cave_root_cellar": { "name_key": "ISL3_CAVE_CELLAR_NAME", "theme": "cave_3", "music": "island3_dungeon", "dark": true, "map": [-1, 4] },
     "trial_canopy_sprint": { "name_key": "ISL3_TRIAL_SPRINT_NAME", "theme": "briar_court", "music": "isl3_setpiece", "dark": true, "map": [2, 1] },
     "trial_moth_scales": { "name_key": "ISL3_TRIAL_SCALES_NAME", "theme": "under_root", "music": "isl3_setpiece", "dark": true, "map": [-2, 3] },
-    "sb_mother_root": { "name_key": "ISL3_SB_MOTHER_NAME", "theme": "briar_court", "music": "isl3_setpiece", "dark": true, "map": [-1, -1] }
+    "sb_mother_root": { "name_key": "ISL3_SB_MOTHER_NAME", "theme": "briar_court", "music": "superboss_a", "dark": true, "map": [-1, -1] }
   },
   "sfx": {}
 }

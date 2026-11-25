@@ -98,7 +98,7 @@
           216
         ]
       ],
-      "zone": "party_r4",
+      "zone": "party_r4_w",
       "leash": 120
     },
     {
@@ -118,7 +118,7 @@
           152
         ]
       ],
-      "zone": "party_r4",
+      "zone": "party_r4_e",
       "leash": 115
     }
   ],
@@ -157,7 +157,11 @@
       ],
       "props": {
         "dir": "e",
-        "dist": 112
+        "dist": 104,
+        "size": [
+          20,
+          20
+        ]
       }
     },
     {
@@ -169,7 +173,11 @@
       ],
       "props": {
         "dir": "e",
-        "dist": 160
+        "dist": 160,
+        "size": [
+          20,
+          20
+        ]
       }
     },
     {
@@ -185,7 +193,7 @@
           48
         ],
         "dir": "e",
-        "strength": 1800
+        "strength": 600
       }
     },
     {
@@ -528,8 +536,48 @@
     "solution": [
       {
         "op": "goto",
-        "to": "sundial_party_r4",
-        "tol": 14
+        "to": [
+          152,
+          216
+        ],
+        "tol": 12
+      },
+      {
+        "op": "clear",
+        "zone": "party_r4_w",
+        "timeout": 25.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          184
+        ],
+        "tol": 10
+      },
+      {
+        "op": "beam",
+        "target": "sundial_party_r4"
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "interact",
+        "target": "sundial_party_r4"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "interact",
+        "target": "sundial_party_r4"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
       },
       {
         "op": "interact",
@@ -542,23 +590,24 @@
       {
         "op": "goto",
         "to": "bloom_party_r4_1",
-        "tol": 10
+        "tol": 8.5
       },
       {
         "op": "wait",
-        "secs": 0.7
+        "secs": 0.75
       },
       {
         "op": "goto",
         "to": "bloom_party_r4_2",
-        "tol": 10
+        "tol": 8.5
       },
       {
         "op": "wait",
-        "secs": 0.7
+        "secs": 0.9
       },
       {
         "op": "clear",
+        "zone": "party_r4_e",
         "timeout": 25.0
       },
       {

@@ -361,7 +361,8 @@
     "start": {
       "moves": [
         "wings"
-      ]
+      ],
+      "hearts": 12
     },
     "solution": [
       {

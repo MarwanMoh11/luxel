@@ -175,6 +175,10 @@ func _tick_boons(dt: float) -> void:
 			_add_ring(w.global_position, 2.0, 15.0, 0.18, PAL["ice"] as Color)
 	_was_dashing = dashing
 
+	# 8. Hide defeated bosses once defeated (hp <= 0 or boss_state == DEATH(5) or is_dead)
+	#    so LxStairController._live_enemy_count() cleanly enters BOON_DRAFT on F4/F8 Warden defeat.
+	_hide_defeated_bosses()
+
 
 func _on_wick_fired(dir: Vector2, kind: String) -> void:
 	if _dir == null or not _dir.is_in_stair() or _wick == null or not is_instance_valid(_wick):
@@ -401,6 +405,8 @@ func _bind_events() -> void:
 		return
 	if not Lx.events.enemy_hit.is_connected(_on_enemy_hit):
 		Lx.events.enemy_hit.connect(_on_enemy_hit)
+	if not Lx.events.boss_defeated.is_connected(_on_boss_defeated):
+		Lx.events.boss_defeated.connect(_on_boss_defeated)
 	_events_bound = true
 
 
@@ -409,4 +415,31 @@ func _unbind_events() -> void:
 		return
 	if Lx.events != null and Lx.events.enemy_hit.is_connected(_on_enemy_hit):
 		Lx.events.enemy_hit.disconnect(_on_enemy_hit)
+	if Lx.events != null and Lx.events.boss_defeated.is_connected(_on_boss_defeated):
+		Lx.events.boss_defeated.disconnect(_on_boss_defeated)
 	_events_bound = false
+
+
+func _on_boss_defeated(_boss_id: String, _isl: int) -> void:
+	if _dir == null or not _dir.is_in_stair():
+		return
+	_hide_defeated_bosses()
+
+
+func _hide_defeated_bosses() -> void:
+	if Lx.world == null or not is_instance_valid(Lx.world) or not Lx.world.has_method("get_enemies"):
+		return
+	var en_v: Variant = Lx.world.call("get_enemies")
+	if not (en_v is Array):
+		return
+	for ev: Variant in (en_v as Array):
+		if not (ev is Node2D) or not is_instance_valid(ev):
+			continue
+		var en: Node2D = ev as Node2D
+		if not en.visible:
+			continue
+		var hp_dead: bool = en.get("hp") != null and float(en.get("hp")) <= 0.0
+		var st_dead: bool = en.get("boss_state") != null and int(en.get("boss_state")) == 5
+		var m_dead: bool = en.has_method("is_dead") and bool(en.call("is_dead"))
+		if hp_dead or st_dead or m_dead:
+			en.visible = false

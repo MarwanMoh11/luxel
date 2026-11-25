@@ -140,7 +140,7 @@
       ],
       "props": {
         "mounts": "blue_transformer",
-        "tide_var": "tower_tide",
+        "tide_var": "dungeon:lighthouse.tower_tide",
         "tide_min": "high",
         "angle_deg": 0,
         "rotatable": true,
@@ -264,7 +264,7 @@
   "layers": [
     {
       "id": "r15_low_mid",
-      "when": "tower_tide==low || tower_tide==mid",
+      "when": "dungeon:lighthouse.tower_tide==low || dungeon:lighthouse.tower_tide==mid",
       "theme": "locks",
       "tiles": [
         [
@@ -280,7 +280,7 @@
     },
     {
       "id": "r15_high",
-      "when": "tower_tide==high",
+      "when": "dungeon:lighthouse.tower_tide==high",
       "theme": "locks",
       "tiles": [
         [
@@ -456,7 +456,7 @@
       },
       {
         "op": "wait",
-        "secs": 0.25
+        "secs": 0.35
       },
       {
         "op": "interact",
@@ -464,7 +464,7 @@
       },
       {
         "op": "wait",
-        "secs": 0.4
+        "secs": 0.45
       },
       {
         "op": "shoot",

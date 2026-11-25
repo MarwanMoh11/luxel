@@ -370,6 +370,7 @@
     "reward": "move:lens+chest_o5_r5_secret",
     "why": "Signature island move shrine granting True Lens for the rest of the game.",
     "exit": "exit_o5_r5_north",
+    "allow_presolve_pass": true,
     "start": {
       "moves": [
         "bolt",

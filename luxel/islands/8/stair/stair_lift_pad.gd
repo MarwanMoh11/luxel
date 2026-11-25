@@ -40,6 +40,25 @@ func tick(dt: float) -> void:
 	_sync_unlock()
 	if _unlocked != prev:
 		queue_redraw()
+	_sync_defeated_bosses()
+
+
+func _sync_defeated_bosses() -> void:
+	# Belt-and-suspenders for boss rooms with stair_controller: LxBossBase keeps
+	# visible=true during BossState.DEATH (5), which stalls LxStairController._live_enemy_count().
+	if region == null or not is_instance_valid(region) or not region.has_method("get_enemies"):
+		return
+	var en_v: Variant = region.call("get_enemies")
+	if not (en_v is Array):
+		return
+	for ev: Variant in (en_v as Array):
+		if not (ev is Node2D) or not is_instance_valid(ev):
+			continue
+		var en: Node2D = ev as Node2D
+		if not en.visible:
+			continue
+		if (en.get("hp") != null and float(en.get("hp")) <= 0.0) or (en.get("boss_state") != null and int(en.get("boss_state")) == 5):
+			en.visible = false
 
 
 func interact(_actor: Node = null) -> bool:

@@ -91,7 +91,7 @@
         96
       ],
       "props": {
-        "angle_deg": 45,
+        "angle_deg": 315,
         "rotatable": true,
         "movable": false,
         "transforms_to": "blue"

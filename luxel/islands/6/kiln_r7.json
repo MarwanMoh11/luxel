@@ -150,7 +150,7 @@
     "reward": "open_r8+open_r14+2_chests",
     "why": "Central mid-dungeon synthesis hub linking Legacy and Casting Wings.",
     "exit": "exit_kiln_r7_west",
-    "start": { "moves": ["sunflare"] },
+    "start": { "moves": ["sunflare"], "ember": 100 },
     "solution": [
       { "op": "goto", "to": [184, 184], "tol": 6.0 },
       { "op": "shoot", "target": "brazier_kiln_r7_sw", "wait_hit": 0.4 },

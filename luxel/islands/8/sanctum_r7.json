@@ -1,0 +1,602 @@
+{
+  "id": "sanctum_r7",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_SC_R7",
+  "theme": "toll_house",
+  "music": "island8_dungeon",
+  "spawn": [
+    400,
+    240
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r7",
+      "name_key": "ISL8_SC_R7",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r7_east",
+      "rect": [
+        432,
+        224,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r1",
+      "to_spawn": [
+        48,
+        144
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r7_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r9",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_sanctum_r7_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_sanctum_r7",
+      "kind": "room_anchor",
+      "pos": [
+        400,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_sanctum_r7",
+      "kind": "lore_stone",
+      "pos": [
+        344,
+        216
+      ],
+      "props": {
+        "string_id": "ISL8_SC_LORE_R7",
+        "icon": "scale"
+      }
+    },
+    {
+      "id": "reset_r7",
+      "kind": "timed_brazier",
+      "pos": [
+        296,
+        216
+      ],
+      "props": {
+        "secs": 3.0,
+        "reset": true,
+        "allow_interact": true,
+        "target_ids": [
+          "push_r7",
+          "mimic_r7"
+        ]
+      }
+    },
+    {
+      "id": "push_r7",
+      "kind": "push_block",
+      "pos": [
+        120,
+        152
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r7_left",
+      "kind": "pressure_plate",
+      "pos": [
+        72,
+        152
+      ],
+      "props": {
+        "by": [
+          "block",
+          "wick"
+        ],
+        "hold": true,
+        "size": [
+          16,
+          16
+        ],
+        "target_id": "scale_r7"
+      }
+    },
+    {
+      "id": "mimic_r7",
+      "kind": "mimic_statue",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "mirror": "x",
+        "range": 480.0,
+        "size": [
+          14,
+          14
+        ]
+      }
+    },
+    {
+      "id": "plate_r7_right",
+      "kind": "pressure_plate",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "by": [
+          "block",
+          "wick"
+        ],
+        "hold": true,
+        "size": [
+          16,
+          16
+        ],
+        "target_id": "scale_r7"
+      }
+    },
+    {
+      "id": "scale_r7",
+      "kind": "scale",
+      "pos": [
+        224,
+        216
+      ],
+      "props": {
+        "left": "plate_r7_left",
+        "right": "plate_r7_right",
+        "mode": "balance",
+        "latch": true,
+        "persist": true,
+        "target_id": "bridge_r7_center"
+      }
+    },
+    {
+      "id": "bridge_r7_center",
+      "kind": "door",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          32,
+          128
+        ],
+        "requires_signals": [
+          "scale_r7"
+        ]
+      }
+    },
+    {
+      "id": "hook_r7",
+      "kind": "lantern_hook",
+      "pos": [
+        168,
+        240
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "sg_r7",
+      "kind": "shadow_gate",
+      "pos": [
+        224,
+        72
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "threshold": 0.3
+      }
+    },
+    {
+      "id": "plate_r7_latch",
+      "kind": "pressure_plate",
+      "pos": [
+        200,
+        40
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "persist": true,
+        "size": [
+          16,
+          16
+        ],
+        "target_id": "door_sanctum_r7_north"
+      }
+    },
+    {
+      "id": "door_sanctum_r7_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "plate_r7_latch"
+        ]
+      }
+    },
+    {
+      "id": "sensor_r7_toll",
+      "kind": "toll_sensor",
+      "pos": [
+        104,
+        240
+      ],
+      "props": {
+        "check": "sold_count>=3",
+        "target_id": "door_r7_toll_vault"
+      }
+    },
+    {
+      "id": "door_r7_toll_vault",
+      "kind": "door",
+      "pos": [
+        88,
+        240
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sensor_r7_toll"
+        ]
+      }
+    },
+    {
+      "id": "chest_r7_toll",
+      "kind": "chest",
+      "pos": [
+        48,
+        240
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 50,
+        "zone": "sanctum_r7",
+        "secret_id": "isl8_sanctum_r7_toll"
+      }
+    },
+    {
+      "id": "lamp_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        216
+      ],
+      "props": {
+        "zone": "sanctum_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        104
+      ],
+      "props": {
+        "zone": "sanctum_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_sw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        256
+      ],
+      "props": {
+        "zone": "sanctum_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_alc",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        136
+      ],
+      "props": {
+        "zone": "sanctum_r7",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        224,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        36,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        148,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        188,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        260,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        408,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        192,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        256,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        112,
+        224,
+        288,
+        32
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "trim": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        32,
+        96,
+        128,
+        96
+      ],
+      "color": "apricot"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        320,
+        112,
+        96,
+        64
+      ],
+      "color": "sky"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r7_solved",
+      "on": "signal:plate_r7_latch",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "sanctum_r7_solved"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "West Nave cathedral ledger hall: push stone weight onto the west pan, walk east to mirror-offset the X-inverted effigy onto the east pan to balance the Taxed Scale, hang the lantern, and slip unlit through the Shadow Gate.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Combining Push Block + X-Mirrored Mimic Statue + Balance Scale + Shadow Gate unlit stealth.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "open_r9+toll_vault",
+    "why": "West Wing opening puzzle fusing Islands 3, 7, and 8 rules with a sold-settings bonus vault.",
+    "exit": "exit_sanctum_r7_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          144,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "push",
+        "target": "push_r7",
+        "to": [
+          72,
+          152
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          240
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          240
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "interactable": "scale_r7",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          240
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r7"
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          40
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "expect",
+        "interactable": "plate_r7_latch",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r7_north"
+      }
+    ]
+  }
+}

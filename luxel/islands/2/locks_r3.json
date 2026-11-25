@@ -397,7 +397,22 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "lck_r3_entry_water",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:locks",
+            "var": "lock_water",
+            "value": "west_high"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Drain the West Lock Basin to descend onto the seabed beside a grounded mirror-raft, push the sightline lock-pin crate clear and aim the mirror east, then re-flood to float the mirror above the parapet and bank a blue shot across the channel.",
     "kind": "puzzle",

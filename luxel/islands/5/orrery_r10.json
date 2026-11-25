@@ -197,8 +197,8 @@
       "id": "sn_o5_r10_ne",
       "kind": "star_node",
       "pos": [
-        368,
-        112
+        344,
+        104
       ],
       "props": {
         "pinned": true
@@ -219,8 +219,8 @@
       "id": "sn_o5_r10_se",
       "kind": "star_node",
       "pos": [
-        368,
-        224
+        344,
+        248
       ],
       "props": {
         "pinned": true

@@ -1,0 +1,439 @@
+{
+  "id": "sanctum_r14",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_SC_R14",
+  "music": "island8_dungeon",
+  "spawn": [
+    208,
+    240
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r14",
+      "name_key": "ISL8_SC_R14",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r14_south",
+      "rect": [
+        192,
+        272,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r13",
+      "to_spawn": [
+        256,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r14_west",
+      "rect": [
+        0,
+        176,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r5",
+      "to_spawn": [
+        384,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r14_lift",
+      "rect": [
+        96,
+        272,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r1",
+      "to_spawn": [
+        320,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "sanctum_upper_ws"
+      ],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r14_north",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r6",
+      "to_spawn": [
+        48,
+        192
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_sanctum_r14",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_sanctum_upper",
+      "kind": "waystone",
+      "pos": [
+        152,
+        144
+      ],
+      "props": {
+        "zone": "sanctum_r14",
+        "name_key": "ISL8_SC_R14"
+      }
+    },
+    {
+      "id": "scale_sanctum_final",
+      "kind": "toll_scale",
+      "pos": [
+        264,
+        144
+      ],
+      "props": {
+        "mode": "shop",
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_sanctum_hollow",
+      "kind": "lore_stone",
+      "pos": [
+        152,
+        192
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_HOLLOW",
+        "icon": "lantern"
+      }
+    },
+    {
+      "id": "brazier_r14_rest",
+      "kind": "brazier",
+      "pos": [
+        264,
+        192
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    },
+    {
+      "id": "moth_8_10",
+      "kind": "moth",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "id": "moth_8_10"
+      }
+    },
+    {
+      "id": "lamp_r14_nw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "zone": "sanctum_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_ne",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "zone": "sanctum_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        232
+      ],
+      "props": {
+        "zone": "sanctum_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_se",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        200
+      ],
+      "props": {
+        "zone": "sanctum_r14",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island8_scenery",
+      "prop": "sanctum_cathedral_arch",
+      "pos": [
+        208,
+        48
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        208,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        152,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        264,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        120,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        296,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        128,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        288,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        176,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        240,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        144
+      ],
+      "radius": 44,
+      "style": "mosaic",
+      "color": "plum",
+      "secondary": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        192,
+        32,
+        32,
+        224
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "trim": "gold"
+    },
+    {
+      "kind": "window_strip",
+      "y": 14,
+      "x0": 112,
+      "x1": 304,
+      "style": "stars"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r14_lift",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "sanctum_upper_ws"
+        },
+        {
+          "narrate": "ISL8_SC_LIFT_OPEN"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Lantern's Threshold: quiet vaulted exhale right outside The Hush with the Upper Waystone, Final Toll Scale, Hollow Wick's Final Note ('I KEPT MY SCREEN. I LOST THE LIGHT.'), 80th Lost Moth #10, and Narthex Express Lift.",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Final voluntary Toll trade, Hollow Wick revelation, 5s boss retry waystone, and 10th Island 8 Moth.",
+    "decisions": 4,
+    "expert_s": 40,
+    "reward": "upper_ws+moth_8_10+final_toll",
+    "why": "Gives players an unforgettable quiet breath, final narrative payoff, and instant retry before The Hush.",
+    "optional": true,
+    "exit": "exit_sanctum_r14_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          152,
+          160
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_sanctum_upper"
+      },
+      {
+        "op": "interact",
+        "target": "lore_sanctum_hollow"
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          72
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.8
+      },
+      {
+        "op": "expect",
+        "flag": "moth:moth_8_10"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r14_north"
+      }
+    ]
+  }
+}

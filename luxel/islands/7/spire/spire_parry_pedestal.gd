@@ -100,7 +100,7 @@ func tick(dt: float) -> void:
 		# Check Wick bolts, lantern, or Zip-dash intercepting the floating dark lantern!
 		if Lx.player is LxWick and is_instance_valid(Lx.player):
 			var w: LxWick = Lx.player as LxWick
-			if w.global_position.distance_to(orb_pos) <= 18.0 and (w.is_dashing() or w.zipping):
+			if w.global_position.distance_to(orb_pos) <= 18.0 and (w.is_dashing() or w.is_zipping()):
 				_complete_clash()
 			else:
 				for bi: int in range(w.bolts.size() - 1, -1, -1):

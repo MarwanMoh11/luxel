@@ -131,18 +131,18 @@
       "id": "hook_r4_bridge",
       "kind": "lantern_hook",
       "pos": [
-        320,
-        184
+        400,
+        208
       ],
       "props": {
-        "light_radius": 72.0
+        "light_radius": 112.0
       }
     },
     {
       "id": "plant_r4_bridge",
       "kind": "light_plant",
       "pos": [
-        320,
+        376,
         144
       ],
       "props": {
@@ -167,7 +167,7 @@
           32,
           16
         ],
-        "threshold": 0.35
+        "threshold": 0.45
       }
     },
     {
@@ -233,8 +233,8 @@
       "id": "lamp_r4_se",
       "kind": "road_lamp",
       "pos": [
-        384,
-        216
+        272,
+        224
       ],
       "props": {
         "lit": true,
@@ -279,17 +279,17 @@
       "id": "censer_r4_1",
       "kind": "censer",
       "pos": [
-        320,
-        216
+        312,
+        224
       ],
       "route": [
         [
-          288,
-          216
+          272,
+          224
         ],
         [
-          368,
-          216
+          352,
+          224
         ]
       ],
       "zone": "archive_mem3",
@@ -351,7 +351,7 @@
       "sheet": "theme_archive",
       "prop": "archive_lantern_sconce",
       "pos": [
-        384,
+        272,
         200
       ],
       "layer": "sort",
@@ -382,8 +382,8 @@
     {
       "kind": "circle",
       "pos": [
-        320,
-        184
+        400,
+        208
       ],
       "radius": 22,
       "color": "jade"
@@ -464,8 +464,8 @@
       {
         "op": "goto",
         "to": [
-          320,
-          184
+          400,
+          208
         ],
         "tol": 10.0
       },
@@ -475,7 +475,15 @@
       },
       {
         "op": "wait",
-        "secs": 0.65
+        "secs": 0.75
+      },
+      {
+        "op": "goto",
+        "to": [
+          376,
+          120
+        ],
+        "tol": 10.0
       },
       {
         "op": "goto",

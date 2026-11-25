@@ -144,6 +144,25 @@
       "requires_moves": [
         "beam"
       ]
+    },
+    {
+      "id": "exit_shift_n_court",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "court_r1",
+      "to_spawn": [
+        48,
+        104
+      ],
+      "requires_flags": [
+        "underroot_done",
+        "loom_done"
+      ],
+      "locked_door_id": "door_court_arch"
     }
   ],
   "enemies": [

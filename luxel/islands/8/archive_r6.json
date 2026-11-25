@@ -428,6 +428,10 @@
         "tol": 10.0
       },
       {
+        "op": "interact",
+        "target": "key_archive_1"
+      },
+      {
         "op": "expect",
         "key": {
           "dungeon": "archive",

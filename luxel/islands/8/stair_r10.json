@@ -88,7 +88,7 @@
       "id": "chest_r10_ember",
       "kind": "chest",
       "pos": [
-        344,
+        360,
         64
       ],
       "props": {
@@ -256,8 +256,8 @@
       "sheet": "theme_endless_stair",
       "prop": "spiral_newel_pillar",
       "pos": [
-        328,
-        88
+        312,
+        92
       ],
       "layer": "sort",
       "flip_x": true,
@@ -474,7 +474,7 @@
       {
         "op": "goto",
         "to": [
-          344,
+          360,
           80
         ],
         "tol": 10.0

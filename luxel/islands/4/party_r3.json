@@ -283,6 +283,15 @@
       "disable": [
         "lamp_party_r3_patio"
       ]
+    },
+    {
+      "id": "cellar_unlocked",
+      "when": "flag:party_cellar_3",
+      "tiles": [],
+      "enable": [],
+      "disable": [
+        "sgate_party_r3"
+      ]
     }
   ],
   "events": [
@@ -460,8 +469,27 @@
     "solution": [
       {
         "op": "goto",
-        "to": "sundial_party_r3",
-        "tol": 14
+        "to": [
+          168,
+          256
+        ],
+        "tol": 10
+      },
+      {
+        "op": "beam",
+        "target": "sundial_party_r3"
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "interact",
+        "target": "sundial_party_r3"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
       },
       {
         "op": "interact",
@@ -521,8 +549,28 @@
         "target": "sw_party_r3_cellar"
       },
       {
+        "op": "wait",
+        "secs": 0.2
+      },
+      {
         "op": "expect",
         "flag": "party_cellar_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          216
+        ],
+        "tol": 14
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          200
+        ],
+        "tol": 14
       },
       {
         "op": "expect_exit",

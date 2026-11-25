@@ -1,0 +1,741 @@
+{
+  "id": "sanctum_r13",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_SC_R13",
+  "music": "island8_dungeon",
+  "spawn": [
+    48,
+    336
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r13",
+      "name_key": "ISL8_SC_R13",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r13_west",
+      "rect": [
+        0,
+        320,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r11",
+      "to_spawn": [
+        424,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r13_east",
+      "rect": [
+        496,
+        320,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r12",
+      "to_spawn": [
+        56,
+        80
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r13_north",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r14",
+      "to_spawn": [
+        208,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "sanctum_bell_rung"
+      ],
+      "locked_door_id": "door_r13_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_sanctum_r13_w",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        336
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_sanctum_r13_e",
+      "kind": "room_anchor",
+      "pos": [
+        464,
+        336
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_sanctum_r13_s",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        344
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_sanctum_r13",
+      "kind": "lore_stone",
+      "pos": [
+        256,
+        328
+      ],
+      "props": {
+        "string_id": "ISL8_SC_LORE_R13",
+        "icon": "sunflare"
+      }
+    },
+    {
+      "id": "tog_r13",
+      "kind": "crystal_toggle",
+      "pos": [
+        32,
+        280
+      ],
+      "props": {
+        "group": "r13_rotor",
+        "phase": 0,
+        "target_id": "rotor_r13"
+      }
+    },
+    {
+      "id": "rotor_r13",
+      "kind": "rotor",
+      "pos": [
+        56,
+        232
+      ],
+      "props": {
+        "size": [
+          48,
+          48
+        ],
+        "quarter_on_signal": true,
+        "start_quarter": 0
+      }
+    },
+    {
+      "id": "mir_r13",
+      "kind": "blue_transformer",
+      "pos": [
+        56,
+        232
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "grav_r13",
+      "kind": "gravity_well",
+      "pos": [
+        120,
+        144
+      ],
+      "props": {
+        "radius": 52.0,
+        "strength": 95.0,
+        "pull": true
+      }
+    },
+    {
+      "id": "rose_r13",
+      "kind": "echo_rose",
+      "pos": [
+        80,
+        288
+      ],
+      "props": {
+        "secs": 5.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "sensor_r13_blue",
+      "kind": "beam_sensor",
+      "pos": [
+        56,
+        128
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_ids": [
+          "eclipse_bell_r13",
+          "portal_r13_in"
+        ]
+      }
+    },
+    {
+      "id": "bramble_r13",
+      "kind": "bramble",
+      "pos": [
+        448,
+        216
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "zone": "sanctum_r13"
+      }
+    },
+    {
+      "id": "hook_r13",
+      "kind": "lantern_hook",
+      "pos": [
+        424,
+        240
+      ],
+      "props": {
+        "light_radius": 84.0
+      }
+    },
+    {
+      "id": "portal_r13_in",
+      "kind": "blue_portal",
+      "pos": [
+        448,
+        88
+      ],
+      "props": {
+        "target_portal_id": "portal_r13_dais",
+        "requires_blue": false,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r13_dais",
+      "kind": "blue_portal",
+      "pos": [
+        240,
+        176
+      ],
+      "props": {
+        "target_portal_id": "portal_r13_in",
+        "requires_blue": false,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "plate_r13_dais",
+      "kind": "pressure_plate",
+      "pos": [
+        272,
+        176
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "persist": true,
+        "size": [
+          16,
+          16
+        ],
+        "target_id": "eclipse_bell_r13"
+      }
+    },
+    {
+      "id": "eclipse_bell_r13",
+      "kind": "sanctum_eclipse_bell",
+      "pos": [
+        256,
+        148
+      ],
+      "props": {
+        "chain_1_id": "sensor_r13_blue",
+        "chain_2_id": "plate_r13_dais",
+        "persist": true,
+        "target_ids": [
+          "bridge_r13_north",
+          "door_r13_north"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r13_north",
+      "kind": "door",
+      "pos": [
+        256,
+        104
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          32,
+          48
+        ],
+        "requires_signals": [
+          "eclipse_bell_r13"
+        ]
+      }
+    },
+    {
+      "id": "door_r13_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "eclipse_bell_r13"
+        ]
+      }
+    },
+    {
+      "id": "sensor_r13_toll",
+      "kind": "toll_sensor",
+      "pos": [
+        200,
+        344
+      ],
+      "props": {
+        "check": "sold:palette_4 || sold:fps_step || sold_count>=2",
+        "target_id": "door_r13_toll"
+      }
+    },
+    {
+      "id": "door_r13_toll",
+      "kind": "door",
+      "pos": [
+        184,
+        328
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r13_toll"
+        ]
+      }
+    },
+    {
+      "id": "chest_r13_toll",
+      "kind": "chest",
+      "pos": [
+        184,
+        312
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 60,
+        "zone": "sanctum_r13",
+        "secret_id": "isl8_sanctum_r13_toll"
+      }
+    },
+    {
+      "id": "lamp_r13_sw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        344
+      ],
+      "props": {
+        "zone": "sanctum_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_se",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        344
+      ],
+      "props": {
+        "zone": "sanctum_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_w",
+      "kind": "road_lamp",
+      "pos": [
+        32,
+        208
+      ],
+      "props": {
+        "zone": "sanctum_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_e",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        264
+      ],
+      "props": {
+        "zone": "sanctum_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_ne",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        88
+      ],
+      "props": {
+        "zone": "sanctum_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_n",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        48
+      ],
+      "props": {
+        "zone": "sanctum_r13",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        256,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        152,
+        358
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        360,
+        358
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        232,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        280,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        56,
+        118
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        448,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.75
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        232,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        280,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 34,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        64,
+        328,
+        384,
+        24
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "trim": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        24,
+        200,
+        64,
+        80
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        424,
+        64,
+        64,
+        56
+      ],
+      "color": "rose"
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "The Great Eclipse Belfry: one grand cathedral drum contraption uniting all 8 moves + Island 8's rule to shatter 3 Eclipse Chains and toll the colossal Bell opening the Threshold to The Hush.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Full-game 8-move synthesis: Rotor + Prism + Beam + Lantern Hook + True Lens + Wings + Portal + Sunflare.",
+    "decisions": 10,
+    "expert_s": 65,
+    "reward": "sanctum_bell_rung+threshold_open",
+    "why": "Peak astonishing puzzle of the entire 10-hour game directly beneath the Eclipse Bell.",
+    "exit": "exit_sanctum_r13_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          56,
+          288
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          56,
+          280
+        ],
+        "target": "tog_r13"
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "shoot",
+        "from": [
+          88,
+          232
+        ],
+        "target": "mir_r13"
+      },
+      {
+        "op": "expect",
+        "interactable": "sensor_r13_blue",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          448,
+          264
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "beam",
+        "from": [
+          448,
+          264
+        ],
+        "target": "bramble_r13"
+      },
+      {
+        "op": "interact",
+        "target": "hook_r13"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          448,
+          88
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          176
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "expect",
+        "interactable": "plate_r13_dais",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          176
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.6
+      },
+      {
+        "op": "sunflare"
+      },
+      {
+        "op": "expect",
+        "flag": "sanctum_bell_rung"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r13_north"
+      }
+    ]
+  }
+}

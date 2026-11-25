@@ -1,0 +1,542 @@
+{
+  "id": "sanctum_r9",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_SC_R9",
+  "theme": "toll_house",
+  "music": "island8_dungeon",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r9",
+      "name_key": "ISL8_SC_R9",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r9_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r7",
+      "to_spawn": [
+        224,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r9_east",
+      "rect": [
+        432,
+        176,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r3",
+      "to_spawn": [
+        48,
+        208
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r9_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r11",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_sanctum_r9_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "choir_r9_w",
+      "kind": "choir_gloam",
+      "pos": [
+        128,
+        128
+      ],
+      "route": [
+        [
+          112,
+          128
+        ],
+        [
+          160,
+          128
+        ]
+      ],
+      "perches": [],
+      "zone": "sanctum_r9",
+      "leash": 130
+    },
+    {
+      "id": "clerk_r9_mid",
+      "kind": "toll_clerk",
+      "pos": [
+        216,
+        160
+      ],
+      "route": [
+        [
+          184,
+          160
+        ],
+        [
+          264,
+          160
+        ]
+      ],
+      "perches": [],
+      "zone": "sanctum_r9",
+      "leash": 136
+    },
+    {
+      "id": "choir_r9_n",
+      "kind": "choir_gloam",
+      "pos": [
+        296,
+        140
+      ],
+      "route": [
+        [
+          264,
+          140
+        ],
+        [
+          320,
+          140
+        ]
+      ],
+      "perches": [],
+      "zone": "sanctum_r9",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_sanctum_r9_s",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_sanctum_r9_e",
+      "kind": "room_anchor",
+      "pos": [
+        400,
+        192
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r9_dusk",
+      "kind": "bell",
+      "pos": [
+        224,
+        192
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 184.0
+      }
+    },
+    {
+      "id": "bell_r9_war",
+      "kind": "bell",
+      "pos": [
+        312,
+        184
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 160.0
+      }
+    },
+    {
+      "id": "crumble_r9_w",
+      "kind": "crumble_floor",
+      "pos": [
+        136,
+        192
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "delay": 0.9,
+        "respawn": 3.0
+      }
+    },
+    {
+      "id": "crumble_r9_e",
+      "kind": "crumble_floor",
+      "pos": [
+        312,
+        152
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "delay": 0.9,
+        "respawn": 3.0
+      }
+    },
+    {
+      "id": "turret_r9_ne",
+      "kind": "turret_eye",
+      "pos": [
+        296,
+        56
+      ],
+      "props": {
+        "dir": "s",
+        "cadence": 2.4,
+        "sight_range": 144.0
+      }
+    },
+    {
+      "id": "crack_r9_moth",
+      "kind": "cracked_wall",
+      "pos": [
+        120,
+        64
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "zone": "sanctum_r9"
+      }
+    },
+    {
+      "id": "moth_8_09",
+      "kind": "moth",
+      "pos": [
+        64,
+        64
+      ],
+      "props": {
+        "id": "moth_8_09"
+      }
+    },
+    {
+      "id": "sensor_r9_minimap",
+      "kind": "toll_sensor",
+      "pos": [
+        152,
+        64
+      ],
+      "props": {
+        "check": "sold:minimap_hud",
+        "target_id": "lamp_r9_moth_hint"
+      }
+    },
+    {
+      "id": "lamp_r9_moth_hint",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        48
+      ],
+      "props": {
+        "zone": "sanctum_r9",
+        "lit": false
+      }
+    },
+    {
+      "id": "door_sanctum_r9_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "clear_zone": "sanctum_r9"
+      }
+    },
+    {
+      "id": "lamp_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        264
+      ],
+      "props": {
+        "zone": "sanctum_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        168
+      ],
+      "props": {
+        "zone": "sanctum_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_c",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        112
+      ],
+      "props": {
+        "zone": "sanctum_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        48
+      ],
+      "props": {
+        "zone": "sanctum_r9",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        256,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        168,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "cracked_choir_pew",
+      "pos": [
+        128,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "cracked_choir_pew",
+      "pos": [
+        276,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        280,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        112,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        328,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 44,
+      "style": "ritual",
+      "color": "plum",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        128,
+        64
+      ],
+      "radius": 18,
+      "glow": true
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r9_cleared",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "sanctum_r9_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "West Triforium combat court: silence the Twin Choir Gloams & Turret Eye with the Dusk Bell, flank the Toll Clerk across crumbling walkways, and crack the NW buttress hiding Lost Moth #9.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Using Dusk/War bells mid-combat with Island 8 role pairs (Toll Clerk + Choir Gloams) and cracked-wall moth secrets.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "open_r11+moth_8_09",
+    "why": "Escalates West Wing into multi-role combat while delivering Moth #9 (illuminated if minimap_hud is sold).",
+    "exit": "exit_sanctum_r9_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          216
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "ring",
+        "target": "bell_r9_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "beam",
+        "from": [
+          168,
+          64
+        ],
+        "target": "crack_r9_moth"
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          64
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.8
+      },
+      {
+        "op": "expect",
+        "flag": "moth:moth_8_09"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r9_north"
+      }
+    ]
+  }
+}

@@ -218,7 +218,10 @@
           "eye_lh_r16_e"
         ],
         "window_s": 0.55,
-        "target_id": "door_lh_r16_vault",
+        "target_ids": [
+          "door_lh_r16_vault",
+          "portal_lh_r16_out"
+        ],
         "sets_flag": "lh_r16_triad_open"
       }
     },
@@ -500,9 +503,16 @@
         "timeout": 3.0
       },
       {
+        "op": "wait_until",
+        "interactable": "portal_lh_r16_in",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
         "op": "goto",
         "to": [
-          272,
+          276,
           216
         ]
       },

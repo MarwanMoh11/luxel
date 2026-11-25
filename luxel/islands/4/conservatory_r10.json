@@ -154,13 +154,13 @@
       "id": "rail_c4_r10_w1",
       "kind": "rail",
       "pos": [
-        84,
-        112
+        94,
+        100
       ],
       "props": {
         "size": [
           6,
-          48
+          64
         ]
       }
     },
@@ -168,7 +168,7 @@
       "id": "rail_c4_r10_w2",
       "kind": "rail",
       "pos": [
-        84,
+        94,
         168
       ],
       "props": {
@@ -399,7 +399,8 @@
     "start": {
       "moves": [
         "wings"
-      ]
+      ],
+      "hearts": 12
     },
     "solution": [
       {
@@ -426,6 +427,10 @@
       {
         "op": "interact",
         "target": "great_lamp_4"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "expect",

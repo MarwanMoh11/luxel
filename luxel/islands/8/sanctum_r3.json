@@ -3,6 +3,8 @@
   "island_id": 8,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL8_SC_R3",
+  "music": "island8_dungeon",
   "spawn": [
     320,
     248
@@ -10,7 +12,7 @@
   "zones": [
     {
       "id": "sanctum_r3",
-      "name_key": "DUNGEON_8_NAME",
+      "name_key": "ISL8_SC_R3",
       "rect": [
         0,
         0,
@@ -32,7 +34,7 @@
       "to_region": "sanctum_r2",
       "to_spawn": [
         336,
-        40
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -57,6 +59,26 @@
       ],
       "requires_flags": [],
       "locked_door_id": "door_sanctum_r3_north"
+    },
+    {
+      "id": "exit_sanctum_r3_west",
+      "rect": [
+        0,
+        192,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r9",
+      "to_spawn": [
+        400,
+        192
+      ],
+      "requires_moves": [
+        "lens",
+        "wings"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [
@@ -64,13 +86,13 @@
       "id": "phantom_owl_sanctum_r3",
       "kind": "phantom_owl",
       "pos": [
-        200,
+        264,
         56
       ],
       "route": [],
       "perches": [
         [
-          152,
+          216,
           40
         ],
         [
@@ -78,8 +100,8 @@
           40
         ],
         [
-          216,
-          72
+          256,
+          68
         ]
       ],
       "zone": "sanctum_r3",
@@ -89,12 +111,12 @@
       "id": "echo_moth_sanctum_r3",
       "kind": "echo_moth",
       "pos": [
-        312,
+        368,
         56
       ],
       "route": [
         [
-          280,
+          320,
           56
         ],
         [
@@ -107,28 +129,61 @@
       "leash": 144
     },
     {
-      "id": "heron_sanctum_r3",
-      "kind": "heron_stalker",
+      "id": "choir_sanctum_r3",
+      "kind": "choir_gloam",
       "pos": [
-        232,
+        312,
         56
       ],
       "route": [
         [
-          184,
+          272,
           56
         ],
         [
-          296,
+          352,
           56
         ]
       ],
       "perches": [],
       "zone": "sanctum_r3",
-      "leash": 130
+      "leash": 136
     }
   ],
   "interactables": [
+    {
+      "id": "anc_sanctum_r3_south",
+      "kind": "room_anchor",
+      "pos": [
+        320,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_sanctum_r3_mid",
+      "kind": "room_anchor",
+      "pos": [
+        216,
+        148
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "hook_sanctum_r3_mid",
+      "kind": "lantern_hook",
+      "pos": [
+        244,
+        140
+      ],
+      "props": {
+        "light_radius": 92.0
+      }
+    },
     {
       "id": "door_sanctum_r3_north",
       "kind": "door",
@@ -149,8 +204,8 @@
       "id": "chest_sanctum_r3_secret",
       "kind": "chest",
       "pos": [
-        40,
-        200
+        64,
+        184
       ],
       "props": {
         "reward_kind": "shards",
@@ -167,11 +222,48 @@
       "id": "lamp_sanctum_r3_mid",
       "kind": "road_lamp",
       "pos": [
-        232,
+        204,
         136
       ],
       "props": {
-        "zone": "sanctum_r3"
+        "zone": "sanctum_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        232
+      ],
+      "props": {
+        "zone": "sanctum_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r3_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        48
+      ],
+      "props": {
+        "zone": "sanctum_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        216
+      ],
+      "props": {
+        "zone": "sanctum_r3",
+        "lit": true
       }
     }
   ],
@@ -230,7 +322,7 @@
       "prop": "void_lantern_post",
       "pos": [
         296,
-        216
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -241,8 +333,8 @@
       "sheet": "island8_scenery",
       "prop": "void_lantern_post",
       "pos": [
-        352,
-        216
+        368,
+        224
       ],
       "layer": "sort",
       "flip_x": true,
@@ -260,55 +352,93 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        72,
-        80
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        392,
-        128
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        168,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        392,
-        176
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.9
     }
   ],
-  "is_2x2_room": true
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 24,
+      "style": "astrolabe",
+      "color": "sky",
+      "secondary": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        32,
+        240,
+        48
+      ],
+      "color": "plum"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r3_cleared",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "sanctum_r3_cleared"
+        }
+      ]
+    }
+  ],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Anchored phantom-bridge crossing over the star-abyss with a mid-pier Lantern Hook checkpoint, Choir Gloam ambush (D25a/D25b fixed), and West Phantom Arch to r9.",
+    "kind": "traversal",
+    "beat": "sho",
+    "teaches": "Mid-chasm Room Anchor + Lantern Hook safety before an elevated True Lens combat terrace.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "open_r4+west_phantom_arch",
+    "why": "Eliminates blind-fall frustration with a mid-pier anchor and bridges the Spine to West Triforium.",
+    "exit": "exit_sanctum_r3_north",
+    "solution": [
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          148
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_sanctum_r3_mid"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          56
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r3_north"
+      }
+    ]
+  }
 }

@@ -93,8 +93,8 @@
     {
       "id": "grate_r13_s",
       "kind": "grate",
-      "pos": [400, 232],
-      "props": { "size": [16, 32] }
+      "pos": [400, 248],
+      "props": { "size": [16, 48] }
     },
     {
       "id": "coupler_r13_s",
@@ -168,7 +168,7 @@
   "layers": [
     {
       "id": "heat_surge",
-      "when": "kiln_heat==surge",
+      "when": "dungeon:great_kiln.kiln_heat==surge",
       "tiles": [
         [7, 8, 6, 2, "bridge"],
         [16, 8, 6, 2, "bridge"]
@@ -200,7 +200,7 @@
     "reward": "kiln_cast_west+kiln_cast_key_1+chute_r11",
     "why": "West Casting Wing climax releasing the West Casting Clamp and awarding Casting Key #1.",
     "exit": "exit_kiln_r13_chute",
-    "start": { "vars": { "kiln_heat": "surge" }, "flags": ["kiln_r12_cast"] },
+    "start": { "vars": { "dungeon:great_kiln:kiln_heat": "surge" }, "flags": ["kiln_r12_cast"] },
     "solution": [
       { "op": "goto", "to": [56, 162], "tol": 4.0 },
       { "op": "interact", "target": "anvil_kiln_r13_skip" },
@@ -208,7 +208,7 @@
       { "op": "goto", "to": [232, 144], "tol": 8.0 },
       { "op": "clear", "timeout": 30.0 },
       { "op": "goto", "to": [368, 56], "tol": 4.0 },
-      { "op": "shoot", "target": [396, 16], "wait_hit": 0.65 },
+      { "op": "shoot", "target": [396, 32], "wait_hit": 0.65 },
       { "op": "wait_until", "target": "coupler_r13_n", "prop": "uncoupled", "value": true, "timeout": 3.0 },
       { "op": "goto", "to": [368, 224], "tol": 4.0 },
       { "op": "shoot", "target": [396, 272], "wait_hit": 0.65 },

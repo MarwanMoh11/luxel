@@ -132,7 +132,7 @@
     "solution": [
       { "op": "goto", "to": [328, 112], "tol": 6.0 },
       { "op": "shoot", "target": "brazier_kiln_r2_n", "wait_hit": 0.4 },
-      { "op": "goto", "to": [288, 200], "tol": 6.0 },
+      { "op": "goto", "to": [264, 216], "tol": 6.0 },
       { "op": "shoot", "target": "brazier_kiln_r2_s", "wait_hit": 0.4 },
       { "op": "goto", "to": [248, 160], "tol": 4.0 },
       { "op": "rotate", "target": "tf_kiln_r2", "angle": 225 },

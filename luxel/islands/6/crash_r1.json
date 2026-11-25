@@ -87,7 +87,7 @@
         "speed": 120.0,
         "loop": false,
         "auto": false,
-        "persist": false
+        "persist": true
       }
     },
     {

@@ -124,7 +124,7 @@
       "props": {
         "movable": false,
         "rotatable": true,
-        "angle_deg": 45.0
+        "angle_deg": 135.0
       }
     },
     {
@@ -502,7 +502,7 @@
       {
         "op": "rotate",
         "target": "mirror_r8_cool",
-        "angle": 315.0
+        "angle": 45.0
       },
       {
         "op": "shoot",

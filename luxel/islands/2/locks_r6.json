@@ -167,6 +167,8 @@
       ],
       "props": {
         "requires_flag": "boss_dredge_hulk_defeated",
+        "flag_id": "locks_harpoon_claimed",
+        "sets_flag": "locks_r6_aqueduct",
         "target_ids": [
           "door_r6_north",
           "door_r6_aqueduct"

@@ -336,6 +336,9 @@
     "reward": "lev_parasite_dead+blowhole_unlocked",
     "why": "Set-piece boss climax freeing the Leviathan so it can launch Wick onto Lighthouse Promontory.",
     "exit": "exit_lev_r4_north",
+    "start": {
+      "hearts": 7
+    },
     "solution": [
       {
         "op": "goto",

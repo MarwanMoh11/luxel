@@ -323,6 +323,10 @@
         "target": "hook_r16"
       },
       {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
         "op": "goto",
         "to": [
           232,
@@ -346,9 +350,6 @@
         "target": "pane_mirror_ward"
       },
       {
-        "op": "recall"
-      },
-      {
         "op": "lens"
       },
       {
@@ -358,6 +359,9 @@
           96
         ],
         "tol": 18.0
+      },
+      {
+        "op": "recall"
       },
       {
         "op": "expect_exit",

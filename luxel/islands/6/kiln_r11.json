@@ -172,7 +172,7 @@
   "layers": [
     {
       "id": "heat_low",
-      "when": "kiln_heat==low",
+      "when": "dungeon:great_kiln.kiln_heat==low",
       "tiles": [
         [7, 6, 5, 3, "ground"],
         [20, 6, 5, 3, "ground"],
@@ -184,7 +184,7 @@
     },
     {
       "id": "heat_surge",
-      "when": "kiln_heat==surge",
+      "when": "dungeon:great_kiln.kiln_heat==surge",
       "tiles": [],
       "enable": [],
       "disable": ["chest_kiln_r11_crust"]
@@ -220,7 +220,7 @@
     "why": "Central macro-control hub for the 8-room Heat-Flow Casting Wing.",
     "optional": true,
     "exit": "exit_kiln_r11_north",
-    "start": { "vars": { "kiln_heat": "low" }, "flags": ["forge_warden_defeated"] },
+    "start": { "vars": { "dungeon:great_kiln:kiln_heat": "low" }, "flags": ["forge_warden_defeated"] },
     "solution": [
       { "op": "goto", "to": [256, 184], "tol": 6.0 },
       { "op": "interact", "target": "ws_kiln_damper" },
@@ -230,7 +230,7 @@
       { "op": "shoot", "target": "switch_r11_grate", "wait_hit": 0.45 },
       { "op": "goto", "to": [256, 120], "tol": 6.0 },
       { "op": "interact", "target": "lever_kiln_damper" },
-      { "op": "expect", "var": "kiln_heat==surge" },
+      { "op": "expect", "var": "dungeon:great_kiln.kiln_heat==surge" },
       { "op": "expect_exit", "exit": "exit_kiln_r11_north" }
     ]
   }

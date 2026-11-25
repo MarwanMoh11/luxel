@@ -134,8 +134,8 @@
       "id": "bell_o5_r12",
       "kind": "star_bell",
       "pos": [
-        280,
-        144
+        272,
+        104
       ],
       "props": {
         "scope": "room:5:orrery_r12",
@@ -273,7 +273,7 @@
       "id": "lamp_o5_r12_c",
       "kind": "road_lamp",
       "pos": [
-        200,
+        144,
         112
       ],
       "props": {

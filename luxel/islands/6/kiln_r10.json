@@ -137,6 +137,7 @@
       { "op": "goto", "to": [256, 88], "tol": 8.0 },
       { "op": "interact", "target": "great_lamp_6" },
       { "op": "expect", "flag": "island_6_relit" },
+      { "op": "wait_until", "target": "bridge_of_light_kiln", "prop": "opened", "value": true, "timeout": 2.5 },
       { "op": "expect_exit", "exit": "exit_r10_bridge_7" }
     ]
   }

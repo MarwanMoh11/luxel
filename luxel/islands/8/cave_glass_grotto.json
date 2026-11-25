@@ -10,7 +10,7 @@
     "sanctum_bells"
   ],
   "spawn": [
-    368,
+    464,
     144
   ],
   "zones": [
@@ -20,7 +20,7 @@
       "rect": [
         0,
         0,
-        416,
+        512,
         288
       ],
       "dark": true
@@ -30,7 +30,7 @@
     {
       "id": "exit_to_stair_landing",
       "rect": [
-        400,
+        496,
         128,
         16,
         48
@@ -49,7 +49,7 @@
       "id": "anc_grotto_e",
       "kind": "room_anchor",
       "pos": [
-        368,
+        464,
         144
       ],
       "props": {
@@ -71,11 +71,11 @@
       "id": "hook_grotto",
       "kind": "lantern_hook",
       "pos": [
-        376,
+        472,
         196
       ],
       "props": {
-        "light_radius": 44.0
+        "light_radius": 52.0
       }
     },
     {
@@ -166,11 +166,11 @@
       "id": "lamp_gg_entry",
       "kind": "road_lamp",
       "pos": [
-        384,
+        480,
         104
       ],
       "props": {
-        "lit": false,
+        "lit": true,
         "zone": "cave_glass_grotto"
       }
     },
@@ -214,6 +214,18 @@
     },
     {
       "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        424,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_archive",
       "prop": "memory_orb_pedestal",
       "pos": [
         232,
@@ -247,6 +259,18 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stained_glass_debris",
+      "pos": [
+        384,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
     },
     {
       "sheet": "island8_scenery",
@@ -292,6 +316,16 @@
         32
       ],
       "color": "sky"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        352,
+        128,
+        64,
+        32
+      ],
+      "color": "plum"
     }
   ],
   "layers": [],
@@ -324,7 +358,7 @@
       {
         "op": "goto",
         "to": [
-          368,
+          464,
           144
         ],
         "tol": 8.0

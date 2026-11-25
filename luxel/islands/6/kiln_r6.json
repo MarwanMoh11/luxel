@@ -146,6 +146,8 @@
       { "op": "goto", "to": [384, 128], "tol": 6.0 },
       { "op": "interact", "target": "wick_key_6_2" },
       { "op": "expect", "flag": "wick_key_6_2" },
+      { "op": "goto", "to": [288, 48], "tol": 6.0 },
+      { "op": "interact", "target": "door_kiln_r6_north" },
       { "op": "expect_exit", "exit": "exit_kiln_r6_north" }
     ]
   }

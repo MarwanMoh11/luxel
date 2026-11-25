@@ -32,7 +32,7 @@ func can_interact(wick: Node) -> bool:
 	return active and wick != null
 
 
-func interact(_wick: Node) -> bool:
+func interact(_wick: Node = null) -> bool:
 	if not active:
 		return false
 	inspected = true
@@ -45,7 +45,7 @@ func interact(_wick: Node) -> bool:
 			Lx.events.narration_requested.emit("I5_LORE_HOLLOW_1", "narration", 3.6)
 		elif LxStrings.has_id("I5_OR_HOLLOW_VISTA"):
 			Lx.events.narration_requested.emit("I5_OR_HOLLOW_VISTA", "narration", 3.6)
-	_emit_signal(true)
+	_notify_linked_targets(true)
 	queue_redraw()
 	return true
 

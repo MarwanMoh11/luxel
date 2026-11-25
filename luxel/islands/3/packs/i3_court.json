@@ -2,7 +2,7 @@
   "pack_id": "i3_court",
   "version": 1,
   "owner": "G3",
-  "comment": "Island 3 Set Piece: The Briar Court (court_r1..r4: three knight jousts, Mercy vs Fire verdicts mutating each next arena, theme briar_court). Debug-only on dungeon/regions meta until ow_shift_n hooks exit_shift_n_court -> court_r1.",
+  "comment": "Island 3 Set Piece: The Briar Court (court_r1..r4: three knight jousts, Mercy vs Fire verdicts mutating each next arena, theme briar_court). Wired live to ow_shift_n via exit_shift_n_court.",
   "interactables": {
     "court_relic_pedestal": "res://luxel/islands/3/court/court_pedestal.gd",
     "court_verdict_brazier": "res://luxel/islands/3/court/court_verdict_brazier.gd",
@@ -29,7 +29,6 @@
       "name_key": "ISL3_DNG_COURT",
       "island": 3,
       "entry": "court_r1",
-      "debug_only": true,
       "regions": [
         "court_r1",
         "court_r2",
@@ -48,10 +47,10 @@
     }
   ],
   "regions": {
-    "court_r1": { "name_key": "ISL3_COURT_R1_NAME", "theme": "briar_court", "music": "isl3_setpiece", "dark": true, "debug_only": true, "map": [0, 2] },
-    "court_r2": { "name_key": "ISL3_COURT_R2_NAME", "theme": "briar_court", "music": "island3_boss_p1", "dark": true, "debug_only": true, "map": [0, 1] },
-    "court_r3": { "name_key": "ISL3_COURT_R3_NAME", "theme": "briar_court", "music": "island3_boss_p1", "dark": true, "debug_only": true, "map": [1, 1] },
-    "court_r4": { "name_key": "ISL3_COURT_R4_NAME", "theme": "briar_court", "music": "island3_boss_p1", "dark": true, "debug_only": true, "map": [1, 0] }
+    "court_r1": { "name_key": "ISL3_COURT_R1_NAME", "theme": "briar_court", "music": "isl3_setpiece", "dark": true, "map": [0, 2] },
+    "court_r2": { "name_key": "ISL3_COURT_R2_NAME", "theme": "briar_court", "music": "isl3_boss_minor_p1", "dark": true, "map": [0, 1] },
+    "court_r3": { "name_key": "ISL3_COURT_R3_NAME", "theme": "briar_court", "music": "isl3_boss_minor_p1", "dark": true, "map": [1, 1] },
+    "court_r4": { "name_key": "ISL3_COURT_R4_NAME", "theme": "briar_court", "music": "isl3_boss_minor_p1", "dark": true, "map": [1, 0] }
   },
   "sfx": {}
 }

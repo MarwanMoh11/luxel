@@ -95,7 +95,7 @@ func _cell_at_point(world_p: Vector2) -> Vector2i:
 	var gx: int = int(roundf(rel.x / cell_size))
 	var gy: int = int(roundf(rel.y / cell_size))
 	var center: Vector2 = Vector2(float(gx) * cell_size, float(gy) * cell_size)
-	if absf(rel.x - center.x) <= cell_size * 0.45 and absf(rel.y - center.y) <= cell_size * 0.45:
+	if absf(rel.x - center.x) <= cell_size * 0.52 and absf(rel.y - center.y) <= cell_size * 0.52:
 		return Vector2i(gx, gy)
 	return Vector2i(-9999, -9999)
 

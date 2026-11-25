@@ -128,15 +128,15 @@
       "id": "well_fl_r3_1",
       "kind": "polarity_well",
       "pos": [
-        188,
-        224
+        190,
+        184
       ],
       "props": {
         "mode": "pull",
-        "radius": 64.0,
-        "strength": 560.0,
+        "radius": 54.0,
+        "strength": 520.0,
         "orbit_capture": true,
-        "orbit_r": 32.0
+        "orbit_r": 16.0
       }
     },
     {
@@ -200,24 +200,24 @@
         "var_name": "fall_latch",
         "allow_ccw_blue": false,
         "allow_interact": true,
-        "cooldown": 0.6,
-        "target_id": "door_fl_r3_chute"
+        "cooldown": 0.6
       }
     },
     {
-      "id": "crumble_fl_r3_end",
-      "kind": "crumble_floor",
+      "id": "plate_fl_r3_chute",
+      "kind": "pressure_plate",
       "pos": [
-        488,
+        512,
         176
       ],
       "props": {
-        "size": [
-          32,
-          32
+        "by": [
+          "wick",
+          "lantern"
         ],
-        "delay": 1.3,
-        "respawn": 2.4
+        "latch": true,
+        "target_id": "door_fl_r3_chute",
+        "sets_flag": "fall_r3_latch"
       }
     },
     {
@@ -234,7 +234,7 @@
           32
         ],
         "requires_signals": [
-          "bell_fl_r3"
+          "plate_fl_r3_chute"
         ],
         "sets_flag": "fall_r3_latch"
       }
@@ -442,7 +442,7 @@
         [
           23,
           10,
-          7,
+          8,
           2,
           "bridge"
         ]
@@ -468,7 +468,7 @@
     },
     {
       "id": "fl_r3_latch_flag",
-      "on": "signal:bell_fl_r3",
+      "on": "signal:plate_fl_r3_chute",
       "once": true,
       "do": [
         {
@@ -534,10 +534,17 @@
       {
         "op": "throw",
         "target": [
-          188,
-          192
+          190,
+          168
         ],
         "hold": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          236,
+          184
+        ]
       },
       {
         "op": "goto",
@@ -582,16 +589,31 @@
         "wait_hit": 0.45
       },
       {
-        "op": "shoot",
-        "from": [
+        "op": "goto",
+        "to": [
           352,
           136
         ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
         "target": [
-          448,
-          128
+          432,
+          142
         ],
-        "wait_hit": 0.8
+        "wait_hit": 0.9
+      },
+      {
+        "op": "wait",
+        "secs": 0.3
+      },
+      {
+        "op": "goto",
+        "to": [
+          512,
+          176
+        ]
       },
       {
         "op": "wait_until",

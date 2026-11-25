@@ -137,8 +137,8 @@
         152
       ],
       "props": {
-        "scope": "dungeon:orrery",
-        "var_name": "orrery_ring",
+        "scope": "room:5:orrery_r11",
+        "var_name": "o5_r11_ring",
         "rotors": [
           "rotor_o5_r11"
         ],
@@ -163,13 +163,13 @@
       "id": "well_o5_r11",
       "kind": "polarity_well",
       "pos": [
-        152,
-        152
+        172,
+        148
       ],
       "props": {
         "mode": "pull",
-        "radius": 56.0,
-        "strength": 480.0,
+        "radius": 52.0,
+        "strength": 420.0,
         "linked_crystal": "crys_o5_r11"
       }
     },
@@ -194,7 +194,7 @@
       "kind": "switch_eye",
       "pos": [
         96,
-        112
+        104
       ],
       "props": {
         "target_ids": [
@@ -398,7 +398,7 @@
   "layers": [
     {
       "id": "r11_ring_90",
-      "when": "orrery_ring!=0",
+      "when": "o5_r11_ring!=0",
       "tiles": [
         [
           9,
@@ -442,7 +442,7 @@
     "exit": "exit_o5_r11_n",
     "start": {
       "vars": {
-        "dungeon:orrery:orrery_ring": 0
+        "room:5:orrery_r11:o5_r11_ring": 0
       }
     },
     "solution": [

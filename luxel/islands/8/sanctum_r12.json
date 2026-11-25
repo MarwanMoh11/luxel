@@ -1,0 +1,474 @@
+{
+  "id": "sanctum_r12",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_SC_R12",
+  "theme": "archive",
+  "music": "island8_boss_p1",
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r12",
+      "name_key": "ISL8_SC_R12",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r12_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r10",
+      "to_spawn": [
+        224,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r12_west",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r5",
+      "to_spawn": [
+        432,
+        96
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r12_nw",
+      "rect": [
+        0,
+        64,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r13",
+      "to_spawn": [
+        464,
+        336
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_r12_to_r13"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mini_rose_seraph",
+      "kind": "rose_seraph",
+      "boss_id": "rose_seraph",
+      "pos": [
+        256,
+        152
+      ],
+      "route": [
+        [
+          160,
+          152
+        ],
+        [
+          352,
+          152
+        ]
+      ],
+      "perches": [],
+      "zone": "sanctum_r12",
+      "leash": 220
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_sanctum_r12_s",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_sanctum_r12_w",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "glass_r12_gold",
+      "kind": "color_glass",
+      "pos": [
+        136,
+        216
+      ],
+      "props": {
+        "color": "gold",
+        "movable": true,
+        "solid": true,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "glass_r12_blue",
+      "kind": "color_glass",
+      "pos": [
+        256,
+        240
+      ],
+      "props": {
+        "color": "blue",
+        "movable": true,
+        "solid": true,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "glass_r12_rose",
+      "kind": "color_glass",
+      "pos": [
+        376,
+        216
+      ],
+      "props": {
+        "color": "rose",
+        "movable": true,
+        "solid": true,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r12_to_r13",
+      "kind": "door",
+      "pos": [
+        24,
+        80
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          32
+        ],
+        "clear_zone": "sanctum_r12"
+      }
+    },
+    {
+      "id": "chest_ember_8_seraph",
+      "kind": "chest",
+      "pos": [
+        256,
+        56
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "sanctum_r12",
+        "secret_id": "ember_8_seraph"
+      }
+    },
+    {
+      "id": "lamp_r12_sw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        280
+      ],
+      "props": {
+        "zone": "sanctum_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_se",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        280
+      ],
+      "props": {
+        "zone": "sanctum_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_nw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        80
+      ],
+      "props": {
+        "zone": "sanctum_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_ne",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        80
+      ],
+      "props": {
+        "zone": "sanctum_r12",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [
+    {
+      "id": "trig_boss_seraph",
+      "rect": [
+        144,
+        224,
+        224,
+        64
+      ],
+      "string_id": "ISL8_BOSS_SERAPH",
+      "once": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        256,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        144,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        368,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        192,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        320,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        88,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        424,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stained_glass_debris",
+      "pos": [
+        256,
+        72
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        112,
+        80,
+        64,
+        192
+      ],
+      "style": "ornate",
+      "color": "apricot",
+      "trim": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        80,
+        64,
+        192
+      ],
+      "style": "ornate",
+      "color": "deep",
+      "trim": "sky"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        336,
+        80,
+        64,
+        192
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "trim": "rose"
+    },
+    {
+      "kind": "window_strip",
+      "y": 14,
+      "x0": 96,
+      "x1": 416,
+      "style": "stars"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r12_seraph_win",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "sanctum_seal_e"
+        },
+        {
+          "narrate": "ISL8_SC_SEAL_E"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "East Bell-Gallery mini-boss nave against THE ROSE-WINDOW SERAPH: match her cycling Gold/Sky/Rose halo carpet stripes and Beam through stained glass to shatter her wings, claiming the East Choir Seal and Ember Piece.",
+    "kind": "boss",
+    "beat": "ten",
+    "teaches": "Hue-matched arena positioning + Beam/Sunflare wing shatter against a 2-phase stained-glass mini-boss.",
+    "decisions": 6,
+    "expert_s": 90,
+    "reward": "sanctum_seal_e+ember_8_seraph+half_lantern",
+    "why": "East Wing mini-boss climax opening the East Belfry entrance to r13.",
+    "exit": "exit_sanctum_r12_nw",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          232
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "expect",
+        "flag": "sanctum_seal_e"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          72
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_8_seraph"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r12_nw"
+      }
+    ]
+  }
+}

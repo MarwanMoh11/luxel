@@ -89,12 +89,12 @@ class Island3HudOverlay:
 		var c_jade: Color = LxPalette.PAL["jade"] as Color
 		var c_apricot: Color = LxPalette.PAL["apricot"] as Color
 		var c_rose: Color = LxPalette.PAL["rose"] as Color
-		var y_cur: float = 24.0
+		var y_cur: float = 20.0
 
 		if show_turn:
 			var eff_t: int = rule.get_effective_turn(clearing) if not clearing.is_empty() else rule.get_wood_turn()
 			var pinned: bool = (not clearing.is_empty()) and rule.is_clearing_pinned(clearing)
-			var bx: float = 236.0
+			var bx: float = 6.0
 			var bw: float = 78.0
 			var bh: float = 13.0
 			var rim: Color = c_cream if (shift_flash_t > 0.0 and not LxHudFx.flash_reduced()) else (c_gold if pinned else c_dusk)
@@ -120,7 +120,7 @@ class Island3HudOverlay:
 			y_cur += bh + 2.0
 
 		if is_tiny:
-			var bx2: float = 248.0
+			var bx2: float = 6.0
 			var bw2: float = 66.0
 			var bh2: float = 12.0
 			canvas.draw_rect(Rect2(bx2, y_cur, bw2, bh2), c_void)
@@ -136,7 +136,7 @@ class Island3HudOverlay:
 
 		if show_sap:
 			var sap_hi: bool = rule.get_oak_sap() == "high"
-			var bx3: float = 256.0
+			var bx3: float = 6.0
 			var bw3: float = 58.0
 			var bh3: float = 12.0
 			canvas.draw_rect(Rect2(bx3, y_cur, bw3, bh3), c_void)

@@ -88,6 +88,7 @@ CONTRACT_INTERACTABLES: Set[str] = {
 FLYING_ENEMIES: Set[str] = {
     "owl", "phantom_owl", "moonshade_owl", "gull_thief", "echo_moth",
     "gloam", "astronomer", "bellows_imp", "the_hush",
+    "mist_eel", "satellite_eye", "null_moth",
 }
 
 WATER_OR_FLOATING_PROPS: Set[str] = {
@@ -219,7 +220,7 @@ KIND_PROPS: Dict[str, Set[str]] = {
     "crumble_floor": {"delay", "respawn"},
     "bounce_bloom": {"dist"},
     "gravity_well": {"strength", "pull", "push", "mode", "on_signal"},
-    "wind_zone": {"strength", "on_signal"},
+    "wind_zone": {"strength", "on_signal", "weather_driven", "weather_req"},
     "spike_floor": {"on_signal"},
     "pull_ring": {"axis", "dist", "target", "latch", "retract_speed"},
     "carry_orb": {"kind", "orb_kind"},
@@ -227,10 +228,10 @@ KIND_PROPS: Dict[str, Set[str]] = {
     "mover_wall": {"path", "speed", "on_signal"},
     "vehicle_skiff": set(),
     "vehicle_cart": {"rail", "alt_rail", "speed", "loop", "auto"},
-    "rotor": {"quarter_on_signal", "speed", "start_quarter"},
+    "rotor": {"quarter_on_signal", "speed", "start_quarter", "linked_var", "var", "scope", "rotate_normals"},
     "tilt_group": {"period", "axis", "strength", "angle", "targets"},
     "pressure_plate": {"by", "hold", "latch", "mode"},
-    "timed_brazier": {"secs", "reset", "allow_interact"},
+    "timed_brazier": {"secs", "reset", "allow_interact", "roofed"},
     "crystal_toggle": {"group", "phase", "cooldown"},
     "toggle_block": {"group", "phase", "start_phase"},
     "beam_emitter": {"color", "duty", "range", "max_bounces", "harms_wick", "damage", "needs_signal"},

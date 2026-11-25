@@ -26,7 +26,6 @@
       "rect": [0, 80, 16, 48],
       "to_region": "ow_shift_n",
       "to_spawn": [224, 64],
-      "one_way": true,
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""

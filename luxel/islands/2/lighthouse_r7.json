@@ -116,7 +116,7 @@
       "id": "transformer_lh_r7_a",
       "kind": "blue_transformer",
       "pos": [
-        120,
+        152,
         168
       ],
       "props": {
@@ -132,11 +132,25 @@
       }
     },
     {
+      "id": "switch_eye_lh_r7_bridge",
+      "kind": "switch_eye",
+      "pos": [
+        248,
+        120
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "bridge_lh_r7",
+        "sets_flag": "lh_r7_bridge_open"
+      }
+    },
+    {
       "id": "portal_lh_r7_in",
       "kind": "blue_portal",
       "pos": [
         184,
-        88
+        168
       ],
       "props": {
         "target_portal_id": "portal_lh_r7_out",
@@ -189,7 +203,6 @@
         "requires_prism": true,
         "target_ids": [
           "door_lh_r7_shutter",
-          "bridge_lh_r7",
           "triad_lh_r7"
         ],
         "sets_flag": "lh_r7_gallery_open"
@@ -254,9 +267,9 @@
         ],
         "zone": "lighthouse_r7",
         "requires_signals": [
-          "switch_eye_lh_r7"
+          "switch_eye_lh_r7_bridge"
         ],
-        "sets_flag": "lh_r7_gallery_open"
+        "sets_flag": "lh_r7_bridge_open"
       }
     },
     {
@@ -438,8 +451,8 @@
         "op": "push",
         "target": "transformer_lh_r7_a",
         "to": [
-          120,
-          88
+          152,
+          120
         ]
       },
       {
@@ -450,35 +463,17 @@
       {
         "op": "shoot",
         "from": [
-          120,
-          144
+          152,
+          168
         ],
         "target": "transformer_lh_r7_a"
       },
       {
         "op": "wait_until",
-        "interactable": "portal_lh_r7_in",
-        "prop": "powered",
+        "interactable": "bridge_lh_r7",
+        "prop": "opened",
         "value": true,
         "timeout": 3.0
-      },
-      {
-        "op": "goto",
-        "to": [
-          160,
-          88
-        ]
-      },
-      {
-        "op": "dash",
-        "dir": [
-          1,
-          0
-        ]
-      },
-      {
-        "op": "wait",
-        "secs": 0.45
       },
       {
         "op": "goto",

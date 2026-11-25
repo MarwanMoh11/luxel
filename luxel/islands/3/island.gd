@@ -49,24 +49,37 @@ const REGIONS: Array[String] = [
 	"loom_r9",
 	"loom_r10",
 	"loom_r11",
+	"court_r1",
+	"court_r2",
+	"court_r3",
+	"court_r4",
 	"oak_r1",
 	"oak_r2",
+	"oak_r2b",
 	"oak_r3",
 	"oak_r4",
+	"oak_r4b",
 	"oak_r5",
+	"oak_r5b",
 	"oak_r6",
+	"oak_r6b",
 	"oak_r7",
+	"oak_r7b",
 	"oak_r8",
+	"oak_r8b",
 	"oak_r9",
+	"oak_r9b",
+	"oak_r9c",
 	"oak_r10",
 ]
 
 const MINOR_BOSSES: Array[String] = [
-	"mother_root",
 	"hundred_lamps",
 	"stag_colossus",
 	"thread_keeper",
 	"loom_widow",
+	"knight_taproot",
+	"knight_spindle",
 	"briar_arbiter",
 ]
 
@@ -128,6 +141,8 @@ func detach() -> void:
 func on_region_loaded(region_id: String) -> void:
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
+	if region_id == "overworld":
+		_sync_oak_seal_gate()
 
 
 func get_rule() -> LxIsland3Rule:
@@ -243,6 +258,21 @@ func _migrate_legacy_seal(st: LxGameState) -> void:
 		st.story_flags["grand_seal_3_ready"] = true
 		if not st.broken_seals.has(SEAL_ID):
 			st.broken_seals.append(SEAL_ID)
+		if not st.opened_doors.has("door_dungeon_3"):
+			st.opened_doors.append("door_dungeon_3")
+
+
+func _sync_oak_seal_gate() -> void:
+	var st: LxGameState = _get_state()
+	if st == null or not (Lx.world is LxRegionLoader):
+		return
+	var world: LxRegionLoader = Lx.world as LxRegionLoader
+	var door_node: LxInteractable = world.find_interactable("door_dungeon_3")
+	if _is_legacy_seal_open(st):
+		_migrate_legacy_seal(st)
+		if door_node is LxDoor:
+			(door_node as LxDoor).opened = true
+			door_node.queue_redraw()
 
 
 func _on_region_entered(island_id: int, region_id: String) -> void:
@@ -289,7 +319,15 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if mr_live:
 			_emit_narration("ISL3_SB_MOTHER_NAME", "title", 3.2)
 		if _events != null:
-			_events.music_mode_requested.emit("isl3_boss_minor_p1" if mr_live else "explore")
+			_events.music_mode_requested.emit("superboss_a" if mr_live else "explore")
+	elif region_id.begins_with("court_"):
+		if _events != null:
+			var ct_boss_live: bool = (
+				(region_id == "court_r2" and st != null and not st.defeated_bosses.has("knight_taproot") and not bool(st.story_flags.get("court_taproot_done", false)))
+				or (region_id == "court_r3" and st != null and not st.defeated_bosses.has("knight_spindle") and not bool(st.story_flags.get("court_spindle_done", false)))
+				or (region_id == "court_r4" and st != null and not st.defeated_bosses.has("briar_arbiter") and not bool(st.story_flags.get("briar_court_done", false)))
+			)
+			_events.music_mode_requested.emit("isl3_boss_minor_p1" if ct_boss_live else "isl3_setpiece")
 	elif region_id.begins_with("underroot_"):
 		if _events != null:
 			var ur_boss_live: bool = (
@@ -321,7 +359,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			var mb_live: bool = region_id == "oak_r6" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
 			if mb_live:
 				_emit_narration("MINIBOSS_3", "title", 3.2)
-			_events.music_mode_requested.emit("island3_boss_p1" if mb_live else "island3_dungeon")
+			var oak_cue: String = "island3_boss_p1" if mb_live else ("isl3_underroot" if region_id == "oak_r4b" else ("island3_combat" if region_id == "oak_r9b" else "island3_dungeon"))
+			_events.music_mode_requested.emit(oak_cue)
 
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
@@ -341,7 +380,7 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	if are_all_beacons_lit():
+	if is_grand_seal_ready():
 		_trigger_seal_shatter()
 
 
@@ -381,6 +420,9 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 		if phase >= 2 and _events != null:
 			_events.music_mode_requested.emit("island3_boss_p2")
 			_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
+	elif boss_id == "mother_root":
+		if phase >= 2 and _events != null:
+			_events.shake_requested.emit(0.32 if phase >= 3 else 0.26)
 	elif MINOR_BOSSES.has(boss_id):
 		if phase >= 2 and _events != null:
 			_events.music_mode_requested.emit("isl3_boss_minor_p2")
@@ -399,6 +441,15 @@ func _on_boss_defeated(boss_id: String, island_id: int) -> void:
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
 			_events.save_requested.emit("mother_root_defeated")
+		return
+	if MINOR_BOSSES.has(boss_id):
+		if st != null and not st.defeated_bosses.has(boss_id):
+			st.defeated_bosses.append(boss_id)
+		if _events != null:
+			var post_cue: String = "isl3_underroot" if boss_id in ["stag_colossus", "hundred_lamps"] else ("isl3_loom" if boss_id in ["thread_keeper", "loom_widow"] else "isl3_setpiece")
+			_events.music_mode_requested.emit(post_cue)
+		if is_grand_seal_ready():
+			_trigger_seal_shatter()
 		return
 	if boss_id != BOSS_ID:
 		return
@@ -423,9 +474,9 @@ func _on_great_lamp_relit(island_id: int) -> void:
 		st.story_flags["great_lamp_3"] = true
 		st.story_flags["island_3_relit"] = true
 	if _rule != null:
-		_rule.set_var("pin_w", 1)
-		_rule.set_var("pin_e", 1)
-		_rule.set_var("pin_n", 1)
+		_rule.set_clearing_pinned("w", true)
+		_rule.set_clearing_pinned("e", true)
+		_rule.set_clearing_pinned("n", true)
 	if _events != null:
 		_events.sfx_requested.emit("lamp_relit", Vector2.ZERO, false)
 		_events.music_mode_requested.emit("explore")

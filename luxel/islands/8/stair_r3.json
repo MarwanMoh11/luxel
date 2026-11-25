@@ -90,7 +90,8 @@
           "stair_a4"
         ],
         "boon_count": 3,
-        "target_exit_id": "door_r3_north"
+        "target_exit_id": "door_r3_north",
+        "target_id": "door_r3_north"
       }
     },
     {
@@ -447,8 +448,8 @@
       "sheet": "theme_endless_stair",
       "prop": "void_chime_post",
       "pos": [
-        400,
-        152
+        404,
+        168
       ],
       "layer": "sort",
       "flip_x": true,

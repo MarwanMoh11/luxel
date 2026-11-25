@@ -138,8 +138,8 @@
       "mini": true,
       "dungeon": "underroot",
       "region": "underroot_r6",
-      "music": "island3_boss_p1",
-      "music_p2": "island3_boss_p2",
+      "music": "isl3_boss_minor_p1",
+      "music_p2": "isl3_boss_minor_p2",
       "heart": "none",
       "flag": "stag_colossus_defeated",
       "aliases": ["boss_stag_colossus"]
@@ -151,8 +151,8 @@
       "mini": false,
       "dungeon": "underroot",
       "region": "underroot_r11",
-      "music": "island3_boss_p1",
-      "music_p2": "island3_boss_p2",
+      "music": "isl3_boss_minor_p1",
+      "music_p2": "isl3_boss_minor_p2",
       "heart": "half",
       "flag": "boss_hundred_lamps_defeated",
       "aliases": ["boss_hundred_lamps"]

@@ -13,21 +13,21 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-############,,################
-#OOOOOOO#..#,,#..#OOOOOOOOOOO#
-#OOOOOOO#...,,...#OOOOOOOOOOO#
-#OOOOOOO#...,,...#OOOOOOOOOOO#
-#OOOOOOO#...,,...#OOOOOOOOOOO#
-#OOOOOOO#...,,...#OOOOOOOOOOO#
-#OOOOOOO####,,####OOOOOOOOOOO#
-#OOOOOOOOOOOPOOOOO#OOOOOOOOOO#
-#OOOOOOOOOOPPOOOO.#.....OO...#
+############,,#########,,#####
+#OOOOOOO#..#,,#..#OOOO.,,..OO#
+#OOOOOOO#...,,...#OOOO.,,..OO#
+#OOOOOOO#...,,...#OOOO.,,..OO#
+#OOOOOOO#...,,...#OOOO.,,....#
+#OOOOOOO#...,,...#..,,,,,,,,,,
+#OOOOOOO####,,####..,,,,,,,,,,
+#OOOOOOOOOOOPOOOOO#..OO......#
+#OOOOOOOOOOPPOOOO.#..OO.OO...#
 #OOOOOOOOPPPOOOOO.......OO...#
 #OOOOOOOOPPOOOOOOO......OOOOO#
 #OOOOOOO.#,,#.............##.#
 #O...OOO.#..#.......#####..#.#
 #O...OOO.,,,,,,,,,,,,,,#,...,,
-#O...OOO........,,.....#....,,
-#OOOOOOO........,,.....#..##.#
-#OOOOOOO........,,........#..#
+########........,,.....#....,,
+,,,,,,,,,,,,,,,,,,.....#..##.#
+,,,,,,,,,,,,,,,,,,........#..#
 ################,,############

@@ -184,7 +184,7 @@
       ],
       "props": {
         "door_kind": "bridge_platform",
-        "starts_open": false,
+        "starts_open": true,
         "requires_signals": [
           "valve_r2_east"
         ],
@@ -569,7 +569,22 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "lck_r2_entry_water",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:locks",
+            "var": "lock_water",
+            "value": "east_high"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Four-way Lock Junction hub where the Master Sluice Organ toggles linked water between the West and East 7-tile lock basins, swinging floating lock-bridges while teasing the Boss Key behind an iron north grate.",
     "kind": "traversal",

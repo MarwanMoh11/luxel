@@ -102,8 +102,9 @@
       { "op": "expect", "flag": "crash_done" },
       { "op": "goto", "to": [96, 152], "tol": 6.0 },
       { "op": "wait", "secs": 0.6 },
-      { "op": "goto", "to": [352, 184], "tol": 8.0 },
-      { "op": "interact", "target": "moth_6_09" },
+      { "op": "goto", "to": [352, 184], "tol": 4.0 },
+      { "op": "wait", "secs": 0.45 },
+      { "op": "expect", "flag": "moth:moth_6_09" },
       { "op": "expect_exit", "exit": "exit_crash_r4_north" }
     ]
   }

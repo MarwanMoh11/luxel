@@ -54,7 +54,7 @@
       "props": {
         "scope": "dungeon:great_kiln",
         "var": "kiln_heat",
-        "values": ["low", "surge"],
+        "values": ["surge", "low"],
         "shootable": true,
         "persist": true,
         "prompt_key": "ISL6_PROMPT_DAMPER"
@@ -151,8 +151,8 @@
     {
       "id": "grate_r16_q4",
       "kind": "grate",
-      "pos": [208, 40],
-      "props": { "size": [16, 48] }
+      "pos": [216, 64],
+      "props": { "size": [16, 96] }
     },
     {
       "id": "coupler_r16_bank",
@@ -212,7 +212,7 @@
   "layers": [
     {
       "id": "heat_low",
-      "when": "kiln_heat==low",
+      "when": "dungeon:great_kiln.kiln_heat==low",
       "tiles": [
         [11, 12, 7, 3, "phantom"]
       ],
@@ -242,11 +242,11 @@
     "reward": "kiln_cast_east+shortcut_r11+open_r17",
     "why": "Climax puzzle of the Heat-Flow Casting Wing releasing the East Casting Clamp.",
     "exit": "exit_kiln_r16_west",
-    "start": { "vars": { "kiln_heat": "surge" }, "flags": ["crucible_weaver_defeated", "kiln_cast_key_2"], "keys": { "wick_key": 1 } },
+    "start": { "vars": { "dungeon:great_kiln:kiln_heat": "surge" }, "moves": ["sunflare"], "ember": 100, "flags": ["crucible_weaver_defeated", "kiln_cast_key_2"], "keys": { "wick_key": 1 } },
     "solution": [
       { "op": "goto", "to": [80, 192], "tol": 4.0 },
       { "op": "interact", "target": "lever_r16_damper" },
-      { "op": "expect", "var": "kiln_heat==low" },
+      { "op": "expect", "var": "dungeon:great_kiln.kiln_heat==low" },
       { "op": "goto", "to": [144, 216], "tol": 4.0 },
       { "op": "lens" },
       { "op": "goto", "to": [320, 216], "tol": 8.0 },
@@ -275,6 +275,8 @@
       { "op": "throw", "target": "pull_r16_clamp_e", "hold": 0.35 },
       { "op": "recall" },
       { "op": "expect", "flag": "kiln_cast_east" },
+      { "op": "goto", "to": [40, 72], "tol": 6.0 },
+      { "op": "interact", "target": "door_kiln_r16_west" },
       { "op": "expect_exit", "exit": "exit_kiln_r16_west" }
     ]
   }

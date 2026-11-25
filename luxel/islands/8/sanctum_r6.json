@@ -3,6 +3,8 @@
   "island_id": 8,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL8_SC_R6",
+  "music": "island8_boss_p1",
   "spawn": [
     192,
     304
@@ -10,7 +12,7 @@
   "zones": [
     {
       "id": "sanctum_r6",
-      "name_key": "DUNGEON_8_NAME",
+      "name_key": "ISL8_SC_R6",
       "rect": [
         0,
         0,
@@ -33,6 +35,23 @@
       "to_spawn": [
         208,
         232
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r6_sw",
+      "rect": [
+        0,
+        176,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r14",
+      "to_spawn": [
+        208,
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -64,6 +83,17 @@
     }
   ],
   "interactables": [
+    {
+      "id": "anc_sanctum_r6",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
     {
       "id": "great_lamp_8",
       "kind": "great_lamp",
@@ -322,55 +352,75 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.7
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        88,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        440,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        72,
-        296
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        392,
-        280
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.85
     }
   ],
-  "is_2x2_room": true
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        264,
+        168
+      ],
+      "radius": 58,
+      "style": "ritual",
+      "color": "plum",
+      "secondary": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        296,
+        72
+      ],
+      "radius": 30,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "cream"
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Ruined Bell-Sanctum Crown hosting the 4-phase dual-island finale against THE HUSH, reacting to every setting sold on Island 8 and culminating in DISPLAY: OFF vs Unbroken Stand.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "All 8 islands' rules in pairs across 4 phases plus the final choice at the Great Lamp.",
+    "decisions": 6,
+    "expert_s": 220,
+    "reward": "great_lamp_8+ending",
+    "why": "Grand finale arena of Luxel, reached via both sanctum_r5 and the deepened Lantern's Threshold (r14).",
+    "optional": true,
+    "exit": "exit_sanctum_r6_sw",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          192,
+          232
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "clear",
+        "timeout": 300.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          88
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "great_lamp_8"
+      },
+      {
+        "op": "expect",
+        "flag": "great_lamp_8"
+      }
+    ]
+  }
 }

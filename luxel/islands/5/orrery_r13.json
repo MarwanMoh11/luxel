@@ -103,7 +103,7 @@
       "id": "sn_o5_r13_1",
       "kind": "star_node",
       "pos": [
-        380,
+        392,
         176
       ],
       "props": {
@@ -119,7 +119,7 @@
       "id": "sn_o5_r13_2",
       "kind": "star_node",
       "pos": [
-        336,
+        340,
         176
       ],
       "props": {
@@ -136,7 +136,7 @@
       "id": "sn_o5_r13_3",
       "kind": "star_node",
       "pos": [
-        292,
+        288,
         176
       ],
       "props": {
@@ -235,8 +235,8 @@
         168
       ],
       "props": {
-        "scope": "dungeon:orrery",
-        "var_name": "orrery_ring",
+        "scope": "room:5:orrery_r13",
+        "var_name": "o5_r13_sky",
         "rotors": [
           "rotor_o5_r13"
         ],
@@ -444,7 +444,7 @@
   "layers": [
     {
       "id": "r13_sky_90",
-      "when": "orrery_ring!=0",
+      "when": "o5_r13_sky!=0",
       "tiles": [
         [
           14,
@@ -466,8 +466,8 @@
       "do": [
         {
           "set_var": {
-            "scope": "dungeon:orrery",
-            "name": "orrery_ring",
+            "scope": "room:5:orrery_r13",
+            "name": "o5_r13_sky",
             "value": 0
           }
         }
@@ -475,7 +475,7 @@
     }
   ],
   "design": {
-    "idea": "The Blind Planetarium (NEW, ASTONISHING): pitch-black void dome with zero visible ground; pulse True Lens to materialize invisible 4-cap constellation stars, shoot 3 to cross onto the central rotor, plant your lantern to anchor both Lens and rotor plate, rotate the unseen sky 90 degrees, and cross north to the Cloaked Mirror Rift!",
+    "idea": "The Blind Planetarium (NEW, ASTONISHING): pitch-black void dome with zero visible ground; pulse True Lens to materialize invisible 4-cap constellation stars, shoot 3 to cross onto the central rotor, rotate the unseen sky 90 degrees, plant your lantern to anchor both Lens and rotor plate, and cross north to the Cloaked Mirror Rift!",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Peak Island 5 epiphany: True Lens reveals invisible constellations AND thrown lantern anchors both Lens and Sextant simultaneously.",
@@ -498,7 +498,7 @@
         "power_sextant"
       ],
       "vars": {
-        "dungeon:orrery:orrery_ring": 0
+        "room:5:orrery_r13:o5_r13_sky": 0
       }
     },
     "solution": [
@@ -519,27 +519,40 @@
       {
         "op": "shoot",
         "target": "sn_o5_r13_1",
-        "wait_hit": 0.4
+        "wait_hit": 0.3
       },
       {
         "op": "shoot",
         "target": "sn_o5_r13_2",
-        "wait_hit": 0.45
+        "wait_hit": 0.35
       },
       {
         "op": "goto",
         "to": [
-          348,
+          340,
           176
         ]
       },
       {
-        "op": "lens"
+        "op": "shoot",
+        "target": "sn_o5_r13_3",
+        "wait_hit": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          176
+        ]
       },
       {
         "op": "shoot",
-        "target": "sn_o5_r13_3",
-        "wait_hit": 0.45
+        "target": "bell_o5_r13",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
       },
       {
         "op": "goto",
@@ -559,26 +572,6 @@
         "prop": "opened",
         "value": true,
         "timeout": 2.5
-      },
-      {
-        "op": "shoot",
-        "target": "bell_o5_r13",
-        "wait_hit": 0.55
-      },
-      {
-        "op": "wait",
-        "secs": 0.65
-      },
-      {
-        "op": "recall"
-      },
-      {
-        "op": "lens"
-      },
-      {
-        "op": "shoot",
-        "target": "sn_o5_r13_6",
-        "wait_hit": 0.4
       },
       {
         "op": "expect_exit",

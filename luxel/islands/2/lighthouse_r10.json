@@ -386,6 +386,7 @@
     "optional": true,
     "exit": "exit_lh_r10_overworld",
     "start": {
+      "hearts": 7,
       "moves": [
         "dash",
         "throw",

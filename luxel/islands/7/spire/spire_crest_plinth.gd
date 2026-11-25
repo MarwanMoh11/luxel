@@ -42,10 +42,10 @@ func interact(_actor: Node = null) -> bool:
 	if both:
 		set_powered(true)
 		emit_power(true)
+		if Lx.state != null:
+			Lx.state.heal_full()
 		if Lx.player is LxWick and is_instance_valid(Lx.player):
-			var w: LxWick = Lx.player as LxWick
-			w.hp = Lx.state.max_hearts if Lx.state != null else w.hp
-			w.ember = 1.0
+			(Lx.player as LxWick).ember = 1.0
 		if Lx.state != null and not bool(Lx.state.story_flags.get(_claimed_flag, false)):
 			Lx.state.story_flags[_claimed_flag] = true
 			Lx.state.shards += 75

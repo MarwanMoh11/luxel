@@ -1,0 +1,572 @@
+{
+  "id": "sanctum_r11",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_SC_R11",
+  "theme": "archive_8",
+  "music": "island8_dungeon",
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r11",
+      "name_key": "ISL8_SC_R11",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r11_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r9",
+      "to_spawn": [
+        240,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r11_east",
+      "rect": [
+        464,
+        144,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r5",
+      "to_spawn": [
+        48,
+        256
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r11_sw_drop",
+      "rect": [
+        48,
+        304,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r1",
+      "to_spawn": [
+        176,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "sanctum_west_drop"
+      ],
+      "locked_door_id": "door_r11_west_drop"
+    },
+    {
+      "id": "exit_sanctum_r11_ne",
+      "rect": [
+        464,
+        32,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r13",
+      "to_spawn": [
+        48,
+        336
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "sanctum_seal_w"
+      ],
+      "locked_door_id": "door_r11_to_r13"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_sanctum_r11_s",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_sanctum_r11_e",
+      "kind": "room_anchor",
+      "pos": [
+        432,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "shrine_hollow_r11",
+      "kind": "sanctum_hollow_shrine",
+      "pos": [
+        104,
+        248
+      ],
+      "props": {}
+    },
+    {
+      "id": "rose_r11",
+      "kind": "echo_rose",
+      "pos": [
+        296,
+        264
+      ],
+      "props": {
+        "secs": 5.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_r11_hold",
+      "kind": "pressure_plate",
+      "pos": [
+        344,
+        264
+      ],
+      "props": {
+        "by": [
+          "wick",
+          "block"
+        ],
+        "hold": true,
+        "size": [
+          16,
+          16
+        ],
+        "target_id": "gate_r11_echo"
+      }
+    },
+    {
+      "id": "gate_r11_echo",
+      "kind": "logic_gate",
+      "pos": [
+        240,
+        240
+      ],
+      "props": {
+        "op": "and",
+        "inputs": [
+          "plate_r11_hold",
+          "hook_r11"
+        ],
+        "persist": true,
+        "target_id": "bridge_r11_echo"
+      }
+    },
+    {
+      "id": "bridge_r11_echo",
+      "kind": "door",
+      "pos": [
+        240,
+        160
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          32,
+          128
+        ],
+        "requires_signals": [
+          "gate_r11_echo"
+        ]
+      }
+    },
+    {
+      "id": "hook_r11",
+      "kind": "lantern_hook",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "light_radius": 72.0,
+        "target_id": "gate_r11_echo"
+      }
+    },
+    {
+      "id": "sg_r11",
+      "kind": "shadow_gate",
+      "pos": [
+        240,
+        88
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "threshold": 0.3
+      }
+    },
+    {
+      "id": "brazier_r11_seal_w",
+      "kind": "brazier",
+      "pos": [
+        376,
+        48
+      ],
+      "props": {
+        "allow_interact": true,
+        "target_id": "door_r11_to_r13"
+      }
+    },
+    {
+      "id": "door_r11_to_r13",
+      "kind": "door",
+      "pos": [
+        448,
+        48
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "brazier_r11_seal_w"
+        ]
+      }
+    },
+    {
+      "id": "door_r11_west_drop",
+      "kind": "door",
+      "pos": [
+        64,
+        296
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "sanctum_west_drop"
+        ]
+      }
+    },
+    {
+      "id": "sensor_r11_ember",
+      "kind": "toll_sensor",
+      "pos": [
+        152,
+        288
+      ],
+      "props": {
+        "check": "sold:ember_hud",
+        "target_id": "chest_r11_ember_bonus"
+      }
+    },
+    {
+      "id": "chest_r11_ember_bonus",
+      "kind": "chest",
+      "pos": [
+        128,
+        288
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45,
+        "zone": "sanctum_r11",
+        "secret_id": "isl8_sanctum_r11_ember"
+      }
+    },
+    {
+      "id": "lamp_r11_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        288
+      ],
+      "props": {
+        "zone": "sanctum_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_e",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        184
+      ],
+      "props": {
+        "zone": "sanctum_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        248
+      ],
+      "props": {
+        "zone": "sanctum_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        48
+      ],
+      "props": {
+        "zone": "sanctum_r11",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        80,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        128,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        408,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        104,
+        248
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        184,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        344,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        344,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        104,
+        248
+      ],
+      "radius": 32,
+      "style": "ritual",
+      "color": "plum",
+      "secondary": "ice"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        240,
+        144,
+        32
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "trim": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        344,
+        24,
+        80,
+        48
+      ],
+      "color": "apricot"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r11_seal_w",
+      "on": "signal:brazier_r11_seal_w",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "sanctum_seal_w"
+        },
+        {
+          "set_flag": "sanctum_west_drop"
+        },
+        {
+          "narrate": "ISL8_SC_SEAL_W"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "West Bell-Gallery Vigil housing Hollow Wick's empty broken lantern: record an Echo Rose holding the 8-tile chasm bridge, hang your lantern to slip unlit through the Shadow Gate, recall & pulse True Lens across phantom tiles to light the West Choir Seal.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Echo Rose + Lantern Hook + Shadow Gate + True Lens chained together around Hollow Wick's backstory.",
+    "decisions": 9,
+    "expert_s": 60,
+    "reward": "sanctum_seal_w+west_drop+hollow_shrine",
+    "why": "Emotional and mechanical capstone of the West Wing, unlocking the West Belfry gate & Narthex drop.",
+    "exit": "exit_sanctum_r11_ne",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "shrine_hollow_r11"
+      },
+      {
+        "op": "interact",
+        "target": "rose_r11"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_r11_hold",
+        "secs": 4.8
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          264
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r11"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_r11_echo",
+        "prop": "opened",
+        "value": true,
+        "timeout": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          48
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          360,
+          48
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "beam",
+        "target": "brazier_r11_seal_w"
+      },
+      {
+        "op": "expect",
+        "flag": "sanctum_seal_w"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r11_ne"
+      }
+    ]
+  }
+}

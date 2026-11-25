@@ -3,6 +3,8 @@
   "island_id": 8,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL8_SC_R2",
+  "music": "island8_dungeon",
   "spawn": [
     176,
     216
@@ -10,7 +12,7 @@
   "zones": [
     {
       "id": "sanctum_r2",
-      "name_key": "DUNGEON_8_NAME",
+      "name_key": "ISL8_SC_R2",
       "rect": [
         0,
         0,
@@ -59,10 +61,60 @@
         "wick_key_8_1"
       ],
       "locked_door_id": "door_sanctum_r2_north"
+    },
+    {
+      "id": "exit_sanctum_r2_east",
+      "rect": [
+        432,
+        144,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r8",
+      "to_spawn": [
+        48,
+        144
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_sanctum_r2_east"
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "censer_sanctum_r2",
+      "kind": "censer",
+      "pos": [
+        248,
+        136
+      ],
+      "route": [
+        [
+          216,
+          136
+        ],
+        [
+          288,
+          136
+        ]
+      ],
+      "perches": [],
+      "zone": "sanctum_r2",
+      "leash": 120
+    }
+  ],
   "interactables": [
+    {
+      "id": "anc_sanctum_r2",
+      "kind": "room_anchor",
+      "pos": [
+        176,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
     {
       "id": "transformer_sanctum_r2",
       "kind": "blue_transformer",
@@ -124,6 +176,68 @@
       }
     },
     {
+      "id": "emit_sanctum_r2_east",
+      "kind": "beam_emitter",
+      "pos": [
+        360,
+        120
+      ],
+      "props": {
+        "dir": "e",
+        "color": "gold",
+        "range": 120.0
+      }
+    },
+    {
+      "id": "glass_sanctum_r2",
+      "kind": "color_glass",
+      "pos": [
+        392,
+        120
+      ],
+      "props": {
+        "color": "gold",
+        "cycles_color": true,
+        "solid": true,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sensor_sanctum_r2_east",
+      "kind": "beam_sensor",
+      "pos": [
+        424,
+        120
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "door_sanctum_r2_east"
+      }
+    },
+    {
+      "id": "door_sanctum_r2_east",
+      "kind": "door",
+      "pos": [
+        424,
+        160
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sensor_sanctum_r2_east"
+        ]
+      }
+    },
+    {
       "id": "door_sanctum_r2_key",
       "kind": "door",
       "pos": [
@@ -173,6 +287,54 @@
         "requires_flags": [
           "wick_key_8_1"
         ]
+      }
+    },
+    {
+      "id": "lamp_sanctum_r2_s",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        216
+      ],
+      "props": {
+        "zone": "sanctum_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r2_mid",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        136
+      ],
+      "props": {
+        "zone": "sanctum_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r2_n",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        56
+      ],
+      "props": {
+        "zone": "sanctum_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        72
+      ],
+      "props": {
+        "zone": "sanctum_r2",
+        "lit": true
       }
     }
   ],
@@ -240,18 +402,6 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "tattered_sanctum_banner",
-      "pos": [
-        152,
-        110
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
         296,
@@ -264,18 +414,6 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
-        376,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
         40,
@@ -285,18 +423,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.25
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
-      "pos": [
-        40,
-        104
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.75
     },
     {
       "sheet": "island8_scenery",
@@ -345,43 +471,141 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.65
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
-      "pos": [
-        200,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
-      "pos": [
-        376,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
-        120,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
     }
   ],
-  "is_2x2_room": true
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        320,
+        48,
+        32,
+        112
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "trim": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        32,
+        32,
+        80,
+        64
+      ],
+      "color": "sky"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r2_east_flag",
+      "on": "signal:sensor_sanctum_r2_east",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "sanctum_r2_east_open"
+        }
+      ]
+    }
+  ],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Sealed Tide & Briar Prism puzzle (D08 wall hole fixed) deepened with a patrolling censer and cyclable blue stained-glass lock opening the East Cloister to r8.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Combining Beam bramble burn, movable Prism reflection, and cyclable Color Glass filters.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "wick_key_8_1+east_cloister",
+    "why": "Fixes the D08 bypassable key vault and introduces the East Stained-Glass Wing cycle.",
+    "exit": "exit_sanctum_r2_north",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "beam",
+        "from": [
+          312,
+          88
+        ],
+        "target": "bramble_sanctum_r2"
+      },
+      {
+        "op": "push",
+        "target": "transformer_sanctum_r2",
+        "to": [
+          328,
+          88
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_sanctum_r2",
+        "angle": 45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          128
+        ],
+        "target": "transformer_sanctum_r2"
+      },
+      {
+        "op": "push",
+        "target": "transformer_sanctum_r2",
+        "to": [
+          328,
+          200
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_sanctum_r2",
+        "angle": 315
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          160
+        ],
+        "target": "transformer_sanctum_r2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          72
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_8_1"
+      },
+      {
+        "op": "interact",
+        "target": "glass_sanctum_r2"
+      },
+      {
+        "op": "expect",
+        "interactable": "sensor_sanctum_r2_east",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "interact",
+        "target": "door_sanctum_r2_north"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r2_north"
+      }
+    ]
+  }
 }

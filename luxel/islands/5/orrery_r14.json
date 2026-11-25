@@ -57,8 +57,10 @@
       "requires_moves": [
         "lens"
       ],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "o5_r14_rings"
+      ],
+      "locked_door_id": "door_o5_r14_north"
     },
     {
       "id": "exit_o5_r14_e",
@@ -139,8 +141,8 @@
         168
       ],
       "props": {
-        "scope": "dungeon:orrery",
-        "var_name": "orrery_ring",
+        "scope": "room:5:orrery_r14",
+        "var_name": "o5_r14_ring",
         "rotors": [
           "rotor_o5_r14"
         ],
@@ -201,7 +203,29 @@
         96
       ],
       "props": {
-        "target_id": "bridge_o5_r14_east",
+        "target_ids": [
+          "bridge_o5_r14_east",
+          "door_o5_r14_north"
+        ],
+        "sets_flag": "o5_r14_rings"
+      }
+    },
+    {
+      "id": "door_o5_r14_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "eye_o5_r14_pin"
+        ],
         "sets_flag": "o5_r14_rings"
       }
     },
@@ -400,7 +424,7 @@
   "layers": [
     {
       "id": "r14_north_align",
-      "when": "orrery_ring==90 || flag:o5_r14_rings",
+      "when": "o5_r14_ring==90 || flag:o5_r14_rings",
       "tiles": [
         [
           15,
@@ -415,7 +439,7 @@
     },
     {
       "id": "r14_east_align",
-      "when": "orrery_ring==180 || flag:o5_r14_rings",
+      "when": "o5_r14_ring==180 || flag:o5_r14_rings",
       "tiles": [
         [
           19,
@@ -448,7 +472,7 @@
     }
   ],
   "design": {
-    "idea": "Nested Rings Conjunction (NEW): clear the patrolling Satellite Eye, rotate the nested Orrery Rings to 90 degrees to open the North bridge to the Astronomer's Study, then rotate to 180 degrees, latch the permanent ring pin, and unlock the East Key-3 vault door into the Boss Key chamber!",
+    "idea": "Nested Rings Conjunction (NEW): clear the patrolling Satellite Eye, rotate the nested Orrery Rings to 90 degrees to open the North bridge to the Astronomer's Study, then pin the alignment latch unlocking both the North Study door and East Key-3 vault bridge!",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Multi-ring quarter-turn conjunction linking the upper Study and Boss Key vault.",
@@ -468,7 +492,7 @@
         "lens"
       ],
       "vars": {
-        "dungeon:orrery:orrery_ring": 0
+        "room:5:orrery_r14:o5_r14_ring": 0
       }
     },
     "solution": [
@@ -491,11 +515,30 @@
       },
       {
         "op": "expect",
-        "var": "orrery_ring==90"
+        "var": "o5_r14_ring==90"
       },
       {
         "op": "wait",
         "secs": 0.65
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          144
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "eye_o5_r14_pin",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r14_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
       },
       {
         "op": "expect_exit",

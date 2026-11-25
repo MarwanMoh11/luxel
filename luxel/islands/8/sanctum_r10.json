@@ -1,0 +1,505 @@
+{
+  "id": "sanctum_r10",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_SC_R10",
+  "theme": "endless_stair",
+  "music": "island8_dungeon",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r10",
+      "name_key": "ISL8_SC_R10",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r10_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r8",
+      "to_spawn": [
+        224,
+        72
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r10_west",
+      "rect": [
+        0,
+        192,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r4",
+      "to_spawn": [
+        400,
+        176
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r10_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r12",
+      "to_spawn": [
+        256,
+        304
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_sanctum_r10_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "wraith_r10",
+      "kind": "page_wraith",
+      "pos": [
+        312,
+        216
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "sanctum_r10",
+      "leash": 120
+    },
+    {
+      "id": "eye_r10",
+      "kind": "eclipse_eye",
+      "pos": [
+        368,
+        216
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "sanctum_r10",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_sanctum_r10_s",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_sanctum_r10_w",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        208
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_sanctum_r10",
+      "kind": "lore_stone",
+      "pos": [
+        160,
+        264
+      ],
+      "props": {
+        "string_id": "ISL8_SC_LORE_R10",
+        "icon": "throw"
+      }
+    },
+    {
+      "id": "grav_r10",
+      "kind": "gravity_well",
+      "pos": [
+        272,
+        152
+      ],
+      "props": {
+        "radius": 76.0,
+        "strength": 85.0,
+        "pull": true
+      }
+    },
+    {
+      "id": "spin_r10",
+      "kind": "spinner",
+      "pos": [
+        152,
+        216
+      ],
+      "props": {
+        "length": 40.0,
+        "speed": 1.35,
+        "arms": 2
+      }
+    },
+    {
+      "id": "pull_ring_r10",
+      "kind": "pull_ring",
+      "pos": [
+        232,
+        152
+      ],
+      "props": {
+        "axis": "s",
+        "dist": 24.0,
+        "latch": true,
+        "persist": true,
+        "target_ids": [
+          "bridge_r10_north",
+          "door_sanctum_r10_north"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r10_north",
+      "kind": "door",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          32,
+          128
+        ],
+        "requires_signals": [
+          "pull_ring_r10"
+        ]
+      }
+    },
+    {
+      "id": "door_sanctum_r10_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "pull_ring_r10"
+        ]
+      }
+    },
+    {
+      "id": "bloom_r10",
+      "kind": "bounce_bloom",
+      "pos": [
+        96,
+        240
+      ],
+      "props": {
+        "dir": "e",
+        "dist": 80.0
+      }
+    },
+    {
+      "id": "sensor_r10_shake",
+      "kind": "toll_sensor",
+      "pos": [
+        336,
+        272
+      ],
+      "props": {
+        "check": "sold:camera_shake",
+        "target_id": "door_r10_toll"
+      }
+    },
+    {
+      "id": "door_r10_toll",
+      "kind": "door",
+      "pos": [
+        360,
+        272
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sensor_r10_shake"
+        ]
+      }
+    },
+    {
+      "id": "chest_r10_toll",
+      "kind": "chest",
+      "pos": [
+        392,
+        272
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40,
+        "zone": "sanctum_r10",
+        "secret_id": "isl8_sanctum_r10_toll"
+      }
+    },
+    {
+      "id": "lamp_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        264
+      ],
+      "props": {
+        "zone": "sanctum_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        240
+      ],
+      "props": {
+        "zone": "sanctum_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        248
+      ],
+      "props": {
+        "zone": "sanctum_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_n",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        40
+      ],
+      "props": {
+        "zone": "sanctum_r10",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        184,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        264,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stone_balustrade_rail",
+      "pos": [
+        288,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        36,
+        260
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "fallen_bell_fragment",
+      "pos": [
+        392,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        152,
+        216
+      ],
+      "radius": 34,
+      "style": "clock",
+      "color": "plum",
+      "secondary": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        24,
+        112,
+        32
+      ],
+      "color": "sky"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r10_bridge",
+      "on": "signal:pull_ring_r10",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "sanctum_east_bridge"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "East Triforium Pendulum Ossuary: clear the Page Wraith & Eclipse Eye, weave past the twin-arm Spinner, and throw+recall the lantern through a Gravity Well to yank the void Pull Ring raising the 8-tile bridge.",
+    "kind": "traversal",
+    "beat": "ten",
+    "teaches": "Curved lantern throws through a Gravity Well onto a Pull Ring over an un-zippable void chasm.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "sanctum_east_bridge+open_r12",
+    "why": "East Wing traversal climax uniting Islands 5, 6, and 8 mechanics.",
+    "exit": "exit_sanctum_r10_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          264,
+          232
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "clear",
+        "timeout": 40.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          200
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "pull_ring_r10",
+        "hold": 0.45
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 0.3
+      },
+      {
+        "op": "expect",
+        "interactable": "pull_ring_r10",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r10_north"
+      }
+    ]
+  }
+}

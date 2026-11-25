@@ -107,7 +107,6 @@
       ],
       "props": {
         "lens_only": true,
-        "pinned": true,
         "target_id": "gate_o5_r15_cipher"
       }
     },
@@ -120,7 +119,6 @@
       ],
       "props": {
         "lens_only": true,
-        "pinned": true,
         "target_id": "gate_o5_r15_cipher"
       }
     },
@@ -133,7 +131,6 @@
       ],
       "props": {
         "lens_only": true,
-        "pinned": true,
         "target_id": "gate_o5_r15_cipher"
       }
     },
@@ -146,7 +143,6 @@
       ],
       "props": {
         "lens_only": true,
-        "pinned": true,
         "target_id": "gate_o5_r15_cipher"
       }
     },
@@ -183,7 +179,8 @@
         ],
         "requires_signals": [
           "gate_o5_r15_cipher"
-        ]
+        ],
+        "sets_flag": "o5_r15_reliquary_open"
       }
     },
     {

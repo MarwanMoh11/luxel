@@ -90,7 +90,8 @@
           "stair_b2"
         ],
         "boon_count": 3,
-        "target_exit_id": "door_r5_north"
+        "target_exit_id": "door_r5_north",
+        "target_id": "door_r5_north"
       }
     },
     {
@@ -145,7 +146,7 @@
         80
       ],
       "props": {
-        "aim": "wick",
+        "aim": true,
         "cadence": 2.4,
         "sight_range": 176.0,
         "can_disable": true
@@ -159,7 +160,7 @@
         112
       ],
       "props": {
-        "aim": "wick",
+        "aim": true,
         "cadence": 2.6,
         "sight_range": 176.0,
         "can_disable": true

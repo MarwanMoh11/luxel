@@ -182,7 +182,10 @@
           "wick"
         ],
         "hold": true,
-        "target_id": "bridge_party_r2_lift"
+        "target_ids": [
+          "bridge_party_r2_lift",
+          "door_party_r2_balcony"
+        ]
       }
     },
     {
@@ -214,7 +217,8 @@
         ],
         "requires_signals": [
           "plate_party_r2"
-        ]
+        ],
+        "persistent": true
       }
     },
     {
@@ -232,7 +236,8 @@
         ],
         "requires_signals": [
           "plate_party_r2"
-        ]
+        ],
+        "persistent": true
       }
     },
     {
@@ -560,8 +565,19 @@
       },
       {
         "op": "goto",
-        "to": "sundial_party_r2",
-        "tol": 14
+        "to": [
+          232,
+          184
+        ],
+        "tol": 10
+      },
+      {
+        "op": "beam",
+        "target": "sundial_party_r2"
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
       },
       {
         "op": "interact",
@@ -597,6 +613,10 @@
       {
         "op": "interact",
         "target": "item_party_fork"
+      },
+      {
+        "op": "wait",
+        "secs": 0.15
       },
       {
         "op": "expect",

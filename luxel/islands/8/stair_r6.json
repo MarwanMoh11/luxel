@@ -101,7 +101,8 @@
           "stair_b4"
         ],
         "boon_count": 3,
-        "target_exit_id": "door_r6_north"
+        "target_exit_id": "door_r6_north",
+        "target_id": "door_r6_north"
       }
     },
     {
@@ -209,14 +210,14 @@
           ],
           [
             88,
-            96
+            112
           ],
           [
-            376,
-            96
+            360,
+            112
           ],
           [
-            376,
+            360,
             216
           ]
         ],
@@ -455,7 +456,7 @@
       "prop": "stair_lantern_candelabra",
       "pos": [
         288,
-        240
+        256
       ],
       "layer": "sort",
       "flip_x": true,

@@ -440,7 +440,15 @@
         "op": "push",
         "target": "transformer_lh_r4",
         "to": [
-          104,
+          88,
+          168
+        ]
+      },
+      {
+        "op": "push",
+        "target": "transformer_lh_r4",
+        "to": [
+          88,
           40
         ]
       },
@@ -452,7 +460,7 @@
       {
         "op": "shoot",
         "from": [
-          104,
+          88,
           88
         ],
         "target": "transformer_lh_r4"

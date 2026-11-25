@@ -108,7 +108,8 @@
           "stair_b4"
         ],
         "boon_count": 3,
-        "target_exit_id": "door_r8_north"
+        "target_exit_id": "door_r8_north",
+        "target_id": "door_r8_north"
       }
     },
     {

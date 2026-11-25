@@ -70,6 +70,10 @@ static func seed_registry(reg: LxPackRegistry) -> void:
 		for reg_name: String in LxLegacy.legacy_regions_for_island(isl):
 			if reg_name.begins_with(pref):
 				regs.append(reg_name)
+		if isl == 3:
+			for extra_r: String in ["oak_r2b", "oak_r4b", "oak_r5b", "oak_r6b", "oak_r7b", "oak_r8b", "oak_r9b", "oak_r9c"]:
+				if not regs.has(extra_r):
+					regs.append(extra_r)
 		regs.sort_custom(_sort_room_names)
 		var entry_r: String = regs[0] if not regs.is_empty() else (pref + "r1")
 		reg._dungeons[did] = {
@@ -98,5 +102,8 @@ static func _sort_room_names(a: String, b: String) -> bool:
 	var ai: int = a.rfind("_r")
 	var bi: int = b.rfind("_r")
 	if ai >= 0 and bi >= 0 and a.left(ai) == b.left(bi):
-		return int(a.substr(ai + 2)) < int(b.substr(bi + 2))
+		var an: int = int(a.substr(ai + 2))
+		var bn: int = int(b.substr(bi + 2))
+		if an != bn:
+			return an < bn
 	return a < b

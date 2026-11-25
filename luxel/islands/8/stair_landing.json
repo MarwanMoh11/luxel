@@ -54,7 +54,7 @@
       "to_island": 8,
       "to_region": "cave_glass_grotto",
       "to_spawn": [
-        368,
+        464,
         144
       ]
     },
@@ -83,17 +83,17 @@
       "id": "gloam_sl_1",
       "kind": "choir_gloam",
       "pos": [
-        200,
-        128
+        184,
+        248
       ],
       "route": [
         [
           184,
-          120
+          232
         ],
         [
-          232,
-          120
+          224,
+          264
         ]
       ],
       "zone": "stair_landing",
@@ -103,17 +103,17 @@
       "id": "gloam_sl_2",
       "kind": "choir_gloam",
       "pos": [
-        376,
-        128
+        392,
+        168
       ],
       "route": [
         [
-          344,
-          120
+          376,
+          152
         ],
         [
           392,
-          120
+          232
         ]
       ],
       "zone": "stair_landing",
@@ -123,17 +123,17 @@
       "id": "clerk_sl_1",
       "kind": "toll_clerk",
       "pos": [
-        288,
-        120
+        184,
+        152
       ],
       "route": [
         [
-          256,
-          120
+          184,
+          136
         ],
         [
-          320,
-          120
+          184,
+          200
         ]
       ],
       "zone": "stair_landing",

@@ -313,7 +313,7 @@
       "kind": "eclipse_eye",
       "pos": [
         264,
-        64
+        76
       ],
       "route": [],
       "zone": "archive_mem5",
@@ -345,7 +345,7 @@
       "sheet": "theme_archive",
       "prop": "wide_library_bookcase",
       "pos": [
-        272,
+        304,
         48
       ],
       "layer": "sort",

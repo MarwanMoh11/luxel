@@ -101,7 +101,7 @@ func tick(dt: float) -> void:
 				var w: LxWick = Lx.player as LxWick
 				w.spawn_ring(_riposte_origin, 6.0, 42.0, 0.28, PAL["rose"] as Color, 1.5)
 				if not w.is_dashing() and w.global_position.distance_to(_riposte_origin) <= 32.0:
-					w.take_damage(1.0, (w.global_position - _riposte_origin).normalized(), "hollow_riposte")
+					w.take_damage(1.0, _riposte_origin, (w.global_position - _riposte_origin).normalized(), "hollow_riposte")
 	queue_redraw()
 
 

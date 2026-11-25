@@ -236,17 +236,17 @@
               "id": "en_dr6_owl",
               "kind": "phantom_owl",
               "pos": [
-                192,
+                224,
                 176
               ],
               "perches": [
                 [
-                  192,
+                  224,
                   176
                 ],
                 [
-                  368,
-                  168
+                  320,
+                  176
                 ]
               ],
               "zone": "dream_r6"
@@ -255,7 +255,7 @@
               "id": "en_dr6_jelly",
               "kind": "star_jelly",
               "pos": [
-                400,
+                336,
                 176
               ],
               "zone": "dream_r6"
@@ -394,6 +394,9 @@
       {
         "op": "wait",
         "secs": 1.0
+      },
+      {
+        "op": "lens"
       },
       {
         "op": "clear",

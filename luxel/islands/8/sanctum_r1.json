@@ -3,6 +3,8 @@
   "island_id": 8,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL8_SC_R1",
+  "music": "island8_dungeon",
   "spawn": [
     144,
     248
@@ -10,7 +12,7 @@
   "zones": [
     {
       "id": "sanctum_r1",
-      "name_key": "DUNGEON_8_NAME",
+      "name_key": "ISL8_SC_R1",
       "rect": [
         0,
         0,
@@ -65,7 +67,7 @@
       ],
       "to_region": "sanctum_r5",
       "to_spawn": [
-        424,
+        416,
         224
       ],
       "requires_moves": [],
@@ -73,10 +75,76 @@
         "sanctum_shortcut_r5_r1"
       ],
       "locked_door_id": "door_sanctum_r1_shortcut"
+    },
+    {
+      "id": "exit_sanctum_r1_west",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r7",
+      "to_spawn": [
+        400,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r1_nw",
+      "rect": [
+        160,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r11",
+      "to_spawn": [
+        64,
+        264
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "sanctum_west_drop"
+      ],
+      "locked_door_id": "door_sanctum_r1_nw"
+    },
+    {
+      "id": "exit_sanctum_r1_ne",
+      "rect": [
+        304,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r14",
+      "to_spawn": [
+        112,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "sanctum_upper_ws"
+      ],
+      "locked_door_id": "door_sanctum_r1_ne"
     }
   ],
   "enemies": [],
   "interactables": [
+    {
+      "id": "anc_sanctum_r1",
+      "kind": "room_anchor",
+      "pos": [
+        144,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
     {
       "id": "ws_sanctum",
       "kind": "waystone",
@@ -87,6 +155,30 @@
       "props": {
         "zone": "sanctum_r1",
         "name_key": "DUNGEON_8_NAME"
+      }
+    },
+    {
+      "id": "scale_sanctum_r1",
+      "kind": "toll_scale",
+      "pos": [
+        104,
+        136
+      ],
+      "props": {
+        "mode": "shop",
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_sanctum_r1",
+      "kind": "lore_stone",
+      "pos": [
+        224,
+        136
+      ],
+      "props": {
+        "string_id": "ISL8_SC_LORE_R1",
+        "icon": "bell"
       }
     },
     {
@@ -155,6 +247,44 @@
       }
     },
     {
+      "id": "door_sanctum_r1_nw",
+      "kind": "door",
+      "pos": [
+        176,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "sanctum_r1",
+        "requires_flags": [
+          "sanctum_west_drop"
+        ]
+      }
+    },
+    {
+      "id": "door_sanctum_r1_ne",
+      "kind": "door",
+      "pos": [
+        320,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "sanctum_r1",
+        "requires_flags": [
+          "sanctum_upper_ws"
+        ]
+      }
+    },
+    {
       "id": "chest_sanctum_r1_cloister",
       "kind": "chest",
       "pos": [
@@ -173,11 +303,12 @@
       "id": "lamp_sanctum_r1_w",
       "kind": "road_lamp",
       "pos": [
-        88,
-        152
+        72,
+        168
       ],
       "props": {
-        "zone": "sanctum_r1"
+        "zone": "sanctum_r1",
+        "lit": true
       }
     },
     {
@@ -188,7 +319,32 @@
         104
       ],
       "props": {
-        "zone": "sanctum_r1"
+        "zone": "sanctum_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "zone": "sanctum_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        56
+      ],
+      "props": {
+        "zone": "sanctum_r1",
+        "lit": true
       }
     }
   ],
@@ -222,8 +378,8 @@
       "sheet": "island8_scenery",
       "prop": "stained_glass_debris",
       "pos": [
-        200,
-        52
+        216,
+        56
       ],
       "layer": "ground",
       "flip_x": false,
@@ -246,7 +402,7 @@
       "sheet": "island8_scenery",
       "prop": "shattered_rose_window",
       "pos": [
-        200,
+        216,
         40
       ],
       "layer": "sort",
@@ -270,7 +426,7 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        312,
+        344,
         48
       ],
       "layer": "sort",
@@ -282,25 +438,13 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        96,
-        110
+        88,
+        104
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": false,
       "phase": 0.25
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "shattered_rose_window",
-      "pos": [
-        232,
-        202
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.45
     },
     {
       "sheet": "island8_scenery",
@@ -340,66 +484,6 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "cracked_choir_pew",
-      "pos": [
-        56,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        48,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        376,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        48,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        344,
-        256
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.85
-    },
-    {
-      "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
         72,
@@ -421,30 +505,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.65
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
-        72,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
-        296,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
     },
     {
       "sheet": "island8_scenery",
@@ -474,7 +534,7 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        392,
+        384,
         152
       ],
       "layer": "sort",
@@ -483,5 +543,76 @@
       "phase": 0.45
     }
   ],
-  "is_2x2_room": true
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        168,
+        136
+      ],
+      "radius": 38,
+      "style": "ritual",
+      "color": "plum",
+      "secondary": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        256,
+        48,
+        32,
+        128
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "trim": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        32,
+        128,
+        64,
+        32
+      ],
+      "color": "apricot"
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Shattered Narthex Hub uniting the main Bell Sanctum spine, West Taxed Scale transept, cloister prism portal, Toll Scale, and return shortcuts from r5, r11, and r14.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Bell Sanctum multi-wing hub navigation, Sanctum Toll Scale, and blue portal cloister.",
+    "decisions": 4,
+    "expert_s": 40,
+    "reward": "waystone+sanctum_hub",
+    "why": "Deepened cathedral narthex connecting all 4 wings and every shortcut loop back to the entry.",
+    "optional": true,
+    "exit": "exit_sanctum_r1_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          152
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_sanctum"
+      },
+      {
+        "op": "interact",
+        "target": "lore_sanctum_r1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r1_north"
+      }
+    ]
+  }
 }

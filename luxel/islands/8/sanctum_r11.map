@@ -1,0 +1,35 @@
+# Bell Sanctum r11 - West Bell-Gallery: Hollow Wick Vigil (30x20)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+##############################
+#OOOOO...........OOOO........#
+#OOOOO...........PPPP..,,,,,,,
+#OOOOO...........PPPP..,,,,,,,
+#OOOOO...........OOOO........#
+#OOOOO########,,##############
+#OOOOOOOOOOOOOOOOOOOOOOO######
+#OOOOOOOOOOOOOOOOOOOOOOO######
+#OOOOOOOOOOOOOOOOOOOOOOO.....#
+#OOOOOOOOOOOOOOOOOOOOOOO.....,
+#OOOOOOOOOOOOOOOOOOOOOOO.....,
+#OOOOOOOOOOOOOOOOOOOOOOO.....#
+#OOOOOOOOOOOOOOOOOOOOOOO.....#
+#OOOOOOOOOOOOOOOOOOOOO.......#
+#........................OOOO#
+#........................OOOO#
+#.......................OOOOO#
+#.......................OOOOO#
+#.......................OOOOO#
+###,,#########,,##############

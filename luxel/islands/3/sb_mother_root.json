@@ -5,7 +5,7 @@
   "is_dungeon": false,
   "theme": "briar_court",
   "name_key": "ISL3_SB_MOTHER_NAME",
-  "music": "isl3_setpiece",
+  "music": "superboss_a",
   "spawn": [
     256,
     304

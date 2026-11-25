@@ -90,7 +90,8 @@
           "stair_a2"
         ],
         "boon_count": 3,
-        "target_exit_id": "door_r2_north"
+        "target_exit_id": "door_r2_north",
+        "target_id": "door_r2_north"
       }
     },
     {

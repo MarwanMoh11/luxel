@@ -427,7 +427,7 @@
     },
     {
       "id": "lck_r4_clear_flag",
-      "on": "cleared:lck_r4",
+      "on": "cleared",
       "once": true,
       "do": [
         {

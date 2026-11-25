@@ -1,0 +1,593 @@
+{
+  "id": "sanctum_r8",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_SC_R8",
+  "theme": "archive",
+  "music": "island8_dungeon",
+  "spawn": [
+    48,
+    144
+  ],
+  "zones": [
+    {
+      "id": "sanctum_r8",
+      "name_key": "ISL8_SC_R8",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sanctum_r8_west",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r2",
+      "to_spawn": [
+        400,
+        160
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_sanctum_r8_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "sanctum_r10",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_sanctum_r8_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_sanctum_r8",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_sanctum_r8",
+      "kind": "lore_stone",
+      "pos": [
+        80,
+        232
+      ],
+      "props": {
+        "string_id": "ISL8_SC_LORE_R8",
+        "icon": "lens"
+      }
+    },
+    {
+      "id": "tog_r8",
+      "kind": "crystal_toggle",
+      "pos": [
+        168,
+        232
+      ],
+      "props": {
+        "group": "r8_glass",
+        "phase": 0,
+        "target_id": "conv_r8"
+      }
+    },
+    {
+      "id": "tblock_r8_bay2",
+      "kind": "toggle_block",
+      "pos": [
+        216,
+        168
+      ],
+      "props": {
+        "group": "r8_glass",
+        "phase": 0,
+        "start_phase": 0,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "conv_r8",
+      "kind": "conveyor",
+      "pos": [
+        344,
+        168
+      ],
+      "props": {
+        "size": [
+          80,
+          24
+        ],
+        "dir": "w",
+        "speed": 42.0,
+        "flip_on_signal": true
+      }
+    },
+    {
+      "id": "push_r8_blocker",
+      "kind": "push_block",
+      "pos": [
+        312,
+        168
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "emit_r8_1",
+      "kind": "beam_emitter",
+      "pos": [
+        120,
+        200
+      ],
+      "props": {
+        "dir": "n",
+        "color": "gold",
+        "range": 144.0
+      }
+    },
+    {
+      "id": "glass_r8_1",
+      "kind": "color_glass",
+      "pos": [
+        120,
+        152
+      ],
+      "props": {
+        "color": "rose",
+        "cycles_color": true,
+        "solid": true,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sensor_r8_gold",
+      "kind": "beam_sensor",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "color": "gold",
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r8_seq"
+      }
+    },
+    {
+      "id": "emit_r8_2",
+      "kind": "beam_emitter",
+      "pos": [
+        216,
+        200
+      ],
+      "props": {
+        "dir": "n",
+        "color": "gold",
+        "range": 144.0
+      }
+    },
+    {
+      "id": "glass_r8_2",
+      "kind": "color_glass",
+      "pos": [
+        216,
+        136
+      ],
+      "props": {
+        "color": "gold",
+        "cycles_color": true,
+        "solid": true,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sensor_r8_blue",
+      "kind": "beam_sensor",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r8_seq"
+      }
+    },
+    {
+      "id": "emit_r8_3",
+      "kind": "beam_emitter",
+      "pos": [
+        312,
+        200
+      ],
+      "props": {
+        "dir": "n",
+        "color": "gold",
+        "range": 144.0
+      }
+    },
+    {
+      "id": "glass_r8_3",
+      "kind": "color_glass",
+      "pos": [
+        312,
+        136
+      ],
+      "props": {
+        "color": "blue",
+        "cycles_color": true,
+        "solid": true,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sensor_r8_rose",
+      "kind": "beam_sensor",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "color": "rose",
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r8_seq"
+      }
+    },
+    {
+      "id": "gate_r8_seq",
+      "kind": "logic_gate",
+      "pos": [
+        264,
+        88
+      ],
+      "props": {
+        "op": "seq",
+        "inputs": [
+          "sensor_r8_gold",
+          "sensor_r8_blue",
+          "sensor_r8_rose"
+        ],
+        "persist": true,
+        "target_id": "door_sanctum_r8_north"
+      }
+    },
+    {
+      "id": "door_sanctum_r8_north",
+      "kind": "door",
+      "pos": [
+        224,
+        56
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r8_seq"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        184
+      ],
+      "props": {
+        "zone": "sanctum_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        248
+      ],
+      "props": {
+        "zone": "sanctum_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        88
+      ],
+      "props": {
+        "zone": "sanctum_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_n",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        40
+      ],
+      "props": {
+        "zone": "sanctum_r8",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        120,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        312,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        396,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scholar_reading_desk",
+      "pos": [
+        272,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        184,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        264,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stained_glass_debris",
+      "pos": [
+        120,
+        120
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stained_glass_debris",
+      "pos": [
+        312,
+        120
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        104,
+        72,
+        32,
+        144
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        200,
+        72,
+        32,
+        144
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        296,
+        72,
+        32,
+        144
+      ],
+      "color": "rose"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        64,
+        224,
+        272,
+        32
+      ],
+      "style": "ornate",
+      "color": "plum",
+      "trim": "gold"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r8_solved",
+      "on": "signal:gate_r8_seq",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "sanctum_r8_solved"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "East Cloister stained-glass optical organ: tune three Color Glass panes, flip the toggle shutter & conveyor, and clear the stone baffle to paint Gold -> Blue -> Rose in exact sequence.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Ordered optical color sequencing using Color Glass, Crystal Toggle shutters, and Conveyor assists.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "open_r10",
+    "why": "East Wing optical counterpart to r7, foreshadowing Rose-Window Seraph's 3-hue mechanic.",
+    "exit": "exit_sanctum_r8_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "glass_r8_1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "expect",
+        "interactable": "sensor_r8_gold",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "interact",
+        "target": "glass_r8_2"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          200
+        ],
+        "target": "tog_r8"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "expect",
+        "interactable": "sensor_r8_blue",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "wait",
+        "secs": 1.4
+      },
+      {
+        "op": "interact",
+        "target": "glass_r8_3"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "interactable": "gate_r8_seq",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r8_north"
+      }
+    ]
+  }
+}

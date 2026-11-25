@@ -78,7 +78,7 @@
         160
       ],
       "props": {
-        "mode": "push",
+        "mode": "pull",
         "radius": 72.0,
         "strength": 540.0
       }

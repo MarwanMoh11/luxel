@@ -528,7 +528,22 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "lck_r9_entry_water",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:locks",
+            "var": "lock_water",
+            "value": "west_high"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Twin-Sluice Water Scale: Sluice-Harpoon a heavy cargo barge over the submerged West Scale Pan, then flip lock_water to east_high so its dry 3.0 weight tips the scale while flooding the East Mirror-Raft into line with the latch eye.",
     "kind": "puzzle",

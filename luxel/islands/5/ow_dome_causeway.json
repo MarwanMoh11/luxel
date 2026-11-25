@@ -40,6 +40,21 @@
       ]
     },
     {
+      "id": "ex_causeway_planet",
+      "rect": [
+        288,
+        368,
+        48,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "planet_r1",
+      "to_spawn": [
+        240,
+        296
+      ]
+    },
+    {
       "id": "ex_causeway_trial",
       "rect": [
         544,
@@ -221,8 +236,8 @@
       "id": "lore_causeway_planet",
       "kind": "lore_stone",
       "pos": [
-        304,
-        344
+        256,
+        336
       ],
       "props": {
         "string_id": "I5_OW_PLANET_GATE",
@@ -491,21 +506,8 @@
         "op": "goto",
         "to": [
           296,
-          200
+          232
         ]
-      },
-      {
-        "op": "interact",
-        "target": "bell_causeway_dial"
-      },
-      {
-        "op": "expect",
-        "flag": "causeway_bell_rung",
-        "value": true
-      },
-      {
-        "op": "wait",
-        "secs": 0.6
       },
       {
         "op": "shoot",
@@ -528,6 +530,21 @@
           304,
           328
         ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          200
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_causeway_dial"
+      },
+      {
+        "op": "expect",
+        "var": "ow_dial==90"
       }
     ]
   }

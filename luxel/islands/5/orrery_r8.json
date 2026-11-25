@@ -86,22 +86,22 @@
       "id": "phantom_owl_o5_r8",
       "kind": "phantom_owl",
       "pos": [
-        128,
-        128
+        112,
+        112
       ],
       "route": [],
       "perches": [
         [
-          128,
-          128
+          112,
+          112
         ],
         [
           168,
-          112
+          104
         ],
         [
           272,
-          112
+          104
         ]
       ],
       "zone": "orrery_r8",
@@ -111,12 +111,12 @@
       "id": "orrery_sentinel_o5_r8",
       "kind": "orrery_sentinel",
       "pos": [
-        136,
+        152,
         136
       ],
       "route": [
         [
-          128,
+          136,
           136
         ],
         [

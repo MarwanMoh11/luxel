@@ -6,6 +6,7 @@ extends LxToy
 
 var star_ids: PackedStringArray = PackedStringArray()
 var aligned: bool = false
+var _synced: bool = false
 var _sets_flag: String = "o5_r16_syzygy"
 var _pulse_t: float = 0.0
 
@@ -22,20 +23,25 @@ func _toy_setup() -> void:
 			if not sid.is_empty():
 				star_ids.append(sid)
 	aligned = Lx.state != null and not _sets_flag.is_empty() and bool(Lx.state.story_flags.get(_sets_flag, false))
+	_synced = false
 	queue_redraw()
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
 	_pulse_t += dt
+	if aligned and not _synced:
+		_synced = true
+		_notify_linked_targets(true)
 	if not aligned and _all_stars_lit():
 		aligned = true
+		_synced = true
 		if Lx.state != null and not _sets_flag.is_empty():
 			Lx.state.story_flags[_sets_flag] = true
 		_emit_sfx("o5_syzygy_chord")
 		if Lx.events != null and LxStrings.has_id("I5_OR_SYZYGY_LIT"):
 			Lx.events.narration_requested.emit("I5_OR_SYZYGY_LIT", "title", 2.8)
-		_emit_signal(true)
+		_notify_linked_targets(true)
 	queue_redraw()
 
 

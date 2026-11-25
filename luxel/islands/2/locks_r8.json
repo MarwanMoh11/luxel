@@ -166,6 +166,22 @@
       }
     },
     {
+      "id": "door_r8_bulkhead",
+      "kind": "door",
+      "pos": [
+        200,
+        224
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "lck_r8",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
       "id": "door_r8_chute",
       "kind": "door",
       "pos": [
@@ -426,7 +442,7 @@
   "events": [
     {
       "id": "lck_r8_clear_flag",
-      "on": "cleared:lck_r8",
+      "on": "cleared",
       "once": true,
       "do": [
         {

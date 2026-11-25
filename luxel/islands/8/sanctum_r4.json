@@ -3,6 +3,8 @@
   "island_id": 8,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL8_SC_R4",
+  "music": "island8_boss_p1",
   "spawn": [
     160,
     248
@@ -10,7 +12,7 @@
   "zones": [
     {
       "id": "sanctum_r4",
-      "name_key": "DUNGEON_8_NAME",
+      "name_key": "ISL8_SC_R4",
       "rect": [
         0,
         0,
@@ -32,7 +34,7 @@
       "to_region": "sanctum_r3",
       "to_spawn": [
         160,
-        40
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -54,6 +56,23 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_sanctum_r4_north"
+    },
+    {
+      "id": "exit_sanctum_r4_east",
+      "rect": [
+        432,
+        160,
+        16,
+        32
+      ],
+      "to_region": "sanctum_r10",
+      "to_spawn": [
+        48,
+        208
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_sanctum_r4_east"
     }
   ],
   "enemies": [
@@ -82,6 +101,41 @@
   ],
   "interactables": [
     {
+      "id": "anc_sanctum_r4",
+      "kind": "room_anchor",
+      "pos": [
+        160,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "brazier_sanctum_r4_w",
+      "kind": "brazier",
+      "pos": [
+        120,
+        144
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    },
+    {
+      "id": "brazier_sanctum_r4_e",
+      "kind": "brazier",
+      "pos": [
+        344,
+        144
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    },
+    {
       "id": "door_sanctum_r4_north",
       "kind": "door",
       "pos": [
@@ -95,6 +149,46 @@
           16
         ],
         "clear_zone": "sanctum_r4"
+      }
+    },
+    {
+      "id": "door_sanctum_r4_east",
+      "kind": "door",
+      "pos": [
+        424,
+        176
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          32
+        ],
+        "clear_zone": "sanctum_r4"
+      }
+    },
+    {
+      "id": "lamp_sanctum_r4_s",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        248
+      ],
+      "props": {
+        "zone": "sanctum_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sanctum_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        48
+      ],
+      "props": {
+        "zone": "sanctum_r4",
+        "lit": true
       }
     }
   ],
@@ -186,30 +280,6 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "stone_gargoyle_perch",
-      "pos": [
-        408,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "eclipse_brazier",
-      "pos": [
-        124,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
         196,
@@ -222,76 +292,69 @@
     },
     {
       "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        56,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        392,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        40,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "floating_cathedral_shard",
-      "pos": [
-        392,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.85
-    },
-    {
-      "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        136,
-        144
+        104,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
-    },
-    {
-      "sheet": "island8_scenery",
-      "prop": "dark_candelabra",
-      "pos": [
-        344,
-        144
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
     }
   ],
-  "is_2x2_room": true
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        144
+      ],
+      "radius": 44,
+      "style": "ritual",
+      "color": "deep",
+      "secondary": "ice"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        248,
+        152
+      ],
+      "radius": 28,
+      "glow": false
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Upgraded Night Harbinger transept with real West/East Eclipse Braziers fueling his Phase 2 Eclipse Mirror twist and opening the East Pendulum Ossuary branch on victory.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Lunar shield counterplay + relighting the snuffed West Eclipse Brazier to shatter his P2 mirror.",
+    "decisions": 5,
+    "expert_s": 85,
+    "reward": "night_harbinger_defeated+east_ossuary",
+    "why": "Mini-boss centerpiece linking the central spine to the East Triforium cycle.",
+    "exit": "exit_sanctum_r4_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          200,
+          184
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sanctum_r4_north"
+      }
+    ]
+  }
 }
