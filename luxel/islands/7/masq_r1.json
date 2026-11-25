@@ -715,6 +715,14 @@
     "exit": "exit_masq_r1_north",
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          196,
+          256
+        ],
+        "tol": 8.0
+      },
+      {
         "op": "interact",
         "target": "lore_masq_r1"
       },

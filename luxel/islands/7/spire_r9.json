@@ -467,10 +467,22 @@
       {
         "op": "goto",
         "to": [
+          400,
+          96
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_spire_r9_truth"
+      },
+      {
+        "op": "goto",
+        "to": [
           264,
           120
         ],
-        "tol": 16.0
+        "tol": 14.0
       },
       {
         "op": "beam",
@@ -481,12 +493,16 @@
         "target": "bramble_spire_r9"
       },
       {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
         "op": "goto",
         "to": [
           184,
           120
         ],
-        "tol": 16.0
+        "tol": 14.0
       },
       {
         "op": "sunflare"
@@ -501,7 +517,7 @@
           72,
           120
         ],
-        "tol": 16.0
+        "tol": 14.0
       },
       {
         "op": "interact",
@@ -513,7 +529,7 @@
           136,
           92
         ],
-        "tol": 18.0
+        "tol": 14.0
       },
       {
         "op": "interact",
@@ -525,7 +541,7 @@
           192,
           48
         ],
-        "tol": 16.0
+        "tol": 14.0
       },
       {
         "op": "interact",

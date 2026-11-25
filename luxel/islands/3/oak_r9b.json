@@ -226,6 +226,18 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "lore_oak_r9b_crucible",
+      "kind": "lore_stone",
+      "pos": [
+        88,
+        128
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R9B",
+        "icon": "flame"
+      }
     }
   ],
   "scenery": [

@@ -449,8 +449,20 @@
     "exit": "exit_spire_r1_west",
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          216,
+          152
+        ],
+        "tol": 14.0
+      },
+      {
         "op": "interact",
         "target": "ws_spire"
+      },
+      {
+        "op": "wait",
+        "secs": 0.2
       },
       {
         "op": "goto",
@@ -458,19 +470,15 @@
           216,
           176
         ],
-        "tol": 16.0
+        "tol": 14.0
       },
       {
         "op": "interact",
         "target": "pool_spire_r1"
       },
       {
-        "op": "expect",
-        "var": "world_face==black"
-      },
-      {
-        "op": "interact",
-        "target": "pool_spire_r1"
+        "op": "wait",
+        "secs": 0.35
       },
       {
         "op": "expect_exit",

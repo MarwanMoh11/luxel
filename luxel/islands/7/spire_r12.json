@@ -388,7 +388,7 @@
       "id": "lamp_r12_c",
       "kind": "road_lamp",
       "pos": [
-        240,
+        200,
         192
       ],
       "props": {
@@ -567,9 +567,9 @@
         "op": "goto",
         "to": [
           240,
-          172
+          168
         ],
-        "tol": 10.0
+        "tol": 8.0
       },
       {
         "op": "interact",

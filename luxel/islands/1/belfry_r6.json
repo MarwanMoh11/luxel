@@ -128,27 +128,6 @@
       "leash": 120
     },
     {
-      "id": "moth_r6_0",
-      "kind": "toll_moth",
-      "pos": [
-        56,
-        72
-      ],
-      "route": [],
-      "perches": [
-        [
-          56,
-          72
-        ],
-        [
-          56,
-          144
-        ]
-      ],
-      "zone": "belfry_vault",
-      "leash": 128
-    },
-    {
       "id": "snuffer_r6_0",
       "kind": "snuffer_acolyte",
       "pos": [
@@ -471,6 +450,16 @@
               "pos": [
                 272,
                 168
+              ],
+              "zone": "belfry_vault",
+              "leash": 130
+            },
+            {
+              "id": "moth_r6_guard",
+              "kind": "toll_moth",
+              "pos": [
+                320,
+                152
               ],
               "zone": "belfry_vault",
               "leash": 130

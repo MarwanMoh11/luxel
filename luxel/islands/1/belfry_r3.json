@@ -148,27 +148,6 @@
       "perches": [],
       "zone": "belfry_gallery",
       "leash": 130
-    },
-    {
-      "id": "moth_r3_0",
-      "kind": "toll_moth",
-      "pos": [
-        192,
-        160
-      ],
-      "route": [],
-      "perches": [
-        [
-          192,
-          160
-        ],
-        [
-          224,
-          152
-        ]
-      ],
-      "zone": "belfry_gallery",
-      "leash": 125
     }
   ],
   "interactables": [
@@ -432,6 +411,16 @@
               "pos": [
                 248,
                 56
+              ],
+              "zone": "belfry_gallery",
+              "leash": 120
+            },
+            {
+              "id": "moth_r3_rush2",
+              "kind": "toll_moth",
+              "pos": [
+                192,
+                160
               ],
               "zone": "belfry_gallery",
               "leash": 120

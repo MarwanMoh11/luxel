@@ -337,6 +337,18 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "lore_oak_r5_hint",
+      "kind": "lore_stone",
+      "pos": [
+        216,
+        120
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R5",
+        "icon": "sun"
+      }
     }
   ],
   "triggers": [],

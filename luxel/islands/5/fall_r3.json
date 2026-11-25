@@ -161,15 +161,13 @@
       }
     },
     {
-      "id": "crys_fl_r3_w2",
-      "kind": "crystal_toggle",
+      "id": "eye_fl_r3_pol",
+      "kind": "switch_eye",
       "pos": [
         272,
         240
       ],
       "props": {
-        "group": "fl_r3_pol",
-        "phase": 0,
         "target_id": "well_fl_r3_2"
       }
     },
@@ -184,7 +182,7 @@
         "mode": "pull",
         "radius": 72.0,
         "strength": 420.0,
-        "linked_crystal": "crys_fl_r3_w2"
+        "on_signal": "flip"
       }
     },
     {
@@ -600,7 +598,7 @@
       },
       {
         "op": "shoot",
-        "target": "crys_fl_r3_w2",
+        "target": "eye_fl_r3_pol",
         "wait_hit": 0.45
       },
       {

@@ -417,6 +417,51 @@
       ]
     },
     {
+      "id": "ev_r15_reentry_ambush",
+      "on": "enter",
+      "if": "flag:spire_false_lamp_shattered && !flag:spire_false_lamp_broken",
+      "once": false,
+      "do": [
+        {
+          "set_flag": "spire_r15_wave2"
+        },
+        {
+          "wave": [
+            {
+              "id": "r15_re_gk",
+              "kind": "glass_knight",
+              "pos": [
+                112,
+                160
+              ],
+              "zone": "spire_r15",
+              "leash": 200
+            },
+            {
+              "id": "r15_re_ref",
+              "kind": "reflection",
+              "pos": [
+                368,
+                120
+              ],
+              "zone": "spire_r15",
+              "leash": 200
+            },
+            {
+              "id": "r15_re_jel",
+              "kind": "moon_jelly",
+              "pos": [
+                368,
+                224
+              ],
+              "zone": "spire_r15",
+              "leash": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "ev_r15_done",
       "on": "cleared",
       "if": "flag:spire_r15_wave2",

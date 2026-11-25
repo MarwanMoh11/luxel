@@ -171,20 +171,43 @@ static func _draw_relic_and_harmony(ci: CanvasItem, box: Rect2, isl_id: int, dat
 
 static func _draw_footer_counts(ci: CanvasItem, box: Rect2) -> void:
 	var embers: int = Lx.state.ember_pieces if Lx.state != null else 0
-	var secrets: int = count_secrets()
+	var moths: int = LxQuests.current().get_moth_count()
 	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_EMBERS", [embers]), box.position + Vector2(6.0, 44.0), LxPalette.PAL["apricot"] if embers >= 16 else LxPalette.PAL["stone"], 1)
-	LxPixelFont.draw_right(ci, LxStrings.fmt("MAP_SECRETS", [secrets]), box.end.x - 6.0, box.position.y + 44.0, LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_right(ci, LxFolkData.fmt_id("JOURNAL_MOTHS_FMT", [moths, 80]), box.end.x - 6.0, box.position.y + 44.0, LxPalette.PAL["gold"] if moths > 0 else LxPalette.PAL["stone"], 1)
 
 
-static func draw_waystones(ci: CanvasItem, box: Rect2, ws_list: Array[Dictionary], ws_idx: int, ws_scroll: int, elapsed: float) -> void:
+static func ws_filter_rect(filter_val: int) -> Rect2:
+	# Compact island search filter pills inside top of Waystone box (170..300, y=109)
+	# filter_val: -1 = ALL, 0 = HUB, 1..8 = island 1..8
+	if filter_val == -1:
+		return Rect2(174.0, 108.0, 16.0, 8.0)
+	if filter_val == 0:
+		return Rect2(191.0, 108.0, 11.0, 8.0)
+	return Rect2(203.0 + float(filter_val - 1) * 11.0, 108.0, 10.0, 8.0)
+
+
+static func draw_waystones(ci: CanvasItem, box: Rect2, ws_list: Array[Dictionary], ws_idx: int, ws_scroll: int, elapsed: float, ws_filter: int = -2) -> void:
 	LxPixelFont.draw_panel(ci, box, "dusk", "mauve", "night")
-	LxPixelFont.draw_left(ci, LxStrings.text("MAP_WAYSTONES"), box.position + Vector2(6.0, 6.0), LxPalette.PAL["sky"], 1)
-	if ws_list.is_empty():
-		LxPixelFont.draw_left(ci, LxStrings.text("MAP_NO_WAYSTONES"), box.position + Vector2(6.0, 20.0), LxPalette.PAL["mauve"], 1)
-		return
+	LxPixelFont.draw_left(ci, LxStrings.text("MAP_WAYSTONES"), box.position + Vector2(6.0, 4.0), LxPalette.PAL["sky"], 1)
 	var total: int = ws_list.size()
-	var cnt_txt: String = LxStrings.fmt("MAP_WS_COUNT_FMT", [ws_idx + 1, total])
-	LxPixelFont.draw_right(ci, cnt_txt, box.end.x - 6.0, box.position.y + 6.0, LxPalette.PAL["gold"] if total > WS_VISIBLE else LxPalette.PAL["stone"], 1)
+	if total > 0:
+		var cnt_txt: String = LxStrings.fmt("MAP_WS_COUNT_FMT", [ws_idx + 1, total])
+		LxPixelFont.draw_right(ci, cnt_txt, box.end.x - 6.0, box.position.y + 4.0, LxPalette.PAL["gold"] if total > WS_VISIBLE else LxPalette.PAL["stone"], 1)
+
+	# Island search filter strip (-1=ALL, 0=H, 1..8)
+	if ws_filter >= -1:
+		for fv: int in range(-1, 9):
+			var fr: Rect2 = ws_filter_rect(fv)
+			var act: bool = fv == ws_filter
+			ci.draw_rect(fr, LxPalette.PAL["gold"] if act else LxPalette.PAL["night"])
+			ci.draw_rect(fr.grow(-1.0), LxPalette.PAL["plum"] if act else LxPalette.PAL["void"])
+			var flbl: String = LxFolkData.tr_id("PANES_TAB_ALL").substr(0, 3) if fv == -1 else (LxFolkData.tr_id("MAP_HUB_SHORT").substr(0, 1) if fv == 0 else str(fv))
+			var fcol: Color = LxPalette.PAL["gold"] if act else (LxBiomePalette.col(fv, "glow") if fv > 0 else LxPalette.PAL["stone"])
+			LxPixelFont.draw_centered(ci, flbl, fr.get_center().x, fr.position.y + 1.0, fcol, 1)
+
+	if ws_list.is_empty():
+		LxPixelFont.draw_left(ci, LxStrings.text("MAP_NO_WAYSTONES"), box.position + Vector2(6.0, 26.0), LxPalette.PAL["mauve"], 1)
+		return
 
 	var vis_count: int = mini(total - ws_scroll, WS_VISIBLE)
 	for row: int in range(vis_count):
@@ -207,18 +230,16 @@ static func draw_waystones(ci: CanvasItem, box: Rect2, ws_list: Array[Dictionary
 		var ax: float = box.end.x - 7.0
 		var up_col: Color = LxPalette.PAL["gold"] if ws_scroll > 0 else LxPalette.PAL["night"]
 		var dn_col: Color = LxPalette.PAL["gold"] if ws_scroll + WS_VISIBLE < total else LxPalette.PAL["night"]
-		# Up triangle arrow
-		ci.draw_rect(Rect2(ax + 1.0, box.position.y + 17.0, 1.0, 1.0), up_col)
-		ci.draw_rect(Rect2(ax, box.position.y + 18.0, 3.0, 1.0), up_col)
-		# Down triangle arrow
-		ci.draw_rect(Rect2(ax, box.position.y + 40.0, 3.0, 1.0), dn_col)
-		ci.draw_rect(Rect2(ax + 1.0, box.position.y + 41.0, 1.0, 1.0), dn_col)
+		ci.draw_rect(Rect2(ax + 1.0, box.position.y + 22.0, 1.0, 1.0), up_col)
+		ci.draw_rect(Rect2(ax, box.position.y + 23.0, 3.0, 1.0), up_col)
+		ci.draw_rect(Rect2(ax, box.position.y + 43.0, 3.0, 1.0), dn_col)
+		ci.draw_rect(Rect2(ax + 1.0, box.position.y + 44.0, 1.0, 1.0), dn_col)
 
-	LxPixelFont.draw_left(ci, LxStrings.text("MAP_TRAVEL_PROMPT"), box.position + Vector2(6.0, 48.0), LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(ci, LxStrings.text("MAP_TRAVEL_PROMPT"), box.position + Vector2(6.0, 49.0), LxPalette.PAL["stone"], 1)
 
 
 static func ws_row_rect(row: int) -> Rect2:
-	return Rect2(179.0, 112.0 + float(row) * 10.0, 112.0, 9.0)
+	return Rect2(179.0, 118.0 + float(row) * 9.0, 112.0, 8.0)
 
 
 static func get_dungeon_name(isl_id: int, data: Dictionary) -> String:

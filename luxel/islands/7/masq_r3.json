@@ -540,7 +540,7 @@
       {
         "op": "goto",
         "to": "dancer_r3_hollow",
-        "tol": 26.0
+        "tol": 24.0
       },
       {
         "op": "interact",
@@ -551,12 +551,9 @@
         "secs": 1.1
       },
       {
-        "op": "lens"
-      },
-      {
         "op": "goto",
         "to": "dancer_r3_hollow",
-        "tol": 26.0
+        "tol": 24.0
       },
       {
         "op": "interact",
@@ -567,16 +564,17 @@
         "secs": 1.1
       },
       {
-        "op": "lens"
-      },
-      {
         "op": "goto",
         "to": "dancer_r3_hollow",
-        "tol": 26.0
+        "tol": 24.0
       },
       {
         "op": "interact",
         "target": "dancer_r3_hollow"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "expect",

@@ -100,32 +100,32 @@
       "id": "crumb_r4_se",
       "kind": "crumble_floor",
       "pos": [
-        376,
+        384,
         224
       ],
       "props": {
         "size": [
-          96,
+          128,
           32
         ],
-        "delay": 1.4,
-        "respawn": 2.2
+        "delay": 1.8,
+        "respawn": 2.0
       }
     },
     {
       "id": "crumb_r4_sw",
       "kind": "crumble_floor",
       "pos": [
-        168,
+        160,
         224
       ],
       "props": {
         "size": [
-          96,
+          128,
           32
         ],
-        "delay": 1.4,
-        "respawn": 2.2
+        "delay": 1.8,
+        "respawn": 2.0
       }
     },
     {
@@ -137,11 +137,11 @@
       ],
       "props": {
         "size": [
-          96,
+          128,
           32
         ],
-        "delay": 1.4,
-        "respawn": 2.2
+        "delay": 1.8,
+        "respawn": 2.0
       }
     },
     {
@@ -153,10 +153,10 @@
       ],
       "props": {
         "size": [
-          48,
-          32
+          64,
+          48
         ],
-        "delay": 1.5,
+        "delay": 1.8,
         "respawn": 2.0
       }
     },

@@ -254,6 +254,31 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_oak_r4_shards",
+      "kind": "chest",
+      "pos": [
+        136,
+        136
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_oak_r4_hint",
+      "kind": "lore_stone",
+      "pos": [
+        136,
+        104
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R4",
+        "icon": "leaf"
+      }
     }
   ],
   "triggers": [],

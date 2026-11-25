@@ -497,6 +497,8 @@ const EPIC_EXACT: Dictionary = {
 	"arena_bars_fall": {"id": "arena_bars_fall", "pitch": 1.00, "db": 0.0},
 	"phase_shift_crown": {"id": "phase_shift_crown", "pitch": 1.00, "db": 0.0},
 	"half_lantern_pickup": {"id": "half_lantern_pickup", "pitch": 1.00, "db": 0.0},
+	"bell_toll_light": {"id": "bell_dawn_ring", "pitch": 1.05, "db": -1.5},
+	"enemy_alert": {"id": "warden_alert", "pitch": 1.02, "db": -3.0},
 }
 
 

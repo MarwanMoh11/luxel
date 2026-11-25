@@ -169,27 +169,6 @@
       "perches": [],
       "zone": "belfry_escapement",
       "leash": 140
-    },
-    {
-      "id": "warden_r9_e",
-      "kind": "warden",
-      "pos": [
-        280,
-        144
-      ],
-      "route": [
-        [
-          264,
-          144
-        ],
-        [
-          288,
-          184
-        ]
-      ],
-      "perches": [],
-      "zone": "belfry_escapement",
-      "leash": 140
     }
   ],
   "interactables": [

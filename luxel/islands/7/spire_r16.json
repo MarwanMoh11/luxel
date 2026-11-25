@@ -291,8 +291,24 @@
     "exit": "exit_spire_r16_east",
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          328,
+          188
+        ],
+        "tol": 10.0
+      },
+      {
         "op": "interact",
         "target": "ws_spire_upper"
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          250
+        ],
+        "tol": 8.0
       },
       {
         "op": "interact",

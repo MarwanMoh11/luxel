@@ -87,27 +87,6 @@
       ],
       "zone": "toll_drop",
       "leash": 180
-    },
-    {
-      "id": "owl_toll_r2_e",
-      "kind": "owl",
-      "pos": [
-        312,
-        240
-      ],
-      "route": [],
-      "perches": [
-        [
-          312,
-          240
-        ],
-        [
-          304,
-          176
-        ]
-      ],
-      "zone": "toll_drop",
-      "leash": 180
     }
   ],
   "interactables": [
@@ -459,28 +438,8 @@
               "id": "moth_tr2_w1",
               "kind": "toll_moth",
               "pos": [
-                80,
-                200
-              ],
-              "zone": "toll_drop",
-              "leash": 180
-            },
-            {
-              "id": "moth_tr2_w2",
-              "kind": "toll_moth",
-              "pos": [
                 304,
                 200
-              ],
-              "zone": "toll_drop",
-              "leash": 180
-            },
-            {
-              "id": "owl_tr2_w3",
-              "kind": "owl",
-              "pos": [
-                296,
-                256
               ],
               "zone": "toll_drop",
               "leash": 180
@@ -507,11 +466,21 @@
               "leash": 140
             },
             {
-              "id": "moth_tr2_land",
-              "kind": "toll_moth",
+              "id": "snuffer_tr2_land2",
+              "kind": "snuffer_acolyte",
               "pos": [
                 232,
                 408
+              ],
+              "zone": "toll_drop",
+              "leash": 140
+            },
+            {
+              "id": "moth_tr2_land",
+              "kind": "toll_moth",
+              "pos": [
+                192,
+                416
               ],
               "zone": "toll_drop",
               "leash": 160

@@ -87,7 +87,7 @@
         120
       ],
       "props": {
-        "secs": 8.5,
+        "secs": 7.0,
         "loop": true
       }
     },
@@ -472,7 +472,7 @@
       },
       {
         "op": "wait",
-        "secs": 0.8
+        "secs": 1.8
       },
       {
         "op": "glide",

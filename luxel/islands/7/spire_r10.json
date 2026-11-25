@@ -473,9 +473,9 @@
         "op": "goto",
         "to": [
           240,
-          200
+          176
         ],
-        "tol": 18.0
+        "tol": 16.0
       },
       {
         "op": "clear",
@@ -487,11 +487,27 @@
           240,
           80
         ],
-        "tol": 20.0
+        "tol": 16.0
       },
       {
         "op": "interact",
         "target": "great_lamp_7"
+      },
+      {
+        "op": "wait",
+        "secs": 0.8
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          44
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "interact",
+        "target": "bridge_of_light_spire"
       },
       {
         "op": "expect",

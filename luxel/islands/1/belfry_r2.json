@@ -88,22 +88,22 @@
       "id": "moth_r2_w",
       "kind": "toll_moth",
       "pos": [
-        104,
-        88
+        208,
+        56
       ],
       "route": [],
       "perches": [
         [
-          104,
-          88
+          208,
+          56
         ],
         [
-          184,
-          104
+          208,
+          120
         ]
       ],
       "zone": "belfry_chasm",
-      "leash": 110
+      "leash": 96
     },
     {
       "id": "snuffer_r2_c",
