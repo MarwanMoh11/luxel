@@ -141,7 +141,10 @@
       "props": {
         "requires_blue": true,
         "requires_prism": true,
-        "target_id": "bridge_lh_r7",
+        "target_ids": [
+          "bridge_lh_r7",
+          "door_lh_r7_shutter"
+        ],
         "sets_flag": "lh_r7_bridge_open"
       }
     },
@@ -286,6 +289,7 @@
           16
         ],
         "requires_signals": [
+          "switch_eye_lh_r7_bridge",
           "switch_eye_lh_r7"
         ],
         "sets_flag": "lh_r7_gallery_open"

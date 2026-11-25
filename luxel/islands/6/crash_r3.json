@@ -26,7 +26,7 @@
       "to_region": "crash_r4",
       "to_spawn": [56, 144],
       "requires_moves": [],
-      "requires_flags": ["crash_throttle_locked"],
+      "requires_flags": ["hollow_ram_phantom_defeated"],
       "locked_door_id": "door_crash_r3_east"
     }
   ],
@@ -78,7 +78,7 @@
       "props": {
         "door_kind": "ward_barrier",
         "size": [16, 64],
-        "requires_flags": ["crash_throttle_locked"]
+        "requires_flags": ["hollow_ram_phantom_defeated"]
       }
     },
     { "id": "lamp_cr3_1", "kind": "road_lamp", "pos": [80, 96], "props": { "lit": true } },
@@ -117,7 +117,8 @@
     "solution": [
       { "op": "goto", "to": [160, 144], "tol": 8.0 },
       { "op": "clear", "timeout": 120.0 },
-      { "op": "expect", "flag": "crash_throttle_locked" },
+      { "op": "expect", "flag": "hollow_ram_phantom_defeated" },
+      { "op": "wait_until", "target": "door_crash_r3_east", "prop": "opened", "value": true, "timeout": 3.0 },
       { "op": "expect_exit", "exit": "exit_crash_r3_east" }
     ]
   }

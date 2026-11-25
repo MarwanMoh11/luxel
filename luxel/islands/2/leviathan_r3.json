@@ -228,6 +228,20 @@
       }
     },
     {
+      "id": "mir_lev_r3_rib",
+      "kind": "blue_transformer",
+      "pos": [
+        312,
+        272
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
       "id": "door_lev_r3_esoph",
       "kind": "door",
       "pos": [

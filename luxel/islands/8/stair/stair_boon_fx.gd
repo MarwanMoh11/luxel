@@ -433,13 +433,10 @@ func _hide_defeated_bosses() -> void:
 	if not (en_v is Array):
 		return
 	for ev: Variant in (en_v as Array):
-		if not (ev is Node2D) or not is_instance_valid(ev):
+		if not (ev is LxBossBase) or not is_instance_valid(ev):
 			continue
-		var en: Node2D = ev as Node2D
-		if not en.visible:
+		var bb: LxBossBase = ev as LxBossBase
+		if not bb.visible:
 			continue
-		var hp_dead: bool = en.get("hp") != null and float(en.get("hp")) <= 0.0
-		var st_dead: bool = en.get("boss_state") != null and int(en.get("boss_state")) == 5
-		var m_dead: bool = en.has_method("is_dead") and bool(en.call("is_dead"))
-		if hp_dead or st_dead or m_dead:
-			en.visible = false
+		if bb.boss_state == LxBossBase.BossState.DEATH and bb.hp <= 0.0 and (bb.state_timer <= 0.05 or bool(bb.get("_death_emitted"))):
+			bb.visible = false

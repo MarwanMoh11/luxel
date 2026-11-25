@@ -339,7 +339,7 @@
     },
     {
       "id": "en_r6_b3_owl",
-      "kind": "phantom_owl",
+      "kind": "owl",
       "pos": [
         88,
         144

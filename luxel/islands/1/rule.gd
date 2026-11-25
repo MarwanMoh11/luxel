@@ -109,7 +109,8 @@ func on_region_loaded(region_id: String) -> void:
 # ---- Public State & Power Queries ----
 
 func get_bell_hour() -> String:
-	var v: Variant = LxToyDraw.world_get_var(SCOPE_ISLAND, VAR_BELL_HOUR, HOUR_EVENING)
+	var vs: LxWorldState = _vars if _vars != null else Lx.vars
+	var v: Variant = vs.get_var(SCOPE_ISLAND, VAR_BELL_HOUR, HOUR_EVENING) if vs != null else LxToyDraw.world_get_var(SCOPE_ISLAND, VAR_BELL_HOUR, HOUR_EVENING)
 	var s: String = str(v).strip_edges().to_lower()
 	return HOUR_MIDNIGHT if s == HOUR_MIDNIGHT else HOUR_EVENING
 
@@ -121,11 +122,15 @@ func is_midnight() -> bool:
 func set_bell_hour(hour: String, silent: bool = false) -> void:
 	var h: String = HOUR_MIDNIGHT if hour.strip_edges().to_lower() == HOUR_MIDNIGHT else HOUR_EVENING
 	var prev: String = get_bell_hour()
-	LxToyDraw.world_set_var(SCOPE_ISLAND, VAR_BELL_HOUR, h)
+	var vs: LxWorldState = _vars if _vars != null else Lx.vars
+	if vs != null:
+		vs.set_var(SCOPE_ISLAND, VAR_BELL_HOUR, h)
+	else:
+		LxToyDraw.world_set_var(SCOPE_ISLAND, VAR_BELL_HOUR, h)
 	if prev == h:
 		_sync_hour_entities(h, silent)
 		return
-	if _vars == null:
+	if vs == null or _vars == null:
 		_apply_bell_hour_transition(h, silent)
 
 

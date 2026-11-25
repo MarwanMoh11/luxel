@@ -135,7 +135,7 @@
           "mid",
           "high"
         ],
-        "style": "pedal",
+        "style": "tide_wheel",
         "shootable": true,
         "persist": false
       }

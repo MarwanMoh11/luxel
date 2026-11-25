@@ -389,9 +389,9 @@
   "design": {
     "idea": "The Lantern's Threshold: quiet vaulted exhale right outside The Hush with the Upper Waystone, Final Toll Scale, Hollow Wick's Final Note ('I KEPT MY SCREEN. I LOST THE LIGHT.'), 80th Lost Moth #10, and Narthex Express Lift.",
     "kind": "story",
-    "beat": "ketsu",
+    "beat": "sho",
     "teaches": "Final voluntary Toll trade, Hollow Wick revelation, 5s boss retry waystone, and 10th Island 8 Moth.",
-    "decisions": 4,
+    "decisions": 5,
     "expert_s": 40,
     "reward": "upper_ws+moth_8_10+final_toll",
     "why": "Gives players an unforgettable quiet breath, final narrative payoff, and instant retry before The Hush.",

@@ -299,6 +299,7 @@ func grant_boon(boon_id: String) -> bool:
 func complete_floor(floor_num: int = -1) -> Dictionary:
 	var f: int = floor_num if floor_num > 0 else maxi(1, _floor)
 	_floor = clampi(f, 1, MAX_FLOORS)
+	_pending_lift_return = false
 	if LIFT_FLOORS.has(_floor):
 		unlock_lift(_floor)
 	var score_info: Dictionary = compute_score(_floor, LxSold.current().get_sold_count(), _run_deaths)
@@ -354,6 +355,7 @@ func get_last_lift_checkpoint(for_floor: int = -1) -> Dictionary:
 func warp_to_lift(floor_num: int, seed_val: int = 0) -> bool:
 	if not is_lift_unlocked(floor_num):
 		return false
+	_pending_lift_return = false
 	if _boons.is_empty():
 		start_run(seed_val if seed_val != 0 else _seed, floor_num)
 	else:
@@ -526,9 +528,9 @@ func _handle_post_death_lift_return(reloaded_region: String) -> void:
 	# Skip cross-region warp when running single-room synthetic room_check isolation.
 	if Lx.input != null and bool(Lx.input.get("_use_synthetic")):
 		return
-	_floor = int(cp.get("floor", _floor))
-	_write_vars()
 	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.has_method("load_island_region"):
+		_floor = int(cp.get("floor", _floor))
+		_write_vars()
 		var pos_v: Vector2 = cp.get("pos", Vector2(-1.0, -1.0)) as Vector2
 		Lx.root.call_deferred("load_island_region", 8, target_reg, pos_v)
 		if Lx.events != null and LxStrings.has_id("ISL8_STAIR_LIFT_RETURN"):

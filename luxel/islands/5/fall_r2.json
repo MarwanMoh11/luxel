@@ -117,23 +117,23 @@
       "id": "well_fl_r2",
       "kind": "polarity_well",
       "pos": [
-        236,
-        128
+        260,
+        88
       ],
       "props": {
         "mode": "pull",
-        "radius": 76.0,
-        "strength": 950.0,
+        "radius": 72.0,
+        "strength": 420.0,
         "orbit_capture": true,
-        "orbit_r": 34.0
+        "orbit_r": 30.0
       }
     },
     {
       "id": "eye_fl_r2_a",
       "kind": "switch_eye",
       "pos": [
-        268,
-        100
+        280,
+        96
       ],
       "props": {
         "target_ids": [
@@ -477,8 +477,8 @@
       {
         "op": "shoot",
         "target": [
-          245,
-          120
+          248,
+          125
         ],
         "wait_hit": 0.9
       },

@@ -70,6 +70,20 @@
       ]
     },
     {
+      "id": "exit_forecourt_toll",
+      "rect": [
+        272,
+        0,
+        32,
+        16
+      ],
+      "to_region": "toll_r1",
+      "to_spawn": [
+        192,
+        240
+      ]
+    },
+    {
       "id": "exit_forecourt_north",
       "rect": [
         272,
@@ -239,6 +253,26 @@
       "id": "midnight_forecourt",
       "when": "bell_hour==midnight",
       "tint": "midnight"
+    },
+    {
+      "id": "forecourt_to_toll",
+      "when": "!flag:great_toll_done && !flag:isl1_belfry_entered && !flag:tut_belfry_entered && !flag:great_lamp_1",
+      "enable": [
+        "exit_forecourt_toll"
+      ],
+      "disable": [
+        "exit_forecourt_north"
+      ]
+    },
+    {
+      "id": "forecourt_to_belfry",
+      "when": "flag:great_toll_done || flag:isl1_belfry_entered || flag:tut_belfry_entered || flag:great_lamp_1",
+      "enable": [
+        "exit_forecourt_north"
+      ],
+      "disable": [
+        "exit_forecourt_toll"
+      ]
     }
   ],
   "events": [],
@@ -446,10 +480,12 @@
     "optional": true,
     "start": {
       "flags": [
-        "seal_broken_1"
+        "seal_broken_1",
+        "undercroft_cleared",
+        "manor_cleared"
       ]
     },
-    "exit": "exit_forecourt_north",
+    "exit": "exit_forecourt_toll",
     "solution": [
       {
         "op": "interact",
@@ -469,7 +505,7 @@
       },
       {
         "op": "expect_exit",
-        "exit": "exit_forecourt_north"
+        "exit": "exit_forecourt_toll"
       }
     ]
   }

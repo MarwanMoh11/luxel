@@ -1,7 +1,7 @@
 {
   "pack_id": "i1_belfry",
   "owner": "P1-GRAND",
-  "comment": "Island 1 Grand Package: The Great Toll set piece (toll_r1..r4, debug_only until belfry_forecourt links toll_r1) and the 18-room deepened Grand Belfry (belfry_r1..r18).",
+  "comment": "Island 1 Grand Package: The Great Toll set piece (toll_r1..r4, live via belfry_forecourt) and the 18-room deepened Grand Belfry (belfry_r1..r18).",
   "interactables": {
     "bf_crank_relic": "res://luxel/islands/1/belfry/bf_crank_relic.gd",
     "toll_clapper_rig": "res://luxel/islands/1/toll/toll_clapper_rig.gd",
@@ -27,8 +27,7 @@
         "undercroft_cleared",
         "manor_cleared"
       ],
-      "done_flag": "great_toll_done",
-      "debug_only": true
+      "done_flag": "great_toll_done"
     }
   ],
   "regions": {
@@ -37,32 +36,28 @@
       "theme": "great_toll_shaft",
       "music": "isl1_setpiece",
       "dark": true,
-      "map": [0, 0],
-      "debug_only": true
+      "map": [0, 0]
     },
     "toll_r2": {
       "name_key": "ISL1_TOLL_DROP",
       "theme": "great_toll_shaft",
       "music": "isl1_setpiece",
       "dark": true,
-      "map": [0, 1],
-      "debug_only": true
+      "map": [0, 1]
     },
     "toll_r3": {
       "name_key": "ISL1_TOLL_SNAG",
       "theme": "great_toll_shaft",
       "music": "isl1_setpiece",
       "dark": true,
-      "map": [0, 2],
-      "debug_only": true
+      "map": [0, 2]
     },
     "toll_r4": {
       "name_key": "ISL1_TOLL_BRAKE",
       "theme": "great_toll_shaft",
       "music": "isl1_setpiece",
       "dark": true,
-      "map": [0, 3],
-      "debug_only": true
+      "map": [0, 3]
     },
     "belfry_r1": {
       "name_key": "ISL1_BF_NARTHEX",
@@ -163,7 +158,7 @@
     "belfry_r16": {
       "name_key": "ISL1_BF_METRONOME",
       "theme": "great_toll_shaft",
-      "music": "isl1_boss_minor_p1",
+      "music": "island1_dungeon",
       "dark": true,
       "map": [1, 2]
     },

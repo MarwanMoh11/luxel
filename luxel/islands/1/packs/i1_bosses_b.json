@@ -77,9 +77,9 @@
       "mini": true,
       "dungeon": "manor",
       "region": "manor_r5",
-      "music": "island1_boss_p1",
-      "music_p2": "island1_boss_p2",
-      "heart": "half",
+      "music": "isl1_boss_minor_p1",
+      "music_p2": "isl1_boss_minor_p2",
+      "heart": "none",
       "flag": "manor_miniboss_done"
     },
     "chandelier": {
@@ -89,8 +89,8 @@
       "mini": false,
       "dungeon": "manor",
       "region": "manor_r11",
-      "music": "island1_boss_p1",
-      "music_p2": "island1_boss_p2",
+      "music": "isl1_boss_minor_p1",
+      "music_p2": "isl1_boss_minor_p2",
       "heart": "half",
       "flag": "manor_cleared"
     },
@@ -101,9 +101,9 @@
       "mini": true,
       "dungeon": "belfry",
       "region": "belfry_r16",
-      "music": "island1_boss_p1",
-      "music_p2": "island1_boss_p2",
-      "heart": "half",
+      "music": "isl1_boss_minor_p1",
+      "music_p2": "isl1_boss_minor_p2",
+      "heart": "none",
       "flag": "metronome_defeated"
     },
     "silent_bell": {

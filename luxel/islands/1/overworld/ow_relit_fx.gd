@@ -29,7 +29,8 @@ func _process(dt: float) -> void:
 func _draw() -> void:
 	if not visible:
 		return
-	var is_mid: bool = str(LxToyDraw.world_get_var("island:1", "bell_hour", "evening")).to_lower() == "midnight"
+	var bh_v: Variant = Lx.vars.get_var("island:1", "bell_hour", "evening") if Lx.vars != null else LxToyDraw.world_get_var("island:1", "bell_hour", "evening")
+	var is_mid: bool = str(bh_v).strip_edges().to_lower() == "midnight"
 	if is_mid:
 		return
 	var reduced: bool = LxHudFx.flash_reduced()

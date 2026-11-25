@@ -31,9 +31,9 @@ func _init() -> void:
 	boss_name_key = "ISL1_BOSS_CHAND"
 	island_id = 1
 	is_miniboss = false
-	reward_heart = "half"
-	music_cue = "island1_boss_p1"
-	music_p2_cue = "island1_boss_p2"
+	reward_heart = "none" # Pack JSON heart="half" awarded once via LxBossHud (avoids double-award)
+	music_cue = "isl1_boss_minor_p1"
+	music_p2_cue = "isl1_boss_minor_p2"
 	max_hp = 92.0
 	hp = 92.0
 	body_radius = 12.5

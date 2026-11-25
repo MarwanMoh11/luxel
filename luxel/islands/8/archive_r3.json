@@ -403,6 +403,20 @@
   ],
   "events": [
     {
+      "id": "ev_r3_init_flood",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:archive",
+            "name": "mem_tide",
+            "value": "flood"
+          }
+        }
+      ]
+    },
+    {
       "id": "ev_r3_mem2",
       "on": "signal:eye_r3_sluice",
       "once": true,

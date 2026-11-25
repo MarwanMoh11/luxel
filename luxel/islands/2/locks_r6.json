@@ -95,11 +95,11 @@
       "id": "skiff_r6",
       "kind": "vehicle_skiff",
       "pos": [
-        200,
-        232
+        184,
+        216
       ],
       "props": {
-        "dir": "e"
+        "dir": "n"
       }
     },
     {
@@ -118,8 +118,8 @@
       "id": "post_r6_se",
       "kind": "mooring_post",
       "pos": [
-        328,
-        216
+        312,
+        200
       ],
       "props": {
         "orbit_r": 42.0,

@@ -431,7 +431,7 @@
     "kind": "boss",
     "beat": "ten",
     "teaches": "Hue-matched arena positioning + Beam/Sunflare wing shatter against a 2-phase stained-glass mini-boss.",
-    "decisions": 6,
+    "decisions": 8,
     "expert_s": 90,
     "reward": "sanctum_seal_e+ember_8_seraph+half_lantern",
     "why": "East Wing mini-boss climax opening the East Belfry entrance to r13.",

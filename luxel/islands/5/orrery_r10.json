@@ -497,6 +497,13 @@
         "flag": "island_5_relit"
       },
       {
+        "op": "wait_until",
+        "interactable": "bridge_of_light_5_crown",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.0
+      },
+      {
         "op": "expect_exit",
         "exit": "exit_o5_r10_bridge"
       }

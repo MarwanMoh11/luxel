@@ -388,7 +388,7 @@
         "op": "shoot",
         "from": [
           136,
-          120
+          104
         ],
         "target": "transformer_lh_r2"
       },

@@ -151,8 +151,8 @@
     {
       "id": "grate_r16_q4",
       "kind": "grate",
-      "pos": [216, 64],
-      "props": { "size": [16, 96] }
+      "pos": [216, 40],
+      "props": { "size": [16, 48] }
     },
     {
       "id": "coupler_r16_bank",
@@ -163,7 +163,7 @@
     {
       "id": "door_r16_q4",
       "kind": "door",
-      "pos": [152, 72],
+      "pos": [216, 88],
       "props": { "door_kind": "switch_door", "size": [16, 48], "requires_signals": ["coupler_r16_bank"] }
     },
     {
@@ -242,7 +242,7 @@
     "reward": "kiln_cast_east+shortcut_r11+open_r17",
     "why": "Climax puzzle of the Heat-Flow Casting Wing releasing the East Casting Clamp.",
     "exit": "exit_kiln_r16_west",
-    "start": { "vars": { "dungeon:great_kiln:kiln_heat": "surge" }, "moves": ["sunflare"], "ember": 100, "flags": ["crucible_weaver_defeated", "kiln_cast_key_2"], "keys": { "wick_key": 1 } },
+    "start": { "vars": { "dungeon:great_kiln:kiln_heat": "surge" }, "moves": ["sunflare"], "ember": 100, "flags": ["crucible_weaver_defeated", "kiln_cast_key_2"], "keys": { "great_kiln:wick_key": 1 } },
     "solution": [
       { "op": "goto", "to": [80, 192], "tol": 4.0 },
       { "op": "interact", "target": "lever_r16_damper" },

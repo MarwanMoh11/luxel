@@ -49,8 +49,8 @@
       ],
       "props": {
         "mode": "pull",
-        "radius": 72.0,
-        "strength": 540.0
+        "radius": 68.0,
+        "strength": 320.0
       }
     },
     {
@@ -62,8 +62,8 @@
       ],
       "props": {
         "mode": "pull",
-        "radius": 72.0,
-        "strength": 540.0
+        "radius": 68.0,
+        "strength": 320.0
       }
     },
     {
@@ -408,6 +408,13 @@
         "prop": "opened",
         "value": true,
         "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          320,
+          136
+        ]
       },
       {
         "op": "goto",

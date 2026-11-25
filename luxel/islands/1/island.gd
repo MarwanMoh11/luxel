@@ -14,33 +14,15 @@ const REQUIRED_BEACONS: Array[String] = [
 ]
 
 const REGIONS: Array[String] = [
-	"overworld",
-	"bell_yard",
-	"vesper_graveyard",
-	"manor_gardens",
-	"belfry_forecourt",
-	"cliff_foundry",
-	"cave_echo_well",
-	"cave_whisper",
-	"cave_shed",
-	"cave_foundry_trial",
-	"cave_lens_grotto",
-	"superboss_silent",
-	"belfry_r1",
-	"belfry_r2",
-	"belfry_r3",
-	"belfry_r4",
-	"belfry_r5",
-	"belfry_r6",
-	"belfry_r7",
+	"overworld", "bell_yard", "vesper_graveyard", "manor_gardens", "belfry_forecourt", "cliff_foundry",
+	"cave_echo_well", "cave_whisper", "cave_shed", "cave_foundry_trial", "cave_lens_grotto", "superboss_silent",
+	"belfry_r1", "belfry_r2", "belfry_r3", "belfry_r4", "belfry_r5", "belfry_r6",
+	"belfry_r7", "belfry_r8", "belfry_r9", "belfry_r10", "belfry_r11", "belfry_r12",
+	"belfry_r13", "belfry_r14", "belfry_r15", "belfry_r16", "belfry_r17", "belfry_r18",
 ]
 
 const OUTDOOR_RELIT_REGIONS: PackedStringArray = [
-	"bell_yard",
-	"vesper_graveyard",
-	"manor_gardens",
-	"belfry_forecourt",
-	"cliff_foundry",
+	"bell_yard", "vesper_graveyard", "manor_gardens", "belfry_forecourt", "cliff_foundry",
 ]
 
 const TutorialCuesScript := preload("res://luxel/islands/1/tutorial_cues.gd")
@@ -427,9 +409,40 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_r4_kills = 0
 		if _events != null:
 			var mb_live: bool = region_id == "belfry_r5" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
+			var metro_live: bool = region_id == "belfry_r16" and st != null and not st.defeated_bosses.has("brass_metronome") and not bool(st.story_flags.get("metronome_defeated", false))
 			if mb_live:
 				_emit_narration("MINIBOSS_1", "title", 3.2)
-			_events.music_mode_requested.emit("island1_boss_p1" if mb_live else "island1_dungeon")
+				_events.music_mode_requested.emit("island1_boss_p1")
+			elif metro_live:
+				_emit_narration("ISL1_BOSS_METRO", "title", 3.2)
+				_events.music_mode_requested.emit("isl1_boss_minor_p1")
+			else:
+				_events.music_mode_requested.emit("island1_dungeon")
+	elif region_id.begins_with("toll_"):
+		_unmount_tutorial_cues()
+		if region_id == "toll_r1" and st != null and not bool(st.story_flags.get("isl1_toll_entered", false)):
+			st.story_flags["isl1_toll_entered"] = true
+			_emit_narration("ISL1_Z_TOLL", "title", 3.2)
+		if _events != null:
+			_events.music_mode_requested.emit("isl1_setpiece")
+	elif region_id.begins_with("undercroft_"):
+		_unmount_tutorial_cues()
+		if _events != null:
+			var uc_b: String = "toll_hound" if region_id == "undercroft_r5" else ("sexton" if region_id == "undercroft_r11" else "")
+			var uc_fl: String = "uc_miniboss_done" if uc_b == "toll_hound" else "undercroft_cleared"
+			var uc_live: bool = not uc_b.is_empty() and st != null and not st.defeated_bosses.has(uc_b) and not bool(st.story_flags.get(uc_fl, false))
+			if uc_live:
+				_emit_narration("ISL1_BOSS_HOUND" if uc_b == "toll_hound" else "ISL1_BOSS_SEXTON", "title", 3.2)
+			_events.music_mode_requested.emit("isl1_boss_minor_p1" if uc_live else "isl1_undercroft")
+	elif region_id.begins_with("manor_"):
+		_unmount_tutorial_cues()
+		if _events != null:
+			var mn_b: String = "clockwork_valet" if region_id == "manor_r5" else ("chandelier" if region_id == "manor_r11" else "")
+			var mn_fl: String = "manor_miniboss_done" if mn_b == "clockwork_valet" else "manor_cleared"
+			var mn_live: bool = not mn_b.is_empty() and st != null and not st.defeated_bosses.has(mn_b) and not bool(st.story_flags.get(mn_fl, false))
+			if mn_live:
+				_emit_narration("ISL1_BOSS_VALET" if mn_b == "clockwork_valet" else "ISL1_BOSS_CHAND", "title", 3.2)
+			_events.music_mode_requested.emit("isl1_boss_minor_p1" if mn_live else "isl1_manor")
 	elif region_id == "superboss_silent":
 		_unmount_tutorial_cues()
 		var sb_dead: bool = st != null and (st.defeated_bosses.has("silent_bell") or bool(st.story_flags.get("silent_bell_defeated", false)))

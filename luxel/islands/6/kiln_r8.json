@@ -43,11 +43,11 @@
     {
       "id": "bellows_kiln_r8_0",
       "kind": "bellows_imp",
-      "pos": [184, 88],
-      "route": [[168, 88], [216, 88]],
+      "pos": [264, 96],
+      "route": [[248, 96], [296, 96]],
       "perches": [],
       "zone": "kiln_r8",
-      "leash": 124
+      "leash": 88
     },
     {
       "id": "mole_kiln_r8_0",
@@ -62,10 +62,10 @@
       "id": "bellows_kiln_r8_1",
       "kind": "bellows_imp",
       "pos": [296, 64],
-      "route": [[264, 56], [328, 72]],
+      "route": [[272, 64], [328, 72]],
       "perches": [],
       "zone": "kiln_r8",
-      "leash": 128
+      "leash": 88
     },
     {
       "id": "knight_kiln_r8_0",

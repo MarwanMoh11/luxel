@@ -117,37 +117,47 @@
       "id": "sn_fl_r3_1",
       "kind": "star_node",
       "pos": [
-        144,
+        136,
         184
       ],
       "props": {
-        "link_range": 84.0
+        "link_range": 100.0
       }
     },
     {
       "id": "well_fl_r3_1",
       "kind": "polarity_well",
       "pos": [
-        190,
-        184
+        192,
+        244
       ],
       "props": {
         "mode": "pull",
-        "radius": 54.0,
-        "strength": 520.0,
-        "orbit_capture": true,
-        "orbit_r": 16.0
+        "radius": 48.0,
+        "strength": 420.0,
+        "orbit_capture": false
+      }
+    },
+    {
+      "id": "hook_fl_r3_mid",
+      "kind": "lantern_hook",
+      "pos": [
+        192,
+        184
+      ],
+      "props": {
+        "zone": "fl_r3"
       }
     },
     {
       "id": "sn_fl_r3_2",
       "kind": "star_node",
       "pos": [
-        236,
+        248,
         184
       ],
       "props": {
-        "link_range": 84.0
+        "link_range": 100.0
       }
     },
     {
@@ -173,7 +183,7 @@
       "props": {
         "mode": "pull",
         "radius": 72.0,
-        "strength": 580.0,
+        "strength": 420.0,
         "linked_crystal": "crys_fl_r3_w2"
       }
     },
@@ -197,6 +207,7 @@
       ],
       "props": {
         "scope": "room:5:fall_r3",
+        "var": "fall_latch",
         "var_name": "fall_latch",
         "allow_ccw_blue": false,
         "allow_interact": true,
@@ -522,7 +533,7 @@
       {
         "op": "goto",
         "to": [
-          144,
+          136,
           184
         ]
       },
@@ -534,15 +545,15 @@
       {
         "op": "throw",
         "target": [
-          190,
-          168
+          192,
+          184
         ],
-        "hold": 0.35
+        "hold": 0.45
       },
       {
         "op": "goto",
         "to": [
-          236,
+          248,
           184
         ]
       },
@@ -599,8 +610,8 @@
       {
         "op": "shoot",
         "target": [
-          432,
-          142
+          428,
+          162
         ],
         "wait_hit": 0.9
       },

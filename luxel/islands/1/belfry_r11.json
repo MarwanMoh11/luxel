@@ -116,7 +116,7 @@
         "dawn_step_deg": 90,
         "war_step_deg": -90,
         "sync_var": "belfry_clock_hand",
-        "sync_scope": "island:1",
+        "sync_scope": "dungeon:belfry",
         "persist": true
       }
     },
@@ -275,60 +275,28 @@
       "id": "hand_west",
       "when": "belfry_clock_hand==west",
       "tiles": [
-        {
-          "rect": [
-            6,
-            12,
-            7,
-            2
-          ],
-          "tile": "bridge"
-        }
+        [6, 12, 7, 2, "bridge"]
       ]
     },
     {
       "id": "hand_north",
       "when": "belfry_clock_hand==north",
       "tiles": [
-        {
-          "rect": [
-            17,
-            3,
-            2,
-            7
-          ],
-          "tile": "bridge"
-        }
+        [17, 3, 2, 7, "bridge"]
       ]
     },
     {
       "id": "hand_east",
       "when": "belfry_clock_hand==east",
       "tiles": [
-        {
-          "rect": [
-            23,
-            12,
-            7,
-            2
-          ],
-          "tile": "bridge"
-        }
+        [24, 12, 7, 2, "bridge"]
       ]
     },
     {
       "id": "hand_south",
       "when": "belfry_clock_hand==south",
       "tiles": [
-        {
-          "rect": [
-            6,
-            12,
-            7,
-            2
-          ],
-          "tile": "bridge"
-        }
+        [6, 12, 7, 2, "bridge"]
       ]
     }
   ],
@@ -419,7 +387,7 @@
     "why": "Multi-level Clockwork Hub #2 connecting F1 Lift (r5), West Drum (r10), East Pendulum Wing (r12/r13), and F3 Shaft (r14).",
     "start": {
       "vars": {
-        "island:1:belfry_clock_hand": "north"
+        "dungeon:belfry:belfry_clock_hand": "north"
       }
     },
     "exit": "exit_r11_east",

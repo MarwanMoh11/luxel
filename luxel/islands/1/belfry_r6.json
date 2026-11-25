@@ -95,8 +95,10 @@
         208
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "belfry_spire_crank"
+      ],
+      "locked_door_id": "door_r6_ne"
     }
   ],
   "enemies": [
@@ -305,6 +307,24 @@
         ],
         "requires_flags": [
           "keepers_flame"
+        ]
+      }
+    },
+    {
+      "id": "door_r6_ne",
+      "kind": "door",
+      "pos": [
+        352,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "belfry_spire_crank"
         ]
       }
     },

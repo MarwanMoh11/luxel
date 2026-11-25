@@ -386,24 +386,32 @@
     "kind": "boss",
     "beat": "ketsu",
     "teaches": "All 8 islands' rules in pairs across 4 phases plus the final choice at the Great Lamp.",
-    "decisions": 6,
+    "decisions": 8,
     "expert_s": 220,
     "reward": "great_lamp_8+ending",
     "why": "Grand finale arena of Luxel, reached via both sanctum_r5 and the deepened Lantern's Threshold (r14).",
     "optional": true,
+    "start": {
+      "hearts": 12,
+      "ember": 100
+    },
     "exit": "exit_sanctum_r6_sw",
     "solution": [
       {
         "op": "goto",
         "to": [
-          192,
-          232
+          264,
+          184
         ],
         "tol": 14.0
       },
       {
         "op": "clear",
         "timeout": 300.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
       },
       {
         "op": "goto",

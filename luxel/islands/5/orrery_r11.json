@@ -119,12 +119,12 @@
       "kind": "rotor",
       "pos": [
         224,
-        152
+        164
       ],
       "props": {
         "size": [
-          96,
-          96
+          72,
+          72
         ],
         "quarter_on_signal": true
       }
@@ -133,11 +133,12 @@
       "id": "bell_o5_r11",
       "kind": "star_bell",
       "pos": [
-        200,
-        152
+        204,
+        164
       ],
       "props": {
         "scope": "room:5:orrery_r11",
+        "var": "o5_r11_ring",
         "var_name": "o5_r11_ring",
         "rotors": [
           "rotor_o5_r11"
@@ -150,8 +151,8 @@
       "id": "crys_o5_r11",
       "kind": "crystal_toggle",
       "pos": [
-        344,
-        192
+        256,
+        224
       ],
       "props": {
         "group": "o5_r11_pol",
@@ -164,12 +165,12 @@
       "kind": "polarity_well",
       "pos": [
         172,
-        148
+        156
       ],
       "props": {
         "mode": "pull",
-        "radius": 52.0,
-        "strength": 420.0,
+        "radius": 44.0,
+        "strength": 320.0,
         "linked_crystal": "crys_o5_r11"
       }
     },
@@ -178,12 +179,12 @@
       "kind": "meteor_orb",
       "pos": [
         248,
-        112
+        108
       ],
       "props": {
         "cradle_pos": [
           248,
-          112
+          108
         ],
         "mass": 1.0,
         "respawn_s": 0.8
@@ -194,7 +195,7 @@
       "kind": "switch_eye",
       "pos": [
         96,
-        104
+        108
       ],
       "props": {
         "target_ids": [
@@ -470,8 +471,8 @@
       {
         "op": "shoot",
         "from": [
-          328,
-          168
+          224,
+          224
         ],
         "target": "crys_o5_r11"
       },
@@ -486,8 +487,9 @@
         "op": "goto",
         "to": [
           288,
-          112
-        ]
+          108
+        ],
+        "tol": 3.0
       },
       {
         "op": "beam",

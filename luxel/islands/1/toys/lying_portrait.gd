@@ -144,7 +144,10 @@ func accuse() -> bool:
 		state = State.ACCUSED_RIGHT
 		_flare_t = 0.55
 		z_index = -4
-		LxToyDraw.world_set_var("dungeon:manor", "manor_verdict", "right")
+		if Lx.vars != null:
+			Lx.vars.set_var("dungeon:manor", "manor_verdict", "right")
+		else:
+			LxToyDraw.world_set_var("dungeon:manor", "manor_verdict", "right")
 		if Lx.state != null:
 			Lx.state.story_flags["manor_verdict_right"] = true
 		set_powered(true)
@@ -161,7 +164,10 @@ func accuse() -> bool:
 	else:
 		state = State.ACCUSED_WRONG
 		_flare_t = 0.65
-		LxToyDraw.world_set_var("dungeon:manor", "manor_verdict", "wrong")
+		if Lx.vars != null:
+			Lx.vars.set_var("dungeon:manor", "manor_verdict", "wrong")
+		else:
+			LxToyDraw.world_set_var("dungeon:manor", "manor_verdict", "wrong")
 		if Lx.state != null:
 			Lx.state.story_flags["manor_verdict_wrong"] = true
 		_emit_sfx("bell_slam")

@@ -165,8 +165,8 @@
       "id": "sn_cw_1",
       "kind": "star_node",
       "pos": [
-        272,
-        280
+        288,
+        272
       ],
       "props": {
         "link_range": 84.0
@@ -176,8 +176,8 @@
       "id": "sn_cw_2",
       "kind": "star_node",
       "pos": [
-        304,
-        280
+        312,
+        288
       ],
       "props": {
         "link_range": 84.0
@@ -187,8 +187,8 @@
       "id": "sn_cw_3",
       "kind": "star_node",
       "pos": [
-        336,
-        280
+        288,
+        304
       ],
       "props": {
         "link_range": 84.0
@@ -505,8 +505,8 @@
       {
         "op": "goto",
         "to": [
-          296,
-          232
+          288,
+          240
         ]
       },
       {
@@ -515,9 +515,23 @@
         "wait_hit": 0.4
       },
       {
+        "op": "goto",
+        "to": [
+          320,
+          240
+        ]
+      },
+      {
         "op": "shoot",
         "target": "sn_cw_2",
         "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          232
+        ]
       },
       {
         "op": "shoot",

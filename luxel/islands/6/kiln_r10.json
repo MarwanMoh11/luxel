@@ -131,7 +131,7 @@
     "exit": "exit_r10_bridge_7",
     "start": { "moves": ["sunflare"], "flags": ["keepers_flame_6"] },
     "solution": [
-      { "op": "goto", "to": [256, 184], "tol": 8.0 },
+      { "op": "goto", "to": [256, 160], "tol": 8.0 },
       { "op": "clear", "timeout": 180.0 },
       { "op": "expect", "flag": "boss_kilnmother_defeated" },
       { "op": "goto", "to": [256, 88], "tol": 8.0 },

@@ -2,7 +2,8 @@ class_name LxOwTwinClapperSeal
 extends LxToy
 ## Belfry Forecourt Twin Clapper Seal (Island 1 grand dungeon gate).
 ## Displays Undercroft Spade (W) and Manor Clapper (E) sockets.
-## - Enforces `undercroft_cleared` + `manor_cleared` (and `great_toll_done` once toll_r1 is live).
+## - Enforces `undercroft_cleared` + `manor_cleared` so the Twin Clapper Seal opens into
+##   The Great Toll (`toll_r1`) on first ascent and `belfry_r1` once `great_toll_done` is set.
 ## - Legacy saves that already passed the seal (`isl1_belfry_entered`, `tut_belfry_entered`,
 ##   `great_lamp_1`, `boss_bellkeeper_defeated`) remain permanently passed.
 ## - While Manor (`P1-B`) is still `debug_only` (not yet landed on disk), opens once `seal_broken_1`
@@ -82,9 +83,7 @@ func _evaluate_open() -> bool:
 		return true
 	var uc_ok: bool = _has_undercroft()
 	var mn_ok: bool = _has_manor()
-	var toll_live: bool = _is_dungeon_live("great_toll")
-	var toll_ok: bool = (not toll_live) or _has_toll()
-	if uc_ok and mn_ok and toll_ok:
+	if uc_ok and mn_ok:
 		return true
 	# Before Manor (P1-B) leaves debug_only, allow seal_broken_1 to pass so Island 1 stays completable
 	if not force_strict and not _is_dungeon_live("manor"):

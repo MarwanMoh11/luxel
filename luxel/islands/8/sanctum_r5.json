@@ -574,6 +574,9 @@
     "expert_s": 60,
     "reward": "keepers_flame_8+shortcut+bell_chain",
     "why": "Unites the legacy synthesis climax with both deepened upper wings and the Belfry threshold.",
+    "start": {
+      "ember": 100
+    },
     "exit": "exit_sanctum_r5_north",
     "solution": [
       {
@@ -595,6 +598,30 @@
         "op": "push",
         "target": "transformer_sanctum_r5",
         "to": [
+          296,
+          248
+        ]
+      },
+      {
+        "op": "push",
+        "target": "transformer_sanctum_r5",
+        "to": [
+          296,
+          168
+        ]
+      },
+      {
+        "op": "push",
+        "target": "transformer_sanctum_r5",
+        "to": [
+          344,
+          168
+        ]
+      },
+      {
+        "op": "push",
+        "target": "transformer_sanctum_r5",
+        "to": [
           344,
           152
         ]
@@ -611,15 +638,6 @@
           184
         ],
         "target": "transformer_sanctum_r5"
-      },
-      {
-        "op": "shoot",
-        "from": [
-          176,
-          216
-        ],
-        "target": "seal_sanctum_r5",
-        "count": 5
       },
       {
         "op": "goto",

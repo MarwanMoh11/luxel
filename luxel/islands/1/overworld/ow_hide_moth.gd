@@ -23,7 +23,8 @@ func _toy_setup() -> void:
 
 
 func _is_midnight() -> bool:
-	return str(LxToyDraw.world_get_var("island:1", "bell_hour", "evening")).to_lower() == "midnight"
+	var v: Variant = Lx.vars.get_var("island:1", "bell_hour", "evening") if Lx.vars != null else LxToyDraw.world_get_var("island:1", "bell_hour", "evening")
+	return str(v).strip_edges().to_lower() == "midnight"
 
 
 func on_bell_hour_changed(_hour: String) -> void:

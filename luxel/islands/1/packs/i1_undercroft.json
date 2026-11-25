@@ -96,7 +96,7 @@
     "undercroft_r5": {
       "name_key": "ISL1_UC_KENNEL",
       "theme": "undercroft",
-      "music": "isl1_boss_minor_p1",
+      "music": "isl1_undercroft",
       "dark": true,
       "map": [
         1,
@@ -156,7 +156,7 @@
     "undercroft_r11": {
       "name_key": "ISL1_UC_TOMB",
       "theme": "undercroft",
-      "music": "isl1_boss_minor_p1",
+      "music": "isl1_undercroft",
       "dark": true,
       "map": [
         2,

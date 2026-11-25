@@ -352,6 +352,10 @@
         "timeout": 120.0
       },
       {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
         "op": "expect_exit",
         "exit": "exit_sanctum_r4_north"
       }

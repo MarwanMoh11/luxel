@@ -302,13 +302,13 @@
     },
     {
       "id": "en_r9_t2_owl",
-      "kind": "phantom_owl",
+      "kind": "silvered_owl",
       "pos": [
-        128,
+        168,
         192
       ],
       "zone": "stair_r9_t2",
-      "leash": 160
+      "leash": 150
     },
     {
       "id": "en_r9_t2_eye",
@@ -717,18 +717,18 @@
       {
         "op": "goto",
         "to": [
-          240,
+          224,
           192
         ],
         "tol": 12.0
       },
       {
-        "op": "clear",
-        "zone": "stair_r9_t2",
-        "timeout": 28.0
+        "op": "lens"
       },
       {
-        "op": "lens"
+        "op": "clear",
+        "zone": "stair_r9_t2",
+        "timeout": 30.0
       },
       {
         "op": "goto",

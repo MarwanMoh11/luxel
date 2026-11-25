@@ -70,7 +70,12 @@ static func seed_registry(reg: LxPackRegistry) -> void:
 		for reg_name: String in LxLegacy.legacy_regions_for_island(isl):
 			if reg_name.begins_with(pref):
 				regs.append(reg_name)
-		if isl == 3:
+		if isl == 1 and did == "belfry":
+			for n: int in range(8, 19):
+				var extra_r1: String = "belfry_r%d" % n
+				if not regs.has(extra_r1):
+					regs.append(extra_r1)
+		elif isl == 3:
 			for extra_r: String in ["oak_r2b", "oak_r4b", "oak_r5b", "oak_r6b", "oak_r7b", "oak_r8b", "oak_r9b", "oak_r9c"]:
 				if not regs.has(extra_r):
 					regs.append(extra_r)

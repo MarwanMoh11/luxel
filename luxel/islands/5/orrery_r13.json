@@ -236,6 +236,7 @@
       ],
       "props": {
         "scope": "room:5:orrery_r13",
+        "var": "o5_r13_sky",
         "var_name": "o5_r13_sky",
         "rotors": [
           "rotor_o5_r13"
@@ -556,15 +557,7 @@
       },
       {
         "op": "goto",
-        "to": [
-          256,
-          184
-        ]
-      },
-      {
-        "op": "throw",
-        "target": "plate_o5_r13_rotor",
-        "hold": 0.45
+        "to": "plate_o5_r13_rotor"
       },
       {
         "op": "wait_until",

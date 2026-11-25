@@ -508,7 +508,7 @@
         "target": "ctrl_r8",
         "prop": "state",
         "value": 1,
-        "timeout": 3.0
+        "timeout": 5.0
       },
       {
         "op": "interact",

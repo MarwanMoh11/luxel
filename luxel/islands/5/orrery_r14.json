@@ -142,6 +142,7 @@
       ],
       "props": {
         "scope": "room:5:orrery_r14",
+        "var": "o5_r14_ring",
         "var_name": "o5_r14_ring",
         "rotors": [
           "rotor_o5_r14"
@@ -168,7 +169,7 @@
       "kind": "polarity_well",
       "pos": [
         308,
-        112
+        168
       ],
       "props": {
         "mode": "push",
@@ -454,6 +455,20 @@
     }
   ],
   "events": [
+    {
+      "id": "o5_r14_reset_ring",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "room:5:orrery_r14",
+            "name": "o5_r14_ring",
+            "value": 0
+          }
+        }
+      ]
+    },
     {
       "id": "o5_r14_rings_msg",
       "on": "signal:eye_o5_r14_pin",

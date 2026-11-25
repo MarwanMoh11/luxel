@@ -25,7 +25,7 @@
       "rect": [0, 208, 16, 48],
       "to_region": "kiln_r2",
       "to_spawn": [288, 48],
-      "requires_moves": ["sunflare"],
+      "requires_moves": [],
       "requires_flags": ["kiln_r12_seam"],
       "locked_door_id": "door_kiln_r12_seam"
     },

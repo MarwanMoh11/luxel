@@ -164,14 +164,48 @@
       }
     },
     {
+      "id": "post_r7_w",
+      "kind": "mooring_post",
+      "pos": [
+        200,
+        124
+      ],
+      "props": {
+        "orbit_r": 36.0,
+        "allow_dismount": true,
+        "size": [
+          32,
+          48
+        ]
+      }
+    },
+    {
+      "id": "post_r7_e",
+      "kind": "mooring_post",
+      "pos": [
+        328,
+        124
+      ],
+      "props": {
+        "orbit_r": 36.0,
+        "allow_dismount": true,
+        "size": [
+          32,
+          48
+        ]
+      }
+    },
+    {
       "id": "sw_r7_east",
-      "kind": "switch_eye",
+      "kind": "locks_orbit_capacitor",
       "pos": [
         356,
         72
       ],
       "props": {
         "requires_blue": true,
+        "latch": true,
+        "persist": true,
         "target_ids": [
           "door_r7_nw",
           "door_r7_ne",

@@ -531,9 +531,6 @@
         "target": "hook_r7_phantom"
       },
       {
-        "op": "lens"
-      },
-      {
         "op": "goto",
         "to": [
           328,

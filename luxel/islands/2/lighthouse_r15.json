@@ -144,7 +144,8 @@
         "tide_min": "high",
         "angle_deg": 0,
         "rotatable": true,
-        "reflect_only_floating": true
+        "reflect_only_floating": true,
+        "persist": true
       }
     },
     {

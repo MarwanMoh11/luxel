@@ -53,7 +53,8 @@ func _toy_setup() -> void:
 func _sync_from_world_var() -> void:
 	if sync_var.is_empty():
 		return
-	var cur: String = str(LxToyDraw.world_get_var(sync_scope, sync_var, "")).strip_edges().to_lower()
+	var raw_v: Variant = Lx.vars.get_var(sync_scope, sync_var, "") if Lx.vars != null else LxToyDraw.world_get_var(sync_scope, sync_var, "")
+	var cur: String = str(raw_v).strip_edges().to_lower()
 	for q: int in CARDINAL_NAMES.keys():
 		if str(CARDINAL_NAMES[q]) == cur:
 			angle = float(q) * (PI * 0.5)
@@ -121,7 +122,10 @@ func _write_world_var() -> void:
 		return
 	var q: int = posmod(int(roundf(target_angle / (PI * 0.5))), 4)
 	var name_dir: String = str(CARDINAL_NAMES.get(q, "west"))
-	LxToyDraw.world_set_var(sync_scope, sync_var, name_dir)
+	if Lx.vars != null:
+		Lx.vars.set_var(sync_scope, sync_var, name_dir)
+	else:
+		LxToyDraw.world_set_var(sync_scope, sync_var, name_dir)
 
 
 func tick(dt: float) -> void:
