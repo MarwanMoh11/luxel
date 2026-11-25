@@ -15,13 +15,13 @@
     "ISL4_PT_PROMPT_ARCH": "BEGIN ONE-DUSK HEIST",
     "ISL4_PT_PROMPT_KEY": "SWAP GOLDEN CLOCK KEY",
     "ISL4_PT_NEED_WEIGHT": "BALANCE THE SCALE WITH THE TEA URN FIRST!",
-    "ISL4_PT_CLUE_1": "HR I-II: DECOY USHERS - ECHO THE LIFT.",
-    "ISL4_PT_CLUE_2": "HR III: RAIN DOUSES TORCHES - FLOATS BARGE.",
-    "ISL4_PT_CLUE_3": "HR IV: EAST WIND LIFTS CHANDELIER RAFTERS.",
-    "ISL4_PT_CLUE_4": "HR V-VI: BOW THE BUTLER - SWAP THE KEY!",
+    "ISL4_PT_CLUE_1": "HOUR I-II: DECOY USHERS - ECHO THE LIFT.",
+    "ISL4_PT_CLUE_2": "HOUR III: RAIN DOUSES FIRE - FLOATS BARGE.",
+    "ISL4_PT_CLUE_3": "HOUR IV: EAST WIND LIFTS HIGH RAFTERS.",
+    "ISL4_PT_CLUE_4": "HOUR V-VI: BOW THE BUTLER - SWAP THE KEY.",
     "ISL4_PT_BOARD_DONE": "THE CLOCK KEY IS STOLEN. CONSERVATORY CALLS!",
     "ISL4_PT_PANTRY_OPEN": "PANTRY SHORTCUT UNLATCHED TO PARTERRE!",
-    "ISL4_PT_ESCAPE_BELL": "HOUR VI BELLS CHIME! RIDE THE AQUEDUCT!"
+    "ISL4_PT_ESCAPE_BELL": "HOUR VI BELLS CHIME. RIDE THE AQUEDUCT!"
   },
   "interactables": {
     "party_heist_board": "res://luxel/islands/4/party/party_heist_board.gd",
@@ -53,14 +53,67 @@
     }
   ],
   "regions": {
-    "party_r1": { "name_key": "ISL4_PT_R1", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [1, 3] },
-    "party_r2": { "name_key": "ISL4_PT_R2", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [1, 2] },
-    "party_r3": { "name_key": "ISL4_PT_R3", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [0, 1] },
-    "party_r4": { "name_key": "ISL4_PT_R4", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [1, 1] },
-    "party_r5": { "name_key": "ISL4_PT_R5", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [1, 0] }
+    "party_r1": {
+      "name_key": "ISL4_PT_R1",
+      "theme": "garden_party",
+      "music": "isl4_setpiece",
+      "dark": true,
+      "map": [
+        1,
+        3
+      ]
+    },
+    "party_r2": {
+      "name_key": "ISL4_PT_R2",
+      "theme": "garden_party",
+      "music": "isl4_setpiece",
+      "dark": true,
+      "map": [
+        1,
+        2
+      ]
+    },
+    "party_r3": {
+      "name_key": "ISL4_PT_R3",
+      "theme": "garden_party",
+      "music": "isl4_setpiece",
+      "dark": true,
+      "map": [
+        0,
+        1
+      ]
+    },
+    "party_r4": {
+      "name_key": "ISL4_PT_R4",
+      "theme": "garden_party",
+      "music": "isl4_setpiece",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "party_r5": {
+      "name_key": "ISL4_PT_R5",
+      "theme": "garden_party",
+      "music": "isl4_setpiece",
+      "dark": true,
+      "map": [
+        1,
+        0
+      ]
+    }
   },
   "sfx": {
-    "party_heist_chime": { "id": "clockwork_chime", "pitch": 1.12, "db": -1.0 },
-    "party_scale_lock": { "id": "switch_eye", "pitch": 1.08, "db": -1.0 }
+    "party_heist_chime": {
+      "id": "clockwork_chime",
+      "pitch": 1.12,
+      "db": -1.0
+    },
+    "party_scale_lock": {
+      "id": "switch_eye",
+      "pitch": 1.08,
+      "db": -1.0
+    }
   }
 }

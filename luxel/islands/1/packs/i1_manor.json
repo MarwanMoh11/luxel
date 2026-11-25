@@ -9,7 +9,7 @@
     "ISL1_MN_PANTRY": "THE PANTRY SAFE",
     "ISL1_MN_KITCHEN": "BLAZING HEARTH KITCHEN",
     "ISL1_MN_WORKSHOP": "CLOCKWORK VALET WORKSHOP",
-    "ISL1_MN_CHOIR": "DRAPED CHOIR PARLOR",
+    "ISL1_MN_CHOIR": "DRAPED CHOIR PARLOUR",
     "ISL1_MN_EYES": "HALL OF SHIFTING EYES",
     "ISL1_MN_STUDY": "THE FIREPLACE STUDY",
     "ISL1_MN_VERDICT": "WHISPERING BALUSTRADE",
@@ -62,20 +62,132 @@
     }
   ],
   "regions": {
-    "manor_r1": { "name_key": "ISL1_MN_FOYER", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [2, 4] },
-    "manor_r2": { "name_key": "ISL1_MN_DINING", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [1, 4] },
-    "manor_r3": { "name_key": "ISL1_MN_PANTRY", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [0, 4] },
-    "manor_r4": { "name_key": "ISL1_MN_KITCHEN", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [3, 4] },
-    "manor_r5": { "name_key": "ISL1_MN_WORKSHOP", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [4, 4] },
-    "manor_r6": { "name_key": "ISL1_MN_CHOIR", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [2, 3] },
-    "manor_r7": { "name_key": "ISL1_MN_EYES", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [1, 3] },
-    "manor_r8": { "name_key": "ISL1_MN_STUDY", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [1, 2] },
-    "manor_r9": { "name_key": "ISL1_MN_VERDICT", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [2, 2] },
-    "manor_r10a": { "name_key": "ISL1_MN_VAULT", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [1, 1] },
-    "manor_r10b": { "name_key": "ISL1_MN_CELLAR", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [3, 1] },
-    "manor_r11": { "name_key": "ISL1_MN_BALLROOM", "theme": "manor", "music": "isl1_manor", "dark": true, "map": [2, 0] }
+    "manor_r1": {
+      "name_key": "ISL1_MN_FOYER",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        2,
+        4
+      ]
+    },
+    "manor_r2": {
+      "name_key": "ISL1_MN_DINING",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        1,
+        4
+      ]
+    },
+    "manor_r3": {
+      "name_key": "ISL1_MN_PANTRY",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        0,
+        4
+      ]
+    },
+    "manor_r4": {
+      "name_key": "ISL1_MN_KITCHEN",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        3,
+        4
+      ]
+    },
+    "manor_r5": {
+      "name_key": "ISL1_MN_WORKSHOP",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        4,
+        4
+      ]
+    },
+    "manor_r6": {
+      "name_key": "ISL1_MN_CHOIR",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        2,
+        3
+      ]
+    },
+    "manor_r7": {
+      "name_key": "ISL1_MN_EYES",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        1,
+        3
+      ]
+    },
+    "manor_r8": {
+      "name_key": "ISL1_MN_STUDY",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        1,
+        2
+      ]
+    },
+    "manor_r9": {
+      "name_key": "ISL1_MN_VERDICT",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        2,
+        2
+      ]
+    },
+    "manor_r10a": {
+      "name_key": "ISL1_MN_VAULT",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "manor_r10b": {
+      "name_key": "ISL1_MN_CELLAR",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        3,
+        1
+      ]
+    },
+    "manor_r11": {
+      "name_key": "ISL1_MN_BALLROOM",
+      "theme": "manor",
+      "music": "isl1_manor",
+      "dark": true,
+      "map": [
+        2,
+        0
+      ]
+    }
   },
   "sfx": {
-    "chain_snap": { "id": "shield_shatter", "pitch": 1.18, "db": 0.0 }
+    "chain_snap": {
+      "id": "shield_shatter",
+      "pitch": 1.18,
+      "db": 0.0
+    }
   }
 }

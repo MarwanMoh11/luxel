@@ -10,23 +10,32 @@
   "state_vars": {
     "vault_water": {
       "scope": "room:2:cave_rib_vault",
-      "values": ["low", "high"],
+      "values": [
+        "low",
+        "high"
+      ],
       "default": "low"
     },
     "cistern_tide": {
       "scope": "room:2:cave_bell_cistern",
-      "values": ["half", "ebb"],
+      "values": [
+        "half",
+        "ebb"
+      ],
       "default": "half"
     },
     "belfry_tide": {
       "scope": "room:2:cave_rooftop_belfry",
-      "values": ["flood", "ebb"],
+      "values": [
+        "flood",
+        "ebb"
+      ],
       "default": "flood"
     }
   },
   "strings": {
     "ISL2_SKIFF_CUT": "NO OARS. AIM BEHIND TO SAIL!",
-    "ISL2_SKIFF_ZIP": "THROW TO ANCHOR. CLICK TO SWING!",
+    "ISL2_SKIFF_ZIP": "THROW TO ANCHOR. ZIP TO SWING ROUND.",
     "ISL2_LEV_WAKE": "SOMETHING HUGE WAKES BELOW THE BAY!",
     "ISL2_LOG_1": "LOG 1: A DARK LANTERN JAMMED THE TIDES.",
     "ISL2_RELIT_WHALE": "THE LEVIATHAN SLEEPS BY THE SUNLIT PIER.",
@@ -44,8 +53,8 @@
     "PROMPT_SPYGLASS": "READ SEA CHART",
     "ISL2_SKIFF_CALLED": "THE SKIFF GLIDES BACK TO THE PIER.",
     "ISL2_CHART_NEED": "BRING THREE SEA-GLASS SHARDS TO CHART IT.",
-    "ISL2_CHART_DONE": "THE MAELSTROM IS CHARTED EAST OF SOUND!",
-    "ISL2_CISTERN_LORE": "LOWER THE TIDE TO GROUND THE SKIFF HEAVY.",
+    "ISL2_CHART_DONE": "THE MAELSTROM LIES EAST OF OUTER SOUND.",
+    "ISL2_CISTERN_LORE": "DROP THE TIDE SO THE SKIFF WEIGHS IT DOWN.",
     "ISL2_MAW_TROPHY": "THE UNDERTOW STILLS TO STAR-MIRROR GLASS.",
     "ISL2_TRIAL_SLALOM": "SLALOM SHOALS: SAIL ALL BUOYS AT HALF TIDE!",
     "ISL2_TRIAL_REGATTA": "FLOOD REGATTA: RIDE THE PORTALS AT FLOOD!",
@@ -64,23 +73,44 @@
       "rescue_folk": "ferry_beetle",
       "steps": [
         {
-          "icons": ["toy_skiff", "cross", "move_bolt", "wave"],
+          "icons": [
+            "toy_skiff",
+            "cross",
+            "move_bolt",
+            "wave"
+          ],
           "need": "skiff_unlocked",
           "flag": "quest:q2_regatta:s0"
         },
         {
-          "icons": ["quest_carry", "wave", "arrow_w", "chest", "star"],
+          "icons": [
+            "quest_carry",
+            "wave",
+            "arrow_w",
+            "chest",
+            "star"
+          ],
           "need": "quest:item:brass_compass",
           "consume_item": "brass_compass",
           "flag": "quest:q2_regatta:s1"
         },
         {
-          "icons": ["quest_timer", "toy_skiff", "wave", "bell", "crown"],
+          "icons": [
+            "quest_timer",
+            "toy_skiff",
+            "wave",
+            "bell",
+            "crown"
+          ],
           "need": "quest_regatta_won",
           "flag": "quest:q2_regatta:s2"
         },
         {
-          "icons": ["crown", "happy", "pane"],
+          "icons": [
+            "crown",
+            "happy",
+            "pane"
+          ],
           "need": "",
           "flag": "quest:q2_regatta:done"
         }
@@ -100,12 +130,24 @@
       "rescue_folk": "mirror_crab",
       "steps": [
         {
-          "icons": ["mirror", "spark", "wave", "arrow_s", "arrow_w", "question"],
+          "icons": [
+            "mirror",
+            "spark",
+            "wave",
+            "arrow_s",
+            "arrow_w",
+            "question"
+          ],
           "need": "quest:item:lens_shard_ebb && quest:item:lens_shard_half && quest:item:lens_shard_flood",
           "flag": "undertow_charted"
         },
         {
-          "icons": ["eye", "wave", "skull", "happy"],
+          "icons": [
+            "eye",
+            "wave",
+            "skull",
+            "happy"
+          ],
           "need": "",
           "flag": "quest:q2_spyglass:done"
         }
@@ -125,12 +167,22 @@
       "rescue_folk": "moth_kid",
       "steps": [
         {
-          "icons": ["sad", "wave", "light_off", "arrow_s", "lantern"],
+          "icons": [
+            "sad",
+            "wave",
+            "light_off",
+            "arrow_s",
+            "lantern"
+          ],
           "need": "isl2_canal_lamps_lit",
           "flag": "quest:q2_moth_kid:s0"
         },
         {
-          "icons": ["lantern", "happy", "ember"],
+          "icons": [
+            "lantern",
+            "happy",
+            "ember"
+          ],
           "need": "",
           "flag": "quest:q2_moth_kid:done"
         }
@@ -150,12 +202,22 @@
       "rescue_folk": "scribe_worm",
       "steps": [
         {
-          "icons": ["book", "skull", "lantern", "light_off", "isl_2"],
+          "icons": [
+            "book",
+            "skull",
+            "lantern",
+            "light_off",
+            "isl_2"
+          ],
           "need": "ship_log_1 && ship_log_2 && ship_log_3 && ship_log_4",
           "flag": "isl2_hollow_chart_revealed"
         },
         {
-          "icons": ["book", "eye", "happy"],
+          "icons": [
+            "book",
+            "eye",
+            "happy"
+          ],
           "need": "",
           "flag": "quest:q2_logs:done"
         }
@@ -168,14 +230,95 @@
     }
   ],
   "regions": {
-    "ow_shoals_west": { "name_key": "ZONE_ISL2_SHOALS", "theme": "seabed", "music": "explore", "dark": true, "map": [-1, 0] },
-    "ow_canal_south": { "name_key": "ZONE_ISL2_CANAL", "theme": "locks", "music": "explore", "dark": true, "map": [0, 1] },
-    "ow_open_sound": { "name_key": "ZONE_ISL2_SOUND", "theme": "locks", "music": "explore", "dark": true, "map": [1, -1] },
-    "ow_boathouse": { "name_key": "ZONE_ISL2_CAMP", "theme": "galleon", "music": "explore", "dark": false, "map": [-1, 1] },
-    "cave_rib_vault": { "name_key": "ZONE_ISL2_RIB_VAULT", "theme": "seabed", "music": "island2_dungeon", "dark": true, "map": [-1, -1] },
-    "cave_bell_cistern": { "name_key": "ZONE_ISL2_CISTERN", "theme": "locks", "music": "island2_dungeon", "dark": true, "map": [1, 1] },
-    "cave_smuggler_cellar": { "name_key": "ZONE_ISL2_CELLAR", "theme": "locks", "music": "island2_dungeon", "dark": true, "map": [0, 2] },
-    "cave_rooftop_belfry": { "name_key": "ZONE_ISL2_BELFRY", "theme": "locks", "music": "island2_dungeon", "dark": true, "map": [1, -2] },
-    "cave_undertow_maw": { "name_key": "ZONE_ISL2_MAW", "theme": "leviathan_belly", "music": "superboss_a", "dark": true, "map": [2, -1] }
+    "ow_shoals_west": {
+      "name_key": "ZONE_ISL2_SHOALS",
+      "theme": "seabed",
+      "music": "explore",
+      "dark": true,
+      "map": [
+        -1,
+        0
+      ]
+    },
+    "ow_canal_south": {
+      "name_key": "ZONE_ISL2_CANAL",
+      "theme": "locks",
+      "music": "explore",
+      "dark": true,
+      "map": [
+        0,
+        1
+      ]
+    },
+    "ow_open_sound": {
+      "name_key": "ZONE_ISL2_SOUND",
+      "theme": "locks",
+      "music": "explore",
+      "dark": true,
+      "map": [
+        1,
+        -1
+      ]
+    },
+    "ow_boathouse": {
+      "name_key": "ZONE_ISL2_CAMP",
+      "theme": "galleon",
+      "music": "explore",
+      "dark": false,
+      "map": [
+        -1,
+        1
+      ]
+    },
+    "cave_rib_vault": {
+      "name_key": "ZONE_ISL2_RIB_VAULT",
+      "theme": "seabed",
+      "music": "island2_dungeon",
+      "dark": true,
+      "map": [
+        -1,
+        -1
+      ]
+    },
+    "cave_bell_cistern": {
+      "name_key": "ZONE_ISL2_CISTERN",
+      "theme": "locks",
+      "music": "island2_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "cave_smuggler_cellar": {
+      "name_key": "ZONE_ISL2_CELLAR",
+      "theme": "locks",
+      "music": "island2_dungeon",
+      "dark": true,
+      "map": [
+        0,
+        2
+      ]
+    },
+    "cave_rooftop_belfry": {
+      "name_key": "ZONE_ISL2_BELFRY",
+      "theme": "locks",
+      "music": "island2_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        -2
+      ]
+    },
+    "cave_undertow_maw": {
+      "name_key": "ZONE_ISL2_MAW",
+      "theme": "leviathan_belly",
+      "music": "superboss_a",
+      "dark": true,
+      "map": [
+        2,
+        -1
+      ]
+    }
   }
 }

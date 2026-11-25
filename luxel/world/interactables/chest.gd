@@ -67,6 +67,7 @@ func interact(_actor: Node = null) -> bool:
 				Lx.state.add_shards(amount)
 				_emit_sfx("shard_pickup")
 	_emit_sfx("chest_open")
+	raise_flag_prop()
 	_emit_save("chest_" + id)
 	_notify_linked_targets(true)
 	queue_redraw()

@@ -17,12 +17,23 @@
       "icon": "gear",
       "steps": [
         {
-          "icons": ["gear", "clock", "arrow_s", "toy_platform", "question"],
+          "icons": [
+            "gear",
+            "clock",
+            "arrow_s",
+            "toy_platform",
+            "question"
+          ],
           "need": "q6_timetable_stamped",
           "flag": "quest:q6_timetable_key:s0"
         },
         {
-          "icons": ["happy", "clock", "ember", "gift"],
+          "icons": [
+            "happy",
+            "clock",
+            "ember",
+            "gift"
+          ],
           "need": "",
           "flag": "quest:q6_timetable_key:done"
         }
@@ -40,12 +51,23 @@
       "icon": "quest_hide",
       "steps": [
         {
-          "icons": ["moth", "quest_hide", "toy_block", "arrow_e", "question"],
+          "icons": [
+            "moth",
+            "quest_hide",
+            "toy_block",
+            "arrow_e",
+            "question"
+          ],
           "need": "quest:hide:spark_1 && quest:hide:spark_2 && quest:hide:spark_3",
           "flag": "quest:q6_spark_hide:s0"
         },
         {
-          "icons": ["happy", "moth", "heart", "shard"],
+          "icons": [
+            "happy",
+            "moth",
+            "heart",
+            "shard"
+          ],
           "need": "",
           "flag": "quest:q6_spark_hide:done"
         }
@@ -83,22 +105,112 @@
     "ISL6_PROMPT_WHISTLE": "EXPRESS WHISTLE SHIFT",
     "ISL6_PROMPT_SIGNAL": "CHECK SIGNAL BOARD",
     "ISL6_SIGNAL_WAIT": "CLEAR EXPRESS + COLOSSUS + 3 CRUCIBLES.",
-    "ISL6_SIGNAL_READY": "CONVERGENCE READY! TRACKS ALIGNED!",
-    "ISL6_TRIAL_RANGE_WIN": "BANK-SHOT RANGE CLEARED! EMBER CLAIMED!",
-    "ISL6_TRIAL_STRIDE_WIN": "STRIDE BALANCE CLEARED! FOUNDRY TROPHY!",
+    "ISL6_SIGNAL_READY": "CONVERGENCE READY. TRACKS ALIGNED.",
+    "ISL6_TRIAL_RANGE_WIN": "BANK-SHOT RANGE CLEARED. EMBER CLAIMED!",
+    "ISL6_TRIAL_STRIDE_WIN": "STRIDE BALANCE CLEARED. FOUNDRY TROPHY!",
     "ISL6_TRIAL_RAIL_WIN": "THREE-TEMPER RAIL RUN CLEARED!",
     "ISL6_SHRINE_BOOST": "SPARK KIDS WARM THE SHRINE: +30% EMBER!"
   },
   "regions": {
-    "ow_rail_yard": { "name_key": "ISL6_Z_YARD", "theme": "forge_deep", "music": "island6_explore", "dark": true, "map": [-1, -1] },
-    "ow_giant_stride": { "name_key": "ISL6_Z_STRIDE", "theme": "forge_deep", "music": "island6_explore", "dark": true, "map": [-1, 1] },
-    "ow_slag_basin": { "name_key": "ISL6_Z_BASIN", "theme": "forge_deep", "music": "island6_explore", "dark": true, "map": [1, 1] },
-    "ow_cinder_overlook": { "name_key": "ISL6_Z_OVERLOOK", "theme": "forge_deep", "music": "island6_explore", "dark": true, "map": [1, -1] },
-    "cave_temper_foundry": { "name_key": "ISL6_Z_FOUNDRY", "theme": "cave_6", "music": "island6_dungeon", "dark": true, "map": [-2, -1] },
-    "cave_slag_sluice": { "name_key": "ISL6_Z_SLUICE", "theme": "cave_6", "music": "island6_dungeon", "dark": true, "map": [2, 1] },
-    "cave_magnet_vault": { "name_key": "ISL6_Z_MAGNET", "theme": "cave_6", "music": "island6_dungeon", "dark": true, "map": [0, 2] },
-    "cave_bellows_trial": { "name_key": "ISL6_Z_TRIAL", "theme": "forge_deep", "music": "isl6_express", "dark": true, "map": [2, -1] },
-    "cave_sunflare_crypt": { "name_key": "ISL6_Z_CRYPT", "theme": "forge_deep", "music": "island6_dungeon", "dark": true, "map": [2, 2] },
-    "superboss_first_forge": { "name_key": "ISL6_Z_FIRST", "theme": "forge_deep", "music": "superboss_b", "dark": true, "map": [2, -2] }
+    "ow_rail_yard": {
+      "name_key": "ISL6_Z_YARD",
+      "theme": "forge_deep",
+      "music": "island6_explore",
+      "dark": true,
+      "map": [
+        -1,
+        -1
+      ]
+    },
+    "ow_giant_stride": {
+      "name_key": "ISL6_Z_STRIDE",
+      "theme": "forge_deep",
+      "music": "island6_explore",
+      "dark": true,
+      "map": [
+        -1,
+        1
+      ]
+    },
+    "ow_slag_basin": {
+      "name_key": "ISL6_Z_BASIN",
+      "theme": "forge_deep",
+      "music": "island6_explore",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "ow_cinder_overlook": {
+      "name_key": "ISL6_Z_OVERLOOK",
+      "theme": "forge_deep",
+      "music": "island6_explore",
+      "dark": true,
+      "map": [
+        1,
+        -1
+      ]
+    },
+    "cave_temper_foundry": {
+      "name_key": "ISL6_Z_FOUNDRY",
+      "theme": "cave_6",
+      "music": "island6_dungeon",
+      "dark": true,
+      "map": [
+        -2,
+        -1
+      ]
+    },
+    "cave_slag_sluice": {
+      "name_key": "ISL6_Z_SLUICE",
+      "theme": "cave_6",
+      "music": "island6_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        1
+      ]
+    },
+    "cave_magnet_vault": {
+      "name_key": "ISL6_Z_MAGNET",
+      "theme": "cave_6",
+      "music": "island6_dungeon",
+      "dark": true,
+      "map": [
+        0,
+        2
+      ]
+    },
+    "cave_bellows_trial": {
+      "name_key": "ISL6_Z_TRIAL",
+      "theme": "forge_deep",
+      "music": "isl6_express",
+      "dark": true,
+      "map": [
+        2,
+        -1
+      ]
+    },
+    "cave_sunflare_crypt": {
+      "name_key": "ISL6_Z_CRYPT",
+      "theme": "forge_deep",
+      "music": "island6_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        2
+      ]
+    },
+    "superboss_first_forge": {
+      "name_key": "ISL6_Z_FIRST",
+      "theme": "forge_deep",
+      "music": "superboss_b",
+      "dark": true,
+      "map": [
+        2,
+        -2
+      ]
+    }
   }
 }

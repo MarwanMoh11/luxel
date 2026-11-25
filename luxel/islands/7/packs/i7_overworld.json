@@ -18,12 +18,21 @@
       "icon": "crown",
       "steps": [
         {
-          "icons": ["quest_carry", "crown", "arrow_w", "isl_7"],
+          "icons": [
+            "quest_carry",
+            "crown",
+            "arrow_w",
+            "isl_7"
+          ],
           "need": "quest:item:qi_silver_mask",
           "flag": "quest:q7_masked_tailor:s0"
         },
         {
-          "icons": ["happy", "gift", "ember"],
+          "icons": [
+            "happy",
+            "gift",
+            "ember"
+          ],
           "need": "",
           "flag": "quest:q7_masked_tailor:done"
         }
@@ -42,12 +51,22 @@
       "icon": "mirror",
       "steps": [
         {
-          "icons": ["eye", "quest_hide", "mirror", "arrow_s", "question"],
+          "icons": [
+            "eye",
+            "quest_hide",
+            "mirror",
+            "arrow_s",
+            "question"
+          ],
           "need": "q7_decoy_ow && q7_decoy_shoals && q7_decoy_promenade",
           "flag": "quest:q7_true_reflection:s0"
         },
         {
-          "icons": ["happy", "home", "spark"],
+          "icons": [
+            "happy",
+            "home",
+            "spark"
+          ],
           "need": "",
           "flag": "quest:q7_true_reflection:done"
         }
@@ -66,12 +85,22 @@
       "icon": "skull",
       "steps": [
         {
-          "icons": ["skull", "clock", "light_on", "arrow_s", "star"],
+          "icons": [
+            "skull",
+            "clock",
+            "light_on",
+            "arrow_s",
+            "star"
+          ],
           "need": "shadow_at_noon_defeated",
           "flag": "quest:q7_noon_rumor:s0"
         },
         {
-          "icons": ["star", "happy", "crown"],
+          "icons": [
+            "star",
+            "happy",
+            "crown"
+          ],
           "need": "",
           "flag": "quest:q7_noon_rumor:done"
         }
@@ -116,22 +145,121 @@
     "ISL7_HUB_DOOR_LOCKED": "UNMASK THREE NORTHWEST LIES TO OPEN.",
     "ISL7_DECOY_FOUND": "A NORTHWEST LIE SHATTERS INTO GLASS!",
     "ISL7_TRIAL_PHASE_OK": "LUNAR PHASE MEDAL EARNED!",
-    "ISL7_TRIAL_WALTZ_OK": "SHADOW WALTZ MEDAL! THREE LIES BROKEN!",
-    "ISL7_TRIAL_ANVIL_OK": "ANVIL MEDAL! THE GLASS CRYPT UNSEALS!",
+    "ISL7_TRIAL_WALTZ_OK": "SHADOW WALTZ MEDAL. THREE LIES BROKEN!",
+    "ISL7_TRIAL_ANVIL_OK": "ANVIL MEDAL. THE GLASS CRYPT UNSEALS.",
     "ISL7_NOON_REUNITED": "YOUR SHADOW BOWS AND STEPS BACK HOME.",
     "ISL7_RELIT_QUAY": "DAWN CLEARS THE QUAY. ONE LANTERN WAITS."
   },
   "regions": {
-    "silver_quay":      { "name_key": "ISL7_Z_QUAY",        "theme": "inverted_palace_silver", "music": "island7_explore", "dark": true,  "map": [0, -1] },
-    "black_shoals":     { "name_key": "ISL7_Z_SHOALS",      "theme": "inverted_palace_silver", "music": "island7_explore", "dark": true,  "map": [-1, 1] },
-    "velvet_promenade": { "name_key": "ISL7_Z_PROM",        "theme": "doppel_theatre",         "music": "isl7_theatre",    "dark": true,  "map": [2, 1] },
-    "glass_terrace":    { "name_key": "ISL7_Z_TERRACE",     "theme": "masquerade",             "music": "isl7_setpiece",   "dark": true,  "map": [1, -1] },
-    "zenith_atoll":     { "name_key": "ISL7_Z_ZENITH",      "theme": "inverted_palace_silver", "music": "island7_explore", "dark": true,  "map": [1, 0] },
-    "cave_mirror_tide": { "name_key": "ISL7_Z_CAVE_TIDE",   "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [-1, -1] },
-    "cave_twin_grotto": { "name_key": "ISL7_Z_CAVE_GROTTO", "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [-2, 1] },
-    "cave_phase_trial": { "name_key": "ISL7_Z_CAVE_PHASE",  "theme": "cave_7",                 "music": "island7_combat",  "dark": true,  "map": [-1, 2] },
-    "cave_echo_vault":  { "name_key": "ISL7_Z_CAVE_ECHO",   "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [1, 2] },
-    "cave_glass_crypt": { "name_key": "ISL7_Z_CAVE_CRYPT",  "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [0, 0] },
-    "superboss_noon":   { "name_key": "ISL7_Z_NOON",        "theme": "inverted_palace_silver", "music": "superboss_b",     "dark": false, "map": [1, -2] }
+    "silver_quay": {
+      "name_key": "ISL7_Z_QUAY",
+      "theme": "inverted_palace_silver",
+      "music": "island7_explore",
+      "dark": true,
+      "map": [
+        0,
+        -1
+      ]
+    },
+    "black_shoals": {
+      "name_key": "ISL7_Z_SHOALS",
+      "theme": "inverted_palace_silver",
+      "music": "island7_explore",
+      "dark": true,
+      "map": [
+        -1,
+        1
+      ]
+    },
+    "velvet_promenade": {
+      "name_key": "ISL7_Z_PROM",
+      "theme": "doppel_theatre",
+      "music": "isl7_theatre",
+      "dark": true,
+      "map": [
+        2,
+        1
+      ]
+    },
+    "glass_terrace": {
+      "name_key": "ISL7_Z_TERRACE",
+      "theme": "masquerade",
+      "music": "isl7_setpiece",
+      "dark": true,
+      "map": [
+        1,
+        -1
+      ]
+    },
+    "zenith_atoll": {
+      "name_key": "ISL7_Z_ZENITH",
+      "theme": "inverted_palace_silver",
+      "music": "island7_explore",
+      "dark": true,
+      "map": [
+        1,
+        0
+      ]
+    },
+    "cave_mirror_tide": {
+      "name_key": "ISL7_Z_CAVE_TIDE",
+      "theme": "cave_7",
+      "music": "island7_dungeon",
+      "dark": true,
+      "map": [
+        -1,
+        -1
+      ]
+    },
+    "cave_twin_grotto": {
+      "name_key": "ISL7_Z_CAVE_GROTTO",
+      "theme": "cave_7",
+      "music": "island7_dungeon",
+      "dark": true,
+      "map": [
+        -2,
+        1
+      ]
+    },
+    "cave_phase_trial": {
+      "name_key": "ISL7_Z_CAVE_PHASE",
+      "theme": "cave_7",
+      "music": "island7_combat",
+      "dark": true,
+      "map": [
+        -1,
+        2
+      ]
+    },
+    "cave_echo_vault": {
+      "name_key": "ISL7_Z_CAVE_ECHO",
+      "theme": "cave_7",
+      "music": "island7_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        2
+      ]
+    },
+    "cave_glass_crypt": {
+      "name_key": "ISL7_Z_CAVE_CRYPT",
+      "theme": "cave_7",
+      "music": "island7_dungeon",
+      "dark": true,
+      "map": [
+        0,
+        0
+      ]
+    },
+    "superboss_noon": {
+      "name_key": "ISL7_Z_NOON",
+      "theme": "inverted_palace_silver",
+      "music": "superboss_b",
+      "dark": false,
+      "map": [
+        1,
+        -2
+      ]
+    }
   }
 }

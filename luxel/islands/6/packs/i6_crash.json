@@ -16,7 +16,7 @@
     "ISL6_CR_R4": "THE OBSIDIAN BREACH",
     "ISL6_CRASH_CUT": "A DARK LANCE SEVERS THE MASTER BRAKE!",
     "ISL6_CRASH_ARM": "SCATTER RECOIL DRIVES THE CART EAST!",
-    "ISL6_CRASH_LOCK": "THROTTLE LOCKED! ENGINE SURGES FORWARD!",
+    "ISL6_CRASH_LOCK": "THROTTLE LOCKED. ENGINE SURGES FORWARD!",
     "ISL6_CRASH_BREACH": "THE EXPRESS SHATTERS THE KILN WALL!"
   },
   "dungeons": [
@@ -46,9 +46,45 @@
     }
   ],
   "regions": {
-    "crash_r1": { "name_key": "ISL6_CR_R1", "theme": "ember_express_roof", "music": "isl6_setpiece",   "dark": true, "map": [0, 0] },
-    "crash_r2": { "name_key": "ISL6_CR_R2", "theme": "iron_colossus",      "music": "isl6_setpiece",   "dark": true, "map": [1, 0] },
-    "crash_r3": { "name_key": "ISL6_CR_R3", "theme": "ember_express_roof", "music": "isl6_boss_minor_p1", "dark": true, "map": [2, 0] },
-    "crash_r4": { "name_key": "ISL6_CR_R4", "theme": "forge_deep",         "music": "isl6_setpiece",   "dark": true, "map": [3, 0] }
+    "crash_r1": {
+      "name_key": "ISL6_CR_R1",
+      "theme": "ember_express_roof",
+      "music": "isl6_setpiece",
+      "dark": true,
+      "map": [
+        0,
+        0
+      ]
+    },
+    "crash_r2": {
+      "name_key": "ISL6_CR_R2",
+      "theme": "iron_colossus",
+      "music": "isl6_setpiece",
+      "dark": true,
+      "map": [
+        1,
+        0
+      ]
+    },
+    "crash_r3": {
+      "name_key": "ISL6_CR_R3",
+      "theme": "ember_express_roof",
+      "music": "isl6_boss_minor_p1",
+      "dark": true,
+      "map": [
+        2,
+        0
+      ]
+    },
+    "crash_r4": {
+      "name_key": "ISL6_CR_R4",
+      "theme": "forge_deep",
+      "music": "isl6_setpiece",
+      "dark": true,
+      "map": [
+        3,
+        0
+      ]
+    }
   }
 }

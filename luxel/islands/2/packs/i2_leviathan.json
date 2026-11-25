@@ -11,7 +11,10 @@
   "state_vars": {
     "belly_tide": {
       "scope": "room:2:leviathan_r3",
-      "values": ["low", "high"],
+      "values": [
+        "low",
+        "high"
+      ],
       "default": "low"
     }
   },
@@ -24,7 +27,7 @@
     "LEV_R3_NAME": "RIB-CAGE BILGE",
     "LEV_R4_NAME": "HEART-BUOY SANCTUM",
     "LEV_R5_NAME": "BLOWHOLE ASCENT",
-    "LEV_CHASE_HINT": "OUTRUN THE WAVE! SNAP CHAINS AND ZIP!",
+    "LEV_CHASE_HINT": "OUTRUN THE TIDE. SNAP CHAINS AND ZIP!",
     "LEV_BELL_HINT": "RING THE CHUM BELL TO PART THE JAWS!",
     "LEV_HEART_HINT": "CLAMP THE SCHOONER RAFT BEFORE EXHALE!",
     "LEV_LAUNCH_HINT": "BANK THROUGH BOTH RAFTS TO OPEN THE VENT!"
@@ -54,10 +57,55 @@
     }
   ],
   "regions": {
-    "leviathan_r1": { "name_key": "LEV_R1_NAME", "theme": "locks",           "music": "isl2_setpiece",      "dark": true, "map": [0, 1] },
-    "leviathan_r2": { "name_key": "LEV_R2_NAME", "theme": "locks",           "music": "isl2_setpiece",      "dark": true, "map": [1, 1] },
-    "leviathan_r3": { "name_key": "LEV_R3_NAME", "theme": "leviathan_belly", "music": "isl2_setpiece",      "dark": true, "map": [2, 1] },
-    "leviathan_r4": { "name_key": "LEV_R4_NAME", "theme": "leviathan_belly", "music": "isl2_boss_minor_p1", "dark": true, "map": [3, 1] },
-    "leviathan_r5": { "name_key": "LEV_R5_NAME", "theme": "leviathan_belly", "music": "isl2_setpiece",      "dark": true, "map": [2, 0] }
+    "leviathan_r1": {
+      "name_key": "LEV_R1_NAME",
+      "theme": "locks",
+      "music": "isl2_setpiece",
+      "dark": true,
+      "map": [
+        0,
+        1
+      ]
+    },
+    "leviathan_r2": {
+      "name_key": "LEV_R2_NAME",
+      "theme": "locks",
+      "music": "isl2_setpiece",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "leviathan_r3": {
+      "name_key": "LEV_R3_NAME",
+      "theme": "leviathan_belly",
+      "music": "isl2_setpiece",
+      "dark": true,
+      "map": [
+        2,
+        1
+      ]
+    },
+    "leviathan_r4": {
+      "name_key": "LEV_R4_NAME",
+      "theme": "leviathan_belly",
+      "music": "isl2_boss_minor_p1",
+      "dark": true,
+      "map": [
+        3,
+        1
+      ]
+    },
+    "leviathan_r5": {
+      "name_key": "LEV_R5_NAME",
+      "theme": "leviathan_belly",
+      "music": "isl2_setpiece",
+      "dark": true,
+      "map": [
+        2,
+        0
+      ]
+    }
   }
 }

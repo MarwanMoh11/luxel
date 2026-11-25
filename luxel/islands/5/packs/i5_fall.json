@@ -10,7 +10,7 @@
     "I5_FL_R3": "TERMINAL ORBIT",
     "I5_FL_R4": "THE COUNTERWEIGHT ROOF",
     "I5_CUE_FALL_LOCK": "THE GRAND ORRERY LOCKS INTO ZENITH!",
-    "I5_FL_R1_HINT": "THE PLAZA BREAKS LOOSE! ZIP THE HOOKS!",
+    "I5_FL_R1_HINT": "THE PLAZA BREAKS LOOSE. ZIP THE HOOKS!",
     "I5_FL_R2_HINT": "CURVE THROUGH THE EDDY TO DROP THE ANCHORS.",
     "I5_FL_R3_HINT": "ORBIT THE WELL TO BRIDGE PAST THE ARCH!",
     "I5_FL_R4_ENTER": "SNAP ITS CHAINS TO LOCK THE DOME HOME!"
@@ -19,7 +19,16 @@
     "fall_wind_rig": "res://luxel/islands/5/fall/fall_wind_rig.gd"
   },
   "state_vars": {
-    "fall_latch": { "scope": "room:5:fall_r3", "values": [0, 90, 180, 270], "default": 0 }
+    "fall_latch": {
+      "scope": "room:5:fall_r3",
+      "values": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "default": 0
+    }
   },
   "dungeons": [
     {
@@ -50,13 +59,57 @@
     }
   ],
   "regions": {
-    "fall_r1": { "name_key": "I5_FL_R1", "theme": "freefall", "music": "isl5_setpiece",     "dark": true, "map": [0, 1] },
-    "fall_r2": { "name_key": "I5_FL_R2", "theme": "freefall", "music": "isl5_setpiece",     "dark": true, "map": [1, 1] },
-    "fall_r3": { "name_key": "I5_FL_R3", "theme": "freefall", "music": "isl5_setpiece",     "dark": true, "map": [2, 1] },
-    "fall_r4": { "name_key": "I5_FL_R4", "theme": "freefall", "music": "isl5_boss_minor_p1", "dark": true, "map": [3, 1] }
+    "fall_r1": {
+      "name_key": "I5_FL_R1",
+      "theme": "freefall",
+      "music": "isl5_setpiece",
+      "dark": true,
+      "map": [
+        0,
+        1
+      ]
+    },
+    "fall_r2": {
+      "name_key": "I5_FL_R2",
+      "theme": "freefall",
+      "music": "isl5_setpiece",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "fall_r3": {
+      "name_key": "I5_FL_R3",
+      "theme": "freefall",
+      "music": "isl5_setpiece",
+      "dark": true,
+      "map": [
+        2,
+        1
+      ]
+    },
+    "fall_r4": {
+      "name_key": "I5_FL_R4",
+      "theme": "freefall",
+      "music": "isl5_boss_minor_p1",
+      "dark": true,
+      "map": [
+        3,
+        1
+      ]
+    }
   },
   "sfx": {
-    "fl_chain_whip": { "id": "harbor_creak",     "pitch": 0.88, "db": -1.5 },
-    "fl_dome_lock":  { "id": "great_lamp_bloom", "pitch": 0.94, "db": 0.0 }
+    "fl_chain_whip": {
+      "id": "harbor_creak",
+      "pitch": 0.88,
+      "db": -1.5
+    },
+    "fl_dome_lock": {
+      "id": "great_lamp_bloom",
+      "pitch": 0.94,
+      "db": 0.0
+    }
   }
 }

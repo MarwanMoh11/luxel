@@ -58,12 +58,16 @@ func set_powered(is_on: bool) -> void:
 	if powered == is_on:
 		return
 	powered = is_on
+	if is_on:
+		raise_flag_prop()
 	_on_power_changed(is_on)
 	queue_redraw()
 
 
 ## Send power to every target in props (uses the shared pulse arcs).
 func emit_power(is_on: bool) -> void:
+	if is_on:
+		raise_flag_prop()
 	_notify_linked_targets(is_on)
 	if Lx.events != null and is_on and bool(props.get("sfx", true)):
 		_emit_sfx(str(props.get("sfx_on", "switch_on")))
@@ -105,4 +109,6 @@ func load_state(d: Dictionary) -> void:
 	super.load_state(d)
 	if persist and d.has("powered"):
 		powered = bool(d["powered"])
+		if powered:
+			raise_flag_prop()
 		_on_power_changed(powered)

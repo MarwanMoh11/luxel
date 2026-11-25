@@ -18,7 +18,7 @@
     "I5_PWR_ORBIT": "APOGEE CLASP: THROW TANGENT TO ORBIT!",
     "I5_MV_PROMPT_CLASP": "CLAIM APOGEE CLASP",
     "I5_MV_LORE_HUB": "PULL BENDS INWARD. PUSH KICKS OUTWARD.",
-    "I5_MV_LORE_SLING": "ORBIT WELL 1. FLIP WELL 2. CURVE THROUGH.",
+    "I5_MV_LORE_SLING": "ORBIT THE FIRST WELL. FLIP THE SECOND.",
     "I5_MV_SHORTCUT": "A VAULT SHORTCUT BRIDGE EXTENDS!",
     "I5_MV_CLEARED": "TWIN MOONS FALL. HALF-LANTERN CLAIMED!"
   },
@@ -53,16 +53,115 @@
     }
   ],
   "regions": {
-    "meteor_r1": { "name_key": "I5_MV_R1", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [2, 3] },
-    "meteor_r2": { "name_key": "I5_MV_R2", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [1, 3] },
-    "meteor_r3": { "name_key": "I5_MV_R3", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [1, 2] },
-    "meteor_r4": { "name_key": "I5_MV_R4", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [3, 3] },
-    "meteor_r5": { "name_key": "I5_MV_R5", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [3, 2] },
-    "meteor_r6": { "name_key": "I5_MV_R6", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [3, 1] },
-    "meteor_r7": { "name_key": "I5_MV_R7", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [4, 1] },
-    "meteor_r8": { "name_key": "I5_MV_R8", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [4, 0] },
-    "meteor_r9": { "name_key": "I5_MV_R9", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [3, 0] },
-    "meteor_r10": { "name_key": "I5_MV_R10", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [2, 2] },
-    "meteor_r11": { "name_key": "I5_MV_R11", "theme": "meteor_vault", "music": "isl5_meteor", "dark": true, "map": [2, 1] }
+    "meteor_r1": {
+      "name_key": "I5_MV_R1",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        2,
+        3
+      ]
+    },
+    "meteor_r2": {
+      "name_key": "I5_MV_R2",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        1,
+        3
+      ]
+    },
+    "meteor_r3": {
+      "name_key": "I5_MV_R3",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        1,
+        2
+      ]
+    },
+    "meteor_r4": {
+      "name_key": "I5_MV_R4",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        3,
+        3
+      ]
+    },
+    "meteor_r5": {
+      "name_key": "I5_MV_R5",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        3,
+        2
+      ]
+    },
+    "meteor_r6": {
+      "name_key": "I5_MV_R6",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        3,
+        1
+      ]
+    },
+    "meteor_r7": {
+      "name_key": "I5_MV_R7",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        4,
+        1
+      ]
+    },
+    "meteor_r8": {
+      "name_key": "I5_MV_R8",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        4,
+        0
+      ]
+    },
+    "meteor_r9": {
+      "name_key": "I5_MV_R9",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        3,
+        0
+      ]
+    },
+    "meteor_r10": {
+      "name_key": "I5_MV_R10",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        2,
+        2
+      ]
+    },
+    "meteor_r11": {
+      "name_key": "I5_MV_R11",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        2,
+        1
+      ]
+    }
   }
 }

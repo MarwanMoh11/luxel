@@ -16,12 +16,22 @@
       "icon": "book",
       "steps": [
         {
-          "icons": ["book", "question", "arrow_e", "isl_8"],
+          "icons": [
+            "book",
+            "question",
+            "arrow_e",
+            "isl_8"
+          ],
           "need": "isl8_all_memories_lit",
           "flag": "quest:q8_lost_ledger:s0"
         },
         {
-          "icons": ["book", "happy", "ember", "gift"],
+          "icons": [
+            "book",
+            "happy",
+            "ember",
+            "gift"
+          ],
           "need": "",
           "flag": "quest:q8_lost_ledger:done"
         }
@@ -40,12 +50,22 @@
       "icon": "flame",
       "steps": [
         {
-          "icons": ["flame", "light_off", "arrow_n", "isl_8"],
+          "icons": [
+            "flame",
+            "light_off",
+            "arrow_n",
+            "isl_8"
+          ],
           "need": "isl8_candles_ready",
           "flag": "quest:q8_eight_candles:s0"
         },
         {
-          "icons": ["flame", "happy", "heart", "home"],
+          "icons": [
+            "flame",
+            "happy",
+            "heart",
+            "home"
+          ],
           "need": "",
           "flag": "quest:q8_eight_candles:done"
         }
@@ -64,12 +84,23 @@
       "icon": "moth",
       "steps": [
         {
-          "icons": ["moth", "skull", "crown", "light_on", "arrow_n"],
+          "icons": [
+            "moth",
+            "skull",
+            "crown",
+            "light_on",
+            "arrow_n"
+          ],
           "need": "first_dark_defeated",
           "flag": "quest:q8_first_dark_rumor:s0"
         },
         {
-          "icons": ["moth", "crown", "happy", "spark"],
+          "icons": [
+            "moth",
+            "crown",
+            "happy",
+            "spark"
+          ],
           "need": "",
           "flag": "quest:q8_first_dark_rumor:done"
         }
@@ -82,16 +113,105 @@
     }
   ],
   "regions": {
-    "vigil_terrace": { "name_key": "ISL8_Z_VIGIL", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [3, 4] },
-    "toll_causeway": { "name_key": "ISL8_Z_TOLL_WAY", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [1, 3] },
-    "archive_cloister": { "name_key": "ISL8_Z_CLOISTER", "theme": "archive", "music": "isl8_archive", "dark": true, "map": [4, 2] },
-    "stair_landing": { "name_key": "ISL8_Z_STAIR_BASE", "theme": "endless_stair", "music": "isl8_setpiece", "dark": true, "map": [1, 1] },
-    "sanctum_forecourt": { "name_key": "ISL8_Z_FORECOURT", "music": "island8_explore", "dark": true, "map": [2, 0] },
-    "cave_blind_scale": { "name_key": "ISL8_Z_BLIND_SCALE", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [0, 2] },
-    "cave_silent_vault": { "name_key": "ISL8_Z_SILENT_VAULT", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [0, 4] },
-    "cave_hush_trial": { "name_key": "ISL8_Z_HUSH_TRIAL", "theme": "endless_stair", "music": "isl8_setpiece", "dark": true, "map": [5, 3] },
-    "cave_glass_grotto": { "name_key": "ISL8_Z_GLASS_GROTTO", "theme": "archive_8", "music": "isl8_archive", "dark": true, "map": [0, 1] },
-    "superboss_first_dark": { "name_key": "ISL8_Z_FIRST_DARK", "theme": "archive_8", "music": "superboss_b", "dark": true, "map": [3, 3] }
+    "vigil_terrace": {
+      "name_key": "ISL8_Z_VIGIL",
+      "theme": "toll_house",
+      "music": "isl8_tollhouse",
+      "dark": true,
+      "map": [
+        3,
+        4
+      ]
+    },
+    "toll_causeway": {
+      "name_key": "ISL8_Z_TOLL_WAY",
+      "theme": "toll_house",
+      "music": "isl8_tollhouse",
+      "dark": true,
+      "map": [
+        1,
+        3
+      ]
+    },
+    "archive_cloister": {
+      "name_key": "ISL8_Z_CLOISTER",
+      "theme": "archive",
+      "music": "isl8_archive",
+      "dark": true,
+      "map": [
+        4,
+        2
+      ]
+    },
+    "stair_landing": {
+      "name_key": "ISL8_Z_STAIR_BASE",
+      "theme": "endless_stair",
+      "music": "isl8_setpiece",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "sanctum_forecourt": {
+      "name_key": "ISL8_Z_FORECOURT",
+      "music": "island8_explore",
+      "dark": true,
+      "map": [
+        2,
+        0
+      ]
+    },
+    "cave_blind_scale": {
+      "name_key": "ISL8_Z_BLIND_SCALE",
+      "theme": "toll_house",
+      "music": "isl8_tollhouse",
+      "dark": true,
+      "map": [
+        0,
+        2
+      ]
+    },
+    "cave_silent_vault": {
+      "name_key": "ISL8_Z_SILENT_VAULT",
+      "theme": "toll_house",
+      "music": "isl8_tollhouse",
+      "dark": true,
+      "map": [
+        0,
+        4
+      ]
+    },
+    "cave_hush_trial": {
+      "name_key": "ISL8_Z_HUSH_TRIAL",
+      "theme": "endless_stair",
+      "music": "isl8_setpiece",
+      "dark": true,
+      "map": [
+        5,
+        3
+      ]
+    },
+    "cave_glass_grotto": {
+      "name_key": "ISL8_Z_GLASS_GROTTO",
+      "theme": "archive_8",
+      "music": "isl8_archive",
+      "dark": true,
+      "map": [
+        0,
+        1
+      ]
+    },
+    "superboss_first_dark": {
+      "name_key": "ISL8_Z_FIRST_DARK",
+      "theme": "archive_8",
+      "music": "superboss_b",
+      "dark": true,
+      "map": [
+        3,
+        3
+      ]
+    }
   },
   "strings": {
     "ISL8_Z_VIGIL": "VIGIL TERRACE",
@@ -121,7 +241,7 @@
     "ISL8_PROMPT_ECLIPSE_SEAL": "INSPECT ECLIPSE SEAL",
     "ISL8_PROMPT_MOTH_ARCH": "INSPECT 80-MOTH ARCH",
     "ISL8_TRIAL_START": "HUSH TRIAL: LIGHT 6 BRAZIERS IN 35S!",
-    "ISL8_TRIAL_WIN": "HUSH TRIAL CLEARED! VAULT UNLOCKED!",
+    "ISL8_TRIAL_WIN": "HUSH TRIAL CLEARED. VAULT UNLOCKED.",
     "ISL8_TRIAL_FAIL": "THE DUSK TOOK THE FLAME. TRY AGAIN.",
     "ISL8_SILENT_BONUS": "SILENT AUDITOR: VAULT CLEARED UNHEARD!",
     "ISL8_FIRST_DARK_WIN": "THE FIRST DARK SHATTERS INTO STARLIGHT!",

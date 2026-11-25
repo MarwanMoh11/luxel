@@ -2,10 +2,63 @@
   "pack_id": "wick_house_hub",
   "owner": "E4-HUB",
   "state_vars": {
-    "hub_relit": { "scope": "game", "values": [0, 1, 2, 3, 4, 5, 6, 7, 8], "default": 0 },
-    "hub_folk": { "scope": "game", "values": [0, 1, 2, 3, 4, 5, 6, 7, 8], "default": 0 },
-    "hub_moths": { "scope": "game", "values": [0, 5, 10, 20, 35, 50, 65, 80], "default": 0 },
-    "hub_medals": { "scope": "game", "values": [0, 3, 6, 9, 12, 15, 18], "default": 0 }
+    "hub_relit": {
+      "scope": "game",
+      "values": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "default": 0
+    },
+    "hub_folk": {
+      "scope": "game",
+      "values": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "default": 0
+    },
+    "hub_moths": {
+      "scope": "game",
+      "values": [
+        0,
+        5,
+        10,
+        20,
+        35,
+        50,
+        65,
+        80
+      ],
+      "default": 0
+    },
+    "hub_medals": {
+      "scope": "game",
+      "values": [
+        0,
+        3,
+        6,
+        9,
+        12,
+        15,
+        18
+      ],
+      "default": 0
+    }
   },
   "interactables": {
     "hub_station": "res://luxel/hub/hub_station.gd",
@@ -20,14 +73,94 @@
     "mg_endless_cellar": "res://luxel/hub/mg_endless_cellar.gd"
   },
   "regions": {
-    "overworld": { "name_key": "ZONE_WICK_HOUSE", "music": "hub", "ambience": "island1", "theme": "wick_house", "dark": false, "map": [0, 0] },
-    "attic": { "name_key": "ZONE_HUB_ATTIC", "music": "hub", "ambience": "island1", "theme": "wick_house", "dark": false, "map": [0, -1] },
-    "observatory": { "name_key": "ZONE_HUB_OBSERVATORY", "music": "hub", "ambience": "island5", "theme": "wick_house", "dark": false, "map": [0, -2] },
-    "workshop": { "name_key": "ZONE_HUB_WORKSHOP", "music": "hub", "ambience": "island6", "theme": "wick_house", "dark": false, "map": [-1, 0] },
-    "gallery": { "name_key": "ZONE_HUB_GALLERY", "music": "hub", "ambience": "island7", "theme": "wick_house", "dark": false, "map": [1, 0] },
-    "pier": { "name_key": "ZONE_HUB_PIER", "music": "hub", "ambience": "island2", "theme": "wick_house", "dark": false, "map": [1, 1] },
-    "corridor": { "name_key": "ZONE_HUB_CORRIDOR", "music": "hub", "ambience": "island1", "theme": "cave_1", "dark": false, "map": [-1, 1] },
-    "cellar": { "name_key": "ZONE_HUB_CELLAR", "music": "hub", "ambience": "island4", "theme": "cave_4", "dark": false, "map": [0, 1] }
+    "overworld": {
+      "name_key": "ZONE_WICK_HOUSE",
+      "music": "hub",
+      "ambience": "island1",
+      "theme": "wick_house",
+      "dark": false,
+      "map": [
+        0,
+        0
+      ]
+    },
+    "attic": {
+      "name_key": "ZONE_HUB_ATTIC",
+      "music": "hub",
+      "ambience": "island1",
+      "theme": "wick_house",
+      "dark": false,
+      "map": [
+        0,
+        -1
+      ]
+    },
+    "observatory": {
+      "name_key": "ZONE_HUB_OBSERVATORY",
+      "music": "hub",
+      "ambience": "island5",
+      "theme": "wick_house",
+      "dark": false,
+      "map": [
+        0,
+        -2
+      ]
+    },
+    "workshop": {
+      "name_key": "ZONE_HUB_WORKSHOP",
+      "music": "hub",
+      "ambience": "island6",
+      "theme": "wick_house",
+      "dark": false,
+      "map": [
+        -1,
+        0
+      ]
+    },
+    "gallery": {
+      "name_key": "ZONE_HUB_GALLERY",
+      "music": "hub",
+      "ambience": "island7",
+      "theme": "wick_house",
+      "dark": false,
+      "map": [
+        1,
+        0
+      ]
+    },
+    "pier": {
+      "name_key": "ZONE_HUB_PIER",
+      "music": "hub",
+      "ambience": "island2",
+      "theme": "wick_house",
+      "dark": false,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "corridor": {
+      "name_key": "ZONE_HUB_CORRIDOR",
+      "music": "hub",
+      "ambience": "island1",
+      "theme": "cave_1",
+      "dark": false,
+      "map": [
+        -1,
+        1
+      ]
+    },
+    "cellar": {
+      "name_key": "ZONE_HUB_CELLAR",
+      "music": "hub",
+      "ambience": "island4",
+      "theme": "cave_4",
+      "dark": false,
+      "map": [
+        0,
+        1
+      ]
+    }
   },
   "quests": [
     {
@@ -37,10 +170,30 @@
       "folk": "moth_kid",
       "icon": "moth",
       "steps": [
-        {"icons": ["moth", "light_on", "arrow_n", "lantern"], "need": "moths>=5", "flag": "quest:q_hub_moths:s0"},
-        {"icons": ["moth", "heart", "pane"], "need": "", "flag": "quest:q_hub_moths:done"}
+        {
+          "icons": [
+            "moth",
+            "light_on",
+            "arrow_n",
+            "lantern"
+          ],
+          "need": "moths>=5",
+          "flag": "quest:q_hub_moths:s0"
+        },
+        {
+          "icons": [
+            "moth",
+            "heart",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_hub_moths:done"
+        }
       ],
-      "reward": {"kind": "shards", "amount": 40}
+      "reward": {
+        "kind": "shards",
+        "amount": 40
+      }
     },
     {
       "id": "q_hub_bell_echo",
@@ -49,10 +202,30 @@
       "folk": "bell_snail",
       "icon": "bell",
       "steps": [
-        {"icons": ["isl_1", "move_prism", "bell", "question"], "need": "hub:secret:bell_echo", "flag": "quest:q_hub_bell_echo:s0"},
-        {"icons": ["bell", "happy", "pane"], "need": "", "flag": "quest:q_hub_bell_echo:done"}
+        {
+          "icons": [
+            "isl_1",
+            "move_prism",
+            "bell",
+            "question"
+          ],
+          "need": "hub:secret:bell_echo",
+          "flag": "quest:q_hub_bell_echo:s0"
+        },
+        {
+          "icons": [
+            "bell",
+            "happy",
+            "pane"
+          ],
+          "need": "",
+          "flag": "quest:q_hub_bell_echo:done"
+        }
       ],
-      "reward": {"kind": "lead", "amount": 1}
+      "reward": {
+        "kind": "lead",
+        "amount": 1
+      }
     },
     {
       "id": "q_hub_tide_chart",
@@ -61,10 +234,31 @@
       "folk": "ferry_beetle",
       "icon": "toy_skiff",
       "steps": [
-        {"icons": ["isl_2", "move_beam", "toy_skiff", "question"], "need": "hub:secret:tide_chart", "flag": "quest:q_hub_tide_chart:s0"},
-        {"icons": ["toy_skiff", "flame", "happy"], "need": "", "flag": "quest:q_hub_tide_chart:done"}
+        {
+          "icons": [
+            "isl_2",
+            "move_beam",
+            "toy_skiff",
+            "question"
+          ],
+          "need": "hub:secret:tide_chart",
+          "flag": "quest:q_hub_tide_chart:s0"
+        },
+        {
+          "icons": [
+            "toy_skiff",
+            "flame",
+            "happy"
+          ],
+          "need": "",
+          "flag": "quest:q_hub_tide_chart:done"
+        }
       ],
-      "reward": {"kind": "flame", "value": "sky", "amount": 1}
+      "reward": {
+        "kind": "flame",
+        "value": "sky",
+        "amount": 1
+      }
     },
     {
       "id": "q_hub_canopy_bulb",
@@ -73,10 +267,30 @@
       "folk": "gardener_frog",
       "icon": "seed",
       "steps": [
-        {"icons": ["isl_3", "move_wings", "seed", "question"], "need": "hub:secret:canopy_bulb", "flag": "quest:q_hub_canopy_bulb:s0"},
-        {"icons": ["seed", "ember", "heart"], "need": "", "flag": "quest:q_hub_canopy_bulb:done"}
+        {
+          "icons": [
+            "isl_3",
+            "move_wings",
+            "seed",
+            "question"
+          ],
+          "need": "hub:secret:canopy_bulb",
+          "flag": "quest:q_hub_canopy_bulb:s0"
+        },
+        {
+          "icons": [
+            "seed",
+            "ember",
+            "heart"
+          ],
+          "need": "",
+          "flag": "quest:q_hub_canopy_bulb:done"
+        }
       ],
-      "reward": {"kind": "ember_piece", "amount": 1}
+      "reward": {
+        "kind": "ember_piece",
+        "amount": 1
+      }
     },
     {
       "id": "q_hub_dusk_ink",
@@ -85,10 +299,31 @@
       "folk": "scribe_worm",
       "icon": "book",
       "steps": [
-        {"icons": ["isl_4", "move_lens", "book", "question"], "need": "hub:secret:dusk_ink", "flag": "quest:q_hub_dusk_ink:s0"},
-        {"icons": ["book", "pane", "happy"], "need": "", "flag": "quest:q_hub_dusk_ink:done"}
+        {
+          "icons": [
+            "isl_4",
+            "move_lens",
+            "book",
+            "question"
+          ],
+          "need": "hub:secret:dusk_ink",
+          "flag": "quest:q_hub_dusk_ink:s0"
+        },
+        {
+          "icons": [
+            "book",
+            "pane",
+            "happy"
+          ],
+          "need": "",
+          "flag": "quest:q_hub_dusk_ink:done"
+        }
       ],
-      "reward": {"kind": "pane", "value": "dusk_dew", "amount": 1}
+      "reward": {
+        "kind": "pane",
+        "value": "dusk_dew",
+        "amount": 1
+      }
     },
     {
       "id": "q_hub_star_prism",
@@ -97,10 +332,31 @@
       "folk": "owl_chick",
       "icon": "star",
       "steps": [
-        {"icons": ["isl_5", "move_sunflare", "star", "question"], "need": "hub:secret:star_prism", "flag": "quest:q_hub_star_prism:s0"},
-        {"icons": ["star", "flame", "happy"], "need": "", "flag": "quest:q_hub_star_prism:done"}
+        {
+          "icons": [
+            "isl_5",
+            "move_sunflare",
+            "star",
+            "question"
+          ],
+          "need": "hub:secret:star_prism",
+          "flag": "quest:q_hub_star_prism:s0"
+        },
+        {
+          "icons": [
+            "star",
+            "flame",
+            "happy"
+          ],
+          "need": "",
+          "flag": "quest:q_hub_star_prism:done"
+        }
       ],
-      "reward": {"kind": "flame", "value": "ice", "amount": 1}
+      "reward": {
+        "kind": "flame",
+        "value": "ice",
+        "amount": 1
+      }
     },
     {
       "id": "q_hub_kiln_cinder",
@@ -109,10 +365,30 @@
       "folk": "kiln_salamander",
       "icon": "ember",
       "steps": [
-        {"icons": ["isl_6", "move_sunflare", "ember", "question"], "need": "hub:secret:kiln_cinder", "flag": "quest:q_hub_kiln_cinder:s0"},
-        {"icons": ["ember", "pane", "happy"], "need": "", "flag": "quest:q_hub_kiln_cinder:done"}
+        {
+          "icons": [
+            "isl_6",
+            "move_sunflare",
+            "ember",
+            "question"
+          ],
+          "need": "hub:secret:kiln_cinder",
+          "flag": "quest:q_hub_kiln_cinder:s0"
+        },
+        {
+          "icons": [
+            "ember",
+            "pane",
+            "happy"
+          ],
+          "need": "",
+          "flag": "quest:q_hub_kiln_cinder:done"
+        }
       ],
-      "reward": {"kind": "lead", "amount": 1}
+      "reward": {
+        "kind": "lead",
+        "amount": 1
+      }
     }
   ],
   "strings": {
@@ -151,7 +427,7 @@
     "HUB_REMATCH_START": "THE MIRROR OPENS!",
     "HUB_REMATCH_WIN": "REMATCH CLEARED!",
     "HUB_REMATCH_HUD": "REMATCH %s",
-    "HUB_REMATCH_R_SHARDS": "SPEED MARK! +SHARDS",
+    "HUB_REMATCH_R_SHARDS": "SPEED MARK WON. BONUS SHARDS.",
     "HUB_REMATCH_R_GOLD": "GOLD MARK! +60 SHARDS",
     "HUB_REMATCH_R_NOHIT": "NO-HIT CROWN CLAIMED!",
     "HUB_NO_HIT_OK": "NO-HIT",
@@ -196,7 +472,7 @@
     "HUB_LEAD_TITLE": "KILN LEAD FORGE",
     "HUB_LEAD_STATS": "LEAD %d/%d   SHARDS %d",
     "HUB_LEAD_DESC": "EXTRA LEAD FITS STRONGER PANES AT ONCE.",
-    "HUB_LEAD_BUY_FMT": "FORGE +1 LEAD  - %d SHARDS",
+    "HUB_LEAD_BUY_FMT": "FORGE +1 LEAD - %d SHARDS",
     "HUB_LEAD_SOLD_OUT": "LEAD CAPACITY MAXED!",
     "HUB_LEAD_OPEN_BENCH": "OPEN PANE WORKBENCH",
     "HUB_LEAD_BOUGHT": "FORGED +1 MAX LEAD!",
@@ -225,13 +501,13 @@
     "HUB_GAL_SET1": "SET 1: CLASSIC TARGETS",
     "HUB_GAL_SET2": "SET 2: PRISM BOUNCE TARGETS",
     "HUB_GAL_SET3": "SET 3: GRAVITY CURVE TARGETS",
-    "HUB_SKIFF_GO": "BOARD SKIFF! SHOOT BACK TO SAIL!",
+    "HUB_SKIFF_GO": "BOARD THE SKIFF. SHOOT BACK TO SAIL!",
     "HUB_MEDAL_BRONZE": "BRONZE MEDAL WON!",
     "HUB_MEDAL_SILVER": "SILVER MEDAL WON!",
     "HUB_MEDAL_GOLD": "GOLD MEDAL WON!",
     "HUB_TRIAL_DONE": "TRIAL COMPLETE.",
     "HUB_NEW_BEST": "NEW BEST!",
-    "HUB_REACT_ISL1": "THE BELLS OF ISLAND 1 RING ACROSS THE SEA.",
+    "HUB_REACT_ISL1": "THE BELLS OF BELL ISLE RING ACROSS THE SEA.",
     "HUB_REACT_ISL2": "THE TIDEWATER LIGHTHOUSE SHINES AGAIN.",
     "HUB_REACT_ISL3": "FRESH LEAVES STIR IN THORNWOOD HOLLOW.",
     "HUB_REACT_ISL4": "MIREFEN CLOCKS TICK FORWARD AT LAST.",

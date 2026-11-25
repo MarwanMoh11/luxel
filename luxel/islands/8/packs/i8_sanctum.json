@@ -9,20 +9,138 @@
     "sanctum_eclipse_bell": "res://luxel/islands/8/sanctum/sanctum_eclipse_bell.gd"
   },
   "regions": {
-    "sanctum_r1":  { "name_key": "ISL8_SC_R1",  "music": "island8_dungeon", "dark": true, "map": [2, 5] },
-    "sanctum_r2":  { "name_key": "ISL8_SC_R2",  "music": "island8_dungeon", "dark": true, "map": [2, 4] },
-    "sanctum_r3":  { "name_key": "ISL8_SC_R3",  "music": "island8_dungeon", "dark": true, "map": [2, 3] },
-    "sanctum_r4":  { "name_key": "ISL8_SC_R4",  "music": "island8_boss_p1", "dark": true, "map": [3, 3] },
-    "sanctum_r5":  { "name_key": "ISL8_SC_R5",  "music": "island8_dungeon", "dark": true, "map": [2, 2] },
-    "sanctum_r6":  { "name_key": "ISL8_SC_R6",  "music": "island8_boss_p1", "dark": true, "map": [2, 0] },
-    "sanctum_r7":  { "name_key": "ISL8_SC_R7",  "theme": "toll_house",    "music": "island8_dungeon", "dark": true, "map": [1, 4] },
-    "sanctum_r8":  { "name_key": "ISL8_SC_R8",  "theme": "archive",       "music": "island8_dungeon", "dark": true, "map": [4, 4] },
-    "sanctum_r9":  { "name_key": "ISL8_SC_R9",  "theme": "toll_house",    "music": "island8_dungeon", "dark": true, "map": [1, 3] },
-    "sanctum_r10": { "name_key": "ISL8_SC_R10", "theme": "endless_stair", "music": "island8_dungeon", "dark": true, "map": [4, 3] },
-    "sanctum_r11": { "name_key": "ISL8_SC_R11", "theme": "archive_8",     "music": "island8_dungeon", "dark": true, "map": [1, 2] },
-    "sanctum_r12": { "name_key": "ISL8_SC_R12", "theme": "archive",       "music": "isl8_boss_minor_p1", "dark": true, "map": [4, 2] },
-    "sanctum_r13": { "name_key": "ISL8_SC_R13", "music": "island8_dungeon", "dark": true, "map": [3, 1] },
-    "sanctum_r14": { "name_key": "ISL8_SC_R14", "music": "island8_dungeon", "dark": true, "map": [2, 1] }
+    "sanctum_r1": {
+      "name_key": "ISL8_SC_R1",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        5
+      ]
+    },
+    "sanctum_r2": {
+      "name_key": "ISL8_SC_R2",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        4
+      ]
+    },
+    "sanctum_r3": {
+      "name_key": "ISL8_SC_R3",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        3
+      ]
+    },
+    "sanctum_r4": {
+      "name_key": "ISL8_SC_R4",
+      "music": "island8_boss_p1",
+      "dark": true,
+      "map": [
+        3,
+        3
+      ]
+    },
+    "sanctum_r5": {
+      "name_key": "ISL8_SC_R5",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        2
+      ]
+    },
+    "sanctum_r6": {
+      "name_key": "ISL8_SC_R6",
+      "music": "island8_boss_p1",
+      "dark": true,
+      "map": [
+        2,
+        0
+      ]
+    },
+    "sanctum_r7": {
+      "name_key": "ISL8_SC_R7",
+      "theme": "toll_house",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        4
+      ]
+    },
+    "sanctum_r8": {
+      "name_key": "ISL8_SC_R8",
+      "theme": "archive",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        4,
+        4
+      ]
+    },
+    "sanctum_r9": {
+      "name_key": "ISL8_SC_R9",
+      "theme": "toll_house",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        3
+      ]
+    },
+    "sanctum_r10": {
+      "name_key": "ISL8_SC_R10",
+      "theme": "endless_stair",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        4,
+        3
+      ]
+    },
+    "sanctum_r11": {
+      "name_key": "ISL8_SC_R11",
+      "theme": "archive_8",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        2
+      ]
+    },
+    "sanctum_r12": {
+      "name_key": "ISL8_SC_R12",
+      "theme": "archive",
+      "music": "isl8_boss_minor_p1",
+      "dark": true,
+      "map": [
+        4,
+        2
+      ]
+    },
+    "sanctum_r13": {
+      "name_key": "ISL8_SC_R13",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        3,
+        1
+      ]
+    },
+    "sanctum_r14": {
+      "name_key": "ISL8_SC_R14",
+      "music": "island8_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        1
+      ]
+    }
   },
   "strings": {
     "ISL8_SC_R1": "SHATTERED NARTHEX HUB",
@@ -46,20 +164,28 @@
     "ISL8_SC_LORE_R10": "CURVE THE LANTERN THROUGH GRAVITY TO YANK.",
     "ISL8_SC_LORE_R13": "BREAK BOTH CHAINS. RING WITH SUNFLARE.",
     "ISL8_SC_HOLLOW_SHRINE": "AN EMPTY LANTERN. ITS GLASS NEVER TRADED.",
-    "ISL8_SC_CHAIN_READY": "ECLIPSE BELL RINGS! BLESSING GRANTED!",
+    "ISL8_SC_CHAIN_READY": "ECLIPSE BELL RINGS. BLESSING GRANTED.",
     "ISL8_SC_CHAIN_WAIT": "RING THE GREAT ECLIPSE BELL ABOVE THE WINGS.",
-    "ISL8_SC_BELL_HINT": "PRISM WEST - PORTAL EAST - SUNFLARE CENTER.",
+    "ISL8_SC_BELL_HINT": "PRISM WEST - PORTAL EAST - SUNFLARE CENTRE.",
     "ISL8_SC_BELL_LOCKED": "TWO ECLIPSE CHAINS STILL BIND THE BELL.",
     "ISL8_SC_BELL_RUNG": "THE GREAT ECLIPSE BELL TOLLS ACROSS NIGHT!",
-    "ISL8_SC_SEAL_W": "WEST VIGIL SEAL LIT! NARTHEX DROP OPEN!",
-    "ISL8_SC_SEAL_E": "SERAPH SHATTERS! EAST CHOIR SEAL LIT!",
+    "ISL8_SC_SEAL_W": "WEST VIGIL SEAL LIT. NARTHEX DROP OPEN.",
+    "ISL8_SC_SEAL_E": "SERAPH SHATTERS. EAST CHOIR SEAL LIT.",
     "ISL8_SC_LIFT_OPEN": "THRESHOLD LIFT LINKED TO THE NARTHEX!",
     "ISL8_SC_PROMPT_CHAIN": "INSPECT ECLIPSE CHAIN",
     "ISL8_SC_PROMPT_SHRINE": "INSPECT BROKEN LANTERN",
     "ISL8_SC_PROMPT_BELL": "INSPECT ECLIPSE BELL"
   },
   "sfx": {
-    "sanctum_bell_toll": { "id": "bell_toll", "pitch": 0.76, "db": 0.5 },
-    "sanctum_vigil_chime": { "id": "clockwork_chime", "pitch": 0.88, "db": -1.5 }
+    "sanctum_bell_toll": {
+      "id": "bell_toll",
+      "pitch": 0.76,
+      "db": 0.5
+    },
+    "sanctum_vigil_chime": {
+      "id": "clockwork_chime",
+      "pitch": 0.88,
+      "db": -1.5
+    }
   }
 }

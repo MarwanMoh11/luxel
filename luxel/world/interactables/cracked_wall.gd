@@ -85,6 +85,7 @@ func break_wall() -> void:
 	if region != null and region.has_method("save_interactables_to_state"):
 		region.call("save_interactables_to_state")
 	_emit_save("cracked_" + id)
+	raise_flag_prop()
 	_notify_linked_targets(true)
 	queue_redraw()
 

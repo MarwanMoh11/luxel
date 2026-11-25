@@ -27,13 +27,16 @@
     "ISL6_COL_LOCK_L": "WEST SHOULDER CHAIN SNAPPED FREE!",
     "ISL6_COL_LOCK_R": "EAST SHOULDER CHAIN SNAPPED FREE!",
     "ISL6_COL_STEERED": "THE COLOSSUS TURNS TOWARD HIGH TRESTLE!",
-    "ISL6_COL_HEART_WIN": "THE HEART CALMS! SPINE HATCH OPEN!",
-    "ISL6_COL_CLEARED": "THE COLOSSUS KNEELS! HALF-LANTERN CLAIMED!"
+    "ISL6_COL_HEART_WIN": "THE HEART CALMS. SPINE HATCH OPEN.",
+    "ISL6_COL_CLEARED": "THE COLOSSUS KNEELS. HALF-LANTERN CLAIMED!"
   },
   "state_vars": {
     "helm_heading": {
       "scope": "room:6:colossus_r10",
-      "values": ["north", "east"],
+      "values": [
+        "north",
+        "east"
+      ],
       "default": "north"
     }
   },
@@ -70,17 +73,125 @@
     }
   ],
   "regions": {
-    "colossus_r1": { "name_key": "ISL6_COL_R1", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [0, 5] },
-    "colossus_r2": { "name_key": "ISL6_COL_R2", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [1, 5] },
-    "colossus_r3": { "name_key": "ISL6_COL_R3", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [2, 5] },
-    "colossus_r4": { "name_key": "ISL6_COL_R4", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [2, 4] },
-    "colossus_r5": { "name_key": "ISL6_COL_R5", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [1, 4] },
-    "colossus_r6": { "name_key": "ISL6_COL_R6", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [1, 3] },
-    "colossus_r7": { "name_key": "ISL6_COL_R7", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [0, 2] },
-    "colossus_r8": { "name_key": "ISL6_COL_R8", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [2, 2] },
-    "colossus_r9": { "name_key": "ISL6_COL_R9", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [1, 2] },
-    "colossus_r10": { "name_key": "ISL6_COL_R10", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [1, 1] },
-    "colossus_r11": { "name_key": "ISL6_COL_R11", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [2, 1] },
-    "colossus_r12": { "name_key": "ISL6_COL_R12", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "map": [3, 1] }
+    "colossus_r1": {
+      "name_key": "ISL6_COL_R1",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        0,
+        5
+      ]
+    },
+    "colossus_r2": {
+      "name_key": "ISL6_COL_R2",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        1,
+        5
+      ]
+    },
+    "colossus_r3": {
+      "name_key": "ISL6_COL_R3",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        2,
+        5
+      ]
+    },
+    "colossus_r4": {
+      "name_key": "ISL6_COL_R4",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        2,
+        4
+      ]
+    },
+    "colossus_r5": {
+      "name_key": "ISL6_COL_R5",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        1,
+        4
+      ]
+    },
+    "colossus_r6": {
+      "name_key": "ISL6_COL_R6",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        1,
+        3
+      ]
+    },
+    "colossus_r7": {
+      "name_key": "ISL6_COL_R7",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        0,
+        2
+      ]
+    },
+    "colossus_r8": {
+      "name_key": "ISL6_COL_R8",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        2,
+        2
+      ]
+    },
+    "colossus_r9": {
+      "name_key": "ISL6_COL_R9",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        1,
+        2
+      ]
+    },
+    "colossus_r10": {
+      "name_key": "ISL6_COL_R10",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "colossus_r11": {
+      "name_key": "ISL6_COL_R11",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        2,
+        1
+      ]
+    },
+    "colossus_r12": {
+      "name_key": "ISL6_COL_R12",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "dark": true,
+      "map": [
+        3,
+        1
+      ]
+    }
   }
 }

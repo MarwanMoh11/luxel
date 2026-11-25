@@ -242,6 +242,14 @@ func get_state_key() -> String:
 	return "%d:%s:%s" % [island_id, region_id, id]
 
 
+## Any interactable may carry `sets_flag`: the story flag it raises once when it is solved, lit, opened or pressed.
+func raise_flag_prop() -> void:
+	var sf: String = str(props.get("sets_flag", "")).strip_edges()
+	if sf.is_empty() or Lx.state == null or bool(Lx.state.story_flags.get(sf, false)):
+		return
+	Lx.state.story_flags[sf] = true
+
+
 func _notify_linked_targets(powered: bool = true) -> void:
 	if region == null or not region.has_method("find_interactable"):
 		return
