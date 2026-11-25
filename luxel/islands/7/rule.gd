@@ -20,8 +20,8 @@ const MOVE_LABEL_KEYS: Dictionary = {
 	"beam": "ISL7_HUD_M_BEAM", "wings": "ISL7_HUD_M_WINGS",
 	"lens": "ISL7_HUD_M_LENS", "sunflare": "ISL7_HUD_M_SUNFLARE",
 }
-const SHADOW_TRUTH := Vector2(3.0, 3.0)
-const SHADOW_LIE := Vector2(-3.0, -3.0)
+const SHADOW_TRUTH := Vector2(6.0, 5.0)
+const SHADOW_LIE := Vector2(-6.0, -5.0)
 const POCKET_RIPPLE_RADIUS: float = 48.0
 
 static var active_rule: LxIsland7Rule = null
@@ -122,23 +122,25 @@ class Island7HudOverlay:
 			canvas.draw_rect(Rect2(sx, 0.0, 1.0, 180.0), Color(c_cream, alpha))
 
 		var y_cur: float = 64.0
-		var bx: float = 246.0; var bw: float = 68.0; var bh: float = 13.0
-		var rim_c: Color = c_cream if (flip_flash_t > 0.6 and not fred) else (c_rose if is_black else c_ice)
-		canvas.draw_rect(Rect2(bx, y_cur, bw, bh), c_void)
-		canvas.draw_rect(Rect2(bx + 1.0, y_cur + 1.0, bw - 2.0, bh - 2.0), c_void if is_black else c_night)
-		canvas.draw_rect(Rect2(bx + 1.0, y_cur + 1.0, bw - 2.0, 1.0), rim_c)
-		if is_black:
-			canvas.draw_rect(Rect2(bx + 5.0, y_cur + 4.0, 5.0, 5.0), c_rose)
-			canvas.draw_rect(Rect2(bx + 6.0, y_cur + 5.0, 3.0, 3.0), c_void)
-			canvas.draw_rect(Rect2(bx + 5.0, y_cur + 5.0, 1.0, 3.0), c_cream)
-		else:
-			canvas.draw_rect(Rect2(bx + 5.0, y_cur + 4.0, 5.0, 5.0), c_sky)
-			canvas.draw_rect(Rect2(bx + 6.0, y_cur + 4.0, 3.0, 5.0), c_ice)
-			canvas.draw_rect(Rect2(bx + 6.0, y_cur + 5.0, 2.0, 2.0), c_cream)
-		var fkey: String = "ISL7_HUD_BLACK" if is_black else "ISL7_HUD_SILVER"
-		if LxStrings.has_id(fkey):
-			LxPixelFont.draw(canvas, LxStrings.text(fkey), Vector2(bx + 14.0, y_cur + 4.0), c_rose if is_black else c_cream)
-		y_cur += bh + 2.0
+		var show_world_pill: bool = is_black or (not reg_id.begins_with("theatre_") and not reg_id.begins_with("masq_"))
+		if show_world_pill:
+			var bx: float = 246.0; var bw: float = 68.0; var bh: float = 13.0
+			var rim_c: Color = c_cream if (flip_flash_t > 0.6 and not fred) else (c_rose if is_black else c_ice)
+			canvas.draw_rect(Rect2(bx, y_cur, bw, bh), c_void)
+			canvas.draw_rect(Rect2(bx + 1.0, y_cur + 1.0, bw - 2.0, bh - 2.0), c_void if is_black else c_night)
+			canvas.draw_rect(Rect2(bx + 1.0, y_cur + 1.0, bw - 2.0, 1.0), rim_c)
+			if is_black:
+				canvas.draw_rect(Rect2(bx + 5.0, y_cur + 4.0, 5.0, 5.0), c_rose)
+				canvas.draw_rect(Rect2(bx + 6.0, y_cur + 5.0, 3.0, 3.0), c_void)
+				canvas.draw_rect(Rect2(bx + 5.0, y_cur + 5.0, 1.0, 3.0), c_cream)
+			else:
+				canvas.draw_rect(Rect2(bx + 5.0, y_cur + 4.0, 5.0, 5.0), c_sky)
+				canvas.draw_rect(Rect2(bx + 6.0, y_cur + 4.0, 3.0, 5.0), c_ice)
+				canvas.draw_rect(Rect2(bx + 6.0, y_cur + 5.0, 2.0, 2.0), c_cream)
+			var fkey: String = "ISL7_HUD_BLACK" if is_black else "ISL7_HUD_SILVER"
+			if LxStrings.has_id(fkey):
+				LxPixelFont.draw(canvas, LxStrings.text(fkey), Vector2(bx + 14.0, y_cur + 4.0), c_rose if is_black else c_cream)
+			y_cur += bh + 2.0
 
 		# 2. Stolen Moves Cage Strip (top-right stack, crimson velvet + golden bars)
 		if not stolen.is_empty():
@@ -510,29 +512,39 @@ static func draw_truth_shadow(
 		return
 	var c_void: Color = LxPalette.PAL["void"] as Color
 	var c_gold: Color = LxPalette.PAL["gold"] as Color
+	var c_cream: Color = LxPalette.PAL["cream"] as Color
 	var c_rose: Color = LxPalette.PAL["rose"] as Color
 	var c_wine: Color = LxPalette.PAL["wine"] as Color
-	var alpha: float = 0.62 if lens_boost else 0.44
+	var c_plum: Color = LxPalette.PAL["plum"] as Color
+	var alpha: float = 0.86 if lens_boost else 0.72
 	var off: Vector2 = SHADOW_LIE if mode == "nw_wrong" else SHADOW_TRUTH
+	var mid: Vector2 = (base_pos + off * 0.48).round()
 	var c: Vector2 = (base_pos + off).round()
-	var w: float = maxf(4.0, roundf(rx * 2.0))
-	var h: float = maxf(2.0, roundf(ry * 2.0))
+	var w: float = maxf(6.0, roundf(rx * 2.0))
+	var h: float = maxf(3.0, roundf(ry * 2.0))
+	# Connecting cast-shadow wedge from feet toward SE (truth) or NW (lie) for instant silhouette clarity
+	ci.draw_rect(Rect2(mid.x - floorf(w * 0.4), mid.y - floorf(h * 0.4), maxf(3.0, w * 0.8), maxf(2.0, h * 0.8)), Color(c_void, alpha * 0.88))
 	ci.draw_rect(Rect2(c.x - floorf(w * 0.5) + 1.0, c.y - floorf(h * 0.5), maxf(2.0, w - 2.0), h), Color(c_void, alpha))
 	ci.draw_rect(Rect2(c.x - floorf(w * 0.5), c.y - floorf(h * 0.5) + 1.0, w, maxf(1.0, h - 2.0)), Color(c_void, alpha))
 	if mode == "se_gold":
-		# Crisp SE directional glint so truth shadows read cleanly even in greyscale
-		ci.draw_rect(Rect2(c.x + floorf(w * 0.5) - 2.0, c.y + floorf(h * 0.5) - 1.0, 2.0, 1.0), Color(c_gold, 0.72 if lens_boost else 0.48))
+		# Bold warm SE directional rim (high-contrast gold + cream glint readable at a glance)
+		var sx: float = c.x + floorf(w * 0.5) - 3.0
+		var sy: float = c.y + floorf(h * 0.5) - 1.0
+		ci.draw_rect(Rect2(sx, sy, 4.0, 2.0), Color(c_gold, 0.92 if lens_boost else 0.78))
+		ci.draw_rect(Rect2(sx + 2.0, sy, 2.0, 1.0), Color(c_cream, 0.95 if lens_boost else 0.74))
 	elif mode == "nw_wrong":
-		# Distinct NW directional tail pointing wrong-way up-left
-		ci.draw_rect(Rect2(c.x - floorf(w * 0.5) - 1.0, c.y - floorf(h * 0.5) - 1.0, 2.0, 2.0), Color(c_void, alpha + 0.16))
-		if lens_boost:
-			ci.draw_rect(Rect2(c.x - floorf(w * 0.5) - 1.0, c.y - floorf(h * 0.5) - 1.0, 1.0, 1.0), c_rose)
+		# Stark NW wrong-way jutting tail stretching up-left with plum/rose tip
+		var nx: float = c.x - floorf(w * 0.5) - 2.0
+		var ny: float = c.y - floorf(h * 0.5) - 2.0
+		ci.draw_rect(Rect2(nx, ny, 4.0, 3.0), Color(c_void, minf(0.95, alpha + 0.16)))
+		ci.draw_rect(Rect2(nx, ny, 2.0, 2.0), c_rose if lens_boost else c_plum)
 	elif mode == "black_lantern":
-		# Hollow dark lantern ring carried by the shadow itself (Hollow Wick Cotillion tell!)
-		var lp: Vector2 = (c + Vector2(rx + 2.0, 0.0)).round()
-		ci.draw_rect(Rect2(lp.x - 2.0, lp.y - 2.0, 5.0, 5.0), c_void)
-		ci.draw_rect(Rect2(lp.x - 1.0, lp.y - 1.0, 3.0, 3.0), c_rose if lens_boost else c_wine)
-		ci.draw_rect(Rect2(lp.x, lp.y, 1.0, 1.0), c_void)
+		# Unmistakable hollow dark lantern held by the shadow itself (Hollow Wick Cotillion tell!)
+		var lp: Vector2 = (c + Vector2(rx + 3.0, 1.0)).round()
+		ci.draw_rect(Rect2(lp.x - 3.0, lp.y - 3.0, 7.0, 7.0), c_void)
+		ci.draw_rect(Rect2(lp.x - 2.0, lp.y - 2.0, 5.0, 5.0), c_rose if lens_boost else c_wine)
+		ci.draw_rect(Rect2(lp.x - 1.0, lp.y - 1.0, 3.0, 3.0), c_void)
+		ci.draw_rect(Rect2(lp.x - 1.0, lp.y - 4.0, 3.0, 1.0), c_cream if lens_boost else c_rose)
 
 
 # ---- Event Handlers ----

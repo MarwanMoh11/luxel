@@ -260,7 +260,7 @@ func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	# Explicit NW shadow cue while disguised (Island 7 Shadow-Truth Law!)
 	if state == State.ROUTINE:
-		draw_circle(Vector2(-7.0, -5.0), 6.0, Color(PAL["void"] as Color, 0.42))
+		LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 2.0), 8.0, 3.0, "nw_wrong", false)
 		if glint_t < 0.28:
 			var gp: Vector2 = (c + Vector2(3.0, -6.0)).round()
 			draw_line(gp + Vector2(-2.0, 0.0), gp + Vector2(2.0, 0.0), PAL["gold"] as Color, 1.0)

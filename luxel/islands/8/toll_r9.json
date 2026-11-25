@@ -287,8 +287,8 @@
       "id": "hook_r9_shade",
       "kind": "lantern_hook",
       "pos": [
-        136,
-        296
+        296,
+        304
       ],
       "props": {
         "light_radius": 52.0
@@ -702,6 +702,26 @@
       {
         "op": "goto",
         "to": [
+          312,
+          304
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          304
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r9_shade"
+      },
+      {
+        "op": "goto",
+        "to": [
           152,
           232
         ],
@@ -714,10 +734,6 @@
           282
         ],
         "tol": 5.0
-      },
-      {
-        "op": "interact",
-        "target": "hook_r9_shade"
       },
       {
         "op": "goto",

@@ -311,8 +311,8 @@
       "id": "en_r6_b3_clerk1",
       "kind": "toll_clerk",
       "pos": [
-        120,
-        88
+        136,
+        104
       ],
       "zone": "stair_t2b",
       "leash": 160
@@ -341,8 +341,8 @@
       "id": "en_r6_b3_owl",
       "kind": "owl",
       "pos": [
-        88,
-        144
+        136,
+        72
       ],
       "zone": "stair_t2b",
       "leash": 160
@@ -351,8 +351,8 @@
       "id": "en_r6_b4_golem",
       "kind": "cinder_golem",
       "pos": [
-        368,
-        160
+        352,
+        104
       ],
       "zone": "stair_t2b",
       "leash": 160

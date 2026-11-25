@@ -410,7 +410,9 @@
       "theme": "inverted_palace_black",
       "full_frame": true,
       "tiles": [],
-      "enable": [],
+      "enable": [
+        "ls_r11_black"
+      ],
       "disable": []
     }
   ],

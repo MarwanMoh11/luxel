@@ -131,8 +131,8 @@
       "id": "hook_r4_bridge",
       "kind": "lantern_hook",
       "pos": [
-        400,
-        208
+        408,
+        224
       ],
       "props": {
         "light_radius": 112.0
@@ -159,7 +159,7 @@
       "id": "sgate_r4_north",
       "kind": "shadow_gate",
       "pos": [
-        320,
+        288,
         104
       ],
       "props": {
@@ -382,8 +382,8 @@
     {
       "kind": "circle",
       "pos": [
-        400,
-        208
+        408,
+        224
       ],
       "radius": 22,
       "color": "jade"
@@ -464,8 +464,8 @@
       {
         "op": "goto",
         "to": [
-          400,
-          208
+          408,
+          224
         ],
         "tol": 10.0
       },
@@ -488,7 +488,7 @@
       {
         "op": "goto",
         "to": [
-          320,
+          288,
           56
         ],
         "tol": 10.0

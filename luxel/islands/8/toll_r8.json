@@ -446,7 +446,7 @@
       "kind": "eclipse_eye",
       "pos": [
         440,
-        248
+        280
       ],
       "zone": "toll_east"
     }
@@ -680,6 +680,14 @@
           424,
           264
         ]
+      },
+      {
+        "op": "beam",
+        "from": [
+          424,
+          280
+        ],
+        "target": "ee_r8_1"
       },
       {
         "op": "clear",

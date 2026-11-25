@@ -481,6 +481,18 @@
         "secs": 0.35
       },
       {
+        "op": "interact",
+        "target": "pool_spire_r1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "var": "world_face==silver"
+      },
+      {
         "op": "expect_exit",
         "exit": "exit_spire_r1_west"
       }
