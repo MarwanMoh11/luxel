@@ -223,7 +223,7 @@
       "kind": "road_lamp",
       "pos": [
         232,
-        64
+        56
       ],
       "props": {
         "zone": "cave_glass_crypt",

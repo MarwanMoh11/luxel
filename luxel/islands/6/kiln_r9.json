@@ -75,7 +75,8 @@
       ],
       "requires_moves": [],
       "requires_flags": [
-        "kiln_r17_bridge"
+        "kiln_r17_bridge",
+        "keepers_flame_6"
       ],
       "locked_door_id": "door_kiln_r9_ne"
     },
@@ -94,7 +95,9 @@
       ],
       "requires_moves": [],
       "requires_flags": [
-        "keepers_flame_6"
+        "keepers_flame_6",
+        "kiln_cast_west",
+        "kiln_cast_east"
       ],
       "locked_door_id": "door_boss_6"
     }
@@ -209,6 +212,17 @@
       }
     },
     {
+      "id": "clamps_kiln_r9_arch",
+      "kind": "kiln_casting_clamps",
+      "pos": [
+        256,
+        76
+      ],
+      "props": {
+        "grant_blessing": false
+      }
+    },
+    {
       "id": "portal_kiln_r9_in",
       "kind": "blue_portal",
       "pos": [
@@ -281,7 +295,27 @@
           16
         ],
         "requires_flags": [
-          "kiln_r17_bridge"
+          "kiln_r17_bridge",
+          "keepers_flame_6"
+        ]
+      }
+    },
+    {
+      "id": "door_kiln_r9_clamps",
+      "kind": "door",
+      "pos": [
+        224,
+        40
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          48,
+          16
+        ],
+        "requires_flags": [
+          "kiln_cast_west",
+          "kiln_cast_east"
         ]
       }
     },
@@ -484,7 +518,7 @@
     "expert_s": 55,
     "reward": "keepers_flame_6+shortcut_r1+clamp_blessing",
     "why": "Grand vault nexus uniting the Legacy Wing, Heat-Flow Casting Wing, and Boss Sanctuary.",
-    "exit": "exit_kiln_r9_north",
+    "exit": "exit_kiln_r9_south",
     "start": {
       "moves": [
         "sunflare"
@@ -569,20 +603,15 @@
         "flag": "keepers_flame_6"
       },
       {
-        "op": "goto",
-        "to": [
-          224,
-          48
-        ],
-        "tol": 6.0
-      },
-      {
-        "op": "interact",
-        "target": "door_boss_6"
+        "op": "wait_until",
+        "target": "door_kiln_r9_south",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
       },
       {
         "op": "expect_exit",
-        "exit": "exit_kiln_r9_north"
+        "exit": "exit_kiln_r9_south"
       }
     ]
   }

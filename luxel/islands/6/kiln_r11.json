@@ -128,7 +128,7 @@
       ],
       "requires_moves": [],
       "requires_flags": [
-        "kiln_cast_key_1"
+        "kiln_cast_east"
       ],
       "locked_door_id": "door_kiln_r11_ne"
     }
@@ -256,15 +256,13 @@
         24
       ],
       "props": {
-        "door_kind": "key_door",
-        "dungeon_id": "great_kiln",
-        "key_kind": "wick_key",
+        "door_kind": "shortcut_door",
         "size": [
           32,
           16
         ],
         "requires_flags": [
-          "kiln_cast_key_1"
+          "kiln_cast_east"
         ]
       }
     },

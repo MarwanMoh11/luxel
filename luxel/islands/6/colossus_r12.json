@@ -438,6 +438,9 @@
           "set_flag": "colossus_cleared"
         },
         {
+          "set_flag": "dungeon_done:iron_colossus"
+        },
+        {
           "shake": 0.22
         },
         {
