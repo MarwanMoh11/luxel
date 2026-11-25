@@ -1,0 +1,546 @@
+{
+  "id": "mausoleum_r7",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R7",
+  "spawn": [
+    224,
+    232
+  ],
+  "zones": [
+    {
+      "id": "ms_r7_belfry",
+      "name_key": "ISL4_MS_R7",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r7_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r6",
+      "to_spawn": [
+        400,
+        56
+      ]
+    },
+    {
+      "id": "exit_ms_r7_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r8",
+      "to_spawn": [
+        272,
+        296
+      ],
+      "locked_door_id": "door_ms_r7_north"
+    },
+    {
+      "id": "exit_ms_r7_west",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_region": "mausoleum_r3",
+      "to_spawn": [
+        392,
+        144
+      ],
+      "requires_flags": [
+        "ms_drain_shortcut"
+      ],
+      "locked_door_id": "door_ms_r7_west"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r7",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        232
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wheel_ms_r7",
+      "kind": "weather_wheel",
+      "pos": [
+        232,
+        152
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "rain",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "n"
+      }
+    },
+    {
+      "id": "sync_ms_r7",
+      "kind": "ms_weather_sync",
+      "pos": [
+        232,
+        200
+      ],
+      "props": {}
+    },
+    {
+      "id": "wind_r7_lane",
+      "kind": "wind_zone",
+      "pos": [
+        232,
+        120
+      ],
+      "props": {
+        "size": [
+          64,
+          112
+        ],
+        "dir": "n",
+        "strength": 440.0
+      }
+    },
+    {
+      "id": "sw_ms_r7_drain",
+      "kind": "switch_eye",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "target_id": "door_ms_r7_west",
+        "sets_flag": "ms_drain_shortcut"
+      }
+    },
+    {
+      "id": "door_ms_r7_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "ms_r7_belfry"
+      }
+    },
+    {
+      "id": "door_ms_r7_west",
+      "kind": "door",
+      "pos": [
+        24,
+        144
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sw_ms_r7_drain"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_drain_shortcut"
+      }
+    },
+    {
+      "id": "lamp_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "zone": "ms_r7_belfry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "zone": "ms_r7_belfry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        152
+      ],
+      "props": {
+        "zone": "ms_r7_belfry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        152
+      ],
+      "props": {
+        "zone": "ms_r7_belfry",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "pd_r7_w",
+      "kind": "petal_duelist",
+      "pos": [
+        296,
+        152
+      ],
+      "zone": "ms_r7_belfry",
+      "route": [
+        [
+          264,
+          152
+        ],
+        [
+          312,
+          168
+        ]
+      ],
+      "leash": 135
+    },
+    {
+      "id": "pd_r7_e",
+      "kind": "petal_duelist",
+      "pos": [
+        376,
+        152
+      ],
+      "zone": "ms_r7_belfry",
+      "route": [
+        [
+          360,
+          136
+        ],
+        [
+          392,
+          168
+        ]
+      ],
+      "leash": 135
+    },
+    {
+      "id": "rf_r7_n",
+      "kind": "rain_frog",
+      "pos": [
+        312,
+        104
+      ],
+      "zone": "ms_r7_belfry",
+      "route": [
+        [
+          296,
+          104
+        ],
+        [
+          328,
+          136
+        ]
+      ],
+      "leash": 135
+    },
+    {
+      "id": "hs_r7_ne",
+      "kind": "heron_stalker",
+      "pos": [
+        392,
+        88
+      ],
+      "zone": "ms_r7_belfry",
+      "route": [
+        [
+          376,
+          88
+        ],
+        [
+          408,
+          120
+        ]
+      ],
+      "leash": 135
+    }
+  ],
+  "layers": [
+    {
+      "id": "wind_belfry_gust",
+      "when": "weather==wind",
+      "tiles": [],
+      "enable": [
+        "wind_r7_lane"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ms_r7_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ms_r7_cleared"
+        }
+      ]
+    },
+    {
+      "id": "ms_r7_short_msg",
+      "on": "signal:sw_ms_r7_drain",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ms_drain_shortcut"
+        },
+        {
+          "narrate": "ISL4_MS_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        152
+      ],
+      "radius": 32,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        48,
+        64,
+        144
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        312,
+        168
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        152,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        296,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        152,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        296,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        264,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "carved_sarcophagus",
+      "pos": [
+        408,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        56,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "design": {
+    "idea": "Asymmetric Diamond Belfry brawl: spin WIND to sweep Rain Frog puddles down the central nave and disrupt twin Petal Duelists, flip SUN to shrink the frog, clear all 4 foes, and latch the West Drain Tunnel back to r3 (Cycle 2)!",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Switching WIND and SUN mid-fight to control puddles, duelists, and cover lanes.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "ms_r7_cleared+ms_drain_shortcut",
+    "why": "East Wing combat arena connecting Cycle 2's cross-wing drain tunnel to r3.",
+    "exit": "exit_ms_r7_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          184
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          184
+        ],
+        "target": "wheel_ms_r7"
+      },
+      {
+        "op": "expect",
+        "var": "weather==wind"
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          184
+        ],
+        "target": "wheel_ms_r7"
+      },
+      {
+        "op": "expect",
+        "var": "weather==sun"
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "expect",
+        "flag": "ms_r7_cleared"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          128
+        ],
+        "target": "sw_ms_r7_drain"
+      },
+      {
+        "op": "expect",
+        "flag": "ms_drain_shortcut"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r7_north"
+      }
+    ]
+  }
+}

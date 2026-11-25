@@ -1,0 +1,35 @@
+# Doppel Theatre R2: Act 1 The Empty Hand (28x20, Split Twin-Stage Bridge)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G glass
+MAP
+#####################,,,####
+######......OOOO.....,,,####
+####........OOOO.....,,,####
+###.........OOOO........####
+###.........OOOO.........###
+###..,,,,...OOOO...,,,,..###
+###..,,,,...OOOO...,,,,..###
+###..,,,,...OOOO...,,,,..###
+###..,,,,...OOOO...,,,,..###
+###.........OOOO.........###
+###.........OOOO.........###
+####........OOOO........####
+,...........OOOO........####
+,....,,,,...OOOO........####
+,....,,,,..#OOOO........####
+####.......#.OO..#......####
+####..,,,....OO..#.,,...####
+####..,,,....OO....,,...####
+#####......#OOOO#......#####
+############################

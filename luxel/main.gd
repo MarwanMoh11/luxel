@@ -235,7 +235,7 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 	if _region_loader == null and Lx.events != null:
 		Lx.events.region_entered.emit(island_id, region_id)
 	if LxRunPersistence.should_autosave_region_load(flow != Flow.TITLE and not in_intro, prev_island != island_id, island_id, region_id, Lx.state):
-		LxRunPersistence.save_now(active_slot, Lx.state, Lx.save, _region_loader, prev_island != island_id)
+		LxRunPersistence.save_now(active_slot, Lx.state, Lx.save, _region_loader, false)
 	return ok
 
 func _attach_island_controller(island_id: int) -> void:

@@ -1,0 +1,521 @@
+{
+  "id": "mausoleum_r6",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R6",
+  "spawn": [
+    56,
+    144
+  ],
+  "zones": [
+    {
+      "id": "ms_r6_transept",
+      "name_key": "ISL4_MS_R6",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r6_west",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_region": "mausoleum_r1",
+      "to_spawn": [
+        488,
+        200
+      ]
+    },
+    {
+      "id": "exit_ms_r6_north",
+      "rect": [
+        384,
+        0,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r7",
+      "to_spawn": [
+        224,
+        232
+      ],
+      "locked_door_id": "door_ms_r6_north"
+    },
+    {
+      "id": "exit_ms_r6_east",
+      "rect": [
+        464,
+        128,
+        16,
+        32
+      ],
+      "to_region": "mausoleum_r10",
+      "to_spawn": [
+        48,
+        176
+      ],
+      "locked_door_id": "door_ms_r6_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r6",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wheel_ms_r6",
+      "kind": "weather_wheel",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "sun",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "e"
+      }
+    },
+    {
+      "id": "orb_r6_seed",
+      "kind": "carry_orb",
+      "pos": [
+        104,
+        104
+      ],
+      "props": {
+        "kind": "seed"
+      }
+    },
+    {
+      "id": "wind_r6_gale",
+      "kind": "wind_zone",
+      "pos": [
+        252,
+        152
+      ],
+      "props": {
+        "size": [
+          200,
+          96
+        ],
+        "dir": "e",
+        "strength": 1500.0,
+        "on_signal": "toggle_active"
+      }
+    },
+    {
+      "id": "bloom_r6_launch",
+      "kind": "bounce_bloom",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "dir": "e",
+        "dist": 156.0,
+        "size": [
+          20,
+          20
+        ]
+      }
+    },
+    {
+      "id": "bloom_r6_alt",
+      "kind": "bounce_bloom",
+      "pos": [
+        168,
+        88
+      ],
+      "props": {
+        "dir": "e",
+        "dist": 156.0,
+        "size": [
+          18,
+          18
+        ]
+      }
+    },
+    {
+      "id": "plate_r6_east",
+      "kind": "pressure_plate",
+      "pos": [
+        340,
+        152
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "size": [
+          22,
+          22
+        ],
+        "target_ids": [
+          "bridge_r6_main",
+          "door_ms_r6_north",
+          "door_ms_r6_east",
+          "wind_r6_gale"
+        ],
+        "sets_flag": "ms_r6_open"
+      }
+    },
+    {
+      "id": "bridge_r6_main",
+      "kind": "door",
+      "pos": [
+        240,
+        144
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          128,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "plate_r6_east"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_r6_open"
+      }
+    },
+    {
+      "id": "door_ms_r6_north",
+      "kind": "door",
+      "pos": [
+        400,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "plate_r6_east"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_r6_open"
+      }
+    },
+    {
+      "id": "door_ms_r6_east",
+      "kind": "door",
+      "pos": [
+        456,
+        144
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "plate_r6_east"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "lamp_r6_w1",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "zone": "ms_r6_transept",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_w2",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        232
+      ],
+      "props": {
+        "zone": "ms_r6_transept",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_e1",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        88
+      ],
+      "props": {
+        "zone": "ms_r6_transept",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_e2",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        184
+      ],
+      "props": {
+        "zone": "ms_r6_transept",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "wind_gale_active",
+      "when": "weather==wind",
+      "tiles": [],
+      "enable": [
+        "wind_r6_gale",
+        "bloom_r6_launch",
+        "bloom_r6_alt"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        104,
+        200
+      ],
+      "radius": 22,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        136,
+        32,
+        32
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        320,
+        136,
+        32,
+        32
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        392,
+        88
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.28
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        152,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        328,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        152,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        328,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        72,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        440,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        120,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "slate_memorial_plinth",
+      "pos": [
+        360,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Split-Chasm Gale Transept: set the buoyant dandelion seed orb on the western launch pad in calm SUN, then spin WIND so the east gale wakes the bounce bloom and carries the seed across the 8-tile abyss onto the eastern plate, extending the bridge to r7 and optional r10!",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "WIND wakes gale wind_zones and bounce_blooms to ferry carry_orbs across un-zippable chasms.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "ms_r6_open",
+    "why": "East Gale Wing opening puzzle establishing WIND physics mastery.",
+    "exit": "exit_ms_r6_north",
+    "solution": [
+      {
+        "op": "carry",
+        "action": "pickup",
+        "target": "orb_r6_seed"
+      },
+      {
+        "op": "carry",
+        "action": "drop",
+        "to": [
+          168,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          200
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          200
+        ],
+        "target": "wheel_ms_r6"
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          200
+        ],
+        "target": "wheel_ms_r6"
+      },
+      {
+        "op": "expect",
+        "var": "weather==wind"
+      },
+      {
+        "op": "wait_until",
+        "flag": "ms_r6_open",
+        "timeout": 5.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r6_north"
+      }
+    ]
+  }
+}

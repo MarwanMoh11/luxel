@@ -41,7 +41,7 @@
     {
       "id": "exit_r15_north",
       "rect": [
-        352,
+        384,
         0,
         32,
         16
@@ -59,17 +59,17 @@
       "id": "moth_r15_w",
       "kind": "toll_moth",
       "pos": [
-        144,
-        144
+        88,
+        192
       ],
       "route": [],
       "perches": [
         [
-          144,
-          144
+          88,
+          192
         ],
         [
-          192,
+          208,
           192
         ]
       ],
@@ -80,18 +80,18 @@
       "id": "moth_r15_e",
       "kind": "toll_moth",
       "pos": [
-        384,
-        144
+        296,
+        176
       ],
       "route": [],
       "perches": [
         [
-          384,
-          144
+          296,
+          176
         ],
         [
-          336,
-          192
+          248,
+          168
         ]
       ],
       "zone": "belfry_clockface",
@@ -161,7 +161,7 @@
       "id": "bell_r15_war",
       "kind": "bell",
       "pos": [
-        72,
+        64,
         192
       ],
       "props": {
@@ -213,7 +213,7 @@
       "id": "bridge_r15_iii",
       "kind": "door",
       "pos": [
-        400,
+        448,
         192
       ],
       "props": {
@@ -232,7 +232,7 @@
       "id": "relic_r15_mainspring",
       "kind": "bf_crank_relic",
       "pos": [
-        464,
+        504,
         192
       ],
       "props": {
@@ -247,8 +247,8 @@
       "id": "gate_r15_dial",
       "kind": "logic_gate",
       "pos": [
-        368,
-        72
+        400,
+        88
       ],
       "props": {
         "op": "all",
@@ -265,7 +265,7 @@
       "id": "door_r15_north",
       "kind": "door",
       "pos": [
-        368,
+        400,
         24
       ],
       "props": {
@@ -307,7 +307,7 @@
       "kind": "road_lamp",
       "pos": [
         88,
-        192
+        184
       ],
       "props": {
         "zone": "belfry_clockface",
@@ -318,8 +318,8 @@
       "id": "lamp_r15_iii",
       "kind": "road_lamp",
       "pos": [
-        448,
-        192
+        496,
+        208
       ],
       "props": {
         "zone": "belfry_clockface",
@@ -332,6 +332,18 @@
       "pos": [
         304,
         168
+      ],
+      "props": {
+        "zone": "belfry_clockface",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r15_ne",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        64
       ],
       "props": {
         "zone": "belfry_clockface",
@@ -374,7 +386,7 @@
     {
       "kind": "light_shaft",
       "pos": [
-        464,
+        504,
         192
       ],
       "size": [
@@ -402,8 +414,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "small_bronze_gear",
       "pos": [
-        64,
-        168
+        80,
+        192
       ],
       "layer": "sort",
       "flip_x": false,
@@ -414,8 +426,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "small_bronze_gear",
       "pos": [
-        480,
-        168
+        496,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -438,11 +450,11 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "belfry_beam_brace",
       "pos": [
-        336,
-        48
+        424,
+        56
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
       "phase": 0.0
     }
@@ -484,14 +496,14 @@
       {
         "op": "goto",
         "to": [
-          88,
+          96,
           192
         ]
       },
       {
         "op": "shoot",
         "from": [
-          104,
+          96,
           192
         ],
         "target": "bell_r15_war"
@@ -539,7 +551,7 @@
       {
         "op": "goto",
         "to": [
-          464,
+          496,
           192
         ]
       },

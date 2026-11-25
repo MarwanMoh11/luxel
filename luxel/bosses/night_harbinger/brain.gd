@@ -104,8 +104,10 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 
 
 func _infer_arena_rect() -> Rect2:
-	if world_ctx != null and is_instance_valid(world_ctx) and str(world_ctx.get("region_id")) == "sanctum_r4":
-		return SANCTUM_R4_CORE
+	if world_ctx != null and is_instance_valid(world_ctx):
+		var reg: String = str(world_ctx.get("current_region_id")) if world_ctx.get("current_region_id") != null else str(world_ctx.get("region_id"))
+		if reg == "sanctum_r4":
+			return SANCTUM_R4_CORE
 	return super._infer_arena_rect()
 
 

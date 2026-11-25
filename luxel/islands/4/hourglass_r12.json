@@ -425,6 +425,36 @@
   ],
   "events": [
     {
+      "id": "hg_r12_p2_dew",
+      "on": "boss_hp:0.66",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        },
+        {
+          "sfx": "sundial_skip"
+        }
+      ]
+    },
+    {
+      "id": "hg_r12_p3_dew",
+      "on": "boss_hp:0.33",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        },
+        {
+          "sfx": "sundial_skip"
+        }
+      ]
+    },
+    {
       "id": "hg_r12_victory_msg",
       "on": "flag:boss_gardener_twice_defeated",
       "once": true,
@@ -484,14 +514,6 @@
       ]
     },
     "solution": [
-      {
-        "op": "shoot",
-        "from": [
-          216,
-          264
-        ],
-        "target": "mirror_hg_r12_s"
-      },
       {
         "op": "clear",
         "timeout": 135.0

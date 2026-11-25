@@ -31,7 +31,7 @@
     {
       "id": "exit_toll_r4_crash",
       "rect": [
-        192,
+        176,
         432,
         32,
         16
@@ -215,7 +215,7 @@
       "id": "bridge_toll_r4",
       "kind": "door",
       "pos": [
-        208,
+        192,
         336
       ],
       "props": {
@@ -234,7 +234,7 @@
       "id": "door_toll_r4_crash",
       "kind": "door",
       "pos": [
-        208,
+        192,
         424
       ],
       "props": {
@@ -311,7 +311,7 @@
       "id": "lamp_tr4_bot",
       "kind": "road_lamp",
       "pos": [
-        208,
+        192,
         392
       ],
       "props": {
@@ -333,7 +333,7 @@
     {
       "kind": "light_shaft",
       "pos": [
-        208,
+        192,
         392
       ],
       "size": [
@@ -346,7 +346,7 @@
     {
       "kind": "cracks",
       "pos": [
-        208,
+        192,
         376
       ],
       "size": [
@@ -360,7 +360,7 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "hanging_pendulum_weight",
       "pos": [
-        64,
+        48,
         200
       ],
       "layer": "sort",
@@ -373,7 +373,7 @@
       "prop": "hanging_pendulum_weight",
       "pos": [
         352,
-        200
+        192
       ],
       "layer": "sort",
       "flip_x": true,
@@ -384,7 +384,7 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "cracked_bell_shard",
       "pos": [
-        160,
+        152,
         400
       ],
       "layer": "sort",
@@ -396,7 +396,7 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "cracked_bell_shard",
       "pos": [
-        256,
+        240,
         400
       ],
       "layer": "sort",
@@ -408,7 +408,7 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "belfry_beam_brace",
       "pos": [
-        128,
+        104,
         72
       ],
       "layer": "sort",

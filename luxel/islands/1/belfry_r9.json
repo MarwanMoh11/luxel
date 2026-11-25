@@ -86,17 +86,17 @@
       "id": "warden_r9_0",
       "kind": "warden",
       "pos": [
-        216,
-        160
+        208,
+        168
       ],
       "route": [
         [
-          200,
-          128
+          192,
+          144
         ],
         [
-          280,
-          192
+          272,
+          184
         ]
       ],
       "perches": [],
@@ -108,16 +108,16 @@
       "kind": "toll_moth",
       "pos": [
         272,
-        136
+        168
       ],
       "route": [],
       "perches": [
         [
           272,
-          136
+          168
         ],
         [
-          208,
+          216,
           184
         ]
       ],
@@ -129,20 +129,20 @@
       "kind": "owl",
       "pos": [
         240,
-        104
+        152
       ],
       "route": [],
       "perches": [
         [
           240,
-          104
+          152
         ],
         [
-          192,
+          200,
           160
         ],
         [
-          288,
+          280,
           160
         ]
       ],
@@ -188,7 +188,7 @@
       "kind": "bell",
       "pos": [
         240,
-        160
+        168
       ],
       "props": {
         "tone": "dusk",
@@ -315,7 +315,7 @@
       "prop": "small_bronze_gear",
       "pos": [
         376,
-        112
+        240
       ],
       "layer": "sort",
       "flip_x": true,
@@ -338,7 +338,7 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        288,
+        256,
         48
       ],
       "layer": "sort",
@@ -350,7 +350,7 @@
   "events": [],
   "triggers": [],
   "design": {
-    "idea": "Diamond crossroad combat chamber linking r8, r3, r4, and r10 across twin spinning gear islands; Dusk-freeze the gears and crack the Warden's shield via the Toll Moth's War burst.",
+    "idea": "Asymmetric crossroad combat chamber linking r8, r3, r4, and r10 across twin spinning gear islands; Dusk-freeze the gears and crack the Warden's shield via the Toll Moth's War burst.",
     "kind": "combat",
     "beat": "sho",
     "teaches": "Weaponizing a Toll Moth's War burst against a shielded Warden on gear-bridged crossroads.",

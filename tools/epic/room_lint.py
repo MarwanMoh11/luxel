@@ -950,6 +950,24 @@ def check_png_palette_stdlib(png_path: Path) -> Tuple[bool, int]:
     return off_pixels == 0, off_pixels
 
 
+NON_DUNGEON_PREFIXES = (
+    "cave_",
+    "caves_",
+    "overworld",
+    "ow_",
+    "superboss_",
+    "trial_",
+    "vault_",
+    "camp_",
+    "hub_",
+    "town_",
+    "village_",
+    "dock_",
+    "shrine_",
+    "harbor_",
+)
+
+
 def infer_dungeon_id(reg: Dict[str, Any], catalog: Dict[str, Any]) -> str:
     reg_id = reg["id"]
     if reg_id.startswith("_") or bool(reg.get("json", {}).get("debug_only", False)):
@@ -961,14 +979,20 @@ def infer_dungeon_id(reg: Dict[str, Any], catalog: Dict[str, Any]) -> str:
             return did
     if not reg["is_dungeon"] or reg_id == "overworld":
         return ""
-    m = re.match(r"^([a-z0-9_]+?)_r\d+$", reg_id)
+    if reg_id.startswith(NON_DUNGEON_PREFIXES) or reg_id.endswith("_forecourt") or reg_id.endswith("_overworld"):
+        return ""
+    m = re.match(r"^([a-z0-9_]+?)_r\d+[a-z]?$", reg_id)
     if m:
         prefix = m.group(1)
         built = str(catalog["islands"].get(isl_id, {}).get("dungeon_id", ""))
-        if built and (built == prefix or built.endswith("_" + prefix) or prefix in built):
-            return built
+        if built:
+            built_regs = (catalog["dungeons"].get(built) or {}).get("regions") or []
+            if built_regs and reg_id not in built_regs:
+                return ""
+            if built == prefix or built.endswith("_" + prefix) or prefix in built:
+                return built
         return f"island{isl_id}_{prefix}"
-    return str(catalog["islands"].get(isl_id, {}).get("dungeon_id", f"island{isl_id}_dungeon"))
+    return ""
 
 
 def lint_region(

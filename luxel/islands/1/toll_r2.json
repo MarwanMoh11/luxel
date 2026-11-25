@@ -50,18 +50,18 @@
       "id": "moth_toll_r2_0",
       "kind": "toll_moth",
       "pos": [
-        296,
+        304,
         176
       ],
       "route": [],
       "perches": [
         [
-          296,
+          304,
           176
         ],
         [
-          280,
-          256
+          296,
+          240
         ]
       ],
       "zone": "toll_drop",
@@ -130,7 +130,7 @@
       "kind": "bell",
       "pos": [
         80,
-        200
+        192
       ],
       "props": {
         "tone": "dusk",
@@ -142,7 +142,7 @@
       "kind": "bell",
       "pos": [
         304,
-        248
+        240
       ],
       "props": {
         "tone": "war",
@@ -297,7 +297,7 @@
       "prop": "small_bronze_gear",
       "pos": [
         72,
-        248
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -309,7 +309,7 @@
       "prop": "small_bronze_gear",
       "pos": [
         312,
-        192
+        248
       ],
       "layer": "sort",
       "flip_x": true,
@@ -351,18 +351,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "theme_great_toll_shaft",
-      "prop": "counterweight_block",
-      "pos": [
-        304,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
     }
   ],
   "events": [],
@@ -382,7 +370,7 @@
         "op": "shoot",
         "from": [
           160,
-          200
+          192
         ],
         "target": "bell_toll_r2_k"
       },
@@ -394,7 +382,7 @@
         "op": "shoot",
         "from": [
           224,
-          248
+          240
         ],
         "target": "bell_toll_r2_w"
       },

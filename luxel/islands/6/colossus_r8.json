@@ -1,0 +1,601 @@
+{
+  "id": "colossus_r8",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
+  "name_key": "ISL6_COL_R8",
+  "spawn": [
+    256,
+    272
+  ],
+  "zones": [
+    {
+      "id": "col_r8",
+      "name_key": "ISL6_COL_R8",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_south",
+      "rect": [
+        224,
+        304,
+        64,
+        16
+      ],
+      "to_region": "colossus_r6",
+      "to_spawn": [
+        520,
+        168
+      ]
+    },
+    {
+      "id": "exit_r8_north",
+      "rect": [
+        224,
+        0,
+        64,
+        16
+      ],
+      "to_region": "colossus_r9",
+      "to_spawn": [
+        528,
+        136
+      ],
+      "requires_flags": [
+        "col_right_lock"
+      ],
+      "locked_door_id": "door_r8_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "stride_r8_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        88,
+        216
+      ],
+      "props": {
+        "step_period": 6.0,
+        "axis": "x",
+        "shake_amp": 0.05,
+        "tilt_group_ids": [
+          "tilt_r8_lung"
+        ],
+        "wind_ids": [
+          "wind_r8_w",
+          "wind_r8_e"
+        ]
+      }
+    },
+    {
+      "id": "tilt_r8_lung",
+      "kind": "tilt_group",
+      "pos": [
+        256,
+        168
+      ],
+      "props": {
+        "size": [
+          288,
+          96
+        ],
+        "axis": "e",
+        "strength": 46.0,
+        "slide_enemies": false
+      }
+    },
+    {
+      "id": "wind_r8_w",
+      "kind": "wind_zone",
+      "pos": [
+        176,
+        168
+      ],
+      "props": {
+        "size": [
+          112,
+          56
+        ],
+        "dir": "e",
+        "strength": 88.0
+      }
+    },
+    {
+      "id": "wind_r8_e",
+      "kind": "wind_zone",
+      "pos": [
+        336,
+        168
+      ],
+      "props": {
+        "size": [
+          112,
+          56
+        ],
+        "dir": "e",
+        "strength": 88.0
+      }
+    },
+    {
+      "id": "anvil_r8_scatter",
+      "kind": "temper_anvil",
+      "pos": [
+        152,
+        256
+      ],
+      "props": {
+        "mode": "scatter",
+        "sets_flag": "temper_scatter_known"
+      }
+    },
+    {
+      "id": "anvil_r8_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        360,
+        256
+      ],
+      "props": {
+        "mode": "lance",
+        "sets_flag": "temper_lance_known"
+      }
+    },
+    {
+      "id": "braz_r8_1",
+      "kind": "timed_brazier",
+      "pos": [
+        236,
+        72
+      ],
+      "props": {
+        "secs": 4.2,
+        "target_id": "gate_r8_igniters"
+      }
+    },
+    {
+      "id": "braz_r8_2",
+      "kind": "timed_brazier",
+      "pos": [
+        256,
+        72
+      ],
+      "props": {
+        "secs": 4.2,
+        "target_id": "gate_r8_igniters"
+      }
+    },
+    {
+      "id": "braz_r8_3",
+      "kind": "timed_brazier",
+      "pos": [
+        276,
+        72
+      ],
+      "props": {
+        "secs": 4.2,
+        "target_id": "gate_r8_igniters"
+      }
+    },
+    {
+      "id": "gate_r8_igniters",
+      "kind": "logic_gate",
+      "pos": [
+        320,
+        64
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "braz_r8_1",
+          "braz_r8_2",
+          "braz_r8_3"
+        ],
+        "target_id": "door_r8_north",
+        "sets_flag": "col_right_lock",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r8_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          64,
+          16
+        ],
+        "requires_signals": [
+          "gate_r8_igniters"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        264
+      ],
+      "props": {
+        "zone": "col_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_nw",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        88
+      ],
+      "props": {
+        "zone": "col_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        88
+      ],
+      "props": {
+        "zone": "col_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        168
+      ],
+      "props": {
+        "zone": "col_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        168
+      ],
+      "props": {
+        "zone": "col_r8",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r8_magnet",
+      "kind": "magnet_golem",
+      "pos": [
+        152,
+        152
+      ],
+      "route": [
+        [
+          128,
+          152
+        ],
+        [
+          192,
+          152
+        ]
+      ],
+      "zone": "col_r8",
+      "leash": 132
+    },
+    {
+      "id": "en_r8_imp",
+      "kind": "bellows_imp",
+      "pos": [
+        360,
+        152
+      ],
+      "route": [
+        [
+          320,
+          152
+        ],
+        [
+          384,
+          152
+        ]
+      ],
+      "zone": "col_r8",
+      "leash": 132
+    },
+    {
+      "id": "en_r8_wasp_1",
+      "kind": "smelter_wasp",
+      "pos": [
+        184,
+        112
+      ],
+      "zone": "col_r8",
+      "leash": 144
+    },
+    {
+      "id": "en_r8_wasp_2",
+      "kind": "smelter_wasp",
+      "pos": [
+        328,
+        112
+      ],
+      "zone": "col_r8",
+      "leash": 144
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        120,
+        144,
+        272,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        48,
+        96,
+        48
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        168
+      ],
+      "radius": 38,
+      "style": "gear"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        152,
+        224
+      ],
+      "radius": 20,
+      "style": "soot"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        360,
+        224
+      ],
+      "radius": 20,
+      "style": "soot"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "brass_steam_pipe_arch",
+      "pos": [
+        256,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        64,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        448,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "iron_chain_hoist",
+      "pos": [
+        192,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "pressure_gauge_dial",
+      "pos": [
+        432,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        320,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "col_r8_chain_snap",
+      "on": "signal:gate_r8_igniters",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "col_right_lock"
+        },
+        {
+          "shake": 0.2
+        },
+        {
+          "narrate": {
+            "id": "ISL6_COL_LOCK_R",
+            "style": "narration",
+            "duration": 2.8
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Living Right Shoulder Bellows lung pulsing gusts in lockstep with the giant's Right Step: forge Lance to crack the Magnet Golem's horseshoe, swap to Scatter to clear the Smelter Wasps and Bellows Imp, then ignite all three clustered furnace dampers in one Scatter volley to snap the East Shoulder Chain!",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Live Lance->Scatter temper switching in wind-pulsed combat + 3-target Scatter igniter volley",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "col_right_lock+open_r9_east",
+    "why": "High-energy combat wing contrasting Left Shoulder's physics puzzle and showcasing Magnet Golem + Scatter synergy.",
+    "exit": "exit_r8_north",
+    "start": {
+      "flags": [
+        "piston_marshal_defeated",
+        "item_heat_boots",
+        "temper_scatter_known",
+        "temper_lance_known"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          360,
+          276
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r8_lance"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==lance"
+      },
+      {
+        "op": "clear",
+        "zone": "col_r8",
+        "timeout": 60.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          276
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r8_scatter"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==scatter"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          120
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          256,
+          72
+        ],
+        "wait_hit": 0.55
+      },
+      {
+        "op": "wait_until",
+        "flag": "col_right_lock",
+        "timeout": 4.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r8_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_north"
+      }
+    ]
+  }
+}

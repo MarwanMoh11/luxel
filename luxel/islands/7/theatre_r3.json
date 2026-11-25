@@ -1,0 +1,210 @@
+{
+  "id": "theatre_r3",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_TH_R3",
+  "theme": "doppel_theatre",
+  "music": "isl7_theatre",
+  "ambience": ["night_breeze"],
+  "spawn": [224, 272],
+  "zones": [
+    {
+      "id": "theatre_act1_b",
+      "name_key": "ISL7_TH_R3",
+      "rect": [0, 0, 448, 320],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_south",
+      "rect": [208, 304, 32, 16],
+      "to_region": "theatre_r2",
+      "to_spawn": [360, 48]
+    },
+    {
+      "id": "exit_r3_short",
+      "rect": [0, 224, 16, 48],
+      "to_region": "theatre_r1",
+      "to_spawn": [432, 264],
+      "requires_flags": ["act1_done"],
+      "locked_door_id": "door_r3_short"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_south",
+      "kind": "room_anchor",
+      "pos": [224, 272],
+      "props": { "auto": true }
+    },
+    {
+      "id": "echo_r3_center",
+      "kind": "echo_rose",
+      "pos": [224, 168],
+      "props": {
+        "secs": 6.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "door_r3_mask_gate",
+      "kind": "door",
+      "pos": [224, 88],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "theatre_act1_b",
+        "size": [32, 16]
+      }
+    },
+    {
+      "id": "mask_r3_break",
+      "kind": "mask_plinth",
+      "pos": [208, 48],
+      "props": {
+        "act": 1,
+        "steals": ["throw"],
+        "mask_icon": "throw",
+        "hp": 2.2,
+        "auto_steal": true,
+        "breakable": true,
+        "release_flag": "act1_done",
+        "sets_flag": "act1_done",
+        "persist": true,
+        "target_id": "door_r3_short"
+      }
+    },
+    {
+      "id": "plate_r3_encore",
+      "kind": "pressure_plate",
+      "pos": [208, 32],
+      "props": {
+        "by": ["wick"],
+        "latch": true,
+        "persist": true,
+        "sets_flag": "act1_done",
+        "target_id": "door_r3_short"
+      }
+    },
+    {
+      "id": "theatre_key_1",
+      "kind": "wick_key",
+      "pos": [256, 48],
+      "props": {
+        "dungeon_id": "theatre",
+        "key_kind": "wick_key",
+        "flag_id": "theatre_key_1",
+        "requires_flag": "act1_done"
+      }
+    },
+    {
+      "id": "door_r3_short",
+      "kind": "door",
+      "pos": [24, 248],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": ["act1_done"],
+        "size": [16, 48]
+      }
+    },
+    {
+      "id": "lamp_r3_nw",
+      "kind": "road_lamp",
+      "pos": [128, 88],
+      "props": { "zone": "theatre_act1_b", "lit": true }
+    },
+    {
+      "id": "lamp_r3_ne",
+      "kind": "road_lamp",
+      "pos": [320, 88],
+      "props": { "zone": "theatre_act1_b", "lit": true }
+    },
+    {
+      "id": "lamp_r3_sw",
+      "kind": "road_lamp",
+      "pos": [128, 256],
+      "props": { "zone": "theatre_act1_b", "lit": true }
+    },
+    {
+      "id": "lamp_r3_se",
+      "kind": "road_lamp",
+      "pos": [320, 256],
+      "props": { "zone": "theatre_act1_b", "lit": true }
+    },
+    {
+      "id": "lamp_r3_alcove",
+      "kind": "road_lamp",
+      "pos": [224, 32],
+      "props": { "zone": "theatre_act1_b", "lit": true }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "r3_snatcher",
+      "kind": "moonshade_snatcher",
+      "pos": [224, 128],
+      "zone": "theatre_act1_b",
+      "leash": 136
+    },
+    {
+      "id": "r3_puppet_w",
+      "kind": "puppet",
+      "pos": [136, 152],
+      "zone": "theatre_act1_b",
+      "leash": 132
+    },
+    {
+      "id": "r3_puppet_e",
+      "kind": "puppet",
+      "pos": [312, 152],
+      "zone": "theatre_act1_b",
+      "leash": 132
+    }
+  ],
+  "decor": [
+    { "kind": "circle", "pos": [224, 168], "radius": 44, "style": "spotlight", "color": "rose", "secondary": "gold" },
+    { "kind": "rug", "rect": [192, 32, 64, 48], "color": "wine", "border": "gold" },
+    { "kind": "inlay", "rect": [144, 128, 160, 80], "color": "gold" }
+  ],
+  "scenery": [
+    { "sheet": "theme_doppel_theatre", "prop": "puppet_crossbar_stand", "pos": [112, 120], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_doppel_theatre", "prop": "puppet_crossbar_stand", "pos": [368, 160], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [152, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [296, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
+    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [224, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_doppel_theatre", "prop": "tattered_act_banner", "pos": [64, 168], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 },
+    { "sheet": "theme_doppel_theatre", "prop": "tattered_act_banner", "pos": [384, 168], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "r3_reclaim_short",
+      "on": "flag:act1_done",
+      "once": true,
+      "do": [
+        { "narrate": { "id": "ISL7_TH_SHORTCUT", "style": "narration", "duration": 2.4 } }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "ACT I CLIMAX: Fight a bolt-eating Moonshade Snatcher and 2 Puppets WITHOUT Lantern Throw using the center Echo Rose decoy, Solar Beam cord cuts, and Dash punishes, then shatter the Act I Mask to reclaim Throw and claim Theatre Key 1.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Baiting bolt-eaters with Echo Rose and severing Puppet cords with Beam when Throw is stolen; reclaiming a stolen move opens the shortcut home.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "reclaim_throw+act1_done+theatre_key_1",
+    "why": "Act I payoff arena restoring Throw, granting Theatre Key 1, and closing Cycle 1 back to the Foyer.",
+    "exit": "exit_r3_short",
+    "solution": [
+      { "op": "interact", "target": "echo_r3_center" },
+      { "op": "clear", "timeout": 75.0 },
+      { "op": "goto", "to": [224, 108], "tol": 10 },
+      { "op": "shoot", "from": [208, 72], "target": "mask_r3_break", "count": 7 },
+      { "op": "wait_until", "flag": "act1_done", "timeout": 3.0 },
+      { "op": "interact", "target": "theatre_key_1" },
+      { "op": "expect_exit", "exit": "exit_r3_short" }
+    ]
+  }
+}

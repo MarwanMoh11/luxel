@@ -1,0 +1,451 @@
+{
+  "id": "mausoleum_r11",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R11",
+  "spawn": [
+    224,
+    264
+  ],
+  "zones": [
+    {
+      "id": "ms_r11_organ",
+      "name_key": "ISL4_MS_R11",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r11_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r9",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_ms_r11_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r12",
+      "to_spawn": [
+        256,
+        296
+      ],
+      "locked_door_id": "door_ms_r11_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r11",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        264
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "shrine_r11_dew",
+      "kind": "rest_shrine",
+      "pos": [
+        152,
+        264
+      ],
+      "props": {}
+    },
+    {
+      "id": "hook_r11_center",
+      "kind": "lantern_hook",
+      "pos": [
+        232,
+        200
+      ],
+      "props": {
+        "light_radius": 52.0
+      }
+    },
+    {
+      "id": "wind_r11_w",
+      "kind": "wind_zone",
+      "pos": [
+        120,
+        152
+      ],
+      "props": {
+        "size": [
+          48,
+          80
+        ],
+        "dir": "s",
+        "strength": 240.0
+      }
+    },
+    {
+      "id": "wind_r11_e",
+      "kind": "wind_zone",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "size": [
+          48,
+          80
+        ],
+        "dir": "s",
+        "strength": 240.0
+      }
+    },
+    {
+      "id": "door_ms_r11_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "ms_r11_organ"
+      }
+    },
+    {
+      "id": "lamp_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        232
+      ],
+      "props": {
+        "zone": "ms_r11_organ",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        232
+      ],
+      "props": {
+        "zone": "ms_r11_organ",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        72
+      ],
+      "props": {
+        "zone": "ms_r11_organ",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "zone": "ms_r11_organ",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "hh_r11_w",
+      "kind": "hour_heron",
+      "pos": [
+        104,
+        152
+      ],
+      "zone": "ms_r11_organ",
+      "route": [
+        [
+          104,
+          136
+        ],
+        [
+          104,
+          184
+        ]
+      ],
+      "leash": 135
+    },
+    {
+      "id": "hh_r11_e",
+      "kind": "hour_heron",
+      "pos": [
+        344,
+        152
+      ],
+      "zone": "ms_r11_organ",
+      "route": [
+        [
+          344,
+          136
+        ],
+        [
+          344,
+          168
+        ]
+      ],
+      "leash": 135
+    },
+    {
+      "id": "tk_r11_c",
+      "kind": "topiary_knight",
+      "pos": [
+        232,
+        152
+      ],
+      "zone": "ms_r11_organ",
+      "route": [
+        [
+          200,
+          152
+        ],
+        [
+          264,
+          152
+        ]
+      ],
+      "leash": 140
+    },
+    {
+      "id": "rf_r11_n",
+      "kind": "rain_frog",
+      "pos": [
+        328,
+        120
+      ],
+      "zone": "ms_r11_organ",
+      "route": [
+        [
+          312,
+          120
+        ],
+        [
+          360,
+          136
+        ]
+      ],
+      "leash": 135
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ms_r11_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ms_r11_cleared"
+        },
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        192,
+        32,
+        64,
+        256
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        200
+      ],
+      "radius": 24,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        232,
+        104
+      ],
+      "size": [
+        56,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.15
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "mausoleum_arch_gate",
+      "pos": [
+        232,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        152,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        296,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        264,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        88,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        360,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        280,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "design": {
+    "idea": "Stepped Ziggurat Organ Stair pre-boss gauntlet: hang your lantern on the central hook to freeze the Topiary Knight, flank the twin Hour Herons on their 1-second ticks along the organ-pipe draft lanes, beam the rear Rain Frog, and top up hearts at the dew shrine before The Drowned Choir!",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Combining Lantern Hook freezes, metronome Heron timing, and draft lanes before the final Choir.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "ms_r11_cleared+full_heal",
+    "why": "Terraced Choir ante-chamber raising tension right before the Sunken Apse boss.",
+    "exit": "exit_ms_r11_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          216
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 60.0
+      },
+      {
+        "op": "expect",
+        "flag": "ms_r11_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r11_north"
+      }
+    ]
+  }
+}

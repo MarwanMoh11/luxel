@@ -94,8 +94,8 @@
       ],
       "props": {
         "mode": "pull",
-        "radius": 76.0,
-        "strength": 580.0,
+        "radius": 64.0,
+        "strength": 640.0,
         "orbit_capture": true,
         "orbit_r": 34.0
       }
@@ -110,7 +110,7 @@
       "props": {
         "mode": "pull",
         "radius": 76.0,
-        "strength": 620.0,
+        "strength": 640.0,
         "linked_crystal": "crys_r9_w2"
       }
     },
@@ -124,7 +124,7 @@
       "props": {
         "mode": "pull",
         "radius": 76.0,
-        "strength": 620.0
+        "strength": 640.0
       }
     },
     {
@@ -189,8 +189,8 @@
       "id": "eye_r9_catapult",
       "kind": "switch_eye",
       "pos": [
-        252,
-        62
+        216,
+        68
       ],
       "props": {
         "requires_blue": true,
@@ -233,7 +233,7 @@
       "id": "eye_r9_short",
       "kind": "switch_eye",
       "pos": [
-        224,
+        296,
         56
       ],
       "props": {
@@ -314,8 +314,8 @@
     {
       "kind": "inlay",
       "rect": [
-        96,
-        204,
+        80,
+        216,
         32,
         16
       ]
@@ -546,16 +546,16 @@
       {
         "op": "goto",
         "to": [
-          112,
-          212
+          96,
+          224
         ],
         "tol": 3.0
       },
       {
         "op": "shoot",
         "target": [
-          192,
-          212
+          176,
+          221
         ],
         "wait_hit": 1.1
       },
@@ -587,7 +587,7 @@
       {
         "op": "shoot",
         "from": [
-          256,
+          264,
           80
         ],
         "target": "eye_r9_short"

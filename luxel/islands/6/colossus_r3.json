@@ -1,0 +1,522 @@
+{
+  "id": "colossus_r3",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_COL_R3",
+  "spawn": [
+    40,
+    144
+  ],
+  "zones": [
+    {
+      "id": "col_r3",
+      "name_key": "ISL6_COL_R3",
+      "rect": [
+        0,
+        0,
+        512,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "colossus_r2",
+      "to_spawn": [
+        440,
+        136
+      ]
+    },
+    {
+      "id": "exit_r3_east",
+      "rect": [
+        496,
+        128,
+        16,
+        48
+      ],
+      "to_region": "colossus_r4",
+      "to_spawn": [
+        40,
+        168
+      ],
+      "locked_door_id": "door_r3_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_west",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_r3_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "mode": "lance",
+        "sets_flag": "temper_lance_known"
+      }
+    },
+    {
+      "id": "stride_r3_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        104,
+        216
+      ],
+      "props": {
+        "step_period": 6.0,
+        "axis": "x",
+        "shake_amp": 0.06,
+        "tilt_group_ids": [
+          "tilt_r3_deck"
+        ]
+      }
+    },
+    {
+      "id": "tilt_r3_deck",
+      "kind": "tilt_group",
+      "pos": [
+        344,
+        144
+      ],
+      "props": {
+        "size": [
+          192,
+          144
+        ],
+        "axis": "e",
+        "strength": 48.0,
+        "slide_enemies": false
+      }
+    },
+    {
+      "id": "mover_r3_piston_n",
+      "kind": "mover_wall",
+      "pos": [
+        248,
+        96
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "path": [
+          [
+            248,
+            96
+          ],
+          [
+            248,
+            120
+          ]
+        ],
+        "speed": 36.0,
+        "on_signal": "auto"
+      }
+    },
+    {
+      "id": "mover_r3_piston_s",
+      "kind": "mover_wall",
+      "pos": [
+        248,
+        192
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "path": [
+          [
+            248,
+            192
+          ],
+          [
+            248,
+            168
+          ]
+        ],
+        "speed": 36.0,
+        "on_signal": "auto"
+      }
+    },
+    {
+      "id": "door_r3_east",
+      "kind": "door",
+      "pos": [
+        480,
+        152
+      ],
+      "props": {
+        "door_type": "combat_gate",
+        "zone": "col_r3",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "zone": "col_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        224
+      ],
+      "props": {
+        "zone": "col_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        64
+      ],
+      "props": {
+        "zone": "col_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_ne",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        64
+      ],
+      "props": {
+        "zone": "col_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_se",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        224
+      ],
+      "props": {
+        "zone": "col_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        144
+      ],
+      "props": {
+        "zone": "col_r3",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r3_knight",
+      "kind": "piston_knight",
+      "pos": [
+        344,
+        144
+      ],
+      "route": [
+        [
+          312,
+          144
+        ],
+        [
+          368,
+          144
+        ]
+      ],
+      "zone": "col_r3",
+      "leash": 144
+    },
+    {
+      "id": "en_r3_hopper_1",
+      "kind": "rail_hopper",
+      "pos": [
+        336,
+        88
+      ],
+      "route": [
+        [
+          312,
+          88
+        ],
+        [
+          392,
+          88
+        ]
+      ],
+      "perches": [
+        [
+          320,
+          88
+        ],
+        [
+          408,
+          88
+        ]
+      ],
+      "zone": "col_r3",
+      "leash": 148
+    },
+    {
+      "id": "en_r3_hopper_2",
+      "kind": "rail_hopper",
+      "pos": [
+        336,
+        208
+      ],
+      "route": [
+        [
+          312,
+          208
+        ],
+        [
+          392,
+          208
+        ]
+      ],
+      "perches": [
+        [
+          320,
+          208
+        ],
+        [
+          408,
+          208
+        ]
+      ],
+      "zone": "col_r3",
+      "leash": 148
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        160,
+        120,
+        192,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        384,
+        144
+      ],
+      "radius": 42,
+      "style": "gear"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        80,
+        64,
+        48,
+        48
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        336,
+        104
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        424,
+        184
+      ],
+      "radius": 20,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        136,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        136,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        448,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        448,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        312,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "slag_ingot_stack",
+      "pos": [
+        448,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "col_r3_clear_flag",
+      "on": "cleared:col_r3",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "colossus_r3_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Hourglass Calf Piston Chamber pairing an armored Piston Knight with two leaping Rail Hoppers across a tilting deck and crushing center brass pistons: forge Lance at the west anvil to crack the Knight's frontal plate cleanly.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "temper_anvil[lance] armor-cracking + fighting around rhythmic piston cover and stride tilt",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "temper_lance_known+open_r4",
+    "why": "First full combat test of The Iron Colossus introducing Lance temper and Piston Knight armor-cracking.",
+    "exit": "exit_r3_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          108
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r3_lance"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==lance"
+      },
+      {
+        "op": "clear",
+        "zone": "col_r3",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r3_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_east"
+      }
+    ]
+  }
+}

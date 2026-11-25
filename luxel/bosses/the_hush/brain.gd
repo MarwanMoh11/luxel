@@ -119,8 +119,10 @@ func is_flying() -> bool:
 
 
 func _infer_arena_rect() -> Rect2:
-	if world_ctx != null and is_instance_valid(world_ctx) and str(world_ctx.get("region_id")) == "sanctum_r6":
-		return SANCTUM_R6_CORE
+	if world_ctx != null and is_instance_valid(world_ctx):
+		var reg: String = str(world_ctx.get("current_region_id")) if world_ctx.get("current_region_id") != null else str(world_ctx.get("region_id"))
+		if reg == "sanctum_r6":
+			return SANCTUM_R6_CORE
 	return super._infer_arena_rect()
 
 
@@ -291,6 +293,10 @@ func take_hit(hit: LxHit) -> int:
 		dmg *= 1.25
 
 	if finale_stage == FinaleStage.UNBROKEN_STAND and unbroken_timer > 0.0:
+		hp = maxf(1.0, hp - dmg)
+	elif phase < 4:
+		hp = maxf(max_hp * 0.24, hp - dmg)
+	elif finale_stage == FinaleStage.NONE:
 		hp = maxf(1.0, hp - dmg)
 	else:
 		hp = maxf(0.0, hp - dmg)

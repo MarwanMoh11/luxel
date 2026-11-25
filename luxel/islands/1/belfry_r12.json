@@ -34,8 +34,8 @@
       ],
       "to_region": "belfry_r11",
       "to_spawn": [
-        488,
-        192
+        464,
+        176
       ]
     },
     {
@@ -322,8 +322,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "iron_pulley_wheel",
       "pos": [
-        408,
-        200
+        432,
+        192
       ],
       "layer": "sort",
       "flip_x": true,

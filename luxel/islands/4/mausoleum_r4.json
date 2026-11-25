@@ -1,0 +1,542 @@
+{
+  "id": "mausoleum_r4",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R4",
+  "spawn": [
+    240,
+    264
+  ],
+  "zones": [
+    {
+      "id": "ms_r4_apse",
+      "name_key": "ISL4_MS_R4",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r4_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r3",
+      "to_spawn": [
+        224,
+        56
+      ]
+    },
+    {
+      "id": "exit_ms_r4_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r5",
+      "to_spawn": [
+        256,
+        264
+      ],
+      "locked_door_id": "door_ms_r4_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r4",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        264
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wheel_ms_r4",
+      "kind": "weather_wheel",
+      "pos": [
+        136,
+        232
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "sun",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "e"
+      }
+    },
+    {
+      "id": "buoy_r4",
+      "kind": "ms_weather_buoy",
+      "pos": [
+        216,
+        168
+      ],
+      "props": {
+        "mirror_id": "mirror_r4",
+        "dock_radius": 20.0,
+        "needs_arm_signal": true,
+        "shoot_latch": false,
+        "sets_flag": "ms_r4_buoy_latched",
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_r4",
+      "kind": "blue_transformer",
+      "pos": [
+        264,
+        168
+      ],
+      "props": {
+        "angle_deg": 45,
+        "angle_step_deg": 45,
+        "rotatable": true,
+        "movable": true,
+        "persist_pos": false,
+        "double_sided": true,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "emitter_r4_low",
+      "kind": "beam_emitter",
+      "pos": [
+        120,
+        168
+      ],
+      "props": {
+        "dir": "e",
+        "color": "gold",
+        "range": 240.0,
+        "max_bounces": 2
+      }
+    },
+    {
+      "id": "sensor_r4_low",
+      "kind": "beam_sensor",
+      "pos": [
+        216,
+        232
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "buoy_r4"
+      }
+    },
+    {
+      "id": "emitter_r4_high",
+      "kind": "beam_emitter",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "dir": "s",
+        "color": "gold",
+        "range": 280.0,
+        "max_bounces": 2
+      }
+    },
+    {
+      "id": "sensor_r4_high",
+      "kind": "beam_sensor",
+      "pos": [
+        360,
+        168
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "door_ms_r4_north",
+        "sets_flag": "ms_r4_open"
+      }
+    },
+    {
+      "id": "door_ms_r4_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r4_high"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_r4_open"
+      }
+    },
+    {
+      "id": "lamp_r4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        280
+      ],
+      "props": {
+        "zone": "ms_r4_apse",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        280
+      ],
+      "props": {
+        "zone": "ms_r4_apse",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "zone": "ms_r4_apse",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        216
+      ],
+      "props": {
+        "zone": "ms_r4_apse",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        56
+      ],
+      "props": {
+        "zone": "ms_r4_apse",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "sun_low_beam",
+      "when": "weather==sun",
+      "tiles": [],
+      "enable": [
+        "emitter_r4_low"
+      ],
+      "disable": []
+    },
+    {
+      "id": "sun_skylight",
+      "when": "weather==sun && flag:ms_r4_buoy_latched",
+      "tiles": [],
+      "enable": [
+        "emitter_r4_high",
+        "sensor_r4_high"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        168
+      ],
+      "radius": 32,
+      "style": "ritual"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        136,
+        232
+      ],
+      "radius": 20,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        112,
+        152,
+        256,
+        32
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        136
+      ],
+      "size": [
+        48,
+        84
+      ],
+      "tint": "warm",
+      "shear": 0.18
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "mausoleum_arch_gate",
+      "pos": [
+        248,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        88,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        392,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        168,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        280,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        296,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        120,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        376,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "slate_memorial_plinth",
+      "pos": [
+        328,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Stepped T-Apse optical contraption: push the Blue Transformer onto the sunken cistern buoy in SUN and rotate it to 135 deg so the low sunbeam arms the elevation pin; flood in RAIN to lift and latch the buoy; return to SUN so the skylight beam bounces off the elevated mirror into the upper blue sensor!",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "SUN -> RAIN -> SUN optical chain: buoy buoyancy elevates a mirror into a skylight beam.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "ms_r4_open",
+    "why": "West Wing optical showpiece preparing players for the 3-season contraption in r8.",
+    "exit": "exit_ms_r4_north",
+    "solution": [
+      {
+        "op": "push",
+        "target": "mirror_r4",
+        "to": [
+          216,
+          168
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_r4",
+        "angle": 135.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "sensor_r4_low",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          216
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          232
+        ],
+        "target": "wheel_ms_r4"
+      },
+      {
+        "op": "expect",
+        "var": "weather==rain"
+      },
+      {
+        "op": "wait_until",
+        "flag": "ms_r4_buoy_latched",
+        "timeout": 3.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          232
+        ],
+        "target": "wheel_ms_r4"
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          232
+        ],
+        "target": "wheel_ms_r4"
+      },
+      {
+        "op": "expect",
+        "var": "weather==sun"
+      },
+      {
+        "op": "wait_until",
+        "flag": "ms_r4_open",
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r4_north"
+      }
+    ]
+  }
+}

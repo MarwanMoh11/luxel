@@ -215,7 +215,7 @@
       "prop": "wind_chime_rack",
       "pos": [
         160,
-        64
+        72
       ],
       "layer": "sort",
       "flip_x": false,
@@ -227,7 +227,7 @@
       "prop": "wind_chime_rack",
       "pos": [
         256,
-        64
+        72
       ],
       "layer": "sort",
       "flip_x": true,

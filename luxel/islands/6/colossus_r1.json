@@ -1,0 +1,488 @@
+{
+  "id": "colossus_r1",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_COL_R1",
+  "spawn": [
+    136,
+    248
+  ],
+  "zones": [
+    {
+      "id": "col_r1",
+      "name_key": "ISL6_COL_R1",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r1_south",
+      "rect": [
+        112,
+        272,
+        48,
+        16
+      ],
+      "to_island": 6,
+      "to_region": "ow_giant_stride",
+      "to_spawn": [
+        416,
+        240
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_r1_north",
+      "rect": [
+        160,
+        0,
+        32,
+        16
+      ],
+      "to_region": "colossus_r6",
+      "to_spawn": [
+        448,
+        328
+      ],
+      "requires_flags": [
+        "colossus_chute_open"
+      ],
+      "locked_door_id": "door_r1_chute"
+    },
+    {
+      "id": "exit_r1_east",
+      "rect": [
+        432,
+        160,
+        16,
+        48
+      ],
+      "to_region": "colossus_r2",
+      "to_spawn": [
+        40,
+        152
+      ],
+      "locked_door_id": "door_r1_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_colossus",
+      "kind": "waystone",
+      "pos": [
+        104,
+        216
+      ],
+      "props": {
+        "zone": "col_r1",
+        "name_key": "ISL6_COL_R1"
+      }
+    },
+    {
+      "id": "stride_r1_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        56,
+        120
+      ],
+      "props": {
+        "step_period": 6.0,
+        "axis": "x",
+        "shake_amp": 0.06,
+        "tilt_group_ids": [
+          "tilt_r1_boot"
+        ]
+      }
+    },
+    {
+      "id": "tilt_r1_boot",
+      "kind": "tilt_group",
+      "pos": [
+        256,
+        104
+      ],
+      "props": {
+        "size": [
+          176,
+          48
+        ],
+        "axis": "e",
+        "strength": 96.0,
+        "slide_enemies": false
+      }
+    },
+    {
+      "id": "crate_r1_oil",
+      "kind": "push_block",
+      "pos": [
+        176,
+        136
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "plate_r1_crate",
+      "kind": "pressure_plate",
+      "pos": [
+        328,
+        104
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "door_r1_east"
+      }
+    },
+    {
+      "id": "anvil_r1_scatter",
+      "kind": "temper_anvil",
+      "pos": [
+        264,
+        224
+      ],
+      "props": {
+        "mode": "scatter",
+        "sets_flag": "temper_scatter_known"
+      }
+    },
+    {
+      "id": "lore_r1_stride",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        224
+      ],
+      "props": {
+        "string_id": "ISL6_COL_LORE_STRIDE",
+        "icon": "gear"
+      }
+    },
+    {
+      "id": "door_r1_chute",
+      "kind": "door",
+      "pos": [
+        176,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "colossus_chute_open"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_east",
+      "kind": "door",
+      "pos": [
+        376,
+        184
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "plate_r1_crate"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "zone": "col_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        168
+      ],
+      "props": {
+        "zone": "col_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        64
+      ],
+      "props": {
+        "zone": "col_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_mid",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        168
+      ],
+      "props": {
+        "zone": "col_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        152
+      ],
+      "props": {
+        "zone": "col_r1",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        160,
+        88,
+        184,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        104,
+        216
+      ],
+      "radius": 28,
+      "style": "gear"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        232,
+        196,
+        64,
+        48
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        224,
+        152
+      ],
+      "radius": 24,
+      "style": "soot"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        136,
+        120
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        88,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        280,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        40,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "slag_ingot_stack",
+      "pos": [
+        320,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "steam_valve_wheel",
+      "pos": [
+        120,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "pressure_gauge_dial",
+      "pos": [
+        232,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        248,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "col_r1_enter_flag",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "colossus_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Safe zero-pit ankle boot hub introducing the giant's 6s rhythmic stride tilt: push the oil crate north out of its bumper pocket so the next Right Step slides it onto the east pressure plate, unsealing the Shin Grate.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "colossus_stride_cam + tilt_group crate sliding + Scatter anvil + Cycle 2 chute tease",
+    "decisions": 4,
+    "expert_s": 40,
+    "reward": "ws_colossus+temper_scatter_known+open_r2",
+    "why": "Entry boot chamber establishing the walking giant rule in zero-pit safety and teasing the Cycle 2 emergency chute from Belly Hub.",
+    "exit": "exit_r1_east",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_colossus"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          160
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "wait_until",
+        "target": "stride_r1_cam",
+        "prop": "stride_side",
+        "value": -1,
+        "timeout": 8.0
+      },
+      {
+        "op": "push",
+        "target": "crate_r1_oil",
+        "to": [
+          176,
+          104
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "plate_r1_crate",
+        "prop": "powered",
+        "value": true,
+        "timeout": 9.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r1_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r1_east"
+      }
+    ]
+  }
+}

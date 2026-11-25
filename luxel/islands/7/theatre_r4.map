@@ -1,0 +1,35 @@
+# Doppel Theatre R4: Act 2 Clipped Wings (32x20, Stepped Z-Zigzag Abyss)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G glass
+MAP
+#####,,,########################
+####.,,,.#######################
+###..,,,..###OOOOOOOOOOOOOO#####
+###..,,,..###O........OOOOO#####
+###.......OOOO........OOOOO#####
+###..,,,..OOOO..,,,,..OOOOO#####
+###..,,,..OOOO..,,,,..OOOOO#####
+###.......OOOO........OOOOO#####
+###.......OOOO........OOOOO#####
+###.......OOOOOOOOOOOOOOOOO#####
+###.......OOOOOOOOOOOOOOOOO#####
+###.......OOOOOOOOOOOOOOO#######
+####....OOOOOO......OOOO.......#
+#####..OOOOOOO..,,..OOOO...,,,.,
+######OOOOOOOO..,,..OOOO...,,,,,
+######OOOOOOOO..,,..OOOO...,,,,#
+######OOOOOOOO......OOOO...,,,.#
+#######OOOOOOO......OOOO.......#
+########OOOOOOOOOOOOOOOO########
+################################

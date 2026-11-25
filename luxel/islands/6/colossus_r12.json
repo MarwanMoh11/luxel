@@ -1,0 +1,518 @@
+{
+  "id": "colossus_r12",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
+  "name_key": "ISL6_COL_R12",
+  "spawn": [
+    48,
+    136
+  ],
+  "zones": [
+    {
+      "id": "col_r12",
+      "name_key": "ISL6_COL_R12",
+      "rect": [
+        0,
+        0,
+        640,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r12_west",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "colossus_r11",
+      "to_spawn": [
+        272,
+        48
+      ]
+    },
+    {
+      "id": "exit_r12_east",
+      "rect": [
+        624,
+        112,
+        16,
+        48
+      ],
+      "to_island": 6,
+      "to_region": "ow_giant_stride",
+      "to_spawn": [
+        416,
+        240
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "colossus_cleared"
+      ],
+      "locked_door_id": "door_r12_vent"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r12_start",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "tilt_r12_spine",
+      "kind": "tilt_group",
+      "pos": [
+        256,
+        136
+      ],
+      "props": {
+        "size": [
+          384,
+          96
+        ],
+        "axis": "e",
+        "strength": 82.0,
+        "stabilized_flag": "colossus_cleared"
+      }
+    },
+    {
+      "id": "crumble_r12_1",
+      "kind": "crumble_floor",
+      "pos": [
+        104,
+        136
+      ],
+      "props": {
+        "size": [
+          48,
+          48
+        ],
+        "delay": 1.15,
+        "respawn": 2.4
+      }
+    },
+    {
+      "id": "crumble_r12_2",
+      "kind": "crumble_floor",
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "size": [
+          48,
+          48
+        ],
+        "delay": 1.15,
+        "respawn": 2.4
+      }
+    },
+    {
+      "id": "bloom_r12_1",
+      "kind": "bounce_bloom",
+      "pos": [
+        192,
+        136
+      ],
+      "props": {
+        "dir": "e",
+        "dist": 108.0,
+        "size": [
+          20,
+          36
+        ]
+      }
+    },
+    {
+      "id": "anc_r12_mid",
+      "kind": "room_anchor",
+      "pos": [
+        304,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "spin_r12_gear",
+      "kind": "spinner",
+      "pos": [
+        360,
+        136
+      ],
+      "props": {
+        "length": 34.0,
+        "speed": 1.25,
+        "arms": 2,
+        "start_deg": 0.0
+      }
+    },
+    {
+      "id": "crumble_r12_3",
+      "kind": "crumble_floor",
+      "pos": [
+        432,
+        136
+      ],
+      "props": {
+        "size": [
+          36,
+          48
+        ],
+        "delay": 1.15,
+        "respawn": 2.4
+      }
+    },
+    {
+      "id": "anvil_r12_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        488,
+        184
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
+    },
+    {
+      "id": "grate_r12_vent",
+      "kind": "grate",
+      "pos": [
+        568,
+        40
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "coupler_r12_vent",
+      "kind": "car_coupler",
+      "pos": [
+        600,
+        64
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_id": "door_r12_vent",
+        "sets_flag": "colossus_cleared",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r12_vent",
+      "kind": "door",
+      "pos": [
+        568,
+        136
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "coupler_r12_vent"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r12_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        96
+      ],
+      "props": {
+        "zone": "col_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_mid_n",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "zone": "col_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_mid_s",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        184
+      ],
+      "props": {
+        "zone": "col_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_e_n",
+      "kind": "road_lamp",
+      "pos": [
+        504,
+        80
+      ],
+      "props": {
+        "zone": "col_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_e_s",
+      "kind": "road_lamp",
+      "pos": [
+        592,
+        136
+      ],
+      "props": {
+        "zone": "col_r12",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        288,
+        112,
+        112,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        464,
+        160,
+        48,
+        44
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        360,
+        136
+      ],
+      "radius": 34,
+      "style": "gear"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        512,
+        136
+      ],
+      "radius": 22,
+      "glow": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        360,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        464,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        304,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "steam_valve_wheel",
+      "pos": [
+        528,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "brass_steam_pipe_arch",
+      "pos": [
+        604,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "col_r12_cleared_msg",
+      "on": "signal:coupler_r12_vent",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "colossus_cleared"
+        },
+        {
+          "shake": 0.22
+        },
+        {
+          "narrate": {
+            "id": "ISL6_COL_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "THE COLLAPSE RUN: sprint across crumbling spine grates (buffered by Heat-Boots), hit the steam-jet launch pad over a 5-tile gear chasm to the mid anchor, slip past the rotating spine gear, bank a Skip bolt off the north hull into the recessed Shoulder Vent lock, and leap out into the Stride Flats sunset as the Colossus kneels!",
+    "kind": "setpiece",
+    "beat": "ketsu",
+    "teaches": "Kinetic synthesis of Heat-Boots crumble timing + bounce_bloom launch + spinner dash + Skip vent lock",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "colossus_cleared",
+    "why": "Thrilling zero-combat kinetic escape finale rewarding every Iron Colossus skill with instant checkpoints.",
+    "exit": "exit_r12_east",
+    "start": {
+      "flags": [
+        "piston_marshal_defeated",
+        "item_heat_boots",
+        "colossus_heart_beaten",
+        "temper_skip_known"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          192,
+          136
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.6
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          136
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          488,
+          170
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r12_skip"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          536,
+          64
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          568,
+          16
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "wait_until",
+        "flag": "colossus_cleared",
+        "timeout": 4.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r12_vent",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r12_east"
+      }
+    ]
+  }
+}

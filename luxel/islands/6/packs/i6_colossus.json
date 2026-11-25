@@ -1,0 +1,87 @@
+{
+  "pack_id": "i6_colossus",
+  "version": 1,
+  "owner": "D6B",
+  "comment": "Island 6 Minor Dungeon B: The Iron Colossus (12 rooms inside a walking giant, 3 internal cycles, Cleated Heat-Boots, theme iron_colossus). Debug-only on dungeon/regions meta until P6-OW hooks ow_giant_stride -> colossus_r1/r6/r12.",
+  "strings": {
+    "ISL6_COL_DUNGEON": "THE IRON COLOSSUS",
+    "ISL6_COL_R1": "LEFT BOOT ANKLE BAY",
+    "ISL6_COL_R2": "COUNTERWEIGHT SHIN SHAFT",
+    "ISL6_COL_R3": "CALF PISTON CHAMBER",
+    "ISL6_COL_R4": "KNEECAP ROTOR GEAR",
+    "ISL6_COL_R5": "THE KNEE PISTON HALL",
+    "ISL6_COL_R6": "BELLY FURNACE CATHEDRAL",
+    "ISL6_COL_R7": "LEFT SHOULDER WINCH",
+    "ISL6_COL_R8": "RIGHT SHOULDER BELLOWS",
+    "ISL6_COL_R9": "COLLARBONE VIADUCT",
+    "ISL6_COL_R10": "JAW AND CROWN COCKPIT",
+    "ISL6_COL_R11": "THE RIBCAGE CORE",
+    "ISL6_COL_R12": "THE SPINE COLLAPSE RUN",
+    "ISL6_POW_BOOTS": "HEAT-BOOTS: HOLD FIRM ON TILTING DECKS!",
+    "ISL6_PROMPT_BOOTS": "CLAIM HEAT-BOOTS",
+    "ISL6_COL_LORE_STRIDE": "STEP LEFT. STEP RIGHT. LET THE GIANT SLIDE.",
+    "ISL6_COL_LORE_CROWN": "EYES READ 3 - 1 - 4 - 2. STEER EAST!",
+    "ISL6_COL_SHORT_KNEE": "SERVICE LADDER DROPPED TO SHIN SHAFT!",
+    "ISL6_COL_SHORT_CHUTE": "EMERGENCY CHUTE OPEN TO BOOT BAY!",
+    "ISL6_COL_CRANE_OPEN": "BELLY CRANE LOWERED TO STRIDE FLATS!",
+    "ISL6_COL_LOCK_L": "WEST SHOULDER CHAIN SNAPPED FREE!",
+    "ISL6_COL_LOCK_R": "EAST SHOULDER CHAIN SNAPPED FREE!",
+    "ISL6_COL_STEERED": "THE COLOSSUS TURNS TOWARD HIGH TRESTLE!",
+    "ISL6_COL_HEART_WIN": "THE HEART CALMS! SPINE HATCH OPEN!",
+    "ISL6_COL_CLEARED": "THE COLOSSUS KNEELS! HALF-LANTERN CLAIMED!"
+  },
+  "state_vars": {
+    "helm_heading": {
+      "scope": "room:6:colossus_r10",
+      "values": ["north", "east"],
+      "default": "north"
+    }
+  },
+  "interactables": {
+    "colossus_boots_altar": "res://luxel/islands/6/colossus/colossus_boots_altar.gd",
+    "colossus_eye_vista": "res://luxel/islands/6/colossus/colossus_eye_vista.gd"
+  },
+  "dungeons": [
+    {
+      "id": "iron_colossus",
+      "name_key": "ISL6_COL_DUNGEON",
+      "island": 6,
+      "entry": "colossus_r1",
+      "regions": [
+        "colossus_r1",
+        "colossus_r2",
+        "colossus_r3",
+        "colossus_r4",
+        "colossus_r5",
+        "colossus_r6",
+        "colossus_r7",
+        "colossus_r8",
+        "colossus_r9",
+        "colossus_r10",
+        "colossus_r11",
+        "colossus_r12"
+      ],
+      "mini_boss": "piston_marshal",
+      "boss": "colossus_heart",
+      "theme": "iron_colossus",
+      "music": "isl6_colossus",
+      "requires_flags": [],
+      "done_flag": "colossus_cleared",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "colossus_r1": { "name_key": "ISL6_COL_R1", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [0, 5] },
+    "colossus_r2": { "name_key": "ISL6_COL_R2", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [1, 5] },
+    "colossus_r3": { "name_key": "ISL6_COL_R3", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [2, 5] },
+    "colossus_r4": { "name_key": "ISL6_COL_R4", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [2, 4] },
+    "colossus_r5": { "name_key": "ISL6_COL_R5", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [1, 4] },
+    "colossus_r6": { "name_key": "ISL6_COL_R6", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [1, 3] },
+    "colossus_r7": { "name_key": "ISL6_COL_R7", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [0, 2] },
+    "colossus_r8": { "name_key": "ISL6_COL_R8", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [2, 2] },
+    "colossus_r9": { "name_key": "ISL6_COL_R9", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [1, 2] },
+    "colossus_r10": { "name_key": "ISL6_COL_R10", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [1, 1] },
+    "colossus_r11": { "name_key": "ISL6_COL_R11", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [2, 1] },
+    "colossus_r12": { "name_key": "ISL6_COL_R12", "theme": "iron_colossus", "music": "isl6_colossus", "dark": true, "debug_only": true, "map": [3, 1] }
+  }
+}

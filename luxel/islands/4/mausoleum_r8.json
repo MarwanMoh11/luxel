@@ -1,0 +1,811 @@
+{
+  "id": "mausoleum_r8",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R8",
+  "spawn": [
+    272,
+    296
+  ],
+  "zones": [
+    {
+      "id": "ms_r8_seasons",
+      "name_key": "ISL4_MS_R8",
+      "rect": [
+        0,
+        0,
+        544,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r8_south",
+      "rect": [
+        256,
+        336,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r7",
+      "to_spawn": [
+        224,
+        56
+      ]
+    },
+    {
+      "id": "exit_ms_r8_west",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_region": "mausoleum_r1",
+      "to_spawn": [
+        488,
+        96
+      ],
+      "requires_flags": [
+        "ms_boss_key",
+        "ms_east_shortcut"
+      ],
+      "locked_door_id": "door_ms_r8_west",
+      "one_way": true
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r8",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        296
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wheel_ms_r8",
+      "kind": "weather_wheel",
+      "pos": [
+        200,
+        232
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "sun",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "e"
+      }
+    },
+    {
+      "id": "sync_ms_r8",
+      "kind": "ms_weather_sync",
+      "pos": [
+        232,
+        280
+      ],
+      "props": {}
+    },
+    {
+      "id": "bramble_r8",
+      "kind": "bramble",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {}
+    },
+    {
+      "id": "buoy_r8",
+      "kind": "ms_weather_buoy",
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "mirror_id": "mirror_r8",
+        "dock_radius": 20.0,
+        "needs_arm_signal": false,
+        "shoot_latch": true,
+        "sets_flag": "ms_r8_buoy_latched",
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_r8",
+      "kind": "blue_transformer",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "angle_deg": 45,
+        "angle_step_deg": 45,
+        "rotatable": true,
+        "movable": true,
+        "persist_pos": false,
+        "double_sided": true,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "emitter_r8_high",
+      "kind": "beam_emitter",
+      "pos": [
+        152,
+        56
+      ],
+      "props": {
+        "dir": "s",
+        "color": "gold",
+        "range": 300.0,
+        "max_bounces": 2
+      }
+    },
+    {
+      "id": "sensor_r8_high",
+      "kind": "beam_sensor",
+      "pos": [
+        296,
+        136
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "door_r8_shutter",
+        "sets_flag": "ms_r8_shutter_open"
+      }
+    },
+    {
+      "id": "door_r8_shutter",
+      "kind": "door",
+      "pos": [
+        264,
+        224
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sensor_r8_high"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_r8_shutter_open"
+      }
+    },
+    {
+      "id": "orb_r8_spore",
+      "kind": "carry_orb",
+      "pos": [
+        296,
+        184
+      ],
+      "props": {
+        "kind": "seed"
+      }
+    },
+    {
+      "id": "wind_r8_gale",
+      "kind": "wind_zone",
+      "pos": [
+        396,
+        232
+      ],
+      "props": {
+        "size": [
+          200,
+          80
+        ],
+        "dir": "e",
+        "strength": 1500.0,
+        "on_signal": "toggle_active"
+      }
+    },
+    {
+      "id": "bloom_r8_launch",
+      "kind": "bounce_bloom",
+      "pos": [
+        312,
+        232
+      ],
+      "props": {
+        "dir": "e",
+        "dist": 156.0,
+        "size": [
+          20,
+          20
+        ]
+      }
+    },
+    {
+      "id": "scale_r8",
+      "kind": "scale",
+      "pos": [
+        472,
+        232
+      ],
+      "props": {
+        "left": [
+          0,
+          0
+        ],
+        "right": [
+          0,
+          -28
+        ],
+        "pan_radius": 18.0,
+        "mode": "either",
+        "need_weight": 1.0,
+        "persist": true,
+        "target_ids": [
+          "bridge_r8_abyss",
+          "wind_r8_gale"
+        ],
+        "sets_flag": "ms_r8_scale_done"
+      }
+    },
+    {
+      "id": "bridge_r8_abyss",
+      "kind": "door",
+      "pos": [
+        384,
+        224
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          128,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "scale_r8"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_r8_scale_done"
+      }
+    },
+    {
+      "id": "ms_boss_key",
+      "kind": "keepers_flame",
+      "pos": [
+        488,
+        136
+      ],
+      "props": {
+        "dungeon_id": "rain_mausoleum",
+        "key_kind": "keepers_flame",
+        "flag_id": "ms_boss_key"
+      }
+    },
+    {
+      "id": "sw_ms_r8_short",
+      "kind": "switch_eye",
+      "pos": [
+        88,
+        216
+      ],
+      "props": {
+        "target_id": "door_ms_r8_west",
+        "sets_flag": "ms_east_shortcut"
+      }
+    },
+    {
+      "id": "door_ms_r8_west",
+      "kind": "door",
+      "pos": [
+        24,
+        176
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sw_ms_r8_short"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_east_shortcut"
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        312
+      ],
+      "props": {
+        "zone": "ms_r8_seasons",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_w1",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        200
+      ],
+      "props": {
+        "zone": "ms_r8_seasons",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_nw",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        72
+      ],
+      "props": {
+        "zone": "ms_r8_seasons",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_mid",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        264
+      ],
+      "props": {
+        "zone": "ms_r8_seasons",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_e1",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        184
+      ],
+      "props": {
+        "zone": "ms_r8_seasons",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        504,
+        104
+      ],
+      "props": {
+        "zone": "ms_r8_seasons",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "rf_r8_guard",
+      "kind": "rain_frog",
+      "pos": [
+        136,
+        248
+      ],
+      "zone": "ms_r8_seasons",
+      "route": [
+        [
+          120,
+          248
+        ],
+        [
+          168,
+          264
+        ]
+      ],
+      "leash": 120
+    }
+  ],
+  "layers": [
+    {
+      "id": "sun_r8_skylight",
+      "when": "weather==sun && flag:ms_r8_buoy_latched",
+      "tiles": [],
+      "enable": [
+        "emitter_r8_high",
+        "sensor_r8_high"
+      ],
+      "disable": []
+    },
+    {
+      "id": "wind_r8_active",
+      "when": "weather==wind",
+      "tiles": [],
+      "enable": [
+        "wind_r8_gale",
+        "bloom_r8_launch"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ms_r8_short_msg",
+      "on": "signal:sw_ms_r8_short",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ms_east_shortcut"
+        },
+        {
+          "narrate": "ISL4_MS_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        152,
+        136
+      ],
+      "radius": 34,
+      "style": "ritual"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        200,
+        232
+      ],
+      "radius": 22,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        448,
+        96,
+        64,
+        80
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        152,
+        104
+      ],
+      "size": [
+        48,
+        76
+      ],
+      "tint": "warm",
+      "shear": 0.16
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        488,
+        136
+      ],
+      "size": [
+        44,
+        60
+      ],
+      "tint": "cool",
+      "shear": 0.22
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        232,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        296,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        104,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        216,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        104,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        504,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        296,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        72,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "mausoleum_arch_gate",
+      "pos": [
+        488,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "bronze_drain_gargoyle",
+      "pos": [
+        232,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING ROOM \u2014 The Three Seasons: unbroken SUN -> RAIN -> SUN -> WIND macro-contraption! Burn the skylight bramble in SUN, push & angle the mirror onto the buoy, flood in RAIN and latch the elevation pin, return to SUN to bounce the skylight beam through the iron grate, drop the spore orb on the launch pad, and flip WIND to blow the spore across the 8-tile abyss onto the scale for the Boss Key!",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Full synthesis of all three Mausoleum weathers (SUN bramble+optics, RAIN buoy lift, WIND spore ferry).",
+    "decisions": 10,
+    "expert_s": 75,
+    "reward": "ms_boss_key+ms_east_shortcut",
+    "why": "Signature astonishing contraption of The Rain Mausoleum awarding the Choir Boss Key and Cycle 3 shortcut.",
+    "exit": "exit_ms_r8_west",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 25.0
+      },
+      {
+        "op": "beam",
+        "from": [
+          152,
+          176
+        ],
+        "target": "bramble_r8"
+      },
+      {
+        "op": "push",
+        "target": "mirror_r8",
+        "to": [
+          152,
+          136
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_r8",
+        "angle": 135.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          232
+        ],
+        "target": "wheel_ms_r8"
+      },
+      {
+        "op": "expect",
+        "var": "weather==rain"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          152,
+          184
+        ],
+        "target": "buoy_r8"
+      },
+      {
+        "op": "wait_until",
+        "flag": "ms_r8_buoy_latched",
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          232
+        ],
+        "target": "wheel_ms_r8"
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          232
+        ],
+        "target": "wheel_ms_r8"
+      },
+      {
+        "op": "expect",
+        "var": "weather==sun"
+      },
+      {
+        "op": "wait_until",
+        "flag": "ms_r8_shutter_open",
+        "timeout": 3.0
+      },
+      {
+        "op": "carry",
+        "action": "pickup",
+        "target": "orb_r8_spore"
+      },
+      {
+        "op": "carry",
+        "action": "drop",
+        "to": [
+          312,
+          232
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          232
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          232
+        ],
+        "target": "wheel_ms_r8"
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          232
+        ],
+        "target": "wheel_ms_r8"
+      },
+      {
+        "op": "expect",
+        "var": "weather==wind"
+      },
+      {
+        "op": "wait_until",
+        "flag": "ms_r8_scale_done",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "ms_boss_key"
+      },
+      {
+        "op": "expect",
+        "flag": "ms_boss_key"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          216
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          216
+        ],
+        "target": "sw_ms_r8_short"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r8_west"
+      }
+    ]
+  }
+}

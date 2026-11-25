@@ -1,0 +1,598 @@
+{
+  "id": "colossus_r10",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_COL_R10",
+  "spawn": [
+    240,
+    248
+  ],
+  "zones": [
+    {
+      "id": "col_r10",
+      "name_key": "ISL6_COL_R10",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_south",
+      "rect": [
+        208,
+        272,
+        64,
+        16
+      ],
+      "to_region": "colossus_r6",
+      "to_spawn": [
+        288,
+        48
+      ]
+    },
+    {
+      "id": "exit_r10_east",
+      "rect": [
+        464,
+        144,
+        16,
+        32
+      ],
+      "to_region": "colossus_r11",
+      "to_spawn": [
+        272,
+        304
+      ],
+      "requires_flags": [
+        "colossus_steered"
+      ],
+      "locked_door_id": "door_r10_boss"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10_south",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "vista_r10_eyes",
+      "kind": "colossus_eye_vista",
+      "pos": [
+        240,
+        44
+      ],
+      "props": {
+        "size": [
+          256,
+          24
+        ],
+        "steered_flag": "colossus_steered"
+      }
+    },
+    {
+      "id": "lore_r10_crown",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        216
+      ],
+      "props": {
+        "string_id": "ISL6_COL_LORE_CROWN",
+        "icon": "compass"
+      }
+    },
+    {
+      "id": "anvil_r10_cycle",
+      "kind": "temper_anvil",
+      "pos": [
+        312,
+        216
+      ],
+      "props": {
+        "mode": "cycle"
+      }
+    },
+    {
+      "id": "ring_r10_shutter",
+      "kind": "pull_ring",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "axis": "s",
+        "dist": 20.0,
+        "latch": true,
+        "persist": true,
+        "target_id": "mover_r10_shutter"
+      }
+    },
+    {
+      "id": "mover_r10_shutter",
+      "kind": "mover_wall",
+      "pos": [
+        284,
+        144
+      ],
+      "props": {
+        "size": [
+          88,
+          16
+        ],
+        "path": [
+          [
+            284,
+            144
+          ],
+          [
+            284,
+            76
+          ]
+        ],
+        "speed": 96.0,
+        "on_signal": "move",
+        "persist": true
+      }
+    },
+    {
+      "id": "orbs_r10_helm",
+      "kind": "sequence_orbs",
+      "pos": [
+        240,
+        112
+      ],
+      "props": {
+        "count": 4,
+        "order": [
+          2,
+          0,
+          3,
+          1
+        ],
+        "spacing": 44.0,
+        "persist": true,
+        "target_id": "door_r10_rudder_cage"
+      }
+    },
+    {
+      "id": "door_r10_rudder_cage",
+      "kind": "door",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "orbs_r10_helm"
+        ]
+      }
+    },
+    {
+      "id": "lever_r10_rudder",
+      "kind": "state_lever",
+      "pos": [
+        408,
+        104
+      ],
+      "props": {
+        "scope": "room:6:colossus_r10",
+        "var": "helm_heading",
+        "values": [
+          "north",
+          "east"
+        ],
+        "persist": true,
+        "target_id": "door_r10_rudder",
+        "sets_flag": "colossus_steered"
+      }
+    },
+    {
+      "id": "door_r10_rudder",
+      "kind": "door",
+      "pos": [
+        432,
+        160
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "colossus_steered"
+        ]
+      }
+    },
+    {
+      "id": "door_r10_boss",
+      "kind": "door",
+      "pos": [
+        452,
+        160
+      ],
+      "props": {
+        "door_type": "boss_key",
+        "dungeon_id": "iron_colossus",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        216
+      ],
+      "props": {
+        "zone": "col_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        176
+      ],
+      "props": {
+        "zone": "col_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        72
+      ],
+      "props": {
+        "zone": "col_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "zone": "col_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        160
+      ],
+      "props": {
+        "zone": "col_r10",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 18,
+      "x0": 112,
+      "x1": 216,
+      "style": "slag"
+    },
+    {
+      "kind": "window_strip",
+      "y": 18,
+      "x0": 264,
+      "x1": 368,
+      "style": "slag"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        176
+      ],
+      "radius": 38
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        88,
+        192,
+        48
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        160,
+        48
+      ],
+      "size": [
+        40,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        304,
+        48
+      ],
+      "size": [
+        40,
+        72
+      ],
+      "tint": "warm",
+      "shear": -0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "riveted_console_desk",
+      "pos": [
+        136,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "riveted_console_desk",
+      "pos": [
+        344,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "pressure_gauge_dial",
+      "pos": [
+        72,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "steam_valve_wheel",
+      "pos": [
+        408,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        48,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        240,
+        176
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "col_r10_steer_giant",
+      "on": "signal:lever_r10_rudder",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "colossus_steered"
+        },
+        {
+          "shake": 0.24
+        },
+        {
+          "narrate": {
+            "id": "ISL6_COL_STEERED",
+            "style": "title",
+            "duration": 3.2
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Inside the Iron Colossus's Jaw and Crown Cockpit looking out through twin blazing furnace eye-windows at the miniature caldera below: pull the west shutter rope to expose the compass orbs, shoot 3 -> 1 -> 4 -> 2 matching the glowing eye-glass pips, pull the east rudder lock to steer the giant toward High Trestle, then unlock the Boss Heart Hatch!",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Reading diegetic eye-window clues + pull_ring shutter + sequence_orbs + rudder steering climax before r11 boss",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "colossus_steered+boss_anchor+open_r11",
+    "why": "Jaw-dropping story-meets-puzzle climax giving the player direct helm control over the walking giant and an 8s boss retry checkpoint.",
+    "exit": "exit_r10_east",
+    "start": {
+      "flags": [
+        "piston_marshal_defeated",
+        "item_heat_boots",
+        "col_left_lock",
+        "col_right_lock",
+        "col_boss_key"
+      ],
+      "keys": {
+        "keepers_flame": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          88,
+          168
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "throw",
+        "target": "ring_r10_shutter",
+        "hold": 0.4
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "shoot",
+        "from": [
+          262,
+          176
+        ],
+        "target": [
+          262,
+          112
+        ],
+        "wait_hit": 0.5
+      },
+      {
+        "op": "shoot",
+        "from": [
+          174,
+          176
+        ],
+        "target": [
+          174,
+          112
+        ],
+        "wait_hit": 0.5
+      },
+      {
+        "op": "shoot",
+        "from": [
+          306,
+          176
+        ],
+        "target": [
+          306,
+          112
+        ],
+        "wait_hit": 0.5
+      },
+      {
+        "op": "shoot",
+        "from": [
+          218,
+          176
+        ],
+        "target": [
+          218,
+          112
+        ],
+        "wait_hit": 0.5
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r10_rudder_cage",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          408,
+          116
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "lever_r10_rudder"
+      },
+      {
+        "op": "wait_until",
+        "flag": "colossus_steered",
+        "timeout": 3.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r10_rudder",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "door_r10_boss"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_east"
+      }
+    ]
+  }
+}

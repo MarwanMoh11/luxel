@@ -1,0 +1,491 @@
+{
+  "id": "mausoleum_r2",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R2",
+  "spawn": [
+    360,
+    160
+  ],
+  "zones": [
+    {
+      "id": "ms_r2_cloister",
+      "name_key": "ISL4_MS_R2",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r2_east",
+      "rect": [
+        400,
+        144,
+        16,
+        32
+      ],
+      "to_region": "mausoleum_r1",
+      "to_spawn": [
+        40,
+        200
+      ]
+    },
+    {
+      "id": "exit_ms_r2_north",
+      "rect": [
+        320,
+        0,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r3",
+      "to_spawn": [
+        224,
+        232
+      ],
+      "locked_door_id": "door_ms_r2_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r2",
+      "kind": "room_anchor",
+      "pos": [
+        360,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wheel_ms_r2",
+      "kind": "weather_wheel",
+      "pos": [
+        216,
+        216
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "sun",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "e"
+      }
+    },
+    {
+      "id": "brazier_r2_open",
+      "kind": "timed_brazier",
+      "pos": [
+        152,
+        168
+      ],
+      "props": {
+        "secs": 16.0,
+        "allow_interact": true,
+        "target_id": "door_r2_bonus"
+      }
+    },
+    {
+      "id": "brazier_r2_roofed",
+      "kind": "ms_roofed_brazier",
+      "pos": [
+        88,
+        216
+      ],
+      "props": {
+        "secs": 0.0,
+        "allow_interact": true,
+        "persist": true,
+        "sets_flag": "ms_r2_mooring"
+      }
+    },
+    {
+      "id": "door_r2_bonus",
+      "kind": "door",
+      "pos": [
+        104,
+        120
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "brazier_r2_open"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r2_bonus",
+      "kind": "chest",
+      "pos": [
+        56,
+        104
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "sw_r2_exit",
+      "kind": "switch_eye",
+      "pos": [
+        360,
+        72
+      ],
+      "props": {
+        "target_id": "door_ms_r2_north",
+        "sets_flag": "ms_r2_open"
+      }
+    },
+    {
+      "id": "door_ms_r2_north",
+      "kind": "door",
+      "pos": [
+        336,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "sw_r2_exit"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_r2_open"
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        184
+      ],
+      "props": {
+        "zone": "ms_r2_cloister",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_sw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        248
+      ],
+      "props": {
+        "zone": "ms_r2_cloister",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        104
+      ],
+      "props": {
+        "zone": "ms_r2_cloister",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_ne",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        56
+      ],
+      "props": {
+        "zone": "ms_r2_cloister",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "rain_raft_bridge",
+      "when": "weather==rain && flag:ms_r2_mooring",
+      "tiles": [
+        [
+          11,
+          5,
+          7,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ms_r2_mooring_apply",
+      "on": "signal:brazier_r2_roofed",
+      "once": false,
+      "do": [
+        {
+          "set_flag": "ms_r2_mooring"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        216
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        184,
+        64,
+        48
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        152,
+        168
+      ],
+      "radius": 18,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        328,
+        72
+      ],
+      "size": [
+        48,
+        48
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "mausoleum_arch_gate",
+      "pos": [
+        344,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        280,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        168,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        296,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "bronze_drain_gargoyle",
+      "pos": [
+        168,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        376,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        40,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        296,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        376,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "design": {
+    "idea": "L-shaped Rain-Pitcher Cloister contrasting an exposed rain-snuffed brazier against a stone-roofed canopy brazier: light the roofed brazier in SUN, then shift to RAIN to float the cistern raft across to the North Sanctuary.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Sheltered roofed flames survive RAIN while open braziers hiss out; RAIN floats cistern rafts.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "ms_r2_open+25_shards",
+    "why": "First West Flood Wing puzzle pairing SUN flame shelter with RAIN buoyancy.",
+    "exit": "exit_ms_r2_north",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          144,
+          192
+        ],
+        "target": "brazier_r2_open"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          216
+        ],
+        "target": "brazier_r2_roofed"
+      },
+      {
+        "op": "expect",
+        "flag": "ms_r2_mooring"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          176,
+          216
+        ],
+        "target": "wheel_ms_r2"
+      },
+      {
+        "op": "expect",
+        "var": "weather==rain"
+      },
+      {
+        "op": "goto",
+        "to": [
+          320,
+          88
+        ],
+        "tol": 12
+      },
+      {
+        "op": "shoot",
+        "from": [
+          320,
+          88
+        ],
+        "target": "sw_r2_exit"
+      },
+      {
+        "op": "expect",
+        "flag": "ms_r2_open"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r2_north"
+      }
+    ]
+  }
+}

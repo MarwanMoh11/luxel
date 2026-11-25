@@ -79,8 +79,8 @@
       "id": "anvil_r11_cycle",
       "kind": "temper_anvil",
       "pos": [
-        216,
-        240
+        80,
+        72
       ],
       "props": {
         "mode": "cycle"
@@ -108,7 +108,7 @@
       "id": "lamp_r11_nw",
       "kind": "road_lamp",
       "pos": [
-        112,
+        136,
         72
       ],
       "props": {
@@ -176,9 +176,9 @@
       "zone": "tr_r11",
       "arena": [
         64,
-        48,
-        384,
-        192
+        56,
+        368,
+        168
       ]
     }
   ],
@@ -240,7 +240,7 @@
       "sheet": "theme_ember_express",
       "prop": "steam_pipe_column",
       "pos": [
-        72,
+        44,
         64
       ],
       "layer": "sort",
@@ -431,6 +431,26 @@
       }
     },
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          80,
+          88
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r11_cycle"
+      },
+      {
+        "op": "beam",
+        "from": [
+          136,
+          152
+        ],
+        "target": "boss_r11_engineer"
+      },
       {
         "op": "clear",
         "timeout": 180.0

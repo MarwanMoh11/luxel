@@ -1,0 +1,480 @@
+{
+  "id": "mausoleum_r10",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R10",
+  "spawn": [
+    48,
+    176
+  ],
+  "zones": [
+    {
+      "id": "ms_r10_reliquary",
+      "name_key": "ISL4_MS_R10",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r10_west",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_region": "mausoleum_r6",
+      "to_spawn": [
+        424,
+        144
+      ]
+    },
+    {
+      "id": "exit_ms_r10_north",
+      "rect": [
+        288,
+        0,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r9",
+      "to_spawn": [
+        424,
+        144
+      ],
+      "requires_flags": [
+        "ms_r10_open",
+        "ms_boss_key"
+      ],
+      "locked_door_id": "door_ms_r10_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r10",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wheel_ms_r10",
+      "kind": "weather_wheel",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "sun",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "s"
+      }
+    },
+    {
+      "id": "wind_r10_curve",
+      "kind": "wind_zone",
+      "pos": [
+        208,
+        56
+      ],
+      "props": {
+        "size": [
+          64,
+          80
+        ],
+        "dir": "s",
+        "strength": 3800.0
+      }
+    },
+    {
+      "id": "sw_r10_curve",
+      "kind": "switch_eye",
+      "pos": [
+        208,
+        68
+      ],
+      "props": {
+        "radius": 16.0,
+        "target_id": "door_ms_r10_north",
+        "sets_flag": "ms_r10_open"
+      }
+    },
+    {
+      "id": "moth_4_05",
+      "kind": "moth",
+      "pos": [
+        280,
+        120
+      ],
+      "props": {
+        "id": "moth_4_05"
+      }
+    },
+    {
+      "id": "chest_r10_shards",
+      "kind": "chest",
+      "pos": [
+        328,
+        120
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40
+      }
+    },
+    {
+      "id": "door_ms_r10_north",
+      "kind": "door",
+      "pos": [
+        304,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "sw_r10_curve"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_r10_open"
+      }
+    },
+    {
+      "id": "lamp_r10_sw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        168
+      ],
+      "props": {
+        "zone": "ms_r10_reliquary",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_nw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        72
+      ],
+      "props": {
+        "zone": "ms_r10_reliquary",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "zone": "ms_r10_reliquary",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_se",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        184
+      ],
+      "props": {
+        "zone": "ms_r10_reliquary",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "wind_r10_active",
+      "when": "weather==wind",
+      "tiles": [],
+      "enable": [
+        "wind_r10_curve"
+      ],
+      "disable": []
+    },
+    {
+      "id": "rain_r10_raft",
+      "when": "weather==rain && flag:ms_r10_open",
+      "tiles": [
+        [
+          9,
+          1,
+          7,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        104,
+        200
+      ],
+      "radius": 20,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        256,
+        80,
+        80,
+        64
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        120,
+        120
+      ],
+      "radius": 18,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        296,
+        104
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        72,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        344,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "carved_sarcophagus",
+      "pos": [
+        296,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        72,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        344,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        136,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Compact U-Hook Dry Reliquary: flip WIND so the eastern canal draft blows south, shoot (or throw your lantern) straight east past the crypt divider to hook 90 degrees south into the hidden eye-switch behind the wall, then flip RAIN to float the Reliquary Raft to Lost Moth #5, 40 shards, and Cycle 4's shortcut to r9!",
+    "kind": "reward",
+    "beat": "ten",
+    "teaches": "Curving throws and bolts around solid stone cover using WIND fields, paired with RAIN raft access.",
+    "decisions": 8,
+    "expert_s": 45,
+    "reward": "moth_4_05+40_shards+ms_r10_open",
+    "why": "Optional East-to-Choir reliquary vault rewarding Lost Moth #5 and closing Cycle 4.",
+    "exit": "exit_ms_r10_north",
+    "start": {
+      "flags": [
+        "ms_boss_key"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          160
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          160
+        ],
+        "target": "wheel_ms_r10"
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          160
+        ],
+        "target": "wheel_ms_r10"
+      },
+      {
+        "op": "expect",
+        "var": "weather==wind"
+      },
+      {
+        "op": "goto",
+        "to": [
+          132,
+          32
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          132,
+          32
+        ],
+        "target": [
+          240,
+          32
+        ]
+      },
+      {
+        "op": "wait_until",
+        "flag": "ms_r10_open",
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          160
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          160
+        ],
+        "target": "wheel_ms_r10"
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          160
+        ],
+        "target": "wheel_ms_r10"
+      },
+      {
+        "op": "expect",
+        "var": "weather==rain"
+      },
+      {
+        "op": "goto",
+        "to": [
+          280,
+          112
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_r10_shards"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r10_north"
+      }
+    ]
+  }
+}

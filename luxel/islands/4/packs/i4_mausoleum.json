@@ -1,0 +1,80 @@
+{
+  "pack_id": "i4_mausoleum",
+  "owner": "D4B",
+  "comment": "Island 4 Minor Dungeon B: The Rain Mausoleum (12 rooms, 4 internal cycles, SUN/RAIN/WIND Weather Wheels, Cloud-Urn Deacon & The Drowned Choir). Debug-only on dungeon/regions meta until overworld integration hooks ow_drowned_cloister -> mausoleum_r1.",
+  "strings": {
+    "ISL4_DNG_MAUSOLEUM": "THE RAIN MAUSOLEUM",
+    "ISL4_MS_R1": "CISTERN NAVE",
+    "ISL4_MS_R2": "RAIN-PITCHER CLOISTER",
+    "ISL4_MS_R3": "FLOODED COLONNADE",
+    "ISL4_MS_R4": "SUN-GLASS APSE",
+    "ISL4_MS_R5": "CLOUD-URN CHAPEL",
+    "ISL4_MS_R6": "GALE TRANSEPT",
+    "ISL4_MS_R7": "WEEPING BELFRY",
+    "ISL4_MS_R8": "HALL OF THREE SEASONS",
+    "ISL4_MS_R9": "THE TUNING NAVE",
+    "ISL4_MS_R10": "DRY RELIQUARY",
+    "ISL4_MS_R11": "THE ORGAN STAIR",
+    "ISL4_MS_R12": "THE SUNKEN APSE",
+    "ISL4_PROMPT_VANE_ROD": "VANE ROD: SHIFT SUN - RAIN - WIND!",
+    "ISL4_PROMPT_CLAIM_VANE": "CLAIM VANE ROD",
+    "ISL4_LORE_CHOIR": "FIVE VOICES HELD THE RAIN SO DUSK STAYED.",
+    "ISL4_MS_LORE_HUB": "SUN DRAINS CRYPT. RAIN FLOATS. WIND CARRIES.",
+    "ISL4_MS_SHORTCUT": "A FLOODGATE SHORTCUT OPENS!",
+    "ISL4_MS_CLEARED": "THE CHOIR RESTS. HALF-LANTERN CLAIMED!"
+  },
+  "interactables": {
+    "ms_vane_pedestal": "res://luxel/islands/4/mausoleum/ms_vane_pedestal.gd",
+    "ms_roofed_brazier": "res://luxel/islands/4/mausoleum/ms_roofed_brazier.gd",
+    "ms_weather_buoy": "res://luxel/islands/4/mausoleum/ms_weather_buoy.gd",
+    "ms_weather_urn": "res://luxel/islands/4/mausoleum/ms_weather_urn.gd",
+    "ms_weather_sync": "res://luxel/islands/4/mausoleum/ms_weather_sync.gd"
+  },
+  "dungeons": [
+    {
+      "id": "rain_mausoleum",
+      "name_key": "ISL4_DNG_MAUSOLEUM",
+      "island": 4,
+      "entry": "mausoleum_r1",
+      "regions": [
+        "mausoleum_r1",
+        "mausoleum_r2",
+        "mausoleum_r3",
+        "mausoleum_r4",
+        "mausoleum_r5",
+        "mausoleum_r6",
+        "mausoleum_r7",
+        "mausoleum_r8",
+        "mausoleum_r9",
+        "mausoleum_r10",
+        "mausoleum_r11",
+        "mausoleum_r12"
+      ],
+      "mini_boss": "boss_cloud_deacon",
+      "boss": "boss_drowned_choir",
+      "theme": "rain_mausoleum",
+      "music": "isl4_mausoleum",
+      "requires_flags": [],
+      "done_flag": "dungeon_mausoleum_done",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "mausoleum_r1":  { "name_key": "ISL4_MS_R1",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 4], "debug_only": true },
+    "mausoleum_r2":  { "name_key": "ISL4_MS_R2",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [1, 4], "debug_only": true },
+    "mausoleum_r3":  { "name_key": "ISL4_MS_R3",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [0, 3], "debug_only": true },
+    "mausoleum_r4":  { "name_key": "ISL4_MS_R4",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [0, 2], "debug_only": true },
+    "mausoleum_r5":  { "name_key": "ISL4_MS_R5",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [1, 2], "debug_only": true },
+    "mausoleum_r6":  { "name_key": "ISL4_MS_R6",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [3, 4], "debug_only": true },
+    "mausoleum_r7":  { "name_key": "ISL4_MS_R7",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [3, 3], "debug_only": true },
+    "mausoleum_r8":  { "name_key": "ISL4_MS_R8",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [3, 2], "debug_only": true },
+    "mausoleum_r9":  { "name_key": "ISL4_MS_R9",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 2], "debug_only": true },
+    "mausoleum_r10": { "name_key": "ISL4_MS_R10", "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [4, 3], "debug_only": true },
+    "mausoleum_r11": { "name_key": "ISL4_MS_R11", "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 1], "debug_only": true },
+    "mausoleum_r12": { "name_key": "ISL4_MS_R12", "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 0], "debug_only": true }
+  },
+  "sfx": {
+    "ms_vane_chime": { "id": "clockwork_chime", "pitch": 1.16, "db": -1.0 },
+    "ms_buoy_latch": { "id": "switch_eye", "pitch": 1.10, "db": -0.5 }
+  }
+}

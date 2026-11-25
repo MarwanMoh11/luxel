@@ -63,15 +63,15 @@
     {
       "id": "exit_r5_north",
       "rect": [
-        208,
+        272,
         0,
         32,
         16
       ],
       "to_region": "belfry_r11",
       "to_spawn": [
-        272,
-        336
+        256,
+        304
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -85,17 +85,17 @@
       "id": "bell_warden_r5",
       "kind": "bell_warden",
       "pos": [
-        224,
-        104
+        208,
+        120
       ],
       "route": [
         [
           160,
-          104
+          120
         ],
         [
           288,
-          104
+          120
         ]
       ],
       "perches": [],
@@ -144,7 +144,7 @@
       "id": "door_r5_f2_lift",
       "kind": "door",
       "pos": [
-        224,
+        288,
         24
       ],
       "props": {
@@ -174,7 +174,7 @@
       "id": "lamp_r5_ne",
       "kind": "road_lamp",
       "pos": [
-        328,
+        344,
         56
       ],
       "props": {
@@ -237,7 +237,7 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        344,
+        360,
         56
       ],
       "layer": "sort",
@@ -285,7 +285,7 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        280,
+        272,
         40
       ],
       "layer": "sort",
@@ -332,7 +332,7 @@
   ],
   "is_2x2_room": true,
   "design": {
-    "idea": "Bell Warden's Octagonal Loft with twin Brass Sanctuary Bell Pedestals (tutorial_island_check intact); defeating Bell Warden drops Wick Key 2 and activates the North Clockwork Lift to the F2 Mainspring Hub (r11).",
+    "idea": "Bell Warden's Octagonal Loft with twin Brass Sanctuary Bell Pedestals (tutorial_island_check intact); defeating Bell Warden drops Wick Key 2 and activates the NE Clockwork Lift to the F2 Mainspring Hub (r11).",
     "kind": "boss",
     "beat": "ten",
     "teaches": "Ring Sanctuary Pedestals to crack Bell Warden's shield and cancel P2 Echo Slams.",

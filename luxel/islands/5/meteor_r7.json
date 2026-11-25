@@ -79,8 +79,8 @@
       ],
       "props": {
         "mode": "pull",
-        "radius": 80.0,
-        "strength": 600.0
+        "radius": 64.0,
+        "strength": 720.0
       }
     },
     {
@@ -92,8 +92,8 @@
       ],
       "props": {
         "mode": "pull",
-        "radius": 80.0,
-        "strength": 620.0,
+        "radius": 76.0,
+        "strength": 640.0,
         "linked_crystal": "crys_r7"
       }
     },
@@ -127,15 +127,43 @@
       "id": "eye_r7_blue",
       "kind": "switch_eye",
       "pos": [
-        214,
+        216,
         44
       ],
       "props": {
         "requires_blue": true,
         "target_ids": [
-          "bridge_r7_key",
+          "gate_r7_bridge",
           "door_mv_r7_n"
         ]
+      }
+    },
+    {
+      "id": "eye_r7_return",
+      "kind": "switch_eye",
+      "pos": [
+        352,
+        208
+      ],
+      "props": {
+        "target_id": "gate_r7_bridge"
+      }
+    },
+    {
+      "id": "gate_r7_bridge",
+      "kind": "logic_gate",
+      "pos": [
+        352,
+        176
+      ],
+      "props": {
+        "op": "any",
+        "inputs": [
+          "eye_r7_blue",
+          "eye_r7_return"
+        ],
+        "persist": true,
+        "target_id": "bridge_r7_key"
       }
     },
     {
@@ -152,7 +180,7 @@
           32
         ],
         "requires_signals": [
-          "eye_r7_blue"
+          "gate_r7_bridge"
         ],
         "starts_open": false
       }
@@ -253,8 +281,8 @@
     {
       "kind": "inlay",
       "rect": [
-        88,
-        208,
+        72,
+        216,
         32,
         16
       ]
@@ -422,16 +450,16 @@
       {
         "op": "goto",
         "to": [
-          104,
-          216
+          88,
+          224
         ],
         "tol": 3.0
       },
       {
         "op": "shoot",
         "target": [
-          181,
-          195
+          164,
+          198
         ],
         "wait_hit": 0.95
       },

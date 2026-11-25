@@ -1,0 +1,494 @@
+{
+  "id": "colossus_r11",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_COL_R11",
+  "spawn": [
+    272,
+    304
+  ],
+  "zones": [
+    {
+      "id": "col_r11",
+      "name_key": "ISL6_COL_R11",
+      "rect": [
+        0,
+        0,
+        544,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_south",
+      "rect": [
+        240,
+        336,
+        64,
+        16
+      ],
+      "to_region": "colossus_r10",
+      "to_spawn": [
+        408,
+        152
+      ]
+    },
+    {
+      "id": "exit_r11_north",
+      "rect": [
+        240,
+        0,
+        64,
+        16
+      ],
+      "to_region": "colossus_r12",
+      "to_spawn": [
+        48,
+        136
+      ],
+      "requires_flags": [
+        "colossus_heart_beaten"
+      ],
+      "locked_door_id": "door_r11_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r11_south",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "stride_r11_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        448,
+        272
+      ],
+      "props": {
+        "step_period": 6.0,
+        "axis": "x",
+        "shake_amp": 0.06,
+        "tilt_group_ids": [
+          "tilt_r11_core"
+        ],
+        "stabilized_flag": "colossus_heart_beaten"
+      }
+    },
+    {
+      "id": "tilt_r11_core",
+      "kind": "tilt_group",
+      "pos": [
+        272,
+        176
+      ],
+      "props": {
+        "size": [
+          320,
+          176
+        ],
+        "axis": "e",
+        "strength": 40.0,
+        "slide_enemies": false,
+        "stabilized_flag": "colossus_heart_beaten"
+      }
+    },
+    {
+      "id": "tf_r11_west",
+      "kind": "blue_transformer",
+      "pos": [
+        64,
+        176
+      ],
+      "props": {
+        "angle_deg": 45.0,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "tf_r11_east",
+      "kind": "blue_transformer",
+      "pos": [
+        480,
+        176
+      ],
+      "props": {
+        "angle_deg": 135.0,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "anvil_r11_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        224,
+        280
+      ],
+      "props": {
+        "mode": "lance",
+        "sets_flag": "temper_lance_known"
+      }
+    },
+    {
+      "id": "anvil_r11_cycle",
+      "kind": "temper_anvil",
+      "pos": [
+        368,
+        280
+      ],
+      "props": {
+        "mode": "cycle"
+      }
+    },
+    {
+      "id": "door_r11_north",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_flags": [
+          "colossus_heart_beaten"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r11_s",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        296
+      ],
+      "props": {
+        "zone": "col_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        88
+      ],
+      "props": {
+        "zone": "col_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        88
+      ],
+      "props": {
+        "zone": "col_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        264
+      ],
+      "props": {
+        "zone": "col_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        264
+      ],
+      "props": {
+        "zone": "col_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_n",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        56
+      ],
+      "props": {
+        "zone": "col_r11",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_r11_heart",
+      "kind": "colossus_heart",
+      "pos": [
+        272,
+        160
+      ],
+      "zone": "col_r11",
+      "arena": [
+        64,
+        64,
+        416,
+        224
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        168
+      ],
+      "radius": 68,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        184,
+        136,
+        176,
+        64
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        80,
+        256,
+        176
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        208,
+        168
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        336,
+        168
+      ],
+      "radius": 24,
+      "glow": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "brass_steam_pipe_arch",
+      "pos": [
+        272,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        64,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        496,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        48,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        496,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        184,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        360,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "col_r11_boss_flag_bridge",
+      "on": "flag:colossus_heart_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "colossus_heart_beaten"
+        }
+      ]
+    },
+    {
+      "id": "col_r11_victory_msg",
+      "on": "flag:colossus_heart_beaten",
+      "once": true,
+      "do": [
+        {
+          "shake": 0.16
+        },
+        {
+          "narrate": {
+            "id": "ISL6_COL_HEART_WIN",
+            "style": "title",
+            "duration": 3.4
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Ribcage Core boss showdown against The Colossus Heart: shatter its 4 Steam Valves in P1 to drop its iron cage, then in P2/P3 freeze dripping slag_slimes with flanking Blue Transformers right along the swinging Heart's pendulum arc so it crashes face-first into its own frozen add, earning Half-Lantern #2 and popping open the Spine Escape Hatch!",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Full Iron Colossus mastery: Heat-Boots on double-speed tilt + Blue-freezing live slimes inside pendulum arc",
+    "decisions": 8,
+    "expert_s": 145,
+    "reward": "half_lantern_6b+colossus_heart_beaten+open_r12",
+    "why": "Dungeon B climax boss delivering Half-Lantern #2 and stabilizing the walking giant's heartbeat.",
+    "exit": "exit_r11_north",
+    "start": {
+      "flags": [
+        "piston_marshal_defeated",
+        "item_heat_boots",
+        "col_left_lock",
+        "col_right_lock",
+        "col_boss_key",
+        "colossus_steered",
+        "temper_skip_known",
+        "temper_scatter_known",
+        "temper_lance_known"
+      ],
+      "vars": {
+        "wick_temper": ""
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          272,
+          244
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "beam",
+        "target": "boss_r11_heart"
+      },
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "colossus_heart_beaten",
+        "timeout": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r11_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_north"
+      }
+    ]
+  }
+}

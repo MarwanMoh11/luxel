@@ -393,6 +393,21 @@
   ],
   "events": [
     {
+      "id": "hg_r5_p2_dew",
+      "on": "boss_hp:0.56",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        },
+        {
+          "sfx": "sundial_skip"
+        }
+      ]
+    },
+    {
       "id": "hg_r5_short_msg",
       "on": "signal:sw_hg_r5_short",
       "once": true,
@@ -419,10 +434,6 @@
     "why": "West Wing climax awarding the key to the East Rose-Glass Wing and closing Cycle 1.",
     "exit": "exit_hg_r5_shortcut",
     "solution": [
-      {
-        "op": "interact",
-        "target": "rose_hg_r5_w"
-      },
       {
         "op": "clear",
         "timeout": 85.0

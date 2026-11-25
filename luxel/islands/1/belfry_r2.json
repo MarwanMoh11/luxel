@@ -64,21 +64,21 @@
       "kind": "owl",
       "pos": [
         208,
-        120
+        168
       ],
       "route": [],
       "perches": [
         [
           208,
-          120
+          168
         ],
         [
           208,
-          88
+          128
         ],
         [
           184,
-          144
+          176
         ]
       ],
       "zone": "belfry_chasm",
@@ -138,7 +138,7 @@
       "kind": "bell",
       "pos": [
         200,
-        168
+        184
       ],
       "props": {
         "tone": "dawn",
@@ -203,7 +203,7 @@
       "kind": "circle",
       "pos": [
         200,
-        168
+        184
       ],
       "radius": 24,
       "style": "clock"
@@ -331,14 +331,14 @@
         "op": "goto",
         "to": [
           208,
-          120
+          136
         ]
       },
       {
         "op": "shoot",
         "from": [
           208,
-          120
+          136
         ],
         "target": "bell_r2_dawn"
       },

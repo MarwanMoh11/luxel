@@ -13,20 +13,20 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-____________####,,####,,__________
-_________###....,,....,,##________
-_______##..OOOO.,,..OO,,..##______
-_____##..OOOOOO.,,..OO,,OO..##____
-____#..OOOOOOOO.,,..OO,,OOOO..#___
-___#..OOOOOOOOO.##..OO..OOOOOO.#__
-__#..OOOOOOOOOO.,,..OOOOOOOOOOO.#_
-_#..OOOOOOOOOOO.,,..OOOOOOOOOOOO.#
-_#..OOOOOOOO...,,,,...OOOOOOOO..##
-#..OOOOOOOO...,,,,,,...OOOOOOOO..#
-#..OOOOOOO...,,,,,,,,...OOOOOOO..#
-#..,,,,++++..,,,,,,,,..OOOO,,,,..#
-#..,,,,++++..,,,,,,,,..OOOO,,,,..#
-#..OOOOOOO...,,,,,,,,...OOOOOOO..#
+______________________##,,####____
+_________#############..,,,..###__
+_______##..OOOO.,,..OO..,,,,...##_
+_____##..OOOOOO.,,..OO..,,,,...OO#
+____#..OOOOOOOO.,,..OO..,,,,..OOO#
+___#..OOOOOOOOO.##..OO..,,,,.OOOO#
+__#..OOOOOOOOOO.,,..OO..,,,.OOOOO#
+_#..OOOOOOOOOOO.,,..OO..,,,.OOOOO#
+_#..OOOOOOOO...,,,,....,,,,.OOOO.#
+#..OOOOOOOO...,,,,,,..,,,,.OOOOO.#
+#..OOOOOOO...,,,,,,,,,,,,..OOOO..#
+#..,,,,++++..,,,,,,,,,,,..OOOO,,,#
+#..,,,,++++..,,,,,,,,,,,..OOOO,,,#
+#..OOOOOOO...,,,,,,,,...OOOOOO,,,#
 #..OOOOOOOO...,,,,,,...OOOOOOOO..#
 _#..OOOOOOOO...,,,,...OOOOOOOO..#_
 _#..OOOOOOOOOO..++..OOOOOOOOOO..#_

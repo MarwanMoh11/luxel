@@ -1,0 +1,283 @@
+{
+  "id": "theatre_r7",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_TH_R7",
+  "theme": "doppel_theatre",
+  "music": "isl7_theatre",
+  "ambience": ["night_breeze"],
+  "spawn": [64, 272],
+  "zones": [
+    {
+      "id": "theatre_act3_a",
+      "name_key": "ISL7_TH_R7",
+      "rect": [0, 0, 512, 320],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [48, 304, 32, 16],
+      "to_region": "theatre_r6",
+      "to_spawn": [88, 48]
+    },
+    {
+      "id": "exit_r7_north",
+      "rect": [416, 0, 48, 16],
+      "to_region": "theatre_r8",
+      "to_spawn": [240, 272],
+      "locked_door_id": "door_r7_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_south",
+      "kind": "room_anchor",
+      "pos": [64, 272],
+      "props": { "auto": true }
+    },
+    {
+      "id": "anc_r7_mid",
+      "kind": "room_anchor",
+      "pos": [240, 264],
+      "props": { "auto": true }
+    },
+    {
+      "id": "mask_r7_act3",
+      "kind": "mask_plinth",
+      "pos": [112, 264],
+      "props": {
+        "act": 3,
+        "steals": ["lens", "prism"],
+        "mask_icon": "lens",
+        "hp": 3.5,
+        "auto_steal": true,
+        "breakable": false,
+        "release_flag": "act3_done",
+        "persist": true
+      }
+    },
+    {
+      "id": "block_r7_ice1",
+      "kind": "push_block",
+      "pos": [72, 168],
+      "props": {
+        "variant": "ice",
+        "size": [16, 16]
+      }
+    },
+    {
+      "id": "plate_r7_1",
+      "kind": "pressure_plate",
+      "pos": [136, 168],
+      "props": {
+        "by": ["block"],
+        "latch": true,
+        "persist": true,
+        "target_ids": ["bridge_r7_mid", "gate_r7_all"]
+      }
+    },
+    {
+      "id": "bridge_r7_mid",
+      "kind": "door",
+      "pos": [176, 200],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": ["plate_r7_1"],
+        "persistent": true,
+        "size": [32, 32]
+      }
+    },
+    {
+      "id": "echo_r7_mid",
+      "kind": "echo_rose",
+      "pos": [240, 224],
+      "props": {
+        "secs": 6.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_r7_echo",
+      "kind": "pressure_plate",
+      "pos": [240, 280],
+      "props": {
+        "by": ["wick"],
+        "hold": true,
+        "target_id": "wall_r7_chalk"
+      }
+    },
+    {
+      "id": "wall_r7_chalk",
+      "kind": "mover_wall",
+      "pos": [304, 168],
+      "props": {
+        "path": [[304, 168], [304, 128]],
+        "speed": 140,
+        "on_signal": "move",
+        "size": [16, 32]
+      }
+    },
+    {
+      "id": "block_r7_ice2",
+      "kind": "push_block",
+      "pos": [240, 168],
+      "props": {
+        "variant": "ice",
+        "size": [16, 16]
+      }
+    },
+    {
+      "id": "plate_r7_2",
+      "kind": "pressure_plate",
+      "pos": [352, 168],
+      "props": {
+        "by": ["block"],
+        "latch": true,
+        "persist": true,
+        "target_ids": ["bridge_r7_east", "gate_r7_all"]
+      }
+    },
+    {
+      "id": "bridge_r7_east",
+      "kind": "door",
+      "pos": [400, 200],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": ["plate_r7_2"],
+        "persistent": true,
+        "size": [64, 32]
+      }
+    },
+    {
+      "id": "sw_r7_east",
+      "kind": "switch_eye",
+      "pos": [440, 112],
+      "props": {
+        "target_id": "gate_r7_all"
+      }
+    },
+    {
+      "id": "gate_r7_all",
+      "kind": "logic_gate",
+      "pos": [400, 72],
+      "props": {
+        "op": "all",
+        "inputs": ["plate_r7_1", "plate_r7_2", "sw_r7_east"],
+        "target_id": "door_r7_north",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r7_north",
+      "kind": "door",
+      "pos": [440, 24],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": ["gate_r7_all"],
+        "sets_flag": "theatre_r7_solved",
+        "persistent": true,
+        "size": [48, 16]
+      }
+    },
+    {
+      "id": "lamp_r7_sw",
+      "kind": "road_lamp",
+      "pos": [80, 232],
+      "props": { "zone": "theatre_act3_a", "lit": true }
+    },
+    {
+      "id": "lamp_r7_nw",
+      "kind": "road_lamp",
+      "pos": [88, 96],
+      "props": { "zone": "theatre_act3_a", "lit": true }
+    },
+    {
+      "id": "lamp_r7_mid",
+      "kind": "road_lamp",
+      "pos": [296, 264],
+      "props": { "zone": "theatre_act3_a", "lit": true }
+    },
+    {
+      "id": "lamp_r7_ne",
+      "kind": "road_lamp",
+      "pos": [464, 80],
+      "props": { "zone": "theatre_act3_a", "lit": true }
+    },
+    {
+      "id": "lamp_r7_se",
+      "kind": "road_lamp",
+      "pos": [464, 240],
+      "props": { "zone": "theatre_act3_a", "lit": true }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "r7_owl",
+      "kind": "silvered_owl",
+      "pos": [240, 128],
+      "zone": "theatre_act3_a",
+      "leash": 164
+    }
+  ],
+  "decor": [
+    { "kind": "circle", "pos": [112, 264], "radius": 24, "style": "spotlight", "color": "sky", "secondary": "ice" },
+    { "kind": "circle", "pos": [240, 224], "radius": 24, "style": "spotlight", "color": "rose", "secondary": "gold" },
+    { "kind": "rug", "rect": [416, 40, 48, 96], "color": "wine", "border": "ice" },
+    { "kind": "inlay", "rect": [56, 160, 88, 48], "color": "ice" }
+  ],
+  "scenery": [
+    { "sheet": "theme_doppel_theatre", "prop": "cardboard_moon_flat", "pos": [96, 56], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [400, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_doppel_theatre", "prop": "puppet_crossbar_stand", "pos": [328, 224], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
+    { "sheet": "theme_doppel_theatre", "prop": "stage_prop_trunk", "pos": [64, 144], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [448, 264], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "r7_steal_narrate",
+      "on": "enter",
+      "if": "!flag:act3_done",
+      "once": true,
+      "do": [
+        { "narrate": { "id": "ISL7_ACT3_STEAL", "style": "narration", "duration": 3.0 } }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "ACT III — THE BLIND EYE: Hollow Wick blinds Lens and Prism; track the Silvered Owl by shadow/Beam, slide Ice Block 1 to chalk-bridge the first chasm, record an Echo Rose ghost (12s via Cue-Mirror!) holding the baffle plate so Ice Block 2 slides into the east socket, and unlock the Fly-Loft.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Tracking Silvered Owls without Lens and chaining Cue-Mirror's 12s Echo Rose with sliding ice blocks and moving stage baffles.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "open_theatre_r8",
+    "why": "Act III puzzle showcasing Cue-Mirror's doubled Echo Rose duration and ice-chalk stage tracks without Lens or Prism.",
+    "exit": "exit_r7_north",
+    "start": {
+      "flags": ["act2_done", "item_cue_mirror"]
+    },
+    "solution": [
+      { "op": "shoot", "from": [56, 168], "target": "block_r7_ice1" },
+      { "op": "wait_until", "target": "plate_r7_1", "prop": "powered", "value": true, "timeout": 4.0 },
+      { "op": "goto", "to": [240, 224], "tol": 10 },
+      { "op": "clear", "timeout": 60.0 },
+      { "op": "interact", "target": "echo_r7_mid" },
+      { "op": "goto", "to": [240, 280], "tol": 6 },
+      { "op": "wait", "secs": 1.6 },
+      { "op": "interact", "target": "echo_r7_mid" },
+      { "op": "wait_until", "target": "plate_r7_echo", "prop": "powered", "value": true, "timeout": 6.0 },
+      { "op": "shoot", "from": [208, 168], "target": "block_r7_ice2" },
+      { "op": "wait_until", "target": "plate_r7_2", "prop": "powered", "value": true, "timeout": 4.0 },
+      { "op": "goto", "to": [440, 200], "tol": 10 },
+      { "op": "shoot", "from": [440, 152], "target": "sw_r7_east" },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "expect_exit", "exit": "exit_r7_north" }
+    ]
+  }
+}

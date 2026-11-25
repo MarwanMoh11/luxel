@@ -40,14 +40,14 @@ func _init() -> void:
 	stagger_threshold = 11.5
 	stagger_duration = 1.60
 	punish_dmg_mult = 1.30
-	post_recover_cd = 0.34
+	post_recover_cd = 0.36
 	shard_drop = 24
 	death_duration = 2.0
 
 
 func _configure_boss(_spec: Dictionary) -> void:
 	if world_ctx != null and str(world_ctx.get("current_region_id")) == "conservatory_r6":
-		arena_rect = Rect2(144.0, 84.0, 148.0, 56.0)
+		arena_rect = Rect2(176.0, 56.0, 124.0, 104.0)
 	configure_phases([0.52])
 
 	# Attack 1: Lily Leap Slam — parabolic hop (air-interceptable!) + water shockwave ring
@@ -56,9 +56,10 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			hop_z = 0.0
 			_leap_from = pos
-			_leap_to = clamp_to_arena(tgt)
+			var c_l: Vector2 = arena_rect.get_center()
+			_leap_to = c_l + (tgt - c_l).limit_length(32.0)
 			_leap_landed = false
-			ground.warn_ring(_leap_to, 20.0, last_tell_duration + LEAP_AIR_TIME * 0.65, 1.0, "sky", "gold")
+			ground.warn_ring(_leap_to, 16.0, last_tell_duration + LEAP_AIR_TIME * 0.65, 0.5, "sky", "gold")
 			stage.play_sfx("hopper_crouch", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_leap_from = pos
@@ -74,7 +75,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 				_leap_landed = true
 				hop_z = 0.0
 				var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-				patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 110.0 if phase >= 2 else 100.0, gap_a, 0.90, {"color": "sky", "source": "lily_ring"})
+				patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 104.0 if phase >= 2 else 96.0, gap_a, 0.94, {"color": "sky", "source": "lily_ring", "damage": 0.5})
 				stage.shake(0.18)
 				stage.play_sfx("hopper_land", pos)
 				if phase >= 2:
@@ -124,7 +125,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 			hop_z = 0.0
 			_twin_stage = 0
 			_leap_from = pos
-			_leap_to = clamp_to_arena(pos.lerp(tgt, 0.55))
+			var c_t: Vector2 = arena_rect.get_center()
+			_leap_to = c_t + (tgt - c_t).limit_length(28.0)
 			ground.warn_ring(_leap_to, 14.0, last_tell_duration + 0.28, 0.5, "sky", "gold")
 			stage.play_sfx("hopper_crouch", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
@@ -144,7 +146,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 				stage.shake(0.18)
 				stage.play_sfx("hopper_land", pos)
 				_leap_from = pos
-				_leap_to = clamp_to_arena(tgt)
+				var c_t2: Vector2 = arena_rect.get_center()
+				_leap_to = c_t2 + (tgt - c_t2).limit_length(32.0)
 			elif el >= 0.44 and el < 0.76:
 				if _twin_stage == 1:
 					_twin_stage = 2
@@ -208,6 +211,13 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 	if boss_state != BossState.COMMIT:
 		hop_z = absf(sin(anim_t * 8.0)) * 3.5 if boss_state == BossState.READY else 0.0
 	_step_updrafts_and_pads(dt)
+
+
+func _step_boss_reposition(dt: float, target: Vector2) -> void:
+	var c: Vector2 = arena_rect.get_center()
+	var desired: Vector2 = c + (target - c).limit_length(24.0).rotated(0.45 * _orbit_side)
+	move_boss((desired - pos).limit_length(move_speed * dt), false)
+	_face_point(target, 4.2, dt)
 
 
 func _trigger_submerging_rim_pads() -> void:

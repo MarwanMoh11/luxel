@@ -1,0 +1,208 @@
+{
+  "id": "theatre_r11",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_TH_R11",
+  "theme": "doppel_theatre",
+  "music": "isl7_theatre",
+  "ambience": ["night_breeze"],
+  "spawn": [208, 240],
+  "zones": [
+    {
+      "id": "theatre_royal_box",
+      "name_key": "ISL7_TH_R11",
+      "rect": [0, 0, 416, 288],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_south",
+      "rect": [192, 272, 32, 16],
+      "to_region": "theatre_r6",
+      "to_spawn": [224, 48]
+    },
+    {
+      "id": "exit_r11_west",
+      "rect": [0, 144, 16, 48],
+      "to_region": "theatre_r1",
+      "to_spawn": [432, 88],
+      "locked_door_id": "door_r11_west"
+    },
+    {
+      "id": "exit_r11_north",
+      "rect": [192, 0, 32, 16],
+      "to_region": "theatre_r12",
+      "to_spawn": [160, 304]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r11_south",
+      "kind": "room_anchor",
+      "pos": [208, 240],
+      "props": { "auto": true }
+    },
+    {
+      "id": "vanity_r11",
+      "kind": "theatre_vanity_mirror",
+      "pos": [328, 168],
+      "props": {}
+    },
+    {
+      "id": "lore_r11_theatre",
+      "kind": "lore_stone",
+      "pos": [304, 104],
+      "props": {
+        "string_id": "ISL7_LORE_THEATRE",
+        "icon": "crown"
+      }
+    },
+    {
+      "id": "sw_r11_stair",
+      "kind": "switch_eye",
+      "pos": [112, 144],
+      "props": {
+        "target_id": "door_r11_west",
+        "sets_flag": "theatre_royal_short"
+      }
+    },
+    {
+      "id": "door_r11_west",
+      "kind": "door",
+      "pos": [24, 168],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": ["sw_r11_stair"],
+        "sets_flag": "theatre_royal_short",
+        "persistent": true,
+        "size": [16, 48]
+      }
+    },
+    {
+      "id": "spot_r11_moth",
+      "kind": "mirror",
+      "pos": [168, 96],
+      "props": {
+        "cue_spotlight": true,
+        "floor_only": true,
+        "spotlight_radius": 30
+      }
+    },
+    {
+      "id": "curtain_r11_moth",
+      "kind": "mirror",
+      "pos": [120, 96],
+      "props": {
+        "cue_curtain": true,
+        "size": [16, 32]
+      }
+    },
+    {
+      "id": "sw_r11_moth",
+      "kind": "switch_eye",
+      "pos": [88, 96],
+      "props": {
+        "target_id": "door_r11_moth"
+      }
+    },
+    {
+      "id": "door_r11_moth",
+      "kind": "door",
+      "pos": [120, 48],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": ["sw_r11_moth"],
+        "persistent": true,
+        "size": [16, 32]
+      }
+    },
+    {
+      "id": "moth_7_07",
+      "kind": "moth",
+      "pos": [56, 56],
+      "props": {
+        "id": "moth_7_07"
+      }
+    },
+    {
+      "id": "lamp_r11_sw",
+      "kind": "road_lamp",
+      "pos": [144, 232],
+      "props": { "zone": "theatre_royal_box", "lit": true }
+    },
+    {
+      "id": "lamp_r11_se",
+      "kind": "road_lamp",
+      "pos": [288, 224],
+      "props": { "zone": "theatre_royal_box", "lit": true }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [168, 40],
+      "props": { "zone": "theatre_royal_box", "lit": true }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [288, 72],
+      "props": { "zone": "theatre_royal_box", "lit": true }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    { "kind": "rug", "rect": [176, 32, 64, 224], "color": "wine", "border": "gold" },
+    { "kind": "rug", "rect": [48, 152, 160, 32], "color": "wine", "border": "gold" },
+    { "kind": "circle", "pos": [168, 88], "radius": 30, "style": "spotlight", "color": "gold", "secondary": "cream" },
+    { "kind": "circle", "pos": [328, 168], "radius": 28, "style": "spotlight", "color": "plum", "secondary": "rose" }
+  ],
+  "scenery": [
+    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [176, 36], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [240, 36], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "theme_doppel_theatre", "prop": "theatre_box_seat", "pos": [272, 128], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_doppel_theatre", "prop": "theatre_box_seat", "pos": [272, 176], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [208, 120], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_doppel_theatre", "prop": "tattered_act_banner", "pos": [80, 184], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "r11_royal_short_msg",
+      "on": "signal:sw_r11_stair",
+      "once": true,
+      "do": [
+        { "narrate": { "id": "ISL7_TH_SHORTCUT", "style": "narration", "duration": 2.4 } }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Royal Box breather and horror beat before Act V: pass the Dressing Vanity Mirror (your reflection smiles half a beat late!), unseal the Royal Grand Stair to the Foyer for a 7s boss retry, and shoot from the golden Cue-Mirror spotlight through the velvet curtain to free Lost Moth moth_7_07!",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Narrative horror tension before Act V, opening the 7s boss retry loop, and using Cue-Mirror curtain piercing to unlock a Lost Moth alcove.",
+    "decisions": 8,
+    "expert_s": 40,
+    "reward": "theatre_royal_short+moth_7_07+lore",
+    "why": "Pre-boss breather room delivering the late-smiling mirror horror beat, Lost Moth #7, and the direct Foyer retry stair.",
+    "optional": true,
+    "exit": "exit_r11_north",
+    "start": {
+      "flags": ["act1_done", "act2_done", "act3_done", "act4_done", "item_cue_mirror"]
+    },
+    "solution": [
+      { "op": "goto", "to": [328, 184], "tol": 8 },
+      { "op": "interact", "target": "vanity_r11" },
+      { "op": "goto", "to": [304, 118], "tol": 6 },
+      { "op": "interact", "target": "lore_r11_theatre" },
+      { "op": "shoot", "from": [168, 96], "target": "sw_r11_moth" },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "goto", "to": [64, 56], "tol": 10 },
+      { "op": "wait", "secs": 0.85 },
+      { "op": "shoot", "from": [160, 144], "target": "sw_r11_stair" },
+      { "op": "wait_until", "flag": "theatre_royal_short", "timeout": 3.0 },
+      { "op": "expect_exit", "exit": "exit_r11_north" }
+    ]
+  }
+}

@@ -1,0 +1,688 @@
+{
+  "id": "mausoleum_r1",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R1",
+  "spawn": [
+    272,
+    296
+  ],
+  "zones": [
+    {
+      "id": "ms_r1_nave",
+      "name_key": "ISL4_MS_R1",
+      "rect": [
+        0,
+        0,
+        544,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r1_south",
+      "rect": [
+        240,
+        336,
+        64,
+        16
+      ],
+      "to_island": 4,
+      "to_region": "overworld",
+      "to_spawn": [
+        216,
+        560
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_ms_r1_west",
+      "rect": [
+        0,
+        176,
+        16,
+        48
+      ],
+      "to_region": "mausoleum_r2",
+      "to_spawn": [
+        360,
+        160
+      ],
+      "locked_door_id": "door_ms_r1_west"
+    },
+    {
+      "id": "exit_ms_r1_nw",
+      "rect": [
+        0,
+        80,
+        16,
+        32
+      ],
+      "to_region": "mausoleum_r5",
+      "to_spawn": [
+        448,
+        160
+      ],
+      "requires_flags": [
+        "ms_west_shortcut"
+      ],
+      "locked_door_id": "door_ms_r1_nw"
+    },
+    {
+      "id": "exit_ms_r1_east",
+      "rect": [
+        528,
+        176,
+        16,
+        48
+      ],
+      "to_region": "mausoleum_r6",
+      "to_spawn": [
+        56,
+        144
+      ],
+      "requires_flags": [
+        "ms_key_1"
+      ],
+      "locked_door_id": "door_ms_r1_east"
+    },
+    {
+      "id": "exit_ms_r1_north",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r9",
+      "to_spawn": [
+        240,
+        232
+      ],
+      "requires_flags": [
+        "ms_boss_key"
+      ],
+      "locked_door_id": "door_ms_r1_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r1",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        296
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_mausoleum",
+      "kind": "waystone",
+      "pos": [
+        264,
+        264
+      ],
+      "props": {
+        "zone": "ms_r1_nave",
+        "name_key": "ISL4_MS_R1"
+      }
+    },
+    {
+      "id": "lore_ms_r1_hub",
+      "kind": "lore_stone",
+      "pos": [
+        200,
+        296
+      ],
+      "props": {
+        "string_id": "ISL4_MS_LORE_HUB",
+        "icon": "tide"
+      }
+    },
+    {
+      "id": "altar_vane_rod",
+      "kind": "ms_vane_pedestal",
+      "pos": [
+        280,
+        200
+      ],
+      "props": {
+        "target_id": "door_ms_r1_west"
+      }
+    },
+    {
+      "id": "wheel_ms_r1",
+      "kind": "weather_wheel",
+      "pos": [
+        344,
+        200
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "rain",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "e"
+      }
+    },
+    {
+      "id": "sync_ms_r1",
+      "kind": "ms_weather_sync",
+      "pos": [
+        312,
+        168
+      ],
+      "props": {}
+    },
+    {
+      "id": "door_ms_r1_west",
+      "kind": "door",
+      "pos": [
+        24,
+        200
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "altar_vane_rod"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_west_open"
+      }
+    },
+    {
+      "id": "door_ms_r1_nw",
+      "kind": "door",
+      "pos": [
+        24,
+        96
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "ms_west_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "door_ms_r1_east",
+      "kind": "door",
+      "pos": [
+        520,
+        200
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "rain_mausoleum",
+        "key_kind": "wick_key",
+        "key_id": "ms_key_1",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_ms_r1_north",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_key",
+        "dungeon_id": "rain_mausoleum",
+        "key_kind": "keepers_flame",
+        "key_id": "ms_boss_key",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r1_sw",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        312
+      ],
+      "props": {
+        "zone": "ms_r1_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        312
+      ],
+      "props": {
+        "zone": "ms_r1_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        200
+      ],
+      "props": {
+        "zone": "ms_r1_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        200
+      ],
+      "props": {
+        "zone": "ms_r1_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        56
+      ],
+      "props": {
+        "zone": "ms_r1_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_nw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "zone": "ms_r1_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_ne",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        88
+      ],
+      "props": {
+        "zone": "ms_r1_nave",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "sun_crypt_drain",
+      "when": "weather==sun",
+      "tiles": [
+        [
+          5,
+          11,
+          7,
+          3,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "rain_choir_raft",
+      "when": "weather==rain",
+      "tiles": [
+        [
+          16,
+          5,
+          2,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ms_r1_enter",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ms_entered"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        256,
+        224,
+        32,
+        104
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        192
+      ],
+      "radius": 44,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        344,
+        200
+      ],
+      "radius": 24,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        384,
+        176,
+        96,
+        48
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        168,
+        256
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        120
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "cool",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "mausoleum_arch_gate",
+      "pos": [
+        280,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        360,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        216,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        232,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        328,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        232,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        328,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        200,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        376,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "bronze_drain_gargoyle",
+      "pos": [
+        216,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "bronze_drain_gargoyle",
+      "pos": [
+        360,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        168,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        392,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        488,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "slate_memorial_plinth",
+      "pos": [
+        392,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Basilica Cistern Nave hub teasing the RAIN-floated North Choir Balcony and locked East Transept from minute one; claim the Vane Rod and shift the Weather Wheel from RAIN to SUN to drain the West Crypt stair.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Vane Rod + Weather Wheel cycles RAIN -> WIND -> SUN, draining flooded crypt tiles while RAIN floats the Choir Raft.",
+    "decisions": 4,
+    "expert_s": 45,
+    "reward": "ms_vane_rod+ms_west_open",
+    "why": "3-weather cistern hub anchoring all 4 Rain Mausoleum cycles and boss progression.",
+    "exit": "exit_ms_r1_west",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_mausoleum"
+      },
+      {
+        "op": "interact",
+        "target": "altar_vane_rod"
+      },
+      {
+        "op": "expect",
+        "flag": "ms_vane_rod"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          304,
+          200
+        ],
+        "target": "wheel_ms_r1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          304,
+          200
+        ],
+        "target": "wheel_ms_r1"
+      },
+      {
+        "op": "expect",
+        "var": "weather==sun"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r1_west"
+      }
+    ]
+  }
+}

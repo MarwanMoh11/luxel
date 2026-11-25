@@ -18,6 +18,10 @@ func _ready() -> void:
 	z_index = 4
 
 
+func get_rise_progress() -> float:
+	return _rise_t
+
+
 func reset(region: LxRegionLoader) -> void:
 	_region = region
 	locked = false

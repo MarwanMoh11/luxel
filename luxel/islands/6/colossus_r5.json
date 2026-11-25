@@ -1,0 +1,439 @@
+{
+  "id": "colossus_r5",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_COL_R5",
+  "spawn": [
+    256,
+    272
+  ],
+  "zones": [
+    {
+      "id": "col_r5",
+      "name_key": "ISL6_COL_R5",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_south",
+      "rect": [
+        224,
+        304,
+        64,
+        16
+      ],
+      "to_region": "colossus_r4",
+      "to_spawn": [
+        360,
+        40
+      ]
+    },
+    {
+      "id": "exit_r5_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "colossus_r2",
+      "to_spawn": [
+        384,
+        48
+      ],
+      "requires_flags": [
+        "colossus_knee_ladder"
+      ],
+      "locked_door_id": "door_r5_ladder"
+    },
+    {
+      "id": "exit_r5_north",
+      "rect": [
+        224,
+        0,
+        64,
+        16
+      ],
+      "to_region": "colossus_r6",
+      "to_spawn": [
+        288,
+        336
+      ],
+      "requires_flags": [
+        "piston_marshal_defeated"
+      ],
+      "locked_door_id": "door_r5_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r5_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "stride_r5_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        424,
+        216
+      ],
+      "props": {
+        "step_period": 6.0,
+        "axis": "x",
+        "shake_amp": 0.06
+      }
+    },
+    {
+      "id": "anvil_r5_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        432,
+        160
+      ],
+      "props": {
+        "mode": "lance",
+        "sets_flag": "temper_lance_known"
+      }
+    },
+    {
+      "id": "altar_r5_boots",
+      "kind": "colossus_boots_altar",
+      "pos": [
+        256,
+        152
+      ],
+      "props": {
+        "requires_flag": "piston_marshal_defeated",
+        "sets_flag": "item_heat_boots"
+      }
+    },
+    {
+      "id": "door_r5_ladder",
+      "kind": "door",
+      "pos": [
+        32,
+        168
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "colossus_knee_ladder"
+        ]
+      }
+    },
+    {
+      "id": "door_r5_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_flags": [
+          "piston_marshal_defeated"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        264
+      ],
+      "props": {
+        "zone": "col_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        96
+      ],
+      "props": {
+        "zone": "col_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        96
+      ],
+      "props": {
+        "zone": "col_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        224
+      ],
+      "props": {
+        "zone": "col_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        256
+      ],
+      "props": {
+        "zone": "col_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_n",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        56
+      ],
+      "props": {
+        "zone": "col_r5",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_r5_marshal",
+      "kind": "piston_marshal",
+      "pos": [
+        256,
+        144
+      ],
+      "zone": "col_r5",
+      "arena": [
+        80,
+        64,
+        352,
+        192
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 52,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        192,
+        128,
+        128,
+        64
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        80,
+        224,
+        160
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        176,
+        160
+      ],
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        344,
+        136
+      ],
+      "radius": 20,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        88,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        424,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "brass_steam_pipe_arch",
+      "pos": [
+        256,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "steam_valve_wheel",
+      "pos": [
+        344,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        448,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "col_r5_ladder_drop",
+      "on": "flag:piston_marshal_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "colossus_knee_ladder"
+        },
+        {
+          "narrate": {
+            "id": "ISL6_COL_SHORT_KNEE",
+            "style": "narration",
+            "duration": 2.8
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Tilting Knee Piston Chamber mini-boss showdown against The Piston Marshal: stay uphill on every giant footstep so his downhill jackhammer lunges jam in the deck, quench his steam vent via corner coolant crystals or crack armor with Lance, claim Cleated Heat-Boots, and drop the Cycle 1 Service Ladder to r2!",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Reading giant stride downhill vectors in combat + awards Cleated Heat-Boots dungeon power",
+    "decisions": 6,
+    "expert_s": 90,
+    "reward": "item_heat_boots+colossus_knee_ladder+open_r6",
+    "why": "Mid-dungeon climax transforming stride tilt into a combat weapon and unlocking Heat-Boots for the upper torso.",
+    "exit": "exit_r5_north",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "piston_marshal_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "goto",
+        "to": "altar_r5_boots",
+        "tol": 8.0
+      },
+      {
+        "op": "expect",
+        "flag": "item_heat_boots"
+      },
+      {
+        "op": "expect",
+        "flag": "colossus_knee_ladder"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_north"
+      }
+    ]
+  }
+}

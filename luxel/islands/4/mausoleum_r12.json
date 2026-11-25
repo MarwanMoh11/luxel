@@ -1,0 +1,460 @@
+{
+  "id": "mausoleum_r12",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R12",
+  "spawn": [
+    256,
+    296
+  ],
+  "zones": [
+    {
+      "id": "ms_r12_apse",
+      "name_key": "ISL4_MS_R12",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r12_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r11",
+      "to_spawn": [
+        224,
+        56
+      ]
+    },
+    {
+      "id": "exit_ms_r12_return",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_island": 4,
+      "to_region": "overworld",
+      "to_spawn": [
+        216,
+        560
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "dungeon_mausoleum_done"
+      ],
+      "locked_door_id": "door_ms_r12_return"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r12",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        296
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wheel_ms_r12",
+      "kind": "weather_wheel",
+      "pos": [
+        264,
+        248
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "rain",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "e"
+      }
+    },
+    {
+      "id": "sync_ms_r12",
+      "kind": "ms_weather_sync",
+      "pos": [
+        232,
+        280
+      ],
+      "props": {}
+    },
+    {
+      "id": "door_ms_r12_return",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "dungeon_mausoleum_done"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r12_sw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        296
+      ],
+      "props": {
+        "zone": "ms_r12_apse",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        296
+      ],
+      "props": {
+        "zone": "ms_r12_apse",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "zone": "ms_r12_apse",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_ne",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        88
+      ],
+      "props": {
+        "zone": "ms_r12_apse",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        184
+      ],
+      "props": {
+        "zone": "ms_r12_apse",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        184
+      ],
+      "props": {
+        "zone": "ms_r12_apse",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "drowned_choir_r12",
+      "kind": "boss_drowned_choir",
+      "pos": [
+        256,
+        152
+      ],
+      "zone": "ms_r12_apse"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ms_r12_victory",
+      "on": "flag:boss_drowned_choir_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "dungeon_mausoleum_done"
+        },
+        {
+          "set_flag": "half_lantern_4_b"
+        },
+        {
+          "narrate": {
+            "id": "ISL4_MS_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 72,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 42,
+      "style": "ritual"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        168,
+        216
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        344,
+        216
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        120
+      ],
+      "size": [
+        60,
+        88
+      ],
+      "tint": "cool",
+      "shear": 0.16
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "mausoleum_arch_gate",
+      "pos": [
+        264,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        136,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        376,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        104,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        424,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        152,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        344,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "carved_sarcophagus",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "carved_sarcophagus",
+      "pos": [
+        360,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Grand Semi-Circular Sunken Apse boss arena against The Drowned Choir: read the 5 porcelain choral busts' D-minor stanzas, turn the central Weather Wheel to expose weather-veiled voices across SUN/RAIN/WIND, silence them in sung order to shatter the Conductor Organ, and claim Half-Lantern 4B!",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Full synthesis of weather control, stanza reading, and spatial weaving against The Drowned Choir.",
+    "decisions": 8,
+    "expert_s": 140,
+    "reward": "dungeon_mausoleum_done+half_lantern_4_b",
+    "why": "Rain Mausoleum climax awarding Half-Lantern 4B (+1 Heart) and unsealing the Garden Party.",
+    "exit": "exit_ms_r12_return",
+    "start": {
+      "flags": [
+        "ms_vane_rod",
+        "ms_boss_key"
+      ]
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          256,
+          272
+        ],
+        "target": "wheel_ms_r12"
+      },
+      {
+        "op": "clear",
+        "timeout": 145.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "boss_drowned_choir_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "flag": "dungeon_mausoleum_done"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r12_return"
+      }
+    ]
+  }
+}

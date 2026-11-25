@@ -1,0 +1,238 @@
+{
+  "id": "theatre_r10",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_TH_R10",
+  "theme": "doppel_theatre",
+  "music": "isl7_theatre",
+  "ambience": ["night_breeze"],
+  "spawn": [240, 272],
+  "zones": [
+    {
+      "id": "theatre_act4_b",
+      "name_key": "ISL7_TH_R10",
+      "rect": [0, 0, 480, 320],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_south",
+      "rect": [224, 304, 32, 16],
+      "to_region": "theatre_r9",
+      "to_spawn": [240, 48]
+    },
+    {
+      "id": "exit_r10_short",
+      "rect": [464, 208, 16, 48],
+      "to_region": "theatre_r6",
+      "to_spawn": [400, 104],
+      "requires_flags": ["act4_done"],
+      "locked_door_id": "door_r10_short"
+    },
+    {
+      "id": "exit_r10_west",
+      "rect": [0, 144, 16, 48],
+      "to_region": "theatre_r8",
+      "to_spawn": [432, 168],
+      "requires_flags": ["act3_done", "act4_done"],
+      "locked_door_id": "door_r10_west"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10_south",
+      "kind": "room_anchor",
+      "pos": [240, 272],
+      "props": { "auto": true }
+    },
+    {
+      "id": "hook_r10_center",
+      "kind": "lantern_hook",
+      "pos": [240, 168],
+      "props": { "light_radius": 64 }
+    },
+    {
+      "id": "mirror_r10_w",
+      "kind": "blue_transformer",
+      "pos": [136, 152],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "mirror_r10_e",
+      "kind": "blue_transformer",
+      "pos": [344, 152],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "door_r10_mask_gate",
+      "kind": "door",
+      "pos": [240, 72],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "theatre_act4_b",
+        "size": [32, 16]
+      }
+    },
+    {
+      "id": "mask_r10_break",
+      "kind": "mask_plinth",
+      "pos": [240, 44],
+      "props": {
+        "act": 4,
+        "steals": ["bolt", "beam"],
+        "mask_icon": "bolt",
+        "hp": 2.0,
+        "auto_steal": true,
+        "breakable": true,
+        "interact_reclaim": true,
+        "release_flag": "act4_done",
+        "sets_flag": "act4_done",
+        "persist": true,
+        "target_id": "door_r10_short"
+      }
+    },
+    {
+      "id": "plate_r10_encore",
+      "kind": "pressure_plate",
+      "pos": [240, 28],
+      "props": {
+        "by": ["wick"],
+        "latch": true,
+        "persist": true,
+        "sets_flag": "act4_done",
+        "target_id": "door_r10_short"
+      }
+    },
+    {
+      "id": "door_r10_short",
+      "kind": "door",
+      "pos": [456, 232],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": ["act4_done"],
+        "size": [16, 48]
+      }
+    },
+    {
+      "id": "door_r10_west",
+      "kind": "door",
+      "pos": [24, 168],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": ["act3_done", "act4_done"],
+        "size": [16, 48]
+      }
+    },
+    {
+      "id": "lamp_r10_sw",
+      "kind": "road_lamp",
+      "pos": [152, 264],
+      "props": { "zone": "theatre_act4_b", "lit": true }
+    },
+    {
+      "id": "lamp_r10_se",
+      "kind": "road_lamp",
+      "pos": [328, 264],
+      "props": { "zone": "theatre_act4_b", "lit": true }
+    },
+    {
+      "id": "lamp_r10_nw",
+      "kind": "road_lamp",
+      "pos": [168, 96],
+      "props": { "zone": "theatre_act4_b", "lit": true }
+    },
+    {
+      "id": "lamp_r10_ne",
+      "kind": "road_lamp",
+      "pos": [312, 96],
+      "props": { "zone": "theatre_act4_b", "lit": true }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "r10_knight",
+      "kind": "glass_knight",
+      "pos": [240, 120],
+      "zone": "theatre_act4_b",
+      "leash": 144
+    },
+    {
+      "id": "r10_reflection",
+      "kind": "reflection",
+      "pos": [176, 136],
+      "zone": "theatre_act4_b",
+      "leash": 144
+    },
+    {
+      "id": "r10_puppet_w",
+      "kind": "puppet",
+      "pos": [160, 192],
+      "zone": "theatre_act4_b",
+      "leash": 136
+    },
+    {
+      "id": "r10_puppet_e",
+      "kind": "puppet",
+      "pos": [320, 136],
+      "zone": "theatre_act4_b",
+      "leash": 136
+    }
+  ],
+  "decor": [
+    { "kind": "circle", "pos": [240, 168], "radius": 44, "style": "spotlight", "color": "sky", "secondary": "ice" },
+    { "kind": "rug", "rect": [208, 28, 64, 36], "color": "wine", "border": "gold" },
+    { "kind": "inlay", "rect": [144, 112, 192, 112], "color": "gold" }
+  ],
+  "scenery": [
+    { "sheet": "theme_doppel_theatre", "prop": "puppet_crossbar_stand", "pos": [112, 112], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_doppel_theatre", "prop": "puppet_crossbar_stand", "pos": [368, 168], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [176, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [304, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.3 },
+    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [240, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_doppel_theatre", "prop": "stage_prop_trunk", "pos": [80, 224], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_doppel_theatre", "prop": "trapdoor_stage_hatch", "pos": [392, 224], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.0 }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "r10_reclaim_short",
+      "on": "flag:act4_done",
+      "once": true,
+      "do": [
+        { "narrate": { "id": "ISL7_TH_SHORTCUT", "style": "narration", "duration": 2.4 } }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "ACT IV CLIMAX — GUNLESS BRAWL: With ZERO Bolts and ZERO Beam, defeat a Glass Knight, Reflection, and 2 Puppets using Throw/Recall cord cuts, Zip slams, Sunflare, and flank Blue Transformers, then shatter the Act IV Mask to reclaim Bolt & Beam and open the trapdoor shortcut to the Greenroom.",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Full melee/lantern combat mastery (Throw+Recall cord slices, LURE throws, Zip slams, Sunflare) with all ranged shooting buttons stolen.",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "reclaim_bolt_beam+act4_done",
+    "why": "Act IV climax arena paying off gunless mastery and completing the twin-wing prerequisites for the Royal Box.",
+    "exit": "exit_r10_short",
+    "start": {
+      "flags": ["act2_done", "item_cue_mirror"]
+    },
+    "solution": [
+      { "op": "clear", "timeout": 90.0 },
+      { "op": "recall" },
+      { "op": "goto", "to": [240, 56], "tol": 6 },
+      { "op": "interact", "target": "mask_r10_break" },
+      { "op": "wait_until", "flag": "act4_done", "timeout": 3.0 },
+      { "op": "expect_exit", "exit": "exit_r10_short" }
+    ]
+  }
+}

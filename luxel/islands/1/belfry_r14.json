@@ -34,8 +34,8 @@
       ],
       "to_region": "belfry_r11",
       "to_spawn": [
-        272,
-        48
+        256,
+        52
       ]
     },
     {
@@ -316,7 +316,7 @@
       "id": "lamp_r14_n",
       "kind": "road_lamp",
       "pos": [
-        224,
+        240,
         56
       ],
       "props": {
@@ -354,7 +354,7 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "counterweight_block",
       "pos": [
-        64,
+        48,
         272
       ],
       "layer": "sort",
@@ -378,7 +378,7 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "belfry_beam_brace",
       "pos": [
-        200,
+        224,
         48
       ],
       "layer": "sort",
@@ -390,8 +390,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "belfry_beam_brace",
       "pos": [
-        312,
-        48
+        424,
+        88
       ],
       "layer": "sort",
       "flip_x": true,

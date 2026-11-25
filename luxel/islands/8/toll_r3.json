@@ -133,78 +133,94 @@
       "id": "tblock_r3_mid",
       "kind": "toggle_block",
       "pos": [
-        176,
-        146
+        208,
+        148
       ],
       "props": {
         "group": "r3_mid",
         "phase": 0,
         "start_phase": 0,
         "size": [
-          16,
-          16
+          20,
+          20
         ],
         "persist": true
       }
     },
     {
-      "id": "sigil_r3",
-      "kind": "floor_sigil",
+      "id": "plate_r3_n",
+      "kind": "pressure_plate",
       "pos": [
-        148,
-        132
+        174,
+        114
       ],
       "props": {
-        "cells": [
-          [
-            0,
-            0
-          ],
-          [
-            1,
-            0
-          ],
-          [
-            2,
-            0
-          ],
-          [
-            3,
-            0
-          ],
-          [
-            3,
-            1
-          ],
-          [
-            2,
-            1
-          ],
-          [
-            1,
-            1
-          ],
-          [
-            0,
-            1
-          ],
-          [
-            0,
-            2
-          ],
-          [
-            1,
-            2
-          ],
-          [
-            2,
-            2
-          ]
+        "by": [
+          "wick"
         ],
-        "cell_size": 14.0,
-        "start": [
-          0,
-          0
+        "hold": true,
+        "target_id": "gate_r3_seq"
+      }
+    },
+    {
+      "id": "plate_r3_e",
+      "kind": "pressure_plate",
+      "pos": [
+        208,
+        148
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "gate_r3_seq"
+      }
+    },
+    {
+      "id": "plate_r3_s",
+      "kind": "pressure_plate",
+      "pos": [
+        174,
+        182
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "gate_r3_seq"
+      }
+    },
+    {
+      "id": "plate_r3_w",
+      "kind": "pressure_plate",
+      "pos": [
+        140,
+        148
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "gate_r3_seq"
+      }
+    },
+    {
+      "id": "gate_r3_seq",
+      "kind": "logic_gate",
+      "pos": [
+        174,
+        148
+      ],
+      "props": {
+        "op": "seq",
+        "inputs": [
+          "plate_r3_n",
+          "plate_r3_e",
+          "plate_r3_s",
+          "plate_r3_w"
         ],
         "target_id": "door_r3_east",
         "persist": true
@@ -224,7 +240,7 @@
           32
         ],
         "requires_signals": [
-          "sigil_r3"
+          "gate_r3_seq"
         ],
         "persistent": true
       }
@@ -493,7 +509,7 @@
   "events": [
     {
       "id": "ev_r3_solved",
-      "on": "signal:sigil_r3",
+      "on": "signal:gate_r3_seq",
       "once": true,
       "do": [
         {
@@ -503,14 +519,14 @@
     }
   ],
   "design": {
-    "idea": "Stepped Cartography Hall: shatter Eclipse Eye, push & angle the blue transformer to lower the raised tile blocking the 11-cell Floor Sigil, trace the unbroken path to open East, and crack the NW wall for Moth 04.",
+    "idea": "Stepped Cartography Hall: shatter Eclipse Eye, push & angle the blue transformer to lower the raised tile over the East Compass Waypoint, trace the clockwise N-E-S-W compass circuit to open East, and crack the NW wall for Moth 04.",
     "kind": "puzzle",
     "beat": "sho",
-    "teaches": "Beam-sensor -> toggle_block unlocking a 1-line floor_sigil; sold:minimap_hud reveals SW map cache.",
+    "teaches": "Beam-sensor -> toggle_block unlocking a clockwise N-E-S-W seq compass circuit; sold:minimap_hud reveals SW map cache.",
     "decisions": 7,
     "expert_s": 50,
     "reward": "open_r4+moth_8_04",
-    "why": "Second Interface Wing room (minimap_hud), combining optics, spatial pathing, and secret wall discovery.",
+    "why": "Second Interface Wing room (minimap_hud), combining optics, spatial compass routing, and secret wall discovery.",
     "exit": "exit_r3_east",
     "solution": [
       {
@@ -544,58 +560,34 @@
       {
         "op": "goto",
         "to": [
-          148,
-          112
+          174,
+          114
         ],
-        "tol": 4.0
+        "tol": 5.0
       },
       {
         "op": "goto",
         "to": [
-          148,
-          132
+          208,
+          148
         ],
-        "tol": 3.0
+        "tol": 5.0
       },
       {
         "op": "goto",
         "to": [
-          190,
-          132
+          174,
+          182
         ],
-        "tol": 3.0
+        "tol": 5.0
       },
       {
         "op": "goto",
         "to": [
-          190,
-          146
+          140,
+          148
         ],
-        "tol": 3.0
-      },
-      {
-        "op": "goto",
-        "to": [
-          148,
-          146
-        ],
-        "tol": 3.0
-      },
-      {
-        "op": "goto",
-        "to": [
-          148,
-          160
-        ],
-        "tol": 3.0
-      },
-      {
-        "op": "goto",
-        "to": [
-          176,
-          160
-        ],
-        "tol": 3.0
+        "tol": 5.0
       },
       {
         "op": "wait_until",

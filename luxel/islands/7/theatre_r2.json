@@ -1,0 +1,229 @@
+{
+  "id": "theatre_r2",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_TH_R2",
+  "theme": "doppel_theatre",
+  "music": "isl7_theatre",
+  "ambience": ["night_breeze"],
+  "spawn": [48, 224],
+  "zones": [
+    {
+      "id": "theatre_act1_a",
+      "name_key": "ISL7_TH_R2",
+      "rect": [0, 0, 448, 320],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_west",
+      "rect": [0, 192, 16, 48],
+      "to_region": "theatre_r1",
+      "to_spawn": [432, 184]
+    },
+    {
+      "id": "exit_r2_north",
+      "rect": [336, 0, 48, 16],
+      "to_region": "theatre_r3",
+      "to_spawn": [224, 272],
+      "locked_door_id": "door_r2_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_west",
+      "kind": "room_anchor",
+      "pos": [48, 224],
+      "props": { "auto": true }
+    },
+    {
+      "id": "anc_r2_east",
+      "kind": "room_anchor",
+      "pos": [312, 224],
+      "props": { "auto": true }
+    },
+    {
+      "id": "mask_r2_act1",
+      "kind": "mask_plinth",
+      "pos": [88, 184],
+      "props": {
+        "act": 1,
+        "steals": ["throw"],
+        "mask_icon": "throw",
+        "hp": 3.5,
+        "auto_steal": true,
+        "breakable": false,
+        "release_flag": "act1_done",
+        "persist": true
+      }
+    },
+    {
+      "id": "emitter_r2",
+      "kind": "beam_emitter",
+      "pos": [64, 112],
+      "props": {
+        "dir": "e",
+        "color": "gold",
+        "range": 360
+      }
+    },
+    {
+      "id": "glass_r2_blue",
+      "kind": "color_glass",
+      "pos": [128, 160],
+      "props": {
+        "color": "blue",
+        "size": [16, 16],
+        "solid": true,
+        "movable": true,
+        "cycles_color": false
+      }
+    },
+    {
+      "id": "mirror_r2_east",
+      "kind": "mirror",
+      "pos": [320, 112],
+      "props": {
+        "angle_deg": 135,
+        "angle_step_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": ""
+      }
+    },
+    {
+      "id": "sensor_r2_blue",
+      "kind": "beam_sensor",
+      "pos": [320, 48],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r2_all"
+      }
+    },
+    {
+      "id": "brazier_r2_w",
+      "kind": "timed_brazier",
+      "pos": [136, 272],
+      "props": {
+        "secs": 14.0,
+        "target_id": "gate_r2_all"
+      }
+    },
+    {
+      "id": "brazier_r2_e",
+      "kind": "timed_brazier",
+      "pos": [336, 272],
+      "props": {
+        "secs": 14.0,
+        "target_id": "gate_r2_all"
+      }
+    },
+    {
+      "id": "gate_r2_all",
+      "kind": "logic_gate",
+      "pos": [384, 96],
+      "props": {
+        "op": "all",
+        "inputs": ["sensor_r2_blue", "brazier_r2_w", "brazier_r2_e"],
+        "target_id": "door_r2_north",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r2_north",
+      "kind": "door",
+      "pos": [360, 24],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": ["gate_r2_all"],
+        "sets_flag": "theatre_r2_solved",
+        "persistent": true,
+        "size": [48, 16]
+      }
+    },
+    {
+      "id": "lamp_r2_nw",
+      "kind": "road_lamp",
+      "pos": [128, 48],
+      "props": { "zone": "theatre_act1_a", "lit": true }
+    },
+    {
+      "id": "lamp_r2_sw",
+      "kind": "road_lamp",
+      "pos": [80, 272],
+      "props": { "zone": "theatre_act1_a", "lit": true }
+    },
+    {
+      "id": "lamp_r2_ne",
+      "kind": "road_lamp",
+      "pos": [384, 56],
+      "props": { "zone": "theatre_act1_a", "lit": true }
+    },
+    {
+      "id": "lamp_r2_se",
+      "kind": "road_lamp",
+      "pos": [384, 240],
+      "props": { "zone": "theatre_act1_a", "lit": true }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    { "kind": "rug", "rect": [80, 80, 64, 64], "color": "wine", "border": "gold" },
+    { "kind": "rug", "rect": [304, 80, 64, 64], "color": "wine", "border": "gold" },
+    { "kind": "circle", "pos": [88, 184], "radius": 24, "style": "spotlight", "color": "coral", "secondary": "gold" },
+    { "kind": "circle", "pos": [320, 112], "radius": 22, "style": "spotlight", "color": "sky", "secondary": "ice" }
+  ],
+  "scenery": [
+    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [168, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [288, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
+    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [64, 64], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [384, 152], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [112, 296], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [344, 296], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.6 },
+    { "sheet": "theme_doppel_theatre", "prop": "stage_prop_trunk", "pos": [160, 216], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "r2_steal_narrate",
+      "on": "enter",
+      "if": "!flag:act1_done",
+      "once": true,
+      "do": [
+        { "narrate": { "id": "ISL7_ACT1_STEAL", "style": "narration", "duration": 3.0 } }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "ACT I — THE EMPTY HAND: Hollow Wick snatches Lantern Throw; push Blue Glass into a golden stage beam, Dash/Wings across the orchestra pit to angle the East mirror into a Blue sensor, then sprint a 14s cross-pit timed brazier relay.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Playing without Throw/Zip: optical beam tinting + mirror banking combined with Dash/Wings cross-pit timed relays.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "open_theatre_r3",
+    "why": "Act I opening stage establishing stolen-move puzzle design where every gap and switch stays 100% solvable without Throw.",
+    "exit": "exit_r2_north",
+    "solution": [
+      { "op": "push", "target": "glass_r2_blue", "to": [128, 112] },
+      { "op": "goto", "to": [196, 272], "tol": 6 },
+      { "op": "dash", "dir": [1, 0] },
+      { "op": "goto", "to": [296, 112], "tol": 10 },
+      { "op": "rotate", "target": "mirror_r2_east", "angle": 225 },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "expect", "interactable": "sensor_r2_blue", "prop": "powered", "value": true },
+      { "op": "shoot", "from": [296, 272], "target": "brazier_r2_e" },
+      { "op": "goto", "to": [252, 272], "tol": 6 },
+      { "op": "dash", "dir": [-1, 0] },
+      { "op": "shoot", "from": [168, 272], "target": "brazier_r2_w" },
+      { "op": "goto", "to": [196, 272], "tol": 6 },
+      { "op": "dash", "dir": [1, 0] },
+      { "op": "wait", "secs": 0.25 },
+      { "op": "expect_exit", "exit": "exit_r2_north" }
+    ]
+  }
+}

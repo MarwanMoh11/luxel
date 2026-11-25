@@ -48,8 +48,8 @@
       ],
       "to_region": "belfry_r11",
       "to_spawn": [
-        488,
-        192
+        464,
+        176
       ],
       "one_way": true,
       "locked_door_id": "door_r13_drop"
@@ -338,7 +338,7 @@
       "prop": "cracked_bell_shard",
       "pos": [
         56,
-        200
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -374,7 +374,7 @@
       "prop": "small_bronze_gear",
       "pos": [
         352,
-        224
+        232
       ],
       "layer": "sort",
       "flip_x": true,

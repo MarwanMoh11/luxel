@@ -1,0 +1,533 @@
+{
+  "id": "colossus_r9",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
+  "name_key": "ISL6_COL_R9",
+  "spawn": [
+    48,
+    136
+  ],
+  "zones": [
+    {
+      "id": "col_r9",
+      "name_key": "ISL6_COL_R9",
+      "rect": [
+        0,
+        0,
+        576,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_west",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "colossus_r7",
+      "to_spawn": [
+        256,
+        40
+      ]
+    },
+    {
+      "id": "exit_r9_east",
+      "rect": [
+        560,
+        112,
+        16,
+        48
+      ],
+      "to_region": "colossus_r8",
+      "to_spawn": [
+        256,
+        48
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r9_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "stride_r9_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        248,
+        184
+      ],
+      "props": {
+        "step_period": 6.0,
+        "axis": "x",
+        "shake_amp": 0.05
+      }
+    },
+    {
+      "id": "anvil_r9_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        48,
+        104
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
+    },
+    {
+      "id": "hook_r9_west",
+      "kind": "lantern_hook",
+      "pos": [
+        48,
+        200
+      ],
+      "props": {
+        "light_radius": 44.0
+      }
+    },
+    {
+      "id": "crumble_r9_1",
+      "kind": "crumble_floor",
+      "pos": [
+        112,
+        136
+      ],
+      "props": {
+        "size": [
+          32,
+          48
+        ],
+        "delay": 1.1,
+        "respawn": 2.5
+      }
+    },
+    {
+      "id": "crumble_r9_2",
+      "kind": "crumble_floor",
+      "pos": [
+        144,
+        136
+      ],
+      "props": {
+        "size": [
+          32,
+          48
+        ],
+        "delay": 1.1,
+        "respawn": 2.5
+      }
+    },
+    {
+      "id": "sgate_r9_neck",
+      "kind": "shadow_gate",
+      "pos": [
+        184,
+        136
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "key_r9_boss",
+      "kind": "wick_key",
+      "pos": [
+        248,
+        136
+      ],
+      "props": {
+        "dungeon_id": "iron_colossus",
+        "key_kind": "keepers_flame",
+        "flag_id": "col_boss_key"
+      }
+    },
+    {
+      "id": "ring_r9_crane",
+      "kind": "pull_ring",
+      "pos": [
+        304,
+        160
+      ],
+      "props": {
+        "axis": "w",
+        "dist": 20.0,
+        "latch": true,
+        "persist": true,
+        "target_id": "bridge_r9_east"
+      }
+    },
+    {
+      "id": "bridge_r9_east",
+      "kind": "door",
+      "pos": [
+        416,
+        136
+      ],
+      "props": {
+        "door_type": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          128,
+          48
+        ],
+        "requires_signals": [
+          "ring_r9_crane"
+        ]
+      }
+    },
+    {
+      "id": "grate_r9_secret",
+      "kind": "grate",
+      "pos": [
+        520,
+        96
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "coupler_r9_secret",
+      "kind": "car_coupler",
+      "pos": [
+        544,
+        96
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_id": "door_r9_secret",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r9_secret",
+      "kind": "door",
+      "pos": [
+        520,
+        200
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "coupler_r9_secret"
+        ]
+      }
+    },
+    {
+      "id": "moth_r9_07",
+      "kind": "moth",
+      "pos": [
+        480,
+        232
+      ],
+      "props": {
+        "id": "moth_6_07"
+      }
+    },
+    {
+      "id": "chest_r9_ember",
+      "kind": "chest",
+      "pos": [
+        528,
+        232
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_6_colossus",
+        "zone": "col_r9"
+      }
+    },
+    {
+      "id": "lamp_r9_nw",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        72
+      ],
+      "props": {
+        "zone": "col_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_sw",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        216
+      ],
+      "props": {
+        "zone": "col_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_mid_n",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        96
+      ],
+      "props": {
+        "zone": "col_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e_n",
+      "kind": "road_lamp",
+      "pos": [
+        496,
+        72
+      ],
+      "props": {
+        "zone": "col_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e_s",
+      "kind": "road_lamp",
+      "pos": [
+        496,
+        168
+      ],
+      "props": {
+        "zone": "col_r9",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r9_wasp",
+      "kind": "smelter_wasp",
+      "pos": [
+        248,
+        96
+      ],
+      "zone": "col_r9",
+      "leash": 136
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        136
+      ],
+      "radius": 34,
+      "style": "gear"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        464,
+        216,
+        80,
+        36
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        208,
+        120,
+        112,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        272,
+        160
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "iron_chain_hoist",
+      "pos": [
+        312,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        72,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        216,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        304,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        472,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Open-air Collarbone Viaduct spanning the giant's neck high above the caldera: hang your lantern on the west hook so Wick runs dark across crumbling Heat-Boots grates through the Shadow Gate to claim the Crown Boss Key, then recall and pull the crane ring to extend the permanent east iron bridge linking both shoulders (Cycle 3) — plus a Skip-banked shadow nook hiding Moth 6-07 and an Ember Piece!",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "lantern_hook + crumble_floor (Heat-Boots grace) + shadow_gate dark crossing + pull_ring Cycle 3 bridge",
+    "decisions": 9,
+    "expert_s": 60,
+    "reward": "col_boss_key+moth_6_07+ember_6_colossus+cycle3_bridge",
+    "why": "Unforgettable open-air vertigo puzzle uniting both shoulder wings and granting the Colossus Boss Key.",
+    "exit": "exit_r9_east",
+    "start": {
+      "flags": [
+        "piston_marshal_defeated",
+        "item_heat_boots",
+        "col_left_lock",
+        "temper_skip_known"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "hook_r9_west"
+      },
+      {
+        "op": "wait_until",
+        "target": "sgate_r9_neck",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          136
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "key_r9_boss"
+      },
+      {
+        "op": "expect",
+        "flag": "col_boss_key"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "clear",
+        "zone": "col_r9",
+        "timeout": 35.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          160
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "ring_r9_crane",
+        "hold": 0.4
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "target": "bridge_r9_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_east"
+      }
+    ]
+  }
+}

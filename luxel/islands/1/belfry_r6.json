@@ -104,22 +104,22 @@
       "id": "snatcher_r6_0",
       "kind": "snatcher",
       "pos": [
-        328,
+        376,
         152
       ],
       "route": [],
       "perches": [
         [
-          328,
+          376,
           152
         ],
         [
-          296,
-          88
+          320,
+          112
         ],
         [
-          248,
-          144
+          360,
+          168
         ]
       ],
       "zone": "belfry_vault",
@@ -206,7 +206,7 @@
       "props": {
         "door_kind": "bridge_platform",
         "size": [
-          48,
+          32,
           32
         ],
         "starts_open": false,
@@ -391,8 +391,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        232,
-        56
+        256,
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -415,7 +415,7 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        216,
+        248,
         152
       ],
       "layer": "sort",

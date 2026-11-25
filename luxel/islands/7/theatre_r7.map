@@ -1,0 +1,35 @@
+# Doppel Theatre R7: Act 3 The Blind Eye (32x20, C-Crescent Chasm Catwalk)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G glass
+MAP
+##########################,,,###
+#######OOOOOOOOOOOOOO....,,,,###
+######.OOOOOOOOOOOOOO....,,,,###
+#####..OOOOOOOOOOOOOO....,,,,###
+####...OOOOOOOOOOOOOO........###
+####...OOOOOOOOOOOOOO........###
+####...OOOOOOOOOOOOOO........###
+####...OOOOOOOOOOOOOO..#.....###
+###.....#OOOO#.........#.....###
+###.......OO...........OOOO..###
+###..,,,,#OO...........#OOO..###
+###..,,,,.OO...........OOOO..###
+###..,,,,.OO...........OOOO..###
+###.......OO...........OOOO..###
+###......#OO#.....#....OOOO..###
+###...,,,.OO......#....OOOO..###
+###...,,,.OO..,,,.....OOOOO..###
+###...,,,.OO..,,,.....OOOOO..###
+###...,,,.OO..........OOOOO#####
+###,,###########################

@@ -18,8 +18,8 @@ enum RingStage { RING_1, PAUSE, RING_2 }
 const KILN_ARMOUR_MAX: float = 4.5
 const ARMOUR_REFORM_DUR: float = 9.0
 const KILN_RING_START_R: float = 10.0
-const KILN_RING_MAX_R: float = 60.0
-const KILN_RING_BAND: float = 10.0
+const KILN_RING_MAX_R: float = 56.0
+const KILN_RING_BAND: float = 9.0
 const RING_COMMIT_DUR: float = 0.32
 const RING_PAUSE_P3: float = 0.48
 const GUST_RANGE: float = 120.0
@@ -64,8 +64,8 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 148.0
-	hp = 148.0
+	max_hp = 172.0
+	hp = 172.0
 	body_radius = 10.0
 	move_speed = 32.0
 	stagger_threshold = 18.0
@@ -80,7 +80,7 @@ func _init() -> void:
 
 func _configure_boss(_spec: Dictionary) -> void:
 	if world_ctx != null and str(world_ctx.get("current_region_id")) == "kiln_r10":
-		arena_rect = Rect2(176.0, 80.0, 144.0, 96.0)
+		arena_rect = Rect2(176.0, 80.0, 144.0, 80.0)
 	configure_phases([0.66, 0.33])
 
 	# Attack 1: Molten Ring — expanding fiery shockwave + cinder gap ring
@@ -434,7 +434,8 @@ func _step_bellows_commit(dt: float) -> void:
 	if _has_player():
 		var wp: Vector2 = _get_wick_pos()
 		if Geometry2D.get_closest_point_to_segment(wp, pos, end_p).distance_to(wp) <= GUST_HALF_W:
-			if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and arena_rect.grow(-22.0).has_point(wp + _gust_dir * 20.0):
+			var safe_push: bool = world_ctx == null or not world_ctx.has_method("is_lethal_void_at") or not bool(world_ctx.call("is_lethal_void_at", wp + _gust_dir * 24.0))
+			if safe_push and Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and arena_rect.grow(-20.0).has_point(wp + _gust_dir * 20.0):
 				Lx.player.call("apply_recoil", _gust_dir * GUST_PUSH_WICK * dt)
 			if not _gust_hit and pos.distance_to(wp) <= GUST_DMG_R:
 				_gust_hit = true

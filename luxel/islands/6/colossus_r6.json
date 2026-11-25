@@ -1,0 +1,677 @@
+{
+  "id": "colossus_r6",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_COL_R6",
+  "spawn": [
+    288,
+    336
+  ],
+  "zones": [
+    {
+      "id": "col_r6",
+      "name_key": "ISL6_COL_R6",
+      "rect": [
+        0,
+        0,
+        576,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_south",
+      "rect": [
+        256,
+        368,
+        64,
+        16
+      ],
+      "to_region": "colossus_r5",
+      "to_spawn": [
+        256,
+        48
+      ]
+    },
+    {
+      "id": "exit_r6_chute",
+      "rect": [
+        384,
+        368,
+        48,
+        16
+      ],
+      "to_region": "colossus_r1",
+      "to_spawn": [
+        176,
+        48
+      ],
+      "requires_flags": [
+        "colossus_chute_open"
+      ],
+      "locked_door_id": "door_r6_chute"
+    },
+    {
+      "id": "exit_r6_crane",
+      "rect": [
+        560,
+        256,
+        16,
+        48
+      ],
+      "to_island": 6,
+      "to_region": "ow_giant_stride",
+      "to_spawn": [
+        416,
+        240
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "colossus_belly_lift"
+      ],
+      "locked_door_id": "door_r6_crane"
+    },
+    {
+      "id": "exit_r6_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "colossus_r7",
+      "to_spawn": [
+        272,
+        272
+      ],
+      "locked_door_id": "door_r6_west"
+    },
+    {
+      "id": "exit_r6_east",
+      "rect": [
+        560,
+        144,
+        16,
+        48
+      ],
+      "to_region": "colossus_r8",
+      "to_spawn": [
+        256,
+        272
+      ]
+    },
+    {
+      "id": "exit_r6_north",
+      "rect": [
+        256,
+        0,
+        64,
+        16
+      ],
+      "to_region": "colossus_r10",
+      "to_spawn": [
+        240,
+        248
+      ],
+      "requires_flags": [
+        "col_left_lock",
+        "col_right_lock"
+      ],
+      "locked_door_id": "door_r6_sternum"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_colossus_belly",
+      "kind": "waystone",
+      "pos": [
+        288,
+        184
+      ],
+      "props": {
+        "zone": "col_r6",
+        "name_key": "ISL6_COL_R6"
+      }
+    },
+    {
+      "id": "stride_r6_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        288,
+        256
+      ],
+      "props": {
+        "step_period": 5.2,
+        "axis": "x",
+        "shake_amp": 0.05,
+        "tilt_group_ids": [
+          "tilt_r6_cathedral"
+        ]
+      }
+    },
+    {
+      "id": "tilt_r6_cathedral",
+      "kind": "tilt_group",
+      "pos": [
+        288,
+        120
+      ],
+      "props": {
+        "size": [
+          224,
+          40
+        ],
+        "axis": "e",
+        "strength": 84.0
+      }
+    },
+    {
+      "id": "crate_r6_ambient",
+      "kind": "push_block",
+      "pos": [
+        288,
+        120
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ],
+        "persist": false
+      }
+    },
+    {
+      "id": "anvil_r6_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
+    },
+    {
+      "id": "anvil_r6_cycle",
+      "kind": "temper_anvil",
+      "pos": [
+        368,
+        248
+      ],
+      "props": {
+        "mode": "cycle"
+      }
+    },
+    {
+      "id": "ring_r6_chute",
+      "kind": "pull_ring",
+      "pos": [
+        424,
+        296
+      ],
+      "props": {
+        "axis": "n",
+        "dist": 20.0,
+        "latch": true,
+        "persist": true,
+        "target_id": "door_r6_chute"
+      }
+    },
+    {
+      "id": "ring_r6_crane",
+      "kind": "pull_ring",
+      "pos": [
+        496,
+        240
+      ],
+      "props": {
+        "axis": "w",
+        "dist": 20.0,
+        "latch": true,
+        "persist": true,
+        "target_id": "door_r6_crane"
+      }
+    },
+    {
+      "id": "door_r6_chute",
+      "kind": "door",
+      "pos": [
+        408,
+        352
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "ring_r6_chute"
+        ]
+      }
+    },
+    {
+      "id": "door_r6_crane",
+      "kind": "door",
+      "pos": [
+        536,
+        280
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "ring_r6_crane"
+        ]
+      }
+    },
+    {
+      "id": "door_r6_west",
+      "kind": "door",
+      "pos": [
+        32,
+        168
+      ],
+      "props": {
+        "door_type": "wick_key",
+        "dungeon_id": "iron_colossus",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_r6_sternum",
+      "kind": "door",
+      "pos": [
+        288,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_flags": [
+          "col_left_lock",
+          "col_right_lock"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r6_s",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        320
+      ],
+      "props": {
+        "zone": "col_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_mid",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        148
+      ],
+      "props": {
+        "zone": "col_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        168
+      ],
+      "props": {
+        "zone": "col_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_e",
+      "kind": "road_lamp",
+      "pos": [
+        464,
+        168
+      ],
+      "props": {
+        "zone": "col_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_n",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        64
+      ],
+      "props": {
+        "zone": "col_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        320
+      ],
+      "props": {
+        "zone": "col_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_crane",
+      "kind": "road_lamp",
+      "pos": [
+        504,
+        280
+      ],
+      "props": {
+        "zone": "col_r6",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        184
+      ],
+      "radius": 52,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        176,
+        104,
+        224,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        224,
+        48,
+        128,
+        48
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        224,
+        248,
+        48
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        288,
+        64
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        264,
+        64
+      ],
+      "size": [
+        48,
+        84
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "brass_steam_pipe_arch",
+      "pos": [
+        288,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        216,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        360,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        128,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        448,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        112,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "iron_chain_hoist",
+      "pos": [
+        472,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        288,
+        184
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "col_r6_chute_unlock",
+      "on": "signal:ring_r6_chute",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "colossus_chute_open"
+        },
+        {
+          "shake": 0.14
+        },
+        {
+          "narrate": {
+            "id": "ISL6_COL_SHORT_CHUTE",
+            "style": "narration",
+            "duration": 2.6
+          }
+        }
+      ]
+    },
+    {
+      "id": "col_r6_crane_unlock",
+      "on": "signal:ring_r6_crane",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "colossus_belly_lift"
+        },
+        {
+          "shake": 0.14
+        },
+        {
+          "narrate": {
+            "id": "ISL6_COL_CRANE_OPEN",
+            "style": "narration",
+            "duration": 2.6
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Monumental 3-tier ribbed Belly Furnace Cathedral central hub overlooking the molten Heart core: test new Heat-Boots stability against the ambient tilting crate, forge Skip, pull the Cycle 2 Emergency Chute & External Crane winches, and branch freely into Left Shoulder (r7) or Right Shoulder (r8) before climbing the Sternum Gate (r10).",
+    "kind": "traversal",
+    "beat": "sho",
+    "teaches": "Heat-Boots footing stability, Belly Cathedral hub geography, Cycle 2 chute & Skip anvil",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "ws_colossus_belly+temper_skip_known+colossus_chute_open+colossus_belly_lift",
+    "why": "Architectural heart of The Iron Colossus tying lower limbs, overworld lift, both shoulder wings, and crown sternum together.",
+    "exit": "exit_r6_chute",
+    "start": {
+      "flags": [
+        "piston_marshal_defeated",
+        "item_heat_boots"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_colossus_belly"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          268
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r6_skip"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          424,
+          256
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "throw",
+        "target": "ring_r6_chute",
+        "hold": 0.4
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "flag": "colossus_chute_open",
+        "timeout": 3.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r6_chute",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_chute"
+      }
+    ]
+  }
+}

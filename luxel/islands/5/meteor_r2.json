@@ -105,8 +105,8 @@
       ],
       "props": {
         "mode": "pull",
-        "radius": 80.0,
-        "strength": 680.0
+        "radius": 60.0,
+        "strength": 740.0
       }
     },
     {
@@ -136,7 +136,7 @@
       "kind": "switch_eye",
       "pos": [
         208,
-        80
+        88
       ],
       "props": {
         "target_id": "door_mv_r2_n"
@@ -223,8 +223,8 @@
     {
       "kind": "inlay",
       "rect": [
-        112,
-        128,
+        104,
+        140,
         32,
         16
       ]
@@ -386,12 +386,12 @@
       {
         "op": "shoot",
         "from": [
-          128,
-          136
+          120,
+          148
         ],
         "target": [
-          208,
-          128
+          197,
+          126
         ],
         "wait_hit": 0.65
       },

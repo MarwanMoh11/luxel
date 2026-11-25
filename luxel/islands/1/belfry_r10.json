@@ -66,8 +66,8 @@
       ],
       "to_region": "belfry_r11",
       "to_spawn": [
-        56,
-        192
+        48,
+        176
       ],
       "locked_door_id": "door_r10_east"
     }
@@ -77,8 +77,8 @@
       "id": "mimic_r10_0",
       "kind": "pew_mimic",
       "pos": [
-        344,
-        192
+        288,
+        180
       ],
       "route": [],
       "perches": [],

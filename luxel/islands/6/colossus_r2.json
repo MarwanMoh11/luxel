@@ -1,0 +1,571 @@
+{
+  "id": "colossus_r2",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_COL_R2",
+  "spawn": [
+    40,
+    144
+  ],
+  "zones": [
+    {
+      "id": "col_r2",
+      "name_key": "ISL6_COL_R2",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "colossus_r1",
+      "to_spawn": [
+        408,
+        184
+      ]
+    },
+    {
+      "id": "exit_r2_north",
+      "rect": [
+        368,
+        0,
+        32,
+        16
+      ],
+      "to_region": "colossus_r5",
+      "to_spawn": [
+        40,
+        160
+      ],
+      "requires_flags": [
+        "colossus_knee_ladder"
+      ],
+      "locked_door_id": "door_r2_ladder"
+    },
+    {
+      "id": "exit_r2_east",
+      "rect": [
+        464,
+        112,
+        16,
+        48
+      ],
+      "to_region": "colossus_r3",
+      "to_spawn": [
+        40,
+        144
+      ],
+      "locked_door_id": "door_r2_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_west",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "stride_r2_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        56,
+        88
+      ],
+      "props": {
+        "step_period": 4.4,
+        "axis": "x",
+        "shake_amp": 0.06,
+        "tilt_group_ids": [
+          "tilt_r2_north",
+          "tilt_r2_south"
+        ]
+      }
+    },
+    {
+      "id": "tilt_r2_north",
+      "kind": "tilt_group",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "size": [
+          192,
+          32
+        ],
+        "axis": "e",
+        "strength": 96.0,
+        "slide_enemies": false
+      }
+    },
+    {
+      "id": "tilt_r2_south",
+      "kind": "tilt_group",
+      "pos": [
+        168,
+        216
+      ],
+      "props": {
+        "size": [
+          176,
+          32
+        ],
+        "axis": "e",
+        "strength": 96.0,
+        "slide_enemies": false
+      }
+    },
+    {
+      "id": "crate_r2_top",
+      "kind": "push_block",
+      "pos": [
+        216,
+        72
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ],
+        "persist": false
+      }
+    },
+    {
+      "id": "crate_r2_bot",
+      "kind": "push_block",
+      "pos": [
+        120,
+        216
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ],
+        "persist": false
+      }
+    },
+    {
+      "id": "plate_r2_west",
+      "kind": "pressure_plate",
+      "pos": [
+        88,
+        72
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "hold": true,
+        "latch": false,
+        "persist": false,
+        "target_id": "gate_r2_all"
+      }
+    },
+    {
+      "id": "plate_r2_east",
+      "kind": "pressure_plate",
+      "pos": [
+        232,
+        216
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "hold": true,
+        "latch": false,
+        "persist": false,
+        "target_id": "gate_r2_all"
+      }
+    },
+    {
+      "id": "crystal_r2_wedge",
+      "kind": "crystal_toggle",
+      "pos": [
+        264,
+        144
+      ],
+      "props": {
+        "group": "shin_wedge",
+        "phase": 0,
+        "persist": false
+      }
+    },
+    {
+      "id": "toggle_r2_n",
+      "kind": "toggle_block",
+      "pos": [
+        112,
+        72
+      ],
+      "props": {
+        "group": "shin_wedge",
+        "phase": 1,
+        "start_phase": 0,
+        "size": [
+          16,
+          32
+        ],
+        "persist": false
+      }
+    },
+    {
+      "id": "toggle_r2_s",
+      "kind": "toggle_block",
+      "pos": [
+        200,
+        216
+      ],
+      "props": {
+        "group": "shin_wedge",
+        "phase": 0,
+        "start_phase": 0,
+        "size": [
+          16,
+          32
+        ],
+        "persist": false
+      }
+    },
+    {
+      "id": "gate_r2_all",
+      "kind": "logic_gate",
+      "pos": [
+        344,
+        136
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_r2_west",
+          "plate_r2_east"
+        ],
+        "target_id": "door_r2_east",
+        "sets_flag": "colossus_r2_solved",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r2_ladder",
+      "kind": "door",
+      "pos": [
+        384,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "colossus_knee_ladder"
+        ]
+      }
+    },
+    {
+      "id": "door_r2_east",
+      "kind": "door",
+      "pos": [
+        408,
+        136
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_r2_all"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        112
+      ],
+      "props": {
+        "zone": "col_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        40
+      ],
+      "props": {
+        "zone": "col_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_s",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "zone": "col_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        72
+      ],
+      "props": {
+        "zone": "col_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        136
+      ],
+      "props": {
+        "zone": "col_r2",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r2_slime",
+      "kind": "slag_slime",
+      "pos": [
+        352,
+        200
+      ],
+      "route": [
+        [
+          336,
+          200
+        ],
+        [
+          384,
+          200
+        ]
+      ],
+      "zone": "col_r2",
+      "leash": 96
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        72,
+        56,
+        168,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        88,
+        200,
+        160,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        304,
+        48,
+        112,
+        56
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        264,
+        144
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        352,
+        200
+      ],
+      "radius": 22,
+      "style": "soot"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        240,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        304,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        432,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "steam_valve_wheel",
+      "pos": [
+        96,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "slag_ingot_stack",
+      "pos": [
+        280,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "pressure_gauge_dial",
+      "pos": [
+        384,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Desynchronize two sliding shin counterweight crates across opposing giant footsteps using a crystal-toggled wedge pair: let Left Step lock the top crate onto the west plate, then flip the crystal to trap it and free the bottom crate to slide onto the east plate on Right Step.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Timing crystal_toggle + toggle_block stoppers with opposite colossus_stride_cam steps",
+    "decisions": 6,
+    "expert_s": 45,
+    "reward": "open_r3+cycle1_ladder_tease",
+    "why": "Develops stride tilting from passive sliding into deliberate counter-phase mechanical trapping.",
+    "exit": "exit_r2_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          264,
+          176
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "plate_r2_west",
+        "prop": "powered",
+        "value": true,
+        "timeout": 7.0
+      },
+      {
+        "op": "shoot",
+        "target": "crystal_r2_wedge",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "target": "plate_r2_east",
+        "prop": "powered",
+        "value": true,
+        "timeout": 7.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r2_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_east"
+      }
+    ]
+  }
+}

@@ -1,0 +1,429 @@
+{
+  "id": "mausoleum_r5",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R5",
+  "spawn": [
+    256,
+    264
+  ],
+  "zones": [
+    {
+      "id": "ms_r5_chapel",
+      "name_key": "ISL4_MS_R5",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r5_south",
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r4",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_ms_r5_shortcut",
+      "rect": [
+        496,
+        144,
+        16,
+        32
+      ],
+      "to_region": "mausoleum_r1",
+      "to_spawn": [
+        56,
+        96
+      ],
+      "requires_flags": [
+        "boss_cloud_deacon_defeated",
+        "ms_west_shortcut"
+      ],
+      "locked_door_id": "door_ms_r5_shortcut"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r5",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        264
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wheel_ms_r5",
+      "kind": "weather_wheel",
+      "pos": [
+        264,
+        216
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "rain",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "e"
+      }
+    },
+    {
+      "id": "sync_ms_r5",
+      "kind": "ms_weather_sync",
+      "pos": [
+        232,
+        248
+      ],
+      "props": {}
+    },
+    {
+      "id": "ms_key_1",
+      "kind": "wick_key",
+      "pos": [
+        200,
+        168
+      ],
+      "props": {
+        "dungeon_id": "rain_mausoleum",
+        "key_kind": "wick_key",
+        "flag_id": "ms_key_1",
+        "requires_flag": "boss_cloud_deacon_defeated"
+      }
+    },
+    {
+      "id": "sw_ms_r5_short",
+      "kind": "switch_eye",
+      "pos": [
+        424,
+        184
+      ],
+      "props": {
+        "target_id": "door_ms_r5_shortcut",
+        "sets_flag": "ms_west_shortcut"
+      }
+    },
+    {
+      "id": "door_ms_r5_shortcut",
+      "kind": "door",
+      "pos": [
+        488,
+        160
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sw_ms_r5_short"
+        ],
+        "persistent": true,
+        "sets_flag": "ms_west_shortcut"
+      }
+    },
+    {
+      "id": "lamp_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        280
+      ],
+      "props": {
+        "zone": "ms_r5_chapel",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        280
+      ],
+      "props": {
+        "zone": "ms_r5_chapel",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        56
+      ],
+      "props": {
+        "zone": "ms_r5_chapel",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        56
+      ],
+      "props": {
+        "zone": "ms_r5_chapel",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "cloud_deacon_r5",
+      "kind": "boss_cloud_deacon",
+      "pos": [
+        256,
+        136
+      ],
+      "zone": "ms_r5_chapel"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ms_r5_short_msg",
+      "on": "signal:sw_ms_r5_short",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ms_west_shortcut"
+        },
+        {
+          "narrate": "ISL4_MS_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        152
+      ],
+      "radius": 58,
+      "style": "ritual"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        264,
+        216
+      ],
+      "radius": 22,
+      "style": "clock"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        344,
+        200
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        96
+      ],
+      "size": [
+        52,
+        68
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "mausoleum_arch_gate",
+      "pos": [
+        264,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        152,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        376,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        152,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        392,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        200,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        312,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        56,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        440,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "design": {
+    "idea": "Chamfered octagonal rain-chapel mini-boss arena against The Cloud-Urn Deacon: spin WIND to blow open and shatter his 3 orbiting rain-urns, flip SUN to evaporate his rain-shield for bonus Beam damage, claim Key 1, and open Cycle 1's west shortcut back to Cistern Nave.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Boss weather counterplay: WIND exposes orbiting shields, SUN evaporates rain armor.",
+    "decisions": 6,
+    "expert_s": 85,
+    "reward": "ms_key_1+ms_west_shortcut+45_shards",
+    "why": "West Flood Wing climax awarding the key to the East Gale Wing and closing Cycle 1.",
+    "exit": "exit_ms_r5_shortcut",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          256,
+          248
+        ],
+        "target": "wheel_ms_r5"
+      },
+      {
+        "op": "expect",
+        "var": "weather==wind"
+      },
+      {
+        "op": "clear",
+        "timeout": 90.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "boss_cloud_deacon_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "ms_key_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          368,
+          184
+        ],
+        "target": "sw_ms_r5_short"
+      },
+      {
+        "op": "expect",
+        "flag": "ms_key_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r5_shortcut"
+      }
+    ]
+  }
+}

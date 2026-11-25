@@ -1,0 +1,832 @@
+{
+  "id": "colossus_r7",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_COL_R7",
+  "spawn": [
+    272,
+    272
+  ],
+  "zones": [
+    {
+      "id": "col_r7",
+      "name_key": "ISL6_COL_R7",
+      "rect": [
+        0,
+        0,
+        544,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [
+        240,
+        304,
+        64,
+        16
+      ],
+      "to_region": "colossus_r6",
+      "to_spawn": [
+        56,
+        168
+      ]
+    },
+    {
+      "id": "exit_r7_north",
+      "rect": [
+        240,
+        0,
+        64,
+        16
+      ],
+      "to_region": "colossus_r9",
+      "to_spawn": [
+        48,
+        136
+      ],
+      "requires_flags": [
+        "col_left_lock"
+      ],
+      "locked_door_id": "door_r7_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_south",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "stride_r7_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        104,
+        264
+      ],
+      "props": {
+        "step_period": 6.0,
+        "axis": "x",
+        "shake_amp": 0.05,
+        "tilt_group_ids": [
+          "tilt_r7_lane1",
+          "tilt_r7_lane2",
+          "tilt_r7_orb"
+        ]
+      }
+    },
+    {
+      "id": "anvil_r7_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        200,
+        264
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
+    },
+    {
+      "id": "tf_r7_cool_n",
+      "kind": "blue_transformer",
+      "pos": [
+        88,
+        56
+      ],
+      "props": {
+        "angle_deg": 45.0,
+        "rotatable": false,
+        "movable": false
+      }
+    },
+    {
+      "id": "tf_r7_cool_s",
+      "kind": "blue_transformer",
+      "pos": [
+        88,
+        228
+      ],
+      "props": {
+        "angle_deg": 135.0,
+        "rotatable": false,
+        "movable": false
+      }
+    },
+    {
+      "id": "tilt_r7_lane1",
+      "kind": "tilt_group",
+      "pos": [
+        192,
+        88
+      ],
+      "props": {
+        "size": [
+          176,
+          32
+        ],
+        "axis": "e",
+        "strength": 112.0,
+        "slide_enemies": false
+      }
+    },
+    {
+      "id": "tilt_r7_lane2",
+      "kind": "tilt_group",
+      "pos": [
+        192,
+        200
+      ],
+      "props": {
+        "size": [
+          176,
+          32
+        ],
+        "axis": "e",
+        "strength": 112.0,
+        "slide_enemies": false
+      }
+    },
+    {
+      "id": "tilt_r7_orb",
+      "kind": "tilt_group",
+      "pos": [
+        436,
+        152
+      ],
+      "props": {
+        "size": [
+          208,
+          32
+        ],
+        "axis": "e",
+        "strength": 124.0,
+        "slide_enemies": false
+      }
+    },
+    {
+      "id": "crate_r7_1",
+      "kind": "push_block",
+      "pos": [
+        136,
+        88
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ],
+        "persist": false
+      }
+    },
+    {
+      "id": "slag_r7_1",
+      "kind": "push_block",
+      "pos": [
+        196,
+        56
+      ],
+      "props": {
+        "variant": "slag",
+        "cooled": false,
+        "size": [
+          16,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "plate_r7_1",
+      "kind": "pressure_plate",
+      "pos": [
+        178,
+        88
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "size": [
+          20,
+          20
+        ],
+        "hold": true,
+        "latch": false,
+        "persist": false,
+        "target_id": "gate_r7_all"
+      }
+    },
+    {
+      "id": "plate_r7_b1",
+      "kind": "pressure_plate",
+      "pos": [
+        196,
+        88
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "size": [
+          20,
+          20
+        ],
+        "hold": true,
+        "latch": false,
+        "persist": false,
+        "target_id": "gate_r7_all"
+      }
+    },
+    {
+      "id": "crate_r7_2",
+      "kind": "push_block",
+      "pos": [
+        136,
+        200
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ],
+        "persist": false
+      }
+    },
+    {
+      "id": "slag_r7_2",
+      "kind": "push_block",
+      "pos": [
+        196,
+        228
+      ],
+      "props": {
+        "variant": "slag",
+        "cooled": false,
+        "size": [
+          16,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "plate_r7_2",
+      "kind": "pressure_plate",
+      "pos": [
+        178,
+        200
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "size": [
+          20,
+          20
+        ],
+        "hold": true,
+        "latch": false,
+        "persist": false,
+        "target_id": "gate_r7_all"
+      }
+    },
+    {
+      "id": "grate_r7_skip",
+      "kind": "grate",
+      "pos": [
+        440,
+        56
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "coupler_r7_skip",
+      "kind": "car_coupler",
+      "pos": [
+        472,
+        72
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_id": "door_r7_orb_gate",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r7_orb_gate",
+      "kind": "door",
+      "pos": [
+        440,
+        152
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "coupler_r7_skip"
+        ]
+      }
+    },
+    {
+      "id": "orb_r7_light",
+      "kind": "carry_orb",
+      "pos": [
+        384,
+        224
+      ],
+      "props": {
+        "kind": "light",
+        "persist": false
+      }
+    },
+    {
+      "id": "plate_r7_orb",
+      "kind": "pressure_plate",
+      "pos": [
+        512,
+        152
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "size": [
+          28,
+          28
+        ],
+        "hold": true,
+        "latch": false,
+        "persist": false,
+        "target_id": "gate_r7_all"
+      }
+    },
+    {
+      "id": "gate_r7_all",
+      "kind": "logic_gate",
+      "pos": [
+        368,
+        64
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_r7_1",
+          "plate_r7_b1",
+          "plate_r7_2",
+          "plate_r7_orb"
+        ],
+        "target_id": "door_r7_north",
+        "sets_flag": "col_left_lock",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r7_north",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          64,
+          16
+        ],
+        "requires_signals": [
+          "gate_r7_all"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        264
+      ],
+      "props": {
+        "zone": "col_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_nw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        48
+      ],
+      "props": {
+        "zone": "col_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        144
+      ],
+      "props": {
+        "zone": "col_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_ne",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        96
+      ],
+      "props": {
+        "zone": "col_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_se",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        224
+      ],
+      "props": {
+        "zone": "col_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        56
+      ],
+      "props": {
+        "zone": "col_r7",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r7_slime",
+      "kind": "slag_slime",
+      "pos": [
+        432,
+        248
+      ],
+      "route": [
+        [
+          400,
+          248
+        ],
+        [
+          456,
+          248
+        ]
+      ],
+      "zone": "col_r7",
+      "leash": 88
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        112,
+        72,
+        144,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        112,
+        184,
+        144,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        368,
+        136,
+        144,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        232,
+        32,
+        80,
+        48
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 20,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "iron_chain_hoist",
+      "pos": [
+        216,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        144,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "slag_ingot_stack",
+      "pos": [
+        144,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        360,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        504,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "steam_valve_wheel",
+      "pos": [
+        496,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "col_r7_chain_snap",
+      "on": "signal:gate_r7_all",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "col_left_lock"
+        },
+        {
+          "shake": 0.2
+        },
+        {
+          "narrate": {
+            "id": "ISL6_COL_LOCK_L",
+            "style": "narration",
+            "duration": 2.8
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Left Shoulder Winch master tilt puzzle: anchored by Heat-Boots, bounce Blue off twin transformers to quench two molten slag bumpers, position them to catch both sliding crates on Right Step, bank a Skip bolt around the iron screen to open the orb shutter, and drop the light orb onto the east groove so all plates lock on ONE Right Step, snapping the West Shoulder Chain!",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Heat-Boots + dual cooled slag bumpers + Skip bank shot + sliding carry_orb synchronized on one giant stride",
+    "decisions": 10,
+    "expert_s": 60,
+    "reward": "col_left_lock+open_r9_west",
+    "why": "Peak stride-physics puzzle uniting slag cooling, Skip wall-ricochet, and Heat-Boots stability.",
+    "exit": "exit_r7_north",
+    "start": {
+      "flags": [
+        "piston_marshal_defeated",
+        "item_heat_boots",
+        "temper_skip_known"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          88,
+          112
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": "tf_r7_cool_n",
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "slag_r7_1",
+        "prop": "cooled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          176
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": "tf_r7_cool_s",
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "slag_r7_2",
+        "prop": "cooled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "wait_until",
+        "target": "stride_r7_cam",
+        "prop": "stride_side",
+        "value": -1,
+        "timeout": 8.0
+      },
+      {
+        "op": "push",
+        "target": "slag_r7_1",
+        "to": [
+          196,
+          88
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "wait_until",
+        "target": "stride_r7_cam",
+        "prop": "stride_side",
+        "value": -1,
+        "timeout": 8.0
+      },
+      {
+        "op": "push",
+        "target": "slag_r7_2",
+        "to": [
+          196,
+          200
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          284
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r7_skip"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          408,
+          72
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          440,
+          32
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r7_orb_gate",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "carry",
+        "target": "orb_r7_light",
+        "action": "pickup"
+      },
+      {
+        "op": "carry",
+        "target": "orb_r7_light",
+        "action": "drop",
+        "to": [
+          416,
+          152
+        ]
+      },
+      {
+        "op": "wait_until",
+        "flag": "col_left_lock",
+        "timeout": 10.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r7_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_north"
+      }
+    ]
+  }
+}

@@ -103,7 +103,7 @@
       "id": "bell_toll_r1_d",
       "kind": "bell",
       "pos": [
-        104,
+        96,
         152
       ],
       "props": {
@@ -138,8 +138,8 @@
       "id": "lamp_tr1_w",
       "kind": "road_lamp",
       "pos": [
-        120,
-        136
+        112,
+        128
       ],
       "props": {
         "zone": "toll_rigging",
@@ -235,8 +235,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "iron_chain_winch",
       "pos": [
-        96,
-        176
+        64,
+        136
       ],
       "layer": "sort",
       "flip_x": false,

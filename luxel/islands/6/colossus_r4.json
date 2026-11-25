@@ -1,0 +1,600 @@
+{
+  "id": "colossus_r4",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "isl6_colossus",
+  "ambience": [
+    "forge_rumble",
+    "ember_crackle"
+  ],
+  "name_key": "ISL6_COL_R4",
+  "spawn": [
+    40,
+    168
+  ],
+  "zones": [
+    {
+      "id": "col_r4",
+      "name_key": "ISL6_COL_R4",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "colossus_r3",
+      "to_spawn": [
+        464,
+        152
+      ]
+    },
+    {
+      "id": "exit_r4_north",
+      "rect": [
+        336,
+        0,
+        48,
+        16
+      ],
+      "to_region": "colossus_r5",
+      "to_spawn": [
+        256,
+        280
+      ],
+      "locked_door_id": "door_r4_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r4_west",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "emit_r4_north",
+      "kind": "beam_emitter",
+      "pos": [
+        136,
+        72
+      ],
+      "props": {
+        "dir": "s",
+        "color": "gold",
+        "period": 0.0,
+        "range": 320.0
+      }
+    },
+    {
+      "id": "rotor_r4_knee",
+      "kind": "rotor",
+      "pos": [
+        136,
+        152
+      ],
+      "props": {
+        "size": [
+          64,
+          64
+        ],
+        "quarter_on_signal": true,
+        "start_quarter": 0,
+        "persist": true
+      }
+    },
+    {
+      "id": "tf_r4_rotor",
+      "kind": "blue_transformer",
+      "pos": [
+        136,
+        152
+      ],
+      "props": {
+        "angle_deg": 45.0,
+        "rotatable": false,
+        "movable": false
+      }
+    },
+    {
+      "id": "plate_r4_rotor",
+      "kind": "pressure_plate",
+      "pos": [
+        88,
+        224
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "rotor_r4_knee"
+      }
+    },
+    {
+      "id": "grate_r4_window",
+      "kind": "grate",
+      "pos": [
+        232,
+        152
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "sensor_r4_cool",
+      "kind": "beam_sensor",
+      "pos": [
+        280,
+        152
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "pass_through": true,
+        "persist": true,
+        "target_id": "slag_r4_bumper"
+      }
+    },
+    {
+      "id": "slag_r4_bumper",
+      "kind": "push_block",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "variant": "slag",
+        "cooled": false,
+        "size": [
+          16,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "stride_r4_cam",
+      "kind": "colossus_stride_cam",
+      "pos": [
+        280,
+        264
+      ],
+      "props": {
+        "step_period": 4.4,
+        "axis": "x",
+        "shake_amp": 0.06,
+        "tilt_group_ids": [
+          "tilt_r4_track"
+        ]
+      }
+    },
+    {
+      "id": "tilt_r4_track",
+      "kind": "tilt_group",
+      "pos": [
+        352,
+        208
+      ],
+      "props": {
+        "size": [
+          176,
+          32
+        ],
+        "axis": "e",
+        "strength": 92.0
+      }
+    },
+    {
+      "id": "crate_r4_weight",
+      "kind": "push_block",
+      "pos": [
+        296,
+        208
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ],
+        "persist": false
+      }
+    },
+    {
+      "id": "plate_r4_crate",
+      "kind": "pressure_plate",
+      "pos": [
+        358,
+        208
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "size": [
+          20,
+          20
+        ],
+        "hold": true,
+        "latch": false,
+        "persist": false,
+        "target_id": "gate_r4_all"
+      }
+    },
+    {
+      "id": "plate_r4_bumper",
+      "kind": "pressure_plate",
+      "pos": [
+        376,
+        208
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "size": [
+          20,
+          20
+        ],
+        "hold": true,
+        "latch": false,
+        "persist": false,
+        "target_id": "gate_r4_all"
+      }
+    },
+    {
+      "id": "gate_r4_all",
+      "kind": "logic_gate",
+      "pos": [
+        424,
+        120
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_r4_crate",
+          "plate_r4_bumper"
+        ],
+        "target_ids": [
+          "door_r4_north",
+          "door_r4_vault"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r4_vault",
+      "kind": "door",
+      "pos": [
+        280,
+        80
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r4_all"
+        ]
+      }
+    },
+    {
+      "id": "key_r4_col1",
+      "kind": "wick_key",
+      "pos": [
+        280,
+        48
+      ],
+      "props": {
+        "dungeon_id": "iron_colossus",
+        "key_kind": "wick_key",
+        "flag_id": "col_key_1"
+      }
+    },
+    {
+      "id": "door_r4_north",
+      "kind": "door",
+      "pos": [
+        360,
+        72
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "gate_r4_all"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        128
+      ],
+      "props": {
+        "zone": "col_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        248
+      ],
+      "props": {
+        "zone": "col_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_mid",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        120
+      ],
+      "props": {
+        "zone": "col_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_ne",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        64
+      ],
+      "props": {
+        "zone": "col_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_se",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        264
+      ],
+      "props": {
+        "zone": "col_r4",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        136,
+        152
+      ],
+      "radius": 44,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        272,
+        192,
+        160,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        256,
+        24,
+        48,
+        48
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        376,
+        152
+      ],
+      "radius": 22,
+      "glow": true
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        184,
+        248
+      ],
+      "radius": 20,
+      "style": "soot"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        72,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        200,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "steam_valve_wheel",
+      "pos": [
+        432,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "slag_ingot_stack",
+      "pos": [
+        328,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "pressure_gauge_dial",
+      "pos": [
+        328,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        280,
+        208
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Quarter-turn the Kneecap Rotor Gear so its mounted Blue Transformer redirects the north furnace beam through the iron window to quench a molten slag block into solid basalt; push the cooled slag onto the east bumper plate so the giant's Right Step catches the sliding crate dead-center on the adjacent plate, opening the Shoulder Key Vault and Knee Lift!",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "rotor + blue_transformer + beam_emitter cooling molten slag into a planted tilt bumper",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "col_key_1+open_r5",
+    "why": "Signature clockwork-meets-stride puzzle showing cooled basalt resists tilting while crates slide against it.",
+    "exit": "exit_r4_north",
+    "solution": [
+      {
+        "op": "stand_on",
+        "target": "plate_r4_rotor",
+        "secs": 0.7
+      },
+      {
+        "op": "wait_until",
+        "target": "slag_r4_bumper",
+        "prop": "cooled",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          376,
+          128
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "push",
+        "target": "slag_r4_bumper",
+        "to": [
+          376,
+          208
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          336,
+          168
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "gate_r4_all",
+        "prop": "powered",
+        "value": true,
+        "timeout": 8.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r4_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "key_r4_col1"
+      },
+      {
+        "op": "expect",
+        "flag": "col_key_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_north"
+      }
+    ]
+  }
+}

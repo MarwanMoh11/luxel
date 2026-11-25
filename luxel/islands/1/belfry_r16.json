@@ -34,8 +34,8 @@
       ],
       "to_region": "belfry_r15",
       "to_spawn": [
-        368,
-        48
+        400,
+        56
       ]
     },
     {
@@ -191,7 +191,7 @@
       "id": "lamp_r16_nw",
       "kind": "road_lamp",
       "pos": [
-        120,
+        96,
         72
       ],
       "props": {
@@ -215,8 +215,8 @@
       "id": "lamp_r16_se",
       "kind": "road_lamp",
       "pos": [
-        264,
-        264
+        344,
+        248
       ],
       "props": {
         "zone": "belfry_metronome",
@@ -311,7 +311,7 @@
       "prop": "small_bronze_gear",
       "pos": [
         368,
-        224
+        240
       ],
       "layer": "sort",
       "flip_x": true,

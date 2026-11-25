@@ -7,8 +7,8 @@
   "name_key": "ISL1_BF_MAINSPRING",
   "music": "island1_dungeon",
   "spawn": [
-    272,
-    336
+    256,
+    304
   ],
   "zones": [
     {
@@ -17,8 +17,8 @@
       "rect": [
         0,
         0,
-        544,
-        384
+        512,
+        352
       ],
       "dark": true
     }
@@ -27,14 +27,14 @@
     {
       "id": "exit_r11_south",
       "rect": [
-        256,
-        368,
+        240,
+        336,
         32,
         16
       ],
       "to_region": "belfry_r5",
       "to_spawn": [
-        224,
+        288,
         48
       ]
     },
@@ -42,7 +42,7 @@
       "id": "exit_r11_west",
       "rect": [
         0,
-        176,
+        160,
         16,
         32
       ],
@@ -55,8 +55,8 @@
     {
       "id": "exit_r11_east",
       "rect": [
-        528,
-        176,
+        496,
+        160,
         16,
         32
       ],
@@ -69,7 +69,7 @@
     {
       "id": "exit_r11_north",
       "rect": [
-        256,
+        240,
         0,
         32,
         16
@@ -92,8 +92,8 @@
       "id": "ws_belfry_f2",
       "kind": "waystone",
       "pos": [
-        272,
-        192
+        256,
+        176
       ],
       "props": {
         "zone": "belfry_mainspring",
@@ -104,12 +104,12 @@
       "id": "hand_r11_bridge",
       "kind": "clock_hand",
       "pos": [
-        272,
-        192
+        256,
+        176
       ],
       "props": {
         "hand": "bridge",
-        "length": 152,
+        "length": 136,
         "width": 28,
         "start_deg": 180,
         "dusk_freezable": false,
@@ -124,8 +124,8 @@
       "id": "bell_r11_dawn",
       "kind": "bell",
       "pos": [
-        232,
-        224
+        224,
+        200
       ],
       "props": {
         "tone": "dawn",
@@ -136,8 +136,8 @@
       "id": "bell_r11_war",
       "kind": "bell",
       "pos": [
-        312,
-        224
+        288,
+        200
       ],
       "props": {
         "tone": "war",
@@ -148,8 +148,8 @@
       "id": "lore_r11",
       "kind": "lore_stone",
       "pos": [
-        272,
-        240
+        256,
+        216
       ],
       "props": {
         "string_id": "ISL1_BF_LORE_R11",
@@ -160,7 +160,7 @@
       "id": "door_r11_north",
       "kind": "door",
       "pos": [
-        272,
+        256,
         24
       ],
       "props": {
@@ -181,8 +181,8 @@
       "id": "lamp_r11_s",
       "kind": "road_lamp",
       "pos": [
-        240,
-        336
+        224,
+        304
       ],
       "props": {
         "zone": "belfry_mainspring",
@@ -193,8 +193,8 @@
       "id": "lamp_r11_c1",
       "kind": "road_lamp",
       "pos": [
-        232,
-        160
+        224,
+        152
       ],
       "props": {
         "zone": "belfry_mainspring",
@@ -205,8 +205,8 @@
       "id": "lamp_r11_c2",
       "kind": "road_lamp",
       "pos": [
-        312,
-        160
+        288,
+        152
       ],
       "props": {
         "zone": "belfry_mainspring",
@@ -218,7 +218,7 @@
       "kind": "road_lamp",
       "pos": [
         64,
-        192
+        176
       ],
       "props": {
         "zone": "belfry_mainspring",
@@ -229,8 +229,8 @@
       "id": "lamp_r11_e",
       "kind": "road_lamp",
       "pos": [
-        480,
-        192
+        448,
+        176
       ],
       "props": {
         "zone": "belfry_mainspring",
@@ -241,7 +241,7 @@
       "id": "lamp_r11_n",
       "kind": "road_lamp",
       "pos": [
-        240,
+        224,
         48
       ],
       "props": {
@@ -256,9 +256,9 @@
       "when": "belfry_clock_hand==west",
       "tiles": [
         [
-          6,
-          11,
-          7,
+          8,
+          10,
+          5,
           2,
           "bridge"
         ]
@@ -269,10 +269,10 @@
       "when": "belfry_clock_hand==north",
       "tiles": [
         [
-          16,
-          4,
-          2,
+          15,
           5,
+          2,
+          3,
           "bridge"
         ]
       ]
@@ -282,9 +282,9 @@
       "when": "belfry_clock_hand==east",
       "tiles": [
         [
-          21,
-          11,
-          7,
+          19,
+          10,
+          5,
           2,
           "bridge"
         ]
@@ -295,9 +295,9 @@
       "when": "belfry_clock_hand==south",
       "tiles": [
         [
-          6,
-          11,
-          7,
+          8,
+          10,
+          5,
           2,
           "bridge"
         ]
@@ -308,17 +308,17 @@
     {
       "kind": "circle",
       "pos": [
-        272,
-        192
+        256,
+        176
       ],
-      "radius": 136,
+      "radius": 124,
       "style": "clock"
     },
     {
       "kind": "light_shaft",
       "pos": [
-        272,
-        192
+        256,
+        176
       ],
       "size": [
         64,
@@ -333,8 +333,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "giant_clock_gear",
       "pos": [
-        272,
-        192
+        256,
+        176
       ],
       "layer": "ground",
       "flip_x": false,
@@ -345,19 +345,7 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "belfry_beam_brace",
       "pos": [
-        224,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_great_toll_shaft",
-      "prop": "belfry_beam_brace",
-      "pos": [
-        320,
+        288,
         48
       ],
       "layer": "sort",
@@ -369,11 +357,23 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "iron_pulley_wheel",
       "pos": [
-        304,
-        344
+        288,
+        312
       ],
       "layer": "sort",
       "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        64,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
       "shadow": true,
       "phase": 0.0
     }
@@ -381,7 +381,7 @@
   "events": [],
   "triggers": [],
   "design": {
-    "idea": "Floor 2 Circular Mainspring Rotunda (Hub #2): ring Dawn (CW) and War (CCW) rim bells to rotate the colossal brass clock-hand bridge between West (r10), North (r14), and East (r12).",
+    "idea": "Floor 2 Cruciform Mainspring Rotunda (Hub #2): ring Dawn (CW) and War (CCW) rim bells to rotate the colossal brass clock-hand bridge between West (r10), North (r14), and East (r12).",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Controlling a world-var rotating central hub bridge via Dawn (CW) and War (CCW) bells.",
@@ -399,8 +399,8 @@
       {
         "op": "goto",
         "to": [
-          272,
-          216
+          256,
+          200
         ]
       },
       {
@@ -414,8 +414,8 @@
       {
         "op": "shoot",
         "from": [
-          256,
-          224
+          248,
+          200
         ],
         "target": "bell_r11_dawn"
       },
@@ -426,8 +426,8 @@
       {
         "op": "shoot",
         "from": [
-          256,
-          224
+          248,
+          200
         ],
         "target": "bell_r11_dawn"
       },

@@ -1,0 +1,535 @@
+{
+  "id": "mausoleum_r3",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "music": "isl4_mausoleum",
+  "name_key": "ISL4_MS_R3",
+  "spawn": [
+    224,
+    232
+  ],
+  "zones": [
+    {
+      "id": "ms_r3_colonnade",
+      "name_key": "ISL4_MS_R3",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ms_r3_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r2",
+      "to_spawn": [
+        336,
+        56
+      ]
+    },
+    {
+      "id": "exit_ms_r3_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "mausoleum_r4",
+      "to_spawn": [
+        240,
+        264
+      ],
+      "locked_door_id": "door_ms_r3_north"
+    },
+    {
+      "id": "exit_ms_r3_east",
+      "rect": [
+        432,
+        128,
+        16,
+        32
+      ],
+      "to_region": "mausoleum_r7",
+      "to_spawn": [
+        56,
+        144
+      ],
+      "requires_flags": [
+        "ms_drain_shortcut"
+      ],
+      "locked_door_id": "door_ms_r3_drain"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_ms_r3",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        232
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wheel_ms_r3",
+      "kind": "weather_wheel",
+      "pos": [
+        232,
+        152
+      ],
+      "props": {
+        "scope": "dungeon:rain_mausoleum",
+        "start": "rain",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "e"
+      }
+    },
+    {
+      "id": "sync_ms_r3",
+      "kind": "ms_weather_sync",
+      "pos": [
+        216,
+        200
+      ],
+      "props": {}
+    },
+    {
+      "id": "door_ms_r3_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "ms_r3_colonnade"
+      }
+    },
+    {
+      "id": "door_ms_r3_drain",
+      "kind": "door",
+      "pos": [
+        424,
+        144
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "ms_drain_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "zone": "ms_r3_colonnade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "zone": "ms_r3_colonnade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        152
+      ],
+      "props": {
+        "zone": "ms_r3_colonnade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        152
+      ],
+      "props": {
+        "zone": "ms_r3_colonnade",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "rf_r3_w",
+      "kind": "rain_frog",
+      "pos": [
+        72,
+        152
+      ],
+      "zone": "ms_r3_colonnade",
+      "route": [
+        [
+          72,
+          120
+        ],
+        [
+          104,
+          184
+        ]
+      ],
+      "leash": 135
+    },
+    {
+      "id": "rf_r3_e",
+      "kind": "rain_frog",
+      "pos": [
+        344,
+        56
+      ],
+      "zone": "ms_r3_colonnade",
+      "route": [
+        [
+          328,
+          56
+        ],
+        [
+          360,
+          88
+        ]
+      ],
+      "leash": 135
+    },
+    {
+      "id": "eel_r3_w",
+      "kind": "mist_eel",
+      "pos": [
+        120,
+        168
+      ],
+      "zone": "ms_r3_colonnade",
+      "route": [
+        [
+          152,
+          88
+        ],
+        [
+          152,
+          200
+        ]
+      ],
+      "leash": 135
+    },
+    {
+      "id": "eel_r3_e",
+      "kind": "mist_eel",
+      "pos": [
+        104,
+        88
+      ],
+      "zone": "ms_r3_colonnade",
+      "route": [
+        [
+          152,
+          88
+        ],
+        [
+          296,
+          104
+        ]
+      ],
+      "leash": 135
+    }
+  ],
+  "layers": [
+    {
+      "id": "sun_dry_canals",
+      "when": "weather==sun",
+      "tiles": [
+        [
+          8,
+          4,
+          3,
+          4,
+          "ground"
+        ],
+        [
+          8,
+          10,
+          3,
+          3,
+          "ground"
+        ],
+        [
+          17,
+          5,
+          3,
+          3,
+          "ground"
+        ],
+        [
+          17,
+          10,
+          3,
+          2,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ms_r3_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ms_r3_cleared"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        152
+      ],
+      "radius": 28,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        88,
+        184
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        360,
+        104
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        232,
+        232
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        104,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        344,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "bronze_drain_gargoyle",
+      "pos": [
+        120,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "bronze_drain_gargoyle",
+      "pos": [
+        328,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        184,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        264,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        264,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "carved_sarcophagus",
+      "pos": [
+        56,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Asymmetric H-shaped Flooded Colonnade with twin eel canals: spin the central Weather Wheel from RAIN to SUN mid-battle to drain the canals, strand both Mist Eels for 2x damage, and shrink both Rain Frogs before they nudge the wheel back!",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Active weather counterplay in combat: SUN strands Mist Eels and shrinks Rain Frogs.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "ms_r3_cleared",
+    "why": "First West Wing combat arena pairing Rain Frogs and Mist Eels around a live Weather Wheel.",
+    "exit": "exit_ms_r3_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          184
+        ],
+        "tol": 12
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          184
+        ],
+        "target": "wheel_ms_r3"
+      },
+      {
+        "op": "wait",
+        "secs": 0.32
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          184
+        ],
+        "target": "wheel_ms_r3"
+      },
+      {
+        "op": "expect",
+        "var": "weather==sun"
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "expect",
+        "flag": "ms_r3_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ms_r3_north"
+      }
+    ]
+  }
+}

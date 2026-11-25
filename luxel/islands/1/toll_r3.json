@@ -369,8 +369,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "iron_chain_winch",
       "pos": [
-        48,
-        168
+        56,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -382,7 +382,7 @@
       "prop": "iron_chain_winch",
       "pos": [
         400,
-        168
+        176
       ],
       "layer": "sort",
       "flip_x": true,

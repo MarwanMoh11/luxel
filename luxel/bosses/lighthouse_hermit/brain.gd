@@ -25,9 +25,9 @@ const BEAM_REVERSE_TIME: float = 0.52
 const LAMP_CRACK_DURATION: float = 4.50
 const LAMP_CRACK_MULT: float = 1.50
 const TIDE_START_R: float = 10.0
-const TIDE_MAX_R: float = 62.0
-const TIDE_BAND: float = 10.0
-const BEAM_BURN_RANGE: float = 62.0
+const TIDE_MAX_R: float = 56.0
+const TIDE_BAND: float = 9.0
+const BEAM_BURN_RANGE: float = 56.0
 
 # Compat fields referenced by tests/luxel/boss_qa_capture.gd
 var active_move: int = BossMove.NONE
@@ -67,14 +67,14 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 120.0
-	hp = 120.0
+	max_hp = 116.0
+	hp = 116.0
 	body_radius = 9.0
 	move_speed = 36.0
 	stagger_threshold = 15.0
 	stagger_duration = 1.50
 	punish_dmg_mult = 1.30
-	post_recover_cd = 0.28
+	post_recover_cd = 0.34
 	shard_drop = 38
 	intro_duration = 0.65
 	phase_shift_duration = 0.70
@@ -90,12 +90,12 @@ func _configure_boss(_spec: Dictionary) -> void:
 	if _arena == null:
 		_arena = ArenaFx.new(self)
 	if world_ctx != null and str(world_ctx.get("current_region_id")) == "lighthouse_r10":
-		arena_rect = Rect2(144.0, 96.0, 176.0, 112.0)
+		arena_rect = Rect2(144.0, 88.0, 176.0, 104.0)
 	configure_phases([0.66, 0.33])
 
 	# Attack 1: Sweeping Lamp Beam — reflects off LxMirrors into blue overcharge ray (+ P3 Counter-Spin!)
 	register_attack("lamp_beam_sweep", {
-		"weight": 1.30, "tell": 0.62, "commit": 0.68, "recover": 1.20, "cooldown": 1.60,
+		"weight": 1.30, "tell": 0.62, "commit": 0.68, "recover": 1.22, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = BossMove.LAMP_BEAM
 			_beam_stage = BeamStage.SWEEP_1
@@ -120,59 +120,58 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if phase >= 3:
 				state_timer = BEAM_SWEEP_TIME + BEAM_REVERSE_PAUSE + BEAM_REVERSE_TIME
 			var aim_v: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, aim_v, 3, 0.58, 138.0, {"color": "gold", "source": "lamp_beam_bolt", "damage": 0.5})
+			patterns.emit_fan(pos, aim_v, 3, 0.72, 124.0, {"color": "gold", "source": "lamp_beam_bolt", "damage": 0.5})
 			_boss_impact(0.16, 78.0, 72.0)
 			stage.play_sfx("hermit_beam_sweep", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, el: float) -> void:
 			_step_lamp_beam_commit(dt, el),
 	})
 
-	# Attack 2: Fresnel Prism Barrage — targeted lens-flare rain + perimeter pressure + golden fan
+	# Attack 2: Fresnel Prism Barrage — targeted lens-flare rain + perimeter pressure + prism lance
 	register_attack("fresnel_prism_barrage", {
-		"weight": 1.20, "tell": 0.56, "commit": 0.34, "recover": 1.05, "cooldown": 1.50,
+		"weight": 1.20, "tell": 0.58, "commit": 0.34, "recover": 1.12, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = BossMove.NONE
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _aim_dir.angle()
-			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 24.0, 0.5, "gold", "coral")
-			ground.warn_lane(pos, pos + _aim_dir * 58.0, 8.0, last_tell_duration, 0.0, "sky", "gold")
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 22.0, 0.5, "gold", "coral")
+			ground.warn_lane(pos, pos + _aim_dir * 54.0, 7.5, last_tell_duration, 0.0, "sky", "gold")
 			stage.play_sfx("hermit_beam_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 2 else 3, 0.78, 138.0, {"color": "gold", "source": "fresnel_bolt", "damage": 0.5})
-			patterns.emit_lane(pos, _aim_dir, 3, 148.0, 0.08, {"color": "sky", "source": "fresnel_lance", "damage": 0.5})
+			patterns.emit_lane(pos, _aim_dir, 3, 134.0, 0.09, {"color": "sky", "source": "fresnel_lance", "damage": 0.5})
 			stage.shake(0.15)
 			stage.play_sfx("hermit_tide_fire", pos),
 	})
 
 	# Attack 3: Lantern Shell Slam — surging shell lunge + gap ring of brine bolts
 	register_attack("lantern_shell_slam", {
-		"weight": 1.15, "tell": 0.54, "commit": 0.36, "recover": 1.10, "cooldown": 1.45,
+		"weight": 1.15, "tell": 0.56, "commit": 0.34, "recover": 1.15, "cooldown": 1.60,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = BossMove.NONE
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _aim_dir.angle()
-			ground.warn_lane(pos, pos + _aim_dir * 60.0, 10.0, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_lane(pos, pos + _aim_dir * 56.0, 9.0, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("warden_swing", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 118.0, gap_a, 0.85, {"color": "sky", "source": "shell_slam_ring", "damage": 0.5})
-			patterns.emit_lane(pos, _aim_dir, 2, 140.0, 0.10, {"color": "ice", "source": "shell_slam_bolt", "damage": 0.5})
+			patterns.emit_gap_ring(pos, 10, 114.0, gap_a, 0.90, {"color": "sky", "source": "shell_slam_ring", "damage": 0.5})
+			patterns.emit_lane(pos, _aim_dir, 2, 128.0, 0.12, {"color": "ice", "source": "shell_slam_bolt", "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
-			move_boss(_aim_dir * 104.0 * dt, false)
-			check_contact_damage(body_radius + 11.0, _aim_dir, 0.5, "shell_slam"),
+			move_boss(_aim_dir * 96.0 * dt, false)
+			check_contact_damage(body_radius + 10.0, _aim_dir, 0.5, "shell_slam"),
 	})
 
 	# Attack 4 (P2/P3): Tide Ring + Interactive Buoy Mines
 	register_attack("tide_ring_mines", {
-		"phases": [2, 3], "weight": 1.75, "tell": 0.58, "commit": 0.34, "recover": 1.20, "cooldown": 1.55,
+		"phases": [2, 3], "weight": 1.75, "tell": 0.58, "commit": 0.34, "recover": 1.22, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = BossMove.TIDE_RING
 			_tide_progress = 0.0
 			_tide_hit = false
 			ground.warn_ring(pos, TIDE_MAX_R, last_tell_duration, 0.0, "sky", "coral")
-			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.05, 0.5, "coral", "gold")
+			ground.warn_ring(tgt, 22.0, last_tell_duration + 0.06, 0.5, "coral", "gold")
 			stage.play_sfx("hermit_tide_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_tide_progress = 0.0
@@ -180,7 +179,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if _arena != null:
 				_arena.spawn_tide_mines()
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 12, 120.0, gap_a, 0.85, {"color": "ice", "source": "tide_ring_spray", "damage": 0.5})
+			patterns.emit_gap_ring(pos, 12, 116.0, gap_a, 0.90, {"color": "ice", "source": "tide_ring_spray", "damage": 0.5})
 			_boss_impact(0.22, 96.0, 96.0)
 			stage.play_sfx("hermit_tide_fire", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
@@ -189,18 +188,18 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 5 (P3): Whirlpool Shell-Pull — LxFields inward pull drawing Wick & buoy mines inward!
 	register_attack("whirlpool_shell_pull", {
-		"phases": [3], "weight": 2.05, "tell": 0.60, "commit": 0.52, "recover": 1.25, "cooldown": 1.55,
+		"phases": [3], "weight": 2.05, "tell": 0.60, "commit": 0.52, "recover": 1.28, "cooldown": 1.70,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = BossMove.WHIRLPOOL_PULL
 			_pull_hit = false
-			ground.warn_ring(pos, 46.0, last_tell_duration, 0.0, "sky", "coral")
-			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration + 0.06, 22.0, 0.5, "sky", "gold")
+			ground.warn_ring(pos, 44.0, last_tell_duration, 0.0, "sky", "coral")
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration + 0.08, 20.0, 0.5, "sky", "gold")
 			stage.play_sfx("hermit_tide_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_pull_hit = false
 			if _arena != null:
 				_arena.set_pull_active(true)
-			patterns.emit_spiral(pos, 4, 114.0, facing, 0.38, 2, 0.22, {"color": "sky", "source": "whirlpool_spray", "damage": 0.5})
+			patterns.emit_spiral(pos, 4, 108.0, facing, 0.42, 2, 0.24, {"color": "sky", "source": "whirlpool_spray", "damage": 0.5})
 			_boss_impact(0.18, 92.0, 90.0)
 			stage.play_sfx("bellows_inhale", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, _el: float) -> void:
