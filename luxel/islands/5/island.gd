@@ -518,7 +518,7 @@ func _zone_enemies_remaining(zone_id: String, just_killed: Object) -> int:
 	for en: LxEnemyBrain in reg.get_enemies():
 		if en == null or not is_instance_valid(en) or en == just_killed or not en.is_alive():
 			continue
-		if not zone_id.is_empty() and not en.zone_id.is_empty() and en.zone_id != zone_id:
+		if not zone_id.is_empty() and not en.zone.is_empty() and en.zone != zone_id:
 			continue
 		alive += 1
 	return alive

@@ -575,7 +575,7 @@
       },
       {
         "op": "wait",
-        "secs": 6.0
+        "secs": 3.0
       },
       {
         "op": "interact",
