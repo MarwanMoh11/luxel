@@ -9,6 +9,7 @@ var _body: VBoxContainer = null
 var _view: String = "room"
 var _scroll: ScrollContainer = null
 var _showing: String = ""
+var _keep: int = 0
 
 
 func setup(editor: Node) -> void:
@@ -30,12 +31,13 @@ func refresh() -> void:
 	var keep: int = _scroll.scroll_vertical if now == _showing else 0
 	_showing = now
 	_fill_card()
-	_rescroll.call_deferred(keep)
+	_keep = keep
+	if not get_tree().process_frame.is_connected(_rescroll):
+		get_tree().process_frame.connect(_rescroll, CONNECT_ONE_SHOT | CONNECT_DEFERRED)
 
 
-func _rescroll(keep: int) -> void:
-	await get_tree().process_frame
-	_scroll.scroll_vertical = keep
+func _rescroll() -> void:
+	_scroll.scroll_vertical = _keep
 
 
 func _fill_card() -> void:
