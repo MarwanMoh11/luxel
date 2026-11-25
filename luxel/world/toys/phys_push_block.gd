@@ -33,6 +33,16 @@ func _toy_setup() -> void:
 	queue_redraw()
 
 
+func reset_toy() -> void:
+	if persist:
+		return
+	slide_vel = Vector2.ZERO
+	_ext_vel = Vector2.ZERO
+	_flash_t = 0.0
+	cooled = (variant != "slag") or bool(props.get("cooled", false))
+	move_to(origin_pos)
+
+
 func is_solid() -> bool:
 	return active
 

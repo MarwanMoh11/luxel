@@ -11,15 +11,20 @@ extends LxToy
 
 const CLAIMED_FLAG: String = "sanctum_bell_blessing_claimed"
 
+var boss_door_id: String = "door_boss_8"
 var _flash_t: float = 0.0
+var _boss_locked: bool = false
 
 
 func _toy_setup() -> void:
 	kind = "sanctum_bell_chain"
-	radius = 18.0
-	size = Vector2(28.0, 14.0)
+	radius = 22.0
+	size = Vector2(40.0, 14.0)
+	boss_door_id = str(props.get("boss_door_id", "door_boss_8")).strip_edges()
 	_flash_t = 0.0
+	_boss_locked = false
 	powered = _is_bell_rung()
+	_sync_boss_door_lock()
 	queue_redraw()
 
 
@@ -39,12 +44,27 @@ func _sold_count() -> int:
 	return 0
 
 
+func _sync_boss_door_lock() -> void:
+	if region == null or boss_door_id.is_empty():
+		return
+	var bd: LxInteractable = region.find_interactable(boss_door_id)
+	if bd == null or not bd.has_method("set_script_locked"):
+		return
+	var want_lock: bool = active and not _is_bell_rung()
+	if want_lock and not _boss_locked:
+		bd.call("set_script_locked", true)
+		_boss_locked = true
+	elif not want_lock and _boss_locked:
+		bd.call("set_script_locked", false)
+		_boss_locked = false
+
+
 func is_solid() -> bool:
-	return active
+	return active and not _is_bell_rung()
 
 
 func get_solid_rect() -> Rect2:
-	return Rect2(pos + Vector2(-12.0, -4.0), Vector2(24.0, 10.0)) if active else Rect2()
+	return Rect2(pos + Vector2(-20.0, -7.0), Vector2(40.0, 14.0)) if is_solid() else Rect2()
 
 
 func interact(_actor: Node = null) -> bool:
@@ -75,6 +95,7 @@ func interact(_actor: Node = null) -> bool:
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	_sync_boss_door_lock()
 	var rung: bool = _is_bell_rung()
 	if rung and not powered:
 		set_powered(true)
@@ -95,40 +116,69 @@ func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
 	var lit_n: int = int(_has_flag("sanctum_seal_w")) + int(_has_flag("sanctum_seal_e")) + int(_is_bell_rung())
-	return Vector4(pos.x, pos.y - 4.0, 26.0 + float(lit_n) * 9.0, 0.35 + float(lit_n) * 0.16)
+	return Vector4(pos.x, pos.y - 4.0, 30.0 + float(lit_n) * 10.0, 0.42 + float(lit_n) * 0.16)
 
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
+	var c_plum: Color = PAL["plum"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_apricot: Color = PAL["apricot"] as Color
+	var c_coral: Color = PAL["coral"] as Color
 	var c_rose: Color = PAL["rose"] as Color
-	var c_sky: Color = PAL["sky"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var has_w: bool = _has_flag("sanctum_seal_w")
 	var has_e: bool = _has_flag("sanctum_seal_e")
 	var has_b: bool = _is_bell_rung()
 	var sold_n: int = mini(6, _sold_count())
 
-	draw_rect(Rect2(-13.0, -4.0, 26.0, 11.0), c_void)
-	LxToyDraw.draw_bevel_box(self, Rect2(-12.0, -5.0, 24.0, 10.0), c_night, c_dusk, c_gold if has_b else c_sky, c_void)
-	# Left Seal: West Vigil (amber/gold)
-	draw_rect(Rect2(-10.0, -3.0, 5.0, 5.0), c_void)
-	draw_rect(Rect2(-9.0, -2.0, 3.0, 3.0), c_apricot if has_w else c_night)
-	# Center Seal: Great Eclipse Bell (gold/cream)
-	draw_rect(Rect2(-3.0, -4.0, 6.0, 6.0), c_void)
-	draw_rect(Rect2(-2.0, -3.0, 4.0, 4.0), c_gold if has_b else c_dusk)
-	if has_b:
-		draw_rect(Rect2(-1.0, -2.0, 2.0, 2.0), c_cream)
-	# Right Seal: East Rose-Window Seraph (rose)
-	draw_rect(Rect2(5.0, -3.0, 5.0, 5.0), c_void)
-	draw_rect(Rect2(6.0, -2.0, 3.0, 3.0), c_rose if has_e else c_night)
-	# Sold-settings brass pips along lower rim
+	# Left & Right wing-seal stanchion posts framing the boss threshold
+	for side: int in [-1, 1]:
+		var sx: float = float(side) * 18.0
+		draw_rect(Rect2(sx - 4.0, -5.0, 8.0, 12.0), c_void)
+		draw_rect(Rect2(sx - 3.0, -4.0, 6.0, 10.0), c_dusk)
+		draw_rect(Rect2(sx - 2.0, -3.0, 4.0, 8.0), c_plum if has_b else c_night)
+		var seal_on: bool = has_w if side < 0 else has_e
+		var seal_c: Color = (c_apricot if side < 0 else c_rose) if seal_on else c_dusk
+		draw_rect(Rect2(sx - 2.0, -2.0, 4.0, 4.0), c_void)
+		draw_rect(Rect2(sx - 1.0, -1.0, 2.0, 2.0), seal_c)
+		# Wing pointer pips on stanchion cap
+		draw_rect(Rect2(sx - 2.0, -5.0, 4.0, 1.0), c_gold if (has_b or seal_on) else c_mauve)
+
+	if not has_b:
+		# Twin heavy iron chains stretched across the boss archway holding THE SILENT BELL
+		draw_line(Vector2(-15.0, -1.0), Vector2(15.0, -1.0), c_void, 4.0)
+		for cx: int in range(-14, 15, 4):
+			draw_rect(Rect2(float(cx), -2.0, 3.0, 2.0), c_mauve if (cx / 4) % 2 == 0 else c_dusk)
+		# Center darkened Silent Bell emblem (unmistakable silhouette + coral silence bar)
+		draw_rect(Rect2(-8.0, -9.0, 16.0, 16.0), c_void)
+		draw_rect(Rect2(-5.0, -8.0, 10.0, 3.0), c_dusk)
+		draw_rect(Rect2(-6.0, -5.0, 12.0, 7.0), c_dusk)
+		draw_rect(Rect2(-7.0, 2.0, 14.0, 2.0), c_mauve)
+		draw_rect(Rect2(-4.0, -6.0, 2.0, 6.0), c_mauve)
+		draw_rect(Rect2(-1.0, 4.0, 2.0, 2.0), c_night) # silent clapper
+		# Coral silence slash across the silent bell
+		draw_line(Vector2(-6.0, -6.0), Vector2(6.0, 4.0), c_coral, 1.5)
+		# Directional wing arrows (< W | E >) beneath chains
+		draw_rect(Rect2(-12.0, 3.0, 3.0, 1.0), c_apricot if has_w else c_gold)
+		draw_rect(Rect2(9.0, 3.0, 3.0, 1.0), c_rose if has_e else c_gold)
+	else:
+		# Parted chains + radiant golden rung bell crest on left post (path wide open)
+		draw_rect(Rect2(-22.0, -11.0, 8.0, 6.0), c_void)
+		draw_rect(Rect2(-21.0, -10.0, 6.0, 4.0), c_gold)
+		draw_rect(Rect2(-20.0, -9.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(14.0, -11.0, 8.0, 6.0), c_void)
+		draw_rect(Rect2(15.0, -10.0, 6.0, 4.0), c_gold)
+		draw_rect(Rect2(16.0, -9.0, 2.0, 2.0), c_cream)
+
+	# Sold-settings brass pips along lower stanchions
 	for i: int in range(6):
-		var px: float = -10.0 + float(i) * 4.0
-		draw_rect(Rect2(px, 3.0, 2.0, 1.0), c_gold if i < sold_n else c_dusk)
+		var px: float = (-21.0 + float(i) * 2.0) if i < 3 else (15.0 + float(i - 3) * 2.0)
+		draw_rect(Rect2(px, 5.0, 1.0, 1.0), c_gold if i < sold_n else c_dusk)
 	if _flash_t > 0.0:
-		draw_arc(Vector2.ZERO, roundf(lerpf(8.0, 24.0, 1.0 - _flash_t / 0.60)), 0.0, TAU, 18, c_cream, 1.4)
+		var fc: Color = c_cream if has_b else c_coral
+		draw_arc(Vector2.ZERO, roundf(lerpf(8.0, 24.0, 1.0 - _flash_t / 0.60)), 0.0, TAU, 18, fc, 1.4)
 	_draw_signal_pulses()

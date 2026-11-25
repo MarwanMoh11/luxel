@@ -410,6 +410,8 @@ func _draw_ledger() -> void:
 	var weight_str: String = "WT:%d" % sold.get_toll_weight()
 	if _mode == "gate" or _mode == "invoice":
 		weight_str = "WT:%d/%d" % [sold.get_toll_weight(), _min_weight]
+	elif sold.get_sold_count() > 0:
+		weight_str = "SOLD:%d/12  WT:%d" % [sold.get_sold_count(), sold.get_toll_weight()]
 	LxPixelFont.draw(c, weight_str, Vector2(298.0, 16.0), cream, 1, void_c, HORIZONTAL_ALIGNMENT_RIGHT)
 	c.draw_rect(Rect2(20.0, 24.0, 280.0, 1.0), plum)
 
@@ -473,15 +475,29 @@ func _draw_ledger() -> void:
 	c.draw_rect(Rect2(24.0, fy + 2.0, 272.0, 28.0), night)
 	if not _rows.is_empty():
 		var cur: Dictionary = _rows[clampi(_row_idx, 0, _rows.size() - 1)]
+		var cur_sid: String = str(cur.get("id", ""))
+		var cur_sold: bool = sold.is_sold(cur_sid) and _mode != "redemption"
 		var lose_s: String = LxStrings.text(str(cur.get("lose_key", "")))
 		var get_s: String = LxStrings.text(str(cur.get("get_key", "")))
+		var pwr_s: String = LxStrings.text(str(cur.get("power_key", "")))
+		var pwr_col: Color = cream
 		if _mode == "redemption":
 			lose_s = LxStrings.text("ISL8_REDEEM_FREE_LINE")
 			get_s = LxStrings.text("ISL8_REDEEM_KEEP_PWR")
+		elif cur_sold:
+			var redeem_ready: bool = Lx.state != null and bool(Lx.state.story_flags.get("toll_redemption_ready", false))
+			if redeem_ready and not sold.is_redemption_used():
+				pwr_s = LxStrings.text("ISL8_SOLD_BUYBACK_READY")
+				pwr_col = lime
+			elif not sold.is_redemption_used():
+				pwr_s = LxStrings.text("ISL8_SOLD_BUYBACK_HINT")
+				pwr_col = apricot
+			else:
+				pwr_s = LxStrings.text("ISL8_SOLD_UNTIL_DAWN")
+				pwr_col = stone
 		LxPixelFont.draw(c, lose_s, Vector2(28.0, fy + 5.0), coral, 1, void_c)
 		LxPixelFont.draw(c, get_s, Vector2(28.0, fy + 14.0), gold, 1, void_c)
-		var pwr_s: String = LxStrings.text(str(cur.get("power_key", "")))
-		LxPixelFont.draw(c, pwr_s, Vector2(28.0, fy + 22.0), cream, 1, void_c)
+		LxPixelFont.draw(c, pwr_s, Vector2(28.0, fy + 22.0), pwr_col, 1, void_c)
 
 	# Bottom controls / feedback bar (Esc always visible)
 	if _feedback_t > 0.0 and not _feedback_text.is_empty():

@@ -60,8 +60,43 @@ func setup(
 	queue_redraw()
 
 
+func _collect_occluders(ignore_obj: Object = null) -> Array[Rect2]:
+	var rects: Array[Rect2] = []
+	if region == null or not is_instance_valid(region) or not region.has_method("get_interactables"):
+		return rects
+	for it_v: Variant in (region.call("get_interactables") as Array):
+		if not is_instance_valid(it_v) or not (it_v is LxInteractable):
+			continue
+		var it: LxInteractable = it_v as LxInteractable
+		if not it.active or it == ignore_obj:
+			continue
+		if not source_id.is_empty() and it.id == source_id:
+			continue
+		if it.kind in ["tone_door", "bell", "cracked_wall", "tone_coffin", "spinner"]:
+			continue
+		if it.blocks_sight():
+			var sr: Rect2 = it.get_solid_rect()
+			if sr.has_area():
+				rects.append(sr)
+	return rects
+
+
+func _is_wall_at_cached(pt: Vector2, occ_rects: Array[Rect2], has_tile_at: bool) -> bool:
+	if has_tile_at:
+		var tt: String = str(region.call("tile_at", pt))
+		if LxMapFormat.blocks_sight_tile(tt):
+			return true
+	for sr: Rect2 in occ_rects:
+		if sr.has_point(pt):
+			return true
+	return false
+
+
 func _compute_radial_occlusion() -> void:
 	_ray_limits.resize(RAY_COUNT)
+	var valid_reg: bool = region != null and is_instance_valid(region)
+	var has_tile_at: bool = valid_reg and region.has_method("tile_at")
+	var occ_rects: Array[Rect2] = _collect_occluders() if valid_reg else ([] as Array[Rect2])
 	for i: int in range(RAY_COUNT):
 		var a: float = (TAU * float(i)) / float(RAY_COUNT)
 		var dir := Vector2(cos(a), sin(a))
@@ -70,33 +105,10 @@ func _compute_radial_occlusion() -> void:
 		while dist < max_radius:
 			dist += RAY_STEP
 			var pt: Vector2 = origin + dir * dist
-			if _is_wall_at(pt):
+			if valid_reg and _is_wall_at_cached(pt, occ_rects, has_tile_at):
 				limit = maxf(4.0, dist - RAY_STEP * 0.5)
 				break
 		_ray_limits[i] = limit
-
-
-func _is_wall_at(pt: Vector2, ignore_obj: Object = null) -> bool:
-	if region == null or not is_instance_valid(region):
-		return false
-	if region.has_method("tile_at"):
-		var tt: String = str(region.call("tile_at", pt))
-		if LxMapFormat.blocks_sight_tile(tt):
-			return true
-	if region.has_method("get_interactables"):
-		for it_v: Variant in (region.call("get_interactables") as Array):
-			if not is_instance_valid(it_v) or not (it_v is LxInteractable):
-				continue
-			var it: LxInteractable = it_v as LxInteractable
-			if not it.active or it == ignore_obj:
-				continue
-			if not source_id.is_empty() and it.id == source_id:
-				continue
-			if it.kind in ["tone_door", "bell", "cracked_wall", "tone_coffin", "spinner"]:
-				continue
-			if it.blocks_sight() and it.get_solid_rect().has_point(pt):
-				return true
-	return false
 
 
 func is_occluded_to(target_pos: Vector2, target_rad: float, target_obj: Object = null) -> bool:
@@ -104,11 +116,16 @@ func is_occluded_to(target_pos: Vector2, target_rad: float, target_obj: Object =
 	var dist: float = rel.length()
 	if dist <= maxf(4.0, target_rad + 2.0):
 		return false
+	var valid_reg: bool = region != null and is_instance_valid(region)
+	if not valid_reg:
+		return false
+	var has_tile_at: bool = region.has_method("tile_at")
+	var occ_rects: Array[Rect2] = _collect_occluders(target_obj)
 	var dir: Vector2 = rel / dist
 	var stop_at: float = maxf(0.0, dist - maxf(2.0, target_rad * 0.65))
 	var d: float = RAY_STEP
 	while d < stop_at:
-		if _is_wall_at(origin + dir * d, target_obj):
+		if _is_wall_at_cached(origin + dir * d, occ_rects, has_tile_at):
 			return true
 		d += RAY_STEP
 	return false

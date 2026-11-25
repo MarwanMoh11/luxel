@@ -8,6 +8,7 @@ var opened: bool = false
 var lit_level: float = 0.0
 var _direct_lit: bool = false
 var _trans_t: float = 0.0
+var _toggle_cd: float = 0.0
 
 
 func _toy_setup() -> void:
@@ -21,6 +22,7 @@ func _toy_setup() -> void:
 	lit_level = 0.0
 	_direct_lit = false
 	_trans_t = 0.0
+	_toggle_cd = 0.0
 	z_index = -4 if opened else 0
 	queue_redraw()
 
@@ -29,18 +31,26 @@ func reset_toy() -> void:
 	if persist and opened:
 		return
 	_direct_lit = false
+	_toggle_cd = 0.0
 	_evaluate_light(false)
 
 
-func on_light(light_radius: float, _source: String) -> void:
-	if active and light_radius > 0.0:
-		_direct_lit = true
+func on_light(light_radius: float, source: String) -> void:
+	if not active or light_radius <= 0.0:
+		return
+	# Lantern light is already accurately sampled (with distance falloff and self-ignoring LOS)
+	# by LxToyDraw.sample_light_at(); ignoring lantern pushes here prevents edge-distance strobing.
+	if source == "lantern_hand" or source == "lantern_hung":
+		return
+	_direct_lit = true
 
 
 func tick(dt: float) -> void:
 	super.tick(dt)
 	if not active:
 		return
+	if _toggle_cd > 0.0:
+		_toggle_cd = maxf(0.0, _toggle_cd - dt)
 	if _trans_t > 0.0:
 		_trans_t = maxf(0.0, _trans_t - dt)
 		queue_redraw()
@@ -53,8 +63,11 @@ func _evaluate_light(with_sfx: bool) -> void:
 		sampled = maxf(sampled, 0.85)
 		_direct_lit = false
 	lit_level = sampled
-	var want_open: bool = lit_level < threshold
+	var hyst: float = 0.04 if with_sfx else 0.0
+	var want_open: bool = (lit_level < threshold - hyst) if not opened else (lit_level < threshold + hyst)
 	if want_open == opened:
+		return
+	if with_sfx and _toggle_cd > 0.0:
 		return
 	# Anti-crush: never snap shut directly on top of Wick
 	if not want_open and rect_at(pos).grow(4.0).has_point(wick_pos()):
@@ -62,6 +75,7 @@ func _evaluate_light(with_sfx: bool) -> void:
 	opened = want_open
 	powered = opened
 	_trans_t = 0.28
+	_toggle_cd = 0.14 if with_sfx else 0.0
 	z_index = -4 if opened else 0
 	_notify_linked_targets(opened)
 	if with_sfx:

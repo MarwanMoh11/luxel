@@ -17,7 +17,18 @@ func collide_step(wick: LxWick, world_ctx: Node, from_p: Vector2, to_p: Vector2,
 	if ctx.has_method("collide"):
 		var cross_pit: bool = airborne or wick.is_dashing() or wick.is_gliding() or wick.is_zipping() or wick.is_launched()
 		var cross_water: bool = airborne or wick.is_dashing() or wick.is_gliding() or wick.is_zipping() or wick.is_launched()
-		return LxWickFx.collide_with_corner_slide(ctx, from_p, to_p, rad, cross_pit, cross_water)
+		var step_dist: float = from_p.distance_to(to_p)
+		if step_dist <= 3.5:
+			return LxWickFx.collide_with_corner_slide(ctx, from_p, to_p, rad, cross_pit, cross_water)
+		var steps: int = clampi(int(ceilf(step_dist / 3.5)), 2, 16)
+		var cur: Vector2 = from_p
+		var inc: Vector2 = (to_p - from_p) / float(steps)
+		for _i: int in range(steps):
+			var nxt: Vector2 = LxWickFx.collide_with_corner_slide(ctx, cur, cur + inc, rad, cross_pit, cross_water)
+			if nxt.distance_squared_to(cur) < 0.0004:
+				break
+			cur = nxt
+		return cur
 	if ctx.has_method("resolve_move"):
 		return ctx.call("resolve_move", from_p, to_p, rad, airborne) as Vector2
 	if ctx.has_method("collide_step"):

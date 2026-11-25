@@ -170,7 +170,11 @@ static func collide_world(
 					continue
 				var tile_rect := Rect2(float(tx) * ts, float(ty) * ts, ts, ts)
 				if not region._is_tile_supported(ttype, tile_rect.get_center()):
-					p = push_circle_out_of_rect(p, radius, tile_rect)
+					var sl: bool = _is_solid_grid_cell(region, tx - 1, ty, ts, can_cross_pit, can_cross_water)
+					var sr: bool = _is_solid_grid_cell(region, tx + 1, ty, ts, can_cross_pit, can_cross_water)
+					var su: bool = _is_solid_grid_cell(region, tx, ty - 1, ts, can_cross_pit, can_cross_water)
+					var sd: bool = _is_solid_grid_cell(region, tx, ty + 1, ts, can_cross_pit, can_cross_water)
+					p = push_circle_out_of_tile(p, radius, tile_rect, sl, sr, su, sd)
 		for it: LxInteractable in items:
 			if it != null and it.is_solid() and (ignore_id.is_empty() or it.id != ignore_id):
 				if is_flying and it.has_method("blocks_flyer") and not bool(it.call("blocks_flyer")):
@@ -183,7 +187,57 @@ static func collide_world(
 				var er: Rect2 = LxMapFormat.to_rect2(ex.get("rect", []))
 				if er.has_area():
 					p = push_circle_out_of_rect(p, radius, er)
+	p = Vector2(
+		clampf(p.x, b.position.x + radius, maxf(b.position.x + radius, b.end.x - radius)),
+		clampf(p.y, b.position.y + radius, maxf(b.position.y + radius, b.end.y - radius))
+	)
 	return p
+
+
+static func _is_solid_grid_cell(
+	region: LxRegionLoader, tx: int, ty: int, ts: float, can_cross_pit: bool, can_cross_water: bool
+) -> bool:
+	if tx < 0 or ty < 0 or tx >= region.width or ty >= region.height:
+		return true
+	var ttype: String = region.grid[ty][tx]
+	if not region.is_solid_tile(ttype, can_cross_pit, can_cross_water):
+		return false
+	return not region._is_tile_supported(ttype, Vector2((float(tx) + 0.5) * ts, (float(ty) + 0.5) * ts))
+
+
+static func push_circle_out_of_tile(
+	center: Vector2, radius: float, rect: Rect2,
+	solid_l: bool, solid_r: bool, solid_u: bool, solid_d: bool
+) -> Vector2:
+	var closest := Vector2(clampf(center.x, rect.position.x, rect.end.x), clampf(center.y, rect.position.y, rect.end.y))
+	var delta: Vector2 = center - closest
+	var dist_sq: float = delta.length_squared()
+	if dist_sq >= radius * radius:
+		return center
+	if dist_sq > 0.0001:
+		var into_seam: bool = false
+		if absf(delta.x) >= absf(delta.y):
+			into_seam = (delta.x < 0.0 and solid_l) or (delta.x > 0.0 and solid_r)
+		else:
+			into_seam = (delta.y < 0.0 and solid_u) or (delta.y > 0.0 and solid_d)
+		if not into_seam:
+			var d: float = sqrt(dist_sq)
+			return center + (delta / d) * (radius - d)
+	var dl: float = center.x - rect.position.x; var dr: float = rect.end.x - center.x
+	var dt_: float = center.y - rect.position.y; var db: float = rect.end.y - center.y
+	var best_d: float = INF
+	var best_p: Vector2 = center
+	if not solid_l and dl < best_d:
+		best_d = dl; best_p = Vector2(rect.position.x - radius, center.y)
+	if not solid_r and dr < best_d:
+		best_d = dr; best_p = Vector2(rect.end.x + radius, center.y)
+	if not solid_u and dt_ < best_d:
+		best_d = dt_; best_p = Vector2(center.x, rect.position.y - radius)
+	if not solid_d and db < best_d:
+		best_d = db; best_p = Vector2(center.x, rect.end.y + radius)
+	if best_d < INF:
+		return best_p
+	return push_circle_out_of_rect(center, radius, rect)
 
 
 static func can_place_rect_world(region: LxRegionLoader, rect: Rect2, ignore_id: String) -> bool:

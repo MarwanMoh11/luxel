@@ -30,6 +30,21 @@ func _toy_setup() -> void:
 	queue_redraw()
 
 
+func reset_toy() -> void:
+	if persist:
+		return
+	if carrier != null and is_instance_valid(carrier):
+		carrier.drop_carried()
+	carrier = null
+	vel = Vector2.ZERO
+	airborne = false
+	_air_t = 0.0
+	z_index = 0
+	pos = origin_pos
+	position = origin_pos.round()
+	queue_redraw()
+
+
 func interact(actor: Node = null) -> bool:
 	if not active or carrier != null or not (actor is LxWick):
 		return false

@@ -80,16 +80,17 @@ func _draw() -> void:
 	var c_ice: Color = PAL["ice"] as Color
 
 	# Double-winged shadow cast onto north sanctuary wall once twin braziers burn!
-	if _wing_t > 0.02:
-		var span: float = roundf(34.0 * _wing_t)
-		var lift: float = roundf(24.0 * _wing_t)
+	if _wing_t >= 0.25:
+		var span: float = maxf(10.0, roundf(34.0 * _wing_t))
+		var lift: float = maxf(4.0, roundf(24.0 * _wing_t))
+		var inner_x: float = maxf(6.0, span - 6.0)
 		var l_wing := PackedVector2Array([
 			Vector2(-4.0, -14.0), Vector2(-span, -14.0 - lift),
-			Vector2(-span + 6.0, -4.0 - lift * 0.5), Vector2(-5.0, -4.0),
+			Vector2(-inner_x, -4.0 - lift * 0.5), Vector2(-5.0, -4.0),
 		])
 		var r_wing := PackedVector2Array([
 			Vector2(4.0, -14.0), Vector2(span, -14.0 - lift),
-			Vector2(span - 6.0, -4.0 - lift * 0.5), Vector2(5.0, -4.0),
+			Vector2(inner_x, -4.0 - lift * 0.5), Vector2(5.0, -4.0),
 		])
 		draw_colored_polygon(l_wing, Color(c_void, 0.82))
 		draw_colored_polygon(r_wing, Color(c_void, 0.82))
