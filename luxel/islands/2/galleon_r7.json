@@ -479,7 +479,7 @@
     "expert_s": 54,
     "reward": "opens_upper_ship_wings",
     "why": "Signature aha room introducing Ballast Clamp + Foot-Pedal + Ballast Keg synergy immediately after the mini-boss.",
-    "exit": "exit_r7_ne",
+    "exit": "exit_r7_nw",
     "start": {
       "vars": {
         "dungeon:galleon:list": "port"
@@ -572,14 +572,14 @@
       },
       {
         "op": "wait_until",
-        "interactable": "door_r7_ne",
+        "interactable": "door_r7_nw",
         "prop": "opened",
         "value": true,
         "timeout": 3.0
       },
       {
         "op": "expect_exit",
-        "exit": "exit_r7_ne"
+        "exit": "exit_r7_nw"
       }
     ]
   }

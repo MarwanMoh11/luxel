@@ -1,0 +1,356 @@
+{
+  "id": "oak_r9b",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "briar_court",
+  "name_key": "OAK3_R9B_NAME",
+  "music": "island3_combat",
+  "spawn": [
+    48,
+    136
+  ],
+  "zones": [
+    {
+      "id": "oak_r9b",
+      "name_key": "OAK3_R9B_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        128
+      ],
+      "radius": 52,
+      "style": "ritual",
+      "color": "coral",
+      "secondary": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        160,
+        80,
+        128,
+        96
+      ],
+      "color": "apricot"
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r9b_west_r9",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "oak_r9",
+      "to_spawn": [
+        408,
+        184
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [
+    {
+      "id": "cruc_beetle",
+      "kind": "burrow_beetle",
+      "pos": [
+        256,
+        96
+      ],
+      "route": [
+        [
+          224,
+          96
+        ],
+        [
+          288,
+          96
+        ]
+      ],
+      "zone": "oak_r9b",
+      "leash": 150
+    },
+    {
+      "id": "cruc_strangler",
+      "kind": "vine_strangler",
+      "pos": [
+        256,
+        168
+      ],
+      "route": [],
+      "zone": "oak_r9b",
+      "leash": 140
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_oak_r9b",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "spool_r9b_w",
+      "kind": "silk_loom_spool",
+      "pos": [
+        144,
+        48
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r9b_e"
+        ],
+        "conduct_speed": 110.0
+      }
+    },
+    {
+      "id": "spool_r9b_e",
+      "kind": "silk_loom_spool",
+      "pos": [
+        304,
+        48
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r9b_w"
+        ],
+        "conduct_speed": 110.0
+      }
+    },
+    {
+      "id": "lp_r9b_bounce_n",
+      "kind": "light_plant",
+      "pos": [
+        224,
+        64
+      ],
+      "props": {
+        "grow": "bounce",
+        "secs": 0.6,
+        "decay": 5.0,
+        "bounce_dist": 52.0
+      }
+    },
+    {
+      "id": "lp_r9b_bounce_s",
+      "kind": "light_plant",
+      "pos": [
+        224,
+        192
+      ],
+      "props": {
+        "grow": "bounce",
+        "secs": 0.6,
+        "decay": 5.0,
+        "bounce_dist": 52.0
+      }
+    },
+    {
+      "id": "chest_oak_r9b_ember",
+      "kind": "chest",
+      "pos": [
+        392,
+        128
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "requires_flags": [
+          "oak_r9b_cleared"
+        ],
+        "secret_id": "ember_3_crucible"
+      }
+    },
+    {
+      "id": "lamp_r9b_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9b_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        40
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9b_ne",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        40
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9b_se",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_briar_court",
+      "prop": "jousting_lance_rack",
+      "pos": [
+        368,
+        72
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "mossy_shield_plinth",
+      "pos": [
+        368,
+        192
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "petal_drift_floor",
+      "pos": [
+        224,
+        128
+      ],
+      "layer": "ground",
+      "shadow": false
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "oak_r9b_wave2",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "cruc_spider",
+              "kind": "jumping_spider",
+              "pos": [
+                272,
+                112
+              ],
+              "zone": "oak_r9b"
+            },
+            {
+              "id": "cruc_archer",
+              "kind": "thorn_archer",
+              "pos": [
+                336,
+                152
+              ],
+              "zone": "oak_r9b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "oak_r9b_finish",
+      "on": "cleared",
+      "if": "flag:rscr_3_oak_r9b_oak_r9b_wave2",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "oak_r9b_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Optional four-role Island 3 combat crucible inside a circular 3-ring arena: fight Burrow Beetle and Vine Strangler in Wave 1, then Jumping Spider and Thorn Archer in Wave 2 using perimeter silk-fire lines and bounce caps to claim an Ember Piece.",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Full 4-archetype Island 3 role synthesis (tank + strangler -> flanker + shadow-sniper)",
+    "decisions": 8,
+    "expert_s": 58,
+    "reward": "Ember Piece (ember_3_crucible)",
+    "why": "Optional mastery gauntlet rewarding full mastery of Island 3's enemy counters before Briar Matron",
+    "optional": true,
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 90.0
+      },
+      {
+        "op": "wait",
+        "secs": 1.0
+      },
+      {
+        "op": "clear",
+        "timeout": 90.0
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r9b_cleared"
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_oak_r9b_ember"
+      }
+    ]
+  }
+}

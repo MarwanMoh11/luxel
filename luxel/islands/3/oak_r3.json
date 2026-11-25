@@ -31,7 +31,7 @@
       ],
       "to_region": "oak_r2",
       "to_spawn": [
-        344,
+        328,
         88
       ],
       "requires_moves": [],
@@ -54,6 +54,23 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_oak_r3_combat"
+    },
+    {
+      "id": "exit_oak_r3_nw",
+      "rect": [
+        112,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r2b",
+      "to_spawn": [
+        368,
+        120
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [
@@ -61,17 +78,17 @@
       "id": "sporecap_oak_r3",
       "kind": "sporecap",
       "pos": [
-        312,
+        256,
         72
       ],
       "route": [
         [
-          296,
+          240,
           72
         ],
         [
-          344,
-          88
+          280,
+          72
         ]
       ],
       "perches": [],
@@ -83,21 +100,32 @@
       "kind": "gloam",
       "pos": [
         216,
-        168
+        176
       ],
       "route": [
         [
-          168,
-          168
+          184,
+          176
         ],
         [
-          264,
-          152
+          248,
+          176
         ]
       ],
       "perches": [],
       "zone": "oak_r3",
       "leash": 144
+    },
+    {
+      "id": "strangler_oak_r3",
+      "kind": "vine_strangler",
+      "pos": [
+        248,
+        144
+      ],
+      "route": [],
+      "zone": "oak_r3",
+      "leash": 110
     }
   ],
   "interactables": [
@@ -136,34 +164,82 @@
         "clear_zone": "oak_r3",
         "sets_flag": "oak_r3_cleared"
       }
+    },
+    {
+      "id": "anc_oak_r3",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        104
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lp_oak_r3_bounce_n",
+      "kind": "light_plant",
+      "pos": [
+        184,
+        64
+      ],
+      "props": {
+        "grow": "bounce",
+        "secs": 0.6,
+        "decay": 5.0,
+        "bounce_dist": 52.0
+      }
+    },
+    {
+      "id": "lp_oak_r3_bounce_s",
+      "kind": "light_plant",
+      "pos": [
+        296,
+        168
+      ],
+      "props": {
+        "grow": "bounce",
+        "secs": 0.6,
+        "decay": 5.0,
+        "bounce_dist": 52.0
+      }
+    },
+    {
+      "id": "lamp_oak_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r3_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
   "scenery": [
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        72,
-        30
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        312,
-        30
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
-    },
     {
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
@@ -297,5 +373,72 @@
       "phase": 0.4
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R3_NAME",
+  "music": "island3_dungeon",
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        216,
+        112
+      ],
+      "radius": 34,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        312,
+        104
+      ],
+      "radius": 24,
+      "glow": false
+    }
+  ],
+  "design": {
+    "idea": "Deepened Spore Gallery adding Vine Strangler and two Seedlight bounce-caps beside the braziers: lighting braziers simultaneously unmasks the Gloam and blooms bounce-caps to vault Sporecap shockwaves.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Multi-purpose brazier lighting (Gloam unmask + Seedlight bounce-cap bloom) + Vine Strangler tether dash-cut",
+    "decisions": 5,
+    "expert_s": 48,
+    "reward": "oak_r3_cleared + oak_r2b junction",
+    "why": "Upgrades the first Hollow Oak fight with Island 3's new Vine Strangler and bounce flora",
+    "exit": "exit_oak_r3_east",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          184,
+          96
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_oak_r3_n"
+      },
+      {
+        "op": "clear",
+        "timeout": 60.0
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r3_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r3_east"
+      }
+    ]
+  }
 }

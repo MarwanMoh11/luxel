@@ -146,6 +146,7 @@
         "door_kind": "wick_key",
         "dungeon_id": "planetarium",
         "key_kind": "wick_key",
+        "key_id": "pl_key_2",
         "size": [
           16,
           48

@@ -1,0 +1,370 @@
+{
+  "id": "oak_r4b",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "tiny": true,
+  "theme": "under_root",
+  "name_key": "OAK3_R4B_NAME",
+  "music": "isl3_underroot",
+  "spawn": [
+    312,
+    200
+  ],
+  "zones": [
+    {
+      "id": "oak_r4b",
+      "name_key": "OAK3_R4B_NAME",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        176,
+        48
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.15
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        48,
+        120
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        312,
+        120
+      ],
+      "radius": 24,
+      "style": "moss"
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r4b_se_r4",
+      "rect": [
+        288,
+        240,
+        32,
+        16
+      ],
+      "to_region": "oak_r4",
+      "to_spawn": [
+        232,
+        192
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r4b_chute_r2b",
+      "rect": [
+        160,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r2b",
+      "to_spawn": [
+        208,
+        48
+      ],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r4b_chute"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_oak_r4b",
+      "kind": "room_anchor",
+      "pos": [
+        312,
+        200
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "stump_oak_r4b_normal",
+      "kind": "stump_shrink",
+      "pos": [
+        304,
+        216
+      ],
+      "props": {
+        "to_region": "oak_r4",
+        "to_spawn": [
+          232,
+          192
+        ],
+        "target_size": "normal"
+      }
+    },
+    {
+      "id": "beetle_r4b_tame",
+      "kind": "beetle_mount",
+      "pos": [
+        296,
+        152
+      ],
+      "props": {
+        "tame": true,
+        "dir": "w",
+        "speed": 90.0
+      }
+    },
+    {
+      "id": "dew_r4b_lens",
+      "kind": "dew_lens",
+      "pos": [
+        64,
+        152
+      ],
+      "props": {
+        "movable": true,
+        "rail_axis": "y",
+        "focus_range": 180.0
+      }
+    },
+    {
+      "id": "knot_r4b_sap",
+      "kind": "dry_root_knot",
+      "pos": [
+        176,
+        48
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "persist": true,
+        "sets_flag": "oak_r4b_knot_burned",
+        "target_id": "door_oak_r4b_chute"
+      }
+    },
+    {
+      "id": "door_oak_r4b_chute",
+      "kind": "door",
+      "pos": [
+        176,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "knot_r4b_sap"
+        ]
+      }
+    },
+    {
+      "id": "chest_oak_r4b_ember",
+      "kind": "chest",
+      "pos": [
+        232,
+        48
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "requires_flags": [
+          "oak_r4b_knot_burned"
+        ],
+        "secret_id": "ember_3_oak_tiny"
+      }
+    },
+    {
+      "id": "lamp_r4b_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        120
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4b_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4b_n",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        328,
+        64
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        48,
+        184
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        264,
+        48
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        328,
+        184
+      ],
+      "layer": "sort",
+      "shadow": false
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Optional tiny crawlspace inside the Hollow Oak's bark: ride a tame beetle west across the 11-tile golden sap river, roll the dew lens north into the ceiling sun-crack line, and focus a dew_ray to melt the dry sap-knot guarding an Ember Piece and Cycle 3 chute back to oak_r2b.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Tiny-scale beetle sap-ferry + dew_lens ray alignment inside Hollow Oak",
+    "decisions": 6,
+    "expert_s": 52,
+    "reward": "Ember Piece + Cycle 3 chute to oak_r2b",
+    "why": "Synthesizes Under-Root's tiny scale and beetle mount inside the Grand Dungeon",
+    "exit": "exit_oak_r4b_chute_r2b",
+    "start": {
+      "vars": {
+        "size": "tiny"
+      },
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "mount",
+        "target": "beetle_r4b_tame"
+      },
+      {
+        "op": "glide",
+        "to": [
+          80,
+          152
+        ],
+        "secs": 3.0,
+        "timeout": 5.5,
+        "tol": 6.0
+      },
+      {
+        "op": "dismount",
+        "to": [
+          64,
+          184
+        ]
+      },
+      {
+        "op": "push",
+        "target": "dew_r4b_lens",
+        "to": [
+          64,
+          48
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          44,
+          48
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "shoot",
+        "target": "dew_r4b_lens"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "knot_r4b_sap",
+        "prop": "burned",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          60
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_oak_r4b_ember"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r4b_chute_r2b"
+      }
+    ]
+  }
+}

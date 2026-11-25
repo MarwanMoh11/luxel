@@ -71,8 +71,8 @@
       "id": "cw_pend_gear",
       "kind": "cracked_wall",
       "pos": [
-        312,
-        144
+        304,
+        160
       ],
       "props": {
         "size": [
@@ -87,8 +87,8 @@
       "id": "eye_pend_gear",
       "kind": "switch_eye",
       "pos": [
-        336,
-        144
+        320,
+        160
       ],
       "props": {
         "target_id": "door_pend_unjam",
@@ -389,8 +389,8 @@
       {
         "op": "goto",
         "to": [
-          240,
-          216
+          256,
+          208
         ]
       },
       {

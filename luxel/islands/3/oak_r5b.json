@@ -1,0 +1,410 @@
+{
+  "id": "oak_r5b",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_3",
+  "name_key": "OAK3_R5B_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    48,
+    184
+  ],
+  "zones": [
+    {
+      "id": "oak_r5b",
+      "name_key": "OAK3_R5B_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        32,
+        288,
+        80
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        104,
+        184
+      ],
+      "radius": 24,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        352,
+        88
+      ],
+      "radius": 28,
+      "style": "moss"
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r5b_west",
+      "rect": [
+        0,
+        160,
+        16,
+        48
+      ],
+      "to_region": "oak_r5",
+      "to_spawn": [
+        352,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r5b_east",
+      "rect": [
+        432,
+        128,
+        16,
+        48
+      ],
+      "to_region": "oak_r6",
+      "to_spawn": [
+        248,
+        48
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r5b_east"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_oak_r5b",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        184
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bramble_r5b_1",
+      "kind": "bramble",
+      "pos": [
+        88,
+        184
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "cracked_r5b_1",
+      "kind": "cracked_wall",
+      "pos": [
+        128,
+        120
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "t_r5b_blue",
+      "kind": "blue_transformer",
+      "pos": [
+        128,
+        88
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "hook_r5b_shade",
+      "kind": "lantern_hook",
+      "pos": [
+        176,
+        176
+      ],
+      "props": {}
+    },
+    {
+      "id": "pw_r5b_1",
+      "kind": "light_plant",
+      "pos": [
+        168,
+        120
+      ],
+      "props": {
+        "grow": "wall",
+        "secs": 0.6,
+        "decay": 1.6,
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "pb_r5b_2",
+      "kind": "light_plant",
+      "pos": [
+        200,
+        88
+      ],
+      "props": {
+        "grow": "bridge",
+        "secs": 0.7,
+        "decay": 3.0,
+        "size": [
+          112,
+          32
+        ]
+      }
+    },
+    {
+      "id": "pw_r5b_3",
+      "kind": "light_plant",
+      "pos": [
+        304,
+        88
+      ],
+      "props": {
+        "grow": "wall",
+        "secs": 0.6,
+        "decay": 3.0,
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "sensor_r5b_blue",
+      "kind": "switch_eye",
+      "pos": [
+        368,
+        88
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "door_oak_r5b_east",
+        "sets_flag": "oak_r5b_solved"
+      }
+    },
+    {
+      "id": "door_oak_r5b_east",
+      "kind": "door",
+      "pos": [
+        424,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "sensor_r5b_blue"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5b_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5b_ne",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5b_se",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_monolith",
+      "pos": [
+        56,
+        88
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        352,
+        40
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        112,
+        216
+      ],
+      "layer": "sort",
+      "shadow": false
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        272,
+        160
+      ],
+      "layer": "sort",
+      "shadow": false
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Beam plus light-starving mastery test: slice bramble and crack stone exposing the Blue Transformer, hang your lantern behind the central pillar so thorn-wall 1 wilts, then bank a Blue Piercing Beam that frost-pins the 7-tile pit bridge AND pierces thorn-wall 3 straight into the blue eye.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Blue Piercing Beam frost-pinning a seedlight bridge while piercing a thorn wall",
+    "decisions": 7,
+    "expert_s": 54,
+    "reward": "Direct upper entry to oak_r6 Spore Crown",
+    "why": "Tests newly acquired Beam with Island 3's Seedlight starving and blue frost-pin rules",
+    "exit": "exit_oak_r5b_east",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          56,
+          184
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "bramble_r5b_1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          176
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "cracked_r5b_1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          176
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r5b_shade"
+      },
+      {
+        "op": "wait",
+        "secs": 0.6
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "rotate",
+        "target": "t_r5b_blue",
+        "angle": 135
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "t_r5b_blue"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r5b_solved"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r5b_east"
+      }
+    ]
+  }
+}

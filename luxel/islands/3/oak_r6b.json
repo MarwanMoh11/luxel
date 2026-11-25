@@ -1,0 +1,433 @@
+{
+  "id": "oak_r6b",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "under_root",
+  "name_key": "OAK3_R6B_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    208,
+    240
+  ],
+  "zones": [
+    {
+      "id": "oak_r6b",
+      "name_key": "OAK3_R6B_NAME",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        144
+      ],
+      "radius": 44,
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        192,
+        128,
+        48
+      ],
+      "color": "jade"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        208,
+        120
+      ],
+      "size": [
+        52,
+        80
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r6b_south",
+      "rect": [
+        192,
+        272,
+        32,
+        16
+      ],
+      "to_region": "oak_r6",
+      "to_spawn": [
+        248,
+        216
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r6b_west_r7",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "oak_r7",
+      "to_spawn": [
+        208,
+        200
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r6b_east_r7b",
+      "rect": [
+        400,
+        128,
+        16,
+        48
+      ],
+      "to_region": "oak_r7b",
+      "to_spawn": [
+        48,
+        144
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r6b_north_r8b",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r8b",
+      "to_spawn": [
+        48,
+        144
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [
+        "oak_r8b_bridge_sc"
+      ],
+      "locked_door_id": "door_oak_r6b_north_sc"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_oak_r6b",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sap_valve_r6b",
+      "kind": "sap_clock",
+      "pos": [
+        144,
+        216
+      ],
+      "props": {
+        "mode": "valve",
+        "scope": "dungeon:hollow_oak",
+        "var": "oak_sap",
+        "shootable": true
+      }
+    },
+    {
+      "id": "bramble_r6b_ctrl",
+      "kind": "bramble",
+      "pos": [
+        240,
+        216
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "rotor_ctrl_r6b",
+      "kind": "oak_sap_rotor_ctrl",
+      "pos": [
+        272,
+        216
+      ],
+      "props": {
+        "rotor_id": "rotor_r6b_ring",
+        "var_name": "hub_rot",
+        "scope": "room:3:oak_r6b",
+        "sap_scope": "dungeon:hollow_oak"
+      }
+    },
+    {
+      "id": "rotor_r6b_ring",
+      "kind": "rotor",
+      "pos": [
+        208,
+        144
+      ],
+      "props": {
+        "size": [
+          64,
+          64
+        ],
+        "quarter_on_signal": true,
+        "start_quarter": 0
+      }
+    },
+    {
+      "id": "door_oak_r6b_north_sc",
+      "kind": "door",
+      "pos": [
+        208,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "oak_r8b_bridge_sc"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r6b_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        240
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6b_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6b_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6b_n",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        208,
+        48
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        112,
+        208
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        304,
+        208
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        56,
+        184
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        360,
+        184
+      ],
+      "layer": "sort",
+      "shadow": true
+    }
+  ],
+  "layers": [
+    {
+      "id": "hub_east",
+      "when": "oak_sap==high && hub_rot==1",
+      "tiles": [
+        [
+          15,
+          8,
+          5,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "hub_west",
+      "when": "oak_sap==high && hub_rot==0",
+      "tiles": [
+        [
+          6,
+          8,
+          5,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Multi-level Inner Trunk Sap Hub: slice the bramble guarding the Sap Rotor prism, flood oak_sap high to lubricate the 4-way Growth-Ring Rotor, and spin it between East (oak_r7b Moving Chamber, 0 keys!) and West (oak_r7 Sap-Silk Loom) while teasing the Cycle 6 north balcony from oak_r8b.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Sap-lubricated Growth-Ring Rotor hub routing to East and West wings without key deadlocks",
+    "decisions": 8,
+    "expert_s": 56,
+    "reward": "Access to oak_r7b (Moving Chamber) & oak_r7 + Cycle 6 balcony",
+    "why": "Central heartwood turntable unifying Hollow Oak's upper wings with zero key deadlock",
+    "exit": "exit_oak_r6b_east_r7b",
+    "start": {
+      "vars": {
+        "oak_sap": "low",
+        "hub_rot": 0
+      },
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          192,
+          216
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "bramble_r6b_ctrl"
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          232
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "sap_valve_r6b"
+      },
+      {
+        "op": "expect",
+        "var": "oak_sap==high"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          232
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "rotor_ctrl_r6b"
+      },
+      {
+        "op": "expect",
+        "var": "hub_rot==1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r6b_east_r7b"
+      }
+    ]
+  }
+}

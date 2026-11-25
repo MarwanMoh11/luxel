@@ -1,0 +1,471 @@
+{
+  "id": "oak_r2b",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_3",
+  "name_key": "OAK3_R2B_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    208,
+    208
+  ],
+  "zones": [
+    {
+      "id": "oak_r2b",
+      "name_key": "OAK3_R2B_NAME",
+      "rect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        192,
+        168
+      ],
+      "radius": 28,
+      "style": "moss"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        296,
+        120
+      ],
+      "radius": 22,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        64,
+        96
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        88
+      ],
+      "size": [
+        44,
+        68
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r2b_south",
+      "rect": [
+        192,
+        240,
+        32,
+        16
+      ],
+      "to_region": "oak_r2",
+      "to_spawn": [
+        208,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r2b_east",
+      "rect": [
+        400,
+        96,
+        16,
+        48
+      ],
+      "to_region": "oak_r3",
+      "to_spawn": [
+        120,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r2b_east"
+    },
+    {
+      "id": "exit_oak_r2b_west_sc",
+      "rect": [
+        0,
+        96,
+        16,
+        48
+      ],
+      "to_region": "oak_r1",
+      "to_spawn": [
+        40,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r2b_west_sc"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_oak_r2b",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        208
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sap_valve_r2b",
+      "kind": "sap_clock",
+      "pos": [
+        208,
+        168
+      ],
+      "props": {
+        "mode": "valve",
+        "scope": "dungeon:hollow_oak",
+        "var": "oak_sap",
+        "shootable": true
+      }
+    },
+    {
+      "id": "push_r2b_amber",
+      "kind": "push_block",
+      "pos": [
+        248,
+        120
+      ],
+      "props": {
+        "variant": "crate"
+      }
+    },
+    {
+      "id": "plate_r2b_sap",
+      "kind": "pressure_plate",
+      "pos": [
+        312,
+        120
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_id": "door_oak_r2b_east",
+        "sets_flag": "oak_sap_unlocked"
+      }
+    },
+    {
+      "id": "door_oak_r2b_east",
+      "kind": "door",
+      "pos": [
+        392,
+        120
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "plate_r2b_sap"
+        ]
+      }
+    },
+    {
+      "id": "hook_r2b_south",
+      "kind": "lantern_hook",
+      "pos": [
+        224,
+        192
+      ],
+      "props": {}
+    },
+    {
+      "id": "sg_r2b_west",
+      "kind": "shadow_gate",
+      "pos": [
+        120,
+        120
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "sw_r2b_sc",
+      "kind": "switch_eye",
+      "pos": [
+        72,
+        48
+      ],
+      "props": {
+        "target_id": "door_oak_r2b_west_sc",
+        "sets_flag": "oak_r2b_shortcut"
+      }
+    },
+    {
+      "id": "door_oak_r2b_west_sc",
+      "kind": "door",
+      "pos": [
+        24,
+        120
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "sw_r2b_sc"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r2b_s",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        208
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2b_ne",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2b_se",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        368,
+        44
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        184,
+        216
+      ],
+      "layer": "sort",
+      "shadow": false
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        312,
+        168
+      ],
+      "layer": "sort",
+      "shadow": false
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "mossy_stump",
+      "pos": [
+        64,
+        160
+      ],
+      "layer": "sort",
+      "shadow": true
+    }
+  ],
+  "layers": [
+    {
+      "id": "sap_high",
+      "when": "oak_sap==high",
+      "tiles": [
+        [
+          17,
+          6,
+          2,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "sap_low",
+      "when": "oak_sap==low",
+      "tiles": [
+        [
+          6,
+          6,
+          3,
+          4,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Introduces the Hollow Oak Sap Clock: flood sap high to float an amber bridge so you can push the crate onto the east pressure plate, then drain sap low and hang your lantern south to slip dark past the shadow gate and unbar Cycle 1 back to oak_r1.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Sap Clock valve (oak_sap high/low), floating bridges, shadow-gate shortcut",
+    "decisions": 5,
+    "expert_s": 52,
+    "reward": "oak_sap_unlocked + Cycle 1 shortcut to oak_r1",
+    "why": "Teaches the Hollow Oak's signature macro state variable safely before inner trunk puzzles",
+    "exit": "exit_oak_r2b_east",
+    "start": {
+      "vars": {
+        "oak_sap": "low"
+      },
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          208,
+          192
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "sap_valve_r2b"
+      },
+      {
+        "op": "expect",
+        "var": "oak_sap==high"
+      },
+      {
+        "op": "push",
+        "target": "push_r2b_amber",
+        "to": [
+          312,
+          120
+        ]
+      },
+      {
+        "op": "expect",
+        "flag": "oak_sap_unlocked"
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          192
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "sap_valve_r2b"
+      },
+      {
+        "op": "expect",
+        "var": "oak_sap==low"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          192
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r2b_south"
+      },
+      {
+        "op": "goto",
+        "to": [
+          80,
+          112
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "sw_r2b_sc"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r2b_shortcut"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r2b_east"
+      }
+    ]
+  }
+}

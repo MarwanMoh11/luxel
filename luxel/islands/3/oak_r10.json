@@ -32,7 +32,7 @@
       "to_region": "oak_r9",
       "to_spawn": [
         224,
-        40
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -46,17 +46,17 @@
         16,
         48
       ],
-      "to_island": 4,
       "to_region": "overworld",
       "to_spawn": [
-        216,
-        560
+        352,
+        168
       ],
       "requires_moves": [],
       "requires_flags": [
         "island_3_relit"
       ],
-      "locked_door_id": "bridge_of_light_3_r10"
+      "locked_door_id": "bridge_of_light_3_r10",
+      "one_way": true
     }
   ],
   "enemies": [
@@ -193,6 +193,67 @@
           "island_3_relit"
         ]
       }
+    },
+    {
+      "id": "anc_oak_r10",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lp_oak_r10_bounce_nw",
+      "kind": "light_plant",
+      "pos": [
+        128,
+        104
+      ],
+      "props": {
+        "grow": "bounce",
+        "secs": 0.6,
+        "decay": 5.0,
+        "bounce_dist": 56.0
+      }
+    },
+    {
+      "id": "lp_oak_r10_bounce_se",
+      "kind": "light_plant",
+      "pos": [
+        352,
+        184
+      ],
+      "props": {
+        "grow": "bounce",
+        "secs": 0.6,
+        "decay": 5.0,
+        "bounce_dist": 56.0
+      }
+    },
+    {
+      "id": "lamp_oak_r10_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r10_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [
@@ -256,30 +317,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        56,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        376,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
     },
     {
       "sheet": "island3_scenery",
@@ -354,5 +391,97 @@
       "phase": 0.7
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R10_NAME",
+  "music": "island3_boss_p1",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        144
+      ],
+      "radius": 62,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "lime"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        144
+      ],
+      "radius": 34,
+      "style": "mosaic",
+      "color": "apricot",
+      "secondary": "cream"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        88
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "tint": "warm",
+      "shear": 0.12
+    }
+  ],
+  "design": {
+    "idea": "Deepened Hollow Crown Keeper Boss arena for migrated Briar Matron (LB345): two Seedlight bounce-bulbs vault P1 Spore Rings, P2 carves concentric Growth-Ring trenches with Beam chain-burn silk snares, P3 awakens Heartwood Sun-Bloom, and relighting Great Lamp 3 returns Wick to relit Thornwood Hollow plaza (D43).",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "3-phase Keeper boss synthesis (bounce vault + Beam snare chain-burn + Sun-Bloom ambush reveal)",
+    "decisions": 9,
+    "expert_s": 135,
+    "reward": "Full Heart + great_lamp_3 + island_3_relit",
+    "why": "Grand Dungeon climax relighting Thornwood Hollow before walking the relit overworld Bridge of Light to Island 4",
+    "exit": "exit_oak_r10_island4",
+    "start": {
+      "flags": [
+        "keepers_flame_3"
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "expect",
+        "flag": "boss_briar_matron_defeated"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          72
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "great_lamp_3"
+      },
+      {
+        "op": "expect",
+        "flag": "island_3_relit"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r10_island4"
+      }
+    ]
+  }
 }

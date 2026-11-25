@@ -32,7 +32,7 @@
       "to_region": "oak_r7",
       "to_spawn": [
         160,
-        56
+        64
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -54,6 +54,48 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_oak_r8_combat"
+    },
+    {
+      "id": "exit_oak_r8_east_r7b",
+      "rect": [
+        400,
+        144,
+        16,
+        48
+      ],
+      "to_region": "oak_r7b",
+      "to_spawn": [
+        144,
+        48
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [
+        "oak_r7_loom_open"
+      ],
+      "locked_door_id": "door_oak_r8_east_r7b"
+    },
+    {
+      "id": "exit_oak_r8_ne_r8b",
+      "rect": [
+        320,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r8b",
+      "to_spawn": [
+        224,
+        240
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [
+        "oak_r8_cleared"
+      ],
+      "locked_door_id": "door_oak_r8_ne_r8b"
     }
   ],
   "enemies": [
@@ -61,17 +103,17 @@
       "id": "bramble_knight_oak_r8",
       "kind": "bramble_knight",
       "pos": [
-        152,
-        88
+        112,
+        136
       ],
       "route": [
         [
-          128,
-          72
+          112,
+          136
         ],
         [
-          184,
-          104
+          160,
+          136
         ]
       ],
       "perches": [],
@@ -82,22 +124,33 @@
       "id": "gloam_oak_r8",
       "kind": "gloam",
       "pos": [
-        312,
+        264,
         120
       ],
       "route": [
         [
-          312,
-          104
+          248,
+          120
         ],
         [
-          344,
-          136
+          280,
+          120
         ]
       ],
       "perches": [],
       "zone": "oak_r8",
       "leash": 148
+    },
+    {
+      "id": "archer_oak_r8",
+      "kind": "thorn_archer",
+      "pos": [
+        80,
+        56
+      ],
+      "route": [],
+      "zone": "oak_r8",
+      "leash": 120
     }
   ],
   "interactables": [
@@ -135,6 +188,103 @@
         "zone": "oak_r8",
         "clear_zone": "oak_r8",
         "sets_flag": "oak_r8_cleared"
+      }
+    },
+    {
+      "id": "anc_oak_r8",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "pw_oak_r8_mid",
+      "kind": "light_plant",
+      "pos": [
+        208,
+        120
+      ],
+      "props": {
+        "grow": "wall",
+        "secs": 0.7,
+        "decay": 3.5,
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_oak_r8_east_r7b",
+      "kind": "door",
+      "pos": [
+        392,
+        168
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "oak_r7_loom_open"
+        ]
+      }
+    },
+    {
+      "id": "door_oak_r8_ne_r8b",
+      "kind": "door",
+      "pos": [
+        336,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "oak_r8_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lamp_oak_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r8_nw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        136
+      ],
+      "props": {
+        "lit": true
       }
     }
   ],
@@ -202,18 +352,6 @@
     },
     {
       "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        280,
-        108
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island3_scenery",
       "prop": "hanging_spore_lantern",
       "pos": [
         152,
@@ -273,5 +411,73 @@
       "phase": 0.4
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R8_NAME",
+  "music": "island3_dungeon",
+  "decor": [
+    {
+      "kind": "cracks",
+      "pos": [
+        224,
+        128
+      ],
+      "radius": 32,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        144,
+        152
+      ],
+      "radius": 24,
+      "style": "moss"
+    }
+  ],
+  "design": {
+    "idea": "Deepened Bramble Bastion: pairs Bramble Knight and Gloam with a shadow-reloading Thorn Archer and a central Seedlight thorn-wall divider \u2014 throw lantern to jam the Archer and expose Gloam, then pierce both thorn-wall and Knight shield in one Solar Beam.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Lantern-throw bow jamming + Beam piercing thorn-wall & Bramble Knight guard",
+    "decisions": 8,
+    "expert_s": 52,
+    "reward": "oak_r8_cleared + Cycle 5 oak_r7b lookout + oak_r8b Canopy Split",
+    "why": "Escalates Hollow Oak combat by adding Thorn Archer and Seedlight cover around the Bastion",
+    "exit": "exit_oak_r8_north",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          160,
+          160
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_oak_r8_w"
+      },
+      {
+        "op": "clear",
+        "timeout": 75.0
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r8_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r8_north"
+      }
+    ]
+  }
 }

@@ -53,6 +53,23 @@
       ],
       "requires_moves": [],
       "requires_flags": [],
+      "locked_door_id": "door_oak_r2_east"
+    },
+    {
+      "id": "exit_oak_r2_north",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r2b",
+      "to_spawn": [
+        208,
+        208
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
       "locked_door_id": ""
     }
   ],
@@ -60,7 +77,7 @@
   "interactables": [
     {
       "id": "mirror_oak_r2",
-      "kind": "mirror",
+      "kind": "blue_transformer",
       "pos": [
         152,
         56
@@ -88,7 +105,11 @@
         "requires_blue": true,
         "requires_prism": true,
         "target_id": "door_oak_r2_vault",
-        "sets_flag": "oak_r2_root_open"
+        "sets_flag": "oak_r2_root_open",
+        "target_ids": [
+          "door_oak_r2_vault",
+          "door_oak_r2_east"
+        ]
       }
     },
     {
@@ -121,6 +142,111 @@
         "key_kind": "wick_key",
         "flag_id": "wick_key_3_1"
       }
+    },
+    {
+      "id": "anc_oak_r2",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "door_oak_r2_east",
+      "kind": "door",
+      "pos": [
+        360,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_oak_r2"
+        ]
+      }
+    },
+    {
+      "id": "hook_oak_r2_s",
+      "kind": "lantern_hook",
+      "pos": [
+        168,
+        160
+      ],
+      "props": {}
+    },
+    {
+      "id": "pw_oak_r2_n",
+      "kind": "light_plant",
+      "pos": [
+        208,
+        56
+      ],
+      "props": {
+        "grow": "wall",
+        "secs": 0.7,
+        "decay": 2.0,
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "pb_oak_r2_gap",
+      "kind": "light_plant",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "grow": "bridge",
+        "secs": 0.6,
+        "decay": 4.0,
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_oak_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r2_vault",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        160
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -148,30 +274,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        328,
-        60
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        328,
-        140
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
     },
     {
       "sheet": "island3_scenery",
@@ -294,5 +396,139 @@
       "phase": 0.8
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R2_NAME",
+  "music": "island3_dungeon",
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        128,
+        32,
+        64,
+        64
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        192,
+        160
+      ],
+      "radius": 28,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        208,
+        64
+      ],
+      "size": [
+        40,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "layers": [
+    {
+      "id": "sap_high_raft",
+      "when": "oak_sap==high",
+      "tiles": [
+        [
+          5,
+          6,
+          3,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Deepened Knotwork Root Cavern: upgraded Blue Transformer + Seedlight bridge/thorn-wall + south lantern hook + north branch into oak_r2b Sap Sluice; bank Blue Prism off the transformer into switch_eye_oak_r2 to unseal wick_key_3_1 and the east passage to oak_r3.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Blue Transformer refraction, lantern-hook thorn starving, oak_r2b sap branch",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "wick_key_3_1 + oak_r2b access",
+    "why": "Rebuilds legacy L_min=2 puzzle into a layered Seedlight + Prism key chamber",
+    "exit": "exit_oak_r2_east",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          160
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_oak_r2_s"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_oak_r2",
+        "angle": 135
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          112
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "mirror_oak_r2"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r2_root_open"
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          184
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_3_1"
+      },
+      {
+        "op": "expect",
+        "key": "wick_key_3_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r2_east"
+      }
+    ]
+  }
 }

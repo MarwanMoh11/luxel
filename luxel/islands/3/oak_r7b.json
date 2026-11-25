@@ -1,0 +1,603 @@
+{
+  "id": "oak_r7b",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "briar_court",
+  "name_key": "OAK3_R7B_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    48,
+    144
+  ],
+  "zones": [
+    {
+      "id": "oak_r7b",
+      "name_key": "OAK3_R7B_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        144
+      ],
+      "radius": 58,
+      "style": "clock",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        96,
+        192,
+        96
+      ],
+      "color": "apricot"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        144
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.15
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r7b_west_r6b",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "oak_r6b",
+      "to_spawn": [
+        368,
+        144
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r7b_nw_r8",
+      "rect": [
+        128,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r8",
+      "to_spawn": [
+        368,
+        168
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [
+        "oak_r7_loom_open"
+      ],
+      "locked_door_id": "door_oak_r7b_nw_sc"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_oak_r7b",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "chamber_ctrl_r7b",
+      "kind": "oak_moving_chamber",
+      "pos": [
+        240,
+        144
+      ],
+      "props": {
+        "dark_secs": 1.2,
+        "hook_ids": [
+          "hook_r7b_n",
+          "hook_r7b_e",
+          "hook_r7b_s",
+          "hook_r7b_w"
+        ],
+        "var_name": "ring_rot",
+        "scope": "room:3:oak_r7b"
+      }
+    },
+    {
+      "id": "hook_r7b_n",
+      "kind": "lantern_hook",
+      "pos": [
+        240,
+        40
+      ],
+      "props": {}
+    },
+    {
+      "id": "hook_r7b_e",
+      "kind": "lantern_hook",
+      "pos": [
+        424,
+        144
+      ],
+      "props": {}
+    },
+    {
+      "id": "hook_r7b_s",
+      "kind": "lantern_hook",
+      "pos": [
+        240,
+        240
+      ],
+      "props": {}
+    },
+    {
+      "id": "hook_r7b_w",
+      "kind": "lantern_hook",
+      "pos": [
+        72,
+        144
+      ],
+      "props": {}
+    },
+    {
+      "id": "cracked_r7b_vault",
+      "kind": "cracked_wall",
+      "pos": [
+        240,
+        184
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "wick_key_3_3",
+      "kind": "wick_key",
+      "pos": [
+        240,
+        144
+      ],
+      "props": {
+        "dungeon_id": "hollow_oak",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_3_3"
+      }
+    },
+    {
+      "id": "t_r7b_prism",
+      "kind": "blue_transformer",
+      "pos": [
+        184,
+        144
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "eye_r7b_exit",
+      "kind": "switch_eye",
+      "pos": [
+        184,
+        48
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "door_oak_r7b_nw_sc",
+        "sets_flag": "oak_r7b_solved"
+      }
+    },
+    {
+      "id": "door_oak_r7b_nw_sc",
+      "kind": "door",
+      "pos": [
+        144,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "eye_r7b_exit"
+        ],
+        "requires_flags": [
+          "oak_r7_loom_open"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r7b_nw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7b_ne",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7b_sw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        240
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7b_se",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        240
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_briar_court",
+      "prop": "heraldic_court_banner",
+      "pos": [
+        192,
+        38
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "heraldic_court_banner",
+      "pos": [
+        288,
+        38
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "mossy_shield_plinth",
+      "pos": [
+        56,
+        88
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "mossy_shield_plinth",
+      "pos": [
+        424,
+        88
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "clipped_rose_urn",
+      "pos": [
+        56,
+        200
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "clipped_rose_urn",
+      "pos": [
+        424,
+        200
+      ],
+      "layer": "sort",
+      "shadow": true
+    }
+  ],
+  "layers": [
+    {
+      "id": "rot_0",
+      "when": "ring_rot==0",
+      "tiles": [
+        [
+          14,
+          4,
+          2,
+          2,
+          "wall"
+        ],
+        [
+          7,
+          8,
+          2,
+          3,
+          "wall"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "cracked_r7b_vault",
+        "wick_key_3_3",
+        "t_r7b_prism"
+      ]
+    },
+    {
+      "id": "rot_1",
+      "when": "ring_rot==1",
+      "tiles": [
+        [
+          21,
+          8,
+          2,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "cracked_r7b_vault",
+        "wick_key_3_3",
+        "t_r7b_prism"
+      ]
+    },
+    {
+      "id": "rot_2",
+      "when": "ring_rot==2",
+      "tiles": [
+        [
+          14,
+          12,
+          2,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "cracked_r7b_vault",
+        "wick_key_3_3"
+      ],
+      "disable": [
+        "t_r7b_prism"
+      ]
+    },
+    {
+      "id": "rot_3",
+      "when": "ring_rot==3",
+      "tiles": [
+        [
+          7,
+          8,
+          2,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "t_r7b_prism"
+      ],
+      "disable": [
+        "cracked_r7b_vault",
+        "wick_key_3_3"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "oak_r7b_hint",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "narrate": "ISL3_OAK_CHAMBER_NOTE"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING ROOM \u2014 The Moving Chamber: the Shifting Woods rule turns inside the Hollow Oak. Hanging your lantern on a cardinal hook leaves the opposite walls dark for 1.2 s so the inner vault rotates 90 deg clockwise! Spin rot 0->1->2 to align Key #3's cracked vault onto the south bridge, Beam it for wick_key_3_3, then spin to rot 3 to align the Blue Transformer and open Cycle 5 into oak_r8.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Intentional darkness-triggered chamber rotation (ring_rot 0..3) + Blue Beam bank",
+    "decisions": 11,
+    "expert_s": 68,
+    "reward": "wick_key_3_3 + Cycle 5 shortcut to oak_r8",
+    "why": "Centerpiece astonishing room turning Island 3's Shifting Wood rule into an indoor puzzle box",
+    "exit": "exit_oak_r7b_nw_r8",
+    "start": {
+      "vars": {
+        "ring_rot": 0
+      },
+      "flags": [
+        "oak_r7_loom_open"
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          240
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r7b_s"
+      },
+      {
+        "op": "wait",
+        "secs": 1.5
+      },
+      {
+        "op": "expect",
+        "var": "ring_rot==1"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          144
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r7b_w"
+      },
+      {
+        "op": "wait",
+        "secs": 1.5
+      },
+      {
+        "op": "expect",
+        "var": "ring_rot==2"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          224
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "cracked_r7b_vault"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          144
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_3_3"
+      },
+      {
+        "op": "expect",
+        "key": "wick_key_3_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          424,
+          144
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r7b_e"
+      },
+      {
+        "op": "wait",
+        "secs": 1.5
+      },
+      {
+        "op": "expect",
+        "var": "ring_rot==3"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "rotate",
+        "target": "t_r7b_prism",
+        "angle": 315
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          144
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "t_r7b_prism"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r7b_solved"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r7b_nw_r8"
+      }
+    ]
+  }
+}

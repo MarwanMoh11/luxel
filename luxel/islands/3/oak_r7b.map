@@ -1,0 +1,33 @@
+# Hollow Oak r7b - The Moving Chamber (30x18, octagonal rotating heartwood vault)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+########,,####################
+#####...,,.................###
+###.....,,..................##
+##..........................##
+##.....OOOOOOOOOOOOOOOO.....##
+##.....OOOOOOOOOOOOOOOO.....##
+##.....OO............OO.....##
+##.....OO............OO.....##
+,,,,...OO............OO.....##
+,,,,...OO............OO.....##
+,,,,...OO............OO.....##
+##.....OO............OO.....##
+##.....OOOOOOOOOOOOOOOO.....##
+##.....OOOOOOOOOOOOOOOO.....##
+##..........................##
+###........................###
+#####....................#####
+##############################

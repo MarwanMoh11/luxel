@@ -75,6 +75,25 @@
         "oak_r5_beam_solved"
       ],
       "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r5_r5b",
+      "rect": [
+        336,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r5b",
+      "to_spawn": [
+        48,
+        184
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r5_blue"
     }
   ],
   "enemies": [],
@@ -204,7 +223,119 @@
         48
       ],
       "props": {
-        "zone": "oak_r5"
+        "zone": "oak_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "anc_oak_r5",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        104
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "cracked_oak_r5_ne",
+      "kind": "cracked_wall",
+      "pos": [
+        312,
+        56
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "t_oak_r5_blue",
+      "kind": "blue_transformer",
+      "pos": [
+        312,
+        36
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "pw_oak_r5_ne",
+      "kind": "light_plant",
+      "pos": [
+        344,
+        36
+      ],
+      "props": {
+        "grow": "wall",
+        "secs": 0.7,
+        "decay": 3.0,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "switch_eye_oak_r5_blue",
+      "kind": "switch_eye",
+      "pos": [
+        392,
+        36
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "door_oak_r5_blue",
+        "sets_flag": "oak_r5_blue_open"
+      }
+    },
+    {
+      "id": "door_oak_r5_blue",
+      "kind": "door",
+      "pos": [
+        352,
+        20
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "switch_eye_oak_r5_blue"
+        ]
+      }
+    },
+    {
+      "id": "lamp_oak_r5_shrine",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r5_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        104
+      ],
+      "props": {
+        "lit": true
       }
     }
   ],
@@ -257,42 +388,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        120,
-        76
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        216,
-        60
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        376,
-        156
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
     },
     {
       "sheet": "island3_scenery",
@@ -355,5 +450,120 @@
       "phase": 0.45
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R5_NAME",
+  "music": "island3_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        104,
+        104
+      ],
+      "radius": 28,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        288,
+        24,
+        112,
+        48
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        104,
+        88
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "design": {
+    "idea": "Deepened Heartwood Beam Shrine: claim Beam, pierce Bramble -> Cracked Wall -> Switch Eye in one glorious shot opening the Cycle 4 return portal and east gate, PLUS crack the NE stone wall to practice Blue Piercing Beam through a thorn-wall into switch_eye_oak_r5_blue unlocking oak_r5b.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Solar Beam piercing B->C->e AND Blue Piercing Beam through living thorn-walls",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "move:beam + Cycle 4 return to oak_r1 + oak_r5b unlock",
+    "why": "Rewrites legacy L_min=2 move shrine to immediately teach Blue Piercing Beam as well",
+    "exit": "exit_oak_r5_east",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          104
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "shrine_beam"
+      },
+      {
+        "op": "expect",
+        "move": "beam"
+      },
+      {
+        "op": "goto",
+        "to": [
+          136,
+          104
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "beam",
+        "target": "switch_eye_oak_r5"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r5_beam_solved"
+      },
+      {
+        "op": "goto",
+        "to": [
+          312,
+          80
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "cracked_oak_r5_ne"
+      },
+      {
+        "op": "beam",
+        "target": "t_oak_r5_blue"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r5_blue_open"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r5_east"
+      }
+    ]
+  }
 }

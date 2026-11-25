@@ -1,0 +1,144 @@
+{
+  "id": "court_r3",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "briar_court",
+  "name_key": "ISL3_COURT_R3_NAME",
+  "music": "island3_boss_p1",
+  "spawn": [256, 240],
+  "zones": [
+    {
+      "id": "court_r3",
+      "name_key": "ISL3_COURT_R3_NAME",
+      "rect": [0, 0, 480, 288],
+      "dark": true
+    }
+  ],
+  "decor": [
+    { "kind": "circle", "pos": [216, 144], "radius": 44, "style": "mosaic", "color": "plum", "secondary": "ice" },
+    { "kind": "inlay", "rect": [64, 48, 288, 192], "color": "stone" },
+    { "kind": "stain", "pos": [416, 72], "radius": 24, "style": "moss" },
+    { "kind": "cracks", "pos": [416, 216], "radius": 22, "glow": true }
+  ],
+  "exits": [
+    {
+      "id": "exit_court_r3_south",
+      "rect": [240, 272, 32, 16],
+      "to_region": "court_r2",
+      "to_spawn": [240, 48],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_court_r3_west_sc",
+      "rect": [0, 128, 16, 48],
+      "to_region": "court_r1",
+      "to_spawn": [368, 104],
+      "requires_moves": [],
+      "requires_flags": ["court_r3_juror_sc"],
+      "locked_door_id": "door_court_r3_sc_w"
+    },
+    {
+      "id": "exit_court_r3_north",
+      "rect": [208, 0, 32, 16],
+      "to_region": "court_r4",
+      "to_spawn": [256, 272],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_court_r3_verdict"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_knight_spindle",
+      "kind": "knight_spindle",
+      "pos": [224, 144],
+      "route": [],
+      "zone": "court_r3",
+      "leash": 0
+    }
+  ],
+  "interactables": [
+    { "id": "anc_court_r3", "kind": "room_anchor", "pos": [256, 240], "props": { "auto": true } },
+    { "id": "lp_r3_mercy_w", "kind": "light_plant", "pos": [144, 144], "props": { "grow": "bounce", "secs": 0.6, "decay": 5.0, "bounce_dist": 56.0 } },
+    { "id": "lp_r3_mercy_e", "kind": "light_plant", "pos": [304, 144], "props": { "grow": "bounce", "secs": 0.6, "decay": 5.0, "bounce_dist": 56.0 } },
+    { "id": "chest_court_r3_fire", "kind": "chest", "pos": [120, 56], "props": { "reward_kind": "shards", "reward": "shards", "amount": 20, "requires_flags": ["court_r3_cleared"] } },
+    { "id": "door_court_r3_sc_w", "kind": "door", "pos": [24, 152], "props": { "door_kind": "shortcut_door", "size": [16, 48], "requires_flags": ["court_r3_juror_sc"] } },
+    { "id": "door_court_r3_combat", "kind": "door", "pos": [376, 152], "props": { "door_kind": "combat_gate", "size": [16, 48], "zone": "court_r3", "clear_zone": "court_r3", "sets_flag": "court_r3_cleared" } },
+    { "id": "brazier_v2_mercy", "kind": "court_verdict_brazier", "pos": [416, 72], "props": { "var_name": "court_v2", "verdict": "mercy", "sibling_id": "brazier_v2_fire", "requires_flag": "court_r3_cleared", "persist": true, "target_id": "gate_v2_verdict" } },
+    { "id": "brazier_v2_fire", "kind": "court_verdict_brazier", "pos": [416, 216], "props": { "var_name": "court_v2", "verdict": "fire", "sibling_id": "brazier_v2_mercy", "requires_flag": "court_r3_cleared", "persist": true, "target_id": "gate_v2_verdict" } },
+    { "id": "gate_v2_verdict", "kind": "logic_gate", "pos": [392, 48], "props": { "op": "any", "inputs": ["brazier_v2_mercy", "brazier_v2_fire"], "target_id": "door_court_r3_verdict" } },
+    { "id": "door_court_r3_verdict", "kind": "door", "pos": [224, 24], "props": { "door_kind": "switch_door", "size": [32, 16], "requires_signals": ["gate_v2_verdict"] } },
+    { "id": "lamp_court_r3_nw", "kind": "road_lamp", "pos": [152, 48], "props": { "lit": true } },
+    { "id": "lamp_court_r3_ne", "kind": "road_lamp", "pos": [296, 48], "props": { "lit": true } },
+    { "id": "lamp_court_r3_sw", "kind": "road_lamp", "pos": [144, 240], "props": { "lit": true } },
+    { "id": "lamp_court_r3_se", "kind": "road_lamp", "pos": [312, 240], "props": { "lit": true } },
+    { "id": "lamp_court_r3_apse", "kind": "road_lamp", "pos": [432, 152], "props": { "lit": true } }
+  ],
+  "scenery": [
+    { "sheet": "theme_briar_court", "prop": "trial_bell_stand", "pos": [96, 112], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "trial_bell_stand", "pos": [344, 112], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "heraldic_court_banner", "pos": [184, 42], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "heraldic_court_banner", "pos": [264, 42], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "clipped_rose_urn", "pos": [104, 192], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "clipped_rose_urn", "pos": [336, 192], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "petal_drift_floor", "pos": [216, 144], "layer": "ground", "shadow": false }
+  ],
+  "layers": [
+    {
+      "id": "v1_mercy",
+      "when": "court_v1==mercy",
+      "tiles": [
+        [8, 8, 2, 2, "ground"],
+        [18, 8, 2, 2, "ground"]
+      ],
+      "enable": ["lp_r3_mercy_w", "lp_r3_mercy_e"],
+      "disable": ["chest_court_r3_fire"]
+    },
+    {
+      "id": "v1_fire",
+      "when": "court_v1==fire",
+      "tiles": [
+        [11, 7, 5, 4, "path"]
+      ],
+      "enable": ["chest_court_r3_fire"],
+      "disable": ["lp_r3_mercy_w", "lp_r3_mercy_e"]
+    }
+  ],
+  "events": [
+    {
+      "id": "court_r3_unlock_sc",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        { "set_flag": "court_r3_juror_sc" }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Joust 2 against silk-swinging Dame Spindle on the court_v1-mutated floor: bolt her glowing corner anchor spool to unhorse her mid-swing, open the Cycle 1 juror shortcut back to court_r1, and choose Verdict 2 for the Arbiter.",
+    "kind": "setpiece",
+    "beat": "ten",
+    "teaches": "Anchor-spool unhorsing, dynamic verdict-mutated arena, Verdict 2 choice",
+    "decisions": 8,
+    "expert_s": 76,
+    "reward": "Sets court_v2 (mercy|fire) + Cycle 1 juror shortcut",
+    "why": "Escalates the Briar Court trial by paying off Verdict 1 terrain and setting up Verdict 2",
+    "exit": "exit_court_r3_north",
+    "start": {
+      "vars": { "court_v1": "mercy" },
+      "flags": ["underroot_done", "loom_done"],
+      "moves": ["bolt", "dash", "throw", "prism"]
+    },
+    "solution": [
+      { "op": "clear", "timeout": 120.0 },
+      { "op": "expect", "flag": "court_r3_cleared" },
+      { "op": "goto", "to": [416, 92], "tol": 8.0 },
+      { "op": "interact", "target": "brazier_v2_mercy" },
+      { "op": "expect", "var": "court_v2==mercy" },
+      { "op": "expect_exit", "exit": "exit_court_r3_north" }
+    ]
+  }
+}

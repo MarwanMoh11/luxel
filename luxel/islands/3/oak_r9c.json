@@ -1,0 +1,333 @@
+{
+  "id": "oak_r9c",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "under_root",
+  "name_key": "OAK3_R9C_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    192,
+    184
+  ],
+  "zones": [
+    {
+      "id": "oak_r9c",
+      "name_key": "OAK3_R9C_NAME",
+      "rect": [
+        0,
+        0,
+        384,
+        224
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        88
+      ],
+      "radius": 40,
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        192,
+        64
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.12
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r9c_south_r9",
+      "rect": [
+        176,
+        208,
+        32,
+        16
+      ],
+      "to_region": "oak_r9",
+      "to_spawn": [
+        112,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_oak_r9c",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        184
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "effigy_r9c_hollow",
+      "kind": "oak_hollow_effigy",
+      "pos": [
+        192,
+        80
+      ],
+      "props": {
+        "requires_signals": [
+          "brazier_r9c_w",
+          "brazier_r9c_e"
+        ]
+      }
+    },
+    {
+      "id": "brazier_r9c_w",
+      "kind": "brazier",
+      "pos": [
+        136,
+        96
+      ],
+      "props": {
+        "target_id": "effigy_r9c_hollow"
+      }
+    },
+    {
+      "id": "brazier_r9c_e",
+      "kind": "brazier",
+      "pos": [
+        248,
+        96
+      ],
+      "props": {
+        "target_id": "effigy_r9c_hollow"
+      }
+    },
+    {
+      "id": "lore_r9c_rubbing",
+      "kind": "lore_stone",
+      "pos": [
+        192,
+        128
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_RUB_3",
+        "icon": "flame"
+      }
+    },
+    {
+      "id": "chest_oak_r9c_shards",
+      "kind": "chest",
+      "pos": [
+        192,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40,
+        "requires_flags": [
+          "oak_r9c_wings_seen"
+        ],
+        "secret_id": "oak_r9c_amber_offering"
+      }
+    },
+    {
+      "id": "lamp_r9c_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9c_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9c_e",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        104,
+        56
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        280,
+        56
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        64,
+        80
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        320,
+        80
+      ],
+      "layer": "sort",
+      "shadow": true
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "oak_r9c_lore_flag",
+      "on": "signal:lore_r9c_rubbing",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "lore_rubbing_3"
+        }
+      ]
+    },
+    {
+      "id": "oak_r9c_wings_reveal",
+      "on": "signal:effigy_r9c_hollow",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "oak_r9c_wings_seen"
+        },
+        {
+          "narrate": "ISL3_OAK_EFFIGY_NOTE"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Optional wordless Hollow Wick lore chapel: lighting both amber braziers casts a haunting double-winged shadow behind the sap-encased Hollow Wick effigy and unlocks the third Bark-Rubbing for Scribe Worm plus an amber shard offering.",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Wordless Hollow Wick foreshadowing (double-winged shadow + lore_rubbing_3)",
+    "decisions": 8,
+    "expert_s": 36,
+    "reward": "lore_rubbing_3 + 40 shards",
+    "why": "Delivers Island 3's final Scribe Worm rubbing and emotional setup for Island 7's Hollow Wick reveal",
+    "optional": true,
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          136,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_r9c_w"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_r9c_e"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r9c_wings_seen"
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          144
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_r9c_rubbing"
+      },
+      {
+        "op": "expect",
+        "flag": "lore_rubbing_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          56
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_oak_r9c_shards"
+      }
+    ]
+  }
+}

@@ -69,26 +69,26 @@
       "id": "well_tr_n",
       "kind": "polarity_well",
       "pos": [
-        256,
+        248,
         120
       ],
       "props": {
         "mode": "pull",
-        "radius": 88.0,
-        "strength": 1600.0
+        "radius": 60.0,
+        "strength": 1850.0
       }
     },
     {
       "id": "well_tr_s",
       "kind": "polarity_well",
       "pos": [
-        192,
+        184,
         240
       ],
       "props": {
         "mode": "pull",
-        "radius": 88.0,
-        "strength": 1600.0
+        "radius": 58.0,
+        "strength": 1850.0
       }
     },
     {
@@ -345,13 +345,13 @@
           304,
           88
         ],
-        "tol": 4.0
+        "tol": 2.0
       },
       {
         "op": "shoot",
         "target": [
-          231,
-          54
+          228,
+          63
         ],
         "wait_hit": 0.75
       },
@@ -367,13 +367,13 @@
           304,
           152
         ],
-        "tol": 4.0
+        "tol": 2.0
       },
       {
         "op": "shoot",
         "target": [
-          231,
-          185
+          228,
+          178
         ],
         "wait_hit": 0.75
       },
@@ -389,13 +389,13 @@
           240,
           216
         ],
-        "tol": 4.0
+        "tol": 2.0
       },
       {
         "op": "shoot",
         "target": [
-          166,
-          186
+          165,
+          189
         ],
         "wait_hit": 0.75
       },

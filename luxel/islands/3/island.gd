@@ -38,6 +38,17 @@ const REGIONS: Array[String] = [
 	"underroot_r9",
 	"underroot_r10",
 	"underroot_r11",
+	"loom_r1",
+	"loom_r2",
+	"loom_r3",
+	"loom_r4",
+	"loom_r5",
+	"loom_r6",
+	"loom_r7",
+	"loom_r8",
+	"loom_r9",
+	"loom_r10",
+	"loom_r11",
 	"oak_r1",
 	"oak_r2",
 	"oak_r3",
@@ -286,6 +297,13 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 				or (region_id == "underroot_r6" and st != null and not st.defeated_bosses.has("stag_colossus"))
 			)
 			_events.music_mode_requested.emit("isl3_boss_minor_p1" if ur_boss_live else "isl3_underroot")
+	elif region_id.begins_with("loom_"):
+		if _events != null:
+			var lm_boss_live: bool = (
+				(region_id == "loom_r11" and st != null and not st.defeated_bosses.has("loom_widow"))
+				or (region_id == "loom_r6" and st != null and not st.defeated_bosses.has("thread_keeper"))
+			)
+			_events.music_mode_requested.emit("isl3_boss_minor_p1" if lm_boss_live else "isl3_loom")
 	elif region_id == "oak_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_MATRON", "title", 3.5)

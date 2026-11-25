@@ -31,7 +31,7 @@
       ],
       "to_region": "oak_r6",
       "to_spawn": [
-        408,
+        400,
         136
       ],
       "requires_moves": [],
@@ -56,6 +56,23 @@
       ],
       "requires_flags": [],
       "locked_door_id": "door_oak_r7_shutter"
+    },
+    {
+      "id": "exit_oak_r7_south_r6b",
+      "rect": [
+        192,
+        224,
+        32,
+        16
+      ],
+      "to_region": "oak_r6b",
+      "to_spawn": [
+        48,
+        144
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -159,6 +176,91 @@
           "switch_eye_oak_r7"
         ]
       }
+    },
+    {
+      "id": "anc_oak_r7",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "pf_oak_r7_fruit",
+      "kind": "light_plant",
+      "pos": [
+        272,
+        184
+      ],
+      "props": {
+        "grow": "fruit",
+        "secs": 0.6,
+        "decay": 6.0
+      }
+    },
+    {
+      "id": "spool_oak_r7_hoist",
+      "kind": "silk_loom_spool",
+      "pos": [
+        248,
+        152
+      ],
+      "props": {
+        "linked_to": [
+          "spool_oak_r7_top"
+        ],
+        "conduct_speed": 96.0
+      }
+    },
+    {
+      "id": "spool_oak_r7_top",
+      "kind": "silk_loom_spool",
+      "pos": [
+        248,
+        104
+      ],
+      "props": {
+        "linked_to": [
+          "spool_oak_r7_hoist"
+        ],
+        "conduct_speed": 96.0
+      }
+    },
+    {
+      "id": "lamp_oak_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r7_mid",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r7_se",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        176
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -186,30 +288,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        120,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        312,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.6
     },
     {
       "sheet": "island3_scenery",
@@ -296,5 +374,97 @@
       "phase": 0.6
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R7_NAME",
+  "music": "island3_dungeon",
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        48,
+        160,
+        48
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        200,
+        152
+      ],
+      "radius": 24,
+      "style": "moss"
+    }
+  ],
+  "design": {
+    "idea": "Deepened Sap-Silk Loom: unlock the key door with wick_key_3_2, push the Blue Transformer north into the silk-bramble lane (using the fruit & hoist spool landmarks), rotate it, and refract Blue Piercing Beam straight through bramble and web into switch_eye_oak_r7 opening oak_r8 AND Cycle 5 in oak_r7b.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Movable Blue Transformer + Blue Piercing Beam through layered bramble and silk web",
+    "decisions": 9,
+    "expert_s": 58,
+    "reward": "oak_r7_loom_open (opens oak_r8 & Cycle 5 lookout in oak_r7b)",
+    "why": "Core Beam + Prism synthesis puzzle unlocking the upper Bastion and Moving Chamber shortcut",
+    "exit": "exit_oak_r7_north",
+    "start": {
+      "keys": {
+        "wick_key_3_2": 1
+      },
+      "flags": [
+        "wick_key_3_2"
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          128,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "push",
+        "target": "transformer_oak_r7",
+        "to": [
+          200,
+          72
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_oak_r7",
+        "angle": 135
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          128
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "beam",
+        "target": "transformer_oak_r7"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r7_loom_open"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r7_north"
+      }
+    ]
+  }
 }

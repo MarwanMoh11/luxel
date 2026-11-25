@@ -59,7 +59,7 @@
       "id": "anc_last_hour",
       "kind": "room_anchor",
       "pos": [
-        384,
+        320,
         192
       ],
       "props": {
@@ -146,6 +146,36 @@
   ],
   "layers": [],
   "events": [
+    {
+      "id": "ev_last_hour_p2_dew",
+      "on": "boss_hp:0.55",
+      "once": true,
+      "do": [
+        {
+          "sfx": "clockwork_chime"
+        },
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ev_last_hour_p3_dew",
+      "on": "boss_hp:0.25",
+      "once": true,
+      "do": [
+        {
+          "sfx": "clockwork_chime"
+        },
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        }
+      ]
+    },
     {
       "id": "ev_last_hour_victory_cue",
       "on": "flag:boss_last_hour_defeated",

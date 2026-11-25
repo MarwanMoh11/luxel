@@ -73,6 +73,44 @@
         "oak_r5_beam_solved"
       ],
       "locked_door_id": "door_oak_r1_shortcut"
+    },
+    {
+      "id": "exit_oak_r1_r2b_sc",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "oak_r2b",
+      "to_spawn": [
+        48,
+        120
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "oak_r2b_shortcut"
+      ],
+      "locked_door_id": "door_oak_r1_r2b_sc"
+    },
+    {
+      "id": "exit_oak_r1_r9_lift",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r9",
+      "to_spawn": [
+        48,
+        184
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "oak_r9_lift_open"
+      ],
+      "locked_door_id": "door_oak_r1_r9_lift"
     }
   ],
   "enemies": [],
@@ -131,7 +169,8 @@
         72
       ],
       "props": {
-        "zone": "oak_r1"
+        "zone": "oak_r1",
+        "lit": true
       }
     },
     {
@@ -142,7 +181,79 @@
         88
       ],
       "props": {
-        "zone": "oak_r1"
+        "zone": "oak_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "anc_oak_r1",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        184
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sap_dial_oak_r1",
+      "kind": "sap_clock",
+      "pos": [
+        208,
+        152
+      ],
+      "props": {
+        "mode": "dial",
+        "scope": "dungeon:hollow_oak",
+        "var": "oak_sap"
+      }
+    },
+    {
+      "id": "door_oak_r1_r2b_sc",
+      "kind": "door",
+      "pos": [
+        24,
+        136
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "oak_r2b_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "door_oak_r1_r9_lift",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "oak_r9_lift_open"
+        ]
+      }
+    },
+    {
+      "id": "lamp_oak_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        176
+      ],
+      "props": {
+        "lit": true
       }
     }
   ],
@@ -207,30 +318,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        312,
-        30
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        360,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
     },
     {
       "sheet": "island3_scenery",
@@ -317,5 +404,71 @@
       "phase": 0.5
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R1_NAME",
+  "music": "island3_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        128
+      ],
+      "radius": 38,
+      "style": "clock",
+      "color": "apricot",
+      "secondary": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        208,
+        96
+      ],
+      "size": [
+        52,
+        80
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "design": {
+    "idea": "Heartwood Root Hub anchoring The Hollow Oak: displays the live Sap-Ring Floor Dial, teases the Cycle 1 sap sluice shortcut west, Cycle 4 Beam portal northwest, and Cycle 7 Heartwood Lift north to the Amber Vault.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Hollow Oak hub topology, live Sap-Ring Floor Dial, multi-cycle shortcut teasers",
+    "decisions": 3,
+    "expert_s": 44,
+    "reward": "ws_oak + Cycles 1/4/7 hub return",
+    "why": "Grand Dungeon vertical hub anchoring 7 internal cycles and live oak_sap state",
+    "optional": true,
+    "exit": "exit_oak_r1_east",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          200,
+          136
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_oak"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r1_east"
+      }
+    ]
+  }
 }

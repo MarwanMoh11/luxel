@@ -54,6 +54,23 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_oak_r4_shutter"
+    },
+    {
+      "id": "exit_oak_r4_south_r4b",
+      "rect": [
+        224,
+        224,
+        32,
+        16
+      ],
+      "to_region": "oak_r4b",
+      "to_spawn": [
+        312,
+        200
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -131,6 +148,111 @@
           "brazier_oak_r4_s"
         ],
         "sets_flag": "oak_r4_pool_lit"
+      }
+    },
+    {
+      "id": "anc_oak_r4",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "spool_oak_r4_nw",
+      "kind": "silk_loom_spool",
+      "pos": [
+        184,
+        72
+      ],
+      "props": {
+        "linked_to": [
+          "spool_oak_r4_ne"
+        ],
+        "conduct_speed": 112.0
+      }
+    },
+    {
+      "id": "spool_oak_r4_ne",
+      "kind": "silk_loom_spool",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "linked_to": [
+          "spool_oak_r4_nw"
+        ],
+        "conduct_speed": 112.0
+      }
+    },
+    {
+      "id": "pb_oak_r4_south",
+      "kind": "light_plant",
+      "pos": [
+        232,
+        152
+      ],
+      "props": {
+        "grow": "bridge",
+        "secs": 0.6,
+        "decay": 4.5,
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "stump_oak_r4_tiny",
+      "kind": "stump_shrink",
+      "pos": [
+        248,
+        192
+      ],
+      "props": {
+        "to_region": "oak_r4b",
+        "to_spawn": [
+          312,
+          200
+        ],
+        "target_size": "tiny"
+      }
+    },
+    {
+      "id": "lamp_oak_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r4_mid",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "lit": true
       }
     }
   ],
@@ -233,5 +355,110 @@
       "phase": 0.6
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R4_NAME",
+  "music": "island3_dungeon",
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        232,
+        96
+      ],
+      "size": [
+        52,
+        84
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        232,
+        184
+      ],
+      "radius": 24,
+      "style": "moss"
+    }
+  ],
+  "design": {
+    "idea": "Deepened Sunshaft Lagoon: unlock the key door with wick_key_3_1, chain-ignite the NW and NE braziers across the lagoon via the overhead silk_loom_spool, cross south to light the third brazier opening oak_r5, and discover the hollow Shrink Stump into tiny oak_r4b.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Silk-spark brazier chaining across water + Shrink Stump crawlspace entrance",
+    "decisions": 7,
+    "expert_s": 54,
+    "reward": "oak_r4_pool_lit + oak_r4b tiny crawlspace",
+    "why": "Weaves Weaver's Loom silk sparks and Under-Root shrink stumps into the Sunshaft Lagoon",
+    "exit": "exit_oak_r4_east",
+    "start": {
+      "keys": {
+        "wick_key_3_1": 1
+      },
+      "flags": [
+        "wick_key_3_1"
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          144,
+          104
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_oak_r4_nw"
+      },
+      {
+        "op": "shoot",
+        "target": "spool_oak_r4_nw"
+      },
+      {
+        "op": "wait",
+        "secs": 1.2
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          104
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_oak_r4_ne"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          176
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_oak_r4_s"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r4_pool_lit"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r4_east"
+      }
+    ]
+  }
 }

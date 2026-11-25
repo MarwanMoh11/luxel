@@ -1,0 +1,61 @@
+{
+  "pack_id": "i4_conservatory",
+  "owner": "G4",
+  "comment": "Island 4 Grand Dungeon Deepened: The Drowned Conservatory (10 legacy rooms kept/deepened with conservatory_r5 intact + 8 new rooms r11..r18 across Thermal Cistern and Glass Canopy wings, 5 cycles, all LEGACY_MAP_FIXES.md items applied).",
+  "strings": {
+    "ISL4_C4_R1": "SUNKEN GLASS ATRIUM",
+    "ISL4_C4_R2": "CURVED REED BASIN",
+    "ISL4_C4_R3": "TRENCH COMBAT COURT",
+    "ISL4_C4_R4": "STEPPING-STONE GALLERY",
+    "ISL4_C4_R5": "WINGS GYMNASIUM",
+    "ISL4_C4_R6": "REED SANCTUARY",
+    "ISL4_C4_R7": "TWIN-LAGOON PRISM",
+    "ISL4_C4_R8": "FLOODED CLOISTER",
+    "ISL4_C4_R9": "UPPER VAULT NEXUS",
+    "ISL4_C4_R10": "GLASS DOME SANCTUM",
+    "ISL4_C4_R11": "DEW-DROP AQUEDUCT",
+    "ISL4_C4_R12": "THERMAL CONSERVATORY",
+    "ISL4_C4_R13": "CLOCKWORK GREENHOUSE",
+    "ISL4_C4_R14": "HANGING ORANGERIE",
+    "ISL4_C4_R15": "THE GLASS CANOPY",
+    "ISL4_C4_R16": "BRIAR AND RAIN VAULT",
+    "ISL4_C4_R17": "SUNDIAL CHANDELIER",
+    "ISL4_C4_R18": "THE BELLFRY LOFT",
+    "ISL4_LORE_ABBESS": "A DARK WING PASSED HERE WITH NO LANTERN.",
+    "ISL4_C4_CANOPY_HINT": "UPPER CANOPY SEAL GLOWS BEYOND THE WEST.",
+    "ISL4_C4_CANOPY_LIT": "CANOPY SEAL BROKEN! VAULT BLESSING GRANTED!",
+    "ISL4_C4_PROMPT_SEAL": "INSPECT CANOPY SEAL",
+    "ISL4_C4_PROMPT_VISTA": "LOOK BELOW THE DOME",
+    "ISL4_C4_VISTA_LINE": "BELOW THE GLASS SHE FOLDS HER WET WINGS.",
+    "ISL4_C4_ORANGERIE_CHUTE": "ORANGERIE CHUTE OPEN TO THE ATRIUM!",
+    "ISL4_C4_CANOPY_SEAL_DONE": "THE SUNDIAL CHANDELIER SHATTERS THE SEAL!"
+  },
+  "interactables": {
+    "c4_canopy_plinth": "res://luxel/islands/4/conservatory/c4_canopy_plinth.gd",
+    "c4_abbess_vista": "res://luxel/islands/4/conservatory/c4_abbess_vista.gd"
+  },
+  "regions": {
+    "conservatory_r1":  { "name_key": "ISL4_C4_R1",  "music": "island4_dungeon", "dark": true, "map": [2, 5] },
+    "conservatory_r2":  { "name_key": "ISL4_C4_R2",  "music": "island4_dungeon", "dark": true, "map": [3, 5] },
+    "conservatory_r3":  { "name_key": "ISL4_C4_R3",  "music": "island4_dungeon", "dark": true, "map": [3, 4] },
+    "conservatory_r4":  { "name_key": "ISL4_C4_R4",  "music": "island4_dungeon", "dark": true, "map": [4, 4] },
+    "conservatory_r5":  { "name_key": "ISL4_C4_R5",  "music": "island4_dungeon", "dark": true, "map": [5, 4] },
+    "conservatory_r6":  { "name_key": "ISL4_C4_R6",  "music": "island4_boss_p1", "dark": true, "map": [5, 3] },
+    "conservatory_r7":  { "name_key": "ISL4_C4_R7",  "music": "island4_dungeon", "dark": true, "map": [6, 3] },
+    "conservatory_r8":  { "name_key": "ISL4_C4_R8",  "music": "island4_dungeon", "dark": true, "map": [6, 2] },
+    "conservatory_r9":  { "name_key": "ISL4_C4_R9",  "music": "island4_dungeon", "dark": true, "map": [5, 2] },
+    "conservatory_r10": { "name_key": "ISL4_C4_R10", "music": "island4_boss_p1", "dark": true, "map": [5, 1] },
+    "conservatory_r11": { "name_key": "ISL4_C4_R11", "theme": "rain_mausoleum", "music": "island4_dungeon", "dark": true, "map": [4, 3] },
+    "conservatory_r12": { "name_key": "ISL4_C4_R12", "theme": "rain_mausoleum", "music": "island4_dungeon", "dark": true, "map": [7, 3] },
+    "conservatory_r13": { "name_key": "ISL4_C4_R13", "theme": "rain_mausoleum", "music": "island4_dungeon", "dark": true, "map": [7, 4] },
+    "conservatory_r14": { "name_key": "ISL4_C4_R14", "theme": "rain_mausoleum", "music": "island4_dungeon", "dark": true, "map": [1, 5] },
+    "conservatory_r15": { "name_key": "ISL4_C4_R15", "theme": "hourglass_maze", "music": "island4_dungeon", "dark": true, "map": [4, 2] },
+    "conservatory_r16": { "name_key": "ISL4_C4_R16", "theme": "hourglass_maze", "music": "island4_dungeon", "dark": true, "map": [3, 2] },
+    "conservatory_r17": { "name_key": "ISL4_C4_R17", "theme": "hourglass_maze", "music": "island4_dungeon", "dark": true, "map": [3, 1] },
+    "conservatory_r18": { "name_key": "ISL4_C4_R18", "theme": "hourglass_maze", "music": "island4_dungeon", "dark": true, "map": [4, 1] }
+  },
+  "sfx": {
+    "c4_thermal_valve": { "id": "switch_eye", "pitch": 1.15, "db": -1.5 },
+    "c4_canopy_chime": { "id": "clockwork_chime", "pitch": 1.18, "db": -1.0 }
+  }
+}

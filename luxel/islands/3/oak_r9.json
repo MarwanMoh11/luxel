@@ -60,6 +60,78 @@
         "keepers_flame_3"
       ],
       "locked_door_id": "door_boss_3"
+    },
+    {
+      "id": "exit_oak_r9_lift_r1",
+      "rect": [
+        0,
+        160,
+        16,
+        48
+      ],
+      "to_region": "oak_r1",
+      "to_spawn": [
+        224,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "oak_r9_lift_open"
+      ],
+      "locked_door_id": "door_oak_r9_lift"
+    },
+    {
+      "id": "exit_oak_r9_sw_r8b",
+      "rect": [
+        96,
+        208,
+        32,
+        16
+      ],
+      "to_region": "oak_r8b",
+      "to_spawn": [
+        224,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r9_nw_r9c",
+      "rect": [
+        96,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r9c",
+      "to_spawn": [
+        192,
+        184
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r9_east_r9b",
+      "rect": [
+        432,
+        160,
+        16,
+        48
+      ],
+      "to_region": "oak_r9b",
+      "to_spawn": [
+        48,
+        136
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -214,6 +286,106 @@
           "keepers_flame_3"
         ]
       }
+    },
+    {
+      "id": "anc_oak_r9",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        184
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "door_oak_r9_lift",
+      "kind": "door",
+      "pos": [
+        24,
+        184
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "oak_r9_lift_open"
+        ]
+      }
+    },
+    {
+      "id": "t2_oak_r9_sap",
+      "kind": "blue_transformer",
+      "pos": [
+        200,
+        144
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "hook_oak_r9_se",
+      "kind": "lantern_hook",
+      "pos": [
+        304,
+        192
+      ],
+      "props": {}
+    },
+    {
+      "id": "cracked_oak_r9_r9b",
+      "kind": "cracked_wall",
+      "pos": [
+        408,
+        184
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_oak_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r9_vault",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -277,30 +449,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        392,
-        30
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        312,
-        140
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
     },
     {
       "sheet": "island3_scenery",
@@ -375,5 +523,200 @@
       "phase": 0.8
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R9_NAME",
+  "music": "island3_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        168
+      ],
+      "radius": 28,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        336,
+        48,
+        80,
+        64
+      ],
+      "color": "apricot"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        96
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.15
+    }
+  ],
+  "layers": [
+    {
+      "id": "sap_high_t2",
+      "when": "oak_sap==high",
+      "tiles": [],
+      "enable": [
+        "t2_oak_r9_sap"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "oak_r9_unlock_lift",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "oak_r9_lift_open"
+        },
+        {
+          "narrate": "ISL3_OAK_LIFT_OPEN"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Deepened Keeper's Amber Vault: drops the Cycle 7 Heartwood Lift back to oak_r1, connects to the optional Heartwood Crucible (oak_r9b) and Hollow Seed Alcove (oak_r9c), and synthesizes Beam, Blue Transformer refraction, and brazier lighting to claim keepers_flame_3 and unlock door_boss_3.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Full kit synthesis (Beam + Blue Transformer + brazier + Boss Key) + Cycle 7 lift & optional wings",
+    "decisions": 10,
+    "expert_s": 62,
+    "reward": "keepers_flame_3 + ws_oak_upper + Cycle 7 Heartwood Lift",
+    "why": "Climax vault uniting every Hollow Oak tool and branching to the final Crucible and Hollow Wick shrine",
+    "exit": "exit_oak_r9_north",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          176
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_oak_upper"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          136
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "cracked_wall_oak_r9"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          136
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "bramble_oak_r9"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          56
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "brazier_oak_r9"
+      },
+      {
+        "op": "push",
+        "target": "transformer_oak_r9",
+        "to": [
+          168,
+          136
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_oak_r9",
+        "angle": 315
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          88
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "beam",
+        "target": "transformer_oak_r9"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r9_vault_open"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          72
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "web_oak_r9"
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          72
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame_3"
+      },
+      {
+        "op": "expect",
+        "flag": "keepers_flame_3"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r9_north"
+      }
+    ]
+  }
 }

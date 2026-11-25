@@ -364,28 +364,20 @@
     "optional": true,
     "solution": [
       {
-        "op": "goto",
-        "to": [
-          260,
-          128
-        ],
-        "tol": 8
-      },
-      {
-        "op": "shoot",
+        "op": "interact",
         "target": "wheel_cistern"
       },
       {
         "op": "wait",
-        "secs": 0.45
+        "secs": 0.5
       },
       {
-        "op": "shoot",
+        "op": "interact",
         "target": "wheel_cistern"
       },
       {
         "op": "wait",
-        "secs": 0.25
+        "secs": 0.2
       },
       {
         "op": "expect",

@@ -1,0 +1,105 @@
+{
+  "id": "court_r2",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "briar_court",
+  "name_key": "ISL3_COURT_R2_NAME",
+  "music": "island3_boss_p1",
+  "spawn": [48, 144],
+  "zones": [
+    {
+      "id": "court_r2",
+      "name_key": "ISL3_COURT_R2_NAME",
+      "rect": [0, 0, 480, 288],
+      "dark": true
+    }
+  ],
+  "decor": [
+    { "kind": "inlay", "rect": [48, 56, 304, 176], "color": "gold" },
+    { "kind": "circle", "pos": [200, 144], "radius": 34, "style": "ritual", "color": "jade", "secondary": "gold" },
+    { "kind": "stain", "pos": [416, 72], "radius": 24, "style": "moss" },
+    { "kind": "cracks", "pos": [416, 216], "radius": 22, "glow": true }
+  ],
+  "exits": [
+    {
+      "id": "exit_court_r2_west",
+      "rect": [0, 128, 16, 48],
+      "to_region": "court_r1",
+      "to_spawn": [192, 48],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_court_r2_north",
+      "rect": [224, 0, 32, 16],
+      "to_region": "court_r3",
+      "to_spawn": [256, 240],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_court_r2_verdict"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_knight_taproot",
+      "kind": "knight_taproot",
+      "pos": [264, 144],
+      "route": [],
+      "zone": "court_r2",
+      "leash": 0
+    }
+  ],
+  "interactables": [
+    { "id": "anc_court_r2", "kind": "room_anchor", "pos": [48, 144], "props": { "auto": true } },
+    { "id": "lp_r2_bounce_nw", "kind": "light_plant", "pos": [112, 56], "props": { "grow": "bounce", "secs": 0.6, "decay": 5.0, "bounce_dist": 56.0 } },
+    { "id": "lp_r2_bounce_sw", "kind": "light_plant", "pos": [112, 232], "props": { "grow": "bounce", "secs": 0.6, "decay": 5.0, "bounce_dist": 56.0 } },
+    { "id": "door_court_r2_combat", "kind": "door", "pos": [376, 152], "props": { "door_kind": "combat_gate", "size": [16, 48], "zone": "court_r2", "clear_zone": "court_r2", "sets_flag": "court_r2_cleared" } },
+    { "id": "brazier_v1_mercy", "kind": "court_verdict_brazier", "pos": [416, 72], "props": { "var_name": "court_v1", "verdict": "mercy", "sibling_id": "brazier_v1_fire", "requires_flag": "court_r2_cleared", "persist": true, "target_id": "gate_v1_verdict" } },
+    { "id": "brazier_v1_fire", "kind": "court_verdict_brazier", "pos": [416, 216], "props": { "var_name": "court_v1", "verdict": "fire", "sibling_id": "brazier_v1_mercy", "requires_flag": "court_r2_cleared", "persist": true, "target_id": "gate_v1_verdict" } },
+    { "id": "gate_v1_verdict", "kind": "logic_gate", "pos": [392, 48], "props": { "op": "any", "inputs": ["brazier_v1_mercy", "brazier_v1_fire"], "target_id": "door_court_r2_verdict" } },
+    { "id": "door_court_r2_verdict", "kind": "door", "pos": [240, 24], "props": { "door_kind": "switch_door", "size": [32, 16], "requires_signals": ["gate_v1_verdict"] } },
+    { "id": "lamp_court_r2_w", "kind": "road_lamp", "pos": [64, 96], "props": { "lit": true } },
+    { "id": "lamp_court_r2_nw", "kind": "road_lamp", "pos": [184, 48], "props": { "lit": true } },
+    { "id": "lamp_court_r2_sw", "kind": "road_lamp", "pos": [184, 240], "props": { "lit": true } },
+    { "id": "lamp_court_r2_ne", "kind": "road_lamp", "pos": [328, 64], "props": { "lit": true } },
+    { "id": "lamp_court_r2_se", "kind": "road_lamp", "pos": [328, 224], "props": { "lit": true } },
+    { "id": "lamp_court_r2_apse", "kind": "road_lamp", "pos": [432, 152], "props": { "lit": true } }
+  ],
+  "scenery": [
+    { "sheet": "theme_briar_court", "prop": "heraldic_court_banner", "pos": [80, 48], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "heraldic_court_banner", "pos": [312, 48], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "jousting_lance_rack", "pos": [64, 216], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "jousting_lance_rack", "pos": [344, 216], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "mossy_shield_plinth", "pos": [200, 48], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "mossy_shield_plinth", "pos": [280, 48], "layer": "sort", "shadow": true },
+    { "sheet": "theme_briar_court", "prop": "petal_drift_floor", "pos": [160, 144], "layer": "ground", "shadow": false },
+    { "sheet": "theme_briar_court", "prop": "petal_drift_floor", "pos": [416, 104], "layer": "ground", "shadow": false }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Joust 1 against beetle-mounted Sir Taproot across 3 horizontal tilt-lanes: bloom Seedlight thorn-walls in his lane to unhorse his charge, then ignite Mercy or Fire Verdict Brazier in the East Apse to physically mutate Dame Spindle's arena.",
+    "kind": "setpiece",
+    "beat": "sho",
+    "teaches": "Lane-thorn unhorsing + Mercy vs Fire arena-mutating verdicts",
+    "decisions": 6,
+    "expert_s": 70,
+    "reward": "Sets court_v1 (mercy|fire) mutating court_r3",
+    "why": "Opening knight trial proving that courtroom choices physically rebuild the next fight",
+    "exit": "exit_court_r2_north",
+    "start": {
+      "flags": ["underroot_done", "loom_done"],
+      "moves": ["bolt", "dash", "throw", "prism"]
+    },
+    "solution": [
+      { "op": "clear", "timeout": 120.0 },
+      { "op": "expect", "flag": "court_r2_cleared" },
+      { "op": "goto", "to": [416, 92], "tol": 8.0 },
+      { "op": "interact", "target": "brazier_v1_mercy" },
+      { "op": "expect", "var": "court_v1==mercy" },
+      { "op": "expect_exit", "exit": "exit_court_r2_north" }
+    ]
+  }
+}

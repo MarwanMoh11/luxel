@@ -31,7 +31,7 @@
       ],
       "to_region": "oak_r5",
       "to_spawn": [
-        392,
+        384,
         88
       ],
       "requires_moves": [],
@@ -54,6 +54,42 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_oak_r6_combat"
+    },
+    {
+      "id": "exit_oak_r6_nw_r5b",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r5b",
+      "to_spawn": [
+        392,
+        152
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r6_south_r6b",
+      "rect": [
+        240,
+        240,
+        32,
+        16
+      ],
+      "to_region": "oak_r6b",
+      "to_spawn": [
+        208,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "oak_r6_cleared"
+      ],
+      "locked_door_id": "door_oak_r6_south_sc"
     }
   ],
   "enemies": [
@@ -111,6 +147,135 @@
         "clear_zone": "oak_r6",
         "sets_flag": "oak_r6_cleared"
       }
+    },
+    {
+      "id": "anc_oak_r6",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lp_oak_r6_bounce_nw",
+      "kind": "light_plant",
+      "pos": [
+        152,
+        80
+      ],
+      "props": {
+        "grow": "bounce",
+        "secs": 0.6,
+        "decay": 5.0,
+        "bounce_dist": 52.0
+      }
+    },
+    {
+      "id": "lp_oak_r6_bounce_se",
+      "kind": "light_plant",
+      "pos": [
+        344,
+        176
+      ],
+      "props": {
+        "grow": "bounce",
+        "secs": 0.6,
+        "decay": 5.0,
+        "bounce_dist": 52.0
+      }
+    },
+    {
+      "id": "bramble_oak_r6_ne",
+      "kind": "bramble",
+      "pos": [
+        352,
+        72
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "bramble_oak_r6_sw",
+      "kind": "bramble",
+      "pos": [
+        144,
+        184
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_oak_r6_south_sc",
+      "kind": "door",
+      "pos": [
+        256,
+        232
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "oak_r6_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lamp_oak_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r6_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        176
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_oak_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -126,18 +291,6 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.1
-    },
-    {
-      "sheet": "island3_scenery",
-      "prop": "spider_silk_banner",
-      "pos": [
-        328,
-        30
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
     },
     {
       "sheet": "island3_scenery",
@@ -260,5 +413,79 @@
       "phase": 0.7
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "OAK3_R6_NAME",
+  "music": "island3_boss_p1",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        128
+      ],
+      "radius": 44,
+      "style": "ritual",
+      "color": "lime",
+      "secondary": "gold"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        144,
+        128
+      ],
+      "radius": 28,
+      "style": "moss"
+    }
+  ],
+  "design": {
+    "idea": "Deepened Spore Crown mini-boss arena for migrated Elder Sporecap (LB345): two Seedlight bounce-caps vault fungal rings and cardinal lanes while Beam unearths its mycelial burrow and slices P2 burrow-brambles, unlocking wick_key_3_2 and the Inner Trunk Sap Hub (oak_r6b).",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Beam-counterplay mini-boss, bounce-cap ring vaulting, mycelial burrow interrupt",
+    "decisions": 6,
+    "expert_s": 84,
+    "reward": "wick_key_3_2 + oak_r6b Sap Hub access",
+    "why": "Mid-dungeon skill check showcasing Beam against migrated Elder Sporecap",
+    "exit": "exit_oak_r6_east",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r6_cleared"
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_3_2"
+      },
+      {
+        "op": "expect",
+        "key": "wick_key_3_2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r6_east"
+      }
+    ]
+  }
 }

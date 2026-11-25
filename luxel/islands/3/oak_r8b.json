@@ -1,0 +1,540 @@
+{
+  "id": "oak_r8b",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "under_root",
+  "name_key": "OAK3_R8B_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    224,
+    240
+  ],
+  "zones": [
+    {
+      "id": "oak_r8b",
+      "name_key": "OAK3_R8B_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        200
+      ],
+      "radius": 28,
+      "style": "ritual",
+      "color": "lime",
+      "secondary": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        288,
+        64,
+        112,
+        96
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        128,
+        128
+      ],
+      "radius": 28,
+      "style": "moss"
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_oak_r8b_south_r8",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "oak_r8",
+      "to_spawn": [
+        328,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_oak_r8b_sw_r6b",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "oak_r6b",
+      "to_spawn": [
+        208,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r8b_sw_sc"
+    },
+    {
+      "id": "exit_oak_r8b_north_r9",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "oak_r9",
+      "to_spawn": [
+        112,
+        192
+      ],
+      "requires_moves": [
+        "beam"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_oak_r8b_key"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "bk_oak_r8b",
+      "kind": "bramble_knight",
+      "pos": [
+        152,
+        152
+      ],
+      "route": [
+        [
+          136,
+          152
+        ],
+        [
+          184,
+          152
+        ]
+      ],
+      "zone": "oak_r8b",
+      "leash": 120
+    },
+    {
+      "id": "fl_oak_r8b",
+      "kind": "false_lantern",
+      "pos": [
+        152,
+        80
+      ],
+      "route": [],
+      "zone": "oak_r8b",
+      "leash": 96
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_oak_r8b",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sap_valve_r8b",
+      "kind": "sap_clock",
+      "pos": [
+        264,
+        200
+      ],
+      "props": {
+        "mode": "valve",
+        "scope": "dungeon:hollow_oak",
+        "var": "oak_sap",
+        "shootable": true
+      }
+    },
+    {
+      "id": "stump_r8b_in",
+      "kind": "stump_shrink",
+      "pos": [
+        224,
+        200
+      ],
+      "props": {
+        "to_region": "",
+        "to_spawn": [
+          320,
+          136
+        ],
+        "target_size": "tiny",
+        "powered_by_sap": true
+      }
+    },
+    {
+      "id": "stump_r8b_out",
+      "kind": "stump_shrink",
+      "pos": [
+        368,
+        136
+      ],
+      "props": {
+        "to_region": "",
+        "to_spawn": [
+          200,
+          200
+        ],
+        "target_size": "normal"
+      }
+    },
+    {
+      "id": "grate_r8b_pinhole",
+      "kind": "grate",
+      "pos": [
+        280,
+        104
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "t_r8b_tiny",
+      "kind": "blue_transformer",
+      "pos": [
+        320,
+        104
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "eye_r8b_blue",
+      "kind": "switch_eye",
+      "pos": [
+        320,
+        72
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "door_oak_r8b_seal",
+        "sets_flag": "oak_r8b_pinhole_open"
+      }
+    },
+    {
+      "id": "sw_r8b_sc",
+      "kind": "switch_eye",
+      "pos": [
+        80,
+        184
+      ],
+      "props": {
+        "target_id": "door_oak_r8b_sw_sc",
+        "sets_flag": "oak_r8b_bridge_sc"
+      }
+    },
+    {
+      "id": "door_oak_r8b_sw_sc",
+      "kind": "door",
+      "pos": [
+        24,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "sw_r8b_sc"
+        ]
+      }
+    },
+    {
+      "id": "door_oak_r8b_seal",
+      "kind": "door",
+      "pos": [
+        224,
+        56
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "eye_r8b_blue"
+        ]
+      }
+    },
+    {
+      "id": "door_oak_r8b_key",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "hollow_oak",
+        "key_kind": "wick_key",
+        "key_id": "wick_key_3_3",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "wick_key_3_3"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8b_sw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8b_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8b_se",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8b_fissure",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        224,
+        42
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        368,
+        200
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        296,
+        200
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        72,
+        120
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        112,
+        232
+      ],
+      "layer": "sort",
+      "shadow": false
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "The Canopy Split (Big + Tiny Synthesis): defeat the Bramble Knight and False Lantern, drop the Cycle 6 SW shortcut to oak_r6b, flood sap high to wake the central Shrink Stump, dive tiny into the sealed east bark fissure to align the Blue Transformer, return normal, fire Beam through the pinhole grate into the blue eye, and unlock Key #3's door to oak_r9.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Sap-powered Shrink Stump + tiny fissure alignment + normal-scale pinhole Blue Beam + Key #3 lock",
+    "decisions": 9,
+    "expert_s": 58,
+    "reward": "Cycle 6 shortcut to oak_r6b + Key #3 route to oak_r9",
+    "why": "Synthesizes Sap Clock, Shrink Stump, Blue Prism, and Beam in one unforgettable room",
+    "exit": "exit_oak_r8b_north_r9",
+    "start": {
+      "vars": {
+        "oak_sap": "low"
+      },
+      "keys": {
+        "wick_key_3_3": 1
+      },
+      "flags": [
+        "wick_key_3_3"
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 60.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          184
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "sw_r8b_sc"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r8b_bridge_sc"
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          216
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "sap_valve_r8b"
+      },
+      {
+        "op": "expect",
+        "var": "oak_sap==high"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          216
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "stump_r8b_in"
+      },
+      {
+        "op": "wait",
+        "secs": 0.55
+      },
+      {
+        "op": "rotate",
+        "target": "t_r8b_tiny",
+        "angle": 225
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          136
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "stump_r8b_out"
+      },
+      {
+        "op": "wait",
+        "secs": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          104
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "t_r8b_tiny"
+      },
+      {
+        "op": "expect",
+        "flag": "oak_r8b_pinhole_open"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_oak_r8b_north_r9"
+      }
+    ]
+  }
+}
