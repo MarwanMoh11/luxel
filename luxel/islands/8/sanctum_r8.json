@@ -185,8 +185,8 @@
       ],
       "props": {
         "color": "gold",
-        "latch": true,
-        "persist": true,
+        "latch": false,
+        "persist": false,
         "target_id": "gate_r8_seq"
       }
     },
@@ -229,8 +229,8 @@
       ],
       "props": {
         "color": "blue",
-        "latch": true,
-        "persist": true,
+        "latch": false,
+        "persist": false,
         "target_id": "gate_r8_seq"
       }
     },
@@ -273,8 +273,8 @@
       ],
       "props": {
         "color": "rose",
-        "latch": true,
-        "persist": true,
+        "latch": false,
+        "persist": false,
         "target_id": "gate_r8_seq"
       }
     },

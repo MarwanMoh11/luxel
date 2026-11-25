@@ -198,7 +198,12 @@
         "secs": 2.0,
         "reset": true,
         "allow_interact": true,
-        "target_id": "mimic_r8_black"
+        "target_ids": [
+          "mimic_r8_black",
+          "block_r8_stone",
+          "orb_r8_silver",
+          "orb_r8_smuggle"
+        ]
       }
     },
     {

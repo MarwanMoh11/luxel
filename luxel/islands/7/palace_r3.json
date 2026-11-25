@@ -150,7 +150,7 @@
       ],
       "props": {
         "variant": "stone",
-        "persist": true
+        "persist": false
       }
     },
     {

@@ -210,7 +210,7 @@
           16,
           16
         ],
-        "persist": true
+        "persist": false
       }
     },
     {
@@ -285,7 +285,7 @@
           16,
           16
         ],
-        "persist": true
+        "persist": false
       }
     },
     {

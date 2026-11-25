@@ -136,6 +136,8 @@ func _ensure_overlay() -> void:
 
 func _clear_overlay() -> void:
 	if _wave_overlay != null and is_instance_valid(_wave_overlay):
+		if _wave_overlay.draw.is_connected(_draw_waves):
+			_wave_overlay.draw.disconnect(_draw_waves)
 		_wave_overlay.queue_free()
 	_wave_overlay = null
 
