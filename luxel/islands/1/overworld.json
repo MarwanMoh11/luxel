@@ -1965,5 +1965,16 @@
       "shadow": false,
       "phase": 0.7
     }
-  ]
+  ],
+  "design": {
+    "idea": "Bell Isle hub overworld: sacred 3-minute Sundial Plaza onboarding (lantern pickup, Bolt, Dash Shrine, Orchard/Observatory/River Beacons, Snatcher bait-throw-zip, Bell Arch Seal) branching out to Chime Town, Manor Gardens, Sunken Foundry, and Belfry Forecourt.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "Lantern pickup, manual Bolt aim, Flare Dash across chasms, Throw+Zip across rivers, Snatcher bait-zip, and first Dawn/Dusk Ring Waves.",
+    "decisions": 12,
+    "expert_s": 180,
+    "reward": "bolt+dash+throw+3beacons+bell_arch_seal+moth_1_01",
+    "why": "Opening island hub and 10-minute browser demo onboarding spine.",
+    "optional": true
+  }
 }

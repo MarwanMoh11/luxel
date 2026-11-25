@@ -414,6 +414,10 @@
         "target": "bell_r2_dawn"
       },
       {
+        "op": "wait",
+        "secs": 1.0
+      },
+      {
         "op": "expect_exit",
         "exit": "exit_r2_north"
       }

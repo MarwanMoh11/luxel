@@ -43,17 +43,84 @@ class EmberExpressRoofPainter(ThemePainter):
 
 
 class IronColossusPainter(ThemePainter):
-    """Iron Colossus: hazard-striped bulkhead seams & furnace-glow slots on walls."""
+    """Iron Colossus: furnace-glow bulkhead vents, riveted structural rib spans & warm magma edge glow."""
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         m_wall = ctx["m_wall"]
+        m_walk = ctx["m_walk"]
         dn_open = ~ctx["n_dn_wall"]
-        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        xs, ys, ly, ts = ctx["xs"], ctx["ys"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
         # Glowing furnace slit vents every 40px along south bulkhead faces
         vx = xs % 40
         vent = m_wall & dn_open & (vx >= 16) & (vx <= 23) & (ly >= ts - 4) & (ly <= ts - 3)
         buf[vent & ((vx % 2) == 0)] = IX["coral"]
         buf[vent & ((vx % 2) == 1) & (ly == ts - 4)] = IX["gold"]
+        # Subtle warm brass structural rib seams every 64px across walkable hull floors
+        rib = m_walk & ctx["m_ground"] & ((xs % 64) == 0) & ((ys % 4) != 0)
+        buf[rib] = IX["wine"]
+        rib_riv = m_walk & ctx["m_ground"] & ((xs % 64) == 2) & ((ys % 16) == 8)
+        buf[rib_riv] = IX["apricot"]
+        # Warm furnace reflection along walkable lips bordering molten water
+        near_lava = m_walk & (ctx["n_up_water"] | ctx["n_dn_water"] | ctx["n_lt_water"] | ctx["n_rt_water"])
+        lip = near_lava & (
+            (ctx["n_up_water"] & (ly < 3))
+            | (ctx["n_dn_water"] & (ly >= ts - 3))
+            | (ctx["n_lt_water"] & (ctx["lx"] < 3))
+            | (ctx["n_rt_water"] & (ctx["lx"] >= ts - 3))
+        ) & (bg < 0.45)
+        buf[lip] = IX["coral"]
+
+
+class ForgeDeepPainter(ThemePainter):
+    """Deep Forge & Great Kiln: warm hearth wall vents & molten rim glow on basalt stonework."""
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_wall = ctx["m_wall"]
+        m_walk = ctx["m_walk"]
+        dn_open = ~ctx["n_dn_wall"]
+        xs, lx, ly, ts = ctx["xs"], ctx["lx"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        # Recessed kiln-hearth ember slits every 48px along south-facing masonry walls
+        vx = xs % 48
+        slit = m_wall & dn_open & (vx >= 20) & (vx <= 27) & (ly >= ts - 4) & (ly <= ts - 3)
+        buf[slit] = IX["coral"]
+        buf[slit & (vx >= 22) & (vx <= 25) & (ly == ts - 4)] = IX["gold"]
+        # Subtle warm ember bounce along walkable flagstones adjacent to lava pits/rivers
+        near_hot = m_walk & (
+            ctx["n_up_water"] | ctx["n_dn_water"] | ctx["n_lt_water"] | ctx["n_rt_water"]
+            | ctx["n_up_abyss"] | ctx["n_dn_abyss"] | ctx["n_lt_abyss"] | ctx["n_rt_abyss"]
+        )
+        edge_glow = near_hot & (
+            ((ctx["n_up_water"] | ctx["n_up_abyss"]) & (ly == 2))
+            | ((ctx["n_dn_water"] | ctx["n_dn_abyss"]) & (ly == ts - 3))
+            | ((ctx["n_lt_water"] | ctx["n_lt_abyss"]) & (lx == 2))
+            | ((ctx["n_rt_water"] | ctx["n_rt_abyss"]) & (lx == ts - 3))
+        ) & (bg < 0.35)
+        buf[edge_glow] = IX["apricot"]
+
+
+class AshenKilnOverworldPainter(ThemePainter):
+    """Ashen Kiln Overworld: luminous volcanic ash-basalt caldera, starry cosmos & cliff overhangs."""
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_void = ctx["m_void"]
+        n_up_land = ctx["n_up_land"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        # Volcanic terraced cliff skirt hanging below southern island rims into starry void
+        cliff = m_void & n_up_land & (ly < 6)
+        buf[cliff & (ly == 0)] = IX["mauve"]
+        buf[cliff & (ly == 1)] = IX["plum"]
+        buf[cliff & (ly == 2)] = np.where((xs % 4 == 0) | (bg[cliff & (ly == 2)] < 0.5), IX["dusk"], IX["plum"])
+        buf[cliff & (ly == 3)] = IX["dusk"]
+        buf[cliff & (ly == 4)] = np.where(bg[cliff & (ly == 4)] < 0.65, IX["night"], IX["dusk"])
+        buf[cliff & (ly == 5) & (bg < 0.55)] = IX["night"]
+        # Subtle glowing cinder cracks on open volcanic ash terraces
+        m_ground = ctx["m_ground"]
+        nb = ctx["n_broad"]
+        ember_vein = m_ground & (nb > 0.76) & (((xs + ctx["ys"] * 2) % 19) == 0) & (bg < 0.45)
+        buf[ember_vein] = IX["coral"]
 
 
 SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
@@ -224,10 +291,10 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             rim_hi="gold",
             rim_mid="apricot",
             bridge_style="iron_grate",
-            bridge_main="dusk",
+            bridge_main="mauve",
             bridge_hi="apricot",
             bridge_rail="gold",
-            bridge_dark="void",
+            bridge_dark="dusk",
             seed=611,
             prop_sheet="theme_ember_express",
             door_sheet="theme_ember_express_doors",
@@ -243,18 +310,18 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Ember Express (Roof)",
             island=6,
             floor_style="train_roof_plate",
-            floor_ramp=("dusk", "plum", "mauve"),
-            floor_seam="night",
-            floor_bevel="stone",
-            floor_accent_a="apricot",
-            floor_accent_b="gold",
+            floor_ramp=("plum", "mauve", "stone"),
+            floor_seam="dusk",
+            floor_bevel="apricot",
+            floor_accent_a="gold",
+            floor_accent_b="apricot",
             path_style="catwalk_grate",
-            path_main="plum",
+            path_main="wine",
             path_hi="apricot",
-            path_edge="void",
+            path_edge="dusk",
             path_trim="gold",
             wall_style="riveted_iron",
-            wall_cap=("night", "dusk", "mauve"),
+            wall_cap=("night", "dusk", "plum"),
             wall_lip="coral",
             wall_face="night",
             wall_face_hi="apricot",
@@ -266,19 +333,19 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             water_foam="gold",
             pit_style="lava_pit",
             void_style="train_rush",
-            rim_hi="apricot",
-            rim_mid="coral",
+            rim_hi="gold",
+            rim_mid="apricot",
             bridge_style="iron_grate",
-            bridge_main="dusk",
-            bridge_hi="mauve",
+            bridge_main="mauve",
+            bridge_hi="apricot",
             bridge_rail="gold",
-            bridge_dark="void",
+            bridge_dark="dusk",
             seed=617,
             prop_sheet="theme_ember_express_roof",
             door_sheet="theme_ember_express_doors",
             special_tiles=("H:grate", "R:rail"),
             default_decor=("grate", "inlay"),
-            notes="Speeding carriage rooftops: corrugated riveted steel roofs, brass grab-rails, grate catwalks, rushing ember blur.",
+            notes="Speeding carriage rooftops: luminous sunset-lit riveted steel roofs, brass grab-rails, warm grate catwalks, rushing ember blur.",
         ),
         EmberExpressRoofPainter,
     ),
@@ -288,15 +355,15 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Iron Colossus",
             island=6,
             floor_style="colossus_hull",
-            floor_ramp=("dusk", "plum", "mauve"),
-            floor_seam="void",
+            floor_ramp=("plum", "mauve", "stone"),
+            floor_seam="dusk",
             floor_bevel="stone",
             floor_accent_a="apricot",
             floor_accent_b="coral",
             path_style="catwalk_grate",
             path_main="wine",
             path_hi="coral",
-            path_edge="night",
+            path_edge="dusk",
             path_trim="gold",
             wall_style="riveted_iron",
             wall_cap=("night", "dusk", "plum"),
@@ -314,16 +381,16 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             rim_hi="apricot",
             rim_mid="coral",
             bridge_style="iron_grate",
-            bridge_main="dusk",
+            bridge_main="mauve",
             bridge_hi="apricot",
             bridge_rail="gold",
-            bridge_dark="void",
+            bridge_dark="dusk",
             seed=621,
             prop_sheet="theme_iron_colossus",
             door_sheet="theme_iron_colossus_doors",
             special_tiles=("H:grate", "R:rail"),
             default_decor=("grate", "circle", "cracks"),
-            notes="Inside the walking giant: riveted foundry hull decks, glowing furnace wall slits, giant gear-chasm shafts.",
+            notes="Inside the walking giant: burnished riveted foundry hull decks, glowing furnace wall slits, giant gear-chasm shafts.",
         ),
         IronColossusPainter,
     ),
@@ -333,16 +400,16 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Deep Forge",
             island=6,
             floor_style="forge_anvil_hall",
-            floor_ramp=("dusk", "plum", "mauve"),
-            floor_seam="night",
+            floor_ramp=("plum", "mauve", "stone"),
+            floor_seam="dusk",
             floor_bevel="stone",
             floor_accent_a="coral",
             floor_accent_b="gold",
             path_style="catwalk_grate",
-            path_main="dusk",
-            path_hi="mauve",
-            path_edge="void",
-            path_trim="coral",
+            path_main="mauve",
+            path_hi="stone",
+            path_edge="dusk",
+            path_trim="apricot",
             wall_style="masonry",
             wall_cap=("night", "dusk", "plum"),
             wall_lip="coral",
@@ -359,17 +426,63 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             rim_hi="gold",
             rim_mid="coral",
             bridge_style="iron_grate",
-            bridge_main="plum",
+            bridge_main="mauve",
             bridge_hi="apricot",
             bridge_rail="gold",
-            bridge_dark="void",
+            bridge_dark="dusk",
             seed=631,
             prop_sheet="theme_forge_deep",
             door_sheet="theme_forge_deep_doors",
             special_tiles=("H:grate",),
             default_decor=("grate", "cracks", "circle"),
-            notes="First Forge & deep Great Kiln: monumental basalt anvil slabs with molten heat-veins and magma rivers.",
+            notes="First Forge & deep Great Kiln: luminous ash-basalt anvil slabs with molten heat-veins and magma rivers.",
         ),
-        ThemePainter,
+        ForgeDeepPainter,
+    ),
+    (
+        ThemeSpec(
+            id="ashen_kiln",
+            name="Ashen Kiln Overworld",
+            island=6,
+            floor_style="cave_floor",
+            floor_ramp=("plum", "mauve", "stone"),
+            floor_seam="dusk",
+            floor_bevel="stone",
+            floor_accent_a="coral",
+            floor_accent_b="apricot",
+            path_style="flagstone",
+            path_main="mauve",
+            path_hi="stone",
+            path_edge="dusk",
+            path_trim="apricot",
+            wall_style="cavern_rock",
+            wall_cap=("night", "dusk", "plum"),
+            wall_lip="apricot",
+            wall_face="dusk",
+            wall_face_hi="wine",
+            wall_base="void",
+            water_style="magma_river",
+            water_deep="wine",
+            water_mid="coral",
+            water_hi="apricot",
+            water_foam="gold",
+            pit_style="lava_pit",
+            void_style="starry_cosmos",
+            rim_hi="apricot",
+            rim_mid="coral",
+            bridge_style="iron_grate",
+            bridge_main="mauve",
+            bridge_hi="apricot",
+            bridge_rail="gold",
+            bridge_dark="dusk",
+            seed=601,
+            organic_edges=True,
+            prop_sheet="island6_scenery",
+            door_sheet="island6_doors",
+            special_tiles=("H:grate", "R:rail"),
+            default_decor=("cracks", "grate"),
+            notes="Ashen Kiln volcanic caldera archipelago: luminous ash-basalt terraces, slag spits, rail cuttings & magma delta.",
+        ),
+        AshenKilnOverworldPainter,
     ),
 ]
