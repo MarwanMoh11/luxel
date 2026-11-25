@@ -3,7 +3,7 @@
   "music": "isl1_undercroft",
   "spawn": [
     240,
-    336
+    348
   ],
   "zones": [
     {
@@ -175,7 +175,7 @@
       "kind": "sexton",
       "pos": [
         240,
-        236
+        250
       ],
       "zone": "uc_tomb"
     }

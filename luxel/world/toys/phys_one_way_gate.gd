@@ -85,20 +85,55 @@ func _draw() -> void:
 	var r := Rect2((-size * 0.5).round(), size.round())
 	var d: Vector2 = _effective_dir()
 	var horiz_pass: bool = absf(d.x) >= absf(d.y)
-	# Floor threshold strip + clear directional chevron
-	draw_rect(r, Color(PAL["night"] as Color, 0.55))
-	LxPhysDraw.draw_chevron(self, -d * 3.0, d, PAL["cream"] as Color if _allow_pass else PAL["gold"] as Color, PAL["void"] as Color, 3.5)
-	# Two anchor gate posts on the sides
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+
+	# Solid inlaid carved stone threshold sill (zero translucent wash)
+	LxPhysDraw.draw_shadow_rect(self, r, Vector2(0.0, 1.0), 0.36)
+	LxPhysDraw.draw_bevel_box(self, r, c_night, c_dusk, c_void, c_void)
+	# Engraved directional pass arrow on sill
+	LxPhysDraw.draw_chevron(self, -d * 3.0, d, c_cream if _allow_pass else c_gold, c_void, 3.0)
+	# Twin carved stone-and-iron hinge bollards + hinged brass turnstile wings
+	var bar_c: Color = c_cream if _allow_pass else c_gold
+	var bar_sh: Color = c_gold if _allow_pass else c_apr
 	if horiz_pass:
-		for py: float in [r.position.y, r.end.y - 4.0]:
-			LxPhysDraw.draw_bevel_box(self, Rect2(-3.0, py, 6.0, 4.0), PAL["dusk"] as Color, PAL["stone"] as Color, PAL["night"] as Color)
-		# Swinging gate bars (swung forward when open)
-		var swing_x: float = d.x * (6.0 if _allow_pass else 0.0)
-		draw_line(Vector2(0.0, r.position.y + 4.0), Vector2(swing_x, 0.0), PAL["gold"] as Color, 2.0)
-		draw_line(Vector2(0.0, r.end.y - 4.0), Vector2(swing_x, 0.0), PAL["gold"] as Color, 2.0)
+		for py: float in [r.position.y - 1.0, r.end.y - 5.0]:
+			LxPhysDraw.draw_bevel_box(self, Rect2(-4.0, py, 8.0, 6.0), c_dusk, c_stone, c_night, c_void)
+			draw_rect(Rect2(-2.0, py + 1.0, 4.0, 2.0), c_apr)
+			draw_rect(Rect2(-1.0, py + 1.0, 2.0, 1.0), c_cream if _allow_pass else c_gold)
+		var swing_x: float = d.x * (7.0 if _allow_pass else 2.0)
+		var top_hinge := Vector2(0.0, r.position.y + 4.0)
+		var bot_hinge := Vector2(0.0, r.end.y - 4.0)
+		var top_tip := Vector2(swing_x, -2.0 if _allow_pass else -1.0)
+		var bot_tip := Vector2(swing_x, 2.0 if _allow_pass else 1.0)
+		draw_line(top_hinge, top_tip, c_void, 4.0)
+		draw_line(bot_hinge, bot_tip, c_void, 4.0)
+		draw_line(top_hinge, top_tip, bar_sh, 2.0)
+		draw_line(bot_hinge, bot_tip, bar_sh, 2.0)
+		draw_line(top_hinge + Vector2(0.0, -1.0), top_tip + Vector2(0.0, -1.0), bar_c, 1.0)
+		draw_line(bot_hinge + Vector2(0.0, -1.0), bot_tip + Vector2(0.0, -1.0), bar_c, 1.0)
+		# Pointed catch tooth at meeting point
+		draw_rect(Rect2(roundf(swing_x) - 1.0, -1.0, 2.0, 2.0), c_cream if _allow_pass else c_mauve)
 	else:
-		for px: float in [r.position.x, r.end.x - 4.0]:
-			LxPhysDraw.draw_bevel_box(self, Rect2(px, -3.0, 4.0, 6.0), PAL["dusk"] as Color, PAL["stone"] as Color, PAL["night"] as Color)
-		var swing_y: float = d.y * (6.0 if _allow_pass else 0.0)
-		draw_line(Vector2(r.position.x + 4.0, 0.0), Vector2(0.0, swing_y), PAL["gold"] as Color, 2.0)
-		draw_line(Vector2(r.end.x - 4.0, 0.0), Vector2(0.0, swing_y), PAL["gold"] as Color, 2.0)
+		for px: float in [r.position.x - 1.0, r.end.x - 5.0]:
+			LxPhysDraw.draw_bevel_box(self, Rect2(px, -4.0, 6.0, 8.0), c_dusk, c_stone, c_night, c_void)
+			draw_rect(Rect2(px + 1.0, -2.0, 4.0, 2.0), c_apr)
+			draw_rect(Rect2(px + 2.0, -2.0, 2.0, 1.0), c_cream if _allow_pass else c_gold)
+		var swing_y: float = d.y * (7.0 if _allow_pass else 2.0)
+		var l_hinge := Vector2(r.position.x + 4.0, 0.0)
+		var r_hinge := Vector2(r.end.x - 4.0, 0.0)
+		var l_tip := Vector2(-2.0 if _allow_pass else -1.0, swing_y)
+		var r_tip := Vector2(2.0 if _allow_pass else 1.0, swing_y)
+		draw_line(l_hinge, l_tip, c_void, 4.0)
+		draw_line(r_hinge, r_tip, c_void, 4.0)
+		draw_line(l_hinge, l_tip, bar_sh, 2.0)
+		draw_line(r_hinge, r_tip, bar_sh, 2.0)
+		draw_line(l_hinge + Vector2(0.0, -1.0), l_tip + Vector2(0.0, -1.0), bar_c, 1.0)
+		draw_line(r_hinge + Vector2(0.0, -1.0), r_tip + Vector2(0.0, -1.0), bar_c, 1.0)
+		draw_rect(Rect2(-1.0, roundf(swing_y) - 1.0, 2.0, 2.0), c_cream if _allow_pass else c_mauve)

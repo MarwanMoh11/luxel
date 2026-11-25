@@ -225,8 +225,8 @@
       "sheet": "theme_cave_1",
       "prop": "subterranean_shroom",
       "pos": [
-        48,
-        184
+        64,
+        168
       ],
       "layer": "sort",
       "flip_x": false,

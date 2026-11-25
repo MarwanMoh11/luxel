@@ -201,9 +201,9 @@
   },
   "sfx": {
     "spire_reverse_chime": {
-      "id": "bell_toll",
+      "id": "bell_toll_heavy",
       "pitch": 0.72,
-      "db": -0.5
+      "db": -1.5
     },
     "spire_nave_chord": {
       "id": "clockwork_chime",

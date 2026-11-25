@@ -2,7 +2,7 @@
   "name_key": "ISL1_MN_BALLROOM",
   "spawn": [
     272,
-    328
+    342
   ],
   "zones": [
     {
@@ -224,7 +224,7 @@
       "kind": "chandelier",
       "pos": [
         272,
-        230
+        244
       ],
       "zone": "mn_ballroom"
     }
@@ -386,8 +386,8 @@
       "sheet": "theme_manor",
       "prop": "velvet_settee",
       "pos": [
-        384,
-        296
+        352,
+        304
       ],
       "layer": "sort",
       "flip_x": true,

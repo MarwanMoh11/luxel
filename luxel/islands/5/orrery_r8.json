@@ -55,9 +55,11 @@
       ],
       "requires_moves": [],
       "requires_flags": [
-        "o5_r8_cleared"
+        "o5_r8_cleared",
+        "o5_r14_rings",
+        "wick_key_5_3"
       ],
-      "locked_door_id": "door_o5_r8_combat"
+      "locked_door_id": "door_o5_r8_east_seal"
     },
     {
       "id": "exit_o5_r8_north",
@@ -78,7 +80,7 @@
       "requires_flags": [
         "o5_r8_cleared"
       ],
-      "locked_door_id": "door_o5_r8_north"
+      "locked_door_id": "door_o5_r8_combat"
     }
   ],
   "enemies": [
@@ -219,38 +221,40 @@
       }
     },
     {
-      "id": "door_o5_r8_combat",
+      "id": "door_o5_r8_east_seal",
       "kind": "door",
       "pos": [
         408,
         152
       ],
       "props": {
-        "door_kind": "combat_gate",
+        "door_kind": "ward_barrier",
         "size": [
           16,
           48
         ],
-        "clear_zone": "orrery_r8",
-        "sets_flag": "o5_r8_cleared",
         "requires_flags": [
-          "o5_r8_cleared"
+          "o5_r8_cleared",
+          "o5_r14_rings",
+          "wick_key_5_3"
         ]
       }
     },
     {
-      "id": "door_o5_r8_north",
+      "id": "door_o5_r8_combat",
       "kind": "door",
       "pos": [
         192,
         24
       ],
       "props": {
-        "door_kind": "ward_barrier",
+        "door_kind": "combat_gate",
         "size": [
-          32,
+          64,
           16
         ],
+        "clear_zone": "orrery_r8",
+        "sets_flag": "o5_r8_cleared",
         "requires_flags": [
           "o5_r8_cleared"
         ]
@@ -424,7 +428,7 @@
     "expert_s": 52,
     "reward": "o5_r8_cleared+access_to_r9_and_r14",
     "why": "Peak ensemble combat crucible gating the upper Orrery wings.",
-    "exit": "exit_o5_r8_east",
+    "exit": "exit_o5_r8_north",
     "start": {
       "moves": [
         "bolt",
@@ -454,8 +458,9 @@
       },
       {
         "op": "expect_exit",
-        "exit": "exit_o5_r8_east"
+        "exit": "exit_o5_r8_north"
       }
     ]
-  }
+  },
+  "theme": "orrery"
 }

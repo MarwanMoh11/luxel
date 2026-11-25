@@ -233,7 +233,7 @@
     "ow_shoals_west": {
       "name_key": "ZONE_ISL2_SHOALS",
       "theme": "seabed",
-      "music": "explore",
+      "music": "island2_explore",
       "dark": true,
       "map": [
         -1,
@@ -243,7 +243,7 @@
     "ow_canal_south": {
       "name_key": "ZONE_ISL2_CANAL",
       "theme": "locks",
-      "music": "explore",
+      "music": "island2_explore",
       "dark": true,
       "map": [
         0,
@@ -253,7 +253,7 @@
     "ow_open_sound": {
       "name_key": "ZONE_ISL2_SOUND",
       "theme": "locks",
-      "music": "explore",
+      "music": "island2_explore",
       "dark": true,
       "map": [
         1,
@@ -263,7 +263,7 @@
     "ow_boathouse": {
       "name_key": "ZONE_ISL2_CAMP",
       "theme": "galleon",
-      "music": "explore",
+      "music": "island2_explore",
       "dark": false,
       "map": [
         -1,

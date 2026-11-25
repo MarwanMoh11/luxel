@@ -11,7 +11,7 @@ const ISLAND_ID: int = 7
 const SCOPE_ISLAND: String = "island:7"
 const SCOPE_PALACE: String = "dungeon:palace"
 const SCOPE_THEATRE: String = "dungeon:theatre"
-const SCOPE_SPIRE: String = "dungeon:spire"
+const SCOPE_SPIRE: String = "island:7"
 
 const ALL_MOVES: Array[String] = ["bolt", "dash", "throw", "prism", "beam", "wings", "lens", "sunflare"]
 const MOVE_LABEL_KEYS: Dictionary = {
@@ -264,7 +264,7 @@ func _attach_hud() -> void:
 
 func _ensure_defaults() -> void:
 	if _vars == null: return
-	for sc: String in [SCOPE_ISLAND, SCOPE_PALACE, SCOPE_SPIRE]:
+	for sc: String in [SCOPE_ISLAND, SCOPE_PALACE]:
 		var v: String = str(_vars.get_var(sc, "world_face", "")).strip_edges().to_lower()
 		if v != "silver" and v != "black": _vars.set_var(sc, "world_face", "silver")
 	if str(_vars.get_var(SCOPE_THEATRE, "stolen_act", "")).strip_edges().is_empty():

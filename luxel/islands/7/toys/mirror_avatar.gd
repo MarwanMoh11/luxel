@@ -72,6 +72,9 @@ func _toy_setup() -> void:
 	_shot_flash_t = 0.0
 	_resync_t = 0.0
 	_bind_wick()
+	var wp_init: Vector2 = wick_pos()
+	if wp_init.x > -9000.0:
+		_last_wick_pos = wp_init
 	queue_redraw()
 
 

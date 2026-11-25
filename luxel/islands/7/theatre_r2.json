@@ -160,13 +160,13 @@
     {
       "id": "lamp_r2_ne",
       "kind": "road_lamp",
-      "pos": [384, 56],
+      "pos": [376, 56],
       "props": { "zone": "theatre_act1_a", "lit": true }
     },
     {
       "id": "lamp_r2_se",
       "kind": "road_lamp",
-      "pos": [384, 240],
+      "pos": [376, 248],
       "props": { "zone": "theatre_act1_a", "lit": true }
     }
   ],

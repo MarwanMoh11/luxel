@@ -254,8 +254,8 @@
       "id": "lamp_r17_nw",
       "kind": "road_lamp",
       "pos": [
-        128,
-        56
+        136,
+        40
       ],
       "props": {
         "zone": "spire_r17",

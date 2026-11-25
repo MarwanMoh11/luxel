@@ -404,8 +404,8 @@
       "id": "lamp_r7_south_e",
       "kind": "road_lamp",
       "pos": [
-        328,
-        320
+        304,
+        312
       ],
       "props": {
         "zone": "mn_eyes",

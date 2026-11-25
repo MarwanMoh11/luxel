@@ -84,7 +84,7 @@
   "regions": {
     "bell_yard": {
       "name_key": "ISL1_Z_TOWN",
-      "music": "explore",
+      "music": "island1_explore",
       "dark": true,
       "map": [
         1,
@@ -93,7 +93,7 @@
     },
     "vesper_graveyard": {
       "name_key": "ISL1_Z_GRAVE",
-      "music": "explore",
+      "music": "island1_explore",
       "dark": true,
       "map": [
         0,
@@ -102,7 +102,7 @@
     },
     "manor_gardens": {
       "name_key": "ISL1_Z_GARDENS",
-      "music": "explore",
+      "music": "island1_explore",
       "dark": true,
       "map": [
         3,
@@ -111,7 +111,7 @@
     },
     "belfry_forecourt": {
       "name_key": "ISL1_Z_FORE",
-      "music": "explore",
+      "music": "island1_explore",
       "dark": true,
       "map": [
         2,
@@ -121,7 +121,7 @@
     "cliff_foundry": {
       "name_key": "ISL1_Z_FOUNDRY",
       "theme": "forge_deep",
-      "music": "explore",
+      "music": "island1_explore",
       "dark": true,
       "map": [
         2,

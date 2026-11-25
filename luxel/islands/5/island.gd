@@ -219,6 +219,17 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_flags": [],
 		},
 		{
+			"id": "wp_5_r11_escapement",
+			"region": "orrery_r11",
+			"zone": "o5_r11",
+			"pos": [96.0, 108.0],
+			"action": "solve_puzzle",
+			"target": "door_o5_r11_north",
+			"grants_flag": "o5_r11_latch",
+			"requires_moves": ["beam", "wings"],
+			"requires_flags": ["o5_r2_bridge"],
+		},
+		{
 			"id": "wp_5_r3_combat",
 			"region": "orrery_r3",
 			"zone": "orrery_r3",
@@ -227,7 +238,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"target": "door_o5_r3_combat",
 			"grants_flag": "o5_r3_cleared",
 			"requires_moves": ["prism", "wings"],
-			"requires_flags": ["wick_key_5_1"],
+			"requires_flags": ["wick_key_5_1", "o5_r11_latch"],
 		},
 		{
 			"id": "wp_5_r4_mirrors",
@@ -241,6 +252,17 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_flags": ["wick_key_5_1", "o5_r3_cleared"],
 		},
 		{
+			"id": "wp_5_r12_carousel",
+			"region": "orrery_r12",
+			"zone": "o5_r12",
+			"pos": [456.0, 144.0],
+			"action": "solve_puzzle",
+			"target": "door_o5_r12_east",
+			"grants_flag": "o5_r12_open",
+			"requires_moves": ["prism"],
+			"requires_flags": ["o5_r4_shutter_open"],
+		},
+		{
 			"id": "wp_5_shrine_lens",
 			"region": "orrery_r5",
 			"zone": "orrery_r5",
@@ -249,7 +271,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"target": "shrine_lens",
 			"grants_move": "lens",
 			"requires_moves": ["prism", "wings"],
-			"requires_flags": ["o5_r4_shutter_open"],
+			"requires_flags": ["o5_r4_shutter_open", "o5_r12_open"],
 		},
 		{
 			"id": "wp_5_miniboss",
@@ -263,6 +285,17 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_flags": [],
 		},
 		{
+			"id": "wp_5_r13_blind",
+			"region": "orrery_r13",
+			"zone": "o5_r13",
+			"pos": [240.0, 24.0],
+			"action": "solve_puzzle",
+			"target": "door_o5_r13_north",
+			"grants_flag": "o5_r13_open",
+			"requires_moves": ["lens"],
+			"requires_flags": ["boss_clockwork_warden_defeated", "wick_key_5_2"],
+		},
+		{
 			"id": "wp_5_r7_starlight",
 			"region": "orrery_r7",
 			"zone": "orrery_r7",
@@ -271,7 +304,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"target": "door_o5_r7_shutter",
 			"grants_flag": "o5_r7_shutter_open",
 			"requires_moves": ["lens"],
-			"requires_flags": ["wick_key_5_2"],
+			"requires_flags": ["wick_key_5_2", "o5_r13_open"],
 		},
 		{
 			"id": "wp_5_r8_combat",
@@ -285,6 +318,28 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_flags": ["o5_r7_shutter_open"],
 		},
 		{
+			"id": "wp_5_r14_rings",
+			"region": "orrery_r14",
+			"zone": "o5_r14",
+			"pos": [256.0, 24.0],
+			"action": "solve_puzzle",
+			"target": "door_o5_r14_north",
+			"grants_flag": "o5_r14_rings",
+			"requires_moves": ["lens"],
+			"requires_flags": ["o5_r8_cleared"],
+		},
+		{
+			"id": "wp_5_r15_study",
+			"region": "orrery_r15",
+			"zone": "o5_r15",
+			"pos": [64.0, 56.0],
+			"action": "collect_key",
+			"target": "wick_key_5_3",
+			"grants_flag": "wick_key_5_3",
+			"requires_moves": ["lens"],
+			"requires_flags": ["o5_r14_rings"],
+		},
+		{
 			"id": "wp_5_keepers_flame",
 			"region": "orrery_r9",
 			"zone": "orrery_r9",
@@ -293,7 +348,18 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"target": "keepers_flame_5",
 			"grants_flag": "keepers_flame_5",
 			"requires_moves": ["lens", "wings", "prism"],
-			"requires_flags": ["o5_r8_cleared"],
+			"requires_flags": ["o5_r8_cleared", "o5_r14_rings", "wick_key_5_3"],
+		},
+		{
+			"id": "wp_5_r16_syzygy",
+			"region": "orrery_r16",
+			"zone": "o5_r16",
+			"pos": [240.0, 24.0],
+			"action": "solve_puzzle",
+			"target": "door_o5_r16_ascend",
+			"grants_flag": "o5_r16_syzygy",
+			"requires_moves": ["lens"],
+			"requires_flags": ["keepers_flame_5"],
 		},
 		{
 			"id": "wp_5_boss",
@@ -304,7 +370,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"target": "boss_astronomer",
 			"grants_flag": "boss_astronomer_defeated",
 			"requires_moves": ["lens"],
-			"requires_flags": ["keepers_flame_5"],
+			"requires_flags": ["keepers_flame_5", "o5_r16_syzygy"],
 		},
 		{
 			"id": "wp_5_great_lamp",
@@ -450,7 +516,7 @@ func _zone_enemies_remaining(zone_id: String, just_killed: Object) -> int:
 		return 0 if ((zone_id == "orrery_r3" and _r3_kills >= 3) or (zone_id == "orrery_r8" and _r8_kills >= 4)) else 1
 	var alive: int = 0
 	for en: LxEnemyBrain in reg.get_enemies():
-		if en == null or not is_instance_valid(en) or en == just_killed or en.dead:
+		if en == null or not is_instance_valid(en) or en == just_killed or not en.is_alive():
 			continue
 		if not zone_id.is_empty() and not en.zone_id.is_empty() and en.zone_id != zone_id:
 			continue

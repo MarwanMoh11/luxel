@@ -72,7 +72,9 @@
       ],
       "requires_moves": [],
       "requires_flags": [
-        "keepers_flame_7"
+        "keepers_flame_7",
+        "spire_duchess_seal",
+        "spire_false_lamp_broken"
       ],
       "locked_door_id": "door_boss_7"
     },
@@ -202,7 +204,9 @@
           16
         ],
         "requires_flags": [
-          "keepers_flame_7"
+          "keepers_flame_7",
+          "spire_duchess_seal",
+          "spire_false_lamp_broken"
         ]
       }
     },
@@ -460,7 +464,11 @@
     "reward": "keepers_flame_7+r1_short+lore",
     "why": "Final Spire staging hub keeping island_check's boss-door flow intact while rewarding both deepened Spire Crests.",
     "start": {
-      "ember": 100.0
+      "ember": 100.0,
+      "flags": [
+        "spire_duchess_seal",
+        "spire_false_lamp_broken"
+      ]
     },
     "exit": "exit_spire_r9_north",
     "solution": [

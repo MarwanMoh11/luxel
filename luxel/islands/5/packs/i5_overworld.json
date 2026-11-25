@@ -183,7 +183,7 @@
     "ow_starfall_cliff": {
       "name_key": "I5_ZONE_CLIFF",
       "theme": "freefall",
-      "music": "explore",
+      "music": "island5_explore",
       "dark": true,
       "map": [
         3,

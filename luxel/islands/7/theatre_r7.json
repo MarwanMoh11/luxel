@@ -205,13 +205,13 @@
     {
       "id": "lamp_r7_ne",
       "kind": "road_lamp",
-      "pos": [464, 80],
+      "pos": [456, 88],
       "props": { "zone": "theatre_act3_a", "lit": true }
     },
     {
       "id": "lamp_r7_se",
       "kind": "road_lamp",
-      "pos": [464, 240],
+      "pos": [456, 248],
       "props": { "zone": "theatre_act3_a", "lit": true }
     }
   ],
@@ -219,7 +219,7 @@
     {
       "id": "r7_owl",
       "kind": "silvered_owl",
-      "pos": [240, 112],
+      "pos": [240, 144],
       "zone": "theatre_act3_a",
       "leash": 124
     }

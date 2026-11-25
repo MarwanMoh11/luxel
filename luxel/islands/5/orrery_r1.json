@@ -488,5 +488,6 @@
         "exit": "exit_o5_r1_west"
       }
     ]
-  }
+  },
+  "theme": "orrery"
 }

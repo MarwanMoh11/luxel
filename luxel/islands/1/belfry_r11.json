@@ -339,28 +339,52 @@
       "id": "hand_west",
       "when": "belfry_clock_hand==west",
       "tiles": [
-        [6, 12, 7, 2, "bridge"]
+        [
+          6,
+          12,
+          7,
+          2,
+          "bridge"
+        ]
       ]
     },
     {
       "id": "hand_north",
       "when": "belfry_clock_hand==north",
       "tiles": [
-        [17, 3, 2, 7, "bridge"]
+        [
+          17,
+          3,
+          2,
+          7,
+          "bridge"
+        ]
       ]
     },
     {
       "id": "hand_east",
       "when": "belfry_clock_hand==east",
       "tiles": [
-        [24, 12, 7, 2, "bridge"]
+        [
+          24,
+          12,
+          7,
+          2,
+          "bridge"
+        ]
       ]
     },
     {
       "id": "hand_south",
       "when": "belfry_clock_hand==south",
       "tiles": [
-        [6, 12, 7, 2, "bridge"]
+        [
+          6,
+          12,
+          7,
+          2,
+          "bridge"
+        ]
       ]
     }
   ],
@@ -405,8 +429,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "belfry_beam_brace",
       "pos": [
-        336,
-        40
+        400,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -429,8 +453,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "small_bronze_gear",
       "pos": [
-        64,
-        168
+        88,
+        224
       ],
       "layer": "sort",
       "flip_x": false,

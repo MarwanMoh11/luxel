@@ -54,8 +54,10 @@
         216
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "o5_r11_latch"
+      ],
+      "locked_door_id": "door_o5_r2_north"
     },
     {
       "id": "exit_o5_r2_ne",
@@ -71,8 +73,10 @@
         240
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "o5_r2_bridge"
+      ],
+      "locked_door_id": "door_o5_r2_ne"
     }
   ],
   "enemies": [],
@@ -110,7 +114,47 @@
         72
       ],
       "props": {
-        "target_id": "bridge_o5_r2",
+        "target_ids": [
+          "bridge_o5_r2",
+          "door_o5_r2_ne"
+        ],
+        "sets_flag": "o5_r2_bridge"
+      }
+    },
+    {
+      "id": "door_o5_r2_north",
+      "kind": "door",
+      "pos": [
+        176,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "o5_r11_latch"
+        ]
+      }
+    },
+    {
+      "id": "door_o5_r2_ne",
+      "kind": "door",
+      "pos": [
+        384,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          64,
+          16
+        ],
+        "requires_signals": [
+          "switch_eye_o5_r2"
+        ],
         "sets_flag": "o5_r2_bridge"
       }
     },
@@ -349,7 +393,7 @@
     "expert_s": 42,
     "reward": "wick_key_5_1+branch_to_r11",
     "why": "First puzzle vault of the Orrery yielding Key 1 and branching to Outer Escapement.",
-    "exit": "exit_o5_r2_north",
+    "exit": "exit_o5_r2_ne",
     "solution": [
       {
         "op": "shoot",
@@ -390,9 +434,17 @@
         "target": "cracked_o5_r2"
       },
       {
+        "op": "goto",
+        "to": [
+          368,
+          136
+        ]
+      },
+      {
         "op": "expect_exit",
-        "exit": "exit_o5_r2_north"
+        "exit": "exit_o5_r2_ne"
       }
     ]
-  }
+  },
+  "theme": "orrery"
 }

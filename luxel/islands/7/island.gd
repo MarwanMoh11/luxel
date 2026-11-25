@@ -177,6 +177,16 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_moves": ["sunflare", "throw"], "requires_flags": [],
 		},
 		{
+			"id": "wp_spire_r12_key", "region": "spire_r12", "zone": "spire_r12",
+			"pos": [240.0, 264.0], "action": "collect_key", "target": "wick_key_7_3",
+			"grants_flag": "wick_key_7_3", "requires_moves": ["beam", "prism"], "requires_flags": [],
+		},
+		{
+			"id": "wp_spire_r13_duchess", "region": "spire_r13", "zone": "spire_r13",
+			"pos": [240.0, 176.0], "action": "defeat_miniboss", "target": "mini_kaleidoscope_duchess",
+			"grants_flag": "spire_duchess_seal", "requires_moves": ["prism", "dash"], "requires_flags": ["wick_key_7_3"],
+		},
+		{
 			"id": "wp_spire_miniboss", "region": "spire_r6", "zone": "spire_r6",
 			"pos": [256.0, 136.0], "action": "defeat_miniboss", "target": "mini_moonshade_warden",
 			"grants_flag": "wick_key_7_2", "requires_moves": ["dash", "throw", "sunflare"], "requires_flags": [],
@@ -185,6 +195,16 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_spire_r7_inverted", "region": "spire_r7", "zone": "spire_r7",
 			"pos": [56.0, 120.0], "action": "solve_puzzle", "target": "door_spire_r7_west",
 			"requires_moves": ["prism", "lens", "wings"], "requires_flags": ["wick_key_7_2"],
+		},
+		{
+			"id": "wp_spire_r14_nave", "region": "spire_r14", "zone": "spire_r14",
+			"pos": [48.0, 168.0], "action": "solve_puzzle", "target": "door_spire_r14_west",
+			"grants_flag": "spire_r14_solved", "requires_moves": ["prism", "throw"], "requires_flags": [],
+		},
+		{
+			"id": "wp_spire_r15_counterfeit", "region": "spire_r15", "zone": "spire_r15",
+			"pos": [240.0, 152.0], "action": "clear_room", "target": "door_spire_r15_south",
+			"grants_flag": "spire_false_lamp_broken", "requires_moves": ["lens"], "requires_flags": ["spire_r14_solved"],
 		},
 		{
 			"id": "wp_spire_r8_combat", "region": "spire_r8", "zone": "spire_r8",
@@ -201,7 +221,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"pos": [240.0, 144.0], "action": "defeat_boss", "target": "boss_hollow_wick",
 			"grants_flag": "boss_hollow_wick_defeated",
 			"requires_moves": ["bolt", "dash", "throw", "prism", "beam", "wings", "lens", "sunflare"],
-			"requires_flags": ["keepers_flame_7"],
+			"requires_flags": ["keepers_flame_7", "spire_duchess_seal", "spire_false_lamp_broken"],
 		},
 		{
 			"id": "wp_great_lamp_7", "region": "spire_r10", "zone": "spire_r10",

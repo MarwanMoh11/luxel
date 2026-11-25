@@ -75,39 +75,80 @@ func tick(dt: float) -> void:
 func _draw() -> void:
 	var r := Rect2((-size * 0.5).round(), size.round())
 	var d: Vector2 = _effective_dir()
+	var perp := Vector2(-d.y, d.x)
 	var c_wind: Color = biome("hi")
 	var c_gust: Color = PAL["ice"] as Color
-	# Subtle translucent wind volume frame + corner brackets
-	draw_rect(r, Color(c_wind, 0.08))
-	draw_rect(r, Color(c_wind, 0.28), false, 1.0)
-	# Animated streaking gust ribbons moving along wind_dir
+	var c_sky: Color = PAL["sky"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_void: Color = PAL["void"] as Color
+	var c_leaf_a: Color = PAL["lime"] as Color if island_id in [0, 1, 3, 4] else biome("glow")
+	var c_leaf_b: Color = PAL["apricot"] as Color if island_id in [2, 4, 6] else c_wind
+	var fred: bool = LxHudFx.flash_reduced()
 	var horiz: bool = absf(d.x) >= absf(d.y)
-	if horiz:
-		var sgn: float = 1.0 if d.x >= 0.0 else -1.0
-		var y: float = r.position.y + 6.0
-		var row_i: int = 0
-		while y < r.end.y - 4.0:
-			var x_off: float = fposmod(_scroll + float(row_i) * 9.0, 24.0)
-			var x: float = r.position.x + (x_off if sgn > 0.0 else (24.0 - x_off))
-			while x < r.end.x - 4.0:
-				var seg_len: float = minf(10.0, r.end.x - x - 2.0)
-				if seg_len >= 3.0:
-					draw_line(Vector2(roundf(x), roundf(y)), Vector2(roundf(x + seg_len), roundf(y)), Color(c_gust if row_i % 2 == 0 else c_wind, 0.62), 1.0)
-				x += 24.0
-			y += 10.0
-			row_i += 1
-	else:
-		var sgn_y: float = 1.0 if d.y >= 0.0 else -1.0
-		var x: float = r.position.x + 6.0
-		var col_i: int = 0
-		while x < r.end.x - 4.0:
-			var y_off: float = fposmod(_scroll + float(col_i) * 9.0, 24.0)
-			var y: float = r.position.y + (y_off if sgn_y > 0.0 else (24.0 - y_off))
-			while y < r.end.y - 4.0:
-				var seg_len: float = minf(10.0, r.end.y - y - 2.0)
-				if seg_len >= 3.0:
-					draw_line(Vector2(roundf(x), roundf(y)), Vector2(roundf(x), roundf(y + seg_len)), Color(c_gust if col_i % 2 == 0 else c_wind, 0.62), 1.0)
-				y += 24.0
-			x += 10.0
-			col_i += 1
-	LxPhysDraw.draw_chevron(self, Vector2.ZERO, d, PAL["cream"] as Color, PAL["void"] as Color, 3.0)
+	var span_along: float = maxf(16.0, size.x if horiz else size.y)
+	var span_cross: float = maxf(14.0, size.y if horiz else size.x)
+	var lane_count: int = clampi(int(roundf(span_cross / 11.0)), 2, 5)
+	var wave_amp: float = 1.2 if fred else 2.2
+
+	# 1. Upwind origin breeze tufts (subtle grounded source ticks, NO box fill!)
+	var upwind_center: Vector2 = -d * (span_along * 0.5 - 2.0)
+	for ti: int in range(lane_count):
+		var frac: float = (float(ti) + 0.5) / float(lane_count) - 0.5
+		var tp: Vector2 = (upwind_center + perp * (frac * (span_cross - 6.0))).round()
+		draw_rect(Rect2(tp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), c_void)
+		draw_rect(Rect2(tp, Vector2(1.0, 1.0)), c_sky if ti % 2 == 0 else c_wind)
+
+	# 2. Drifting layered wind ribbon streaks with curled eddies (bounded <= 10 ribbons)
+	var rib_cycle: float = span_along + 14.0
+	for li: int in range(lane_count):
+		var cross_f: float = (float(li) + 0.5) / float(lane_count) - 0.5
+		var cross_off: float = cross_f * (span_cross - 8.0)
+		var per_lane: int = 2 if span_along >= 42.0 else 1
+		for ri: int in range(per_lane):
+			var seed_o: float = float(li * 17 + ri * 29)
+			var u_px: float = fposmod(_scroll * 2.2 + seed_o, rib_cycle) - 7.0
+			var head_s: float = -span_along * 0.5 + u_px
+			var seg_len: float = 12.0 if (li + ri) % 2 == 0 else 9.0
+			var tail_s: float = maxf(-span_along * 0.5 + 2.0, head_s - seg_len)
+			var clamp_head: float = minf(span_along * 0.5 - 2.0, head_s)
+			if clamp_head - tail_s < 4.0:
+				continue
+			var rib_col: Color = c_gust if (li + ri) % 2 == 0 else c_sky
+			var steps: int = 4
+			var prev_p: Vector2 = Vector2.ZERO
+			for si: int in range(steps + 1):
+				var t: float = float(si) / float(steps)
+				var s_cur: float = lerpf(tail_s, clamp_head, t)
+				var wob: float = sin(s_cur * 0.24 + float(li) * 1.7 + (_clock * 2.5 if not fred else 0.0)) * wave_amp
+				var pt: Vector2 = (d * s_cur + perp * (cross_off + wob)).round()
+				if si > 0:
+					draw_line(prev_p, pt, c_void, 2.0)
+					draw_line(prev_p, pt, rib_col if si < steps else c_cream, 1.0)
+				prev_p = pt
+			# Trailing eddy curl pixel at ribbon tail
+			var curl_dir: float = 1.0 if (li % 2 == 0) else -1.0
+			var tail_wob: float = sin(tail_s * 0.24 + float(li) * 1.7) * wave_amp
+			var curl_p: Vector2 = (d * (tail_s - 1.0) + perp * (cross_off + tail_wob + curl_dir * 2.0)).round()
+			draw_rect(Rect2(curl_p, Vector2(1.0, 1.0)), c_wind)
+
+	# 3. Drifting leaves / petals carried by the wind (bounded <= 6 leaves)
+	var leaf_n: int = clampi(int(roundf((span_along * span_cross) / 260.0)), 3, 6)
+	for k: int in range(leaf_n):
+		var lu: float = fposmod(_scroll * 1.85 + float(k) * (span_along / float(leaf_n)) * 1.37, span_along - 6.0)
+		var ls: float = -span_along * 0.5 + 3.0 + lu
+		var lc_base: float = (float(k % 3) - 1.0) * (span_cross * 0.28)
+		var lc: float = lc_base + sin(_clock * (1.8 if fred else 4.2) + float(k) * 2.1) * (2.0 if fred else 3.2)
+		var lp: Vector2 = (d * ls + perp * lc).round()
+		var leaf_c: Color = c_leaf_a if k % 2 == 0 else c_leaf_b
+		var flip: bool = int(floorf(_clock * (2.0 if fred else 5.0) + float(k))) % 2 == 0
+		draw_rect(Rect2(lp - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), c_void)
+		if flip:
+			draw_rect(Rect2(lp + Vector2(-1.0, 0.0), Vector2(2.0, 1.0)), leaf_c)
+			draw_rect(Rect2(lp + Vector2(0.0, -1.0), Vector2(1.0, 1.0)), c_cream)
+		else:
+			draw_rect(Rect2(lp + Vector2(0.0, -1.0), Vector2(1.0, 2.0)), leaf_c)
+			draw_rect(Rect2(lp + Vector2(-1.0, 0.0), Vector2(1.0, 1.0)), c_cream)
+
+	# 4. Crisp central flow chevron so direction reads instantly even in stills
+	LxPhysDraw.draw_chevron(self, Vector2.ZERO, d, c_cream, c_void, 3.0)
+	LxPhysDraw.draw_chevron(self, -d * 4.0, d, c_gust, c_void, 2.0)

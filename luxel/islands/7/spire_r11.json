@@ -54,6 +54,9 @@
         48,
         152
       ],
+      "requires_flags": [
+        "spire_r3_cleared"
+      ],
       "locked_door_id": "door_spire_r11_east"
     }
   ],
@@ -241,6 +244,9 @@
         ],
         "requires_signals": [
           "gate_r11_exit"
+        ],
+        "requires_flags": [
+          "spire_r3_cleared"
         ]
       }
     },
@@ -439,7 +445,8 @@
     "why": "Spire Cycle 1 loop connecting r2's Black Arch directly onto r4's west abyss ledge.",
     "start": {
       "flags": [
-        "item_moon_pocket"
+        "item_moon_pocket",
+        "spire_r3_cleared"
       ],
       "vars": {
         "island:7:world_face": "silver"

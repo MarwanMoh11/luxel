@@ -426,5 +426,6 @@
         "exit": "exit_o5_r7_north"
       }
     ]
-  }
+  },
+  "theme": "orrery"
 }

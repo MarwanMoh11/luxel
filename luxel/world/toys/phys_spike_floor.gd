@@ -93,24 +93,47 @@ func tick(dt: float) -> void:
 
 func _draw() -> void:
 	var r := Rect2((-size * 0.5).round(), size.round())
-	LxPhysDraw.draw_bevel_box(self, r, PAL["night"] as Color, PAL["dusk"] as Color, PAL["void"] as Color, PAL["void"] as Color)
-	var cols: int = maxi(1, int(floor(size.x / 8.0)))
-	var rows: int = maxi(1, int(floor(size.y / 8.0)))
-	var sx: float = size.x / float(cols)
-	var sy: float = size.y / float(rows)
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+
+	# Heavy beveled perforated iron floor plate with corner rivets
+	var rim_hi: Color = c_coral if state == State.TELEGRAPH else (c_stone if state == State.UP else c_mauve)
+	LxPhysDraw.draw_bevel_box(self, r, c_night, rim_hi, c_void, c_void, c_dusk)
+	draw_rect(r.grow(-2.0), c_dusk, false, 1.0)
+
+	var cols: int = clampi(int(floor(size.x / 8.0)), 1, 6)
+	var rows: int = clampi(int(floor(size.y / 8.0)), 1, 6)
+	var sx: float = (size.x - 2.0) / float(cols)
+	var sy: float = (size.y - 2.0) / float(rows)
 	var warn_flash: bool = LxHudFx.flash_reduced() or fmod(_clock * 10.0, 1.0) < 0.5
 	for ry: int in range(rows):
 		for rx: int in range(cols):
-			var c := Vector2(roundf(r.position.x + (float(rx) + 0.5) * sx), roundf(r.position.y + (float(ry) + 0.5) * sy))
-			draw_rect(Rect2(c - Vector2(2.0, 1.0), Vector2(4.0, 3.0)), PAL["void"] as Color)
+			var c := Vector2(roundf(r.position.x + 1.0 + (float(rx) + 0.5) * sx), roundf(r.position.y + 1.0 + (float(ry) + 0.5) * sy))
+			# Recessed iron spike socket collar
+			draw_rect(Rect2(c - Vector2(3.0, 2.0), Vector2(6.0, 4.0)), c_void)
+			draw_rect(Rect2(c - Vector2(2.0, 1.0), Vector2(4.0, 2.0)), c_dusk)
+			draw_rect(Rect2(c - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), c_void)
 			if state == State.TELEGRAPH:
-				draw_rect(Rect2(c - Vector2(1.0, 2.0), Vector2(2.0, 2.0)), PAL["coral"] as Color if warn_flash else PAL["apricot"] as Color)
-				draw_rect(Rect2(c - Vector2(0.0, 2.0), Vector2.ONE), PAL["cream"] as Color)
+				# Gleaming coral/cream warning tips emerging from sockets
+				draw_rect(Rect2(c - Vector2(2.0, 2.0), Vector2(4.0, 3.0)), c_void)
+				draw_rect(Rect2(c - Vector2(1.0, 3.0), Vector2(2.0, 3.0)), c_coral if warn_flash else c_apr)
+				draw_rect(Rect2(c + Vector2(0.0, -3.0), Vector2(1.0, 2.0)), c_cream)
 			elif state == State.UP:
-				var tri := PackedVector2Array([c + Vector2(-2.0, 1.0), c + Vector2(0.0, -5.0), c + Vector2(2.0, 1.0)])
-				draw_colored_polygon(tri, PAL["stone"] as Color)
-				draw_line(c + Vector2(0.0, -5.0), c + Vector2(2.0, 1.0), PAL["dusk"] as Color, 1.0)
-				draw_rect(Rect2(c + Vector2(-1.0, -5.0), Vector2(2.0, 2.0)), PAL["coral"] as Color)
-				draw_rect(Rect2(c + Vector2(0.0, -5.0), Vector2.ONE), PAL["cream"] as Color)
+				# Tall sharp 2.5D steel spikes with lit left edge & shaded right edge
+				var out_tri := PackedVector2Array([c + Vector2(-3.0, 1.0), c + Vector2(0.0, -7.0), c + Vector2(3.0, 1.0)])
+				draw_colored_polygon(out_tri, c_void)
+				var lit_tri := PackedVector2Array([c + Vector2(-2.0, 1.0), c + Vector2(0.0, -6.0), c + Vector2(0.0, 1.0)])
+				var sh_tri := PackedVector2Array([c + Vector2(0.0, 1.0), c + Vector2(0.0, -6.0), c + Vector2(2.0, 1.0)])
+				draw_colored_polygon(lit_tri, c_stone)
+				draw_colored_polygon(sh_tri, c_mauve)
+				draw_rect(Rect2(c + Vector2(-1.0, -5.0), Vector2(2.0, 2.0)), c_coral)
+				draw_rect(Rect2(c + Vector2(0.0, -6.0), Vector2(1.0, 2.0)), c_cream)
 			else:
-				draw_rect(Rect2(c - Vector2(1.0, 0.0), Vector2(2.0, 1.0)), PAL["dusk"] as Color)
+				# Safely tucked steel tip glint inside dark socket
+				draw_rect(Rect2(c - Vector2(1.0, 0.0), Vector2(2.0, 1.0)), c_mauve)

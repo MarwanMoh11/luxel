@@ -204,51 +204,75 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var r := Rect2((-size * 0.5).round(), size.round())
-	LxPhysDraw.draw_shadow_rect(self, r, Vector2(2.0, 2.0), 0.38)
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	LxPhysDraw.draw_shadow_rect(self, r, Vector2(1.0, 3.0), 0.44)
 	var base_c: Color = PAL["mauve"] as Color
 	var hi_c: Color = PAL["stone"] as Color
 	var sh_c: Color = PAL["dusk"] as Color
+	var front_c: Color = c_night
 	var riv_c: Color = biome("hi")
 	match variant:
 		"ice":
 			base_c = PAL["sky"] as Color
-			hi_c = PAL["cream"] as Color
+			hi_c = c_cream
 			sh_c = PAL["blue"] as Color
+			front_c = PAL["deep"] as Color
 			riv_c = PAL["ice"] as Color
 		"crate":
-			base_c = PAL["wine"] as Color
-			hi_c = PAL["apricot"] as Color
-			sh_c = PAL["night"] as Color
-			riv_c = PAL["gold"] as Color
+			base_c = PAL["apricot"] as Color
+			hi_c = PAL["gold"] as Color
+			sh_c = PAL["wine"] as Color
+			front_c = PAL["wine"] as Color
+			riv_c = c_cream
 		"slag":
 			if not cooled:
 				var hot: bool = LxHudFx.flash_reduced() or fmod(_clock * 4.0, 1.0) < 0.5
 				base_c = PAL["coral"] as Color
 				hi_c = PAL["gold"] as Color if hot else PAL["apricot"] as Color
 				sh_c = PAL["wine"] as Color
-				riv_c = PAL["cream"] as Color
+				front_c = PAL["plum"] as Color
+				riv_c = c_cream
 			else:
 				base_c = PAL["dusk"] as Color
 				hi_c = PAL["mauve"] as Color
-				sh_c = PAL["night"] as Color
+				sh_c = c_night
+				front_c = c_void
 				riv_c = PAL["stone"] as Color
 	if _flash_t > 0.0:
-		hi_c = PAL["cream"] as Color
-	LxPhysDraw.draw_bevel_box(self, r, base_c, hi_c, sh_c, PAL["void"] as Color, riv_c)
-	# Crisp surface motif per variant
-	var cx: float = floorf(r.position.x + r.size.x * 0.5)
-	var cy: float = floorf(r.position.y + r.size.y * 0.5)
+		hi_c = c_cream
+
+	# 2.5D top-down block: raised top plateau + shaded front face so it reads as a heavy pushable object
+	var face_h: float = minf(5.0, maxf(3.0, floorf(r.size.y * 0.30)))
+	var top_r := Rect2(r.position.x, r.position.y - 2.0, r.size.x, r.size.y - face_h + 2.0)
+	var front_r := Rect2(r.position.x, top_r.end.y - 1.0, r.size.x, face_h + 1.0)
+	LxPhysDraw.draw_bevel_box(self, front_r, front_c, sh_c, c_void, c_void)
+	LxPhysDraw.draw_bevel_box(self, top_r, base_c, hi_c, sh_c, c_void, riv_c)
+	# Recessed push-grip notches on left & right flanks
+	var mid_y: float = roundf(top_r.get_center().y)
+	draw_rect(Rect2(top_r.position.x + 1.0, mid_y - 2.0, 1.0, 4.0), c_void)
+	draw_rect(Rect2(top_r.end.x - 2.0, mid_y - 2.0, 1.0, 4.0), c_void)
+
+	# Crisp carved top emblem per variant
+	var cx: float = floorf(top_r.get_center().x)
+	var cy: float = floorf(top_r.get_center().y)
 	match variant:
 		"stone":
-			draw_rect(Rect2(cx - 3.0, cy - 3.0, 6.0, 6.0), sh_c, false, 1.0)
-			draw_rect(Rect2(cx - 1.0, cy - 1.0, 2.0, 2.0), biome("glow"))
+			draw_rect(Rect2(cx - 3.0, cy - 2.0, 6.0, 5.0), c_void)
+			draw_rect(Rect2(cx - 2.0, cy - 1.0, 4.0, 3.0), sh_c)
+			draw_rect(Rect2(cx - 1.0, cy, 2.0, 1.0), biome("glow"))
+			draw_rect(Rect2(cx - 2.0, front_r.position.y + 2.0, 4.0, 1.0), sh_c)
 		"ice":
-			draw_line(r.position + Vector2(3.0, 3.0), r.end - Vector2(4.0, 4.0), PAL["ice"] as Color, 1.0)
-			draw_rect(Rect2(r.position + Vector2(3.0, 3.0), Vector2(2.0, 1.0)), PAL["cream"] as Color)
+			draw_line(top_r.position + Vector2(3.0, 2.0), top_r.end - Vector2(4.0, 3.0), PAL["ice"] as Color, 1.0)
+			draw_rect(Rect2(top_r.position + Vector2(3.0, 2.0), Vector2(3.0, 1.0)), c_cream)
+			draw_rect(Rect2(top_r.end - Vector2(5.0, 3.0), Vector2(2.0, 1.0)), c_cream)
 		"crate":
-			draw_line(r.position + Vector2(2.0, 2.0), r.end - Vector2(3.0, 3.0), sh_c, 1.0)
-			draw_line(Vector2(r.end.x - 3.0, r.position.y + 2.0), Vector2(r.position.x + 2.0, r.end.y - 3.0), sh_c, 1.0)
+			draw_line(top_r.position + Vector2(2.0, 2.0), top_r.end - Vector2(3.0, 2.0), sh_c, 1.0)
+			draw_line(Vector2(top_r.end.x - 3.0, top_r.position.y + 2.0), Vector2(top_r.position.x + 2.0, top_r.end.y - 2.0), sh_c, 1.0)
 		"slag":
-			var crack_c: Color = PAL["gold"] as Color if not cooled else PAL["night"] as Color
-			draw_line(Vector2(cx - 4.0, cy - 1.0), Vector2(cx, cy + 2.0), crack_c, 1.0)
-			draw_line(Vector2(cx, cy + 2.0), Vector2(cx + 4.0, cy - 2.0), crack_c, 1.0)
+			var crack_c: Color = PAL["gold"] as Color if not cooled else c_night
+			draw_line(Vector2(cx - 4.0, cy - 1.0), Vector2(cx, cy + 1.0), crack_c, 1.0)
+			draw_line(Vector2(cx, cy + 1.0), Vector2(cx + 4.0, cy - 2.0), crack_c, 1.0)
+			if not cooled:
+				draw_rect(Rect2(cx - 1.0, cy, 2.0, 1.0), c_cream)

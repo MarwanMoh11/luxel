@@ -349,8 +349,8 @@
       "sheet": "theme_manor",
       "prop": "manor_candelabra",
       "pos": [
-        352,
-        240
+        336,
+        224
       ],
       "layer": "sort",
       "flip_x": false,

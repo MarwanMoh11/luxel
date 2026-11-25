@@ -3,7 +3,7 @@
   "music": "isl1_undercroft",
   "spawn": [
     224,
-    304
+    316
   ],
   "zones": [
     {
@@ -212,7 +212,7 @@
       "kind": "toll_hound",
       "pos": [
         224,
-        206
+        218
       ],
       "zone": "uc_kennel"
     }

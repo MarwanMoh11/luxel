@@ -67,10 +67,10 @@
         32,
         16
       ],
-      "to_region": "orrery_r10",
+      "to_region": "orrery_r16",
       "to_spawn": [
-        176,
-        288
+        240,
+        240
       ],
       "requires_moves": [
         "lens"
@@ -88,16 +88,19 @@
         32,
         16
       ],
-      "to_region": "orrery_r16",
+      "to_region": "orrery_r10",
       "to_spawn": [
-        240,
-        240
+        176,
+        288
       ],
       "requires_moves": [
         "lens"
       ],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "keepers_flame_5",
+        "o5_r16_syzygy"
+      ],
+      "locked_door_id": "door_o5_r9_syzygy_short"
     },
     {
       "id": "exit_o5_r9_return",
@@ -319,6 +322,25 @@
         ],
         "requires_flags": [
           "keepers_flame_5"
+        ]
+      }
+    },
+    {
+      "id": "door_o5_r9_syzygy_short",
+      "kind": "door",
+      "pos": [
+        416,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          48,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_5",
+          "o5_r16_syzygy"
         ]
       }
     },
@@ -581,5 +603,6 @@
         "exit": "exit_o5_r9_north"
       }
     ]
-  }
+  },
+  "theme": "orrery"
 }

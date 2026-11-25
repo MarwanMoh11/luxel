@@ -86,14 +86,38 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var r := Rect2((-size * 0.5).round(), size.round())
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_plum: Color = PAL["plum"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+
 	if state == State.GONE:
-		# Faint corner anchor brackets showing respawn progress
+		# Crisp dark chasm socket framed by broken corner masonry brackets (zero translucent wash)
 		var frac: float = 1.0 - clampf(timer / maxf(respawn, 0.01), 0.0, 1.0)
-		var c: Color = PAL["stone"] as Color if frac > 0.72 else PAL["dusk"] as Color
-		for cp: Vector2 in [r.position, Vector2(r.end.x - 3.0, r.position.y), Vector2(r.position.x, r.end.y - 3.0), r.end - Vector2(3.0, 3.0)]:
-			draw_rect(Rect2(cp, Vector2(3.0, 3.0)), Color(c, 0.75))
-		if frac > 0.72:
-			draw_rect(r.grow(-2.0), Color(biome("hi"), 0.25), false, 1.0)
+		draw_rect(r.grow(-1.0), c_void)
+		draw_rect(r.grow(-2.0), c_night)
+		var br_c: Color = c_stone if frac > 0.72 else c_mauve
+		var br_sh: Color = c_dusk
+		# Four jagged broken stone corner ledges
+		draw_rect(Rect2(r.position, Vector2(5.0, 2.0)), br_c)
+		draw_rect(Rect2(r.position, Vector2(2.0, 5.0)), br_c)
+		draw_rect(Rect2(r.position + Vector2(1.0, 1.0), Vector2(2.0, 2.0)), br_sh)
+		draw_rect(Rect2(r.end.x - 5.0, r.position.y, 5.0, 2.0), br_c)
+		draw_rect(Rect2(r.end.x - 2.0, r.position.y, 2.0, 5.0), br_c)
+		draw_rect(Rect2(r.position.x, r.end.y - 2.0, 5.0, 2.0), br_sh)
+		draw_rect(Rect2(r.position.x, r.end.y - 5.0, 2.0, 5.0), br_sh)
+		draw_rect(Rect2(r.end.x - 5.0, r.end.y - 2.0, 5.0, 2.0), br_sh)
+		draw_rect(Rect2(r.end.x - 2.0, r.end.y - 5.0, 2.0, 5.0), br_sh)
+		# Reforming stone pebbles gathering toward center right before respawn
+		if frac > 0.55:
+			var gather: float = clampf((frac - 0.55) / 0.45, 0.0, 1.0)
+			var spread: float = lerpf(5.0, 1.0, gather)
+			for off_p: Vector2 in [Vector2(-spread, -spread), Vector2(spread, -spread * 0.5), Vector2(-spread * 0.5, spread), Vector2(spread, spread)]:
+				draw_rect(Rect2(off_p.round() - Vector2.ONE, Vector2(2.0, 2.0)), biome("hi") if frac > 0.8 else c_stone)
 		return
 
 	var shake_off := Vector2.ZERO
@@ -102,15 +126,31 @@ func _draw() -> void:
 		frac_s = 1.0 - clampf(timer / maxf(delay, 0.01), 0.0, 1.0)
 		if not LxHudFx.flash_reduced():
 			shake_off = Vector2(roundf(sin(_clock * 48.0) * (1.0 + frac_s)), roundf(cos(_clock * 37.0) * 0.8))
-	var dr := Rect2(r.position + shake_off, r.size)
-	LxPhysDraw.draw_shadow_rect(self, dr, Vector2(0.0, 2.0), 0.45)
-	var base_c: Color = PAL["plum"] as Color if state == State.SHAKING else PAL["mauve"] as Color
-	var hi_c: Color = PAL["coral"] as Color if (state == State.SHAKING and frac_s > 0.55) else PAL["stone"] as Color
-	LxPhysDraw.draw_bevel_box(self, dr, base_c, hi_c, PAL["dusk"] as Color, PAL["void"] as Color)
-	# Carved fracture cracks that deepen while shaking
-	var cc: Color = PAL["void"] as Color if state == State.SHAKING else PAL["dusk"] as Color
-	draw_line(dr.position + Vector2(3.0, 3.0), dr.get_center(), cc, 1.0)
-	draw_line(dr.get_center(), dr.end - Vector2(4.0, 5.0), cc, 1.0)
+	var dr := Rect2((r.position + shake_off).round(), r.size)
+	# Recessed chasm rim under flagstone
+	draw_rect(Rect2(r.position.x, r.end.y - 1.0, r.size.x, 3.0), c_void)
+	# Carved weathered flagstone body
+	var base_c: Color = c_plum if state == State.SHAKING else c_mauve
+	var hi_c: Color = c_coral if (state == State.SHAKING and frac_s > 0.5) else (c_apr if state == State.SHAKING else c_stone)
+	LxPhysDraw.draw_bevel_box(self, dr, base_c, hi_c, c_dusk, c_void)
+	# Subtle masonry notch corners & carved stone grain
+	draw_rect(Rect2(dr.position + Vector2(2.0, 2.0), Vector2(2.0, 1.0)), hi_c)
+	draw_rect(Rect2(dr.end - Vector2(4.0, 3.0), Vector2(2.0, 1.0)), c_night)
+	# Branching jagged fracture cracks (clearly deeper and splitting while SHAKING)
+	var cc: Color = c_void if state == State.SHAKING else c_night
+	var c_edge: Color = c_coral if state == State.SHAKING else c_stone
+	var mid: Vector2 = dr.get_center().round()
+	draw_line(dr.position + Vector2(3.0, 2.0), mid + Vector2(-1.0, -1.0), cc, 1.0)
+	draw_line(mid + Vector2(-1.0, -1.0), mid + Vector2(1.0, 1.0), cc, 1.0)
+	draw_line(mid + Vector2(1.0, 1.0), dr.end - Vector2(3.0, 4.0), cc, 1.0)
+	draw_line(mid + Vector2(0.0, -1.0), Vector2(dr.end.x - 3.0, dr.position.y + 4.0), cc, 1.0)
+	draw_rect(Rect2(mid + Vector2(-2.0, 1.0), Vector2(1.0, 1.0)), c_edge)
+	draw_rect(Rect2(mid + Vector2(2.0, -2.0), Vector2(1.0, 1.0)), c_edge)
 	if state == State.SHAKING:
-		draw_line(Vector2(dr.end.x - 4.0, dr.position.y + 3.0), dr.get_center(), PAL["void"] as Color, 1.0)
-		draw_line(dr.get_center(), Vector2(dr.position.x + 4.0, dr.end.y - 3.0), PAL["void"] as Color, 1.0)
+		# Second crossing chasm fracture + tumbling pebble chips
+		draw_line(Vector2(dr.end.x - 3.0, dr.position.y + 2.0), mid, c_void, 2.0)
+		draw_line(mid, Vector2(dr.position.x + 3.0, dr.end.y - 3.0), c_void, 2.0)
+		draw_rect(Rect2(mid - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), c_coral)
+		var drop: float = roundf(frac_s * 3.0)
+		draw_rect(Rect2(dr.position.x + 2.0, dr.end.y + drop, 2.0, 1.0), c_stone)
+		draw_rect(Rect2(dr.end.x - 4.0, dr.end.y + 1.0 + drop, 2.0, 1.0), c_mauve)

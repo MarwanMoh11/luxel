@@ -84,7 +84,10 @@
         240
       ],
       "requires_flags": [
-        "palace_mirror_chord"
+        "palace_mirror_chord",
+        "palace_r6_orb_lit",
+        "palace_r7_solved",
+        "palace_r8_solved"
       ],
       "locked_door_id": "door_r9_north"
     }
@@ -203,7 +206,10 @@
       "props": {
         "door_kind": "ward_barrier",
         "requires_flags": [
-          "palace_mirror_chord"
+          "palace_mirror_chord",
+          "palace_r6_orb_lit",
+          "palace_r7_solved",
+          "palace_r8_solved"
         ],
         "size": [
           48,

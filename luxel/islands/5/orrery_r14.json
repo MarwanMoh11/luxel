@@ -3,7 +3,7 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "planetarium",
+  "theme": "orrery",
   "music": "island5_dungeon",
   "name_key": "I5_OR_R14",
   "spawn": [
@@ -79,6 +79,7 @@
         "lens"
       ],
       "requires_flags": [
+        "o5_r14_rings",
         "wick_key_5_3"
       ],
       "locked_door_id": "door_o5_r14_k3"
@@ -246,7 +247,8 @@
         "starts_open": false,
         "requires_signals": [
           "eye_o5_r14_pin"
-        ]
+        ],
+        "sets_flag": "o5_r14_rings"
       }
     },
     {
@@ -257,15 +259,13 @@
         160
       ],
       "props": {
-        "door_kind": "key_door",
-        "dungeon_id": "orrery",
-        "key_kind": "wick_key",
-        "key_id": "wick_key_5_3",
+        "door_kind": "ward_barrier",
         "size": [
           16,
           32
         ],
         "requires_flags": [
+          "o5_r14_rings",
           "wick_key_5_3"
         ]
       }

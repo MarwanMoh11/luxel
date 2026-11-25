@@ -145,28 +145,82 @@ func _draw() -> void:
 	var horiz: bool = absf(d.x) >= absf(d.y)
 	var running: bool = effective_speed() > 0.1
 	var boosted: bool = running and _boost_t > 0.0 and _boost_mult > 1.05
-	var rim_c: Color = PAL["coral"] as Color if boosted else (PAL["mauve"] as Color if running else PAL["dusk"] as Color)
-	LxPhysDraw.draw_bevel_box(self, r, PAL["night"] as Color, rim_c, PAL["void"] as Color, PAL["void"] as Color)
-	# Animated slat bars + directional chevron pips (dimmed & motionless when paused)
-	var chev_c: Color = PAL["cream"] as Color if boosted else (biome("glow") if (running and powered) else (biome("hi") if running else PAL["dusk"] as Color))
-	var roller_c: Color = PAL["apricot"] as Color if boosted else (PAL["stone"] as Color if running else PAL["mauve"] as Color)
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+
+	# Grounded drop shadow & heavy iron chassis outline
+	LxPhysDraw.draw_shadow_rect(self, r, Vector2(0.0, 2.0), 0.42)
+	draw_rect(r, c_void)
+	# Recessed belt trough
+	draw_rect(Rect2(r.position + Vector2(1.0, 1.0), r.size - Vector2(2.0, 2.0)), c_night)
+
+	# Bright metallic guide rails along the long edges (unmistakable bright edge!)
+	var edge_hi: Color = c_cream if boosted else (c_gold if (running and powered) else (c_stone if running else c_mauve))
+	var edge_mid: Color = c_coral if boosted else (biome("hi") if running else c_dusk)
+	var chev_c: Color = c_cream if boosted else (c_gold if (running and powered) else (c_cream if running else c_dusk))
+	var slat_a: Color = c_dusk if running else c_night
+	var slat_b: Color = c_mauve if boosted else (c_night if running else c_void)
+	var roller_hi: Color = c_cream if boosted else (c_gold if powered else c_stone)
+	var roller_mid: Color = c_apr if boosted else (c_mauve if running else c_dusk)
+
 	if horiz:
+		# Top & bottom bright steel side rails
+		draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, r.size.x - 2.0, 2.0), edge_mid)
+		draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, r.size.x - 2.0, 1.0), edge_hi)
+		draw_rect(Rect2(r.position.x + 1.0, r.end.y - 3.0, r.size.x - 2.0, 2.0), c_dusk)
+		draw_rect(Rect2(r.position.x + 1.0, r.end.y - 2.0, r.size.x - 2.0, 1.0), edge_mid)
+		# Moving belt slats + bold directional chevrons
 		var sign_x: float = 1.0 if d.x >= 0.0 else -1.0
-		draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, 2.0, r.size.y - 2.0), roller_c)
-		draw_rect(Rect2(r.end.x - 3.0, r.position.y + 1.0, 2.0, r.size.y - 2.0), roller_c)
 		var off: float = _scroll if sign_x > 0.0 else (8.0 - _scroll)
+		var belt_y: float = r.position.y + 3.0
+		var belt_h: float = maxf(4.0, r.size.y - 6.0)
 		var x: float = r.position.x + 4.0 + off
+		var si: int = 0
 		while x < r.end.x - 4.0:
-			draw_line(Vector2(roundf(x), r.position.y + 2.0), Vector2(roundf(x), r.end.y - 3.0), PAL["dusk"] as Color, 1.0)
-			LxPhysDraw.draw_chevron(self, Vector2(roundf(x), 0.0), d, chev_c, PAL["void"] as Color, 2.5)
+			var rx: float = roundf(x)
+			draw_rect(Rect2(rx - 2.0, belt_y, 5.0, belt_h), slat_a if si % 2 == 0 else slat_b)
+			draw_rect(Rect2(rx - 3.0, belt_y, 1.0, belt_h), c_void)
+			draw_rect(Rect2(rx - 2.0, belt_y, 5.0, 1.0), c_mauve if running else c_dusk)
+			LxPhysDraw.draw_chevron(self, Vector2(rx, 0.0), d, chev_c, c_void, 2.5)
 			x += 8.0
+			si += 1
+		# Chunky end-cap rollers with specular ridge & brass bearings
+		for end_x: float in [r.position.x + 1.0, r.end.x - 4.0]:
+			draw_rect(Rect2(end_x, r.position.y + 1.0, 3.0, r.size.y - 2.0), c_void)
+			draw_rect(Rect2(end_x, r.position.y + 2.0, 3.0, r.size.y - 4.0), roller_mid)
+			draw_rect(Rect2(end_x + 1.0, r.position.y + 2.0, 1.0, r.size.y - 4.0), roller_hi)
+			draw_rect(Rect2(end_x + 1.0, r.position.y + 1.0, 1.0, 1.0), c_gold if running else c_mauve)
+			draw_rect(Rect2(end_x + 1.0, r.end.y - 2.0, 1.0, 1.0), c_gold if running else c_mauve)
 	else:
+		# Left & right bright steel side rails
+		draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, 2.0, r.size.y - 2.0), edge_mid)
+		draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, 1.0, r.size.y - 2.0), edge_hi)
+		draw_rect(Rect2(r.end.x - 3.0, r.position.y + 1.0, 2.0, r.size.y - 2.0), c_dusk)
+		draw_rect(Rect2(r.end.x - 2.0, r.position.y + 1.0, 1.0, r.size.y - 2.0), edge_mid)
 		var sign_y: float = 1.0 if d.y >= 0.0 else -1.0
-		draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, r.size.x - 2.0, 2.0), roller_c)
-		draw_rect(Rect2(r.position.x + 1.0, r.end.y - 3.0, r.size.x - 2.0, 2.0), roller_c)
 		var off_y: float = _scroll if sign_y > 0.0 else (8.0 - _scroll)
+		var belt_x: float = r.position.x + 3.0
+		var belt_w: float = maxf(4.0, r.size.x - 6.0)
 		var y: float = r.position.y + 4.0 + off_y
+		var sj: int = 0
 		while y < r.end.y - 4.0:
-			draw_line(Vector2(r.position.x + 2.0, roundf(y)), Vector2(r.end.x - 3.0, roundf(y)), PAL["dusk"] as Color, 1.0)
-			LxPhysDraw.draw_chevron(self, Vector2(0.0, roundf(y)), d, chev_c, PAL["void"] as Color, 2.5)
+			var ry: float = roundf(y)
+			draw_rect(Rect2(belt_x, ry - 2.0, belt_w, 5.0), slat_a if sj % 2 == 0 else slat_b)
+			draw_rect(Rect2(belt_x, ry - 3.0, belt_w, 1.0), c_void)
+			draw_rect(Rect2(belt_x, ry - 2.0, 1.0, 5.0), c_mauve if running else c_dusk)
+			LxPhysDraw.draw_chevron(self, Vector2(0.0, ry), d, chev_c, c_void, 2.5)
 			y += 8.0
+			sj += 1
+		for end_y: float in [r.position.y + 1.0, r.end.y - 4.0]:
+			draw_rect(Rect2(r.position.x + 1.0, end_y, r.size.x - 2.0, 3.0), c_void)
+			draw_rect(Rect2(r.position.x + 2.0, end_y, r.size.x - 4.0, 3.0), roller_mid)
+			draw_rect(Rect2(r.position.x + 2.0, end_y + 1.0, r.size.x - 4.0, 1.0), roller_hi)
+			draw_rect(Rect2(r.position.x + 1.0, end_y + 1.0, 1.0, 1.0), c_gold if running else c_mauve)
+			draw_rect(Rect2(r.end.x - 2.0, end_y + 1.0, 1.0, 1.0), c_gold if running else c_mauve)

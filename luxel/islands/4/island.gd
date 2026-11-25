@@ -287,6 +287,17 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_flags": ["c4_r8_cleared"],
 		},
 		{
+			"id": "wp_4_canopy_seal",
+			"region": "conservatory_r17",
+			"zone": "conservatory_r17",
+			"pos": [328.0, 88.0],
+			"action": "solve_puzzle",
+			"target": "sensor_c4_r17_seal",
+			"grants_flag": "c4_canopy_seal",
+			"requires_moves": ["wings"],
+			"requires_flags": ["keepers_flame_4"],
+		},
+		{
 			"id": "wp_4_boss",
 			"region": "conservatory_r10",
 			"zone": "conservatory_r10",
@@ -295,7 +306,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"target": "boss_heron_abbess",
 			"grants_flag": "boss_heron_abbess_defeated",
 			"requires_moves": ["wings"],
-			"requires_flags": ["keepers_flame_4"],
+			"requires_flags": ["keepers_flame_4", "c4_canopy_seal"],
 		},
 		{
 			"id": "wp_4_great_lamp",

@@ -3,7 +3,7 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "cave_5",
+  "theme": "starfall_geode",
   "name_key": "I5_CAVE_CIST",
   "music": "island5_dungeon",
   "spawn": [

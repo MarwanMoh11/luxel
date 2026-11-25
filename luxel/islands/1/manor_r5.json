@@ -144,8 +144,8 @@
       "id": "lamp_r5_sw",
       "kind": "road_lamp",
       "pos": [
-        112,
-        240
+        144,
+        248
       ],
       "props": {
         "zone": "mn_workshop",
@@ -332,8 +332,8 @@
       "sheet": "theme_manor",
       "prop": "bellmaker_pedestal",
       "pos": [
-        368,
-        264
+        344,
+        232
       ],
       "layer": "sort",
       "flip_x": false,

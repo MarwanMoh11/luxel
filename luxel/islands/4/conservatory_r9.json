@@ -55,7 +55,8 @@
         "wings"
       ],
       "requires_flags": [
-        "keepers_flame_4"
+        "keepers_flame_4",
+        "c4_canopy_seal"
       ],
       "locked_door_id": "door_boss_4"
     },
@@ -179,6 +180,24 @@
         "flag_id": "keepers_flame_4",
         "requires_moves": [
           "wings"
+        ]
+      }
+    },
+    {
+      "id": "door_c4_r9_canopy_seal",
+      "kind": "door",
+      "pos": [
+        224,
+        40
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_flags": [
+          "c4_canopy_seal"
         ]
       }
     },
@@ -437,7 +456,21 @@
   "name_key": "ISL4_C4_R9",
   "music": "island4_dungeon",
   "layers": [],
-  "events": [],
+  "events": [
+    {
+      "id": "ev_c4_r9_canopy_open",
+      "on": "flag:c4_canopy_seal",
+      "once": true,
+      "do": [
+        {
+          "sfx": "c4_canopy_chime"
+        },
+        {
+          "narrate": "ISL4_C4_CANOPY_UNSEALED"
+        }
+      ]
+    }
+  ],
   "decor": [
     {
       "kind": "circle",
@@ -480,7 +513,7 @@
     "expert_s": 60,
     "reward": "keepers_flame_4, c4_r9_vault_open, Upper Canopy wing access",
     "why": "Pre-boss nexus linking the main vault to the Upper Glass Canopy loop while fixing D06 & D25a.",
-    "exit": "exit_c4_r9_north",
+    "exit": "exit_c4_r9_west",
     "start": {
       "moves": [
         "wings"
@@ -568,36 +601,8 @@
         "flag": "keepers_flame_4"
       },
       {
-        "op": "goto",
-        "to": [
-          112,
-          136
-        ],
-        "tol": 12
-      },
-      {
-        "op": "glide",
-        "to": [
-          216,
-          120
-        ],
-        "tol": 14
-      },
-      {
-        "op": "goto",
-        "to": [
-          224,
-          48
-        ],
-        "tol": 14
-      },
-      {
-        "op": "interact",
-        "target": "door_boss_4"
-      },
-      {
         "op": "expect_exit",
-        "exit": "exit_c4_r9_north"
+        "exit": "exit_c4_r9_west"
       }
     ]
   },

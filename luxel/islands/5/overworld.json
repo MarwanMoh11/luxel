@@ -2642,5 +2642,6 @@
         "var": "ow_dial==90"
       }
     ]
-  }
+  },
+  "theme": "starfall_overworld"
 }

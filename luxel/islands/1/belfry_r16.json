@@ -8,7 +8,7 @@
   "music": "island1_dungeon",
   "spawn": [
     224,
-    272
+    282
   ],
   "zones": [
     {
@@ -81,16 +81,16 @@
       "kind": "brass_metronome",
       "pos": [
         224,
-        174
+        184
       ],
       "route": [
         [
           144,
-          174
+          184
         ],
         [
           304,
-          174
+          184
         ]
       ],
       "perches": [],

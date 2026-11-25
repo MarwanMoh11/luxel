@@ -98,7 +98,7 @@
         ],
         "quarter_on_signal": true,
         "start_quarter": 0,
-        "persist": true
+        "persist": false
       }
     },
     {
@@ -154,7 +154,7 @@
         "color": "blue",
         "latch": true,
         "pass_through": true,
-        "persist": true,
+        "persist": false,
         "target_id": "slag_r4_bumper"
       }
     },
@@ -172,7 +172,7 @@
           16,
           16
         ],
-        "persist": true
+        "persist": false
       }
     },
     {

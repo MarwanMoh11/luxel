@@ -9,7 +9,7 @@
   "ambience": [],
   "spawn": [
     224,
-    304
+    312
   ],
   "zones": [
     {
@@ -46,7 +46,7 @@
       "kind": "silent_bell",
       "pos": [
         224,
-        144
+        212
       ],
       "zone": "superboss_silent"
     }

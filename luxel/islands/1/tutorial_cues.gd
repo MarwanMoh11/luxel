@@ -135,6 +135,8 @@ func _on_lantern_picked_up(_pickup_id: String, pickup_pos: Vector2) -> void:
 
 func _on_lantern_thrown(_pos: Vector2, _dir: Vector2) -> void:
 	_has_thrown = true
+	if _throw_hint_shown and Lx.events != null:
+		Lx.events.prompt_requested.emit("", "", 0.0)
 
 
 func _trigger_throw_combat_hint() -> void:
@@ -144,7 +146,7 @@ func _trigger_throw_combat_hint() -> void:
 	if Lx.state != null:
 		Lx.state.story_flags["throw_combat_hint_shown"] = true
 	if Lx.events != null:
-		Lx.events.prompt_requested.emit("PROMPT_THROW", "lx_throw", 5.5)
+		Lx.events.prompt_requested.emit("PROMPT_THROW", "lx_throw", 3.0)
 
 
 func _on_enemy_hit(enemy: Object, hit: Object, result: int) -> void:
@@ -172,6 +174,8 @@ func _on_enemy_killed(enemy: Object, kind: String, pos: Vector2, _opened: bool) 
 		_celebrate_t = 3.2
 		if Lx.state != null:
 			Lx.state.story_flags["tut_plaza_warden_dead"] = true
+		if Lx.events != null:
+			Lx.events.prompt_requested.emit("", "", 0.0)
 	if kind == "snatcher" or enemy is LxSnatcherBrain:
 		_mark_snatcher_killed()
 
@@ -235,6 +239,8 @@ func _process(delta: float) -> void:
 		if _is_beacon_lit("beacon_observatory") or _is_inter_bool("lamp_orchard_s", "lit") or crossed_chasm:
 			_dash_crossed = true
 			Lx.state.story_flags["tut_dash_crossed"] = true
+			if Lx.events != null:
+				Lx.events.prompt_requested.emit("", "", 0.0)
 	if not _river_crossed and wpos.x >= 1036.0 and wpos.y >= 260.0 and wpos.y <= 450.0:
 		_river_crossed = true
 		Lx.state.story_flags["tut_river_crossed"] = true

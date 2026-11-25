@@ -156,18 +156,44 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
-	LxPhysDraw.draw_track_line(self, pos, path, PAL["dusk"] as Color, PAL["night"] as Color, biome("hi") if _is_moving_active() else PAL["mauve"] as Color, is_loop)
-	var r := Rect2((-size * 0.5).round(), size.round())
-	LxPhysDraw.draw_shadow_rect(self, r, Vector2(0.0, 3.0), 0.42)
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 	var lit: bool = _is_moving_active()
-	LxPhysDraw.draw_bevel_box(self, r, PAL["dusk"] as Color, biome("hi") if lit else PAL["stone"] as Color, PAL["night"] as Color, PAL["void"] as Color, biome("glow") if lit else PAL["mauve"] as Color)
-	# Deck planks + glowing center core
-	var inner := Rect2(r.position + Vector2(3.0, 3.0), r.size - Vector2(6.0, 6.0))
-	draw_rect(inner, PAL["night"] as Color)
-	var px: float = inner.position.x + 4.0
-	while px < inner.end.x - 1.0:
-		draw_line(Vector2(px, inner.position.y), Vector2(px, inner.end.y - 1.0), PAL["dusk"] as Color, 1.0)
-		px += 6.0
-	draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), biome("glow") if lit else PAL["plum"] as Color)
+
+	LxPhysDraw.draw_track_line(self, pos, path, c_dusk, c_night, biome("hi") if lit else PAL["mauve"] as Color, is_loop)
+	var r := Rect2((-size * 0.5).round(), size.round())
+	# Floating ferry deck shadow + stepped hull underside
+	LxPhysDraw.draw_shadow_rect(self, r, Vector2(0.0, 3.0), 0.44)
+	draw_rect(Rect2(r.position.x + 1.0, r.end.y - 1.0, r.size.x - 2.0, 3.0), c_void)
+	draw_rect(Rect2(r.position.x + 2.0, r.end.y - 1.0, r.size.x - 4.0, 2.0), c_night)
+	# Warm timber-and-brass deck frame (unmistakably walkable floor, distinct from mover_wall!)
+	LxPhysDraw.draw_bevel_box(self, r, c_wine, c_gold if lit else c_apr, c_night, c_void)
+	var deck := Rect2(r.position + Vector2(2.0, 2.0), r.size - Vector2(4.0, 4.0))
+	draw_rect(deck, c_dusk if not lit else c_wine)
+	# Crisp timber deck planks & brass nail studs
+	var px: float = deck.position.x + 4.0
+	while px < deck.end.x - 1.0:
+		draw_line(Vector2(px, deck.position.y), Vector2(px, deck.end.y - 1.0), c_void, 1.0)
+		draw_rect(Rect2(px - 2.0, deck.position.y + 1.0, 1.0, 1.0), c_apr if lit else c_stone)
+		px += 5.0
+	# Four brass corner deck bollards (light up gold/cream when ferry is moving)
+	var post_c: Color = c_cream if lit else c_stone
+	for cp: Vector2 in [
+		r.position + Vector2(1.0, 1.0),
+		Vector2(r.end.x - 4.0, r.position.y + 1.0),
+		Vector2(r.position.x + 1.0, r.end.y - 4.0),
+		r.end - Vector2(4.0, 4.0),
+	]:
+		draw_rect(Rect2(cp, Vector2(3.0, 3.0)), c_void)
+		draw_rect(Rect2(cp + Vector2(1.0, 1.0), Vector2(1.0, 1.0)), post_c)
+	# Center brass compass rivet
+	draw_rect(Rect2(-3.0, -2.0, 6.0, 4.0), c_void)
+	draw_rect(Rect2(-2.0, -1.0, 4.0, 2.0), biome("glow") if lit else c_dusk)
 	if lit:
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 1.0), c_cream)

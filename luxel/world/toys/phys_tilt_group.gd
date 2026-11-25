@@ -167,11 +167,34 @@ func tick(dt: float) -> void:
 func _draw() -> void:
 	var is_calm: bool = _is_stabilized()
 	var has_boots: bool = _has_heat_boots()
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+
+	# 1. Grounded iron deck corner brackets & slope chevrons (zero translucent rect wash!)
 	if _zone_rect.has_area():
 		var r := Rect2((-size * 0.5).round(), size.round())
-		draw_rect(r, Color(biome("mid"), 0.04 if is_calm else (0.11 if telegraphing else 0.06)))
-		draw_rect(r, Color(PAL["ice"] as Color if is_calm else (PAL["gold"] as Color if telegraphing else biome("hi")), 0.26), false, 1.0)
-		# Crisp directional deck floor ticks readable in greyscale
+		var br_c: Color = c_ice if is_calm else (c_gold if telegraphing else c_stone)
+		var arm: float = minf(6.0, minf(r.size.x, r.size.y) * 0.25)
+		for corner: Array in [
+			[r.position, Vector2(1.0, 1.0)],
+			[Vector2(r.end.x - 1.0, r.position.y), Vector2(-1.0, 1.0)],
+			[Vector2(r.position.x, r.end.y - 1.0), Vector2(1.0, -1.0)],
+			[r.end - Vector2.ONE, Vector2(-1.0, -1.0)],
+		]:
+			var cp: Vector2 = corner[0] as Vector2
+			var sg: Vector2 = corner[1] as Vector2
+			draw_line(cp, cp + Vector2(sg.x * arm, 0.0), c_void, 3.0)
+			draw_line(cp, cp + Vector2(0.0, sg.y * arm), c_void, 3.0)
+			draw_line(cp, cp + Vector2(sg.x * arm, 0.0), br_c, 1.0)
+			draw_line(cp, cp + Vector2(0.0, sg.y * arm), br_c, 1.0)
 		if not is_calm:
 			var sdir: Vector2 = tilt_axis * float(tilt_side)
 			var step_n: int = clampi(int(maxf(size.x, size.y) / 48.0), 1, 4)
@@ -179,19 +202,29 @@ func _draw() -> void:
 				var u: float = (float(i) + 0.5) / float(step_n) - 0.5
 				var pt: Vector2 = (tilt_axis * (u * (size.x if absf(tilt_axis.x) >= absf(tilt_axis.y) else size.y) * 0.65)).round()
 				if pt.length() > 16.0:
-					LxPhysDraw.draw_chevron(self, pt, sdir, PAL["cream"] as Color if telegraphing else biome("hi"), PAL["void"] as Color, 2.0)
+					LxPhysDraw.draw_chevron(self, pt, sdir, c_cream if telegraphing else biome("hi"), c_void, 2.0)
 
-	var badge := Rect2(-12.0, -7.0, 24.0, 14.0)
-	var border_c: Color = PAL["ice"] as Color if is_calm else (PAL["gold"] as Color if telegraphing else PAL["stone"] as Color)
-	LxPhysDraw.draw_bevel_box(self, badge, PAL["night"] as Color, border_c, PAL["dusk"] as Color, PAL["void"] as Color)
-	# Pendulum level indicator showing live tilt angle
-	var ang: float = 0.0 if is_calm else clampf(tilt_amount, -1.2, 1.2) * 0.55
-	var bob: Vector2 = (Vector2(sin(ang) * 7.0, cos(ang) * 5.0) + Vector2(0.0, -4.0)).round()
-	draw_line(Vector2(0.0, -4.0), bob, PAL["ice"] as Color if is_calm else PAL["gold"] as Color, 1.0)
-	draw_rect(Rect2(bob - Vector2.ONE, Vector2(2.0, 2.0)), PAL["ice"] as Color if is_calm else (PAL["coral"] as Color if telegraphing else PAL["cream"] as Color))
+	# 2. Sculpted brass & iron pendulum inclinometer floor medallion
+	draw_rect(Rect2(-13.0, -7.0, 26.0, 16.0), c_void)
+	draw_rect(Rect2(-12.0, -8.0, 24.0, 18.0), c_void)
+	var rim_c: Color = c_ice if is_calm else (c_gold if telegraphing else c_apr)
+	LxPhysDraw.draw_bevel_box(self, Rect2(-12.0, -7.0, 24.0, 15.0), c_night, rim_c, c_dusk, c_void, c_stone)
+	# Engraved degree arc along bottom of dial
+	draw_arc(Vector2(0.0, -4.0), 8.0, 0.55, PI - 0.55, 10, c_dusk, 1.0)
+	for tick_x: float in [-5.0, 0.0, 5.0]:
+		draw_rect(Rect2(tick_x, 3.0, 1.0, 2.0), c_ice if (is_calm and tick_x == 0.0) else c_mauve)
+	# Brass top pivot stud
+	draw_rect(Rect2(-2.0, -6.0, 4.0, 2.0), rim_c)
+	draw_rect(Rect2(-1.0, -6.0, 2.0, 1.0), c_cream)
+	# Swinging weighted plumb bob
+	var ang: float = 0.0 if is_calm else clampf(tilt_amount, -1.2, 1.2) * 0.62
+	var bob: Vector2 = (Vector2(sin(ang) * 7.5, cos(ang) * 6.5) + Vector2(0.0, -5.0)).round()
+	draw_line(Vector2(0.0, -5.0), bob, c_ice if is_calm else c_gold, 1.0)
+	draw_rect(Rect2(bob - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
+	draw_rect(Rect2(bob - Vector2.ONE, Vector2(2.0, 2.0)), c_ice if is_calm else (c_coral if telegraphing else c_cream))
+	# Active slope chevron on the downhill side
 	if not is_calm:
-		LxPhysDraw.draw_chevron(self, tilt_axis * (float(tilt_side) * 8.0), tilt_axis * float(tilt_side), biome("glow"), PAL["void"] as Color, 2.0)
+		LxPhysDraw.draw_chevron(self, tilt_axis * (float(tilt_side) * 8.0), tilt_axis * float(tilt_side), c_cream if telegraphing else c_gold, c_void, 2.0)
 	if has_boots:
-		# Small brass cleat anchor mark on badge corner when Heat-Boots brace Wick
-		draw_rect(Rect2(-10.0, 3.0, 3.0, 2.0), PAL["apricot"] as Color)
-		draw_rect(Rect2(-9.0, 2.0, 1.0, 1.0), PAL["cream"] as Color)
+		draw_rect(Rect2(-10.0, 4.0, 3.0, 2.0), c_apr)
+		draw_rect(Rect2(-9.0, 3.0, 1.0, 1.0), c_cream)

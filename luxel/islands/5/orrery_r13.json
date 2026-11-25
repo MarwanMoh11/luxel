@@ -3,7 +3,7 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "planetarium",
+  "theme": "orrery",
   "music": "island5_dungeon",
   "name_key": "I5_OR_R13",
   "spawn": [
