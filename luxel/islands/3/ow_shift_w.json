@@ -1,0 +1,530 @@
+{
+  "id": "ow_shift_w",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "shift_clearing": "w",
+  "name_key": "ISL3_SHIFT_W_NAME",
+  "music": "island3_explore",
+  "spawn": [
+    184,
+    264
+  ],
+  "zones": [
+    {
+      "id": "whispering_wood",
+      "name_key": "ISL3_SHIFT_W_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        216,
+        160
+      ],
+      "radius": 30,
+      "color": "jade",
+      "secondary": "gold"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        80,
+        232
+      ],
+      "radius": 26,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        344,
+        104
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        128
+      ],
+      "size": [
+        44,
+        72
+      ],
+      "tint": "lime",
+      "shear": 0.3
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_shift_w_to_camp",
+      "rect": [
+        160,
+        288,
+        48,
+        32
+      ],
+      "to_region": "ow_camp",
+      "to_spawn": [
+        120,
+        56
+      ]
+    },
+    {
+      "id": "exit_shift_w_to_ow",
+      "rect": [
+        416,
+        144,
+        32,
+        48
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        72,
+        440
+      ]
+    },
+    {
+      "id": "exit_shift_w_amber",
+      "rect": [
+        0,
+        112,
+        32,
+        48
+      ],
+      "to_region": "cave_amber_well",
+      "to_spawn": [
+        328,
+        128
+      ]
+    },
+    {
+      "id": "exit_shift_w_north",
+      "rect": [
+        192,
+        0,
+        48,
+        32
+      ],
+      "to_region": "ow_shift_n",
+      "to_spawn": [
+        120,
+        224
+      ]
+    },
+    {
+      "id": "exit_shift_w_underroot",
+      "rect": [
+        32,
+        224,
+        32,
+        32
+      ],
+      "to_region": "underroot_r1",
+      "to_spawn": [
+        192,
+        216
+      ],
+      "one_way": true
+    }
+  ],
+  "enemies": [
+    {
+      "id": "shift_w_beetle",
+      "kind": "burrow_beetle",
+      "pos": [
+        312,
+        104
+      ],
+      "route": [
+        [
+          280,
+          104
+        ],
+        [
+          344,
+          104
+        ]
+      ],
+      "zone": "whispering_wood",
+      "leash": 128
+    },
+    {
+      "id": "shift_w_drifter",
+      "kind": "dandelion_drifter",
+      "pos": [
+        312,
+        232
+      ],
+      "route": [
+        [
+          272,
+          232
+        ],
+        [
+          336,
+          208
+        ]
+      ],
+      "zone": "whispering_wood",
+      "leash": 136
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_shift_w",
+      "kind": "room_anchor",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_pin_w",
+      "kind": "wood_pin_lamp",
+      "pos": [
+        216,
+        160
+      ],
+      "props": {
+        "clearing": "w",
+        "lit": false,
+        "snuff_on_hit": false,
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_shift_w_rule",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        224
+      ],
+      "props": {
+        "string_id": "ISL3_HINT_SHIFT",
+        "icon": "leaf"
+      }
+    },
+    {
+      "id": "stump_shift_w_underroot",
+      "kind": "stump_shrink",
+      "pos": [
+        80,
+        232
+      ],
+      "props": {
+        "to_region": "underroot_r1",
+        "to_spawn": [
+          192,
+          216
+        ],
+        "target_size": "tiny"
+      }
+    },
+    {
+      "id": "lore_shift_w_stump",
+      "kind": "lore_stone",
+      "pos": [
+        104,
+        240
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_UNDERROOT_ARCH",
+        "icon": "leaf"
+      }
+    },
+    {
+      "id": "lamp_shift_w_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        264
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_shift_w_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_shift_w_n",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        216,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hollow_oak_arch",
+      "pos": [
+        80,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "ancient_oak_tree",
+      "pos": [
+        360,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "gnarled_thorn_tree",
+      "pos": [
+        72,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        344,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        176,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        264,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        96,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        296,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        184,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        248,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "layers": [
+    {
+      "id": "seal_not_0",
+      "when": "eff_turn_w!=0",
+      "tiles": [
+        [
+          8,
+          13,
+          1,
+          5,
+          "wall"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "lore_shift_w_stump",
+        "stump_shift_w_underroot",
+        "exit_shift_w_underroot"
+      ]
+    },
+    {
+      "id": "seal_not_1",
+      "when": "eff_turn_w!=1",
+      "tiles": [
+        [
+          2,
+          7,
+          2,
+          3,
+          "wall"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_shift_w_amber"
+      ]
+    },
+    {
+      "id": "seal_not_2",
+      "when": "eff_turn_w!=2",
+      "tiles": [
+        [
+          12,
+          2,
+          3,
+          2,
+          "pit"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_shift_w_north"
+      ]
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Western Whispering Wood clearing showcasing the Shifting Woods rule: unlit wood_pin_lamp rotates wood_turn (0=Great Stump, 1=Amber Well, 2=Crown Bridge) when leaving unpinned, while lighting it pins the clearing; static S/E exits guarantee zero softlocks.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "wood_pin_lamp, eff_turn_w layers, burrow_beetle + dandelion_drifter patrol",
+    "decisions": 4,
+    "expert_s": 44,
+    "reward": "Pinned routing to Under-Root, Amber Well, and Crown Thicket",
+    "why": "First-3-minute Shifting Woods discovery beat with fair readable compass and zero softlocks",
+    "optional": true,
+    "start": {
+      "vars": {
+        "wood_turn": 1,
+        "eff_turn_w": 1,
+        "pin_w": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          240
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_shift_w_rule"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          192
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "lamp_pin_w"
+      },
+      {
+        "op": "expect",
+        "var": "pin_w==1"
+      },
+      {
+        "op": "clear"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_shift_w_amber"
+      }
+    ]
+  }
+}

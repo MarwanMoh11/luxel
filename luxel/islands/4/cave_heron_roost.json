@@ -1,0 +1,444 @@
+{
+  "id": "cave_heron_roost",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "name_key": "ISL4_ZONE_HERON_ROOST",
+  "music": "island4_explore",
+  "spawn": [
+    48,
+    144
+  ],
+  "zones": [
+    {
+      "id": "cave_heron_roost",
+      "name_key": "ISL4_ZONE_HERON_ROOST",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_roost_to_ow",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        1120,
+        464
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "sundial_roost",
+      "kind": "garden_sundial",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "plaque_roost",
+      "kind": "isl4_schedule_plaque",
+      "pos": [
+        64,
+        176
+      ],
+      "props": {
+        "highlight_hours": [
+          4
+        ]
+      }
+    },
+    {
+      "id": "anc_roost_w",
+      "kind": "room_anchor",
+      "pos": [
+        96,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_roost_a",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        80
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_roost_b",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        208
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "vent_roost_1",
+      "kind": "updraft_vent",
+      "pos": [
+        136,
+        104
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "hour_req": [
+          4
+        ],
+        "dir": [
+          1,
+          -1
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "vent_roost_2",
+      "kind": "updraft_vent",
+      "pos": [
+        216,
+        144
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "hour_req": [
+          4
+        ],
+        "dir": [
+          1,
+          1
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "vent_roost_3",
+      "kind": "updraft_vent",
+      "pos": [
+        304,
+        168
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "hour_req": [
+          4
+        ],
+        "dir": [
+          1,
+          -1
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "wind_roost_e",
+      "kind": "wind_zone",
+      "pos": [
+        208,
+        128
+      ],
+      "props": {
+        "size": [
+          192,
+          160
+        ],
+        "dir": "e",
+        "strength": 160.0
+      }
+    },
+    {
+      "id": "chest_ember_4_5",
+      "kind": "chest",
+      "pos": [
+        368,
+        120
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_4_5"
+      }
+    },
+    {
+      "id": "moth_4_08",
+      "kind": "moth",
+      "pos": [
+        368,
+        168
+      ],
+      "props": {
+        "id": "moth_4_08"
+      }
+    },
+    {
+      "id": "lamp_roost_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_roost_a",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_roost_b",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_roost_e",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_roost_ret",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "hour4_east_wind",
+      "when": "dusk_hour==4",
+      "tiles": [],
+      "enable": [
+        "wind_roost_e"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        64,
+        112
+      ],
+      "radius": 20,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "rect": [
+        336,
+        96,
+        48,
+        96
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        32,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        200,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        264,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        376,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        376,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Post-Wings Hour IV East Wind updraft gauntlet chaining three thermal plumes across stepped cliff islands to the Heron Roost ember and Moth #8.",
+    "kind": "traversal",
+    "beat": "ten",
+    "teaches": "Hour IV updraft_vent glide chaining with generous mid-course anchors",
+    "decisions": 7,
+    "expert_s": 55,
+    "reward": "ember_4_5, moth_4_08",
+    "why": "High-altitude Moth Wings showcase cave off Reed Causeway NE cliff.",
+    "optional": true,
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ],
+      "vars": {
+        "island:4:dusk_hour": 3
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "sundial_roost"
+      },
+      {
+        "op": "expect",
+        "var": "dusk_hour==4"
+      },
+      {
+        "op": "goto",
+        "to": [
+          96,
+          112
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          184,
+          80
+        ],
+        "tol": 16
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          96
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          256,
+          192
+        ],
+        "tol": 16
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          192
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          352,
+          144
+        ],
+        "tol": 16
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          120
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_4_5"
+      }
+    ]
+  }
+}

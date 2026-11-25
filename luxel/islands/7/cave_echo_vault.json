@@ -1,0 +1,438 @@
+{
+  "id": "cave_echo_vault",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_CAVE_ECHO",
+  "theme": "cave_7",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    360,
+    144
+  ],
+  "zones": [
+    {
+      "id": "cave_echo_vault",
+      "name_key": "ISL7_Z_CAVE_ECHO",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cev_prom",
+      "rect": [
+        400,
+        120,
+        16,
+        48
+      ],
+      "to_region": "velvet_promenade",
+      "to_spawn": [
+        56,
+        344
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "cev_puppet_1",
+      "kind": "puppet",
+      "pos": [
+        248,
+        112
+      ],
+      "route": [
+        [
+          232,
+          112
+        ],
+        [
+          280,
+          112
+        ]
+      ],
+      "zone": "cave_echo_vault",
+      "leash": 120
+    },
+    {
+      "id": "cev_puppet_2",
+      "kind": "puppet",
+      "pos": [
+        248,
+        192
+      ],
+      "route": [
+        [
+          232,
+          192
+        ],
+        [
+          288,
+          192
+        ]
+      ],
+      "zone": "cave_echo_vault",
+      "leash": 120
+    },
+    {
+      "id": "cev_false_chest_n",
+      "kind": "false_chest",
+      "pos": [
+        96,
+        96
+      ],
+      "zone": "vault_west",
+      "leash": 108
+    },
+    {
+      "id": "cev_false_chest_s",
+      "kind": "false_chest",
+      "pos": [
+        96,
+        192
+      ],
+      "zone": "vault_west",
+      "leash": 108
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_cev_east",
+      "kind": "room_anchor",
+      "pos": [
+        360,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "pool_cev_nave",
+      "kind": "moon_pool",
+      "pos": [
+        304,
+        192
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": false
+      }
+    },
+    {
+      "id": "hook_cev_gate",
+      "kind": "lantern_hook",
+      "pos": [
+        248,
+        152
+      ],
+      "props": {
+        "light_radius": 64
+      }
+    },
+    {
+      "id": "shadow_gate_cev",
+      "kind": "shadow_gate",
+      "pos": [
+        192,
+        152
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.45
+      }
+    },
+    {
+      "id": "chest_ember_7_vault",
+      "kind": "chest",
+      "pos": [
+        72,
+        144
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "vault_west"
+      }
+    },
+    {
+      "id": "moth_7_05",
+      "kind": "moth",
+      "pos": [
+        280,
+        48
+      ],
+      "props": {
+        "id": "moth_7_05"
+      }
+    },
+    {
+      "id": "lamp_cev_e1",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "zone": "cave_echo_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cev_e2",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        200
+      ],
+      "props": {
+        "zone": "cave_echo_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cev_w1",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        144
+      ],
+      "props": {
+        "zone": "cave_echo_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cev_w2",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        104
+      ],
+      "props": {
+        "zone": "cave_echo_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cev_w3",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        192
+      ],
+      "props": {
+        "zone": "cave_echo_vault",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        88,
+        96,
+        112
+      ],
+      "color": "plum"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        72,
+        144
+      ],
+      "radius": 20,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        264,
+        152
+      ],
+      "radius": 22,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cave_arch_rock",
+      "pos": [
+        376,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        216,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        216,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "stalagmite_tall",
+      "pos": [
+        320,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        48,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "subterranean_shroom",
+      "pos": [
+        136,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          17,
+          4,
+          2,
+          1,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "moth_7_05"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Twin-alcove velvet vault where flipping Black exposes two Puppets' spools & Moth 05, then hanging your lantern slips through a Shadow Gate into a Three-Chest Shadow-Truth test.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Use Black World to expose Puppet spools, hang your lantern to pass Shadow Gates unarmed, and pick the lone SE-shadow chest among two NW-shadow mimics.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "ember_7_vault+moth_7_05",
+    "why": "Combines combat, shadow_gate unarmed traversal, and the Shadow-Truth Law off Velvet Promenade.",
+    "target": "chest_ember_7_vault",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "pool_cev_nave"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          144
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "cave_echo_vault"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "hook_cev_gate"
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          144
+        ]
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          144
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_7_vault"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_cev_prom"
+      }
+    ]
+  }
+}

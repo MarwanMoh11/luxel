@@ -11,8 +11,8 @@
     "harbor_rigging"
   ],
   "spawn": [
-    400,
-    144
+    368,
+    128
   ],
   "zones": [
     {
@@ -21,8 +21,8 @@
       "rect": [
         0,
         0,
-        448,
-        288
+        416,
+        256
       ],
       "dark": true
     }
@@ -31,8 +31,8 @@
     {
       "id": "exit_r8_east",
       "rect": [
-        432,
-        128,
+        400,
+        112,
         16,
         32
       ],
@@ -46,7 +46,7 @@
       "id": "exit_r8_chute",
       "rect": [
         160,
-        272,
+        240,
         32,
         16
       ],
@@ -64,8 +64,8 @@
       "id": "anc_r8_e",
       "kind": "room_anchor",
       "pos": [
-        400,
-        144
+        368,
+        128
       ],
       "props": {
         "auto": true
@@ -75,8 +75,8 @@
       "id": "valve_r8_pedal",
       "kind": "state_lever",
       "pos": [
-        232,
-        168
+        216,
+        152
       ],
       "props": {
         "scope": "dungeon:galleon",
@@ -96,8 +96,8 @@
       "id": "mir_r8",
       "kind": "blue_transformer",
       "pos": [
-        280,
-        136
+        264,
+        120
       ],
       "props": {
         "normal": [
@@ -113,7 +113,7 @@
       "kind": "ballast_keg",
       "pos": [
         168,
-        80
+        64
       ],
       "props": {
         "respawn_s": 5.0,
@@ -126,8 +126,8 @@
       "id": "keg_r8_2",
       "kind": "ballast_keg",
       "pos": [
-        216,
-        200
+        200,
+        184
       ],
       "props": {
         "respawn_s": 5.0,
@@ -141,7 +141,7 @@
       "kind": "cracked_wall",
       "pos": [
         120,
-        80
+        64
       ],
       "props": {
         "size": [
@@ -155,7 +155,7 @@
       "kind": "moth",
       "pos": [
         56,
-        72
+        64
       ],
       "props": {
         "id": "moth_2_08"
@@ -166,7 +166,7 @@
       "kind": "door",
       "pos": [
         120,
-        168
+        152
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -182,7 +182,7 @@
       "kind": "door",
       "pos": [
         176,
-        264
+        232
       ],
       "props": {
         "door_kind": "combat_gate",
@@ -198,7 +198,7 @@
       "kind": "wick_key",
       "pos": [
         56,
-        184
+        168
       ],
       "props": {
         "dungeon_id": "galleon",
@@ -210,7 +210,7 @@
       "kind": "quest_item",
       "pos": [
         56,
-        232
+        216
       ],
       "props": {
         "id": "ship_log_2"
@@ -221,7 +221,7 @@
       "kind": "lore_stone",
       "pos": [
         88,
-        232
+        216
       ],
       "props": {
         "string_id": "ISL2_LOG_2",
@@ -232,7 +232,7 @@
       "id": "lamp_r8_e",
       "kind": "road_lamp",
       "pos": [
-        392,
+        360,
         104
       ],
       "props": {
@@ -245,7 +245,7 @@
       "kind": "road_lamp",
       "pos": [
         264,
-        56
+        40
       ],
       "props": {
         "zone": "gal_r8",
@@ -257,7 +257,7 @@
       "kind": "road_lamp",
       "pos": [
         216,
-        248
+        216
       ],
       "props": {
         "zone": "gal_r8",
@@ -269,7 +269,7 @@
       "kind": "road_lamp",
       "pos": [
         72,
-        200
+        184
       ],
       "props": {
         "zone": "gal_r8",
@@ -282,8 +282,8 @@
       "id": "net_r8",
       "kind": "net_caster",
       "pos": [
-        312,
-        88
+        280,
+        72
       ],
       "zone": "gal_r8"
     },
@@ -291,8 +291,8 @@
       "id": "anchor_r8",
       "kind": "anchor_drowned",
       "pos": [
-        200,
-        136
+        184,
+        120
       ],
       "zone": "gal_r8"
     },
@@ -301,7 +301,7 @@
       "kind": "pistol_shrimp",
       "pos": [
         184,
-        56
+        40
       ],
       "zone": "gal_r8"
     },
@@ -310,7 +310,7 @@
       "kind": "pistol_shrimp",
       "pos": [
         248,
-        232
+        216
       ],
       "zone": "gal_r8"
     }
@@ -320,7 +320,7 @@
       "kind": "grate",
       "rect": [
         144,
-        240,
+        208,
         48,
         32
       ],
@@ -330,7 +330,7 @@
       "kind": "inlay",
       "rect": [
         32,
-        160,
+        144,
         64,
         80
       ]
@@ -339,7 +339,7 @@
       "kind": "cracks",
       "pos": [
         184,
-        88
+        72
       ],
       "radius": 20,
       "glow": false
@@ -347,10 +347,10 @@
     {
       "kind": "stain",
       "pos": [
-        344,
-        216
+        312,
+        152
       ],
-      "radius": 24,
+      "radius": 20,
       "style": "soot"
     }
   ],
@@ -359,7 +359,7 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        376,
+        344,
         72
       ],
       "layer": "sort",
@@ -369,21 +369,9 @@
     },
     {
       "sheet": "theme_galleon",
-      "prop": "oak_ship_barrel",
-      "pos": [
-        392,
-        216
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_galleon",
       "prop": "broken_cannon",
       "pos": [
-        168,
+        152,
         40
       ],
       "layer": "sort",
@@ -407,7 +395,7 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        328,
+        312,
         40
       ],
       "layer": "sort",
@@ -420,7 +408,7 @@
       "prop": "hanging_ship_lantern",
       "pos": [
         88,
-        168
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -432,7 +420,7 @@
       "prop": "bilge_grate_hatch",
       "pos": [
         184,
-        248
+        216
       ],
       "layer": "ground",
       "flip_x": false,
@@ -443,8 +431,8 @@
       "sheet": "theme_galleon",
       "prop": "tangled_cargo_net",
       "pos": [
-        376,
-        248
+        280,
+        216
       ],
       "layer": "sort",
       "flip_x": false,
@@ -467,7 +455,7 @@
     "exit": "exit_r8_chute",
     "start": {
       "vars": {
-        "list": "port"
+        "dungeon:galleon:list": "port"
       },
       "flags": [
         "power_ballast_clamp"
@@ -498,7 +486,7 @@
         "op": "shoot",
         "from": [
           200,
-          80
+          64
         ],
         "target": "keg_r8_1"
       },
@@ -513,7 +501,7 @@
         "op": "goto",
         "to": [
           56,
-          72
+          64
         ]
       },
       {

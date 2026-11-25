@@ -1,0 +1,455 @@
+{
+  "id": "meteor_r10",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R10",
+  "spawn": [
+    240,
+    240
+  ],
+  "zones": [
+    {
+      "id": "mv_r10",
+      "name_key": "I5_MV_R10",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r10_s",
+      "rect": [
+        224,
+        272,
+        32,
+        16
+      ],
+      "to_region": "meteor_r1",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_mv_r10_n",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "meteor_r11",
+      "to_spawn": [
+        256,
+        336
+      ],
+      "locked_door_id": "door_mv_r10_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r10",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "crys_r10_flip",
+      "kind": "crystal_toggle",
+      "pos": [
+        240,
+        144
+      ],
+      "props": {
+        "group": "r10_pol",
+        "phase": 0,
+        "target_ids": [
+          "well_r10_w",
+          "well_r10_e"
+        ]
+      }
+    },
+    {
+      "id": "well_r10_w",
+      "kind": "polarity_well",
+      "pos": [
+        128,
+        136
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 480.0,
+        "linked_crystal": "crys_r10_flip"
+      }
+    },
+    {
+      "id": "well_r10_e",
+      "kind": "polarity_well",
+      "pos": [
+        352,
+        152
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 480.0,
+        "linked_crystal": "crys_r10_flip"
+      }
+    },
+    {
+      "id": "crumble_r10_nw",
+      "kind": "crumble_floor",
+      "pos": [
+        180,
+        92
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "delay": 1.0,
+        "respawn": 3.0
+      }
+    },
+    {
+      "id": "crumble_r10_se",
+      "kind": "crumble_floor",
+      "pos": [
+        300,
+        196
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "delay": 1.0,
+        "respawn": 3.0
+      }
+    },
+    {
+      "id": "door_mv_r10_n",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "mv_r10",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_mv_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        248
+      ],
+      "props": {
+        "zone": "mv_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r10_se",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        248
+      ],
+      "props": {
+        "zone": "mv_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        144
+      ],
+      "props": {
+        "zone": "mv_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        144
+      ],
+      "props": {
+        "zone": "mv_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r10_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        72
+      ],
+      "props": {
+        "zone": "mv_r10",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "null_r10_w",
+      "kind": "null_moth",
+      "pos": [
+        104,
+        104
+      ],
+      "zone": "mv_r10"
+    },
+    {
+      "id": "null_r10_e",
+      "kind": "null_moth",
+      "pos": [
+        376,
+        144
+      ],
+      "zone": "mv_r10"
+    },
+    {
+      "id": "carrier_r10",
+      "kind": "meteor_carrier",
+      "pos": [
+        104,
+        144
+      ],
+      "zone": "mv_r10"
+    },
+    {
+      "id": "hound_r10",
+      "kind": "comet_hound",
+      "pos": [
+        344,
+        192
+      ],
+      "zone": "mv_r10"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        144
+      ],
+      "radius": 34,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        128,
+        136
+      ],
+      "radius": 20,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        352,
+        152
+      ],
+      "radius": 20,
+      "glow": true
+    },
+    {
+      "kind": "mural",
+      "pos": [
+        240,
+        56
+      ],
+      "radius": 24,
+      "style": "moon"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        240,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        240,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        280,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        72,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        408,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        88,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        408,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "mv_r10_cleared_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mv_r10_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Perihelion Bridge: battle across offset diamond bastions linked by crystal-synced polarity wells and crumbling flank slabs, flipping both wells simultaneously to bend Null Moth lanes and Meteor Carrier boulders.",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Live polarity flipping in multi-role combat right before The Twin Moons.",
+    "decisions": 8,
+    "expert_s": 48,
+    "reward": "boss_sanctum_access",
+    "why": "Pre-boss crescendo testing every Meteor Vault combat verb on a dramatic chasm spine.",
+    "exit": "exit_mv_r10_n",
+    "start": {
+      "flags": [
+        "power_orbit_ring"
+      ]
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          216
+        ],
+        "target": "crys_r10_flip"
+      },
+      {
+        "op": "clear",
+        "timeout": 60.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_mv_r10_n",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r10_n"
+      }
+    ]
+  }
+}

@@ -1,0 +1,445 @@
+{
+  "id": "meteor_r11",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R11",
+  "spawn": [
+    256,
+    336
+  ],
+  "zones": [
+    {
+      "id": "mv_r11",
+      "name_key": "I5_MV_R11",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r11_s",
+      "rect": [
+        240,
+        368,
+        32,
+        16
+      ],
+      "to_region": "meteor_r10",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_mv_r11_return",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "meteor_r1",
+      "to_spawn": [
+        240,
+        72
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "meteor_done"
+      ],
+      "locked_door_id": "door_mv_r11_return"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r11",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        336
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "orb_r11_w",
+      "kind": "meteor_orb",
+      "pos": [
+        104,
+        192
+      ],
+      "props": {
+        "cradle_pos": [
+          104,
+          192
+        ],
+        "respawn_s": 1.2
+      }
+    },
+    {
+      "id": "orb_r11_e",
+      "kind": "meteor_orb",
+      "pos": [
+        408,
+        192
+      ],
+      "props": {
+        "cradle_pos": [
+          408,
+          192
+        ],
+        "respawn_s": 1.2
+      }
+    },
+    {
+      "id": "door_mv_r11_return",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "meteor_done"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_mv_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        304
+      ],
+      "props": {
+        "zone": "mv_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        304
+      ],
+      "props": {
+        "zone": "mv_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        88
+      ],
+      "props": {
+        "zone": "mv_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        88
+      ],
+      "props": {
+        "zone": "mv_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r11_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        192
+      ],
+      "props": {
+        "zone": "mv_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r11_e",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        192
+      ],
+      "props": {
+        "zone": "mv_r11",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_twin_moons",
+      "kind": "twin_moons",
+      "pos": [
+        256,
+        168
+      ],
+      "zone": "mv_r11",
+      "arena": [
+        96,
+        72,
+        320,
+        240
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 84,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "mural",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 44,
+      "style": "constellation"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        184,
+        160
+      ],
+      "radius": 26,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        328,
+        224
+      ],
+      "radius": 26,
+      "glow": true
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        128
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        256,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        256,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        144,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        368,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        136,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        376,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        200,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        312,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "mv_r11_victory_msg",
+      "on": "flag:meteor_done",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "I5_MV_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    },
+    {
+      "id": "mv_r11_spawn_pane",
+      "on": "flag:meteor_done",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "pane_r11_orbit_shard",
+            "kind": "pane_pickup",
+            "pos": [
+              256,
+              152
+            ],
+            "props": {
+              "pane": "orbit_shard"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Boss sanctum of The Twin Moons (Sola & Umbra): two opposite-polarity moons orbit as live gravity wells; curve bolts and slingshot meteors through their fields to trigger twin-bell Clash Staggers and claim Half-Lantern + Orbit Shard pane.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Mastering live moving gravity wells to turn bosses' own curvature against them.",
+    "decisions": 8,
+    "expert_s": 125,
+    "reward": "meteor_done+half_lantern_5a+pane_orbit_shard",
+    "why": "Climax boss sanctum of The Meteor Vault rewarding Half-Lantern 5A and the Orbit Shard pane.",
+    "exit": "exit_mv_r11_return",
+    "start": {
+      "flags": [
+        "power_orbit_ring"
+      ]
+    },
+    "solution": [
+      {
+        "op": "beam",
+        "from": [
+          256,
+          288
+        ],
+        "target": "boss_twin_moons"
+      },
+      {
+        "op": "clear",
+        "timeout": 125.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "meteor_done",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "pane_r11_orbit_shard"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r11_return"
+      }
+    ]
+  }
+}

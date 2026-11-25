@@ -1,0 +1,421 @@
+{
+  "id": "meteor_r5",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R5",
+  "spawn": [
+    224,
+    248
+  ],
+  "zones": [
+    {
+      "id": "mv_r5",
+      "name_key": "I5_MV_R5",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r5_s",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "meteor_r4",
+      "to_spawn": [
+        336,
+        56
+      ]
+    },
+    {
+      "id": "exit_mv_r5_n",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "meteor_r6",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_mv_r5_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r5",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "altar_apogee_clasp",
+      "kind": "mv_apogee_altar",
+      "pos": [
+        224,
+        232
+      ],
+      "props": {}
+    },
+    {
+      "id": "well_r5_core",
+      "kind": "polarity_well",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 80.0,
+        "strength": 520.0,
+        "orbit_capture": true,
+        "orbit_r": 36.0
+      }
+    },
+    {
+      "id": "tb_r5_w",
+      "kind": "timed_brazier",
+      "pos": [
+        188,
+        144
+      ],
+      "props": {
+        "secs": 9.0,
+        "target_id": "door_mv_r5_n"
+      }
+    },
+    {
+      "id": "tb_r5_n",
+      "kind": "timed_brazier",
+      "pos": [
+        224,
+        108
+      ],
+      "props": {
+        "secs": 9.0,
+        "target_id": "door_mv_r5_n"
+      }
+    },
+    {
+      "id": "tb_r5_e",
+      "kind": "timed_brazier",
+      "pos": [
+        260,
+        144
+      ],
+      "props": {
+        "secs": 9.0,
+        "target_id": "door_mv_r5_n"
+      }
+    },
+    {
+      "id": "door_mv_r5_n",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "tb_r5_w",
+          "tb_r5_n",
+          "tb_r5_e"
+        ],
+        "sets_flag": "mv_r5_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "moth_5_7",
+      "kind": "moth",
+      "pos": [
+        40,
+        72
+      ],
+      "props": {
+        "id": "moth_5_7"
+      }
+    },
+    {
+      "id": "lamp_mv_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        240
+      ],
+      "props": {
+        "zone": "mv_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        240
+      ],
+      "props": {
+        "zone": "mv_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r5_w",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        128
+      ],
+      "props": {
+        "zone": "mv_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r5_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        128
+      ],
+      "props": {
+        "zone": "mv_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r5_n",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        48
+      ],
+      "props": {
+        "zone": "mv_r5",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        232
+      ],
+      "radius": 26,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        216,
+        24,
+        16
+      ]
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        224,
+        56
+      ],
+      "radius": 18
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        224
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        224,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        120,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        328,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        120,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        328,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        40,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        280,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Claim the Apogee Clasp and throw your lantern tangentially into the central gravity well so it locks into a circular orbit, sweeping all three timed braziers in one lap to unlock the Hound Ring (with Lost Moth #7 perched on a NW void crescent).",
+    "kind": "reward",
+    "beat": "sho",
+    "teaches": "Tangential Apogee Clasp lantern throws lock into orbit around gravity wells, lighting switches and enabling orbital zips.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "power_orbit_ring+moth_5_7",
+    "why": "Dungeon power sanctum teaching Apogee Clasp immediately through an unforgettable circular orbit sweep.",
+    "exit": "exit_mv_r5_n",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "altar_apogee_clasp"
+      },
+      {
+        "op": "expect",
+        "flag": "power_orbit_ring"
+      },
+      {
+        "op": "goto",
+        "to": [
+          188,
+          224
+        ]
+      },
+      {
+        "op": "throw",
+        "target": [
+          188,
+          120
+        ],
+        "hold": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_mv_r5_n",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.5
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          144
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          56
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r5_n"
+      }
+    ]
+  }
+}

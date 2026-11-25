@@ -11,8 +11,8 @@
     "harbor_rigging"
   ],
   "spawn": [
-    240,
-    304
+    272,
+    336
   ],
   "zones": [
     {
@@ -21,8 +21,8 @@
       "rect": [
         0,
         0,
-        480,
-        352
+        544,
+        384
       ],
       "dark": true
     }
@@ -31,8 +31,8 @@
     {
       "id": "exit_r2_south",
       "rect": [
-        224,
-        336,
+        256,
+        368,
         32,
         16
       ],
@@ -46,7 +46,7 @@
       "id": "exit_r2_west",
       "rect": [
         0,
-        160,
+        176,
         16,
         32
       ],
@@ -59,8 +59,8 @@
     {
       "id": "exit_r2_east",
       "rect": [
-        464,
-        160,
+        528,
+        176,
         16,
         32
       ],
@@ -73,14 +73,14 @@
     {
       "id": "exit_r2_north",
       "rect": [
-        224,
+        256,
         0,
         32,
         16
       ],
       "to_region": "galleon_r5",
       "to_spawn": [
-        240,
+        256,
         272
       ],
       "locked_door_id": "door_r2_north"
@@ -88,15 +88,15 @@
     {
       "id": "exit_r2_ladder",
       "rect": [
-        464,
+        528,
         64,
         16,
         32
       ],
       "to_region": "galleon_r6",
       "to_spawn": [
-        416,
-        160
+        400,
+        152
       ],
       "requires_flags": [
         "galleon_r6_ladder"
@@ -109,8 +109,8 @@
       "id": "anc_r2_s",
       "kind": "room_anchor",
       "pos": [
-        240,
-        304
+        272,
+        336
       ],
       "props": {
         "auto": true
@@ -120,27 +120,28 @@
       "id": "valve_r2",
       "kind": "state_lever",
       "pos": [
-        240,
-        216
+        272,
+        232
       ],
       "props": {
         "scope": "dungeon:galleon",
         "var": "list",
         "values": [
-          "port",
-          "starboard"
+          "starboard",
+          "port"
         ],
-        "index": 1,
+        "index": 0,
         "shootable": true,
-        "persist": false
+        "persist": false,
+        "target_id": "bridge_r2_west"
       }
     },
     {
       "id": "valve_r2_east",
       "kind": "state_lever",
       "pos": [
-        440,
-        216
+        488,
+        248
       ],
       "props": {
         "scope": "dungeon:galleon",
@@ -151,15 +152,54 @@
         ],
         "index": 1,
         "shootable": true,
-        "persist": false
+        "persist": false,
+        "target_id": "bridge_r2_east"
+      }
+    },
+    {
+      "id": "bridge_r2_west",
+      "kind": "door",
+      "pos": [
+        152,
+        192
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "valve_r2"
+        ],
+        "size": [
+          112,
+          32
+        ]
+      }
+    },
+    {
+      "id": "bridge_r2_east",
+      "kind": "door",
+      "pos": [
+        392,
+        192
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "valve_r2_east"
+        ],
+        "size": [
+          112,
+          32
+        ]
       }
     },
     {
       "id": "drv_r2",
       "kind": "gal_list_driver",
       "pos": [
-        240,
-        264
+        272,
+        280
       ],
       "props": {
         "targets": []
@@ -169,8 +209,8 @@
       "id": "grate_r2_teaser",
       "kind": "grate",
       "pos": [
-        296,
-        64
+        328,
+        72
       ],
       "props": {
         "size": [
@@ -183,7 +223,7 @@
       "id": "door_r2_north",
       "kind": "door",
       "pos": [
-        240,
+        272,
         24
       ],
       "props": {
@@ -200,7 +240,7 @@
       "id": "door_r2_ladder",
       "kind": "door",
       "pos": [
-        456,
+        520,
         80
       ],
       "props": {
@@ -218,8 +258,8 @@
       "id": "lamp_r2_s",
       "kind": "road_lamp",
       "pos": [
-        200,
-        296
+        232,
+        328
       ],
       "props": {
         "zone": "gal_r2",
@@ -230,7 +270,7 @@
       "id": "lamp_r2_n",
       "kind": "road_lamp",
       "pos": [
-        280,
+        312,
         72
       ],
       "props": {
@@ -242,8 +282,8 @@
       "id": "lamp_r2_w",
       "kind": "road_lamp",
       "pos": [
-        40,
-        136
+        56,
+        152
       ],
       "props": {
         "zone": "gal_r2",
@@ -254,8 +294,8 @@
       "id": "lamp_r2_e",
       "kind": "road_lamp",
       "pos": [
-        440,
-        136
+        488,
+        152
       ],
       "props": {
         "zone": "gal_r2",
@@ -266,8 +306,20 @@
       "id": "lamp_r2_tease",
       "kind": "road_lamp",
       "pos": [
-        360,
+        392,
         56
+      ],
+      "props": {
+        "zone": "gal_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_c",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        168
       ],
       "props": {
         "zone": "gal_r2",
@@ -280,24 +332,24 @@
     {
       "kind": "compass",
       "pos": [
-        240,
-        176
+        272,
+        192
       ],
-      "radius": 32
+      "radius": 34
     },
     {
       "kind": "circle",
       "pos": [
-        360,
-        56
+        392,
+        72
       ],
-      "radius": 20,
+      "radius": 22,
       "style": "spotlight"
     },
     {
       "kind": "inlay",
       "rect": [
-        192,
+        224,
         32,
         96,
         48
@@ -306,8 +358,8 @@
     {
       "kind": "stain",
       "pos": [
-        200,
-        248
+        232,
+        264
       ],
       "radius": 20,
       "style": "water"
@@ -315,12 +367,12 @@
     {
       "kind": "light_shaft",
       "pos": [
-        240,
+        272,
         136
       ],
       "size": [
-        48,
-        72
+        52,
+        76
       ],
       "tint": "warm",
       "shear": 0.25
@@ -331,7 +383,7 @@
       "sheet": "theme_galleon",
       "prop": "mast_stump_pillar",
       "pos": [
-        200,
+        232,
         120
       ],
       "layer": "sort",
@@ -343,7 +395,7 @@
       "sheet": "theme_galleon",
       "prop": "mast_stump_pillar",
       "pos": [
-        280,
+        312,
         120
       ],
       "layer": "sort",
@@ -355,8 +407,8 @@
       "sheet": "theme_galleon",
       "prop": "brass_capstan",
       "pos": [
-        360,
-        56
+        392,
+        72
       ],
       "layer": "sort",
       "flip_x": false,
@@ -367,8 +419,8 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        200,
-        312
+        168,
+        344
       ],
       "layer": "sort",
       "flip_x": false,
@@ -379,8 +431,8 @@
       "sheet": "theme_galleon",
       "prop": "rope_coil_crate",
       "pos": [
-        280,
-        312
+        328,
+        344
       ],
       "layer": "sort",
       "flip_x": true,
@@ -392,7 +444,7 @@
       "prop": "brass_porthole_lamp",
       "pos": [
         40,
-        232
+        248
       ],
       "layer": "sort",
       "flip_x": false,
@@ -403,8 +455,8 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        440,
-        264
+        504,
+        280
       ],
       "layer": "sort",
       "flip_x": true,
@@ -415,7 +467,7 @@
       "sheet": "theme_galleon",
       "prop": "hanging_ship_lantern",
       "pos": [
-        200,
+        232,
         40
       ],
       "layer": "sort",
@@ -427,7 +479,7 @@
       "sheet": "theme_galleon",
       "prop": "hanging_ship_lantern",
       "pos": [
-        280,
+        312,
         40
       ],
       "layer": "sort",
@@ -439,7 +491,7 @@
       "sheet": "theme_galleon",
       "prop": "tattered_sail_banner",
       "pos": [
-        216,
+        248,
         56
       ],
       "layer": "sort",
@@ -451,7 +503,7 @@
       "sheet": "theme_galleon",
       "prop": "tattered_sail_banner",
       "pos": [
-        264,
+        296,
         56
       ],
       "layer": "sort",
@@ -463,8 +515,8 @@
       "sheet": "theme_galleon",
       "prop": "bilge_grate_hatch",
       "pos": [
-        240,
-        296
+        272,
+        328
       ],
       "layer": "ground",
       "flip_x": false,
@@ -479,8 +531,8 @@
       "when": "list==port",
       "tiles": [
         [
-          4,
-          10,
+          6,
+          11,
           7,
           2,
           "bridge"
@@ -494,8 +546,8 @@
       "when": "list==starboard",
       "tiles": [
         [
-          19,
-          10,
+          21,
+          11,
           7,
           2,
           "bridge"
@@ -518,22 +570,22 @@
     "exit": "exit_r2_west",
     "start": {
       "vars": {
-        "list": "starboard"
+        "dungeon:galleon:list": "starboard"
       }
     },
     "solution": [
       {
         "op": "goto",
         "to": [
-          240,
-          264
+          272,
+          280
         ]
       },
       {
         "op": "shoot",
         "from": [
-          240,
-          264
+          272,
+          280
         ],
         "target": "valve_r2"
       },

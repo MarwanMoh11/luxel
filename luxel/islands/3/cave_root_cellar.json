@@ -1,0 +1,425 @@
+{
+  "id": "cave_root_cellar",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "cave_3",
+  "name_key": "ISL3_CAVE_CELLAR_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    176,
+    48
+  ],
+  "zones": [
+    {
+      "id": "root_cellar",
+      "name_key": "ISL3_CAVE_CELLAR_NAME",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        132,
+        148,
+        72,
+        40
+      ],
+      "color": "jade"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        72,
+        128
+      ],
+      "radius": 32,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        344,
+        128
+      ],
+      "size": [
+        36,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cellar_to_camp",
+      "rect": [
+        176,
+        0,
+        32,
+        32
+      ],
+      "to_region": "ow_camp",
+      "to_spawn": [
+        200,
+        224
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_root_cellar",
+      "kind": "room_anchor",
+      "pos": [
+        176,
+        48
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lp_cellar_fruit",
+      "kind": "light_plant",
+      "pos": [
+        144,
+        72
+      ],
+      "props": {
+        "grow": "fruit",
+        "secs": 0.4,
+        "decay": 0.0,
+        "drop_orb": false
+      }
+    },
+    {
+      "id": "orb_cellar_seed",
+      "kind": "carry_orb",
+      "pos": [
+        144,
+        96
+      ],
+      "props": {
+        "kind": "seed"
+      }
+    },
+    {
+      "id": "block_cellar",
+      "kind": "push_block",
+      "pos": [
+        192,
+        120
+      ],
+      "props": {
+        "variant": "crate"
+      }
+    },
+    {
+      "id": "scale_cellar",
+      "kind": "scale",
+      "pos": [
+        168,
+        168
+      ],
+      "props": {
+        "left": [
+          -24,
+          0
+        ],
+        "right": [
+          24,
+          0
+        ],
+        "pan_radius": 12.0,
+        "mode": "balance",
+        "need_weight": 1.0,
+        "target_id": "door_cellar_outer"
+      }
+    },
+    {
+      "id": "door_cellar_outer",
+      "kind": "door",
+      "pos": [
+        120,
+        128
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "scale_cellar"
+        ]
+      }
+    },
+    {
+      "id": "moth_3_06",
+      "kind": "moth",
+      "pos": [
+        64,
+        96
+      ],
+      "props": {
+        "id": "moth_3_06"
+      }
+    },
+    {
+      "id": "chest_cellar_shards",
+      "kind": "chest",
+      "pos": [
+        64,
+        152
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45
+      }
+    },
+    {
+      "id": "lore_cellar_wings",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        88
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_CELLAR",
+        "icon": "leaf"
+      }
+    },
+    {
+      "id": "wind_cellar_east",
+      "kind": "wind_zone",
+      "pos": [
+        264,
+        128
+      ],
+      "props": {
+        "size": [
+          96,
+          48
+        ],
+        "dir": [
+          1,
+          0
+        ],
+        "strength": 110.0
+      }
+    },
+    {
+      "id": "chest_cellar_wings_ember",
+      "kind": "chest",
+      "pos": [
+        344,
+        128
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "requires_moves": [
+          "lens"
+        ],
+        "secret_id": "isl3_cellar_wings_ember"
+      }
+    },
+    {
+      "id": "lamp_cellar_n",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cellar_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cellar_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_cave_3",
+      "prop": "cave_arch_rock",
+      "pos": [
+        192,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "stalagmite_tall",
+      "pos": [
+        144,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        192,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        48,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "subterranean_shroom",
+      "pos": [
+        88,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        344,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Root Cellar combining an outer Fruit-Scale weight puzzle (carry glowing seed orb + push crate to balance scale for Moth #6 & 45 shards) with a 7-tile tailwind chasm teasing an Island 4 Wings backtrack Ember Piece.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "carry_orb + push_block + scale(balance), Wings backtrack chasm tease",
+    "decisions": 5,
+    "expert_s": 46,
+    "reward": "moth_3_06, 45 shards, Wings backtrack ember_piece",
+    "why": "Camp cellar rewarding Beam exploration and creating memorable Metroidvania Wings anticipation",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          184,
+          104
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_cellar_wings"
+      },
+      {
+        "op": "push",
+        "target": "block_cellar",
+        "to": [
+          192,
+          168
+        ]
+      },
+      {
+        "op": "carry",
+        "target": "orb_cellar_seed",
+        "action": "pickup"
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          168
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "carry",
+        "target": "orb_cellar_seed",
+        "action": "drop"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "target": "door_cellar_outer",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          96
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect",
+        "flag": "moth:moth_3_06"
+      }
+    ]
+  }
+}

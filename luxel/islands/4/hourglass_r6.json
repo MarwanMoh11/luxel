@@ -48,8 +48,8 @@
       ],
       "to_region": "hourglass_r7",
       "to_spawn": [
-        224,
-        208
+        232,
+        240
       ],
       "locked_door_id": "door_hg_r6_north"
     },
@@ -97,8 +97,8 @@
       "id": "rose_hg_r6_2",
       "kind": "echo_rose",
       "pos": [
-        232,
-        232
+        264,
+        248
       ],
       "props": {
         "secs": 3.5,

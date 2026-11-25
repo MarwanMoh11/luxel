@@ -1,0 +1,669 @@
+{
+  "id": "ow_slag_basin",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "forge_deep",
+  "music": "island6_explore",
+  "name_key": "ISL6_Z_BASIN",
+  "spawn": [
+    368,
+    56
+  ],
+  "zones": [
+    {
+      "id": "slag_basin",
+      "name_key": "ISL6_Z_BASIN",
+      "rect": [
+        0,
+        0,
+        736,
+        480
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_basin_to_overworld",
+      "rect": [
+        336,
+        16,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        856,
+        504
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_basin_to_stride",
+      "rect": [
+        16,
+        208,
+        16,
+        48
+      ],
+      "to_region": "ow_giant_stride",
+      "to_spawn": [
+        768,
+        264
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_magnet_vault",
+      "rect": [
+        96,
+        448,
+        48,
+        16
+      ],
+      "to_region": "cave_magnet_vault",
+      "to_spawn": [
+        208,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_slag_sluice",
+      "rect": [
+        704,
+        288,
+        16,
+        48
+      ],
+      "to_region": "cave_slag_sluice",
+      "to_spawn": [
+        48,
+        144
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_overlook_lift",
+      "rect": [
+        704,
+        112,
+        16,
+        48
+      ],
+      "to_region": "ow_cinder_overlook",
+      "to_spawn": [
+        56,
+        344
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_sunflare_crypt",
+      "rect": [
+        560,
+        448,
+        48,
+        16
+      ],
+      "to_region": "cave_sunflare_crypt",
+      "to_spawn": [
+        208,
+        48
+      ],
+      "requires_moves": [
+        "sunflare"
+      ],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "basin_magnet_1",
+      "kind": "magnet_golem",
+      "pos": [
+        216,
+        264
+      ],
+      "route": [
+        [
+          184,
+          264
+        ],
+        [
+          256,
+          264
+        ]
+      ],
+      "perches": [],
+      "zone": "basin_west",
+      "leash": 120
+    },
+    {
+      "id": "basin_wasp_1",
+      "kind": "smelter_wasp",
+      "pos": [
+        448,
+        304
+      ],
+      "route": [
+        [
+          400,
+          296
+        ],
+        [
+          464,
+          336
+        ]
+      ],
+      "perches": [],
+      "zone": "basin_south",
+      "leash": 132
+    },
+    {
+      "id": "basin_slime_1",
+      "kind": "slag_slime",
+      "pos": [
+        384,
+        384
+      ],
+      "route": [
+        [
+          352,
+          384
+        ],
+        [
+          432,
+          384
+        ]
+      ],
+      "perches": [],
+      "zone": "basin_south",
+      "leash": 116
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_slag_basin",
+      "kind": "waystone",
+      "pos": [
+        368,
+        144
+      ],
+      "props": {
+        "zone": "slag_basin",
+        "name_key": "ISL6_Z_BASIN"
+      }
+    },
+    {
+      "id": "anvil_basin_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        296,
+        208
+      ],
+      "props": {
+        "mode": "lance",
+        "sets_flag": "temper_lance_known"
+      }
+    },
+    {
+      "id": "lever_timetable_3",
+      "kind": "state_lever",
+      "pos": [
+        424,
+        208
+      ],
+      "props": {
+        "scope": "island:6",
+        "var": "kiln_shift",
+        "values": [
+          "station_a",
+          "station_b",
+          "station_c"
+        ],
+        "prompt_key": "ISL6_PROMPT_SHIFT",
+        "persist": true
+      }
+    },
+    {
+      "id": "npc_candle_grandma",
+      "kind": "npc",
+      "pos": [
+        336,
+        360
+      ],
+      "props": {
+        "folk": "candle_grandma",
+        "wander_radius": 8,
+        "bubbles": [
+          {
+            "icons": [
+              "lantern",
+              "toy_block",
+              "move_sunflare",
+              "arrow_se"
+            ],
+            "line": "ISL6_Q_GRANDMA"
+          }
+        ]
+      }
+    },
+    {
+      "id": "owg_magnet_return",
+      "kind": "one_way_gate",
+      "pos": [
+        56,
+        320
+      ],
+      "props": {
+        "dir": "n",
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "owg_sluice_return",
+      "kind": "one_way_gate",
+      "pos": [
+        536,
+        64
+      ],
+      "props": {
+        "dir": "w",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "slag_basin_plug",
+      "kind": "push_block",
+      "pos": [
+        168,
+        120
+      ],
+      "props": {
+        "variant": "slag"
+      }
+    },
+    {
+      "id": "tf_basin_spark",
+      "kind": "blue_transformer",
+      "pos": [
+        168,
+        184
+      ],
+      "props": {
+        "angle_deg": 270,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "spark_hide_2",
+      "kind": "spark_hider",
+      "pos": [
+        168,
+        72
+      ],
+      "props": {
+        "spot_id": "spark_2"
+      }
+    },
+    {
+      "id": "seal_sunflare_crypt",
+      "kind": "obsidian_seal",
+      "pos": [
+        488,
+        416
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_basin_1",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_basin_2",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_basin_3",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_basin_4",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        288
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_basin_5",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        408
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_basin_6",
+      "kind": "road_lamp",
+      "pos": [
+        640,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_basin_7",
+      "kind": "road_lamp",
+      "pos": [
+        640,
+        312
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_basin_8",
+      "kind": "road_lamp",
+      "pos": [
+        560,
+        408
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        320,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        432,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        240,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "quench_barrel_tub",
+      "pos": [
+        272,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "slag_chimney_vent",
+      "pos": [
+        432,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "foundry_crane_hook",
+      "pos": [
+        640,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        176,
+        416
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        640,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ingot_mold_trough",
+      "pos": [
+        368,
+        224
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "chained_slag_cauldron",
+      "pos": [
+        592,
+        416
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "layers": [
+    {
+      "id": "station_a",
+      "when": "kiln_shift==station_a",
+      "tiles": [
+        [
+          8,
+          18,
+          5,
+          6,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "exit_to_magnet_vault"
+      ],
+      "disable": []
+    },
+    {
+      "id": "station_b",
+      "when": "kiln_shift==station_b",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "station_c",
+      "when": "kiln_shift==station_c",
+      "tiles": [
+        [
+          30,
+          11,
+          7,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "exit_to_slag_sluice",
+        "exit_to_overlook_lift"
+      ],
+      "disable": []
+    },
+    {
+      "id": "relit",
+      "when": "flag:island_6_relit",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "stamp_board_3",
+      "on": "signal:lever_timetable_3",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "q6_stamp_3"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Braided lava delta with Lance Anvil, Timetable #3, Colossus leg bridge (station_a -> Magnet Vault), Express viaduct bridge (station_c -> Slag Sluice & Overlook Lift), Candle Grandma, Spark-Kid #2 cooled slag nook, and Sunflare Crypt seal.",
+    "kind": "traversal",
+    "beat": "sho",
+    "teaches": "Lance temper, two-shift island routing (A vs C), and Sunflare secret teasing.",
+    "decisions": 6,
+    "expert_s": 60,
+    "reward": "temper_lance_known+q6_timetable_stamped",
+    "why": "Four-island magma delta showcasing both Train and Colossus bridges across live lava canals with zero stranding.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          296,
+          232
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_basin_lance"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==lance"
+      },
+      {
+        "op": "goto",
+        "to": [
+          424,
+          232
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "lever_timetable_3"
+      },
+      {
+        "op": "expect",
+        "var": "kiln_shift==station_b"
+      },
+      {
+        "op": "interact",
+        "target": "lever_timetable_3"
+      },
+      {
+        "op": "expect",
+        "var": "kiln_shift==station_c"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_to_slag_sluice"
+      }
+    ]
+  }
+}

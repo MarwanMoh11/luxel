@@ -1,0 +1,468 @@
+{
+  "id": "belfry_r10",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_BF_DRUM",
+  "music": "island1_dungeon",
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "belfry_drum",
+      "name_key": "ISL1_BF_DRUM",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "belfry_r9",
+      "to_spawn": [
+        240,
+        48
+      ]
+    },
+    {
+      "id": "exit_r10_rope",
+      "rect": [
+        48,
+        304,
+        32,
+        16
+      ],
+      "to_region": "belfry_r1",
+      "to_spawn": [
+        64,
+        48
+      ],
+      "requires_flags": [
+        "belfry_rope_shortcut"
+      ],
+      "locked_door_id": "door_r10_rope"
+    },
+    {
+      "id": "exit_r10_east",
+      "rect": [
+        464,
+        128,
+        16,
+        48
+      ],
+      "to_region": "belfry_r11",
+      "to_spawn": [
+        56,
+        192
+      ],
+      "locked_door_id": "door_r10_east"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mimic_r10_0",
+      "kind": "pew_mimic",
+      "pos": [
+        344,
+        192
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "belfry_drum",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "conv_r10_n",
+      "kind": "conveyor",
+      "pos": [
+        296,
+        64
+      ],
+      "props": {
+        "size": [
+          144,
+          32
+        ],
+        "dir": "w",
+        "speed": 48,
+        "flip_on_signal": true
+      }
+    },
+    {
+      "id": "ring_r10_1",
+      "kind": "pull_ring",
+      "pos": [
+        200,
+        64
+      ],
+      "props": {
+        "axis": "x",
+        "dist": 24,
+        "target_id": "conv_r10_n",
+        "latch": true
+      }
+    },
+    {
+      "id": "blk_r10_drum",
+      "kind": "push_block",
+      "pos": [
+        248,
+        112
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r10",
+      "kind": "pressure_plate",
+      "pos": [
+        296,
+        112
+      ],
+      "props": {
+        "by": [
+          "block",
+          "lantern"
+        ],
+        "latch": true,
+        "target_id": "mover_r10_shutter"
+      }
+    },
+    {
+      "id": "mover_r10_shutter",
+      "kind": "mover_wall",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "path": [
+          [
+            376,
+            152
+          ],
+          [
+            376,
+            208
+          ]
+        ],
+        "speed": 96,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "bell_r10_dusk",
+      "kind": "bell",
+      "pos": [
+        200,
+        144
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "bell_r10_dawn",
+      "kind": "bell",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 184
+      }
+    },
+    {
+      "id": "door_r10_east",
+      "kind": "tone_door",
+      "pos": [
+        456,
+        152
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          16,
+          48
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "relic_r10_rope",
+      "kind": "bf_crank_relic",
+      "pos": [
+        80,
+        176
+      ],
+      "props": {
+        "flag_id": "belfry_rope_shortcut",
+        "relic_kind": "rope",
+        "prompt_key": "ISL1_BF_PROMPT_ROPE",
+        "narrate_key": "ISL1_BF_ROPE_GOT",
+        "target_id": "door_r10_rope"
+      }
+    },
+    {
+      "id": "door_r10_rope",
+      "kind": "door",
+      "pos": [
+        64,
+        296
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "belfry_rope_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "chest_r10_shards",
+      "kind": "chest",
+      "pos": [
+        424,
+        64
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "lamp_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        248
+      ],
+      "props": {
+        "zone": "belfry_drum",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        208
+      ],
+      "props": {
+        "zone": "belfry_drum",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        120
+      ],
+      "props": {
+        "zone": "belfry_drum",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        48
+      ],
+      "props": {
+        "zone": "belfry_drum",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        224,
+        48,
+        144,
+        32
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        344,
+        152
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        80,
+        176
+      ],
+      "size": [
+        40,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.15
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        56,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_pulley_wheel",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        424,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        280,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "Z-shaped Winding-Drum Hall: clear the disguised Pew Mimic, freeze the conveyor with Dusk while seating the drum counterweight on the plate to open the Dawn shutter, drop the permanent SW Rope Shortcut to r1, and open East to the Mainspring Hub (r11).",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Conveyor + Dusk freeze + acoustic shutter opening + permanent multi-floor rope shortcut.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "belfry_rope_shortcut+open_r11",
+    "why": "Floor 2 West entry creating a direct shortcut back to the Narthex (r1) and linking into Hub #2 (r11).",
+    "exit": "exit_r10_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          200
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          176
+        ],
+        "target": "bell_r10_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 15.0
+      },
+      {
+        "op": "push",
+        "target": "blk_r10_drum",
+        "to": [
+          296,
+          112
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          80,
+          192
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "relic_r10_rope"
+      },
+      {
+        "op": "expect",
+        "flag": "belfry_rope_shortcut"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          296,
+          152
+        ],
+        "target": "bell_r10_dawn"
+      },
+      {
+        "op": "wait",
+        "secs": 0.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_east"
+      }
+    ]
+  }
+}

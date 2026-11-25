@@ -3,6 +3,8 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL1_BF_NARTHEX",
+  "music": "island1_dungeon",
   "spawn": [
     192,
     216
@@ -29,10 +31,10 @@
         32,
         16
       ],
-      "to_region": "overworld",
+      "to_region": "belfry_forecourt",
       "to_spawn": [
-        640,
-        152
+        288,
+        96
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -48,7 +50,7 @@
       ],
       "to_region": "belfry_r2",
       "to_spawn": [
-        324,
+        420,
         120
       ],
       "requires_moves": [],
@@ -65,7 +67,7 @@
       ],
       "to_region": "belfry_r3",
       "to_spawn": [
-        60,
+        52,
         104
       ],
       "requires_moves": [],
@@ -84,14 +86,52 @@
       ],
       "to_region": "belfry_r6",
       "to_spawn": [
-        224,
-        188
+        272,
+        176
       ],
       "requires_moves": [],
       "requires_flags": [
         "keepers_flame"
       ],
       "locked_door_id": "door_r1_north"
+    },
+    {
+      "id": "exit_r1_nw_rope",
+      "rect": [
+        48,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r10",
+      "to_spawn": [
+        64,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "belfry_rope_shortcut"
+      ],
+      "locked_door_id": "door_r1_nw_rope"
+    },
+    {
+      "id": "exit_r1_ne_lift",
+      "rect": [
+        304,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r14",
+      "to_spawn": [
+        80,
+        272
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "belfry_master_lift"
+      ],
+      "locked_door_id": "door_r1_ne_lift"
     }
   ],
   "enemies": [],
@@ -106,6 +146,18 @@
       "props": {
         "zone": "belfry_entry",
         "name_key": "ZONE_BELFRY"
+      }
+    },
+    {
+      "id": "lore_belfry_r1",
+      "kind": "lore_stone",
+      "pos": [
+        248,
+        176
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R1",
+        "icon": "bell"
       }
     },
     {
@@ -147,6 +199,42 @@
       }
     },
     {
+      "id": "door_r1_nw_rope",
+      "kind": "door",
+      "pos": [
+        64,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "belfry_rope_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_ne_lift",
+      "kind": "door",
+      "pos": [
+        320,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "belfry_master_lift"
+        ]
+      }
+    },
+    {
       "id": "lamp_r1_w",
       "kind": "road_lamp",
       "pos": [
@@ -154,7 +242,8 @@
         128
       ],
       "props": {
-        "zone": "belfry_entry"
+        "zone": "belfry_entry",
+        "lit": true
       }
     },
     {
@@ -165,11 +254,58 @@
         128
       ],
       "props": {
-        "zone": "belfry_entry"
+        "zone": "belfry_entry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        216
+      ],
+      "props": {
+        "zone": "belfry_entry",
+        "lit": true
       }
     }
   ],
-  "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        144
+      ],
+      "radius": 36,
+      "style": "clock"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        272,
+        196
+      ],
+      "size": [
+        36,
+        24
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        192,
+        112
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.16
+    }
+  ],
   "scenery": [
     {
       "sheet": "island1_scenery",
@@ -292,6 +428,42 @@
       "phase": 0.65
     },
     {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "cracked_bell_shard",
+      "pos": [
+        272,
+        188
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        96,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_pulley_wheel",
+      "pos": [
+        288,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
       "sheet": "island1_scenery",
       "prop": "stone_bench",
       "pos": [
@@ -302,19 +474,48 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "stone_bench",
-      "pos": [
-        248,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
     }
   ],
-  "is_2x2_room": true
+  "events": [
+    {
+      "id": "ev_r1_r6_short",
+      "on": "flag:belfry_r6_shortcut",
+      "once": false,
+      "do": [
+        {
+          "unlock": [
+            "door_r1_north"
+          ]
+        }
+      ]
+    }
+  ],
+  "triggers": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Grand Belfry Narthex hub anchoring all 4 floors: fallen Great Bell shard in SE, locked East Key Door, North Vault shortcut, NW Rope shortcut (r10), and NE Master Lift (r14).",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Establishes the vertical 4-floor hub structure and multi-shortcut clockwork architecture.",
+    "decisions": 4,
+    "expert_s": 30,
+    "reward": "waystone+clockwork_hub",
+    "why": "Central hub of the 18-room Grand Belfry tying all 9 internal cycles together.",
+    "optional": true,
+    "exit": "exit_r1_west",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_belfry"
+      },
+      {
+        "op": "interact",
+        "target": "lore_belfry_r1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r1_west"
+      }
+    ]
+  }
 }

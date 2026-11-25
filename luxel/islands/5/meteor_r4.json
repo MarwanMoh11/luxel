@@ -1,0 +1,457 @@
+{
+  "id": "meteor_r4",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R4",
+  "spawn": [
+    56,
+    224
+  ],
+  "zones": [
+    {
+      "id": "mv_r4",
+      "name_key": "I5_MV_R4",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r4_w",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_region": "meteor_r1",
+      "to_spawn": [
+        424,
+        232
+      ]
+    },
+    {
+      "id": "exit_mv_r4_n",
+      "rect": [
+        320,
+        0,
+        32,
+        16
+      ],
+      "to_region": "meteor_r5",
+      "to_spawn": [
+        224,
+        248
+      ],
+      "locked_door_id": "door_mv_r4_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r4",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "orb_r4",
+      "kind": "meteor_orb",
+      "pos": [
+        104,
+        224
+      ],
+      "props": {
+        "cradle_pos": [
+          104,
+          224
+        ],
+        "respawn_s": 0.7
+      }
+    },
+    {
+      "id": "crys_r4",
+      "kind": "crystal_toggle",
+      "pos": [
+        88,
+        176
+      ],
+      "props": {
+        "group": "r4_pol",
+        "phase": 0,
+        "target_id": "well_r4_2"
+      }
+    },
+    {
+      "id": "well_r4_1",
+      "kind": "polarity_well",
+      "pos": [
+        168,
+        164
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 84.0,
+        "strength": 300.0
+      }
+    },
+    {
+      "id": "well_r4_2",
+      "kind": "polarity_well",
+      "pos": [
+        244,
+        192
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 88.0,
+        "strength": 420.0,
+        "linked_crystal": "crys_r4"
+      }
+    },
+    {
+      "id": "cracked_r4_bulkhead",
+      "kind": "cracked_wall",
+      "pos": [
+        166,
+        132
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "eye_r4_bridge",
+      "kind": "switch_eye",
+      "pos": [
+        140,
+        116
+      ],
+      "props": {
+        "target_ids": [
+          "bridge_r4_cross",
+          "door_mv_r4_n"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r4_cross",
+      "kind": "door",
+      "pos": [
+        232,
+        224
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          192,
+          32
+        ],
+        "requires_signals": [
+          "eye_r4_bridge"
+        ],
+        "starts_open": false
+      }
+    },
+    {
+      "id": "door_mv_r4_n",
+      "kind": "door",
+      "pos": [
+        336,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "eye_r4_bridge"
+        ],
+        "sets_flag": "mv_r4_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_mv_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        192
+      ],
+      "props": {
+        "zone": "mv_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        264
+      ],
+      "props": {
+        "zone": "mv_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        200
+      ],
+      "props": {
+        "zone": "mv_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        72
+      ],
+      "props": {
+        "zone": "mv_r4",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        56,
+        216,
+        24,
+        16
+      ]
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        104,
+        224
+      ],
+      "radius": 20
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        352,
+        152
+      ],
+      "radius": 22,
+      "glow": true
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        336,
+        64
+      ],
+      "radius": 28,
+      "style": "astrolabe"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        336,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        48,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        120,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        368,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        368,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "cracked_meteor_boulder",
+      "pos": [
+        32,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        352,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Flip Well 2 from Pull to Push so a thrown-lantern slingshot meteor boulder executes a 150-degree boomerang U-bend across the star chasm, smashing the NW bulkhead and lighting the bridge eye behind it.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Polarity flipping (Pull vs Push) and heavy meteor_orb orbital slingshots around walls.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "apogee_sanctum_access",
+    "why": "Signature polarity-flip meteor puzzle gating the Apogee Clasp sanctum.",
+    "exit": "exit_mv_r4_n",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          56,
+          176
+        ],
+        "target": "crys_r4"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "well_r4_2",
+        "prop": "is_push",
+        "value": true,
+        "timeout": 2.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          224
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "beam",
+        "target": [
+          180,
+          224
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "cracked_r4_bulkhead",
+        "prop": "broken",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "wait",
+        "secs": 1.1
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          224
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "beam",
+        "target": [
+          180,
+          224
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "eye_r4_bridge",
+        "prop": "activated",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          224
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r4_n"
+      }
+    ]
+  }
+}

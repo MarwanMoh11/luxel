@@ -1,0 +1,481 @@
+{
+  "id": "ow_starfall_cliff",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "freefall",
+  "name_key": "I5_ZONE_CLIFF",
+  "music": "explore",
+  "spawn": [
+    256,
+    328
+  ],
+  "zones": [
+    {
+      "id": "starfall_cliff",
+      "name_key": "I5_ZONE_CLIFF",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "ex_cliff_south",
+      "rect": [
+        224,
+        352,
+        64,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        872,
+        272
+      ]
+    },
+    {
+      "id": "ex_cliff_apron",
+      "rect": [
+        16,
+        160,
+        16,
+        48
+      ],
+      "to_island": 5,
+      "to_region": "ow_meteor_apron",
+      "to_spawn": [
+        520,
+        104
+      ]
+    },
+    {
+      "id": "ex_cliff_dream1",
+      "rect": [
+        96,
+        48,
+        48,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "dream_r1",
+      "to_spawn": [
+        208,
+        240
+      ]
+    },
+    {
+      "id": "ex_cliff_dream4",
+      "rect": [
+        224,
+        48,
+        48,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "dream_r4",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "requires_flags": [
+        "dream_r3_ok"
+      ],
+      "locked_door_id": "door_dream_short"
+    },
+    {
+      "id": "ex_cliff_horizon",
+      "rect": [
+        480,
+        192,
+        16,
+        48
+      ],
+      "to_island": 5,
+      "to_region": "superboss_horizon",
+      "to_spawn": [
+        80,
+        208
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "island_5_relit"
+      ],
+      "locked_door_id": "door_horizon_rift"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_cliff",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        328
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_5_cliff",
+      "kind": "waystone",
+      "pos": [
+        192,
+        232
+      ],
+      "props": {
+        "name_key": "I5_ZONE_CLIFF",
+        "zone": "starfall_cliff"
+      }
+    },
+    {
+      "id": "cw_cliff_stele",
+      "kind": "cracked_wall",
+      "pos": [
+        336,
+        152
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "qi_5_tablet_c",
+      "kind": "quest_item",
+      "pos": [
+        336,
+        120
+      ],
+      "props": {
+        "id": "qi_5_tablet_c"
+      }
+    },
+    {
+      "id": "sn_cliff_1",
+      "kind": "star_node",
+      "pos": [
+        392,
+        144
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_cliff_2",
+      "kind": "star_node",
+      "pos": [
+        416,
+        112
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "moth_5_04",
+      "kind": "moth",
+      "pos": [
+        456,
+        88
+      ],
+      "props": {
+        "id": "moth_5_04"
+      }
+    },
+    {
+      "id": "well_cliff_1",
+      "kind": "gravity_well",
+      "pos": [
+        384,
+        216
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 64.0,
+        "strength": 760.0
+      }
+    },
+    {
+      "id": "door_dream_short",
+      "kind": "door",
+      "pos": [
+        256,
+        88
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          48,
+          16
+        ],
+        "requires_flags": [
+          "dream_r3_ok"
+        ]
+      }
+    },
+    {
+      "id": "door_horizon_rift",
+      "kind": "door",
+      "pos": [
+        464,
+        216
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "island_5_relit"
+        ],
+        "requires_moves": [
+          "lens"
+        ]
+      }
+    },
+    {
+      "id": "lore_cliff_dream",
+      "kind": "lore_stone",
+      "pos": [
+        160,
+        112
+      ],
+      "props": {
+        "string_id": "I5_OW_DREAM_OPEN",
+        "icon": "star",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "lore_cliff_rift",
+      "kind": "lore_stone",
+      "pos": [
+        432,
+        232
+      ],
+      "props": {
+        "string_id": "I5_OW_CLIFF_RIFT",
+        "icon": "skull",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "lamp_cliff_s",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        296
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cliff_dream",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cliff_e",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cliff_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cliff_ne",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [],
+  "scenery": [
+    {
+      "sheet": "theme_freefall",
+      "prop": "fallen_telescope_tube",
+      "pos": [
+        96,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "cracked_dome_arch",
+      "pos": [
+        128,
+        72
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tilted_marble_column",
+      "pos": [
+        208,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        288,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        440,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "star_chime_crystal",
+      "pos": [
+        448,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "shattered_balustrade",
+      "pos": [
+        224,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "High cosmic abyss overlook hosting the Dream Telescope entrance, Floor-4 shortcut, Singularity Rift gate to Event Horizon, a cracked stele hiding Tablet C, and a void star-bridge to Moth 4.",
+    "kind": "story",
+    "beat": "sho",
+    "teaches": "Gateway to Dream Telescope and Event Horizon superboss; star_node abyss crossing",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "qi_5_tablet_c, moth_5_04, access to dream_r1/r4 and superboss_horizon",
+    "why": "NE sub-overworld connecting Kiln Overlook and Meteor Apron to optional endgame content.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        256,
+        328
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          336,
+          192
+        ]
+      },
+      {
+        "op": "beam",
+        "target": "cw_cliff_stele"
+      },
+      {
+        "op": "goto",
+        "to": [
+          336,
+          128
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_cliff_1",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "shoot",
+        "target": "sn_cliff_2",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          448,
+          96
+        ]
+      }
+    ]
+  }
+}

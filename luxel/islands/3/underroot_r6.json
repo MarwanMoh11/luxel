@@ -44,24 +44,447 @@
       "to_spawn": [
         48,
         64
-      ]
+      ],
+      "locked_door_id": "door_r6_north_sc"
     }
   ],
   "interactables": [
     {
-      "id": "lamp_r6_1",
-      "kind": "road_lamp",
+      "id": "anc_r6_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "pw_r6_nw",
+      "kind": "light_plant",
+      "pos": [
+        176,
+        104
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          16,
+          16
+        ],
+        "secs": 0.45,
+        "decay": 2.4
+      }
+    },
+    {
+      "id": "pw_r6_ne",
+      "kind": "light_plant",
+      "pos": [
+        272,
+        104
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          16,
+          16
+        ],
+        "secs": 0.45,
+        "decay": 2.4
+      }
+    },
+    {
+      "id": "pw_r6_sw",
+      "kind": "light_plant",
+      "pos": [
+        176,
+        184
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          16,
+          16
+        ],
+        "secs": 0.45,
+        "decay": 2.4
+      }
+    },
+    {
+      "id": "pw_r6_se",
+      "kind": "light_plant",
+      "pos": [
+        272,
+        184
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          16,
+          16
+        ],
+        "secs": 0.45,
+        "decay": 2.4
+      }
+    },
+    {
+      "id": "dew_r6_ne",
+      "kind": "dew_lens",
+      "pos": [
+        352,
+        80
+      ],
+      "props": {
+        "movable": false,
+        "rail_axis": "none",
+        "focus_range": 180.0
+      }
+    },
+    {
+      "id": "dew_r6_se",
+      "kind": "dew_lens",
+      "pos": [
+        352,
+        208
+      ],
+      "props": {
+        "movable": false,
+        "rail_axis": "none",
+        "focus_range": 180.0
+      }
+    },
+    {
+      "id": "altar_r6_saphorn",
+      "kind": "ur_sap_horn_altar",
       "pos": [
         224,
-        144
+        72
+      ],
+      "props": {
+        "requires_flag": "stag_colossus_defeated",
+        "target_id": "door_r6_north_sc"
+      }
+    },
+    {
+      "id": "door_r6_north_sc",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "altar_r6_saphorn"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r6_nw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        72
       ],
       "props": {
         "zone": "ur_r6",
         "lit": true
       }
+    },
+    {
+      "id": "lamp_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        64
+      ],
+      "props": {
+        "zone": "ur_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        224
+      ],
+      "props": {
+        "zone": "ur_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        224
+      ],
+      "props": {
+        "zone": "ur_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r6_acorn_nw",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        112,
+        92
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r6_grass_se",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        348,
+        208
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": true
+      }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "boss_stag_colossus",
+      "kind": "stag_colossus",
+      "pos": [
+        272,
+        144
+      ],
+      "zone": "ur_r6"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 52,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        144
+      ],
+      "size": [
+        52,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        176,
+        144
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        280,
+        144
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        224,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        88,
+        228
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        360,
+        228
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "beetle_hitching_post",
+      "pos": [
+        176,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "beetle_hitching_post",
+      "pos": [
+        272,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        56,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        392,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        148,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        300,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        384,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        72,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Mini-boss octagonal root-bowl for The Stag Colossus: bloom center thorn-walls in its Timber Charge path to flip it onto its back, or trigger P2 corner Dew Lenses to overheat it, then claim the Sap-Horn and drop north onto the r2 balcony.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Turning light-grown thorn walls into offensive charge-breakers against Stag Colossus and earning the Sap-Horn dungeon power.",
+    "decisions": 6,
+    "expert_s": 88,
+    "reward": "sap_horn+cycle_1_drop",
+    "why": "Dungeon A mini-boss awarding the Sap-Horn and opening Cycle 1 back to Acorn Atrium.",
+    "exit": "exit_r6_north_sc",
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "ur_r6",
+        "timeout": 90.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "interact",
+        "target": "altar_r6_saphorn"
+      },
+      {
+        "op": "expect",
+        "flag": "sap_horn"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r6_north_sc",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_north_sc"
+      }
+    ]
+  },
   "id": "underroot_r6",
   "island_id": 3,
   "tile_size": 16,

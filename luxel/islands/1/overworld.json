@@ -84,10 +84,10 @@
         32,
         24
       ],
-      "to_region": "belfry_r1",
+      "to_region": "belfry_forecourt",
       "to_spawn": [
-        192,
-        216
+        288,
+        368
       ],
       "requires_moves": [
         "dash",
@@ -121,6 +121,63 @@
         "great_lamp_1"
       ],
       "locked_door_id": "bridge_of_light_1"
+    },
+    {
+      "id": "exit_to_bell_yard",
+      "rect": [
+        416,
+        64,
+        32,
+        16
+      ],
+      "to_region": "bell_yard",
+      "to_spawn": [
+        384,
+        464
+      ],
+      "requires_moves": [
+        "bolt",
+        "dash",
+        "throw"
+      ]
+    },
+    {
+      "id": "exit_to_manor_gardens",
+      "rect": [
+        1248,
+        336,
+        32,
+        48
+      ],
+      "to_region": "manor_gardens",
+      "to_spawn": [
+        56,
+        256
+      ],
+      "requires_moves": [
+        "bolt",
+        "dash",
+        "throw"
+      ]
+    },
+    {
+      "id": "exit_to_cliff_foundry",
+      "rect": [
+        624,
+        688,
+        32,
+        16
+      ],
+      "to_region": "cliff_foundry",
+      "to_spawn": [
+        304,
+        56
+      ],
+      "requires_moves": [
+        "bolt",
+        "dash",
+        "throw"
+      ]
     }
   ],
   "enemies": [
@@ -769,6 +826,81 @@
       "props": {
         "zone": "bell_arch"
       }
+    },
+    {
+      "id": "bell_orchard_dawn",
+      "kind": "bell",
+      "pos": [
+        464,
+        160
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 160,
+        "zone": "orchard"
+      }
+    },
+    {
+      "id": "door_nw_town",
+      "kind": "tone_door",
+      "pos": [
+        432,
+        120
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          32,
+          16
+        ],
+        "persist": true,
+        "zone": "orchard"
+      }
+    },
+    {
+      "id": "bell_glass_dusk",
+      "kind": "bell",
+      "pos": [
+        672,
+        576
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 160,
+        "zone": "glasshouse"
+      }
+    },
+    {
+      "id": "door_south_foundry",
+      "kind": "tone_door",
+      "pos": [
+        640,
+        616
+      ],
+      "props": {
+        "tone": "dusk",
+        "size": [
+          32,
+          16
+        ],
+        "persist": true,
+        "zone": "glasshouse"
+      }
+    },
+    {
+      "id": "moth_1_01",
+      "kind": "moth",
+      "pos": [
+        1080,
+        120
+      ],
+      "props": {
+        "id": "moth_1_01",
+        "zone": "moonlit_bridge",
+        "requires_moves": [
+          "throw"
+        ]
+      }
     }
   ],
   "triggers": [
@@ -1102,7 +1234,7 @@
       "sheet": "island1_scenery",
       "prop": "orchard_tree_warm",
       "pos": [
-        456,
+        488,
         104
       ],
       "layer": "sort",

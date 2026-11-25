@@ -1,0 +1,524 @@
+{
+  "id": "cave_rooftop_belfry",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ZONE_ISL2_BELFRY",
+  "theme": "locks",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    232,
+    248
+  ],
+  "zones": [
+    {
+      "id": "rooftop_belfry",
+      "name_key": "ZONE_ISL2_BELFRY",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_belfry_out",
+      "rect": [
+        208,
+        272,
+        48,
+        16
+      ],
+      "to_region": "ow_open_sound",
+      "to_spawn": [
+        376,
+        40
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "reef_skate_bf_1",
+      "kind": "reef_skate",
+      "pos": [
+        216,
+        120
+      ],
+      "route": [
+        [
+          200,
+          120
+        ],
+        [
+          264,
+          120
+        ]
+      ],
+      "zone": "rooftop_belfry",
+      "leash": 132
+    },
+    {
+      "id": "crab_warden_bf_1",
+      "kind": "crab_warden",
+      "pos": [
+        280,
+        136
+      ],
+      "route": [
+        [
+          232,
+          136
+        ],
+        [
+          296,
+          136
+        ]
+      ],
+      "zone": "rooftop_belfry",
+      "leash": 132
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_belfry",
+      "kind": "room_anchor",
+      "pos": [
+        232,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_belfry",
+      "kind": "state_lever",
+      "pos": [
+        296,
+        216
+      ],
+      "props": {
+        "scope": "room:2:cave_rooftop_belfry",
+        "var": "belfry_tide",
+        "values": [
+          "flood",
+          "ebb"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "trial_salvage_gate",
+      "kind": "trial_gate",
+      "pos": [
+        184,
+        216
+      ],
+      "props": {
+        "challenge": "salvage_gauntlet",
+        "once": true,
+        "shoot_to_start": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_belfry",
+      "kind": "blue_transformer",
+      "pos": [
+        232,
+        168
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_belfry_reward",
+      "kind": "door",
+      "pos": [
+        232,
+        72
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          48,
+          16
+        ],
+        "zone": "rooftop_belfry",
+        "clear_zone": "rooftop_belfry"
+      }
+    },
+    {
+      "id": "moth_2_07",
+      "kind": "moth",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "id": "moth_2_07"
+      }
+    },
+    {
+      "id": "chest_belfry_salvage",
+      "kind": "chest",
+      "pos": [
+        264,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 60,
+        "zone": "rooftop_belfry"
+      }
+    },
+    {
+      "id": "lamp_bf_1",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        232
+      ],
+      "props": {
+        "zone": "rooftop_belfry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bf_2",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        232
+      ],
+      "props": {
+        "zone": "rooftop_belfry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bf_3",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        120
+      ],
+      "props": {
+        "zone": "rooftop_belfry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bf_4",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        120
+      ],
+      "props": {
+        "zone": "rooftop_belfry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bf_5",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        40
+      ],
+      "props": {
+        "zone": "rooftop_belfry",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "belfry_ebb",
+      "when": "belfry_tide==ebb",
+      "theme": "seabed",
+      "tiles": [
+        [
+          3,
+          6,
+          6,
+          8,
+          "ground"
+        ],
+        [
+          20,
+          7,
+          5,
+          5,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_salvage_trial",
+      "on": "trial_start:trial_salvage_gate",
+      "once": false,
+      "do": [
+        {
+          "narrate": "ISL2_TRIAL_SALVAGE"
+        },
+        {
+          "challenge": {
+            "id": "salvage_gauntlet",
+            "kind": "no_hit",
+            "time": 50,
+            "zone": "rooftop_belfry",
+            "waves": [
+              {
+                "at": 0.4,
+                "enemies": [
+                  {
+                    "id": "bf_w1_skate",
+                    "kind": "reef_skate",
+                    "pos": [
+                      168,
+                      120
+                    ],
+                    "zone": "rooftop_belfry"
+                  },
+                  {
+                    "id": "bf_w1_shrimp",
+                    "kind": "pistol_shrimp",
+                    "pos": [
+                      296,
+                      120
+                    ],
+                    "zone": "rooftop_belfry"
+                  }
+                ]
+              }
+            ],
+            "reward": {
+              "kind": "shards",
+              "value": "",
+              "amount": 60
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        168
+      ],
+      "radius": 34,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        16,
+        112,
+        48
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        232,
+        120
+      ],
+      "radius": 22,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island2_scenery",
+      "prop": "tide_bell_post",
+      "pos": [
+        168,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "tide_bell_post",
+      "pos": [
+        296,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        184,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        280,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        280,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        200,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        264,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        152,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "brass_compass_floor",
+      "pos": [
+        232,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Flood-tide Rooftop Belfry combat gauntlet where dropping the inner tide valve mid-fight drains the flanking trenches to strand Reef Skates helplessly dry.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Mid-combat tide shifting to strand Reef Skates + No-Hit Salvage Trial",
+    "decisions": 8,
+    "expert_s": 56,
+    "reward": "moth_2_07 + 60 shards (+ 60 bonus from No-Hit Trial)",
+    "why": "Flood-tide optional combat trial chamber off Outer Sound",
+    "optional": true,
+    "target": "chest_belfry_salvage",
+    "start": {
+      "vars": {
+        "belfry_tide": "flood"
+      },
+      "spawn": [
+        232,
+        248
+      ]
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          232
+        ],
+        "target": "valve_belfry"
+      },
+      {
+        "op": "expect",
+        "var": "belfry_tide==ebb"
+      },
+      {
+        "op": "clear"
+      },
+      {
+        "op": "expect",
+        "interactable": "door_belfry_reward",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          40
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_belfry_salvage"
+      }
+    ]
+  }
+}

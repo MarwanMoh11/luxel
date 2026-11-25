@@ -30,7 +30,7 @@ class SyzygyWellField:
 		var dist: float = sqrt(d2)
 		var u: float = clampf(1.0 - dist / radius, 0.0, 1.0)
 		var falloff: float = (0.35 + 0.65 * u) * (1.0 - exp(-dist / 10.0))
-		var mult: float = 1.15 if what in ["bolt", "beam"] else (0.85 if what == "lantern" else (0.05 if what == "wick" else 0.25))
+		var mult: float = 1.20 if what in ["bolt", "beam"] else (0.85 if what == "lantern" else (0.0 if what == "wick" else 0.25))
 		var dn: Vector2 = delta / dist
 		if is_push:
 			dn = -dn
@@ -75,14 +75,14 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island5_boss_p1"
 	music_p2_cue = "island5_boss_p2"
-	max_hp = 88.0
-	hp = 88.0
+	max_hp = 108.0
+	hp = 108.0
 	body_radius = 9.0
-	move_speed = 52.0
+	move_speed = 48.0
 	stagger_threshold = 15.0
 	stagger_duration = 1.65
 	punish_dmg_mult = 1.30
-	post_recover_cd = 0.28
+	post_recover_cd = 0.32
 	shard_drop = 45
 	death_duration = 2.4
 
@@ -126,19 +126,23 @@ func _configure_boss(_spec: Dictionary) -> void:
 				stage.play_sfx("astronomer_constellation_fire", pos),
 	})
 
-	# Attack 2: Starlight Barrage — shooting-star rain across Wick & corners + twin crescent boomerangs
+	# Attack 2: Starlight Barrage — aimed starlight fan + twin crescent boomerangs
 	register_attack("starlight_barrage", {
-		"weight": 1.20, "tell": 0.54, "commit": 0.38, "recover": 1.00, "cooldown": 1.40,
+		"weight": 1.20, "tell": 0.54, "commit": 0.38, "recover": 1.02, "cooldown": 1.40,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = AstroMove.DIVE
 			decoy_offsets.clear()
-			var drops: Array[Vector2] = _build_star_targets(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "sky", "gold")
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			ground.warn_sector(pos, d.angle() - 0.52, d.angle() + 0.52, 42.0, last_tell_duration, 0.0, "sky", "gold")
+			if not arena_rect.grow(-11.0).has_point(tgt):
+				ground.warn_ring(tgt, 20.0, last_tell_duration + 0.04, 1.0, "sky", "gold")
 			stage.play_sfx("astronomer_constellation_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_boomerang(pos, d.rotated(0.28), 142.0, 0.68, 0.72, {"color": "gold", "source": "star_boomerang", "field_scale": 1.0})
-			patterns.emit_boomerang(pos, d.rotated(-0.28), 142.0, 0.68, -0.72, {"color": "ice", "source": "star_boomerang", "field_scale": 1.0})
+			patterns.emit_fan(pos, d, 5 if phase >= 2 else 3, 0.72, 122.0, {"color": "sky", "source": "star_fan", "field_scale": 1.0, "damage": 0.5})
+			patterns.emit_boomerang(pos, d.rotated(0.28), 124.0, 0.68, 0.72, {"color": "gold", "source": "star_boomerang", "field_scale": 1.0, "damage": 0.5})
+			if phase >= 2:
+				patterns.emit_boomerang(pos, d.rotated(-0.28), 124.0, 0.68, -0.72, {"color": "ice", "source": "star_boomerang", "field_scale": 1.0, "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("astronomer_constellation_fire", pos),
 	})
@@ -150,20 +154,18 @@ func _configure_boss(_spec: Dictionary) -> void:
 			active_move = AstroMove.DIVE
 			decoy_offsets.clear()
 			_sweep_dir = Vector2.LEFT if tgt.x < arena_rect.get_center().x else Vector2.RIGHT
-			var c: Vector2 = arena_rect.get_center()
-			var sx: float = arena_rect.end.x - 10.0 if _sweep_dir.x < 0.0 else arena_rect.position.x + 10.0
-			var ex: float = arena_rect.position.x + 10.0 if _sweep_dir.x < 0.0 else arena_rect.end.x - 10.0
-			ground.warn_lane(Vector2(sx, c.y), Vector2(ex, c.y), arena_rect.size.y * 0.30, last_tell_duration, 0.0, "sky", "ice")
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			ground.warn_lane(pos, pos + d * 150.0, 8.0, last_tell_duration, 0.0, "gold", "cream")
+			ground.warn_lane(pos, pos + d * 56.0, 8.0, last_tell_duration, 0.0, "gold", "cream")
+			if not arena_rect.grow(-11.0).has_point(tgt):
+				ground.warn_ring(tgt, 20.0, last_tell_duration + 0.04, 1.0, "gold", "cream")
 			stage.play_sfx("clockwork_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
 			var sx: float = arena_rect.end.x - 10.0 if _sweep_dir.x < 0.0 else arena_rect.position.x + 10.0
 			var gap_idx: int = 3 if int(anim_t * 10.0) % 2 == 0 else 5
-			patterns.emit_sweep_wall(Vector2(sx, c.y), _sweep_dir, arena_rect.size.y - 24.0, 10, gap_idx, 3, 118.0, {"color": "ice", "source": "meridian_wall"})
+			patterns.emit_sweep_wall(Vector2(sx, c.y), _sweep_dir, arena_rect.size.y - 24.0, 9, gap_idx, 3, 108.0, {"color": "ice", "source": "meridian_wall", "damage": 0.5})
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_lane(pos, d, 3, 152.0, 0.08, {"color": "gold", "source": "astrolabe_lance", "field_scale": 1.0})
+			patterns.emit_lane(pos, d, 3, 134.0, 0.09, {"color": "gold", "source": "astrolabe_lance", "field_scale": 1.0, "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("astronomer_constellation_fire", pos),
 	})
@@ -182,35 +184,34 @@ func _configure_boss(_spec: Dictionary) -> void:
 				decoy_offsets.append(Vector2.from_angle(star_base_ang + 2.1) * 46.0)
 				decoy_offsets.append(Vector2.from_angle(star_base_ang - 2.1) * 46.0)
 			var rays: int = 5 if phase >= 3 else 3
-			ground.warn_ring(pos, 74.0, last_tell_duration, 0.0, "sky", "gold")
+			ground.warn_ring(pos, 32.0, last_tell_duration, 0.0, "sky", "gold")
 			for i: int in range(rays):
 				var rd: Vector2 = Vector2.from_angle(star_base_ang + float(i) * (TAU / float(rays)))
-				ground.warn_lane(pos, pos + rd * NOVA_RAY_RANGE, NOVA_RAY_HALF_W, last_tell_duration, 1.0, "sky", "gold")
+				ground.warn_lane(pos, pos + rd * 52.0, 6.0, last_tell_duration, 0.0, "sky", "gold")
 			stage.play_sfx("astronomer_constellation_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			decoy_offsets.clear()
 			var rays: int = 5 if phase >= 3 else 3
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 12 if phase >= 3 else 10, 122.0, gap_a + 0.42, 0.72, {"color": "ice", "source": "constellation_ring", "field_scale": 1.05})
+			patterns.emit_gap_ring(pos, 10, 114.0, gap_a, 0.88, {"color": "ice", "source": "constellation_ring", "field_scale": 1.05, "damage": 0.5})
 			for i: int in range(rays):
 				var rd: Vector2 = Vector2.from_angle(star_base_ang + float(i) * (TAU / float(rays)))
-				patterns.emit_lane(pos, rd, 2, 148.0, 0.09, {"color": "gold", "source": "constellation_ray", "field_scale": 1.05})
+				patterns.emit_lane(pos, rd, 2, 132.0, 0.10, {"color": "gold", "source": "constellation_ray", "field_scale": 1.05, "damage": 0.5})
 			stage.shake(0.22)
 			stage.play_sfx("astronomer_constellation_fire", pos),
 	})
 
 	# Attack 5 (P3): Gravity Syzygy — twin orbiting LxFields wells bend a 5-arm celestial spiral!
 	register_attack("gravity_syzygy", {
-		"phases": [3], "weight": 1.65, "tell": 0.64, "commit": 0.52, "recover": 1.25, "cooldown": 1.80,
+		"phases": [3], "weight": 1.75, "tell": 0.64, "commit": 0.52, "recover": 1.25, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = AstroMove.CONSTELLATION
 			_ensure_wells(true)
 			star_base_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			ground.warn_ring(pos, 52.0, last_tell_duration, 0.0, "gold", "ice")
-			ground.warn_ring(clamp_to_arena(tgt), 24.0, last_tell_duration + 0.06, 1.0, "sky", "gold")
+			ground.warn_ring(pos, 34.0, last_tell_duration, 0.0, "gold", "ice")
 			stage.play_sfx("clockwork_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_spiral(pos, 5, 118.0, star_base_ang, 0.34, 3, 0.14, {"color": "gold", "source": "syzygy_spiral", "field_scale": 1.25})
+			patterns.emit_spiral(pos, 5, 110.0, star_base_ang, 0.34, 3, 0.16, {"color": "gold", "source": "syzygy_spiral", "field_scale": 1.25, "damage": 0.5})
 			stage.shake(0.22)
 			stage.play_sfx("eclipse_wave", pos),
 	})
@@ -245,11 +246,9 @@ func _on_phase_enter(new_phase: int) -> void:
 	altitude = ALT_PERCH
 	var c: Vector2 = arena_rect.get_center()
 	if new_phase == 2:
-		# P2 Arena Mutation: Astral Chime carves 4 outer void alcoves + lights safe star pedestals!
-		_carve_safe_tile_near(c + Vector2(-92.0, -52.0), "pit")
-		_carve_safe_tile_near(c + Vector2(92.0, -52.0), "pit")
-		_carve_safe_tile_near(c + Vector2(-92.0, 52.0), "pit")
-		_carve_safe_tile_near(c + Vector2(92.0, 52.0), "pit")
+		# P2 Arena Mutation: Astral Chime carves outer void alcoves + lights safe star pedestals!
+		_carve_safe_tile_near(Vector2(arena_rect.position.x - 24.0, c.y - 16.0), "pit")
+		_carve_safe_tile_near(Vector2(arena_rect.end.x + 24.0, c.y - 16.0), "pit")
 		_star_pedestals = [
 			clamp_to_arena(c + Vector2(-64.0, -34.0)), clamp_to_arena(c + Vector2(64.0, -34.0)),
 			clamp_to_arena(c + Vector2(-64.0, 34.0)), clamp_to_arena(c + Vector2(64.0, 34.0)),
@@ -323,13 +322,13 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var lens_mult: float = 1.35 if true_core_lit_t > 0.0 else 1.0
 
 	if boss_state == BossState.STAGGER:
-		return dmg * 1.45 * lens_mult
+		return dmg * (1.80 if heavy else 1.45) * lens_mult
 	if is_curved:
 		return dmg * 1.35 * lens_mult
 	if is_punishable():
-		return dmg * (1.20 if heavy else 1.0) * lens_mult
+		return dmg * (1.70 if heavy else 1.0) * lens_mult
 	if heavy:
-		return dmg * 1.15 * lens_mult
+		return dmg * 1.65 * lens_mult
 
 	# Spectral starlight veil outside punish windows: reduced plain bolt chip + astrolabe glint!
 	clank_t = 0.12
@@ -359,8 +358,8 @@ func _ensure_wells(activate: bool) -> void:
 	_well_a.pos = clamp_to_arena(c + Vector2(66.0, 0.0))
 	_well_b.pos = clamp_to_arena(c + Vector2(-66.0, 0.0))
 	if activate and not _wells_reg:
-		LxFields.register(_well_a)
-		LxFields.register(_well_b)
+		LxFields.add(_well_a)
+		LxFields.add(_well_b)
 		_wells_reg = true
 
 
@@ -368,16 +367,16 @@ func _unregister_wells() -> void:
 	if _well_a != null:
 		_well_a.active = false
 		if _wells_reg:
-			LxFields.unregister(_well_a)
+			LxFields.remove(_well_a)
 	if _well_b != null:
 		_well_b.active = false
 		if _wells_reg:
-			LxFields.unregister(_well_b)
+			LxFields.remove(_well_b)
 	_wells_reg = false
 
 
 func _build_star_targets(tgt: Vector2) -> Array[Vector2]:
-	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var out: Array[Vector2] = [tgt]
 	var inset: Rect2 = arena_rect.grow(-18.0)
 	var corners: Array[Vector2] = [
 		inset.position, Vector2(inset.end.x, inset.position.y),
@@ -396,9 +395,8 @@ func _build_star_targets(tgt: Vector2) -> Array[Vector2]:
 func _carve_safe_tile_near(world_pt: Vector2, tile_kind: String) -> void:
 	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("tile_at"):
 		return
-	var p: Vector2 = clamp_to_arena(world_pt)
-	var tx: int = int(floorf(p.x / 16.0))
-	var ty: int = int(floorf(p.y / 16.0))
+	var tx: int = int(floorf(world_pt.x / 16.0))
+	var ty: int = int(floorf(world_pt.y / 16.0))
 	var cp := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
 	if str(world_ctx.call("tile_at", cp)) == "ground" and cp.distance_to(home) > 34.0:
 		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), tile_kind)

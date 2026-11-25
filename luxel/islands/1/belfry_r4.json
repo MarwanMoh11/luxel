@@ -3,9 +3,11 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL1_BF_COLONNADE",
+  "music": "island1_dungeon",
   "spawn": [
-    36,
-    112
+    44,
+    104
   ],
   "zones": [
     {
@@ -31,8 +33,25 @@
       ],
       "to_region": "belfry_r3",
       "to_spawn": [
-        324,
+        300,
         104
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_r4_nw",
+      "rect": [
+        48,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r9",
+      "to_spawn": [
+        432,
+        168
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -63,17 +82,17 @@
       "id": "warden_r4_0",
       "kind": "warden",
       "pos": [
-        184,
-        64
+        168,
+        136
       ],
       "route": [
         [
-          152,
-          64
+          136,
+          136
         ],
         [
           248,
-          64
+          136
         ]
       ],
       "perches": [],
@@ -84,16 +103,16 @@
       "id": "warden_r4_1",
       "kind": "warden",
       "pos": [
-        216,
+        264,
         152
       ],
       "route": [
         [
-          160,
+          232,
           152
         ],
         [
-          248,
+          320,
           152
         ]
       ],
@@ -125,6 +144,27 @@
       ],
       "zone": "belfry_nave",
       "leash": 155
+    },
+    {
+      "id": "snuffer_r4_0",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        312,
+        168
+      ],
+      "route": [
+        [
+          264,
+          168
+        ],
+        [
+          328,
+          128
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_nave",
+      "leash": 140
     }
   ],
   "interactables": [
@@ -147,6 +187,89 @@
           "r4_cleared"
         ]
       }
+    },
+    {
+      "id": "spin_r4_center",
+      "kind": "spinner",
+      "pos": [
+        208,
+        112
+      ],
+      "props": {
+        "length": 34,
+        "speed": 1.25,
+        "arms": 2
+      }
+    },
+    {
+      "id": "bell_r4_dusk",
+      "kind": "bell",
+      "pos": [
+        80,
+        176
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        128
+      ],
+      "props": {
+        "zone": "belfry_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        88
+      ],
+      "props": {
+        "zone": "belfry_nave",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        48
+      ],
+      "props": {
+        "zone": "belfry_nave",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        112
+      ],
+      "radius": 38,
+      "style": "clock"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        128,
+        168
+      ],
+      "size": [
+        32,
+        18
+      ]
     }
   ],
   "triggers": [],
@@ -174,18 +297,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.45
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "belfry_bell_hanging",
-      "pos": [
-        72,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
     },
     {
       "sheet": "island1_scenery",
@@ -248,5 +359,38 @@
       "phase": 0.75
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Colonnade combat crucible with a sweeping center pendulum spinner, SW Dusk Bell to freeze the spinner & enemies, twin Wardens, Owl, and Snuffer Acolyte guarding the North combat gate to Bell Warden.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Using Dusk Bell mid-fight to freeze environmental hazards and enemy squads simultaneously.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "r4_cleared",
+    "why": "Escalates combat with a clockwork hazard and links the West/East F1 cycle via NW arch to r9.",
+    "exit": "exit_r4_north",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          64,
+          144
+        ],
+        "target": "bell_r4_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 28.0
+      },
+      {
+        "op": "expect",
+        "flag": "r4_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_north"
+      }
+    ]
+  }
 }

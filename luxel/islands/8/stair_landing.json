@@ -1,0 +1,476 @@
+{
+  "id": "stair_landing",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "endless_stair",
+  "name_key": "ISL8_Z_STAIR_BASE",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    288,
+    368
+  ],
+  "zones": [
+    {
+      "id": "stair_landing",
+      "name_key": "ISL8_Z_STAIR_BASE",
+      "rect": [
+        0,
+        0,
+        576,
+        416
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_overworld",
+      "rect": [
+        272,
+        400,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "overworld",
+      "to_spawn": [
+        176,
+        256
+      ]
+    },
+    {
+      "id": "exit_to_cave_glass_grotto",
+      "rect": [
+        0,
+        176,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "cave_glass_grotto",
+      "to_spawn": [
+        368,
+        144
+      ]
+    },
+    {
+      "id": "exit_stair_to_forecourt",
+      "rect": [
+        560,
+        176,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "sanctum_forecourt",
+      "to_spawn": [
+        112,
+        88
+      ],
+      "requires_flags": [
+        "stair_cleared"
+      ],
+      "locked_door_id": "door_stair_forecourt_bridge"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "gloam_sl_1",
+      "kind": "choir_gloam",
+      "pos": [
+        200,
+        128
+      ],
+      "route": [
+        [
+          184,
+          120
+        ],
+        [
+          232,
+          120
+        ]
+      ],
+      "zone": "stair_landing",
+      "leash": 124
+    },
+    {
+      "id": "gloam_sl_2",
+      "kind": "choir_gloam",
+      "pos": [
+        376,
+        128
+      ],
+      "route": [
+        [
+          344,
+          120
+        ],
+        [
+          392,
+          120
+        ]
+      ],
+      "zone": "stair_landing",
+      "leash": 124
+    },
+    {
+      "id": "clerk_sl_1",
+      "kind": "toll_clerk",
+      "pos": [
+        288,
+        120
+      ],
+      "route": [
+        [
+          256,
+          120
+        ],
+        [
+          320,
+          120
+        ]
+      ],
+      "zone": "stair_landing",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_stair_landing",
+      "kind": "room_anchor",
+      "pos": [
+        288,
+        368
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_stair_landing",
+      "kind": "waystone",
+      "pos": [
+        248,
+        320
+      ],
+      "props": {
+        "zone": "stair_landing",
+        "name_key": "ISL8_Z_STAIR_BASE"
+      }
+    },
+    {
+      "id": "door_stair_forecourt_bridge",
+      "kind": "door",
+      "pos": [
+        528,
+        200
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "stair_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lore_stair_base",
+      "kind": "lore_stone",
+      "pos": [
+        288,
+        80
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_STAIR",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "chest_sl_shards",
+      "kind": "chest",
+      "pos": [
+        360,
+        88
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40,
+        "secret_id": "isl8_sl_ring"
+      }
+    },
+    {
+      "id": "lamp_sl_s",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        320
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_landing"
+      }
+    },
+    {
+      "id": "lamp_sl_w",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        200
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_landing"
+      }
+    },
+    {
+      "id": "lamp_sl_e",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        200
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_landing"
+      }
+    },
+    {
+      "id": "lamp_sl_n",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_landing"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        288,
+        72
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        168,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        408,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        184,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        392,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "hourglass_milestone",
+      "pos": [
+        216,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        144,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        432,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        240,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        336,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stone_balustrade_rail",
+      "pos": [
+        288,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "cracked_step_rubble",
+      "pos": [
+        152,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        200
+      ],
+      "radius": 84,
+      "color": "rose"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        248,
+        72,
+        80,
+        32
+      ],
+      "color": "gold"
+    }
+  ],
+  "layers": [
+    {
+      "id": "relit_dawn",
+      "when": "flag:island_8_relit",
+      "disable": [
+        "gloam_sl_1",
+        "gloam_sl_2",
+        "clerk_sl_1"
+      ]
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Spiral spire base overlooking a central star-well chasm; links overworld NW spur to The Endless Stair, Glass Grotto secret cave, and Sanctum Forecourt.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "ring-arena combat vs choir_gloam pair + toll_clerk around central void",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "stair_access_and_grotto",
+    "why": "Distinct ring-and-void spiral silhouette introducing the Endless Stair spire aesthetic.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          320
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          360,
+          104
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_sl_shards"
+      }
+    ]
+  }
+}

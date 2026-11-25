@@ -1,0 +1,31 @@
+# Canopy Sprint - Wilting Vine Race Viaduct (30x16)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+##############################
+###OOOOOOO..........OOO#######
+##OOOOOOO...,,,,,,..OOO#....##
+##OOOOOOO..,,,,,,,..OOO#,,,,##
+##..,,,,,OOO,,,,,,..OOO#,,,,##
+##..,,,,,OOO,,,,,,..OOO#,,####
+##..,,,,,OOOO,,,,,..OOO.....##
+,,,,,,,,,OOOOOOOOOOOOOO..,,,##
+,,,,,,,,,OOOOOOOOOOOOOO..,,,##
+##..,,,,,OOOOOOOOOOOOOO..,,,##
+##..,,,,,OOOOO,,,,,,,OOO,,,,##
+##..,,,,,OOOOO,,,,,,,OOO,,,,##
+##OOOOOOO.OOOO,,,,,,,OOOO,,,##
+###OOOOOO..OOO,,,,,,.OOOOO.###
+####OOOOOOOOOOOOOOOOOOOOOO####
+##############################

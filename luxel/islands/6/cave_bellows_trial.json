@@ -1,0 +1,622 @@
+{
+  "id": "cave_bellows_trial",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "forge_deep",
+  "music": "isl6_express",
+  "name_key": "ISL6_Z_TRIAL",
+  "spawn": [
+    48,
+    160
+  ],
+  "zones": [
+    {
+      "id": "cave_bellows_trial",
+      "name_key": "ISL6_Z_TRIAL",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_trial_to_overlook",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "ow_cinder_overlook",
+      "to_spawn": [
+        624,
+        296
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_bt_1",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "trial_bellows_run",
+      "kind": "trial_gate",
+      "pos": [
+        152,
+        160
+      ],
+      "props": {
+        "challenge": "bellows_rail_run",
+        "once": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "cart_bellows_loop",
+      "kind": "vehicle_cart",
+      "pos": [
+        112,
+        64
+      ],
+      "props": {
+        "rail": [
+          [
+            96,
+            64
+          ],
+          [
+            352,
+            64
+          ],
+          [
+            352,
+            248
+          ],
+          [
+            96,
+            248
+          ],
+          [
+            96,
+            64
+          ]
+        ],
+        "speed": 92.0,
+        "loop": true,
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_bt_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        192,
+        120
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
+    },
+    {
+      "id": "anvil_bt_scatter",
+      "kind": "temper_anvil",
+      "pos": [
+        256,
+        120
+      ],
+      "props": {
+        "mode": "scatter",
+        "sets_flag": "temper_scatter_known"
+      }
+    },
+    {
+      "id": "anvil_bt_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        224,
+        192
+      ],
+      "props": {
+        "mode": "lance",
+        "sets_flag": "temper_lance_known"
+      }
+    },
+    {
+      "id": "grate_bt_skip",
+      "kind": "grate",
+      "pos": [
+        184,
+        112
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "coupler_bt_skip",
+      "kind": "car_coupler",
+      "pos": [
+        152,
+        112
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_id": "gate_bt_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "braz_bt_1",
+      "kind": "timed_brazier",
+      "pos": [
+        304,
+        104
+      ],
+      "props": {
+        "secs": 6.0,
+        "target_id": "gate_bt_scat"
+      }
+    },
+    {
+      "id": "braz_bt_2",
+      "kind": "timed_brazier",
+      "pos": [
+        304,
+        120
+      ],
+      "props": {
+        "secs": 6.0,
+        "target_id": "gate_bt_scat"
+      }
+    },
+    {
+      "id": "braz_bt_3",
+      "kind": "timed_brazier",
+      "pos": [
+        304,
+        136
+      ],
+      "props": {
+        "secs": 6.0,
+        "target_id": "gate_bt_scat"
+      }
+    },
+    {
+      "id": "gate_bt_scat",
+      "kind": "logic_gate",
+      "pos": [
+        288,
+        104
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "braz_bt_1",
+          "braz_bt_2",
+          "braz_bt_3"
+        ],
+        "target_id": "gate_bt_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "coupler_bt_arm1",
+      "kind": "car_coupler",
+      "pos": [
+        264,
+        192
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_bt_lance",
+        "persist": true
+      }
+    },
+    {
+      "id": "coupler_bt_arm2",
+      "kind": "car_coupler",
+      "pos": [
+        296,
+        192
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_bt_lance",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_bt_lance",
+      "kind": "logic_gate",
+      "pos": [
+        280,
+        176
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "coupler_bt_arm1",
+          "coupler_bt_arm2"
+        ],
+        "target_id": "gate_bt_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_bt_all",
+      "kind": "logic_gate",
+      "pos": [
+        328,
+        160
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "coupler_bt_skip",
+          "gate_bt_scat",
+          "gate_bt_lance"
+        ],
+        "target_id": "door_trial_trophy",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_trial_trophy",
+      "kind": "door",
+      "pos": [
+        392,
+        168
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_bt_all"
+        ]
+      }
+    },
+    {
+      "id": "pickup_slag_coat",
+      "kind": "pane_pickup",
+      "pos": [
+        424,
+        152
+      ],
+      "props": {
+        "pane": "slag_coat"
+      }
+    },
+    {
+      "id": "moth_6_08",
+      "kind": "moth",
+      "pos": [
+        424,
+        184
+      ],
+      "props": {
+        "id": "moth_6_08"
+      }
+    },
+    {
+      "id": "lamp_bt_1",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        160
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bt_2",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bt_3",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        152
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bt_4",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bt_5",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        48,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        48,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "tempering_floor_seal",
+      "pos": [
+        224,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "quench_barrel_tub",
+      "pos": [
+        304,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        424,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "start_bellows_trial",
+      "on": "trial_start:trial_bellows_run",
+      "once": false,
+      "do": [
+        {
+          "challenge": {
+            "id": "bellows_rail_run",
+            "kind": "light_all",
+            "time": 42.0,
+            "targets": [
+              "coupler_bt_skip",
+              "gate_bt_scat",
+              "gate_bt_lance"
+            ],
+            "ok": [
+              {
+                "set_flag": "bellows_trial_cleared"
+              },
+              {
+                "set_flag": "trial6:bellows_rail:gold"
+              },
+              {
+                "reward": {
+                  "kind": "shards",
+                  "amount": 50
+                }
+              },
+              {
+                "narrate": "ISL6_TRIAL_RAIL_WIN"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Timed Three-Temper Rail Run trial ringed by an active looping rail cart: fire Skip bank, Scatter triple-damper, and Lance twin-armour pierce in 42s to claim Pane slag_coat + moth_6_08.",
+    "kind": "setpiece",
+    "beat": "ten",
+    "teaches": "Rapid mid-run switching across all 3 Bolt Tempers under a fair timer.",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "pane:slag_coat+moth_6_08",
+    "why": "Signature Island 6 trial accessed via station_b Express flatcars from High Trestle.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          152,
+          184
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "trial_bellows_run"
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          144
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_bt_skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          112
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          184,
+          92
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "wait_until",
+        "target": "coupler_bt_skip",
+        "prop": "uncoupled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          144
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_bt_scatter"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          120
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          304,
+          120
+        ],
+        "wait_hit": 0.5
+      },
+      {
+        "op": "wait_until",
+        "target": "gate_bt_scat",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          176
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_bt_lance"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          192
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          312,
+          192
+        ],
+        "wait_hit": 0.8
+      },
+      {
+        "op": "wait_until",
+        "target": "door_trial_trophy",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          424,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "pickup_slag_coat"
+      }
+    ]
+  }
+}

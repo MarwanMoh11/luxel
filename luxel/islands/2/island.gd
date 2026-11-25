@@ -1,11 +1,12 @@
 class_name LxIsland2
 extends RefCounted
-## Island 2 (Tidewater Harbor) progression beats, story hooks, region list, and main-path waypoints.
+## Island 2 (Tidewater Harbor) progression beats, story hooks, tidal gating, region list, and main-path waypoints.
 
 const ISLAND_ID: int = 2
 const SEAL_ID: String = "lighthouse_seal"
 const BOSS_ID: String = "lighthouse_hermit"
 const MINI_BOSS_KIND: String = "tide_captain"
+const SUPERBOSS_ID: String = "undertow"
 
 const REQUIRED_BEACONS: Array[String] = [
 	"beacon_2_1",
@@ -13,8 +14,38 @@ const REQUIRED_BEACONS: Array[String] = [
 	"beacon_2_3",
 ]
 
+const REQUIRED_EPIC_DUNGEONS: Array[Dictionary] = [
+	{"id": "galleon", "flag": "galleon_done"},
+	{"id": "locks", "flag": "locks_done"},
+	{"id": "leviathan", "flag": "leviathan_done"},
+]
+
+const OVERWORLD_REGIONS: Array[String] = [
+	"overworld",
+	"ow_shoals_west",
+	"ow_canal_south",
+	"ow_open_sound",
+	"ow_boathouse",
+]
+
+const CAVE_REGIONS: Array[String] = [
+	"cave_rib_vault",
+	"cave_bell_cistern",
+	"cave_smuggler_cellar",
+	"cave_rooftop_belfry",
+]
+
 const REGIONS: Array[String] = [
 	"overworld",
+	"ow_shoals_west",
+	"ow_canal_south",
+	"ow_open_sound",
+	"ow_boathouse",
+	"cave_rib_vault",
+	"cave_bell_cistern",
+	"cave_smuggler_cellar",
+	"cave_rooftop_belfry",
+	"cave_undertow_maw",
 	"lighthouse_r1",
 	"lighthouse_r2",
 	"lighthouse_r3",
@@ -79,6 +110,11 @@ func detach() -> void:
 func on_region_loaded(region_id: String) -> void:
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
+	if region_id == "overworld":
+		_sync_lighthouse_seal_gate()
+	if region_id in OVERWORLD_REGIONS:
+		_apply_relit_harbor_state()
+	_check_leviathan_awakening()
 
 
 func get_rule() -> LxIsland2Rule:
@@ -108,6 +144,16 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 		_wp("wp_lh_r10_boss", "lighthouse_r10", "lighthouse_r10", [224.0, 144.0], "boss", "defeat_boss", "boss_lighthouse_hermit", "Defeat the Lighthouse Hermit in the Circular Fresnel Crown", ["dash", "throw", "prism"], ["keepers_flame_2"], "", "boss_lighthouse_hermit_defeated"),
 		_wp("wp_lh_r10_great_lamp", "lighthouse_r10", "lighthouse_r10", [224.0, 56.0], "great_lamp", "light_great_lamp", "great_lamp_2", "Relight Great Lamp 2 to wake Tidewater Harbor", ["dash", "throw", "prism"], ["boss_lighthouse_hermit_defeated"], "", "island_2_relit"),
 		_wp("wp_2_bridge_to_island_3", "lighthouse_r10", "lighthouse_r10", [440.0, 136.0], "exit", "enter_exit", "exit_lh_r10_island3", "Cross Bridge of Light to Island 3 Thornwood Hollow", ["prism"], ["island_2_relit"], "", "", "overworld", 3),
+	]
+
+
+func get_epic_overworld_waypoints() -> Array[Dictionary]:
+	return [
+		_wp("wp_2_skiff_cut", "overworld", "harbor_landing", [152.0, 392.0], "skiff_tether", "interact", "tether_skiff_harbor", "Untether the Harbor Skiff at low tide", ["bolt", "dash", "throw"], [], "", "skiff_unlocked"),
+		_wp("wp_2_tide_organ", "overworld", "harbor_landing", [280.0, 264.0], "state_lever", "shoot", "organ_harbor_w", "Sound the Quay Tide Organ to shift harbor tides", ["bolt", "dash", "throw"], ["skiff_unlocked"], "", "tide_organ_used"),
+		_wp("wp_2_shoals_ws", "ow_shoals_west", "shoals_east", [680.0, 264.0], "waystone", "interact", "ws_2_shoals", "Sail West to Shipwreck Shoals and The Drowned Galleon", ["bolt", "dash", "throw"], ["skiff_unlocked"]),
+		_wp("wp_2_canal_ws", "ow_canal_south", "canal_quarter", [280.0, 88.0], "waystone", "interact", "ws_2_canal", "Sail South to Canal Quarter, Boathouse Camp, and The Smugglers Locks", ["bolt", "dash", "throw"], ["skiff_unlocked"]),
+		_wp("wp_2_sound_ws", "ow_open_sound", "outer_sound", [104.0, 344.0], "waystone", "interact", "ws_2_sound", "Sail North-East to Outer Sound for Flood Regatta, Leviathan, and Undertow Maw", ["bolt", "dash", "throw"], ["skiff_unlocked"]),
 	]
 
 
@@ -151,6 +197,15 @@ static func _wp(
 	return d
 
 
+func has_legacy_seal_pass() -> bool:
+	var st: LxGameState = _get_state()
+	if st == null:
+		return false
+	return st.broken_seals.has(SEAL_ID) \
+		or st.opened_doors.has("door_dungeon_2") \
+		or bool(st.story_flags.get("seal_broken_2", false))
+
+
 func are_all_beacons_lit() -> bool:
 	var st: LxGameState = _get_state()
 	if st == null:
@@ -159,6 +214,87 @@ func are_all_beacons_lit() -> bool:
 		if not st.lit_beacons.has(bid) and not bool(st.story_flags.get(bid, false)):
 			return false
 	return true
+
+
+func are_all_epic_dungeons_live() -> bool:
+	if Lx.packs == null:
+		return false
+	for spec: Dictionary in REQUIRED_EPIC_DUNGEONS:
+		var dm: Dictionary = Lx.packs.dungeon(str(spec["id"]))
+		if dm.is_empty() or bool(dm.get("debug_only", false)):
+			return false
+	return true
+
+
+func is_epic_dungeon_done(dungeon_id: String, done_flag: String) -> bool:
+	var st: LxGameState = _get_state()
+	if st == null:
+		return false
+	return bool(st.story_flags.get(done_flag, false)) \
+		or bool(st.story_flags.get("dungeon_done:" + dungeon_id, false))
+
+
+func are_all_seal_requirements_met() -> bool:
+	if has_legacy_seal_pass():
+		return true
+	if not are_all_beacons_lit():
+		return false
+	if are_all_epic_dungeons_live():
+		for spec: Dictionary in REQUIRED_EPIC_DUNGEONS:
+			if not is_epic_dungeon_done(str(spec["id"]), str(spec["flag"])):
+				return false
+	return true
+
+
+func _sync_lighthouse_seal_gate() -> void:
+	var st: LxGameState = _get_state()
+	if st == null or not (Lx.world is LxRegionLoader):
+		return
+	var world: LxRegionLoader = Lx.world as LxRegionLoader
+	var door_node: LxInteractable = world.find_interactable("door_dungeon_2")
+	# Legacy saves that already broke lighthouse_seal stay passed permanently.
+	if has_legacy_seal_pass():
+		if not st.broken_seals.has(SEAL_ID):
+			st.broken_seals.append(SEAL_ID)
+		if not st.opened_doors.has("door_dungeon_2"):
+			st.opened_doors.append("door_dungeon_2")
+		if door_node is LxDoor:
+			(door_node as LxDoor).opened = true
+			door_node.queue_redraw()
+		return
+	# Once Galleon + Locks + Leviathan are all live, enforce full bible gating on door_dungeon_2.
+	if are_all_epic_dungeons_live() and door_node is LxDoor:
+		var d: LxDoor = door_node as LxDoor
+		for spec: Dictionary in REQUIRED_EPIC_DUNGEONS:
+			var fl: String = str(spec["flag"])
+			if not d.required_flags.has(fl) and not is_epic_dungeon_done(str(spec["id"]), fl):
+				d.required_flags.append(fl)
+
+
+func _apply_relit_harbor_state() -> void:
+	var st: LxGameState = _get_state()
+	if st == null or not (st.relit_islands.has(ISLAND_ID) or bool(st.story_flags.get("island_2_relit", false))):
+		return
+	if not (Lx.world is LxRegionLoader):
+		return
+	var world: LxRegionLoader = Lx.world as LxRegionLoader
+	for it: LxInteractable in world.get_interactables():
+		if it != null and is_instance_valid(it) and it.kind == "road_lamp":
+			if it.get("lit") is bool and not bool(it.get("lit")):
+				it.set("lit", true)
+				it.queue_redraw()
+
+
+func _check_leviathan_awakening() -> void:
+	var st: LxGameState = _get_state()
+	if st == null or bool(st.story_flags.get("isl2_leviathan_awakened", false)):
+		return
+	if is_epic_dungeon_done("galleon", "galleon_done") and is_epic_dungeon_done("locks", "locks_done"):
+		st.story_flags["isl2_leviathan_awakened"] = true
+		_emit_narration("ISL2_LEV_WAKE", "title", 3.6)
+		if _events != null:
+			_events.sfx_requested.emit("whale_groan_low", Vector2.ZERO, false)
+			_events.shake_requested.emit(0.24)
 
 
 func _on_region_entered(island_id: int, region_id: String) -> void:
@@ -172,6 +308,19 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			if _events != null:
 				_events.sfx_requested.emit("lighthouse_toll", Vector2.ZERO, false)
 		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id in OVERWORLD_REGIONS:
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id in CAVE_REGIONS:
+		if _events != null:
+			_events.music_mode_requested.emit("island2_dungeon")
+	elif region_id == "cave_undertow_maw":
+		if st != null and not st.defeated_bosses.has(SUPERBOSS_ID) and not bool(st.story_flags.get("undertow_defeated", false)):
+			_emit_narration("BOSS_UNDERTOW", "title", 3.5)
+			if _events != null:
+				_events.music_mode_requested.emit("island2_boss_p1")
+		elif _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "lighthouse_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
@@ -210,8 +359,10 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	if are_all_beacons_lit():
+	if are_all_seal_requirements_met():
 		_trigger_seal_shatter()
+	elif are_all_beacons_lit():
+		_emit_narration("ISL2_SEAL_LOCKED", "narration", 3.2)
 
 
 func _trigger_seal_shatter() -> void:
@@ -246,7 +397,7 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
-	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
+	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND and boss_id != SUPERBOSS_ID:
 		return
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island2_boss_p2")
@@ -254,9 +405,22 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
-	if island_id != ISLAND_ID or boss_id != BOSS_ID:
+	if island_id != ISLAND_ID:
 		return
 	var st: LxGameState = _get_state()
+	if boss_id == SUPERBOSS_ID:
+		if st != null:
+			if not st.defeated_bosses.has(SUPERBOSS_ID):
+				st.defeated_bosses.append(SUPERBOSS_ID)
+			st.story_flags["undertow_defeated"] = true
+			st.story_flags["boss_undertow_defeated"] = true
+		if _events != null:
+			_events.sfx_requested.emit("boss_victory", Vector2.ZERO, false)
+			_events.music_mode_requested.emit("explore")
+			_events.save_requested.emit("boss_undertow_defeated")
+		return
+	if boss_id != BOSS_ID:
+		return
 	if st != null:
 		if not st.defeated_bosses.has(BOSS_ID):
 			st.defeated_bosses.append(BOSS_ID)

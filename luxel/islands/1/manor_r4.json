@@ -227,17 +227,17 @@
       "id": "butler_r4_n",
       "kind": "lamp_butler",
       "pos": [
-        192,
+        224,
         72
       ],
       "zone": "mn_kitchen",
       "route": [
         [
-          168,
+          192,
           72
         ],
         [
-          256,
+          264,
           72
         ]
       ]
@@ -246,17 +246,17 @@
       "id": "butler_r4_e",
       "kind": "lamp_butler",
       "pos": [
-        288,
+        296,
         88
       ],
       "zone": "mn_kitchen",
       "route": [
         [
-          264,
+          272,
           88
         ],
         [
-          328,
+          336,
           88
         ]
       ]
@@ -266,7 +266,7 @@
       "kind": "snuffer_acolyte",
       "pos": [
         304,
-        256
+        264
       ],
       "zone": "mn_kitchen"
     },
@@ -329,7 +329,7 @@
       "prop": "hearth_fireplace",
       "pos": [
         392,
-        92
+        100
       ],
       "layer": "sort",
       "flip_x": false,
@@ -461,8 +461,8 @@
       {
         "op": "shoot",
         "from": [
-          288,
-          216
+          344,
+          176
         ],
         "target": "bell_r4_dusk"
       },

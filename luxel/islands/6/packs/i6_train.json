@@ -57,21 +57,20 @@
       "theme": "ember_express",
       "music": "isl6_express",
       "requires_flags": [],
-      "done_flag": "express_cleared",
-      "debug_only": true
+      "done_flag": "express_cleared"
     }
   ],
   "regions": {
-    "train_r1": { "name_key": "ISL6_TR_R1", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [0, 1], "debug_only": true },
-    "train_r2": { "name_key": "ISL6_TR_R2", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [1, 1], "debug_only": true },
-    "train_r3": { "name_key": "ISL6_TR_R3", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [2, 1], "debug_only": true },
-    "train_r4": { "name_key": "ISL6_TR_R4", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [3, 1], "debug_only": true },
-    "train_r5": { "name_key": "ISL6_TR_R5", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [3, 0], "debug_only": true },
-    "train_r6": { "name_key": "ISL6_TR_R6", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [1, 0], "debug_only": true },
-    "train_r7": { "name_key": "ISL6_TR_R7", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [2, 2], "debug_only": true },
-    "train_r8": { "name_key": "ISL6_TR_R8", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [3, 2], "debug_only": true },
-    "train_r9": { "name_key": "ISL6_TR_R9", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [4, 2], "debug_only": true },
-    "train_r10": { "name_key": "ISL6_TR_R10", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [4, 1], "debug_only": true },
-    "train_r11": { "name_key": "ISL6_TR_R11", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [5, 1], "debug_only": true }
+    "train_r1": { "name_key": "ISL6_TR_R1", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [0, 1] },
+    "train_r2": { "name_key": "ISL6_TR_R2", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [1, 1] },
+    "train_r3": { "name_key": "ISL6_TR_R3", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [2, 1] },
+    "train_r4": { "name_key": "ISL6_TR_R4", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [3, 1] },
+    "train_r5": { "name_key": "ISL6_TR_R5", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [3, 0] },
+    "train_r6": { "name_key": "ISL6_TR_R6", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [1, 0] },
+    "train_r7": { "name_key": "ISL6_TR_R7", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [2, 2] },
+    "train_r8": { "name_key": "ISL6_TR_R8", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [3, 2] },
+    "train_r9": { "name_key": "ISL6_TR_R9", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [4, 2] },
+    "train_r10": { "name_key": "ISL6_TR_R10", "theme": "ember_express_roof", "music": "isl6_express", "dark": true, "map": [4, 1] },
+    "train_r11": { "name_key": "ISL6_TR_R11", "theme": "ember_express", "music": "isl6_express", "dark": true, "map": [5, 1] }
   }
 }

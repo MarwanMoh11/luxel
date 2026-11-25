@@ -84,10 +84,10 @@
         32,
         32
       ],
-      "to_region": "spire_r1",
+      "to_region": "glass_terrace",
       "to_spawn": [
-        224,
-        200
+        320,
+        392
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -116,6 +116,62 @@
         "great_lamp_7"
       ],
       "locked_door_id": "bridge_of_light_7"
+    },
+    {
+      "id": "exit_to_silver_quay",
+      "rect": [
+        272,
+        0,
+        48,
+        16
+      ],
+      "to_region": "silver_quay",
+      "to_spawn": [
+        368,
+        424
+      ]
+    },
+    {
+      "id": "exit_to_black_shoals",
+      "rect": [
+        288,
+        752,
+        48,
+        16
+      ],
+      "to_region": "black_shoals",
+      "to_spawn": [
+        368,
+        56
+      ]
+    },
+    {
+      "id": "exit_to_velvet_promenade",
+      "rect": [
+        1056,
+        752,
+        48,
+        16
+      ],
+      "to_region": "velvet_promenade",
+      "to_spawn": [
+        384,
+        56
+      ]
+    },
+    {
+      "id": "exit_to_zenith_atoll",
+      "rect": [
+        624,
+        336,
+        32,
+        32
+      ],
+      "to_region": "zenith_atoll",
+      "to_spawn": [
+        288,
+        360
+      ]
     }
   ],
   "enemies": [
@@ -377,6 +433,16 @@
       ],
       "zone": "lunar_glasscourt",
       "leash": 148
+    },
+    {
+      "id": "false_chest_ow_1",
+      "kind": "false_chest",
+      "pos": [
+        224,
+        344
+      ],
+      "zone": "shoals_landing",
+      "leash": 104
     }
   ],
   "interactables": [
@@ -746,6 +812,75 @@
       ],
       "props": {
         "zone": "inverted_causeway"
+      }
+    },
+    {
+      "id": "moon_pool_ow_landing",
+      "kind": "moon_pool",
+      "pos": [
+        232,
+        376
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 18,
+        "persist": true
+      }
+    },
+    {
+      "id": "moon_pool_ow_causeway",
+      "kind": "moon_pool",
+      "pos": [
+        632,
+        568
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 18,
+        "persist": true
+      }
+    },
+    {
+      "id": "moon_pool_ow_court",
+      "kind": "moon_pool",
+      "pos": [
+        1048,
+        328
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 18,
+        "persist": true
+      }
+    },
+    {
+      "id": "moth_7_01",
+      "kind": "moth",
+      "pos": [
+        104,
+        120
+      ],
+      "props": {
+        "id": "moth_7_01"
+      }
+    },
+    {
+      "id": "decoy_ow_nw",
+      "kind": "i7_shadow_decoy",
+      "pos": [
+        392,
+        536
+      ],
+      "props": {
+        "reveal_flag": "q7_decoy_ow",
+        "decoy_style": "mirror",
+        "truth": false
       }
     }
   ],
@@ -1720,5 +1855,47 @@
       "shadow": true,
       "phase": 0.85
     }
-  ]
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          18,
+          41,
+          3,
+          7,
+          "bridge"
+        ],
+        [
+          36,
+          22,
+          3,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "exit_to_black_shoals",
+        "exit_to_zenith_atoll",
+        "moth_7_01"
+      ],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Moon Shoals twin crescent overworld teaching the Shadow-Truth Law in 10s (false_chest), Silver/Black Moon Pool flips, 3 Hollow Wick skirmishes, 3 Lunar Obelisks, and 5 outer branches.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "NW-shadow false chests lie; Moon Pools flip Moon Shoals between Silver and Black, raising obsidian piers to Black Shoals, Zenith Atoll, and Moth 01.",
+    "decisions": 8,
+    "expert_s": 185,
+    "reward": "spire_gate_seal+moth_7_01+q7_decoy_ow+chest_ember_7_1+chest_ember_7_2",
+    "why": "Central twin-crescent overworld uniting all Island 7 districts, camps, dungeons, and the Island 8 bridge.",
+    "optional": true,
+    "exit": "exit_to_silver_quay"
+  }
 }

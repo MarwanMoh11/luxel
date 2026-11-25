@@ -91,20 +91,20 @@
         "speed": 100.0,
         "loop": false,
         "auto": false,
-        "persist": true
+        "persist": false
       }
     },
     {
       "id": "toggle_r7_switch",
       "kind": "crystal_toggle",
       "pos": [
-        304,
+        344,
         112
       ],
       "props": {
         "group": "r7_siding",
         "target_id": "cart_r7_freight",
-        "persist": true
+        "persist": false
       }
     },
     {
@@ -128,7 +128,7 @@
         "alt_rail": [
           [
             304,
-            136
+            132
           ],
           [
             304,
@@ -138,14 +138,14 @@
         "speed": 100.0,
         "loop": false,
         "auto": false,
-        "persist": true
+        "persist": false
       }
     },
     {
       "id": "anvil_r7_lance",
       "kind": "temper_anvil",
       "pos": [
-        112,
+        128,
         248
       ],
       "props": {
@@ -279,7 +279,7 @@
       "id": "lamp_r7_ne",
       "kind": "road_lamp",
       "pos": [
-        424,
+        400,
         48
       ],
       "props": {
@@ -341,7 +341,7 @@
       "rect": [
         96,
         32,
-        368,
+        320,
         32
       ],
       "glow": false
@@ -359,7 +359,7 @@
     {
       "kind": "inlay",
       "rect": [
-        88,
+        104,
         224,
         48,
         48
@@ -380,7 +380,7 @@
       "sheet": "theme_ember_express_roof",
       "prop": "roof_signal_lantern",
       "pos": [
-        104,
+        48,
         48
       ],
       "layer": "sort",
@@ -392,7 +392,7 @@
       "sheet": "theme_ember_express_roof",
       "prop": "roof_signal_lantern",
       "pos": [
-        456,
+        432,
         48
       ],
       "layer": "sort",
@@ -404,8 +404,8 @@
       "sheet": "theme_ember_express_roof",
       "prop": "coal_tender_crate",
       "pos": [
-        64,
-        232
+        156,
+        280
       ],
       "layer": "sort",
       "flip_x": false,
@@ -428,7 +428,7 @@
       "sheet": "theme_ember_express_roof",
       "prop": "handbrake_wheel_post",
       "pos": [
-        496,
+        488,
         280
       ],
       "layer": "sort",
@@ -475,7 +475,7 @@
           120,
           68
         ],
-        "tol": 5.0
+        "tol": 4.0
       },
       {
         "op": "mount",
@@ -487,7 +487,7 @@
           80,
           88
         ],
-        "count": 4,
+        "count": 6,
         "wait_hit": 0.35
       },
       {
@@ -497,7 +497,7 @@
           304,
           88
         ],
-        "tol": 20.0,
+        "tol": 8.0,
         "timeout": 8.0
       },
       {
@@ -506,8 +506,23 @@
         "wait_hit": 0.45
       },
       {
-        "op": "wait",
-        "secs": 0.25
+        "op": "shoot",
+        "target": [
+          80,
+          88
+        ],
+        "count": 2,
+        "wait_hit": 0.25
+      },
+      {
+        "op": "wait_phase",
+        "target": "cart_r7_express",
+        "near": [
+          304,
+          88
+        ],
+        "tol": 8.0,
+        "timeout": 4.0
       },
       {
         "op": "dash",
@@ -518,7 +533,7 @@
       },
       {
         "op": "wait",
-        "secs": 0.25
+        "secs": 0.22
       },
       {
         "op": "shoot",
@@ -526,7 +541,7 @@
           304,
           88
         ],
-        "count": 2,
+        "count": 3,
         "wait_hit": 0.35
       },
       {
@@ -536,7 +551,7 @@
           304,
           192
         ],
-        "tol": 20.0,
+        "tol": 10.0,
         "timeout": 8.0
       },
       {
@@ -553,10 +568,10 @@
       {
         "op": "goto",
         "to": [
-          112,
-          228
+          128,
+          232
         ],
-        "tol": 6.0
+        "tol": 3.0
       },
       {
         "op": "interact",

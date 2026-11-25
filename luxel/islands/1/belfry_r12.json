@@ -1,0 +1,406 @@
+{
+  "id": "belfry_r12",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_BF_PENDULUM",
+  "music": "island1_dungeon",
+  "spawn": [
+    48,
+    160
+  ],
+  "zones": [
+    {
+      "id": "belfry_pendulum",
+      "name_key": "ISL1_BF_PENDULUM",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r12_west",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "belfry_r11",
+      "to_spawn": [
+        488,
+        192
+      ]
+    },
+    {
+      "id": "exit_r12_north",
+      "rect": [
+        416,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r13",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "locked_door_id": "door_r12_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "owl_r12_0",
+      "kind": "owl",
+      "pos": [
+        296,
+        112
+      ],
+      "route": [],
+      "perches": [
+        [
+          296,
+          112
+        ],
+        [
+          296,
+          200
+        ],
+        [
+          320,
+          152
+        ]
+      ],
+      "zone": "belfry_pendulum",
+      "leash": 160
+    },
+    {
+      "id": "moth_r12_0",
+      "kind": "toll_moth",
+      "pos": [
+        304,
+        232
+      ],
+      "route": [],
+      "perches": [
+        [
+          304,
+          232
+        ],
+        [
+          256,
+          224
+        ]
+      ],
+      "zone": "belfry_pendulum",
+      "leash": 140
+    }
+  ],
+  "interactables": [
+    {
+      "id": "spin_r12_1",
+      "kind": "spinner",
+      "pos": [
+        192,
+        160
+      ],
+      "props": {
+        "length": 36,
+        "speed": 1.35,
+        "arms": 2
+      }
+    },
+    {
+      "id": "spin_r12_2",
+      "kind": "spinner",
+      "pos": [
+        368,
+        128
+      ],
+      "props": {
+        "length": 36,
+        "speed": -1.45,
+        "arms": 2
+      }
+    },
+    {
+      "id": "spin_r12_3",
+      "kind": "spinner",
+      "pos": [
+        368,
+        192
+      ],
+      "props": {
+        "length": 36,
+        "speed": 1.45,
+        "arms": 2
+      }
+    },
+    {
+      "id": "crumble_r12_w",
+      "kind": "crumble_floor",
+      "pos": [
+        192,
+        160
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "delay": 1.2,
+        "respawn": 2.5
+      }
+    },
+    {
+      "id": "bell_r12_k1",
+      "kind": "bell",
+      "pos": [
+        128,
+        128
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 184
+      }
+    },
+    {
+      "id": "bell_r12_k2",
+      "kind": "bell",
+      "pos": [
+        304,
+        160
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "hook_r12",
+      "kind": "lantern_hook",
+      "pos": [
+        288,
+        184
+      ],
+      "props": {
+        "light_radius": 96
+      }
+    },
+    {
+      "id": "anc_r12",
+      "kind": "room_anchor",
+      "pos": [
+        288,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "door_r12_north",
+      "kind": "tone_door",
+      "pos": [
+        432,
+        24
+      ],
+      "props": {
+        "tone": "dusk",
+        "size": [
+          32,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_r12_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        144
+      ],
+      "props": {
+        "zone": "belfry_pendulum",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_c",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        112
+      ],
+      "props": {
+        "zone": "belfry_pendulum",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_e",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        144
+      ],
+      "props": {
+        "zone": "belfry_pendulum",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_n",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        64
+      ],
+      "props": {
+        "zone": "belfry_pendulum",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        272,
+        128,
+        48,
+        80
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        288,
+        144
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.14
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "hanging_pendulum_weight",
+      "pos": [
+        112,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        264,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_pulley_wheel",
+      "pos": [
+        408,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        400,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "Stepped twin-peninsula Pendulum Gauntlet: Dusk-freeze three staggered pendulums across abyss catwalks, anchor on the central pier, clear the Owl and Toll Moth, and ring Dusk K2 to open the North loft gate.",
+    "kind": "traversal",
+    "beat": "ten",
+    "teaches": "Chained Dusk freezes on multi-pendulum gaps with mid-chasm checkpointing.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "belfry_r12_crossed",
+    "why": "High-tempo traversal wing leading East from the Mainspring Rotunda to Key 3's foundry loft.",
+    "exit": "exit_r12_north",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          152
+        ],
+        "target": "bell_r12_k1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          160
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r12"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          288,
+          160
+        ],
+        "target": "bell_r12_k2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          432,
+          144
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r12_north"
+      }
+    ]
+  }
+}

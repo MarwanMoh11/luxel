@@ -1,0 +1,372 @@
+{
+  "id": "belfry_r16",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_BF_METRONOME",
+  "music": "isl1_boss_minor_p1",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "belfry_metronome",
+      "name_key": "ISL1_BF_METRONOME",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r16_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "belfry_r15",
+      "to_spawn": [
+        368,
+        48
+      ]
+    },
+    {
+      "id": "exit_r16_west",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "belfry_r17",
+      "to_spawn": [
+        112,
+        240
+      ],
+      "requires_flags": [
+        "metronome_defeated"
+      ],
+      "locked_door_id": "door_r16_west"
+    },
+    {
+      "id": "exit_r16_east",
+      "rect": [
+        432,
+        144,
+        16,
+        32
+      ],
+      "to_region": "belfry_r18",
+      "to_spawn": [
+        48,
+        160
+      ],
+      "requires_flags": [
+        "belfry_spire_crank"
+      ],
+      "locked_door_id": "door_r16_east"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_metronome",
+      "kind": "brass_metronome",
+      "pos": [
+        224,
+        136
+      ],
+      "route": [
+        [
+          144,
+          136
+        ],
+        [
+          304,
+          136
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_metronome",
+      "leash": 200
+    }
+  ],
+  "interactables": [
+    {
+      "id": "bell_r16_k1",
+      "kind": "bell",
+      "pos": [
+        96,
+        160
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 240
+      }
+    },
+    {
+      "id": "bell_r16_k2",
+      "kind": "bell",
+      "pos": [
+        352,
+        160
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 240
+      }
+    },
+    {
+      "id": "relic_r16_crank",
+      "kind": "bf_crank_relic",
+      "pos": [
+        224,
+        104
+      ],
+      "props": {
+        "flag_id": "belfry_spire_crank",
+        "requires_flag": "metronome_defeated",
+        "relic_kind": "crank",
+        "prompt_key": "ISL1_BF_PROMPT_CRANK",
+        "narrate_key": "ISL1_BF_CRANK_GOT",
+        "target_id": "door_r16_east"
+      }
+    },
+    {
+      "id": "door_r16_west",
+      "kind": "door",
+      "pos": [
+        24,
+        160
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "metronome_defeated"
+        ]
+      }
+    },
+    {
+      "id": "door_r16_east",
+      "kind": "door",
+      "pos": [
+        424,
+        160
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "belfry_spire_crank"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r16_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "zone": "belfry_metronome",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r16_nw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        72
+      ],
+      "props": {
+        "zone": "belfry_metronome",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r16_ne",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        72
+      ],
+      "props": {
+        "zone": "belfry_metronome",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r16_se",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        264
+      ],
+      "props": {
+        "zone": "belfry_metronome",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 64,
+      "style": "clock"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        128,
+        144,
+        192,
+        32
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        104
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.0
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "giant_clock_gear",
+      "pos": [
+        224,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "hanging_pendulum_weight",
+      "pos": [
+        160,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "hanging_pendulum_weight",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        80,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        368,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "Mini-Boss #2 The Brass Metronome ticks across an octagonal escapement vault; ring flanking Dusk Bells K1/K2 at apex swing to freeze it wide open and pop its bronze cuckoo core for 1.6x damage, then claim the Spire Crank.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Using Dusk Bell freezing offensively in a boss duel to expose armored cores.",
+    "decisions": 8,
+    "expert_s": 90,
+    "reward": "metronome_defeated+belfry_spire_crank",
+    "why": "Floor 3 climax mini-boss gating the optional Foundry Loft (r17) and Carillon Balcony (r18).",
+    "exit": "exit_r16_east",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          160,
+          224
+        ],
+        "target": "bell_r16_k1"
+      },
+      {
+        "op": "clear",
+        "timeout": 85.0
+      },
+      {
+        "op": "expect",
+        "flag": "metronome_defeated"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          104
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "relic_r16_crank"
+      },
+      {
+        "op": "expect",
+        "flag": "belfry_spire_crank"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r16_east"
+      }
+    ]
+  }
+}

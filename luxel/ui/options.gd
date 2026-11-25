@@ -9,29 +9,12 @@ signal rebind_requested()
 
 enum Tab { AUDIO, DISPLAY, CONTROLS, ASSIST }
 
-const TAB_KEYS: Array[String] = [
-	"OPT_TAB_AUDIO",
-	"OPT_TAB_DISPLAY",
-	"OPT_TAB_CONTROLS",
-	"OPT_TAB_ASSIST",
-]
-
+const TAB_KEYS: Array[String] = ["OPT_TAB_AUDIO", "OPT_TAB_DISPLAY", "OPT_TAB_CONTROLS", "OPT_TAB_ASSIST"]
 const COLOR_LABEL_KEYS: Dictionary = {
-	"gold": "OPT_COL_GOLD",
-	"cream": "OPT_COL_CREAM",
-	"ice": "OPT_COL_ICE",
-	"lime": "OPT_COL_LIME",
-	"coral": "OPT_COL_CORAL",
-	"rose": "OPT_COL_ROSE",
-	"sky": "OPT_COL_SKY",
-	"apricot": "OPT_COL_APRICOT",
+	"gold": "OPT_COL_GOLD", "cream": "OPT_COL_CREAM", "ice": "OPT_COL_ICE", "lime": "OPT_COL_LIME",
+	"coral": "OPT_COL_CORAL", "rose": "OPT_COL_ROSE", "sky": "OPT_COL_SKY", "apricot": "OPT_COL_APRICOT",
 }
-
-const CURSOR_SIZE_KEYS: Array[String] = [
-	"OPT_CURSOR_SMALL",
-	"OPT_CURSOR_MED",
-	"OPT_CURSOR_LARGE",
-]
+const CURSOR_SIZE_KEYS: Array[String] = ["OPT_CURSOR_SMALL", "OPT_CURSOR_MED", "OPT_CURSOR_LARGE"]
 
 const PANEL_RECT := Rect2(18.0, 12.0, 284.0, 156.0)
 
@@ -347,6 +330,9 @@ func _draw() -> void:
 	LxHudFx.draw_biome_crest(self, isl_o, Vector2(PANEL_RECT.position.x + 16.0, PANEL_RECT.position.y + 8.0), LxBiomePalette.col(isl_o, "hi"), LxPalette.PAL["cream"] as Color)
 	LxHudFx.draw_biome_crest(self, isl_o, Vector2(PANEL_RECT.end.x - 17.0, PANEL_RECT.position.y + 8.0), LxBiomePalette.col(isl_o, "hi"), LxPalette.PAL["cream"] as Color)
 	LxPixelFont.draw_centered(self, LxStrings.text("OPT_TITLE"), 160.0, PANEL_RECT.position.y + 5.0, LxPalette.PAL["gold"], 1)
+	var sold_n: int = LxSold.current().get_sold_count()
+	if sold_n > 0:
+		LxHudOverlays.draw_sold_badge(self, Vector2(PANEL_RECT.end.x - 24.0, PANEL_RECT.position.y + 3.0), sold_n, true, true)
 
 	for i: int in range(TAB_KEYS.size()):
 		var tr: Rect2 = _tab_rect(i)
@@ -418,7 +404,12 @@ func _draw_row(idx: int, row_id: String, cfg: Dictionary) -> void:
 	var val_txt: String = _row_value_text(row_id, cfg)
 
 	var label_x: float = 12.0 if sel else 6.0
-	LxPixelFont.draw_left(self, label, r.position + Vector2(label_x, 4.0), label_col, 1)
+	var sold_id: String = LxHudOverlays.sold_id_for_option_row(row_id)
+	var row_sold: bool = not sold_id.is_empty() and LxSold.current().is_sold(sold_id)
+	LxPixelFont.draw_left(self, label, r.position + Vector2(label_x, 4.0), LxPalette.PAL["coral"] if row_sold else label_col, 1)
+	if row_sold:
+		LxHudOverlays.draw_sold_badge(self, Vector2(r.end.x - 6.0, r.position.y + 2.0), 0, false, true)
+		return
 	if not val_txt.is_empty():
 		LxPixelFont.draw_right(self, val_txt, r.end.x - 8.0, r.position.y + 4.0, val_col, 1)
 

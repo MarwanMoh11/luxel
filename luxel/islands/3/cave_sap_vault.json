@@ -1,0 +1,484 @@
+{
+  "id": "cave_sap_vault",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "cave_3",
+  "name_key": "ISL3_CAVE_SAP_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    360,
+    128
+  ],
+  "zones": [
+    {
+      "id": "sap_vault",
+      "name_key": "ISL3_CAVE_SAP_NAME",
+      "rect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        164,
+        100,
+        72,
+        104
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        64,
+        128
+      ],
+      "radius": 24,
+      "style": "ritual",
+      "color": "lime",
+      "secondary": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        200,
+        120
+      ],
+      "size": [
+        32,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sap_to_shift_n",
+      "rect": [
+        384,
+        112,
+        32,
+        32
+      ],
+      "to_region": "ow_shift_n",
+      "to_spawn": [
+        64,
+        120
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_sap_vault",
+      "kind": "room_anchor",
+      "pos": [
+        360,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "stump_sap_in",
+      "kind": "stump_shrink",
+      "pos": [
+        304,
+        184
+      ],
+      "props": {
+        "to_spawn": [
+          216,
+          168
+        ],
+        "target_size": "tiny"
+      }
+    },
+    {
+      "id": "stump_sap_out",
+      "kind": "stump_shrink",
+      "pos": [
+        216,
+        192
+      ],
+      "props": {
+        "to_spawn": [
+          304,
+          160
+        ],
+        "target_size": "normal"
+      }
+    },
+    {
+      "id": "grate_sap_e",
+      "kind": "grate",
+      "pos": [
+        248,
+        120
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "grate_sap_n",
+      "kind": "grate",
+      "pos": [
+        200,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "bt_sap_inner",
+      "kind": "blue_transformer",
+      "pos": [
+        184,
+        168
+      ],
+      "props": {
+        "angle_deg": 135,
+        "movable": true,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "dew_sap_inner",
+      "kind": "dew_lens",
+      "pos": [
+        176,
+        120
+      ],
+      "props": {
+        "movable": false,
+        "rail_axis": "none",
+        "focus_range": 120.0
+      }
+    },
+    {
+      "id": "sw_sap_blue",
+      "kind": "switch_eye",
+      "pos": [
+        200,
+        72
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_sap_vault"
+      }
+    },
+    {
+      "id": "door_sap_vault",
+      "kind": "door",
+      "pos": [
+        104,
+        128
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sw_sap_blue"
+        ]
+      }
+    },
+    {
+      "id": "pickup_canopy_dew",
+      "kind": "pane_pickup",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "pane": "canopy_dew"
+      }
+    },
+    {
+      "id": "lore_sap_vault",
+      "kind": "lore_stone",
+      "pos": [
+        64,
+        152
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_SAP_VAULT",
+        "icon": "leaf"
+      }
+    },
+    {
+      "id": "chest_sap_shards",
+      "kind": "chest",
+      "pos": [
+        64,
+        72
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 50
+      }
+    },
+    {
+      "id": "lamp_sap_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sap_mid",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sap_n",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        40
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sap_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_cave_3",
+      "prop": "cave_arch_rock",
+      "pos": [
+        376,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "stalagmite_tall",
+      "pos": [
+        336,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        288,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        48,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        128,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "subterranean_shroom",
+      "pos": [
+        272,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "dripping_pool_basin",
+      "pos": [
+        296,
+        120
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Two-scale Sap Vault: shrink via an in-room stump into a sealed inner chamber, roll and rotate a Blue Transformer onto the pinhole line, return to normal scale, and fire a charged Beam through the grate pinhole into the transformer to latch the vault's blue switch_eye for Pane Canopy Dew.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "in-room stump_shrink toggle, grate pinhole Beam refraction, Blue Piercing Beam, Canopy Dew Pane",
+    "decisions": 8,
+    "expert_s": 58,
+    "reward": "Pane canopy_dew, lore_sap_vault, 50 shards",
+    "why": "Signature late-Island-3 Beam + Shrink synthesis secret rewarding Canopy Dew Pane",
+    "optional": true,
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          304,
+          168
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "stump_sap_in"
+      },
+      {
+        "op": "wait",
+        "secs": 0.5
+      },
+      {
+        "op": "expect",
+        "var": "size==tiny"
+      },
+      {
+        "op": "rotate",
+        "target": "bt_sap_inner",
+        "angle": 315
+      },
+      {
+        "op": "push",
+        "target": "bt_sap_inner",
+        "to": [
+          200,
+          120
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          176
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "stump_sap_out"
+      },
+      {
+        "op": "wait",
+        "secs": 0.5
+      },
+      {
+        "op": "expect",
+        "var": "size==normal"
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          120
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "beam",
+        "target": "bt_sap_inner"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "target": "door_sap_vault",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          112
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "pickup_canopy_dew"
+      }
+    ]
+  }
+}

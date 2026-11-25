@@ -384,7 +384,7 @@
   "events": [],
   "design": {
     "idea": "Safe caboose vestibule introducing the Skip Tempering Anvil and wall-ricochet bank coupler behind an iron screen, while teasing the locked north roof hatch from train_r6.",
-    "kind": "hub",
+    "kind": "puzzle",
     "beat": "ki",
     "teaches": "temper_anvil[skip] + car_coupler[bank] 45-degree wall bounce through iron grate",
     "decisions": 4,
@@ -401,9 +401,9 @@
         "op": "goto",
         "to": [
           216,
-          164
+          168
         ],
-        "tol": 6.0
+        "tol": 3.0
       },
       {
         "op": "interact",

@@ -1,0 +1,529 @@
+{
+  "id": "cave_hush_trial",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "endless_stair",
+  "name_key": "ISL8_Z_HUSH_TRIAL",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "sanctum_bells"
+  ],
+  "spawn": [
+    224,
+    48
+  ],
+  "zones": [
+    {
+      "id": "cave_hush_trial",
+      "name_key": "ISL8_Z_HUSH_TRIAL",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_archive_cloister",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_cloister",
+      "to_spawn": [
+        544,
+        400
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_hush_trial",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        48
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "gate_hush_trial",
+      "kind": "trial_gate",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "challenge": "hush_trial_6",
+        "once": true,
+        "persist": true,
+        "target_id": "door_hush_trophy"
+      }
+    },
+    {
+      "id": "braz_ht_1",
+      "kind": "brazier",
+      "pos": [
+        104,
+        80
+      ],
+      "props": {
+        "lit": false
+      }
+    },
+    {
+      "id": "braz_ht_2",
+      "kind": "brazier",
+      "pos": [
+        344,
+        80
+      ],
+      "props": {
+        "lit": false
+      }
+    },
+    {
+      "id": "braz_ht_3",
+      "kind": "brazier",
+      "pos": [
+        72,
+        152
+      ],
+      "props": {
+        "lit": false
+      }
+    },
+    {
+      "id": "braz_ht_4",
+      "kind": "brazier",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "lit": false
+      }
+    },
+    {
+      "id": "braz_ht_5",
+      "kind": "brazier",
+      "pos": [
+        120,
+        216
+      ],
+      "props": {
+        "lit": false
+      }
+    },
+    {
+      "id": "braz_ht_6",
+      "kind": "brazier",
+      "pos": [
+        328,
+        216
+      ],
+      "props": {
+        "lit": false
+      }
+    },
+    {
+      "id": "door_hush_trophy",
+      "kind": "door",
+      "pos": [
+        224,
+        248
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_hush_trial"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "pickup_hush_glass",
+      "kind": "pane_pickup",
+      "pos": [
+        192,
+        280
+      ],
+      "props": {
+        "pane": "hush_glass"
+      }
+    },
+    {
+      "id": "moth_8_05",
+      "kind": "moth",
+      "pos": [
+        280,
+        280
+      ],
+      "props": {
+        "id": "moth_8_05"
+      }
+    },
+    {
+      "id": "lore_hush_trial",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        56
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_TRIAL",
+        "icon": "clock"
+      }
+    },
+    {
+      "id": "lamp_ht_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_hush_trial"
+      }
+    },
+    {
+      "id": "lamp_ht_c",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        176
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_hush_trial"
+      }
+    },
+    {
+      "id": "lamp_ht_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        280
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_hush_trial"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        160,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        288,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "hourglass_milestone",
+      "pos": [
+        224,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        152,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        304,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        184,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        264,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 44,
+      "color": "rose"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        144,
+        264,
+        160,
+        32
+      ],
+      "color": "plum"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_hush_trial_start",
+      "on": "trial_start:gate_hush_trial",
+      "once": false,
+      "do": [
+        {
+          "narrate": "ISL8_TRIAL_START"
+        },
+        {
+          "challenge": {
+            "id": "hush_trial_6",
+            "kind": "light_all",
+            "time": 35.0,
+            "targets": [
+              "braz_ht_1",
+              "braz_ht_2",
+              "braz_ht_3",
+              "braz_ht_4",
+              "braz_ht_5",
+              "braz_ht_6"
+            ],
+            "waves": [
+              {
+                "at": 1.2,
+                "enemies": [
+                  {
+                    "id": "gloam_ht_1",
+                    "kind": "choir_gloam",
+                    "pos": [
+                      128,
+                      144
+                    ],
+                    "zone": "cave_hush_trial"
+                  },
+                  {
+                    "id": "gloam_ht_2",
+                    "kind": "choir_gloam",
+                    "pos": [
+                      320,
+                      144
+                    ],
+                    "zone": "cave_hush_trial"
+                  }
+                ]
+              }
+            ],
+            "ok": [
+              {
+                "set_flag": "trial_hush_cleared"
+              },
+              {
+                "unlock": [
+                  "door_hush_trophy"
+                ]
+              },
+              {
+                "narrate": "ISL8_TRIAL_WIN"
+              },
+              {
+                "reward": {
+                  "kind": "shards",
+                  "amount": 50
+                }
+              }
+            ],
+            "fail": [
+              {
+                "narrate": "ISL8_TRIAL_FAIL"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "35-second six-brazier ignition race around an octagonal star-wheel arena while dodging 2 harmonized choir_gloams; unlocks the stained-glass Pane hush_glass and Moth 8_05.",
+    "kind": "setpiece",
+    "beat": "ten",
+    "teaches": "timed light_all trial routing + bolt/beam brazier ignition under pressure",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "pane_hush_glass+moth_8_05",
+    "why": "Thrilling timed trial with high replay feel and a build-defining stained-glass pane reward.",
+    "target": "pickup_hush_glass",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "gate_hush_trial"
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          96
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "target": "braz_ht_1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          152
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "target": "braz_ht_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          200
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "target": "braz_ht_5"
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          200
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "target": "braz_ht_6"
+      },
+      {
+        "op": "goto",
+        "to": [
+          336,
+          152
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "target": "braz_ht_4"
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          96
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "target": "braz_ht_2"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_hush_trophy",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          280
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "pickup_hush_glass"
+      }
+    ]
+  }
+}

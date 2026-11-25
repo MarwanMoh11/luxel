@@ -1,0 +1,39 @@
+# Belfry r11 - The Mainspring Rotunda (34x24)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+____________####,,####____________
+_________###....,,....###_________
+_______##..OOOO.,,..OOOO.##_______
+_____##..OOOOOO.,,..OOOOOO.##_____
+____#..OOOOOOOO.,,..OOOOOOOO.#____
+___#..OOOOOOOOO.OO..OOOOOOOOO.#___
+__#..OOOOOOOOOO.OO..OOOOOOOOOO.#__
+_#..OOOOOOOOOOO.OO..OOOOOOOOOOO.#_
+_#..OOOOOOOO...,,,,...OOOOOOOO..#_
+#..OOOOOOOO...,,,,,,...OOOOOOOO..#
+#..OOOOOOO...,,,,,,,,...OOOOOOO..#
+,,,,,,,OOOO..,,,,,,,,..OOOO,,,,,,,
+,,,,,,,OOOO..,,,,,,,,..OOOO,,,,,,,
+#..OOOOOOO...,,,,,,,,...OOOOOOO..#
+#..OOOOOOOO...,,,,,,...OOOOOOOO..#
+_#..OOOOOOOO...,,,,...OOOOOOOO..#_
+_#..OOOOOOOOOO..++..OOOOOOOOOO..#_
+__#..OOOOOOOOO..++..OOOOOOOOO..#__
+___#..OOOOOOOO..++..OOOOOOOO..#___
+____#..OOOOOOO..++..OOOOOOO..#____
+_____##..OOOOO..++..OOOOO..##_____
+_______##......,,,,......##_______
+_________###...,,,,...###_________
+____________####,,####____________

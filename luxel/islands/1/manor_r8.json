@@ -249,7 +249,7 @@
       "kind": "portrait_eye",
       "pos": [
         328,
-        160
+        172
       ],
       "zone": "mn_study",
       "facing": 3.14
@@ -439,6 +439,14 @@
         "timeout": 4.0
       },
       {
+        "op": "goto",
+        "to": [
+          216,
+          90
+        ],
+        "tol": 4.0
+      },
+      {
         "op": "interact",
         "target": "clue_r8_steward"
       },
@@ -448,6 +456,14 @@
       },
       {
         "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          42
+        ],
+        "tol": 4.0
       },
       {
         "op": "interact",

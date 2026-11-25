@@ -1,0 +1,456 @@
+{
+  "id": "cave_foundry_trial",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_Z_FTRIAL",
+  "theme": "forge_deep",
+  "music": "isl1_setpiece",
+  "ambience": [
+    "sanctum_bells"
+  ],
+  "spawn": [
+    56,
+    160
+  ],
+  "zones": [
+    {
+      "id": "cave_foundry_trial",
+      "name_key": "ISL1_Z_FTRIAL",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ft_west",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "cliff_foundry",
+      "to_spawn": [
+        552,
+        224
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_ft_w",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "trial_ft_gate",
+      "kind": "ow_foundry_trial",
+      "pos": [
+        104,
+        160
+      ],
+      "props": {
+        "bells": [
+          "bell_ft_1",
+          "bell_ft_2",
+          "bell_ft_3",
+          "bell_ft_4",
+          "bell_ft_5"
+        ],
+        "target_id": "door_ft_reward"
+      }
+    },
+    {
+      "id": "bell_ft_1",
+      "kind": "bell",
+      "pos": [
+        120,
+        64
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 96
+      }
+    },
+    {
+      "id": "bell_ft_2",
+      "kind": "bell",
+      "pos": [
+        224,
+        56
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 96
+      }
+    },
+    {
+      "id": "bell_ft_3",
+      "kind": "bell",
+      "pos": [
+        344,
+        160
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 96
+      }
+    },
+    {
+      "id": "bell_ft_4",
+      "kind": "bell",
+      "pos": [
+        288,
+        248
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 96
+      }
+    },
+    {
+      "id": "bell_ft_5",
+      "kind": "bell",
+      "pos": [
+        160,
+        248
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 96
+      }
+    },
+    {
+      "id": "door_ft_reward",
+      "kind": "door",
+      "pos": [
+        344,
+        64
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "trial_ft_gate"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "pane_ft_vesper",
+      "kind": "pane_pickup",
+      "pos": [
+        384,
+        56
+      ],
+      "props": {
+        "pane": "vesper_chime"
+      }
+    },
+    {
+      "id": "moth_1_08",
+      "kind": "moth",
+      "pos": [
+        384,
+        80
+      ],
+      "props": {
+        "id": "moth_1_08"
+      }
+    },
+    {
+      "id": "lamp_ft_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        128
+      ],
+      "props": {
+        "zone": "cave_foundry_trial",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ft_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        72
+      ],
+      "props": {
+        "zone": "cave_foundry_trial",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ft_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        128
+      ],
+      "props": {
+        "zone": "cave_foundry_trial",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ft_s",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        240
+      ],
+      "props": {
+        "zone": "cave_foundry_trial",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ft_v",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        64
+      ],
+      "props": {
+        "zone": "cave_foundry_trial",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        40,
+        128,
+        80,
+        64
+      ],
+      "glow": true
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        344,
+        160
+      ],
+      "radius": 24,
+      "style": "gear"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        356,
+        36,
+        48,
+        56
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        48,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        320,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        240,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "great_forge_anvil",
+      "pos": [
+        272,
+        244
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "tempering_floor_seal",
+      "pos": [
+        104,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "giant_clock_gear",
+      "pos": [
+        384,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "High-tempo ring-catwalk speed trial over foundry pits: ring all 5 elevated bells via Dash & Throw+Zip within 22 seconds to unlock Pane Vesper Chime and Moth 08.",
+    "kind": "traversal",
+    "beat": "ten",
+    "teaches": "Chaining Bolt shots, Flare Dashes, and Throw+Zip hops across pit islands under time pressure.",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "pane_vesper_chime+moth_1_08+medals",
+    "why": "Signature Island 1 speed trial awarding Bronze/Silver/Gold medals and the Vesper Chime stained-glass pane.",
+    "target": "pane_ft_vesper",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "trial_ft_gate"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          128
+        ],
+        "target": "bell_ft_1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          72
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          72
+        ],
+        "target": "bell_ft_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          144
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          144
+        ],
+        "target": "bell_ft_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          312,
+          184
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          312,
+          184
+        ],
+        "target": "bell_ft_4"
+      },
+      {
+        "op": "goto",
+        "to": [
+          160,
+          224
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          160,
+          224
+        ],
+        "target": "bell_ft_5"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_ft_reward",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "pane_ft_vesper"
+      },
+      {
+        "op": "goto",
+        "to": [
+          384,
+          80
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect",
+        "flag": "foundry_trial_cleared"
+      }
+    ]
+  }
+}

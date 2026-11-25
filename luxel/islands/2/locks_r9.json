@@ -1,0 +1,630 @@
+{
+  "id": "locks_r9",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R9_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "lck_r9",
+      "name_key": "LCK_R9_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_region": "locks_r7",
+      "to_spawn": [
+        384,
+        56
+      ]
+    },
+    {
+      "id": "exit_r9_north",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r10",
+      "to_spawn": [
+        272,
+        380
+      ],
+      "locked_door_id": "door_r9_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r9_s",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        312
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r9",
+      "kind": "state_lever",
+      "pos": [
+        256,
+        232
+      ],
+      "props": {
+        "scope": "dungeon:locks",
+        "var": "lock_water",
+        "values": [
+          "west_high",
+          "east_high"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "scale_r9",
+      "kind": "scale",
+      "pos": [
+        256,
+        152
+      ],
+      "props": {
+        "left": [
+          -80.0,
+          0.0
+        ],
+        "right": [
+          80.0,
+          0.0
+        ],
+        "pan_radius": 26.0,
+        "mode": "left_heavy",
+        "need_weight": 2.5,
+        "target_id": "gate_r9"
+      }
+    },
+    {
+      "id": "raft_r9_cargo",
+      "kind": "tide_raft",
+      "pos": [
+        120,
+        152
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "mounts": "cargo",
+        "weight": 3.0,
+        "tide_var": "lock_water",
+        "lock_side": "west"
+      }
+    },
+    {
+      "id": "raft_r9_mir",
+      "kind": "tide_raft",
+      "pos": [
+        392,
+        152
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "mounts": "blue_transformer",
+        "tide_var": "lock_water",
+        "lock_side": "east",
+        "angle_deg": 45.0,
+        "rotatable": true,
+        "reflect_only_floating": true
+      }
+    },
+    {
+      "id": "sw_r9_latch",
+      "kind": "switch_eye",
+      "pos": [
+        392,
+        72
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "gate_r9"
+      }
+    },
+    {
+      "id": "gate_r9",
+      "kind": "logic_gate",
+      "pos": [
+        256,
+        120
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "scale_r9",
+          "sw_r9_latch"
+        ],
+        "persist": true,
+        "target_id": "bridge_r9_north"
+      }
+    },
+    {
+      "id": "bridge_r9_north",
+      "kind": "door",
+      "pos": [
+        256,
+        96
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "gate_r9"
+        ],
+        "size": [
+          64,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_r9_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "locks",
+        "key_kind": "wick_key",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "skiff_r9",
+      "kind": "vehicle_skiff",
+      "pos": [
+        88,
+        184
+      ],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "lamp_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        296
+      ],
+      "props": {
+        "zone": "lck_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_c",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        216
+      ],
+      "props": {
+        "zone": "lck_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        72
+      ],
+      "props": {
+        "zone": "lck_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        72
+      ],
+      "props": {
+        "zone": "lck_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "zone": "lck_r9",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "skate_r9",
+      "kind": "reef_skate",
+      "pos": [
+        376,
+        248
+      ],
+      "zone": "lck_r9"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        256,
+        184
+      ],
+      "radius": 26
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        96,
+        128,
+        160
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        176,
+        152
+      ],
+      "radius": 26,
+      "style": "gear"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        336,
+        152
+      ],
+      "radius": 26,
+      "style": "gear"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        152
+      ],
+      "size": [
+        52,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        200,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        312,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        200,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        312,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        120,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        216,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        296,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        296,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        40,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        472,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        256,
+        280
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r9_west_high",
+      "when": "lock_water==west_high",
+      "tiles": [
+        [
+          3,
+          6,
+          9,
+          8,
+          "water"
+        ],
+        [
+          20,
+          6,
+          9,
+          8,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r9_east_high",
+      "when": "lock_water==east_high",
+      "tiles": [
+        [
+          3,
+          6,
+          9,
+          8,
+          "ground"
+        ],
+        [
+          20,
+          6,
+          9,
+          8,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Twin-Sluice Water Scale: Sluice-Harpoon a heavy cargo barge over the submerged West Scale Pan, then flip lock_water to east_high so its dry 3.0 weight tips the scale while flooding the East Mirror-Raft into line with the latch eye.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Grounded cargo Tide Rafts outweigh Wick (3.0 vs 1.0) on Scales; linked lock_water solves both basins in one flip.",
+    "decisions": 9,
+    "expert_s": 56,
+    "reward": "whirlpool_access",
+    "why": "Synthesizes Sluice Harpoon towing, linked lock_water, Tide Raft grounding mass, and floating mirror banks before the centerpiece.",
+    "exit": "exit_r9_north",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      },
+      "flags": [
+        "power_sluice_harpoon"
+      ],
+      "keys": {
+        "wick_key": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          200,
+          152
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "raft_r9_cargo",
+        "hold": 0.45
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 1.1
+      },
+      {
+        "op": "shoot",
+        "from": [
+          256,
+          264
+        ],
+        "target": "valve_r9"
+      },
+      {
+        "op": "expect",
+        "var": "lock_water==east_high"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "scale_r9",
+        "prop": "solved",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "clear",
+        "zone": "lck_r9",
+        "timeout": 25.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          312,
+          152
+        ],
+        "target": "raft_r9_mir"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_r9_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          44
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "door_r9_north"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_north"
+      }
+    ]
+  }
+}

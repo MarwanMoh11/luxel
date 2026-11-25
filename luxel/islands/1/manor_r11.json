@@ -84,7 +84,7 @@
       "kind": "bell",
       "pos": [
         64,
-        192
+        152
       ],
       "props": {
         "tone": "war",
@@ -96,7 +96,7 @@
       "kind": "bell",
       "pos": [
         480,
-        192
+        216
       ],
       "props": {
         "tone": "dawn",
@@ -107,8 +107,8 @@
       "id": "sconce_r11_nw",
       "kind": "brazier",
       "pos": [
-        128,
-        96
+        144,
+        104
       ],
       "props": {
         "lit": true,
@@ -119,8 +119,8 @@
       "id": "sconce_r11_ne",
       "kind": "brazier",
       "pos": [
-        416,
-        96
+        400,
+        104
       ],
       "props": {
         "lit": true,
@@ -131,8 +131,8 @@
       "id": "sconce_r11_sw",
       "kind": "brazier",
       "pos": [
-        128,
-        288
+        144,
+        280
       ],
       "props": {
         "lit": true,
@@ -143,8 +143,8 @@
       "id": "sconce_r11_se",
       "kind": "brazier",
       "pos": [
-        416,
-        288
+        400,
+        280
       ],
       "props": {
         "lit": true,
@@ -386,23 +386,11 @@
       "sheet": "theme_manor",
       "prop": "velvet_settee",
       "pos": [
-        408,
-        320
+        384,
+        296
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "theme_manor",
-      "prop": "gilded_portrait_c",
-      "pos": [
-        272,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": false,
       "shadow": true,
       "phase": 0.0
     }
@@ -444,7 +432,7 @@
         "op": "shoot",
         "from": [
           136,
-          192
+          152
         ],
         "target": "bell_r11_war"
       },

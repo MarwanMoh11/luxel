@@ -1,0 +1,478 @@
+{
+  "id": "cave_twin_grotto",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_CAVE_GROTTO",
+  "theme": "cave_7",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    392,
+    152
+  ],
+  "zones": [
+    {
+      "id": "cave_twin_grotto",
+      "name_key": "ISL7_Z_CAVE_GROTTO",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ctg_shoals",
+      "rect": [
+        432,
+        128,
+        16,
+        48
+      ],
+      "to_region": "black_shoals",
+      "to_spawn": [
+        160,
+        264
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_ctg_east",
+      "kind": "room_anchor",
+      "pos": [
+        392,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "pool_ctg_south",
+      "kind": "moon_pool",
+      "pos": [
+        328,
+        200
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": false
+      }
+    },
+    {
+      "id": "mimic_ctg_1",
+      "kind": "mimic_statue",
+      "pos": [
+        344,
+        88
+      ],
+      "props": {
+        "mirror": "y",
+        "range": 360.0
+      }
+    },
+    {
+      "id": "plate_ctg_north",
+      "kind": "pressure_plate",
+      "pos": [
+        168,
+        56
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_ctg_logic"
+      }
+    },
+    {
+      "id": "mirror_ctg_blue",
+      "kind": "blue_transformer",
+      "pos": [
+        296,
+        168
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "sw_ctg_blue",
+      "kind": "switch_eye",
+      "pos": [
+        296,
+        104
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "gate_ctg_logic"
+      }
+    },
+    {
+      "id": "gate_ctg_logic",
+      "kind": "logic_gate",
+      "pos": [
+        144,
+        160
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_ctg_north",
+          "sw_ctg_blue"
+        ],
+        "target_id": "door_ctg_vault"
+      }
+    },
+    {
+      "id": "door_ctg_vault",
+      "kind": "door",
+      "pos": [
+        120,
+        192
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "required_signals": [
+          "gate_ctg_logic"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "item_qi_silver_mask",
+      "kind": "quest_item",
+      "pos": [
+        72,
+        112
+      ],
+      "props": {
+        "id": "qi_silver_mask",
+        "icon": "crown",
+        "carry": true
+      }
+    },
+    {
+      "id": "moth_7_04",
+      "kind": "moth",
+      "pos": [
+        72,
+        168
+      ],
+      "props": {
+        "id": "moth_7_04"
+      }
+    },
+    {
+      "id": "lamp_ctg_e1",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        192
+      ],
+      "props": {
+        "zone": "cave_twin_grotto",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ctg_c1",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        216
+      ],
+      "props": {
+        "zone": "cave_twin_grotto",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ctg_n1",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        72
+      ],
+      "props": {
+        "zone": "cave_twin_grotto",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ctg_w1",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        216
+      ],
+      "props": {
+        "zone": "cave_twin_grotto",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ctg_v1",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        136
+      ],
+      "props": {
+        "zone": "cave_twin_grotto",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        40,
+        72,
+        64,
+        128
+      ],
+      "color": "ice"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        168,
+        56
+      ],
+      "radius": 20,
+      "style": "ritual",
+      "color": "sky",
+      "secondary": "cream"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        328,
+        200
+      ],
+      "radius": 22,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cave_arch_rock",
+      "pos": [
+        408,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "stalagmite_tall",
+      "pos": [
+        360,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        248,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        152,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        360,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cave_lantern_post",
+      "pos": [
+        56,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        272,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          12,
+          14,
+          2,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "T-split twin ice grotto where Wick walks across a glass partition to steer a Y-mirrored Mimic Statue around asymmetric ice pillars onto a northern pressure plate while banking a Blue Bolt.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Desynchronize a Y-mirrored Mimic Statue with walls/pillars, cross phantom ice with Lens, and combine Blue-transformer banking to unseal Tailor Spider's Silver Mask.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "qi_silver_mask+moth_7_04",
+    "why": "Key optional quest cave rewarding Tailor Spider's Silver Mask and Moth 04.",
+    "start": {
+      "vars": {
+        "world_face": "black"
+      }
+    },
+    "target": "item_qi_silver_mask",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          344,
+          184
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          184
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          200
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          216
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          168
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          264,
+          168
+        ],
+        "target": "mirror_ctg_blue"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          112
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "item_qi_silver_mask"
+      },
+      {
+        "op": "expect",
+        "flag": "quest:item:qi_silver_mask"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ctg_shoals"
+      }
+    ]
+  }
+}

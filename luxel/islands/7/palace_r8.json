@@ -45,6 +45,7 @@
       "props": {
         "var": "world_face",
         "allow_bolt_flip": true,
+        "step_flip": true,
         "radius_px": 16,
         "persist": true
       }
@@ -70,7 +71,8 @@
       "props": {
         "by": ["block"],
         "hold": true,
-        "size": [28, 28]
+        "size": [36, 36],
+        "target_id": "scale_r8_twin"
       }
     },
     {
@@ -80,7 +82,8 @@
       "props": {
         "by": ["block"],
         "hold": true,
-        "size": [28, 28]
+        "size": [36, 36],
+        "target_id": "scale_r8_twin"
       }
     },
     {
@@ -126,7 +129,8 @@
       "props": {
         "secs": 2.0,
         "reset": true,
-        "allow_interact": true
+        "allow_interact": true,
+        "target_id": "mimic_r8_black"
       }
     },
     {
@@ -175,7 +179,7 @@
     {
       "id": "lamp_r8_s",
       "kind": "road_lamp",
-      "pos": [224, 232],
+      "pos": [184, 264],
       "props": { "zone": "palace_scales", "lit": true }
     },
     {
@@ -204,6 +208,7 @@
       "id": "black_world",
       "when": "world_face==black",
       "theme": "inverted_palace_black",
+      "overlay": "res://luxel/art/islands/7/palace_r8__black_world.png",
       "full_frame": true,
       "tiles": [
         [13, 12, 3, 3, "bridge"]
@@ -230,10 +235,10 @@
       { "op": "goto", "to": [74, 104], "tol": 8 },
       { "op": "push", "target": "block_r8_stone", "to": [152, 104] },
       { "op": "carry", "target": "orb_r8_silver", "action": "pickup" },
-      { "op": "carry", "target": "orb_r8_silver", "action": "drop", "to": [152, 104] },
+      { "op": "carry", "target": "orb_r8_silver", "action": "drop", "to": [152, 120] },
       { "op": "carry", "target": "orb_r8_smuggle", "action": "pickup" },
-      { "op": "goto", "to": [224, 272], "tol": 12 },
-      { "op": "interact", "target": "pool_r8_center" },
+      { "op": "goto", "to": [224, 272], "tol": 6 },
+      { "op": "wait", "secs": 0.30 },
       { "op": "expect", "var": "world_face==black" },
       { "op": "carry", "target": "orb_r8_smuggle", "action": "drop", "to": [336, 104] },
       { "op": "goto", "to": [288, 128], "tol": 8 },

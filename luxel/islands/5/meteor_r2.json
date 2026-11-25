@@ -1,0 +1,417 @@
+{
+  "id": "meteor_r2",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R2",
+  "spawn": [
+    368,
+    216
+  ],
+  "zones": [
+    {
+      "id": "mv_r2",
+      "name_key": "I5_MV_R2",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r2_e",
+      "rect": [
+        400,
+        192,
+        16,
+        48
+      ],
+      "to_region": "meteor_r1",
+      "to_spawn": [
+        56,
+        232
+      ]
+    },
+    {
+      "id": "exit_mv_r2_n",
+      "rect": [
+        112,
+        0,
+        32,
+        16
+      ],
+      "to_region": "meteor_r3",
+      "to_spawn": [
+        224,
+        240
+      ],
+      "locked_door_id": "door_mv_r2_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r2",
+      "kind": "room_anchor",
+      "pos": [
+        368,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_r2_1",
+      "kind": "polarity_well",
+      "pos": [
+        312,
+        168
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 84.0,
+        "strength": 580.0
+      }
+    },
+    {
+      "id": "well_r2_2",
+      "kind": "polarity_well",
+      "pos": [
+        192,
+        168
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 80.0,
+        "strength": 640.0
+      }
+    },
+    {
+      "id": "well_r2_3",
+      "kind": "polarity_well",
+      "pos": [
+        168,
+        96
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 80.0,
+        "strength": 680.0
+      }
+    },
+    {
+      "id": "eye_r2_1",
+      "kind": "switch_eye",
+      "pos": [
+        264,
+        152
+      ],
+      "props": {
+        "target_id": "door_mv_r2_n"
+      }
+    },
+    {
+      "id": "eye_r2_2",
+      "kind": "switch_eye",
+      "pos": [
+        152,
+        160
+      ],
+      "props": {
+        "target_id": "door_mv_r2_n"
+      }
+    },
+    {
+      "id": "eye_r2_3",
+      "kind": "switch_eye",
+      "pos": [
+        208,
+        80
+      ],
+      "props": {
+        "target_id": "door_mv_r2_n"
+      }
+    },
+    {
+      "id": "door_mv_r2_n",
+      "kind": "door",
+      "pos": [
+        128,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "eye_r2_1",
+          "eye_r2_2",
+          "eye_r2_3"
+        ],
+        "sets_flag": "mv_r2_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_mv_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        248
+      ],
+      "props": {
+        "zone": "mv_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r2_mid",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        256
+      ],
+      "props": {
+        "zone": "mv_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r2_n",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        64
+      ],
+      "props": {
+        "zone": "mv_r2",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        336,
+        208,
+        32,
+        16
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        208,
+        32,
+        16
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        112,
+        128,
+        32,
+        16
+      ]
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        120
+      ],
+      "radius": 20
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        80,
+        168
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        128,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        256,
+        252
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "brass_caliper_stand",
+      "pos": [
+        352,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        72,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        240,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "floating_meteor_shard",
+      "pos": [
+        160,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "cracked_meteor_boulder",
+      "pos": [
+        64,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Three-bay diagonal baffle staircase teaching progressively tighter curved manual shots around solid stone fins with safe basalt footing.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Reading gravity well curve arcs at three angles to hook bolts cleanly behind iron baffles.",
+    "decisions": 5,
+    "expert_s": 42,
+    "reward": "west_wing_passage",
+    "why": "Dedicated curved-shot literacy staircase before introducing combat pressure in the Kennel.",
+    "exit": "exit_mv_r2_n",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          352,
+          216
+        ],
+        "target": [
+          274,
+          199
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_r2_1",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          216
+        ],
+        "target": [
+          146,
+          199
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_r2_2",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          136
+        ],
+        "target": [
+          208,
+          128
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_r2_3",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_mv_r2_n",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r2_n"
+      }
+    ]
+  }
+}

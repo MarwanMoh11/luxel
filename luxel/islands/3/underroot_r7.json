@@ -44,24 +44,581 @@
       "to_spawn": [
         48,
         208
-      ]
+      ],
+      "locked_door_id": "door_r7_east"
     }
   ],
   "interactables": [
     {
-      "id": "lamp_r7_1",
+      "id": "anc_r7_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r7_center",
+      "kind": "room_anchor",
+      "pos": [
+        248,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r7_east",
+      "kind": "room_anchor",
+      "pos": [
+        360,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "beetle_r7_tame",
+      "kind": "beetle_mount",
+      "pos": [
+        72,
+        144
+      ],
+      "props": {
+        "tame": true,
+        "dir": "e",
+        "speed": 96.0,
+        "require_sap_horn": false
+      }
+    },
+    {
+      "id": "eye_r7_moth",
+      "kind": "switch_eye",
+      "pos": [
+        192,
+        104
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "bridge_r7_moth"
+      }
+    },
+    {
+      "id": "bridge_r7_moth",
+      "kind": "door",
+      "pos": [
+        248,
+        80
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          48,
+          32
+        ],
+        "requires_signals": [
+          "eye_r7_moth"
+        ]
+      }
+    },
+    {
+      "id": "moth_3_08",
+      "kind": "moth",
+      "pos": [
+        248,
+        48
+      ],
+      "props": {
+        "id": "moth_3_08"
+      }
+    },
+    {
+      "id": "pb_r7_east",
+      "kind": "light_plant",
+      "pos": [
+        312,
+        144
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          48,
+          32
+        ],
+        "secs": 0.45,
+        "decay": 6.0
+      }
+    },
+    {
+      "id": "beetle_r7_wild",
+      "kind": "beetle_mount",
+      "pos": [
+        416,
+        104
+      ],
+      "props": {
+        "tame": false,
+        "dir": "s",
+        "speed": 64.0,
+        "lure_radius": 176.0,
+        "require_sap_horn": false
+      }
+    },
+    {
+      "id": "plate_r7_east",
+      "kind": "pressure_plate",
+      "pos": [
+        416,
+        160
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "hold": true,
+        "size": [
+          28,
+          28
+        ],
+        "target_id": "door_r7_east"
+      }
+    },
+    {
+      "id": "hook_r7_lure",
+      "kind": "lantern_hook",
+      "pos": [
+        416,
+        172
+      ],
+      "props": {
+        "light_radius": 92.0
+      }
+    },
+    {
+      "id": "door_r7_east",
+      "kind": "door",
+      "pos": [
+        488,
+        144
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "plate_r7_east"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r7_w",
       "kind": "road_lamp",
       "pos": [
-        256,
-        144
+        56,
+        104
       ],
       "props": {
         "zone": "ur_r7",
         "lit": true
       }
+    },
+    {
+      "id": "lamp_r7_c",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        192
+      ],
+      "props": {
+        "zone": "ur_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        48
+      ],
+      "props": {
+        "zone": "ur_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        112
+      ],
+      "props": {
+        "zone": "ur_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_se",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        208
+      ],
+      "props": {
+        "zone": "ur_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r7_grass_nw",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        56,
+        184
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r7_acorn_se",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        448,
+        216
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": true
+      }
     }
   ],
   "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        48
+      ],
+      "radius": 20,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        48
+      ],
+      "size": [
+        32,
+        44
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        416,
+        160
+      ],
+      "radius": 22,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        248,
+        144
+      ],
+      "radius": 20,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "beetle_hitching_post",
+      "pos": [
+        64,
+        116
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "beetle_hitching_post",
+      "pos": [
+        264,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "beetle_hitching_post",
+      "pos": [
+        376,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        456,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        224,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        360,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        452,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        272,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        464,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        352,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        464,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        384,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "pebble_milestone",
+      "pos": [
+        224,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Mount a tame Sap-Horn beetle to cross the wide amber sap river, bank a Prism bolt off its mirrored carapace into the NW blue eye to raise Lost Moth #8's bridge, then cross east to lure a wild beetle onto the gate plate with your hung lantern and halt it with Sap-Horn.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Riding beetle_mount across sap, using its mirrored carapace as a mobile Prism reflector, and luring + Sap-Horn halting wild beetles onto weight plates.",
+    "decisions": 8,
+    "expert_s": 56,
+    "reward": "moth_3_08+r8_access",
+    "why": "Signature Sap-Horn puzzle showcasing all three beetle_mount mechanics (ferry, Prism carapace, wild-lure halt) plus Moth #8.",
+    "exit": "exit_r7_east",
+    "start": {
+      "flags": [
+        "sap_horn"
+      ]
+    },
+    "solution": [
+      {
+        "op": "mount",
+        "target": "beetle_r7_tame"
+      },
+      {
+        "op": "glide",
+        "to": [
+          248,
+          144
+        ],
+        "secs": 2.4,
+        "timeout": 4.5,
+        "tol": 3.0
+      },
+      {
+        "op": "dismount",
+        "to": [
+          224,
+          168
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          168
+        ],
+        "target": "beetle_r7_tame"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_r7_moth",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          48
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          276,
+          144
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "pb_r7_east",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          172
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r7_lure"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "plate_r7_east",
+        "prop": "pressed",
+        "value": true,
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "beetle_r7_wild"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r7_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_east"
+      }
+    ]
+  },
   "id": "underroot_r7",
   "island_id": 3,
   "tile_size": 16,

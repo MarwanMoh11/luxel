@@ -1,0 +1,409 @@
+{
+  "id": "meteor_r8",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R8",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "mv_r8",
+      "name_key": "I5_MV_R8",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r8_s",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "meteor_r7",
+      "to_spawn": [
+        400,
+        56
+      ]
+    },
+    {
+      "id": "exit_mv_r8_w",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "meteor_r9",
+      "to_spawn": [
+        456,
+        224
+      ],
+      "locked_door_id": "door_mv_r8_k2"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r8",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_r8_w",
+      "kind": "polarity_well",
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 480.0
+      }
+    },
+    {
+      "id": "well_r8_e",
+      "kind": "polarity_well",
+      "pos": [
+        312,
+        128
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 480.0
+      }
+    },
+    {
+      "id": "door_mv_r8_combat",
+      "kind": "door",
+      "pos": [
+        72,
+        136
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "mv_r8",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_mv_r8_k2",
+      "kind": "door",
+      "pos": [
+        24,
+        136
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "meteor_vault",
+        "key_kind": "wick_key",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_mv_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "zone": "mv_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r8_se",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        264
+      ],
+      "props": {
+        "zone": "mv_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r8_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        72
+      ],
+      "props": {
+        "zone": "mv_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        72
+      ],
+      "props": {
+        "zone": "mv_r8",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "null_r8_w",
+      "kind": "null_moth",
+      "pos": [
+        168,
+        80
+      ],
+      "zone": "mv_r8"
+    },
+    {
+      "id": "null_r8_e",
+      "kind": "null_moth",
+      "pos": [
+        320,
+        88
+      ],
+      "zone": "mv_r8"
+    },
+    {
+      "id": "carrier_r8",
+      "kind": "meteor_carrier",
+      "pos": [
+        296,
+        176
+      ],
+      "zone": "mv_r8"
+    },
+    {
+      "id": "hound_r8",
+      "kind": "comet_hound",
+      "pos": [
+        192,
+        176
+      ],
+      "zone": "mv_r8"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        152,
+        136
+      ],
+      "radius": 32,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        312,
+        128
+      ],
+      "radius": 32,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        224,
+        152
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        240,
+        64,
+        32
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        152,
+        136
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        312,
+        128
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        120,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        344,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "star_ore_crate",
+      "pos": [
+        392,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "celestial_safe_chest",
+      "pos": [
+        368,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "cracked_meteor_boulder",
+      "pos": [
+        96,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        392,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "mv_r8_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mv_r8_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Null Moth bastion where straight bolts are swallowed; curve bolts through the twin wells or detonate the Meteor Carrier's boulder mid-windup, then spend Key 2 on the West Vault Door.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Countering Null Moths with curved gravity shots and detonating Meteor Carriers during tell.",
+    "decisions": 8,
+    "expert_s": 52,
+    "reward": "sling_catapult_access",
+    "why": "Escalated combat room combining Null Moths, Meteor Carrier, and Comet Hound behind Key 2.",
+    "exit": "exit_mv_r8_w",
+    "start": {
+      "flags": [
+        "power_orbit_ring"
+      ],
+      "keys": {
+        "wick_key": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_mv_r8_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "door_mv_r8_k2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r8_w"
+      }
+    ]
+  }
+}

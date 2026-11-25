@@ -1,0 +1,438 @@
+{
+  "id": "cave_broken_pendulum",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_5",
+  "name_key": "I5_CAVE_PEND",
+  "music": "island5_dungeon",
+  "spawn": [
+    208,
+    240
+  ],
+  "exits": [
+    {
+      "id": "ex_pend_out",
+      "rect": [
+        192,
+        272,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        344,
+        176
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pend",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_pend",
+      "kind": "polarity_well",
+      "pos": [
+        160,
+        192
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 540.0
+      }
+    },
+    {
+      "id": "orb_pend",
+      "kind": "meteor_orb",
+      "pos": [
+        96,
+        216
+      ],
+      "props": {
+        "cradle_pos": [
+          96,
+          216
+        ],
+        "respawn_s": 0.8
+      }
+    },
+    {
+      "id": "cw_pend_gear",
+      "kind": "cracked_wall",
+      "pos": [
+        312,
+        144
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "target_id": "door_pend_unjam",
+        "sets_flag": "pend_gear_unjammed"
+      }
+    },
+    {
+      "id": "eye_pend_gear",
+      "kind": "switch_eye",
+      "pos": [
+        336,
+        144
+      ],
+      "props": {
+        "target_id": "door_pend_unjam",
+        "sets_flag": "pend_gear_unjammed"
+      }
+    },
+    {
+      "id": "rotor_pend",
+      "kind": "rotor",
+      "pos": [
+        208,
+        144
+      ],
+      "props": {
+        "size": [
+          80,
+          80
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_pend",
+      "kind": "star_bell",
+      "pos": [
+        208,
+        128
+      ],
+      "props": {
+        "scope": "room:5:cave_broken_pendulum",
+        "var_name": "pend_turn",
+        "rotors": [
+          "rotor_pend"
+        ],
+        "allow_ccw_blue": true,
+        "target_id": "bridge_pend_north"
+      }
+    },
+    {
+      "id": "door_pend_unjam",
+      "kind": "door",
+      "pos": [
+        208,
+        192
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "eye_pend_gear"
+        ]
+      }
+    },
+    {
+      "id": "bridge_pend_north",
+      "kind": "door",
+      "pos": [
+        208,
+        88
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "bell_pend"
+        ]
+      }
+    },
+    {
+      "id": "qi_5_brass_lens",
+      "kind": "quest_item",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "id": "qi_5_brass_lens"
+      }
+    },
+    {
+      "id": "chest_pend_shards",
+      "kind": "chest",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "lamp_pend_s",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        240
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pend_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pend_c",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        160
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pend_n",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pend_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        160
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [
+    {
+      "id": "pend_90",
+      "when": "pend_turn==90",
+      "tiles": [
+        [
+          11,
+          5,
+          4,
+          1,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_pend_unjam",
+      "on": "flag:pend_gear_unjammed",
+      "once": true,
+      "do": [
+        {
+          "sfx": "meteor_clank"
+        },
+        {
+          "narrate": "I5_OW_PEND_UNJAM"
+        }
+      ]
+    },
+    {
+      "id": "ev_pend_lens_compat",
+      "on": "flag:quest:item:qi_5_brass_lens",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "quest:item:brass_lens"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_5",
+      "prop": "stalagmite_tall",
+      "pos": [
+        168,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "dripping_pool_basin",
+      "pos": [
+        72,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        256,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "cave_arch_rock",
+      "pos": [
+        216,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        352,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Flooded clockwork gear cellar: flip the polarity well to push, shatter the jammed east gear tooth with Beam/meteor to unjam the central rotor, then ring the Star Bell to align the north bridge to the Brass Lens.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Polarity flipping, gear unjamming, and rotor bridge alignment",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "qi_5_brass_lens (Owl Chick -> pane:zenith_lens), 35 shards",
+    "why": "NW optional cave driving Quest 1 (The Broken Sextant).",
+    "optional": true,
+    "start": {
+      "spawn": [
+        208,
+        240
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          224
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "well_pend",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          216
+        ]
+      },
+      {
+        "op": "beam",
+        "target": "cw_pend_gear"
+      },
+      {
+        "op": "beam",
+        "target": "eye_pend_gear"
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_pend_gear",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          152
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_pend"
+      },
+      {
+        "op": "wait",
+        "secs": 0.6
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          64
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "qi_5_brass_lens"
+      }
+    ]
+  }
+}

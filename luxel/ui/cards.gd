@@ -287,7 +287,8 @@ func _draw_ending_display_off() -> void:
 	# Stage 6 & 7: THE LANTERN KEPT EVERYTHING YOU SOLD. -> IT WAS TOO MUCH LIGHT FOR THE DARK.
 	if t >= 5.35 and t < 6.45:
 		var p_kept: float = _window_fade(t, 5.35, 6.45, 0.22)
-		LxPixelFont.draw_faded(self, LxStrings.text("END_KEPT_ALL"), Vector2(160.0, 148.0), p_kept, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
+		var end_sold_k: String = LxHudOverlays.get_ending_sold_key("display_off", LxSold.current().get_dawn_receipts().size())
+		LxPixelFont.draw_faded(self, LxStrings.text(end_sold_k if not end_sold_k.is_empty() else "END_KEPT_ALL"), Vector2(160.0, 148.0), p_kept, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
 	elif t >= 6.45 and t < 7.65:
 		var p_much: float = _window_fade(t, 6.45, 7.65, 0.22)
 		LxPixelFont.draw_faded(self, LxStrings.text("END_TOO_MUCH"), Vector2(160.0, 148.0), p_much, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
@@ -306,7 +307,9 @@ func _draw_ending_display_off() -> void:
 
 func _draw_ending_dawn() -> void:
 	var t: float = _elapsed
+	var receipts: PackedStringArray = LxSold.current().get_dawn_receipts()
 	LxEndingArt.draw_ending_dawn(self, t, DAWN_ISLANDS, _motes)
+	LxHudOverlays.draw_dawn_buyback_parade(self, t, receipts)
 	if t >= 1.5:
 		var p_title: float = _window_fade(t, 1.5, ENDING_DAWN_SECS, 0.35)
 		LxPixelFont.draw_faded(self, LxStrings.text("END_DAWN_TITLE"), Vector2(160.0, 34.0), p_title, "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
@@ -315,7 +318,8 @@ func _draw_ending_dawn() -> void:
 	draw_rect(Rect2(0.0, 164.0, 320.0, 16.0), LxPalette.PAL["void"])
 	if t >= 3.6:
 		var p_sub: float = _window_fade(t, 3.6, ENDING_DAWN_SECS, 0.35)
-		LxPixelFont.draw_faded(self, LxStrings.text("END_DAWN_SUB"), Vector2(160.0, 169.0), p_sub, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
+		var dawn_k: String = LxHudOverlays.get_ending_sold_key("dawn", receipts.size())
+		LxPixelFont.draw_faded(self, LxStrings.text(dawn_k if not dawn_k.is_empty() else "END_DAWN_SUB"), Vector2(160.0, 169.0), p_sub, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
 	if t >= 0.5:
 		LxPixelFont.draw_right(self, LxStrings.text("INTRO_SKIP"), 312.0, 169.0, LxPalette.PAL["mauve"], 1)
 
@@ -429,7 +433,12 @@ func _draw_results() -> void:
 	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_UPGRADES_FMT", [upg_t.x, upg_t.y]), Vector2(228.0, 90.0), p2, "sky", 1, HORIZONTAL_ALIGNMENT_RIGHT)
 	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_EMBERS_FMT", [embers]), Vector2(92.0, 102.0), p3, "apricot", 1)
 	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_HARMONY_FMT", [harmony]), Vector2(228.0, 102.0), p3, "gold", 1, HORIZONTAL_ALIGNMENT_RIGHT)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(160.0, 114.0), p4, "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	var tolls_n: int = LxSold.current().get_dawn_receipts().size()
+	if tolls_n > 0 and LxStrings.has_id("ISL8_RES_TOLLS"):
+		LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(92.0, 114.0), p4, "gold", 1)
+		LxPixelFont.draw_faded(self, LxStrings.fmt("ISL8_RES_TOLLS", [mini(tolls_n, 12)]), Vector2(228.0, 114.0), p4, "coral", 1, HORIZONTAL_ALIGNMENT_RIGHT)
+	else:
+		LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(160.0, 114.0), p4, "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
 	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_HINT"), Vector2(160.0, 143.0), clampf((_elapsed - 0.42) / 0.25, 0.0, 1.0), "stone", 1, HORIZONTAL_ALIGNMENT_CENTER)
 
 
@@ -473,6 +482,13 @@ func _draw_credits() -> void:
 func _load_credits() -> void:
 	_credit_lines.clear()
 	_credit_lines.append({"text": LxStrings.text("CREDITS_TITLE"), "color": "gold", "scale": 2})
+	var receipts: PackedStringArray = LxSold.current().get_dawn_receipts()
+	if not receipts.is_empty():
+		_credit_lines.append({"divider": true, "text": "", "color": "gold", "scale": 1})
+		if LxStrings.has_id("ISL8_RES_TOLLS"): _add_credit_line(LxStrings.fmt("ISL8_RES_TOLLS", [mini(receipts.size(), 12)]), "gold")
+		for sid: String in receipts:
+			var nk: String = str(LxSold.current().get_setting(sid).get("name_key", ""))
+			if not nk.is_empty() and LxStrings.has_id(nk): _add_credit_line(LxStrings.text(nk), "cream")
 	var loaded: bool = false
 	if FileAccess.file_exists(CREDITS_PATH):
 		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(CREDITS_PATH))

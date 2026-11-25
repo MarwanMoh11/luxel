@@ -1,0 +1,623 @@
+{
+  "id": "ow_clock_terrace",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "garden_party",
+  "name_key": "ISL4_ZONE_TERRACE",
+  "music": "island4_explore",
+  "spawn": [
+    288,
+    368
+  ],
+  "zones": [
+    {
+      "id": "ow_clock_terrace",
+      "name_key": "ISL4_ZONE_TERRACE",
+      "rect": [
+        0,
+        0,
+        576,
+        416
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_terrace_to_ow",
+      "rect": [
+        272,
+        400,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        944,
+        184
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_terrace_to_orchard",
+      "rect": [
+        0,
+        272,
+        16,
+        48
+      ],
+      "to_region": "ow_weeping_orchard",
+      "to_spawn": [
+        496,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_terrace_to_cloister",
+      "rect": [
+        448,
+        400,
+        32,
+        16
+      ],
+      "to_region": "ow_drowned_cloister",
+      "to_spawn": [
+        560,
+        168
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_wing_spire",
+      "rect": [
+        560,
+        176,
+        16,
+        48
+      ],
+      "to_region": "trial_wing_spire",
+      "to_spawn": [
+        48,
+        160
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "pd_terrace_nw",
+      "kind": "petal_duelist",
+      "pos": [
+        184,
+        128
+      ],
+      "route": [
+        [
+          160,
+          128
+        ],
+        [
+          216,
+          128
+        ]
+      ],
+      "zone": "ow_clock_terrace",
+      "leash": 115
+    },
+    {
+      "id": "hh_terrace_ne",
+      "kind": "hour_heron",
+      "pos": [
+        392,
+        128
+      ],
+      "route": [
+        [
+          360,
+          128
+        ],
+        [
+          416,
+          128
+        ]
+      ],
+      "zone": "ow_clock_terrace",
+      "leash": 115
+    }
+  ],
+  "interactables": [
+    {
+      "id": "sundial_terrace",
+      "kind": "garden_sundial",
+      "pos": [
+        288,
+        208
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 16
+      }
+    },
+    {
+      "id": "plaque_terrace",
+      "kind": "isl4_schedule_plaque",
+      "pos": [
+        240,
+        248
+      ],
+      "props": {
+        "highlight_hours": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    },
+    {
+      "id": "ws_4_terrace",
+      "kind": "waystone",
+      "pos": [
+        336,
+        248
+      ],
+      "props": {
+        "name_key": "ISL4_ZONE_TERRACE"
+      }
+    },
+    {
+      "id": "npc_scribe_worm",
+      "kind": "npc",
+      "pos": [
+        224,
+        208
+      ],
+      "props": {
+        "folk": "scribe_worm",
+        "quest": "q_isl4_missing_minutes",
+        "wander_radius": 10,
+        "bubbles": [
+          [
+            "book",
+            "clock",
+            "arrow_s"
+          ],
+          [
+            "book",
+            "star",
+            "happy",
+            "key"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "seal_plinth_t_hg",
+      "kind": "isl4_seal_plinth",
+      "pos": [
+        224,
+        80
+      ],
+      "props": {
+        "seal_flag": "dungeon_hourglass_done",
+        "alt_flag": "dungeon_done:hourglass_maze",
+        "seal_kind": "hourglass",
+        "hint_string_id": "ISL4_SEAL_HOURGLASS"
+      }
+    },
+    {
+      "id": "seal_plinth_t_ms",
+      "kind": "isl4_seal_plinth",
+      "pos": [
+        288,
+        64
+      ],
+      "props": {
+        "seal_flag": "dungeon_mausoleum_done",
+        "alt_flag": "dungeon_done:rain_mausoleum",
+        "seal_kind": "mausoleum",
+        "hint_string_id": "ISL4_SEAL_MAUSOLEUM"
+      }
+    },
+    {
+      "id": "seal_plinth_t_party",
+      "kind": "isl4_seal_plinth",
+      "pos": [
+        352,
+        80
+      ],
+      "props": {
+        "seal_flag": "party_done",
+        "alt_flag": "golden_clock_key",
+        "seal_kind": "party",
+        "hint_string_id": "ISL4_SEAL_PARTY"
+      }
+    },
+    {
+      "id": "lore_terrace_party",
+      "kind": "lore_stone",
+      "pos": [
+        288,
+        108
+      ],
+      "props": {
+        "string_id": "ISL4_PARTY_GATE_HINT",
+        "icon": "key",
+        "persist": true
+      }
+    },
+    {
+      "id": "brazier_pin_orchard",
+      "kind": "brazier",
+      "pos": [
+        96,
+        272
+      ],
+      "props": {
+        "sets_flag": "orchard_terrace_pinned"
+      }
+    },
+    {
+      "id": "brazier_pin_cloister",
+      "kind": "brazier",
+      "pos": [
+        448,
+        344
+      ],
+      "props": {
+        "sets_flag": "cloister_terrace_pinned"
+      }
+    },
+    {
+      "id": "chest_terrace_shards",
+      "kind": "chest",
+      "pos": [
+        96,
+        176
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 50
+      }
+    },
+    {
+      "id": "lamp_tr_s",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        328
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        304
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr_se",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        328
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr_e",
+      "kind": "road_lamp",
+      "pos": [
+        488,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr_nw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr_n",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_pin_orchard",
+      "on": "signal:brazier_pin_orchard",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "orchard_terrace_pinned"
+        },
+        {
+          "narrate": "ISL4_CUE_SEAL_PIN"
+        }
+      ]
+    },
+    {
+      "id": "ev_pin_cloister",
+      "on": "signal:brazier_pin_cloister",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "cloister_terrace_pinned"
+        },
+        {
+          "narrate": "ISL4_CUE_SEAL_PIN"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        208
+      ],
+      "radius": 44,
+      "style": "clock"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        256,
+        48,
+        64,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        288,
+        208
+      ],
+      "radius": 40
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_garden_party",
+      "prop": "festive_bunting_arch",
+      "pos": [
+        288,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        216,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        360,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        160,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        416,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "banquet_table_cloth",
+      "pos": [
+        200,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "tea_service_stand",
+      "pos": [
+        376,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        248,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        328,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "masked_statue_plinth",
+      "pos": [
+        488,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "music_box_pedestal",
+      "pos": [
+        104,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "hedgerow_lamp_urn",
+      "pos": [
+        424,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Grand Sundial Piazza uniting Mirefen's 3 districts, displaying live 3-Seal status plinths for Hourglass Maze, Rain Mausoleum, and The Garden Party, plus Scribe Bookworm and pinnable district shortcuts.",
+    "kind": "story",
+    "beat": "sho",
+    "teaches": "3-Seal progression clarity, Scribe Bookworm quest, and permanent shortcut pinning",
+    "decisions": 5,
+    "expert_s": 55,
+    "reward": "orchard_terrace_pinned, cloister_terrace_pinned, 50 shards, Wing Spire & Garden Party links",
+    "why": "Northeast grand plaza anchoring the macro seal quest, shortcuts, and Wing Spire trial.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "interact",
+        "target": "sundial_terrace"
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          288
+        ],
+        "tol": 12
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_pin_orchard"
+      },
+      {
+        "op": "expect",
+        "flag": "orchard_terrace_pinned"
+      },
+      {
+        "op": "goto",
+        "to": [
+          432,
+          344
+        ],
+        "tol": 12
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_pin_cloister"
+      },
+      {
+        "op": "expect",
+        "flag": "cloister_terrace_pinned"
+      }
+    ]
+  }
+}

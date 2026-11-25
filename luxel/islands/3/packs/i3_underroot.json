@@ -1,7 +1,7 @@
 {
   "pack_id": "i3_underroot",
   "owner": "P3-UNDERROOT",
-  "comment": "Island 3 Minor Dungeon A: The Under-Root (11 tiny-world rooms, 4 internal cycles, theme under_root). Debug-only on dungeon/region meta until P3-OW swaps r1/r11 overworld returns to ow_shift_w.",
+  "comment": "Island 3 Minor Dungeon A: The Under-Root (11 tiny-world rooms, 4 internal cycles, theme under_root). Wired to ow_shift_w Turn 0 Great Stump.",
   "strings": {
     "ISL3_DNG_UNDERROOT": "THE UNDER-ROOT",
     "ISL3_UR_R1_NAME": "ROOT THRESHOLD",
@@ -51,22 +51,21 @@
       "theme": "under_root",
       "music": "isl3_underroot",
       "requires_flags": [],
-      "done_flag": "underroot_done",
-      "debug_only": true
+      "done_flag": "underroot_done"
     }
   ],
   "regions": {
-    "underroot_r1": { "name_key": "ISL3_UR_R1_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 4], "debug_only": true },
-    "underroot_r2": { "name_key": "ISL3_UR_R2_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 3], "debug_only": true },
-    "underroot_r3": { "name_key": "ISL3_UR_R3_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [1, 3], "debug_only": true },
-    "underroot_r4": { "name_key": "ISL3_UR_R4_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [0, 3], "debug_only": true },
-    "underroot_r5": { "name_key": "ISL3_UR_R5_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [0, 2], "debug_only": true },
-    "underroot_r6": { "name_key": "ISL3_UR_R6_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [1, 2], "debug_only": true },
-    "underroot_r7": { "name_key": "ISL3_UR_R7_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 2], "debug_only": true },
-    "underroot_r8": { "name_key": "ISL3_UR_R8_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [3, 2], "debug_only": true },
-    "underroot_r9": { "name_key": "ISL3_UR_R9_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [3, 1], "debug_only": true },
-    "underroot_r10": { "name_key": "ISL3_UR_R10_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [4, 3], "debug_only": true },
-    "underroot_r11": { "name_key": "ISL3_UR_R11_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [4, 2], "debug_only": true }
+    "underroot_r1": { "name_key": "ISL3_UR_R1_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 4] },
+    "underroot_r2": { "name_key": "ISL3_UR_R2_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 3] },
+    "underroot_r3": { "name_key": "ISL3_UR_R3_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [1, 3] },
+    "underroot_r4": { "name_key": "ISL3_UR_R4_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [0, 3] },
+    "underroot_r5": { "name_key": "ISL3_UR_R5_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [0, 2] },
+    "underroot_r6": { "name_key": "ISL3_UR_R6_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [1, 2] },
+    "underroot_r7": { "name_key": "ISL3_UR_R7_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 2] },
+    "underroot_r8": { "name_key": "ISL3_UR_R8_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [3, 2] },
+    "underroot_r9": { "name_key": "ISL3_UR_R9_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [3, 1] },
+    "underroot_r10": { "name_key": "ISL3_UR_R10_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [4, 3] },
+    "underroot_r11": { "name_key": "ISL3_UR_R11_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [4, 2] }
   },
   "sfx": {}
 }

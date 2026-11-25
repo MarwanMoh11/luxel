@@ -38,8 +38,8 @@
       ],
       "to_region": "galleon_r11",
       "to_spawn": [
-        224,
-        64
+        208,
+        56
       ]
     },
     {
@@ -446,7 +446,7 @@
     "exit": "exit_r12_warp",
     "start": {
       "vars": {
-        "list": "port"
+        "dungeon:galleon:list": "port"
       },
       "flags": [
         "power_ballast_clamp"

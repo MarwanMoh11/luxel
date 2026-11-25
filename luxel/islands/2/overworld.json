@@ -119,6 +119,62 @@
         "island_2_relit"
       ],
       "locked_door_id": "bridge_of_light_2"
+    },
+    {
+      "id": "exit_ow_west",
+      "rect": [
+        0,
+        304,
+        16,
+        80
+      ],
+      "to_region": "ow_shoals_west",
+      "to_spawn": [
+        696,
+        264
+      ]
+    },
+    {
+      "id": "exit_ow_south",
+      "rect": [
+        704,
+        688,
+        96,
+        16
+      ],
+      "to_region": "ow_canal_south",
+      "to_spawn": [
+        344,
+        56
+      ]
+    },
+    {
+      "id": "exit_ow_sound",
+      "rect": [
+        864,
+        0,
+        80,
+        16
+      ],
+      "to_region": "ow_open_sound",
+      "to_spawn": [
+        72,
+        296
+      ]
+    },
+    {
+      "id": "exit_ow_cistern",
+      "rect": [
+        816,
+        576,
+        48,
+        16
+      ],
+      "to_region": "cave_bell_cistern",
+      "to_spawn": [
+        232,
+        56
+      ]
     }
   ],
   "enemies": [
@@ -865,6 +921,266 @@
       "props": {
         "zone": "drydock_quays"
       }
+    },
+    {
+      "id": "skiff_harbor",
+      "kind": "vehicle_skiff",
+      "pos": [
+        184,
+        408
+      ],
+      "props": {}
+    },
+    {
+      "id": "tether_skiff_harbor",
+      "kind": "skiff_tether",
+      "pos": [
+        152,
+        392
+      ],
+      "props": {
+        "rope_to": [
+          184,
+          408
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "npc_ferry_beetle",
+      "kind": "npc",
+      "pos": [
+        136,
+        360
+      ],
+      "props": {
+        "folk": "ferry_beetle",
+        "quest": "q2_regatta",
+        "wander_radius": 10,
+        "bubbles": [
+          [
+            "toy_skiff",
+            "cross",
+            "move_bolt",
+            "wave"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "organ_harbor_w",
+      "kind": "state_lever",
+      "pos": [
+        280,
+        264
+      ],
+      "props": {
+        "scope": "island:2",
+        "var": "tide",
+        "values": [
+          "ebb",
+          "half",
+          "flood"
+        ],
+        "shootable": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "organ_harbor_e",
+      "kind": "state_lever",
+      "pos": [
+        920,
+        424
+      ],
+      "props": {
+        "scope": "island:2",
+        "var": "tide",
+        "values": [
+          "ebb",
+          "half",
+          "flood"
+        ],
+        "shootable": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "post_bay_mid",
+      "kind": "mooring_post",
+      "pos": [
+        488,
+        376
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_bay_west",
+      "kind": "mooring_post",
+      "pos": [
+        344,
+        424
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_bay_east",
+      "kind": "mooring_post",
+      "pos": [
+        728,
+        360
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "raft_bay_mirror",
+      "kind": "tide_raft",
+      "pos": [
+        392,
+        344
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_min": "half",
+        "rotatable": true,
+        "normal": [
+          -0.7071,
+          0.7071
+        ]
+      }
+    },
+    {
+      "id": "skiff_bell_quay",
+      "kind": "skiff_bell",
+      "pos": [
+        120,
+        344
+      ],
+      "props": {
+        "dock_pos": [
+          184,
+          408
+        ],
+        "dock_dir": "e"
+      }
+    },
+    {
+      "id": "skiff_bell_reef",
+      "kind": "skiff_bell",
+      "pos": [
+        936,
+        456
+      ],
+      "props": {
+        "dock_pos": [
+          888,
+          408
+        ],
+        "dock_dir": "w"
+      }
+    },
+    {
+      "id": "moth_2_01",
+      "kind": "moth",
+      "pos": [
+        296,
+        584
+      ],
+      "props": {
+        "id": "moth_2_01"
+      }
+    },
+    {
+      "id": "moth_2_02",
+      "kind": "moth",
+      "pos": [
+        488,
+        664
+      ],
+      "props": {
+        "id": "moth_2_02"
+      }
+    },
+    {
+      "id": "lore_skiff_zip",
+      "kind": "lore_stone",
+      "pos": [
+        520,
+        664
+      ],
+      "props": {
+        "string_id": "ISL2_SKIFF_ZIP",
+        "icon": "tide",
+        "persist": true
+      }
+    },
+    {
+      "id": "phantom_lens_1",
+      "kind": "phantom_platform",
+      "pos": [
+        1000,
+        600
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "phantom_lens_2",
+      "kind": "phantom_platform",
+      "pos": [
+        1048,
+        632
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "chest_2_true_lens",
+      "kind": "chest",
+      "pos": [
+        1080,
+        648
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 90,
+        "zone": "breakwater_reef",
+        "requires_moves": [
+          "lens"
+        ],
+        "secret_id": "isl2_true_lens_reef"
+      }
+    },
+    {
+      "id": "lore_hollow_chart",
+      "kind": "lore_stone",
+      "pos": [
+        1080,
+        664
+      ],
+      "props": {
+        "string_id": "ISL2_LENS_SECRET",
+        "icon": "tide",
+        "persist": true
+      }
     }
   ],
   "triggers": [
@@ -1023,22 +1339,10 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "moored_skiff",
-      "pos": [
-        42,
-        360
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island2_scenery",
       "prop": "fishing_sloop",
       "pos": [
-        188,
-        432
+        256,
+        472
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1609,5 +1913,211 @@
       "shadow": false,
       "phase": 0.2
     }
-  ]
+  ],
+  "layers": [
+    {
+      "id": "ferry_quay",
+      "when": "!flag:skiff_unlocked",
+      "tiles": [],
+      "enable": [
+        "npc_ferry_beetle"
+      ],
+      "disable": []
+    },
+    {
+      "id": "tide_ebb",
+      "when": "tide==ebb",
+      "theme": "seabed",
+      "tiles": [
+        [
+          16,
+          35,
+          7,
+          4,
+          "ground"
+        ],
+        [
+          13,
+          27,
+          4,
+          3,
+          "ground"
+        ],
+        [
+          35,
+          21,
+          4,
+          3,
+          "ground"
+        ],
+        [
+          44,
+          14,
+          5,
+          3,
+          "ground"
+        ]
+      ],
+      "enable": [
+        "moth_2_01"
+      ],
+      "disable": [
+        "exit_ow_cistern"
+      ]
+    },
+    {
+      "id": "tide_half",
+      "when": "tide==half",
+      "theme": "locks",
+      "tiles": [
+        [
+          50,
+          36,
+          5,
+          2,
+          "bridge"
+        ],
+        [
+          21,
+          13,
+          2,
+          2,
+          "bridge"
+        ],
+        [
+          18,
+          36,
+          12,
+          2,
+          "water"
+        ]
+      ],
+      "enable": [
+        "exit_ow_cistern"
+      ],
+      "disable": [
+        "moth_2_01"
+      ]
+    },
+    {
+      "id": "tide_flood",
+      "when": "tide==flood",
+      "theme": "locks",
+      "tiles": [
+        [
+          29,
+          37,
+          3,
+          3,
+          "bridge"
+        ],
+        [
+          53,
+          2,
+          3,
+          3,
+          "bridge"
+        ],
+        [
+          14,
+          21,
+          2,
+          2,
+          "water"
+        ],
+        [
+          66,
+          22,
+          3,
+          2,
+          "water"
+        ],
+        [
+          18,
+          36,
+          12,
+          2,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "moth_2_01",
+        "exit_ow_cistern"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_relit_harbor",
+      "on": "flag:island_2_relit",
+      "once": true,
+      "do": [
+        {
+          "narrate": "ISL2_RELIT_WHALE"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Tidewater Harbor main bay: untether the oarless Skiff at low tide, sound Quay Tide Organs to visibly re-tile ebb/half/flood shoals and cistern slips, and sail outward to Shoals, Canal Quarter, and Outer Sound.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "Skiff recoil sailing, Mooring-Post Zip swings, Tide Organs re-tiling the island",
+    "decisions": 6,
+    "expert_s": 145,
+    "reward": "Skiff + Tide Organs + 3 Beacons + Moths 01/02 + Lighthouse & Cistern access",
+    "why": "Central Island 2 coastal overworld hub preserving legacy silhouette and adding full tidal sailing",
+    "optional": true,
+    "start": {
+      "vars": {
+        "tide": "ebb"
+      },
+      "spawn": [
+        104,
+        248
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          136,
+          392
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "tether_skiff_harbor"
+      },
+      {
+        "op": "expect",
+        "flag": "skiff_unlocked"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          264
+        ],
+        "target": "organ_harbor_w"
+      },
+      {
+        "op": "expect",
+        "var": "tide==half"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          264
+        ],
+        "target": "organ_harbor_w"
+      },
+      {
+        "op": "expect",
+        "var": "tide==flood"
+      }
+    ]
+  }
 }

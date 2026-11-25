@@ -1,0 +1,476 @@
+{
+  "id": "belfry_forecourt",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL1_Z_FORE",
+  "music": "explore",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    288,
+    368
+  ],
+  "zones": [
+    {
+      "id": "belfry_forecourt",
+      "name_key": "ISL1_Z_FORE",
+      "rect": [
+        0,
+        0,
+        576,
+        416
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_forecourt_south",
+      "rect": [
+        272,
+        400,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        640,
+        152
+      ]
+    },
+    {
+      "id": "exit_forecourt_west",
+      "rect": [
+        0,
+        224,
+        16,
+        32
+      ],
+      "to_region": "bell_yard",
+      "to_spawn": [
+        712,
+        256
+      ]
+    },
+    {
+      "id": "exit_forecourt_east",
+      "rect": [
+        560,
+        224,
+        16,
+        32
+      ],
+      "to_region": "manor_gardens",
+      "to_spawn": [
+        384,
+        456
+      ]
+    },
+    {
+      "id": "exit_forecourt_north",
+      "rect": [
+        272,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r1",
+      "to_spawn": [
+        192,
+        216
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "door_twin_clapper",
+      "kind": "ow_twin_clapper_seal",
+      "pos": [
+        288,
+        40
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "bell_forecourt_dawn",
+      "kind": "bell",
+      "pos": [
+        288,
+        224
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 176
+      }
+    },
+    {
+      "id": "lore_forecourt_uc",
+      "kind": "lore_stone",
+      "pos": [
+        192,
+        176
+      ],
+      "props": {
+        "string_id": "ISL1_LORE_UC_HINT",
+        "icon": "arrow_w"
+      }
+    },
+    {
+      "id": "lore_forecourt_mn",
+      "kind": "lore_stone",
+      "pos": [
+        384,
+        176
+      ],
+      "props": {
+        "string_id": "ISL1_LORE_MN_HINT",
+        "icon": "arrow_e"
+      }
+    },
+    {
+      "id": "npc_scribe_worm",
+      "kind": "npc",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "folk": "scribe_worm",
+        "require_flag": "great_lamp_1",
+        "wander_radius": 8,
+        "bubbles": [
+          {
+            "icons": [
+              "skull",
+              "bell",
+              "light_off",
+              "clock",
+              "arrow_w"
+            ],
+            "line": "ISL1_Q4_SILENT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "lamp_fc_sw",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        352
+      ],
+      "props": {
+        "zone": "belfry_forecourt",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fc_se",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        352
+      ],
+      "props": {
+        "zone": "belfry_forecourt",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fc_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        216
+      ],
+      "props": {
+        "zone": "belfry_forecourt",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fc_e",
+      "kind": "road_lamp",
+      "pos": [
+        480,
+        216
+      ],
+      "props": {
+        "zone": "belfry_forecourt",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fc_nw",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        112
+      ],
+      "props": {
+        "zone": "belfry_forecourt",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fc_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        112
+      ],
+      "props": {
+        "zone": "belfry_forecourt",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "midnight_forecourt",
+      "when": "bell_hour==midnight",
+      "tint": "midnight"
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        224
+      ],
+      "radius": 44,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        256,
+        56,
+        64,
+        88
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        288,
+        112
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island1_scenery",
+      "prop": "bell_tower_arch",
+      "pos": [
+        288,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        232,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        344,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        176,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        400,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "cracked_bell_shard",
+      "pos": [
+        160,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        416,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        128,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        448,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        208,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        368,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        176,
+        256
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        400,
+        256
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Grand Belfry Forecourt displaying the Twin Clapper Seal (Undercroft Spade + Manor Clapper), branching West to Chime Town and East to Manor Gardens, and hosting Scribe Worm's post-relight Silent Bell rumor.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Shows both dungeon goals visually on the Twin Clapper Seal before climbing the Grand Belfry.",
+    "decisions": 4,
+    "expert_s": 45,
+    "reward": "twin_clapper_seal+silent_bell_rumor",
+    "why": "Macro crossroads linking Overworld, Town, Manor Gardens, and the Grand Belfry.",
+    "optional": true,
+    "start": {
+      "flags": [
+        "seal_broken_1"
+      ]
+    },
+    "exit": "exit_forecourt_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_forecourt_uc"
+      },
+      {
+        "op": "interact",
+        "target": "lore_forecourt_mn"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          288,
+          272
+        ],
+        "target": "bell_forecourt_dawn"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_forecourt_north"
+      }
+    ]
+  }
+}

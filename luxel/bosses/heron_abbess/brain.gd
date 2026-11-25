@@ -56,21 +56,21 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island4_boss_p1"
 	music_p2_cue = "island4_boss_p2"
-	max_hp = 84.0
-	hp = 84.0
+	max_hp = 102.0
+	hp = 102.0
 	body_radius = 9.0
-	move_speed = 46.0
+	move_speed = 44.0
 	stagger_threshold = 15.0
 	stagger_duration = 1.65
 	punish_dmg_mult = 1.30
-	post_recover_cd = 0.28
+	post_recover_cd = 0.30
 	shard_drop = 42
 	death_duration = 2.4
 
 
 func _configure_boss(_spec: Dictionary) -> void:
 	if world_ctx != null and str(world_ctx.get("current_region_id")) == "conservatory_r10":
-		arena_rect = Rect2(144.0, 72.0, 192.0, 112.0)
+		arena_rect = Rect2(152.0, 80.0, 168.0, 88.0)
 	configure_phases([0.66, 0.33])
 
 	# Attack 1: Spear Stab — razor beak lunge leaving beak stuck in floor during RECOVER!
@@ -81,15 +81,15 @@ func _configure_boss(_spec: Dictionary) -> void:
 			beak_stuck = false
 			_stab_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _stab_dir.angle()
-			ground.warn_lane(pos, pos + _stab_dir * 132.0, 10.0, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_lane(pos, pos + _stab_dir * 52.0, 8.0, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("heron_stare", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_lane(pos, _stab_dir, 4 if phase >= 3 else 3, 168.0, 0.06, {"color": "ice", "source": "heron_spear"})
+			patterns.emit_lane(pos, _stab_dir, 4 if phase >= 3 else 3, 148.0, 0.07, {"color": "ice", "source": "heron_spear"})
 			stage.shake(0.16)
 			stage.play_sfx("heron_stab", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
-			move_boss(_stab_dir * 165.0 * dt, false)
-			check_contact_damage(26.0, _stab_dir, 1.0, "heron_spear"),
+			move_boss(_stab_dir * 120.0 * dt, false)
+			check_contact_damage(22.0, _stab_dir, 1.0, "heron_spear"),
 	})
 
 	# Attack 2: Wing Gust — broad gale corridor pushing Wick/lantern unless sheltered in a skylight!
@@ -102,14 +102,16 @@ func _configure_boss(_spec: Dictionary) -> void:
 			facing = gust_dir.angle()
 			gust_hit = false
 			gust_announced = false
-			ground.warn_lane(pos, pos + gust_dir * GUST_RANGE, GUST_HALF_W * 0.72, last_tell_duration, 0.0, "sky", "ice")
+			ground.warn_lane(pos, pos + gust_dir * 52.0, 10.0, last_tell_duration, 0.0, "sky", "ice")
+			if not arena_rect.grow(-11.0).has_point(tgt):
+				ground.warn_ring(tgt, 20.0, last_tell_duration + 0.04, 1.0, "coral", "gold")
 			stage.play_sfx("heron_gust_inhale", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			gust_announced = true
 			gust_emitted.emit(pos, gust_dir, GUST_RANGE, GUST_HALF_W, self)
 			if world_ctx != null and world_ctx.has_method("on_enemy_gust"):
 				world_ctx.call("on_enemy_gust", self, pos, gust_dir, GUST_RANGE, GUST_HALF_W)
-			patterns.emit_fan(pos, gust_dir, 7 if phase >= 3 else 5, 0.92, 142.0, {"color": "sky", "source": "wing_gust"})
+			patterns.emit_fan(pos, gust_dir, 5 if phase >= 3 else 3, 0.88, 126.0, {"color": "sky", "source": "wing_gust", "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("heron_gust_fire", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
@@ -117,8 +119,10 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if _has_player():
 				var wp: Vector2 = _get_wick_pos()
 				if Geometry2D.get_closest_point_to_segment(wp, pos, end_p).distance_to(wp) <= GUST_HALF_W:
-					if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and not _in_active_skylight(wp):
-						Lx.player.call("apply_recoil", gust_dir * GUST_PUSH_WICK * dt)
+					var push_probe: Vector2 = wp + gust_dir * 18.0
+					var safe_push: bool = world_ctx == null or not world_ctx.has_method("is_lethal_void_at") or not bool(world_ctx.call("is_lethal_void_at", push_probe))
+					if safe_push and Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and not _in_active_skylight(wp):
+						Lx.player.call("apply_recoil", gust_dir * 120.0 * dt)
 					if not gust_hit and pos.distance_to(wp) <= 58.0:
 						gust_hit = true
 						emit_boss_damage(gust_dir, 1.0, "wing_gust", pos, true)
@@ -128,19 +132,23 @@ func _configure_boss(_spec: Dictionary) -> void:
 					_push_thrown_lantern(dt),
 	})
 
-	# Attack 3: Feather Barrage — glass-feather rain across Wick & corners + twin plume boomerangs
+	# Attack 3: Feather Barrage — aimed glass-feather volley + twin curving plume boomerangs
 	register_attack("feather_barrage", {
-		"weight": 1.15, "tell": 0.54, "commit": 0.36, "recover": 0.98, "cooldown": 1.45,
+		"weight": 1.15, "tell": 0.54, "commit": 0.36, "recover": 1.02, "cooldown": 1.45,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = BossMove.STAB
 			beak_stuck = false
-			var drops: Array[Vector2] = _build_feather_targets(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "sky", "gold")
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			ground.warn_sector(pos, d.angle() - 0.55, d.angle() + 0.55, 44.0, last_tell_duration, 0.0, "sky", "gold")
+			if not arena_rect.grow(-11.0).has_point(tgt):
+				ground.warn_ring(tgt, 20.0, last_tell_duration + 0.04, 1.0, "sky", "gold")
 			stage.play_sfx("heron_ring_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_boomerang(pos, d.rotated(0.28), 144.0, 0.68, 0.72, {"color": "ice", "source": "feather_plume"})
-			patterns.emit_boomerang(pos, d.rotated(-0.28), 144.0, 0.68, -0.72, {"color": "gold", "source": "feather_plume"})
+			patterns.emit_fan(pos, d, 5 if phase >= 2 else 3, 0.72, 122.0, {"color": "sky", "source": "feather_fan", "damage": 0.5})
+			patterns.emit_boomerang(pos, d.rotated(0.28), 124.0, 0.68, 0.72, {"color": "ice", "source": "feather_plume", "damage": 0.5})
+			if phase >= 2:
+				patterns.emit_boomerang(pos, d.rotated(-0.28), 124.0, 0.68, -0.72, {"color": "gold", "source": "feather_plume", "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("heron_ring_fire", pos),
 	})
@@ -152,12 +160,12 @@ func _configure_boss(_spec: Dictionary) -> void:
 			active_move = BossMove.SHOCKWAVE_RING
 			beak_stuck = false
 			ring_progress = 0.0
-			ground.warn_ring(pos, RING_MAX_R, last_tell_duration, 0.0, "sky", "coral")
+			ground.warn_ring(pos, 32.0, last_tell_duration, 0.0, "sky", "coral")
 			stage.play_sfx("heron_ring_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 14 if phase >= 3 else 12, 126.0, gap_a + 0.40, 0.70, {"color": "sky", "source": "choir_ring"})
-			patterns.emit_orbit(pos, 4 if phase >= 3 else 3, 42.0, 2.2, 2.0, {"color": "ice", "source": "glass_halo"})
+			patterns.emit_gap_ring(pos, 12 if phase >= 3 else 10, 114.0, gap_a, 0.88, {"color": "sky", "source": "choir_ring", "damage": 0.5})
+			patterns.emit_orbit(pos, 3, 40.0, 2.0, 1.9, {"color": "ice", "source": "glass_halo", "damage": 0.5})
 			stage.shake(0.20)
 			stage.play_sfx("heron_ring_fire", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
@@ -175,7 +183,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			leap_to = clamp_to_arena(tgt)
 			_double_ripple_done = false
 			ring_progress = 0.0
-			ground.warn_ring(leap_to, 26.0, last_tell_duration + LEAP_AIR_TIME * 0.7, 1.0, "coral", "gold")
+			ground.warn_ring(leap_to, 18.0, last_tell_duration + LEAP_AIR_TIME * 0.7, 1.0, "coral", "gold")
 			stage.play_sfx("heron_gust_inhale", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			leap_from = pos
@@ -190,7 +198,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 				leap_stage = 1
 				abbess_z = 0.0
 				var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-				patterns.emit_gap_ring(pos, 12, 128.0, gap_a + 0.36, 0.72, {"color": "sky", "source": "gale_ripple_1"})
+				patterns.emit_gap_ring(pos, 10, 114.0, gap_a, 0.88, {"color": "sky", "source": "gale_ripple_1", "damage": 0.5})
 				stage.shake(0.22)
 				stage.play_sfx("heron_ring_fire", pos)
 			else:
@@ -198,7 +206,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 				if not _double_ripple_done and el >= LEAP_AIR_TIME + DOUBLE_RIPPLE_GAP:
 					_double_ripple_done = true
 					var gap_b: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-					patterns.emit_gap_ring(pos, 14, 134.0, gap_b - 0.38, 0.70, {"color": "gold", "source": "gale_ripple_2"})
+					patterns.emit_gap_ring(pos, 12, 120.0, gap_b, 0.88, {"color": "gold", "source": "gale_ripple_2", "damage": 0.5})
 					stage.shake(0.20)
 					stage.play_sfx("clockwork_chime", pos)
 					stage.play_sfx("heron_ring_fire", pos),
@@ -247,18 +255,18 @@ func _on_phase_enter(new_phase: int) -> void:
 	if new_phase == 2:
 		if not _skylights.is_empty():
 			_skylights[0]["shattered"] = true
-		_carve_safe_tile_near(c + Vector2(-88.0, -44.0), "water")
-		_carve_safe_tile_near(c + Vector2(88.0, 44.0), "water")
-		props.spawn_pillar(clamp_to_arena(c + Vector2(-56.0, -18.0)), 4.5, "abbess_glass_w")
-		props.spawn_pillar(clamp_to_arena(c + Vector2(56.0, -18.0)), 4.5, "abbess_glass_e")
+		_carve_safe_tile_near(Vector2(arena_rect.position.x - 24.0, c.y), "water")
+		_carve_safe_tile_near(Vector2(arena_rect.end.x + 24.0, c.y), "water")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-52.0, -16.0)), 4.5, "abbess_glass_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(52.0, -16.0)), 4.5, "abbess_glass_e")
 		stage.darkness_pulse(0.62, 1.0)
 		stage.shake(0.24)
 		stage.play_sfx("heron_abbess_phase", pos)
 	elif new_phase == 3:
 		for sk: Dictionary in _skylights:
 			sk["shattered"] = true
-		_carve_safe_tile_near(c + Vector2(88.0, -44.0), "water")
-		_carve_safe_tile_near(c + Vector2(-88.0, 44.0), "water")
+		_carve_safe_tile_near(Vector2(arena_rect.position.x - 24.0, c.y + 16.0), "water")
+		_carve_safe_tile_near(Vector2(arena_rect.end.x + 24.0, c.y + 16.0), "water")
 		stage.darkness_pulse(0.70, 1.1)
 		stage.shake(0.28)
 		stage.play_sfx("heron_abbess_phase", pos)
@@ -349,12 +357,14 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		return dmg * 2.0
 
 	if boss_state == BossState.STAGGER:
-		return dmg * 1.45
+		return dmg * (1.85 if heavy else 1.45)
 	if beak_stuck:
-		return dmg * 1.25
+		return dmg * (1.75 if heavy else 1.25)
 	if is_punishable():
-		return dmg * (1.15 if (heavy or gliding) else 1.0)
-	if heavy or gliding:
+		return dmg * (1.70 if heavy else (1.15 if gliding else 1.0))
+	if heavy:
+		return dmg * 1.65
+	if gliding:
 		return dmg * 1.15
 
 	# Porcelain-feather mantle outside punish windows: reduced ground bolt chip + clear glint!
@@ -373,7 +383,7 @@ func _on_death_start() -> void:
 
 
 func _build_feather_targets(tgt: Vector2) -> Array[Vector2]:
-	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var out: Array[Vector2] = [tgt]
 	var inset: Rect2 = arena_rect.grow(-18.0)
 	var corners: Array[Vector2] = [
 		inset.position, Vector2(inset.end.x, inset.position.y),
@@ -392,9 +402,8 @@ func _build_feather_targets(tgt: Vector2) -> Array[Vector2]:
 func _carve_safe_tile_near(world_pt: Vector2, tile_kind: String) -> void:
 	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("tile_at"):
 		return
-	var p: Vector2 = clamp_to_arena(world_pt)
-	var tx: int = int(floorf(p.x / 16.0))
-	var ty: int = int(floorf(p.y / 16.0))
+	var tx: int = int(floorf(world_pt.x / 16.0))
+	var ty: int = int(floorf(world_pt.y / 16.0))
 	var cp := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
 	if str(world_ctx.call("tile_at", cp)) == "ground" and cp.distance_to(home) > 32.0:
 		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), tile_kind)

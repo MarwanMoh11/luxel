@@ -1,6 +1,6 @@
 class_name LxKilnSlagHelper
 extends RefCounted
-## Helper for upgraded Kilnmother (Island 6 Bible 4.8):
+## Helper for upgraded Kilnmother on LxBossBase (Island 6 Bible §4.8):
 ## Tracks lobbed molten/cooled slag boulders, triggers room slag_pourers,
 ## cools boulders on Blue hits, computes 4-Way Furnace Cross occlusion by cooled boulders
 ## or frozen slag_slimes, and renders boulders + P2 cracked outer lava channels.
@@ -48,7 +48,10 @@ func commit_lobs(owner: LxEnemyBrain) -> void:
 			var wp: Vector2 = owner.call("_get_wick_pos") as Vector2
 			if wp.distance_to(tp) <= 22.0:
 				var push: Vector2 = (wp - tp).normalized() if wp.distance_to(tp) > 0.1 else Vector2.DOWN
-				owner.call("_emit_player_hit", push, 1.0)
+				if owner.has_method("emit_boss_damage"):
+					owner.call("emit_boss_damage", push, 1.0, "slag_lob", tp, true)
+				else:
+					owner.call("_emit_player_hit", push, 1.0)
 	lob_targets.clear()
 
 

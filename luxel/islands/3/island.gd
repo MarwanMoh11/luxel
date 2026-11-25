@@ -15,6 +15,29 @@ const REQUIRED_BEACONS: Array[String] = [
 
 const REGIONS: Array[String] = [
 	"overworld",
+	"ow_camp",
+	"ow_shift_w",
+	"ow_shift_e",
+	"ow_shift_n",
+	"ow_tiny_moss",
+	"cave_amber_well",
+	"cave_burrow_den",
+	"cave_sap_vault",
+	"cave_root_cellar",
+	"trial_canopy_sprint",
+	"trial_moth_scales",
+	"sb_mother_root",
+	"underroot_r1",
+	"underroot_r2",
+	"underroot_r3",
+	"underroot_r4",
+	"underroot_r5",
+	"underroot_r6",
+	"underroot_r7",
+	"underroot_r8",
+	"underroot_r9",
+	"underroot_r10",
+	"underroot_r11",
 	"oak_r1",
 	"oak_r2",
 	"oak_r3",
@@ -25,6 +48,21 @@ const REGIONS: Array[String] = [
 	"oak_r8",
 	"oak_r9",
 	"oak_r10",
+]
+
+const MINOR_BOSSES: Array[String] = [
+	"mother_root",
+	"hundred_lamps",
+	"stag_colossus",
+	"thread_keeper",
+	"loom_widow",
+	"briar_arbiter",
+]
+
+const GRAND_SEAL_FLAGS: Array[String] = [
+	"underroot_done",
+	"loom_done",
+	"briar_court_done",
 ]
 
 var _events: LxEventBus = null
@@ -161,10 +199,46 @@ func are_all_beacons_lit() -> bool:
 	return true
 
 
+func is_grand_seal_ready() -> bool:
+	var st: LxGameState = _get_state()
+	if st == null:
+		return false
+	if _is_legacy_seal_open(st):
+		return true
+	if not are_all_beacons_lit():
+		return false
+	for fl: String in GRAND_SEAL_FLAGS:
+		if not bool(st.story_flags.get(fl, false)):
+			return false
+	return true
+
+
+func _is_legacy_seal_open(st: LxGameState) -> bool:
+	if st == null:
+		return false
+	return (
+		st.broken_seals.has(SEAL_ID)
+		or bool(st.story_flags.get("seal_broken_3", false))
+		or bool(st.story_flags.get("isl3_oak_entered", false))
+		or st.opened_doors.has("door_dungeon_3")
+	)
+
+
+func _migrate_legacy_seal(st: LxGameState) -> void:
+	if st == null:
+		return
+	if _is_legacy_seal_open(st):
+		st.story_flags["seal_broken_3"] = true
+		st.story_flags["grand_seal_3_ready"] = true
+		if not st.broken_seals.has(SEAL_ID):
+			st.broken_seals.append(SEAL_ID)
+
+
 func _on_region_entered(island_id: int, region_id: String) -> void:
 	if island_id != ISLAND_ID:
 		return
 	var st: LxGameState = _get_state()
+	_migrate_legacy_seal(st)
 	if region_id == "overworld":
 		if st != null and not bool(st.story_flags.get("isl3_arrived", false)):
 			st.story_flags["isl3_arrived"] = true
@@ -173,6 +247,45 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 				_events.sfx_requested.emit("prop_rustle", Vector2.ZERO, false)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
+	elif region_id == "ow_camp":
+		if st != null and not bool(st.story_flags.get("isl3_camp_visited", false)):
+			st.story_flags["isl3_camp_visited"] = true
+			_emit_narration("ISL3_CAMP_NAME", "title", 3.0)
+		elif st != null and st.relit_islands.has(ISLAND_ID) and not bool(st.story_flags.get("isl3_camp_relit_seen", false)):
+			st.story_flags["isl3_camp_relit_seen"] = true
+			_emit_narration("ISL3_CAMP_RELIT_NOTE", "narration", 3.8)
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id.begins_with("ow_shift_"):
+		if region_id == "ow_shift_w" and st != null and not bool(st.story_flags.get("isl3_shift_seen", false)):
+			st.story_flags["isl3_shift_seen"] = true
+			_emit_narration("ISL3_SHIFT_W_NAME", "title", 3.0)
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id == "ow_tiny_moss":
+		if st != null:
+			st.story_flags["quest:hide:hollow_stump"] = true
+		if _events != null:
+			_events.music_mode_requested.emit("isl3_underroot")
+	elif region_id.begins_with("cave_"):
+		if _events != null:
+			_events.music_mode_requested.emit("island3_dungeon")
+	elif region_id.begins_with("trial_"):
+		if _events != null:
+			_events.music_mode_requested.emit("isl3_setpiece")
+	elif region_id == "sb_mother_root":
+		var mr_live: bool = st == null or (not st.defeated_bosses.has("mother_root") and not bool(st.story_flags.get("mother_root_defeated", false)))
+		if mr_live:
+			_emit_narration("ISL3_SB_MOTHER_NAME", "title", 3.2)
+		if _events != null:
+			_events.music_mode_requested.emit("isl3_boss_minor_p1" if mr_live else "explore")
+	elif region_id.begins_with("underroot_"):
+		if _events != null:
+			var ur_boss_live: bool = (
+				(region_id == "underroot_r11" and st != null and not st.defeated_bosses.has("hundred_lamps"))
+				or (region_id == "underroot_r6" and st != null and not st.defeated_bosses.has("stag_colossus"))
+			)
+			_events.music_mode_requested.emit("isl3_boss_minor_p1" if ur_boss_live else "isl3_underroot")
 	elif region_id == "oak_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_MATRON", "title", 3.5)
@@ -246,17 +359,31 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
-	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
-		return
-	if phase >= 2 and _events != null:
-		_events.music_mode_requested.emit("island3_boss_p2")
-		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
+	if boss_id == BOSS_ID or boss_id == MINI_BOSS_KIND:
+		if phase >= 2 and _events != null:
+			_events.music_mode_requested.emit("island3_boss_p2")
+			_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
+	elif MINOR_BOSSES.has(boss_id):
+		if phase >= 2 and _events != null:
+			_events.music_mode_requested.emit("isl3_boss_minor_p2")
+			_events.shake_requested.emit(0.30 if phase >= 3 else 0.24)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
-	if island_id != ISLAND_ID or boss_id != BOSS_ID:
+	if island_id != ISLAND_ID:
 		return
 	var st: LxGameState = _get_state()
+	if boss_id == "mother_root":
+		if st != null:
+			if not st.defeated_bosses.has("mother_root"):
+				st.defeated_bosses.append("mother_root")
+			st.story_flags["mother_root_defeated"] = true
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+			_events.save_requested.emit("mother_root_defeated")
+		return
+	if boss_id != BOSS_ID:
+		return
 	if st != null:
 		if not st.defeated_bosses.has(BOSS_ID):
 			st.defeated_bosses.append(BOSS_ID)
@@ -277,10 +404,15 @@ func _on_great_lamp_relit(island_id: int) -> void:
 			st.relit_islands.append(ISLAND_ID)
 		st.story_flags["great_lamp_3"] = true
 		st.story_flags["island_3_relit"] = true
+	if _rule != null:
+		_rule.set_var("pin_w", 1)
+		_rule.set_var("pin_e", 1)
+		_rule.set_var("pin_n", 1)
 	if _events != null:
 		_events.sfx_requested.emit("lamp_relit", Vector2.ZERO, false)
 		_events.music_mode_requested.emit("explore")
 		_emit_narration("ISL3_RELIGHT", "title", 4.0)
+		_emit_narration("ISL3_RELIT_NOTE", "narration", 4.0)
 		_emit_narration("ISL3_BRIDGE", "narration", 4.0)
 		_events.save_requested.emit("great_lamp_3")
 

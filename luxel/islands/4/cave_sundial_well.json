@@ -1,0 +1,435 @@
+{
+  "id": "cave_sundial_well",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_4",
+  "name_key": "ISL4_ZONE_SUNDIAL_WELL",
+  "music": "island4_dungeon",
+  "spawn": [
+    176,
+    208
+  ],
+  "zones": [
+    {
+      "id": "cave_sundial_well",
+      "name_key": "ISL4_ZONE_SUNDIAL_WELL",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_well_to_ow",
+      "rect": [
+        160,
+        240,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        352,
+        208
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "brazier_well_pin",
+      "kind": "brazier",
+      "pos": [
+        128,
+        192
+      ],
+      "props": {
+        "sets_flag": "well_pinned"
+      }
+    },
+    {
+      "id": "sundial_well",
+      "kind": "garden_sundial",
+      "pos": [
+        224,
+        192
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "rose_well_1",
+      "kind": "echo_rose",
+      "pos": [
+        88,
+        144
+      ],
+      "props": {
+        "secs": 6.0
+      }
+    },
+    {
+      "id": "plate_well_1",
+      "kind": "pressure_plate",
+      "pos": [
+        88,
+        80
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "gate_well_vault"
+      }
+    },
+    {
+      "id": "tb_well_a",
+      "kind": "timed_brazier",
+      "pos": [
+        168,
+        64
+      ],
+      "props": {
+        "secs": 6.0,
+        "target_id": "gate_well_vault"
+      }
+    },
+    {
+      "id": "tb_well_b",
+      "kind": "timed_brazier",
+      "pos": [
+        248,
+        80
+      ],
+      "props": {
+        "secs": 6.0,
+        "target_id": "gate_well_vault"
+      }
+    },
+    {
+      "id": "gate_well_vault",
+      "kind": "logic_gate",
+      "pos": [
+        248,
+        168
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_well_1",
+          "tb_well_a",
+          "tb_well_b"
+        ],
+        "target_id": "door_well_vault"
+      }
+    },
+    {
+      "id": "door_well_vault",
+      "kind": "door",
+      "pos": [
+        280,
+        128
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_well_vault"
+        ]
+      }
+    },
+    {
+      "id": "chest_ember_4_3",
+      "kind": "chest",
+      "pos": [
+        328,
+        104
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_4_3"
+      }
+    },
+    {
+      "id": "moth_4_02",
+      "kind": "moth",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "id": "moth_4_02"
+      }
+    },
+    {
+      "id": "lamp_well_s",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_well_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_well_n",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_well_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_well_pin",
+      "on": "signal:brazier_well_pin",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "well_pinned"
+        },
+        {
+          "narrate": "ISL4_CUE_SEAL_PIN"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "rect": [
+        128,
+        80,
+        96,
+        96
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        144,
+        96,
+        64,
+        64
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_4",
+      "prop": "cave_arch_rock",
+      "pos": [
+        176,
+        228
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        48,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        248,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "stalagmite_tall",
+      "pos": [
+        48,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        248,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "dripping_pool_basin",
+      "pos": [
+        112,
+        64
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "subterranean_shroom",
+      "pos": [
+        304,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "cave_lantern_post",
+      "pos": [
+        304,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Safe Echo Rose and dual timed-brazier cistern well exposed at Hour II; inner pin-sconce permanently locks the overworld well open.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "pin-sconce permanence, Echo Rose holding a plate while Wick sprints to light timed braziers",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "well_pinned, ember_4_3, moth_4_02",
+    "why": "Early optional cave teaching Echo Rose plate-holding + generous pin-sconce loop rule.",
+    "optional": true,
+    "start": {
+      "vars": {
+        "island:4:dusk_hour": 2
+      }
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "target": "brazier_well_pin"
+      },
+      {
+        "op": "expect",
+        "flag": "well_pinned"
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          144
+        ],
+        "tol": 10
+      },
+      {
+        "op": "interact",
+        "target": "rose_well_1"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_well_1",
+        "secs": 2.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          80
+        ],
+        "tol": 12
+      },
+      {
+        "op": "shoot",
+        "target": "tb_well_a"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          80
+        ],
+        "tol": 12
+      },
+      {
+        "op": "shoot",
+        "target": "tb_well_b"
+      },
+      {
+        "op": "expect",
+        "interactable": "door_well_vault",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          104
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_4_3"
+      }
+    ]
+  }
+}

@@ -1,0 +1,577 @@
+{
+  "id": "ow_meteor_apron",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "meteor_vault",
+  "name_key": "I5_ZONE_APRON",
+  "music": "isl5_meteor",
+  "spawn": [
+    288,
+    328
+  ],
+  "zones": [
+    {
+      "id": "meteor_apron",
+      "name_key": "I5_ZONE_APRON",
+      "rect": [
+        0,
+        0,
+        576,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "ex_apron_south",
+      "rect": [
+        256,
+        352,
+        64,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        392,
+        152
+      ]
+    },
+    {
+      "id": "ex_apron_trial",
+      "rect": [
+        16,
+        176,
+        16,
+        48
+      ],
+      "to_island": 5,
+      "to_region": "trial_comet_range",
+      "to_spawn": [
+        400,
+        144
+      ]
+    },
+    {
+      "id": "ex_apron_cliff",
+      "rect": [
+        544,
+        80,
+        16,
+        48
+      ],
+      "to_island": 5,
+      "to_region": "ow_starfall_cliff",
+      "to_spawn": [
+        56,
+        184
+      ],
+      "requires_flags": [
+        "beacon_5_1"
+      ],
+      "locked_door_id": "door_apron_cliff"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_apron",
+      "kind": "room_anchor",
+      "pos": [
+        288,
+        328
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_5_apron",
+      "kind": "waystone",
+      "pos": [
+        288,
+        304
+      ],
+      "props": {
+        "name_key": "I5_ZONE_APRON",
+        "zone": "meteor_apron"
+      }
+    },
+    {
+      "id": "well_apron_1",
+      "kind": "polarity_well",
+      "pos": [
+        392,
+        208
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 80.0,
+        "strength": 600.0,
+        "orbit_capture": true,
+        "orbit_r": 32.0
+      }
+    },
+    {
+      "id": "eye_apron_plug",
+      "kind": "switch_eye",
+      "pos": [
+        456,
+        248
+      ],
+      "props": {
+        "target_id": "bridge_apron_tablet",
+        "sets_flag": "apron_tablet_bridge"
+      }
+    },
+    {
+      "id": "bridge_apron_tablet",
+      "kind": "door",
+      "pos": [
+        416,
+        304
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "eye_apron_plug"
+        ]
+      }
+    },
+    {
+      "id": "qi_5_tablet_a",
+      "kind": "quest_item",
+      "pos": [
+        496,
+        256
+      ],
+      "props": {
+        "id": "qi_5_tablet_a"
+      }
+    },
+    {
+      "id": "well_apron_2",
+      "kind": "polarity_well",
+      "pos": [
+        184,
+        120
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 480.0,
+        "orbit_capture": true,
+        "orbit_r": 32.0
+      }
+    },
+    {
+      "id": "sn_apron_1",
+      "kind": "star_node",
+      "pos": [
+        192,
+        104
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_apron_2",
+      "kind": "star_node",
+      "pos": [
+        152,
+        96
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "moth_5_02",
+      "kind": "moth",
+      "pos": [
+        96,
+        88
+      ],
+      "props": {
+        "id": "moth_5_02"
+      }
+    },
+    {
+      "id": "orb_apron_1",
+      "kind": "meteor_orb",
+      "pos": [
+        256,
+        128
+      ],
+      "props": {
+        "cradle_pos": [
+          256,
+          128
+        ],
+        "respawn_s": 0.8
+      }
+    },
+    {
+      "id": "bell_apron_dial",
+      "kind": "star_bell",
+      "pos": [
+        336,
+        104
+      ],
+      "props": {
+        "scope": "island:5",
+        "var_name": "ow_dial",
+        "allow_ccw_blue": true,
+        "sets_flag": "apron_bell_rung"
+      }
+    },
+    {
+      "id": "door_apron_cliff",
+      "kind": "door",
+      "pos": [
+        432,
+        104
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "beacon_5_1"
+        ]
+      }
+    },
+    {
+      "id": "lore_apron_vault",
+      "kind": "lore_stone",
+      "pos": [
+        296,
+        64
+      ],
+      "props": {
+        "string_id": "I5_OW_METEOR_GATE",
+        "icon": "star",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "lamp_apron_s",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        296
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_apron_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_apron_n",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_apron_e",
+      "kind": "road_lamp",
+      "pos": [
+        488,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_apron_se",
+      "kind": "road_lamp",
+      "pos": [
+        488,
+        272
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_apron_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        80
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_apron_hound",
+      "kind": "comet_hound",
+      "pos": [
+        176,
+        208
+      ],
+      "route": [
+        [
+          136,
+          208
+        ],
+        [
+          200,
+          208
+        ]
+      ],
+      "zone": "meteor_apron",
+      "leash": 130
+    },
+    {
+      "id": "en_apron_carrier",
+      "kind": "meteor_carrier",
+      "pos": [
+        312,
+        136
+      ],
+      "route": [
+        [
+          264,
+          136
+        ],
+        [
+          360,
+          136
+        ]
+      ],
+      "zone": "meteor_apron",
+      "leash": 130
+    }
+  ],
+  "layers": [
+    {
+      "id": "apron_dial_180",
+      "when": "ow_dial==180",
+      "tiles": [
+        [
+          24,
+          9,
+          4,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        296,
+        48
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        240,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        360,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        296,
+        304
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        200,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "brass_caliper_stand",
+      "pos": [
+        368,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "cracked_meteor_boulder",
+      "pos": [
+        80,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "star_ore_crate",
+      "pos": [
+        512,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        472,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Fractured NW asteroid approach to the Meteor Vault: curve a bolt around a basalt fin to open the eastern tablet bridge, light star nodes to reach the NW moth islet, and ring the Star Bell.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "Curved shots around terrain fins and multi-exit overworld hub branching",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "qi_5_tablet_a, moth_5_02, paths to trial_comet_range, ow_starfall_cliff, and meteor_r1",
+    "why": "NW sub-overworld connecting Brass Terrace to Dungeon A, Comet Range Trial, and Starfall Cliff.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        288,
+        328
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 28.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          248
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": [
+          432,
+          192
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_apron_plug",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          480,
+          264
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          320,
+          112
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_apron_dial"
+      },
+      {
+        "op": "expect",
+        "var": "ow_dial==90"
+      }
+    ]
+  }
+}

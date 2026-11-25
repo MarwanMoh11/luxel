@@ -1,0 +1,533 @@
+{
+  "id": "ow_dome_causeway",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "planetarium",
+  "name_key": "I5_ZONE_CAUSEWAY",
+  "music": "isl5_planetarium",
+  "spawn": [
+    288,
+    56
+  ],
+  "zones": [
+    {
+      "id": "dome_causeway",
+      "name_key": "I5_ZONE_CAUSEWAY",
+      "rect": [
+        0,
+        0,
+        576,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "ex_causeway_north",
+      "rect": [
+        256,
+        16,
+        64,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        664,
+        936
+      ]
+    },
+    {
+      "id": "ex_causeway_trial",
+      "rect": [
+        544,
+        176,
+        16,
+        48
+      ],
+      "to_island": 5,
+      "to_region": "trial_constellation_sprint",
+      "to_spawn": [
+        56,
+        144
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_causeway",
+      "kind": "room_anchor",
+      "pos": [
+        288,
+        56
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_5_causeway",
+      "kind": "waystone",
+      "pos": [
+        152,
+        152
+      ],
+      "props": {
+        "name_key": "I5_ZONE_CAUSEWAY",
+        "zone": "dome_causeway"
+      }
+    },
+    {
+      "id": "npc_scribe_worm",
+      "kind": "npc",
+      "pos": [
+        144,
+        200
+      ],
+      "props": {
+        "folk": "scribe_worm",
+        "quest": "q5_star_catalog",
+        "wander_radius": 8,
+        "bubbles": [
+          {
+            "icons": [
+              "book",
+              "star",
+              "question",
+              "arrow_nw",
+              "arrow_ne"
+            ],
+            "line": "I5_Q2_START"
+          },
+          {
+            "icons": [
+              "book",
+              "check",
+              "spark",
+              "gift",
+              "happy"
+            ],
+            "line": "I5_Q2_DONE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rotor_causeway",
+      "kind": "rotor",
+      "pos": [
+        296,
+        200
+      ],
+      "props": {
+        "size": [
+          96,
+          96
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_causeway_dial",
+      "kind": "star_bell",
+      "pos": [
+        296,
+        176
+      ],
+      "props": {
+        "scope": "island:5",
+        "var_name": "ow_dial",
+        "rotors": [
+          "rotor_causeway"
+        ],
+        "allow_ccw_blue": true,
+        "sets_flag": "causeway_bell_rung"
+      }
+    },
+    {
+      "id": "sn_cw_1",
+      "kind": "star_node",
+      "pos": [
+        272,
+        280
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_cw_2",
+      "kind": "star_node",
+      "pos": [
+        304,
+        280
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_cw_3",
+      "kind": "star_node",
+      "pos": [
+        336,
+        280
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_cw_sw",
+      "kind": "star_node",
+      "pos": [
+        200,
+        280
+      ],
+      "props": {
+        "link_range": 84.0,
+        "sky_turns": [
+          90
+        ],
+        "turn_var": "ow_dial",
+        "turn_scope": "island:5"
+      }
+    },
+    {
+      "id": "moth_5_03",
+      "kind": "moth",
+      "pos": [
+        112,
+        328
+      ],
+      "props": {
+        "id": "moth_5_03"
+      }
+    },
+    {
+      "id": "qi_5_tablet_b",
+      "kind": "quest_item",
+      "pos": [
+        144,
+        336
+      ],
+      "props": {
+        "id": "qi_5_tablet_b"
+      }
+    },
+    {
+      "id": "lore_causeway_planet",
+      "kind": "lore_stone",
+      "pos": [
+        304,
+        344
+      ],
+      "props": {
+        "string_id": "I5_OW_PLANET_GATE",
+        "icon": "star",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "lamp_cw_n",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cw_camp",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cw_c",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cw_e",
+      "kind": "road_lamp",
+      "pos": [
+        480,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cw_s",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        328
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cw_sw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        320
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_cw_eye",
+      "kind": "satellite_eye",
+      "pos": [
+        432,
+        160
+      ],
+      "route": [
+        [
+          416,
+          160
+        ],
+        [
+          456,
+          160
+        ]
+      ],
+      "zone": "dome_causeway",
+      "leash": 120
+    },
+    {
+      "id": "en_cw_jelly",
+      "kind": "star_jelly",
+      "pos": [
+        432,
+        240
+      ],
+      "route": [
+        [
+          416,
+          240
+        ],
+        [
+          456,
+          240
+        ]
+      ],
+      "zone": "dome_causeway",
+      "leash": 120
+    }
+  ],
+  "layers": [
+    {
+      "id": "cw_dial_90",
+      "when": "ow_dial==90",
+      "tiles": [
+        [
+          7,
+          16,
+          2,
+          2,
+          "bridge"
+        ],
+        [
+          11,
+          19,
+          3,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        296,
+        200
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "star_chart_lectern",
+      "pos": [
+        104,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "celestial_bench",
+      "pos": [
+        176,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        96,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        248,
+        336
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        360,
+        336
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        440,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        520,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Sunken turning causeway and South Camp overlooking the Planetarium: ring the Star Bell to rotate the central rotor to 90 degrees revealing the SW tablet and moth stairs, and light 3 star nodes to bridge south.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Star Bell turning causeways and lighting star_node bridges over void",
+    "decisions": 5,
+    "expert_s": 55,
+    "reward": "qi_5_tablet_b, moth_5_03, Scribe Worm quest, paths to trial_constellation_sprint and planet_r1",
+    "why": "SE sub-overworld connecting Echo Promenade to Dungeon B, Constellation Sprint, and South Camp.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        288,
+        56
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          296,
+          200
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_causeway_dial"
+      },
+      {
+        "op": "expect",
+        "var": "ow_dial==90"
+      },
+      {
+        "op": "wait",
+        "secs": 0.6
+      },
+      {
+        "op": "shoot",
+        "target": "sn_cw_1",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "sn_cw_2",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "sn_cw_3",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          328
+        ]
+      }
+    ]
+  }
+}

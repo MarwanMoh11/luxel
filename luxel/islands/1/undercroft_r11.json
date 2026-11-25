@@ -42,10 +42,10 @@
         16
       ],
       "to_island": 1,
-      "to_region": "overworld",
+      "to_region": "bell_yard",
       "to_spawn": [
-        424,
-        184
+        208,
+        320
       ],
       "one_way": true,
       "requires_flags": [

@@ -1,0 +1,394 @@
+{
+  "id": "superboss_first_forge",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "forge_deep",
+  "music": "superboss_a",
+  "name_key": "ISL6_Z_FIRST",
+  "spawn": [
+    256,
+    328
+  ],
+  "zones": [
+    {
+      "id": "first_forge_arena",
+      "name_key": "ISL6_Z_FIRST",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ff_to_overlook",
+      "rect": [
+        224,
+        368,
+        64,
+        16
+      ],
+      "to_region": "ow_cinder_overlook",
+      "to_spawn": [
+        568,
+        376
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_first_forge",
+      "kind": "first_forge",
+      "pos": [
+        256,
+        184
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "first_forge_arena",
+      "leash": 0
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_first_forge",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        328
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_ff_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        96,
+        192
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
+    },
+    {
+      "id": "anvil_ff_scatter",
+      "kind": "temper_anvil",
+      "pos": [
+        256,
+        96
+      ],
+      "props": {
+        "mode": "scatter",
+        "sets_flag": "temper_scatter_known"
+      }
+    },
+    {
+      "id": "anvil_ff_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        416,
+        192
+      ],
+      "props": {
+        "mode": "lance",
+        "sets_flag": "temper_lance_known"
+      }
+    },
+    {
+      "id": "lore_first_forge",
+      "kind": "lore_stone",
+      "pos": [
+        208,
+        320
+      ],
+      "props": {
+        "string_id": "ISL6_LORE_FIRST",
+        "icon": "crown"
+      }
+    },
+    {
+      "id": "door_ff_blessing",
+      "kind": "door",
+      "pos": [
+        256,
+        72
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_flags": [
+          "first_forge_defeated"
+        ]
+      }
+    },
+    {
+      "id": "moth_6_10",
+      "kind": "moth",
+      "pos": [
+        224,
+        40
+      ],
+      "props": {
+        "id": "moth_6_10"
+      }
+    },
+    {
+      "id": "chest_first_forge_200",
+      "kind": "chest",
+      "pos": [
+        288,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 200
+      }
+    },
+    {
+      "id": "lamp_ff_1",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ff_2",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ff_3",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        264
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ff_4",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ff_5",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        40
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "tempering_floor_seal",
+      "pos": [
+        256,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "basalt_forge_arch",
+      "pos": [
+        256,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        176,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        336,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "great_forge_anvil",
+      "pos": [
+        128,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "chained_slag_cauldron",
+      "pos": [
+        384,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        176,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        336,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Three-Anvil Mastery Superboss Duel against The First Forge in an octagonal sunken anvil sanctum, rewarding moth_6_10 and 200 Shards.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Live mid-fight Bolt Tempering stance matching (Skip, Scatter, Lance) + Sunflare mastery.",
+    "decisions": 9,
+    "expert_s": 165,
+    "reward": "first_forge_defeated+moth_6_10+200sh",
+    "why": "Climax post-relight superboss duel beneath High Trestle celebrating Island 6's entire kit.",
+    "optional": true,
+    "start": {
+      "flags": [
+        "great_lamp_6",
+        "temper_skip_known",
+        "temper_scatter_known",
+        "temper_lance_known"
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens",
+        "sunflare"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          208,
+          304
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_first_forge"
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          192
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_ff_skip"
+      },
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_ff_blessing",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          48
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_first_forge_200"
+      }
+    ]
+  }
+}

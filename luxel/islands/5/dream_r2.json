@@ -1,0 +1,370 @@
+{
+  "id": "dream_r2",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "name_key": "I5_DR_R2",
+  "music": "isl5_planetarium",
+  "spawn": [
+    144,
+    240
+  ],
+  "exits": [
+    {
+      "id": "ex_dr2_out",
+      "rect": [
+        128,
+        272,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_starfall_cliff",
+      "to_spawn": [
+        128,
+        96
+      ],
+      "one_way": true
+    },
+    {
+      "id": "ex_dr2_next",
+      "rect": [
+        304,
+        0,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "dream_r3",
+      "to_spawn": [
+        144,
+        272
+      ],
+      "locked_door_id": "door_dr2_next",
+      "one_way": true
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_dr2",
+      "kind": "room_anchor",
+      "pos": [
+        144,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rotor_dr2",
+      "kind": "rotor",
+      "pos": [
+        232,
+        152
+      ],
+      "props": {
+        "size": [
+          64,
+          64
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_dr2",
+      "kind": "star_bell",
+      "pos": [
+        232,
+        152
+      ],
+      "props": {
+        "scope": "room:5:dream_r2",
+        "var_name": "dr2_turn",
+        "rotors": [
+          "rotor_dr2"
+        ],
+        "sets_flag": "dr2_bell_rung"
+      }
+    },
+    {
+      "id": "sn_dr2_1",
+      "kind": "star_node",
+      "pos": [
+        160,
+        120
+      ],
+      "props": {
+        "cap_group": "dr2",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_dr2_2",
+      "kind": "star_node",
+      "pos": [
+        304,
+        176
+      ],
+      "props": {
+        "cap_group": "dr2",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_dr2_3",
+      "kind": "star_node",
+      "pos": [
+        152,
+        176
+      ],
+      "props": {
+        "cap_group": "dr2",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_dr2_4",
+      "kind": "star_node",
+      "pos": [
+        312,
+        120
+      ],
+      "props": {
+        "cap_group": "dr2",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "door_dr2_next",
+      "kind": "door",
+      "pos": [
+        320,
+        32
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          48,
+          16
+        ],
+        "clear_zone": "dream_r2"
+      }
+    },
+    {
+      "id": "lamp_dr2_s",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        240
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr2_n",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr2_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr2_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_dr2_j1",
+      "kind": "star_jelly",
+      "pos": [
+        112,
+        104
+      ],
+      "route": [
+        [
+          88,
+          96
+        ],
+        [
+          128,
+          120
+        ]
+      ],
+      "zone": "dream_r2",
+      "leash": 180
+    },
+    {
+      "id": "en_dr2_j2",
+      "kind": "star_jelly",
+      "pos": [
+        368,
+        192
+      ],
+      "route": [
+        [
+          344,
+          176
+        ],
+        [
+          392,
+          216
+        ]
+      ],
+      "zone": "dream_r2",
+      "leash": 180
+    }
+  ],
+  "layers": [
+    {
+      "id": "dr2_turn_90",
+      "when": "dr2_turn==90",
+      "tiles": [
+        [
+          9,
+          6,
+          2,
+          2,
+          "bridge"
+        ],
+        [
+          18,
+          10,
+          2,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_dr2_ok",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "dream_r2_ok"
+        },
+        {
+          "sfx": "door_open"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        232,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "star_chart_lectern",
+      "pos": [
+        184,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        88,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Dream Telescope Floor 2 (Star-Step Relay): cross a diagonal void archipelago, bridging flank islets with 4-cap star_nodes or turning the Star Bell to vaporize splitting Star Jellies with Beam and Throw.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Clean Star Jelly kills over star-bridged void decks",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "Unlocks Dream Telescope Floor 3",
+    "why": "Dream Telescope Floor 2 constellation-combat escalation.",
+    "exit": "ex_dr2_next",
+    "start": {
+      "spawn": [
+        144,
+        240
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 40.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "ex_dr2_next"
+      }
+    ]
+  }
+}

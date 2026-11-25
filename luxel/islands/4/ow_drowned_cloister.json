@@ -1,0 +1,632 @@
+{
+  "id": "ow_drowned_cloister",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "rain_mausoleum",
+  "name_key": "ISL4_ZONE_CLOISTER",
+  "music": "island4_explore",
+  "spawn": [
+    288,
+    48
+  ],
+  "zones": [
+    {
+      "id": "ow_drowned_cloister",
+      "name_key": "ISL4_ZONE_CLOISTER",
+      "rect": [
+        0,
+        0,
+        608,
+        448
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cloister_to_ow",
+      "rect": [
+        272,
+        0,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        544,
+        752
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_rain_cistern",
+      "rect": [
+        0,
+        176,
+        16,
+        48
+      ],
+      "to_region": "cave_rain_cistern",
+      "to_spawn": [
+        368,
+        128
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_cloister_to_terrace",
+      "rect": [
+        592,
+        144,
+        16,
+        48
+      ],
+      "to_region": "ow_clock_terrace",
+      "to_spawn": [
+        464,
+        368
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_last_hour",
+      "rect": [
+        0,
+        352,
+        16,
+        48
+      ],
+      "to_region": "vault_last_hour",
+      "to_spawn": [
+        432,
+        192
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "island_4_relit"
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "rf_cloister_c",
+      "kind": "rain_frog",
+      "pos": [
+        296,
+        208
+      ],
+      "route": [
+        [
+          264,
+          208
+        ],
+        [
+          328,
+          208
+        ]
+      ],
+      "zone": "ow_drowned_cloister",
+      "leash": 135
+    },
+    {
+      "id": "eel_cloister_w",
+      "kind": "mist_eel",
+      "pos": [
+        152,
+        232
+      ],
+      "route": [
+        [
+          128,
+          232
+        ],
+        [
+          168,
+          232
+        ]
+      ],
+      "zone": "ow_drowned_cloister",
+      "leash": 135
+    },
+    {
+      "id": "hh_cloister_e",
+      "kind": "hour_heron",
+      "pos": [
+        448,
+        192
+      ],
+      "route": [
+        [
+          432,
+          160
+        ],
+        [
+          464,
+          216
+        ]
+      ],
+      "zone": "ow_drowned_cloister",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "sundial_cloister",
+      "kind": "garden_sundial",
+      "pos": [
+        240,
+        88
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "plaque_cloister",
+      "kind": "isl4_schedule_plaque",
+      "pos": [
+        344,
+        88
+      ],
+      "props": {
+        "highlight_hours": [
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "id": "ws_4_cloister",
+      "kind": "waystone",
+      "pos": [
+        184,
+        88
+      ],
+      "props": {
+        "name_key": "ISL4_ZONE_CLOISTER"
+      }
+    },
+    {
+      "id": "item_dew_hour_3",
+      "kind": "quest_item",
+      "pos": [
+        296,
+        240
+      ],
+      "props": {
+        "id": "dew_hour_3"
+      }
+    },
+    {
+      "id": "cgate_cloister_terrace",
+      "kind": "clock_gate",
+      "pos": [
+        552,
+        168
+      ],
+      "props": {
+        "var": "dusk_hour",
+        "open_on": [
+          3
+        ],
+        "size": [
+          16,
+          48
+        ],
+        "pin_flag": "cloister_terrace_pinned"
+      }
+    },
+    {
+      "id": "lore_cloister_ms",
+      "kind": "lore_stone",
+      "pos": [
+        296,
+        368
+      ],
+      "props": {
+        "string_id": "ISL4_CLOISTER_GATE_HINT",
+        "icon": "tide",
+        "persist": true
+      }
+    },
+    {
+      "id": "chest_cloister_pier",
+      "kind": "chest",
+      "pos": [
+        344,
+        384
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40
+      }
+    },
+    {
+      "id": "chest_cloister_lens",
+      "kind": "chest",
+      "pos": [
+        520,
+        384
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 85,
+        "requires_moves": [
+          "lens"
+        ],
+        "secret_id": "isl4_cloister_phantom"
+      }
+    },
+    {
+      "id": "door_last_hour_seal",
+      "kind": "door",
+      "pos": [
+        56,
+        376
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "island_4_relit"
+        ]
+      }
+    },
+    {
+      "id": "lamp_cl_n1",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cl_n2",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cl_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cl_c",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cl_e",
+      "kind": "road_lamp",
+      "pos": [
+        488,
+        152
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cl_s",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        368
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cl_sw",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        376
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cl_se",
+      "kind": "road_lamp",
+      "pos": [
+        520,
+        368
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "hour3_mausoleum_raft",
+      "when": "dusk_hour==3",
+      "tiles": [
+        [
+          17,
+          17,
+          3,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "item_dew_hour_3"
+      ],
+      "disable": []
+    },
+    {
+      "id": "hour6_shadow_bridge",
+      "when": "dusk_hour==6 || flag:boss_last_hour_defeated",
+      "tiles": [
+        [
+          5,
+          17,
+          3,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        88
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        272,
+        272,
+        48,
+        48
+      ]
+    },
+    {
+      "kind": "stain",
+      "rect": [
+        256,
+        336,
+        80,
+        64
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "mausoleum_arch_gate",
+      "pos": [
+        296,
+        420
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        200,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        256,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        336,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        160,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        424,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        264,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        88,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        456,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        120,
+        360
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "storm_brazier_bowl",
+      "pos": [
+        496,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "carved_sarcophagus",
+      "pos": [
+        136,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Drowned Cloister south district where Hour III floats the raft bridge to Rain Mausoleum and blooms the Raindrop quest item, while Hour VI raises the Shadow Bridge to the Last Hour superboss.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Hour III rain raft flooding, Rain Frog + Mist Eel preview, Hour VI Shadow Bridge, and True Lens phantom bridge",
+    "decisions": 6,
+    "expert_s": 65,
+    "reward": "dew_hour_3, Rain Cistern + Rain Mausoleum + Last Hour links, 40/85 shard chests",
+    "why": "Southern rain cloister tying together Rain Mausoleum, Rain Cistern, and the post-relight Superboss.",
+    "optional": true,
+    "start": {
+      "vars": {
+        "island:4:dusk_hour": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "sundial_cloister"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "interact",
+        "target": "sundial_cloister"
+      },
+      {
+        "op": "expect",
+        "var": "dusk_hour==3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          240
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "item_dew_hour_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          384
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "chest_cloister_pier"
+      }
+    ]
+  }
+}

@@ -1,0 +1,620 @@
+{
+  "id": "toll_r1",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R1",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    248,
+    312
+  ],
+  "zones": [
+    {
+      "id": "toll_narthex",
+      "name_key": "ISL8_TOLL_R1",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r1_south_ow",
+      "rect": [
+        224,
+        336,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_causeway",
+      "to_spawn": [
+        56,
+        224
+      ]
+    },
+    {
+      "id": "exit_r1_west",
+      "rect": [
+        0,
+        176,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r2",
+      "to_spawn": [
+        392,
+        184
+      ],
+      "locked_door_id": "door_r1_west"
+    },
+    {
+      "id": "exit_r1_nw_short",
+      "rect": [
+        96,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r5",
+      "to_spawn": [
+        376,
+        160
+      ],
+      "locked_door_id": "door_r1_nw_short"
+    },
+    {
+      "id": "exit_r1_east",
+      "rect": [
+        496,
+        176,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r6",
+      "to_spawn": [
+        56,
+        240
+      ],
+      "locked_door_id": "door_r1_east"
+    },
+    {
+      "id": "exit_r1_ne_chute",
+      "rect": [
+        384,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r10",
+      "to_spawn": [
+        128,
+        264
+      ],
+      "locked_door_id": "door_r1_ne_chute"
+    },
+    {
+      "id": "exit_r1_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r11",
+      "to_spawn": [
+        240,
+        296
+      ],
+      "locked_door_id": "door_r1_boss"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r1_south",
+      "kind": "room_anchor",
+      "pos": [
+        248,
+        312
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_toll_r1",
+      "kind": "waystone",
+      "pos": [
+        248,
+        216
+      ],
+      "props": {
+        "lit": false
+      }
+    },
+    {
+      "id": "lore_r1_narthex",
+      "kind": "lore_stone",
+      "pos": [
+        200,
+        232
+      ],
+      "props": {
+        "string_id": "ISL8_TOLL_LORE_NARTHEX",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "scale_r1_shop",
+      "kind": "toll_scale",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "mode": "shop",
+        "persist": true
+      }
+    },
+    {
+      "id": "bell_r1_desk",
+      "kind": "bell",
+      "pos": [
+        168,
+        168
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 180.0,
+        "target_id": "door_r1_west",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r1_west",
+      "kind": "door",
+      "pos": [
+        24,
+        192
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "bell_r1_desk"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "door_r1_nw_short",
+      "kind": "door",
+      "pos": [
+        112,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "toll_west_short"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_ne_chute",
+      "kind": "door",
+      "pos": [
+        400,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "toll_chute_short"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_east",
+      "kind": "door",
+      "pos": [
+        488,
+        192
+      ],
+      "props": {
+        "door_type": "wick_key",
+        "dungeon_id": "toll_house",
+        "key_id": "key_toll_1",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_r1_boss",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_type": "boss_key",
+        "dungeon_id": "toll_house",
+        "key_id": "toll_boss_key",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sensor_r1_toll",
+      "kind": "toll_sensor",
+      "pos": [
+        376,
+        248
+      ],
+      "props": {
+        "check": "sold_count>=1",
+        "target_id": "door_r1_bonus",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_r1_bonus",
+      "kind": "door",
+      "pos": [
+        416,
+        264
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r1_toll"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r1_toll",
+      "kind": "chest",
+      "pos": [
+        424,
+        296
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lamp_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        296
+      ],
+      "props": {
+        "zone": "toll_narthex",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        232
+      ],
+      "props": {
+        "zone": "toll_narthex",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        152
+      ],
+      "props": {
+        "zone": "toll_narthex",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        104
+      ],
+      "props": {
+        "zone": "toll_narthex",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_gate_arch",
+      "pos": [
+        248,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stamp_floor_emblem",
+      "pos": [
+        248,
+        184
+      ],
+      "layer": "ground"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        184,
+        120
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        312,
+        120
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        72,
+        120
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        440,
+        120
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        72,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        328,
+        232
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        200,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        296,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "inkwell_lectern_stand",
+      "pos": [
+        136,
+        280
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        456,
+        296
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        136,
+        104
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        360,
+        104
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        296,
+        296
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 20,
+      "x0": 200,
+      "x1": 288,
+      "style": "stars"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        216,
+        152,
+        64,
+        96
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        112,
+        320,
+        128
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        184
+      ],
+      "radius": 28,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        88
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r1_enter",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "T-cross mahogany Counting Narthex teasing Boss Counter (N), East Feel Wing (wick_key), overhead Mezzanine pits, and check-in counter bell opening the West Interface Wing.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Toll House wing layout, optional Toll Scale trading, and counter bell check-in.",
+    "decisions": 4,
+    "expert_s": 35,
+    "reward": "waystone+boss_tease",
+    "why": "Central 6-exit hub unifying all 3 Toll House cycles and teasing the Mezzanine and Boss Counter.",
+    "exit": "exit_r1_west",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_toll_r1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          212,
+          232
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_r1_narthex"
+      },
+      {
+        "op": "ring",
+        "target": "bell_r1_desk",
+        "from": [
+          200,
+          184
+        ]
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r1_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r1_west"
+      }
+    ]
+  }
+}

@@ -1,0 +1,406 @@
+{
+  "id": "meteor_r6",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R6",
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "mv_r6",
+      "name_key": "I5_MV_R6",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r6_s",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "meteor_r5",
+      "to_spawn": [
+        224,
+        56
+      ]
+    },
+    {
+      "id": "exit_mv_r6_short",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "meteor_r1",
+      "to_spawn": [
+        424,
+        96
+      ],
+      "requires_flags": [
+        "mv_miniboss_done"
+      ],
+      "locked_door_id": "door_mv_r6_short"
+    },
+    {
+      "id": "exit_mv_r6_e",
+      "rect": [
+        464,
+        144,
+        16,
+        32
+      ],
+      "to_region": "meteor_r7",
+      "to_spawn": [
+        56,
+        224
+      ],
+      "requires_flags": [
+        "mv_miniboss_done"
+      ],
+      "locked_door_id": "door_mv_r6_e"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r6",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "orb_r6_w",
+      "kind": "meteor_orb",
+      "pos": [
+        128,
+        120
+      ],
+      "props": {
+        "cradle_pos": [
+          128,
+          120
+        ],
+        "respawn_s": 1.2
+      }
+    },
+    {
+      "id": "orb_r6_e",
+      "kind": "meteor_orb",
+      "pos": [
+        352,
+        120
+      ],
+      "props": {
+        "cradle_pos": [
+          352,
+          120
+        ],
+        "respawn_s": 1.2
+      }
+    },
+    {
+      "id": "door_mv_r6_short",
+      "kind": "door",
+      "pos": [
+        24,
+        160
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "mv_miniboss_done"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_mv_r6_e",
+      "kind": "door",
+      "pos": [
+        456,
+        160
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "mv_miniboss_done"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_mv_r6_sw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        264
+      ],
+      "props": {
+        "zone": "mv_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        264
+      ],
+      "props": {
+        "zone": "mv_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r6_nw",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        56
+      ],
+      "props": {
+        "zone": "mv_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        56
+      ],
+      "props": {
+        "zone": "mv_r6",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_apogee_hound",
+      "kind": "apogee_hound",
+      "pos": [
+        240,
+        136
+      ],
+      "zone": "mv_r6",
+      "arena": [
+        80,
+        64,
+        320,
+        192
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        160
+      ],
+      "radius": 68,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        160,
+        120
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        320,
+        200
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        160
+      ],
+      "radius": 24
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        240,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        240,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        112,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        368,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        112,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "cracked_meteor_boulder",
+      "pos": [
+        368,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "mv_r6_miniboss_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mv_miniboss_done"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Mini-boss octagonal ring against The Apogee Hound, which orbits a central switchable polarity well kicking blazing meteors; flip polarity to derail its pounce and punish its flank.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Curved flank attacks and polarity flips in boss combat, unlocking Hub Shortcut Cycle 2 and East Wing.",
+    "decisions": 6,
+    "expert_s": 80,
+    "reward": "mv_miniboss_done+half_lantern+hub_shortcut_2",
+    "why": "Mid-dungeon mini-boss exam rewarding Cycle 2 hub return and deeper vault access.",
+    "exit": "exit_mv_r6_e",
+    "start": {
+      "flags": [
+        "power_orbit_ring"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 85.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "mv_miniboss_done",
+        "timeout": 4.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r6_e"
+      }
+    ]
+  }
+}

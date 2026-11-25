@@ -1,0 +1,729 @@
+{
+  "id": "toll_r8",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R8",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    232,
+    280
+  ],
+  "zones": [
+    {
+      "id": "toll_ledger",
+      "name_key": "ISL8_TOLL_R8",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r7",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_r8_west",
+      "rect": [
+        0,
+        80,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r3",
+      "to_spawn": [
+        256,
+        56
+      ],
+      "locked_door_id": "door_r8_west"
+    },
+    {
+      "id": "exit_r8_north",
+      "rect": [
+        288,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r9",
+      "to_spawn": [
+        240,
+        316
+      ],
+      "locked_door_id": "door_r8_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_south",
+      "kind": "room_anchor",
+      "pos": [
+        232,
+        280
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "emitter_r8",
+      "kind": "beam_emitter",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "dir": "n",
+        "color": "gold",
+        "range": 320.0,
+        "max_bounces": 4
+      }
+    },
+    {
+      "id": "rotor_r8_1",
+      "kind": "rotor",
+      "pos": [
+        168,
+        184
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "quarter_on_signal": true,
+        "start_quarter": 0,
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_r8_1",
+      "kind": "blue_transformer",
+      "pos": [
+        168,
+        184
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": false,
+        "angle_deg": 135.0,
+        "persist_pos": true
+      }
+    },
+    {
+      "id": "rotor_r8_2",
+      "kind": "rotor",
+      "pos": [
+        296,
+        184
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "quarter_on_signal": true,
+        "start_quarter": 0,
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_r8_2",
+      "kind": "blue_transformer",
+      "pos": [
+        296,
+        184
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": false,
+        "angle_deg": 135.0,
+        "persist_pos": true
+      }
+    },
+    {
+      "id": "grate_r8_n",
+      "kind": "grate",
+      "pos": [
+        312,
+        120
+      ],
+      "props": {
+        "size": [
+          320,
+          16
+        ]
+      }
+    },
+    {
+      "id": "bsens_r8",
+      "kind": "beam_sensor",
+      "pos": [
+        296,
+        104
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_ids": [
+          "bridge_r8_north",
+          "door_r8_west"
+        ]
+      }
+    },
+    {
+      "id": "switch_r8_rot1",
+      "kind": "switch_eye",
+      "pos": [
+        200,
+        264
+      ],
+      "props": {
+        "target_id": "rotor_r8_1"
+      }
+    },
+    {
+      "id": "cart_r8",
+      "kind": "vehicle_cart",
+      "pos": [
+        256,
+        264
+      ],
+      "props": {
+        "rail": [
+          [
+            256,
+            264
+          ],
+          [
+            408,
+            264
+          ]
+        ],
+        "speed": 120.0,
+        "loop": false,
+        "auto": false,
+        "persist": true
+      }
+    },
+    {
+      "id": "plate_r8_rot2",
+      "kind": "pressure_plate",
+      "pos": [
+        456,
+        264
+      ],
+      "props": {
+        "by": [
+          "wick",
+          "lantern",
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "rotor_r8_2"
+      }
+    },
+    {
+      "id": "bridge_r8_north",
+      "kind": "door",
+      "pos": [
+        112,
+        176
+      ],
+      "props": {
+        "door_type": "bridge_platform",
+        "size": [
+          48,
+          128
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "bsens_r8"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "key_toll_2",
+      "kind": "wick_key",
+      "pos": [
+        216,
+        72
+      ],
+      "props": {
+        "dungeon_id": "toll_house",
+        "key_kind": "wick_key"
+      }
+    },
+    {
+      "id": "door_r8_west",
+      "kind": "door",
+      "pos": [
+        24,
+        96
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "bsens_r8"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "door_r8_north",
+      "kind": "door",
+      "pos": [
+        304,
+        24
+      ],
+      "props": {
+        "door_type": "wick_key",
+        "dungeon_id": "toll_house",
+        "key_id": "key_toll_2",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sensor_r8_still",
+      "kind": "toll_sensor",
+      "pos": [
+        120,
+        280
+      ],
+      "props": {
+        "check": "sold:world_anims || sold:camera_shake",
+        "target_id": "door_r8_still",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_r8_still",
+      "kind": "door",
+      "pos": [
+        88,
+        280
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r8_still"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r8_still",
+      "kind": "chest",
+      "pos": [
+        56,
+        280
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        296
+      ],
+      "props": {
+        "zone": "toll_ledger",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        440,
+        280
+      ],
+      "props": {
+        "zone": "toll_ledger",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_nw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        72
+      ],
+      "props": {
+        "zone": "toll_ledger",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        72
+      ],
+      "props": {
+        "zone": "toll_ledger",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "pw_r8_1",
+      "kind": "page_wraith",
+      "pos": [
+        136,
+        264
+      ],
+      "zone": "toll_ledger"
+    },
+    {
+      "id": "ee_r8_1",
+      "kind": "eclipse_eye",
+      "pos": [
+        440,
+        248
+      ],
+      "zone": "toll_ledger"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        104,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        168,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        472,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        360,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        456,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        72,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        472,
+        280
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        472,
+        88
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        216,
+        296
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        48,
+        128,
+        48
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        128,
+        240,
+        80,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        136,
+        264
+      ],
+      "radius": 18,
+      "style": "ink"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        304,
+        64
+      ],
+      "size": [
+        48,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r8_mid_bridge",
+      "on": "signal:bsens_r8",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_mid_bridge"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_TOLL_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "H-Shaped Rail-Chasm Still Ledger: clear the disguised Page Wraith (instantly exposed if world_anims is sold!), shoot switch_r8_rot1, ride the recoil rail cart across the star-chasm to turn rotor_r8_2, align the double blue-mirror beam through the north grate, cross the raised bridge for Key 2 & West mid-bridge, and unlock North -> r9!",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "vehicle_cart recoil crossing + rotor-mounted blue_transformer relay + grate sightline; opens Cycle 2 bridge to r3.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "toll_key+mid_bridge",
+    "why": "Climax of the Feel Wing (camera_shake + world_anims), uniting cart traversal with multi-rotor optics.",
+    "exit": "exit_r8_north",
+    "start": {
+      "flags": [
+        "item_brass_receipt"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          264
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "clear",
+        "zone": "",
+        "timeout": 28.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          200,
+          280
+        ],
+        "target": "switch_r8_rot1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "mount",
+        "target": "cart_r8"
+      },
+      {
+        "op": "shoot",
+        "target": [
+          64,
+          264
+        ],
+        "count": 4,
+        "wait_hit": 0.35
+      },
+      {
+        "op": "wait_phase",
+        "target": "cart_r8",
+        "near": [
+          408,
+          264
+        ],
+        "tol": 24.0,
+        "timeout": 6.0
+      },
+      {
+        "op": "dismount",
+        "to": [
+          424,
+          264
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          456,
+          264
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "bridge_r8_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "mount",
+        "target": "cart_r8"
+      },
+      {
+        "op": "shoot",
+        "target": [
+          496,
+          264
+        ],
+        "count": 4,
+        "wait_hit": 0.35
+      },
+      {
+        "op": "wait_phase",
+        "target": "cart_r8",
+        "near": [
+          256,
+          264
+        ],
+        "tol": 24.0,
+        "timeout": 6.0
+      },
+      {
+        "op": "dismount",
+        "to": [
+          232,
+          264
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "key_toll_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          42
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "door_r8_north"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_north"
+      }
+    ]
+  }
+}

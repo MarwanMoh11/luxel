@@ -1,17 +1,20 @@
 extends RefCounted
-## Helper for Upgraded Lighthouse Hermit P2/P3 arena mutations:
-## - P2 tower_tide -> "high", safe outer tile flood (cleanly reverted on death/setup),
+## Helper for Upgraded Lighthouse Hermit P2/P3 arena mutations on LxBossBase:
+## - P2 tower_tide -> "high", safe outer tile flood via stage.set_tiles (auto-reverted on retry/death),
 ##   drifting mirrors (Ballast Clamp pins them!), and 2 interactive Tide Ring Buoy Mines.
-## - P3 cupola twilight dimmer, Whirlpool Shell-Pull LxFields well, and cracked-shell crab beat.
+## - P3 cupola twilight dimmer, Whirlpool Shell-Pull LxFields well, and cracked-shell tiny crab beat.
 
 const PAL: Dictionary = LxPalette.PAL
+
 
 class _HermitPullField:
 	extends RefCounted
 	var active: bool = false
 	var center: Vector2 = Vector2.ZERO
+
 	func is_field_active() -> bool:
 		return active
+
 	func field_accel(p: Vector2, what: String) -> Vector2:
 		if not active:
 			return Vector2.ZERO
@@ -19,19 +22,18 @@ class _HermitPullField:
 		var d: float = delta.length()
 		if d < 18.0 or d > 160.0:
 			return Vector2.ZERO
-		var mult: float = 0.42 if what == "wick" else 1.0
-		return (delta / d) * (135.0 * mult)
+		var mult: float = 0.38 if what == "wick" else 1.0
+		return (delta / d) * (128.0 * mult)
 
 
-var boss: LxEnemyBrain = null
+var boss: LxBossBase = null
 var tide_mines: Array[Dictionary] = []
-var _saved_tiles: Dictionary = {}
 var _twilight_active: bool = false
 var _saved_darkness: float = 0.36
 var _pull_field: _HermitPullField = null
 
 
-func _init(p_boss: LxEnemyBrain = null) -> void:
+func _init(p_boss: LxBossBase = null) -> void:
 	boss = p_boss
 
 
@@ -45,37 +47,25 @@ func cleanup() -> void:
 		_twilight_active = false
 		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
 			LxDarknessLayer.active_instance.set_darkness(_saved_darkness)
-	if not _saved_tiles.is_empty():
-		var ctx: Node = boss.world_ctx if boss != null else null
-		if ctx != null and is_instance_valid(ctx) and ctx.has_method("set_tiles"):
-			for kv: Variant in _saved_tiles.keys():
-				var k: Vector2i = kv as Vector2i
-				ctx.call("set_tiles", Rect2i(k.x, k.y, 1, 1), str(_saved_tiles[k]))
-		_saved_tiles.clear()
 
 
 func apply_p2_tower_tide() -> void:
 	if Lx.vars != null:
 		Lx.vars.set_var("dungeon:lighthouse", "tower_tide", "high")
-	var ctx: Node = boss.world_ctx if boss != null else null
-	if ctx != null and is_instance_valid(ctx) and ctx.get("grid") is Array:
-		var g: Array = ctx.get("grid") as Array
-		if g.size() >= 17 and (g[0] as PackedStringArray).size() >= 26:
-			for cell: Vector2i in [Vector2i(4, 6), Vector2i(23, 6), Vector2i(5, 11), Vector2i(22, 11)]:
-				_flood_cell(ctx, g, cell)
-
-
-func _flood_cell(ctx: Node, g: Array, cell: Vector2i) -> void:
-	var cell_c := Vector2((float(cell.x) + 0.5) * 16.0, (float(cell.y) + 0.5) * 16.0)
-	var wp: Vector2 = boss.call("_get_wick_pos") as Vector2
-	if wp.distance_to(cell_c) < 22.0 or boss.pos.distance_to(cell_c) < 22.0:
+	if boss == null:
 		return
-	if cell.y >= 0 and cell.y < g.size():
-		var row: PackedStringArray = g[cell.y] as PackedStringArray
-		if cell.x >= 0 and cell.x < row.size() and not _saved_tiles.has(cell):
-			_saved_tiles[cell] = row[cell.x]
-			if ctx.has_method("set_tiles"):
-				ctx.call("set_tiles", Rect2i(cell.x, cell.y, 1, 1), "water")
+	var ctx: Node = boss.world_ctx
+	if ctx == null or not is_instance_valid(ctx) or not ctx.has_method("tile_at"):
+		return
+	var c: Vector2 = boss.arena_rect.get_center()
+	var wp: Vector2 = boss.call("_get_wick_pos") as Vector2
+	for off_v: Vector2 in [Vector2(-112.0, -64.0), Vector2(112.0, -64.0), Vector2(-112.0, 48.0), Vector2(112.0, 48.0)]:
+		var pt: Vector2 = c + off_v
+		var tx: int = int(floorf(pt.x / 16.0))
+		var ty: int = int(floorf(pt.y / 16.0))
+		var cp := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
+		if str(ctx.call("tile_at", cp)) == "ground" and cp.distance_to(boss.home) > 48.0 and cp.distance_to(wp) > 28.0:
+			boss.stage.set_tiles(ctx, Rect2i(tx, ty, 1, 1), "water")
 
 
 func apply_p3_eclipse() -> void:
@@ -88,7 +78,7 @@ func apply_p3_eclipse() -> void:
 
 
 func set_pull_active(on: bool) -> void:
-	if on:
+	if on and boss != null:
 		if _pull_field == null:
 			_pull_field = _HermitPullField.new()
 			LxFields.add(_pull_field)
@@ -99,14 +89,18 @@ func set_pull_active(on: bool) -> void:
 
 
 func spawn_tide_mines() -> void:
+	if boss == null:
+		return
 	tide_mines.clear()
 	for sgn: float in [-1.0, 1.0]:
 		var ang: float = boss.facing + sgn * 1.25
-		var mp: Vector2 = boss.pos + Vector2.from_angle(ang) * 44.0
+		var mp: Vector2 = boss.clamp_to_arena(boss.pos + Vector2.from_angle(ang) * 44.0)
 		tide_mines.append({"pos": mp, "vel": Vector2.from_angle(ang) * 18.0, "ttl": 9.0, "batted": false})
 
 
 func tick_mirrors_and_mines(dt: float, pulling: bool, on_mine_hit: Callable) -> void:
+	if boss == null:
+		return
 	if _pull_field != null:
 		_pull_field.center = boss.pos
 		_pull_field.active = pulling
@@ -124,12 +118,12 @@ func tick_mirrors_and_mines(dt: float, pulling: bool, on_mine_hit: Callable) -> 
 			if (lan_out and mp.distance_to(lan_p) <= 22.0) or (Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).is_dashing() and mp.distance_to(wp) <= 24.0):
 				m["batted"] = true
 				mv = (boss.pos - mp).normalized() * 170.0
-				boss.call("_emit_sfx", "warden_clank")
+				boss.stage.play_sfx("crab_shell_clank", mp)
 			elif pulling:
 				mv += (boss.pos - mp).normalized() * 165.0 * dt
 				if mp.distance_to(boss.pos) <= boss.body_radius + 10.0:
 					m["batted"] = true
-		mp += mv * dt
+		mp = boss.clamp_to_arena(mp + mv * dt)
 		mv *= exp(-1.6 * dt)
 		m["pos"] = mp
 		m["vel"] = mv
@@ -164,6 +158,8 @@ func _drift_mirrors(dt: float) -> void:
 
 
 func draw_extras(ci: CanvasItem, off: Vector2) -> void:
+	if boss == null:
+		return
 	var lc: Vector2 = off.round()
 	for m: Dictionary in tide_mines:
 		var mp: Vector2 = ((m["pos"] as Vector2) - boss.pos + off).round()

@@ -116,6 +116,70 @@
         "great_lamp_6"
       ],
       "locked_door_id": "bridge_of_light_6"
+    },
+    {
+      "id": "exit_to_rail_yard",
+      "rect": [
+        352,
+        48,
+        48,
+        16
+      ],
+      "to_region": "ow_rail_yard",
+      "to_spawn": [
+        384,
+        456
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_giant_stride",
+      "rect": [
+        512,
+        512,
+        64,
+        16
+      ],
+      "to_region": "ow_giant_stride",
+      "to_spawn": [
+        416,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_slag_basin",
+      "rect": [
+        832,
+        512,
+        48,
+        16
+      ],
+      "to_region": "ow_slag_basin",
+      "to_spawn": [
+        368,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_cinder_overlook",
+      "rect": [
+        896,
+        48,
+        48,
+        16
+      ],
+      "to_region": "ow_cinder_overlook",
+      "to_spawn": [
+        352,
+        392
+      ],
+      "requires_moves": [],
+      "requires_flags": []
     }
   ],
   "enemies": [
@@ -144,8 +208,8 @@
       "id": "mole_ash_0",
       "kind": "ash_mole",
       "pos": [
-        392,
-        136
+        408,
+        168
       ],
       "route": [],
       "perches": [
@@ -279,16 +343,16 @@
       "kind": "bellows_imp",
       "pos": [
         872,
-        424
+        392
       ],
       "route": [
         [
           840,
-          424
+          392
         ],
         [
           904,
-          424
+          392
         ]
       ],
       "perches": [],
@@ -299,17 +363,17 @@
       "id": "golem_causeway_0",
       "kind": "cinder_golem",
       "pos": [
-        888,
-        136
+        840,
+        152
       ],
       "route": [
         [
-          840,
-          136
+          824,
+          152
         ],
         [
-          936,
-          136
+          896,
+          152
         ]
       ],
       "perches": [],
@@ -320,8 +384,8 @@
       "id": "mole_causeway_0",
       "kind": "ash_mole",
       "pos": [
-        968,
-        120
+        984,
+        152
       ],
       "route": [],
       "perches": [
@@ -741,6 +805,31 @@
       ],
       "props": {
         "zone": "cinder_terrace"
+      }
+    },
+    {
+      "id": "moth_6_01",
+      "kind": "moth",
+      "pos": [
+        728,
+        224
+      ],
+      "props": {
+        "id": "moth_6_01",
+        "zone": "ash_drifts"
+      }
+    },
+    {
+      "id": "lore_kiln_dam_notice",
+      "kind": "lore_stone",
+      "pos": [
+        1256,
+        200
+      ],
+      "props": {
+        "string_id": "ISL6_LORE_DAM",
+        "icon": "arrow_nw",
+        "zone": "kiln_approach"
       }
     }
   ],
@@ -1702,5 +1791,38 @@
       "shadow": true,
       "phase": 0.7
     }
-  ]
+  ],
+  "design": {
+    "idea": "Central Ashen Kiln caldera hub connecting Cinder Landing, 3 Crucibles, 4 moving-island districts, and the Great Kiln Obsidian Dam.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Caldera navigation, 3 Crucibles, Blue Portal shortcuts, and perimeter branches to Switchyard, Stride Flats, Slag Basin, and High Trestle.",
+    "decisions": 5,
+    "expert_s": 180,
+    "reward": "kiln_gate_seal+moth_6_01+ember_6_1+ember_6_2",
+    "why": "Preserved Island 6 hub cleanly branched to the 4 moving-island overworld districts with D10 gate choke and 95/96 map alignment fixed.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          312,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          440,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_to_rail_yard"
+      }
+    ]
+  }
 }

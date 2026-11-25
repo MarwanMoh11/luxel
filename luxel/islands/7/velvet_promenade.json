@@ -1,0 +1,736 @@
+{
+  "id": "velvet_promenade",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_PROM",
+  "theme": "doppel_theatre",
+  "music": "isl7_theatre",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    384,
+    56
+  ],
+  "zones": [
+    {
+      "id": "velvet_promenade",
+      "name_key": "ISL7_Z_PROM",
+      "rect": [
+        0,
+        0,
+        768,
+        480
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_vp_overworld",
+      "rect": [
+        352,
+        0,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        1080,
+        712
+      ]
+    },
+    {
+      "id": "exit_vp_terrace",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "glass_terrace",
+      "to_spawn": [
+        472,
+        224
+      ]
+    },
+    {
+      "id": "exit_vp_vault",
+      "rect": [
+        0,
+        320,
+        16,
+        48
+      ],
+      "to_region": "cave_echo_vault",
+      "to_spawn": [
+        360,
+        144
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "vp_puppet_1",
+      "kind": "puppet",
+      "pos": [
+        552,
+        312
+      ],
+      "route": [
+        [
+          528,
+          312
+        ],
+        [
+          584,
+          312
+        ]
+      ],
+      "zone": "velvet_promenade",
+      "leash": 124
+    },
+    {
+      "id": "vp_reflection_1",
+      "kind": "reflection",
+      "pos": [
+        488,
+        344
+      ],
+      "route": [
+        [
+          456,
+          344
+        ],
+        [
+          528,
+          344
+        ]
+      ],
+      "zone": "velvet_promenade",
+      "leash": 124
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_velvet_promenade",
+      "kind": "waystone",
+      "pos": [
+        384,
+        112
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "name_key": "ISL7_Z_PROM"
+      }
+    },
+    {
+      "id": "pool_vp_center",
+      "kind": "moon_pool",
+      "pos": [
+        488,
+        152
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "npc_tailor_spider",
+      "kind": "npc",
+      "pos": [
+        296,
+        152
+      ],
+      "props": {
+        "folk": "tailor_spider",
+        "quest": "q7_masked_tailor",
+        "rescuable": false,
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "quest_carry",
+              "crown",
+              "arrow_w",
+              "isl_7"
+            ],
+            "line": "ISL7_Q2_HINT"
+          },
+          [
+            "happy",
+            "gift",
+            "ember"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "bench_vp_tailor",
+      "kind": "i7_spotlight_bench",
+      "pos": [
+        232,
+        144
+      ],
+      "props": {
+        "require_flag": "q7_tailor_bench"
+      }
+    },
+    {
+      "id": "lore_vp_acts",
+      "kind": "lore_stone",
+      "pos": [
+        616,
+        152
+      ],
+      "props": {
+        "string_id": "ISL7_LORE_PROM",
+        "icon": "crown"
+      }
+    },
+    {
+      "id": "trial_gate_waltz",
+      "kind": "trial_gate",
+      "pos": [
+        328,
+        256
+      ],
+      "props": {
+        "challenge": "shadow_waltz",
+        "once": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "decoy_vp_waltz_1",
+      "kind": "i7_shadow_decoy",
+      "pos": [
+        288,
+        312
+      ],
+      "props": {
+        "reveal_flag": "vp_waltz_d1",
+        "decoy_style": "lantern",
+        "truth": false,
+        "silent": true
+      }
+    },
+    {
+      "id": "decoy_vp_waltz_2",
+      "kind": "i7_shadow_decoy",
+      "pos": [
+        368,
+        344
+      ],
+      "props": {
+        "reveal_flag": "vp_waltz_d2",
+        "decoy_style": "mirror",
+        "truth": false,
+        "silent": true
+      }
+    },
+    {
+      "id": "decoy_vp_waltz_3",
+      "kind": "i7_shadow_decoy",
+      "pos": [
+        448,
+        288
+      ],
+      "props": {
+        "reveal_flag": "q7_decoy_promenade",
+        "decoy_style": "bust",
+        "truth": false,
+        "silent": false
+      }
+    },
+    {
+      "id": "decoy_vp_truth_ref",
+      "kind": "i7_shadow_decoy",
+      "pos": [
+        368,
+        288
+      ],
+      "props": {
+        "decoy_style": "lantern",
+        "truth": true,
+        "silent": true
+      }
+    },
+    {
+      "id": "lamp_vp_n1",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        96
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vp_n2",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        96
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vp_w1",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vp_w2",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        328
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vp_e1",
+      "kind": "road_lamp",
+      "pos": [
+        560,
+        128
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vp_e2",
+      "kind": "road_lamp",
+      "pos": [
+        624,
+        120
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vp_c1",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        264
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vp_c2",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        240
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vp_s1",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        376
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vp_s2",
+      "kind": "road_lamp",
+      "pos": [
+        528,
+        360
+      ],
+      "props": {
+        "zone": "velvet_promenade",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        352,
+        72,
+        64,
+        240
+      ],
+      "color": "wine",
+      "border": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        368,
+        312
+      ],
+      "radius": 44,
+      "style": "spotlight",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        144
+      ],
+      "radius": 24,
+      "style": "spotlight",
+      "color": "gold",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        584,
+        112,
+        72,
+        72
+      ],
+      "color": "gold"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "proscenium_mask_arch",
+      "pos": [
+        648,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        616,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        616,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        424,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        472,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        520,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        568,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        596,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        256,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        488,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "brass_footlight_row",
+      "pos": [
+        368,
+        368
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "theatre_box_seat",
+      "pos": [
+        184,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "stage_prop_trunk",
+      "pos": [
+        192,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "tattered_act_banner",
+      "pos": [
+        128,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "tattered_act_banner",
+      "pos": [
+        240,
+        368
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "trapdoor_stage_hatch",
+      "pos": [
+        448,
+        320
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          9,
+          14,
+          3,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "vp_unlock_bench",
+      "on": "flag:quest:q7_masked_tailor:done",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "q7_tailor_bench"
+        },
+        {
+          "narrate": "ISL7_BENCH_FULL"
+        }
+      ]
+    },
+    {
+      "id": "vp_start_waltz_trial",
+      "on": "trial_start:trial_gate_waltz",
+      "once": false,
+      "do": [
+        {
+          "challenge": {
+            "id": "shadow_waltz_7",
+            "kind": "light_all",
+            "time": 20.0,
+            "targets": [
+              "decoy_vp_waltz_1",
+              "decoy_vp_waltz_2",
+              "decoy_vp_waltz_3"
+            ],
+            "ok": [
+              {
+                "set_flag": "q7_decoy_promenade"
+              },
+              {
+                "set_flag": "trial_medal_waltz"
+              },
+              {
+                "reward": {
+                  "kind": "shards",
+                  "amount": 55
+                }
+              },
+              {
+                "narrate": "ISL7_TRIAL_WALTZ_OK"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Crimson velvet theatre causeway lined with 5 Act playbills, Tailor Spider's mask quest & spotlight bench, and the 20s Shadow-Step Waltz decoy trial.",
+    "kind": "story",
+    "beat": "sho",
+    "teaches": "Compares SE-gold truth shadows against NW-wrong lying decoys under theatre spotlights during the Shadow-Step Waltz trial.",
+    "decisions": 6,
+    "expert_s": 65,
+    "reward": "q7_masked_tailor+q7_decoy_promenade+trial_medal_waltz+55sh",
+    "why": "Eastern theatrical district framing Doppel Theatre, Echo Vault, and the third NW-shadow decoy.",
+    "optional": true,
+    "exit": "exit_vp_vault",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_velvet_promenade"
+      },
+      {
+        "op": "interact",
+        "target": "trial_gate_waltz"
+      },
+      {
+        "op": "interact",
+        "target": "decoy_vp_waltz_1"
+      },
+      {
+        "op": "interact",
+        "target": "decoy_vp_waltz_2"
+      },
+      {
+        "op": "interact",
+        "target": "decoy_vp_waltz_3"
+      },
+      {
+        "op": "expect",
+        "flag": "trial_medal_waltz"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_vp_vault"
+      }
+    ]
+  }
+}

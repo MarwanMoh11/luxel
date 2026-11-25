@@ -70,8 +70,8 @@
       ],
       "to_region": "galleon_r11",
       "to_spawn": [
-        224,
-        240
+        208,
+        272
       ],
       "locked_door_id": "door_r10_north"
     }
@@ -146,6 +146,8 @@
           184,
           184
         ],
+        "orb_min_x": 184.0,
+        "orb_max_x": 328.0,
         "table_rect": [
           160,
           160,
@@ -327,7 +329,7 @@
       "id": "lamp_r10_nw",
       "kind": "road_lamp",
       "pos": [
-        120,
+        168,
         104
       ],
       "props": {
@@ -351,8 +353,8 @@
       "id": "lamp_r10_e",
       "kind": "road_lamp",
       "pos": [
-        424,
-        232
+        408,
+        216
       ],
       "props": {
         "zone": "gal_r10",
@@ -365,8 +367,8 @@
     {
       "kind": "window_strip",
       "y": 8,
-      "x0": 80,
-      "x1": 192,
+      "x0": 144,
+      "x1": 208,
       "style": "stars"
     },
     {
@@ -435,7 +437,7 @@
       "prop": "brass_capstan",
       "pos": [
         104,
-        72
+        136
       ],
       "layer": "sort",
       "flip_x": false,
@@ -446,8 +448,8 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        440,
-        280
+        328,
+        296
       ],
       "layer": "sort",
       "flip_x": false,
@@ -458,8 +460,8 @@
       "sheet": "theme_galleon",
       "prop": "rope_coil_crate",
       "pos": [
-        424,
-        296
+        312,
+        312
       ],
       "layer": "sort",
       "flip_x": true,
@@ -568,7 +570,7 @@
     "exit": "exit_r10_north",
     "start": {
       "vars": {
-        "list": "starboard"
+        "dungeon:galleon:list": "starboard"
       },
       "flags": [
         "power_ballast_clamp"

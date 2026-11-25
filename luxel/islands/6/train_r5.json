@@ -78,7 +78,7 @@
       "id": "anvil_r5_skip",
       "kind": "temper_anvil",
       "pos": [
-        120,
+        168,
         208
       ],
       "props": {
@@ -133,8 +133,8 @@
       "id": "lamp_r5_sw",
       "kind": "road_lamp",
       "pos": [
-        104,
-        216
+        112,
+        184
       ],
       "props": {
         "zone": "tr_r5",

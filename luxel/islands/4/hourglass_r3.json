@@ -182,7 +182,7 @@
       "kind": "topiary_knight",
       "pos": [
         328,
-        136
+        104
       ],
       "zone": "hg_r3_cloister"
     },
@@ -190,8 +190,8 @@
       "id": "snuffer_r3",
       "kind": "mire_snuffer",
       "pos": [
-        232,
-        88
+        312,
+        200
       ],
       "zone": "hg_r3_cloister"
     }

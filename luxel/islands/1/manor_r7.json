@@ -62,8 +62,7 @@
       "to_spawn": [
         208,
         240
-      ],
-      "locked_door_id": "mover_r7_m4"
+      ]
     }
   ],
   "interactables": [
@@ -142,7 +141,20 @@
         184
       ],
       "props": {
-        "light_radius": 72
+        "light_radius": 72,
+        "target_id": "mover_r7_m1"
+      }
+    },
+    {
+      "id": "ls_r7_west",
+      "kind": "light_sensor",
+      "pos": [
+        208,
+        168
+      ],
+      "props": {
+        "need_secs": 0.2,
+        "target_id": "mover_r7_m1"
       }
     },
     {
@@ -247,7 +259,20 @@
         160
       ],
       "props": {
-        "light_radius": 72
+        "light_radius": 72,
+        "target_id": "mover_r7_m2"
+      }
+    },
+    {
+      "id": "ls_r7_center",
+      "kind": "light_sensor",
+      "pos": [
+        296,
+        152
+      ],
+      "props": {
+        "need_secs": 0.2,
+        "target_id": "mover_r7_m2"
       }
     },
     {
@@ -321,6 +346,19 @@
         "cone_range": 152,
         "sweep_deg": 0,
         "freeze_secs": 3.5,
+        "target_id": "mover_r7_m4"
+      }
+    },
+    {
+      "id": "ls_r7_sanctum",
+      "kind": "light_sensor",
+      "pos": [
+        472,
+        184
+      ],
+      "props": {
+        "need_secs": 0.2,
+        "persist": true,
         "target_id": "mover_r7_m4"
       }
     },
@@ -403,7 +441,7 @@
       "kind": "road_lamp",
       "pos": [
         504,
-        152
+        88
       ],
       "props": {
         "zone": "mn_eyes",
@@ -522,8 +560,8 @@
       "sheet": "theme_manor",
       "prop": "velvet_settee",
       "pos": [
-        200,
-        256
+        184,
+        296
       ],
       "layer": "sort",
       "flip_x": false,
@@ -598,6 +636,14 @@
       ]
     },
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          314
+        ],
+        "tol": 4.0
+      },
       {
         "op": "interact",
         "target": "lore_r7_eyes"

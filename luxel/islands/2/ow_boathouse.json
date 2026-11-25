@@ -1,0 +1,417 @@
+{
+  "id": "ow_boathouse",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ZONE_ISL2_CAMP",
+  "theme": "galleon",
+  "music": "explore",
+  "ambience": [
+    "harbor_rigging"
+  ],
+  "spawn": [
+    200,
+    56
+  ],
+  "zones": [
+    {
+      "id": "boathouse_camp",
+      "name_key": "ZONE_ISL2_CAMP",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": false
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_boathouse_out",
+      "rect": [
+        176,
+        0,
+        48,
+        16
+      ],
+      "to_region": "ow_canal_south",
+      "to_spawn": [
+        40,
+        280
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_boathouse",
+      "kind": "room_anchor",
+      "pos": [
+        200,
+        56
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rest_shrine_boathouse",
+      "kind": "rest_shrine",
+      "pos": [
+        120,
+        104
+      ],
+      "props": {
+        "zone": "boathouse_camp",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
+      "id": "hub_door_wick_house",
+      "kind": "hub_door",
+      "pos": [
+        248,
+        72
+      ],
+      "props": {
+        "door_role": "return_waystone"
+      }
+    },
+    {
+      "id": "spyglass_chart_2",
+      "kind": "spyglass_chart",
+      "pos": [
+        296,
+        120
+      ],
+      "props": {}
+    },
+    {
+      "id": "npc_ferry_beetle_camp",
+      "kind": "npc",
+      "pos": [
+        152,
+        152
+      ],
+      "props": {
+        "folk": "ferry_beetle",
+        "quest": "q2_regatta",
+        "require_flag": "skiff_unlocked",
+        "wander_radius": 8,
+        "bubbles": [
+          [
+            "quest_carry",
+            "wave",
+            "arrow_w",
+            "chest",
+            "star"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "npc_mirror_crab_camp",
+      "kind": "npc",
+      "pos": [
+        264,
+        152
+      ],
+      "props": {
+        "folk": "mirror_crab",
+        "quest": "q2_spyglass",
+        "wander_radius": 8,
+        "bubbles": [
+          [
+            "mirror",
+            "spark",
+            "wave",
+            "arrow_s",
+            "arrow_w",
+            "question"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "npc_scribe_worm",
+      "kind": "npc",
+      "pos": [
+        232,
+        200
+      ],
+      "props": {
+        "folk": "scribe_worm",
+        "quest": "q2_logs",
+        "wander_radius": 6,
+        "bubbles": [
+          [
+            "book",
+            "skull",
+            "lantern",
+            "light_off",
+            "isl_2"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "npc_moth_kid_camp",
+      "kind": "npc",
+      "pos": [
+        184,
+        184
+      ],
+      "props": {
+        "folk": "moth_kid",
+        "require_flag": "quest:q2_moth_kid:done",
+        "wander_radius": 10,
+        "bubbles": [
+          [
+            "lantern",
+            "happy",
+            "home"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "lamp_bh_1",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        88
+      ],
+      "props": {
+        "zone": "boathouse_camp",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bh_2",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        88
+      ],
+      "props": {
+        "zone": "boathouse_camp",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bh_3",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        200
+      ],
+      "props": {
+        "zone": "boathouse_camp",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        128,
+        96,
+        128,
+        80
+      ],
+      "style": "hearth"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        296,
+        120
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        200,
+        88
+      ],
+      "size": [
+        48,
+        32
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "ship_helm_wheel",
+      "pos": [
+        312,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_capstan",
+      "pos": [
+        168,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        56,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        72,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tangled_cargo_net",
+      "pos": [
+        344,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        232,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_porthole_lamp",
+      "pos": [
+        280,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        200,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "tattered_sail_banner",
+      "pos": [
+        104,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Cozy Tide-Keeper's Boathouse drydock camp uniting Island 2's Lamp-Folk quests, Spyglass Sea-Chart table, Rest Bench, and Wick House travel door.",
+    "kind": "reward",
+    "beat": "ki",
+    "teaches": "Pictogram quest turn-ins, Spyglass Chart assembly for Undertow, Hub return",
+    "decisions": 3,
+    "expert_s": 45,
+    "reward": "Pane harbor_wake (q2_regatta) + undertow_charted + 80 shards (q2_logs)",
+    "why": "Island 2 safe drydock sanctuary and quest hub",
+    "optional": true,
+    "start": {
+      "spawn": [
+        200,
+        56
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          296,
+          152
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "spyglass_chart_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          152
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "npc_mirror_crab_camp"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_boathouse_out"
+      }
+    ]
+  }
+}

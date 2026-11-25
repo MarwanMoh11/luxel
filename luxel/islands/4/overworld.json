@@ -103,7 +103,7 @@
         1120,
         224,
         32,
-        48
+        64
       ],
       "to_island": 5,
       "to_region": "overworld",
@@ -116,6 +116,104 @@
         "island_4_relit"
       ],
       "locked_door_id": "bridge_of_light_4"
+    },
+    {
+      "id": "exit_to_weeping_orchard",
+      "rect": [
+        96,
+        304,
+        16,
+        48
+      ],
+      "to_region": "ow_weeping_orchard",
+      "to_spawn": [
+        560,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_drowned_cloister",
+      "rect": [
+        528,
+        784,
+        32,
+        16
+      ],
+      "to_region": "ow_drowned_cloister",
+      "to_spawn": [
+        288,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_clock_terrace",
+      "rect": [
+        928,
+        128,
+        32,
+        16
+      ],
+      "to_region": "ow_clock_terrace",
+      "to_spawn": [
+        288,
+        368
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_cave_sundial_well",
+      "rect": [
+        336,
+        160,
+        32,
+        16
+      ],
+      "to_region": "cave_sundial_well",
+      "to_spawn": [
+        176,
+        208
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_cave_echo_cellar",
+      "rect": [
+        128,
+        528,
+        16,
+        32
+      ],
+      "to_region": "cave_echo_cellar",
+      "to_spawn": [
+        336,
+        128
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_cave_heron_roost",
+      "rect": [
+        1152,
+        448,
+        16,
+        32
+      ],
+      "to_region": "cave_heron_roost",
+      "to_spawn": [
+        48,
+        144
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": []
     }
   ],
   "enemies": [
@@ -165,17 +263,17 @@
       "id": "heron_stalker_4_beds",
       "kind": "heron_stalker",
       "pos": [
-        360,
-        216
+        408,
+        296
       ],
       "route": [
         [
-          312,
-          216
+          376,
+          296
         ],
         [
-          392,
-          216
+          424,
+          296
         ]
       ],
       "perches": [],
@@ -299,17 +397,17 @@
       "id": "heron_stalker_4_trial",
       "kind": "heron_stalker",
       "pos": [
-        504,
-        712
+        464,
+        680
       ],
       "route": [
         [
-          488,
-          712
+          464,
+          680
         ],
         [
-          584,
-          712
+          504,
+          680
         ]
       ],
       "perches": [],
@@ -320,22 +418,22 @@
       "id": "mire_snuffer_4_trial",
       "kind": "mire_snuffer",
       "pos": [
-        584,
-        696
+        624,
+        680
       ],
       "route": [],
       "perches": [
         [
-          584,
-          696
+          624,
+          680
         ],
         [
-          504,
-          696
+          576,
+          680
         ],
         [
-          552,
-          728
+          608,
+          704
         ]
       ],
       "zone": "trial_4",
@@ -490,13 +588,13 @@
       "kind": "door",
       "pos": [
         1096,
-        248
+        256
       ],
       "props": {
         "door_kind": "bridge_of_light",
         "size": [
           16,
-          48
+          64
         ],
         "zone": "starfall_pier",
         "requires_flags": [
@@ -612,7 +710,7 @@
       "props": {
         "reward_kind": "shards",
         "reward": "shards",
-        "amount": 65,
+        "amount": 85,
         "zone": "reed_causeway",
         "requires_moves": [
           "lens"
@@ -727,6 +825,280 @@
       ],
       "props": {
         "zone": "starfall_pier"
+      }
+    },
+    {
+      "id": "sundial_4_landing",
+      "kind": "garden_sundial",
+      "pos": [
+        232,
+        528
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14,
+        "zone": "fen_landing"
+      }
+    },
+    {
+      "id": "plaque_4_landing",
+      "kind": "isl4_schedule_plaque",
+      "pos": [
+        200,
+        528
+      ],
+      "props": {
+        "highlight_hours": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    },
+    {
+      "id": "rose_4_landing",
+      "kind": "echo_rose",
+      "pos": [
+        184,
+        584
+      ],
+      "props": {
+        "secs": 6.0
+      }
+    },
+    {
+      "id": "npc_candle_grandma",
+      "kind": "npc",
+      "pos": [
+        248,
+        592
+      ],
+      "props": {
+        "folk": "candle_grandma",
+        "quest": "q_isl4_last_teacup",
+        "wander_radius": 8,
+        "bubbles": [
+          [
+            "clock",
+            "arrow_e",
+            "isl_4"
+          ],
+          [
+            "heart",
+            "clock",
+            "sad",
+            "arrow_ne"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "npc_frog_tea_relight",
+      "kind": "npc",
+      "pos": [
+        272,
+        592
+      ],
+      "props": {
+        "folk": "gardener_frog",
+        "require_flag": "island_4_relit",
+        "wander_radius": 6,
+        "bubbles": [
+          {
+            "icons": [
+              "heart",
+              "flame",
+              "happy"
+            ],
+            "line": "ISL4_RELIGHT_TEA"
+          }
+        ]
+      }
+    },
+    {
+      "id": "sundial_4_glass",
+      "kind": "garden_sundial",
+      "pos": [
+        592,
+        568
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14,
+        "zone": "glass_walk"
+      }
+    },
+    {
+      "id": "sundial_4_pier",
+      "kind": "garden_sundial",
+      "pos": [
+        824,
+        520
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14,
+        "zone": "reed_causeway"
+      }
+    },
+    {
+      "id": "rose_4_glass_trial",
+      "kind": "echo_rose",
+      "pos": [
+        544,
+        736
+      ],
+      "props": {
+        "secs": 6.0
+      }
+    },
+    {
+      "id": "cgate_4_well",
+      "kind": "clock_gate",
+      "pos": [
+        352,
+        184
+      ],
+      "props": {
+        "var": "dusk_hour",
+        "open_on": [
+          2
+        ],
+        "size": [
+          32,
+          16
+        ],
+        "pin_flag": "well_pinned"
+      }
+    },
+    {
+      "id": "cgate_4_cellar",
+      "kind": "clock_gate",
+      "pos": [
+        152,
+        544
+      ],
+      "props": {
+        "var": "dusk_hour",
+        "open_on": [
+          1
+        ],
+        "size": [
+          16,
+          32
+        ],
+        "pin_flag": "cellar_pinned"
+      }
+    },
+    {
+      "id": "vent_4_moth1",
+      "kind": "updraft_vent",
+      "pos": [
+        944,
+        400
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "hour_req": [
+          4
+        ],
+        "dir": [
+          -1,
+          0
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "moth_4_01",
+      "kind": "moth",
+      "pos": [
+        896,
+        400
+      ],
+      "props": {
+        "id": "moth_4_01"
+      }
+    },
+    {
+      "id": "item_dew_hour_5",
+      "kind": "quest_item",
+      "pos": [
+        592,
+        272
+      ],
+      "props": {
+        "id": "dew_hour_5"
+      }
+    },
+    {
+      "id": "seal_plinth_ow_hg",
+      "kind": "isl4_seal_plinth",
+      "pos": [
+        504,
+        248
+      ],
+      "props": {
+        "seal_flag": "dungeon_hourglass_done",
+        "alt_flag": "dungeon_done:hourglass_maze",
+        "seal_kind": "hourglass",
+        "hint_string_id": "ISL4_SEAL_HOURGLASS"
+      }
+    },
+    {
+      "id": "seal_plinth_ow_ms",
+      "kind": "isl4_seal_plinth",
+      "pos": [
+        584,
+        248
+      ],
+      "props": {
+        "seal_flag": "dungeon_mausoleum_done",
+        "alt_flag": "dungeon_done:rain_mausoleum",
+        "seal_kind": "mausoleum",
+        "hint_string_id": "ISL4_SEAL_MAUSOLEUM"
+      }
+    },
+    {
+      "id": "seal_plinth_ow_party",
+      "kind": "isl4_seal_plinth",
+      "pos": [
+        544,
+        280
+      ],
+      "props": {
+        "seal_flag": "party_done",
+        "alt_flag": "golden_clock_key",
+        "seal_kind": "party",
+        "hint_string_id": "ISL4_SEAL_PARTY"
+      }
+    },
+    {
+      "id": "lamp_4_orchard_path",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        328
+      ],
+      "props": {
+        "lit": true,
+        "zone": "sunken_beds"
+      }
+    },
+    {
+      "id": "lamp_4_roost_cliff",
+      "kind": "road_lamp",
+      "pos": [
+        1104,
+        464
+      ],
+      "props": {
+        "lit": true,
+        "zone": "reed_causeway"
       }
     }
   ],
@@ -1428,8 +1800,8 @@
       "sheet": "island4_scenery",
       "prop": "flooded_statue",
       "pos": [
-        424,
-        216
+        392,
+        248
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1476,8 +1848,8 @@
       "sheet": "island4_scenery",
       "prop": "flooded_statue",
       "pos": [
-        728,
-        224
+        656,
+        296
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1560,8 +1932,8 @@
       "sheet": "island4_scenery",
       "prop": "flooded_statue",
       "pos": [
-        224,
-        432
+        264,
+        448
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1704,8 +2076,8 @@
       "sheet": "island4_scenery",
       "prop": "flooded_statue",
       "pos": [
-        808,
-        408
+        840,
+        488
       ],
       "layer": "sort",
       "flip_x": false,
@@ -2024,5 +2396,66 @@
       "shadow": true,
       "phase": 0.7
     }
-  ]
+  ],
+  "layers": [
+    {
+      "id": "hour2_well_drain",
+      "when": "dusk_hour==2 || flag:well_pinned",
+      "tiles": [
+        [
+          21,
+          10,
+          2,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "exit_cave_sundial_well"
+      ],
+      "disable": []
+    },
+    {
+      "id": "hour3_central_raft",
+      "when": "dusk_hour==3",
+      "tiles": [
+        [
+          26,
+          26,
+          4,
+          2,
+          "bridge"
+        ],
+        [
+          30,
+          26,
+          2,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "hour5_court_dew",
+      "when": "dusk_hour==5",
+      "tiles": [],
+      "enable": [
+        "item_dew_hour_5"
+      ],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Mirefen Gardens hub lagoon governed by a generous 150s 6-hour dusk loop with sundials in every district, Echo Rose arrival camp, time-pinnable caves, and portals to Weeping Orchard, Drowned Cloister, and Clock Terrace.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "6-hour dusk schedule, sundial skip/rewind, Echo Rose recording, and pin-sconce permanence",
+    "decisions": 6,
+    "expert_s": 135,
+    "reward": "beacon_4_1..3, moth_4_01, ember_4_1..2, access to all 3 districts and 3 side caves",
+    "why": "Central living-clock lagoon linking every Island 4 district, cave, and the Drowned Conservatory.",
+    "optional": true
+  }
 }

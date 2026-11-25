@@ -1,0 +1,108 @@
+{
+  "name_key": "ISL3_LM_R11_NAME",
+  "spawn": [
+    256,
+    272
+  ],
+  "zones": [
+    {
+      "id": "loom_r11",
+      "name_key": "ISL3_LM_R11_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_loom_r11_south",
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
+      "to_region": "loom_r10",
+      "to_spawn": [
+        176,
+        40
+      ]
+    },
+    {
+      "id": "exit_loom_r11_ow",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_island": 3,
+      "to_region": "ow_shift_e",
+      "to_spawn": [
+        176,
+        160
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "loom_done"
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_loom_r11",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_loom_r11",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        160
+      ],
+      "props": {
+        "zone": "loom_r11",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [],
+  "scenery": [],
+  "design": {
+    "idea": "Temporary graph stub for loom_r11",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "stub",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "stub",
+    "why": "Graph validation stub",
+    "optional": true,
+    "solution": []
+  },
+  "id": "loom_r11",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "loom",
+  "music": "isl3_loom",
+  "ambience": [
+    "forest_wind",
+    "cave_drip"
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "enemies": []
+}

@@ -3,8 +3,10 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL1_BF_VAULT",
+  "music": "island1_dungeon",
   "spawn": [
-    408,
+    500,
     112
   ],
   "zones": [
@@ -14,7 +16,7 @@
       "rect": [
         0,
         0,
-        448,
+        544,
         224
       ],
       "dark": true
@@ -24,15 +26,15 @@
     {
       "id": "exit_r6_east",
       "rect": [
-        432,
+        528,
         80,
         16,
         48
       ],
       "to_region": "belfry_r5",
       "to_spawn": [
-        40,
-        128
+        48,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -41,7 +43,7 @@
     {
       "id": "exit_r6_south",
       "rect": [
-        208,
+        256,
         208,
         32,
         16
@@ -60,7 +62,7 @@
     {
       "id": "exit_r6_north",
       "rect": [
-        208,
+        256,
         0,
         32,
         16
@@ -78,6 +80,23 @@
         "keepers_flame"
       ],
       "locked_door_id": "door_belfry_boss"
+    },
+    {
+      "id": "exit_r6_ne",
+      "rect": [
+        336,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r18",
+      "to_spawn": [
+        352,
+        208
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [
@@ -85,22 +104,22 @@
       "id": "snatcher_r6_0",
       "kind": "snatcher",
       "pos": [
-        216,
-        72
+        328,
+        152
       ],
       "route": [],
       "perches": [
         [
-          152,
-          56
+          328,
+          152
         ],
         [
-          152,
-          120
-        ],
-        [
-          184,
+          296,
           88
+        ],
+        [
+          248,
+          144
         ]
       ],
       "zone": "belfry_vault",
@@ -112,14 +131,14 @@
       "id": "brazier_r6_vault",
       "kind": "brazier",
       "pos": [
-        48,
-        72
+        168,
+        56
       ],
       "props": {
         "light_by_lantern": true,
         "target_ids": [
           "bridge_r6_west",
-          "bridge_r6_bonus"
+          "door_r6_bonus"
         ],
         "sets_flag": "r6_vault_brazier_lit"
       }
@@ -145,8 +164,8 @@
       "id": "switch_eye_r6",
       "kind": "switch_eye",
       "pos": [
-        48,
-        152
+        168,
+        168
       ],
       "props": {
         "target_ids": [
@@ -160,13 +179,13 @@
       "id": "bridge_r6_west",
       "kind": "door",
       "pos": [
-        104,
+        144,
         112
       ],
       "props": {
         "door_kind": "bridge_platform",
         "size": [
-          48,
+          128,
           32
         ],
         "starts_open": false,
@@ -181,27 +200,8 @@
       "id": "bridge_r6_east",
       "kind": "door",
       "pos": [
-        336,
+        416,
         112
-      ],
-      "props": {
-        "door_kind": "bridge_platform",
-        "size": [
-          32,
-          32
-        ],
-        "starts_open": false,
-        "requires_signals": [
-          "switch_eye_r6"
-        ]
-      }
-    },
-    {
-      "id": "bridge_r6_bonus",
-      "kind": "door",
-      "pos": [
-        328,
-        48
       ],
       "props": {
         "door_kind": "bridge_platform",
@@ -211,6 +211,24 @@
         ],
         "starts_open": false,
         "requires_signals": [
+          "switch_eye_r6"
+        ]
+      }
+    },
+    {
+      "id": "door_r6_bonus",
+      "kind": "door",
+      "pos": [
+        464,
+        72
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
           "brazier_r6_vault"
         ]
       }
@@ -219,7 +237,7 @@
       "id": "chest_r6_vault",
       "kind": "chest",
       "pos": [
-        392,
+        464,
         40
       ],
       "props": {
@@ -229,10 +247,34 @@
       }
     },
     {
+      "id": "bell_r6_dusk",
+      "kind": "bell",
+      "pos": [
+        248,
+        112
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 176
+      }
+    },
+    {
+      "id": "bell_r6_dawn",
+      "kind": "bell",
+      "pos": [
+        296,
+        112
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 176
+      }
+    },
+    {
       "id": "door_r6_south",
       "kind": "door",
       "pos": [
-        224,
+        272,
         200
       ],
       "props": {
@@ -250,7 +292,7 @@
       "id": "door_belfry_boss",
       "kind": "door",
       "pos": [
-        224,
+        272,
         24
       ],
       "props": {
@@ -265,6 +307,82 @@
           "keepers_flame"
         ]
       }
+    },
+    {
+      "id": "lamp_r6_e",
+      "kind": "road_lamp",
+      "pos": [
+        496,
+        96
+      ],
+      "props": {
+        "zone": "belfry_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_c",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        88
+      ],
+      "props": {
+        "zone": "belfry_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        88
+      ],
+      "props": {
+        "zone": "belfry_vault",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        112
+      ],
+      "radius": 36,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        48,
+        112
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": -0.15
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r6_unseal",
+      "on": "enter",
+      "if": "flag:belfry_mainspring_key && flag:belfry_spire_crank",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "belfry_vault_unsealed"
+        },
+        {
+          "set_flag": "belfry_r6_shortcut"
+        }
+      ]
     }
   ],
   "triggers": [],
@@ -273,7 +391,7 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        184,
+        232,
         56
       ],
       "layer": "sort",
@@ -285,7 +403,7 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        264,
+        312,
         56
       ],
       "layer": "sort",
@@ -297,8 +415,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        156,
-        84
+        216,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -309,8 +427,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        292,
-        84
+        360,
+        88
       ],
       "layer": "sort",
       "flip_x": true,
@@ -319,46 +437,10 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "broken_column",
-      "pos": [
-        184,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "mossy_column",
-      "pos": [
-        260,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        408,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "candelabra_tall",
-      "pos": [
-        392,
-        168
+        504,
+        152
       ],
       "layer": "sort",
       "flip_x": true,
@@ -366,5 +448,82 @@
       "phase": 0.65
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Suspended Keeper's Vault with an 8-tile un-zippable West chasm (D06 fixed), center Dusk/Dawn bells to hush the Snatcher, brazier+eye bridge synthesis for Keeper's Flame, NE Carillon stair from r18, and South shortcut to r1.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Synthesizes Snatcher hushing, lantern-throw brazier lighting, and eye-switch bridge extension across a true 8-tile abyss.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "belfry_r6_shortcut+keepers_flame",
+    "why": "Grand penultimate vault converging both the F1 shortcut loop and F3 Carillon descent before the Spire Crown.",
+    "exit": "exit_r6_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          272,
+          112
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          272,
+          112
+        ],
+        "target": "bell_r6_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 15.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          152
+        ],
+        "target": "switch_eye_r6"
+      },
+      {
+        "op": "throw",
+        "from": [
+          240,
+          88
+        ],
+        "target": "brazier_r6_vault"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          48,
+          112
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          48
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "door_belfry_boss"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_north"
+      }
+    ]
+  }
 }

@@ -1,0 +1,867 @@
+{
+  "id": "ow_shoals_west",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ZONE_ISL2_SHOALS",
+  "theme": "seabed",
+  "music": "explore",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    712,
+    264
+  ],
+  "zones": [
+    {
+      "id": "shoals_east",
+      "name_key": "ZONE_ISL2_SHOALS",
+      "rect": [
+        0,
+        0,
+        768,
+        576
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_shoals_east",
+      "rect": [
+        752,
+        240,
+        16,
+        80
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        88,
+        312
+      ]
+    },
+    {
+      "id": "exit_shoals_canal",
+      "rect": [
+        544,
+        560,
+        80,
+        16
+      ],
+      "to_region": "ow_canal_south",
+      "to_spawn": [
+        168,
+        72
+      ]
+    },
+    {
+      "id": "exit_shoals_rib_vault",
+      "rect": [
+        288,
+        0,
+        48,
+        16
+      ],
+      "to_region": "cave_rib_vault",
+      "to_spawn": [
+        216,
+        232
+      ]
+    },
+    {
+      "id": "exit_shoals_galleon",
+      "rect": [
+        0,
+        240,
+        16,
+        64
+      ],
+      "to_region": "galleon_r1",
+      "to_spawn": [
+        192,
+        248
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "reef_skate_sh_1",
+      "kind": "reef_skate",
+      "pos": [
+        280,
+        184
+      ],
+      "route": [
+        [
+          248,
+          184
+        ],
+        [
+          344,
+          184
+        ]
+      ],
+      "zone": "shoals_east",
+      "leash": 132
+    },
+    {
+      "id": "crab_warden_sh_1",
+      "kind": "crab_warden",
+      "pos": [
+        376,
+        184
+      ],
+      "route": [
+        [
+          328,
+          184
+        ],
+        [
+          408,
+          184
+        ]
+      ],
+      "zone": "shoals_east",
+      "leash": 136
+    },
+    {
+      "id": "anchor_drowned_sh_1",
+      "kind": "anchor_drowned",
+      "pos": [
+        504,
+        440
+      ],
+      "route": [
+        [
+          488,
+          440
+        ],
+        [
+          552,
+          440
+        ]
+      ],
+      "zone": "shoals_east",
+      "leash": 132
+    },
+    {
+      "id": "pistol_shrimp_sh_1",
+      "kind": "pistol_shrimp",
+      "pos": [
+        632,
+        440
+      ],
+      "route": [],
+      "zone": "shoals_east",
+      "leash": 144
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_2_shoals",
+      "kind": "waystone",
+      "pos": [
+        680,
+        264
+      ],
+      "props": {
+        "zone": "shoals_east",
+        "name_key": "ZONE_ISL2_SHOALS"
+      }
+    },
+    {
+      "id": "organ_shoals",
+      "kind": "state_lever",
+      "pos": [
+        632,
+        264
+      ],
+      "props": {
+        "scope": "island:2",
+        "var": "tide",
+        "values": [
+          "ebb",
+          "half",
+          "flood"
+        ],
+        "shootable": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "skiff_shoals",
+      "kind": "vehicle_skiff",
+      "pos": [
+        520,
+        280
+      ],
+      "props": {}
+    },
+    {
+      "id": "skiff_bell_shoals",
+      "kind": "skiff_bell",
+      "pos": [
+        616,
+        296
+      ],
+      "props": {
+        "dock_pos": [
+          520,
+          280
+        ],
+        "dock_dir": "w"
+      }
+    },
+    {
+      "id": "post_shoals_n",
+      "kind": "mooring_post",
+      "pos": [
+        424,
+        264
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_shoals_w",
+      "kind": "mooring_post",
+      "pos": [
+        248,
+        280
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_shoals_s",
+      "kind": "mooring_post",
+      "pos": [
+        376,
+        424
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "trial_slalom_gate",
+      "kind": "trial_gate",
+      "pos": [
+        584,
+        312
+      ],
+      "props": {
+        "challenge": "slalom_shoals",
+        "once": true,
+        "shoot_to_start": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "moth_2_03",
+      "kind": "moth",
+      "pos": [
+        616,
+        88
+      ],
+      "props": {
+        "id": "moth_2_03"
+      }
+    },
+    {
+      "id": "item_lens_shard_flood",
+      "kind": "quest_item",
+      "pos": [
+        648,
+        104
+      ],
+      "props": {
+        "id": "lens_shard_flood"
+      }
+    },
+    {
+      "id": "obsidian_seal_shoals",
+      "kind": "obsidian_seal",
+      "pos": [
+        168,
+        488
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "chest_shoals_sunflare",
+      "kind": "chest",
+      "pos": [
+        104,
+        488
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 100,
+        "zone": "shoals_east",
+        "requires_moves": [
+          "sunflare"
+        ],
+        "secret_id": "isl2_sunflare_bunker"
+      }
+    },
+    {
+      "id": "chest_shoals_wreck",
+      "kind": "chest",
+      "pos": [
+        120,
+        296
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "zone": "shoals_east"
+      }
+    },
+    {
+      "id": "lamp_sh_e1",
+      "kind": "road_lamp",
+      "pos": [
+        712,
+        232
+      ],
+      "props": {
+        "zone": "shoals_east",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sh_e2",
+      "kind": "road_lamp",
+      "pos": [
+        600,
+        280
+      ],
+      "props": {
+        "zone": "shoals_east",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sh_n1",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        136
+      ],
+      "props": {
+        "zone": "shoals_east",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sh_w1",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        264
+      ],
+      "props": {
+        "zone": "shoals_east",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sh_s1",
+      "kind": "road_lamp",
+      "pos": [
+        568,
+        520
+      ],
+      "props": {
+        "zone": "shoals_east",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sh_cn",
+      "kind": "road_lamp",
+      "pos": [
+        632,
+        88
+      ],
+      "props": {
+        "zone": "shoals_east",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "tide_ebb",
+      "when": "tide==ebb",
+      "theme": "seabed",
+      "tiles": [
+        [
+          17,
+          2,
+          5,
+          6,
+          "ground"
+        ],
+        [
+          9,
+          15,
+          7,
+          3,
+          "ground"
+        ],
+        [
+          11,
+          29,
+          17,
+          3,
+          "ground"
+        ],
+        [
+          28,
+          28,
+          4,
+          3,
+          "ground"
+        ]
+      ],
+      "enable": [
+        "exit_shoals_rib_vault"
+      ],
+      "disable": [
+        "trial_slalom_gate",
+        "moth_2_03",
+        "item_lens_shard_flood"
+      ]
+    },
+    {
+      "id": "tide_half",
+      "when": "tide==half",
+      "theme": "locks",
+      "tiles": [
+        [
+          31,
+          18,
+          4,
+          2,
+          "bridge"
+        ],
+        [
+          10,
+          15,
+          3,
+          2,
+          "bridge"
+        ],
+        [
+          11,
+          30,
+          19,
+          1,
+          "water"
+        ]
+      ],
+      "enable": [
+        "trial_slalom_gate"
+      ],
+      "disable": [
+        "exit_shoals_rib_vault",
+        "moth_2_03",
+        "item_lens_shard_flood"
+      ]
+    },
+    {
+      "id": "tide_flood",
+      "when": "tide==flood",
+      "theme": "galleon",
+      "tiles": [
+        [
+          24,
+          6,
+          11,
+          2,
+          "bridge"
+        ],
+        [
+          33,
+          8,
+          3,
+          4,
+          "bridge"
+        ],
+        [
+          22,
+          7,
+          3,
+          3,
+          "bridge"
+        ],
+        [
+          11,
+          30,
+          19,
+          1,
+          "water"
+        ]
+      ],
+      "enable": [
+        "moth_2_03",
+        "item_lens_shard_flood"
+      ],
+      "disable": [
+        "exit_shoals_rib_vault",
+        "trial_slalom_gate"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_slalom_start",
+      "on": "trial_start:trial_slalom_gate",
+      "once": false,
+      "do": [
+        {
+          "narrate": "ISL2_TRIAL_SLALOM"
+        },
+        {
+          "challenge": {
+            "id": "slalom_shoals",
+            "kind": "race",
+            "time": 35,
+            "goal_radius": 28,
+            "checkpoints": [
+              [
+                456,
+                264
+              ],
+              [
+                360,
+                264
+              ],
+              [
+                248,
+                280
+              ],
+              [
+                312,
+                376
+              ],
+              [
+                376,
+                424
+              ],
+              [
+                472,
+                360
+              ]
+            ],
+            "goal": [
+              552,
+              296
+            ],
+            "reward": {
+              "kind": "pane",
+              "value": "sea_glass",
+              "amount": 1
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        664,
+        264
+      ],
+      "radius": 26
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        312,
+        184
+      ],
+      "radius": 28,
+      "style": "water"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        568,
+        472
+      ],
+      "radius": 24,
+      "style": "sand"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        104,
+        264
+      ],
+      "radius": 20,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_seabed",
+      "prop": "shipwreck_rib_beam",
+      "pos": [
+        648,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "shipwreck_rib_beam",
+      "pos": [
+        248,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "giant_clam_shell",
+      "pos": [
+        344,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "coral_fan_cluster",
+      "pos": [
+        632,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "coral_fan_cluster",
+      "pos": [
+        536,
+        456
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "barnacle_boulder",
+      "pos": [
+        296,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "barnacle_boulder",
+      "pos": [
+        616,
+        440
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sunken_bell_relic",
+      "pos": [
+        104,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sunken_amphora_urn",
+      "pos": [
+        648,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "tidepool_starfish",
+      "pos": [
+        328,
+        184
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "tidepool_starfish",
+      "pos": [
+        568,
+        488
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "pearl_lantern_post",
+      "pos": [
+        696,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "pearl_lantern_post",
+      "pos": [
+        120,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sea_anemone_glow",
+      "pos": [
+        600,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "shipwreck_ribs",
+      "pos": [
+        520,
+        504
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Tidal shipwreck archipelago where ebb opens Rib-Cage Vault and Galleon hull, half runs Skiff Slalom for Sea Glass, and flood raises the Crow's Nest masthead.",
+    "kind": "traversal",
+    "beat": "sho",
+    "teaches": "Multi-tide overworld exploration, Skiff slalom mooring hairpins, Galleon approach",
+    "decisions": 5,
+    "expert_s": 85,
+    "reward": "Pane sea_glass + moth_2_03 + lens_shard_flood + Galleon entry",
+    "why": "Western Island 2 tidal overworld linking Harbor Quay, Rib-Cage Vault, Galleon, and Canal Quarter",
+    "optional": true,
+    "start": {
+      "vars": {
+        "tide": "ebb"
+      },
+      "spawn": [
+        712,
+        264
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          680,
+          264
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "ws_2_shoals"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          664,
+          264
+        ],
+        "target": "organ_shoals"
+      },
+      {
+        "op": "expect",
+        "var": "tide==half"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          664,
+          264
+        ],
+        "target": "organ_shoals"
+      },
+      {
+        "op": "expect",
+        "var": "tide==flood"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_shoals_east"
+      }
+    ]
+  }
+}

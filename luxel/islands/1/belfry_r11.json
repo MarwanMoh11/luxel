@@ -1,0 +1,448 @@
+{
+  "id": "belfry_r11",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_BF_MAINSPRING",
+  "music": "island1_dungeon",
+  "spawn": [
+    272,
+    336
+  ],
+  "zones": [
+    {
+      "id": "belfry_mainspring",
+      "name_key": "ISL1_BF_MAINSPRING",
+      "rect": [
+        0,
+        0,
+        544,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_south",
+      "rect": [
+        256,
+        368,
+        32,
+        16
+      ],
+      "to_region": "belfry_r5",
+      "to_spawn": [
+        224,
+        48
+      ]
+    },
+    {
+      "id": "exit_r11_west",
+      "rect": [
+        0,
+        176,
+        16,
+        32
+      ],
+      "to_region": "belfry_r10",
+      "to_spawn": [
+        420,
+        152
+      ]
+    },
+    {
+      "id": "exit_r11_east",
+      "rect": [
+        528,
+        176,
+        16,
+        32
+      ],
+      "to_region": "belfry_r12",
+      "to_spawn": [
+        48,
+        160
+      ]
+    },
+    {
+      "id": "exit_r11_north",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r14",
+      "to_spawn": [
+        256,
+        304
+      ],
+      "requires_flags": [
+        "belfry_key_3",
+        "belfry_gear_1"
+      ],
+      "locked_door_id": "door_r11_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_belfry_f2",
+      "kind": "waystone",
+      "pos": [
+        272,
+        192
+      ],
+      "props": {
+        "zone": "belfry_mainspring",
+        "name_key": "ISL1_BF_MAINSPRING"
+      }
+    },
+    {
+      "id": "hand_r11_bridge",
+      "kind": "clock_hand",
+      "pos": [
+        272,
+        192
+      ],
+      "props": {
+        "hand": "bridge",
+        "length": 152,
+        "width": 28,
+        "start_deg": 180,
+        "dusk_freezable": false,
+        "dawn_step_deg": 90,
+        "war_step_deg": -90,
+        "sync_var": "belfry_clock_hand",
+        "sync_scope": "dungeon:belfry",
+        "persist": true
+      }
+    },
+    {
+      "id": "bell_r11_dawn",
+      "kind": "bell",
+      "pos": [
+        232,
+        224
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 184
+      }
+    },
+    {
+      "id": "bell_r11_war",
+      "kind": "bell",
+      "pos": [
+        312,
+        224
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 184
+      }
+    },
+    {
+      "id": "lore_r11",
+      "kind": "lore_stone",
+      "pos": [
+        272,
+        240
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R11",
+        "icon": "clock"
+      }
+    },
+    {
+      "id": "door_r11_north",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "belfry",
+        "key_kind": "wick_key",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "belfry_key_3",
+          "belfry_gear_1"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r11_s",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        336
+      ],
+      "props": {
+        "zone": "belfry_mainspring",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_c1",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        160
+      ],
+      "props": {
+        "zone": "belfry_mainspring",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_c2",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        160
+      ],
+      "props": {
+        "zone": "belfry_mainspring",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        192
+      ],
+      "props": {
+        "zone": "belfry_mainspring",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_e",
+      "kind": "road_lamp",
+      "pos": [
+        480,
+        192
+      ],
+      "props": {
+        "zone": "belfry_mainspring",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_n",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        48
+      ],
+      "props": {
+        "zone": "belfry_mainspring",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "hand_west",
+      "when": "belfry_clock_hand==west",
+      "tiles": [
+        [
+          6,
+          11,
+          7,
+          2,
+          "bridge"
+        ]
+      ]
+    },
+    {
+      "id": "hand_north",
+      "when": "belfry_clock_hand==north",
+      "tiles": [
+        [
+          16,
+          4,
+          2,
+          5,
+          "bridge"
+        ]
+      ]
+    },
+    {
+      "id": "hand_east",
+      "when": "belfry_clock_hand==east",
+      "tiles": [
+        [
+          21,
+          11,
+          7,
+          2,
+          "bridge"
+        ]
+      ]
+    },
+    {
+      "id": "hand_south",
+      "when": "belfry_clock_hand==south",
+      "tiles": [
+        [
+          6,
+          11,
+          7,
+          2,
+          "bridge"
+        ]
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        192
+      ],
+      "radius": 136,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        192
+      ],
+      "size": [
+        64,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.0
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "giant_clock_gear",
+      "pos": [
+        272,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        224,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        320,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_pulley_wheel",
+      "pos": [
+        304,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "Floor 2 Circular Mainspring Rotunda (Hub #2): ring Dawn (CW) and War (CCW) rim bells to rotate the colossal brass clock-hand bridge between West (r10), North (r14), and East (r12).",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Controlling a world-var rotating central hub bridge via Dawn (CW) and War (CCW) bells.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "f2_hub+mainspring_tease",
+    "why": "Multi-level Clockwork Hub #2 connecting F1 Lift (r5), West Drum (r10), East Pendulum Wing (r12/r13), and F3 Shaft (r14).",
+    "start": {
+      "vars": {
+        "belfry_clock_hand": "west"
+      }
+    },
+    "exit": "exit_r11_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          272,
+          216
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "ws_belfry_f2"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r11"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          256,
+          224
+        ],
+        "target": "bell_r11_dawn"
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "shoot",
+        "from": [
+          256,
+          224
+        ],
+        "target": "bell_r11_dawn"
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect",
+        "var": "belfry_clock_hand==east"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_east"
+      }
+    ]
+  }
+}

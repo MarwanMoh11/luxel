@@ -1,0 +1,384 @@
+{
+  "id": "belfry_r8",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_BF_WELL",
+  "music": "island1_dungeon",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "belfry_well",
+      "name_key": "ISL1_BF_WELL",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "belfry_r2",
+      "to_spawn": [
+        208,
+        48
+      ]
+    },
+    {
+      "id": "exit_r8_east",
+      "rect": [
+        432,
+        144,
+        16,
+        48
+      ],
+      "to_region": "belfry_r9",
+      "to_spawn": [
+        48,
+        160
+      ],
+      "locked_door_id": "door_r8_east"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "gh_r8_0",
+      "kind": "grave_hand",
+      "pos": [
+        80,
+        112
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "belfry_well",
+      "leash": 96
+    }
+  ],
+  "interactables": [
+    {
+      "id": "blk_r8_weight",
+      "kind": "push_block",
+      "pos": [
+        216,
+        176
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r8",
+      "kind": "pressure_plate",
+      "pos": [
+        184,
+        224
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_ids": [
+          "bridge_r8_crank",
+          "mover_r8_baffle"
+        ]
+      }
+    },
+    {
+      "id": "mover_r8_baffle",
+      "kind": "mover_wall",
+      "pos": [
+        304,
+        160
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "path": [
+          [
+            304,
+            160
+          ],
+          [
+            304,
+            96
+          ]
+        ],
+        "speed": 96,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "bridge_r8_crank",
+      "kind": "door",
+      "pos": [
+        176,
+        80
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          64,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "plate_r8"
+        ]
+      }
+    },
+    {
+      "id": "bell_r8_war",
+      "kind": "bell",
+      "pos": [
+        248,
+        160
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "bell_r8_war_relay",
+      "kind": "bell",
+      "pos": [
+        352,
+        160
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 144,
+        "relay": true
+      }
+    },
+    {
+      "id": "door_r8_east",
+      "kind": "tone_door",
+      "pos": [
+        424,
+        168
+      ],
+      "props": {
+        "tone": "war",
+        "size": [
+          16,
+          48
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "relic_gear_1",
+      "kind": "bf_crank_relic",
+      "pos": [
+        72,
+        64
+      ],
+      "props": {
+        "flag_id": "belfry_gear_1",
+        "relic_kind": "gear",
+        "prompt_key": "ISL1_BF_PROMPT_CRANK",
+        "narrate_key": "ISL1_BF_GEAR1_GOT"
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        256
+      ],
+      "props": {
+        "zone": "belfry_well",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_c",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        120
+      ],
+      "props": {
+        "zone": "belfry_well",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_nw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        104
+      ],
+      "props": {
+        "zone": "belfry_well",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        160
+      ],
+      "radius": 28,
+      "style": "clock"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        392,
+        168
+      ],
+      "size": [
+        32,
+        36
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        72,
+        64
+      ],
+      "size": [
+        40,
+        56
+      ],
+      "tint": "warm",
+      "shear": -0.18
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "counterweight_block",
+      "pos": [
+        120,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        360,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        152,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        328,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "L-shaped Counterweight Well: push the stone counterweight onto the scale plate to retract the acoustic baffle and extend the NW crank bridge, defeat the Grave Hand, turn Gear Crank 1, and chain a War Relay to shatter the East seam to r9.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Counterweight plate clearing an acoustic baffle line for a War Ring relay.",
+    "decisions": 6,
+    "expert_s": 55,
+    "reward": "belfry_gear_1",
+    "why": "Rewards Gear Crank 1 (needed for the F2 Mainspring Gate) and opens the West-to-East F1 clockwork loop.",
+    "exit": "exit_r8_east",
+    "solution": [
+      {
+        "op": "push",
+        "target": "blk_r8_weight",
+        "to": [
+          184,
+          224
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          120,
+          80
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 12.0
+      },
+      {
+        "op": "interact",
+        "target": "relic_gear_1"
+      },
+      {
+        "op": "expect",
+        "flag": "belfry_gear_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          192
+        ],
+        "target": "bell_r8_war"
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_east"
+      }
+    ]
+  }
+}

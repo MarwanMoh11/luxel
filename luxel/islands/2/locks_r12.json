@@ -1,0 +1,500 @@
+{
+  "id": "locks_r12",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R12_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    272,
+    328
+  ],
+  "zones": [
+    {
+      "id": "lck_r12",
+      "name_key": "LCK_R12_NAME",
+      "rect": [
+        0,
+        0,
+        544,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r12_south",
+      "rect": [
+        256,
+        368,
+        32,
+        16
+      ],
+      "to_region": "locks_r11",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_r12_warp",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r1",
+      "to_spawn": [
+        104,
+        272
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "locks_done"
+      ],
+      "locked_door_id": "door_r12_warp"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r12_s",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        328
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r12",
+      "kind": "state_lever",
+      "pos": [
+        272,
+        296
+      ],
+      "props": {
+        "scope": "dungeon:locks",
+        "var": "lock_water",
+        "values": [
+          "west_high",
+          "east_high"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "mir_r12_w",
+      "kind": "blue_transformer",
+      "pos": [
+        168,
+        200
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "mir_r12_e",
+      "kind": "blue_transformer",
+      "pos": [
+        376,
+        200
+      ],
+      "props": {
+        "normal": [
+          -0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "door_r12_warp",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "locks_done"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r12_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        312
+      ],
+      "props": {
+        "zone": "lck_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_se",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        312
+      ],
+      "props": {
+        "zone": "lck_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "zone": "lck_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        88
+      ],
+      "props": {
+        "zone": "lck_r12",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "twins_r12",
+      "kind": "twin_lockmasters",
+      "pos": [
+        272,
+        176
+      ],
+      "zone": "lck_r12"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        272,
+        192
+      ],
+      "radius": 52
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        192
+      ],
+      "radius": 68,
+      "style": "ritual"
+    },
+    {
+      "kind": "window_strip",
+      "y": 8,
+      "x0": 112,
+      "x1": 224,
+      "style": "stars"
+    },
+    {
+      "kind": "window_strip",
+      "y": 8,
+      "x0": 320,
+      "x1": 432,
+      "style": "stars"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        64,
+        352,
+        256
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        168
+      ],
+      "size": [
+        68,
+        92
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        104,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        440,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        104,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        440,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        88,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        456,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        216,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        328,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_buoy_marker",
+      "pos": [
+        200,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_buoy_marker",
+      "pos": [
+        344,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        272,
+        280
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r12_west_high",
+      "when": "lock_water==west_high",
+      "tiles": [
+        [
+          2,
+          7,
+          3,
+          10,
+          "water"
+        ],
+        [
+          29,
+          7,
+          3,
+          10,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r12_east_high",
+      "when": "lock_water==east_high",
+      "tiles": [
+        [
+          2,
+          7,
+          3,
+          10,
+          "ground"
+        ],
+        [
+          29,
+          7,
+          3,
+          10,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "lck_r12_victory_msg",
+      "on": "flag:locks_done",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "LCK_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Double-Lock Sanctum Boss Arena: Twin Lockmasters Brine and Bilge share one sea-glass hex shield across 4 Blue Portals while flipping lock_water between lateral sluices every 12 seconds; victory awards Half-Lantern #2 and locks_done.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Synthesizes portal-line reading, mid-swap shield knocks, blue mirror flanking, and linked sluice shifts across 3 escalating boss phases.",
+    "decisions": 10,
+    "expert_s": 138,
+    "reward": "locks_done+half_lantern_2+cycle_5",
+    "why": "Climax boss of The Smugglers' Locks awarding Half-Lantern #2 and setting locks_done to awaken The Leviathan.",
+    "exit": "exit_r12_warp",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      },
+      "flags": [
+        "power_sluice_harpoon"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          272,
+          280
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lck_r12",
+        "timeout": 180.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "locks_done",
+        "timeout": 5.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r12_warp"
+      }
+    ]
+  }
+}

@@ -1,0 +1,501 @@
+{
+  "id": "locks_r3",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R3_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    48,
+    144
+  ],
+  "zones": [
+    {
+      "id": "lck_r3",
+      "name_key": "LCK_R3_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_west",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_region": "locks_r2",
+      "to_spawn": [
+        48,
+        192
+      ]
+    },
+    {
+      "id": "exit_r3_east",
+      "rect": [
+        432,
+        128,
+        16,
+        32
+      ],
+      "to_region": "locks_r4",
+      "to_spawn": [
+        48,
+        160
+      ],
+      "locked_door_id": "door_r3_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_w",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r3",
+      "kind": "state_lever",
+      "pos": [
+        248,
+        216
+      ],
+      "props": {
+        "scope": "dungeon:locks",
+        "var": "lock_water",
+        "values": [
+          "west_high",
+          "east_high"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "raft_r3",
+      "kind": "tide_raft",
+      "pos": [
+        168,
+        136
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_var": "lock_water",
+        "lock_side": "west",
+        "angle_deg": 0.0,
+        "rotatable": true,
+        "reflect_only_floating": true
+      }
+    },
+    {
+      "id": "blk_r3_pin",
+      "kind": "push_block",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sw_r3_east",
+      "kind": "switch_eye",
+      "pos": [
+        312,
+        136
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_ids": [
+          "bridge_r3_east",
+          "door_r3_east"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r3_east",
+      "kind": "door",
+      "pos": [
+        328,
+        144
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "sw_r3_east"
+        ],
+        "size": [
+          80,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_r3_east",
+      "kind": "door",
+      "pos": [
+        424,
+        144
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r3_east"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        120
+      ],
+      "props": {
+        "zone": "lck_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "zone": "lck_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_c",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "zone": "lck_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        104
+      ],
+      "props": {
+        "zone": "lck_r3",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        48,
+        64,
+        192
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        248,
+        152
+      ],
+      "radius": 20,
+      "style": "water"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        32,
+        224,
+        80,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        136
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        248,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        72,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        216,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        280,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        56,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        392,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        408,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        168,
+        232
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r3_west_drained",
+      "when": "lock_water==east_high",
+      "theme": "seabed",
+      "tiles": [
+        [
+          5,
+          4,
+          8,
+          10,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r3_west_flooded",
+      "when": "lock_water==west_high",
+      "tiles": [
+        [
+          5,
+          4,
+          8,
+          10,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Drain the West Lock Basin to descend onto the seabed beside a grounded mirror-raft, push the sightline lock-pin crate clear and aim the mirror east, then re-flood to float the mirror above the parapet and bank a blue shot across the channel.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Draining a lock exposes grounded Tide Rafts and seabed blocks for hand-adjustment; re-flooding lifts reflect_only_floating mirrors into the firing plane.",
+    "decisions": 5,
+    "expert_s": 48,
+    "reward": "opens_barge_channel",
+    "why": "Develops linked lock_water state into a crisp drain -> adjust -> re-flood spatial puzzle.",
+    "exit": "exit_r3_east",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          232,
+          248
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          248
+        ],
+        "target": "valve_r3"
+      },
+      {
+        "op": "expect",
+        "var": "lock_water==east_high"
+      },
+      {
+        "op": "push",
+        "target": "blk_r3_pin",
+        "to": [
+          200,
+          104
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          168
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "raft_r3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          248
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          248
+        ],
+        "target": "valve_r3"
+      },
+      {
+        "op": "expect",
+        "var": "lock_water==west_high"
+      },
+      {
+        "op": "expect",
+        "interactable": "raft_r3",
+        "prop": "state",
+        "value": "floating"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          232
+        ],
+        "target": "raft_r3"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r3_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_east"
+      }
+    ]
+  }
+}

@@ -168,18 +168,21 @@ func _choreograph(f: int, w: LxWick, world: LxRegionLoader) -> void:
 			w.press_fire()
 		elif f == 48:
 			w.release_fire()
-		elif f >= 50 and f < 74:
-			# Watch Dawn Echo sweep across while F2 stays frozen and F1 slides into North Bridge!
-			_set_in(Vector2(132.0, 296.0) - w.global_position, Vector2.RIGHT)
-		elif f >= 74 and f < 120:
-			# Run across South Catwalk to Center Pier (280, 296)
-			_set_in(Vector2(280.0, 296.0) - w.global_position, Vector2.RIGHT)
-		elif f >= 120 and f < 148:
+		elif f >= 50 and f < 66:
+			# Step west around blk_r9_baffle (128, 248) to clear (92, 256)
+			_set_in(Vector2(92.0, 256.0) - w.global_position, Vector2.DOWN)
+		elif f >= 66 and f < 86:
+			# Head down to South Catwalk approach (104, 296)
+			_set_in(Vector2(104.0, 296.0) - w.global_position, Vector2.RIGHT)
+		elif f >= 86 and f < 142:
+			# Run across South Catwalk to Center Pier (288, 296)
+			_set_in(Vector2(288.0, 296.0) - w.global_position, Vector2.RIGHT)
+		elif f >= 142 and f < 178:
 			# Head north up Center Pier to F2 bridge lane (288, 200)
 			_set_in(Vector2(288.0, 200.0) - w.global_position, Vector2.UP)
-		elif f >= 148 and f < 190:
-			# Cross F2 coffin bridge to East Reliquary Pier (456, 200)!
-			_set_in(Vector2(456.0, 200.0) - w.global_position, Vector2.RIGHT)
+		elif f >= 178 and f < 236:
+			# Stride across the hovering stone coffin F2 bridge to East Reliquary Pier (464, 200)!
+			_set_in(Vector2(464.0, 200.0) - w.global_position, Vector2.RIGHT)
 		else:
 			_set_in(Vector2.ZERO, Vector2.UP)
 		return

@@ -1,0 +1,189 @@
+{
+  "pack_id": "i4_overworld",
+  "owner": "OW4",
+  "comment": "Island 4 (Mirefen Gardens) overworld districts, side caves, Wing Spire trial, Last Hour superboss vault, 3 Lamp-Folk quests, strings, and overworld helpers.",
+  "strings": {
+    "ISL4_ZONE_ORCHARD": "WEEPING ORCHARD",
+    "ISL4_ZONE_CLOISTER": "DROWNED CLOISTER",
+    "ISL4_ZONE_TERRACE": "CLOCK TERRACE",
+    "ISL4_ZONE_LAST_HOUR": "THE LAST HOUR",
+    "ISL4_ZONE_SUNDIAL_WELL": "SUNDIAL WELL",
+    "ISL4_ZONE_ECHO_CELLAR": "ECHO CELLAR",
+    "ISL4_ZONE_RAIN_CISTERN": "RAIN CISTERN",
+    "ISL4_ZONE_HERON_ROOST": "HERON ROOST",
+    "ISL4_ZONE_WING_SPIRE": "WING SPIRE TRIAL",
+    "ISL4_LORE_CELLAR": "THE GARDEN KEPT SUNSET TO HIDE THE DARK.",
+    "ISL4_LORE_HOLLOW": "IT STUDIED OUR ECHOES BEFORE IT STOLE ONE.",
+    "ISL4_RELIGHT_LOOP": "THE CLOCK MOVES FORWARD. MORNING NEARS.",
+    "ISL4_LAST_HOUR_VICTORY": "THE HANDS TICK FORWARD. A GOLDEN MOTH FALLS.",
+    "ISL4_ORCHARD_GATE_HINT": "HOURGLASS MAZE: RECORD ECHOES TO CONSPIRE.",
+    "ISL4_CLOISTER_GATE_HINT": "RAIN MAUSOLEUM: RAFT FLOATS AT HOUR III.",
+    "ISL4_PARTY_GATE_HINT": "GARDEN PARTY: UNSEALS AFTER MAZE + MAUSOLEUM",
+    "ISL4_SEAL_HOURGLASS": "SEAL I: THE HOURGLASS MAZE IN WEST ORCHARD.",
+    "ISL4_SEAL_MAUSOLEUM": "SEAL II: RAIN MAUSOLEUM IN SOUTH CLOISTER.",
+    "ISL4_SEAL_PARTY": "SEAL III: STEAL CLOCK KEY AT GARDEN PARTY.",
+    "ISL4_SEAL_LIT": "THIS GARDEN SEAL SHINES UNBROKEN.",
+    "ISL4_PROMPT_READ_DIAL": "READ SCHEDULE",
+    "ISL4_PROMPT_INSPECT_SEAL": "INSPECT SEAL",
+    "ISL4_SCHED_H1": "I MIST: ECHO CELLAR ARCH OPENS WEST.",
+    "ISL4_SCHED_H2": "II ROSE: WELL DRAINS - ROSES BLOOM LONG.",
+    "ISL4_SCHED_H3": "III RAIN: RAFTS FLOAT - TORCHES HISS OUT.",
+    "ISL4_SCHED_H4": "IV WIND: EAST UPDRAFTS LIFT MOTH WINGS.",
+    "ISL4_SCHED_H5": "V LANTERN: COURT DEW GLOWS - GATES CHIME.",
+    "ISL4_SCHED_H6": "VI DUSK: SHADOW BRIDGE RISES IN CLOISTER.",
+    "ISL4_TRIAL_SPIRE_WIN": "WING SPIRE CLEARED! PETAL DECOY UNLOCKED.",
+    "ISL4_TRIAL_MEDAL_GOLD": "GOLD WING MEDAL EARNED!",
+    "ISL4_TRIAL_MEDAL_SILVER": "SILVER WING MEDAL EARNED!",
+    "ISL4_TRIAL_MEDAL_BRONZE": "BRONZE WING MEDAL EARNED!",
+    "ISL4_RELIGHT_TEA": "TEA BY SUNSET. MIREFEN RESTS AT LAST."
+  },
+  "interactables": {
+    "isl4_seal_plinth": "res://luxel/islands/4/overworld/isl4_seal_plinth.gd",
+    "isl4_schedule_plaque": "res://luxel/islands/4/overworld/isl4_schedule_plaque.gd",
+    "isl4_trial_medal": "res://luxel/islands/4/overworld/isl4_trial_medal.gd"
+  },
+  "regions": {
+    "ow_weeping_orchard": {
+      "name_key": "ISL4_ZONE_ORCHARD",
+      "theme": "hourglass_maze",
+      "music": "island4_explore",
+      "dark": true,
+      "map": [-1, 0]
+    },
+    "ow_drowned_cloister": {
+      "name_key": "ISL4_ZONE_CLOISTER",
+      "theme": "rain_mausoleum",
+      "music": "island4_explore",
+      "dark": true,
+      "map": [0, 1]
+    },
+    "ow_clock_terrace": {
+      "name_key": "ISL4_ZONE_TERRACE",
+      "theme": "garden_party",
+      "music": "island4_explore",
+      "dark": true,
+      "map": [1, -1]
+    },
+    "cave_sundial_well": {
+      "name_key": "ISL4_ZONE_SUNDIAL_WELL",
+      "theme": "cave_4",
+      "music": "island4_dungeon",
+      "dark": true,
+      "map": [0, -1]
+    },
+    "cave_echo_cellar": {
+      "name_key": "ISL4_ZONE_ECHO_CELLAR",
+      "theme": "cave_4",
+      "music": "island4_dungeon",
+      "dark": true,
+      "map": [-1, 1]
+    },
+    "cave_rain_cistern": {
+      "name_key": "ISL4_ZONE_RAIN_CISTERN",
+      "theme": "cave_4",
+      "music": "isl4_mausoleum",
+      "dark": true,
+      "map": [-1, 2]
+    },
+    "cave_heron_roost": {
+      "name_key": "ISL4_ZONE_HERON_ROOST",
+      "theme": "rain_mausoleum",
+      "music": "island4_explore",
+      "dark": true,
+      "map": [2, 0]
+    },
+    "trial_wing_spire": {
+      "name_key": "ISL4_ZONE_WING_SPIRE",
+      "theme": "garden_party",
+      "music": "isl4_setpiece",
+      "dark": true,
+      "map": [2, -1]
+    },
+    "vault_last_hour": {
+      "name_key": "ISL4_ZONE_LAST_HOUR",
+      "theme": "hourglass_maze",
+      "music": "isl4_boss_minor_p1",
+      "dark": true,
+      "map": [-1, 3]
+    }
+  },
+  "quests": [
+    {
+      "id": "q_isl4_three_hour_bloom",
+      "island": 4,
+      "kind": "fetch",
+      "folk": "gardener_frog",
+      "icon": "seed",
+      "rescue_folk": "gardener_frog",
+      "steps": [
+        {
+          "icons": ["clock", "seed", "question"],
+          "need": "quest:item:dew_hour_2 && quest:item:dew_hour_3 && quest:item:dew_hour_5",
+          "consume_item": "dew_hour_5",
+          "flag": "quest:q_isl4_three_hour_bloom:s0"
+        },
+        {
+          "icons": ["clock", "seed", "happy", "pane"],
+          "need": "",
+          "flag": "quest:q_isl4_three_hour_bloom:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "dusk_dew",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q_isl4_missing_minutes",
+      "island": 4,
+      "kind": "fetch",
+      "folk": "scribe_worm",
+      "icon": "book",
+      "rescue_folk": "scribe_worm",
+      "steps": [
+        {
+          "icons": ["book", "clock", "arrow_s"],
+          "need": "lore_4_cellar",
+          "flag": "shadow_bridge_marked"
+        },
+        {
+          "icons": ["book", "star", "happy", "key"],
+          "need": "",
+          "flag": "quest:q_isl4_missing_minutes:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "value": "shards",
+        "amount": 120
+      }
+    },
+    {
+      "id": "q_isl4_last_teacup",
+      "island": 4,
+      "kind": "fetch",
+      "folk": "candle_grandma",
+      "icon": "heart",
+      "rescue_folk": "candle_grandma",
+      "steps": [
+        {
+          "icons": ["heart", "clock", "sad", "arrow_ne"],
+          "need": "quest:item:teacup",
+          "consume_item": "teacup",
+          "flag": "grandma_portal_open"
+        },
+        {
+          "icons": ["heart", "flame", "happy", "gift"],
+          "need": "",
+          "flag": "quest:q_isl4_last_teacup:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "value": "shards",
+        "amount": 90
+      }
+    }
+  ]
+}

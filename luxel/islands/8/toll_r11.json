@@ -1,0 +1,404 @@
+{
+  "id": "toll_r11",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R11",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    248,
+    312
+  ],
+  "zones": [
+    {
+      "id": "toll_boss",
+      "name_key": "ISL8_TOLL_R11",
+      "rect": [
+        0,
+        0,
+        480,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_south",
+      "rect": [
+        224,
+        336,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r1",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_r11_return",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "overworld",
+      "to_spawn": [
+        336,
+        1104
+      ],
+      "one_way": true,
+      "locked_door_id": "door_r11_return"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r11_south",
+      "kind": "room_anchor",
+      "pos": [
+        248,
+        312
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mirror_r11_w",
+      "kind": "blue_transformer",
+      "pos": [
+        120,
+        184
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "mirror_r11_e",
+      "kind": "blue_transformer",
+      "pos": [
+        360,
+        184
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 135.0
+      }
+    },
+    {
+      "id": "door_r11_return",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "toll_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        280
+      ],
+      "props": {
+        "zone": "toll_boss",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        280
+      ],
+      "props": {
+        "zone": "toll_boss",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "zone": "toll_boss",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "zone": "toll_boss",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "tollmaster_r11",
+      "kind": "tollmaster",
+      "pos": [
+        248,
+        152
+      ],
+      "zone": "toll_boss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_gate_arch",
+      "pos": [
+        248,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stamp_floor_emblem",
+      "pos": [
+        248,
+        184
+      ],
+      "layer": "ground"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        120,
+        88
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        376,
+        88
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        104,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        376,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        88,
+        168
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        392,
+        168
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 20,
+      "x0": 160,
+      "x1": 320,
+      "style": "stars"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        192,
+        64,
+        96,
+        208
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        184
+      ],
+      "radius": 52,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        80,
+        288,
+        176
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        128
+      ],
+      "size": [
+        72,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r11_victory",
+      "on": "flag:tollmaster_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_cleared"
+        },
+        {
+          "set_flag": "toll_redemption_ready"
+        },
+        {
+          "sfx": "shrine_claimed"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_TOLL_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Grand Gilded Basilica Apse hosting Boss THE TOLLMASTER: bank blue bolts off twin flanking mirrors behind his Lectern Shield, smash his Brass Register (or sell a setting!) during P2 & P3 Invoices, and earn +1 Half-Lantern plus 1 Free Redemption Receipt!",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Boss-scale synthesis of Island 8's Sold-Settings choice vs pure manual-aim counterplay.",
+    "decisions": 8,
+    "expert_s": 125,
+    "reward": "toll_cleared+half_lantern+redemption",
+    "why": "Climactic counting-house boss unlocking 1/3 of the Triple Eclipse Seal and Free Redemption at Vigil Terrace.",
+    "exit": "exit_r11_return",
+    "start": {
+      "flags": [
+        "item_brass_receipt"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          264
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "clear",
+        "timeout": 150.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "tollmaster_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "toll_cleared",
+        "timeout": 5.0
+      },
+      {
+        "op": "expect",
+        "flag": "toll_redemption_ready"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r11_return",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_return"
+      }
+    ]
+  }
+}

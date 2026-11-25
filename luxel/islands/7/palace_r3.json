@@ -138,6 +138,7 @@
       "props": {
         "door_kind": "wick_key",
         "dungeon_id": "palace",
+        "key_id": "palace_key_3",
         "size": [16, 48]
       }
     },
@@ -196,9 +197,10 @@
       "id": "black_world",
       "when": "world_face==black",
       "theme": "inverted_palace_black",
+      "overlay": "res://luxel/art/islands/7/palace_r3__black_world.png",
       "full_frame": true,
       "tiles": [
-        [6, 17, 3, 2, "bridge"]
+        [2, 17, 2, 2, "bridge"]
       ],
       "enable": ["chest_r3_black"],
       "disable": []

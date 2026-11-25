@@ -101,7 +101,7 @@
       "kind": "road_lamp",
       "pos": [
         136,
-        216
+        232
       ],
       "props": {
         "zone": "hg_r11_promenade",
@@ -113,7 +113,7 @@
       "kind": "road_lamp",
       "pos": [
         216,
-        40
+        88
       ],
       "props": {
         "zone": "hg_r11_promenade",
@@ -257,7 +257,7 @@
       "sheet": "theme_hourglass_maze",
       "prop": "stone_hedge_bench",
       "pos": [
-        72,
+        40,
         200
       ],
       "layer": "sort",
@@ -282,12 +282,28 @@
     "exit": "exit_hg_r11_north",
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          120,
+          200
+        ],
+        "tol": 4.0
+      },
+      {
         "op": "interact",
         "target": "lore_hg_r11_gardener"
       },
       {
-        "op": "interact",
-        "target": "rest_hg_r11"
+        "op": "goto",
+        "to": [
+          184,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "wait",
+        "secs": 1.2
       },
       {
         "op": "expect_exit",

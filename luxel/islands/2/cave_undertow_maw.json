@@ -1,0 +1,535 @@
+{
+  "id": "cave_undertow_maw",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ZONE_ISL2_MAW",
+  "theme": "leviathan_belly",
+  "music": "island2_boss_p1",
+  "ambience": [
+    "harbor_tide"
+  ],
+  "spawn": [
+    72,
+    200
+  ],
+  "zones": [
+    {
+      "id": "undertow_maw",
+      "name_key": "ZONE_ISL2_MAW",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_maw_out",
+      "rect": [
+        0,
+        176,
+        16,
+        48
+      ],
+      "to_region": "ow_open_sound",
+      "to_spawn": [
+        712,
+        456
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_undertow",
+      "kind": "undertow",
+      "pos": [
+        264,
+        200
+      ],
+      "zone": "undertow_maw"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_maw",
+      "kind": "room_anchor",
+      "pos": [
+        72,
+        200
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "skiff_maw",
+      "kind": "vehicle_skiff",
+      "pos": [
+        184,
+        184
+      ],
+      "props": {}
+    },
+    {
+      "id": "skiff_bell_maw",
+      "kind": "skiff_bell",
+      "pos": [
+        136,
+        216
+      ],
+      "props": {
+        "dock_pos": [
+          184,
+          184
+        ],
+        "dock_dir": "e"
+      }
+    },
+    {
+      "id": "post_maw_n",
+      "kind": "mooring_post",
+      "pos": [
+        264,
+        136
+      ],
+      "props": {
+        "orbit_r": 48,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_maw_s",
+      "kind": "mooring_post",
+      "pos": [
+        264,
+        264
+      ],
+      "props": {
+        "orbit_r": 48,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_maw_w",
+      "kind": "mooring_post",
+      "pos": [
+        168,
+        232
+      ],
+      "props": {
+        "orbit_r": 48,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_maw_e",
+      "kind": "mooring_post",
+      "pos": [
+        344,
+        200
+      ],
+      "props": {
+        "orbit_r": 48,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "raft_maw_nw",
+      "kind": "tide_raft",
+      "pos": [
+        216,
+        152
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_min": "ebb",
+        "rotatable": true,
+        "normal": [
+          0.7071,
+          0.7071
+        ]
+      }
+    },
+    {
+      "id": "raft_maw_se",
+      "kind": "tide_raft",
+      "pos": [
+        312,
+        248
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_min": "ebb",
+        "rotatable": true,
+        "normal": [
+          -0.7071,
+          -0.7071
+        ]
+      }
+    },
+    {
+      "id": "door_maw_trophy",
+      "kind": "door",
+      "pos": [
+        392,
+        136
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          32
+        ],
+        "zone": "undertow_maw",
+        "clear_zone": "undertow_maw"
+      }
+    },
+    {
+      "id": "chest_undertow_ember",
+      "kind": "chest",
+      "pos": [
+        440,
+        88
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "undertow_maw"
+      }
+    },
+    {
+      "id": "chest_undertow_shards",
+      "kind": "chest",
+      "pos": [
+        456,
+        120
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 150,
+        "zone": "undertow_maw"
+      }
+    },
+    {
+      "id": "lore_undertow_trophy",
+      "kind": "lore_stone",
+      "pos": [
+        424,
+        120
+      ],
+      "props": {
+        "string_id": "ISL2_MAW_TROPHY",
+        "icon": "tide",
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_maw_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        184
+      ],
+      "props": {
+        "zone": "undertow_maw",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_maw_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        72
+      ],
+      "props": {
+        "zone": "undertow_maw",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_maw_s",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        312
+      ],
+      "props": {
+        "zone": "undertow_maw",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_maw_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        200
+      ],
+      "props": {
+        "zone": "undertow_maw",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_maw_tr",
+      "kind": "road_lamp",
+      "pos": [
+        440,
+        104
+      ],
+      "props": {
+        "zone": "undertow_maw",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_undertow_win",
+      "on": "flag:undertow_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "undertow_trophy"
+        },
+        {
+          "narrate": "ISL2_MAW_TROPHY"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        264,
+        200
+      ],
+      "radius": 92,
+      "style": "ritual"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        264,
+        88
+      ],
+      "radius": 24,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        264,
+        312
+      ],
+      "radius": 24,
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        400,
+        64,
+        64,
+        64
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "ivory_rib_arch",
+      "pos": [
+        88,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "curled_rib_pillar",
+      "pos": [
+        216,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "curled_rib_pillar",
+      "pos": [
+        312,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "swallowed_anchor",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "swallowed_ship_crate",
+      "pos": [
+        376,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "barnacle_cluster",
+      "pos": [
+        168,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "whale_lantern_jar",
+      "pos": [
+        104,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "whale_lantern_jar",
+      "pos": [
+        104,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "whale_lantern_jar",
+      "pos": [
+        440,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "digestive_spore_bulb",
+      "pos": [
+        376,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "digestive_spore_bulb",
+      "pos": [
+        248,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Circular abyssal maelstrom superboss arena for THE UNDERTOW featuring a live central suction/geyser well, 4 cardinal mooring posts for Skiff orbits, and 2 mirror rafts.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Full Island 2 mastery exam: Skiff orbits, Mooring Zip, Prism Split banks, mine batting",
+    "decisions": 10,
+    "expert_s": 160,
+    "reward": "Full Heart + Ember Vessel + 150 Shards + Maelstrom Trophy",
+    "why": "Island 2 optional Superboss unlocked via Mirror Crab's Spyglass Chart",
+    "optional": true,
+    "target": "chest_undertow_ember",
+    "start": {
+      "flags": [
+        "undertow_charted"
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ],
+      "spawn": [
+        72,
+        200
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "expect",
+        "flag": "undertow_defeated"
+      },
+      {
+        "op": "expect",
+        "interactable": "door_maw_trophy",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          440,
+          88
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_undertow_ember"
+      }
+    ]
+  }
+}

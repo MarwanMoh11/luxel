@@ -1,0 +1,700 @@
+{
+  "id": "silver_quay",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_QUAY",
+  "theme": "inverted_palace_silver",
+  "music": "island7_explore",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    368,
+    424
+  ],
+  "zones": [
+    {
+      "id": "silver_quay",
+      "name_key": "ISL7_Z_QUAY",
+      "rect": [
+        0,
+        0,
+        736,
+        480
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sq_overworld",
+      "rect": [
+        336,
+        464,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        296,
+        48
+      ]
+    },
+    {
+      "id": "exit_sq_shoals",
+      "rect": [
+        96,
+        464,
+        48,
+        16
+      ],
+      "to_region": "black_shoals",
+      "to_spawn": [
+        144,
+        56
+      ]
+    },
+    {
+      "id": "exit_sq_terrace",
+      "rect": [
+        720,
+        208,
+        16,
+        48
+      ],
+      "to_region": "glass_terrace",
+      "to_spawn": [
+        168,
+        224
+      ]
+    },
+    {
+      "id": "exit_sq_cave_tide",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_region": "cave_mirror_tide",
+      "to_spawn": [
+        360,
+        152
+      ]
+    },
+    {
+      "id": "exit_sq_palace",
+      "rect": [
+        336,
+        0,
+        64,
+        16
+      ],
+      "to_region": "palace_r1",
+      "to_spawn": [
+        240,
+        304
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_silver_quay",
+      "kind": "waystone",
+      "pos": [
+        368,
+        376
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "name_key": "ISL7_Z_QUAY"
+      }
+    },
+    {
+      "id": "rest_silver_quay",
+      "kind": "rest_shrine",
+      "pos": [
+        448,
+        368
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
+      "id": "pool_sq_center",
+      "kind": "moon_pool",
+      "pos": [
+        504,
+        232
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 18,
+        "persist": true
+      }
+    },
+    {
+      "id": "pool_sq_west",
+      "kind": "moon_pool",
+      "pos": [
+        128,
+        232
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "hub_door_7",
+      "kind": "i7_hub_door",
+      "pos": [
+        544,
+        136
+      ],
+      "props": {
+        "require_flag": "hub_door_7"
+      }
+    },
+    {
+      "id": "vista_sq_moon_pool",
+      "kind": "i7_moon_vista",
+      "pos": [
+        304,
+        280
+      ],
+      "props": {
+        "view_id": "moon_pool",
+        "require_face": "black"
+      }
+    },
+    {
+      "id": "moth_7_02",
+      "kind": "moth",
+      "pos": [
+        304,
+        264
+      ],
+      "props": {
+        "id": "moth_7_02"
+      }
+    },
+    {
+      "id": "npc_mirror_crab",
+      "kind": "npc",
+      "pos": [
+        440,
+        272
+      ],
+      "props": {
+        "folk": "mirror_crab",
+        "quest": "q_silver_lens",
+        "rescuable": true,
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "mirror",
+              "light_on",
+              "isl_7"
+            ],
+            "line": "ISL7_Q1_HINT"
+          },
+          [
+            "spark",
+            "happy",
+            "pane"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "npc_moth_kid_7",
+      "kind": "npc",
+      "pos": [
+        240,
+        368
+      ],
+      "props": {
+        "folk": "moth_kid",
+        "quest": "q7_true_reflection",
+        "rescuable": false,
+        "wander_radius": 12,
+        "bubbles": [
+          {
+            "icons": [
+              "eye",
+              "quest_hide",
+              "mirror",
+              "arrow_s",
+              "question"
+            ],
+            "line": "ISL7_Q3_HINT"
+          },
+          [
+            "happy",
+            "home",
+            "spark"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "lore_sq_truth",
+      "kind": "lore_stone",
+      "pos": [
+        296,
+        136
+      ],
+      "props": {
+        "string_id": "ISL7_LORE_QUAY",
+        "icon": "mirror"
+      }
+    },
+    {
+      "id": "lore_sq_dawn_lantern",
+      "kind": "lore_stone",
+      "pos": [
+        448,
+        128
+      ],
+      "props": {
+        "string_id": "ISL7_LORE_DAWN_LANTERN",
+        "icon": "lantern"
+      }
+    },
+    {
+      "id": "lamp_sq_s1",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        384
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sq_s2",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        392
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sq_w1",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        360
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sq_w2",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        176
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sq_n1",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        104
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sq_n2",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        104
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sq_e1",
+      "kind": "road_lamp",
+      "pos": [
+        520,
+        176
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sq_e2",
+      "kind": "road_lamp",
+      "pos": [
+        528,
+        304
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sq_e3",
+      "kind": "road_lamp",
+      "pos": [
+        648,
+        216
+      ],
+      "props": {
+        "zone": "silver_quay",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        504,
+        232
+      ],
+      "radius": 34,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "ice"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        328,
+        72,
+        80,
+        72
+      ],
+      "color": "ice"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        368,
+        376
+      ],
+      "radius": 28,
+      "style": "ritual",
+      "color": "sky",
+      "secondary": "cream"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        352,
+        88
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "crystal_chandelier_arch",
+      "pos": [
+        368,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        288,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        448,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        208,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        576,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        264,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        480,
+        360
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        152,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        576,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "velvet_palace_bench",
+      "pos": [
+        472,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "moon_glass_urn",
+      "pos": [
+        176,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "gilded_statue_bust",
+      "pos": [
+        512,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "reflection_floor_pool",
+      "pos": [
+        368,
+        128
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          0,
+          13,
+          5,
+          3,
+          "bridge"
+        ],
+        [
+          17,
+          16,
+          4,
+          3,
+          "ground"
+        ],
+        [
+          18,
+          19,
+          2,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "exit_sq_cave_tide",
+        "moth_7_02",
+        "vista_sq_moon_pool"
+      ],
+      "disable": []
+    },
+    {
+      "id": "relit_dawn",
+      "when": "flag:great_lamp_7",
+      "tiles": [],
+      "enable": [
+        "lore_sq_dawn_lantern"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "sq_unlock_hub_door",
+      "on": "flag:quest:q7_true_reflection:done",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "hub_door_7"
+        },
+        {
+          "narrate": "ISL7_HUB_DOOR_OPEN"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Moon Shoals crescent camp hub linking the Inverted Palace facade, Wick House doorway, Mirror Crab & Moth Kid quests, and a Black-World sunken vista + sea-cave bridge.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Flipping Silver Quay to Black raises both the central sunken moon vista (Mirror Crab quest + Moth 02) and the west obsidian bridge into Mirror Tide Grotto.",
+    "decisions": 5,
+    "expert_s": 70,
+    "reward": "ws_silver_quay+q_silver_lens+q7_true_reflection+hub_door_7+moth_7_02",
+    "why": "Primary Moon Shoals sanctuary camp where both quests, the Palace entrance, and the Silver/Black bay transformation anchor exploration.",
+    "optional": true,
+    "exit": "exit_sq_terrace",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_silver_quay"
+      },
+      {
+        "op": "interact",
+        "target": "lore_sq_truth"
+      },
+      {
+        "op": "interact",
+        "target": "pool_sq_center"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "interact",
+        "target": "vista_sq_moon_pool"
+      },
+      {
+        "op": "expect",
+        "flag": "quest:view:moon_pool"
+      },
+      {
+        "op": "interact",
+        "target": "pool_sq_center"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==silver"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sq_terrace"
+      }
+    ]
+  }
+}

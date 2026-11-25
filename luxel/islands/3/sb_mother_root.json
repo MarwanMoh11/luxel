@@ -1,0 +1,382 @@
+{
+  "id": "sb_mother_root",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "briar_court",
+  "name_key": "ISL3_SB_MOTHER_NAME",
+  "music": "isl3_setpiece",
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "heartwood_sanctum",
+      "name_key": "ISL3_SB_MOTHER_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        152
+      ],
+      "radius": 84,
+      "style": "ritual",
+      "color": "pine",
+      "secondary": "lime"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        152
+      ],
+      "radius": 44,
+      "style": "mosaic",
+      "color": "apricot",
+      "secondary": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        104
+      ],
+      "size": [
+        72,
+        112
+      ],
+      "tint": "lime",
+      "shear": 0.18
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mother_to_shift_n",
+      "rect": [
+        240,
+        320,
+        32,
+        32
+      ],
+      "to_region": "ow_shift_n",
+      "to_spawn": [
+        344,
+        64
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_mother_root",
+      "kind": "mother_root",
+      "pos": [
+        256,
+        128
+      ],
+      "route": [],
+      "zone": "heartwood_sanctum",
+      "leash": 0
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mother_root",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "moth_3_10",
+      "kind": "moth",
+      "pos": [
+        224,
+        96
+      ],
+      "props": {
+        "id": "moth_3_10"
+      }
+    },
+    {
+      "id": "chest_mother_trophy",
+      "kind": "chest",
+      "pos": [
+        288,
+        96
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 100,
+        "sets_flag": "trophy_mother_root",
+        "secret_id": "isl3_mother_root_trophy"
+      }
+    },
+    {
+      "id": "lamp_mr_nw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mr_ne",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mr_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mr_se",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mr_s",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        288
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_briar_court",
+      "prop": "rose_thorn_arch",
+      "pos": [
+        256,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "thorn_hedge_brazier",
+      "pos": [
+        176,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "thorn_hedge_brazier",
+      "pos": [
+        336,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "heraldic_court_banner",
+      "pos": [
+        64,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "heraldic_court_banner",
+      "pos": [
+        448,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "briar_lantern_post",
+      "pos": [
+        64,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "briar_lantern_post",
+      "pos": [
+        448,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "clipped_rose_urn",
+      "pos": [
+        192,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "clipped_rose_urn",
+      "pos": [
+        320,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "petal_drift_floor",
+      "pos": [
+        256,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "mother_rewards_locked",
+      "when": "!flag:mother_root_defeated",
+      "tiles": [],
+      "enable": [],
+      "disable": [
+        "moth_3_10",
+        "chest_mother_trophy"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_mother_victory",
+      "on": "flag:mother_root_defeated",
+      "once": true,
+      "do": [
+        {
+          "sfx": "great_lamp_bloom"
+        },
+        {
+          "narrate": {
+            "id": "ISL3_MOTHER_WIN",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Superboss Heartwood Sanctum for The Mother Root synthesizing Seedlight thorn-wall beam cover, P2/P3 Growth-Ring currents, and mid-fight Shrink-Dive taproot heart staggers; defeating her flowers the canopy for Moth #10 and 100 shards.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Seedlight cover vs beam sweep, Growth-Ring current dodge, Shrink-Dive bark shatter",
+    "decisions": 9,
+    "expert_s": 135,
+    "reward": "moth_3_10, trophy_mother_root, 100 shards",
+    "why": "Optional Island 3 climax superboss synthesizing every Thornwood Hollow rule",
+    "optional": true,
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "expect",
+        "flag": "mother_root_defeated"
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          112
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_mother_trophy"
+      }
+    ]
+  }
+}

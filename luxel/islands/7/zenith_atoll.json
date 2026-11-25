@@ -1,0 +1,620 @@
+{
+  "id": "zenith_atoll",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_ZENITH",
+  "theme": "inverted_palace_silver",
+  "music": "island7_explore",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    288,
+    360
+  ],
+  "zones": [
+    {
+      "id": "zenith_atoll",
+      "name_key": "ISL7_Z_ZENITH",
+      "rect": [
+        0,
+        0,
+        576,
+        416
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_za_overworld",
+      "rect": [
+        256,
+        400,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        640,
+        384
+      ]
+    },
+    {
+      "id": "exit_za_crypt",
+      "rect": [
+        0,
+        176,
+        16,
+        48
+      ],
+      "to_region": "cave_glass_crypt",
+      "to_spawn": [
+        360,
+        144
+      ],
+      "requires_flags": [
+        "zenith_anvil_trial"
+      ],
+      "locked_door_id": "door_za_crypt"
+    },
+    {
+      "id": "exit_za_noon",
+      "rect": [
+        256,
+        0,
+        64,
+        16
+      ],
+      "to_region": "superboss_noon",
+      "to_spawn": [
+        240,
+        296
+      ],
+      "requires_flags": [
+        "great_lamp_7"
+      ],
+      "locked_door_id": "door_za_noon"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_zenith_atoll",
+      "kind": "waystone",
+      "pos": [
+        288,
+        280
+      ],
+      "props": {
+        "zone": "zenith_atoll",
+        "name_key": "ISL7_Z_ZENITH"
+      }
+    },
+    {
+      "id": "pool_za_south",
+      "kind": "moon_pool",
+      "pos": [
+        216,
+        264
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "anvil_za_moon",
+      "kind": "temper_anvil",
+      "pos": [
+        288,
+        208
+      ],
+      "props": {
+        "mode": "cycle",
+        "prompt_key": "ISL7_PROMPT_ANVIL",
+        "sets_flag": "temper_anvil_7",
+        "hit_to_swap": true
+      }
+    },
+    {
+      "id": "lore_za_anvil",
+      "kind": "lore_stone",
+      "pos": [
+        240,
+        208
+      ],
+      "props": {
+        "string_id": "ISL7_LORE_ZENITH",
+        "icon": "spark"
+      }
+    },
+    {
+      "id": "trial_gate_anvil",
+      "kind": "trial_gate",
+      "pos": [
+        352,
+        208
+      ],
+      "props": {
+        "challenge": "anvil_range",
+        "once": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_za_bank",
+      "kind": "blue_transformer",
+      "pos": [
+        408,
+        128
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "sw_za_skip",
+      "kind": "switch_eye",
+      "pos": [
+        464,
+        128
+      ],
+      "props": {
+        "requires_blue": false,
+        "reset_time": 18.0,
+        "target_id": "gate_za_trial"
+      }
+    },
+    {
+      "id": "sw_za_lance",
+      "kind": "switch_eye",
+      "pos": [
+        464,
+        184
+      ],
+      "props": {
+        "requires_blue": false,
+        "reset_time": 18.0,
+        "target_id": "gate_za_trial"
+      }
+    },
+    {
+      "id": "sw_za_scatter",
+      "kind": "switch_eye",
+      "pos": [
+        448,
+        232
+      ],
+      "props": {
+        "requires_blue": false,
+        "reset_time": 18.0,
+        "target_id": "gate_za_trial"
+      }
+    },
+    {
+      "id": "gate_za_trial",
+      "kind": "logic_gate",
+      "pos": [
+        416,
+        176
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "sw_za_skip",
+          "sw_za_lance",
+          "sw_za_scatter"
+        ],
+        "sets_flag": "zenith_anvil_trial",
+        "target_id": "door_za_crypt"
+      }
+    },
+    {
+      "id": "door_za_crypt",
+      "kind": "door",
+      "pos": [
+        64,
+        200
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "zenith_anvil_trial"
+        ]
+      }
+    },
+    {
+      "id": "door_za_noon",
+      "kind": "door",
+      "pos": [
+        288,
+        48
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_flags": [
+          "great_lamp_7"
+        ]
+      }
+    },
+    {
+      "id": "lamp_za_s1",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        328
+      ],
+      "props": {
+        "zone": "zenith_atoll",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_za_s2",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        328
+      ],
+      "props": {
+        "zone": "zenith_atoll",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_za_w1",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        200
+      ],
+      "props": {
+        "zone": "zenith_atoll",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_za_c1",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        160
+      ],
+      "props": {
+        "zone": "zenith_atoll",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_za_e1",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        192
+      ],
+      "props": {
+        "zone": "zenith_atoll",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_za_e2",
+      "kind": "road_lamp",
+      "pos": [
+        480,
+        168
+      ],
+      "props": {
+        "zone": "zenith_atoll",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_za_n1",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        96
+      ],
+      "props": {
+        "zone": "zenith_atoll",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_za_n2",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        96
+      ],
+      "props": {
+        "zone": "zenith_atoll",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        288,
+        208
+      ],
+      "radius": 52,
+      "color": "gold",
+      "secondary": "ice"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        208
+      ],
+      "radius": 68,
+      "style": "clock",
+      "color": "sky",
+      "secondary": "cream"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        264,
+        72
+      ],
+      "size": [
+        48,
+        80
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "crystal_chandelier_arch",
+      "pos": [
+        288,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        224,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        360,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        160,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        360,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        240,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        336,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_bell_pedestal",
+      "pos": [
+        144,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "reflection_floor_pool",
+      "pos": [
+        288,
+        280
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          10,
+          7,
+          3,
+          3,
+          "bridge"
+        ],
+        [
+          23,
+          16,
+          3,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "za_start_anvil_trial",
+      "on": "trial_start:trial_gate_anvil",
+      "once": false,
+      "do": [
+        {
+          "challenge": {
+            "id": "anvil_range_7",
+            "kind": "light_all",
+            "time": 18.0,
+            "targets": [
+              "sw_za_skip",
+              "sw_za_lance",
+              "sw_za_scatter"
+            ],
+            "ok": [
+              {
+                "set_flag": "zenith_anvil_trial"
+              },
+              {
+                "set_flag": "trial_medal_anvil"
+              },
+              {
+                "reward": {
+                  "kind": "shards",
+                  "amount": 50
+                }
+              },
+              {
+                "narrate": "ISL7_TRIAL_ANVIL_OK"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Central Yin-Yang lagoon eye housing the Moon-Anvil (swap Tempering), 18s Mirror-Parry Anvil Range unlocking Glass Origin Crypt, and the Zenith Sun-Dial gate to Your Shadow at Noon.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Re-temper bolts at the Moon-Anvil and clear the 18s target gallery to unlock Glass Origin Crypt; return after relighting the Great Lamp for High Noon.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "temper_anvil_7+trial_medal_anvil+50sh+crypt_unlock",
+    "why": "Heart of the lagoon connecting bolt tempering mastery, the secret crypt, and the post-relight superboss.",
+    "optional": true,
+    "exit": "exit_za_crypt",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_zenith_atoll"
+      },
+      {
+        "op": "interact",
+        "target": "anvil_za_moon"
+      },
+      {
+        "op": "interact",
+        "target": "trial_gate_anvil"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          400,
+          144
+        ],
+        "target": "sw_za_skip"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          408,
+          184
+        ],
+        "target": "sw_za_lance"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          392,
+          232
+        ],
+        "target": "sw_za_scatter"
+      },
+      {
+        "op": "expect",
+        "flag": "zenith_anvil_trial"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_za_crypt"
+      }
+    ]
+  }
+}

@@ -1,0 +1,440 @@
+{
+  "id": "planet_r3",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R3",
+  "spawn": [
+    112,
+    240
+  ],
+  "zones": [
+    {
+      "id": "pl_r3",
+      "name_key": "I5_PL_R3",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r3_s",
+      "rect": [
+        96,
+        272,
+        32,
+        16
+      ],
+      "to_region": "planet_r2",
+      "to_spawn": [
+        112,
+        48
+      ]
+    },
+    {
+      "id": "exit_pl_r3_short",
+      "rect": [
+        432,
+        224,
+        16,
+        48
+      ],
+      "to_region": "planet_r1",
+      "to_spawn": [
+        56,
+        96
+      ],
+      "requires_flags": [
+        "pl_r3_short"
+      ],
+      "locked_door_id": "door_pl_r3_short"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r3",
+      "kind": "room_anchor",
+      "pos": [
+        112,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sn_r3_1",
+      "kind": "star_node",
+      "pos": [
+        180,
+        192
+      ],
+      "props": {
+        "cap_group": "pl_r3",
+        "max_lit": 4,
+        "links": [
+          "sn_r3_2",
+          "sn_r3_4"
+        ]
+      }
+    },
+    {
+      "id": "sn_r3_2",
+      "kind": "star_node",
+      "pos": [
+        232,
+        192
+      ],
+      "props": {
+        "cap_group": "pl_r3",
+        "max_lit": 4,
+        "links": [
+          "sn_r3_1",
+          "sn_r3_3",
+          "sn_r3_4"
+        ]
+      }
+    },
+    {
+      "id": "sn_r3_3",
+      "kind": "star_node",
+      "pos": [
+        284,
+        192
+      ],
+      "props": {
+        "cap_group": "pl_r3",
+        "max_lit": 4,
+        "links": [
+          "sn_r3_2",
+          "sn_r3_4"
+        ]
+      }
+    },
+    {
+      "id": "sn_r3_4",
+      "kind": "star_node",
+      "pos": [
+        232,
+        144
+      ],
+      "props": {
+        "cap_group": "pl_r3",
+        "max_lit": 4,
+        "links": [
+          "sn_r3_1",
+          "sn_r3_2",
+          "sn_r3_3"
+        ]
+      }
+    },
+    {
+      "id": "pl_key_1",
+      "kind": "wick_key",
+      "pos": [
+        344,
+        176
+      ],
+      "props": {
+        "dungeon_id": "planetarium",
+        "key_kind": "wick_key",
+        "flag_id": "pl_key_1",
+        "requires_flag": "pl_r3_cleared"
+      }
+    },
+    {
+      "id": "door_pl_r3_combat",
+      "kind": "door",
+      "pos": [
+        368,
+        248
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "pl_r3",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "sn_r3_short",
+      "kind": "star_node",
+      "pos": [
+        396,
+        200
+      ],
+      "props": {
+        "pinned": true,
+        "target_id": "door_pl_r3_short",
+        "sets_flag": "pl_r3_short"
+      }
+    },
+    {
+      "id": "door_pl_r3_short",
+      "kind": "door",
+      "pos": [
+        424,
+        248
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sn_r3_short"
+        ],
+        "sets_flag": "pl_r3_short",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_pl_r3_sw",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        232
+      ],
+      "props": {
+        "zone": "pl_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        72
+      ],
+      "props": {
+        "zone": "pl_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r3_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        56
+      ],
+      "props": {
+        "zone": "pl_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        216
+      ],
+      "props": {
+        "zone": "pl_r3",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_pl_r3_jelly1",
+      "kind": "star_jelly",
+      "pos": [
+        176,
+        88
+      ],
+      "zone": "pl_r3"
+    },
+    {
+      "id": "en_pl_r3_jelly2",
+      "kind": "star_jelly",
+      "pos": [
+        264,
+        88
+      ],
+      "zone": "pl_r3"
+    },
+    {
+      "id": "en_pl_r3_moth",
+      "kind": "echo_moth",
+      "pos": [
+        352,
+        168
+      ],
+      "zone": "pl_r3"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        80
+      ],
+      "radius": 34,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        320,
+        152,
+        48,
+        48
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        112,
+        200
+      ],
+      "size": [
+        44,
+        52
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "star_chart_lectern",
+      "pos": [
+        64,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "celestial_bench",
+      "pos": [
+        216,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "floating_prism_lens",
+      "pos": [
+        160,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        392,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        312,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "pl_r3_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "pl_r3_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Three-islet constellation combat archipelago against two splitting Star Jellies and an Echo Moth: use Solar Beam or Throw to vaporize Star Jellies cleanly without splitting, light the 4-cap central star deck to flank, claim Key 1, and ignite the pinned shortcut star back to the Hub.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Clean Star Jelly kills via Beam/Throw without bolt-splitting, plus pinned shortcut star nodes.",
+    "decisions": 5,
+    "expert_s": 48,
+    "reward": "pl_key_1+hub_shortcut_1",
+    "why": "West wing climax combat room awarding Small Key 1 and Cycle 1 hub shortcut.",
+    "exit": "exit_pl_r3_short",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "pl_r3_cleared",
+        "timeout": 3.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "pl_key_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          352,
+          200
+        ],
+        "target": "sn_r3_short",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_pl_r3_short",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r3_short"
+      }
+    ]
+  }
+}

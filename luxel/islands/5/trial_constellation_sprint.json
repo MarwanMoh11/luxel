@@ -1,0 +1,429 @@
+{
+  "id": "trial_constellation_sprint",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "name_key": "I5_TRIAL_SPRINT",
+  "music": "isl5_planetarium",
+  "spawn": [
+    48,
+    144
+  ],
+  "exits": [
+    {
+      "id": "ex_sprint_out",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_island": 5,
+      "to_region": "ow_dome_causeway",
+      "to_spawn": [
+        520,
+        200
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_sprint",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_tr_sprint",
+      "kind": "lore_stone",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "string_id": "I5_OW_TRIAL_SPRINT",
+        "icon": "clock",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "tg_sprint",
+      "kind": "trial_gate",
+      "pos": [
+        72,
+        176
+      ],
+      "props": {
+        "challenge": "constellation_sprint",
+        "once": false
+      }
+    },
+    {
+      "id": "sn_sp_1",
+      "kind": "star_node",
+      "pos": [
+        128,
+        144
+      ],
+      "props": {
+        "cap_group": "sprint",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_sp_2",
+      "kind": "star_node",
+      "pos": [
+        168,
+        184
+      ],
+      "props": {
+        "cap_group": "sprint",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_sp_3",
+      "kind": "star_node",
+      "pos": [
+        208,
+        152
+      ],
+      "props": {
+        "cap_group": "sprint",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_sp_4",
+      "kind": "star_node",
+      "pos": [
+        288,
+        136
+      ],
+      "props": {
+        "cap_group": "sprint",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_sp_5",
+      "kind": "star_node",
+      "pos": [
+        328,
+        104
+      ],
+      "props": {
+        "cap_group": "sprint",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_sp_6",
+      "kind": "star_node",
+      "pos": [
+        368,
+        144
+      ],
+      "props": {
+        "cap_group": "sprint",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "bell_sprint_fin",
+      "kind": "star_bell",
+      "pos": [
+        416,
+        144
+      ],
+      "props": {
+        "scope": "room:5:trial_constellation_sprint",
+        "var_name": "sprint_done",
+        "target_id": "door_sprint_prize",
+        "sets_flag": "trial_sprint_done"
+      }
+    },
+    {
+      "id": "door_sprint_prize",
+      "kind": "door",
+      "pos": [
+        432,
+        144
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "bell_sprint_fin"
+        ]
+      }
+    },
+    {
+      "id": "chest_5_ember_3",
+      "kind": "chest",
+      "pos": [
+        448,
+        144
+      ],
+      "props": {
+        "reward": "ember_piece",
+        "amount": 1
+      }
+    },
+    {
+      "id": "lamp_sp_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        176
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sp_m",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        160
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sp_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sp_e2",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_sp_eye1",
+      "kind": "satellite_eye",
+      "pos": [
+        208,
+        72
+      ],
+      "route": [
+        [
+          192,
+          72
+        ],
+        [
+          224,
+          72
+        ]
+      ],
+      "zone": "sprint_trial",
+      "leash": 110
+    },
+    {
+      "id": "en_sp_eye2",
+      "kind": "satellite_eye",
+      "pos": [
+        320,
+        216
+      ],
+      "route": [
+        [
+          304,
+          216
+        ],
+        [
+          336,
+          216
+        ]
+      ],
+      "zone": "sprint_trial",
+      "leash": 110
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_sprint_done",
+      "on": "flag:trial_sprint_done",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "medal:trial_constellation_sprint"
+        },
+        {
+          "sfx": "shrine_unlock"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "star_chart_lectern",
+      "pos": [
+        40,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        248,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        448,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        448,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "4-star FIFO capped constellation sprint across a void chasm under Satellite Eye fire; walk off fading oldest stars to ring the finish bell and claim Ember Piece 3.",
+    "kind": "traversal",
+    "beat": "ten",
+    "teaches": "Managing the 4-star FIFO cap on the move under ranged pressure",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "ember_5_3 (Ember Piece 3), medal:trial_constellation_sprint",
+    "why": "Optional speed/constellation trial off ow_dome_causeway.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        48,
+        144
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "target": "sn_sp_1",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "sn_sp_2",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "sn_sp_3",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          152
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_sp_4",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "sn_sp_5",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "sn_sp_6",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          408,
+          144
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_sprint_fin"
+      },
+      {
+        "op": "goto",
+        "to": [
+          448,
+          144
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_5_ember_3"
+      }
+    ]
+  }
+}

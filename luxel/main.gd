@@ -120,6 +120,7 @@ func enter_title() -> void:
 	_mark_ending_seen()
 	_pending_ending_t = 0.0
 	flow = Flow.TITLE
+	LxSold.current().restore_all("title", true)
 	Lx.audio.set_paused(false)
 	Lx.audio.play_cue("title")
 	_sync_ui_flow()
@@ -177,6 +178,7 @@ func continue_slot(slot_num: int) -> bool:
 	return true
 
 func load_island_region(island_id: int, region_id: String, spawn_override: Vector2 = Vector2(-1.0, -1.0)) -> bool:
+	LxVehicleSkiff.capture_mount_carryover(_wick as LxWick)
 	var hud: Node = Lx.ui.get("hud") as Node if (Lx.ui != null and Lx.ui.get("hud") != null) else null
 	if hud != null:
 		if not _tracked_bosses.is_empty() and hud.has_method("hide_boss"): hud.call("hide_boss")
@@ -212,10 +214,12 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 		elif _region_loader.get("spawn_pos") is Vector2: spawn_at = _region_loader.get("spawn_pos") as Vector2
 	if spawn_at.x < 0.0: spawn_at = Vector2(160.0, 90.0)
 	Lx.state.spawn_pos = spawn_at
-	if _region_loader != null and bool(_region_loader.get("is_dungeon")) and _region_loader.has_method("set_room_anchor"):
-		_region_loader.call("set_room_anchor", spawn_at)
+	if _region_loader != null and _region_loader.has_method("set_room_anchor"):
+		if bool(_region_loader.get("is_dungeon")) or region_id != "overworld" or LxBossHud.region_has_live_boss(_region_loader):
+			_region_loader.call("set_room_anchor", spawn_at)
 	if Lx.hitstop != null: Lx.hitstop.clear()
 	if _wick != null and _wick.has_method("reset_for_room"): _wick.call("reset_for_room", spawn_at)
+	LxVehicleSkiff.restore_mount_carryover(_region_loader as LxRegionLoader, _wick as LxWick, spawn_at)
 	if _region_loader != null and _region_loader.has_method("get_bounds"):
 		Lx.camera.set_bounds(_region_loader.call("get_bounds"), bool(_region_loader.get("is_dungeon")))
 		Lx.camera.snap_to(spawn_at)
@@ -292,7 +296,12 @@ func open_rest_shop() -> void:
 
 func retry_from_death() -> void:
 	Lx.state.heal_full()
-	var in_dng: bool = (_region_loader != null and bool(_region_loader.get("is_dungeon"))) \
+	var was_boss: bool = not _tracked_bosses.is_empty()
+	if was_boss and _tracked_bosses[0] is LxEnemyBrain and is_instance_valid(_tracked_bosses[0]):
+		var tb: LxEnemyBrain = _tracked_bosses[0] as LxEnemyBrain
+		var tbid: String = tb.boss_id if not tb.boss_id.is_empty() else tb.kind
+		Lx.state.boss_retries[tbid] = int(Lx.state.boss_retries.get(tbid, 0)) + 1
+	var in_dng: bool = was_boss or (_region_loader != null and bool(_region_loader.get("is_dungeon"))) \
 		or (Lx.packs != null and not Lx.packs.dungeon_of(Lx.state.island_id, Lx.state.region_id).is_empty()) \
 		or Lx.state.region_id != "overworld"
 	if in_dng:
@@ -307,13 +316,30 @@ func retry_from_death() -> void:
 
 func trigger_ending(mode: String = "") -> void:
 	_pending_ending_t = 0.0
-	ending_mode = mode if not mode.is_empty() else str(Lx.get_decision("ending_mode", "display_off"))
+	ending_mode = _resolve_ending_mode(mode)
+	var sold: LxSold = LxSold.current()
+	if sold.get_sold_count() > 0 or not sold.get_active_and_redeemed_ids().is_empty():
+		if not sold.is_dawn_restored():
+			sold.restore_all("dawn", true)
 	flow = Flow.ENDING
 	ending_timer = 0.0
 	Lx.audio.set_paused(false)
 	Lx.audio.play_cue("ending_dawn")
 	Lx.state.append_run_log("ending:" + ending_mode)
 	_sync_ui_flow()
+
+func _resolve_ending_mode(explicit_mode: String) -> String:
+	if not explicit_mode.is_empty(): return explicit_mode
+	var choice: String = ""
+	if Lx.vars != null:
+		choice = str(Lx.vars.get_var("island:8", "hush_finale_choice", "")).strip_edges().to_lower()
+		if choice.is_empty(): choice = str(Lx.vars.get_var("game", "hush_finale_choice", "")).strip_edges().to_lower()
+	if choice.is_empty() and Lx.state != null:
+		choice = str(Lx.state.story_flags.get("hush_finale_choice", "")).strip_edges().to_lower()
+	if choice.is_empty(): choice = LxSold.current().get_hush_finale_choice().strip_edges().to_lower()
+	if choice == "keep" or choice == "dawn": return "dawn"
+	if choice == "display" or choice == "display_off": return "display_off"
+	return str(Lx.get_decision("ending_mode", "display_off"))
 
 func _mark_ending_seen() -> void:
 	if flow == Flow.ENDING and Lx.state != null:
@@ -359,6 +385,7 @@ func _physics_process(delta: float) -> void:
 func step_sim(raw_dt: float) -> void:
 	if Lx.save != null:
 		Lx.save.tick_autosave(raw_dt)
+	LxSold.current().tick_runtime(raw_dt)
 	if flow == Flow.INTRO:
 		intro_timer += raw_dt
 		Lx.audio.tick(raw_dt, false)
@@ -458,41 +485,16 @@ func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	_on_save_requested("shrine")
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
-	if phase < 2 or Lx.packs == null or Lx.audio == null: return
-	var bm: Dictionary = Lx.packs.boss_meta(boss_id)
-	var m1: String = str(bm.get("music", ""))
-	var m2: String = str(bm.get("music_p2", ""))
-	if not m2.is_empty() and (Lx.audio.current_track_group == m1 or not bool(bm.get("builtin", false))):
-		Lx.audio.play_cue(m2)
+	LxBossHud.handle_boss_phase_changed(boss_id, phase)
 
 func _on_boss_defeated(boss_id: String, isl: int) -> void:
-	var bmeta: Dictionary = Lx.packs.boss_meta(boss_id) if Lx.packs != null else {}
-	var canon: String = str(bmeta.get("id", boss_id))
-	if not Lx.state.defeated_bosses.has(canon): Lx.state.defeated_bosses.append(canon)
-	var bflag: String = str(bmeta.get("flag", ""))
-	if not bflag.is_empty(): Lx.state.story_flags[bflag] = true
-	var dng: String = str(bmeta.get("dungeon", ""))
-	if not dng.is_empty() and not bool(bmeta.get("mini", false)):
-		Lx.state.story_flags["dungeon_done:" + dng] = true
-		var dm: Dictionary = Lx.packs.dungeon(dng) if Lx.packs != null else {}
-		var df: String = str(dm.get("done_flag", ""))
-		if not df.is_empty(): Lx.state.story_flags[df] = true
-	var heart_kind: String = str(bmeta.get("heart", ""))
-	if heart_kind.is_empty():
-		var is_major_fb: bool = str(Lx.get_island_data(isl).get("boss", "")) == boss_id or boss_id == "hollow_wick_boss"
-		heart_kind = "full" if is_major_fb else "none"
-	if heart_kind != "none" and not bool(Lx.state.story_flags.get("boss_heart_" + canon, false)):
-		Lx.state.story_flags["boss_heart_" + canon] = true
-		if heart_kind == "half": Lx.state.add_half_lantern()
-		else: Lx.state.add_boss_heart()
-	var is_major: bool = not bool(bmeta.get("mini", false)) if not bmeta.is_empty() else (heart_kind != "none")
-	if is_major and Lx.audio != null and Lx.audio._is_boss_cue(Lx.audio.current_track_group): Lx.audio.silence_music(0.85)
-	if is_major: Lx.audio.play_stinger("stinger_lamp")
+	LxBossHud.handle_boss_defeated(boss_id, isl, _region_loader)
 	_on_save_requested("boss")
 
 func _on_great_lamp_relit(isl: int) -> void:
 	if not Lx.state.relit_islands.has(isl):
 		Lx.state.relit_islands.append(isl)
+	LxHubTravel.ensure_hub_waystone_unlocked()
 	if _darkness_layer != null and _darkness_layer.has_method("trigger_dawn_wave"):
 		var wave_pos: Vector2 = _wick.global_position if _wick != null else Vector2(160.0, 90.0)
 		_darkness_layer.call("trigger_dawn_wave", wave_pos, 260.0, 1400.0)
@@ -509,32 +511,7 @@ func _sync_ui_flow() -> void:
 
 func _sync_boss_hud() -> void:
 	var hud: Node = Lx.ui.get("hud") as Node if (Lx.ui != null and Lx.ui.get("hud") != null) else null
-	var live: Array[LxEnemyBrain] = []
-	if _region_loader != null and _region_loader.has_method("get_enemies"):
-		for e: LxEnemyBrain in _region_loader.call("get_enemies"):
-			if e != null and is_instance_valid(e) and e.is_alive() and e.visible and (e.is_boss or not e.boss_id.is_empty()):
-				live.append(e)
-				if live.size() >= 2: break
-	if not live.is_empty() and hud != null:
-		for b: LxEnemyBrain in live:
-			if not _tracked_bosses.has(b):
-				LxDamageFx.trigger_boss_awaken(b)
-				if Lx.packs != null:
-					var bid: String = b.boss_id if not b.boss_id.is_empty() else b.kind
-					var bm: Dictionary = Lx.packs.boss_meta(bid)
-					var bm1: String = str(bm.get("music", ""))
-					if not bm1.is_empty() and not bool(bm.get("builtin", false)) and Lx.audio.current_track_group != bm1 and Lx.audio.current_track_group != str(bm.get("music_p2", "")):
-						Lx.audio.play_cue(bm1)
-		_tracked_bosses.clear()
-		for b: LxEnemyBrain in live: _tracked_bosses.append(b)
-		if hud.has_method("sync_bosses"):
-			hud.call("sync_bosses", live)
-		else:
-			var b0: LxEnemyBrain = live[0]
-			hud.call("show_boss", b0.boss_id if not b0.boss_id.is_empty() else b0.kind, b0.hp, b0.max_hp, b0.phase)
-	elif live.is_empty() and not _tracked_bosses.is_empty():
-		_tracked_bosses.clear()
-		if hud != null: hud.call("hide_boss")
+	LxBossHud.sync_live_bosses(_region_loader, _tracked_bosses, hud)
 
 func _sync_zone_banner(wpos: Vector2) -> void:
 	if _region_loader == null or not _region_loader.has_method("get_zones"): return

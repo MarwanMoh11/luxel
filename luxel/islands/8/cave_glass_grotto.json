@@ -1,0 +1,383 @@
+{
+  "id": "cave_glass_grotto",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "archive_8",
+  "name_key": "ISL8_Z_GLASS_GROTTO",
+  "music": "isl8_archive",
+  "ambience": [
+    "sanctum_bells"
+  ],
+  "spawn": [
+    368,
+    144
+  ],
+  "zones": [
+    {
+      "id": "cave_glass_grotto",
+      "name_key": "ISL8_Z_GLASS_GROTTO",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_stair_landing",
+      "rect": [
+        400,
+        128,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "stair_landing",
+      "to_spawn": [
+        48,
+        200
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_grotto_e",
+      "kind": "room_anchor",
+      "pos": [
+        368,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_grotto_mid",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "hook_grotto",
+      "kind": "lantern_hook",
+      "pos": [
+        360,
+        184
+      ],
+      "props": {
+        "light_radius": 52.0
+      }
+    },
+    {
+      "id": "sg_grotto",
+      "kind": "shadow_gate",
+      "pos": [
+        296,
+        152
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "gate_grotto_gilded",
+      "kind": "toll_gate",
+      "pos": [
+        296,
+        72
+      ],
+      "props": {
+        "check": "sold_count>=4",
+        "min_weight": 4,
+        "size": [
+          16,
+          32
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "seal_grotto_obs",
+      "kind": "obsidian_seal",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "pickup_last_glass",
+      "kind": "pane_pickup",
+      "pos": [
+        56,
+        120
+      ],
+      "props": {
+        "pane": "last_glass"
+      }
+    },
+    {
+      "id": "chest_ember_8_grotto",
+      "kind": "chest",
+      "pos": [
+        56,
+        168
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_8_grotto"
+      }
+    },
+    {
+      "id": "lore_hollow_grotto",
+      "kind": "lore_stone",
+      "pos": [
+        56,
+        96
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_GROTTO",
+        "icon": "eye",
+        "sets_flag": "lore_hollow_grotto_8"
+      }
+    },
+    {
+      "id": "lamp_gg_entry",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        104
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_glass_grotto"
+      }
+    },
+    {
+      "id": "lamp_gg_mid",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        112
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_glass_grotto"
+      }
+    },
+    {
+      "id": "lamp_gg_vault",
+      "kind": "road_lamp",
+      "pos": [
+        40,
+        192
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_glass_grotto"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        336,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        232,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        104,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stained_glass_debris",
+      "pos": [
+        240,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stained_glass_debris",
+      "pos": [
+        104,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        56,
+        136
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        56,
+        136
+      ],
+      "radius": 28,
+      "color": "rose"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        128,
+        48,
+        32
+      ],
+      "color": "sky"
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Three-stage late-kit secret grotto: hang lantern to slip unlit through a shadow gate (or pass the gilded toll bypass at 4+ sold), cross a True Lens phantom bridge, and Sunflare an obsidian lock to claim Pane last_glass, an Ember Piece, and the Hollow mural.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "lantern_hook + shadow_gate + True Lens phantom bridge + Sunflare obsidian seal",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "pane_last_glass+ember_8_grotto+lore_hollow_grotto_8",
+    "why": "Rewards full-kit mastery with Island 8's secret stained-glass pane and deep Hollow Wick lore.",
+    "target": "pickup_last_glass",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          360,
+          168
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "throw",
+        "target": "hook_grotto"
+      },
+      {
+        "op": "wait_until",
+        "target": "sg_grotto",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          144
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          136
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "sunflare"
+      },
+      {
+        "op": "wait_until",
+        "target": "seal_grotto_obs",
+        "prop": "shattered",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "pickup_last_glass"
+      }
+    ]
+  }
+}

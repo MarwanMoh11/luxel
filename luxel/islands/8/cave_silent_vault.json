@@ -1,0 +1,434 @@
+{
+  "id": "cave_silent_vault",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "toll_house",
+  "name_key": "ISL8_Z_SILENT_VAULT",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "sanctum_bells"
+  ],
+  "spawn": [
+    208,
+    48
+  ],
+  "zones": [
+    {
+      "id": "cave_silent_vault",
+      "name_key": "ISL8_Z_SILENT_VAULT",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_toll_causeway",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_causeway",
+      "to_spawn": [
+        144,
+        400
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "clerk_sv_1",
+      "kind": "toll_clerk",
+      "pos": [
+        104,
+        152
+      ],
+      "route": [
+        [
+          80,
+          152
+        ],
+        [
+          152,
+          152
+        ]
+      ],
+      "zone": "cave_silent_vault",
+      "leash": 120
+    },
+    {
+      "id": "clerk_sv_2",
+      "kind": "toll_clerk",
+      "pos": [
+        312,
+        152
+      ],
+      "route": [
+        [
+          264,
+          152
+        ],
+        [
+          336,
+          152
+        ]
+      ],
+      "zone": "cave_silent_vault",
+      "leash": 120
+    },
+    {
+      "id": "censer_sv_1",
+      "kind": "censer",
+      "pos": [
+        232,
+        152
+      ],
+      "route": [
+        [
+          168,
+          152
+        ],
+        [
+          256,
+          144
+        ]
+      ],
+      "zone": "cave_silent_vault",
+      "leash": 116
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_silent",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        48
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_sv_dusk",
+      "kind": "bell",
+      "pos": [
+        208,
+        96
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 144.0
+      }
+    },
+    {
+      "id": "sensor_sv_silent",
+      "kind": "toll_sensor",
+      "pos": [
+        72,
+        96
+      ],
+      "props": {
+        "check": "sold:sound_off",
+        "target_id": "door_sv_vault",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_sv_vault",
+      "kind": "door",
+      "pos": [
+        208,
+        200
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "cave_silent_vault",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "item_dawn_spool",
+      "kind": "quest_item",
+      "pos": [
+        208,
+        240
+      ],
+      "props": {
+        "id": "dawn_spool",
+        "icon": "spark",
+        "carry": false
+      }
+    },
+    {
+      "id": "moth_8_03",
+      "kind": "moth",
+      "pos": [
+        296,
+        240
+      ],
+      "props": {
+        "id": "moth_8_03"
+      }
+    },
+    {
+      "id": "chest_sv_bonus",
+      "kind": "chest",
+      "pos": [
+        112,
+        240
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 60,
+        "secret_id": "isl8_silent_auditor"
+      }
+    },
+    {
+      "id": "lore_silent",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        48
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_SILENT",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "lamp_sv_n",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        48
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_silent_vault"
+      }
+    },
+    {
+      "id": "lamp_sv_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        168
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_silent_vault"
+      }
+    },
+    {
+      "id": "lamp_sv_e",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        168
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_silent_vault"
+      }
+    },
+    {
+      "id": "lamp_sv_s",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        252
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_silent_vault"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        156,
+        228
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        64,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        352,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        112,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        304,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        160,
+        244
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        256,
+        244
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        96,
+        224,
+        224,
+        32
+      ],
+      "color": "wine"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        80,
+        64,
+        32
+      ],
+      "color": "gold"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_sv_silent_open",
+      "on": "signal:sensor_sv_silent",
+      "once": true,
+      "do": [
+        {
+          "unlock": [
+            "door_sv_vault"
+          ]
+        },
+        {
+          "narrate": "ISL8_SILENT_BONUS"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Velvet ledger vault guarded by 2 toll_clerks and 1 censer around a Dusk Bell; selling sound_off lets Wick bypass silently via toll_sensor while full combat also cracks the vault cleanly.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "sound_off stealth synergy + Dusk Bell crowd control + Dawn Spool quest",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "dawn_spool+moth_8_03",
+    "why": "Showcases how Island 8's sold-settings rule reshapes a real side-vault without hard-locking players who kept sound on.",
+    "target": "item_dawn_spool",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          208,
+          80
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_sv_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          240
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "item_dawn_spool"
+      },
+      {
+        "op": "expect",
+        "flag": "quest:item:dawn_spool"
+      }
+    ]
+  }
+}

@@ -1,0 +1,646 @@
+{
+  "id": "manor_gardens",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL1_Z_GARDENS",
+  "music": "explore",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    56,
+    256
+  ],
+  "zones": [
+    {
+      "id": "manor_gardens",
+      "name_key": "ISL1_Z_GARDENS",
+      "rect": [
+        0,
+        0,
+        768,
+        512
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mg_west",
+      "rect": [
+        0,
+        240,
+        16,
+        32
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        1200,
+        360
+      ]
+    },
+    {
+      "id": "exit_mg_forecourt",
+      "rect": [
+        368,
+        496,
+        32,
+        16
+      ],
+      "to_region": "belfry_forecourt",
+      "to_spawn": [
+        520,
+        240
+      ]
+    },
+    {
+      "id": "exit_mg_shed",
+      "rect": [
+        752,
+        240,
+        16,
+        32
+      ],
+      "to_region": "cave_shed",
+      "to_spawn": [
+        56,
+        128
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "butler_mg_1",
+      "kind": "lamp_butler",
+      "pos": [
+        264,
+        160
+      ],
+      "route": [
+        [
+          264,
+          136
+        ],
+        [
+          264,
+          200
+        ]
+      ],
+      "zone": "manor_gardens",
+      "leash": 120
+    },
+    {
+      "id": "butler_mg_2",
+      "kind": "lamp_butler",
+      "pos": [
+        504,
+        192
+      ],
+      "route": [
+        [
+          472,
+          192
+        ],
+        [
+          536,
+          192
+        ]
+      ],
+      "zone": "manor_gardens",
+      "leash": 120
+    },
+    {
+      "id": "mimic_mg_1",
+      "kind": "pew_mimic",
+      "pos": [
+        528,
+        368
+      ],
+      "zone": "manor_gardens",
+      "leash": 112
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_manor_gardens",
+      "kind": "waystone",
+      "pos": [
+        120,
+        256
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "name_key": "ISL1_Z_GARDENS"
+      }
+    },
+    {
+      "id": "trial_mg_relay",
+      "kind": "ow_chime_relay",
+      "pos": [
+        160,
+        336
+      ],
+      "props": {
+        "bells": [
+          "bell_mg_1",
+          "bell_mg_2",
+          "bell_mg_3",
+          "bell_mg_4"
+        ]
+      }
+    },
+    {
+      "id": "bell_mg_1",
+      "kind": "bell",
+      "pos": [
+        176,
+        176
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 136
+      }
+    },
+    {
+      "id": "bell_mg_2",
+      "kind": "bell",
+      "pos": [
+        288,
+        368
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 136
+      }
+    },
+    {
+      "id": "bell_mg_3",
+      "kind": "bell",
+      "pos": [
+        464,
+        288
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 136
+      }
+    },
+    {
+      "id": "bell_mg_4",
+      "kind": "bell",
+      "pos": [
+        560,
+        128
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 144
+      }
+    },
+    {
+      "id": "hide_moth_garden",
+      "kind": "ow_hide_moth",
+      "pos": [
+        608,
+        128
+      ],
+      "props": {
+        "spot_id": "i1_garden",
+        "extra_flag": "q1_moth_garden"
+      }
+    },
+    {
+      "id": "lamp_mg_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        224
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mg_nw",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        112
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mg_portico_w",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        112
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mg_portico_e",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        112
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mg_ne",
+      "kind": "road_lamp",
+      "pos": [
+        608,
+        176
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mg_s",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        432
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mg_sw",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        368
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mg_se",
+      "kind": "road_lamp",
+      "pos": [
+        480,
+        368
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mg_e",
+      "kind": "road_lamp",
+      "pos": [
+        656,
+        224
+      ],
+      "props": {
+        "zone": "manor_gardens",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "evening_shed_gate",
+      "when": "bell_hour==evening",
+      "tiles": [
+        [
+          43,
+          15,
+          1,
+          2,
+          "wall"
+        ]
+      ]
+    },
+    {
+      "id": "midnight_gardens",
+      "when": "bell_hour==midnight",
+      "tint": "midnight",
+      "disable": [
+        "butler_mg_1",
+        "butler_mg_2"
+      ]
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        344,
+        96,
+        80,
+        48
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        384,
+        256
+      ],
+      "radius": 34,
+      "style": "mosaic"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        608,
+        128
+      ],
+      "radius": 24,
+      "style": "petal"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        384,
+        128
+      ],
+      "size": [
+        44,
+        60
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        344,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        424,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        264,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        504,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "velvet_settee",
+      "pos": [
+        288,
+        408
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        384,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_bloom",
+      "pos": [
+        128,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_warm",
+      "pos": [
+        624,
+        336
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        176,
+        368
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        624,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        272,
+        272
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        464,
+        224
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        544,
+        288
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        160,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "mossy_column",
+      "pos": [
+        464,
+        416
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Aristocratic hedge maze with patrolling Lamp Butlers, the 4-bell Estate Chime Relay stealth trial, and Midnight shift that pulls patrols indoors and opens the Tool Shed.",
+    "kind": "story",
+    "beat": "sho",
+    "teaches": "Hedge lanes and Dusk bells control Lamp Butler vision cones; Midnight pulls estate guards indoors to reveal hidden paths.",
+    "decisions": 6,
+    "expert_s": 70,
+    "reward": "trial_relay_shards+q1_moth_garden+cave_shed_access",
+    "why": "Eastern estate district leading to Bellmaker's Manor, Cave Shed, and Belfry Forecourt.",
+    "optional": true,
+    "start": {
+      "vars": {
+        "bell_hour": "midnight"
+      }
+    },
+    "exit": "exit_mg_shed",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_manor_gardens"
+      },
+      {
+        "op": "interact",
+        "target": "trial_mg_relay"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          176,
+          224
+        ],
+        "target": "bell_mg_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          288,
+          320
+        ],
+        "target": "bell_mg_2"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          464,
+          256
+        ],
+        "target": "bell_mg_3"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          520,
+          128
+        ],
+        "target": "bell_mg_4"
+      },
+      {
+        "op": "wait_until",
+        "flag": "trial_relay_rewarded",
+        "timeout": 3.5
+      },
+      {
+        "op": "wait_until",
+        "flag": "quest:hide:i1_garden",
+        "timeout": 3.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mg_shed"
+      }
+    ]
+  }
+}

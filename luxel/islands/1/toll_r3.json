@@ -1,0 +1,510 @@
+{
+  "id": "toll_r3",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_TOLL_SNAG",
+  "music": "isl1_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    224,
+    288
+  ],
+  "zones": [
+    {
+      "id": "toll_snag",
+      "name_key": "ISL1_TOLL_SNAG",
+      "rect": [
+        0,
+        0,
+        448,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_toll_r3_drop",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "toll_r4",
+      "to_spawn": [
+        208,
+        224
+      ],
+      "one_way": true,
+      "locked_door_id": "door_toll_r3_drop"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "owl_toll_r3",
+      "kind": "owl",
+      "pos": [
+        224,
+        96
+      ],
+      "route": [],
+      "perches": [
+        [
+          224,
+          96
+        ],
+        [
+          192,
+          128
+        ],
+        [
+          256,
+          128
+        ]
+      ],
+      "zone": "toll_snag",
+      "leash": 180
+    },
+    {
+      "id": "moth_toll_r3_w",
+      "kind": "toll_moth",
+      "pos": [
+        80,
+        112
+      ],
+      "route": [],
+      "perches": [
+        [
+          80,
+          112
+        ],
+        [
+          112,
+          144
+        ]
+      ],
+      "zone": "toll_snag",
+      "leash": 150
+    },
+    {
+      "id": "moth_toll_r3_e",
+      "kind": "toll_moth",
+      "pos": [
+        368,
+        112
+      ],
+      "route": [],
+      "perches": [
+        [
+          368,
+          112
+        ],
+        [
+          336,
+          144
+        ]
+      ],
+      "zone": "toll_snag",
+      "leash": 150
+    }
+  ],
+  "interactables": [
+    {
+      "id": "rotor_toll_r3",
+      "kind": "rotor",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "size": [
+          64,
+          64
+        ],
+        "speed": 0.45,
+        "quarter_on_signal": false
+      }
+    },
+    {
+      "id": "spin_toll_r3",
+      "kind": "spinner",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "length": 36,
+        "speed": 1.35,
+        "arms": 2
+      }
+    },
+    {
+      "id": "bell_toll_r3_k",
+      "kind": "bell",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 184
+      }
+    },
+    {
+      "id": "bell_toll_r3_w1",
+      "kind": "bell",
+      "pos": [
+        120,
+        136
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 144
+      }
+    },
+    {
+      "id": "bell_toll_r3_w2",
+      "kind": "bell",
+      "pos": [
+        328,
+        136
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 144
+      }
+    },
+    {
+      "id": "lock_toll_r3_w",
+      "kind": "toll_chain_lock",
+      "pos": [
+        64,
+        128
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "target_id": "gate_toll_r3",
+        "persist": true
+      }
+    },
+    {
+      "id": "lock_toll_r3_e",
+      "kind": "toll_chain_lock",
+      "pos": [
+        384,
+        128
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "target_id": "gate_toll_r3",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_toll_r3",
+      "kind": "logic_gate",
+      "pos": [
+        224,
+        56
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "lock_toll_r3_w",
+          "lock_toll_r3_e"
+        ],
+        "persist": true,
+        "target_id": "door_toll_r3_drop"
+      }
+    },
+    {
+      "id": "door_toll_r3_drop",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_toll_r3"
+        ]
+      }
+    },
+    {
+      "id": "anc_toll_r3",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        288
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_tr3_s",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        288
+      ],
+      "props": {
+        "zone": "toll_snag",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr3_se",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        288
+      ],
+      "props": {
+        "zone": "toll_snag",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr3_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        104
+      ],
+      "props": {
+        "zone": "toll_snag",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr3_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "zone": "toll_snag",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr3_n",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        64
+      ],
+      "props": {
+        "zone": "toll_snag",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 52,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        288
+      ],
+      "radius": 38,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        144
+      ],
+      "size": [
+        56,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.14
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "giant_clock_gear",
+      "pos": [
+        224,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        48,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        400,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        168,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        280,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_snag_cut",
+      "on": "signal:gate_toll_r3",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_snag_cut"
+        },
+        {
+          "narrate": {
+            "id": "ISL1_TOLL_SNAG_DONE",
+            "style": "title",
+            "duration": 2.6
+          }
+        },
+        {
+          "shake": 0.22
+        }
+      ]
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "The falling bell snags on a colossal spinning escapement gear; freeze the central spinner with Dusk, clear the perches, and shatter both coral Chain-Locks with War Bells (or Toll Moths) to resume the plunge.",
+    "kind": "setpiece",
+    "beat": "ten",
+    "teaches": "Combining Dusk motion-freeze with War structural shattering on a live gear arena.",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "toll_snag_cut",
+    "why": "Mid-plunge pacing break turning the vertical fall into a tactical multi-flank combat-puzzle.",
+    "exit": "exit_toll_r3_drop",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          272
+        ],
+        "target": "bell_toll_r3_k"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          184
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 18.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          136
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          144,
+          136
+        ],
+        "target": "bell_toll_r3_w1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          136
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          304,
+          136
+        ],
+        "target": "bell_toll_r3_w2"
+      },
+      {
+        "op": "expect",
+        "flag": "toll_snag_cut"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_toll_r3_drop"
+      }
+    ]
+  }
+}

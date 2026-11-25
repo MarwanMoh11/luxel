@@ -1,0 +1,539 @@
+{
+  "id": "archive_cloister",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "archive",
+  "name_key": "ISL8_Z_CLOISTER",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    48,
+    224
+  ],
+  "zones": [
+    {
+      "id": "archive_cloister",
+      "name_key": "ISL8_Z_CLOISTER",
+      "rect": [
+        0,
+        0,
+        704,
+        448
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_overworld",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "overworld",
+      "to_spawn": [
+        672,
+        520
+      ]
+    },
+    {
+      "id": "exit_archive_to_vigil",
+      "rect": [
+        0,
+        352,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "vigil_terrace",
+      "to_spawn": [
+        536,
+        136
+      ]
+    },
+    {
+      "id": "exit_to_cave_hush_trial",
+      "rect": [
+        528,
+        432,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "cave_hush_trial",
+      "to_spawn": [
+        224,
+        48
+      ]
+    },
+    {
+      "id": "exit_archive_to_forecourt",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "sanctum_forecourt",
+      "to_spawn": [
+        560,
+        208
+      ],
+      "requires_flags": [
+        "archive_cleared"
+      ],
+      "locked_door_id": "door_archive_forecourt_bridge"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "censer_ac_1",
+      "kind": "censer",
+      "pos": [
+        352,
+        224
+      ],
+      "route": [
+        [
+          312,
+          200
+        ],
+        [
+          408,
+          248
+        ]
+      ],
+      "zone": "archive_cloister",
+      "leash": 136
+    },
+    {
+      "id": "wraith_ac_1",
+      "kind": "page_wraith",
+      "pos": [
+        304,
+        264
+      ],
+      "route": [],
+      "zone": "archive_cloister",
+      "leash": 124
+    },
+    {
+      "id": "gloam_ac_1",
+      "kind": "choir_gloam",
+      "pos": [
+        552,
+        200
+      ],
+      "route": [
+        [
+          520,
+          192
+        ],
+        [
+          600,
+          224
+        ]
+      ],
+      "zone": "archive_cloister",
+      "leash": 132
+    },
+    {
+      "id": "censer_ac_2",
+      "kind": "censer",
+      "pos": [
+        568,
+        264
+      ],
+      "route": [
+        [
+          528,
+          264
+        ],
+        [
+          616,
+          264
+        ]
+      ],
+      "zone": "archive_cloister",
+      "leash": 132
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_cloister",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_cloister",
+      "kind": "waystone",
+      "pos": [
+        184,
+        240
+      ],
+      "props": {
+        "zone": "archive_cloister",
+        "name_key": "ISL8_Z_CLOISTER"
+      }
+    },
+    {
+      "id": "door_archive_forecourt_bridge",
+      "kind": "door",
+      "pos": [
+        240,
+        40
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "archive_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lore_cloister",
+      "kind": "lore_stone",
+      "pos": [
+        592,
+        192
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_CLOISTER",
+        "icon": "book"
+      }
+    },
+    {
+      "id": "chest_ac_shards",
+      "kind": "chest",
+      "pos": [
+        448,
+        168
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "secret_id": "isl8_ac_stacks"
+      }
+    },
+    {
+      "id": "lamp_ac_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        200
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_cloister"
+      }
+    },
+    {
+      "id": "lamp_ac_sw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        344
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_cloister"
+      }
+    },
+    {
+      "id": "lamp_ac_mid",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        176
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_cloister"
+      }
+    },
+    {
+      "id": "lamp_ac_e",
+      "kind": "road_lamp",
+      "pos": [
+        520,
+        232
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_cloister"
+      }
+    },
+    {
+      "id": "lamp_ac_se",
+      "kind": "road_lamp",
+      "pos": [
+        560,
+        360
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_cloister"
+      }
+    },
+    {
+      "id": "lamp_ac_n",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        112
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_cloister"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        624,
+        232
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "compass_rug_medallion",
+      "pos": [
+        368,
+        232
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        264,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        416,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        248,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "rolling_library_ladder",
+      "pos": [
+        272,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scholar_reading_desk",
+      "pos": [
+        496,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        448,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        600,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        208,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        504,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        320,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scroll_cubby_rack",
+      "pos": [
+        144,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        368,
+        232
+      ],
+      "radius": 40,
+      "color": "sky"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        504,
+        208,
+        128,
+        48
+      ],
+      "color": "plum"
+    }
+  ],
+  "layers": [
+    {
+      "id": "relit_dawn",
+      "when": "flag:island_8_relit",
+      "disable": [
+        "censer_ac_1",
+        "wraith_ac_1",
+        "gloam_ac_1",
+        "censer_ac_2"
+      ]
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "East drifting library cloister connecting Vigil Terrace & overworld to Archive of Lost Lamps, The Hush Trial, and Sanctum Forecourt; pairs censer dusk-smoke with disguised page_wraiths.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "censer chain-slicing + page_wraith rug tells + eastern wing routing",
+    "decisions": 5,
+    "expert_s": 55,
+    "reward": "archive_access_and_hush_trial",
+    "why": "East overworld hub with rose-glass library identity and distinct vertical-pier silhouette.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          184,
+          240
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          448,
+          184
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_ac_shards"
+      }
+    ]
+  }
+}

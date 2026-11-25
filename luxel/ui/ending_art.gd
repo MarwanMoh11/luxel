@@ -264,6 +264,19 @@ static func draw_ending_dawn(ci: CanvasItem, t: float, islands: Array[Vector2], 
 		var mx: float = roundf(fmod(160.0 + cos(float(m["angle"])) * 140.0 + t * 8.0, 320.0))
 		var my: float = roundf(120.0 - fmod(t * float(m["speed"]) * 0.4 + float(m["phase"]) * 80.0, 96.0))
 		ci.draw_rect(Rect2(mx, my, 2.0, 2.0), LxPalette.color(str(m["color"])))
+	# Buy-back golden sparks rising from the lantern when tolls were sold and returned at dawn.
+	var receipts_n: int = LxSold.current().get_dawn_receipts().size()
+	if receipts_n > 0 and t >= 1.1:
+		var fr_d: bool = LxHudFx.flash_reduced()
+		for ri: int in range(mini(receipts_n, 12)):
+			var age: float = t - (1.1 + float(ri) * 0.28)
+			if age < 0.0: continue
+			var u: float = clampf(age / 2.2, 0.0, 1.0)
+			var rx: float = roundf(27.0 + u * (133.0 + float((ri % 5) - 2) * 26.0))
+			var ry: float = roundf(145.0 - u * 86.0 - sin(u * PI) * 18.0)
+			if ry >= 18.0 and ry < 160.0:
+				var col_k: String = "cream" if (fr_d or ri % 2 == 0) else "gold"
+				ci.draw_rect(Rect2(rx, ry, 2.0, 2.0), LxPalette.PAL[col_k])
 
 static func _draw_dawn_sky(ci: CanvasItem, t: float, rise: float) -> void:
 	var cols: Array[Color] = [

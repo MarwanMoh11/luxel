@@ -1,0 +1,482 @@
+{
+  "id": "locks_r4",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R4_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    48,
+    160
+  ],
+  "zones": [
+    {
+      "id": "lck_r4",
+      "name_key": "LCK_R4_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_west",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "locks_r3",
+      "to_spawn": [
+        400,
+        144
+      ]
+    },
+    {
+      "id": "exit_r4_east",
+      "rect": [
+        464,
+        144,
+        16,
+        32
+      ],
+      "to_region": "locks_r2",
+      "to_spawn": [
+        496,
+        208
+      ],
+      "locked_door_id": "door_r4_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r4_w",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mir_r4",
+      "kind": "blue_transformer",
+      "pos": [
+        232,
+        168
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "raft_r4_n",
+      "kind": "tide_raft",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "mounts": "cargo",
+        "tide_var": "lock_water",
+        "drift_dir": [
+          1,
+          0
+        ],
+        "drift_speed": 14.0
+      }
+    },
+    {
+      "id": "raft_r4_s",
+      "kind": "tide_raft",
+      "pos": [
+        232,
+        264
+      ],
+      "props": {
+        "mounts": "cargo",
+        "tide_var": "lock_water",
+        "drift_dir": [
+          -1,
+          0
+        ],
+        "drift_speed": 14.0
+      }
+    },
+    {
+      "id": "skiff_r4",
+      "kind": "vehicle_skiff",
+      "pos": [
+        168,
+        264
+      ],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "key_locks_1",
+      "kind": "wick_key",
+      "pos": [
+        408,
+        72
+      ],
+      "props": {
+        "dungeon_id": "locks",
+        "key_kind": "wick_key",
+        "requires_flag": "locks_r4_cleared"
+      }
+    },
+    {
+      "id": "door_r4_east",
+      "kind": "door",
+      "pos": [
+        456,
+        160
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "lck_r4",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        200
+      ],
+      "props": {
+        "zone": "lck_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_c",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        120
+      ],
+      "props": {
+        "zone": "lck_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        88
+      ],
+      "props": {
+        "zone": "lck_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        184
+      ],
+      "props": {
+        "zone": "lck_r4",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "caster_r4",
+      "kind": "net_caster",
+      "pos": [
+        200,
+        120
+      ],
+      "zone": "lck_r4"
+    },
+    {
+      "id": "lamprey_r4_1",
+      "kind": "brine_lamprey",
+      "pos": [
+        216,
+        216
+      ],
+      "zone": "lck_r4"
+    },
+    {
+      "id": "barnacle_r4_1",
+      "kind": "barnacle_sentry",
+      "pos": [
+        312,
+        120
+      ],
+      "zone": "lck_r4"
+    },
+    {
+      "id": "barnacle_r4_2",
+      "kind": "barnacle_sentry",
+      "pos": [
+        312,
+        200
+      ],
+      "zone": "lck_r4"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        352,
+        32,
+        96,
+        80
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        184,
+        200
+      ],
+      "radius": 22,
+      "style": "water"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        208,
+        128,
+        64,
+        64
+      ],
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        392,
+        88
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.28
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        120,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        120,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        328,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        424,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        184,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        296,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        104,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        424,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "hanging_fishing_net",
+      "pos": [
+        40,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        280,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "lck_r4_wave2",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "wait": 0.5
+        }
+      ]
+    },
+    {
+      "id": "lck_r4_clear_flag",
+      "on": "cleared:lck_r4",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "locks_r4_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Canal wharf battle flanked by drifting cargo barge channels where Wick counters a Net Caster and Brine Lamprey while banking blue shots off the quay mirror to crack twin Barnacle Sentries for Key #1 and Cycle 1.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Prioritize Net Caster before throwing lantern; use central Blue Transformer to crack shielded Barnacle Sentries cleanly.",
+    "decisions": 6,
+    "expert_s": 48,
+    "reward": "locks_small_1+cycle_1",
+    "why": "Lower-wing combat climax awarding Key #1 and completing Cycle 1 back to Lock Junction Hub r2.",
+    "exit": "exit_r4_east",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          136,
+          168
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lck_r4",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "locks_r4_cleared",
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "key_locks_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_east"
+      }
+    ]
+  }
+}

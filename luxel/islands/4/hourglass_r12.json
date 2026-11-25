@@ -75,7 +75,7 @@
       "id": "mirror_hg_r12_n",
       "kind": "blue_transformer",
       "pos": [
-        248,
+        184,
         104
       ],
       "props": {
@@ -92,10 +92,10 @@
       "kind": "blue_transformer",
       "pos": [
         264,
-        248
+        264
       ],
       "props": {
-        "angle_deg": 135,
+        "angle_deg": 45,
         "angle_step_deg": 45,
         "rotatable": true,
         "movable": false,
@@ -107,7 +107,7 @@
       "id": "rose_hg_r12_1",
       "kind": "echo_rose",
       "pos": [
-        120,
+        104,
         136
       ],
       "props": {
@@ -119,7 +119,7 @@
       "id": "rose_hg_r12_2",
       "kind": "echo_rose",
       "pos": [
-        392,
+        408,
         136
       ],
       "props": {
@@ -131,7 +131,7 @@
       "id": "rose_hg_r12_3",
       "kind": "echo_rose",
       "pos": [
-        376,
+        408,
         248
       ],
       "props": {
@@ -485,8 +485,12 @@
     },
     "solution": [
       {
-        "op": "interact",
-        "target": "rose_hg_r12_1"
+        "op": "shoot",
+        "from": [
+          216,
+          264
+        ],
+        "target": "mirror_hg_r12_s"
       },
       {
         "op": "clear",

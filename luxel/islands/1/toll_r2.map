@@ -1,0 +1,43 @@
+# Great Toll r2 - The Plunging Shaft (24x28)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+____################____
+___##OOOOOOOOOOOOOO##___
+__##OOOOOOOOOOOOOOOO##__
+_##OO...OOOOOOOO...OO##_
+_#OO....OOOOOOOO....OO#_
+_#OO....OOOOOOOO....OO#_
+##OOO..OOOOOOOOOO..OOO##
+#OOOOOOOOOOOOOOOOOOOOOO#
+#OOOOOOOOOOOOOOOOOOOOOO#
+#OOO..OO,,,,,,,,OO..OOO#
+#OO...OO,,,,,,,,OO...OO#
+#OO...OO,,,,,,,,OO...OO#
+#OO...OO,,,,,,,,OO...OO#
+#OO...OO,,,,,,,,OO...OO#
+#OO...OO,,,,,,,,OO...OO#
+#OO...OO,,,,,,,,OO...OO#
+#OO...OO,,,,,,,,OO...OO#
+#OOO..OO,,,,,,,,OO..OOO#
+#OOOOOOOOOOOOOOOOOOOOOO#
+#OOOOOOOOOOOOOOOOOOOOOO#
+##OOOOOOOOOOOOOOOOOOOO##
+_#OOOOOOOOOOOOOOOOOOOO#_
+_##OOOOOOOOOOOOOOOOOO##_
+__##OOOOO,,,,,,OOOOO##__
+___##OOOO,,,,,,OOOO##___
+____##...,,,,,,...##____
+_____#...,,,,,,...#_____
+_____######,,######_____

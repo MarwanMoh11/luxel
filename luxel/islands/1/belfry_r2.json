@@ -3,8 +3,10 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL1_BF_CHASM",
+  "music": "island1_dungeon",
   "spawn": [
-    324,
+    420,
     120
   ],
   "zones": [
@@ -14,7 +16,7 @@
       "rect": [
         0,
         0,
-        384,
+        480,
         240
       ],
       "dark": true
@@ -24,19 +26,36 @@
     {
       "id": "exit_r2_east",
       "rect": [
-        368,
+        464,
         96,
         16,
         48
       ],
       "to_region": "belfry_r1",
       "to_spawn": [
-        36,
-        128
+        44,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
+    },
+    {
+      "id": "exit_r2_north",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r8",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_r2_north"
     }
   ],
   "enemies": [
@@ -44,22 +63,22 @@
       "id": "owl_r2_0",
       "kind": "owl",
       "pos": [
-        224,
-        136
+        208,
+        120
       ],
       "route": [],
       "perches": [
         [
-          224,
-          136
+          208,
+          120
         ],
         [
-          224,
-          96
+          208,
+          88
         ],
         [
-          176,
-          148
+          184,
+          144
         ]
       ],
       "zone": "belfry_chasm",
@@ -71,8 +90,8 @@
       "id": "switch_eye_r2",
       "kind": "switch_eye",
       "pos": [
-        200,
-        56
+        328,
+        40
       ],
       "props": {
         "target_id": "bridge_r2",
@@ -83,13 +102,13 @@
       "id": "bridge_r2",
       "kind": "door",
       "pos": [
-        256,
+        304,
         120
       ],
       "props": {
         "door_kind": "bridge_platform",
         "size": [
-          32,
+          128,
           32
         ],
         "starts_open": false,
@@ -113,6 +132,94 @@
           "dash"
         ]
       }
+    },
+    {
+      "id": "bell_r2_dawn",
+      "kind": "bell",
+      "pos": [
+        200,
+        168
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "door_r2_north",
+      "kind": "tone_door",
+      "pos": [
+        208,
+        24
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          32,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        104
+      ],
+      "props": {
+        "zone": "belfry_chasm",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_c",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        104
+      ],
+      "props": {
+        "zone": "belfry_chasm",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        104
+      ],
+      "props": {
+        "zone": "belfry_chasm",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        200,
+        168
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        104,
+        112
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.15
     }
   ],
   "triggers": [
@@ -133,20 +240,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        296,
-        84
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "candelabra_tall",
-      "pos": [
-        296,
-        152
+        424,
+        136
       ],
       "layer": "sort",
       "flip_x": true,
@@ -157,7 +252,7 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        180,
+        184,
         184
       ],
       "layer": "sort",
@@ -179,22 +274,10 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "candelabra_tall",
-      "pos": [
-        68,
-        136
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
         96,
-        54
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -202,5 +285,67 @@
       "phase": 0.0
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "design": {
+    "idea": "3-island chasm teaching Switch Eye bridge extension across an 8-tile un-zippable gap (D06 fixed), Flare Dash for Wick Key 1, and a center Dawn Bell unlocking the north Counterweight Well (r8).",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Switch-Eye bridge extension, Dash gap crossing, and Dawn Ring Wave unlocking north paths.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "wick_key_1+open_r8",
+    "why": "Deepened West Wing opening room preserving Wick Key 1 while opening the F1 West clockwork loop.",
+    "exit": "exit_r2_north",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          392,
+          96
+        ],
+        "target": "switch_eye_r2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          120
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          120
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          120
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          208,
+          120
+        ],
+        "target": "bell_r2_dawn"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_north"
+      }
+    ]
+  }
 }

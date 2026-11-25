@@ -1,0 +1,517 @@
+{
+  "id": "cave_smuggler_cellar",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ZONE_ISL2_CELLAR",
+  "theme": "locks",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_tide"
+  ],
+  "spawn": [
+    216,
+    56
+  ],
+  "zones": [
+    {
+      "id": "smuggler_cellar",
+      "name_key": "ZONE_ISL2_CELLAR",
+      "rect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cellar_out",
+      "rect": [
+        192,
+        0,
+        48,
+        16
+      ],
+      "to_region": "ow_canal_south",
+      "to_spawn": [
+        376,
+        536
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_cellar",
+      "kind": "room_anchor",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "brazier_cellar_1",
+      "kind": "brazier",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "target_id": "gate_cellar_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_cellar",
+      "kind": "blue_transformer",
+      "pos": [
+        232,
+        136
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "eye_cellar_vault",
+      "kind": "switch_eye",
+      "pos": [
+        296,
+        136
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "gate_cellar_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_cellar_all",
+      "kind": "logic_gate",
+      "pos": [
+        200,
+        184
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "brazier_cellar_1",
+          "eye_cellar_vault"
+        ],
+        "target_ids": [
+          "bridge_cellar",
+          "door_cellar_vault"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "bridge_cellar",
+      "kind": "door",
+      "pos": [
+        280,
+        168
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          32
+        ],
+        "zone": "smuggler_cellar",
+        "requires_signals": [
+          "gate_cellar_all"
+        ]
+      }
+    },
+    {
+      "id": "door_cellar_vault",
+      "kind": "door",
+      "pos": [
+        312,
+        168
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "zone": "smuggler_cellar",
+        "requires_signals": [
+          "gate_cellar_all"
+        ]
+      }
+    },
+    {
+      "id": "item_lens_shard_ebb",
+      "kind": "quest_item",
+      "pos": [
+        360,
+        168
+      ],
+      "props": {
+        "id": "lens_shard_ebb"
+      }
+    },
+    {
+      "id": "lore_ship_log_1",
+      "kind": "lore_stone",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "string_id": "ISL2_LOG_1",
+        "icon": "tide",
+        "persist": true
+      }
+    },
+    {
+      "id": "chest_cellar_smuggle",
+      "kind": "chest",
+      "pos": [
+        360,
+        200
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30,
+        "zone": "smuggler_cellar"
+      }
+    },
+    {
+      "id": "bramble_cellar_moth",
+      "kind": "bramble",
+      "pos": [
+        136,
+        72
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "zone": "smuggler_cellar"
+      }
+    },
+    {
+      "id": "moth_2_09",
+      "kind": "moth",
+      "pos": [
+        72,
+        72
+      ],
+      "props": {
+        "id": "moth_2_09",
+        "requires_moves": [
+          "beam"
+        ]
+      }
+    },
+    {
+      "id": "lamp_cel_1",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        72
+      ],
+      "props": {
+        "zone": "smuggler_cellar",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cel_2",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        168
+      ],
+      "props": {
+        "zone": "smuggler_cellar",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cel_3",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        200
+      ],
+      "props": {
+        "zone": "smuggler_cellar",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cel_4",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        168
+      ],
+      "props": {
+        "zone": "smuggler_cellar",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cel_5",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        56
+      ],
+      "props": {
+        "zone": "smuggler_cellar",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_ship_log_1",
+      "on": "signal:lore_ship_log_1",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ship_log_1"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        176,
+        96,
+        64,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        320,
+        144,
+        48,
+        64
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        120,
+        184
+      ],
+      "radius": 20,
+      "style": "water"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        88,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        168,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        360,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        248,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "hanging_fishing_net",
+      "pos": [
+        344,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        184,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        248,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        344,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Ebb-tide contraband cellar combining a cross-canal lantern Throw onto a recessed brazier with a Blue Transformer bank to extend the vault bridge; bramble alcove hides Moth 09 for Beam backtrack.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Cross-canal lantern throw + Blue bank dual lock + Beam bramble tease",
+    "decisions": 6,
+    "expert_s": 48,
+    "reward": "lens_shard_ebb + ship_log_1 + 30 shards + moth_2_09 (Beam)",
+    "why": "Ebb-tide cave off Canal Quarter supplying Spyglass Shard #1 and Hollow Wick Log #1",
+    "optional": true,
+    "target": "item_lens_shard_ebb",
+    "start": {
+      "spawn": [
+        216,
+        56
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          88
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "brazier_cellar_1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          168
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_cellar",
+        "steps": 1
+      },
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          168
+        ],
+        "target": "mirror_cellar"
+      },
+      {
+        "op": "expect",
+        "interactable": "door_cellar_vault",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          360,
+          168
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "item_lens_shard_ebb"
+      }
+    ]
+  }
+}

@@ -1,0 +1,603 @@
+{
+  "name_key": "ISL3_LM_R2_NAME",
+  "spawn": [
+    256,
+    280
+  ],
+  "zones": [
+    {
+      "id": "lm_r2",
+      "name_key": "ISL3_LM_R2_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_loom_r2_south",
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
+      "to_region": "loom_r1",
+      "to_spawn": [
+        208,
+        40
+      ]
+    },
+    {
+      "id": "exit_loom_r2_sw",
+      "rect": [
+        0,
+        208,
+        16,
+        32
+      ],
+      "to_region": "loom_r3",
+      "to_spawn": [
+        208,
+        216
+      ],
+      "locked_door_id": "door_loom_r2_sw"
+    },
+    {
+      "id": "exit_loom_r2_nw_sc",
+      "rect": [
+        0,
+        64,
+        16,
+        32
+      ],
+      "to_region": "loom_r6",
+      "to_spawn": [
+        224,
+        48
+      ],
+      "requires_flags": [
+        "loom_r6_balcony_open"
+      ]
+    },
+    {
+      "id": "exit_loom_r2_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "loom_r7",
+      "to_spawn": [
+        48,
+        208
+      ],
+      "locked_door_id": "door_loom_r2_key"
+    },
+    {
+      "id": "exit_loom_r2_ne_sc",
+      "rect": [
+        496,
+        64,
+        16,
+        32
+      ],
+      "to_region": "loom_r9",
+      "to_spawn": [
+        272,
+        48
+      ],
+      "requires_flags": [
+        "loom_r9_hoisted"
+      ]
+    },
+    {
+      "id": "exit_loom_r2_boss",
+      "rect": [
+        336,
+        0,
+        32,
+        16
+      ],
+      "to_region": "loom_r10",
+      "to_spawn": [
+        40,
+        128
+      ],
+      "locked_door_id": "door_loom_r2_boss"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        280
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lm_r2_bobbin",
+      "kind": "loom_landmark",
+      "pos": [
+        248,
+        152
+      ],
+      "props": {
+        "variant": "hanging_bobbin"
+      }
+    },
+    {
+      "id": "wheel_r2_warp",
+      "kind": "loom_warp_wheel",
+      "pos": [
+        256,
+        224
+      ],
+      "props": {
+        "lock_spool_id": "spool_r2_lock",
+        "snap_secs": 5.5,
+        "scope": "dungeon:loom",
+        "var": "loom_warp",
+        "sets_flag": "loom_r2_warp_locked",
+        "persist": true,
+        "target_id": "door_loom_r2_sw"
+      }
+    },
+    {
+      "id": "t_r2",
+      "kind": "blue_transformer",
+      "pos": [
+        328,
+        224
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "spool_r2_lock",
+      "kind": "silk_loom_spool",
+      "pos": [
+        328,
+        168
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "freeze_secs": 16.0,
+        "power_on_freeze": true
+      }
+    },
+    {
+      "id": "door_loom_r2_sw",
+      "kind": "door",
+      "pos": [
+        32,
+        224
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "wheel_r2_warp"
+        ]
+      }
+    },
+    {
+      "id": "door_loom_r2_key",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "size": [
+          32,
+          16
+        ],
+        "dungeon_id": "loom"
+      }
+    },
+    {
+      "id": "door_loom_r2_boss",
+      "kind": "door",
+      "pos": [
+        352,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_key",
+        "size": [
+          32,
+          16
+        ],
+        "dungeon_id": "loom"
+      }
+    },
+    {
+      "id": "lamp_r2_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        264
+      ],
+      "props": {
+        "zone": "lm_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_se",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        224
+      ],
+      "props": {
+        "zone": "lm_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_nw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        72
+      ],
+      "props": {
+        "zone": "lm_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_ne",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        72
+      ],
+      "props": {
+        "zone": "lm_r2",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        248,
+        64,
+        48
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        48,
+        224,
+        40
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        224
+      ],
+      "radius": 24,
+      "style": "gear"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        152
+      ],
+      "size": [
+        60,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        328,
+        32,
+        48,
+        28
+      ],
+      "color": "rose"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "woven_floor_medallion",
+      "pos": [
+        256,
+        264
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        352,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        112,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        396,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        312,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        204,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        128,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        384,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        176,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        376,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "brass_shuttle_rack",
+      "pos": [
+        292,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "luminous_yarn_basket",
+      "pos": [
+        168,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "layers": [
+    {
+      "id": "warp_low_bridge",
+      "when": "loom_warp==low",
+      "tiles": [
+        [
+          5,
+          13,
+          5,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r6_balcony_bridge",
+      "when": "flag:loom_r6_balcony_open",
+      "tiles": [
+        [
+          5,
+          4,
+          2,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r9_hoist_bridge",
+      "when": "flag:loom_r9_hoisted",
+      "tiles": [
+        [
+          25,
+          4,
+          2,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Multi-level Heddle Hub with the Boss Key hanging in a glass bobbin over the central pit; rotate the east Blue Transformer, shift the Warp-Wheel to lower the SW shuttle track, and freeze the tension spool blue before it snaps back so you can cross into the West Wing.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Hub macro-state (loom_warp high/low) pinned with Blue silk-freeze; previews Boss Key bobbin, Key Door, Boss Door, and upper cycle landings.",
+    "decisions": 5,
+    "expert_s": 52,
+    "reward": "r3_access+hub_orientation",
+    "why": "Central multi-level hub linking all four cycles and teasing every major Weaver's Loom landmark.",
+    "exit": "exit_loom_r2_sw",
+    "start": {
+      "vars": {
+        "loom_warp": "high"
+      }
+    },
+    "solution": [
+      {
+        "op": "rotate",
+        "target": "t_r2",
+        "angle": 225
+      },
+      {
+        "op": "interact",
+        "target": "wheel_r2_warp"
+      },
+      {
+        "op": "expect",
+        "var": "loom_warp==low"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          296,
+          224
+        ],
+        "target": "t_r2"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_loom_r2_sw",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r2_sw"
+      }
+    ]
+  },
+  "id": "loom_r2",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "loom",
+  "music": "isl3_loom",
+  "ambience": [
+    "forest_wind",
+    "cave_drip"
+  ],
+  "triggers": [],
+  "events": [],
+  "enemies": []
+}

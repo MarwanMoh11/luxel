@@ -1,0 +1,421 @@
+{
+  "id": "meteor_r3",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R3",
+  "spawn": [
+    224,
+    240
+  ],
+  "zones": [
+    {
+      "id": "mv_r3",
+      "name_key": "I5_MV_R3",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r3_s",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "meteor_r2",
+      "to_spawn": [
+        128,
+        56
+      ]
+    },
+    {
+      "id": "exit_mv_r3_short",
+      "rect": [
+        432,
+        176,
+        16,
+        48
+      ],
+      "to_region": "meteor_r1",
+      "to_spawn": [
+        56,
+        96
+      ],
+      "requires_flags": [
+        "mv_r3_short"
+      ],
+      "locked_door_id": "door_mv_r3_short"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r3",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_r3_w",
+      "kind": "polarity_well",
+      "pos": [
+        152,
+        152
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 68.0,
+        "strength": 440.0
+      }
+    },
+    {
+      "id": "well_r3_e",
+      "kind": "polarity_well",
+      "pos": [
+        296,
+        152
+      ],
+      "props": {
+        "mode": "push",
+        "radius": 68.0,
+        "strength": 440.0
+      }
+    },
+    {
+      "id": "mv_key_1",
+      "kind": "wick_key",
+      "pos": [
+        224,
+        128
+      ],
+      "props": {
+        "dungeon_id": "meteor_vault",
+        "key_kind": "wick_key",
+        "flag_id": "mv_key_1",
+        "requires_flag": "mv_r3_cleared"
+      }
+    },
+    {
+      "id": "eye_r3_short",
+      "kind": "switch_eye",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "target_id": "door_mv_r3_short",
+        "sets_flag": "mv_r3_short"
+      }
+    },
+    {
+      "id": "door_mv_r3_short",
+      "kind": "door",
+      "pos": [
+        424,
+        200
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "eye_r3_short"
+        ],
+        "sets_flag": "mv_r3_short",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_mv_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "zone": "mv_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r3_se",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        248
+      ],
+      "props": {
+        "zone": "mv_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        88
+      ],
+      "props": {
+        "zone": "mv_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r3_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        88
+      ],
+      "props": {
+        "zone": "mv_r3",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "hound_r3_w",
+      "kind": "comet_hound",
+      "pos": [
+        96,
+        152
+      ],
+      "zone": "mv_r3"
+    },
+    {
+      "id": "hound_r3_n",
+      "kind": "comet_hound",
+      "pos": [
+        224,
+        112
+      ],
+      "zone": "mv_r3"
+    },
+    {
+      "id": "eye_r3_turret",
+      "kind": "satellite_eye",
+      "pos": [
+        328,
+        120
+      ],
+      "zone": "mv_r3"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 44,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        152,
+        152
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        296,
+        152
+      ],
+      "radius": 20,
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        112,
+        32,
+        32
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        224,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        144,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        304,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "cracked_meteor_boulder",
+      "pos": [
+        64,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        360,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        72,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "brass_caliper_stand",
+      "pos": [
+        360,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "mv_r3_on_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mv_r3_cleared"
+        }
+      ]
+    },
+    {
+      "id": "mv_r3_short_msg",
+      "on": "signal:eye_r3_short",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mv_r3_short"
+        },
+        {
+          "narrate": "I5_MV_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Twin-well hourglass combat kennel where curving shots behind an armored Satellite Eye and using basalt piers against curve-leaping Comet Hounds earns Key 1 and the West Hub Shortcut.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Combining curved shots around opposing polarity wells with cover piers in combat.",
+    "decisions": 5,
+    "expert_s": 48,
+    "reward": "mv_key_1+hub_shortcut_1",
+    "why": "First combat test of Island 5's new enemy pair rewarding Key 1 and Cycle 1 back to the hub.",
+    "exit": "exit_mv_r3_short",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "mv_r3_cleared",
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "mv_key_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          152
+        ],
+        "target": "eye_r3_short"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_mv_r3_short",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r3_short"
+      }
+    ]
+  }
+}

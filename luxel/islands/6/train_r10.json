@@ -74,8 +74,8 @@
       "id": "anvil_r10_cycle",
       "kind": "temper_anvil",
       "pos": [
-        88,
-        72
+        80,
+        56
       ],
       "props": {
         "mode": "cycle"
@@ -86,11 +86,11 @@
       "kind": "wind_zone",
       "pos": [
         184,
-        120
+        88
       ],
       "props": {
         "dir": "n",
-        "strength": 135.0,
+        "strength": 125.0,
         "size": [
           64,
           48
@@ -102,11 +102,11 @@
       "kind": "wind_zone",
       "pos": [
         344,
-        120
+        168
       ],
       "props": {
         "dir": "s",
-        "strength": 135.0,
+        "strength": 125.0,
         "size": [
           64,
           48
@@ -118,7 +118,7 @@
       "kind": "crumble_floor",
       "pos": [
         184,
-        96
+        72
       ],
       "props": {
         "size": [
@@ -134,7 +134,7 @@
       "kind": "crumble_floor",
       "pos": [
         344,
-        144
+        184
       ],
       "props": {
         "size": [
@@ -166,7 +166,7 @@
       "kind": "road_lamp",
       "pos": [
         64,
-        168
+        160
       ],
       "props": {
         "zone": "tr_r10",
@@ -178,7 +178,19 @@
       "kind": "road_lamp",
       "pos": [
         264,
-        88
+        80
+      ],
+      "props": {
+        "zone": "tr_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_mids",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        176
       ],
       "props": {
         "zone": "tr_r10",
@@ -190,7 +202,7 @@
       "kind": "road_lamp",
       "pos": [
         432,
-        80
+        104
       ],
       "props": {
         "zone": "tr_r10",
@@ -202,7 +214,7 @@
       "kind": "road_lamp",
       "pos": [
         432,
-        168
+        192
       ],
       "props": {
         "zone": "tr_r10",
@@ -215,8 +227,8 @@
       "id": "en_r10_stoker",
       "kind": "stoker",
       "pos": [
-        264,
-        128
+        256,
+        96
       ],
       "zone": "tr_r10"
     },
@@ -224,8 +236,8 @@
       "id": "en_r10_hopper",
       "kind": "rail_hopper",
       "pos": [
-        416,
-        128
+        272,
+        168
       ],
       "zone": "tr_r10"
     }
@@ -245,9 +257,9 @@
       "kind": "grate",
       "rect": [
         232,
-        80,
+        72,
         64,
-        80
+        112
       ],
       "glow": true
     },
@@ -255,16 +267,16 @@
       "kind": "inlay",
       "rect": [
         392,
-        64,
+        96,
         80,
-        112
+        96
       ]
     },
     {
       "kind": "cracks",
       "pos": [
         432,
-        120
+        152
       ],
       "radius": 24,
       "glow": true
@@ -276,7 +288,7 @@
       "prop": "loco_smokestack",
       "pos": [
         104,
-        180
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -288,7 +300,7 @@
       "prop": "brass_steam_whistle",
       "pos": [
         248,
-        76
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -300,7 +312,7 @@
       "prop": "coal_tender_crate",
       "pos": [
         48,
-        180
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -311,8 +323,8 @@
       "sheet": "theme_ember_express_roof",
       "prop": "cinder_brazier_cage",
       "pos": [
-        272,
-        168
+        244,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -324,7 +336,7 @@
       "prop": "roof_signal_lantern",
       "pos": [
         456,
-        72
+        96
       ],
       "layer": "sort",
       "flip_x": false,
@@ -336,7 +348,7 @@
       "prop": "roof_signal_lantern",
       "pos": [
         456,
-        176
+        208
       ],
       "layer": "sort",
       "flip_x": true,
@@ -348,11 +360,11 @@
   "layers": [],
   "events": [],
   "design": {
-    "idea": "Blazing Smokestack Tender Catwalk leading into the Locomotive Cab: provides an 8-second boss checkpoint anchor, Cycle Anvil prep, and a tense sprint across dual steam-gust gratings past a Stoker and Rail Hopper.",
+    "idea": "Blazing Z-stepped Smokestack Tender Catwalk leading into the Locomotive Cab: provides an 8-second boss checkpoint anchor, Cycle Anvil prep, and a tense sprint across staggered steam-gust gratings past a Stoker and Rail Hopper.",
     "kind": "traversal",
     "beat": "ketsu",
-    "teaches": "Boss temper prep + fighting across narrow steam-swept catwalk ribs over molten lava",
-    "decisions": 6,
+    "teaches": "Boss temper prep + fighting across staggered narrow steam-swept catwalk ribs over molten lava",
+    "decisions": 8,
     "expert_s": 45,
     "reward": "boss_anchor+open_r11",
     "why": "Dramatic sky-open prelude to The Engineer with instant boss retry and temper selection.",
@@ -368,10 +380,10 @@
       {
         "op": "goto",
         "to": [
-          88,
-          96
+          80,
+          72
         ],
-        "tol": 6.0
+        "tol": 3.0
       },
       {
         "op": "interact",

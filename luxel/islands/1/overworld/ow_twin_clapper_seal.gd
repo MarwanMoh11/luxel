@@ -82,7 +82,7 @@ func _evaluate_open() -> bool:
 		return true
 	var uc_ok: bool = _has_undercroft()
 	var mn_ok: bool = _has_manor()
-	var toll_live: bool = ResourceLoader.exists("res://luxel/islands/1/toll_r1.map") or FileAccess.file_exists("res://luxel/islands/1/toll_r1.map")
+	var toll_live: bool = _is_dungeon_live("great_toll")
 	var toll_ok: bool = (not toll_live) or _has_toll()
 	if uc_ok and mn_ok and toll_ok:
 		return true

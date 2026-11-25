@@ -1,0 +1,418 @@
+{
+  "id": "trial_comet_range",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "name_key": "I5_TRIAL_COMET",
+  "music": "isl5_meteor",
+  "spawn": [
+    400,
+    144
+  ],
+  "exits": [
+    {
+      "id": "ex_comet_out",
+      "rect": [
+        432,
+        128,
+        16,
+        32
+      ],
+      "to_island": 5,
+      "to_region": "ow_meteor_apron",
+      "to_spawn": [
+        64,
+        200
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_tr_comet",
+      "kind": "room_anchor",
+      "pos": [
+        400,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_tr_comet",
+      "kind": "lore_stone",
+      "pos": [
+        376,
+        200
+      ],
+      "props": {
+        "string_id": "I5_OW_TRIAL_COMET",
+        "icon": "toy_gravity",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "tg_comet",
+      "kind": "trial_gate",
+      "pos": [
+        368,
+        144
+      ],
+      "props": {
+        "challenge": "comet_range",
+        "once": false,
+        "shoot_to_start": true
+      }
+    },
+    {
+      "id": "well_tr_n",
+      "kind": "polarity_well",
+      "pos": [
+        240,
+        88
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 82.0,
+        "strength": 620.0
+      }
+    },
+    {
+      "id": "well_tr_s",
+      "kind": "polarity_well",
+      "pos": [
+        200,
+        176
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 82.0,
+        "strength": 620.0
+      }
+    },
+    {
+      "id": "trans_tr_s",
+      "kind": "blue_transformer",
+      "pos": [
+        256,
+        232
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "eye_tr_1",
+      "kind": "switch_eye",
+      "pos": [
+        168,
+        64
+      ],
+      "props": {
+        "target_id": "gate_tr_comet"
+      }
+    },
+    {
+      "id": "eye_tr_2",
+      "kind": "switch_eye",
+      "pos": [
+        192,
+        128
+      ],
+      "props": {
+        "target_id": "gate_tr_comet"
+      }
+    },
+    {
+      "id": "eye_tr_3",
+      "kind": "switch_eye",
+      "pos": [
+        128,
+        208
+      ],
+      "props": {
+        "target_id": "gate_tr_comet"
+      }
+    },
+    {
+      "id": "gate_tr_comet",
+      "kind": "logic_gate",
+      "pos": [
+        328,
+        96
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "eye_tr_1",
+          "eye_tr_2",
+          "eye_tr_3"
+        ],
+        "target_id": "door_tr_comet_prize",
+        "sets_flag": "trial_comet_done"
+      }
+    },
+    {
+      "id": "door_tr_comet_prize",
+      "kind": "door",
+      "pos": [
+        368,
+        64
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          64,
+          16
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "gate_tr_comet"
+        ]
+      }
+    },
+    {
+      "id": "pickup_comet_tail",
+      "kind": "pane_pickup",
+      "pos": [
+        368,
+        48
+      ],
+      "props": {
+        "pane": "comet_tail"
+      }
+    },
+    {
+      "id": "lamp_trc_1",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_trc_2",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_trc_3",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_trc_4",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_tr_comet_win",
+      "on": "flag:trial_comet_done",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "medal:trial_comet_range"
+        },
+        {
+          "sfx": "shrine_unlock"
+        },
+        {
+          "narrate": "I5_OW_GRAV_DONE"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        320,
+        104
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        320,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "brass_caliper_stand",
+      "pos": [
+        416,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        416,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        336,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Orbital trick-shot range behind an L-shaped brass grate: curve manual bolts through twin gravity wells around three solid baffles to ring all three shielded targets and claim the Comet Tail pane.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Precision multi-angle curved orbital archery around baffles",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "pane:comet_tail, medal:trial_comet_range",
+    "why": "Optional mastery trial off ow_meteor_apron rewarding Island 5's Trial Pane.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        400,
+        144
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          304,
+          88
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": [
+          208,
+          40
+        ],
+        "wait_hit": 0.75
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_tr_1",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          136
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": [
+          224,
+          80
+        ],
+        "wait_hit": 0.75
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_tr_2",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          224
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": [
+          160,
+          160
+        ],
+        "wait_hit": 0.75
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_tr_3",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          48
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "pickup_comet_tail"
+      }
+    ]
+  }
+}

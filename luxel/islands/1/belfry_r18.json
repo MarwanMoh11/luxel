@@ -1,0 +1,354 @@
+{
+  "id": "belfry_r18",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_BF_CARILLON",
+  "music": "island1_dungeon",
+  "spawn": [
+    48,
+    160
+  ],
+  "zones": [
+    {
+      "id": "belfry_carillon",
+      "name_key": "ISL1_BF_CARILLON",
+      "rect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r18_west",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "belfry_r16",
+      "to_spawn": [
+        400,
+        160
+      ]
+    },
+    {
+      "id": "exit_r18_nw",
+      "rect": [
+        0,
+        80,
+        16,
+        32
+      ],
+      "to_region": "belfry_r17",
+      "to_spawn": [
+        368,
+        128
+      ]
+    },
+    {
+      "id": "exit_r18_south",
+      "rect": [
+        336,
+        240,
+        32,
+        16
+      ],
+      "to_region": "belfry_r6",
+      "to_spawn": [
+        352,
+        48
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_belfry_upper",
+      "kind": "waystone",
+      "pos": [
+        208,
+        144
+      ],
+      "props": {
+        "zone": "belfry_carillon",
+        "name_key": "ISL1_BF_CARILLON"
+      }
+    },
+    {
+      "id": "lore_r18_keeper",
+      "kind": "lore_stone",
+      "pos": [
+        312,
+        112
+      ],
+      "props": {
+        "string_id": "ISL1_LORE_KEEPER",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "bell_r18_dawn",
+      "kind": "bell",
+      "pos": [
+        128,
+        96
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 144,
+        "target_id": "gate_r18_chord"
+      }
+    },
+    {
+      "id": "bell_r18_dusk",
+      "kind": "bell",
+      "pos": [
+        192,
+        96
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 144,
+        "target_id": "gate_r18_chord"
+      }
+    },
+    {
+      "id": "bell_r18_war",
+      "kind": "bell",
+      "pos": [
+        256,
+        96
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 144,
+        "target_id": "gate_r18_chord"
+      }
+    },
+    {
+      "id": "gate_r18_chord",
+      "kind": "logic_gate",
+      "pos": [
+        208,
+        64
+      ],
+      "props": {
+        "op": "seq",
+        "inputs": [
+          "bell_r18_dawn",
+          "bell_r18_dusk",
+          "bell_r18_war"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_r18_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        144
+      ],
+      "props": {
+        "zone": "belfry_carillon",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r18_c",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        184
+      ],
+      "props": {
+        "zone": "belfry_carillon",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r18_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        176
+      ],
+      "props": {
+        "zone": "belfry_carillon",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        144
+      ],
+      "radius": 44,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        208,
+        104
+      ],
+      "size": [
+        72,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.0
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "wind_chime_rack",
+      "pos": [
+        160,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "wind_chime_rack",
+      "pos": [
+        256,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        96,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        160,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        360,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r18_chord",
+      "on": "signal:gate_r18_chord",
+      "once": true,
+      "do": [
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 25
+          }
+        },
+        {
+          "set_flag": "belfry_upper_ws"
+        },
+        {
+          "narrate": {
+            "id": "ISL1_BF_CARILLON_CHIME",
+            "style": "title",
+            "duration": 2.8
+          }
+        }
+      ]
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Serene crescent open-air Carillon Balcony: tension-release vista before the Spire Crown with an upper waystone (<8s boss retry), Lore Stone revealing why the Bellkeeper rang Dusk forever, and a 3-Tone Practice Rack (Dawn->Dusk->War = +25 shards) previewing the final boss's 3 rim bells.",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Previews the 3-tone Rim Bell counter cadence of the Grand Bellkeeper fight in a calm vista.",
+    "decisions": 6,
+    "expert_s": 35,
+    "reward": "belfry_upper_ws+carillon_preview",
+    "why": "Essential pre-boss rest/vista beat and upper waystone dropping straight onto belfry_r6.",
+    "optional": true,
+    "exit": "exit_r18_south",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_belfry_upper"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r18_keeper"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          136
+        ],
+        "target": "bell_r18_dawn"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          192,
+          136
+        ],
+        "target": "bell_r18_dusk"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          256,
+          136
+        ],
+        "target": "bell_r18_war"
+      },
+      {
+        "op": "expect",
+        "flag": "belfry_upper_ws"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r18_south"
+      }
+    ]
+  }
+}

@@ -15,6 +15,16 @@ const REQUIRED_BEACONS: Array[String] = [
 
 const REGIONS: Array[String] = [
 	"overworld",
+	"ow_rail_yard",
+	"ow_giant_stride",
+	"ow_slag_basin",
+	"ow_cinder_overlook",
+	"cave_temper_foundry",
+	"cave_slag_sluice",
+	"cave_magnet_vault",
+	"cave_bellows_trial",
+	"cave_sunflare_crypt",
+	"superboss_first_forge",
 	"kiln_r1",
 	"kiln_r2",
 	"kiln_r3",
@@ -27,10 +37,26 @@ const REGIONS: Array[String] = [
 	"kiln_r10",
 ]
 
+const MOTION_REGIONS: Array[String] = [
+	"overworld",
+	"ow_rail_yard",
+	"ow_giant_stride",
+	"ow_slag_basin",
+	"ow_cinder_overlook",
+]
+
+const SEAL_DUNGEON_FLAGS: Array[String] = [
+	"express_cleared",
+	"colossus_cleared",
+	"crash_done",
+]
+
 var _events: LxEventBus = null
 var _state: LxGameState = null
 var _attached: bool = false
 var _rule: LxIsland6Rule = null
+var _motion_fx: LxIsland6MotionFx = null
+var _vars_bound: LxWorldState = null
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -48,11 +74,16 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.boss_phase_changed.connect(_on_boss_phase_changed)
 	_events.boss_defeated.connect(_on_boss_defeated)
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
+	_bind_vars()
 	_rule = LxIsland6Rule.new()
 	_rule.attach(_events, _state)
 
 
 func detach() -> void:
+	_clear_motion_fx()
+	if _vars_bound != null and _vars_bound.var_changed.is_connected(_on_var_changed):
+		_vars_bound.var_changed.disconnect(_on_var_changed)
+	_vars_bound = null
 	if _rule != null:
 		_rule.detach()
 		_rule = null
@@ -77,8 +108,101 @@ func detach() -> void:
 
 
 func on_region_loaded(region_id: String) -> void:
+	_bind_vars()
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
+	_sync_overworld_gate(region_id)
+	_mount_motion_fx(region_id)
+	_apply_spark_shrine_bonus(region_id)
+
+
+func _bind_vars() -> void:
+	if Lx.vars == null or _vars_bound == Lx.vars:
+		return
+	if _vars_bound != null and _vars_bound.var_changed.is_connected(_on_var_changed):
+		_vars_bound.var_changed.disconnect(_on_var_changed)
+	_vars_bound = Lx.vars
+	if not _vars_bound.var_changed.is_connected(_on_var_changed):
+		_vars_bound.var_changed.connect(_on_var_changed)
+
+
+func _on_var_changed(_scope: String, var_name: String, value: Variant) -> void:
+	if var_name == "kiln_shift" and _motion_fx != null and is_instance_valid(_motion_fx):
+		_motion_fx.trigger_shift(str(value).strip_edges().to_lower())
+
+
+func _clear_motion_fx() -> void:
+	if _motion_fx != null and is_instance_valid(_motion_fx):
+		_motion_fx.queue_free()
+	_motion_fx = null
+
+
+func _mount_motion_fx(region_id: String) -> void:
+	_clear_motion_fx()
+	if region_id not in MOTION_REGIONS:
+		return
+	if Lx.world == null or not is_instance_valid(Lx.world):
+		return
+	var b: Rect2 = Lx.world.get("bounds") as Rect2 if Lx.world.get("bounds") is Rect2 else Rect2(0, 0, 768, 512)
+	var st: LxGameState = _get_state()
+	var is_relit: bool = st != null and (st.relit_islands.has(ISLAND_ID) or bool(st.story_flags.get("island_6_relit", false)) or bool(st.story_flags.get("great_lamp_6", false)))
+	_motion_fx = LxIsland6MotionFx.new()
+	_motion_fx.name = "Island6WorldMotionFx"
+	_motion_fx.setup(region_id, b, LxIsland6Rule.get_kiln_shift(), is_relit)
+	Lx.world.add_child(_motion_fx)
+
+
+func _are_epic_dungeons_wired() -> bool:
+	return FileAccess.file_exists("res://luxel/islands/6/train_r1.map") \
+		and FileAccess.file_exists("res://luxel/islands/6/colossus_r1.map") \
+		and FileAccess.file_exists("res://luxel/islands/6/crash_r1.map") \
+		and (Lx.packs == null or not bool(Lx.packs.region_meta(ISLAND_ID, "train_r1").get("debug_only", false)))
+
+
+func _legacy_passed_kiln_seal(st: LxGameState) -> bool:
+	if st == null:
+		return false
+	return st.opened_doors.has("door_dungeon_6") \
+		or st.broken_seals.has(SEAL_ID) \
+		or st.broken_seals.has("door_dungeon_6") \
+		or bool(st.story_flags.get("isl6_kiln_entered", false))
+
+
+func _sync_overworld_gate(region_id: String) -> void:
+	if region_id != "overworld" or Lx.world == null or not is_instance_valid(Lx.world):
+		return
+	var st: LxGameState = _get_state()
+	if _legacy_passed_kiln_seal(st):
+		if st != null and not st.opened_doors.has("door_dungeon_6"):
+			st.opened_doors.append("door_dungeon_6")
+		return
+	if not _are_epic_dungeons_wired():
+		return
+	# Once Ember Express, Iron Colossus, and Iron Collision are all live, enforce full 6-flag seal
+	if Lx.world.has_method("find_interactable"):
+		var door_v: Variant = Lx.world.call("find_interactable", "door_dungeon_6")
+		if door_v is LxDoor:
+			var d: LxDoor = door_v as LxDoor
+			for fl: String in SEAL_DUNGEON_FLAGS:
+				if not d.required_flags.has(fl):
+					d.required_flags.append(fl)
+
+
+func _apply_spark_shrine_bonus(region_id: String) -> void:
+	if region_id not in ["overworld", "ow_rail_yard"]:
+		return
+	var st: LxGameState = _get_state()
+	if st == null or not bool(st.story_flags.get("quest:q6_spark_hide:done", false)):
+		return
+	if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.get("ember") != null:
+		var emax: float = st.get_effective_ember_max()
+		var cur: float = float(Lx.player.get("ember"))
+		var floor_e: float = emax * 0.30
+		if cur < floor_e:
+			Lx.player.set("ember", floor_e)
+			if not bool(st.story_flags.get("isl6_shrine_boost_shown", false)):
+				st.story_flags["isl6_shrine_boost_shown"] = true
+				_emit_narration("ISL6_SHRINE_BOOST", "narration", 2.6)
 
 
 func get_region_list() -> PackedStringArray:
@@ -272,7 +396,18 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("ISL6_ARRIVAL", "narration", 4.0)
 			if _events != null:
 				_events.sfx_requested.emit("forge_gust", Vector2.ZERO, false)
+				_events.shake_requested.emit(0.05)
 		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id in ["ow_rail_yard", "ow_giant_stride", "ow_slag_basin", "ow_cinder_overlook"]:
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id == "superboss_first_forge":
+		if st != null and not st.defeated_bosses.has("first_forge") and not bool(st.story_flags.get("first_forge_defeated", false)):
+			_emit_narration("ISL6_BOSS_FIRST", "title", 3.5)
+			if _events != null:
+				_events.music_mode_requested.emit("superboss_a")
+		elif _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "kiln_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
@@ -317,7 +452,18 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
 	if are_all_beacons_lit():
-		_trigger_seal_shatter()
+		if not _are_epic_dungeons_wired() or _are_epic_seal_flags_met():
+			_trigger_seal_shatter()
+
+
+func _are_epic_seal_flags_met() -> bool:
+	var st: LxGameState = _get_state()
+	if st == null:
+		return false
+	for fl: String in SEAL_DUNGEON_FLAGS:
+		if not bool(st.story_flags.get(fl, false)):
+			return false
+	return true
 
 
 func _trigger_seal_shatter() -> void:
@@ -371,6 +517,16 @@ func _on_boss_defeated(boss_id: String, island_id: int) -> void:
 			st.story_flags["defeated_" + MINI_BOSS_KIND] = true
 			st.story_flags[MINI_BOSS_KIND + "_defeated"] = true
 		return
+	if boss_id == "first_forge":
+		if st != null:
+			if not st.defeated_bosses.has("first_forge"):
+				st.defeated_bosses.append("first_forge")
+			st.story_flags["first_forge_defeated"] = true
+		if _events != null:
+			_events.sfx_requested.emit("boss_victory", Vector2.ZERO, false)
+			_events.music_mode_requested.emit("explore")
+			_events.save_requested.emit("first_forge_defeated")
+		return
 	if boss_id != BOSS_ID:
 		return
 	if st != null:
@@ -392,6 +548,8 @@ func _on_great_lamp_relit(island_id: int) -> void:
 			st.relit_islands.append(ISLAND_ID)
 		st.story_flags["great_lamp_6"] = true
 		st.story_flags["island_6_relit"] = true
+	if _motion_fx != null and is_instance_valid(_motion_fx):
+		_motion_fx.set_relit(true)
 	if _events != null:
 		_events.sfx_requested.emit("lamp_relit", Vector2.ZERO, false)
 		_events.music_mode_requested.emit("explore")

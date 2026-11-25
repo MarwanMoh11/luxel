@@ -91,9 +91,9 @@
       ],
       "props": {
         "dir": "w",
-        "speed": 48.0,
+        "speed": 36.0,
         "size": [
-          112,
+          80,
           32
         ]
       }
@@ -141,8 +141,8 @@
       "id": "gate_r3_dampers",
       "kind": "logic_gate",
       "pos": [
-        424,
-        64
+        384,
+        72
       ],
       "props": {
         "op": "all",
@@ -189,8 +189,8 @@
       "id": "lamp_r3_mid",
       "kind": "road_lamp",
       "pos": [
-        232,
-        64
+        184,
+        72
       ],
       "props": {
         "zone": "tr_r3",
@@ -202,7 +202,7 @@
       "kind": "road_lamp",
       "pos": [
         368,
-        64
+        72
       ],
       "props": {
         "zone": "tr_r3",
@@ -213,8 +213,8 @@
       "id": "lamp_r3_se",
       "kind": "road_lamp",
       "pos": [
-        368,
-        192
+        344,
+        184
       ],
       "props": {
         "zone": "tr_r3",
@@ -227,7 +227,7 @@
       "id": "en_r3_stoker_1",
       "kind": "stoker",
       "pos": [
-        216,
+        184,
         80
       ],
       "zone": "tr_r3"
@@ -245,8 +245,8 @@
       "id": "en_r3_stoker_2",
       "kind": "stoker",
       "pos": [
-        344,
-        152
+        328,
+        168
       ],
       "zone": "tr_r3"
     }
@@ -256,14 +256,14 @@
       "kind": "window_strip",
       "y": 4,
       "x0": 32,
-      "x1": 128,
+      "x1": 120,
       "style": "slag"
     },
     {
       "kind": "window_strip",
       "y": 4,
-      "x0": 340,
-      "x1": 436,
+      "x0": 320,
+      "x1": 388,
       "style": "slag"
     },
     {
@@ -279,10 +279,10 @@
     {
       "kind": "stain",
       "pos": [
-        152,
-        176
+        208,
+        184
       ],
-      "radius": 28,
+      "radius": 24,
       "style": "soot"
     },
     {
@@ -309,8 +309,8 @@
       "sheet": "theme_ember_express",
       "prop": "coal_bucket_crate",
       "pos": [
-        48,
-        208
+        224,
+        212
       ],
       "layer": "sort",
       "flip_x": false,
@@ -321,7 +321,7 @@
       "sheet": "theme_ember_express",
       "prop": "coal_bucket_crate",
       "pos": [
-        72,
+        252,
         212
       ],
       "layer": "sort",
@@ -345,7 +345,7 @@
       "sheet": "theme_ember_express",
       "prop": "steam_pipe_column",
       "pos": [
-        144,
+        128,
         64
       ],
       "layer": "sort",
@@ -358,7 +358,7 @@
       "prop": "steam_pipe_column",
       "pos": [
         336,
-        200
+        196
       ],
       "layer": "sort",
       "flip_x": true,
@@ -370,7 +370,7 @@
       "prop": "carriage_wall_lamp",
       "pos": [
         240,
-        56
+        72
       ],
       "layer": "sort",
       "flip_x": false,
@@ -404,12 +404,16 @@
     "exit": "exit_r3_east",
     "solution": [
       {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
         "op": "goto",
         "to": [
           88,
-          88
+          80
         ],
-        "tol": 6.0
+        "tol": 3.0
       },
       {
         "op": "interact",
@@ -418,10 +422,6 @@
       {
         "op": "expect",
         "var": "wick_temper==scatter"
-      },
-      {
-        "op": "clear",
-        "timeout": 45.0
       },
       {
         "op": "goto",

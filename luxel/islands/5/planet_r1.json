@@ -1,0 +1,706 @@
+{
+  "id": "planet_r1",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R1",
+  "spawn": [
+    240,
+    296
+  ],
+  "zones": [
+    {
+      "id": "pl_r1",
+      "name_key": "I5_PL_R1",
+      "rect": [
+        0,
+        0,
+        480,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r1_ow",
+      "rect": [
+        224,
+        336,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_dome_causeway",
+      "to_spawn": [
+        304,
+        328
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_pl_r1_w",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_region": "planet_r2",
+      "to_spawn": [
+        336,
+        192
+      ],
+      "locked_door_id": "door_pl_r1_west"
+    },
+    {
+      "id": "exit_pl_r1_nw_short",
+      "rect": [
+        0,
+        80,
+        16,
+        32
+      ],
+      "to_region": "planet_r3",
+      "to_spawn": [
+        392,
+        208
+      ],
+      "requires_flags": [
+        "pl_r3_short"
+      ],
+      "locked_door_id": "door_pl_r1_short_w"
+    },
+    {
+      "id": "exit_pl_r1_e",
+      "rect": [
+        464,
+        208,
+        16,
+        48
+      ],
+      "to_region": "planet_r4",
+      "to_spawn": [
+        56,
+        160
+      ],
+      "locked_door_id": "door_pl_r1_k1"
+    },
+    {
+      "id": "exit_pl_r1_ne_short",
+      "rect": [
+        464,
+        80,
+        16,
+        32
+      ],
+      "to_region": "planet_r6",
+      "to_spawn": [
+        56,
+        160
+      ],
+      "requires_flags": [
+        "pl_miniboss_done"
+      ],
+      "locked_door_id": "door_pl_r1_short_e"
+    },
+    {
+      "id": "exit_pl_r1_r9_short",
+      "rect": [
+        336,
+        0,
+        32,
+        16
+      ],
+      "to_region": "planet_r9",
+      "to_spawn": [
+        256,
+        296
+      ],
+      "requires_flags": [
+        "pl_r9_short"
+      ],
+      "locked_door_id": "door_pl_r1_short_r9"
+    },
+    {
+      "id": "exit_pl_r1_n",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "planet_r10",
+      "to_spawn": [
+        240,
+        240
+      ],
+      "locked_door_id": "door_pl_r1_boss"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r1",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        296
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_planetarium",
+      "kind": "waystone",
+      "pos": [
+        240,
+        280
+      ],
+      "props": {
+        "zone": "pl_r1",
+        "name_key": "I5_PL_R1"
+      }
+    },
+    {
+      "id": "lore_pl_r1_hub",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        280
+      ],
+      "props": {
+        "string_id": "I5_PL_LORE_HUB",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "sn_r1_s1",
+      "kind": "star_node",
+      "pos": [
+        224,
+        244
+      ],
+      "props": {
+        "links": [
+          "sn_r1_s2"
+        ],
+        "pinned": true
+      }
+    },
+    {
+      "id": "sn_r1_s2",
+      "kind": "star_node",
+      "pos": [
+        256,
+        256
+      ],
+      "props": {
+        "links": [
+          "sn_r1_s1"
+        ],
+        "pinned": true
+      }
+    },
+    {
+      "id": "rotor_pl_r1",
+      "kind": "rotor",
+      "pos": [
+        240,
+        184
+      ],
+      "props": {
+        "size": [
+          96,
+          96
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_pl_r1",
+      "kind": "star_bell",
+      "pos": [
+        240,
+        168
+      ],
+      "props": {
+        "scope": "dungeon:planetarium",
+        "var_name": "sky_turn",
+        "rotors": [
+          "rotor_pl_r1"
+        ],
+        "allow_ccw_blue": true,
+        "cooldown": 0.6,
+        "target_id": "door_pl_r1_west"
+      }
+    },
+    {
+      "id": "door_pl_r1_west",
+      "kind": "door",
+      "pos": [
+        24,
+        232
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "bell_pl_r1"
+        ],
+        "sets_flag": "pl_r1_west_open",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_pl_r1_short_w",
+      "kind": "door",
+      "pos": [
+        24,
+        96
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "pl_r3_short"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_pl_r1_k1",
+      "kind": "door",
+      "pos": [
+        456,
+        232
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "planetarium",
+        "key_kind": "wick_key",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_pl_r1_short_e",
+      "kind": "door",
+      "pos": [
+        456,
+        96
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "pl_miniboss_done"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_pl_r1_short_r9",
+      "kind": "door",
+      "pos": [
+        352,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "pl_r9_short"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_pl_r1_boss",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_key",
+        "dungeon_id": "planetarium",
+        "key_kind": "keepers_flame",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_pl_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        304
+      ],
+      "props": {
+        "zone": "pl_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r1_se",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        304
+      ],
+      "props": {
+        "zone": "pl_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        208
+      ],
+      "props": {
+        "zone": "pl_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        208
+      ],
+      "props": {
+        "zone": "pl_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        72
+      ],
+      "props": {
+        "zone": "pl_r1",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        288
+      ],
+      "radius": 22
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        184
+      ],
+      "radius": 44,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "mural",
+      "pos": [
+        240,
+        64
+      ],
+      "radius": 20,
+      "style": "constellation"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        120
+      ],
+      "size": [
+        52,
+        68
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        88,
+        176
+      ],
+      "size": [
+        40,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        240,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        240,
+        184
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        192,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        288,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        120,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        392,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "star_chart_lectern",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "celestial_bench",
+      "pos": [
+        392,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        112,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "sky_90",
+      "when": "sky_turn==90",
+      "tiles": [
+        [
+          9,
+          12,
+          3,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "sky_180",
+      "when": "sky_turn==180",
+      "tiles": [
+        [
+          18,
+          12,
+          4,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "sky_270",
+      "when": "sky_turn==270",
+      "tiles": [
+        [
+          13,
+          6,
+          4,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "pl_r1_entered",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "pl_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Pitch-dark rotating Planetarium dome hub teasing the N Boss Door, E Key-1 door, and 3 shortcut balconies; shoot twin star nodes to bridge onto the central rotor and ring the Star Bell 90 degrees to swing the West Star-Bridge and unlock the West Wing.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Lighting star_nodes as solid void bridges and ringing the Star Bell to rotate the dome 90 degrees.",
+    "decisions": 4,
+    "expert_s": 48,
+    "reward": "waystone+west_wing_access",
+    "why": "Central rotating hub of The Planetarium anchoring all four shortcut cycles and teaching stars + turning sky.",
+    "exit": "exit_pl_r1_w",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_planetarium"
+      },
+      {
+        "op": "interact",
+        "target": "lore_pl_r1_hub"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          280
+        ],
+        "target": "sn_r1_s1",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          280
+        ],
+        "target": "sn_r1_s2",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          196
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_pl_r1"
+      },
+      {
+        "op": "expect",
+        "var": "sky_turn==90"
+      },
+      {
+        "op": "wait",
+        "secs": 0.6
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_pl_r1_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r1_w"
+      }
+    ]
+  }
+}

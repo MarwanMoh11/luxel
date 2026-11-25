@@ -1,0 +1,296 @@
+{
+  "id": "dream_r1",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "name_key": "I5_DR_R1",
+  "music": "isl5_meteor",
+  "spawn": [
+    208,
+    240
+  ],
+  "exits": [
+    {
+      "id": "ex_dr1_out",
+      "rect": [
+        192,
+        272,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_starfall_cliff",
+      "to_spawn": [
+        128,
+        96
+      ]
+    },
+    {
+      "id": "ex_dr1_next",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "dream_r2",
+      "to_spawn": [
+        144,
+        240
+      ],
+      "locked_door_id": "door_dr1_next",
+      "one_way": true
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_dr1",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_dr1",
+      "kind": "polarity_well",
+      "pos": [
+        208,
+        144
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 500.0
+      }
+    },
+    {
+      "id": "door_dr1_next",
+      "kind": "door",
+      "pos": [
+        272,
+        32
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          48,
+          16
+        ],
+        "clear_zone": "dream_r1"
+      }
+    },
+    {
+      "id": "lamp_dr1_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        240
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr1_n",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr1_w",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr1_e",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        176
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_dr1_h1",
+      "kind": "comet_hound",
+      "pos": [
+        168,
+        80
+      ],
+      "route": [
+        [
+          144,
+          80
+        ],
+        [
+          208,
+          80
+        ]
+      ],
+      "zone": "dream_r1",
+      "leash": 160
+    },
+    {
+      "id": "en_dr1_h2",
+      "kind": "comet_hound",
+      "pos": [
+        320,
+        160
+      ],
+      "route": [
+        [
+          296,
+          160
+        ],
+        [
+          344,
+          192
+        ]
+      ],
+      "zone": "dream_r1",
+      "leash": 160
+    },
+    {
+      "id": "en_dr1_eye",
+      "kind": "satellite_eye",
+      "pos": [
+        232,
+        104
+      ],
+      "route": [
+        [
+          200,
+          104
+        ],
+        [
+          264,
+          104
+        ]
+      ],
+      "zone": "dream_r1",
+      "leash": 160
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_dr1_ok",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "dream_r1_ok"
+        },
+        {
+          "sfx": "door_open"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        208,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        240,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        344,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        256,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Dream Telescope Floor 1 (Elliptical Hunt): curve bolts through the central polarity well to shatter an orbiting Satellite Eye while using asymmetric piers to stagger two Comet Hounds.",
+    "kind": "combat",
+    "beat": "ki",
+    "teaches": "Orbital combat spacing around a central polarity well",
+    "decisions": 4,
+    "expert_s": 42,
+    "reward": "Unlocks Dream Telescope Floor 2",
+    "why": "Dream Telescope Floor 1 warm-up gauntlet.",
+    "exit": "ex_dr1_next",
+    "start": {
+      "spawn": [
+        208,
+        240
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "ex_dr1_next"
+      }
+    ]
+  }
+}

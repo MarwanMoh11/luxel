@@ -62,10 +62,10 @@
         32,
         32
       ],
-      "to_region": "sanctum_r1",
+      "to_region": "sanctum_forecourt",
       "to_spawn": [
-        144,
-        248
+        304,
+        368
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -74,6 +74,78 @@
         "beacon_8_3"
       ],
       "locked_door_id": "door_dungeon_8"
+    },
+    {
+      "id": "exit_to_vigil_terrace",
+      "rect": [
+        512,
+        1072,
+        32,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "vigil_terrace",
+      "to_spawn": [
+        64,
+        224
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_to_toll_causeway",
+      "rect": [
+        0,
+        784,
+        32,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "toll_causeway",
+      "to_spawn": [
+        616,
+        224
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_ow_west"
+    },
+    {
+      "id": "exit_to_archive_cloister",
+      "rect": [
+        736,
+        496,
+        32,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "archive_cloister",
+      "to_spawn": [
+        48,
+        224
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_ow_east"
+    },
+    {
+      "id": "exit_to_stair_landing",
+      "rect": [
+        160,
+        208,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_landing",
+      "to_spawn": [
+        288,
+        368
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_ow_nw"
     }
   ],
   "enemies": [
@@ -631,6 +703,94 @@
       ],
       "props": {
         "zone": "gauntlet_mire"
+      }
+    },
+    {
+      "id": "toll_ow_west",
+      "kind": "toll_scale",
+      "pos": [
+        120,
+        840
+      ],
+      "props": {
+        "mode": "gate",
+        "min_weight": 1,
+        "target_id": "door_ow_west",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_ow_west",
+      "kind": "toll_gate",
+      "pos": [
+        40,
+        808
+      ],
+      "props": {
+        "min_weight": 1,
+        "size": [
+          16,
+          48
+        ],
+        "allow_direct_pay": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "door_ow_east",
+      "kind": "toll_gate",
+      "pos": [
+        696,
+        520
+      ],
+      "props": {
+        "min_weight": 1,
+        "size": [
+          16,
+          48
+        ],
+        "allow_direct_pay": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "door_ow_nw",
+      "kind": "toll_gate",
+      "pos": [
+        176,
+        232
+      ],
+      "props": {
+        "min_weight": 1,
+        "size": [
+          32,
+          16
+        ],
+        "allow_direct_pay": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "moth_8_01",
+      "kind": "moth",
+      "pos": [
+        76,
+        252
+      ],
+      "props": {
+        "id": "moth_8_01"
+      }
+    },
+    {
+      "id": "lamp_8_vigil_dock",
+      "kind": "road_lamp",
+      "pos": [
+        488,
+        1088
+      ],
+      "props": {
+        "lit": true,
+        "zone": "dark_hub"
       }
     }
   ],
@@ -1606,5 +1766,16 @@
       "shadow": true,
       "phase": 0.9
     }
-  ]
+  ],
+  "design": {
+    "idea": "Island 8 star-abyss 5-islet spine with 3 eclipse beacons and 4 perimeter branches to Vigil Terrace, Toll Causeway, Archive Cloister, Stair Landing, and Sanctum Forecourt.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "8-move Island 8 gauntlets + perimeter wing branching",
+    "decisions": 6,
+    "expert_s": 135,
+    "reward": "seal_broken_8+moth_8_01",
+    "why": "Preserves approved Island 8 overworld silhouette while linking all Epic expansion wings.",
+    "optional": true
+  }
 }

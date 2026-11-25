@@ -16,12 +16,12 @@ const FRONT_GUARD_HALF: float = 1.08
 const SPEAR_COMMIT_TIME: float = 0.26
 const MIRROR_COMMIT_TIME: float = 0.22
 const SPEAR_RANGE: float = 104.0
-const SPEAR_LUNGE_SPEED: float = 248.0
-const SPEAR_ARC_R: float = 38.0
-const SPEAR_HALF_ARC: float = 1.05
-const MIRROR_RANGE: float = 96.0
-const MIRROR_HALF_W: float = 12.0
-const BLINK_DIST: float = 28.0
+const SPEAR_LUNGE_SPEED: float = 200.0
+const SPEAR_ARC_R: float = 28.0
+const SPEAR_HALF_ARC: float = 0.95
+const MIRROR_RANGE: float = 92.0
+const MIRROR_HALF_W: float = 10.0
+const BLINK_DIST: float = 26.0
 const GUARD_CRACK_STAGGER_P1: float = 1.35
 const GUARD_CRACK_STAGGER_P2: float = 1.80
 const GUARD_CRACK_MULT: float = 1.45
@@ -62,14 +62,14 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island7_boss_p1"
 	music_p2_cue = "island7_boss_p2"
-	max_hp = 152.0
-	hp = 152.0
+	max_hp = 290.0
+	hp = 290.0
 	body_radius = 7.5
-	move_speed = 44.0
-	stagger_threshold = 20.0
+	move_speed = 38.0
+	stagger_threshold = 24.0
 	stagger_duration = 1.75
-	punish_dmg_mult = 1.30
-	post_recover_cd = 0.28
+	punish_dmg_mult = 1.25
+	post_recover_cd = 0.42
 	intro_duration = 0.45
 	phase_shift_duration = 0.62
 	death_duration = 1.8
@@ -78,7 +78,7 @@ func _init() -> void:
 
 func _configure_boss(spec: Dictionary) -> void:
 	# Override legacy spire_r6.json max_hp=7.5 with tuned Epic LxBossBase HP
-	var base_hp: float = 152.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	var base_hp: float = 290.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	max_hp = base_hp
 	hp = base_hp
 	kind = "spire_warden"
@@ -88,25 +88,25 @@ func _configure_boss(spec: Dictionary) -> void:
 
 	# Attack 1: Lunar Arc — prismatic halberd sweep + sky/ice crescent fan
 	register_attack("lunar_arc", {
-		"weight": 1.25, "tell": 0.48, "commit": 0.28, "recover": 1.05, "cooldown": 1.3,
+		"weight": 1.25, "tell": 0.50, "commit": 0.28, "recover": 1.10, "cooldown": 1.4,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			spear_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = spear_dir.angle()
-			ground.warn_sector(pos, facing - 1.15, facing + 1.15, 48.0, last_tell_duration, 1.0, "sky", "ice")
-			ground.warn_lane(pos, clamp_to_arena(pos + spear_dir * 165.0), 9.0, last_tell_duration, 0.0, "rose", "ice")
+			ground.warn_sector(pos, facing - 1.05, facing + 1.05, 40.0, last_tell_duration, 0.0, "sky", "ice")
+			ground.warn_lane(pos, clamp_to_arena(pos + spear_dir * 165.0), 8.0, last_tell_duration, 0.0, "rose", "ice")
 			stage.play_sfx("moonshade_feint", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			var cnt: int = 5 if phase >= 2 else 4
-			patterns.emit_fan(pos, spear_dir, cnt, 0.78, 144.0 if phase >= 2 else 130.0, {"color": "ice", "source": "spire_lunar_arc", "reflectable": true})
+			var cnt: int = 4 if phase >= 2 else 3
+			patterns.emit_fan(pos, spear_dir, cnt, 0.76, 114.0 if phase >= 2 else 104.0, {"color": "ice", "source": "spire_lunar_arc", "reflectable": true})
 			stage.shake(0.14)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
-			move_boss(spear_dir * 74.0 * dt, false),
+			move_boss(spear_dir * 58.0 * dt, false),
 	})
 
 	# Attack 2: Prismatic Spear Lunge — lateral blink-feint + lunge + P2 Silver Blink-Ghost lane & 0.50s horror linger!
 	register_attack("prismatic_spear_lunge", {
-		"weight": 1.35, "tell": 0.56, "commit": 0.48, "recover": 1.08, "cooldown": 1.5,
+		"weight": 1.35, "tell": 0.56, "commit": 0.48, "recover": 1.15, "cooldown": 1.6,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			feint_done = false
 			feint_side = -feint_side
@@ -128,7 +128,7 @@ func _configure_boss(spec: Dictionary) -> void:
 				if silver_ghost_active or _is_spire_black():
 					ground.warn_lane(mirror_pos, clamp_to_arena(mirror_pos + mirror_dir * MIRROR_RANGE), MIRROR_HALF_W, maxf(0.45, state_timer + SPEAR_COMMIT_TIME), 0.0, "sky", "ice")
 			if state_timer > 0.16:
-				_face_point(tgt, 4.2, dt)
+				_face_point(tgt, 4.0, dt)
 				spear_dir = Vector2.from_angle(facing)
 				if tgt.distance_to(mirror_pos) > 1.0:
 					mirror_dir = (tgt - mirror_pos).normalized(),
@@ -139,37 +139,34 @@ func _configure_boss(spec: Dictionary) -> void:
 			_mirror_fired = false
 			_mirror_hit = false
 			spear_dir = Vector2.from_angle(facing)
-			patterns.emit_fan(pos, spear_dir, 3, 0.42, 146.0, {"color": "sky", "source": "spire_spear_tip", "reflectable": true})
 			LxDamageFx.boss_impact(pos, 0.16, 76.0, 80.0, 82.0, 1.38, 0.34, "ice")
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, el: float) -> void:
 			_step_spear_commit(dt, el),
-		"on_recover": func(_b: LxBossBase, _dt: float) -> void:
-			pass,
 	})
 
 	# Attack 3: Mirror Shard Barrage — rains lunar crystal rings on Wick & corners + gap-ring (anti-safe-spot!)
 	register_attack("mirror_shard_barrage", {
-		"weight": 1.15, "tell": 0.52, "commit": 0.32, "recover": 1.10, "cooldown": 1.6,
+		"weight": 1.15, "tell": 0.56, "commit": 0.32, "recover": 1.15, "cooldown": 1.9,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			spear_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			var spots: Array[Vector2] = _perimeter_targets(tgt, 4 if phase >= 2 else 3)
-			patterns.emit_rain(ground, spots, last_tell_duration, 22.0, 1.0, "sky", "ice")
+			var spots: Array[Vector2] = _perimeter_targets(tgt, 3)
+			patterns.emit_rain(ground, spots, last_tell_duration, 15.0, 1.0, "sky", "ice")
 			stage.play_sfx("mirror_ping", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 8 if phase >= 2 else 6, 134.0, a + PI * 0.42, 0.76, {"color": "ice", "source": "spire_shard_ring", "reflectable": true})
+			patterns.emit_gap_ring(pos, 6, 102.0, a + PI * 0.42, 0.96, {"color": "ice", "source": "spire_shard_ring", "reflectable": true})
 			stage.shake(0.14)
 			stage.play_sfx("lens_reveal", pos),
 	})
 
-	# Attack 4 (P2): Cross-World Blink — Silver Blink-Ghost & Black Warden fire crossing spear lanes + boomerangs!
+	# Attack 4 (P2): Cross-World Blink — Silver Blink-Ghost & Black Warden fire crossing spear lanes!
 	register_attack("cross_world_blink", {
-		"phases": [2], "weight": 2.30, "tell": 0.54, "commit": 0.44, "recover": 1.12, "cooldown": 1.2,
+		"phases": [2], "weight": 4.20, "tell": 0.54, "commit": 0.44, "recover": 1.15, "cooldown": 0.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			feint_side = -feint_side
 			mirror_pos = pos
-			_do_lateral_feint(tgt, 42.0)
+			_do_lateral_feint(tgt, 36.0)
 			spear_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			mirror_dir = (tgt - mirror_pos).normalized() if tgt.distance_to(mirror_pos) > 1.0 else -spear_dir
 			facing = spear_dir.angle()
@@ -177,10 +174,9 @@ func _configure_boss(spec: Dictionary) -> void:
 			ground.warn_lane(mirror_pos, clamp_to_arena(mirror_pos + mirror_dir * 160.0), 10.0, last_tell_duration, 0.0, "sky", "ice")
 			stage.play_sfx("moonshade_blink", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, spear_dir, 4, 0.56, 148.0, {"color": "rose", "source": "spire_cross_black", "reflectable": true})
-			patterns.emit_boomerang(pos, spear_dir, 140.0, 0.62, 0.55, {"color": "sky", "source": "spire_boomerang", "reflectable": true})
+			patterns.emit_fan(pos, spear_dir, 3, 0.56, 118.0, {"color": "rose", "source": "spire_cross_black", "reflectable": true})
 			if silver_ghost_active or _is_spire_black():
-				patterns.emit_fan(mirror_pos, mirror_dir, 3, 0.48, 142.0, {"color": "ice", "source": "spire_cross_silver", "reflectable": true})
+				patterns.emit_fan(mirror_pos, mirror_dir, 3, 0.52, 112.0, {"color": "ice", "source": "spire_cross_silver", "reflectable": true})
 				silver_ghost_linger_t = GHOST_HORROR_LINGER
 			stage.shake(0.18)
 			stage.play_sfx("lens_reveal", pos),
@@ -261,9 +257,20 @@ func _step_spear_commit(dt: float, el: float) -> void:
 			Lx.events.lantern_struck.emit(_get_lantern_pos())
 
 
+func _step_boss_reposition(dt: float, target: Vector2) -> void:
+	var to_h: Vector2 = home - pos
+	if to_h.length() > 42.0:
+		move_boss(to_h.normalized() * move_speed * dt, false)
+		return
+	super._step_boss_reposition(dt, target)
+
+
 func _do_lateral_feint(tgt: Vector2, dist_px: float) -> void:
 	var to_t: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 	var lat: Vector2 = Vector2(-to_t.y, to_t.x) * feint_side
+	var cand: Vector2 = pos + lat * dist_px
+	if cand.distance_to(home) > 52.0:
+		lat = (home - pos).normalized() if home.distance_to(pos) > 4.0 else -lat
 	move_boss(lat * dist_px, false)
 	stage.play_sfx("moonshade_blink", pos)
 
@@ -381,12 +388,12 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 			_wear_shield(0.20)
 			stage.play_sfx("warden_clank", pos)
 			return dmg * 0.18
-		return dmg * 0.44
+		return dmg * 0.36
 	clank_t = 0.10
 	if src == LxHit.SOURCE_BOLT:
 		stage.play_sfx("mirror_ping", pos)
-		return dmg * 0.28
-	return dmg * 0.50
+		return dmg * 0.26
+	return dmg * 0.42
 
 
 func _on_phase_enter(new_phase: int) -> void:
@@ -402,8 +409,8 @@ func _on_phase_enter(new_phase: int) -> void:
 		mirror_dir = Vector2.from_angle(facing)
 		_set_spire_face("black")
 		shield_reformed.emit(self, pos)
-		_carve_safe_pit(0.42, 0.24)
-		_carve_safe_pit(0.62, 0.76)
+		_carve_safe_pit(0.76, 0.24)
+		_carve_safe_pit(0.88, 0.62)
 		var c: Vector2 = arena_rect.get_center()
 		props.spawn_pillar(clamp_to_arena(c + Vector2(-56.0, 26.0)), 4.0, "spire_prism_w")
 		props.spawn_pillar(clamp_to_arena(c + Vector2(56.0, -26.0)), 4.0, "spire_prism_e")

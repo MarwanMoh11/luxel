@@ -1,0 +1,574 @@
+{
+  "id": "locks_r7",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R7_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "lck_r7",
+      "name_key": "LCK_R7_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "locks_r6",
+      "to_spawn": [
+        256,
+        56
+      ]
+    },
+    {
+      "id": "exit_r7_nw",
+      "rect": [
+        96,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r8",
+      "to_spawn": [
+        208,
+        272
+      ],
+      "locked_door_id": "door_r7_nw"
+    },
+    {
+      "id": "exit_r7_ne",
+      "rect": [
+        368,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r9",
+      "to_spawn": [
+        256,
+        304
+      ],
+      "locked_door_id": "door_r7_ne"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_s",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        280
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r7_harpoon",
+      "kind": "lore_stone",
+      "pos": [
+        152,
+        264
+      ],
+      "props": {
+        "string_id": "LCK_LORE_HARPOON",
+        "icon": "tide"
+      }
+    },
+    {
+      "id": "mir_r7_dock",
+      "kind": "blue_transformer",
+      "pos": [
+        200,
+        232
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": false
+      }
+    },
+    {
+      "id": "raft_r7",
+      "kind": "tide_raft",
+      "pos": [
+        136,
+        152
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "mounts": "blue_transformer",
+        "tide_var": "lock_water",
+        "angle_deg": 0.0,
+        "rotatable": true,
+        "allow_harpoon_always": false
+      }
+    },
+    {
+      "id": "portal_r7_w",
+      "kind": "blue_portal",
+      "pos": [
+        200,
+        152
+      ],
+      "props": {
+        "target_portal_id": "portal_r7_e",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r7_e",
+      "kind": "blue_portal",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "target_portal_id": "portal_r7_w",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "exit_dir": "e",
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "sw_r7_east",
+      "kind": "switch_eye",
+      "pos": [
+        384,
+        72
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_ids": [
+          "door_r7_nw",
+          "door_r7_ne",
+          "door_r7_mid"
+        ]
+      }
+    },
+    {
+      "id": "door_r7_mid",
+      "kind": "door",
+      "pos": [
+        256,
+        240
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r7_east"
+        ],
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_r7_nw",
+      "kind": "door",
+      "pos": [
+        112,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r7_east"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r7_ne",
+      "kind": "door",
+      "pos": [
+        384,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r7_east"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "skiff_r7",
+      "kind": "vehicle_skiff",
+      "pos": [
+        104,
+        152
+      ],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "lamp_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        280
+      ],
+      "props": {
+        "zone": "lck_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        152
+      ],
+      "props": {
+        "zone": "lck_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "zone": "lck_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        440,
+        152
+      ],
+      "props": {
+        "zone": "lck_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "zone": "lck_r7",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        288,
+        32,
+        144,
+        64
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        176,
+        192,
+        48,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        424,
+        200
+      ],
+      "radius": 20,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        360,
+        136
+      ],
+      "size": [
+        52,
+        68
+      ],
+      "tint": "cool",
+      "shear": 0.25
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        384,
+        72
+      ],
+      "radius": 18
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        168,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        296,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        232,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        296,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        40,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        456,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        72,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        440,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "hanging_fishing_net",
+      "pos": [
+        408,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        136,
+        184
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "First Sluice Harpoon aha: rotate a floating mirror-raft on the West dock, Harpoon-tow it straight THROUGH a powered Waterway Portal into the sealed East chamber, then bank a blue bolt through the same portal off it to unlock both upper lock wings.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Sluice Harpoon tows floating Tide Rafts through powered Waterway Portals; blue bolts also warp through Waterway Portals.",
+    "decisions": 8,
+    "expert_s": 56,
+    "reward": "opens_upper_lock_wings",
+    "why": "Signature Sluice Harpoon introduction unlocking both the Contraband Vault (r8) and Twin-Sluice Scale (r9).",
+    "exit": "exit_r7_nw",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      },
+      "flags": [
+        "power_sluice_harpoon"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r7_harpoon"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          136,
+          232
+        ],
+        "target": "mir_r7_dock"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "portal_r7_w",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          136,
+          180
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "raft_r7"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          152
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "raft_r7",
+        "hold": 0.45
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 1.3
+      },
+      {
+        "op": "shoot",
+        "from": [
+          136,
+          232
+        ],
+        "target": "mir_r7_dock"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r7_nw",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_nw"
+      }
+    ]
+  }
+}

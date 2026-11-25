@@ -82,6 +82,7 @@ func detach() -> void:
 		_rule.detach()
 		_rule = null
 	_unmount_tutorial_cues()
+	_unmount_relit_fx()
 	if not _attached or _events == null:
 		_attached = false
 		return
@@ -105,15 +106,45 @@ func detach() -> void:
 
 
 func on_region_loaded(region_id: String) -> void:
-	if region_id.begins_with("belfry_"):
+	if region_id.begins_with("belfry_") and region_id != "belfry_forecourt":
 		_mark_belfry_entered()
 		_unmount_tutorial_cues()
+		_unmount_relit_fx()
 	elif region_id == "overworld":
 		_mount_tutorial_cues()
+		_unmount_relit_fx()
 	else:
 		_unmount_tutorial_cues()
+		if OUTDOOR_RELIT_REGIONS.has(region_id):
+			_mount_relit_fx()
+		else:
+			_unmount_relit_fx()
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
+
+
+func _mount_relit_fx() -> void:
+	_unmount_relit_fx()
+	if Lx.world == null or not is_instance_valid(Lx.world):
+		return
+	var fx: Node2D = RelitFxScript.new() as Node2D
+	if fx != null:
+		fx.name = "Island1RelitFx"
+		var b: Variant = Lx.world.get("bounds")
+		if b is Rect2 and fx.has_method("setup"):
+			fx.call("setup", b as Rect2)
+		Lx.world.add_child(fx)
+		_relit_fx = fx
+
+
+func _unmount_relit_fx() -> void:
+	if _relit_fx != null and is_instance_valid(_relit_fx):
+		_relit_fx.queue_free()
+	_relit_fx = null
+	if Lx.world != null and is_instance_valid(Lx.world):
+		var leftover: Node = Lx.world.get_node_or_null("Island1RelitFx")
+		if leftover != null and is_instance_valid(leftover) and not leftover.is_queued_for_deletion():
+			leftover.queue_free()
 
 
 func _mark_belfry_entered() -> void:
@@ -238,12 +269,23 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_flags": ["beacon_observatory"],
 		},
 		{
-			"id": "wp_enter_belfry",
+			"id": "wp_enter_forecourt",
 			"region": "overworld",
 			"zone": "bell_arch",
 			"pos": [640.0, 108.0],
 			"action": "enter_exit",
 			"target": "exit_to_belfry",
+			"to_region": "belfry_forecourt",
+			"requires_moves": ["dash", "throw"],
+			"requires_flags": ["beacon_orchard", "beacon_observatory", "beacon_bridge"],
+		},
+		{
+			"id": "wp_enter_belfry",
+			"region": "belfry_forecourt",
+			"zone": "belfry_forecourt",
+			"pos": [288.0, 24.0],
+			"action": "enter_exit",
+			"target": "exit_forecourt_north",
 			"to_region": "belfry_r1",
 			"requires_moves": ["dash", "throw"],
 			"requires_flags": ["beacon_orchard", "beacon_observatory", "beacon_bridge"],
@@ -373,7 +415,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 				_events.music_mode_requested.emit("island1_boss_p1")
 		elif st != null and st.relit_islands.has(ISLAND_ID) and _events != null:
 			_events.music_mode_requested.emit("explore")
-	elif region_id.begins_with("belfry_"):
+	elif region_id.begins_with("belfry_") and region_id != "belfry_forecourt":
 		_mark_belfry_entered()
 		_unmount_tutorial_cues()
 		if region_id == "belfry_r1" and st != null and not bool(st.story_flags.get("isl1_belfry_entered", false)):
@@ -388,6 +430,25 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			if mb_live:
 				_emit_narration("MINIBOSS_1", "title", 3.2)
 			_events.music_mode_requested.emit("island1_boss_p1" if mb_live else "island1_dungeon")
+	elif region_id == "superboss_silent":
+		_unmount_tutorial_cues()
+		var sb_dead: bool = st != null and (st.defeated_bosses.has("silent_bell") or bool(st.story_flags.get("silent_bell_defeated", false)))
+		if not sb_dead:
+			_emit_narration("ISL1_BOSS_SILENT", "title", 3.2)
+			if Lx.audio != null and is_instance_valid(Lx.audio):
+				Lx.audio.silence_music(0.15)
+		elif _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif OUTDOOR_RELIT_REGIONS.has(region_id):
+		_unmount_tutorial_cues()
+		_mount_relit_fx()
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id.begins_with("cave_"):
+		_unmount_tutorial_cues()
+		if _events != null:
+			var cue: String = "isl1_manor" if region_id == "cave_shed" else ("isl1_setpiece" if region_id == "cave_foundry_trial" else "isl1_undercroft")
+			_events.music_mode_requested.emit(cue)
 
 
 func _on_lantern_picked_up(_pickup_id: String, _pos: Vector2) -> void:

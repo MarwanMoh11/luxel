@@ -3,6 +3,8 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL1_BF_LOFT",
+  "music": "island1_dungeon",
   "spawn": [
     224,
     216
@@ -32,7 +34,7 @@
       "to_region": "belfry_r4",
       "to_spawn": [
         208,
-        36
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -48,7 +50,7 @@
       ],
       "to_region": "belfry_r6",
       "to_spawn": [
-        408,
+        500,
         112
       ],
       "requires_moves": [],
@@ -57,6 +59,25 @@
         "wick_key_2"
       ],
       "locked_door_id": "door_r5_west"
+    },
+    {
+      "id": "exit_r5_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r11",
+      "to_spawn": [
+        272,
+        336
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "bell_warden_defeated"
+      ],
+      "locked_door_id": "door_r5_f2_lift"
     }
   ],
   "enemies": [
@@ -118,6 +139,84 @@
           "wick_key_2"
         ]
       }
+    },
+    {
+      "id": "door_r5_f2_lift",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "bell_warden_defeated"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        56
+      ],
+      "props": {
+        "zone": "belfry_loft",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        56
+      ],
+      "props": {
+        "zone": "belfry_loft",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        216
+      ],
+      "props": {
+        "zone": "belfry_loft",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        128
+      ],
+      "radius": 52,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        96
+      ],
+      "size": [
+        44,
+        60
+      ],
+      "tint": "warm",
+      "shear": 0.1
     }
   ],
   "triggers": [],
@@ -231,5 +330,52 @@
       "phase": 0.0
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Bell Warden's Octagonal Loft with twin Brass Sanctuary Bell Pedestals (tutorial_island_check intact); defeating Bell Warden drops Wick Key 2 and activates the North Clockwork Lift to the F2 Mainspring Hub (r11).",
+    "kind": "boss",
+    "beat": "ten",
+    "teaches": "Ring Sanctuary Pedestals to crack Bell Warden's shield and cancel P2 Echo Slams.",
+    "decisions": 8,
+    "expert_s": 85,
+    "reward": "wick_key_2+f2_lift",
+    "why": "Floor 1 climax mini-boss unlocking both the Vault teaser (r6) and the Floor 2 Mainspring Climb (r11).",
+    "exit": "exit_r5_west",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 85.0
+      },
+      {
+        "op": "expect",
+        "flag": "bell_warden_defeated"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          128
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          48,
+          120
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "door_r5_west"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_west"
+      }
+    ]
+  }
 }

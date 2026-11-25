@@ -1,0 +1,613 @@
+{
+  "id": "toll_r3",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R3",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    216,
+    280
+  ],
+  "zones": [
+    {
+      "id": "toll_carto",
+      "name_key": "ISL8_TOLL_R3",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_south",
+      "rect": [
+        192,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r2",
+      "to_spawn": [
+        192,
+        52
+      ]
+    },
+    {
+      "id": "exit_r3_east",
+      "rect": [
+        464,
+        176,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r4",
+      "to_spawn": [
+        56,
+        160
+      ],
+      "locked_door_id": "door_r3_east"
+    },
+    {
+      "id": "exit_r3_north_bridge",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r8",
+      "to_spawn": [
+        56,
+        84
+      ],
+      "locked_door_id": "door_r3_mid_bridge"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_south",
+      "kind": "room_anchor",
+      "pos": [
+        216,
+        280
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "emitter_r3",
+      "kind": "beam_emitter",
+      "pos": [
+        408,
+        72
+      ],
+      "props": {
+        "dir": "s",
+        "color": "gold",
+        "range": 260.0,
+        "max_bounces": 2
+      }
+    },
+    {
+      "id": "mirror_r3",
+      "kind": "blue_transformer",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "movable": true,
+        "rotatable": true,
+        "angle_deg": 0.0
+      }
+    },
+    {
+      "id": "bsens_r3",
+      "kind": "beam_sensor",
+      "pos": [
+        312,
+        152
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "tblock_r3_mid"
+      }
+    },
+    {
+      "id": "tblock_r3_mid",
+      "kind": "toggle_block",
+      "pos": [
+        176,
+        146
+      ],
+      "props": {
+        "group": "r3_mid",
+        "phase": 0,
+        "start_phase": 0,
+        "size": [
+          16,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "sigil_r3",
+      "kind": "floor_sigil",
+      "pos": [
+        148,
+        132
+      ],
+      "props": {
+        "cells": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "cell_size": 14.0,
+        "start": [
+          0,
+          0
+        ],
+        "target_id": "door_r3_east",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r3_east",
+      "kind": "door",
+      "pos": [
+        456,
+        192
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sigil_r3"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "door_r3_mid_bridge",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "toll_mid_bridge"
+        ]
+      }
+    },
+    {
+      "id": "crack_r3_moth",
+      "kind": "cracked_wall",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "moth_8_04",
+      "kind": "moth",
+      "pos": [
+        40,
+        88
+      ],
+      "props": {
+        "id": "moth_8_04"
+      }
+    },
+    {
+      "id": "sensor_r3_map",
+      "kind": "toll_sensor",
+      "pos": [
+        136,
+        232
+      ],
+      "props": {
+        "check": "sold:minimap_hud",
+        "target_id": "door_r3_map",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_r3_map",
+      "kind": "door",
+      "pos": [
+        104,
+        232
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r3_map"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r3_map",
+      "kind": "chest",
+      "pos": [
+        56,
+        248
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "zone": "toll_carto",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_n",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        72
+      ],
+      "props": {
+        "zone": "toll_carto",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        232
+      ],
+      "props": {
+        "zone": "toll_carto",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "ee_r3_1",
+      "kind": "eclipse_eye",
+      "pos": [
+        360,
+        104
+      ],
+      "zone": "toll_carto"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        152,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        424,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        408,
+        264
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "inkwell_lectern_stand",
+      "pos": [
+        120,
+        104
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        168,
+        280
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        216,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        120,
+        152
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        440,
+        136
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        312,
+        264
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        174,
+        148
+      ],
+      "radius": 38
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        128,
+        112,
+        96,
+        76
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        368,
+        108
+      ],
+      "size": [
+        52,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.4
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        40,
+        88
+      ],
+      "radius": 18,
+      "style": "ink"
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r3_solved",
+      "on": "signal:sigil_r3",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_r3_solved"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Stepped Cartography Hall: shatter Eclipse Eye, push & angle the blue transformer to lower the raised tile blocking the 11-cell Floor Sigil, trace the unbroken path to open East, and crack the NW wall for Moth 04.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Beam-sensor -> toggle_block unlocking a 1-line floor_sigil; sold:minimap_hud reveals SW map cache.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "open_r4+moth_8_04",
+    "why": "Second Interface Wing room (minimap_hud), combining optics, spatial pathing, and secret wall discovery.",
+    "exit": "exit_r3_east",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 28.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "push",
+        "target": "mirror_r3",
+        "to": [
+          408,
+          152
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_r3",
+        "angle": 45.0
+      },
+      {
+        "op": "wait_until",
+        "target": "tblock_r3_mid",
+        "prop": "raised",
+        "value": false,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          148,
+          112
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          148,
+          132
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          190,
+          132
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          190,
+          146
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          148,
+          146
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          148,
+          160
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          160
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r3_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_east"
+      }
+    ]
+  }
+}

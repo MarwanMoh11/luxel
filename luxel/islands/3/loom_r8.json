@@ -1,0 +1,120 @@
+{
+  "name_key": "ISL3_LM_R8_NAME",
+  "spawn": [
+    224,
+    248
+  ],
+  "zones": [
+    {
+      "id": "loom_r8",
+      "name_key": "ISL3_LM_R8_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_loom_r8_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "loom_r7",
+      "to_spawn": [
+        384,
+        48
+      ]
+    },
+    {
+      "id": "exit_loom_r8_west_sc",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_region": "loom_r1",
+      "to_spawn": [
+        40,
+        176
+      ],
+      "requires_flags": [
+        "loom_r8_shortcut"
+      ]
+    },
+    {
+      "id": "exit_loom_r8_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "loom_r9",
+      "to_spawn": [
+        48,
+        256
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_loom_r8",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_loom_r8",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "zone": "loom_r8",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [],
+  "scenery": [],
+  "design": {
+    "idea": "Temporary graph stub for loom_r8",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "stub",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "stub",
+    "why": "Graph validation stub",
+    "optional": true,
+    "solution": []
+  },
+  "id": "loom_r8",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "loom",
+  "music": "isl3_loom",
+  "ambience": [
+    "forest_wind",
+    "cave_drip"
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "enemies": []
+}

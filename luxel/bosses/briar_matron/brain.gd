@@ -49,14 +49,14 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 74.0
-	hp = 74.0
+	max_hp = 72.0
+	hp = 72.0
 	body_radius = 9.5
 	move_speed = 38.0
 	stagger_threshold = 13.5
 	stagger_duration = 1.70
 	punish_dmg_mult = 1.32
-	post_recover_cd = 0.34
+	post_recover_cd = 0.36
 	shard_drop = 40
 	death_duration = 2.4
 
@@ -92,12 +92,12 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = MatronMove.SPORE_RING
 			ground.warn_ring(pos, 78.0, last_tell_duration, 0.0, "lime", "coral")
-			ground.warn_ring(clamp_to_arena(tgt), 21.0, last_tell_duration + 0.06, 1.0, "jade", "lime")
+			ground.warn_ring(tgt, 22.0, last_tell_duration + 0.06, 0.5, "jade", "lime")
 			stage.play_sfx("briar_spore_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
 			var cnt: int = 12 if phase >= 3 else 10
-			patterns.emit_gap_ring(pos, cnt, 112.0 if phase >= 2 else 102.0, gap_a, 0.88, {"color": "lime", "source": "matron_spore"})
+			patterns.emit_gap_ring(pos, cnt, 110.0 if phase >= 2 else 100.0, gap_a, 0.94, {"color": "lime", "source": "matron_spore", "damage": 0.5})
 			stage.shake(0.20)
 			stage.play_sfx("briar_spore_burst", pos),
 	})
@@ -362,7 +362,7 @@ func _is_matron_in_light() -> bool:
 
 
 func _build_volley_targets(tgt: Vector2) -> Array[Vector2]:
-	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var out: Array[Vector2] = [tgt]
 	var inset: Rect2 = arena_rect.grow(-18.0)
 	var corners: Array[Vector2] = [
 		inset.position, Vector2(inset.end.x, inset.position.y),

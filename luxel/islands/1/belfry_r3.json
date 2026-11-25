@@ -3,8 +3,10 @@
   "island_id": 1,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "ISL1_BF_GALLERY",
+  "music": "island1_dungeon",
   "spawn": [
-    60,
+    52,
     104
   ],
   "zones": [
@@ -31,8 +33,8 @@
       ],
       "to_region": "belfry_r1",
       "to_spawn": [
-        348,
-        128
+        332,
+        120
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -48,8 +50,8 @@
       ],
       "to_region": "belfry_r4",
       "to_spawn": [
-        36,
-        112
+        44,
+        104
       ],
       "requires_moves": [
         "throw"
@@ -58,6 +60,25 @@
         "r3_shutter_open"
       ],
       "locked_door_id": "door_r3_shutter"
+    },
+    {
+      "id": "exit_r3_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r9",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "requires_moves": [
+        "throw"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_r3_north"
     }
   ],
   "enemies": [
@@ -66,16 +87,16 @@
       "kind": "warden",
       "pos": [
         248,
-        104
+        128
       ],
       "route": [
         [
           208,
-          104
+          128
         ],
         [
-          288,
-          104
+          280,
+          128
         ]
       ],
       "perches": [],
@@ -86,26 +107,47 @@
       "id": "owl_r3_0",
       "kind": "owl",
       "pos": [
-        280,
-        72
+        200,
+        136
       ],
       "route": [],
       "perches": [
         [
-          280,
-          72
-        ],
-        [
           200,
-          144
+          136
         ],
         [
-          296,
-          128
+          232,
+          152
+        ],
+        [
+          280,
+          120
         ]
       ],
       "zone": "belfry_gallery",
       "leash": 140
+    },
+    {
+      "id": "snuffer_r3_0",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        216,
+        160
+      ],
+      "route": [
+        [
+          200,
+          160
+        ],
+        [
+          264,
+          144
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_gallery",
+      "leash": 130
     }
   ],
   "interactables": [
@@ -113,8 +155,8 @@
       "id": "brazier_r3_a",
       "kind": "brazier",
       "pos": [
-        216,
-        40
+        200,
+        104
       ],
       "props": {
         "target_id": "door_r3_shutter",
@@ -125,8 +167,8 @@
       "id": "brazier_r3_b",
       "kind": "brazier",
       "pos": [
-        280,
-        168
+        272,
+        136
       ],
       "props": {
         "target_id": "door_r3_shutter",
@@ -155,6 +197,46 @@
       }
     },
     {
+      "id": "bell_r3_dusk",
+      "kind": "bell",
+      "pos": [
+        48,
+        40
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 184
+      }
+    },
+    {
+      "id": "bell_r3_dawn",
+      "kind": "bell",
+      "pos": [
+        264,
+        80
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 176
+      }
+    },
+    {
+      "id": "door_r3_north",
+      "kind": "tone_door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          32,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
       "id": "chest_r3_shards",
       "kind": "chest",
       "pos": [
@@ -168,6 +250,54 @@
           "throw"
         ]
       }
+    },
+    {
+      "id": "lamp_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        80
+      ],
+      "props": {
+        "zone": "belfry_gallery",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        104
+      ],
+      "props": {
+        "zone": "belfry_gallery",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        88,
+        112,
+        48
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        64
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.14
     }
   ],
   "triggers": [
@@ -222,21 +352,9 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "candelabra_tall",
-      "pos": [
-        296,
-        136
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        268,
+        272,
         40
       ],
       "layer": "sort",
@@ -257,5 +375,71 @@
       "phase": 0.0
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Zip across the 4-tile Lantern Gallery chasm, hush the Snuffer Acolyte with the west Dusk Bell, clear the gallery, light both braziers for the East shutter, and ring the Dawn Bell to link North into the Escapement Stair (r9).",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Throw+Zip chasm crossing, Snuffer Acolyte disruption, and dual brazier/Dawn routing.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "r3_shutter_open+open_r9",
+    "why": "Deepened East Gallery teaching Throw+Zip while adding a loop north into the clockwork climb.",
+    "exit": "exit_r3_east",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          52,
+          80
+        ],
+        "target": "bell_r3_dusk"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          104
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 18.0
+      },
+      {
+        "op": "throw",
+        "from": [
+          200,
+          120
+        ],
+        "target": "brazier_r3_a"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "throw",
+        "from": [
+          248,
+          128
+        ],
+        "target": "brazier_r3_b"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          96
+        ],
+        "target": "bell_r3_dawn"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_east"
+      }
+    ]
+  }
 }

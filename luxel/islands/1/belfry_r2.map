@@ -1,4 +1,4 @@
-# Belfry r2 - Suspended Clapper Chasm Vault (24x15)
+# Belfry r2 - Suspended Clapper Chasm Vault (30x15)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,18 +13,18 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-########################
-#OOOOOOOOOOOOOOOOO...OO#
-#OO....OOOOOOOOOO....OO#
-#O..~~.OOOOO..OOO....OO#
-#O..#...OOOO...OO...#OO#
-#O......OOO....OO.....O#
-#O....,.OO..,,.OO.,,,,,,
-#O....,.OO..,,.OO,,,,,,,
-#OO.....OO..,,.OO.,,,,,,
-#OOOO...OO.....OO...###O
-#OOOOOO.OO..~~.OO..####O
-#OOOOOOOOO...#.OO.#####O
-#OOOOOOOOOO...OOOOOOOOO#
-#OOOOOOOOOOOOOOOOOOOOOO#
-########################
+############,,################
+#OOOOOOOOOO.,,OOOOOOOOOOO..OO#
+#OO....OOOO.,,OOOOO#..OOO..OO#
+#O..~~.OOOO.,,OOOOO#.OOOO..OO#
+#O..#...OOO.,,OOOOO..OOOO.#OO#
+#O......OO..,,,OOOOOOO.....OO#
+#O....,.OO..,,,OOOOOOOO.,,,,,,
+#O....,.OO..,,,OOOOOOOO,,,,,,,
+#OO.....OO..,,,OOOOOOOO.,,,,,,
+#OOOO...OO.....OOOOOOOO..###O#
+#OOOOOO.OO..,.OOOOOOOOO.####O#
+#OOOOOOOOO..,.OOOOOOOO.#####O#
+#OOOOOOOOOO...OOOOOOOOOOOOOOO#
+#OOOOOOOOOOOOOOOOOOOOOOOOOOOO#
+##############################

@@ -1,0 +1,716 @@
+{
+  "id": "ow_weeping_orchard",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "hourglass_maze",
+  "name_key": "ISL4_ZONE_ORCHARD",
+  "music": "island4_explore",
+  "spawn": [
+    560,
+    240
+  ],
+  "zones": [
+    {
+      "id": "ow_weeping_orchard",
+      "name_key": "ISL4_ZONE_ORCHARD",
+      "rect": [
+        0,
+        0,
+        608,
+        448
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_orchard_to_ow",
+      "rect": [
+        592,
+        224,
+        16,
+        48
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        144,
+        328
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_orchard_to_terrace",
+      "rect": [
+        480,
+        0,
+        32,
+        16
+      ],
+      "to_region": "ow_clock_terrace",
+      "to_spawn": [
+        48,
+        296
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "tk_orchard_n",
+      "kind": "topiary_knight",
+      "pos": [
+        264,
+        80
+      ],
+      "route": [
+        [
+          232,
+          80
+        ],
+        [
+          304,
+          80
+        ]
+      ],
+      "zone": "ow_weeping_orchard",
+      "leash": 130
+    },
+    {
+      "id": "pd_orchard_n",
+      "kind": "petal_duelist",
+      "pos": [
+        368,
+        80
+      ],
+      "route": [
+        [
+          336,
+          80
+        ],
+        [
+          408,
+          80
+        ]
+      ],
+      "zone": "ow_weeping_orchard",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "sundial_orchard",
+      "kind": "garden_sundial",
+      "pos": [
+        504,
+        240
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "plaque_orchard",
+      "kind": "isl4_schedule_plaque",
+      "pos": [
+        504,
+        200
+      ],
+      "props": {
+        "highlight_hours": [
+          2,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "ws_4_orchard",
+      "kind": "waystone",
+      "pos": [
+        168,
+        360
+      ],
+      "props": {
+        "name_key": "ISL4_ZONE_ORCHARD"
+      }
+    },
+    {
+      "id": "npc_gardener_frog",
+      "kind": "npc",
+      "pos": [
+        128,
+        360
+      ],
+      "props": {
+        "folk": "gardener_frog",
+        "quest": "q_isl4_three_hour_bloom",
+        "wander_radius": 10,
+        "bubbles": [
+          [
+            "clock",
+            "seed",
+            "question"
+          ],
+          [
+            "clock",
+            "seed",
+            "happy",
+            "pane"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "item_dew_hour_2",
+      "kind": "quest_item",
+      "pos": [
+        72,
+        344
+      ],
+      "props": {
+        "id": "dew_hour_2"
+      }
+    },
+    {
+      "id": "rose_orchard_bloom",
+      "kind": "echo_rose",
+      "pos": [
+        464,
+        368
+      ],
+      "props": {
+        "secs": 6.0
+      }
+    },
+    {
+      "id": "plate_orchard_a",
+      "kind": "pressure_plate",
+      "pos": [
+        496,
+        352
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "gate_orchard_trellis"
+      }
+    },
+    {
+      "id": "plate_orchard_b",
+      "kind": "pressure_plate",
+      "pos": [
+        496,
+        392
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "gate_orchard_trellis"
+      }
+    },
+    {
+      "id": "gate_orchard_trellis",
+      "kind": "logic_gate",
+      "pos": [
+        512,
+        344
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_orchard_a",
+          "plate_orchard_b"
+        ],
+        "target_id": "door_orchard_trellis"
+      }
+    },
+    {
+      "id": "door_orchard_trellis",
+      "kind": "door",
+      "pos": [
+        536,
+        376
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_orchard_trellis"
+        ]
+      }
+    },
+    {
+      "id": "chest_orchard_shards",
+      "kind": "chest",
+      "pos": [
+        568,
+        376
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45
+      }
+    },
+    {
+      "id": "cgate_orchard_terrace",
+      "kind": "clock_gate",
+      "pos": [
+        496,
+        40
+      ],
+      "props": {
+        "var": "dusk_hour",
+        "open_on": [
+          5
+        ],
+        "size": [
+          32,
+          16
+        ],
+        "pin_flag": "orchard_terrace_pinned"
+      }
+    },
+    {
+      "id": "lore_orchard_hg",
+      "kind": "lore_stone",
+      "pos": [
+        128,
+        72
+      ],
+      "props": {
+        "string_id": "ISL4_ORCHARD_GATE_HINT",
+        "icon": "clock",
+        "persist": true
+      }
+    },
+    {
+      "id": "vent_orchard_loft",
+      "kind": "updraft_vent",
+      "pos": [
+        328,
+        160
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "hour_req": [
+          4
+        ],
+        "dir": [
+          0,
+          1
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "chest_orchard_wings_loft",
+      "kind": "chest",
+      "pos": [
+        328,
+        232
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 60
+      }
+    },
+    {
+      "id": "seal_orchard_vault",
+      "kind": "obsidian_seal",
+      "pos": [
+        536,
+        72
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "chest_orchard_sunflare",
+      "kind": "chest",
+      "pos": [
+        568,
+        72
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 120,
+        "requires_moves": [
+          "sunflare"
+        ],
+        "secret_id": "isl4_orchard_bloom"
+      }
+    },
+    {
+      "id": "lamp_orch_e",
+      "kind": "road_lamp",
+      "pos": [
+        536,
+        208
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_orch_sw",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        328
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_orch_w",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        240
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_orch_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_orch_n",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_orch_ne",
+      "kind": "road_lamp",
+      "pos": [
+        464,
+        80
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_orch_se",
+      "kind": "road_lamp",
+      "pos": [
+        464,
+        344
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_orch_loft",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "hour2_pollen",
+      "when": "dusk_hour==2",
+      "tiles": [],
+      "enable": [
+        "item_dew_hour_2"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        504,
+        240
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        128,
+        96
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        456,
+        336,
+        72,
+        72
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "garden_clock_arch",
+      "pos": [
+        128,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        88,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        168,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "hourglass_floor_dial",
+      "pos": [
+        128,
+        128
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        456,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        240,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        400,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "topiary_bird_statue",
+      "pos": [
+        88,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        216,
+        408
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "sand_chute_urn",
+      "pos": [
+        552,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "mossy_garden_obelisk",
+      "pos": [
+        456,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "marsh_willow",
+      "pos": [
+        72,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "glass_cloche_bed",
+      "pos": [
+        128,
+        392
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "blooming_lotus",
+      "pos": [
+        264,
+        408
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        528,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Weeping Orchard west district with Gardener Frog camp, Hour II Rose Bloom Echo dual-plate trellis, Hour IV Wings loft islet, NE Sunflare vault, and Hourglass Maze portal plaza.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Hour II extended Echo Rose bloom, Frog quest gathering, and Topiary Knight + Petal Duelist pairing",
+    "decisions": 6,
+    "expert_s": 60,
+    "reward": "dew_hour_2, dusk_dew quest, 45/60/120 shard chests, Hourglass Maze & Clock Terrace links",
+    "why": "Western orchard hub introducing Frog camp, Hour II bloom rule, and Hourglass Maze threshold.",
+    "optional": true,
+    "start": {
+      "vars": {
+        "island:4:dusk_hour": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "sundial_orchard"
+      },
+      {
+        "op": "expect",
+        "var": "dusk_hour==2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          464,
+          368
+        ],
+        "tol": 12
+      },
+      {
+        "op": "interact",
+        "target": "rose_orchard_bloom"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_orchard_a",
+        "secs": 1.6
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_orchard_b",
+        "secs": 1.2
+      },
+      {
+        "op": "expect",
+        "interactable": "door_orchard_trellis",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "interact",
+        "target": "chest_orchard_shards"
+      }
+    ]
+  }
+}

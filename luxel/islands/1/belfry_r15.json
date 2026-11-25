@@ -1,0 +1,560 @@
+{
+  "id": "belfry_r15",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_BF_CLOCKFACE",
+  "music": "island1_dungeon",
+  "spawn": [
+    272,
+    336
+  ],
+  "zones": [
+    {
+      "id": "belfry_clockface",
+      "name_key": "ISL1_BF_CLOCKFACE",
+      "rect": [
+        0,
+        0,
+        544,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r15_south",
+      "rect": [
+        256,
+        368,
+        32,
+        16
+      ],
+      "to_region": "belfry_r14",
+      "to_spawn": [
+        256,
+        48
+      ]
+    },
+    {
+      "id": "exit_r15_north",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r16",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "locked_door_id": "door_r15_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "moth_r15_w",
+      "kind": "toll_moth",
+      "pos": [
+        144,
+        144
+      ],
+      "route": [],
+      "perches": [
+        [
+          144,
+          144
+        ],
+        [
+          192,
+          192
+        ]
+      ],
+      "zone": "belfry_clockface",
+      "leash": 180
+    },
+    {
+      "id": "moth_r15_e",
+      "kind": "toll_moth",
+      "pos": [
+        384,
+        144
+      ],
+      "route": [],
+      "perches": [
+        [
+          384,
+          144
+        ],
+        [
+          336,
+          192
+        ]
+      ],
+      "zone": "belfry_clockface",
+      "leash": 180
+    }
+  ],
+  "interactables": [
+    {
+      "id": "lore_r15",
+      "kind": "lore_stone",
+      "pos": [
+        240,
+        328
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R15",
+        "icon": "clock"
+      }
+    },
+    {
+      "id": "hand_r15_hour",
+      "kind": "clock_hand",
+      "pos": [
+        272,
+        192
+      ],
+      "props": {
+        "hand": "hour",
+        "length": 124,
+        "width": 22,
+        "speed": 0.14,
+        "start_deg": 90,
+        "dusk_freezable": false
+      }
+    },
+    {
+      "id": "hand_r15_min",
+      "kind": "clock_hand",
+      "pos": [
+        272,
+        192
+      ],
+      "props": {
+        "hand": "minute",
+        "length": 136,
+        "width": 18,
+        "speed": 0.42,
+        "start_deg": 0,
+        "dusk_freezable": true,
+        "freeze_secs": 3.0
+      }
+    },
+    {
+      "id": "bell_r15_dusk",
+      "kind": "bell",
+      "pos": [
+        272,
+        192
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 208,
+        "target_id": "bridge_r15_iii"
+      }
+    },
+    {
+      "id": "bell_r15_war",
+      "kind": "bell",
+      "pos": [
+        72,
+        192
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 176,
+        "target_id": "gate_r15_dial"
+      }
+    },
+    {
+      "id": "hook_r15_hub",
+      "kind": "lantern_hook",
+      "pos": [
+        232,
+        208
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "sg_r15_xii",
+      "kind": "shadow_gate",
+      "pos": [
+        272,
+        96
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "threshold": 0.45
+      }
+    },
+    {
+      "id": "bell_r15_dawn",
+      "kind": "bell",
+      "pos": [
+        272,
+        48
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 176,
+        "target_id": "gate_r15_dial"
+      }
+    },
+    {
+      "id": "bridge_r15_iii",
+      "kind": "door",
+      "pos": [
+        400,
+        192
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          64,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "bell_r15_dusk"
+        ]
+      }
+    },
+    {
+      "id": "relic_r15_mainspring",
+      "kind": "bf_crank_relic",
+      "pos": [
+        464,
+        192
+      ],
+      "props": {
+        "flag_id": "belfry_mainspring_key",
+        "relic_kind": "mainspring",
+        "prompt_key": "ISL1_BF_PROMPT_SPRING",
+        "narrate_key": "ISL1_BF_SPRING_GOT",
+        "target_id": "gate_r15_dial"
+      }
+    },
+    {
+      "id": "gate_r15_dial",
+      "kind": "logic_gate",
+      "pos": [
+        368,
+        72
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "bell_r15_war",
+          "bell_r15_dawn",
+          "relic_r15_mainspring"
+        ],
+        "persist": true,
+        "target_id": "door_r15_north"
+      }
+    },
+    {
+      "id": "door_r15_north",
+      "kind": "door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r15_dial"
+        ]
+      }
+    },
+    {
+      "id": "anc_r15_hub",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_r15_vi",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        336
+      ],
+      "props": {
+        "zone": "belfry_clockface",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r15_ix",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        192
+      ],
+      "props": {
+        "zone": "belfry_clockface",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r15_iii",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        192
+      ],
+      "props": {
+        "zone": "belfry_clockface",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r15_hub",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        168
+      ],
+      "props": {
+        "zone": "belfry_clockface",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        192
+      ],
+      "radius": 152,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        192
+      ],
+      "radius": 92,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        192
+      ],
+      "size": [
+        72,
+        72
+      ],
+      "tint": "cool",
+      "shear": 0.0
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        464,
+        192
+      ],
+      "size": [
+        48,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.12
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "giant_clock_gear",
+      "pos": [
+        272,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        64,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        480,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "wind_chime_rack",
+      "pos": [
+        240,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        336,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "ASTONISHING SHOWPIECE \u2014 Inside the Great Clock Face: cross the sweeping giant Hour Hand to IX (War Bell), cloak dark via the Hub Lantern Hook to enter XII (Shadow Gate + Dawn Bell), and Dusk-freeze the Minute Hand pointing at III to bridge across and claim the Mainspring Key.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Mastery synthesis of all 3 Ring Wave tones, Shutter Hood cloak, and live Dusk-frozen clockwork hands.",
+    "decisions": 12,
+    "expert_s": 80,
+    "reward": "belfry_mainspring_key",
+    "why": "Signature unforgettable architectural set-piece puzzle of the entire Island 1 Grand Belfry.",
+    "start": {
+      "flags": [
+        "item_echo_clapper",
+        "item_shutter_hood"
+      ]
+    },
+    "exit": "exit_r15_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r15"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          224
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 18.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          192
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          192
+        ],
+        "target": "bell_r15_war"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          208
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r15_hub"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          56
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_r15_dawn"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          208
+        ]
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          272,
+          216
+        ],
+        "target": "bell_r15_dusk"
+      },
+      {
+        "op": "goto",
+        "to": [
+          464,
+          192
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "relic_r15_mainspring"
+      },
+      {
+        "op": "expect",
+        "flag": "belfry_mainspring_key"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r15_north"
+      }
+    ]
+  }
+}

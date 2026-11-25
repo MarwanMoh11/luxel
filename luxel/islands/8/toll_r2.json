@@ -1,0 +1,465 @@
+{
+  "id": "toll_r2",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R2",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    392,
+    184
+  ],
+  "zones": [
+    {
+      "id": "toll_hearts",
+      "name_key": "ISL8_TOLL_R2",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_east",
+      "rect": [
+        432,
+        160,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r1",
+      "to_spawn": [
+        52,
+        192
+      ]
+    },
+    {
+      "id": "exit_r2_north",
+      "rect": [
+        176,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r3",
+      "to_spawn": [
+        208,
+        272
+      ],
+      "locked_door_id": "door_r2_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_east",
+      "kind": "room_anchor",
+      "pos": [
+        392,
+        184
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "block_r2_stone",
+      "kind": "push_block",
+      "pos": [
+        120,
+        216
+      ],
+      "props": {
+        "variant": "stone"
+      }
+    },
+    {
+      "id": "plate_r2_left",
+      "kind": "pressure_plate",
+      "pos": [
+        120,
+        136
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "hold": true,
+        "target_id": "relay_r2_left"
+      }
+    },
+    {
+      "id": "relay_r2_left",
+      "kind": "logic_gate",
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "op": "any",
+        "inputs": [
+          "plate_r2_left"
+        ],
+        "target_id": "scale_r2"
+      }
+    },
+    {
+      "id": "rail_r2_pit",
+      "kind": "rail",
+      "pos": [
+        264,
+        104
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "hook_r2_right",
+      "kind": "lantern_hook",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "scale_r2",
+      "kind": "scale",
+      "pos": [
+        232,
+        104
+      ],
+      "props": {
+        "left": "relay_r2_left",
+        "right": "hook_r2_right",
+        "mode": "balance",
+        "need_weight": 1.0,
+        "target_id": "door_r2_north",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r2_north",
+      "kind": "door",
+      "pos": [
+        192,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "scale_r2"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "sensor_r2_hearts",
+      "kind": "toll_sensor",
+      "pos": [
+        136,
+        88
+      ],
+      "props": {
+        "check": "sold:hud_hearts",
+        "target_id": "door_r2_hearts",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_r2_hearts",
+      "kind": "door",
+      "pos": [
+        104,
+        80
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sensor_r2_hearts"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r2_hearts",
+      "kind": "chest",
+      "pos": [
+        56,
+        72
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        184
+      ],
+      "props": {
+        "zone": "toll_hearts",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        168
+      ],
+      "props": {
+        "zone": "toll_hearts",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_n",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        72
+      ],
+      "props": {
+        "zone": "toll_hearts",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "tc_r2_1",
+      "kind": "toll_clerk",
+      "pos": [
+        184,
+        216
+      ],
+      "zone": "toll_hearts",
+      "route": [
+        [
+          184,
+          216
+        ],
+        [
+          248,
+          216
+        ]
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        248,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        56,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        280,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        152,
+        40
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        40,
+        136
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        408,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        248,
+        232
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        392,
+        120
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        56,
+        56
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        112,
+        96,
+        96
+      ]
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        176,
+        152,
+        96,
+        48
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        200,
+        72
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.4
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r2_solved",
+      "on": "signal:scale_r2",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_r2_solved"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "L-shaped Ledger Scale chamber: clear the patrolling Toll Clerk, push the stone ledger weight onto the West pan, and throw the lantern over the pit rail onto the East Hook Island to balance the scale.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Counterbalancing a Scale with push_block + cross-pit lantern_hook throw; sold:hud_hearts unlocks NW blind vault.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "open_r3+heart_alcove",
+    "why": "First Interface Wing room (hud_hearts), pairing shield combat with tactile weight-and-throw balance.",
+    "exit": "exit_r2_north",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "push",
+        "target": "block_r2_stone",
+        "to": [
+          120,
+          136
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          250,
+          104
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "throw",
+        "target": "hook_r2_right",
+        "hold": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r2_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_north"
+      }
+    ]
+  }
+}

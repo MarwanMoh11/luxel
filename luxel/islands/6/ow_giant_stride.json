@@ -1,0 +1,753 @@
+{
+  "id": "ow_giant_stride",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "forge_deep",
+  "music": "island6_explore",
+  "name_key": "ISL6_Z_STRIDE",
+  "spawn": [
+    416,
+    56
+  ],
+  "zones": [
+    {
+      "id": "stride_flats",
+      "name_key": "ISL6_Z_STRIDE",
+      "rect": [
+        0,
+        0,
+        832,
+        512
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_stride_to_overworld",
+      "rect": [
+        384,
+        16,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        544,
+        488
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_stride_to_basin",
+      "rect": [
+        800,
+        240,
+        16,
+        48
+      ],
+      "to_region": "ow_slag_basin",
+      "to_spawn": [
+        48,
+        232
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "stride_knight_1",
+      "kind": "piston_knight",
+      "pos": [
+        224,
+        240
+      ],
+      "route": [
+        [
+          192,
+          240
+        ],
+        [
+          264,
+          240
+        ]
+      ],
+      "perches": [],
+      "zone": "stride_west",
+      "leash": 124
+    },
+    {
+      "id": "stride_hopper_1",
+      "kind": "rail_hopper",
+      "pos": [
+        200,
+        176
+      ],
+      "route": [
+        [
+          184,
+          176
+        ],
+        [
+          248,
+          176
+        ]
+      ],
+      "perches": [
+        [
+          192,
+          160
+        ],
+        [
+          248,
+          200
+        ]
+      ],
+      "zone": "stride_west",
+      "leash": 128
+    },
+    {
+      "id": "stride_stoker_1",
+      "kind": "stoker",
+      "pos": [
+        592,
+        248
+      ],
+      "route": [
+        [
+          576,
+          248
+        ],
+        [
+          624,
+          248
+        ]
+      ],
+      "perches": [],
+      "zone": "stride_east",
+      "leash": 116
+    },
+    {
+      "id": "stride_slime_1",
+      "kind": "slag_slime",
+      "pos": [
+        616,
+        296
+      ],
+      "route": [
+        [
+          584,
+          296
+        ],
+        [
+          648,
+          296
+        ]
+      ],
+      "perches": [],
+      "zone": "stride_east",
+      "leash": 112
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_giant_stride",
+      "kind": "waystone",
+      "pos": [
+        416,
+        128
+      ],
+      "props": {
+        "zone": "stride_flats",
+        "name_key": "ISL6_Z_STRIDE"
+      }
+    },
+    {
+      "id": "anvil_stride_scatter",
+      "kind": "temper_anvil",
+      "pos": [
+        368,
+        200
+      ],
+      "props": {
+        "mode": "scatter",
+        "sets_flag": "temper_scatter_known"
+      }
+    },
+    {
+      "id": "lever_timetable_2",
+      "kind": "state_lever",
+      "pos": [
+        464,
+        200
+      ],
+      "props": {
+        "scope": "island:6",
+        "var": "kiln_shift",
+        "values": [
+          "station_a",
+          "station_b",
+          "station_c"
+        ],
+        "prompt_key": "ISL6_PROMPT_SHIFT",
+        "persist": true
+      }
+    },
+    {
+      "id": "npc_moth_kid",
+      "kind": "npc",
+      "pos": [
+        336,
+        128
+      ],
+      "props": {
+        "folk": "moth_kid",
+        "quest": "q6_spark_hide",
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "moth",
+              "quest_hide",
+              "toy_block",
+              "arrow_e",
+              "question"
+            ],
+            "line": "ISL6_Q3_HINT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "spark_hide_1",
+      "kind": "spark_hider",
+      "pos": [
+        144,
+        192
+      ],
+      "props": {
+        "spot_id": "spark_1"
+      }
+    },
+    {
+      "id": "lore_colossus_dock",
+      "kind": "lore_stone",
+      "pos": [
+        416,
+        328
+      ],
+      "props": {
+        "string_id": "ISL6_LORE_COLOSSUS",
+        "icon": "gear"
+      }
+    },
+    {
+      "id": "trial_stride_balance",
+      "kind": "trial_gate",
+      "pos": [
+        616,
+        168
+      ],
+      "props": {
+        "challenge": "stride_balance_trial",
+        "once": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "tilt_crater3",
+      "kind": "tilt_group",
+      "pos": [
+        688,
+        232
+      ],
+      "props": {
+        "axis": "x",
+        "period": 5.0,
+        "strength": 54.0,
+        "size": [
+          144,
+          112
+        ]
+      }
+    },
+    {
+      "id": "crate_sb_1",
+      "kind": "push_block",
+      "pos": [
+        656,
+        200
+      ],
+      "props": {
+        "variant": "crate"
+      }
+    },
+    {
+      "id": "crate_sb_2",
+      "kind": "push_block",
+      "pos": [
+        656,
+        240
+      ],
+      "props": {
+        "variant": "crate"
+      }
+    },
+    {
+      "id": "crate_sb_3",
+      "kind": "push_block",
+      "pos": [
+        656,
+        280
+      ],
+      "props": {
+        "variant": "crate"
+      }
+    },
+    {
+      "id": "plate_sb_1",
+      "kind": "pressure_plate",
+      "pos": [
+        720,
+        200
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_id": "gate_sb_all"
+      }
+    },
+    {
+      "id": "plate_sb_2",
+      "kind": "pressure_plate",
+      "pos": [
+        720,
+        240
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_id": "gate_sb_all"
+      }
+    },
+    {
+      "id": "plate_sb_3",
+      "kind": "pressure_plate",
+      "pos": [
+        720,
+        280
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_id": "gate_sb_all"
+      }
+    },
+    {
+      "id": "gate_sb_all",
+      "kind": "logic_gate",
+      "pos": [
+        744,
+        168
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_sb_1",
+          "plate_sb_2",
+          "plate_sb_3"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_stride_1",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_stride_2",
+      "kind": "road_lamp",
+      "pos": [
+        464,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_stride_3",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        160
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_stride_4",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        256
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_stride_5",
+      "kind": "road_lamp",
+      "pos": [
+        520,
+        256
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_stride_6",
+      "kind": "road_lamp",
+      "pos": [
+        640,
+        304
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_stride_7",
+      "kind": "road_lamp",
+      "pos": [
+        752,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_stride_8",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        288
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "basalt_forge_arch",
+      "pos": [
+        416,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "slag_chimney_vent",
+      "pos": [
+        128,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        224,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        608,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        336,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        496,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "quench_barrel_tub",
+      "pos": [
+        368,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "tempering_floor_seal",
+      "pos": [
+        688,
+        232
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        736,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "chained_slag_cauldron",
+      "pos": [
+        160,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "station_a",
+      "when": "kiln_shift==station_a",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "station_b",
+      "when": "kiln_shift==station_b",
+      "tiles": [
+        [
+          22,
+          22,
+          10,
+          6,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "station_c",
+      "when": "kiln_shift==station_c",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "relit",
+      "when": "flag:island_6_relit",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "stamp_board_2",
+      "on": "signal:lever_timetable_2",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "q6_stamp_2"
+        }
+      ]
+    },
+    {
+      "id": "stride_balance_win",
+      "on": "signal:gate_sb_all",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stride_trial_done"
+        },
+        {
+          "set_flag": "trial6:stride_balance:gold"
+        },
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 50
+          }
+        },
+        {
+          "narrate": "ISL6_TRIAL_STRIDE_WIN"
+        }
+      ]
+    },
+    {
+      "id": "start_stride_trial",
+      "on": "trial_start:trial_stride_balance",
+      "once": false,
+      "do": [
+        {
+          "challenge": {
+            "id": "stride_balance_trial",
+            "kind": "light_all",
+            "time": 35.0,
+            "targets": [
+              "plate_sb_1",
+              "plate_sb_2",
+              "plate_sb_3"
+            ],
+            "ok": [
+              {
+                "set_flag": "stride_trial_done"
+              },
+              {
+                "reward": {
+                  "kind": "shards",
+                  "amount": 50
+                }
+              },
+              {
+                "narrate": "ISL6_TRIAL_STRIDE_WIN"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Colossal sunken bootprint craters with Scatter Anvil, Timetable #2, Colossus ankle dock (station_b), Moth Kid hide-and-seek quest, and Stride Balance tilt-crate trial.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "Scatter temper, Colossus station_b docking, and crate tilt timing.",
+    "decisions": 5,
+    "expert_s": 65,
+    "reward": "temper_scatter_known+stride_trial_done",
+    "why": "Distinct 3-crater volcanic silhouette connecting Overworld to Iron Colossus and Slag Basin.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          368,
+          224
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_stride_scatter"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==scatter"
+      },
+      {
+        "op": "goto",
+        "to": [
+          464,
+          224
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "lever_timetable_2"
+      },
+      {
+        "op": "expect",
+        "var": "kiln_shift==station_b"
+      },
+      {
+        "op": "goto",
+        "to": [
+          160,
+          192
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "spark_hide_1"
+      },
+      {
+        "op": "expect",
+        "flag": "quest:hide:spark_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_stride_to_basin"
+      }
+    ]
+  }
+}

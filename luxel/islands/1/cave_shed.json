@@ -1,0 +1,349 @@
+{
+  "id": "cave_shed",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_Z_SHED",
+  "theme": "manor",
+  "music": "isl1_manor",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    56,
+    128
+  ],
+  "zones": [
+    {
+      "id": "cave_shed",
+      "name_key": "ISL1_Z_SHED",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cs_west",
+      "rect": [
+        0,
+        112,
+        16,
+        32
+      ],
+      "to_region": "manor_gardens",
+      "to_spawn": [
+        712,
+        256
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mimic_cs_1",
+      "kind": "pew_mimic",
+      "pos": [
+        208,
+        80
+      ],
+      "zone": "cave_shed",
+      "leash": 132
+    },
+    {
+      "id": "mimic_cs_2",
+      "kind": "pew_mimic",
+      "pos": [
+        208,
+        176
+      ],
+      "zone": "cave_shed",
+      "leash": 132
+    },
+    {
+      "id": "moth_cs_1",
+      "kind": "toll_moth",
+      "pos": [
+        240,
+        128
+      ],
+      "perches": [
+        [
+          240,
+          128
+        ],
+        [
+          224,
+          96
+        ]
+      ],
+      "zone": "cave_shed",
+      "leash": 132
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_cs_w",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_cs_war",
+      "kind": "bell",
+      "pos": [
+        240,
+        192
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 136
+      }
+    },
+    {
+      "id": "door_cs_closet",
+      "kind": "tone_door",
+      "pos": [
+        280,
+        112
+      ],
+      "props": {
+        "tone": "war",
+        "size": [
+          16,
+          32
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "chest_ember_shed",
+      "kind": "chest",
+      "pos": [
+        320,
+        88
+      ],
+      "props": {
+        "reward": "ember_piece",
+        "amount": 1,
+        "sets_flag": "ember_1_shed"
+      }
+    },
+    {
+      "id": "lore_shed_rope",
+      "kind": "lore_stone",
+      "pos": [
+        320,
+        144
+      ],
+      "props": {
+        "string_id": "ISL1_LORE_SHED_ROPE",
+        "icon": "bell",
+        "sets_flag": "clue_shed_rope"
+      }
+    },
+    {
+      "id": "lamp_cs_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        112
+      ],
+      "props": {
+        "zone": "cave_shed",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cs_c",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        128
+      ],
+      "props": {
+        "zone": "cave_shed",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cs_e",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        112
+      ],
+      "props": {
+        "zone": "cave_shed",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        96,
+        80,
+        128,
+        96
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        240,
+        160
+      ],
+      "radius": 22,
+      "style": "soot"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        272,
+        112
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_manor",
+      "prop": "mahogany_table",
+      "pos": [
+        144,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "tea_trolley",
+      "pos": [
+        128,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "manor_candelabra",
+      "pos": [
+        248,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "brass_lamp_sconce",
+      "pos": [
+        112,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "wall_curtain_drape",
+      "pos": [
+        328,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_manor",
+      "prop": "bellmaker_pedestal",
+      "pos": [
+        304,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Midnight estate tool shed concealing two Pew Mimics, a volatile Toll Moth, and a War-sealed rear closet holding an Ember Piece and a cut-rope Manor clue.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Shooting a Toll Moth triggers a War wave that unmasks disguised Pew Mimics and blasts War seals.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "ember_1_shed+clue_shed_rope",
+    "why": "Midnight estate combat encounter rewarding an Ember Piece and foreshadowing the Manor culprit.",
+    "target": "chest_ember_shed",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          208,
+          192
+        ],
+        "target": "bell_cs_war"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_cs_closet",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_shed"
+      },
+      {
+        "op": "interact",
+        "target": "lore_shed_rope"
+      },
+      {
+        "op": "expect",
+        "interactable": "chest_ember_shed",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "expect",
+        "interactable": "lore_shed_rope",
+        "prop": "read_done",
+        "value": true
+      }
+    ]
+  }
+}

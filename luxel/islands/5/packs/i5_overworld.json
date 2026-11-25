@@ -1,0 +1,324 @@
+{
+  "pack_id": "i5_overworld",
+  "version": 1,
+  "owner": "OW5",
+  "comment": "Island 5 (Starfall Observatory) overworld expansion: 3 sub-overworlds, 4 caves, 2 trials, Dream Telescope (dream_r1..r6), Event Horizon superboss room, 3 pictogram quests, lore & strings.",
+  "strings": {
+    "I5_ZONE_APRON": "METEOR APRON",
+    "I5_ZONE_CAUSEWAY": "DOME CAUSEWAY",
+    "I5_ZONE_CLIFF": "STARFALL CLIFF",
+    "I5_ZONE_HORIZON": "SINGULARITY RIM",
+    "I5_CAVE_GRAV": "GRAVITY WELL GROTTO",
+    "I5_CAVE_PEND": "BROKEN PENDULUM CELLAR",
+    "I5_CAVE_CIST": "STAR CISTERN",
+    "I5_CAVE_CRYPT": "ASTROLABE CRYPT",
+    "I5_TRIAL_COMET": "COMET RANGE TRIAL",
+    "I5_TRIAL_SPRINT": "CONSTELLATION SPRINT",
+    "I5_DR_R1": "DREAM 1: ELLIPTICAL HUNT",
+    "I5_DR_R2": "DREAM 2: STAR-STEP RELAY",
+    "I5_DR_R3": "DREAM 3: NULL AND METEOR",
+    "I5_DR_R4": "DREAM 4: TURNING PRISM",
+    "I5_DR_R5": "DREAM 5: BLIND ORBIT",
+    "I5_DR_R6": "DREAM 6: APHELION GAUNTLET",
+    "I5_Q1_START": "THE LENS CRACKED IN THE NORTH CELLAR.",
+    "I5_Q1_DONE": "CLEAR GLASS! LOOK EAST AT THE SHOALS.",
+    "I5_Q2_START": "THREE FALLEN TABLETS HOLD THE SKY MAP.",
+    "I5_Q2_DONE": "THE CATALOG IS WHOLE. MOTHS MARKED!",
+    "I5_Q3_START": "TURN TO 270 AND LIGHT FOUR COLD LAMPS.",
+    "I5_Q3_DONE": "THE CISTERN ARCH OPENS BELOW!",
+    "I5_LORE_HOLLOW_1": "GLASS LOG 9: A SECOND LANTERN WALKED EAST.",
+    "I5_LORE_HOLLOW_2": "IT HAD NO WICK. OUR MOTHS COPIED ITS STEP.",
+    "I5_LORE_SUNFLARE": "SEALED BY SUNFIRE: THE ASTRONOMER FEARED 7.",
+    "I5_RELIGHT_POST": "THE STARS STAND STILL FOR DAWN.",
+    "I5_OW_INTRO_BEND": "GRAVITY BENDS THE BOLT AROUND THE STONE.",
+    "I5_OW_SEAL_HINT": "THREE BEACONS AND TWO VAULTS HOLD THE DOME.",
+    "I5_OW_METEOR_GATE": "METEOR VAULT: NORTH ASTEROID ARCH.",
+    "I5_OW_PLANET_GATE": "THE PLANETARIUM: SOUTH GLASS DOME.",
+    "I5_OW_CLIFF_RIFT": "A BLACK RIFT HUMS BEYOND THE ZENITH.",
+    "I5_OW_DREAM_OPEN": "DREAM TELESCOPE: SIX TRIALS OF ORBIT.",
+    "I5_OW_TRIAL_COMET": "CURVE SHOTS THROUGH WELLS TO RING TARGETS.",
+    "I5_OW_TRIAL_SPRINT": "CROSS FOUR-CAP STARS BEFORE TIME RUNS OUT.",
+    "I5_DR_LEAD_REWARD": "FLOOR 3 CLEARED! +1 LEAD SLOT + SHORTCUT.",
+    "I5_DR_CROWN_REWARD": "STAR CROWN CLAIMED! DREAM TELESCOPE MASTER.",
+    "I5_SH_DEFEATED": "THE EVENT HORIZON COLLAPSES TO DAWN!",
+    "I5_CUE_ECLIPSE": "THE SINGULARITY FLIPS WHITE!",
+    "I5_CUE_CHAINS": "THE ORRERY CHAINS SNAP FREE!",
+    "I5_OW_GRAV_DONE": "ORBITAL ARCHERY MASTERED.",
+    "I5_OW_PEND_UNJAM": "THE PENDULUM GEAR UNJAMS AND TURNS!",
+    "I5_OW_CIST_CLEAR": "DARKNESS OPENS THE CISTERN VAULT.",
+    "I5_OW_CRYPT_CLEAR": "TRUE LENS REVEALS THE HIDDEN ASTROLABE."
+  },
+  "quests": [
+    {
+      "id": "q5_broken_sextant",
+      "island": 5,
+      "kind": "fetch",
+      "folk": "owl_chick",
+      "icon": "mirror",
+      "steps": [
+        {
+          "icons": [
+            "folk_owl",
+            "mirror",
+            "cross",
+            "arrow_nw",
+            "gear"
+          ],
+          "need": "quest:item:qi_5_brass_lens",
+          "consume_item": "qi_5_brass_lens",
+          "flag": "q5_sextant_repaired"
+        },
+        {
+          "icons": [
+            "mirror",
+            "check",
+            "star",
+            "arrow_n",
+            "happy"
+          ],
+          "need": "",
+          "flag": "quest:q5_broken_sextant:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "zenith_lens",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q5_star_catalog",
+      "island": 5,
+      "kind": "fetch",
+      "folk": "scribe_worm",
+      "icon": "book",
+      "steps": [
+        {
+          "icons": [
+            "book",
+            "star",
+            "question",
+            "arrow_nw",
+            "arrow_ne"
+          ],
+          "need": "quest:item:qi_5_tablet_a && quest:item:qi_5_tablet_b && quest:item:qi_5_tablet_c",
+          "flag": "q5_catalog_done"
+        },
+        {
+          "icons": [
+            "book",
+            "check",
+            "spark",
+            "gift",
+            "happy"
+          ],
+          "need": "",
+          "flag": "quest:q5_star_catalog:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "value": "shards",
+        "amount": 100
+      }
+    },
+    {
+      "id": "q5_lost_apprentice",
+      "island": 5,
+      "kind": "fetch",
+      "folk": "moth_kid",
+      "icon": "toy_brazier",
+      "steps": [
+        {
+          "icons": [
+            "folk_moth",
+            "toy_brazier",
+            "light_off",
+            "clock",
+            "arrow_s"
+          ],
+          "need": "q5_braziers_lit",
+          "flag": "q5_cistern_open"
+        },
+        {
+          "icons": [
+            "flame",
+            "light_on",
+            "arrow_s",
+            "chest",
+            "happy"
+          ],
+          "need": "",
+          "flag": "quest:q5_lost_apprentice:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "value": "shards",
+        "amount": 60
+      }
+    }
+  ],
+  "regions": {
+    "ow_meteor_apron": {
+      "name_key": "I5_ZONE_APRON",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        1,
+        0
+      ]
+    },
+    "ow_dome_causeway": {
+      "name_key": "I5_ZONE_CAUSEWAY",
+      "theme": "planetarium",
+      "music": "isl5_planetarium",
+      "dark": true,
+      "map": [
+        2,
+        3
+      ]
+    },
+    "ow_starfall_cliff": {
+      "name_key": "I5_ZONE_CLIFF",
+      "theme": "freefall",
+      "music": "explore",
+      "dark": true,
+      "map": [
+        3,
+        0
+      ]
+    },
+    "cave_gravity_well": {
+      "name_key": "I5_CAVE_GRAV",
+      "theme": "cave_5",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        0,
+        2
+      ]
+    },
+    "cave_broken_pendulum": {
+      "name_key": "I5_CAVE_PEND",
+      "theme": "cave_5",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        0,
+        0
+      ]
+    },
+    "cave_star_cistern": {
+      "name_key": "I5_CAVE_CIST",
+      "theme": "cave_5",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        3
+      ]
+    },
+    "cave_astrolabe_crypt": {
+      "name_key": "I5_CAVE_CRYPT",
+      "theme": "cave_5",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        4,
+        2
+      ]
+    },
+    "trial_comet_range": {
+      "name_key": "I5_TRIAL_COMET",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        0,
+        1
+      ]
+    },
+    "trial_constellation_sprint": {
+      "name_key": "I5_TRIAL_SPRINT",
+      "theme": "planetarium",
+      "music": "isl5_planetarium",
+      "dark": true,
+      "map": [
+        3,
+        3
+      ]
+    },
+    "dream_r1": {
+      "name_key": "I5_DR_R1",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        4,
+        0
+      ]
+    },
+    "dream_r2": {
+      "name_key": "I5_DR_R2",
+      "theme": "planetarium",
+      "music": "isl5_planetarium",
+      "dark": true,
+      "map": [
+        5,
+        0
+      ]
+    },
+    "dream_r3": {
+      "name_key": "I5_DR_R3",
+      "theme": "meteor_vault",
+      "music": "isl5_meteor",
+      "dark": true,
+      "map": [
+        6,
+        0
+      ]
+    },
+    "dream_r4": {
+      "name_key": "I5_DR_R4",
+      "theme": "planetarium",
+      "music": "isl5_planetarium",
+      "dark": true,
+      "map": [
+        5,
+        1
+      ]
+    },
+    "dream_r5": {
+      "name_key": "I5_DR_R5",
+      "theme": "planetarium",
+      "music": "isl5_planetarium",
+      "dark": true,
+      "map": [
+        6,
+        1
+      ]
+    },
+    "dream_r6": {
+      "name_key": "I5_DR_R6",
+      "theme": "freefall",
+      "music": "isl5_setpiece",
+      "dark": true,
+      "map": [
+        7,
+        1
+      ]
+    },
+    "superboss_horizon": {
+      "name_key": "I5_ZONE_HORIZON",
+      "theme": "freefall",
+      "music": "isl5_boss_minor_p1",
+      "dark": true,
+      "map": [
+        4,
+        1
+      ]
+    }
+  }
+}

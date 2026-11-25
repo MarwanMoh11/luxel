@@ -1,0 +1,407 @@
+{
+  "id": "cave_magnet_vault",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_6",
+  "music": "island6_dungeon",
+  "name_key": "ISL6_Z_MAGNET",
+  "spawn": [
+    208,
+    48
+  ],
+  "zones": [
+    {
+      "id": "cave_magnet_vault",
+      "name_key": "ISL6_Z_MAGNET",
+      "rect": [
+        0,
+        0,
+        416,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_magnet_to_basin",
+      "rect": [
+        192,
+        0,
+        48,
+        16
+      ],
+      "to_region": "ow_slag_basin",
+      "to_spawn": [
+        56,
+        408
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mv_magnet_golem",
+      "kind": "magnet_golem",
+      "pos": [
+        208,
+        168
+      ],
+      "route": [
+        [
+          184,
+          168
+        ],
+        [
+          232,
+          168
+        ]
+      ],
+      "perches": [],
+      "zone": "magnet_cage",
+      "leash": 44
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_1",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        48
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_mv_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        128,
+        96
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
+    },
+    {
+      "id": "grate_mv_skip",
+      "kind": "grate",
+      "pos": [
+        72,
+        184
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "coupler_mv_bank",
+      "kind": "car_coupler",
+      "pos": [
+        40,
+        184
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_id": "gate_mv_vault",
+        "persist": true
+      }
+    },
+    {
+      "id": "rail_mv_south",
+      "kind": "rail",
+      "pos": [
+        208,
+        216
+      ],
+      "props": {
+        "size": [
+          64,
+          16
+        ]
+      }
+    },
+    {
+      "id": "hook_mv_cage",
+      "kind": "lantern_hook",
+      "pos": [
+        208,
+        184
+      ],
+      "props": {
+        "target_id": "gate_mv_vault",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_mv_vault",
+      "kind": "logic_gate",
+      "pos": [
+        288,
+        200
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "coupler_mv_bank",
+          "hook_mv_cage"
+        ],
+        "target_id": "door_mv_vault",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_mv_vault",
+      "kind": "door",
+      "pos": [
+        312,
+        248
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_mv_vault"
+        ]
+      }
+    },
+    {
+      "id": "pickup_anvil_strike",
+      "kind": "pane_pickup",
+      "pos": [
+        352,
+        216
+      ],
+      "props": {
+        "pane": "anvil_strike"
+      }
+    },
+    {
+      "id": "moth_6_05",
+      "kind": "moth",
+      "pos": [
+        352,
+        256
+      ],
+      "props": {
+        "id": "moth_6_05"
+      }
+    },
+    {
+      "id": "lamp_mv_1",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        80
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_2",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        80
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_3",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_4",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        256
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_5",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_6",
+      "prop": "stalagmite_tall",
+      "pos": [
+        112,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        288,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        352,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        112,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        352,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Barred Magnet Golem bullion cage where Wick throws the lantern over the south rail onto the cage hook (or lets the Golem yank it in!) while banking a Skip shot behind the west grate to claim Pane anvil_strike and moth_6_05.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Combining Skip ricochets with rail-over lantern throws & Magnet Golem pull behavior.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "pane:anvil_strike+moth_6_05",
+    "why": "Memorable Magnet Golem secret vault reached via station_a Colossus bridge.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          128,
+          112
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_mv_skip"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          184
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          72,
+          144
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "wait_until",
+        "target": "coupler_mv_bank",
+        "prop": "uncoupled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          240
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "throw",
+        "target": "hook_mv_cage"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_mv_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          224
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "pickup_anvil_strike"
+      }
+    ]
+  }
+}

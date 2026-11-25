@@ -1,0 +1,350 @@
+{
+  "id": "cave_astrolabe_crypt",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_5",
+  "name_key": "I5_CAVE_CRYPT",
+  "music": "island5_dungeon",
+  "spawn": [
+    48,
+    176
+  ],
+  "exits": [
+    {
+      "id": "ex_crypt_out",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        960,
+        696
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_crypt",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_crypt",
+      "kind": "polarity_well",
+      "pos": [
+        240,
+        136
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 76.0,
+        "strength": 560.0,
+        "lens_only": true
+      }
+    },
+    {
+      "id": "sn_crypt_1",
+      "kind": "star_node",
+      "pos": [
+        336,
+        72
+      ],
+      "props": {
+        "lens_only": true,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_crypt_2",
+      "kind": "star_node",
+      "pos": [
+        336,
+        144
+      ],
+      "props": {
+        "lens_only": true,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "door_crypt_vault",
+      "kind": "door",
+      "pos": [
+        360,
+        96
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "clear_zone": "crypt_arena"
+      }
+    },
+    {
+      "id": "moth_5_06",
+      "kind": "moth",
+      "pos": [
+        392,
+        80
+      ],
+      "props": {
+        "id": "moth_5_06"
+      }
+    },
+    {
+      "id": "chest_5_ember_4",
+      "kind": "chest",
+      "pos": [
+        392,
+        128
+      ],
+      "props": {
+        "reward": "ember_piece",
+        "amount": 1,
+        "requires_moves": [
+          "lens"
+        ]
+      }
+    },
+    {
+      "id": "lamp_crypt_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        160
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_crypt_m1",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        176
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_crypt_m2",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_crypt_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_crypt_owl",
+      "kind": "phantom_owl",
+      "pos": [
+        256,
+        96
+      ],
+      "perches": [
+        [
+          256,
+          96
+        ],
+        [
+          288,
+          160
+        ],
+        [
+          208,
+          160
+        ]
+      ],
+      "zone": "crypt_arena",
+      "leash": 135
+    },
+    {
+      "id": "en_crypt_null",
+      "kind": "null_moth",
+      "pos": [
+        272,
+        168
+      ],
+      "route": [
+        [
+          216,
+          168
+        ],
+        [
+          288,
+          168
+        ]
+      ],
+      "zone": "crypt_arena",
+      "leash": 135
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_crypt_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "cave_crypt_cleared"
+        },
+        {
+          "sfx": "door_open"
+        },
+        {
+          "narrate": "I5_OW_CRYPT_CLEAR"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_5",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        40,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        304,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        400,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "stalagmite_tall",
+      "pos": [
+        400,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Post-Lens rift vault: pulse True Lens to cross diagonal phantom stepping stones, reveal the cloaked polarity well and Phantom Owl, defeat the Owl + Null Moth pair, and claim Moth 6 plus Ember Piece 4.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "True Lens revealing phantom bridges, cloaked wells, and phantom foes together",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "moth_5_06, ember_5_4 (4th Ember Piece -> +1 Heart)",
+    "why": "Post-Lens secret cave off Zenith Rim rewarding mastery of True Lens + curved combat.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        48,
+        176
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          144
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          384,
+          128
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_5_ember_4"
+      }
+    ]
+  }
+}

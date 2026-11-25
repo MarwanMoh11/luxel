@@ -44,16 +44,153 @@
       "to_spawn": [
         48,
         144
-      ]
+      ],
+      "locked_door_id": "door_r5_east"
     }
   ],
   "interactables": [
     {
-      "id": "lamp_r5_1",
+      "id": "anc_r5_south",
+      "kind": "room_anchor",
+      "pos": [
+        64,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r5_east",
+      "kind": "room_anchor",
+      "pos": [
+        288,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "t_r5",
+      "kind": "blue_transformer",
+      "pos": [
+        104,
+        112
+      ],
+      "props": {
+        "angle_deg": 0,
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "dew_r5_1",
+      "kind": "dew_lens",
+      "pos": [
+        152,
+        168
+      ],
+      "props": {
+        "movable": true,
+        "rail_axis": "y",
+        "focus_range": 180.0
+      }
+    },
+    {
+      "id": "pb_r5_bridge",
+      "kind": "light_plant",
+      "pos": [
+        216,
+        140
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          80,
+          32
+        ],
+        "secs": 0.5,
+        "decay": 2.2
+      }
+    },
+    {
+      "id": "eye_r5_blue",
+      "kind": "switch_eye",
+      "pos": [
+        256,
+        74
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_r5_east"
+      }
+    },
+    {
+      "id": "dew_r5_2",
+      "kind": "dew_lens",
+      "pos": [
+        328,
+        160
+      ],
+      "props": {
+        "movable": true,
+        "rail_axis": "y",
+        "focus_range": 140.0
+      }
+    },
+    {
+      "id": "knot_r5_key",
+      "kind": "dry_root_knot",
+      "pos": [
+        376,
+        64
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "wick_key_ur_1",
+      "kind": "wick_key",
+      "pos": [
+        416,
+        64
+      ],
+      "props": {
+        "dungeon_id": "underroot",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_ur_1"
+      }
+    },
+    {
+      "id": "door_r5_east",
+      "kind": "door",
+      "pos": [
+        456,
+        128
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "eye_r5_blue"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5_sw",
       "kind": "road_lamp",
       "pos": [
-        240,
-        128
+        64,
+        176
       ],
       "props": {
         "zone": "ur_r5",
@@ -61,20 +198,367 @@
       }
     },
     {
-      "id": "wick_key_ur_1",
-      "kind": "wick_key",
+      "id": "lamp_r5_nw",
+      "kind": "road_lamp",
       "pos": [
-        400,
-        128
+        112,
+        64
       ],
       "props": {
-        "dungeon_id": "underroot",
-        "key_kind": "wick_key",
-        "flag_id": "wick_key_ur_1"
+        "zone": "ur_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_c",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        176
+      ],
+      "props": {
+        "zone": "ur_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        48
+      ],
+      "props": {
+        "zone": "ur_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        176
+      ],
+      "props": {
+        "zone": "ur_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r5_grass_nw",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        88,
+        84
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r5_acorn_se",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        352,
+        196
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": true
       }
     }
   ],
   "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        104,
+        112
+      ],
+      "radius": 20,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        416,
+        64
+      ],
+      "radius": 22,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        416,
+        64
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.28
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        152,
+        168
+      ],
+      "radius": 18,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        328,
+        160
+      ],
+      "radius": 18,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "giant_dew_lens",
+      "pos": [
+        136,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        128,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        296,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        52,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        364,
+        164
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        96,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        416,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        288,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        328,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        424,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "pebble_milestone",
+      "pos": [
+        272,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Freeze Dew Lens #1 via a rotated Blue Transformer into a 3-way Blue Prism Splitter that simultaneously frost-pins the chasm bridge for 12 s and trips the east blue eye, then roll Dew Lens #2 liquid-side to burn the root-knot guarding Key #1.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Using both states of dew_lens in one chamber: frozen 3-way Blue Prism Splitter for frost-pinning + eye activation, and liquid focused dew_ray to burn dry_root_knot.",
+    "decisions": 6,
+    "expert_s": 54,
+    "reward": "wick_key_ur_1",
+    "why": "Key #1 optical showcase proving frozen vs liquid dew_lens mastery before the mini-boss.",
+    "exit": "exit_r5_east",
+    "solution": [
+      {
+        "op": "push",
+        "target": "dew_r5_1",
+        "to": [
+          152,
+          112
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "t_r5",
+        "angle": 45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          160
+        ],
+        "target": "t_r5"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          160
+        ],
+        "target": "t_r5"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r5_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          140
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          182
+        ],
+        "tol": 3.5
+      },
+      {
+        "op": "push",
+        "target": "dew_r5_2",
+        "to": [
+          328,
+          64
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          288,
+          64
+        ],
+        "target": "dew_r5_2"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "knot_r5_key",
+        "prop": "burned",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_ur_1"
+      },
+      {
+        "op": "expect",
+        "flag": "wick_key_ur_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_east"
+      }
+    ]
+  },
   "id": "underroot_r5",
   "island_id": 3,
   "tile_size": 16,

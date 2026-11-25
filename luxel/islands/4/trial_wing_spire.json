@@ -1,0 +1,592 @@
+{
+  "id": "trial_wing_spire",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "garden_party",
+  "name_key": "ISL4_ZONE_WING_SPIRE",
+  "music": "isl4_setpiece",
+  "spawn": [
+    48,
+    160
+  ],
+  "zones": [
+    {
+      "id": "trial_wing_spire",
+      "name_key": "ISL4_ZONE_WING_SPIRE",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_to_terrace",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "ow_clock_terrace",
+      "to_spawn": [
+        528,
+        200
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_spire_start",
+      "kind": "room_anchor",
+      "pos": [
+        64,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "trial_wing_gate",
+      "kind": "trial_gate",
+      "pos": [
+        88,
+        144
+      ],
+      "props": {
+        "once": false,
+        "persist": true,
+        "target_ids": [
+          "door_spire_vault",
+          "medal_wing_spire"
+        ],
+        "challenge": {
+          "id": "wing_spire",
+          "kind": "race",
+          "time": 48.0,
+          "goal_radius": 32.0,
+          "instant_retry": true,
+          "checkpoints": [
+            [
+              176,
+              80
+            ],
+            [
+              320,
+              80
+            ],
+            [
+              352,
+              224
+            ],
+            [
+              192,
+              240
+            ]
+          ],
+          "goal": [
+            80,
+            160
+          ],
+          "ok": [
+            {
+              "set_flag": "trial_wing_spire_done"
+            },
+            {
+              "narrate": "ISL4_TRIAL_SPIRE_WIN"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "medal_wing_spire",
+      "kind": "isl4_trial_medal",
+      "pos": [
+        40,
+        136
+      ],
+      "props": {
+        "trial_id": "wing_spire",
+        "gold_s": 18.0,
+        "silver_s": 28.0,
+        "bronze_s": 48.0
+      }
+    },
+    {
+      "id": "vent_sp_1",
+      "kind": "updraft_vent",
+      "pos": [
+        128,
+        112
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "dir": [
+          1,
+          -1
+        ],
+        "boost_mult": 1.3
+      }
+    },
+    {
+      "id": "vent_sp_2",
+      "kind": "updraft_vent",
+      "pos": [
+        248,
+        80
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "dir": [
+          1,
+          0
+        ],
+        "boost_mult": 1.3
+      }
+    },
+    {
+      "id": "vent_sp_3",
+      "kind": "updraft_vent",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "dir": [
+          0,
+          1
+        ],
+        "boost_mult": 1.3
+      }
+    },
+    {
+      "id": "vent_sp_4",
+      "kind": "updraft_vent",
+      "pos": [
+        272,
+        232
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "dir": [
+          -1,
+          0
+        ],
+        "boost_mult": 1.3
+      }
+    },
+    {
+      "id": "vent_sp_5",
+      "kind": "updraft_vent",
+      "pos": [
+        136,
+        200
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "dir": [
+          -1,
+          -1
+        ],
+        "boost_mult": 1.3
+      }
+    },
+    {
+      "id": "door_spire_vault",
+      "kind": "door",
+      "pos": [
+        64,
+        104
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "trial_wing_gate"
+        ]
+      }
+    },
+    {
+      "id": "pickup_petal_mirror",
+      "kind": "pane_pickup",
+      "pos": [
+        48,
+        56
+      ],
+      "props": {
+        "pane": "petal_mirror"
+      }
+    },
+    {
+      "id": "moth_4_09",
+      "kind": "moth",
+      "pos": [
+        80,
+        56
+      ],
+      "props": {
+        "id": "moth_4_09"
+      }
+    },
+    {
+      "id": "chest_spire_shards",
+      "kind": "chest",
+      "pos": [
+        64,
+        32
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 60
+      }
+    },
+    {
+      "id": "lamp_sp_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sp_nw",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sp_ne",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sp_se",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        208
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sp_sw",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sp_vault",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_spire_init",
+      "on": "enter",
+      "once": false,
+      "do": []
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        176,
+        80
+      ],
+      "radius": 20,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        320,
+        80
+      ],
+      "radius": 20,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        352,
+        224
+      ],
+      "radius": 20,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        240
+      ],
+      "radius": 20,
+      "style": "clock"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_garden_party",
+      "prop": "festive_bunting_arch",
+      "pos": [
+        96,
+        172
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        160,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        336,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        368,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        176,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        32,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        96,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Celeste-style instant-retry Moth Wings spire flight trial with Bronze/Silver/Gold medals rewarding the Petal Mirror stained-glass pane and Moth #9.",
+    "kind": "traversal",
+    "beat": "ten",
+    "teaches": "high-speed updraft_vent aerial routing and timed trial mastery",
+    "decisions": 8,
+    "expert_s": 90,
+    "reward": "petal_mirror pane, moth_4_09, trial medal + bonus shards",
+    "why": "Signature Island 4 Wings flight trial off Clock Terrace East balcony.",
+    "optional": true,
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          80,
+          144
+        ],
+        "tol": 12
+      },
+      {
+        "op": "interact",
+        "target": "trial_wing_gate"
+      },
+      {
+        "op": "goto",
+        "to": [
+          96,
+          128
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          176,
+          80
+        ],
+        "tol": 18
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          80
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          320,
+          80
+        ],
+        "tol": 18
+      },
+      {
+        "op": "goto",
+        "to": [
+          336,
+          96
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          352,
+          224
+        ],
+        "tol": 18
+      },
+      {
+        "op": "goto",
+        "to": [
+          320,
+          224
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          192,
+          240
+        ],
+        "tol": 18
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          224
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          80,
+          160
+        ],
+        "tol": 20
+      },
+      {
+        "op": "expect",
+        "flag": "trial_wing_spire_done"
+      },
+      {
+        "op": "expect",
+        "interactable": "door_spire_vault",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          48,
+          56
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "pickup_petal_mirror"
+      }
+    ]
+  }
+}

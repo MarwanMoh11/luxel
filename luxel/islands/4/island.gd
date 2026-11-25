@@ -1,6 +1,7 @@
 class_name LxIsland4
 extends RefCounted
-## Island 4 (Mirefen Gardens) progression beats, story hooks, region list, and main-path waypoints.
+## Island 4 (Mirefen Gardens) progression beats, story hooks, region list, Epic gating,
+## legacy-save preservation, relit state transitions, and main-path waypoints.
 
 const ISLAND_ID: int = 4
 const SEAL_ID: String = "conservatory_seal"
@@ -15,6 +16,15 @@ const REQUIRED_BEACONS: Array[String] = [
 
 const REGIONS: Array[String] = [
 	"overworld",
+	"ow_weeping_orchard",
+	"ow_drowned_cloister",
+	"ow_clock_terrace",
+	"cave_sundial_well",
+	"cave_echo_cellar",
+	"cave_rain_cistern",
+	"cave_heron_roost",
+	"trial_wing_spire",
+	"vault_last_hour",
 	"conservatory_r1",
 	"conservatory_r2",
 	"conservatory_r3",
@@ -52,6 +62,7 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.boss_phase_changed.connect(_on_boss_phase_changed)
 	_events.boss_defeated.connect(_on_boss_defeated)
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
+	_preserve_legacy_seal_state()
 	_rule = Island4Rule.new()
 	_rule.attach(_events, _state)
 
@@ -81,6 +92,7 @@ func detach() -> void:
 
 
 func on_region_loaded(region_id: String) -> void:
+	_preserve_legacy_seal_state()
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
 
@@ -273,12 +285,63 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 	]
 
 
+## Preserves legacy saves that already unsealed or entered the Drowned Conservatory
+## prior to the Epic expansion (Hourglass Maze + Rain Mausoleum + Garden Party).
+func _preserve_legacy_seal_state() -> void:
+	var st: LxGameState = _get_state()
+	if st == null:
+		return
+	var legacy_passed: bool = st.broken_seals.has(SEAL_ID) \
+		or st.opened_doors.has("door_dungeon_4") \
+		or bool(st.story_flags.get("seal_broken_4", false)) \
+		or st.relit_islands.has(ISLAND_ID) \
+		or st.has_move("wings") \
+		or st.claimed_shrines.has("shrine_wings")
+	if legacy_passed:
+		if not st.broken_seals.has(SEAL_ID):
+			st.broken_seals.append(SEAL_ID)
+		if not st.opened_doors.has("door_dungeon_4"):
+			st.opened_doors.append("door_dungeon_4")
+		st.story_flags["seal_broken_4"] = true
+		st.story_flags["conservatory_seal_passed"] = true
+
+
 func are_all_beacons_lit() -> bool:
 	var st: LxGameState = _get_state()
 	if st == null:
 		return false
 	for bid: String in REQUIRED_BEACONS:
 		if not st.lit_beacons.has(bid) and not bool(st.story_flags.get(bid, false)):
+			return false
+	return true
+
+
+func _is_dungeon_live(dungeon_id: String) -> bool:
+	if Lx.packs == null:
+		return false
+	var meta: Dictionary = Lx.packs.dungeon(dungeon_id)
+	return not meta.is_empty() and not bool(meta.get("debug_only", false))
+
+
+## Full Epic Conservatory seal check: 3 beacons + any live wired prerequisite dungeons
+## (Hourglass Maze, Rain Mausoleum, Garden Party -> golden_clock_key).
+func are_seal_requirements_met() -> bool:
+	var st: LxGameState = _get_state()
+	if st == null:
+		return false
+	if bool(st.story_flags.get("conservatory_seal_passed", false)) or st.broken_seals.has(SEAL_ID):
+		return true
+	if not are_all_beacons_lit():
+		return false
+	if _is_dungeon_live("hourglass_maze"):
+		if not bool(st.story_flags.get("dungeon_hourglass_done", false)) and not bool(st.story_flags.get("dungeon_done:hourglass_maze", false)):
+			return false
+	if _is_dungeon_live("rain_mausoleum"):
+		if not bool(st.story_flags.get("dungeon_mausoleum_done", false)) and not bool(st.story_flags.get("dungeon_done:rain_mausoleum", false)):
+			return false
+	if _is_dungeon_live("garden_party"):
+		var got_party: bool = bool(st.story_flags.get("party_done", false)) or bool(st.story_flags.get("golden_clock_key", false))
+		if not got_party:
 			return false
 	return true
 
@@ -293,7 +356,29 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("ISL4_ARRIVAL", "narration", 4.0)
 			if _events != null:
 				_events.sfx_requested.emit("wing_gale", Vector2.ZERO, false)
+		elif st != null and st.relit_islands.has(ISLAND_ID) and not bool(st.story_flags.get("isl4_relight_tea_seen", false)):
+			st.story_flags["isl4_relight_tea_seen"] = true
+			_emit_narration("ISL4_RELIGHT_TEA", "narration", 3.6)
 		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id in ["ow_weeping_orchard", "ow_drowned_cloister", "ow_clock_terrace", "cave_heron_roost"]:
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id == "trial_wing_spire":
+		if _events != null:
+			_events.music_mode_requested.emit("isl4_setpiece")
+	elif region_id == "cave_rain_cistern":
+		if _events != null:
+			_events.music_mode_requested.emit("isl4_mausoleum")
+	elif region_id in ["cave_sundial_well", "cave_echo_cellar"]:
+		if _events != null:
+			_events.music_mode_requested.emit("island4_dungeon")
+	elif region_id == "vault_last_hour":
+		if st != null and not st.defeated_bosses.has("boss_last_hour") and not bool(st.story_flags.get("boss_last_hour_defeated", false)):
+			_emit_narration("ISL4_BOSS_LAST_HOUR", "title", 3.5)
+			if _events != null:
+				_events.music_mode_requested.emit("isl4_boss_minor_p1")
+		elif _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "conservatory_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
@@ -336,7 +421,7 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
-	if are_all_beacons_lit():
+	if are_seal_requirements_met():
 		_trigger_seal_shatter()
 
 
@@ -347,6 +432,7 @@ func _trigger_seal_shatter() -> void:
 			return
 		st.broken_seals.append(SEAL_ID)
 		st.story_flags["seal_broken_4"] = true
+		st.story_flags["conservatory_seal_passed"] = true
 	if _events != null:
 		_events.seal_broken.emit(ISLAND_ID, SEAL_ID)
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
@@ -386,6 +472,11 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
+	if boss_id == "boss_last_hour":
+		if phase >= 2 and _events != null:
+			_events.music_mode_requested.emit("isl4_boss_minor_p2")
+			_events.shake_requested.emit(0.32 if phase == 2 else 0.38)
+		return
 	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
 		return
 	if phase >= 2 and _events != null:
@@ -394,9 +485,25 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
-	if island_id != ISLAND_ID or boss_id != BOSS_ID:
+	if island_id != ISLAND_ID:
 		return
 	var st: LxGameState = _get_state()
+	if boss_id == "boss_last_hour":
+		if st != null:
+			if not st.defeated_bosses.has("boss_last_hour"):
+				st.defeated_bosses.append("boss_last_hour")
+			st.story_flags["boss_last_hour_defeated"] = true
+		if _events != null:
+			_events.sfx_requested.emit("boss_victory", Vector2.ZERO, false)
+			_events.music_mode_requested.emit("explore")
+			_events.save_requested.emit("boss_last_hour_defeated")
+		return
+	if boss_id in ["boss_gardener_twice", "boss_drowned_choir", "boss_toastmaster"]:
+		if are_seal_requirements_met():
+			_trigger_seal_shatter()
+		return
+	if boss_id != BOSS_ID:
+		return
 	if st != null:
 		if not st.defeated_bosses.has(BOSS_ID):
 			st.defeated_bosses.append(BOSS_ID)
@@ -420,6 +527,7 @@ func _on_great_lamp_relit(island_id: int) -> void:
 		_events.sfx_requested.emit("lamp_relit", Vector2.ZERO, false)
 		_events.music_mode_requested.emit("explore")
 		_emit_narration("ISL4_RELIGHT", "title", 4.0)
+		_emit_narration("ISL4_RELIGHT_LOOP", "narration", 4.0)
 		_emit_narration("ISL4_BRIDGE", "narration", 4.0)
 		_events.save_requested.emit("great_lamp_4")
 

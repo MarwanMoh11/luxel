@@ -530,7 +530,7 @@
       "prop": "amber_lantern_post",
       "pos": [
         328,
-        248
+        216
       ],
       "layer": "sort",
       "flip_x": true,
@@ -554,7 +554,7 @@
       "prop": "topiary_bird_statue",
       "pos": [
         440,
-        120
+        136
       ],
       "layer": "sort",
       "flip_x": true,
@@ -578,7 +578,7 @@
       "prop": "sand_chute_urn",
       "pos": [
         344,
-        88
+        120
       ],
       "layer": "sort",
       "flip_x": true,
@@ -601,7 +601,7 @@
       "sheet": "theme_hourglass_maze",
       "prop": "mossy_garden_obelisk",
       "pos": [
-        408,
+        392,
         216
       ],
       "layer": "sort",

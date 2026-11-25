@@ -352,10 +352,22 @@
       }
     },
     {
-      "id": "lamp_r1_north",
+      "id": "lamp_r1_north_w",
       "kind": "road_lamp",
       "pos": [
-        248,
+        152,
+        64
+      ],
+      "props": {
+        "zone": "mn_foyer",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_north_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
         64
       ],
       "props": {
@@ -553,18 +565,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "theme_manor",
-      "prop": "hearth_fireplace",
-      "pos": [
-        248,
-        34
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
     }
   ],
   "events": [
@@ -594,6 +594,14 @@
       {
         "op": "interact",
         "target": "ws_manor"
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          314
+        ],
+        "tol": 4.0
       },
       {
         "op": "interact",

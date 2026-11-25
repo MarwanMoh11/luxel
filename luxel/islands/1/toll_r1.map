@@ -1,0 +1,33 @@
+# Great Toll r1 - Great Bell Rigging (24x18)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+____#######,,#######____
+____#OOO...,,...OOO#____
+___##OO....,,....OO##___
+__##OO.....,,.....OO##__
+_##OO.....,,,,.....OO##_
+##OO.....,,,,,,.....OO##
+#OO.....,,,,,,,,.....OO#
+#O.....,,,,,,,,,,.....O#
+#O...,,,,,,,,,,,,,,...O#
+#O...,,,..,,,,..,,,...O#
+#OO..,,,..,,,,..,,,..OO#
+##O..,,,..,,,,..,,,..O##
+__#..O....,,,,....O..#__
+__#..OO...,,,,...OO..#__
+___##OO...,,,,...OO##___
+____##....,,,,....##____
+_____##...,,,,...##_____
+______#####,,#####______

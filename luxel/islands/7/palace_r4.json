@@ -109,7 +109,7 @@
     {
       "id": "lamp_r4_se",
       "kind": "road_lamp",
-      "pos": [344, 232],
+      "pos": [392, 192],
       "props": { "zone": "palace_courtyard", "lit": true }
     }
   ],
@@ -129,7 +129,7 @@
     {
       "id": "ref_r4_north",
       "kind": "reflection",
-      "pos": [216, 72],
+      "pos": [216, 176],
       "zone": "palace_courtyard"
     },
     {
@@ -158,11 +158,12 @@
       "id": "black_world",
       "when": "world_face==black",
       "theme": "inverted_palace_black",
+      "overlay": "res://luxel/art/islands/7/palace_r4__black_world.png",
       "full_frame": true,
       "tiles": [
-        [5, 3, 2, 3, "pit"],
+        [6, 3, 2, 3, "pit"],
         [21, 3, 2, 3, "pit"],
-        [5, 10, 2, 3, "pit"],
+        [6, 10, 2, 3, "pit"],
         [21, 10, 2, 3, "pit"]
       ],
       "enable": [],

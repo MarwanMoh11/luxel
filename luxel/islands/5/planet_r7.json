@@ -1,0 +1,564 @@
+{
+  "id": "planet_r7",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R7",
+  "spawn": [
+    56,
+    224
+  ],
+  "zones": [
+    {
+      "id": "pl_r7",
+      "name_key": "I5_PL_R7",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r7_w",
+      "rect": [
+        0,
+        208,
+        16,
+        32
+      ],
+      "to_region": "planet_r6",
+      "to_spawn": [
+        424,
+        160
+      ]
+    },
+    {
+      "id": "exit_pl_r7_n",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "planet_r8",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "locked_door_id": "door_pl_r7_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r7",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sn_r7_1",
+      "kind": "star_node",
+      "pos": [
+        100,
+        224
+      ],
+      "props": {
+        "cap_group": "pl_r7",
+        "max_lit": 4,
+        "links": [
+          "sn_r7_2"
+        ]
+      }
+    },
+    {
+      "id": "sn_r7_2",
+      "kind": "star_node",
+      "pos": [
+        144,
+        256
+      ],
+      "props": {
+        "cap_group": "pl_r7",
+        "max_lit": 4,
+        "links": [
+          "sn_r7_1",
+          "sn_r7_3"
+        ]
+      }
+    },
+    {
+      "id": "sn_r7_3",
+      "kind": "star_node",
+      "pos": [
+        196,
+        256
+      ],
+      "props": {
+        "cap_group": "pl_r7",
+        "max_lit": 4,
+        "links": [
+          "sn_r7_2",
+          "sn_r7_4"
+        ]
+      }
+    },
+    {
+      "id": "sn_r7_4",
+      "kind": "star_node",
+      "pos": [
+        224,
+        216
+      ],
+      "props": {
+        "cap_group": "pl_r7",
+        "max_lit": 4,
+        "links": [
+          "sn_r7_3"
+        ]
+      }
+    },
+    {
+      "id": "sn_r7_5",
+      "kind": "star_node",
+      "pos": [
+        240,
+        120
+      ],
+      "props": {
+        "cap_group": "pl_r7",
+        "max_lit": 4,
+        "links": [
+          "sn_r7_6"
+        ]
+      }
+    },
+    {
+      "id": "sn_r7_6",
+      "kind": "star_node",
+      "pos": [
+        240,
+        72
+      ],
+      "props": {
+        "cap_group": "pl_r7",
+        "max_lit": 4,
+        "links": [
+          "sn_r7_5"
+        ]
+      }
+    },
+    {
+      "id": "rotor_pl_r7",
+      "kind": "rotor",
+      "pos": [
+        240,
+        176
+      ],
+      "props": {
+        "size": [
+          96,
+          96
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "trans_pl_r7",
+      "kind": "blue_transformer",
+      "pos": [
+        216,
+        152
+      ],
+      "props": {
+        "angle_deg": 0.0,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "bell_pl_r7",
+      "kind": "star_bell",
+      "pos": [
+        304,
+        152
+      ],
+      "props": {
+        "scope": "dungeon:planetarium",
+        "var_name": "sky_turn",
+        "rotors": [
+          "rotor_pl_r7"
+        ],
+        "allow_ccw_blue": true,
+        "require_sextant_ccw": true,
+        "cooldown": 0.55
+      }
+    },
+    {
+      "id": "pl_key_2",
+      "kind": "wick_key",
+      "pos": [
+        392,
+        168
+      ],
+      "props": {
+        "dungeon_id": "planetarium",
+        "key_kind": "wick_key",
+        "flag_id": "pl_key_2"
+      }
+    },
+    {
+      "id": "plate_pl_r7_key",
+      "kind": "pressure_plate",
+      "pos": [
+        392,
+        136
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "target_id": "door_pl_r7_n",
+        "sets_flag": "pl_r7_open"
+      }
+    },
+    {
+      "id": "door_pl_r7_n",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "plate_pl_r7_key"
+        ],
+        "sets_flag": "pl_r7_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_pl_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        256
+      ],
+      "props": {
+        "zone": "pl_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r7_c",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        192
+      ],
+      "props": {
+        "zone": "pl_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        192
+      ],
+      "props": {
+        "zone": "pl_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        48
+      ],
+      "props": {
+        "zone": "pl_r7",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        176
+      ],
+      "radius": 44,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "mural",
+      "pos": [
+        392,
+        168
+      ],
+      "radius": 24,
+      "style": "constellation"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        392,
+        152
+      ],
+      "size": [
+        44,
+        60
+      ],
+      "tint": "rose",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        240,
+        176
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        48,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        368,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        272,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "floating_prism_lens",
+      "pos": [
+        420,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r7_key_270",
+      "when": "sky_turn==270",
+      "tiles": [
+        [
+          18,
+          10,
+          4,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Navigate a 4-star FIFO spiral onto the central rotor, rotate the Blue Transformer 45 degrees to bank a Blue Prism CCW shot into the Star Bell (270 degrees) swinging open the East Key-2 bridge around glass walls, then spend the remaining star budget northward to exit.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Combining 4-star FIFO budget management with Blue Prism CCW Star Bell rotation to bypass glass walls.",
+    "decisions": 9,
+    "expert_s": 58,
+    "reward": "pl_key_2",
+    "why": "Deep-wing signature optics and constellation budget puzzle rewarding Small Key 2.",
+    "exit": "exit_pl_r7_n",
+    "start": {
+      "flags": [
+        "power_sextant"
+      ],
+      "vars": {
+        "sky_turn": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          80,
+          224
+        ],
+        "target": "sn_r7_1",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          80,
+          256
+        ],
+        "target": "sn_r7_2",
+        "wait_hit": 0.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          122,
+          240
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r7_3",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          170,
+          256
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r7_4",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          176
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "trans_pl_r7",
+        "steps": 1
+      },
+      {
+        "op": "shoot",
+        "from": [
+          216,
+          196
+        ],
+        "target": "trans_pl_r7",
+        "wait_hit": 0.85
+      },
+      {
+        "op": "expect",
+        "var": "sky_turn==270"
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          168
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "pl_key_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          136
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_pl_r7_n",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          144
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r7_5",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "beam",
+        "from": [
+          240,
+          136
+        ],
+        "target": "sn_r7_6"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r7_n"
+      }
+    ]
+  }
+}

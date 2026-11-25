@@ -1,0 +1,598 @@
+{
+  "id": "toll_causeway",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "toll_house",
+  "name_key": "ISL8_Z_TOLL_WAY",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    616,
+    224
+  ],
+  "zones": [
+    {
+      "id": "toll_causeway",
+      "name_key": "ISL8_Z_TOLL_WAY",
+      "rect": [
+        0,
+        0,
+        672,
+        448
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_overworld",
+      "rect": [
+        656,
+        208,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "overworld",
+      "to_spawn": [
+        64,
+        808
+      ]
+    },
+    {
+      "id": "exit_toll_to_vigil",
+      "rect": [
+        656,
+        352,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "vigil_terrace",
+      "to_spawn": [
+        104,
+        136
+      ]
+    },
+    {
+      "id": "exit_to_cave_blind_scale",
+      "rect": [
+        128,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "cave_blind_scale",
+      "to_spawn": [
+        112,
+        240
+      ]
+    },
+    {
+      "id": "exit_to_cave_silent_vault",
+      "rect": [
+        128,
+        432,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "cave_silent_vault",
+      "to_spawn": [
+        208,
+        48
+      ]
+    },
+    {
+      "id": "exit_to_toll_r1",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "toll_r1",
+      "to_spawn": [
+        248,
+        312
+      ]
+    },
+    {
+      "id": "exit_to_toll_r6_backdoor",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r6",
+      "to_spawn": [
+        56,
+        248
+      ],
+      "requires_flags": [
+        "toll_west_backdoor"
+      ]
+    },
+    {
+      "id": "exit_toll_to_forecourt",
+      "rect": [
+        448,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "sanctum_forecourt",
+      "to_spawn": [
+        48,
+        208
+      ],
+      "requires_flags": [
+        "toll_cleared"
+      ],
+      "locked_door_id": "door_toll_forecourt_bridge"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "clerk_tw_1",
+      "kind": "toll_clerk",
+      "pos": [
+        344,
+        240
+      ],
+      "route": [
+        [
+          312,
+          240
+        ],
+        [
+          392,
+          240
+        ]
+      ],
+      "zone": "toll_causeway",
+      "leash": 132
+    },
+    {
+      "id": "eye_tw_1",
+      "kind": "eclipse_eye",
+      "pos": [
+        264,
+        216
+      ],
+      "route": [],
+      "zone": "toll_causeway",
+      "leash": 120
+    },
+    {
+      "id": "clerk_tw_2",
+      "kind": "toll_clerk",
+      "pos": [
+        184,
+        240
+      ],
+      "route": [
+        [
+          160,
+          224
+        ],
+        [
+          216,
+          256
+        ]
+      ],
+      "zone": "toll_causeway",
+      "leash": 128
+    },
+    {
+      "id": "wraith_tw_1",
+      "kind": "page_wraith",
+      "pos": [
+        152,
+        288
+      ],
+      "route": [],
+      "zone": "toll_causeway",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_tollway",
+      "kind": "room_anchor",
+      "pos": [
+        616,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_tollway",
+      "kind": "waystone",
+      "pos": [
+        504,
+        248
+      ],
+      "props": {
+        "zone": "toll_causeway",
+        "name_key": "ISL8_Z_TOLL_WAY"
+      }
+    },
+    {
+      "id": "mirror_tw_plaza",
+      "kind": "blue_transformer",
+      "pos": [
+        312,
+        216
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_toll_forecourt_bridge",
+      "kind": "door",
+      "pos": [
+        464,
+        40
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "toll_cleared"
+        ]
+      }
+    },
+    {
+      "id": "scale_tollway",
+      "kind": "toll_scale",
+      "pos": [
+        80,
+        192
+      ],
+      "props": {
+        "mode": "shop",
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_tollway",
+      "kind": "lore_stone",
+      "pos": [
+        128,
+        192
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_TOLLWAY",
+        "icon": "toy_scale"
+      }
+    },
+    {
+      "id": "chest_tw_shards",
+      "kind": "chest",
+      "pos": [
+        216,
+        176
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "secret_id": "isl8_tw_plaza"
+      }
+    },
+    {
+      "id": "lamp_tw_e",
+      "kind": "road_lamp",
+      "pos": [
+        576,
+        200
+      ],
+      "props": {
+        "lit": true,
+        "zone": "toll_causeway"
+      }
+    },
+    {
+      "id": "lamp_tw_se",
+      "kind": "road_lamp",
+      "pos": [
+        560,
+        344
+      ],
+      "props": {
+        "lit": true,
+        "zone": "toll_causeway"
+      }
+    },
+    {
+      "id": "lamp_tw_mid",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        192
+      ],
+      "props": {
+        "lit": true,
+        "zone": "toll_causeway"
+      }
+    },
+    {
+      "id": "lamp_tw_w",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        216
+      ],
+      "props": {
+        "lit": true,
+        "zone": "toll_causeway"
+      }
+    },
+    {
+      "id": "lamp_tw_nw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        96
+      ],
+      "props": {
+        "lit": true,
+        "zone": "toll_causeway"
+      }
+    },
+    {
+      "id": "lamp_tw_sw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        368
+      ],
+      "props": {
+        "lit": true,
+        "zone": "toll_causeway"
+      }
+    },
+    {
+      "id": "lamp_tw_n",
+      "kind": "road_lamp",
+      "pos": [
+        440,
+        104
+      ],
+      "props": {
+        "lit": true,
+        "zone": "toll_causeway"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_gate_arch",
+      "pos": [
+        56,
+        232
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stamp_floor_emblem",
+      "pos": [
+        320,
+        240
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        240,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        392,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        224,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        424,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        488,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        192,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        120,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        464,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        64,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        192,
+        176,
+        64
+      ],
+      "color": "wine"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        208,
+        128,
+        48
+      ],
+      "color": "gold"
+    }
+  ],
+  "layers": [
+    {
+      "id": "relit_dawn",
+      "when": "flag:island_8_relit",
+      "disable": [
+        "clerk_tw_1",
+        "eye_tw_1",
+        "clerk_tw_2",
+        "wraith_tw_1"
+      ]
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "West floating ledger viaduct connecting Vigil Terrace & overworld to The Toll House, Blind Scale Vault, Silent Vault, and Sanctum Forecourt; features mirror-reflectable eclipse_eye + toll_clerk role pair.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "toll_clerk + eclipse_eye mirror reflection + western wing routing",
+    "decisions": 5,
+    "expert_s": 55,
+    "reward": "toll_house_access_and_caves",
+    "why": "West overworld hub linking Minor Dungeon A and two signature caves with meaningful cover and mirror counterplay.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          504,
+          248
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          192
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_tw_shards"
+      }
+    ]
+  }
+}

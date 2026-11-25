@@ -1,0 +1,400 @@
+{
+  "id": "cave_blind_scale",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "toll_house",
+  "name_key": "ISL8_Z_BLIND_SCALE",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "sanctum_bells"
+  ],
+  "spawn": [
+    112,
+    240
+  ],
+  "zones": [
+    {
+      "id": "cave_blind_scale",
+      "name_key": "ISL8_Z_BLIND_SCALE",
+      "rect": [
+        0,
+        0,
+        384,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_toll_causeway",
+      "rect": [
+        96,
+        272,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_causeway",
+      "to_spawn": [
+        144,
+        48
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_blind",
+      "kind": "room_anchor",
+      "pos": [
+        112,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "plate_blind_west",
+      "kind": "pressure_plate",
+      "pos": [
+        112,
+        160
+      ],
+      "props": {
+        "by": [
+          "block",
+          "wick",
+          "lantern"
+        ],
+        "hold": true,
+        "size": [
+          20,
+          20
+        ],
+        "target_id": "scale_blind"
+      }
+    },
+    {
+      "id": "plate_blind_east",
+      "kind": "pressure_plate",
+      "pos": [
+        272,
+        160
+      ],
+      "props": {
+        "by": [
+          "block",
+          "wick",
+          "lantern"
+        ],
+        "hold": true,
+        "size": [
+          20,
+          20
+        ],
+        "target_id": "scale_blind"
+      }
+    },
+    {
+      "id": "scale_blind",
+      "kind": "scale",
+      "pos": [
+        192,
+        112
+      ],
+      "props": {
+        "left": "plate_blind_west",
+        "right": "plate_blind_east",
+        "mode": "balance",
+        "need_weight": 1.0,
+        "latch": true,
+        "persist": true,
+        "target_id": "door_blind_vault"
+      }
+    },
+    {
+      "id": "orb_blind_stone",
+      "kind": "carry_orb",
+      "pos": [
+        56,
+        208
+      ],
+      "props": {
+        "kind": "stone"
+      }
+    },
+    {
+      "id": "mimic_blind",
+      "kind": "mimic_statue",
+      "pos": [
+        304,
+        240
+      ],
+      "props": {
+        "mirror": "x",
+        "range": 380.0
+      }
+    },
+    {
+      "id": "door_blind_vault",
+      "kind": "door",
+      "pos": [
+        112,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "scale_blind"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_ember_8_scale",
+      "kind": "chest",
+      "pos": [
+        112,
+        48
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_8_scale"
+      }
+    },
+    {
+      "id": "moth_8_02",
+      "kind": "moth",
+      "pos": [
+        256,
+        48
+      ],
+      "props": {
+        "id": "moth_8_02"
+      }
+    },
+    {
+      "id": "lore_blind",
+      "kind": "lore_stone",
+      "pos": [
+        152,
+        232
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_BLIND",
+        "icon": "toy_scale"
+      }
+    },
+    {
+      "id": "lamp_blind_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        128
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_blind_scale"
+      }
+    },
+    {
+      "id": "lamp_blind_e",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        128
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_blind_scale"
+      }
+    },
+    {
+      "id": "lamp_blind_n",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        48
+      ],
+      "props": {
+        "lit": true,
+        "zone": "cave_blind_scale"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        80,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        224,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        148,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        240,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        56,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        320,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        144,
+        32,
+        32
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        256,
+        144,
+        32,
+        32
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        80,
+        32,
+        192,
+        32
+      ],
+      "color": "wine"
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Offset an X-mirrored mimic statue across an iron grate by walking west to fetch a stone carry orb, then align both weights onto twin scale pans simultaneously.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "mimic_statue wall-offset calibration + carry_orb + twin scale balance",
+    "decisions": 6,
+    "expert_s": 45,
+    "reward": "ember_8_scale+moth_8_02",
+    "why": "Compact, high-aha Island 8 side vault combining Island 7 mirror-offset with Toll House scales.",
+    "target": "chest_ember_8_scale",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          56,
+          208
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "carry",
+        "target": "orb_blind_stone",
+        "action": "pickup"
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          160
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "carry",
+        "target": "orb_blind_stone",
+        "action": "drop"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_blind_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          60
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_8_scale"
+      }
+    ]
+  }
+}

@@ -1,0 +1,657 @@
+{
+  "id": "toll_r10",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R10",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    56,
+    248
+  ],
+  "zones": [
+    {
+      "id": "toll_organ",
+      "name_key": "ISL8_TOLL_R10",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_west",
+      "rect": [
+        0,
+        224,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r9",
+      "to_spawn": [
+        456,
+        64
+      ]
+    },
+    {
+      "id": "exit_r10_chute",
+      "rect": [
+        112,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r1",
+      "to_spawn": [
+        400,
+        56
+      ],
+      "locked_door_id": "door_r10_chute"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10_west",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r10_organ",
+      "kind": "lore_stone",
+      "pos": [
+        104,
+        216
+      ],
+      "props": {
+        "string_id": "ISL8_TOLL_LORE_ORGAN",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "bell_r10_dusk",
+      "kind": "bell",
+      "pos": [
+        232,
+        232
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 240.0
+      }
+    },
+    {
+      "id": "bell_r10_dawn",
+      "kind": "bell",
+      "pos": [
+        104,
+        152
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 200.0,
+        "target_id": "tblock_r10_w",
+        "persist": true
+      }
+    },
+    {
+      "id": "bell_r10_war",
+      "kind": "bell",
+      "pos": [
+        360,
+        152
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 220.0,
+        "target_id": "tblock_r10_e",
+        "persist": true
+      }
+    },
+    {
+      "id": "tblock_r10_w",
+      "kind": "toggle_block",
+      "pos": [
+        148,
+        100
+      ],
+      "props": {
+        "group": "r10_w",
+        "phase": 0,
+        "start_phase": 0,
+        "size": [
+          96,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "tblock_r10_e",
+      "kind": "toggle_block",
+      "pos": [
+        268,
+        100
+      ],
+      "props": {
+        "group": "r10_e",
+        "phase": 0,
+        "start_phase": 0,
+        "size": [
+          96,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "orbs_r10",
+      "kind": "sequence_orbs",
+      "pos": [
+        208,
+        64
+      ],
+      "props": {
+        "count": 4,
+        "order": [
+          1,
+          3,
+          0,
+          2
+        ],
+        "positions": [
+          [
+            -88,
+            0
+          ],
+          [
+            -32,
+            0
+          ],
+          [
+            32,
+            0
+          ],
+          [
+            88,
+            0
+          ]
+        ],
+        "target_id": "door_r10_chute",
+        "persist": true
+      }
+    },
+    {
+      "id": "crack_r10_moth",
+      "kind": "cracked_wall",
+      "pos": [
+        408,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "war_breakable": true
+      }
+    },
+    {
+      "id": "moth_8_06",
+      "kind": "moth",
+      "pos": [
+        440,
+        88
+      ],
+      "props": {
+        "id": "moth_8_06"
+      }
+    },
+    {
+      "id": "door_r10_chute",
+      "kind": "door",
+      "pos": [
+        128,
+        296
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "orbs_r10"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "sensor_r10_mute",
+      "kind": "toll_sensor",
+      "pos": [
+        360,
+        232
+      ],
+      "props": {
+        "check": "sold:music_off || sold:sound_off || sold:fps_step",
+        "target_id": "door_r10_mute",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_r10_mute",
+      "kind": "door",
+      "pos": [
+        392,
+        232
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r10_mute"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r10_mute",
+      "kind": "chest",
+      "pos": [
+        424,
+        248
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        248
+      ],
+      "props": {
+        "zone": "toll_organ",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_c",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        184
+      ],
+      "props": {
+        "zone": "toll_organ",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_n",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "zone": "toll_organ",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        184
+      ],
+      "props": {
+        "zone": "toll_organ",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "cg_r10_1",
+      "kind": "choir_gloam",
+      "pos": [
+        184,
+        152
+      ],
+      "zone": "toll_organ"
+    },
+    {
+      "id": "cg_r10_2",
+      "kind": "choir_gloam",
+      "pos": [
+        296,
+        184
+      ],
+      "zone": "toll_organ"
+    },
+    {
+      "id": "tc_r10_1",
+      "kind": "toll_clerk",
+      "pos": [
+        312,
+        248
+      ],
+      "zone": "toll_organ",
+      "route": [
+        [
+          280,
+          248
+        ],
+        [
+          344,
+          248
+        ]
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        56,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        360,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        56,
+        184
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        168,
+        264
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        264,
+        264
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        152,
+        40
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        280,
+        40
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        440,
+        264
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        72,
+        136
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        376,
+        136
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        200,
+        264
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        40,
+        224,
+        48
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        232
+      ],
+      "radius": 26,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        208,
+        72
+      ],
+      "size": [
+        72,
+        48
+      ],
+      "tint": "rose",
+      "shear": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r10_chute",
+      "on": "signal:orbs_r10",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_chute_short"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_TOLL_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Stepped Mute Organ Loft: hush the Choir Gloams & Clerk with Dusk Bell, lower the two pipe shutters with Dawn & War Bells (also cracking the NE pipe for Moth 06!), strike the 4 Sequence Orbs in chord order 2-4-1-3, and drop down the SW chute directly beside the Narthex Boss Gate!",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "3-bell acoustic puzzle + 4-orb sequence_orbs chord + Cycle 3 chute return; sold:music_off/sound_off/fps_step opens SE vault.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "chute_short+moth_8_06",
+    "why": "Beauty Wing finale (music_off + sound_off + fps_step), looping back cleanly to the Boss Counter.",
+    "exit": "exit_r10_chute",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          228
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_r10_organ"
+      },
+      {
+        "op": "ring",
+        "target": "bell_r10_dusk",
+        "from": [
+          152,
+          232
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 38.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "ring",
+        "target": "bell_r10_dawn",
+        "from": [
+          136,
+          168
+        ]
+      },
+      {
+        "op": "ring",
+        "target": "bell_r10_war",
+        "from": [
+          328,
+          168
+        ]
+      },
+      {
+        "op": "wait_until",
+        "target": "tblock_r10_w",
+        "prop": "raised",
+        "value": false,
+        "timeout": 2.5
+      },
+      {
+        "op": "wait_until",
+        "target": "tblock_r10_e",
+        "prop": "raised",
+        "value": false,
+        "timeout": 2.5
+      },
+      {
+        "op": "shoot",
+        "from": [
+          176,
+          124
+        ],
+        "target": [
+          176,
+          64
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          296,
+          124
+        ],
+        "target": [
+          296,
+          64
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          120,
+          124
+        ],
+        "target": [
+          120,
+          64
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          124
+        ],
+        "target": [
+          240,
+          64
+        ]
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r10_chute",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_chute"
+      }
+    ]
+  }
+}

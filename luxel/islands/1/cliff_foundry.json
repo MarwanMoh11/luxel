@@ -1,0 +1,582 @@
+{
+  "id": "cliff_foundry",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL1_Z_FOUNDRY",
+  "theme": "forge_deep",
+  "music": "explore",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    304,
+    56
+  ],
+  "zones": [
+    {
+      "id": "cliff_foundry",
+      "name_key": "ISL1_Z_FOUNDRY",
+      "rect": [
+        0,
+        0,
+        608,
+        416
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cf_north",
+      "rect": [
+        288,
+        0,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        640,
+        648
+      ]
+    },
+    {
+      "id": "exit_cf_trial",
+      "rect": [
+        592,
+        208,
+        16,
+        32
+      ],
+      "to_region": "cave_foundry_trial",
+      "to_spawn": [
+        56,
+        160
+      ]
+    },
+    {
+      "id": "exit_cf_grotto",
+      "rect": [
+        0,
+        208,
+        16,
+        32
+      ],
+      "to_region": "cave_lens_grotto",
+      "to_spawn": [
+        336,
+        144
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "snuffer_cf_1",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        416,
+        200
+      ],
+      "zone": "cliff_foundry",
+      "leash": 128
+    },
+    {
+      "id": "warden_cf_1",
+      "kind": "warden",
+      "pos": [
+        440,
+        248
+      ],
+      "route": [
+        [
+          408,
+          248
+        ],
+        [
+          464,
+          248
+        ]
+      ],
+      "zone": "cliff_foundry",
+      "leash": 128
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_foundry",
+      "kind": "waystone",
+      "pos": [
+        352,
+        112
+      ],
+      "props": {
+        "zone": "cliff_foundry",
+        "name_key": "ISL1_Z_FOUNDRY"
+      }
+    },
+    {
+      "id": "npc_grandma_foundry",
+      "kind": "npc",
+      "pos": [
+        240,
+        128
+      ],
+      "props": {
+        "folk": "candle_grandma",
+        "quest": "q1_cold_hearth",
+        "wander_radius": 8,
+        "bubbles": [
+          {
+            "icons": [
+              "flame",
+              "light_off",
+              "sad",
+              "arrow_s",
+              "toy_brazier"
+            ],
+            "line": "ISL1_Q3_HINT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "bell_cf_war",
+      "kind": "bell",
+      "pos": [
+        240,
+        192
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 136
+      }
+    },
+    {
+      "id": "door_cf_shutter",
+      "kind": "tone_door",
+      "pos": [
+        240,
+        248
+      ],
+      "props": {
+        "tone": "war",
+        "size": [
+          32,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "bell_cf_dawn",
+      "kind": "bell",
+      "pos": [
+        240,
+        304
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 144
+      }
+    },
+    {
+      "id": "brazier_cf_1",
+      "kind": "brazier",
+      "pos": [
+        184,
+        304
+      ],
+      "props": {
+        "dawn_relight": true,
+        "target_id": "gate_cf_hearth"
+      }
+    },
+    {
+      "id": "brazier_cf_2",
+      "kind": "brazier",
+      "pos": [
+        240,
+        344
+      ],
+      "props": {
+        "dawn_relight": true,
+        "target_id": "gate_cf_hearth"
+      }
+    },
+    {
+      "id": "brazier_cf_3",
+      "kind": "brazier",
+      "pos": [
+        296,
+        304
+      ],
+      "props": {
+        "dawn_relight": true,
+        "target_id": "gate_cf_hearth"
+      }
+    },
+    {
+      "id": "gate_cf_hearth",
+      "kind": "logic_gate",
+      "pos": [
+        288,
+        272
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "brazier_cf_1",
+          "brazier_cf_2",
+          "brazier_cf_3"
+        ],
+        "persist": true,
+        "sets_flag": "foundry_hearth_lit"
+      }
+    },
+    {
+      "id": "lamp_cf_n",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        96
+      ],
+      "props": {
+        "zone": "cliff_foundry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cf_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        208
+      ],
+      "props": {
+        "zone": "cliff_foundry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cf_e",
+      "kind": "road_lamp",
+      "pos": [
+        528,
+        208
+      ],
+      "props": {
+        "zone": "cliff_foundry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cf_hearth",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        280
+      ],
+      "props": {
+        "zone": "cliff_foundry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cf_mid",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        224
+      ],
+      "props": {
+        "zone": "cliff_foundry",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "midnight_foundry",
+      "when": "bell_hour==midnight",
+      "tint": "midnight"
+    }
+  ],
+  "events": [
+    {
+      "id": "cf_hearth_lit_ev",
+      "on": "signal:gate_cf_hearth",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "foundry_hearth_lit"
+        },
+        {
+          "sfx": "shrine_unlock"
+        },
+        {
+          "narrate": {
+            "id": "ISL1_FOUNDRY_LIT",
+            "style": "title",
+            "duration": 3.2
+          }
+        }
+      ]
+    },
+    {
+      "id": "cf_hub_door_msg",
+      "on": "flag:hub_door_1",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "ISL1_HUB_OPEN",
+            "style": "title",
+            "duration": 3.2
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        176,
+        288,
+        128,
+        64
+      ],
+      "glow": true
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        304
+      ],
+      "radius": 32,
+      "style": "gear"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        448,
+        240
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        128,
+        224
+      ],
+      "radius": 22,
+      "style": "soot"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "basalt_forge_arch",
+      "pos": [
+        304,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "great_forge_anvil",
+      "pos": [
+        384,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        168,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        312,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        328,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        128,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        512,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "iron_weapon_rack",
+      "pos": [
+        408,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "quench_barrel_tub",
+      "pos": [
+        208,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ingot_mold_trough",
+      "pos": [
+        128,
+        256
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "slag_chimney_vent",
+      "pos": [
+        488,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "tempering_floor_seal",
+      "pos": [
+        240,
+        304
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Coastal bronze bell foundry south of the Glasshouse: shatter the War shutter, ignite 3 cooled bronze moulds with one Dawn ring for Grandma's hearth quest, and branch to Foundry Ring-Dash and Lens Grotto.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "War waves shatter shutters and Dawn waves light multiple foundry moulds simultaneously.",
+    "decisions": 6,
+    "expert_s": 65,
+    "reward": "foundry_hearth_lit+hub_door_1+trial_and_grotto_access",
+    "why": "Southern industrial bell-casting wing tying War/Dawn acoustics to Grandma's Wick House quest.",
+    "optional": true,
+    "exit": "exit_cf_trial",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_foundry"
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          288,
+          192
+        ],
+        "target": "bell_cf_war"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_cf_shutter",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          272
+        ],
+        "target": "bell_cf_dawn"
+      },
+      {
+        "op": "wait_until",
+        "flag": "foundry_hearth_lit",
+        "timeout": 4.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_cf_trial"
+      }
+    ]
+  }
+}

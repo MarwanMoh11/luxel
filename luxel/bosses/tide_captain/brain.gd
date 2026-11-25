@@ -1,256 +1,224 @@
 class_name LxTideCaptainBoss
-extends LxCrabWardenBrain
-## Tidewater Harbor Grand Mini-Boss (Island 2, `lighthouse_r6`): Upgraded Tide Captain.
-## 2 phases, HP 18.0 (~52 bolts), claw shield 4.0 (1 Prism-Split fan breaks guard!).
-## Signature kit: Brine Surge Cone (0.58s/0.52s), Blue-Bolt Guard Crack (1.4s 1.5x stagger),
-## P2 Lateral Claw-Rush Feint, P2 Double Cross-Surge (twin +-45 deg cones with safe center lane!),
-## and P2 Arena Mutation (tower_tide -> "mid", surging basin foam, floating mirror drift, & bicorne snatch beat!).
+extends LxBossBase
+## Tidewater Harbor Grand Mini-Boss (Island 2, `lighthouse_r6`): Tide Captain (Bible §4.6).
+## 2 phases on LxBossBase. Armored brass-claw carapace chips plain bolts outside punish windows
+## with a sea-gold armour glint; Blue / Prism-Split hits shatter his active claw guard for a 1.6s
+## 1.5x Guard-Crack stagger!
+## Preserves B2 upgrades: Brine Surge Cone, P2 Lateral Claw-Rush Feint, P2 Double Cross-Surge
+## (twin +-45 deg cones with safe center lane), P2 sluice basin flood (`tower_tide -> "mid"`),
+## drifting mirrors (pinned by Ballast Clamp / hung lantern), and floating bicorne hat beat!
 
-const SURGE_TELL_P1: float = 0.62
-const SURGE_TELL_P2: float = 0.56
-const CROSS_TELL_P2: float = 0.60
-const SURGE_FIRE_TIME: float = 0.32
-const CROSS_FIRE_TIME: float = 0.34
-const SURGE_RECOVER_P1: float = 1.40
-const SURGE_RECOVER_P2: float = 1.40
-const SURGE_START_R: float = 10.0
-const SURGE_MAX_R: float = 82.0
-const SURGE_HALF_ARC: float = 0.50
-const CROSS_OFFSET_RAD: float = 0.785 # +-45 deg cones with safe center lane
-const CROSS_HALF_ARC: float = 0.32
-const SURGE_BAND: float = 12.0
-const SURGE_CD_P1: float = 5.2
-const SURGE_CD_P2: float = 4.6
+const FRONT_GUARD_HALF: float = 1.05
+const SHIELD_MAX_HP: float = 4.0
+const SHIELD_GONE_DUR: float = 6.2
 const GUARD_CRACK_STAGGER: float = 1.60
 const GUARD_CRACK_MULT: float = 1.50
+const SURGE_START_R: float = 10.0
+const SURGE_MAX_R: float = 60.0
+const SURGE_HALF_ARC: float = 0.48
+const CROSS_OFFSET_RAD: float = 0.785
+const CROSS_HALF_ARC: float = 0.34
+const SURGE_BAND: float = 12.0
 const FEINT_DIST: float = 18.0
-const PHASE2_ROAR_TIME: float = 0.60
 
-var surge_attack: bool = false
-var cross_surge: bool = false
-var _next_cross: bool = true
-var surge_cd: float = 1.6
-var surge_progress: float = 0.0
-var surge_dir: Vector2 = Vector2.RIGHT
-var surge_hit: bool = false
-var swings_since_surge: int = 0
+var shield_max: float = SHIELD_MAX_HP
+var shield_hp: float = SHIELD_MAX_HP
+var shield_gone_t: float = 0.0
 var guard_cracked_t: float = 0.0
-var feint_done: bool = false
-var feint_side: float = 1.0
-var feint_ghost_pos: Vector2 = Vector2.ZERO
-var feint_ghost_t: float = 0.0
-var _roaring: bool = false
+
+var _surge_dir: Vector2 = Vector2.RIGHT
+var _surge_progress: float = 0.0
+var _surge_hit: bool = false
+var _cross_active: bool = false
+var _rush_dir: Vector2 = Vector2.RIGHT
+var _feint_done: bool = false
+var _feint_side: float = 1.0
+var _feint_ghost_pos: Vector2 = Vector2.ZERO
+var _feint_ghost_t: float = 0.0
 var _hat_float_t: float = 0.0
 var _hat_pos: Vector2 = Vector2.ZERO
 var _p2_flood_active: bool = false
-var _saved_tiles: Dictionary = {}
+var _clank_sfx_cd: float = 0.0
 
 
 func _init() -> void:
 	super._init()
 	kind = "tide_captain"
 	boss_id = "tide_captain"
+	boss_name_key = "MINIBOSS_2"
 	island_id = 2
-	is_boss = true
-	max_hp = 18.0
-	hp = 18.0
-	shield_max = 4.0
-	shield_hp = 4.0
-	shield_gone_duration = 6.2
-	body_radius = 7.0
-	routine_speed = 34.0
-	leash_radius = 175.0
-	notice_radius = 140.0
-	reach = 40.0
-	lunge_reach = 96.0
-	swing_r = 28.0
-	swing_arc = 1.18
-	tell_time = 0.52
-	lunge_tell_time = 0.58
-	recover_time = 1.25
-	shard_drop = 16
+	is_miniboss = true
+	reward_heart = "none"
+	music_cue = "island2_boss_p1"
+	music_p2_cue = "island2_boss_p2"
+	max_hp = 56.0
+	hp = 56.0
+	body_radius = 8.0
+	move_speed = 38.0
+	stagger_threshold = 11.0
+	stagger_duration = 1.55
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.28
+	shard_drop = 18
+	intro_duration = 0.60
+	phase_shift_duration = 0.65
+	death_duration = 2.0
 
 
-func _exit_tree() -> void:
-	_revert_arena_tiles()
+func _configure_boss(_spec: Dictionary) -> void:
+	if world_ctx != null and str(world_ctx.get("current_region_id")) == "lighthouse_r6":
+		arena_rect = Rect2(176.0, 88.0, 176.0, 80.0)
+	configure_phases([0.50])
+
+	# Attack 1: Brine Surge Cone — sweeping saltwater cone + aimed brine fan
+	register_attack("brine_surge_cone", {
+		"weight": 1.25, "tell": 0.58, "commit": 0.34, "recover": 1.15, "cooldown": 1.45,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_cross_active = false
+			_surge_progress = 0.0
+			_surge_hit = false
+			_surge_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _surge_dir.angle()
+			ground.warn_sector(pos, facing - SURGE_HALF_ARC, facing + SURGE_HALF_ARC, SURGE_MAX_R, last_tell_duration, 0.0, "sky", "coral")
+			stage.play_sfx("tide_captain_slam_tell", pos),
+		"on_tell": func(_b: LxBossBase, tgt: Vector2, _dt: float, _prog: float) -> void:
+			if state_timer > 0.20 and tgt.distance_to(pos) > 1.0:
+				_surge_dir = Vector2.from_angle(facing),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			_surge_progress = 0.0
+			_surge_hit = false
+			_surge_dir = Vector2.from_angle(facing)
+			patterns.emit_fan(pos, _surge_dir, 5 if phase >= 2 else 3, 0.78, 138.0, {"color": "sky", "source": "tide_surge_bolt", "damage": 0.5})
+			_boss_impact(0.18, 84.0, 88.0)
+			stage.play_sfx("tide_captain_slam_fire", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
+			_step_surge_wave(el, 0.34, false),
+	})
+
+	# Attack 2: Claw-Rush Cleave — advancing lunge + P2 Lateral Claw-Rush Feint!
+	register_attack("claw_rush_cleave", {
+		"weight": 1.20, "tell": 0.54, "commit": 0.36, "recover": 1.08, "cooldown": 1.40,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_feint_done = false
+			_feint_side = -_feint_side
+			_rush_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _rush_dir.angle()
+			ground.warn_lane(pos, pos + _rush_dir * 60.0, 10.0, last_tell_duration, 0.0, "coral", "gold")
+			stage.play_sfx("warden_swing", pos),
+		"on_tell": func(_b: LxBossBase, tgt: Vector2, _dt: float, prog: float) -> void:
+			if phase >= 2 and not _feint_done and prog >= 0.35:
+				_feint_done = true
+				_feint_ghost_pos = pos
+				_feint_ghost_t = 0.30
+				var to_f: Vector2 = tgt - pos
+				var perp: Vector2 = (to_f.normalized() if to_f.length() > 0.1 else _rush_dir).rotated(PI * 0.5 * _feint_side)
+				move_boss(perp * FEINT_DIST, false)
+				if tgt.distance_to(pos) > 1.0:
+					_rush_dir = (tgt - pos).normalized()
+					facing = _rush_dir.angle()
+				stage.play_sfx("tide_captain_feint", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			patterns.emit_fan(pos, _rush_dir, 5 if phase >= 2 else 3, 0.68, 140.0, {"color": "coral", "source": "claw_cleave", "damage": 0.5})
+			stage.shake(0.15)
+			stage.play_sfx("warden_swing", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			move_boss(_rush_dir * 108.0 * dt, false)
+			check_contact_damage(body_radius + 11.0, _rush_dir, 0.5, "claw_rush"),
+	})
+
+	# Attack 3: Harbor Squall Barrage — targeted brine geysers + perimeter corner pressure + lane bolts
+	register_attack("harbor_squall_barrage", {
+		"weight": 1.15, "tell": 0.56, "commit": 0.32, "recover": 1.08, "cooldown": 1.50,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_rush_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _rush_dir.angle()
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 24.0, 0.5, "sky", "coral")
+			ground.warn_lane(pos, pos + _rush_dir * 58.0, 8.0, last_tell_duration, 0.0, "ice", "gold")
+			stage.play_sfx("tide_captain_slam_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			patterns.emit_lane(pos, _rush_dir, 4 if phase >= 2 else 3, 146.0, 0.08, {"color": "ice", "source": "harbor_squall", "damage": 0.5})
+			stage.shake(0.14)
+			stage.play_sfx("tide_surge", pos),
+	})
+
+	# Attack 4 (P2): Double Cross-Surge — twin +-45 deg surge cones with safe center lane!
+	register_attack("double_cross_surge", {
+		"phases": [2], "weight": 1.95, "tell": 0.60, "commit": 0.36, "recover": 1.25, "cooldown": 1.45,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_cross_active = true
+			_surge_progress = 0.0
+			_surge_hit = false
+			_surge_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _surge_dir.angle()
+			for sgn: float in [-1.0, 1.0]:
+				var ca: float = facing + sgn * CROSS_OFFSET_RAD
+				ground.warn_sector(pos, ca - CROSS_HALF_ARC, ca + CROSS_HALF_ARC, SURGE_MAX_R, last_tell_duration, 0.0, "sky", "coral")
+			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.06, 0.5, "coral", "gold")
+			stage.play_sfx("tide_captain_slam_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			_surge_progress = 0.0
+			_surge_hit = false
+			_surge_dir = Vector2.from_angle(facing)
+			patterns.emit_fan(pos, _surge_dir.rotated(-CROSS_OFFSET_RAD), 3, 0.56, 138.0, {"color": "sky", "source": "cross_surge", "damage": 0.5})
+			patterns.emit_fan(pos, _surge_dir.rotated(CROSS_OFFSET_RAD), 3, 0.56, 138.0, {"color": "sky", "source": "cross_surge", "damage": 0.5})
+			_boss_impact(0.20, 88.0, 90.0)
+			stage.play_sfx("tide_captain_slam_fire", pos)
+			stage.play_sfx("tide_surge", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
+			_step_surge_wave(el, 0.36, true),
+	})
 
 
-func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
-	_revert_arena_tiles()
-	super.setup(spec, p_director, p_world)
-	is_boss = true
-	boss_id = str(spec.get("boss_id", "tide_captain"))
-	island_id = int(spec.get("island_id", 2))
-	if not spec.has("max_hp") and not spec.has("data"):
-		max_hp = 18.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
-		hp = max_hp
-	if not spec.has("shield_hp") and not spec.has("data"):
-		shield_max = 4.0
-		shield_hp = 4.0
-	surge_attack = false
-	cross_surge = false
-	_next_cross = true
-	surge_cd = 1.6
-	surge_progress = 0.0
-	surge_dir = Vector2.from_angle(facing)
-	surge_hit = false
-	swings_since_surge = 0
+func _on_reset_encounter() -> void:
+	shield_max = SHIELD_MAX_HP
+	shield_hp = SHIELD_MAX_HP
+	shield_gone_t = 0.0
 	guard_cracked_t = 0.0
-	feint_done = false
-	feint_side = 1.0
-	feint_ghost_pos = pos
-	feint_ghost_t = 0.0
-	_roaring = false
+	_surge_progress = 0.0
+	_surge_hit = false
+	_cross_active = false
+	_feint_done = false
+	_feint_side = 1.0
+	_feint_ghost_pos = pos
+	_feint_ghost_t = 0.0
 	_hat_float_t = 0.0
 	_hat_pos = pos
 	_p2_flood_active = false
+	_clank_sfx_cd = 0.0
 
 
-func take_hit(hit: LxHit) -> int:
-	if state == State.DEAD or hit == null:
-		return HitResult.GLANCED
-	if _roaring:
-		_emit_enemy_hit(hit, HitResult.GLANCED)
-		return HitResult.GLANCED
-	var h: Dictionary = _read_hit(hit)
-	var src: String = str(h["source"])
-	var is_blue_hit: bool = hit.is_blue() or src == LxHit.SOURCE_PRISM
-	# Blue-Bolt / Prism-Split Guard Crack: shatters active claw guard for 1.4s 1.5x punish!
-	if is_blue_hit and _has_active_shield():
-		var dmg: float = float(h["damage"]) * GUARD_CRACK_MULT
-		var orig: Vector2 = h["origin"] as Vector2
-		var rel: Vector2 = orig - pos
-		shield_hp = 0.0
-		shield_gone_t = shield_gone_duration
-		guard_cracked_t = GUARD_CRACK_STAGGER
-		wary = true
-		surge_attack = false
-		cross_surge = false
-		lunge_attack = false
-		is_counter_attack = false
-		hp -= dmg
-		flash_t = 0.18
-		if rel.length() > 0.01:
-			knock = -rel.normalized() * 68.0
-		shield_broken.emit(self, pos)
-		_boss_impact(0.20, 80.0, 84.0)
-		_emit_sfx("tide_captain_guard_crack")
-		if hp <= 0.001:
-			opened_kill = true
-			_die(hit)
-			return HitResult.KILLED
-		if not _check_phase_transition():
-			_release_token()
-			state = State.STAGGER
-			state_timer = GUARD_CRACK_STAGGER
-		_emit_enemy_hit(hit, HitResult.OPENED)
-		return HitResult.OPENED
-
-	var hp_before: float = hp
-	var res: int = super.take_hit(hit)
-	if is_alive() and guard_cracked_t > 0.0 and not is_blue_hit and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		var dealt: float = maxf(0.0, hp_before - hp)
-		if dealt > 0.001:
-			hp -= dealt * (GUARD_CRACK_MULT - 1.0)
-			if hp <= 0.001:
-				opened_kill = true
-				_die(hit)
-				return HitResult.KILLED
-	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		_check_phase_transition()
-	return res
-
-
-func _die(hit: Object) -> void:
-	_revert_arena_tiles()
-	_p2_flood_active = false
-	super._die(hit)
-
-
-func _is_hit_invulnerable() -> bool:
-	return _roaring
-
-
-func _on_damaged_alive(_hit: LxHit) -> bool:
-	return _check_phase_transition()
-
-
-func _check_phase_transition() -> bool:
-	if phase < 2 and hp <= max_hp * 0.50 and hp > 0.001:
-		phase = 2
-		wary = false
-		_roaring = true
-		surge_attack = false
-		cross_surge = false
-		lunge_attack = false
-		is_counter_attack = false
-		surge_progress = 0.0
+func _on_phase_enter(new_phase: int) -> void:
+	if new_phase == 2:
+		_p2_flood_active = true
+		_hat_float_t = 1.80
+		_hat_pos = pos + Vector2(-18.0, -14.0)
 		guard_cracked_t = 0.0
 		if shield_gone_t <= 0.0:
-			shield_hp = maxf(shield_hp, shield_max * 0.50)
-		_release_token()
-		state = State.NOTICE
-		state_timer = PHASE2_ROAR_TIME
-		surge_cd = 2.40
-		_trigger_p2_sluice_flood()
-		if Lx.events != null:
-			Lx.events.boss_phase_changed.emit(boss_id, 2)
+			shield_hp = maxf(shield_hp, shield_max * 0.65)
+		if Lx.vars != null:
+			Lx.vars.set_var("dungeon:lighthouse", "tower_tide", "mid")
+		# P2 Arena Mutation: sluice flood carves outer basin rim pockets (reverted cleanly on retry/death!)
+		var c: Vector2 = arena_rect.get_center()
+		_flood_safe_tile_near(c + Vector2(-48.0, -72.0))
+		_flood_safe_tile_near(c + Vector2(56.0, -72.0))
+		_flood_safe_tile_near(c + Vector2(-48.0, 64.0))
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-72.0, 26.0)), 4.0, "tide_piling_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(72.0, -26.0)), 4.0, "tide_piling_e")
+		stage.darkness_pulse(0.56, 0.90)
 		_boss_impact(0.26, 92.0, 92.0)
-		_emit_sfx("tide_captain_phase2")
-		_emit_sfx("tide_surge")
-		return true
-	return false
+		stage.play_sfx("tide_captain_phase2", pos)
+		stage.play_sfx("tide_surge", pos)
 
 
-func _trigger_p2_sluice_flood() -> void:
-	_p2_flood_active = true
-	_hat_float_t = 1.80
-	_hat_pos = pos + Vector2(-18.0, -14.0)
-	if Lx.vars != null:
-		Lx.vars.set_var("dungeon:lighthouse", "tower_tide", "mid")
-	# Flood safe recessed basin flank pockets (preserving center walkway & exits; reverted cleanly on death/reload!)
-	if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.get("grid") is Array:
-		var g: Array = world_ctx.get("grid") as Array
-		if g.size() >= 15 and (g[0] as PackedStringArray).size() >= 28:
-			_flood_tile_rect(Rect2i(11, 12, 2, 1))
-			_flood_tile_rect(Rect2i(17, 2, 2, 1))
-
-
-func _flood_tile_rect(rect: Rect2i) -> void:
-	if world_ctx == null or not is_instance_valid(world_ctx):
-		return
-	var gv: Variant = world_ctx.get("grid")
-	if not (gv is Array):
-		return
-	var g: Array = gv as Array
-	var wp: Vector2 = _get_wick_pos()
-	for ty: int in range(maxi(1, rect.position.y), mini(g.size() - 1, rect.end.y)):
-		var row: PackedStringArray = g[ty] as PackedStringArray
-		for tx: int in range(maxi(1, rect.position.x), mini(row.size() - 1, rect.end.x)):
-			var cell_c := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
-			if wp.distance_to(cell_c) < 22.0 or pos.distance_to(cell_c) < 22.0:
-				continue
-			var key := Vector2i(tx, ty)
-			if not _saved_tiles.has(key):
-				_saved_tiles[key] = row[tx]
-			if world_ctx.has_method("set_tiles"):
-				world_ctx.call("set_tiles", Rect2i(tx, ty, 1, 1), "water")
-
-
-func _revert_arena_tiles() -> void:
-	if _saved_tiles.is_empty():
-		return
-	if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("set_tiles"):
-		for kv: Variant in _saved_tiles.keys():
-			var k: Vector2i = kv as Vector2i
-			world_ctx.call("set_tiles", Rect2i(k.x, k.y, 1, 1), str(_saved_tiles[k]))
-	_saved_tiles.clear()
-
-
-func _step_brain(dt: float) -> void:
-	surge_cd = maxf(0.0, surge_cd - dt)
+func _on_boss_tick(dt: float, _target: Vector2) -> void:
+	_clank_sfx_cd = maxf(0.0, _clank_sfx_cd - dt)
 	guard_cracked_t = maxf(0.0, guard_cracked_t - dt)
-	feint_ghost_t = maxf(0.0, feint_ghost_t - dt)
+	_feint_ghost_t = maxf(0.0, _feint_ghost_t - dt)
+	if shield_gone_t > 0.0:
+		shield_gone_t = maxf(0.0, shield_gone_t - dt)
+		if shield_gone_t <= 0.0:
+			shield_hp = shield_max
+			stage.play_sfx("warden_shield_reform", pos)
 	if _hat_float_t > 0.0:
 		_hat_float_t = maxf(0.0, _hat_float_t - dt)
 		var u: float = 1.0 - clampf(_hat_float_t / 1.80, 0.0, 1.0)
@@ -258,7 +226,101 @@ func _step_brain(dt: float) -> void:
 		_hat_pos = drift_p.lerp(pos + Vector2(0.0, -body_radius - 6.0), clampf((u - 0.62) / 0.38, 0.0, 1.0))
 	if _p2_flood_active:
 		_drift_floating_mirrors(dt)
-	super._step_brain(dt)
+
+
+func _has_active_shield() -> bool:
+	return shield_hp > 0.0 and shield_gone_t <= 0.0 and boss_state != BossState.STAGGER and boss_state != BossState.DEATH
+
+
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	if hit == null:
+		return dmg
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var orig: Vector2 = h["origin"] as Vector2
+	var is_blue_hit: bool = hit.is_blue() or src == LxHit.SOURCE_PRISM
+	var heavy: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_SUNFLARE] \
+			or bool(h["pierce"]) or bool(h["cracks_armour"])
+
+	# Signature Blue-Bolt / Prism-Split Guard Crack: shatters active claw guard for 1.6s 1.5x punish!
+	if is_blue_hit and _has_active_shield():
+		shield_hp = 0.0
+		shield_gone_t = SHIELD_GONE_DUR
+		guard_cracked_t = GUARD_CRACK_STAGGER
+		_boss_impact(0.20, 80.0, 84.0)
+		stage.play_sfx("tide_captain_guard_crack", pos)
+		stagger_immunity_t = 0.0
+		add_stagger(stagger_threshold)
+		return dmg * GUARD_CRACK_MULT
+
+	if boss_state == BossState.STAGGER or guard_cracked_t > 0.0:
+		return dmg * GUARD_CRACK_MULT
+
+	var rel: Vector2 = orig - pos
+	var rear_hit: bool = rel.length() > 0.1 and absf(angle_difference(facing, rel.angle())) > 1.95
+	var front_hit: bool = rel.length() > 0.1 and absf(angle_difference(facing, rel.angle())) < FRONT_GUARD_HALF
+
+	if rear_hit or is_blue_hit:
+		return dmg * 1.30
+	if is_punishable():
+		if heavy and _has_active_shield():
+			_wear_shield(float(h["shield_wear"]))
+		return dmg * (1.20 if heavy else 1.0)
+	if heavy:
+		if _has_active_shield():
+			_wear_shield(float(h["shield_wear"]) * 1.15)
+		return dmg * 1.15
+
+	# Armored brass-claw carapace outside punish windows: reduced bolt chip + clear armour glint!
+	clank_t = 0.12
+	if _clank_sfx_cd <= 0.0:
+		_clank_sfx_cd = 0.28
+		stage.play_sfx("crab_shell_clank", pos)
+	if _has_active_shield():
+		_wear_shield(0.18)
+	return dmg * (0.24 if (front_hit and _has_active_shield()) else 0.32)
+
+
+func _wear_shield(amt: float) -> void:
+	shield_hp = maxf(0.0, shield_hp - maxf(0.0, amt))
+	if shield_hp <= 0.001:
+		shield_hp = 0.0
+		shield_gone_t = SHIELD_GONE_DUR
+		guard_cracked_t = maxf(guard_cracked_t, 1.20)
+		stage.play_sfx("tide_captain_guard_crack", pos)
+		add_stagger(stagger_threshold * 0.65)
+
+
+func _step_surge_wave(elapsed: float, dur: float, is_cross: bool) -> void:
+	_surge_progress = clampf(elapsed / maxf(dur, 0.05), 0.0, 1.0)
+	var wave_r: float = lerpf(SURGE_START_R, SURGE_MAX_R, _surge_progress)
+	var cones: Array[Vector2] = _surge_cones(_surge_dir.angle(), is_cross)
+	if not _surge_hit and _has_player():
+		var wv: Vector2 = _get_wick_pos() - pos
+		var wd: float = wv.length()
+		if wd > 0.1 and absf(wd - wave_r) <= SURGE_BAND:
+			for ci: Vector2 in cones:
+				if absf(angle_difference(ci.x, wv.angle())) <= ci.y:
+					_surge_hit = true
+					var push_d: Vector2 = Vector2.from_angle(ci.x)
+					emit_boss_damage(push_d, 0.5, "brine_surge", pos, true)
+					if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and arena_rect.grow(-22.0).has_point(_get_wick_pos() + push_d * 20.0):
+						Lx.player.call("apply_recoil", push_d * 42.0)
+					break
+	if _is_lantern_out():
+		var lv: Vector2 = _get_lantern_pos() - pos
+		if lv.length() <= wave_r + 4.0:
+			for ci: Vector2 in cones:
+				if lv.length() < 0.1 or absf(angle_difference(ci.x, lv.angle())) <= ci.y:
+					if Lx.events != null:
+						Lx.events.lantern_struck.emit(_get_lantern_pos())
+					break
+
+
+func _surge_cones(base_a: float, is_cross: bool) -> Array[Vector2]:
+	if is_cross:
+		return [Vector2(base_a - CROSS_OFFSET_RAD, CROSS_HALF_ARC), Vector2(base_a + CROSS_OFFSET_RAD, CROSS_HALF_ARC)]
+	return [Vector2(base_a, SURGE_HALF_ARC)]
 
 
 func _drift_floating_mirrors(dt: float) -> void:
@@ -281,156 +343,49 @@ func _drift_floating_mirrors(dt: float) -> void:
 			m.position = cand.round()
 
 
-func _on_stagger_end(target_pos: Vector2) -> void:
-	surge_attack = false
-	cross_surge = false
-	super._on_stagger_end(target_pos)
-
-
-func _step_notice(dt: float, target_pos: Vector2) -> void:
-	var to_t: Vector2 = target_pos - pos
-	if to_t.length() > 0.01:
-		_turn_toward(to_t.angle(), TURN_PATROL * 1.4, dt)
-	state_timer -= dt
-	if state_timer <= 0.0:
-		_roaring = false
-		state = State.POSITION
-		step_clock = 0.0
-		cooldown = 0.90
-
-
-func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
-	if surge_cd <= 0.0 and (phase >= 2 or swings_since_surge >= 1) and dist < SURGE_MAX_R + 18.0 \
-			and _claim_token():
-		surge_attack = true
-		cross_surge = (phase >= 2 and _next_cross)
-		if phase >= 2:
-			_next_cross = not _next_cross
-		lunge_attack = false
-		is_counter_attack = false
-		state = State.TELL
-		var base_t: float = CROSS_TELL_P2 if cross_surge else (SURGE_TELL_P2 if phase >= 2 else SURGE_TELL_P1)
-		last_tell_duration = _scaled_tell(base_t, false, attack_damage)
-		state_timer = last_tell_duration
-		surge_progress = 0.0
-		surge_hit = false
-		var to_t: Vector2 = target_pos - pos
-		if to_t.length() > 0.01:
-			facing = to_t.angle()
-		surge_dir = Vector2.from_angle(facing)
-		swings_since_surge = 0
-		_emit_attack_started()
-		_emit_sfx("tide_captain_slam_tell")
-		return true
-	surge_attack = false
-	cross_surge = false
-	return super._try_start_attack(target_pos, dist)
-
-
-func _begin_swing_tell(is_lunge: bool) -> void:
-	feint_done = false
-	feint_side = -feint_side
-	super._begin_swing_tell(is_lunge)
-
-
-func _step_tell(dt: float, target_pos: Vector2) -> void:
-	if surge_attack:
-		if state_timer > 0.20:
-			var to_t: Vector2 = target_pos - pos
-			if to_t.length() > 0.01:
-				_turn_toward(to_t.angle(), 2.6, dt)
-				surge_dir = Vector2.from_angle(facing)
-		state_timer -= dt
-		if state_timer <= 0.0:
-			_enter_commit()
+func _flood_safe_tile_near(world_pt: Vector2) -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("tile_at"):
 		return
-	if phase >= 2 and not is_counter_attack and not feint_done and state_timer <= last_tell_duration * 0.65:
-		feint_done = true
-		feint_ghost_pos = pos
-		feint_ghost_t = 0.28
-		var to_f: Vector2 = target_pos - pos
-		var perp: Vector2 = (to_f.normalized() if to_f.length() > 0.01 else Vector2.from_angle(facing)).rotated(PI * 0.5 * feint_side)
-		_move_step(perp * FEINT_DIST, false)
-		if target_pos.distance_to(pos) > 0.01:
-			facing = (target_pos - pos).angle()
-		_emit_sfx("tide_captain_feint")
-	super._step_tell(dt, target_pos)
+	var tx: int = int(floorf(world_pt.x / 16.0))
+	var ty: int = int(floorf(world_pt.y / 16.0))
+	var cp := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
+	if str(world_ctx.call("tile_at", cp)) == "ground" and cp.distance_to(home) > 44.0 and cp.distance_to(_get_wick_pos()) > 28.0:
+		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), "water")
 
 
-func _enter_commit() -> void:
-	if surge_attack:
-		state = State.COMMIT
-		state_timer = CROSS_FIRE_TIME if cross_surge else SURGE_FIRE_TIME
-		surge_progress = 0.0
-		surge_hit = false
-		surge_dir = Vector2.from_angle(facing)
-		_boss_impact(0.18, 84.0, 88.0)
-		_emit_sfx("tide_captain_slam_fire")
-		if cross_surge:
-			_emit_sfx("tide_surge")
-		return
-	swings_since_surge += 1
-	super._enter_commit()
+func _perimeter_targets(tgt: Vector2) -> Array[Vector2]:
+	var out: Array[Vector2] = [tgt]
+	var inset: Rect2 = arena_rect.grow(-14.0)
+	var corners: Array[Vector2] = [
+		inset.position, Vector2(inset.end.x, inset.position.y),
+		Vector2(inset.position.x, inset.end.y), inset.end,
+	]
+	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
+	out.append(corners[0])
+	out.append(corners[1])
+	if phase >= 2:
+		out.append(corners[2])
+	return out
 
 
-func _step_commit(dt: float) -> void:
-	if not surge_attack:
-		super._step_commit(dt)
-		return
-	var fire_dur: float = CROSS_FIRE_TIME if cross_surge else SURGE_FIRE_TIME
-	state_timer = maxf(0.0, state_timer - dt)
-	surge_progress = 1.0 - clampf(state_timer / fire_dur, 0.0, 1.0)
-	var wave_r: float = lerpf(SURGE_START_R, SURGE_MAX_R, surge_progress)
-	var base_a: float = surge_dir.angle()
-	var cones: Array[Vector2] = []
-	if cross_surge:
-		cones.append(Vector2(base_a - CROSS_OFFSET_RAD, CROSS_HALF_ARC))
-		cones.append(Vector2(base_a + CROSS_OFFSET_RAD, CROSS_HALF_ARC))
-	else:
-		cones.append(Vector2(base_a, SURGE_HALF_ARC))
-	if not surge_hit and _has_player():
-		var wv: Vector2 = _get_wick_pos() - pos
-		var wd: float = wv.length()
-		if wd > 0.01 and absf(wd - wave_r) <= SURGE_BAND:
-			for c_info: Vector2 in cones:
-				if absf(angle_difference(c_info.x, wv.angle())) <= c_info.y:
-					surge_hit = true
-					var push_d: Vector2 = Vector2.from_angle(c_info.x)
-					_emit_player_hit(push_d)
-					if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil"):
-						Lx.player.call("apply_recoil", push_d * 65.0)
-					break
-	if _is_lured():
-		var lv: Vector2 = _get_lantern_pos() - pos
-		if lv.length() <= wave_r + 4.0:
-			for c_info: Vector2 in cones:
-				if lv.length() < 0.01 or absf(angle_difference(c_info.x, lv.angle())) <= c_info.y:
-					if Lx.events != null:
-						Lx.events.lantern_struck.emit(_get_lantern_pos())
-					break
-	if state_timer <= 0.0:
-		surge_attack = false
-		cross_surge = false
-		surge_progress = 0.0
-		state = State.RECOVER
-		state_timer = maxf(MIN_RECOVER_TIME, SURGE_RECOVER_P2 if phase >= 2 else SURGE_RECOVER_P1)
-		last_recover_duration = state_timer
-		surge_cd = SURGE_CD_P2 if phase >= 2 else SURGE_CD_P1
+func _on_death_start() -> void:
+	_p2_flood_active = false
+	stage.revert_tiles(world_ctx)
+	stage.play_sfx("tide_captain_phase2", pos)
 
 
-func _swing_tell_base() -> float: return 0.50 if phase >= 2 else tell_time
-func _lunge_tell_base() -> float: return 0.54 if phase >= 2 else lunge_tell_time
-func _post_recover_cooldown() -> float: return 1.15 if phase >= 2 else 1.25
-func _body_color() -> Color: return (PAL["wine"] as Color) if phase >= 2 else (PAL["coral"] as Color)
-func _shield_color() -> Color: return PAL["gold"] as Color
+func _body_color() -> Color:
+	return (PAL["wine"] if phase >= 2 else PAL["coral"]) as Color
 
 
-func _draw_extra(off: Vector2) -> void:
-	if not surge_attack:
-		super._draw_extra(off)
+func _shield_color() -> Color:
+	return PAL["gold"] as Color
+
+
+func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	# P2 basin tide foam ripples around Captain
-	if _p2_flood_active and not LxHudFx.flash_reduced():
+	if _p2_flood_active and not is_flash_reduced():
 		var fr: float = 24.0 + fmod(anim_t * 22.0, 26.0)
 		draw_arc(c, fr, 0.0, TAU, 20, Color(PAL["sky"] as Color, 0.32), 1.2)
 	# Personality beat: bicorne hat pops off & bobs on P2 tide before he snatches it back!
@@ -438,53 +393,29 @@ func _draw_extra(off: Vector2) -> void:
 		var hp_l: Vector2 = (_hat_pos - pos + off).round()
 		draw_line(hp_l + Vector2(-7.0, 0.0), hp_l + Vector2(7.0, 0.0), PAL["deep"] as Color, 3.0)
 		draw_line(hp_l + Vector2(-4.5, -2.5), hp_l + Vector2(4.5, -2.5), PAL["gold"] as Color, 1.5)
-	if feint_ghost_t > 0.0:
-		var gp: Vector2 = (feint_ghost_pos - pos + off).round()
+	if _feint_ghost_t > 0.0:
+		var gp: Vector2 = (_feint_ghost_pos - pos + off).round()
 		draw_line(gp, c, PAL["sky"] as Color, 1.4)
 		draw_arc(gp, body_radius, 0.0, TAU, 12, PAL["ice"] as Color, 1.2)
 	if guard_cracked_t > 0.0:
 		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, PAL["sky"] as Color, 1.8)
 		draw_arc(c, body_radius + 2.5, 0.0, TAU, 14, PAL["cream"] as Color, 1.0)
-	if surge_attack and state == State.TELL:
-		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var base_a: float = surge_dir.angle()
-		var cones: Array[Vector2] = _surge_cones(base_a)
-		var hot: bool = state_timer <= 0.16
-		var edge_c: Color = (PAL["cream"] if hot else PAL["sky"]) as Color
-		for ci: Vector2 in cones:
+	# Active Brine Surge / Cross-Surge wave visual
+	if boss_state == BossState.COMMIT and active_attack_id in ["brine_surge_cone", "double_cross_surge"]:
+		var wave_r: float = lerpf(SURGE_START_R, SURGE_MAX_R, _surge_progress)
+		for ci: Vector2 in _surge_cones(_surge_dir.angle(), _cross_active):
 			var a0: float = ci.x - ci.y
 			var a1: float = ci.x + ci.y
-			draw_line(c, (c + Vector2.from_angle(a0) * SURGE_MAX_R).round(), edge_c, 1.5 if hot else 1.2)
-			draw_line(c, (c + Vector2.from_angle(a1) * SURGE_MAX_R).round(), edge_c, 1.5 if hot else 1.2)
-			draw_arc(c, SURGE_MAX_R, a0, a1, 14, PAL["blue"] as Color, 1.2)
-			var inner_r: float = lerpf(SURGE_START_R + 6.0, SURGE_MAX_R * 0.72, prog)
-			draw_arc(c, inner_r, a0, a1, 14, (PAL["cream"] if hot else PAL["ice"]) as Color, 2.0 if hot else 1.5)
-	elif surge_attack and state == State.COMMIT:
-		var wave_r: float = lerpf(SURGE_START_R, SURGE_MAX_R, surge_progress)
-		var base_a: float = surge_dir.angle()
-		var cones: Array[Vector2] = _surge_cones(base_a)
-		for ci: Vector2 in cones:
-			var a0: float = ci.x - ci.y
-			var a1: float = ci.x + ci.y
-			draw_arc(c, wave_r + 3.2, a0, a1, 16, PAL["deep"] as Color, 2.4)
-			draw_arc(c, wave_r, a0, a1, 16, PAL["sky"] as Color, 3.4)
-			draw_arc(c, maxf(3.0, wave_r - 2.4), a0, a1, 14, PAL["ice"] as Color, 2.0)
-			draw_arc(c, maxf(3.0, wave_r - 3.6), a0, a1, 12, PAL["cream"] as Color, 1.1)
-	elif _roaring:
-		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
-		var rr: float = body_radius + 10.0 + rp * 16.0
-		draw_arc(c, rr + 2.4, 0.0, TAU, 28, PAL["sky"] as Color, 2.0)
-		draw_arc(c, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)
-
-
-func _surge_cones(base_a: float) -> Array[Vector2]:
-	var out: Array[Vector2] = []
-	if cross_surge:
-		out.append(Vector2(base_a - CROSS_OFFSET_RAD, CROSS_HALF_ARC))
-		out.append(Vector2(base_a + CROSS_OFFSET_RAD, CROSS_HALF_ARC))
-	else:
-		out.append(Vector2(base_a, SURGE_HALF_ARC))
-	return out
+			draw_arc(c, wave_r + 3.0, a0, a1, 16, PAL["deep"] as Color, 2.2)
+			draw_arc(c, wave_r, a0, a1, 16, PAL["sky"] as Color, 3.2)
+			draw_arc(c, maxf(3.0, wave_r - 2.4), a0, a1, 14, PAL["ice"] as Color, 1.8)
+			draw_arc(c, maxf(3.0, wave_r - 3.6), a0, a1, 12, PAL["cream"] as Color, 1.0)
+	# Armour glint outside punish windows vs golden punish halo
+	if clank_t > 0.0:
+		draw_arc(c, body_radius + 5.0, facing - 1.1, facing + 1.1, 14, PAL["cream"] as Color, 2.2)
+		draw_arc(c, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["gold"] as Color, 1.2)
+	elif is_punishable() and boss_state != BossState.DEATH:
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

@@ -1,0 +1,872 @@
+{
+  "id": "ow_rail_yard",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "forge_deep",
+  "music": "island6_explore",
+  "name_key": "ISL6_Z_YARD",
+  "spawn": [
+    384,
+    456
+  ],
+  "zones": [
+    {
+      "id": "switchyard_camp",
+      "name_key": "ISL6_Z_YARD",
+      "rect": [
+        0,
+        0,
+        768,
+        512
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_yard_to_overworld",
+      "rect": [
+        352,
+        480,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        376,
+        72
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_yard_to_foundry",
+      "rect": [
+        16,
+        320,
+        16,
+        48
+      ],
+      "to_region": "cave_temper_foundry",
+      "to_spawn": [
+        368,
+        144
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_cinder_overlook",
+      "rect": [
+        736,
+        256,
+        16,
+        48
+      ],
+      "to_region": "ow_cinder_overlook",
+      "to_spawn": [
+        56,
+        232
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_rail_spur_east"
+    },
+    {
+      "id": "exit_to_train_r1",
+      "rect": [
+        224,
+        32,
+        48,
+        16
+      ],
+      "to_region": "train_r1",
+      "to_spawn": [
+        48,
+        128
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "yard_hopper_1",
+      "kind": "rail_hopper",
+      "pos": [
+        128,
+        256
+      ],
+      "route": [
+        [
+          112,
+          256
+        ],
+        [
+          176,
+          256
+        ]
+      ],
+      "perches": [
+        [
+          112,
+          240
+        ],
+        [
+          168,
+          272
+        ]
+      ],
+      "zone": "switchyard_west",
+      "leash": 120
+    },
+    {
+      "id": "yard_stoker_1",
+      "kind": "stoker",
+      "pos": [
+        168,
+        392
+      ],
+      "route": [
+        [
+          136,
+          392
+        ],
+        [
+          208,
+          392
+        ]
+      ],
+      "perches": [],
+      "zone": "switchyard_west",
+      "leash": 116
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_rail_yard",
+      "kind": "waystone",
+      "pos": [
+        384,
+        320
+      ],
+      "props": {
+        "zone": "switchyard_camp",
+        "name_key": "ISL6_Z_YARD"
+      }
+    },
+    {
+      "id": "rest_shrine_yard",
+      "kind": "rest_shrine",
+      "pos": [
+        328,
+        304
+      ],
+      "props": {
+        "zone": "switchyard_camp",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
+      "id": "hub_door_6",
+      "kind": "kiln_hub_door",
+      "pos": [
+        448,
+        304
+      ],
+      "props": {
+        "zone": "switchyard_camp"
+      }
+    },
+    {
+      "id": "anvil_yard_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        480,
+        256
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
+    },
+    {
+      "id": "anvil_yard_cycle",
+      "kind": "temper_anvil",
+      "pos": [
+        264,
+        320
+      ],
+      "props": {
+        "mode": "cycle"
+      }
+    },
+    {
+      "id": "lever_timetable_1",
+      "kind": "state_lever",
+      "pos": [
+        248,
+        200
+      ],
+      "props": {
+        "scope": "island:6",
+        "var": "kiln_shift",
+        "values": [
+          "station_a",
+          "station_b",
+          "station_c"
+        ],
+        "prompt_key": "ISL6_PROMPT_SHIFT",
+        "persist": true
+      }
+    },
+    {
+      "id": "grate_yard_baffle",
+      "kind": "grate",
+      "pos": [
+        568,
+        216
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "coupler_yard_spur",
+      "kind": "car_coupler",
+      "pos": [
+        616,
+        208
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_id": "door_rail_spur_east",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_rail_spur_east",
+      "kind": "door",
+      "pos": [
+        568,
+        280
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "coupler_yard_spur"
+        ]
+      }
+    },
+    {
+      "id": "moth_6_02",
+      "kind": "moth",
+      "pos": [
+        568,
+        72
+      ],
+      "props": {
+        "id": "moth_6_02"
+      }
+    },
+    {
+      "id": "lore_yard_express",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        168
+      ],
+      "props": {
+        "string_id": "ISL6_LORE_EXPRESS",
+        "icon": "gear"
+      }
+    },
+    {
+      "id": "npc_kiln_salamander",
+      "kind": "npc",
+      "pos": [
+        296,
+        248
+      ],
+      "props": {
+        "folk": "kiln_salamander",
+        "quest": "q_kiln_ember",
+        "rescuable": true,
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "ember",
+              "isl_6",
+              "arrow_n"
+            ],
+            "line": "ISL6_Q1_HINT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npc_ferry_beetle",
+      "kind": "npc",
+      "pos": [
+        208,
+        208
+      ],
+      "props": {
+        "folk": "ferry_beetle",
+        "quest": "q6_timetable_key",
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "gear",
+              "clock",
+              "arrow_s",
+              "toy_platform",
+              "question"
+            ],
+            "line": "ISL6_Q2_HINT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "trial_yard_range",
+      "kind": "trial_gate",
+      "pos": [
+        520,
+        352
+      ],
+      "props": {
+        "challenge": "yard_bank_range",
+        "once": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "rb_1",
+      "kind": "timed_brazier",
+      "pos": [
+        568,
+        336
+      ],
+      "props": {
+        "secs": 20.0,
+        "target_id": "gate_yard_range"
+      }
+    },
+    {
+      "id": "rb_2",
+      "kind": "timed_brazier",
+      "pos": [
+        616,
+        336
+      ],
+      "props": {
+        "secs": 20.0,
+        "target_id": "gate_yard_range"
+      }
+    },
+    {
+      "id": "rb_3",
+      "kind": "timed_brazier",
+      "pos": [
+        664,
+        336
+      ],
+      "props": {
+        "secs": 20.0,
+        "target_id": "gate_yard_range"
+      }
+    },
+    {
+      "id": "rb_4",
+      "kind": "timed_brazier",
+      "pos": [
+        592,
+        376
+      ],
+      "props": {
+        "secs": 20.0,
+        "target_id": "gate_yard_range"
+      }
+    },
+    {
+      "id": "rb_5",
+      "kind": "timed_brazier",
+      "pos": [
+        648,
+        376
+      ],
+      "props": {
+        "secs": 20.0,
+        "target_id": "gate_yard_range"
+      }
+    },
+    {
+      "id": "gate_yard_range",
+      "kind": "logic_gate",
+      "pos": [
+        688,
+        352
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "rb_1",
+          "rb_2",
+          "rb_3",
+          "rb_4",
+          "rb_5"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_yard_1",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        424
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_yard_2",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        424
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_yard_3",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        256
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_yard_4",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        336
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_yard_5",
+      "kind": "road_lamp",
+      "pos": [
+        520,
+        272
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_yard_6",
+      "kind": "road_lamp",
+      "pos": [
+        648,
+        272
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_yard_7",
+      "kind": "road_lamp",
+      "pos": [
+        560,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_yard_8",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        368
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "foundry_crane_hook",
+      "pos": [
+        128,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        176,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        240,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "quench_barrel_tub",
+      "pos": [
+        304,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "great_forge_anvil",
+      "pos": [
+        336,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "tempering_floor_seal",
+      "pos": [
+        384,
+        304
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        336,
+        432
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        432,
+        432
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "slag_chimney_vent",
+      "pos": [
+        144,
+        368
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "iron_weapon_rack",
+      "pos": [
+        480,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ingot_mold_trough",
+      "pos": [
+        288,
+        304
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "chained_slag_cauldron",
+      "pos": [
+        528,
+        368
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "layers": [
+    {
+      "id": "station_a",
+      "when": "kiln_shift==station_a",
+      "tiles": [
+        [
+          10,
+          6,
+          14,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "exit_to_train_r1"
+      ],
+      "disable": []
+    },
+    {
+      "id": "station_b",
+      "when": "kiln_shift==station_b",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "station_c",
+      "when": "kiln_shift==station_c",
+      "tiles": [
+        [
+          32,
+          6,
+          5,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "relit",
+      "when": "flag:island_6_relit",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "stamp_board_1",
+      "on": "signal:lever_timetable_1",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "q6_stamp_1"
+        }
+      ]
+    },
+    {
+      "id": "yard_range_gate_win",
+      "on": "signal:gate_yard_range",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ember_6_range"
+        },
+        {
+          "set_flag": "trial6:yard_range:gold"
+        },
+        {
+          "reward": {
+            "kind": "ember_piece",
+            "amount": 1
+          }
+        },
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 45
+          }
+        },
+        {
+          "narrate": "ISL6_TRIAL_RANGE_WIN"
+        }
+      ]
+    },
+    {
+      "id": "start_yard_range",
+      "on": "trial_start:trial_yard_range",
+      "once": false,
+      "do": [
+        {
+          "challenge": {
+            "id": "yard_bank_range",
+            "kind": "light_all",
+            "time": 22.0,
+            "targets": [
+              "rb_1",
+              "rb_2",
+              "rb_3",
+              "rb_4",
+              "rb_5"
+            ],
+            "ok": [
+              {
+                "set_flag": "ember_6_range"
+              },
+              {
+                "set_flag": "trial6:yard_range:gold"
+              },
+              {
+                "reward": {
+                  "kind": "ember_piece",
+                  "amount": 1
+                }
+              },
+              {
+                "reward": {
+                  "kind": "shards",
+                  "amount": 45
+                }
+              },
+              {
+                "narrate": "ISL6_TRIAL_RANGE_WIN"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Switchyard Camp hub introducing Bolt Tempering (Skip Anvil + wall-bank shortcut gate), Timetable Switchboard #1, Ember Express Track 1 dock, Colossus arm bridge on station_c, folk quests, Wick House door, and Skip Range trial.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "First 3 minutes of Ashen Kiln: Skip wall-ricochet + Foundry Timetable shifting the live train and giant on the map.",
+    "decisions": 5,
+    "expert_s": 65,
+    "reward": "temper_skip_known+moth_6_02+ember_6_range+bellows_vent",
+    "why": "Central Island 6 camp with zero waiting tax timetable shifts and immediate visual proof of Skip ricochet.",
+    "exit": "exit_to_cinder_overlook",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          480,
+          272
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_yard_skip"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          512,
+          208
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          560,
+          172
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "wait_until",
+        "target": "door_rail_spur_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          224
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "lever_timetable_1"
+      },
+      {
+        "op": "expect",
+        "var": "kiln_shift==station_b"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_to_cinder_overlook"
+      }
+    ]
+  }
+}

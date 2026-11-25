@@ -1,0 +1,429 @@
+{
+  "id": "cave_echo_well",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_Z_WELL",
+  "theme": "cave_1",
+  "music": "isl1_undercroft",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    192,
+    248
+  ],
+  "zones": [
+    {
+      "id": "cave_echo_well",
+      "name_key": "ISL1_Z_WELL",
+      "rect": [
+        0,
+        0,
+        384,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_ew_south",
+      "rect": [
+        176,
+        272,
+        32,
+        16
+      ],
+      "to_region": "bell_yard",
+      "to_spawn": [
+        384,
+        48
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_ew_s",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "blk_ew_baffle",
+      "kind": "push_block",
+      "pos": [
+        120,
+        184
+      ],
+      "props": {
+        "variant": "stone"
+      }
+    },
+    {
+      "id": "bell_ew_1",
+      "kind": "bell",
+      "pos": [
+        80,
+        184
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 184
+      }
+    },
+    {
+      "id": "bell_ew_2",
+      "kind": "bell",
+      "pos": [
+        248,
+        184
+      ],
+      "props": {
+        "tone": "dawn",
+        "relay": true,
+        "wave_radius": 144
+      }
+    },
+    {
+      "id": "bell_ew_3",
+      "kind": "bell",
+      "pos": [
+        312,
+        168
+      ],
+      "props": {
+        "tone": "dawn",
+        "relay": true,
+        "wave_radius": 136
+      }
+    },
+    {
+      "id": "door_ew_vault",
+      "kind": "tone_door",
+      "pos": [
+        264,
+        80
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          16,
+          32
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "chest_ember_well",
+      "kind": "chest",
+      "pos": [
+        304,
+        72
+      ],
+      "props": {
+        "reward": "ember_piece",
+        "amount": 1,
+        "sets_flag": "ember_1_well"
+      }
+    },
+    {
+      "id": "moth_1_03",
+      "kind": "moth",
+      "pos": [
+        304,
+        104
+      ],
+      "props": {
+        "id": "moth_1_03"
+      }
+    },
+    {
+      "id": "lamp_ew_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        240
+      ],
+      "props": {
+        "zone": "cave_echo_well",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ew_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        128
+      ],
+      "props": {
+        "zone": "cave_echo_well",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ew_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        72
+      ],
+      "props": {
+        "zone": "cave_echo_well",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ew_v",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        72
+      ],
+      "props": {
+        "zone": "cave_echo_well",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        80,
+        184
+      ],
+      "radius": 22,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        128,
+        224
+      ],
+      "radius": 22,
+      "style": "water"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        160,
+        128
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        304,
+        80
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_1",
+      "prop": "cave_arch_rock",
+      "pos": [
+        192,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "stalagmite_tall",
+      "pos": [
+        88,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        64,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        128,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        320,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "cave_lantern_post",
+      "pos": [
+        112,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        160,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "subterranean_shroom",
+      "pos": [
+        64,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "dripping_pool_basin",
+      "pos": [
+        136,
+        236
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        80,
+        184
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Push a stone acoustic baffle clear of a cistern slit so a 3-bell Dawn relay ripples across a walled-in water well and curves through the vault basin to unseal the Ember & Moth vault.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Push-blocks act as movable acoustic baffles; clearing a wave lane chains multiple relay bells across sealed water chasms.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "ember_1_well+moth_1_03",
+    "why": "Midnight millpond secret cave deepening Ring Wave occlusion and relay geometry.",
+    "target": "chest_ember_well",
+    "solution": [
+      {
+        "op": "push",
+        "target": "blk_ew_baffle",
+        "dir": [
+          0,
+          1
+        ],
+        "dist": 24
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          184
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          112,
+          184
+        ],
+        "target": "bell_ew_1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_ew_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_well"
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          104
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect",
+        "interactable": "chest_ember_well",
+        "prop": "opened",
+        "value": true
+      }
+    ]
+  }
+}

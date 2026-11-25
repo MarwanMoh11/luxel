@@ -29,7 +29,7 @@
       "to_region": "underroot_r3",
       "to_spawn": [
         48,
-        80
+        68
       ]
     },
     {
@@ -44,24 +44,420 @@
       "to_spawn": [
         64,
         216
-      ]
+      ],
+      "locked_door_id": "door_r4_combat"
     }
   ],
   "interactables": [
     {
-      "id": "lamp_r4_1",
+      "id": "anc_r4_east",
+      "kind": "room_anchor",
+      "pos": [
+        400,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "dew_r4",
+      "kind": "dew_lens",
+      "pos": [
+        128,
+        120
+      ],
+      "props": {
+        "movable": false,
+        "rail_axis": "none",
+        "focus_range": 192.0
+      }
+    },
+    {
+      "id": "wind_r4_n",
+      "kind": "wind_zone",
+      "pos": [
+        216,
+        64
+      ],
+      "props": {
+        "size": [
+          176,
+          36
+        ],
+        "dir": "e",
+        "strength": 72.0
+      }
+    },
+    {
+      "id": "wind_r4_s",
+      "kind": "wind_zone",
+      "pos": [
+        200,
+        184
+      ],
+      "props": {
+        "size": [
+          192,
+          40
+        ],
+        "dir": "e",
+        "strength": 72.0
+      }
+    },
+    {
+      "id": "door_r4_combat",
+      "kind": "door",
+      "pos": [
+        208,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "ur_r4",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r4_e",
       "kind": "road_lamp",
       "pos": [
-        224,
+        384,
+        96
+      ],
+      "props": {
+        "zone": "ur_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
         128
       ],
       "props": {
         "zone": "ur_r4",
         "lit": true
       }
+    },
+    {
+      "id": "lamp_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        48
+      ],
+      "props": {
+        "zone": "ur_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_s",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        216
+      ],
+      "props": {
+        "zone": "ur_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r4_thimble",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        216,
+        122
+      ],
+      "props": {
+        "variant": "thimble_tower",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r4_grass_nw",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        88,
+        72
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r4_grass_se",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        336,
+        168
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": true
+      }
+    },
+    {
+      "id": "lm_r4_acorn_sw",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        92,
+        196
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": false
+      }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "ur_r4_beetle",
+      "kind": "burrow_beetle",
+      "pos": [
+        288,
+        128
+      ],
+      "zone": "ur_r4"
+    },
+    {
+      "id": "ur_r4_drifter_n",
+      "kind": "dandelion_drifter",
+      "pos": [
+        96,
+        88
+      ],
+      "zone": "ur_r4"
+    },
+    {
+      "id": "ur_r4_drifter_s",
+      "kind": "dandelion_drifter",
+      "pos": [
+        112,
+        176
+      ],
+      "zone": "ur_r4"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        122
+      ],
+      "radius": 38,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        108
+      ],
+      "size": [
+        44,
+        60
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        128,
+        120
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        304,
+        128
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        208,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        368,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        76,
+        188
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        52,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        344,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        168,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        352,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        256,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        144,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fallen_bark_bench",
+      "pos": [
+        240,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ur_r4_reward",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "sfx": "shrine_unlock"
+        },
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 15
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Tiny-scale courtyard battle around an overturned Brass Thimble tower using wind-drifting lanes and a fixed dew lens to crack a Burrow Beetle's shell while clearing two Dandelion Drifters.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Using central thimble cover to stall a Burrow Beetle and firing through a dew_lens to crack its shell while popping drifting dandelion seed-mines.",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "15_shards+r5_access",
+    "why": "First combat crucible introducing Island 3's tank + aerial disrupter pair around a signature tiny-world thimble tower.",
+    "exit": "exit_r4_north",
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "ur_r4",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r4_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_north"
+      }
+    ]
+  },
   "id": "underroot_r4",
   "island_id": 3,
   "tile_size": 16,
@@ -74,6 +470,5 @@
     "cave_drip"
   ],
   "triggers": [],
-  "layers": [],
-  "events": []
+  "layers": []
 }

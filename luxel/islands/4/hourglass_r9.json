@@ -71,19 +71,26 @@
     },
     {
       "id": "dial_hg_r9",
-      "kind": "garden_sundial",
+      "kind": "state_lever",
       "pos": [
         216,
         248
       ],
       "props": {
-        "region_hour_lock": true,
         "scope": "room:4:hourglass_r9",
         "var": "hg_room_hour",
-        "max_hour": 2,
+        "values": [
+          1,
+          2
+        ],
+        "index": 0,
         "shootable": true,
-        "can_rewind": false,
-        "visual_radius": 14
+        "style": "tide_wheel",
+        "persist": false,
+        "target_ids": [
+          "cgate_hg_r9_1",
+          "cgate_hg_r9_2"
+        ]
       }
     },
     {
@@ -351,8 +358,8 @@
       "id": "lamp_r9_e",
       "kind": "road_lamp",
       "pos": [
-        456,
-        152
+        424,
+        136
       ],
       "props": {
         "zone": "hg_r9_three",
@@ -378,7 +385,7 @@
       "kind": "topiary_knight",
       "pos": [
         456,
-        184
+        152
       ],
       "zone": "hg_r9_three"
     }
@@ -580,6 +587,21 @@
   ],
   "events": [
     {
+      "id": "hg_r9_reset_hour",
+      "on": "enter",
+      "if": "!flag:hg_boss_key",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "room:4:hourglass_r9",
+            "name": "hg_room_hour",
+            "value": 1
+          }
+        }
+      ]
+    },
+    {
       "id": "hg_r9_short_msg",
       "on": "signal:gate_hg_r9_all",
       "once": true,
@@ -643,7 +665,11 @@
         "secs": 3.4
       },
       {
-        "op": "interact",
+        "op": "shoot",
+        "from": [
+          216,
+          216
+        ],
         "target": "dial_hg_r9"
       },
       {

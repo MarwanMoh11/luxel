@@ -45,8 +45,7 @@
         80,
         312
       ],
-      "one_way": true,
-      "locked_door_id": "gate_r3_safe"
+      "one_way": true
     }
   ],
   "interactables": [

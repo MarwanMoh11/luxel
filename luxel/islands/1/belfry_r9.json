@@ -1,0 +1,392 @@
+{
+  "id": "belfry_r9",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_BF_ESCAPEMENT",
+  "music": "island1_dungeon",
+  "spawn": [
+    48,
+    160
+  ],
+  "zones": [
+    {
+      "id": "belfry_escapement",
+      "name_key": "ISL1_BF_ESCAPEMENT",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "belfry_r8",
+      "to_spawn": [
+        396,
+        168
+      ]
+    },
+    {
+      "id": "exit_r9_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "belfry_r3",
+      "to_spawn": [
+        240,
+        48
+      ]
+    },
+    {
+      "id": "exit_r9_east",
+      "rect": [
+        464,
+        144,
+        16,
+        48
+      ],
+      "to_region": "belfry_r4",
+      "to_spawn": [
+        64,
+        48
+      ]
+    },
+    {
+      "id": "exit_r9_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r10",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r9_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "warden_r9_0",
+      "kind": "warden",
+      "pos": [
+        216,
+        160
+      ],
+      "route": [
+        [
+          200,
+          128
+        ],
+        [
+          280,
+          192
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_escapement",
+      "leash": 140
+    },
+    {
+      "id": "moth_r9_0",
+      "kind": "toll_moth",
+      "pos": [
+        272,
+        136
+      ],
+      "route": [],
+      "perches": [
+        [
+          272,
+          136
+        ],
+        [
+          208,
+          184
+        ]
+      ],
+      "zone": "belfry_escapement",
+      "leash": 145
+    },
+    {
+      "id": "owl_r9_0",
+      "kind": "owl",
+      "pos": [
+        240,
+        104
+      ],
+      "route": [],
+      "perches": [
+        [
+          240,
+          104
+        ],
+        [
+          192,
+          160
+        ],
+        [
+          288,
+          160
+        ]
+      ],
+      "zone": "belfry_escapement",
+      "leash": 150
+    }
+  ],
+  "interactables": [
+    {
+      "id": "rotor_r9_w",
+      "kind": "rotor",
+      "pos": [
+        152,
+        160
+      ],
+      "props": {
+        "size": [
+          48,
+          48
+        ],
+        "speed": 0.4,
+        "quarter_on_signal": false
+      }
+    },
+    {
+      "id": "rotor_r9_e",
+      "kind": "rotor",
+      "pos": [
+        328,
+        160
+      ],
+      "props": {
+        "size": [
+          48,
+          48
+        ],
+        "speed": -0.4,
+        "quarter_on_signal": false
+      }
+    },
+    {
+      "id": "bell_r9_dusk",
+      "kind": "bell",
+      "pos": [
+        240,
+        160
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "door_r9_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "clear_zone": "belfry_escapement",
+        "sets_flag": "belfry_r9_cleared"
+      }
+    },
+    {
+      "id": "lamp_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        144
+      ],
+      "props": {
+        "zone": "belfry_escapement",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        144
+      ],
+      "props": {
+        "zone": "belfry_escapement",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        256
+      ],
+      "props": {
+        "zone": "belfry_escapement",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        64
+      ],
+      "props": {
+        "zone": "belfry_escapement",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        160
+      ],
+      "radius": 52,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        144
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.12
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "giant_clock_gear",
+      "pos": [
+        240,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        104,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        376,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "candelabra_tall",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "Diamond crossroad combat chamber linking r8, r3, r4, and r10 across twin spinning gear islands; Dusk-freeze the gears and crack the Warden's shield via the Toll Moth's War burst.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Weaponizing a Toll Moth's War burst against a shielded Warden on gear-bridged crossroads.",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "belfry_r9_cleared+cycle1",
+    "why": "Key 4-way clockwork junction creating 2 major Floor 1 cycles and ascending to Floor 2.",
+    "exit": "exit_r9_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          176,
+          160
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          176,
+          160
+        ],
+        "target": "bell_r9_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 22.0
+      },
+      {
+        "op": "expect",
+        "flag": "belfry_r9_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_north"
+      }
+    ]
+  }
+}

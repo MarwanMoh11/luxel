@@ -29,10 +29,10 @@
         32,
         16
       ],
-      "to_region": "overworld",
+      "to_region": "sanctum_forecourt",
       "to_spawn": [
-        400,
-        192
+        304,
+        88
       ],
       "requires_moves": [],
       "requires_flags": [],

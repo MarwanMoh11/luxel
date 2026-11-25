@@ -1,0 +1,133 @@
+{
+  "pack_id": "i8_overworld",
+  "version": 1,
+  "owner": "P8-OW",
+  "comment": "Island 8 (The Long Night) Overworld Expansion: Vigil Terrace (THE LANTERN ASKS intro), Toll Causeway, Archive Cloister, Stair Landing, Sanctum Forecourt (Triple Eclipse Seal), 4 optional caves/trials, Superboss First Dark, and 3 Island 8 folk quests.",
+  "interactables": {
+    "eclipse_seal_gate": "res://luxel/islands/8/overworld/eclipse_seal_gate.gd",
+    "moth_arch_gate": "res://luxel/islands/8/overworld/moth_arch_gate.gd"
+  },
+  "quests": [
+    {
+      "id": "q8_lost_ledger",
+      "island": 8,
+      "kind": "fetch",
+      "folk": "scribe_worm",
+      "icon": "book",
+      "steps": [
+        {
+          "icons": ["book", "question", "arrow_e", "isl_8"],
+          "need": "isl8_all_memories_lit",
+          "flag": "quest:q8_lost_ledger:s0"
+        },
+        {
+          "icons": ["book", "happy", "ember", "gift"],
+          "need": "",
+          "flag": "quest:q8_lost_ledger:done"
+        }
+      ],
+      "reward": {
+        "kind": "ember_piece",
+        "value": "ember_8_quest",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q8_eight_candles",
+      "island": 8,
+      "kind": "fetch",
+      "folk": "candle_grandma",
+      "icon": "flame",
+      "steps": [
+        {
+          "icons": ["flame", "light_off", "arrow_n", "isl_8"],
+          "need": "isl8_candles_ready",
+          "flag": "quest:q8_eight_candles:s0"
+        },
+        {
+          "icons": ["flame", "happy", "heart", "home"],
+          "need": "",
+          "flag": "quest:q8_eight_candles:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "value": "vigil_hearth_upgrade",
+        "amount": 60
+      }
+    },
+    {
+      "id": "q8_first_dark_rumor",
+      "island": 8,
+      "kind": "fetch",
+      "folk": "moth_kid",
+      "icon": "moth",
+      "steps": [
+        {
+          "icons": ["moth", "skull", "crown", "light_on", "arrow_n"],
+          "need": "first_dark_defeated",
+          "flag": "quest:q8_first_dark_rumor:s0"
+        },
+        {
+          "icons": ["moth", "crown", "happy", "spark"],
+          "need": "",
+          "flag": "quest:q8_first_dark_rumor:done"
+        }
+      ],
+      "reward": {
+        "kind": "flame",
+        "value": "gold",
+        "amount": 1
+      }
+    }
+  ],
+  "regions": {
+    "vigil_terrace": { "name_key": "ISL8_Z_VIGIL", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [3, 4] },
+    "toll_causeway": { "name_key": "ISL8_Z_TOLL_WAY", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [1, 3] },
+    "archive_cloister": { "name_key": "ISL8_Z_CLOISTER", "theme": "archive", "music": "isl8_archive", "dark": true, "map": [4, 2] },
+    "stair_landing": { "name_key": "ISL8_Z_STAIR_BASE", "theme": "endless_stair", "music": "isl8_setpiece", "dark": true, "map": [1, 1] },
+    "sanctum_forecourt": { "name_key": "ISL8_Z_FORECOURT", "music": "island8_explore", "dark": true, "map": [2, 0] },
+    "cave_blind_scale": { "name_key": "ISL8_Z_BLIND_SCALE", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [0, 2] },
+    "cave_silent_vault": { "name_key": "ISL8_Z_SILENT_VAULT", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [0, 4] },
+    "cave_hush_trial": { "name_key": "ISL8_Z_HUSH_TRIAL", "theme": "endless_stair", "music": "isl8_setpiece", "dark": true, "map": [5, 3] },
+    "cave_glass_grotto": { "name_key": "ISL8_Z_GLASS_GROTTO", "theme": "archive_8", "music": "isl8_archive", "dark": true, "map": [0, 1] },
+    "superboss_first_dark": { "name_key": "ISL8_Z_FIRST_DARK", "theme": "archive_8", "music": "superboss_a", "dark": true, "map": [3, 3] }
+  },
+  "strings": {
+    "ISL8_Z_VIGIL": "VIGIL TERRACE",
+    "ISL8_Z_TOLL_WAY": "TOLL CAUSEWAY",
+    "ISL8_Z_CLOISTER": "ARCHIVE CLOISTER",
+    "ISL8_Z_STAIR_BASE": "STAIR LANDING",
+    "ISL8_Z_FORECOURT": "SANCTUM FORECOURT",
+    "ISL8_Z_BLIND_SCALE": "BLIND SCALE VAULT",
+    "ISL8_Z_SILENT_VAULT": "THE SILENT VAULT",
+    "ISL8_Z_HUSH_TRIAL": "THE HUSH TRIAL",
+    "ISL8_Z_GLASS_GROTTO": "GLASS GROTTO",
+    "ISL8_Z_FIRST_DARK": "THE FIRST DARK",
+    "ISL8_ASK_PAID": "PAID. THE LANTERN DRINKS IT IN.",
+    "ISL8_VIGIL_BRIDGES_LIT": "WEST AND EAST ECLIPSE BRIDGES IGNITE!",
+    "ISL8_VIGIL_RELIT": "DAWN RETURNS. ALL SETTINGS RESTORED!",
+    "ISL8_LORE_VIGIL": "THE LANTERN ASKS. GIVE ONE PIECE TO PASS.",
+    "ISL8_LORE_GROTTO": "BEFORE THE FIRST LAMP THERE WAS ONLY HUSH.",
+    "ISL8_LORE_FORECOURT": "THREE WINGS SEAL THE GREAT BELL SANCTUM.",
+    "ISL8_LORE_TOLLWAY": "THE TOLL HOUSE WEIGHS EVERY SETTING.",
+    "ISL8_LORE_CLOISTER": "EIGHT LOST LAMPS SLEEP IN THE ARCHIVE.",
+    "ISL8_LORE_STAIR": "TWELVE FLOORS CLIMB INTO THE STAR VOID.",
+    "ISL8_LORE_BLIND": "OFFSET THE MIRROR EFFIGY TO BALANCE BOTH.",
+    "ISL8_LORE_SILENT": "BELLS WAKE THE CLERKS. SILENCE SLIPS BY.",
+    "ISL8_LORE_TRIAL": "LIGHT ALL SIX BRAZIERS BEFORE DUSK FALLS.",
+    "ISL8_SEAL_NEEDS_THREE": "THREE SEALS HOLD: TOLL - ARCHIVE - STAIR.",
+    "ISL8_SEAL_SHATTER": "THE TRIPLE ECLIPSE SEAL SHATTERS!",
+    "ISL8_PROMPT_ECLIPSE_SEAL": "INSPECT ECLIPSE SEAL",
+    "ISL8_PROMPT_MOTH_ARCH": "INSPECT 80-MOTH ARCH",
+    "ISL8_TRIAL_START": "HUSH TRIAL: LIGHT 6 BRAZIERS IN 35S!",
+    "ISL8_TRIAL_WIN": "HUSH TRIAL CLEARED! VAULT UNLOCKED!",
+    "ISL8_TRIAL_FAIL": "THE DUSK TOOK THE FLAME. TRY AGAIN.",
+    "ISL8_SILENT_BONUS": "SILENT AUDITOR: VAULT CLEARED UNHEARD!",
+    "ISL8_FIRST_DARK_WIN": "THE FIRST DARK SHATTERS INTO STARLIGHT!",
+    "ISL8_Q1_HINT": "FIND THE DAWN SPOOL IN THE SILENT VAULT.",
+    "ISL8_Q2_HINT": "RELIGHT ALL EIGHT MEMORIES IN THE ARCHIVE.",
+    "ISL8_Q3_HINT": "KINDLE THE THREE ECLIPSE BEACONS.",
+    "ISL8_Q4_DARK": "80 MOTHS OPEN THE ARCH OF FIRST DARK."
+  }
+}

@@ -1,0 +1,580 @@
+{
+  "id": "ow_cinder_overlook",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "forge_deep",
+  "music": "island6_explore",
+  "name_key": "ISL6_Z_OVERLOOK",
+  "spawn": [
+    352,
+    392
+  ],
+  "zones": [
+    {
+      "id": "cinder_overlook",
+      "name_key": "ISL6_Z_OVERLOOK",
+      "rect": [
+        0,
+        0,
+        704,
+        448
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_overlook_to_overworld",
+      "rect": [
+        320,
+        416,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        920,
+        72
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_overlook_to_yard",
+      "rect": [
+        16,
+        208,
+        16,
+        48
+      ],
+      "to_region": "ow_rail_yard",
+      "to_spawn": [
+        688,
+        280
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_overlook_to_basin",
+      "rect": [
+        16,
+        320,
+        16,
+        48
+      ],
+      "to_region": "ow_slag_basin",
+      "to_spawn": [
+        656,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_bellows_trial",
+      "rect": [
+        672,
+        176,
+        16,
+        48
+      ],
+      "to_region": "cave_bellows_trial",
+      "to_spawn": [
+        48,
+        160
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_first_forge",
+      "rect": [
+        544,
+        416,
+        48,
+        16
+      ],
+      "to_region": "superboss_first_forge",
+      "to_spawn": [
+        256,
+        328
+      ],
+      "requires_moves": [
+        "sunflare"
+      ],
+      "requires_flags": [
+        "great_lamp_6",
+        "temper_skip_known",
+        "temper_scatter_known",
+        "temper_lance_known"
+      ],
+      "locked_door_id": "door_first_forge"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "overlook_wasp_1",
+      "kind": "smelter_wasp",
+      "pos": [
+        448,
+        176
+      ],
+      "route": [
+        [
+          416,
+          160
+        ],
+        [
+          464,
+          224
+        ]
+      ],
+      "perches": [],
+      "zone": "overlook_east",
+      "leash": 124
+    },
+    {
+      "id": "overlook_wasp_2",
+      "kind": "smelter_wasp",
+      "pos": [
+        192,
+        296
+      ],
+      "route": [
+        [
+          160,
+          288
+        ],
+        [
+          240,
+          320
+        ]
+      ],
+      "perches": [],
+      "zone": "overlook_west",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_cinder_overlook",
+      "kind": "waystone",
+      "pos": [
+        352,
+        200
+      ],
+      "props": {
+        "zone": "cinder_overlook",
+        "name_key": "ISL6_Z_OVERLOOK"
+      }
+    },
+    {
+      "id": "anvil_overlook_cycle",
+      "kind": "temper_anvil",
+      "pos": [
+        288,
+        224
+      ],
+      "props": {
+        "mode": "cycle"
+      }
+    },
+    {
+      "id": "signal_tower_board",
+      "kind": "signal_board",
+      "pos": [
+        352,
+        112
+      ],
+      "props": {
+        "free_shift": true
+      }
+    },
+    {
+      "id": "npc_scribe_worm",
+      "kind": "npc",
+      "pos": [
+        448,
+        344
+      ],
+      "props": {
+        "folk": "scribe_worm",
+        "require_flag": "great_lamp_6",
+        "wander_radius": 8,
+        "bubbles": [
+          {
+            "icons": [
+              "skull",
+              "flame",
+              "toy_brazier",
+              "arrow_s",
+              "exclaim"
+            ],
+            "line": "ISL6_Q4_FORGE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "spark_hide_3",
+      "kind": "spark_hider",
+      "pos": [
+        128,
+        168
+      ],
+      "props": {
+        "spot_id": "spark_3"
+      }
+    },
+    {
+      "id": "lore_overlook_vista",
+      "kind": "lore_stone",
+      "pos": [
+        424,
+        216
+      ],
+      "props": {
+        "string_id": "ISL6_LORE_VIADUCT",
+        "icon": "gear"
+      }
+    },
+    {
+      "id": "owg_trial_return",
+      "kind": "one_way_gate",
+      "pos": [
+        528,
+        312
+      ],
+      "props": {
+        "dir": "w",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_first_forge",
+      "kind": "door",
+      "pos": [
+        568,
+        344
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          48,
+          16
+        ],
+        "requires_flags": [
+          "great_lamp_6",
+          "temper_skip_known",
+          "temper_scatter_known",
+          "temper_lance_known"
+        ]
+      }
+    },
+    {
+      "id": "lamp_ov_1",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        368
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ov_2",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        368
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ov_3",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ov_4",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        344
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ov_5",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        152
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ov_6",
+      "kind": "road_lamp",
+      "pos": [
+        624,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ov_7",
+      "kind": "road_lamp",
+      "pos": [
+        568,
+        376
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "basalt_forge_arch",
+      "pos": [
+        352,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        296,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        408,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "foundry_crane_hook",
+      "pos": [
+        176,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "slag_chimney_vent",
+      "pos": [
+        112,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "tempering_floor_seal",
+      "pos": [
+        352,
+        232
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "chained_slag_cauldron",
+      "pos": [
+        448,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        624,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "quench_barrel_tub",
+      "pos": [
+        528,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "station_a",
+      "when": "kiln_shift==station_a",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "station_b",
+      "when": "kiln_shift==station_b",
+      "tiles": [
+        [
+          30,
+          11,
+          7,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "exit_to_bellows_trial"
+      ],
+      "disable": []
+    },
+    {
+      "id": "station_c",
+      "when": "kiln_shift==station_c",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "relit",
+      "when": "flag:island_6_relit",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "mark_overlook_ws",
+      "on": "signal:ws_cinder_overlook",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "overlook_waystone"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "High Trestle Overlook panoramic viaduct housing the Convergence Signal Tower, Express flatcar bridge (station_b -> Three-Temper Rail Run), Spark-Kid #3, post-relight Scribe Worm rumor, and First Forge elevator gate.",
+    "kind": "story",
+    "beat": "sho",
+    "teaches": "Convergence goal clarity, Express Whistle fast-shift, and First Forge post-relight hook.",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "overlook_waystone+superboss_access",
+    "why": "Dramatic T-shaped viaduct connecting all overworld wings, Iron Collision tower, and the superboss vault.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          352,
+          224
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_cinder_overlook"
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          168
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "spark_hide_3"
+      },
+      {
+        "op": "expect",
+        "flag": "quest:hide:spark_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          136
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "signal_tower_board"
+      },
+      {
+        "op": "expect",
+        "var": "kiln_shift==station_b"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_to_bellows_trial"
+      }
+    ]
+  }
+}

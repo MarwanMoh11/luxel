@@ -1,0 +1,493 @@
+{
+  "id": "sanctum_forecourt",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL8_Z_FORECOURT",
+  "music": "island8_explore",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    304,
+    368
+  ],
+  "zones": [
+    {
+      "id": "sanctum_forecourt",
+      "name_key": "ISL8_Z_FORECOURT",
+      "rect": [
+        0,
+        0,
+        608,
+        416
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_overworld",
+      "rect": [
+        288,
+        400,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "overworld",
+      "to_spawn": [
+        400,
+        112
+      ]
+    },
+    {
+      "id": "exit_to_sanctum_r1",
+      "rect": [
+        288,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "sanctum_r1",
+      "to_spawn": [
+        160,
+        240
+      ],
+      "requires_flags": [
+        "beacon_8_1",
+        "beacon_8_2",
+        "beacon_8_3"
+      ]
+    },
+    {
+      "id": "exit_forecourt_to_toll",
+      "rect": [
+        0,
+        192,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "toll_causeway",
+      "to_spawn": [
+        464,
+        72
+      ]
+    },
+    {
+      "id": "exit_forecourt_to_archive",
+      "rect": [
+        592,
+        192,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "archive_cloister",
+      "to_spawn": [
+        240,
+        72
+      ]
+    },
+    {
+      "id": "exit_forecourt_to_stair",
+      "rect": [
+        0,
+        64,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "stair_landing",
+      "to_spawn": [
+        496,
+        200
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_forecourt",
+      "kind": "room_anchor",
+      "pos": [
+        304,
+        368
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_forecourt",
+      "kind": "waystone",
+      "pos": [
+        248,
+        288
+      ],
+      "props": {
+        "zone": "sanctum_forecourt",
+        "name_key": "ISL8_Z_FORECOURT"
+      }
+    },
+    {
+      "id": "door_triple_eclipse_seal",
+      "kind": "eclipse_seal_gate",
+      "pos": [
+        304,
+        48
+      ],
+      "props": {
+        "size": [
+          64,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "scale_forecourt",
+      "kind": "toll_scale",
+      "pos": [
+        368,
+        288
+      ],
+      "props": {
+        "mode": "shop",
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_forecourt",
+      "kind": "lore_stone",
+      "pos": [
+        304,
+        216
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_FORECOURT",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "lamp_fc_s1",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        344
+      ],
+      "props": {
+        "lit": true,
+        "zone": "sanctum_forecourt"
+      }
+    },
+    {
+      "id": "lamp_fc_s2",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        344
+      ],
+      "props": {
+        "lit": true,
+        "zone": "sanctum_forecourt"
+      }
+    },
+    {
+      "id": "lamp_fc_w",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        216
+      ],
+      "props": {
+        "lit": true,
+        "zone": "sanctum_forecourt"
+      }
+    },
+    {
+      "id": "lamp_fc_e",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        216
+      ],
+      "props": {
+        "lit": true,
+        "zone": "sanctum_forecourt"
+      }
+    },
+    {
+      "id": "lamp_fc_n1",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        104
+      ],
+      "props": {
+        "lit": true,
+        "zone": "sanctum_forecourt"
+      }
+    },
+    {
+      "id": "lamp_fc_n2",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        104
+      ],
+      "props": {
+        "lit": true,
+        "zone": "sanctum_forecourt"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island8_scenery",
+      "prop": "sanctum_cathedral_arch",
+      "pos": [
+        304,
+        62
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        304,
+        216
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        224,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        384,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        224,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stone_gargoyle_perch",
+      "pos": [
+        240,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stone_gargoyle_perch",
+      "pos": [
+        368,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        176,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        432,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        192,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        416,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        256,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "tattered_sanctum_banner",
+      "pos": [
+        352,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stained_glass_debris",
+      "pos": [
+        272,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "stained_glass_debris",
+      "pos": [
+        336,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        304,
+        216
+      ],
+      "radius": 52,
+      "color": "plum"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        288,
+        64,
+        32,
+        304
+      ],
+      "color": "wine"
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Cruciform cathedral plaza uniting return bridges from Toll Causeway, Archive Cloister, and Stair Landing before the Triple Eclipse Seal guarding Bell Sanctum.",
+    "kind": "story",
+    "beat": "ten",
+    "teaches": "Triple Eclipse Seal progression gate + converging wing shortcuts",
+    "decisions": 3,
+    "expert_s": 45,
+    "reward": "bell_sanctum_access",
+    "why": "Iconic gothic climax threshold replacing the bare northern crown doorway.",
+    "optional": true,
+    "start": {
+      "flags": [
+        "beacon_8_1",
+        "beacon_8_2",
+        "beacon_8_3"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          288
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          80
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_to_sanctum_r1"
+      }
+    ]
+  }
+}

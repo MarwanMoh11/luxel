@@ -1,0 +1,409 @@
+{
+  "id": "cave_rain_cistern",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_4",
+  "name_key": "ISL4_ZONE_RAIN_CISTERN",
+  "music": "isl4_mausoleum",
+  "spawn": [
+    368,
+    128
+  ],
+  "zones": [
+    {
+      "id": "cave_rain_cistern",
+      "name_key": "ISL4_ZONE_RAIN_CISTERN",
+      "rect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cistern_to_cloister",
+      "rect": [
+        400,
+        112,
+        16,
+        32
+      ],
+      "to_region": "ow_drowned_cloister",
+      "to_spawn": [
+        48,
+        200
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "rf_cist_n",
+      "kind": "rain_frog",
+      "pos": [
+        232,
+        48
+      ],
+      "route": [
+        [
+          184,
+          48
+        ],
+        [
+          280,
+          48
+        ]
+      ],
+      "zone": "cave_rain_cistern",
+      "leash": 135
+    },
+    {
+      "id": "rf_cist_s",
+      "kind": "rain_frog",
+      "pos": [
+        232,
+        208
+      ],
+      "route": [
+        [
+          184,
+          208
+        ],
+        [
+          280,
+          208
+        ]
+      ],
+      "zone": "cave_rain_cistern",
+      "leash": 135
+    },
+    {
+      "id": "eel_cist_n",
+      "kind": "mist_eel",
+      "pos": [
+        184,
+        80
+      ],
+      "route": [
+        [
+          168,
+          80
+        ],
+        [
+          200,
+          80
+        ]
+      ],
+      "zone": "cave_rain_cistern",
+      "leash": 130
+    },
+    {
+      "id": "eel_cist_s",
+      "kind": "mist_eel",
+      "pos": [
+        272,
+        176
+      ],
+      "route": [
+        [
+          256,
+          176
+        ],
+        [
+          288,
+          176
+        ]
+      ],
+      "zone": "cave_rain_cistern",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "wheel_cistern",
+      "kind": "weather_wheel",
+      "pos": [
+        240,
+        128
+      ],
+      "props": {
+        "scope": "room:4:cave_rain_cistern",
+        "start": "rain",
+        "reset_on_enter": true,
+        "states": [
+          "sun",
+          "rain",
+          "wind"
+        ],
+        "wind_dir": "w"
+      }
+    },
+    {
+      "id": "door_cistern_vault",
+      "kind": "door",
+      "pos": [
+        104,
+        128
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          32
+        ],
+        "zone": "cave_rain_cistern"
+      }
+    },
+    {
+      "id": "moth_4_06",
+      "kind": "moth",
+      "pos": [
+        64,
+        104
+      ],
+      "props": {
+        "id": "moth_4_06"
+      }
+    },
+    {
+      "id": "chest_cistern_shards",
+      "kind": "chest",
+      "pos": [
+        64,
+        152
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 75
+      }
+    },
+    {
+      "id": "lamp_cis_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cis_c",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cis_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cis_s",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        208
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cis_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "sun_dry_ring",
+      "when": "weather==sun",
+      "tiles": [
+        [
+          10,
+          4,
+          10,
+          2,
+          "ground"
+        ],
+        [
+          10,
+          10,
+          10,
+          2,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        128
+      ],
+      "radius": 28,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "rect": [
+        128,
+        48,
+        224,
+        160
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_4",
+      "prop": "cave_arch_rock",
+      "pos": [
+        376,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "stalagmite_tall",
+      "pos": [
+        128,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "stalagmite_tall",
+      "pos": [
+        344,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        128,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        48,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        344,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Weather-Wheel combat cistern: spin the central wheel from RAIN to SUN to drain the ring moat, strand both Mist Eels, and shrink both Rain Frogs.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "weather_wheel SUN counterplay against rain_frog and mist_eel",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "moth_4_06, 75 shards",
+    "why": "Optional Rain Cloister combat cavern showcasing the Weather Wheel combat loop.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          264,
+          128
+        ],
+        "tol": 14
+      },
+      {
+        "op": "shoot",
+        "target": "wheel_cistern"
+      },
+      {
+        "op": "shoot",
+        "target": "wheel_cistern"
+      },
+      {
+        "op": "expect",
+        "var": "weather==sun"
+      },
+      {
+        "op": "clear"
+      },
+      {
+        "op": "expect",
+        "interactable": "door_cistern_vault",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          152
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "chest_cistern_shards"
+      }
+    ]
+  }
+}

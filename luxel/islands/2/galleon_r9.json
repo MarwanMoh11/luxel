@@ -98,7 +98,27 @@
         "index": 0,
         "style": "tide_wheel",
         "shootable": true,
-        "persist": false
+        "persist": false,
+        "target_id": "bridge_r9_canal"
+      }
+    },
+    {
+      "id": "bridge_r9_canal",
+      "kind": "door",
+      "pos": [
+        248,
+        288
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "valve_r9_capsize"
+        ],
+        "size": [
+          208,
+          32
+        ]
       }
     },
     {
@@ -131,7 +151,7 @@
       "kind": "mooring_post",
       "pos": [
         328,
-        200
+        176
       ],
       "props": {
         "orbit_r": 44.0,
@@ -144,7 +164,7 @@
       "kind": "tide_raft",
       "pos": [
         328,
-        136
+        112
       ],
       "props": {
         "mounts": "blue_transformer",
@@ -153,7 +173,7 @@
           0,
           1
         ],
-        "drift_speed": 8.0,
+        "drift_speed": 14.0,
         "normal": [
           0.7071,
           -0.7071
@@ -550,7 +570,7 @@
     "exit": "exit_r9_north",
     "start": {
       "vars": {
-        "capsize": "upright"
+        "room:2:galleon_r9:capsize": "upright"
       },
       "flags": [
         "power_ballast_clamp"
@@ -561,7 +581,11 @@
     },
     "solution": [
       {
-        "op": "interact",
+        "op": "shoot",
+        "from": [
+          104,
+          280
+        ],
         "target": "valve_r9_capsize"
       },
       {
@@ -592,7 +616,8 @@
         "to": [
           376,
           144
-        ]
+        ],
+        "tol": 2.0
       },
       {
         "op": "throw",
@@ -603,11 +628,15 @@
         "op": "recall"
       },
       {
-        "op": "shoot",
-        "from": [
+        "op": "goto",
+        "to": [
           376,
           144
         ],
+        "tol": 2.0
+      },
+      {
+        "op": "shoot",
         "target": "raft_r9"
       },
       {
@@ -616,6 +645,14 @@
         "prop": "opened",
         "value": true,
         "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          416,
+          44
+        ],
+        "tol": 6.0
       },
       {
         "op": "interact",

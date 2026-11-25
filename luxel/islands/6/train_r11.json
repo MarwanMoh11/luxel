@@ -79,7 +79,7 @@
       "id": "anvil_r11_cycle",
       "kind": "temper_anvil",
       "pos": [
-        88,
+        216,
         240
       ],
       "props": {
@@ -120,8 +120,8 @@
       "id": "lamp_r11_sw",
       "kind": "road_lamp",
       "pos": [
-        112,
-        240
+        264,
+        272
       ],
       "props": {
         "zone": "tr_r11",
@@ -145,7 +145,7 @@
       "kind": "road_lamp",
       "pos": [
         384,
-        240
+        216
       ],
       "props": {
         "zone": "tr_r11",
@@ -176,9 +176,9 @@
       "zone": "tr_r11",
       "arena": [
         64,
-        56,
+        48,
         384,
-        208
+        192
       ]
     }
   ],
@@ -209,12 +209,12 @@
     {
       "kind": "grate",
       "rect": [
-        144,
-        112,
-        256,
-        80
+        208,
+        128,
+        128,
+        48
       ],
-      "glow": true
+      "glow": false
     },
     {
       "kind": "cracks",
@@ -289,7 +289,7 @@
       "prop": "emergency_brake_wheel",
       "pos": [
         464,
-        200
+        192
       ],
       "layer": "sort",
       "flip_x": true,
@@ -300,8 +300,8 @@
       "sheet": "theme_ember_express",
       "prop": "carriage_wall_lamp",
       "pos": [
-        160,
-        268
+        208,
+        280
       ],
       "layer": "sort",
       "flip_x": false,
@@ -313,7 +313,7 @@
       "prop": "carriage_wall_lamp",
       "pos": [
         352,
-        268
+        280
       ],
       "layer": "sort",
       "flip_x": true,
@@ -413,7 +413,7 @@
     "kind": "boss",
     "beat": "ketsu",
     "teaches": "Full Ember Express mastery: live temper swapping, Lance vs Rail-Drone, and breaking P3 boiler chains",
-    "decisions": 7,
+    "decisions": 8,
     "expert_s": 140,
     "reward": "half_lantern_6a+pane_cinder_blast+express_cleared",
     "why": "Climax boss of The Ember Express delivering Half-Lantern #1 and Pane Cinder Blast.",
@@ -425,7 +425,10 @@
         "temper_skip_known",
         "temper_scatter_known",
         "temper_lance_known"
-      ]
+      ],
+      "vars": {
+        "wick_temper": ""
+      }
     },
     "solution": [
       {

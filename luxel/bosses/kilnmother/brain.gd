@@ -1,9 +1,13 @@
 class_name LxKilnmotherBoss
-extends LxCinderGolemBrain
-## Ashen Kiln Boss (Island 6): the Kilnmother, a towering furnace with heavy slag armour (4.5).
-## 3 phases, HP 20.0. Sunflare cracks her armour and stuns her for huge damage.
-## Hitting her glowing belly during BELLOWS_GUST inhale (TELL) interrupts & staggers her 0.9s!
-## P2 adds a 4-Way Furnace Cross-Blast (tell >= 0.55s) alongside Bellows Gust & Molten Rings.
+extends LxBossBase
+## Ashen Kiln Grand Boss (Island 6, `kiln_r10`): The Kilnmother (Bible §4.8).
+## 3 phases (66%/33%) on LxBossBase. Towering furnace with heavy slag armour that chips plain bolts
+## outside punish windows with a molten armour glint; Sunflare / Lance (`cracks_armour`) shatters
+## armour (1.45x + stagger), hitting her blazing belly during Bellows Gust TELL interrupts & staggers,
+## and hitting her P3 Core Meltdown inhale with Sunflare/Lance triggers a massive Meltdown Stagger!
+## Preserves B6 upgrades: Slag Lob (2 coolable molten boulders), P2 Reforge Roar cracking outer basalt
+## rims + summoning 2 director-compliant `slag_slime` adds (freeze for 4-Way Furnace Cross cover!),
+## P2 4-Way Furnace Cross-Blast, and P3 Double Molten Ring Core Meltdown!
 
 signal gust_emitted(origin: Vector2, dir: Vector2, gust_range: float, half_width: float, source: LxEnemyBrain)
 signal add_spawn_requested(specs: Array, source: LxEnemyBrain)
@@ -12,427 +16,433 @@ enum KilnMove { MOLTEN_RING, BELLOWS_GUST, FURNACE_CROSS, SLAG_LOB }
 enum RingStage { RING_1, PAUSE, RING_2 }
 
 const KILN_ARMOUR_MAX: float = 4.5
-const KILN_RING_MAX_R: float = 80.0
-const KILN_RING_BAND: float = 10.5
-const KILN_TRIGGER_R: float = 128.0
-const RING_PAUSE_P3: float = 0.62
-const MELTDOWN_STAGGER: float = 2.00
-const SLAG_LOB_TELL: float = 0.54
-const SLAG_LOB_COMMIT: float = 0.32
-const SLAG_LOB_RECOVER: float = 1.15
-
-const GUST_TELL_P1: float = 0.60
-const GUST_TELL_P3: float = 0.54
-const GUST_COMMIT_TIME: float = 0.36
-const GUST_RANGE: float = 132.0
-const GUST_HALF_W: float = 30.0
-const GUST_DMG_R: float = 60.0
-const GUST_PUSH_WICK: float = 275.0
+const ARMOUR_REFORM_DUR: float = 9.0
+const KILN_RING_START_R: float = 10.0
+const KILN_RING_MAX_R: float = 60.0
+const KILN_RING_BAND: float = 10.0
+const RING_COMMIT_DUR: float = 0.32
+const RING_PAUSE_P3: float = 0.48
+const GUST_RANGE: float = 120.0
+const GUST_HALF_W: float = 24.0
+const GUST_DMG_R: float = 54.0
+const GUST_PUSH_WICK: float = 210.0
 const GUST_PUSH_LANTERN: float = 175.0
-const GUST_RECOVER: float = 1.25
-const BELLY_INTERRUPT_STAGGER: float = 0.90
+const CROSS_RANGE: float = 104.0
+const CROSS_HALF_W: float = 10.0
 
-const CROSS_TELL_P2: float = 0.58
-const CROSS_TELL_P3: float = 0.55
-const CROSS_COMMIT_TIME: float = 0.36
-const CROSS_RANGE: float = 114.0
-const CROSS_HALF_W: float = 12.0
-const CROSS_RECOVER: float = 1.30
-const ROAR_TIME: float = 0.70
-
+# Compat fields referenced by tests/luxel/boss_qa_capture.gd, action_qa_capture.gd & teaching fx
 var active_move: int = KilnMove.MOLTEN_RING
-var ring_stage: int = RingStage.RING_1
-var move_cycle: int = 0
-var gust_dir: Vector2 = Vector2.RIGHT
-var gust_hit: bool = false
-var gust_announced: bool = false
-var cross_base_ang: float = 0.0
-var cross_progress: float = 0.0
-var cross_hit: bool = false
 var _roaring: bool = false
+var armour_max: float = KILN_ARMOUR_MAX
+var armour_hp: float = KILN_ARMOUR_MAX
+var armour_intact: bool = true
+
+var _armour_broken_t: float = 0.0
+var _ring_stage: int = RingStage.RING_1
+var _ring_progress: float = 0.0
+var _ring_hit: bool = false
+var _gust_dir: Vector2 = Vector2.DOWN
+var _gust_hit: bool = false
+var _gust_announced: bool = false
+var _cross_base_ang: float = 0.0
+var _cross_progress: float = 0.0
+var _cross_hit: bool = false
 var _armor_forged_roar: bool = false
-var _slag: LxKilnSlagHelper = LxKilnSlagHelper.new()
 var _slimes_spawned_p2: bool = false
 var _lob_done: bool = false
+var _clank_sfx_cd: float = 0.0
+var _slag: LxKilnSlagHelper = LxKilnSlagHelper.new()
 
 
 func _init() -> void:
 	super._init()
-	kind = "kilnmother"; boss_id = "kilnmother"; island_id = 6; is_boss = true
-	max_hp = 20.0; hp = 20.0; armour_max = KILN_ARMOUR_MAX; armour_hp = KILN_ARMOUR_MAX
-	body_radius = 9.5; routine_speed = 26.0; leash_radius = 160.0; notice_radius = 140.0
-	tell_time = 0.66; recover_time = 1.45; give_up_time = 1.1; attack_damage = 1.5
-	reach = KILN_TRIGGER_R; lunge_reach = KILN_TRIGGER_R; shard_drop = 36
+	kind = "kilnmother"
+	boss_id = "kilnmother"
+	boss_name_key = "BOSS_KILNMOTHER"
+	island_id = 6
+	is_miniboss = false
+	reward_heart = "full"
+	music_cue = "island6_boss_p1"
+	music_p2_cue = "island6_boss_p2"
+	max_hp = 148.0
+	hp = 148.0
+	body_radius = 10.0
+	move_speed = 32.0
+	stagger_threshold = 18.0
+	stagger_duration = 1.70
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.28
+	shard_drop = 44
+	intro_duration = 0.65
+	phase_shift_duration = 0.70
+	death_duration = 2.4
 
 
-func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
-	super.setup(spec, p_director, p_world)
-	max_hp = maxf(20.0, max_hp); hp = max_hp; is_boss = true
-	boss_id = str(spec.get("boss_id", "kilnmother")); island_id = int(spec.get("island_id", 6))
-	armour_max = maxf(1.0, float(spec.get("armour_hp", KILN_ARMOUR_MAX)))
-	armour_hp = armour_max; armour_intact = true
-	active_move = KilnMove.MOLTEN_RING; ring_stage = RingStage.RING_1; move_cycle = 0
-	gust_dir = Vector2.from_angle(facing); gust_hit = false; gust_announced = false
-	cross_base_ang = facing; cross_progress = 0.0; cross_hit = false
-	_roaring = false; _armor_forged_roar = false; _slag.reset()
-	_slimes_spawned_p2 = false; _lob_done = false
+func _configure_boss(_spec: Dictionary) -> void:
+	if world_ctx != null and str(world_ctx.get("current_region_id")) == "kiln_r10":
+		arena_rect = Rect2(176.0, 80.0, 144.0, 96.0)
+	configure_phases([0.66, 0.33])
+
+	# Attack 1: Molten Ring — expanding fiery shockwave + cinder gap ring
+	register_attack("molten_ring", {
+		"weight": 1.25, "tell": 0.62, "commit": 0.36, "recover": 1.25, "cooldown": 1.55,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = KilnMove.MOLTEN_RING
+			_ring_stage = RingStage.RING_1
+			_ring_progress = 0.0
+			_ring_hit = false
+			ground.warn_ring(pos, KILN_RING_MAX_R, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.06, 0.5, "apricot", "coral")
+			stage.play_sfx("golem_stomp_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_ring_stage = RingStage.RING_1
+			_ring_progress = 0.0
+			_ring_hit = false
+			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 120.0, gap_a, 0.85, {"color": "coral", "source": "kiln_ring_ember", "damage": 0.5})
+			_boss_impact(0.20, 96.0, 96.0)
+			stage.play_sfx("golem_stomp_shockwave", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
+			_step_single_ring(el, 0.36),
+	})
+
+	# Attack 2: Bellows Gust — glowing belly inhale (shoot to interrupt!), pushes Wick & lantern + ember fan
+	register_attack("bellows_gust", {
+		"weight": 1.20, "tell": 0.60, "commit": 0.38, "recover": 1.25, "cooldown": 1.55,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = KilnMove.BELLOWS_GUST
+			_gust_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _gust_dir.angle()
+			_gust_hit = false
+			_gust_announced = false
+			ground.warn_lane(pos, pos + _gust_dir * 58.0, 14.0, last_tell_duration, 0.0, "coral", "gold")
+			stage.play_sfx("kilnmother_bellows_inhale", pos),
+		"on_tell": func(_b: LxBossBase, _tgt: Vector2, _dt: float, _prog: float) -> void:
+			if state_timer > 0.22:
+				_gust_dir = Vector2.from_angle(facing),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			_gust_hit = false
+			_gust_announced = false
+			patterns.emit_fan(pos, _gust_dir, 5 if phase >= 2 else 3, 0.72, 142.0, {"color": "apricot", "source": "bellows_cinder", "damage": 0.5})
+			_boss_impact(0.20, 115.0, 110.0)
+			stage.play_sfx("kilnmother_bellows_gust", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			_step_bellows_commit(dt),
+	})
+
+	# Attack 3: Slag Lob — drops 2 coolable molten slag boulders + perimeter corner cinder rain!
+	register_attack("slag_lob", {
+		"weight": 1.20, "tell": 0.54, "commit": 0.34, "recover": 1.15, "cooldown": 1.50,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = KilnMove.SLAG_LOB
+			_lob_done = false
+			var targets: Array[Vector2] = _slag.pick_lob_targets(pos, tgt, world_ctx)
+			for tp: Vector2 in targets:
+				ground.warn_ring(tp, 18.0, last_tell_duration, 0.0, "coral", "gold")
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration + 0.04, 24.0, 0.5, "apricot", "gold")
+			stage.play_sfx("kilnmother_bellows_inhale", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_lob_done = true
+			_slag.commit_lobs(self)
+			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			patterns.emit_lane(pos, d, 3, 146.0, 0.08, {"color": "gold", "source": "slag_sparks", "damage": 0.5})
+			_boss_impact(0.16, 80.0, 82.0)
+			stage.play_sfx("magma_crack", pos),
+	})
+
+	# Attack 4 (P2/P3): 4-Way Furnace Cross-Blast — occluded by cooled slag boulders / frozen slimes!
+	register_attack("furnace_cross", {
+		"phases": [2, 3], "weight": 1.80, "tell": 0.58, "commit": 0.38, "recover": 1.30, "cooldown": 1.55,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = KilnMove.FURNACE_CROSS
+			_cross_base_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			facing = _cross_base_ang
+			_cross_progress = 0.0
+			_cross_hit = false
+			for ci: int in range(4):
+				var cdir: Vector2 = Vector2.from_angle(_cross_base_ang + float(ci) * (PI * 0.5))
+				ground.warn_lane(pos, pos + cdir * 62.0, CROSS_HALF_W, last_tell_duration, 0.0, "coral", "gold")
+			stage.play_sfx("golem_stomp_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			_cross_progress = 0.0
+			_cross_hit = false
+			for ci: int in range(4):
+				var cdir: Vector2 = Vector2.from_angle(_cross_base_ang + float(ci) * (PI * 0.5))
+				patterns.emit_lane(pos, cdir, 2, 140.0, 0.09, {"color": "coral", "source": "furnace_cross_bolt", "damage": 0.5})
+			_boss_impact(0.22, 108.0, 104.0)
+			stage.play_sfx("kilnmother_bellows_gust", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
+			_step_cross_commit(el, 0.38),
+	})
+
+	# Attack 5 (P3): Core Meltdown Double-Ring — Ring 1 -> blazing inhale pause (Sunflare/Lance staggers!) -> Ring 2!
+	register_attack("core_meltdown_rings", {
+		"phases": [3], "weight": 2.05, "tell": 0.62, "commit": RING_COMMIT_DUR + RING_PAUSE_P3 + RING_COMMIT_DUR, "recover": 1.35, "cooldown": 1.60,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = KilnMove.MOLTEN_RING
+			_ring_stage = RingStage.RING_1
+			_ring_progress = 0.0
+			_ring_hit = false
+			ground.warn_ring(pos, KILN_RING_MAX_R, last_tell_duration, 0.0, "coral", "cream")
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration + 0.08, 22.0, 0.5, "coral", "gold")
+			stage.play_sfx("golem_stomp_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_ring_stage = RingStage.RING_1
+			_ring_progress = 0.0
+			_ring_hit = false
+			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			patterns.emit_gap_ring(pos, 12, 122.0, gap_a, 0.85, {"color": "gold", "source": "meltdown_ring1", "damage": 0.5})
+			_boss_impact(0.22, 98.0, 100.0)
+			stage.play_sfx("golem_stomp_shockwave", pos),
+		"on_commit": func(_b: LxBossBase, tgt: Vector2, _dt: float, el: float) -> void:
+			_step_meltdown_commit(el, tgt),
+	})
 
 
-func take_hit(hit: LxHit) -> int:
-	if state == State.DEAD or hit == null:
-		return HitResult.GLANCED
-	if _roaring:
-		_emit_enemy_hit(hit, HitResult.GLANCED)
-		return HitResult.GLANCED
-	var h: Dictionary = _read_hit(hit)
-	# P3 Core Meltdown: hitting her exposed furnace mouth during Double-Ring inhale PAUSE with Sunflare/Lance staggers 2.0s!
-	var in_meltdown_inhale: bool = phase >= 3 and state == State.COMMIT and active_move == KilnMove.MOLTEN_RING and ring_stage == RingStage.PAUSE
-	if in_meltdown_inhale and (bool(h.get("cracks_armour", false)) or str(h.get("source", "")) == LxHit.SOURCE_SUNFLARE):
-		if armour_intact:
-			_crack_armour()
-		hp -= float(h["damage"]) + 1.5
-		flash_t = 0.22
-		ring_stage = RingStage.RING_1
-		_boss_impact(0.26, 94.0, 96.0)
-		_emit_sfx("kilnmother_belly_interrupt")
-		_emit_sfx("magma_crack")
-		if hp <= 0.001:
-			opened_kill = true
-			_die(hit)
-			return HitResult.KILLED
-		_release_token()
-		state = State.STAGGER
-		state_timer = MELTDOWN_STAGGER
-		_emit_enemy_hit(hit, HitResult.OPENED)
-		return HitResult.OPENED
-	# Hitting her glowing exposed belly during BELLOWS_GUST inhale (TELL) interrupts & staggers her 0.9s!
-	if state == State.TELL and active_move == KilnMove.BELLOWS_GUST:
-		var dmg: float = float(h["damage"])
-		var orig: Vector2 = h["origin"] as Vector2
-		var rel: Vector2 = orig - pos
-		if bool(h.get("cracks_armour", false)) and armour_intact:
-			_crack_armour()
-		hp -= dmg
-		wary = true
-		flash_t = 0.18
-		if rel.length() > 0.01:
-			knock = -rel.normalized() * 72.0
-		active_move = KilnMove.MOLTEN_RING
-		_boss_impact(0.22, 84.0, 88.0)
-		_emit_sfx("kilnmother_belly_interrupt")
-		if hp <= 0.001:
-			opened_kill = true
-			_die(hit)
-			return HitResult.KILLED
-		if not _check_phase_transition_bool():
-			_release_token()
-			state = State.STAGGER
-			state_timer = BELLY_INTERRUPT_STAGGER
-		_emit_enemy_hit(hit, HitResult.OPENED)
-		return HitResult.OPENED
-
-	var sunflare_crack: bool = bool(h.get("cracks_armour", false)) and armour_intact
-	var res: int = super.take_hit(hit)
-	if is_alive() and sunflare_crack:
-		hp = maxf(0.0, hp - float(h.get("damage", 0.0)) * 0.25)
-		if hp <= 0.001:
-			opened_kill = true
-			_die(hit)
-			return HitResult.KILLED
-	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		_check_phase_transition()
-	return res
-
-
-func _check_phase_transition_bool() -> bool:
-	if phase < 2 and hp <= max_hp * 0.66 and hp > 0.001:
-		_enter_phase(2)
-		return true
-	if phase < 3 and hp <= max_hp * 0.33 and hp > 0.001:
-		_enter_phase(3)
-		return true
-	return false
-
-
-func _check_phase_transition() -> void:
-	_check_phase_transition_bool()
+func _on_reset_encounter() -> void:
+	active_move = KilnMove.MOLTEN_RING
+	_roaring = false
+	armour_max = KILN_ARMOUR_MAX
+	armour_hp = KILN_ARMOUR_MAX
+	armour_intact = true
+	_armour_broken_t = 0.0
+	_ring_stage = RingStage.RING_1
+	_ring_progress = 0.0
+	_ring_hit = false
+	_gust_dir = Vector2.from_angle(facing)
+	_gust_hit = false
+	_gust_announced = false
+	_cross_base_ang = facing
+	_cross_progress = 0.0
+	_cross_hit = false
+	_armor_forged_roar = false
+	_slimes_spawned_p2 = false
+	_lob_done = false
+	_clank_sfx_cd = 0.0
+	_slag.reset()
 
 
 func _enter_phase(next_phase: int) -> void:
-	phase = next_phase
+	# Compat hook for tests/luxel/boss_qa_capture.gd
+	phase = clampi(next_phase, 1, 3)
+	if not phases_reached.has(phase):
+		phases_reached.append(phase)
+	_on_phase_enter(phase)
+
+
+func _on_phase_enter(new_phase: int) -> void:
 	_roaring = true
 	_armor_forged_roar = false
 	active_move = KilnMove.MOLTEN_RING
-	ring_stage = RingStage.RING_1
-	stomp_progress = 0.0
-	cross_progress = 0.0
-	if phase == 2 and not armour_intact:
-		armour_intact = true
-		armour_hp = 2.0
-		_armor_forged_roar = true
-		_emit_sfx("shield_clang")
-		var fred_f: bool = LxHudFx.flash_reduced()
-		if Lx.player != null and is_instance_valid(Lx.player):
-			if Lx.player.has_method("spawn_ring"):
-				Lx.player.call("spawn_ring", pos, body_radius + 2.0, 44.0, 0.34, PAL["gold"] as Color, 1.5 if fred_f else 2.0)
-				Lx.player.call("spawn_ring", pos, body_radius + 4.0, 32.0, 0.26, PAL["coral"] as Color, 1.2 if fred_f else 1.6)
-			if Lx.player.has_method("spawn_sparks"):
-				for fi: int in range(4):
-					var fdir: Vector2 = Vector2.from_angle(PI * 0.25 + float(fi) * (PI * 0.5))
-					Lx.player.call("spawn_sparks", pos, fdir, 3, (PAL["gold"] if fi % 2 == 0 else PAL["coral"]) as Color, 36.0, 92.0, 0.32)
-	_release_token()
-	state = State.NOTICE
-	state_timer = ROAR_TIME
-	if Lx.events != null:
-		Lx.events.boss_phase_changed.emit(boss_id, phase)
-		Lx.events.shake_requested.emit(0.35)
-	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
-	_emit_sfx("kilnmother_phase")
+	_ring_stage = RingStage.RING_1
+	_ring_progress = 0.0
+	_cross_progress = 0.0
 	_slag.trigger_room_pourers(world_ctx)
-	if phase == 2:
+	var c: Vector2 = arena_rect.get_center()
+	if new_phase == 2:
+		if not armour_intact:
+			armour_intact = true
+			armour_hp = 2.5
+			_armor_forged_roar = true
+			stage.play_sfx("golem_armour_clank", pos)
+			_spawn_reforge_sparks()
 		_slag.rim_cracked = true
+		# P2 Arena Mutation: crack outer basalt rim into lava channels + spawn 2 director-compliant slag_slimes!
+		_carve_safe_pit_near(c + Vector2(-64.0, -56.0))
+		_carve_safe_pit_near(c + Vector2(64.0, -56.0))
 		if not _slimes_spawned_p2 and Lx.packs != null and not Lx.packs.enemy_script("slag_slime").is_empty():
 			_slimes_spawned_p2 = true
-			add_spawn_requested.emit([
-				{"kind": "slag_slime", "pos": pos + Vector2(-58.0, 24.0), "island_id": 6},
-				{"kind": "slag_slime", "pos": pos + Vector2(58.0, 24.0), "island_id": 6},
-			], self)
+			var slime_specs: Array[Dictionary] = [
+				{"kind": "slag_slime", "pos": clamp_to_arena(home + Vector2(-44.0, 22.0)), "summon_color": "coral"},
+				{"kind": "slag_slime", "pos": clamp_to_arena(home + Vector2(44.0, 22.0)), "summon_color": "coral"},
+			]
+			adds.queue_wave(slime_specs, 0.70, 2)
+		stage.darkness_pulse(0.62, 1.0)
+	elif new_phase == 3:
+		_carve_safe_pit_near(c + Vector2(-88.0, 8.0))
+		_carve_safe_pit_near(c + Vector2(96.0, 8.0))
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-58.0, -32.0)), 4.5, "kiln_slag_pillar_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(58.0, -32.0)), 4.5, "kiln_slag_pillar_e")
+		stage.darkness_pulse(0.72, 1.1)
+	stage.shake(0.30)
+	stage.play_sfx("kilnmother_phase", pos)
 
 
-func _step_brain(dt: float) -> void:
+func _spawn_reforge_sparks() -> void:
+	var fred_f: bool = is_flash_reduced()
+	if Lx.player != null and is_instance_valid(Lx.player):
+		if Lx.player.has_method("spawn_ring"):
+			Lx.player.call("spawn_ring", pos, body_radius + 2.0, 44.0, 0.34, PAL["gold"] as Color, 1.5 if fred_f else 2.0)
+			Lx.player.call("spawn_ring", pos, body_radius + 4.0, 32.0, 0.26, PAL["coral"] as Color, 1.2 if fred_f else 1.6)
+		if Lx.player.has_method("spawn_sparks"):
+			for fi: int in range(4):
+				var fdir: Vector2 = Vector2.from_angle(PI * 0.25 + float(fi) * (PI * 0.5))
+				Lx.player.call("spawn_sparks", pos, fdir, 3, (PAL["gold"] if fi % 2 == 0 else PAL["coral"]) as Color, 36.0, 92.0, 0.32)
+
+
+func _on_boss_tick(dt: float, _target: Vector2) -> void:
+	if boss_state != BossState.PHASE_SHIFT:
+		_roaring = false
+		_armor_forged_roar = false
+	_clank_sfx_cd = maxf(0.0, _clank_sfx_cd - dt)
+	if not armour_intact:
+		_armour_broken_t = maxf(0.0, _armour_broken_t - dt)
+		if _armour_broken_t <= 0.0:
+			armour_intact = true
+			armour_hp = armour_max * 0.65
+			stage.play_sfx("golem_armour_clank", pos)
 	_slag.tick(dt, self)
-	if state == State.NOTICE and _roaring:
-		state_timer -= dt
-		if state_timer <= 0.0:
-			_roaring = false
-			_armor_forged_roar = false
-			state = State.POSITION
-			cooldown = 0.35
-		return
-	super._step_brain(dt)
 
 
-func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
-	if dist > KILN_TRIGGER_R:
-		return false
-	var chosen: int = KilnMove.MOLTEN_RING
-	if phase >= 2:
-		var slot_m: int = move_cycle % 4
-		if _is_lantern_out() and dist <= GUST_RANGE and slot_m != 2:
-			chosen = KilnMove.BELLOWS_GUST
-		elif slot_m == 1:
-			chosen = KilnMove.BELLOWS_GUST
-		elif slot_m == 2:
-			chosen = KilnMove.FURNACE_CROSS
-		elif slot_m == 3:
-			chosen = KilnMove.SLAG_LOB
-		else:
-			chosen = KilnMove.MOLTEN_RING if dist <= KILN_RING_MAX_R + 14.0 else KilnMove.FURNACE_CROSS
-	else:
-		var slot_p1: int = move_cycle % 3
-		if _is_lantern_out() and dist <= GUST_RANGE:
-			chosen = KilnMove.BELLOWS_GUST
-		elif slot_p1 == 1:
-			chosen = KilnMove.BELLOWS_GUST
-		elif slot_p1 == 2:
-			chosen = KilnMove.SLAG_LOB
-		else:
-			chosen = KilnMove.MOLTEN_RING if dist <= KILN_RING_MAX_R + 14.0 else KilnMove.BELLOWS_GUST
-	if not _claim_token():
-		return false
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	if hit == null:
+		return dmg
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var cracks: bool = bool(h["cracks_armour"]) or src == LxHit.SOURCE_SUNFLARE
+	var heavy: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_PRISM] or bool(h["pierce"])
 
-	move_cycle += 1
-	active_move = chosen
-	state = State.TELL
-	lunge_attack = false
-	is_counter_attack = false
-	var to_t: Vector2 = target_pos - pos
-	if to_t.length() > 0.01:
-		facing = to_t.angle()
+	# P3 Core Meltdown Inhale Interrupt: Sunflare / Lance into open furnace mouth triggers huge stagger!
+	var in_meltdown_pause: bool = phase >= 3 and boss_state == BossState.COMMIT and active_attack_id == "core_meltdown_rings" and _ring_stage == RingStage.PAUSE
+	if in_meltdown_pause and (cracks or heavy):
+		if armour_intact:
+			_crack_armour()
+		_ring_stage = RingStage.RING_1
+		_boss_impact(0.26, 94.0, 96.0)
+		stage.play_sfx("kilnmother_belly_interrupt", pos)
+		stage.play_sfx("magma_crack", pos)
+		stagger_immunity_t = 0.0
+		add_stagger(stagger_threshold)
+		return dmg * 1.60
 
-	if active_move == KilnMove.BELLOWS_GUST:
-		gust_dir = to_t.normalized() if to_t.length() > 0.01 else Vector2.from_angle(facing)
-		gust_hit = false
-		gust_announced = false
-		var base_g: float = GUST_TELL_P3 if phase >= 3 else GUST_TELL_P1
-		last_tell_duration = _scaled_tell(base_g, false, attack_damage)
-		_emit_sfx("kilnmother_bellows_inhale")
-	elif active_move == KilnMove.FURNACE_CROSS:
-		cross_base_ang = facing
-		cross_progress = 0.0
-		cross_hit = false
-		var base_c: float = CROSS_TELL_P3 if phase >= 3 else CROSS_TELL_P2
-		last_tell_duration = _scaled_tell(base_c, false, attack_damage)
-		_emit_sfx("golem_stomp_tell")
-	elif active_move == KilnMove.SLAG_LOB:
-		_lob_done = false
-		_slag.pick_lob_targets(pos, target_pos, world_ctx)
-		last_tell_duration = _scaled_tell(SLAG_LOB_TELL, false, 1.0)
-		_emit_sfx("furnace_draw")
-	else:
-		ring_stage = RingStage.RING_1
-		stomp_progress = 0.0
-		stomp_hit = false
-		var base_r: float = 0.58 if phase >= 3 else tell_time
-		last_tell_duration = _scaled_tell(base_r, false, attack_damage)
-		_emit_sfx("golem_stomp_tell")
+	# Bellows Gust Belly Interrupt: hitting blazing belly during TELL interrupts & staggers!
+	if boss_state == BossState.TELL and active_attack_id == "bellows_gust" and stagger_immunity_t <= 0.0:
+		if cracks and armour_intact:
+			_crack_armour()
+		active_move = KilnMove.MOLTEN_RING
+		_boss_impact(0.22, 84.0, 88.0)
+		stage.play_sfx("kilnmother_belly_interrupt", pos)
+		add_stagger(stagger_threshold)
+		return dmg * 1.35
 
-	state_timer = last_tell_duration
-	_emit_attack_started()
-	return true
+	# Sunflare / Lance cracks heavy furnace slag armour for 1.45x + stagger!
+	if cracks and armour_intact:
+		_crack_armour()
+		add_stagger(stagger_threshold * 0.70)
+		return dmg * 1.45
+
+	if boss_state == BossState.STAGGER:
+		return dmg * 1.50
+	if is_punishable():
+		if (heavy or cracks) and armour_intact:
+			_wear_armour(float(h["shield_wear"]))
+		return dmg * (1.20 if (not armour_intact or heavy or cracks) else 1.0)
+	if heavy or cracks:
+		if armour_intact:
+			_wear_armour(float(h["shield_wear"]))
+		return dmg * 1.15
+
+	# Heavy furnace slag armour outside punish windows: reduced bolt chip + clear slag armour glint!
+	clank_t = 0.12
+	if _clank_sfx_cd <= 0.0:
+		_clank_sfx_cd = 0.28
+		stage.play_sfx("golem_armour_clank", pos)
+	if armour_intact:
+		_wear_armour(0.10)
+	return dmg * (0.24 if armour_intact else 0.34)
 
 
-func _step_tell(dt: float, target_pos: Vector2) -> void:
-	if active_move == KilnMove.BELLOWS_GUST and state_timer > 0.22:
-		var to_t: Vector2 = target_pos - pos
-		if to_t.length() > 0.01:
-			_turn_toward(to_t.angle(), 2.4, dt)
-			gust_dir = Vector2.from_angle(facing)
-	elif active_move == KilnMove.FURNACE_CROSS and state_timer > 0.22:
-		var to_c: Vector2 = target_pos - pos
-		if to_c.length() > 0.01:
-			_turn_toward(to_c.angle(), 2.4, dt)
-			cross_base_ang = facing
-	state_timer -= dt
-	if state_timer <= 0.0:
-		_enter_commit()
+func _wear_armour(amt: float) -> void:
+	armour_hp = maxf(0.0, armour_hp - maxf(0.0, amt))
+	if armour_hp <= 0.001:
+		_crack_armour()
 
 
-func _enter_commit() -> void:
-	if active_move == KilnMove.BELLOWS_GUST:
-		state = State.COMMIT
-		state_timer = GUST_COMMIT_TIME
-		gust_hit = false
-		gust_announced = false
-		_boss_impact(0.20, 115.0, 110.0)
-		_emit_sfx("kilnmother_bellows_gust")
-		return
-	if active_move == KilnMove.FURNACE_CROSS:
-		state = State.COMMIT
-		state_timer = CROSS_COMMIT_TIME
-		cross_progress = 0.0
-		cross_hit = false
-		_boss_impact(0.22, 108.0, 104.0)
-		_emit_sfx("kilnmother_bellows_gust")
-		return
-	if active_move == KilnMove.SLAG_LOB:
-		state = State.COMMIT
-		state_timer = SLAG_LOB_COMMIT
-		_lob_done = false
-		_boss_impact(0.16, 80.0, 82.0)
-		_emit_sfx("magma_crack")
-		return
-	ring_stage = RingStage.RING_1
-	super._enter_commit()
+func _crack_armour() -> void:
+	armour_hp = 0.0
+	armour_intact = false
+	_armour_broken_t = ARMOUR_REFORM_DUR
+	stage.play_sfx("golem_armour_crack", pos)
+	_boss_impact(0.22, 86.0, 88.0)
 
 
-func _step_commit(dt: float) -> void:
-	if active_move == KilnMove.BELLOWS_GUST:
-		_step_bellows_commit(dt)
-		return
-	if active_move == KilnMove.FURNACE_CROSS:
-		_step_cross_commit(dt)
-		return
-	if active_move == KilnMove.SLAG_LOB:
-		if not _lob_done:
-			_lob_done = true
-			_slag.commit_lobs(self)
-		state_timer -= dt
-		if state_timer <= 0.0:
-			state = State.RECOVER
-			state_timer = maxf(MIN_RECOVER_TIME, SLAG_LOB_RECOVER)
-			last_recover_duration = state_timer
-		return
-	if ring_stage == RingStage.PAUSE:
-		state_timer -= dt
-		if state_timer <= 0.0:
-			ring_stage = RingStage.RING_2
-			state_timer = STOMP_COMMIT_TIME
-			stomp_progress = 0.0
-			stomp_hit = false
-			_boss_impact(0.22, 98.0, 100.0)
-			_emit_sfx("golem_stomp_shockwave")
-		return
-
-	state_timer = maxf(0.0, state_timer - dt)
-	stomp_progress = 1.0 - clampf(state_timer / STOMP_COMMIT_TIME, 0.0, 1.0)
-	var ring_r: float = lerpf(STOMP_START_R, KILN_RING_MAX_R, stomp_progress)
-	if not stomp_hit and _has_player():
+func _step_single_ring(el: float, dur: float) -> void:
+	_ring_progress = clampf(el / maxf(dur, 0.05), 0.0, 1.0)
+	var ring_r: float = lerpf(KILN_RING_START_R, KILN_RING_MAX_R, _ring_progress)
+	if not _ring_hit and _has_player():
 		var wv: Vector2 = _get_wick_pos() - pos
 		if absf(wv.length() - ring_r) <= KILN_RING_BAND:
-			stomp_hit = true
-			var push: Vector2 = wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing)
-			_emit_shockwave_hit(push)
-	if _is_lured() and _get_lantern_pos().distance_to(pos) <= ring_r:
-		if Lx.events != null:
-			Lx.events.lantern_struck.emit(_get_lantern_pos())
-
-	if state_timer <= 0.0:
-		if ring_stage == RingStage.RING_1 and phase >= 3:
-			ring_stage = RingStage.PAUSE
-			state_timer = _scaled_tell(RING_PAUSE_P3, false, attack_damage)
-			stomp_progress = 0.0
-			stomp_hit = false
-			_emit_sfx("golem_stomp_tell")
-		else:
-			ring_stage = RingStage.RING_1
-			state = State.RECOVER
-			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
-			last_recover_duration = state_timer
+			_ring_hit = true
+			var push: Vector2 = wv.normalized() if wv.length() > 0.1 else Vector2.from_angle(facing)
+			emit_boss_damage(push, 0.5, "shockwave", pos, true)
+	if _is_lantern_out() and _get_lantern_pos().distance_to(pos) <= ring_r and Lx.events != null:
+		Lx.events.lantern_struck.emit(_get_lantern_pos())
 
 
-func _step_cross_commit(dt: float) -> void:
-	state_timer = maxf(0.0, state_timer - dt)
-	cross_progress = 1.0 - clampf(state_timer / CROSS_COMMIT_TIME, 0.0, 1.0)
-	var raw_len: float = lerpf(14.0, CROSS_RANGE, cross_progress)
-	if not cross_hit and _has_player():
+func _step_meltdown_commit(el: float, tgt: Vector2) -> void:
+	if el < RING_COMMIT_DUR:
+		_step_single_ring(el, RING_COMMIT_DUR)
+	elif el < RING_COMMIT_DUR + RING_PAUSE_P3:
+		if _ring_stage == RingStage.RING_1:
+			_ring_stage = RingStage.PAUSE
+			_ring_progress = 0.0
+			_ring_hit = false
+			ground.warn_ring(pos, KILN_RING_MAX_R, RING_PAUSE_P3, 0.0, "coral", "cream")
+			stage.play_sfx("golem_stomp_tell", pos)
+	else:
+		if _ring_stage != RingStage.RING_2:
+			_ring_stage = RingStage.RING_2
+			_ring_progress = 0.0
+			_ring_hit = false
+			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			patterns.emit_gap_ring(pos, 14, 126.0, gap_a, 0.85, {"color": "coral", "source": "meltdown_ring2", "damage": 0.5})
+			_boss_impact(0.24, 100.0, 102.0)
+			stage.play_sfx("golem_stomp_shockwave", pos)
+		_step_single_ring(el - RING_COMMIT_DUR - RING_PAUSE_P3, RING_COMMIT_DUR)
+
+
+func _step_cross_commit(el: float, dur: float) -> void:
+	_cross_progress = clampf(el / maxf(dur, 0.05), 0.0, 1.0)
+	var raw_len: float = lerpf(14.0, CROSS_RANGE, _cross_progress)
+	if not _cross_hit and _has_player():
 		var wp: Vector2 = _get_wick_pos()
 		for ci: int in range(4):
-			var cdir: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
+			var cdir: Vector2 = Vector2.from_angle(_cross_base_ang + float(ci) * (PI * 0.5))
 			var arm_len: float = _slag.arm_length_with_cover(pos, cdir, raw_len, CROSS_HALF_W, world_ctx, self)
 			if Geometry2D.get_closest_point_to_segment(wp, pos, pos + cdir * arm_len).distance_to(wp) <= CROSS_HALF_W:
-				cross_hit = true
-				_emit_player_hit(cdir, attack_damage)
+				_cross_hit = true
+				emit_boss_damage(cdir, 0.5, "furnace_cross", pos, true)
 				break
 	if _is_lantern_out():
 		var lp: Vector2 = _get_lantern_pos()
 		for ci: int in range(4):
-			var cdir_l: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
+			var cdir_l: Vector2 = Vector2.from_angle(_cross_base_ang + float(ci) * (PI * 0.5))
 			var arm_len_l: float = _slag.arm_length_with_cover(pos, cdir_l, raw_len, CROSS_HALF_W, world_ctx, self)
 			if Geometry2D.get_closest_point_to_segment(lp, pos, pos + cdir_l * arm_len_l).distance_to(lp) <= CROSS_HALF_W + 3.0:
 				if Lx.events != null:
 					Lx.events.lantern_struck.emit(lp)
 				break
-	if state_timer <= 0.0:
-		state = State.RECOVER
-		state_timer = maxf(MIN_RECOVER_TIME, CROSS_RECOVER)
-		last_recover_duration = state_timer
 
 
 func _step_bellows_commit(dt: float) -> void:
-	if not gust_announced:
-		gust_announced = true
-		gust_emitted.emit(pos, gust_dir, GUST_RANGE, GUST_HALF_W, self)
+	if not _gust_announced:
+		_gust_announced = true
+		gust_emitted.emit(pos, _gust_dir, GUST_RANGE, GUST_HALF_W, self)
 		if world_ctx != null and world_ctx.has_method("on_enemy_gust"):
-			world_ctx.call("on_enemy_gust", self, pos, gust_dir, GUST_RANGE, GUST_HALF_W)
-	var end_p: Vector2 = pos + gust_dir * GUST_RANGE
+			world_ctx.call("on_enemy_gust", self, pos, _gust_dir, GUST_RANGE, GUST_HALF_W)
+	var end_p: Vector2 = pos + _gust_dir * GUST_RANGE
 	if _has_player():
 		var wp: Vector2 = _get_wick_pos()
 		if Geometry2D.get_closest_point_to_segment(wp, pos, end_p).distance_to(wp) <= GUST_HALF_W:
-			if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil"):
-				Lx.player.call("apply_recoil", gust_dir * GUST_PUSH_WICK * dt)
-			if not gust_hit and pos.distance_to(wp) <= GUST_DMG_R:
-				gust_hit = true
-				_emit_player_hit(gust_dir, 1.0)
+			if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and arena_rect.grow(-22.0).has_point(wp + _gust_dir * 20.0):
+				Lx.player.call("apply_recoil", _gust_dir * GUST_PUSH_WICK * dt)
+			if not _gust_hit and pos.distance_to(wp) <= GUST_DMG_R:
+				_gust_hit = true
+				emit_boss_damage(_gust_dir, 0.5, "bellows_gust", pos, true)
 	if _is_lantern_out():
 		var lp: Vector2 = _get_lantern_pos()
 		if Geometry2D.get_closest_point_to_segment(lp, pos, end_p).distance_to(lp) <= GUST_HALF_W + 6.0:
 			_push_thrown_lantern(dt)
-	state_timer -= dt
-	if state_timer <= 0.0:
-		state = State.RECOVER
-		state_timer = maxf(MIN_RECOVER_TIME, GUST_RECOVER)
-		last_recover_duration = state_timer
 
 
 func _push_thrown_lantern(dt: float) -> void:
@@ -445,78 +455,72 @@ func _push_thrown_lantern(dt: float) -> void:
 		if st_v != null and (int(st_v) == 1 or int(st_v) == 2):
 			var cur_v: Variant = lan.get("pos")
 			if cur_v is Vector2:
-				var pushed: Vector2 = (cur_v as Vector2) + gust_dir * GUST_PUSH_LANTERN * dt
+				var pushed: Vector2 = (cur_v as Vector2) + _gust_dir * GUST_PUSH_LANTERN * dt
 				lan.set("pos", pushed)
 				if lan is Node2D:
 					(lan as Node2D).global_position = pushed.round()
 
 
+func _carve_safe_pit_near(world_pt: Vector2) -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("tile_at"):
+		return
+	var tx: int = int(floorf(world_pt.x / 16.0))
+	var ty: int = int(floorf(world_pt.y / 16.0))
+	var cp := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
+	if cp.y < 216.0 and str(world_ctx.call("tile_at", cp)) == "ground" and cp.distance_to(home) > 44.0 and cp.distance_to(_get_wick_pos()) > 28.0:
+		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), "pit")
+
+
+func _perimeter_targets(tgt: Vector2) -> Array[Vector2]:
+	var out: Array[Vector2] = [tgt]
+	var inset: Rect2 = arena_rect.grow(-14.0)
+	var corners: Array[Vector2] = [
+		inset.position, Vector2(inset.end.x, inset.position.y),
+		Vector2(inset.position.x, inset.end.y), inset.end,
+	]
+	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
+	out.append(corners[0])
+	out.append(corners[1])
+	if phase >= 2:
+		out.append(corners[2])
+	return out
+
+
+func _on_death_start() -> void:
+	_slag.reset()
+	stage.revert_tiles(world_ctx)
+	stage.play_sfx("kilnmother_phase", pos)
+
+
 func _body_color() -> Color:
 	if armour_intact:
-		return (PAL["dusk"] as Color) if phase >= 3 else (PAL["stone"] as Color)
-	return (PAL["gold"] as Color) if phase >= 3 else (PAL["coral"] as Color)
+		return (PAL["dusk"] if phase >= 3 else PAL["stone"]) as Color
+	return (PAL["gold"] if phase >= 3 else PAL["coral"]) as Color
 
 
-func _draw_extra(off: Vector2) -> void:
+func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
-	var belly_exposed: bool = active_move == KilnMove.BELLOWS_GUST and state == State.TELL
-	if _sprite_sheet == null:
-		# Kiln chimney crown + glowing furnace belly
-		draw_rect(Rect2(off + Vector2(-4.0, -body_radius - 5.0), Vector2(8.0, 5.0)), PAL["night"] as Color, true)
-		draw_rect(Rect2(off + Vector2(-2.5, -body_radius - 4.0), Vector2(5.0, 3.0)), PAL["apricot"] as Color, true)
-		draw_circle(off + Vector2(0.0, 1.0), 4.8 if belly_exposed else 4.2, PAL["night"] as Color)
-		draw_circle(off + Vector2(0.0, 1.0), 3.4 if belly_exposed else 2.8, (PAL["cream"] as Color) if (belly_exposed or not armour_intact) else (PAL["coral"] as Color))
+	var belly_exposed: bool = active_attack_id == "bellows_gust" and boss_state == BossState.TELL
 	if armour_intact:
 		LxDamageFx.draw_armour_plates(self, off, body_radius + 3.5, 2.0, armour_hp, armour_max)
 	if belly_exposed:
-		# Blazing belly target reticle during inhale TELL (shoot to interrupt & stagger!)
-		var br: float = 5.5 + (0.0 if LxHudFx.flash_reduced() else 1.2 * sin(anim_t * 22.0))
-		var side: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
-		var g_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var dmg_pt: Vector2 = off + gust_dir * GUST_DMG_R
-		var end_pt: Vector2 = off + gust_dir * GUST_RANGE
-		LxBossTelegraphFx.draw_ground_danger_lane(self, dmg_pt, end_pt, GUST_HALF_W, g_prog, anim_t, "apricot", "gold")
-		LxBossTelegraphFx.draw_ground_danger_lane(self, off, dmg_pt, GUST_HALF_W, g_prog, anim_t, "coral", "gold")
+		var br: float = 5.5 + (0.0 if is_flash_reduced() else 1.2 * sin(anim_t * 22.0))
 		draw_arc(c + Vector2(0.0, 1.0), br, 0.0, TAU, 16, PAL["gold"] as Color, 1.8)
 		draw_circle(c + Vector2(0.0, 1.0), 2.5, PAL["cream"] as Color)
-		var pull_d: float = lerpf(46.0, 12.0, g_prog)
-		draw_line((off + gust_dir * pull_d - side * 14.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["apricot"] as Color, 1.3)
-		draw_line((off + gust_dir * pull_d + side * 14.0).round(), (off + gust_dir * (pull_d - 6.0)).round(), PAL["apricot"] as Color, 1.3)
-		if state_timer <= 0.35:
-			var g_urg: float = 1.0 - clampf(state_timer / 0.35, 0.0, 1.0)
-			LxBossTelegraphFx.draw_ground_danger_ring(self, off + gust_dir * (GUST_DMG_R * 0.72), 15.0, g_urg, anim_t, "coral", "gold")
-	elif active_move == KilnMove.BELLOWS_GUST and state == State.COMMIT:
-		var side2: Vector2 = Vector2(-gust_dir.y, gust_dir.x)
+	elif active_attack_id == "bellows_gust" and boss_state == BossState.COMMIT:
+		var side2 := Vector2(-_gust_dir.y, _gust_dir.x)
 		var g_len: float = GUST_RANGE * 0.88
 		for idx: int in range(-1, 2):
 			var s_off: Vector2 = side2 * float(idx) * (GUST_HALF_W * 0.48)
-			var l_end: float = g_len if idx == 0 else g_len * 0.86
 			var p0: Vector2 = (off + s_off).round()
-			var p1: Vector2 = (off + s_off + gust_dir * l_end).round()
-			draw_line(p0, p1, PAL["wine"] as Color, 7.2 if idx == 0 else 5.2)
-			draw_line(p0, p1, PAL["coral"] as Color, 5.2 if idx == 0 else 3.6)
-			draw_line(p0, p1, PAL["apricot"] as Color, 3.4 if idx == 0 else 2.2)
-			draw_line(p0, p1, PAL["gold"] as Color, 2.0 if idx == 0 else 1.2)
-			if idx == 0:
-				draw_line(p0, p1, PAL["cream"] as Color, 1.1)
-		for ei: int in range(6):
-			var et: float = fposmod(anim_t * 4.0 + float(ei) * 0.167, 1.0)
-			var lat: float = sin(anim_t * 15.0 + float(ei) * 2.2) * (GUST_HALF_W * 0.78)
-			var ep: Vector2 = (off + gust_dir * lerpf(10.0, g_len, et) + side2 * lat).round()
-			draw_line(ep, (ep - gust_dir * 5.0).round(), PAL["coral"] as Color, 1.5)
-			draw_circle(ep, 1.6, PAL["gold"] as Color)
-			draw_circle(ep, 0.8, PAL["cream"] as Color)
-	elif active_move == KilnMove.FURNACE_CROSS and state == State.TELL:
-		var hot_c: bool = state_timer <= 0.22
-		var c_urg: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
+			var p1: Vector2 = (off + s_off + _gust_dir * (g_len if idx == 0 else g_len * 0.86)).round()
+			draw_line(p0, p1, PAL["wine"] as Color, 6.8 if idx == 0 else 4.8)
+			draw_line(p0, p1, PAL["coral"] as Color, 4.6 if idx == 0 else 3.2)
+			draw_line(p0, p1, PAL["gold"] as Color, 1.8 if idx == 0 else 1.1)
+	elif active_attack_id == "furnace_cross" and boss_state == BossState.COMMIT:
+		var raw_len: float = lerpf(14.0, CROSS_RANGE, _cross_progress)
 		for ci: int in range(4):
-			var cdir: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
-			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + cdir * CROSS_RANGE, CROSS_HALF_W, c_urg, anim_t, "coral", "gold")
-		draw_circle(c, 3.0 if hot_c else 2.2, (PAL["cream"] if hot_c else PAL["gold"]) as Color)
-	elif active_move == KilnMove.FURNACE_CROSS and state == State.COMMIT:
-		var raw_len: float = lerpf(14.0, CROSS_RANGE, cross_progress)
-		for ci: int in range(4):
-			var cdir: Vector2 = Vector2.from_angle(cross_base_ang + float(ci) * (PI * 0.5))
+			var cdir: Vector2 = Vector2.from_angle(_cross_base_ang + float(ci) * (PI * 0.5))
 			var arm_len: float = _slag.arm_length_with_cover(pos, cdir, raw_len, CROSS_HALF_W, world_ctx, self)
 			var cend: Vector2 = (c + cdir * arm_len).round()
 			draw_line(c, cend, PAL["wine"] as Color, 9.0)
@@ -525,53 +529,25 @@ func _draw_extra(off: Vector2) -> void:
 			draw_line(c, cend, PAL["gold"] as Color, 2.0)
 			draw_line(c, cend, PAL["cream"] as Color, 1.0)
 			draw_circle(cend, 2.4, (PAL["ice"] if arm_len < raw_len - 1.0 else PAL["gold"]) as Color)
-			draw_circle(cend, 1.2, PAL["cream"] as Color)
-	elif active_move == KilnMove.MOLTEN_RING and state == State.TELL:
-		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		LxBossTelegraphFx.draw_ground_danger_ring(self, off, KILN_RING_MAX_R, prog, anim_t, "coral", "gold")
-		draw_arc(off, lerpf(KILN_RING_MAX_R, STOMP_START_R + 6.0, prog), 0.0, TAU, 28, (PAL["cream"] if state_timer <= 0.14 else PAL["apricot"]) as Color, 1.6)
-	elif active_move == KilnMove.MOLTEN_RING and state == State.COMMIT:
-		if ring_stage == RingStage.PAUSE:
-			var p_urg: float = 1.0 - clampf(state_timer / maxf(RING_PAUSE_P3, 0.05), 0.0, 1.0)
-			LxBossTelegraphFx.draw_ground_danger_ring(self, off, KILN_RING_MAX_R, p_urg, anim_t, "coral", "gold")
-			var pr: float = KILN_RING_MAX_R * 0.5 + (0.0 if LxHudFx.flash_reduced() else 2.0 * sin(anim_t * 18.0))
-			var hot_k: bool = state_timer <= 0.14
-			draw_arc(off, pr + 2.0, 0.0, TAU, 24, (PAL["apricot"] if hot_k else PAL["coral"]) as Color, 2.0)
-			draw_arc(off, pr, 0.0, TAU, 24, (PAL["cream"] if hot_k else PAL["gold"]) as Color, 2.4 if hot_k else 2.2)
-			for ki: int in range(4):
-				var kd: Vector2 = Vector2.from_angle(float(ki) * (TAU * 0.25))
-				draw_line((off + kd * (pr - 3.0)).round(), (off + kd * (pr + 4.0)).round(), PAL["cream"] as Color, 1.2)
+	elif active_attack_id in ["molten_ring", "core_meltdown_rings"] and boss_state == BossState.COMMIT:
+		if _ring_stage == RingStage.PAUSE:
+			var pr: float = KILN_RING_MAX_R * 0.45 + (0.0 if is_flash_reduced() else 2.0 * sin(anim_t * 18.0))
+			draw_arc(c, pr + 2.0, 0.0, TAU, 24, PAL["coral"] as Color, 2.0)
+			draw_arc(c, pr, 0.0, TAU, 24, PAL["cream"] as Color, 2.2)
 		else:
-			var ring_r: float = lerpf(STOMP_START_R, KILN_RING_MAX_R, stomp_progress)
-			draw_arc(off, ring_r + 2.8, 0.0, TAU, 36, PAL["wine"] as Color, 2.5)
-			draw_arc(off, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.8)
-			draw_arc(off, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
-			draw_arc(off, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
-			for si: int in range(8):
-				var sa: float = anim_t * 1.9 + float(si) * (TAU / 8.0)
-				var sd: Vector2 = Vector2.from_angle(sa)
-				var st: Vector2 = Vector2(-sd.y, sd.x)
-				var base_c: Vector2 = off + sd * maxf(2.0, ring_r - 1.0)
-				var tip: Vector2 = (off + sd * (ring_r + 6.5)).round()
-				draw_line((base_c - st * 3.0).round(), tip, PAL["coral"] as Color, 1.6)
-				draw_line((base_c + st * 3.0).round(), tip, PAL["coral"] as Color, 1.6)
-				draw_line(base_c.round(), tip, PAL["gold"] as Color, 1.2)
-				draw_circle(tip, 1.1, PAL["apricot"] as Color)
-	elif _roaring:
-		var fred_r: bool = LxHudFx.flash_reduced()
-		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
-		var rr: float = body_radius + 11.0 + rp * 18.0
-		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["coral"] as Color, 2.2)
-		draw_arc(off, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)
-		if _armor_forged_roar:
-			var snap_r: float = lerpf(body_radius + 16.0, body_radius + 3.5, clampf(rp * 1.45, 0.0, 1.0))
-			for fi: int in range(4):
-				var fa: float = PI * 0.25 + float(fi) * (PI * 0.5)
-				var fcol: Color = (PAL["gold"] if (fred_r or int(anim_t * 14.0) % 2 == 0) else PAL["coral"]) as Color
-				draw_arc(off, snap_r + 1.4, fa - 0.42, fa + 0.42, 6, PAL["coral"] as Color, 1.8)
-				draw_arc(off, snap_r, fa - 0.38, fa + 0.38, 6, fcol, 2.0)
+			var ring_r: float = lerpf(KILN_RING_START_R, KILN_RING_MAX_R, _ring_progress)
+			draw_arc(c, ring_r + 2.8, 0.0, TAU, 36, PAL["wine"] as Color, 2.5)
+			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.8)
+			draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
+			draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
 	var lob_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-	_slag.draw_slag(self, pos, off, lob_prog, active_move == KilnMove.SLAG_LOB and state == State.TELL, anim_t)
+	_slag.draw_slag(self, pos, off, lob_prog, active_attack_id == "slag_lob" and boss_state == BossState.TELL, anim_t)
+	# Heavy slag armour glint outside punish windows vs golden punish halo
+	if clank_t > 0.0:
+		draw_arc(c, body_radius + 5.5, facing - 1.2, facing + 1.2, 16, PAL["cream"] as Color, 2.2)
+		draw_arc(c, body_radius + 7.5, facing - 0.9, facing + 0.9, 12, PAL["gold"] as Color, 1.3)
+	elif is_punishable() and boss_state != BossState.DEATH:
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

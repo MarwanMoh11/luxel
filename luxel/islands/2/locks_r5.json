@@ -1,0 +1,614 @@
+{
+  "id": "locks_r5",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R5_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "lck_r5",
+      "name_key": "LCK_R5_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_region": "locks_r2",
+      "to_spawn": [
+        176,
+        56
+      ]
+    },
+    {
+      "id": "exit_r5_north",
+      "rect": [
+        288,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r6",
+      "to_spawn": [
+        256,
+        304
+      ],
+      "locked_door_id": "door_r5_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r5_s",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        312
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "skiff_r5",
+      "kind": "vehicle_skiff",
+      "pos": [
+        224,
+        232
+      ],
+      "props": {
+        "dir": "n"
+      }
+    },
+    {
+      "id": "post_r5_1",
+      "kind": "mooring_post",
+      "pos": [
+        224,
+        184
+      ],
+      "props": {
+        "orbit_r": 42.0,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_r5_2",
+      "kind": "mooring_post",
+      "pos": [
+        224,
+        104
+      ],
+      "props": {
+        "orbit_r": 42.0,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_r5_3",
+      "kind": "mooring_post",
+      "pos": [
+        384,
+        104
+      ],
+      "props": {
+        "orbit_r": 42.0,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "conv_r5_mid",
+      "kind": "conveyor",
+      "pos": [
+        304,
+        232
+      ],
+      "props": {
+        "dir": "s",
+        "speed": 48.0,
+        "size": [
+          48,
+          32
+        ],
+        "flip_on_signal": true
+      }
+    },
+    {
+      "id": "conv_r5_top",
+      "kind": "conveyor",
+      "pos": [
+        304,
+        152
+      ],
+      "props": {
+        "dir": "s",
+        "speed": 48.0,
+        "size": [
+          48,
+          32
+        ],
+        "flip_on_signal": true
+      }
+    },
+    {
+      "id": "mir_r5_s",
+      "kind": "blue_transformer",
+      "pos": [
+        312,
+        200
+      ],
+      "props": {
+        "angle_deg": 0.0,
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "mir_r5_n",
+      "kind": "blue_transformer",
+      "pos": [
+        312,
+        104
+      ],
+      "props": {
+        "angle_deg": 0.0,
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "sw_r5_rev1",
+      "kind": "switch_eye",
+      "pos": [
+        456,
+        200
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_ids": [
+          "conv_r5_mid",
+          "conv_r5_top",
+          "bridge_r5_cove"
+        ]
+      }
+    },
+    {
+      "id": "sw_r5_rev2",
+      "kind": "switch_eye",
+      "pos": [
+        456,
+        104
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_ids": [
+          "bridge_r5_north",
+          "door_r5_north"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r5_cove",
+      "kind": "door",
+      "pos": [
+        144,
+        104
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "sw_r5_rev1"
+        ],
+        "size": [
+          64,
+          32
+        ]
+      }
+    },
+    {
+      "id": "bridge_r5_north",
+      "kind": "door",
+      "pos": [
+        304,
+        80
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "sw_r5_rev2"
+        ],
+        "size": [
+          48,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_r5_north",
+      "kind": "door",
+      "pos": [
+        304,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sw_r5_rev2"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "qitem_lens_half",
+      "kind": "quest_item",
+      "pos": [
+        72,
+        104
+      ],
+      "props": {
+        "id": "lens_shard_half",
+        "icon": "mirror"
+      }
+    },
+    {
+      "id": "lamp_r5_s",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        312
+      ],
+      "props": {
+        "zone": "lck_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_c",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        232
+      ],
+      "props": {
+        "zone": "lck_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_cove",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        136
+      ],
+      "props": {
+        "zone": "lck_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        152
+      ],
+      "props": {
+        "zone": "lck_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_n",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        40
+      ],
+      "props": {
+        "zone": "lck_r5",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "skate_r5",
+      "kind": "reef_skate",
+      "pos": [
+        456,
+        136
+      ],
+      "zone": "lck_r5"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        272,
+        208,
+        64,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        272,
+        128,
+        64,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        72,
+        104
+      ],
+      "radius": 24,
+      "style": "spotlight"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        328,
+        280
+      ],
+      "radius": 20,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        312,
+        168
+      ],
+      "size": [
+        52,
+        68
+      ],
+      "tint": "cool",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        168,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        56,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        104,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        40,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        264,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        440,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        344,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        472,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "hanging_fishing_net",
+      "pos": [
+        424,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "S-curve sluiceway where fast southward currents resist raw walking until Wick uses mooring-post eddies and blue mirror banks to reverse the flow, open the West Cove for Lens Shard Half, and drop the North Dredge sill.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Reversing sluice currents unlocks side coves and high ledges; Mooring Posts anchor Skiff Zip-swings upstream.",
+    "decisions": 7,
+    "expert_s": 54,
+    "reward": "lens_shard_half+miniboss_approach",
+    "why": "Mid-wing aqueduct showcase awarding Quest Item lens_shard_half (q2_spyglass) ahead of the Dredge Basin.",
+    "exit": "exit_r5_north",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          280,
+          200
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mir_r5_s",
+        "angle": 45.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          312,
+          264
+        ],
+        "target": "mir_r5_s"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_r5_cove",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "clear",
+        "zone": "lck_r5",
+        "timeout": 25.0
+      },
+      {
+        "op": "interact",
+        "target": "qitem_lens_half"
+      },
+      {
+        "op": "goto",
+        "to": [
+          280,
+          104
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mir_r5_n",
+        "angle": 45.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          312,
+          168
+        ],
+        "target": "mir_r5_n"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r5_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_north"
+      }
+    ]
+  }
+}

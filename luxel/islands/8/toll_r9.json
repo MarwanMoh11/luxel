@@ -1,0 +1,777 @@
+{
+  "id": "toll_r9",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R9",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    248,
+    312
+  ],
+  "zones": [
+    {
+      "id": "toll_mezz",
+      "name_key": "ISL8_TOLL_R9",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_south",
+      "rect": [
+        224,
+        336,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r8",
+      "to_spawn": [
+        304,
+        56
+      ]
+    },
+    {
+      "id": "exit_r9_east",
+      "rect": [
+        496,
+        48,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r10",
+      "to_spawn": [
+        56,
+        240
+      ],
+      "locked_door_id": "door_r9_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r9_south",
+      "kind": "room_anchor",
+      "pos": [
+        248,
+        312
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "emit_r9_1",
+      "kind": "beam_emitter",
+      "pos": [
+        344,
+        264
+      ],
+      "props": {
+        "dir": "n",
+        "color": "gold",
+        "range": 140.0,
+        "max_bounces": 1
+      }
+    },
+    {
+      "id": "emit_r9_2",
+      "kind": "beam_emitter",
+      "pos": [
+        392,
+        264
+      ],
+      "props": {
+        "dir": "n",
+        "color": "gold",
+        "range": 140.0,
+        "max_bounces": 1
+      }
+    },
+    {
+      "id": "emit_r9_3",
+      "kind": "beam_emitter",
+      "pos": [
+        440,
+        264
+      ],
+      "props": {
+        "dir": "n",
+        "color": "gold",
+        "range": 140.0,
+        "max_bounces": 1
+      }
+    },
+    {
+      "id": "glass_r9_1",
+      "kind": "color_glass",
+      "pos": [
+        344,
+        216
+      ],
+      "props": {
+        "color": "blue",
+        "size": [
+          16,
+          16
+        ],
+        "solid": true,
+        "movable": false,
+        "cycles_color": true
+      }
+    },
+    {
+      "id": "glass_r9_2",
+      "kind": "color_glass",
+      "pos": [
+        392,
+        216
+      ],
+      "props": {
+        "color": "rose",
+        "size": [
+          16,
+          16
+        ],
+        "solid": true,
+        "movable": false,
+        "cycles_color": true
+      }
+    },
+    {
+      "id": "glass_r9_3",
+      "kind": "color_glass",
+      "pos": [
+        440,
+        216
+      ],
+      "props": {
+        "color": "gold",
+        "size": [
+          16,
+          16
+        ],
+        "solid": true,
+        "movable": false,
+        "cycles_color": true
+      }
+    },
+    {
+      "id": "bsens_r9_g",
+      "kind": "beam_sensor",
+      "pos": [
+        344,
+        168
+      ],
+      "props": {
+        "color": "gold",
+        "hold": true,
+        "target_id": "gate_r9_prism"
+      }
+    },
+    {
+      "id": "bsens_r9_b",
+      "kind": "beam_sensor",
+      "pos": [
+        392,
+        168
+      ],
+      "props": {
+        "color": "blue",
+        "hold": true,
+        "target_id": "gate_r9_prism"
+      }
+    },
+    {
+      "id": "bsens_r9_r",
+      "kind": "beam_sensor",
+      "pos": [
+        440,
+        168
+      ],
+      "props": {
+        "color": "rose",
+        "hold": true,
+        "target_id": "gate_r9_prism"
+      }
+    },
+    {
+      "id": "gate_r9_prism",
+      "kind": "logic_gate",
+      "pos": [
+        328,
+        200
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "bsens_r9_g",
+          "bsens_r9_b",
+          "bsens_r9_r"
+        ],
+        "persist": true,
+        "target_id": "bridge_r9_mezz"
+      }
+    },
+    {
+      "id": "lore_r9_mezz",
+      "kind": "lore_stone",
+      "pos": [
+        360,
+        312
+      ],
+      "props": {
+        "string_id": "ISL8_TOLL_LORE_MEZZ",
+        "icon": "lens"
+      }
+    },
+    {
+      "id": "bridge_r9_mezz",
+      "kind": "door",
+      "pos": [
+        240,
+        224
+      ],
+      "props": {
+        "door_type": "bridge_platform",
+        "size": [
+          128,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "gate_r9_prism"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "emit_r9_baffle",
+      "kind": "beam_emitter",
+      "pos": [
+        40,
+        168
+      ],
+      "props": {
+        "dir": "e",
+        "color": "gold",
+        "range": 140.0,
+        "max_bounces": 1
+      }
+    },
+    {
+      "id": "mimic_r9",
+      "kind": "mimic_statue",
+      "pos": [
+        56,
+        248
+      ],
+      "props": {
+        "mirror": "x",
+        "range": 280.0
+      }
+    },
+    {
+      "id": "hook_r9_shade",
+      "kind": "lantern_hook",
+      "pos": [
+        136,
+        280
+      ],
+      "props": {
+        "light_radius": 52.0
+      }
+    },
+    {
+      "id": "sgate_r9",
+      "kind": "shadow_gate",
+      "pos": [
+        136,
+        168
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "pane_r9_wick",
+      "kind": "pane_pickup",
+      "pos": [
+        104,
+        72
+      ],
+      "props": {
+        "pane": "toll_wick"
+      }
+    },
+    {
+      "id": "key_toll_boss",
+      "kind": "wick_key",
+      "pos": [
+        232,
+        72
+      ],
+      "props": {
+        "dungeon_id": "toll_house",
+        "key_kind": "keepers_flame",
+        "flag_id": "toll_boss_key"
+      }
+    },
+    {
+      "id": "plate_r9_east",
+      "kind": "pressure_plate",
+      "pos": [
+        408,
+        72
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "door_r9_east"
+      }
+    },
+    {
+      "id": "door_r9_east",
+      "kind": "door",
+      "pos": [
+        488,
+        64
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "plate_r9_east"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "sensor_r9_pal4",
+      "kind": "toll_sensor",
+      "pos": [
+        408,
+        312
+      ],
+      "props": {
+        "check": "sold:palette_4",
+        "target_id": "door_r9_pal4",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_r9_pal4",
+      "kind": "door",
+      "pos": [
+        424,
+        296
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r9_pal4"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r9_pal4",
+      "kind": "chest",
+      "pos": [
+        472,
+        312
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "lamp_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        312
+      ],
+      "props": {
+        "zone": "toll_mezz",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        232
+      ],
+      "props": {
+        "zone": "toll_mezz",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n1",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        56
+      ],
+      "props": {
+        "zone": "toll_mezz",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n2",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        56
+      ],
+      "props": {
+        "zone": "toll_mezz",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        232,
+        40
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stamp_floor_emblem",
+      "pos": [
+        296,
+        72
+      ],
+      "layer": "ground"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "inkwell_lectern_stand",
+      "pos": [
+        312,
+        312
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        472,
+        184
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        104,
+        40
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        360,
+        40
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        56,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        440,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        472,
+        200
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        472,
+        296
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 20,
+      "x0": 144,
+      "x1": 352,
+      "style": "stars"
+    },
+    {
+      "kind": "mural",
+      "pos": [
+        392,
+        296
+      ],
+      "radius": 24,
+      "style": "moon"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        80,
+        48,
+        224,
+        32
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        320,
+        152,
+        136,
+        128
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        64
+      ],
+      "size": [
+        64,
+        48
+      ],
+      "tint": "rose",
+      "shear": 0.35
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "ASTONISHING Four-Colour Mezzanine overlooking the Narthex abyss: cycle 3 stained-glass filters (gold/blue/rose) to bridge the 8-tile chasm, offset the X-mirrored Mimic Statue into the baffle beam to shade Shadow Gate sgate_r9, hang the lantern to slip unlit onto the North Overlook, and claim the Boss Key + Pane toll_wick!",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "color_glass 3-hue filter synthesis + mimic_statue beam-baffle + unlit shadow_gate; sold:palette_4 unlocks SE vault.",
+    "decisions": 10,
+    "expert_s": 60,
+    "reward": "toll_boss_key+pane_toll_wick",
+    "why": "Centerpiece Ketsu puzzle of The Toll House, rewarding both the Boss Key and Island 8's Dungeon Pane.",
+    "exit": "exit_r9_east",
+    "start": {
+      "flags": [
+        "item_brass_receipt"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          360,
+          324
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_r9_mezz"
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          234
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "glass_r9_1"
+      },
+      {
+        "op": "interact",
+        "target": "glass_r9_1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          234
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "glass_r9_2"
+      },
+      {
+        "op": "interact",
+        "target": "glass_r9_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          440,
+          234
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "glass_r9_3"
+      },
+      {
+        "op": "interact",
+        "target": "glass_r9_3"
+      },
+      {
+        "op": "wait_until",
+        "target": "bridge_r9_mezz",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          232
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          136,
+          266
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r9_shade"
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          200
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          136,
+          184
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "sgate_r9",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "pane_r9_wick"
+      },
+      {
+        "op": "interact",
+        "target": "key_toll_boss"
+      },
+      {
+        "op": "goto",
+        "to": [
+          408,
+          72
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r9_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_east"
+      }
+    ]
+  }
+}

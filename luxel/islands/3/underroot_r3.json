@@ -44,24 +44,500 @@
       "to_spawn": [
         400,
         128
-      ]
+      ],
+      "locked_door_id": "door_r3_west"
     }
   ],
   "interactables": [
     {
-      "id": "lamp_r3_1",
+      "id": "anc_r3_east",
+      "kind": "room_anchor",
+      "pos": [
+        368,
+        200
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r3_south",
+      "kind": "room_anchor",
+      "pos": [
+        160,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "pf_r3_fruit",
+      "kind": "light_plant",
+      "pos": [
+        240,
+        224
+      ],
+      "props": {
+        "grow": "fruit",
+        "secs": 0.45,
+        "decay": 8.0
+      }
+    },
+    {
+      "id": "hook_r3_shade",
+      "kind": "lantern_hook",
+      "pos": [
+        352,
+        224
+      ],
+      "props": {
+        "light_radius": 78.0
+      }
+    },
+    {
+      "id": "conv_r3_north",
+      "kind": "conveyor",
+      "pos": [
+        88,
+        152
+      ],
+      "props": {
+        "size": [
+          20,
+          112
+        ],
+        "dir": "n",
+        "speed": 62.0,
+        "flip_on_signal": false
+      }
+    },
+    {
+      "id": "conv_r3_south",
+      "kind": "conveyor",
+      "pos": [
+        352,
+        112
+      ],
+      "props": {
+        "size": [
+          24,
+          96
+        ],
+        "dir": "s",
+        "speed": 46.0,
+        "flip_on_signal": false
+      }
+    },
+    {
+      "id": "pw_r3_thorn",
+      "kind": "light_plant",
+      "pos": [
+        48,
+        168
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          32,
+          16
+        ],
+        "secs": 0.45,
+        "decay": 1.0
+      }
+    },
+    {
+      "id": "pb_r3_bridge",
+      "kind": "light_plant",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          48,
+          32
+        ],
+        "secs": 0.5,
+        "decay": 6.0,
+        "target_id": "door_r3_west"
+      }
+    },
+    {
+      "id": "door_r3_west",
+      "kind": "door",
+      "pos": [
+        24,
+        80
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "pb_r3_bridge"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r3_e",
       "kind": "road_lamp",
       "pos": [
-        208,
-        144
+        368,
+        160
       ],
       "props": {
         "zone": "ur_r3",
         "lit": true
       }
+    },
+    {
+      "id": "lamp_r3_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        48
+      ],
+      "props": {
+        "zone": "ur_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        240
+      ],
+      "props": {
+        "zone": "ur_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        48
+      ],
+      "props": {
+        "zone": "ur_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r3_grass_nw",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        120,
+        40
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r3_grass_se",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        368,
+        244
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": true
+      }
+    },
+    {
+      "id": "lm_r3_acorn_s",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        156,
+        252
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": false
+      }
     }
   ],
   "enemies": [],
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        216
+      ],
+      "size": [
+        36,
+        52
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        64,
+        152
+      ],
+      "radius": 20,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        336,
+        128
+      ],
+      "radius": 18,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        176,
+        224
+      ],
+      "radius": 16,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        64,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        136,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        324,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        224,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        316,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        368,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        168,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        308,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        204,
+        252
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        368,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "pebble_milestone",
+      "pos": [
+        280,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fallen_bark_bench",
+      "pos": [
+        280,
+        252
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Ripen a seedlight fruit, pluck its glowing seed orb onto the northbound leafcutter ant highway, hang your 1.8x sun-lantern in shade behind the east root wall, and walk dark past the thorn-wall as the ants deliver light to bloom your exit bridge.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Using carry_orb seed couriers on ant conveyor highways to deliver light remotely while Wick travels in shadow past light-triggered thorn walls.",
+    "decisions": 5,
+    "expert_s": 48,
+    "reward": "ant_courier_mastery",
+    "why": "Develops light-starving with autonomous light delivery via tiny-world leafcutter ant roads.",
+    "exit": "exit_r3_west",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          232
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "pf_r3_fruit",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "pf_r3_fruit"
+      },
+      {
+        "op": "carry",
+        "action": "drop",
+        "to": [
+          88,
+          196
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          236
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r3_shade"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "pw_r3_thorn",
+        "prop": "powered",
+        "value": false,
+        "timeout": 3.5
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r3_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          48,
+          196
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          112
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_west"
+      }
+    ]
+  },
   "id": "underroot_r3",
   "island_id": 3,
   "tile_size": 16,

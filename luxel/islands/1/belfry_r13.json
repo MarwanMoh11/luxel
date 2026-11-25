@@ -1,0 +1,439 @@
+{
+  "id": "belfry_r13",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_BF_FOUNDRY",
+  "music": "island1_dungeon",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "belfry_foundry",
+      "name_key": "ISL1_BF_FOUNDRY",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r13_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "belfry_r12",
+      "to_spawn": [
+        432,
+        48
+      ]
+    },
+    {
+      "id": "exit_r13_drop",
+      "rect": [
+        432,
+        128,
+        16,
+        32
+      ],
+      "to_region": "belfry_r11",
+      "to_spawn": [
+        488,
+        192
+      ],
+      "one_way": true,
+      "locked_door_id": "door_r13_drop"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "butler_r13_0",
+      "kind": "lamp_butler",
+      "pos": [
+        104,
+        152
+      ],
+      "route": [
+        [
+          96,
+          120
+        ],
+        [
+          96,
+          184
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_foundry",
+      "leash": 150
+    },
+    {
+      "id": "snuffer_r13_0",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        352,
+        168
+      ],
+      "route": [
+        [
+          352,
+          120
+        ],
+        [
+          352,
+          192
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_foundry",
+      "leash": 150
+    },
+    {
+      "id": "mimic_r13_1",
+      "kind": "pew_mimic",
+      "pos": [
+        168,
+        96
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "belfry_foundry",
+      "leash": 130
+    },
+    {
+      "id": "mimic_r13_2",
+      "kind": "pew_mimic",
+      "pos": [
+        304,
+        96
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "belfry_foundry",
+      "leash": 130
+    },
+    {
+      "id": "owl_r13_0",
+      "kind": "owl",
+      "pos": [
+        224,
+        72
+      ],
+      "route": [],
+      "perches": [
+        [
+          224,
+          72
+        ],
+        [
+          176,
+          160
+        ],
+        [
+          280,
+          160
+        ]
+      ],
+      "zone": "belfry_foundry",
+      "leash": 160
+    }
+  ],
+  "interactables": [
+    {
+      "id": "tog_r13_w",
+      "kind": "crystal_toggle",
+      "pos": [
+        160,
+        216
+      ],
+      "props": {
+        "group": "bf_r13",
+        "phase": 0
+      }
+    },
+    {
+      "id": "tog_r13_e",
+      "kind": "crystal_toggle",
+      "pos": [
+        296,
+        216
+      ],
+      "props": {
+        "group": "bf_r13",
+        "phase": 0
+      }
+    },
+    {
+      "id": "tb_r13_w",
+      "kind": "toggle_block",
+      "pos": [
+        152,
+        160
+      ],
+      "props": {
+        "group": "bf_r13",
+        "phase": 1,
+        "start_phase": 0,
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "tb_r13_e",
+      "kind": "toggle_block",
+      "pos": [
+        304,
+        160
+      ],
+      "props": {
+        "group": "bf_r13",
+        "phase": 0,
+        "start_phase": 0,
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "bell_r13_war",
+      "kind": "bell",
+      "pos": [
+        224,
+        160
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "belfry_key_3",
+      "kind": "wick_key",
+      "pos": [
+        72,
+        64
+      ],
+      "props": {
+        "dungeon_id": "belfry",
+        "key_kind": "wick_key",
+        "flag_id": "belfry_key_3",
+        "requires_flag": "belfry_r13_cleared"
+      }
+    },
+    {
+      "id": "door_r13_drop",
+      "kind": "door",
+      "pos": [
+        424,
+        144
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          32
+        ],
+        "clear_zone": "belfry_foundry",
+        "sets_flag": "belfry_r13_cleared"
+      }
+    },
+    {
+      "id": "lamp_r13_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        264
+      ],
+      "props": {
+        "zone": "belfry_foundry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_nw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        96
+      ],
+      "props": {
+        "zone": "belfry_foundry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_ne",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        72
+      ],
+      "props": {
+        "zone": "belfry_foundry",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_c",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        192
+      ],
+      "props": {
+        "zone": "belfry_foundry",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 36,
+      "style": "clock"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        176,
+        128,
+        96,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        72,
+        64
+      ],
+      "size": [
+        40,
+        48
+      ],
+      "tint": "warm",
+      "shear": -0.15
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "cracked_bell_shard",
+      "pos": [
+        56,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        384,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "counterweight_block",
+      "pos": [
+        120,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        352,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "Asymmetric U-vault Chime-Foundry combat arena: toggle brass cover blocks against a Lamp Butler, Snuffer, Owl, and two disguised Pew Mimics, ring the central War Bell to unmask mimics and crack armor, claim Key 3, and drop straight back to r11.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Cross-dungeon enemy squad mastery (Butler + Mimics + Snuffer + Owl) with toggleable cover and War shockwave.",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "belfry_key_3",
+    "why": "Floor 2 combat climax awarding Belfry Key 3 to open the Mainspring North Gate into Floor 3.",
+    "exit": "exit_r13_drop",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          200,
+          240
+        ],
+        "target": "tog_r13_w"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          208
+        ],
+        "target": "bell_r13_war"
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "expect",
+        "flag": "belfry_r13_cleared"
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          64
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "belfry_key_3"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r13_drop"
+      }
+    ]
+  }
+}

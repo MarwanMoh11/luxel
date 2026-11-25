@@ -44,7 +44,8 @@
       "to_spawn": [
         336,
         192
-      ]
+      ],
+      "locked_door_id": "door_r10_se_sc"
     },
     {
       "id": "exit_r10_north",
@@ -63,19 +64,354 @@
   ],
   "interactables": [
     {
-      "id": "lamp_r10_1",
+      "id": "anc_r10_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_underroot_deep",
+      "kind": "waystone",
+      "pos": [
+        192,
+        160
+      ],
+      "props": {
+        "zone": "ur_r10",
+        "name_key": "ISL3_UR_R10_NAME"
+      }
+    },
+    {
+      "id": "lore_r10_rubbing",
+      "kind": "lore_stone",
+      "pos": [
+        256,
+        112
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_RUB_1",
+        "icon": "book"
+      }
+    },
+    {
+      "id": "hook_r10_shade",
+      "kind": "lantern_hook",
+      "pos": [
+        296,
+        176
+      ],
+      "props": {
+        "light_radius": 76.0
+      }
+    },
+    {
+      "id": "sg_r10_rib",
+      "kind": "shadow_gate",
+      "pos": [
+        120,
+        80
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "chest_r10_shards",
+      "kind": "chest",
+      "pos": [
+        72,
+        80
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "door_r10_se_sc",
+      "kind": "door",
+      "pos": [
+        360,
+        160
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "ur_r10_lift"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r10_n",
       "kind": "road_lamp",
       "pos": [
         192,
+        48
+      ],
+      "props": {
+        "zone": "ur_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        312,
         112
       ],
       "props": {
         "zone": "ur_r10",
         "lit": true
       }
+    },
+    {
+      "id": "lamp_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        184
+      ],
+      "props": {
+        "zone": "ur_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r10_shed",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        192,
+        108
+      ],
+      "props": {
+        "variant": "shed_exoskeleton",
+        "flip_x": false
+      }
     }
   ],
   "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        160
+      ],
+      "radius": 26,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        192,
+        152
+      ],
+      "size": [
+        40,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        72,
+        80
+      ],
+      "radius": 18,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        192,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        288,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        144,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        320,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        316,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        240,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fallen_bark_bench",
+      "pos": [
+        248,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "pebble_milestone",
+      "pos": [
+        144,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ur_r10_unlock_lift",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ur_r10_lift"
+        }
+      ]
+    },
+    {
+      "id": "ur_r10_lore_flag",
+      "on": "signal:lore_r10_rubbing",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "lore_rubbing_1"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Quiet pre-boss gallery spanned by Hundred Lamps' shed exoskeleton: light Waystone 2, unseal the sap-lift back to r1, read Bark-Rubbing #1, and hang your lantern behind a rib pillar to open the shadow-rib cache foreshadowing the boss rule.",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Foreshadowing Hundred Lamps' inverted light-armor rule via a darkened exoskeleton rib gate while providing a calm pre-boss sanctuary.",
+    "decisions": 4,
+    "expert_s": 38,
+    "reward": "ws_underroot_deep+lore_rubbing_1+30_shards+cycle_4",
+    "why": "Pre-boss breather, Cycle 4 lift to r1, and Hollow Wick lore beat.",
+    "exit": "exit_r10_north",
+    "optional": true,
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_underroot_deep"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r10_rubbing"
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          164
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r10_shade"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "sg_r10_rib",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_r10_shards"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect",
+        "flag": "ur_r10_lift"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_north"
+      }
+    ]
+  },
   "id": "underroot_r10",
   "island_id": 3,
   "tile_size": 16,
@@ -88,6 +424,5 @@
     "cave_drip"
   ],
   "triggers": [],
-  "layers": [],
-  "events": []
+  "layers": []
 }

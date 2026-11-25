@@ -1,0 +1,472 @@
+{
+  "id": "toll_r5",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R5",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    216,
+    280
+  ],
+  "zones": [
+    {
+      "id": "toll_audit",
+      "name_key": "ISL8_TOLL_R5",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_south",
+      "rect": [
+        192,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r4",
+      "to_spawn": [
+        224,
+        52
+      ]
+    },
+    {
+      "id": "exit_r5_east_short",
+      "rect": [
+        432,
+        144,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r1",
+      "to_spawn": [
+        112,
+        56
+      ],
+      "locked_door_id": "door_r5_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r5_south",
+      "kind": "room_anchor",
+      "pos": [
+        216,
+        280
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "braz_r5_nw",
+      "kind": "brazier",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "braz_r5_ne",
+      "kind": "brazier",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "braz_r5_sw",
+      "kind": "brazier",
+      "pos": [
+        88,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "braz_r5_se",
+      "kind": "brazier",
+      "pos": [
+        312,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "altar_r5_receipt",
+      "kind": "toll_receipt_altar",
+      "pos": [
+        184,
+        168
+      ],
+      "props": {
+        "requires_flag": "chief_auditor_defeated"
+      }
+    },
+    {
+      "id": "key_toll_1",
+      "kind": "wick_key",
+      "pos": [
+        248,
+        168
+      ],
+      "props": {
+        "dungeon_id": "toll_house",
+        "key_kind": "wick_key",
+        "requires_flag": "chief_auditor_defeated"
+      }
+    },
+    {
+      "id": "door_r5_balc",
+      "kind": "door",
+      "pos": [
+        376,
+        160
+      ],
+      "props": {
+        "door_type": "combat_gate",
+        "size": [
+          16,
+          32
+        ],
+        "zone": "toll_audit"
+      }
+    },
+    {
+      "id": "switch_r5_short",
+      "kind": "switch_eye",
+      "pos": [
+        408,
+        152
+      ],
+      "props": {
+        "target_id": "door_r5_east",
+        "sets_flag": "toll_west_short"
+      }
+    },
+    {
+      "id": "door_r5_east",
+      "kind": "door",
+      "pos": [
+        424,
+        160
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "switch_r5_short"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "sensor_r5_ember",
+      "kind": "toll_sensor",
+      "pos": [
+        120,
+        72
+      ],
+      "props": {
+        "check": "sold:ember_hud",
+        "target_id": "door_r5_ember",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_r5_ember",
+      "kind": "door",
+      "pos": [
+        88,
+        72
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r5_ember"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r5_ember",
+      "kind": "chest",
+      "pos": [
+        56,
+        72
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lamp_r5_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "zone": "toll_audit",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        184
+      ],
+      "props": {
+        "zone": "toll_audit",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "auditor_r5",
+      "kind": "chief_auditor",
+      "pos": [
+        216,
+        152
+      ],
+      "zone": "toll_audit"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stamp_floor_emblem",
+      "pos": [
+        216,
+        168
+      ],
+      "layer": "ground"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_gate_arch",
+      "pos": [
+        216,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        152,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        280,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        56,
+        168
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        264,
+        264
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        344,
+        120
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        328,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        72,
+        200
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        168
+      ],
+      "radius": 44,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        112,
+        80,
+        192,
+        160
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        168,
+        136
+      ],
+      "radius": 18,
+      "style": "ink"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        264,
+        200
+      ],
+      "radius": 18,
+      "style": "ink"
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r5_shortcut",
+      "on": "signal:switch_r5_short",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_west_short"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_TOLL_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Chamfered Audit Chamber hosting Mini-Boss The Chief Auditor: rotate Bolt, Throw, and Beam to beat his Audit Stamp, then claim the Brass Receipt, small key, and East shortcut to the Narthex.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Kit rotation against audited moves; awards Brass Receipt dungeon power and Toll House Cycle 1 shortcut.",
+    "decisions": 6,
+    "expert_s": 85,
+    "reward": "item_brass_receipt+toll_key+short",
+    "why": "Climax of the West Interface Wing, awarding the Brass Receipt needed for the East Feel Wing.",
+    "exit": "exit_r5_east_short",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 95.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "chief_auditor_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "altar_r5_receipt"
+      },
+      {
+        "op": "expect",
+        "flag": "item_brass_receipt"
+      },
+      {
+        "op": "interact",
+        "target": "key_toll_1"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r5_balc",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          344,
+          168
+        ],
+        "target": "switch_r5_short"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r5_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_east_short"
+      }
+    ]
+  }
+}

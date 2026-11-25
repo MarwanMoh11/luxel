@@ -1,0 +1,181 @@
+{
+  "pack_id": "i2_overworld",
+  "owner": "OW2",
+  "comment": "Island 2 (Tidewater Harbor) Overworld package: 3 new tidal OW regions, Tide-Keeper's Boathouse camp, 4 tidal caves, The Undertow superboss maw, 4 pictogram quests, 10 lost moths, 3 trials, and custom skiff/chart interactables.",
+  "interactables": {
+    "skiff_tether": "res://luxel/islands/2/overworld/skiff_tether.gd",
+    "skiff_bell": "res://luxel/islands/2/overworld/skiff_bell.gd",
+    "spyglass_chart": "res://luxel/islands/2/overworld/spyglass_chart.gd"
+  },
+  "state_vars": {
+    "vault_water": {
+      "scope": "room:2:cave_rib_vault",
+      "values": ["low", "high"],
+      "default": "low"
+    },
+    "cistern_tide": {
+      "scope": "room:2:cave_bell_cistern",
+      "values": ["half", "ebb"],
+      "default": "half"
+    },
+    "belfry_tide": {
+      "scope": "room:2:cave_rooftop_belfry",
+      "values": ["flood", "ebb"],
+      "default": "flood"
+    }
+  },
+  "strings": {
+    "ISL2_SKIFF_CUT": "NO OARS. AIM BEHIND TO SAIL!",
+    "ISL2_SKIFF_ZIP": "THROW TO ANCHOR. CLICK TO SWING!",
+    "ISL2_LEV_WAKE": "SOMETHING HUGE WAKES BELOW THE BAY!",
+    "ISL2_LOG_1": "LOG 1: A DARK LANTERN JAMMED THE TIDES.",
+    "ISL2_RELIT_WHALE": "THE LEVIATHAN SLEEPS BY THE SUNLIT PIER.",
+    "ZONE_ISL2_SHOALS": "SHIPWRECK SHOALS",
+    "ZONE_ISL2_CANAL": "CANAL QUARTER",
+    "ZONE_ISL2_SOUND": "OUTER SOUND",
+    "ZONE_ISL2_CAMP": "TIDE-KEEPERS BOATHOUSE",
+    "ZONE_ISL2_RIB_VAULT": "RIB-CAGE VAULT",
+    "ZONE_ISL2_CISTERN": "BELL CISTERN",
+    "ZONE_ISL2_CELLAR": "SMUGGLERS CELLAR",
+    "ZONE_ISL2_BELFRY": "ROOFTOP BELFRY",
+    "ZONE_ISL2_MAW": "THE UNDERTOW MAW",
+    "PROMPT_UNTETHER": "UNTETHER SKIFF",
+    "PROMPT_RING_SKIFF": "CALL SKIFF",
+    "PROMPT_SPYGLASS": "READ SEA CHART",
+    "ISL2_SKIFF_CALLED": "THE SKIFF GLIDES BACK TO THE PIER.",
+    "ISL2_CHART_NEED": "BRING THREE SEA-GLASS SHARDS TO CHART IT.",
+    "ISL2_CHART_DONE": "THE MAELSTROM IS CHARTED EAST OF SOUND!",
+    "ISL2_CISTERN_LORE": "LOWER THE TIDE TO GROUND THE SKIFF HEAVY.",
+    "ISL2_MAW_TROPHY": "THE UNDERTOW STILLS TO STAR-MIRROR GLASS.",
+    "ISL2_TRIAL_SLALOM": "SLALOM SHOALS: SAIL ALL BUOYS AT HALF TIDE!",
+    "ISL2_TRIAL_REGATTA": "FLOOD REGATTA: RIDE THE PORTALS AT FLOOD!",
+    "ISL2_TRIAL_SALVAGE": "SALVAGE GAUNTLET: DROP TIDE TO STRAND FOES!",
+    "ISL2_QUAY_LAMPS": "QUAY LAMPS LIT! MOTH KID CHEERS BELOW.",
+    "ISL2_SEAL_LOCKED": "THREE BEACONS AND THE LEVIATHAN UNSEAL THIS.",
+    "ISL2_LENS_SECRET": "A HOLLOW MAP MARKED EVERY HARBOR MIRROR."
+  },
+  "quests": [
+    {
+      "id": "q2_regatta",
+      "island": 2,
+      "kind": "fetch",
+      "folk": "ferry_beetle",
+      "icon": "toy_skiff",
+      "rescue_folk": "ferry_beetle",
+      "steps": [
+        {
+          "icons": ["toy_skiff", "cross", "move_bolt", "wave"],
+          "need": "skiff_unlocked",
+          "flag": "quest:q2_regatta:s0"
+        },
+        {
+          "icons": ["quest_carry", "wave", "arrow_w", "chest", "star"],
+          "need": "quest:item:brass_compass",
+          "consume_item": "brass_compass",
+          "flag": "quest:q2_regatta:s1"
+        },
+        {
+          "icons": ["quest_timer", "toy_skiff", "wave", "bell", "crown"],
+          "need": "quest_regatta_won",
+          "flag": "quest:q2_regatta:s2"
+        },
+        {
+          "icons": ["crown", "happy", "pane"],
+          "need": "",
+          "flag": "quest:q2_regatta:done"
+        }
+      ],
+      "reward": {
+        "kind": "pane",
+        "value": "harbor_wake",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q2_spyglass",
+      "island": 2,
+      "kind": "fetch",
+      "folk": "mirror_crab",
+      "icon": "mirror",
+      "rescue_folk": "mirror_crab",
+      "steps": [
+        {
+          "icons": ["mirror", "spark", "wave", "arrow_s", "arrow_w", "question"],
+          "need": "quest:item:lens_shard_ebb && quest:item:lens_shard_half && quest:item:lens_shard_flood",
+          "flag": "undertow_charted"
+        },
+        {
+          "icons": ["eye", "wave", "skull", "happy"],
+          "need": "",
+          "flag": "quest:q2_spyglass:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "value": "",
+        "amount": 60
+      }
+    },
+    {
+      "id": "q2_moth_kid",
+      "island": 2,
+      "kind": "fetch",
+      "folk": "moth_kid",
+      "icon": "lantern",
+      "rescue_folk": "moth_kid",
+      "steps": [
+        {
+          "icons": ["sad", "wave", "light_off", "arrow_s", "lantern"],
+          "need": "isl2_canal_lamps_lit",
+          "flag": "quest:q2_moth_kid:s0"
+        },
+        {
+          "icons": ["lantern", "happy", "ember"],
+          "need": "",
+          "flag": "quest:q2_moth_kid:done"
+        }
+      ],
+      "reward": {
+        "kind": "ember_piece",
+        "value": "ember_2_3",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q2_logs",
+      "island": 2,
+      "kind": "fetch",
+      "folk": "scribe_worm",
+      "icon": "book",
+      "rescue_folk": "scribe_worm",
+      "steps": [
+        {
+          "icons": ["book", "skull", "lantern", "light_off", "isl_2"],
+          "need": "ship_log_1 && ship_log_2 && ship_log_3 && ship_log_4",
+          "flag": "isl2_hollow_chart_revealed"
+        },
+        {
+          "icons": ["book", "eye", "happy"],
+          "need": "",
+          "flag": "quest:q2_logs:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "value": "",
+        "amount": 80
+      }
+    }
+  ],
+  "regions": {
+    "ow_shoals_west": { "name_key": "ZONE_ISL2_SHOALS", "theme": "seabed", "music": "explore", "dark": true, "map": [-1, 0] },
+    "ow_canal_south": { "name_key": "ZONE_ISL2_CANAL", "theme": "locks", "music": "explore", "dark": true, "map": [0, 1] },
+    "ow_open_sound": { "name_key": "ZONE_ISL2_SOUND", "theme": "locks", "music": "explore", "dark": true, "map": [1, -1] },
+    "ow_boathouse": { "name_key": "ZONE_ISL2_CAMP", "theme": "galleon", "music": "explore", "dark": false, "map": [-1, 1] },
+    "cave_rib_vault": { "name_key": "ZONE_ISL2_RIB_VAULT", "theme": "seabed", "music": "island2_dungeon", "dark": true, "map": [-1, -1] },
+    "cave_bell_cistern": { "name_key": "ZONE_ISL2_CISTERN", "theme": "locks", "music": "island2_dungeon", "dark": true, "map": [1, 1] },
+    "cave_smuggler_cellar": { "name_key": "ZONE_ISL2_CELLAR", "theme": "locks", "music": "island2_dungeon", "dark": true, "map": [0, 2] },
+    "cave_rooftop_belfry": { "name_key": "ZONE_ISL2_BELFRY", "theme": "locks", "music": "island2_dungeon", "dark": true, "map": [1, -2] },
+    "cave_undertow_maw": { "name_key": "ZONE_ISL2_MAW", "theme": "leviathan_belly", "music": "island2_boss_p1", "dark": true, "map": [2, -1] }
+  }
+}

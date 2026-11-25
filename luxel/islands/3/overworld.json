@@ -120,6 +120,90 @@
         "island_3_relit"
       ],
       "locked_door_id": "bridge_of_light_3"
+    },
+    {
+      "id": "exit_to_camp",
+      "rect": [
+        48,
+        864,
+        32,
+        48
+      ],
+      "to_region": "ow_camp",
+      "to_spawn": [
+        368,
+        144
+      ]
+    },
+    {
+      "id": "exit_to_tiny_moss",
+      "rect": [
+        160,
+        704,
+        16,
+        16
+      ],
+      "to_region": "ow_tiny_moss",
+      "to_spawn": [
+        56,
+        128
+      ]
+    },
+    {
+      "id": "exit_to_shift_w",
+      "rect": [
+        16,
+        416,
+        32,
+        48
+      ],
+      "to_region": "ow_shift_w",
+      "to_spawn": [
+        392,
+        160
+      ]
+    },
+    {
+      "id": "exit_to_shift_e",
+      "rect": [
+        640,
+        544,
+        32,
+        48
+      ],
+      "to_region": "ow_shift_e",
+      "to_spawn": [
+        56,
+        160
+      ]
+    },
+    {
+      "id": "exit_to_shift_n",
+      "rect": [
+        48,
+        176,
+        48,
+        48
+      ],
+      "to_region": "ow_shift_n",
+      "to_spawn": [
+        392,
+        160
+      ]
+    },
+    {
+      "id": "exit_gardener_to_camp",
+      "rect": [
+        176,
+        176,
+        32,
+        16
+      ],
+      "to_region": "ow_camp",
+      "to_spawn": [
+        344,
+        64
+      ]
     }
   ],
   "enemies": [
@@ -190,17 +274,17 @@
       "id": "gloam_3_1",
       "kind": "gloam",
       "pos": [
-        552,
-        632
+        520,
+        648
       ],
       "route": [
         [
-          520,
-          616
+          504,
+          640
         ],
         [
-          584,
-          648
+          552,
+          664
         ]
       ],
       "perches": [],
@@ -253,7 +337,7 @@
       "id": "sporecap_3_3",
       "kind": "sporecap",
       "pos": [
-        152,
+        184,
         424
       ],
       "route": [],
@@ -730,6 +814,82 @@
       "props": {
         "zone": "moss_trailhead",
         "lit": true
+      }
+    },
+    {
+      "id": "lp_trail_intro",
+      "kind": "light_plant",
+      "pos": [
+        200,
+        888
+      ],
+      "props": {
+        "grow": "fruit",
+        "secs": 0.5,
+        "decay": 6.0,
+        "zone": "moss_trailhead"
+      }
+    },
+    {
+      "id": "stump_3_spore",
+      "kind": "stump_shrink",
+      "pos": [
+        168,
+        712
+      ],
+      "props": {
+        "to_region": "ow_tiny_moss",
+        "to_spawn": [
+          56,
+          128
+        ],
+        "target_size": "tiny",
+        "zone": "spore_glade"
+      }
+    },
+    {
+      "id": "lp_3_brook_bridge",
+      "kind": "light_plant",
+      "pos": [
+        80,
+        640
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          32,
+          32
+        ],
+        "secs": 0.7,
+        "decay": 4.0,
+        "zone": "spore_glade"
+      }
+    },
+    {
+      "id": "moth_3_01",
+      "kind": "moth",
+      "pos": [
+        48,
+        636
+      ],
+      "props": {
+        "id": "moth_3_01",
+        "zone": "spore_glade"
+      }
+    },
+    {
+      "id": "chest_3_relit_flower",
+      "kind": "chest",
+      "pos": [
+        352,
+        872
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 50,
+        "zone": "moss_trailhead",
+        "sets_flag": "isl3_relit_keepsake"
       }
     }
   ],
@@ -1655,5 +1815,51 @@
       "shadow": true,
       "phase": 0.5
     }
-  ]
+  ],
+  "layers": [
+    {
+      "id": "root_bridge_grown",
+      "when": "flag:ow_root_bridge_grown",
+      "tiles": [
+        [
+          21,
+          35,
+          3,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "gardener_shortcut_locked",
+      "when": "!flag:q_isl3_gardener_done",
+      "tiles": [],
+      "enable": [],
+      "disable": [
+        "exit_gardener_to_camp"
+      ]
+    },
+    {
+      "id": "relit_keepsake_hidden",
+      "when": "!flag:island_3_relit",
+      "tiles": [],
+      "enable": [],
+      "disable": [
+        "chest_3_relit_flower"
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Heartwood Spine vertical 3-tier root spiral connecting Trailhead, Lantern Glade Camp, Spore Glade (Stump + Brook Moth), Briar Crossing, Canopy Bridge, 3 Shifting Wood clearings, Hollow Oak Glade, and Island 4 Bridge.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "Seedlight trail bloom, 3 beacons, Shifting Wood clearings, macro-to-micro root bridge",
+    "decisions": 6,
+    "expert_s": 130,
+    "reward": "3 beacons, Hollow Oak access, moth_3_01, 2 ember chests, Lens secret",
+    "why": "Main vertical spine of Island 3 preserving its approved coiling-root silhouette",
+    "optional": true
+  }
 }

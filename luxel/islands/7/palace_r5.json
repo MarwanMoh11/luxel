@@ -164,6 +164,7 @@
       "id": "black_world",
       "when": "world_face==black",
       "theme": "inverted_palace_black",
+      "overlay": "res://luxel/art/islands/7/palace_r5__black_world.png",
       "full_frame": true,
       "tiles": [],
       "enable": [],

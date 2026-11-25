@@ -1,0 +1,679 @@
+{
+  "id": "ow_camp",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL3_CAMP_NAME",
+  "music": "island3_explore",
+  "spawn": [
+    344,
+    144
+  ],
+  "zones": [
+    {
+      "id": "lantern_glade",
+      "name_key": "ISL3_CAMP_NAME",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 44,
+      "style": "ritual",
+      "color": "dusk",
+      "secondary": "jade"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        128,
+        48
+      ],
+      "radius": 20,
+      "color": "jade",
+      "secondary": "gold"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        72,
+        168
+      ],
+      "radius": 28,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        112
+      ],
+      "size": [
+        48,
+        80
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_camp_to_ow",
+      "rect": [
+        384,
+        128,
+        32,
+        48
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        104,
+        888
+      ]
+    },
+    {
+      "id": "exit_camp_to_shift_w",
+      "rect": [
+        96,
+        0,
+        48,
+        32
+      ],
+      "to_region": "ow_shift_w",
+      "to_spawn": [
+        184,
+        264
+      ]
+    },
+    {
+      "id": "exit_camp_to_scales",
+      "rect": [
+        0,
+        176,
+        32,
+        48
+      ],
+      "to_region": "trial_moth_scales",
+      "to_spawn": [
+        360,
+        128
+      ]
+    },
+    {
+      "id": "exit_camp_to_cellar",
+      "rect": [
+        176,
+        256,
+        48,
+        32
+      ],
+      "to_region": "cave_root_cellar",
+      "to_spawn": [
+        176,
+        48
+      ],
+      "requires_moves": [
+        "beam"
+      ]
+    },
+    {
+      "id": "exit_gardener_to_summit",
+      "rect": [
+        336,
+        16,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        192,
+        208
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_3_camp",
+      "kind": "waystone",
+      "pos": [
+        248,
+        144
+      ],
+      "props": {
+        "zone": "lantern_glade",
+        "lit": true,
+        "lit_by_default": true,
+        "name_key": "ISL3_CAMP_NAME"
+      }
+    },
+    {
+      "id": "hub_camp_panes",
+      "kind": "hub_door",
+      "pos": [
+        304,
+        120
+      ],
+      "props": {
+        "door_role": "pane_workshop"
+      }
+    },
+    {
+      "id": "totem_camp_compass",
+      "kind": "ow_compass_totem",
+      "pos": [
+        152,
+        56
+      ],
+      "props": {}
+    },
+    {
+      "id": "sun_seed_1",
+      "kind": "ow_sun_seed",
+      "pos": [
+        168,
+        120
+      ],
+      "props": {
+        "sets_flag": "q_gardener_seed_1"
+      }
+    },
+    {
+      "id": "lp_camp_fruit",
+      "kind": "light_plant",
+      "pos": [
+        136,
+        152
+      ],
+      "props": {
+        "grow": "fruit",
+        "secs": 0.5,
+        "decay": 8.0
+      }
+    },
+    {
+      "id": "hook_camp_nursery",
+      "kind": "lantern_hook",
+      "pos": [
+        128,
+        72
+      ],
+      "props": {
+        "light_radius": 64.0
+      }
+    },
+    {
+      "id": "lp_camp_wall",
+      "kind": "light_plant",
+      "pos": [
+        72,
+        104
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          16,
+          16
+        ],
+        "secs": 0.45,
+        "decay": 1.2
+      }
+    },
+    {
+      "id": "moth_3_02",
+      "kind": "moth",
+      "pos": [
+        64,
+        56
+      ],
+      "props": {
+        "id": "moth_3_02"
+      }
+    },
+    {
+      "id": "bramble_camp_cellar",
+      "kind": "bramble",
+      "pos": [
+        200,
+        248
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "npc_gardener_frog",
+      "kind": "npc",
+      "pos": [
+        184,
+        148
+      ],
+      "props": {
+        "folk": "gardener_frog",
+        "quest": "q_isl3_gardener",
+        "rescuable": true,
+        "wander_radius": 8.0,
+        "bubbles": [
+          [
+            "folk_frog",
+            "seed",
+            "light_on",
+            "arrow_ne",
+            "isl_3"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "npc_tailor_spider",
+      "kind": "npc",
+      "pos": [
+        288,
+        176
+      ],
+      "props": {
+        "folk": "tailor_spider",
+        "quest": "q_isl3_tailor",
+        "rescuable": true,
+        "wander_radius": 8.0,
+        "bubbles": [
+          [
+            "quest_carry",
+            "toy_ring",
+            "arrow_e",
+            "skull",
+            "light_on"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "npc_scribe_worm",
+      "kind": "npc",
+      "pos": [
+        264,
+        96
+      ],
+      "props": {
+        "folk": "scribe_worm",
+        "quest": "q_isl3_scribe",
+        "rescuable": true,
+        "wander_radius": 6.0,
+        "bubbles": [
+          [
+            "book",
+            "eye",
+            "lantern",
+            "question"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "npc_camp_relit_guest",
+      "kind": "npc",
+      "pos": [
+        216,
+        172
+      ],
+      "props": {
+        "folk": "owl_chick",
+        "require_flag": "island_3_relit",
+        "wander_radius": 6.0,
+        "bubbles": [
+          {
+            "icons": [
+              "crown",
+              "seed",
+              "happy",
+              "flame"
+            ],
+            "line": "ISL3_CAMP_RELIT_NOTE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "lamp_camp_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        120
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_camp_s",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_camp_sw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_camp_ne",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        248,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "ancient_oak_tree",
+      "pos": [
+        360,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        344,
+        102
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        316,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        300,
+        210
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fallen_log_mossy",
+      "pos": [
+        232,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "mossy_stump",
+      "pos": [
+        148,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        184,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        296,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        144,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        96,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        48,
+        132
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        44,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.4
+    }
+  ],
+  "layers": [
+    {
+      "id": "gardener_shortcut_sealed",
+      "when": "!flag:q_isl3_gardener_done",
+      "tiles": [
+        [
+          21,
+          1,
+          2,
+          1,
+          "wall"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_gardener_to_summit"
+      ]
+    },
+    {
+      "id": "camp_relit_bloom",
+      "when": "flag:island_3_relit",
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_gardener_shortcut_msg",
+      "on": "flag:q_isl3_gardener_done",
+      "once": true,
+      "do": [
+        {
+          "sfx": "seed_bloom"
+        },
+        {
+          "narrate": "ISL3_GARDENER_BRIDGE"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Lantern Glade hub camp introducing the 3 pictogram folk, the Wood-Compass Totem, Sun-Seed #1, and a zero-text Seedlight Nursery where hanging your lantern behind a root pillar wilts a thorn-wall to reach Moth #2.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "light_plant(fruit+wall), lantern_hook shadow starving, ow_sun_seed, ow_compass_totem, folk quests",
+    "decisions": 4,
+    "expert_s": 42,
+    "reward": "ws_3_camp, moth_3_02, q_gardener_seed_1, 3 folk quests, pane workshop",
+    "why": "First-3-minute sanctuary hub grounding Thornwood Hollow's rules before the Shifting Woods",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          136
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "sun_seed_1"
+      },
+      {
+        "op": "expect",
+        "flag": "q_gardener_seed_1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          76
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "totem_camp_compass"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          84
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_camp_nursery"
+      },
+      {
+        "op": "wait",
+        "secs": 1.6
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          72
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          56
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect",
+        "flag": "moth:moth_3_02"
+      }
+    ]
+  }
+}

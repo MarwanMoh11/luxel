@@ -1,0 +1,481 @@
+{
+  "id": "cave_glass_crypt",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_CAVE_CRYPT",
+  "theme": "cave_7",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    360,
+    144
+  ],
+  "zones": [
+    {
+      "id": "cave_glass_crypt",
+      "name_key": "ISL7_Z_CAVE_CRYPT",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cgc_zenith",
+      "rect": [
+        400,
+        120,
+        16,
+        48
+      ],
+      "to_region": "zenith_atoll",
+      "to_spawn": [
+        56,
+        200
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_cgc_east",
+      "kind": "room_anchor",
+      "pos": [
+        360,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "pool_cgc_foyer",
+      "kind": "moon_pool",
+      "pos": [
+        328,
+        192
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": false
+      }
+    },
+    {
+      "id": "anvil_cgc_local",
+      "kind": "temper_anvil",
+      "pos": [
+        312,
+        120
+      ],
+      "props": {
+        "mode": "cycle",
+        "prompt_key": "ISL7_PROMPT_ANVIL",
+        "hit_to_swap": true
+      }
+    },
+    {
+      "id": "sw_cgc_skip",
+      "kind": "switch_eye",
+      "pos": [
+        184,
+        56
+      ],
+      "props": {
+        "requires_blue": false,
+        "target_id": "gate_cgc_logic"
+      }
+    },
+    {
+      "id": "glass_cgc_blue",
+      "kind": "color_glass",
+      "pos": [
+        216,
+        216
+      ],
+      "props": {
+        "color": "blue"
+      }
+    },
+    {
+      "id": "sw_cgc_lance",
+      "kind": "switch_eye",
+      "pos": [
+        168,
+        216
+      ],
+      "props": {
+        "requires_blue": false,
+        "target_id": "gate_cgc_logic"
+      }
+    },
+    {
+      "id": "seal_cgc_obsidian",
+      "kind": "obsidian_seal",
+      "pos": [
+        216,
+        144
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "gate_cgc_logic",
+      "kind": "logic_gate",
+      "pos": [
+        168,
+        144
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "sw_cgc_skip",
+          "sw_cgc_lance"
+        ],
+        "target_id": "door_cgc_sanctum"
+      }
+    },
+    {
+      "id": "door_cgc_sanctum",
+      "kind": "door",
+      "pos": [
+        136,
+        144
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "required_signals": [
+          "gate_cgc_logic"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_ember_7_crypt",
+      "kind": "chest",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "cave_glass_crypt"
+      }
+    },
+    {
+      "id": "lore_cgc_origin",
+      "kind": "lore_stone",
+      "pos": [
+        72,
+        176
+      ],
+      "props": {
+        "string_id": "ISL7_LORE_ORIGIN",
+        "icon": "lantern",
+        "sets_flag": "lore_hollow_origin"
+      }
+    },
+    {
+      "id": "lamp_cgc_e1",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "zone": "cave_glass_crypt",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cgc_n1",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        64
+      ],
+      "props": {
+        "zone": "cave_glass_crypt",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cgc_s1",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        216
+      ],
+      "props": {
+        "zone": "cave_glass_crypt",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cgc_c1",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        128
+      ],
+      "props": {
+        "zone": "cave_glass_crypt",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cgc_w1",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        144
+      ],
+      "props": {
+        "zone": "cave_glass_crypt",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        40,
+        72,
+        80,
+        128
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "mural",
+      "pos": [
+        72,
+        152
+      ],
+      "radius": 24,
+      "style": "moon"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        216,
+        144
+      ],
+      "radius": 20,
+      "glow": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cave_arch_rock",
+      "pos": [
+        376,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        288,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        176,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        56,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cave_lantern_post",
+      "pos": [
+        96,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "stalagmite_tall",
+      "pos": [
+        360,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          13,
+          12,
+          2,
+          1,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Deep mastery secret crypt combining Moon-Anvil bolt tempering (Skip & Lance), True Lens phantom tiles, and Sunflare obsidian shattering to reveal Hollow Wick's origin mural.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Weave Skip/Lance bolt tempering, Lens anchoring, and Sunflare to uncover Hollow Wick's origin story and a mastery Ember Piece.",
+    "decisions": 10,
+    "expert_s": 55,
+    "reward": "ember_7_crypt+lore_hollow_origin",
+    "why": "Emotional lore payoff for Hollow Wick's six-island arc hidden behind Island 7's full-kit mastery test.",
+    "start": {
+      "vars": {
+        "world_face": "black"
+      }
+    },
+    "target": "chest_ember_7_crypt",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "anvil_cgc_local"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          56
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          56
+        ],
+        "target": "sw_cgc_skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          216
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          216
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          184,
+          216
+        ],
+        "target": "sw_cgc_lance"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          144
+        ]
+      },
+      {
+        "op": "sunflare"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          120
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_7_crypt"
+      },
+      {
+        "op": "interact",
+        "target": "lore_cgc_origin"
+      },
+      {
+        "op": "expect",
+        "flag": "lore_hollow_origin"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_cgc_zenith"
+      }
+    ]
+  }
+}

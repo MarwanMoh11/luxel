@@ -1,0 +1,438 @@
+{
+  "id": "cave_slag_sluice",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_6",
+  "music": "island6_dungeon",
+  "name_key": "ISL6_Z_SLUICE",
+  "spawn": [
+    48,
+    144
+  ],
+  "zones": [
+    {
+      "id": "cave_slag_sluice",
+      "name_key": "ISL6_Z_SLUICE",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sluice_to_basin",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "ow_slag_basin",
+      "to_spawn": [
+        640,
+        312
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_sluice_1",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "tf_sluice",
+      "kind": "blue_transformer",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "slag_s1",
+      "kind": "push_block",
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "variant": "slag"
+      }
+    },
+    {
+      "id": "slag_s2",
+      "kind": "push_block",
+      "pos": [
+        152,
+        168
+      ],
+      "props": {
+        "variant": "slag"
+      }
+    },
+    {
+      "id": "conv_sluice_1",
+      "kind": "conveyor",
+      "pos": [
+        232,
+        136
+      ],
+      "props": {
+        "size": [
+          96,
+          16
+        ],
+        "dir": "e",
+        "speed": 64.0
+      }
+    },
+    {
+      "id": "conv_sluice_2",
+      "kind": "conveyor",
+      "pos": [
+        232,
+        168
+      ],
+      "props": {
+        "size": [
+          96,
+          16
+        ],
+        "dir": "e",
+        "speed": 64.0
+      }
+    },
+    {
+      "id": "plate_sluice_1",
+      "kind": "pressure_plate",
+      "pos": [
+        288,
+        136
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_id": "gate_sluice_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "plate_sluice_2",
+      "kind": "pressure_plate",
+      "pos": [
+        288,
+        168
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_id": "gate_sluice_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_sluice_all",
+      "kind": "logic_gate",
+      "pos": [
+        312,
+        112
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_sluice_1",
+          "plate_sluice_2"
+        ],
+        "target_id": "door_sluice_vault",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_sluice_vault",
+      "kind": "door",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_sluice_all"
+        ]
+      }
+    },
+    {
+      "id": "qi_slag_coal",
+      "kind": "quest_item",
+      "pos": [
+        384,
+        128
+      ],
+      "props": {
+        "id": "slag_coal",
+        "icon": "ember",
+        "carry": false
+      }
+    },
+    {
+      "id": "moth_6_04",
+      "kind": "moth",
+      "pos": [
+        384,
+        176
+      ],
+      "props": {
+        "id": "moth_6_04"
+      }
+    },
+    {
+      "id": "lamp_sl_1",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sl_2",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sl_3",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sl_4",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_6",
+      "prop": "stalagmite_tall",
+      "pos": [
+        144,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        240,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        96,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "dripping_pool_basin",
+      "pos": [
+        160,
+        80
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        384,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "subterranean_shroom",
+      "pos": [
+        384,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Cool two molten slag blocks using a Blue Transformer, then push both onto twin eastbound conveyors to latch the sluice plates and claim pure Slag Coal + moth_6_04.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Slag cooling via Blue reflection + conveyor block delivery.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "qi_slag_coal+moth_6_04",
+    "why": "Delivers Kiln Salamander's quest item behind station_c Express routing.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          88
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          152,
+          88
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "slag_s1",
+        "prop": "cooled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "push",
+        "target": "slag_s1",
+        "dir": "e",
+        "dist": 48.0
+      },
+      {
+        "op": "wait_until",
+        "target": "plate_sluice_1",
+        "prop": "powered",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          88
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          152,
+          88
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "slag_s2",
+        "prop": "cooled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "push",
+        "target": "slag_s2",
+        "dir": "e",
+        "dist": 48.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_sluice_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          384,
+          136
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "qi_slag_coal"
+      },
+      {
+        "op": "expect",
+        "flag": "quest:item:slag_coal"
+      }
+    ]
+  }
+}

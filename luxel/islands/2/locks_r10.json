@@ -1,0 +1,818 @@
+{
+  "id": "locks_r10",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R10_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    272,
+    380
+  ],
+  "zones": [
+    {
+      "id": "lck_r10",
+      "name_key": "LCK_R10_NAME",
+      "rect": [
+        0,
+        0,
+        544,
+        416
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_south",
+      "rect": [
+        256,
+        400,
+        32,
+        16
+      ],
+      "to_region": "locks_r9",
+      "to_spawn": [
+        256,
+        44
+      ]
+    },
+    {
+      "id": "exit_r10_spillway",
+      "rect": [
+        0,
+        192,
+        16,
+        32
+      ],
+      "to_region": "locks_r1",
+      "to_spawn": [
+        392,
+        112
+      ],
+      "requires_flags": [
+        "locks_shortcut_open"
+      ],
+      "locked_door_id": "door_r10_spillway"
+    },
+    {
+      "id": "exit_r10_north",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r11",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r10_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10_s",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        376
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "skiff_r10",
+      "kind": "vehicle_skiff",
+      "pos": [
+        440,
+        248
+      ],
+      "props": {
+        "dir": "w"
+      }
+    },
+    {
+      "id": "mir_r10_s",
+      "kind": "blue_transformer",
+      "pos": [
+        232,
+        360
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": false
+      }
+    },
+    {
+      "id": "mir_r10_e",
+      "kind": "blue_transformer",
+      "pos": [
+        488,
+        216
+      ],
+      "props": {
+        "normal": [
+          -0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": false
+      }
+    },
+    {
+      "id": "portal_r10_n",
+      "kind": "blue_portal",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "target_portal_id": "portal_r10_s",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "exit_dir": "e",
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r10_s",
+      "kind": "blue_portal",
+      "pos": [
+        232,
+        328
+      ],
+      "props": {
+        "target_portal_id": "portal_r10_n",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r10_e",
+      "kind": "blue_portal",
+      "pos": [
+        456,
+        216
+      ],
+      "props": {
+        "target_portal_id": "portal_r10_w",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r10_w",
+      "kind": "blue_portal",
+      "pos": [
+        88,
+        216
+      ],
+      "props": {
+        "target_portal_id": "portal_r10_e",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "exit_dir": "s",
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "raft_r10_ne",
+      "kind": "tide_raft",
+      "pos": [
+        408,
+        88
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "mounts": "blue_transformer",
+        "tide_var": "lock_water",
+        "normal": [
+          0.7071,
+          -0.7071
+        ],
+        "rotatable": false
+      }
+    },
+    {
+      "id": "raft_r10_sw",
+      "kind": "tide_raft",
+      "pos": [
+        136,
+        328
+      ],
+      "props": {
+        "size": [
+          24,
+          24
+        ],
+        "mounts": "blue_transformer",
+        "tide_var": "lock_water",
+        "normal": [
+          -0.7071,
+          0.7071
+        ],
+        "rotatable": false
+      }
+    },
+    {
+      "id": "cap_r10_e",
+      "kind": "locks_orbit_capacitor",
+      "pos": [
+        456,
+        152
+      ],
+      "props": {
+        "hold_secs": 4.0,
+        "target_id": "gate_r10_orbit"
+      }
+    },
+    {
+      "id": "cap_r10_s",
+      "kind": "locks_orbit_capacitor",
+      "pos": [
+        168,
+        328
+      ],
+      "props": {
+        "hold_secs": 4.0,
+        "target_id": "gate_r10_orbit"
+      }
+    },
+    {
+      "id": "gate_r10_orbit",
+      "kind": "logic_gate",
+      "pos": [
+        272,
+        360
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "cap_r10_e",
+          "cap_r10_s"
+        ],
+        "persist": true,
+        "target_ids": [
+          "bridge_r10_island",
+          "door_r10_north",
+          "door_r10_spillway"
+        ]
+      }
+    },
+    {
+      "id": "grate_r10_n",
+      "kind": "grate",
+      "pos": [
+        272,
+        168
+      ],
+      "props": {
+        "size": [
+          64,
+          16
+        ]
+      }
+    },
+    {
+      "id": "grate_r10_w",
+      "kind": "grate",
+      "pos": [
+        232,
+        208
+      ],
+      "props": {
+        "size": [
+          16,
+          64
+        ]
+      }
+    },
+    {
+      "id": "grate_r10_e",
+      "kind": "grate",
+      "pos": [
+        312,
+        208
+      ],
+      "props": {
+        "size": [
+          16,
+          64
+        ]
+      }
+    },
+    {
+      "id": "bridge_r10_island",
+      "kind": "door",
+      "pos": [
+        272,
+        304
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "gate_r10_orbit"
+        ],
+        "size": [
+          32,
+          144
+        ]
+      }
+    },
+    {
+      "id": "key_locks_boss",
+      "kind": "keepers_flame",
+      "pos": [
+        272,
+        208
+      ],
+      "props": {
+        "dungeon_id": "locks",
+        "key_kind": "keepers_flame",
+        "sets_flag": "locks_boss_key"
+      }
+    },
+    {
+      "id": "door_r10_north",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "gate_r10_orbit"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r10_spillway",
+      "kind": "door",
+      "pos": [
+        24,
+        208
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "gate_r10_orbit"
+        ],
+        "sets_flag": "locks_shortcut_open",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        376
+      ],
+      "props": {
+        "zone": "lck_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        40
+      ],
+      "props": {
+        "zone": "lck_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        40,
+        168
+      ],
+      "props": {
+        "zone": "lck_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        504,
+        168
+      ],
+      "props": {
+        "zone": "lck_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_mid",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        192
+      ],
+      "props": {
+        "zone": "lck_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_ne",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        40
+      ],
+      "props": {
+        "zone": "lck_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_sw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        376
+      ],
+      "props": {
+        "zone": "lck_r10",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        272,
+        208
+      ],
+      "radius": 28
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        208
+      ],
+      "radius": 30,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "window_strip",
+      "y": 8,
+      "x0": 112,
+      "x1": 224,
+      "style": "stars"
+    },
+    {
+      "kind": "window_strip",
+      "y": 8,
+      "x0": 320,
+      "x1": 432,
+      "style": "stars"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        224,
+        352,
+        96,
+        48
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        208
+      ],
+      "size": [
+        56,
+        68
+      ],
+      "tint": "cool",
+      "shear": 0.22
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        56,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        488,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        40,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        504,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        232,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        328,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_buoy_marker",
+      "pos": [
+        56,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_buoy_marker",
+      "pos": [
+        488,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        272,
+        376
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        488,
+        88
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        56,
+        328
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "lck_r10_orbit_msg",
+      "on": "signal:gate_r10_orbit",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "locks_shortcut_open"
+        },
+        {
+          "shake": 0.2
+        },
+        {
+          "sfx": "great_lamp_bloom"
+        },
+        {
+          "narrate": {
+            "id": "LCK_ORBIT_LIT",
+            "style": "title",
+            "duration": 3.2
+          }
+        },
+        {
+          "wait": 0.4
+        },
+        {
+          "narrate": "LCK_SPILLWAY"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING: Circular octagonal waterfall abyss rimmed by 4 Waterway Blue Portals \u2014 Sluice-Harpoon two mirror-rafts onto opposite corners and fire ONE blue bolt into a perpetual recirculating 4-portal orbit that holds twin capacitors lit, unlocking the Boss Key island and Spillway Return.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Blue bolts warp indefinitely through Waterway Portals, resetting range and bounces to form a live perpetual circuit powering both orbit capacitors.",
+    "decisions": 11,
+    "expert_s": 64,
+    "reward": "locks_boss_key+cycle_4",
+    "why": "Astonishing centerpiece of The Smugglers' Locks awarding the Boss Key and opening Cycle 4 directly back to Sluice Intake r1.",
+    "exit": "exit_r10_north",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      },
+      "flags": [
+        "power_sluice_harpoon"
+      ]
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          184,
+          360
+        ],
+        "target": "mir_r10_s"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "portal_r10_s",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          488,
+          264
+        ],
+        "target": "mir_r10_e"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "portal_r10_e",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          504,
+          88
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "raft_r10_ne",
+        "hold": 0.45
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 1.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          40,
+          328
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "raft_r10_sw",
+        "hold": 0.45
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 1.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          184,
+          360
+        ],
+        "target": "mir_r10_s"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "gate_r10_orbit",
+        "prop": "powered",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "key_locks_boss"
+      },
+      {
+        "op": "expect",
+        "flag": "locks_boss_key"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_north"
+      }
+    ]
+  }
+}

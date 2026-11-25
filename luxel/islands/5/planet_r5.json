@@ -1,0 +1,416 @@
+{
+  "id": "planet_r5",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R5",
+  "spawn": [
+    224,
+    248
+  ],
+  "zones": [
+    {
+      "id": "pl_r5",
+      "name_key": "I5_PL_R5",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r5_s",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "planet_r4",
+      "to_spawn": [
+        224,
+        48
+      ]
+    },
+    {
+      "id": "exit_pl_r5_n",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "planet_r6",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_pl_r5_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r5",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "altar_sextant",
+      "kind": "pl_sextant_altar",
+      "pos": [
+        224,
+        224
+      ],
+      "props": {}
+    },
+    {
+      "id": "sn_r5_s",
+      "kind": "star_node",
+      "pos": [
+        224,
+        184
+      ],
+      "props": {
+        "link_range": 68.0
+      }
+    },
+    {
+      "id": "sn_r5_n",
+      "kind": "star_node",
+      "pos": [
+        224,
+        72
+      ],
+      "props": {
+        "link_range": 68.0
+      }
+    },
+    {
+      "id": "plate_pl_r5_n",
+      "kind": "pressure_plate",
+      "pos": [
+        224,
+        48
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "target_id": "door_pl_r5_n",
+        "sets_flag": "pl_r5_open"
+      }
+    },
+    {
+      "id": "door_pl_r5_n",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "plate_pl_r5_n"
+        ],
+        "sets_flag": "pl_r5_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "trans_pl_r5",
+      "kind": "blue_transformer",
+      "pos": [
+        320,
+        216
+      ],
+      "props": {
+        "angle_deg": 225.0,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "bell_pl_r5",
+      "kind": "star_bell",
+      "pos": [
+        320,
+        144
+      ],
+      "props": {
+        "scope": "dungeon:planetarium",
+        "var_name": "sky_turn",
+        "allow_ccw_blue": true,
+        "require_sextant_ccw": true,
+        "cooldown": 0.6
+      }
+    },
+    {
+      "id": "moth_5_08",
+      "kind": "moth",
+      "pos": [
+        56,
+        64
+      ],
+      "props": {
+        "id": "moth_5_08"
+      }
+    },
+    {
+      "id": "lamp_pl_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        232
+      ],
+      "props": {
+        "zone": "pl_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        232
+      ],
+      "props": {
+        "zone": "pl_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r5_n",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        48
+      ],
+      "props": {
+        "zone": "pl_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        88
+      ],
+      "props": {
+        "zone": "pl_r5",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        224
+      ],
+      "radius": 28,
+      "style": "ritual"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        224,
+        48
+      ],
+      "radius": 18
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        216
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        224,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        168,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        264,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        48,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "hanging_orrery_pendulum",
+      "pos": [
+        344,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r5_nw_270",
+      "when": "sky_turn==270",
+      "tiles": [
+        [
+          6,
+          2,
+          4,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Claim the Starlight Sextant, light two distant void stars 112px apart, and throw your lantern into open void between them as a portable Star Vertex to lock a solid bridge across (plus optional Blue Prism CCW turn to 270 degrees for Lost Moth #8 on the NW Moon Crescent).",
+    "kind": "reward",
+    "beat": "sho",
+    "teaches": "Starlight Sextant: thrown lantern acts as a portable Star Vertex bridging distant stars, and unlocks Blue CCW Star Bell turns.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "power_sextant+moth_5_08",
+    "why": "Dungeon power sanctum teaching the Starlight Sextant immediately through a dramatic void lantern-bridge.",
+    "exit": "exit_pl_r5_n",
+    "start": {
+      "vars": {
+        "sky_turn": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "altar_sextant"
+      },
+      {
+        "op": "expect",
+        "flag": "power_sextant"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          208
+        ],
+        "target": "sn_r5_s",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          184
+        ]
+      },
+      {
+        "op": "beam",
+        "target": "sn_r5_n"
+      },
+      {
+        "op": "throw",
+        "target": [
+          224,
+          128
+        ],
+        "hold": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          48
+        ]
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_pl_r5_n",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r5_n"
+      }
+    ]
+  }
+}

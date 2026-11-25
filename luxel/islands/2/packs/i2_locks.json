@@ -1,0 +1,76 @@
+{
+  "pack_id": "i2_locks",
+  "owner": "D2B",
+  "comment": "Island 2 Minor Dungeon B: The Smugglers' Locks (12 rooms, 5 internal cycles, Sluice Harpoon, canal locks & portal barges). Debug-only on dungeon/regions meta until ow_canal_south hooks locks_r1.",
+  "strings": {
+    "LCK_NAME": "THE SMUGGLERS LOCKS",
+    "LCK_HARPOON": "SLUICE HARPOON: RECALL TOWS RAFTS!",
+    "LCK_PROMPT_HARPOON": "CLAIM SLUICE HARPOON",
+    "LCK_SHORTCUT": "AQUEDUCT GATE UNLOCKS TO JUNCTION!",
+    "LCK_SPILLWAY": "SPILLWAY RETURN OPENED TO ENTRY!",
+    "LCK_ORBIT_LIT": "PERPETUAL BLUE ORBIT! CAGE RETRACTS!",
+    "LCK_CLEARED": "TWIN LOCKMASTERS FALL! HALF-LANTERN WON!",
+    "ISL2_LOG_3": "LOG 3: THE LOCKS OBEYED ITS COLD BLUE.",
+    "LCK_LORE_PORTAL": "BANK BLUE TO POWER WATERWAY PORTALS.",
+    "LCK_LORE_HARPOON": "THROW AND RECALL TOWS FLOATING RAFTS.",
+    "LCK_R1_NAME": "SLUICE INTAKE",
+    "LCK_R2_NAME": "LOCK JUNCTION HUB",
+    "LCK_R3_NAME": "WEST LOCK BASIN",
+    "LCK_R4_NAME": "BARGE CHANNEL",
+    "LCK_R5_NAME": "CURRENT MAZE",
+    "LCK_R6_NAME": "DREDGE BASIN",
+    "LCK_R7_NAME": "PORTAL BARGE LOCK",
+    "LCK_R8_NAME": "CONTRABAND VAULT",
+    "LCK_R9_NAME": "TWIN-SLUICE SCALE",
+    "LCK_R10_NAME": "PORTAL WHIRLPOOL",
+    "LCK_R11_NAME": "CUSTOMS ANTECHAMBER",
+    "LCK_R12_NAME": "DOUBLE-LOCK SANCTUM"
+  },
+  "interactables": {
+    "locks_harpoon_altar": "res://luxel/islands/2/locks/locks_harpoon_altar.gd",
+    "locks_orbit_capacitor": "res://luxel/islands/2/locks/locks_orbit_capacitor.gd"
+  },
+  "dungeons": [
+    {
+      "id": "locks",
+      "name_key": "LCK_NAME",
+      "island": 2,
+      "entry": "locks_r1",
+      "regions": [
+        "locks_r1",
+        "locks_r2",
+        "locks_r3",
+        "locks_r4",
+        "locks_r5",
+        "locks_r6",
+        "locks_r7",
+        "locks_r8",
+        "locks_r9",
+        "locks_r10",
+        "locks_r11",
+        "locks_r12"
+      ],
+      "mini_boss": "dredge_hulk",
+      "boss": "twin_lockmasters",
+      "theme": "locks",
+      "music": "isl2_locks",
+      "requires_flags": [],
+      "done_flag": "locks_done",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "locks_r1":  { "name_key": "LCK_R1_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 5] },
+    "locks_r2":  { "name_key": "LCK_R2_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 4] },
+    "locks_r3":  { "name_key": "LCK_R3_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [1, 4] },
+    "locks_r4":  { "name_key": "LCK_R4_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [3, 4] },
+    "locks_r5":  { "name_key": "LCK_R5_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 3] },
+    "locks_r6":  { "name_key": "LCK_R6_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 2] },
+    "locks_r7":  { "name_key": "LCK_R7_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [1, 2] },
+    "locks_r8":  { "name_key": "LCK_R8_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [0, 2] },
+    "locks_r9":  { "name_key": "LCK_R9_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [1, 1] },
+    "locks_r10": { "name_key": "LCK_R10_NAME", "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 1] },
+    "locks_r11": { "name_key": "LCK_R11_NAME", "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 0] },
+    "locks_r12": { "name_key": "LCK_R12_NAME", "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [3, 0] }
+  }
+}

@@ -256,6 +256,7 @@ func _hide_all_modals() -> void:
 
 func show_title(open_slots: bool = false) -> void:
 	_hide_all_modals()
+	LxSold.current().restore_all("title", true)
 	if narration != null:
 		narration.clear_all()
 	if Lx.hitstop != null:
@@ -476,6 +477,10 @@ func _draw_reticle() -> void:
 	if Lx.state != null and not Lx.state.has_lantern():
 		_cursor_node.draw_rect(Rect2(pos.x - 1.0, pos.y - 1.0, 3.0, 3.0), LxPalette.PAL["mauve"] as Color)
 		_cursor_node.draw_rect(Rect2(pos.x, pos.y, 1.0, 1.0), LxPalette.PAL["stone"] as Color)
+		return
+	if not bool(LxSold.current().get_hud_visibility().get("show_cursor_ring", true)):
+		_cursor_node.draw_rect(Rect2(pos.x - 1.0, pos.y - 1.0, 3.0, 3.0), LxPalette.PAL["night"] as Color)
+		_cursor_node.draw_rect(Rect2(pos.x, pos.y, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
 		return
 	var arm: float = float(sz + 2)
 	var gap: float = float(sz + 1)

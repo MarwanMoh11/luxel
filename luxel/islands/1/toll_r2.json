@@ -1,0 +1,412 @@
+{
+  "id": "toll_r2",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_TOLL_DROP",
+  "music": "isl1_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    192,
+    224
+  ],
+  "zones": [
+    {
+      "id": "toll_drop",
+      "name_key": "ISL1_TOLL_DROP",
+      "rect": [
+        0,
+        0,
+        384,
+        448
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_toll_r2_drop",
+      "rect": [
+        176,
+        432,
+        32,
+        16
+      ],
+      "to_region": "toll_r3",
+      "to_spawn": [
+        224,
+        288
+      ],
+      "one_way": true,
+      "locked_door_id": "door_toll_r2_drop"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "moth_toll_r2_0",
+      "kind": "toll_moth",
+      "pos": [
+        296,
+        176
+      ],
+      "route": [],
+      "perches": [
+        [
+          296,
+          176
+        ],
+        [
+          280,
+          256
+        ]
+      ],
+      "zone": "toll_drop",
+      "leash": 180
+    }
+  ],
+  "interactables": [
+    {
+      "id": "bell_plat_r2",
+      "kind": "falling_bell_platform",
+      "pos": [
+        192,
+        224
+      ],
+      "props": {
+        "radius_px": 56,
+        "scroll_speed": 68,
+        "duration_s": 10.0,
+        "brakes_needed": 0,
+        "auto_start": true,
+        "complete_flag": "toll_r2_survived",
+        "target_ids": [
+          "door_toll_r2_drop",
+          "bridge_toll_r2"
+        ],
+        "persist": true,
+        "rail_events": [
+          {
+            "t": 1.2,
+            "side": "l",
+            "kind": "bell",
+            "tone": "dusk"
+          },
+          {
+            "t": 2.0,
+            "side": "l",
+            "kind": "beam"
+          },
+          {
+            "t": 4.2,
+            "side": "r",
+            "kind": "bell",
+            "tone": "war"
+          },
+          {
+            "t": 5.0,
+            "side": "r",
+            "kind": "grate"
+          },
+          {
+            "t": 7.2,
+            "side": "l",
+            "kind": "bell",
+            "tone": "dusk"
+          },
+          {
+            "t": 8.0,
+            "side": "r",
+            "kind": "beam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "bell_toll_r2_k",
+      "kind": "bell",
+      "pos": [
+        80,
+        200
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "bell_toll_r2_w",
+      "kind": "bell",
+      "pos": [
+        304,
+        248
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "bridge_toll_r2",
+      "kind": "door",
+      "pos": [
+        192,
+        328
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          96
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "bell_plat_r2"
+        ]
+      }
+    },
+    {
+      "id": "door_toll_r2_drop",
+      "kind": "door",
+      "pos": [
+        192,
+        424
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "bell_plat_r2"
+        ]
+      }
+    },
+    {
+      "id": "anc_toll_r2",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_tr2_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        184
+      ],
+      "props": {
+        "zone": "toll_drop",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr2_ne",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        184
+      ],
+      "props": {
+        "zone": "toll_drop",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr2_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        264
+      ],
+      "props": {
+        "zone": "toll_drop",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr2_se",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        264
+      ],
+      "props": {
+        "zone": "toll_drop",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr2_bot",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        392
+      ],
+      "props": {
+        "zone": "toll_drop",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        224
+      ],
+      "radius": 58,
+      "style": "clock"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        160,
+        384,
+        64,
+        32
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        192,
+        208
+      ],
+      "size": [
+        44,
+        96
+      ],
+      "tint": "cool",
+      "shear": -0.15
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        72,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "small_bronze_gear",
+      "pos": [
+        312,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "cracked_bell_shard",
+      "pos": [
+        152,
+        400
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        232,
+        400
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "counterweight_block",
+      "pos": [
+        80,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "counterweight_block",
+      "pos": [
+        304,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "Ride the plunging 7x7 bronze bell crown down the shaft, shooting Dusk wall bells to freeze timber beams and War wall bells to shatter descending stone grates.",
+    "kind": "setpiece",
+    "beat": "sho",
+    "teaches": "Rapid Dawn/Dusk/War bell targeting while holding footing on a live plunging set piece.",
+    "decisions": 5,
+    "expert_s": 55,
+    "reward": "toll_r2_survived",
+    "why": "Signature adrenaline drop surfing the falling bell down the shaft.",
+    "exit": "exit_toll_r2_drop",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          160,
+          200
+        ],
+        "target": "bell_toll_r2_k"
+      },
+      {
+        "op": "clear",
+        "timeout": 12.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          248
+        ],
+        "target": "bell_toll_r2_w"
+      },
+      {
+        "op": "wait_until",
+        "flag": "toll_r2_survived",
+        "timeout": 14.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_toll_r2_drop"
+      }
+    ]
+  }
+}

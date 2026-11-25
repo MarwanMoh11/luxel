@@ -1,0 +1,898 @@
+{
+  "id": "ow_open_sound",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ZONE_ISL2_SOUND",
+  "theme": "locks",
+  "music": "explore",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    56,
+    296
+  ],
+  "zones": [
+    {
+      "id": "outer_sound",
+      "name_key": "ZONE_ISL2_SOUND",
+      "rect": [
+        0,
+        0,
+        768,
+        576
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sound_west",
+      "rect": [
+        0,
+        272,
+        16,
+        80
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        872,
+        88
+      ]
+    },
+    {
+      "id": "exit_sound_canal",
+      "rect": [
+        0,
+        432,
+        16,
+        80
+      ],
+      "to_region": "ow_canal_south",
+      "to_spawn": [
+        696,
+        264
+      ]
+    },
+    {
+      "id": "exit_sound_belfry",
+      "rect": [
+        352,
+        0,
+        48,
+        16
+      ],
+      "to_region": "cave_rooftop_belfry",
+      "to_spawn": [
+        232,
+        248
+      ]
+    },
+    {
+      "id": "exit_sound_maw",
+      "rect": [
+        752,
+        432,
+        16,
+        48
+      ],
+      "to_region": "cave_undertow_maw",
+      "to_spawn": [
+        72,
+        200
+      ],
+      "requires_flags": [
+        "undertow_charted"
+      ],
+      "locked_door_id": "door_sound_maw"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "reef_skate_sd_1",
+      "kind": "reef_skate",
+      "pos": [
+        424,
+        456
+      ],
+      "route": [
+        [
+          392,
+          456
+        ],
+        [
+          504,
+          456
+        ]
+      ],
+      "zone": "outer_sound",
+      "leash": 136
+    },
+    {
+      "id": "pistol_shrimp_sd_1",
+      "kind": "pistol_shrimp",
+      "pos": [
+        488,
+        104
+      ],
+      "route": [],
+      "zone": "outer_sound",
+      "leash": 144
+    },
+    {
+      "id": "anchor_drowned_sd_1",
+      "kind": "anchor_drowned",
+      "pos": [
+        600,
+        472
+      ],
+      "route": [
+        [
+          584,
+          472
+        ],
+        [
+          632,
+          472
+        ]
+      ],
+      "zone": "outer_sound",
+      "leash": 132
+    },
+    {
+      "id": "net_caster_sd_1",
+      "kind": "net_caster",
+      "pos": [
+        632,
+        520
+      ],
+      "route": [
+        [
+          600,
+          520
+        ],
+        [
+          664,
+          520
+        ]
+      ],
+      "zone": "outer_sound",
+      "leash": 136
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_2_sound",
+      "kind": "waystone",
+      "pos": [
+        104,
+        344
+      ],
+      "props": {
+        "zone": "outer_sound",
+        "name_key": "ZONE_ISL2_SOUND"
+      }
+    },
+    {
+      "id": "organ_sound",
+      "kind": "state_lever",
+      "pos": [
+        312,
+        280
+      ],
+      "props": {
+        "scope": "island:2",
+        "var": "tide",
+        "values": [
+          "ebb",
+          "half",
+          "flood"
+        ],
+        "shootable": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "skiff_sound",
+      "kind": "vehicle_skiff",
+      "pos": [
+        248,
+        392
+      ],
+      "props": {}
+    },
+    {
+      "id": "skiff_bell_sound",
+      "kind": "skiff_bell",
+      "pos": [
+        152,
+        408
+      ],
+      "props": {
+        "dock_pos": [
+          248,
+          392
+        ],
+        "dock_dir": "e"
+      }
+    },
+    {
+      "id": "post_sound_sw",
+      "kind": "mooring_post",
+      "pos": [
+        232,
+        488
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_sound_mid",
+      "kind": "mooring_post",
+      "pos": [
+        504,
+        264
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_sound_ne",
+      "kind": "mooring_post",
+      "pos": [
+        568,
+        184
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "portal_regatta_1a",
+      "kind": "blue_portal",
+      "pos": [
+        280,
+        456
+      ],
+      "props": {
+        "target_portal_id": "portal_regatta_1b",
+        "requires_blue": false,
+        "starts_powered": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_regatta_1b",
+      "kind": "blue_portal",
+      "pos": [
+        440,
+        216
+      ],
+      "props": {
+        "target_portal_id": "portal_regatta_1a",
+        "requires_blue": false,
+        "starts_powered": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_regatta_2a",
+      "kind": "blue_portal",
+      "pos": [
+        584,
+        280
+      ],
+      "props": {
+        "target_portal_id": "portal_regatta_2b",
+        "requires_blue": false,
+        "starts_powered": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_regatta_2b",
+      "kind": "blue_portal",
+      "pos": [
+        248,
+        168
+      ],
+      "props": {
+        "target_portal_id": "portal_regatta_2a",
+        "requires_blue": false,
+        "starts_powered": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "trial_regatta_gate",
+      "kind": "trial_gate",
+      "pos": [
+        280,
+        296
+      ],
+      "props": {
+        "challenge": "flood_regatta",
+        "once": true,
+        "shoot_to_start": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "door_sound_maw",
+      "kind": "door",
+      "pos": [
+        744,
+        456
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "outer_sound",
+        "requires_flags": [
+          "undertow_charted"
+        ]
+      }
+    },
+    {
+      "id": "wind_sound_viaduct",
+      "kind": "wind_zone",
+      "pos": [
+        568,
+        104
+      ],
+      "props": {
+        "size": [
+          64,
+          32
+        ],
+        "dir": "e",
+        "strength": 120
+      }
+    },
+    {
+      "id": "moth_2_05",
+      "kind": "moth",
+      "pos": [
+        568,
+        376
+      ],
+      "props": {
+        "id": "moth_2_05"
+      }
+    },
+    {
+      "id": "moth_2_10",
+      "kind": "moth",
+      "pos": [
+        680,
+        104
+      ],
+      "props": {
+        "id": "moth_2_10"
+      }
+    },
+    {
+      "id": "chest_sound_viaduct",
+      "kind": "chest",
+      "pos": [
+        696,
+        120
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 60,
+        "zone": "outer_sound",
+        "secret_id": "isl2_wings_viaduct"
+      }
+    },
+    {
+      "id": "lamp_sd_w1",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        296
+      ],
+      "props": {
+        "zone": "outer_sound",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sd_w2",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        456
+      ],
+      "props": {
+        "zone": "outer_sound",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sd_mid",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        280
+      ],
+      "props": {
+        "zone": "outer_sound",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sd_n1",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        40
+      ],
+      "props": {
+        "zone": "outer_sound",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sd_se",
+      "kind": "road_lamp",
+      "pos": [
+        680,
+        440
+      ],
+      "props": {
+        "zone": "outer_sound",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sd_ne",
+      "kind": "road_lamp",
+      "pos": [
+        664,
+        88
+      ],
+      "props": {
+        "zone": "outer_sound",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "tide_ebb",
+      "when": "tide==ebb",
+      "theme": "seabed",
+      "tiles": [
+        [
+          11,
+          11,
+          5,
+          4,
+          "ground"
+        ],
+        [
+          28,
+          21,
+          5,
+          4,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_sound_belfry",
+        "trial_regatta_gate"
+      ]
+    },
+    {
+      "id": "tide_half",
+      "when": "tide==half",
+      "theme": "locks",
+      "tiles": [
+        [
+          11,
+          23,
+          3,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_sound_belfry",
+        "trial_regatta_gate"
+      ]
+    },
+    {
+      "id": "tide_flood",
+      "when": "tide==flood",
+      "theme": "locks",
+      "tiles": [
+        [
+          22,
+          3,
+          3,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "exit_sound_belfry",
+        "trial_regatta_gate"
+      ],
+      "disable": []
+    },
+    {
+      "id": "sound_relit",
+      "when": "flag:island_2_relit",
+      "theme": "seabed",
+      "tiles": [
+        [
+          32,
+          21,
+          7,
+          6,
+          "ground"
+        ]
+      ],
+      "enable": [
+        "moth_2_05"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_regatta_start",
+      "on": "trial_start:trial_regatta_gate",
+      "once": false,
+      "do": [
+        {
+          "narrate": "ISL2_TRIAL_REGATTA"
+        },
+        {
+          "challenge": {
+            "id": "flood_regatta",
+            "kind": "race",
+            "time": 45,
+            "goal_radius": 30,
+            "checkpoints": [
+              [
+                248,
+                392
+              ],
+              [
+                280,
+                456
+              ],
+              [
+                440,
+                216
+              ],
+              [
+                568,
+                184
+              ],
+              [
+                584,
+                280
+              ],
+              [
+                248,
+                168
+              ]
+            ],
+            "goal": [
+              264,
+              280
+            ],
+            "ok": [
+              {
+                "set_flag": "quest_regatta_won"
+              }
+            ],
+            "reward": {
+              "kind": "ember_piece",
+              "value": "ember_2_4",
+              "amount": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ev_sound_relit",
+      "on": "flag:island_2_relit",
+      "once": true,
+      "do": [
+        {
+          "narrate": "ISL2_RELIT_WHALE"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        312,
+        280
+      ],
+      "radius": 28
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        624,
+        416,
+        96,
+        80
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        88,
+        360
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        680,
+        104
+      ],
+      "radius": 20,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island2_scenery",
+      "prop": "sea_glass_arch",
+      "pos": [
+        696,
+        424
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "harbor_wind_vane",
+      "pos": [
+        312,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        344,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "fresnel_pedestal",
+      "pos": [
+        408,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        104,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "coastal_lantern_post",
+      "pos": [
+        104,
+        488
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "tide_bell_post",
+      "pos": [
+        280,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "wooden_crates",
+      "pos": [
+        136,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "mooring_bollard",
+      "pos": [
+        168,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "mooring_bollard",
+      "pos": [
+        600,
+        424
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island2_scenery",
+      "prop": "brass_compass_floor",
+      "pos": [
+        312,
+        296
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sunken_amphora_urn",
+      "pos": [
+        680,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "coral_fan_cluster",
+      "pos": [
+        632,
+        504
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        472,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Sweeping outer coastal sound with Waterway Blue Portal Regatta loop (flood), Rooftop Belfry arch, sunlit Leviathan sandbar (relit), Wings viaduct, and Undertow Maw seal.",
+    "kind": "traversal",
+    "beat": "ten",
+    "teaches": "Flood-tide Waterway Portal Regatta, relit world state, superboss chart gate",
+    "decisions": 5,
+    "expert_s": 80,
+    "reward": "ember_2_4 + quest_regatta_won + moth_2_05 + moth_2_10 + Undertow entry",
+    "why": "Northeastern Island 2 overworld hub for flood Regatta, Belfry cave, Leviathan horizon, and Superboss",
+    "optional": true,
+    "start": {
+      "vars": {
+        "tide": "ebb"
+      },
+      "spawn": [
+        56,
+        296
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          344
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "ws_2_sound"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          264,
+          280
+        ],
+        "target": "organ_sound"
+      },
+      {
+        "op": "expect",
+        "var": "tide==half"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          264,
+          280
+        ],
+        "target": "organ_sound"
+      },
+      {
+        "op": "expect",
+        "var": "tide==flood"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sound_west"
+      }
+    ]
+  }
+}

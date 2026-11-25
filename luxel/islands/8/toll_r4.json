@@ -1,0 +1,548 @@
+{
+  "id": "toll_r4",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R4",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    56,
+    168
+  ],
+  "zones": [
+    {
+      "id": "toll_sightline",
+      "name_key": "ISL8_TOLL_R4",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_west",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "toll_r3",
+      "to_spawn": [
+        424,
+        192
+      ]
+    },
+    {
+      "id": "exit_r4_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r5",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "locked_door_id": "door_r4_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r4_west",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "glass_r4_w",
+      "kind": "color_glass",
+      "pos": [
+        104,
+        120
+      ],
+      "props": {
+        "color": "blue",
+        "size": [
+          16,
+          16
+        ],
+        "solid": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "glass_r4_e",
+      "kind": "color_glass",
+      "pos": [
+        328,
+        120
+      ],
+      "props": {
+        "color": "blue",
+        "size": [
+          16,
+          16
+        ],
+        "solid": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "mwall_r4_div",
+      "kind": "mover_wall",
+      "pos": [
+        216,
+        120
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ],
+        "path": [
+          [
+            216,
+            120
+          ],
+          [
+            152,
+            120
+          ]
+        ],
+        "speed": 96.0,
+        "on_signal": "move",
+        "persist": true
+      }
+    },
+    {
+      "id": "ring_r4_div",
+      "kind": "pull_ring",
+      "pos": [
+        216,
+        152
+      ],
+      "props": {
+        "axis": "s",
+        "dist": 24.0,
+        "latch": true,
+        "persist": true,
+        "target_id": "mwall_r4_div"
+      }
+    },
+    {
+      "id": "mirror_r4_w",
+      "kind": "blue_transformer",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "mirror_r4_e",
+      "kind": "blue_transformer",
+      "pos": [
+        328,
+        200
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 135.0
+      }
+    },
+    {
+      "id": "door_r4_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_type": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "toll_sightline"
+      }
+    },
+    {
+      "id": "sensor_r4_cursor",
+      "kind": "toll_sensor",
+      "pos": [
+        392,
+        152
+      ],
+      "props": {
+        "check": "sold:cursor_ring",
+        "target_ids": [
+          "mwall_r4_keen",
+          "door_r4_keen"
+        ],
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "mwall_r4_keen",
+      "kind": "mover_wall",
+      "pos": [
+        408,
+        120
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "path": [
+          [
+            408,
+            120
+          ],
+          [
+            440,
+            120
+          ]
+        ],
+        "speed": 96.0,
+        "on_signal": "move",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r4_keen",
+      "kind": "door",
+      "pos": [
+        360,
+        232
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r4_cursor"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r4_keen",
+      "kind": "chest",
+      "pos": [
+        392,
+        248
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        200
+      ],
+      "props": {
+        "zone": "toll_sightline",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        216
+      ],
+      "props": {
+        "zone": "toll_sightline",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        72
+      ],
+      "props": {
+        "zone": "toll_sightline",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "tc_r4_1",
+      "kind": "toll_clerk",
+      "pos": [
+        184,
+        232
+      ],
+      "zone": "toll_sightline",
+      "route": [
+        [
+          184,
+          232
+        ],
+        [
+          248,
+          232
+        ]
+      ]
+    },
+    {
+      "id": "cn_r4_1",
+      "kind": "censer",
+      "pos": [
+        296,
+        232
+      ],
+      "zone": "toll_sightline"
+    },
+    {
+      "id": "tc_r4_2",
+      "kind": "toll_clerk",
+      "pos": [
+        360,
+        72
+      ],
+      "zone": "toll_sightline",
+      "route": [
+        [
+          328,
+          72
+        ],
+        [
+          392,
+          72
+        ]
+      ]
+    },
+    {
+      "id": "ee_r4_1",
+      "kind": "eclipse_eye",
+      "pos": [
+        104,
+        56
+      ],
+      "zone": "toll_sightline"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        152,
+        104
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        280,
+        104
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        72,
+        88
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        392,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        56,
+        232
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        408,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        360,
+        88
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        248,
+        248
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        176,
+        48,
+        96,
+        48
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        64,
+        144,
+        240,
+        80
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        104,
+        120
+      ],
+      "size": [
+        36,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r4_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_r4_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Partitioned Sightline Treasury: battle a 4-foe role mix across a glass-slit teller partition; bank blue shots through teller glass and yank the pull_ring to open the central vault divider.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "pull_ring + mover_wall vault breach, glass-slit sightlines, and shield/censer/eye role combos.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "open_r5",
+    "why": "Third Interface Wing room (cursor_ring), escalating combat tactics ahead of The Chief Auditor.",
+    "exit": "exit_r4_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          216,
+          200
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "ring_r4_div",
+        "hold": 0.45
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "target": "ring_r4_div",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.7
+      },
+      {
+        "op": "clear",
+        "timeout": 42.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r4_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_north"
+      }
+    ]
+  }
+}

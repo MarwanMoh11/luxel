@@ -1,0 +1,375 @@
+{
+  "id": "superboss_horizon",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "freefall",
+  "name_key": "I5_ZONE_HORIZON",
+  "music": "isl5_boss_minor_p1",
+  "spawn": [
+    72,
+    208
+  ],
+  "exits": [
+    {
+      "id": "ex_horizon_out",
+      "rect": [
+        0,
+        192,
+        16,
+        32
+      ],
+      "to_island": 5,
+      "to_region": "ow_starfall_cliff",
+      "to_spawn": [
+        448,
+        216
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_horizon",
+      "kind": "room_anchor",
+      "pos": [
+        72,
+        208
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "trans_hor_n",
+      "kind": "blue_transformer",
+      "pos": [
+        272,
+        80
+      ],
+      "props": {
+        "angle_deg": 90,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "trans_hor_s",
+      "kind": "blue_transformer",
+      "pos": [
+        272,
+        336
+      ],
+      "props": {
+        "angle_deg": 270,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "sn_hor_nw",
+      "kind": "star_node",
+      "pos": [
+        160,
+        128
+      ],
+      "props": {
+        "lit": true,
+        "pinned": true,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_hor_ne",
+      "kind": "star_node",
+      "pos": [
+        384,
+        128
+      ],
+      "props": {
+        "lens_only": true,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_hor_sw",
+      "kind": "star_node",
+      "pos": [
+        160,
+        288
+      ],
+      "props": {
+        "lens_only": true,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_hor_se",
+      "kind": "star_node",
+      "pos": [
+        384,
+        288
+      ],
+      "props": {
+        "lit": true,
+        "pinned": true,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "door_hor_trophy",
+      "kind": "door",
+      "pos": [
+        448,
+        248
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "superboss_5_defeated"
+        ]
+      }
+    },
+    {
+      "id": "chest_horizon_trophy",
+      "kind": "chest",
+      "pos": [
+        480,
+        248
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 200
+      }
+    },
+    {
+      "id": "lamp_hor_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_hor_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_hor_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        120
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_hor_sw",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        320
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_hor_se",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        320
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_hor_e",
+      "kind": "road_lamp",
+      "pos": [
+        480,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_event_horizon",
+      "kind": "event_horizon",
+      "pos": [
+        272,
+        208
+      ],
+      "zone": "superboss_horizon"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_hor_win",
+      "on": "flag:superboss_5_defeated",
+      "once": true,
+      "do": [
+        {
+          "sfx": "zodiac_chord"
+        },
+        {
+          "narrate": "I5_SH_DEFEATED"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        272,
+        208
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "cracked_dome_arch",
+      "pos": [
+        64,
+        192
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tilted_marble_column",
+      "pos": [
+        224,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tilted_marble_column",
+      "pos": [
+        320,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tether_anchor_post",
+      "pos": [
+        464,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "star_chime_crystal",
+      "pos": [
+        128,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Island 5 Superboss Sanctum (The Event Horizon): a circular star-glass orbital ring around a devouring singularity that swallows and heals from straight shots, demanding tangential periapsis curved shots, Lens star safety in P2, and White Hole mirror/throw counters in P3.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Tangential orbital shooting mastery and White Hole inversion counters",
+    "decisions": 10,
+    "expert_s": 180,
+    "reward": "Full Heart, 200 shards, superboss_5_defeated",
+    "why": "Post-relight optional superboss pinnacle of Island 5.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        72,
+        208
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ],
+      "flags": [
+        "island_5_relit",
+        "power_orbit_ring",
+        "power_sextant"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          176,
+          208
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          472,
+          248
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_horizon_trophy"
+      }
+    ]
+  }
+}

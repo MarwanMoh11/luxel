@@ -29,10 +29,10 @@
         32,
         16
       ],
-      "to_region": "overworld",
+      "to_region": "glass_terrace",
       "to_spawn": [
-        704,
-        200
+        320,
+        80
       ],
       "requires_moves": [],
       "requires_flags": [],

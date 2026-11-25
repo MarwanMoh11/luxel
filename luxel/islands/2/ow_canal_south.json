@@ -1,0 +1,924 @@
+{
+  "id": "ow_canal_south",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ZONE_ISL2_CANAL",
+  "theme": "locks",
+  "music": "explore",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    344,
+    56
+  ],
+  "zones": [
+    {
+      "id": "canal_quarter",
+      "name_key": "ZONE_ISL2_CANAL",
+      "rect": [
+        0,
+        0,
+        768,
+        576
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_canal_north",
+      "rect": [
+        320,
+        0,
+        96,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        728,
+        536
+      ]
+    },
+    {
+      "id": "exit_canal_shoals",
+      "rect": [
+        128,
+        0,
+        80,
+        16
+      ],
+      "to_region": "ow_shoals_west",
+      "to_spawn": [
+        568,
+        520
+      ]
+    },
+    {
+      "id": "exit_canal_sound",
+      "rect": [
+        752,
+        240,
+        16,
+        80
+      ],
+      "to_region": "ow_open_sound",
+      "to_spawn": [
+        72,
+        456
+      ]
+    },
+    {
+      "id": "exit_canal_boathouse",
+      "rect": [
+        0,
+        256,
+        16,
+        48
+      ],
+      "to_region": "ow_boathouse",
+      "to_spawn": [
+        200,
+        56
+      ]
+    },
+    {
+      "id": "exit_canal_cellar",
+      "rect": [
+        352,
+        560,
+        48,
+        16
+      ],
+      "to_region": "cave_smuggler_cellar",
+      "to_spawn": [
+        216,
+        56
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "net_caster_cn_1",
+      "kind": "net_caster",
+      "pos": [
+        584,
+        200
+      ],
+      "route": [
+        [
+          552,
+          200
+        ],
+        [
+          632,
+          200
+        ]
+      ],
+      "zone": "canal_quarter",
+      "leash": 136
+    },
+    {
+      "id": "gull_thief_cn_1",
+      "kind": "gull_thief",
+      "pos": [
+        600,
+        344
+      ],
+      "perches": [
+        [
+          600,
+          344
+        ],
+        [
+          648,
+          360
+        ],
+        [
+          568,
+          312
+        ]
+      ],
+      "zone": "canal_quarter",
+      "leash": 148
+    },
+    {
+      "id": "barnacle_sentry_cn_1",
+      "kind": "barnacle_sentry",
+      "pos": [
+        632,
+        488
+      ],
+      "route": [],
+      "zone": "canal_quarter",
+      "leash": 128
+    },
+    {
+      "id": "brine_lamprey_cn_1",
+      "kind": "brine_lamprey",
+      "pos": [
+        568,
+        504
+      ],
+      "route": [
+        [
+          568,
+          504
+        ],
+        [
+          664,
+          504
+        ]
+      ],
+      "zone": "canal_quarter",
+      "leash": 136
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_2_canal",
+      "kind": "waystone",
+      "pos": [
+        280,
+        88
+      ],
+      "props": {
+        "zone": "canal_quarter",
+        "name_key": "ZONE_ISL2_CANAL"
+      }
+    },
+    {
+      "id": "organ_canal",
+      "kind": "state_lever",
+      "pos": [
+        200,
+        264
+      ],
+      "props": {
+        "scope": "island:2",
+        "var": "tide",
+        "values": [
+          "ebb",
+          "half",
+          "flood"
+        ],
+        "shootable": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "skiff_canal",
+      "kind": "vehicle_skiff",
+      "pos": [
+        328,
+        232
+      ],
+      "props": {}
+    },
+    {
+      "id": "skiff_bell_canal",
+      "kind": "skiff_bell",
+      "pos": [
+        216,
+        296
+      ],
+      "props": {
+        "dock_pos": [
+          328,
+          232
+        ],
+        "dock_dir": "s"
+      }
+    },
+    {
+      "id": "post_canal_mid",
+      "kind": "mooring_post",
+      "pos": [
+        392,
+        344
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_canal_s",
+      "kind": "mooring_post",
+      "pos": [
+        456,
+        456
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "portal_canal_w",
+      "kind": "blue_portal",
+      "pos": [
+        280,
+        360
+      ],
+      "props": {
+        "target_portal_id": "portal_canal_e",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_canal_e",
+      "kind": "blue_portal",
+      "pos": [
+        488,
+        360
+      ],
+      "props": {
+        "target_portal_id": "portal_canal_w",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "raft_canal_mirror",
+      "kind": "tide_raft",
+      "pos": [
+        376,
+        216
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_min": "half",
+        "rotatable": true,
+        "normal": [
+          -0.7071,
+          0.7071
+        ]
+      }
+    },
+    {
+      "id": "npc_moth_kid",
+      "kind": "npc",
+      "pos": [
+        184,
+        344
+      ],
+      "props": {
+        "folk": "moth_kid",
+        "quest": "q2_moth_kid",
+        "wander_radius": 8,
+        "bubbles": [
+          [
+            "sad",
+            "wave",
+            "light_off",
+            "arrow_s",
+            "lantern"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "brazier_canal_1",
+      "kind": "brazier",
+      "pos": [
+        152,
+        312
+      ],
+      "props": {
+        "target_id": "gate_canal_lamps",
+        "persist": true
+      }
+    },
+    {
+      "id": "brazier_canal_2",
+      "kind": "brazier",
+      "pos": [
+        344,
+        120
+      ],
+      "props": {
+        "target_id": "gate_canal_lamps",
+        "persist": true
+      }
+    },
+    {
+      "id": "brazier_canal_3",
+      "kind": "brazier",
+      "pos": [
+        568,
+        312
+      ],
+      "props": {
+        "target_id": "gate_canal_lamps",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_canal_lamps",
+      "kind": "logic_gate",
+      "pos": [
+        168,
+        328
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "brazier_canal_1",
+          "brazier_canal_2",
+          "brazier_canal_3"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "moth_2_04",
+      "kind": "moth",
+      "pos": [
+        248,
+        408
+      ],
+      "props": {
+        "id": "moth_2_04"
+      }
+    },
+    {
+      "id": "chest_canal_crane",
+      "kind": "chest",
+      "pos": [
+        680,
+        104
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45,
+        "zone": "canal_quarter"
+      }
+    },
+    {
+      "id": "npc_mirror_crab_canal",
+      "kind": "npc",
+      "pos": [
+        648,
+        88
+      ],
+      "props": {
+        "folk": "mirror_crab",
+        "quest": "q2_spyglass",
+        "wander_radius": 6,
+        "bubbles": [
+          [
+            "mirror",
+            "spark",
+            "wave",
+            "arrow_s",
+            "arrow_w",
+            "question"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "lamp_cn_n1",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "zone": "canal_quarter",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cn_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        72
+      ],
+      "props": {
+        "zone": "canal_quarter",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cn_w1",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        280
+      ],
+      "props": {
+        "zone": "canal_quarter",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cn_e1",
+      "kind": "road_lamp",
+      "pos": [
+        696,
+        264
+      ],
+      "props": {
+        "zone": "canal_quarter",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cn_s1",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        536
+      ],
+      "props": {
+        "zone": "canal_quarter",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cn_se",
+      "kind": "road_lamp",
+      "pos": [
+        600,
+        472
+      ],
+      "props": {
+        "zone": "canal_quarter",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "tide_ebb",
+      "when": "tide==ebb",
+      "theme": "seabed",
+      "tiles": [
+        [
+          20,
+          26,
+          5,
+          6,
+          "ground"
+        ],
+        [
+          13,
+          23,
+          6,
+          4,
+          "ground"
+        ],
+        [
+          16,
+          25,
+          6,
+          3,
+          "ground"
+        ]
+      ],
+      "enable": [
+        "exit_canal_cellar",
+        "moth_2_04",
+        "npc_moth_kid"
+      ],
+      "disable": [
+        "chest_canal_crane",
+        "npc_mirror_crab_canal"
+      ]
+    },
+    {
+      "id": "tide_half",
+      "when": "tide==half",
+      "theme": "locks",
+      "tiles": [
+        [
+          14,
+          16,
+          4,
+          2,
+          "bridge"
+        ],
+        [
+          29,
+          16,
+          4,
+          2,
+          "bridge"
+        ],
+        [
+          13,
+          23,
+          4,
+          4,
+          "water"
+        ],
+        [
+          16,
+          25,
+          6,
+          2,
+          "water"
+        ],
+        [
+          20,
+          26,
+          3,
+          6,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_canal_cellar",
+        "moth_2_04",
+        "npc_moth_kid",
+        "chest_canal_crane",
+        "npc_mirror_crab_canal"
+      ]
+    },
+    {
+      "id": "tide_flood",
+      "when": "tide==flood",
+      "theme": "galleon",
+      "tiles": [
+        [
+          36,
+          4,
+          4,
+          3,
+          "bridge"
+        ],
+        [
+          38,
+          7,
+          3,
+          5,
+          "bridge"
+        ],
+        [
+          13,
+          23,
+          4,
+          4,
+          "water"
+        ],
+        [
+          16,
+          25,
+          6,
+          2,
+          "water"
+        ],
+        [
+          20,
+          26,
+          3,
+          6,
+          "water"
+        ]
+      ],
+      "enable": [
+        "chest_canal_crane",
+        "npc_mirror_crab_canal"
+      ],
+      "disable": [
+        "exit_canal_cellar",
+        "moth_2_04",
+        "npc_moth_kid"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_canal_lamps_lit",
+      "on": "signal:gate_canal_lamps",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "isl2_canal_lamps_lit"
+        },
+        {
+          "narrate": "ISL2_QUAY_LAMPS"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        112,
+        48,
+        272,
+        80
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        560,
+        272,
+        96,
+        64
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        168,
+        280
+      ],
+      "radius": 22,
+      "style": "water"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        632,
+        264
+      ],
+      "radius": 24
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        600,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        664,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        408,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        600,
+        504
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        120,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        88,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        216,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        552,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        200,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        552,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "hanging_fishing_net",
+      "pos": [
+        648,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        312,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        72,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        696,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        344,
+        120
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Terraced tidal canal quarter linking Boathouse Camp, Smugglers' Cellar (ebb), Locks basin (half), and Customs Crane balcony (flood), with Moth Kid's 3-lamp quest.",
+    "kind": "traversal",
+    "beat": "sho",
+    "teaches": "Tide-gated canal levels, Waterway Skiff portals, Boathouse camp access",
+    "decisions": 5,
+    "expert_s": 85,
+    "reward": "moth_2_04 + ember_2_3 (q2_moth_kid) + Boathouse Camp + Smugglers Cellar entry",
+    "why": "Southern Island 2 tidal hub connecting Boathouse, Smugglers Cellar, Shoals, and Outer Sound",
+    "optional": true,
+    "start": {
+      "vars": {
+        "tide": "ebb"
+      },
+      "spawn": [
+        344,
+        56
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          280,
+          88
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "ws_2_canal"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          184,
+          264
+        ],
+        "target": "organ_canal"
+      },
+      {
+        "op": "expect",
+        "var": "tide==half"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_canal_boathouse"
+      }
+    ]
+  }
+}

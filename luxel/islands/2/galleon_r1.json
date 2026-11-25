@@ -37,12 +37,11 @@
         16
       ],
       "to_island": 2,
-      "to_region": "overworld",
+      "to_region": "ow_shoals_west",
       "to_spawn": [
-        104,
-        248
-      ],
-      "one_way": true
+        56,
+        264
+      ]
     },
     {
       "id": "exit_r1_north",
@@ -54,8 +53,8 @@
       ],
       "to_region": "galleon_r2",
       "to_spawn": [
-        240,
-        304
+        272,
+        336
       ],
       "locked_door_id": "door_r1_north"
     },
@@ -70,7 +69,7 @@
       "to_region": "galleon_r10",
       "to_spawn": [
         416,
-        168
+        176
       ],
       "requires_flags": [
         "galleon_shortcut_open"
@@ -119,7 +118,27 @@
         ],
         "index": 0,
         "shootable": true,
-        "persist": false
+        "persist": false,
+        "target_id": "bridge_r1_crate"
+      }
+    },
+    {
+      "id": "bridge_r1_crate",
+      "kind": "door",
+      "pos": [
+        192,
+        120
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "valve_r1"
+        ],
+        "size": [
+          32,
+          48
+        ]
       }
     },
     {
@@ -491,13 +510,21 @@
     "exit": "exit_r1_north",
     "start": {
       "vars": {
-        "list": "port"
+        "dungeon:galleon:list": "port"
       }
     },
     "solution": [
       {
         "op": "interact",
         "target": "ws_galleon"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          232
+        ],
+        "tol": 4.0
       },
       {
         "op": "interact",

@@ -1,0 +1,774 @@
+{
+  "id": "bell_yard",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL1_Z_TOWN",
+  "music": "explore",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    384,
+    464
+  ],
+  "zones": [
+    {
+      "id": "bell_yard",
+      "name_key": "ISL1_Z_TOWN",
+      "rect": [
+        0,
+        0,
+        768,
+        512
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_town_south",
+      "rect": [
+        368,
+        496,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        432,
+        144
+      ]
+    },
+    {
+      "id": "exit_town_west",
+      "rect": [
+        0,
+        240,
+        16,
+        32
+      ],
+      "to_region": "vesper_graveyard",
+      "to_spawn": [
+        648,
+        240
+      ]
+    },
+    {
+      "id": "exit_town_east",
+      "rect": [
+        752,
+        240,
+        16,
+        32
+      ],
+      "to_region": "belfry_forecourt",
+      "to_spawn": [
+        56,
+        240
+      ]
+    },
+    {
+      "id": "exit_town_well",
+      "rect": [
+        368,
+        0,
+        32,
+        16
+      ],
+      "to_region": "cave_echo_well",
+      "to_spawn": [
+        192,
+        248
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "town_bell_lever",
+      "kind": "state_lever",
+      "pos": [
+        384,
+        304
+      ],
+      "props": {
+        "scope": "island:1",
+        "var": "bell_hour",
+        "values": [
+          "evening",
+          "midnight"
+        ],
+        "shootable": true,
+        "persist": true,
+        "prompt_key": "ISL1_PROMPT_HOUR"
+      }
+    },
+    {
+      "id": "ws_bell_yard",
+      "kind": "waystone",
+      "pos": [
+        320,
+        368
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "name_key": "ISL1_Z_TOWN"
+      }
+    },
+    {
+      "id": "rest_shrine_town",
+      "kind": "rest_shrine",
+      "pos": [
+        448,
+        368
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
+      "id": "hub_portal_town",
+      "kind": "ow_hub_portal",
+      "pos": [
+        560,
+        176
+      ],
+      "props": {
+        "zone": "bell_yard"
+      }
+    },
+    {
+      "id": "npc_bell_snail",
+      "kind": "npc",
+      "pos": [
+        336,
+        272
+      ],
+      "props": {
+        "folk": "bell_snail",
+        "quest": "q_bell_clapper",
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "bell",
+              "question",
+              "arrow_w",
+              "clock",
+              "quest_carry"
+            ],
+            "line": "ISL1_Q1_HINT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npc_moth_kid",
+      "kind": "npc",
+      "pos": [
+        208,
+        304
+      ],
+      "props": {
+        "folk": "moth_kid",
+        "quest": "q1_midnight_hide",
+        "wander_radius": 14,
+        "bubbles": [
+          {
+            "icons": [
+              "moth",
+              "quest_hide",
+              "clock",
+              "arrow_n",
+              "question"
+            ],
+            "line": "ISL1_Q2_HINT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npc_grandma_relit",
+      "kind": "npc",
+      "pos": [
+        512,
+        208
+      ],
+      "props": {
+        "folk": "candle_grandma",
+        "require_flag": "great_lamp_1",
+        "wander_radius": 8,
+        "bubbles": [
+          [
+            "flame",
+            "light_on",
+            "happy",
+            "home",
+            "heart"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "moth_1_02",
+      "kind": "moth",
+      "pos": [
+        384,
+        144
+      ],
+      "props": {
+        "id": "moth_1_02"
+      }
+    },
+    {
+      "id": "bell_town_dawn",
+      "kind": "bell",
+      "pos": [
+        192,
+        208
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 136
+      }
+    },
+    {
+      "id": "hide_moth_town",
+      "kind": "ow_hide_moth",
+      "pos": [
+        144,
+        192
+      ],
+      "props": {
+        "spot_id": "i1_town"
+      }
+    },
+    {
+      "id": "trial_carillon",
+      "kind": "ow_carillon_trial",
+      "pos": [
+        592,
+        344
+      ],
+      "props": {
+        "dawn_bell": "bell_carillon_dawn",
+        "dusk_bell": "bell_carillon_dusk",
+        "war_bell": "bell_carillon_war"
+      }
+    },
+    {
+      "id": "bell_carillon_dawn",
+      "kind": "bell",
+      "pos": [
+        544,
+        304
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 96
+      }
+    },
+    {
+      "id": "bell_carillon_dusk",
+      "kind": "bell",
+      "pos": [
+        592,
+        288
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 96
+      }
+    },
+    {
+      "id": "bell_carillon_war",
+      "kind": "bell",
+      "pos": [
+        640,
+        304
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 96
+      }
+    },
+    {
+      "id": "lamp_town_s",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        448
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_town_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        224
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_town_e",
+      "kind": "road_lamp",
+      "pos": [
+        672,
+        224
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_town_plaza_nw",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        256
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_town_plaza_ne",
+      "kind": "road_lamp",
+      "pos": [
+        480,
+        256
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_town_hub",
+      "kind": "road_lamp",
+      "pos": [
+        528,
+        176
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_town_carillon",
+      "kind": "road_lamp",
+      "pos": [
+        608,
+        368
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_town_quay",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        48
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_town_sw",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        368
+      ],
+      "props": {
+        "zone": "bell_yard",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "evening_pond",
+      "when": "bell_hour==evening",
+      "tiles": [
+        [
+          23,
+          6,
+          2,
+          2,
+          "water"
+        ],
+        [
+          23,
+          11,
+          2,
+          2,
+          "water"
+        ]
+      ]
+    },
+    {
+      "id": "midnight_town",
+      "when": "bell_hour==midnight",
+      "tint": "midnight"
+    }
+  ],
+  "events": [
+    {
+      "id": "town_hide_bonus_shards",
+      "on": "flag:ember_1_quest",
+      "once": true,
+      "do": [
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 25
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        384,
+        304
+      ],
+      "radius": 44,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        592,
+        320
+      ],
+      "radius": 38,
+      "style": "mosaic"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        528,
+        164,
+        64,
+        40
+      ],
+      "style": "hearth"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        144,
+        192
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        384,
+        304
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island1_scenery",
+      "prop": "bell_tower_arch",
+      "pos": [
+        384,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "hanging_chimes",
+      "pos": [
+        304,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "hanging_chimes",
+      "pos": [
+        464,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        288,
+        336
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_bench",
+      "pos": [
+        480,
+        336
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_warm",
+      "pos": [
+        112,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "orchard_tree_bloom",
+      "pos": [
+        224,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        528,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_warm",
+      "pos": [
+        240,
+        272
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        496,
+        384
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "cozy_stone_hearth",
+      "pos": [
+        592,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        512,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        528,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        160,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "stone_lantern_garden",
+      "pos": [
+        656,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        272,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "river_reeds",
+      "pos": [
+        496,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        672,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Chime Town hub camp centered on the Town Bell that flips Bell Isle between Evening and Midnight, with 3 folk quests, a Midnight ghost-stone pond, Wick House portal, and the Carillon Ear-Test.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Tolling the Town Bell flips Bell Isle to Midnight, raising ghost pond stones and opening graveyard/manor secrets.",
+    "decisions": 5,
+    "expert_s": 75,
+    "reward": "bell_hour_midnight+moth_1_02+carillon_trophy+hub_portal",
+    "why": "Living emotional anchor of Bell Isle connecting overworld, graveyard, forecourt, Echo Well, and Wick House.",
+    "optional": true,
+    "exit": "exit_town_west",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_bell_yard"
+      },
+      {
+        "op": "interact",
+        "target": "town_bell_lever"
+      },
+      {
+        "op": "expect",
+        "var": "bell_hour==midnight"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          224
+        ],
+        "target": "bell_town_dawn"
+      },
+      {
+        "op": "wait_until",
+        "flag": "quest:hide:i1_town",
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          384,
+          144
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_town_west"
+      }
+    ]
+  }
+}

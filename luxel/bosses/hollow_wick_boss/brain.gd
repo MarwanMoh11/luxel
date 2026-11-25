@@ -62,14 +62,14 @@ func _init() -> void:
 	kind = "hollow_wick_boss"; boss_id = "hollow_wick"; boss_name_key = "BOSS_HOLLOW"
 	island_id = 7; is_miniboss = false; reward_heart = "full"
 	music_cue = "island7_boss_p1"; music_p2_cue = "island7_boss_p2"
-	max_hp = 310.0; hp = 310.0; body_radius = 6.5; move_speed = 54.0
-	stagger_threshold = 28.0; stagger_duration = 1.80; punish_dmg_mult = 1.35
-	post_recover_cd = 0.28; intro_duration = 0.50; phase_shift_duration = 0.68
+	max_hp = 520.0; hp = 520.0; body_radius = 6.5; move_speed = 54.0
+	stagger_threshold = 32.0; stagger_duration = 1.80; punish_dmg_mult = 1.25
+	post_recover_cd = 0.30; intro_duration = 0.50; phase_shift_duration = 0.68
 	death_duration = 2.2; shard_drop = 45
 
 
 func _configure_boss(spec: Dictionary) -> void:
-	var base_hp: float = 310.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	var base_hp: float = 520.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	max_hp = base_hp
 	hp = base_hp
 	kind = "hollow_wick_boss"
@@ -86,6 +86,8 @@ func _configure_boss(spec: Dictionary) -> void:
 			facing = commit_dir.angle()
 			_volley_shots = 0
 			ground.warn_lane(pos, clamp_to_arena(pos + commit_dir * 165.0), 10.0, last_tell_duration, 0.0, "sky", "gold")
+			if tgt.distance_to(pos) > 95.0 or not _has_clear_view(pos, tgt):
+				ground.warn_ring(tgt, 24.0, last_tell_duration, 1.0, "sky", "coral")
 			stage.play_sfx("hollow_wick_tell", pos),
 		"on_tell": func(_b: LxBossBase, tgt: Vector2, dt: float, _prog: float) -> void:
 			if state_timer > 0.16:
@@ -127,7 +129,7 @@ func _configure_boss(spec: Dictionary) -> void:
 			var att: Vector2 = _attention_target(tgt)
 			commit_dir = (att - pos).normalized() if att.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = commit_dir.angle()
-			dark_lantern_pos = clamp_to_arena(pos + commit_dir * clampf(att.distance_to(pos), 36.0, 108.0))
+			dark_lantern_pos = clamp_to_arena(pos + commit_dir * clampf(att.distance_to(pos), 36.0, 240.0))
 			_zip_started = false
 			_zip_hit = false
 			ground.warn_ring(dark_lantern_pos, ZIP_BURST_R, last_tell_duration, 0.0, "sky", "coral")
@@ -137,7 +139,7 @@ func _configure_boss(spec: Dictionary) -> void:
 				var att: Vector2 = _attention_target(tgt)
 				_face_point(att, 3.4, dt)
 				commit_dir = Vector2.from_angle(facing)
-				dark_lantern_pos = clamp_to_arena(pos + commit_dir * clampf(att.distance_to(pos), 36.0, 108.0)),
+				dark_lantern_pos = clamp_to_arena(pos + commit_dir * clampf(att.distance_to(pos), 36.0, 240.0)),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var th_dur: float = CLASH_THROW_TIME_P3 if phase >= 3 else ZIP_THROW_TIME
 			state_timer = th_dur + ZIP_FLY_TIME
@@ -418,13 +420,13 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var is_pierce: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_SUNFLARE] or bool(h["pierce"])
 
 	if is_pierce:
-		return dmg * (1.15 if boss_state == BossState.STAGGER else (1.0 if is_punishable() else 0.92))
+		return dmg * (1.10 if boss_state == BossState.STAGGER else (0.96 if is_punishable() else 0.86))
 	if boss_state == BossState.STAGGER:
 		return dmg * 1.15
 	if boss_state == BossState.RECOVER:
 		return dmg
 	if _lure_opened_t > 0.0:
-		return dmg * 0.72
+		return dmg * 0.65
 
 	# Rival Dark-Mantle Guard outside punish windows: bolts chip with silver-rose parry glint!
 	_armour_glint_t = 0.22
@@ -432,8 +434,8 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	clank_t = 0.12
 	if src == LxHit.SOURCE_BOLT:
 		stage.play_sfx("mirror_ping", pos)
-		return dmg * 0.16
-	return dmg * 0.38
+		return dmg * 0.14
+	return dmg * 0.28
 
 
 func _on_phase_enter(new_phase: int) -> void:

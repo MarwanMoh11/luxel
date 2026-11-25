@@ -1,0 +1,35 @@
+# Trial Cave: Lunar Phase Sharpshooter Range (30x20)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G glass
+MAP
+#############,,,,#############
+#############,,,,#############
+#########....,,,,........#####
+##,,,,,,#....,,,,........#####
+##,,,,,,#................#####
+##,,,,,,,................#####
+##,,,,,,,................#####
+##,,,,,,#................#####
+##,,,,,,#................#####
+##,,,,,,#................#####
+#########................#####
+#########................#####
+#######OOOOOOOOOOOOOOOOOOOO###
+#######OOOOOOOOOOOOOOOOOOOO###
+#######OO...OOOOOOOOOOO...O###
+#######OO...OO...OO...O...O###
+#######OO...OO...OO...O...O###
+#######OOOOOOO...OO...OOOOO###
+##############################
+##############################

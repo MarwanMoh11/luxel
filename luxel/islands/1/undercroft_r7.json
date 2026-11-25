@@ -261,7 +261,7 @@
       "id": "lamp_r7_s",
       "kind": "road_lamp",
       "pos": [
-        240,
+        208,
         296
       ],
       "props": {
@@ -549,8 +549,8 @@
       {
         "op": "goto",
         "to": [
-          144,
-          120
+          116,
+          112
         ]
       },
       {
@@ -566,7 +566,7 @@
         "interactable": "seal_r7_vault",
         "prop": "opened",
         "value": true,
-        "timeout": 3.5
+        "timeout": 4.0
       },
       {
         "op": "interact",

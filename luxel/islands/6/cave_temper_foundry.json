@@ -1,0 +1,564 @@
+{
+  "id": "cave_temper_foundry",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_6",
+  "music": "island6_dungeon",
+  "name_key": "ISL6_Z_FOUNDRY",
+  "spawn": [
+    368,
+    144
+  ],
+  "zones": [
+    {
+      "id": "cave_temper_foundry",
+      "name_key": "ISL6_Z_FOUNDRY",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_foundry_to_yard",
+      "rect": [
+        400,
+        128,
+        16,
+        48
+      ],
+      "to_region": "ow_rail_yard",
+      "to_spawn": [
+        56,
+        344
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_tf_1",
+      "kind": "room_anchor",
+      "pos": [
+        368,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_tf_skip",
+      "kind": "temper_anvil",
+      "pos": [
+        296,
+        208
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
+    },
+    {
+      "id": "grate_tf_skip",
+      "kind": "grate",
+      "pos": [
+        184,
+        208
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "coupler_tf_skip",
+      "kind": "car_coupler",
+      "pos": [
+        152,
+        208
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_id": "gate_temper_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "anvil_tf_scatter",
+      "kind": "temper_anvil",
+      "pos": [
+        296,
+        80
+      ],
+      "props": {
+        "mode": "scatter",
+        "sets_flag": "temper_scatter_known"
+      }
+    },
+    {
+      "id": "braz_tf_1",
+      "kind": "timed_brazier",
+      "pos": [
+        192,
+        64
+      ],
+      "props": {
+        "secs": 4.0,
+        "target_id": "gate_tf_scat"
+      }
+    },
+    {
+      "id": "braz_tf_2",
+      "kind": "timed_brazier",
+      "pos": [
+        192,
+        80
+      ],
+      "props": {
+        "secs": 4.0,
+        "target_id": "gate_tf_scat"
+      }
+    },
+    {
+      "id": "braz_tf_3",
+      "kind": "timed_brazier",
+      "pos": [
+        192,
+        96
+      ],
+      "props": {
+        "secs": 4.0,
+        "target_id": "gate_tf_scat"
+      }
+    },
+    {
+      "id": "gate_tf_scat",
+      "kind": "logic_gate",
+      "pos": [
+        160,
+        64
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "braz_tf_1",
+          "braz_tf_2",
+          "braz_tf_3"
+        ],
+        "target_id": "gate_temper_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "anvil_tf_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        120,
+        80
+      ],
+      "props": {
+        "mode": "lance",
+        "sets_flag": "temper_lance_known"
+      }
+    },
+    {
+      "id": "coupler_tf_arm1",
+      "kind": "car_coupler",
+      "pos": [
+        120,
+        128
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_tf_lance",
+        "persist": true
+      }
+    },
+    {
+      "id": "coupler_tf_arm2",
+      "kind": "car_coupler",
+      "pos": [
+        120,
+        160
+      ],
+      "props": {
+        "lock_type": "armoured",
+        "target_id": "gate_tf_lance",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_tf_lance",
+      "kind": "logic_gate",
+      "pos": [
+        104,
+        176
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "coupler_tf_arm1",
+          "coupler_tf_arm2"
+        ],
+        "target_id": "gate_temper_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_temper_all",
+      "kind": "logic_gate",
+      "pos": [
+        104,
+        112
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "coupler_tf_skip",
+          "gate_tf_scat",
+          "gate_tf_lance"
+        ],
+        "target_id": "door_temper_vault",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_temper_vault",
+      "kind": "door",
+      "pos": [
+        88,
+        144
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_temper_all"
+        ]
+      }
+    },
+    {
+      "id": "chest_ember_6_temper",
+      "kind": "chest",
+      "pos": [
+        48,
+        120
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_6_temper"
+      }
+    },
+    {
+      "id": "moth_6_03",
+      "kind": "moth",
+      "pos": [
+        48,
+        168
+      ],
+      "props": {
+        "id": "moth_6_03"
+      }
+    },
+    {
+      "id": "lamp_tf_1",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tf_2",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        80
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tf_3",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        208
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tf_4",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tf_5",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_6",
+      "prop": "stalagmite_tall",
+      "pos": [
+        352,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        352,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        128,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        288,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        128,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        320,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "subterranean_shroom",
+      "pos": [
+        48,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Three-chamber Bolt Tempering sandbox proving Skip ricochet, Scatter 3-brazier volley, and Lance twin-armoured pierce to unlock the ember + moth vault.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "All three Bolt Tempers in one safe, tactile foundry cavern.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "ember_6_temper+moth_6_03",
+    "why": "Teaches Skip, Scatter, and Lance cleanly right off Switchyard Camp.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          296,
+          184
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_tf_skip"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          208
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          184,
+          240
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "wait_until",
+        "target": "coupler_tf_skip",
+        "prop": "uncoupled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          104
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_tf_scatter"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==scatter"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          80
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          192,
+          80
+        ],
+        "wait_hit": 0.5
+      },
+      {
+        "op": "wait_until",
+        "target": "gate_tf_scat",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          80
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_tf_lance"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==lance"
+      },
+      {
+        "op": "goto",
+        "to": [
+          120,
+          104
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          120,
+          176
+        ],
+        "wait_hit": 0.8
+      },
+      {
+        "op": "wait_until",
+        "target": "door_temper_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_6_temper"
+      }
+    ]
+  }
+}

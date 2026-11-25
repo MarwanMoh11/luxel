@@ -1,0 +1,340 @@
+{
+  "id": "dream_r5",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "name_key": "I5_DR_R5",
+  "music": "isl5_planetarium",
+  "spawn": [
+    240,
+    272
+  ],
+  "exits": [
+    {
+      "id": "ex_dr5_out",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_starfall_cliff",
+      "to_spawn": [
+        256,
+        112
+      ],
+      "one_way": true
+    },
+    {
+      "id": "ex_dr5_next",
+      "rect": [
+        304,
+        0,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "dream_r6",
+      "to_spawn": [
+        192,
+        304
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "locked_door_id": "door_dr5_next",
+      "one_way": true
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_dr5",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_dr5",
+      "kind": "polarity_well",
+      "pos": [
+        256,
+        160
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 76.0,
+        "strength": 540.0
+      }
+    },
+    {
+      "id": "sn_dr5_1",
+      "kind": "star_node",
+      "pos": [
+        144,
+        112
+      ],
+      "props": {
+        "lens_only": true,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_dr5_2",
+      "kind": "star_node",
+      "pos": [
+        128,
+        96
+      ],
+      "props": {
+        "lens_only": true,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "moth_5_10",
+      "kind": "moth",
+      "pos": [
+        88,
+        88
+      ],
+      "props": {
+        "id": "moth_5_10"
+      }
+    },
+    {
+      "id": "door_dr5_next",
+      "kind": "door",
+      "pos": [
+        320,
+        32
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          48,
+          16
+        ],
+        "clear_zone": "dream_r5"
+      }
+    },
+    {
+      "id": "lamp_dr5_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        272
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr5_n",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr5_c1",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr5_c2",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_dr5_owl1",
+      "kind": "phantom_owl",
+      "pos": [
+        240,
+        128
+      ],
+      "perches": [
+        [
+          240,
+          128
+        ],
+        [
+          320,
+          184
+        ]
+      ],
+      "zone": "dream_r5",
+      "leash": 160
+    },
+    {
+      "id": "en_dr5_owl2",
+      "kind": "phantom_owl",
+      "pos": [
+        384,
+        168
+      ],
+      "perches": [
+        [
+          384,
+          168
+        ],
+        [
+          192,
+          184
+        ]
+      ],
+      "zone": "dream_r5",
+      "leash": 160
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_dr5_ok",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "dream_r5_ok"
+        },
+        {
+          "sfx": "door_open"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        256,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "floating_prism_lens",
+      "pos": [
+        280,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        72,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Dream Telescope Floor 5 (Blind Orbit): pulse True Lens to cross phantom spans, uncloak two Phantom Owls around a polarity well, and reveal hidden lens-only star nodes leading to Moth 10.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "True Lens combat + lens_only secret constellation discovery",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "moth_5_10, unlocks Dream Telescope Floor 6",
+    "why": "Post-Lens penultimate Dream Telescope floor holding Island 5's 10th Lost Moth.",
+    "exit": "ex_dr5_next",
+    "start": {
+      "spawn": [
+        240,
+        272
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          192
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "ex_dr5_next"
+      }
+    ]
+  }
+}

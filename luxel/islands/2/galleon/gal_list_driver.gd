@@ -213,6 +213,9 @@ func _step_rail_targets(dir_x: float, dt: float) -> void:
 func _step_orb_targets(dir_x: float, dt: float) -> void:
 	if orb_targets.is_empty() or not region.has_method("find_interactable"):
 		return
+	var use_groove: bool = props.has("orb_min_x") and props.has("orb_max_x")
+	var gmin: float = float(props.get("orb_min_x", rail_min_x))
+	var gmax: float = float(props.get("orb_max_x", rail_max_x))
 	for oid: String in orb_targets:
 		var it: LxInteractable = region.call("find_interactable", oid) as LxInteractable
 		if it == null or not is_instance_valid(it) or not it.active:
@@ -221,7 +224,13 @@ func _step_orb_targets(dir_x: float, dt: float) -> void:
 			continue
 		if table_rect.has_area() and not table_rect.has_point(it.pos):
 			continue
-		if it.has_method("push_orb"):
+		if use_groove:
+			var nx: float = clampf(it.pos.x + dir_x * speed * 0.85 * dt, gmin, gmax)
+			if absf(nx - it.pos.x) > 0.02:
+				it.pos = Vector2(nx, it.pos.y)
+				it.position = it.pos.round()
+				it.queue_redraw()
+		elif it.has_method("push_orb"):
 			it.call("push_orb", Vector2(dir_x * speed * 0.78 * dt, 0.0))
 
 

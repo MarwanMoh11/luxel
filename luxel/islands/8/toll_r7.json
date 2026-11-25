@@ -1,0 +1,520 @@
+{
+  "id": "toll_r7",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_TOLL_R7",
+  "theme": "toll_house",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    232,
+    280
+  ],
+  "zones": [
+    {
+      "id": "toll_flinch",
+      "name_key": "ISL8_TOLL_R7",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r6",
+      "to_spawn": [
+        352,
+        56
+      ]
+    },
+    {
+      "id": "exit_r7_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "toll_r8",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r7_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_south",
+      "kind": "room_anchor",
+      "pos": [
+        232,
+        280
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ctog_r7_w",
+      "kind": "crystal_toggle",
+      "pos": [
+        152,
+        216
+      ],
+      "props": {
+        "group": "r7_cover",
+        "phase": 0
+      }
+    },
+    {
+      "id": "ctog_r7_e",
+      "kind": "crystal_toggle",
+      "pos": [
+        312,
+        120
+      ],
+      "props": {
+        "group": "r7_cover",
+        "phase": 0
+      }
+    },
+    {
+      "id": "tblock_r7_a",
+      "kind": "toggle_block",
+      "pos": [
+        184,
+        168
+      ],
+      "props": {
+        "group": "r7_cover",
+        "phase": 0,
+        "start_phase": 0,
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "tblock_r7_b",
+      "kind": "toggle_block",
+      "pos": [
+        280,
+        168
+      ],
+      "props": {
+        "group": "r7_cover",
+        "phase": 1,
+        "start_phase": 0,
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "tblock_r7_c",
+      "kind": "toggle_block",
+      "pos": [
+        184,
+        104
+      ],
+      "props": {
+        "group": "r7_cover",
+        "phase": 1,
+        "start_phase": 0,
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "tblock_r7_d",
+      "kind": "toggle_block",
+      "pos": [
+        280,
+        216
+      ],
+      "props": {
+        "group": "r7_cover",
+        "phase": 0,
+        "start_phase": 0,
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r7_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_type": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "toll_flinch"
+      }
+    },
+    {
+      "id": "sensor_r7_flash",
+      "kind": "toll_sensor",
+      "pos": [
+        376,
+        72
+      ],
+      "props": {
+        "check": "sold:hit_flash",
+        "target_id": "door_r7_flash",
+        "show_glyph": true
+      }
+    },
+    {
+      "id": "door_r7_flash",
+      "kind": "door",
+      "pos": [
+        408,
+        72
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          16
+        ],
+        "requires_signals": [
+          "sensor_r7_flash"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_r7_flash",
+      "kind": "chest",
+      "pos": [
+        440,
+        56
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lamp_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "zone": "toll_flinch",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        152
+      ],
+      "props": {
+        "zone": "toll_flinch",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        200
+      ],
+      "props": {
+        "zone": "toll_flinch",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "zone": "toll_flinch",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "tc_r7_1",
+      "kind": "toll_clerk",
+      "pos": [
+        232,
+        152
+      ],
+      "zone": "toll_flinch",
+      "route": [
+        [
+          200,
+          152
+        ],
+        [
+          264,
+          152
+        ]
+      ]
+    },
+    {
+      "id": "cn_r7_1",
+      "kind": "censer",
+      "pos": [
+        312,
+        168
+      ],
+      "zone": "toll_flinch"
+    },
+    {
+      "id": "cg_r7_1",
+      "kind": "choir_gloam",
+      "pos": [
+        104,
+        104
+      ],
+      "zone": "toll_flinch"
+    },
+    {
+      "id": "cg_r7_2",
+      "kind": "choir_gloam",
+      "pos": [
+        360,
+        88
+      ],
+      "zone": "toll_flinch"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        72,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        360,
+        232
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "iron_teller_grille",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        104,
+        232
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        440,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        120,
+        72
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        344,
+        216
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        280,
+        264
+      ],
+      "layer": "sort"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        152
+      ],
+      "radius": 34,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        128,
+        72,
+        208,
+        144
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        232,
+        200
+      ],
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        232,
+        96
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r7_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_r7_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Butterfly-shaped Flinching Hall: flip crystal_toggle cover pillars mid-combat to isolate Censer smoke and Choir Gloam chords while flanking the Toll Clerk around twin star-pits.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Phase-swapping toggle_block tactical cover against a 3-role Island 8 encounter; sold:hit_flash opens NE vault.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "open_r8",
+    "why": "Second Feel Wing room (hit_flash), testing rhythmic spacing, True Lens, and mid-fight cover control.",
+    "exit": "exit_r7_north",
+    "solution": [
+      {
+        "op": "lens"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          184,
+          248
+        ],
+        "target": "ctog_r7_w"
+      },
+      {
+        "op": "wait_until",
+        "target": "tblock_r7_a",
+        "prop": "raised",
+        "value": false,
+        "timeout": 2.5
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          168
+        ],
+        "target": "ctog_r7_e"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r7_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_north"
+      }
+    ]
+  }
+}

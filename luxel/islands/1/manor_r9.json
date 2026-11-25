@@ -179,7 +179,10 @@
       "props": {
         "tone": "dawn",
         "wave_radius": 44,
-        "target_id": "portrait_r9_steward"
+        "target_ids": [
+          "portrait_r9_steward",
+          "door_r9_vault"
+        ]
       }
     },
     {
@@ -240,7 +243,7 @@
       "props": {
         "door_kind": "switch_door",
         "requires_signals": [
-          "portrait_r9_steward"
+          "bell_r9_steward"
         ],
         "size": [
           32,
@@ -468,16 +471,48 @@
     },
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          176,
+          150
+        ],
+        "tol": 4.0
+      },
+      {
         "op": "interact",
         "target": "lore_r9_verdict"
+      },
+      {
+        "op": "goto",
+        "to": [
+          80,
+          146
+        ],
+        "tol": 4.0
       },
       {
         "op": "interact",
         "target": "lectern_r9_butler"
       },
       {
+        "op": "goto",
+        "to": [
+          176,
+          146
+        ],
+        "tol": 4.0
+      },
+      {
         "op": "interact",
         "target": "lectern_r9_choir"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          146
+        ],
+        "tol": 4.0
       },
       {
         "op": "interact",

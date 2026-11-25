@@ -1,0 +1,351 @@
+{
+  "id": "dream_r4",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "name_key": "I5_DR_R4",
+  "music": "isl5_planetarium",
+  "spawn": [
+    240,
+    272
+  ],
+  "exits": [
+    {
+      "id": "ex_dr4_out",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_starfall_cliff",
+      "to_spawn": [
+        256,
+        112
+      ]
+    },
+    {
+      "id": "ex_dr4_next",
+      "rect": [
+        160,
+        0,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "dream_r5",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "locked_door_id": "door_dr4_next",
+      "one_way": true
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_dr4",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rotor_dr4",
+      "kind": "rotor",
+      "pos": [
+        224,
+        160
+      ],
+      "props": {
+        "size": [
+          80,
+          80
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_dr4",
+      "kind": "star_bell",
+      "pos": [
+        224,
+        160
+      ],
+      "props": {
+        "scope": "room:5:dream_r4",
+        "var_name": "dr4_turn",
+        "rotors": [
+          "rotor_dr4"
+        ],
+        "sets_flag": "dr4_bell_rung"
+      }
+    },
+    {
+      "id": "trans_dr4_w",
+      "kind": "blue_transformer",
+      "pos": [
+        168,
+        160
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "trans_dr4_e",
+      "kind": "blue_transformer",
+      "pos": [
+        296,
+        192
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "door_dr4_next",
+      "kind": "door",
+      "pos": [
+        176,
+        32
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          48,
+          16
+        ],
+        "clear_zone": "dream_r4",
+        "requires_moves": [
+          "lens"
+        ]
+      }
+    },
+    {
+      "id": "lamp_dr4_s",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        272
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr4_n",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr4_w",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr4_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_dr4_s1",
+      "kind": "orrery_sentinel",
+      "pos": [
+        184,
+        104
+      ],
+      "route": [
+        [
+          160,
+          104
+        ],
+        [
+          216,
+          104
+        ]
+      ],
+      "zone": "dream_r4",
+      "leash": 160
+    },
+    {
+      "id": "en_dr4_s2",
+      "kind": "orrery_sentinel",
+      "pos": [
+        368,
+        192
+      ],
+      "route": [
+        [
+          352,
+          192
+        ],
+        [
+          400,
+          216
+        ]
+      ],
+      "zone": "dream_r4",
+      "leash": 160
+    },
+    {
+      "id": "en_dr4_moth",
+      "kind": "echo_moth",
+      "pos": [
+        256,
+        104
+      ],
+      "route": [
+        [
+          224,
+          104
+        ],
+        [
+          288,
+          128
+        ]
+      ],
+      "zone": "dream_r4",
+      "leash": 160
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_dr4_ok",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "dream_r4_ok"
+        },
+        {
+          "sfx": "door_open"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        224,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        152,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        272,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        400,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Dream Telescope Floor 4 (Turning Prism): bank shots off twin Blue Transformers on an asymmetric turning prism nave to crack two Orrery Sentinels and an Echo Moth; True Lens shutter gates Floor 5.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Prism banking + turning rotor cover; Lens gate into Blind Orbit",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "Unlocks Dream Telescope Floor 5 (with True Lens)",
+    "why": "Dream Telescope Floor 4 and Floor-4 cliff shortcut destination.",
+    "exit": "ex_dr4_next",
+    "start": {
+      "spawn": [
+        240,
+        272
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "ex_dr4_next"
+      }
+    ]
+  }
+}

@@ -1,0 +1,428 @@
+{
+  "id": "cave_mirror_tide",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_CAVE_TIDE",
+  "theme": "cave_7",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    360,
+    152
+  ],
+  "zones": [
+    {
+      "id": "cave_mirror_tide",
+      "name_key": "ISL7_Z_CAVE_TIDE",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cmt_quay",
+      "rect": [
+        400,
+        128,
+        16,
+        48
+      ],
+      "to_region": "silver_quay",
+      "to_spawn": [
+        120,
+        232
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_cmt_east",
+      "kind": "room_anchor",
+      "pos": [
+        360,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "pool_cmt_center",
+      "kind": "moon_pool",
+      "pos": [
+        216,
+        152
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "carry_bridge": true,
+        "radius_px": 16,
+        "persist": false
+      }
+    },
+    {
+      "id": "orb_cmt_light",
+      "kind": "carry_orb",
+      "pos": [
+        328,
+        200
+      ],
+      "props": {
+        "kind": "light",
+        "persist": false
+      }
+    },
+    {
+      "id": "hook_cmt_mid",
+      "kind": "lantern_hook",
+      "pos": [
+        216,
+        124
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "plate_cmt_black",
+      "kind": "pressure_plate",
+      "pos": [
+        88,
+        160
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "door_cmt_vault"
+      }
+    },
+    {
+      "id": "door_cmt_vault",
+      "kind": "door",
+      "pos": [
+        64,
+        104
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "required_signals": [
+          "plate_cmt_black"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "chest_ember_7_tide",
+      "kind": "chest",
+      "pos": [
+        56,
+        56
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "cave_mirror_tide"
+      }
+    },
+    {
+      "id": "moth_7_03",
+      "kind": "moth",
+      "pos": [
+        88,
+        56
+      ],
+      "props": {
+        "id": "moth_7_03"
+      }
+    },
+    {
+      "id": "lamp_cmt_e1",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        112
+      ],
+      "props": {
+        "zone": "cave_mirror_tide",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cmt_c1",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        128
+      ],
+      "props": {
+        "zone": "cave_mirror_tide",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cmt_w1",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        136
+      ],
+      "props": {
+        "zone": "cave_mirror_tide",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cmt_nw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        64
+      ],
+      "props": {
+        "zone": "cave_mirror_tide",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        152
+      ],
+      "radius": 28,
+      "style": "ritual",
+      "color": "sky",
+      "secondary": "ice"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        36,
+        36,
+        68,
+        52
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        328,
+        200
+      ],
+      "radius": 20,
+      "style": "water"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cave_arch_rock",
+      "pos": [
+        376,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "stalagmite_tall",
+      "pos": [
+        304,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        360,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        112,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        184,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cave_lantern_post",
+      "pos": [
+        56,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "dripping_pool_basin",
+      "pos": [
+        320,
+        176
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "subterranean_shroom",
+      "pos": [
+        48,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          8,
+          9,
+          3,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "plate_cmt_black"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Curved tidal sea-cave where carrying a Silver Light Orb across the central Moon Pool raises the Black obsidian bridge to latch the West vault socket.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Smuggling a Light Orb across a Silver->Black Moon Pool flip bridges water chasms and powers opposite-world sockets.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "ember_7_tide+moth_7_03",
+    "why": "Signature overworld Moon Pool + Carry Orb cave off Silver Quay.",
+    "start": {
+      "vars": {
+        "world_face": "silver"
+      },
+      "flags": [
+        "item_moon_pocket"
+      ]
+    },
+    "target": "chest_ember_7_tide",
+    "solution": [
+      {
+        "op": "carry",
+        "target": "orb_cmt_light",
+        "action": "pickup"
+      },
+      {
+        "op": "interact",
+        "target": "pool_cmt_center"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "carry",
+        "target": "orb_cmt_light",
+        "action": "drop",
+        "to": [
+          88,
+          160
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          64
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_7_tide"
+      },
+      {
+        "op": "interact",
+        "target": "pool_cmt_center"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==silver"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_cmt_quay"
+      }
+    ]
+  }
+}

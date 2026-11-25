@@ -1,0 +1,422 @@
+{
+  "id": "cave_whisper",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_Z_WHISPER",
+  "theme": "undercroft",
+  "music": "isl1_undercroft",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    368,
+    144
+  ],
+  "zones": [
+    {
+      "id": "cave_whisper",
+      "name_key": "ISL1_Z_WHISPER",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cw_east",
+      "rect": [
+        400,
+        128,
+        16,
+        32
+      ],
+      "to_region": "vesper_graveyard",
+      "to_spawn": [
+        56,
+        240
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_cw_e",
+      "kind": "room_anchor",
+      "pos": [
+        368,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "turret_cw_1",
+      "kind": "turret_eye",
+      "pos": [
+        208,
+        192
+      ],
+      "props": {
+        "dir": "n",
+        "cadence": 1.6,
+        "sight_range": 144
+      }
+    },
+    {
+      "id": "bell_cw_dusk",
+      "kind": "bell",
+      "pos": [
+        288,
+        192
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 160
+      }
+    },
+    {
+      "id": "hook_cw_1",
+      "kind": "lantern_hook",
+      "pos": [
+        280,
+        96
+      ],
+      "props": {
+        "light_radius": 44
+      }
+    },
+    {
+      "id": "sg_cw_inner",
+      "kind": "shadow_gate",
+      "pos": [
+        168,
+        136
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "item_brass_clapper",
+      "kind": "quest_item",
+      "pos": [
+        80,
+        128
+      ],
+      "props": {
+        "id": "brass_clapper",
+        "icon": "bell",
+        "carry": true
+      }
+    },
+    {
+      "id": "moth_1_04",
+      "kind": "moth",
+      "pos": [
+        112,
+        80
+      ],
+      "props": {
+        "id": "moth_1_04"
+      }
+    },
+    {
+      "id": "bell_cw_dawn",
+      "kind": "bell",
+      "pos": [
+        112,
+        224
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 120
+      }
+    },
+    {
+      "id": "door_cw_return",
+      "kind": "tone_door",
+      "pos": [
+        168,
+        224
+      ],
+      "props": {
+        "tone": "dawn",
+        "size": [
+          16,
+          32
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_cw_e",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        112
+      ],
+      "props": {
+        "zone": "cave_whisper",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cw_s",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        224
+      ],
+      "props": {
+        "zone": "cave_whisper",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cw_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        96
+      ],
+      "props": {
+        "zone": "cave_whisper",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        128,
+        144,
+        32
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        80,
+        128
+      ],
+      "radius": 28,
+      "style": "ritual"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        208,
+        192
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        128,
+        192
+      ],
+      "radius": 20,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bone_ossuary_arch",
+      "pos": [
+        368,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "stone_crypt_pillar",
+      "pos": [
+        232,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_coffin",
+      "pos": [
+        56,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "open_sarcophagus",
+      "pos": [
+        296,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        320,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        208,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_urn",
+      "pos": [
+        136,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        136,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        264,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Hang your lantern behind a crypt pillar to unseal a Shadow Gate while ringing a Dusk Bell to freeze the sentinel Turret Eye, then claim the lost Brass Clapper and Moth.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Combining Lantern Hook shadow occlusion with Dusk-bell turret freezing lets Wick enter dark vaults unarmed.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "brass_clapper+moth_1_04",
+    "why": "Midnight quest crypt holding Bell Ringer Snail's lost Brass Clapper for Pane Toll Echo.",
+    "target": "item_brass_clapper",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          176
+        ],
+        "target": "bell_cw_dusk"
+      },
+      {
+        "op": "interact",
+        "target": "hook_cw_1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "sg_cw_inner",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          136
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "item_brass_clapper"
+      },
+      {
+        "op": "expect",
+        "flag": "quest:item:brass_clapper"
+      },
+      {
+        "op": "interact",
+        "target": "bell_cw_dawn"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_cw_return",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          80
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      }
+    ]
+  }
+}

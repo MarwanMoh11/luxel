@@ -1,0 +1,505 @@
+{
+  "id": "locks_r6",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R6_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "lck_r6",
+      "name_key": "LCK_R6_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_region": "locks_r5",
+      "to_spawn": [
+        304,
+        36
+      ]
+    },
+    {
+      "id": "exit_r6_aqueduct",
+      "rect": [
+        496,
+        160,
+        16,
+        32
+      ],
+      "to_region": "locks_r2",
+      "to_spawn": [
+        496,
+        80
+      ],
+      "requires_flags": [
+        "locks_r6_aqueduct"
+      ],
+      "locked_door_id": "door_r6_aqueduct"
+    },
+    {
+      "id": "exit_r6_north",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r7",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "requires_flags": [
+        "locks_harpoon_claimed"
+      ],
+      "locked_door_id": "door_r6_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r6_s",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        312
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "skiff_r6",
+      "kind": "vehicle_skiff",
+      "pos": [
+        200,
+        232
+      ],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "post_r6_nw",
+      "kind": "mooring_post",
+      "pos": [
+        184,
+        136
+      ],
+      "props": {
+        "orbit_r": 42.0,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_r6_se",
+      "kind": "mooring_post",
+      "pos": [
+        328,
+        216
+      ],
+      "props": {
+        "orbit_r": 42.0,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "mir_r6_w",
+      "kind": "blue_transformer",
+      "pos": [
+        120,
+        184
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "mir_r6_e",
+      "kind": "blue_transformer",
+      "pos": [
+        392,
+        184
+      ],
+      "props": {
+        "normal": [
+          -0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "altar_sluice_harpoon",
+      "kind": "locks_harpoon_altar",
+      "pos": [
+        256,
+        280
+      ],
+      "props": {
+        "requires_flag": "boss_dredge_hulk_defeated",
+        "target_ids": [
+          "door_r6_north",
+          "door_r6_aqueduct"
+        ]
+      }
+    },
+    {
+      "id": "door_r6_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "locks_harpoon_claimed"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r6_aqueduct",
+      "kind": "door",
+      "pos": [
+        488,
+        176
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "locks_r6_aqueduct"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r6_sw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        280
+      ],
+      "props": {
+        "zone": "lck_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        280
+      ],
+      "props": {
+        "zone": "lck_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_nw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        72
+      ],
+      "props": {
+        "zone": "lck_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        72
+      ],
+      "props": {
+        "zone": "lck_r6",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "dredge_r6",
+      "kind": "dredge_hulk",
+      "pos": [
+        256,
+        176
+      ],
+      "zone": "lck_r6"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        80,
+        48,
+        352,
+        256
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        224,
+        256,
+        64,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        104,
+        216
+      ],
+      "radius": 22,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        176
+      ],
+      "size": [
+        60,
+        72
+      ],
+      "tint": "cool",
+      "shear": 0.22
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        104,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        408,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        440,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        88,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        424,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        200,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        312,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        376,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        256,
+        296
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "lck_r6_shortcut_msg",
+      "on": "flag:locks_r6_aqueduct",
+      "once": true,
+      "do": [
+        {
+          "narrate": "LCK_SHORTCUT"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Octagonal flooded Dredge Basin where Wick duels The Dredge Hulk turret-barge from the Skiff moat or quay mirrors, batting wake mines into its stern to win the Sluice Harpoon and unlock the East Aqueduct shortcut to r2.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Flank armored hull with blue mirror banks and wake-mine bats; claim Sluice Harpoon to tow floating rafts and mines.",
+    "decisions": 7,
+    "expert_s": 90,
+    "reward": "power_sluice_harpoon+cycle_2",
+    "why": "Mid-dungeon mini-boss exam awarding the Smugglers' Locks signature power and opening Cycle 2 back to Lock Junction.",
+    "exit": "exit_r6_north",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          280
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lck_r6",
+        "timeout": 120.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "boss_dredge_hulk_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "altar_sluice_harpoon"
+      },
+      {
+        "op": "expect",
+        "flag": "power_sluice_harpoon"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r6_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_north"
+      }
+    ]
+  }
+}

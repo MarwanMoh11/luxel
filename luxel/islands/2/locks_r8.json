@@ -1,0 +1,540 @@
+{
+  "id": "locks_r8",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R8_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    120,
+    272
+  ],
+  "zones": [
+    {
+      "id": "lck_r8",
+      "name_key": "LCK_R8_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_south",
+      "rect": [
+        112,
+        304,
+        32,
+        16
+      ],
+      "to_region": "locks_r7",
+      "to_spawn": [
+        112,
+        56
+      ]
+    },
+    {
+      "id": "exit_r8_chute",
+      "rect": [
+        272,
+        304,
+        32,
+        16
+      ],
+      "to_region": "locks_r4",
+      "to_spawn": [
+        48,
+        160
+      ],
+      "one_way": true,
+      "locked_door_id": "door_r8_chute"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_s",
+      "kind": "room_anchor",
+      "pos": [
+        128,
+        280
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r8_e",
+      "kind": "room_anchor",
+      "pos": [
+        296,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mir_r8",
+      "kind": "blue_transformer",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": false
+      }
+    },
+    {
+      "id": "portal_r8_w",
+      "kind": "blue_portal",
+      "pos": [
+        168,
+        200
+      ],
+      "props": {
+        "target_portal_id": "portal_r8_e",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r8_e",
+      "kind": "blue_portal",
+      "pos": [
+        296,
+        200
+      ],
+      "props": {
+        "target_portal_id": "portal_r8_w",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "skiff_r8",
+      "kind": "vehicle_skiff",
+      "pos": [
+        88,
+        152
+      ],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "key_locks_2",
+      "kind": "wick_key",
+      "pos": [
+        392,
+        72
+      ],
+      "props": {
+        "dungeon_id": "locks",
+        "key_kind": "wick_key",
+        "requires_flag": "locks_r8_cleared"
+      }
+    },
+    {
+      "id": "lore_r8_log3",
+      "kind": "lore_stone",
+      "pos": [
+        392,
+        152
+      ],
+      "props": {
+        "string_id": "ISL2_LOG_3",
+        "icon": "book",
+        "sets_flag": "ship_log_3"
+      }
+    },
+    {
+      "id": "door_r8_chute",
+      "kind": "door",
+      "pos": [
+        288,
+        296
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "lck_r8",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        264
+      ],
+      "props": {
+        "zone": "lck_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "zone": "lck_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        216
+      ],
+      "props": {
+        "zone": "lck_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        88
+      ],
+      "props": {
+        "zone": "lck_r8",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mine_r8_w",
+      "kind": "buoy_mine",
+      "pos": [
+        56,
+        200
+      ],
+      "zone": "lck_r8"
+    },
+    {
+      "id": "crab_r8",
+      "kind": "crab_warden",
+      "pos": [
+        344,
+        120
+      ],
+      "zone": "lck_r8"
+    },
+    {
+      "id": "shrimp_r8_1",
+      "kind": "pistol_shrimp",
+      "pos": [
+        392,
+        104
+      ],
+      "zone": "lck_r8"
+    },
+    {
+      "id": "shrimp_r8_2",
+      "kind": "pistol_shrimp",
+      "pos": [
+        392,
+        184
+      ],
+      "zone": "lck_r8"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        304,
+        32,
+        112,
+        176
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        272,
+        256,
+        32,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        312,
+        152
+      ],
+      "radius": 20,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        376,
+        104
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        40,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        312,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        312,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        248,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        152,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        232,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        408,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "hanging_fishing_net",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        248,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "lck_r8_clear_flag",
+      "on": "cleared:lck_r8",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "locks_r8_cleared"
+        }
+      ]
+    },
+    {
+      "id": "lck_r8_log_flag",
+      "on": "signal:lore_r8_log3",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ship_log_3"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Contraband alley ambush separated by a sealed bulkhead: power the Waterway Portal, Harpoon-tow or detonate a live Buoy Mine, warp behind the Crab Warden and Pistol Shrimps to claim Key #2, Ship Log 3, and the Cycle 3 drain chute to r4.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Powering portals mid-combat flanks shielded Crab Wardens and sniping Pistol Shrimps while unlocking Hollow Wick's third Ship Log.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "locks_small_2+ship_log_3+cycle_3",
+    "why": "Upper-west combat vault awarding Key #2, Ship Log #3 (q2_logs), and Cycle 3 drop chute to r4.",
+    "exit": "exit_r8_chute",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      },
+      "flags": [
+        "power_sluice_harpoon"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          248
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          248
+        ],
+        "target": "mir_r8"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "portal_r8_w",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "throw",
+        "from": [
+          168,
+          232
+        ],
+        "target": "mine_r8_w",
+        "hold": 0.3
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          200
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "clear",
+        "zone": "lck_r8",
+        "timeout": 50.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "locks_r8_cleared",
+        "timeout": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "key_locks_2"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r8_log3"
+      },
+      {
+        "op": "expect",
+        "flag": "ship_log_3"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_chute"
+      }
+    ]
+  }
+}

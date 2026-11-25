@@ -1,0 +1,104 @@
+{
+  "pack_id": "i6_overworld",
+  "version": 1,
+  "owner": "OW6",
+  "comment": "Island 6 (Ashen Kiln) Overworld Package: 4 overworld districts, 5 caves/trials, First Forge superboss sanctum, quests, interactables, and strings.",
+  "interactables": {
+    "kiln_hub_door": "res://luxel/islands/6/overworld/kiln_hub_portal.gd",
+    "spark_hider": "res://luxel/islands/6/overworld/spark_hider.gd",
+    "signal_board": "res://luxel/islands/6/overworld/timetable_whistle.gd"
+  },
+  "quests": [
+    {
+      "id": "q6_timetable_key",
+      "island": 6,
+      "kind": "fetch",
+      "folk": "ferry_beetle",
+      "icon": "gear",
+      "steps": [
+        {
+          "icons": ["gear", "clock", "arrow_s", "toy_platform", "question"],
+          "need": "q6_timetable_stamped",
+          "flag": "quest:q6_timetable_key:s0"
+        },
+        {
+          "icons": ["happy", "clock", "ember", "gift"],
+          "need": "",
+          "flag": "quest:q6_timetable_key:done"
+        }
+      ],
+      "reward": {
+        "kind": "ember_piece",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q6_spark_hide",
+      "island": 6,
+      "kind": "hide_and_seek",
+      "folk": "moth_kid",
+      "icon": "quest_hide",
+      "steps": [
+        {
+          "icons": ["moth", "quest_hide", "toy_block", "arrow_e", "question"],
+          "need": "quest:hide:spark_1 && quest:hide:spark_2 && quest:hide:spark_3",
+          "flag": "quest:q6_spark_hide:s0"
+        },
+        {
+          "icons": ["happy", "moth", "heart", "shard"],
+          "need": "",
+          "flag": "quest:q6_spark_hide:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "amount": 60
+      }
+    }
+  ],
+  "strings": {
+    "ISL6_Z_YARD": "SWITCHYARD CAMP",
+    "ISL6_Z_STRIDE": "THE STRIDE FLATS",
+    "ISL6_Z_BASIN": "THE SLAG BASIN",
+    "ISL6_Z_OVERLOOK": "HIGH TRESTLE OVERLOOK",
+    "ISL6_Z_FOUNDRY": "TEMPERING FOUNDRY",
+    "ISL6_Z_SLUICE": "THE SLAG SLUICE",
+    "ISL6_Z_MAGNET": "THE MAGNET VAULT",
+    "ISL6_Z_TRIAL": "THREE-TEMPER RAIL RUN",
+    "ISL6_Z_CRYPT": "HOLLOW FORGE CRYPT",
+    "ISL6_Z_FIRST": "THE FIRST FORGE",
+    "ISL6_Q1_HINT": "COOL THE SLAG SLUICE FOR PURE COAL.",
+    "ISL6_Q2_HINT": "STAMP ALL THREE TIMETABLE SWITCHBOARDS.",
+    "ISL6_Q3_HINT": "THREE SPARK KIDS HID IN COOL SHADOWS.",
+    "ISL6_Q4_FORGE": "THE FIRST FORGE WAKES BELOW HIGH TRESTLE.",
+    "ISL6_Q_GRANDMA": "SUNFLARE SHATTERS THE OBSIDIAN CRYPT SEAL.",
+    "ISL6_SPARK_FOUND": "A HIDING SPARK KID LEAPS INTO THE LIGHT!",
+    "ISL6_LORE_DAM": "THE OBSIDIAN DAM FACES HIGH TRESTLE.",
+    "ISL6_LORE_VIADUCT": "SHIFT THE TIMETABLE TO BRIDGE THE GORGE.",
+    "ISL6_LORE_HOLLOW": "HE TEMPERED NO BOLT. HE FORGED A SHADOW.",
+    "ISL6_LORE_FIRST": "BEFORE THE HUSH EIGHT LAMPS WERE HAMMERED.",
+    "ISL6_LORE_COLOSSUS": "THE GIANT WALKS WHEN SHIFT B SOUNDS.",
+    "ISL6_LORE_EXPRESS": "THE EXPRESS DOCKS AT TRACK 1 ON SHIFT A.",
+    "ISL6_PROMPT_HUB": "TO WICK HOUSE",
+    "ISL6_PROMPT_WHISTLE": "EXPRESS WHISTLE SHIFT",
+    "ISL6_PROMPT_SIGNAL": "CHECK SIGNAL BOARD",
+    "ISL6_SIGNAL_WAIT": "CLEAR EXPRESS + COLOSSUS + 3 CRUCIBLES.",
+    "ISL6_SIGNAL_READY": "CONVERGENCE READY! TRACKS ALIGNED!",
+    "ISL6_TRIAL_RANGE_WIN": "BANK-SHOT RANGE CLEARED! EMBER CLAIMED!",
+    "ISL6_TRIAL_STRIDE_WIN": "STRIDE BALANCE CLEARED! FOUNDRY TROPHY!",
+    "ISL6_TRIAL_RAIL_WIN": "THREE-TEMPER RAIL RUN CLEARED!",
+    "ISL6_SHRINE_BOOST": "SPARK KIDS WARM THE SHRINE: +30% EMBER!"
+  },
+  "regions": {
+    "ow_rail_yard": { "name_key": "ISL6_Z_YARD", "theme": "forge_deep", "music": "island6_explore", "dark": true, "map": [-1, -1] },
+    "ow_giant_stride": { "name_key": "ISL6_Z_STRIDE", "theme": "forge_deep", "music": "island6_explore", "dark": true, "map": [-1, 1] },
+    "ow_slag_basin": { "name_key": "ISL6_Z_BASIN", "theme": "forge_deep", "music": "island6_explore", "dark": true, "map": [1, 1] },
+    "ow_cinder_overlook": { "name_key": "ISL6_Z_OVERLOOK", "theme": "forge_deep", "music": "island6_explore", "dark": true, "map": [1, -1] },
+    "cave_temper_foundry": { "name_key": "ISL6_Z_FOUNDRY", "theme": "cave_6", "music": "island6_dungeon", "dark": true, "map": [-2, -1] },
+    "cave_slag_sluice": { "name_key": "ISL6_Z_SLUICE", "theme": "cave_6", "music": "island6_dungeon", "dark": true, "map": [2, 1] },
+    "cave_magnet_vault": { "name_key": "ISL6_Z_MAGNET", "theme": "cave_6", "music": "island6_dungeon", "dark": true, "map": [0, 2] },
+    "cave_bellows_trial": { "name_key": "ISL6_Z_TRIAL", "theme": "forge_deep", "music": "isl6_express", "dark": true, "map": [2, -1] },
+    "cave_sunflare_crypt": { "name_key": "ISL6_Z_CRYPT", "theme": "forge_deep", "music": "island6_dungeon", "dark": true, "map": [2, 2] },
+    "superboss_first_forge": { "name_key": "ISL6_Z_FIRST", "theme": "forge_deep", "music": "superboss_a", "dark": true, "map": [2, -2] }
+  }
+}

@@ -120,7 +120,7 @@
       "kind": "shadow_gate",
       "pos": [
         104,
-        80
+        88
       ],
       "props": {
         "size": [
@@ -434,6 +434,14 @@
       {
         "op": "wait",
         "secs": 0.8
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          176
+        ],
+        "tol": 8.0
       },
       {
         "op": "expect",

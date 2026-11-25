@@ -1,0 +1,455 @@
+{
+  "id": "cave_rib_vault",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ZONE_ISL2_RIB_VAULT",
+  "theme": "seabed",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_tide"
+  ],
+  "spawn": [
+    216,
+    248
+  ],
+  "zones": [
+    {
+      "id": "rib_vault",
+      "name_key": "ZONE_ISL2_RIB_VAULT",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_rib_vault_out",
+      "rect": [
+        192,
+        272,
+        48,
+        16
+      ],
+      "to_region": "ow_shoals_west",
+      "to_spawn": [
+        312,
+        40
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_rib_vault",
+      "kind": "room_anchor",
+      "pos": [
+        216,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_rib_vault",
+      "kind": "state_lever",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "scope": "room:2:cave_rib_vault",
+        "var": "vault_water",
+        "values": [
+          "low",
+          "high"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "raft_rib_mirror",
+      "kind": "tide_raft",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_var": "vault_water",
+        "tide_min": "high",
+        "normal": [
+          1.0,
+          0.0
+        ],
+        "rotatable": true,
+        "reflect_only_floating": true
+      }
+    },
+    {
+      "id": "eye_rib_blue",
+      "kind": "switch_eye",
+      "pos": [
+        200,
+        56
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "door_rib_vault",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_rib_vault",
+      "kind": "door",
+      "pos": [
+        296,
+        216
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "rib_vault",
+        "requires_signals": [
+          "eye_rib_blue"
+        ]
+      }
+    },
+    {
+      "id": "item_brass_compass",
+      "kind": "quest_item",
+      "pos": [
+        360,
+        184
+      ],
+      "props": {
+        "id": "brass_compass"
+      }
+    },
+    {
+      "id": "moth_2_06",
+      "kind": "moth",
+      "pos": [
+        360,
+        104
+      ],
+      "props": {
+        "id": "moth_2_06"
+      }
+    },
+    {
+      "id": "lamp_rib_1",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        232
+      ],
+      "props": {
+        "zone": "rib_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_rib_2",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        184
+      ],
+      "props": {
+        "zone": "rib_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_rib_3",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        216
+      ],
+      "props": {
+        "zone": "rib_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_rib_4",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        168
+      ],
+      "props": {
+        "zone": "rib_vault",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_rib_5",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        88
+      ],
+      "props": {
+        "zone": "rib_vault",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "vault_high",
+      "when": "vault_water==high",
+      "theme": "locks",
+      "tiles": [
+        [
+          8,
+          6,
+          9,
+          5,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        200,
+        136
+      ],
+      "radius": 26,
+      "style": "mosaic"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        216,
+        232
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        320,
+        64,
+        64,
+        160
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_seabed",
+      "prop": "shipwreck_rib_beam",
+      "pos": [
+        72,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "shipwreck_rib_beam",
+      "pos": [
+        264,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "giant_clam_shell",
+      "pos": [
+        360,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "coral_fan_cluster",
+      "pos": [
+        104,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sunken_bell_relic",
+      "pos": [
+        360,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sunken_amphora_urn",
+      "pos": [
+        136,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "pearl_lantern_post",
+      "pos": [
+        184,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "pearl_lantern_post",
+      "pos": [
+        248,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sea_anemone_glow",
+      "pos": [
+        344,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Rotate a grounded Tide Raft mirror while the rib cavern is drained dry, then open the flood-valve to float the raft up to blue-beam height and unseal the compass vault.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Dry-setup -> flood-elevation Tide Raft mirror bank",
+    "decisions": 6,
+    "expert_s": 52,
+    "reward": "quest_item brass_compass + moth_2_06",
+    "why": "Ebb-tide secret cave in Shipwreck Shoals driving Ferry Beetle's Regatta quest",
+    "optional": true,
+    "target": "item_brass_compass",
+    "start": {
+      "vars": {
+        "vault_water": "low"
+      },
+      "spawn": [
+        216,
+        248
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          136
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "raft_rib_mirror",
+        "steps": 1
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          216
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          216
+        ],
+        "target": "valve_rib_vault"
+      },
+      {
+        "op": "expect",
+        "var": "vault_water==high"
+      },
+      {
+        "op": "expect",
+        "interactable": "raft_rib_mirror",
+        "prop": "state",
+        "value": "floating"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          136
+        ],
+        "target": "raft_rib_mirror"
+      },
+      {
+        "op": "expect",
+        "interactable": "door_rib_vault",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          360,
+          184
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "item_brass_compass"
+      }
+    ]
+  }
+}

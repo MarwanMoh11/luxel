@@ -1,0 +1,518 @@
+{
+  "id": "toll_r4",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_TOLL_BRAKE",
+  "music": "isl1_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    208,
+    224
+  ],
+  "zones": [
+    {
+      "id": "toll_brake",
+      "name_key": "ISL1_TOLL_BRAKE",
+      "rect": [
+        0,
+        0,
+        416,
+        448
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_toll_r4_crash",
+      "rect": [
+        192,
+        432,
+        32,
+        16
+      ],
+      "to_region": "belfry_r1",
+      "to_spawn": [
+        192,
+        216
+      ],
+      "one_way": true,
+      "locked_door_id": "door_toll_r4_crash"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "snuffer_toll_r4_w",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        120,
+        120
+      ],
+      "route": [
+        [
+          112,
+          120
+        ],
+        [
+          160,
+          128
+        ]
+      ],
+      "perches": [],
+      "zone": "toll_brake",
+      "leash": 180
+    },
+    {
+      "id": "snuffer_toll_r4_e",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        296,
+        120
+      ],
+      "route": [
+        [
+          304,
+          120
+        ],
+        [
+          256,
+          128
+        ]
+      ],
+      "perches": [],
+      "zone": "toll_brake",
+      "leash": 180
+    }
+  ],
+  "interactables": [
+    {
+      "id": "bell_plat_r4",
+      "kind": "falling_bell_platform",
+      "pos": [
+        208,
+        224
+      ],
+      "props": {
+        "radius_px": 56,
+        "scroll_speed": 76,
+        "duration_s": 18.0,
+        "brakes_needed": 3,
+        "auto_start": true,
+        "complete_flag": "great_toll_done",
+        "target_ids": [
+          "door_toll_r4_crash",
+          "bridge_toll_r4"
+        ],
+        "persist": true,
+        "rail_events": [
+          {
+            "t": 2.0,
+            "side": "l",
+            "kind": "bell",
+            "tone": "dawn"
+          },
+          {
+            "t": 5.5,
+            "side": "r",
+            "kind": "bell",
+            "tone": "dawn"
+          },
+          {
+            "t": 9.0,
+            "side": "l",
+            "kind": "bell",
+            "tone": "dawn"
+          },
+          {
+            "t": 12.5,
+            "side": "r",
+            "kind": "bell",
+            "tone": "dawn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "spin_toll_r4_w",
+      "kind": "spinner",
+      "pos": [
+        136,
+        176
+      ],
+      "props": {
+        "length": 30,
+        "speed": 1.4,
+        "arms": 1
+      }
+    },
+    {
+      "id": "spin_toll_r4_e",
+      "kind": "spinner",
+      "pos": [
+        280,
+        176
+      ],
+      "props": {
+        "length": 30,
+        "speed": -1.4,
+        "arms": 1
+      }
+    },
+    {
+      "id": "bell_toll_r4_d1",
+      "kind": "bell",
+      "pos": [
+        128,
+        224
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "bell_toll_r4_d2",
+      "kind": "bell",
+      "pos": [
+        288,
+        224
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "bell_toll_r4_d3",
+      "kind": "bell",
+      "pos": [
+        208,
+        152
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "bell_toll_r4_k",
+      "kind": "bell",
+      "pos": [
+        208,
+        288
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 208
+      }
+    },
+    {
+      "id": "bridge_toll_r4",
+      "kind": "door",
+      "pos": [
+        208,
+        336
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          80
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "bell_plat_r4"
+        ]
+      }
+    },
+    {
+      "id": "door_toll_r4_crash",
+      "kind": "door",
+      "pos": [
+        208,
+        424
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "bell_plat_r4"
+        ]
+      }
+    },
+    {
+      "id": "anc_toll_r4",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_tr4_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        184
+      ],
+      "props": {
+        "zone": "toll_brake",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr4_ne",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        184
+      ],
+      "props": {
+        "zone": "toll_brake",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        264
+      ],
+      "props": {
+        "zone": "toll_brake",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr4_se",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        264
+      ],
+      "props": {
+        "zone": "toll_brake",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr4_bot",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        392
+      ],
+      "props": {
+        "zone": "toll_brake",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        224
+      ],
+      "radius": 58,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        208,
+        392
+      ],
+      "size": [
+        56,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.0
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        208,
+        376
+      ],
+      "size": [
+        48,
+        24
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "hanging_pendulum_weight",
+      "pos": [
+        64,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "hanging_pendulum_weight",
+      "pos": [
+        352,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "cracked_bell_shard",
+      "pos": [
+        160,
+        400
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "cracked_bell_shard",
+      "pos": [
+        256,
+        400
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        128,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        288,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_brake_done",
+      "on": "flag:great_toll_done",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "ISL1_TOLL_BRAKE_DONE",
+            "style": "title",
+            "duration": 2.8
+          }
+        },
+        {
+          "shake": 0.28
+        }
+      ]
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Final arrestor plunge: weave twin pendulums, clear clinging Snuffers, and ring 3 Dawn Arrestor Bells to brake the bell and blow open the Belfry Base.",
+    "kind": "setpiece",
+    "beat": "ketsu",
+    "teaches": "High-tempo Dawn chord braking amidst pendulums and enemies, culminating in the crash into belfry_r1.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "great_toll_done+belfry_lift",
+    "why": "Climax of the Great Toll set piece delivering the player directly into the Grand Belfry Narthex.",
+    "exit": "exit_toll_r4_crash",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          208,
+          256
+        ],
+        "target": "bell_toll_r4_k"
+      },
+      {
+        "op": "clear",
+        "timeout": 18.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          176,
+          224
+        ],
+        "target": "bell_toll_r4_d1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          224
+        ],
+        "target": "bell_toll_r4_d2"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "shoot",
+        "from": [
+          208,
+          192
+        ],
+        "target": "bell_toll_r4_d3"
+      },
+      {
+        "op": "wait_until",
+        "flag": "great_toll_done",
+        "timeout": 8.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_toll_r4_crash"
+      }
+    ]
+  }
+}

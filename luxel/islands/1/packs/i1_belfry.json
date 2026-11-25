@@ -1,0 +1,225 @@
+{
+  "pack_id": "i1_belfry",
+  "owner": "P1-GRAND",
+  "comment": "Island 1 Grand Package: The Great Toll set piece (toll_r1..r4, debug_only until belfry_forecourt links toll_r1) and the 18-room deepened Grand Belfry (belfry_r1..r18).",
+  "interactables": {
+    "bf_crank_relic": "res://luxel/islands/1/belfry/bf_crank_relic.gd",
+    "toll_clapper_rig": "res://luxel/islands/1/toll/toll_clapper_rig.gd",
+    "toll_chain_lock": "res://luxel/islands/1/toll/toll_chain_lock.gd"
+  },
+  "dungeons": [
+    {
+      "id": "great_toll",
+      "name_key": "ISL1_Z_TOLL",
+      "island": 1,
+      "entry": "toll_r1",
+      "regions": [
+        "toll_r1",
+        "toll_r2",
+        "toll_r3",
+        "toll_r4"
+      ],
+      "mini_boss": "",
+      "boss": "",
+      "theme": "great_toll_shaft",
+      "music": "isl1_setpiece",
+      "requires_flags": [
+        "undercroft_cleared",
+        "manor_cleared"
+      ],
+      "done_flag": "great_toll_done",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "toll_r1": {
+      "name_key": "ISL1_TOLL_RIG",
+      "theme": "great_toll_shaft",
+      "music": "isl1_setpiece",
+      "dark": true,
+      "map": [0, 0],
+      "debug_only": true
+    },
+    "toll_r2": {
+      "name_key": "ISL1_TOLL_DROP",
+      "theme": "great_toll_shaft",
+      "music": "isl1_setpiece",
+      "dark": true,
+      "map": [0, 1],
+      "debug_only": true
+    },
+    "toll_r3": {
+      "name_key": "ISL1_TOLL_SNAG",
+      "theme": "great_toll_shaft",
+      "music": "isl1_setpiece",
+      "dark": true,
+      "map": [0, 2],
+      "debug_only": true
+    },
+    "toll_r4": {
+      "name_key": "ISL1_TOLL_BRAKE",
+      "theme": "great_toll_shaft",
+      "music": "isl1_setpiece",
+      "dark": true,
+      "map": [0, 3],
+      "debug_only": true
+    },
+    "belfry_r1": {
+      "name_key": "ISL1_BF_NARTHEX",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [2, 6]
+    },
+    "belfry_r2": {
+      "name_key": "ISL1_BF_CHASM",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [1, 6]
+    },
+    "belfry_r3": {
+      "name_key": "ISL1_BF_GALLERY",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [4, 4]
+    },
+    "belfry_r4": {
+      "name_key": "ISL1_BF_COLONNADE",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [4, 3]
+    },
+    "belfry_r5": {
+      "name_key": "ISL1_BF_LOFT",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [3, 2]
+    },
+    "belfry_r6": {
+      "name_key": "ISL1_BF_VAULT",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [2, 1]
+    },
+    "belfry_r7": {
+      "name_key": "ZONE_BELL_TOWER",
+      "music": "island1_boss_p1",
+      "dark": true,
+      "map": [2, 0]
+    },
+    "belfry_r8": {
+      "name_key": "ISL1_BF_WELL",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [0, 6]
+    },
+    "belfry_r9": {
+      "name_key": "ISL1_BF_ESCAPEMENT",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [4, 5]
+    },
+    "belfry_r10": {
+      "name_key": "ISL1_BF_DRUM",
+      "theme": "great_toll_shaft",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [0, 5]
+    },
+    "belfry_r11": {
+      "name_key": "ISL1_BF_MAINSPRING",
+      "theme": "great_toll_shaft",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [2, 5]
+    },
+    "belfry_r12": {
+      "name_key": "ISL1_BF_PENDULUM",
+      "theme": "great_toll_shaft",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [3, 5]
+    },
+    "belfry_r13": {
+      "name_key": "ISL1_BF_FOUNDRY",
+      "theme": "great_toll_shaft",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [3, 4]
+    },
+    "belfry_r14": {
+      "name_key": "ISL1_BF_SHAFT",
+      "theme": "great_toll_shaft",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [1, 4]
+    },
+    "belfry_r15": {
+      "name_key": "ISL1_BF_CLOCKFACE",
+      "theme": "great_toll_shaft",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [1, 3]
+    },
+    "belfry_r16": {
+      "name_key": "ISL1_BF_METRONOME",
+      "theme": "great_toll_shaft",
+      "music": "isl1_boss_minor_p1",
+      "dark": true,
+      "map": [1, 2]
+    },
+    "belfry_r17": {
+      "name_key": "ISL1_BF_CLAPPERLOFT",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [0, 1]
+    },
+    "belfry_r18": {
+      "name_key": "ISL1_BF_CARILLON",
+      "music": "island1_dungeon",
+      "dark": true,
+      "map": [1, 1]
+    }
+  },
+  "strings": {
+    "ISL1_Z_TOLL": "THE GREAT TOLL",
+    "ISL1_TOLL_RIG": "GREAT BELL RIGGING",
+    "ISL1_TOLL_DROP": "THE PLUNGING SHAFT",
+    "ISL1_TOLL_SNAG": "ESCAPEMENT SNAG",
+    "ISL1_TOLL_BRAKE": "ARRESTOR DESCENT",
+    "ISL1_TOLL_PROMPT_FIT": "HANG STOLEN CLAPPER",
+    "ISL1_TOLL_CUT": "A DARK BOLT CUTS THE MASTER ROPE!",
+    "ISL1_TOLL_SNAG_DONE": "THE CHAIN SNAPS! THE BELL PLUNGES ON!",
+    "ISL1_TOLL_BRAKE_DONE": "ARRESTOR BRAKES CATCH! BELFRY BASE OPEN!",
+    "ISL1_BF_NARTHEX": "BELFRY NARTHEX",
+    "ISL1_BF_CHASM": "CLAPPER CHASM",
+    "ISL1_BF_GALLERY": "LANTERN GALLERY",
+    "ISL1_BF_COLONNADE": "PENDULUM COLONNADE",
+    "ISL1_BF_LOFT": "BELL WARDENS LOFT",
+    "ISL1_BF_VAULT": "KEEPERS VAULT",
+    "ISL1_BF_WELL": "COUNTERWEIGHT WELL",
+    "ISL1_BF_ESCAPEMENT": "ESCAPEMENT STAIR",
+    "ISL1_BF_DRUM": "WINDING-DRUM HALL",
+    "ISL1_BF_MAINSPRING": "MAINSPRING ROTUNDA",
+    "ISL1_BF_PENDULUM": "PENDULUM GAUNTLET",
+    "ISL1_BF_FOUNDRY": "CHIME-FOUNDRY LOFT",
+    "ISL1_BF_SHAFT": "COUNTERWEIGHT SHAFT",
+    "ISL1_BF_CLOCKFACE": "THE GREAT CLOCK FACE",
+    "ISL1_BF_METRONOME": "METRONOME VAULT",
+    "ISL1_BF_CLAPPERLOFT": "CLAPPER FOUNDRY LOFT",
+    "ISL1_BF_CARILLON": "CARILLON BALCONY",
+    "ISL1_LORE_KEEPER": "HE RANG DUSK FOREVER TO HIDE FROM THE HUSH.",
+    "ISL1_BF_LORE_R1": "THE GREAT BELL CRASHED. CLIMB THE CLOCKWORK!",
+    "ISL1_BF_LORE_R11": "DAWN TURNS CLOCKWISE. WAR TURNS BACK.",
+    "ISL1_BF_LORE_R14": "RING IN ORDER: DAWN THEN DUSK THEN WAR.",
+    "ISL1_BF_LORE_R15": "DUSK FREEZES THE MINUTE HAND AT THREE.",
+    "ISL1_BF_PROMPT_CRANK": "TURN BRASS CRANK",
+    "ISL1_BF_PROMPT_SPRING": "CLAIM MAINSPRING KEY",
+    "ISL1_BF_PROMPT_ROPE": "DROP NARTHEX ROPE",
+    "ISL1_BF_GEAR1_GOT": "GEAR CRANK 1 ENGAGED IN THE MAINSPRING!",
+    "ISL1_BF_ROPE_GOT": "ROPE SHORTCUT DROPPED TO THE NARTHEX!",
+    "ISL1_BF_LIFT_GOT": "MASTER COUNTERWEIGHT LIFT UNLOCKED!",
+    "ISL1_BF_SPRING_GOT": "MAINSPRING KEY CLAIMED AT THREE OCLOCK!",
+    "ISL1_BF_CRANK_GOT": "SPIRE CRANK CLAIMED! CARILLON OPEN!",
+    "ISL1_BF_CARILLON_CHIME": "THREE-TONE CHORD! +25 SHARDS GRANTED!"
+  }
+}

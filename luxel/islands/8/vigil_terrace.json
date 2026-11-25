@@ -1,0 +1,743 @@
+{
+  "id": "vigil_terrace",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "toll_house",
+  "name_key": "ISL8_Z_VIGIL",
+  "music": "isl8_tollhouse",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    64,
+    224
+  ],
+  "zones": [
+    {
+      "id": "vigil_terrace",
+      "name_key": "ISL8_Z_VIGIL",
+      "rect": [
+        0,
+        0,
+        640,
+        448
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_to_overworld",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "overworld",
+      "to_spawn": [
+        480,
+        1096
+      ]
+    },
+    {
+      "id": "exit_vigil_to_toll",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "toll_causeway",
+      "to_spawn": [
+        616,
+        368
+      ],
+      "locked_door_id": "gate_vigil_west"
+    },
+    {
+      "id": "exit_vigil_to_archive",
+      "rect": [
+        624,
+        112,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "archive_cloister",
+      "to_spawn": [
+        48,
+        368
+      ],
+      "locked_door_id": "gate_vigil_east"
+    },
+    {
+      "id": "exit_vigil_to_first_dark",
+      "rect": [
+        288,
+        0,
+        48,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "superboss_first_dark",
+      "to_spawn": [
+        256,
+        336
+      ],
+      "locked_door_id": "gate_moth_arch_80"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_vigil",
+      "kind": "room_anchor",
+      "pos": [
+        64,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_vigil",
+      "kind": "waystone",
+      "pos": [
+        152,
+        232
+      ],
+      "props": {
+        "zone": "vigil_terrace",
+        "lit": true,
+        "lit_by_default": true,
+        "name_key": "ISL8_Z_VIGIL"
+      }
+    },
+    {
+      "id": "scale_vigil_main",
+      "kind": "toll_scale",
+      "pos": [
+        312,
+        208
+      ],
+      "props": {
+        "mode": "gate",
+        "min_weight": 1,
+        "auto_sell_id": "hud_hearts",
+        "target_ids": [
+          "gate_vigil_west",
+          "gate_vigil_east"
+        ],
+        "sets_flag": "toll_weight_1",
+        "persist": true
+      }
+    },
+    {
+      "id": "scale_vigil_redeem",
+      "kind": "toll_scale",
+      "pos": [
+        368,
+        176
+      ],
+      "props": {
+        "mode": "redemption",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_vigil_west",
+      "kind": "toll_gate",
+      "pos": [
+        72,
+        136
+      ],
+      "props": {
+        "min_weight": 1,
+        "size": [
+          16,
+          48
+        ],
+        "allow_direct_pay": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_vigil_east",
+      "kind": "toll_gate",
+      "pos": [
+        568,
+        136
+      ],
+      "props": {
+        "min_weight": 1,
+        "size": [
+          16,
+          48
+        ],
+        "allow_direct_pay": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_moth_arch_80",
+      "kind": "moth_arch_gate",
+      "pos": [
+        312,
+        48
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_vigil_scale",
+      "kind": "lore_stone",
+      "pos": [
+        264,
+        224
+      ],
+      "props": {
+        "string_id": "ISL8_LORE_VIGIL",
+        "icon": "toy_scale",
+        "style": "narration"
+      }
+    },
+    {
+      "id": "rest_vigil_hearth",
+      "kind": "rest_shrine",
+      "pos": [
+        448,
+        320
+      ],
+      "props": {
+        "zone": "vigil_terrace",
+        "name_key": "SHOP_TITLE"
+      }
+    },
+    {
+      "id": "hub_door_8",
+      "kind": "hub_door",
+      "pos": [
+        504,
+        296
+      ],
+      "props": {
+        "door_role": "pane_workshop"
+      }
+    },
+    {
+      "id": "npc_tailor_spider_8",
+      "kind": "npc",
+      "pos": [
+        408,
+        312
+      ],
+      "props": {
+        "folk": "tailor_spider",
+        "quest": "q_golden_thread",
+        "rescuable": true,
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "lantern",
+              "spark",
+              "isl_8"
+            ],
+            "line": "ISL8_Q1_HINT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npc_scribe_worm_8",
+      "kind": "npc",
+      "pos": [
+        488,
+        344
+      ],
+      "props": {
+        "folk": "scribe_worm",
+        "quest": "q8_lost_ledger",
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "book",
+              "question",
+              "arrow_e",
+              "isl_8"
+            ],
+            "line": "ISL8_Q2_HINT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npc_candle_grandma_8",
+      "kind": "npc",
+      "pos": [
+        432,
+        356
+      ],
+      "props": {
+        "folk": "candle_grandma",
+        "quest": "q8_eight_candles",
+        "wander_radius": 8,
+        "bubbles": [
+          {
+            "icons": [
+              "flame",
+              "light_off",
+              "arrow_n",
+              "isl_8"
+            ],
+            "line": "ISL8_Q3_HINT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "npc_moth_kid_8",
+      "kind": "npc",
+      "pos": [
+        344,
+        96
+      ],
+      "props": {
+        "folk": "moth_kid",
+        "quest": "q8_first_dark_rumor",
+        "require_flag": "island_8_relit",
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "moth",
+              "skull",
+              "crown",
+              "light_on",
+              "arrow_n"
+            ],
+            "line": "ISL8_Q4_DARK"
+          }
+        ]
+      }
+    },
+    {
+      "id": "lamp_vigil_entry",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "lit": true,
+        "zone": "vigil_terrace"
+      }
+    },
+    {
+      "id": "lamp_vigil_dais_w",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        176
+      ],
+      "props": {
+        "lit": true,
+        "zone": "vigil_terrace"
+      }
+    },
+    {
+      "id": "lamp_vigil_dais_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        240
+      ],
+      "props": {
+        "lit": true,
+        "zone": "vigil_terrace"
+      }
+    },
+    {
+      "id": "lamp_vigil_camp",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        304
+      ],
+      "props": {
+        "lit": true,
+        "zone": "vigil_terrace"
+      }
+    },
+    {
+      "id": "lamp_vigil_north",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        88
+      ],
+      "props": {
+        "lit": true,
+        "zone": "vigil_terrace"
+      }
+    },
+    {
+      "id": "lamp_vigil_bridge_w",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        136
+      ],
+      "props": {
+        "lit": false,
+        "zone": "vigil_terrace"
+      }
+    },
+    {
+      "id": "lamp_vigil_bridge_e",
+      "kind": "road_lamp",
+      "pos": [
+        528,
+        136
+      ],
+      "props": {
+        "lit": false,
+        "zone": "vigil_terrace"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stamp_floor_emblem",
+      "pos": [
+        312,
+        212
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_gate_arch",
+      "pos": [
+        312,
+        62
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        272,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "brass_balance_scale",
+      "pos": [
+        352,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "ledger_counter_desk",
+      "pos": [
+        376,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        424,
+        156
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        248,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "hanging_receipt_banner",
+      "pos": [
+        376,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        168,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        456,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "wax_seal_pedestal",
+      "pos": [
+        200,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "inkwell_lectern_stand",
+      "pos": [
+        520,
+        360
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        256,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        368,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        192,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        392,
+        372
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        312,
+        208
+      ],
+      "radius": 44,
+      "color": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        264,
+        184,
+        96,
+        48
+      ],
+      "color": "wine"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        400,
+        296,
+        120,
+        72
+      ],
+      "color": "apricot"
+    }
+  ],
+  "layers": [
+    {
+      "id": "eclipse_bridges",
+      "when": "toll_weight>=1",
+      "enable": [
+        "lamp_vigil_bridge_w",
+        "lamp_vigil_bridge_e"
+      ]
+    },
+    {
+      "id": "relit_dawn",
+      "when": "flag:island_8_relit",
+      "enable": [
+        "npc_moth_kid_8"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_vigil_welcome_pan",
+      "on": "enter",
+      "if": "!flag:vigil_first_trade_seen",
+      "once": true,
+      "do": [
+        {
+          "pan": [
+            312,
+            208,
+            1.4
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ev_vigil_first_trade",
+      "on": "signal:scale_vigil_main",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "toll_weight_1"
+        },
+        {
+          "shake": 0.16
+        },
+        {
+          "sfx": "toll_mote_drink"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Safe Camp Hub introducing THE LANTERN ASKS: first voluntary setting trade at the central Toll Scale siphons 18 HUD motes into Wick's lantern and ignites West & East eclipse bridges.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "toll_scale + THE LANTERN ASKS + Redemption Desk + Folk Quests + 80-Moth Arch",
+    "decisions": 3,
+    "expert_s": 50,
+    "reward": "unlock_west_east_wings",
+    "why": "Unforgettable Island 8 first-3-minutes reveal of the sold-settings rule and safe camp anchor.",
+    "exit": "exit_vigil_to_toll",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          312,
+          228
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "scale_vigil_main"
+      },
+      {
+        "op": "expect",
+        "var": "toll_weight>=1"
+      },
+      {
+        "op": "wait_until",
+        "target": "gate_vigil_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "wait_until",
+        "target": "gate_vigil_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_vigil_to_toll"
+      }
+    ]
+  }
+}

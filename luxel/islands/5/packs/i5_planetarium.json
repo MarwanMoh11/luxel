@@ -1,0 +1,68 @@
+{
+  "pack_id": "i5_planetarium",
+  "owner": "D5B",
+  "comment": "Island 5 Minor Dungeon B: The Planetarium (11 rooms, 4 cycles, lit constellations as walkable ground, Star Bells turning skies 90 deg, Starlight Sextant). Debug-only on dungeon/regions meta until ow_dome_causeway hooks south arch -> planet_r1.",
+  "strings": {
+    "I5_DNG_PLANET": "THE PLANETARIUM",
+    "I5_PL_R1": "ROTATING DOME HUB",
+    "I5_PL_R2": "FIRST CONSTELLATION",
+    "I5_PL_R3": "STAR-DECK KENNEL",
+    "I5_PL_R4": "QUARTER TURN",
+    "I5_PL_R5": "SEXTANT SANCTUM",
+    "I5_PL_R6": "MERIDIAN WEAVER DOME",
+    "I5_PL_R7": "THE FOUR-STAR BUDGET",
+    "I5_PL_R8": "ECLIPSE CHOIR",
+    "I5_PL_R9": "THE TURNING SKY",
+    "I5_PL_R10": "THE ECLIPTIC STAIR",
+    "I5_PL_R11": "THE ZODIAC SANCTUM",
+    "I5_PWR_SEXTANT": "STARLIGHT SEXTANT: LANTERN BRIDGES STARS!",
+    "I5_PL_PROMPT_SEXTANT": "CLAIM STARLIGHT SEXTANT",
+    "I5_PL_LORE_HUB": "RING THE BELL TO TURN THE DOME 90 DEGREES.",
+    "I5_PL_LORE_SKY": "PLANT LANTERN ON ROTOR. RING FROM THE STAR.",
+    "I5_PL_CLEARED": "THE ZODIAC BOWS. HALF-LANTERN CLAIMED!"
+  },
+  "interactables": {
+    "pl_sextant_altar": "res://luxel/islands/5/planet/pl_sextant_altar.gd"
+  },
+  "dungeons": [
+    {
+      "id": "planetarium",
+      "name_key": "I5_DNG_PLANET",
+      "island": 5,
+      "entry": "planet_r1",
+      "regions": [
+        "planet_r1",
+        "planet_r2",
+        "planet_r3",
+        "planet_r4",
+        "planet_r5",
+        "planet_r6",
+        "planet_r7",
+        "planet_r8",
+        "planet_r9",
+        "planet_r10",
+        "planet_r11"
+      ],
+      "mini_boss": "meridian_weaver",
+      "boss": "the_zodiac",
+      "theme": "planetarium",
+      "music": "isl5_planetarium",
+      "requires_flags": [],
+      "done_flag": "planetarium_done",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "planet_r1": { "name_key": "I5_PL_R1", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [2, 3], "debug_only": true },
+    "planet_r2": { "name_key": "I5_PL_R2", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [1, 3], "debug_only": true },
+    "planet_r3": { "name_key": "I5_PL_R3", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [1, 2], "debug_only": true },
+    "planet_r4": { "name_key": "I5_PL_R4", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [3, 3], "debug_only": true },
+    "planet_r5": { "name_key": "I5_PL_R5", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [3, 2], "debug_only": true },
+    "planet_r6": { "name_key": "I5_PL_R6", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [3, 1], "debug_only": true },
+    "planet_r7": { "name_key": "I5_PL_R7", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [4, 1], "debug_only": true },
+    "planet_r8": { "name_key": "I5_PL_R8", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [4, 0], "debug_only": true },
+    "planet_r9": { "name_key": "I5_PL_R9", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [3, 0], "debug_only": true },
+    "planet_r10": { "name_key": "I5_PL_R10", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [2, 2], "debug_only": true },
+    "planet_r11": { "name_key": "I5_PL_R11", "theme": "planetarium", "music": "isl5_planetarium", "dark": true, "map": [2, 1], "debug_only": true }
+  }
+}

@@ -1,0 +1,356 @@
+{
+  "id": "cave_gravity_well",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_5",
+  "name_key": "I5_CAVE_GRAV",
+  "music": "island5_dungeon",
+  "spawn": [
+    336,
+    128
+  ],
+  "exits": [
+    {
+      "id": "ex_cg_out",
+      "rect": [
+        368,
+        112,
+        16,
+        32
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        112,
+        648
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_cg",
+      "kind": "room_anchor",
+      "pos": [
+        336,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_cg_1",
+      "kind": "polarity_well",
+      "pos": [
+        256,
+        96
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 80.0,
+        "strength": 620.0
+      }
+    },
+    {
+      "id": "eye_cg_1",
+      "kind": "switch_eye",
+      "pos": [
+        208,
+        104
+      ],
+      "props": {
+        "target_id": "door_cg_1"
+      }
+    },
+    {
+      "id": "door_cg_1",
+      "kind": "door",
+      "pos": [
+        192,
+        184
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "eye_cg_1"
+        ]
+      }
+    },
+    {
+      "id": "well_cg_2",
+      "kind": "polarity_well",
+      "pos": [
+        144,
+        80
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 82.0,
+        "strength": 640.0
+      }
+    },
+    {
+      "id": "eye_cg_2",
+      "kind": "switch_eye",
+      "pos": [
+        80,
+        96
+      ],
+      "props": {
+        "target_id": "door_cg_vault",
+        "sets_flag": "cave_5_grav_done"
+      }
+    },
+    {
+      "id": "door_cg_vault",
+      "kind": "door",
+      "pos": [
+        112,
+        176
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "eye_cg_2"
+        ]
+      }
+    },
+    {
+      "id": "moth_5_05",
+      "kind": "moth",
+      "pos": [
+        64,
+        168
+      ],
+      "props": {
+        "id": "moth_5_05"
+      }
+    },
+    {
+      "id": "chest_cg_shards",
+      "kind": "chest",
+      "pos": [
+        80,
+        192
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "lamp_cg_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        160
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cg_m",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cg_m2",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cg_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_cg_done",
+      "on": "flag:cave_5_grav_done",
+      "once": true,
+      "do": [
+        {
+          "sfx": "shrine_unlock"
+        },
+        {
+          "narrate": "I5_OW_GRAV_DONE"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_5",
+      "prop": "stalagmite_tall",
+      "pos": [
+        352,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        272,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        168,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        48,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        88,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Curved-shot grotto teaching progressive 90-degree and 135-degree slingshot bends around solid basalt fins via twin gravity wells to unlock Moth 5 and treasure.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Aiming off-axis past gravity well rims to bend bolts around cover",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "moth_5_05, 30 shards, cave_5_grav_done",
+    "why": "SW training cave right off Starfall Landing reinforcing Minute-1 curved-shot mastery.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        336,
+        128
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          264,
+          176
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": [
+          288,
+          88
+        ],
+        "wait_hit": 0.75
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_cg_1",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          160,
+          168
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": [
+          176,
+          72
+        ],
+        "wait_hit": 0.75
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_cg_2",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          80,
+          184
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_cg_shards"
+      }
+    ]
+  }
+}

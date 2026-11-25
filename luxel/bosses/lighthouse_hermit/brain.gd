@@ -1,81 +1,84 @@
 class_name LxLighthouseHermitBoss
-extends LxWardenBrain
-## Tidewater Harbor Grand Boss (Island 2, `lighthouse_r10`): Upgraded 3-Phase Lighthouse Hermit.
-## HP 34.0 (~97 bolts), lamp-shell shield 5.0.
-## - P1: Sweeping Lamp Beam (reflects off LxMirrors into BLUE overcharge ray -> 1.2s stagger + 4.5s 1.5x crack!).
-## - P2 (66%): Raises `tower_tide` -> "high", floods outer pockets, floats room mirrors (Ballast Clamp pins!),
-##   & Tide Ring spawns 2 interactive Buoy Mines!
-## - P3 (33%): Cupola shutters dim arena to dramatic twilight, adds Double-Sweep Counter-Spin &
-##   Whirlpool Shell-Pull (LxFields inward pull — bat/pull mine into face for stagger!), & tiny crab leak beat!
+extends LxBossBase
+## Tidewater Harbor Grand Boss (Island 2, `lighthouse_r10`): Lighthouse Hermit (Bible §4.7).
+## 3 phases (66%/33%) on LxBossBase. Armored brass-and-glass cupola shell chips plain bolts outside
+## punish windows with a crystal armour glint; Prism-Split / Blue banks bypass shell (1.35x) and
+## self-reflecting his Sweeping Lamp Beam off a room LxMirror triggers 1.5s stagger + 4.5s 1.5x crack!
+## Preserves B2 upgrades: P2 Tower Tide (`tower_tide -> "high"`, outer pocket flood, drifting mirrors
+## pinned by Ballast Clamp, Tide Ring Buoy Mines); P3 Storm Eclipse twilight dimming, Double-Sweep
+## Counter-Spin, Whirlpool Shell-Pull (`LxFields`), and cracked-shell tiny crab leak-plugging beat!
 
 const ArenaFx := preload("res://luxel/bosses/lighthouse_hermit/arena_fx.gd")
 
 enum BossMove { NONE, LAMP_BEAM, TIDE_RING, WHIRLPOOL_PULL }
 enum BeamStage { SWEEP_1, COUNTER_PAUSE, SWEEP_2 }
 
-const BEAM_TELL_P1: float = 0.65
-const BEAM_TELL_P3: float = 0.56
-const BEAM_COMMIT_TIME: float = 0.68
-const BEAM_REVERSE_PAUSE: float = 0.42
-const BEAM_REVERSE_TIME: float = 0.56
+const SHIELD_MAX_HP: float = 5.0
+const SHIELD_GONE_DUR: float = 5.2
 const BEAM_RANGE: float = 142.0
 const BEAM_HALF_W: float = 9.0
 const BEAM_SWEEP_ARC_P1: float = 1.25
-const BEAM_SWEEP_ARC_P3: float = 1.55
-const BEAM_RECOVER_P1: float = 1.30
-const BEAM_RECOVER_P3: float = 1.05
-const BEAM_CD_P1: float = 3.8
-const BEAM_CD_P3: float = 2.6
-const SELF_REFLECT_STAGGER: float = 1.20
+const BEAM_SWEEP_ARC_P3: float = 1.50
+const BEAM_SWEEP_TIME: float = 0.68
+const BEAM_REVERSE_PAUSE: float = 0.36
+const BEAM_REVERSE_TIME: float = 0.52
 const LAMP_CRACK_DURATION: float = 4.50
 const LAMP_CRACK_MULT: float = 1.50
-const TIDE_TELL_P2: float = 0.62
-const TIDE_TELL_P3: float = 0.54
-const TIDE_COMMIT_TIME: float = 0.30
 const TIDE_START_R: float = 10.0
-const TIDE_MAX_R: float = 74.0
+const TIDE_MAX_R: float = 62.0
 const TIDE_BAND: float = 10.0
-const TIDE_RECOVER_P2: float = 1.25
-const TIDE_RECOVER_P3: float = 1.05
-const TIDE_CD_P2: float = 4.2
-const TIDE_CD_P3: float = 3.0
-const PULL_TELL_P3: float = 0.60
-const PULL_COMMIT_TIME: float = 0.50
-const PULL_RECOVER_P3: float = 1.25
-const PULL_CD_P3: float = 4.6
-const ROAR_TIME: float = 0.70
+const BEAM_BURN_RANGE: float = 62.0
 
+# Compat fields referenced by tests/luxel/boss_qa_capture.gd
 var active_move: int = BossMove.NONE
-var beam_stage: int = BeamStage.SWEEP_1
-var beam_cd: float = 1.2
-var tide_cd: float = 2.0
-var pull_cd: float = 2.4
-var sweep_start_ang: float = 0.0
-var sweep_dir: float = 1.0
-var beam_angle: float = 0.0
-var beam_hit: bool = false
-var beam_hit_len: float = BEAM_RANGE
-var reflected_active: bool = false
-var reflect_origin: Vector2 = Vector2.ZERO
-var reflect_end: Vector2 = Vector2.ZERO
-var reflect_dir_v: Vector2 = Vector2.RIGHT
+var _roaring: bool = false
+
+var shield_max: float = SHIELD_MAX_HP
+var shield_hp: float = SHIELD_MAX_HP
+var shield_gone_t: float = 0.0
 var lamp_cracked_t: float = 0.0
+
+var _beam_stage: int = BeamStage.SWEEP_1
+var _sweep_start_ang: float = 0.0
+var _sweep_dir: float = 1.0
+var _beam_angle: float = 0.0
+var _beam_hit: bool = false
+var _beam_hit_len: float = BEAM_RANGE
+var _reflected_active: bool = false
+var _reflect_origin: Vector2 = Vector2.ZERO
+var _reflect_end: Vector2 = Vector2.ZERO
 var _beam_light_t: float = 0.0
 var _mirror_ping_t: float = 0.0
-var tide_progress: float = 0.0
-var tide_hit: bool = false
-var pull_hit: bool = false
-var _roaring: bool = false
+var _tide_progress: float = 0.0
+var _tide_hit: bool = false
+var _pull_hit: bool = false
+var _aim_dir: Vector2 = Vector2.DOWN
+var _clank_sfx_cd: float = 0.0
 var _arena: ArenaFx = null
 
 
 func _init() -> void:
 	super._init()
-	kind = "lighthouse_hermit"; boss_id = "lighthouse_hermit"; island_id = 2; is_boss = true
-	max_hp = 34.0; hp = 34.0; shield_max = 5.0; shield_hp = 5.0; shield_gone_duration = 4.8
-	body_radius = 8.5; routine_speed = 34.0; leash_radius = 185.0; notice_radius = 152.0
-	reach = 44.0; lunge_reach = 104.0; swing_r = 34.0; swing_arc = 1.28
-	tell_time = 0.50; lunge_tell_time = 0.56; recover_time = 1.20; give_up_time = 1.8; shard_drop = 34
+	kind = "lighthouse_hermit"
+	boss_id = "lighthouse_hermit"
+	boss_name_key = "BOSS_HERMIT"
+	island_id = 2
+	is_miniboss = false
+	reward_heart = "full"
+	music_cue = "island2_boss_p1"
+	music_p2_cue = "island2_boss_p2"
+	max_hp = 120.0
+	hp = 120.0
+	body_radius = 9.0
+	move_speed = 36.0
+	stagger_threshold = 15.0
+	stagger_duration = 1.50
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.28
+	shard_drop = 38
+	intro_duration = 0.65
+	phase_shift_duration = 0.70
+	death_duration = 2.4
 
 
 func _exit_tree() -> void:
@@ -83,340 +86,458 @@ func _exit_tree() -> void:
 		_arena.cleanup()
 
 
-func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
+func _configure_boss(_spec: Dictionary) -> void:
 	if _arena == null:
 		_arena = ArenaFx.new(self)
-	_arena.cleanup()
-	super.setup(spec, p_director, p_world)
-	is_boss = true
-	boss_id = str(spec.get("boss_id", "lighthouse_hermit"))
-	island_id = int(spec.get("island_id", 2))
-	if not spec.has("max_hp") and not spec.has("data"):
-		max_hp = 34.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
-		hp = max_hp
-	if not spec.has("shield_hp") and not spec.has("data"):
-		shield_max = 5.0; shield_hp = 5.0
-	active_move = BossMove.NONE; beam_stage = BeamStage.SWEEP_1
-	beam_cd = 1.2; tide_cd = 2.0; pull_cd = 2.4
-	sweep_start_ang = facing; sweep_dir = 1.0; beam_angle = facing
-	beam_hit = false; beam_hit_len = BEAM_RANGE; reflected_active = false
-	reflect_origin = pos; reflect_end = pos; reflect_dir_v = Vector2.RIGHT
-	lamp_cracked_t = 0.0; _mirror_ping_t = 0.0; tide_progress = 0.0
-	tide_hit = false; pull_hit = false; _roaring = false
+	if world_ctx != null and str(world_ctx.get("current_region_id")) == "lighthouse_r10":
+		arena_rect = Rect2(144.0, 96.0, 176.0, 112.0)
+	configure_phases([0.66, 0.33])
+
+	# Attack 1: Sweeping Lamp Beam — reflects off LxMirrors into blue overcharge ray (+ P3 Counter-Spin!)
+	register_attack("lamp_beam_sweep", {
+		"weight": 1.30, "tell": 0.62, "commit": 0.68, "recover": 1.20, "cooldown": 1.60,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = BossMove.LAMP_BEAM
+			_beam_stage = BeamStage.SWEEP_1
+			_reflected_active = false
+			_beam_hit = false
+			_beam_hit_len = BEAM_RANGE
+			_sweep_dir = -_sweep_dir
+			var aim_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
+			_sweep_start_ang = wrapf(aim_a - _sweep_dir * (arc * 0.5), -PI, PI)
+			_beam_angle = _sweep_start_ang
+			facing = aim_a
+			ground.warn_sector(pos, _sweep_start_ang, _sweep_start_ang + _sweep_dir * arc, BEAM_BURN_RANGE, last_tell_duration, 0.0, "gold", "coral")
+			stage.play_sfx("hermit_beam_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_beam_stage = BeamStage.SWEEP_1
+			_beam_angle = _sweep_start_ang
+			_beam_hit = false
+			_beam_hit_len = BEAM_RANGE
+			_reflected_active = false
+			_beam_light_t = 0.0
+			if phase >= 3:
+				state_timer = BEAM_SWEEP_TIME + BEAM_REVERSE_PAUSE + BEAM_REVERSE_TIME
+			var aim_v: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			patterns.emit_fan(pos, aim_v, 3, 0.58, 138.0, {"color": "gold", "source": "lamp_beam_bolt", "damage": 0.5})
+			_boss_impact(0.16, 78.0, 72.0)
+			stage.play_sfx("hermit_beam_sweep", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, el: float) -> void:
+			_step_lamp_beam_commit(dt, el),
+	})
+
+	# Attack 2: Fresnel Prism Barrage — targeted lens-flare rain + perimeter pressure + golden fan
+	register_attack("fresnel_prism_barrage", {
+		"weight": 1.20, "tell": 0.56, "commit": 0.34, "recover": 1.05, "cooldown": 1.50,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = BossMove.NONE
+			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _aim_dir.angle()
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 24.0, 0.5, "gold", "coral")
+			ground.warn_lane(pos, pos + _aim_dir * 58.0, 8.0, last_tell_duration, 0.0, "sky", "gold")
+			stage.play_sfx("hermit_beam_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 2 else 3, 0.78, 138.0, {"color": "gold", "source": "fresnel_bolt", "damage": 0.5})
+			patterns.emit_lane(pos, _aim_dir, 3, 148.0, 0.08, {"color": "sky", "source": "fresnel_lance", "damage": 0.5})
+			stage.shake(0.15)
+			stage.play_sfx("hermit_tide_fire", pos),
+	})
+
+	# Attack 3: Lantern Shell Slam — surging shell lunge + gap ring of brine bolts
+	register_attack("lantern_shell_slam", {
+		"weight": 1.15, "tell": 0.54, "commit": 0.36, "recover": 1.10, "cooldown": 1.45,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = BossMove.NONE
+			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _aim_dir.angle()
+			ground.warn_lane(pos, pos + _aim_dir * 60.0, 10.0, last_tell_duration, 0.0, "coral", "gold")
+			stage.play_sfx("warden_swing", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 118.0, gap_a, 0.85, {"color": "sky", "source": "shell_slam_ring", "damage": 0.5})
+			patterns.emit_lane(pos, _aim_dir, 2, 140.0, 0.10, {"color": "ice", "source": "shell_slam_bolt", "damage": 0.5})
+			stage.shake(0.16)
+			stage.play_sfx("warden_swing", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			move_boss(_aim_dir * 104.0 * dt, false)
+			check_contact_damage(body_radius + 11.0, _aim_dir, 0.5, "shell_slam"),
+	})
+
+	# Attack 4 (P2/P3): Tide Ring + Interactive Buoy Mines
+	register_attack("tide_ring_mines", {
+		"phases": [2, 3], "weight": 1.75, "tell": 0.58, "commit": 0.34, "recover": 1.20, "cooldown": 1.55,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = BossMove.TIDE_RING
+			_tide_progress = 0.0
+			_tide_hit = false
+			ground.warn_ring(pos, TIDE_MAX_R, last_tell_duration, 0.0, "sky", "coral")
+			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.05, 0.5, "coral", "gold")
+			stage.play_sfx("hermit_tide_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_tide_progress = 0.0
+			_tide_hit = false
+			if _arena != null:
+				_arena.spawn_tide_mines()
+			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			patterns.emit_gap_ring(pos, 12, 120.0, gap_a, 0.85, {"color": "ice", "source": "tide_ring_spray", "damage": 0.5})
+			_boss_impact(0.22, 96.0, 96.0)
+			stage.play_sfx("hermit_tide_fire", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
+			_step_tide_ring_commit(el, 0.34),
+	})
+
+	# Attack 5 (P3): Whirlpool Shell-Pull — LxFields inward pull drawing Wick & buoy mines inward!
+	register_attack("whirlpool_shell_pull", {
+		"phases": [3], "weight": 2.05, "tell": 0.60, "commit": 0.52, "recover": 1.25, "cooldown": 1.55,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			active_move = BossMove.WHIRLPOOL_PULL
+			_pull_hit = false
+			ground.warn_ring(pos, 46.0, last_tell_duration, 0.0, "sky", "coral")
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration + 0.06, 22.0, 0.5, "sky", "gold")
+			stage.play_sfx("hermit_tide_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			_pull_hit = false
+			if _arena != null:
+				_arena.set_pull_active(true)
+			patterns.emit_spiral(pos, 4, 114.0, facing, 0.38, 2, 0.22, {"color": "sky", "source": "whirlpool_spray", "damage": 0.5})
+			_boss_impact(0.18, 92.0, 90.0)
+			stage.play_sfx("bellows_inhale", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, _el: float) -> void:
+			if not _pull_hit and _has_player() and _get_wick_pos().distance_to(pos) <= body_radius + 14.0:
+				_pull_hit = true
+				emit_boss_damage((_get_wick_pos() - pos).normalized(), 0.5, "shockwave", pos, true),
+		"on_recover": func(_b: LxBossBase, _dt: float) -> void:
+			if _arena != null:
+				_arena.set_pull_active(false),
+	})
 
 
-func take_hit(hit: LxHit) -> int:
-	if state == State.DEAD or hit == null: return HitResult.GLANCED
-	if _roaring: _emit_enemy_hit(hit, HitResult.GLANCED); return HitResult.GLANCED
-	var h: Dictionary = _read_hit(hit)
-	var src: String = str(h["source"])
-	var is_blue_hit: bool = hit.is_blue() or src == LxHit.SOURCE_PRISM
-	if is_blue_hit and _has_active_shield():
-		var mult: float = LAMP_CRACK_MULT if lamp_cracked_t > 0.0 else 1.25
-		var dmg: float = float(h["damage"]) * mult
-		var rel: Vector2 = (h["origin"] as Vector2) - pos
-		hp -= dmg; wary = true; flash_t = 0.16
-		if rel.length() > 0.01: knock = -rel.normalized() * 44.0
-		if hp <= 0.001: opened_kill = true; _die(hit); return HitResult.KILLED
-		if not _on_damaged_alive(hit) and (state == State.ROUTINE or state == State.RETURN):
-			_enter_notice()
-		_emit_sfx("hermit_prism_bank_hit"); _emit_enemy_hit(hit, HitResult.OPENED)
-		return HitResult.OPENED
-
-	var hp_before: float = hp
-	var res: int = super.take_hit(hit)
-	if is_alive() and lamp_cracked_t > 0.0 and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		var dealt: float = maxf(0.0, hp_before - hp)
-		if dealt > 0.001:
-			hp -= dealt * (LAMP_CRACK_MULT - 1.0)
-			if hp <= 0.001: opened_kill = true; _die(hit); return HitResult.KILLED
-			_on_damaged_alive(hit)
-	return res
-
-
-func _die(hit: Object) -> void:
-	if _arena != null: _arena.cleanup()
-	LxDamageFx.boss_impact(pos, 0.24, 96.0, 88.0, 128.0, 1.55, 0.55, "gold")
-	super._die(hit)
-
-
-func _is_hit_invulnerable() -> bool: return _roaring
-
-
-func _on_damaged_alive(_hit: LxHit) -> bool:
-	if phase < 2 and hp <= max_hp * 0.66 and hp > 0.001: _enter_phase(2); return true
-	if phase < 3 and hp <= max_hp * 0.33 and hp > 0.001: _enter_phase(3); return true
-	return false
+func _on_reset_encounter() -> void:
+	if _arena != null:
+		_arena.cleanup()
+	active_move = BossMove.NONE
+	_roaring = false
+	shield_max = SHIELD_MAX_HP
+	shield_hp = SHIELD_MAX_HP
+	shield_gone_t = 0.0
+	lamp_cracked_t = 0.0
+	_beam_stage = BeamStage.SWEEP_1
+	_sweep_start_ang = facing
+	_sweep_dir = 1.0
+	_beam_angle = facing
+	_beam_hit = false
+	_beam_hit_len = BEAM_RANGE
+	_reflected_active = false
+	_mirror_ping_t = 0.0
+	_tide_progress = 0.0
+	_tide_hit = false
+	_pull_hit = false
+	_clank_sfx_cd = 0.0
 
 
 func _enter_phase(next_phase: int) -> void:
-	phase = next_phase; wary = false; _roaring = true
-	active_move = BossMove.NONE; beam_stage = BeamStage.SWEEP_1
-	reflected_active = false; lunge_attack = false; is_counter_attack = false; tide_progress = 0.0
-	if _arena != null: _arena.set_pull_active(false)
-	_release_token(); state = State.NOTICE; state_timer = ROAR_TIME
-	beam_cd = 0.85; tide_cd = 0.45; pull_cd = 1.6
-	if phase == 2 and _arena != null: _arena.apply_p2_tower_tide()
-	elif phase == 3 and _arena != null: _arena.apply_p3_eclipse()
-	if Lx.events != null:
-		Lx.events.boss_phase_changed.emit(boss_id, phase)
-		Lx.events.shake_requested.emit(0.32)
-	LxDamageFx.trigger_boss_phase_reset(self, next_phase)
-	_emit_sfx("hermit_phase_roar")
+	# Compat hook for tests/luxel/boss_qa_capture.gd
+	phase = clampi(next_phase, 1, 3)
+	if not phases_reached.has(phase):
+		phases_reached.append(phase)
+	_on_phase_enter(phase)
 
 
-func _step_brain(dt: float) -> void:
-	beam_cd = maxf(0.0, beam_cd - dt); tide_cd = maxf(0.0, tide_cd - dt)
-	pull_cd = maxf(0.0, pull_cd - dt); lamp_cracked_t = maxf(0.0, lamp_cracked_t - dt)
-	_mirror_ping_t = maxf(0.0, _mirror_ping_t - dt)
+func _on_phase_enter(new_phase: int) -> void:
+	_roaring = true
+	active_move = BossMove.NONE
+	_beam_stage = BeamStage.SWEEP_1
+	_reflected_active = false
+	_tide_progress = 0.0
 	if _arena != null:
-		var pulling: bool = (active_move == BossMove.WHIRLPOOL_PULL and state == State.COMMIT)
+		_arena.set_pull_active(false)
+	var c: Vector2 = arena_rect.get_center()
+	if new_phase == 2:
+		if _arena != null:
+			_arena.apply_p2_tower_tide()
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-72.0, -38.0)), 4.5, "hermit_buoy_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(72.0, -38.0)), 4.5, "hermit_buoy_e")
+		stage.darkness_pulse(0.60, 0.95)
+	elif new_phase == 3:
+		if _arena != null:
+			_arena.apply_p3_eclipse()
+		stage.darkness_pulse(0.72, 1.05)
+	stage.shake(0.28)
+	stage.play_sfx("hermit_phase_roar", pos)
+
+
+func _on_boss_tick(dt: float, _target: Vector2) -> void:
+	if boss_state != BossState.PHASE_SHIFT:
+		_roaring = false
+	_clank_sfx_cd = maxf(0.0, _clank_sfx_cd - dt)
+	lamp_cracked_t = maxf(0.0, lamp_cracked_t - dt)
+	_mirror_ping_t = maxf(0.0, _mirror_ping_t - dt)
+	if shield_gone_t > 0.0:
+		shield_gone_t = maxf(0.0, shield_gone_t - dt)
+		if shield_gone_t <= 0.0:
+			shield_hp = shield_max
+	var pulling: bool = (boss_state == BossState.COMMIT and active_attack_id == "whirlpool_shell_pull")
+	if _arena != null:
 		_arena.tick_mirrors_and_mines(dt, pulling, _on_tide_mine_hit)
-	super._step_brain(dt)
+		if not pulling:
+			_arena.set_pull_active(false)
+
+
+func _has_active_shield() -> bool:
+	return shield_hp > 0.0 and shield_gone_t <= 0.0 and boss_state != BossState.STAGGER and boss_state != BossState.DEATH
+
+
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	if hit == null:
+		return dmg
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var is_blue_hit: bool = hit.is_blue() or src == LxHit.SOURCE_PRISM
+	var heavy: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_SUNFLARE] \
+			or bool(h["pierce"]) or bool(h["cracks_armour"])
+
+	if boss_state == BossState.STAGGER or lamp_cracked_t > 0.0:
+		return dmg * LAMP_CRACK_MULT
+	if is_blue_hit:
+		stage.play_sfx("hermit_prism_bank_hit", pos)
+		if _has_active_shield():
+			_wear_shield(float(h["shield_wear"]) * 1.2)
+		return dmg * 1.35
+	if is_punishable():
+		return dmg * (1.20 if heavy else 1.0)
+	if heavy:
+		if _has_active_shield():
+			_wear_shield(float(h["shield_wear"]))
+		return dmg * 1.15
+
+	# Cupola lamp-shell armour outside punish windows: reduced bolt chip + sea-glass armour glint!
+	clank_t = 0.12
+	if _clank_sfx_cd <= 0.0:
+		_clank_sfx_cd = 0.28
+		stage.play_sfx("crystal_clank", pos)
+	return dmg * (0.24 if _has_active_shield() else 0.32)
+
+
+func _wear_shield(amt: float) -> void:
+	shield_hp = maxf(0.0, shield_hp - maxf(0.0, amt))
+	if shield_hp <= 0.001:
+		shield_hp = 0.0
+		shield_gone_t = SHIELD_GONE_DUR
+		lamp_cracked_t = maxf(lamp_cracked_t, 2.5)
+		stage.play_sfx("hermit_self_reflect_stagger", pos)
+		add_stagger(stagger_threshold * 0.60)
 
 
 func _on_tide_mine_hit() -> void:
 	hp = maxf(0.5, hp - 3.5)
 	lamp_cracked_t = maxf(lamp_cracked_t, LAMP_CRACK_DURATION)
-	_release_token(); active_move = BossMove.NONE; state = State.STAGGER; state_timer = SELF_REFLECT_STAGGER
-	if _arena != null: _arena.set_pull_active(false)
-	_emit_sfx("hermit_self_reflect_stagger")
+	if _arena != null:
+		_arena.set_pull_active(false)
+	active_move = BossMove.NONE
+	stagger_immunity_t = 0.0
+	add_stagger(stagger_threshold)
+	stage.play_sfx("hermit_self_reflect_stagger", pos)
 	LxDamageFx.boss_impact(pos, 0.24, 88.0, 90.0, 92.0, 1.45, 0.36, "gold")
 
 
-func _step_notice(dt: float, target_pos: Vector2) -> void:
-	var to_t: Vector2 = target_pos - pos
-	if to_t.length() > 0.01: _turn_toward(to_t.angle(), TURN_PATROL * 1.4, dt)
-	state_timer -= dt
-	if state_timer <= 0.0:
-		_roaring = false; state = State.POSITION; step_clock = 0.0; cooldown = 0.35
+func _step_tide_ring_commit(el: float, dur: float) -> void:
+	_tide_progress = clampf(el / maxf(dur, 0.05), 0.0, 1.0)
+	var ring_r: float = lerpf(TIDE_START_R, TIDE_MAX_R, _tide_progress)
+	if not _tide_hit and _has_player():
+		var wv: Vector2 = _get_wick_pos() - pos
+		if absf(wv.length() - ring_r) <= TIDE_BAND:
+			_tide_hit = true
+			var push_d: Vector2 = wv.normalized() if wv.length() > 0.1 else Vector2.from_angle(facing)
+			emit_boss_damage(push_d, 0.5, "shockwave", pos, true)
+	if _is_lantern_out() and _get_lantern_pos().distance_to(pos) <= ring_r and Lx.events != null:
+		Lx.events.lantern_struck.emit(_get_lantern_pos())
 
 
-func _try_start_attack(target_pos: Vector2, dist: float) -> bool:
-	if phase >= 3 and pull_cd <= 0.0 and dist < 148.0 and _claim_token():
-		active_move = BossMove.WHIRLPOOL_PULL; lunge_attack = false; is_counter_attack = false
-		state = State.TELL; last_tell_duration = _scaled_tell(PULL_TELL_P3, false, attack_damage)
-		state_timer = last_tell_duration; pull_hit = false
-		_emit_attack_started(); _emit_sfx("hermit_tide_tell"); return true
-	if phase >= 2 and tide_cd <= 0.0 and dist < TIDE_MAX_R + 24.0 and _claim_token():
-		active_move = BossMove.TIDE_RING; lunge_attack = false; is_counter_attack = false
-		state = State.TELL; last_tell_duration = _scaled_tell(TIDE_TELL_P3 if phase >= 3 else TIDE_TELL_P2, false, attack_damage)
-		state_timer = last_tell_duration; tide_progress = 0.0; tide_hit = false
-		_emit_attack_started(); _emit_sfx("hermit_tide_tell"); return true
-	if beam_cd <= 0.0 and dist < BEAM_RANGE + 14.0 and _claim_token():
-		active_move = BossMove.LAMP_BEAM; beam_stage = BeamStage.SWEEP_1; reflected_active = false
-		lunge_attack = false; is_counter_attack = false; state = State.TELL
-		last_tell_duration = _scaled_tell(BEAM_TELL_P3 if phase >= 3 else BEAM_TELL_P1, false, attack_damage)
-		state_timer = last_tell_duration; sweep_dir = -sweep_dir
-		var to_t: Vector2 = target_pos - pos
-		var aim_a: float = to_t.angle() if to_t.length() > 0.01 else facing
-		var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
-		sweep_start_ang = wrapf(aim_a - sweep_dir * (arc * 0.5), -PI, PI)
-		beam_angle = sweep_start_ang; facing = aim_a; beam_hit = false; beam_hit_len = BEAM_RANGE
-		_emit_attack_started(); _emit_sfx("hermit_beam_tell"); return true
-	active_move = BossMove.NONE
-	return super._try_start_attack(target_pos, dist)
-
-
-func _step_tell(dt: float, target_pos: Vector2) -> void:
-	if active_move == BossMove.LAMP_BEAM:
-		if state_timer > 0.24:
-			var to_t: Vector2 = target_pos - pos
-			if to_t.length() > 0.01:
-				var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
-				sweep_start_ang = wrapf(to_t.angle() - sweep_dir * (arc * 0.5), -PI, PI)
-				beam_angle = sweep_start_ang; facing = to_t.angle()
-		state_timer -= dt
-		if state_timer <= 0.0: _enter_commit()
-		return
-	if active_move == BossMove.TIDE_RING or active_move == BossMove.WHIRLPOOL_PULL:
-		state_timer -= dt
-		if state_timer <= 0.0: _enter_commit()
-		return
-	super._step_tell(dt, target_pos)
-
-
-func _enter_commit() -> void:
-	if active_move == BossMove.LAMP_BEAM:
-		state = State.COMMIT; beam_stage = BeamStage.SWEEP_1; state_timer = BEAM_COMMIT_TIME
-		beam_angle = sweep_start_ang; beam_hit = false; beam_hit_len = BEAM_RANGE; reflected_active = false; _beam_light_t = 0.0
-		_boss_impact(0.16, 78.0, 72.0); _emit_sfx("hermit_beam_sweep"); return
-	if active_move == BossMove.TIDE_RING:
-		state = State.COMMIT; state_timer = TIDE_COMMIT_TIME; tide_progress = 0.0; tide_hit = false
-		if _arena != null: _arena.spawn_tide_mines()
-		_boss_impact(0.22, 96.0, 96.0); _emit_sfx("hermit_tide_fire"); return
-	if active_move == BossMove.WHIRLPOOL_PULL:
-		state = State.COMMIT; state_timer = PULL_COMMIT_TIME; pull_hit = false
-		if _arena != null: _arena.set_pull_active(true)
-		_boss_impact(0.18, 92.0, 90.0); _emit_sfx("bellows_inhale"); return
-	super._enter_commit()
-
-
-func _step_commit(dt: float) -> void:
-	if active_move == BossMove.LAMP_BEAM: _step_lamp_beam_commit(dt); return
-	if active_move == BossMove.WHIRLPOOL_PULL:
-		state_timer = maxf(0.0, state_timer - dt)
-		if not pull_hit and _has_player() and _get_wick_pos().distance_to(pos) <= body_radius + 13.0:
-			pull_hit = true; _emit_shockwave_hit((_get_wick_pos() - pos).normalized())
-		if state_timer <= 0.0:
-			if _arena != null: _arena.set_pull_active(false)
-			active_move = BossMove.NONE; state = State.RECOVER
-			state_timer = maxf(MIN_RECOVER_TIME, PULL_RECOVER_P3); last_recover_duration = state_timer; pull_cd = PULL_CD_P3
-		return
-	if active_move == BossMove.TIDE_RING:
-		state_timer = maxf(0.0, state_timer - dt)
-		tide_progress = 1.0 - clampf(state_timer / TIDE_COMMIT_TIME, 0.0, 1.0)
-		var ring_r: float = lerpf(TIDE_START_R, TIDE_MAX_R, tide_progress)
-		if not tide_hit and _has_player():
-			var wv: Vector2 = _get_wick_pos() - pos
-			if absf(wv.length() - ring_r) <= TIDE_BAND:
-				tide_hit = true; _emit_shockwave_hit(wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing))
-		if _is_lured() and _get_lantern_pos().distance_to(pos) <= ring_r and Lx.events != null:
-			Lx.events.lantern_struck.emit(_get_lantern_pos())
-		if state_timer <= 0.0:
-			active_move = BossMove.NONE; tide_progress = 0.0; state = State.RECOVER
-			state_timer = maxf(MIN_RECOVER_TIME, TIDE_RECOVER_P3 if phase >= 3 else TIDE_RECOVER_P2)
-			last_recover_duration = state_timer; tide_cd = TIDE_CD_P3 if phase >= 3 else TIDE_CD_P2
-		return
-	super._step_commit(dt)
-
-
-func _step_lamp_beam_commit(dt: float) -> void:
-	if beam_stage == BeamStage.COUNTER_PAUSE:
-		reflected_active = false; state_timer -= dt
-		if state_timer <= 0.0:
-			beam_stage = BeamStage.SWEEP_2; state_timer = BEAM_REVERSE_TIME; beam_hit = false
-			_boss_impact(0.16, 78.0, 72.0); _emit_sfx("hermit_beam_sweep")
-		return
-	state_timer = maxf(0.0, state_timer - dt)
-	var dur: float = BEAM_REVERSE_TIME if beam_stage == BeamStage.SWEEP_2 else BEAM_COMMIT_TIME
-	var prog: float = 1.0 - clampf(state_timer / maxf(dur, 0.05), 0.0, 1.0)
+func _step_lamp_beam_commit(dt: float, el: float) -> void:
 	var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
-	beam_angle = wrapf(sweep_start_ang + sweep_dir * arc * prog, -PI, PI); facing = beam_angle
-	var bdir: Vector2 = Vector2.from_angle(beam_angle)
-	beam_hit_len = BEAM_RANGE; reflected_active = false
+	var prog: float = 0.0
+	if phase >= 3 and el >= BEAM_SWEEP_TIME:
+		if el < BEAM_SWEEP_TIME + BEAM_REVERSE_PAUSE:
+			if _beam_stage == BeamStage.SWEEP_1:
+				_beam_stage = BeamStage.COUNTER_PAUSE
+				_sweep_dir = -_sweep_dir
+				_sweep_start_ang = _beam_angle
+				_beam_hit = false
+				_reflected_active = false
+				stage.play_sfx("hermit_beam_tell", pos)
+			return
+		if _beam_stage != BeamStage.SWEEP_2:
+			_beam_stage = BeamStage.SWEEP_2
+			_beam_hit = false
+			_boss_impact(0.16, 78.0, 72.0)
+			stage.play_sfx("hermit_beam_sweep", pos)
+		prog = clampf((el - BEAM_SWEEP_TIME - BEAM_REVERSE_PAUSE) / BEAM_REVERSE_TIME, 0.0, 1.0)
+	else:
+		prog = clampf(el / BEAM_SWEEP_TIME, 0.0, 1.0)
+
+	_beam_angle = wrapf(_sweep_start_ang + _sweep_dir * arc * prog, -PI, PI)
+	facing = _beam_angle
+	var bdir: Vector2 = Vector2.from_angle(_beam_angle)
+	_beam_hit_len = BEAM_RANGE
+	_reflected_active = false
 	var hit_mirror: LxMirror = _find_beam_mirror(bdir)
 	if hit_mirror != null:
-		beam_hit_len = clampf((hit_mirror.pos - pos).dot(bdir), body_radius + 4.0, BEAM_RANGE)
+		_beam_hit_len = clampf((hit_mirror.pos - pos).dot(bdir), body_radius + 4.0, BEAM_RANGE)
 		if _mirror_ping_t <= 0.0:
-			_mirror_ping_t = 0.18; hit_mirror.on_hit(LxHit.make(LxHit.SOURCE_BEAM, 0.0, bdir, pos))
+			_mirror_ping_t = 0.18
+			hit_mirror.on_hit(LxHit.make(LxHit.SOURCE_BEAM, 0.0, bdir, pos))
 		var rdir: Vector2 = hit_mirror.reflect_dir(bdir)
 		if rdir.length_squared() > 0.01:
-			reflected_active = true; reflect_origin = hit_mirror.pos; reflect_dir_v = rdir; reflect_end = hit_mirror.pos + rdir * BEAM_RANGE
-			if Geometry2D.get_closest_point_to_segment(pos, reflect_origin + rdir * 8.0, reflect_end).distance_to(pos) <= body_radius + 7.5:
-				_trigger_self_reflect_stagger(); return
-	var bend: Vector2 = pos + bdir * beam_hit_len
+			_reflected_active = true
+			_reflect_origin = hit_mirror.pos
+			_reflect_end = hit_mirror.pos + rdir * BEAM_RANGE
+			if Geometry2D.get_closest_point_to_segment(pos, _reflect_origin + rdir * 8.0, _reflect_end).distance_to(pos) <= body_radius + 7.5:
+				_trigger_self_reflect_stagger()
+				return
+	var bend: Vector2 = pos + bdir * _beam_hit_len
 	_beam_light_t -= dt
 	if _beam_light_t <= 0.0:
-		_beam_light_t = 0.14; LxDamageFx.boss_impact(pos + bdir * minf(66.0, beam_hit_len * 0.5), 0.0, 0.0, 0.0, 76.0, 1.38, 0.22)
-	if not beam_hit and _has_player() and Geometry2D.get_closest_point_to_segment(_get_wick_pos(), pos, bend).distance_to(_get_wick_pos()) <= BEAM_HALF_W:
-		beam_hit = true; _emit_player_hit(bdir)
+		_beam_light_t = 0.14
+		LxDamageFx.boss_impact(pos + bdir * minf(66.0, _beam_hit_len * 0.5), 0.0, 0.0, 0.0, 76.0, 1.38, 0.22)
+	var burn_end: Vector2 = pos + bdir * minf(_beam_hit_len, BEAM_BURN_RANGE)
+	if not _beam_hit and _has_player() and Geometry2D.get_closest_point_to_segment(_get_wick_pos(), pos, burn_end).distance_to(_get_wick_pos()) <= BEAM_HALF_W:
+		_beam_hit = true
+		emit_boss_damage(bdir, 0.5, "lamp_beam", pos, true)
 	if _is_lantern_out() and Geometry2D.get_closest_point_to_segment(_get_lantern_pos(), pos, bend).distance_to(_get_lantern_pos()) <= BEAM_HALF_W + 2.0 and Lx.events != null:
 		Lx.events.lantern_struck.emit(_get_lantern_pos())
-	if state_timer <= 0.0:
-		reflected_active = false
-		if beam_stage == BeamStage.SWEEP_1 and phase >= 3:
-			beam_stage = BeamStage.COUNTER_PAUSE; state_timer = BEAM_REVERSE_PAUSE; sweep_dir = -sweep_dir; sweep_start_ang = beam_angle; beam_hit = false
-			_emit_sfx("hermit_beam_tell")
-		else:
-			active_move = BossMove.NONE; beam_stage = BeamStage.SWEEP_1; state = State.RECOVER
-			state_timer = maxf(MIN_RECOVER_TIME, BEAM_RECOVER_P3 if phase >= 3 else BEAM_RECOVER_P1)
-			last_recover_duration = state_timer; beam_cd = BEAM_CD_P3 if phase >= 3 else BEAM_CD_P1
 
 
 func _find_beam_mirror(bdir: Vector2) -> LxMirror:
-	var best: LxMirror = null; var best_proj: float = BEAM_RANGE
+	var best: LxMirror = null
+	var best_proj: float = BEAM_RANGE
 	for ctx: Node in [world_ctx, Lx.world]:
-		if ctx == null or not is_instance_valid(ctx): continue
+		if ctx == null or not is_instance_valid(ctx):
+			continue
 		var inters_v: Variant = ctx.call("get_interactables") if ctx.has_method("get_interactables") else ctx.get("interactables")
-		if not (inters_v is Array): continue
+		if not (inters_v is Array):
+			continue
 		for it_v: Variant in (inters_v as Array):
-			if not (it_v is LxMirror): continue
+			if not (it_v is LxMirror) or not is_instance_valid(it_v as LxMirror):
+				continue
 			var m: LxMirror = it_v as LxMirror
-			if not is_instance_valid(m) or not m.is_reflective(): continue
-			var rel: Vector2 = m.pos - pos; var proj: float = rel.dot(bdir)
-			if proj <= body_radius + 2.0 or proj >= best_proj: continue
+			if not m.is_reflective():
+				continue
+			var rel: Vector2 = m.pos - pos
+			var proj: float = rel.dot(bdir)
+			if proj <= body_radius + 2.0 or proj >= best_proj:
+				continue
 			if (rel - bdir * proj).length() <= maxf(m.size.x, m.size.y) * 0.62:
-				best_proj = proj; best = m
+				best_proj = proj
+				best = m
 	return best
 
 
 func _trigger_self_reflect_stagger() -> void:
-	active_move = BossMove.NONE; beam_stage = BeamStage.SWEEP_1; reflected_active = false
-	lamp_cracked_t = LAMP_CRACK_DURATION; shield_hp = 0.0; shield_gone_t = shield_gone_duration
-	shield_broken.emit(self, pos); _release_token(); state = State.STAGGER; state_timer = SELF_REFLECT_STAGGER
-	beam_cd = BEAM_CD_P3 if phase >= 3 else BEAM_CD_P1
+	active_move = BossMove.NONE
+	_beam_stage = BeamStage.SWEEP_1
+	_reflected_active = false
+	lamp_cracked_t = LAMP_CRACK_DURATION
+	shield_hp = 0.0
+	shield_gone_t = SHIELD_GONE_DUR
+	stagger_immunity_t = 0.0
+	add_stagger(stagger_threshold)
 	LxDamageFx.boss_impact(pos, 0.28, 98.0, 102.0, 96.0, 1.50, 0.42, "ice")
-	_emit_sfx("hermit_self_reflect_stagger")
+	stage.play_sfx("hermit_self_reflect_stagger", pos)
 
 
-func _emit_shockwave_hit(push_dir: Vector2) -> void:
-	var prev_kind: String = kind; kind = "shockwave"; _emit_player_hit(push_dir); kind = prev_kind
+func _perimeter_targets(tgt: Vector2) -> Array[Vector2]:
+	var out: Array[Vector2] = [tgt]
+	var inset: Rect2 = arena_rect.grow(-14.0)
+	var corners: Array[Vector2] = [
+		inset.position, Vector2(inset.end.x, inset.position.y),
+		Vector2(inset.position.x, inset.end.y), inset.end,
+	]
+	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
+	out.append(corners[0])
+	out.append(corners[1])
+	if phase >= 2:
+		out.append(corners[2])
+	return out
 
 
-func _post_recover_cooldown() -> float: return 0.60 if phase >= 3 else (0.78 if phase >= 2 else 0.92)
-func _body_color() -> Color: return (PAL["coral"] if phase >= 3 else (PAL["blue"] if phase == 2 else PAL["teal"])) as Color
-func _shield_color() -> Color: return PAL["gold"] as Color
+func _on_death_start() -> void:
+	if _arena != null:
+		_arena.cleanup()
+	stage.revert_tiles(world_ctx)
+	LxDamageFx.boss_impact(pos, 0.24, 96.0, 88.0, 128.0, 1.55, 0.55, "gold")
+	stage.play_sfx("hermit_phase_roar", pos)
 
 
-func _draw_extra(off: Vector2) -> void:
+func _body_color() -> Color:
+	return (PAL["coral"] if phase >= 3 else (PAL["blue"] if phase == 2 else PAL["teal"])) as Color
+
+
+func _shield_color() -> Color:
+	return PAL["gold"] as Color
+
+
+func _draw_boss_extra(off: Vector2) -> void:
 	var lc: Vector2 = off.round()
-	if _arena != null: _arena.draw_extras(self, off)
+	if _arena != null:
+		_arena.draw_extras(self, off)
 	if lamp_cracked_t > 0.0:
 		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["sky"] as Color, 1.8)
 		draw_arc(lc, body_radius + 2.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.1)
-	if active_move == BossMove.WHIRLPOOL_PULL and (state == State.TELL or state == State.COMMIT):
-		var pulling_now: bool = state == State.COMMIT
+	if active_attack_id == "whirlpool_shell_pull" and boss_state in [BossState.TELL, BossState.COMMIT]:
+		var pulling_now: bool = boss_state == BossState.COMMIT
 		var r_pull: float = 52.0 if pulling_now else lerpf(64.0, 22.0, 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0))
 		draw_arc(lc, r_pull, anim_t * 3.0, anim_t * 3.0 + PI * 1.5, 24, PAL["coral" if pulling_now else "sky"] as Color, 2.0)
 		draw_arc(lc, r_pull * 0.62, -anim_t * 4.0, -anim_t * 4.0 + PI * 1.4, 18, PAL["cream" if pulling_now else "ice"] as Color, 1.4)
-	elif active_move == BossMove.LAMP_BEAM and (state == State.TELL or (state == State.COMMIT and beam_stage == BeamStage.COUNTER_PAUSE)):
+	elif active_attack_id == "lamp_beam_sweep" and boss_state == BossState.TELL:
 		var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
-		var end_a: float = sweep_start_ang + sweep_dir * arc
-		var denom: float = BEAM_REVERSE_PAUSE if beam_stage == BeamStage.COUNTER_PAUSE else maxf(last_tell_duration, 0.05)
-		var prog_b: float = 1.0 - clampf(state_timer / maxf(denom, 0.05), 0.0, 1.0)
-		LxBossTelegraphFx.draw_ground_danger_sector(self, off, sweep_start_ang, end_a, minf(BEAM_RANGE, 108.0), prog_b, anim_t, "gold", "coral")
-		_draw_sweep_mirror_glints(sweep_start_ang + sweep_dir * (arc * 0.5), arc * 0.5 + 0.12, prog_b)
-	elif active_move == BossMove.LAMP_BEAM and state == State.COMMIT:
-		var b_dir: Vector2 = Vector2.from_angle(beam_angle)
-		var b_end: Vector2 = (off + b_dir * beam_hit_len).round()
+		_draw_sweep_mirror_glints(_sweep_start_ang + _sweep_dir * (arc * 0.5), arc * 0.5 + 0.14, 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0))
+	elif active_attack_id == "lamp_beam_sweep" and boss_state == BossState.COMMIT and _beam_stage != BeamStage.COUNTER_PAUSE:
+		var b_dir: Vector2 = Vector2.from_angle(_beam_angle)
+		var b_end: Vector2 = (off + b_dir * _beam_hit_len).round()
 		draw_line(lc, b_end, PAL["apricot"] as Color, 6.8)
 		draw_line(lc, b_end, PAL["gold"] as Color, 3.8)
 		draw_line(lc, b_end, PAL["cream"] as Color, 1.6)
-		if reflected_active:
-			var r0: Vector2 = (reflect_origin - pos + off).round(); var r1: Vector2 = (reflect_end - pos + off).round()
-			draw_line(r0, r1, PAL["blue"] as Color, 5.0); draw_line(r0, r1, PAL["sky"] as Color, 3.0); draw_line(r0, r1, PAL["cream"] as Color, 1.2)
-	elif active_move == BossMove.TIDE_RING and state == State.TELL:
-		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		LxBossTelegraphFx.draw_ground_danger_ring(self, off, TIDE_MAX_R, prog, anim_t, "sky", "coral")
-	elif active_move == BossMove.TIDE_RING and state == State.COMMIT:
-		var ring_r: float = lerpf(TIDE_START_R, TIDE_MAX_R, tide_progress)
-		draw_arc(off, ring_r + 2.4, 0.0, TAU, 36, PAL["blue"] as Color, 2.4)
-		draw_arc(off, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
-		draw_arc(off, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["cream"] as Color, 1.4)
-	elif _roaring:
-		var rp: float = 1.0 - clampf(state_timer / ROAR_TIME, 0.0, 1.0)
-		var rr: float = body_radius + 11.0 + rp * 18.0
-		draw_arc(off, rr + 2.5, 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
-		draw_arc(off, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)
+		if _reflected_active:
+			var r0: Vector2 = (_reflect_origin - pos + off).round()
+			var r1: Vector2 = (_reflect_end - pos + off).round()
+			draw_line(r0, r1, PAL["blue"] as Color, 5.0)
+			draw_line(r0, r1, PAL["sky"] as Color, 3.0)
+			draw_line(r0, r1, PAL["cream"] as Color, 1.2)
+	elif active_attack_id == "tide_ring_mines" and boss_state == BossState.COMMIT:
+		var ring_r: float = lerpf(TIDE_START_R, TIDE_MAX_R, _tide_progress)
+		draw_arc(lc, ring_r + 2.4, 0.0, TAU, 36, PAL["blue"] as Color, 2.4)
+		draw_arc(lc, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
+		draw_arc(lc, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["cream"] as Color, 1.4)
+	# Cupola armour glint outside punish windows vs golden punish halo
+	if clank_t > 0.0:
+		draw_arc(lc, body_radius + 5.0, facing - 1.1, facing + 1.1, 16, PAL["cream"] as Color, 2.2)
+		draw_arc(lc, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["ice"] as Color, 1.2)
+	elif is_punishable() and boss_state != BossState.DEATH:
+		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
 
 
 func _draw_sweep_mirror_glints(mid_a: float, half_arc: float, prog: float) -> void:
-	var rad_d: float = 7.5 + (0.0 if LxHudFx.flash_reduced() else 1.5 * sin(anim_t * 18.0))
+	var rad_d: float = 7.5 + (0.0 if is_flash_reduced() else 1.5 * sin(anim_t * 18.0))
 	var col_d: Color = (PAL["ice"] if prog > 0.50 else PAL["sky"]) as Color
 	for ctx: Node in [world_ctx, Lx.world]:
-		if ctx == null or not is_instance_valid(ctx): continue
+		if ctx == null or not is_instance_valid(ctx):
+			continue
 		var inters_v: Variant = ctx.call("get_interactables") if ctx.has_method("get_interactables") else ctx.get("interactables")
-		if not (inters_v is Array): continue
+		if not (inters_v is Array):
+			continue
 		for it_v: Variant in (inters_v as Array):
-			if not (it_v is LxMirror) or not is_instance_valid(it_v as LxMirror): continue
+			if not (it_v is LxMirror) or not is_instance_valid(it_v as LxMirror):
+				continue
 			var m: LxMirror = it_v as LxMirror
 			var rel: Vector2 = m.pos - pos
 			if not m.is_reflective() or rel.length() <= body_radius + 2.0 or rel.length() > BEAM_RANGE + 8.0 or absf(angle_difference(mid_a, rel.angle())) > half_arc:
 				continue
 			var mp: Vector2 = rel.round()
-			var pts: PackedVector2Array = PackedVector2Array([mp + Vector2(0.0, -rad_d), mp + Vector2(rad_d, 0.0), mp + Vector2(0.0, rad_d), mp + Vector2(-rad_d, 0.0), mp + Vector2(0.0, -rad_d)])
-			draw_polyline(pts, PAL["void"] as Color, 2.6); draw_polyline(pts, col_d, 1.5); draw_circle(mp, 2.2, PAL["cream"] as Color)
+			var pts := PackedVector2Array([mp + Vector2(0.0, -rad_d), mp + Vector2(rad_d, 0.0), mp + Vector2(0.0, rad_d), mp + Vector2(-rad_d, 0.0), mp + Vector2(0.0, -rad_d)])
+			draw_polyline(pts, PAL["void"] as Color, 2.6)
+			draw_polyline(pts, col_d, 1.5)
+			draw_circle(mp, 2.2, PAL["cream"] as Color)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

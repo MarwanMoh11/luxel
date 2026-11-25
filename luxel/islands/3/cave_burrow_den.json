@@ -1,0 +1,398 @@
+{
+  "id": "cave_burrow_den",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "cave_3",
+  "name_key": "ISL3_CAVE_BURROW_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    192,
+    56
+  ],
+  "zones": [
+    {
+      "id": "burrow_den",
+      "name_key": "ISL3_CAVE_BURROW_NAME",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        144,
+        128
+      ],
+      "radius": 36,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        192,
+        136
+      ],
+      "radius": 28,
+      "glow": false
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        216
+      ],
+      "radius": 22,
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "gold"
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_burrow_to_shift_e",
+      "rect": [
+        176,
+        0,
+        32,
+        32
+      ],
+      "to_region": "ow_shift_e",
+      "to_spawn": [
+        344,
+        264
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "den_beetle",
+      "kind": "burrow_beetle",
+      "pos": [
+        120,
+        144
+      ],
+      "route": [
+        [
+          88,
+          144
+        ],
+        [
+          152,
+          144
+        ]
+      ],
+      "zone": "burrow_den",
+      "leash": 160
+    },
+    {
+      "id": "den_archer",
+      "kind": "thorn_archer",
+      "pos": [
+        296,
+        136
+      ],
+      "route": [
+        [
+          296,
+          112
+        ],
+        [
+          296,
+          160
+        ]
+      ],
+      "zone": "burrow_den",
+      "leash": 160
+    },
+    {
+      "id": "den_drifter",
+      "kind": "dandelion_drifter",
+      "pos": [
+        232,
+        160
+      ],
+      "route": [
+        [
+          192,
+          160
+        ],
+        [
+          264,
+          152
+        ]
+      ],
+      "zone": "burrow_den",
+      "leash": 160
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_burrow_den",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        56
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lp_den_bounce_w",
+      "kind": "light_plant",
+      "pos": [
+        72,
+        112
+      ],
+      "props": {
+        "grow": "bounce",
+        "bounce_dir": [
+          1,
+          0
+        ],
+        "bounce_dist": 64.0,
+        "secs": 0.5,
+        "decay": 6.0
+      }
+    },
+    {
+      "id": "lp_den_bounce_e",
+      "kind": "light_plant",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "grow": "bounce",
+        "bounce_dir": [
+          -1,
+          0
+        ],
+        "bounce_dist": 64.0,
+        "secs": 0.5,
+        "decay": 6.0
+      }
+    },
+    {
+      "id": "door_burrow_vault",
+      "kind": "door",
+      "pos": [
+        192,
+        184
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "burrow_den",
+        "clear_zone": "burrow_den"
+      }
+    },
+    {
+      "id": "item_amber_spindle",
+      "kind": "quest_item",
+      "pos": [
+        192,
+        216
+      ],
+      "props": {
+        "id": "amber_spindle",
+        "icon": "toy_ring",
+        "carry": false
+      }
+    },
+    {
+      "id": "moth_3_05",
+      "kind": "moth",
+      "pos": [
+        144,
+        216
+      ],
+      "props": {
+        "id": "moth_3_05"
+      }
+    },
+    {
+      "id": "chest_burrow_shards",
+      "kind": "chest",
+      "pos": [
+        232,
+        216
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "lamp_den_n",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_den_e",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_den_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_cave_3",
+      "prop": "cave_arch_rock",
+      "pos": [
+        192,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "stalagmite_tall",
+      "pos": [
+        88,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        296,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        72,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        328,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "mossy_boulder_large",
+      "pos": [
+        136,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "subterranean_shroom",
+      "pos": [
+        248,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Role-pair combat den pairing Burrow Beetle (armored charger), Thorn Archer (jammed by lantern light), and Dandelion Drifter around bloomable Seedlight bounce-caps and cover pillars.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "burrow_beetle + thorn_archer + dandelion_drifter role synergy, light_plant(bounce) repositioning",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "amber_spindle (Tailor Spider quest), moth_3_05, 35 shards",
+    "why": "Combat encounter cave rewarding Tailor Spider's Pane quest and Moth #5",
+    "optional": true,
+    "solution": [
+      {
+        "op": "clear"
+      },
+      {
+        "op": "expect",
+        "target": "door_burrow_vault",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          216
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "item_amber_spindle"
+      },
+      {
+        "op": "expect",
+        "flag": "quest:item:amber_spindle"
+      }
+    ]
+  }
+}

@@ -1,0 +1,438 @@
+{
+  "id": "cave_star_cistern",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "cave_5",
+  "name_key": "I5_CAVE_CIST",
+  "music": "island5_dungeon",
+  "spawn": [
+    400,
+    144
+  ],
+  "exits": [
+    {
+      "id": "ex_cist_out",
+      "rect": [
+        432,
+        128,
+        16,
+        32
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        368,
+        1008
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_cist",
+      "kind": "room_anchor",
+      "pos": [
+        400,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sn_cist_1",
+      "kind": "star_node",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "cap_group": "cist",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_cist_2",
+      "kind": "star_node",
+      "pos": [
+        296,
+        104
+      ],
+      "props": {
+        "cap_group": "cist",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_cist_3",
+      "kind": "star_node",
+      "pos": [
+        240,
+        96
+      ],
+      "props": {
+        "cap_group": "cist",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_cist_4",
+      "kind": "star_node",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "cap_group": "cist",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "sn_cist_5",
+      "kind": "star_node",
+      "pos": [
+        144,
+        152
+      ],
+      "props": {
+        "cap_group": "cist",
+        "max_lit": 4,
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "trans_cist",
+      "kind": "blue_transformer",
+      "pos": [
+        224,
+        64
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "well_cist",
+      "kind": "polarity_well",
+      "pos": [
+        160,
+        80
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 68.0,
+        "strength": 480.0
+      }
+    },
+    {
+      "id": "eye_cist_blue",
+      "kind": "switch_eye",
+      "pos": [
+        144,
+        64
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_cist_inner",
+        "sets_flag": "cist_blue_opened"
+      }
+    },
+    {
+      "id": "door_cist_inner",
+      "kind": "door",
+      "pos": [
+        128,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "eye_cist_blue"
+        ]
+      }
+    },
+    {
+      "id": "sg_cist_vault",
+      "kind": "shadow_gate",
+      "pos": [
+        96,
+        152
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "threshold": 0.45
+      }
+    },
+    {
+      "id": "pickup_null_well",
+      "kind": "pane_pickup",
+      "pos": [
+        64,
+        144
+      ],
+      "props": {
+        "pane": "null_well"
+      }
+    },
+    {
+      "id": "chest_cist_shards",
+      "kind": "chest",
+      "pos": [
+        64,
+        184
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 40
+      }
+    },
+    {
+      "id": "lamp_cist_e",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        120
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cist_e2",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        176
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cist_c",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        160
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cist_n",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_cist_clear",
+      "on": "flag:cist_blue_opened",
+      "once": true,
+      "do": [
+        {
+          "sfx": "door_open"
+        },
+        {
+          "narrate": "I5_OW_CIST_CLEAR"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_5",
+      "prop": "dripping_pool_basin",
+      "pos": [
+        376,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "subterranean_shroom",
+      "pos": [
+        416,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        200,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "stalagmite_tall",
+      "pos": [
+        56,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        272,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Dark reflection cistern combining a 4-star capped pool crossing, a blue transformer bank into a blue eye switch, and a shadow gate requiring tossing the lantern away behind a pillar to claim the Null Well pane.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Combining star bridges, blue transformers, and shadow gates",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "pane:null_well, 40 shards",
+    "why": "Quest 3 reward cave holding Island 5's secret Stained-Glass Pane.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        400,
+        144
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "target": "sn_cist_1",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "sn_cist_2",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          152
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_cist_3",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          64
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "trans_cist",
+        "angle": 180
+      },
+      {
+        "op": "shoot",
+        "target": "trans_cist",
+        "wait_hit": 0.65
+      },
+      {
+        "op": "expect",
+        "interactable": "eye_cist_blue",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          152
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_cist_4",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          152
+        ]
+      },
+      {
+        "op": "throw",
+        "dir": [
+          1,
+          0
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          144
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "pickup_null_well"
+      }
+    ]
+  }
+}

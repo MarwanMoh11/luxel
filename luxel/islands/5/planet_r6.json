@@ -1,0 +1,360 @@
+{
+  "id": "planet_r6",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R6",
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "pl_r6",
+      "name_key": "I5_PL_R6",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r6_s",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "planet_r5",
+      "to_spawn": [
+        224,
+        48
+      ]
+    },
+    {
+      "id": "exit_pl_r6_short",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "planet_r1",
+      "to_spawn": [
+        424,
+        96
+      ],
+      "requires_flags": [
+        "pl_miniboss_done"
+      ],
+      "locked_door_id": "door_pl_r6_short"
+    },
+    {
+      "id": "exit_pl_r6_e",
+      "rect": [
+        464,
+        144,
+        16,
+        32
+      ],
+      "to_region": "planet_r7",
+      "to_spawn": [
+        56,
+        224
+      ],
+      "requires_flags": [
+        "pl_miniboss_done"
+      ],
+      "locked_door_id": "door_pl_r6_e"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r6",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "door_pl_r6_short",
+      "kind": "door",
+      "pos": [
+        24,
+        160
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "pl_miniboss_done"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_pl_r6_e",
+      "kind": "door",
+      "pos": [
+        456,
+        160
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "pl_miniboss_done"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_pl_r6_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        248
+      ],
+      "props": {
+        "zone": "pl_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        248
+      ],
+      "props": {
+        "zone": "pl_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r6_nw",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        64
+      ],
+      "props": {
+        "zone": "pl_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        64
+      ],
+      "props": {
+        "zone": "pl_r6",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_meridian_weaver",
+      "kind": "meridian_weaver",
+      "pos": [
+        240,
+        136
+      ],
+      "zone": "pl_r6",
+      "arena": [
+        88,
+        64,
+        304,
+        184
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        156
+      ],
+      "radius": 68,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        156
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        112
+      ],
+      "size": [
+        56,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        240,
+        156
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        240,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        104,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        376,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        104,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        376,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Octagonal brass compass mini-boss arena against The Meridian Weaver, which strides across an 8-star dome ring extinguishing stars behind its feet; shoot corner Star Bells during its Divider Slice tell to rotate the dome 90 degrees and stagger it.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Controlling star footing and dome rotation in boss combat, unlocking Hub Shortcut Cycle 2 and the deep wing.",
+    "decisions": 6,
+    "expert_s": 85,
+    "reward": "pl_miniboss_done+half_lantern+hub_shortcut_2",
+    "why": "Mid-dungeon mini-boss exam rewarding Cycle 2 hub return and deeper Planetarium wing access.",
+    "exit": "exit_pl_r6_e",
+    "start": {
+      "flags": [
+        "power_sextant"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 85.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "pl_miniboss_done",
+        "timeout": 4.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r6_e"
+      }
+    ]
+  }
+}

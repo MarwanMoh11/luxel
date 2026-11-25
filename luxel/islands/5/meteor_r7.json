@@ -1,0 +1,462 @@
+{
+  "id": "meteor_r7",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R7",
+  "spawn": [
+    56,
+    224
+  ],
+  "zones": [
+    {
+      "id": "mv_r7",
+      "name_key": "I5_MV_R7",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r7_w",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_region": "meteor_r6",
+      "to_spawn": [
+        424,
+        160
+      ]
+    },
+    {
+      "id": "exit_mv_r7_n",
+      "rect": [
+        384,
+        0,
+        32,
+        16
+      ],
+      "to_region": "meteor_r8",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "locked_door_id": "door_mv_r7_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r7",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_r7_1",
+      "kind": "polarity_well",
+      "pos": [
+        144,
+        176
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 80.0,
+        "strength": 600.0
+      }
+    },
+    {
+      "id": "well_r7_2",
+      "kind": "polarity_well",
+      "pos": [
+        224,
+        160
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 80.0,
+        "strength": 620.0,
+        "linked_crystal": "crys_r7"
+      }
+    },
+    {
+      "id": "crys_r7",
+      "kind": "crystal_toggle",
+      "pos": [
+        80,
+        176
+      ],
+      "props": {
+        "group": "r7_pol",
+        "phase": 0,
+        "target_id": "well_r7_2"
+      }
+    },
+    {
+      "id": "trans_r7",
+      "kind": "blue_transformer",
+      "pos": [
+        176,
+        152
+      ],
+      "props": {
+        "angle_deg": 0.0,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "eye_r7_blue",
+      "kind": "switch_eye",
+      "pos": [
+        214,
+        44
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_ids": [
+          "bridge_r7_key",
+          "door_mv_r7_n"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r7_key",
+      "kind": "door",
+      "pos": [
+        272,
+        208
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          144,
+          32
+        ],
+        "requires_signals": [
+          "eye_r7_blue"
+        ],
+        "starts_open": false
+      }
+    },
+    {
+      "id": "mv_key_2",
+      "kind": "wick_key",
+      "pos": [
+        400,
+        144
+      ],
+      "props": {
+        "dungeon_id": "meteor_vault",
+        "key_kind": "wick_key",
+        "flag_id": "mv_key_2"
+      }
+    },
+    {
+      "id": "door_mv_r7_n",
+      "kind": "door",
+      "pos": [
+        400,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "eye_r7_blue"
+        ],
+        "sets_flag": "mv_r7_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_mv_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        256
+      ],
+      "props": {
+        "zone": "mv_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r7_opt",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        240
+      ],
+      "props": {
+        "zone": "mv_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r7_cit",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        144
+      ],
+      "props": {
+        "zone": "mv_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        72
+      ],
+      "props": {
+        "zone": "mv_r7",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "eye_r7_guard",
+      "kind": "satellite_eye",
+      "pos": [
+        168,
+        248
+      ],
+      "zone": "mv_r7"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        88,
+        208,
+        32,
+        16
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        176,
+        152
+      ],
+      "radius": 24,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        400,
+        144
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        400,
+        96
+      ],
+      "size": [
+        44,
+        60
+      ],
+      "tint": "cool",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        400,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "celestial_safe_chest",
+      "pos": [
+        432,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "star_ore_crate",
+      "pos": [
+        360,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "brass_caliper_stand",
+      "pos": [
+        56,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        360,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        120,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        432,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Clear the patrolling Satellite Eye, rotate the Blue Transformer, flip Well 2 to Push, and curve a yellow bolt through Well 1 into the mirror so the reflected blue ray curves the opposite way into the Blue Eye, bridging the chasm to Key 2.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Chaining curved yellow gravity shots with Blue Prism reflection and opposite-polarity blue curves.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "mv_key_2",
+    "why": "Mid-deep optics synthesis puzzle rewarding Small Key 2.",
+    "exit": "exit_mv_r7_n",
+    "start": {
+      "flags": [
+        "power_orbit_ring"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 25.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          56,
+          176
+        ],
+        "target": "crys_r7"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "well_r7_2",
+        "prop": "is_push",
+        "value": true,
+        "timeout": 2.0
+      },
+      {
+        "op": "rotate",
+        "target": "trans_r7",
+        "steps": 1
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          216
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          181,
+          195
+        ],
+        "wait_hit": 0.95
+      },
+      {
+        "op": "wait_until",
+        "interactable": "eye_r7_blue",
+        "prop": "activated",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          208
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "mv_key_2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r7_n"
+      }
+    ]
+  }
+}

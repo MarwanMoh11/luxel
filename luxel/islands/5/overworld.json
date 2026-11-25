@@ -87,7 +87,7 @@
       "to_region": "orrery_r1",
       "to_spawn": [
         176,
-        224
+        192
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -116,6 +116,133 @@
         "island_5_relit"
       ],
       "locked_door_id": "bridge_of_light_5"
+    },
+    {
+      "id": "exit_to_meteor_apron",
+      "rect": [
+        336,
+        96,
+        48,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_meteor_apron",
+      "to_spawn": [
+        288,
+        336
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_pendulum",
+      "rect": [
+        272,
+        112,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "cave_broken_pendulum",
+      "to_spawn": [
+        208,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_grav_cave",
+      "rect": [
+        64,
+        624,
+        16,
+        48
+      ],
+      "to_island": 5,
+      "to_region": "cave_gravity_well",
+      "to_spawn": [
+        336,
+        128
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_causeway",
+      "rect": [
+        640,
+        944,
+        48,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_dome_causeway",
+      "to_spawn": [
+        288,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_cistern",
+      "rect": [
+        336,
+        960,
+        16,
+        32
+      ],
+      "to_island": 5,
+      "to_region": "cave_star_cistern",
+      "to_spawn": [
+        400,
+        144
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "q5_cistern_open"
+      ],
+      "locked_door_id": "door_cistern_5"
+    },
+    {
+      "id": "exit_to_crypt",
+      "rect": [
+        1072,
+        704,
+        16,
+        32
+      ],
+      "to_island": 5,
+      "to_region": "cave_astrolabe_crypt",
+      "to_spawn": [
+        48,
+        176
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_to_starfall_cliff",
+      "rect": [
+        848,
+        208,
+        48,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_starfall_cliff",
+      "to_spawn": [
+        256,
+        336
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "beacon_5_1"
+      ],
+      "locked_door_id": "door_cliff_5"
     }
   ],
   "enemies": [
@@ -165,17 +292,17 @@
       "id": "echo_moth_5_terrace",
       "kind": "echo_moth",
       "pos": [
-        408,
-        200
+        472,
+        224
       ],
       "route": [
         [
-          376,
-          200
+          440,
+          224
         ],
         [
-          456,
-          200
+          504,
+          224
         ]
       ],
       "perches": [],
@@ -207,17 +334,17 @@
       "id": "echo_moth_5_promenade",
       "kind": "echo_moth",
       "pos": [
-        664,
-        856
+        704,
+        832
       ],
       "route": [
         [
-          632,
-          856
+          664,
+          832
         ],
         [
-          696,
-          856
+          728,
+          832
         ]
       ],
       "perches": [],
@@ -229,21 +356,21 @@
       "kind": "phantom_owl",
       "pos": [
         888,
-        664
+        624
       ],
       "route": [],
       "perches": [
         [
           888,
-          664
+          624
         ],
         [
           856,
-          720
+          672
         ],
         [
-          936,
-          720
+          920,
+          648
         ]
       ],
       "zone": "zenith_rim",
@@ -253,17 +380,17 @@
       "id": "orrery_sentinel_5_zenith",
       "kind": "orrery_sentinel",
       "pos": [
-        920,
-        744
+        896,
+        776
       ],
       "route": [
         [
-          872,
-          744
+          864,
+          776
         ],
         [
-          952,
-          744
+          936,
+          776
         ]
       ],
       "perches": [],
@@ -295,16 +422,16 @@
       "id": "orrery_sentinel_5_trial",
       "kind": "orrery_sentinel",
       "pos": [
-        408,
+        464,
         968
       ],
       "route": [
         [
-          376,
+          432,
           968
         ],
         [
-          472,
+          488,
           968
         ]
       ],
@@ -332,6 +459,48 @@
       "perches": [],
       "zone": "trial_5",
       "leash": 120
+    },
+    {
+      "id": "comet_hound_5_terrace",
+      "kind": "comet_hound",
+      "pos": [
+        520,
+        152
+      ],
+      "route": [
+        [
+          488,
+          152
+        ],
+        [
+          552,
+          152
+        ]
+      ],
+      "perches": [],
+      "zone": "brass_terrace",
+      "leash": 136
+    },
+    {
+      "id": "satellite_eye_5_overlook",
+      "kind": "satellite_eye",
+      "pos": [
+        888,
+        376
+      ],
+      "route": [
+        [
+          856,
+          376
+        ],
+        [
+          920,
+          376
+        ]
+      ],
+      "perches": [],
+      "zone": "kiln_overlook",
+      "leash": 132
     }
   ],
   "interactables": [
@@ -799,6 +968,378 @@
       ],
       "props": {
         "zone": "kiln_overlook"
+      }
+    },
+    {
+      "id": "well_ow_5_intro",
+      "kind": "polarity_well",
+      "pos": [
+        296,
+        472
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 560.0,
+        "orbit_capture": true,
+        "orbit_r": 32.0,
+        "zone": "star_landing"
+      }
+    },
+    {
+      "id": "switch_ow_5_intro",
+      "kind": "switch_eye",
+      "pos": [
+        344,
+        504
+      ],
+      "props": {
+        "target_id": "bridge_ow_5_intro",
+        "sets_flag": "ow_5_intro_bent",
+        "zone": "star_landing"
+      }
+    },
+    {
+      "id": "bridge_ow_5_intro",
+      "kind": "door",
+      "pos": [
+        312,
+        536
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          64,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "switch_ow_5_intro"
+        ],
+        "zone": "star_landing"
+      }
+    },
+    {
+      "id": "well_ow_5_terrace",
+      "kind": "gravity_well",
+      "pos": [
+        440,
+        216
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 64.0,
+        "strength": 980.0,
+        "zone": "brass_terrace"
+      }
+    },
+    {
+      "id": "door_terrace_gate",
+      "kind": "door",
+      "pos": [
+        688,
+        224
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          80
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "switch_eye_5_terrace"
+        ],
+        "zone": "brass_terrace"
+      }
+    },
+    {
+      "id": "npc_owl_chick",
+      "kind": "npc",
+      "pos": [
+        224,
+        560
+      ],
+      "props": {
+        "folk": "owl_chick",
+        "quest": "q5_broken_sextant",
+        "wander_radius": 8,
+        "bubbles": [
+          {
+            "icons": [
+              "folk_owl",
+              "mirror",
+              "cross",
+              "arrow_nw",
+              "gear"
+            ],
+            "line": "I5_Q1_START"
+          },
+          {
+            "icons": [
+              "mirror",
+              "check",
+              "star",
+              "arrow_n",
+              "happy"
+            ],
+            "line": "I5_Q1_DONE"
+          }
+        ],
+        "zone": "star_landing"
+      }
+    },
+    {
+      "id": "npc_moth_kid",
+      "kind": "npc",
+      "pos": [
+        112,
+        624
+      ],
+      "props": {
+        "folk": "moth_kid",
+        "quest": "q5_lost_apprentice",
+        "wander_radius": 8,
+        "bubbles": [
+          {
+            "icons": [
+              "folk_moth",
+              "toy_brazier",
+              "light_off",
+              "clock",
+              "arrow_s"
+            ],
+            "line": "I5_Q3_START"
+          },
+          {
+            "icons": [
+              "flame",
+              "light_on",
+              "arrow_s",
+              "chest",
+              "happy"
+            ],
+            "line": "I5_Q3_DONE"
+          }
+        ],
+        "zone": "star_landing"
+      }
+    },
+    {
+      "id": "braz_q3_1",
+      "kind": "timed_brazier",
+      "pos": [
+        136,
+        608
+      ],
+      "props": {
+        "secs": 35.0,
+        "persist": true,
+        "target_id": "gate_q3_braziers",
+        "zone": "star_landing"
+      }
+    },
+    {
+      "id": "braz_q3_2",
+      "kind": "timed_brazier",
+      "pos": [
+        392,
+        616
+      ],
+      "props": {
+        "secs": 35.0,
+        "persist": true,
+        "target_id": "gate_q3_braziers",
+        "zone": "orrery_plaza"
+      }
+    },
+    {
+      "id": "braz_q3_3",
+      "kind": "timed_brazier",
+      "pos": [
+        472,
+        632
+      ],
+      "props": {
+        "secs": 35.0,
+        "persist": true,
+        "target_id": "gate_q3_braziers",
+        "zone": "orrery_plaza"
+      }
+    },
+    {
+      "id": "braz_q3_4",
+      "kind": "timed_brazier",
+      "pos": [
+        552,
+        824
+      ],
+      "props": {
+        "secs": 35.0,
+        "persist": true,
+        "target_id": "gate_q3_braziers",
+        "zone": "echo_promenade"
+      }
+    },
+    {
+      "id": "gate_q3_braziers",
+      "kind": "logic_gate",
+      "pos": [
+        376,
+        944
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "braz_q3_1",
+          "braz_q3_2",
+          "braz_q3_3",
+          "braz_q3_4"
+        ],
+        "sets_flag": "q5_braziers_lit",
+        "target_id": "door_cistern_5",
+        "zone": "echo_promenade"
+      }
+    },
+    {
+      "id": "bell_ow_dial",
+      "kind": "star_bell",
+      "pos": [
+        512,
+        560
+      ],
+      "props": {
+        "scope": "island:5",
+        "var_name": "ow_dial",
+        "allow_ccw_blue": true,
+        "sets_flag": "ow_dial_unlocked",
+        "zone": "orrery_plaza"
+      }
+    },
+    {
+      "id": "door_cistern_5",
+      "kind": "door",
+      "pos": [
+        352,
+        976
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "q5_cistern_open"
+        ],
+        "zone": "echo_promenade"
+      }
+    },
+    {
+      "id": "door_cliff_5",
+      "kind": "door",
+      "pos": [
+        872,
+        224
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          48,
+          16
+        ],
+        "requires_flags": [
+          "beacon_5_1"
+        ],
+        "zone": "kiln_overlook"
+      }
+    },
+    {
+      "id": "moth_5_01",
+      "kind": "moth",
+      "pos": [
+        240,
+        224
+      ],
+      "props": {
+        "id": "moth_5_01",
+        "zone": "brass_terrace"
+      }
+    },
+    {
+      "id": "lore_5_seal",
+      "kind": "lore_stone",
+      "pos": [
+        472,
+        528
+      ],
+      "props": {
+        "string_id": "I5_OW_SEAL_HINT",
+        "icon": "star",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "lore_5_hollow_1",
+      "kind": "lore_stone",
+      "pos": [
+        200,
+        536
+      ],
+      "props": {
+        "string_id": "I5_LORE_HOLLOW_1",
+        "icon": "book",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "lore_5_hollow_2",
+      "kind": "lore_stone",
+      "pos": [
+        552,
+        856
+      ],
+      "props": {
+        "string_id": "I5_LORE_HOLLOW_2",
+        "icon": "book",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "lore_5_sunflare",
+      "kind": "lore_stone",
+      "pos": [
+        904,
+        960
+      ],
+      "props": {
+        "string_id": "I5_LORE_SUNFLARE",
+        "icon": "flame",
+        "duration": 3.2
+      }
+    },
+    {
+      "id": "lamp_5_apron_arch",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        152
+      ],
+      "props": {
+        "lit": true,
+        "zone": "brass_terrace"
+      }
+    },
+    {
+      "id": "lamp_5_causeway_arch",
+      "kind": "road_lamp",
+      "pos": [
+        664,
+        888
+      ],
+      "props": {
+        "lit": true,
+        "zone": "echo_promenade"
       }
     }
   ],
@@ -1795,6 +2336,260 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.45
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        336,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "broken_astrolabe_ring",
+      "pos": [
+        400,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        640,
+        912
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        704,
+        912
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "astro_floor_compass",
+      "pos": [
+        248,
+        504
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
     }
-  ]
+  ],
+  "layers": [
+    {
+      "id": "ow_dial_90",
+      "when": "ow_dial==90",
+      "tiles": [
+        [
+          38,
+          36,
+          8,
+          2,
+          "bridge"
+        ],
+        [
+          29,
+          17,
+          3,
+          7,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "ow_dial_180",
+      "when": "ow_dial==180",
+      "tiles": [
+        [
+          37,
+          22,
+          9,
+          2,
+          "bridge"
+        ],
+        [
+          46,
+          22,
+          3,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "ow_dial_270",
+      "when": "ow_dial==270",
+      "tiles": [
+        [
+          21,
+          39,
+          7,
+          2,
+          "bridge"
+        ],
+        [
+          26,
+          41,
+          3,
+          10,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "ow_relit_dawn",
+      "when": "flag:island_5_relit",
+      "tiles": [
+        [
+          38,
+          36,
+          8,
+          2,
+          "bridge"
+        ],
+        [
+          37,
+          22,
+          9,
+          2,
+          "bridge"
+        ],
+        [
+          21,
+          39,
+          7,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_ow_intro_bend",
+      "on": "signal:switch_ow_5_intro",
+      "once": true,
+      "do": [
+        {
+          "sfx": "gravity_curve"
+        },
+        {
+          "narrate": "I5_OW_INTRO_BEND"
+        },
+        {
+          "shake": 0.14
+        }
+      ]
+    },
+    {
+      "id": "ev_ow_q3_open_cistern",
+      "on": "flag:q5_braziers_lit",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "q5_cistern_open"
+        },
+        {
+          "sfx": "door_open"
+        },
+        {
+          "narrate": "I5_Q3_DONE"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Starfall Observatory hub: Minute-1 curved gravity shot opens a plaza shortcut, Orrery Plaza Star Bell visibly turns island meridian bridges across 0/90/180/270 quarters, connecting 3 beacons, 3 sub-overworlds, 4 caves, and the Grand Orrery seal.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "Gravity wells bend manual bolts around stone baffles; Star Bells turn the island dial 90 degrees",
+    "decisions": 8,
+    "expert_s": 210,
+    "reward": "Beacons 5_1..3, 3 quests, Moth 5_01, 2 Ember Pieces, Orrery Seal access",
+    "why": "Island 5 main hub tying together all overworld zones, caves, minor dungeon approaches, and the Grand Orrery.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        152,
+        544
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          504
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": [
+          328,
+          464
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "expect",
+        "interactable": "switch_ow_5_intro",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          496,
+          560
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_ow_dial"
+      },
+      {
+        "op": "expect",
+        "var": "ow_dial==90"
+      }
+    ]
+  }
 }

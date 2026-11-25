@@ -1,4 +1,4 @@
-# Belfry r6 - Suspended Bell-Chasm Keeper's Vault (28x14)
+# Belfry r6 - Suspended Bell-Chasm Keeper's Vault (34x14)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,17 +13,17 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-#############,,#############
-#OOOOOO..~~~#,,#...OOO....##
-#OOOOOO..~~~.,,....OOO....##
-#....OOO.....,,..#.OOO....##
-#....OOO.....,,....OOO######
-#....OOO..,,,,,,,...OO.....,
-#.,,,OOO..,,,,,,....OO,,,,,,
-#.,,,OOO,,,,,....,,.OO,,,,,,
-#....OOO.....,,.....OO.....#
-#....OOOOOO..,,..#..OO....##
-##.#.OOOOOOO.,,..~~.OO...###
-####.OOOOOOOO,,..~~.OO..####
-#####OOOOOOO#,,#...OOO.#####
-#############,,#############
+################,,###,,###########
+#OOOOOO..~~~OOOO,,...,,..#......##
+#OOOOOO..~~~OOO.,,...,,..#......##
+#....OO###.OOOO.,,..#,,..#......##
+#....OO###OOOOO.,,...,,..###,,####
+#....OOOOOOOOOO.,,,,,,,,,OO......,
+#.,,,OOOOOOOOOO.,,,,,,,,,OO,,,,,,,
+#.,,,OOOOOOOOOO.,,,,..,,OOO,,,,,,,
+#....OOOOOOOOOO.,,......OOO......#
+#....OOOOO###OO.,,..#...OOO.....##
+##.#.OOOOO#.OOO.,,..~~..OOO....###
+####.OOOOOOOOOO.,,..~~..OOO...####
+#####OOOOOOOOOOO,,......OOOO.#####
+################,,################

@@ -1,0 +1,518 @@
+{
+  "id": "cave_phase_trial",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_CAVE_PHASE",
+  "theme": "cave_7",
+  "music": "island7_combat",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    240,
+    56
+  ],
+  "zones": [
+    {
+      "id": "cave_phase_trial",
+      "name_key": "ISL7_Z_CAVE_PHASE",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cpt_shoals",
+      "rect": [
+        208,
+        0,
+        64,
+        16
+      ],
+      "to_region": "black_shoals",
+      "to_spawn": [
+        520,
+        424
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_cpt_north",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        56
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "pool_cpt_east",
+      "kind": "moon_pool",
+      "pos": [
+        360,
+        88
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": false
+      }
+    },
+    {
+      "id": "trial_gate_phase",
+      "kind": "trial_gate",
+      "pos": [
+        240,
+        104
+      ],
+      "props": {
+        "challenge": "lunar_phase_range",
+        "once": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "braz_pt_1",
+      "kind": "timed_brazier",
+      "pos": [
+        168,
+        240
+      ],
+      "props": {
+        "secs": 24.0,
+        "target_id": "gate_pt_trial"
+      }
+    },
+    {
+      "id": "mirror_pt_w",
+      "kind": "blue_transformer",
+      "pos": [
+        240,
+        168
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "sw_pt_blue_w",
+      "kind": "switch_eye",
+      "pos": [
+        240,
+        256
+      ],
+      "props": {
+        "requires_blue": true,
+        "reset_time": 24.0,
+        "target_id": "gate_pt_trial"
+      }
+    },
+    {
+      "id": "braz_pt_2",
+      "kind": "timed_brazier",
+      "pos": [
+        328,
+        256
+      ],
+      "props": {
+        "secs": 24.0,
+        "target_id": "gate_pt_trial"
+      }
+    },
+    {
+      "id": "mirror_pt_e",
+      "kind": "blue_transformer",
+      "pos": [
+        384,
+        168
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "sw_pt_blue_e",
+      "kind": "switch_eye",
+      "pos": [
+        384,
+        240
+      ],
+      "props": {
+        "requires_blue": true,
+        "reset_time": 24.0,
+        "target_id": "gate_pt_trial"
+      }
+    },
+    {
+      "id": "gate_pt_trial",
+      "kind": "logic_gate",
+      "pos": [
+        192,
+        128
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "braz_pt_1",
+          "sw_pt_blue_w",
+          "braz_pt_2",
+          "sw_pt_blue_e"
+        ],
+        "sets_flag": "trial_phase_cleared",
+        "target_id": "door_pt_reward"
+      }
+    },
+    {
+      "id": "door_pt_reward",
+      "kind": "door",
+      "pos": [
+        136,
+        96
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "trial_phase_cleared"
+        ]
+      }
+    },
+    {
+      "id": "pickup_moon_phase",
+      "kind": "pane_pickup",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "pane": "moon_phase"
+      }
+    },
+    {
+      "id": "moth_7_08",
+      "kind": "moth",
+      "pos": [
+        72,
+        128
+      ],
+      "props": {
+        "id": "moth_7_08"
+      }
+    },
+    {
+      "id": "lamp_cpt_n1",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        72
+      ],
+      "props": {
+        "zone": "cave_phase_trial",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cpt_n2",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        72
+      ],
+      "props": {
+        "zone": "cave_phase_trial",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cpt_g1",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "zone": "cave_phase_trial",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cpt_g2",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "zone": "cave_phase_trial",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cpt_v1",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        72
+      ],
+      "props": {
+        "zone": "cave_phase_trial",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        152,
+        136,
+        240,
+        44
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        104
+      ],
+      "radius": 24,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "ice"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        40,
+        56,
+        72,
+        88
+      ],
+      "color": "gold"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cave_arch_rock",
+      "pos": [
+        240,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        184,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        304,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "stalagmite_tall",
+      "pos": [
+        368,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        160,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "cave_lantern_post",
+      "pos": [
+        56,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          15,
+          12,
+          6,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "cpt_start_phase_trial",
+      "on": "trial_start:trial_gate_phase",
+      "once": false,
+      "do": [
+        {
+          "challenge": {
+            "id": "lunar_phase_7",
+            "kind": "light_all",
+            "time": 24.0,
+            "targets": [
+              "braz_pt_1",
+              "sw_pt_blue_w",
+              "braz_pt_2",
+              "sw_pt_blue_e"
+            ],
+            "ok": [
+              {
+                "set_flag": "trial_phase_cleared"
+              },
+              {
+                "set_flag": "trial_medal_phase"
+              },
+              {
+                "unlock": [
+                  "door_pt_reward"
+                ]
+              },
+              {
+                "narrate": "ISL7_TRIAL_PHASE_OK"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Horseshoe optical shooting gallery hosting Trial #1 (Lunar Phase Sharpshooter): alternate Yellow direct shots and Blue mirror bank-shots within 24s to earn Pane moon_phase + Moth 08.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Alternating direct yellow bolts and blue-transformer bank shots under a 24s clock (previewing the moon_phase pane rhythm).",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "pane_moon_phase+moth_7_08+trial_medal_phase",
+    "why": "Dedicated trial arena granting Island 7's trial stained-glass pane and Moth 08.",
+    "target": "pickup_moon_phase",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "trial_gate_phase"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          168
+        ],
+        "target": "braz_pt_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          200,
+          168
+        ],
+        "target": "mirror_pt_w"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          168
+        ],
+        "target": "braz_pt_2"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          344,
+          168
+        ],
+        "target": "mirror_pt_e"
+      },
+      {
+        "op": "wait",
+        "secs": 0.5
+      },
+      {
+        "op": "expect",
+        "flag": "trial_phase_cleared"
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          88
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "pickup_moon_phase"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_cpt_shoals"
+      }
+    ]
+  }
+}

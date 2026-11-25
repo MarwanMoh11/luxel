@@ -1,0 +1,414 @@
+{
+  "id": "dream_r6",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "freefall",
+  "name_key": "I5_DR_R6",
+  "music": "isl5_setpiece",
+  "spawn": [
+    192,
+    304
+  ],
+  "exits": [
+    {
+      "id": "ex_dr6_out",
+      "rect": [
+        176,
+        336,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_starfall_cliff",
+      "to_spawn": [
+        256,
+        112
+      ],
+      "one_way": true
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_dr6",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_dr6_w",
+      "kind": "polarity_well",
+      "pos": [
+        192,
+        184
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 540.0
+      }
+    },
+    {
+      "id": "well_dr6_e",
+      "kind": "polarity_well",
+      "pos": [
+        312,
+        176
+      ],
+      "props": {
+        "mode": "push",
+        "radius": 72.0,
+        "strength": 540.0
+      }
+    },
+    {
+      "id": "rotor_dr6",
+      "kind": "rotor",
+      "pos": [
+        256,
+        184
+      ],
+      "props": {
+        "size": [
+          64,
+          64
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_dr6",
+      "kind": "star_bell",
+      "pos": [
+        256,
+        184
+      ],
+      "props": {
+        "scope": "room:5:dream_r6",
+        "var_name": "dr6_turn",
+        "rotors": [
+          "rotor_dr6"
+        ],
+        "sets_flag": "dr6_bell_rung"
+      }
+    },
+    {
+      "id": "door_dr6_trophy",
+      "kind": "door",
+      "pos": [
+        320,
+        104
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          64,
+          16
+        ],
+        "clear_zone": "dream_r6"
+      }
+    },
+    {
+      "id": "chest_dr6_crown",
+      "kind": "chest",
+      "pos": [
+        328,
+        64
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 150
+      }
+    },
+    {
+      "id": "lamp_dr6_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        304
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr6_n",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr6_w",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr6_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        152
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_dr6_carr",
+      "kind": "meteor_carrier",
+      "pos": [
+        192,
+        144
+      ],
+      "route": [
+        [
+          160,
+          144
+        ],
+        [
+          224,
+          144
+        ]
+      ],
+      "zone": "dream_r6",
+      "leash": 180
+    },
+    {
+      "id": "en_dr6_null",
+      "kind": "null_moth",
+      "pos": [
+        352,
+        144
+      ],
+      "route": [
+        [
+          320,
+          144
+        ],
+        [
+          408,
+          160
+        ]
+      ],
+      "zone": "dream_r6",
+      "leash": 180
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_dr6_wave2",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "en_dr6_owl",
+              "kind": "phantom_owl",
+              "pos": [
+                192,
+                176
+              ],
+              "perches": [
+                [
+                  192,
+                  176
+                ],
+                [
+                  368,
+                  168
+                ]
+              ],
+              "zone": "dream_r6"
+            },
+            {
+              "id": "en_dr6_jelly",
+              "kind": "star_jelly",
+              "pos": [
+                400,
+                176
+              ],
+              "zone": "dream_r6"
+            }
+          ]
+        },
+        {
+          "wait": 0.4
+        }
+      ]
+    },
+    {
+      "id": "ev_dr6_finish",
+      "on": "cleared",
+      "if": "flag:rscr_5_dream_r6_ev_dr6_wave2",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "dream_r6_ok"
+        },
+        {
+          "set_flag": "dream_cleared"
+        },
+        {
+          "set_flag": "star_crown_trophy"
+        },
+        {
+          "sfx": "shrine_unlock"
+        },
+        {
+          "narrate": "I5_DR_CROWN_REWARD"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        328,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "cracked_dome_arch",
+      "pos": [
+        328,
+        48
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tilted_marble_column",
+      "pos": [
+        112,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        432,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "star_chime_crystal",
+      "pos": [
+        232,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Dream Telescope Floor 6 (Aphelion Gauntlet): two-wave climax mixing Meteor Carrier, Null Moth, Phantom Owl, and Star Jelly across an asymmetric falling pinnacle with twin polarity wells and a central Star Bell.",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Full synthesis of Island 5 curved combat, True Lens, and constellation spacing",
+    "decisions": 9,
+    "expert_s": 70,
+    "reward": "star_crown_trophy, 150 shards, dream_cleared",
+    "why": "Climax floor of the Dream Telescope mastery gauntlet.",
+    "optional": true,
+    "start": {
+      "spawn": [
+        192,
+        304
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          224
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "wait",
+        "secs": 1.0
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          72
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_dr6_crown"
+      }
+    ]
+  }
+}

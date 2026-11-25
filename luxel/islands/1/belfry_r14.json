@@ -1,0 +1,519 @@
+{
+  "id": "belfry_r14",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_BF_SHAFT",
+  "music": "island1_dungeon",
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "belfry_shaft",
+      "name_key": "ISL1_BF_SHAFT",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r14_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_region": "belfry_r11",
+      "to_spawn": [
+        272,
+        48
+      ]
+    },
+    {
+      "id": "exit_r14_lift",
+      "rect": [
+        64,
+        336,
+        32,
+        16
+      ],
+      "to_region": "belfry_r1",
+      "to_spawn": [
+        320,
+        48
+      ],
+      "requires_flags": [
+        "belfry_master_lift"
+      ],
+      "locked_door_id": "door_r14_lift"
+    },
+    {
+      "id": "exit_r14_north",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "belfry_r15",
+      "to_spawn": [
+        272,
+        336
+      ],
+      "locked_door_id": "door_r14_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "lore_r14",
+      "kind": "lore_stone",
+      "pos": [
+        256,
+        264
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R14",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "mp_r14",
+      "kind": "moving_platform",
+      "pos": [
+        256,
+        168
+      ],
+      "props": {
+        "size": [
+          48,
+          32
+        ],
+        "path": [
+          [
+            224,
+            168
+          ],
+          [
+            288,
+            168
+          ]
+        ],
+        "speed": 40,
+        "pingpong": true
+      }
+    },
+    {
+      "id": "bell_r14_dawn",
+      "kind": "bell",
+      "pos": [
+        256,
+        168
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 176,
+        "target_id": "gate_r14_seq"
+      }
+    },
+    {
+      "id": "hook_r14",
+      "kind": "lantern_hook",
+      "pos": [
+        80,
+        192
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "bell_r14_dusk",
+      "kind": "bell",
+      "pos": [
+        96,
+        128
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 240,
+        "target_id": "gate_r14_seq"
+      }
+    },
+    {
+      "id": "eye_r14",
+      "kind": "lying_portrait",
+      "pos": [
+        384,
+        104
+      ],
+      "props": {
+        "mode": "watcher",
+        "dir": "s",
+        "cone_range": 108,
+        "cone_deg": 60,
+        "sweep_deg": 24,
+        "target_id": "mover_r14_eye"
+      }
+    },
+    {
+      "id": "mover_r14_eye",
+      "kind": "mover_wall",
+      "pos": [
+        376,
+        168
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "path": [
+          [
+            376,
+            120
+          ],
+          [
+            376,
+            168
+          ]
+        ],
+        "speed": 96,
+        "on_signal": "move"
+      }
+    },
+    {
+      "id": "sg_r14",
+      "kind": "shadow_gate",
+      "pos": [
+        400,
+        168
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "threshold": 0.45
+      }
+    },
+    {
+      "id": "bell_r14_war",
+      "kind": "bell",
+      "pos": [
+        440,
+        168
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 176,
+        "target_id": "gate_r14_seq"
+      }
+    },
+    {
+      "id": "gate_r14_seq",
+      "kind": "logic_gate",
+      "pos": [
+        256,
+        72
+      ],
+      "props": {
+        "op": "seq",
+        "inputs": [
+          "bell_r14_dawn",
+          "bell_r14_dusk",
+          "bell_r14_war"
+        ],
+        "persist": true,
+        "target_ids": [
+          "door_r14_north",
+          "door_r14_lift"
+        ]
+      }
+    },
+    {
+      "id": "door_r14_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r14_seq"
+        ]
+      }
+    },
+    {
+      "id": "door_r14_lift",
+      "kind": "door",
+      "pos": [
+        80,
+        328
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "belfry_master_lift"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r14_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        304
+      ],
+      "props": {
+        "zone": "belfry_shaft",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        248
+      ],
+      "props": {
+        "zone": "belfry_shaft",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_c",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        120
+      ],
+      "props": {
+        "zone": "belfry_shaft",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_n",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        56
+      ],
+      "props": {
+        "zone": "belfry_shaft",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        168
+      ],
+      "radius": 44,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        72
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.0
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "counterweight_block",
+      "pos": [
+        64,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        120,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        200,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        312,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "wind_chime_rack",
+      "pos": [
+        440,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r14_lift",
+      "on": "signal:gate_r14_seq",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "belfry_master_lift"
+        },
+        {
+          "narrate": {
+            "id": "ISL1_BF_LIFT_GOT",
+            "style": "title",
+            "duration": 2.8
+          }
+        },
+        {
+          "shake": 0.2
+        }
+      ]
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Split-tier Counterweight Shaft combining Dawn->Dusk->War 3-tone sequence with Shutter Hood darkness: ring Dawn at center, hang lantern on the West hook to cloak dark, strike Dusk to freeze the watcher portrait, slip dark through the East Shadow Gate to strike War, opening the Clock Face stair and dropping the Master Lift to r1.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Synthesizing Island 1's 3 tones with Shutter Hood stealth and Shadow Gate traversal.",
+    "decisions": 10,
+    "expert_s": 65,
+    "reward": "belfry_master_lift",
+    "why": "Floor 3 gateway uniting both minor dungeon powers and connecting F3 directly to F1 Narthex via Master Lift.",
+    "start": {
+      "flags": [
+        "item_echo_clapper",
+        "item_shutter_hood"
+      ]
+    },
+    "exit": "exit_r14_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r14"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          192
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          256,
+          192
+        ],
+        "target": "bell_r14_dawn"
+      },
+      {
+        "op": "goto",
+        "to": [
+          80,
+          192
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r14"
+      },
+      {
+        "op": "goto",
+        "to": [
+          96,
+          144
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_r14_dusk"
+      },
+      {
+        "op": "goto",
+        "to": [
+          440,
+          168
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "bell_r14_war"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect",
+        "flag": "belfry_master_lift"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r14_north"
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+# Bell Isle - Foundry Ring-Dash (28x20 tiles = 448x320 px)
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+############################
+############################
+##OOOOOOOOOO.....OOOO#,,,,##
+##OOO.....OO.....OOOO,,,,,##
+##OOO.....OO....+++++,,,,,##
+##OOO.....OO....+++++#,,,,##
+##OOOOOOOOOOOOOOOOO++#######
+##.......OOOOOOOOOO++OOOOO##
+##.......OOOOOOOOOO++...OO##
+,,,,,,,,,OOOOOOOOOO.....OO##
+,,,,,,,,,OOOOOOOOOO.....OO##
+##.......OOOOOOOOOO.....OO##
+##.....++OOOOOOOOOO.....OO##
+##OOOOO++OOOOOOOOOOOOOOOOO##
+##OOOOO++....OO......OOOOO##
+##OOOOO......OO......OOOOO##
+##OOOOO......OO......OOOOO##
+##OOOOOOOOOOOOOOOOOOOOOOOO##
+############################
+############################

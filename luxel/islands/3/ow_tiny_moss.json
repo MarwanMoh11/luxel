@@ -1,0 +1,435 @@
+{
+  "id": "ow_tiny_moss",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "tiny": true,
+  "theme": "under_root",
+  "name_key": "ISL3_TINY_MOSS_NAME",
+  "music": "isl3_underroot",
+  "spawn": [
+    56,
+    128
+  ],
+  "zones": [
+    {
+      "id": "tiny_moss",
+      "name_key": "ISL3_TINY_MOSS_NAME",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        296,
+        128
+      ],
+      "radius": 44,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        296,
+        96
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "lime",
+      "shear": 0.35
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        112,
+        128
+      ],
+      "radius": 24,
+      "style": "water"
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_tiny_to_ow",
+      "rect": [
+        16,
+        112,
+        16,
+        32
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        200,
+        728
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_tiny_moss",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "stump_tiny_return",
+      "kind": "stump_shrink",
+      "pos": [
+        40,
+        128
+      ],
+      "props": {
+        "to_region": "overworld",
+        "to_spawn": [
+          200,
+          728
+        ],
+        "target_size": "normal"
+      }
+    },
+    {
+      "id": "hook_tiny_shade",
+      "kind": "lantern_hook",
+      "pos": [
+        128,
+        56
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "lp_tiny_wall",
+      "kind": "light_plant",
+      "pos": [
+        152,
+        152
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          16,
+          16
+        ],
+        "secs": 0.45,
+        "decay": 1.0
+      }
+    },
+    {
+      "id": "dew_tiny",
+      "kind": "dew_lens",
+      "pos": [
+        152,
+        184
+      ],
+      "props": {
+        "movable": true,
+        "rail_axis": "y",
+        "focus_range": 140.0
+      }
+    },
+    {
+      "id": "knot_tiny_sap",
+      "kind": "dry_root_knot",
+      "pos": [
+        232,
+        128
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "persist": true,
+        "sets_flag": "ow_root_bridge_grown"
+      }
+    },
+    {
+      "id": "moth_3_03",
+      "kind": "moth",
+      "pos": [
+        304,
+        88
+      ],
+      "props": {
+        "id": "moth_3_03"
+      }
+    },
+    {
+      "id": "chest_tiny_moss_ember",
+      "kind": "chest",
+      "pos": [
+        328,
+        128
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "isl3_tiny_moss_ember"
+      }
+    },
+    {
+      "id": "sun_seed_3",
+      "kind": "ow_sun_seed",
+      "pos": [
+        296,
+        168
+      ],
+      "props": {
+        "sets_flag": "q_gardener_seed_3"
+      }
+    },
+    {
+      "id": "lamp_tiny_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tiny_e",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        128,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        72,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        328,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        272,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        328,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        264,
+        188
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        176,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        48,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_tiny_hide_spot",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "quest:hide:hollow_stump"
+        }
+      ]
+    },
+    {
+      "id": "ev_tiny_bridge_grown",
+      "on": "flag:ow_root_bridge_grown",
+      "once": true,
+      "do": [
+        {
+          "shake": 0.22
+        },
+        {
+          "sfx": "bridge_rise"
+        },
+        {
+          "narrate": "ISL3_ROOT_BRIDGE_GROWN"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Macro-to-micro tiny pocket under Spore Glade: hang your overly bright 1.8x sun-lantern behind a root pillar to wilt a thorn-wall, roll a dewdrop lens onto the center line, and focus a dew_ray to burn the jammed sap-knot \u2014 growing a full-size bridge in the overworld above!",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "tiny 1.8x sun-lantern shadow-starving, dew_lens rolling, dew_ray vs dry_root_knot, macro-to-micro world change",
+    "decisions": 5,
+    "expert_s": 48,
+    "reward": "ow_root_bridge_grown (overworld bridge), moth_3_03, ember_piece, q_gardener_seed_3",
+    "why": "Signature macro-to-micro astonishing moment in the Thornwood overworld",
+    "optional": true,
+    "solution": [
+      {
+        "op": "expect",
+        "var": "size==tiny"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          72
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_tiny_shade"
+      },
+      {
+        "op": "wait",
+        "secs": 1.5
+      },
+      {
+        "op": "push",
+        "target": "dew_tiny",
+        "to": [
+          152,
+          128
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          128
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "target": "dew_tiny"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "target": "knot_tiny_sap",
+        "prop": "burned",
+        "value": true
+      },
+      {
+        "op": "expect",
+        "flag": "ow_root_bridge_grown"
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "sun_seed_3"
+      },
+      {
+        "op": "expect",
+        "flag": "q_gardener_seed_3"
+      }
+    ]
+  }
+}

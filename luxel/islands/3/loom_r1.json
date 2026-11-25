@@ -1,0 +1,662 @@
+{
+  "name_key": "ISL3_LM_R1_NAME",
+  "spawn": [
+    208,
+    216
+  ],
+  "zones": [
+    {
+      "id": "lm_r1",
+      "name_key": "ISL3_LM_R1_NAME",
+      "rect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_loom_r1_ow",
+      "rect": [
+        192,
+        240,
+        32,
+        16
+      ],
+      "to_island": 3,
+      "to_region": "ow_shift_e",
+      "to_spawn": [
+        176,
+        160
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_loom_r1_north",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_region": "loom_r2",
+      "to_spawn": [
+        256,
+        280
+      ],
+      "locked_door_id": "door_loom_r1_north"
+    },
+    {
+      "id": "exit_loom_r1_west_sc",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_region": "loom_r8",
+      "to_spawn": [
+        40,
+        144
+      ],
+      "requires_flags": [
+        "loom_r8_shortcut"
+      ],
+      "locked_door_id": "door_loom_r1_west_sc"
+    },
+    {
+      "id": "exit_loom_r1_east_sc",
+      "rect": [
+        400,
+        160,
+        16,
+        32
+      ],
+      "to_region": "loom_r10",
+      "to_spawn": [
+        312,
+        128
+      ],
+      "requires_flags": [
+        "loom_r10_lift"
+      ],
+      "locked_door_id": "door_loom_r1_east_sc"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r1_entry",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_loom",
+      "kind": "waystone",
+      "pos": [
+        208,
+        196
+      ],
+      "props": {
+        "zone": "lm_r1",
+        "name_key": "ISL3_LM_R1_NAME"
+      }
+    },
+    {
+      "id": "lore_r1_hint",
+      "kind": "lore_stone",
+      "pos": [
+        164,
+        212
+      ],
+      "props": {
+        "string_id": "ISL3_HINT_LOOM",
+        "icon": "lantern"
+      }
+    },
+    {
+      "id": "t_r1",
+      "kind": "blue_transformer",
+      "pos": [
+        128,
+        168
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "spool_r1_k3",
+      "kind": "silk_loom_spool",
+      "pos": [
+        208,
+        168
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "freeze_secs": 18.0,
+        "power_on_freeze": true,
+        "target_ids": [
+          "bridge_r1_mid",
+          "door_loom_r1_north"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r1_mid",
+      "kind": "door",
+      "pos": [
+        208,
+        144
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          64,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "spool_r1_k3"
+        ]
+      }
+    },
+    {
+      "id": "pw_r1_thorn",
+      "kind": "light_plant",
+      "pos": [
+        272,
+        120
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          16,
+          16
+        ],
+        "secs": 0.45,
+        "decay": 1.4,
+        "blocks_sight": true
+      }
+    },
+    {
+      "id": "spool_r1_k1",
+      "kind": "silk_loom_spool",
+      "pos": [
+        312,
+        120
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r1_k2"
+        ],
+        "state": "taut",
+        "conduct_speed": 150.0
+      }
+    },
+    {
+      "id": "spool_r1_k2",
+      "kind": "silk_loom_spool",
+      "pos": [
+        312,
+        72
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r1_k4"
+        ],
+        "state": "taut",
+        "conduct_speed": 150.0
+      }
+    },
+    {
+      "id": "spool_r1_k4",
+      "kind": "silk_loom_spool",
+      "pos": [
+        168,
+        72
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut"
+      }
+    },
+    {
+      "id": "pb_r1_north",
+      "kind": "light_plant",
+      "pos": [
+        208,
+        80
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          48,
+          32
+        ],
+        "secs": 0.4,
+        "decay": 18.0
+      }
+    },
+    {
+      "id": "tb_r1_north",
+      "kind": "timed_brazier",
+      "pos": [
+        168,
+        56
+      ],
+      "props": {
+        "secs": 22.0,
+        "target_id": "door_loom_r1_north"
+      }
+    },
+    {
+      "id": "door_loom_r1_north",
+      "kind": "door",
+      "pos": [
+        208,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "spool_r1_k3",
+          "tb_r1_north"
+        ]
+      }
+    },
+    {
+      "id": "door_loom_r1_west_sc",
+      "kind": "door",
+      "pos": [
+        16,
+        176
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "loom_r8_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "door_loom_r1_east_sc",
+      "kind": "door",
+      "pos": [
+        400,
+        176
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "loom_r10_lift"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r1_sw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        224
+      ],
+      "props": {
+        "zone": "lm_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_se",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        224
+      ],
+      "props": {
+        "zone": "lm_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        40
+      ],
+      "props": {
+        "zone": "lm_r1",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        176,
+        184,
+        64,
+        52
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        196
+      ],
+      "radius": 22,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        112,
+        156,
+        120,
+        24
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        208,
+        188
+      ],
+      "size": [
+        44,
+        60
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        28,
+        64,
+        24
+      ],
+      "color": "rose"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "woven_floor_medallion",
+      "pos": [
+        208,
+        196
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        208,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        88,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        328,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        160,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        256,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        172,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        244,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "wooden_thread_spool",
+      "pos": [
+        84,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "dyed_bolt_of_cloth",
+      "pos": [
+        348,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "luminous_yarn_basket",
+      "pos": [
+        260,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        344,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "events": [
+    {
+      "id": "loom_mark_entered",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "loom_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Safe silk-spool primer: rotate a Blue Transformer to freeze a counterweight cable blue, hoisting the center bridge; step clear of a blooming thorn-wall and shoot yellow at the east spool so silk-fire blooms the north bridge and lights the shutter brazier.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Blue light freezes silk_loom_spool (hoisting bridges); yellow light sends a conducting fire spark along linked threads to bloom light_plants and ignite braziers.",
+    "decisions": 4,
+    "expert_s": 42,
+    "reward": "ws_loom+r2_access",
+    "why": "Entry Carding Hall anchoring Waystone 1 and both dungeon return shortcuts (r8 zip-cable, r10 lift).",
+    "exit": "exit_loom_r1_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_loom"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r1_hint"
+      },
+      {
+        "op": "rotate",
+        "target": "t_r1",
+        "angle": 45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          200
+        ],
+        "target": "t_r1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_r1_mid",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          120
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "pw_r1_thorn",
+        "prop": "powered",
+        "value": false,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          208,
+          120
+        ],
+        "target": "spool_r1_k1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_loom_r1_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "pb_r1_north",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r1_north"
+      }
+    ]
+  },
+  "id": "loom_r1",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "loom",
+  "music": "isl3_loom",
+  "ambience": [
+    "forest_wind",
+    "cave_drip"
+  ],
+  "triggers": [],
+  "layers": [],
+  "enemies": []
+}

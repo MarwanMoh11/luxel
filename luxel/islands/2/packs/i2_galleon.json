@@ -55,22 +55,21 @@
       "theme": "galleon",
       "music": "isl2_galleon",
       "requires_flags": [],
-      "done_flag": "galleon_done",
-      "debug_only": true
+      "done_flag": "galleon_done"
     }
   ],
   "regions": {
-    "galleon_r1":  { "name_key": "GAL_R1_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 5], "debug_only": true },
-    "galleon_r2":  { "name_key": "GAL_R2_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 4], "debug_only": true },
-    "galleon_r3":  { "name_key": "GAL_R3_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [1, 4], "debug_only": true },
-    "galleon_r4":  { "name_key": "GAL_R4_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [3, 4], "debug_only": true },
-    "galleon_r5":  { "name_key": "GAL_R5_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 3], "debug_only": true },
-    "galleon_r6":  { "name_key": "GAL_R6_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 2], "debug_only": true },
-    "galleon_r7":  { "name_key": "GAL_R7_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [1, 2], "debug_only": true },
-    "galleon_r8":  { "name_key": "GAL_R8_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [0, 2], "debug_only": true },
-    "galleon_r9":  { "name_key": "GAL_R9_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [1, 1], "debug_only": true },
-    "galleon_r10": { "name_key": "GAL_R10_NAME", "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 1], "debug_only": true },
-    "galleon_r11": { "name_key": "GAL_R11_NAME", "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 0], "debug_only": true },
-    "galleon_r12": { "name_key": "GAL_R12_NAME", "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [3, 0], "debug_only": true }
+    "galleon_r1":  { "name_key": "GAL_R1_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 5] },
+    "galleon_r2":  { "name_key": "GAL_R2_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 4] },
+    "galleon_r3":  { "name_key": "GAL_R3_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [1, 4] },
+    "galleon_r4":  { "name_key": "GAL_R4_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [3, 4] },
+    "galleon_r5":  { "name_key": "GAL_R5_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 3] },
+    "galleon_r6":  { "name_key": "GAL_R6_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 2] },
+    "galleon_r7":  { "name_key": "GAL_R7_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [1, 2] },
+    "galleon_r8":  { "name_key": "GAL_R8_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [0, 2] },
+    "galleon_r9":  { "name_key": "GAL_R9_NAME",  "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [1, 1] },
+    "galleon_r10": { "name_key": "GAL_R10_NAME", "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 1] },
+    "galleon_r11": { "name_key": "GAL_R11_NAME", "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [2, 0] },
+    "galleon_r12": { "name_key": "GAL_R12_NAME", "theme": "galleon", "music": "isl2_galleon", "dark": true, "map": [3, 0] }
   }
 }

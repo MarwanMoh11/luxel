@@ -1,0 +1,610 @@
+{
+  "id": "ow_shift_n",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "shift_clearing": "n",
+  "name_key": "ISL3_SHIFT_N_NAME",
+  "music": "island3_explore",
+  "spawn": [
+    392,
+    160
+  ],
+  "zones": [
+    {
+      "id": "crown_thicket",
+      "name_key": "ISL3_SHIFT_N_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 30,
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        64
+      ],
+      "radius": 32,
+      "style": "ritual",
+      "color": "plum",
+      "secondary": "gold"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        88,
+        40
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        80
+      ],
+      "size": [
+        48,
+        76
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_shift_n_to_ow",
+      "rect": [
+        416,
+        144,
+        32,
+        48
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        120,
+        200
+      ]
+    },
+    {
+      "id": "exit_shift_n_to_w",
+      "rect": [
+        96,
+        288,
+        48,
+        32
+      ],
+      "to_region": "ow_shift_w",
+      "to_spawn": [
+        216,
+        56
+      ]
+    },
+    {
+      "id": "exit_shift_n_to_e",
+      "rect": [
+        320,
+        288,
+        48,
+        32
+      ],
+      "to_region": "ow_shift_e",
+      "to_spawn": [
+        216,
+        56
+      ]
+    },
+    {
+      "id": "exit_shift_n_sap",
+      "rect": [
+        0,
+        96,
+        32,
+        48
+      ],
+      "to_region": "cave_sap_vault",
+      "to_spawn": [
+        360,
+        128
+      ],
+      "requires_moves": [
+        "beam"
+      ]
+    },
+    {
+      "id": "exit_shift_n_mother",
+      "rect": [
+        320,
+        0,
+        48,
+        32
+      ],
+      "to_region": "sb_mother_root",
+      "to_spawn": [
+        256,
+        304
+      ],
+      "requires_moves": [
+        "beam"
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "shift_n_strangler",
+      "kind": "vine_strangler",
+      "pos": [
+        168,
+        120
+      ],
+      "route": [],
+      "zone": "crown_thicket",
+      "leash": 110
+    },
+    {
+      "id": "shift_n_knight",
+      "kind": "bramble_knight",
+      "pos": [
+        248,
+        112
+      ],
+      "route": [
+        [
+          216,
+          112
+        ],
+        [
+          280,
+          112
+        ]
+      ],
+      "zone": "crown_thicket",
+      "leash": 128
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_3_crown",
+      "kind": "waystone",
+      "pos": [
+        280,
+        144
+      ],
+      "props": {
+        "zone": "crown_thicket",
+        "name_key": "ISL3_SHIFT_N_NAME"
+      }
+    },
+    {
+      "id": "lamp_pin_n",
+      "kind": "wood_pin_lamp",
+      "pos": [
+        224,
+        160
+      ],
+      "props": {
+        "clearing": "n",
+        "lit": false,
+        "snuff_on_hit": false,
+        "persist": true
+      }
+    },
+    {
+      "id": "door_court_arch",
+      "kind": "door",
+      "pos": [
+        224,
+        32
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "underroot_done",
+          "loom_done"
+        ]
+      }
+    },
+    {
+      "id": "lore_court_seal",
+      "kind": "lore_stone",
+      "pos": [
+        192,
+        64
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_COURT_SEAL",
+        "icon": "leaf"
+      }
+    },
+    {
+      "id": "lore_mother_mural",
+      "kind": "lore_stone",
+      "pos": [
+        304,
+        72
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_MOTHER_MURAL",
+        "icon": "sun"
+      }
+    },
+    {
+      "id": "bramble_shift_n_sap",
+      "kind": "bramble",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "cracked_shift_n_mother",
+      "kind": "cracked_wall",
+      "pos": [
+        344,
+        56
+      ],
+      "props": {
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "seal_3_monolith",
+      "kind": "obsidian_seal",
+      "pos": [
+        88,
+        72
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "chest_3_sunflare_monolith",
+      "kind": "chest",
+      "pos": [
+        64,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 120,
+        "requires_moves": [
+          "sunflare"
+        ],
+        "secret_id": "isl3_sunflare_monolith"
+      }
+    },
+    {
+      "id": "lore_hollow_monolith",
+      "kind": "lore_stone",
+      "pos": [
+        104,
+        40
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_MONOLITH",
+        "icon": "flame"
+      }
+    },
+    {
+      "id": "lamp_shift_n_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_shift_n_court",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_shift_n_sw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        224,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hollow_oak_arch",
+      "pos": [
+        224,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_monolith",
+      "pos": [
+        48,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        120,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "ancient_oak_tree",
+      "pos": [
+        384,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        176,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        280,
+        100
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        96,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        328,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        144,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        352,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    }
+  ],
+  "layers": [
+    {
+      "id": "seal_not_2",
+      "when": "eff_turn_n!=2",
+      "tiles": [
+        [
+          6,
+          16,
+          3,
+          2,
+          "pit"
+        ],
+        [
+          20,
+          16,
+          3,
+          2,
+          "pit"
+        ],
+        [
+          3,
+          6,
+          2,
+          3,
+          "wall"
+        ],
+        [
+          20,
+          2,
+          3,
+          1,
+          "wall"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_shift_n_to_w",
+        "exit_shift_n_to_e",
+        "exit_shift_n_sap",
+        "exit_shift_n_mother"
+      ]
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Crown Thicket highland clearing uniting the Shifting Woods ring (Turn 2) with Hollow Oak Glade, the Briar Court Arch, Beam-gated Sap Vault & Mother Root sanctum, and an Island 6 Sunflare Hollow Wick monolith.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Crown Turn canopy ring, Beam barrier piercing, Sunflare secret tease, Briar Court seal",
+    "decisions": 8,
+    "expert_s": 56,
+    "reward": "ws_3_crown, Sap Vault + Mother Root access, Sunflare secret monolith",
+    "why": "Highland keystone tying all three Shifting Wood clearings, the Briar Court, and optional late-game secrets together",
+    "optional": true,
+    "start": {
+      "vars": {
+        "wood_turn": 2,
+        "eff_turn_n": 2,
+        "pin_n": 0
+      },
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          280,
+          160
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_3_crown"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          160
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "lamp_pin_n"
+      },
+      {
+        "op": "expect",
+        "var": "pin_n==1"
+      },
+      {
+        "op": "clear"
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          96
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "beam",
+        "target": "cracked_shift_n_mother"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_shift_n_mother"
+      }
+    ]
+  }
+}

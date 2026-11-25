@@ -96,7 +96,7 @@
       "props": {
         "size": [
           16,
-          48
+          64
         ],
         "path": [
           [
@@ -105,10 +105,10 @@
           ],
           [
             168,
-            112
+            128
           ]
         ],
-        "speed": 96,
+        "speed": 110,
         "on_signal": "move",
         "persist": true
       }

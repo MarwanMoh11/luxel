@@ -1,0 +1,349 @@
+{
+  "id": "superboss_first_dark",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "archive_8",
+  "name_key": "ISL8_Z_FIRST_DARK",
+  "music": "superboss_a",
+  "ambience": [
+    "void_hum",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    256,
+    336
+  ],
+  "zones": [
+    {
+      "id": "superboss_first_dark",
+      "name_key": "ISL8_Z_FIRST_DARK",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_first_dark_to_vigil",
+      "rect": [
+        240,
+        368,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "vigil_terrace",
+      "to_spawn": [
+        312,
+        88
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_first_dark",
+      "kind": "first_dark",
+      "pos": [
+        256,
+        176
+      ],
+      "route": [],
+      "zone": "superboss_first_dark",
+      "leash": 0
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_first_dark",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        336
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "hook_fd_nw",
+      "kind": "lantern_hook",
+      "pos": [
+        128,
+        112
+      ],
+      "props": {
+        "light_radius": 58.0
+      }
+    },
+    {
+      "id": "hook_fd_ne",
+      "kind": "lantern_hook",
+      "pos": [
+        384,
+        112
+      ],
+      "props": {
+        "light_radius": 58.0
+      }
+    },
+    {
+      "id": "hook_fd_sw",
+      "kind": "lantern_hook",
+      "pos": [
+        128,
+        256
+      ],
+      "props": {
+        "light_radius": 58.0
+      }
+    },
+    {
+      "id": "hook_fd_se",
+      "kind": "lantern_hook",
+      "pos": [
+        384,
+        256
+      ],
+      "props": {
+        "light_radius": 58.0
+      }
+    },
+    {
+      "id": "lamp_fd_s",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        312
+      ],
+      "props": {
+        "lit": true,
+        "zone": "superboss_first_dark"
+      }
+    },
+    {
+      "id": "lamp_fd_nw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        88
+      ],
+      "props": {
+        "lit": true,
+        "zone": "superboss_first_dark"
+      }
+    },
+    {
+      "id": "lamp_fd_ne",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        88
+      ],
+      "props": {
+        "lit": true,
+        "zone": "superboss_first_dark"
+      }
+    },
+    {
+      "id": "lamp_fd_sw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        280
+      ],
+      "props": {
+        "lit": true,
+        "zone": "superboss_first_dark"
+      }
+    },
+    {
+      "id": "lamp_fd_se",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        280
+      ],
+      "props": {
+        "lit": true,
+        "zone": "superboss_first_dark"
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_floor_seal",
+      "pos": [
+        256,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        104,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_brazier",
+      "pos": [
+        408,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        192,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "eclipse_obelisk",
+      "pos": [
+        320,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        192,
+        316
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "dark_candelabra",
+      "pos": [
+        320,
+        316
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "shattered_rose_window",
+      "pos": [
+        256,
+        56
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 96,
+      "color": "plum"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 44,
+      "color": "gold"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_fd_reward",
+      "on": "flag:first_dark_defeated",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "chest_golden_dawn_crown",
+            "kind": "chest",
+            "pos": [
+              256,
+              176
+            ],
+            "props": {
+              "reward_kind": "shards",
+              "reward": "shards",
+              "amount": 200,
+              "secret_id": "first_dark_crown"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "80-Moth Archipelago Superboss arena: octagonal starless obsidian disc ringed by 80 rescued moths where THE FIRST DARK erases floor tiles into void.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "True Lens memory-tile reading + Recall Moth-Spark ripping + Sunflare core punish",
+    "decisions": 10,
+    "expert_s": 160,
+    "reward": "first_dark_defeated+golden_dawn_crown",
+    "why": "Ultimate 10-hour capstone encounter rewarding 80/80 Lost Moth exploration.",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          280
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "clear",
+        "timeout": 180.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,669 @@
+{
+  "id": "vesper_graveyard",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL1_Z_GRAVE",
+  "music": "explore",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    648,
+    240
+  ],
+  "zones": [
+    {
+      "id": "vesper_graveyard",
+      "name_key": "ISL1_Z_GRAVE",
+      "rect": [
+        0,
+        0,
+        704,
+        480
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_vg_east",
+      "rect": [
+        688,
+        224,
+        16,
+        32
+      ],
+      "to_region": "bell_yard",
+      "to_spawn": [
+        56,
+        256
+      ]
+    },
+    {
+      "id": "exit_vg_undercroft",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r1",
+      "to_spawn": [
+        224,
+        272
+      ]
+    },
+    {
+      "id": "exit_vg_uc_back",
+      "rect": [
+        144,
+        464,
+        32,
+        16
+      ],
+      "to_region": "undercroft_r6",
+      "to_spawn": [
+        496,
+        288
+      ]
+    },
+    {
+      "id": "exit_vg_whisper",
+      "rect": [
+        0,
+        224,
+        16,
+        32
+      ],
+      "to_region": "cave_whisper",
+      "to_spawn": [
+        368,
+        144
+      ]
+    },
+    {
+      "id": "exit_vg_silent",
+      "rect": [
+        336,
+        0,
+        32,
+        16
+      ],
+      "to_region": "superboss_silent",
+      "to_spawn": [
+        224,
+        304
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "warden_vg_1",
+      "kind": "warden",
+      "pos": [
+        352,
+        360
+      ],
+      "route": [
+        [
+          312,
+          360
+        ],
+        [
+          408,
+          360
+        ]
+      ],
+      "zone": "vesper_graveyard",
+      "leash": 132
+    },
+    {
+      "id": "toll_moth_vg_1",
+      "kind": "toll_moth",
+      "pos": [
+        432,
+        328
+      ],
+      "perches": [
+        [
+          432,
+          328
+        ],
+        [
+          384,
+          392
+        ]
+      ],
+      "zone": "vesper_graveyard",
+      "leash": 132
+    },
+    {
+      "id": "grave_hand_vg_1",
+      "kind": "grave_hand",
+      "pos": [
+        208,
+        144
+      ],
+      "zone": "vesper_graveyard",
+      "leash": 96
+    },
+    {
+      "id": "grave_hand_vg_2",
+      "kind": "grave_hand",
+      "pos": [
+        488,
+        168
+      ],
+      "zone": "vesper_graveyard",
+      "leash": 96
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_graveyard",
+      "kind": "waystone",
+      "pos": [
+        576,
+        240
+      ],
+      "props": {
+        "zone": "vesper_graveyard",
+        "name_key": "ISL1_Z_GRAVE"
+      }
+    },
+    {
+      "id": "lore_grave_mid",
+      "kind": "lore_stone",
+      "pos": [
+        224,
+        112
+      ],
+      "props": {
+        "string_id": "ISL1_LORE_MIDNIGHT",
+        "icon": "clock"
+      }
+    },
+    {
+      "id": "bell_vg_dawn",
+      "kind": "bell",
+      "pos": [
+        208,
+        368
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 128
+      }
+    },
+    {
+      "id": "hide_moth_grave",
+      "kind": "ow_hide_moth",
+      "pos": [
+        160,
+        320
+      ],
+      "props": {
+        "spot_id": "i1_grave",
+        "extra_flag": "q1_moth_grave"
+      }
+    },
+    {
+      "id": "lamp_vg_e",
+      "kind": "road_lamp",
+      "pos": [
+        608,
+        208
+      ],
+      "props": {
+        "zone": "vesper_graveyard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vg_nw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        128
+      ],
+      "props": {
+        "zone": "vesper_graveyard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vg_n",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        128
+      ],
+      "props": {
+        "zone": "vesper_graveyard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vg_w",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        224
+      ],
+      "props": {
+        "zone": "vesper_graveyard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vg_sw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        384
+      ],
+      "props": {
+        "zone": "vesper_graveyard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vg_s",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        392
+      ],
+      "props": {
+        "zone": "vesper_graveyard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vg_se",
+      "kind": "road_lamp",
+      "pos": [
+        496,
+        336
+      ],
+      "props": {
+        "zone": "vesper_graveyard",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_vg_ne",
+      "kind": "road_lamp",
+      "pos": [
+        496,
+        224
+      ],
+      "props": {
+        "zone": "vesper_graveyard",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "evening_gates",
+      "when": "bell_hour==evening",
+      "tiles": [
+        [
+          9,
+          5,
+          2,
+          1,
+          "wall"
+        ],
+        [
+          4,
+          14,
+          1,
+          2,
+          "wall"
+        ],
+        [
+          21,
+          11,
+          2,
+          7,
+          "water"
+        ],
+        [
+          16,
+          14,
+          12,
+          2,
+          "water"
+        ]
+      ],
+      "disable": [
+        "grave_hand_vg_1",
+        "grave_hand_vg_2"
+      ]
+    },
+    {
+      "id": "silent_sealed",
+      "when": "bell_hour==evening || !flag:great_lamp_1",
+      "tiles": [
+        [
+          21,
+          5,
+          2,
+          1,
+          "wall"
+        ]
+      ]
+    },
+    {
+      "id": "midnight_grave",
+      "when": "bell_hour==midnight",
+      "tint": "midnight",
+      "enable": [
+        "grave_hand_vg_1",
+        "grave_hand_vg_2"
+      ]
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        352,
+        352
+      ],
+      "radius": 36,
+      "style": "ritual"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        160,
+        320
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        208,
+        144
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        160,
+        112
+      ],
+      "size": [
+        36,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bone_ossuary_arch",
+      "pos": [
+        160,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bone_ossuary_arch",
+      "pos": [
+        352,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        272,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        432,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        128,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        288,
+        392
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        480,
+        384
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        128,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        192,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        320,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        384,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "open_sarcophagus",
+      "pos": [
+        528,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_coffin",
+      "pos": [
+        240,
+        408
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "toll_brazier",
+      "pos": [
+        544,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        528,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "weeping_willow",
+      "pos": [
+        112,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        464,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Moonlit hillside cemetery whose iron crypt gates swing wide and ghost causeway rises at Midnight, linking Undercroft, Whispering Crypt, and post-relight Silent Sanctum.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Midnight transforms Vesper Graveyard from a sealed terrace into a connected crypt hub with waking Grave Hands and Toll Moth bursts.",
+    "decisions": 6,
+    "expert_s": 65,
+    "reward": "undercroft_access+q1_moth_grave+silent_sanctum_gate",
+    "why": "Atmospheric gateway to Minor Dungeon A, Cave Whisper, and the post-relight Superboss.",
+    "optional": true,
+    "start": {
+      "vars": {
+        "bell_hour": "midnight"
+      }
+    },
+    "exit": "exit_vg_undercroft",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_graveyard"
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          368
+        ],
+        "target": "bell_vg_dawn"
+      },
+      {
+        "op": "wait_until",
+        "flag": "quest:hide:i1_grave",
+        "timeout": 3.5
+      },
+      {
+        "op": "interact",
+        "target": "lore_grave_mid"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_vg_undercroft"
+      }
+    ]
+  }
+}

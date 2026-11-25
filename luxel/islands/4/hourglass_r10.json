@@ -226,8 +226,8 @@
       "id": "lamp_r10_n",
       "kind": "road_lamp",
       "pos": [
-        200,
-        40
+        184,
+        72
       ],
       "props": {
         "zone": "hg_r10_basin",
@@ -282,8 +282,8 @@
       "sheet": "theme_hourglass_maze",
       "prop": "echo_rose_trellis",
       "pos": [
-        328,
-        184
+        344,
+        152
       ],
       "layer": "sort",
       "flip_x": true,
@@ -330,7 +330,7 @@
       "sheet": "theme_hourglass_maze",
       "prop": "stone_hedge_bench",
       "pos": [
-        280,
+        264,
         200
       ],
       "layer": "sort",

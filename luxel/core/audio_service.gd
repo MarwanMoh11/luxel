@@ -541,13 +541,11 @@ func _pick_free_1d() -> AudioStreamPlayer:
 		if not _sfx_pool[idx].playing: _sfx_cursor = (idx + 1) % _sfx_pool.size(); return _sfx_pool[idx]
 	var out: AudioStreamPlayer = _sfx_pool[_sfx_cursor]; _sfx_cursor = (_sfx_cursor + 1) % _sfx_pool.size(); return out
 
-
 func _pick_free_2d() -> AudioStreamPlayer2D:
 	for k: int in range(_sfx_2d_pool.size()):
 		var idx: int = (_sfx_2d_cursor + k) % _sfx_2d_pool.size()
 		if not _sfx_2d_pool[idx].playing: _sfx_2d_cursor = (idx + 1) % _sfx_2d_pool.size(); return _sfx_2d_pool[idx]
 	var out: AudioStreamPlayer2D = _sfx_2d_pool[_sfx_2d_cursor]; _sfx_2d_cursor = (_sfx_2d_cursor + 1) % _sfx_2d_pool.size(); return out
-
 
 func _pick_variant_stream(sfx_id: String) -> AudioStream:
 	var arr: Array = SfxMap.variant_list(sfx_id)
@@ -558,22 +556,19 @@ func _pick_variant_stream(sfx_id: String) -> AudioStream:
 		if cand != null: return cand
 	return _load_sfx_stream(sfx_id)
 
-
 func get_music_position() -> float: return _explore_player.get_playback_position() if (_explore_player != null and _explore_player.playing) else 0.0
 func is_music_playing() -> bool: return _explore_player != null and _explore_player.playing
 func get_lowpass_cutoff() -> float: return _lowpass.cutoff_hz if _lowpass != null else OPEN_LP_HZ
 
 func _load_music_stream(cue_name: String, fallback: String) -> AudioStream:
-	if cue_name == "silence":
-		return null
+	if cue_name == "silence": return null
 	var cands: Array[String] = ["res://luxel/audio/music/%s.ogg" % cue_name]
 	if not fallback.is_empty() and fallback != cue_name: cands.append("res://luxel/audio/music/%s.ogg" % fallback)
 	var do_loop: bool = not cue_name.begins_with("stinger_") and cue_name != "ending_dawn"
 	for path: String in cands:
 		var loaded: AudioStream = _load_cached_ogg(path, do_loop)
 		if loaded != null: return loaded
-	var gen := AudioStreamGenerator.new(); gen.mix_rate = 44100.0; gen.buffer_length = 0.5
-	return gen
+	var gen := AudioStreamGenerator.new(); gen.mix_rate = 44100.0; gen.buffer_length = 0.5; return gen
 
 func _load_ambience_stream(amb_name: String, fallback: String = "night_breeze") -> AudioStream:
 	var cands: Array[String] = ["res://luxel/audio/ambience/%s.ogg" % amb_name]
@@ -588,8 +583,7 @@ func _load_sfx_stream(sfx_id: String) -> AudioStream:
 	for ext: String in [".ogg", ".wav"]:
 		var loaded: AudioStream = _load_cached_ogg("res://luxel/audio/sfx/%s%s" % [sfx_id, ext], false, ext == ".ogg")
 		if loaded != null: return loaded
-	_sfx_missing[sfx_id] = true
-	return null
+	_sfx_missing[sfx_id] = true; return null
 
 func _load_cached_ogg(path: String, set_loop: bool, allow_disk_ogg: bool = true) -> AudioStream:
 	if _stream_cache.has(path): return _stream_cache[path] as AudioStream

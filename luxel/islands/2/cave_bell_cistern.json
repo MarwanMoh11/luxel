@@ -1,0 +1,536 @@
+{
+  "id": "cave_bell_cistern",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ZONE_ISL2_CISTERN",
+  "theme": "locks",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_tide"
+  ],
+  "spawn": [
+    232,
+    56
+  ],
+  "zones": [
+    {
+      "id": "bell_cistern",
+      "name_key": "ZONE_ISL2_CISTERN",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_cistern_out",
+      "rect": [
+        208,
+        0,
+        48,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        840,
+        552
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_cistern",
+      "kind": "room_anchor",
+      "pos": [
+        232,
+        56
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_cistern",
+      "kind": "lore_stone",
+      "pos": [
+        312,
+        104
+      ],
+      "props": {
+        "string_id": "ISL2_CISTERN_LORE",
+        "icon": "tide",
+        "persist": true
+      }
+    },
+    {
+      "id": "valve_cistern",
+      "kind": "state_lever",
+      "pos": [
+        328,
+        136
+      ],
+      "props": {
+        "scope": "room:2:cave_bell_cistern",
+        "var": "cistern_tide",
+        "values": [
+          "half",
+          "ebb"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "skiff_cistern",
+      "kind": "vehicle_skiff",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {}
+    },
+    {
+      "id": "plate_cistern_skiff",
+      "kind": "pressure_plate",
+      "pos": [
+        232,
+        152
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "size": [
+          44,
+          44
+        ],
+        "latch": true,
+        "target_id": "gate_cistern_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_cistern",
+      "kind": "blue_transformer",
+      "pos": [
+        152,
+        200
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "eye_cistern_blue",
+      "kind": "switch_eye",
+      "pos": [
+        248,
+        200
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "gate_cistern_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_cistern_all",
+      "kind": "logic_gate",
+      "pos": [
+        328,
+        184
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_cistern_skiff",
+          "eye_cistern_blue"
+        ],
+        "target_id": "door_cistern_vault",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_cistern_vault",
+      "kind": "door",
+      "pos": [
+        360,
+        168
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "bell_cistern",
+        "requires_signals": [
+          "gate_cistern_all"
+        ]
+      }
+    },
+    {
+      "id": "pickup_anchor_lead",
+      "kind": "pane_pickup",
+      "pos": [
+        392,
+        168
+      ],
+      "props": {
+        "pane": "anchor_lead"
+      }
+    },
+    {
+      "id": "lamp_cis_1",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        72
+      ],
+      "props": {
+        "zone": "bell_cistern",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cis_2",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "zone": "bell_cistern",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cis_3",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        216
+      ],
+      "props": {
+        "zone": "bell_cistern",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cis_4",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        232
+      ],
+      "props": {
+        "zone": "bell_cistern",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cis_5",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        120
+      ],
+      "props": {
+        "zone": "bell_cistern",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "cistern_ebb",
+      "when": "cistern_tide==ebb",
+      "theme": "seabed",
+      "tiles": [
+        [
+          8,
+          6,
+          10,
+          8,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        152
+      ],
+      "radius": 28,
+      "style": "gear"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        368,
+        112,
+        48,
+        96
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        64,
+        128,
+        48,
+        80
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        232,
+        72
+      ],
+      "radius": 20,
+      "style": "water"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        328,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        312,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        184,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        104,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        56,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        264,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        328,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        232,
+        88
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING: Sail your Skiff over a submerged giant floor plate at half-tide, dismount, and drain the cistern to ebb so your grounded empty Skiff weighs the plate down!",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Skiff grounding counterweight on ebb tide + drained basin mirror bank",
+    "decisions": 8,
+    "expert_s": 58,
+    "reward": "Stained-Glass Pane anchor_lead",
+    "why": "Island 2 signature Astonishing Moment #1 secret cave off Breakwater Reef",
+    "optional": true,
+    "target": "pickup_anchor_lead",
+    "start": {
+      "vars": {
+        "cistern_tide": "half"
+      },
+      "spawn": [
+        232,
+        56
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          120,
+          152
+        ]
+      },
+      {
+        "op": "mount",
+        "target": "skiff_cistern"
+      },
+      {
+        "op": "shoot",
+        "target": [
+          72,
+          152
+        ],
+        "count": 2
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "dismount"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          312,
+          136
+        ],
+        "target": "valve_cistern"
+      },
+      {
+        "op": "expect",
+        "var": "cistern_tide==ebb"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "interactable": "plate_cistern_skiff",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          232
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_cistern",
+        "steps": 1
+      },
+      {
+        "op": "shoot",
+        "from": [
+          152,
+          232
+        ],
+        "target": "mirror_cistern"
+      },
+      {
+        "op": "expect",
+        "interactable": "door_cistern_vault",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          168
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "pickup_anchor_lead"
+      }
+    ]
+  }
+}

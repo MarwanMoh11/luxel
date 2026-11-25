@@ -11,7 +11,7 @@
     "harbor_rigging"
   ],
   "spawn": [
-    240,
+    224,
     272
   ],
   "zones": [
@@ -21,7 +21,7 @@
       "rect": [
         0,
         0,
-        480,
+        448,
         320
       ],
       "dark": true
@@ -31,28 +31,28 @@
     {
       "id": "exit_r6_south",
       "rect": [
-        224,
+        208,
         304,
         32,
         16
       ],
       "to_region": "galleon_r5",
       "to_spawn": [
-        240,
+        256,
         56
       ]
     },
     {
       "id": "exit_r6_ladder",
       "rect": [
-        464,
+        432,
         144,
         16,
         32
       ],
       "to_region": "galleon_r2",
       "to_spawn": [
-        424,
+        496,
         80
       ],
       "requires_flags": [
@@ -63,7 +63,7 @@
     {
       "id": "exit_r6_north",
       "rect": [
-        224,
+        208,
         0,
         32,
         16
@@ -74,7 +74,7 @@
         272
       ],
       "requires_flags": [
-        "galleon_clamp_claimed"
+        "boss_bosun_rig_defeated"
       ],
       "locked_door_id": "door_r6_north"
     }
@@ -84,7 +84,7 @@
       "id": "anc_r6_s",
       "kind": "room_anchor",
       "pos": [
-        240,
+        224,
         272
       ],
       "props": {
@@ -95,7 +95,7 @@
       "id": "valve_r6",
       "kind": "state_lever",
       "pos": [
-        344,
+        328,
         232
       ],
       "props": {
@@ -114,7 +114,7 @@
       "id": "mir_r6_w",
       "kind": "blue_transformer",
       "pos": [
-        152,
+        136,
         168
       ],
       "props": {
@@ -130,7 +130,7 @@
       "id": "mir_r6_e",
       "kind": "blue_transformer",
       "pos": [
-        344,
+        328,
         168
       ],
       "props": {
@@ -146,7 +146,7 @@
       "id": "altar_ballast_clamp",
       "kind": "gal_clamp_altar",
       "pos": [
-        240,
+        224,
         184
       ],
       "props": {
@@ -161,13 +161,13 @@
       "id": "door_r6_north",
       "kind": "door",
       "pos": [
-        240,
+        224,
         24
       ],
       "props": {
         "door_kind": "ward_barrier",
         "requires_flags": [
-          "galleon_clamp_claimed"
+          "boss_bosun_rig_defeated"
         ],
         "size": [
           32,
@@ -179,7 +179,7 @@
       "id": "door_r6_ladder",
       "kind": "door",
       "pos": [
-        456,
+        424,
         160
       ],
       "props": {
@@ -197,7 +197,7 @@
       "id": "lamp_r6_sw",
       "kind": "road_lamp",
       "pos": [
-        168,
+        152,
         264
       ],
       "props": {
@@ -221,7 +221,7 @@
       "id": "lamp_r6_nw",
       "kind": "road_lamp",
       "pos": [
-        152,
+        136,
         72
       ],
       "props": {
@@ -233,7 +233,7 @@
       "id": "lamp_r6_ne",
       "kind": "road_lamp",
       "pos": [
-        344,
+        312,
         72
       ],
       "props": {
@@ -247,8 +247,8 @@
       "id": "bosun_r6",
       "kind": "bosun_rig",
       "pos": [
-        240,
-        120
+        224,
+        168
       ],
       "zone": "gal_r6"
     }
@@ -257,16 +257,16 @@
     {
       "kind": "circle",
       "pos": [
-        240,
+        224,
         168
       ],
-      "radius": 48,
+      "radius": 46,
       "style": "gear"
     },
     {
       "kind": "grate",
       "rect": [
-        192,
+        176,
         128,
         96,
         64
@@ -276,8 +276,8 @@
     {
       "kind": "stain",
       "pos": [
-        88,
-        200
+        104,
+        168
       ],
       "radius": 22,
       "style": "water"
@@ -285,11 +285,11 @@
     {
       "kind": "light_shaft",
       "pos": [
-        240,
+        224,
         152
       ],
       "size": [
-        56,
+        52,
         72
       ],
       "tint": "warm",
@@ -302,7 +302,7 @@
       "prop": "brass_capstan",
       "pos": [
         104,
-        88
+        72
       ],
       "layer": "sort",
       "flip_x": false,
@@ -313,8 +313,8 @@
       "sheet": "theme_galleon",
       "prop": "rope_coil_crate",
       "pos": [
-        392,
-        88
+        376,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -325,8 +325,8 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        104,
-        248
+        136,
+        280
       ],
       "layer": "sort",
       "flip_x": false,
@@ -337,8 +337,8 @@
       "sheet": "theme_galleon",
       "prop": "tangled_cargo_net",
       "pos": [
-        392,
-        248
+        376,
+        120
       ],
       "layer": "sort",
       "flip_x": true,
@@ -349,7 +349,7 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        184,
+        168,
         40
       ],
       "layer": "sort",
@@ -361,7 +361,7 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        296,
+        280,
         40
       ],
       "layer": "sort",
@@ -374,7 +374,7 @@
       "prop": "hanging_ship_lantern",
       "pos": [
         104,
-        152
+        216
       ],
       "layer": "sort",
       "flip_x": false,
@@ -386,7 +386,7 @@
       "prop": "hanging_ship_lantern",
       "pos": [
         392,
-        136
+        200
       ],
       "layer": "sort",
       "flip_x": true,
@@ -397,7 +397,7 @@
       "sheet": "theme_galleon",
       "prop": "tattered_sail_banner",
       "pos": [
-        200,
+        184,
         56
       ],
       "layer": "sort",
@@ -409,7 +409,7 @@
       "sheet": "theme_galleon",
       "prop": "tattered_sail_banner",
       "pos": [
-        280,
+        264,
         56
       ],
       "layer": "sort",
@@ -444,14 +444,14 @@
     "exit": "exit_r6_north",
     "start": {
       "vars": {
-        "list": "port"
+        "dungeon:galleon:list": "port"
       }
     },
     "solution": [
       {
         "op": "goto",
         "to": [
-          240,
+          224,
           232
         ]
       },
@@ -472,6 +472,13 @@
       {
         "op": "expect",
         "flag": "power_ballast_clamp"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r6_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
       },
       {
         "op": "expect_exit",

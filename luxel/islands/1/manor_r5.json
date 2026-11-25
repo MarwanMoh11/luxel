@@ -272,8 +272,8 @@
       "sheet": "theme_manor",
       "prop": "tea_trolley",
       "pos": [
-        128,
-        264
+        156,
+        272
       ],
       "layer": "sort",
       "flip_x": false,

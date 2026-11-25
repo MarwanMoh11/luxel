@@ -1,0 +1,473 @@
+{
+  "id": "cave_sunflare_crypt",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "forge_deep",
+  "music": "island6_dungeon",
+  "name_key": "ISL6_Z_CRYPT",
+  "spawn": [
+    208,
+    48
+  ],
+  "zones": [
+    {
+      "id": "cave_sunflare_crypt",
+      "name_key": "ISL6_Z_CRYPT",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_crypt_to_basin",
+      "rect": [
+        192,
+        0,
+        48,
+        16
+      ],
+      "to_region": "ow_slag_basin",
+      "to_spawn": [
+        584,
+        408
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_sc_1",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        48
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "tf_sc_1",
+      "kind": "blue_transformer",
+      "pos": [
+        112,
+        136
+      ],
+      "props": {
+        "angle_deg": 225,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "slag_sc_1",
+      "kind": "push_block",
+      "pos": [
+        80,
+        160
+      ],
+      "props": {
+        "variant": "slag"
+      }
+    },
+    {
+      "id": "plate_sc_1",
+      "kind": "pressure_plate",
+      "pos": [
+        128,
+        160
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_id": "gate_crypt_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "seal_crypt_core",
+      "kind": "obsidian_seal",
+      "pos": [
+        208,
+        144
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "target_id": "gate_crypt_all"
+      }
+    },
+    {
+      "id": "braz_sc_1",
+      "kind": "timed_brazier",
+      "pos": [
+        184,
+        120
+      ],
+      "props": {
+        "secs": 3.0,
+        "target_id": "gate_crypt_braz"
+      }
+    },
+    {
+      "id": "braz_sc_2",
+      "kind": "timed_brazier",
+      "pos": [
+        232,
+        120
+      ],
+      "props": {
+        "secs": 3.0,
+        "target_id": "gate_crypt_braz"
+      }
+    },
+    {
+      "id": "braz_sc_3",
+      "kind": "timed_brazier",
+      "pos": [
+        184,
+        168
+      ],
+      "props": {
+        "secs": 3.0,
+        "target_id": "gate_crypt_braz"
+      }
+    },
+    {
+      "id": "braz_sc_4",
+      "kind": "timed_brazier",
+      "pos": [
+        232,
+        168
+      ],
+      "props": {
+        "secs": 3.0,
+        "target_id": "gate_crypt_braz"
+      }
+    },
+    {
+      "id": "gate_crypt_braz",
+      "kind": "logic_gate",
+      "pos": [
+        288,
+        144
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "braz_sc_1",
+          "braz_sc_2",
+          "braz_sc_3",
+          "braz_sc_4"
+        ],
+        "target_id": "gate_crypt_all",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_crypt_all",
+      "kind": "logic_gate",
+      "pos": [
+        272,
+        176
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_sc_1",
+          "seal_crypt_core",
+          "gate_crypt_braz"
+        ],
+        "target_id": "door_crypt_inner",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_crypt_inner",
+      "kind": "door",
+      "pos": [
+        216,
+        216
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "gate_crypt_all"
+        ]
+      }
+    },
+    {
+      "id": "chest_ember_6_sunflare",
+      "kind": "chest",
+      "pos": [
+        176,
+        248
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_6_sunflare"
+      }
+    },
+    {
+      "id": "chest_shards_crypt",
+      "kind": "chest",
+      "pos": [
+        248,
+        248
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 60
+      }
+    },
+    {
+      "id": "lore_hollow_kiln",
+      "kind": "lore_stone",
+      "pos": [
+        208,
+        248
+      ],
+      "props": {
+        "string_id": "ISL6_LORE_HOLLOW",
+        "icon": "skull"
+      }
+    },
+    {
+      "id": "lamp_sc_1",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sc_2",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sc_3",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sc_4",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "tempering_floor_seal",
+      "pos": [
+        208,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        176,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        240,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "chained_slag_cauldron",
+      "pos": [
+        56,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        360,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "crypt_hollow_flag",
+      "on": "signal:lore_hollow_kiln",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "lore_hollow_kiln"
+        },
+        {
+          "set_flag": "hub:secret:kiln_cinder"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Post-Sunflare secret crypt combining Blue-cooled slag placement with a 4-corner Sunflare Seal burst to uncover Hollow Wick's forge inscription, ember_6_sunflare, 60 shards, and Wick House's kiln_cinder secret.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Sunflare radial AoE mastery combined with Blue slag cooling.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "ember_6_sunflare+lore_hollow_kiln+60sh",
+    "why": "Late-ability secret visible from minute 3 in Slag Basin paying off Sunflare and advancing Hollow Wick's arc.",
+    "optional": true,
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens",
+        "sunflare"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          144,
+          136
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          112,
+          136
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "slag_sc_1",
+        "prop": "cooled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "push",
+        "target": "slag_sc_1",
+        "dir": "e",
+        "dist": 48.0
+      },
+      {
+        "op": "wait_until",
+        "target": "plate_sc_1",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          128
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "sunflare"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_crypt_inner",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          240
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_hollow_kiln"
+      },
+      {
+        "op": "expect",
+        "flag": "lore_hollow_kiln"
+      }
+    ]
+  }
+}

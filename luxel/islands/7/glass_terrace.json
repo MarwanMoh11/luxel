@@ -1,0 +1,554 @@
+{
+  "id": "glass_terrace",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_TERRACE",
+  "theme": "masquerade",
+  "music": "isl7_setpiece",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    320,
+    392
+  ],
+  "zones": [
+    {
+      "id": "glass_terrace",
+      "name_key": "ISL7_Z_TERRACE",
+      "rect": [
+        0,
+        0,
+        640,
+        448
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_gt_overworld",
+      "rect": [
+        288,
+        432,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        704,
+        128
+      ]
+    },
+    {
+      "id": "exit_gt_quay",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_region": "silver_quay",
+      "to_spawn": [
+        672,
+        232
+      ]
+    },
+    {
+      "id": "exit_gt_promenade",
+      "rect": [
+        624,
+        208,
+        16,
+        48
+      ],
+      "to_region": "velvet_promenade",
+      "to_spawn": [
+        56,
+        152
+      ]
+    },
+    {
+      "id": "exit_gt_spire",
+      "rect": [
+        288,
+        0,
+        64,
+        16
+      ],
+      "to_region": "spire_r1",
+      "to_spawn": [
+        224,
+        200
+      ],
+      "requires_flags": [
+        "beacon_7_1",
+        "beacon_7_2",
+        "beacon_7_3"
+      ],
+      "locked_door_id": "door_twin_mask_gate"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_glass_terrace",
+      "kind": "waystone",
+      "pos": [
+        320,
+        296
+      ],
+      "props": {
+        "zone": "glass_terrace",
+        "name_key": "ISL7_Z_TERRACE"
+      }
+    },
+    {
+      "id": "pool_gt_east",
+      "kind": "moon_pool",
+      "pos": [
+        424,
+        232
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_gt_twin_masks",
+      "kind": "lore_stone",
+      "pos": [
+        248,
+        136
+      ],
+      "props": {
+        "string_id": "ISL7_LORE_TERRACE",
+        "icon": "crown"
+      }
+    },
+    {
+      "id": "door_twin_mask_gate",
+      "kind": "door",
+      "pos": [
+        320,
+        48
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_beacons": [
+          "beacon_7_1",
+          "beacon_7_2",
+          "beacon_7_3"
+        ],
+        "requires_flags": [
+          "twin_mask_gate_open"
+        ]
+      }
+    },
+    {
+      "id": "npc_scribe_worm_7",
+      "kind": "npc",
+      "pos": [
+        392,
+        168
+      ],
+      "props": {
+        "folk": "scribe_worm",
+        "quest": "q7_noon_rumor",
+        "rescuable": false,
+        "require_flag": "great_lamp_7",
+        "wander_radius": 10,
+        "bubbles": [
+          {
+            "icons": [
+              "skull",
+              "clock",
+              "light_on",
+              "arrow_s",
+              "star"
+            ],
+            "line": "ISL7_Q4_NOON"
+          },
+          [
+            "star",
+            "happy",
+            "crown"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "lamp_gt_s1",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        368
+      ],
+      "props": {
+        "zone": "glass_terrace",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_gt_s2",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        368
+      ],
+      "props": {
+        "zone": "glass_terrace",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_gt_w1",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        224
+      ],
+      "props": {
+        "zone": "glass_terrace",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_gt_e1",
+      "kind": "road_lamp",
+      "pos": [
+        528,
+        224
+      ],
+      "props": {
+        "zone": "glass_terrace",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_gt_c1",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        200
+      ],
+      "props": {
+        "zone": "glass_terrace",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_gt_c2",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        200
+      ],
+      "props": {
+        "zone": "glass_terrace",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_gt_n1",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        96
+      ],
+      "props": {
+        "zone": "glass_terrace",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_gt_n2",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        96
+      ],
+      "props": {
+        "zone": "glass_terrace",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        320,
+        224
+      ],
+      "radius": 46,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "ice"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        296,
+        64,
+        48,
+        352
+      ],
+      "color": "plum",
+      "border": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        296,
+        80
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_masquerade",
+      "prop": "velvet_rosette_arch",
+      "pos": [
+        320,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_ballroom_pillar",
+      "pos": [
+        248,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_ballroom_pillar",
+      "pos": [
+        392,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        264,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        376,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "masquerade_mirror_tall",
+      "pos": [
+        184,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "masquerade_mirror_tall",
+      "pos": [
+        456,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "domino_mask_pedestal",
+      "pos": [
+        272,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "domino_mask_pedestal",
+      "pos": [
+        368,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "moon_lantern_urn",
+      "pos": [
+        264,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "moon_lantern_urn",
+      "pos": [
+        448,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "champagne_fountain",
+      "pos": [
+        432,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_floor_crest",
+      "pos": [
+        320,
+        224
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          10,
+          6,
+          4,
+          3,
+          "bridge"
+        ],
+        [
+          26,
+          6,
+          3,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "gt_sync_twin_mask_gate",
+      "on": "flag:palace_cleared",
+      "if": "flag:beacon_7_1 && flag:beacon_7_2 && flag:beacon_7_3",
+      "once": false,
+      "do": [
+        {
+          "set_flag": "twin_mask_gate_open"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Octagonal grand Spire forecourt joining Silver Quay, Velvet Promenade, Overworld Spire Threshold, and the Twin-Mask Gate to Masquerade & Mirror Spire.",
+    "kind": "story",
+    "beat": "ten",
+    "teaches": "Converges both minor dungeons and the 3 Lunar Obelisks at the Twin-Mask Gate; post-relight Scribe Worm points Wick south to Zenith Atoll.",
+    "decisions": 4,
+    "expert_s": 45,
+    "reward": "ws_glass_terrace+q7_noon_rumor+spire_entry",
+    "why": "Grand architectural pivot before The Masquerade and Mirror Spire, keeping all 3 outer districts looped into one cycle.",
+    "optional": true,
+    "exit": "exit_gt_overworld",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_glass_terrace"
+      },
+      {
+        "op": "interact",
+        "target": "lore_gt_twin_masks"
+      },
+      {
+        "op": "interact",
+        "target": "pool_gt_east"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_gt_overworld"
+      }
+    ]
+  }
+}

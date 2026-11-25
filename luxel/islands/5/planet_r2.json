@@ -1,0 +1,413 @@
+{
+  "id": "planet_r2",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R2",
+  "spawn": [
+    336,
+    192
+  ],
+  "zones": [
+    {
+      "id": "pl_r2",
+      "name_key": "I5_PL_R2",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r2_e",
+      "rect": [
+        368,
+        176,
+        16,
+        32
+      ],
+      "to_region": "planet_r1",
+      "to_spawn": [
+        56,
+        224
+      ]
+    },
+    {
+      "id": "exit_pl_r2_n",
+      "rect": [
+        96,
+        0,
+        32,
+        16
+      ],
+      "to_region": "planet_r3",
+      "to_spawn": [
+        112,
+        240
+      ],
+      "locked_door_id": "door_pl_r2_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r2",
+      "kind": "room_anchor",
+      "pos": [
+        336,
+        192
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sn_r2_1",
+      "kind": "star_node",
+      "pos": [
+        268,
+        192
+      ],
+      "props": {
+        "cap_group": "pl_r2",
+        "max_lit": 4,
+        "links": [
+          "sn_r2_2"
+        ]
+      }
+    },
+    {
+      "id": "sn_r2_2",
+      "kind": "star_node",
+      "pos": [
+        220,
+        192
+      ],
+      "props": {
+        "cap_group": "pl_r2",
+        "max_lit": 4,
+        "links": [
+          "sn_r2_1",
+          "sn_r2_3"
+        ]
+      }
+    },
+    {
+      "id": "sn_r2_3",
+      "kind": "star_node",
+      "pos": [
+        180,
+        148
+      ],
+      "props": {
+        "cap_group": "pl_r2",
+        "max_lit": 4,
+        "links": [
+          "sn_r2_2",
+          "sn_r2_4"
+        ]
+      }
+    },
+    {
+      "id": "sn_r2_4",
+      "kind": "star_node",
+      "pos": [
+        132,
+        136
+      ],
+      "props": {
+        "cap_group": "pl_r2",
+        "max_lit": 4,
+        "links": [
+          "sn_r2_3",
+          "sn_r2_5"
+        ]
+      }
+    },
+    {
+      "id": "sn_r2_5",
+      "kind": "star_node",
+      "pos": [
+        112,
+        96
+      ],
+      "props": {
+        "cap_group": "pl_r2",
+        "max_lit": 4,
+        "links": [
+          "sn_r2_4",
+          "sn_r2_6"
+        ]
+      }
+    },
+    {
+      "id": "sn_r2_6",
+      "kind": "star_node",
+      "pos": [
+        112,
+        68
+      ],
+      "props": {
+        "cap_group": "pl_r2",
+        "max_lit": 4,
+        "links": [
+          "sn_r2_5"
+        ],
+        "target_id": "door_pl_r2_n",
+        "sets_flag": "pl_r2_open"
+      }
+    },
+    {
+      "id": "door_pl_r2_n",
+      "kind": "door",
+      "pos": [
+        112,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sn_r2_6"
+        ],
+        "sets_flag": "pl_r2_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_pl_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        160
+      ],
+      "props": {
+        "zone": "pl_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r2_se",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        224
+      ],
+      "props": {
+        "zone": "pl_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r2_nw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        52
+      ],
+      "props": {
+        "zone": "pl_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r2_ne",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        48
+      ],
+      "props": {
+        "zone": "pl_r2",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        280,
+        176,
+        32,
+        32
+      ]
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        112,
+        48
+      ],
+      "radius": 18
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        320,
+        176
+      ],
+      "size": [
+        44,
+        48
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "star_chart_lectern",
+      "pos": [
+        296,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "celestial_bench",
+      "pos": [
+        344,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "floating_prism_lens",
+      "pos": [
+        160,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        60,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "S-step crescent void gulf teaching the 6-star constellation bridge and the 4-star FIFO cap: shoot stars ahead so older stars behind you pulse amber warning and fade harmlessly as you step forward.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Building star_node bridges across void and managing the 4-star FIFO cap safely.",
+    "decisions": 5,
+    "expert_s": 42,
+    "reward": "constellation_literacy+path_to_r3",
+    "why": "First pure constellation puzzle introducing the 4-star FIFO budget with zero unfair drops.",
+    "exit": "exit_pl_r2_n",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          292,
+          192
+        ],
+        "target": "sn_r2_1",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          292,
+          164
+        ],
+        "target": "sn_r2_2",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          244,
+          192
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r2_3",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          170
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r2_4",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          156,
+          142
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r2_5",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          122,
+          116
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r2_6",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_pl_r2_n",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r2_n"
+      }
+    ]
+  }
+}

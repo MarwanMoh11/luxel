@@ -290,8 +290,8 @@
       "id": "lm_r1_grass_w",
       "kind": "ur_tiny_landmark",
       "pos": [
-        56,
-        108
+        52,
+        124
       ],
       "props": {
         "variant": "grass_cathedral",
@@ -314,7 +314,7 @@
       "id": "lm_r1_acorn_sw",
       "kind": "ur_tiny_landmark",
       "pos": [
-        112,
+        116,
         208
       ],
       "props": {
@@ -392,8 +392,8 @@
       "sheet": "theme_under_root",
       "prop": "colossal_acorn_dome",
       "pos": [
-        64,
-        164
+        88,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -404,8 +404,8 @@
       "sheet": "theme_under_root",
       "prop": "colossal_acorn_dome",
       "pos": [
-        320,
-        212
+        312,
+        204
       ],
       "layer": "sort",
       "flip_x": true,
@@ -417,7 +417,7 @@
       "prop": "fern_canopy_frond",
       "pos": [
         52,
-        152
+        148
       ],
       "layer": "sort",
       "flip_x": false,

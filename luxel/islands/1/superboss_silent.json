@@ -1,0 +1,370 @@
+{
+  "id": "superboss_silent",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_Z_SILENT",
+  "theme": "undercroft",
+  "music": "silence",
+  "ambience": [],
+  "spawn": [
+    224,
+    304
+  ],
+  "zones": [
+    {
+      "id": "superboss_silent",
+      "name_key": "ISL1_Z_SILENT",
+      "rect": [
+        0,
+        0,
+        448,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sb_south",
+      "rect": [
+        208,
+        336,
+        32,
+        16
+      ],
+      "to_region": "vesper_graveyard",
+      "to_spawn": [
+        352,
+        56
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_silent_bell",
+      "kind": "silent_bell",
+      "pos": [
+        224,
+        144
+      ],
+      "zone": "superboss_silent"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_sb_s",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_silent_bell",
+      "kind": "lore_stone",
+      "pos": [
+        192,
+        248
+      ],
+      "props": {
+        "string_id": "ISL1_LORE_SILENT",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "lamp_sb_sw",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        240
+      ],
+      "props": {
+        "zone": "superboss_silent",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sb_se",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        240
+      ],
+      "props": {
+        "zone": "superboss_silent",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sb_nw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        96
+      ],
+      "props": {
+        "zone": "superboss_silent",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sb_ne",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        96
+      ],
+      "props": {
+        "zone": "superboss_silent",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sb_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        288
+      ],
+      "props": {
+        "zone": "superboss_silent",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "sb_silence_broken_msg",
+      "on": "flag:silent_bell_defeated",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "ISL1_SILENT_BROKEN",
+            "style": "title",
+            "duration": 3.5
+          }
+        },
+        {
+          "music": "explore"
+        }
+      ]
+    },
+    {
+      "id": "sb_spawn_moth_10",
+      "on": "flag:silent_bell_defeated",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "moth_1_10",
+            "kind": "moth",
+            "pos": [
+              224,
+              160
+            ],
+            "props": {
+              "id": "moth_1_10"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 68,
+      "style": "ritual"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 34,
+      "style": "clock"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        168,
+        128
+      ],
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        280,
+        192
+      ],
+      "radius": 22,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_undercroft",
+      "prop": "bell_floor_seal",
+      "pos": [
+        224,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        104,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        320,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        144,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "crypt_candelabra",
+      "pos": [
+        296,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        144,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "mossy_headstone",
+      "pos": [
+        272,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        192,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_undercroft",
+      "prop": "tattered_crypt_banner",
+      "pos": [
+        256,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Post-relight Midnight superboss arena in 0 dB total silence: read The Silent Bell's dust-ripples by eye, throw your lantern inside its open mouth to force a ring, and break the silence with a Dawn chord.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Zero-audio combat mastery on The Island That Rings, rewarding Moth 10 and 150 shards.",
+    "decisions": 8,
+    "expert_s": 150,
+    "reward": "silent_bell_defeated+moth_1_10+150sh",
+    "why": "Unforgettable post-relight optional superboss climax.",
+    "optional": true,
+    "exit": "exit_sb_south",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_silent_bell"
+      },
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "silent_bell_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          160
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_sb_south"
+      }
+    ]
+  }
+}

@@ -1,324 +1,283 @@
 class_name LxForgeWardenBoss
-extends LxCinderGolemBrain
-## Ashen Kiln mini-boss (Island 6): Forge Warden.
-## 2 phases, HP 12.5, heavy armour 3.5 (cracked by Sunflare).
-## Phase 2 follows its Forge Quake with a telegraphed Molten Line-Fissure hammer slam
-## aimed along Wick's lane (tell >= 0.52s) instead of a 2nd shockwave ring!
+extends LxBossBase
+## Ashen Kiln Mini-Boss #1 (Island 6, `kiln_r6`): Forge Warden (Bible §4.6).
+## 2 phases on LxBossBase. Heavy furnace slag armour chips plain bolts outside punish windows
+## with a molten-gold armour glint; Sunflare / Lance (`cracks_armour`) shatters his armour for
+## 1.45x damage + heavy stagger!
+## Preserves B6 upgrades: Forge Quake shockwave, P2 Molten Line-Fissure triggering room `slag_pourer`s
+## & splashing molten slag boulders (cool with Blue bolts to block his follow-up fissure and reflect
+## sparks back for a 1.1s mini-stagger!), plus P2 lava pit rim cracks & cooled basalt anvil pillars!
 
-enum QuakeStage { RING_1, FISSURE_TELL, FISSURE_COMMIT }
-
-const FORGE_ARMOUR_MAX: float = 3.5
-const FORGE_RING_MAX_R: float = 76.0
-const FORGE_RING_BAND: float = 10.5
-const FORGE_TRIGGER_R: float = 84.0
-const FISSURE_TELL_TIME: float = 0.54
-const FISSURE_COMMIT_TIME: float = 0.34
-const FISSURE_RANGE: float = 114.0
-const FISSURE_HALF_W: float = 13.0
-const PHASE2_ROAR_TIME: float = 0.60
-const FISSURE_REFLECT_STAGGER: float = 0.85
+const FORGE_ARMOUR_MAX: float = 4.0
+const ARMOUR_REFORM_DUR: float = 8.0
+const FORGE_RING_START_R: float = 10.0
+const FORGE_RING_MAX_R: float = 60.0
+const FORGE_RING_BAND: float = 10.0
+const FISSURE_RANGE: float = 112.0
+const FISSURE_HALF_W: float = 10.0
 const MAX_SLAG_BOULDERS: int = 2
 
-var quake_stage: int = QuakeStage.RING_1
-var fissure_dir: Vector2 = Vector2.RIGHT
-var fissure_progress: float = 0.0
-var fissure_hit: bool = false
-var _roaring: bool = false
-var _slag_boulders: Array[Dictionary] = []
+# Compat fields referenced by miniboss_synergy.gd & failure_teaching_fx.gd
+var armour_max: float = FORGE_ARMOUR_MAX
+var armour_hp: float = FORGE_ARMOUR_MAX
+var armour_intact: bool = true
+
+var _armour_broken_t: float = 0.0
+var _stomp_progress: float = 0.0
+var _stomp_hit: bool = false
+var _fissure_dir: Vector2 = Vector2.RIGHT
+var _fissure_progress: float = 0.0
+var _fissure_hit: bool = false
 var _fissure_block_dist: float = FISSURE_RANGE
 var _fissure_reflected: bool = false
 var _reflect_fx_t: float = 0.0
 var _reflect_fx_pos: Vector2 = Vector2.ZERO
+var _rush_dir: Vector2 = Vector2.RIGHT
+var _slag_boulders: Array[Dictionary] = []
+var _clank_sfx_cd: float = 0.0
 
 
 func _init() -> void:
 	super._init()
 	kind = "forge_warden"
 	boss_id = "forge_warden"
+	boss_name_key = "MINIBOSS_6"
 	island_id = 6
-	is_boss = true
-	max_hp = 12.5
-	hp = 12.5
+	is_miniboss = true
+	reward_heart = "none"
+	music_cue = "island6_boss_p1"
+	music_p2_cue = "island6_boss_p2"
+	max_hp = 78.0
+	hp = 78.0
+	body_radius = 9.0
+	move_speed = 34.0
+	stagger_threshold = 13.5
+	stagger_duration = 1.60
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.28
+	shard_drop = 22
+	intro_duration = 0.60
+	phase_shift_duration = 0.65
+	death_duration = 2.0
+
+
+func _configure_boss(_spec: Dictionary) -> void:
+	if world_ctx != null and str(world_ctx.get("current_region_id")) == "kiln_r6":
+		arena_rect = Rect2(224.0, 96.0, 176.0, 64.0)
+	configure_phases([0.50])
+
+	# Attack 1: Forge Quake Slam — expanding molten shockwave ring + cinder gap ring + slag splash
+	register_attack("forge_quake_slam", {
+		"weight": 1.25, "tell": 0.60, "commit": 0.34, "recover": 1.25, "cooldown": 1.50,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_stomp_progress = 0.0
+			_stomp_hit = false
+			ground.warn_ring(pos, FORGE_RING_MAX_R, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.06, 0.5, "apricot", "coral")
+			stage.play_sfx("golem_stomp_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_stomp_progress = 0.0
+			_stomp_hit = false
+			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 120.0, gap_a, 0.85, {"color": "coral", "source": "forge_quake", "damage": 0.5})
+			_splash_slag_boulder(pos + Vector2.from_angle(gap_a + 0.75) * 48.0)
+			_boss_impact(0.20, 88.0, 90.0)
+			stage.play_sfx("golem_stomp_shockwave", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
+			_step_quake_commit(el, 0.34),
+	})
+
+	# Attack 2: Anvil Cinder Barrage — targeted molten drops across Wick & corners + forge bolt lane
+	register_attack("anvil_cinder_barrage", {
+		"weight": 1.20, "tell": 0.56, "commit": 0.32, "recover": 1.10, "cooldown": 1.45,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_rush_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _rush_dir.angle()
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 24.0, 0.5, "coral", "gold")
+			ground.warn_lane(pos, pos + _rush_dir * 58.0, 8.0, last_tell_duration, 0.0, "apricot", "gold")
+			stage.play_sfx("golem_stomp_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			patterns.emit_lane(pos, _rush_dir, 4 if phase >= 2 else 3, 148.0, 0.08, {"color": "gold", "source": "anvil_cinder", "damage": 0.5})
+			stage.shake(0.16)
+			stage.play_sfx("golem_stomp_shockwave", pos),
+	})
+
+	# Attack 3: Furnace Hammer Rush — advancing hammer lunge + molten spark fan
+	register_attack("furnace_hammer_rush", {
+		"weight": 1.15, "tell": 0.54, "commit": 0.36, "recover": 1.15, "cooldown": 1.50,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_rush_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _rush_dir.angle()
+			ground.warn_lane(pos, pos + _rush_dir * 60.0, 10.0, last_tell_duration, 0.0, "coral", "gold")
+			stage.play_sfx("warden_swing", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			patterns.emit_fan(pos, _rush_dir, 5 if phase >= 2 else 3, 0.72, 138.0, {"color": "apricot", "source": "hammer_sparks", "damage": 0.5})
+			stage.shake(0.16)
+			stage.play_sfx("warden_swing", pos),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
+			move_boss(_rush_dir * 104.0 * dt, false)
+			check_contact_damage(body_radius + 11.0, _rush_dir, 0.5, "hammer_rush"),
+	})
+
+	# Attack 4 (P2): Molten Line-Fissure — blazing lava lane (cooled slag boulder blocks & reflects for stagger!)
+	register_attack("molten_line_fissure", {
+		"phases": [2], "weight": 2.00, "tell": 0.56, "commit": 0.38, "recover": 1.35, "cooldown": 1.45,
+		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			_fissure_progress = 0.0
+			_fissure_hit = false
+			_fissure_reflected = false
+			_fissure_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
+			facing = _fissure_dir.angle()
+			ground.warn_lane(pos, pos + _fissure_dir * 64.0, FISSURE_HALF_W, last_tell_duration, 0.0, "coral", "gold")
+			stage.play_sfx("golem_stomp_tell", pos),
+		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
+			_fissure_progress = 0.0
+			_fissure_hit = false
+			_fissure_reflected = false
+			_fissure_dir = Vector2.from_angle(facing)
+			_fissure_block_dist = _compute_fissure_block_dist(_fissure_dir)
+			_boss_impact(0.22, 98.0, 102.0)
+			stage.play_sfx("golem_stomp_shockwave", pos)
+			_trigger_room_slag_pourers()
+			_splash_slag_boulder(pos + _fissure_dir.rotated(0.55) * 52.0)
+			patterns.emit_fan(pos, _fissure_dir, 3, 0.42, 146.0, {"color": "coral", "source": "fissure_cinder", "damage": 0.5}),
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
+			_step_fissure_commit(el, 0.38),
+	})
+
+
+func _on_reset_encounter() -> void:
 	armour_max = FORGE_ARMOUR_MAX
 	armour_hp = FORGE_ARMOUR_MAX
-	body_radius = 8.5
-	routine_speed = 26.0
-	leash_radius = 150.0
-	notice_radius = 132.0
-	tell_time = 0.64
-	recover_time = 1.45
-	give_up_time = 1.1
-	attack_damage = 1.5
-	reach = FORGE_TRIGGER_R
-	lunge_reach = FORGE_TRIGGER_R
-	shard_drop = 18
-
-
-func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node = null) -> void:
-	super.setup(spec, p_director, p_world)
-	max_hp = maxf(12.5, max_hp)
-	hp = max_hp
-	is_boss = true
-	boss_id = str(spec.get("boss_id", "forge_warden"))
-	island_id = int(spec.get("island_id", 6))
-	armour_max = maxf(1.0, float(spec.get("armour_hp", FORGE_ARMOUR_MAX)))
-	armour_hp = armour_max
 	armour_intact = true
-	quake_stage = QuakeStage.RING_1
-	fissure_dir = Vector2.from_angle(facing)
-	fissure_progress = 0.0
-	fissure_hit = false
-	_roaring = false
-	_slag_boulders.clear()
+	_armour_broken_t = 0.0
+	_stomp_progress = 0.0
+	_stomp_hit = false
+	_fissure_progress = 0.0
+	_fissure_hit = false
 	_fissure_block_dist = FISSURE_RANGE
 	_fissure_reflected = false
 	_reflect_fx_t = 0.0
+	_slag_boulders.clear()
+	_clank_sfx_cd = 0.0
 
 
-func take_hit(hit: LxHit) -> int:
-	if _roaring:
-		_emit_enemy_hit(hit, HitResult.GLANCED)
-		return HitResult.GLANCED
-	var res: int = super.take_hit(hit)
-	if is_alive() and res != HitResult.GLANCED and res != HitResult.BLOCKED:
-		_check_phase_transition()
-	return res
-
-
-func _check_phase_transition() -> void:
-	if phase < 2 and hp <= max_hp * 0.50 and hp > 0.001:
-		phase = 2
-		_roaring = true
-		quake_stage = QuakeStage.RING_1
-		stomp_progress = 0.0
-		fissure_progress = 0.0
-		_release_token()
-		state = State.NOTICE
-		state_timer = PHASE2_ROAR_TIME
-		if Lx.events != null:
-			Lx.events.boss_phase_changed.emit(boss_id, 2)
-		_boss_impact(0.28, 98.0, 96.0)
-		_emit_sfx("forge_warden_phase2")
+func _on_phase_enter(new_phase: int) -> void:
+	if new_phase == 2:
+		armour_intact = true
+		armour_hp = maxf(armour_hp, 3.0)
+		_armour_broken_t = 0.0
 		_trigger_room_slag_pourers()
 		_splash_slag_boulder(pos + Vector2.from_angle(facing + 0.65) * 48.0)
+		# P2 Arena Mutation: crack outer basalt rim into lava pockets + drop basalt anvil cover pillars!
+		var c: Vector2 = arena_rect.get_center()
+		_carve_safe_pit_near(c + Vector2(-72.0, -56.0))
+		_carve_safe_pit_near(c + Vector2(56.0, -56.0))
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-72.0, 20.0)), 4.5, "forge_anvil_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(72.0, -20.0)), 4.5, "forge_anvil_e")
+		stage.darkness_pulse(0.60, 0.95)
+		_boss_impact(0.28, 98.0, 96.0)
+		stage.play_sfx("forge_warden_phase2", pos)
 
 
-func _step_brain(dt: float) -> void:
-	if _reflect_fx_t > 0.0:
-		_reflect_fx_t = maxf(0.0, _reflect_fx_t - dt)
+func _on_boss_tick(dt: float, _target: Vector2) -> void:
+	_clank_sfx_cd = maxf(0.0, _clank_sfx_cd - dt)
+	_reflect_fx_t = maxf(0.0, _reflect_fx_t - dt)
+	if not armour_intact:
+		_armour_broken_t = maxf(0.0, _armour_broken_t - dt)
+		if _armour_broken_t <= 0.0:
+			armour_intact = true
+			armour_hp = armour_max * 0.75
+			stage.play_sfx("golem_armour_clank", pos)
 	_tick_slag_boulders(dt)
-	if state == State.NOTICE and _roaring:
-		state_timer -= dt
-		if state_timer <= 0.0:
-			_roaring = false
-			state = State.POSITION
-			cooldown = 0.35
-		return
-	super._step_brain(dt)
 
 
-func _try_start_attack(_target_pos: Vector2, dist: float) -> bool:
-	if dist <= FORGE_TRIGGER_R and _claim_token():
-		state = State.TELL
-		lunge_attack = false
-		is_counter_attack = false
-		var base_t: float = 0.56 if phase >= 2 else tell_time
-		last_tell_duration = _scaled_tell(base_t, false, attack_damage)
-		state_timer = last_tell_duration
-		stomp_progress = 0.0
-		stomp_hit = false
-		quake_stage = QuakeStage.RING_1
-		_emit_attack_started()
-		_emit_sfx("golem_stomp_tell")
-		return true
-	return false
+func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	if hit == null:
+		return dmg
+	var h: Dictionary = _read_hit(hit)
+	var src: String = str(h["source"])
+	var cracks: bool = bool(h["cracks_armour"]) or src == LxHit.SOURCE_SUNFLARE
+	var heavy: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_PRISM] or bool(h["pierce"])
+
+	# Sunflare / Lance cracks heavy slag armour immediately for 1.45x + stagger!
+	if cracks and armour_intact:
+		_crack_armour()
+		add_stagger(stagger_threshold * 0.75)
+		return dmg * 1.45
+
+	if boss_state == BossState.STAGGER:
+		return dmg * 1.50
+	if is_punishable():
+		if (heavy or cracks) and armour_intact:
+			_wear_armour(float(h["shield_wear"]))
+		return dmg * (1.20 if (not armour_intact or heavy or cracks) else 1.0)
+	if heavy or cracks:
+		if armour_intact:
+			_wear_armour(float(h["shield_wear"]))
+		return dmg * 1.15
+
+	# Heavy forge slag armour outside punish windows: reduced bolt chip + clear molten-gold glint!
+	clank_t = 0.12
+	if _clank_sfx_cd <= 0.0:
+		_clank_sfx_cd = 0.28
+		stage.play_sfx("golem_armour_clank", pos)
+	if armour_intact:
+		_wear_armour(0.12)
+	return dmg * (0.24 if armour_intact else 0.34)
 
 
-func _enter_commit() -> void:
-	quake_stage = QuakeStage.RING_1
-	super._enter_commit()
-	_boss_impact(0.18, 88.0, 90.0)
+func _wear_armour(amt: float) -> void:
+	armour_hp = maxf(0.0, armour_hp - maxf(0.0, amt))
+	if armour_hp <= 0.001:
+		_crack_armour()
 
 
-func _step_commit(dt: float) -> void:
-	if quake_stage == QuakeStage.FISSURE_TELL:
-		if state_timer > 0.20:
-			var to_t: Vector2 = _attention_target() - pos
-			if to_t.length() > 0.01:
-				_turn_toward(to_t.angle(), 3.2, dt)
-				fissure_dir = Vector2.from_angle(facing)
-		state_timer -= dt
-		if state_timer <= 0.0:
-			quake_stage = QuakeStage.FISSURE_COMMIT
-			state_timer = FISSURE_COMMIT_TIME
-			fissure_progress = 0.0
-			fissure_hit = false
-			_fissure_reflected = false
-			fissure_dir = Vector2.from_angle(facing)
-			_fissure_block_dist = _compute_fissure_block_dist(fissure_dir)
-			_boss_impact(0.22, 98.0, 102.0)
-			_emit_sfx("golem_stomp_shockwave")
-			_trigger_room_slag_pourers()
-			_splash_slag_boulder(pos + fissure_dir.rotated(0.55) * 52.0)
-		return
+func _crack_armour() -> void:
+	armour_hp = 0.0
+	armour_intact = false
+	_armour_broken_t = ARMOUR_REFORM_DUR
+	stage.play_sfx("golem_armour_crack", pos)
+	_boss_impact(0.20, 82.0, 84.0)
 
-	if quake_stage == QuakeStage.FISSURE_COMMIT:
-		state_timer = maxf(0.0, state_timer - dt)
-		fissure_progress = 1.0 - clampf(state_timer / FISSURE_COMMIT_TIME, 0.0, 1.0)
-		var raw_len: float = lerpf(12.0, FISSURE_RANGE, fissure_progress)
-		var cur_len: float = minf(raw_len, _fissure_block_dist)
-		var fend: Vector2 = pos + fissure_dir * cur_len
-		# Cooled slag boulder blocks follow-up fissure & reflects sparks for 0.85s mini-stagger!
-		if not _fissure_reflected and _fissure_block_dist < FISSURE_RANGE - 1.0 and raw_len >= _fissure_block_dist:
-			_fissure_reflected = true
-			_reflect_fx_t = 0.35
-			_reflect_fx_pos = pos + fissure_dir * _fissure_block_dist
-			_emit_sfx("magma_crack")
-			_emit_sfx("shield_shatter")
-			quake_stage = QuakeStage.RING_1
-			fissure_progress = 0.0
-			_release_token()
-			state = State.STAGGER
-			state_timer = FISSURE_REFLECT_STAGGER
-			return
-		if not fissure_hit and _has_player():
-			var wp: Vector2 = _get_wick_pos()
-			if Geometry2D.get_closest_point_to_segment(wp, pos, fend).distance_to(wp) <= FISSURE_HALF_W:
-				fissure_hit = true
-				_emit_player_hit(fissure_dir, attack_damage)
-		if _is_lured():
-			var lp: Vector2 = _get_lantern_pos()
-			if Geometry2D.get_closest_point_to_segment(lp, pos, fend).distance_to(lp) <= FISSURE_HALF_W + 2.0:
-				if Lx.events != null:
-					Lx.events.lantern_struck.emit(lp)
-		if state_timer <= 0.0:
-			quake_stage = QuakeStage.RING_1
-			fissure_progress = 0.0
-			state = State.RECOVER
-			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
-			last_recover_duration = state_timer
-		return
 
-	state_timer = maxf(0.0, state_timer - dt)
-	stomp_progress = 1.0 - clampf(state_timer / STOMP_COMMIT_TIME, 0.0, 1.0)
-	var max_r: float = FORGE_RING_MAX_R if phase >= 2 else STOMP_MAX_R + 6.0
-	var ring_r: float = lerpf(STOMP_START_R, max_r, stomp_progress)
-	if not stomp_hit and _has_player():
+func _step_quake_commit(el: float, dur: float) -> void:
+	_stomp_progress = clampf(el / maxf(dur, 0.05), 0.0, 1.0)
+	var ring_r: float = lerpf(FORGE_RING_START_R, FORGE_RING_MAX_R, _stomp_progress)
+	if not _stomp_hit and _has_player():
 		var wv: Vector2 = _get_wick_pos() - pos
 		if absf(wv.length() - ring_r) <= FORGE_RING_BAND:
-			stomp_hit = true
-			var push: Vector2 = wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing)
-			_emit_shockwave_hit(push)
-	if _is_lured() and _get_lantern_pos().distance_to(pos) <= ring_r:
-		if Lx.events != null:
-			Lx.events.lantern_struck.emit(_get_lantern_pos())
-
-	if state_timer <= 0.0:
-		if quake_stage == QuakeStage.RING_1 and phase >= 2:
-			# P2 chains a telegraphed Molten Line-Fissure aimed along Wick's lane!
-			quake_stage = QuakeStage.FISSURE_TELL
-			state_timer = _scaled_tell(FISSURE_TELL_TIME, false, attack_damage)
-			var to_w: Vector2 = _attention_target() - pos
-			if to_w.length() > 0.01:
-				facing = to_w.angle()
-			fissure_dir = Vector2.from_angle(facing)
-			fissure_progress = 0.0
-			fissure_hit = false
-			_emit_sfx("golem_stomp_tell")
-		else:
-			quake_stage = QuakeStage.RING_1
-			state = State.RECOVER
-			state_timer = maxf(MIN_RECOVER_TIME, recover_time)
-			last_recover_duration = state_timer
+			_stomp_hit = true
+			var push: Vector2 = wv.normalized() if wv.length() > 0.1 else Vector2.from_angle(facing)
+			emit_boss_damage(push, 0.5, "shockwave", pos, true)
+	if _is_lantern_out() and _get_lantern_pos().distance_to(pos) <= ring_r and Lx.events != null:
+		Lx.events.lantern_struck.emit(_get_lantern_pos())
 
 
-func _body_color() -> Color:
-	if armour_intact:
-		return (PAL["mauve"] as Color) if phase >= 2 else (PAL["stone"] as Color)
-	return (PAL["apricot"] as Color) if phase >= 2 else (PAL["coral"] as Color)
-
-
-func _draw_extra(off: Vector2) -> void:
-	if _sprite_sheet == null:
-		# Glowing forge grate core
-		draw_rect(Rect2(off + Vector2(-4.0, -3.0), Vector2(8.0, 5.0)), PAL["night"] as Color, true)
-		draw_rect(Rect2(off + Vector2(-3.0, -2.0), Vector2(6.0, 3.0)), (PAL["gold"] as Color) if not armour_intact else (PAL["coral"] as Color), true)
-	if armour_intact:
-		LxDamageFx.draw_armour_plates(self, off, body_radius + 3.0, 1.8, armour_hp, armour_max)
-	var c: Vector2 = off.round()
-	if state == State.TELL:
-		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var tell_max_r: float = FORGE_RING_MAX_R if phase >= 2 else STOMP_MAX_R + 6.0
-		for ti: int in range(12):
-			var a0: float = float(ti) * (TAU / 12.0)
-			draw_arc(c, tell_max_r, a0, a0 + 0.24, 3, PAL["coral"] as Color, 1.0)
-		var tr: float = lerpf(tell_max_r, STOMP_START_R + 5.0, prog)
-		var hot: bool = state_timer <= 0.14
-		draw_arc(c, tr + 2.0, 0.0, TAU, 28, (PAL["apricot"] if hot else PAL["coral"]) as Color, 1.4)
-		draw_arc(c, tr, 0.0, TAU, 28, (PAL["cream"] if hot else PAL["apricot"]) as Color, 2.0 if hot else 1.8)
-		draw_arc(c, maxf(3.0, tr - 2.0), 0.0, TAU, 24, (PAL["cream"] if hot else PAL["gold"]) as Color, 1.0)
-	elif state == State.COMMIT:
-		if quake_stage == QuakeStage.FISSURE_TELL:
-			var perp: Vector2 = Vector2(-fissure_dir.y, fissure_dir.x)
-			var fend: Vector2 = (c + fissure_dir * FISSURE_RANGE).round()
-			var hot_f: bool = state_timer <= 0.20
-			var fc: Color = (PAL["cream"] if hot_f else PAL["apricot"]) as Color
-			draw_line((c + perp * (FISSURE_HALF_W * 0.72)).round(), (fend + perp * (FISSURE_HALF_W * 0.72)).round(), PAL["coral"] as Color, 1.4)
-			draw_line((c - perp * (FISSURE_HALF_W * 0.72)).round(), (fend - perp * (FISSURE_HALF_W * 0.72)).round(), PAL["coral"] as Color, 1.4)
-			draw_line(c, fend, fc, 2.0 if hot_f else 1.4)
-			for ci: int in range(1, 6):
-				var t: float = float(ci) / 6.0
-				var mp: Vector2 = c.lerp(fend, t).round()
-				var zig: float = (4.0 if ci % 2 == 0 else -4.0)
-				draw_line(mp, (mp + perp * zig).round(), PAL["gold"] as Color, 1.2)
-		elif quake_stage == QuakeStage.FISSURE_COMMIT:
-			var cur_len: float = minf(lerpf(12.0, FISSURE_RANGE, fissure_progress), _fissure_block_dist)
-			var perp2: Vector2 = Vector2(-fissure_dir.y, fissure_dir.x)
-			var fend2: Vector2 = (c + fissure_dir * cur_len).round()
-			draw_line(c, fend2, PAL["wine"] as Color, 10.0)
-			draw_line(c, fend2, PAL["coral"] as Color, 6.8)
-			draw_line(c, fend2, PAL["apricot"] as Color, 4.0)
-			draw_line(c, fend2, PAL["gold"] as Color, 2.2)
-			draw_line(c, fend2, PAL["cream"] as Color, 1.0)
-			for ei: int in range(5):
-				var et: float = float(ei + 1) / 5.5
-				var ep: Vector2 = (c + fissure_dir * (cur_len * et) + perp2 * (sin(anim_t * 18.0 + float(ei) * 2.1) * 6.0)).round()
-				draw_circle(ep, 2.0, PAL["gold"] as Color)
-				draw_circle(ep, 1.0, PAL["cream"] as Color)
-		else:
-			var max_r: float = FORGE_RING_MAX_R if phase >= 2 else STOMP_MAX_R + 6.0
-			var ring_r: float = lerpf(STOMP_START_R, max_r, stomp_progress)
-			draw_arc(c, ring_r + 2.8, 0.0, TAU, 36, PAL["wine"] as Color, 2.5)
-			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.8)
-			draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
-			draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
-			for si: int in range(8):
-				var sa: float = anim_t * 1.9 + float(si) * (TAU / 8.0)
-				var sd: Vector2 = Vector2.from_angle(sa)
-				var st: Vector2 = Vector2(-sd.y, sd.x)
-				var base_c: Vector2 = c + sd * maxf(2.0, ring_r - 1.0)
-				var tip: Vector2 = (c + sd * (ring_r + 6.5)).round()
-				draw_line((base_c - st * 3.0).round(), tip, PAL["coral"] as Color, 1.6)
-				draw_line((base_c + st * 3.0).round(), tip, PAL["coral"] as Color, 1.6)
-				draw_line(base_c.round(), tip, PAL["gold"] as Color, 1.2)
-				draw_circle(tip, 1.1, PAL["apricot"] as Color)
-	elif _roaring:
-		var rp: float = 1.0 - clampf(state_timer / PHASE2_ROAR_TIME, 0.0, 1.0)
-		var rr: float = body_radius + 11.0 + rp * 16.0
-		draw_arc(c, rr + 2.4, 0.0, TAU, 28, PAL["coral"] as Color, 2.2)
-		draw_arc(c, rr, 0.0, TAU, 28, PAL["apricot"] as Color, 2.4)
-		draw_arc(c, maxf(3.0, rr - 2.2), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
-	# Draw splashed molten/cooled slag boulders & reflected spark arc!
-	for sb: Dictionary in _slag_boulders:
-		var sp: Vector2 = ((sb["pos"] as Vector2) - pos + off).round()
-		var cool: bool = bool(sb["cooled"])
-		draw_circle(sp, 8.5, PAL["night"] as Color)
-		draw_circle(sp, 7.0, (PAL["mauve"] if cool else PAL["coral"]) as Color)
-		draw_arc(sp, 7.5, 0.0, TAU, 14, (PAL["ice"] if cool else PAL["gold"]) as Color, 1.3)
-	if _reflect_fx_t > 0.0:
-		var rp_l: Vector2 = (_reflect_fx_pos - pos + off).round()
-		draw_line(rp_l, c, PAL["ice"] as Color, 2.4)
-		draw_line(rp_l, c, PAL["cream"] as Color, 1.0)
+func _step_fissure_commit(el: float, dur: float) -> void:
+	_fissure_progress = clampf(el / maxf(dur, 0.05), 0.0, 1.0)
+	var raw_len: float = lerpf(12.0, FISSURE_RANGE, _fissure_progress)
+	var cur_len: float = minf(raw_len, _fissure_block_dist)
+	var fend: Vector2 = pos + _fissure_dir * cur_len
+	# Cooled slag boulder blocks follow-up fissure & reflects sparks for stagger!
+	if not _fissure_reflected and _fissure_block_dist < FISSURE_RANGE - 1.0 and raw_len >= _fissure_block_dist:
+		_fissure_reflected = true
+		_reflect_fx_t = 0.38
+		_reflect_fx_pos = pos + _fissure_dir * _fissure_block_dist
+		stage.play_sfx("magma_crack", _reflect_fx_pos)
+		stage.play_sfx("shield_shatter", pos)
+		stagger_immunity_t = 0.0
+		add_stagger(stagger_threshold)
+		return
+	if not _fissure_hit and _has_player():
+		var wp: Vector2 = _get_wick_pos()
+		if Geometry2D.get_closest_point_to_segment(wp, pos, fend).distance_to(wp) <= FISSURE_HALF_W:
+			_fissure_hit = true
+			emit_boss_damage(_fissure_dir, 0.5, "molten_fissure", pos, true)
+	if _is_lantern_out():
+		var lp: Vector2 = _get_lantern_pos()
+		if Geometry2D.get_closest_point_to_segment(lp, pos, fend).distance_to(lp) <= FISSURE_HALF_W + 2.0 and Lx.events != null:
+			Lx.events.lantern_struck.emit(lp)
 
 
 func _trigger_room_slag_pourers() -> void:
@@ -330,11 +289,7 @@ func _trigger_room_slag_pourers() -> void:
 
 
 func _splash_slag_boulder(at_p: Vector2) -> void:
-	var p: Vector2 = at_p
-	if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("get_bounds"):
-		var b: Rect2 = (world_ctx.call("get_bounds") as Rect2).grow(-24.0)
-		if b.has_area():
-			p = Vector2(clampf(p.x, b.position.x, b.end.x), clampf(p.y, b.position.y, b.end.y))
+	var p: Vector2 = clamp_to_arena(at_p)
 	while _slag_boulders.size() >= MAX_SLAG_BOULDERS:
 		_slag_boulders.pop_front()
 	_slag_boulders.append({"pos": p, "cooled": false, "ttl": 16.0})
@@ -356,7 +311,7 @@ func _tick_slag_boulders(dt: float) -> void:
 					if str(bv.get("light_color")).to_lower() == LxHit.COLOR_BLUE:
 						sb["cooled"] = true
 						sb["ttl"] = 14.0
-						_emit_sfx("magma_crack")
+						stage.play_sfx("magma_crack", bp_s)
 						wick_node.bolts.remove_at(bi)
 						break
 
@@ -382,6 +337,80 @@ func _compute_fissure_block_dist(dir: Vector2) -> float:
 		if proj > 14.0 and proj < best and (rel - dir * proj).length() <= FISSURE_HALF_W + 4.0:
 			best = proj
 	return best
+
+
+func _carve_safe_pit_near(world_pt: Vector2) -> void:
+	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("tile_at"):
+		return
+	var tx: int = int(floorf(world_pt.x / 16.0))
+	var ty: int = int(floorf(world_pt.y / 16.0))
+	var cp := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
+	if cp.x > 136.0 and str(world_ctx.call("tile_at", cp)) == "ground" and cp.distance_to(home) > 44.0 and cp.distance_to(_get_wick_pos()) > 28.0:
+		stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), "pit")
+
+
+func _perimeter_targets(tgt: Vector2) -> Array[Vector2]:
+	var out: Array[Vector2] = [tgt]
+	var inset: Rect2 = arena_rect.grow(-14.0)
+	var corners: Array[Vector2] = [
+		inset.position, Vector2(inset.end.x, inset.position.y),
+		Vector2(inset.position.x, inset.end.y), inset.end,
+	]
+	corners.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.distance_squared_to(tgt) < b.distance_squared_to(tgt))
+	out.append(corners[0])
+	out.append(corners[1])
+	if phase >= 2:
+		out.append(corners[2])
+	return out
+
+
+func _on_death_start() -> void:
+	_slag_boulders.clear()
+	stage.revert_tiles(world_ctx)
+	stage.play_sfx("forge_warden_phase2", pos)
+
+
+func _body_color() -> Color:
+	if armour_intact:
+		return (PAL["mauve"] if phase >= 2 else PAL["stone"]) as Color
+	return (PAL["apricot"] if phase >= 2 else PAL["coral"]) as Color
+
+
+func _draw_boss_extra(off: Vector2) -> void:
+	var c: Vector2 = off.round()
+	if armour_intact:
+		LxDamageFx.draw_armour_plates(self, off, body_radius + 3.0, 1.8, armour_hp, armour_max)
+	if boss_state == BossState.COMMIT and active_attack_id == "forge_quake_slam":
+		var ring_r: float = lerpf(FORGE_RING_START_R, FORGE_RING_MAX_R, _stomp_progress)
+		draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, PAL["wine"] as Color, 2.4)
+		draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.6)
+		draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["apricot"] as Color, 1.8)
+		draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.1)
+	elif boss_state == BossState.COMMIT and active_attack_id == "molten_line_fissure":
+		var cur_len: float = minf(lerpf(12.0, FISSURE_RANGE, _fissure_progress), _fissure_block_dist)
+		var fend2: Vector2 = (c + _fissure_dir * cur_len).round()
+		draw_line(c, fend2, PAL["wine"] as Color, 10.0)
+		draw_line(c, fend2, PAL["coral"] as Color, 6.8)
+		draw_line(c, fend2, PAL["apricot"] as Color, 4.0)
+		draw_line(c, fend2, PAL["gold"] as Color, 2.2)
+		draw_line(c, fend2, PAL["cream"] as Color, 1.0)
+	# Draw splashed molten/cooled slag boulders & reflected spark arc!
+	for sb: Dictionary in _slag_boulders:
+		var sp: Vector2 = ((sb["pos"] as Vector2) - pos + off).round()
+		var cool: bool = bool(sb["cooled"])
+		draw_circle(sp, 8.5, PAL["night"] as Color)
+		draw_circle(sp, 7.0, (PAL["mauve"] if cool else PAL["coral"]) as Color)
+		draw_arc(sp, 7.5, 0.0, TAU, 14, (PAL["ice"] if cool else PAL["gold"]) as Color, 1.3)
+	if _reflect_fx_t > 0.0:
+		var rp_l: Vector2 = (_reflect_fx_pos - pos + off).round()
+		draw_line(rp_l, c, PAL["ice"] as Color, 2.4)
+		draw_line(rp_l, c, PAL["cream"] as Color, 1.0)
+	# Heavy slag armour glint outside punish windows vs golden punish halo
+	if clank_t > 0.0:
+		draw_arc(c, body_radius + 5.5, facing - 1.15, facing + 1.15, 16, PAL["cream"] as Color, 2.2)
+		draw_arc(c, body_radius + 7.5, facing - 0.85, facing + 0.85, 12, PAL["gold"] as Color, 1.3)
+	elif is_punishable() and boss_state != BossState.DEATH:
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

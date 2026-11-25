@@ -30,7 +30,7 @@ class WardenWellField:
 		var dist: float = sqrt(d2)
 		var u: float = clampf(1.0 - dist / radius, 0.0, 1.0)
 		var falloff: float = (0.35 + 0.65 * u) * (1.0 - exp(-dist / 10.0))
-		var mult: float = 1.15 if what in ["bolt", "beam"] else (0.90 if what == "lantern" else (0.06 if what == "wick" else 0.25))
+		var mult: float = 1.20 if what in ["bolt", "beam"] else (0.90 if what == "lantern" else (0.0 if what == "wick" else 0.25))
 		var dn: Vector2 = delta / dist
 		if is_push:
 			dn = -dn
@@ -62,14 +62,14 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island5_boss_p1"
 	music_p2_cue = "island5_boss_p2"
-	max_hp = 46.0
-	hp = 46.0
+	max_hp = 50.0
+	hp = 50.0
 	body_radius = 9.0
-	move_speed = 40.0
+	move_speed = 38.0
 	stagger_threshold = 10.5
-	stagger_duration = 1.55
+	stagger_duration = 1.60
 	punish_dmg_mult = 1.30
-	post_recover_cd = 0.28
+	post_recover_cd = 0.32
 	shard_drop = 26
 	death_duration = 2.0
 
@@ -95,7 +95,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 				ground.warn_lane(pos, pos + rd * 148.0, 7.0, last_tell_duration, 0.0, "sky", "gold")
 			stage.play_sfx("orrery_bell_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _fan_dir, 5 if phase >= 2 else 3, FAN_SPREAD, 146.0, {"color": "gold", "source": "brass_beam", "field_scale": 1.05})
+			patterns.emit_fan(pos, _fan_dir, 5 if phase >= 2 else 3, FAN_SPREAD, 128.0, {"color": "gold", "source": "brass_beam", "field_scale": 1.05})
 			beam_bolt_fired.emit(pos, _fan_dir, self)
 			stage.shake(0.14)
 			stage.play_sfx("orrery_beam_bolt", pos),
@@ -103,8 +103,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if phase >= 2 and not _fan_second_done and el >= 0.26:
 				_fan_second_done = true
 				_rail_spin = -_rail_spin
-				var rev_dir: Vector2 = _fan_dir.rotated(_rail_spin * 0.20)
-				patterns.emit_fan(pos, rev_dir, 3, FAN_SPREAD, 142.0, {"color": "ice", "source": "brass_beam_rev", "field_scale": 1.10})
+				var rev_dir: Vector2 = _fan_dir.rotated(_rail_spin * 0.22)
+				patterns.emit_fan(pos, rev_dir, 3, FAN_SPREAD, 124.0, {"color": "ice", "source": "brass_beam_rev", "field_scale": 1.10, "damage": 0.5})
 				stage.play_sfx("orrery_beam_bolt", pos),
 	})
 
@@ -113,7 +113,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"weight": 1.20, "tell": 0.54, "commit": 0.36, "recover": 1.02, "cooldown": 1.40,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			ground.warn_ring(pos, 64.0, last_tell_duration, 0.0, "sky", "gold")
-			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.05, 1.0, "apricot", "gold")
+			ground.warn_ring(tgt, 22.0, last_tell_duration + 0.05, 0.5, "apricot", "gold")
 			stage.play_sfx("orrery_bell_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
@@ -152,8 +152,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_sector(pos, _fan_dir.angle() - 0.85, _fan_dir.angle() + 0.85, 110.0, last_tell_duration, 0.0, "gold", "coral")
 			stage.play_sfx("clockwork_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _fan_dir, 5, 0.95, 144.0, {"color": "gold", "source": "escapement_fan", "field_scale": 1.25})
-			patterns.emit_orbit(pos, 3, 42.0, 2.2 * _rail_spin, 2.0, {"color": "ice", "source": "escapement_gear"})
+			patterns.emit_fan(pos, _fan_dir, 5, 0.98, 128.0, {"color": "gold", "source": "escapement_fan", "field_scale": 1.25, "damage": 0.5})
+			patterns.emit_orbit(pos, 3, 42.0, 2.0 * _rail_spin, 1.9, {"color": "ice", "source": "escapement_gear", "damage": 0.5})
 			stage.shake(0.20)
 			stage.play_sfx("eclipse_wave", pos),
 	})
@@ -239,13 +239,13 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var lens_mult: float = 1.35 if _lens_highlight_t > 0.0 else 1.0
 
 	if boss_state == BossState.STAGGER:
-		return dmg * 1.45 * lens_mult
+		return dmg * (1.75 if heavy else 1.45) * lens_mult
 	if is_curved or rear_hit:
 		return dmg * 1.35 * lens_mult
 	if is_punishable():
-		return dmg * (1.20 if heavy else 1.0) * lens_mult
+		return dmg * (1.65 if heavy else 1.0) * lens_mult
 	if heavy:
-		return dmg * 1.15
+		return dmg * 1.55
 
 	# Front brass shield & spinning gear carapace outside punish windows: reduced chip + gold glint!
 	clank_t = 0.12
@@ -267,7 +267,7 @@ func _ensure_well() -> void:
 	_well.pos = arena_rect.get_center()
 	_well.active = true
 	if not _well_reg:
-		LxFields.register(_well)
+		LxFields.add(_well)
 		_well_reg = true
 
 
@@ -275,7 +275,7 @@ func _unregister_well() -> void:
 	if _well != null:
 		_well.active = false
 		if _well_reg:
-			LxFields.unregister(_well)
+			LxFields.remove(_well)
 			_well_reg = false
 
 
@@ -287,7 +287,7 @@ func _flip_well() -> void:
 
 
 func _build_star_targets(tgt: Vector2) -> Array[Vector2]:
-	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var out: Array[Vector2] = [tgt]
 	var inset: Rect2 = arena_rect.grow(-18.0)
 	var corners: Array[Vector2] = [
 		inset.position, Vector2(inset.end.x, inset.position.y),

@@ -1,0 +1,43 @@
+# Great Toll r4 - Arrestor Descent (26x28)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+______##############______
+____###OOOOOOOOOOOO###____
+___##OOOOOOOOOOOOOOOO##___
+__##OO....OOOOOO....OO##__
+_##OO.....OOOOOO.....OO##_
+_#OO......OOOOOO......OO#_
+##OO...,,,OOOOOO,,,...OO##
+#OOO...,,,OOOOOO,,,...OOO#
+#OO....,,,++,,++,,,....OO#
+#OO.......,,,,,,.......OO#
+#OO..OO..,,,,,,,,..OO..OO#
+#O...OO..,,,,,,,,..OO...O#
+#O...OO..,,,,,,,,..OO...O#
+#O...OO..,,,,,,,,..OO...O#
+#O...OO..,,,,,,,,..OO...O#
+#O...OO..,,,,,,,,..OO...O#
+#O...OO..,,,,,,,,..OO...O#
+#OO..OO..,,,,,,,,..OO..OO#
+#OO......,,,,,,,,......OO#
+#OOOOOOOOOOOOOOOOOOOOOOOO#
+##OOOOOOOOOOOOOOOOOOOOOO##
+_##OOOOOOOOOOOOOOOOOOOO##_
+__##OOOOOO,,,,,,OOOOOO##__
+___##OOOOO,,,,,,OOOOO##___
+____##....,,,,,,....##____
+_____##...,,,,,,...##_____
+______#...,,,,,,...#______
+______######,,######______

@@ -150,6 +150,7 @@
       "id": "black_world",
       "when": "world_face==black",
       "theme": "inverted_palace_black",
+      "overlay": "res://luxel/art/islands/7/palace_r2__black_world.png",
       "full_frame": true,
       "tiles": [
         [10, 8, 3, 3, "bridge"],

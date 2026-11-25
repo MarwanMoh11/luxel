@@ -1,6 +1,7 @@
 class_name LxIsland7
 extends RefCounted
-## Island 7 (Moon Shoals - The Twist) progression beats, Hollow Wick encounters, and waypoints.
+## Island 7 (Moon Shoals - THE ISLAND THAT LIES) progression beats, Silver/Black world state,
+## Twin-Mask Gate coordination (Palace + Theatre + Masquerade, preserving legacy seals), and waypoints.
 
 const ISLAND_ID: int = 7
 const SEAL_ID: String = "spire_gate_seal"
@@ -22,6 +23,17 @@ const HOLLOW_ENCOUNTERS: Array[String] = [
 
 const REGIONS: Array[String] = [
 	"overworld",
+	"silver_quay",
+	"black_shoals",
+	"velvet_promenade",
+	"glass_terrace",
+	"zenith_atoll",
+	"cave_mirror_tide",
+	"cave_twin_grotto",
+	"cave_phase_trial",
+	"cave_echo_vault",
+	"cave_glass_crypt",
+	"superboss_noon",
 	"spire_r1",
 	"spire_r2",
 	"spire_r3",
@@ -36,6 +48,7 @@ const REGIONS: Array[String] = [
 
 var _events: LxEventBus = null
 var _state: LxGameState = null
+var _vars: LxWorldState = null
 var _attached: bool = false
 var _rule: LxIsland7Rule = null
 
@@ -45,6 +58,7 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 		detach()
 	_events = events if events != null else Lx.events
 	_state = state if state != null else Lx.state
+	_vars = Lx.vars
 	if _events == null:
 		return
 	_attached = true
@@ -55,14 +69,19 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.boss_defeated.connect(_on_boss_defeated)
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
 	_events.narration_requested.connect(_on_narration_requested)
+	if _vars != null and not _vars.var_changed.is_connected(_on_var_changed):
+		_vars.var_changed.connect(_on_var_changed)
 	_rule = LxIsland7Rule.new()
 	_rule.attach(_events, _state)
+	_sync_spire_gate_flag()
 
 
 func detach() -> void:
 	if _rule != null:
 		_rule.detach()
 		_rule = null
+	if _vars != null and _vars.var_changed.is_connected(_on_var_changed):
+		_vars.var_changed.disconnect(_on_var_changed)
 	if not _attached or _events == null:
 		_attached = false
 		return
@@ -86,6 +105,7 @@ func detach() -> void:
 func on_region_loaded(region_id: String) -> void:
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
+	_sync_spire_gate_flag()
 
 
 func get_rule() -> LxIsland7Rule:
@@ -165,12 +185,23 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_flags": [],
 		},
 		{
-			"id": "wp_enter_spire",
+			"id": "wp_enter_terrace",
 			"region": "overworld",
 			"zone": "spire_terrace",
 			"pos": [704.0, 80.0],
 			"action": "enter_exit",
 			"target": "exit_to_spire",
+			"to_region": "glass_terrace",
+			"requires_moves": ["bolt", "dash", "throw", "prism", "beam", "wings", "lens", "sunflare"],
+			"requires_flags": ["beacon_7_1", "beacon_7_2", "beacon_7_3"],
+		},
+		{
+			"id": "wp_enter_spire",
+			"region": "glass_terrace",
+			"zone": "glass_terrace",
+			"pos": [320.0, 16.0],
+			"action": "enter_exit",
+			"target": "exit_gt_spire",
 			"to_region": "spire_r1",
 			"requires_moves": ["bolt", "dash", "throw", "prism", "beam", "wings", "lens", "sunflare"],
 			"requires_flags": ["beacon_7_1", "beacon_7_2", "beacon_7_3"],
@@ -305,9 +336,68 @@ func are_all_beacons_lit() -> bool:
 	return true
 
 
+func is_epic_gate_full() -> bool:
+	## True once Palace, Theatre, and Masquerade are all live (non-debug_only) in the build.
+	if Lx.packs == null:
+		return false
+	var pal: Dictionary = Lx.packs.dungeon("palace")
+	var tht: Dictionary = Lx.packs.dungeon("theatre")
+	var masq: Dictionary = Lx.packs.region_meta(ISLAND_ID, "masq_r1")
+	if pal.is_empty() or bool(pal.get("debug_only", false)):
+		return false
+	if tht.is_empty() or bool(tht.get("debug_only", false)):
+		return false
+	if masq.is_empty() or bool(masq.get("debug_only", false)):
+		return false
+	return true
+
+
+func _sync_spire_gate_flag() -> void:
+	var st: LxGameState = _get_state()
+	if st == null:
+		return
+	var legacy_passed: bool = bool(st.story_flags.get("isl7_spire_entered", false)) \
+		or st.broken_seals.has(SEAL_ID) \
+		or st.opened_doors.has("door_dungeon_7") \
+		or st.opened_doors.has("door_twin_mask_gate")
+	var palace_ok: bool = bool(st.story_flags.get("palace_cleared", false)) or bool(st.story_flags.get("dungeon_done:palace", false))
+	var theatre_ok: bool = bool(st.story_flags.get("theatre_cleared", false)) or bool(st.story_flags.get("dungeon_done:theatre", false))
+	var masq_ok: bool = bool(st.story_flags.get("masquerade_done", false))
+	if palace_ok and theatre_ok:
+		st.story_flags["twin_masks_ready"] = true
+	var can_open_spire: bool = false
+	if are_all_beacons_lit():
+		if is_epic_gate_full():
+			can_open_spire = (palace_ok and theatre_ok and masq_ok) or (legacy_passed and bool(st.story_flags.get("isl7_spire_entered", false)))
+		else:
+			can_open_spire = true
+	elif legacy_passed:
+		can_open_spire = true
+	if can_open_spire:
+		st.story_flags["twin_mask_gate_open"] = true
+
+
+func _on_var_changed(scope: String, var_name: String, value: Variant) -> void:
+	if scope != "island:7" or var_name != "world_face":
+		return
+	var st: LxGameState = _get_state()
+	if st == null or st.island_id != ISLAND_ID:
+		return
+	var face: String = str(value).strip_edges().to_lower()
+	if face == "black":
+		if not bool(st.story_flags.get("ow_world_black", false)):
+			st.story_flags["ow_world_black"] = true
+			_emit_narration("ISL7_FACE_BLACK", "narration", 3.4)
+	elif face == "silver":
+		if bool(st.story_flags.get("ow_world_black", false)) and not bool(st.story_flags.get("ow_world_silver", false)):
+			st.story_flags["ow_world_silver"] = true
+			_emit_narration("ISL7_FACE_SILVER", "narration", 3.0)
+
+
 func _on_region_entered(island_id: int, region_id: String) -> void:
 	if island_id != ISLAND_ID:
 		return
+	_sync_spire_gate_flag()
 	var st: LxGameState = _get_state()
 	if region_id == "overworld":
 		if st != null and not bool(st.story_flags.get("isl7_arrived", false)):
@@ -316,6 +406,41 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			if _events != null:
 				_events.sfx_requested.emit("lens_reveal", Vector2.ZERO, false)
 		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id == "silver_quay":
+		if st != null:
+			st.story_flags["silver_quay_visited"] = true
+			if st.relit_islands.has(ISLAND_ID) and not bool(st.story_flags.get("isl7_relit_quay_shown", false)):
+				st.story_flags["isl7_relit_quay_shown"] = true
+				_emit_narration("ISL7_RELIT_QUAY", "narration", 3.6)
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id == "black_shoals":
+		if st != null:
+			st.story_flags["black_shoals_visited"] = true
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id == "velvet_promenade":
+		if st != null:
+			st.story_flags["velvet_promenade_visited"] = true
+		if _events != null:
+			_events.music_mode_requested.emit("isl7_theatre")
+	elif region_id == "glass_terrace":
+		if st != null:
+			st.story_flags["glass_terrace_seen"] = true
+		if _events != null:
+			_events.music_mode_requested.emit("explore" if (st != null and st.relit_islands.has(ISLAND_ID)) else "isl7_setpiece")
+	elif region_id == "zenith_atoll":
+		if st != null:
+			st.story_flags["zenith_visited"] = true
+		if _events != null:
+			_events.music_mode_requested.emit("explore")
+	elif region_id == "superboss_noon":
+		if st != null and not bool(st.story_flags.get("shadow_at_noon_defeated", false)):
+			_emit_narration("ISL7_NOON_ENTER", "title", 3.4)
+			if _events != null:
+				_events.music_mode_requested.emit("superboss_a")
+		elif _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "spire_r10":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
@@ -354,6 +479,7 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		st.story_flags[beacon_id] = true
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
+	_sync_spire_gate_flag()
 
 
 func _trigger_seal_shatter() -> void:
@@ -363,6 +489,7 @@ func _trigger_seal_shatter() -> void:
 			return
 		st.broken_seals.append(SEAL_ID)
 		st.story_flags["seal_broken_7"] = true
+	_sync_spire_gate_flag()
 	if _events != null:
 		_events.seal_broken.emit(ISLAND_ID, SEAL_ID)
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
@@ -404,6 +531,11 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
+	if boss_id == "shadow_at_noon":
+		if phase >= 2 and _events != null:
+			_events.music_mode_requested.emit("superboss_b")
+			_events.shake_requested.emit(0.32 if phase >= 3 else 0.26)
+		return
 	if boss_id != BOSS_ID and boss_id != "hollow_wick_boss" and not _is_miniboss_id(boss_id):
 		return
 	if phase >= 2 and _events != null:
@@ -415,6 +547,17 @@ func _on_boss_defeated(boss_id: String, island_id: int) -> void:
 	if island_id != ISLAND_ID:
 		return
 	var st: LxGameState = _get_state()
+	if boss_id == "shadow_at_noon":
+		if st != null:
+			if not st.defeated_bosses.has("shadow_at_noon"):
+				st.defeated_bosses.append("shadow_at_noon")
+			st.story_flags["shadow_at_noon_defeated"] = true
+		if _events != null:
+			_events.sfx_requested.emit("shadow_reunite", Vector2.ZERO, false)
+			_events.music_mode_requested.emit("explore")
+			_emit_narration("ISL7_NOON_REUNITED", "title", 3.6)
+			_events.save_requested.emit("shadow_at_noon_defeated")
+		return
 	if _is_miniboss_id(boss_id):
 		if st != null:
 			if not st.defeated_bosses.has(MINI_BOSS_KIND):
@@ -422,6 +565,9 @@ func _on_boss_defeated(boss_id: String, island_id: int) -> void:
 			st.defeated_bosses.erase(MINI_BOSS_ALT_KIND)
 			st.story_flags["defeated_moonshade_warden"] = true
 			st.story_flags["moonshade_warden_defeated"] = true
+		return
+	if boss_id == "queen_in_glass" or boss_id == "the_understudy":
+		_sync_spire_gate_flag()
 		return
 	if boss_id != BOSS_ID and boss_id != "hollow_wick_boss":
 		return

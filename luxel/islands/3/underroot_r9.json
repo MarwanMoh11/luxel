@@ -44,15 +44,223 @@
       "to_spawn": [
         456,
         80
-      ]
+      ],
+      "locked_door_id": "door_r9_cork"
     }
   ],
   "interactables": [
     {
-      "id": "lamp_r9_1",
+      "id": "anc_r9_west",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r9_jar",
+      "kind": "lore_stone",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "string_id": "ISL3_UR_JAR_NOTE",
+        "icon": "lantern"
+      }
+    },
+    {
+      "id": "hook_r9_neck",
+      "kind": "lantern_hook",
+      "pos": [
+        48,
+        96
+      ],
+      "props": {
+        "light_radius": 76.0
+      }
+    },
+    {
+      "id": "sg_r9_neck",
+      "kind": "shadow_gate",
+      "pos": [
+        104,
+        144
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "dew_r9",
+      "kind": "dew_lens",
+      "pos": [
+        144,
+        176
+      ],
+      "props": {
+        "movable": true,
+        "rail_axis": "y",
+        "focus_range": 320.0,
+        "max_bounces": 6
+      }
+    },
+    {
+      "id": "t1_r9",
+      "kind": "blue_transformer",
+      "pos": [
+        176,
+        160
+      ],
+      "props": {
+        "angle_deg": 0,
+        "movable": true,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "t2_r9",
+      "kind": "blue_transformer",
+      "pos": [
+        224,
+        136
+      ],
+      "props": {
+        "angle_deg": 0,
+        "movable": true,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "pf1_r9",
+      "kind": "light_plant",
+      "pos": [
+        192,
+        64
+      ],
+      "props": {
+        "grow": "fruit",
+        "secs": 0.8,
+        "decay": 1.4,
+        "target_id": "gate_r9_jar"
+      }
+    },
+    {
+      "id": "pf2_r9",
+      "kind": "light_plant",
+      "pos": [
+        336,
+        112
+      ],
+      "props": {
+        "grow": "fruit",
+        "secs": 0.8,
+        "decay": 1.4,
+        "target_id": "gate_r9_jar"
+      }
+    },
+    {
+      "id": "pf3_r9",
+      "kind": "light_plant",
+      "pos": [
+        352,
+        192
+      ],
+      "props": {
+        "grow": "fruit",
+        "secs": 0.8,
+        "decay": 1.4,
+        "target_id": "gate_r9_jar"
+      }
+    },
+    {
+      "id": "pf4_r9",
+      "kind": "light_plant",
+      "pos": [
+        240,
+        176
+      ],
+      "props": {
+        "grow": "fruit",
+        "secs": 0.8,
+        "decay": 1.4,
+        "target_id": "gate_r9_jar"
+      }
+    },
+    {
+      "id": "gate_r9_jar",
+      "kind": "logic_gate",
+      "pos": [
+        376,
+        128
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "pf1_r9",
+          "pf2_r9",
+          "pf3_r9",
+          "pf4_r9"
+        ],
+        "persist": true,
+        "target_id": "door_r9_cork"
+      }
+    },
+    {
+      "id": "door_r9_cork",
+      "kind": "door",
+      "pos": [
+        392,
+        128
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_r9_jar"
+        ]
+      }
+    },
+    {
+      "id": "keepers_flame_ur",
+      "kind": "wick_key",
+      "pos": [
+        448,
+        128
+      ],
+      "props": {
+        "dungeon_id": "underroot",
+        "key_kind": "keepers_flame",
+        "flag_id": "keepers_flame_ur"
+      }
+    },
+    {
+      "id": "lamp_r9_w",
       "kind": "road_lamp",
       "pos": [
-        256,
+        48,
+        160
+      ],
+      "props": {
+        "zone": "ur_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_c1",
+      "kind": "road_lamp",
+      "pos": [
+        288,
         144
       ],
       "props": {
@@ -61,20 +269,347 @@
       }
     },
     {
-      "id": "keepers_flame_ur",
-      "kind": "wick_key",
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
       "pos": [
-        448,
+        456,
+        192
+      ],
+      "props": {
+        "zone": "ur_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r9_jar_shadow",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        264,
         144
       ],
       "props": {
-        "dungeon_id": "underroot",
-        "key_kind": "keepers_flame",
-        "flag_id": "keepers_flame_ur"
+        "variant": "jar_shadow",
+        "flip_x": false,
+        "span_px": 240
       }
     }
   ],
   "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        176,
+        112
+      ],
+      "radius": 14,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        96
+      ],
+      "radius": 14,
+      "style": "clock"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        448,
+        128
+      ],
+      "radius": 24,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        264,
+        128
+      ],
+      "size": [
+        64,
+        84
+      ],
+      "tint": "cool",
+      "shear": 0.22
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        448,
+        128
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.28
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        144,
+        144
+      ],
+      "radius": 16,
+      "style": "water"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "giant_dew_lens",
+      "pos": [
+        164,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        288,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        296,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        448,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        456,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        424,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        464,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "pebble_milestone",
+      "pos": [
+        144,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ur_r9_pop_cork",
+      "on": "signal:gate_r9_jar",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ur_r9_bridge"
+        },
+        {
+          "shake": 0.22
+        },
+        {
+          "sfx": "shrine_claimed"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Discarded Lantern-Jar: inside a sideways glass bottle while Hundred Lamps' giant shadow glides outside, align a dewdrop and two Blue Transformers so ONE 45-degree shot loops 5 times around the curved glass walls to frost-pin all 4 fruits simultaneously and pop the cork guarding the Boss Key.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Chaining a liquid dew_lens through Blue Transformers and curved glass walls into a 5-bounce simultaneous blue starburst.",
+    "decisions": 10,
+    "expert_s": 64,
+    "reward": "keepers_flame_ur+cycle_3_bridge",
+    "why": "Signature astonishing centerpiece puzzle of The Under-Root awarding the Boss Key and Cycle 3 back to Acorn Atrium.",
+    "exit": "exit_r9_se_sc",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r9_jar"
+      },
+      {
+        "op": "goto",
+        "to": [
+          48,
+          108
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r9_neck"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "sg_r9_neck",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          198
+        ],
+        "tol": 3.5
+      },
+      {
+        "op": "push",
+        "target": "dew_r9",
+        "to": [
+          144,
+          144
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          182
+        ],
+        "tol": 3.5
+      },
+      {
+        "op": "push",
+        "target": "t1_r9",
+        "to": [
+          176,
+          112
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "t1_r9",
+        "angle": 90
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          158
+        ],
+        "tol": 3.5
+      },
+      {
+        "op": "push",
+        "target": "t2_r9",
+        "to": [
+          224,
+          96
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "t2_r9",
+        "angle": 90
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          120,
+          168
+        ],
+        "tol": 2.5
+      },
+      {
+        "op": "shoot",
+        "from": [
+          120,
+          168
+        ],
+        "target": "dew_r9"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r9_cork",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame_ur"
+      },
+      {
+        "op": "expect",
+        "flag": "keepers_flame_ur"
+      },
+      {
+        "op": "expect",
+        "flag": "ur_r9_bridge"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_se_sc"
+      }
+    ]
+  },
   "id": "underroot_r9",
   "island_id": 3,
   "tile_size": 16,
@@ -87,6 +622,5 @@
     "cave_drip"
   ],
   "triggers": [],
-  "layers": [],
-  "events": []
+  "layers": []
 }

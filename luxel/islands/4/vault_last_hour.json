@@ -1,0 +1,356 @@
+{
+  "id": "vault_last_hour",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "name_key": "ISL4_ZONE_LAST_HOUR",
+  "music": "isl4_boss_minor_p1",
+  "spawn": [
+    432,
+    192
+  ],
+  "zones": [
+    {
+      "id": "vault_last_hour",
+      "name_key": "ISL4_ZONE_LAST_HOUR",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_last_hour_to_cloister",
+      "rect": [
+        496,
+        176,
+        16,
+        48
+      ],
+      "to_region": "ow_drowned_cloister",
+      "to_spawn": [
+        48,
+        376
+      ],
+      "requires_moves": [],
+      "requires_flags": []
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_last_hour",
+      "kind": "boss_last_hour",
+      "pos": [
+        248,
+        184
+      ],
+      "route": [],
+      "zone": "vault_last_hour",
+      "leash": 0
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_last_hour",
+      "kind": "room_anchor",
+      "pos": [
+        384,
+        192
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rose_last_hour",
+      "kind": "echo_rose",
+      "pos": [
+        248,
+        240
+      ],
+      "props": {
+        "secs": 6.0
+      }
+    },
+    {
+      "id": "lamp_lh_nw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        112
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_sw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        272
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_se",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        272
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_xii",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_entry",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_last_hour_victory_cue",
+      "on": "flag:boss_last_hour_defeated",
+      "once": true,
+      "do": [
+        {
+          "sfx": "clockwork_chime"
+        },
+        {
+          "narrate": {
+            "id": "ISL4_LAST_HOUR_VICTORY",
+            "style": "title",
+            "duration": 3.8
+          }
+        }
+      ]
+    },
+    {
+      "id": "ev_last_hour_rewards",
+      "on": "flag:boss_last_hour_defeated",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "pickup_rain_prism",
+            "kind": "pane_pickup",
+            "pos": [
+              224,
+              64
+            ],
+            "props": {
+              "pane": "rain_prism"
+            }
+          }
+        },
+        {
+          "spawn": {
+            "id": "moth_4_10",
+            "kind": "moth",
+            "pos": [
+              256,
+              56
+            ],
+            "props": {
+              "id": "moth_4_10"
+            }
+          }
+        },
+        {
+          "spawn": {
+            "id": "lore_last_hour_hollow",
+            "kind": "lore_stone",
+            "pos": [
+              288,
+              64
+            ],
+            "props": {
+              "string_id": "ISL4_LORE_HOLLOW",
+              "icon": "clock",
+              "persist": true
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 112,
+      "style": "clock"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 44
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        64
+      ],
+      "radius": 32
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        176,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        336,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        176,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        336,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "brass_sundial_pedestal",
+      "pos": [
+        256,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "hourglass_floor_dial",
+      "pos": [
+        256,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false
+    }
+  ],
+  "design": {
+    "idea": "Post-relight Hour VI superboss clock-face floating over starry void: fight The Last Hour backwards in time with Echo Rose Temporal Annihilation, then claim Rain Prism, Moth #10, and Hollow Wick lore at XII o'clock.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Temporal Annihilation (forward bolts vs backward bolts) and Moth Wings dodging over sweeping clock hands",
+    "decisions": 10,
+    "expert_s": 175,
+    "reward": "boss_last_hour_defeated, rain_prism pane, moth_4_10, ISL4_LORE_HOLLOW",
+    "why": "Island 4 cosmic superboss climax behind Hour VI Shadow Bridge.",
+    "optional": true,
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ],
+      "flags": [
+        "island_4_relit"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "expect",
+        "flag": "boss_last_hour_defeated"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          64
+        ],
+        "tol": 16
+      },
+      {
+        "op": "interact",
+        "target": "pickup_rain_prism"
+      }
+    ]
+  }
+}

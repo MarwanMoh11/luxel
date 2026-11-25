@@ -1,0 +1,327 @@
+{
+  "id": "cave_lens_grotto",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_Z_GROTTO",
+  "theme": "cave_1",
+  "music": "isl1_undercroft",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    336,
+    144
+  ],
+  "zones": [
+    {
+      "id": "cave_lens_grotto",
+      "name_key": "ISL1_Z_GROTTO",
+      "rect": [
+        0,
+        0,
+        384,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lg_east",
+      "rect": [
+        368,
+        128,
+        16,
+        32
+      ],
+      "to_region": "cliff_foundry",
+      "to_spawn": [
+        56,
+        224
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_lg_e",
+      "kind": "room_anchor",
+      "pos": [
+        336,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "grate_lg_view",
+      "kind": "grate",
+      "pos": [
+        256,
+        168
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "chest_ember_grotto",
+      "kind": "chest",
+      "pos": [
+        64,
+        120
+      ],
+      "props": {
+        "reward": "ember_piece",
+        "amount": 1,
+        "requires_moves": [
+          "beam",
+          "lens"
+        ],
+        "secret_id": "isl1_lens_grotto",
+        "sets_flag": "ember_1_grotto"
+      }
+    },
+    {
+      "id": "lore_grotto_hollow",
+      "kind": "lore_stone",
+      "pos": [
+        64,
+        160
+      ],
+      "props": {
+        "string_id": "ISL1_LORE_HOLLOW",
+        "icon": "moth",
+        "sets_flag": "lore_hollow_grotto"
+      }
+    },
+    {
+      "id": "lamp_lg_e",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        120
+      ],
+      "props": {
+        "zone": "cave_lens_grotto",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lg_n",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        80
+      ],
+      "props": {
+        "zone": "cave_lens_grotto",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lg_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        136
+      ],
+      "props": {
+        "zone": "cave_lens_grotto",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "mural",
+      "pos": [
+        64,
+        144
+      ],
+      "radius": 26,
+      "style": "moon"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        312,
+        176
+      ],
+      "radius": 20,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        64,
+        128
+      ],
+      "size": [
+        36,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_cave_1",
+      "prop": "stalagmite_tall",
+      "pos": [
+        312,
+        100
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        312,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        48,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "cave_lantern_post",
+      "pos": [
+        296,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "subterranean_shroom",
+      "pos": [
+        48,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_1",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        96,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "design": {
+    "idea": "Day-1 teaser grate overlooking a sealed Hollow Wick mural across an 8-tile phantom abyss; return with Solar Beam and True Lens to burn the brambles, walk the hidden stone path, and claim the Ember & lore.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Backtrack reward paying off Solar Beam (Island 3) + True Lens (Island 5) with deep Hollow Wick foreshadowing.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "ember_1_grotto+lore_hollow_grotto",
+    "why": "Memorable Metroidvania secret teased on Island 1 and paid off mid-campaign.",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "beam",
+        "lens"
+      ]
+    },
+    "target": "chest_ember_grotto",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          296,
+          76
+        ]
+      },
+      {
+        "op": "beam",
+        "from": [
+          296,
+          76
+        ],
+        "target": [
+          264,
+          76
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          72
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          88
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_grotto"
+      },
+      {
+        "op": "interact",
+        "target": "lore_grotto_hollow"
+      },
+      {
+        "op": "expect",
+        "interactable": "chest_ember_grotto",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "expect",
+        "interactable": "lore_grotto_hollow",
+        "prop": "read_done",
+        "value": true
+      }
+    ]
+  }
+}

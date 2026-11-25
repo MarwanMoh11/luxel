@@ -1,0 +1,136 @@
+{
+  "pack_id": "i7_overworld",
+  "owner": "P7-OW",
+  "comment": "Island 7 Moon Shoals Overworld package: 5 new districts, 5 caves/trials, superboss_noon arena, quests, custom overworld toys, strings, and region map metadata.",
+  "interactables": {
+    "i7_hub_door": "res://luxel/islands/7/overworld/i7_hub_door.gd",
+    "i7_moon_vista": "res://luxel/islands/7/overworld/i7_moon_vista.gd",
+    "i7_shadow_decoy": "res://luxel/islands/7/overworld/i7_shadow_decoy.gd",
+    "i7_spotlight_bench": "res://luxel/islands/7/overworld/i7_spotlight_bench.gd"
+  },
+  "quests": [
+    {
+      "id": "q7_masked_tailor",
+      "island": 7,
+      "kind": "carry_back",
+      "folk": "tailor_spider",
+      "icon": "crown",
+      "steps": [
+        {
+          "icons": ["quest_carry", "crown", "arrow_w", "isl_7"],
+          "need": "quest:item:qi_silver_mask",
+          "flag": "quest:q7_masked_tailor:s0"
+        },
+        {
+          "icons": ["happy", "gift", "ember"],
+          "need": "",
+          "flag": "quest:q7_masked_tailor:done"
+        }
+      ],
+      "reward": {
+        "kind": "ember_piece",
+        "value": "ember_7_quest",
+        "amount": 1
+      }
+    },
+    {
+      "id": "q7_true_reflection",
+      "island": 7,
+      "kind": "hide_and_seek",
+      "folk": "moth_kid",
+      "icon": "mirror",
+      "steps": [
+        {
+          "icons": ["eye", "quest_hide", "mirror", "arrow_s", "question"],
+          "need": "q7_decoy_ow && q7_decoy_shoals && q7_decoy_promenade",
+          "flag": "quest:q7_true_reflection:s0"
+        },
+        {
+          "icons": ["happy", "home", "spark"],
+          "need": "",
+          "flag": "quest:q7_true_reflection:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "value": "shards",
+        "amount": 60
+      }
+    },
+    {
+      "id": "q7_noon_rumor",
+      "island": 7,
+      "kind": "fetch",
+      "folk": "scribe_worm",
+      "icon": "skull",
+      "steps": [
+        {
+          "icons": ["skull", "clock", "light_on", "arrow_s", "star"],
+          "need": "shadow_at_noon_defeated",
+          "flag": "quest:q7_noon_rumor:s0"
+        },
+        {
+          "icons": ["star", "happy", "crown"],
+          "need": "",
+          "flag": "quest:q7_noon_rumor:done"
+        }
+      ],
+      "reward": {
+        "kind": "shards",
+        "value": "shards",
+        "amount": 80
+      }
+    }
+  ],
+  "strings": {
+    "ISL7_Z_QUAY": "SILVER QUAY",
+    "ISL7_Z_SHOALS": "BLACK SHOALS",
+    "ISL7_Z_PROM": "VELVET PROMENADE",
+    "ISL7_Z_TERRACE": "GLASS TERRACE",
+    "ISL7_Z_ZENITH": "ZENITH ATOLL",
+    "ISL7_Z_NOON": "ZENITH SUNDIAL",
+    "ISL7_Z_CAVE_TIDE": "MIRROR TIDE GROTTO",
+    "ISL7_Z_CAVE_GROTTO": "TWIN ICE GROTTO",
+    "ISL7_Z_CAVE_PHASE": "LUNAR PHASE RANGE",
+    "ISL7_Z_CAVE_ECHO": "ECHO VAULT",
+    "ISL7_Z_CAVE_CRYPT": "GLASS ORIGIN CRYPT",
+    "ISL7_FACE_BLACK": "THE POOL FLIPS. THE BLACK TRUTH RISES.",
+    "ISL7_FACE_SILVER": "SILVER RETURNS OVER MOON SHOALS.",
+    "ISL7_LORE_ORIGIN": "TWO LANTERNS LIT AT DUSK. ONLY ONE HELD.",
+    "ISL7_LORE_DAWN_LANTERN": "AN EMPTY BRASS CAGE. STILL WARM.",
+    "ISL7_LORE_QUAY": "WATCH EVERY SHADOW. TRUTH FALLS SOUTHEAST.",
+    "ISL7_LORE_SHOALS": "BLACK TIDE RAISES WHAT SILVER DROWNS.",
+    "ISL7_LORE_PROM": "FIVE ACTS WAIT BEHIND VELVET CURTAINS.",
+    "ISL7_LORE_TERRACE": "PALACE AND THEATRE UNMASK THE SPIRE.",
+    "ISL7_LORE_ZENITH": "STRIKE THE MOON ANVIL TO TEMPER BOLTS.",
+    "ISL7_Q1_HINT": "SHINE LIGHT ON THE SUNKEN BLACK POOL.",
+    "ISL7_Q2_HINT": "A SILVER MASK SLEEPS IN THE TWIN GROTTO.",
+    "ISL7_Q3_HINT": "THREE LIES CAST THEIR SHADOWS NORTHWEST.",
+    "ISL7_Q4_NOON": "HIGH NOON BURNS ON ZENITH ATOLL NOW.",
+    "ISL7_PROMPT_ANVIL": "TEMPER BOLT",
+    "ISL7_PROMPT_HUB_DOOR": "ENTER WICK HOUSE",
+    "ISL7_PROMPT_BENCH": "REST IN SPOTLIGHT",
+    "ISL7_BENCH_FULL": "SPOTLIGHT WARMTH FILLS YOUR EMBER!",
+    "ISL7_HUB_DOOR_OPEN": "THE SILVER DOOR OPENS TO WICK HOUSE.",
+    "ISL7_HUB_DOOR_LOCKED": "UNMASK THREE NORTHWEST LIES TO OPEN.",
+    "ISL7_DECOY_FOUND": "A NORTHWEST LIE SHATTERS INTO GLASS!",
+    "ISL7_TRIAL_PHASE_OK": "LUNAR PHASE MEDAL EARNED!",
+    "ISL7_TRIAL_WALTZ_OK": "SHADOW WALTZ MEDAL! THREE LIES BROKEN!",
+    "ISL7_TRIAL_ANVIL_OK": "ANVIL MEDAL! THE GLASS CRYPT UNSEALS!",
+    "ISL7_NOON_REUNITED": "YOUR SHADOW BOWS AND STEPS BACK HOME.",
+    "ISL7_RELIT_QUAY": "DAWN CLEARS THE QUAY. ONE LANTERN WAITS."
+  },
+  "regions": {
+    "silver_quay":      { "name_key": "ISL7_Z_QUAY",        "theme": "inverted_palace_silver", "music": "island7_explore", "dark": true,  "map": [0, -1] },
+    "black_shoals":     { "name_key": "ISL7_Z_SHOALS",      "theme": "inverted_palace_silver", "music": "island7_explore", "dark": true,  "map": [-1, 1] },
+    "velvet_promenade": { "name_key": "ISL7_Z_PROM",        "theme": "doppel_theatre",         "music": "isl7_theatre",    "dark": true,  "map": [2, 1] },
+    "glass_terrace":    { "name_key": "ISL7_Z_TERRACE",     "theme": "masquerade",             "music": "isl7_setpiece",   "dark": true,  "map": [1, -1] },
+    "zenith_atoll":     { "name_key": "ISL7_Z_ZENITH",      "theme": "inverted_palace_silver", "music": "island7_explore", "dark": true,  "map": [1, 0] },
+    "cave_mirror_tide": { "name_key": "ISL7_Z_CAVE_TIDE",   "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [-1, -1] },
+    "cave_twin_grotto": { "name_key": "ISL7_Z_CAVE_GROTTO", "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [-2, 1] },
+    "cave_phase_trial": { "name_key": "ISL7_Z_CAVE_PHASE",  "theme": "cave_7",                 "music": "island7_combat",  "dark": true,  "map": [-1, 2] },
+    "cave_echo_vault":  { "name_key": "ISL7_Z_CAVE_ECHO",   "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [1, 2] },
+    "cave_glass_crypt": { "name_key": "ISL7_Z_CAVE_CRYPT",  "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [0, 0] },
+    "superboss_noon":   { "name_key": "ISL7_Z_NOON",        "theme": "inverted_palace_silver", "music": "superboss_a",     "dark": false, "map": [1, -2] }
+  }
+}

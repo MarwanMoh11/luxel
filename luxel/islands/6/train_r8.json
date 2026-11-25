@@ -74,8 +74,8 @@
       "id": "anvil_r8_lance",
       "kind": "temper_anvil",
       "pos": [
-        104,
-        64
+        80,
+        56
       ],
       "props": {
         "mode": "lance"
@@ -85,7 +85,7 @@
       "id": "anvil_r8_scatter",
       "kind": "temper_anvil",
       "pos": [
-        104,
+        88,
         176
       ],
       "props": {
@@ -96,7 +96,7 @@
       "id": "grate_r8_cage_w",
       "kind": "grate",
       "pos": [
-        192,
+        240,
         200
       ],
       "props": {
@@ -110,7 +110,7 @@
       "id": "door_r8_cage",
       "kind": "door",
       "pos": [
-        240,
+        288,
         200
       ],
       "props": {
@@ -128,7 +128,7 @@
       "id": "grate_r8_cage_e",
       "kind": "grate",
       "pos": [
-        288,
+        336,
         200
       ],
       "props": {
@@ -142,7 +142,7 @@
       "id": "plate_r8_cage",
       "kind": "pressure_plate",
       "pos": [
-        192,
+        240,
         232
       ],
       "props": {
@@ -160,7 +160,7 @@
       "id": "coupler_r8_cage",
       "kind": "car_coupler",
       "pos": [
-        288,
+        320,
         216
       ],
       "props": {
@@ -173,7 +173,7 @@
       "id": "gate_r8_cage",
       "kind": "logic_gate",
       "pos": [
-        240,
+        288,
         256
       ],
       "props": {
@@ -190,7 +190,7 @@
       "id": "chest_r8_bullion",
       "kind": "chest",
       "pos": [
-        176,
+        224,
         256
       ],
       "props": {
@@ -246,7 +246,7 @@
       "id": "lamp_r8_n",
       "kind": "road_lamp",
       "pos": [
-        240,
+        208,
         64
       ],
       "props": {
@@ -259,7 +259,7 @@
       "kind": "road_lamp",
       "pos": [
         384,
-        96
+        104
       ],
       "props": {
         "zone": "tr_r8",
@@ -270,7 +270,7 @@
       "id": "lamp_r8_cage",
       "kind": "road_lamp",
       "pos": [
-        240,
+        288,
         240
       ],
       "props": {
@@ -293,7 +293,7 @@
       "id": "en_r8_wasp_1",
       "kind": "smelter_wasp",
       "pos": [
-        200,
+        192,
         72
       ],
       "zone": "tr_r8"
@@ -302,8 +302,8 @@
       "id": "en_r8_wasp_2",
       "kind": "smelter_wasp",
       "pos": [
-        344,
-        72
+        312,
+        88
       ],
       "zone": "tr_r8"
     },
@@ -311,8 +311,8 @@
       "id": "en_r8_magnet",
       "kind": "magnet_golem",
       "pos": [
-        288,
-        240
+        328,
+        248
       ],
       "zone": "tr_r8"
     }
@@ -328,14 +328,14 @@
     {
       "kind": "window_strip",
       "y": 4,
-      "x0": 272,
-      "x1": 368,
+      "x0": 240,
+      "x1": 320,
       "style": "slag"
     },
     {
       "kind": "grate",
       "rect": [
-        176,
+        224,
         216,
         128,
         48
@@ -366,7 +366,7 @@
       "sheet": "theme_ember_express",
       "prop": "steam_pipe_column",
       "pos": [
-        144,
+        128,
         56
       ],
       "layer": "sort",
@@ -378,7 +378,7 @@
       "sheet": "theme_ember_express",
       "prop": "steam_pipe_column",
       "pos": [
-        368,
+        320,
         56
       ],
       "layer": "sort",
@@ -391,7 +391,7 @@
       "prop": "iron_stove_brazier",
       "pos": [
         416,
-        80
+        104
       ],
       "layer": "sort",
       "flip_x": false,
@@ -402,11 +402,11 @@
       "sheet": "theme_ember_express",
       "prop": "brass_luggage_rack",
       "pos": [
-        392,
-        184
+        32,
+        64
       ],
       "layer": "sort",
-      "flip_x": true,
+      "flip_x": false,
       "shadow": true,
       "phase": 0.0
     },
@@ -426,7 +426,7 @@
       "sheet": "theme_ember_express",
       "prop": "carriage_wall_lamp",
       "pos": [
-        240,
+        224,
         48
       ],
       "layer": "sort",
@@ -473,10 +473,10 @@
       {
         "op": "goto",
         "to": [
-          104,
-          88
+          80,
+          72
         ],
-        "tol": 6.0
+        "tol": 3.0
       },
       {
         "op": "interact",
@@ -485,7 +485,7 @@
       {
         "op": "goto",
         "to": [
-          288,
+          320,
           176
         ],
         "tol": 6.0

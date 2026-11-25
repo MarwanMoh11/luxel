@@ -1,0 +1,474 @@
+{
+  "id": "trial_canopy_sprint",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "briar_court",
+  "name_key": "ISL3_TRIAL_SPRINT_NAME",
+  "music": "isl3_setpiece",
+  "spawn": [
+    56,
+    128
+  ],
+  "zones": [
+    {
+      "id": "canopy_sprint",
+      "name_key": "ISL3_TRIAL_SPRINT_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        104,
+        128
+      ],
+      "radius": 24,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        416,
+        128
+      ],
+      "radius": 24,
+      "style": "ritual",
+      "color": "lime",
+      "secondary": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        416,
+        64
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_sprint_to_shift_e",
+      "rect": [
+        0,
+        112,
+        32,
+        32
+      ],
+      "to_region": "ow_shift_e",
+      "to_spawn": [
+        392,
+        120
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_sprint",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "trial_gate_sprint",
+      "kind": "trial_gate",
+      "pos": [
+        104,
+        128
+      ],
+      "props": {
+        "challenge": "canopy_sprint_race",
+        "once": false
+      }
+    },
+    {
+      "id": "lp_sprint_b1",
+      "kind": "light_plant",
+      "pos": [
+        168,
+        80
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          48,
+          32
+        ],
+        "secs": 0.35,
+        "decay": 4.5
+      }
+    },
+    {
+      "id": "lp_sprint_b2",
+      "kind": "light_plant",
+      "pos": [
+        256,
+        136
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          32,
+          48
+        ],
+        "secs": 0.35,
+        "decay": 4.5
+      }
+    },
+    {
+      "id": "lp_sprint_b3",
+      "kind": "light_plant",
+      "pos": [
+        360,
+        176
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          48,
+          32
+        ],
+        "secs": 0.35,
+        "decay": 4.5
+      }
+    },
+    {
+      "id": "door_sprint_prize",
+      "kind": "door",
+      "pos": [
+        400,
+        88
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "trial_canopy_sprint_done"
+        ]
+      }
+    },
+    {
+      "id": "pickup_briar_thorn",
+      "kind": "pane_pickup",
+      "pos": [
+        408,
+        56
+      ],
+      "props": {
+        "pane": "briar_thorn"
+      }
+    },
+    {
+      "id": "chest_sprint_shards",
+      "kind": "chest",
+      "pos": [
+        432,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40
+      }
+    },
+    {
+      "id": "lamp_sprint_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sprint_n",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sprint_s",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        192
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_sprint_e",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_briar_court",
+      "prop": "rose_thorn_arch",
+      "pos": [
+        400,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "heraldic_court_banner",
+      "pos": [
+        72,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "briar_lantern_post",
+      "pos": [
+        216,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "briar_lantern_post",
+      "pos": [
+        312,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "clipped_rose_urn",
+      "pos": [
+        432,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "petal_drift_floor",
+      "pos": [
+        248,
+        80
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_sprint_start",
+      "on": "trial_start:trial_gate_sprint",
+      "once": false,
+      "do": [
+        {
+          "narrate": "ISL3_TRIAL_SPRINT_GO"
+        },
+        {
+          "challenge": {
+            "id": "canopy_sprint_race",
+            "kind": "race",
+            "time": 25.0,
+            "start_pos": [
+              104,
+              128
+            ],
+            "checkpoints": [
+              [
+                232,
+                72
+              ],
+              [
+                296,
+                176
+              ]
+            ],
+            "goal": [
+              416,
+              128
+            ],
+            "goal_radius": 24.0,
+            "instant_retry": true,
+            "ok": [
+              {
+                "set_flag": "trial_canopy_sprint_done"
+              },
+              {
+                "unlock": [
+                  "door_sprint_prize"
+                ]
+              },
+              {
+                "narrate": "ISL3_TRIAL_SPRINT_WIN"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "25-second instant-retry Canopy Sprint across 3 wilting Seedlight vine bridges in a Z-bend treetop viaduct; blooming bridges ahead with bolts or lantern speed unlocks the Briar Thorn Pane dais.",
+    "kind": "traversal",
+    "beat": "sho",
+    "teaches": "trial_gate race, rapid light_plant(bridge) blooming under time pressure",
+    "decisions": 5,
+    "expert_s": 34,
+    "reward": "Pane briar_thorn, 40 shards, Canopy Sprint medal flag",
+    "why": "High-tempo overworld traversal trial rewarding the Briar Thorn Pane",
+    "optional": true,
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "trial_gate_sprint"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          80
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "lp_sprint_b1",
+        "count": 3
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          72
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          96
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "lp_sprint_b2",
+        "count": 3
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          176
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          320,
+          176
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "lp_sprint_b3",
+        "count": 3
+      },
+      {
+        "op": "goto",
+        "to": [
+          416,
+          128
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "expect",
+        "flag": "trial_canopy_sprint_done"
+      },
+      {
+        "op": "goto",
+        "to": [
+          408,
+          56
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "pickup_briar_thorn"
+      }
+    ]
+  }
+}

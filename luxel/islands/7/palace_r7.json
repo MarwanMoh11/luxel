@@ -106,7 +106,7 @@
       "kind": "moving_platform",
       "pos": [240, 152],
       "props": {
-        "path": [[232, 152], [280, 152]],
+        "path": [[232, 152], [296, 152]],
         "speed": 48,
         "pingpong": true,
         "size": [40, 32]
@@ -115,7 +115,7 @@
     {
       "id": "mirror_r7_east",
       "kind": "blue_transformer",
-      "pos": [336, 72],
+      "pos": [336, 64],
       "props": {
         "angle_deg": 135,
         "rotatable": false,
@@ -125,7 +125,7 @@
     {
       "id": "sw_r7_blue",
       "kind": "switch_eye",
-      "pos": [232, 72],
+      "pos": [232, 64],
       "props": {
         "requires_blue": true,
         "target_ids": ["door_r7_north", "door_r7_east", "bridge_r7_north"],
@@ -135,12 +135,12 @@
     {
       "id": "bridge_r7_north",
       "kind": "door",
-      "pos": [232, 104],
+      "pos": [232, 112],
       "props": {
         "door_kind": "bridge_platform",
         "requires_signals": ["sw_r7_blue"],
         "persistent": true,
-        "size": [48, 96]
+        "size": [48, 64]
       }
     },
     {
@@ -188,7 +188,7 @@
     {
       "id": "owl_r7_chasm",
       "kind": "silvered_owl",
-      "pos": [232, 112],
+      "pos": [112, 48],
       "zone": "palace_stairwell"
     }
   ],
@@ -201,7 +201,7 @@
   "scenery": [
     { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [128, 60], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
     { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [384, 60], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "lunar_brazier_bowl", "pos": [288, 256], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "lunar_brazier_bowl", "pos": [196, 268], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
     { "sheet": "theme_inverted_palace_silver", "prop": "floating_mirror_shard", "pos": [56, 200], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 },
     { "sheet": "theme_inverted_palace_silver", "prop": "silver_bell_pedestal", "pos": [392, 232], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
     { "sheet": "theme_inverted_palace_silver", "prop": "moon_glass_urn", "pos": [152, 268], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
@@ -211,10 +211,9 @@
       "id": "black_world",
       "when": "world_face==black",
       "theme": "inverted_palace_black",
+      "overlay": "res://luxel/art/islands/7/palace_r7__black_world.png",
       "full_frame": true,
-      "tiles": [
-        [17, 15, 3, 2, "pit"]
-      ],
+      "tiles": [],
       "enable": ["plant_r7_bridge", "mp_r7_east"],
       "disable": ["turret_r7_silver", "mirror_r7_east"]
     }
@@ -244,13 +243,13 @@
       { "op": "wait", "secs": 0.70 },
       { "op": "wait_until", "target": "mp_r7_east", "near": [232, 152], "tol": 14, "timeout": 6.0 },
       { "op": "goto", "to": [232, 152], "tol": 10 },
-      { "op": "wait_until", "target": "mp_r7_east", "near": [280, 152], "tol": 14, "timeout": 6.0 },
+      { "op": "wait_until", "target": "mp_r7_east", "near": [296, 152], "tol": 14, "timeout": 6.0 },
       { "op": "goto", "to": [336, 152], "tol": 10 },
       { "op": "recall" },
       { "op": "goto", "to": [368, 200], "tol": 10 },
       { "op": "interact", "target": "pool_r7_east" },
       { "op": "expect", "var": "world_face==silver" },
-      { "op": "shoot", "from": [336, 128], "at": [336, 72], "wait_hit": 0.55 },
+      { "op": "shoot", "from": [336, 128], "at": [336, 64], "wait_hit": 0.55 },
       { "op": "wait", "secs": 0.45 },
       { "op": "expect", "target": "sw_r7_blue", "prop": "activated", "value": true },
       { "op": "expect_exit", "exit": "exit_r7_east" }

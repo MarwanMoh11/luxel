@@ -1,0 +1,373 @@
+{
+  "id": "planet_r11",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R11",
+  "spawn": [
+    256,
+    336
+  ],
+  "zones": [
+    {
+      "id": "pl_r11",
+      "name_key": "I5_PL_R11",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r11_s",
+      "rect": [
+        240,
+        368,
+        32,
+        16
+      ],
+      "to_region": "planet_r10",
+      "to_spawn": [
+        240,
+        48
+      ]
+    },
+    {
+      "id": "exit_pl_r11_return",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "planet_r1",
+      "to_spawn": [
+        240,
+        72
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "planetarium_done"
+      ],
+      "locked_door_id": "door_pl_r11_return"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r11",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        336
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "door_pl_r11_return",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "planetarium_done"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_pl_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        296
+      ],
+      "props": {
+        "zone": "pl_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        296
+      ],
+      "props": {
+        "zone": "pl_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        88
+      ],
+      "props": {
+        "zone": "pl_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        88
+      ],
+      "props": {
+        "zone": "pl_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r11_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        192
+      ],
+      "props": {
+        "zone": "pl_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r11_e",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        192
+      ],
+      "props": {
+        "zone": "pl_r11",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_the_zodiac",
+      "kind": "the_zodiac",
+      "pos": [
+        256,
+        168
+      ],
+      "zone": "pl_r11",
+      "arena": [
+        112,
+        88,
+        288,
+        208
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 92,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "mural",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 48,
+      "style": "constellation"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        136
+      ],
+      "size": [
+        68,
+        96
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        256,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        256,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        136,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        376,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        136,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        376,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        200,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        312,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "pl_r11_victory_msg",
+      "on": "flag:planetarium_done",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "I5_PL_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Grand celestial dome boss sanctum of The Zodiac: battle four living constellations (The Ram 0 deg, The Scales 90 deg, The Archer 180 deg with Bow Gravity Well, The Serpent 270 deg) as the dome turns 90 degrees and redraws the arena silhouette between every body.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Mastering constellation footing, Sextant lantern anchoring, and curved shots across four rotating boss silhouettes.",
+    "decisions": 8,
+    "expert_s": 135,
+    "reward": "planetarium_done+half_lantern_5b",
+    "why": "Climax boss sanctum of The Planetarium rewarding Half-Lantern 5B and clearing Dungeon B.",
+    "exit": "exit_pl_r11_return",
+    "start": {
+      "flags": [
+        "power_sextant"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 125.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "planetarium_done",
+        "timeout": 5.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r11_return"
+      }
+    ]
+  }
+}

@@ -1,0 +1,497 @@
+{
+  "id": "ow_shift_e",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "shift_clearing": "e",
+  "name_key": "ISL3_SHIFT_E_NAME",
+  "music": "island3_explore",
+  "spawn": [
+    56,
+    160
+  ],
+  "zones": [
+    {
+      "id": "silkwood",
+      "name_key": "ISL3_SHIFT_E_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        216,
+        160
+      ],
+      "radius": 30,
+      "color": "rose",
+      "secondary": "gold"
+    },
+    {
+      "kind": "inlay",
+      "pos": [
+        344,
+        216
+      ],
+      "rect": [
+        336,
+        200,
+        56,
+        40
+      ],
+      "color": "mauve"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        168,
+        240
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        128
+      ],
+      "size": [
+        48,
+        72
+      ],
+      "tint": "rose",
+      "shear": 0.4
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_shift_e_to_ow",
+      "rect": [
+        0,
+        144,
+        32,
+        48
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        616,
+        568
+      ]
+    },
+    {
+      "id": "exit_shift_e_burrow",
+      "rect": [
+        320,
+        288,
+        48,
+        32
+      ],
+      "to_region": "cave_burrow_den",
+      "to_spawn": [
+        192,
+        56
+      ]
+    },
+    {
+      "id": "exit_shift_e_sprint",
+      "rect": [
+        416,
+        96,
+        32,
+        48
+      ],
+      "to_region": "trial_canopy_sprint",
+      "to_spawn": [
+        56,
+        128
+      ]
+    },
+    {
+      "id": "exit_shift_e_north",
+      "rect": [
+        192,
+        0,
+        48,
+        32
+      ],
+      "to_region": "ow_shift_n",
+      "to_spawn": [
+        304,
+        224
+      ]
+    }
+  ],
+  "enemies": [
+    {
+      "id": "shift_e_spider",
+      "kind": "jumping_spider",
+      "pos": [
+        288,
+        176
+      ],
+      "route": [
+        [
+          256,
+          176
+        ],
+        [
+          312,
+          176
+        ]
+      ],
+      "zone": "silkwood",
+      "leash": 136
+    },
+    {
+      "id": "shift_e_archer",
+      "kind": "thorn_archer",
+      "pos": [
+        184,
+        240
+      ],
+      "route": [
+        [
+          168,
+          240
+        ],
+        [
+          224,
+          240
+        ]
+      ],
+      "zone": "silkwood",
+      "leash": 136
+    },
+    {
+      "id": "shift_e_mimic",
+      "kind": "false_lantern",
+      "pos": [
+        120,
+        240
+      ],
+      "route": [],
+      "zone": "silkwood",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_shift_e",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_pin_e",
+      "kind": "wood_pin_lamp",
+      "pos": [
+        216,
+        160
+      ],
+      "props": {
+        "clearing": "e",
+        "lit": false,
+        "snuff_on_hit": false,
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_shift_e_loom",
+      "kind": "lore_stone",
+      "pos": [
+        368,
+        216
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_LOOM_ARCH",
+        "icon": "lantern"
+      }
+    },
+    {
+      "id": "lamp_shift_e_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        144
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_shift_e_n",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_shift_e_se",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        264
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_ring_floor",
+      "pos": [
+        216,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "thorn_archway",
+      "pos": [
+        368,
+        198
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        336,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        392,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "gnarled_thorn_tree",
+      "pos": [
+        88,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        152,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        288,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        136,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        152,
+        266
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        184,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        248,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "layers": [
+    {
+      "id": "seal_not_0",
+      "when": "eff_turn_e!=0",
+      "tiles": [
+        [
+          20,
+          17,
+          3,
+          1,
+          "wall"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_shift_e_burrow"
+      ]
+    },
+    {
+      "id": "seal_not_1",
+      "when": "eff_turn_e!=1",
+      "tiles": [
+        [
+          20,
+          12,
+          1,
+          3,
+          "wall"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "lore_shift_e_loom"
+      ]
+    },
+    {
+      "id": "seal_not_2",
+      "when": "eff_turn_e!=2",
+      "tiles": [
+        [
+          12,
+          2,
+          3,
+          2,
+          "pit"
+        ],
+        [
+          22,
+          6,
+          3,
+          3,
+          "pit"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_shift_e_sprint",
+        "exit_shift_e_north"
+      ]
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Eastern Silkwood clearing linking Briar Crossing to Burrow Den (Turn 0), Weaver's Loom Arch (Turn 1), and Canopy Sprint + Crown Thicket (Turn 2), patrolled by Jumping Spider, Thorn Archer, and a disguised False Lantern.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "wood_pin_lamp steering, false_lantern unmasking, thorn_archer light-jamming",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "Pinned routing to Burrow Den, Weaver's Loom, Canopy Sprint, and Crown Thicket",
+    "why": "Eastern branch of the Shifting Woods expanding exploration and enemy counterplay",
+    "optional": true,
+    "start": {
+      "vars": {
+        "wood_turn": 0,
+        "eff_turn_e": 0,
+        "pin_e": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          176,
+          160
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "lamp_pin_e"
+      },
+      {
+        "op": "expect",
+        "var": "pin_e==1"
+      },
+      {
+        "op": "clear"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_shift_e_burrow"
+      }
+    ]
+  }
+}

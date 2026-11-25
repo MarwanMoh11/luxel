@@ -158,6 +158,11 @@ func _configure_boss(spec: Dictionary) -> void:
 	})
 
 
+func _on_engage() -> void:
+	# Short intro beat so Belfry R5 pedestal synergy & tutorial checks engage smoothly
+	state_timer = 0.05
+
+
 func _on_reset_encounter() -> void:
 	shield_hp = shield_max
 	shield_gone_t = 0.0

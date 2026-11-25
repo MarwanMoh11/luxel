@@ -1,0 +1,614 @@
+{
+  "id": "locks_r2",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R2_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    272,
+    336
+  ],
+  "zones": [
+    {
+      "id": "lck_r2",
+      "name_key": "LCK_R2_NAME",
+      "rect": [
+        0,
+        0,
+        544,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_south",
+      "rect": [
+        256,
+        368,
+        32,
+        16
+      ],
+      "to_region": "locks_r1",
+      "to_spawn": [
+        208,
+        56
+      ]
+    },
+    {
+      "id": "exit_r2_west",
+      "rect": [
+        0,
+        176,
+        16,
+        32
+      ],
+      "to_region": "locks_r3",
+      "to_spawn": [
+        48,
+        144
+      ]
+    },
+    {
+      "id": "exit_r2_east",
+      "rect": [
+        528,
+        192,
+        16,
+        32
+      ],
+      "to_region": "locks_r4",
+      "to_spawn": [
+        432,
+        160
+      ]
+    },
+    {
+      "id": "exit_r2_nw",
+      "rect": [
+        160,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r5",
+      "to_spawn": [
+        256,
+        304
+      ],
+      "locked_door_id": "door_r2_nw"
+    },
+    {
+      "id": "exit_r2_aqueduct",
+      "rect": [
+        528,
+        64,
+        16,
+        32
+      ],
+      "to_region": "locks_r6",
+      "to_spawn": [
+        464,
+        176
+      ],
+      "requires_flags": [
+        "locks_r6_aqueduct"
+      ],
+      "locked_door_id": "door_r2_aqueduct"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_s",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        344
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r2",
+      "kind": "state_lever",
+      "pos": [
+        272,
+        232
+      ],
+      "props": {
+        "scope": "dungeon:locks",
+        "var": "lock_water",
+        "values": [
+          "east_high",
+          "west_high"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false,
+        "target_id": "bridge_r2_west"
+      }
+    },
+    {
+      "id": "valve_r2_east",
+      "kind": "state_lever",
+      "pos": [
+        488,
+        248
+      ],
+      "props": {
+        "scope": "dungeon:locks",
+        "var": "lock_water",
+        "values": [
+          "west_high",
+          "east_high"
+        ],
+        "index": 1,
+        "shootable": true,
+        "persist": false,
+        "target_id": "bridge_r2_east"
+      }
+    },
+    {
+      "id": "bridge_r2_west",
+      "kind": "door",
+      "pos": [
+        136,
+        192
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "valve_r2"
+        ],
+        "size": [
+          112,
+          32
+        ]
+      }
+    },
+    {
+      "id": "bridge_r2_east",
+      "kind": "door",
+      "pos": [
+        408,
+        208
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "requires_signals": [
+          "valve_r2_east"
+        ],
+        "size": [
+          112,
+          32
+        ]
+      }
+    },
+    {
+      "id": "grate_r2_teaser",
+      "kind": "grate",
+      "pos": [
+        312,
+        56
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_r2_nw",
+      "kind": "door",
+      "pos": [
+        176,
+        24
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "locks",
+        "key_kind": "wick_key",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r2_aqueduct",
+      "kind": "door",
+      "pos": [
+        520,
+        80
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "locks_r6_aqueduct"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "skiff_r2",
+      "kind": "vehicle_skiff",
+      "pos": [
+        136,
+        232
+      ],
+      "props": {
+        "dir": "w"
+      }
+    },
+    {
+      "id": "lamp_r2_s",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        328
+      ],
+      "props": {
+        "zone": "lck_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_c",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        184
+      ],
+      "props": {
+        "zone": "lck_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        40,
+        168
+      ],
+      "props": {
+        "zone": "lck_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        488,
+        168
+      ],
+      "props": {
+        "zone": "lck_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_nw",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "zone": "lck_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_tease",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        56
+      ],
+      "props": {
+        "zone": "lck_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r2_ne",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        56
+      ],
+      "props": {
+        "zone": "lck_r2",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        272,
+        192
+      ],
+      "radius": 34
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        360,
+        56
+      ],
+      "radius": 22,
+      "style": "spotlight"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        128,
+        128,
+        128
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        232,
+        296
+      ],
+      "radius": 20,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        152
+      ],
+      "size": [
+        56,
+        76
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        360,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        232,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        312,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        200,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        344,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        72,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        472,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        200,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        360,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        136,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        440,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        272,
+        312
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "locks_west_high",
+      "when": "lock_water==west_high",
+      "tiles": [
+        [
+          5,
+          11,
+          7,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "locks_east_high",
+      "when": "lock_water==east_high",
+      "tiles": [
+        [
+          22,
+          12,
+          7,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Four-way Lock Junction hub where the Master Sluice Organ toggles linked water between the West and East 7-tile lock basins, swinging floating lock-bridges while teasing the Boss Key behind an iron north grate.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "Shifting dungeon:locks lock_water between west_high and east_high alternates which canal wing bridges across; key door NW and grate alcove set clear goals.",
+    "decisions": 4,
+    "expert_s": 45,
+    "reward": "hub_routing+boss_key_tease",
+    "why": "Central four-way canal junction anchoring Cycles 1 and 2 and telegraphing the Boss Key early.",
+    "exit": "exit_r2_west",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "east_high"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          272,
+          280
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          272,
+          280
+        ],
+        "target": "valve_r2"
+      },
+      {
+        "op": "expect",
+        "var": "lock_water==west_high"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_west"
+      }
+    ]
+  }
+}

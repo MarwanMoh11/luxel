@@ -86,3 +86,198 @@ static func draw_challenge_timer(ci: CanvasItem, ch: Dictionary, blink_t: float,
 	if fw > 0.0:
 		ci.draw_rect(Rect2(bar_x + 1.0, y_base + 5.0, fw, 1.0), fill_c)
 	LxPixelFont.draw_right(ci, t_str, x + w - 4.0, y_base + 3.0, pal["cream"] as Color if (urgent and blink_hi) else fill_c, 1)
+
+
+static func draw_half_lantern(ci: CanvasItem, origin: Vector2, max_h: int, half_count: int) -> void:
+	if half_count <= 0:
+		return
+	var pal: Dictionary = LxPalette.PAL
+	var cols: int = mini(max_h, 6)
+	var x: float = origin.x + float(cols) * 7.0 + 3.0
+	var y: float = origin.y - 1.0
+	var txt: String = LxStrings.fmt("MAP_WS_COUNT_FMT", [half_count, 2]) if LxStrings.has_id("MAP_WS_COUNT_FMT") else LxStrings.fmt("HUD_SHARDS_FMT", [half_count])
+	var tw: float = float(LxPixelFont.width(txt, 1))
+	ci.draw_rect(Rect2(x - 1.0, y, tw + 10.0, 8.0), Color(pal["void"] as Color, 0.72))
+	# Mini half-lit brass lantern icon (5x7)
+	ci.draw_rect(Rect2(x, y, 5.0, 7.0), pal["night"] as Color)
+	ci.draw_rect(Rect2(x + 1.0, y, 3.0, 1.0), pal["apricot"] as Color)
+	ci.draw_rect(Rect2(x, y + 1.0, 5.0, 1.0), pal["gold"] as Color)
+	ci.draw_rect(Rect2(x, y + 2.0, 1.0, 4.0), pal["apricot"] as Color)
+	ci.draw_rect(Rect2(x + 4.0, y + 2.0, 1.0, 4.0), pal["mauve"] as Color)
+	ci.draw_rect(Rect2(x, y + 6.0, 5.0, 1.0), pal["apricot"] as Color)
+	ci.draw_rect(Rect2(x + 1.0, y + 2.0, 2.0, 4.0), pal["gold"] as Color)
+	ci.draw_rect(Rect2(x + 1.0, y + 3.0, 1.0, 2.0), pal["cream"] as Color)
+	ci.draw_rect(Rect2(x + 3.0, y + 2.0, 1.0, 4.0), pal["dusk"] as Color)
+	LxPixelFont.draw_left(ci, txt, Vector2(x + 7.0, y + 1.0), pal["gold"] as Color, 1)
+
+
+static func resolve_active_temper() -> String:
+	if Lx.player != null and is_instance_valid(Lx.player):
+		var tv: Variant = Lx.player.get("temper")
+		if tv is String:
+			var ts: String = (tv as String).strip_edges().to_lower()
+			if ts in ["skip", "scatter", "lance"]:
+				return ts
+	if Lx.state != null and Lx.state.story_flags.has("wick_temper"):
+		var fs: String = str(Lx.state.story_flags.get("wick_temper", "")).strip_edges().to_lower()
+		if fs in ["skip", "scatter", "lance"]:
+			return fs
+	if Lx.vars != null:
+		var vs: String = str(Lx.vars.get_var("game", "wick_temper", "")).strip_edges().to_lower()
+		if vs in ["skip", "scatter", "lance"]:
+			return vs
+	return ""
+
+
+static func has_owned_temper() -> bool:
+	if not resolve_active_temper().is_empty():
+		return true
+	if Lx.state != null:
+		for k: String in ["temper_known_skip", "temper_known_scatter", "temper_known_lance"]:
+			if bool(Lx.state.story_flags.get(k, false)):
+				return true
+		var arr: Variant = Lx.state.story_flags.get("wick_tempers_known", [])
+		if arr is Array and not (arr as Array).is_empty():
+			return true
+	return false
+
+
+static func draw_temper_mark(ci: CanvasItem, origin: Vector2, max_h: int, hearts_visible: bool = true) -> void:
+	if Lx.state == null or not has_owned_temper():
+		return
+	# Island 6 rule draws its own combined temper + timetable badge while active.
+	if Lx.state.island_id == 6 and LxIsland6Rule.active_instance != null:
+		return
+	var cur: String = resolve_active_temper()
+	var pal: Dictionary = LxPalette.PAL
+	var t_key: String = "ISL6_HUD_SKIP" if cur == "skip" else ("ISL6_HUD_SCAT" if cur == "scatter" else ("ISL6_HUD_LANC" if cur == "lance" else "ISL6_HUD_BASE"))
+	var t_lbl: String = LxStrings.text(t_key) if LxStrings.has_id(t_key) else LxStrings.sanitize(cur.to_upper() if not cur.is_empty() else "BASE", 4)
+	var col_name: String = "gold" if cur == "skip" else ("apricot" if cur == "scatter" else ("coral" if cur == "lance" else "stone"))
+	var col: Color = pal[col_name] as Color
+	var y: float = (22.0 if max_h > 6 else 16.0) if hearts_visible else origin.y
+	var x: float = origin.x
+	var box_w: float = float(LxPixelFont.width(t_lbl, 1)) + 16.0
+	LxPixelFont.draw_panel(ci, Rect2(x, y, box_w, 10.0), "night", col_name, "void")
+	var p := Vector2(roundf(x + 5.0), roundf(y + 5.0))
+	match cur:
+		"skip":
+			ci.draw_rect(Rect2(p.x - 2.0, p.y + 1.0, 2.0, 1.0), col)
+			ci.draw_rect(Rect2(p.x - 1.0, p.y - 2.0, 1.0, 3.0), col)
+			ci.draw_rect(Rect2(p.x, p.y - 2.0, 2.0, 1.0), pal["cream"] as Color)
+		"scatter":
+			ci.draw_rect(Rect2(p.x - 2.0, p.y - 2.0, 1.0, 2.0), col)
+			ci.draw_rect(Rect2(p.x, p.y - 1.0, 1.0, 2.0), pal["cream"] as Color)
+			ci.draw_rect(Rect2(p.x + 2.0, p.y - 2.0, 1.0, 2.0), col)
+		"lance":
+			ci.draw_rect(Rect2(p.x, p.y - 3.0, 1.0, 6.0), col)
+			ci.draw_rect(Rect2(p.x - 1.0, p.y - 2.0, 3.0, 1.0), pal["cream"] as Color)
+		_:
+			ci.draw_rect(Rect2(p.x - 1.0, p.y - 1.0, 3.0, 3.0), col)
+	LxPixelFont.draw_left(ci, t_lbl, Vector2(x + 11.0, y + 2.0), col, 1)
+
+
+static func sold_id_for_option_row(row_id: String) -> String:
+	match row_id:
+		"music_vol": return "music_off"
+		"sfx_vol": return "sound_off"
+		"screen_shake": return "camera_shake"
+		"cursor_size", "cursor_color": return "cursor_ring"
+		_: return ""
+
+
+static func draw_sold_badge(ci: CanvasItem, at: Vector2, sold_count: int = 0, full_banner: bool = false, right_align: bool = false) -> void:
+	var pal: Dictionary = LxPalette.PAL
+	var txt: String = ""
+	if full_banner:
+		if sold_count > 0 and LxStrings.has_id("ISL8_RES_TOLLS"):
+			txt = LxStrings.fmt("ISL8_RES_TOLLS", [mini(sold_count, 12)])
+		elif LxStrings.has_id("ISL8_TOLL_ALREADY_SOLD"):
+			txt = LxStrings.text("ISL8_TOLL_ALREADY_SOLD")
+		else:
+			txt = LxStrings.text("END_ASK_TITLE")
+	else:
+		txt = LxStrings.text("ISL8_TAG_SOLD") if LxStrings.has_id("ISL8_TAG_SOLD") else LxStrings.text("OPT_OFF")
+	if txt.is_empty():
+		return
+	var w: float = float(LxPixelFont.width(txt, 1)) + 8.0
+	var x: float = roundf(at.x - w) if right_align else roundf(at.x)
+	var y: float = roundf(at.y)
+	LxPixelFont.draw_panel(ci, Rect2(x, y, w, 9.0), "wine", "coral", "void")
+	LxPixelFont.draw_centered(ci, txt, x + w * 0.5, y + 2.0, pal["gold"] as Color, 1)
+
+
+static func get_ending_sold_key(ending_mode: String, receipt_count: int) -> String:
+	if receipt_count <= 0:
+		return ""
+	var prefix: String = "ISL8_DAWN_" if ending_mode == "dawn" else "ISL8_END_"
+	var tier: String = "ALL" if receipt_count >= 12 else ("MID" if receipt_count >= 5 else "FEW")
+	var key: String = prefix + tier
+	return key if LxStrings.has_id(key) else ""
+
+
+static func draw_dawn_buyback_parade(ci: CanvasItem, t: float, receipts: PackedStringArray) -> void:
+	if receipts.is_empty() or t < 1.2:
+		return
+	var pal: Dictionary = LxPalette.PAL
+	var sold: LxSold = LxSold.current()
+	var count: int = receipts.size()
+	var step_s: float = clampf(4.2 / float(maxi(count, 1)), 0.28, 0.55)
+	for i: int in range(count):
+		var start_t: float = 1.25 + float(i) * step_s
+		var age: float = t - start_t
+		if age < 0.0 or age > 2.4:
+			continue
+		var sid: String = receipts[i]
+		var meta: Dictionary = sold.get_setting(sid)
+		var nk: String = str(meta.get("name_key", ""))
+		if nk.is_empty() or not LxStrings.has_id(nk):
+			continue
+		var label: String = LxStrings.text(nk)
+		var prog: float = clampf(age / 2.4, 0.0, 1.0)
+		var fade: float = minf(age / 0.25, (2.4 - age) / 0.45)
+		var lane_x: float = 82.0 if (i % 2 == 0) else 238.0
+		var py: float = roundf(lerpf(118.0, 48.0, prog))
+		var col: Color = LxPalette.fade_step(fade, "cream" if prog < 0.35 else "gold")
+		if col.a <= 0.0:
+			continue
+		var w: float = float(LxPixelFont.width(label, 1)) + 8.0
+		ci.draw_rect(Rect2(roundf(lane_x - w * 0.5), py - 1.0, w, 8.0), Color(pal["night"] as Color, clampf(fade * 0.72, 0.0, 0.72)))
+		LxPixelFont.draw_centered(ci, label, lane_x, py, col, 1)
+
+
+static func draw_ember_meter(ci: CanvasItem, at: Vector2, ember_val: float, ember_max: float, blink_t: float) -> void:
+	var bar_w: float = 68.0
+	var bar_h: float = 8.0
+	var frac: float = clampf(ember_val / maxf(1.0, ember_max), 0.0, 1.0)
+	var ready: bool = frac >= 0.999
+	var border_col: String = "cream" if (ready and (LxHudFx.flash_reduced() or fmod(blink_t, 0.5) < 0.25)) else ("gold" if ready else "mauve")
+	LxPixelFont.draw_panel(ci, Rect2(at, Vector2(bar_w, bar_h)), "night", border_col, "void")
+	var inner_w: float = floorf((bar_w - 4.0) * frac)
+	if inner_w > 0.0:
+		var fill_c: Color = LxPalette.PAL["gold"] if ready else (LxPalette.PAL["apricot"] if frac >= 0.5 else LxPalette.PAL["coral"])
+		ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(inner_w, bar_h - 4.0)), fill_c)
+		if ready:
+			ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(inner_w, 1.0)), LxPalette.PAL["cream"])
+	var label_id: String = "HUD_EMBER_READY" if ready else "HUD_EMBER"
+	var label_col: Color = LxPalette.PAL["gold"] if ready else LxPalette.PAL["stone"]
+	LxPixelFont.draw_right(ci, LxStrings.text(label_id), at.x + bar_w, at.y - 7.0, label_col, 1)
+
+
+static func draw_zip_cue(ci: CanvasItem, origin: Vector2, zip_alpha: float) -> void:
+	if zip_alpha <= 0.02: return
+	var pos: Vector2 = origin
+	if Lx.ui != null:
+		var nar_v: Variant = Lx.ui.get("narration")
+		if nar_v is Object and is_instance_valid(nar_v):
+			var nar: Object = nar_v as Object
+			if nar.has_method("has_active_prompt") and bool(nar.call("has_active_prompt")):
+				var saying: bool = nar.has_method("is_saying") and (bool(nar.call("is_saying", "main")) or bool(nar.call("is_saying", "title")))
+				pos.y = 120.0 if saying else 133.0
+	var glyph: String = LxStrings.sanitize(Lx.input.get_glyph("lx_fire"), 6) if Lx.input != null else "-"
+	var txt: String = LxStrings.fmt("HUD_ZIP_CUE", [glyph])
+	var w: float = float(LxPixelFont.width(txt, 1)) + 8.0
+	ci.draw_rect(Rect2(pos, Vector2(w, 9.0)), Color(LxPalette.PAL["night"] as Color, zip_alpha * 0.85))
+	ci.draw_rect(Rect2(pos + Vector2(1.0, 1.0), Vector2(w - 2.0, 7.0)), Color(LxPalette.PAL["dusk"] as Color, zip_alpha * 0.90))
+	ci.draw_rect(Rect2(pos, Vector2(w, 1.0)), Color(LxPalette.PAL["gold"] as Color, zip_alpha))
+	ci.draw_rect(Rect2(pos + Vector2(0.0, 8.0), Vector2(w, 1.0)), Color(LxPalette.PAL["gold"] as Color, zip_alpha))
+	LxPixelFont.draw_left(ci, txt, pos + Vector2(4.0, 2.0), Color(LxPalette.PAL["gold"] as Color, zip_alpha), 1)

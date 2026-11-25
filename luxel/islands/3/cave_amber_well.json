@@ -1,0 +1,416 @@
+{
+  "id": "cave_amber_well",
+  "island_id": 3,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "theme": "cave_3",
+  "name_key": "ISL3_CAVE_AMBER_NAME",
+  "music": "island3_dungeon",
+  "spawn": [
+    328,
+    128
+  ],
+  "zones": [
+    {
+      "id": "amber_well",
+      "name_key": "ISL3_CAVE_AMBER_NAME",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        288,
+        168
+      ],
+      "radius": 32,
+      "style": "acid"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        72,
+        128
+      ],
+      "radius": 28,
+      "style": "ritual",
+      "color": "blue",
+      "secondary": "ice"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        72,
+        96
+      ],
+      "size": [
+        40,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.3
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_amber_to_shift_w",
+      "rect": [
+        352,
+        112,
+        32,
+        32
+      ],
+      "to_region": "ow_shift_w",
+      "to_spawn": [
+        56,
+        136
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_amber_well",
+      "kind": "room_anchor",
+      "pos": [
+        328,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bt_amber",
+      "kind": "blue_transformer",
+      "pos": [
+        264,
+        168
+      ],
+      "props": {
+        "angle_deg": 45,
+        "movable": true,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "lp_amber_bridge",
+      "kind": "light_plant",
+      "pos": [
+        192,
+        128
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          64,
+          32
+        ],
+        "secs": 0.6,
+        "decay": 1.8,
+        "frost_secs": 16.0
+      }
+    },
+    {
+      "id": "sw_amber_blue",
+      "kind": "switch_eye",
+      "pos": [
+        144,
+        88
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_amber_vault"
+      }
+    },
+    {
+      "id": "door_amber_vault",
+      "kind": "door",
+      "pos": [
+        120,
+        128
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sw_amber_blue"
+        ]
+      }
+    },
+    {
+      "id": "chest_amber_well_ember",
+      "kind": "chest",
+      "pos": [
+        64,
+        88
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "isl3_amber_well_ember"
+      }
+    },
+    {
+      "id": "moth_3_04",
+      "kind": "moth",
+      "pos": [
+        64,
+        168
+      ],
+      "props": {
+        "id": "moth_3_04"
+      }
+    },
+    {
+      "id": "sun_seed_2",
+      "kind": "ow_sun_seed",
+      "pos": [
+        88,
+        128
+      ],
+      "props": {
+        "sets_flag": "q_gardener_seed_2"
+      }
+    },
+    {
+      "id": "lamp_amber_e",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_amber_se",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_amber_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "scenery": [
+    {
+      "sheet": "theme_cave_3",
+      "prop": "cave_arch_rock",
+      "pos": [
+        344,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "stalagmite_tall",
+      "pos": [
+        296,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        272,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        240,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        48,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        48,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "subterranean_shroom",
+      "pos": [
+        328,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_cave_3",
+      "prop": "dripping_pool_basin",
+      "pos": [
+        288,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Frost-Pin puzzle cave: rotate and roll a Blue Transformer into two firing lanes to both latch the vault's blue switch_eye and frost-pin a rapid-wilting Seedlight bridge open for 16 seconds.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "blue_transformer push+rotate, Blue frost-pin on light_plant(bridge), blue switch_eye",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "ember_piece, moth_3_04, q_gardener_seed_2",
+    "why": "Teaches Blue frost-pinning Seedlight bridges cleanly in the overworld before Hollow Oak",
+    "optional": true,
+    "solution": [
+      {
+        "op": "rotate",
+        "target": "bt_amber",
+        "angle": 135
+      },
+      {
+        "op": "push",
+        "target": "bt_amber",
+        "to": [
+          256,
+          88
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          136
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "shoot",
+        "target": "bt_amber"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "target": "door_amber_vault",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "push",
+        "target": "bt_amber",
+        "to": [
+          256,
+          128
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          176
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "shoot",
+        "target": "bt_amber"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "target": "lp_amber_bridge",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          96,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "sun_seed_2"
+      },
+      {
+        "op": "expect",
+        "flag": "q_gardener_seed_2"
+      }
+    ]
+  }
+}

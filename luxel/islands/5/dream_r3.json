@@ -1,0 +1,334 @@
+{
+  "id": "dream_r3",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "name_key": "I5_DR_R3",
+  "music": "isl5_meteor",
+  "spawn": [
+    144,
+    272
+  ],
+  "exits": [
+    {
+      "id": "ex_dr3_out",
+      "rect": [
+        128,
+        304,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "ow_starfall_cliff",
+      "to_spawn": [
+        128,
+        96
+      ],
+      "one_way": true
+    },
+    {
+      "id": "ex_dr3_next",
+      "rect": [
+        304,
+        0,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "dream_r4",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_dr3_next",
+      "one_way": true
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_dr3",
+      "kind": "room_anchor",
+      "pos": [
+        144,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_dr3_w",
+      "kind": "polarity_well",
+      "pos": [
+        160,
+        176
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 540.0
+      }
+    },
+    {
+      "id": "well_dr3_e",
+      "kind": "polarity_well",
+      "pos": [
+        288,
+        160
+      ],
+      "props": {
+        "mode": "push",
+        "radius": 72.0,
+        "strength": 540.0
+      }
+    },
+    {
+      "id": "door_dr3_next",
+      "kind": "door",
+      "pos": [
+        320,
+        32
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          48,
+          16
+        ],
+        "clear_zone": "dream_r3"
+      }
+    },
+    {
+      "id": "chest_dr3_reward",
+      "kind": "chest",
+      "pos": [
+        360,
+        64
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 60
+      }
+    },
+    {
+      "id": "lamp_dr3_s",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        272
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr3_n",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr3_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        176
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_dr3_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        120
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_dr3_null1",
+      "kind": "null_moth",
+      "pos": [
+        112,
+        160
+      ],
+      "route": [
+        [
+          80,
+          160
+        ],
+        [
+          144,
+          192
+        ]
+      ],
+      "zone": "dream_r3",
+      "leash": 160
+    },
+    {
+      "id": "en_dr3_null2",
+      "kind": "null_moth",
+      "pos": [
+        344,
+        128
+      ],
+      "route": [
+        [
+          312,
+          112
+        ],
+        [
+          368,
+          144
+        ]
+      ],
+      "zone": "dream_r3",
+      "leash": 160
+    },
+    {
+      "id": "en_dr3_carr",
+      "kind": "meteor_carrier",
+      "pos": [
+        232,
+        176
+      ],
+      "route": [
+        [
+          192,
+          176
+        ],
+        [
+          264,
+          176
+        ]
+      ],
+      "zone": "dream_r3",
+      "leash": 160
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_dr3_ok",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "dream_r3_ok"
+        },
+        {
+          "set_flag": "lead_slot_5"
+        },
+        {
+          "reward": {
+            "kind": "lead",
+            "amount": 1
+          }
+        },
+        {
+          "sfx": "shrine_unlock"
+        },
+        {
+          "narrate": "I5_DR_LEAD_REWARD"
+        }
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        232,
+        176
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "cracked_meteor_boulder",
+      "pos": [
+        72,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "star_ore_crate",
+      "pos": [
+        376,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        320,
+        40
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Dream Telescope Floor 3 (Null & Meteor): use twin opposite-polarity wells across a stepped Z-bastion to curve shots into two Null Moths while detonating a Meteor Carrier's boulder; unlocks +1 Lead Slot and Floor 4 cliff shortcut.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Curved anti-null combat with dual pull/push wells",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "+1 Lantern Lead Slot (lead_slot_5), 60 shards, Floor 4 cliff shortcut",
+    "why": "Mid-point milestone floor of the Dream Telescope.",
+    "exit": "ex_dr3_next",
+    "start": {
+      "spawn": [
+        144,
+        272
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "ex_dr3_next"
+      }
+    ]
+  }
+}

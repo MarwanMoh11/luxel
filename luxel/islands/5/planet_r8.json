@@ -1,0 +1,418 @@
+{
+  "id": "planet_r8",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R8",
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "pl_r8",
+      "name_key": "I5_PL_R8",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r8_s",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "planet_r7",
+      "to_spawn": [
+        240,
+        48
+      ]
+    },
+    {
+      "id": "exit_pl_r8_w",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "planet_r9",
+      "to_spawn": [
+        456,
+        160
+      ],
+      "locked_door_id": "door_pl_r8_k2"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r8",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_pl_r8",
+      "kind": "gravity_well",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 460.0
+      }
+    },
+    {
+      "id": "bell_pl_r8",
+      "kind": "star_bell",
+      "pos": [
+        224,
+        216
+      ],
+      "props": {
+        "scope": "dungeon:planetarium",
+        "var_name": "sky_turn",
+        "allow_ccw_blue": true,
+        "cooldown": 0.7
+      }
+    },
+    {
+      "id": "sn_r8_w",
+      "kind": "star_node",
+      "pos": [
+        64,
+        192
+      ],
+      "props": {
+        "link_range": 72.0
+      }
+    },
+    {
+      "id": "sn_r8_e",
+      "kind": "star_node",
+      "pos": [
+        384,
+        192
+      ],
+      "props": {
+        "link_range": 72.0
+      }
+    },
+    {
+      "id": "door_pl_r8_combat",
+      "kind": "door",
+      "pos": [
+        72,
+        136
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "pl_r8",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_pl_r8_k2",
+      "kind": "door",
+      "pos": [
+        24,
+        136
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "planetarium",
+        "key_kind": "wick_key",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_pl_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "zone": "pl_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r8_se",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        264
+      ],
+      "props": {
+        "zone": "pl_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r8_nw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        64
+      ],
+      "props": {
+        "zone": "pl_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        64
+      ],
+      "props": {
+        "zone": "pl_r8",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_pl_r8_eye1",
+      "kind": "satellite_eye",
+      "pos": [
+        128,
+        88
+      ],
+      "zone": "pl_r8"
+    },
+    {
+      "id": "en_pl_r8_eye2",
+      "kind": "satellite_eye",
+      "pos": [
+        320,
+        88
+      ],
+      "zone": "pl_r8"
+    },
+    {
+      "id": "en_pl_r8_jelly",
+      "kind": "star_jelly",
+      "pos": [
+        224,
+        72
+      ],
+      "zone": "pl_r8"
+    },
+    {
+      "id": "en_pl_r8_null",
+      "kind": "null_moth",
+      "pos": [
+        320,
+        176
+      ],
+      "zone": "pl_r8"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 52,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "mural",
+      "pos": [
+        224,
+        64
+      ],
+      "radius": 22,
+      "style": "constellation"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        112
+      ],
+      "size": [
+        52,
+        64
+      ],
+      "tint": "rose",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        224,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        104,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        344,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        352,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        104,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r8_cover_90",
+      "when": "sky_turn==90",
+      "tiles": [
+        [
+          11,
+          8,
+          1,
+          2,
+          "wall"
+        ],
+        [
+          16,
+          8,
+          1,
+          2,
+          "wall"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "pl_r8_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "pl_r8_cleared"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Eclipse Choir combat nave pairing two Satellite Eyes, a Star Jelly, and a Null Moth around a central gravity well and Star Bell: ring the bell to raise rotating eclipse baffles breaking crossfire, curve bolts around the central well into the Null Moth and Eyes, then unlock the Key-2 vault door west.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Using a Star Bell for tactical cover rotation and curving shots around a central well in multi-role combat.",
+    "decisions": 6,
+    "expert_s": 52,
+    "reward": "boss_key_dome_access",
+    "why": "Deep-wing tactical combat gauntlet gating The Turning Sky Boss Key dome.",
+    "exit": "exit_pl_r8_w",
+    "start": {
+      "flags": [
+        "power_sextant"
+      ],
+      "keys": {
+        "wick_key": 1
+      },
+      "vars": {
+        "sky_turn": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 42.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "pl_r8_cleared",
+        "timeout": 3.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "interact",
+        "target": "door_pl_r8_k2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r8_w"
+      }
+    ]
+  }
+}

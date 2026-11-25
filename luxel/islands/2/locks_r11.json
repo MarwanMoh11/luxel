@@ -1,0 +1,553 @@
+{
+  "id": "locks_r11",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R11_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "lck_r11",
+      "name_key": "LCK_R11_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_region": "locks_r10",
+      "to_spawn": [
+        272,
+        36
+      ]
+    },
+    {
+      "id": "exit_r11_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r12",
+      "to_spawn": [
+        272,
+        328
+      ],
+      "locked_door_id": "door_r11_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r11_s",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        280
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "valve_r11",
+      "kind": "state_lever",
+      "pos": [
+        240,
+        232
+      ],
+      "props": {
+        "scope": "dungeon:locks",
+        "var": "lock_water",
+        "values": [
+          "west_high",
+          "east_high"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "mir_r11",
+      "kind": "blue_transformer",
+      "pos": [
+        240,
+        184
+      ],
+      "props": {
+        "normal": [
+          0.7071,
+          0.7071
+        ],
+        "movable": false,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "portal_r11_w",
+      "kind": "blue_portal",
+      "pos": [
+        152,
+        184
+      ],
+      "props": {
+        "target_portal_id": "portal_r11_e",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r11_e",
+      "kind": "blue_portal",
+      "pos": [
+        328,
+        184
+      ],
+      "props": {
+        "target_portal_id": "portal_r11_w",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "door_r11_combat",
+      "kind": "door",
+      "pos": [
+        240,
+        72
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "clear_zone": "lck_r11",
+        "size": [
+          48,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r11_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_key",
+        "dungeon_id": "locks",
+        "key_kind": "keepers_flame",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r11_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        264
+      ],
+      "props": {
+        "zone": "lck_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_w",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        120
+      ],
+      "props": {
+        "zone": "lck_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        120
+      ],
+      "props": {
+        "zone": "lck_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_n",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "zone": "lck_r11",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "drowned_r11",
+      "kind": "anchor_drowned",
+      "pos": [
+        240,
+        160
+      ],
+      "zone": "lck_r11"
+    },
+    {
+      "id": "lamprey_r11_w",
+      "kind": "brine_lamprey",
+      "pos": [
+        104,
+        168
+      ],
+      "zone": "lck_r11"
+    },
+    {
+      "id": "lamprey_r11_e",
+      "kind": "brine_lamprey",
+      "pos": [
+        392,
+        168
+      ],
+      "zone": "lck_r11"
+    },
+    {
+      "id": "shrimp_r11_w",
+      "kind": "pistol_shrimp",
+      "pos": [
+        168,
+        136
+      ],
+      "zone": "lck_r11"
+    },
+    {
+      "id": "shrimp_r11_e",
+      "kind": "pistol_shrimp",
+      "pos": [
+        312,
+        136
+      ],
+      "zone": "lck_r11"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        160,
+        64,
+        160,
+        176
+      ]
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        152
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        104,
+        168
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        392,
+        168
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        88
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.18
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        184,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        296,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        40,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        440,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        184,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        296,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        168,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        312,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        40,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        440,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r11_west_high",
+      "when": "lock_water==west_high",
+      "tiles": [
+        [
+          4,
+          6,
+          4,
+          8,
+          "water"
+        ],
+        [
+          22,
+          6,
+          4,
+          8,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r11_east_high",
+      "when": "lock_water==east_high",
+      "tiles": [
+        [
+          4,
+          6,
+          4,
+          8,
+          "ground"
+        ],
+        [
+          22,
+          6,
+          4,
+          8,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Split-level Customs Antechamber gauntlet where Wick flips lock_water to strand aquatic Brine Lampreys, flanks twin Pistol Shrimps across linked portals, and banks blue shots past an Anchor Drowned to unlock the Boss Door.",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Combining Sluice Organ terrain control, portal flanking, and mirror cover clears heavy mixed coastal squads before the boss.",
+    "decisions": 8,
+    "expert_s": 48,
+    "reward": "boss_threshold",
+    "why": "Climax combat exam right before the Double-Lock Sanctum validating mastery of Smugglers' Locks foes.",
+    "exit": "exit_r11_north",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      },
+      "flags": [
+        "power_sluice_harpoon",
+        "locks_boss_key"
+      ],
+      "keys": {
+        "keepers_flame": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          264
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          264
+        ],
+        "target": "mir_r11"
+      },
+      {
+        "op": "clear",
+        "zone": "lck_r11",
+        "timeout": 60.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r11_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          44
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "door_r11_north"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_north"
+      }
+    ]
+  }
+}

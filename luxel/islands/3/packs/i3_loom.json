@@ -1,0 +1,77 @@
+{
+  "pack_id": "i3_loom",
+  "owner": "D3B-LOOM",
+  "comment": "Island 3 Minor Dungeon B: The Weaver's Loom (11 rooms, 4 internal cycles, Brass Shuttle, theme loom). Debug-only in fragment until ow_shift_e Turn 1 Silk Arch hooks loom_r1.",
+  "strings": {
+    "ISL3_DNG_LOOM": "THE WEAVERS LOOM",
+    "ISL3_LM_R1_NAME": "CARDING HALL",
+    "ISL3_LM_R2_NAME": "THE HEDDLE HUB",
+    "ISL3_LM_R3_NAME": "SPARK-RACE GALLERY",
+    "ISL3_LM_R4_NAME": "SHUTTLE CATWALKS",
+    "ISL3_LM_R5_NAME": "TENSION SCALES",
+    "ISL3_LM_R6_NAME": "THREAD-KEEPER LOOM",
+    "ISL3_LM_R7_NAME": "SHUTTLE WEAVE CHASM",
+    "ISL3_LM_R8_NAME": "THREE-ISLAND GAUNTLET",
+    "ISL3_LM_R9_NAME": "CATHEDRAL OF ONE THREAD",
+    "ISL3_LM_R10_NAME": "BOBBIN LOFT",
+    "ISL3_LM_R11_NAME": "THE WIDOWS SPINDLE",
+    "ISL3_PWR_SHUTTLE": "BRASS SHUTTLE: THROW FROM SPOOLS TO WEAVE!",
+    "ISL3_PROMPT_SHUTTLE": "CLAIM BRASS SHUTTLE",
+    "ISL3_PROMPT_WARP_WHEEL": "SHIFT WARP DECK",
+    "ISL3_PROMPT_WEAVE_SPARK": "IGNITE WOVEN SILK",
+    "ISL3_HINT_LOOM": "BLUE FREEZES SILK. YELLOW SENDS THE SPARK.",
+    "ISL3_LORE_RUB_2": "HE CARRIED LIGHT - YET LEFT ONLY ASH.",
+    "ISL3_LM_ANCHOR_1": "FIRST BOBBIN ANCHOR SNAPPED!",
+    "ISL3_LM_HOIST_NOTE": "THE EAST WEIGHT FALLS! THE BRIDGE RISES!",
+    "ISL3_LM_SHORTCUT": "A SILK ZIP-CABLE OPENS TO CARDING HALL!",
+    "ISL3_LM_CLEARED": "THE LOOM WIDOW FALLS. HALF-LANTERN CLAIMED!"
+  },
+  "interactables": {
+    "loom_shuttle_altar": "res://luxel/islands/3/loom/loom_shuttle_altar.gd",
+    "loom_shuttle_spool": "res://luxel/islands/3/loom/loom_shuttle_spool.gd",
+    "loom_warp_wheel": "res://luxel/islands/3/loom/loom_warp_wheel.gd",
+    "loom_landmark": "res://luxel/islands/3/loom/loom_landmark.gd"
+  },
+  "dungeons": [
+    {
+      "id": "loom",
+      "name_key": "ISL3_DNG_LOOM",
+      "island": 3,
+      "entry": "loom_r1",
+      "debug_only": true,
+      "regions": [
+        "loom_r1",
+        "loom_r2",
+        "loom_r3",
+        "loom_r4",
+        "loom_r5",
+        "loom_r6",
+        "loom_r7",
+        "loom_r8",
+        "loom_r9",
+        "loom_r10",
+        "loom_r11"
+      ],
+      "mini_boss": "thread_keeper",
+      "boss": "loom_widow",
+      "theme": "loom",
+      "music": "isl3_loom",
+      "requires_flags": [],
+      "done_flag": "loom_done"
+    }
+  ],
+  "regions": {
+    "loom_r1": { "name_key": "ISL3_LM_R1_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [2, 4] },
+    "loom_r2": { "name_key": "ISL3_LM_R2_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [2, 3] },
+    "loom_r3": { "name_key": "ISL3_LM_R3_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [1, 3] },
+    "loom_r4": { "name_key": "ISL3_LM_R4_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [0, 3] },
+    "loom_r5": { "name_key": "ISL3_LM_R5_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [0, 2] },
+    "loom_r6": { "name_key": "ISL3_LM_R6_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [1, 2] },
+    "loom_r7": { "name_key": "ISL3_LM_R7_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [2, 2] },
+    "loom_r8": { "name_key": "ISL3_LM_R8_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [3, 2] },
+    "loom_r9": { "name_key": "ISL3_LM_R9_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [3, 1] },
+    "loom_r10": { "name_key": "ISL3_LM_R10_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [4, 3] },
+    "loom_r11": { "name_key": "ISL3_LM_R11_NAME", "theme": "loom", "music": "isl3_loom", "dark": true, "debug_only": true, "map": [4, 2] }
+  },
+  "sfx": {}
+}

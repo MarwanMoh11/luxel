@@ -64,7 +64,7 @@
       "to_region": "hourglass_r7",
       "to_spawn": [
         56,
-        128
+        136
       ],
       "requires_flags": [
         "hg_cross_shortcut"
@@ -98,19 +98,26 @@
     },
     {
       "id": "dial_hg_r4",
-      "kind": "garden_sundial",
+      "kind": "state_lever",
       "pos": [
         88,
         120
       ],
       "props": {
-        "region_hour_lock": true,
         "scope": "room:4:hourglass_r4",
         "var": "hg_room_hour",
-        "max_hour": 2,
+        "values": [
+          1,
+          2
+        ],
+        "index": 0,
         "shootable": true,
-        "can_rewind": false,
-        "visual_radius": 14
+        "style": "tide_wheel",
+        "persist": false,
+        "target_ids": [
+          "cgate_hg_r4_1",
+          "cgate_hg_r4_2"
+        ]
       }
     },
     {
@@ -350,7 +357,7 @@
       "prop": "clipped_topiary_cone",
       "pos": [
         216,
-        184
+        88
       ],
       "layer": "sort",
       "flip_x": true,
@@ -418,7 +425,23 @@
       "phase": 0.0
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "hg_r4_reset_hour",
+      "on": "enter",
+      "if": "!flag:hg_r4_open",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "room:4:hourglass_r4",
+            "name": "hg_room_hour",
+            "value": 1
+          }
+        }
+      ]
+    }
+  ],
   "triggers": [],
   "layers": [],
   "design": {

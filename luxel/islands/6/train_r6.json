@@ -378,7 +378,7 @@
       "id": "en_r6_wasp_1",
       "kind": "smelter_wasp",
       "pos": [
-        368,
+        312,
         72
       ],
       "zone": "tr_r6"
@@ -387,8 +387,8 @@
       "id": "en_r6_wasp_2",
       "kind": "smelter_wasp",
       "pos": [
-        160,
-        168
+        208,
+        72
       ],
       "zone": "tr_r6"
     }

@@ -1,0 +1,530 @@
+{
+  "id": "planet_r10",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R10",
+  "spawn": [
+    240,
+    240
+  ],
+  "zones": [
+    {
+      "id": "pl_r10",
+      "name_key": "I5_PL_R10",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r10_s",
+      "rect": [
+        224,
+        272,
+        32,
+        16
+      ],
+      "to_region": "planet_r1",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_pl_r10_n",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "planet_r11",
+      "to_spawn": [
+        256,
+        336
+      ],
+      "locked_door_id": "door_pl_r10_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r10",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_pl_r10",
+      "kind": "gravity_well",
+      "pos": [
+        240,
+        160
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 480.0
+      }
+    },
+    {
+      "id": "sn_r10_ram_a",
+      "kind": "star_node",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "links": [
+          "sn_r10_ram_b"
+        ]
+      }
+    },
+    {
+      "id": "sn_r10_ram_b",
+      "kind": "star_node",
+      "pos": [
+        76,
+        184
+      ],
+      "props": {
+        "links": [
+          "sn_r10_ram_a",
+          "sn_r10_ram"
+        ]
+      }
+    },
+    {
+      "id": "sn_r10_ram",
+      "kind": "star_node",
+      "pos": [
+        48,
+        212
+      ],
+      "props": {
+        "links": [
+          "sn_r10_ram_b"
+        ],
+        "target_id": "door_pl_r10_n"
+      }
+    },
+    {
+      "id": "sn_r10_scales_a",
+      "kind": "star_node",
+      "pos": [
+        368,
+        208
+      ],
+      "props": {
+        "links": [
+          "sn_r10_scales"
+        ]
+      }
+    },
+    {
+      "id": "sn_r10_scales",
+      "kind": "star_node",
+      "pos": [
+        424,
+        208
+      ],
+      "props": {
+        "links": [
+          "sn_r10_scales_a"
+        ],
+        "target_id": "door_pl_r10_n"
+      }
+    },
+    {
+      "id": "sn_r10_arch_a",
+      "kind": "star_node",
+      "pos": [
+        104,
+        96
+      ],
+      "props": {
+        "links": [
+          "sn_r10_archer"
+        ]
+      }
+    },
+    {
+      "id": "sn_r10_archer",
+      "kind": "star_node",
+      "pos": [
+        56,
+        64
+      ],
+      "props": {
+        "links": [
+          "sn_r10_arch_a"
+        ],
+        "target_id": "door_pl_r10_n"
+      }
+    },
+    {
+      "id": "sn_r10_serp_a",
+      "kind": "star_node",
+      "pos": [
+        368,
+        96
+      ],
+      "props": {
+        "links": [
+          "sn_r10_serp_b"
+        ]
+      }
+    },
+    {
+      "id": "sn_r10_serp_b",
+      "kind": "star_node",
+      "pos": [
+        396,
+        56
+      ],
+      "props": {
+        "links": [
+          "sn_r10_serp_a",
+          "sn_r10_serpent"
+        ]
+      }
+    },
+    {
+      "id": "sn_r10_serpent",
+      "kind": "star_node",
+      "pos": [
+        428,
+        88
+      ],
+      "props": {
+        "links": [
+          "sn_r10_serp_b"
+        ],
+        "target_id": "door_pl_r10_n"
+      }
+    },
+    {
+      "id": "door_pl_r10_n",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "sn_r10_ram",
+          "sn_r10_scales",
+          "sn_r10_archer",
+          "sn_r10_serpent"
+        ],
+        "sets_flag": "pl_r10_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_pl_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        240
+      ],
+      "props": {
+        "zone": "pl_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r10_sw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        232
+      ],
+      "props": {
+        "zone": "pl_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r10_se",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        232
+      ],
+      "props": {
+        "zone": "pl_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r10_nw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        48
+      ],
+      "props": {
+        "zone": "pl_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r10_ne",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        104
+      ],
+      "props": {
+        "zone": "pl_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r10_n",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        48
+      ],
+      "props": {
+        "zone": "pl_r10",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_pl_r10_carrier",
+      "kind": "meteor_carrier",
+      "pos": [
+        240,
+        88
+      ],
+      "zone": "pl_r10"
+    },
+    {
+      "id": "en_pl_r10_eye",
+      "kind": "satellite_eye",
+      "pos": [
+        192,
+        112
+      ],
+      "zone": "pl_r10"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        160
+      ],
+      "radius": 28
+    },
+    {
+      "kind": "mural",
+      "pos": [
+        240,
+        56
+      ],
+      "radius": 20,
+      "style": "constellation"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        96
+      ],
+      "size": [
+        52,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        240,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "star_chart_lectern",
+      "pos": [
+        56,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        424,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        56,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Four-bay Ecliptic Cathedral nave flanking a central gravity well: defeat the Meteor Carrier and Satellite Eye, then ignite the four micro-constellation bays (Ram horn SW, Scales beam SE, Archer bow NW, Serpent S-chain NE — directly foreshadowing The Zodiac boss's 4 forms!) to unseal the Zodiac Arch.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Reading the four Zodiac constellation silhouettes (Ram, Scales, Archer, Serpent) before the climax boss.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "zodiac_silhouette_literacy+boss_access",
+    "why": "Pre-boss climax chamber teaching all four Zodiac shapes under combat pressure.",
+    "exit": "exit_pl_r10_n",
+    "start": {
+      "flags": [
+        "power_sextant"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          208
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r10_ram",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          208
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r10_scales",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          84
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r10_archer",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          396,
+          84
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_r10_serpent",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_pl_r10_n",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r10_n"
+      }
+    ]
+  }
+}

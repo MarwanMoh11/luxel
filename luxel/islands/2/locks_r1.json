@@ -1,0 +1,554 @@
+{
+  "id": "locks_r1",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LCK_R1_NAME",
+  "theme": "locks",
+  "music": "isl2_locks",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    104,
+    280
+  ],
+  "zones": [
+    {
+      "id": "lck_r1",
+      "name_key": "LCK_R1_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r1_ow",
+      "rect": [
+        80,
+        304,
+        48,
+        16
+      ],
+      "to_island": 2,
+      "to_region": "overworld",
+      "to_spawn": [
+        104,
+        248
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_r1_north",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_region": "locks_r2",
+      "to_spawn": [
+        272,
+        336
+      ],
+      "locked_door_id": "door_r1_north"
+    },
+    {
+      "id": "exit_r1_spillway",
+      "rect": [
+        432,
+        96,
+        16,
+        32
+      ],
+      "to_region": "locks_r10",
+      "to_spawn": [
+        36,
+        208
+      ],
+      "requires_flags": [
+        "locks_shortcut_open"
+      ],
+      "locked_door_id": "door_r1_spillway"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_locks",
+      "kind": "waystone",
+      "pos": [
+        56,
+        280
+      ],
+      "props": {
+        "zone": "lck_r1",
+        "name_key": "LCK_R1_NAME"
+      }
+    },
+    {
+      "id": "lore_r1_portal",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        280
+      ],
+      "props": {
+        "string_id": "LCK_LORE_PORTAL",
+        "icon": "tide"
+      }
+    },
+    {
+      "id": "skiff_r1",
+      "kind": "vehicle_skiff",
+      "pos": [
+        200,
+        216
+      ],
+      "props": {
+        "dir": "w"
+      }
+    },
+    {
+      "id": "mir_r1",
+      "kind": "blue_transformer",
+      "pos": [
+        264,
+        216
+      ],
+      "props": {
+        "normal": [
+          -1.0,
+          0.0
+        ],
+        "movable": false,
+        "rotatable": false
+      }
+    },
+    {
+      "id": "portal_r1_s",
+      "kind": "blue_portal",
+      "pos": [
+        152,
+        216
+      ],
+      "props": {
+        "target_portal_id": "portal_r1_n",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "pair_sync": true,
+        "target_id": "door_r1_north"
+      }
+    },
+    {
+      "id": "portal_r1_n",
+      "kind": "blue_portal",
+      "pos": [
+        216,
+        104
+      ],
+      "props": {
+        "target_portal_id": "portal_r1_s",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "warps_bolts": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "post_r1_n",
+      "kind": "mooring_post",
+      "pos": [
+        184,
+        120
+      ],
+      "props": {
+        "orbit_r": 40.0,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "door_r1_north",
+      "kind": "door",
+      "pos": [
+        208,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "portal_r1_s"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r1_spillway",
+      "kind": "door",
+      "pos": [
+        424,
+        112
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "locks_shortcut_open"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_r1_sw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        264
+      ],
+      "props": {
+        "zone": "lck_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_se",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        264
+      ],
+      "props": {
+        "zone": "lck_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        56
+      ],
+      "props": {
+        "zone": "lck_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_ne",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        72
+      ],
+      "props": {
+        "zone": "lck_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        136
+      ],
+      "props": {
+        "zone": "lck_r1",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        32,
+        240,
+        272,
+        48
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        232,
+        280
+      ],
+      "radius": 22,
+      "style": "water"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        192,
+        32,
+        32,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        120,
+        264
+      ],
+      "size": [
+        48,
+        52
+      ],
+      "tint": "warm",
+      "shear": 0.32
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        360,
+        104
+      ],
+      "radius": 22
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        312,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        136,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        248,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        216,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        40,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "lock_lantern_post",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        40,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        392,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        360,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        200,
+        248
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        248,
+        56
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "hanging_fishing_net",
+      "pos": [
+        152,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "lck_mark_entered",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "locks_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Board the intake Skiff and fire east into the vertical dock mirror so the blue reflection powers the Waterway Portal while shot recoil simultaneously shoves your Skiff west onto it, warping cleanly over the sealed canal sill.",
+    "kind": "traversal",
+    "beat": "ki",
+    "teaches": "Skiff recoil propulsion pairs with Blue Transformers to power and enter Waterway Portals in one fluid motion.",
+    "decisions": 4,
+    "expert_s": 38,
+    "reward": "ws_locks+spillway_tease",
+    "why": "Atmospheric canal-lock entry teaching Skiff recoil-portal induction while teasing the East Spillway Return from r10.",
+    "exit": "exit_r1_north",
+    "start": {
+      "vars": {
+        "dungeon:locks:lock_water": "west_high"
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_locks"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r1_portal"
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          248
+        ]
+      },
+      {
+        "op": "mount",
+        "target": "skiff_r1"
+      },
+      {
+        "op": "shoot",
+        "target": "mir_r1",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "portal_r1_s",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": "mir_r1",
+        "wait_hit": 0.5
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "dismount",
+        "to": [
+          216,
+          56
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r1_north"
+      }
+    ]
+  }
+}

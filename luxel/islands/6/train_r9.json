@@ -129,13 +129,13 @@
       "id": "cart_r9_shuttle",
       "kind": "vehicle_cart",
       "pos": [
-        240,
+        232,
         160
       ],
       "props": {
         "rail": [
           [
-            240,
+            232,
             160
           ],
           [
@@ -146,7 +146,7 @@
         "speed": 96.0,
         "loop": false,
         "auto": false,
-        "persist": true
+        "persist": false
       }
     },
     {
@@ -603,9 +603,9 @@
         "op": "goto",
         "to": [
           72,
-          128
+          120
         ],
-        "tol": 6.0
+        "tol": 3.0
       },
       {
         "op": "interact",
@@ -640,10 +640,10 @@
       {
         "op": "goto",
         "to": [
-          212,
+          216,
           160
         ],
-        "tol": 5.0
+        "tol": 3.0
       },
       {
         "op": "mount",
@@ -655,7 +655,7 @@
           160,
           160
         ],
-        "count": 3,
+        "count": 4,
         "wait_hit": 0.35
       },
       {
@@ -665,7 +665,7 @@
           320,
           160
         ],
-        "tol": 16.0,
+        "tol": 12.0,
         "timeout": 8.0
       },
       {
@@ -689,17 +689,17 @@
           400,
           160
         ],
-        "count": 3,
+        "count": 4,
         "wait_hit": 0.35
       },
       {
         "op": "wait_phase",
         "target": "cart_r9_shuttle",
         "near": [
-          240,
+          232,
           160
         ],
-        "tol": 18.0,
+        "tol": 12.0,
         "timeout": 8.0
       },
       {
@@ -713,9 +713,9 @@
         "op": "goto",
         "to": [
           152,
-          212
+          216
         ],
-        "tol": 6.0
+        "tol": 3.0
       },
       {
         "op": "interact",

@@ -130,6 +130,9 @@ func _draw() -> void:
 		var col: Color = LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"]
 		LxPixelFont.draw_centered(self, LxFolkData.tr_id(ITEMS[i]), r.get_center().x, r.position.y + 3.0, col, 1)
 	LxPixelFont.draw_centered(self, LxStrings.text("PAUSE_HINT"), 160.0, PANEL_RECT.end.y - 11.0, LxPalette.PAL["stone"], 1)
+	var sold_n: int = LxSold.current().get_sold_count()
+	if sold_n > 0:
+		LxHudOverlays.draw_sold_badge(self, Vector2(PANEL_RECT.end.x - 6.0, PANEL_RECT.position.y - 4.0), sold_n, true, true)
 
 
 func _draw_status_ribbon(isl: int) -> void:

@@ -1139,6 +1139,13 @@ def lint_region(
                         ek = str(we.get("kind", "")).lower()
                         if ek and ek not in catalog["enemies"]:
                             err("UNKNOWN_ENEMY_KIND", f"event wave enemy kind '{ek}' unknown")
+            if isinstance(act, dict) and "spawn" in act and bool(ev.get("once", False)):
+                sp_list = act["spawn"] if isinstance(act["spawn"], list) else [act["spawn"]]
+                for sp in sp_list:
+                    if isinstance(sp, dict):
+                        sk = str(sp.get("kind", "")).lower()
+                        if sk in ("pane_pickup", "wick_key", "keepers_flame", "chest", "moth"):
+                            warn("ONCE_SPAWN_COLLECTIBLE", f"event '{ev.get('id', '?')}' has once=true and spawns collectible '{sk}' (lost on leave+re-enter if unclaimed; use once=false)")
 
     logic_inputs: Set[str] = set()
     for it in reg["interactables"]:

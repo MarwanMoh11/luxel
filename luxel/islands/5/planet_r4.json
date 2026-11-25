@@ -1,0 +1,456 @@
+{
+  "id": "planet_r4",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_PL_R4",
+  "spawn": [
+    56,
+    160
+  ],
+  "zones": [
+    {
+      "id": "pl_r4",
+      "name_key": "I5_PL_R4",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_pl_r4_w",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "planet_r1",
+      "to_spawn": [
+        424,
+        224
+      ]
+    },
+    {
+      "id": "exit_pl_r4_n",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "planet_r5",
+      "to_spawn": [
+        224,
+        240
+      ],
+      "locked_door_id": "door_pl_r4_n"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_pl_r4",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "sn_r4_w1",
+      "kind": "star_node",
+      "pos": [
+        104,
+        160
+      ],
+      "props": {
+        "links": [
+          "sn_r4_w2"
+        ]
+      }
+    },
+    {
+      "id": "sn_r4_w2",
+      "kind": "star_node",
+      "pos": [
+        152,
+        160
+      ],
+      "props": {
+        "links": [
+          "sn_r4_w1"
+        ]
+      }
+    },
+    {
+      "id": "rotor_pl_r4",
+      "kind": "rotor",
+      "pos": [
+        224,
+        160
+      ],
+      "props": {
+        "size": [
+          112,
+          112
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_pl_r4",
+      "kind": "star_bell",
+      "pos": [
+        368,
+        160
+      ],
+      "props": {
+        "scope": "dungeon:planetarium",
+        "var_name": "sky_turn",
+        "rotors": [
+          "rotor_pl_r4"
+        ],
+        "allow_ccw_blue": true,
+        "cooldown": 0.55
+      }
+    },
+    {
+      "id": "plate_pl_r4",
+      "kind": "pressure_plate",
+      "pos": [
+        352,
+        272
+      ],
+      "props": {
+        "by": [
+          "wick",
+          "lantern"
+        ],
+        "latch": true,
+        "target_id": "door_pl_r4_n",
+        "sets_flag": "pl_r4_open"
+      }
+    },
+    {
+      "id": "door_pl_r4_n",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "plate_pl_r4"
+        ],
+        "sets_flag": "pl_r4_open",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_pl_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        48,
+        128
+      ],
+      "props": {
+        "zone": "pl_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r4_c",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        128
+      ],
+      "props": {
+        "zone": "pl_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r4_se",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        264
+      ],
+      "props": {
+        "zone": "pl_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pl_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        48
+      ],
+      "props": {
+        "zone": "pl_r4",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 48,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        336,
+        256,
+        32,
+        32
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        160
+      ],
+      "size": [
+        56,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        224,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        48,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "hanging_orrery_pendulum",
+      "pos": [
+        256,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        392,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        392,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r4_turn_90",
+      "when": "sky_turn==90",
+      "tiles": [
+        [
+          12,
+          13,
+          4,
+          4,
+          "bridge"
+        ],
+        [
+          16,
+          15,
+          3,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r4_turn_270",
+      "when": "sky_turn==270",
+      "tiles": [
+        [
+          12,
+          4,
+          4,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Split-glass clover rotunda where shooting the East wall Star Bell turns the central rotor and star-bridges 90 degrees around glass dividers: turn to 90 to reach the SE latch plate unlocking the north arch, then turn to 270 to bridge straight north.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Multi-step 90-degree Star Bell sky-turn routing around glass dividers.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "turning_fluency+path_to_sextant",
+    "why": "East wing entrance puzzle developing Star Bell 90-degree turning fluency.",
+    "exit": "exit_pl_r4_n",
+    "start": {
+      "vars": {
+        "sky_turn": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          80,
+          160
+        ],
+        "target": "sn_r4_w1",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          80,
+          128
+        ],
+        "target": "sn_r4_w2",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          160
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "bell_pl_r4",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "expect",
+        "var": "sky_turn==90"
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          272
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_pl_r4_n",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          160
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "bell_pl_r4",
+        "wait_hit": 0.6
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "shoot",
+        "target": "bell_pl_r4",
+        "wait_hit": 0.6
+      },
+      {
+        "op": "expect",
+        "var": "sky_turn==270"
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_pl_r4_n"
+      }
+    ]
+  }
+}

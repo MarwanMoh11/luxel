@@ -46,7 +46,7 @@
       "pos": [208, 144],
       "props": {
         "var": "world_face",
-        "allow_bolt_flip": true,
+        "allow_bolt_flip": false,
         "hidden": true,
         "radius_px": 16,
         "persist": true
@@ -98,8 +98,8 @@
   ],
   "scenery": [
     { "sheet": "theme_inverted_palace_silver", "prop": "crystal_chandelier_arch", "pos": [208, 44], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [112, 72], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [304, 72], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [128, 60], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [296, 60], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
     { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [56, 136], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
     { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [360, 136], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
     { "sheet": "theme_inverted_palace_silver", "prop": "gilded_statue_bust", "pos": [104, 172], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
@@ -109,6 +109,7 @@
       "id": "black_world",
       "when": "world_face==black",
       "theme": "inverted_palace_black",
+      "overlay": "res://luxel/art/islands/7/palace_r11__black_world.png",
       "full_frame": true,
       "tiles": [
         [10, 3, 6, 3, "pit"]

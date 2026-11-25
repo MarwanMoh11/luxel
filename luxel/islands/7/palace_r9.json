@@ -135,6 +135,7 @@
       "props": {
         "door_kind": "wick_key",
         "dungeon_id": "palace",
+        "key_id": "palace_key_2",
         "size": [48, 16]
       }
     },
@@ -167,25 +168,25 @@
     {
       "id": "gk_r9_mid",
       "kind": "glass_knight",
-      "pos": [264, 136],
+      "pos": [232, 152],
       "zone": "palace_conservatory"
     },
     {
       "id": "jelly_r9_w",
       "kind": "moon_jelly",
-      "pos": [168, 224],
+      "pos": [112, 160],
       "zone": "palace_conservatory"
     },
     {
       "id": "jelly_r9_e",
       "kind": "moon_jelly",
-      "pos": [304, 224],
+      "pos": [288, 192],
       "zone": "palace_conservatory"
     },
     {
       "id": "owl_r9_ne",
       "kind": "silvered_owl",
-      "pos": [384, 152],
+      "pos": [336, 96],
       "zone": "palace_conservatory"
     }
   ],
@@ -207,10 +208,11 @@
       "id": "black_world",
       "when": "world_face==black",
       "theme": "inverted_palace_black",
+      "overlay": "res://luxel/art/islands/7/palace_r9__black_world.png",
       "full_frame": true,
       "tiles": [
-        [6, 13, 3, 4, "pit"],
-        [20, 13, 3, 4, "pit"]
+        [5, 12, 3, 3, "pit"],
+        [20, 12, 3, 3, "pit"]
       ],
       "enable": ["sensor_r9_blue"],
       "disable": []

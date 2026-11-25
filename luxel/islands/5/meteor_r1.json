@@ -1,0 +1,642 @@
+{
+  "id": "meteor_r1",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "isl5_meteor",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_MV_R1",
+  "spawn": [
+    240,
+    296
+  ],
+  "zones": [
+    {
+      "id": "mv_r1",
+      "name_key": "I5_MV_R1",
+      "rect": [
+        0,
+        0,
+        480,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_mv_r1_ow",
+      "rect": [
+        224,
+        336,
+        32,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "overworld",
+      "to_spawn": [
+        152,
+        544
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_mv_r1_w",
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
+      "to_region": "meteor_r2",
+      "to_spawn": [
+        368,
+        216
+      ],
+      "locked_door_id": "door_mv_r1_west"
+    },
+    {
+      "id": "exit_mv_r1_nw_short",
+      "rect": [
+        0,
+        80,
+        16,
+        32
+      ],
+      "to_region": "meteor_r3",
+      "to_spawn": [
+        392,
+        208
+      ],
+      "requires_flags": [
+        "mv_r3_short"
+      ],
+      "locked_door_id": "door_mv_r1_short_w"
+    },
+    {
+      "id": "exit_mv_r1_e",
+      "rect": [
+        464,
+        208,
+        16,
+        48
+      ],
+      "to_region": "meteor_r4",
+      "to_spawn": [
+        56,
+        224
+      ],
+      "locked_door_id": "door_mv_r1_k1"
+    },
+    {
+      "id": "exit_mv_r1_ne_short",
+      "rect": [
+        464,
+        80,
+        16,
+        32
+      ],
+      "to_region": "meteor_r6",
+      "to_spawn": [
+        56,
+        160
+      ],
+      "requires_flags": [
+        "mv_miniboss_done"
+      ],
+      "locked_door_id": "door_mv_r1_short_e"
+    },
+    {
+      "id": "exit_mv_r1_r9_short",
+      "rect": [
+        336,
+        0,
+        32,
+        16
+      ],
+      "to_region": "meteor_r9",
+      "to_spawn": [
+        144,
+        304
+      ],
+      "requires_flags": [
+        "mv_r9_short"
+      ],
+      "locked_door_id": "door_mv_r1_short_r9"
+    },
+    {
+      "id": "exit_mv_r1_n",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "meteor_r10",
+      "to_spawn": [
+        240,
+        240
+      ],
+      "locked_door_id": "door_mv_r1_boss"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_mv_r1",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        296
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_meteor_vault",
+      "kind": "waystone",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "zone": "mv_r1",
+        "name_key": "I5_MV_R1"
+      }
+    },
+    {
+      "id": "lore_r1_hub",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        280
+      ],
+      "props": {
+        "string_id": "I5_MV_LORE_HUB",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "well_r1_hub",
+      "kind": "polarity_well",
+      "pos": [
+        240,
+        176
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 80.0,
+        "strength": 560.0,
+        "orbit_capture": true,
+        "orbit_r": 34.0,
+        "linked_var": "well_phase",
+        "writes_var": true
+      }
+    },
+    {
+      "id": "eye_r1_w",
+      "kind": "switch_eye",
+      "pos": [
+        192,
+        144
+      ],
+      "props": {
+        "target_id": "door_mv_r1_west"
+      }
+    },
+    {
+      "id": "eye_r1_e",
+      "kind": "switch_eye",
+      "pos": [
+        288,
+        144
+      ],
+      "props": {
+        "target_id": "door_mv_r1_west"
+      }
+    },
+    {
+      "id": "door_mv_r1_west",
+      "kind": "door",
+      "pos": [
+        24,
+        232
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "requires_signals": [
+          "eye_r1_w",
+          "eye_r1_e"
+        ],
+        "sets_flag": "mv_r1_west_open",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_mv_r1_short_w",
+      "kind": "door",
+      "pos": [
+        24,
+        96
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "mv_r3_short"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_mv_r1_k1",
+      "kind": "door",
+      "pos": [
+        456,
+        232
+      ],
+      "props": {
+        "door_kind": "wick_key",
+        "dungeon_id": "meteor_vault",
+        "key_kind": "wick_key",
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "door_mv_r1_short_e",
+      "kind": "door",
+      "pos": [
+        456,
+        96
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "mv_miniboss_done"
+        ],
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_mv_r1_short_r9",
+      "kind": "door",
+      "pos": [
+        352,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "requires_flags": [
+          "mv_r9_short"
+        ],
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_mv_r1_boss",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "boss_key",
+        "dungeon_id": "meteor_vault",
+        "key_kind": "keepers_flame",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_mv_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        304
+      ],
+      "props": {
+        "zone": "mv_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r1_se",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        304
+      ],
+      "props": {
+        "zone": "mv_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        200
+      ],
+      "props": {
+        "zone": "mv_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        224
+      ],
+      "props": {
+        "zone": "mv_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_mv_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        72
+      ],
+      "props": {
+        "zone": "mv_r1",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        232
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        176
+      ],
+      "radius": 52,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        224,
+        224,
+        32,
+        16
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        392,
+        168
+      ],
+      "radius": 20,
+      "glow": true
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        96
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        240,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        240,
+        232
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        296,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        152,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        328,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        152,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "brass_caliper_stand",
+      "pos": [
+        384,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        88,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "star_ore_crate",
+      "pos": [
+        408,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "mv_r1_entered",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mv_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Cruciform orbital wellhead hub teasing the Boss Door north, Key 1 east, and teaching your first twin curved shots around the central polarity well to unlock the West Wing.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Curving manual bolts around a central polarity well to strike occluded eye switches behind iron baffles.",
+    "decisions": 4,
+    "expert_s": 45,
+    "reward": "waystone+west_wing_access",
+    "why": "Central hub of The Meteor Vault anchoring all four shortcut cycles and teasing the Boss Key vault.",
+    "exit": "exit_mv_r1_w",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_meteor_vault"
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          296
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_r1_hub"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          232
+        ],
+        "target": [
+          177,
+          183
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          232
+        ],
+        "target": [
+          303,
+          183
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_mv_r1_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_mv_r1_w"
+      }
+    ]
+  }
+}

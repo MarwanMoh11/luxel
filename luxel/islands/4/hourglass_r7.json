@@ -7,8 +7,8 @@
   "music": "isl4_hourglass",
   "name_key": "ISL4_HG_R7",
   "spawn": [
-    224,
-    208
+    232,
+    240
   ],
   "zones": [
     {
@@ -18,7 +18,7 @@
         0,
         0,
         448,
-        256
+        288
       ],
       "dark": true
     }
@@ -28,7 +28,7 @@
       "id": "exit_hg_r7_south",
       "rect": [
         208,
-        240,
+        272,
         48,
         16
       ],
@@ -57,7 +57,7 @@
       "id": "exit_hg_r7_west",
       "rect": [
         0,
-        96,
+        112,
         16,
         48
       ],
@@ -77,8 +77,8 @@
       "id": "anc_hg_r7",
       "kind": "room_anchor",
       "pos": [
-        224,
-        208
+        232,
+        240
       ],
       "props": {
         "auto": true
@@ -89,7 +89,7 @@
       "kind": "echo_rose",
       "pos": [
         264,
-        152
+        168
       ],
       "props": {
         "secs": 4.0,
@@ -101,7 +101,7 @@
       "kind": "switch_eye",
       "pos": [
         104,
-        152
+        168
       ],
       "props": {
         "target_id": "door_hg_r7_west",
@@ -113,7 +113,7 @@
       "kind": "door",
       "pos": [
         24,
-        120
+        136
       ],
       "props": {
         "door_kind": "switch_door",
@@ -150,7 +150,7 @@
       "kind": "road_lamp",
       "pos": [
         184,
-        216
+        248
       ],
       "props": {
         "zone": "hg_r7_walk",
@@ -162,7 +162,7 @@
       "kind": "road_lamp",
       "pos": [
         376,
-        136
+        152
       ],
       "props": {
         "zone": "hg_r7_walk",
@@ -186,7 +186,7 @@
       "kind": "road_lamp",
       "pos": [
         88,
-        104
+        120
       ],
       "props": {
         "zone": "hg_r7_walk",
@@ -196,11 +196,11 @@
   ],
   "enemies": [
     {
-      "id": "hh_r7_nw",
+      "id": "hh_r7_sw",
       "kind": "hour_heron",
       "pos": [
         136,
-        104
+        216
       ],
       "zone": "hg_r7_walk"
     },
@@ -208,8 +208,8 @@
       "id": "pd_r7_mid",
       "kind": "petal_duelist",
       "pos": [
-        248,
-        88
+        312,
+        152
       ],
       "zone": "hg_r7_walk"
     },
@@ -217,8 +217,8 @@
       "id": "hh_r7_e",
       "kind": "hour_heron",
       "pos": [
-        360,
-        104
+        376,
+        168
       ],
       "zone": "hg_r7_walk"
     }
@@ -228,8 +228,8 @@
       "kind": "inlay",
       "rect": [
         112,
-        96,
-        256,
+        112,
+        240,
         64
       ]
     },
@@ -237,7 +237,7 @@
       "kind": "circle",
       "pos": [
         248,
-        120
+        136
       ],
       "radius": 32,
       "style": "clock"
@@ -246,7 +246,7 @@
       "kind": "cracks",
       "pos": [
         152,
-        184
+        200
       ],
       "radius": 18,
       "glow": false
@@ -269,8 +269,8 @@
       "sheet": "theme_hourglass_maze",
       "prop": "tall_hourglass_pillar",
       "pos": [
-        120,
-        184
+        104,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -281,7 +281,7 @@
       "sheet": "theme_hourglass_maze",
       "prop": "tall_hourglass_pillar",
       "pos": [
-        360,
+        344,
         56
       ],
       "layer": "sort",
@@ -294,7 +294,7 @@
       "prop": "echo_rose_trellis",
       "pos": [
         408,
-        152
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -330,7 +330,7 @@
       "prop": "amber_lantern_post",
       "pos": [
         280,
-        216
+        248
       ],
       "layer": "sort",
       "flip_x": true,
@@ -381,7 +381,7 @@
         "op": "shoot",
         "from": [
           152,
-          152
+          168
         ],
         "target": "sw_hg_r7_short"
       },

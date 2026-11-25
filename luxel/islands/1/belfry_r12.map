@@ -1,0 +1,35 @@
+# Belfry r12 - The Pendulum Gauntlet (30x20)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+______________________####,,##
+____________________###...,,.#
+__________________###.....,,.#
+________________###...OO..,,.#
+______###########.....OO..,,.#
+____###..OOOOOO.......OO..,,.#
+___##....OOOOOO...,,..OO..,,.#
+__##.....OOOOOO...,,..OO..,,.#
+_##..,,,,OO++OO...,,..OO++,,.#
+,,,,.,,,,OO++OO...,,..OO++,,.#
+,,,,.,,,,OO++OO...,,..OO++,,.#
+_##..,,,,OOOOOO...,,..OOOO,,.#
+__#......OOOOOO...,,..OOOO,,.#
+__##.....OOOOOO...,,..OOOO..##
+___##....OOOOOO.......OOOO.##_
+____##...OOOOOO.......OOOO##__
+_____##...............###_____
+______####..........###_______
+_________############_________
+______________________________

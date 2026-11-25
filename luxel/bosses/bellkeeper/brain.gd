@@ -23,10 +23,10 @@ const SLAM_BAND: float = 9.5
 const SLAM_RING_TIME: float = 0.26
 const DOUBLE_TOLL_GAP_P2: float = 0.48
 const DOUBLE_TOLL_GAP_P3: float = 0.46
-const LUNGE_SPEED: float = 215.0
-const CLOCK_HAND_SPEED: float = 0.32
-const CLOCK_HAND_LEN: float = 92.0
-const CLOCK_HAND_HIT_CD: float = 2.60
+const LUNGE_SPEED: float = 188.0
+const CLOCK_HAND_SPEED: float = 0.30
+const CLOCK_HAND_LEN: float = 90.0
+const CLOCK_HAND_HIT_CD: float = 2.80
 const TONE_CYCLE: PackedStringArray = ["dawn", "dusk", "war"]
 
 enum SlamStage { NONE, RING_1, TOLL_PAUSE, RING_2 }
@@ -87,24 +87,24 @@ func _configure_boss(spec: Dictionary) -> void:
 	hp = base_hp
 	boss_id = str(spec.get("boss_id", "bellkeeper"))
 	island_id = int(spec.get("island_id", 1))
-	configure_phases([0.55, 0.25])
+	configure_phases([0.60, 0.34])
 
 	# Attack 1: Crown Cleave — wide bell-staff swing + golden chime fan
 	register_attack("crown_cleave", {
-		"weight": 1.25, "tell": 0.50, "commit": 0.28, "recover": 1.10, "cooldown": 1.3,
+		"weight": 1.25, "tell": 0.50, "commit": 0.28, "recover": 1.15, "cooldown": 1.4,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _aim_dir.angle()
-			ground.warn_sector(pos, facing - 1.25, facing + 1.25, 48.0, last_tell_duration, 1.0, "gold", "coral")
+			ground.warn_sector(pos, facing - 1.20, facing + 1.20, 44.0, last_tell_duration, 0.0, "gold", "coral")
 			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 175.0), 9.0, last_tell_duration, 0.0, "apricot", "gold")
 			stage.play_sfx("warden_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			var cnt: int = 5 if phase >= 2 else 4
-			patterns.emit_fan(pos, _aim_dir, cnt, 0.80, 126.0 if phase >= 2 else 112.0, {"color": "gold", "source": "bellkeeper_cleave", "reflectable": true})
+			var cnt: int = 4 if phase >= 2 else 3
+			patterns.emit_fan(pos, _aim_dir, cnt, 0.80, 114.0 if phase >= 2 else 104.0, {"color": "gold", "source": "bellkeeper_cleave", "reflectable": true})
 			stage.shake(0.14)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
-			move_boss(_aim_dir * 68.0 * dt, false),
+			move_boss(_aim_dir * 60.0 * dt, false),
 	})
 
 	# Attack 2: Spire Lunge — grand hop-lunge closing across the spire + coral-gold fan
@@ -173,7 +173,7 @@ func _configure_boss(spec: Dictionary) -> void:
 
 	# Attack 5 (P3): Three-Tone Chorus — Gold/Ice/Coral crown aura duel wave (counterable by matching rim bell!)
 	register_attack("three_tone_chorus", {
-		"phases": [3], "weight": 2.60, "tell": 0.60, "commit": 0.52, "recover": 1.20, "cooldown": 1.1,
+		"phases": [3], "weight": 5.50, "tell": 0.60, "commit": 0.52, "recover": 1.15, "cooldown": 0.5,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_toll_tone = TONE_CYCLE[_tone_idx % TONE_CYCLE.size()]
 			_tone_idx += 1

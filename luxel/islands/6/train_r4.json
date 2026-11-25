@@ -243,8 +243,8 @@
       "id": "lamp_r4_e",
       "kind": "road_lamp",
       "pos": [
-        456,
-        120
+        448,
+        88
       ],
       "props": {
         "zone": "tr_r4",
@@ -413,10 +413,10 @@
   "events": [],
   "design": {
     "idea": "Plush cruciform Grand Dining Salon acting as the 5-way central hub, teasing the locked Siding (wick_key), Brake Shortcut (train_r9), and Locomotive Boss Bulkhead (keepers_flame) while inviting Wick up the North Roof Ladder.",
-    "kind": "hub",
+    "kind": "story",
     "beat": "sho",
     "teaches": "Multi-wing dungeon orientation, Cycle Anvil temper swapping, and 5-way landmark hub reading",
-    "decisions": 4,
+    "decisions": 5,
     "expert_s": 45,
     "reward": "ws_train_mid+multi_hub",
     "why": "Central spine hub of The Ember Express uniting the Roof loop, Parallel Freight wing, and Locomotive finale.",

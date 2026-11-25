@@ -1,0 +1,618 @@
+{
+  "id": "black_shoals",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": false,
+  "name_key": "ISL7_Z_SHOALS",
+  "theme": "inverted_palace_silver",
+  "music": "island7_explore",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    368,
+    56
+  ],
+  "zones": [
+    {
+      "id": "black_shoals",
+      "name_key": "ISL7_Z_SHOALS",
+      "rect": [
+        0,
+        0,
+        736,
+        480
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_bs_overworld",
+      "rect": [
+        336,
+        0,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        208,
+        552
+      ]
+    },
+    {
+      "id": "exit_bs_quay",
+      "rect": [
+        112,
+        0,
+        64,
+        16
+      ],
+      "to_region": "silver_quay",
+      "to_spawn": [
+        120,
+        424
+      ]
+    },
+    {
+      "id": "exit_bs_grotto",
+      "rect": [
+        0,
+        240,
+        16,
+        48
+      ],
+      "to_region": "cave_twin_grotto",
+      "to_spawn": [
+        392,
+        152
+      ]
+    },
+    {
+      "id": "exit_bs_phase",
+      "rect": [
+        496,
+        464,
+        48,
+        16
+      ],
+      "to_region": "cave_phase_trial",
+      "to_spawn": [
+        240,
+        56
+      ]
+    },
+    {
+      "id": "exit_bs_palace_back",
+      "rect": [
+        720,
+        160,
+        16,
+        48
+      ],
+      "to_region": "palace_r6",
+      "to_spawn": [
+        360,
+        264
+      ],
+      "requires_flags": [
+        "palace_backdoor_open"
+      ],
+      "locked_door_id": "door_bs_palace_back"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "bs_glass_knight_1",
+      "kind": "glass_knight",
+      "pos": [
+        368,
+        240
+      ],
+      "route": [
+        [
+          344,
+          240
+        ],
+        [
+          416,
+          240
+        ]
+      ],
+      "zone": "black_shoals",
+      "leash": 132
+    },
+    {
+      "id": "bs_moon_jelly_1",
+      "kind": "moon_jelly",
+      "pos": [
+        376,
+        264
+      ],
+      "route": [
+        [
+          352,
+          264
+        ],
+        [
+          408,
+          256
+        ]
+      ],
+      "zone": "black_shoals",
+      "leash": 124
+    },
+    {
+      "id": "bs_reflection_1",
+      "kind": "reflection",
+      "pos": [
+        552,
+        240
+      ],
+      "route": [
+        [
+          544,
+          240
+        ],
+        [
+          584,
+          240
+        ]
+      ],
+      "zone": "black_shoals",
+      "leash": 128
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ws_black_shoals",
+      "kind": "waystone",
+      "pos": [
+        144,
+        80
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "name_key": "ISL7_Z_SHOALS"
+      }
+    },
+    {
+      "id": "pool_bs_north",
+      "kind": "moon_pool",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "pool_bs_center",
+      "kind": "moon_pool",
+      "pos": [
+        368,
+        208
+      ],
+      "props": {
+        "scope": "island:7",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_bs_reef",
+      "kind": "lore_stone",
+      "pos": [
+        424,
+        88
+      ],
+      "props": {
+        "string_id": "ISL7_LORE_SHOALS",
+        "icon": "wave"
+      }
+    },
+    {
+      "id": "decoy_bs_nw",
+      "kind": "i7_shadow_decoy",
+      "pos": [
+        592,
+        168
+      ],
+      "props": {
+        "reveal_flag": "q7_decoy_shoals",
+        "decoy_style": "bust",
+        "truth": false
+      }
+    },
+    {
+      "id": "chest_bs_shards",
+      "kind": "chest",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45,
+        "zone": "black_shoals"
+      }
+    },
+    {
+      "id": "door_bs_palace_back",
+      "kind": "door",
+      "pos": [
+        688,
+        184
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "palace_backdoor_open"
+        ]
+      }
+    },
+    {
+      "id": "lamp_bs_n1",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        56
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bs_nw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        80
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bs_c1",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        240
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bs_c2",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        216
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bs_w1",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        280
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bs_e1",
+      "kind": "road_lamp",
+      "pos": [
+        560,
+        200
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bs_e2",
+      "kind": "road_lamp",
+      "pos": [
+        640,
+        200
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bs_s1",
+      "kind": "road_lamp",
+      "pos": [
+        520,
+        384
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_bs_s2",
+      "kind": "road_lamp",
+      "pos": [
+        472,
+        408
+      ],
+      "props": {
+        "zone": "black_shoals",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        368,
+        208
+      ],
+      "radius": 32,
+      "style": "ritual",
+      "color": "sky",
+      "secondary": "rose"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        584,
+        216
+      ],
+      "radius": 24,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        160,
+        264
+      ],
+      "radius": 22,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "dark_inverted_pillar",
+      "pos": [
+        312,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "dark_inverted_pillar",
+      "pos": [
+        432,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "rose_thorn_glass_arch",
+      "pos": [
+        648,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "eclipse_brazier_bowl",
+      "pos": [
+        368,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "eclipse_brazier_bowl",
+      "pos": [
+        528,
+        360
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "black_candelabra",
+      "pos": [
+        120,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "black_candelabra",
+      "pos": [
+        568,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "void_mirror_shard",
+      "pos": [
+        184,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "dusk_bell_pedestal",
+      "pos": [
+        272,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "dark_reflection_pool",
+      "pos": [
+        368,
+        256
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [
+        [
+          15,
+          15,
+          3,
+          3,
+          "bridge"
+        ],
+        [
+          0,
+          15,
+          6,
+          3,
+          "bridge"
+        ],
+        [
+          30,
+          13,
+          3,
+          3,
+          "bridge"
+        ],
+        [
+          34,
+          17,
+          3,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "exit_bs_grotto",
+        "chest_bs_shards",
+        "decoy_bs_nw"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [],
+  "design": {
+    "idea": "Sunken obsidian archipelago where flipping Black raises the West reef causeway (Twin Grotto), East Palace backdoor bridge, and turns Glass Knight shields rose-brittle.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Black World physically transforms water chasms into obsidian reefs AND weakens Glass Knight mirror shields while exposing the Shoals NW-shadow decoy.",
+    "decisions": 6,
+    "expert_s": 60,
+    "reward": "q7_decoy_shoals+45sh+grotto_and_trial_access",
+    "why": "Western wild reef district linking Silver Quay, Overworld SW Black pier, Palace backdoor, Twin Grotto, and Lunar Phase Trial.",
+    "optional": true,
+    "exit": "exit_bs_phase",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "pool_bs_north"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          224
+        ]
+      },
+      {
+        "op": "clear"
+      },
+      {
+        "op": "interact",
+        "target": "decoy_bs_nw"
+      },
+      {
+        "op": "expect",
+        "flag": "q7_decoy_shoals"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_bs_phase"
+      }
+    ]
+  }
+}

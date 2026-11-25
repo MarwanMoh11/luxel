@@ -1,11 +1,13 @@
 class_name LxIsland8
 extends RefCounted
-## Island 8 (The Long Night - Finale) progression beats, Night Remix gauntlets, and Bell Sanctum.
+## Island 8 (The Long Night - Finale) progression beats, Vigil Terrace ("THE LANTERN ASKS"),
+## overworld wings, optional caves, superboss First Dark, and Bell Sanctum.
 
 const ISLAND_ID: int = 8
 const SEAL_ID: String = "sanctum_gate_seal"
 const BOSS_ID: String = "the_hush"
 const MINI_BOSS_KIND: String = "night_harbinger"
+const SUPERBOSS_ID: String = "first_dark"
 
 const REQUIRED_BEACONS: Array[String] = [
 	"beacon_8_1",
@@ -15,6 +17,16 @@ const REQUIRED_BEACONS: Array[String] = [
 
 const REGIONS: Array[String] = [
 	"overworld",
+	"vigil_terrace",
+	"toll_causeway",
+	"archive_cloister",
+	"stair_landing",
+	"sanctum_forecourt",
+	"cave_blind_scale",
+	"cave_silent_vault",
+	"cave_hush_trial",
+	"cave_glass_grotto",
+	"superboss_first_dark",
 	"sanctum_r1",
 	"sanctum_r2",
 	"sanctum_r3",
@@ -27,6 +39,7 @@ var _events: LxEventBus = null
 var _state: LxGameState = null
 var _attached: bool = false
 var _rule: LxIsland8Rule = null
+var _ceremony: LxVigilCeremony = null
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -45,9 +58,14 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_events.great_lamp_relit.connect(_on_great_lamp_relit)
 	_rule = LxIsland8Rule.new()
 	_rule.attach(_events, _state)
+	_ceremony = LxVigilCeremony.new()
+	_ceremony.attach()
 
 
 func detach() -> void:
+	if _ceremony != null:
+		_ceremony.detach()
+		_ceremony = null
 	if _rule != null:
 		_rule.detach()
 		_rule = null
@@ -72,6 +90,9 @@ func detach() -> void:
 func on_region_loaded(region_id: String) -> void:
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
+	if _ceremony != null:
+		_ceremony.on_region_loaded(region_id)
+	_sync_overworld_quest_flags()
 
 
 func get_rule() -> LxIsland8Rule:
@@ -118,12 +139,23 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"requires_flags": [],
 		},
 		{
-			"id": "wp_enter_sanctum",
+			"id": "wp_enter_forecourt",
 			"region": "overworld",
 			"zone": "dark_hub",
 			"pos": [400.0, 64.0],
 			"action": "enter_exit",
 			"target": "exit_to_sanctum",
+			"to_region": "sanctum_forecourt",
+			"requires_moves": ["bolt", "dash", "throw", "prism", "beam", "wings", "lens", "sunflare"],
+			"requires_flags": ["beacon_8_1", "beacon_8_2", "beacon_8_3"],
+		},
+		{
+			"id": "wp_enter_sanctum",
+			"region": "sanctum_forecourt",
+			"zone": "sanctum_forecourt",
+			"pos": [304.0, 32.0],
+			"action": "enter_exit",
+			"target": "exit_to_sanctum_r1",
 			"to_region": "sanctum_r1",
 			"requires_moves": ["bolt", "dash", "throw", "prism", "beam", "wings", "lens", "sunflare"],
 			"requires_flags": ["beacon_8_1", "beacon_8_2", "beacon_8_3"],
@@ -216,10 +248,29 @@ func are_all_beacons_lit() -> bool:
 	return true
 
 
+func _sync_overworld_quest_flags() -> void:
+	var st: LxGameState = _get_state()
+	if st == null:
+		return
+	if are_all_beacons_lit() and (st.lit_waystones.has("ws_sanctum") or bool(st.story_flags.get("sanctum_forecourt_seen", false))):
+		st.story_flags["isl8_candles_ready"] = true
+	var all_mem: bool = true
+	for i: int in range(1, 9):
+		if not bool(st.story_flags.get("mem_%d_lit" % i, false)):
+			all_mem = false
+			break
+	if all_mem:
+		st.story_flags["isl8_all_memories_lit"] = true
+	if LxSold.current().get_toll_weight() >= 1:
+		st.story_flags["toll_weight_1"] = true
+
+
 func _on_region_entered(island_id: int, region_id: String) -> void:
 	if island_id != ISLAND_ID:
 		return
+	_sync_overworld_quest_flags()
 	var st: LxGameState = _get_state()
+	var relit: bool = st != null and (st.relit_islands.has(ISLAND_ID) or bool(st.story_flags.get("island_8_relit", false)))
 	if region_id == "overworld":
 		if st != null and not bool(st.story_flags.get("isl8_arrived", false)):
 			st.story_flags["isl8_arrived"] = true
@@ -227,14 +278,60 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			if _events != null:
 				_events.sfx_requested.emit("void_hum", Vector2.ZERO, false)
 		if _events != null:
-			_events.music_mode_requested.emit("explore")
+			_events.music_mode_requested.emit("hub" if relit else "explore")
+	elif region_id == "vigil_terrace":
+		if st != null:
+			if not bool(st.story_flags.get("vigil_visited", false)):
+				st.story_flags["vigil_visited"] = true
+				_emit_narration("ISL8_Z_VIGIL", "title", 3.0)
+				_emit_narration("ISL8_LORE_VIGIL", "narration", 4.0)
+			elif relit and not bool(st.story_flags.get("vigil_relit_seen", false)):
+				st.story_flags["vigil_relit_seen"] = true
+				_emit_narration("ISL8_VIGIL_RELIT", "title", 3.8)
+		if _events != null:
+			_events.music_mode_requested.emit("hub" if relit else "isl8_tollhouse")
+	elif region_id == "toll_causeway":
+		if st != null and not bool(st.story_flags.get("toll_causeway_lit", false)):
+			st.story_flags["toll_causeway_lit"] = true
+			_emit_narration("ISL8_Z_TOLL_WAY", "title", 2.8)
+		if _events != null:
+			_events.music_mode_requested.emit("hub" if relit else "isl8_tollhouse")
+	elif region_id == "archive_cloister":
+		if st != null and not bool(st.story_flags.get("archive_cloister_lit", false)):
+			st.story_flags["archive_cloister_lit"] = true
+			_emit_narration("ISL8_Z_CLOISTER", "title", 2.8)
+		if _events != null:
+			_events.music_mode_requested.emit("hub" if relit else "isl8_archive")
+	elif region_id == "stair_landing":
+		if st != null and not bool(st.story_flags.get("stair_landing_lit", false)):
+			st.story_flags["stair_landing_lit"] = true
+			_emit_narration("ISL8_Z_STAIR_BASE", "title", 2.8)
+		if _events != null:
+			_events.music_mode_requested.emit("hub" if relit else "isl8_setpiece")
+	elif region_id == "sanctum_forecourt":
+		if st != null and not bool(st.story_flags.get("sanctum_forecourt_seen", false)):
+			st.story_flags["sanctum_forecourt_seen"] = true
+			_emit_narration("ISL8_Z_FORECOURT", "title", 3.0)
+		if _events != null:
+			_events.music_mode_requested.emit("hub" if relit else "explore")
+	elif region_id.begins_with("cave_"):
+		if _events != null:
+			var cue: String = "isl8_setpiece" if region_id == "cave_hush_trial" else ("isl8_archive" if region_id == "cave_glass_grotto" else "isl8_tollhouse")
+			_events.music_mode_requested.emit(cue)
+	elif region_id == "superboss_first_dark":
+		if st != null and not st.defeated_bosses.has(SUPERBOSS_ID):
+			_emit_narration("ISL8_BOSS_FIRST_DARK", "title", 4.0)
+			if _events != null:
+				_events.music_mode_requested.emit("superboss_a")
+		elif _events != null:
+			_events.music_mode_requested.emit("hub")
 	elif region_id == "sanctum_r6":
 		if st != null and not st.defeated_bosses.has(BOSS_ID):
 			_emit_narration("BOSS_HUSH", "title", 4.0)
 			if _events != null:
 				_events.music_mode_requested.emit("island8_boss_p1")
-		elif st != null and st.relit_islands.has(ISLAND_ID) and _events != null:
-			_events.music_mode_requested.emit("explore")
+		elif relit and _events != null:
+			_events.music_mode_requested.emit("hub")
 	elif region_id.begins_with("sanctum_"):
 		if region_id == "sanctum_r1" and st != null and not bool(st.story_flags.get("isl8_sanctum_entered", false)):
 			st.story_flags["isl8_sanctum_entered"] = true
@@ -257,6 +354,7 @@ func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
 		if not st.lit_beacons.has(beacon_id):
 			st.lit_beacons.append(beacon_id)
 		st.story_flags[beacon_id] = true
+	_sync_overworld_quest_flags()
 	if are_all_beacons_lit():
 		_trigger_seal_shatter()
 
@@ -294,6 +392,11 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
+	if boss_id == SUPERBOSS_ID:
+		if phase >= 2 and _events != null:
+			_events.music_mode_requested.emit("superboss_b")
+			_events.shake_requested.emit(0.34)
+		return
 	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
 		return
 	if phase >= 2 and _events != null:
@@ -305,6 +408,18 @@ func _on_boss_defeated(boss_id: String, island_id: int) -> void:
 	if island_id != ISLAND_ID:
 		return
 	var st: LxGameState = _get_state()
+	if boss_id == SUPERBOSS_ID:
+		if st != null:
+			if not st.defeated_bosses.has(SUPERBOSS_ID):
+				st.defeated_bosses.append(SUPERBOSS_ID)
+			st.story_flags["first_dark_defeated"] = true
+			st.story_flags["cosmetic:golden_dawn_crown"] = true
+		if _events != null:
+			_events.sfx_requested.emit("boss_victory", Vector2.ZERO, false)
+			_emit_narration("ISL8_FIRST_DARK_WIN", "title", 4.5)
+			_events.music_mode_requested.emit("hub")
+			_events.save_requested.emit("first_dark_defeated")
+		return
 	if boss_id == MINI_BOSS_KIND:
 		if st != null:
 			if not st.defeated_bosses.has(MINI_BOSS_KIND):

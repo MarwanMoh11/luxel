@@ -44,7 +44,11 @@
       "to_spawn": [
         336,
         112
-      ]
+      ],
+      "requires_flags": [
+        "ur_r8_shortcut"
+      ],
+      "locked_door_id": "door_r8_w_sc"
     },
     {
       "id": "exit_r8_north",
@@ -58,24 +62,479 @@
       "to_spawn": [
         48,
         144
-      ]
+      ],
+      "locked_door_id": "door_r8_combat"
     }
   ],
   "interactables": [
     {
-      "id": "lamp_r8_1",
-      "kind": "road_lamp",
+      "id": "anc_r8_sw",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        208
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "conv_r8_n",
+      "kind": "conveyor",
+      "pos": [
+        224,
+        64
+      ],
+      "props": {
+        "size": [
+          224,
+          24
+        ],
+        "dir": "e",
+        "speed": 42.0,
+        "flip_on_signal": false
+      }
+    },
+    {
+      "id": "conv_r8_e",
+      "kind": "conveyor",
+      "pos": [
+        368,
+        144
+      ],
+      "props": {
+        "size": [
+          24,
+          144
+        ],
+        "dir": "s",
+        "speed": 42.0,
+        "flip_on_signal": false
+      }
+    },
+    {
+      "id": "conv_r8_s",
+      "kind": "conveyor",
+      "pos": [
+        224,
+        232
+      ],
+      "props": {
+        "size": [
+          224,
+          24
+        ],
+        "dir": "w",
+        "speed": 42.0,
+        "flip_on_signal": false
+      }
+    },
+    {
+      "id": "conv_r8_w",
+      "kind": "conveyor",
+      "pos": [
+        80,
+        144
+      ],
+      "props": {
+        "size": [
+          24,
+          112
+        ],
+        "dir": "n",
+        "speed": 42.0,
+        "flip_on_signal": false
+      }
+    },
+    {
+      "id": "dew_r8",
+      "kind": "dew_lens",
       "pos": [
         224,
         144
       ],
       "props": {
+        "movable": false,
+        "rail_axis": "none",
+        "focus_range": 176.0
+      }
+    },
+    {
+      "id": "hook_r8_w",
+      "kind": "lantern_hook",
+      "pos": [
+        152,
+        144
+      ],
+      "props": {
+        "light_radius": 84.0
+      }
+    },
+    {
+      "id": "hook_r8_e",
+      "kind": "lantern_hook",
+      "pos": [
+        296,
+        144
+      ],
+      "props": {
+        "light_radius": 84.0
+      }
+    },
+    {
+      "id": "door_r8_w_sc",
+      "kind": "door",
+      "pos": [
+        24,
+        128
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "ur_r8_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "door_r8_combat",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "zone": "ur_r8",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        48
+      ],
+      "props": {
         "zone": "ur_r8",
         "lit": true
       }
+    },
+    {
+      "id": "lamp_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        48
+      ],
+      "props": {
+        "zone": "ur_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        248
+      ],
+      "props": {
+        "zone": "ur_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_se",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        248
+      ],
+      "props": {
+        "zone": "ur_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r8_grass_ne",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        388,
+        68
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": true
+      }
+    },
+    {
+      "id": "lm_r8_acorn_se",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        384,
+        236
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": false
+      }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "ur_r8_false_lantern",
+      "kind": "false_lantern",
+      "pos": [
+        304,
+        112
+      ],
+      "zone": "ur_r8"
+    },
+    {
+      "id": "ur_r8_spider_1",
+      "kind": "jumping_spider",
+      "pos": [
+        192,
+        196
+      ],
+      "zone": "ur_r8"
+    },
+    {
+      "id": "ur_r8_spider_2",
+      "kind": "jumping_spider",
+      "pos": [
+        328,
+        168
+      ],
+      "zone": "ur_r8"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 34,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        144
+      ],
+      "size": [
+        40,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        224,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        156,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "ant_lantern_post",
+      "pos": [
+        292,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        392,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        388,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        176,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        272,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        56,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "fern_canopy_frond",
+      "pos": [
+        396,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        160,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "pebble_milestone",
+      "pos": [
+        288,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ur_r8_open_shortcut",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ur_r8_shortcut"
+        },
+        {
+          "narrate": "ISL3_UR_SHORTCUT"
+        },
+        {
+          "sfx": "shrine_unlock"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Ant-mill clockwise conveyor ring battle against two Jumping Spiders and a disguised False Lantern; unmask the False Lantern with a test bolt, ride the belt clear of spider landing rings, and unseal the west root-slide shortcut to r1.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Bolt-checking suspicious lamps before throwing your lantern and riding moving ant belts to outpace jumping_spider leaps.",
+    "decisions": 7,
+    "expert_s": 54,
+    "reward": "ur_r8_shortcut+r9_access",
+    "why": "High-tempo wing-2 combat ring opening Cycle 2 back to Root Threshold.",
+    "exit": "exit_r8_north",
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "ur_r8",
+        "timeout": 55.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r8_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect",
+        "flag": "ur_r8_shortcut"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_north"
+      }
+    ]
+  },
   "id": "underroot_r8",
   "island_id": 3,
   "tile_size": 16,
@@ -88,6 +547,5 @@
     "cave_drip"
   ],
   "triggers": [],
-  "layers": [],
-  "events": []
+  "layers": []
 }

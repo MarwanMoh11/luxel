@@ -1,0 +1,319 @@
+{
+  "id": "toll_r1",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "great_toll_shaft",
+  "name_key": "ISL1_TOLL_RIG",
+  "music": "isl1_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    192,
+    240
+  ],
+  "zones": [
+    {
+      "id": "toll_rigging",
+      "name_key": "ISL1_TOLL_RIG",
+      "rect": [
+        0,
+        0,
+        384,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_toll_r1_south",
+      "rect": [
+        176,
+        272,
+        32,
+        16
+      ],
+      "to_region": "belfry_forecourt",
+      "to_spawn": [
+        288,
+        96
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_toll_r1_drop",
+      "rect": [
+        176,
+        0,
+        32,
+        16
+      ],
+      "to_region": "toll_r2",
+      "to_spawn": [
+        192,
+        224
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "hollow_cameo_1"
+      ],
+      "locked_door_id": "door_toll_r1_drop"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "rig_toll_r1",
+      "kind": "toll_clapper_rig",
+      "pos": [
+        192,
+        128
+      ],
+      "props": {
+        "flag_id": "hollow_cameo_1",
+        "target_id": "door_toll_r1_drop",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_toll_r1_drop",
+      "kind": "door",
+      "pos": [
+        192,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "rig_toll_r1"
+        ],
+        "requires_flags": [
+          "hollow_cameo_1"
+        ]
+      }
+    },
+    {
+      "id": "bell_toll_r1_d",
+      "kind": "bell",
+      "pos": [
+        104,
+        152
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 176
+      }
+    },
+    {
+      "id": "anc_toll_r1",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_tr1_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        232
+      ],
+      "props": {
+        "zone": "toll_rigging",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr1_w",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        136
+      ],
+      "props": {
+        "zone": "toll_rigging",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr1_e",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        136
+      ],
+      "props": {
+        "zone": "toll_rigging",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_tr1_n",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        64
+      ],
+      "props": {
+        "zone": "toll_rigging",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        128
+      ],
+      "radius": 44,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        192,
+        104
+      ],
+      "size": [
+        48,
+        84
+      ],
+      "tint": "warm",
+      "shear": 0.18
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        248,
+        160
+      ],
+      "size": [
+        28,
+        20
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        136,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "belfry_beam_brace",
+      "pos": [
+        248,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_chain_winch",
+      "pos": [
+        96,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_pulley_wheel",
+      "pos": [
+        288,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "hanging_pendulum_weight",
+      "pos": [
+        264,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "shaft_lantern_cage",
+      "pos": [
+        224,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "Hang the Stolen Clapper in the Great Bell rigging, triggering Hollow Wick's wordless violet bolt from the rafters that cuts the master cable and opens the shaft plunge.",
+    "kind": "setpiece",
+    "beat": "ki",
+    "teaches": "Establishes Hollow Wick as a wordless rival and launches the Great Toll descent.",
+    "decisions": 4,
+    "expert_s": 40,
+    "reward": "hollow_cameo_1",
+    "why": "Dramatic narrative launchpad from Belfry Forecourt into the plunging Great Toll shaft.",
+    "exit": "exit_toll_r1_drop",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          160,
+          176
+        ],
+        "target": "bell_toll_r1_d"
+      },
+      {
+        "op": "interact",
+        "target": "rig_toll_r1"
+      },
+      {
+        "op": "wait_until",
+        "flag": "hollow_cameo_1",
+        "timeout": 4.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_toll_r1_drop"
+      }
+    ]
+  }
+}

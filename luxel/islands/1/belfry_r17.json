@@ -1,0 +1,417 @@
+{
+  "id": "belfry_r17",
+  "island_id": 1,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL1_BF_CLAPPERLOFT",
+  "music": "island1_dungeon",
+  "spawn": [
+    112,
+    240
+  ],
+  "zones": [
+    {
+      "id": "belfry_clapperloft",
+      "name_key": "ISL1_BF_CLAPPERLOFT",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r17_south",
+      "rect": [
+        96,
+        272,
+        32,
+        16
+      ],
+      "to_region": "belfry_r16",
+      "to_spawn": [
+        48,
+        160
+      ]
+    },
+    {
+      "id": "exit_r17_east",
+      "rect": [
+        400,
+        112,
+        16,
+        32
+      ],
+      "to_region": "belfry_r18",
+      "to_spawn": [
+        48,
+        80
+      ],
+      "locked_door_id": "door_r17_east"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "snatcher_r17_0",
+      "kind": "snatcher",
+      "pos": [
+        344,
+        168
+      ],
+      "route": [],
+      "perches": [
+        [
+          344,
+          168
+        ],
+        [
+          280,
+          96
+        ],
+        [
+          360,
+          88
+        ]
+      ],
+      "zone": "belfry_clapperloft",
+      "leash": 160
+    }
+  ],
+  "interactables": [
+    {
+      "id": "sensor_r17_perch",
+      "kind": "light_sensor",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "need_secs": 0.35,
+        "hold": false,
+        "persist": true,
+        "target_ids": [
+          "bridge_r17_chasm",
+          "door_r17_east"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r17_chasm",
+      "kind": "door",
+      "pos": [
+        256,
+        128
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          128,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "sensor_r17_perch"
+        ]
+      }
+    },
+    {
+      "id": "door_r17_east",
+      "kind": "door",
+      "pos": [
+        392,
+        128
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sensor_r17_perch"
+        ]
+      }
+    },
+    {
+      "id": "hook_r17",
+      "kind": "lantern_hook",
+      "pos": [
+        152,
+        200
+      ],
+      "props": {
+        "light_radius": 72
+      }
+    },
+    {
+      "id": "sg_r17",
+      "kind": "shadow_gate",
+      "pos": [
+        40,
+        112
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "threshold": 0.45
+      }
+    },
+    {
+      "id": "chest_ember_1_belfry",
+      "kind": "chest",
+      "pos": [
+        40,
+        48
+      ],
+      "props": {
+        "reward": "ember_piece",
+        "amount": 1,
+        "zone": "belfry_clapperloft"
+      }
+    },
+    {
+      "id": "moth_1_09",
+      "kind": "moth",
+      "pos": [
+        368,
+        56
+      ],
+      "props": {
+        "moth_id": "moth_1_09"
+      }
+    },
+    {
+      "id": "bell_r17_dawn",
+      "kind": "bell",
+      "pos": [
+        160,
+        160
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 160
+      }
+    },
+    {
+      "id": "lamp_r17_s",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        216
+      ],
+      "props": {
+        "zone": "belfry_clapperloft",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r17_c",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        96
+      ],
+      "props": {
+        "zone": "belfry_clapperloft",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r17_e",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        96
+      ],
+      "props": {
+        "zone": "belfry_clapperloft",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        128,
+        96,
+        64,
+        80
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        368,
+        56
+      ],
+      "size": [
+        36,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.14
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        40,
+        48
+      ],
+      "size": [
+        32,
+        48
+      ],
+      "tint": "cool",
+      "shear": -0.14
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        120,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "broken_column",
+      "pos": [
+        88,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "cracked_bell_shard",
+      "pos": [
+        352,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_great_toll_shaft",
+      "prop": "iron_pulley_wheel",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [],
+  "triggers": [],
+  "design": {
+    "idea": "Optional Clapper Foundry Loft: light the recessed skylight Light Sensor across an 8-tile chasm (via lantern throw or Snatcher courier), cloak dark via the Lantern Hook to claim Ember Piece behind the West Shadow Gate, rescue Lost Moth 1-09, and loop East into r18.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Skylight lantern-throw sensor precision, Shutter Hood secret vault entry, and optional loop reward.",
+    "decisions": 9,
+    "expert_s": 60,
+    "reward": "moth_1_09+ember_1_belfry",
+    "why": "Rewarding optional vault off the Metronome arena hosting Island 1's 9th Lost Moth and a Belfry Ember Piece.",
+    "start": {
+      "flags": [
+        "item_shutter_hood"
+      ]
+    },
+    "exit": "exit_r17_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          152,
+          200
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "hook_r17"
+      },
+      {
+        "op": "goto",
+        "to": [
+          40,
+          64
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_1_belfry"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          104
+        ]
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "throw",
+        "from": [
+          184,
+          88
+        ],
+        "target": "sensor_r17_perch"
+      },
+      {
+        "op": "wait",
+        "secs": 0.8
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          128
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 15.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          64
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "moth_1_09"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r17_east"
+      }
+    ]
+  }
+}

@@ -55,15 +55,36 @@
   ],
   "interactables": [
     {
-      "id": "lamp_r11_1",
-      "kind": "road_lamp",
+      "id": "anc_r11_south",
+      "kind": "room_anchor",
       "pos": [
         256,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "hook_r11_w",
+      "kind": "lantern_hook",
+      "pos": [
+        88,
         160
       ],
       "props": {
-        "zone": "ur_r11",
-        "lit": true
+        "light_radius": 84.0
+      }
+    },
+    {
+      "id": "hook_r11_e",
+      "kind": "lantern_hook",
+      "pos": [
+        424,
+        160
+      ],
+      "props": {
+        "light_radius": 84.0
       }
     },
     {
@@ -83,9 +104,394 @@
           "underroot_done"
         ]
       }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        64
+      ],
+      "props": {
+        "zone": "ur_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        64
+      ],
+      "props": {
+        "zone": "ur_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        256
+      ],
+      "props": {
+        "zone": "ur_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        256
+      ],
+      "props": {
+        "zone": "ur_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lm_r11_grass_nw",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        64,
+        92
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r11_grass_ne",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        448,
+        92
+      ],
+      "props": {
+        "variant": "grass_cathedral",
+        "flip_x": true
+      }
+    },
+    {
+      "id": "lm_r11_acorn_sw",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        76,
+        248
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": false
+      }
+    },
+    {
+      "id": "lm_r11_acorn_se",
+      "kind": "ur_tiny_landmark",
+      "pos": [
+        436,
+        248
+      ],
+      "props": {
+        "variant": "acorn_boulder",
+        "flip_x": true
+      }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "boss_hundred_lamps",
+      "kind": "hundred_lamps",
+      "pos": [
+        256,
+        112
+      ],
+      "zone": "ur_r11"
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 62,
+      "style": "ritual"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        160
+      ],
+      "size": [
+        56,
+        76
+      ],
+      "tint": "cool",
+      "shear": 0.25
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        180,
+        122
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        332,
+        122
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        180,
+        198
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        332,
+        198
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_under_root",
+      "prop": "braided_root_arch",
+      "pos": [
+        256,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        144,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        368,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        144,
+        268
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "glow_spore_cluster",
+      "pos": [
+        368,
+        268
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        48,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "moss_cap_shroom",
+      "pos": [
+        464,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        112,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "colossal_acorn_dome",
+      "pos": [
+        400,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        196,
+        276
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_under_root",
+      "prop": "amber_sap_urn",
+      "pos": [
+        316,
+        276
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ur_r11_boss_victory",
+      "on": "flag:boss_hundred_lamps_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "underroot_done"
+        },
+        {
+          "narrate": "ISL3_UR_CLEARED"
+        },
+        {
+          "sfx": "shrine_claimed"
+        },
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 40
+          }
+        }
+      ]
+    },
+    {
+      "id": "ur_r11_spawn_pane",
+      "on": "flag:boss_hundred_lamps_defeated",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "pane_r11_ember_seed",
+            "kind": "pane_pickup",
+            "pos": [
+              256,
+              144
+            ],
+            "props": {
+              "pane": "ember_seed"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Boss vault for Hundred Lamps: a 10-segment centipede vulnerable on DARK segments while your 1.8x sun-lantern lights any segment you approach \u2014 hang light on flank hooks behind root pillars, strike dark rings, and snuff P2 light-eggs to claim Half-Lantern #1 and Pane ember_seed.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Climax mastery of The Under-Root's inverted light rule: casting shadow wedges behind root pillars and extinguishing light-eggs.",
+    "decisions": 8,
+    "expert_s": 120,
+    "reward": "half_lantern+pane_ember_seed+underroot_done",
+    "why": "Climax boss of The Under-Root awarding Half-Lantern #1 and the ember_seed Stained-Glass Pane.",
+    "exit": "exit_r11_return_ow",
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "ur_r11",
+        "timeout": 120.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "expect",
+        "flag": "underroot_done"
+      },
+      {
+        "op": "interact",
+        "target": "pane_r11_ember_seed"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_r11_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_return_ow"
+      }
+    ]
+  },
   "id": "underroot_r11",
   "island_id": 3,
   "tile_size": 16,
@@ -98,6 +504,5 @@
     "cave_drip"
   ],
   "triggers": [],
-  "layers": [],
-  "events": []
+  "layers": []
 }

@@ -56,12 +56,11 @@
         16
       ],
       "to_island": 1,
-      "to_region": "overworld",
+      "to_region": "vesper_graveyard",
       "to_spawn": [
-        424,
-        184
+        160,
+        424
       ],
-      "one_way": true,
       "requires_flags": [
         "uc_backdoor_open"
       ],
@@ -257,8 +256,8 @@
       "id": "grave_hand_r6",
       "kind": "grave_hand",
       "pos": [
-        456,
-        224
+        488,
+        176
       ],
       "zone": "uc_echo"
     }

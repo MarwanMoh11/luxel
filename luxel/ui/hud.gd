@@ -54,11 +54,14 @@ func bind_events() -> void:
 		[Lx.events.move_unlocked, _on_move_unlocked], [Lx.events.boss_phase_changed, _on_boss_phase],
 		[Lx.events.boss_defeated, _on_boss_defeated], [Lx.events.ember_piece_collected, _on_ember_piece],
 		[Lx.events.enemy_hit, _on_enemy_hit], [Lx.events.lantern_stolen, _on_lantern_stolen],
+		[LxSold.current().hud_visibility_changed, _on_hud_visibility_changed],
 	]
 	for p: Array in pairs:
 		var sig: Signal = p[0] as Signal
 		var cb: Callable = p[1] as Callable
 		if not sig.is_connected(cb): sig.connect(cb)
+
+func _on_hud_visibility_changed(_flags: Dictionary) -> void: queue_redraw()
 
 func set_ember(current: float, maximum: float) -> void:
 	_ember_max = maxf(1.0, maximum); _ember_val = clampf(current, 0.0, _ember_max); queue_redraw()
@@ -81,17 +84,20 @@ func sync_bosses(live_bosses: Array) -> void:
 	if live_bosses.is_empty():
 		hide_boss(); return
 	var prev_trails: Dictionary = {}
-	for pe: Dictionary in _boss_entries: prev_trails[str(pe.get("id", ""))] = float(pe.get("trail_hp", pe.get("hp", 0.0)))
+	for pe: Dictionary in _boss_entries:
+		var tk: String = str(pe.get("iid", pe.get("id", "")))
+		prev_trails[tk] = float(pe.get("trail_hp", pe.get("hp", 0.0)))
 	var next_list: Array[Dictionary] = []
 	for item: Variant in live_bosses:
 		if not (item is LxEnemyBrain) or not is_instance_valid(item): continue
 		var b: LxEnemyBrain = item as LxEnemyBrain
 		var bid: String = b.boss_id if not b.boss_id.is_empty() else b.kind
+		var iid: String = str(b.get_instance_id())
 		var nk: String = resolve_boss_name_key(bid)
 		var mh: float = maxf(1.0, b.max_hp)
 		var ch: float = clampf(b.hp, 0.0, mh)
-		var tr: float = clampf(float(prev_trails.get(bid, ch)), ch, mh)
-		next_list.append({"id": bid, "name_key": nk, "hp": ch, "max_hp": mh, "trail_hp": tr, "phase": maxi(1, b.phase)})
+		var tr: float = clampf(float(prev_trails.get(iid, prev_trails.get(bid, ch))), ch, mh)
+		next_list.append({"id": bid, "iid": iid, "name_key": nk, "hp": ch, "max_hp": mh, "trail_hp": tr, "phase": maxi(1, b.phase)})
 		_check_hollow_twist(nk)
 		if next_list.size() >= 2: break
 	if next_list.is_empty(): hide_boss(); return
@@ -170,7 +176,18 @@ func _on_boss_phase(boss_id: String, phase: int) -> void:
 		spawn_screen_cue(p_cue, Vector2(160.0, 126.0), "coral", 1.8)
 		if not _cues.is_empty(): _cues[_cues.size() - 1]["boss_callout"] = true
 
-func _on_boss_defeated(_boss_id: String, _island_id: int) -> void: hide_boss()
+func _on_boss_defeated(boss_id: String, _island_id: int) -> void:
+	if _boss_entries.size() > 1 and not boss_id.is_empty():
+		var rem: Array[Dictionary] = []
+		var removed_one: bool = false
+		for be: Dictionary in _boss_entries:
+			if not removed_one and str(be.get("id", "")) == boss_id: removed_one = true; continue
+			rem.append(be)
+		if not rem.is_empty():
+			_boss_entries = rem; _boss_name_key = str(rem[0]["name_key"]); _boss_hp = float(rem[0]["hp"])
+			_boss_max_hp = float(rem[0]["max_hp"]); _boss_trail_hp = float(rem[0]["trail_hp"]); _boss_phase = int(rem[0]["phase"])
+			queue_redraw(); return
+	hide_boss()
 func _on_ember_piece(_total: int) -> void: spawn_screen_cue("CUE_EMBER_FOUND", Vector2(160.0, 34.0), "apricot", 1.8)
 
 func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
@@ -231,9 +248,14 @@ func _sync_player_ember() -> void:
 func _draw() -> void:
 	if Lx.state == null: return
 	LxHudFx.sync_reticle_visibility(self)
+	var vis: Dictionary = LxSold.current().get_hud_visibility()
+	var show_hearts: bool = bool(vis.get("show_hearts", true))
+	var show_minimap: bool = bool(vis.get("show_minimap", true))
+	var show_ember: bool = bool(vis.get("show_ember", true))
 	var notice_col: Color = _notice_color()
 	var notice_r: Rect2 = _compute_notice_rect() if notice_col.a > 0.0 else Rect2()
-	_draw_hearts(Vector2(5.0, 5.0))
+	if show_hearts: _draw_hearts(Vector2(5.0, 5.0))
+	LxHudOverlays.draw_temper_mark(self, Vector2(5.0, 5.0), clampi(Lx.state.max_hearts, 4, 12), show_hearts)
 	var in_dng: bool = Lx.world != null and bool(Lx.world.get("is_dungeon"))
 	if not _boss_active and not in_dng and Lx.state.island_id > 0 and _notice_text.is_empty() and not LxHudFx.is_ceremony_active(): _draw_beacon_gauge(160.0, 4.0)
 	if bool(_challenge.get("active", false)):
@@ -241,13 +263,13 @@ func _draw() -> void:
 	var keys_shown: bool = _draw_shards_and_keys(Vector2(315.0, 5.0))
 	_draw_moves_tray(Vector2(5.0, 160.0))
 	if not _boss_active: _draw_zip_cue(Vector2(5.0, 148.0))
-	if Lx.world != null and not _boss_active:
+	if show_minimap and Lx.world != null and not _boss_active:
 		var mm_o := Vector2(263.0, 22.0 if keys_shown else 16.0)
 		var mg: String = LxStrings.sanitize(Lx.input.get_glyph("lx_map"), 6) if Lx.input != null else "-"
 		var mw: float = float(LxPixelFont.width(LxStrings.fmt("HUD_MAP_HINT", [mg if not mg.is_empty() else "-"]), 1))
 		draw_rect(Rect2(mm_o.x + 50.0 - mw, mm_o.y + 30.0, mw + 4.0, 9.0), Color(LxPalette.PAL["void"] as Color, 0.72))
 		LxMinimap.draw_minimap(self, mm_o, _blink_t)
-	if Lx.state.has_move("sunflare"): _draw_ember_meter(Vector2(246.0, 166.0))
+	if show_ember and Lx.state.has_move("sunflare"): _draw_ember_meter(Vector2(246.0, 166.0))
 	if _boss_active: _draw_boss_bar()
 	var prompt_r: Rect2 = _draw_interact_prompt(notice_r)
 	LxHudFx.draw_cues(self, _cues, prompt_r, notice_r)
@@ -266,6 +288,8 @@ func _draw_hearts(origin: Vector2) -> void:
 			draw_rect(Rect2(pos + Vector2(1.0, 1.0), Vector2(1.0, 1.0)), LxPalette.PAL["rose"])
 		elif fill_amt >= 0.25:
 			for r: Rect2 in HALF_HEART_PIXELS: draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["coral"])
+	if Lx.state.half_lanterns > 0:
+		LxHudOverlays.draw_half_lantern(self, origin, max_h, Lx.state.half_lanterns)
 	if cur_h > 0.0 and cur_h <= 1.0 and (LxHudFx.flash_reduced() or fmod(_blink_t, 0.6) < 0.35):
 		LxPixelFont.draw_left(self, LxStrings.text("HUD_LAST_HEART"), Vector2(origin.x, origin.y + (15.0 if max_h > 6 else 8.0)), LxPalette.PAL["coral"], 1)
 
@@ -364,7 +388,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		_draw_move_icon(mid, box.position + Vector2(3.0, 2.0), icon_col)
 		if is_locked:
 			LxHudOverlays.draw_locked_move_badge(self, box)
-		if mid == "dash" and dash_cd > 0.02:
+		elif mid == "dash" and dash_cd > 0.02:
 			var frac: float = clampf(1.0 - dash_cd / maxf(0.15, Lx.state.get_effective_dash_cooldown() + 0.17), 0.0, 1.0)
 			draw_rect(Rect2(slot_x + 2.0, origin.y + 9.0, floorf(9.0 * frac), 1.0), LxPalette.PAL["coral"])
 		elif mid == "beam" and beam_cd > 0.02:
@@ -378,14 +402,15 @@ func _draw_moves_tray(origin: Vector2) -> void:
 			elif lens_cd > 0.02:
 				var lfrac: float = clampf(1.0 - lens_cd / maxf(0.1, float(mdata.get("cooldown", 6.0))), 0.0, 1.0)
 				draw_rect(Rect2(slot_x + 2.0, origin.y + 9.0, floorf(9.0 * lfrac), 1.0), LxPalette.PAL["sky"])
+		var g_col: Color = LxPalette.PAL["mauve"] if is_locked else LxPalette.PAL["stone"]
 		if mid == "wings":
 			var raw_dg: String = Lx.input.get_glyph("lx_dash").to_upper() if Lx.input != null else ""
 			var dg: String = "SHF" if raw_dg == "SHIFT" else LxStrings.sanitize(raw_dg, 3)
 			var wlbl: String = LxStrings.fmt("HUD_HOLD_SHORT_FMT", [dg]) if (not dg.is_empty() and LxStrings.has_id("HUD_HOLD_SHORT_FMT")) else LxStrings.text("OPT_MODE_HOLD")
-			LxPixelFont.draw_centered(self, wlbl, slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["ice"] if wings_gliding else LxPalette.PAL["stone"], 1)
+			LxPixelFont.draw_centered(self, wlbl, slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["ice"] if (wings_gliding and not is_locked) else g_col, 1)
 		elif not is_passive and not action_id.is_empty() and Lx.input != null:
 			var glyph: String = LxStrings.sanitize(Lx.input.get_glyph(action_id).to_upper(), 5)
-			LxPixelFont.draw_centered(self, glyph, slot_x + 6.5, origin.y + 12.0, LxPalette.PAL["stone"], 1)
+			LxPixelFont.draw_centered(self, glyph, slot_x + 6.5, origin.y + 12.0, g_col, 1)
 		elif mid == "prism":
 			draw_rect(Rect2(slot_x + 3.0, origin.y + 13.0, 1.0, 2.0), LxPalette.PAL["sky"])
 			draw_rect(Rect2(slot_x + 6.0, origin.y + 12.0, 1.0, 3.0), LxPalette.PAL["ice"])
@@ -395,24 +420,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		slot_x += step_x
 
 func _draw_zip_cue(origin: Vector2) -> void:
-	if _zip_cue_alpha <= 0.02: return
-	var pos: Vector2 = origin
-	if Lx.ui != null:
-		var nar_v: Variant = Lx.ui.get("narration")
-		if nar_v is Object and is_instance_valid(nar_v):
-			var nar: Object = nar_v as Object
-			if nar.has_method("has_active_prompt") and bool(nar.call("has_active_prompt")):
-				var saying: bool = nar.has_method("is_saying") and (bool(nar.call("is_saying", "main")) or bool(nar.call("is_saying", "title")))
-				pos.y = 120.0 if saying else 133.0
-	var glyph: String = LxStrings.sanitize(Lx.input.get_glyph("lx_fire"), 6) if Lx.input != null else "-"
-	var txt: String = LxStrings.fmt("HUD_ZIP_CUE", [glyph])
-	var w: float = float(LxPixelFont.width(txt, 1)) + 8.0
-	var a: float = _zip_cue_alpha
-	draw_rect(Rect2(pos, Vector2(w, 9.0)), Color(LxPalette.PAL["night"] as Color, a * 0.85))
-	draw_rect(Rect2(pos + Vector2(1.0, 1.0), Vector2(w - 2.0, 7.0)), Color(LxPalette.PAL["dusk"] as Color, a * 0.90))
-	draw_rect(Rect2(pos, Vector2(w, 1.0)), Color(LxPalette.PAL["gold"] as Color, a))
-	draw_rect(Rect2(pos + Vector2(0.0, 8.0), Vector2(w, 1.0)), Color(LxPalette.PAL["gold"] as Color, a))
-	LxPixelFont.draw_left(self, txt, pos + Vector2(4.0, 2.0), Color(LxPalette.PAL["gold"] as Color, a), 1)
+	LxHudOverlays.draw_zip_cue(self, origin, _zip_cue_alpha)
 
 
 func _draw_move_icon(move_id: String, at: Vector2, col: Color) -> void:
@@ -456,21 +464,7 @@ func _draw_move_icon(move_id: String, at: Vector2, col: Color) -> void:
 
 
 func _draw_ember_meter(at: Vector2) -> void:
-	var bar_w: float = 68.0
-	var bar_h: float = 8.0
-	var frac: float = clampf(_ember_val / maxf(1.0, _ember_max), 0.0, 1.0)
-	var ready: bool = frac >= 0.999
-	var border_col: String = "cream" if (ready and (LxHudFx.flash_reduced() or fmod(_blink_t, 0.5) < 0.25)) else ("gold" if ready else "mauve")
-	LxPixelFont.draw_panel(self, Rect2(at, Vector2(bar_w, bar_h)), "night", border_col, "void")
-	var inner_w: float = floorf((bar_w - 4.0) * frac)
-	if inner_w > 0.0:
-		var fill_c: Color = LxPalette.PAL["gold"] if ready else (LxPalette.PAL["apricot"] if frac >= 0.5 else LxPalette.PAL["coral"])
-		draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(inner_w, bar_h - 4.0)), fill_c)
-		if ready:
-			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(inner_w, 1.0)), LxPalette.PAL["cream"])
-	var label_id: String = "HUD_EMBER_READY" if ready else "HUD_EMBER"
-	var label_col: Color = LxPalette.PAL["gold"] if ready else LxPalette.PAL["stone"]
-	LxPixelFont.draw_right(self, LxStrings.text(label_id), at.x + bar_w, at.y - 7.0, label_col, 1)
+	LxHudOverlays.draw_ember_meter(self, at, _ember_val, _ember_max, _blink_t)
 
 
 func _draw_boss_bar() -> void:
