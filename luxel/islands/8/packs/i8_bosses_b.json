@@ -100,8 +100,8 @@
       "mini": false,
       "dungeon": "archive",
       "region": "archive_r12",
-      "music": "island8_boss_p1",
-      "music_p2": "island8_boss_p2",
+      "music": "isl8_boss_minor_p1",
+      "music_p2": "isl8_boss_minor_p2",
       "heart": "half",
       "flag": "archivist_defeated",
       "arena_lock": true
@@ -116,8 +116,8 @@
       "mini": false,
       "dungeon": "endless_stair",
       "region": "stair_r10",
-      "music": "island8_boss_p1",
-      "music_p2": "island8_boss_p2",
+      "music": "isl8_boss_minor_p1",
+      "music_p2": "isl8_boss_minor_p2",
       "heart": "none",
       "flag": "stair_warden_defeated",
       "arena_lock": true
@@ -131,8 +131,8 @@
       "mini": true,
       "dungeon": "bell_sanctum",
       "region": "sanctum_r12",
-      "music": "island8_boss_p1",
-      "music_p2": "island8_boss_p2",
+      "music": "isl8_boss_minor_p1",
+      "music_p2": "isl8_boss_minor_p2",
       "heart": "half",
       "flag": "rose_seraph_defeated",
       "arena_lock": true
@@ -147,8 +147,8 @@
       "mini": false,
       "dungeon": "superboss",
       "region": "superboss_first_dark",
-      "music": "island8_boss_p1",
-      "music_p2": "island8_boss_p2",
+      "music": "superboss_b",
+      "music_p2": "superboss_b",
       "heart": "full",
       "flag": "first_dark_defeated",
       "arena_lock": true

@@ -23,6 +23,7 @@ var _rattle_t: float = 0.0
 var _is_light_bridge: bool = false
 var _door_sheet: LxSpriteSheet = null
 var _door_sheet_key: String = ""
+var _script_lock_saved: Dictionary = {}
 
 func setup(spec: Dictionary) -> void:
 	super.setup(spec)
@@ -41,10 +42,8 @@ func setup(spec: Dictionary) -> void:
 		"shortcut_door", "bridge_of_light": door_type = "ward_barrier"
 		_: door_type = raw_type
 	var raw_key: String = str(props.get("key_kind", props.get("key_id", ""))).strip_edges().to_lower()
-	if raw_key == "keepers_flame":
-		door_type = "boss_key"
-	elif raw_key == "wick_key" and door_type == "switch_door":
-		door_type = "wick_key"
+	if raw_key == "keepers_flame": door_type = "boss_key"
+	elif raw_key == "wick_key" and door_type == "switch_door": door_type = "wick_key"
 	kind = "door"
 	size = _parse_size(props.get("size", [32.0, 16.0]), Vector2(32.0, 16.0))
 	radius = maxf(size.x, size.y) * 0.5 + 4.0
@@ -62,9 +61,9 @@ func setup(spec: Dictionary) -> void:
 	required_signals = _to_str_array(props.get("requires_signals", props.get("required_signals", [])))
 	required_count = maxi(1, int(props.get("required_count", maxi(1, required_signals.size()))))
 	opened = bool(props.get("opened", props.get("starts_open", false)))
+	_script_lock_saved.clear()
 	_is_light_bridge = id.begins_with("bridge_of_light") or raw_type == "bridge_of_light"
-	if Lx.state != null and not id.is_empty() and (Lx.state.opened_doors.has(id) or Lx.state.broken_seals.has(id)):
-		opened = true
+	if _is_persisted_open(): opened = true
 	_load_door_sheet()
 	queue_redraw()
 
@@ -166,22 +165,36 @@ func _ward_requirements_met() -> bool:
 	for fl: String in required_flags:
 		if region != null and region.has_method("is_flag_set"):
 			if not bool(region.call("is_flag_set", fl)): return false
-		elif not bool(Lx.state.story_flags.get(fl, false)) and not Lx.state.lit_beacons.has(fl):
+		elif not LxRegionRuntime.flag_truthy(Lx.state.story_flags.get(fl, false)) and not Lx.state.lit_beacons.has(fl):
 			return false
 	return true
 
+func _is_persisted_open() -> bool:
+	if Lx.state == null or id.is_empty(): return false
+	var skey: String = get_state_key()
+	if Lx.state.opened_doors.has(skey) or Lx.state.broken_seals.has(skey): return true
+	return LxLegacy.is_legacy_region(island_id, region_id) and (Lx.state.opened_doors.has(id) or Lx.state.broken_seals.has(id))
+
+func set_script_locked(locked: bool) -> void:
+	if locked:
+		if _script_lock_saved.is_empty(): _script_lock_saved = {"opened": opened, "active": active}
+		opened = false; active = true; queue_redraw()
+	elif not _script_lock_saved.is_empty():
+		opened = bool(_script_lock_saved.get("opened", false))
+		active = bool(_script_lock_saved.get("active", true))
+		_script_lock_saved.clear(); queue_redraw()
+
 func _open(persist: bool) -> bool:
+	_script_lock_saved.clear()
 	opened = true
 	_open_t = OPEN_DUR
 	if Lx.state != null:
 		var flag_name: String = str(props.get("sets_flag", props.get("flag_id", "")))
-		if not flag_name.is_empty():
-			Lx.state.story_flags[flag_name] = true
+		if not flag_name.is_empty(): Lx.state.story_flags[flag_name] = true
 		if persist and not id.is_empty():
-			if not Lx.state.opened_doors.has(id):
-				Lx.state.opened_doors.append(id)
-			if door_type == "ward_barrier" and not Lx.state.broken_seals.has(id):
-				Lx.state.broken_seals.append(id)
+			var skey: String = get_state_key()
+			if not Lx.state.opened_doors.has(skey): Lx.state.opened_doors.append(skey)
+			if door_type == "ward_barrier" and not Lx.state.broken_seals.has(skey): Lx.state.broken_seals.append(skey)
 	var is_grand: bool = door_type == "boss_key" or door_type == "ward_barrier"
 	if door_type == "ward_barrier" and Lx.events != null:
 		Lx.events.seal_broken.emit(island_id, id)
@@ -231,16 +244,16 @@ func _has_unlock_key() -> bool:
 	return Lx.state.get_key_count(dungeon_id, "keepers_flame" if door_type == "boss_key" else "wick_key") > 0
 
 func save_state() -> Dictionary:
-	return {"active": active, "opened": opened, "signals": _active_signals.duplicate()}
+	var eff_open: bool = bool(_script_lock_saved.get("opened", opened)) if not _script_lock_saved.is_empty() else opened
+	var eff_act: bool = bool(_script_lock_saved.get("active", active)) if not _script_lock_saved.is_empty() else active
+	return {"active": eff_act, "opened": eff_open, "signals": _active_signals.duplicate()}
 
 func load_state(d: Dictionary) -> void:
 	super.load_state(d)
 	opened = bool(d.get("opened", opened))
 	var sigs: Variant = d.get("signals", {})
-	if sigs is Dictionary:
-		_active_signals = (sigs as Dictionary).duplicate()
-	if Lx.state != null and (Lx.state.opened_doors.has(id) or Lx.state.broken_seals.has(id)):
-		opened = true
+	if sigs is Dictionary: _active_signals = (sigs as Dictionary).duplicate()
+	if _is_persisted_open(): opened = true
 	queue_redraw()
 
 func _draw() -> void:
@@ -387,30 +400,20 @@ func _draw_wick_key(sheet: LxSpriteSheet, x0: float, y0: float, w: float, h: flo
 func _draw_key_feedback(cx: float, cy: float, is_boss: bool) -> void:
 	if _rattle_t > 0.0:
 		var rcol: Color = PAL["coral"] as Color if int(floorf(_rattle_t * 30.0)) % 2 == 0 else PAL["cream"] as Color
-		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 1.0), rcol)
-		draw_rect(Rect2(cx - 2.0, cy + 2.0, 4.0, 1.0), rcol)
-		return
-	if not _player_can_unlock_key_door() or not (LxHudFx.flash_reduced() or (_pulse_stage % 2 == 0)):
-		return
+		draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 1.0), rcol); draw_rect(Rect2(cx - 2.0, cy + 2.0, 4.0, 1.0), rcol); return
+	if not _player_can_unlock_key_door() or not (LxHudFx.flash_reduced() or (_pulse_stage % 2 == 0)): return
 	var off: float = 5.0 if is_boss else 4.0
-	draw_rect(Rect2(cx - off - 1.0, cy - 2.0, 1.0, 3.0), PAL["cream"] as Color)
-	draw_rect(Rect2(cx - off - 2.0, cy - 1.0, 3.0, 1.0), PAL["gold"] as Color)
-	draw_rect(Rect2(cx + off, cy - 2.0, 1.0, 3.0), PAL["cream"] as Color)
-	draw_rect(Rect2(cx + off - 1.0, cy - 1.0, 3.0, 1.0), PAL["gold"] as Color)
+	draw_rect(Rect2(cx - off - 1.0, cy - 2.0, 1.0, 3.0), PAL["cream"] as Color); draw_rect(Rect2(cx - off - 2.0, cy - 1.0, 3.0, 1.0), PAL["gold"] as Color)
+	draw_rect(Rect2(cx + off, cy - 2.0, 1.0, 3.0), PAL["cream"] as Color); draw_rect(Rect2(cx + off - 1.0, cy - 1.0, 3.0, 1.0), PAL["gold"] as Color)
 
 func _draw_switch_door(sheet: LxSpriteSheet, x0: float, y0: float, w: float, h: float, rattle_dx: float) -> void:
 	var drawn: bool = false
-	if w > h:
-		drawn = _draw_sheet_prop(sheet, "switch_door_h", Vector2(rattle_dx, 0.0), true)
-	elif w <= 20.0 and h <= 20.0:
-		drawn = _draw_sheet_prop(sheet, "switch_door_v_seal", Vector2(rattle_dx, 0.0), true)
-	else:
-		drawn = _draw_vertical_modular(sheet, "switch_door_v_cap", "switch_door_v_mid", "switch_door_v_seal", y0, h, rattle_dx, true)
-	if not drawn:
-		_draw_fallback_box(x0, y0, w, h, PAL["dusk"] as Color)
+	if w > h: drawn = _draw_sheet_prop(sheet, "switch_door_h", Vector2(rattle_dx, 0.0), true)
+	elif w <= 20.0 and h <= 20.0: drawn = _draw_sheet_prop(sheet, "switch_door_v_seal", Vector2(rattle_dx, 0.0), true)
+	else: drawn = _draw_vertical_modular(sheet, "switch_door_v_cap", "switch_door_v_mid", "switch_door_v_seal", y0, h, rattle_dx, true)
+	if not drawn: _draw_fallback_box(x0, y0, w, h, PAL["dusk"] as Color)
 	var need: int = maxi(required_count, required_signals.size())
-	if need > 1:
-		_draw_pip_strip(x0, y0, w, h, _active_signals.size(), need, 1.0)
+	if need > 1: _draw_pip_strip(x0, y0, w, h, _active_signals.size(), need, 1.0)
 
 func _draw_combat_gate(sheet: LxSpriteSheet, x0: float, y0: float, w: float, h: float, rattle_dx: float) -> void:
 	var drawn: bool = false
@@ -592,6 +595,5 @@ func _draw_open_burst(w: float, h: float) -> void:
 static func _to_str_array(v: Variant) -> Array[String]:
 	var out: Array[String] = []
 	if v is Array:
-		for item: Variant in (v as Array):
-			out.append(str(item))
+		for item: Variant in (v as Array): out.append(str(item))
 	return out

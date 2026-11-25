@@ -32,6 +32,8 @@ class Bolt:
 	var curve_angle_deg: float = 0.0
 	var hit_ids: Array[int] = []
 
+const MAX_BOLTS: int = 64
+
 var is_held: bool = false
 
 
@@ -71,15 +73,20 @@ func reset() -> void:
 
 
 func _sync_saved_temper() -> void:
-	if wick == null or not wick.temper.is_empty():
+	if wick == null:
 		return
 	var saved_t: String = ""
-	if Lx.state != null and Lx.state.story_flags.has("wick_temper"):
+	if Lx.state != null:
 		saved_t = str(Lx.state.story_flags.get("wick_temper", "")).strip_edges().to_lower()
 	elif Lx.vars != null:
 		saved_t = str(Lx.vars.get_var("game", "wick_temper", "")).strip_edges().to_lower()
-	if saved_t in ["skip", "scatter", "lance"]:
-		wick.temper = saved_t
+	wick.temper = saved_t if saved_t in ["skip", "scatter", "lance"] else ""
+
+
+func _push_bolt(b: Bolt) -> void:
+	if wick.bolts.size() >= MAX_BOLTS:
+		wick.bolts.remove_at(0)
+	wick.bolts.append(b)
 
 
 func _mod_stat(stat_name: String, base_val: float) -> float:
@@ -174,7 +181,7 @@ func _fire_bolt() -> bool:
 		b.biome_tint = "coral"
 		wick.spawn_sparks(b.pos, aim, 5, LxWick.PAL_CORAL, 55.0, 120.0, 0.18)
 
-	wick.bolts.append(b)
+	_push_bolt(b)
 	var panes_f: LxPanes = LxPanes.current()
 	if panes_f != null and not panes_f.equipped_ids().is_empty():
 		panes_f.fire_bolt_fired({
@@ -202,7 +209,7 @@ func _fire_bolt() -> bool:
 			sb_t.cracks_armour = b.cracks_armour
 			sb_t.biome_tint = b.biome_tint
 			sb_t.temper = "scatter"
-			wick.bolts.append(sb_t)
+			_push_bolt(sb_t)
 	# Island 7 Full Silver Moon: Radiant Mirror Echo fires a synced parallel twin-bolt (zero aim assist)
 	if bm != null and is_instance_valid(bm) and bm.mirror_echo_active:
 		var eb := Bolt.new()
@@ -218,7 +225,7 @@ func _fire_bolt() -> bool:
 		eb.bounces_left = 0
 		eb.is_prism = true
 		eb.light_color = LxHit.COLOR_BLUE
-		wick.bolts.append(eb)
+		_push_bolt(eb)
 		wick.spawn_sparks(eb.pos, aim, 3, LxWick.PAL_ICE, 35.0, 85.0, 0.14)
 	wick.shots_fired += 1
 	var cd_scale: float = bm.get_fire_rate_mult() if (bm != null and is_instance_valid(bm)) else (0.82 if (br != null and is_instance_valid(br) and br.starlight_surge_t > 0.0) else 1.0)
@@ -278,7 +285,7 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 		# 1. Enemy collision
 		var enemies: Array = wick.world_get_enemies(world_ctx)
 		for e_var: Variant in enemies:
-			if not (e_var is Object):
+			if not is_instance_valid(e_var) or not (e_var is Object):
 				continue
 			var enemy: Object = e_var as Object
 			if not wick.is_entity_alive(enemy):
@@ -343,11 +350,9 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 		if not dead:
 			var inters: Array = wick.world_get_interactables(world_ctx)
 			for it_var: Variant in inters:
-				if not (it_var is Object):
+				if not is_instance_valid(it_var) or not (it_var is Object):
 					continue
 				var item: Object = it_var as Object
-				if not is_instance_valid(item):
-					continue
 				if item.get("active") is bool and not bool(item.get("active")):
 					continue
 				var iid: int = item.get_instance_id()
@@ -414,7 +419,7 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 			var props_v: Variant = world_ctx.get("_scenery_props")
 			if props_v is Array:
 				for pv: Variant in (props_v as Array):
-					if not (pv is LxSceneryProp) or not is_instance_valid(pv as Object):
+					if not is_instance_valid(pv) or not (pv is LxSceneryProp):
 						continue
 					var sp: LxSceneryProp = pv as LxSceneryProp
 					var pid: int = sp.get_instance_id()
@@ -525,7 +530,7 @@ func _apply_prism_bounce(
 			sb.biome_tint = b.biome_tint
 			if ignore_id != -1:
 				sb.hit_ids.append(ignore_id)
-			wick.bolts.append(sb)
+			_push_bolt(sb)
 		wick.trigger_hitstop(0.028)
 		if Lx.camera != null and is_instance_valid(Lx.camera):
 			Lx.camera.add_kick(b.dir, 1.6)

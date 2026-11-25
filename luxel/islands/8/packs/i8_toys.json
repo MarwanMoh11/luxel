@@ -45,7 +45,7 @@
         "ebb",
         "flood"
       ],
-      "default": "ebb"
+      "default": "flood"
     },
     "stair_floor": {
       "scope": "dungeon:stair",
@@ -128,6 +128,7 @@
     }
   },
   "strings": {
+    "ISL8_REDEMPTION_LOCKED": "WIN A REDEMPTION RECEIPT FROM TOLLMASTER.",
     "ISL8_MENU_TITLE": "THE LANTERN ASKS",
     "ISL8_MENU_REDEEM_TITLE": "REDEMPTION DESK",
     "ISL8_MENU_INVOICE_TITLE": "TOLLMASTER INVOICE",

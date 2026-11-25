@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "theme": "archive_8",
   "name_key": "ISL8_Z_FIRST_DARK",
-  "music": "superboss_a",
+  "music": "superboss_b",
   "ambience": [
     "void_hum",
     "sanctum_bells"

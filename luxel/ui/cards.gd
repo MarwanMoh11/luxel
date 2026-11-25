@@ -22,7 +22,9 @@ const CREDITS_CLIP_TOP: float = 16.0
 const CREDITS_CLIP_BOT: float = 134.0
 const CREDITS_FADE_PX: float = 12.0
 const DEATH_PANEL := Rect2(44.0, 36.0, 232.0, 102.0)
-const RESULTS_PANEL := Rect2(40.0, 24.0, 240.0, 132.0)
+const RESULTS_PANEL := Rect2(24.0, 14.0, 272.0, 152.0)
+const DEATH_BTN_RETRY := Rect2(64.0, 106.0, 90.0, 16.0)
+const DEATH_BTN_TITLE := Rect2(166.0, 106.0, 90.0, 16.0)
 const LANTERN_POS := Vector2(160.0, 96.0)
 const EYE_COUNT: int = 24
 const MOTE_COUNT: int = 18
@@ -35,6 +37,7 @@ const DAWN_ISLANDS: Array[Vector2] = [
 var mode: int = Mode.NONE
 var ending_mode: String = "display_off"
 var _is_boss_death: bool = false
+var _death_idx: int = 0 # 0 = RETRY, 1 = TITLE
 var _elapsed: float = 0.0
 var _stats: Dictionary = {}
 var _credit_lines: Array[Dictionary] = [] # {text, color, scale, divider?}
@@ -54,7 +57,7 @@ func show_intro() -> void:
 	mode = Mode.INTRO; _elapsed = 0.0; _intro_cue_stage = 0; visible = true; queue_redraw()
 
 func show_death(is_boss: bool = false) -> void:
-	mode = Mode.DEATH; _is_boss_death = is_boss; _elapsed = 0.0; visible = true; queue_redraw()
+	mode = Mode.DEATH; _is_boss_death = is_boss; _death_idx = 0; _elapsed = 0.0; visible = true; queue_redraw()
 
 func show_ending(p_mode: String = "display_off") -> void:
 	ending_mode = "dawn" if p_mode == "dawn" else "display_off"
@@ -116,64 +119,60 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not visible or mode == Mode.NONE:
-		return
-	var guard_s: float = 0.18 if mode == Mode.DEATH else 0.25
-	if _elapsed < guard_s:
-		return
-
+	if not visible or mode == Mode.NONE: return
+	if _elapsed < (0.18 if mode == Mode.DEATH else 0.25): return
 	if mode == Mode.INTRO:
 		if _is_any_action_press(event):
-			if Lx.audio != null:
-				Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
-			close()
-			intro_finished.emit()
-			get_viewport().set_input_as_handled()
+			if Lx.audio != null: Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
+			close(); intro_finished.emit(); get_viewport().set_input_as_handled()
 		return
-
 	if mode == Mode.ENDING:
 		var lmb_end: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT
 		if _elapsed >= 0.5 and (lmb_end or event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ESCAPE) or _key_just(event, KEY_SPACE) or _key_just(event, KEY_ENTER)):
-			_finish_ending()
-			get_viewport().set_input_as_handled()
+			_finish_ending(); get_viewport().set_input_as_handled()
 		return
-
 	if mode == Mode.DEATH:
+		if event is InputEventMouseMotion:
+			var mp: Vector2 = (event as InputEventMouseMotion).position
+			var ni: int = 0 if DEATH_BTN_RETRY.has_point(mp) else (1 if DEATH_BTN_TITLE.has_point(mp) else _death_idx)
+			if ni != _death_idx: _death_idx = ni; queue_redraw()
+			return
+		if event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
+			if DEATH_BTN_TITLE.has_point((event as InputEventMouseButton).position):
+				if Lx.audio != null: Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
+				close(); title_requested.emit(); get_viewport().set_input_as_handled(); return
+			if Lx.audio != null: Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
+			close(); retry_requested.emit(); get_viewport().set_input_as_handled(); return
+		if event.is_action_pressed("lx_move_left") or event.is_action_pressed("lx_move_right") or _key_just(event, KEY_LEFT) or _key_just(event, KEY_RIGHT):
+			_death_idx = 1 - _death_idx; queue_redraw(); get_viewport().set_input_as_handled(); return
 		if event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
 			if Lx.audio != null: Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
-			close()
-			title_requested.emit()
-			get_viewport().set_input_as_handled()
-			return
+			close(); title_requested.emit(); get_viewport().set_input_as_handled(); return
 		var rmb_d: bool = event is InputEventMouseButton and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT
 		if not rmb_d and _is_any_action_press(event):
-			if Lx.audio != null: Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
-			close()
-			retry_requested.emit()
-			get_viewport().set_input_as_handled()
-			return
-
+			if _death_idx == 1 and (event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE)):
+				if Lx.audio != null: Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
+				close(); title_requested.emit()
+			else:
+				if Lx.audio != null: Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
+				close(); retry_requested.emit()
+			get_viewport().set_input_as_handled(); return
 	elif mode == Mode.RESULTS:
 		var lmb_res: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT
 		var rmb_res: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT
 		if rmb_res or event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
 			if Lx.audio != null: Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
-			close()
-			title_requested.emit()
-			get_viewport().set_input_as_handled()
+			close(); title_requested.emit(); get_viewport().set_input_as_handled()
 		elif lmb_res or event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
 			if Lx.audio != null: Lx.audio.play_sfx("ui_confirm", Vector2.ZERO, false, true)
 			ending_finished.emit()
 			if mode == Mode.RESULTS: show_credits()
 			get_viewport().set_input_as_handled()
-
 	elif mode == Mode.CREDITS:
 		var rmb_c: bool = event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT
 		if rmb_c or event.is_action_pressed("lx_ui_cancel") or _key_just(event, KEY_ESCAPE):
 			if Lx.audio != null: Lx.audio.play_sfx("ui_back", Vector2.ZERO, false, true)
-			close()
-			credits_finished.emit()
-			get_viewport().set_input_as_handled()
+			close(); credits_finished.emit(); get_viewport().set_input_as_handled()
 
 
 func _finish_ending() -> void:
@@ -226,21 +225,21 @@ func _draw_death() -> void:
 	LxPixelFont.draw_faded(self, LxStrings.text("DEATH_TITLE"), Vector2(160.0, 48.0), p, "coral", 2, HORIZONTAL_ALIGNMENT_CENTER)
 	var in_dng: bool = Lx.world != null and bool(Lx.world.get("is_dungeon"))
 	var sub_key: String = "DEATH_BOSS_SUB" if _is_boss_death else ("DEATH_ANCHOR_SUB" if (in_dng and LxStrings.has_id("DEATH_ANCHOR_SUB")) else "DEATH_SUB")
-	LxPixelFont.draw_faded(self, LxStrings.text(sub_key), Vector2(160.0, 68.0), p, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
-
+	var sub_txt: String = LxStrings.text(sub_key)
+	var sw: float = float(LxPixelFont.width(sub_txt, 1))
+	LxBubble.draw_icon(self, "door" if _is_boss_death else ("star" if in_dng else "lantern"), Vector2(roundf(160.0 - sw * 0.5 - 12.0), 66.0), 1.0)
+	LxPixelFont.draw_faded(self, sub_txt, Vector2(160.0, 68.0), p, "cream", 1, HORIZONTAL_ALIGNMENT_CENTER)
 	var play_s: float = Lx.state.play_time_s if Lx.state != null else 0.0
 	var deaths: int = Lx.state.deaths if Lx.state != null else 0
 	var shards: int = Lx.state.shards if Lx.state != null else 0
-	var stats_line: String = LxStrings.fmt("DEATH_STATS_FMT", [LxStrings.format_time(play_s), deaths, shards])
-	LxPixelFont.draw_centered(self, stats_line, 160.0, 86.0, LxPalette.PAL["stone"], 1)
-
-	var pulse: Color = LxPalette.PAL["gold"] if (LxHudFx.flash_reduced() or fmod(_elapsed, 1.2) < 0.6) else LxPalette.PAL["apricot"]
-	var retry_txt: String = LxStrings.text("DEATH_RETRY_HINT")
-	var rw: float = float(LxPixelFont.width(retry_txt, 1))
-	draw_rect(Rect2(roundf(160.0 - rw * 0.5 - 6.0), 109.0, 2.0, 2.0), pulse)
-	draw_rect(Rect2(roundf(160.0 + rw * 0.5 + 4.0), 109.0, 2.0, 2.0), pulse)
-	LxPixelFont.draw_centered(self, retry_txt, 160.0, 108.0, pulse, 1)
-	LxPixelFont.draw_centered(self, LxStrings.text("DEATH_TITLE_HINT"), 160.0, 122.0, LxPalette.PAL["mauve"], 1)
+	LxPixelFont.draw_centered(self, LxStrings.fmt("DEATH_STATS_FMT", [LxUiNav.format_epic_time(play_s), deaths, shards]), 160.0, 86.0, LxPalette.PAL["stone"], 1)
+	var pulse_b: bool = LxHudFx.flash_reduced() or fmod(_elapsed, 1.2) < 0.6
+	LxPixelFont.draw_panel(self, DEATH_BTN_RETRY, "plum" if _death_idx == 0 else "night", ("cream" if pulse_b else "gold") if _death_idx == 0 else "mauve", "void")
+	LxPixelFont.draw_centered(self, LxStrings.text("PAUSE_RETRY"), DEATH_BTN_RETRY.get_center().x, DEATH_BTN_RETRY.position.y + 5.0, LxPalette.PAL["gold"] if _death_idx == 0 else LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_panel(self, DEATH_BTN_TITLE, "plum" if _death_idx == 1 else "night", "gold" if _death_idx == 1 else "mauve", "void")
+	LxPixelFont.draw_centered(self, LxStrings.text("PAUSE_TITLE_BTN"), DEATH_BTN_TITLE.get_center().x, DEATH_BTN_TITLE.position.y + 5.0, LxPalette.PAL["gold"] if _death_idx == 1 else LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(self, LxStrings.text("DEATH_RETRY_HINT"), Vector2(54.0, 127.0), LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_right(self, LxStrings.text("DEATH_TITLE_HINT"), 266.0, 127.0, LxPalette.PAL["mauve"], 1)
 
 
 func _draw_ending_display_off() -> void:
@@ -416,30 +415,31 @@ func _draw_results() -> void:
 	var relit: int = int(_stats.get("relit_count", Lx.state.relit_islands.size() if Lx.state != null else 0))
 	var harmony: int = int(_stats.get("harmony_count", Lx.state.get_harmony_count() if Lx.state != null else 0))
 	var upg_t: Vector2i = Lx.state.get_upgrade_totals() if Lx.state != null else Vector2i(0, 20)
+	var dng_t: Vector2i = LxUiNav.count_total_dungeons()
+	var dng_done: int = int(_stats.get("dungeons_done", dng_t.x))
+	var boss_t: Vector2i = LxUiNav.count_total_bosses()
+	var boss_done: int = int(_stats.get("bosses_done", boss_t.x))
+	var moths_n: int = int(_stats.get("moths_caught", LxQuests.current().get_moth_count()))
 	var comp_pct: int = int(_stats.get("completion_pct", Lx.state.get_completion_pct(relit, embers) if Lx.state != null else 0))
+	var tolls_n: int = int(_stats.get("sold_settings", LxSold.current().get_dawn_receipts().size()))
 	var rank_key: String = _compute_rank_key(deaths, relit)
 	LxEndingArt.draw_results_ornaments(self, RESULTS_PANEL, rank_key, _elapsed, relit)
-
-	var p: float = clampf(_elapsed / 0.35, 0.0, 1.0)
-	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_TITLE"), Vector2(160.0, 34.0), p, "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
-	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_RANK_FMT", [LxStrings.text(rank_key)]), 160.0, 56.0, LxEndingArt.rank_text_color(rank_key), 2)
-	var p1: float = clampf((_elapsed - 0.10) / 0.25, 0.0, 1.0)
-	var p2: float = clampf((_elapsed - 0.18) / 0.25, 0.0, 1.0)
-	var p3: float = clampf((_elapsed - 0.26) / 0.25, 0.0, 1.0)
-	var p4: float = clampf((_elapsed - 0.34) / 0.25, 0.0, 1.0)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_TIME_FMT", [LxStrings.format_time(play_s)]), Vector2(92.0, 78.0), p1, "cream", 1)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_COMPLETION_FMT", [comp_pct]), Vector2(228.0, 78.0), p1, "lime" if comp_pct >= 100 else "gold", 1, HORIZONTAL_ALIGNMENT_RIGHT)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_DEATHS_FMT", [deaths]), Vector2(92.0, 90.0), p2, "cream", 1)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_UPGRADES_FMT", [upg_t.x, upg_t.y]), Vector2(228.0, 90.0), p2, "sky", 1, HORIZONTAL_ALIGNMENT_RIGHT)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_EMBERS_FMT", [embers]), Vector2(92.0, 102.0), p3, "apricot", 1)
-	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_HARMONY_FMT", [harmony]), Vector2(228.0, 102.0), p3, "gold", 1, HORIZONTAL_ALIGNMENT_RIGHT)
-	var tolls_n: int = LxSold.current().get_dawn_receipts().size()
-	if tolls_n > 0 and LxStrings.has_id("ISL8_RES_TOLLS"):
-		LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(92.0, 114.0), p4, "gold", 1)
-		LxPixelFont.draw_faded(self, LxStrings.fmt("ISL8_RES_TOLLS", [mini(tolls_n, 12)]), Vector2(228.0, 114.0), p4, "coral", 1, HORIZONTAL_ALIGNMENT_RIGHT)
-	else:
-		LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(160.0, 114.0), p4, "gold", 1, HORIZONTAL_ALIGNMENT_CENTER)
-	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_HINT"), Vector2(160.0, 143.0), clampf((_elapsed - 0.42) / 0.25, 0.0, 1.0), "stone", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_TITLE"), Vector2(160.0, 19.0), clampf(_elapsed / 0.35, 0.0, 1.0), "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
+	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_RANK_FMT", [LxStrings.text(rank_key)]), 160.0, 41.0, LxEndingArt.rank_text_color(rank_key), 2)
+	var p1: float = clampf((_elapsed - 0.08) / 0.22, 0.0, 1.0); var p2: float = clampf((_elapsed - 0.16) / 0.22, 0.0, 1.0)
+	var p3: float = clampf((_elapsed - 0.24) / 0.22, 0.0, 1.0); var p4: float = clampf((_elapsed - 0.32) / 0.22, 0.0, 1.0)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_TIME_FMT", [LxUiNav.format_epic_time(play_s)]), Vector2(48.0, 64.0), p1, "cream", 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_COMPLETION_FMT", [comp_pct]), Vector2(175.0, 64.0), p1, "lime" if comp_pct >= 100 else "gold", 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("MAP_DUNGEON_COUNT_FMT", [dng_done, dng_t.y]), Vector2(48.0, 76.0), p2, "apricot", 1)
+	LxPixelFont.draw_faded(self, LxUiNav.fmt_pair("MAP_DUNGEON_BOSS", LxFolkData.fmt_id("FMT_RATIO", [boss_done, boss_t.y])), Vector2(175.0, 76.0), p2, "coral", 1)
+	LxPixelFont.draw_faded(self, LxFolkData.fmt_id("JOURNAL_MOTHS_FMT", [moths_n, 80]), Vector2(48.0, 88.0), p3, "gold", 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_ISLANDS_FMT", [relit]), Vector2(175.0, 88.0), p3, "sky", 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_DEATHS_FMT", [deaths]), Vector2(48.0, 100.0), p4, "cream", 1)
+	var toll_txt: String = LxStrings.fmt("ISL8_RES_TOLLS", [mini(tolls_n, 12)]) if LxStrings.has_id("ISL8_RES_TOLLS") else LxStrings.fmt("RESULTS_EMBERS_FMT", [embers])
+	LxPixelFont.draw_faded(self, toll_txt, Vector2(175.0, 100.0), p4, "coral" if tolls_n > 0 else "stone", 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_UPGRADES_FMT", [upg_t.x, upg_t.y]), Vector2(48.0, 112.0), p4, "sky", 1)
+	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_HARMONY_FMT", [harmony]), Vector2(175.0, 112.0), p4, "gold", 1)
+	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_HINT"), Vector2(160.0, 153.0), clampf((_elapsed - 0.40) / 0.25, 0.0, 1.0), "stone", 1, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _credits_total_height() -> float:

@@ -185,7 +185,7 @@
         "mode": "valve",
         "scope": "dungeon:hollow_oak",
         "var": "oak_sap",
-        "shootable": true
+        "shootable": false
       }
     },
     {
@@ -533,6 +533,18 @@
       {
         "op": "expect",
         "flag": "oak_r2b_shortcut"
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_oak_r2b_shards"
       },
       {
         "op": "recall"

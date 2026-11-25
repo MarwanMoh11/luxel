@@ -128,7 +128,7 @@ func _measure_pan(is_left: bool) -> float:
 			total += 1.0
 	if region != null and region.has_method("get_interactables"):
 		for it_v: Variant in (region.call("get_interactables") as Array):
-			if not (it_v is LxInteractable) or it_v == self:
+			if not is_instance_valid(it_v) or not (it_v is LxInteractable) or it_v == self:
 				continue
 			var it: LxInteractable = it_v as LxInteractable
 			if not is_instance_valid(it) or not it.active:

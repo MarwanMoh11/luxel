@@ -53,9 +53,10 @@ func press() -> bool:
 		var aim: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
 		var spd: float = _mod_stat("throw_speed", float(data.get("throw_speed", 360.0)))
 		var rng: float = _mod_stat("throw_range", float(data.get("throw_range", 108.0)))
-		var hang: float = _mod_stat("hang_time", float(data.get("hang_time", 4.5)))
+		var base_hang: float = Lx.state.get_effective_throw_hang() if Lx.state != null else float(data.get("hang_time", 4.5))
+		var hang: float = _mod_stat("hang_time", base_hang)
 		var rspd: float = _mod_stat("recall_speed", float(data.get("recall_speed", 440.0)))
-		var lure_r: float = float(data.get("lure_radius", 135.0))
+		var lure_r: float = Lx.state.get_effective_lure_radius() if Lx.state != null else float(data.get("lure_radius", 135.0))
 		var empowered: bool = wick.move_dash != null and wick.move_dash.consume_counter()
 		if empowered:
 			dmg *= 1.25
@@ -174,7 +175,8 @@ func tick_zip(dt: float, world_ctx: Node) -> void:
 	wick.spawn_sparks(wick.global_position, -zip_dir, 1, LxWick.PAL_CREAM if _zip_empowered else LxWick.PAL_GOLD, 10.0, 28.0, 0.18)
 
 	var data: Dictionary = get_data()
-	var zdmg: float = float(data.get("zip_damage", 1.75)) * (1.25 if _zip_empowered else 1.0)
+	var base_zdmg: float = Lx.state.get_effective_zip_damage() if Lx.state != null else float(data.get("zip_damage", 1.75))
+	var zdmg: float = base_zdmg * (1.25 if _zip_empowered else 1.0)
 	var wear: float = float(data.get("shield_wear", 2.0)) + (0.5 if _zip_empowered else 0.0)
 	var stag: bool = bool(data.get("stagger", true))
 	var hs: float = float(data.get("hitstop", 0.085))
@@ -182,7 +184,7 @@ func tick_zip(dt: float, world_ctx: Node) -> void:
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
 	for e_var: Variant in enemies:
-		if not (e_var is Object):
+		if not is_instance_valid(e_var) or not (e_var is Object):
 			continue
 		var enemy: Object = e_var as Object
 		if not wick.is_entity_alive(enemy):
@@ -231,8 +233,10 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 	if wick == null or wick.lantern == null:
 		return
 	var data: Dictionary = get_data()
-	var burst_r: float = float(data.get("zip_burst_radius", 24.0)) * (1.15 if _zip_empowered else 1.0)
-	var zdmg: float = float(data.get("zip_damage", 1.75)) * (1.25 if _zip_empowered else 1.0)
+	var base_br: float = Lx.state.get_effective_zip_radius() if Lx.state != null else float(data.get("zip_burst_radius", 24.0))
+	var burst_r: float = base_br * (1.15 if _zip_empowered else 1.0)
+	var base_zdmg: float = Lx.state.get_effective_zip_damage() if Lx.state != null else float(data.get("zip_damage", 1.75))
+	var zdmg: float = base_zdmg * (1.25 if _zip_empowered else 1.0)
 	var wear: float = float(data.get("shield_wear", 2.0)) + (0.5 if _zip_empowered else 0.0)
 	var stag: bool = bool(data.get("stagger", true))
 	var hs: float = float(data.get("hitstop", 0.085))
@@ -252,7 +256,7 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 		LxGroundDecals.active_instance.add_decal(dk, center + Vector2(0.0, 3.0), 10.0, 5.0)
 	if isl in [2, 4] and world_ctx != null and is_instance_valid(world_ctx):
 		var wfx: Variant = world_ctx.get("_water_fx")
-		if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
+		if is_instance_valid(wfx) and wfx is Object and (wfx as Object).has_method("spawn_ripple"):
 			(wfx as Object).call("spawn_ripple", center, "ice" if isl == 2 else "rose", 14.0)
 	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
 		Lx.camera.call("add_kick", zip_dir, 2.2 if was_emp else 1.6)
@@ -261,7 +265,7 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 		LxDarknessLayer.active_instance.add_burst_light(center, 78.0 if was_emp else 64.0, (1.48 if was_emp else 1.28) * z_sc, 0.30)
 	if world_ctx != null and is_instance_valid(world_ctx):
 		var amb: Variant = world_ctx.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+		if is_instance_valid(amb) and amb is Object and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", center, burst_r * 2.2, 85.0)
 	if LxBiomeMechanics.active_instance != null and is_instance_valid(LxBiomeMechanics.active_instance):
 		LxBiomeMechanics.active_instance.try_hit_biome_target(center - zip_dir * burst_r, center + zip_dir * burst_r, zip_dir, wick)
@@ -271,7 +275,7 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
 	for e_var: Variant in enemies:
-		if not (e_var is Object):
+		if not is_instance_valid(e_var) or not (e_var is Object):
 			continue
 		var enemy: Object = e_var as Object
 		if not wick.is_entity_alive(enemy):
@@ -292,10 +296,10 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 
 	var inters: Array = wick.world_get_interactables(world_ctx)
 	for it_var: Variant in inters:
-		if not (it_var is Object):
+		if not is_instance_valid(it_var) or not (it_var is Object):
 			continue
 		var item: Object = it_var as Object
-		if not is_instance_valid(item) or not item.has_method("on_hit"):
+		if not item.has_method("on_hit"):
 			continue
 		if item.get("active") is bool and not bool(item.get("active")):
 			continue

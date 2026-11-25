@@ -37,7 +37,7 @@
       ],
       "to_region": "lighthouse_r1",
       "to_spawn": [
-        48,
+        88,
         136
       ],
       "requires_moves": [],
@@ -95,6 +95,26 @@
         [
           144,
           184
+        ]
+      ],
+      "zone": "lh_r11",
+      "leash": 120
+    },
+    {
+      "id": "skate_lh_r11_2",
+      "kind": "reef_skate",
+      "pos": [
+        184,
+        72
+      ],
+      "route": [
+        [
+          152,
+          72
+        ],
+        [
+          216,
+          72
         ]
       ],
       "zone": "lh_r11",
@@ -211,6 +231,20 @@
           "eye_lh_r11_well"
         ],
         "sets_flag": "lh_r11_well_open"
+      }
+    },
+    {
+      "id": "chest_lh_r11",
+      "kind": "chest",
+      "pos": [
+        72,
+        232
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30,
+        "zone": "lh_r11"
       }
     },
     {

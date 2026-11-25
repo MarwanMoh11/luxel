@@ -2120,6 +2120,50 @@
       {
         "op": "goto",
         "to": [
+          152,
+          392
+        ]
+      },
+      {
+        "op": "mount",
+        "target": "skiff_harbor"
+      },
+      {
+        "op": "shoot",
+        "target": [
+          104,
+          408
+        ],
+        "count": 1,
+        "wait_hit": 0.25
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "shoot",
+        "target": [
+          280,
+          408
+        ],
+        "count": 1,
+        "wait_hit": 0.25
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "dismount",
+        "to": [
+          136,
+          392
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
           120,
           344
         ]
@@ -2149,7 +2193,7 @@
       },
       {
         "op": "wait",
-        "secs": 0.35
+        "secs": 1.25
       },
       {
         "op": "shoot",
@@ -2162,6 +2206,10 @@
       {
         "op": "expect",
         "var": "tide==flood"
+      },
+      {
+        "op": "wait",
+        "secs": 0.6
       },
       {
         "op": "expect_exit",

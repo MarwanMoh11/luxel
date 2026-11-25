@@ -92,6 +92,10 @@ func _draw() -> void:
 	var r: float = 3.0 + roundf(pulse * 2.0)
 	draw_circle(Vector2.ZERO, r, col_core)
 	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
+	# Organic whale-breath pulse wave radiating across the rib-cage chamber
+	if not LxHudFx.flash_reduced():
+		var bu: float = fmod(_clock / maxf(2.0, period_s * 0.5), 1.0)
+		draw_arc(Vector2.ZERO, roundf(lerpf(8.0, 44.0, bu)), 0.0, TAU, 20, Color(col_core, (1.0 - bu) * 0.45), 1.0)
 	# Tide indicator pips (1 = low exhale, 2 = high inhale)
 	draw_rect(Rect2(-5.0, 5.0, 3.0, 2.0), PAL["ice"] as Color)
 	draw_rect(Rect2(2.0, 5.0, 3.0, 2.0), PAL["cream"] as Color if high else PAL["dusk"] as Color)

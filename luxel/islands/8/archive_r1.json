@@ -41,8 +41,7 @@
       "to_spawn": [
         184,
         240
-      ],
-      "one_way": true
+      ]
     },
     {
       "id": "exit_r1_west",
@@ -177,6 +176,8 @@
         232
       ],
       "props": {
+        "zone": "archive_rotunda",
+        "name_key": "ISL8_D_ARCHIVE",
         "lit": false
       }
     },

@@ -231,7 +231,7 @@ func _try_drip_slag_slime() -> void:
 func _check_frozen_slime_collision() -> void:
 	var enemies: Array = world_ctx.call("get_enemies") as Array if (world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("get_enemies")) else []
 	for ev: Variant in enemies:
-		if not (ev is LxEnemyBrain) or ev == self or not is_instance_valid(ev as Object):
+		if not is_instance_valid(ev) or not (ev is LxEnemyBrain) or ev == self:
 			continue
 		var eb: LxEnemyBrain = ev as LxEnemyBrain
 		if not eb.is_alive() or not eb.has_method("is_frozen_block") or not bool(eb.call("is_frozen_block")):
@@ -304,7 +304,7 @@ func _set_room_stride_speed(mult: float, calm: bool) -> void:
 	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("get_interactables"):
 		return
 	for it_v: Variant in (world_ctx.call("get_interactables") as Array):
-		if it_v is LxInteractable and (it_v as LxInteractable).kind == "colossus_stride_cam":
+		if is_instance_valid(it_v) and it_v is LxInteractable and (it_v as LxInteractable).kind == "colossus_stride_cam":
 			if (it_v as Object).has_method("set_speed_mult"):
 				(it_v as Object).call("set_speed_mult", mult)
 			if calm and (it_v as Object).has_method("set_stabilized"):

@@ -59,8 +59,8 @@ func _rows_for_tab(tab: int) -> Array[String]:
 			return ["master_vol", "music_vol", "sfx_vol", "ambience_vol", "mute_unfocus"]
 		Tab.DISPLAY:
 			if OS.has_feature("web"):
-				return ["screen_shake", "flash_reduction", "cursor_size", "cursor_color"]
-			return ["fullscreen", "window_scale", "screen_shake", "flash_reduction", "cursor_size", "cursor_color"]
+				return ["screen_shake", "flash_reduction", "cursor_size", "cursor_color", "next_light_cue"]
+			return ["fullscreen", "window_scale", "screen_shake", "flash_reduction", "cursor_size", "cursor_color", "next_light_cue"]
 		Tab.CONTROLS:
 			return ["rebind", "hold_fire", "hold_beam", "reset_controls"]
 		Tab.ASSIST:
@@ -184,6 +184,9 @@ func _handle_click(pos: Vector2) -> bool:
 		if r.has_point(pos):
 			_row_idx = i
 			var rid: String = rows[i]
+			if _is_row_sold(rid):
+				_play_ui_sfx("denied")
+				return true
 			var bar := Rect2(r.end.x - 94.0, r.position.y + 1.0, 56.0, 11.0)
 			if rid in ["master_vol", "music_vol", "sfx_vol", "ambience_vol", "screen_shake", "assist_game_speed"] and bar.has_point(pos):
 				_drag_row = rid
@@ -200,7 +203,15 @@ func _handle_click(pos: Vector2) -> bool:
 	return false
 
 
+func _is_row_sold(row_id: String) -> bool:
+	var sid: String = LxHudOverlays.sold_id_for_option_row(row_id)
+	return not sid.is_empty() and LxSold.current().is_sold(sid)
+
+
 func _set_slider_from_frac(row_id: String, frac: float, is_drag: bool = false) -> void:
+	if _is_row_sold(row_id):
+		if not is_drag: _play_ui_sfx("denied")
+		return
 	var cfg: Dictionary = _cfg()
 	var prev_v: Variant = cfg.get(row_id)
 	var next_v: Variant
@@ -224,6 +235,9 @@ func _set_slider_from_frac(row_id: String, frac: float, is_drag: bool = false) -
 
 
 func _activate_row(row_id: String) -> void:
+	if _is_row_sold(row_id):
+		_play_ui_sfx("denied")
+		return
 	if row_id == "rebind":
 		_play_ui_sfx("ui_confirm")
 		rebind_requested.emit()
@@ -235,6 +249,9 @@ func _activate_row(row_id: String) -> void:
 
 
 func _adjust_row(row_id: String, dir: int) -> void:
+	if _is_row_sold(row_id):
+		_play_ui_sfx("denied")
+		return
 	var cfg: Dictionary = _cfg()
 	match row_id:
 		"master_vol", "music_vol", "sfx_vol", "ambience_vol":
@@ -242,6 +259,10 @@ func _adjust_row(row_id: String, dir: int) -> void:
 			cfg[row_id] = v
 		"mute_unfocus", "fullscreen", "flash_reduction":
 			cfg[row_id] = not bool(cfg.get(row_id, false))
+		"next_light_cue":
+			var nxt_c: bool = not LxUiNav.is_next_light_cue_enabled()
+			cfg[row_id] = nxt_c
+			LxUiNav.set_next_light_cue_enabled(nxt_c)
 		"window_scale":
 			cfg[row_id] = clampi(int(cfg.get(row_id, 3)) + dir, 1, 5)
 		"screen_shake":
@@ -318,6 +339,7 @@ func _apply_and_save(cfg: Dictionary) -> void:
 	if Lx.save != null:
 		Lx.save.settings = cfg
 		Lx.save.save_settings()
+	LxSold.current()._apply_all_live_effects()
 	settings_changed.emit(cfg)
 
 
@@ -462,46 +484,27 @@ func _draw_slider(r: Rect2, row_id: String, cfg: Dictionary, sel: bool) -> void:
 
 func _row_label(row_id: String) -> String:
 	match row_id:
-		"master_vol":
-			return LxStrings.text("OPT_MASTER")
-		"music_vol":
-			return LxStrings.text("OPT_MUSIC")
-		"sfx_vol":
-			return LxStrings.text("OPT_SFX")
-		"ambience_vol":
-			return LxStrings.text("OPT_AMBIENCE")
-		"mute_unfocus":
-			return LxStrings.text("OPT_MUTE_UNFOCUS")
-		"fullscreen":
-			return LxStrings.text("OPT_FULLSCREEN")
-		"window_scale":
-			return LxStrings.text("OPT_WIN_SCALE")
-		"screen_shake":
-			return LxStrings.text("OPT_SHAKE")
-		"flash_reduction":
-			return LxStrings.text("OPT_FLASH_RED")
-		"cursor_size":
-			return LxStrings.text("OPT_CURSOR_SIZE")
-		"cursor_color":
-			return LxStrings.text("OPT_CURSOR_COLOR")
-		"rebind":
-			return LxStrings.text("OPT_REBIND_OPEN")
-		"hold_fire":
-			return LxStrings.text("OPT_HOLD_FIRE")
-		"hold_beam":
-			return LxStrings.text("OPT_HOLD_BEAM")
-		"hold_wings":
-			return LxStrings.text("OPT_HOLD_WINGS")
-		"reset_controls":
-			return LxStrings.text("OPT_RESET_DEFAULTS")
-		"assist_damage_mult":
-			return LxStrings.text("OPT_ASSIST_DMG")
-		"assist_tell_scale":
-			return LxStrings.text("OPT_ASSIST_TELLS")
-		"assist_game_speed":
-			return LxStrings.text("OPT_ASSIST_SPEED")
-		_:
-			return LxStrings.text("OPT_BACK")
+		"master_vol": return LxStrings.text("OPT_MASTER")
+		"music_vol": return LxStrings.text("OPT_MUSIC")
+		"sfx_vol": return LxStrings.text("OPT_SFX")
+		"ambience_vol": return LxStrings.text("OPT_AMBIENCE")
+		"mute_unfocus": return LxStrings.text("OPT_MUTE_UNFOCUS")
+		"fullscreen": return LxStrings.text("OPT_FULLSCREEN")
+		"window_scale": return LxStrings.text("OPT_WIN_SCALE")
+		"screen_shake": return LxStrings.text("OPT_SHAKE")
+		"flash_reduction": return LxStrings.text("OPT_FLASH_RED")
+		"cursor_size": return LxStrings.text("OPT_CURSOR_SIZE")
+		"cursor_color": return LxStrings.text("OPT_CURSOR_COLOR")
+		"next_light_cue": return LxUiNav.tr_any("OPT_NEXT_LIGHT", "ISL3_HUD_PIN")
+		"rebind": return LxStrings.text("OPT_REBIND_OPEN")
+		"hold_fire": return LxStrings.text("OPT_HOLD_FIRE")
+		"hold_beam": return LxStrings.text("OPT_HOLD_BEAM")
+		"hold_wings": return LxStrings.text("OPT_HOLD_WINGS")
+		"reset_controls": return LxStrings.text("OPT_RESET_DEFAULTS")
+		"assist_damage_mult": return LxStrings.text("OPT_ASSIST_DMG")
+		"assist_tell_scale": return LxStrings.text("OPT_ASSIST_TELLS")
+		"assist_game_speed": return LxStrings.text("OPT_ASSIST_SPEED")
+		_: return LxStrings.text("OPT_BACK")
 
 
 func _row_value_text(row_id: String, cfg: Dictionary) -> String:
@@ -510,6 +513,8 @@ func _row_value_text(row_id: String, cfg: Dictionary) -> String:
 			return LxStrings.fmt("FMT_PCT", [roundi(float(cfg.get(row_id, 1.0)) * 100.0)])
 		"mute_unfocus", "fullscreen", "flash_reduction":
 			return LxStrings.text("OPT_ON" if bool(cfg.get(row_id, false)) else "OPT_OFF")
+		"next_light_cue":
+			return LxStrings.text("OPT_ON" if LxUiNav.is_next_light_cue_enabled() else "OPT_OFF")
 		"window_scale":
 			return LxStrings.fmt("OPT_SCALE_FMT", [int(cfg.get(row_id, 3))])
 		"screen_shake":
@@ -552,8 +557,9 @@ func _tab_rect(i: int) -> Rect2:
 
 
 func _row_rect(i: int) -> Rect2:
-	var base_y: float = 54.0 if current_tab == Tab.ASSIST else 44.0
-	return Rect2(26.0, base_y + float(i) * 16.0, 268.0, 13.0)
+	var base_y: float = 54.0 if current_tab == Tab.ASSIST else (42.0 if current_tab == Tab.DISPLAY else 44.0)
+	var step_y: float = 15.0 if current_tab == Tab.DISPLAY else 16.0
+	return Rect2(26.0, base_y + float(i) * step_y, 268.0, 13.0)
 
 
 func _back_btn_rect() -> Rect2:

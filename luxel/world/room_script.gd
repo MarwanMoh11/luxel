@@ -31,9 +31,13 @@ var _all_exits_locked: bool = false
 var _auto_unlock_on_clear: bool = false
 var _connected_events: bool = false
 var _local_vars: Dictionary = {}
+var _pending_once_wave_ids: Array[String] = []
+var _challenge_spawned: Dictionary = {} # challenge_tag -> Array[LxEnemyBrain]
+var _aborted: bool = false
 
 func setup(p_region: Node, p_events: Array, p_island_id: int = 0, p_region_id: String = "") -> void:
 	cleanup()
+	_aborted = false
 	region = p_region
 	island_id = p_island_id if p_island_id > 0 else (int(p_region.get("current_island_id")) if p_region != null else 1)
 	region_id = p_region_id if not p_region_id.is_empty() else (str(p_region.get("current_region_id")) if p_region != null else "")
@@ -44,21 +48,27 @@ func setup(p_region: Node, p_events: Array, p_island_id: int = 0, p_region_id: S
 			if str(ev.get("id", "")).is_empty(): ev["id"] = "ev_%d" % i
 			events.append(ev)
 	_elapsed_s = 0.0; _entered_fired = false; _all_exits_locked = false; _auto_unlock_on_clear = false
-	for d: Dictionary in [_fired_once, _timer_next, _prev_cond_state, _zone_cleared_fired, _signal_cache, _locked_exit_ids]: d.clear()
-	_queues.clear(); _pending_spawns.clear(); _locked_door_ids.clear()
+	for d: Dictionary in [_fired_once, _timer_next, _prev_cond_state, _zone_cleared_fired, _signal_cache, _locked_exit_ids, _challenge_spawned]: d.clear()
+	_queues.clear(); _pending_spawns.clear(); _locked_door_ids.clear(); _pending_once_wave_ids.clear()
 	_scan_initial_enemies(); _bind_bus(); z_index = 2; queue_redraw()
 
 func _exit_tree() -> void: cleanup()
 
 func cleanup() -> void:
+	_aborted = true
 	if _connected_events and Lx.events != null:
 		if Lx.events.player_died.is_connected(_on_player_died): Lx.events.player_died.disconnect(_on_player_died)
 		if Lx.events.enemy_killed.is_connected(_on_enemy_killed): Lx.events.enemy_killed.disconnect(_on_enemy_killed)
 	_connected_events = false
+	if not _locked_door_ids.is_empty() and region != null and is_instance_valid(region) and region.has_method("find_interactable"):
+		for did: String in _locked_door_ids:
+			var it: LxInteractable = region.call("find_interactable", did) as LxInteractable
+			if it != null and is_instance_valid(it) and it is LxDoor: (it as LxDoor).set_script_locked(false)
+		_locked_door_ids.clear()
 	if active_challenge != null and is_instance_valid(active_challenge):
 		if active_challenge.has_method("cleanup"): active_challenge.call("cleanup")
 		active_challenge.queue_free()
-	active_challenge = null; _pending_spawns.clear(); _queues.clear()
+	active_challenge = null; _pending_spawns.clear(); _queues.clear(); _challenge_spawned.clear()
 
 func _bind_bus() -> void:
 	if _connected_events or Lx.events == null: return
@@ -70,26 +80,37 @@ func _scan_initial_enemies() -> void:
 	_had_enemies = false; _had_zone_enemies.clear()
 	if region == null or not region.has_method("get_enemies"): return
 	for e: Variant in (region.call("get_enemies") as Array):
-		if e is LxEnemyBrain and is_instance_valid(e) and (e as LxEnemyBrain).is_alive():
+		if is_instance_valid(e) and e is LxEnemyBrain and (e as LxEnemyBrain).is_alive():
 			_had_enemies = true
 			var z: String = (e as LxEnemyBrain).zone
 			if not z.is_empty(): _had_zone_enemies[z] = true
 
+func _region_changed() -> bool:
+	if _aborted or region == null or not is_instance_valid(region): return true
+	return int(region.get("current_island_id")) != island_id or str(region.get("current_region_id")) != region_id
+
 func tick(dt: float) -> void:
-	if region == null or not is_instance_valid(region): return
+	if _region_changed(): return
 	_elapsed_s += dt
-	if not _entered_fired: _entered_fired = true; _dispatch_trigger("enter", {})
+	if not _entered_fired:
+		_entered_fired = true; _dispatch_trigger("enter", {})
+		if _region_changed(): return
 	_tick_pending_spawns(dt)
+	if _region_changed(): return
 	_tick_queues(dt)
+	if _region_changed(): return
 	if active_challenge != null and is_instance_valid(active_challenge) and active_challenge.has_method("tick"):
 		active_challenge.call("tick", dt)
+		if _region_changed(): return
 	_poll_events()
+	if _region_changed(): return
+	_commit_pending_wave_once_flags()
 	_check_wave_auto_unlock()
 	if not _pending_spawns.is_empty(): queue_redraw()
 
 func notify(event_name: String, data: Dictionary = {}) -> void:
 	var ev_s: String = event_name.strip_edges()
-	if ev_s.is_empty(): return
+	if ev_s.is_empty() or _region_changed(): return
 	if ev_s == "player_died": _on_player_died(); return
 	if ev_s.begins_with("signal:"):
 		var pwr: bool = bool(data.get("powered", true))
@@ -101,31 +122,45 @@ func notify(event_name: String, data: Dictionary = {}) -> void:
 		_dispatch_trigger("cleared" if z.is_empty() else ("cleared:" + z), data)
 		if not z.is_empty(): _dispatch_trigger("cleared", data)
 		return
-	_dispatch_trigger(ev_s, data)
+	var fired_n: int = _dispatch_trigger(ev_s, data)
+	if fired_n == 0 and ev_s.begins_with("trial_start:"):
+		var ch_spec: Variant = data.get("challenge", null)
+		if ch_spec is Dictionary:
+			_act_challenge(ch_spec, data)
+		else:
+			var g_v: Variant = data.get("gate", null)
+			if is_instance_valid(g_v) and (g_v as Object).has_method("on_challenge_result"):
+				(g_v as Object).call("on_challenge_result", false)
 
 func is_exit_locked(exit_id: String) -> bool: return _all_exits_locked or bool(_locked_exit_ids.get(exit_id, false))
 func has_pending_waves() -> bool: return not _pending_spawns.is_empty()
 
-func run_actions(actions: Array) -> void:
+func run_actions(actions: Array, ctx: Dictionary = {}, once_ev_id: String = "") -> void:
 	var copy: Array = []
 	for a: Variant in actions:
 		if a is Dictionary: copy.append((a as Dictionary).duplicate(true))
 	if not copy.is_empty():
-		_queues.append({"actions": copy, "idx": 0, "wait_t": 0.0})
+		_queues.append({"actions": copy, "idx": 0, "wait_t": 0.0, "ctx": ctx, "once_ev_id": once_ev_id})
 		_tick_queues(0.0)
 
 func eval_condition(cond: String) -> bool:
 	var c: String = cond.strip_edges()
 	if c.is_empty(): return true
 	var ws: Object = _get_world_state()
-	return bool(ws.call("eval", c, island_id, region_id)) if (ws != null and ws.has_method("eval")) else _eval_cond_fallback(c)
+	if ws != null and ws.has_method("eval"): return bool(ws.call("eval", c, island_id, region_id))
+	return LxRegionRuntime.eval_cond_fallback(c, island_id, region_id, _local_vars, Callable(self, "_is_flag_set"))
 
-func _dispatch_trigger(trig: String, data: Dictionary) -> void:
+func _dispatch_trigger(trig: String, data: Dictionary) -> int:
+	var count: int = 0
 	for ev: Dictionary in events:
-		if str(ev.get("on", "")).strip_edges() == trig: _try_fire_event(ev, data)
+		if _region_changed(): break
+		if str(ev.get("on", "")).strip_edges() == trig:
+			if _try_fire_event(ev, data): count += 1
+	return count
 
 func _poll_events() -> void:
 	for ev: Dictionary in events:
+		if _region_changed(): return
 		var ev_id: String = str(ev.get("id", ""))
 		if _is_once_consumed(ev): continue
 		var on_s: String = str(ev.get("on", "")).strip_edges()
@@ -142,35 +177,62 @@ func _poll_events() -> void:
 			var ck: String = ev_id + ":" + z
 			if _is_zone_ready_cleared(z) and not bool(_zone_cleared_fired.get(ck, false)):
 				_zone_cleared_fired[ck] = true; _try_fire_event(ev, {"zone": z})
-		elif on_s.begins_with("boss_hp:") and _any_boss_below_ratio(clampf(float(on_s.substr(8)), 0.0, 1.0)):
-			_try_fire_event(ev, {})
+		elif on_s.begins_with("boss_hp:"):
+			if not bool(_prev_cond_state.get(ev_id, false)) and _any_boss_below_ratio(clampf(float(on_s.substr(8)), 0.0, 1.0)):
+				_prev_cond_state[ev_id] = true; _try_fire_event(ev, {})
 		elif on_s.begins_with("signal:"):
 			var sid: String = on_s.substr(7).strip_edges()
 			if not bool(_signal_cache.get(sid, false)) and _is_interactable_triggered(sid):
 				_signal_cache[sid] = true; _try_fire_event(ev, {"signal": sid})
 
-func _try_fire_event(ev: Dictionary, _data: Dictionary) -> bool:
+func _try_fire_event(ev: Dictionary, data: Dictionary) -> bool:
 	if _is_once_consumed(ev): return false
 	var cond: String = str(ev.get("if", "")).strip_edges()
 	if not cond.is_empty() and not eval_condition(cond): return false
 	var ev_id: String = str(ev.get("id", ""))
-	if bool(ev.get("once", true)):
+	var acts_v: Variant = ev.get("do", [])
+	var acts: Array = acts_v as Array if acts_v is Array else []
+	var is_once: bool = bool(ev.get("once", true))
+	var has_wave: bool = _actions_have_key(acts, "wave")
+	var has_wait: bool = _actions_have_key(acts, "wait")
+	var deferred_once: String = ""
+	if is_once:
 		_fired_once[ev_id] = true
-		if Lx.state != null: Lx.state.story_flags[_once_flag_key(ev_id)] = true
-	var acts: Variant = ev.get("do", [])
-	if acts is Array: run_actions(acts as Array)
+		if has_wave:
+			if not _pending_once_wave_ids.has(ev_id): _pending_once_wave_ids.append(ev_id)
+		elif has_wait:
+			deferred_once = ev_id
+		elif Lx.state != null:
+			Lx.state.story_flags[_once_flag_key(ev_id)] = true
+	var ctx: Dictionary = data.duplicate(false)
+	ctx["ev_id"] = ev_id; ctx["on"] = str(ev.get("on", "")).strip_edges()
+	if not acts.is_empty(): run_actions(acts, ctx, deferred_once)
 	return true
+
+static func _actions_have_key(acts: Array, key: String) -> bool:
+	for a_v: Variant in acts:
+		if a_v is Dictionary and (a_v as Dictionary).has(key): return true
+	return false
+
+func _commit_pending_wave_once_flags() -> void:
+	if _pending_once_wave_ids.is_empty() or not _had_enemies or not _pending_spawns.is_empty(): return
+	if region == null or not region.has_method("is_zone_cleared") or not bool(region.call("is_zone_cleared", "")): return
+	if Lx.state != null:
+		for eid: String in _pending_once_wave_ids:
+			Lx.state.story_flags[_once_flag_key(eid)] = true
+	_pending_once_wave_ids.clear()
 
 func _once_flag_key(ev_id: String) -> String: return "rscr_%d_%s_%s" % [island_id, region_id, ev_id]
 
 func _is_once_consumed(ev: Dictionary) -> bool:
 	if not bool(ev.get("once", true)): return false
 	var ev_id: String = str(ev.get("id", ""))
-	return bool(_fired_once.get(ev_id, false)) or (Lx.state != null and bool(Lx.state.story_flags.get(_once_flag_key(ev_id), false)))
+	return bool(_fired_once.get(ev_id, false)) or (Lx.state != null and LxRegionRuntime.flag_truthy(Lx.state.story_flags.get(_once_flag_key(ev_id), false)))
 
 func _tick_queues(dt: float) -> void:
 	var i: int = 0
 	while i < _queues.size():
+		if _region_changed(): return
 		var q: Dictionary = _queues[i]
 		var wt: float = float(q.get("wait_t", 0.0))
 		if wt > 0.0:
@@ -178,15 +240,21 @@ func _tick_queues(dt: float) -> void:
 			if float(q["wait_t"]) > 0.0: i += 1; continue
 		var actions: Array = q.get("actions", []) as Array
 		var idx: int = int(q.get("idx", 0))
+		var ctx: Dictionary = q.get("ctx", {}) as Dictionary
 		var paused: bool = false
 		while idx < actions.size():
-			var wait_s: float = _execute_action(actions[idx] as Dictionary)
+			var wait_s: float = _execute_action(actions[idx] as Dictionary, ctx)
+			if _region_changed(): return
 			idx += 1
 			if wait_s > 0.0: q["idx"] = idx; q["wait_t"] = wait_s; paused = true; break
 		if paused: i += 1
-		else: _queues.remove_at(i)
+		else:
+			var done_ev: String = str(q.get("once_ev_id", ""))
+			if not done_ev.is_empty() and Lx.state != null:
+				Lx.state.story_flags[_once_flag_key(done_ev)] = true
+			_queues.remove_at(i)
 
-func _execute_action(act: Dictionary) -> float:
+func _execute_action(act: Dictionary, ctx: Dictionary = {}) -> float:
 	if act.has("wait"): return maxf(0.0, float(act["wait"]))
 	if act.has("wave"): _act_wave(act["wave"])
 	if act.has("lock"): _act_lock(act["lock"])
@@ -203,12 +271,32 @@ func _execute_action(act: Dictionary) -> float:
 	if act.has("sfx"): _act_sfx(act["sfx"])
 	if act.has("spawn"): _act_spawn_interactable(act["spawn"])
 	if act.has("remove"): _act_remove_interactable(str(act["remove"]))
-	if act.has("reward"): _act_reward(act["reward"])
+	if act.has("reward"): _act_reward(act["reward"], ctx)
 	if act.has("warp"): _act_warp(act["warp"])
-	if act.has("challenge"): _act_challenge(act["challenge"])
+	if act.has("challenge"): _act_challenge(act["challenge"], ctx)
 	return 0.0
 
-func _act_wave(raw: Variant) -> void:
+func spawn_wave_for_challenge(raw: Variant, tag: String) -> void:
+	_act_wave(raw, tag)
+
+func clear_challenge_spawns(tag: String) -> void:
+	if tag.is_empty(): return
+	for i: int in range(_pending_spawns.size() - 1, -1, -1):
+		if str(_pending_spawns[i].get("challenge_tag", "")) == tag:
+			_pending_spawns.remove_at(i)
+	var list_v: Variant = _challenge_spawned.get(tag, null)
+	if list_v is Array:
+		var reg_en: Variant = region.get("_enemies") if (region != null and is_instance_valid(region)) else null
+		for e_v: Variant in (list_v as Array):
+			if is_instance_valid(e_v) and e_v is LxEnemyBrain:
+				var br: LxEnemyBrain = e_v as LxEnemyBrain
+				if br.director != null: br.director.unregister(br)
+				if reg_en is Array: (reg_en as Array).erase(br)
+				br.queue_free()
+	_challenge_spawned.erase(tag)
+	queue_redraw()
+
+func _act_wave(raw: Variant, challenge_tag: String = "") -> void:
 	var specs: Array = raw as Array if raw is Array else ([raw] if raw is Dictionary else [])
 	if specs.is_empty(): return
 	var wick_pos: Vector2 = _get_wick_pos()
@@ -217,7 +305,7 @@ func _act_wave(raw: Variant) -> void:
 		var spec: Dictionary = (sp_v as Dictionary).duplicate(true)
 		var safe_pos: Vector2 = _find_safe_wave_pos(LxMapFormat.to_vec2(spec.get("pos", _region_center()), _region_center()), wick_pos)
 		spec["pos"] = [safe_pos.x, safe_pos.y]; spec["home"] = [safe_pos.x, safe_pos.y]
-		_pending_spawns.append({"spec": spec, "pos": safe_pos, "timer": TELEGRAPH_SECS, "dur": TELEGRAPH_SECS})
+		_pending_spawns.append({"spec": spec, "pos": safe_pos, "timer": TELEGRAPH_SECS, "dur": TELEGRAPH_SECS, "challenge_tag": challenge_tag})
 		_had_enemies = true
 		var z: String = str(spec.get("zone", ""))
 		if not z.is_empty(): _had_zone_enemies[z] = true; _zone_cleared_fired.erase(z)
@@ -269,6 +357,10 @@ func _tick_pending_spawns(dt: float) -> void:
 			var brain: LxEnemyBrain = _spawn_enemy_compat(spec)
 			if brain != null and is_instance_valid(brain):
 				brain.pos = sp_pos; brain.position = sp_pos.round()
+				var ctag: String = str(_pending_spawns[i].get("challenge_tag", ""))
+				if not ctag.is_empty():
+					var arr: Array = _challenge_spawned.get(ctag, []) as Array
+					arr.append(brain); _challenge_spawned[ctag] = arr
 			_pending_spawns.remove_at(i)
 	if _pending_spawns.is_empty(): queue_redraw()
 
@@ -300,7 +392,7 @@ func _act_lock(raw: Variant) -> void:
 			if tid == "all": _lock_all_exits(); continue
 			var it: LxInteractable = region.call("find_interactable", tid) as LxInteractable if (not tid.is_empty() and region.has_method("find_interactable")) else null
 			if it != null and it is LxDoor:
-				(it as LxDoor).opened = false; it.active = true; it.queue_redraw()
+				(it as LxDoor).set_script_locked(true)
 				if not _locked_door_ids.has(tid): _locked_door_ids.append(tid)
 			elif not tid.is_empty():
 				_locked_exit_ids[tid] = true; _set_exit_flag_lock(tid, true)
@@ -316,8 +408,11 @@ func _act_unlock(raw: Variant) -> void:
 		if tid == "all": _unlock_all_script_locks(); return
 		var it: LxInteractable = region.call("find_interactable", tid) as LxInteractable if region.has_method("find_interactable") else null
 		if it != null and it is LxDoor:
-			if not (it as LxDoor).opened: (it as LxDoor).call("_open", false)
-			_locked_door_ids.erase(tid)
+			if _locked_door_ids.has(tid):
+				(it as LxDoor).set_script_locked(false)
+				_locked_door_ids.erase(tid)
+			elif not (it as LxDoor).opened:
+				(it as LxDoor).call("_open", false)
 		else: _locked_exit_ids.erase(tid); _set_exit_flag_lock(tid, false)
 
 func _lock_all_exits() -> void:
@@ -338,7 +433,7 @@ func _unlock_all_script_locks() -> void:
 	_locked_exit_ids.clear()
 	for did: String in _locked_door_ids:
 		var it: LxInteractable = region.call("find_interactable", did) as LxInteractable if (region != null and region.has_method("find_interactable")) else null
-		if it != null and it is LxDoor and not (it as LxDoor).opened: (it as LxDoor).call("_open", false)
+		if it != null and it is LxDoor: (it as LxDoor).set_script_locked(false)
 	_locked_door_ids.clear()
 	if any_u and Lx.events != null: Lx.events.sfx_requested.emit("door_open", _get_wick_pos(), false)
 
@@ -407,53 +502,15 @@ func _act_sfx(raw: Variant) -> void:
 		Lx.events.sfx_requested.emit(str(d.get("id", "")), LxMapFormat.to_vec2(d.get("pos", Vector2.ZERO)), d.has("pos"))
 
 func _act_spawn_interactable(raw: Variant) -> void:
-	if not (raw is Dictionary) or region == null: return
-	var spec: Dictionary = (raw as Dictionary).duplicate(true)
-	if region.has_method("spawn_interactable"): region.call("spawn_interactable", spec); return
-	var item: LxInteractable = LxInteractableFactory.create(spec)
-	if item == null: return
-	item.region = region; item.island_id = island_id; item.region_id = region_id; item.setup(spec)
-	if region.has_method("_sync_interactable_layer"): region.call("_sync_interactable_layer", item)
-	else: region.add_child(item)
-	var arr: Variant = region.get("_interactables")
-	if arr is Array: (arr as Array).append(item)
-	var by_id: Variant = region.get("_interactables_by_id")
-	if by_id is Dictionary and not item.id.is_empty(): (by_id as Dictionary)[item.id] = item
+	if raw is Dictionary and region != null and region.has_method("spawn_interactable"):
+		region.call("spawn_interactable", (raw as Dictionary).duplicate(true))
 
 func _act_remove_interactable(tid: String) -> void:
-	if tid.is_empty() or region == null: return
-	if region.has_method("remove_interactable"): region.call("remove_interactable", tid); return
-	var it: LxInteractable = region.call("find_interactable", tid) as LxInteractable if region.has_method("find_interactable") else null
-	if it != null:
-		it.active = false; it.visible = false
-		if region.get("_interactables") is Array: (region.get("_interactables") as Array).erase(it)
-		if region.get("_interactables_by_id") is Dictionary: (region.get("_interactables_by_id") as Dictionary).erase(tid)
-		it.queue_free()
+	if not tid.is_empty() and region != null and region.has_method("remove_interactable"):
+		region.call("remove_interactable", tid)
 
-func _act_reward(raw: Variant) -> void:
-	if not (raw is Dictionary) or Lx.state == null: return
-	var d: Dictionary = raw as Dictionary; var rk: String = str(d.get("kind", "shards")).to_lower()
-	match rk:
-		"shards":
-			Lx.state.add_shards(maxi(1, int(d.get("amount", 20))))
-			if Lx.events != null: Lx.events.sfx_requested.emit("shard_pickup", _get_wick_pos(), false)
-		"ember_piece": Lx.state.add_ember_piece()
-		"half_lantern":
-			if Lx.state.has_method("add_half_lantern"): Lx.state.call("add_half_lantern")
-			else: Lx.state.add_ember_piece()
-		"key", "wick_key", "keepers_flame":
-			Lx.state.add_key(str(d.get("dungeon_id", "island_%d" % island_id)), str(d.get("key_kind", "keepers_flame" if rk == "keepers_flame" else "wick_key")), maxi(1, int(d.get("amount", 1))))
-			if Lx.events != null: Lx.events.sfx_requested.emit("key_pickup", _get_wick_pos(), false)
-		"pane", "moth":
-			var sid: String = str(d.get("id", d.get(rk, "")))
-			if not sid.is_empty(): Lx.state.story_flags[rk + "_" + sid] = true
-		"flag": _act_set_flag(d.get("id", d.get("flag", "")))
-		"heal": Lx.state.heal_full()
-		"chest":
-			var cspec: Dictionary = d.duplicate(true); cspec["kind"] = "chest"
-			if not cspec.has("id"): cspec["id"] = "reward_chest_%d" % int(_elapsed_s * 100.0)
-			if not cspec.has("pos"): var wp: Vector2 = _get_wick_pos(); cspec["pos"] = [wp.x, wp.y - 20.0]
-			_act_spawn_interactable(cspec)
+func _act_reward(raw: Variant, ctx: Dictionary = {}) -> void:
+	LxRegionRuntime.apply_script_reward(raw, island_id, region_id, _get_wick_pos(), Callable(self, "_act_spawn_interactable"), str(ctx.get("ev_id", "")))
 
 func _act_warp(raw: Variant) -> void:
 	if not (raw is Dictionary): return
@@ -464,11 +521,16 @@ func _act_warp(raw: Variant) -> void:
 		Lx.root.call("load_island_region", int(d.get("island", d.get("to_island", island_id))), to_reg, pos)
 	elif pos.x >= 0.0 and Lx.player is Node2D: (Lx.player as Node2D).global_position = pos
 
-func _act_challenge(raw: Variant) -> void:
+func _act_challenge(raw: Variant, ctx: Dictionary = {}) -> void:
 	if not (raw is Dictionary): return
 	if active_challenge != null and is_instance_valid(active_challenge): active_challenge.call("cleanup"); active_challenge.queue_free()
+	var gate: Object = null
+	var g_v: Variant = ctx.get("gate", null)
+	if is_instance_valid(g_v) and g_v is Object: gate = g_v as Object
+	elif str(ctx.get("on", "")).begins_with("trial_start:") and region != null and region.has_method("find_interactable"):
+		gate = region.call("find_interactable", str(ctx.get("on", "")).substr(12)) as Object
 	var ch: Node = ChallengeScript.new(); ch.name = "LxChallenge"; add_child(ch)
-	ch.call("setup", self, region, (raw as Dictionary).duplicate(true))
+	ch.call("setup", self, region, (raw as Dictionary).duplicate(true), gate)
 	active_challenge = ch
 
 func _on_player_died() -> void:
@@ -490,7 +552,7 @@ func _is_zone_ready_cleared(zone: String) -> bool:
 func _any_boss_below_ratio(thresh: float) -> bool:
 	if region == null or not region.has_method("get_enemies"): return false
 	for e_v: Variant in (region.call("get_enemies") as Array):
-		if e_v is LxEnemyBrain and is_instance_valid(e_v):
+		if is_instance_valid(e_v) and e_v is LxEnemyBrain:
 			var e: LxEnemyBrain = e_v as LxEnemyBrain
 			if e.is_alive() and (e.is_boss or not e.boss_id.is_empty()) and e.max_hp > 0.0 and (e.hp / e.max_hp) <= thresh: return true
 	return false
@@ -501,51 +563,10 @@ func _is_interactable_triggered(sid: String) -> bool:
 
 func _is_flag_set(flag: String) -> bool:
 	if region != null and region.has_method("is_flag_set"): return bool(region.call("is_flag_set", flag))
-	return Lx.state != null and bool(Lx.state.story_flags.get(flag, false))
+	return Lx.state != null and LxRegionRuntime.flag_truthy(Lx.state.story_flags.get(flag, false))
 
 func _get_world_state() -> Object:
-	if Lx.vars != null and is_instance_valid(Lx.vars):
-		return Lx.vars
-	return null
-
-func _read_world_var(vname: String) -> Variant:
-	var ws: Object = _get_world_state()
-	if ws != null and ws.has_method("get_var"):
-		for sc: String in ["room:%d:%s" % [island_id, region_id], "island:%d" % island_id, "game"]:
-			var v: Variant = ws.call("get_var", sc, vname, "__MISSING__")
-			if str(v) != "__MISSING__": return v
-	if _local_vars.has(vname): return _local_vars[vname]
-	if Lx.state != null:
-		for sc2: String in ["room:%d:%s" % [island_id, region_id], "island:%d" % island_id, "game"]:
-			var k: String = "wvar:%s:%s" % [sc2, vname]
-			if Lx.state.story_flags.has(k): return Lx.state.story_flags[k]
-	return ""
-
-func _eval_cond_fallback(expr: String) -> bool:
-	for or_part: String in expr.split(" || "):
-		var ok: bool = true
-		for atom_raw: String in or_part.split(" && "):
-			var atom: String = atom_raw.strip_edges()
-			if not atom.is_empty() and not _eval_atom(atom): ok = false; break
-		if ok: return true
-	return false
-
-func _eval_atom(atom: String) -> bool:
-	if atom.begins_with("!flag:"): return not _is_flag_set(atom.substr(6).strip_edges())
-	if atom.begins_with("flag:"): return _is_flag_set(atom.substr(5).strip_edges())
-	for op: String in ["==", "!=", ">=", "<=", ">", "<"]:
-		var p: int = atom.find(op)
-		if p > 0:
-			var cur: Variant = _read_world_var(atom.substr(0, p).strip_edges())
-			var rhs: String = atom.substr(p + op.length()).strip_edges()
-			match op:
-				"==": return str(cur) == rhs
-				"!=": return str(cur) != rhs
-				">=": return float(cur) >= float(rhs)
-				"<=": return float(cur) <= float(rhs)
-				">": return float(cur) > float(rhs)
-				"<": return float(cur) < float(rhs)
-	return _is_flag_set(atom)
+	return Lx.vars if (Lx.vars != null and is_instance_valid(Lx.vars)) else null
 
 func _get_wick_pos() -> Vector2:
 	if region != null and region.has_method("get_wick_pos"): return region.call("get_wick_pos") as Vector2

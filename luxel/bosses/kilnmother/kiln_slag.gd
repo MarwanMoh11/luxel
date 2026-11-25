@@ -24,7 +24,7 @@ func trigger_room_pourers(world_ctx: Node) -> void:
 	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("get_interactables"):
 		return
 	for it_v: Variant in (world_ctx.call("get_interactables") as Array):
-		if it_v is LxInteractable and (it_v as LxInteractable).kind == "slag_pourer" and (it_v as Object).has_method("trigger_pour"):
+		if is_instance_valid(it_v) and it_v is LxInteractable and (it_v as LxInteractable).kind == "slag_pourer" and (it_v as Object).has_method("trigger_pour"):
 			(it_v as Object).call("trigger_pour")
 
 
@@ -56,7 +56,7 @@ func commit_lobs(owner: LxEnemyBrain) -> void:
 
 
 func tick(dt: float, owner: LxEnemyBrain) -> void:
-	var wick_node: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var wick_node: LxWick = Lx.player as LxWick if (is_instance_valid(Lx.player) and Lx.player is LxWick) else null
 	for i: int in range(boulders.size() - 1, -1, -1):
 		var b: Dictionary = boulders[i]
 		b["ttl"] = float(b["ttl"]) - dt
@@ -67,7 +67,7 @@ func tick(dt: float, owner: LxEnemyBrain) -> void:
 			var bp: Vector2 = b["pos"] as Vector2
 			for bi: int in range(wick_node.bolts.size() - 1, -1, -1):
 				var bv: Variant = wick_node.bolts[bi]
-				if bv is Object and (bv.get("pos") as Vector2).distance_to(bp) <= 11.0:
+				if is_instance_valid(bv) and bv is Object and (bv.get("pos") as Vector2).distance_to(bp) <= 11.0:
 					if str(bv.get("light_color")).to_lower() == LxHit.COLOR_BLUE:
 						b["cooled"] = true
 						b["ttl"] = BOULDER_TTL
@@ -86,11 +86,11 @@ func arm_length_with_cover(origin: Vector2, dir: Vector2, max_len: float, half_w
 	if world_ctx != null and is_instance_valid(world_ctx):
 		if world_ctx.has_method("get_interactables"):
 			for it_v: Variant in (world_ctx.call("get_interactables") as Array):
-				if it_v is LxInteractable and (it_v as LxInteractable).kind == "push_block" and bool((it_v as Object).get("cooled")):
+				if is_instance_valid(it_v) and it_v is LxInteractable and (it_v as LxInteractable).kind == "push_block" and bool((it_v as Object).get("cooled")):
 					covers.append((it_v as LxInteractable).pos)
 		if world_ctx.has_method("get_enemies"):
 			for ev: Variant in (world_ctx.call("get_enemies") as Array):
-				if ev is LxEnemyBrain and ev != owner and (ev as LxEnemyBrain).is_alive() and (ev as Object).has_method("is_frozen_block") and bool((ev as Object).call("is_frozen_block")):
+				if is_instance_valid(ev) and ev is LxEnemyBrain and ev != owner and (ev as LxEnemyBrain).is_alive() and (ev as Object).has_method("is_frozen_block") and bool((ev as Object).call("is_frozen_block")):
 					covers.append((ev as LxEnemyBrain).pos)
 	for cp: Vector2 in covers:
 		var rel: Vector2 = cp - origin

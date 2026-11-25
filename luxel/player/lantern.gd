@@ -130,7 +130,7 @@ func start_recall(wick: LxWick, world_ctx: Node, slam_radius: float = 18.0, hs: 
 		# Immediate 18 px recall-on-grab slam (catches diving/wrestling Snatchers and nearby foes)
 		var enemies: Array = wick.world_get_enemies(world_ctx)
 		for e_var: Variant in enemies:
-			if not (e_var is Object):
+			if not is_instance_valid(e_var) or not (e_var is Object):
 				continue
 			var enemy: Object = e_var as Object
 			if not wick.is_entity_alive(enemy):
@@ -150,7 +150,7 @@ func start_recall(wick: LxWick, world_ctx: Node, slam_radius: float = 18.0, hs: 
 		var r_inters: Array = wick.world_get_interactables(world_ctx)
 		var pull_dir: Vector2 = (wick.global_position - pos).normalized() if wick.global_position.distance_to(pos) > 0.5 else -dir
 		for it_v: Variant in r_inters:
-			if it_v is Object and is_instance_valid(it_v as Object) and (it_v as Object).has_method("on_lantern_pull"):
+			if is_instance_valid(it_v) and it_v is Object and (it_v as Object).has_method("on_lantern_pull"):
 				var item_p: Object = it_v as Object
 				if wick.get_entity_pos(item_p).distance_to(pos) <= wick.get_entity_radius(item_p, 10.0) + slam_radius:
 					item_p.call("on_lantern_pull", pull_dir, "recall")
@@ -352,7 +352,7 @@ func _burst_light(at_pos: Vector2, rad: float, intensity: float, dur: float) -> 
 func _emit_gust(at_pos: Vector2, rad: float, strength: float) -> void:
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+		if is_instance_valid(amb) and amb is Object and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", at_pos, rad, strength)
 
 
@@ -363,7 +363,7 @@ func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: S
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
 	for e_var: Variant in enemies:
-		if not (e_var is Object):
+		if not is_instance_valid(e_var) or not (e_var is Object):
 			continue
 		var enemy: Object = e_var as Object
 		if not wick.is_entity_alive(enemy):
@@ -406,10 +406,10 @@ func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: S
 	# Interactables (distant braziers, switches, bells)
 	var inters: Array = wick.world_get_interactables(world_ctx)
 	for it_var: Variant in inters:
-		if not (it_var is Object):
+		if not is_instance_valid(it_var) or not (it_var is Object):
 			continue
 		var item: Object = it_var as Object
-		if not is_instance_valid(item) or not item.has_method("on_hit"):
+		if not item.has_method("on_hit"):
 			continue
 		var iid: int = item.get_instance_id()
 		if hit_ids.has(iid):
@@ -432,7 +432,7 @@ func _sweep_hits(wick: LxWick, world_ctx: Node, move_dir: Vector2, hit_source: S
 
 func _find_pickup_pos(wick: LxWick, world_ctx: Node) -> Vector2:
 	for it_var: Variant in wick.world_get_interactables(world_ctx):
-		if it_var is Object and is_instance_valid(it_var as Object):
+		if is_instance_valid(it_var) and it_var is Object:
 			var item: Object = it_var as Object
 			if str(item.get("kind")) == "lantern_pickup" and bool(item.get("active")):
 				return wick.get_entity_pos(item)
@@ -446,10 +446,10 @@ func _notify_light(wick: LxWick, world_ctx: Node) -> void:
 	var src_tag: String = "lantern_hung" if is_lure_active() else ("lantern_recall" if state == State.RECALLING else "lantern_hand")
 	var inters: Array = wick.world_get_interactables(world_ctx)
 	for it_var: Variant in inters:
-		if not (it_var is Object):
+		if not is_instance_valid(it_var) or not (it_var is Object):
 			continue
 		var item: Object = it_var as Object
-		if not is_instance_valid(item) or not item.has_method("on_light"):
+		if not item.has_method("on_light"):
 			continue
 		var ipos: Vector2 = wick.get_entity_pos(item)
 		var irad: float = wick.get_entity_radius(item, 0.0)
@@ -466,10 +466,10 @@ func _notify_light(wick: LxWick, world_ctx: Node) -> void:
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
 	for e_var: Variant in enemies:
-		if not (e_var is Object):
+		if not is_instance_valid(e_var) or not (e_var is Object):
 			continue
 		var enemy: Object = e_var as Object
-		if not is_instance_valid(enemy) or not enemy.has_method("on_light"):
+		if not enemy.has_method("on_light"):
 			continue
 		if enemy.has_method("is_dead") and bool(enemy.call("is_dead")):
 			continue

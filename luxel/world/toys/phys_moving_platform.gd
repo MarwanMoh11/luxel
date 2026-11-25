@@ -94,7 +94,7 @@ func tick(dt: float) -> void:
 
 func _carry_riders(old_rect: Rect2, delta: Vector2) -> void:
 	# 1. Carry Wick
-	if Lx.player is LxWick and is_instance_valid(Lx.player):
+	if is_instance_valid(Lx.player) and Lx.player is LxWick:
 		var w: LxWick = Lx.player as LxWick
 		if not w.dead and not w.is_dashing() and not w.is_gliding() and not w.is_zipping() and not w.is_launched() and not w.is_mounted():
 			if old_rect.grow(1.5).has_point(w.global_position):
@@ -112,7 +112,7 @@ func _carry_riders(old_rect: Rect2, delta: Vector2) -> void:
 	# 3. Carry push_blocks and carry_orbs resting on deck
 	if region != null and region.has_method("get_interactables"):
 		for it_v: Variant in region.call("get_interactables") as Array:
-			if it_v == self or not (it_v is LxInteractable):
+			if it_v == self or not is_instance_valid(it_v) or not (it_v is LxInteractable):
 				continue
 			var it: LxInteractable = it_v as LxInteractable
 			if not it.active:
@@ -141,6 +141,17 @@ func load_state(d: Dictionary) -> void:
 		_seg_idx = clampi(int(d.get("seg_idx", 0)), 0, maxi(0, path.size() - 1))
 		_seg_t = clampf(float(d.get("seg_t", 0.0)), 0.0, 1.0)
 		_dir_sign = -1 if int(d.get("dir_sign", 1)) < 0 else 1
+		if path.size() >= 2:
+			var next_idx: int = _seg_idx + _dir_sign
+			if is_loop:
+				next_idx = posmod(next_idx, path.size())
+			else:
+				next_idx = clampi(next_idx, 0, path.size() - 1)
+			pos = path[_seg_idx].lerp(path[next_idx], _seg_t)
+			position = pos.round()
+		elif path.size() == 1:
+			pos = path[0]
+			position = pos.round()
 	queue_redraw()
 
 

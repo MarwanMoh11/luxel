@@ -25,6 +25,7 @@ var rematch_target_region: String = ""
 var rematch_elapsed: float = 0.0
 var rematch_hits: int = 0
 var rematch_returning: bool = false
+var _rematch_slot_id: String = ""
 var _return_delay_t: float = 0.0
 var _stashed_defeated: Array[String] = []
 var _hud_layer: CanvasLayer = null
@@ -136,6 +137,7 @@ func start_rematch(boss_id: String) -> bool:
 
 	rematch_active = true
 	rematch_returning = false
+	_rematch_slot_id = str(Lx.state.slot_id)
 	rematch_boss_id = canon
 	rematch_boss_meta = meta.duplicate(true)
 	rematch_target_island = isl
@@ -159,6 +161,7 @@ func cancel_rematch() -> void:
 	_restore_stashed_defeated()
 	rematch_active = false
 	rematch_returning = false
+	_rematch_slot_id = ""
 	rematch_boss_id = ""
 	rematch_boss_meta.clear()
 	_return_delay_t = 0.0
@@ -179,6 +182,14 @@ func _process(delta: float) -> void:
 	_ensure_flame_aura()
 	if not rematch_active:
 		return
+	if Lx.state == null or (not _rematch_slot_id.is_empty() and str(Lx.state.slot_id) != _rematch_slot_id):
+		cancel_rematch()
+		return
+	var flow_now: int = int(Lx.root.get("flow")) if (Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null) else 2
+	if flow_now != 2:
+		if flow_now in [0, 1, 6, 7]:
+			cancel_rematch()
+		return
 	if rematch_returning:
 		_return_delay_t -= delta
 		if _return_delay_t <= 0.0:
@@ -186,16 +197,15 @@ func _process(delta: float) -> void:
 		if _hud_draw != null and is_instance_valid(_hud_draw):
 			_hud_draw.queue_redraw()
 		return
-	if Lx.root != null and int(Lx.root.get("flow")) == 2: # Flow.PLAY
-		rematch_elapsed += delta
-		if _hud_draw != null and is_instance_valid(_hud_draw):
-			_hud_draw.queue_redraw()
+	rematch_elapsed += delta
+	if _hud_draw != null and is_instance_valid(_hud_draw):
+		_hud_draw.queue_redraw()
 
 
 func _on_region_entered(island_id: int, region_id: String) -> void:
 	_restore_stashed_defeated()
 	_ensure_flame_aura()
-	if rematch_active and not rematch_returning:
+	if rematch_active:
 		if island_id != rematch_target_island or region_id != rematch_target_region:
 			cancel_rematch()
 	if island_id > 0:
@@ -208,7 +218,7 @@ func _on_player_damaged(_amt: float, _from: Vector2, _kdir: Vector2, _src: Strin
 
 
 func _on_player_died() -> void:
-	if rematch_active and not rematch_returning:
+	if rematch_active:
 		cancel_rematch()
 
 
@@ -228,7 +238,11 @@ func _on_boss_defeated(boss_id: String, _isl: int) -> void:
 
 
 func _finish_return_to_mirror() -> void:
+	var slot_ok: bool = Lx.state != null and (_rematch_slot_id.is_empty() or str(Lx.state.slot_id) == _rematch_slot_id)
+	var flow_ok: bool = Lx.root == null or not is_instance_valid(Lx.root) or Lx.root.get("flow") == null or int(Lx.root.get("flow")) == 2
 	cancel_rematch()
+	if not slot_ok or not flow_ok:
+		return
 	if Lx.state != null:
 		Lx.state.heal_full()
 	if Lx.root != null and Lx.root.has_method("load_island_region"):

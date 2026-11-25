@@ -44,7 +44,6 @@
         "normal": [-0.7071, 0.7071],
         "rotatable": true,
         "reflect_only_floating": true,
-        "allow_clamp_always": true,
         "allow_harpoon_always": true
       }
     },

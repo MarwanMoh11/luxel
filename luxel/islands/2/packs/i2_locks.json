@@ -1,7 +1,7 @@
 {
   "pack_id": "i2_locks",
   "owner": "D2B",
-  "comment": "Island 2 Minor Dungeon B: The Smugglers' Locks (12 rooms, 5 internal cycles, Sluice Harpoon, canal locks & portal barges). Debug-only on dungeon/regions meta until ow_canal_south hooks locks_r1.",
+  "comment": "Island 2 Minor Dungeon B: The Smugglers' Locks (12 rooms, 5 internal cycles, Sluice Harpoon, canal locks & portal barges). Wired live from ow_canal_south.",
   "strings": {
     "LCK_NAME": "THE SMUGGLERS LOCKS",
     "LCK_HARPOON": "SLUICE HARPOON: RECALL TOWS RAFTS!",
@@ -55,22 +55,21 @@
       "theme": "locks",
       "music": "isl2_locks",
       "requires_flags": [],
-      "done_flag": "locks_done",
-      "debug_only": true
+      "done_flag": "locks_done"
     }
   ],
   "regions": {
-    "locks_r1":  { "name_key": "LCK_R1_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 5] },
-    "locks_r2":  { "name_key": "LCK_R2_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 4] },
-    "locks_r3":  { "name_key": "LCK_R3_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [1, 4] },
-    "locks_r4":  { "name_key": "LCK_R4_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [3, 4] },
-    "locks_r5":  { "name_key": "LCK_R5_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 3] },
-    "locks_r6":  { "name_key": "LCK_R6_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 2] },
-    "locks_r7":  { "name_key": "LCK_R7_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [1, 2] },
-    "locks_r8":  { "name_key": "LCK_R8_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [0, 2] },
-    "locks_r9":  { "name_key": "LCK_R9_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [1, 1] },
-    "locks_r10": { "name_key": "LCK_R10_NAME", "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 1] },
-    "locks_r11": { "name_key": "LCK_R11_NAME", "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [2, 0] },
-    "locks_r12": { "name_key": "LCK_R12_NAME", "theme": "locks", "music": "isl2_locks", "dark": true, "debug_only": true, "map": [3, 0] }
+    "locks_r1":  { "name_key": "LCK_R1_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "map": [2, 5] },
+    "locks_r2":  { "name_key": "LCK_R2_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "map": [2, 4] },
+    "locks_r3":  { "name_key": "LCK_R3_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "map": [1, 4] },
+    "locks_r4":  { "name_key": "LCK_R4_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "map": [3, 4] },
+    "locks_r5":  { "name_key": "LCK_R5_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "map": [2, 3] },
+    "locks_r6":  { "name_key": "LCK_R6_NAME",  "theme": "locks", "music": "isl2_boss_minor_p1", "dark": true, "map": [2, 2] },
+    "locks_r7":  { "name_key": "LCK_R7_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "map": [1, 2] },
+    "locks_r8":  { "name_key": "LCK_R8_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "map": [0, 2] },
+    "locks_r9":  { "name_key": "LCK_R9_NAME",  "theme": "locks", "music": "isl2_locks", "dark": true, "map": [1, 1] },
+    "locks_r10": { "name_key": "LCK_R10_NAME", "theme": "locks", "music": "isl2_locks", "dark": true, "map": [2, 1] },
+    "locks_r11": { "name_key": "LCK_R11_NAME", "theme": "locks", "music": "isl2_locks", "dark": true, "map": [2, 0] },
+    "locks_r12": { "name_key": "LCK_R12_NAME", "theme": "locks", "music": "isl2_boss_minor_p1", "dark": true, "map": [3, 0] }
   }
 }

@@ -216,6 +216,20 @@
       }
     },
     {
+      "id": "chest_gal_r3",
+      "kind": "chest",
+      "pos": [
+        56,
+        136
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "zone": "gal_r3"
+      }
+    },
+    {
       "id": "lamp_r3_e",
       "kind": "road_lamp",
       "pos": [
@@ -264,7 +278,28 @@
       }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "skate_gal_r3",
+      "kind": "reef_skate",
+      "pos": [
+        120,
+        120
+      ],
+      "route": [
+        [
+          88,
+          120
+        ],
+        [
+          136,
+          120
+        ]
+      ],
+      "zone": "gal_r3",
+      "leash": 110
+    }
+  ],
   "decor": [
     {
       "kind": "stain",
@@ -463,6 +498,21 @@
       {
         "op": "expect",
         "var": "list==starboard"
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          136
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "gal_r3",
+        "timeout": 20.0
+      },
+      {
+        "op": "recall"
       },
       {
         "op": "rotate",

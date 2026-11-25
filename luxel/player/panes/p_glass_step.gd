@@ -20,7 +20,7 @@ func on_dash(ctx: Dictionary) -> void:
 	if w == null or wr == null or not w.has_method("world_get_enemies"):
 		return
 	for ev: Variant in (w.call("world_get_enemies", wr) as Array):
-		if not (ev is Object) or not is_instance_valid(ev as Object):
+		if not is_instance_valid(ev) or not (ev is Object):
 			continue
 		if w.has_method("is_entity_alive") and not bool(w.call("is_entity_alive", ev)):
 			continue

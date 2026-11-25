@@ -277,6 +277,40 @@
   "layers": [],
   "events": [
     {
+      "id": "ev_sprint_start",
+      "on": "trial_start:tg_sprint",
+      "once": false,
+      "do": [
+        {
+          "challenge": {
+            "id": "constellation_sprint",
+            "kind": "race",
+            "time": 55.0,
+            "start_pos": [
+              48,
+              144
+            ],
+            "goal": [
+              416,
+              144
+            ],
+            "goal_radius": 28.0,
+            "instant_retry": true,
+            "ok": [
+              {
+                "set_flag": "trial_sprint_done"
+              },
+              {
+                "unlock": [
+                  "door_sprint_prize"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
       "id": "ev_sprint_done",
       "on": "flag:trial_sprint_done",
       "once": true,

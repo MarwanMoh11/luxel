@@ -137,10 +137,9 @@ func take_echo_hit(hit: Variant = null) -> int:
 	if not is_echo_active():
 		return -1
 	var atk: Object = null
-	if hit is Object and (hit as Object).get("attacker") is Object:
-		atk = (hit as Object).get("attacker") as Object
-	elif hit is Dictionary and (hit as Dictionary).get("attacker") is Object:
-		atk = (hit as Dictionary).get("attacker") as Object
+	var atk_v: Variant = (hit as Object).get("attacker") if (is_instance_valid(hit) and hit is Object) else ((hit as Dictionary).get("attacker") if hit is Dictionary else null)
+	if is_instance_valid(atk_v) and atk_v is Object:
+		atk = atk_v as Object
 	_disperse_t = 0.35
 	_emit_sfx("prop_rustle")
 	echo_hit.emit(atk, echo_pos)
@@ -365,7 +364,7 @@ func _step_bolt_interactables(b: Dictionary, bp: Vector2, nxt: Vector2) -> bool:
 	var hit_ids: Array = b["hit_ids"] as Array
 	var bdir: Vector2 = (b["dir"] as Vector2).normalized()
 	for it_v: Variant in (region.call("get_interactables") as Array):
-		if not (it_v is LxInteractable) or it_v == self:
+		if not is_instance_valid(it_v) or not (it_v is LxInteractable) or it_v == self:
 			continue
 		var it: LxInteractable = it_v as LxInteractable
 		if not is_instance_valid(it) or not it.active:

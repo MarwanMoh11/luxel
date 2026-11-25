@@ -173,8 +173,8 @@
       "mini": true,
       "dungeon": "ember_express",
       "region": "train_r5",
-      "music": "island6_boss_p1",
-      "music_p2": "island6_boss_p2",
+      "music": "isl6_boss_minor_p1",
+      "music_p2": "isl6_boss_minor_p2",
       "heart": "none",
       "flag": "brakeman_defeated",
       "island": 6
@@ -188,8 +188,8 @@
       "mini": false,
       "dungeon": "ember_express",
       "region": "train_r11",
-      "music": "island6_boss_p1",
-      "music_p2": "island6_boss_p2",
+      "music": "isl6_boss_minor_p1",
+      "music_p2": "isl6_boss_minor_p2",
       "heart": "half",
       "flag": "engineer_defeated",
       "island": 6

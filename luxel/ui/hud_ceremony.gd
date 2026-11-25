@@ -201,7 +201,7 @@ func _draw_boss_intro(ci: CanvasItem) -> void:
 	for pi: int in range(ph):
 		ci.draw_rect(Rect2(px0 + float(pi * 6), 88.0, 4.0, 2.0), pal["coral"] as Color)
 	if t >= 0.30:
-		LxPixelFont.draw_right(ci, LxStrings.text("INTRO_SKIP"), card.end.x - 6.0, card.end.y - 10.0, pal["mauve"] as Color, 1)
+		LxPixelFont.draw_right(ci, LxStrings.text("INTRO_SKIP"), card.end.x - 6.0, card.end.y - 12.0, pal["mauve"] as Color, 1)
 
 
 func _draw_reward_ceremony(ci: CanvasItem) -> void:
@@ -248,7 +248,7 @@ func _draw_previously_bar(ci: CanvasItem) -> void:
 	var lw: float = float(LxPixelFont.width(lbl, 1))
 	var strip_w: float = float(icons.size()) * 11.0 + 4.0
 	var box_w: float = roundf(lw + strip_w + 18.0)
-	var box := Rect2(roundf(160.0 - box_w * 0.5), 24.0, box_w, 15.0)
+	var box := Rect2(roundf(160.0 - box_w * 0.5), 31.0, box_w, 15.0)
 	LxPixelFont.draw_panel(ci, box, "night", "gold", "void")
 	LxPixelFont.draw_left(ci, lbl, box.position + Vector2(6.0, 5.0), LxPalette.fade_step(fade, "gold"), 1)
 	var ix: float = box.position.x + lw + 12.0

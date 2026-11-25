@@ -37,6 +37,10 @@ func add_tether(id: String, a: Variant, b: Variant, cfg: Dictionary = {}) -> Dic
 		"on_cut": cfg.get("on_cut", Callable()),
 	}
 	tethers.append(t)
+	if tethers.size() > 24:
+		for i: int in range(tethers.size() - 1, -1, -1):
+			if bool(tethers[i]["cut"]):
+				tethers.remove_at(i)
 	return t
 
 
@@ -120,7 +124,7 @@ func tick(dt: float) -> void:
 	_clock += dt
 	var has_p: bool = boss != null and boss.has_method("_has_player") and bool(boss.call("_has_player"))
 	var wp: Vector2 = boss.call("_get_wick_pos") as Vector2 if has_p else Vector2(-9999.0, -9999.0)
-	var wick_node: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var wick_node: LxWick = Lx.player as LxWick if (is_instance_valid(Lx.player) and Lx.player is LxWick) else null
 
 	for t: Dictionary in tethers:
 		if bool(t["cut"]):
@@ -133,7 +137,7 @@ func tick(dt: float) -> void:
 		# Check player bolts slicing cuttable tethers
 		if bool(t["cuttable"]) and wick_node != null:
 			for bv: Variant in wick_node.bolts:
-				if bv is Object:
+				if is_instance_valid(bv) and bv is Object:
 					var bp: Vector2 = bv.get("pos") as Vector2
 					if Geometry2D.get_closest_point_to_segment(bp, pa, pb).distance_to(bp) <= 6.5:
 						var hit := LxHit.make(LxHit.SOURCE_BOLT, float(bv.get("damage")), bv.get("dir") as Vector2, bp)

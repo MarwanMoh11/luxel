@@ -70,10 +70,10 @@ func grant_bookmark() -> void:
 
 func get_mem_tide() -> String:
 	if Lx.vars != null:
-		var v: String = str(Lx.vars.get_var(SCOPE_ARCHIVE, VAR_MEM_TIDE, "ebb")).strip_edges().to_lower()
+		var v: String = str(Lx.vars.get_var(SCOPE_ARCHIVE, VAR_MEM_TIDE, "flood")).strip_edges().to_lower()
 		if v == "flood" or v == "ebb":
 			return v
-	return "ebb"
+	return "flood"
 
 
 func set_mem_tide(val: String) -> void:
@@ -103,7 +103,7 @@ func activate_for_region(region_id: String, region_data: Dictionary = {}) -> Dic
 			_guarded_missing.append(isl_n)
 	if not wanted.is_empty() and Lx.vars != null:
 		if str(Lx.vars.get_var(SCOPE_ARCHIVE, VAR_MEM_TIDE, "")) not in ["flood", "ebb"]:
-			Lx.vars.set_var(SCOPE_ARCHIVE, VAR_MEM_TIDE, "ebb")
+			Lx.vars.set_var(SCOPE_ARCHIVE, VAR_MEM_TIDE, "flood")
 	return {
 		"active_islands": get_loaded_rule_islands(),
 		"guarded_missing": _guarded_missing.duplicate(),

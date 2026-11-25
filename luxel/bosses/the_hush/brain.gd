@@ -450,7 +450,6 @@ func _enter_finale_choice() -> void:
 		if panel.has_method("start_auto_display_off"): panel.call("start_auto_display_off")
 		else: _on_display_off_completed()
 		return
-	_emit_narr("ISL8_ASK_FINALE_1", "title", 3.5)
 	if panel.has_method("open_choice"): panel.call("open_choice")
 
 
@@ -470,6 +469,10 @@ func _mount_finale_panel() -> Node:
 
 func _cleanup_finale_panel() -> void:
 	if _finale_panel != null and is_instance_valid(_finale_panel):
+		if _finale_panel.is_connected("display_off_completed", _on_display_off_completed):
+			_finale_panel.disconnect("display_off_completed", _on_display_off_completed)
+		if _finale_panel.is_connected("keep_display_chosen", _on_keep_display_chosen):
+			_finale_panel.disconnect("keep_display_chosen", _on_keep_display_chosen)
 		if _finale_panel.has_method("hide_panel"): _finale_panel.call("hide_panel")
 		_finale_panel.queue_free()
 	_finale_panel = null

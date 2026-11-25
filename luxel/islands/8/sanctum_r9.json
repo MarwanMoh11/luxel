@@ -55,8 +55,10 @@
         208
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "sanctum_r3_west_arch"
+      ],
+      "locked_door_id": "door_sanctum_r9_east"
     },
     {
       "id": "exit_sanctum_r9_north",
@@ -281,6 +283,24 @@
       "props": {
         "zone": "sanctum_r9",
         "lit": false
+      }
+    },
+    {
+      "id": "door_sanctum_r9_east",
+      "kind": "door",
+      "pos": [
+        424,
+        192
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "sanctum_r3_west_arch"
+        ]
       }
     },
     {

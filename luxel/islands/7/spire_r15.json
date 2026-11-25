@@ -327,6 +327,7 @@
     {
       "id": "ev_r15_shatter",
       "on": "signal:fake_lamp_r15",
+      "if": "!flag:spire_r15_wave2 && !flag:spire_false_lamp_broken",
       "once": true,
       "do": [
         {

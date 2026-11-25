@@ -83,27 +83,6 @@
       ],
       "zone": "belfry_chasm",
       "leash": 72
-    },
-    {
-      "id": "moth_r2_w",
-      "kind": "toll_moth",
-      "pos": [
-        208,
-        152
-      ],
-      "route": [],
-      "perches": [
-        [
-          208,
-          152
-        ],
-        [
-          208,
-          184
-        ]
-      ],
-      "zone": "belfry_chasm",
-      "leash": 96
     }
   ],
   "interactables": [
@@ -342,7 +321,7 @@
               "id": "moth_r2_amb",
               "kind": "toll_moth",
               "pos": [
-                208,
+                232,
                 56
               ],
               "zone": "belfry_chasm",
@@ -352,8 +331,18 @@
               "id": "snuffer_r2_amb",
               "kind": "snuffer_acolyte",
               "pos": [
-                208,
-                168
+                224,
+                96
+              ],
+              "zone": "belfry_chasm",
+              "leash": 96
+            },
+            {
+              "id": "moth_r2_amb2",
+              "kind": "toll_moth",
+              "pos": [
+                176,
+                64
               ],
               "zone": "belfry_chasm",
               "leash": 96
@@ -392,7 +381,7 @@
       },
       {
         "op": "clear",
-        "timeout": 24.0
+        "timeout": 40.0
       },
       {
         "op": "goto",
@@ -409,14 +398,18 @@
         "op": "goto",
         "to": [
           208,
-          136
+          120
         ]
+      },
+      {
+        "op": "clear",
+        "timeout": 42.0
       },
       {
         "op": "shoot",
         "from": [
-          208,
-          136
+          200,
+          152
         ],
         "target": "bell_r2_dawn"
       },

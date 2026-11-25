@@ -97,6 +97,20 @@
         216,
         56
       ]
+    },
+    {
+      "id": "exit_canal_locks",
+      "rect": [
+        592,
+        560,
+        48,
+        16
+      ],
+      "to_region": "locks_r1",
+      "to_spawn": [
+        104,
+        280
+      ]
     }
   ],
   "enemies": [
@@ -149,7 +163,7 @@
       "kind": "barnacle_sentry",
       "pos": [
         632,
-        488
+        376
       ],
       "route": [],
       "zone": "canal_quarter",
@@ -159,17 +173,17 @@
       "id": "brine_lamprey_cn_1",
       "kind": "brine_lamprey",
       "pos": [
-        568,
-        504
+        600,
+        408
       ],
       "route": [
         [
           568,
-          504
+          408
         ],
         [
           664,
-          504
+          408
         ]
       ],
       "zone": "canal_quarter",

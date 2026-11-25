@@ -252,7 +252,7 @@ func tick_glide(dt: float, dash_held: bool) -> void:
 		wick.spawn_sparks(wick.global_position, -glide_dir, 1, LxBiomePalette.col(isl_g, "glow"), 8.0, 22.0, 0.16)
 		if isl_g in [2, 4, 7] and Lx.world != null and is_instance_valid(Lx.world):
 			var wfx: Variant = Lx.world.get("_water_fx")
-			if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
+			if is_instance_valid(wfx) and wfx is Object and (wfx as Object).has_method("spawn_ripple"):
 				(wfx as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 4.0), "rose" if isl_g == 4 else "ice", 10.0)
 
 	if glide_time_left <= 0.0 or glide_dist_left <= 0.0:
@@ -342,5 +342,5 @@ func _sync_arc_node() -> void:
 func _gust(radius: float, strength: float) -> void:
 	if wick != null and Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+		if is_instance_valid(amb) and amb is Object and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", wick.global_position, radius, strength)

@@ -42,74 +42,36 @@ var _drag_start: Vector2 = Vector2.ZERO
 var _drag_active: bool = false
 
 
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	visible = false
-
-
-func close() -> void:
-	visible = false
-	_clear_drag()
-
+func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; visible = false
+func close() -> void: visible = false; _clear_drag()
 
 func open(p_read_only: bool = false) -> void:
-	read_only = p_read_only
-	_sheet = LxSpriteSheet.load_sheet(SHEET_PATH)
+	read_only = p_read_only; _sheet = LxSpriteSheet.load_sheet(SHEET_PATH)
 	LxPanes.current().load_from_state()
-	_island_filter = 0
-	_rebuild_list()
-	_idx = 0
-	_focus_slots = false
-	_slot_cursor = 0
-	_scroll_row = 0
-	_elapsed = 0.0
-	_feedback_txt = ""
-	_feedback_t = 0.0
-	_deny_t = 0.0
-	_spark_slot = -1
-	_spark_t = 0.0
-	_clear_drag()
-	visible = true
-	_play_sfx("menu_open")
-	queue_redraw()
+	_island_filter = 0; _rebuild_list()
+	_idx = 0; _focus_slots = false; _slot_cursor = 0; _scroll_row = 0; _elapsed = 0.0
+	_feedback_txt = ""; _feedback_t = 0.0; _deny_t = 0.0; _spark_slot = -1; _spark_t = 0.0
+	_clear_drag(); visible = true; _play_sfx("menu_open"); queue_redraw()
 
-
-func _clear_drag() -> void:
-	_dragging_id = ""
-	_dragging_from_slot = -1
-	_drag_active = false
-
-
-func _rebuild_list() -> void:
-	_panes = LxPanes.current().panes_for_island(_island_filter)
-	_idx = clampi(_idx, 0, maxi(0, _panes.size() - 1))
-	_sync_scroll()
-
+func _clear_drag() -> void: _dragging_id = ""; _dragging_from_slot = -1; _drag_active = false
+func _rebuild_list() -> void: _panes = LxPanes.current().panes_for_island(_island_filter); _idx = clampi(_idx, 0, maxi(0, _panes.size() - 1)); _sync_scroll()
 
 func _sync_scroll() -> void:
 	var row: int = _idx / GRID_COLS
-	if row < _scroll_row:
-		_scroll_row = row
-	elif row >= _scroll_row + GRID_ROWS:
-		_scroll_row = row - GRID_ROWS + 1
-	var max_rows: int = maxi(0, ceili(float(_panes.size()) / float(GRID_COLS)) - GRID_ROWS)
-	_scroll_row = clampi(_scroll_row, 0, max_rows)
-
+	if row < _scroll_row: _scroll_row = row
+	elif row >= _scroll_row + GRID_ROWS: _scroll_row = row - GRID_ROWS + 1
+	_scroll_row = clampi(_scroll_row, 0, maxi(0, ceili(float(_panes.size()) / float(GRID_COLS)) - GRID_ROWS))
 
 func _process(delta: float) -> void:
-	if not visible:
-		return
+	if not visible: return
 	_elapsed += delta
 	if _feedback_t > 0.0:
 		_feedback_t = maxf(0.0, _feedback_t - delta)
-		if _feedback_t <= 0.0:
-			_feedback_txt = ""
-	if _deny_t > 0.0:
-		_deny_t = maxf(0.0, _deny_t - delta)
+		if _feedback_t <= 0.0: _feedback_txt = ""
+	if _deny_t > 0.0: _deny_t = maxf(0.0, _deny_t - delta)
 	if _spark_t > 0.0:
 		_spark_t = maxf(0.0, _spark_t - delta)
-		if _spark_t <= 0.0:
-			_spark_slot = -1
+		if _spark_t <= 0.0: _spark_slot = -1
 	queue_redraw()
 
 

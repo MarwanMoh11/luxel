@@ -135,7 +135,7 @@ func _spawn_crypt_pillars_and_bells() -> void:
 	var has_room_bell: bool = false
 	if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("get_interactables"):
 		for it_v: Variant in (world_ctx.call("get_interactables") as Array):
-			if it_v is Object and str((it_v as Object).get("kind")) == "bell":
+			if is_instance_valid(it_v) and it_v is Object and str((it_v as Object).get("kind")) == "bell":
 				has_room_bell = true
 				break
 	if not has_room_bell:

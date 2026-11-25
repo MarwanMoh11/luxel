@@ -146,8 +146,8 @@
       "mini": true,
       "dungeon": "galleon",
       "region": "galleon_r6",
-      "music": "island2_boss_p1",
-      "music_p2": "island2_boss_p2",
+      "music": "isl2_boss_minor_p1",
+      "music_p2": "isl2_boss_minor_p2",
       "heart": "none",
       "flag": "boss_bosun_rig_defeated",
       "aliases": [
@@ -165,8 +165,8 @@
       "mini": false,
       "dungeon": "galleon",
       "region": "galleon_r12",
-      "music": "island2_boss_p1",
-      "music_p2": "island2_boss_p2",
+      "music": "isl2_boss_minor_p1",
+      "music_p2": "isl2_boss_minor_p2",
       "heart": "half",
       "flag": "boss_figurehead_defeated",
       "aliases": [

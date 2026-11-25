@@ -144,6 +144,8 @@
         216
       ],
       "props": {
+        "zone": "toll_narthex",
+        "name_key": "ISL8_D_TOLL",
         "lit": false
       }
     },

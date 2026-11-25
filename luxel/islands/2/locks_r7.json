@@ -89,8 +89,8 @@
       "id": "lore_r7_harpoon",
       "kind": "lore_stone",
       "pos": [
-        152,
-        264
+        136,
+        256
       ],
       "props": {
         "string_id": "LCK_LORE_HARPOON",
@@ -535,6 +535,13 @@
       ]
     },
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          160,
+          256
+        ]
+      },
       {
         "op": "interact",
         "target": "lore_r7_harpoon"

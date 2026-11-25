@@ -127,14 +127,14 @@
       "kind": "polarity_well",
       "pos": [
         256,
-        136
+        112
       ],
       "props": {
         "mode": "pull",
-        "radius": 52.0,
-        "strength": 420.0,
+        "radius": 44.0,
+        "strength": 400.0,
         "orbit_capture": true,
-        "orbit_r": 32.0
+        "orbit_r": 28.0
       }
     },
     {
@@ -372,13 +372,10 @@
     },
     "solution": [
       {
-        "op": "lens"
-      },
-      {
         "op": "goto",
         "to": [
-          296,
-          184
+          376,
+          176
         ]
       },
       {
@@ -390,6 +387,10 @@
           176,
           152
         ]
+      },
+      {
+        "op": "wait",
+        "secs": 4.2
       },
       {
         "op": "lens"
@@ -412,6 +413,10 @@
         "prop": "opened",
         "value": true,
         "timeout": 2.5
+      },
+      {
+        "op": "wait",
+        "secs": 4.2
       },
       {
         "op": "lens"

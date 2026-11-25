@@ -224,10 +224,10 @@ static func sample_light_at(region: Node, world_pos: Vector2, ignore: Object = n
 		var items_v: Variant = region.call("get_interactables")
 		if items_v is Array:
 			for it_v: Variant in (items_v as Array):
-				if not (it_v is LxInteractable) or it_v == ignore:
+				if not is_instance_valid(it_v) or not (it_v is LxInteractable) or it_v == ignore:
 					continue
 				var it: LxInteractable = it_v as LxInteractable
-				if not is_instance_valid(it) or not it.active:
+				if not it.active:
 					continue
 				var pool: Vector4 = it.get_light_pool()
 				if pool.z > 1.0 and pool.w > 0.01:
@@ -240,7 +240,7 @@ static func sample_light_at(region: Node, world_pos: Vector2, ignore: Object = n
 					best = maxf(best, 1.0)
 	if Lx.player != null and is_instance_valid(Lx.player):
 		var lan_v: Variant = Lx.player.get("lantern")
-		if lan_v is Object and is_instance_valid(lan_v):
+		if is_instance_valid(lan_v) and lan_v is Object:
 			var lan: Object = lan_v as Object
 			var lpos: Vector2 = lan.get("pos") as Vector2 if lan.get("pos") is Vector2 else (
 				(Lx.player as Node2D).global_position if Lx.player is Node2D else Vector2(-9999.0, -9999.0)
@@ -278,7 +278,7 @@ static func _get_vars_service() -> Object:
 	if lx_scr == null:
 		return null
 	var v: Variant = lx_scr.get("vars")
-	if v is Object and is_instance_valid(v):
+	if is_instance_valid(v) and v is Object:
 		var obj: Object = v as Object
 		if obj.has_method("get_var") and obj.has_method("set_var"):
 			return obj
@@ -329,7 +329,7 @@ static func trigger_room_reset(source: LxInteractable) -> int:
 				targets.append(sid)
 	var inters: Array = source.region.call("get_interactables") as Array
 	for it_v: Variant in inters:
-		if not (it_v is LxInteractable) or it_v == source:
+		if not is_instance_valid(it_v) or not (it_v is LxInteractable) or it_v == source:
 			continue
 		var it: LxInteractable = it_v as LxInteractable
 		if not targets.is_empty() and not targets.has(it.id):

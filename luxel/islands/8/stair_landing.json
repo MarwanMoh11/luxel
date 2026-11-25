@@ -76,6 +76,21 @@
         "stair_cleared"
       ],
       "locked_door_id": "door_stair_forecourt_bridge"
+    },
+    {
+      "id": "exit_to_stair_r1",
+      "rect": [
+        272,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r1",
+      "to_spawn": [
+        216,
+        264
+      ]
     }
   ],
   "enemies": [
@@ -186,8 +201,8 @@
       "id": "lore_stair_base",
       "kind": "lore_stone",
       "pos": [
-        288,
-        80
+        224,
+        96
       ],
       "props": {
         "string_id": "ISL8_LORE_STAIR",
@@ -263,7 +278,7 @@
       "prop": "arch_landing_gate",
       "pos": [
         288,
-        72
+        56
       ],
       "layer": "over",
       "flip_x": false,

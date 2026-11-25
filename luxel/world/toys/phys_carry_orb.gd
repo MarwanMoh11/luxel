@@ -103,7 +103,7 @@ func tick(dt: float) -> void:
 			if fa.length_squared() > 0.01:
 				vel += fa * dt
 		var nxt: Vector2 = pos + vel * dt
-		var hit_wall: bool = region != null and region.has_method("tile_at") and LxMapFormat.blocks_sight_tile(str(region.call("tile_at", nxt)))
+		var hit_wall: bool = _flight_blocked(pos, nxt)
 		if hit_wall or _air_t <= 0.0:
 			airborne = false
 			vel = Vector2.ZERO
@@ -123,6 +123,43 @@ func tick(dt: float) -> void:
 	# Light orb radiates real illumination to nearby on_light interactables!
 	if orb_kind == "light" and region != null and region.has_method("apply_light"):
 		region.call("apply_light", pos, 44.0, "carry_orb")
+
+
+func _flight_blocked(from_p: Vector2, to_p: Vector2) -> bool:
+	if region == null or not is_instance_valid(region):
+		return false
+	if region.has_method("tile_at") and LxMapFormat.blocks_sight_tile(str(region.call("tile_at", to_p))):
+		return true
+	if region.has_method("clear_view") and not bool(region.call("clear_view", from_p, to_p)):
+		return true
+	if region.has_method("get_interactables"):
+		var mid: Vector2 = from_p.lerp(to_p, 0.5)
+		for it_v: Variant in (region.call("get_interactables") as Array):
+			if not is_instance_valid(it_v) or it_v == self or not (it_v is Object):
+				continue
+			var it: Object = it_v as Object
+			if it.get("active") is bool and not bool(it.get("active")):
+				continue
+			var blocked: bool = false
+			var brect: Rect2 = Rect2()
+			if it is LxPhysOneWayGate:
+				blocked = (it as LxPhysOneWayGate).blocks_lantern(from_p, to_p)
+				brect = (it as LxPhysOneWayGate).get_lantern_block_rect()
+			elif it.has_method("blocks_lantern") and bool(it.call("blocks_lantern")):
+				blocked = true
+				brect = (it.call("get_lantern_block_rect") as Rect2) if it.has_method("get_lantern_block_rect") else (
+					(it.call("get_solid_rect") as Rect2) if it.has_method("get_solid_rect") else Rect2()
+				)
+			elif it.has_method("is_solid") and bool(it.call("is_solid")) and it.has_method("get_solid_rect"):
+				var ik: String = str(it.get("kind"))
+				if ik in ["door", "gate", "one_way_gate", "grate", "toggle_block", "mover_wall"]:
+					blocked = true
+					brect = it.call("get_solid_rect") as Rect2
+			if blocked and brect.has_area():
+				var grown: Rect2 = brect.grow(1.5)
+				if grown.has_point(to_p) or grown.has_point(mid):
+					return true
+	return false
 
 
 func get_interact_prompt() -> String:

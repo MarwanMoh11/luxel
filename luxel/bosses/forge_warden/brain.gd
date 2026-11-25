@@ -284,7 +284,7 @@ func _trigger_room_slag_pourers() -> void:
 	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("get_interactables"):
 		return
 	for it_v: Variant in (world_ctx.call("get_interactables") as Array):
-		if it_v is LxInteractable and (it_v as LxInteractable).kind == "slag_pourer" and (it_v as Object).has_method("trigger_pour"):
+		if is_instance_valid(it_v) and it_v is LxInteractable and (it_v as LxInteractable).kind == "slag_pourer" and (it_v as Object).has_method("trigger_pour"):
 			(it_v as Object).call("trigger_pour")
 
 
@@ -296,7 +296,7 @@ func _splash_slag_boulder(at_p: Vector2) -> void:
 
 
 func _tick_slag_boulders(dt: float) -> void:
-	var wick_node: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var wick_node: LxWick = Lx.player as LxWick if (is_instance_valid(Lx.player) and Lx.player is LxWick) else null
 	for i: int in range(_slag_boulders.size() - 1, -1, -1):
 		var sb: Dictionary = _slag_boulders[i]
 		sb["ttl"] = float(sb["ttl"]) - dt
@@ -307,7 +307,7 @@ func _tick_slag_boulders(dt: float) -> void:
 			var bp_s: Vector2 = sb["pos"] as Vector2
 			for bi: int in range(wick_node.bolts.size() - 1, -1, -1):
 				var bv: Variant = wick_node.bolts[bi]
-				if bv is Object and (bv.get("pos") as Vector2).distance_to(bp_s) <= 10.0:
+				if is_instance_valid(bv) and bv is Object and (bv.get("pos") as Vector2).distance_to(bp_s) <= 10.0:
 					if str(bv.get("light_color")).to_lower() == LxHit.COLOR_BLUE:
 						sb["cooled"] = true
 						sb["ttl"] = 14.0
@@ -325,11 +325,11 @@ func _compute_fissure_block_dist(dir: Vector2) -> float:
 	if world_ctx != null and is_instance_valid(world_ctx):
 		if world_ctx.has_method("get_interactables"):
 			for it_v: Variant in (world_ctx.call("get_interactables") as Array):
-				if it_v is LxInteractable and (it_v as LxInteractable).kind == "push_block" and bool((it_v as Object).get("cooled")):
+				if is_instance_valid(it_v) and it_v is LxInteractable and (it_v as LxInteractable).kind == "push_block" and bool((it_v as Object).get("cooled")):
 					candidates.append((it_v as LxInteractable).pos)
 		if world_ctx.has_method("get_enemies"):
 			for ev: Variant in (world_ctx.call("get_enemies") as Array):
-				if ev is LxEnemyBrain and ev != self and (ev as LxEnemyBrain).is_alive() and (ev as Object).has_method("is_frozen_block") and bool((ev as Object).call("is_frozen_block")):
+				if is_instance_valid(ev) and ev is LxEnemyBrain and ev != self and (ev as LxEnemyBrain).is_alive() and (ev as Object).has_method("is_frozen_block") and bool((ev as Object).call("is_frozen_block")):
 					candidates.append((ev as LxEnemyBrain).pos)
 	for cp: Vector2 in candidates:
 		var rel: Vector2 = cp - pos

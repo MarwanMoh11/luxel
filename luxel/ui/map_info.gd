@@ -44,6 +44,7 @@ static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: 
 		LxPixelFont.draw_left(ci, LxStrings.text("MAP_HUB_LABEL"), box.position + Vector2(14.0, 5.0), LxPalette.PAL["gold"], 1)
 		if Lx.state != null and Lx.state.island_id == 0:
 			LxPixelFont.draw_right(ci, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 5.0, LxPalette.PAL["cream"], 1)
+		LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_SECRETS", [count_secrets()]), box.position + Vector2(6.0, 26.0), LxPalette.PAL["sky"], 1)
 		_draw_footer_counts(ci, box)
 		return
 	LxPixelFont.draw_panel(ci, box, "dusk", LxBiomePalette.key(isl_id, "border") if explored else "mauve", "night")
@@ -261,10 +262,11 @@ static func count_secrets() -> int:
 		if iid.begins_with("chest"):
 			count += 1
 	for f_var: Variant in Lx.state.story_flags.keys():
-		if not bool(Lx.state.story_flags[f_var]):
-			continue
 		var fk: String = str(f_var)
-		if (fk.begins_with("disc_") and not fk.begins_with("disc_all_")) or fk.begins_with("chime_1_"):
+		if not ((fk.begins_with("disc_") and not fk.begins_with("disc_all_")) or fk.begins_with("chime_1_")):
+			continue
+		var fv: Variant = Lx.state.story_flags[f_var]
+		if fv is bool and bool(fv):
 			count += 1
 	return count
 

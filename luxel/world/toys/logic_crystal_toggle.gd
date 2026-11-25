@@ -87,7 +87,7 @@ func _apply_phase(new_phase: int, broadcast: bool) -> void:
 	_notify_linked_targets(powered)
 	if broadcast and region != null and region.has_method("get_interactables"):
 		for it_v: Variant in (region.call("get_interactables") as Array):
-			if not (it_v is LxInteractable) or it_v == self:
+			if not is_instance_valid(it_v) or not (it_v is LxInteractable) or it_v == self:
 				continue
 			var it: LxInteractable = it_v as LxInteractable
 			if not is_instance_valid(it):

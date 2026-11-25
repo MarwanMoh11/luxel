@@ -14,6 +14,7 @@ var min_weight: int = 1
 var state: int = State.IDLE
 var auto_sell_id: String = ""
 var sets_flag: String = ""
+var requires_flag: String = ""
 var _tilt: float = 0.0 # 0.0 = level, 1.0 = tilted paid
 var _pulse_t: float = 0.0
 var _sold_ref: LxSold = null
@@ -27,6 +28,7 @@ func _toy_setup() -> void:
 	min_weight = maxi(1, int(props.get("min_weight", 1)))
 	auto_sell_id = str(props.get("auto_sell_id", "")).strip_edges().to_lower()
 	sets_flag = str(props.get("sets_flag", "")).strip_edges()
+	requires_flag = str(props.get("requires_flag", "")).strip_edges()
 	radius = 20.0
 	persist = bool(props.get("persist", true))
 	_bind_sold()
@@ -68,12 +70,18 @@ func interact(_actor: Node = null) -> bool:
 	if mode == "gate" and sold.get_toll_weight() >= min_weight:
 		_mark_paid(true)
 		return true
-	if mode == "redemption" and sold.is_redemption_used():
-		if state == State.PAID:
-			_mark_paid(false)
-			return true
-		_emit_sfx("door_locked")
-		return false
+	if mode == "redemption":
+		if not requires_flag.is_empty() and (Lx.state == null or not bool(Lx.state.story_flags.get(requires_flag, false))):
+			_emit_sfx("door_locked")
+			if Lx.events != null and LxStrings.has_id("ISL8_REDEMPTION_LOCKED"):
+				Lx.events.narration_requested.emit("ISL8_REDEMPTION_LOCKED", "narration", 3.0)
+			return false
+		if sold.is_redemption_used():
+			if state == State.PAID:
+				_mark_paid(false)
+				return true
+			_emit_sfx("door_locked")
+			return false
 	if mode == "boon_toll" and state == State.PAID:
 		return true
 

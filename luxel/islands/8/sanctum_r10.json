@@ -55,8 +55,10 @@
         176
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "night_harbinger_defeated"
+      ],
+      "locked_door_id": "door_sanctum_r10_west"
     },
     {
       "id": "exit_sanctum_r10_north",
@@ -197,6 +199,24 @@
         ],
         "requires_signals": [
           "pull_ring_r10"
+        ]
+      }
+    },
+    {
+      "id": "door_sanctum_r10_west",
+      "kind": "door",
+      "pos": [
+        24,
+        208
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "night_harbinger_defeated"
         ]
       }
     },

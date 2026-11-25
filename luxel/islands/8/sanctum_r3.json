@@ -73,10 +73,7 @@
         400,
         192
       ],
-      "requires_moves": [
-        "lens",
-        "wings"
-      ],
+      "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     }
@@ -216,6 +213,26 @@
           "lens"
         ],
         "secret_id": "isl8_sanctum_r3_lens_chest"
+      }
+    },
+    {
+      "id": "plate_sanctum_r3_arch",
+      "kind": "pressure_plate",
+      "pos": [
+        40,
+        208
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "persist": true,
+        "size": [
+          16,
+          16
+        ],
+        "sets_flag": "sanctum_r3_west_arch"
       }
     },
     {

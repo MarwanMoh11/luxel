@@ -62,9 +62,12 @@ func _on_trial_tick(dt: float) -> void:
 	var alive_n: int = 0
 	for i: int in range(_targets.size() - 1, -1, -1):
 		var t: LxGalleryTarget = _targets[i]
-		if t == null or not is_instance_valid(t) or not t.active:
-			if t != null and is_instance_valid(t) and region != null:
-				region.remove_interactable(t.id)
+		if not is_instance_valid(t) or not t.active:
+			if is_instance_valid(t):
+				if t.target_scored.is_connected(_on_target_scored):
+					t.target_scored.disconnect(_on_target_scored)
+				if is_instance_valid(region):
+					region.remove_interactable(t.id)
 			_targets.remove_at(i)
 		else:
 			alive_n += 1
@@ -116,10 +119,17 @@ func _on_target_scored(_tgt: LxGalleryTarget, _hit: LxHit, pts: int) -> void:
 	trial_score += float(pts + bonus)
 
 
+func _exit_tree() -> void:
+	_clear_targets()
+
+
 func _clear_targets() -> void:
 	for t: LxGalleryTarget in _targets:
-		if t != null and is_instance_valid(t) and region != null:
-			region.remove_interactable(t.id)
+		if is_instance_valid(t):
+			if t.target_scored.is_connected(_on_target_scored):
+				t.target_scored.disconnect(_on_target_scored)
+			if is_instance_valid(region):
+				region.remove_interactable(t.id)
 	_targets.clear()
 
 

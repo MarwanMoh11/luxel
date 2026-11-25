@@ -88,6 +88,10 @@ func _add_prop(id: String, kind: String, pos: Vector2, cfg: Dictionary) -> Dicti
 		"on_hit": cfg.get("on_hit", Callable()),
 	}
 	props.append(p)
+	if props.size() > 32:
+		for i: int in range(props.size() - 1, -1, -1):
+			if str(props[i]["state"]) == "broken":
+				props.remove_at(i)
 	return p
 
 
@@ -161,7 +165,7 @@ func collide_circle(pt: Vector2, rad: float) -> Vector2:
 
 func tick(dt: float) -> void:
 	_clock += dt
-	var wick_node: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var wick_node: LxWick = Lx.player as LxWick if (is_instance_valid(Lx.player) and Lx.player is LxWick) else null
 	var has_p: bool = boss != null and boss.has_method("_has_player") and bool(boss.call("_has_player"))
 	var wp: Vector2 = boss.call("_get_wick_pos") as Vector2 if has_p else Vector2(-9999.0, -9999.0)
 
@@ -177,7 +181,7 @@ func tick(dt: float) -> void:
 			var pr: float = float(p["radius"])
 			for bi: int in range(wick_node.bolts.size() - 1, -1, -1):
 				var bv: Variant = wick_node.bolts[bi]
-				if not (bv is Object):
+				if not is_instance_valid(bv) or not (bv is Object):
 					continue
 				var bp: Vector2 = bv.get("pos") as Vector2
 				if bp.distance_to(pp) <= pr + 4.0:

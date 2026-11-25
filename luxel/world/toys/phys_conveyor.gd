@@ -103,7 +103,7 @@ func tick(dt: float) -> void:
 	# 2. Push loose interactables (blocks / orbs / movable mirrors)
 	if region != null and region.has_method("get_interactables"):
 		for it_v: Variant in region.call("get_interactables") as Array:
-			if it_v == self or not (it_v is LxInteractable):
+			if not is_instance_valid(it_v) or it_v == self or not (it_v is LxInteractable):
 				continue
 			var it: LxInteractable = it_v as LxInteractable
 			if not it.active or not rect.has_point(it.pos):

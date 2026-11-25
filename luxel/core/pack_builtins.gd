@@ -75,6 +75,11 @@ static func seed_registry(reg: LxPackRegistry) -> void:
 				var extra_r1: String = "belfry_r%d" % n
 				if not regs.has(extra_r1):
 					regs.append(extra_r1)
+		elif isl == 2 and did == "lighthouse":
+			for n: int in range(11, 19):
+				var extra_r2: String = "lighthouse_r%d" % n
+				if not regs.has(extra_r2):
+					regs.append(extra_r2)
 		elif isl == 3:
 			for extra_r: String in ["oak_r2b", "oak_r4b", "oak_r5b", "oak_r6b", "oak_r7b", "oak_r8b", "oak_r9b", "oak_r9c"]:
 				if not regs.has(extra_r):
@@ -84,6 +89,16 @@ static func seed_registry(reg: LxPackRegistry) -> void:
 				var extra_r4: String = "conservatory_r%d" % n
 				if not regs.has(extra_r4):
 					regs.append(extra_r4)
+		elif isl == 6 and did == "great_kiln":
+			for n: int in range(11, 19):
+				var extra_r6: String = "kiln_r%d" % n
+				if not regs.has(extra_r6):
+					regs.append(extra_r6)
+		elif isl == 8 and did == "bell_sanctum":
+			for n: int in range(7, 15):
+				var extra_r8: String = "sanctum_r%d" % n
+				if not regs.has(extra_r8):
+					regs.append(extra_r8)
 		regs.sort_custom(_sort_room_names)
 		var entry_r: String = regs[0] if not regs.is_empty() else (pref + "r1")
 		reg._dungeons[did] = {

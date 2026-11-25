@@ -5,6 +5,8 @@ extends LxToy
 ## Props: dir ("n"|"e"|"s"|"w"|[x,y]), aim (bool), cadence (float), tell_secs (float), recover_secs (float),
 ## bolt_speed (float), damage (float), color (String), sight_range (float), can_disable (bool).
 
+const MAX_BOLTS: int = 24
+
 enum Phase { IDLE, TELL, COMMIT, RECOVER }
 
 var aim_mode: bool = false
@@ -153,6 +155,8 @@ func _track_wick() -> void:
 
 func _fire_bolt() -> void:
 	var bdir: Vector2 = fire_dir.normalized()
+	if bolts.size() >= MAX_BOLTS:
+		bolts.remove_at(0)
 	bolts.append({
 		"pos": pos + bdir * 9.0,
 		"prev": pos + bdir * 9.0,
@@ -197,10 +201,10 @@ func _tick_bolts(dt: float) -> void:
 		if not dead:
 			var hit_ids: Array = b["hit_ids"] as Array
 			for it_v: Variant in inters:
-				if not (it_v is LxInteractable):
+				if not is_instance_valid(it_v) or not (it_v is LxInteractable):
 					continue
 				var it: LxInteractable = it_v as LxInteractable
-				if not is_instance_valid(it) or not it.active:
+				if not it.active:
 					continue
 				var iid: int = it.get_instance_id()
 				if hit_ids.has(iid):
@@ -245,7 +249,7 @@ func _tick_bolts(dt: float) -> void:
 					break
 
 		# 3. Wick hit (only unreflected bolts)
-		if not dead and not bool(b["reflected"]) and Lx.player is LxWick and is_instance_valid(Lx.player):
+		if not dead and not bool(b["reflected"]) and is_instance_valid(Lx.player) and Lx.player is LxWick:
 			var w: LxWick = Lx.player as LxWick
 			if not w.dead and Geometry2D.get_closest_point_to_segment(w.global_position, bp, nxt).distance_to(w.global_position) <= 6.5:
 				w.take_damage(bolt_damage, bp, bdir, "turret_eye")

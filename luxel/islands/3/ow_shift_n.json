@@ -94,7 +94,7 @@
       "to_region": "ow_shift_w",
       "to_spawn": [
         216,
-        56
+        72
       ]
     },
     {
@@ -108,7 +108,7 @@
       "to_region": "ow_shift_e",
       "to_spawn": [
         216,
-        56
+        72
       ]
     },
     {
@@ -170,8 +170,8 @@
       "id": "shift_n_strangler",
       "kind": "vine_strangler",
       "pos": [
-        184,
-        152
+        256,
+        176
       ],
       "route": [],
       "zone": "crown_thicket",

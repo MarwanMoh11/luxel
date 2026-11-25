@@ -64,7 +64,7 @@
       "max_rank": 4,
       "rank_islands": [1, 3, 5, 7],
       "costs": [130, 240, 320, 380],
-      "values": [0.15, 0.13, 0.115, 0.10]
+      "values": [0.145, 0.125, 0.11, 0.095]
     },
     {
       "id": "throw_damage",
@@ -75,7 +75,7 @@
       "max_rank": 3,
       "rank_islands": [1, 3, 6],
       "costs": [145, 270, 360],
-      "values": [2.6, 3.3, 4.1]
+      "values": [2.6, 3.25, 4.0]
     },
     {
       "id": "dash_cooldown",
@@ -86,7 +86,7 @@
       "max_rank": 3,
       "rank_islands": [1, 3, 6],
       "costs": [140, 260, 350],
-      "values": [0.44, 0.34, 0.25]
+      "values": [0.42, 0.32, 0.24]
     },
     {
       "id": "pickup_radius",
@@ -142,7 +142,7 @@
       "rank_islands": [2, 4, 7],
       "costs": [185, 295, 395],
       "values": [4, 5, 7],
-      "mult_values": [1.38, 1.48, 1.60]
+      "mult_values": [1.30, 1.42, 1.55]
     },
     {
       "id": "beam_charge",
@@ -176,7 +176,7 @@
       "max_rank": 3,
       "rank_islands": [4, 6, 8],
       "costs": [215, 320, 410],
-      "values": [124.0, 156.0, 192.0]
+      "values": [120.0, 148.0, 184.0]
     },
     {
       "id": "lens_duration",
@@ -187,7 +187,7 @@
       "max_rank": 2,
       "rank_islands": [5, 7],
       "costs": [235, 360],
-      "values": [5.5, 7.5]
+      "values": [5.2, 6.5]
     },
     {
       "id": "lens_radius",
@@ -210,7 +210,7 @@
       "max_rank": 2,
       "rank_islands": [6, 8],
       "costs": [265, 395],
-      "values": [78.0, 56.0]
+      "values": [80.0, 62.0]
     },
     {
       "id": "spare_wick",

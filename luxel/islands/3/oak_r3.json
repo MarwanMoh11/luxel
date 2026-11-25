@@ -533,8 +533,7 @@
     },
     {
       "id": "oak_r3_finish",
-      "on": "cleared",
-      "if": "flag:rscr_3_oak_r3_oak_r3_wave2",
+      "on": "flag:rscr_3_oak_r3_oak_r3_wave2",
       "once": true,
       "do": [
         {

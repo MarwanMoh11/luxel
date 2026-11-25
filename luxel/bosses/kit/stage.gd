@@ -84,9 +84,8 @@ func revert_tiles(world_ctx: Node) -> void:
 	if _saved_tiles.is_empty() or world_ctx == null or not is_instance_valid(world_ctx):
 		_saved_tiles.clear()
 		return
-	if world_ctx.has_method("set_tiles_batch"):
-		world_ctx.call("set_tiles_batch", _saved_tiles)
-	elif world_ctx.has_method("set_tiles"):
+	var has_batch: bool = world_ctx.has_method("set_tiles_batch")
+	if has_batch or world_ctx.has_method("set_tiles"):
 		var by_tile: Dictionary = {}
 		for key_v: Variant in _saved_tiles.keys():
 			var k: Vector2i = key_v as Vector2i
@@ -94,10 +93,16 @@ func revert_tiles(world_ctx: Node) -> void:
 			if not by_tile.has(t):
 				by_tile[t] = []
 			(by_tile[t] as Array).append(k)
+		var batch_ops: Array = []
 		for t_v: Variant in by_tile.keys():
 			var tile_s: String = str(t_v)
 			for rect: Rect2i in _coalesce_tile_rects(by_tile[tile_s] as Array):
-				world_ctx.call("set_tiles", rect, tile_s)
+				if has_batch:
+					batch_ops.append({"rect": rect, "tile": tile_s})
+				else:
+					world_ctx.call("set_tiles", rect, tile_s)
+		if has_batch and not batch_ops.is_empty():
+			world_ctx.call("set_tiles_batch", batch_ops)
 	else:
 		var grid_v: Variant = world_ctx.get("grid")
 		if grid_v is Array:

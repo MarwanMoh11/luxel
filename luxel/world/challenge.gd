@@ -18,6 +18,7 @@ var auto_retry: bool = false
 
 var _owner_script: Node = null
 var _region: Node = null
+var _gate: Object = null
 var _spec: Dictionary = {}
 var _ok_actions: Array = []
 var _fail_actions: Array = []
@@ -59,10 +60,11 @@ class _LxChallengeHudDraw extends Node2D:
 			ch._draw_hud_overlay(self)
 
 
-func setup(p_script: Node, p_region: Node, p_spec: Dictionary) -> void:
+func setup(p_script: Node, p_region: Node, p_spec: Dictionary, p_gate: Object = null) -> void:
 	cleanup()
 	_owner_script = p_script
 	_region = p_region
+	_gate = p_gate if (p_gate != null and is_instance_valid(p_gate)) else null
 	_spec = p_spec.duplicate(true)
 	challenge_id = str(_spec.get("id", "%s_%s" % [str(_spec.get("kind", "ch")), str(p_region.get("current_region_id")) if p_region != null else "r"]))
 	kind = str(_spec.get("kind", "survive")).strip_edges().to_lower()
@@ -181,7 +183,11 @@ func retry() -> void:
 
 
 func cancel() -> void:
+	var was_running: bool = state == State.RUNNING
 	state = State.IDLE
+	_despawn_challenge_enemies()
+	if was_running:
+		_notify_gate(false)
 	_hide_hud()
 	queue_redraw()
 
@@ -283,7 +289,9 @@ func _tick_wave_schedule() -> void:
 		if not bool(w.get("_sent", false)) and elapsed_s >= float(w.get("at", 0.0)):
 			w["_sent"] = true
 			var enemies: Variant = w.get("enemies", w.get("wave", []))
-			if _owner_script.has_method("run_actions"):
+			if _owner_script.has_method("spawn_wave_for_challenge"):
+				_owner_script.call("spawn_wave_for_challenge", enemies, challenge_id)
+			elif _owner_script.has_method("run_actions"):
 				_owner_script.call("run_actions", [{"wave": enemies}])
 
 
@@ -298,7 +306,7 @@ func _tick_escort(dt: float) -> void:
 			_escort_idx += 1
 	if _region != null and _region.has_method("get_enemies"):
 		for e_v: Variant in (_region.call("get_enemies") as Array):
-			if e_v is LxEnemyBrain and is_instance_valid(e_v):
+			if is_instance_valid(e_v) and e_v is LxEnemyBrain:
 				var e: LxEnemyBrain = e_v as LxEnemyBrain
 				if e.is_alive() and e.pos.distance_to(_escort_pos) <= e.body_radius + 8.0:
 					_escort_hp = maxf(0.0, _escort_hp - dt * 1.2)
@@ -312,16 +320,30 @@ func _tick_escort(dt: float) -> void:
 func _win_challenge() -> void:
 	state = State.WON
 	_result_flash_t = 1.0
+	var done_flag: String = "challenge_done_" + challenge_id
+	var already_done: bool = Lx.state != null and bool(Lx.state.story_flags.get(done_flag, false))
 	if Lx.state != null:
-		Lx.state.story_flags["challenge_done_" + challenge_id] = true
+		Lx.state.story_flags[done_flag] = true
 	if Lx.events != null:
 		Lx.events.sfx_requested.emit("chest_open", _get_wick_pos(), false)
+	_notify_gate(true)
+	if _region != null and is_instance_valid(_region) and _region.has_method("save_interactables_to_state"):
+		_region.call("save_interactables_to_state")
 	if _owner_script != null and _owner_script.has_method("run_actions"):
-		var acts: Array = _ok_actions.duplicate(true)
-		if not _reward_spec.is_empty():
+		var acts: Array = []
+		for a_v: Variant in _ok_actions:
+			if a_v is Dictionary:
+				var ad: Dictionary = (a_v as Dictionary).duplicate(true)
+				if already_done:
+					ad.erase("reward")
+				if not ad.is_empty():
+					acts.append(ad)
+		if not already_done and not _reward_spec.is_empty():
 			acts.append({"reward": _reward_spec})
 		if not acts.is_empty():
 			_owner_script.call("run_actions", acts)
+	if not already_done and Lx.events != null:
+		Lx.events.save_requested.emit("challenge_" + challenge_id)
 	_update_hud()
 	queue_redraw()
 
@@ -330,12 +352,24 @@ func _fail_challenge(_reason: String) -> void:
 	state = State.FAILED
 	_result_flash_t = 0.8
 	_retry_t = AUTO_RETRY_DELAY
+	_despawn_challenge_enemies()
+	_notify_gate(false)
 	if Lx.events != null:
 		Lx.events.sfx_requested.emit("denied", _get_wick_pos(), false)
 	if _owner_script != null and _owner_script.has_method("run_actions") and not _fail_actions.is_empty():
 		_owner_script.call("run_actions", _fail_actions)
 	_update_hud()
 	queue_redraw()
+
+
+func _notify_gate(won: bool) -> void:
+	if _gate != null and is_instance_valid(_gate) and _gate.has_method("on_challenge_result"):
+		_gate.call("on_challenge_result", won)
+
+
+func _despawn_challenge_enemies() -> void:
+	if _owner_script != null and is_instance_valid(_owner_script) and _owner_script.has_method("clear_challenge_spawns"):
+		_owner_script.call("clear_challenge_spawns", challenge_id)
 
 
 func _all_waves_done() -> bool:

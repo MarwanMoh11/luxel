@@ -37,12 +37,11 @@
         16
       ],
       "to_island": 2,
-      "to_region": "overworld",
+      "to_region": "ow_canal_south",
       "to_spawn": [
-        104,
-        248
-      ],
-      "one_way": true
+        616,
+        520
+      ]
     },
     {
       "id": "exit_r1_north",

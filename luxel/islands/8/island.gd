@@ -27,12 +27,53 @@ const REGIONS: Array[String] = [
 	"cave_hush_trial",
 	"cave_glass_grotto",
 	"superboss_first_dark",
+	"toll_r1",
+	"toll_r2",
+	"toll_r3",
+	"toll_r4",
+	"toll_r5",
+	"toll_r6",
+	"toll_r7",
+	"toll_r8",
+	"toll_r9",
+	"toll_r10",
+	"toll_r11",
+	"archive_r1",
+	"archive_r2",
+	"archive_r3",
+	"archive_r4",
+	"archive_r5",
+	"archive_r6",
+	"archive_r7",
+	"archive_r8",
+	"archive_r9",
+	"archive_r10",
+	"archive_r11",
+	"archive_r12",
+	"stair_r1",
+	"stair_r2",
+	"stair_r3",
+	"stair_r4",
+	"stair_r5",
+	"stair_r6",
+	"stair_r7",
+	"stair_r8",
+	"stair_r9",
+	"stair_r10",
 	"sanctum_r1",
 	"sanctum_r2",
 	"sanctum_r3",
 	"sanctum_r4",
 	"sanctum_r5",
 	"sanctum_r6",
+	"sanctum_r7",
+	"sanctum_r8",
+	"sanctum_r9",
+	"sanctum_r10",
+	"sanctum_r11",
+	"sanctum_r12",
+	"sanctum_r13",
+	"sanctum_r14",
 ]
 
 var _events: LxEventBus = null
@@ -322,7 +363,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if st != null and not st.defeated_bosses.has(SUPERBOSS_ID):
 			_emit_narration("ISL8_BOSS_FIRST_DARK", "title", 4.0)
 			if _events != null:
-				_events.music_mode_requested.emit("superboss_a")
+				_events.music_mode_requested.emit("superboss_b")
 		elif _events != null:
 			_events.music_mode_requested.emit("hub")
 	elif region_id == "sanctum_r6":
@@ -341,9 +382,10 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 				_events.shake_requested.emit(0.10)
 		if _events != null:
 			var mb_live: bool = region_id == "sanctum_r4" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
+			var seraph_live: bool = region_id == "sanctum_r12" and st != null and not st.defeated_bosses.has("rose_seraph") and not bool(st.story_flags.get("rose_seraph_defeated", false))
 			if mb_live:
 				_emit_narration("MINIBOSS_8", "title", 3.2)
-			_events.music_mode_requested.emit("island8_boss_p1" if mb_live else "island8_dungeon")
+			_events.music_mode_requested.emit("island8_boss_p1" if mb_live else ("isl8_boss_minor_p1" if seraph_live else "island8_dungeon"))
 
 
 func _on_beacon_lit(island_id: int, beacon_id: String) -> void:
@@ -396,6 +438,11 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 		if phase >= 2 and _events != null:
 			_events.music_mode_requested.emit("superboss_b")
 			_events.shake_requested.emit(0.34)
+		return
+	if boss_id in ["chief_auditor", "tollmaster", "indexer", "archivist", "stair_warden", "rose_seraph"]:
+		if phase >= 2 and _events != null:
+			_events.music_mode_requested.emit("isl8_boss_minor_p2")
+			_events.shake_requested.emit(0.28 if phase == 2 else 0.34)
 		return
 	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
 		return

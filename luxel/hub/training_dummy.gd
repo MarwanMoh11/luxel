@@ -5,6 +5,7 @@ extends LxInteractable
 
 const WINDOW_SECS: float = 4.0
 const COMBO_TIMEOUT: float = 2.6
+const MAX_SAMPLES: int = 256
 
 var _hit_t: float = 0.0
 var _recoil_dir: Vector2 = Vector2.RIGHT
@@ -38,6 +39,8 @@ func on_hit(hit: LxHit) -> bool:
 	_since_hit = 0.0
 	_plaque_t = 4.5
 	combo_streak += 1
+	if _samples.size() >= MAX_SAMPLES:
+		_samples.remove_at(0)
 	_samples.append({"t": _sim_t, "dmg": hit.damage})
 	_recompute_tempo()
 	_recoil_dir = hit.dir.normalized() if hit.dir.length_squared() > 0.01 else Vector2.RIGHT

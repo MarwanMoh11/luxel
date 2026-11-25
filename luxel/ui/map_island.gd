@@ -517,8 +517,7 @@ static func _draw_info_sidebar(ci: CanvasItem, isl_id: int, nodes: Array[Diction
 		var folk_n: int = 0
 		if Lx.state != null:
 			for k: Variant in Lx.state.story_flags.keys():
-				if str(k).begins_with("folk:") and bool(Lx.state.story_flags[k]):
-					folk_n += 1
+				if str(k).begins_with("folk:") and bool(Lx.state.story_flags[k]): folk_n += 1
 		LxBubble.draw_icon(ci, "home", Vector2(x0 + 48.0, y), 1.0)
 		LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_WS_COUNT_FMT", [folk_n, 10]), Vector2(x0 + 60.0, y + 2.0), pal["cream"] as Color, 1)
 	else:
@@ -535,8 +534,7 @@ static func _draw_info_sidebar(ci: CanvasItem, isl_id: int, nodes: Array[Diction
 		var d_list: Array[Dictionary] = LxMapInfo.get_island_dungeons(isl_id)
 		var d_done: int = 0
 		for dd: Dictionary in d_list:
-			if LxMapDungeon.is_dungeon_done(dd):
-				d_done += 1
+			if LxMapDungeon.is_dungeon_done(dd): d_done += 1
 		LxBubble.draw_icon(ci, "crown", Vector2(x0 + 46.0, y), 1.0)
 		LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_WS_COUNT_FMT", [d_done, d_list.size()]), Vector2(x0 + 58.0, y + 2.0), pal["lime" if (not d_list.is_empty() and d_done == d_list.size()) else "sky"] as Color, 1)
 
@@ -580,26 +578,17 @@ static func _draw_info_sidebar(ci: CanvasItem, isl_id: int, nodes: Array[Diction
 
 	# 3. Compact 4-state legend at sidebar bottom
 	var ly: float = INFO_RECT.end.y - 26.0
-	var states: Array[Array] = [
-		["unseen", "JOURNAL_UNSEEN"], ["seen", "MAP_LOCKED"],
-		["open", "JOURNAL_Q_OPEN"], ["cleared", "JOURNAL_Q_DONE"],
-	]
+	var states: Array[Array] = [["unseen", "JOURNAL_UNSEEN"], ["seen", "MAP_LOCKED"], ["open", "JOURNAL_Q_OPEN"], ["cleared", "JOURNAL_Q_DONE"]]
 	for si: int in range(4):
-		var col_i: int = si % 2
-		var row_i: int = si / 2
-		var lx: float = x0 + float(col_i) * 45.0
-		var ry2: float = ly + float(row_i) * 10.0
+		var lx: float = x0 + float(si % 2) * 45.0
+		var ry2: float = ly + float(si / 2) * 10.0
 		ci.draw_rect(Rect2(lx, ry2 + 1.0, 4.0, 4.0), _state_color(str(states[si][0])))
 		LxPixelFont.draw_left(ci, LxFolkData.tr_id(str(states[si][1])).substr(0, 6), Vector2(lx + 6.0, ry2), pal["stone"] as Color, 1)
 
-
 static func hit_test_node(nodes: Array[Dictionary], pos: Vector2) -> int:
 	for i: int in range(nodes.size()):
-		var p: Vector2 = nodes[i]["pos"] as Vector2
-		if pos.distance_to(p) <= 9.0:
-			return i
+		if pos.distance_to(nodes[i]["pos"] as Vector2) <= 9.0: return i
 	return -1
-
 
 static func _state_color(st: String) -> Color:
 	var pal: Dictionary = LxPalette.PAL

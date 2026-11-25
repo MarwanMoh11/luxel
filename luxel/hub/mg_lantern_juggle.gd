@@ -50,9 +50,12 @@ func _on_trial_tick(dt: float) -> void:
 	var alive: int = 0
 	for i: int in range(_motes.size() - 1, -1, -1):
 		var m: LxGalleryTarget = _motes[i]
-		if m == null or not is_instance_valid(m) or not m.active:
-			if m != null and is_instance_valid(m) and region != null:
-				region.remove_interactable(m.id)
+		if not is_instance_valid(m) or not m.active:
+			if is_instance_valid(m):
+				if m.target_scored.is_connected(_on_mote_hit):
+					m.target_scored.disconnect(_on_mote_hit)
+				if is_instance_valid(region):
+					region.remove_interactable(m.id)
 			_motes.remove_at(i)
 		else:
 			alive += 1
@@ -95,10 +98,17 @@ func _on_mote_hit(_tgt: LxGalleryTarget, hit: LxHit, pts: int) -> void:
 	_spawn_mote()
 
 
+func _exit_tree() -> void:
+	_clear_motes()
+
+
 func _clear_motes() -> void:
 	for m: LxGalleryTarget in _motes:
-		if m != null and is_instance_valid(m) and region != null:
-			region.remove_interactable(m.id)
+		if is_instance_valid(m):
+			if m.target_scored.is_connected(_on_mote_hit):
+				m.target_scored.disconnect(_on_mote_hit)
+			if is_instance_valid(region):
+				region.remove_interactable(m.id)
 	_motes.clear()
 
 

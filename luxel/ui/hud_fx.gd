@@ -179,7 +179,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 					if rung_n >= tot_n:
 						_draw_discovery_crown(hud, Vector2(o.x + float(show_n) * 5.0 + 2.0, o.y + 2.0), LxPalette.PAL["gold"] as Color, blink_t, fred)
 		2:
-			var has_epic_tide: bool = LxIsland2Rule.active_instance != null
+			var has_epic_tide: bool = LxHudOverlays.has_active_island_hud(2)
 			if not br.is_dungeon and not has_epic_tide:
 				has_top_badge = true
 				hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
@@ -243,7 +243,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(maxf(1.0, sw), 1.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(o + Vector2(2.0 + sw - 1.0, 2.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
 		6:
-			var has_epic_kiln: bool = LxIsland6Rule.active_instance != null
+			var has_epic_kiln: bool = LxHudOverlays.has_active_island_hud(6)
 			if not has_epic_kiln:
 				has_top_badge = true
 				hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)

@@ -49,7 +49,7 @@ func _toy_setup() -> void:
 
 
 func _exit_tree() -> void:
-	if _vars_bound != null and _vars_bound.var_changed.is_connected(_on_world_var_changed):
+	if is_instance_valid(_vars_bound) and _vars_bound.var_changed.is_connected(_on_world_var_changed):
 		_vars_bound.var_changed.disconnect(_on_world_var_changed)
 	_vars_bound = null
 
@@ -57,6 +57,8 @@ func _exit_tree() -> void:
 func _bind_vars() -> void:
 	if Lx.vars == null or _vars_bound == Lx.vars:
 		return
+	if is_instance_valid(_vars_bound) and _vars_bound.var_changed.is_connected(_on_world_var_changed):
+		_vars_bound.var_changed.disconnect(_on_world_var_changed)
 	_vars_bound = Lx.vars
 	if not _vars_bound.var_changed.is_connected(_on_world_var_changed):
 		_vars_bound.var_changed.connect(_on_world_var_changed)
@@ -171,7 +173,7 @@ func _is_rider_on_deck(p: Vector2) -> bool:
 
 
 func _rotate_riders(da: float) -> void:
-	if Lx.player is LxWick and is_instance_valid(Lx.player):
+	if is_instance_valid(Lx.player) and Lx.player is LxWick:
 		var w: LxWick = Lx.player as LxWick
 		if not w.dead and not w.is_dashing() and not w.is_gliding() and not w.is_zipping() and not w.is_launched() and not w.is_mounted():
 			if _is_rider_on_deck(w.global_position):
@@ -186,7 +188,7 @@ func _rotate_riders(da: float) -> void:
 			w.lantern.global_position = w.lantern.pos.round()
 	if region != null and region.has_method("get_interactables"):
 		for it_v: Variant in region.call("get_interactables") as Array:
-			if it_v == self or not (it_v is LxInteractable):
+			if it_v == self or not is_instance_valid(it_v) or not (it_v is LxInteractable):
 				continue
 			var it: LxInteractable = it_v as LxInteractable
 			if not it.active or not _is_rider_on_deck(it.pos):

@@ -63,7 +63,7 @@ func tick(dt: float) -> void:
 		# Also bounce carry_orb and sliding push_blocks
 		if region != null and region.has_method("get_interactables"):
 			for it_v: Variant in region.call("get_interactables") as Array:
-				if it_v == self or not (it_v is LxInteractable):
+				if not is_instance_valid(it_v) or it_v == self or not (it_v is LxInteractable):
 					continue
 				var it: LxInteractable = it_v as LxInteractable
 				if not it.active or not trigger_r.has_point(it.pos):

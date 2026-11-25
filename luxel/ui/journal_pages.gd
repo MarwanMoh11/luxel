@@ -64,7 +64,9 @@ static func draw_quests(ci: CanvasItem, area: Rect2, sel: int, scroll: int) -> v
 		LxBubble.draw_icon(ci, "isl_%d" % clampi(isl, 1, 8), r.position + Vector2(14.0, 4.0), 1.0)
 		ci.draw_rect(Rect2(r.position.x + 26.0, r.position.y + 3.0, 1.0, 12.0), LxPalette.PAL["dusk"])
 		# Step pictogram strip (up to 4 icons) + arrow -> destination place label
-		var step_icons: Array[String] = ["check", "heart", "lantern"] if done else qsvc.get_active_bubble_icons(qid)
+		var step_icons: Array[String] = qsvc.get_active_bubble_icons(qid)
+		if done:
+			step_icons = ["check", "heart", "lantern"]
 		var max_steps: int = mini(step_icons.size(), 4)
 		for si: int in range(max_steps):
 			LxBubble.draw_icon(ci, step_icons[si], r.position + Vector2(30.0 + float(si * 12), 4.0), 1.0)

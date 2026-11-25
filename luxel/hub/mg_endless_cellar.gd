@@ -97,10 +97,22 @@ func _on_trial_tick(dt: float) -> void:
 			_spawn_next_wave()
 		return
 	var alive: int = 0
-	for e: LxEnemyBrain in _wave_enemies:
-		if e != null and is_instance_valid(e) and e.is_alive():
+	for i: int in range(_wave_enemies.size() - 1, -1, -1):
+		var e: LxEnemyBrain = _wave_enemies[i]
+		if not is_instance_valid(e):
+			_wave_enemies.remove_at(i)
+		elif e.is_alive():
 			alive += 1
+		else:
+			if e.director != null:
+				e.director.release_light(e)
+				e.director.unregister(e)
+			if is_instance_valid(region):
+				region.get_enemies().erase(e)
+			e.queue_free()
+			_wave_enemies.remove_at(i)
 	if alive == 0:
+		_clear_wave_enemies()
 		trial_score = float(current_wave)
 		LxHubState.record_daily_cellar_wave(current_wave)
 		if Lx.state != null:
@@ -148,10 +160,17 @@ func _pick_far_slot(wpos: Vector2, used: Array[int]) -> int:
 	return best_i
 
 
+func _exit_tree() -> void:
+	_clear_wave_enemies()
+
+
 func _clear_wave_enemies() -> void:
 	for e: LxEnemyBrain in _wave_enemies:
-		if e != null and is_instance_valid(e):
-			if region != null:
+		if is_instance_valid(e):
+			if e.director != null:
+				e.director.release_light(e)
+				e.director.unregister(e)
+			if is_instance_valid(region):
 				region.get_enemies().erase(e)
 			e.queue_free()
 	_wave_enemies.clear()

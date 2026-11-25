@@ -13,6 +13,7 @@ const TETHER_SNAP_STAGGER: float = 0.90
 const KNOT_CRIT_MULT: float = 1.45
 const POST_COOLDOWN: float = 1.05
 
+var is_flying: bool = false
 var disguised: bool = true
 var tether_dir: Vector2 = Vector2.RIGHT
 var tether_end: Vector2 = Vector2.ZERO

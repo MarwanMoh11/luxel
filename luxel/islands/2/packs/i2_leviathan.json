@@ -1,7 +1,7 @@
 {
   "pack_id": "i2_leviathan",
   "owner": "G2",
-  "comment": "Island 2 Set Piece: The Leviathan (leviathan_r1..r5: flooded rooftop skiff chase, breakwater swallow, rib-cage bilge, Gullet Lamprey boss, 3-tier blowhole sky-launch). Debug-only on dungeon/regions meta until ow_open_sound hooks leviathan_r1.",
+  "comment": "Island 2 Set Piece: The Leviathan (leviathan_r1..r5: flooded rooftop skiff chase, breakwater swallow, rib-cage bilge, Gullet Lamprey boss, 3-tier blowhole sky-launch). Wired live from ow_open_sound.",
   "interactables": {
     "lev_wave_chaser": "res://luxel/islands/2/leviathan/lev_wave_chaser.gd",
     "lev_maw_swallow": "res://luxel/islands/2/leviathan/lev_maw_swallow.gd",
@@ -50,15 +50,14 @@
         "galleon_done",
         "locks_done"
       ],
-      "done_flag": "leviathan_done",
-      "debug_only": true
+      "done_flag": "leviathan_done"
     }
   ],
   "regions": {
-    "leviathan_r1": { "name_key": "LEV_R1_NAME", "theme": "locks",           "music": "isl2_setpiece",   "dark": true, "debug_only": true, "map": [0, 1] },
-    "leviathan_r2": { "name_key": "LEV_R2_NAME", "theme": "locks",           "music": "isl2_setpiece",   "dark": true, "debug_only": true, "map": [1, 1] },
-    "leviathan_r3": { "name_key": "LEV_R3_NAME", "theme": "leviathan_belly", "music": "isl2_setpiece",   "dark": true, "debug_only": true, "map": [2, 1] },
-    "leviathan_r4": { "name_key": "LEV_R4_NAME", "theme": "leviathan_belly", "music": "island2_boss_p1", "dark": true, "debug_only": true, "map": [3, 1] },
-    "leviathan_r5": { "name_key": "LEV_R5_NAME", "theme": "leviathan_belly", "music": "isl2_setpiece",   "dark": true, "debug_only": true, "map": [2, 0] }
+    "leviathan_r1": { "name_key": "LEV_R1_NAME", "theme": "locks",           "music": "isl2_setpiece",      "dark": true, "map": [0, 1] },
+    "leviathan_r2": { "name_key": "LEV_R2_NAME", "theme": "locks",           "music": "isl2_setpiece",      "dark": true, "map": [1, 1] },
+    "leviathan_r3": { "name_key": "LEV_R3_NAME", "theme": "leviathan_belly", "music": "isl2_setpiece",      "dark": true, "map": [2, 1] },
+    "leviathan_r4": { "name_key": "LEV_R4_NAME", "theme": "leviathan_belly", "music": "isl2_boss_minor_p1", "dark": true, "map": [3, 1] },
+    "leviathan_r5": { "name_key": "LEV_R5_NAME", "theme": "leviathan_belly", "music": "isl2_setpiece",      "dark": true, "map": [2, 0] }
   }
 }

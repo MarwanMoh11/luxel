@@ -5,6 +5,9 @@ extends RefCounted
 
 const PAL: Dictionary = LxPalette.PAL
 const MIN_TELL_S: float = 0.45
+const MAX_DECALS: int = 48
+const MAX_HAZARDS: int = 32
+const MAX_INVERSIONS: int = 8
 
 var boss: LxEnemyBrain = null
 var _decals: Array[Dictionary] = []
@@ -69,64 +72,63 @@ func nearest_safe_spot(from_p: Vector2, arena: Rect2) -> Vector2:
 
 # --- Telegraphed Ground Decals -----------------------------------------------
 
+func _push_decal(d: Dictionary) -> Dictionary:
+	if _decals.size() >= MAX_DECALS:
+		_decals.remove_at(0)
+	_decals.append(d)
+	return d
+
+
 func warn_ring(center: Vector2, radius: float, dur: float, dmg: float = 1.0, fill_key: String = "coral", rim_key: String = "gold", linger_s: float = 0.0, on_detonate: Callable = Callable()) -> Dictionary:
-	var d: Dictionary = {
+	return _push_decal({
 		"kind": "ring", "pos": center, "radius": maxf(8.0, radius),
 		"dur": _floor_tell(dur, dmg), "elapsed": 0.0, "damage": dmg,
 		"fill": fill_key, "rim": rim_key, "linger": maxf(0.0, linger_s),
 		"on_detonate": on_detonate, "detonated": false,
-	}
-	_decals.append(d)
-	return d
+	})
 
 
 func warn_lane(from_p: Vector2, to_p: Vector2, half_w: float, dur: float, dmg: float = 1.0, fill_key: String = "coral", rim_key: String = "gold", linger_s: float = 0.0, on_detonate: Callable = Callable()) -> Dictionary:
-	var d: Dictionary = {
+	return _push_decal({
 		"kind": "lane", "pos": from_p, "to": to_p, "half_w": maxf(4.0, half_w),
 		"dur": _floor_tell(dur, dmg), "elapsed": 0.0, "damage": dmg,
 		"fill": fill_key, "rim": rim_key, "linger": maxf(0.0, linger_s),
 		"on_detonate": on_detonate, "detonated": false,
-	}
-	_decals.append(d)
-	return d
+	})
 
 
 func warn_sector(origin: Vector2, ang0: float, ang1: float, radius: float, dur: float, dmg: float = 1.0, fill_key: String = "coral", rim_key: String = "gold", on_detonate: Callable = Callable()) -> Dictionary:
-	var d: Dictionary = {
+	return _push_decal({
 		"kind": "sector", "pos": origin, "ang0": ang0, "ang1": ang1,
 		"radius": maxf(12.0, radius), "dur": _floor_tell(dur, dmg), "elapsed": 0.0,
 		"damage": dmg, "fill": fill_key, "rim": rim_key, "linger": 0.0,
 		"on_detonate": on_detonate, "detonated": false,
-	}
-	_decals.append(d)
-	return d
+	})
 
 
 func warn_rect(rect: Rect2, dur: float, dmg: float = 1.0, fill_key: String = "coral", rim_key: String = "gold", linger_s: float = 0.0, on_detonate: Callable = Callable()) -> Dictionary:
-	var d: Dictionary = {
+	return _push_decal({
 		"kind": "rect", "rect": rect, "pos": rect.get_center(),
 		"dur": _floor_tell(dur, dmg), "elapsed": 0.0, "damage": dmg,
 		"fill": fill_key, "rim": rim_key, "linger": maxf(0.0, linger_s),
 		"on_detonate": on_detonate, "detonated": false,
-	}
-	_decals.append(d)
-	return d
+	})
 
 
 func warn_summon(center: Vector2, radius: float, dur: float, col_key: String = "gold", on_detonate: Callable = Callable()) -> Dictionary:
-	var d: Dictionary = {
+	return _push_decal({
 		"kind": "summon", "pos": center, "radius": maxf(10.0, radius),
 		"dur": maxf(0.45, dur), "elapsed": 0.0, "damage": 0.0,
 		"fill": col_key, "rim": "cream", "linger": 0.0,
 		"on_detonate": on_detonate, "detonated": false,
-	}
-	_decals.append(d)
-	return d
+	})
 
 
 # --- Lingering Hazards -------------------------------------------------------
 
 func add_hazard_circle(center: Vector2, radius: float, duration: float, dmg: float = 1.0, fill_key: String = "coral", airborne_safe: bool = true) -> void:
+	if _hazards.size() >= MAX_HAZARDS:
+		_hazards.remove_at(0)
 	_hazards.append({
 		"kind": "circle", "pos": center, "radius": maxf(6.0, radius),
 		"ttl": maxf(0.25, duration), "max_ttl": maxf(0.25, duration),
@@ -136,6 +138,8 @@ func add_hazard_circle(center: Vector2, radius: float, duration: float, dmg: flo
 
 
 func add_hazard_rect(rect: Rect2, duration: float, dmg: float = 1.0, fill_key: String = "coral", airborne_safe: bool = true) -> void:
+	if _hazards.size() >= MAX_HAZARDS:
+		_hazards.remove_at(0)
 	_hazards.append({
 		"kind": "rect", "rect": rect, "pos": rect.get_center(),
 		"ttl": maxf(0.25, duration), "max_ttl": maxf(0.25, duration),
@@ -150,6 +154,8 @@ func warn_safe_inversion(arena: Rect2, safe_centers: Array[Vector2], safe_radius
 	var safes_copy: Array[Vector2] = []
 	for p: Vector2 in safe_centers:
 		safes_copy.append(p)
+	if _inversions.size() >= MAX_INVERSIONS:
+		_inversions.remove_at(0)
 	_inversions.append({
 		"arena": arena, "safes": safes_copy, "safe_r": maxf(16.0, safe_radius),
 		"warn_dur": maxf(0.55, warn_s) * _assist_scale(),
@@ -173,7 +179,7 @@ func tick(dt: float) -> void:
 			_detonate_decal(d, has_p, wp)
 			_decals.remove_at(i)
 
-	var gliding: bool = Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).is_gliding()
+	var gliding: bool = is_instance_valid(Lx.player) and Lx.player is LxWick and (Lx.player as LxWick).is_gliding()
 	for i: int in range(_hazards.size() - 1, -1, -1):
 		var h: Dictionary = _hazards[i]
 		h["ttl"] = float(h["ttl"]) - dt
@@ -352,7 +358,7 @@ func _has_wick() -> bool:
 func _wick_pos() -> Vector2:
 	if boss != null and boss.has_method("_get_wick_pos"):
 		return boss.call("_get_wick_pos") as Vector2
-	if Lx.player is Node2D and is_instance_valid(Lx.player):
+	if is_instance_valid(Lx.player) and Lx.player is Node2D:
 		return (Lx.player as Node2D).global_position
 	return Vector2(-9999.0, -9999.0)
 

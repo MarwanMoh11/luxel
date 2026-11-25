@@ -28,7 +28,8 @@ var beam_on: bool = true
 var telegraphing: bool = false
 var segments: Array[Dictionary] = [] # [{start, end, dir, color, bounce}]
 
-var _cache_sig: String = ""
+var _cache_sig: int = 0
+var _cache_valid: bool = false
 var _cycle_t: float = 0.0
 var _harm_cd: float = 0.0
 var _telegraph_sfx_played: bool = false
@@ -55,7 +56,8 @@ func _toy_setup() -> void:
 	invert_signal = bool(props.get("invert_signal", false))
 	radius = maxf(10.0, radius)
 	_cycle_t = phase_offset
-	_cache_sig = ""
+	_cache_sig = 0
+	_cache_valid = false
 	_harm_cd = 0.0
 	_telegraph_sfx_played = false
 	segments.clear()
@@ -69,7 +71,8 @@ func _toy_setup() -> void:
 
 func reset_toy() -> void:
 	_cycle_t = phase_offset
-	_cache_sig = ""
+	_cache_sig = 0
+	_cache_valid = false
 	_harm_cd = 0.0
 	_telegraph_sfx_played = false
 	_update_cycle_state()
@@ -111,7 +114,8 @@ func tick(dt: float) -> void:
 		segments.clear()
 		_hit_sensors.clear()
 		_hit_plants.clear()
-		_cache_sig = ""
+		_cache_sig = 0
+		_cache_valid = false
 		queue_redraw()
 	elif telegraphing:
 		retrace_beam(not prev_tel)
@@ -147,10 +151,11 @@ func _update_cycle_state() -> void:
 
 
 func retrace_beam(force: bool = false) -> void:
-	var sig: String = _build_scene_signature()
-	if not force and sig == _cache_sig:
+	var sig: int = _build_scene_signature()
+	if not force and _cache_valid and sig == _cache_sig:
 		return
 	_cache_sig = sig
+	_cache_valid = true
 	segments.clear()
 	_hit_sensors.clear()
 	_hit_plants.clear()
@@ -170,32 +175,45 @@ func retrace_beam(force: bool = false) -> void:
 	queue_redraw()
 
 
-func _build_scene_signature() -> String:
-	var parts := PackedStringArray([
-		"%d:%d:%.1f:%.1f:%s:%d" % [1 if beam_on else 0, 1 if telegraphing else 0, pos.x, pos.y, beam_color, max_bounces]
-	])
-	if region != null and region.has_method("get_interactables"):
+static func _mix_hash(h: int, v: int) -> int:
+	return (h ^ v) * 1099511628211
+
+
+func _build_scene_signature() -> int:
+	var h: int = -3750763034362895579
+	h = _mix_hash(h, (1 if beam_on else 0) | ((1 if telegraphing else 0) << 1) | (max_bounces << 2))
+	h = _mix_hash(h, roundi(pos.x * 10.0))
+	h = _mix_hash(h, roundi(pos.y * 10.0))
+	h = _mix_hash(h, beam_color.hash())
+	if region != null and is_instance_valid(region) and region.has_method("get_interactables"):
 		for it_v: Variant in (region.call("get_interactables") as Array):
-			if not (it_v is LxInteractable) or it_v == self:
+			if not is_instance_valid(it_v) or it_v == self or not (it_v is LxInteractable):
 				continue
 			var it: LxInteractable = it_v as LxInteractable
-			if not is_instance_valid(it):
-				continue
-			var n_s: String = ""
-			if it.is_reflective():
-				var nv: Variant = it.get("normal")
-				if nv is Vector2:
-					n_s = "%.2f,%.2f" % [(nv as Vector2).x, (nv as Vector2).y]
 			var c_s: String = str(it.call("get_tint_color")) if it.has_method("get_tint_color") else ""
-			if it.is_solid() or it.is_reflective() or not c_s.is_empty() or it.kind in ["beam_sensor", "light_sensor", "light_plant"]:
-				parts.append("%d:%d:%d:%.0f,%.0f:%s:%s" % [it.get_instance_id(), 1 if it.active else 0, 1 if it.is_solid() else 0, it.pos.x, it.pos.y, n_s, c_s])
-	if region != null and region.has_method("get_enemies"):
+			var is_sol: bool = it.is_solid()
+			var is_ref: bool = it.is_reflective()
+			if is_sol or is_ref or not c_s.is_empty() or it.kind in ["beam_sensor", "light_sensor", "light_plant"]:
+				h = _mix_hash(h, it.get_instance_id())
+				h = _mix_hash(h, (1 if it.active else 0) | ((1 if is_sol else 0) << 1))
+				h = _mix_hash(h, roundi(it.pos.x))
+				h = _mix_hash(h, roundi(it.pos.y))
+				if is_ref:
+					var nv: Variant = it.get("normal")
+					if nv is Vector2:
+						h = _mix_hash(h, roundi((nv as Vector2).x * 100.0))
+						h = _mix_hash(h, roundi((nv as Vector2).y * 100.0))
+				if not c_s.is_empty():
+					h = _mix_hash(h, c_s.hash())
+	if region != null and is_instance_valid(region) and region.has_method("get_enemies"):
 		for e_v: Variant in (region.call("get_enemies") as Array):
-			if e_v is LxEnemyBrain and is_instance_valid(e_v):
+			if is_instance_valid(e_v) and e_v is LxEnemyBrain:
 				var e: LxEnemyBrain = e_v as LxEnemyBrain
 				if e.is_alive():
-					parts.append("e%d:%.0f,%.0f" % [e.get_instance_id(), e.pos.x, e.pos.y])
-	return "|".join(parts)
+					h = _mix_hash(h, e.get_instance_id())
+					h = _mix_hash(h, roundi(e.pos.x))
+					h = _mix_hash(h, roundi(e.pos.y))
+	return h
 
 
 func _trace_single_ray(ray: Dictionary, inters: Array, enemies: Array, queue: Array[Dictionary]) -> void:
@@ -226,7 +244,7 @@ func _trace_single_ray(ray: Dictionary, inters: Array, enemies: Array, queue: Ar
 		# 2. Live enemy block
 		var blocked_enemy: bool = false
 		for e_v: Variant in enemies:
-			if e_v is LxEnemyBrain and is_instance_valid(e_v):
+			if is_instance_valid(e_v) and e_v is LxEnemyBrain:
 				var e: LxEnemyBrain = e_v as LxEnemyBrain
 				if e.is_alive() and Geometry2D.get_closest_point_to_segment(e.pos, cur, nxt).distance_to(e.pos) <= e.body_radius + 1.5:
 					end_pt = cur
@@ -238,10 +256,10 @@ func _trace_single_ray(ray: Dictionary, inters: Array, enemies: Array, queue: Ar
 		# 3. Interactables (mirrors, color glass, sensors, plants, solid blocks)
 		var stopped: bool = false
 		for it_v: Variant in inters:
-			if not (it_v is LxInteractable) or it_v == self:
+			if not is_instance_valid(it_v) or it_v == self or not (it_v is LxInteractable):
 				continue
 			var it: LxInteractable = it_v as LxInteractable
-			if not is_instance_valid(it) or not it.active:
+			if not it.active:
 				continue
 			var iid: int = it.get_instance_id()
 			if iid == ignore_id:
@@ -356,7 +374,7 @@ func _deliver_beam_effects(_dt: float) -> void:
 		var it: Object = p_entry["item"] as Object
 		if it != null and is_instance_valid(it) and it.has_method("on_light"):
 			it.call("on_light", 64.0, "beam")
-	if harms_wick and beam_damage > 0.0 and _harm_cd <= 0.0 and Lx.player is LxWick and is_instance_valid(Lx.player):
+	if harms_wick and beam_damage > 0.0 and _harm_cd <= 0.0 and is_instance_valid(Lx.player) and Lx.player is LxWick:
 		var w: LxWick = Lx.player as LxWick
 		if not w.dead and not w.is_invulnerable():
 			for seg: Dictionary in segments:

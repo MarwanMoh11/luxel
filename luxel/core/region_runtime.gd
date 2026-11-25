@@ -350,7 +350,7 @@ static func spawn_enemy_for_region(region: LxRegionLoader, spec: Dictionary, dir
 	LxRegionArena.tune_boss_ranges(brain, region)
 	list.append(brain)
 	if region.has_method("_on_enemy_tree_exiting"):
-		brain.tree_exiting.connect(region.call_deferred.bind("_on_enemy_tree_exiting", brain), Object.CONNECT_ONE_SHOT)
+		brain.tree_exiting.connect(Callable(region, "_on_enemy_tree_exiting").bind(brain), Object.CONNECT_ONE_SHOT)
 	return brain
 
 
@@ -468,3 +468,124 @@ static func lantern_pos() -> Vector2:
 			if (lan as Object).get("pos") is Vector2: return (lan as Object).get("pos") as Vector2
 			if lan is Node2D: return (lan as Node2D).global_position
 	return wick_pos()
+
+
+static func apply_script_reward(
+	raw: Variant, island_id: int, region_id: String, wpos: Vector2,
+	spawn_cb: Callable, ev_id: String = ""
+) -> void:
+	if not (raw is Dictionary) or Lx.state == null:
+		return
+	var d: Dictionary = raw as Dictionary
+	var rk: String = str(d.get("kind", "shards")).strip_edges().to_lower()
+	match rk:
+		"shards":
+			Lx.state.add_shards(maxi(1, int(d.get("amount", 20))))
+			if Lx.events != null: Lx.events.sfx_requested.emit("shard_pickup", wpos, false)
+		"ember_piece":
+			Lx.state.add_ember_piece()
+		"half_lantern":
+			if Lx.state.has_method("add_half_lantern"): Lx.state.call("add_half_lantern")
+			else: Lx.state.add_ember_piece()
+		"key", "wick_key", "keepers_flame":
+			var default_dng: String = Lx.packs.dungeon_of(island_id, region_id) if Lx.packs != null else ""
+			if default_dng.is_empty(): default_dng = "island_%d" % island_id
+			var did: String = str(d.get("dungeon_id", default_dng)).strip_edges()
+			if did.is_empty(): did = default_dng
+			var kkind: String = str(d.get("key_kind", "keepers_flame" if rk == "keepers_flame" else "wick_key"))
+			Lx.state.add_key(did, kkind, maxi(1, int(d.get("amount", 1))))
+			if Lx.events != null: Lx.events.sfx_requested.emit("key_pickup", wpos, false)
+		"pane":
+			var pid: String = str(d.get("id", d.get("pane", d.get("value", "")))).strip_edges()
+			if not pid.is_empty():
+				var granted: bool = false
+				if Lx.panes != null and Lx.panes.has_method("grant_pane"):
+					granted = bool(Lx.panes.call("grant_pane", pid))
+				else:
+					granted = LxPanes.current().grant_pane(pid)
+				if granted and Lx.events != null:
+					Lx.events.sfx_requested.emit("shrine_claimed", wpos, false)
+		"moth":
+			var mid: String = str(d.get("id", d.get("moth", d.get("value", "")))).strip_edges()
+			if not mid.is_empty():
+				var q: Object = LxQuests.current()
+				if q != null and q.has_method("catch_moth"):
+					q.call("catch_moth", mid)
+				else:
+					Lx.state.story_flags["moth:" + mid] = true
+				if Lx.events != null:
+					Lx.events.sfx_requested.emit("moth_catch", wpos, false)
+		"lead":
+			var amt_l: int = maxi(1, int(d.get("amount", d.get("value", 1))))
+			var added: bool = false
+			if Lx.panes != null and Lx.panes.has_method("add_lead"):
+				added = bool(Lx.panes.call("add_lead", amt_l))
+			else:
+				added = LxPanes.current().add_lead(amt_l)
+			if added and Lx.events != null:
+				Lx.events.sfx_requested.emit("shrine_claimed", wpos, false)
+		"flag":
+			var fid: String = str(d.get("id", d.get("flag", d.get("value", "")))).strip_edges()
+			if not fid.is_empty(): Lx.state.story_flags[fid] = true
+		"heal":
+			if d.has("amount"):
+				var amt_h: float = float(d.get("amount", 0.0))
+				if amt_h > 0.0:
+					Lx.state.hearts = minf(float(Lx.state.max_hearts), Lx.state.hearts + amt_h)
+					if Lx.events != null: Lx.events.player_healed.emit(Lx.state.hearts)
+				else:
+					Lx.state.heal_full()
+			else:
+				Lx.state.heal_full()
+		"chest":
+			var cspec: Dictionary = d.duplicate(true); cspec["kind"] = "chest"
+			if not cspec.has("id"):
+				cspec["id"] = "reward_chest_%s" % (ev_id if not ev_id.is_empty() else region_id)
+			if not cspec.has("pos"): cspec["pos"] = [wpos.x, wpos.y - 20.0]
+			if spawn_cb.is_valid(): spawn_cb.call(cspec)
+
+
+static func read_world_var(vname: String, island_id: int, region_id: String, local_vars: Dictionary) -> Variant:
+	if Lx.vars != null and is_instance_valid(Lx.vars) and Lx.vars.has_method("get_var"):
+		for sc: String in ["room:%d:%s" % [island_id, region_id], "island:%d" % island_id, "game"]:
+			var v: Variant = Lx.vars.call("get_var", sc, vname, "__MISSING__")
+			if str(v) != "__MISSING__": return v
+	if local_vars.has(vname): return local_vars[vname]
+	if Lx.state != null:
+		for sc2: String in ["room:%d:%s" % [island_id, region_id], "island:%d" % island_id, "game"]:
+			var k: String = "wvar:%s:%s" % [sc2, vname]
+			if Lx.state.story_flags.has(k): return Lx.state.story_flags[k]
+	return ""
+
+
+static func eval_cond_fallback(
+	expr: String, island_id: int, region_id: String, local_vars: Dictionary, is_flag_cb: Callable
+) -> bool:
+	for or_part: String in expr.split(" || "):
+		var ok: bool = true
+		for atom_raw: String in or_part.split(" && "):
+			var atom: String = atom_raw.strip_edges()
+			if not atom.is_empty() and not _eval_cond_atom(atom, island_id, region_id, local_vars, is_flag_cb):
+				ok = false; break
+		if ok: return true
+	return false
+
+
+static func _eval_cond_atom(
+	atom: String, island_id: int, region_id: String, local_vars: Dictionary, is_flag_cb: Callable
+) -> bool:
+	if atom.begins_with("!flag:"): return not bool(is_flag_cb.call(atom.substr(6).strip_edges()))
+	if atom.begins_with("flag:"): return bool(is_flag_cb.call(atom.substr(5).strip_edges()))
+	for op: String in ["==", "!=", ">=", "<=", ">", "<"]:
+		var p: int = atom.find(op)
+		if p > 0:
+			var cur: Variant = read_world_var(atom.substr(0, p).strip_edges(), island_id, region_id, local_vars)
+			var rhs: String = atom.substr(p + op.length()).strip_edges()
+			match op:
+				"==": return str(cur) == rhs
+				"!=": return str(cur) != rhs
+				">=": return float(cur) >= float(rhs)
+				"<=": return float(cur) <= float(rhs)
+				">": return float(cur) > float(rhs)
+				"<": return float(cur) < float(rhs)
+	return bool(is_flag_cb.call(atom))

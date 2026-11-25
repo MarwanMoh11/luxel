@@ -147,6 +147,7 @@
       ],
       "props": {
         "mode": "redemption",
+        "requires_flag": "toll_redemption_ready",
         "persist": true
       }
     },

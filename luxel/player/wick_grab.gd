@@ -15,7 +15,7 @@ static func is_obj_movable(obj: Object) -> bool:
 static func get_interact_candidates(wick: LxWick, world_ctx: Node) -> Array[Dictionary]:
 	var candidates: Array[Dictionary] = []
 	for it_var: Variant in wick.world_get_interactables(world_ctx):
-		if not (it_var is Object and is_instance_valid(it_var as Object)):
+		if not is_instance_valid(it_var) or not (it_var is Object):
 			continue
 		var obj: Object = it_var as Object
 		if obj == wick.carried_item:

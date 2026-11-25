@@ -70,6 +70,32 @@ static func _is_safe_spawn_point(pt: Vector2, region_loader: Node) -> bool:
 			return false
 	return true
 
+static func is_travel_blocked(region_loader: Node) -> bool:
+	if region_loader == null or not is_instance_valid(region_loader):
+		return false
+	if region_loader.has_method("is_arena_locked") and bool(region_loader.call("is_arena_locked")):
+		return true
+	var rscr: Variant = region_loader.get("room_script")
+	if rscr is Object and is_instance_valid(rscr):
+		var ch: Variant = (rscr as Object).get("active_challenge")
+		if ch is Object and is_instance_valid(ch) and int((ch as Object).get("state")) == LxChallenge.State.RUNNING:
+			return true
+	return false
+
+
+static func resolve_safe_entry_spawn(region_loader: Node, wick: Node, spawn_at: Vector2) -> Vector2:
+	if region_loader == null or not is_instance_valid(region_loader):
+		return spawn_at
+	if wick != null and is_instance_valid(wick) and wick.has_method("is_mounted") and bool(wick.call("is_mounted")):
+		return spawn_at
+	if region_loader.has_method("is_point_safe") and not bool(region_loader.call("is_point_safe", spawn_at)):
+		if region_loader.has_method("find_nearest_safe_point"):
+			var safe_pt: Vector2 = region_loader.call("find_nearest_safe_point", spawn_at) as Vector2
+			if safe_pt.x >= 0.0:
+				return safe_pt
+	return spawn_at
+
+
 static func resolve_overworld_respawn(state: LxGameState) -> Dictionary:
 	if state == null:
 		return {"island": 1, "region": "overworld", "pos": Vector2(-1.0, -1.0)}

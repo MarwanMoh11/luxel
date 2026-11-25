@@ -16,6 +16,7 @@ var wave_x: float = 36.0
 var halted: bool = false
 var _elapsed: float = 0.0
 var _splash_t: float = 0.0
+var _rumble_cd: float = 0.0
 
 
 func _toy_setup() -> void:
@@ -80,6 +81,12 @@ func tick(dt: float) -> void:
 			return
 		if _elapsed >= grace_s and wave_x < stop_x:
 			wave_x = minf(stop_x, wave_x + speed * dt)
+			_rumble_cd = maxf(0.0, _rumble_cd - dt)
+			if w.global_position.x - wave_x < 108.0 and _rumble_cd <= 0.0:
+				_rumble_cd = 0.85
+				if Lx.events != null and not LxHudFx.flash_reduced():
+					Lx.events.shake_requested.emit(0.09)
+				_emit_sfx("water_level_sweep")
 			if w.global_position.x < wave_x - 8.0 and w.global_position.x < safe_x:
 				_reset_chase_on_catch(w)
 	queue_redraw()
@@ -117,17 +124,27 @@ func _draw() -> void:
 	var c_ice: Color = PAL["ice"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	# Towering storm swell behind wave_x
-	draw_rect(Rect2(lx - 26.0, -half_h, 20.0, band_h), Color(c_deep, 0.72))
-	draw_rect(Rect2(lx - 10.0, -half_h, 8.0, band_h), Color(c_blue, 0.85))
+	draw_rect(Rect2(lx - 38.0, -half_h, 30.0, band_h), Color(PAL["void"] as Color, 0.55))
+	draw_rect(Rect2(lx - 26.0, -half_h, 20.0, band_h), Color(c_deep, 0.78))
+	draw_rect(Rect2(lx - 10.0, -half_h, 8.0, band_h), Color(c_blue, 0.88))
 	draw_rect(Rect2(lx - 4.0, -half_h, 4.0, band_h), c_sky)
 	draw_rect(Rect2(lx - 1.0, -half_h, 2.0, band_h), c_ice)
-	# Foaming scalloped crest pips
+	# Looming Leviathan dorsal ridge & glowing amber eye surging behind the wave wall
+	var fin_y: float = 0.0 if red else roundf(sin(_clock * 3.2) * 10.0)
+	draw_rect(Rect2(lx - 32.0, fin_y - 26.0, 18.0, 52.0), PAL["night"] as Color)
+	draw_rect(Rect2(lx - 26.0, fin_y - 18.0, 12.0, 36.0), c_deep)
+	draw_rect(Rect2(lx - 18.0, fin_y - 6.0, 5.0, 4.0), PAL["gold"] as Color)
+	draw_rect(Rect2(lx - 17.0, fin_y - 5.0, 2.0, 2.0), c_cream)
+	# Foaming scalloped crest pips + leaping storm-spray droplets
 	var y: float = -half_h + 6.0
 	var idx: int = 0
 	while y < half_h - 4.0:
-		var wob: float = 0.0 if red else roundf(sin(_clock * 7.0 + float(idx) * 1.1) * 2.0)
-		draw_rect(Rect2(lx + wob, y, 3.0, 4.0), c_cream if idx % 2 == 0 else c_ice)
+		var wob: float = 0.0 if red else roundf(sin(_clock * 7.0 + float(idx) * 1.1) * 2.5)
+		draw_rect(Rect2(lx + wob, y, 4.0, 4.0), c_cream if idx % 2 == 0 else c_ice)
 		draw_rect(Rect2(lx - 4.0 + wob, y + 4.0, 2.0, 3.0), c_sky)
+		if not red and idx % 2 == 0:
+			var sp_x: float = lx + 4.0 + fmod(_clock * 28.0 + float(idx) * 7.0, 14.0)
+			draw_rect(Rect2(roundf(sp_x), y + 1.0, 2.0, 1.0), Color(c_cream, 0.75))
 		y += 12.0
 		idx += 1
 	if _splash_t > 0.0:

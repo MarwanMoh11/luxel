@@ -87,6 +87,25 @@
         "undertow_charted"
       ],
       "locked_door_id": "door_sound_maw"
+    },
+    {
+      "id": "exit_sound_leviathan",
+      "rect": [
+        752,
+        256,
+        16,
+        64
+      ],
+      "to_region": "leviathan_r1",
+      "to_spawn": [
+        48,
+        136
+      ],
+      "requires_flags": [
+        "galleon_done",
+        "locks_done"
+      ],
+      "locked_door_id": "door_sound_leviathan"
     }
   ],
   "enemies": [
@@ -345,6 +364,38 @@
         "requires_flags": [
           "undertow_charted"
         ]
+      }
+    },
+    {
+      "id": "door_sound_leviathan",
+      "kind": "door",
+      "pos": [
+        744,
+        288
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          64
+        ],
+        "zone": "outer_sound",
+        "requires_flags": [
+          "galleon_done",
+          "locks_done"
+        ]
+      }
+    },
+    {
+      "id": "lamp_sd_lev",
+      "kind": "road_lamp",
+      "pos": [
+        696,
+        264
+      ],
+      "props": {
+        "zone": "outer_sound",
+        "lit": true
       }
     },
     {

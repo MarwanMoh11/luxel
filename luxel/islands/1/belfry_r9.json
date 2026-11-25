@@ -404,21 +404,21 @@
               "id": "moth_r9_rein",
               "kind": "toll_moth",
               "pos": [
-                240,
-                264
+                256,
+                120
               ],
               "zone": "belfry_escapement",
-              "leash": 150
+              "leash": 110
             },
             {
               "id": "gh_r9_rein",
               "kind": "grave_hand",
               "pos": [
-                240,
-                48
+                224,
+                192
               ],
               "zone": "belfry_escapement",
-              "leash": 130
+              "leash": 96
             }
           ]
         }
@@ -454,7 +454,7 @@
       },
       {
         "op": "clear",
-        "timeout": 46.0
+        "timeout": 68.0
       },
       {
         "op": "expect",

@@ -145,8 +145,8 @@
       "mini": true,
       "dungeon": "toll_house",
       "region": "toll_r5",
-      "music": "island8_boss_p1",
-      "music_p2": "island8_boss_p2",
+      "music": "isl8_boss_minor_p1",
+      "music_p2": "isl8_boss_minor_p2",
       "heart": "half",
       "flag": "chief_auditor_defeated",
       "arena_lock": true
@@ -161,8 +161,8 @@
       "mini": false,
       "dungeon": "toll_house",
       "region": "toll_r11",
-      "music": "island8_boss_p1",
-      "music_p2": "island8_boss_p2",
+      "music": "isl8_boss_minor_p1",
+      "music_p2": "isl8_boss_minor_p2",
       "heart": "half",
       "flag": "tollmaster_defeated",
       "arena_lock": true
@@ -176,8 +176,8 @@
       "mini": true,
       "dungeon": "archive",
       "region": "archive_r6",
-      "music": "island8_boss_p1",
-      "music_p2": "island8_boss_p2",
+      "music": "isl8_boss_minor_p1",
+      "music_p2": "isl8_boss_minor_p2",
       "heart": "half",
       "flag": "indexer_defeated",
       "arena_lock": true

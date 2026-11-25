@@ -25,7 +25,7 @@ func tick(dt: float, ctx: Dictionary) -> void:
 	var lpos: Vector2 = lan.get("pos") as Vector2
 	if wr.has_method("get_interactables"):
 		for it_v: Variant in (wr.call("get_interactables") as Array):
-			if it_v is LxInteractable and str((it_v as LxInteractable).kind) == "moth":
+			if is_instance_valid(it_v) and it_v is LxInteractable and str((it_v as LxInteractable).kind) == "moth":
 				var m: LxInteractable = it_v as LxInteractable
 				if m.active and m.pos.distance_to(lpos) <= 92.0:
 					m.pos = m.pos.move_toward(lpos, 32.0 * dt)

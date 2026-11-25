@@ -276,6 +276,22 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_oak_r6_shards",
+      "kind": "chest",
+      "pos": [
+        376,
+        136
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "requires_flags": [
+          "oak_r6_cleared"
+        ]
+      }
     }
   ],
   "triggers": [],
@@ -415,7 +431,7 @@
   ],
   "is_2x2_room": true,
   "name_key": "OAK3_R6_NAME",
-  "music": "island3_boss_p1",
+  "music": "isl3_boss_minor_p1",
   "decor": [
     {
       "kind": "circle",

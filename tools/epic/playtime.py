@@ -422,6 +422,55 @@ FEATURE_NAMES: Tuple[str, ...] = (
     "bias", "area_walk", "enemy_ttk", "boss_ttk", "puzzle_units", "reading_units", "travel_units",
 )
 
+# Frozen feature vectors extracted by extract_features() from commit 765ccaa (Luxel 1.0 Gold),
+# the exact build Marwan played when tools/epic/calibration.json was recorded.
+# Keeping these frozen prevents Epic grand-dungeon / overworld rewrites from corrupting the
+# 42-room calibration fit (R2=0.926 clean / 0.869 all) or skewing the NNLS weights.
+CALIBRATION_1_0_FEATURES: Dict[str, Dict[str, float]] = {
+    "1:belfry_r1": {"bias": 1.0, "area_walk": 10.8377, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 0.0, "reading_units": 1.2, "travel_units": 3.1406},
+    "1:belfry_r2": {"bias": 1.0, "area_walk": 7.2381, "enemy_ttk": 1.9162, "boss_ttk": 0.0, "puzzle_units": 1.5, "reading_units": 1.5, "travel_units": 2.275},
+    "1:belfry_r3": {"bias": 1.0, "area_walk": 7.2672, "enemy_ttk": 5.8284, "boss_ttk": 0.0, "puzzle_units": 1.9, "reading_units": 1.5, "travel_units": 2.2885},
+    "1:belfry_r4": {"bias": 1.0, "area_walk": 10.4, "enemy_ttk": 9.7405, "boss_ttk": 0.0, "puzzle_units": 0.0, "reading_units": 0.0, "travel_units": 1.5907},
+    "1:belfry_r5": {"bias": 1.0, "area_walk": 10.896, "enemy_ttk": 0.0, "boss_ttk": 7.9948, "puzzle_units": 0.0, "reading_units": 0.7, "travel_units": 1.5268},
+    "1:belfry_r6": {"bias": 1.0, "area_walk": 8.936, "enemy_ttk": 1.8257, "boss_ttk": 0.0, "puzzle_units": 3.2, "reading_units": 1.4, "travel_units": 2.9923},
+    "1:belfry_r7": {"bias": 1.0, "area_walk": 10.8377, "enemy_ttk": 0.0, "boss_ttk": 9.6867, "puzzle_units": 1.4, "reading_units": 1.8, "travel_units": 1.8571},
+    "1:overworld": {"bias": 1.0, "area_walk": 110.2554, "enemy_ttk": 32.7824, "boss_ttk": 0.0, "puzzle_units": 1.2, "reading_units": 18.6, "travel_units": 3.5167},
+    "2:lighthouse_r1": {"bias": 1.0, "area_walk": 8.4999, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 0.0, "reading_units": 1.2, "travel_units": 3.9375},
+    "2:lighthouse_r10": {"bias": 1.0, "area_walk": 10.8766, "enemy_ttk": 0.0, "boss_ttk": 12.8483, "puzzle_units": 8.8, "reading_units": 1.8, "travel_units": 2.0655},
+    "2:lighthouse_r2": {"bias": 1.0, "area_walk": 8.1445, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 5.0, "reading_units": 0.7, "travel_units": 2.1094},
+    "2:lighthouse_r3": {"bias": 1.0, "area_walk": 9.2611, "enemy_ttk": 8.7041, "boss_ttk": 0.0, "puzzle_units": 2.2, "reading_units": 0.0, "travel_units": 2.1385},
+    "2:lighthouse_r4": {"bias": 1.0, "area_walk": 8.6477, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 6.7, "reading_units": 0.7, "travel_units": 2.1758},
+    "2:lighthouse_r5": {"bias": 1.0, "area_walk": 9.3969, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 7.4, "reading_units": 1.8, "travel_units": 3.0536},
+    "2:lighthouse_r6": {"bias": 1.0, "area_walk": 10.6211, "enemy_ttk": 0.0, "boss_ttk": 8.415, "puzzle_units": 4.4, "reading_units": 0.7, "travel_units": 2.0438},
+    "2:lighthouse_r7": {"bias": 1.0, "area_walk": 7.827, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 9.0, "reading_units": 0.0, "travel_units": 2.3571},
+    "2:lighthouse_r8": {"bias": 1.0, "area_walk": 9.4864, "enemy_ttk": 8.7041, "boss_ttk": 0.0, "puzzle_units": 4.4, "reading_units": 0.0, "travel_units": 2.1274},
+    "2:lighthouse_r9": {"bias": 1.0, "area_walk": 9.6629, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 4.4, "reading_units": 1.9, "travel_units": 2.8728},
+    "2:overworld": {"bias": 1.0, "area_walk": 85.9142, "enemy_ttk": 27.4932, "boss_ttk": 0.0, "puzzle_units": 14.3, "reading_units": 19.6, "travel_units": 4.2768},
+    "3:oak_r1": {"bias": 1.0, "area_walk": 9.5751, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 1.3, "reading_units": 2.0, "travel_units": 2.2995},
+    "3:oak_r10": {"bias": 1.0, "area_walk": 11.426, "enemy_ttk": 0.0, "boss_ttk": 13.4733, "puzzle_units": 3.8, "reading_units": 2.6, "travel_units": 1.5444},
+    "3:oak_r2": {"bias": 1.0, "area_walk": 8.769, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 2.7, "reading_units": 0.7, "travel_units": 1.7167},
+    "3:oak_r3": {"bias": 1.0, "area_walk": 9.8363, "enemy_ttk": 4.1473, "boss_ttk": 0.0, "puzzle_units": 1.4, "reading_units": 0.0, "travel_units": 1.5824},
+    "3:oak_r4": {"bias": 1.0, "area_walk": 6.9401, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 2.6, "reading_units": 0.0, "travel_units": 2.6077},
+    "3:oak_r5": {"bias": 1.0, "area_walk": 8.6232, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 3.9, "reading_units": 2.5, "travel_units": 2.2806},
+    "3:oak_r6": {"bias": 1.0, "area_walk": 10.5212, "enemy_ttk": 0.0, "boss_ttk": 7.2081, "puzzle_units": 0.0, "reading_units": 0.7, "travel_units": 1.5603},
+    "3:oak_r7": {"bias": 1.0, "area_walk": 7.8808, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 4.9, "reading_units": 0.0, "travel_units": 1.6667},
+    "3:oak_r8": {"bias": 1.0, "area_walk": 9.6848, "enemy_ttk": 7.1338, "boss_ttk": 0.0, "puzzle_units": 1.4, "reading_units": 0.0, "travel_units": 1.5938},
+    "3:oak_r9": {"bias": 1.0, "area_walk": 9.3744, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 6.2, "reading_units": 1.9, "travel_units": 1.8061},
+    "3:overworld": {"bias": 1.0, "area_walk": 99.4673, "enemy_ttk": 29.0662, "boss_ttk": 0.0, "puzzle_units": 2.4, "reading_units": 18.9, "travel_units": 3.0733},
+    "4:conservatory_r1": {"bias": 1.0, "area_walk": 8.936, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 4.8, "reading_units": 2.7, "travel_units": 3.3317},
+    "4:conservatory_r10": {"bias": 1.0, "area_walk": 10.0698, "enemy_ttk": 0.0, "boss_ttk": 13.6386, "puzzle_units": 1.4, "reading_units": 2.6, "travel_units": 2.7396},
+    "4:conservatory_r2": {"bias": 1.0, "area_walk": 8.2986, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 2.1, "reading_units": 0.7, "travel_units": 2.5168},
+    "4:conservatory_r3": {"bias": 1.0, "area_walk": 9.6848, "enemy_ttk": 3.6973, "boss_ttk": 0.0, "puzzle_units": 0.0, "reading_units": 0.0, "travel_units": 2.1538},
+    "4:conservatory_r4": {"bias": 1.0, "area_walk": 8.475, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 2.2, "reading_units": 0.0, "travel_units": 2.4769},
+    "4:conservatory_r5": {"bias": 1.0, "area_walk": 8.4999, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 1.5, "reading_units": 2.5, "travel_units": 3.5692},
+    "4:conservatory_r6": {"bias": 1.0, "area_walk": 9.5971, "enemy_ttk": 0.0, "boss_ttk": 8.0595, "puzzle_units": 0.0, "reading_units": 0.7, "travel_units": 2.5547},
+    "4:conservatory_r7": {"bias": 1.0, "area_walk": 7.1204, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 4.2, "reading_units": 0.7, "travel_units": 3.0361},
+    "4:conservatory_r8": {"bias": 1.0, "area_walk": 9.8363, "enemy_ttk": 6.0189, "boss_ttk": 0.0, "puzzle_units": 0.0, "reading_units": 0.0, "travel_units": 2.1},
+    "4:conservatory_r9": {"bias": 1.0, "area_walk": 8.8886, "enemy_ttk": 0.0, "boss_ttk": 0.0, "puzzle_units": 3.3, "reading_units": 0.7, "travel_units": 2.4357},
+    "4:overworld": {"bias": 1.0, "area_walk": 85.4035, "enemy_ttk": 20.1081, "boss_ttk": 0.0, "puzzle_units": 5.5, "reading_units": 19.6, "travel_units": 4.2249},
+    "5:overworld": {"bias": 1.0, "area_walk": 104.7318, "enemy_ttk": 20.6932, "boss_ttk": 0.0, "puzzle_units": 6.9, "reading_units": 21.7, "travel_units": 4.155},
+}
+
 
 def _solve_linear_system(A: List[List[float]], b: List[float]) -> List[float]:
     n = len(b)
@@ -998,14 +1047,21 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if not (r["id"].startswith("_") or bool(r.get("json", {}).get("debug_only", False)))
     }
 
-    # 1. Extract baseline 1.0 features & fit NNLS weights on Marwan's 42 rooms (unchanged!)
+    # 1. Extract live features for all Epic rooms, while fitting NNLS weights on the frozen
+    # Luxel 1.0 Gold (765ccaa) features for Marwan's 42 playtested rooms so Epic room rebuilds
+    # never corrupt the calibration fit.
     feats_by_key: Dict[str, Dict[str, float]] = {k: extract_features(r, enemy_stats) for k, r in all_regions.items()}
+    cal_feats: Dict[str, Dict[str, float]] = {
+        k: CALIBRATION_1_0_FEATURES.get(k, feats_by_key[k])
+        for k in zt.keys()
+        if k in CALIBRATION_1_0_FEATURES or k in feats_by_key
+    }
     fit_X: List[List[float]] = []
     fit_y: List[float] = []
     for k, sec in sorted(zt.items()):
-        if k in partial_rooms or k in outlier_rooms or k not in feats_by_key:
+        if k in partial_rooms or k in outlier_rooms or k not in cal_feats:
             continue
-        fit_X.append([feats_by_key[k][fn] for fn in FEATURE_NAMES])
+        fit_X.append([cal_feats[k][fn] for fn in FEATURE_NAMES])
         fit_y.append(float(sec))
 
     weights = fit_weights_nnls(fit_X, fit_y, ridge=3.5)
@@ -1015,9 +1071,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     eval_all_a, eval_all_p = [], []
     residuals: List[Dict[str, Any]] = []
     for k, actual in sorted(zt.items()):
-        if k not in all_regions:
+        if k not in cal_feats:
             continue
-        pred = predict_expert_s(feats_by_key[k], weights, all_regions[k])
+        pred = predict_expert_s(cal_feats[k], weights, all_regions.get(k, {}))
         eval_all_a.append(actual)
         eval_all_p.append(pred)
         if k not in partial_rooms:

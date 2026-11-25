@@ -112,11 +112,19 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, 10.0, PAL["blue"] as Color if state == "erupting" else PAL["night"] as Color)
 	if state == "erupting":
 		var wob: float = 0.0 if red else roundf(sin(_clock * 14.0) * 1.5)
-		draw_rect(Rect2(-6.0 + wob, -26.0, 12.0, 28.0), Color(c_sky, 0.72))
-		draw_rect(Rect2(-3.0 - wob, -30.0, 6.0, 32.0), c_ice)
-		draw_rect(Rect2(-1.0, -32.0, 2.0, 34.0), c_cream)
-		LxPhysDraw.draw_chevron(self, Vector2(0.0, -18.0), Vector2.UP, c_gold, c_void, 3.0)
-		LxPhysDraw.draw_chevron(self, Vector2(0.0, -8.0), Vector2.UP, c_cream, c_void, 3.0)
+		# Twilight sky-shaft piercing down through the open blowhole
+		draw_rect(Rect2(-12.0, -44.0, 24.0, 46.0), Color(c_gold, 0.16))
+		draw_rect(Rect2(-7.0 + wob, -34.0, 14.0, 36.0), Color(c_sky, 0.78))
+		draw_rect(Rect2(-4.0 - wob, -38.0, 8.0, 40.0), c_ice)
+		draw_rect(Rect2(-1.0, -42.0, 2.0, 44.0), c_cream)
+		if not red:
+			for di: int in range(6):
+				var du: float = fmod(_clock * 1.6 + float(di) * 0.17, 1.0)
+				var dx: float = roundf(sin(float(di) * 2.1 + _clock * 5.0) * (5.0 + du * 6.0))
+				var dy: float = roundf(lerpf(2.0, -40.0, du))
+				draw_rect(Rect2(dx, dy, 2.0, 2.0), c_cream if di % 2 == 0 else c_ice)
+		LxPhysDraw.draw_chevron(self, Vector2(0.0, -24.0), Vector2.UP, c_gold, c_void, 3.0)
+		LxPhysDraw.draw_chevron(self, Vector2(0.0, -10.0), Vector2.UP, c_cream, c_void, 3.0)
 	else:
 		LxPhysDraw.draw_chevron(self, Vector2(0.0, 0.0), Vector2.UP, PAL["stone"] as Color, c_void, 2.0)
 	if _erupt_t > 0.0:

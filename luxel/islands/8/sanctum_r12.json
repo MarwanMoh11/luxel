@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "name_key": "ISL8_SC_R12",
   "theme": "archive",
-  "music": "island8_boss_p1",
+  "music": "isl8_boss_minor_p1",
   "spawn": [
     256,
     304
@@ -55,8 +55,10 @@
         96
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "night_harbinger_defeated"
+      ],
+      "locked_door_id": "door_sanctum_r12_west"
     },
     {
       "id": "exit_sanctum_r12_nw",
@@ -171,6 +173,24 @@
         "size": [
           16,
           16
+        ]
+      }
+    },
+    {
+      "id": "door_sanctum_r12_west",
+      "kind": "door",
+      "pos": [
+        24,
+        176
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "night_harbinger_defeated"
         ]
       }
     },

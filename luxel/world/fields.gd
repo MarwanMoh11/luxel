@@ -201,7 +201,7 @@ static func _collect_sight_blockers(world_ctx: Node) -> Array[Rect2]:
 	if not (inters is Array):
 		return out
 	for it_v: Variant in (inters as Array):
-		if not (it_v is Object) or not is_instance_valid(it_v as Object):
+		if not is_instance_valid(it_v) or not (it_v is Object):
 			continue
 		var item: Object = it_v as Object
 		if item.get("active") is bool and not bool(item.get("active")):

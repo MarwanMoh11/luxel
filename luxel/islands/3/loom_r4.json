@@ -435,14 +435,13 @@
     },
     {
       "id": "loom_r4_clear_flag",
-      "on": "cleared",
+      "on": "flag:rscr_3_loom_r4_loom_r4_wave2",
       "once": true,
       "do": [
         {
           "set_flag": "loom_r4_cleared"
         }
-      ],
-      "if": "flag:rscr_3_loom_r4_loom_r4_wave2"
+      ]
     }
   ],
   "design": {

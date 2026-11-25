@@ -55,8 +55,10 @@
         256
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "night_harbinger_defeated"
+      ],
+      "locked_door_id": "door_sanctum_r11_east"
     },
     {
       "id": "exit_sanctum_r11_sw_drop",
@@ -235,6 +237,24 @@
       "props": {
         "allow_interact": true,
         "target_id": "door_r11_to_r13"
+      }
+    },
+    {
+      "id": "door_sanctum_r11_east",
+      "kind": "door",
+      "pos": [
+        456,
+        160
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "night_harbinger_defeated"
+        ]
       }
     },
     {

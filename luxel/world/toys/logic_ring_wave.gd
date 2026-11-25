@@ -85,10 +85,10 @@ func _is_wall_at(pt: Vector2, ignore_obj: Object = null) -> bool:
 			return true
 	if region.has_method("get_interactables"):
 		for it_v: Variant in (region.call("get_interactables") as Array):
-			if not (it_v is LxInteractable):
+			if not is_instance_valid(it_v) or not (it_v is LxInteractable):
 				continue
 			var it: LxInteractable = it_v as LxInteractable
-			if not is_instance_valid(it) or not it.active or it == ignore_obj:
+			if not it.active or it == ignore_obj:
 				continue
 			if not source_id.is_empty() and it.id == source_id:
 				continue
@@ -140,7 +140,7 @@ func _deliver_rings() -> void:
 		return
 	if region.has_method("get_interactables"):
 		for it_v: Variant in (region.call("get_interactables") as Array):
-			if not (it_v is Object) or not is_instance_valid(it_v as Object):
+			if not is_instance_valid(it_v) or not (it_v is Object):
 				continue
 			var obj: Object = it_v as Object
 			if obj.get("id") is String:
@@ -158,7 +158,7 @@ func _deliver_rings() -> void:
 			_try_touch_listener(obj, opos, orad, false)
 	if region.has_method("get_enemies"):
 		for e_v: Variant in (region.call("get_enemies") as Array):
-			if not (e_v is Object) or not is_instance_valid(e_v as Object):
+			if not is_instance_valid(e_v) or not (e_v is Object):
 				continue
 			var e: Object = e_v as Object
 			if e.has_method("is_alive") and not bool(e.call("is_alive")):

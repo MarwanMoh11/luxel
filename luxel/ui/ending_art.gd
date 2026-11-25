@@ -10,15 +10,15 @@ const ICON_PAL: Dictionary = {
 }
 const STAT_ICONS: Array[Array] = [
 	["ggggg", ".ici.", "..c..", ".i.i.", "ggggg"], # Time: hourglass
+	[".aaa.", "annna", "angna", "annna", "aaaaa"], # Dungeons: doorway
+	["c.g.c", "cgggc", ".ggg.", "c.g.c", "..a.."], # Moths: moth
 	[".sss.", "snsns", "ssrss", ".s.s.", "..m.."], # Deaths: fallen wick
-	["..c..", ".cgc.", "agaga", "ragar", ".wrw."], # Embers: flame
-	[".aga.", "aggga", "agcga", "aggga", ".ddd."], # Lamps relit: lantern
 ]
 const RIGHT_STAT_ICONS: Array[Array] = [
-	["..c..", "g.g.g", "ggcgg", "ggggg", ".aaa."], # Clear %: gold/cream laurel crown
-	["..i..", ".icy.", "iccyb", ".yyb.", "..b.."], # Upgrades: sky/ice spark gem
-	["..ooc", "..o.o", "..o..", "coo..", ".ow.."], # Harmony: rose/cream chime note
+	["..c..", "g.g.g", "ggcgg", "ggggg", ".aaa."], # Clear %: crown
+	[".rrr.", "rnrnr", "rrrrr", ".rgr.", ".r.r."], # Bosses: boss skull
 	[".aga.", "aggga", "agcga", "aggga", ".ddd."], # Lamps relit: lantern
+	["..g..", "ggggg", ".a.a.", "rr.rr", "..w.."], # Sold settings / tolls: scale
 ]
 const RANK_STYLE: Dictionary = {
 	"RANK_S": ["gold", "wine", "cream"], "RANK_A": ["lime", "pine", "gold"],
@@ -456,64 +456,66 @@ static func draw_results_backdrop(ci: CanvasItem, panel: Rect2, t: float) -> voi
 static func draw_results_ornaments(ci: CanvasItem, panel: Rect2, rank_key: String, t: float, relit_count: int = -1) -> void:
 	_draw_rivets(ci, panel, "apricot", "gold")
 	if rank_key == "RANK_S" or rank_key == "RANK_A":
-		_draw_split_filigree_divider(ci, panel.position.x + 14.0, panel.end.x - 14.0, 144.0, 176.0, 47.0, "apricot", "gold")
+		_draw_split_filigree_divider(ci, panel.position.x + 14.0, panel.end.x - 14.0, 144.0, 176.0, 36.0, "apricot", "gold")
 	else:
-		_draw_filigree_divider(ci, panel.position.x + 14.0, panel.end.x - 14.0, 47.0, "apricot", "gold")
+		_draw_filigree_divider(ci, panel.position.x + 14.0, panel.end.x - 14.0, 36.0, "apricot", "gold")
 	_draw_rank_medallion(ci, rank_key, t)
-	LxPixelFont.draw_panel(ci, Rect2(70.0, 73.0, 180.0, 50.0), "night", "dusk", "void")
+	LxPixelFont.draw_panel(ci, Rect2(34.0, 59.0, 252.0, 64.0), "night", "dusk", "void")
+	ci.draw_rect(Rect2(160.0, 63.0, 1.0, 56.0), LxPalette.PAL["dusk"])
 	for row: int in range(STAT_ICONS.size()):
-		var iy: float = 78.0 + float(row) * 12.0
-		_draw_mini_icon(ci, STAT_ICONS[row], 82.0, iy)
-		_draw_mini_icon(ci, RIGHT_STAT_ICONS[row], 233.0, iy)
-	_draw_filigree_divider(ci, panel.position.x + 22.0, panel.end.x - 22.0, 124.0, "mauve", "apricot", false)
+		var iy: float = 64.0 + float(row) * 12.0
+		_draw_mini_icon(ci, STAT_ICONS[row], 40.0, iy)
+		_draw_mini_icon(ci, RIGHT_STAT_ICONS[row], 167.0, iy)
+	_draw_mini_icon(ci, ["..i..", ".icy.", "iccyb", ".yyb.", "..b.."], 40.0, 112.0)
+	_draw_mini_icon(ci, ["..ooc", "..o.o", "..o..", "coo..", ".ow.."], 167.0, 112.0)
+	_draw_filigree_divider(ci, panel.position.x + 22.0, panel.end.x - 22.0, 127.0, "mauve", "apricot", false)
 	var eff_relit: int = relit_count if relit_count >= 0 else (Lx.state.relit_islands.size() if Lx.state != null else 8)
 	for isl_c: int in range(1, 9):
 		var relit_c: bool = eff_relit >= 8 or isl_c <= eff_relit or (Lx.state != null and Lx.state.relit_islands.has(isl_c))
-		var cx_c: float = roundf(83.0 + float(isl_c - 1) * 22.0)
+		var cx_c: float = roundf(62.0 + float(isl_c - 1) * 28.0)
 		var c1: Color = LxBiomePalette.col(isl_c, "glow") if relit_c else (LxPalette.PAL["dusk"] as Color)
 		var c2: Color = (LxPalette.PAL["cream"] if relit_c else LxPalette.PAL["mauve"]) as Color
-		LxHudFx.draw_biome_crest(ci, isl_c, Vector2(cx_c, 134.0), c1, c2)
+		LxHudFx.draw_biome_crest(ci, isl_c, Vector2(cx_c, 137.0), c1, c2)
 		if Lx.state != null and bool(Lx.state.story_flags.get("disc_all_%d" % isl_c, false)):
 			var sg_c: bool = LxHudFx.flash_reduced() or fmod(t * 2.4 + float(isl_c) * 0.4, 1.0) < 0.55
-			ci.draw_rect(Rect2(cx_c, 127.0, 1.0, 3.0), c1)
-			ci.draw_rect(Rect2(cx_c - 1.0, 128.0, 3.0, 1.0), c1)
-			ci.draw_rect(Rect2(cx_c, 128.0, 1.0, 1.0), LxPalette.PAL["cream"] if sg_c else c1)
+			ci.draw_rect(Rect2(cx_c, 130.0, 1.0, 3.0), c1); ci.draw_rect(Rect2(cx_c - 1.0, 131.0, 3.0, 1.0), c1)
+			ci.draw_rect(Rect2(cx_c, 131.0, 1.0, 1.0), LxPalette.PAL["cream"] if sg_c else c1)
 	if rank_key == "RANK_S" or rank_key == "RANK_A":
 		var fr_r: bool = LxHudFx.flash_reduced()
 		var cnt: int = 8 if rank_key == "RANK_S" else 4
 		var all_relit_r: bool = eff_relit >= 8
 		for pi: int in range(cnt):
-			var side_x: float = (panel.position.x + 12.0 + float(pi % 2) * 12.0) if pi < cnt / 2 else (panel.end.x - 14.0 - float(pi % 2) * 12.0)
+			var side_x: float = (panel.position.x + 8.0 + float(pi % 2) * 8.0) if pi < cnt / 2 else (panel.end.x - 10.0 - float(pi % 2) * 8.0)
 			var py: float = roundf(panel.position.y + 14.0 + fmod((0.0 if fr_r else t * (10.0 + float(pi % 3) * 3.0)) + float(pi) * 17.0, panel.size.y - 28.0))
-			var px: float = roundf(side_x + (0.0 if fr_r else sin(t * 2.1 + float(pi) * 1.4) * 2.5))
+			var px: float = roundf(side_x + (0.0 if fr_r else sin(t * 2.1 + float(pi) * 1.4) * 2.0))
 			var p_c: Color = LxBiomePalette.col((pi % 8) + 1, "glow") if all_relit_r else LxPalette.PAL["cream" if (rank_key == "RANK_S" and pi % 3 == 0) else ("gold" if pi % 2 == 0 else ("apricot" if rank_key == "RANK_S" else "lime"))]
 			ci.draw_rect(Rect2(px, py, 1.0, 1.0), p_c)
 
 static func _draw_rank_medallion(ci: CanvasItem, rank_key: String, t: float) -> void:
 	var st: Array = RANK_STYLE.get(rank_key, RANK_STYLE["RANK_C"]) as Array
 	var rim: String = str(st[0])
-	_px(ci, [[104, 57, 18, 8], [198, 57, 18, 8], [122, 53, 76, 16]], "night")
-	_px(ci, [[106, 58, 16, 6], [198, 58, 16, 6], [125, 55, 70, 12]], str(st[1]))
-	_px(ci, [[105, 58, 17, 1], [105, 63, 17, 1], [198, 58, 17, 1], [198, 63, 17, 1], [123, 54, 74, 1], [123, 67, 74, 1], [123, 54, 2, 14], [195, 54, 2, 14]], rim)
-	_px(ci, [[104, 60, 2, 2], [214, 60, 2, 2]], "dusk")
-	_px(ci, [[124, 54, 1, 1], [195, 54, 1, 1], [124, 67, 1, 1], [195, 67, 1, 1]], str(st[2]))
+	_px(ci, [[104, 44, 18, 8], [198, 44, 18, 8], [122, 40, 76, 16]], "night")
+	_px(ci, [[106, 45, 16, 6], [198, 45, 16, 6], [125, 42, 70, 12]], str(st[1]))
+	_px(ci, [[105, 45, 17, 1], [105, 50, 17, 1], [198, 45, 17, 1], [198, 50, 17, 1], [123, 41, 74, 1], [123, 54, 74, 1], [123, 41, 2, 14], [195, 41, 2, 14]], rim)
+	_px(ci, [[104, 47, 2, 2], [214, 47, 2, 2]], "dusk")
+	_px(ci, [[124, 41, 1, 1], [195, 41, 1, 1], [124, 54, 1, 1], [195, 54, 1, 1]], str(st[2]))
 	if rank_key == "RANK_S":
-		_px(ci, [[155, 51, 11, 2], [155, 50, 2, 1], [159, 49, 3, 2], [164, 50, 2, 1]], "gold")
-		_px(ci, [[160, 49, 1, 2], [156, 51, 1, 1], [164, 51, 1, 1]], "cream")
+		_px(ci, [[155, 38, 11, 2], [155, 37, 2, 1], [159, 36, 3, 2], [164, 37, 2, 1]], "gold")
+		_px(ci, [[160, 36, 1, 2], [156, 38, 1, 1], [164, 38, 1, 1]], "cream")
 		var sg: bool = LxHudFx.flash_reduced() or fmod(t * 2.4, 1.0) < 0.5
-		_px(ci, [[117, 54, 1, 1], [202, 54, 1, 1]] if sg else [[117, 67, 1, 1], [202, 67, 1, 1]], "cream")
-		_px(ci, [[116, 54, 1, 1], [118, 54, 1, 1], [201, 54, 1, 1], [203, 54, 1, 1]] if sg else [[116, 67, 1, 1], [118, 67, 1, 1], [201, 67, 1, 1], [203, 67, 1, 1]], "gold")
+		_px(ci, [[117, 41, 1, 1], [202, 41, 1, 1]] if sg else [[117, 54, 1, 1], [202, 54, 1, 1]], "cream")
+		_px(ci, [[116, 41, 1, 1], [118, 41, 1, 1], [201, 41, 1, 1], [203, 41, 1, 1]] if sg else [[116, 54, 1, 1], [118, 54, 1, 1], [201, 54, 1, 1], [203, 54, 1, 1]], "gold")
 	elif rank_key == "RANK_A":
-		_px(ci, [[155, 51, 4, 2], [162, 51, 4, 2], [158, 50, 5, 1]], "lime")
-		ci.draw_rect(Rect2(159.0, 51.0, 3.0, 2.0), LxPalette.PAL["gold"])
+		_px(ci, [[155, 38, 4, 2], [162, 38, 4, 2], [158, 37, 5, 1]], "lime")
+		ci.draw_rect(Rect2(159.0, 38.0, 3.0, 2.0), LxPalette.PAL["gold"])
 		if LxHudFx.flash_reduced() or fmod(t * 2.0, 1.0) < 0.45:
-			_px(ci, [[118, 55, 1, 1], [201, 55, 1, 1]], "cream")
+			_px(ci, [[118, 42, 1, 1], [201, 42, 1, 1]], "cream")
 	elif rank_key == "RANK_B":
-		_px(ci, [[159, 50, 3, 3], [157, 51, 7, 1]], "sky")
-		ci.draw_rect(Rect2(160.0, 51.0, 1.0, 1.0), LxPalette.PAL["ice"])
+		_px(ci, [[159, 37, 3, 3], [157, 38, 7, 1]], "sky")
+		ci.draw_rect(Rect2(160.0, 38.0, 1.0, 1.0), LxPalette.PAL["ice"])
 	else:
-		ci.draw_rect(Rect2(158.0, 51.0, 5.0, 2.0), LxPalette.PAL["apricot"])
-		ci.draw_rect(Rect2(160.0, 51.0, 1.0, 1.0), LxPalette.PAL["coral"])
+		ci.draw_rect(Rect2(158.0, 38.0, 5.0, 2.0), LxPalette.PAL["apricot"])
+		ci.draw_rect(Rect2(160.0, 38.0, 1.0, 1.0), LxPalette.PAL["coral"])
 
 static func _draw_mini_icon(ci: CanvasItem, rows: Array, ox: float, oy: float) -> void:
 	for r: int in range(rows.size()):

@@ -15,6 +15,7 @@ extends Resource
 @export var shard_drop: int = 2
 @export var attack_damage: float = 1.0
 @export var is_boss: bool = false
+@export var home_island: int = 1
 
 
 static func from_dict(d: Dictionary) -> LxEnemyData:
@@ -32,6 +33,7 @@ static func from_dict(d: Dictionary) -> LxEnemyData:
 	res.shard_drop = int(d.get("shard_drop", res.shard_drop))
 	res.attack_damage = float(d.get("attack_damage", res.attack_damage))
 	res.is_boss = bool(d.get("is_boss", res.is_boss))
+	res.home_island = int(d.get("home_island", res.home_island))
 	return res
 
 
@@ -50,4 +52,5 @@ func to_dict() -> Dictionary:
 		"shard_drop": shard_drop,
 		"attack_damage": attack_damage,
 		"is_boss": is_boss,
+		"home_island": home_island,
 	}

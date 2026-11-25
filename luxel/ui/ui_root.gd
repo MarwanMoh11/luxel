@@ -22,6 +22,7 @@ enum Screen { NONE, TITLE, INTRO, HUD, PAUSE, MAP, OPTIONS, REBIND, SHOP, DEATH,
 var current_screen: int = Screen.NONE
 var _return_screen: int = Screen.TITLE
 var _main: Node = null
+var _last_visited_isl: int = -1
 
 var hud: LxHud = null
 var narration: LxNarration = null
@@ -69,12 +70,15 @@ func _build_children() -> void:
 
 func _connect_signals() -> void:
 	title.slot_selected.connect(func(slot_num: int, is_new: bool) -> void:
+		var after_day: bool = (not is_new) and LxUiNav.is_slot_after_day(slot_num)
 		play_slot_requested.emit(slot_num, is_new)
 		if _main != null:
 			if is_new and _main.has_method("start_new_game"):
 				_main.call("start_new_game", slot_num, true)
 			elif not is_new and _main.has_method("continue_slot"):
 				_main.call("continue_slot", slot_num)
+				if after_day and hud != null:
+					hud.show_previously_bar(LxUiNav.build_previously_icons())
 	)
 	title.options_requested.connect(func() -> void: show_options(Screen.TITLE))
 	title.quit_requested.connect(func() -> void:
@@ -105,6 +109,7 @@ func _connect_signals() -> void:
 			_main.call("retry_from_death")
 	)
 	pause.title_requested.connect(func() -> void:
+		if Lx.state != null: Lx.state.story_flags["last_save_unix"] = int(Time.get_unix_time_from_system())
 		if _main != null and _main.has_method("flush_and_save"):
 			_main.call("flush_and_save", "title_exit")
 		return_to_title_requested.emit()
@@ -141,6 +146,7 @@ func _connect_signals() -> void:
 		settings_changed.emit(cfg)
 		if _main != null and _main.has_method("apply_runtime_settings"):
 			_main.call("apply_runtime_settings")
+		LxSold.current()._apply_all_live_effects()
 	)
 
 	rebind.closed.connect(func() -> void: show_options(_return_screen))
@@ -204,11 +210,41 @@ func _notify_main_resume() -> void:
 		_main.call("toggle_pause")
 
 
+func _pause_main_if_playing() -> void:
+	if _main == null or not is_instance_valid(_main) or int(_main.get("flow")) != 2:
+		return
+	_main.set("flow", 3)
+	if Lx.input != null: Lx.input.clear_all_toggles()
+	if Lx.audio != null: Lx.audio.pause_all(true)
+	if Lx.events != null: Lx.events.pause_toggled.emit(true)
+
+
 func bind_events() -> void:
-	if hud != null:
-		hud.bind_events()
-	if narration != null:
-		narration.bind_events()
+	if hud != null: hud.bind_events()
+	if narration != null: narration.bind_events()
+	if Lx.events != null and not Lx.events.region_entered.is_connected(_on_region_entered):
+		Lx.events.region_entered.connect(_on_region_entered)
+
+func _on_region_entered(island_id: int, _region_id: String) -> void:
+	if island_id > 0 and island_id != _last_visited_isl:
+		_last_visited_isl = island_id
+		LxUiNav.record_island_visit(island_id)
+
+func switch_pause_tab(target_screen: int) -> void:
+	if target_screen == current_screen: return
+	if target_screen == Screen.PAUSE:
+		if _main != null: _main.set("flow", 3)
+		show_pause()
+	elif target_screen == Screen.MAP:
+		show_map(Screen.PAUSE)
+	elif target_screen == Screen.JOURNAL:
+		show_journal(Screen.PAUSE)
+	elif target_screen == Screen.PANES:
+		show_panes(true, Screen.PAUSE)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if current_screen == Screen.HUD and hud != null and hud.try_skip_ceremony(event):
+		get_viewport().set_input_as_handled()
 
 
 func is_modal_open() -> bool:
@@ -257,10 +293,10 @@ func _hide_all_modals() -> void:
 func show_title(open_slots: bool = false) -> void:
 	_hide_all_modals()
 	LxSold.current().restore_all("title", true)
-	if narration != null:
-		narration.clear_all()
-	if Lx.hitstop != null:
-		Lx.hitstop.clear()
+	if narration != null: narration.clear_all()
+	if Lx.hitstop != null: Lx.hitstop.clear()
+	if hud != null: hud.reset_session_banners()
+	_last_visited_isl = -1
 	hud.visible = false
 	current_screen = Screen.TITLE
 	title.open(open_slots)
@@ -303,6 +339,7 @@ func show_hud() -> void:
 
 
 func show_pause() -> void:
+	if Lx.state != null: Lx.state.story_flags["last_save_unix"] = int(Time.get_unix_time_from_system())
 	_hide_all_modals()
 	hud.visible = false
 	current_screen = Screen.PAUSE
@@ -335,70 +372,41 @@ func show_options(from_screen: int = -1) -> void:
 
 
 func show_rebind() -> void:
-	_hide_all_modals()
-	hud.visible = false
-	current_screen = Screen.REBIND
-	rebind.open()
-	_sync_overlay_state()
-
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.REBIND; rebind.open(); _sync_overlay_state()
 
 func show_shop() -> void:
-	_hide_all_modals(); hud.visible = false; current_screen = Screen.SHOP
-	rest_shop.open(); _sync_overlay_state()
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.SHOP; rest_shop.open(); _sync_overlay_state()
 
 func show_journal(from_screen: int = -1, page: int = 0) -> void:
 	if from_screen >= 0: _return_screen = from_screen
 	elif current_screen in [Screen.PAUSE, Screen.HUD]: _return_screen = current_screen
-	_hide_all_modals(); hud.visible = false; current_screen = Screen.JOURNAL
-	journal.open(page); _sync_overlay_state()
+	if _return_screen == Screen.HUD: _pause_main_if_playing()
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.JOURNAL; journal.open(page); _sync_overlay_state()
 
 func show_panes(read_only: bool = false, from_screen: int = -1) -> void:
 	if from_screen >= 0: _return_screen = from_screen
 	elif current_screen in [Screen.PAUSE, Screen.HUD, Screen.SHOP]: _return_screen = current_screen
-	_hide_all_modals(); hud.visible = false; current_screen = Screen.PANES
-	panes_menu.open(read_only); _sync_overlay_state()
+	if _return_screen == Screen.HUD: _pause_main_if_playing()
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.PANES; panes_menu.open(read_only); _sync_overlay_state()
 
-func open_panes_menu() -> void:
-	show_panes(false, Screen.HUD)
-
+func open_panes_menu() -> void: show_panes(false, Screen.HUD)
 
 func show_death(is_boss: bool = false) -> void:
-	_hide_all_modals()
-	hud.visible = false
-	current_screen = Screen.DEATH
-	cards.show_death(is_boss)
-	_sync_overlay_state()
-
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.DEATH; cards.show_death(is_boss); _sync_overlay_state()
 
 func show_ending(p_mode: String = "") -> void:
 	var mode_str: String = p_mode
 	if mode_str.is_empty():
 		var host: Node = _main if _main != null else Lx.root
-		if host != null and host.get("ending_mode") != null:
-			mode_str = str(host.get("ending_mode"))
-	if mode_str.is_empty():
-		mode_str = str(Lx.get_decision("ending_mode", "display_off"))
-	_hide_all_modals()
-	hud.visible = false
-	current_screen = Screen.ENDING
-	cards.show_ending(mode_str)
-	_sync_overlay_state()
-
+		if host != null and host.get("ending_mode") != null: mode_str = str(host.get("ending_mode"))
+	if mode_str.is_empty(): mode_str = str(Lx.get_decision("ending_mode", "display_off"))
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.ENDING; cards.show_ending(mode_str); _sync_overlay_state()
 
 func show_results(stats: Dictionary = {}) -> void:
-	_hide_all_modals()
-	hud.visible = false
-	current_screen = Screen.RESULTS
-	cards.show_results(stats)
-	_sync_overlay_state()
-
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.RESULTS; cards.show_results(stats); _sync_overlay_state()
 
 func show_credits() -> void:
-	_hide_all_modals()
-	hud.visible = false
-	current_screen = Screen.CREDITS
-	cards.show_credits()
-	_sync_overlay_state()
+	_hide_all_modals(); hud.visible = false; current_screen = Screen.CREDITS; cards.show_credits(); _sync_overlay_state()
 
 
 func advance_ending() -> void:
@@ -441,6 +449,8 @@ func apply_display_settings(cfg: Dictionary) -> void:
 
 
 func _exit_tree() -> void:
+	if Lx.events != null and Lx.events.region_entered.is_connected(_on_region_entered):
+		Lx.events.region_entered.disconnect(_on_region_entered)
 	if DisplayServer.get_name() != "headless":
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
@@ -470,7 +480,7 @@ func _draw_reticle() -> void:
 	var pos: Vector2 = get_viewport().get_mouse_position().round()
 	if Lx.input != null and Lx.input.last_device == "gamepad":
 		var center: Vector2 = Vector2(160.0, 90.0)
-		if Lx.player != null and Lx.camera != null and Lx.player is Node2D:
+		if is_instance_valid(Lx.player) and Lx.player is Node2D and is_instance_valid(Lx.camera):
 			center = (Lx.player as Node2D).global_position - Lx.camera.global_position + Vector2(160.0, 90.0)
 		pos = (center + Lx.input.last_aim_dir.normalized() * 42.0).round()
 		pos = Vector2(clampf(pos.x, 8.0, 312.0), clampf(pos.y, 8.0, 172.0))
@@ -499,14 +509,14 @@ func _draw_reticle() -> void:
 				gap = maxf(1.0, roundf(gap + lerpf(2.0, -1.0, bp)))
 				beam_ready = bp >= 0.999
 		var md_v: Variant = Lx.player.get("move_dash")
-		if md_v is Object and is_instance_valid(md_v):
+		if is_instance_valid(md_v) and md_v is Object:
 			var ct_v: Variant = (md_v as Object).get("counter_t")
 			counter_ready = (ct_v is float or ct_v is int) and float(ct_v) > 0.0
 		var sf_v: Variant = Lx.player.get("move_sunflare")
-		if sf_v is Object and is_instance_valid(sf_v) and (sf_v as Object).has_method("can_use"):
+		if is_instance_valid(sf_v) and sf_v is Object and (sf_v as Object).has_method("can_use"):
 			sunflare_ready = bool((sf_v as Object).call("can_use"))
 		var lan_v: Variant = Lx.player.get("lantern")
-		if lan_v is Object and is_instance_valid(lan_v):
+		if is_instance_valid(lan_v) and lan_v is Object:
 			if (lan_v as Object).has_method("is_lure_active"):
 				zip_ready = bool((lan_v as Object).call("is_lure_active"))
 			lan_stolen = int((lan_v as Object).get("state")) == 4
@@ -573,17 +583,11 @@ func _active_biome_reticle_color() -> Color:
 	var rules: LxBiomeRules = LxBiomeRules.active_instance
 	var mech: LxBiomeMechanics = LxBiomeMechanics.active_instance
 	if rules != null and is_instance_valid(rules):
-		if rules.beam_buff_t > 0.0:
-			return LxPalette.PAL["ice"]
-		if rules.starlight_surge_t > 0.0:
-			return LxPalette.PAL["sky"]
+		if rules.beam_buff_t > 0.0: return LxPalette.PAL["ice"]
+		if rules.starlight_surge_t > 0.0: return LxPalette.PAL["sky"]
 	if mech != null and is_instance_valid(mech):
-		if mech.molten_charges > 0:
-			return LxPalette.PAL["coral"]
-		if mech.tailwind_t > 0.0:
-			return LxPalette.PAL["rose"]
-		if mech.mirror_echo_active and rules != null and is_instance_valid(rules) and rules.lunar_phase > 0.65:
-			return LxPalette.PAL["ice"]
-		if mech.dawn_seals_broken > 0 and rules != null and is_instance_valid(rules) and rules.island_id == 8:
-			return LxPalette.PAL["gold"]
+		if mech.molten_charges > 0: return LxPalette.PAL["coral"]
+		if mech.tailwind_t > 0.0: return LxPalette.PAL["rose"]
+		if mech.mirror_echo_active and rules != null and is_instance_valid(rules) and rules.lunar_phase > 0.65: return LxPalette.PAL["ice"]
+		if mech.dawn_seals_broken > 0 and rules != null and is_instance_valid(rules) and rules.island_id == 8: return LxPalette.PAL["gold"]
 	return Color(0.0, 0.0, 0.0, 0.0)

@@ -265,21 +265,22 @@ static func build_waystone_index() -> void:
 static func _index_island_waystones(island_id: int) -> void:
 	var map_dict: Dictionary = {}
 	var dir_path: String = "res://luxel/islands/%d" % island_id
-	if not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(dir_path)):
-		_waystone_cache[island_id] = map_dict
-		return
 	var region_names: Array[String] = []
 	if Lx.packs != null:
 		for r: String in Lx.packs.region_ids(island_id):
 			if not region_names.has(r):
 				region_names.append(r)
-	var da: DirAccess = DirAccess.open(dir_path)
-	if da != null:
-		for fname: String in da.get_files():
-			if fname.ends_with(".json"):
-				var stem: String = fname.trim_suffix(".json")
-				if not region_names.has(stem):
-					region_names.append(stem)
+	if DirAccess.dir_exists_absolute(dir_path):
+		var da: DirAccess = DirAccess.open(dir_path)
+		if da != null:
+			for fname: String in da.get_files():
+				if fname.ends_with(".json"):
+					var stem: String = fname.trim_suffix(".json")
+					if not region_names.has(stem):
+						region_names.append(stem)
+	if region_names.is_empty():
+		_waystone_cache[island_id] = map_dict
+		return
 	for reg_id: String in region_names:
 		var jpath: String = dir_path + "/" + reg_id + ".json"
 		if not FileAccess.file_exists(jpath):

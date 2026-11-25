@@ -53,6 +53,9 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
+	if LxUiNav.handle_tab_bar_key(event, 3):
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseMotion:
 		var p: Vector2 = (event as InputEventMouseMotion).position
 		for i: int in range(ITEMS.size()):
@@ -66,6 +69,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			if LxUiNav.handle_tab_bar_click(mb.position, 3):
+				get_viewport().set_input_as_handled()
+				return
 			for i: int in range(ITEMS.size()):
 				if _row_rect(i).has_point(mb.position):
 					_idx = i
@@ -115,6 +121,7 @@ func _draw() -> void:
 	var bkey: String = LxBiomePalette.key(isl, "border")
 	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", bkey, "night")
 	_draw_brass_filigree(isl)
+	LxUiNav.draw_pause_tab_bar(self, 3)
 	var b_hi: Color = LxBiomePalette.col(isl, "hi")
 	LxHudFx.draw_biome_crest(self, isl, Vector2(PANEL_RECT.position.x + 14.0, PANEL_RECT.position.y + 12.0), b_hi, LxPalette.PAL["cream"] as Color)
 	LxHudFx.draw_biome_crest(self, isl, Vector2(PANEL_RECT.end.x - 15.0, PANEL_RECT.position.y + 12.0), b_hi, LxPalette.PAL["cream"] as Color)

@@ -439,7 +439,7 @@
       },
       {
         "op": "clear",
-        "timeout": 28.0
+        "timeout": 52.0
       },
       {
         "op": "interact",

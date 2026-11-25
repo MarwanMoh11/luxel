@@ -50,43 +50,43 @@
       "id": "moth_toll_r2_0",
       "kind": "toll_moth",
       "pos": [
-        304,
-        176
+        256,
+        136
       ],
       "route": [],
       "perches": [
         [
-          304,
+          240,
           176
         ],
         [
-          296,
-          240
+          232,
+          232
         ]
       ],
       "zone": "toll_drop",
-      "leash": 180
+      "leash": 140
     },
     {
       "id": "moth_toll_r2_w",
       "kind": "toll_moth",
       "pos": [
-        72,
-        168
+        128,
+        136
       ],
       "route": [],
       "perches": [
         [
-          72,
-          168
+          144,
+          176
         ],
         [
-          80,
+          152,
           232
         ]
       ],
       "zone": "toll_drop",
-      "leash": 180
+      "leash": 140
     }
   ],
   "interactables": [
@@ -418,27 +418,6 @@
   ],
   "events": [
     {
-      "id": "ev_toll_r2_wave",
-      "on": "signal:bell_toll_r2_k",
-      "once": true,
-      "do": [
-        {
-          "wave": [
-            {
-              "id": "moth_tr2_w1",
-              "kind": "toll_moth",
-              "pos": [
-                304,
-                200
-              ],
-              "zone": "toll_drop",
-              "leash": 180
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "ev_toll_r2_landing",
       "on": "flag:toll_r2_survived",
       "once": true,
@@ -464,6 +443,16 @@
               ],
               "zone": "toll_drop",
               "leash": 160
+            },
+            {
+              "id": "moth_tr2_w1",
+              "kind": "toll_moth",
+              "pos": [
+                192,
+                368
+              ],
+              "zone": "toll_drop",
+              "leash": 140
             }
           ]
         }
@@ -507,24 +496,16 @@
         "target": "bell_toll_r2_k"
       },
       {
+        "op": "clear",
+        "timeout": 46.0
+      },
+      {
         "op": "shoot",
         "from": [
           224,
           240
         ],
         "target": "bell_toll_r2_w"
-      },
-      {
-        "op": "clear",
-        "timeout": 28.0
-      },
-      {
-        "op": "shoot",
-        "from": [
-          160,
-          192
-        ],
-        "target": "bell_toll_r2_k"
       },
       {
         "op": "wait_until",
@@ -540,7 +521,7 @@
       },
       {
         "op": "clear",
-        "timeout": 20.0
+        "timeout": 52.0
       },
       {
         "op": "interact",

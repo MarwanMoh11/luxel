@@ -176,6 +176,6 @@
     "cave_bell_cistern": { "name_key": "ZONE_ISL2_CISTERN", "theme": "locks", "music": "island2_dungeon", "dark": true, "map": [1, 1] },
     "cave_smuggler_cellar": { "name_key": "ZONE_ISL2_CELLAR", "theme": "locks", "music": "island2_dungeon", "dark": true, "map": [0, 2] },
     "cave_rooftop_belfry": { "name_key": "ZONE_ISL2_BELFRY", "theme": "locks", "music": "island2_dungeon", "dark": true, "map": [1, -2] },
-    "cave_undertow_maw": { "name_key": "ZONE_ISL2_MAW", "theme": "leviathan_belly", "music": "island2_boss_p1", "dark": true, "map": [2, -1] }
+    "cave_undertow_maw": { "name_key": "ZONE_ISL2_MAW", "theme": "leviathan_belly", "music": "superboss_a", "dark": true, "map": [2, -1] }
   }
 }

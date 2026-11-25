@@ -46,21 +46,31 @@ var _banner_cooldowns: Dictionary = {} # banner_key -> last_shown_s
 var _seen_boss_intros: Dictionary = {} # boss_id -> true
 var ceremony: LxHudCeremony = LxHudCeremony.new()
 var _bound: bool = false
+var _bound_events: Object = null
+var _bound_sold: Object = null
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	bind_events()
 
+func _exit_tree() -> void:
+	if is_instance_valid(_bound_events):
+		for p: Array in [[_bound_events.beacon_lit, _on_beacon_lit], [_bound_events.waystone_lit, _on_waystone_lit], [_bound_events.move_unlocked, _on_move_unlocked], [_bound_events.boss_phase_changed, _on_boss_phase], [_bound_events.boss_defeated, _on_boss_defeated], [_bound_events.ember_piece_collected, _on_ember_piece], [_bound_events.enemy_hit, _on_enemy_hit], [_bound_events.lantern_stolen, _on_lantern_stolen], [_bound_events.great_lamp_relit, _on_great_lamp_relit]]:
+			if (p[0] as Signal).is_connected(p[1] as Callable): (p[0] as Signal).disconnect(p[1] as Callable)
+	if is_instance_valid(_bound_sold) and (_bound_sold as LxSold).hud_visibility_changed.is_connected(_on_hud_visibility_changed):
+		(_bound_sold as LxSold).hud_visibility_changed.disconnect(_on_hud_visibility_changed)
+	_bound = false; _bound_events = null; _bound_sold = null
+
 func bind_events() -> void:
 	if _bound or Lx.events == null: return
-	_bound = true
+	_bound = true; _bound_events = Lx.events; _bound_sold = LxSold.current()
 	var pairs: Array = [
 		[Lx.events.beacon_lit, _on_beacon_lit], [Lx.events.waystone_lit, _on_waystone_lit],
 		[Lx.events.move_unlocked, _on_move_unlocked], [Lx.events.boss_phase_changed, _on_boss_phase],
 		[Lx.events.boss_defeated, _on_boss_defeated], [Lx.events.ember_piece_collected, _on_ember_piece],
 		[Lx.events.enemy_hit, _on_enemy_hit], [Lx.events.lantern_stolen, _on_lantern_stolen],
 		[Lx.events.great_lamp_relit, _on_great_lamp_relit],
-		[LxSold.current().hud_visibility_changed, _on_hud_visibility_changed],
+		[(_bound_sold as LxSold).hud_visibility_changed, _on_hud_visibility_changed],
 	]
 	for p: Array in pairs:
 		var sig: Signal = p[0] as Signal
@@ -100,7 +110,7 @@ func sync_bosses(live_bosses: Array) -> void:
 		prev_trails[tk] = float(pe.get("trail_hp", pe.get("hp", 0.0)))
 	var next_list: Array[Dictionary] = []
 	for item: Variant in live_bosses:
-		if not (item is LxEnemyBrain) or not is_instance_valid(item): continue
+		if not is_instance_valid(item) or not (item is LxEnemyBrain): continue
 		var b: LxEnemyBrain = item as LxEnemyBrain
 		var bid: String = b.boss_id if not b.boss_id.is_empty() else b.kind
 		var iid: String = str(b.get_instance_id())
@@ -172,6 +182,7 @@ func reset_session_banners() -> void:
 
 func spawn_world_cue(string_id: String, world_pos: Vector2, color_name: String = "gold", duration: float = 1.4, args: Array = []) -> void:
 	var txt: String = LxStrings.fmt(string_id, args) if not args.is_empty() else LxStrings.text(string_id)
+	if _cues.size() >= 16: _cues.remove_at(0)
 	_cues.append({"text": txt, "pos": world_pos, "is_world": true, "color": color_name, "t": 0.0, "dur": maxf(duration, 0.4)})
 	queue_redraw()
 
@@ -181,6 +192,7 @@ func spawn_screen_cue(string_id: String, screen_pos: Vector2, color_name: String
 	for c: Dictionary in _cues:
 		if bool(c["is_world"]) or absf((c["pos"] as Vector2).y - screen_pos.y) > 14.0: kept.append(c)
 	_cues = kept
+	if _cues.size() >= 16: _cues.remove_at(0)
 	_cues.append({"text": txt, "pos": screen_pos, "is_world": false, "color": color_name, "t": 0.0, "dur": maxf(duration, 0.4)})
 	queue_redraw()
 
@@ -344,24 +356,7 @@ func _draw_hearts(origin: Vector2) -> void:
 
 
 func _draw_beacon_gauge(cx: float, y: float) -> void:
-	var isl: int = Lx.state.island_id
-	var lit_count: int = _count_island_beacons(isl)
-	var spacing: float = 11.0
-	var start_x: float = roundf(cx - spacing)
-	draw_rect(Rect2(start_x - 5.0, y - 2.0, spacing * 2.0 + 11.0, 11.0), Color(LxPalette.PAL["void"] as Color, 0.72))
-	var lit_glass: Color = LxBiomePalette.col(isl, "glow")
-	var lit_frame: Color = LxBiomePalette.col(isl, "hi")
-	for i: int in range(3):
-		var p: Vector2 = Vector2(start_x + float(i) * spacing - 2.0, y)
-		var is_lit: bool = i < lit_count
-		draw_rect(Rect2(p - Vector2.ONE, Vector2(7.0, 9.0)), LxPalette.PAL["night"])
-		var glass_col: Color = lit_glass if is_lit else LxPalette.PAL["dusk"]
-		var frame_col: Color = lit_frame if is_lit else LxPalette.PAL["mauve"]
-		draw_rect(Rect2(p + Vector2(1.0, 2.0), Vector2(3.0, 4.0)), glass_col)
-		if is_lit:
-			draw_rect(Rect2(p + Vector2(2.0, 3.0), Vector2(1.0, 2.0)), LxPalette.PAL["cream"])
-		for r: Rect2 in LANTERN_FRAME:
-			draw_rect(Rect2(p + r.position, r.size), frame_col)
+	LxHudOverlays.draw_beacon_gauge(self, cx, y, Lx.state.island_id, _count_island_beacons(Lx.state.island_id), LANTERN_FRAME)
 
 func _draw_shards_and_keys(top_right: Vector2) -> bool:
 	var shard_str: String = LxStrings.fmt("HUD_SHARDS_FMT", [Lx.state.shards])
@@ -474,43 +469,7 @@ func _draw_zip_cue(origin: Vector2) -> void:
 
 
 func _draw_move_icon(move_id: String, at: Vector2, col: Color) -> void:
-	match move_id:
-		"bolt":
-			draw_rect(Rect2(at + Vector2(1.0, 2.0), Vector2(5.0, 2.0)), col)
-			draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(2.0, 4.0)), LxPalette.PAL["cream"])
-		"dash":
-			draw_rect(Rect2(at + Vector2(0.0, 2.0), Vector2(3.0, 1.0)), col)
-			draw_rect(Rect2(at + Vector2(1.0, 4.0), Vector2(4.0, 1.0)), col)
-			draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(2.0, 5.0)), LxPalette.PAL["cream"])
-		"throw":
-			draw_rect(Rect2(at + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), col)
-			draw_rect(Rect2(at + Vector2(3.0, 2.0), Vector2(1.0, 3.0)), LxPalette.PAL["cream"])
-		"prism":
-			draw_rect(Rect2(at + Vector2(0.0, 3.0), Vector2(2.0, 1.0)), LxPalette.PAL["gold"])
-			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(2.0, 3.0)), LxPalette.PAL["ice"])
-			draw_rect(Rect2(at + Vector2(3.0, 3.0), Vector2(1.0, 1.0)), LxPalette.PAL["cream"])
-			draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(2.0, 1.0)), LxPalette.PAL["sky"])
-			draw_rect(Rect2(at + Vector2(6.0, 0.0), Vector2(1.0, 1.0)), LxPalette.PAL["ice"])
-			draw_rect(Rect2(at + Vector2(4.0, 3.0), Vector2(3.0, 1.0)), LxPalette.PAL["ice"])
-			draw_rect(Rect2(at + Vector2(4.0, 5.0), Vector2(2.0, 1.0)), LxPalette.PAL["sky"])
-			draw_rect(Rect2(at + Vector2(6.0, 6.0), Vector2(1.0, 1.0)), LxPalette.PAL["ice"])
-		"beam":
-			draw_rect(Rect2(at + Vector2(0.0, 2.0), Vector2(7.0, 3.0)), col)
-			draw_rect(Rect2(at + Vector2(0.0, 3.0), Vector2(7.0, 1.0)), LxPalette.PAL["gold"])
-		"wings":
-			draw_rect(Rect2(at + Vector2(0.0, 1.0), Vector2(3.0, 2.0)), col)
-			draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(3.0, 2.0)), col)
-			draw_rect(Rect2(at + Vector2(2.0, 3.0), Vector2(3.0, 2.0)), LxPalette.PAL["cream"])
-		"lens":
-			draw_rect(Rect2(at + Vector2(1.0, 1.0), Vector2(5.0, 5.0)), col)
-			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), LxPalette.PAL["deep"])
-			draw_rect(Rect2(at + Vector2(3.0, 3.0), Vector2(1.0, 1.0)), LxPalette.PAL["cream"])
-		"sunflare":
-			draw_rect(Rect2(at + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), col)
-			draw_rect(Rect2(at + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), col)
-			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), LxPalette.PAL["cream"])
-		_:
-			draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), col)
+	LxHudOverlays.draw_move_icon(self, move_id, at, col)
 
 
 func _draw_ember_meter(at: Vector2) -> void:
@@ -527,12 +486,12 @@ func _draw_boss_bar() -> void:
 func _draw_interact_prompt(notice_rect: Rect2 = Rect2()) -> Rect2:
 	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D): return Rect2()
 	var sf_v: Variant = Lx.player.get("move_sunflare")
-	if sf_v is Object and is_instance_valid(sf_v) and float((sf_v as Object).get("flare_vis_t")) > 0.0: return Rect2()
+	if is_instance_valid(sf_v) and sf_v is Object and float((sf_v as Object).get("flare_vis_t")) > 0.0: return Rect2()
 	if LxHudFx.is_ceremony_active(): return Rect2()
 	if Lx.player.has_method("is_grabbing") and bool(Lx.player.call("is_grabbing")):
 		var gblk: Variant = Lx.player.get("grabbed_block")
 		var gpos: Vector2 = (Lx.player as Node2D).global_position
-		if gblk is Object and is_instance_valid(gblk as Object):
+		if is_instance_valid(gblk) and gblk is Object:
 			var bpv: Variant = (gblk as Object).get("pos")
 			if bpv is Vector2: gpos = bpv as Vector2
 		var gtxt: String = LxStrings.text("HUD_PUSH_PULL")
@@ -549,7 +508,7 @@ func _draw_interact_prompt(notice_rect: Rect2 = Rect2()) -> Rect2:
 	var best_pos: Vector2 = Vector2.ZERO
 	var best_d2: float = INF
 	for item: Variant in (items_v as Array):
-		if item == null or not (item is Object) or not is_instance_valid(item): continue
+		if not is_instance_valid(item) or not (item is Object): continue
 		var obj: Object = item as Object
 		if not _prop_bool(obj, "active") or _prop_bool(obj, "opened") or _prop_bool(obj, "collected") or _prop_bool(obj, "shattered"): continue
 		if not obj.has_method("get_interact_prompt"): continue

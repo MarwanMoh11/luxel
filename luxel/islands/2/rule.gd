@@ -37,6 +37,10 @@ var _clamped_pos: Vector2 = Vector2.ZERO
 var _clamp_ring_t: float = 0.0
 var _harpoon_streaks: Array[Dictionary] = [] # {from, to, age, life}
 var _transition_flash_t: float = 0.0
+var _fx: LxIsland2RuleFx = LxIsland2RuleFx.new()
+var _fx_clock: float = 0.0
+var _last_tide_rank: int = 0
+var _last_tower_rank: int = 0
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -72,6 +76,7 @@ func detach() -> void:
 			_events.lantern_caught.disconnect(_on_lantern_caught)
 	_free_runtime_nodes()
 	_harpoon_streaks.clear()
+	_fx.reset()
 	_attached = false
 
 
@@ -168,8 +173,17 @@ func _on_var_changed(scope: String, var_name: String, value: Variant) -> void:
 	if scope == "island:2" and var_name == "tide":
 		if st != null:
 			st.story_flags["tide_organ_used"] = true
+		var r_new: int = TIDE_VALUES.find(val_s)
+		var rising: bool = r_new > _last_tide_rank or (r_new == 0 and _last_tide_rank == 0)
+		_last_tide_rank = maxi(0, r_new)
+		var org_p: Vector2 = Lx.player.global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2.ZERO
+		_fx.trigger_tide_sweep(rising, false, org_p)
 		_on_tide_shifted(val_s)
 	elif scope == "dungeon:lighthouse" and var_name == "tower_tide":
+		var tr_new: int = TOWER_TIDE_VALUES.find(val_s)
+		var tr_rising: bool = tr_new > _last_tower_rank
+		_last_tower_rank = maxi(0, tr_new)
+		_fx.trigger_tide_sweep(tr_rising, true, Lx.player.global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2.ZERO)
 		if _events != null:
 			_events.sfx_requested.emit("clockwork_chime", Vector2.ZERO, false)
 			_events.sfx_requested.emit("water_level_sweep", Vector2.ZERO, false)
@@ -179,6 +193,7 @@ func _on_var_changed(scope: String, var_name: String, value: Variant) -> void:
 			_events.sfx_requested.emit("harbor_creak", Vector2.ZERO, false)
 			_events.shake_requested.emit(0.08)
 	elif scope == "dungeon:locks" and var_name == "lock_water":
+		_fx.trigger_tide_sweep(val_s == "west_high", true, Lx.player.global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2.ZERO)
 		if _events != null:
 			_events.sfx_requested.emit("water_level_sweep", Vector2.ZERO, false)
 			_events.shake_requested.emit(0.09)
@@ -261,6 +276,7 @@ func _on_lantern_caught(_at_pos: Vector2) -> void:
 func tick_rule(dt: float) -> void:
 	if not _attached:
 		return
+	_fx_clock += dt
 	if _transition_flash_t > 0.0:
 		_transition_flash_t = maxf(0.0, _transition_flash_t - dt)
 	if _clamp_ring_t > 0.0:
@@ -270,6 +286,7 @@ func tick_rule(dt: float) -> void:
 		if float(_harpoon_streaks[i]["age"]) >= float(_harpoon_streaks[i]["life"]):
 			_harpoon_streaks.remove_at(i)
 
+	_fx.tick(dt, Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null)
 	_tick_ballast_clamp()
 	if _driver_node != null and is_instance_valid(_driver_node):
 		_driver_node.queue_redraw()
@@ -425,6 +442,7 @@ func _free_runtime_nodes() -> void:
 
 
 func _draw_world_fx(ci: CanvasItem) -> void:
+	_fx.draw_world(ci, Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null, _fx_clock)
 	var c_gold: Color = LxPalette.PAL["gold"] as Color
 	var c_cream: Color = LxPalette.PAL["cream"] as Color
 	var c_ice: Color = LxPalette.PAL["ice"] as Color
@@ -443,6 +461,7 @@ func _draw_world_fx(ci: CanvasItem) -> void:
 
 
 func _draw_tide_hud(ci: CanvasItem) -> void:
+	_fx.draw_hud_sweep(ci, _fx_clock)
 	var origin := Vector2(5.0, 22.0)
 	var pal: Dictionary = LxPalette.PAL
 	var c_void: Color = pal["void"] as Color

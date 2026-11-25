@@ -22,7 +22,7 @@ func setup(spec: Dictionary) -> void:
 	radius = maxf(size.x, size.y) * 0.5
 	_rebuild_veins()
 	shattered = bool(props.get("shattered", false))
-	if Lx.state != null and Lx.state.broken_seals.has(id):
+	if _is_persisted_broken():
 		shattered = true
 	active = not shattered
 	z_index = -4 if shattered else 0
@@ -74,8 +74,10 @@ func on_hit(hit: LxHit) -> bool:
 		active = false
 		z_index = -4
 		_shatter_t = 0.42
-		if Lx.state != null and not id.is_empty() and not Lx.state.broken_seals.has(id):
-			Lx.state.broken_seals.append(id)
+		if Lx.state != null and not id.is_empty():
+			var skey: String = get_state_key()
+			if not Lx.state.broken_seals.has(skey):
+				Lx.state.broken_seals.append(skey)
 		if Lx.events != null:
 			Lx.events.seal_broken.emit(island_id, id)
 			Lx.events.shake_requested.emit(0.24)
@@ -97,7 +99,7 @@ func on_hit(hit: LxHit) -> bool:
 		var has_live_foe: bool = false
 		if region != null and region.has_method("get_enemies"):
 			for e: Variant in (region.call("get_enemies") as Array):
-				if e is LxEnemyBrain and is_instance_valid(e) and (e as LxEnemyBrain).is_alive():
+				if is_instance_valid(e) and e is LxEnemyBrain and (e as LxEnemyBrain).is_alive():
 					has_live_foe = true
 					break
 		if not has_live_foe and _ember_cd <= 0.0:
@@ -130,10 +132,18 @@ func save_state() -> Dictionary:
 	return {"active": active, "shattered": shattered}
 
 
+func _is_persisted_broken() -> bool:
+	if Lx.state == null or id.is_empty():
+		return false
+	if Lx.state.broken_seals.has(get_state_key()):
+		return true
+	return LxLegacy.is_legacy_region(island_id, region_id) and Lx.state.broken_seals.has(id)
+
+
 func load_state(d: Dictionary) -> void:
 	super.load_state(d)
 	shattered = bool(d.get("shattered", shattered))
-	if Lx.state != null and Lx.state.broken_seals.has(id):
+	if _is_persisted_broken():
 		shattered = true
 	active = not shattered
 	z_index = -4 if shattered else 0

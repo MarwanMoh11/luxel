@@ -45,7 +45,7 @@ func refresh_slots() -> void:
 	_summaries.clear()
 	for i: int in range(1, SLOT_COUNT + 1):
 		if Lx.save != null:
-			_summaries.append(Lx.save.slot_summary(i))
+			_summaries.append(LxUiNav.enrich_slot_summary(i, Lx.save.slot_summary(i)))
 		else:
 			_summaries.append({"empty": true, "slot": i})
 	queue_redraw()
@@ -477,18 +477,22 @@ func _draw_slots() -> void:
 			LxPixelFont.draw_right(self, LxStrings.text("SLOT_NEW"), r.end.x - 8.0, r.position.y + 10.0, LxPalette.PAL["lime"] if sel else LxPalette.PAL["stone"], 1)
 		else:
 			var isl_id: int = int(info.get("island_id", 1))
-			var isl_data: Dictionary = Lx.get_island_data(isl_id)
-			var isl_name: String = LxStrings.sanitize(str(isl_data.get("name", "")), 20)
+			var isl_name: String = LxStrings.text("MAP_HUB_SHORT") if isl_id == 0 else LxStrings.sanitize(str(Lx.get_island_data(isl_id).get("name", "")), 14)
 			var relit: int = int(info.get("relit_count", 0))
 			var relit_arr: Array = info.get("relit_islands", []) as Array
 			var harm_cnt: int = int(info.get("harmony_count", 0))
 			var harm_arr: Array = info.get("harmony_islands", []) as Array
 			var hearts: int = int(info.get("hearts", 4))
-			var time_str: String = LxStrings.format_time(float(info.get("play_time_s", 0.0)))
-			var meta: String = LxStrings.fmt("SLOT_META", [isl_name, relit, time_str])
-			LxPixelFont.draw_left(self, meta, r.position + Vector2(7.0, 15.0), LxPalette.PAL["cream"], 1)
+			var pct: int = int(info.get("completion_pct", 0))
+			var dng_d: int = int(info.get("dungeons_done", 0))
+			var dng_t: int = int(info.get("dungeons_total", 32))
+			var time_str: String = LxUiNav.format_epic_time(float(info.get("play_time_s", 0.0)))
 			_draw_slot_pips(r.position + Vector2(46.0, 6.0), relit, relit_arr, harm_arr)
-			_draw_slot_badges(r.position + Vector2(106.0, 5.0), hearts, harm_cnt)
+			_draw_slot_badges(r.position + Vector2(92.0, 5.0), hearts, dng_d, dng_t, pct)
+			var meta: String = LxStrings.fmt("SLOT_META", [isl_name, relit, time_str])
+			LxPixelFont.draw_left(self, meta, r.position + Vector2(7.0, 17.0), LxBiomePalette.col(clampi(isl_id, 1, 8), "glow") if isl_id > 0 else LxPalette.PAL["gold"], 1)
+			if harm_cnt > 0:
+				LxPixelFont.draw_right(self, LxStrings.fmt("SLOT_HARMONY_FMT", [harm_cnt]), r.end.x - 42.0, r.position.y + 17.0, LxPalette.PAL["gold"], 1)
 			LxPixelFont.draw_right(self, LxStrings.text("SLOT_CONTINUE"), r.end.x - 42.0, r.position.y + 5.0, LxPalette.PAL["gold"] if sel else LxPalette.PAL["stone"], 1)
 			var del_r: Rect2 = _slot_del_rect(i)
 			var del_hi: bool = _hover_del == i
@@ -516,15 +520,17 @@ func _draw_slot_pips(origin: Vector2, relit: int, relit_arr: Array, harm_arr: Ar
 		_px([[cx + 3.0, cy, 1.0, 1.0], [cx + 1.0, cy + 2.0, 1.0, 1.0], [cx + 5.0, cy + 2.0, 1.0, 1.0]], hi)
 
 
-func _draw_slot_badges(at: Vector2, hearts: int, harm_cnt: int) -> void:
+func _draw_slot_badges(at: Vector2, hearts: int, dng_done: int, dng_total: int, pct: int) -> void:
 	var hx: float = roundf(at.x); var hy: float = roundf(at.y)
 	_px([[hx, hy, 2, 1], [hx + 3, hy, 2, 1], [hx, hy + 1, 5, 2], [hx + 1, hy + 3, 3, 1], [hx + 2, hy + 4, 1, 1]], LxPalette.PAL["coral"])
 	draw_rect(Rect2(hx + 1.0, hy + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
 	LxPixelFont.draw_left(self, LxStrings.fmt("SLOT_HEARTS_FMT", [hearts]), Vector2(hx + 7.0, hy), LxPalette.PAL["rose"], 1)
-	var sx: float = hx + 27.0
-	_px([[sx - 1, hy + 2, 3, 1], [sx, hy + 1, 1, 3]], LxPalette.PAL["gold" if harm_cnt > 0 else "mauve"])
-	draw_rect(Rect2(sx, hy + 2.0, 1.0, 1.0), LxPalette.PAL["cream" if harm_cnt > 0 else "dusk"])
-	LxPixelFont.draw_left(self, LxStrings.fmt("SLOT_HARMONY_FMT", [harm_cnt]), Vector2(sx + 4.0, hy), LxPalette.PAL["gold" if harm_cnt > 0 else "stone"], 1)
+	var dx: float = hx + 27.0
+	_px([[dx, hy, 4, 5]], LxPalette.PAL["apricot"])
+	_px([[dx + 1, hy + 1, 2, 4]], LxPalette.PAL["night"])
+	draw_rect(Rect2(dx + 1.0, hy + 2.0, 1.0, 1.0), LxPalette.PAL["gold"])
+	LxPixelFont.draw_left(self, LxFolkData.fmt_id("FMT_RATIO", [dng_done, dng_total]), Vector2(dx + 6.0, hy), LxPalette.PAL["lime" if dng_done >= dng_total else "apricot"], 1)
+	LxPixelFont.draw_left(self, LxStrings.fmt("FMT_PCT", [pct]), Vector2(dx + 34.0, hy), LxPalette.PAL["gold"] if pct >= 100 else LxPalette.PAL["cream"], 1)
 
 
 func _draw_confirm_delete() -> void:

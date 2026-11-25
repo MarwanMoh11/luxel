@@ -129,7 +129,7 @@ func _tint_passing_wick_bolts() -> void:
 	var grect: Rect2 = rect_at(pos).grow(2.0)
 	var hit_col: String = LxToyDraw.to_hit_color(glass_color)
 	for b_v: Variant in (bolts_v as Array):
-		if not (b_v is Object):
+		if not is_instance_valid(b_v) or not (b_v is Object):
 			continue
 		var b: Object = b_v as Object
 		var bp_v: Variant = b.get("pos")

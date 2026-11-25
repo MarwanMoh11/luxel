@@ -492,7 +492,7 @@
     },
     {
       "id": "ur_r4_reward",
-      "on": "cleared",
+      "on": "flag:rscr_3_underroot_r4_underroot_r4_wave2",
       "once": true,
       "do": [
         {
@@ -507,8 +507,7 @@
             "amount": 15
           }
         }
-      ],
-      "if": "flag:rscr_3_underroot_r4_underroot_r4_wave2"
+      ]
     }
   ],
   "design": {

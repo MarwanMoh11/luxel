@@ -57,6 +57,7 @@ var _exits_locked: bool = false
 var _fired_triggers: Dictionary = {}
 var _director: LxAttackDirector = null
 var _vars_connected: LxWorldState = null
+var _loading_region: bool = false
 
 func _ready() -> void:
 	_ensure_containers()
@@ -147,9 +148,11 @@ func load_region_from_paths(
 	if scenery_raw is Array:
 		_scenery_props = LxSceneryProp.spawn_from_specs(scenery_raw as Array, _scenery_ground_root, _scenery_sort_root, _scenery_over_root)
 	var inter_specs: Array[Dictionary] = []; inter_specs.assign(parsed.get("interactables", []))
+	_loading_region = true
 	for spec: Dictionary in inter_specs: spawn_interactable(spec)
 	LxRegionRuntime.promote_destructible_map_tiles(self)
 	load_interactables_from_state()
+	_loading_region = false
 	if _signal_conduits != null: _signal_conduits.rebuild(self)
 	if LxLegacy.is_legacy_region(current_island_id, current_region_id):
 		if _visual_teaching != null: _visual_teaching.rebuild(self)
@@ -158,6 +161,11 @@ func load_region_from_paths(
 	for espec: Dictionary in enemy_specs: spawn_enemy(espec)
 	var layer_specs: Array[Dictionary] = []; layer_specs.assign(parsed.get("layers", []))
 	if _layers != null: _layers.setup(self, layer_specs, grid)
+	if not is_point_safe(spawn_pos):
+		var safe_sp: Vector2 = find_nearest_safe_point(spawn_pos)
+		if safe_sp.x >= 0.0:
+			spawn_pos = safe_sp
+			_room_anchor_pos = safe_sp
 	_signal_states = LxRegionRuntime.snapshot_signals(_interactables)
 	var ev_specs: Array[Dictionary] = []; ev_specs.assign(parsed.get("events", []))
 	if not ev_specs.is_empty(): room_script = LxRegionRuntime.create_room_script(self, ev_specs)
@@ -217,10 +225,21 @@ func _on_tiles_mutated() -> void:
 	if _water_fx != null: _water_fx.configure(grid, tile_size, current_island_id, is_dungeon)
 	_redraw_ground()
 
+func _on_enemy_tree_exiting(brain: LxEnemyBrain) -> void:
+	_enemies.erase(brain)
+
+func prune_freed_enemies() -> void:
+	for i: int in range(_enemies.size() - 1, -1, -1):
+		var e_v: Variant = _enemies[i]
+		if e_v == null or not is_instance_valid(e_v) or (e_v is Node and (e_v as Node).is_queued_for_deletion()):
+			_enemies.remove_at(i)
+
 func _rebuild_active_enemies() -> void:
+	prune_freed_enemies()
 	if _layers == null: return
-	for e: LxEnemyBrain in _enemies:
-		if e == null or not is_instance_valid(e): continue
+	for e_v: Variant in _enemies:
+		if not is_instance_valid(e_v) or not (e_v is LxEnemyBrain): continue
+		var e: LxEnemyBrain = e_v as LxEnemyBrain
 		var eid: String = e.enemy_id if not e.enemy_id.is_empty() else (str(e.get("id")) if e.get("id") != null else "")
 		e.visible = not (not eid.is_empty() and _layers.is_enemy_disabled(eid))
 
@@ -240,12 +259,44 @@ func set_tiles(rect: Rect2i, tile: String) -> void:
 	if _layers != null: _layers.record_tile_override(Rect2i(x0, y0, x1 - x0, y1 - y0), tile)
 	_on_tiles_mutated()
 
+func set_tiles_batch(ops: Array) -> void:
+	if width <= 0 or height <= 0 or ops.is_empty(): return
+	var changed: bool = false
+	for op_v: Variant in ops:
+		var r := Rect2i()
+		var tile: String = ""
+		if op_v is Dictionary:
+			var d: Dictionary = op_v as Dictionary
+			if d.get("rect") is Rect2i: r = d["rect"] as Rect2i
+			tile = str(d.get("tile", ""))
+		elif op_v is Array and (op_v as Array).size() >= 5:
+			var a: Array = op_v as Array
+			r = Rect2i(int(a[0]), int(a[1]), int(a[2]), int(a[3])); tile = str(a[4])
+		if tile.is_empty(): continue
+		var x0: int = clampi(r.position.x, 0, width); var y0: int = clampi(r.position.y, 0, height)
+		var x1: int = clampi(r.position.x + r.size.x, 0, width); var y1: int = clampi(r.position.y + r.size.y, 0, height)
+		if x1 <= x0 or y1 <= y0: continue
+		for ty: int in range(y0, y1):
+			var row: PackedStringArray = grid[ty]
+			for tx: int in range(x0, x1): row[tx] = tile
+			grid[ty] = row
+		if _layers != null: _layers.record_tile_override(Rect2i(x0, y0, x1 - x0, y1 - y0), tile, false)
+		changed = true
+	if changed:
+		if _layers != null: _layers.flush_tile_overrides()
+		_on_tiles_mutated()
+
 func spawn_enemy(spec: Dictionary) -> LxEnemyBrain:
 	_ensure_containers()
 	return LxRegionRuntime.spawn_enemy_for_region(self, spec, _director, _enemies_root, _enemies)
 
 func spawn_interactable(spec: Dictionary) -> LxInteractable:
 	_ensure_containers()
+	var req_id: String = str(spec.get("id", ""))
+	if not req_id.is_empty() and _interactables_by_id.has(req_id):
+		var existing: Variant = _interactables_by_id[req_id]
+		if existing is LxInteractable and is_instance_valid(existing):
+			return existing as LxInteractable
 	var prepped: Dictionary = LxRegionRuntime.prepare_interactable_spec(spec, current_island_id, current_region_id)
 	var item: LxInteractable = LxInteractableFactory.create(prepped)
 	if item == null: return null
@@ -256,6 +307,11 @@ func spawn_interactable(spec: Dictionary) -> LxInteractable:
 		_interactables_by_id[item.id] = item
 	_sync_interactable_layer(item)
 	_interactables.append(item)
+	if not _loading_region and Lx.state != null and not item.id.is_empty():
+		var skey: String = item.get_state_key()
+		if Lx.state.interactable_states.has(skey) and Lx.state.interactable_states[skey] is Dictionary:
+			item.load_state(Lx.state.interactable_states[skey] as Dictionary)
+			_sync_interactable_layer(item)
 	return item
 
 func remove_interactable(id: String) -> void:
@@ -275,8 +331,19 @@ func notify(event: String, data: Dictionary = {}) -> void:
 	room_notified.emit(event, data)
 	if room_script != null and room_script.has_method("notify"): room_script.call("notify", event, data)
 
+func is_point_safe(p: Vector2) -> bool:
+	if _layers != null: return _layers.is_point_safe(p)
+	if bounds.has_area() and not bounds.has_point(p): return false
+	if is_lethal_void_at(p): return false
+	return not is_solid_tile(tile_at(p), false, false)
+
+func find_nearest_safe_point(from_pos: Vector2) -> Vector2:
+	if _layers != null: return _layers.find_nearest_safe_tile_center(from_pos)
+	return spawn_pos
+
 func set_room_anchor(p: Vector2) -> void:
 	if not p.is_finite() or p.x < 0.0 or p.y < 0.0: return
+	if not is_point_safe(p): return
 	_room_anchor_pos = p
 	if bounds.has_area() and bounds.has_point(p): spawn_pos = p
 	if Lx.state != null and not current_region_id.is_empty():
@@ -407,6 +474,8 @@ func load_interactables_from_state() -> void:
 				_sync_interactable_layer(it)
 
 func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
+	var start_isl: int = current_island_id
+	var start_reg: String = current_region_id
 	_lens_circles.clear()
 	for sp: LxSceneryProp in _scenery_props:
 		if sp != null and sp.animated: sp.tick(dt)
@@ -422,27 +491,38 @@ func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
 			it.tick(dt)
 			if it is LxDoor or it.kind in ["toggle_block", "tone_door", "shadow_gate"] or it.has_method("is_floor_toy"): _sync_interactable_layer(it)
 	LxRegionRuntime.poll_signals(self, _signal_states)
+	if current_island_id != start_isl or current_region_id != start_reg: return
 	if room_script != null and room_script.has_method("tick"): room_script.call("tick", dt)
+	if current_island_id != start_isl or current_region_id != start_reg: return
 	if player_pos.x > -9000.0:
 		LxRegionRuntime.check_triggers(self, player_pos, _fired_triggers)
 		if is_dungeon: update_dungeon_room(player_pos)
 
 func tick_region(dt: float, player_pos: Vector2 = Vector2.ZERO) -> int:
+	var start_isl: int = current_island_id
+	var start_reg: String = current_region_id
 	var ppos: Vector2 = get_wick_pos() if (player_pos == Vector2.ZERO and Lx.player != null and is_instance_valid(Lx.player)) else player_pos
 	tick(dt, ppos)
+	if current_island_id != start_isl or current_region_id != start_reg: return 0
+	prune_freed_enemies()
 	var engaged: int = 0
-	for e: LxEnemyBrain in _enemies:
-		if e != null and is_instance_valid(e) and e.is_alive() and e.visible:
-			e.tick(dt)
-			if e.is_alive() and e.state != LxEnemyBrain.State.ROUTINE and e.state != LxEnemyBrain.State.RETURN and e.state != LxEnemyBrain.State.DEAD:
-				engaged += 1
+	for e_v: Variant in _enemies:
+		if is_instance_valid(e_v) and e_v is LxEnemyBrain:
+			var e: LxEnemyBrain = e_v as LxEnemyBrain
+			if e.is_alive() and e.visible:
+				e.tick(dt)
+				if current_island_id != start_isl or current_region_id != start_reg: return engaged
+				if e.is_alive() and e.state != LxEnemyBrain.State.ROUTINE and e.state != LxEnemyBrain.State.RETURN and e.state != LxEnemyBrain.State.DEAD:
+					engaged += 1
 	if _arena != null: _arena.tick(dt, self, ppos)
 	return engaged
 
 func get_spawn_pos() -> Vector2: return spawn_pos
 func collide_fly(pos: Vector2, radius: float) -> Vector2: return collide(pos, radius, true, true, "", true)
 func get_bounds() -> Rect2: return bounds
-func get_enemies() -> Array[LxEnemyBrain]: return _enemies
+func get_enemies() -> Array[LxEnemyBrain]:
+	prune_freed_enemies()
+	return _enemies
 func get_interactables() -> Array[LxInteractable]: return _interactables
 func get_zones() -> Array[Dictionary]: return zones
 func is_lantern_hung() -> bool: return get_lantern_state() == 2
@@ -483,8 +563,11 @@ func hit_interactables(hit: LxHit, hit_pos: Vector2, hit_radius: float = 8.0) ->
 	return null
 
 func is_zone_cleared(zone_id: String = "") -> bool:
-	for e: LxEnemyBrain in _enemies:
-		if e == null or not is_instance_valid(e) or not e.is_alive() or not e.visible: continue
+	prune_freed_enemies()
+	for e_v: Variant in _enemies:
+		if not is_instance_valid(e_v) or not (e_v is LxEnemyBrain): continue
+		var e: LxEnemyBrain = e_v as LxEnemyBrain
+		if not e.is_alive() or not e.visible: continue
 		if zone_id.is_empty() or e.zone == zone_id: return false
 	return true
 

@@ -91,7 +91,7 @@
     "cave_silent_vault": { "name_key": "ISL8_Z_SILENT_VAULT", "theme": "toll_house", "music": "isl8_tollhouse", "dark": true, "map": [0, 4] },
     "cave_hush_trial": { "name_key": "ISL8_Z_HUSH_TRIAL", "theme": "endless_stair", "music": "isl8_setpiece", "dark": true, "map": [5, 3] },
     "cave_glass_grotto": { "name_key": "ISL8_Z_GLASS_GROTTO", "theme": "archive_8", "music": "isl8_archive", "dark": true, "map": [0, 1] },
-    "superboss_first_dark": { "name_key": "ISL8_Z_FIRST_DARK", "theme": "archive_8", "music": "superboss_a", "dark": true, "map": [3, 3] }
+    "superboss_first_dark": { "name_key": "ISL8_Z_FIRST_DARK", "theme": "archive_8", "music": "superboss_b", "dark": true, "map": [3, 3] }
   },
   "strings": {
     "ISL8_Z_VIGIL": "VIGIL TERRACE",

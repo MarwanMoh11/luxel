@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "name_key": "LCK_R6_NAME",
   "theme": "locks",
-  "music": "isl2_locks",
+  "music": "isl2_boss_minor_p1",
   "ambience": [
     "harbor_tide",
     "harbor_rigging"

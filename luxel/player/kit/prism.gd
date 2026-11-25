@@ -36,6 +36,8 @@ func get_damage_mult() -> float:
 	if locked:
 		return 1.0
 	if unlocked:
+		if Lx.state != null:
+			return Lx.state.get_effective_prism_damage_mult()
 		return float(get_data().get("damage_mult", 1.30))
 	return 1.15
 

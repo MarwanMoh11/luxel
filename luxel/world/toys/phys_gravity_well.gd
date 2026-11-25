@@ -209,7 +209,7 @@ func _sweep_orbit_contacts(w: LxWick, lan: LxLantern, a: Vector2, b: Vector2) ->
 	var move_d: Vector2 = (b - a).normalized() if b.distance_squared_to(a) > 0.001 else lan.dir
 	var light_r: float = lan.get_light_radius()
 	for it_v: Variant in (region.call("get_interactables") as Array):
-		if not (it_v is LxInteractable) or it_v == self:
+		if not is_instance_valid(it_v) or not (it_v is LxInteractable) or it_v == self:
 			continue
 		var it: LxInteractable = it_v as LxInteractable
 		if not it.active:

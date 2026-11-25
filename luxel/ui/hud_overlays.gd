@@ -118,10 +118,9 @@ static func resolve_active_temper() -> String:
 			var ts: String = (tv as String).strip_edges().to_lower()
 			if ts in ["skip", "scatter", "lance"]:
 				return ts
-	if Lx.state != null and Lx.state.story_flags.has("wick_temper"):
+	if Lx.state != null:
 		var fs: String = str(Lx.state.story_flags.get("wick_temper", "")).strip_edges().to_lower()
-		if fs in ["skip", "scatter", "lance"]:
-			return fs
+		return fs if fs in ["skip", "scatter", "lance"] else ""
 	if Lx.vars != null:
 		var vs: String = str(Lx.vars.get_var("game", "wick_temper", "")).strip_edges().to_lower()
 		if vs in ["skip", "scatter", "lance"]:
@@ -142,10 +141,33 @@ static func has_owned_temper() -> bool:
 	return false
 
 
+static func _find_hud_node(node_name: String) -> Node:
+	if Lx.root != null:
+		var n: Node = Lx.root.get_node_or_null(node_name)
+		if n != null and is_instance_valid(n): return n
+	if Lx.ui != null:
+		var n2: Node = Lx.ui.get_node_or_null(node_name)
+		if n2 != null and is_instance_valid(n2): return n2
+	if Lx.world != null:
+		var n3: Node = Lx.world.find_child(node_name, true, false)
+		if n3 != null and is_instance_valid(n3): return n3
+	return null
+
+
+static func has_active_island_hud(isl_id: int) -> bool:
+	match isl_id:
+		1: return LxIsland1Rule.active_instance != null or _find_hud_node("Island1RuleHud") != null
+		2: return _find_hud_node("Island2TideHudLayer") != null
+		3: return _find_hud_node("Island3HudOverlay") != null
+		5: return _find_hud_node("I5AstrolabeHud") != null
+		6: return _find_hud_node("Island6HudMark") != null or LxIsland6Rule.active_instance != null
+		_: return false
+
+
 static func is_temper_mark_drawn() -> bool:
 	if Lx.state == null or not has_owned_temper():
 		return false
-	if Lx.state.island_id == 6 and LxIsland6Rule.active_instance != null:
+	if Lx.state.island_id == 6 and has_active_island_hud(6):
 		return false
 	return true
 
@@ -155,29 +177,28 @@ static func compute_left_stack_y(max_h: int, hearts_visible: bool = true, includ
 	if Lx.state != null:
 		match Lx.state.island_id:
 			1:
-				if LxIsland1Rule.active_instance != null:
-					var r1: Object = LxIsland1Rule.active_instance
-					var bt: float = float(r1.get("bell_window_t")) if r1.get("bell_window_t") != null else 0.0
-					var rt: float = float(r1.get("resonance_t")) if r1.get("resonance_t") != null else 0.0
-					if bt > 0.01 or rt > 0.01:
-						y = maxf(y, 35.0)
+				if has_active_island_hud(1):
+					y = maxf(y, 35.0)
 			2:
-				if LxIsland2Rule.active_instance != null:
+				if has_active_island_hud(2):
 					y = maxf(y, 37.0)
 			3:
-				if LxIsland3Rule.active_instance != null:
-					var r3: Object = LxIsland3Rule.active_instance
+				if has_active_island_hud(3) or Lx.vars != null:
 					var rows3: int = 0
-					if r3.has_method("get_turns_left") and int(r3.call("get_turns_left")) >= 0: rows3 += 1
-					if bool(r3.get("is_tiny")): rows3 += 1
-					if float(r3.get("sap_t")) > 0.01 if r3.get("sap_t") != null else false: rows3 += 1
+					if Lx.state.region_id in ["ow_shift_w", "ow_shift_e", "ow_shift_n", "_proof_i3_1"] or (Lx.vars != null and int(Lx.vars.get_var("island:3", "wood_turn", 0)) > 0):
+						rows3 += 1
+					if Lx.vars != null and str(Lx.vars.get_var("island:3", "size", "normal")) == "tiny":
+						rows3 += 1
+					if Lx.vars != null and str(Lx.vars.get_var("dungeon:hollow_oak", "oak_sap", "low")) == "high":
+						rows3 += 1
 					if rows3 > 0:
 						y = maxf(y, 20.0 + float(rows3) * 14.0 + 3.0)
 			5:
-				if LxIsland5Rule.active_instance != null:
+				var h5: Node = _find_hud_node("I5AstrolabeHud")
+				if h5 != null and (not (h5 is CanvasItem) or (h5 as CanvasItem).visible):
 					y = maxf(y, 54.0 if max_h > 6 else 47.0)
 			6:
-				if LxIsland6Rule.active_instance != null:
+				if has_active_island_hud(6):
 					y = maxf(y, 47.0)
 	if include_temper and is_temper_mark_drawn():
 		y += 12.0
@@ -308,7 +329,7 @@ static func draw_zip_cue(ci: CanvasItem, origin: Vector2, zip_alpha: float) -> v
 	var pos: Vector2 = origin
 	if Lx.ui != null:
 		var nar_v: Variant = Lx.ui.get("narration")
-		if nar_v is Object and is_instance_valid(nar_v):
+		if is_instance_valid(nar_v) and nar_v is Object:
 			var nar: Object = nar_v as Object
 			if nar.has_method("has_active_prompt") and bool(nar.call("has_active_prompt")):
 				var saying: bool = nar.has_method("is_saying") and (bool(nar.call("is_saying", "main")) or bool(nar.call("is_saying", "title")))
@@ -321,3 +342,62 @@ static func draw_zip_cue(ci: CanvasItem, origin: Vector2, zip_alpha: float) -> v
 	ci.draw_rect(Rect2(pos, Vector2(w, 1.0)), Color(LxPalette.PAL["gold"] as Color, zip_alpha))
 	ci.draw_rect(Rect2(pos + Vector2(0.0, 8.0), Vector2(w, 1.0)), Color(LxPalette.PAL["gold"] as Color, zip_alpha))
 	LxPixelFont.draw_left(ci, txt, pos + Vector2(4.0, 2.0), Color(LxPalette.PAL["gold"] as Color, zip_alpha), 1)
+
+
+static func draw_beacon_gauge(ci: CanvasItem, cx: float, y: float, isl: int, lit_count: int, lantern_frame: Array[Rect2]) -> void:
+	var spacing: float = 11.0
+	var start_x: float = roundf(cx - spacing)
+	ci.draw_rect(Rect2(start_x - 5.0, y - 2.0, spacing * 2.0 + 11.0, 11.0), Color(LxPalette.PAL["void"] as Color, 0.72))
+	var lit_glass: Color = LxBiomePalette.col(isl, "glow")
+	var lit_frame: Color = LxBiomePalette.col(isl, "hi")
+	for i: int in range(3):
+		var p := Vector2(start_x + float(i) * spacing - 2.0, y)
+		var is_lit: bool = i < lit_count
+		ci.draw_rect(Rect2(p - Vector2.ONE, Vector2(7.0, 9.0)), LxPalette.PAL["night"])
+		ci.draw_rect(Rect2(p + Vector2(1.0, 2.0), Vector2(3.0, 4.0)), lit_glass if is_lit else LxPalette.PAL["dusk"])
+		if is_lit:
+			ci.draw_rect(Rect2(p + Vector2(2.0, 3.0), Vector2(1.0, 2.0)), LxPalette.PAL["cream"])
+		var frame_col: Color = lit_frame if is_lit else LxPalette.PAL["mauve"]
+		for r: Rect2 in lantern_frame:
+			ci.draw_rect(Rect2(p + r.position, r.size), frame_col)
+
+
+static func draw_move_icon(ci: CanvasItem, move_id: String, at: Vector2, col: Color) -> void:
+	var cream: Color = LxPalette.PAL["cream"] as Color
+	match move_id:
+		"bolt":
+			ci.draw_rect(Rect2(at + Vector2(1.0, 2.0), Vector2(5.0, 2.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(2.0, 4.0)), cream)
+		"dash":
+			ci.draw_rect(Rect2(at + Vector2(0.0, 2.0), Vector2(3.0, 1.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(1.0, 4.0), Vector2(4.0, 1.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(2.0, 5.0)), cream)
+		"throw":
+			ci.draw_rect(Rect2(at + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(3.0, 2.0), Vector2(1.0, 3.0)), cream)
+		"prism":
+			ci.draw_rect(Rect2(at + Vector2(0.0, 3.0), Vector2(2.0, 1.0)), LxPalette.PAL["gold"])
+			ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(2.0, 3.0)), LxPalette.PAL["ice"])
+			ci.draw_rect(Rect2(at + Vector2(3.0, 3.0), Vector2(1.0, 1.0)), cream)
+			ci.draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(2.0, 1.0)), LxPalette.PAL["sky"])
+			ci.draw_rect(Rect2(at + Vector2(6.0, 0.0), Vector2(1.0, 1.0)), LxPalette.PAL["ice"])
+			ci.draw_rect(Rect2(at + Vector2(4.0, 3.0), Vector2(3.0, 1.0)), LxPalette.PAL["ice"])
+			ci.draw_rect(Rect2(at + Vector2(4.0, 5.0), Vector2(2.0, 1.0)), LxPalette.PAL["sky"])
+			ci.draw_rect(Rect2(at + Vector2(6.0, 6.0), Vector2(1.0, 1.0)), LxPalette.PAL["ice"])
+		"beam":
+			ci.draw_rect(Rect2(at + Vector2(0.0, 2.0), Vector2(7.0, 3.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(0.0, 3.0), Vector2(7.0, 1.0)), LxPalette.PAL["gold"])
+		"wings":
+			ci.draw_rect(Rect2(at + Vector2(0.0, 1.0), Vector2(3.0, 2.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(4.0, 1.0), Vector2(3.0, 2.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(2.0, 3.0), Vector2(3.0, 2.0)), cream)
+		"lens":
+			ci.draw_rect(Rect2(at + Vector2(1.0, 1.0), Vector2(5.0, 5.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), LxPalette.PAL["deep"])
+			ci.draw_rect(Rect2(at + Vector2(3.0, 3.0), Vector2(1.0, 1.0)), cream)
+		"sunflare":
+			ci.draw_rect(Rect2(at + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), col)
+			ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), cream)
+		_:
+			ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), col)

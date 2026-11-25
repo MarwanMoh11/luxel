@@ -52,7 +52,7 @@
     "kiln_r12": { "name_key": "ISL6_KILN_R12", "theme": "forge_deep",    "music": "island6_dungeon", "dark": true, "map": [1, 4] },
     "kiln_r13": { "name_key": "ISL6_KILN_R13", "theme": "forge_deep",    "music": "island6_dungeon", "dark": true, "map": [1, 3] },
     "kiln_r14": { "name_key": "ISL6_KILN_R14", "theme": "forge_deep",    "music": "island6_dungeon", "dark": true, "map": [5, 3] },
-    "kiln_r15": { "name_key": "ISL6_KILN_R15", "theme": "iron_colossus", "music": "island6_boss_p1", "dark": true, "map": [5, 2] },
+    "kiln_r15": { "name_key": "ISL6_KILN_R15", "theme": "iron_colossus", "music": "isl6_boss_minor_p1", "dark": true, "map": [5, 2] },
     "kiln_r16": { "name_key": "ISL6_KILN_R16", "theme": "iron_colossus", "music": "island6_dungeon", "dark": true, "map": [4, 2] },
     "kiln_r17": { "name_key": "ISL6_KILN_R17", "theme": "iron_colossus", "music": "island6_dungeon", "dark": true, "map": [3, 2] },
     "kiln_r18": { "name_key": "ISL6_KILN_R18", "theme": "forge_deep",    "music": "island6_dungeon", "dark": true, "map": [2, 1] }

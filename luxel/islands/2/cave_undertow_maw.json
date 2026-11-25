@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "name_key": "ZONE_ISL2_MAW",
   "theme": "leviathan_belly",
-  "music": "island2_boss_p1",
+  "music": "superboss_a",
   "ambience": [
     "harbor_tide"
   ],

@@ -72,7 +72,7 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 	# 1. Hit every alive enemy within radial burst (cracks_armour=true, stun 1.6s)
 	var enemies: Array = wick.world_get_enemies(ctx)
 	for e_var: Variant in enemies:
-		if not (e_var is Object):
+		if not is_instance_valid(e_var) or not (e_var is Object):
 			continue
 		var enemy: Object = e_var as Object
 		if not wick.is_entity_alive(enemy):
@@ -100,11 +100,9 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 
 	var inters: Array = wick.world_get_interactables(ctx)
 	for it_var: Variant in inters:
-		if not (it_var is Object):
+		if not is_instance_valid(it_var) or not (it_var is Object):
 			continue
 		var item: Object = it_var as Object
-		if not is_instance_valid(item):
-			continue
 		if item.get("active") is bool and not bool(item.get("active")):
 			continue
 		var ipos: Vector2 = wick.get_entity_pos(item)
@@ -151,10 +149,10 @@ func trigger_sunflare(world_ctx: Node = null) -> bool:
 		Lx.camera.call("add_kick", Vector2.UP, 3.0)
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+		if is_instance_valid(amb) and amb is Object and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", origin, rad * 1.4, 130.0)
 		var wfx: Variant = Lx.world.get("_water_fx")
-		if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
+		if is_instance_valid(wfx) and wfx is Object and (wfx as Object).has_method("spawn_ripple"):
 			(wfx as Object).call("spawn_ripple", origin, "gold", 18.0)
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.SCORCH, origin, rad * 0.48, 9.0)

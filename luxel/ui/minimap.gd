@@ -136,7 +136,7 @@ static func _draw_interactables(c: CanvasItem, bounds: Rect2, inner: Rect2, blin
 		return
 	var pulse_on: bool = LxHudFx.flash_reduced() or fmod(blink_t, 0.7) < 0.35
 	for item: Variant in (items_v as Array):
-		if item == null or not (item is Object) or not is_instance_valid(item):
+		if not is_instance_valid(item) or not (item is Object):
 			continue
 		var obj: Object = item as Object
 		if not _prop_bool(obj, "active"):
@@ -225,7 +225,7 @@ static func _draw_exits(c: CanvasItem, bounds: Rect2, inner: Rect2) -> void:
 		var did: String = str(ex.get("locked_door_id", ""))
 		if not did.is_empty() and Lx.world.has_method("find_interactable"):
 			var door: Variant = Lx.world.call("find_interactable", did)
-			if door is Object and (door as Object).has_method("is_solid") and bool((door as Object).call("is_solid")):
+			if is_instance_valid(door) and door is Object and (door as Object).has_method("is_solid") and bool((door as Object).call("is_solid")):
 				continue
 		var r: Rect2 = LxMapFormat.to_rect2(ex.get("rect", []))
 		if r.size.x > 0.0 and r.size.y > 0.0:
@@ -240,7 +240,7 @@ static func _draw_boss_alerts(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_
 		return
 	var pulse_on: bool = LxHudFx.flash_reduced() or fmod(blink_t, 0.5) < 0.28
 	for item: Variant in (enemies_v as Array):
-		if item == null or not (item is Object) or not is_instance_valid(item):
+		if not is_instance_valid(item) or not (item is Object):
 			continue
 		var obj: Object = item as Object
 		if not _prop_bool(obj, "is_boss"):
@@ -259,7 +259,7 @@ static func _draw_player(c: CanvasItem, bounds: Rect2, inner: Rect2, blink_t: fl
 	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
 		return
 	var lan_v: Variant = Lx.player.get("lantern")
-	if lan_v is Object and is_instance_valid(lan_v) and (lan_v as Object).has_method("is_out") and bool((lan_v as Object).call("is_out")):
+	if is_instance_valid(lan_v) and lan_v is Object and (lan_v as Object).has_method("is_out") and bool((lan_v as Object).call("is_out")):
 		var lpos_v: Variant = (lan_v as Object).get("pos")
 		if lpos_v is Vector2:
 			var lp: Vector2 = _map_pt(lpos_v as Vector2, bounds, inner, 2.0, 2.0)

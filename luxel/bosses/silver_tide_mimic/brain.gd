@@ -14,6 +14,7 @@ var _shell_reform_t: float = 0.0
 var _blush_t: float = 0.0
 var _hop_stage: int = 0
 var _wick_hooked: bool = false
+var _hooked_wick: Object = null
 
 
 func _init() -> void:
@@ -145,12 +146,29 @@ func _exec_mimic_echo(tgt: Vector2) -> void:
 
 
 func _on_reset_encounter() -> void:
+	_unhook_wick()
 	_last_wick_move = "bolt"
 	_copied_move = "bolt"
 	_mirror_shell_hp = 0.0
 	_shell_reform_t = 0.0
 	_blush_t = 0.0
 	_hop_stage = 0
+
+
+func _on_death_start() -> void:
+	_unhook_wick()
+
+
+func _exit_tree() -> void:
+	_unhook_wick()
+
+
+func _unhook_wick() -> void:
+	var cb := Callable(self, "_on_wick_fired")
+	if is_instance_valid(_hooked_wick) and _hooked_wick.has_signal("fired") and _hooked_wick.is_connected("fired", cb):
+		_hooked_wick.disconnect("fired", cb)
+	_hooked_wick = null
+	_wick_hooked = false
 
 
 func _on_boss_tick(dt: float, _target: Vector2) -> void:
@@ -169,15 +187,18 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 func _poll_wick_move() -> void:
 	if Lx.player == null or not is_instance_valid(Lx.player):
 		return
+	if _hooked_wick != Lx.player:
+		_unhook_wick()
 	if not _wick_hooked and Lx.player.has_signal("fired"):
 		var cb := Callable(self, "_on_wick_fired")
 		if not Lx.player.is_connected("fired", cb):
 			Lx.player.connect("fired", cb)
+		_hooked_wick = Lx.player
 		_wick_hooked = true
 	if Lx.player.has_method("is_dashing") and bool(Lx.player.call("is_dashing")):
 		_last_wick_move = "dash"
 	var ml: Variant = Lx.player.get("move_lens")
-	if ml is Object and (ml as Object).has_method("is_pulse_active") and bool((ml as Object).call("is_pulse_active")):
+	if is_instance_valid(ml) and ml is Object and (ml as Object).has_method("is_pulse_active") and bool((ml as Object).call("is_pulse_active")):
 		_last_wick_move = "lens"
 
 

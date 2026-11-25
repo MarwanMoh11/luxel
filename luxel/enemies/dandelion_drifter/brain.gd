@@ -16,6 +16,7 @@ const MINE_SNAG_DUR: float = 2.0
 const MAX_MINES: int = 6
 const POST_COOLDOWN: float = 1.05
 
+var is_flying: bool = true
 var drift_pts: Array[Vector2] = []
 var drift_i: int = 0
 var mines: Array[Dictionary] = []

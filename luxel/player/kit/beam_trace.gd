@@ -34,11 +34,9 @@ static func trace_segments(
 	var solid_blockers: Array[Rect2] = []
 	if wick != null:
 		for it_var: Variant in wick.world_get_interactables(ctx):
-			if not (it_var is Object):
+			if not is_instance_valid(it_var) or not (it_var is Object):
 				continue
 			var item: Object = it_var as Object
-			if not is_instance_valid(item):
-				continue
 			if item.get("active") is bool and not bool(item.get("active")):
 				continue
 			if item.has_method("is_reflective") and bool(item.call("is_reflective")):

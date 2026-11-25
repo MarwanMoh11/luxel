@@ -33,7 +33,7 @@ func _ring_nearby_bells(ctx: Dictionary, center: Vector2) -> void:
 	if not (inters is Array):
 		return
 	for it_v: Variant in (inters as Array):
-		if not (it_v is Object) or not is_instance_valid(it_v as Object):
+		if not is_instance_valid(it_v) or not (it_v is Object):
 			continue
 		var item: Object = it_v as Object
 		if str(item.get("kind")) != "bell":

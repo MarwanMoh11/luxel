@@ -52,6 +52,7 @@ func _boot_services() -> void:
 	_quests = _load_singleton("res://luxel/story/quests.gd")
 	if _quests != null and _quests.has_method("bind_events"): _quests.call("bind_events", events)
 	var save_svc := LxSaveService.new(); save_svc.name = "SaveService"; add_child(save_svc); save_svc.setup(dbg.is_debug_run()); Lx.save = save_svc
+	save_svc.save_failed.connect(_on_save_failed)
 	var input_svc := LxInputService.new(); input_svc.name = "InputService"; add_child(input_svc); input_svc.setup()
 	if save_svc.settings.has("bindings"): input_svc.import_bindings(save_svc.settings["bindings"] as Dictionary)
 	if save_svc.settings.has("hold_mode"): input_svc.hold_modes = (save_svc.settings["hold_mode"] as Dictionary).duplicate(true)
@@ -119,6 +120,7 @@ func _apply_debug_args() -> void:
 func enter_title() -> void:
 	_mark_ending_seen()
 	_pending_ending_t = 0.0
+	LxVehicleSkiff.clear_mount_carryover()
 	flow = Flow.TITLE
 	LxSold.current().restore_all("title", true)
 	Lx.audio.set_paused(false)
@@ -130,7 +132,10 @@ func flush_and_save(reason: String = "exit") -> void:
 	LxRunPersistence.flush_and_save(active_slot, Lx.state, Lx.save, _region_loader, _wick, reason)
 
 func start_new_game(slot_num: int, play_intro: bool = true) -> void:
+	if Lx.save != null: Lx.save.flush_pending()
 	_pending_ending_t = 0.0
+	LxVehicleSkiff.clear_mount_carryover()
+	if _wick != null and _wick.has_method("dismount"): _wick.call("dismount")
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
 	if _region_loader != null and _region_loader.has_method("discard_loaded"): _region_loader.call("discard_loaded")
 	Lx.state.reset_new_game(str(active_slot))
@@ -144,25 +149,24 @@ func start_new_game(slot_num: int, play_intro: bool = true) -> void:
 	_sync_ui_flow()
 
 func finish_intro() -> void:
-	if flow != Flow.INTRO:
-		return
+	if flow != Flow.INTRO: return
 	flow = Flow.PLAY
 	_sync_ui_flow()
 	if _darkness_layer != null and _darkness_layer.has_method("trigger_transition_fade"):
 		_darkness_layer.call("trigger_transition_fade", 0.45)
 	var isl_id: int = Lx.state.island_id if Lx.state != null else 1
 	Lx.audio.start_island_music(isl_id)
-	if _wick != null:
-		_sync_zone_banner(_wick.global_position)
+	if _wick != null: _sync_zone_banner(_wick.global_position)
 	if Lx.events != null and Lx.state != null and isl_id == 1:
 		Lx.state.story_flags["isl1_arrived"] = true
 		Lx.events.narration_requested.emit("ISL1_ARRIVAL", "narration", 4.0)
 
 func continue_slot(slot_num: int) -> bool:
 	_pending_ending_t = 0.0
+	LxVehicleSkiff.clear_mount_carryover()
+	if _wick != null and _wick.has_method("dismount"): _wick.call("dismount")
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
-	if not Lx.save.load_slot(active_slot, Lx.state):
-		return false
+	if not Lx.save.load_slot(active_slot, Lx.state): return false
 	if _region_loader != null and _region_loader.has_method("discard_loaded"): _region_loader.call("discard_loaded")
 	if Lx.state.hearts <= 0.0: Lx.state.heal_full()
 	if Lx.panes != null and Lx.panes.has_method("load_from_state"): Lx.panes.call("load_from_state")
@@ -177,8 +181,9 @@ func continue_slot(slot_num: int) -> bool:
 	if Lx.state.relit_islands.has(finale_isl) and not bool(Lx.state.story_flags.get("ending_seen", false)): _pending_ending_t = 1.45
 	return true
 
-func load_island_region(island_id: int, region_id: String, spawn_override: Vector2 = Vector2(-1.0, -1.0)) -> bool:
-	LxVehicleSkiff.capture_mount_carryover(_wick as LxWick)
+func load_island_region(island_id: int, region_id: String, spawn_override: Vector2 = Vector2(-1.0, -1.0), carry_mount: bool = false) -> bool:
+	if carry_mount: LxVehicleSkiff.capture_mount_carryover(_wick as LxWick)
+	else: LxVehicleSkiff.clear_mount_carryover()
 	var hud: Node = Lx.ui.get("hud") as Node if (Lx.ui != null and Lx.ui.get("hud") != null) else null
 	if hud != null:
 		if not _tracked_bosses.is_empty() and hud.has_method("hide_boss"): hud.call("hide_boss")
@@ -190,10 +195,11 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 	if _region_loader != null and _region_loader.has_method("save_interactables_to_state"):
 		_region_loader.call("save_interactables_to_state")
 	var prev_island: int = Lx.state.island_id
+	var prev_region: String = Lx.state.region_id
+	var prev_room: String = Lx.state.room_id
 	Lx.state.island_id = island_id
 	Lx.state.region_id = region_id
 	Lx.state.room_id = "" if region_id == "overworld" else region_id
-	Lx.state.mark_region_visited(island_id, region_id)
 	if current_island_script != null and current_island_script.has_method("detach"):
 		current_island_script.call("detach")
 	current_island_script = null
@@ -202,10 +208,15 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 	var ok: bool = false
 	if _region_loader != null and _region_loader.has_method("load_region"):
 		ok = bool(_region_loader.call("load_region", island_id, region_id, _director))
+		if not ok:
+			Lx.state.island_id = prev_island; Lx.state.region_id = prev_region; Lx.state.room_id = prev_room
+			if current_island_script != null and current_island_script.has_method("detach"): current_island_script.call("detach")
+			current_island_script = null; _attach_island_controller(prev_island)
+			return false
+	Lx.state.mark_region_visited(island_id, region_id)
 	var rdata: Dictionary = _region_loader.get("region_data") as Dictionary if (_region_loader != null and _region_loader.get("region_data") is Dictionary) else {}
 	if in_intro:
-		Lx.audio.silence_music(0.45)
-		Lx.audio.call("_start_island_ambience", island_id)
+		Lx.audio.silence_music(0.45); Lx.audio.call("_start_island_ambience", island_id)
 	else:
 		Lx.audio.start_region_music(island_id, region_id, rdata)
 	var spawn_at: Vector2 = spawn_override
@@ -213,13 +224,17 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 		if _region_loader.has_method("get_spawn_pos"): spawn_at = _region_loader.call("get_spawn_pos") as Vector2
 		elif _region_loader.get("spawn_pos") is Vector2: spawn_at = _region_loader.get("spawn_pos") as Vector2
 	if spawn_at.x < 0.0: spawn_at = Vector2(160.0, 90.0)
+	if Lx.hitstop != null: Lx.hitstop.clear()
+	if _wick != null and _wick.has_method("reset_for_room"): _wick.call("reset_for_room", spawn_at)
+	LxVehicleSkiff.restore_mount_carryover(_region_loader as LxRegionLoader, _wick as LxWick, spawn_at)
+	var safe_spawn: Vector2 = LxRunPersistence.resolve_safe_entry_spawn(_region_loader, _wick, spawn_at)
+	if not safe_spawn.is_equal_approx(spawn_at):
+		spawn_at = safe_spawn
+		if _wick != null and _wick.has_method("reset_for_room"): _wick.call("reset_for_room", spawn_at)
 	Lx.state.spawn_pos = spawn_at
 	if _region_loader != null and _region_loader.has_method("set_room_anchor"):
 		if bool(_region_loader.get("is_dungeon")) or region_id != "overworld" or LxBossHud.region_has_live_boss(_region_loader):
 			_region_loader.call("set_room_anchor", spawn_at)
-	if Lx.hitstop != null: Lx.hitstop.clear()
-	if _wick != null and _wick.has_method("reset_for_room"): _wick.call("reset_for_room", spawn_at)
-	LxVehicleSkiff.restore_mount_carryover(_region_loader as LxRegionLoader, _wick as LxWick, spawn_at)
 	if _region_loader != null and _region_loader.has_method("get_bounds"):
 		Lx.camera.set_bounds(_region_loader.call("get_bounds"), bool(_region_loader.get("is_dungeon")))
 		Lx.camera.snap_to(spawn_at)
@@ -246,9 +261,14 @@ func _attach_island_controller(island_id: int) -> void:
 			current_island_script.call("attach", Lx.events, Lx.state)
 
 func fast_travel_waystone(island_id: int, waystone_id: String) -> bool:
+	if LxRunPersistence.is_travel_blocked(_region_loader):
+		if Lx.audio != null: Lx.audio.play_sfx("denied", Vector2.ZERO, false)
+		return false
 	if island_id == 0 and waystone_id == "ws_hub" and not Lx.state.lit_waystones.has("ws_hub"):
 		Lx.state.lit_waystones.append("ws_hub")
 	if not Lx.state.lit_waystones.has(waystone_id): return false
+	LxVehicleSkiff.clear_mount_carryover()
+	if _wick != null and _wick.has_method("dismount"): _wick.call("dismount")
 	Lx.state.last_waystone_island = island_id
 	Lx.state.last_waystone_id = waystone_id
 	Lx.state.heal_full()
@@ -295,6 +315,7 @@ func open_rest_shop() -> void:
 		_sync_ui_flow()
 
 func retry_from_death() -> void:
+	LxVehicleSkiff.clear_mount_carryover()
 	Lx.state.heal_full()
 	var was_boss: bool = not _tracked_bosses.is_empty()
 	if was_boss and _tracked_bosses[0] is LxEnemyBrain and is_instance_valid(_tracked_bosses[0]):
@@ -357,48 +378,45 @@ func apply_runtime_settings() -> void:
 	Lx.audio.apply_settings(cfg)
 	Lx.hitstop.game_speed = float(cfg.get("assist_game_speed", 1.0))
 	Lx.camera.shake_scale = float(cfg.get("screen_shake", 100)) / 100.0
+	LxSold.current()._apply_all_live_effects()
 	Lx.save.save_settings()
 
 func _notification(what: int) -> void:
-	if not _services_ready:
-		return
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+	if not _services_ready: return
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		if flow in [Flow.PLAY, Flow.PAUSE, Flow.MAP, Flow.REST_SHOP]: flush_and_save("close")
+		elif Lx.save != null: Lx.save.flush_pending()
+	elif what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		Lx.audio.set_window_focus(false)
-		if flow == Flow.PLAY:
-			toggle_pause()
+		if flow == Flow.PLAY: toggle_pause()
 	elif what == NOTIFICATION_APPLICATION_FOCUS_IN:
 		Lx.audio.set_window_focus(true)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not _services_ready:
-		return
+	if not _services_ready: return
+	var modal_blocking: bool = flow == Flow.PLAY and _ui_root != null and _ui_root.has_method("is_modal_open") and bool(_ui_root.call("is_modal_open"))
+	if modal_blocking: return
 	if event.is_action_pressed("lx_pause") and flow in [Flow.PLAY, Flow.PAUSE, Flow.MAP, Flow.REST_SHOP]:
 		toggle_pause()
 	elif (flow == Flow.PLAY or flow == Flow.MAP) and event.is_action_pressed("lx_map"):
 		open_map()
 
 func _physics_process(delta: float) -> void:
-	if not _services_ready:
-		return
+	if not _services_ready: return
 	step_sim(delta)
 
 func step_sim(raw_dt: float) -> void:
-	if Lx.save != null:
-		Lx.save.tick_autosave(raw_dt)
+	if Lx.save != null: Lx.save.tick_autosave(raw_dt)
 	LxSold.current().tick_runtime(raw_dt)
 	if flow == Flow.INTRO:
-		intro_timer += raw_dt
-		Lx.audio.tick(raw_dt, false)
-		if intro_timer >= LxCards.INTRO_BEAT_SECS * float(LxCards.INTRO_KEYS.size()):
-			finish_intro()
+		intro_timer += raw_dt; Lx.audio.tick(raw_dt, false)
+		if intro_timer >= LxCards.INTRO_BEAT_SECS * float(LxCards.INTRO_KEYS.size()): finish_intro()
 		return
 	if flow == Flow.ENDING:
-		ending_timer += raw_dt
-		Lx.audio.tick(raw_dt, false)
-		if ending_timer >= 8.0 and _ui_root != null and int(_ui_root.get("current_screen")) == 10:
-			_ui_root.call("show_results")
+		ending_timer += raw_dt; Lx.audio.tick(raw_dt, false)
+		if ending_timer >= 8.0 and _ui_root != null and int(_ui_root.get("current_screen")) == 10: _ui_root.call("show_results")
 		return
-	if flow != Flow.PLAY:
+	if flow != Flow.PLAY or (_ui_root != null and _ui_root.has_method("is_modal_open") and bool(_ui_root.call("is_modal_open"))):
 		Lx.audio.tick(raw_dt, false)
 		return
 
@@ -442,7 +460,12 @@ func step_sim(raw_dt: float) -> void:
 						next_reg = parts[1] if parts.size() > 1 and not parts[1].is_empty() else "overworld"
 				var sp_arr: Array = ex.get("to_spawn", [-1.0, -1.0]) as Array
 				var sp_vec := Vector2(float(sp_arr[0]), float(sp_arr[1])) if sp_arr.size() >= 2 else Vector2(-1.0, -1.0)
-				if not next_reg.is_empty(): load_island_region(next_isl, next_reg, sp_vec)
+				if not next_reg.is_empty(): load_island_region(next_isl, next_reg, sp_vec, true)
+
+
+func _on_save_failed(_reason: String) -> void:
+	if _ui_root != null and _ui_root.has_method("show_notice") and LxStrings.has_id("NOTICE_SAVE_FAILED"):
+		_ui_root.call("show_notice", "NOTICE_SAVE_FAILED", 4.5)
 
 
 func _on_enemy_attack_landed(_enemy: Object, kind: String, pos: Vector2, dir: Vector2, damage: float) -> void:
@@ -462,27 +485,19 @@ func _on_save_requested(reason: String) -> void:
 	LxRunPersistence.save_now(active_slot, Lx.state, Lx.save, _region_loader, immediate)
 
 func _on_waystone_lit(isl: int, ws_id: String) -> void:
-	if not Lx.state.lit_waystones.has(ws_id):
-		Lx.state.lit_waystones.append(ws_id)
-	Lx.state.last_waystone_island = isl
-	Lx.state.last_waystone_id = ws_id
-	Lx.state.heal_full()
-	_on_save_requested("waystone")
+	if not Lx.state.lit_waystones.has(ws_id): Lx.state.lit_waystones.append(ws_id)
+	Lx.state.last_waystone_island = isl; Lx.state.last_waystone_id = ws_id
+	Lx.state.heal_full(); _on_save_requested("waystone")
 
 func _on_beacon_lit(_isl: int, beacon_id: String) -> void:
-	if not Lx.state.lit_beacons.has(beacon_id):
-		Lx.state.lit_beacons.append(beacon_id)
-	Lx.audio.play_stinger("stinger_lamp")
-	_on_save_requested("beacon")
+	if not Lx.state.lit_beacons.has(beacon_id): Lx.state.lit_beacons.append(beacon_id)
+	Lx.audio.play_stinger("stinger_lamp"); _on_save_requested("beacon")
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
-	if not Lx.state.claimed_shrines.has(shrine_id):
-		Lx.state.claimed_shrines.append(shrine_id)
+	if not Lx.state.claimed_shrines.has(shrine_id): Lx.state.claimed_shrines.append(shrine_id)
 	Lx.state.unlock_move(move_id)
-	if _wick != null and _wick.has_method("sync_unlocks_from_state"):
-		_wick.call("sync_unlocks_from_state")
-	Lx.audio.play_stinger("stinger_move")
-	_on_save_requested("shrine")
+	if _wick != null and _wick.has_method("sync_unlocks_from_state"): _wick.call("sync_unlocks_from_state")
+	Lx.audio.play_stinger("stinger_move"); _on_save_requested("shrine")
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	LxBossHud.handle_boss_phase_changed(boss_id, phase)

@@ -397,11 +397,11 @@
       "sheet": "theme_planetarium",
       "prop": "dome_arch_rib",
       "pos": [
-        240,
-        36
+        272,
+        40
       ],
       "layer": "sort",
-      "flip_x": false,
+      "flip_x": true,
       "shadow": true,
       "phase": 0.0
     },

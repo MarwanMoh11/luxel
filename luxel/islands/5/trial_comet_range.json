@@ -236,6 +236,36 @@
   "layers": [],
   "events": [
     {
+      "id": "ev_tr_comet_start",
+      "on": "trial_start:tg_comet",
+      "once": false,
+      "do": [
+        {
+          "challenge": {
+            "id": "comet_range",
+            "kind": "light_all",
+            "time": 60.0,
+            "instant_retry": true,
+            "targets": [
+              "eye_tr_1",
+              "eye_tr_2",
+              "eye_tr_3"
+            ],
+            "ok": [
+              {
+                "set_flag": "trial_comet_done"
+              },
+              {
+                "unlock": [
+                  "door_tr_comet_prize"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
       "id": "ev_tr_comet_win",
       "on": "flag:trial_comet_done",
       "once": true,

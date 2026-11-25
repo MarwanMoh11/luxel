@@ -56,6 +56,14 @@ const REGIONS: Array[String] = [
 	"lighthouse_r8",
 	"lighthouse_r9",
 	"lighthouse_r10",
+	"lighthouse_r11",
+	"lighthouse_r12",
+	"lighthouse_r13",
+	"lighthouse_r14",
+	"lighthouse_r15",
+	"lighthouse_r16",
+	"lighthouse_r17",
+	"lighthouse_r18",
 ]
 
 var _events: LxEventBus = null
@@ -319,7 +327,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if st != null and not st.defeated_bosses.has(SUPERBOSS_ID) and not bool(st.story_flags.get("undertow_defeated", false)):
 			_emit_narration("BOSS_UNDERTOW", "title", 3.5)
 			if _events != null:
-				_events.music_mode_requested.emit("island2_boss_p1")
+				_events.music_mode_requested.emit("superboss_a")
 		elif _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "lighthouse_r10":
@@ -397,17 +405,25 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
-	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND and boss_id != SUPERBOSS_ID:
+	if _events == null or phase < 2:
 		return
-	if phase >= 2 and _events != null:
+	if boss_id == BOSS_ID or boss_id == MINI_BOSS_KIND:
 		_events.music_mode_requested.emit("island2_boss_p2")
 		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
+	elif boss_id in ["bosun_rig", "figurehead", "dredge_hulk", "twin_lockmasters", "gullet_lamprey"]:
+		_events.music_mode_requested.emit("isl2_boss_minor_p2")
+		_events.shake_requested.emit(0.36 if phase >= 3 else 0.28)
+	elif boss_id == SUPERBOSS_ID:
+		_events.shake_requested.emit(0.40 if phase >= 3 else 0.32)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
 	if island_id != ISLAND_ID:
 		return
 	var st: LxGameState = _get_state()
+	if boss_id in ["figurehead", "twin_lockmasters"]:
+		_check_leviathan_awakening()
+		return
 	if boss_id == SUPERBOSS_ID:
 		if st != null:
 			if not st.defeated_bosses.has(SUPERBOSS_ID):

@@ -65,7 +65,7 @@ func tick_echo_recorder(dt: float) -> void:
 	if _sample_cd > 0.0:
 		return
 	_sample_cd = SAMPLE_INTERVAL
-	if Lx.player is Node2D and is_instance_valid(Lx.player):
+	if is_instance_valid(Lx.player) and Lx.player is Node2D:
 		var wp: Vector2 = (Lx.player as Node2D).global_position
 		var wf: Vector2 = Lx.player.get("facing") as Vector2 if Lx.player.get("facing") is Vector2 else Vector2.RIGHT
 		var dashing: bool = Lx.player.has_method("is_dashing") and bool(Lx.player.call("is_dashing"))

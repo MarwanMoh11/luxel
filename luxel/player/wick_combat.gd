@@ -4,6 +4,7 @@ extends RefCounted
 
 
 const VOID_RETRY_S: float = 0.45
+const VOID_FALL_HEART_COST: int = 1
 
 
 static func take_damage(w: LxWick, amount: float, from_pos: Vector2, knock_dir: Vector2, source: String = "hazard") -> void:
@@ -79,7 +80,8 @@ static func check_void_fall(w: LxWick, world_ctx: Node) -> void:
 	elif ctx.has_method("tile_at"):
 		lethal = str(ctx.call("tile_at", w.global_position)) in ["pit", "void"]
 	if not lethal:
-		w._last_safe_pos = w.global_position
+		if is_safe_ground(ctx, w.global_position):
+			w._last_safe_pos = w.global_position
 		return
 	kill_by_void(w, w.global_position)
 
@@ -90,27 +92,34 @@ static func kill_by_void(w: LxWick, at_pos: Vector2) -> void:
 	var assist_zero: bool = (Lx.save != null and float(Lx.save.settings.get("assist_damage_mult", 1.0)) <= 0.001) \
 			or (Lx.state != null and Lx.state.get("assist_damage_mult") != null and float(Lx.state.get("assist_damage_mult")) <= 0.001)
 	if w.god or assist_zero:
-		if w._last_safe_pos != Vector2.ZERO:
-			w.global_position = w._last_safe_pos
-			w.last_pos = w._last_safe_pos
+		var safe_p: Vector2 = _find_void_respawn_pos(w, w._world_ctx)
+		w.global_position = safe_p
+		w.last_pos = safe_p
+		w._last_safe_pos = safe_p
 		w.velocity = Vector2.ZERO
 		w.knock = Vector2.ZERO
+		w._field_vel = Vector2.ZERO
 		return
 	if w.is_grabbing(): w.release_grab(w._world_ctx)
 	if w.is_carrying(): w.drop_carried()
 	if w.is_mounted(): w.dismount()
 	w._interact_held = false
 	w._interact_cand = null
-	var lost_hp: float = maxf(1.0, w.get_hearts())
+	var prev_hp: float = w.get_hearts()
+	var cost: float = float(VOID_FALL_HEART_COST)
+	var remaining: float = maxf(0.0, prev_hp - cost)
+	var fatal: bool = remaining <= 0.001
 	if Lx.state != null:
-		Lx.state.hearts = 0.0
+		Lx.state.hearts = 0.0 if fatal else remaining
 		Lx.state.hits_taken += 1
 		Lx.state.deaths += 1
-		w._local_hearts = 0.0
+		w._local_hearts = Lx.state.hearts
+		w._local_max_hearts = Lx.state.max_hearts
 	else:
-		w._local_hearts = 0.0
+		w._local_hearts = 0.0 if fatal else remaining
 	w.dead = true
-	w._void_retry_t = VOID_RETRY_S
+	w._void_resume_hearts = 0.0 if fatal else remaining
+	w._void_retry_t = 0.0 if fatal else VOID_RETRY_S
 	w.velocity = Vector2.ZERO
 	w.knock = Vector2.ZERO
 	w.hurt_flash = 1.0
@@ -124,10 +133,14 @@ static func kill_by_void(w: LxWick, at_pos: Vector2) -> void:
 	w.spawn_ring(at_pos, 2.0, 14.0, 0.24, LxWick.PAL_CORAL, 1.2)
 	w.spawn_sparks(at_pos, Vector2.UP, 10, LxWick.PAL_CORAL, 20.0, 75.0, 0.28)
 	w.emit_sfx("wick_hurt", at_pos, false)
-	if Lx.state != null and Lx.state.has_method("append_run_log"):
-		Lx.state.append_run_log("death")
-	if Lx.events != null:
-		Lx.events.player_damaged.emit(lost_hp, at_pos, Vector2.ZERO, "void")
+	if fatal:
+		if Lx.state != null and Lx.state.has_method("append_run_log"):
+			Lx.state.append_run_log("death")
+		if Lx.events != null:
+			Lx.events.player_damaged.emit(maxf(cost, prev_hp), at_pos, Vector2.ZERO, "void")
+			Lx.events.player_died.emit()
+	elif Lx.events != null:
+		Lx.events.player_damaged.emit(cost, at_pos, Vector2.ZERO, "void")
 
 
 static func tick_void_retry(w: LxWick, dt: float, world_ctx: Node) -> bool:
@@ -148,12 +161,14 @@ static func tick_void_retry(w: LxWick, dt: float, world_ctx: Node) -> bool:
 	w._launch_vel = Vector2.ZERO
 	w.mercy_t = 0.90
 	w.hurt_flash = 0.0
+	var keep_hp: float = w._void_resume_hearts if w._void_resume_hearts > 0.001 else maxf(1.0, w.get_hearts())
+	w._void_resume_hearts = 0.0
 	if Lx.state != null:
-		Lx.state.hearts = float(Lx.state.max_hearts)
+		Lx.state.hearts = minf(float(Lx.state.max_hearts), keep_hp)
 		w._local_hearts = Lx.state.hearts
 		w._local_max_hearts = Lx.state.max_hearts
 	else:
-		w._local_hearts = float(w._local_max_hearts)
+		w._local_hearts = minf(float(w._local_max_hearts), keep_hp)
 	if w.lantern != null:
 		w.lantern.reset_to_hand(respawn_p)
 	w.spawn_ring(respawn_p, 2.0, 16.0, 0.24, LxWick.PAL_GOLD, 1.5)
@@ -164,12 +179,26 @@ static func tick_void_retry(w: LxWick, dt: float, world_ctx: Node) -> bool:
 	return true
 
 
+static func is_safe_ground(ctx: Node, pt: Vector2) -> bool:
+	if ctx == null or not is_instance_valid(ctx):
+		return true
+	if ctx.has_method("is_lethal_void_at") and bool(ctx.call("is_lethal_void_at", pt)):
+		return false
+	if ctx.has_method("tile_at"):
+		var tname: String = str(ctx.call("tile_at", pt))
+		if not ctx.has_method("is_lethal_void_at") and tname in ["pit", "void", "phantom", "water", "tide"]:
+			return false
+		if LxMapFormat.is_solid_tile(tname, true, true):
+			return false
+	return true
+
+
 static func _find_void_respawn_pos(w: LxWick, world_ctx: Node) -> Vector2:
 	var ctx: Node = world_ctx if world_ctx != null else w._world_ctx
-	# 1. Prefer an active room_anchor interactable if set, else last safe ground, else room spawn
-	if ctx != null:
+	# 1. Prefer an active room_anchor interactable if set and safe, else last safe ground, else room spawn, else BFS nearest safe tile
+	if ctx != null and is_instance_valid(ctx):
 		for it_v: Variant in w.world_get_interactables(ctx):
-			if it_v is Object and is_instance_valid(it_v as Object):
+			if is_instance_valid(it_v) and it_v is Object:
 				var it: Object = it_v as Object
 				if str(it.get("kind")) == "room_anchor" and bool(it.get("active")):
 					var is_cur: bool = (it.get("activated") is bool and bool(it.get("activated"))) \
@@ -177,14 +206,57 @@ static func _find_void_respawn_pos(w: LxWick, world_ctx: Node) -> Vector2:
 						or (it.get("powered") is bool and bool(it.get("powered")))
 					if is_cur:
 						var ap: Vector2 = w.get_entity_pos(it)
-						if not (ctx.has_method("is_lethal_void_at") and bool(ctx.call("is_lethal_void_at", ap))):
+						if is_safe_ground(ctx, ap):
 							return ap
-	if w._last_safe_pos != Vector2.ZERO:
-		if ctx == null or not (ctx.has_method("is_lethal_void_at") and bool(ctx.call("is_lethal_void_at", w._last_safe_pos))):
-			return w._last_safe_pos
-	if ctx != null and ctx.has_method("get_spawn_pos"):
-		return ctx.call("get_spawn_pos") as Vector2
-	return w.global_position
+	if w._last_safe_pos != Vector2.ZERO and is_safe_ground(ctx, w._last_safe_pos):
+		return w._last_safe_pos
+	var sp: Vector2 = w.global_position
+	if ctx != null and is_instance_valid(ctx) and ctx.has_method("get_spawn_pos"):
+		sp = ctx.call("get_spawn_pos") as Vector2
+		if is_safe_ground(ctx, sp):
+			return sp
+	var origin: Vector2 = w._last_safe_pos if w._last_safe_pos != Vector2.ZERO else w.global_position
+	var bfs_p: Vector2 = _find_nearest_safe_tile(ctx, origin)
+	if bfs_p.is_finite():
+		return bfs_p
+	return sp
+
+
+static func _find_nearest_safe_tile(ctx: Node, from_pos: Vector2) -> Vector2:
+	if ctx == null or not is_instance_valid(ctx) or not ctx.has_method("tile_at"):
+		return Vector2.INF
+	var w_v: Variant = ctx.get("width")
+	var h_v: Variant = ctx.get("height")
+	var ts_v: Variant = ctx.get("tile_size")
+	var gw: int = int(w_v) if w_v is int else 0
+	var gh: int = int(h_v) if h_v is int else 0
+	var ts: float = float(ts_v) if (ts_v is int or ts_v is float) and float(ts_v) > 0.0 else float(LxMapFormat.DEFAULT_TILE_SIZE)
+	if gw <= 0 or gh <= 0:
+		return Vector2.INF
+	var start_c := Vector2i(clampi(int(floor(from_pos.x / ts)), 0, gw - 1), clampi(int(floor(from_pos.y / ts)), 0, gh - 1))
+	for pass_idx: int in range(2):
+		var allow_solid_walk: bool = pass_idx == 1
+		var visited: Dictionary = {start_c: true}
+		var queue: Array[Vector2i] = [start_c]
+		var head: int = 0
+		var steps: int = 0
+		while head < queue.size() and steps < 512:
+			var cur: Vector2i = queue[head]
+			head += 1
+			steps += 1
+			var center := Vector2((float(cur.x) + 0.5) * ts, (float(cur.y) + 0.5) * ts)
+			if is_safe_ground(ctx, center):
+				return center
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				var nb: Vector2i = cur + d
+				if nb.x < 0 or nb.x >= gw or nb.y < 0 or nb.y >= gh or visited.has(nb):
+					continue
+				var nc := Vector2((float(nb.x) + 0.5) * ts, (float(nb.y) + 0.5) * ts)
+				if not allow_solid_walk and LxMapFormat.is_solid_tile(str(ctx.call("tile_at", nc)), true, true):
+					continue
+				visited[nb] = true
+				queue.append(nb)
+	return Vector2.INF
 
 
 static func on_hit_landed(w: LxWick, hit: LxHit, result: int, target_pos: Vector2, hitstop_s: float, shake_i: float) -> void:

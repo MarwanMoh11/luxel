@@ -77,16 +77,24 @@ func _hits_lantern_blocker(wick: LxWick, world_ctx: Node, from_p: Vector2, to_p:
 	var dist: float = from_p.distance_to(to_p)
 	var steps: int = maxi(1, int(ceil(dist / 4.0)))
 	for it_v: Variant in world_list(wick, world_ctx, "get_interactables", "interactables", "lx_interactables"):
-		if not (it_v is Object) or not is_instance_valid(it_v as Object):
+		if not is_instance_valid(it_v) or not (it_v is Object):
 			continue
 		var item: Object = it_v as Object
 		if item.get("active") is bool and not bool(item.get("active")):
 			continue
-		if not (item.has_method("blocks_lantern") and bool(item.call("blocks_lantern"))):
+		if not item.has_method("blocks_lantern"):
 			continue
-		if not item.has_method("get_solid_rect"):
+		var arity: int = get_method_arity(item, "blocks_lantern")
+		var blocked: bool = bool(item.call("blocks_lantern", from_p, to_p)) if arity >= 2 else bool(item.call("blocks_lantern"))
+		if not blocked:
 			continue
-		var srect: Rect2 = item.call("get_solid_rect") as Rect2
+		var srect: Rect2 = Rect2()
+		if item.has_method("get_lantern_block_rect"):
+			srect = item.call("get_lantern_block_rect") as Rect2
+		elif item.has_method("get_solid_rect"):
+			srect = item.call("get_solid_rect") as Rect2
+		else:
+			continue
 		if not srect.has_area():
 			continue
 		var grown: Rect2 = srect.grow(1.5)
@@ -157,9 +165,15 @@ func apply_hit_to_entity(entity: Object, hit: LxHit) -> int:
 
 
 func get_method_arity(obj: Object, method_name: String) -> int:
-	var key: String = "%d:%s" % [obj.get_instance_id(), method_name]
+	if not is_instance_valid(obj):
+		return 4
+	var scr: Variant = obj.get_script()
+	var tkey: String = str((scr as Object).get_instance_id()) if is_instance_valid(scr) else obj.get_class()
+	var key: String = "%s:%s" % [tkey, method_name]
 	if _arity_cache.has(key):
 		return int(_arity_cache[key])
+	if _arity_cache.size() >= 256:
+		_arity_cache.clear()
 	for m: Dictionary in obj.get_method_list():
 		if str(m.get("name", "")) == method_name:
 			var sz: int = (m.get("args", []) as Array).size()

@@ -210,17 +210,18 @@ func _draw_overlay() -> void:
 	var stone: Color = PAL["stone"] as Color
 	var fred: bool = LxHudFx.flash_reduced()
 
-	# Dead 4px void pixel blocks eating inward during CHOICE / AUTOSELL
+	# Dead 4px void pixel blocks eating inward during CHOICE (visible from tap 1) & AUTOSELL
 	if dead_pct > 0.001 and stage in [Stage.CHOICE, Stage.AUTOSELL]:
 		var cols: int = 80
 		var rows: int = 45
+		var reach_in: float = clampf(dead_pct * 2.4 if dead_pct <= 0.06 else lerpf(0.144, 1.0, (dead_pct - 0.06) / 0.94), 0.0, 1.0)
 		for gy: int in range(rows):
 			for gx: int in range(cols):
 				var dx: float = absf(float(gx) - 39.5) / 40.0
 				var dy: float = absf(float(gy) - 22.0) / 22.5
 				var edge_d: float = maxf(dx, dy)
-				var bayer: float = float(((gx & 1) * 2 + (gy & 1)) % 4) * 0.06
-				var thresh: float = (1.0 - dead_pct) * 1.04 + (bayer if fred else 0.0)
+				var bayer: float = float(((gx & 1) * 2 + (gy & 1)) % 4) * 0.025
+				var thresh: float = (1.0 - reach_in) * 0.99 - (0.0 if fred else bayer)
 				if edge_d >= thresh or dead_pct >= 0.99:
 					c.draw_rect(Rect2(float(gx * 4), float(gy * 4), 4.0, 4.0), void_c)
 

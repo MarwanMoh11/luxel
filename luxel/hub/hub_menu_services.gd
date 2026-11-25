@@ -173,6 +173,10 @@ func handle_menu_input(event: InputEvent) -> bool:
 		_play_ui("menu_close"); closed.emit(); return true
 	if event.is_action_pressed("lx_ui_accept"):
 		confirm_selected(); return true
+	if event.is_action_pressed("lx_move_up") or event.is_action_pressed("lx_move_left"):
+		select_index(_idx - 1); _play_ui("ui_move"); return true
+	if event.is_action_pressed("lx_move_down") or event.is_action_pressed("lx_move_right"):
+		select_index(_idx + 1); _play_ui("ui_move"); return true
 	return false
 
 

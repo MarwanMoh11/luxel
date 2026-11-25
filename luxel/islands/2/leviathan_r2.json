@@ -63,7 +63,39 @@
       "locked_door_id": "door_lev_r2_maw"
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "skate_lev_r2_1",
+      "kind": "reef_skate",
+      "pos": [
+        408,
+        168
+      ],
+      "route": [
+        [
+          392,
+          144
+        ],
+        [
+          424,
+          192
+        ]
+      ],
+      "zone": "lev_r2",
+      "leash": 110
+    },
+    {
+      "id": "mine_lev_r2_1",
+      "kind": "buoy_mine",
+      "pos": [
+        392,
+        120
+      ],
+      "route": [],
+      "zone": "lev_r2",
+      "leash": 96
+    }
+  ],
   "interactables": [
     {
       "id": "anc_lev_r2",
@@ -125,6 +157,17 @@
       "props": {
         "orbit_r": 40,
         "allow_dismount": true
+      }
+    },
+    {
+      "id": "skiff_lev_r2",
+      "kind": "vehicle_skiff",
+      "pos": [
+        248,
+        264
+      ],
+      "props": {
+        "dir": "e"
       }
     },
     {
@@ -455,6 +498,21 @@
       {
         "op": "wait",
         "secs": 0.75
+      },
+      {
+        "op": "goto",
+        "to": [
+          408,
+          120
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lev_r2",
+        "timeout": 20.0
+      },
+      {
+        "op": "recall"
       },
       {
         "op": "goto",

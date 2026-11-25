@@ -99,6 +99,6 @@
     "cave_magnet_vault": { "name_key": "ISL6_Z_MAGNET", "theme": "cave_6", "music": "island6_dungeon", "dark": true, "map": [0, 2] },
     "cave_bellows_trial": { "name_key": "ISL6_Z_TRIAL", "theme": "forge_deep", "music": "isl6_express", "dark": true, "map": [2, -1] },
     "cave_sunflare_crypt": { "name_key": "ISL6_Z_CRYPT", "theme": "forge_deep", "music": "island6_dungeon", "dark": true, "map": [2, 2] },
-    "superboss_first_forge": { "name_key": "ISL6_Z_FIRST", "theme": "forge_deep", "music": "superboss_a", "dark": true, "map": [2, -2] }
+    "superboss_first_forge": { "name_key": "ISL6_Z_FIRST", "theme": "forge_deep", "music": "superboss_b", "dark": true, "map": [2, -2] }
   }
 }

@@ -13,6 +13,7 @@ var challenge_spec: Variant = ""
 var state: int = State.READY
 var once: bool = true
 var _flash_t: float = 0.0
+var _watched_challenge: Object = null
 
 
 func _toy_setup() -> void:
@@ -24,6 +25,7 @@ func _toy_setup() -> void:
 	once = bool(props.get("once", true))
 	state = State.SOLVED if powered else State.READY
 	_flash_t = 0.0
+	_watched_challenge = null
 	queue_redraw()
 
 
@@ -32,6 +34,7 @@ func reset_toy() -> void:
 		return
 	state = State.READY
 	_flash_t = 0.0
+	_watched_challenge = null
 	if powered:
 		set_powered(false)
 		emit_power(false)
@@ -43,6 +46,18 @@ func tick(dt: float) -> void:
 	if _flash_t > 0.0:
 		_flash_t = maxf(0.0, _flash_t - dt)
 		queue_redraw()
+	if state == State.ACTIVE and _watched_challenge != null:
+		if not is_instance_valid(_watched_challenge):
+			_watched_challenge = null
+			on_challenge_result(false)
+		else:
+			var cst: Variant = _watched_challenge.get("state")
+			if cst is int:
+				var ci: int = int(cst)
+				if ci == LxChallenge.State.WON:
+					on_challenge_result(true)
+				elif ci == LxChallenge.State.FAILED or ci == LxChallenge.State.IDLE:
+					on_challenge_result(false)
 
 
 func interact(_actor: Node = null) -> bool:
@@ -73,15 +88,21 @@ func _try_start() -> bool:
 	_emit_sfx("boss_awaken")
 	_emit_gust(72.0, 48.0)
 	var started_via_script: bool = false
+	_watched_challenge = null
 	if region != null and is_instance_valid(region):
 		var scr: Variant = region.get("room_script")
-		if scr is Object and is_instance_valid(scr):
+		if is_instance_valid(scr) and scr is Object:
 			var so: Object = scr as Object
 			if so.has_method("start_challenge"):
 				so.call("start_challenge", challenge_spec, self)
 				started_via_script = true
 		if not started_via_script and region.has_method("notify"):
 			region.call("notify", "trial_start:" + id, {"challenge": challenge_spec, "gate": self})
+		var scr2: Variant = region.get("room_script")
+		if is_instance_valid(scr2) and scr2 is Object:
+			var ch_v: Variant = (scr2 as Object).get("active_challenge")
+			if is_instance_valid(ch_v) and ch_v is Object:
+				_watched_challenge = ch_v as Object
 	trial_started.emit(challenge_spec)
 	queue_redraw()
 	return true
@@ -89,6 +110,9 @@ func _try_start() -> bool:
 
 ## Callback for E0-4's LxRoomScript / LxChallenge when the trial ends.
 func on_challenge_result(passed: bool) -> void:
+	_watched_challenge = null
+	if state != State.ACTIVE:
+		return
 	if passed:
 		state = State.SOLVED
 		_flash_t = 0.50

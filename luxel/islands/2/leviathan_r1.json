@@ -38,10 +38,9 @@
       ],
       "to_region": "ow_open_sound",
       "to_spawn": [
-        72,
-        296
+        696,
+        288
       ],
-      "one_way": true,
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
@@ -83,7 +82,39 @@
       "locked_door_id": "door_lev_r1_belly"
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "mine_lev_r1_1",
+      "kind": "buoy_mine",
+      "pos": [
+        344,
+        152
+      ],
+      "route": [],
+      "zone": "lev_r1",
+      "leash": 96
+    },
+    {
+      "id": "lamprey_lev_r1_1",
+      "kind": "brine_lamprey",
+      "pos": [
+        536,
+        152
+      ],
+      "route": [
+        [
+          504,
+          152
+        ],
+        [
+          568,
+          152
+        ]
+      ],
+      "zone": "lev_r1",
+      "leash": 110
+    }
+  ],
   "interactables": [
     {
       "id": "anc_lev_r1",
@@ -119,8 +150,8 @@
         "start_x": 24,
         "stop_x": 624,
         "safe_x": 584,
-        "speed": 34.0,
-        "grace_s": 6.0,
+        "speed": 30.0,
+        "grace_s": 12.0,
         "band_h": 224
       }
     },
@@ -259,6 +290,20 @@
         "requires_flags": [
           "lev_belly_portal"
         ]
+      }
+    },
+    {
+      "id": "chest_lev_r1",
+      "kind": "chest",
+      "pos": [
+        344,
+        208
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "zone": "lev_r1"
       }
     },
     {

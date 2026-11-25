@@ -93,7 +93,7 @@ func _handle_seq_signal(from_id: String, is_on: bool) -> void:
 
 
 func _evaluate_output() -> bool:
-	var keys: Array[String] = inputs
+	var keys: Array[String] = inputs.duplicate()
 	if keys.is_empty():
 		for k: Variant in _states.keys():
 			keys.append(str(k))

@@ -53,12 +53,16 @@ func is_anchor_active() -> bool:
 		and wick.lantern != null and wick.lantern.is_lure_active()
 
 
+func _sync_radii() -> void:
+	var data: Dictionary = get_data()
+	pulse_radius = Lx.state.get_effective_lens_radius() if Lx.state != null else float(data.get("pulse_radius", 104.0))
+	hung_radius = Lx.state.get_effective_lens_hung_radius() if Lx.state != null else float(data.get("hung_radius", 78.0))
+
+
 func get_reveal_radius() -> float:
 	if not unlocked or locked or wick == null or not wick.has_lantern():
 		return 0.0
-	var data: Dictionary = get_data()
-	pulse_radius = float(data.get("pulse_radius", 104.0))
-	hung_radius = float(data.get("hung_radius", 78.0))
+	_sync_radii()
 	if is_pulse_active():
 		return pulse_radius
 	if is_anchor_active():
@@ -86,8 +90,7 @@ func press() -> bool:
 	var base_dur: float = float(data.get("duration", 4.0))
 	pulse_duration = maxf(0.5, Lx.state.get_effective_lens_duration() if Lx.state != null else base_dur)
 	warn_time = clampf(float(data.get("warn_time", 1.2)), 0.2, pulse_duration)
-	pulse_radius = float(data.get("pulse_radius", 104.0))
-	hung_radius = float(data.get("hung_radius", 78.0))
+	_sync_radii()
 	var cd: float = maxf(float(data.get("cooldown", 6.0)), pulse_duration + 2.0)
 
 	pulse_left = pulse_duration
@@ -103,7 +106,7 @@ func press() -> bool:
 		Lx.camera.call("add_kick", Vector2.UP, 1.4)
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+		if is_instance_valid(amb) and amb is Object and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", pulse_origin, pulse_radius, 72.0)
 	wick.spawn_ring(wick.global_position, 4.0, pulse_radius, _wave_dur, LxWick.PAL_ICE, 1.8)
 	wick.spawn_ring(wick.global_position, 2.0, pulse_radius * 0.72, 0.28, LxWick.PAL_SKY, 1.2)
@@ -143,9 +146,7 @@ func register_circle(world_ctx: Node) -> void:
 		anchor_active = false
 		anchor_radius = 0.0
 		return
-	var data: Dictionary = get_data()
-	pulse_radius = float(data.get("pulse_radius", 104.0))
-	hung_radius = float(data.get("hung_radius", 78.0))
+	_sync_radii()
 
 	if is_pulse_active():
 		pulse_origin = wick.global_position
@@ -174,9 +175,7 @@ func tick_lens(_dt: float, world_ctx: Node) -> void:
 		anchor_radius = 0.0
 		return
 
-	var data: Dictionary = get_data()
-	pulse_radius = float(data.get("pulse_radius", 104.0))
-	hung_radius = float(data.get("hung_radius", 78.0))
+	_sync_radii()
 
 	if is_pulse_active():
 		pulse_origin = wick.global_position
@@ -212,10 +211,10 @@ func _apply_reveal_circle(ctx: Node, origin: Vector2, rad: float, source: String
 
 	var inters: Array = wick.world_get_interactables(ctx)
 	for it_var: Variant in inters:
-		if not (it_var is Object):
+		if not is_instance_valid(it_var) or not (it_var is Object):
 			continue
 		var item: Object = it_var as Object
-		if not is_instance_valid(item) or not item.has_method("on_light"):
+		if not item.has_method("on_light"):
 			continue
 		var ipos: Vector2 = wick.get_entity_pos(item)
 		var irad: float = wick.get_entity_radius(item, 8.0)
@@ -224,10 +223,10 @@ func _apply_reveal_circle(ctx: Node, origin: Vector2, rad: float, source: String
 
 	var enemies: Array = wick.world_get_enemies(ctx)
 	for e_var: Variant in enemies:
-		if not (e_var is Object):
+		if not is_instance_valid(e_var) or not (e_var is Object):
 			continue
 		var enemy: Object = e_var as Object
-		if not is_instance_valid(enemy) or not enemy.has_method("on_light"):
+		if not enemy.has_method("on_light"):
 			continue
 		if enemy.has_method("is_dead") and bool(enemy.call("is_dead")):
 			continue

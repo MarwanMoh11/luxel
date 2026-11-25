@@ -107,47 +107,47 @@
       "id": "owl_r3_0",
       "kind": "owl",
       "pos": [
-        224,
-        168
+        248,
+        88
       ],
       "route": [],
       "perches": [
         [
-          224,
-          168
+          248,
+          88
         ],
         [
-          264,
-          152
+          280,
+          112
+        ],
+        [
+          216,
+          112
+        ]
+      ],
+      "zone": "belfry_gallery",
+      "leash": 72
+    },
+    {
+      "id": "snuffer_r3_0",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        232,
+        128
+      ],
+      "route": [
+        [
+          216,
+          128
         ],
         [
           280,
           112
         ]
       ],
-      "zone": "belfry_gallery",
-      "leash": 84
-    },
-    {
-      "id": "snuffer_r3_0",
-      "kind": "snuffer_acolyte",
-      "pos": [
-        216,
-        160
-      ],
-      "route": [
-        [
-          200,
-          160
-        ],
-        [
-          264,
-          144
-        ]
-      ],
       "perches": [],
       "zone": "belfry_gallery",
-      "leash": 130
+      "leash": 96
     }
   ],
   "interactables": [
@@ -459,7 +459,7 @@
       },
       {
         "op": "clear",
-        "timeout": 26.0
+        "timeout": 48.0
       },
       {
         "op": "throw",

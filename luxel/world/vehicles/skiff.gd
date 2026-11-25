@@ -57,12 +57,13 @@ static func capture_mount_carryover(wick: LxWick) -> bool:
 	if wick == null or not is_instance_valid(wick) or not wick.is_mounted():
 		return false
 	var veh: Node = wick.get_mounted_vehicle()
-	if not (veh is LxVehicleSkiff):
+	if not is_instance_valid(veh) or veh.is_queued_for_deletion() or not (veh is LxVehicleSkiff):
 		return false
 	var sk: LxVehicleSkiff = veh as LxVehicleSkiff
 	pending_carryover = {
 		"active": true, "vel": sk.vel, "heading": sk.heading,
 		"island_id": sk.island_id, "from_region": sk.region_id,
+		"slot_id": str(Lx.state.slot_id) if Lx.state != null else "",
 	}
 	return true
 
@@ -75,6 +76,13 @@ static func restore_mount_carryover(reg: LxRegionLoader, wick: LxWick, spawn_at:
 	var data: Dictionary = pending_carryover.duplicate(true)
 	pending_carryover.clear()
 	if reg == null or not is_instance_valid(reg) or wick == null or not is_instance_valid(wick) or wick.dead:
+		return null
+	var want_slot: String = str(data.get("slot_id", ""))
+	if not want_slot.is_empty() and Lx.state != null and str(Lx.state.slot_id) != want_slot:
+		return null
+	var from_isl: int = int(data.get("island_id", -1))
+	var reg_isl_v: Variant = reg.get("current_island_id")
+	if from_isl > 0 and reg_isl_v is int and int(reg_isl_v) > 0 and int(reg_isl_v) != from_isl:
 		return null
 	var tt: String = str(reg.tile_at(spawn_at))
 	var is_water_spawn: bool = tt == "water" or tt == "tide"
@@ -106,11 +114,12 @@ static func restore_mount_carryover(reg: LxRegionLoader, wick: LxWick, spawn_at:
 static func _find_nearest_skiff(reg: LxRegionLoader, at_pos: Vector2, max_d: float) -> LxVehicleSkiff:
 	var best: LxVehicleSkiff = null
 	var best_d2: float = max_d * max_d
-	for it: LxInteractable in reg.get_interactables():
-		if it is LxVehicleSkiff and is_instance_valid(it) and it.active:
-			var d2: float = it.pos.distance_squared_to(at_pos)
+	for it: Variant in reg.get_interactables():
+		if is_instance_valid(it) and it is LxVehicleSkiff and (it as LxVehicleSkiff).active:
+			var sk: LxVehicleSkiff = it as LxVehicleSkiff
+			var d2: float = sk.pos.distance_squared_to(at_pos)
 			if d2 <= best_d2:
-				best_d2 = d2; best = it as LxVehicleSkiff
+				best_d2 = d2; best = sk
 	return best
 
 
@@ -165,11 +174,18 @@ func on_mounted(w: LxWick) -> void:
 	_spawn_wake(pos, 5.5); _emit_sfx("skiff_dock"); queue_redraw()
 
 func on_dismounted(w: LxWick) -> void:
-	if w != null and w.fired.is_connected(_on_rider_fired):
+	if is_instance_valid(w) and w.fired.is_connected(_on_rider_fired):
 		w.fired.disconnect(_on_rider_fired)
 	if rider == w: rider = null
 	_swing_t = 0.0; _release_post_whip()
 	_emit_sfx("footstep_wood"); queue_redraw()
+
+func _exit_tree() -> void:
+	if is_instance_valid(rider) and rider.fired.is_connected(_on_rider_fired):
+		rider.fired.disconnect(_on_rider_fired)
+	rider = null
+	_swing_t = 0.0
+	_release_post_whip()
 
 func try_dismount(w: LxWick) -> bool:
 	var pref: Vector2 = w.get_move_input()
@@ -195,9 +211,9 @@ func _find_safe_dock_pos(pref_dir: Vector2 = Vector2.ZERO) -> Vector2:
 		var best_alt: Vector2 = Vector2.INF
 		var best_d2: float = 44.0 * 44.0
 		for it_v: Variant in region.call("get_interactables") as Array:
-			if it_v == self or not (it_v is LxInteractable): continue
+			if not is_instance_valid(it_v) or it_v == self or not (it_v is LxInteractable): continue
 			var it: LxInteractable = it_v as LxInteractable
-			if not is_instance_valid(it) or not it.active: continue
+			if not it.active: continue
 			if it.kind == "tide_raft" and it.is_platform_solid():
 				var d2: float = it.pos.distance_squared_to(pos)
 				if d2 < best_d2: best_d2 = d2; best_alt = it.pos
@@ -253,7 +269,7 @@ func on_wick_dash(w: LxWick) -> bool:
 func _shake_off_latched_enemies(w: LxWick) -> void:
 	if region == null or not region.has_method("get_enemies"): return
 	for e_v: Variant in region.call("get_enemies") as Array:
-		if e_v is Object and is_instance_valid(e_v as Object) and (e_v as Object).has_method("on_skiff_shake_off"):
+		if is_instance_valid(e_v) and e_v is Object and (e_v as Object).has_method("on_skiff_shake_off"):
 			(e_v as Object).call("on_skiff_shake_off", self, w)
 
 func _bat_nearby_mines(bat_dir: Vector2, bat_speed: float) -> void:
@@ -261,7 +277,7 @@ func _bat_nearby_mines(bat_dir: Vector2, bat_speed: float) -> void:
 	var bd: Vector2 = bat_dir.normalized() if bat_dir.length_squared() > 0.001 else heading
 	if region.has_method("get_enemies"):
 		for e_v: Variant in region.call("get_enemies") as Array:
-			if not (e_v is LxEnemyBrain) or not is_instance_valid(e_v): continue
+			if not is_instance_valid(e_v) or not (e_v is LxEnemyBrain): continue
 			var en: LxEnemyBrain = e_v as LxEnemyBrain
 			var eid: int = en.get_instance_id()
 			if not en.is_alive() or en.kind != "buoy_mine" or _bat_cd.has(eid) or en.pos.distance_to(pos) > MINE_BAT_RADIUS: continue
@@ -272,10 +288,10 @@ func _bat_nearby_mines(bat_dir: Vector2, bat_speed: float) -> void:
 			_emit_bat_fx(en.pos, push_d)
 	if region.has_method("get_interactables"):
 		for it_v: Variant in region.call("get_interactables") as Array:
-			if it_v == self or not (it_v is LxInteractable): continue
+			if not is_instance_valid(it_v) or it_v == self or not (it_v is LxInteractable): continue
 			var it: LxInteractable = it_v as LxInteractable
 			var iid: int = it.get_instance_id()
-			if not is_instance_valid(it) or not it.active or (it.kind != "ballast_keg" and it.kind != "buoy_mine"): continue
+			if not it.active or (it.kind != "ballast_keg" and it.kind != "buoy_mine"): continue
 			if _bat_cd.has(iid) or it.pos.distance_to(pos) > MINE_BAT_RADIUS: continue
 			_bat_cd[iid] = 0.28
 			var push_i: Vector2 = ((it.pos - pos).normalized() * 0.6 + bd * 0.4).normalized() if it.pos.distance_to(pos) > 2.0 else bd
@@ -321,7 +337,7 @@ func _find_anchored_mooring_post(lan_pos: Vector2) -> Node:
 	if region == null or not region.has_method("get_interactables"): return null
 	var best: Node = null; var best_d: float = 26.0
 	for it_v: Variant in region.call("get_interactables") as Array:
-		if it_v is LxInteractable and is_instance_valid(it_v as Object):
+		if is_instance_valid(it_v) and it_v is LxInteractable:
 			var it: LxInteractable = it_v as LxInteractable
 			if it.active and it.kind == "mooring_post" and it.pos.distance_to(lan_pos) <= best_d:
 				best_d = it.pos.distance_to(lan_pos); best = it
@@ -456,7 +472,7 @@ func _can_float_at(ctx: Node, p: Vector2) -> bool:
 	if ctx.has_method("get_interactables"):
 		var my_r := Rect2(p - Vector2(HULL_RADIUS, HULL_RADIUS * 0.7), Vector2(HULL_RADIUS * 2.0, HULL_RADIUS * 1.4))
 		for it_v: Variant in ctx.call("get_interactables") as Array:
-			if it_v == self or not (it_v is LxInteractable): continue
+			if not is_instance_valid(it_v) or it_v == self or not (it_v is LxInteractable): continue
 			var it: LxInteractable = it_v as LxInteractable
 			if it.is_solid() and it.get_solid_rect().intersects(my_r): return false
 	return true

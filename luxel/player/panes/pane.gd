@@ -76,21 +76,21 @@ func tick(dt: float, _ctx: Dictionary) -> void:
 
 func _fx(ctx: Dictionary) -> LxPaneFx:
 	var fx_v: Variant = ctx.get("fx", null)
-	if fx_v is LxPaneFx and is_instance_valid(fx_v):
+	if is_instance_valid(fx_v) and fx_v is LxPaneFx:
 		return fx_v as LxPaneFx
 	return LxPaneFx.ensure_in_world()
 
 
 func _wick(ctx: Dictionary) -> Node2D:
 	var w_v: Variant = ctx.get("wick", Lx.player)
-	if w_v is Node2D and is_instance_valid(w_v):
+	if is_instance_valid(w_v) and w_v is Node2D:
 		return w_v as Node2D
 	return null
 
 
 func _world(ctx: Dictionary) -> Node:
 	var wr_v: Variant = ctx.get("world", Lx.world)
-	if wr_v is Node and is_instance_valid(wr_v):
+	if is_instance_valid(wr_v) and wr_v is Node:
 		return wr_v as Node
 	return null
 
@@ -115,7 +115,7 @@ func _pulse_aoe(ctx: Dictionary, center: Vector2, radius: float, dmg: float, wea
 	var hits: int = 0
 	var enemies: Array = w.call("world_get_enemies", wr) as Array
 	for ev: Variant in enemies:
-		if not (ev is Object) or not is_instance_valid(ev as Object):
+		if not is_instance_valid(ev) or not (ev is Object):
 			continue
 		var enemy: Object = ev as Object
 		if w.has_method("is_entity_alive") and not bool(w.call("is_entity_alive", enemy)):

@@ -91,9 +91,11 @@ var _field_vel: Vector2 = Vector2.ZERO
 var _launch_vel: Vector2 = Vector2.ZERO
 var _launch_t: float = 0.0
 var _void_retry_t: float = 0.0
+var _void_resume_hearts: float = 0.0
 var _locked_moves: Dictionary = {}
 
 var _world_ctx: Node = null
+var _bound_events: Object = null
 var _prev_act: Dictionary = {}
 var _walk_phase: float = 0.0
 var _clock_t: float = 0.0
@@ -116,15 +118,44 @@ func setup(world_ctx: Node) -> void:
 		god = true
 	Lx.player = self
 	_bind_world_ctx(world_ctx)
-	if Lx.events != null and not Lx.events.move_unlocked.is_connected(_on_move_unlocked):
-		Lx.events.move_unlocked.connect(_on_move_unlocked)
-	if Lx.events != null and not Lx.events.lantern_picked_up.is_connected(_on_lantern_picked_up):
-		Lx.events.lantern_picked_up.connect(_on_lantern_picked_up)
+	_bind_event_signals()
 	sync_unlocks_from_state()
 	if Lx.state != null:
 		_local_max_hearts = Lx.state.max_hearts
 		_local_hearts = Lx.state.hearts
 	reset_for_room(global_position)
+
+
+func _exit_tree() -> void:
+	_unbind_event_signals()
+	if Lx.player == self:
+		Lx.player = null
+
+
+func _bind_event_signals() -> void:
+	if _bound_events == Lx.events:
+		if is_instance_valid(_bound_events):
+			if not _bound_events.move_unlocked.is_connected(_on_move_unlocked):
+				_bound_events.move_unlocked.connect(_on_move_unlocked)
+			if not _bound_events.lantern_picked_up.is_connected(_on_lantern_picked_up):
+				_bound_events.lantern_picked_up.connect(_on_lantern_picked_up)
+		return
+	_unbind_event_signals()
+	_bound_events = Lx.events
+	if is_instance_valid(_bound_events):
+		if not _bound_events.move_unlocked.is_connected(_on_move_unlocked):
+			_bound_events.move_unlocked.connect(_on_move_unlocked)
+		if not _bound_events.lantern_picked_up.is_connected(_on_lantern_picked_up):
+			_bound_events.lantern_picked_up.connect(_on_lantern_picked_up)
+
+
+func _unbind_event_signals() -> void:
+	if is_instance_valid(_bound_events):
+		if _bound_events.move_unlocked.is_connected(_on_move_unlocked):
+			_bound_events.move_unlocked.disconnect(_on_move_unlocked)
+		if _bound_events.lantern_picked_up.is_connected(_on_lantern_picked_up):
+			_bound_events.lantern_picked_up.disconnect(_on_lantern_picked_up)
+	_bound_events = null
 
 
 func _bind_world_ctx(world_ctx: Node) -> void:
@@ -181,16 +212,17 @@ func reset_for_room(at_pos: Vector2) -> void:
 	_ensure_kit()
 	if is_mounted(): dismount(at_pos)
 	if is_carrying(): drop_carried()
-	global_position = at_pos; last_pos = at_pos; _last_safe_pos = at_pos
+	global_position = at_pos; last_pos = at_pos
+	_last_safe_pos = at_pos if WickCombat.is_safe_ground(_world_ctx, at_pos) else Vector2.ZERO
 	velocity = Vector2.ZERO; knock = Vector2.ZERO
 	_external_vel = Vector2.ZERO; _external_source = ""; _field_vel = Vector2.ZERO
-	_launch_vel = Vector2.ZERO; _launch_t = 0.0; _void_retry_t = 0.0
+	_launch_vel = Vector2.ZERO; _launch_t = 0.0; _void_retry_t = 0.0; _void_resume_hearts = 0.0
 	mercy_t = 0.0; hurt_flash = 0.0; bounce_t = 0.0; muzzle_t = 0.0
 	shoot_anim_t = 0.0; throw_anim_t = 0.0; catch_anim_t = 0.0; recoil_vis = 0.0
 	dead = false
 	grabbed_block = null; grab_axis = Vector2.ZERO; grab_slide_speed = 0.0
 	_interact_held = false; _interact_hold_t = 0.0; _interact_cand = null
-	bolts.clear(); _fx.clear(); _prev_act.clear()
+	bolts.clear(); _fx.clear(); _world_q.clear(); _prev_act.clear()
 	if Lx.input != null: Lx.input.clear_all_toggles()
 	for mv_var: Variant in moves.values():
 		if mv_var is LxMove: (mv_var as LxMove).reset()

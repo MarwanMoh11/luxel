@@ -127,7 +127,8 @@
           ]
         ],
         "speed": 120.0,
-        "on_signal": "move"
+        "on_signal": "move",
+        "persist": true
       }
     },
     {
@@ -171,7 +172,8 @@
         "persist": true,
         "target_ids": [
           "door_r6_north",
-          "door_r6_backdoor"
+          "door_r6_backdoor",
+          "mwall_r6_1"
         ]
       }
     },

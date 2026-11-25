@@ -507,7 +507,7 @@
     },
     {
       "id": "loom_r8_open_shortcut",
-      "on": "cleared",
+      "on": "flag:rscr_3_loom_r8_loom_r8_wave2",
       "once": true,
       "do": [
         {
@@ -522,8 +522,7 @@
         {
           "sfx": "shrine_unlock"
         }
-      ],
-      "if": "flag:rscr_3_loom_r8_loom_r8_wave2"
+      ]
     }
   ],
   "design": {

@@ -409,14 +409,6 @@
     "exit": "exit_spire_r7_west",
     "solution": [
       {
-        "op": "goto",
-        "to": [
-          256,
-          200
-        ],
-        "tol": 16.0
-      },
-      {
         "op": "lens"
       },
       {

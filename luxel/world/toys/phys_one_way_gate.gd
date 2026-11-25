@@ -31,6 +31,20 @@ func blocks_sight() -> bool:
 	return false
 
 
+func blocks_lantern(from_p: Vector2 = Vector2.INF, to_p: Vector2 = Vector2.INF) -> bool:
+	if not active:
+		return false
+	if from_p.is_finite() and to_p.is_finite():
+		var delta: Vector2 = to_p - from_p
+		if delta.length_squared() > 0.0001 and delta.dot(_effective_dir()) > 0.0:
+			return false
+	return true
+
+
+func get_lantern_block_rect() -> Rect2:
+	return Rect2(pos - size * 0.5, size) if active else Rect2()
+
+
 func get_solid_rect() -> Rect2:
 	return Rect2(pos - size * 0.5, size) if is_solid() else Rect2()
 
@@ -41,7 +55,7 @@ func tick(dt: float) -> void:
 		return
 	var d: Vector2 = _effective_dir()
 	var prev_allow: bool = _allow_pass
-	if Lx.player is LxWick and is_instance_valid(Lx.player):
+	if is_instance_valid(Lx.player) and Lx.player is LxWick:
 		var w: LxWick = Lx.player as LxWick
 		var rel: Vector2 = w.global_position - pos
 		var along: float = rel.dot(d)

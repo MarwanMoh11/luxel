@@ -37,6 +37,7 @@ var _prompt_text: String = ""
 var _prompt_t: float = 0.0
 var _prompt_dur: float = 0.0
 var _bound: bool = false
+var _bound_events: Object = null
 
 
 func _ready() -> void:
@@ -44,10 +45,21 @@ func _ready() -> void:
 	bind_events()
 
 
+func _exit_tree() -> void:
+	if is_instance_valid(_bound_events):
+		if _bound_events.narration_requested.is_connected(_on_narration_requested):
+			_bound_events.narration_requested.disconnect(_on_narration_requested)
+		if _bound_events.prompt_requested.is_connected(_on_prompt_requested):
+			_bound_events.prompt_requested.disconnect(_on_prompt_requested)
+	_bound = false
+	_bound_events = null
+
+
 func bind_events() -> void:
 	if _bound or Lx.events == null:
 		return
 	_bound = true
+	_bound_events = Lx.events
 	if not Lx.events.narration_requested.is_connected(_on_narration_requested):
 		Lx.events.narration_requested.connect(_on_narration_requested)
 	if not Lx.events.prompt_requested.is_connected(_on_prompt_requested):

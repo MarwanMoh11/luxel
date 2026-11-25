@@ -305,8 +305,7 @@
     },
     {
       "id": "oak_r9b_finish",
-      "on": "cleared",
-      "if": "flag:rscr_3_oak_r9b_oak_r9b_wave2",
+      "on": "flag:rscr_3_oak_r9b_oak_r9b_wave2",
       "once": true,
       "do": [
         {
@@ -346,6 +345,10 @@
       {
         "op": "clear",
         "timeout": 90.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.2
       },
       {
         "op": "expect",

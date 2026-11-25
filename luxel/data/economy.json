@@ -10,7 +10,7 @@
     "5": {"hp_mult": 3.35, "shard_mult": 1.00},
     "6": {"hp_mult": 3.70, "shard_mult": 1.45},
     "7": {"hp_mult": 2.75, "shard_mult": 1.55},
-    "8": {"hp_mult": 3.60, "shard_mult": 1.60}
+    "8": {"hp_mult": 3.80, "shard_mult": 1.60}
   },
   "boss_bands": {
     "default": {"hp_mult": 1.00, "shard_mult": 1.00},

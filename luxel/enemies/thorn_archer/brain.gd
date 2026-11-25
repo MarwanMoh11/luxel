@@ -13,6 +13,7 @@ const JAM_DURATION: float = 1.80
 const LIGHT_HOLD_S: float = 0.30
 const POST_COOLDOWN: float = 0.85
 
+var is_flying: bool = false
 var perches: Array[Vector2] = []
 var perch_i: int = 0
 var pause_t: float = 0.0

@@ -169,7 +169,7 @@
       "kind": "grate",
       "pos": [
         312,
-        120
+        152
       ],
       "props": {
         "size": [
@@ -183,7 +183,7 @@
       "kind": "beam_sensor",
       "pos": [
         296,
-        104
+        136
       ],
       "props": {
         "color": "blue",

@@ -111,7 +111,7 @@ func orbital_count() -> int:
 func tick(dt: float) -> void:
 	_clock += dt
 	var dirty: bool = false
-	var w: Node2D = Lx.player as Node2D if (Lx.player is Node2D and is_instance_valid(Lx.player)) else null
+	var w: Node2D = Lx.player as Node2D if (is_instance_valid(Lx.player) and Lx.player is Node2D) else null
 	var enemies: Array = []
 	if w != null and Lx.world != null and is_instance_valid(Lx.world) and w.has_method("world_get_enemies"):
 		enemies = w.call("world_get_enemies", Lx.world) as Array
@@ -146,7 +146,7 @@ func tick(dt: float) -> void:
 		if w != null and float(o["hit_cd"]) <= 0.0:
 			var opos: Vector2 = w.global_position + Vector2.from_angle(float(o["angle"])) * float(o["radius"])
 			for ev: Variant in enemies:
-				if not (ev is Object) or not is_instance_valid(ev as Object):
+				if not is_instance_valid(ev) or not (ev is Object):
 					continue
 				if w.has_method("is_entity_alive") and not bool(w.call("is_entity_alive", ev)):
 					continue
@@ -171,7 +171,7 @@ func _apply_pool_effect(p: Dictionary, w: Node2D, enemies: Array) -> void:
 	var prad: float = float(p["radius"])
 	var kind: String = str(p["kind"])
 	for ev: Variant in enemies:
-		if not (ev is Object) or not is_instance_valid(ev as Object):
+		if not is_instance_valid(ev) or not (ev is Object):
 			continue
 		if w.has_method("is_entity_alive") and not bool(w.call("is_entity_alive", ev)):
 			continue
@@ -192,7 +192,7 @@ func _apply_decoy_pulse(d: Dictionary, w: Node2D, enemies: Array) -> void:
 	if w.has_method("spawn_ring"):
 		w.call("spawn_ring", dpos, 3.0, 22.0, 0.22, LxPalette.color(str(d["color"])), 1.0)
 	for ev: Variant in enemies:
-		if not (ev is Object) or not is_instance_valid(ev as Object):
+		if not is_instance_valid(ev) or not (ev is Object):
 			continue
 		if w.has_method("is_entity_alive") and not bool(w.call("is_entity_alive", ev)):
 			continue
@@ -220,7 +220,7 @@ func _draw() -> void:
 		draw_rect(Rect2(pos + Vector2(-2.0, -6.0), Vector2(4.0, 6.0)), col)
 		draw_rect(Rect2(pos + Vector2(-1.0, -5.0), Vector2(2.0, 2.0)), LxPalette.PAL["cream"])
 
-	var w: Node2D = Lx.player as Node2D if (Lx.player is Node2D and is_instance_valid(Lx.player)) else null
+	var w: Node2D = Lx.player as Node2D if (is_instance_valid(Lx.player) and Lx.player is Node2D) else null
 	if w != null:
 		var wp: Vector2 = w.global_position.round()
 		for o: Dictionary in _orbitals:

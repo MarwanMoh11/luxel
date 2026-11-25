@@ -111,13 +111,25 @@ func _draw() -> void:
 	var jaw_gap: float = 20.0 if state == "open" else 3.0
 	if state == "open" and _open_t > 0.0:
 		jaw_gap = lerpf(3.0, 20.0, 1.0 - clampf(_open_t / 0.70, 0.0, 1.0))
-	# Warm glowing amber gullet when jaws part
+	# Warm glowing amber gullet & inward suction motes when jaws part
+	var red: bool = LxHudFx.flash_reduced()
 	if state == "open":
 		draw_rect(Rect2(-hw + 4.0, -jaw_gap, size.x - 8.0, jaw_gap * 2.0), PAL["wine"] as Color)
 		draw_rect(Rect2(-hw + 8.0, -jaw_gap + 4.0, size.x - 16.0, maxf(4.0, jaw_gap * 2.0 - 8.0)), c_apricot)
 		draw_rect(Rect2(-hw + 12.0, -jaw_gap + 8.0, size.x - 24.0, maxf(2.0, jaw_gap * 2.0 - 16.0)), c_gold)
-		# Welcoming inward chevrons
-		LxPhysDraw.draw_chevron(self, Vector2(-6.0, 0.0), Vector2.RIGHT, c_cream, c_void, 3.0)
+		# Welcoming inward chevrons + warm inward current motes
+		var shift: float = 0.0 if red else fmod(_clock * 18.0, 12.0)
+		LxPhysDraw.draw_chevron(self, Vector2(-14.0 + shift, 0.0), Vector2.RIGHT, c_cream, c_void, 3.0)
+		LxPhysDraw.draw_chevron(self, Vector2(-4.0 + shift * 0.5, 0.0), Vector2.RIGHT, c_gold, c_void, 2.5)
+		for mi: int in range(4):
+			var mu: float = fmod(_clock * 0.85 + float(mi) * 0.25, 1.0)
+			var mx: float = roundf(lerpf(-hw - 16.0, 4.0, mu))
+			var my: float = roundf((float(mi) - 1.5) * 8.0 * (1.0 - mu * 0.6))
+			draw_rect(Rect2(mx, my, 2.0, 1.0), c_cream if mi % 2 == 0 else c_gold)
+	elif not red:
+		# Subtle rhythmic gill-mist puffs while jaws loom closed
+		var pu: float = fmod(_clock * 0.55, 1.0)
+		draw_arc(Vector2(-hw - 4.0 - pu * 10.0, 0.0), roundf(2.0 + pu * 6.0), 0.0, TAU, 10, Color(PAL["sky"] as Color, (1.0 - pu) * 0.55), 1.0)
 	# Upper & lower colossal whale jaw silhouettes
 	var top_y: float = -hh
 	var top_h: float = maxf(8.0, hh - jaw_gap)

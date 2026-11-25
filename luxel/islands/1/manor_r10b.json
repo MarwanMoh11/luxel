@@ -128,6 +128,7 @@
         56
       ],
       "props": {
+        "reward": "ember_piece",
         "reward_kind": "ember_piece",
         "amount": 1,
         "flag_id": "ember_1_cellar"

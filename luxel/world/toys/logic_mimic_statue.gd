@@ -149,7 +149,7 @@ func _ride_moving_platform() -> bool:
 	if region == null or not region.has_method("get_interactables"):
 		return false
 	for it_v: Variant in (region.call("get_interactables") as Array):
-		if not (it_v is LxInteractable) or it_v == self:
+		if not is_instance_valid(it_v) or not (it_v is LxInteractable) or it_v == self:
 			continue
 		var it: LxInteractable = it_v as LxInteractable
 		if not is_instance_valid(it) or not it.active or not it.is_platform_solid():
@@ -179,7 +179,7 @@ func _try_push_obstacles(mdelta: Vector2) -> void:
 		return
 	var probe: Rect2 = rect_at(pos + mdelta).grow(1.5)
 	for it_v: Variant in (region.call("get_interactables") as Array):
-		if not (it_v is LxInteractable) or it_v == self:
+		if not is_instance_valid(it_v) or not (it_v is LxInteractable) or it_v == self:
 			continue
 		var it: LxInteractable = it_v as LxInteractable
 		if not is_instance_valid(it) or not it.active or not it.is_solid():

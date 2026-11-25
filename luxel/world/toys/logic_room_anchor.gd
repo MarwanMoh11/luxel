@@ -55,11 +55,16 @@ func get_interact_prompt() -> String:
 
 
 func claim_anchor() -> void:
+	if is_instance_valid(region):
+		if region.has_method("is_lethal_void_at") and bool(region.call("is_lethal_void_at", pos)):
+			return
+		if region.has_method("tile_at") and LxMapFormat.is_solid_tile(str(region.call("tile_at", pos)), true, true):
+			return
 	var was_cur: bool = is_current_anchor
 	# Deactivate sibling room anchors so only one shows as current
 	if region != null and region.has_method("get_interactables"):
 		for it_v: Variant in (region.call("get_interactables") as Array):
-			if it_v is LxRoomAnchor and it_v != self:
+			if is_instance_valid(it_v) and it_v is LxRoomAnchor and it_v != self:
 				var sib: LxRoomAnchor = it_v as LxRoomAnchor
 				sib.is_current_anchor = false
 				sib.powered = false

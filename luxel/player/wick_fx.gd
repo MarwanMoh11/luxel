@@ -4,6 +4,10 @@ extends RefCounted
 
 const PAL_MAUVE: Color = Color("8a6e91")
 const MAX_MOTES: int = 48
+const MAX_AFTERIMAGES: int = 24
+const MAX_RINGS: int = 32
+const MAX_SPARKS: int = 96
+const MAX_WEDGES: int = 16
 const DUST_INTERVAL: float = 0.22
 const MOTE_INTERVAL: float = 0.18
 const STREAK_DASH_INTERVAL: float = 0.036
@@ -52,18 +56,22 @@ func trigger_lantern_ignite(wick: LxWick) -> void:
 		LxDarknessLayer.active_instance.add_burst_light(wick.global_position, 108.0, 1.55 * sc, 0.46)
 
 func spawn_afterimage(at_pos: Vector2, col: Color, dir: Vector2 = Vector2.RIGHT, anim: String = "dash", life: float = 0.20) -> void:
+	if afterimages.size() >= MAX_AFTERIMAGES: afterimages.remove_at(0)
 	afterimages.append({"pos": at_pos, "age": 0.0, "life": maxf(0.04, life), "col": col, "dir": dir, "anim": anim})
 
 func spawn_prism_wedge(at_pos: Vector2, base_dir: Vector2, angle_deg: float = 18.0, length_px: float = 16.0, life: float = 0.14) -> void:
 	var dn: Vector2 = base_dir.normalized() if base_dir.length_squared() > 0.0001 else Vector2.RIGHT
+	if wedges.size() >= MAX_WEDGES: wedges.remove_at(0)
 	wedges.append({"pos": at_pos, "dir": dn, "ang": deg_to_rad(angle_deg), "len": length_px, "age": 0.0, "life": maxf(0.04, life)})
 
 func spawn_ring(at_pos: Vector2, r0: float, r1: float, life: float, col: Color, width: float = 1.0) -> void:
+	if rings.size() >= MAX_RINGS: rings.remove_at(0)
 	rings.append({"pos": at_pos, "r0": r0, "r1": r1, "age": 0.0, "life": maxf(0.02, life), "col": col, "w": width})
 
 func spawn_sparks(at_pos: Vector2, base_dir: Vector2, count: int, col: Color, min_spd: float, max_spd: float, life: float) -> void:
 	var dn: Vector2 = base_dir.normalized() if base_dir.length_squared() > 0.0001 else Vector2.RIGHT
 	for _i: int in range(count):
+		if sparks.size() >= MAX_SPARKS: sparks.remove_at(0)
 		sparks.append({
 			"pos": at_pos,
 			"vel": dn.rotated(randf_range(-0.65, 0.65)) * randf_range(min_spd, max_spd),
@@ -123,7 +131,7 @@ func _is_near_sanctuary(world_pos: Vector2) -> bool:
 	var inters: Variant = Lx.world.call("get_interactables")
 	if not (inters is Array): return false
 	for it: Variant in (inters as Array):
-		if it is Node2D and is_instance_valid(it):
+		if is_instance_valid(it) and it is Node2D:
 			var k: String = str((it as Object).get("kind"))
 			if k in ["rest_shrine", "waystone", "great_lamp", "brazier", "beacon"]:
 				if k != "rest_shrine" and not bool((it as Object).get("lit")): continue
@@ -277,7 +285,7 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 				var rcol: Color = LxWick.PAL_ICE if randf() < 0.42 else LxWick.PAL_SKY
 				spawn_ring(wick.global_position + Vector2(0.0, 2.0), 2.0, 10.0, 0.34, rcol, 1.0)
 				var wfx: Variant = Lx.world.get("_water_fx")
-				if wfx is Object and is_instance_valid(wfx) and (wfx as Object).has_method("spawn_ripple"):
+				if is_instance_valid(wfx) and wfx is Object and (wfx as Object).has_method("spawn_ripple"):
 					(wfx as Object).call("spawn_ripple", wick.global_position + Vector2(0.0, 2.0), "ice")
 				_step_parity = (_step_parity + 1) & 1
 				if _step_parity == 0:

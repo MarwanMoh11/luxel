@@ -93,12 +93,18 @@ func on_mounted(w: LxWick) -> void:
 
 
 func on_dismounted(w: LxWick) -> void:
-	if w != null and w.fired.is_connected(_on_rider_fired):
+	if is_instance_valid(w) and w.fired.is_connected(_on_rider_fired):
 		w.fired.disconnect(_on_rider_fired)
 	if rider == w:
 		rider = null
 	_board_grace = 0.22
 	queue_redraw()
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(rider) and rider.fired.is_connected(_on_rider_fired):
+		rider.fired.disconnect(_on_rider_fired)
+	rider = null
 
 
 func try_dismount(w: LxWick) -> bool:
@@ -162,7 +168,7 @@ func tick(dt: float) -> void:
 			rail_vel = move_toward(rail_vel, speed * (1.0 if rail_vel >= 0.0 else -1.0), 140.0 * dt)
 		_step_rail(dt)
 		# Catch an airborne / launched Wick jumping from another cart!
-		if _board_grace <= 0.0 and Lx.player is LxWick and is_instance_valid(Lx.player):
+		if _board_grace <= 0.0 and is_instance_valid(Lx.player) and Lx.player is LxWick:
 			var w: LxWick = Lx.player as LxWick
 			if not w.dead and not w.is_mounted() and (w.is_launched() or w.is_dashing() or w.is_gliding()):
 				if w.global_position.distance_to(pos) <= 15.0:

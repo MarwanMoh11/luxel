@@ -254,7 +254,7 @@
       "id": "lamp_o5_r10_e",
       "kind": "road_lamp",
       "pos": [
-        384,
+        368,
         168
       ],
       "props": {
@@ -489,11 +489,11 @@
         "op": "goto",
         "to": [
           232,
-          88
+          104
         ]
       },
       {
-        "op": "interact",
+        "op": "beam",
         "target": "great_lamp_5"
       },
       {

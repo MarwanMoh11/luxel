@@ -600,21 +600,25 @@ def collect_world_economy() -> Dict[str, Any]:
     # 2. Rest Shop / NPC Wares (from upgrades.json "wares" or economy.json "shop_wares")
     wares = list(upgrades_cfg.get("wares", [])) or list(economy_cfg.get("shop_wares", []))
     for w in wares:
+        if bool(w.get("repeatable", False)):
+            continue
         wid = str(w.get("id", ""))
         w_isl = max(1, int(w.get("requires_island", 1)))
+        ris = [int(x) for x in w.get("rank_islands", [])]
         costs = [int(c) for c in (w.get("costs") or [w.get("cost", 0)])]
         for r_i, c in enumerate(costs):
             if c <= 0:
                 continue
+            ri = ris[r_i] if r_i < len(ris) else (w_isl + r_i if bool(w.get("stagger_islands", False)) else w_isl)
             sinks.append({
                 "id": f"ware:{wid}:r{r_i+1}",
                 "group": wid,
                 "kind": "ware",
                 "ware_type": str(w.get("effect", "ware")),
                 "rank": r_i + 1,
-                "unlock_island": max(w_isl, w_isl + r_i if bool(w.get("stagger_islands", False)) else w_isl),
+                "unlock_island": min(8, max(1, ri)),
                 "cost": c,
-                "priority": 45 + r_i * 5,
+                "priority": 34 + r_i * 12,
             })
 
     # 3. Hub Lead Forge (available from Island 1 once hub unlocked)
@@ -647,6 +651,8 @@ def collect_world_economy() -> Dict[str, Any]:
     hearts_max = int(decisions.get("hearts_max", 12))
     embers_per_heart = int(decisions.get("ember_pieces_per_heart", 4))
     halfs_per_heart = int(decisions.get("half_lanterns_per_heart", 2))
+    boss_full_below = int(decisions.get("boss_heart_full_below", 99))
+    boss_pieces = int(decisions.get("boss_heart_pieces", 2))
     moth_tiers = packs["moth_tiers"]
 
     # Simulate 3 player profiles across Islands 1..8
@@ -660,6 +666,7 @@ def collect_world_economy() -> Dict[str, Any]:
             pname, opt_frac, hub_frac, include_cosmetics,
             income, sinks, playtime_isl, moth_tiers, hub_cfg,
             hearts_start, hearts_max, embers_per_heart, halfs_per_heart,
+            boss_full_below, boss_pieces,
             moves_cfg, upgrades_cfg,
         )
 
@@ -720,20 +727,20 @@ def kit_stats_from_ranks(
     moves = moves_cfg.get("moves", {})
     upg_map = {str(u["id"]): u for u in upgrades_cfg.get("upgrades", [])}
 
-    def eff(uid: str, move_id: str, field: str, default: float) -> float:
+    def eff(uid: str, move_id: str, field: str, default: float, vkey: str = "values") -> float:
         base = float((moves.get(move_id) or {}).get(field, default))
         r = ranks.get(uid, 0)
         if r <= 0 or uid not in upg_map:
             return base
-        vals = upg_map[uid].get("values") or []
+        vals = upg_map[uid].get(vkey) or []
         return float(vals[min(r - 1, len(vals) - 1)]) if vals else base
 
     bolt_dmg = eff("bolt_damage", "bolt", "damage", 0.35)
     bolt_cd = eff("bolt_rate", "bolt", "cooldown", 0.18)
     throw_dmg = eff("throw_damage", "throw", "throw_damage", 2.0)
-    zip_dmg = eff("zip_bomb", "throw", "zip_damage", 1.75)
+    zip_dmg = eff("zip_bomb", "throw", "zip_damage", 1.75, "dmg_values")
     beam_cd = eff("beam_charge", "beam", "charge_time", 0.6) + float((moves.get("beam") or {}).get("cooldown", 0.45))
-    beam_dmg = float((moves.get("beam") or {}).get("damage", 2.5))
+    beam_dmg = eff("beam_width", "beam", "damage", 2.5, "dmg_values")
     ember_max = eff("ember_meter", "sunflare", "ember_max", 100.0)
 
     bolt_sustained_dps = bolt_dmg / max(0.05, bolt_cd)
@@ -771,6 +778,8 @@ def simulate_profile(
     hearts_max: int,
     embers_per_heart: int,
     halfs_per_heart: int,
+    boss_full_below: int,
+    boss_pieces: int,
     moves_cfg: Dict[str, Any],
     upgrades_cfg: Dict[str, Any],
 ) -> Dict[str, Any]:
@@ -867,6 +876,18 @@ def simulate_profile(
                 heart_overflows += 1
 
         for _ in range(f_gain):
+            if max_hearts < boss_full_below:
+                if max_hearts < hearts_max:
+                    max_hearts += 1
+                    if max_hearts >= hearts_max and hit_max_hearts_island is None:
+                        hit_max_hearts_island = isl
+                else:
+                    heart_overflows += 1
+            else:
+                half_rem += boss_pieces
+
+        while half_rem >= halfs_per_heart:
+            half_rem -= halfs_per_heart
             if max_hearts < hearts_max:
                 max_hearts += 1
                 if max_hearts >= hearts_max and hit_max_hearts_island is None:

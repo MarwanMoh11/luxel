@@ -272,7 +272,7 @@ func _step_view(dir: int) -> void:
 	_rebuild_dungeons(); _rebuild_island_nodes(); _play_ui_sfx("ui_move"); queue_redraw()
 
 func _tab_rect(v_idx: int) -> Rect2:
-	return Rect2(142.0 + float(v_idx) * 34.0, 14.0, 32.0, 9.0)
+	return Rect2(126.0 + float(v_idx) * 38.0, 14.0, 36.0, 9.0)
 
 func _handle_click(pos: Vector2) -> bool:
 	if LxUiNav.handle_tab_bar_click(pos, 4):
@@ -362,7 +362,7 @@ func _draw_view_tabs() -> void:
 	var labels: Array[String] = [
 		LxFolkData.tr_id("MAP_TAB_WORLD"),
 		LxUiNav.tr_any("MAP_TAB_ISLAND", "MAP_ISLAND_FMT").substr(0, 6),
-		LxFolkData.tr_id("MAP_TAB_DUNGEON").substr(0, 6),
+		LxFolkData.tr_id("MAP_TAB_DUNGEON").substr(0, 7),
 	]
 	for vi: int in range(3):
 		var r: Rect2 = _tab_rect(vi)
@@ -389,7 +389,14 @@ func _draw_panel_brackets() -> void:
 
 
 func _draw_header_legend() -> void:
-	# Compact diegetic micro-icon legend balancing the top-right 8-island jewel bar (y=16).
+	# Map title + compact micro-icon legend left of view tabs (x=22..138, y=16).
+	if _view == View.ARCHIPELAGO:
+		LxPixelFont.draw_left(self, LxStrings.text("MAP_TITLE"), Vector2(22.0, 16.0), LxPalette.PAL["gold"], 1)
+		var sx0: float = 96.0
+		_px(Vector2(sx0, 18.0), [[-1, 0, 3, 1], [0, -1, 1, 3]], LxPalette.PAL["gold"])
+		draw_rect(Rect2(sx0, 18.0, 1.0, 1.0), LxPalette.PAL["cream"])
+		LxPixelFont.draw_left(self, LxStrings.text("MAP_LEGEND_RELIT"), Vector2(sx0 + 4.0, 16.0), LxPalette.PAL["stone"], 1)
+		return
 	var lx: float = 22.0
 	draw_rect(Rect2(lx, 16.0, 3.0, 5.0), LxPalette.PAL["night"])
 	_px(Vector2(lx, 16.0), [[0, 0, 3, 1], [0, 4, 3, 1]], LxPalette.PAL["apricot"])

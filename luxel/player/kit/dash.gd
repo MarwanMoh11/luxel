@@ -22,13 +22,24 @@ var perfect_refund_done: bool = false
 var counter_t: float = 0.0
 
 var hit_ids: Array[int] = []
+var charges_left: int = 1
+var _charge_regen_t: float = 0.0
+var _chain_cd: float = 0.0
 var _afterimage_cd: float = 0.0
 var _buffer_t: float = 0.0
 var _mid_spray_done: bool = false
 
 
+func _get_max_charges() -> int:
+	return Lx.state.get_effective_dash_charges() if Lx.state != null else 1
+
+
 func can_use() -> bool:
-	if not super.can_use():
+	var max_c: int = _get_max_charges()
+	if max_c > 1:
+		if not unlocked or locked or wick == null or charges_left <= 0 or _chain_cd > 0.0:
+			return false
+	elif not super.can_use():
 		return false
 	if wick.dead or active or is_gliding or wick.is_gliding() or wick.is_zipping() or wick.bounce_t > 0.0:
 		return false
@@ -80,7 +91,16 @@ func _execute_dash() -> bool:
 	iframes_left = float(data.get("iframes", 0.19))
 	perfect_window = float(data.get("perfect_window", 0.12))
 	perfect_refund_done = false
-	cooldown_left = eff_cd + duration
+	var max_c: int = _get_max_charges()
+	if max_c > 1:
+		charges_left = maxi(0, mini(charges_left, max_c) - 1)
+		_chain_cd = duration + 0.06
+		if _charge_regen_t <= 0.0:
+			_charge_regen_t = eff_cd + duration
+		cooldown_left = _charge_regen_t if charges_left <= 0 else 0.0
+	else:
+		charges_left = 0
+		cooldown_left = eff_cd + duration
 	hit_ids.clear()
 	_afterimage_cd = 0.0
 	_mid_spray_done = false
@@ -112,6 +132,24 @@ func release() -> void:
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	var max_c: int = _get_max_charges()
+	if _chain_cd > 0.0:
+		_chain_cd = maxf(0.0, _chain_cd - dt)
+	if max_c > 1:
+		if charges_left < max_c:
+			if _charge_regen_t <= 0.0:
+				_charge_regen_t = _get_effective_cooldown()
+			_charge_regen_t = maxf(0.0, _charge_regen_t - dt)
+			if _charge_regen_t <= 0.0:
+				charges_left = mini(max_c, charges_left + 1)
+				if charges_left < max_c:
+					_charge_regen_t = _get_effective_cooldown()
+			cooldown_left = _charge_regen_t if charges_left <= 0 else 0.0
+		else:
+			_charge_regen_t = 0.0
+			cooldown_left = 0.0
+	elif cooldown_left <= 0.0:
+		charges_left = 1
 	if iframes_left > 0.0:
 		iframes_left = maxf(0.0, iframes_left - dt)
 	if counter_t > 0.0:
@@ -179,7 +217,7 @@ func _check_dash_hits(world_ctx: Node) -> void:
 
 	var enemies: Array = wick.world_get_enemies(world_ctx)
 	for e_var: Variant in enemies:
-		if not (e_var is Object):
+		if not is_instance_valid(e_var) or not (e_var is Object):
 			continue
 		var enemy: Object = e_var as Object
 		if not wick.is_entity_alive(enemy):
@@ -236,7 +274,12 @@ func on_perfect_dodge() -> bool:
 	var allow_refund: bool = bool(data.get("perfect_refund", true))
 	if allow_refund and not perfect_refund_done:
 		perfect_refund_done = true
+		var max_c: int = _get_max_charges()
+		charges_left = mini(max_c, charges_left + 1)
+		if charges_left >= max_c:
+			_charge_regen_t = 0.0
 		cooldown_left = 0.0
+		_chain_cd = 0.0
 		counter_t = 1.45
 		wick.perfect_dodges += 1
 		wick.trigger_hitstop(0.045)
@@ -296,6 +339,9 @@ func reset() -> void:
 	iframes_left = 0.0
 	perfect_refund_done = false
 	counter_t = 0.0
+	charges_left = _get_max_charges()
+	_charge_regen_t = 0.0
+	_chain_cd = 0.0
 	hit_ids.clear()
 
 
@@ -310,7 +356,7 @@ func _get_effective_cooldown() -> float:
 func _gust(radius: float, strength: float) -> void:
 	if wick != null and Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+		if is_instance_valid(amb) and amb is Object and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", wick.global_position, radius, strength)
 
 

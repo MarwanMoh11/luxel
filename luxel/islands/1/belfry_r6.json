@@ -106,47 +106,47 @@
       "id": "snatcher_r6_0",
       "kind": "snatcher",
       "pos": [
-        376,
-        152
+        372,
+        144
       ],
       "route": [],
       "perches": [
         [
-          376,
-          152
+          264,
+          120
         ],
         [
           320,
-          112
+          136
         ],
         [
-          360,
-          168
+          280,
+          152
         ]
       ],
       "zone": "belfry_vault",
-      "leash": 120
+      "leash": 100
     },
     {
       "id": "snuffer_r6_0",
       "kind": "snuffer_acolyte",
       "pos": [
-        376,
-        168
+        368,
+        160
       ],
       "route": [
         [
-          360,
-          168
+          288,
+          136
         ],
         [
-          384,
-          128
+          336,
+          152
         ]
       ],
       "perches": [],
       "zone": "belfry_vault",
-      "leash": 120
+      "leash": 96
     }
   ],
   "interactables": [
@@ -561,7 +561,7 @@
       },
       {
         "op": "clear",
-        "timeout": 28.0
+        "timeout": 45.0
       },
       {
         "op": "shoot",

@@ -37,7 +37,9 @@
         232
       ],
       "requires_moves": [],
-      "requires_flags": [],
+      "requires_flags": [
+        "keepers_flame_8"
+      ],
       "locked_door_id": ""
     },
     {

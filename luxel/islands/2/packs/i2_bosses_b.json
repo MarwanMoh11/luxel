@@ -96,8 +96,8 @@
       "mini": true,
       "dungeon": "locks",
       "region": "locks_r6",
-      "music": "island2_boss_p1",
-      "music_p2": "island2_boss_p2",
+      "music": "isl2_boss_minor_p1",
+      "music_p2": "isl2_boss_minor_p2",
       "heart": "none",
       "flag": "boss_dredge_hulk_defeated",
       "aliases": [
@@ -115,8 +115,8 @@
       "mini": false,
       "dungeon": "locks",
       "region": "locks_r12",
-      "music": "island2_boss_p1",
-      "music_p2": "island2_boss_p2",
+      "music": "isl2_boss_minor_p1",
+      "music_p2": "isl2_boss_minor_p2",
       "heart": "half",
       "flag": "boss_twin_lockmasters_defeated",
       "aliases": [
@@ -133,8 +133,8 @@
       "mini": true,
       "dungeon": "leviathan",
       "region": "leviathan_r4",
-      "music": "island2_boss_p1",
-      "music_p2": "island2_boss_p2",
+      "music": "isl2_boss_minor_p1",
+      "music_p2": "isl2_boss_minor_p2",
       "heart": "none",
       "flag": "boss_gullet_lamprey_defeated",
       "aliases": [
@@ -152,8 +152,8 @@
       "mini": false,
       "dungeon": "undertow",
       "region": "cave_undertow_maw",
-      "music": "island2_boss_p1",
-      "music_p2": "island2_boss_p2",
+      "music": "superboss_a",
+      "music_p2": "superboss_a",
       "heart": "full",
       "flag": "boss_undertow_defeated",
       "aliases": [

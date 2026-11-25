@@ -31,6 +31,8 @@ const TINY_REGIONS: Dictionary = {
 
 const TURN_KEYS: Array[String] = ["ISL3_HUD_MOSS", "ISL3_HUD_SILK", "ISL3_HUD_CROWN"]
 
+static var active_instance: LxIsland3Rule = null
+
 
 class Island3HudOverlay:
 	extends CanvasLayer
@@ -165,6 +167,7 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_state = state if state != null else Lx.state
 	_vars = Lx.vars
 	_attached = true
+	active_instance = self
 	_ensure_defaults()
 	if _events != null and not _events.region_entered.is_connected(_on_region_entered):
 		_events.region_entered.connect(_on_region_entered)
@@ -186,6 +189,8 @@ func detach() -> void:
 	_active_region_id = ""
 	_active_clearing = ""
 	_attached = false
+	if active_instance == self:
+		active_instance = null
 
 
 func _attach_hud() -> void:

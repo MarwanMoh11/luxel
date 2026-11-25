@@ -69,7 +69,7 @@ static func sync_hub_layers(region_id: String = "") -> void:
 			if en_v is Array:
 				for id_v: Variant in (en_v as Array):
 					var it: LxInteractable = Lx.world.find_interactable(str(id_v))
-					if it != null:
+					if is_instance_valid(it):
 						it.active = matched
 						it.visible = matched
 

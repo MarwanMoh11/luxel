@@ -73,6 +73,26 @@
       "route": [],
       "zone": "lh_r12",
       "leash": 120
+    },
+    {
+      "id": "skate_lh_r12_1",
+      "kind": "reef_skate",
+      "pos": [
+        368,
+        232
+      ],
+      "route": [
+        [
+          328,
+          232
+        ],
+        [
+          392,
+          232
+        ]
+      ],
+      "zone": "lh_r12",
+      "leash": 120
     }
   ],
   "interactables": [
@@ -173,6 +193,20 @@
           "well_lh_r12_f1"
         ],
         "sets_flag": "relay_f1"
+      }
+    },
+    {
+      "id": "chest_lh_r12",
+      "kind": "chest",
+      "pos": [
+        368,
+        264
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "zone": "lh_r12"
       }
     },
     {

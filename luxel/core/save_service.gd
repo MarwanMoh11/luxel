@@ -12,10 +12,14 @@ const OBSIDIAN_SEAL_IDS: Array[String] = [
 	"seal_spire_r5", "seal_spire_r9", "seal_8_g3", "seal_sanctum_r5",
 ]
 
+signal save_failed(reason: String)
+
 var debug_mode: bool = false
 var settings: Dictionary = {}
 var last_load_used_backup: bool = false
 var last_notice_key: String = ""
+var last_save_failed: bool = false
+var last_save_error: String = ""
 
 var _debounce_timer: float = -1.0
 var _pending_slot: int = -1
@@ -24,6 +28,8 @@ var _io_thread: Thread = null
 var _io_mutex: Mutex = Mutex.new()
 var _io_queue: Array[Dictionary] = []
 var _io_running: bool = false
+var _io_failed_pending: bool = false
+var _io_error_msg: String = ""
 
 
 func _init() -> void:
@@ -129,6 +135,7 @@ func tick_autosave(dt: float) -> void:
 			if sl > 0 and st != null and is_instance_valid(st):
 				_dispatch_async_write(slot_path(sl), _snapshot_state_fast(st))
 	_reap_finished_thread()
+	_poll_io_error()
 
 
 func flush_pending() -> void:
@@ -144,6 +151,7 @@ func flush_pending() -> void:
 			_io_thread.wait_to_finish()
 		_io_thread = null
 		_io_running = false
+	_poll_io_error()
 
 
 func _snapshot_state_fast(state: LxGameState) -> Dictionary:
@@ -156,7 +164,7 @@ func _snapshot_state_fast(state: LxGameState) -> Dictionary:
 		"room_anchor_region": state.room_anchor_region,
 		"room_anchor_pos": [state.room_anchor_pos.x, state.room_anchor_pos.y],
 		"last_waystone_island": state.last_waystone_island, "last_waystone_id": state.last_waystone_id,
-		"max_hearts": state.max_hearts, "hearts": state.hearts,
+		"max_hearts": state.max_hearts, "hearts": state.hearts, "spare_wick_ready": state.spare_wick_ready,
 		"ember_pieces": state.ember_pieces, "half_lanterns": state.half_lanterns, "shards": state.shards,
 		"unlocked_moves": state.unlocked_moves.duplicate(), "upgrades": state.upgrades.duplicate(),
 		"lit_waystones": state.lit_waystones.duplicate(), "lit_beacons": state.lit_beacons.duplicate(),
@@ -176,7 +184,9 @@ func _dispatch_async_write(user_path: String, data: Dictionary) -> bool:
 	_ensure_dir()
 	var abs_target: String = ProjectSettings.globalize_path(user_path)
 	if OS.has_feature("web"):
-		return _write_atomic_abs(abs_target, data)
+		var ok_web: bool = _write_atomic_abs(abs_target, data)
+		_record_sync_write_result(ok_web, abs_target)
+		return ok_web
 	_reap_finished_thread()
 	_io_mutex.lock()
 	# Coalesce multiple queued writes to the same slot file.
@@ -209,7 +219,40 @@ func _io_worker_loop() -> void:
 			return
 		var job: Dictionary = _io_queue.pop_front() as Dictionary
 		_io_mutex.unlock()
-		_write_atomic_abs(str(job["path"]), job["data"] as Dictionary)
+		var p: String = str(job["path"])
+		var ok: bool = _write_atomic_abs(p, job["data"] as Dictionary)
+		_io_mutex.lock()
+		if ok:
+			_io_failed_pending = false
+			_io_error_msg = ""
+		else:
+			_io_failed_pending = true
+			_io_error_msg = "write_failed:" + p.get_file()
+		_io_mutex.unlock()
+
+
+func _poll_io_error() -> void:
+	_io_mutex.lock()
+	var failed: bool = _io_failed_pending
+	var msg: String = _io_error_msg
+	_io_failed_pending = false
+	_io_mutex.unlock()
+	if failed:
+		last_save_failed = true
+		last_save_error = msg
+		last_notice_key = "NOTICE_SAVE_FAILED"
+		save_failed.emit(msg)
+
+
+func _record_sync_write_result(ok: bool, abs_target: String) -> void:
+	if ok:
+		last_save_failed = false
+		last_save_error = ""
+	else:
+		last_save_failed = true
+		last_save_error = "write_failed:" + abs_target.get_file()
+		last_notice_key = "NOTICE_SAVE_FAILED"
+		save_failed.emit(last_save_error)
 
 
 func _reap_finished_thread() -> void:
@@ -308,8 +351,11 @@ static func _normalize_save_dict(out: Dictionary) -> void:
 	var has_obsidian_seal: bool = false
 	if out.get("broken_seals") is Array:
 		for s_v: Variant in (out["broken_seals"] as Array):
-			if OBSIDIAN_SEAL_IDS.has(str(s_v)):
+			var ss: String = str(s_v)
+			var tail: String = ss.get_slice(":", 2) if ss.count(":") >= 2 else ss
+			if OBSIDIAN_SEAL_IDS.has(ss) or OBSIDIAN_SEAL_IDS.has(tail):
 				has_obsidian_seal = true
+	_migrate_door_keys(out)
 	var sf: Dictionary = out["story_flags"] as Dictionary if out.get("story_flags") is Dictionary else {}
 	out["story_flags"] = sf
 	if not (out.get("world_vars") is Dictionary):
@@ -333,6 +379,49 @@ static func _normalize_save_dict(out: Dictionary) -> void:
 		sf["tut_vent_dashed"] = true
 
 
+static func _migrate_door_keys(out: Dictionary) -> void:
+	# Qualify bare opened_doors / broken_seals using interactable_states ("isl:reg:id") so
+	# legacy saves stay playable without pre-opening same-named doors in other dungeons.
+	var istates: Dictionary = out["interactable_states"] as Dictionary if out.get("interactable_states") is Dictionary else {}
+	var by_bare_open: Dictionary = {}
+	var by_bare_seal: Dictionary = {}
+	for k_v: Variant in istates.keys():
+		var ks: String = str(k_v)
+		if ks.count(":") < 2 or not (istates[k_v] is Dictionary):
+			continue
+		var st_d: Dictionary = istates[k_v] as Dictionary
+		var bare: String = ks.substr(ks.find(":", ks.find(":") + 1) + 1)
+		if bare.is_empty():
+			continue
+		if st_d.get("opened") is bool and bool(st_d["opened"]):
+			var arr_o: Array = by_bare_open.get(bare, []) as Array
+			if not arr_o.has(ks): arr_o.append(ks)
+			by_bare_open[bare] = arr_o
+		if (st_d.get("shattered") is bool and bool(st_d["shattered"])) or (st_d.get("opened") is bool and bool(st_d["opened"])):
+			var arr_s: Array = by_bare_seal.get(bare, []) as Array
+			if not arr_s.has(ks): arr_s.append(ks)
+			by_bare_seal[bare] = arr_s
+	for field_map: Array in [["opened_doors", by_bare_open], ["broken_seals", by_bare_seal]]:
+		var fname: String = str(field_map[0])
+		var lookup: Dictionary = field_map[1] as Dictionary
+		if not (out.get(fname) is Array):
+			continue
+		var migrated: Array = []
+		for item_v: Variant in (out[fname] as Array):
+			var s: String = str(item_v)
+			if s.is_empty():
+				continue
+			if s.contains(":"):
+				if not migrated.has(s): migrated.append(s)
+			elif lookup.has(s):
+				for qk: Variant in (lookup[s] as Array):
+					var qks: String = str(qk)
+					if not migrated.has(qks): migrated.append(qks)
+			else:
+				if not migrated.has(s): migrated.append(s)
+		out[fname] = migrated
+
+
 static func _is_valid_save_dict(d: Dictionary) -> bool:
 	return d.has("version") and d.has("island_id")
 
@@ -345,6 +434,7 @@ static func default_settings() -> Dictionary:
 		"sfx_vol": 0.9,
 		"ambience_vol": 0.65,
 		"mute_unfocus": true,
+		"next_light_cue": true,
 		"fullscreen": false,
 		"window_scale": 3,
 		"screen_shake": 100,
@@ -397,7 +487,10 @@ func save_settings() -> bool:
 
 func _write_atomic_json(user_path: String, data: Dictionary) -> bool:
 	_ensure_dir()
-	return _write_atomic_abs(ProjectSettings.globalize_path(user_path), data)
+	var abs_p: String = ProjectSettings.globalize_path(user_path)
+	var ok: bool = _write_atomic_abs(abs_p, data)
+	_record_sync_write_result(ok, abs_p)
+	return ok
 
 
 static func _write_atomic_abs(abs_target: String, data: Dictionary) -> bool:

@@ -7,6 +7,7 @@ extends LxToy
 ## relay (bool), echo_delay (float, default 1.4), echo_enabled (bool), target_id/target_ids.
 
 const DEFAULT_ECHO_DELAY: float = 1.4
+const MAX_WAVES: int = 12
 
 var tone: String = "dawn"
 var wave_radius: float = 176.0
@@ -176,6 +177,11 @@ func ring(is_echo_wave: bool = false, in_chain: PackedStringArray = PackedString
 	else:
 		add_child(wave)
 	wave.setup(pos, tone, region, wave_speed, wave_radius, id, is_echo_wave, in_chain)
+	if _waves.size() >= MAX_WAVES:
+		var old_w: LxRingWave = _waves[0]
+		if is_instance_valid(old_w):
+			old_w.queue_free()
+		_waves.remove_at(0)
 	_waves.append(wave)
 	var sfx_id: String = _tone_sfx(is_echo_wave)
 	_emit_sfx(sfx_id)

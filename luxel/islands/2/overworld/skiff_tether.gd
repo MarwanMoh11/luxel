@@ -40,18 +40,27 @@ func _cut_rope() -> bool:
 	if not active or cut:
 		return false
 	cut = true
-	_snap_t = 0.45
+	_snap_t = 0.65
 	set_powered(true)
 	emit_power(true)
 	if Lx.state != null:
 		Lx.state.story_flags["skiff_unlocked"] = true
 	_emit_sfx("harbor_creak")
 	_emit_sfx("switch_on")
-	_emit_gust(48.0, 32.0)
+	_emit_sfx("skiff_wake")
+	_emit_gust(54.0, 36.0)
 	if Lx.events != null:
+		Lx.events.shake_requested.emit(0.10)
 		if LxStrings.has_id("ISL2_SKIFF_CUT"):
-			Lx.events.narration_requested.emit("ISL2_SKIFF_CUT", "title", 3.4)
+			Lx.events.narration_requested.emit("ISL2_SKIFF_CUT", "title", 3.6)
 		Lx.events.save_requested.emit("skiff_unlocked")
+	if region != null and region.has_method("get_interactables"):
+		for it_v: Variant in region.call("get_interactables") as Array:
+			if it_v is LxVehicleSkiff and is_instance_valid(it_v as Object):
+				var sk: LxVehicleSkiff = it_v as LxVehicleSkiff
+				if sk.pos.distance_to(rope_to) <= 36.0:
+					sk.vel = Vector2(22.0, 0.0)
+					sk.queue_redraw()
 	queue_redraw()
 	return true
 

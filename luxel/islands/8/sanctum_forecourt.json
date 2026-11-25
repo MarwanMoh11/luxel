@@ -56,11 +56,7 @@
         160,
         240
       ],
-      "requires_flags": [
-        "beacon_8_1",
-        "beacon_8_2",
-        "beacon_8_3"
-      ]
+      "locked_door_id": "door_triple_eclipse_seal"
     },
     {
       "id": "exit_forecourt_to_toll",
@@ -147,9 +143,9 @@
           16
         ],
         "requires_flags": [
-          "beacon_8_1",
-          "beacon_8_2",
-          "beacon_8_3"
+          "toll_cleared",
+          "archive_cleared",
+          "stair_cleared"
         ]
       }
     },
@@ -485,7 +481,10 @@
       "flags": [
         "beacon_8_1",
         "beacon_8_2",
-        "beacon_8_3"
+        "beacon_8_3",
+        "toll_cleared",
+        "archive_cleared",
+        "stair_cleared"
       ]
     },
     "solution": [

@@ -101,9 +101,9 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 	var ctx: Node = world_ctx if world_ctx != null else (_world_ctx if _world_ctx != null else Lx.world)
 	var data: Dictionary = get_data()
 	var max_range: float = float(data.get("range", 220.0))
-	var width_px: float = float(data.get("width", 6.0))
+	var width_px: float = Lx.state.get_effective_beam_width() if Lx.state != null else float(data.get("width", 6.0))
 	var half_w: float = width_px * 0.5
-	var dmg: float = float(data.get("damage", 2.5))
+	var dmg: float = Lx.state.get_effective_beam_damage() if Lx.state != null else float(data.get("damage", 2.5))
 	var wear: float = float(data.get("shield_wear", 3.0))
 	var empowered: bool = wick.move_dash != null and wick.move_dash.consume_counter()
 	if empowered:
@@ -196,7 +196,7 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 		)
 
 		for e_var: Variant in enemies:
-			if not (e_var is Object):
+			if not is_instance_valid(e_var) or not (e_var is Object):
 				continue
 			var enemy: Object = e_var as Object
 			if not wick.is_entity_alive(enemy):
@@ -218,10 +218,10 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 						wick.spawn_sparks(epos, s_dir, 6, LxWick.PAL_ICE, 34.0, 96.0, 0.20)
 
 		for it_var: Variant in inters:
-			if not (it_var is Object):
+			if not is_instance_valid(it_var) or not (it_var is Object):
 				continue
 			var item: Object = it_var as Object
-			if not is_instance_valid(item) or not item.has_method("on_hit"):
+			if not item.has_method("on_hit"):
 				continue
 			if item.get("active") is bool and not bool(item.get("active")):
 				continue
@@ -299,7 +299,7 @@ func fire_instant_beam(world_ctx: Node = null) -> bool:
 		LxDarknessLayer.active_instance.add_burst_light(end_p, 78.0 if empowered else 64.0, bi_b, 0.30)
 	if Lx.world != null and is_instance_valid(Lx.world):
 		var amb: Variant = Lx.world.get("_ambient_life")
-		if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
+		if is_instance_valid(amb) and amb is Object and (amb as Object).has_method("_gust_particles"):
 			(amb as Object).call("_gust_particles", start_p, 56.0, 72.0)
 			(amb as Object).call("_gust_particles", end_p, 52.0, 84.0)
 	wick.emit_sfx("beam_fire", start_p, false)
