@@ -86,7 +86,50 @@
       "locked_door_id": "door_r11_north"
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "moth_r11_w",
+      "kind": "toll_moth",
+      "pos": [
+        232,
+        184
+      ],
+      "route": [],
+      "perches": [
+        [
+          232,
+          184
+        ],
+        [
+          216,
+          232
+        ]
+      ],
+      "zone": "belfry_mainspring",
+      "leash": 115
+    },
+    {
+      "id": "owl_r11_e",
+      "kind": "owl",
+      "pos": [
+        344,
+        184
+      ],
+      "route": [],
+      "perches": [
+        [
+          344,
+          184
+        ],
+        [
+          352,
+          232
+        ]
+      ],
+      "zone": "belfry_mainspring",
+      "leash": 115
+    }
+  ],
   "interactables": [
     {
       "id": "ws_belfry_f2",
@@ -174,6 +217,27 @@
       "props": {
         "string_id": "ISL1_BF_LORE_R11",
         "icon": "clock"
+      }
+    },
+    {
+      "id": "shrine_r11_rest",
+      "kind": "rest_shrine",
+      "pos": [
+        288,
+        176
+      ],
+      "props": {}
+    },
+    {
+      "id": "chest_r11_west",
+      "kind": "chest",
+      "pos": [
+        40,
+        168
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
       }
     },
     {
@@ -381,9 +445,9 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Controlling a world-var rotating central hub bridge via Dawn (CW) and War (CCW) bells.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 50,
-    "reward": "f2_hub+mainspring_tease",
+    "reward": "f2_hub+mainspring_tease+25sh",
     "why": "Multi-level Clockwork Hub #2 connecting F1 Lift (r5), West Drum (r10), East Pendulum Wing (r12/r13), and F3 Shaft (r14).",
     "start": {
       "vars": {
@@ -398,6 +462,10 @@
           288,
           224
         ]
+      },
+      {
+        "op": "clear",
+        "timeout": 22.0
       },
       {
         "op": "interact",

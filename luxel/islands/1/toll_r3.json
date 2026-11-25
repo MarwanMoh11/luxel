@@ -112,6 +112,27 @@
       ],
       "zone": "toll_snag",
       "leash": 150
+    },
+    {
+      "id": "snuffer_toll_r3_n",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        224,
+        40
+      ],
+      "route": [
+        [
+          168,
+          40
+        ],
+        [
+          280,
+          40
+        ]
+      ],
+      "perches": [],
+      "zone": "toll_snag",
+      "leash": 140
     }
   ],
   "interactables": [
@@ -256,6 +277,30 @@
       ],
       "props": {
         "auto": true
+      }
+    },
+    {
+      "id": "chest_toll_r3",
+      "kind": "chest",
+      "pos": [
+        152,
+        40
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_toll_r3",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        312
+      ],
+      "props": {
+        "string_id": "ISL1_TOLL_LORE_SNAG",
+        "icon": "gear"
       }
     },
     {
@@ -416,6 +461,40 @@
   ],
   "events": [
     {
+      "id": "ev_toll_r3_snap_w",
+      "on": "signal:lock_toll_r3_w",
+      "once": true,
+      "do": [
+        {
+          "shake": 0.16
+        },
+        {
+          "wave": [
+            {
+              "id": "snuffer_tr3_rein",
+              "kind": "snuffer_acolyte",
+              "pos": [
+                184,
+                56
+              ],
+              "zone": "toll_snag",
+              "leash": 150
+            },
+            {
+              "id": "moth_tr3_rein",
+              "kind": "toll_moth",
+              "pos": [
+                320,
+                104
+              ],
+              "zone": "toll_snag",
+              "leash": 160
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "ev_snag_cut",
       "on": "signal:gate_toll_r3",
       "once": true,
@@ -438,16 +517,20 @@
   ],
   "triggers": [],
   "design": {
-    "idea": "The falling bell snags on a colossal spinning escapement gear; freeze the central spinner with Dusk, clear the perches, and shatter both coral Chain-Locks with War Bells (or Toll Moths) to resume the plunge.",
+    "idea": "The falling bell snags on a colossal spinning escapement gear; freeze the central spinner with Dusk, clear the perches and north Snuffer, snap the west Chain-Lock triggering a reinforcement wave, and shatter the east Chain-Lock to resume the plunge.",
     "kind": "setpiece",
     "beat": "ten",
     "teaches": "Combining Dusk motion-freeze with War structural shattering on a live gear arena.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 60,
-    "reward": "toll_snag_cut",
+    "reward": "toll_snag_cut+25sh",
     "why": "Mid-plunge pacing break turning the vertical fall into a tactical multi-flank combat-puzzle.",
     "exit": "exit_toll_r3_drop",
     "solution": [
+      {
+        "op": "interact",
+        "target": "lore_toll_r3"
+      },
       {
         "op": "shoot",
         "from": [
@@ -465,7 +548,7 @@
       },
       {
         "op": "clear",
-        "timeout": 18.0
+        "timeout": 28.0
       },
       {
         "op": "shoot",
@@ -491,11 +574,8 @@
         "target": "bell_toll_r3_w1"
       },
       {
-        "op": "goto",
-        "to": [
-          224,
-          224
-        ]
+        "op": "clear",
+        "timeout": 20.0
       },
       {
         "op": "shoot",

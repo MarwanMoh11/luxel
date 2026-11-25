@@ -87,6 +87,48 @@
       "perches": [],
       "zone": "toll_brake",
       "leash": 180
+    },
+    {
+      "id": "moth_toll_r4_w",
+      "kind": "toll_moth",
+      "pos": [
+        80,
+        120
+      ],
+      "route": [],
+      "perches": [
+        [
+          80,
+          120
+        ],
+        [
+          112,
+          152
+        ]
+      ],
+      "zone": "toll_brake",
+      "leash": 180
+    },
+    {
+      "id": "moth_toll_r4_e",
+      "kind": "toll_moth",
+      "pos": [
+        336,
+        120
+      ],
+      "route": [],
+      "perches": [
+        [
+          336,
+          120
+        ],
+        [
+          304,
+          152
+        ]
+      ],
+      "zone": "toll_brake",
+      "leash": 180
     }
   ],
   "interactables": [
@@ -257,6 +299,30 @@
       ],
       "props": {
         "auto": true
+      }
+    },
+    {
+      "id": "chest_toll_r4",
+      "kind": "chest",
+      "pos": [
+        120,
+        392
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "lore_toll_r4",
+      "kind": "lore_stone",
+      "pos": [
+        264,
+        392
+      ],
+      "props": {
+        "string_id": "ISL1_TOLL_LORE_BRAKE",
+        "icon": "bell"
       }
     },
     {
@@ -431,6 +497,37 @@
   ],
   "events": [
     {
+      "id": "ev_toll_r4_brake_wave",
+      "on": "signal:bell_toll_r4_d1",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "moth_tr4_bw1",
+              "kind": "toll_moth",
+              "pos": [
+                160,
+                176
+              ],
+              "zone": "toll_brake",
+              "leash": 180
+            },
+            {
+              "id": "moth_tr4_bw2",
+              "kind": "toll_moth",
+              "pos": [
+                256,
+                176
+              ],
+              "zone": "toll_brake",
+              "leash": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "ev_brake_done",
       "on": "flag:great_toll_done",
       "once": true,
@@ -450,13 +547,13 @@
   ],
   "triggers": [],
   "design": {
-    "idea": "Final arrestor plunge: weave twin pendulums, clear clinging Snuffers, and ring 3 Dawn Arrestor Bells to brake the bell and blow open the Belfry Base.",
+    "idea": "Final arrestor plunge: weave twin pendulums, clear clinging Snuffers and diving Toll Moths, survive the arrestor alarm wave while ringing 3 Dawn Arrestor Bells, and claim the crash-landing cache before entering Belfry Base.",
     "kind": "setpiece",
     "beat": "ketsu",
     "teaches": "High-tempo Dawn chord braking amidst pendulums and enemies, culminating in the crash into belfry_r1.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 55,
-    "reward": "great_toll_done+belfry_lift",
+    "reward": "great_toll_done+belfry_lift+30sh",
     "why": "Climax of the Great Toll set piece delivering the player directly into the Grand Belfry Narthex.",
     "exit": "exit_toll_r4_crash",
     "solution": [
@@ -470,7 +567,7 @@
       },
       {
         "op": "clear",
-        "timeout": 18.0
+        "timeout": 30.0
       },
       {
         "op": "shoot",
@@ -507,7 +604,11 @@
       {
         "op": "wait_until",
         "flag": "great_toll_done",
-        "timeout": 14.0
+        "timeout": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_toll_r4"
       },
       {
         "op": "expect_exit",

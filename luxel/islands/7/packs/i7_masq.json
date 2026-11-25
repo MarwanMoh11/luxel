@@ -37,7 +37,10 @@
       "music": "isl7_setpiece",
       "dark": true,
       "debug_only": true,
-      "map": [0, 3]
+      "map": [
+        0,
+        3
+      ]
     },
     "masq_r2": {
       "name_key": "ISL7_MASQ_R2",
@@ -45,7 +48,10 @@
       "music": "isl7_setpiece",
       "dark": true,
       "debug_only": true,
-      "map": [0, 2]
+      "map": [
+        0,
+        2
+      ]
     },
     "masq_r3": {
       "name_key": "ISL7_MASQ_R3",
@@ -53,7 +59,10 @@
       "music": "isl7_setpiece",
       "dark": true,
       "debug_only": true,
-      "map": [0, 1]
+      "map": [
+        0,
+        1
+      ]
     },
     "masq_r4": {
       "name_key": "ISL7_MASQ_R4",
@@ -61,7 +70,10 @@
       "music": "isl7_setpiece",
       "dark": true,
       "debug_only": true,
-      "map": [0, 0]
+      "map": [
+        0,
+        0
+      ]
     }
   },
   "strings": {
@@ -79,7 +91,15 @@
     "ISL7_MASQ_R4_BREACH": "THE ROSE WINDOW SHATTERS INTO THE SPIRE!"
   },
   "sfx": {
-    "masq_glass_crack": { "id": "hush_shatter", "pitch": 1.22, "db": -0.5 },
-    "masq_waltz_chime": { "id": "clockwork_chime", "pitch": 1.18, "db": -1.0 }
+    "masq_glass_crack": {
+      "id": "hush_shatter",
+      "pitch": 1.22,
+      "db": -0.5
+    },
+    "masq_waltz_chime": {
+      "id": "masq_waltz_shuffle",
+      "pitch": 1.08,
+      "db": -0.5
+    }
   }
 }

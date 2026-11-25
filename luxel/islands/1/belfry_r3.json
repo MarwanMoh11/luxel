@@ -148,6 +148,27 @@
       "perches": [],
       "zone": "belfry_gallery",
       "leash": 130
+    },
+    {
+      "id": "moth_r3_0",
+      "kind": "toll_moth",
+      "pos": [
+        232,
+        88
+      ],
+      "route": [],
+      "perches": [
+        [
+          232,
+          88
+        ],
+        [
+          264,
+          56
+        ]
+      ],
+      "zone": "belfry_gallery",
+      "leash": 125
     }
   ],
   "interactables": [
@@ -249,6 +270,18 @@
         "requires_moves": [
           "throw"
         ]
+      }
+    },
+    {
+      "id": "lore_r3_gallery",
+      "kind": "lore_stone",
+      "pos": [
+        40,
+        24
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R3",
+        "icon": "flame"
       }
     },
     {
@@ -375,18 +408,55 @@
       "phase": 0.0
     }
   ],
+  "events": [
+    {
+      "id": "ev_r3_brazier_rush",
+      "on": "signal:brazier_r3_a",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "snuffer_r3_rush",
+              "kind": "snuffer_acolyte",
+              "pos": [
+                280,
+                120
+              ],
+              "zone": "belfry_gallery",
+              "leash": 120
+            },
+            {
+              "id": "moth_r3_rush",
+              "kind": "toll_moth",
+              "pos": [
+                248,
+                56
+              ],
+              "zone": "belfry_gallery",
+              "leash": 120
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "is_2x2_room": true,
   "design": {
-    "idea": "Zip across the 4-tile Lantern Gallery chasm, hush the Snuffer Acolyte with the west Dusk Bell, clear the gallery, light both braziers for the East shutter, and ring the Dawn Bell to link North into the Escapement Stair (r9).",
+    "idea": "Zip across the 4-tile Lantern Gallery chasm, hush the Snuffer Acolyte and Toll Moth with the west Dusk Bell, clear the gallery, survive the brazier-lighting Snuffer rush while lighting both braziers for the East shutter, and ring the Dawn Bell north to r9.",
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Throw+Zip chasm crossing, Snuffer Acolyte disruption, and dual brazier/Dawn routing.",
-    "decisions": 6,
+    "decisions": 8,
     "expert_s": 50,
     "reward": "r3_shutter_open+open_r9",
     "why": "Deepened East Gallery teaching Throw+Zip while adding a loop north into the clockwork climb.",
     "exit": "exit_r3_east",
     "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r3_gallery"
+      },
       {
         "op": "shoot",
         "from": [
@@ -404,7 +474,7 @@
       },
       {
         "op": "clear",
-        "timeout": 18.0
+        "timeout": 26.0
       },
       {
         "op": "throw",

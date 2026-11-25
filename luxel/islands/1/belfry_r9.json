@@ -148,6 +148,48 @@
       ],
       "zone": "belfry_escapement",
       "leash": 150
+    },
+    {
+      "id": "snuffer_r9_0",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        72,
+        168
+      ],
+      "route": [
+        [
+          56,
+          144
+        ],
+        [
+          96,
+          200
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_escapement",
+      "leash": 140
+    },
+    {
+      "id": "warden_r9_e",
+      "kind": "warden",
+      "pos": [
+        408,
+        168
+      ],
+      "route": [
+        [
+          384,
+          144
+        ],
+        [
+          424,
+          200
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_escapement",
+      "leash": 140
     }
   ],
   "interactables": [
@@ -210,6 +252,30 @@
         ],
         "clear_zone": "belfry_escapement",
         "sets_flag": "belfry_r9_cleared"
+      }
+    },
+    {
+      "id": "chest_r9_shards",
+      "kind": "chest",
+      "pos": [
+        392,
+        248
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_r9_gear",
+      "kind": "lore_stone",
+      "pos": [
+        280,
+        280
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R9",
+        "icon": "gear"
       }
     },
     {
@@ -347,16 +413,48 @@
       "phase": 0.5
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "ev_r9_dusk_wave",
+      "on": "signal:bell_r9_dusk",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "moth_r9_rein",
+              "kind": "toll_moth",
+              "pos": [
+                240,
+                264
+              ],
+              "zone": "belfry_escapement",
+              "leash": 150
+            },
+            {
+              "id": "gh_r9_rein",
+              "kind": "grave_hand",
+              "pos": [
+                240,
+                48
+              ],
+              "zone": "belfry_escapement",
+              "leash": 130
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "triggers": [],
   "design": {
-    "idea": "Asymmetric crossroad combat chamber linking r8, r3, r4, and r10 across twin spinning gear islands; Dusk-freeze the gears and crack the Warden's shield via the Toll Moth's War burst.",
+    "idea": "Asymmetric crossroad combat chamber linking r8, r3, r4, and r10 across twin spinning gear islands; Dusk-freeze the gears, survive the Dusk reinforcement wave, and crack twin Wardens' shields via Toll Moth War bursts.",
     "kind": "combat",
     "beat": "sho",
-    "teaches": "Weaponizing a Toll Moth's War burst against a shielded Warden on gear-bridged crossroads.",
-    "decisions": 5,
+    "teaches": "Weaponizing a Toll Moth's War burst against shielded Wardens on gear-bridged crossroads.",
+    "decisions": 8,
     "expert_s": 50,
-    "reward": "belfry_r9_cleared+cycle1",
+    "reward": "belfry_r9_cleared+cycle1+25sh",
     "why": "Key 4-way clockwork junction creating 2 major Floor 1 cycles and ascending to Floor 2.",
     "exit": "exit_r9_north",
     "solution": [
@@ -377,7 +475,7 @@
       },
       {
         "op": "clear",
-        "timeout": 22.0
+        "timeout": 46.0
       },
       {
         "op": "expect",

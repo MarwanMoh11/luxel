@@ -83,6 +83,48 @@
       ],
       "zone": "belfry_chasm",
       "leash": 72
+    },
+    {
+      "id": "moth_r2_w",
+      "kind": "toll_moth",
+      "pos": [
+        104,
+        88
+      ],
+      "route": [],
+      "perches": [
+        [
+          104,
+          88
+        ],
+        [
+          184,
+          104
+        ]
+      ],
+      "zone": "belfry_chasm",
+      "leash": 110
+    },
+    {
+      "id": "snuffer_r2_c",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        208,
+        168
+      ],
+      "route": [
+        [
+          200,
+          152
+        ],
+        [
+          216,
+          184
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_chasm",
+      "leash": 84
     }
   ],
   "interactables": [
@@ -159,6 +201,30 @@
           16
         ],
         "persist": true
+      }
+    },
+    {
+      "id": "chest_r2_shards",
+      "kind": "chest",
+      "pos": [
+        56,
+        40
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lore_r2_chasm",
+      "kind": "lore_stone",
+      "pos": [
+        408,
+        72
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R2",
+        "icon": "bell"
       }
     },
     {
@@ -285,18 +351,45 @@
       "phase": 0.0
     }
   ],
+  "events": [
+    {
+      "id": "ev_r2_key_ambush",
+      "on": "flag:wick_key_1",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "moth_r2_amb",
+              "kind": "toll_moth",
+              "pos": [
+                208,
+                56
+              ],
+              "zone": "belfry_chasm",
+              "leash": 110
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "is_2x2_room": true,
   "design": {
-    "idea": "3-island chasm teaching Switch Eye bridge extension across an 8-tile un-zippable gap (D06 fixed), Flare Dash for Wick Key 1, and a center Dawn Bell unlocking the north Counterweight Well (r8).",
+    "idea": "3-island chasm teaching Switch Eye bridge extension across an 8-tile un-zippable gap (D06 fixed), clearing the Snuffer and Toll Moth for Flare Dash Wick Key 1 + NW shard cache, surviving the key-pickup moth ambush, and ringing the Dawn Bell north to r8.",
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Switch-Eye bridge extension, Dash gap crossing, and Dawn Ring Wave unlocking north paths.",
-    "decisions": 5,
+    "decisions": 8,
     "expert_s": 45,
-    "reward": "wick_key_1+open_r8",
+    "reward": "wick_key_1+open_r8+20sh",
     "why": "Deepened West Wing opening room preserving Wick Key 1 while opening the F1 West clockwork loop.",
     "exit": "exit_r2_north",
     "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r2_chasm"
+      },
       {
         "op": "shoot",
         "from": [
@@ -314,7 +407,7 @@
       },
       {
         "op": "clear",
-        "timeout": 12.0
+        "timeout": 24.0
       },
       {
         "op": "goto",

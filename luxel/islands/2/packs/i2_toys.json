@@ -10,37 +10,60 @@
   "state_vars": {
     "tide": {
       "scope": "island:2",
-      "values": ["ebb", "half", "flood"],
+      "values": [
+        "ebb",
+        "half",
+        "flood"
+      ],
       "default": "ebb"
     },
     "tower_tide": {
       "scope": "dungeon:lighthouse",
-      "values": ["low", "mid", "high"],
+      "values": [
+        "low",
+        "mid",
+        "high"
+      ],
       "default": "low"
     },
     "list": {
       "scope": "dungeon:galleon",
-      "values": ["port", "starboard"],
+      "values": [
+        "port",
+        "starboard"
+      ],
       "default": "port"
     },
     "lock_water": {
       "scope": "dungeon:locks",
-      "values": ["west_high", "east_high"],
+      "values": [
+        "west_high",
+        "east_high"
+      ],
       "default": "west_high"
     },
     "relay_f1": {
       "scope": "dungeon:lighthouse",
-      "values": [0, 1],
+      "values": [
+        0,
+        1
+      ],
       "default": 0
     },
     "relay_f2": {
       "scope": "dungeon:lighthouse",
-      "values": [0, 1],
+      "values": [
+        0,
+        1
+      ],
       "default": 0
     },
     "relay_f3": {
       "scope": "dungeon:lighthouse",
-      "values": [0, 1],
+      "values": [
+        0,
+        1
+      ],
       "default": 0
     }
   },
@@ -68,12 +91,65 @@
     "_proof_i2_1": {
       "name_key": "PROOF_I2_1_NAME",
       "debug_only": true,
-      "map": [0, 0]
+      "map": [
+        0,
+        0
+      ]
     },
     "_proof_i2_2": {
       "name_key": "PROOF_I2_2_NAME",
       "debug_only": true,
-      "map": [1, 0]
+      "map": [
+        1,
+        0
+      ]
+    }
+  },
+  "sfx": {
+    "skiff_recoil_pop": {
+      "id": "skiff_recoil_pop",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "skiff_hull_bump": {
+      "id": "skiff_hull_bump",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "skiff_dock": {
+      "id": "skiff_dock",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "skiff_wake": {
+      "id": "skiff_wake",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "skiff_wake_loop": {
+      "id": "skiff_wake",
+      "pitch": 1.0,
+      "db": -1.0
+    },
+    "tide_organ_ebb": {
+      "id": "tide_organ_ebb",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "tide_organ_half": {
+      "id": "tide_organ_half",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "tide_organ_flood": {
+      "id": "tide_organ_flood",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "water_level_sweep": {
+      "id": "water_level_sweep",
+      "pitch": 1.0,
+      "db": 0.0
     }
   }
 }

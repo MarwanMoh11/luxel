@@ -63,7 +63,71 @@
       "locked_door_id": "door_toll_r1_drop"
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "snuffer_toll_r1_w",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        88,
+        120
+      ],
+      "route": [
+        [
+          72,
+          120
+        ],
+        [
+          112,
+          168
+        ]
+      ],
+      "perches": [],
+      "zone": "toll_rigging",
+      "leash": 135
+    },
+    {
+      "id": "warden_toll_r1_e",
+      "kind": "warden",
+      "pos": [
+        272,
+        136
+      ],
+      "route": [
+        [
+          248,
+          120
+        ],
+        [
+          288,
+          168
+        ]
+      ],
+      "perches": [],
+      "zone": "toll_rigging",
+      "leash": 135
+    },
+    {
+      "id": "moth_toll_r1_n",
+      "kind": "toll_moth",
+      "pos": [
+        192,
+        72
+      ],
+      "route": [],
+      "perches": [
+        [
+          168,
+          72
+        ],
+        [
+          224,
+          72
+        ]
+      ],
+      "zone": "toll_rigging",
+      "leash": 145
+    }
+  ],
   "interactables": [
     {
       "id": "rig_toll_r1",
@@ -109,6 +173,42 @@
       "props": {
         "tone": "dawn",
         "wave_radius": 176
+      }
+    },
+    {
+      "id": "bell_toll_r1_w",
+      "kind": "bell",
+      "pos": [
+        288,
+        152
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 176
+      }
+    },
+    {
+      "id": "chest_toll_r1",
+      "kind": "chest",
+      "pos": [
+        56,
+        104
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_toll_r1",
+      "kind": "lore_stone",
+      "pos": [
+        136,
+        232
+      ],
+      "props": {
+        "string_id": "ISL1_TOLL_LORE_RIG",
+        "icon": "bell"
       }
     },
     {
@@ -280,19 +380,84 @@
       "phase": 0.6
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "ev_toll_r1_ambush",
+      "on": "flag:hollow_cameo_1",
+      "once": true,
+      "do": [
+        {
+          "shake": 0.2
+        },
+        {
+          "wave": [
+            {
+              "id": "moth_tr1_amb_w",
+              "kind": "toll_moth",
+              "pos": [
+                88,
+                104
+              ],
+              "zone": "toll_rigging",
+              "leash": 160
+            },
+            {
+              "id": "moth_tr1_amb_e",
+              "kind": "toll_moth",
+              "pos": [
+                296,
+                104
+              ],
+              "zone": "toll_rigging",
+              "leash": 160
+            },
+            {
+              "id": "snuffer_tr1_amb_s",
+              "kind": "snuffer_acolyte",
+              "pos": [
+                192,
+                232
+              ],
+              "zone": "toll_rigging",
+              "leash": 150
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "triggers": [],
   "design": {
-    "idea": "Hang the Stolen Clapper in the Great Bell rigging, triggering Hollow Wick's wordless violet bolt from the rafters that cuts the master cable and opens the shaft plunge.",
+    "idea": "Clear the rigging guards using the east War Bell and west Dawn Bell, claim the rigging cache, and hang the Stolen Clapper to trigger Hollow Wick's violet cable-cut and rafter ambush before plunging north.",
     "kind": "setpiece",
     "beat": "ki",
-    "teaches": "Establishes Hollow Wick as a wordless rival and launches the Great Toll descent.",
-    "decisions": 4,
-    "expert_s": 40,
-    "reward": "hollow_cameo_1",
+    "teaches": "Establishes Hollow Wick as a wordless rival and combines War/Dawn combat with an urgent post-cut plunge.",
+    "decisions": 8,
+    "expert_s": 45,
+    "reward": "hollow_cameo_1+25sh",
     "why": "Dramatic narrative launchpad from Belfry Forecourt into the plunging Great Toll shaft.",
     "exit": "exit_toll_r1_drop",
     "solution": [
+      {
+        "op": "interact",
+        "target": "lore_toll_r1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          168
+        ],
+        "target": "bell_toll_r1_w"
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_toll_r1"
+      },
       {
         "op": "shoot",
         "from": [

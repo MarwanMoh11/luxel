@@ -11,22 +11,81 @@
   "state_vars": {
     "world_face": {
       "scope": "island:7",
-      "values": ["silver", "black"],
+      "values": [
+        "silver",
+        "black"
+      ],
       "default": "silver"
     },
     "stolen_act": {
       "scope": "dungeon:theatre",
-      "values": ["none", "act1", "act2", "act3", "act4", "act5"],
+      "values": [
+        "none",
+        "act1",
+        "act2",
+        "act3",
+        "act4",
+        "act5"
+      ],
       "default": "none"
     }
   },
   "sfx": {
-    "moon_pool_flip": { "id": "phantom_phase", "pitch": 0.88, "db": -0.5 },
-    "mask_steal": { "id": "shadow_whisper", "pitch": 1.15, "db": 0.0 },
-    "mask_shatter": { "id": "shield_shatter", "pitch": 1.12, "db": 0.0 },
-    "cotillion_dim": { "id": "hush_pulse", "pitch": 0.92, "db": -1.5 },
-    "shadow_reunite": { "id": "great_lamp_bloom", "pitch": 1.08, "db": -1.0 },
-    "string_snap": { "id": "crystal_clank", "pitch": 1.24, "db": -1.0 }
+    "moon_pool_flip": {
+      "id": "moon_pool_silver",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "mask_steal": {
+      "id": "mask_steal",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "mask_shatter": {
+      "id": "mask_reclaim",
+      "pitch": 1.04,
+      "db": 0.0
+    },
+    "cotillion_dim": {
+      "id": "moon_pool_black",
+      "pitch": 0.94,
+      "db": -1.0
+    },
+    "shadow_reunite": {
+      "id": "mask_reclaim",
+      "pitch": 0.94,
+      "db": 0.0
+    },
+    "string_snap": {
+      "id": "silk_snap",
+      "pitch": 1.06,
+      "db": -0.5
+    },
+    "mask_reclaim": {
+      "id": "mask_reclaim",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "moon_pool_silver": {
+      "id": "moon_pool_silver",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "moon_pool_black": {
+      "id": "moon_pool_black",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "mirror_avatar_step": {
+      "id": "mirror_avatar_step",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "masq_waltz_shuffle": {
+      "id": "masq_waltz_shuffle",
+      "pitch": 1.0,
+      "db": 0.0
+    }
   },
   "strings": {
     "ISL7_HUD_SILVER": "SILVER",
@@ -54,12 +113,18 @@
     "_proof_i7_1": {
       "name_key": "ISL7_PROOF_1",
       "debug_only": true,
-      "map": [0, 0]
+      "map": [
+        0,
+        0
+      ]
     },
     "_proof_i7_2": {
       "name_key": "ISL7_PROOF_2",
       "debug_only": true,
-      "map": [1, 0]
+      "map": [
+        1,
+        0
+      ]
     }
   }
 }

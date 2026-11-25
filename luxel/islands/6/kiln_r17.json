@@ -65,7 +65,7 @@
     {
       "id": "mimic_r17",
       "kind": "mimic_statue",
-      "pos": [88, 152],
+      "pos": [88, 136],
       "props": { "mirror": "x", "size": [14, 14], "range": 215.0, "persist": true }
     },
     {
@@ -148,10 +148,10 @@
       { "op": "goto", "to": [304, 136], "tol": 4.0 },
       { "op": "push", "target": "glass_r17_blue", "to": [368, 136] },
       { "op": "wait_until", "target": "door_kiln_r17_mid", "prop": "opened", "value": true, "timeout": 3.5 },
-      { "op": "goto", "to": [184, 152], "tol": 3.0 },
+      { "op": "goto", "to": [184, 136], "tol": 3.0 },
       { "op": "goto", "to": [184, 24], "tol": 2.0 },
-      { "op": "goto", "to": [184, 74], "tol": 2.0 },
-      { "op": "goto", "to": [260, 74], "tol": 2.0 },
+      { "op": "goto", "to": [184, 72], "tol": 2.0 },
+      { "op": "goto", "to": [260, 72], "tol": 2.0 },
       { "op": "wait_until", "target": "door_kiln_r17_south", "prop": "opened", "value": true, "timeout": 3.5 },
       { "op": "goto", "to": [240, 32], "tol": 6.0 },
       { "op": "interact", "target": "chest_ember_6_kiln" },

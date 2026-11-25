@@ -34,8 +34,8 @@ func _init() -> void:
 	island_id = 4
 	is_miniboss = false
 	reward_heart = "half"
-	music_cue = "island4_boss_p1"
-	music_p2_cue = "island4_boss_p2"
+	music_cue = "isl4_boss_minor_p1"
+	music_p2_cue = "isl4_boss_minor_p2"
 	max_hp = 112.0
 	hp = 112.0
 	body_radius = 12.0
@@ -193,7 +193,7 @@ func _on_phase_enter(new_phase: int) -> void:
 		stage.set_tiles(world_ctx, Rect2i(16, 2, 1, 2), "water")
 		_weather = "rain"
 		if Lx.vars != null:
-			Lx.vars.set_var("dungeon:mausoleum", "weather", "rain")
+			Lx.vars.set_var("dungeon:rain_mausoleum", "weather", "rain")
 		stage.darkness_pulse(0.60, 0.95)
 		stage.shake(0.22)
 		stage.play_sfx("choir_organ_swell", pos)
@@ -325,13 +325,16 @@ func _cycle_local_weather() -> void:
 	var order: Array[String] = ["sun", "rain", "wind"]
 	_weather = order[(order.find(_weather) + 1) % order.size()]
 	if Lx.vars != null:
-		Lx.vars.set_var("dungeon:mausoleum", "weather", _weather)
+		Lx.vars.set_var("dungeon:rain_mausoleum", "weather", _weather)
 	stage.play_sfx("weather_shift_" + _weather, _wheel_pos)
 
 
 func _read_weather() -> String:
 	if Lx.vars != null:
-		var ws: String = str(Lx.vars.get_var("dungeon:mausoleum", "weather", "")).strip_edges().to_lower()
+		var reg_id: String = str(world_ctx.get("current_region_id")) if (world_ctx != null and is_instance_valid(world_ctx) and world_ctx.get("current_region_id") != null) else ""
+		var ws: String = str(Lx.vars.resolve_var("weather", island_id, reg_id, "")).strip_edges().to_lower()
+		if ws not in ["sun", "rain", "wind"]:
+			ws = str(Lx.vars.get_var("dungeon:rain_mausoleum", "weather", "")).strip_edges().to_lower()
 		if ws in ["sun", "rain", "wind"]:
 			return ws
 	return _weather

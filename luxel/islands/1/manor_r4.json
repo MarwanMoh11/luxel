@@ -154,6 +154,30 @@
       }
     },
     {
+      "id": "chest_mn_r4",
+      "kind": "chest",
+      "pos": [
+        320,
+        40
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lore_mn_r4",
+      "kind": "lore_stone",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "string_id": "ISL1_MN_LORE_R4",
+        "icon": "flame"
+      }
+    },
+    {
       "id": "door_r4_tunnel",
       "kind": "door",
       "pos": [
@@ -410,6 +434,37 @@
   ],
   "events": [
     {
+      "id": "ev_mn_r4_hearth_wave",
+      "on": "signal:bell_r4_war",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "moth_mn_r4_w",
+              "kind": "toll_moth",
+              "pos": [
+                344,
+                120
+              ],
+              "zone": "mn_kitchen",
+              "leash": 150
+            },
+            {
+              "id": "snuffer_mn_r4_w",
+              "kind": "snuffer_acolyte",
+              "pos": [
+                248,
+                280
+              ],
+              "zone": "mn_kitchen",
+              "leash": 150
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "mn_r4_tunnel_msg",
       "on": "signal:sw_r4_tunnel",
       "once": true,
@@ -424,13 +479,13 @@
     }
   ],
   "design": {
-    "idea": "Reverse instinct: let the Snuffer Acolyte or Dusk Valve douse the blazing hearth holding the Shadow Gate shut, unmask the kitchen mimic with War, and hang your lantern to slip into the Valet's Workshop.",
+    "idea": "Reverse instinct: unmask the kitchen mimic with War while weathering the pantry alarm wave, douse the blazing hearth holding the Shadow Gate shut, claim the north pantry chest, and hang your lantern to slip into the Valet's Workshop.",
     "kind": "combat",
     "beat": "sho",
     "teaches": "Ambient hearths seal Shadow Gates; Dusk bells douse hearths and War bells unmask Pew Mimics and crack Butler hoods.",
-    "decisions": 6,
+    "decisions": 8,
     "expert_s": 50,
-    "reward": "manor_tunnel_open+open_r5",
+    "reward": "manor_tunnel_open+open_r5+20sh",
     "why": "Combines stealth-brawl combat with reverse-instinct light dousing and unlocks the Midnight Garden tunnel.",
     "exit": "exit_r4_east",
     "solution": [

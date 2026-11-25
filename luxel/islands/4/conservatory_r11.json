@@ -86,11 +86,11 @@
         120
       ],
       "props": {
-        "radius": 24,
+        "radius": 26,
         "on": true,
         "dir": [
-          1,
-          -1
+          0,
+          0
         ],
         "boost_mult": 1.25
       }
@@ -99,16 +99,16 @@
       "id": "wind_c4_r11",
       "kind": "wind_zone",
       "pos": [
-        240,
-        96
+        248,
+        84
       ],
       "props": {
         "size": [
-          64,
-          48
+          48,
+          32
         ],
         "dir": "e",
-        "strength": 1200
+        "strength": 900
       }
     },
     {

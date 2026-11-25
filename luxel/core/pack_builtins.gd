@@ -79,6 +79,11 @@ static func seed_registry(reg: LxPackRegistry) -> void:
 			for extra_r: String in ["oak_r2b", "oak_r4b", "oak_r5b", "oak_r6b", "oak_r7b", "oak_r8b", "oak_r9b", "oak_r9c"]:
 				if not regs.has(extra_r):
 					regs.append(extra_r)
+		elif isl == 4 and did == "conservatory":
+			for n: int in range(11, 19):
+				var extra_r4: String = "conservatory_r%d" % n
+				if not regs.has(extra_r4):
+					regs.append(extra_r4)
 		regs.sort_custom(_sort_room_names)
 		var entry_r: String = regs[0] if not regs.is_empty() else (pref + "r1")
 		reg._dungeons[did] = {

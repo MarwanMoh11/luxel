@@ -128,10 +128,10 @@
         200
       ],
       "props": {
-        "radius": 24,
+        "radius": 26,
         "on": true,
         "dir": [
-          -1,
+          0,
           0
         ],
         "boost_mult": 1.25
@@ -145,10 +145,10 @@
         200
       ],
       "props": {
-        "radius": 24,
+        "radius": 26,
         "on": true,
         "dir": [
-          -1,
+          0,
           0
         ],
         "boost_mult": 1.25

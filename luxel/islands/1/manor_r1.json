@@ -161,6 +161,15 @@
       }
     },
     {
+      "id": "shrine_mn_r1_rest",
+      "kind": "rest_shrine",
+      "pos": [
+        312,
+        296
+      ],
+      "props": {}
+    },
+    {
       "id": "portrait_r1_butler",
       "kind": "lying_portrait",
       "pos": [
@@ -583,7 +592,7 @@
     "kind": "story",
     "beat": "ki",
     "teaches": "The three suspect portraits watch the foyer while West Dining and East Kitchen invite free-order exploration.",
-    "decisions": 4,
+    "decisions": 5,
     "expert_s": 40,
     "reward": "waystone+3_portraits_tease",
     "why": "Central architectural hub of The Bellmaker's Manor connecting every wing and shortcut loop.",

@@ -21,7 +21,7 @@
         "leash_radius": 0.0,
         "notice_radius": 180.0,
         "tell_time": 0.52,
-        "recover_time": 1.10,
+        "recover_time": 1.1,
         "shard_drop": 22,
         "attack_damage": 1.0,
         "is_boss": true
@@ -51,7 +51,7 @@
         "leash_radius": 0.0,
         "notice_radius": 180.0,
         "tell_time": 0.55,
-        "recover_time": 1.20,
+        "recover_time": 1.2,
         "shard_drop": 22,
         "attack_damage": 1.0,
         "is_boss": true
@@ -107,7 +107,9 @@
     "thread_keeper": {
       "island": 3,
       "name_key": "ISL3_BOSS_KEEPER",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "loom",
       "region": "loom_r6",
@@ -120,7 +122,10 @@
     "loom_widow": {
       "island": 3,
       "name_key": "ISL3_BOSS_WIDOW",
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "loom",
       "region": "loom_r11",
@@ -133,7 +138,9 @@
     "knight_taproot": {
       "island": 3,
       "name_key": "ISL3_BOSS_TAPROOT",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "briar_court",
       "region": "court_r2",
@@ -146,7 +153,9 @@
     "knight_spindle": {
       "island": 3,
       "name_key": "ISL3_BOSS_SPINDLE",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "briar_court",
       "region": "court_r3",
@@ -159,7 +168,9 @@
     "briar_arbiter": {
       "island": 3,
       "name_key": "ISL3_BOSS_ARBITER",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": false,
       "dungeon": "briar_court",
       "region": "court_r4",
@@ -172,7 +183,10 @@
     "mother_root": {
       "island": 3,
       "name_key": "ISL3_BOSS_MOTHER",
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "",
       "region": "sb_mother_root",
@@ -184,26 +198,110 @@
     }
   },
   "sfx": {
-    "tk_loom_clack": { "id": "clockwork_chime", "pitch": 0.86, "db": -1.0 },
-    "tk_shuttle_zip": { "id": "zip_streak", "pitch": 1.12, "db": -1.0 },
-    "tk_silk_needle": { "id": "star_lance", "pitch": 1.24, "db": -2.0 },
-    "tk_wood_unspool": { "id": "harbor_creak", "pitch": 1.14, "db": -1.0 },
-    "lw_widow_plucks": { "id": "prop_chime", "pitch": 0.78, "db": -1.0 },
-    "lw_spoke_ignite": { "id": "web_burn", "pitch": 1.06, "db": 0.0 },
-    "lw_widow_drop_thud": { "id": "bell_slam", "pitch": 0.86, "db": 0.5 },
-    "lw_silk_choir_die": { "id": "boss_victory", "pitch": 0.94, "db": 0.0 },
-    "kt_court_horn": { "id": "boss_awaken", "pitch": 1.14, "db": -1.0 },
-    "kt_beetle_gallop": { "id": "golem_stomp", "pitch": 1.22, "db": -2.0 },
-    "kt_lance_crack": { "id": "shield_shatter", "pitch": 1.08, "db": 0.0 },
-    "ks_tether_whip": { "id": "zip_streak", "pitch": 1.22, "db": -1.0 },
-    "ks_spindle_ring": { "id": "clockwork_chime", "pitch": 1.18, "db": -1.5 },
-    "ks_unhorse_thud": { "id": "heavy_hit", "pitch": 0.90, "db": 0.5 },
-    "ba_court_gavel": { "id": "bell_slam", "pitch": 0.80, "db": 0.5 },
-    "ba_scale_clang": { "id": "shield_clang", "pitch": 0.88, "db": 0.0 },
-    "ba_seed_verdict": { "id": "dawn_burst", "pitch": 1.06, "db": -0.5 },
-    "mr_mother_groan": { "id": "boss_matron_roar", "pitch": 0.78, "db": 0.5 },
-    "mr_bark_seal": { "id": "stone_break", "pitch": 0.74, "db": 0.5 },
-    "mr_heart_pulse_tiny": { "id": "hush_pulse", "pitch": 0.76, "db": -1.0 },
-    "mr_canopy_bloom": { "id": "great_lamp_bloom", "pitch": 1.02, "db": 0.0 }
+    "tk_loom_clack": {
+      "id": "clockwork_chime",
+      "pitch": 0.86,
+      "db": -1.0
+    },
+    "tk_shuttle_zip": {
+      "id": "zip_streak",
+      "pitch": 1.12,
+      "db": -1.0
+    },
+    "tk_silk_needle": {
+      "id": "star_lance",
+      "pitch": 1.24,
+      "db": -2.0
+    },
+    "tk_wood_unspool": {
+      "id": "wood_shift",
+      "pitch": 1.12,
+      "db": -1.0
+    },
+    "lw_widow_plucks": {
+      "id": "silk_snap",
+      "pitch": 0.86,
+      "db": -0.5
+    },
+    "lw_spoke_ignite": {
+      "id": "silk_spark_run",
+      "pitch": 0.96,
+      "db": 0.0
+    },
+    "lw_widow_drop_thud": {
+      "id": "bell_slam",
+      "pitch": 0.86,
+      "db": 0.5
+    },
+    "lw_silk_choir_die": {
+      "id": "boss_victory",
+      "pitch": 0.94,
+      "db": 0.0
+    },
+    "kt_court_horn": {
+      "id": "boss_awaken",
+      "pitch": 1.14,
+      "db": -1.0
+    },
+    "kt_beetle_gallop": {
+      "id": "beetle_hoof",
+      "pitch": 0.92,
+      "db": 0.5
+    },
+    "kt_lance_crack": {
+      "id": "shield_shatter",
+      "pitch": 1.08,
+      "db": 0.0
+    },
+    "ks_tether_whip": {
+      "id": "zip_streak",
+      "pitch": 1.22,
+      "db": -1.0
+    },
+    "ks_spindle_ring": {
+      "id": "clockwork_chime",
+      "pitch": 1.18,
+      "db": -1.5
+    },
+    "ks_unhorse_thud": {
+      "id": "heavy_hit",
+      "pitch": 0.9,
+      "db": 0.5
+    },
+    "ba_court_gavel": {
+      "id": "bell_slam",
+      "pitch": 0.8,
+      "db": 0.5
+    },
+    "ba_scale_clang": {
+      "id": "shield_clang",
+      "pitch": 0.88,
+      "db": 0.0
+    },
+    "ba_seed_verdict": {
+      "id": "seed_bloom",
+      "pitch": 0.96,
+      "db": 0.0
+    },
+    "mr_mother_groan": {
+      "id": "boss_matron_roar",
+      "pitch": 0.78,
+      "db": 0.5
+    },
+    "mr_bark_seal": {
+      "id": "stone_break",
+      "pitch": 0.74,
+      "db": 0.5
+    },
+    "mr_heart_pulse_tiny": {
+      "id": "hush_pulse",
+      "pitch": 0.76,
+      "db": -1.0
+    },
+    "mr_canopy_bloom": {
+      "id": "great_lamp_bloom",
+      "pitch": 1.02,
+      "db": 0.0
+    }
   }
 }

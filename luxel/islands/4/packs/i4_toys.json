@@ -23,27 +23,51 @@
   "state_vars": {
     "dusk_hour": {
       "scope": "island:4",
-      "values": [1, 2, 3, 4, 5, 6],
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
       "default": 1
     },
     "dusk_paused": {
       "scope": "island:4",
-      "values": [0, 1],
+      "values": [
+        0,
+        1
+      ],
       "default": 0
     },
     "weather": {
-      "scope": "dungeon:mausoleum",
-      "values": ["sun", "rain", "wind"],
+      "scope": "dungeon:rain_mausoleum",
+      "values": [
+        "sun",
+        "rain",
+        "wind"
+      ],
       "default": "rain"
     },
     "hg_room_hour": {
       "scope": "room:4:hourglass_r4",
-      "values": [1, 2, 3, 4],
+      "values": [
+        1,
+        2,
+        3,
+        4
+      ],
       "default": 1
     },
     "party_phase": {
-      "scope": "dungeon:party",
-      "values": ["scout", "heist", "escape", "done"],
+      "scope": "dungeon:garden_party",
+      "values": [
+        "scout",
+        "heist",
+        "escape",
+        "done"
+      ],
       "default": "scout"
     }
   },
@@ -54,24 +78,78 @@
     "clock_gate": "res://luxel/islands/4/toys/isl4_clock_gate.gd"
   },
   "sfx": {
-    "sundial_skip": { "id": "clockwork_chime", "pitch": 1.06, "db": -1.5 },
-    "weather_shift_sun": { "id": "dawn_burst", "pitch": 1.12, "db": -2.0 },
-    "weather_shift_rain": { "id": "marsh_splash", "pitch": 0.96, "db": -1.5 },
-    "weather_shift_wind": { "id": "wing_gale", "pitch": 1.08, "db": -1.0 },
-    "updraft_catch": { "id": "wing_gale", "pitch": 1.18, "db": -1.5 },
-    "clock_gate_warn": { "id": "clockwork_chime", "pitch": 0.92, "db": -3.5 },
-    "echo_annihilate": { "id": "prism_chain", "pitch": 1.08, "db": -0.5 }
+    "sundial_skip": {
+      "id": "dusk_clock_chime",
+      "pitch": 1.1,
+      "db": -1.0
+    },
+    "weather_shift_sun": {
+      "id": "weather_shift_sun",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "weather_shift_rain": {
+      "id": "weather_shift_rain",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "weather_shift_wind": {
+      "id": "weather_shift_wind",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "updraft_catch": {
+      "id": "updraft_catch",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "clock_gate_warn": {
+      "id": "dusk_clock_chime",
+      "pitch": 0.94,
+      "db": -2.0
+    },
+    "echo_annihilate": {
+      "id": "echo_rose_replay",
+      "pitch": 1.08,
+      "db": 0.0
+    },
+    "dusk_clock_chime": {
+      "id": "dusk_clock_chime",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "echo_rose_record": {
+      "id": "echo_rose_record",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "echo_rose_replay": {
+      "id": "echo_rose_replay",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "weather_wheel_turn": {
+      "id": "weather_wheel_turn",
+      "pitch": 1.0,
+      "db": 0.0
+    }
   },
   "regions": {
     "_proof_i4_1": {
       "name_key": "ISL4_PROOF_1_NAME",
       "debug_only": true,
-      "map": [0, 0]
+      "map": [
+        0,
+        0
+      ]
     },
     "_proof_i4_2": {
       "name_key": "ISL4_PROOF_2_NAME",
       "debug_only": true,
-      "map": [1, 0]
+      "map": [
+        1,
+        0
+      ]
     }
   }
 }

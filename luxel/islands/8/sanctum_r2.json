@@ -179,8 +179,8 @@
       "id": "emit_sanctum_r2_east",
       "kind": "beam_emitter",
       "pos": [
-        360,
-        120
+        168,
+        56
       ],
       "props": {
         "dir": "e",
@@ -192,8 +192,8 @@
       "id": "glass_sanctum_r2",
       "kind": "color_glass",
       "pos": [
-        392,
-        120
+        200,
+        56
       ],
       "props": {
         "color": "gold",
@@ -209,8 +209,8 @@
       "id": "sensor_sanctum_r2_east",
       "kind": "beam_sensor",
       "pos": [
-        424,
-        120
+        232,
+        56
       ],
       "props": {
         "color": "blue",

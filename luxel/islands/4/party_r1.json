@@ -32,12 +32,11 @@
         32,
         16
       ],
-      "to_region": "overworld",
+      "to_region": "ow_clock_terrace",
       "to_spawn": [
-        216,
-        560
+        288,
+        60
       ],
-      "one_way": true,
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""

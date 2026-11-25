@@ -160,6 +160,18 @@
       }
     },
     {
+      "id": "lore_uc_r4",
+      "kind": "lore_stone",
+      "pos": [
+        384,
+        184
+      ],
+      "props": {
+        "string_id": "ISL1_UC_LORE_R4",
+        "icon": "flame"
+      }
+    },
+    {
       "id": "lamp_r4_e",
       "kind": "road_lamp",
       "pos": [
@@ -435,6 +447,37 @@
   ],
   "events": [
     {
+      "id": "ev_uc_r4_brazier_wave",
+      "on": "signal:tb_r4_w",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "mimic_uc_r4_w",
+              "kind": "pew_mimic",
+              "pos": [
+                360,
+                120
+              ],
+              "zone": "uc_cloister",
+              "leash": 130
+            },
+            {
+              "id": "moth_uc_r4_w",
+              "kind": "toll_moth",
+              "pos": [
+                240,
+                120
+              ],
+              "zone": "uc_cloister",
+              "leash": 140
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "uc_r4_clr",
       "on": "cleared",
       "once": true,
@@ -446,16 +489,20 @@
     }
   ],
   "design": {
-    "idea": "Cloister ring encircling a central Dusk Bell island via four bridges: freeze sprinting Snuffers around the moat ring and crack the Warden with the Toll Moth.",
+    "idea": "Cloister ring encircling a central Dusk Bell island via four bridges: freeze sprinting Snuffers around the moat ring, crack the Warden with the Toll Moth, and fight through a Pew Mimic & Moth ambush triggered when lighting the twin timed altar braziers.",
     "kind": "combat",
     "beat": "sho",
     "teaches": "Using ring chokepoints and a central Dusk Bell to intercept Snuffer Acolytes protecting timed altar braziers.",
-    "decisions": 6,
+    "decisions": 8,
     "expert_s": 50,
     "reward": "open_r5+20sh",
     "why": "Ringed ossuary cloister guarding the Toll-Hound's rotunda.",
     "exit": "exit_r4_north",
     "solution": [
+      {
+        "op": "interact",
+        "target": "lore_uc_r4"
+      },
       {
         "op": "goto",
         "to": [
@@ -496,6 +543,10 @@
         "prop": "opened",
         "value": true,
         "timeout": 3.0
+      },
+      {
+        "op": "clear",
+        "timeout": 28.0
       },
       {
         "op": "expect_exit",

@@ -270,6 +270,43 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "bloom_r6b_east_return",
+      "kind": "bounce_bloom",
+      "pos": [
+        360,
+        144
+      ],
+      "props": {
+        "dir": "w",
+        "dist": 144.0
+      }
+    },
+    {
+      "id": "chest_oak_r6b_shards",
+      "kind": "chest",
+      "pos": [
+        40,
+        152
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_oak_r6b_rotor",
+      "kind": "lore_stone",
+      "pos": [
+        200,
+        200
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R6B",
+        "icon": "leaf"
+      }
     }
   ],
   "scenery": [
@@ -352,7 +389,7 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Sap-lubricated Growth-Ring Rotor hub routing to East and West wings without key deadlocks",
-    "decisions": 8,
+    "decisions": 9,
     "expert_s": 56,
     "reward": "Access to oak_r7b (Moving Chamber) & oak_r7 + Cycle 6 balcony",
     "why": "Central heartwood turntable unifying Hollow Oak's upper wings with zero key deadlock",

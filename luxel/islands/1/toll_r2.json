@@ -66,6 +66,48 @@
       ],
       "zone": "toll_drop",
       "leash": 180
+    },
+    {
+      "id": "moth_toll_r2_w",
+      "kind": "toll_moth",
+      "pos": [
+        72,
+        168
+      ],
+      "route": [],
+      "perches": [
+        [
+          72,
+          168
+        ],
+        [
+          80,
+          232
+        ]
+      ],
+      "zone": "toll_drop",
+      "leash": 180
+    },
+    {
+      "id": "owl_toll_r2_e",
+      "kind": "owl",
+      "pos": [
+        312,
+        240
+      ],
+      "route": [],
+      "perches": [
+        [
+          312,
+          240
+        ],
+        [
+          304,
+          176
+        ]
+      ],
+      "zone": "toll_drop",
+      "leash": 180
     }
   ],
   "interactables": [
@@ -79,7 +121,7 @@
       "props": {
         "radius_px": 56,
         "scroll_speed": 68,
-        "duration_s": 10.0,
+        "duration_s": 13.0,
         "brakes_needed": 0,
         "auto_start": true,
         "complete_flag": "toll_r2_survived",
@@ -121,6 +163,16 @@
             "t": 8.0,
             "side": "r",
             "kind": "beam"
+          },
+          {
+            "t": 9.8,
+            "side": "r",
+            "kind": "grate"
+          },
+          {
+            "t": 11.2,
+            "side": "l",
+            "kind": "beam"
           }
         ]
       }
@@ -134,7 +186,8 @@
       ],
       "props": {
         "tone": "dusk",
-        "wave_radius": 208
+        "wave_radius": 208,
+        "target_id": "gate_toll_r2_chord"
       }
     },
     {
@@ -146,7 +199,48 @@
       ],
       "props": {
         "tone": "war",
-        "wave_radius": 208
+        "wave_radius": 208,
+        "target_id": "gate_toll_r2_chord"
+      }
+    },
+    {
+      "id": "gate_toll_r2_chord",
+      "kind": "logic_gate",
+      "pos": [
+        192,
+        152
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "bell_toll_r2_k",
+          "bell_toll_r2_w"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "chest_toll_r2",
+      "kind": "chest",
+      "pos": [
+        104,
+        392
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_toll_r2",
+      "kind": "lore_stone",
+      "pos": [
+        264,
+        392
+      ],
+      "props": {
+        "string_id": "ISL1_TOLL_LORE_DROP",
+        "icon": "clock"
       }
     },
     {
@@ -353,16 +447,74 @@
       "phase": 0.0
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "ev_toll_r2_wave",
+      "on": "signal:bell_toll_r2_k",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "moth_tr2_w1",
+              "kind": "toll_moth",
+              "pos": [
+                80,
+                200
+              ],
+              "zone": "toll_drop",
+              "leash": 180
+            },
+            {
+              "id": "moth_tr2_w2",
+              "kind": "toll_moth",
+              "pos": [
+                304,
+                200
+              ],
+              "zone": "toll_drop",
+              "leash": 180
+            },
+            {
+              "id": "owl_tr2_w3",
+              "kind": "owl",
+              "pos": [
+                296,
+                256
+              ],
+              "zone": "toll_drop",
+              "leash": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ev_toll_r2_chord",
+      "on": "signal:gate_toll_r2_chord",
+      "once": true,
+      "do": [
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 15
+          }
+        },
+        {
+          "shake": 0.14
+        }
+      ]
+    }
+  ],
   "triggers": [],
   "design": {
-    "idea": "Ride the plunging 7x7 bronze bell crown down the shaft, shooting Dusk wall bells to freeze timber beams and War wall bells to shatter descending stone grates.",
+    "idea": "Ride the plunging 7x7 bronze bell crown down the shaft, shooting Dusk wall bells to freeze timber beams and War wall bells to shatter descending stone grates while fending off flanking shaft flyers and claiming the landing cache.",
     "kind": "setpiece",
     "beat": "sho",
     "teaches": "Rapid Dawn/Dusk/War bell targeting while holding footing on a live plunging set piece.",
-    "decisions": 5,
+    "decisions": 9,
     "expert_s": 55,
-    "reward": "toll_r2_survived",
+    "reward": "toll_r2_survived+40sh",
     "why": "Signature adrenaline drop surfing the falling bell down the shaft.",
     "exit": "exit_toll_r2_drop",
     "solution": [
@@ -375,10 +527,6 @@
         "target": "bell_toll_r2_k"
       },
       {
-        "op": "clear",
-        "timeout": 12.0
-      },
-      {
         "op": "shoot",
         "from": [
           224,
@@ -387,9 +535,17 @@
         "target": "bell_toll_r2_w"
       },
       {
+        "op": "clear",
+        "timeout": 28.0
+      },
+      {
         "op": "wait_until",
         "flag": "toll_r2_survived",
-        "timeout": 14.0
+        "timeout": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_toll_r2"
       },
       {
         "op": "expect_exit",

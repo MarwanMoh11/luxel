@@ -204,6 +204,32 @@
       }
     },
     {
+      "id": "anchor_c4_r9_mid",
+      "kind": "room_anchor",
+      "pos": [
+        216,
+        120
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 26,
+        "persist": true
+      }
+    },
+    {
+      "id": "anchor_c4_r9_west",
+      "kind": "room_anchor",
+      "pos": [
+        112,
+        136
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 26,
+        "persist": true
+      }
+    },
+    {
       "id": "updraft_c4_r9_west",
       "kind": "updraft_vent",
       "pos": [
@@ -211,10 +237,10 @@
         136
       ],
       "props": {
-        "radius": 22,
+        "radius": 26,
         "on": true,
         "dir": [
-          -1,
+          0,
           0
         ],
         "boost_mult": 1.25

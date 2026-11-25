@@ -65,6 +65,48 @@
       "perches": [],
       "zone": "belfry_well",
       "leash": 96
+    },
+    {
+      "id": "snuffer_r8_e",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        312,
+        200
+      ],
+      "route": [
+        [
+          272,
+          200
+        ],
+        [
+          360,
+          200
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_well",
+      "leash": 120
+    },
+    {
+      "id": "moth_r8_0",
+      "kind": "toll_moth",
+      "pos": [
+        264,
+        120
+      ],
+      "route": [],
+      "perches": [
+        [
+          264,
+          120
+        ],
+        [
+          168,
+          136
+        ]
+      ],
+      "zone": "belfry_well",
+      "leash": 135
     }
   ],
   "interactables": [
@@ -202,6 +244,30 @@
       }
     },
     {
+      "id": "chest_r8_shards",
+      "kind": "chest",
+      "pos": [
+        392,
+        88
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_r8_well",
+      "kind": "lore_stone",
+      "pos": [
+        248,
+        264
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R8",
+        "icon": "gear"
+      }
+    },
+    {
       "id": "lamp_r8_s",
       "kind": "road_lamp",
       "pos": [
@@ -323,19 +389,55 @@
       "phase": 0.0
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "ev_r8_crank_ambush",
+      "on": "flag:belfry_gear_1",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "gh_r8_amb",
+              "kind": "grave_hand",
+              "pos": [
+                280,
+                232
+              ],
+              "zone": "belfry_well",
+              "leash": 110
+            },
+            {
+              "id": "mimic_r8_amb",
+              "kind": "pew_mimic",
+              "pos": [
+                368,
+                120
+              ],
+              "zone": "belfry_well",
+              "leash": 120
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "triggers": [],
   "design": {
-    "idea": "L-shaped Counterweight Well: push the stone counterweight onto the scale plate to retract the acoustic baffle and extend the NW crank bridge, defeat the Grave Hand, turn Gear Crank 1, and chain a War Relay to shatter the East seam to r9.",
+    "idea": "L-shaped Counterweight Well: push the stone counterweight onto the scale plate to retract the acoustic baffle and extend the NW crank bridge, defeat the Snuffer, Toll Moth, and Grave Hand, turn Gear Crank 1 triggering an ambush, and chain a War Relay east to r9.",
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Counterweight plate clearing an acoustic baffle line for a War Ring relay.",
-    "decisions": 6,
+    "decisions": 9,
     "expert_s": 55,
-    "reward": "belfry_gear_1",
+    "reward": "belfry_gear_1+25sh",
     "why": "Rewards Gear Crank 1 (needed for the F2 Mainspring Gate) and opens the West-to-East F1 clockwork loop.",
     "exit": "exit_r8_east",
     "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r8_well"
+      },
       {
         "op": "push",
         "target": "blk_r8_weight",
@@ -353,7 +455,7 @@
       },
       {
         "op": "clear",
-        "timeout": 12.0
+        "timeout": 28.0
       },
       {
         "op": "interact",

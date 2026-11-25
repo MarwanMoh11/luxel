@@ -21,7 +21,8 @@
     "ISL3_PROMPT_ACORN": "SET HEARTWOOD ACORN",
     "ISL3_PROMPT_SHUTTLE_STAND": "SET GILDED SHUTTLE",
     "ISL3_PROMPT_MERCY": "IGNITE VERDICT: MERCY",
-    "ISL3_PROMPT_FIRE": "IGNITE VERDICT: FIRE"
+    "ISL3_PROMPT_FIRE": "IGNITE VERDICT: FIRE",
+    "ISL3_LORE_COURT_VERDICTS": "MERCY OR FIRE REBUILDS THE NEXT KNIGHT HALL."
   },
   "dungeons": [
     {
@@ -47,10 +48,46 @@
     }
   ],
   "regions": {
-    "court_r1": { "name_key": "ISL3_COURT_R1_NAME", "theme": "briar_court", "music": "isl3_setpiece", "dark": true, "map": [0, 2] },
-    "court_r2": { "name_key": "ISL3_COURT_R2_NAME", "theme": "briar_court", "music": "isl3_boss_minor_p1", "dark": true, "map": [0, 1] },
-    "court_r3": { "name_key": "ISL3_COURT_R3_NAME", "theme": "briar_court", "music": "isl3_boss_minor_p1", "dark": true, "map": [1, 1] },
-    "court_r4": { "name_key": "ISL3_COURT_R4_NAME", "theme": "briar_court", "music": "isl3_boss_minor_p1", "dark": true, "map": [1, 0] }
+    "court_r1": {
+      "name_key": "ISL3_COURT_R1_NAME",
+      "theme": "briar_court",
+      "music": "isl3_setpiece",
+      "dark": true,
+      "map": [
+        0,
+        2
+      ]
+    },
+    "court_r2": {
+      "name_key": "ISL3_COURT_R2_NAME",
+      "theme": "briar_court",
+      "music": "isl3_boss_minor_p1",
+      "dark": true,
+      "map": [
+        0,
+        1
+      ]
+    },
+    "court_r3": {
+      "name_key": "ISL3_COURT_R3_NAME",
+      "theme": "briar_court",
+      "music": "isl3_boss_minor_p1",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "court_r4": {
+      "name_key": "ISL3_COURT_R4_NAME",
+      "theme": "briar_court",
+      "music": "isl3_boss_minor_p1",
+      "dark": true,
+      "map": [
+        1,
+        0
+      ]
+    }
   },
   "sfx": {}
 }

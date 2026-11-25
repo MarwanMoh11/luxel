@@ -21,7 +21,13 @@
     "ISL3_LORE_RUB_1": "A DARK LANTERN BURNED THE FIRST SAPLING.",
     "ISL3_UR_JAR_NOTE": "ONE BEAM IN GLASS WAKES ALL FOUR FRUITS.",
     "ISL3_UR_SHORTCUT": "A ROOT-SLIDE SHORTCUT UNSEALS!",
-    "ISL3_UR_CLEARED": "HUNDRED LAMPS FALLS. HALF-LANTERN CLAIMED!"
+    "ISL3_UR_CLEARED": "HUNDRED LAMPS FALLS. HALF-LANTERN CLAIMED!",
+    "ISL3_LORE_UR_R1": "A TINY MOTH CARRIES A BLINDING SUN.",
+    "ISL3_LORE_UR_R4": "FOCUS BOLTS THROUGH DEW TO CRACK BEETLES.",
+    "ISL3_LORE_UR_R5": "BLUE FROST FREEZES DEW INTO A THREE-WAY BEAM.",
+    "ISL3_LORE_UR_R7": "BEETLE SHELLS BOUNCE PRISM ACROSS THE SAP.",
+    "ISL3_LORE_UR_R8": "TEST EVERY UNLIT LAMP BEFORE YOU THROW.",
+    "ISL3_LORE_UR_R9": "A HUNDRED-LEGGED SHADOW WATCHES THE GLASS."
   },
   "interactables": {
     "ur_sap_horn_altar": "res://luxel/islands/3/underroot/ur_sap_horn_altar.gd",
@@ -55,17 +61,116 @@
     }
   ],
   "regions": {
-    "underroot_r1": { "name_key": "ISL3_UR_R1_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 4] },
-    "underroot_r2": { "name_key": "ISL3_UR_R2_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 3] },
-    "underroot_r3": { "name_key": "ISL3_UR_R3_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [1, 3] },
-    "underroot_r4": { "name_key": "ISL3_UR_R4_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [0, 3] },
-    "underroot_r5": { "name_key": "ISL3_UR_R5_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [0, 2] },
-    "underroot_r6": { "name_key": "ISL3_UR_R6_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [1, 2] },
-    "underroot_r7": { "name_key": "ISL3_UR_R7_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [2, 2] },
-    "underroot_r8": { "name_key": "ISL3_UR_R8_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [3, 2] },
-    "underroot_r9": { "name_key": "ISL3_UR_R9_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [3, 1] },
-    "underroot_r10": { "name_key": "ISL3_UR_R10_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [4, 3] },
-    "underroot_r11": { "name_key": "ISL3_UR_R11_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [4, 2] }
+    "underroot_r1": {
+      "name_key": "ISL3_UR_R1_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        2,
+        4
+      ]
+    },
+    "underroot_r2": {
+      "name_key": "ISL3_UR_R2_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        2,
+        3
+      ]
+    },
+    "underroot_r3": {
+      "name_key": "ISL3_UR_R3_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        1,
+        3
+      ]
+    },
+    "underroot_r4": {
+      "name_key": "ISL3_UR_R4_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        0,
+        3
+      ]
+    },
+    "underroot_r5": {
+      "name_key": "ISL3_UR_R5_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        0,
+        2
+      ]
+    },
+    "underroot_r6": {
+      "name_key": "ISL3_UR_R6_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        1,
+        2
+      ]
+    },
+    "underroot_r7": {
+      "name_key": "ISL3_UR_R7_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        2,
+        2
+      ]
+    },
+    "underroot_r8": {
+      "name_key": "ISL3_UR_R8_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        3,
+        2
+      ]
+    },
+    "underroot_r9": {
+      "name_key": "ISL3_UR_R9_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        3,
+        1
+      ]
+    },
+    "underroot_r10": {
+      "name_key": "ISL3_UR_R10_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        4,
+        3
+      ]
+    },
+    "underroot_r11": {
+      "name_key": "ISL3_UR_R11_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        4,
+        2
+      ]
+    }
   },
   "sfx": {}
 }

@@ -126,6 +126,48 @@
       ],
       "zone": "belfry_vault",
       "leash": 120
+    },
+    {
+      "id": "moth_r6_0",
+      "kind": "toll_moth",
+      "pos": [
+        320,
+        152
+      ],
+      "route": [],
+      "perches": [
+        [
+          320,
+          152
+        ],
+        [
+          232,
+          144
+        ]
+      ],
+      "zone": "belfry_vault",
+      "leash": 128
+    },
+    {
+      "id": "snuffer_r6_0",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        352,
+        88
+      ],
+      "route": [
+        [
+          328,
+          72
+        ],
+        [
+          376,
+          120
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_vault",
+      "leash": 120
     }
   ],
   "interactables": [
@@ -273,6 +315,18 @@
       }
     },
     {
+      "id": "lore_r6_vault",
+      "kind": "lore_stone",
+      "pos": [
+        232,
+        88
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R6",
+        "icon": "flame"
+      }
+    },
+    {
       "id": "door_r6_south",
       "kind": "door",
       "pos": [
@@ -403,6 +457,27 @@
           "set_flag": "belfry_r6_shortcut"
         }
       ]
+    },
+    {
+      "id": "ev_r6_flame_claimed",
+      "on": "flag:keepers_flame",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "owl_r6_guard",
+              "kind": "owl",
+              "pos": [
+                272,
+                168
+              ],
+              "zone": "belfry_vault",
+              "leash": 130
+            }
+          ]
+        }
+      ]
     }
   ],
   "triggers": [],
@@ -474,7 +549,7 @@
     "kind": "puzzle",
     "beat": "ketsu",
     "teaches": "Synthesizes Snatcher hushing, lantern-throw brazier lighting, and eye-switch bridge extension across a true 8-tile abyss.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 55,
     "reward": "belfry_r6_shortcut+keepers_flame",
     "why": "Grand penultimate vault converging both the F1 shortcut loop and F3 Carillon descent before the Spire Crown.",
@@ -497,7 +572,7 @@
       },
       {
         "op": "clear",
-        "timeout": 15.0
+        "timeout": 28.0
       },
       {
         "op": "shoot",

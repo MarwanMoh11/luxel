@@ -165,6 +165,43 @@
       "perches": [],
       "zone": "belfry_nave",
       "leash": 140
+    },
+    {
+      "id": "moth_r4_0",
+      "kind": "toll_moth",
+      "pos": [
+        208,
+        56
+      ],
+      "route": [],
+      "perches": [
+        [
+          208,
+          56
+        ],
+        [
+          128,
+          72
+        ],
+        [
+          288,
+          72
+        ]
+      ],
+      "zone": "belfry_nave",
+      "leash": 150
+    },
+    {
+      "id": "mimic_r4_0",
+      "kind": "pew_mimic",
+      "pos": [
+        144,
+        184
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "belfry_nave",
+      "leash": 135
     }
   ],
   "interactables": [
@@ -211,6 +248,42 @@
       "props": {
         "tone": "dusk",
         "wave_radius": 208
+      }
+    },
+    {
+      "id": "bell_r4_war",
+      "kind": "bell",
+      "pos": [
+        360,
+        88
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 192
+      }
+    },
+    {
+      "id": "chest_r4_colonnade",
+      "kind": "chest",
+      "pos": [
+        344,
+        40
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_r4_colonnade",
+      "kind": "lore_stone",
+      "pos": [
+        72,
+        168
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R4",
+        "icon": "clock"
       }
     },
     {
@@ -361,13 +434,13 @@
   ],
   "is_2x2_room": true,
   "design": {
-    "idea": "Colonnade combat crucible with a sweeping center pendulum spinner, SW Dusk Bell to freeze the spinner & enemies, twin Wardens, Owl, and Snuffer Acolyte guarding the North combat gate to Bell Warden.",
+    "idea": "Colonnade combat crucible with a sweeping center pendulum spinner, SW Dusk Bell to freeze the spinner & enemies, NE War Bell to unmask the disguised Pew Mimic and crack Warden shields, plus an optional NE shard chest guarding the North combat gate to Bell Warden.",
     "kind": "combat",
     "beat": "sho",
-    "teaches": "Using Dusk Bell mid-fight to freeze environmental hazards and enemy squads simultaneously.",
-    "decisions": 5,
+    "teaches": "Combining Dusk freeze and War shield-break bells mid-fight against mixed Belfry squads.",
+    "decisions": 8,
     "expert_s": 45,
-    "reward": "r4_cleared",
+    "reward": "r4_cleared+25sh",
     "why": "Escalates combat with a clockwork hazard and links the West/East F1 cycle via NW arch to r9.",
     "exit": "exit_r4_north",
     "solution": [
@@ -381,7 +454,7 @@
       },
       {
         "op": "clear",
-        "timeout": 28.0
+        "timeout": 42.0
       },
       {
         "op": "expect",

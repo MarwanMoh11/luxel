@@ -147,6 +147,15 @@
       }
     },
     {
+      "id": "shrine_uc_r1_rest",
+      "kind": "rest_shrine",
+      "pos": [
+        320,
+        304
+      ],
+      "props": {}
+    },
+    {
       "id": "bell_r1_dawn",
       "kind": "bell",
       "pos": [
@@ -539,7 +548,7 @@
     "kind": "story",
     "beat": "ki",
     "teaches": "Ringing a Dawn Bell sends a visible gold wave that opens matching Dawn tone doors.",
-    "decisions": 4,
+    "decisions": 5,
     "expert_s": 35,
     "reward": "waystone+boss_tease",
     "why": "Cruciform nave hub of the chapel catacombs anchoring all three Undercroft shortcut cycles.",

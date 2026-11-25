@@ -177,6 +177,19 @@
       }
     },
     {
+      "id": "chest_ms_r7",
+      "kind": "chest",
+      "pos": [
+        376,
+        200
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40
+      }
+    },
+    {
       "id": "lamp_r7_s",
       "kind": "road_lamp",
       "pos": [
@@ -305,6 +318,26 @@
         ]
       ],
       "leash": 135
+    },
+    {
+      "id": "hh_r7_nw",
+      "kind": "hour_heron",
+      "pos": [
+        120,
+        88
+      ],
+      "zone": "ms_r7_belfry",
+      "route": [
+        [
+          104,
+          88
+        ],
+        [
+          152,
+          104
+        ]
+      ],
+      "leash": 130
     }
   ],
   "layers": [
@@ -475,7 +508,7 @@
     "kind": "combat",
     "beat": "ten",
     "teaches": "Switching WIND and SUN mid-fight to control puddles, duelists, and cover lanes.",
-    "decisions": 8,
+    "decisions": 9,
     "expert_s": 50,
     "reward": "ms_r7_cleared+ms_drain_shortcut",
     "why": "East Wing combat arena connecting Cycle 2's cross-wing drain tunnel to r3.",

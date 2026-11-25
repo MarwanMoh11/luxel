@@ -141,11 +141,10 @@
       "props": {
         "mounts": "blue_transformer",
         "tide_var": "dungeon:lighthouse.tower_tide",
-        "tide_min": "high",
+        "tide_min": "mid",
         "angle_deg": 0,
         "rotatable": true,
-        "reflect_only_floating": true,
-        "persist": true
+        "reflect_only_floating": true
       }
     },
     {
@@ -450,14 +449,6 @@
           184,
           200
         ]
-      },
-      {
-        "op": "interact",
-        "target": "lever_lh_r15_tide"
-      },
-      {
-        "op": "wait",
-        "secs": 0.35
       },
       {
         "op": "interact",

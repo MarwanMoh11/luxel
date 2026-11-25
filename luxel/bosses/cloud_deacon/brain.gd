@@ -34,8 +34,8 @@ func _init() -> void:
 	island_id = 4
 	is_miniboss = true
 	reward_heart = "none"
-	music_cue = "island4_boss_p1"
-	music_p2_cue = "island4_boss_p2"
+	music_cue = "isl4_boss_minor_p1"
+	music_p2_cue = "isl4_boss_minor_p2"
 	max_hp = 66.0
 	hp = 66.0
 	body_radius = 10.5
@@ -275,7 +275,7 @@ func _on_death_start() -> void:
 func _hijack_weather_to_rain() -> void:
 	_weather = "rain"
 	if Lx.vars != null:
-		Lx.vars.set_var("dungeon:mausoleum", "weather", "rain")
+		Lx.vars.set_var("dungeon:rain_mausoleum", "weather", "rain")
 	if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("get_interactables"):
 		for it_v: Variant in (world_ctx.call("get_interactables") as Array):
 			if it_v is Object and is_instance_valid(it_v) and (it_v as Object).has_method("set_weather"):
@@ -288,7 +288,7 @@ func _cycle_local_weather() -> void:
 	var idx: int = order.find(_weather)
 	_weather = order[(idx + 1) % order.size()]
 	if Lx.vars != null:
-		Lx.vars.set_var("dungeon:mausoleum", "weather", _weather)
+		Lx.vars.set_var("dungeon:rain_mausoleum", "weather", _weather)
 	if _weather == "sun":
 		stage.play_sfx("deacon_steam_hiss", pos)
 	else:
@@ -297,8 +297,11 @@ func _cycle_local_weather() -> void:
 
 func _read_weather() -> String:
 	if Lx.vars != null:
-		var wv: Variant = Lx.vars.get_var("dungeon:mausoleum", "weather", "")
+		var reg_id: String = str(world_ctx.get("current_region_id")) if (world_ctx != null and is_instance_valid(world_ctx) and world_ctx.get("current_region_id") != null) else ""
+		var wv: Variant = Lx.vars.resolve_var("weather", island_id, reg_id, "")
 		var ws: String = str(wv).strip_edges().to_lower()
+		if ws not in ["sun", "rain", "wind"]:
+			ws = str(Lx.vars.get_var("dungeon:rain_mausoleum", "weather", "")).strip_edges().to_lower()
 		if ws in ["sun", "rain", "wind"]:
 			return ws
 	return _weather

@@ -13,22 +13,40 @@
   "state_vars": {
     "ow_dial": {
       "scope": "island:5",
-      "values": [0, 90, 180, 270],
+      "values": [
+        0,
+        90,
+        180,
+        270
+      ],
       "default": 0
     },
     "well_phase": {
       "scope": "dungeon:meteor_vault",
-      "values": ["pull", "push"],
+      "values": [
+        "pull",
+        "push"
+      ],
       "default": "pull"
     },
     "sky_turn": {
       "scope": "dungeon:planetarium",
-      "values": [0, 90, 180, 270],
+      "values": [
+        0,
+        90,
+        180,
+        270
+      ],
       "default": 0
     },
     "orrery_ring": {
       "scope": "dungeon:orrery",
-      "values": [0, 90, 180, 270],
+      "values": [
+        0,
+        90,
+        180,
+        270
+      ],
       "default": 0
     },
     "dream_best": {
@@ -44,24 +62,83 @@
     "polarity_well": "res://luxel/islands/5/toys/polarity_well.gd"
   },
   "sfx": {
-    "gravity_curve": { "id": "phantom_phase", "pitch": 1.18, "db": -3.0 },
-    "polarity_flip": { "id": "clockwork_chime", "pitch": 1.16, "db": -1.5 },
-    "star_ignite": { "id": "prop_chime", "pitch": 1.28, "db": -0.5 },
-    "star_snuff": { "id": "phantom_phase", "pitch": 0.78, "db": -3.0 },
-    "star_bell_turn": { "id": "clockwork_chime", "pitch": 0.88, "db": 0.0 },
-    "meteor_clank": { "id": "crystal_clank", "pitch": 0.84, "db": -0.5 },
-    "horizon_pull": { "id": "void_hum", "pitch": 0.86, "db": -2.0 }
+    "gravity_curve": {
+      "id": "gravity_well_pull",
+      "pitch": 1.06,
+      "db": -1.0
+    },
+    "polarity_flip": {
+      "id": "polarity_flip",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "star_ignite": {
+      "id": "star_ignite",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "star_snuff": {
+      "id": "star_snuff",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "star_bell_turn": {
+      "id": "star_bell_turn",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "meteor_clank": {
+      "id": "meteor_orb_roll",
+      "pitch": 1.12,
+      "db": -0.5
+    },
+    "horizon_pull": {
+      "id": "gravity_well_pull",
+      "pitch": 0.84,
+      "db": -0.5
+    },
+    "gravity_well_pull": {
+      "id": "gravity_well_pull",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "gravity_well_push": {
+      "id": "gravity_well_push",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "meteor_orb_roll": {
+      "id": "meteor_orb_roll",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "meteor_orb_shatter": {
+      "id": "meteor_orb_shatter",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "star_constellation": {
+      "id": "star_constellation",
+      "pitch": 1.0,
+      "db": 0.0
+    }
   },
   "regions": {
     "_proof_i5_1": {
       "name_key": "I5_PROOF_1_NAME",
       "debug_only": true,
-      "map": [0, 0]
+      "map": [
+        0,
+        0
+      ]
     },
     "_proof_i5_2": {
       "name_key": "I5_PROOF_2_NAME",
       "debug_only": true,
-      "map": [1, 0]
+      "map": [
+        1,
+        0
+      ]
     }
   }
 }

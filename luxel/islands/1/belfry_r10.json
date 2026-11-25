@@ -84,6 +84,48 @@
       "perches": [],
       "zone": "belfry_drum",
       "leash": 120
+    },
+    {
+      "id": "snuffer_r10_0",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        344,
+        192
+      ],
+      "route": [
+        [
+          280,
+          192
+        ],
+        [
+          384,
+          192
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_drum",
+      "leash": 135
+    },
+    {
+      "id": "moth_r10_n",
+      "kind": "toll_moth",
+      "pos": [
+        344,
+        56
+      ],
+      "route": [],
+      "perches": [
+        [
+          344,
+          56
+        ],
+        [
+          248,
+          56
+        ]
+      ],
+      "zone": "belfry_drum",
+      "leash": 125
     }
   ],
   "interactables": [
@@ -265,6 +307,18 @@
       }
     },
     {
+      "id": "lore_r10_drum",
+      "kind": "lore_stone",
+      "pos": [
+        216,
+        264
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R10",
+        "icon": "clock"
+      }
+    },
+    {
       "id": "lamp_r10_s",
       "kind": "road_lamp",
       "pos": [
@@ -396,19 +450,55 @@
       "phase": 0.0
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "ev_r10_rope_wave",
+      "on": "flag:belfry_rope_shortcut",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "gh_r10_rope",
+              "kind": "grave_hand",
+              "pos": [
+                240,
+                232
+              ],
+              "zone": "belfry_drum",
+              "leash": 120
+            },
+            {
+              "id": "moth_r10_rope",
+              "kind": "toll_moth",
+              "pos": [
+                408,
+                152
+              ],
+              "zone": "belfry_drum",
+              "leash": 130
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "triggers": [],
   "design": {
-    "idea": "Z-shaped Winding-Drum Hall: clear the disguised Pew Mimic, freeze the conveyor with Dusk while seating the drum counterweight on the plate to open the Dawn shutter, drop the permanent SW Rope Shortcut to r1, and open East to the Mainspring Hub (r11).",
+    "idea": "Z-shaped Winding-Drum Hall: clear the disguised Pew Mimic, Snuffer, and conveyor Toll Moth, freeze the belt with Dusk while seating the drum counterweight to open the Dawn shutter, drop the permanent SW Rope Shortcut triggering a guard wave, and exit East to Hub #2 (r11).",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Conveyor + Dusk freeze + acoustic shutter opening + permanent multi-floor rope shortcut.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 55,
     "reward": "belfry_rope_shortcut+open_r11",
     "why": "Floor 2 West entry creating a direct shortcut back to the Narthex (r1) and linking into Hub #2 (r11).",
     "exit": "exit_r10_east",
     "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r10_drum"
+      },
       {
         "op": "goto",
         "to": [
@@ -426,7 +516,7 @@
       },
       {
         "op": "clear",
-        "timeout": 15.0
+        "timeout": 30.0
       },
       {
         "op": "push",

@@ -15,7 +15,7 @@
         "routine_speed": 64.0,
         "leash_radius": 158.0,
         "notice_radius": 148.0,
-        "tell_time": 0.50,
+        "tell_time": 0.5,
         "recover_time": 1.15,
         "shard_drop": 6,
         "attack_damage": 1.0,
@@ -31,7 +31,7 @@
         "leash_radius": 158.0,
         "notice_radius": 140.0,
         "tell_time": 0.55,
-        "recover_time": 1.10,
+        "recover_time": 1.1,
         "shard_drop": 5,
         "attack_damage": 1.0,
         "is_boss": false
@@ -61,7 +61,7 @@
         "leash_radius": 160.0,
         "notice_radius": 145.0,
         "tell_time": 0.52,
-        "recover_time": 1.00,
+        "recover_time": 1.0,
         "shard_drop": 4,
         "attack_damage": 1.0,
         "is_boss": false
@@ -75,7 +75,7 @@
         "routine_speed": 40.0,
         "leash_radius": 158.0,
         "notice_radius": 136.0,
-        "tell_time": 0.50,
+        "tell_time": 0.5,
         "recover_time": 1.05,
         "shard_drop": 4,
         "attack_damage": 1.0,
@@ -84,7 +84,10 @@
     },
     "boss_shear_keeper": {
       "script": "res://luxel/bosses/shear_keeper/brain.gd",
-      "aliases": ["brass_shear_keeper", "shear_keeper"],
+      "aliases": [
+        "brass_shear_keeper",
+        "shear_keeper"
+      ],
       "data": {
         "max_hp": 64.0,
         "body_radius": 11.0,
@@ -100,7 +103,9 @@
     },
     "boss_gardener_twice": {
       "script": "res://luxel/bosses/gardener_twice/brain.gd",
-      "aliases": ["gardener_twice"],
+      "aliases": [
+        "gardener_twice"
+      ],
       "data": {
         "max_hp": 235.0,
         "body_radius": 10.0,
@@ -108,7 +113,7 @@
         "leash_radius": 0.0,
         "notice_radius": 180.0,
         "tell_time": 0.55,
-        "recover_time": 1.10,
+        "recover_time": 1.1,
         "shard_drop": 65,
         "attack_damage": 1.0,
         "is_boss": true
@@ -119,49 +124,135 @@
     "boss_shear_keeper": {
       "name_key": "ISL4_BOSS_SHEAR",
       "island": 4,
-      "phases": [0.56],
+      "phases": [
+        0.56
+      ],
       "mini": true,
       "dungeon": "hourglass_maze",
       "region": "hourglass_r5",
-      "music": "island4_boss_p1",
-      "music_p2": "island4_boss_p2",
+      "music": "isl4_boss_minor_p1",
+      "music_p2": "isl4_boss_minor_p2",
       "heart": "none",
       "flag": "boss_shear_keeper_defeated",
-      "aliases": ["brass_shear_keeper", "shear_keeper"]
+      "aliases": [
+        "brass_shear_keeper",
+        "shear_keeper"
+      ]
     },
     "boss_gardener_twice": {
       "name_key": "ISL4_BOSS_GARDENER",
       "island": 4,
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "hourglass_maze",
       "region": "hourglass_r12",
-      "music": "island4_boss_p1",
-      "music_p2": "island4_boss_p2",
+      "music": "isl4_boss_minor_p1",
+      "music_p2": "isl4_boss_minor_p2",
       "heart": "half",
       "flag": "boss_gardener_twice_defeated",
-      "aliases": ["gardener_twice"]
+      "aliases": [
+        "gardener_twice"
+      ]
     }
   },
   "sfx": {
-    "topiary_freeze": {"id": "prop_rustle", "pitch": 1.15, "db": -1.0},
-    "topiary_cleave": {"id": "warden_swing", "pitch": 1.12, "db": -0.5},
-    "hour_heron_tick": {"id": "clockwork_chime", "pitch": 1.08, "db": -3.0},
-    "hour_heron_clank": {"id": "crystal_clank", "pitch": 1.16, "db": -1.5},
-    "hour_heron_lunge": {"id": "beak_strike", "pitch": 1.10, "db": 0.0},
-    "petal_parry": {"id": "crystal_clank", "pitch": 1.24, "db": -1.0},
-    "petal_lunge": {"id": "hollow_dash", "pitch": 1.18, "db": -1.0},
-    "petal_echo": {"id": "lens_reveal", "pitch": 1.14, "db": -2.0},
-    "mist_eel_arc": {"id": "marsh_splash", "pitch": 1.16, "db": -1.0},
-    "mist_eel_flop": {"id": "marsh_splash", "pitch": 0.84, "db": -1.5},
-    "rain_frog_swell": {"id": "marsh_croak", "pitch": 0.90, "db": -2.0},
-    "rain_frog_spit": {"id": "spore_pop", "pitch": 1.08, "db": -1.0},
-    "rain_frog_shrink": {"id": "marsh_croak", "pitch": 1.32, "db": -2.0},
-    "shear_clack": {"id": "shell_snap", "pitch": 1.16, "db": -0.5},
-    "shear_jam": {"id": "shield_shatter", "pitch": 1.06, "db": 0.0},
-    "shear_whirl": {"id": "wing_gale", "pitch": 1.14, "db": -0.5},
-    "gardener_record": {"id": "clockwork_chime", "pitch": 0.96, "db": -1.0},
-    "gardener_clash": {"id": "perfect_counter", "pitch": 1.08, "db": 0.5},
-    "gardener_annihilate": {"id": "prism_chain", "pitch": 1.12, "db": 0.5}
+    "topiary_freeze": {
+      "id": "prop_rustle",
+      "pitch": 1.15,
+      "db": -1.0
+    },
+    "topiary_cleave": {
+      "id": "warden_swing",
+      "pitch": 1.12,
+      "db": -0.5
+    },
+    "hour_heron_tick": {
+      "id": "dusk_clock_chime",
+      "pitch": 1.18,
+      "db": -2.0
+    },
+    "hour_heron_clank": {
+      "id": "crystal_clank",
+      "pitch": 1.16,
+      "db": -1.5
+    },
+    "hour_heron_lunge": {
+      "id": "beak_strike",
+      "pitch": 1.1,
+      "db": 0.0
+    },
+    "petal_parry": {
+      "id": "crystal_clank",
+      "pitch": 1.24,
+      "db": -1.0
+    },
+    "petal_lunge": {
+      "id": "hollow_dash",
+      "pitch": 1.18,
+      "db": -1.0
+    },
+    "petal_echo": {
+      "id": "echo_rose_replay",
+      "pitch": 1.04,
+      "db": -1.0
+    },
+    "mist_eel_arc": {
+      "id": "marsh_splash",
+      "pitch": 1.16,
+      "db": -1.0
+    },
+    "mist_eel_flop": {
+      "id": "marsh_splash",
+      "pitch": 0.84,
+      "db": -1.5
+    },
+    "rain_frog_swell": {
+      "id": "marsh_croak",
+      "pitch": 0.9,
+      "db": -2.0
+    },
+    "rain_frog_spit": {
+      "id": "spore_pop",
+      "pitch": 1.08,
+      "db": -1.0
+    },
+    "rain_frog_shrink": {
+      "id": "marsh_croak",
+      "pitch": 1.32,
+      "db": -2.0
+    },
+    "shear_clack": {
+      "id": "shell_snap",
+      "pitch": 1.16,
+      "db": -0.5
+    },
+    "shear_jam": {
+      "id": "shield_shatter",
+      "pitch": 1.06,
+      "db": 0.0
+    },
+    "shear_whirl": {
+      "id": "wing_gale",
+      "pitch": 1.14,
+      "db": -0.5
+    },
+    "gardener_record": {
+      "id": "echo_rose_record",
+      "pitch": 1.0,
+      "db": -0.5
+    },
+    "gardener_clash": {
+      "id": "perfect_counter",
+      "pitch": 1.08,
+      "db": 0.5
+    },
+    "gardener_annihilate": {
+      "id": "echo_rose_replay",
+      "pitch": 1.12,
+      "db": 0.0
+    }
   }
 }

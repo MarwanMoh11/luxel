@@ -11,12 +11,36 @@
     "ISL6_BOSS_FIRST": "THE FIRST FORGE"
   },
   "sfx": {
-    "marshal_rattle": {"id": "shield_clang", "pitch": 1.38, "db": -1.5},
-    "heart_pendulum_bonk": {"id": "bell_slam", "pitch": 0.78, "db": 0.5},
-    "weaver_glass_clink": {"id": "crystal_clank", "pitch": 1.32, "db": -0.5},
-    "weaver_spin_mirror": {"id": "mirror_turn", "pitch": 1.18, "db": -1.0},
-    "forge_stance_shift": {"id": "clockwork_chime", "pitch": 0.88, "db": -0.5},
-    "forge_bless_chord": {"id": "great_lamp_bloom", "pitch": 0.94, "db": 0.5}
+    "marshal_rattle": {
+      "id": "shield_clang",
+      "pitch": 1.38,
+      "db": -1.5
+    },
+    "heart_pendulum_bonk": {
+      "id": "colossus_step",
+      "pitch": 0.94,
+      "db": 0.5
+    },
+    "weaver_glass_clink": {
+      "id": "crystal_clank",
+      "pitch": 1.32,
+      "db": -0.5
+    },
+    "weaver_spin_mirror": {
+      "id": "mirror_turn",
+      "pitch": 1.18,
+      "db": -1.0
+    },
+    "forge_stance_shift": {
+      "id": "anvil_temper_lance",
+      "pitch": 1.06,
+      "db": 0.0
+    },
+    "forge_bless_chord": {
+      "id": "great_lamp_bloom",
+      "pitch": 0.94,
+      "db": 0.5
+    }
   },
   "enemies": {
     "piston_marshal": {
@@ -44,7 +68,7 @@
         "leash_radius": 0.0,
         "notice_radius": 180.0,
         "tell_time": 0.58,
-        "recover_time": 1.20,
+        "recover_time": 1.2,
         "shard_drop": 36,
         "attack_damage": 1.0,
         "is_boss": true,
@@ -59,8 +83,8 @@
         "routine_speed": 54.0,
         "leash_radius": 0.0,
         "notice_radius": 180.0,
-        "tell_time": 0.50,
-        "recover_time": 1.10,
+        "tell_time": 0.5,
+        "recover_time": 1.1,
         "shard_drop": 22,
         "attack_damage": 1.0,
         "is_boss": true,
@@ -91,7 +115,7 @@
         "routine_speed": 32.0,
         "leash_radius": 0.0,
         "notice_radius": 180.0,
-        "tell_time": 0.60,
+        "tell_time": 0.6,
         "recover_time": 1.25,
         "shard_drop": 60,
         "attack_damage": 1.0,
@@ -103,7 +127,9 @@
   "bosses": {
     "piston_marshal": {
       "name_key": "ISL6_BOSS_MARSHAL",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "iron_colossus",
       "region": "colossus_r5",
@@ -115,7 +141,10 @@
     },
     "colossus_heart": {
       "name_key": "ISL6_BOSS_HEART",
-      "phases": [0.6, 0.3],
+      "phases": [
+        0.6,
+        0.3
+      ],
       "mini": false,
       "dungeon": "iron_colossus",
       "region": "colossus_r11",
@@ -127,7 +156,9 @@
     },
     "hollow_ram_phantom": {
       "name_key": "ISL6_BOSS_PHANTOM",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "iron_collision",
       "region": "crash_r3",
@@ -139,7 +170,9 @@
     },
     "crucible_weaver": {
       "name_key": "ISL6_BOSS_WEAVER",
-      "phases": [0.58],
+      "phases": [
+        0.58
+      ],
       "mini": true,
       "dungeon": "great_kiln",
       "region": "kiln_r15",
@@ -151,7 +184,10 @@
     },
     "first_forge": {
       "name_key": "ISL6_BOSS_FIRST",
-      "phases": [0.66, 0.34],
+      "phases": [
+        0.66,
+        0.34
+      ],
       "mini": false,
       "dungeon": "superboss",
       "region": "superboss_first_forge",

@@ -108,16 +108,34 @@
       "props": { "auto": true, "activate_radius": 24, "persist": true }
     },
     {
+      "id": "anchor_c4_r5_mid",
+      "kind": "room_anchor",
+      "pos": [304, 136],
+      "props": { "auto": true, "activate_radius": 28, "persist": true }
+    },
+    {
+      "id": "anchor_c4_r5_east",
+      "kind": "room_anchor",
+      "pos": [432, 168],
+      "props": { "auto": true, "activate_radius": 28, "persist": true }
+    },
+    {
       "id": "updraft_c4_r5_main",
       "kind": "updraft_vent",
       "pos": [384, 136],
-      "props": { "radius": 24, "on": true, "dir": [1, 0], "boost_mult": 1.25 }
+      "props": { "radius": 26, "on": true, "dir": [0, 0], "boost_mult": 1.25 }
     },
     {
       "id": "updraft_c4_r5_ember",
       "kind": "updraft_vent",
       "pos": [216, 232],
-      "props": { "radius": 24, "on": false, "requires_signals": ["switch_eye_c4_r5"], "dir": [-1, 0], "boost_mult": 1.25 }
+      "props": { "radius": 26, "on": false, "requires_signals": ["switch_eye_c4_r5"], "dir": [0, 0], "boost_mult": 1.25 }
+    },
+    {
+      "id": "updraft_c4_r5_ember_e",
+      "kind": "updraft_vent",
+      "pos": [312, 232],
+      "props": { "radius": 26, "on": false, "requires_signals": ["switch_eye_c4_r5"], "dir": [0, 0], "boost_mult": 1.25 }
     },
     {
       "id": "fountain_c4_r5_hf",
@@ -130,7 +148,7 @@
       "kind": "switch_eye",
       "pos": [456, 136],
       "props": {
-        "target_ids": ["door_c4_r5_exit", "door_c4_r5_shortcut", "updraft_c4_r5_ember"],
+        "target_ids": ["door_c4_r5_exit", "door_c4_r5_shortcut", "updraft_c4_r5_ember", "updraft_c4_r5_ember_e"],
         "sets_flag": "c4_r5_shortcut"
       }
     },

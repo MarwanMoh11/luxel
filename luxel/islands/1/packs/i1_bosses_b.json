@@ -46,7 +46,7 @@
         "routine_speed": 40.0,
         "leash_radius": 0.0,
         "notice_radius": 180.0,
-        "tell_time": 0.50,
+        "tell_time": 0.5,
         "recover_time": 1.15,
         "shard_drop": 22,
         "attack_damage": 1.0,
@@ -73,7 +73,9 @@
     "clockwork_valet": {
       "island": 1,
       "name_key": "ISL1_BOSS_VALET",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "manor",
       "region": "manor_r5",
@@ -85,7 +87,10 @@
     "chandelier": {
       "island": 1,
       "name_key": "ISL1_BOSS_CHAND",
-      "phases": [0.65, 0.32],
+      "phases": [
+        0.65,
+        0.32
+      ],
       "mini": false,
       "dungeon": "manor",
       "region": "manor_r11",
@@ -97,7 +102,9 @@
     "brass_metronome": {
       "island": 1,
       "name_key": "ISL1_BOSS_METRO",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "belfry",
       "region": "belfry_r16",
@@ -109,7 +116,9 @@
     "silent_bell": {
       "island": 1,
       "name_key": "ISL1_BOSS_SILENT",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": false,
       "dungeon": "",
       "region": "superboss_silent",
@@ -120,15 +129,55 @@
     }
   },
   "sfx": {
-    "valet_spotlight_tell": { "id": "clockwork_chime", "pitch": 1.24, "db": -2.5 },
-    "valet_candle_tell": { "id": "brazier_lit", "pitch": 1.18, "db": -2.5 },
-    "valet_bow_chime": { "id": "prop_chime", "pitch": 1.12, "db": -1.5 },
-    "valet_unwind": { "id": "clockwork_chime", "pitch": 0.78, "db": 0.0 },
-    "chandelier_wax_splash": { "id": "brazier_lit", "pitch": 0.88, "db": 0.0 },
-    "chandelier_blackout": { "id": "snuffer_gulp", "pitch": 0.82, "db": 0.5 },
-    "chandelier_chain_snap": { "id": "shield_shatter", "pitch": 1.24, "db": 0.0 },
-    "metronome_tick": { "id": "clockwork_chime", "pitch": 1.32, "db": -2.0 },
-    "metronome_cuckoo_pop": { "id": "prop_chime", "pitch": 1.48, "db": 0.0 },
-    "metronome_winddown": { "id": "clockwork_chime", "pitch": 0.72, "db": 0.0 }
+    "valet_spotlight_tell": {
+      "id": "clockwork_chime",
+      "pitch": 1.24,
+      "db": -2.5
+    },
+    "valet_candle_tell": {
+      "id": "brazier_lit",
+      "pitch": 1.18,
+      "db": -2.5
+    },
+    "valet_bow_chime": {
+      "id": "echo_clapper_pulse",
+      "pitch": 1.08,
+      "db": -1.5
+    },
+    "valet_unwind": {
+      "id": "clockwork_chime",
+      "pitch": 0.78,
+      "db": 0.0
+    },
+    "chandelier_wax_splash": {
+      "id": "brazier_lit",
+      "pitch": 0.88,
+      "db": 0.0
+    },
+    "chandelier_blackout": {
+      "id": "snuffer_gulp",
+      "pitch": 0.82,
+      "db": 0.5
+    },
+    "chandelier_chain_snap": {
+      "id": "shield_shatter",
+      "pitch": 1.24,
+      "db": 0.0
+    },
+    "metronome_tick": {
+      "id": "dusk_clock_chime",
+      "pitch": 1.16,
+      "db": -2.0
+    },
+    "metronome_cuckoo_pop": {
+      "id": "cuckoo_pop",
+      "pitch": 1.04,
+      "db": 0.0
+    },
+    "metronome_winddown": {
+      "id": "dusk_clock_chime",
+      "pitch": 0.8,
+      "db": -0.5
+    }
   }
 }

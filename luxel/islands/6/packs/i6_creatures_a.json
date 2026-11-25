@@ -7,10 +7,26 @@
     "ISL6_BOSS_ENG": "THE ENGINEER"
   },
   "sfx": {
-    "steam_whistle": {"id": "bell_toll_heavy", "pitch": 1.52, "db": -2.5},
-    "coupler_snap": {"id": "shield_clang", "pitch": 0.86, "db": -0.5},
-    "piston_hiss": {"id": "forge_gust", "pitch": 1.24, "db": -1.5},
-    "magnet_hum": {"id": "void_hum", "pitch": 1.26, "db": -2.0}
+    "steam_whistle": {
+      "id": "steam_whistle",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "coupler_snap": {
+      "id": "coupler_snap",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "piston_hiss": {
+      "id": "slag_cool",
+      "pitch": 1.14,
+      "db": -1.0
+    },
+    "magnet_hum": {
+      "id": "void_hum",
+      "pitch": 1.26,
+      "db": -2.0
+    }
   },
   "enemies": {
     "stoker": {
@@ -22,7 +38,7 @@
         "leash_radius": 148.0,
         "notice_radius": 124.0,
         "tell_time": 0.52,
-        "recover_time": 1.20,
+        "recover_time": 1.2,
         "shard_drop": 4,
         "attack_damage": 1.0,
         "island": 6,
@@ -39,7 +55,7 @@
         "leash_radius": 156.0,
         "notice_radius": 132.0,
         "tell_time": 0.46,
-        "recover_time": 1.10,
+        "recover_time": 1.1,
         "shard_drop": 3,
         "attack_damage": 1.0,
         "island": 6,
@@ -56,7 +72,7 @@
         "leash_radius": 136.0,
         "notice_radius": 108.0,
         "tell_time": 0.58,
-        "recover_time": 1.30,
+        "recover_time": 1.3,
         "shard_drop": 4,
         "attack_damage": 1.0,
         "island": 6,
@@ -140,7 +156,7 @@
         "leash_radius": 0.0,
         "notice_radius": 180.0,
         "tell_time": 0.55,
-        "recover_time": 1.20,
+        "recover_time": 1.2,
         "shard_drop": 34,
         "attack_damage": 1.0,
         "is_boss": true,
@@ -151,7 +167,9 @@
   "bosses": {
     "brakeman": {
       "name_key": "ISL6_BOSS_BRAKE",
-      "phases": [0.58],
+      "phases": [
+        0.58
+      ],
       "mini": true,
       "dungeon": "ember_express",
       "region": "train_r5",
@@ -163,7 +181,10 @@
     },
     "engineer": {
       "name_key": "ISL6_BOSS_ENG",
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "ember_express",
       "region": "train_r11",

@@ -192,6 +192,30 @@
       }
     },
     {
+      "id": "chest_uc_r3",
+      "kind": "chest",
+      "pos": [
+        56,
+        40
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lore_uc_r3",
+      "kind": "lore_stone",
+      "pos": [
+        432,
+        120
+      ],
+      "props": {
+        "string_id": "ISL1_UC_LORE_R3",
+        "icon": "flame"
+      }
+    },
+    {
       "id": "lamp_r3_e",
       "kind": "road_lamp",
       "pos": [
@@ -259,6 +283,26 @@
         ]
       ],
       "zone": "uc_relay"
+    },
+    {
+      "id": "snuffer_uc_r3",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        360,
+        216
+      ],
+      "route": [
+        [
+          344,
+          184
+        ],
+        [
+          408,
+          256
+        ]
+      ],
+      "zone": "uc_relay",
+      "leash": 120
     }
   ],
   "decor": [
@@ -453,6 +497,37 @@
   ],
   "events": [
     {
+      "id": "ev_uc_r3_relay_wave",
+      "on": "signal:bell_r3_d2",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "gh_uc_r3_w",
+              "kind": "grave_hand",
+              "pos": [
+                72,
+                168
+              ],
+              "zone": "uc_relay",
+              "leash": 96
+            },
+            {
+              "id": "moth_uc_r3_w",
+              "kind": "toll_moth",
+              "pos": [
+                120,
+                184
+              ],
+              "zone": "uc_relay",
+              "leash": 120
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "uc_r3_relay",
       "on": "signal:bell_r3_d3",
       "once": true,
@@ -464,19 +539,23 @@
     }
   ],
   "design": {
-    "idea": "U-shaped twin gallery: hang your lantern in the projecting SE bay to open the acoustic shutter and chain a 3-bell Dawn relay around the chasm.",
+    "idea": "U-shaped twin gallery: clear the SE Snuffer and Toll Moth guarding the Lantern Hook, hang your lantern to lift the acoustic shutter, chain a 3-bell Dawn relay waking West gallery guards, and grab the NW cache.",
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Lantern Hook + Light Sensor holding a baffle open while Wick walks unarmed to strike a Dawn relay chain.",
-    "decisions": 6,
+    "decisions": 9,
     "expert_s": 50,
-    "reward": "uc_west_relay",
+    "reward": "uc_west_relay+20sh",
     "why": "U-shaped ossuary gallery linking the Coffin Vault to the Acolyte Cloister via bell relays.",
     "exit": "exit_r3_west",
     "solution": [
       {
+        "op": "interact",
+        "target": "lore_uc_r3"
+      },
+      {
         "op": "clear",
-        "timeout": 18.0
+        "timeout": 28.0
       },
       {
         "op": "recall"

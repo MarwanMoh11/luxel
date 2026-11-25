@@ -196,6 +196,30 @@
       }
     },
     {
+      "id": "chest_uc_r6",
+      "kind": "chest",
+      "pos": [
+        456,
+        280
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_uc_r6",
+      "kind": "lore_stone",
+      "pos": [
+        80,
+        72
+      ],
+      "props": {
+        "string_id": "ISL1_UC_LORE_R6",
+        "icon": "bell"
+      }
+    },
+    {
       "id": "door_r6_south",
       "kind": "door",
       "pos": [
@@ -260,6 +284,26 @@
         176
       ],
       "zone": "uc_echo"
+    },
+    {
+      "id": "moth_uc_r6",
+      "kind": "toll_moth",
+      "pos": [
+        288,
+        168
+      ],
+      "perches": [
+        [
+          288,
+          168
+        ],
+        [
+          216,
+          168
+        ]
+      ],
+      "zone": "uc_echo",
+      "leash": 130
     }
   ],
   "decor": [
@@ -443,18 +487,32 @@
         },
         {
           "narrate": "ISL1_UC_SHORTCUT"
+        },
+        {
+          "wave": [
+            {
+              "id": "snuffer_uc_r6_back",
+              "kind": "snuffer_acolyte",
+              "pos": [
+                288,
+                120
+              ],
+              "zone": "uc_echo",
+              "leash": 130
+            }
+          ]
         }
       ]
     }
   ],
   "design": {
-    "idea": "Three stone peninsulas over a flooded crypt chasm: throw at the West Dawn Bell for a 1.4s Echo, dash across the center pier, and ring Dusk in overlap.",
+    "idea": "Three stone peninsulas over a flooded crypt chasm: throw at the West Dawn Bell for a 1.4s Echo, dash across the center pier past a hovering Toll Moth, ring Dusk in overlap, and claim the SE backdoor cache.",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Echo Clapper's 1.4s delayed second wave lets Wick bridge time-and-distance gaps across flooded crypt chasms.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 55,
-    "reward": "uc_backdoor_open",
+    "reward": "uc_backdoor_open+25sh",
     "why": "Flooded three-peninsula chasm validating Echo Clapper mastery at the start of the East Wing.",
     "exit": "exit_r6_north",
     "start": {
@@ -512,7 +570,7 @@
       },
       {
         "op": "clear",
-        "timeout": 18.0
+        "timeout": 26.0
       },
       {
         "op": "shoot",

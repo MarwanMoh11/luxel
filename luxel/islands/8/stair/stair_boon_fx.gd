@@ -360,16 +360,16 @@ func _draw_hud() -> void:
 		tag = "B:%d  SCORE:%d x%s" % [boons.size(), int(sc.get("score", 0)), mult_s]
 	var w_px: float = float(LxPixelFont.width(tag, 1)) + 8.0
 	var bx: float = 315.0 - w_px
-	var by: float = 29.0
+	var by: float = 148.0
 	c.draw_rect(Rect2(bx, by, w_px, 9.0), PAL["void"] as Color)
 	c.draw_rect(Rect2(bx + 1.0, by + 1.0, w_px - 2.0, 7.0), PAL["night"] as Color)
 	c.draw_rect(Rect2(bx + 1.0, by + 1.0, 1.0, 7.0), PAL["rose"] as Color if _dir.is_iron_ascent() else PAL["gold"] as Color)
 	LxPixelFont.draw(c, tag, Vector2(bx + 4.0, by + 2.0), PAL["cream"] as Color, 1, PAL["void"] as Color)
 
-	# Active boon color pips along bottom-right edge (crisp & compact)
+	# Active boon color pips stacked cleanly above the Iron Ascent score bar (zero minimap overlap)
 	if not boons.is_empty():
 		var px: float = 312.0
-		var py: float = 41.0
+		var py: float = 141.0
 		for i: int in range(boons.size() - 1, -1, -1):
 			var meta: Dictionary = _dir.get_boon_meta(boons[i])
 			var grp: String = str(meta.get("group", "WICK"))

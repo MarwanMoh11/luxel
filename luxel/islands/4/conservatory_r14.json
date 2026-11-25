@@ -87,7 +87,7 @@
         120
       ],
       "props": {
-        "secs": 6.0,
+        "secs": 8.5,
         "loop": true
       }
     },
@@ -144,7 +144,7 @@
         168
       ],
       "props": {
-        "radius": 24,
+        "radius": 28,
         "on": false,
         "requires_signals": [
           "plate_c4_r14_a"
@@ -164,7 +164,7 @@
         168
       ],
       "props": {
-        "radius": 24,
+        "radius": 28,
         "on": false,
         "requires_signals": [
           "plate_c4_r14_b"
@@ -184,7 +184,7 @@
         168
       ],
       "props": {
-        "radius": 24,
+        "radius": 28,
         "on": false,
         "requires_signals": [
           "plate_c4_r14_c"

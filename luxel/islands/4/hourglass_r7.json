@@ -146,6 +146,19 @@
       }
     },
     {
+      "id": "chest_hg_r7",
+      "kind": "chest",
+      "pos": [
+        392,
+        120
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
       "id": "lamp_r7_s",
       "kind": "road_lamp",
       "pos": [
@@ -219,6 +232,24 @@
       "pos": [
         376,
         168
+      ],
+      "zone": "hg_r7_walk"
+    },
+    {
+      "id": "tk_r7_n",
+      "kind": "topiary_knight",
+      "pos": [
+        232,
+        88
+      ],
+      "zone": "hg_r7_walk"
+    },
+    {
+      "id": "snuffer_r7_ne",
+      "kind": "mire_snuffer",
+      "pos": [
+        312,
+        88
       ],
       "zone": "hg_r7_walk"
     }
@@ -360,7 +391,7 @@
     "kind": "combat",
     "beat": "ten",
     "teaches": "Echo Rose turns Petal Duelist parries away while cover pillars break Hour Heron cardinal lanes.",
-    "decisions": 8,
+    "decisions": 9,
     "expert_s": 50,
     "reward": "hg_r7_cleared+hg_cross_shortcut",
     "why": "Escalates East Wing combat and closes Cross-Hedge Cycle 2 back to r4.",

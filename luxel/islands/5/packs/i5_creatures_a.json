@@ -21,7 +21,7 @@
         "routine_speed": 46.0,
         "leash_radius": 158.0,
         "notice_radius": 120.0,
-        "tell_time": 0.50,
+        "tell_time": 0.5,
         "recover_time": 0.95,
         "shard_drop": 4,
         "attack_damage": 1.0,
@@ -52,7 +52,7 @@
         "leash_radius": 152.0,
         "notice_radius": 110.0,
         "tell_time": 0.55,
-        "recover_time": 1.00,
+        "recover_time": 1.0,
         "shard_drop": 4,
         "attack_damage": 1.0,
         "is_boss": false
@@ -82,7 +82,7 @@
         "leash_radius": 148.0,
         "notice_radius": 130.0,
         "tell_time": 0.68,
-        "recover_time": 1.20,
+        "recover_time": 1.2,
         "shard_drop": 6,
         "attack_damage": 1.0,
         "is_boss": false
@@ -111,8 +111,8 @@
         "routine_speed": 48.0,
         "leash_radius": 0.0,
         "notice_radius": 180.0,
-        "tell_time": 0.60,
-        "recover_time": 1.00,
+        "tell_time": 0.6,
+        "recover_time": 1.0,
         "shard_drop": 28,
         "attack_damage": 1.0,
         "is_boss": true
@@ -122,7 +122,9 @@
   "bosses": {
     "apogee_hound": {
       "name_key": "I5_BOSS_HOUND",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "meteor_vault",
       "region": "meteor_r6",
@@ -134,7 +136,10 @@
     },
     "twin_moons": {
       "name_key": "I5_BOSS_MOONS",
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "meteor_vault",
       "region": "meteor_r11",
@@ -146,15 +151,55 @@
     }
   },
   "sfx": {
-    "i5_meteor_hit": {"id": "crystal_clank", "pitch": 0.84, "db": -0.5},
-    "i5_gravity_bend": {"id": "phantom_phase", "pitch": 1.16, "db": -1.5},
-    "i5_well_polarity": {"id": "clockwork_chime", "pitch": 1.18, "db": -1.0},
-    "i5_comet_bark": {"id": "owl_lock", "pitch": 1.24, "db": -2.0},
-    "i5_hound_stagger": {"id": "shield_shatter", "pitch": 0.90, "db": 0.0},
-    "i5_moon_clash_bong": {"id": "bell_toll_heavy", "pitch": 1.06, "db": 0.5},
-    "i5_null_moth_eat": {"id": "snuffer_gulp", "pitch": 0.86, "db": -1.5},
-    "i5_star_jelly_swell": {"id": "spore_pop", "pitch": 1.22, "db": -3.0},
-    "i5_star_jelly_pulse": {"id": "hush_pulse", "pitch": 1.18, "db": -1.5},
-    "i5_star_jelly_split": {"id": "spore_pop", "pitch": 1.32, "db": -1.0}
+    "i5_meteor_hit": {
+      "id": "meteor_orb_shatter",
+      "pitch": 0.96,
+      "db": -0.5
+    },
+    "i5_gravity_bend": {
+      "id": "gravity_well_pull",
+      "pitch": 1.06,
+      "db": -1.0
+    },
+    "i5_well_polarity": {
+      "id": "polarity_flip",
+      "pitch": 1.04,
+      "db": -0.5
+    },
+    "i5_comet_bark": {
+      "id": "owl_lock",
+      "pitch": 1.24,
+      "db": -2.0
+    },
+    "i5_hound_stagger": {
+      "id": "stagger_break",
+      "pitch": 1.04,
+      "db": 0.0
+    },
+    "i5_moon_clash_bong": {
+      "id": "bell_toll_heavy",
+      "pitch": 1.06,
+      "db": 0.5
+    },
+    "i5_null_moth_eat": {
+      "id": "snuffer_gulp",
+      "pitch": 0.86,
+      "db": -1.5
+    },
+    "i5_star_jelly_swell": {
+      "id": "spore_pop",
+      "pitch": 1.22,
+      "db": -3.0
+    },
+    "i5_star_jelly_pulse": {
+      "id": "hush_pulse",
+      "pitch": 1.18,
+      "db": -1.5
+    },
+    "i5_star_jelly_split": {
+      "id": "spore_pop",
+      "pitch": 1.32,
+      "db": -1.0
+    }
   }
 }

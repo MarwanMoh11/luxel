@@ -1,7 +1,7 @@
 {
   "pack_id": "i4_party",
   "owner": "G4",
-  "comment": "Island 4 Set Piece: The Garden Party (party_r1..r5 — one-dusk heist with six clock events, Banquet Bell & Echo Rose Toastmaster duel, Indiana-Jones scale key swap, and Hour VI Aqueduct Escape). Debug-only on dungeon & regions entries ONLY until ow_clock_terrace hooks exit_terrace_to_party -> party_r1.",
+  "comment": "Island 4 Set Piece: The Garden Party (party_r1..r5 — one-dusk heist with six clock events, Banquet Bell & Echo Rose Toastmaster duel, Indiana-Jones scale key swap, and Hour VI Aqueduct Escape). Wired live to ow_clock_terrace.",
   "strings": {
     "ISL4_DNG_PARTY": "THE GARDEN PARTY",
     "ISL4_PT_R1": "VERANDA HEIST LOBBY",
@@ -34,7 +34,6 @@
       "name_key": "ISL4_DNG_PARTY",
       "island": 4,
       "entry": "party_r1",
-      "debug_only": true,
       "regions": [
         "party_r1",
         "party_r2",
@@ -54,11 +53,11 @@
     }
   ],
   "regions": {
-    "party_r1": { "name_key": "ISL4_PT_R1", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "debug_only": true, "map": [1, 3] },
-    "party_r2": { "name_key": "ISL4_PT_R2", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "debug_only": true, "map": [1, 2] },
-    "party_r3": { "name_key": "ISL4_PT_R3", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "debug_only": true, "map": [0, 1] },
-    "party_r4": { "name_key": "ISL4_PT_R4", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "debug_only": true, "map": [1, 1] },
-    "party_r5": { "name_key": "ISL4_PT_R5", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "debug_only": true, "map": [1, 0] }
+    "party_r1": { "name_key": "ISL4_PT_R1", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [1, 3] },
+    "party_r2": { "name_key": "ISL4_PT_R2", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [1, 2] },
+    "party_r3": { "name_key": "ISL4_PT_R3", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [0, 1] },
+    "party_r4": { "name_key": "ISL4_PT_R4", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [1, 1] },
+    "party_r5": { "name_key": "ISL4_PT_R5", "theme": "garden_party", "music": "isl4_setpiece", "dark": true, "map": [1, 0] }
   },
   "sfx": {
     "party_heist_chime": { "id": "clockwork_chime", "pitch": 1.12, "db": -1.0 },

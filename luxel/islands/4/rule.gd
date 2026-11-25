@@ -19,8 +19,8 @@ const REWIND_SWEEP_S: float = 0.60
 const WRAP_SWEEP_S: float = 1.20
 
 const SCOPE_ISLAND: String = "island:4"
-const SCOPE_PARTY: String = "dungeon:party"
-const SCOPE_MAUSOLEUM: String = "dungeon:mausoleum"
+const SCOPE_PARTY: String = "dungeon:garden_party"
+const SCOPE_MAUSOLEUM: String = "dungeon:rain_mausoleum"
 
 const HOUR_CUES: Array[String] = [
 	"ISL4_CUE_HOUR_1",

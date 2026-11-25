@@ -20,12 +20,19 @@
     },
     "redemption_used": {
       "scope": "game",
-      "values": [false, true],
+      "values": [
+        false,
+        true
+      ],
       "default": false
     },
     "hush_finale_choice": {
       "scope": "game",
-      "values": ["", "display", "keep"],
+      "values": [
+        "",
+        "display",
+        "keep"
+      ],
       "default": ""
     },
     "display_pixels_pct": {
@@ -34,7 +41,10 @@
     },
     "mem_tide": {
       "scope": "dungeon:archive",
-      "values": ["ebb", "flood"],
+      "values": [
+        "ebb",
+        "flood"
+      ],
       "default": "ebb"
     },
     "stair_floor": {
@@ -51,15 +61,71 @@
     }
   },
   "sfx": {
-    "toll_weigh": { "id": "clockwork_chime", "pitch": 0.88, "db": 0.0 },
-    "toll_mote_drink": { "id": "shrine_claimed", "pitch": 1.08, "db": -0.5 },
-    "toll_redeem": { "id": "dawn_burst", "pitch": 1.12, "db": -1.0 },
-    "invoice_stamp": { "id": "bell_slam", "pitch": 0.94, "db": 0.0 },
-    "register_shatter": { "id": "shield_shatter", "pitch": 0.92, "db": 0.5 },
-    "boon_draft": { "id": "star_lance", "pitch": 1.06, "db": -0.5 },
-    "plinth_lock": { "id": "switch_eye", "pitch": 0.84, "db": 0.0 },
-    "plinth_return": { "id": "lens_reveal", "pitch": 1.12, "db": 0.0 },
-    "bookmark_pin": { "id": "mirror_ping", "pitch": 1.16, "db": -0.5 }
+    "toll_weigh": {
+      "id": "toll_coin_clink",
+      "pitch": 0.94,
+      "db": 0.0
+    },
+    "toll_mote_drink": {
+      "id": "shrine_claimed",
+      "pitch": 1.08,
+      "db": -0.5
+    },
+    "toll_redeem": {
+      "id": "dawn_burst",
+      "pitch": 1.12,
+      "db": -1.0
+    },
+    "invoice_stamp": {
+      "id": "setting_sold_hud",
+      "pitch": 0.94,
+      "db": 0.0
+    },
+    "register_shatter": {
+      "id": "shield_shatter",
+      "pitch": 0.92,
+      "db": 0.5
+    },
+    "boon_draft": {
+      "id": "boon_draft",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "plinth_lock": {
+      "id": "switch_eye",
+      "pitch": 0.84,
+      "db": 0.0
+    },
+    "plinth_return": {
+      "id": "lens_reveal",
+      "pitch": 1.12,
+      "db": 0.0
+    },
+    "bookmark_pin": {
+      "id": "mirror_ping",
+      "pitch": 1.16,
+      "db": -0.5
+    },
+    "toll_coin_clink": {
+      "id": "toll_coin_clink",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "setting_sold_visual": {
+      "id": "setting_sold_visual",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "setting_sold_audio": {
+      "id": "setting_sold_audio",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "setting_sold_hud": {
+      "id": "setting_sold_hud",
+      "pitch": 1.0,
+      "db": 0.0
+    }
   },
   "strings": {
     "ISL8_MENU_TITLE": "THE LANTERN ASKS",
@@ -212,12 +278,18 @@
     "_proof_i8_1": {
       "name_key": "ISL8_PROOF_1_NAME",
       "debug_only": true,
-      "map": [0, 0]
+      "map": [
+        0,
+        0
+      ]
     },
     "_proof_i8_2": {
       "name_key": "ISL8_PROOF_2_NAME",
       "debug_only": true,
-      "map": [1, 0]
+      "map": [
+        1,
+        0
+      ]
     }
   }
 }

@@ -11,7 +11,7 @@ extends LxToy
 
 const SWEEP_DUR: float = 1.0
 
-var var_scope: String = "dungeon:mausoleum"
+var var_scope: String = "dungeon:rain_mausoleum"
 var var_name: String = "weather"
 var states: Array[String] = ["sun", "rain", "wind"]
 var wind_dir: Vector2 = Vector2.RIGHT
@@ -28,7 +28,7 @@ var _init_notified: bool = false
 func _toy_setup() -> void:
 	kind = "weather_wheel"
 	radius = maxf(14.0, radius)
-	var_scope = str(props.get("scope", "dungeon:mausoleum")).strip_edges()
+	var_scope = str(props.get("scope", "dungeon:rain_mausoleum")).strip_edges()
 	if var_scope.is_empty():
 		var_scope = "room:%d:%s" % [island_id, region_id]
 	var_name = str(props.get("var", "weather")).strip_edges()

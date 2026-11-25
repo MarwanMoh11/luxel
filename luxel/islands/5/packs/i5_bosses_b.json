@@ -19,7 +19,7 @@
         "leash_radius": 0.0,
         "notice_radius": 180.0,
         "tell_time": 0.52,
-        "recover_time": 0.90,
+        "recover_time": 0.9,
         "shard_drop": 20,
         "attack_damage": 1.0,
         "is_boss": true
@@ -49,7 +49,7 @@
         "leash_radius": 0.0,
         "notice_radius": 180.0,
         "tell_time": 0.58,
-        "recover_time": 1.00,
+        "recover_time": 1.0,
         "shard_drop": 26,
         "attack_damage": 1.0,
         "is_boss": true
@@ -63,8 +63,8 @@
         "routine_speed": 24.0,
         "leash_radius": 0.0,
         "notice_radius": 180.0,
-        "tell_time": 0.60,
-        "recover_time": 1.00,
+        "tell_time": 0.6,
+        "recover_time": 1.0,
         "shard_drop": 45,
         "attack_damage": 1.0,
         "is_boss": true
@@ -74,7 +74,9 @@
   "bosses": {
     "meridian_weaver": {
       "name_key": "I5_BOSS_WEAVER",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "planetarium",
       "region": "planet_r6",
@@ -86,7 +88,11 @@
     },
     "the_zodiac": {
       "name_key": "I5_BOSS_ZODIAC",
-      "phases": [0.75, 0.5, 0.25],
+      "phases": [
+        0.75,
+        0.5,
+        0.25
+      ],
       "mini": false,
       "dungeon": "planetarium",
       "region": "planet_r11",
@@ -98,7 +104,10 @@
     },
     "the_counterweight": {
       "name_key": "I5_BOSS_WEIGHT",
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "fall",
       "region": "fall_r4",
@@ -110,7 +119,10 @@
     },
     "event_horizon": {
       "name_key": "I5_BOSS_HORIZON",
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "superboss",
       "region": "superboss_horizon",
@@ -122,13 +134,45 @@
     }
   },
   "sfx": {
-    "compass_tick": {"id": "clockwork_chime", "pitch": 1.32, "db": -2.5},
-    "zodiac_chord": {"id": "great_lamp_bloom", "pitch": 1.08, "db": -1.0},
-    "chain_groan": {"id": "harbor_creak", "pitch": 0.78, "db": -1.0},
-    "horizon_swallow": {"id": "snuffer_gulp", "pitch": 0.72, "db": -1.0},
-    "white_hole_flip": {"id": "dawn_burst", "pitch": 1.16, "db": 0.5},
-    "i5b_gravity_curve": {"id": "phantom_phase", "pitch": 1.16, "db": -1.5},
-    "i5b_polarity_flip": {"id": "clockwork_chime", "pitch": 1.18, "db": -1.0},
-    "i5b_chain_snap": {"id": "shield_shatter", "pitch": 1.12, "db": 0.5}
+    "compass_tick": {
+      "id": "clockwork_chime",
+      "pitch": 1.32,
+      "db": -2.5
+    },
+    "zodiac_chord": {
+      "id": "star_constellation",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "chain_groan": {
+      "id": "harbor_creak",
+      "pitch": 0.78,
+      "db": -1.0
+    },
+    "horizon_swallow": {
+      "id": "snuffer_gulp",
+      "pitch": 0.72,
+      "db": -1.0
+    },
+    "white_hole_flip": {
+      "id": "gravity_well_push",
+      "pitch": 1.1,
+      "db": 0.5
+    },
+    "i5b_gravity_curve": {
+      "id": "gravity_well_pull",
+      "pitch": 1.04,
+      "db": -1.0
+    },
+    "i5b_polarity_flip": {
+      "id": "polarity_flip",
+      "pitch": 1.04,
+      "db": -0.5
+    },
+    "i5b_chain_snap": {
+      "id": "shield_shatter",
+      "pitch": 1.12,
+      "db": 0.5
+    }
   }
 }

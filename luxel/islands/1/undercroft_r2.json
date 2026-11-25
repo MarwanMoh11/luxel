@@ -102,6 +102,18 @@
       }
     },
     {
+      "id": "lore_uc_r2",
+      "kind": "lore_stone",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "string_id": "ISL1_UC_LORE_R2",
+        "icon": "bell"
+      }
+    },
+    {
       "id": "bell_r2_dusk",
       "kind": "bell",
       "pos": [
@@ -318,6 +330,26 @@
         264
       ],
       "zone": "uc_coffins"
+    },
+    {
+      "id": "moth_r2_uc",
+      "kind": "toll_moth",
+      "pos": [
+        296,
+        168
+      ],
+      "perches": [
+        [
+          296,
+          168
+        ],
+        [
+          120,
+          168
+        ]
+      ],
+      "zone": "uc_coffins",
+      "leash": 135
     }
   ],
   "decor": [
@@ -479,6 +511,27 @@
   ],
   "events": [
     {
+      "id": "ev_uc_r2_wake",
+      "on": "signal:bell_r2_dawn",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "gh_uc_r2_wake",
+              "kind": "grave_hand",
+              "pos": [
+                64,
+                152
+              ],
+              "zone": "uc_coffins",
+              "leash": 96
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "uc_r2_mark",
       "on": "signal:door_r2_west",
       "once": true,
@@ -490,11 +543,11 @@
     }
   ],
   "design": {
-    "idea": "L-shaped ossuary vault: Dawn slides twin coffins across an 8-tile abyss while a pushed stone baffle shields a Pew Mimic from a War Bell.",
+    "idea": "L-shaped ossuary vault: Dawn slides twin coffins across an 8-tile abyss and wakes a second Grave Hand on the west landing, Dusk hushes them while a Toll Moth patrols the chasm, and a pushed stone baffle shields a Pew Mimic from a War Bell.",
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Tone Coffins respond to Dawn, Dusk hushes Grave Hands, and push blocks occlude Ring Waves.",
-    "decisions": 5,
+    "decisions": 7,
     "expert_s": 45,
     "reward": "open_r3+15sh",
     "why": "Dry stone ossuary introducing all three bell tones and acoustic occlusion.",

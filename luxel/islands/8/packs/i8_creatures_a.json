@@ -21,8 +21,8 @@
         "routine_speed": 36.0,
         "leash_radius": 158.0,
         "notice_radius": 120.0,
-        "tell_time": 0.50,
-        "recover_time": 1.20,
+        "tell_time": 0.5,
+        "recover_time": 1.2,
         "shield_hp": 2.0,
         "shard_drop": 5,
         "attack_damage": 1.0,
@@ -68,7 +68,7 @@
         "leash_radius": 128.0,
         "notice_radius": 155.0,
         "tell_time": 0.54,
-        "recover_time": 1.30,
+        "recover_time": 1.3,
         "shard_drop": 4,
         "attack_damage": 1.0,
         "is_boss": false
@@ -82,7 +82,7 @@
         "routine_speed": 38.0,
         "leash_radius": 150.0,
         "notice_radius": 64.0,
-        "tell_time": 0.50,
+        "tell_time": 0.5,
         "recover_time": 1.15,
         "shard_drop": 4,
         "attack_damage": 1.0,
@@ -128,7 +128,7 @@
         "leash_radius": 0.0,
         "notice_radius": 180.0,
         "tell_time": 0.55,
-        "recover_time": 1.10,
+        "recover_time": 1.1,
         "shard_drop": 28,
         "attack_damage": 1.0,
         "is_boss": true
@@ -139,7 +139,9 @@
     "chief_auditor": {
       "island": 8,
       "name_key": "ISL8_BOSS_AUDITOR",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "toll_house",
       "region": "toll_r5",
@@ -152,7 +154,10 @@
     "tollmaster": {
       "island": 8,
       "name_key": "ISL8_BOSS_TOLLMASTER",
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "toll_house",
       "region": "toll_r11",
@@ -165,7 +170,9 @@
     "indexer": {
       "island": 8,
       "name_key": "ISL8_BOSS_INDEXER",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "archive",
       "region": "archive_r6",
@@ -177,20 +184,80 @@
     }
   },
   "sfx": {
-    "clerk_bell": { "id": "clockwork_chime", "pitch": 1.24, "db": -2.0 },
-    "tax_ring_drop": { "id": "bell_slam", "pitch": 1.18, "db": -1.5 },
-    "censer_swing": { "id": "gust_whoosh", "pitch": 0.92, "db": -2.0 },
-    "censer_chain_cut": { "id": "shield_shatter", "pitch": 1.16, "db": -0.5 },
-    "choir_chord": { "id": "hush_pulse", "pitch": 1.18, "db": -2.0 },
-    "choir_silence": { "id": "clockwork_chime", "pitch": 0.86, "db": -2.0 },
-    "eclipse_lock": { "id": "beam_charge", "pitch": 1.10, "db": -3.0 },
-    "eclipse_beam": { "id": "lighthouse_beam", "pitch": 1.06, "db": -1.0 },
-    "paper_snap": { "id": "prop_rustle", "pitch": 1.22, "db": -1.5 },
-    "page_hop": { "id": "feather_flutter", "pitch": 1.12, "db": -1.5 },
-    "auditor_ding": { "id": "clockwork_chime", "pitch": 1.32, "db": -1.0 },
-    "register_chime": { "id": "shop_buy", "pitch": 1.12, "db": -0.5 },
-    "tollmaster_invoice": { "id": "bell_slam", "pitch": 0.92, "db": 0.0 },
-    "tollmaster_register_break": { "id": "seal_shatter_heavy", "pitch": 1.08, "db": 0.5 },
-    "drawer_clack": { "id": "harbor_creak", "pitch": 1.18, "db": -1.0 }
+    "clerk_bell": {
+      "id": "toll_coin_clink",
+      "pitch": 1.04,
+      "db": -1.0
+    },
+    "tax_ring_drop": {
+      "id": "toll_coin_clink",
+      "pitch": 0.88,
+      "db": 0.0
+    },
+    "censer_swing": {
+      "id": "gust_whoosh",
+      "pitch": 0.92,
+      "db": -2.0
+    },
+    "censer_chain_cut": {
+      "id": "shield_shatter",
+      "pitch": 1.16,
+      "db": -0.5
+    },
+    "choir_chord": {
+      "id": "hush_pulse",
+      "pitch": 1.18,
+      "db": -2.0
+    },
+    "choir_silence": {
+      "id": "clockwork_chime",
+      "pitch": 0.86,
+      "db": -2.0
+    },
+    "eclipse_lock": {
+      "id": "beam_charge",
+      "pitch": 1.1,
+      "db": -3.0
+    },
+    "eclipse_beam": {
+      "id": "lighthouse_beam",
+      "pitch": 1.06,
+      "db": -1.0
+    },
+    "paper_snap": {
+      "id": "prop_rustle",
+      "pitch": 1.22,
+      "db": -1.5
+    },
+    "page_hop": {
+      "id": "feather_flutter",
+      "pitch": 1.12,
+      "db": -1.5
+    },
+    "auditor_ding": {
+      "id": "toll_coin_clink",
+      "pitch": 1.12,
+      "db": -0.5
+    },
+    "register_chime": {
+      "id": "toll_coin_clink",
+      "pitch": 1.0,
+      "db": -0.5
+    },
+    "tollmaster_invoice": {
+      "id": "setting_sold_hud",
+      "pitch": 0.9,
+      "db": 0.5
+    },
+    "tollmaster_register_break": {
+      "id": "seal_shatter_heavy",
+      "pitch": 1.08,
+      "db": 0.5
+    },
+    "drawer_clack": {
+      "id": "harbor_creak",
+      "pitch": 1.18,
+      "db": -1.0
+    }
   }
 }

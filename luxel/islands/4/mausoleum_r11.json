@@ -135,6 +135,19 @@
       }
     },
     {
+      "id": "chest_ms_r11",
+      "kind": "chest",
+      "pos": [
+        120,
+        104
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45
+      }
+    },
+    {
       "id": "lamp_r11_sw",
       "kind": "road_lamp",
       "pos": [
@@ -263,6 +276,26 @@
         ]
       ],
       "leash": 135
+    },
+    {
+      "id": "pd_r11_n",
+      "kind": "petal_duelist",
+      "pos": [
+        224,
+        88
+      ],
+      "zone": "ms_r11_organ",
+      "route": [
+        [
+          192,
+          88
+        ],
+        [
+          256,
+          88
+        ]
+      ],
+      "leash": 130
     }
   ],
   "layers": [],
@@ -420,7 +453,7 @@
     "kind": "combat",
     "beat": "ketsu",
     "teaches": "Combining Lantern Hook freezes, metronome Heron timing, and draft lanes before the final Choir.",
-    "decisions": 8,
+    "decisions": 9,
     "expert_s": 50,
     "reward": "ms_r11_cleared+full_heal",
     "why": "Terraced Choir ante-chamber raising tension right before the Sunken Apse boss.",

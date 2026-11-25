@@ -111,6 +111,18 @@
       }
     },
     {
+      "id": "lore_mn_r2",
+      "kind": "lore_stone",
+      "pos": [
+        344,
+        120
+      ],
+      "props": {
+        "string_id": "ISL1_MN_LORE_R2",
+        "icon": "scroll"
+      }
+    },
+    {
       "id": "lamp_r2_entry_n",
       "kind": "road_lamp",
       "pos": [
@@ -197,6 +209,15 @@
           224
         ]
       ]
+    },
+    {
+      "id": "mimic_mn_r2",
+      "kind": "pew_mimic",
+      "pos": [
+        272,
+        240
+      ],
+      "zone": "mn_dining"
     }
   ],
   "decor": [
@@ -339,6 +360,27 @@
   ],
   "events": [
     {
+      "id": "ev_mn_r2_dusk_wave",
+      "on": "signal:bell_r2_dusk",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "snuffer_mn_r2",
+              "kind": "snuffer_acolyte",
+              "pos": [
+                104,
+                152
+              ],
+              "zone": "mn_dining",
+              "leash": 135
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "mn_r2_passed",
       "on": "signal:gate_r2_shadow",
       "once": true,
@@ -350,11 +392,11 @@
     }
   ],
   "design": {
-    "idea": "Safe stealth intro: freeze patrolling Lamp Butlers with the central Dusk Bell and hang your lantern behind the SW dining screen so the Shadow Gate glides open.",
+    "idea": "Safe stealth intro: freeze patrolling Lamp Butlers with the central Dusk Bell while fending off the disguised banquet Pew Mimic and summoned Snuffer, then hang your lantern behind the SW dining screen so the Shadow Gate glides open.",
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Lamp Butlers sweep vision cones, Dusk freezes them, and hanging your lantern behind cover opens Shadow Gates.",
-    "decisions": 5,
+    "decisions": 8,
     "expert_s": 45,
     "reward": "open_r3+15sh",
     "why": "Introduces Manor stealth cones, Dusk-freezing patrols, and Shadow Gate light occlusion safely.",

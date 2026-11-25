@@ -20,7 +20,12 @@
     "ISL1_UC_LORE_NAVE": "DAWN WAKES. DUSK HUSHES. WAR SHATTERS.",
     "ISL1_UC_LORE_CHOIR": "THREE COFFINS ANSWER. ONE BLOCK SHIELDS.",
     "ISL1_UC_SHORTCUT": "A CRYPT SHORTCUT GRATES OPEN!",
-    "ISL1_UC_CLEARED": "THE SEXTON FALLS. HALF-LANTERN CLAIMED!"
+    "ISL1_UC_CLEARED": "THE SEXTON FALLS. HALF-LANTERN CLAIMED!",
+    "ISL1_UC_LORE_R2": "STONE BLOCKS SHIELD MIMICS FROM WAR RING.",
+    "ISL1_UC_LORE_R3": "HANG YOUR LANTERN TO LIFT THE BAFFLE.",
+    "ISL1_UC_LORE_R4": "HUSH THE SNUFFERS BEFORE LIGHTING ALTARS.",
+    "ISL1_UC_LORE_R6": "THROW AT DAWN. DASH EAST TO RING DUSK.",
+    "ISL1_UC_LORE_R10": "THROW WAR ECHO THEN STAND ON THE SHUTTER."
   },
   "interactables": {
     "uc_echo_altar": "res://luxel/islands/1/undercroft/uc_echo_altar.gd"
@@ -166,19 +171,19 @@
   },
   "sfx": {
     "echo_clapper_pulse": {
-      "id": "clockwork_chime",
-      "pitch": 1.32,
-      "db": -1.0
+      "id": "echo_clapper_pulse",
+      "pitch": 1.0,
+      "db": 0.0
     },
     "coffin_slide": {
-      "id": "golem_stomp",
-      "pitch": 0.84,
-      "db": -2.5
+      "id": "coffin_slide",
+      "pitch": 1.0,
+      "db": 0.0
     },
     "coffin_freeze": {
-      "id": "clockwork_chime",
-      "pitch": 1.42,
-      "db": -2.0
+      "id": "bell_dusk_ring",
+      "pitch": 1.08,
+      "db": -1.5
     },
     "coffin_shatter": {
       "id": "stone_break",

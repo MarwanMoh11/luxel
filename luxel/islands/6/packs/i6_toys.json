@@ -11,32 +11,121 @@
   "state_vars": {
     "kiln_shift": {
       "scope": "island:6",
-      "values": ["station_a", "station_b", "station_c"],
+      "values": [
+        "station_a",
+        "station_b",
+        "station_c"
+      ],
       "default": "station_a"
     },
     "train_brake": {
       "scope": "dungeon:ember_express",
-      "values": ["running", "braked"],
+      "values": [
+        "running",
+        "braked"
+      ],
       "default": "running"
     },
     "kiln_heat": {
       "scope": "dungeon:great_kiln",
-      "values": ["low", "surge"],
+      "values": [
+        "low",
+        "surge"
+      ],
       "default": "low"
     },
     "wick_temper": {
       "scope": "game",
-      "values": ["", "skip", "scatter", "lance"],
+      "values": [
+        "",
+        "skip",
+        "scatter",
+        "lance"
+      ],
       "default": ""
     }
   },
   "sfx": {
-    "anvil_clang_skip": { "id": "prism_bounce", "pitch": 1.18, "db": 0.0 },
-    "anvil_clang_scatter": { "id": "shield_clang", "pitch": 1.24, "db": 0.0 },
-    "anvil_clang_lance": { "id": "bell_slam", "pitch": 0.86, "db": 0.5 },
-    "anvil_clang_heavy": { "id": "bell_toll_heavy", "pitch": 0.78, "db": 0.5 },
-    "heart_thump": { "id": "golem_stomp", "pitch": 0.76, "db": 0.5 },
-    "colossus_horn": { "id": "harbor_creak", "pitch": 0.72, "db": 0.5 }
+    "anvil_clang_skip": {
+      "id": "anvil_temper_skip",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "anvil_clang_scatter": {
+      "id": "anvil_temper_scatter",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "anvil_clang_lance": {
+      "id": "anvil_temper_lance",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "anvil_clang_heavy": {
+      "id": "anvil_temper_lance",
+      "pitch": 0.84,
+      "db": 0.5
+    },
+    "heart_thump": {
+      "id": "colossus_step",
+      "pitch": 0.82,
+      "db": 0.0
+    },
+    "colossus_horn": {
+      "id": "colossus_tilt",
+      "pitch": 0.88,
+      "db": 0.5
+    },
+    "anvil_temper_skip": {
+      "id": "anvil_temper_skip",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "anvil_temper_scatter": {
+      "id": "anvil_temper_scatter",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "anvil_temper_lance": {
+      "id": "anvil_temper_lance",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "colossus_step": {
+      "id": "colossus_step",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "colossus_tilt": {
+      "id": "colossus_tilt",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "train_chug": {
+      "id": "train_chug",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "train_brake": {
+      "id": "train_brake",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "slag_pour": {
+      "id": "slag_pour",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "slag_cool": {
+      "id": "slag_cool",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "heat_boots_step": {
+      "id": "heat_boots_step",
+      "pitch": 1.0,
+      "db": 0.0
+    }
   },
   "strings": {
     "ISL6_SHIFT_A": "SHIFT A: EXPRESS AT SWITCHYARD.",
@@ -66,12 +155,18 @@
     "_proof_i6_1": {
       "name_key": "ISL6_PROOF_1_NAME",
       "debug_only": true,
-      "map": [0, 0]
+      "map": [
+        0,
+        0
+      ]
     },
     "_proof_i6_2": {
       "name_key": "ISL6_PROOF_2_NAME",
       "debug_only": true,
-      "map": [1, 0]
+      "map": [
+        1,
+        0
+      ]
     }
   }
 }

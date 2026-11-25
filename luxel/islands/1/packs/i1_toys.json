@@ -10,37 +10,75 @@
   "state_vars": {
     "bell_hour": {
       "scope": "island:1",
-      "values": ["evening", "midnight"],
+      "values": [
+        "evening",
+        "midnight"
+      ],
       "default": "evening"
     },
     "manor_verdict": {
       "scope": "dungeon:manor",
-      "values": ["none", "right", "wrong"],
+      "values": [
+        "none",
+        "right",
+        "wrong"
+      ],
       "default": "none"
     },
     "belfry_clock_hand": {
       "scope": "dungeon:belfry",
-      "values": ["west", "north", "east", "south"],
+      "values": [
+        "west",
+        "north",
+        "east",
+        "south"
+      ],
       "default": "west"
     }
   },
   "sfx": {
-    "bell_dawn_ring": { "id": "bell_toll_heavy", "pitch": 1.28, "db": -1.0 },
-    "bell_dusk_ring": { "id": "clockwork_chime", "pitch": 1.18, "db": -0.5 },
-    "bell_war_ring": { "id": "bell_slam", "pitch": 0.78, "db": 0.0 },
-    "portrait_blink": { "id": "switch_eye", "pitch": 0.92, "db": -2.0 },
-    "cuckoo_pop": { "id": "prop_chime", "pitch": 1.48, "db": -1.0 }
+    "bell_dawn_ring": {
+      "id": "bell_dawn_ring",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "bell_dusk_ring": {
+      "id": "bell_dusk_ring",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "bell_war_ring": {
+      "id": "bell_war_ring",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "portrait_blink": {
+      "id": "portrait_blink",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "cuckoo_pop": {
+      "id": "cuckoo_pop",
+      "pitch": 1.0,
+      "db": 0.0
+    }
   },
   "regions": {
     "_proof_i1_1": {
       "name_key": "ISL1_PROOF_1",
       "debug_only": true,
-      "map": [0, 0]
+      "map": [
+        0,
+        0
+      ]
     },
     "_proof_i1_2": {
       "name_key": "ISL1_PROOF_2",
       "debug_only": true,
-      "map": [1, 0]
+      "map": [
+        1,
+        0
+      ]
     }
   },
   "strings": {

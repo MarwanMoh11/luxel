@@ -1189,5 +1189,77 @@
     "PANE_DAWN_SPARK_DESC": "KILLS FLASH LIGHT + EMBER - SHORT BOLT",
     "PANE_LAST_GLASS_NAME": "LAST GLASS",
     "PANE_LAST_GLASS_DESC": "EMPTY EMBER BOOSTS BOLTS - SLOW FILL"
+  },
+  "sfx": {
+    "folk_chirp_warm": {
+      "id": "folk_chirp_warm",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "folk_chirp_bright": {
+      "id": "folk_chirp_bright",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "folk_chirp_croak": {
+      "id": "folk_chirp_croak",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "folk_chirp_clack": {
+      "id": "folk_chirp_clack",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "folk_chirp_candle_grandma": {
+      "id": "folk_chirp_warm",
+      "pitch": 0.94,
+      "db": 0.0
+    },
+    "folk_chirp_bell_snail": {
+      "id": "folk_chirp_warm",
+      "pitch": 1.08,
+      "db": 0.0
+    },
+    "folk_chirp_moth_kid": {
+      "id": "folk_chirp_bright",
+      "pitch": 1.06,
+      "db": 0.0
+    },
+    "folk_chirp_owl_chick": {
+      "id": "folk_chirp_bright",
+      "pitch": 0.92,
+      "db": 0.0
+    },
+    "folk_chirp_gardener_frog": {
+      "id": "folk_chirp_croak",
+      "pitch": 0.96,
+      "db": 0.0
+    },
+    "folk_chirp_kiln_salamander": {
+      "id": "folk_chirp_croak",
+      "pitch": 1.12,
+      "db": 0.0
+    },
+    "folk_chirp_ferry_beetle": {
+      "id": "folk_chirp_clack",
+      "pitch": 0.9,
+      "db": 0.0
+    },
+    "folk_chirp_mirror_crab": {
+      "id": "folk_chirp_clack",
+      "pitch": 1.14,
+      "db": 0.0
+    },
+    "folk_chirp_scribe_worm": {
+      "id": "folk_chirp_clack",
+      "pitch": 1.0,
+      "db": -0.5
+    },
+    "folk_chirp_tailor_spider": {
+      "id": "folk_chirp_clack",
+      "pitch": 1.22,
+      "db": -0.5
+    }
   }
 }

@@ -28,7 +28,7 @@
     "ISL3_ROOT_BRIDGE_GROWN": "A GREAT ROOT BRIDGE SPROUTS ABOVE!",
     "ISL3_GARDENER_BRIDGE": "THE GARDENER VINE OPENS TO THE SUMMIT!",
     "ISL3_LORE_SAP_VAULT": "THE OLD SAP HOLDS LIGHT LIKE GLASS.",
-    "ISL3_LORE_CELLAR": "WINGS OF DUSK ONCE CROSSED THIS CHASM.",
+    "ISL3_LORE_CELLAR": "UNSEEN STONES SPAN THE DEEPEST CHASM.",
     "ISL3_LORE_MONOLITH": "TWO WINGS - ONE COLD FLAME. HE PASSED HERE.",
     "ISL3_LORE_COURT_SEAL": "TWO HALF-LANTERNS SUMMON THE BRIAR COURT.",
     "ISL3_LORE_MOTHER_MURAL": "AT CROWN TURN - THE MOTHER ROOT WAKES.",
@@ -39,7 +39,9 @@
     "ISL3_TRIAL_SCALES_GO": "LIGHT ALL THREE SHRINE BRAZIERS IN TIME!",
     "ISL3_TRIAL_SCALES_WIN": "MOTH SCALES BALANCED! CLAIM YOUR PRIZE.",
     "ISL3_MOTHER_WIN": "THE MOTHER ROOT FLOWERS IN GOLDEN LIGHT!",
-    "ISL3_CAMP_RELIT_NOTE": "THE ARBITER RESTS BY LANTERN GLADE FIRE."
+    "ISL3_CAMP_RELIT_NOTE": "THE ARBITER RESTS BY LANTERN GLADE FIRE.",
+    "ISL3_LORE_SHIFT_W": "LIGHT THE COMPASS LAMP TO PIN THIS TURN.",
+    "ISL3_LORE_SHIFT_E": "SILKWOOD OPENS THE LOOM ON ITS SECOND TURN."
   },
   "quests": [
     {
@@ -51,12 +53,23 @@
       "rescue_folk": "gardener_frog",
       "steps": [
         {
-          "icons": ["folk_frog", "seed", "light_on", "arrow_ne", "isl_3"],
+          "icons": [
+            "folk_frog",
+            "seed",
+            "light_on",
+            "arrow_ne",
+            "isl_3"
+          ],
           "need": "q_gardener_seed_1 && q_gardener_seed_2 && q_gardener_seed_3",
           "flag": "q_isl3_gardener_done"
         },
         {
-          "icons": ["happy", "gift", "ember", "home"],
+          "icons": [
+            "happy",
+            "gift",
+            "ember",
+            "home"
+          ],
           "need": "",
           "flag": "quest:q_isl3_gardener:done"
         }
@@ -75,13 +88,24 @@
       "rescue_folk": "tailor_spider",
       "steps": [
         {
-          "icons": ["quest_carry", "toy_ring", "arrow_e", "skull", "light_on"],
+          "icons": [
+            "quest_carry",
+            "toy_ring",
+            "arrow_e",
+            "skull",
+            "light_on"
+          ],
           "need": "quest:item:amber_spindle",
           "consume_item": "amber_spindle",
           "flag": "q_isl3_tailor_done"
         },
         {
-          "icons": ["happy", "gift", "pane", "home"],
+          "icons": [
+            "happy",
+            "gift",
+            "pane",
+            "home"
+          ],
           "need": "",
           "flag": "quest:q_isl3_tailor:done"
         }
@@ -101,12 +125,22 @@
       "rescue_folk": "scribe_worm",
       "steps": [
         {
-          "icons": ["book", "eye", "lantern", "question"],
+          "icons": [
+            "book",
+            "eye",
+            "lantern",
+            "question"
+          ],
           "need": "lore_rubbing_1 && lore_rubbing_2 && lore_rubbing_3",
           "flag": "q_isl3_scribe_done"
         },
         {
-          "icons": ["happy", "gift", "ember", "skull"],
+          "icons": [
+            "happy",
+            "gift",
+            "ember",
+            "skull"
+          ],
           "need": "",
           "flag": "quest:q_isl3_scribe:done"
         }
@@ -118,18 +152,122 @@
     }
   ],
   "regions": {
-    "ow_camp": { "name_key": "ISL3_CAMP_NAME", "music": "island3_explore", "dark": true, "map": [-1, 3] },
-    "ow_shift_w": { "name_key": "ISL3_SHIFT_W_NAME", "music": "island3_explore", "dark": true, "map": [-1, 1] },
-    "ow_shift_e": { "name_key": "ISL3_SHIFT_E_NAME", "music": "island3_explore", "dark": true, "map": [1, 2] },
-    "ow_shift_n": { "name_key": "ISL3_SHIFT_N_NAME", "music": "island3_explore", "dark": true, "map": [-1, 0] },
-    "ow_tiny_moss": { "name_key": "ISL3_TINY_MOSS_NAME", "theme": "under_root", "music": "isl3_underroot", "dark": true, "map": [-1, 2] },
-    "cave_amber_well": { "name_key": "ISL3_CAVE_AMBER_NAME", "theme": "cave_3", "music": "island3_dungeon", "dark": true, "map": [-2, 1] },
-    "cave_burrow_den": { "name_key": "ISL3_CAVE_BURROW_NAME", "theme": "cave_3", "music": "island3_dungeon", "dark": true, "map": [2, 2] },
-    "cave_sap_vault": { "name_key": "ISL3_CAVE_SAP_NAME", "theme": "cave_3", "music": "island3_dungeon", "dark": true, "map": [-2, 0] },
-    "cave_root_cellar": { "name_key": "ISL3_CAVE_CELLAR_NAME", "theme": "cave_3", "music": "island3_dungeon", "dark": true, "map": [-1, 4] },
-    "trial_canopy_sprint": { "name_key": "ISL3_TRIAL_SPRINT_NAME", "theme": "briar_court", "music": "isl3_setpiece", "dark": true, "map": [2, 1] },
-    "trial_moth_scales": { "name_key": "ISL3_TRIAL_SCALES_NAME", "theme": "under_root", "music": "isl3_setpiece", "dark": true, "map": [-2, 3] },
-    "sb_mother_root": { "name_key": "ISL3_SB_MOTHER_NAME", "theme": "briar_court", "music": "superboss_a", "dark": true, "map": [-1, -1] }
+    "ow_camp": {
+      "name_key": "ISL3_CAMP_NAME",
+      "music": "island3_explore",
+      "dark": true,
+      "map": [
+        -1,
+        3
+      ]
+    },
+    "ow_shift_w": {
+      "name_key": "ISL3_SHIFT_W_NAME",
+      "music": "island3_explore",
+      "dark": true,
+      "map": [
+        -1,
+        1
+      ]
+    },
+    "ow_shift_e": {
+      "name_key": "ISL3_SHIFT_E_NAME",
+      "music": "island3_explore",
+      "dark": true,
+      "map": [
+        1,
+        2
+      ]
+    },
+    "ow_shift_n": {
+      "name_key": "ISL3_SHIFT_N_NAME",
+      "music": "island3_explore",
+      "dark": true,
+      "map": [
+        -1,
+        0
+      ]
+    },
+    "ow_tiny_moss": {
+      "name_key": "ISL3_TINY_MOSS_NAME",
+      "theme": "under_root",
+      "music": "isl3_underroot",
+      "dark": true,
+      "map": [
+        -1,
+        2
+      ]
+    },
+    "cave_amber_well": {
+      "name_key": "ISL3_CAVE_AMBER_NAME",
+      "theme": "cave_3",
+      "music": "island3_dungeon",
+      "dark": true,
+      "map": [
+        -2,
+        1
+      ]
+    },
+    "cave_burrow_den": {
+      "name_key": "ISL3_CAVE_BURROW_NAME",
+      "theme": "cave_3",
+      "music": "island3_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        2
+      ]
+    },
+    "cave_sap_vault": {
+      "name_key": "ISL3_CAVE_SAP_NAME",
+      "theme": "cave_3",
+      "music": "island3_dungeon",
+      "dark": true,
+      "map": [
+        -2,
+        0
+      ]
+    },
+    "cave_root_cellar": {
+      "name_key": "ISL3_CAVE_CELLAR_NAME",
+      "theme": "cave_3",
+      "music": "island3_dungeon",
+      "dark": true,
+      "map": [
+        -1,
+        4
+      ]
+    },
+    "trial_canopy_sprint": {
+      "name_key": "ISL3_TRIAL_SPRINT_NAME",
+      "theme": "briar_court",
+      "music": "isl3_setpiece",
+      "dark": true,
+      "map": [
+        2,
+        1
+      ]
+    },
+    "trial_moth_scales": {
+      "name_key": "ISL3_TRIAL_SCALES_NAME",
+      "theme": "under_root",
+      "music": "isl3_setpiece",
+      "dark": true,
+      "map": [
+        -2,
+        3
+      ]
+    },
+    "sb_mother_root": {
+      "name_key": "ISL3_SB_MOTHER_NAME",
+      "theme": "briar_court",
+      "music": "superboss_a",
+      "dark": true,
+      "map": [
+        -1,
+        -1
+      ]
+    }
   },
   "sfx": {}
 }

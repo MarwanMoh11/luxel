@@ -93,6 +93,39 @@
       }
     },
     {
+      "id": "lore_r18_carillon",
+      "kind": "lore_stone",
+      "pos": [
+        96,
+        144
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R18",
+        "icon": "clock"
+      }
+    },
+    {
+      "id": "shrine_r18_bench",
+      "kind": "rest_shrine",
+      "pos": [
+        160,
+        176
+      ],
+      "props": {}
+    },
+    {
+      "id": "chest_r18_carillon",
+      "kind": "chest",
+      "pos": [
+        328,
+        72
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
       "id": "bell_r18_dawn",
       "kind": "bell",
       "pos": [
@@ -302,8 +335,8 @@
     "kind": "story",
     "beat": "ketsu",
     "teaches": "Previews the 3-tone Rim Bell counter cadence of the Grand Bellkeeper fight in a calm vista.",
-    "decisions": 6,
-    "expert_s": 35,
+    "decisions": 8,
+    "expert_s": 38,
     "reward": "belfry_upper_ws+carillon_preview",
     "why": "Essential pre-boss rest/vista beat and upper waystone dropping straight onto belfry_r6.",
     "optional": true,

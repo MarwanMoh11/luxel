@@ -149,10 +149,10 @@
         152
       ],
       "props": {
-        "radius": 24,
+        "radius": 26,
         "on": true,
         "dir": [
-          1,
+          0,
           0
         ],
         "boost_mult": 1.25
@@ -166,7 +166,7 @@
         120
       ],
       "props": {
-        "radius": 24,
+        "radius": 26,
         "on": false,
         "requires_signals": [
           "xtal_c4_r12_2"
@@ -186,14 +186,14 @@
         216
       ],
       "props": {
-        "radius": 22,
+        "radius": 26,
         "on": false,
         "requires_signals": [
           "xtal_c4_r12_2"
         ],
         "dir": [
           0,
-          1
+          0
         ],
         "boost_mult": 1.25
       }

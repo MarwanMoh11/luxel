@@ -12,21 +12,135 @@
     "sap_clock": "res://luxel/islands/3/toys/sap_clock.gd"
   },
   "state_vars": {
-    "wood_turn": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
-    "pin_w": { "scope": "island:3", "values": [0, 1], "default": 0 },
-    "pin_e": { "scope": "island:3", "values": [0, 1], "default": 0 },
-    "pin_n": { "scope": "island:3", "values": [0, 1], "default": 0 },
-    "pin_turn_w": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
-    "pin_turn_e": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
-    "pin_turn_n": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
-    "eff_turn_w": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
-    "eff_turn_e": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
-    "eff_turn_n": { "scope": "island:3", "values": [0, 1, 2], "default": 0 },
-    "size": { "scope": "island:3", "values": ["normal", "tiny"], "default": "normal" },
-    "loom_warp": { "scope": "dungeon:loom", "values": ["high", "low"], "default": "high" },
-    "court_v1": { "scope": "island:3", "values": ["none", "mercy", "fire"], "default": "none" },
-    "court_v2": { "scope": "island:3", "values": ["none", "mercy", "fire"], "default": "none" },
-    "oak_sap": { "scope": "dungeon:hollow_oak", "values": ["low", "high"], "default": "low" }
+    "wood_turn": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1,
+        2
+      ],
+      "default": 0
+    },
+    "pin_w": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1
+      ],
+      "default": 0
+    },
+    "pin_e": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1
+      ],
+      "default": 0
+    },
+    "pin_n": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1
+      ],
+      "default": 0
+    },
+    "pin_turn_w": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1,
+        2
+      ],
+      "default": 0
+    },
+    "pin_turn_e": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1,
+        2
+      ],
+      "default": 0
+    },
+    "pin_turn_n": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1,
+        2
+      ],
+      "default": 0
+    },
+    "eff_turn_w": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1,
+        2
+      ],
+      "default": 0
+    },
+    "eff_turn_e": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1,
+        2
+      ],
+      "default": 0
+    },
+    "eff_turn_n": {
+      "scope": "island:3",
+      "values": [
+        0,
+        1,
+        2
+      ],
+      "default": 0
+    },
+    "size": {
+      "scope": "island:3",
+      "values": [
+        "normal",
+        "tiny"
+      ],
+      "default": "normal"
+    },
+    "loom_warp": {
+      "scope": "dungeon:loom",
+      "values": [
+        "high",
+        "low"
+      ],
+      "default": "high"
+    },
+    "court_v1": {
+      "scope": "island:3",
+      "values": [
+        "none",
+        "mercy",
+        "fire"
+      ],
+      "default": "none"
+    },
+    "court_v2": {
+      "scope": "island:3",
+      "values": [
+        "none",
+        "mercy",
+        "fire"
+      ],
+      "default": "none"
+    },
+    "oak_sap": {
+      "scope": "dungeon:hollow_oak",
+      "values": [
+        "low",
+        "high"
+      ],
+      "default": "low"
+    }
   },
   "strings": {
     "PROMPT_SHRINK_STUMP": "SHRINK INTO STUMP",
@@ -49,26 +163,73 @@
     "ISL3_PROOF_2_NAME": "TINY UNDER-ROOT"
   },
   "sfx": {
-    "seed_bloom": { "id": "spore_pop", "pitch": 1.18, "db": -1.5 },
-    "seed_wilt": { "id": "prop_rustle", "pitch": 0.84, "db": -2.0 },
-    "wood_shift": { "id": "harbor_creak", "pitch": 0.78, "db": -0.5 },
-    "shrink_swirl": { "id": "phantom_phase", "pitch": 1.24, "db": -1.0 },
-    "dew_focus_ray": { "id": "prism_chain", "pitch": 1.16, "db": -1.0 },
-    "silk_spark_run": { "id": "brazier_lit", "pitch": 1.26, "db": -2.5 },
-    "silk_snap": { "id": "web_burn", "pitch": 1.15, "db": -1.0 },
-    "sap_horn_call": { "id": "bell_toll_heavy", "pitch": 0.72, "db": -1.0 },
-    "sap_clock_tick": { "id": "clockwork_chime", "pitch": 0.88, "db": -1.5 }
+    "seed_bloom": {
+      "id": "seed_bloom",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "seed_wilt": {
+      "id": "seed_wilt",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "wood_shift": {
+      "id": "wood_shift",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "shrink_swirl": {
+      "id": "shrink_swirl",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "dew_focus_ray": {
+      "id": "dew_focus_ray",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "silk_spark_run": {
+      "id": "silk_spark_run",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "silk_snap": {
+      "id": "silk_snap",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "sap_horn_call": {
+      "id": "bell_toll_heavy",
+      "pitch": 0.72,
+      "db": -1.0
+    },
+    "sap_clock_tick": {
+      "id": "dusk_clock_chime",
+      "pitch": 0.9,
+      "db": -1.5
+    },
+    "beetle_hoof": {
+      "id": "beetle_hoof",
+      "pitch": 1.0,
+      "db": 0.0
+    }
   },
   "regions": {
     "_proof_i3_1": {
       "name_key": "ISL3_PROOF_1_NAME",
       "debug_only": true,
-      "map": [0, 0]
+      "map": [
+        0,
+        0
+      ]
     },
     "_proof_i3_2": {
       "name_key": "ISL3_PROOF_2_NAME",
       "debug_only": true,
-      "map": [1, 0]
+      "map": [
+        1,
+        0
+      ]
     }
   }
 }

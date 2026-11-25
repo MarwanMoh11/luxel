@@ -37,7 +37,7 @@
         "leash_radius": 0.0,
         "notice_radius": 190.0,
         "tell_time": 0.58,
-        "recover_time": 1.20,
+        "recover_time": 1.2,
         "shard_drop": 48,
         "attack_damage": 1.0,
         "is_boss": true
@@ -67,7 +67,7 @@
         "leash_radius": 0.0,
         "notice_radius": 185.0,
         "tell_time": 0.54,
-        "recover_time": 1.10,
+        "recover_time": 1.1,
         "shard_drop": 30,
         "attack_damage": 1.0,
         "is_boss": true
@@ -82,7 +82,7 @@
         "leash_radius": 0.0,
         "notice_radius": 200.0,
         "tell_time": 0.62,
-        "recover_time": 1.20,
+        "recover_time": 1.2,
         "shard_drop": 80,
         "attack_damage": 1.0,
         "is_boss": true
@@ -93,7 +93,10 @@
     "archivist": {
       "island": 8,
       "name_key": "ISL8_BOSS_ARCHIVIST",
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "archive",
       "region": "archive_r12",
@@ -106,7 +109,10 @@
     "stair_warden": {
       "island": 8,
       "name_key": "ISL8_BOSS_STAIR1",
-      "phases": [0.66, 0.33],
+      "phases": [
+        0.66,
+        0.33
+      ],
       "mini": false,
       "dungeon": "endless_stair",
       "region": "stair_r10",
@@ -119,7 +125,9 @@
     "rose_seraph": {
       "island": 8,
       "name_key": "ISL8_BOSS_SERAPH",
-      "phases": [0.5],
+      "phases": [
+        0.5
+      ],
       "mini": true,
       "dungeon": "bell_sanctum",
       "region": "sanctum_r12",
@@ -132,7 +140,10 @@
     "first_dark": {
       "island": 8,
       "name_key": "ISL8_BOSS_FIRST_DARK",
-      "phases": [0.6, 0.28],
+      "phases": [
+        0.6,
+        0.28
+      ],
       "mini": false,
       "dungeon": "superboss",
       "region": "superboss_first_dark",
@@ -144,14 +155,50 @@
     }
   },
   "sfx": {
-    "page_turn_heavy": { "id": "prop_rustle", "pitch": 0.78, "db": 0.0 },
-    "tile_erase": { "id": "seal_shatter_heavy", "pitch": 0.72, "db": -0.5 },
-    "moth_spark_rip": { "id": "prism_chain", "pitch": 1.24, "db": -0.5 },
-    "seraph_hue_shift": { "id": "clockwork_chime", "pitch": 1.26, "db": -1.5 },
-    "seraph_glass_shatter": { "id": "shield_shatter", "pitch": 1.18, "db": 0.0 },
-    "stair_tread_drop": { "id": "stone_break", "pitch": 0.82, "db": 0.0 },
-    "eclipse_mirror_shatter": { "id": "shield_shatter", "pitch": 1.28, "db": 0.0 },
-    "hush_pixel_sell": { "id": "waystone_lit", "pitch": 1.15, "db": -1.0 },
-    "hush_big_blast": { "id": "dawn_burst", "pitch": 0.90, "db": 0.5 }
+    "page_turn_heavy": {
+      "id": "prop_rustle",
+      "pitch": 0.78,
+      "db": 0.0
+    },
+    "tile_erase": {
+      "id": "seal_shatter_heavy",
+      "pitch": 0.72,
+      "db": -0.5
+    },
+    "moth_spark_rip": {
+      "id": "prism_chain",
+      "pitch": 1.24,
+      "db": -0.5
+    },
+    "seraph_hue_shift": {
+      "id": "phase_shift_crown",
+      "pitch": 1.12,
+      "db": -1.0
+    },
+    "seraph_glass_shatter": {
+      "id": "shield_shatter",
+      "pitch": 1.18,
+      "db": 0.0
+    },
+    "stair_tread_drop": {
+      "id": "stone_break",
+      "pitch": 0.82,
+      "db": 0.0
+    },
+    "eclipse_mirror_shatter": {
+      "id": "shield_shatter",
+      "pitch": 1.28,
+      "db": 0.0
+    },
+    "hush_pixel_sell": {
+      "id": "setting_sold_visual",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "hush_big_blast": {
+      "id": "dawn_burst",
+      "pitch": 0.9,
+      "db": 0.5
+    }
   }
 }

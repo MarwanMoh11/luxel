@@ -161,6 +161,27 @@
       }
     },
     {
+      "id": "lore_r1_toll",
+      "kind": "lore_stone",
+      "pos": [
+        272,
+        160
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R1_TOLL",
+        "icon": "clock"
+      }
+    },
+    {
+      "id": "shrine_r1_rest",
+      "kind": "rest_shrine",
+      "pos": [
+        136,
+        176
+      ],
+      "props": {}
+    },
+    {
       "id": "door_r1_east",
       "kind": "door",
       "pos": [
@@ -497,8 +518,8 @@
     "kind": "story",
     "beat": "ki",
     "teaches": "Establishes the vertical 4-floor hub structure and multi-shortcut clockwork architecture.",
-    "decisions": 4,
-    "expert_s": 30,
+    "decisions": 6,
+    "expert_s": 35,
     "reward": "waystone+clockwork_hub",
     "why": "Central hub of the 18-room Grand Belfry tying all 9 internal cycles together.",
     "optional": true,

@@ -190,6 +190,19 @@
       }
     },
     {
+      "id": "anchor_c4_r7_mid",
+      "kind": "room_anchor",
+      "pos": [
+        232,
+        136
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 26,
+        "persist": true
+      }
+    },
+    {
       "id": "updraft_c4_r7_mid",
       "kind": "updraft_vent",
       "pos": [
@@ -197,10 +210,10 @@
         136
       ],
       "props": {
-        "radius": 22,
+        "radius": 26,
         "on": true,
         "dir": [
-          1,
+          0,
           0
         ],
         "boost_mult": 1.25

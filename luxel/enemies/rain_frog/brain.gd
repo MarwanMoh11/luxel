@@ -237,8 +237,10 @@ func _try_nudge_weather_wheel(dt: float) -> bool:
 			var wh: LxInteractable = it_v as LxInteractable
 			var to_w: Vector2 = wh.pos - pos
 			if to_w.length() <= 14.0:
-				if Lx.vars != null:
-					Lx.vars.set_var("dungeon:mausoleum", "weather", "rain")
+				if wh.has_method("set_weather"):
+					wh.call("set_weather", "rain", true)
+				elif Lx.vars != null:
+					Lx.vars.set_var("dungeon:rain_mausoleum", "weather", "rain")
 				_wheel_cd = 9.0
 				_emit_sfx("rain_frog_swell")
 				return true
@@ -352,7 +354,7 @@ func _read_weather() -> String:
 		var reg_id: String = str(world_ctx.get("region_id")) if (world_ctx != null and is_instance_valid(world_ctx) and world_ctx.get("region_id") != null) else ""
 		var w: String = str(Lx.vars.resolve_var("weather", island_id, reg_id, ""))
 		if w.is_empty():
-			w = str(Lx.vars.get_var("dungeon:mausoleum", "weather", ""))
+			w = str(Lx.vars.get_var("dungeon:rain_mausoleum", "weather", ""))
 		if not w.is_empty():
 			return w.to_lower()
 	return ""

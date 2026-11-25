@@ -89,6 +89,26 @@
         "wings"
       ],
       "requires_flags": []
+    },
+    {
+      "id": "exit_terrace_to_party",
+      "rect": [
+        272,
+        0,
+        32,
+        16
+      ],
+      "to_region": "party_r1",
+      "to_spawn": [
+        216,
+        248
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "dungeon_hourglass_done",
+        "dungeon_mausoleum_done"
+      ],
+      "locked_door_id": "door_terrace_to_party"
     }
   ],
   "enemies": [
@@ -202,11 +222,30 @@
       }
     },
     {
+      "id": "door_terrace_to_party",
+      "kind": "door",
+      "pos": [
+        288,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "dungeon_hourglass_done",
+          "dungeon_mausoleum_done"
+        ]
+      }
+    },
+    {
       "id": "seal_plinth_t_hg",
       "kind": "isl4_seal_plinth",
       "pos": [
         224,
-        80
+        68
       ],
       "props": {
         "seal_flag": "dungeon_hourglass_done",
@@ -219,8 +258,8 @@
       "id": "seal_plinth_t_ms",
       "kind": "isl4_seal_plinth",
       "pos": [
-        288,
-        64
+        352,
+        68
       ],
       "props": {
         "seal_flag": "dungeon_mausoleum_done",
@@ -234,7 +273,7 @@
       "kind": "isl4_seal_plinth",
       "pos": [
         352,
-        80
+        104
       ],
       "props": {
         "seal_flag": "party_done",
@@ -247,8 +286,8 @@
       "id": "lore_terrace_party",
       "kind": "lore_stone",
       "pos": [
-        288,
-        108
+        224,
+        104
       ],
       "props": {
         "string_id": "ISL4_PARTY_GATE_HINT",
@@ -453,8 +492,8 @@
       "sheet": "theme_garden_party",
       "prop": "paper_lantern_post",
       "pos": [
-        216,
-        80
+        196,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -464,8 +503,8 @@
       "sheet": "theme_garden_party",
       "prop": "paper_lantern_post",
       "pos": [
-        360,
-        80
+        380,
+        68
       ],
       "layer": "sort",
       "flip_x": false,

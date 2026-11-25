@@ -147,6 +147,19 @@
       }
     },
     {
+      "id": "chest_ms_r3_sun",
+      "kind": "chest",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
       "id": "lamp_r3_s",
       "kind": "road_lamp",
       "pos": [
@@ -275,6 +288,26 @@
         ]
       ],
       "leash": 135
+    },
+    {
+      "id": "hh_r3_n",
+      "kind": "hour_heron",
+      "pos": [
+        232,
+        72
+      ],
+      "zone": "ms_r3_colonnade",
+      "route": [
+        [
+          208,
+          72
+        ],
+        [
+          256,
+          72
+        ]
+      ],
+      "leash": 130
     }
   ],
   "layers": [
@@ -480,7 +513,7 @@
     "kind": "combat",
     "beat": "sho",
     "teaches": "Active weather counterplay in combat: SUN strands Mist Eels and shrinks Rain Frogs.",
-    "decisions": 5,
+    "decisions": 8,
     "expert_s": 45,
     "reward": "ms_r3_cleared",
     "why": "First West Wing combat arena pairing Rain Frogs and Mist Eels around a live Weather Wheel.",

@@ -164,8 +164,8 @@
       "id": "crys_fl_r3_w2",
       "kind": "crystal_toggle",
       "pos": [
-        344,
-        224
+        272,
+        240
       ],
       "props": {
         "group": "fl_r3_pol",
@@ -572,21 +572,6 @@
         "zone": "fl_r3_mid"
       },
       {
-        "op": "shoot",
-        "from": [
-          344,
-          200
-        ],
-        "target": "crys_fl_r3_w2"
-      },
-      {
-        "op": "wait_until",
-        "interactable": "well_fl_r3_2",
-        "prop": "is_push",
-        "value": true,
-        "timeout": 2.0
-      },
-      {
         "op": "goto",
         "to": [
           344,
@@ -598,6 +583,26 @@
         "op": "shoot",
         "target": "sn_fl_r3_3",
         "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          212
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": "crys_fl_r3_w2",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "well_fl_r3_2",
+        "prop": "is_push",
+        "value": true,
+        "timeout": 2.0
       },
       {
         "op": "goto",

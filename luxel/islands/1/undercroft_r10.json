@@ -219,6 +219,18 @@
       }
     },
     {
+      "id": "lore_uc_r10",
+      "kind": "lore_stone",
+      "pos": [
+        352,
+        136
+      ],
+      "props": {
+        "string_id": "ISL1_UC_LORE_R10",
+        "icon": "bell"
+      }
+    },
+    {
       "id": "lamp_r10_e",
       "kind": "road_lamp",
       "pos": [
@@ -274,6 +286,26 @@
         ]
       ],
       "zone": "uc_balcony"
+    },
+    {
+      "id": "moth_uc_r10",
+      "kind": "toll_moth",
+      "pos": [
+        232,
+        72
+      ],
+      "perches": [
+        [
+          232,
+          72
+        ],
+        [
+          352,
+          72
+        ]
+      ],
+      "zone": "uc_balcony",
+      "leash": 120
     }
   ],
   "decor": [
@@ -406,14 +438,45 @@
           "narrate": "ISL1_UC_SHORTCUT"
         }
       ]
+    },
+    {
+      "id": "ev_uc_r10_pane_ambush",
+      "on": "signal:seal_r10_pane",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "gh_uc_r10_amb",
+              "kind": "grave_hand",
+              "pos": [
+                184,
+                168
+              ],
+              "zone": "uc_balcony",
+              "leash": 100
+            },
+            {
+              "id": "moth_uc_r10_amb",
+              "kind": "toll_moth",
+              "pos": [
+                232,
+                136
+              ],
+              "zone": "uc_balcony",
+              "leash": 120
+            }
+          ]
+        }
+      ]
     }
   ],
   "design": {
-    "idea": "Compact L-shaped chandelier balcony above the Nave: sprint crumbling catwalks, drop the shortcut to r1, and time a War Echo through a plate-lifted shutter for Pane Belfry Weight.",
+    "idea": "Compact L-shaped chandelier balcony above the Nave: sprint crumbling catwalks past a Toll Moth and Owl, drop the shortcut to r1, and time a War Echo through a plate-lifted shutter for Pane Belfry Weight while fending off the seal ambush.",
     "kind": "traversal",
     "beat": "ketsu",
     "teaches": "Combining Echo Clapper throw timing with a player-held shutter plate for optional mastery secrets.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 45,
     "reward": "pane_belfry_weight+r1_shortcut",
     "why": "Tight elevated balcony loop returning straight to the Nave hub with the Boss Key in hand.",

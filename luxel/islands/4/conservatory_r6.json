@@ -128,7 +128,7 @@
         72
       ],
       "props": {
-        "radius": 22,
+        "radius": 24,
         "on": true,
         "boost_mult": 1.25
       }
@@ -141,7 +141,7 @@
         72
       ],
       "props": {
-        "radius": 22,
+        "radius": 24,
         "on": true,
         "boost_mult": 1.25
       }
@@ -154,7 +154,7 @@
         168
       ],
       "props": {
-        "radius": 22,
+        "radius": 24,
         "on": true,
         "boost_mult": 1.25
       }
@@ -167,7 +167,7 @@
         168
       ],
       "props": {
-        "radius": 22,
+        "radius": 24,
         "on": true,
         "boost_mult": 1.25
       }

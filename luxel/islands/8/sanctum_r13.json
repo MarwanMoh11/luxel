@@ -244,7 +244,7 @@
       "id": "portal_r13_in",
       "kind": "blue_portal",
       "pos": [
-        448,
+        464,
         88
       ],
       "props": {
@@ -438,7 +438,7 @@
       "kind": "road_lamp",
       "pos": [
         472,
-        88
+        112
       ],
       "props": {
         "zone": "sanctum_r13",
@@ -690,10 +690,10 @@
       {
         "op": "goto",
         "to": [
-          432,
+          440,
           88
         ],
-        "tol": 5.0
+        "tol": 4.0
       },
       {
         "op": "dash",

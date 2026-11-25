@@ -100,6 +100,27 @@
       ],
       "zone": "belfry_pendulum",
       "leash": 64
+    },
+    {
+      "id": "snuffer_r12_c",
+      "kind": "snuffer_acolyte",
+      "pos": [
+        288,
+        240
+      ],
+      "route": [
+        [
+          264,
+          240
+        ],
+        [
+          312,
+          240
+        ]
+      ],
+      "perches": [],
+      "zone": "belfry_pendulum",
+      "leash": 96
     }
   ],
   "interactables": [
@@ -218,6 +239,30 @@
           16
         ],
         "persist": true
+      }
+    },
+    {
+      "id": "chest_r12_south",
+      "kind": "chest",
+      "pos": [
+        248,
+        280
+      ],
+      "props": {
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_r12_pend",
+      "kind": "lore_stone",
+      "pos": [
+        96,
+        176
+      ],
+      "props": {
+        "string_id": "ISL1_BF_LORE_R12",
+        "icon": "clock"
       }
     },
     {
@@ -343,19 +388,55 @@
       "phase": 0.0
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "ev_r12_k2_wave",
+      "on": "signal:bell_r12_k2",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "moth_r12_e1",
+              "kind": "toll_moth",
+              "pos": [
+                432,
+                104
+              ],
+              "zone": "belfry_pendulum",
+              "leash": 120
+            },
+            {
+              "id": "moth_r12_e2",
+              "kind": "toll_moth",
+              "pos": [
+                432,
+                184
+              ],
+              "zone": "belfry_pendulum",
+              "leash": 120
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "triggers": [],
   "design": {
-    "idea": "Stepped twin-peninsula Pendulum Gauntlet: Dusk-freeze three staggered pendulums across abyss catwalks, anchor on the central pier, clear the Owl and Toll Moth, and ring Dusk K2 to open the North loft gate.",
+    "idea": "Stepped twin-peninsula Pendulum Gauntlet: Dusk-freeze three staggered pendulums across abyss catwalks, anchor on the central pier, clear the Owl, Toll Moth, and Snuffer, grab the southern pier cache, and ring Dusk K2 while dodging diving moths to open the North loft gate.",
     "kind": "traversal",
     "beat": "ten",
     "teaches": "Chained Dusk freezes on multi-pendulum gaps with mid-chasm checkpointing.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 55,
-    "reward": "belfry_r12_crossed",
+    "reward": "belfry_r12_crossed+25sh",
     "why": "High-tempo traversal wing leading East from the Mainspring Rotunda to Key 3's foundry loft.",
     "exit": "exit_r12_north",
     "solution": [
+      {
+        "op": "interact",
+        "target": "lore_r12_pend"
+      },
       {
         "op": "shoot",
         "from": [
@@ -373,7 +454,7 @@
       },
       {
         "op": "clear",
-        "timeout": 18.0
+        "timeout": 28.0
       },
       {
         "op": "interact",

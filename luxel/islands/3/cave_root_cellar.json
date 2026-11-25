@@ -199,25 +199,6 @@
       }
     },
     {
-      "id": "wind_cellar_east",
-      "kind": "wind_zone",
-      "pos": [
-        280,
-        128
-      ],
-      "props": {
-        "size": [
-          128,
-          48
-        ],
-        "dir": [
-          1,
-          0
-        ],
-        "strength": 110.0
-      }
-    },
-    {
       "id": "chest_cellar_wings_ember",
       "kind": "chest",
       "pos": [
@@ -346,14 +327,14 @@
   "layers": [],
   "events": [],
   "design": {
-    "idea": "Root Cellar combining an outer Fruit-Scale weight puzzle (carry glowing seed orb + push crate to balance scale for Moth #6 & 45 shards) with a 7-tile tailwind chasm teasing an Island 4 Wings backtrack Ember Piece.",
+    "idea": "Root Cellar combining an outer Fruit-Scale weight puzzle (carry glowing seed orb + push crate to balance scale for Moth #6 & 45 shards) with a 9-tile phantom-stone chasm teasing an Island 5 True Lens backtrack Ember Piece.",
     "kind": "puzzle",
     "beat": "sho",
-    "teaches": "carry_orb + push_block + scale(balance), Wings backtrack chasm tease",
+    "teaches": "carry_orb + push_block + scale(balance), True Lens phantom-stone chasm tease",
     "decisions": 5,
     "expert_s": 46,
-    "reward": "moth_3_06, 45 shards, Wings backtrack ember_piece",
-    "why": "Camp cellar rewarding Beam exploration and creating memorable Metroidvania Wings anticipation",
+    "reward": "moth_3_06, 45 shards, True Lens backtrack ember_piece",
+    "why": "Camp cellar rewarding Beam exploration and creating memorable Metroidvania Lens anticipation",
     "optional": true,
     "solution": [
       {

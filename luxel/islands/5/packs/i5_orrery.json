@@ -34,31 +34,204 @@
     "o5_syzygy_conduit": "res://luxel/islands/5/orrery/o5_syzygy_conduit.gd"
   },
   "state_vars": {
-    "o5_r11_ring": { "scope": "room:5:orrery_r11", "values": [0, 90, 180, 270], "default": 0 },
-    "o5_r13_sky":  { "scope": "room:5:orrery_r13", "values": [0, 90, 180, 270], "default": 0 },
-    "o5_r14_ring": { "scope": "room:5:orrery_r14", "values": [0, 90, 180, 270], "default": 0 }
+    "o5_r11_ring": {
+      "scope": "room:5:orrery_r11",
+      "values": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "default": 0
+    },
+    "o5_r13_sky": {
+      "scope": "room:5:orrery_r13",
+      "values": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "default": 0
+    },
+    "o5_r14_ring": {
+      "scope": "room:5:orrery_r14",
+      "values": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "default": 0
+    }
   },
   "regions": {
-    "orrery_r1":  { "name_key": "I5_OR_R1",  "music": "island5_dungeon", "dark": true, "map": [2, 5] },
-    "orrery_r2":  { "name_key": "I5_OR_R2",  "music": "island5_dungeon", "dark": true, "map": [1, 5] },
-    "orrery_r3":  { "name_key": "I5_OR_R3",  "music": "island5_dungeon", "dark": true, "map": [1, 4] },
-    "orrery_r4":  { "name_key": "I5_OR_R4",  "music": "island5_dungeon", "dark": true, "map": [2, 4] },
-    "orrery_r5":  { "name_key": "I5_OR_R5",  "music": "island5_dungeon", "dark": true, "map": [3, 4] },
-    "orrery_r6":  { "name_key": "I5_OR_R6",  "music": "island5_boss_p1", "dark": true, "map": [3, 3] },
-    "orrery_r7":  { "name_key": "I5_OR_R7",  "music": "island5_dungeon", "dark": true, "map": [2, 3] },
-    "orrery_r8":  { "name_key": "I5_OR_R8",  "music": "island5_dungeon", "dark": true, "map": [2, 2] },
-    "orrery_r9":  { "name_key": "I5_OR_R9",  "music": "island5_dungeon", "dark": true, "map": [3, 2] },
-    "orrery_r10": { "name_key": "I5_OR_R10", "music": "island5_boss_p1", "dark": true, "map": [3, 0] },
-    "orrery_r11": { "name_key": "I5_OR_R11", "theme": "meteor_vault", "music": "island5_dungeon", "dark": true, "map": [0, 4] },
-    "orrery_r12": { "name_key": "I5_OR_R12", "theme": "planetarium",  "music": "island5_dungeon", "dark": true, "map": [3, 5] },
-    "orrery_r13": { "name_key": "I5_OR_R13", "theme": "planetarium",  "music": "island5_dungeon", "dark": true, "map": [4, 3] },
-    "orrery_r14": { "name_key": "I5_OR_R14", "theme": "planetarium",  "music": "island5_dungeon", "dark": true, "map": [1, 2] },
-    "orrery_r15": { "name_key": "I5_OR_R15", "theme": "planetarium",  "music": "isl5_planetarium","dark": true, "map": [1, 1] },
-    "orrery_r16": { "name_key": "I5_OR_R16", "theme": "freefall",     "music": "isl5_setpiece",   "dark": true, "map": [4, 1] }
+    "orrery_r1": {
+      "name_key": "I5_OR_R1",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        5
+      ]
+    },
+    "orrery_r2": {
+      "name_key": "I5_OR_R2",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        5
+      ]
+    },
+    "orrery_r3": {
+      "name_key": "I5_OR_R3",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        4
+      ]
+    },
+    "orrery_r4": {
+      "name_key": "I5_OR_R4",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        4
+      ]
+    },
+    "orrery_r5": {
+      "name_key": "I5_OR_R5",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        3,
+        4
+      ]
+    },
+    "orrery_r6": {
+      "name_key": "I5_OR_R6",
+      "music": "island5_boss_p1",
+      "dark": true,
+      "map": [
+        3,
+        3
+      ]
+    },
+    "orrery_r7": {
+      "name_key": "I5_OR_R7",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        3
+      ]
+    },
+    "orrery_r8": {
+      "name_key": "I5_OR_R8",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        2,
+        2
+      ]
+    },
+    "orrery_r9": {
+      "name_key": "I5_OR_R9",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        3,
+        2
+      ]
+    },
+    "orrery_r10": {
+      "name_key": "I5_OR_R10",
+      "music": "island5_boss_p1",
+      "dark": true,
+      "map": [
+        3,
+        0
+      ]
+    },
+    "orrery_r11": {
+      "name_key": "I5_OR_R11",
+      "theme": "meteor_vault",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        0,
+        4
+      ]
+    },
+    "orrery_r12": {
+      "name_key": "I5_OR_R12",
+      "theme": "planetarium",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        3,
+        5
+      ]
+    },
+    "orrery_r13": {
+      "name_key": "I5_OR_R13",
+      "theme": "planetarium",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        4,
+        3
+      ]
+    },
+    "orrery_r14": {
+      "name_key": "I5_OR_R14",
+      "theme": "planetarium",
+      "music": "island5_dungeon",
+      "dark": true,
+      "map": [
+        1,
+        2
+      ]
+    },
+    "orrery_r15": {
+      "name_key": "I5_OR_R15",
+      "theme": "planetarium",
+      "music": "isl5_planetarium",
+      "dark": true,
+      "map": [
+        1,
+        1
+      ]
+    },
+    "orrery_r16": {
+      "name_key": "I5_OR_R16",
+      "theme": "freefall",
+      "music": "isl5_setpiece",
+      "dark": true,
+      "map": [
+        4,
+        1
+      ]
+    }
   },
   "sfx": {
-    "o5_ring_latch":   { "id": "clockwork_chime", "pitch": 1.12, "db": -1.0 },
-    "o5_lens_carpet":  { "id": "prop_chime",      "pitch": 1.24, "db": -1.5 },
-    "o5_syzygy_chord": { "id": "great_lamp_bloom","pitch": 1.06, "db": -0.5 }
+    "o5_ring_latch": {
+      "id": "star_bell_turn",
+      "pitch": 1.08,
+      "db": -0.5
+    },
+    "o5_lens_carpet": {
+      "id": "prop_chime",
+      "pitch": 1.24,
+      "db": -1.5
+    },
+    "o5_syzygy_chord": {
+      "id": "star_constellation",
+      "pitch": 1.04,
+      "db": 0.0
+    }
   }
 }

@@ -15,5 +15,77 @@
     "MAP_HUB_LABEL": "WICK HOUSE HUB",
     "MAP_HUB_SHORT": "HUB",
     "SHOP_TAB_PANES": "PANES"
+  },
+  "sfx": {
+    "boss_armour_glint": {
+      "id": "boss_armour_glint",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "boss_armour_chip": {
+      "id": "boss_armour_chip",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "stagger_break": {
+      "id": "stagger_break",
+      "pitch": 1.0,
+      "db": 0.5
+    },
+    "arena_bars_rise": {
+      "id": "arena_bars_rise",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "arena_bars_fall": {
+      "id": "arena_bars_fall",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "phase_shift_crown": {
+      "id": "phase_shift_crown",
+      "pitch": 1.0,
+      "db": 0.5
+    },
+    "half_lantern_pickup": {
+      "id": "half_lantern_pickup",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "hub_medal_bronze": {
+      "id": "hub_medal_bronze",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "hub_medal_silver": {
+      "id": "hub_medal_silver",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "hub_medal_gold": {
+      "id": "hub_medal_gold",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "pane_fit": {
+      "id": "pane_fit",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "moth_catch": {
+      "id": "moth_catch",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "quest_done": {
+      "id": "quest_done",
+      "pitch": 1.0,
+      "db": 0.0
+    },
+    "express_lift": {
+      "id": "express_lift",
+      "pitch": 1.0,
+      "db": 0.0
+    }
   }
 }

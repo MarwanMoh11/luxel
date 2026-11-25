@@ -79,6 +79,19 @@
       }
     },
     {
+      "id": "anchor_c4_r17_e",
+      "kind": "room_anchor",
+      "pos": [
+        408,
+        248
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 26,
+        "persist": true
+      }
+    },
+    {
       "id": "wheel_c4_r17",
       "kind": "weather_wheel",
       "pos": [
@@ -99,11 +112,11 @@
         232
       ],
       "props": {
-        "radius": 24,
+        "radius": 26,
         "on": true,
         "weather_req": "wind",
         "dir": [
-          1,
+          0,
           0
         ],
         "boost_mult": 1.25

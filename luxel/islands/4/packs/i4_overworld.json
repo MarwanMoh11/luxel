@@ -102,7 +102,7 @@
     "vault_last_hour": {
       "name_key": "ISL4_ZONE_LAST_HOUR",
       "theme": "hourglass_maze",
-      "music": "isl4_boss_minor_p1",
+      "music": "superboss_a",
       "dark": true,
       "map": [-1, 3]
     }
@@ -144,7 +144,7 @@
       "steps": [
         {
           "icons": ["book", "clock", "arrow_s"],
-          "need": "lore_4_cellar && lore_4_gardener && lore_4_choir",
+          "need": "lore_4_cellar && lore_4_gardener && lore_4_choir && lore_4_abbess",
           "flag": "shadow_bridge_marked"
         },
         {

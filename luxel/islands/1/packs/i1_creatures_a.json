@@ -14,8 +14,8 @@
         "routine_speed": 44.0,
         "leash_radius": 156.0,
         "notice_radius": 110.0,
-        "tell_time": 0.50,
-        "recover_time": 1.20,
+        "tell_time": 0.5,
+        "recover_time": 1.2,
         "shard_drop": 3,
         "attack_damage": 1.0,
         "is_boss": false
@@ -90,8 +90,8 @@
         "routine_speed": 24.0,
         "leash_radius": 96.0,
         "notice_radius": 54.0,
-        "tell_time": 0.50,
-        "recover_time": 1.20,
+        "tell_time": 0.5,
+        "recover_time": 1.2,
         "shard_drop": 2,
         "attack_damage": 1.0,
         "is_boss": false
@@ -106,7 +106,7 @@
         "leash_radius": 0.0,
         "notice_radius": 180.0,
         "tell_time": 0.58,
-        "recover_time": 1.20,
+        "recover_time": 1.2,
         "shard_drop": 18,
         "attack_damage": 1.0,
         "is_boss": true
@@ -132,7 +132,9 @@
     "toll_hound": {
       "island": 1,
       "name_key": "ISL1_BOSS_HOUND",
-      "phases": [0.58],
+      "phases": [
+        0.58
+      ],
       "mini": true,
       "dungeon": "undercroft",
       "region": "undercroft_r5",
@@ -144,7 +146,10 @@
     "sexton": {
       "island": 1,
       "name_key": "ISL1_BOSS_SEXTON",
-      "phases": [0.6, 0.32],
+      "phases": [
+        0.6,
+        0.32
+      ],
       "mini": false,
       "dungeon": "undercroft",
       "region": "undercroft_r11",
@@ -155,20 +160,80 @@
     }
   },
   "sfx": {
-    "toll_moth_tell": { "id": "clockwork_chime", "pitch": 1.22, "db": -3.0 },
-    "toll_moth_ring": { "id": "bell_slam", "pitch": 1.35, "db": -1.5 },
-    "toll_moth_war_ring": { "id": "bell_slam", "pitch": 1.15, "db": 0.0 },
-    "snuffer_cone_knock": { "id": "shield_clang", "pitch": 1.18, "db": -1.0 },
-    "portrait_eye_blink": { "id": "switch_eye", "pitch": 1.08, "db": -2.0 },
-    "portrait_glass_crack": { "id": "crystal_clank", "pitch": 1.22, "db": -0.5 },
-    "butler_whistle": { "id": "warden_alert", "pitch": 1.28, "db": -2.5 },
-    "pew_creak": { "id": "harbor_creak", "pitch": 0.90, "db": -2.0 },
-    "pew_chomp": { "id": "shell_snap", "pitch": 0.85, "db": 0.0 },
-    "grave_grab": { "id": "magpie_grab", "pitch": 0.82, "db": -1.0 },
-    "grave_wrist_snap": { "id": "stone_break", "pitch": 1.25, "db": -1.5 },
-    "toll_hound_bark": { "id": "bell_slam", "pitch": 0.95, "db": 0.5 },
-    "toll_hound_bonk": { "id": "stone_break", "pitch": 0.86, "db": 1.0 },
-    "sexton_cave_in": { "id": "stone_break", "pitch": 0.78, "db": 1.0 },
-    "sexton_cleave": { "id": "warden_swing", "pitch": 0.80, "db": 0.5 }
+    "toll_moth_tell": {
+      "id": "echo_clapper_pulse",
+      "pitch": 1.1,
+      "db": -2.5
+    },
+    "toll_moth_ring": {
+      "id": "bell_dawn_ring",
+      "pitch": 1.12,
+      "db": -1.5
+    },
+    "toll_moth_war_ring": {
+      "id": "bell_war_ring",
+      "pitch": 1.12,
+      "db": -0.5
+    },
+    "snuffer_cone_knock": {
+      "id": "shield_clang",
+      "pitch": 1.18,
+      "db": -1.0
+    },
+    "portrait_eye_blink": {
+      "id": "portrait_blink",
+      "pitch": 1.06,
+      "db": -1.0
+    },
+    "portrait_glass_crack": {
+      "id": "crystal_clank",
+      "pitch": 1.22,
+      "db": -0.5
+    },
+    "butler_whistle": {
+      "id": "warden_alert",
+      "pitch": 1.28,
+      "db": -2.5
+    },
+    "pew_creak": {
+      "id": "harbor_creak",
+      "pitch": 0.9,
+      "db": -2.0
+    },
+    "pew_chomp": {
+      "id": "shell_snap",
+      "pitch": 0.85,
+      "db": 0.0
+    },
+    "grave_grab": {
+      "id": "magpie_grab",
+      "pitch": 0.82,
+      "db": -1.0
+    },
+    "grave_wrist_snap": {
+      "id": "stone_break",
+      "pitch": 1.25,
+      "db": -1.5
+    },
+    "toll_hound_bark": {
+      "id": "bell_war_ring",
+      "pitch": 1.04,
+      "db": 0.0
+    },
+    "toll_hound_bonk": {
+      "id": "stone_break",
+      "pitch": 0.86,
+      "db": 1.0
+    },
+    "sexton_cave_in": {
+      "id": "stone_break",
+      "pitch": 0.78,
+      "db": 1.0
+    },
+    "sexton_cleave": {
+      "id": "warden_swing",
+      "pitch": 0.8,
+      "db": 0.5
+    }
   }
 }

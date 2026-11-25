@@ -25,6 +25,35 @@ const REGIONS: Array[String] = [
 	"cave_heron_roost",
 	"trial_wing_spire",
 	"vault_last_hour",
+	"hourglass_r1",
+	"hourglass_r2",
+	"hourglass_r3",
+	"hourglass_r4",
+	"hourglass_r5",
+	"hourglass_r6",
+	"hourglass_r7",
+	"hourglass_r8",
+	"hourglass_r9",
+	"hourglass_r10",
+	"hourglass_r11",
+	"hourglass_r12",
+	"mausoleum_r1",
+	"mausoleum_r2",
+	"mausoleum_r3",
+	"mausoleum_r4",
+	"mausoleum_r5",
+	"mausoleum_r6",
+	"mausoleum_r7",
+	"mausoleum_r8",
+	"mausoleum_r9",
+	"mausoleum_r10",
+	"mausoleum_r11",
+	"mausoleum_r12",
+	"party_r1",
+	"party_r2",
+	"party_r3",
+	"party_r4",
+	"party_r5",
 	"conservatory_r1",
 	"conservatory_r2",
 	"conservatory_r3",
@@ -35,6 +64,14 @@ const REGIONS: Array[String] = [
 	"conservatory_r8",
 	"conservatory_r9",
 	"conservatory_r10",
+	"conservatory_r11",
+	"conservatory_r12",
+	"conservatory_r13",
+	"conservatory_r14",
+	"conservatory_r15",
+	"conservatory_r16",
+	"conservatory_r17",
+	"conservatory_r18",
 ]
 
 const Island4Rule := preload("res://luxel/islands/4/rule.gd")
@@ -377,7 +414,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if st != null and not st.defeated_bosses.has("boss_last_hour") and not bool(st.story_flags.get("boss_last_hour_defeated", false)):
 			_emit_narration("ISL4_BOSS_LAST_HOUR", "title", 3.5)
 			if _events != null:
-				_events.music_mode_requested.emit("isl4_boss_minor_p1")
+				_events.music_mode_requested.emit("superboss_a")
 		elif _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "conservatory_r10":
@@ -448,14 +485,14 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 		return
 	if st.region_id == "conservatory_r3":
 		_r3_kills += 1
-		if _r3_kills >= 2 and not bool(st.story_flags.get("c4_r3_cleared", false)):
+		if _r3_kills >= 3 and not bool(st.story_flags.get("c4_r3_cleared", false)):
 			st.story_flags["c4_r3_cleared"] = true
 			if _events != null:
 				_events.sfx_requested.emit("door_open", Vector2.ZERO, false)
 				_emit_narration("CUE_DOOR_OPEN", "title", 2.5)
 	elif st.region_id == "conservatory_r8":
 		_r8_kills += 1
-		if _r8_kills >= 3 and not bool(st.story_flags.get("c4_r8_cleared", false)):
+		if _r8_kills >= 4 and not bool(st.story_flags.get("c4_r8_cleared", false)):
 			st.story_flags["c4_r8_cleared"] = true
 			if _events != null:
 				_events.sfx_requested.emit("door_open", Vector2.ZERO, false)
@@ -474,8 +511,13 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if boss_id == "boss_last_hour":
 		if phase >= 2 and _events != null:
-			_events.music_mode_requested.emit("isl4_boss_minor_p2")
+			_events.music_mode_requested.emit("superboss_a")
 			_events.shake_requested.emit(0.32 if phase == 2 else 0.38)
+		return
+	if boss_id in ["boss_shear_keeper", "boss_gardener_twice", "boss_cloud_deacon", "boss_drowned_choir", "boss_toastmaster"]:
+		if phase >= 2 and _events != null:
+			_events.music_mode_requested.emit("isl4_boss_minor_p2")
+			_events.shake_requested.emit(0.28 if phase == 2 else 0.34)
 		return
 	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
 		return

@@ -194,6 +194,24 @@
         200
       ],
       "zone": "hg_r3_cloister"
+    },
+    {
+      "id": "pd_r3_n",
+      "kind": "petal_duelist",
+      "pos": [
+        208,
+        88
+      ],
+      "zone": "hg_r3_cloister"
+    },
+    {
+      "id": "hh_r3_e",
+      "kind": "hour_heron",
+      "pos": [
+        296,
+        136
+      ],
+      "zone": "hg_r3_cloister"
     }
   ],
   "decor": [
@@ -319,7 +337,7 @@
     "kind": "combat",
     "beat": "sho",
     "teaches": "Topiary Knights freeze armored under light/Echoes and take 2x damage from behind; Mire Snuffers punish careless hung lanterns.",
-    "decisions": 5,
+    "decisions": 8,
     "expert_s": 45,
     "reward": "hg_r3_cleared+25_shards",
     "why": "Introduces the Hourglass Maze signature enemy role pair in a cover-rich twin-lane cloister.",

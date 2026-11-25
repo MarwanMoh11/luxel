@@ -124,8 +124,8 @@
       ],
       "props": {
         "size": [
-          96,
-          96
+          48,
+          48
         ],
         "quarter_on_signal": true
       }
@@ -134,8 +134,8 @@
       "id": "bell_o5_r12",
       "kind": "star_bell",
       "pos": [
-        272,
-        104
+        104,
+        216
       ],
       "props": {
         "scope": "room:5:orrery_r12",
@@ -168,7 +168,7 @@
         104
       ],
       "props": {
-        "angle_deg": 225,
+        "angle_deg": 45,
         "rotatable": true,
         "movable": false,
         "angle_step_deg": 45,
@@ -187,7 +187,7 @@
         184
       ],
       "props": {
-        "angle_deg": 135,
+        "angle_deg": 315,
         "rotatable": true,
         "movable": false,
         "angle_step_deg": 45,
@@ -408,6 +408,11 @@
         "timeout": 50.0
       },
       {
+        "op": "rotate",
+        "target": "trans_o5_r12_n",
+        "angle": 225
+      },
+      {
         "op": "goto",
         "to": [
           196,
@@ -426,6 +431,11 @@
         "prop": "activated",
         "value": true,
         "timeout": 2.5
+      },
+      {
+        "op": "rotate",
+        "target": "trans_o5_r12_s",
+        "angle": 135
       },
       {
         "op": "goto",
